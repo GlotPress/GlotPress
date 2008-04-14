@@ -1,4 +1,11 @@
 <?php
+/**
+ * Tests for pomo/pomo.php
+ *
+ * @version $Id$
+ * @package GlotPress
+ * @subpackage tests
+ */
 error_reporting(E_ALL);
 require_once('PHPUnit/Framework.php');
 require_once('pomo.php');
