@@ -92,12 +92,15 @@ class GP_Gettext_Entry extends GP_Entry {
 		$quote = '"';
 		$slash = '\\';
 		$newline = "\n";
+		$tab = "\t";
+
 		$replaces = array(
 			"$slash" 	=> "$slash$slash",
-			"\t" 		=> '\t',
+			"$tab" 		=> "$slash$tab",
 			"$quote"	=> "$slash$quote",
 		);
 		$string = str_replace(array_keys($replaces), array_values($replaces), $string);	
+
 		$po = array();
 		foreach (explode($newline, $string) as $line) {
 			$po[] = wordwrap($line, POMO_MAX_LINE_LEN - 2, " $quote$newline$quote");
@@ -127,6 +130,7 @@ class GP_Gettext_Entry extends GP_Entry {
 	 * Prepare a text as a comment -- wraps the lines and prepends #
 	 * and a special character to each line
 	 *
+	 * @access private
 	 * @param string $text the comment text
 	 * @param string $char character to denote a special PO comment,
 	 * 	like :, default is a space
