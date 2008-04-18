@@ -1,7 +1,6 @@
 <?php
 /**
  * Tests for pomo
- *
  * @version $Id: test.php 3 2008-04-14 12:56:21Z nbachiyski $
  * @package pomo
  * @subpackage tests
@@ -12,6 +11,20 @@ require_once('PHPUnit/Framework.php');
 require_once('po.php');
 
 class Test_POMO extends PHPUnit_Framework_TestCase {
+
+	function temp_filename() {
+		$tmp_dir = '';
+		$dirs = array('TMP', 'TMPDIR', 'TEMP');
+		foreach($dirs as $dir)
+			if (isset($_ENV[$dir]) && !empty($_ENV[$dir])) {
+				$tmp_dir = $dir;
+				break;
+			}
+		if (empty($dir)) $dir = '/tmp';
+		$dir = realpath($dir);
+		return tempnam($dir, 'testpomo');
+
+	}
 
 	function test_create_entry() {
 		// no singular => empty object
@@ -193,6 +206,37 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$po->set_header('Project-Id-Version', 'WordPress 2.6-bleeding');
 		$po->set_header('POT-Creation-Date', '2008-04-08 18:00+0000');
 		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"", $po->export_headers());
+	}
+
+	function test_export() {
+		$po = new PO();
+		$entry = new Translation_Entry(array('singular' => 'baba',));
+		$entry2 = new Translation_Entry(array('singular' => 'dyado',));
+		$po->set_header('Project-Id-Version', 'WordPress 2.6-bleeding');
+		$po->set_header('POT-Creation-Date', '2008-04-08 18:00+0000');
+		$po->add_entry($entry);
+		$po->add_entry($entry2);
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export(false));
+		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"\n\nmsgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export());
+	}
+
+
+	function test_export_to_file() {
+		$po = new PO();
+		$entry = new Translation_Entry(array('singular' => 'baba',));
+		$entry2 = new Translation_Entry(array('singular' => 'dyado',));
+		$po->set_header('Project-Id-Version', 'WordPress 2.6-bleeding');
+		$po->set_header('POT-Creation-Date', '2008-04-08 18:00+0000');
+		$po->add_entry($entry);
+		$po->add_entry($entry2);
+
+		$temp_fn = $this->temp_filename();
+		$po->export_to_file($temp_fn, false);
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", file_get_contents($temp_fn));
+
+		$temp_fn2 = $this->temp_filename();
+		$po->export_to_file($temp_fn2);
+		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"\n\nmsgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", file_get_contents($temp_fn2));
 	}
 
 }

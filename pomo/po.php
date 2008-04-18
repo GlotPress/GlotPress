@@ -34,31 +34,72 @@ class PO {
 		return true;
 	}
 
+	/**
+	 * Sets $header PO header to $value
+	 *
+	 * If the header already exists, it will be overwritten
+	 *
+	 * @param string $header header name, without trailing :
+	 * @param string $value header value, without trailing \n
+	 */
 	function set_header($header, $value) {
 		$this->headers[$header] = $value;
 	}
 
+	/**
+	 * Exports headers to a PO entry
+	 *
+	 * @return string msgid/msgstr PO entry for this PO file headers, doesn't contain newline at the end
+	 */
 	function export_headers() {
 		$header_string = '';
 		foreach($this->headers as $header => $value) {
 			$header_string.= "$header: $value\n";
 		}
 		$poified = PO::poify($header_string);
-		return rtrim("msgid \"\"\nmsgstr $poified\n");
+		return rtrim("msgid \"\"\nmsgstr $poified");
 	}
 
+	/**
+	 * Exports all entries to PO format
+	 *
+	 * @return string sequence of mgsgid/msgstr PO strings, doesn't containt newline at the end
+	 */
 	function export_entries() {
 		//TODO sorting
 		return implode("\n\n", array_map(array('PO', 'export_entry'), $this->entries));
 	}
 
-	function export($headers = true) {
+	/**
+	 * Exports the whole PO file as a string
+	 *
+	 * @param bool $include_headers whether to include the headers in the export
+	 * @return string ready for inclusion in PO file string for headers and all the enrtries
+	 */
+	function export($include_headers = true) {
 		$res = '';
-		if ($headers) {
+		if ($include_headers) {
 			$res .= $this->export_headers();
+			$res .= "\n\n";
 		}
 		$res .= $this->export_entries();
 		return $res;
+	}
+
+	/**
+	 * Same as {@link export}, but writes the result to a file
+	 *
+	 * @param string $filename where to write the PO string
+	 * @param bool $include_headers whether to include tje headers in the export
+	 * @return bool true on success, false on error
+	 */
+	function export_to_file($filename, $include_headers = true) {
+		$f = fopen($filename, 'w');
+		if (false === $f) return false;
+		$export = $this->export($include_headers);
+		$res = fwrite($f, $export);
+		if (false === $res) return false;
+		return fclose($f);
 	}
 
 
