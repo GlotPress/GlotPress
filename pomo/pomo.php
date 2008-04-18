@@ -30,6 +30,7 @@ class GP_Entry {
 	var $translator_comments = '';
 	var $extracted_comments = '';
 	var $references = array();
+	var $flags = array();
 
 	/**
 	 * @param array $args associative array, support following keys:
@@ -40,6 +41,7 @@ class GP_Entry {
 	 * 	- translator_comments (string) -- comments left by translators
 	 * 	- extracted_comments (string) -- comments left by developers
 	 * 	- references (array) -- places in the code this strings is used, in relative_to_root_path/file.php:linenum form
+	 * 	- flags (array) -- flags like php-format
 	 */
 	function GP_Entry($args=array()) {
 		// if no singular -- empty object
@@ -56,6 +58,7 @@ class GP_Entry {
 		if (isset($args['plural'])) $this->is_plural = true;
 		if (!is_array($this->translations)) $this->translations = array();
 		if (!is_array($this->references)) $this->references = array();
+		if (!is_array($this->flags)) $this->flags = array();
 	}
 
 	/**
@@ -71,24 +74,18 @@ class GP_Entry {
 }
 
 /**
- * A string for translation, including some gettext specifics
+ * Routines for working with PO files
  */
-class GP_Gettext_Entry extends GP_Entry {
-
-	var $flags = array();
-
-	function GP_Gettext_Entry($args=array()) {
-		parent::GP_Entry($args);
-		if (!is_array($this->flags)) $this->flags = array();
-	}
+class PO {
 
 	/**
 	 * Formats a string in PO-style
 	 *
+	 * @static
 	 * @param string $string the string to format
 	 * @return string the poified string
 	 */
-	function poify($string) {
+	static function poify($string) {
 		$quote = '"';
 		$slash = '\\';
 		$newline = "\n";
@@ -96,7 +93,7 @@ class GP_Gettext_Entry extends GP_Entry {
 
 		$replaces = array(
 			"$slash" 	=> "$slash$slash",
-			"$tab" 		=> "$slash$tab",
+			"$tab" 		=> '\t',
 			"$quote"	=> "$slash$quote",
 		);
 		$string = str_replace(array_keys($replaces), array_values($replaces), $string);	
@@ -115,7 +112,15 @@ class GP_Gettext_Entry extends GP_Entry {
 		return $po;
 	}
 
-	function _prepend_each_line($string, $with) {
+	/**
+	 * Inserts $with in the beginning of every new line of $string and 
+	 * returns the modified string
+	 *
+	 * @static
+	 * @param string $string prepend lines in this string
+	 * @param string $with prepend lines with this string
+	 */
+	static function prepend_each_line($string, $with) {
 		$php_with = var_export($with, true);
 		$lines = explode("\n", $string);
 		// do not prepend the string on the last empty line, artefact by explode
@@ -135,34 +140,36 @@ class GP_Gettext_Entry extends GP_Entry {
 	 * @param string $char character to denote a special PO comment,
 	 * 	like :, default is a space
 	 */
-	function _comment_block($text, $char=' ') {
+	static function comment_block($text, $char=' ') {
 		$text = wordwrap($text, POMO_MAX_LINE_LEN - 3);
-		return $this->_prepend_each_line($text, "#$char ");
+		return PO::prepend_each_line($text, "#$char ");
 	}
 
 	/**
 	 * Builds a string from the entry for inclusion in PO file
 	 *
+	 * @static
+	 * @param object &$entry the entry to convert to po string
 	 * @return string|bool PO-style formatted string for the entry or
 	 * 	false if the entry is empty
 	 */
-	function to_po() {
-		if (is_null($this->singular)) return false;
+	static function to_po(&$entry) {
+		if (is_null($entry->singular)) return false;
 		$po = array();	
-		if (!empty($this->translator_comments)) $po[] = $this->_comment_block($this->translator_comments);
-		if (!empty($this->extracted_comments)) $po[] = $this->_comment_block($this->extracted_comments, '.');
-		if (!empty($this->references)) $po[] = $this->_comment_block(implode(' ', $this->references), '.');
-		if (!empty($this->flags)) $po[] = $this->_comment_block(implode("\n", $this->flags), ',');
-		if (!is_null($this->context)) $po[] = 'msgctxt '.$this->poify($this->context);
-		$po[] = 'msgid '.$this->poify($this->singular);
-		if (!$this->is_plural) {
-			$translation = empty($this->translations)? '' : $this->translations[0];
-			$po[] = 'msgstr '.$this->poify($translation);
+		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
+		if (!empty($entry->extracted_comments)) $po[] = PO::comment_block($entry->extracted_comments, '.');
+		if (!empty($entry->references)) $po[] = PO::comment_block(implode(' ', $entry->references), '.');
+		if (!empty($entry->flags)) $po[] = PO::comment_block(implode("\n", $entry->flags), ',');
+		if (!is_null($entry->context)) $po[] = 'msgctxt '.PO::poify($entry->context);
+		$po[] = 'msgid '.PO::poify($entry->singular);
+		if (!$entry->is_plural) {
+			$translation = empty($entry->translations)? '' : $entry->translations[0];
+			$po[] = 'msgstr '.PO::poify($translation);
 		} else {
-			$po[] = 'msgid_plural '.$this->poify($this->plural);
-			$translations = empty($this->translations)? array('', '') : $this->translations;
+			$po[] = 'msgid_plural '.PO::poify($entry->plural);
+			$translations = empty($entry->translations)? array('', '') : $entry->translations;
 			foreach($translations as $i => $translation) {
-				$po[] = "msgstr[$i] ".$this->poify($translation);
+				$po[] = "msgstr[$i] ".PO::poify($translation);
 			}
 		}
 		return implode("\n", $po);
