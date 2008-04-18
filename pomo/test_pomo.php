@@ -14,12 +14,12 @@ class Test_POMO extends PHPUnit_Framework_TestCase {
 
 	function test_create_entry() {
 		// no singular => empty object
-		$entry = new GP_Entry();
+		$entry = new Translation_Entry();
 		$this->assertNull($entry->singular);
 		$this->assertNull($entry->plural);
 		$this->assertFalse($entry->is_plural);
 		// args -> members
-		$entry = new GP_Entry(array(
+		$entry = new Translation_Entry(array(
 			'singular' => 'baba',
 			'plural' => 'babas',
 			'non_existant' => 'cookoo',
@@ -92,24 +92,24 @@ http://wordpress.org/
 	}
 
 	function test_export_entry() {
-		$entry = new GP_Entry(array('singular' => 'baba'));
+		$entry = new Translation_Entry(array('singular' => 'baba'));
 		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
 		// plural
-		$entry = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas'));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas'));
 		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] ""
 msgstr[1] ""', PO::export_entry($entry));
-		$entry = new GP_Entry(array('singular' => 'baba', 'translator_comments' => "baba\ndyado"));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'translator_comments' => "baba\ndyado"));
 		$this->assertEquals('#  baba
 #  dyado
 msgid "baba"
 msgstr ""', PO::export_entry($entry));
-		$entry = new GP_Entry(array('singular' => 'baba', 'extracted_comments' => "baba"));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'extracted_comments' => "baba"));
 		$this->assertEquals('#. baba
 msgid "baba"
 msgstr ""', PO::export_entry($entry));
-		$entry = new GP_Entry(array(
+		$entry = new Translation_Entry(array(
 			'singular' => 'baba',
 			'extracted_comments' => "baba",
 			'references' => range(1, 29)));
@@ -118,25 +118,25 @@ msgstr ""', PO::export_entry($entry));
 #. 29
 msgid "baba"
 msgstr ""', PO::export_entry($entry));
-		$entry = new GP_Entry(array('singular' => 'baba', 'translations' => array()));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'translations' => array()));
 		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
 
-		$entry = new GP_Entry(array('singular' => 'baba', 'translations' => array('куку', 'буку')));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'translations' => array('куку', 'буку')));
 		$this->assertEquals("msgid \"baba\"\nmsgstr \"куку\"", PO::export_entry($entry));
 
-		$entry = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку')));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку')));
 		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] "кукубуку"', PO::export_entry($entry));
 
-		$entry = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга')));
+		$entry = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга')));
 		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] "кукубуку"
 msgstr[1] "кукуруку"
 msgstr[2] "бабаяга"', PO::export_entry($entry));
 		// context
-		$entry = new GP_Entry(array('context' => 'ctxt', 'singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга'), 'flags' => array('fuzzy', 'php-format')));
+		$entry = new Translation_Entry(array('context' => 'ctxt', 'singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга'), 'flags' => array('fuzzy', 'php-format')));
 		$this->assertEquals('#, fuzzy
 #, php-format
 msgctxt "ctxt"
@@ -149,10 +149,10 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 
 	function test_key() {
-		$entry_baba = new GP_Entry(array('singular' => 'baba',));
-		$entry_dyado = new GP_Entry(array('singular' => 'dyado',));
-		$entry_baba_ctxt = new GP_Entry(array('singular' => 'baba', 'context' => 'x'));
-		$entry_baba_plural = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas'));
+		$entry_baba = new Translation_Entry(array('singular' => 'baba',));
+		$entry_dyado = new Translation_Entry(array('singular' => 'dyado',));
+		$entry_baba_ctxt = new Translation_Entry(array('singular' => 'baba', 'context' => 'x'));
+		$entry_baba_plural = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas'));
 		$this->assertEquals($entry_baba->key(), $entry_baba_plural->key());
 		$this->assertNotEquals($entry_baba->key(), $entry_baba_ctxt->key());
 		$this->assertNotEquals($entry_baba_plural->key(), $entry_baba_ctxt->key());
@@ -160,9 +160,9 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 	}
 
 	function test_add_entry() {
-		$entry = new GP_Entry(array('singular' => 'baba',));
-		$entry2 = new GP_Entry(array('singular' => 'dyado',));
-		$empty = new GP_Entry();
+		$entry = new Translation_Entry(array('singular' => 'baba',));
+		$entry2 = new Translation_Entry(array('singular' => 'dyado',));
+		$empty = new Translation_Entry();
 		$po = new PO();
 		$po->add_entry(&$entry);
 		$this->assertEquals(array($entry->key() => $entry), $po->entries);
@@ -179,8 +179,8 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 	}
 
 	function test_export_entries() {
-		$entry = new GP_Entry(array('singular' => 'baba',));
-		$entry2 = new GP_Entry(array('singular' => 'dyado',));
+		$entry = new Translation_Entry(array('singular' => 'baba',));
+		$entry2 = new Translation_Entry(array('singular' => 'dyado',));
 		$po = new PO();
 		$po->add_entry($entry);
 		$po->add_entry($entry2);

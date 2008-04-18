@@ -11,9 +11,9 @@ define('PO_MAX_LINE_LEN', 79);
 ini_set('auto_detect_line_endings', 1);
 
 /**
- * GP_Entry class encapsulates a translatable string
+ * Translation_Entry class encapsulates a translatable string
  */
-class GP_Entry {
+class Translation_Entry {
 
 	/**
 	 * Whether the entry contains a string and its plural form, default is false
@@ -42,7 +42,7 @@ class GP_Entry {
 	 * 	- references (array) -- places in the code this strings is used, in relative_to_root_path/file.php:linenum form
 	 * 	- flags (array) -- flags like php-format
 	 */
-	function GP_Entry($args=array()) {
+	function Translation_Entry($args=array()) {
 		// if no singular -- empty object
 		if (!isset($args['singular'])) {
 			return;
