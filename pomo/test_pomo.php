@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for pomo/pomo.php
+ * Tests for pomo
  *
  * @version $Id: test.php 3 2008-04-14 12:56:21Z nbachiyski $
  * @package pomo
@@ -8,7 +8,8 @@
  */
 error_reporting(E_ALL);
 require_once('PHPUnit/Framework.php');
-require_once('pomo.php');
+
+require_once('po.php');
 
 class Test_POMO extends PHPUnit_Framework_TestCase {
 
