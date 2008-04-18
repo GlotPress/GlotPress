@@ -232,11 +232,11 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 		$temp_fn = $this->temp_filename();
 		$po->export_to_file($temp_fn, false);
-		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", file_get_contents($temp_fn));
+		$this->assertEquals($po->export(false), file_get_contents($temp_fn));
 
 		$temp_fn2 = $this->temp_filename();
 		$po->export_to_file($temp_fn2);
-		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"\n\nmsgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", file_get_contents($temp_fn2));
+		$this->assertEquals($po->export(), file_get_contents($temp_fn2));
 	}
 
 }
