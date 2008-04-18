@@ -3,7 +3,7 @@
  * Tests for pomo/pomo.php
  *
  * @version $Id: test.php 3 2008-04-14 12:56:21Z nbachiyski $
- * @package GlotPress
+ * @package pomo
  * @subpackage tests
  */
 error_reporting(E_ALL);
@@ -12,7 +12,7 @@ require_once('pomo.php');
 
 class Test_POMO extends PHPUnit_Framework_TestCase {
 
-	function test_creation() {
+	function test_create_entry() {
 		// no singular => empty object
 		$entry = new GP_Entry();
 		$this->assertNull($entry->singular);
@@ -37,7 +37,6 @@ class Test_POMO extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_prepend_each_line() {
-		$entry = new GP_Entry();
 		$this->assertEquals('baba_', PO::prepend_each_line('', 'baba_'));
 		$this->assertEquals('baba_dyado', PO::prepend_each_line('dyado', 'baba_'));
 		$this->assertEquals("# baba\n# dyado\n# \n", PO::prepend_each_line("baba\ndyado\n\n", '# '));
@@ -92,24 +91,24 @@ http://wordpress.org/
 		$this->assertEquals($po_mail, PO::poify($mail));
 	}
 
-	function test_to_po() {
+	function test_export_entry() {
 		$entry = new GP_Entry(array('singular' => 'baba'));
-		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::to_po($entry));
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
 		// plural
 		$entry = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas'));
 		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] ""
-msgstr[1] ""', PO::to_po($entry));
+msgstr[1] ""', PO::export_entry($entry));
 		$entry = new GP_Entry(array('singular' => 'baba', 'translator_comments' => "baba\ndyado"));
 		$this->assertEquals('#  baba
 #  dyado
 msgid "baba"
-msgstr ""', PO::to_po($entry));
+msgstr ""', PO::export_entry($entry));
 		$entry = new GP_Entry(array('singular' => 'baba', 'extracted_comments' => "baba"));
 		$this->assertEquals('#. baba
 msgid "baba"
-msgstr ""', PO::to_po($entry));
+msgstr ""', PO::export_entry($entry));
 		$entry = new GP_Entry(array(
 			'singular' => 'baba',
 			'extracted_comments' => "baba",
@@ -118,24 +117,24 @@ msgstr ""', PO::to_po($entry));
 #. 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
 #. 29
 msgid "baba"
-msgstr ""', PO::to_po($entry));
+msgstr ""', PO::export_entry($entry));
 		$entry = new GP_Entry(array('singular' => 'baba', 'translations' => array()));
-		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::to_po($entry));
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
 
 		$entry = new GP_Entry(array('singular' => 'baba', 'translations' => array('куку', 'буку')));
-		$this->assertEquals("msgid \"baba\"\nmsgstr \"куку\"", PO::to_po($entry));
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"куку\"", PO::export_entry($entry));
 
 		$entry = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку')));
 		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
-msgstr[0] "кукубуку"', PO::to_po($entry));
+msgstr[0] "кукубуку"', PO::export_entry($entry));
 
 		$entry = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга')));
 		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] "кукубуку"
 msgstr[1] "кукуруку"
-msgstr[2] "бабаяга"', PO::to_po($entry));
+msgstr[2] "бабаяга"', PO::export_entry($entry));
 		// context
 		$entry = new GP_Entry(array('context' => 'ctxt', 'singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга'), 'flags' => array('fuzzy', 'php-format')));
 		$this->assertEquals('#, fuzzy
@@ -145,9 +144,56 @@ msgid "baba"
 msgid_plural "babas"
 msgstr[0] "кукубуку"
 msgstr[1] "кукуруку"
-msgstr[2] "бабаяга"', PO::to_po($entry));
-
+msgstr[2] "бабаяга"', PO::export_entry($entry));
 	}
+
+
+	function test_key() {
+		$entry_baba = new GP_Entry(array('singular' => 'baba',));
+		$entry_dyado = new GP_Entry(array('singular' => 'dyado',));
+		$entry_baba_ctxt = new GP_Entry(array('singular' => 'baba', 'context' => 'x'));
+		$entry_baba_plural = new GP_Entry(array('singular' => 'baba', 'plural' => 'babas'));
+		$this->assertEquals($entry_baba->key(), $entry_baba_plural->key());
+		$this->assertNotEquals($entry_baba->key(), $entry_baba_ctxt->key());
+		$this->assertNotEquals($entry_baba_plural->key(), $entry_baba_ctxt->key());
+		$this->assertNotEquals($entry_baba->key(), $entry_dyado->key());
+	}
+
+	function test_add_entry() {
+		$entry = new GP_Entry(array('singular' => 'baba',));
+		$entry2 = new GP_Entry(array('singular' => 'dyado',));
+		$empty = new GP_Entry();
+		$po = new PO();
+		$po->add_entry(&$entry);
+		$this->assertEquals(array($entry->key() => $entry), $po->entries);
+		// add the same entry more than once
+		// we do not need to test proper key generation here, see test_key()
+		$po->add_entry(&$entry);
+		$po->add_entry(&$entry);
+		$this->assertEquals(array($entry->key() => $entry), $po->entries);
+		$po->add_entry(&$entry2);
+		$this->assertEquals(array($entry->key() => $entry, $entry2->key() => $entry2), $po->entries);
+		// add empty entry
+		$this->assertEquals(false, $po->add_entry($empty));
+		$this->assertEquals(array($entry->key() => $entry, $entry2->key() => $entry2), $po->entries);
+	}
+
+	function test_export_entries() {
+		$entry = new GP_Entry(array('singular' => 'baba',));
+		$entry2 = new GP_Entry(array('singular' => 'dyado',));
+		$po = new PO();
+		$po->add_entry($entry);
+		$po->add_entry($entry2);
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export_entries());
+	}
+
+	function test_export_headers() {
+		$po = new PO();
+		$po->set_header('Project-Id-Version', 'WordPress 2.6-bleeding');
+		$po->set_header('POT-Creation-Date', '2008-04-08 18:00+0000');
+		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"", $po->export_headers());
+	}
+
 }
 
 ?>

@@ -3,11 +3,10 @@
  * Library for working with PO and MO files
  *
  * @version $Id$
- * @package GlotPress
- * @subpackage pomo
+ * @package pomo
  */
 
-define('POMO_MAX_LINE_LEN', 79);
+define('PO_MAX_LINE_LEN', 79);
 
 ini_set('auto_detect_line_endings', 1);
 
@@ -77,6 +76,50 @@ class GP_Entry {
  * Routines for working with PO files
  */
 class PO {
+	
+	var $entries = array();
+	var $headers = array();
+
+	/**
+	 * Add entry to the PO structure
+	 *
+	 * @param object &$entry
+	 * @return bool true on success, false if the entry doesn't have a key
+	 */
+	function add_entry(&$entry) {
+		$key = $entry->key();
+		if (false === $key) return false;
+		$this->entries[$key] = &$entry;
+		return true;
+	}
+
+	function set_header($header, $value) {
+		$this->headers[$header] = $value;
+	}
+
+	function export_headers() {
+		$header_string = '';
+		foreach($this->headers as $header => $value) {
+			$header_string.= "$header: $value\n";
+		}
+		$poified = PO::poify($header_string);
+		return rtrim("msgid \"\"\nmsgstr $poified\n");
+	}
+
+	function export_entries() {
+		//TODO sorting
+		return implode("\n\n", array_map(array('PO', 'export_entry'), $this->entries));
+	}
+
+	function export($headers = true) {
+		$res = '';
+		if ($headers) {
+			$res .= $this->export_headers();
+		}
+		$res .= $this->export_entries();
+		return $res;
+	}
+
 
 	/**
 	 * Formats a string in PO-style
@@ -100,7 +143,7 @@ class PO {
 
 		$po = array();
 		foreach (explode($newline, $string) as $line) {
-			$po[] = wordwrap($line, POMO_MAX_LINE_LEN - 2, " $quote$newline$quote");
+			$po[] = wordwrap($line, PO_MAX_LINE_LEN - 2, " $quote$newline$quote");
 		}
 		$po = $quote.implode("${slash}n$quote$newline$quote", $po).$quote;
 		// add empty string on first line for readbility
@@ -141,7 +184,7 @@ class PO {
 	 * 	like :, default is a space
 	 */
 	static function comment_block($text, $char=' ') {
-		$text = wordwrap($text, POMO_MAX_LINE_LEN - 3);
+		$text = wordwrap($text, PO_MAX_LINE_LEN - 3);
 		return PO::prepend_each_line($text, "#$char ");
 	}
 
@@ -153,7 +196,7 @@ class PO {
 	 * @return string|bool PO-style formatted string for the entry or
 	 * 	false if the entry is empty
 	 */
-	static function to_po(&$entry) {
+	static function export_entry(&$entry) {
 		if (is_null($entry->singular)) return false;
 		$po = array();	
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
@@ -174,5 +217,6 @@ class PO {
 		}
 		return implode("\n", $po);
 	}
+
 }
 ?>
