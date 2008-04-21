@@ -10,6 +10,7 @@ require_once('PHPUnit/Framework.php');
 
 require_once('entry.php');
 require_once('po.php');
+require_once('mo.php');
 
 class Test_POMO extends PHPUnit_Framework_TestCase {
 
@@ -239,6 +240,37 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$po->export_to_file($temp_fn2);
 		$this->assertEquals($po->export(), file_get_contents($temp_fn2));
 	}
+
+	function test_mo_simple() {
+		$mo = new MO();
+		$mo->import_from_file('data/simple.mo');
+		$this->assertEquals(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Report-Msgid-Bugs-To' => 'wp-polyglots@lists.automattic.com'), $mo->headers);
+		$this->assertEquals(2, count($mo->entries));
+		$this->assertEquals(array('dyado'), $mo->entries['baba']->translations);
+		$this->assertEquals(array('yes'), $mo->entries["kuku\nruku"]->translations);
+	}
+
+	function test_mo_plural() {
+		$mo = new MO();
+		$mo->import_from_file('data/plural.mo');
+		$this->assertEquals(1, count($mo->entries));
+		$this->assertEquals(array("oney dragoney", "twoey dragoney","manyey dragoney"), $mo->entries["one dragon"]->translations);
+	}
+
+	function test_mo_context() {
+		$mo = new MO();
+		$mo->import_from_file('data/context.mo');
+		$this->assertEquals(2, count($mo->entries));
+		$plural_entry = new Translation_Entry(array('singular' => 'one dragon', 'plural' => '%d dragons', 'translations' => array("oney dragoney", "twoey dragoney","manyey dragoney"), 'context' => 'dragonland'));
+		$this->assertEquals($plural_entry, $mo->entries[$plural_entry->key()]);
+		$this->assertEquals("dragonland", $mo->entries[$plural_entry->key()]->context);
+
+		$single_entry = new Translation_Entry(array('singular' => 'one dragon', 'translations' => array("oney dragoney"), 'context' => 'not so dragon'));
+		$this->assertEquals($single_entry, $mo->entries[$single_entry->key()]);
+		$this->assertEquals("not so dragon", $mo->entries[$single_entry->key()]->context);
+
+	}
+
 
 }
 
