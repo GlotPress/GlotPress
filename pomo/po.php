@@ -1,6 +1,6 @@
 <?php
 /**
- * Library for working with PO
+ * Class for working with PO files
  *
  * @version $Id$
  * @package pomo
@@ -8,6 +8,7 @@
  */
 
 require_once 'entry.php';
+require_once 'translations.php';
 
 define('PO_MAX_LINE_LEN', 79);
 
@@ -16,35 +17,8 @@ ini_set('auto_detect_line_endings', 1);
 /**
  * Routines for working with PO files
  */
-class PO {
+class PO extends Translations {
 	
-	var $entries = array();
-	var $headers = array();
-
-	/**
-	 * Add entry to the PO structure
-	 *
-	 * @param object &$entry
-	 * @return bool true on success, false if the entry doesn't have a key
-	 */
-	function add_entry(&$entry) {
-		$key = $entry->key();
-		if (false === $key) return false;
-		$this->entries[$key] = &$entry;
-		return true;
-	}
-
-	/**
-	 * Sets $header PO header to $value
-	 *
-	 * If the header already exists, it will be overwritten
-	 *
-	 * @param string $header header name, without trailing :
-	 * @param string $value header value, without trailing \n
-	 */
-	function set_header($header, $value) {
-		$this->headers[$header] = $value;
-	}
 
 	/**
 	 * Exports headers to a PO entry
@@ -110,7 +84,7 @@ class PO {
 	 * @param string $string the string to format
 	 * @return string the poified string
 	 */
-	static function poify($string) {
+	function poify($string) {
 		$quote = '"';
 		$slash = '\\';
 		$newline = "\n";
@@ -145,7 +119,7 @@ class PO {
 	 * @param string $string prepend lines in this string
 	 * @param string $with prepend lines with this string
 	 */
-	static function prepend_each_line($string, $with) {
+	function prepend_each_line($string, $with) {
 		$php_with = var_export($with, true);
 		$lines = explode("\n", $string);
 		// do not prepend the string on the last empty line, artefact by explode
@@ -165,7 +139,7 @@ class PO {
 	 * @param string $char character to denote a special PO comment,
 	 * 	like :, default is a space
 	 */
-	static function comment_block($text, $char=' ') {
+	function comment_block($text, $char=' ') {
 		$text = wordwrap($text, PO_MAX_LINE_LEN - 3);
 		return PO::prepend_each_line($text, "#$char ");
 	}
@@ -178,7 +152,7 @@ class PO {
 	 * @return string|bool PO-style formatted string for the entry or
 	 * 	false if the entry is empty
 	 */
-	static function export_entry(&$entry) {
+	function export_entry(&$entry) {
 		if (is_null($entry->singular)) return false;
 		$po = array();	
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
