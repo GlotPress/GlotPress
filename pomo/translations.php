@@ -37,6 +37,10 @@ class Translations {
 		$this->headers[$header] = $value;
 	}
 
+	function set_headers(&$headers) {
+		$this->headers = array_merge($this->headers, $headers);
+	}
+
 }
 
 ?>

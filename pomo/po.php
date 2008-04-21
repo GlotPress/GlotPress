@@ -7,7 +7,6 @@
  * @subpackage po
  */
 
-require_once 'entry.php';
 require_once 'translations.php';
 
 define('PO_MAX_LINE_LEN', 79);

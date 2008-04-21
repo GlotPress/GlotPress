@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains Translate_Entry class
+ * Contains Translation_Entry class
  *
  * @version $Id$
  * @package pomo

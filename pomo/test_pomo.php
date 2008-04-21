@@ -8,6 +8,7 @@
 error_reporting(E_ALL);
 require_once('PHPUnit/Framework.php');
 
+require_once('entry.php');
 require_once('po.php');
 
 class Test_POMO extends PHPUnit_Framework_TestCase {
@@ -177,7 +178,7 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$entry = new Translation_Entry(array('singular' => 'baba',));
 		$entry2 = new Translation_Entry(array('singular' => 'dyado',));
 		$empty = new Translation_Entry();
-		$po = new PO();
+		$po = new Translations();
 		$po->add_entry(&$entry);
 		$this->assertEquals(array($entry->key() => $entry), $po->entries);
 		// add the same entry more than once
