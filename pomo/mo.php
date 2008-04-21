@@ -1,8 +1,11 @@
 <?php
 /**
  * Class for working with MO files
+ *
+ * @version $Id$
+ * @package pomo
+ * @subpackage mo
  */
-
 
 require_once 'translations.php';
 require_once 'streams.php';
