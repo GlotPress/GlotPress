@@ -8,9 +8,9 @@
 error_reporting(E_ALL);
 require_once('PHPUnit/Framework.php');
 
-require_once('entry.php');
-require_once('po.php');
-require_once('mo.php');
+require_once('../entry.php');
+require_once('../po.php');
+require_once('../mo.php');
 
 class Test_POMO extends PHPUnit_Framework_TestCase {
 
