@@ -1,0 +1,10 @@
+msgctxt "dragonland"
+msgid "one dragon"
+msgid_plural "%d dragons"
+msgstr[0] "oney dragoney"
+msgstr[1] "twoey dragoney"
+msgstr[2] "manyey dragoney"
+
+msgctxt "not so dragon"
+msgid "one dragon"
+msgstr "oney dragoney"
