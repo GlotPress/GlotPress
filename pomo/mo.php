@@ -77,6 +77,7 @@ class MO extends Translations {
 				$this->add_entry($this->make_entry($original, $translation));
 			}
 		}
+		return true;
 	}
 
 	function make_headers($translation) {
