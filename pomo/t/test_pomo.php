@@ -1,7 +1,7 @@
 <?php
 /**
  * Tests for pomo
- * @version $Id: test.php 3 2008-04-14 12:56:21Z nbachiyski $
+ * @version $Id$
  * @package pomo
  * @subpackage tests
  */
