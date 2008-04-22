@@ -194,6 +194,18 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$this->assertEquals(array($entry->key() => $entry, $entry2->key() => $entry2), $po->entries);
 	}
 
+	function test_translate() {
+		$entry1 = new Translation_Entry(array('singular' => 'baba', 'translations' => array('babax')));
+		$entry2 = new Translation_Entry(array('singular' => 'baba', 'translations' => array('babay'), 'context' => 'x'));
+		$domain = new Translations();
+		$domain->add_entry(&$entry1);
+		$domain->add_entry(&$entry2);
+		$this->assertEquals('babax', $domain->translate('baba'));
+		$this->assertEquals('babay', $domain->translate('baba', 'x'));
+		$this->assertEquals('baba', $domain->translate('baba', 'y'));
+		$this->assertEquals('babaz', $domain->translate('babaz'));
+	}
+
 	function test_export_entries() {
 		$entry = new Translation_Entry(array('singular' => 'baba',));
 		$entry2 = new Translation_Entry(array('singular' => 'dyado',));

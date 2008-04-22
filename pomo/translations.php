@@ -5,8 +5,9 @@
  * @version $Id$
  * @package pomo
  * @subpackage translations
-
  */
+
+require_once 'entry.php';
 
 class Translations {
 	var $entries = array();
@@ -39,6 +40,21 @@ class Translations {
 
 	function set_headers(&$headers) {
 		$this->headers = array_merge($this->headers, $headers);
+	}
+
+	function translate_entry(&$entry) {
+		$key = $entry->key();
+		return isset($this->entries[$key])? $this->entries[$key] : false;
+	}
+
+	function translate($singular, $content=null) {
+		$entry = new Translation_Entry(array('singular' => $singular, 'context' => $content));
+		$translated = $this->translate_entry($entry);
+		return ($translated && !empty($translated->translations))? $translated->translations[0] : $singular;
+	}
+
+	function translate_plural($singular, $plural, $count) {
+		//TODO: set up a function on setting the Plural header
 	}
 
 }
