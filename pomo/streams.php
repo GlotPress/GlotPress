@@ -1,56 +1,13 @@
 <?php
 /**
- * PHP-Gettext External Library: StreamReader classes
- *
- * @package External
- * @subpackage PHP-gettext
- *
- * @internal
-   Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
-
-   This file is part of PHP-gettext.
-
-   PHP-gettext is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   PHP-gettext is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with PHP-gettext; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+ * Based on the classes from Danilo Segan <danilo@kvota.net>
  */
 
 
-// Simple class to wrap file streams, string streams, etc.
-// seek is essential, and it should be byte stream
-class StreamReader {
-  // should return a string [FIXME: perhaps return array of bytes?]
-  function read($bytes) {
-    return false;
-  }
-
-  // should return new position
-  function seekto($position) {
-    return false;
-  }
-
-  // returns current position
-  function currentpos() {
-    return false;
-  }
-
-  // returns length of entire stream (limit for seekto()s)
-  function length() {
-    return false;
-  }
-}
-
+/**
+ * Provides file-like methods for manipulating a string instead
+ * of a physical file.
+ */
 class StringReader {
   var $_pos;
   var $_str;
@@ -76,7 +33,7 @@ class StringReader {
     return $this->_pos;
   }
 
-  function currentpos() {
+  function pos() {
     return $this->_pos;
   }
 
@@ -86,97 +43,46 @@ class StringReader {
 
 }
 
-
-class FileReader {
-  var $_pos;
-  var $_fd;
-  var $_length;
-
-  function FileReader($filename) {
-    if (file_exists($filename)) {
-
-      $this->_length=filesize($filename);
-      $this->_pos = 0;
-      $this->_fd = fopen($filename,'rb');
-      if (!$this->_fd) {
-	$this->error = 3; // Cannot read file, probably permissions
-	return false;
-      }
-    } else {
-      $this->error = 2; // File doesn't exist
-      return false;
-    }
-  }
-
-  function read($bytes) {
-    if ($bytes) {
-      fseek($this->_fd, $this->_pos);
-
-      // PHP 5.1.1 does not read more than 8192 bytes in one fread()
-      // the discussions at PHP Bugs suggest it's the intended behaviour
-      while ($bytes > 0) {
-        $chunk  = fread($this->_fd, $bytes);
-        $data  .= $chunk;
-        $bytes -= strlen($chunk);
-      }
-      $this->_pos = ftell($this->_fd);
-
-      return $data;
-    } else return '';
-  }
-
-  function seekto($pos) {
-    fseek($this->_fd, $pos);
-    $this->_pos = ftell($this->_fd);
-    return $this->_pos;
-  }
-
-  function currentpos() {
-    return $this->_pos;
-  }
-
-  function length() {
-    return $this->_length;
-  }
-
-  function close() {
-    fclose($this->_fd);
-  }
-
-}
-
-
-// Preloads entire file in memory first, then creates a StringReader
-// over it (it assumes knowledge of StringReader internals)
 class CachedFileReader extends StringReader {
-  function CachedFileReader($filename) {
-    if (file_exists($filename)) {
-
-      $length=filesize($filename);
-      $fd = fopen($filename,'rb');
-
-      if (!$fd) {
-	$this->error = 3; // Cannot read file, probably permissions
-	return false;
-      }
-      $this->_str = fread($fd, $length);
-      fclose($fd);
-
-    } else {
-      $this->error = 2; // File doesn't exist
-      return false;
-    }
-  }
+	function CachedFileReader($filename) {
+		if (file_exists($filename)) {
+			$length=filesize($filename);
+			$fd = fopen($filename,'rb');
+			if (!$fd) {
+				return false;
+			}
+			$this->_str = fread($fd, $length);
+			fclose($fd);
+		} else {
+			return false;
+		}
+	}
 }
 
+/**
+ * Allows reading integers from a file.
+ */
 class CachedIntFileReader extends CachedFileReader {
+
 	var $endian = 'little';
 
+	/**
+	 * Opens a file and caches it.
+	 *
+	 * @param $filename string name of the file to be opened
+	 * @param $endian string endianness of the words in the file, allowed
+	 * 	values are 'little' or 'big'. Default value is 'little'
+	 */
 	function CachedIntFileReader($filename, $endian = 'little') {
 		$this->endian = $endian;
 		parent::CachedFileReader($filename);
 	}
 
+	/**
+	 * Sets the endianness of the file.
+	 *
+	 * @param $endian string 'big' or 'little'
+	 */
 	function setEndian($endian) {
 		$this->endian = $endian;
 	}
@@ -184,26 +90,32 @@ class CachedIntFileReader extends CachedFileReader {
 	/**
 	 * Reads a 32bit Integer from the Stream
 	 *
-	 * @return Integer from the Stream
+	 * @return mixed The integer, corresponding to the next 32 bits from
+	 * 	the stream of false if there are not enough bytes or on error
 	 */
-	function readint() {
+	function readint32() {
+		$bytes = $this->read(4);
+		if (4 != strlen($bytes))
+			return false;
 		$endian_letter = ('big' == $this->endian)? 'N' : 'V';
-		$int = unpack($endian_letter, $this->read(4));
+		$int = unpack($endian_letter, $bytes);
 		return array_shift($int);
 	}
 
 	/**
 	 * Reads an array of 32-bit Integers from the Stream
 	 *
-	 * @param int count How many elements should be read
-	 * @return Array of Integers
+	 * @param integer count How many elements should be read
+	 * @return mixed Array of integers or false if there isn't
+	 * 	enough data or on error
 	 */
-	function readintarray($count) {
+	function readint32array($count) {
+		$bytes = $this->read(4 * $count);
+		if (4*$count != strlen($bytes))
+			return false;
 		$endian_letter = ('big' == $this->endian)? 'N' : 'V';
-		return unpack($endian_letter.$count, $this->read(4 * $count));
+		return unpack($endian_letter.$count, $bytes);
 	}
-
-
 }
 
 ?>

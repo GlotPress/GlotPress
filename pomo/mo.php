@@ -46,22 +46,22 @@ class MO extends Translations {
 
 	function import_from_reader($reader) {
 		$reader->setEndian('little');
-		$endian = MO::get_byteorder($reader->readint());
+		$endian = MO::get_byteorder($reader->readint32());
 		if (false === $endian) {
 			return false;
 		}
 		$reader->setEndian($endian);
 
-		$revision = $reader->readint();
-		$total = $reader->readint();
+		$revision = $reader->readint32();
+		$total = $reader->readint32();
 		// get addresses of array of lenghts and offsets for original string and translations
-		$originals_lo_addr = $reader->readint();
-		$translations_lo_addr = $reader->readint();
+		$originals_lo_addr = $reader->readint32();
+		$translations_lo_addr = $reader->readint32();
 
 		$reader->seekto($originals_lo_addr);
-		$originals_lo = $reader->readintarray($total * 2); // each of 
+		$originals_lo = $reader->readint32array($total * 2); // each of 
 		$reader->seekto($translations_lo_addr);
-		$translations_lo = $reader->readintarray($total * 2); 
+		$translations_lo = $reader->readint32array($total * 2); 
 
 		$length = create_function('$i', 'return $i * 2 + 1;');
 		$offset = create_function('$i', 'return $i * 2 + 2;');
