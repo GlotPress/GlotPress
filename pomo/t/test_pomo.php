@@ -206,6 +206,32 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$this->assertEquals('babaz', $domain->translate('babaz'));
 	}
 
+	function test_translate_plural() {
+		$entry_incomplete = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('babax')));
+		$entry_toomany = new Translation_Entry(array('singular' => 'wink', 'plural' => 'winks', 'translations' => array('winki', 'winka', 'winko')));
+		$entry_2 = new Translation_Entry(array('singular' => 'dyado', 'plural' => 'dyados', 'translations' => array('dyadox', 'dyadoy')));
+		$domain = new Translations();
+		$domain->add_entry(&$entry_incomplete);
+		$domain->add_entry(&$entry_toomany);
+		$domain->add_entry(&$entry_2);
+		$this->assertEquals('other', $domain->translate_plural('other', 'others', 1));
+		$this->assertEquals('others', $domain->translate_plural('other', 'others', 111));
+		// too few translations + cont logic
+		$this->assertEquals('baba', $domain->translate_plural('baba', 'babas', 1));
+		$this->assertEquals('babas', $domain->translate_plural('baba', 'babas', 2));
+		$this->assertEquals('babas', $domain->translate_plural('baba', 'babas', 0));
+		$this->assertEquals('babas', $domain->translate_plural('baba', 'babas', -1));
+		$this->assertEquals('babas', $domain->translate_plural('baba', 'babas', 999));
+		// too many translations
+		$this->assertEquals('winks', $domain->translate_plural('wink', 'winks', 999));
+		// proper
+		$this->assertEquals('dyadox', $domain->translate_plural('dyado', 'dyados', 1));
+		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', 0));
+		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', 18881));
+		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', -18881));
+	}
+
+
 	function test_export_entries() {
 		$entry = new Translation_Entry(array('singular' => 'baba',));
 		$entry2 = new Translation_Entry(array('singular' => 'dyado',));
