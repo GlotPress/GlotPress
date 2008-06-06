@@ -12,7 +12,7 @@ require_once 'streams.php';
 
 class MO extends Translations {
 
-	var $_nlurals = 2;
+	var $_nplurals = 2;
 
 	function set_header($header, $value) {
 		parent::set_header($header, $value);
