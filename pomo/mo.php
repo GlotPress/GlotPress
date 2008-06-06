@@ -12,6 +12,14 @@ require_once 'streams.php';
 
 class MO extends Translations {
 
+	var $_nlurals = 2;
+
+	function set_header($header, $value) {
+		parent::set_header($header, $value);
+		if ('Plural-Forms' == $header)
+			$this->_gettext_select_plural_form = $this->_make_gettext_select_plural_form($value);
+	}
+
 	/**
 	 * Fills up with the entries from MO file $filename
 	 *
@@ -113,5 +121,15 @@ class MO extends Translations {
 		$entry = & new Translation_Entry($args);
 		return $entry;
 	}
+
+	function select_plural_form($count) {
+		return $this->gettext_select_plural_form($count);
+	}
+
+	function get_plural_forms_count() {
+		return $this->_nplurals;
+	}
+
+
 }
 ?>

@@ -292,7 +292,23 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$mo = new MO();
 		$mo->import_from_file('data/plural.mo');
 		$this->assertEquals(1, count($mo->entries));
-		$this->assertEquals(array("oney dragoney", "twoey dragoney","manyey dragoney"), $mo->entries["one dragon"]->translations);
+		$this->assertEquals(array("oney dragoney", "twoey dragoney", "manyey dragoney", "manyeyey dragoney", "manyeyeyey dragoney"), $mo->entries["one dragon"]->translations);
+
+		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
+		$this->assertEquals('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', 2));
+		$this->assertEquals('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', -8));
+
+
+		$mo->set_header('Plural-Forms', 'nplurals=5; plural=0');
+		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
+		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 2));
+		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', -8));
+
+		$mo->set_header('Plural-Forms', 'nplurals=5; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;');
+		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
+		$this->assertEquals('manyey dragoney', $mo->translate_plural('one dragon', '%d dragons', 11));
+		$this->assertEquals('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', 3));
+
 	}
 
 	function test_mo_context() {
@@ -308,7 +324,6 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$this->assertEquals("not so dragon", $mo->entries[$single_entry->key()]->context);
 
 	}
-
 
 }
 

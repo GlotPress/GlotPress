@@ -31,6 +31,8 @@ class Translations {
 	 *
 	 * If the header already exists, it will be overwritten
 	 *
+	 * TODO: this should be out of this class, it is gettext specific
+	 *
 	 * @param string $header header name, without trailing :
 	 * @param string $value header value, without trailing \n
 	 */
@@ -39,7 +41,13 @@ class Translations {
 	}
 
 	function set_headers(&$headers) {
-		$this->headers = array_merge($this->headers, $headers);
+		foreach($headers as $header => $value) {
+			$this->set_header($header, $value);
+		}
+	}
+
+	function get_header($header) {
+		return isset($this->headers[$header])? $this->headers[$header] : false;
 	}
 
 	function translate_entry(&$entry) {
@@ -83,6 +91,72 @@ class Translations {
 			return $translated->translations[$index];
 		else
 			return 1 == $count? $singular : $plural;
+	}
+
+	/**
+	 * The gettext implmentation of select_plural_form.
+	 *
+	 * It lives in this class, because there are more than one descendand, which will use it and
+	 * they can't share it effectively.
+	 *
+	 */
+	function gettext_select_plural_form($count) {
+		if (!isset($this->_gettext_select_plural_form) || is_null($this->_gettext_select_plural_form)) {
+			$plural_header = $this->get_header('Plural-Forms');
+			$this->_gettext_select_plural_form = $this->_make_gettext_select_plural_form($plural_header);
+		}
+		return call_user_func($this->_gettext_select_plural_form, $count);
+	}
+
+	/**
+	 * Makes a function, which will return the right translation index, according to the
+	 * plural forms header
+	 */
+	function _make_gettext_select_plural_form($plural_header) {
+		$res = create_function('$count', 'return 1 == $count? 0 : 1;');
+		if ($plural_header && (preg_match('/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $plural_header, $matches))) {
+			$nplurals = (int)$matches[1];
+			$this->_nplurals = $nplurals;
+			$plural_expr = trim($this->_parenthesize_plural_exression($matches[2]));
+			$plural_expr = str_replace('n', '$n', $plural_expr);
+			$func_body = "
+				\$index = (int)($plural_expr);
+				return (\$index < $nplurals)? \$index : $nplurals - 1;";
+			$res = create_function('$n', $func_body);
+		}
+		return $res;
+	}
+
+	/**
+	 * Adds parantheses to the inner parts of ternary operators in
+	 * plural expressions, because PHP evaluates ternary oerators from left to right
+	 * 
+	 * @param string $expression the expression without parentheses
+	 * @return string the expression with parentheses added
+	 */
+	function _parenthesize_plural_exression($expression) {
+		$expression .= ';';
+		$res = '';
+		$depth = 0;
+		for ($i = 0; $i < strlen($expression); ++$i) {
+			$char = $expression[$i];
+			switch ($char) {
+				case '?':
+					$res .= ' ? (';
+					$depth++;
+					break;
+				case ':':
+					$res .= ') : (';
+					break;
+				case ';':
+					$res .= str_repeat(')', $depth) . ';';
+					$depth= 0;
+					break;
+				default:
+					$res .= $char;
+			}
+		}
+		return rtrim($res, ';');
 	}
 }
 
