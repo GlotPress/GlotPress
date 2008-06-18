@@ -45,17 +45,10 @@ class StringReader {
 
 class CachedFileReader extends StringReader {
 	function CachedFileReader($filename) {
-		if (file_exists($filename)) {
-			$length=filesize($filename);
-			$fd = fopen($filename,'rb');
-			if (!$fd) {
-				return false;
-			}
-			$this->_str = fread($fd, $length);
-			fclose($fd);
-		} else {
+		$this->_str = file_get_contents($filename);
+		if (false ===$this->_str)
 			return false;
-		}
+		$this->pos = 0;
 	}
 }
 

@@ -67,12 +67,12 @@ class PO extends Translations {
 	 * @return bool true on success, false on error
 	 */
 	function export_to_file($filename, $include_headers = true) {
-		$f = fopen($filename, 'w');
-		if (false === $f) return false;
+		$fh = fopen($filename, 'w');
+		if (false === $fh) return false;
 		$export = $this->export($include_headers);
-		$res = fwrite($f, $export);
+		$res = fwrite($fh, $export);
 		if (false === $res) return false;
-		return fclose($f);
+		return fclose($fh);
 	}
 
 
