@@ -26,7 +26,7 @@ class MO extends Translations {
 	 * @param string $filename MO file to load
 	 */
 	function import_from_file($filename) {
-		$reader = new CachedIntFileReader($filename);
+		$reader = new POMO_CachedIntFileReader($filename);
 		if (isset($reader->error)) {
 			return false;
 		}

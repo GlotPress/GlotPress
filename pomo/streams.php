@@ -8,11 +8,11 @@
  * Provides file-like methods for manipulating a string instead
  * of a physical file.
  */
-class StringReader {
+class POMO_StringReader {
   var $_pos;
   var $_str;
 
-  function StringReader($str='') {
+  function POMO_StringReader($str='') {
     $this->_str = $str;
     $this->_pos = 0;
   }
@@ -43,8 +43,8 @@ class StringReader {
 
 }
 
-class CachedFileReader extends StringReader {
-	function CachedFileReader($filename) {
+class POMO_CachedFileReader extends POMO_StringReader {
+	function POMO_CachedFileReader($filename) {
 		$this->_str = file_get_contents($filename);
 		if (false ===$this->_str)
 			return false;
@@ -55,7 +55,7 @@ class CachedFileReader extends StringReader {
 /**
  * Allows reading integers from a file.
  */
-class CachedIntFileReader extends CachedFileReader {
+class POMO_CachedIntFileReader extends POMO_CachedFileReader {
 
 	var $endian = 'little';
 
@@ -66,7 +66,7 @@ class CachedIntFileReader extends CachedFileReader {
 	 * @param $endian string endianness of the words in the file, allowed
 	 * 	values are 'little' or 'big'. Default value is 'little'
 	 */
-	function CachedIntFileReader($filename, $endian = 'little') {
+	function POMO_CachedIntFileReader($filename, $endian = 'little') {
 		$this->endian = $endian;
 		parent::CachedFileReader($filename);
 	}
