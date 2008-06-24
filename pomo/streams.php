@@ -68,7 +68,7 @@ class POMO_CachedIntFileReader extends POMO_CachedFileReader {
 	 */
 	function POMO_CachedIntFileReader($filename, $endian = 'little') {
 		$this->endian = $endian;
-		parent::CachedFileReader($filename);
+		parent::POMO_CachedFileReader($filename);
 	}
 
 	/**
