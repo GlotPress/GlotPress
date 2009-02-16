@@ -7,7 +7,7 @@
  * @subpackage translations
  */
 
-require_once 'entry.php';
+require_once dirname(__FILE__) . '/entry.php';
 
 class Translations {
 	var $entries = array();
