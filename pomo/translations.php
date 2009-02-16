@@ -158,6 +158,16 @@ class Translations {
 		}
 		return rtrim($res, ';');
 	}
+	
+	/**
+	 * Merge $other in the current object.
+	 *
+	 * @param Object &$other Another Translation object, whose translations will be merged in this one
+	 * @return void
+	 **/
+	function merge_with(&$other) {
+		$this->entries = array_merge($this->entries, $other->entries);
+	}
 }
 
 ?>

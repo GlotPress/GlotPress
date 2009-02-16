@@ -324,6 +324,18 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$this->assertEquals("not so dragon", $mo->entries[$single_entry->key()]->context);
 
 	}
+	
+	function test_translations_merge() {
+		$host = new Translations();
+		$host->add_entry(new Translation_Entry(array('singular' => 'pink',)));
+		$host->add_entry(new Translation_Entry(array('singular' => 'green',)));
+		$guest = new Translations();
+		$guest->add_entry(new Translation_Entry(array('singular' => 'green',)));
+		$guest->add_entry(new Translation_Entry(array('singular' => 'red',)));
+		$host->merge_with($guest);
+		$this->assertEquals(3, count($host->entries));
+		$this->assertEquals(array(), array_diff(array('pink', 'green', 'red'), array_keys($host->entries)));
+	}
 
 }
 
