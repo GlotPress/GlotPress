@@ -7,8 +7,8 @@
  * @subpackage mo
  */
 
-require_once 'translations.php';
-require_once 'streams.php';
+require_once dirname(__FILE__) . '/translations.php';
+require_once dirname(__FILE__) . '/streams.php';
 
 class MO extends Translations {
 

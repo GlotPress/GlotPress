@@ -1,6 +1,11 @@
 <?php
 /**
+ * Classes, which help reading streams of data from files.
  * Based on the classes from Danilo Segan <danilo@kvota.net>
+ *
+ * @version $Id$
+ * @package pomo
+ * @subpackage streams
  */
 
 
@@ -12,7 +17,7 @@ class POMO_StringReader {
   var $_pos;
   var $_str;
 
-  function POMO_StringReader($str='') {
+  function POMO_StringReader($str = '') {
     $this->_str = $str;
     $this->_pos = 0;
   }
@@ -43,10 +48,13 @@ class POMO_StringReader {
 
 }
 
+/**
+ * Reads the contents of the file in the beginning.
+ */
 class POMO_CachedFileReader extends POMO_StringReader {
 	function POMO_CachedFileReader($filename) {
 		$this->_str = file_get_contents($filename);
-		if (false ===$this->_str)
+		if (false === $this->_str)
 			return false;
 		$this->pos = 0;
 	}
