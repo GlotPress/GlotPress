@@ -6,6 +6,7 @@
  * @subpackage tests
  */
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once('PHPUnit/Framework.php');
 
 require_once('../entry.php');
@@ -336,7 +337,39 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$this->assertEquals(3, count($host->entries));
 		$this->assertEquals(array(), array_diff(array('pink', 'green', 'red'), array_keys($host->entries)));
 	}
+	
+	function test_export_mo_file() {
+		$entries = array();
+		$entries[] = new Translation_Entry(array('singular' => 'pink',
+			'translations' => array('розов')));
+		$no_translation_entry = new Translation_Entry(array('singular' => 'grey'));
+		$entries[] = new Translation_Entry(array('singular' => 'green', 'plural' => 'greens',
+			'translations' => array('зелен', 'зелени')));
+		$entries[] = new Translation_Entry(array('singular' => 'red', 'context' => 'color',
+			'translations' => array('червен')));
+		$entries[] = new Translation_Entry(array('singular' => 'red', 'context' => 'bull',
+			'translations' => array('бик')));
+		$entries[] = new Translation_Entry(array('singular' => 'maroon', 'plural' => 'maroons', 'context' => 'context',
+			'translations' => array('пурпурен', 'пурпурни')));
 
+		$mo = new MO();
+		$mo->set_header('Project-Id-Version', 'Baba Project 1.0');
+		foreach($entries as $entry) {
+			$mo->add_entry($entry);
+		}
+		$mo->add_entry($no_translation_entry);
+		
+		$temp_fn = $this->temp_filename();
+		$mo->export_to_file($temp_fn);
+		
+		$again = new MO();
+		$again->import_from_file($temp_fn);
+
+		$this->assertEquals(count($entries), count($again->entries));
+		foreach($entries as $entry) {
+			$this->assertEquals($entry, $again->entries[$entry->key()]);
+		}
+	}
 }
 
 ?>

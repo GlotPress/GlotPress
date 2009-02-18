@@ -22,7 +22,7 @@ class Translations {
 	function add_entry(&$entry) {
 		$key = $entry->key();
 		if (false === $key) return false;
-		$this->entries[$key] = &$entry;
+		$this->entries[$key] = $entry;
 		return true;
 	}
 
