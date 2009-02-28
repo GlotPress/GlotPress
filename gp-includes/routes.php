@@ -6,6 +6,7 @@
 function gp_get_routes() {
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
+		'/([^/]+)/([^/]+)/translations/?(\d+)?' => 'gp_route_project_translations',
 	) );
 }
 
@@ -33,6 +34,6 @@ class GP_Router {
 				return call_user_func_array( $func, array_slice( $matches, 1 ) );
 			}
 		}
-		return gp_tmpl_page( '404', array('title' => __('Not Found'), 'http_status' => 404 ) );
+		return gp_tmpl_404();
 	}	
 }

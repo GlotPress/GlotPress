@@ -12,6 +12,7 @@ function gp_schema_get() {
 	 - There are fields to take all the plural forms (no known language has more than 4 plural forms)
 	 - Belongs to an original string
 	 - Belongs to a user
+	 - Status can be: new, approved, unaproved, current, spam or whatever you'd like
 	*/
 	$gp_schema['translations'] = "CREATE TABLE IF NOT EXISTS `$gpdb->translations` (
 		`id` INT(10) NOT NULL auto_increment,
@@ -22,6 +23,7 @@ function gp_schema_get() {
 		`translation_2` TEXT,
 		`translation_3` TEXT,
 		`user_id` INT(10) NOT NULL default 0,
+		`status` VARCHAR(20) NOT NULL default 'new',
 		PRIMARY KEY (`id`),
 		KEY `original_id` (`original_id`),
 		KEY `user_id` (`user_id`)
@@ -30,7 +32,6 @@ function gp_schema_get() {
 	/*
 	Original strings
 	 - Has many translations
-	 - Has not more than one current translation
 	 - Belongs to a project
 	 */
 	$gp_schema['originals'] = "CREATE TABLE IF NOT EXISTS `$gpdb->originals` (
@@ -44,6 +45,18 @@ function gp_schema_get() {
 		PRIMARY KEY (`id`),
 	) TYPE = MYISAM;";
 
+	/*
+	Projects
+	*/
+	$gp_schema['projects'] = "CREATE TABLE IF NOT EXISTS `$gpdb->projects` (
+		`id` INT(10) NOT NULL auto_increment,
+		`name` VARCHAR(255) NOT NULL,
+		`slug` VARCHAR(255) NOT NULL,
+		`description` TEXT NOT NULL,
+		`parent_project_id` INT(10),
+		PRIMARY KEY (`id`),
+		KEY `slug` (`slug`),	
+	);";
 
 	/*
 	Users

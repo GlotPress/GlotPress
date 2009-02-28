@@ -1,1 +1,1 @@
-<h1>Welcome, Home!</h1>
+<h1>Welcome to GlotPress!</h1>

@@ -6,6 +6,7 @@
 define('GP_INSTALLING', true);
 require_once( 'gp-load.php' );
 require_once( BACKPRESS_PATH . 'class.bp-sql-schema-parser.php' );
+require_once( GP_PATH . GP_INC . 'install-upgrade.php' );
 require_once( GP_PATH . GP_INC . 'schema.php' );
 
 function gp_update_db_version() {
@@ -28,14 +29,12 @@ function guess_uri()
 	return rtrim( $uri, " \t\n\r\0\x0B/" ) . '/';
 }
 
-
-$alterations = BP_SQL_Schema_Parser::delta( $gpdb, gp_schema_get() );
-$messages = $alterations['messages'];
-$errors = $alterations['errors'];
-
-if ( !$errors ) {
-	gp_update_db_version();
-	gp_update_option( 'uri', guess_uri() );
+if ( gp_get_option( 'gp_db_version' ) <= gp_get_option_from_db( 'gp_db_version' ) && !isset( $_GET['force'] ) ) {
+	$success_message = __( 'You already have the latest version, no need to upgrade!' );
+	$errors = array();
+} else {
+	$success_message = __( 'GlotPress was successully installed!' );
+	$errors = gp_install();
 }
 
 // TODO: check if the .htaccess is in place or try to write it

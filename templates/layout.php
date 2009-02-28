@@ -10,7 +10,12 @@ wp_enqueue_style( 'base' );
 		<?php gp_head(); ?>
 	</head>
 	<body>
-	<?php gp_tmpl_load( $content_template, gp_tmpl_filter_args( get_defined_vars() ) ); ?>
+		<div id="header">
+			<ul id="breadcrumb">
+				<?php echo gp_tmpl_breadcrumb(); ?>
+			</ul>
+		</div>
+	<?php gp_tmpl_load( $content_template, get_defined_vars() ); ?>
 	<?php gp_footer(); ?>
 	</body>
 </html>

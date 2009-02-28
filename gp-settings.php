@@ -5,7 +5,7 @@
  * routing logic in the end.
  */
 
-require_once( GP_PATH . GP_INC . '/system.php');
+require_once( GP_PATH . GP_INC . '/system.php' );
 
 gp_unregister_GLOBALS();
 
@@ -94,7 +94,7 @@ $gpdb = &new $gpdb_class( array(
 ) );
 unset( $gpdb_class );
 
-$gpdb->tables = array('translations', 'originals', 'users', 'usermeta', 'meta');
+$gpdb->tables = array('translations', 'originals', 'projects', 'users', 'usermeta', 'meta');
 
 // Set the prefix on the tables
 if ( is_wp_error( $gpdb->set_prefix( $gp_table_prefix ) ) ) {
@@ -106,13 +106,15 @@ if ( !function_exists( 'add_filter' ) ) {
 }
 
 if ( !defined( 'GP_TMPL_PATH' ) )
-	define( 'GP_TMPL_PATH', GP_PATH . 'templates' );
+	define( 'GP_TMPL_PATH', GP_PATH . 'templates/' );
 
 require_once( GP_PATH . GP_INC . 'meta.php');
 require_once( GP_PATH . GP_INC . 'wp-formatting.php');
 require_once( GP_PATH . GP_INC . 'url.php');
-require_once( GP_PATH . GP_INC . 'template.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
+
+require_once( GP_PATH . GP_INC . 'template.php');
+require_once( GP_TMPL_PATH . 'template-helpers.php' );
 
 
 /**
@@ -149,6 +151,11 @@ require( BACKPRESS_PATH . 'functions.kses.php' );
 
 require( POMO_PATH . 'mo.php' );
 require( GP_PATH . GP_INC . 'l10n.php' );
+
+if ( !class_exists( 'WP_Users' ) ) {
+	require_once( BACKPRESS_PATH . 'class.wp-users.php' );
+	$wp_users_object = new WP_Users( $gpdb );
+}
 
 if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
 	$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';

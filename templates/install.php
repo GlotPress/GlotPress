@@ -4,19 +4,19 @@ There were some errors:
 	<?php echo implode("\n", $errors); ?>
 </pre>
 <?php else: ?>
-GlotPress database was updated successfully!
+<?php echo $success_message; ?>
 <?php endif; ?>
 <p>
 Please add this to your <code>.htacess</code> file:
 <pre>
 # BEGIN GlotPress
-<IfModule mod_rewrite.c>
+&lt;IfModule mod_rewrite.c&gt;
 RewriteEngine On
 RewriteBase <?php echo $path . "\n"; ?>
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . <?php echo $path; ?>index.php [L]
-</IfModule>
+&lt;/IfModule&gt;
 # END GlotPress
 	
 </pre>

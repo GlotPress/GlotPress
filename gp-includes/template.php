@@ -1,6 +1,7 @@
 <?php
 function gp_tmpl_load( $template, $args = array() ) {
- 	$file = GP_TMPL_PATH . "/$template.php";
+	$args = gp_tmpl_filter_args( $args );
+ 	$file = GP_TMPL_PATH . "$template.php";
 	if ( is_readable( $file ) ) {
 		extract( $args, EXTR_SKIP );
 		include $file;
@@ -36,4 +37,9 @@ function gp_tmpl_filter_args( $args ) {
 		if ( $k[0] != '_' && $k != 'GLOBALS' && !gp_startswith( $k, 'HTTP' ) && !gp_startswith( $k, 'PHP' ) )
 			$clean_args[$k] = $v;
 	return $clean_args;
+}
+
+function gp_tmpl_404( $args ) {
+	gp_tmpl_page( '404', array('title' => __('Not Found'), 'http_status' => 404 ) + $args );
+	exit();
 }
