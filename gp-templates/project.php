@@ -1,0 +1,1 @@
+<h1>Project "<?php echo gp_h( $project->name ) ?>"</h1>
