@@ -43,3 +43,7 @@ function gp_tmpl_404( $args = array()) {
 	gp_tmpl_page( '404', array('title' => __('Not Found'), 'http_status' => 404 ) + $args );
 	exit();
 }
+
+function gp_h( $s ) {
+	return wp_specialchars( $s );
+}

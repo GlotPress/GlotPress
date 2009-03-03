@@ -22,3 +22,8 @@ function gp_url($path, $query = null ) {
 		$url .= '?' . ltrim( $query, '?' );
 	return $url;
 }
+
+function gp_project_url( $project_or_slug, $query = null ) {
+	$slug = is_object( $project_or_slug )? $project_or_slug->slug : $project_or_slug;
+	return gp_url( $slug, $query );
+}

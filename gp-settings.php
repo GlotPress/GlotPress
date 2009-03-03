@@ -114,6 +114,7 @@ require_once( GP_PATH . GP_INC . 'url.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
 
 require_once( GP_PATH . GP_INC . 'template.php');
+require_once( GP_PATH . GP_INC . 'template-links.php');
 require_once( GP_TMPL_PATH . 'template-helpers.php' );
 
 
