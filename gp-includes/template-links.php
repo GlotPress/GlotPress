@@ -21,6 +21,7 @@ function gp_project_link() {
 
 
 function gp_html_attributes( $attrs ) {
+	$attrs = wp_parse_args( $attrs );
 	$strings = array();
 	foreach( $attrs as $key => $value ) {
 		$strings[] = $key.'="'.attribute_escape( $value ).'"';
