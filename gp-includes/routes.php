@@ -4,9 +4,15 @@
  */
 
 function gp_get_routes() {
+	$dir = '([^/]+)';
+	$path = '(.+?)';
+	$locale = $project = $dir;
+	// overall structure
+	// /project
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
-		'/([^/]+)/([^/]+)/translations/?(\d+)?' => 'gp_route_project_translations',
+		"/$project/import-sources" => 'gp_route_project_import_sources',
+		"/$project/$locale/translations/?(\d+)?" => 'gp_route_project_translations',
 	) );
 }
 
