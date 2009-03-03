@@ -19,7 +19,6 @@ function gp_project_link() {
 	echo call_user_func_array('gp_project_link_get', $args);
 }
 
-
 function gp_html_attributes( $attrs ) {
 	$attrs = wp_parse_args( $attrs );
 	$strings = array();

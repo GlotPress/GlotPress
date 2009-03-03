@@ -11,8 +11,10 @@ function gp_get_routes() {
 	// /project
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
-		"/$project/import-sources" => 'gp_route_project_import_sources',
-		"/$project/$locale/translations/?(\d+)?" => 'gp_route_project_translations',
+		"/$path/import-sources" => 'gp_route_project_import_sources',
+		"/$path/$locale/translations/?(\d+)?" => 'gp_route_project_translations',
+		// keep this one at the bottom, because it will catch anything
+		"/$path" => 'gp_route_project',
 	) );
 }
 
@@ -28,7 +30,7 @@ class GP_Router {
 	*/
 	function request_uri() {
 		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "|^$subdir(.*?)(\?.*)?\$|", $_SERVER['REQUEST_URI'], $match ) )
+		if ( preg_match( "|^$subdir(.*?)(\?.*)?$|", $_SERVER['REQUEST_URI'], $match ) )
 			return $match[1];
 		return false;
 	}

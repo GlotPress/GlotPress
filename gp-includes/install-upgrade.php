@@ -34,7 +34,7 @@ function gp_install() {
 	gp_update_db_version();
 	gp_update_option( 'uri', guess_uri() );
 	
-	$gpdb->insert( $gpdb->projects, array('name' => 'sample', 'slug' => 'sample', 'description' => 'A Sample Project') );
+	$gpdb->insert( $gpdb->projects, array('name' => 'sample', 'slug' => 'sample', 'description' => 'A Sample Project', 'path' => 'sample') );
 	
 	return array();
 }

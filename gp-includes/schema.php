@@ -47,15 +47,18 @@ function gp_schema_get() {
 
 	/*
 	Projects
+	- Has a project -- its parent
+	- The path is the combination of the slugs of all its parents, separated by /
 	*/
 	$gp_schema['projects'] = "CREATE TABLE IF NOT EXISTS `$gpdb->projects` (
 		`id` INT(10) NOT NULL auto_increment,
 		`name` VARCHAR(255) NOT NULL,
 		`slug` VARCHAR(255) NOT NULL,
+		`path` VARCHAR(255) NOT NULL,
 		`description` TEXT NOT NULL,
 		`parent_project_id` INT(10),
 		PRIMARY KEY (`id`),
-		KEY `slug` (`slug`),	
+		UNIQUE KEY `path` (`path`)
 	);";
 
 	/*
