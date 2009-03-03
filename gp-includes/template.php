@@ -39,7 +39,7 @@ function gp_tmpl_filter_args( $args ) {
 	return $clean_args;
 }
 
-function gp_tmpl_404( $args ) {
+function gp_tmpl_404( $args = array()) {
 	gp_tmpl_page( '404', array('title' => __('Not Found'), 'http_status' => 404 ) + $args );
 	exit();
 }
