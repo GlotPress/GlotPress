@@ -23,7 +23,10 @@ define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 
 define( 'GP_INC', 'gp-includes/' );
 
-if ( file_exists( GP_PATH . 'gp-config.php') ) {
+if ( defined( 'GP_CONFIG_FILE' ) && GP_CONFIG_FILE ) {
+	require_once GP_CONFIG_FILE;
+	require_once( GP_PATH . 'gp-settings.php' );
+} elseif ( file_exists( GP_PATH . 'gp-config.php') ) {
 	
 	require_once( GP_PATH . 'gp-config.php');
 	require_once( GP_PATH . 'gp-settings.php' );
