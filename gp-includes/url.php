@@ -13,3 +13,12 @@ function gp_url_path( $url = null ) {
 	$parsed = parse_url( $url );
 	return $parsed['path'];
 }
+
+function gp_url($path, $query = null ) {
+	$url = gp_get_option( 'url' ) . ltrim( $path, '/' );
+	if ( $query && is_array( $query ) ) 
+		$url = add_query_arg( urlencode_deep( $query ), $url );
+	elseif ( $query )
+		$url .= '?' . ltrim( $query, '?' );
+	return $url;
+}
