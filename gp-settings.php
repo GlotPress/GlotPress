@@ -157,12 +157,6 @@ if ( !class_exists( 'WP_Users' ) ) {
 	$wp_users_object = new WP_Users( $gpdb );
 }
 
-if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
-	$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';
-	header( 'Location: ' . $install_uri );
-	die();
-}
-
 require( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
 	require_once $route;
@@ -172,6 +166,15 @@ if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 	return;
 else
 	define( 'GP_INSTALLING', false );
+
+if ( defined( 'GP_NO_ROUTING') && GP_NO_ROUTING )
+	return;
+
+if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
+	$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';
+	header( 'Location: ' . $install_uri );
+	die();
+}
 
 $gp_router = new GP_Router( gp_get_routes() );
 $gp_router->route();
