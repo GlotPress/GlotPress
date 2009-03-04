@@ -12,6 +12,7 @@ function gp_route_project( $project_path ) {
 function gp_route_project_import_originals_get( $project_path ) {
 	global $gpdb;
 	$project = &GP_Project::get_by_path( $project_path );
+	$title = sprintf( __('Import originals for %s' ), $project->name );
 	gp_tmpl_page( 'project-import-originals', get_defined_vars() );
 }
 
