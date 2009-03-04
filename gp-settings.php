@@ -144,23 +144,27 @@ require_once( GP_PATH . GP_INC . 'class.bp-options.php' );
 require_once( BACKPRESS_PATH . 'functions.bp-options.php' );
 
 
-require( BACKPRESS_PATH . 'class.wp-dependencies.php' );
-require( BACKPRESS_PATH . 'class.wp-styles.php' );
-require( BACKPRESS_PATH . 'functions.wp-styles.php' );
+require_once( BACKPRESS_PATH . 'class.wp-dependencies.php' );
+require_once( BACKPRESS_PATH . 'class.wp-styles.php' );
+require_once( BACKPRESS_PATH . 'functions.wp-styles.php' );
 require_once( GP_PATH . GP_INC . 'assets-loader.php');
 
 require_once( GP_PATH . GP_INC . 'default-filters.php');
-require( BACKPRESS_PATH . 'functions.kses.php' );
+require_once( BACKPRESS_PATH . 'functions.kses.php' );
 
-require( POMO_PATH . 'mo.php' );
-require( GP_PATH . GP_INC . 'l10n.php' );
+require_once( POMO_PATH . 'mo.php' );
+require_once( GP_PATH . GP_INC . 'l10n.php' );
 
 if ( !class_exists( 'WP_Users' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-users.php' );
 	$wp_users_object = new WP_Users( $gpdb );
 }
 
-require( GP_PATH . GP_INC . 'routes.php' );
+require_once( GP_PATH . GP_INC . 'locales.php' );
+
+$gp_locales = &new GP_Locales();
+
+require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
 	require_once $route;
 }

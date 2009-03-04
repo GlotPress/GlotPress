@@ -4,15 +4,18 @@
  */
 
 function gp_get_routes() {
+	global $gp_locales;
 	$dir = '([^/]+)';
 	$path = '(.+?)';
 	$project = $path;
+	$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), $gp_locales->locales ) ).')';
 	// overall structure
 	// /project
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
 		"get:/$project/import-originals" => 'gp_route_project_import_originals_get',
 		"post:/$project/import-originals" => 'gp_route_project_import_originals_post',
+		"/$project/$locale" => 'gp_route_project_translations',
 		// keep this one at the bottom, because it will catch anything
 		"/$path" => 'gp_route_project',
 	) );
@@ -31,7 +34,7 @@ class GP_Router {
 	*/
 	function request_uri() {
 		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "|^$subdir(.*?)(\?.*)?$|", $_SERVER['REQUEST_URI'], $match ) )
+		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
 			return $match[1];
 		return false;
 	}
@@ -50,7 +53,7 @@ class GP_Router {
 					$re = substr( $re, strlen( $method.':' ));
 				}
 			}
-			if ( preg_match("|^$re$|", $request_uri, $matches ) ) {
+			if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
 				return call_user_func_array( $func, array_slice( $matches, 1 ) );
 			}
 		}
