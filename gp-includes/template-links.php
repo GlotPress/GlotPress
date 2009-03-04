@@ -10,13 +10,13 @@ function gp_link() {
 	echo call_user_func_array('gp_link_get', $args);
 }
 
-function gp_project_link_get( &$project_or_slug, $text, $attrs = array() ) {
-	return gp_link_get( gp_project_url( $project_or_slug ), $text, $attrs );
+function gp_link_project_get( &$project_or_slug, $text, $attrs = array() ) {
+	return gp_link_get( gp_url_project( $project_or_slug ), $text, $attrs );
 }
 
-function gp_project_link() {
+function gp_link_project() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_project_link_get', $args);
+	echo call_user_func_array('gp_link_project_get', $args);
 }
 
 function gp_html_attributes( $attrs ) {

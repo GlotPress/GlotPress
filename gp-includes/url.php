@@ -14,8 +14,20 @@ function gp_url_path( $url = null ) {
 	return $parsed['path'];
 }
 
+/**
+ * Joins paths, and takes care of slashes between them
+ */
+function gp_url_join() {
+	$args = func_get_args();
+	if ( empty( $args ) ) return '';
+	$start_slash = gp_startswith( $args[0], '/' ) ? '/' : '';
+	$end_slash = gp_endswith( $args[ count($args) - 1 ] , '/' )? '/' : '';
+	$args = array_map( create_function( '$x', 'return trim($x, "/");'), $args );
+	return $start_slash . implode( '/', $args ) . $end_slash;
+}
+
 function gp_url($path, $query = null ) {
-	$url = gp_get_option( 'url' ) . ltrim( $path, '/' );
+	$url = gp_url_join( gp_get_option( 'url' ), $path );
 	if ( $query && is_array( $query ) ) 
 		$url = add_query_arg( urlencode_deep( $query ), $url );
 	elseif ( $query )
@@ -23,7 +35,16 @@ function gp_url($path, $query = null ) {
 	return $url;
 }
 
-function gp_project_url( $project_or_slug, $query = null ) {
+function gp_url_project( $project_or_slug, $query = null ) {
 	$slug = is_object( $project_or_slug )? $project_or_slug->slug : $project_or_slug;
 	return gp_url( $slug, $query );
+}
+
+/**
+ * Constructs URL for a project and locale.
+ * /<project-path>/<locale>/<path>/<page>
+ */
+function gp_url_project_locale( $project_or_slug, $locale, $path = '', $query = null ) {
+	$slug = is_object( $project_or_slug )? $project_or_slug->slug : $project_or_slug;
+	return gp_url( gp_url_join( $slug, $locale, $path ), $query );
 }
