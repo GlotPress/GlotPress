@@ -47,3 +47,7 @@ function gp_tmpl_404( $args = array()) {
 function gp_h( $s ) {
 	return wp_specialchars( $s );
 }
+
+function gp_attr( $s ) {
+	return attribute_escape( $s );
+}

@@ -35,9 +35,9 @@ function gp_url($path, $query = null ) {
 	return $url;
 }
 
-function gp_url_project( $project_or_slug, $query = null ) {
+function gp_url_project( $project_or_slug, $path = '', $query = null ) {
 	$slug = is_object( $project_or_slug )? $project_or_slug->slug : $project_or_slug;
-	return gp_url( $slug, $query );
+	return gp_url( gp_url_join( $slug, $path ), $query );
 }
 
 /**
@@ -45,6 +45,5 @@ function gp_url_project( $project_or_slug, $query = null ) {
  * /<project-path>/<locale>/<path>/<page>
  */
 function gp_url_project_locale( $project_or_slug, $locale, $path = '', $query = null ) {
-	$slug = is_object( $project_or_slug )? $project_or_slug->slug : $project_or_slug;
-	return gp_url( gp_url_join( $slug, $locale, $path ), $query );
+	return gp_url_project( $project_or_slug, gp_url_join( $locale, $path ), $query );
 }

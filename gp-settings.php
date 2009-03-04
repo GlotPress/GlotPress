@@ -179,5 +179,7 @@ if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
 	die();
 }
 
+gp_populate_notices();
+
 $gp_router = new GP_Router( gp_get_routes() );
 $gp_router->route();
