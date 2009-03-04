@@ -40,13 +40,26 @@ function gp_notice( $key = 'notice' ) {
 }
 
 function gp_populate_notices() {
+	// TODO: keep notices in a cookie -- query args are both ugly and a security hole
 	global $gp_redirect_notices;
+	$gp_redirect_notices = array();
 	$prefix = '_gp_notice_';
 	foreach ($_GET as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {			
 			$gp_redirect_notices[$suffix] = $value;
 		}
 	}
+}
+
+
+function gp_redirect( $location, $status = 302 ) {
+	global $gp_redirect_notices;
+	foreach( $gp_redirect_notices as $key => $message ) {
+		$location = add_query_arg( "_gp_notice_$key", rawurlencode( $message ), $location );
+	}
+	$res = wp_redirect( $location, $status );
+	if ( false === $res) return $res;
+	exit;
 }
 
 /**
