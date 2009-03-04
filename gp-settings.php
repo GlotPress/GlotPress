@@ -109,9 +109,11 @@ if ( !defined( 'GP_TMPL_PATH' ) )
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 
 require_once( GP_PATH . GP_INC . 'meta.php');
+require_once( GP_PATH . GP_INC . 'misc.php');
 require_once( GP_PATH . GP_INC . 'wp-formatting.php');
 require_once( GP_PATH . GP_INC . 'url.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
+require_once GP_PATH . GP_INC . 'project.php';
 
 require_once( GP_PATH . GP_INC . 'template.php');
 require_once( GP_PATH . GP_INC . 'template-links.php');
