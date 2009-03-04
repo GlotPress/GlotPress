@@ -6,13 +6,13 @@
 function gp_get_routes() {
 	$dir = '([^/]+)';
 	$path = '(.+?)';
-	$locale = $project = $dir;
+	$project = $path;
 	// overall structure
 	// /project
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
-		"/$path/import-sources" => 'gp_route_project_import_sources',
-		"/$path/$locale/translations/?(\d+)?" => 'gp_route_project_translations',
+		"get:/$project/import-originals" => 'gp_route_project_import_originals_get',
+		"post:/$project/import-originals" => 'gp_route_project_import_originals_post',
 		// keep this one at the bottom, because it will catch anything
 		"/$path" => 'gp_route_project',
 	) );
@@ -20,6 +20,7 @@ function gp_get_routes() {
 
 
 class GP_Router {
+	
 	function GP_Router( $urls ) {
 		$this->urls = $urls;
 	}
@@ -35,9 +36,20 @@ class GP_Router {
 		return false;
 	}
 	
+	function request_method() {
+		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
+	}
+	
 	function route() {
 		$request_uri = $this->request_uri();
+		$request_method = strtolower( $this->request_method() );
 		foreach( $this->urls as $re => $func ) {
+			foreach (array('get', 'post', 'head', 'put', 'delete') as $method) {
+				if ( gp_startswith( $re, $method.':' ) ) {
+					if ( $method != $request_method ) continue;
+					$re = substr( $re, strlen( $method.':' ));
+				}
+			}
 			if ( preg_match("|^$re$|", $request_uri, $matches ) ) {
 				return call_user_func_array( $func, array_slice( $matches, 1 ) );
 			}
