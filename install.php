@@ -21,4 +21,4 @@ if ( gp_get_option( 'gp_db_version' ) <= gp_get_option_from_db( 'gp_db_version' 
 
 $title = "Install GlotPress";
 $path = gp_add_slash( gp_url_path() );
-gp_tmpl_page( 'install',  get_defined_vars() );
+gp_tmpl_load( 'install',  get_defined_vars() );

@@ -1,3 +1,7 @@
+<?php
+gp_title( __('Install < GlotPress') );
+gp_tmpl_header();
+?>
 <?php if ($errors): ?>
 There were some errors:
 <pre>
@@ -21,3 +25,4 @@ RewriteRule . <?php echo $path; ?>index.php [L]
 	
 </pre>
 </p>
+<?php gp_tmpl_footer(); ?>
