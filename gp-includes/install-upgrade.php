@@ -32,7 +32,7 @@ function gp_install() {
 	gp_update_db_version();
 	gp_update_option( 'uri', guess_uri() );
 	
-	$gpdb->insert( $gpdb->projects, array('name' => 'sample', 'slug' => 'sample', 'description' => 'A Sample Project', 'path' => 'sample') );
+	$gpdb->insert( $gpdb->projects, array('name' => 'Sample', 'slug' => 'sample', 'description' => 'A Sample Project', 'path' => 'sample') );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'GlotPress FTW', 'comment' => 'FTW means For The Win', 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
 	

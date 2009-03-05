@@ -63,7 +63,7 @@ function gp_title( $title = null ) {
 function gp_breadcrumb( $breadcrumb = null ) {
 	if ( !is_null( $breadcrumb ) ) {
 		/* translators: separates links in the navigation breadcrumb */
-		$breadcrumb_string = implode( ' '._x('&gt;', 'breadcrumb').' ', $breadcrumb );
+		$breadcrumb_string = implode( ' <span class="separator">'._x('&rArr;', 'breadcrumb').'</span> ', $breadcrumb );
 		add_filter( 'gp_breadcrumb', create_function( '$x', 'return '.var_export($breadcrumb_string, true).';'), 5 );
 	} else {
 		return apply_filters( 'gp_breadcrumb', '' );

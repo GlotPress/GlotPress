@@ -32,3 +32,10 @@ table.translations th.original, table.translations th.translation  {
 table.translations tr.even {
 	background-color: #fcfcfc;
 }
+#footer {
+	text-align: center;
+	font-size: 85%;
+}
+.separator {
+	font-size: 85%;
+}
