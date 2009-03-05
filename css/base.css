@@ -8,6 +8,7 @@ h1 {
 }	
 table.translations {
 	font-size: 90%;
+	width: 100%;
 }
 table.translations th {
 	font-weight: bold;

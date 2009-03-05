@@ -118,3 +118,15 @@ endif;
 function gp_parity_factory( ) {
 	return create_function( '', 'static $parity = "odd"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
 }
+
+/**
+ * Builds SQL LIMIT/OFFSET clause for the given page
+ * 
+ * @param integer $page The page number. The first page is 1.
+ * @param integer $per_page How many items are there in a page
+ */
+function gp_limit_for_page( $page, $per_page ) {
+	global $gpdb;
+	$page = $page? $page - 1 : 0;
+	return sprintf( 'LIMIT %d OFFSET %d', $per_page, $per_page * $page );
+}

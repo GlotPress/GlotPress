@@ -14,7 +14,7 @@ function gp_get_routes() {
 		'/' => 'gp_route_index',
 		"get:/$project/import-originals" => 'gp_route_project_import_originals_get',
 		"post:/$project/import-originals" => 'gp_route_project_import_originals_post',
-		"/$project/$locale" => 'gp_route_project_translations',
+		"/$project/$locale(?:/(\d+))?" => 'gp_route_project_translations',
 		// keep this one at the bottom, because it will catch anything
 		"/$path" => 'gp_route_project',
 	) );
