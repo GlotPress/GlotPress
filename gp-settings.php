@@ -147,6 +147,8 @@ require_once( BACKPRESS_PATH . 'functions.bp-options.php' );
 require_once( BACKPRESS_PATH . 'class.wp-dependencies.php' );
 require_once( BACKPRESS_PATH . 'class.wp-styles.php' );
 require_once( BACKPRESS_PATH . 'functions.wp-styles.php' );
+require_once( BACKPRESS_PATH . 'class.wp-scripts.php' );
+require_once( BACKPRESS_PATH . 'functions.wp-scripts.php' );
 require_once( GP_PATH . GP_INC . 'assets-loader.php');
 
 require_once( GP_PATH . GP_INC . 'default-filters.php');

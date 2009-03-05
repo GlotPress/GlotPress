@@ -4,3 +4,4 @@
  */
 
 add_action( 'gp_head', 'wp_print_styles' );
+add_action( 'gp_head', 'wp_print_scripts' );
