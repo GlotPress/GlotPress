@@ -4,16 +4,15 @@ function gp_route_project( $project_path ) {
 	$project = &GP_Project::get_by_path( $project_path );
 	if ( !$project ) gp_tmpl_404();
 	// TODO: list subprojects
-	// TODO: list available locales, which have translations of this project
-	$title = sprintf( __('%s project '), gp_h( $project->name ) );
-	gp_tmpl_page( 'project', get_defined_vars() );
+	$title = sprintf( __('%s project '), gp_h( $project->name ) );	
+	gp_tmpl_load( 'project', get_defined_vars() );
 }
 
 function gp_route_project_import_originals_get( $project_path ) {
 	global $gpdb;
 	$project = &GP_Project::get_by_path( $project_path );
 	$title = sprintf( __('Import originals for %s' ), $project->name );
-	gp_tmpl_page( 'project-import-originals', get_defined_vars() );
+	gp_tmpl_load( 'project-import-originals', get_defined_vars() );
 }
 
 function gp_route_project_import_originals_post( $project_path ) {
@@ -43,4 +42,14 @@ function gp_route_project_import_originals_post( $project_path ) {
 		}
 	}
 	// TODO: PO file parsing in POMO
+}
+
+
+function gp_route_project_translations( $project_path, $locale_slug, $page = 0 ) {
+	global $gpdb;
+	$per_page = 50000;
+	$project = &GP_Project::get_by_path( $project_path );
+	$locale = GP_Locales::by_slug( $locale_slug );
+	$translations = $gpdb->get_results( $gpdb->prepare( "SELECT t.*, o.* FROM $gpdb->originals as o LEFT JOIN $gpdb->translations as t ON o.id = t.original_id WHERE o.project_id = %d AND ( locale IS NULL OR locale = '%s') ORDER BY t.id ASC LIMIT %d OFFSET %d", $project->id, $locale_slug, $per_page, $per_page * $page ) );
+	gp_tmpl_load( 'project-translations', get_defined_vars() );
 }

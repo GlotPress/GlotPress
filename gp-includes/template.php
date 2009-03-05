@@ -1,5 +1,6 @@
 <?php
-function gp_tmpl_load( $template, $args = array() ) {
+function gp_tmpl_load( $template, $args = array() ) {	
+	$all_locales = GP_Locales::locales();
 	$args = gp_tmpl_filter_args( $args );
  	$file = GP_TMPL_PATH . "$template.php";
 	if ( is_readable( $file ) ) {

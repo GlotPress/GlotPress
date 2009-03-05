@@ -1,7 +1,33 @@
 html, body {
 	font-family: "Lucida Grande", "MS Trebuchet", sans-serif;
+	color: #333;
 }
 h1 {
 	font-family: "Georgia", serif;
 	font-weight: normal;
+}	
+table.translations {
+	font-size: 90%;
+}
+table.translations th {
+	font-weight: bold;
+	color: #eee;
+	background-color: #555;
+}
+table.translations tr {
+	border: 0;
+}
+table.translations td, table.translations th {
+	padding: 0.5em;
+	border: 1px solid #eee;
+	/* white-space: pre-wrap; */
+	margin: 0;
+	border-spacing: 0;
+}
+
+table.translations th.original, table.translations th.translation  {
+	width: 45%;
+}
+table.translations tr.even {
+	background-color: #fcfcfc;
 }
