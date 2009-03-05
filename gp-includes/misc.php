@@ -114,3 +114,7 @@ function wp_sanitize_redirect($location) {
     return $location;
 }
 endif;
+
+function gp_parity_factory( ) {
+	return create_function( '', 'static $parity = "odd"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
+}
