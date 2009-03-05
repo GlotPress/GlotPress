@@ -1,5 +1,5 @@
 <?php
-gp_title( __('Not Found < GlotPress') );
+gp_title( __('Not Found &lt; GlotPress') );
 gp_tmpl_header();
 ?>
 Not Found

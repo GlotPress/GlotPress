@@ -1,5 +1,5 @@
 <?php
-gp_title( __('Install < GlotPress') );
+gp_title( __('Install &lt; GlotPress') );
 gp_tmpl_header();
 ?>
 <?php if ($errors): ?>

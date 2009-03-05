@@ -1,5 +1,5 @@
 <?php
-gp_title( sprintf( __('Import Originals < %s < GlotPress'), gp_h( $project->name ) ) );
+gp_title( sprintf( __('Import Originals &lt; %s &lt; GlotPress'), gp_h( $project->name ) ) );
 gp_tmpl_header();
 ?>
 <h1>Import originals for <?php echo gp_h( $project->name ); ?></h1>

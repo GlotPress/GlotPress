@@ -1,5 +1,5 @@
 <?php
-gp_title( __('Home < GlotPress') );
+gp_title( __('Home &lt; GlotPress') );
 gp_tmpl_header();
 ?>
 <h1>Welcome to GlotPress!</h1>
