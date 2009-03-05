@@ -29,5 +29,12 @@ class GP_Test_Urls extends UnitTestCase {
 		$this->assertEqual( 'baba/dyado', gp_url_join( 'baba', 'dyado' ) );
 		$this->assertEqual( 'baba/dyado', gp_url_join( 'baba/', '/dyado' ) );
 		$this->assertEqual( '/baba/dyado/', gp_url_join( '/baba//', '/dyado/' ) );
+		$this->assertEqual( '/baba/', gp_url_join( '/baba/', '/' ) );
+		$this->assertEqual( '/baba/', gp_url_join( '/baba/', '//' ) );
+		$this->assertEqual( '/baba/', gp_url_join( '/', '/baba/' ) );
+		$this->assertEqual( '/baba/', gp_url_join( '/', '/baba/' ) );
+		$this->assertEqual( '/baba/', gp_url_join( '//', '/baba/' ) );
+		$this->assertEqual( '/', gp_url_join( '/', '/' ) );
+		$this->assertEqual( '/', gp_url_join( '///', '///' ) );
 	}
 }
