@@ -9,6 +9,10 @@ class GP_Locale {
 	var $slug;
 	// TODO: days, months, decimals, quotes
 	
+	function combined_name() {
+		/* translators: combined name for locales: 1: name in English, 2: native name */
+		return sprintf( _x( '%1$s/%2$s', 'locales' ), $this->english_name, $this->native_name );
+	}
 }
 
 class GP_Locales {
@@ -63,12 +67,25 @@ class GP_Locales {
 	
 	}
 	
+	function &instance() {
+		if ( !isset( $GLOBALS['gp_locales'] ) )
+			$GLOBALS['gp_locales'] = &new GP_Locales();
+		return $GLOBALS['gp_locales'];
+	}
+	
+	function locales() {
+		$instance = &GP_Locales::instance();
+		return $instance->locales;
+	}
+	
 	function exists( $slug ) {
-		return isset( $this->locales[$slug] );
+		$instance = &GP_Locales::instance();
+		return isset( $instance->locales[$slug] );
 	}
 	
 	function by_slug( $slug ) {
-		return $this->locales[$slug];
+		$instance = &GP_Locales::instance();
+		return $instance->locales[$slug];
 	}
 }
 ?>

@@ -4,11 +4,10 @@
  */
 
 function gp_get_routes() {
-	global $gp_locales;
 	$dir = '([^/]+)';
 	$path = '(.+?)';
 	$project = $path;
-	$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), $gp_locales->locales ) ).')';
+	$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 	// overall structure
 	// /project
 	return apply_filters( 'routes', array(

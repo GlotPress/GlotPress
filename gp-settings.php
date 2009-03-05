@@ -162,8 +162,6 @@ if ( !class_exists( 'WP_Users' ) ) {
 
 require_once( GP_PATH . GP_INC . 'locales.php' );
 
-$gp_locales = &new GP_Locales();
-
 require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
 	require_once $route;
