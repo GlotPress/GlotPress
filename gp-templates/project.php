@@ -1,8 +1,11 @@
 <?php
 gp_title( sprintf( __('%s &lt; GlotPress'), gp_h( $project->name ) ) );
+gp_breadcrumb( array(
+	gp_link_home_get(),
+	gp_link_project_get( $project, $project->name ),
+) );
 gp_tmpl_header();
 ?>
-<h1>Project "<?php echo gp_h( $project->name ) ?>"</h1>
 <?php _e('Translations in:'); ?>
 <ul>
 <?php foreach( $all_locales as $locale ): ?>

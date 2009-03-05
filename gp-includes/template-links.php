@@ -19,6 +19,15 @@ function gp_link_project() {
 	echo call_user_func_array('gp_link_project_get', $args);
 }
 
+function gp_link_home_get() {
+	return gp_link_get( gp_url( '/' ), __( 'Home' ), array( 'title' => __('Home Is Where The Heart Is') ) );
+}
+
+function gp_link_home() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_home_get', $args);	
+}
+
 function gp_html_attributes( $attrs ) {
 	$attrs = wp_parse_args( $attrs );
 	$strings = array();

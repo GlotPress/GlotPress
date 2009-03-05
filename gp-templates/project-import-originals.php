@@ -1,8 +1,12 @@
 <?php
 gp_title( sprintf( __('Import Originals &lt; %s &lt; GlotPress'), gp_h( $project->name ) ) );
+gp_breadcrumb( array(
+	gp_link_home_get(),
+	gp_link_project_get( $project, $project->name ),
+	__('Import originals'),
+) );
 gp_tmpl_header();
 ?>
-<h1>Import originals for <?php echo gp_h( $project->name ); ?></h1>
 <?php if (gp_notice('error')): ?>
 	<div class="error">
 		<?php echo gp_notice('error'); ?>

@@ -10,10 +10,4 @@ wp_enqueue_style( 'base' );
 		<?php gp_head(); ?>
 	</head>
 	<body>
-		<div id="header">
-			<!--
-			<ul id="breadcrumb">
-				<?php echo gp_tmpl_breadcrumb(); ?>
-			</ul>
-			-->
-		</div>
+		<h1><?php echo gp_breadcrumb(); ?></h1>
