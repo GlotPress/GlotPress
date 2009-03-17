@@ -21,6 +21,8 @@ function gp_scripts_default( &$scripts ) {
 	
 	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.2.6-min' );
 	$scripts->add( 'jquery-ui-core', '/jquery/ui.core.js', array('jquery'), '1.5.2' );
+	$scripts->add( 'jquery-ui-tabs', '/jquery/ui.tabs.js', array('jquery-ui-core'), '1.5.2' );
+	$scripts->add( 'editor', '/editor.js', array('jquery-ui-tabs', 'jquery') );
 }
 
 add_action( 'wp_default_scripts', 'gp_scripts_default' );

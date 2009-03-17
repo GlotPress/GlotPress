@@ -31,9 +31,9 @@ function gp_route_project_import_originals_post( $project_path ) {
 				foreach( $mo->entries as $entry ) {
 					$data = array('project_id' => $project->id, 'context' => $entry->context,
 						'singular' => $entry->singular, 'plural' => $entry->plural );
-					if ( is_null( $entry->context) ) unset($data['context']);
-					if ( is_null( $entry->plural) ) unset($data['plural']);
-					$gpdb->insert($gpdb->originals, $data );
+					if ( is_null( $entry->context ) ) unset($data['context']);
+					if ( is_null( $entry->plural ) ) unset($data['plural']);
+					$gpdb->insert( $gpdb->originals, $data );
 				}
 				// TODO: were they really added?
 				gp_notice_set( sprintf(__("%s strings were added"), count($mo->entries) ) );
@@ -51,7 +51,7 @@ function gp_route_project_translations( $project_path, $locale_slug, $page = nul
 	$project = &GP_Project::get_by_path( $project_path );
 	$locale = GP_Locales::by_slug( $locale_slug );
 	$limit = gp_limit_for_page( $page, $per_page );
-	$translations = $gpdb->get_results( $gpdb->prepare( "SELECT t.*, o.* FROM $gpdb->originals as o LEFT JOIN $gpdb->translations as t ON o.id = t.original_id WHERE o.project_id = %d AND ( locale IS NULL OR locale = '%s') ORDER BY t.id ASC $limit", $project->id, $locale_slug ) );
+	$translations = $gpdb->get_results( $gpdb->prepare( "SELECT t.*, o.*, t.id as id, o.id as original_id FROM $gpdb->originals as o LEFT JOIN $gpdb->translations as t ON o.id = t.original_id WHERE o.project_id = %d AND ( locale IS NULL OR locale = '%s') ORDER BY t.id ASC $limit", $project->id, $locale_slug ) );
 	// TODO: expose paging
 	gp_tmpl_load( 'project-translations', get_defined_vars() );
 }

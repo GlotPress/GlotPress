@@ -1,10 +1,15 @@
-html, body {
+html, body, textarea {
 	font-family: "Lucida Grande", "MS Trebuchet", sans-serif;
 	color: #333;
 }
 h1 {
 	font-family: "Georgia", serif;
 	font-weight: normal;
+	letter-spacing: -0.1em;
+}
+textarea {
+	font-size: 100%;
+	padding: 0.5em;
 }	
 table.translations {
 	font-size: 90%;
@@ -32,10 +37,60 @@ table.translations th.original, table.translations th.translation  {
 table.translations tr.even {
 	background-color: #fcfcfc;
 }
+table.translations tr.editor {
+	background-color: #F8FFEC;
+	display: none;
+}
 #footer {
 	text-align: center;
 	font-size: 85%;
 }
 .separator {
 	font-size: 85%;
+}
+.clear {
+	clear: both;
+}
+.half {
+	float: left;
+	width: 50%;
+}
+span.context {
+	background-color: #666;
+	color: white;
+	padding: 0.2em;
+}
+.editor .comment {
+	font-style: italic;
+}
+.editor .original {
+	font-weight: bold;
+}
+.editor .textareas, .editor .actions {
+	clear: both;
+}
+.editor .textareas {
+	float: left;
+}
+.editor .meta {
+	float: left;
+	margin-left: 2em;
+}
+/* jQuery UI Tabs for plural translations */
+.ui-tabs-nav .ui-tabs-hide {
+     display: none;
+}
+.ui-tabs-nav a, .ui-tabs-nav a:visited {
+	text-decoration: none;
+}
+.ui-tabs-nav ul {
+	margin: 0 0 0 0.5em;
+	padding: 0;
+}
+.ui-tabs-nav li {
+	display: inline;
+}
+.ui-tabs-nav .ui-tabs-selected {
+	font-weight: bold;
+	font-size: 130%;
 }
