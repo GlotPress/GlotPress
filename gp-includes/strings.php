@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions, which makes work with strings easier
+ * Functions, which make work with strings easier
  */
 
 function gp_startswith( $haystack, $needle ) {

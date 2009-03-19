@@ -38,7 +38,7 @@ function gp_route_project_import_originals_post( $project_path ) {
 				// TODO: were they really added?
 				gp_notice_set( sprintf(__("%s strings were added"), count($mo->entries) ) );
 			}
-			gp_redirect( gp_url_join( gp_url_project( $project ), 'import-originals' ) );
+			wp_redirect( gp_url_join( gp_url_project( $project ), 'import-originals' ) );
 		}
 	}
 	// TODO: PO file parsing in POMO
