@@ -46,13 +46,13 @@ $gp.editor = function($){ return {
 		}).get().join('&');
 		$.ajax({type: "POST", url: '', data: data,
 			success: function(msg){
-				$gp.notices.clear();
-				$gp.editor.update_preview();
-				$gp.editor.hide();
-				//TODO: go to next untranslated, or at least next
+				$gp.notices.success('Saved!');
 			},
 			error: function(xhr, msg, o){ $gp.notices.error(msg); },
 		});
+		$gp.editor.update_preview();
+		$gp.editor.hide();
+		//TODO: go to next untranslated, or at least next
 	},
 	hooks: {
 		show_by_original_attr: function() {

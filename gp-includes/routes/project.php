@@ -62,6 +62,7 @@ function gp_route_project_translations_post( $project_path, $locale_slug ) {
 	$locale = GP_Locales::by_slug( $locale_slug );
 	//TODO: multiple insert
 	foreach($_POST['translation'] as $original_id => $translations) {
+	    sleep(2);
 	    $data = compact('original_id');
 	    $data['locale'] = $locale_slug;
 	    foreach(range(0, 3) as $i) {
