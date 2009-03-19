@@ -45,13 +45,32 @@ function gp_route_project_import_originals_post( $project_path ) {
 }
 
 
-function gp_route_project_translations( $project_path, $locale_slug, $page = null ) {
+function gp_route_project_translations_get( $project_path, $locale_slug ) {
 	global $gpdb;
-	$per_page = 50;
+	$per_page = 1000;
 	$project = &GP_Project::get_by_path( $project_path );
 	$locale = GP_Locales::by_slug( $locale_slug );
-	$limit = gp_limit_for_page( $page, $per_page );
-	$translations = $gpdb->get_results( $gpdb->prepare( "SELECT t.*, o.*, t.id as id, o.id as original_id FROM $gpdb->originals as o LEFT JOIN $gpdb->translations as t ON o.id = t.original_id WHERE o.project_id = %d AND ( locale IS NULL OR locale = '%s') ORDER BY t.id ASC $limit", $project->id, $locale_slug ) );
+	$limit = gp_limit_for_page( gp_get('page', 1), $per_page );
+	$translations = $gpdb->get_results( $gpdb->prepare( "SELECT t.*, o.*, t.id as id, o.id as original_id FROM $gpdb->originals as o LEFT JOIN $gpdb->translations as t ON o.id = t.original_id AND t.status = 'current' WHERE o.project_id = %d AND ( locale IS NULL OR locale = '%s') ORDER BY t.id ASC $limit", $project->id, $locale_slug ) );
 	// TODO: expose paging
 	gp_tmpl_load( 'project-translations', get_defined_vars() );
+}
+
+function gp_route_project_translations_post( $project_path, $locale_slug ) {
+	global $gpdb;
+	$project = &GP_Project::get_by_path( $project_path );
+	$locale = GP_Locales::by_slug( $locale_slug );
+	//TODO: multiple insert
+	foreach($_POST['translation'] as $original_id => $translations) {
+	    $data = compact('original_id');
+	    $data['locale'] = $locale_slug;
+	    foreach(range(0, 3) as $i) {
+	        if (isset($translations[$i])) $data["translation_$i"] = $translations[$i];
+	    }
+	    /*
+	    Since we still don't have status updates, just insert with status current
+	    */
+	    $data['status'] = 'current';
+        $gpdb->insert($gpdb->translations, $data);
+	}
 }

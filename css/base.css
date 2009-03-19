@@ -94,13 +94,19 @@ span.context {
 	font-weight: bold;
 	font-size: 130%;
 }
-#gp-js-error {
-	position: absolute;
+#gp-js-message {
+	position: fixed;
 	top: 0;
-	left: 48%;
-	color: white;
-	background-color: red;
 	padding: 0.5em;
 	display: none;
 	font-size: 85%;
+	z-index: 1001;
+}
+.gp-js-error {
+	color: white;
+	background-color: red;	
+}
+.gp-js-notice {
+	color: #222;
+	background-color: #FDDF9D;	
 }
