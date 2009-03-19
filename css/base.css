@@ -94,3 +94,13 @@ span.context {
 	font-weight: bold;
 	font-size: 130%;
 }
+#gp-js-error {
+	position: absolute;
+	top: 0;
+	left: 48%;
+	color: white;
+	background-color: red;
+	padding: 0.5em;
+	display: none;
+	font-size: 85%;
+}

@@ -10,4 +10,5 @@ wp_enqueue_style( 'base' );
 		<?php gp_head(); ?>
 	</head>
 	<body>
+	    <div id="gp-js-error"></div>
 		<h1><?php echo gp_breadcrumb(); ?></h1>

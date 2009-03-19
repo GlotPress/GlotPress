@@ -9,8 +9,7 @@ wp_enqueue_script( 'editor' );
 $parity = gp_parity_factory();
 gp_tmpl_header();
 ?>
-
-<table class="translations">
+<table id="translations" class="translations">
 	<tr>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
@@ -33,8 +32,8 @@ gp_tmpl_header();
 	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" >
 		<td colspan="3">
 			<?php if ( $t->plural ): ?>
-			<p class="original half"><?php echo gp_h($t->singular); ?></p>
-			<p class="original half"><?php echo gp_h($t->plural); ?></p>
+			<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
+			<p><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
 			<?php else: ?>
 			<p class="original"><?php echo gp_h($t->singular); ?></p>
 			<?php endif; ?>
