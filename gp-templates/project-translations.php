@@ -69,7 +69,7 @@ gp_tmpl_header();
 				<?php endif; ?>
 			</div>
 			<div class="actions">
-				<button class="ok">OK &amp; Next</button>
+				<button class="ok">Add translation</button>
 				<a href="#" class="close"><?php _e('Close'); ?></a>
 			</div>
 		</td>
