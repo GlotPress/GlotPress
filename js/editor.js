@@ -5,9 +5,11 @@ $gp.editor = function($){ return {
 		$gp.editor.table = table;
 		$gp.editor.install_hooks();
 	},
-	show: function(original_id) {
-		if ($gp.editor.current) $gp.editor.hide();
+	show: function(element) {
+		var original_id = element.attr('original');
 		var editor = $('#editor-' + original_id);
+		if (!editor.length) return;		
+		if ($gp.editor.current) $gp.editor.hide();
 		editor.preview = $('#preview-' + original_id);
 		editor.original_id = original_id;
 		$gp.editor.current = editor;
@@ -20,6 +22,11 @@ $gp.editor = function($){ return {
 		editor.preview.hide();
 		$('textarea:first', editor).focus();
 	},
+	next: function() {
+		if (!$gp.editor.current) return;
+		//TODO: go to next page if needed
+		$gp.editor.show($gp.editor.current.nextAll('tr.editor').eq(0));
+	},
 	hide: function(editor) {
 		editor = editor? editor : $gp.editor.current;
 		if (!editor) return;
@@ -28,8 +35,8 @@ $gp.editor = function($){ return {
 		$gp.editor.current = null;
 	},
 	install_hooks: function() {
-		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show_by_original_attr);
-		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show_by_original_attr);		
+		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show);
+		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);		
 	},
 	update_preview: function() {
 		if (!$gp.editor.current) return;
@@ -51,13 +58,12 @@ $gp.editor = function($){ return {
 			error: function(xhr, msg, o){ $gp.notices.error(msg); },
 		});
 		$gp.editor.update_preview();
-		$gp.editor.hide();
-		//TODO: go to next untranslated, or at least next
+		// TODO: next untranslated
+		$gp.editor.next();
 	},
 	hooks: {
-		show_by_original_attr: function() {
-			var original_id = $(this).attr('original');
-			$gp.editor.show(original_id);
+		show: function() {
+			$gp.editor.show($(this));
 			return false;
 		},
 		hide: function() {

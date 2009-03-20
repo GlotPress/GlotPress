@@ -29,7 +29,7 @@ gp_tmpl_header();
 			<a href="#" original="<?php echo $t->original_id; ?>" class="edit"><?php _e('Edit'); ?></a>
 		</td>
 	</tr>
-	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" >
+	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
 		<td colspan="3">
 			<?php if ( $t->plural ): ?>
 			<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
