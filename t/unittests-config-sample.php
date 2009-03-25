@@ -1,8 +1,8 @@
 <?php
 // ** MySQL settings - You can get this info from your web host ** //
 
-/** The name of the database for bbPress */
-define('GPDB_NAME', 'glotpress');
+/** The name of the test database for GlotPress */
+define('GPDB_NAME', 'glotpress_test');
 
 /** MySQL database username */
 define('GPDB_USER', 'username');

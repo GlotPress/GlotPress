@@ -1,7 +1,7 @@
 <?php
 require_once('init.php');
 
-class GP_Test_Misc extends UnitTestCase {
+class GP_Test_Misc extends GP_UnitTestCase {
 	function GP_Test_Misc() {
 		$this->UnitTestCase('Misc functions tests');
 	}

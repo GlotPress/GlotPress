@@ -1,14 +1,15 @@
 <?php
 require_once('init.php');
 
-class GP_Test_Urls extends UnitTestCase {
+class GP_Test_Urls extends GP_UnitTestCase {
 	function GP_Test_Urls() {
 		$this->UnitTestCase('URLs test');
 	}
 	
 	function setUp() {
+        parent::setUp();
 		$this->url = 'http://example.org/gp/';
-		gp_update_option( 'uri', $this->url );
+		gp_update_option( 'uri', $this->url );		
 	}
 
 	function test_gp_url() {

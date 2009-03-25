@@ -153,6 +153,7 @@ require_once( GP_PATH . GP_INC . 'default-filters.php');
 require_once( BACKPRESS_PATH . 'functions.kses.php' );
 
 require_once( POMO_PATH . 'mo.php' );
+require_once( POMO_PATH . 'po.php' );
 require_once( GP_PATH . GP_INC . 'l10n.php' );
 
 if ( !class_exists( 'WP_Users' ) ) {
