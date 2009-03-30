@@ -35,7 +35,11 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEqual('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
 		$this->assertEqual('manyey dragoney', $mo->translate_plural('one dragon', '%d dragons', 11));
 		$this->assertEqual('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', 3));
-
+		
+		$mo->set_header('Plural-Forms', 'nplurals=2; plural=n !=1;');
+		$this->assertEqual('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
+		$this->assertEqual('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', 2));
+		$this->assertEqual('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', -8));
 	}
 
 	function test_mo_context() {
@@ -95,5 +99,13 @@ class GP_Test_MO extends GP_UnitTestCase {
 		foreach($entries as $entry) {
 			$this->assertEqual($entry, $again->entries[$entry->key()]);
 		}
+	}
+	
+	function test_nplurals_with_backslashn() {
+		$mo = new MO();
+		$mo->import_from_file('data/bad_nplurals.mo');
+		$this->assertEqual('%d foro', $mo->translate_plural('%d forum', '%d forums', 1));
+		$this->assertEqual('%d foros', $mo->translate_plural('%d forum', '%d forums', 2));
+		$this->assertEqual('%d foros', $mo->translate_plural('%d forum', '%d forums', -1));
 	}
 }

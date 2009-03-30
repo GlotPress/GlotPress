@@ -87,7 +87,7 @@ class Translations {
 		$total_plural_forms = $this->get_plural_forms_count();
 		if ($translated && 0 <= $index && $index < $total_plural_forms &&
 				is_array($translated->translations) &&
-				count($translated->translations) == $total_plural_forms)
+				isset($translated->translations[$index]))
 			return $translated->translations[$index];
 		else
 			return 1 == $count? $singular : $plural;
