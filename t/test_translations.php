@@ -48,13 +48,10 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		$this->assertEqual('other', $domain->translate_plural('other', 'others', 1));
 		$this->assertEqual('others', $domain->translate_plural('other', 'others', 111));
 		// too few translations + cont logic
-		$this->assertEqual('baba', $domain->translate_plural('baba', 'babas', 1));
 		$this->assertEqual('babas', $domain->translate_plural('baba', 'babas', 2));
 		$this->assertEqual('babas', $domain->translate_plural('baba', 'babas', 0));
 		$this->assertEqual('babas', $domain->translate_plural('baba', 'babas', -1));
 		$this->assertEqual('babas', $domain->translate_plural('baba', 'babas', 999));
-		// too many translations
-		$this->assertEqual('winks', $domain->translate_plural('wink', 'winks', 999));
 		// proper
 		$this->assertEqual('dyadox', $domain->translate_plural('dyado', 'dyados', 1));
 		$this->assertEqual('dyadoy', $domain->translate_plural('dyado', 'dyados', 0));
