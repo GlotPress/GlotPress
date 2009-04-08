@@ -13,8 +13,13 @@ if ( gp_get_option( 'gp_db_version' ) <= gp_get_option_from_db( 'gp_db_version' 
 	$success_message = __( 'You already have the latest version, no need to upgrade!' );
 	$errors = array();
 } else {
-	$success_message = __( 'GlotPress was successully installed!' );
-	$errors = gp_install();
+    if ( gp_get( 'action', 'install' )  == 'upgrade' ) {
+	    $success_message = __( 'GlotPress was successully upgraded!' );
+	    $errors = gp_upgrade();
+    } else {
+	    $success_message = __( 'GlotPress was successully installed!' );
+	    $errors = gp_install();
+	}
 }
 
 // TODO: check if the .htaccess is in place or try to write it

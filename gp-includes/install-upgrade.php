@@ -20,7 +20,7 @@ function gp_update_db_version() {
 	gp_update_option( 'gp_db_version', gp_get_option( 'gp_db_version' ) );
 }
 
-function gp_install() {
+function gp_upgrade_db() {
 	global $gpdb;
 	
 	$alterations = BP_SQL_Schema_Parser::delta( $gpdb, gp_schema_get() );
@@ -30,11 +30,26 @@ function gp_install() {
 	if ( $errors ) return $errors;
 
 	gp_update_db_version();
+    
+}
+
+function gp_upgrade() {
+    return gp_upgrade_db();
+}
+
+function gp_install() {
+    global $gpdb;
+    
+    $errors = gp_upgrade_db();
+    
+	if ( $errors ) return $errors;
+	
 	gp_update_option( 'uri', guess_uri() );
 	
 	$gpdb->insert( $gpdb->projects, array('name' => 'Sample', 'slug' => 'sample', 'description' => 'A Sample Project', 'path' => 'sample') );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'GlotPress FTW', 'comment' => 'FTW means For The Win', 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
+	#$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
 	
 	return array();
 }
