@@ -1,9 +1,10 @@
 <?php
-gp_title( sprintf( __( 'Translations &lt; %s &lt; GlotPress' ), $project->name ) );
+gp_title( sprintf( __( 'Translations &lt; %s &lt; %s &lt; GlotPress' ), $translation_set->name, $project->name ) );
 gp_breadcrumb( array(
 	gp_link_home_get(),
 	gp_link_project_get( $project, $project->name ),
 	$locale->combined_name(),
+	$translation_set->name,
 ) );
 wp_enqueue_script( 'editor' );
 $parity = gp_parity_factory();

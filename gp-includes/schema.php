@@ -17,7 +17,7 @@ function gp_schema_get() {
 	$gp_schema['translations'] = "CREATE TABLE IF NOT EXISTS `$gpdb->translations` (
 		`id` INT(10) NOT NULL auto_increment,
 		`original_id` INT(10) NOT NULL default 0,
-		`locale` VARCHAR(10),
+		`translation_set_id` INT(10) NOT NULL default 0,
 		`translation_0` TEXT NOT NULL,
 		`translation_1` TEXT,
 		`translation_2` TEXT,
@@ -28,6 +28,21 @@ function gp_schema_get() {
 		KEY `original_id` (`original_id`),
 		KEY `user_id` (`user_id`)
 	) TYPE = MYISAM;";
+
+    /*
+    Translations sets: a translation set holds specific translation of a project in a specific language
+    For example each WordPress Spanish translation (formal, informal and that of Diego) will be different sets.
+    Most projects will have only one translation set per language.
+    */
+    $gp_schema['translation_sets'] = "CREATE TABLE IF NOT EXISTS `$gpdb->translation_sets` (
+    	`id` INT(10) NOT NULL auto_increment,
+    	`name` VARCHAR(255) NOT NULL,
+    	`slug` VARCHAR(255) NOT NULL,
+		`project_id` INT(10) NOT NULL default 0,
+    	`locale` VARCHAR(10),
+    	`user_id` INT(10) NOT NULL default 0,
+    	PRIMARY KEY (`id`),
+    ) TYPE = MYISAM;";
 
 	/*
 	Original strings

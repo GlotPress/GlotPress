@@ -1,23 +1,24 @@
 <?php
 function gp_route_project( $project_path ) {
 	global $gpdb;
-	$project = &GP_Project::get_by_path( $project_path );
+	$project = &GP_Project::by_path( $project_path );
 	if ( !$project ) gp_tmpl_404();
 	// TODO: list subprojects
-	$title = sprintf( __('%s project '), gp_h( $project->name ) );	
+	$translation_sets = GP_Translation_Set::by_project_id( $project->id );
+	$title = sprintf( __('%s project '), gp_h( $project->name ) );
 	gp_tmpl_load( 'project', get_defined_vars() );
 }
 
 function gp_route_project_import_originals_get( $project_path ) {
 	global $gpdb;
-	$project = &GP_Project::get_by_path( $project_path );
+	$project = &GP_Project::by_path( $project_path );
 	$title = sprintf( __('Import originals for %s' ), $project->name );
 	gp_tmpl_load( 'project-import-originals', get_defined_vars() );
 }
 
 function gp_route_project_import_originals_post( $project_path ) {
 	global $gpdb;
-	$project = &GP_Project::get_by_path( $project_path );
+	$project = &GP_Project::by_path( $project_path );
 	if ( !$project ) gp_tmpl_404();
 	$source = gp_post( 'source' );
 	if ( 'mo' == $source ) {
@@ -44,26 +45,31 @@ function gp_route_project_import_originals_post( $project_path ) {
 	// TODO: PO file parsing in POMO
 }
 
-
-function gp_route_project_translations_get( $project_path, $locale_slug ) {
+function gp_route_project_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 	global $gpdb;
 	$per_page = 1000;
-	$project = &GP_Project::get_by_path( $project_path );
+	$project = GP_Project::by_path( $project_path );
 	$locale = GP_Locales::by_slug( $locale_slug );
+	$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 	$limit = gp_limit_for_page( gp_get('page', 1), $per_page );
-	$translations = $gpdb->get_results( $gpdb->prepare( "SELECT t.*, o.*, t.id as id, o.id as original_id FROM $gpdb->originals as o LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.status = 'current' AND t.locale = '%s' WHERE o.project_id = %d ORDER BY t.id ASC $limit", $locale_slug, $project->id ) );
+	$translations = $gpdb->get_results( $gpdb->prepare( "
+	    SELECT t.*, o.*, t.id as id, o.id as original_id
+	    FROM $gpdb->originals as o
+	    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.status = 'current' AND t.translation_set_id = %d
+	    WHERE o.project_id = %d ORDER BY t.id ASC $limit", $translation_set->id, $project->id ) );
 	// TODO: expose paging
-	gp_tmpl_load( 'project-translations', get_defined_vars() );
+	gp_tmpl_load( 'translations', get_defined_vars() );
 }
 
-function gp_route_project_translations_post( $project_path, $locale_slug ) {
+function gp_route_project_translations_post ($project_path, $locale_slug, $translation_set_slug ) {
 	global $gpdb;
-	$project = &GP_Project::get_by_path( $project_path );
+	$project = GP_Project::by_path( $project_path );
 	$locale = GP_Locales::by_slug( $locale_slug );
+	$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 	//TODO: multiple insert
 	foreach($_POST['translation'] as $original_id => $translations) {
 	    $data = compact('original_id');
-	    $data['locale'] = $locale_slug;
+	    $data['translation_set_id'] = $translation_set->id;
 	    foreach(range(0, 3) as $i) {
 	        if (isset($translations[$i])) $data["translation_$i"] = $translations[$i];
 	    }
@@ -72,7 +78,7 @@ function gp_route_project_translations_post( $project_path, $locale_slug ) {
 	    and set all the previous translations of the same original to sth else
 	    */
 	    $data['status'] = 'current';
-	    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'locale' => $locale_slug));
+	    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id));
 	    
         $gpdb->insert($gpdb->translations, $data);
 	}

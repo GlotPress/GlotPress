@@ -94,7 +94,7 @@ $gpdb = &new $gpdb_class( array(
 ) );
 unset( $gpdb_class );
 
-$gpdb->tables = array('translations', 'originals', 'projects', 'users', 'usermeta', 'meta');
+$gpdb->tables = array('translations', 'translation_sets', 'originals', 'projects', 'users', 'usermeta', 'meta');
 
 // Set the prefix on the tables
 if ( is_wp_error( $gpdb->set_prefix( $gp_table_prefix ) ) ) {
@@ -113,7 +113,9 @@ require_once( GP_PATH . GP_INC . 'misc.php');
 require_once( GP_PATH . GP_INC . 'wp-formatting.php');
 require_once( GP_PATH . GP_INC . 'url.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
+
 require_once GP_PATH . GP_INC . 'project.php';
+require_once GP_PATH . GP_INC . 'translation-set.php';
 
 require_once( GP_PATH . GP_INC . 'template.php');
 require_once( GP_PATH . GP_INC . 'template-links.php');

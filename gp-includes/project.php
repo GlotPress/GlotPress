@@ -9,7 +9,7 @@ class GP_Project {
 			return $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE `id` = '%s'", $project_or_id ) );
 	}
 	
-	function get_by_path( $path ) {
+	function by_path( $path ) {
 		global $gpdb;
 		$path = trim( $path, '/' );
 		return $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", $path ) );

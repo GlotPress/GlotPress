@@ -25,7 +25,7 @@ function gp_link_home_get() {
 
 function gp_link_home() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_home_get', $args);	
+	echo call_user_func_array('gp_link_home_get', $args);
 }
 
 function gp_html_attributes( $attrs ) {
