@@ -200,5 +200,101 @@ class PO extends Translations {
 		return implode("\n", $po);
 	}
 
+	function import_from_file($filename) {
+		$f = fopen($filename, 'r');
+		if (!$f) return false;
+		$lineno = 0;
+		while (true) {
+			list($entry, $lineno) = $this->read_entry($f, $lineno);
+			if (!$entry) break;
+			if ($entry->singular == '') {
+				//TODO: parse headers
+			} else {
+				$this->add_entry($entry);
+			}
+		}
+		PO::read_line($f, 'clear');
+		return is_null($entry);
+	}
+	
+	function read_entry($f, $lineno = 0) {
+		$entry = new Translation_Entry();
+		$complete = false;
+		// where were we in the last step
+		// can be: comment, msgctxt, msgid, msgid_plural, msgstr, msgstr_plural
+		$context = 'comment';
+		$is_final = create_function('$context', 'return $context == "msgstr" || $context == "msgstr_plural";');
+		while (true) {
+			$lineno++;
+			if (feof($f)) {
+				if ($is_final($context))
+					break;
+				else
+					return false;
+			}
+			$line = PO::read_line($f);
+			if (!$line) return false;
+			if ($line == "\n") continue;
+			$line = trim($line);
+			if (preg_match('/^#/', $line, $m)) {
+				// the comment is the start of a new entry
+				if ($is_final($context)) {
+					PO::read_line($f, 'put-back');
+					$lineno--;
+					break;
+				}
+				// comments have to be at the beginning
+				if ($context != 'comment') {
+					return false;
+				}
+				// add comment
+				$this->add_comment_to_entry(&$entry, $line);;
+			}
+			if (preg_match('/^msgid\s+(".*")/', $line, $m)) {
+				if ($is_final($context)) {
+					PO::read_line($f, 'put-back');
+					$lineno--;
+					break;
+				}
+				if ($context != 'msgctxt' && $context != 'comment') {
+					return false;
+				}
+				$context = 'msgid';
+				$entry->singular .= PO::unpoify($m[1]);
+			}
+			if (preg_match('/^msgstr\s+(".*")/', $line, $m)) {
+				if ($context != 'msgid') {
+					return false;
+				}
+				$context = 'msgstr';
+				$entry->translations = array(PO::unpoify($m[1]));
+			}
+		}
+		if ($entry->translations == array('')) $entry->translations = array();
+		return array($entry, $lineno);
+	}
+	
+	function read_line($f, $action = 'read') {
+		static $last_line = '';
+		static $use_last_line = false;
+		if ('clear' == $action) {
+			$last_line = '';
+			return true;
+		}
+		if ('put-back' == $action) {
+			$use_last_line = true;
+			return true;
+		}
+		$line = $use_last_line? $last_line : fgets($f);
+		$last_line = $line;
+		$use_last_line = false;
+		return $line;
+	}
+	
+	function add_comment_to_entry(&$entry, $po_comment_line) {
+		//TODO: parse the next char and send to appropriate comment type
+		// or other action (fuzzy, formats, etc.)
+		$entry->translator_comments .= $po_comment_line."\n";
+	}
 }
 ?>

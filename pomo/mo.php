@@ -136,7 +136,7 @@ class MO extends Translations {
 		$reader->seekto($originals_lenghts_addr);
 		$originals_lenghts = $reader->readint32array($total * 2); // each of 
 		$reader->seekto($translations_lenghts_addr);
-		$translations_lenghts = $reader->readint32array($total * 2); 
+		$translations_lenghts = $reader->readint32array($total * 2);
 
 		$length = create_function('$i', 'return $i * 2 + 1;');
 		$offset = create_function('$i', 'return $i * 2 + 2;');

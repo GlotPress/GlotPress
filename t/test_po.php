@@ -67,6 +67,8 @@ http://wordpress.org/
 		$this->assertEqual("baba\ngugu", PO::unpoify('"baba\n"'."\t\t\t\n".'"gugu"'));
 		$this->assertEqual($this->a90, PO::unpoify($this->po_a90));
 		$this->assertEqual('\\t\\n', PO::unpoify('"\\\\t\\\\n"'));
+		// wordwrapped
+		$this->assertEqual('babadyado', PO::unpoify("\"\"\n\"baba\"\n\"dyado\""));
 		$this->assertEqual($this->mail, PO::unpoify($this->po_mail));
 	}
 
@@ -171,6 +173,13 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$temp_fn2 = $this->temp_filename();
 		$po->export_to_file($temp_fn2);
 		$this->assertEqual($po->export(), file_get_contents($temp_fn2));
+	}
+	
+	function test_import_from_file() {
+		$po = new PO();
+		$po->import_from_file('data/simple.po');
+		$first_entry = new Translation_Entry(array('singular' => 'moon',));
+		$this->assertEqual($first_entry, $po->entries['moon']);
 	}
 }
 ?>
