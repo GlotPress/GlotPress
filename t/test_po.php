@@ -4,31 +4,9 @@ require_once('init.php');
 class GP_Test_PO extends GP_UnitTestCase {
     function GP_Test_PO() {
         $this->UnitTestCase('PO');
-    }
 
-	function test_prepend_each_line() {
-		$this->assertEqual('baba_', PO::prepend_each_line('', 'baba_'));
-		$this->assertEqual('baba_dyado', PO::prepend_each_line('dyado', 'baba_'));
-		$this->assertEqual("# baba\n# dyado\n# \n", PO::prepend_each_line("baba\ndyado\n\n", '# '));
-	}
-
-	function test_poify() {
-		//simple
-		$this->assertEqual('"baba"', PO::poify('baba'));
-		//long word
-		$a90 = str_repeat("a", 90);
-		$this->assertEqual("\"$a90\"", PO::poify($a90));
-		// tab
-		$this->assertEqual('"ba\tba"', PO::poify("ba\tba"));
-		// backslash 
-		$this->assertEqual('"ba\\\\ba"', PO::poify('ba\\ba'));
-		// empty line
-		$this->assertEqual('"ba\\\\ba"', PO::poify('ba\\ba'));
-		// random wordpress.pot string
-		$src = 'Categories can be selectively converted to tags using the <a href="%s">category to tag converter</a>.';
-		$this->assertEqual("\"Categories can be selectively converted to tags using the <a href=\\\"%s\\\">category to tag converter</a>.\"", PO::poify($src));
 		// not so random wordpress.pot string -- multiple lines
-		$mail = "Your new WordPress blog has been successfully set up at:
+		$this->mail = "Your new WordPress blog has been successfully set up at:
 
 %1\$s
 
@@ -42,7 +20,7 @@ We hope you enjoy your new blog. Thanks!
 --The WordPress Team
 http://wordpress.org/
 ";
-	$po_mail = '""
+	$this->po_mail = '""
 "Your new WordPress blog has been successfully set up at:\n"
 "\n"
 "%1$s\n"
@@ -56,7 +34,40 @@ http://wordpress.org/
 "\n"
 "--The WordPress Team\n"
 "http://wordpress.org/\n"';
-		$this->assertEqual($po_mail, PO::poify($mail));
+		$this->a90 = str_repeat("a", 90);
+		$this->po_a90 = "\"$this->a90\"";
+    }
+
+	function test_prepend_each_line() {
+		$this->assertEqual('baba_', PO::prepend_each_line('', 'baba_'));
+		$this->assertEqual('baba_dyado', PO::prepend_each_line('dyado', 'baba_'));
+		$this->assertEqual("# baba\n# dyado\n# \n", PO::prepend_each_line("baba\ndyado\n\n", '# '));
+	}
+
+	function test_poify() {
+		//simple
+		$this->assertEqual('"baba"', PO::poify('baba'));
+		//long word		
+		$this->assertEqual($this->po_a90, PO::poify($this->a90));
+		// tab
+		$this->assertEqual('"ba\tba"', PO::poify("ba\tba"));
+		// do not add leading empty string of one-line string ending on a newline
+		$this->assertEqual('"\\\\a\\\\n\\n"', PO::poify("\a\\n\n"));
+		// backslash
+		$this->assertEqual('"ba\\\\ba"', PO::poify('ba\\ba'));
+		// random wordpress.pot string
+		$src = 'Categories can be selectively converted to tags using the <a href="%s">category to tag converter</a>.';
+		$this->assertEqual("\"Categories can be selectively converted to tags using the <a href=\\\"%s\\\">category to tag converter</a>.\"", PO::poify($src));
+
+		$this->assertEqual($this->po_mail, PO::poify($this->mail));
+	}
+	
+	function test_unpoify() {
+		$this->assertEqual('baba', PO::unpoify('"baba"'));
+		$this->assertEqual("baba\ngugu", PO::unpoify('"baba\n"'."\t\t\t\n".'"gugu"'));
+		$this->assertEqual($this->a90, PO::unpoify($this->po_a90));
+		$this->assertEqual('\\t\\n', PO::unpoify('"\\\\t\\\\n"'));
+		$this->assertEqual($this->mail, PO::unpoify($this->po_mail));
 	}
 
 	function test_export_entry() {

@@ -75,7 +75,6 @@ class PO extends Translations {
 		return fclose($fh);
 	}
 
-
 	/**
 	 * Formats a string in PO-style
 	 *
@@ -87,18 +86,19 @@ class PO extends Translations {
 		$quote = '"';
 		$slash = '\\';
 		$newline = "\n";
-		$tab = "\t";
 
 		$replaces = array(
 			"$slash" 	=> "$slash$slash",
-			"$tab" 		=> '\t',
 			"$quote"	=> "$slash$quote",
+			"\t" 		=> '\t',
 		);
+
 		$string = str_replace(array_keys($replaces), array_values($replaces), $string);
 
 		$po = $quote.implode("${slash}n$quote$newline$quote", explode($newline, $string)).$quote;
 		// add empty string on first line for readbility
-		if (false !== strpos($po, $newline)) {
+		if (false !== strpos($string, $newline) &&
+				(substr_count($string, $newline) > 1 || !($newline === substr($string, -strlen($newline))))) {
 			$po = "$quote$quote$newline$po";
 		}
 		// remove empty strings
@@ -106,6 +106,37 @@ class PO extends Translations {
 		return $po;
 	}
 	
+	/**
+	 * Gives back the original string from a PO-formatted string
+	 * 
+	 * @static
+	 * @param string $string PO-formatted string
+	 * @return string enascaped string
+	 */
+	function unpoify($string) {
+		$escapes = array('t' => "\t", 'n' => "\n", '\\' => '\\');
+		$lines = array_map('trim', explode("\n", $string));
+		$lines = array_map(create_function('$x', 'return trim($x, "\\"");'), $lines);
+		$unpoified = '';
+		$previous_is_backslash = false;
+		foreach($lines as $line) {
+			preg_match_all('/./u', $line, $chars);
+			$chars = $chars[0];
+			foreach($chars as $char) {
+				if (!$previous_is_backslash) {
+					if ('\\' == $char)
+						$previous_is_backslash = true;
+					else
+						$unpoified .= $char;
+				} else {
+					$previous_is_backslash = false;
+					$unpoified .= isset($escapes[$char])? $escapes[$char] : $char;
+				}
+			}
+		}
+		return $unpoified;
+	}
+
 	/**
 	 * Inserts $with in the beginning of every new line of $string and 
 	 * returns the modified string
