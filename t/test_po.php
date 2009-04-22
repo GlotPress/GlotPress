@@ -15,12 +15,9 @@ class GP_Test_PO extends GP_UnitTestCase {
 	function test_poify() {
 		//simple
 		$this->assertEqual('"baba"', PO::poify('baba'));
-		//long word, which shouldn't be wrapped
+		//long word
 		$a90 = str_repeat("a", 90);
 		$this->assertEqual("\"$a90\"", PO::poify($a90));
-		// sentence, which should be wrapped
-		$sentence = "Baba told me not to eat mushrooms early in the morning or me ears would go uuup in the skyyy";
-		$this->assertEqual("\"\"\n\"Baba told me not to eat mushrooms early in the morning or me ears would go \"\n\"uuup in the skyyy\"", PO::poify($sentence));
 		// tab
 		$this->assertEqual('"ba\tba"', PO::poify("ba\tba"));
 		// backslash 
@@ -29,7 +26,8 @@ class GP_Test_PO extends GP_UnitTestCase {
 		$this->assertEqual('"ba\\\\ba"', PO::poify('ba\\ba'));
 		// random wordpress.pot string
 		$src = 'Categories can be selectively converted to tags using the <a href="%s">category to tag converter</a>.';
-		$this->assertEqual("\"\"\n\"Categories can be selectively converted to tags using the <a \"\n\"href=\\\"%s\\\">category to tag converter</a>.\"", PO::poify($src));
+		$this->assertEqual("\"Categories can be selectively converted to tags using the <a href=\\\"%s\\\">category to tag converter</a>.\"", PO::poify($src));
+		// not so random wordpress.pot string -- multiple lines
 		$mail = "Your new WordPress blog has been successfully set up at:
 
 %1\$s

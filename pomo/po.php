@@ -94,13 +94,9 @@ class PO extends Translations {
 			"$tab" 		=> '\t',
 			"$quote"	=> "$slash$quote",
 		);
-		$string = str_replace(array_keys($replaces), array_values($replaces), $string);	
+		$string = str_replace(array_keys($replaces), array_values($replaces), $string);
 
-		$po = array();
-		foreach (explode($newline, $string) as $line) {
-			$po[] = wordwrap($line, PO_MAX_LINE_LEN - 2, " $quote$newline$quote");
-		}
-		$po = $quote.implode("${slash}n$quote$newline$quote", $po).$quote;
+		$po = $quote.implode("${slash}n$quote$newline$quote", explode($newline, $string)).$quote;
 		// add empty string on first line for readbility
 		if (false !== strpos($po, $newline)) {
 			$po = "$quote$quote$newline$po";
@@ -109,7 +105,7 @@ class PO extends Translations {
 		$po = str_replace("$newline$quote$quote", '', $po);
 		return $po;
 	}
-
+	
 	/**
 	 * Inserts $with in the beginning of every new line of $string and 
 	 * returns the modified string
@@ -153,7 +149,7 @@ class PO extends Translations {
 	 */
 	function export_entry(&$entry) {
 		if (is_null($entry->singular)) return false;
-		$po = array();	
+		$po = array();
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
 		if (!empty($entry->extracted_comments)) $po[] = PO::comment_block($entry->extracted_comments, '.');
 		if (!empty($entry->references)) $po[] = PO::comment_block(implode(' ', $entry->references), ':');
