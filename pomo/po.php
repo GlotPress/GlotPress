@@ -16,7 +16,7 @@ ini_set('auto_detect_line_endings', 1);
 /**
  * Routines for working with PO files
  */
-class PO extends Translations {
+class PO extends Gettext_Translations {
 	
 
 	/**
@@ -205,23 +205,24 @@ class PO extends Translations {
 		if (!$f) return false;
 		$lineno = 0;
 		while (true) {
-			list($entry, $lineno) = $this->read_entry($f, $lineno);
-			if (!$entry) break;
-			if ($entry->singular == '') {
-				//TODO: parse headers
+			$res = $this->read_entry($f, $lineno);
+			if (!$res) break;
+			if ($res['entry']->singular == '') {
+				$this->set_headers($this->make_headers($res['entry']->translations[0]));
 			} else {
-				$this->add_entry($entry);
+				$this->add_entry($res['entry']);
 			}
 		}
 		PO::read_line($f, 'clear');
-		return is_null($entry);
+		return $res !== false;
 	}
 	
 	function read_entry($f, $lineno = 0) {
 		$entry = new Translation_Entry();
 		// where were we in the last step
 		// can be: comment, msgctxt, msgid, msgid_plural, msgstr, msgstr_plural
-		$context = 'comment';
+		$context = '';
+		$msgstr_index = 0;
 		$is_final = create_function('$context', 'return $context == "msgstr" || $context == "msgstr_plural";');
 		while (true) {
 			$lineno++;
@@ -230,6 +231,8 @@ class PO extends Translations {
 				if (feof($f)) {
 					if ($is_final($context))
 						break;
+					elseif (!$context) // we haven't read a line and eof came
+						return null;
 					else
 						return false;
 				} else {
@@ -246,34 +249,75 @@ class PO extends Translations {
 					break;
 				}
 				// comments have to be at the beginning
-				if ($context != 'comment') {
+				if ($context && $context != 'comment') {
 					return false;
 				}
 				// add comment
 				$this->add_comment_to_entry(&$entry, $line);;
-			}
-			if (preg_match('/^msgid\s+(".*")/', $line, $m)) {
+			} elseif (preg_match('/^msgctxt\s+(".*")/', $line, $m)) {
 				if ($is_final($context)) {
 					PO::read_line($f, 'put-back');
 					$lineno--;
 					break;
 				}
-				if ($context != 'msgctxt' && $context != 'comment') {
+				if ($context && $context != 'comment') {
+					return false;
+				}
+				$context = 'msgctxt';
+				$entry->context .= PO::unpoify($m[1]);
+			} elseif (preg_match('/^msgid\s+(".*")/', $line, $m)) {
+				if ($is_final($context)) {
+					PO::read_line($f, 'put-back');
+					$lineno--;
+					break;
+				}
+				if ($context && $context != 'msgctxt' && $context != 'comment') {
 					return false;
 				}
 				$context = 'msgid';
 				$entry->singular .= PO::unpoify($m[1]);
-			}
-			if (preg_match('/^msgstr\s+(".*")/', $line, $m)) {
+			} elseif (preg_match('/^msgid_plural\s+(".*")/', $line, $m)) {
+				if ($context != 'msgid') {
+					return false;
+				}
+				$context = 'msgid_plural';
+				$entry->is_plural = true;
+				$entry->plural .= PO::unpoify($m[1]);
+			} elseif (preg_match('/^msgstr\s+(".*")/', $line, $m)) {
 				if ($context != 'msgid') {
 					return false;
 				}
 				$context = 'msgstr';
 				$entry->translations = array(PO::unpoify($m[1]));
+			} elseif (preg_match('/^msgstr\[(\d+)\]\s+(".*")/', $line, $m)) {
+				if ($context != 'msgid_plural' && $context != 'msgstr_plural') {
+					return false;
+				}
+				$context = 'msgstr_plural';
+				$msgstr_index = $m[1];
+				$entry->translations[$m[1]] = PO::unpoify($m[2]);
+			} elseif (preg_match('/^".*"$/', $line)) {
+				$unpoified = PO::unpoify($line);
+				switch ($context) {
+					case 'msgid':
+						$entry->singular .= $unpoified; break;
+					case 'msgctxt':
+						$entry->context .= $unpoified; break;
+					case 'msgid_plural':
+						$entry->plural .= $unpoified; break;
+					case 'msgstr':
+						$entry->translations[0] .= $unpoified; break;
+					case 'msgstr_plural':
+						$entry->translations[$msgstr_index] .= $unpoified; break;
+					default:
+						return false;
+				}
+			} else {
+				return false;
 			}
 		}
-		if ($entry->translations == array('')) $entry->translations = array();
-		return array($entry, $lineno);
+		if (array() == array_filter($entry->translations)) $entry->translations = array();
+		return array('entry' => $entry, 'lineno' => $lineno);
 	}
 	
 	function read_line($f, $action = 'read') {
@@ -294,9 +338,17 @@ class PO extends Translations {
 	}
 	
 	function add_comment_to_entry(&$entry, $po_comment_line) {
-		//TODO: parse the next char and send to appropriate comment type
-		// or other action (fuzzy, formats, etc.)
-		$entry->translator_comments .= $po_comment_line."\n";
+		$first_two = substr($po_comment_line, 0, 2);
+		$comment = trim(substr($po_comment_line, 2));
+		if ('#:' == $first_two) {
+			$entry->references = array_merge($entry->references, preg_split('/\s+/', $comment));
+		} elseif ('#.' == $first_two) {
+			$entry->extracted_comments = trim($entry->extracted_comments . "\n" . $comment);
+		} elseif ('#,' == $first_two) {
+			$entry->flags = array_merge($entry->flags, preg_split('/\s+/', $comment));
+		} else {
+			$entry->translator_comments = trim($entry->translator_comments . "\n" . $comment);
+		}
 	}
 }
 ?>

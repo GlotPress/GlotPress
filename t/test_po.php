@@ -177,9 +177,31 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 	
 	function test_import_from_file() {
 		$po = new PO();
-		$po->import_from_file('data/simple.po');
-		$first_entry = new Translation_Entry(array('singular' => 'moon',));
-		$this->assertEqual($first_entry, $po->entries['moon']);
+		$res = $po->import_from_file('data/simple.po');
+		$this->assertEqual(true, $res);
+
+		$this->assertEqual(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Plural-Forms' => 'nplurals=2; plural=n != 1;'), $po->headers);
+		
+		$simple_entry = new Translation_Entry(array('singular' => 'moon',));
+		$this->assertEqual($simple_entry, $po->entries[$simple_entry->key()]);
+		
+		$all_types_entry = new Translation_Entry(array('singular' => 'strut', 'plural' => 'struts', 'context' => 'brum',
+			'translations' => array('ztrut0', 'ztrut1', 'ztrut2')));
+		$this->assertEqual($all_types_entry, $po->entries[$all_types_entry->key()]);
+		
+		$multiple_line_entry = new Translation_Entry(array('singular' => 'The first thing you need to do is tell Blogger to let WordPress access your account. You will be sent back here after providing authorization.', 'translations' => array("baba\ndyadogugu")));
+		$this->assertEqual($multiple_line_entry, $po->entries[$multiple_line_entry->key()]);
+		
+		$multiple_line_all_types_entry = new Translation_Entry(array('context' => 'context', 'singular' => 'singular',
+			'plural' => 'plural', 'translations' => array('translation0', 'translation1', 'translation2')));
+		$this->assertEqual($multiple_line_all_types_entry, $po->entries[$multiple_line_all_types_entry->key()]);
+		
+		$comments_entry = new Translation_Entry(array('singular' => 'a', 'translator_comments' => "baba\nbrubru",
+			'references' => array('wp-admin/x.php:111', 'baba:333', 'baba'), 'extracted_comments' => "translators: buuu",
+			'flags' => array('fuzzy')));
+		$this->assertEqual($comments_entry, $po->entries[$comments_entry->key()]);
 	}
+	
+	//TODO: add tests for bad files
 }
 ?>
