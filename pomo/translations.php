@@ -94,6 +94,18 @@ class Translations {
 	}
 
 	/**
+	 * Merge $other in the current object.
+	 *
+	 * @param Object &$other Another Translation object, whose translations will be merged in this one
+	 * @return void
+	 **/
+	function merge_with(&$other) {
+		$this->entries = array_merge($this->entries, $other->entries);
+	}
+}
+
+class Gettext_Translations extends Translations {
+	/**
 	 * The gettext implmentation of select_plural_form.
 	 *
 	 * It lives in this class, because there are more than one descendand, which will use it and
@@ -159,15 +171,26 @@ class Translations {
 		return rtrim($res, ';');
 	}
 	
-	/**
-	 * Merge $other in the current object.
-	 *
-	 * @param Object &$other Another Translation object, whose translations will be merged in this one
-	 * @return void
-	 **/
-	function merge_with(&$other) {
-		$this->entries = array_merge($this->entries, $other->entries);
+	function make_headers($translation) {
+		$headers = array();
+		// sometimes \ns are used instead of real new lines
+		$translation = str_replace('\n', "\n", $translation);
+		$lines = explode("\n", $translation);
+		foreach($lines as $line) {
+			$parts = explode(':', $line, 2);
+			if (!isset($parts[1])) continue;
+			$headers[trim($parts[0])] = trim($parts[1]);
+		}
+		return $headers;
 	}
+
+	function set_header($header, $value) {
+		parent::set_header($header, $value);
+		if ('Plural-Forms' == $header)
+			$this->_gettext_select_plural_form = $this->_make_gettext_select_plural_form($value);
+	}
+
+	
 }
 
 ?>

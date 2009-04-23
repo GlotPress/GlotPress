@@ -10,15 +10,9 @@
 require_once dirname(__FILE__) . '/translations.php';
 require_once dirname(__FILE__) . '/streams.php';
 
-class MO extends Translations {
+class MO extends Gettext_Translations {
 
 	var $_nplurals = 2;
-
-	function set_header($header, $value) {
-		parent::set_header($header, $value);
-		if ('Plural-Forms' == $header)
-			$this->_gettext_select_plural_form = $this->_make_gettext_select_plural_form($value);
-	}
 
 	/**
 	 * Fills up with the entries from MO file $filename
@@ -153,19 +147,6 @@ class MO extends Translations {
 			}
 		}
 		return true;
-	}
-
-	function make_headers($translation) {
-		$headers = array();
-		// sometimes \ns are used instead of real new lines
-		$translation = str_replace('\n', "\n", $translation);
-		$lines = explode("\n", $translation);
-		foreach($lines as $line) {
-			$parts = explode(':', $line, 2);
-			if (!isset($parts[1])) continue;
-			$headers[trim($parts[0])] = trim($parts[1]);
-		}
-		return $headers;
 	}
 
 	/**
