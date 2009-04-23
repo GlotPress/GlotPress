@@ -219,21 +219,23 @@ class PO extends Translations {
 	
 	function read_entry($f, $lineno = 0) {
 		$entry = new Translation_Entry();
-		$complete = false;
 		// where were we in the last step
 		// can be: comment, msgctxt, msgid, msgid_plural, msgstr, msgstr_plural
 		$context = 'comment';
 		$is_final = create_function('$context', 'return $context == "msgstr" || $context == "msgstr_plural";');
 		while (true) {
 			$lineno++;
-			if (feof($f)) {
-				if ($is_final($context))
-					break;
-				else
-					return false;
-			}
 			$line = PO::read_line($f);
-			if (!$line) return false;
+			if (!$line)  {
+				if (feof($f)) {
+					if ($is_final($context))
+						break;
+					else
+						return false;
+				} else {
+					return false;
+				}
+			}
 			if ($line == "\n") continue;
 			$line = trim($line);
 			if (preg_match('/^#/', $line, $m)) {
