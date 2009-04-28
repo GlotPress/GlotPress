@@ -19,9 +19,13 @@ gp_tmpl_header();
 <?php endif; ?>
 
 <form action="" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="source" value="mo" id="source" />
-	<p><label for="file"><?php echo __('MO file'); ?></label><input type="file" name="file" id="file" />
+	<p>
+		<label for="mo-file"><?php echo __('MO file'); ?></label><input type="file" name="mo-file" id="mo-file" />
 	</p>
+	<p>
+		<label for="pot-file"><?php echo __('POT file'); ?></label><input type="file" name="pot-file" id="pot-file" />
+	</p>
+
 	<p><input type="submit" value="<?php echo gp_attr( __('Import') ); ?>"></p>
 </form>
 <?php gp_tmpl_footer(); ?>
