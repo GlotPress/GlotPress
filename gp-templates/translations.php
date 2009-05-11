@@ -77,4 +77,5 @@ gp_tmpl_header();
 	</tr>
 <?php endforeach; ?>
 </table>
+<p><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?></p>
 <?php gp_tmpl_footer(); ?>

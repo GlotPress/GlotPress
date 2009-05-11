@@ -10,21 +10,51 @@ class GP_Route_Project {
 		gp_tmpl_load( 'project', get_defined_vars() );
 	}
 
-	function originals_get( $project_path ) {
+	function import_originals_get( $project_path ) {
 		global $gpdb;
 		$project = &GP_Project::by_path( $project_path );
-		$title = sprintf( __('Import originals for %s' ), $project->name );
-		gp_tmpl_load( 'project-import-originals', get_defined_vars() );
+		$kind = 'originals';
+		gp_tmpl_load( 'project-import', get_defined_vars() );
 	}
 
-	function originals_post( $project_path ) {
+	function import_originals_post( $project_path ) {
 		global $gpdb;
 		$project = &GP_Project::by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
+		
 		$block = array( 'GP_Route_Project', '_merge_originals');
-		GP_Route_Project::_import($project, 'mo-file', 'MO', $block) or GP_Route_Project::_import($project, 'pot-file', 'PO', $block);
+		GP_Route_Project::_import('mo-file', 'MO', $block, array($project)) or
+		GP_Route_Project::_import('pot-file', 'PO', $block, array($project));
+
 		wp_redirect( gp_url_join( gp_url_project( $project ), 'import-originals' ) );
 	}
+
+	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+		global $gpdb;
+		$project = GP_Project::by_path( $project_path );
+		$locale = GP_Locales::by_slug( $locale_slug );
+		$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		
+		$kind = 'translations';
+		gp_tmpl_load( 'project-import', get_defined_vars() );
+	}
+
+	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
+		global $gpdb;
+		global $gpdb;
+		$project = GP_Project::by_path( $project_path );
+		$locale = GP_Locales::by_slug( $locale_slug );
+		$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		
+		$block = array( 'GP_Route_Project', '_merge_translations');
+		GP_Route_Project::_import('mo-file', 'MO', $block, array($project, $locale, $translation_set)) or
+		GP_Route_Project::_import('pot-file', 'PO', $block, array($project, $locale, $translation_set));
+
+		wp_redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
+	}
+
 
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		global $gpdb;
@@ -59,13 +89,13 @@ class GP_Route_Project {
 		    and set all the previous translations of the same original to sth else
 		    */
 		    $data['status'] = 'current';
-		    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id));
+		    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => 'current'));
 	    
 	        $gpdb->insert($gpdb->translations, $data);
 		}
 	}
 
-	function _import($project, $file_key, $class, $block) {
+	function _import($file_key, $class, $block, $block_args) {
 		global $gpdb;
 		if ( is_uploaded_file( $_FILES[$file_key]['tmp_name'] ) ) {
 			$translations = new $class();
@@ -73,7 +103,8 @@ class GP_Route_Project {
 			if ( !$result ) {
 				gp_notice_set( __("Couldn&#8217;t load translations from file!"), 'error' );
 			} else {
-				call_user_func($block, $project, $translations);
+				$block_args[] = $translations;
+				call_user_func_array( $block, $block_args );
 			}
 			return true;
 		}
@@ -82,7 +113,7 @@ class GP_Route_Project {
 	
 	function _merge_originals( $project, $translations ) {
 		global $gpdb;
-		// TODO: do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields
+		$originals_added = 0;
 		$gpdb->update( $gpdb->originals, array('status' => '+obsolete'), array('project_id' => $project->id));
 		foreach( $translations->entries as $entry ) {
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
@@ -90,23 +121,70 @@ class GP_Route_Project {
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
 			if ( is_null( $entry->context ) ) unset($data['context']);
 			if ( is_null( $entry->plural ) ) unset($data['plural']);
-			// check if
-			$where = array();
-			// TODO: fix db::prepare to understand %1$s and so on
-			$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'context = %s';
-			$where[] = 'singular = %s';
-			$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
-			$where[] = 'project_id = %d';
-			$where = implode( ' AND ', $where );
-			$sql = $gpdb->prepare( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
-			$existing = $gpdb->get_row( $sql );
-			if ( $existing )
+			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields			
+			$existing = GP_Route_Project::_find_original( $project, $entry );
+			if ( $existing ) {
 				$gpdb->update( $gpdb->originals, $data, array('id' => $existing->id ) );
-			else
+			} else {
 				$gpdb->insert( $gpdb->originals, $data );
+				$originals_added++;
+			}
 		}
 		$gpdb->update( $gpdb->originals, array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
 		// TODO: were they really added?
-		gp_notice_set( sprintf(__("%s strings were processed"), count($translations->entries) ) );
+		gp_notice_set( sprintf(__("%s strings were added."), count($originals_added) ) );
+	}
+	
+	function _merge_translations( $project, $locale, $translation_set, $translations ) {
+		global $gpdb;
+		$translations_added = 0;
+		foreach( $translations->entries as $entry ) {
+			if ( empty( $entry->translations )) continue;
+			$original = GP_Route_Project::_find_original( $project, $entry );
+			if ( $original ) {
+				$translation = GP_Route_Project::_find_translation( $original, $translation_set, $entry );
+				if ( !$translation ) {
+					$data = array( 'original_id' => $original->id );
+					$data['translation_set_id'] = $translation_set->id;
+				    foreach(range(0, 3) as $i) {
+				        if (isset($entry->translations[$i])) $data["translation_$i"] = $entry->translations[$i];
+				    }
+					// TODO: extract setting the current translation to GP_Translation::set_current()					
+				    $data['status'] = 'current';
+				    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => 'current'));
+			        $gpdb->insert($gpdb->translations, $data);
+					$translations_added++;
+				}
+			}
+		}
+		gp_notice_set( sprintf(__("%s translations were added"), $translations_added ) );
+	}
+	
+	function _find_original( $project, $entry ) {
+		global $gpdb;
+		$where = array();
+		// TODO: fix db::prepare to understand %1$s
+		// now each condition has to contain a %s not to break the sequence
+		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'context = %s';
+		$where[] = 'singular = %s';
+		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
+		$where[] = 'project_id = %d';
+		$where = implode( ' AND ', $where );
+		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
+		return $gpdb->get_row( $sql );
+	}
+	
+	function _find_translation( $original, $translation_set, $entry ) {
+		global $gpdb;
+		$where = array();
+		$where[] = 'original_id = %s';
+		$where[] = 'translation_set_id = %s';
+		$tr = array_pad( $entry->translations, 4, null );
+		foreach(range(0, 3) as $i) {
+			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s is NULL)" : "translation_$i = %s";
+		}
+		$where = implode( ' AND ', $where );
+		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->translations WHERE $where", $original->id, $translation_set->id, $tr[0], $tr[1], $tr[2], $tr[3] );
+		return $gpdb->get_row( $sql );
 	}
 }

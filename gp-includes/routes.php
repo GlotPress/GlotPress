@@ -12,10 +12,12 @@ function gp_get_routes() {
 	// /project
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
-		"get:/$project/import-originals" => array('GP_Route_Project', 'originals_get'),
-		"post:/$project/import-originals" => array('GP_Route_Project', 'originals_post'),
+		"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
+		"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
 		"get:/$project/$locale/$dir" => array('GP_Route_Project', 'translations_get'),
 		"post:/$project/$locale/$dir" => array('GP_Route_Project', 'translations_post'),
+		"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Project', 'import_translations_get'),
+		"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Project', 'import_translations_post'),
 		// keep this one at the bottom, because it will catch anything
 		"/$path" => array('GP_Route_Project', 'index'),
 	) );
