@@ -115,6 +115,7 @@ require_once( GP_PATH . GP_INC . 'url.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
 
 require_once GP_PATH . GP_INC . 'project.php';
+require_once GP_PATH . GP_INC . 'translation.php';
 require_once GP_PATH . GP_INC . 'translation-set.php';
 
 require_once( GP_PATH . GP_INC . 'template.php');

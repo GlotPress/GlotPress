@@ -9,7 +9,6 @@ function gp_get_routes() {
 	$project = $path;
 	$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 	// overall structure
-	// /project
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
 		"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
@@ -18,6 +17,7 @@ function gp_get_routes() {
 		"post:/$project/$locale/$dir" => array('GP_Route_Project', 'translations_post'),
 		"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Project', 'import_translations_get'),
 		"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Project', 'import_translations_post'),
+		"/$project/$locale/$dir/export-translations" => array('GP_Route_Project', 'export_translations_get'),
 		// keep this one at the bottom, because it will catch anything
 		"/$path" => array('GP_Route_Project', 'index'),
 	) );

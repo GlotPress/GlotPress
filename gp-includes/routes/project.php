@@ -55,20 +55,44 @@ class GP_Route_Project {
 		wp_redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
 	}
 
-
-	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		global $gpdb;
-		$per_page = 1000;
 		$project = GP_Project::by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$limit = gp_limit_for_page( gp_get('page', 1), $per_page );
-		$translations = $gpdb->get_results( $gpdb->prepare( "
-		    SELECT t.*, o.*, t.id as id, o.id as original_id
-		    FROM $gpdb->originals as o
-		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.status = 'current' AND t.translation_set_id = %d
-		    WHERE o.project_id = %d AND o.status LIKE '+%%' ORDER BY t.id ASC $limit", $translation_set->id, $project->id ) );
-		// TODO: expose paging
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+
+		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
+		$po = new PO();
+		$po->merge_with(GP_Translation::current_by_project_and_translation_set( $project, $translation_set ));
+		$po->set_header('Project-Id-Version', $project->name);
+		// TODO: add more meta info in the project
+		$po->set_header('Report-Msgid-Bugs-To', 'wp-polyglots@lists.automattic.com');
+		// TODO: last updated for a translation set
+		$po->set_header('PO-Revision-Date', gmdate('Y-m-d H:i:s+0000'));
+		// TODO: Language Team
+		$po->set_header('MIME-Version', '1.0');
+		$po->set_header('Content-Type', 'text/plain; charset=UTF-8');
+		$po->set_header('Content-Transfer-Encoding', '8bit');
+		// TODO: get from locale
+		$po->set_header('Plural-Forms', 'nplurals=2; plural=n != 1;');
+		$po->set_header('X-Generator', 'GlotPress/' . gp_get_option('version'));
+				
+		header('Content-Description: File Transfer');
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Content-Type: application/octet-stream", true);
+		echo "# Translation of {$project->name} in {$locale->english_name}\n";
+		echo "# This file is distributed under the same license as the {$project->name} package.\n";
+		echo $po->export();
+		
+	}
+
+	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+		global $gpdb;
+		$project = GP_Project::by_path( $project_path );
+		$locale = GP_Locales::by_slug( $locale_slug );
+		$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		$translations = GP_Translation::current_by_project_and_translation_set( $project, $translation_set );
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
 

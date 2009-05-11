@@ -16,7 +16,7 @@ gp_tmpl_header();
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th><?php _e('Actions'); ?></th>
 	</tr>
-<?php foreach( $translations as $t ): ?>
+<?php foreach( $translations->entries as $t ): ?>
 	<tr class="preview <?php echo $parity(); ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
 		<td class="original">			
 			<?php echo gp_h( $t->singular ); ?>
@@ -25,7 +25,7 @@ gp_tmpl_header();
 			<?php endif; ?>
 
 		</td>
-		<td class="translation"><?php echo gp_h( $t->translation_0 ); ?></td>
+		<td class="translation"><?php echo gp_h( $t->translations[0] ); ?></td>
 		<td class="actions">
 			<a href="#" original="<?php echo $t->original_id; ?>" class="edit"><?php _e('Edit'); ?></a>
 		</td>
@@ -49,24 +49,24 @@ gp_tmpl_header();
 						<li><a href="#tabs-<?php echo $t->original_id; ?>-2">Plural</a></li>
 					</ul>
 					<div id="tabs-<?php echo $t->original_id; ?>-1">
-						<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translation_0 ?></textarea>
+						<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
 					</div>
 					<div id="tabs-<?php echo $t->original_id; ?>-2">
-						<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translation_1 ?></textarea>
+						<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[1] ?></textarea>
 					</div>
 
 				</div>
 			<?php else: ?>
 				<div class="textareas">
-					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translation_0 ?></textarea>				
+					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>				
 				</div>
 			<?php endif; ?>
 			<div class="meta">
 				<?php if ( $t->context ): ?>
 				<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.gp_h($t->context).'</span>' ); ?></p>
 				<?php endif; ?>
-				<?php if ( $t->comment ): ?>
-				<p class="comment"><?php printf( __('Comment: %s'), gp_h($t->comment) ); ?></p>
+				<?php if ( $t->extracted_comment ): ?>
+				<p class="comment"><?php printf( __('Comment: %s'), gp_h($t->extracted_comment) ); ?></p>
 				<?php endif; ?>
 			</div>
 			<div class="actions">
