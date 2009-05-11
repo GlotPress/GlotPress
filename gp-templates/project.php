@@ -2,10 +2,17 @@
 gp_title( sprintf( __('%s &lt; GlotPress'), gp_h( $project->name ) ) );
 gp_breadcrumb( array(
 	gp_link_home_get(),
+	// TODO: add parent projects to breadcrumb
 	gp_link_project_get( $project, $project->name ),
 ) );
 gp_tmpl_header();
 ?>
+<?php if ($sub_projects): ?>
+<ul>
+<?php foreach($sub_projects as $sub_project) ?>
+	<li><?php gp_link_project( $sub_project, gp_h( $sub_project->name )); ?></li>
+</ul>	
+<?php endif; ?>
 <?php _e('Translations:'); ?>
 <ul>
 <?php foreach( $translation_sets as $translation_set ):

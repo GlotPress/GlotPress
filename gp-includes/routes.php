@@ -58,5 +58,5 @@ class GP_Router {
 			}
 		}
 		return gp_tmpl_404();
-	}	
+	}
 }

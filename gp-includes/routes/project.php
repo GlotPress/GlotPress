@@ -4,7 +4,7 @@ class GP_Route_Project {
 		global $gpdb;
 		$project = &GP_Project::by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
-		// TODO: list subprojects
+		$sub_projects = $project->sub_projects();
 		$translation_sets = GP_Translation_Set::by_project_id( $project->id );
 		$title = sprintf( __('%s project '), gp_h( $project->name ) );
 		gp_tmpl_load( 'project', get_defined_vars() );

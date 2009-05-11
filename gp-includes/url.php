@@ -35,15 +35,15 @@ function gp_url($path, $query = null ) {
 	return $url;
 }
 
-function gp_url_project( $project_or_slug, $path = '', $query = null ) {
-	$slug = is_object( $project_or_slug )? $project_or_slug->slug : $project_or_slug;
-	return gp_url( gp_url_join( $slug, $path ), $query );
+function gp_url_project( $project_or_path, $path = '', $query = null ) {
+	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
+	return gp_url( gp_url_join( $project_path, $path ), $query );
 }
 
 /**
  * Constructs URL for a project and locale.
  * /<project-path>/<locale>/<path>/<page>
  */
-function gp_url_project_locale( $project_or_slug, $locale, $path = '', $query = null ) {
-	return gp_url_project( $project_or_slug, gp_url_join( $locale, $path ), $query );
+function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = null ) {
+	return gp_url_project( $project_or_path, gp_url_join( $locale, $path ), $query );
 }
