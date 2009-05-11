@@ -184,7 +184,7 @@ class PO extends Gettext_Translations {
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
 		if (!empty($entry->extracted_comments)) $po[] = PO::comment_block($entry->extracted_comments, '.');
 		if (!empty($entry->references)) $po[] = PO::comment_block(implode(' ', $entry->references), ':');
-		if (!empty($entry->flags)) $po[] = PO::comment_block(implode("\n", $entry->flags), ',');
+		if (!empty($entry->flags)) $po[] = PO::comment_block(implode(", ", $entry->flags), ',');
 		if (!is_null($entry->context)) $po[] = 'msgctxt '.PO::poify($entry->context);
 		$po[] = 'msgid '.PO::poify($entry->singular);
 		if (!$entry->is_plural) {
@@ -345,7 +345,7 @@ class PO extends Gettext_Translations {
 		} elseif ('#.' == $first_two) {
 			$entry->extracted_comments = trim($entry->extracted_comments . "\n" . $comment);
 		} elseif ('#,' == $first_two) {
-			$entry->flags = array_merge($entry->flags, preg_split('/\s+/', $comment));
+			$entry->flags = array_merge($entry->flags, preg_split('/,\s*/', $comment));
 		} else {
 			$entry->translator_comments = trim($entry->translator_comments . "\n" . $comment);
 		}

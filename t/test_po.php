@@ -118,8 +118,7 @@ msgstr[1] "кукуруку"
 msgstr[2] "бабаяга"', PO::export_entry($entry));
 		// context
 		$entry = new Translation_Entry(array('context' => 'ctxt', 'singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга'), 'flags' => array('fuzzy', 'php-format')));
-		$this->assertEqual('#, fuzzy
-#, php-format
+		$this->assertEqual('#, fuzzy, php-format
 msgctxt "ctxt"
 msgid "baba"
 msgid_plural "babas"

@@ -17,7 +17,6 @@ class GP_Test_Translation_Entry extends GP_UnitTestCase {
 		$entry = new Translation_Entry(array(
 			'singular' => 'baba',
 			'plural' => 'babas',
-			'non_existant' => 'cookoo',
 			'translations' => array('баба', 'баби'),
 			'references' => 'should be array here',
 			'flags' => 'baba',
@@ -25,7 +24,6 @@ class GP_Test_Translation_Entry extends GP_UnitTestCase {
 		$this->assertEqual('baba', $entry->singular);
 		$this->assertEqual('babas', $entry->plural);
 		$this->assertTrue($entry->is_plural);
-		$this->assertFalse(isset($entry->non_existant));
 		$this->assertEqual(array('баба', 'баби'), $entry->translations);
 		$this->assertEqual(array(), $entry->references);
 		$this->assertEqual(array(), $entry->flags);

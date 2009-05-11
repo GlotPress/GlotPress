@@ -48,9 +48,7 @@ class Translation_Entry {
 		// get member variable values from args hash
 		$object_varnames = array_keys(get_object_vars($this));
 		foreach ($args as $varname => $value) {
-			if (in_array($varname, $object_varnames)) {
-				$this->$varname = $value;
-			}
+			$this->$varname = $value;
 		}
 		if (isset($args['plural'])) $this->is_plural = true;
 		if (!is_array($this->translations)) $this->translations = array();
