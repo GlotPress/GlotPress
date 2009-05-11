@@ -19,7 +19,10 @@ class Translations {
 	 * @param object &$entry
 	 * @return bool true on success, false if the entry doesn't have a key
 	 */
-	function add_entry(&$entry) {
+	function add_entry($entry) {
+		if (is_array($entry)) {
+			$entry = new Translation_Entry($entry);
+		}
 		$key = $entry->key();
 		if (false === $key) return false;
 		$this->entries[$key] = $entry;

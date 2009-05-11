@@ -23,6 +23,12 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		// add empty entry
 		$this->assertEqual(false, $po->add_entry($empty));
 		$this->assertEqual(array($entry->key() => $entry, $entry2->key() => $entry2), $po->entries);
+		
+		// give add_entry() the arguments and let it create the entry itself
+		$po = new Translations();
+		$po->add_entry(array('singular' => 'baba',));
+		$entries= array_values($po->entries);
+		$this->assertEqual($entry->key(), $entries[0]->key());
 	}
 
 	function test_translate() {
