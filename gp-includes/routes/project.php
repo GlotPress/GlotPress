@@ -21,7 +21,8 @@ class GP_Route_Project {
 		global $gpdb;
 		$project = &GP_Project::by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
-		GP_Route_Project::_import($project, 'mo-file', 'MO') or GP_Route_Project::_import($project, 'pot-file', 'PO');
+		$block = array( 'GP_Route_Project', '_merge_originals');
+		GP_Route_Project::_import($project, 'mo-file', 'MO', $block) or GP_Route_Project::_import($project, 'pot-file', 'PO', $block);
 		wp_redirect( gp_url_join( gp_url_project( $project ), 'import-originals' ) );
 	}
 
@@ -36,7 +37,7 @@ class GP_Route_Project {
 		    SELECT t.*, o.*, t.id as id, o.id as original_id
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.status = 'current' AND t.translation_set_id = %d
-		    WHERE o.project_id = %d ORDER BY t.id ASC $limit", $translation_set->id, $project->id ) );
+		    WHERE o.project_id = %d AND o.status LIKE '+%%' ORDER BY t.id ASC $limit", $translation_set->id, $project->id ) );
 		// TODO: expose paging
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
@@ -64,7 +65,7 @@ class GP_Route_Project {
 		}
 	}
 
-	function _import($project, $file_key, $class) {
+	function _import($project, $file_key, $class, $block) {
 		global $gpdb;
 		if ( is_uploaded_file( $_FILES[$file_key]['tmp_name'] ) ) {
 			$translations = new $class();
@@ -72,19 +73,40 @@ class GP_Route_Project {
 			if ( !$result ) {
 				gp_notice_set( __("Couldn&#8217;t load translations from file!"), 'error' );
 			} else {
-				// TODO: do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields
-				foreach( $translations->entries as $entry ) {
-					$data = array('project_id' => $project->id, 'context' => $entry->context,
-						'singular' => $entry->singular, 'plural' => $entry->plural );
-					if ( is_null( $entry->context ) ) unset($data['context']);
-					if ( is_null( $entry->plural ) ) unset($data['plural']);
-					$gpdb->insert( $gpdb->originals, $data );
-				}
-				// TODO: were they really added?
-				gp_notice_set( sprintf(__("%s strings were added"), count($translations->entries) ) );
+				call_user_func($block, $project, $translations);
 			}
 			return true;
 		}
 		return false;
+	}
+	
+	function _merge_originals( $project, $translations ) {
+		global $gpdb;
+		// TODO: do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields
+		$gpdb->update( $gpdb->originals, array('status' => '+obsolete'), array('project_id' => $project->id));
+		foreach( $translations->entries as $entry ) {
+			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
+				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
+				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
+			if ( is_null( $entry->context ) ) unset($data['context']);
+			if ( is_null( $entry->plural ) ) unset($data['plural']);
+			// check if
+			$where = array();
+			// TODO: fix db::prepare to understand %1$s and so on
+			$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'context = %s';
+			$where[] = 'singular = %s';
+			$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
+			$where[] = 'project_id = %d';
+			$where = implode( ' AND ', $where );
+			$sql = $gpdb->prepare( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
+			$existing = $gpdb->get_row( $sql );
+			if ( $existing )
+				$gpdb->update( $gpdb->originals, $data, array('id' => $existing->id ) );
+			else
+				$gpdb->insert( $gpdb->originals, $data );
+		}
+		$gpdb->update( $gpdb->originals, array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
+		// TODO: were they really added?
+		gp_notice_set( sprintf(__("%s strings were processed"), count($translations->entries) ) );
 	}
 }

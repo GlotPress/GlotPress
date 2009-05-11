@@ -57,6 +57,7 @@ function gp_schema_get() {
 		`plural` TEXT,
 		`references` TEXT,
 		`comment` TEXT,
+		`status` VARCHAR(255) NOT NULL default '+active',
 		PRIMARY KEY (`id`),
 	) TYPE = MYISAM;";
 
