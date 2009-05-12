@@ -64,7 +64,7 @@ class GP_Route_Project {
 
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
 		$po = new PO();
-		$po->merge_with(GP_Translation::current_by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
+		$po->merge_with(GP_Translation::by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
 		$po->set_header('Project-Id-Version', $project->name);
 		// TODO: add more meta info in the project
 		$po->set_header('Report-Msgid-Bugs-To', 'wp-polyglots@lists.automattic.com');
