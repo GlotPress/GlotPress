@@ -65,7 +65,7 @@ gp_tmpl_header();
 				<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.gp_h($t->context).'</span>' ); ?></p>
 				<?php endif; ?>
 				<?php if ( $t->extracted_comment ): ?>
-				<p class="comment"><?php printf( __('Comment: %s'), gp_h($t->extracted_comment) ); ?></p>
+				<p class="comment"><?php printf( __('Comment: %s'), make_clickable( gp_h($t->extracted_comment) ) ); ?></p>
 				<?php endif; ?>
 			</div>
 			<div class="actions">
