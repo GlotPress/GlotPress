@@ -9,6 +9,28 @@ gp_breadcrumb( array(
 wp_enqueue_script( 'editor' );
 $parity = gp_parity_factory();
 gp_tmpl_header();
+
+function textareas( $entry, $index = 0 ) {
+?>
+<div class="textareas">
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo $entry->translations[$index] ?></textarea>
+	<p>
+		<a href="#" class="copy" tabindex="-1">Copy from original</a>
+		<a href="#" class="refs" tabindex="-1">Show references</a>
+		<ul class="refs">
+<?php foreach($entry->references as $reference):
+			list( $file, $line ) = explode( ':', $reference );
+			// TODO: keep the trac/reference link in both project and let the user override it
+			// so that she can use textmate or whatever scheme she wants
+?>
+<!--			<li><a href="http://core.trac.wordpress.org/browser/trunk/<?php echo $file ?>#L<?php echo $line ?>"><?php echo $file ?></a></li> -->
+			<li><a href="txmt://open?url=file://~/wordpress/trunk/<?php echo $file ?>&amp;line=<?php echo $line ?>"><?php echo $file ?></a></li>
+<?php endforeach; ?>
+		</ul>
+	</p>
+</div>
+<?php
+}
 ?>
 <table id="translations" class="translations">
 	<tr>
@@ -37,26 +59,16 @@ gp_tmpl_header();
 		<td colspan="3">
 			<?php if ( !$t->plural ): ?>
 			<p class="original"><?php echo gp_h($t->singular); ?></p>
-			<div class="textareas">
-				<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
-				<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>
-			</div>	
+			<?php textareas( $t ); ?>
 			<?php else: ?>
 				<!--
 					TODO: use the correct number of plurals
 					TODO: dynamically set the number of rows
 				-->				
 				<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
-				<div class="textareas">
-					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
-					<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>					
-				</div>
+				<?php textareas( $t, 0 ); ?>
 				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
-				<div class="textareas">
-					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
-					<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>					
-				</div>
-				
+				<?php textareas( $t, 1 ); ?>				
 			
 			<?php endif; ?>
 			<div class="meta">

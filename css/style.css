@@ -10,6 +10,7 @@ h1 {
 textarea {
 	font-size: 100%;
 	padding: 0.5em;
+	line-height: 1.5em;
 }	
 table.translations {
 	font-size: 90%;
