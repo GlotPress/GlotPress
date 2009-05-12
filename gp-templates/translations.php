@@ -45,14 +45,13 @@ gp_tmpl_header();
 				<!--
 					TODO: use the correct number of plurals
 					TODO: dynamically set the number of rows
-				-->					
-				
+				-->				
 				<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
 				<div class="textareas">
 					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
 					<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>					
-				</div>				
-				<p><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
+				</div>
+				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
 				<div class="textareas">
 					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
 					<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>					

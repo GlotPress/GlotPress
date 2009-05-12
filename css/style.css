@@ -77,28 +77,11 @@ span.context {
 	clear: both;
 }
 .editor .textareas {
+    float: left;
 }
 .editor .meta {
 	float: left;
 	margin-left: 2em;
-}
-/* jQuery UI Tabs for plural translations */
-.ui-tabs-nav .ui-tabs-hide {
-     display: none;
-}
-.ui-tabs-nav a, .ui-tabs-nav a:visited {
-	text-decoration: none;
-}
-.ui-tabs-nav ul {
-	margin: 0 0 0 0.5em;
-	padding: 0;
-}
-.ui-tabs-nav li {
-	display: inline;
-}
-.ui-tabs-nav .ui-tabs-selected {
-	font-weight: bold;
-	font-size: 130%;
 }
 #gp-js-message {
 	position: fixed;
