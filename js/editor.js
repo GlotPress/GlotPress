@@ -8,17 +8,15 @@ $gp.editor = function($){ return {
 	show: function(element) {
 		var original_id = element.attr('original');
 		var editor = $('#editor-' + original_id);
-		if (!editor.length) return;		
+		if (!editor.length) return;
 		if ($gp.editor.current) $gp.editor.hide();
 		editor.preview = $('#preview-' + original_id);
 		editor.original_id = original_id;
 		$gp.editor.current = editor;
-		$('#tabs-'+original_id).tabs({
-			show: function(event, ui) { $('textarea:first', $(ui.panel)).focus(); return false; }
-		});
 		$('a.close', editor).click($gp.editor.hooks.hide);
 		$('button.ok', editor).click($gp.editor.hooks.ok);
-		editor.show();		
+		$('a.copy').click($gp.editor.hooks.copy);
+		editor.show();
 		editor.preview.hide();
 		$('textarea:first', editor).focus();
 	},
@@ -36,7 +34,7 @@ $gp.editor = function($){ return {
 	},
 	install_hooks: function() {
 		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show);
-		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);		
+		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);
 	},
 	update_preview: function() {
 		if (!$gp.editor.current) return;
@@ -61,6 +59,11 @@ $gp.editor = function($){ return {
 		// TODO: next untranslated
 		$gp.editor.next();
 	},
+	copy: function(link) {
+		original_text = link.parents('.textareas').siblings('.original').html();
+		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
+		link.parent('p').siblings('textarea').html(original_text);
+	},
 	hooks: {
 		show: function() {
 			$gp.editor.show($(this));
@@ -72,6 +75,10 @@ $gp.editor = function($){ return {
 		},
 		ok: function() {
 			$gp.editor.save();
+			return false;
+		},
+		copy: function() {
+			$gp.editor.copy($(this));
 			return false;
 		},
 	}

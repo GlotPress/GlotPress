@@ -64,7 +64,7 @@ class GP_Route_Project {
 
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
 		$po = new PO();
-		$po->merge_with(GP_Translation::current_by_project_and_translation_set( $project, $translation_set ));
+		$po->merge_with(GP_Translation::current_by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
 		$po->set_header('Project-Id-Version', $project->name);
 		// TODO: add more meta info in the project
 		$po->set_header('Report-Msgid-Bugs-To', 'wp-polyglots@lists.automattic.com');
@@ -92,7 +92,7 @@ class GP_Route_Project {
 		$project = GP_Project::by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$translations = GP_Translation::current_by_project_and_translation_set( $project, $translation_set );
+		$translations = GP_Translation::by_project_and_translation_set( $project, $translation_set );
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
 
@@ -112,8 +112,8 @@ class GP_Route_Project {
 		    Since we still don't have status updates, just insert with status current
 		    and set all the previous translations of the same original to sth else
 		    */
-		    $data['status'] = 'current';
-		    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => 'current'));
+		    $data['status'] = '+current';
+		    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
 	    
 	        $gpdb->insert($gpdb->translations, $data);
 		}
@@ -174,8 +174,8 @@ class GP_Route_Project {
 				        if (isset($entry->translations[$i])) $data["translation_$i"] = $entry->translations[$i];
 				    }
 					// TODO: extract setting the current translation to GP_Translation::set_current()					
-				    $data['status'] = 'current';
-				    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => 'current'));
+				    $data['status'] = in_array( 'fuzzy', $entry->flags )? '+fuzzy' : '+current';
+				    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
 			        $gpdb->insert($gpdb->translations, $data);
 					$translations_added++;
 				}

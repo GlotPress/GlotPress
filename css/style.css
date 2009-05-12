@@ -41,6 +41,13 @@ table.translations tr.editor {
 	background-color: #F8FFEC;
 	display: none;
 }
+table.translations tr.preview.status-fuzzy {
+	background-color: #FC6;
+}
+table.translations tr.preview.status-current {
+	background-color: #CF6;
+}
+
 #footer {
 	text-align: center;
 	font-size: 85%;
@@ -70,7 +77,6 @@ span.context {
 	clear: both;
 }
 .editor .textareas {
-	float: left;
 }
 .editor .meta {
 	float: left;

@@ -25,7 +25,7 @@ var $gp = function($) { return {
 			$gp.notices.element.show();
 		},
 		center: function() {
-			$gp.notices.element.css('left', ($(document).width() - $gp.notices.element.width()) / 2);			
+			$gp.notices.element.css('left', ($(document).width() - $gp.notices.element.width()) / 2);
 		}
 	},
 	init: function() {

@@ -16,8 +16,11 @@ gp_tmpl_header();
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th><?php _e('Actions'); ?></th>
 	</tr>
-<?php foreach( $translations->entries as $t ): ?>
-	<tr class="preview <?php echo $parity(); ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
+<?php foreach( $translations->entries as $t ):
+		$class = str_replace( array( '+', '-' ), '', $t->translation_status );
+		if ( !$class )  $class = 'untranslated';
+?>
+	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
 		<td class="original">			
 			<?php echo gp_h( $t->singular ); ?>
 			<?php if ( $t->context ): ?>
@@ -32,34 +35,30 @@ gp_tmpl_header();
 	</tr>
 	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
 		<td colspan="3">
-			<?php if ( $t->plural ): ?>
-			<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
-			<p><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
-			<?php else: ?>
+			<?php if ( !$t->plural ): ?>
 			<p class="original"><?php echo gp_h($t->singular); ?></p>
-			<?php endif; ?>
-			<?php if ($t->plural): ?>
-				<div class="textareas" id="tabs-<?php echo $t->original_id ?>">
-					<ul>
-						<!--
-							TODO: use the correct number of plurals
-							TODO: dynamically set the number of rows
-						-->					
-						<li><a href="#tabs-<?php echo $t->original_id; ?>-1">Singular</a></li>
-						<li><a href="#tabs-<?php echo $t->original_id; ?>-2">Plural</a></li>
-					</ul>
-					<div id="tabs-<?php echo $t->original_id; ?>-1">
-						<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
-					</div>
-					<div id="tabs-<?php echo $t->original_id; ?>-2">
-						<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[1] ?></textarea>
-					</div>
-
-				</div>
+			<div class="textareas">
+				<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
+				<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>
+			</div>	
 			<?php else: ?>
+				<!--
+					TODO: use the correct number of plurals
+					TODO: dynamically set the number of rows
+				-->					
+				
+				<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
 				<div class="textareas">
-					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>				
+					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
+					<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>					
+				</div>				
+				<p><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
+				<div class="textareas">
+					<textarea name="translation[<?php echo $t->original_id; ?>][]" rows="8" cols="80"><?php echo $t->translations[0] ?></textarea>
+					<p><a href="#" class="copy" tabindex="-1">Copy from original</a></p>					
 				</div>
+				
+			
 			<?php endif; ?>
 			<div class="meta">
 				<?php if ( $t->context ): ?>
