@@ -116,7 +116,7 @@ class PO extends Gettext_Translations {
 	function unpoify($string) {
 		$escapes = array('t' => "\t", 'n' => "\n", '\\' => '\\');
 		$lines = array_map('trim', explode("\n", $string));
-		$lines = array_map(create_function('$x', 'return trim($x, "\\"");'), $lines);
+		$lines = array_map(array('PO', 'trim_quotes'), $lines);
 		$unpoified = '';
 		$previous_is_backslash = false;
 		foreach($lines as $line) {
@@ -349,6 +349,12 @@ class PO extends Gettext_Translations {
 		} else {
 			$entry->translator_comments = trim($entry->translator_comments . "\n" . $comment);
 		}
+	}
+	
+	function trim_quotes($s) {
+		if ( substr($s, 0, 1) == '"') $s = substr($s, 1);
+		if ( substr($s, -1, 1) == '"') $s = substr($s, 0, -1);
+		return $s;
 	}
 }
 ?>
