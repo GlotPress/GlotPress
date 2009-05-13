@@ -9,6 +9,7 @@ class GP_Translation {
 	
 	function by_project_and_translation_set_and_status( $project, $translation_set, $status ) {
 		global $gpdb;
+		$locale = GP_Locales::by_slug( $translation_set->locale );
 		$status_cond = '';
 		if ( in_array( $status, array('+', '-') ) ) {
 			$status_cond = "t.status LIKE '$status%%'";
@@ -27,6 +28,7 @@ class GP_Translation {
 		$translations = new Translations();
 		foreach( $rows as $row ) {
 			$row->translations = array($row->translation_0, $row->translation_1, $row->translation_2, $row->translation_3);
+			$row->translations = array_slice( $row->translations, 0, $locale->nplurals );
 			$row->extracted_comment = $row->comment;
 			$row->references = preg_split('/\s+/', $row->references, PREG_SPLIT_NO_EMPTY);
 			unset($row->comment);
