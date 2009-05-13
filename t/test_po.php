@@ -199,6 +199,10 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 			'references' => array('wp-admin/x.php:111', 'baba:333', 'baba'), 'extracted_comments' => "translators: buuu",
 			'flags' => array('fuzzy')));
 		$this->assertEqual($comments_entry, $po->entries[$comments_entry->key()]);
+			
+		$end_quote_entry = new Translation_Entry(array('singular' => 'a"'));
+		$this->assertEqual($end_quote_entry, $po->entries[$end_quote_entry->key()]);
+
 	}
 	
 	//TODO: add tests for bad files

@@ -49,3 +49,6 @@ msgstr[2] ""
 msgid "a"
 msgstr ""
 
+msgid "a\""
+msgstr ""
+
