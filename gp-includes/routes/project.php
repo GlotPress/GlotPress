@@ -63,6 +63,7 @@ class GP_Route_Project {
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
+		// TODO: extract as Translation_Set::export
 		$po = new PO();
 		$po->merge_with(GP_Translation::by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
 		$po->set_header('Project-Id-Version', $project->name);
@@ -74,8 +75,7 @@ class GP_Route_Project {
 		$po->set_header('MIME-Version', '1.0');
 		$po->set_header('Content-Type', 'text/plain; charset=UTF-8');
 		$po->set_header('Content-Transfer-Encoding', '8bit');
-		// TODO: get from locale
-		$po->set_header('Plural-Forms', 'nplurals=2; plural=n != 1;');
+		$po->set_header('Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;");
 		$po->set_header('X-Generator', 'GlotPress/' . gp_get_option('version'));
 				
 		header('Content-Description: File Transfer');
@@ -113,7 +113,9 @@ class GP_Route_Project {
 		    and set all the previous translations of the same original to sth else
 		    */
 		    $data['status'] = '+current';
-		    $gpdb->update($gpdb->translations, array('status' => 'approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+		    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+		    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
+		
 	    
 	        $gpdb->insert($gpdb->translations, $data);
 		}
@@ -176,6 +178,8 @@ class GP_Route_Project {
 					// TODO: extract setting the current translation to GP_Translation::set_current()					
 				    $data['status'] = in_array( 'fuzzy', $entry->flags )? '+fuzzy' : '+current';
 				    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+				    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
+				
 			        $gpdb->insert($gpdb->translations, $data);
 					$translations_added++;
 				}
@@ -189,9 +193,9 @@ class GP_Route_Project {
 		$where = array();
 		// TODO: fix db::prepare to understand %1$s
 		// now each condition has to contain a %s not to break the sequence
-		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'context = %s';
-		$where[] = 'singular = %s';
-		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
+		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
+		$where[] = 'BINARY singular = %s';
+		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
 		$where[] = 'project_id = %d';
 		$where = implode( ' AND ', $where );
 		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
@@ -205,7 +209,7 @@ class GP_Route_Project {
 		$where[] = 'translation_set_id = %s';
 		$tr = array_pad( $entry->translations, 4, null );
 		foreach(range(0, 3) as $i) {
-			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s is NULL)" : "translation_$i = %s";
+			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s is NULL)" : "BINARY translation_$i = %s";
 		}
 		$where = implode( ' AND ', $where );
 		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->translations WHERE $where", $original->id, $translation_set->id, $tr[0], $tr[1], $tr[2], $tr[3] );
