@@ -13,18 +13,17 @@ gp_tmpl_header();
 function textareas( $entry, $index = 0 ) {
 ?>
 <div class="textareas">
-	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo $entry->translations[$index] ?></textarea>
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo gp_h($entry->translations[$index]); ?></textarea>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
-		<a href="#" class="refs" tabindex="-1">Show references</a>
 		<ul class="refs">
 <?php foreach($entry->references as $reference):
 			list( $file, $line ) = explode( ':', $reference );
 			// TODO: keep the trac/reference link in both project and let the user override it
 			// so that she can use textmate or whatever scheme she wants
 ?>
-<!--			<li><a href="http://core.trac.wordpress.org/browser/trunk/<?php echo $file ?>#L<?php echo $line ?>"><?php echo $file ?></a></li> -->
-			<li><a href="txmt://open?url=file://~/wordpress/trunk/<?php echo $file ?>&amp;line=<?php echo $line ?>"><?php echo $file ?></a></li>
+<!--			<li><a tabindex="-1" href="http://core.trac.wordpress.org/browser/trunk/<?php echo $file ?>#L<?php echo $line ?>"><?php echo $file ?></a></li> -->
+			<li><a tabindex="-1" href="txmt://open?url=file://~/wordpress/trunk/<?php echo $file ?>&amp;line=<?php echo $line ?>"><?php echo $file ?></a></li>
 <?php endforeach; ?>
 		</ul>
 	</p>
@@ -88,4 +87,6 @@ function textareas( $entry, $index = 0 ) {
 <?php endforeach; ?>
 </table>
 <p><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?></p>
+<p><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?></p>
+
 <?php gp_tmpl_footer(); ?>
