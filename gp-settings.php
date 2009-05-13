@@ -39,6 +39,14 @@ $gp_log->notice('Logging started');
 require_once( BACKPRESS_PATH . 'functions.core.php' );
 require_once( BACKPRESS_PATH . 'functions.compat.php' );
 
+// alleviate the magic_quotes_gpc effects
+if ( get_magic_quotes_gpc() ) {
+	$_GET    = stripslashes_deep($_GET   );
+	$_POST   = stripslashes_deep($_POST  );
+	$_COOKIE = stripslashes_deep($_COOKIE);
+}
+
+
 require_once( BACKPRESS_PATH . 'class.wp-error.php' );
 
 if ( !defined( 'GP_DATABASE_CLASS_INCLUDE' ) ) {
