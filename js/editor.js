@@ -38,7 +38,15 @@ $gp.editor = function($){ return {
 	},
 	update_preview: function() {
 		if (!$gp.editor.current) return;
-		$('td.translation', $gp.editor.current.preview).text($('textarea:first', $gp.editor.current).val());
+		var p = $gp.editor.current.preview;
+		$('td.translation', p).text($('textarea:first', $gp.editor.current).val());
+		// TODO: is the next status always current?
+		$.each( $.grep(p.attr('class').split(' '), function(x) {
+			return x.substr(0, 7) == 'status-';
+		}), function(status) {
+			p.removeClass(status);
+		} );
+		p.addClass('status-current');
 	},
 	save: function() {
 		if (!$gp.editor.current) return;
