@@ -9,7 +9,7 @@ gp_breadcrumb( array(
 wp_enqueue_script( 'editor' );
 $parity = gp_parity_factory();
 gp_tmpl_header();
-
+$i = 0;
 function textareas( $entry, $index = 0 ) {
 ?>
 <div class="textareas">
@@ -33,6 +33,7 @@ function textareas( $entry, $index = 0 ) {
 ?>
 <table id="translations" class="translations">
 	<tr>
+		<th>#</th>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th><?php _e('Actions'); ?></th>
@@ -42,6 +43,7 @@ function textareas( $entry, $index = 0 ) {
 		if ( !$class )  $class = 'untranslated';
 ?>
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
+		<td><?php echo $i++; ?></td>
 		<td class="original">			
 			<?php echo gp_h( $t->singular ); ?>
 			<?php if ( $t->context ): ?>
