@@ -70,7 +70,7 @@ $gp.editor = function($){ return {
 	copy: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
-		link.parent('p').siblings('textarea').html(original_text);
+		link.parent('p').siblings('textarea').html(original_text).focus();
 	},
 	hooks: {
 		show: function() {
