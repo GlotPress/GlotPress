@@ -263,11 +263,11 @@ function gp_get_option_from_db( $option ) {
 	} elseif ( false !== $_r = wp_cache_get( $option, 'gp_option' ) ) {
 		$r = $_r;
 	} else {
-		if ( GP_INSTALLING ) {
+		if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING ) {
 			$gpdb->suppress_errors();
 		}
 		$row = $gpdb->get_row( $gpdb->prepare( "SELECT `meta_value` FROM `$gpdb->meta` WHERE `object_type` = 'gp_option' AND `meta_key` = %s", $option ) );
-		if ( GP_INSTALLING ) {
+		if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING ) {
 			$gpdb->suppress_errors( false );
 		}
 
