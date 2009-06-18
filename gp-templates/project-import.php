@@ -9,17 +9,6 @@ gp_breadcrumb( array(
 ) );
 gp_tmpl_header();
 ?>
-<?php if (gp_notice('error')): ?>
-	<div class="error">
-		<?php echo gp_notice('error'); ?>
-	</div>
-<?php endif; ?>
-<?php if (gp_notice()): ?>
-	<div class="notice">
-		<?php echo gp_notice(); ?>
-	</div>
-<?php endif; ?>
-
 <form action="" method="post" enctype="multipart/form-data">
 	<p>
 		<label for="mo-file"><?php echo __('MO file'); ?></label><input type="file" name="mo-file" id="mo-file" />

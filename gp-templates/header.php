@@ -12,3 +12,14 @@ wp_enqueue_style( 'base' );
 	<body>
 	    <div id="gp-js-message"></div>
 		<h1><?php echo gp_breadcrumb(); ?></h1>
+		<?php if (gp_notice('error')): ?>
+			<div class="error">
+				<?php echo gp_notice('error'); ?>
+			</div>
+		<?php endif; ?>
+		<?php if (gp_notice()): ?>
+			<div class="notice">
+				<?php echo gp_notice(); ?>
+			</div>
+		<?php endif; ?>
+				
