@@ -11,6 +11,9 @@ function gp_get_routes() {
 	// overall structure
 	return apply_filters( 'routes', array(
 		'/' => 'gp_route_index',
+		'get:/login' => array('GP_Route_Login', 'login_get'),
+		'post:/login' => array('GP_Route_Login', 'login_post'),
+		'get:/logout' => array('GP_Route_Login', 'logout'),
 		"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 		"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
 		"get:/$project/$locale/$dir" => array('GP_Route_Project', 'translations_get'),

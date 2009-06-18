@@ -21,7 +21,6 @@ if ( !defined( 'GP_LANG_PATH' ) ) {
 	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
 }
 
-
 require_once( BACKPRESS_PATH . 'class.bp-log.php' );
 $gp_log = new BP_Log();
 if ( defined( 'GP_LOG_LEVEL' ) ) {
@@ -38,6 +37,7 @@ $gp_log->notice('Logging started');
 // Load core BackPress functions
 require_once( BACKPRESS_PATH . 'functions.core.php' );
 require_once( BACKPRESS_PATH . 'functions.compat.php' );
+require_once( BACKPRESS_PATH . 'functions.formatting.php' );
 
 // alleviate the magic_quotes_gpc effects
 if ( get_magic_quotes_gpc() ) {
@@ -104,6 +104,12 @@ unset( $gpdb_class );
 
 $gpdb->tables = array('translations', 'translation_sets', 'originals', 'projects', 'users', 'usermeta', 'meta');
 
+if ( defined('CUSTOM_USER_TABLE') )
+    $gpdb->users = CUSTOM_USER_TABLE;
+
+if ( defined('CUSTOM_USER_META_TABLE') )
+    $gpdb->usermeta = CUSTOM_USER_META_TABLE;
+
 // Set the prefix on the tables
 if ( is_wp_error( $gpdb->set_prefix( $gp_table_prefix ) ) ) {
 	die( 'Your table prefix may only contain letters, numbers and underscores.' );
@@ -118,7 +124,6 @@ if ( !defined( 'GP_TMPL_PATH' ) )
 
 require_once( GP_PATH . GP_INC . 'meta.php');
 require_once( GP_PATH . GP_INC . 'misc.php');
-require_once( GP_PATH . GP_INC . 'wp-formatting.php');
 require_once( GP_PATH . GP_INC . 'url.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
 
@@ -173,6 +178,33 @@ if ( !class_exists( 'WP_Users' ) ) {
 }
 
 require_once( GP_PATH . GP_INC . 'locales.php' );
+
+// Users and roles
+
+if ( !defined( 'WP_AUTH_COOKIE_VERSION' ) ) {
+	define( 'WP_AUTH_COOKIE_VERSION', 2 );
+}
+
+// WP_Pass
+if ( !class_exists( 'WP_Pass' ) ) {
+	require_once( BACKPRESS_PATH . 'class.wp-pass.php' );
+}
+
+// WP_Users
+if ( !class_exists( 'WP_Users' ) ) {
+	require_once( BACKPRESS_PATH . 'class.wp-users.php' );
+	$wp_users_object = new WP_Users( $gpdb );
+}
+
+if ( !class_exists( 'WP_Auth' ) ) {
+	require_once( BACKPRESS_PATH . 'class.wp-auth.php' );
+	$wp_auth_object = new WP_Auth( $bbdb, $wp_users_object,  array( 'auth' => array(
+		'domain' => $_SERVER['HTTP_HOST'], 'path' => gp_url_path(), 'name' => 'glotpress_auth',
+		'secure' => false,
+	)));
+}
+
+$gp_current_user =& $wp_auth_object->current;
 
 require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {

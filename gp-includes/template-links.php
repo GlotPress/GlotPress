@@ -28,6 +28,16 @@ function gp_link_home() {
 	echo call_user_func_array('gp_link_home_get', $args);
 }
 
+function gp_link_login_get() {
+	return gp_link_get( gp_url( '/login' ), __( 'Login' ), array( 'title' => __('Sign into GlotPress') ) );
+}
+
+function gp_link_login() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_login_get', $args);
+}
+
+
 function gp_html_attributes( $attrs ) {
 	$attrs = wp_parse_args( $attrs );
 	$strings = array();
