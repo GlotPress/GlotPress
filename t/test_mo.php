@@ -108,4 +108,10 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEqual('%d foros', $mo->translate_plural('%d forum', '%d forums', 2));
 		$this->assertEqual('%d foros', $mo->translate_plural('%d forum', '%d forums', -1));
 	}
+	
+	function test_overloaded_mb_functions() {
+		$this->skipIf(((ini_get("mbstring.func_overload") & 2) == 0));
+		$mo = new MO();
+		$mo->import_from_file('data/overload.mo');
+	}
 }
