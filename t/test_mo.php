@@ -109,9 +109,20 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEqual('%d foros', $mo->translate_plural('%d forum', '%d forums', -1));
 	}
 	
-	function test_overloaded_mb_functions() {
-		$this->skipIf(((ini_get("mbstring.func_overload") & 2) == 0));
+	function test_performance() {
+		$start = microtime(true);
 		$mo = new MO();
-		$mo->import_from_file('data/overload.mo');
+		$mo->import_from_file('data/de_DE-2.8.mo');
+		echo "Performance: ".(microtime(true) - $start)."\n";
+	}
+	
+	function test_overloaded_mb_functions() {
+		// skipIf() method skips the whole test case, not only this method
+		// that's why we are skipping it the stupid way
+		if ((ini_get("mbstring.func_overload") & 2) != 0) {
+			$mo = new MO();
+			$mo->import_from_file('data/overload.mo');
+			$this->assertEqual(array('Табло'), $mo->entries['Dashboard']->translations);
+		}
 	}
 }
