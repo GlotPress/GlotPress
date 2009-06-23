@@ -19,9 +19,9 @@ function gp_schema_get() {
 		`original_id` INT(10) NOT NULL default 0,
 		`translation_set_id` INT(10) NOT NULL default 0,
 		`translation_0` TEXT NOT NULL,
-		`translation_1` TEXT,
-		`translation_2` TEXT,
-		`translation_3` TEXT,
+		`translation_1` TEXT DEFAULT NULL,
+		`translation_2` TEXT DEFAULT NULL,
+		`translation_3` TEXT DEFAULT NULL,
 		`user_id` INT(10) NOT NULL default 0,
 		`status` VARCHAR(20) NOT NULL default 'new',
 		PRIMARY KEY (`id`),
@@ -39,7 +39,7 @@ function gp_schema_get() {
     	`name` VARCHAR(255) NOT NULL,
     	`slug` VARCHAR(255) NOT NULL,
 		`project_id` INT(10) NOT NULL default 0,
-    	`locale` VARCHAR(10),
+    	`locale` VARCHAR(10) DEFAULT NULL,
     	`user_id` INT(10) NOT NULL default 0,
     	PRIMARY KEY (`id`),
     ) TYPE = MYISAM;";
@@ -52,11 +52,11 @@ function gp_schema_get() {
 	$gp_schema['originals'] = "CREATE TABLE IF NOT EXISTS `$gpdb->originals` (
 		`id` INT(10) NOT NULL auto_increment,
 		`project_id` INT(10) NOT NULL default 0,
-		`context` VARCHAR(255),
+		`context` VARCHAR(255) DEFAULT NULL,
 		`singular` TEXT NOT NULL,
-		`plural` TEXT,
-		`references` TEXT,
-		`comment` TEXT,
+		`plural` TEXT DEFAULT NULL,
+		`references` TEXT DEFAULT NULL,
+		`comment` TEXT DEFAULT NULL,
 		`status` VARCHAR(255) NOT NULL default '+active',
 		PRIMARY KEY (`id`),
 	) TYPE = MYISAM;";
@@ -72,7 +72,7 @@ function gp_schema_get() {
 		`slug` VARCHAR(255) NOT NULL,
 		`path` VARCHAR(255) NOT NULL,
 		`description` TEXT NOT NULL,
-		`parent_project_id` INT(10),
+		`parent_project_id` INT(10) NOT NULL default 0,
 		PRIMARY KEY (`id`),
 		UNIQUE KEY `path` (`path`)
 	);";
@@ -102,8 +102,8 @@ function gp_schema_get() {
 	$gp_schema['usermeta'] = "CREATE TABLE IF NOT EXISTS `$gpdb->usermeta` (
 		`umeta_id` bigINT(20) NOT NULL auto_increment,
 		`user_id` bigINT(20) NOT NULL default 0,
-		`meta_key` varchar(255),
-		`meta_value` longTEXT,
+		`meta_key` varchar(255) NOT NULL,
+		`meta_value` longTEXT NOT NULL,
 		PRIMARY KEY (`umeta_id`),
 		KEY `user_id` (`user_id`),
 		KEY `meta_key` (`meta_key`)
