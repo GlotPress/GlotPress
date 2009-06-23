@@ -199,7 +199,7 @@ if ( !class_exists( 'WP_Users' ) ) {
 if ( !class_exists( 'WP_Auth' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-auth.php' );
 	$wp_auth_object = new WP_Auth( $bbdb, $wp_users_object,  array( 'auth' => array(
-		'domain' => $_SERVER['HTTP_HOST'], 'path' => gp_url_path(), 'name' => 'glotpress_auth',
+		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' , 'path' => gp_url_path(), 'name' => 'glotpress_auth',
 		'secure' => false,
 	)));
 }
