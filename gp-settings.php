@@ -198,13 +198,22 @@ if ( !class_exists( 'WP_Users' ) ) {
 
 if ( !class_exists( 'WP_Auth' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-auth.php' );
-	$wp_auth_object = new WP_Auth( $bbdb, $wp_users_object,  array( 'auth' => array(
-		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' , 'path' => gp_url_path(), 'name' => 'glotpress_auth',
-		'secure' => false,
-	)));
+	$cookies = array();
+	$cookies['auth'][] = array(
+		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
+		'path' => gp_url_path(),
+		'name' => 'glotpress_auth',
+	);
+	$cookies['logged_in'][] = array(
+		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
+		'path' => gp_url_path(),
+		'name' => 'glotpress_logged_in',
+	);
+	$wp_auth_object = new WP_Auth( $bbdb, $wp_users_object, $cookies );
+	unset( $cookies );
 }
 
-$gp_current_user =& $wp_auth_object->current;
+require_once( GP_PATH . GP_INC . 'user.php' );
 
 require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {

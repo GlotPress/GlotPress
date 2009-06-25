@@ -10,8 +10,20 @@ wp_enqueue_style( 'base' );
 		<?php gp_head(); ?>
 	</head>
 	<body>
-	    <div id="gp-js-message"></div>
-		<h1><?php echo gp_breadcrumb(); ?></h1>
+	    <div id="gp-js-message"></div>		
+		<h1>
+			<?php echo gp_breadcrumb(); ?>
+			<span id="hello">
+			<?php if (gp_logged_in()):
+					$user = gp_current_user();
+			?>
+				Hi, <?php echo $user->user_login; ?>.
+				<a href="<?php echo gp_url('/logout')?>">Log out</a>
+			<?php else: ?>
+				<a href="<?php echo gp_url('/login'); ?>">Log in</a>
+			<?php endif; ?>
+			</span>
+		</h1>
 		<?php if (gp_notice('error')): ?>
 			<div class="error">
 				<?php echo gp_notice('error'); ?>
@@ -21,5 +33,4 @@ wp_enqueue_style( 'base' );
 			<div class="notice">
 				<?php echo gp_notice(); ?>
 			</div>
-		<?php endif; ?>
-				
+		<?php endif; ?>		

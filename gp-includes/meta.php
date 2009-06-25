@@ -371,8 +371,6 @@ function gp_delete_option( $option, $value = '' ) {
 	return gp_delete_meta( 0, $option, $value, 'option', true );
 }
 
-
-
 /* User meta */
 
 function gp_get_usermeta( $user_id, $meta_key ) {

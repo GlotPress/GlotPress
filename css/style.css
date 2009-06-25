@@ -1,11 +1,23 @@
-html, body, textarea {
+html, body, textarea, input, textarea {
 	font-family: "Lucida Grande", "MS Trebuchet", sans-serif;
 	color: #333;
+}
+input, textarea {
+    font-size: 1em;
 }
 h1 {
 	font-family: "Georgia", serif;
 	font-weight: normal;
 	letter-spacing: -0.1em;
+	font-size: 2em;
+}
+#hello {
+	font-family: "Lucida Grande", "MS Trebuchet", sans-serif;
+	color: #333;
+	font-weight: normal;
+	float: right;
+	font-size: 0.5em;
+	letter-spacing: 0;	
 }
 textarea {
 	font-size: 100%;
@@ -92,15 +104,18 @@ span.context {
 	font-size: 85%;
 	z-index: 1001;
 }
-.gp-js-error {
+.gp-js-error, .error {
 	color: white;
 	background-color: red;	
 }
-.gp-js-notice {
+.gp-js-notice, .notice {
 	color: #222;
-	background-color: #FDDF9D;	
+	background-color: #FDDF9D;
 }
 .gp-js-success {
 	color: white;
 	background-color: #00DA12;
+}
+.notice, .error {
+	padding: 0.5em;    
 }
