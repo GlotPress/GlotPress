@@ -17,5 +17,8 @@ gp_tmpl_header();
 		<dd><input type="submit" name="submit" value="<?php _e('Login'); ?>" id="submit"></dd>
 	</dl>
 </form>
+<script type="text/javascript" charset="utf-8">
+	document.getElementById('user_login').focus();
+</script>
 <?php gp_tmpl_footer(); ?>
 
