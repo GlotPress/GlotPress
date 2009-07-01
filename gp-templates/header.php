@@ -14,8 +14,8 @@ wp_enqueue_style( 'base' );
 		<h1>
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
-			<?php if (gp_logged_in()):
-					$user = gp_current_user();
+			<?php if (GP_User::logged_in()):
+					$user = GP_User::current();
 			?>
 				Hi, <?php echo $user->user_login; ?>.
 				<a href="<?php echo gp_url('/logout')?>">Log out</a>

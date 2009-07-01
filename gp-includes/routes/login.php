@@ -7,17 +7,15 @@ class GP_Route_Login {
 	
 	function login_post() {
 		global $wp_users_object, $wp_auth_object;
-		$user = $wp_users_object->get_user( $_POST['user_login'], array( 'by' => 'login' ) );
+				
+		$user = GP_User::by_login( $_POST['user_login'] );
 		
-		if ( is_wp_error($user) || !$user ) {
+		if ( !$user || is_wp_error($user) ) {
 			gp_notice_set( __("Invalid username!"), 'error' );
 			wp_redirect(gp_url('/login'));
 		}
 		
-		if ( WP_Pass::check_password( $_POST['user_pass'], $user->user_pass, $user->ID ) ) {
-			$wp_auth_object->set_current_user( $user->ID );
-			$wp_auth_object->set_auth_cookie( $user->ID );
-			$wp_auth_object->set_auth_cookie( $user->ID, 0, 0, 'logged_in');
+		if ( $user->login( $_POST['user_pass'] ) ) {
 			gp_notice_set( __("Welcome, gonzo &amp; bonzo!") );
 			wp_redirect(gp_url('/'));
 		} else {
@@ -27,8 +25,7 @@ class GP_Route_Login {
 	}
 	
 	function logout() {
-		global $wp_auth_object;
-		$wp_auth_object->clear_auth_cookie();
+		GP_User::logout();
 		wp_redirect(gp_url('/'));
 	}
 }
