@@ -120,6 +120,16 @@ function gp_schema_get() {
 		KEY `object_type__meta_key` (`object_type`, `meta_key`),
 		KEY `object_type__object_id__meta_key` (`object_type`, `object_id`, `meta_key`)
 	);";
+	
+	// permissions
+	$gp_schema['permissions'] = "CREATE TABLE IF NOT EXISTS `$gpdb->permissions` (
+		`id` INT(10) NOT NULL AUTO_INCREMENT,
+		`user_id` INT(10) NOT NULL DEFAULT 0,
+		`action` VARCHAR(16) DEFAULT NULL,
+		`object_type` VARCHAR(16) DEFAULT NULL,
+		`object_id` BIGINT(20) DEFAULT NULL,
+		PRIMARY KEY (`id`),		
+	);";
 
 	$gp_schema = apply_filters( 'gp_schema_pre_charset', $gp_schema );
 

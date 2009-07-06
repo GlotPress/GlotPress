@@ -209,7 +209,7 @@ class GP_Route_Project {
 		$where[] = 'translation_set_id = %s';
 		$tr = array_pad( $entry->translations, 4, null );
 		foreach(range(0, 3) as $i) {
-			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s is NULL)" : "BINARY translation_$i = %s";
+			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s IS NULL)" : "BINARY translation_$i = %s";
 		}
 		$where = implode( ' AND ', $where );
 		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->translations WHERE $where", $original->id, $translation_set->id, $tr[0], $tr[1], $tr[2], $tr[3] );

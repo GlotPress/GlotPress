@@ -102,7 +102,7 @@ $gpdb = &new $gpdb_class( array(
 ) );
 unset( $gpdb_class );
 
-$gpdb->tables = array('translations', 'translation_sets', 'originals', 'projects', 'users', 'usermeta', 'meta');
+$gpdb->tables = array('translations', 'translation_sets', 'originals', 'projects', 'users', 'usermeta', 'meta', 'permissions');
 
 if ( defined('CUSTOM_USER_TABLE') )
     $gpdb->users = CUSTOM_USER_TABLE;
@@ -138,7 +138,7 @@ require_once( GP_PATH . GP_INC . 'template-links.php');
  * Define the full path to the object cache functions include
  */
 if ( !defined( 'GP_OBJECT_CACHE_FUNCTIONS_INCLUDE' ) ) {
-	define( 'GP_OBJECT_CACHE_FUNCTIONS_INCLUDE', BACKPRESS_PATH . 'functions.wp-object-cache.php' );
+	define( 'GP_OBJECT_CACHE_FUNCTIONS_INCLUDE', BACKPRESS_PATH . 'loader.wp-object-cache.php' );
 }
 
 // Load the database class
@@ -150,7 +150,7 @@ if ( GP_OBJECT_CACHE_FUNCTIONS_INCLUDE && !function_exists( 'wp_cache_init' ) ) 
 if ( !isset( $wp_object_cache ) && function_exists( 'wp_cache_init' ) ) {
 	wp_cache_init();
 	if ( function_exists('wp_cache_add_global_groups') ) {
-		wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta' ) );
+		wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'usermail', 'usernicename' ) );
 	}
 }
 
@@ -214,6 +214,7 @@ if ( !class_exists( 'WP_Auth' ) ) {
 }
 
 require_once( GP_PATH . GP_INC . 'user.php' );
+require_once( GP_PATH . GP_INC . 'permission.php' );
 
 require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {

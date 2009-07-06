@@ -7,6 +7,7 @@ class GP_UnitTestCase extends UnitTestCase {
     
     function GP_UnitTestCase($label = false) {
         $this->UnitTestCase($label);
+		
     }
     
     function setUp() {
@@ -17,9 +18,9 @@ class GP_UnitTestCase extends UnitTestCase {
         $gpdb->query("CREATE DATABASE ".GPDB_NAME.";");
         $gpdb->select( GPDB_NAME, $gpdb->dbh );
         gp_install();
-
+		wp_cache_flush();
         error_reporting(E_ALL);
-        ini_set('display_errors', 1);        
+        ini_set('display_errors', 1);
     }
 
 	function temp_filename() {
@@ -34,11 +35,4 @@ class GP_UnitTestCase extends UnitTestCase {
 		$dir = realpath($dir);
 		return tempnam($dir, 'testpomo');
 	}
-	
-	function test_a() {
-	    
-	}
-
 }
-
-?>

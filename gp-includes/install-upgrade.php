@@ -49,7 +49,8 @@ function gp_install() {
 	$gpdb->insert( $gpdb->projects, array('name' => 'Sample', 'slug' => 'sample', 'description' => 'A Sample Project', 'path' => 'sample') );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'GlotPress FTW', 'comment' => 'FTW means For The Win', 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
-	#$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
 	
+	// TODO: ask the user for an e-mail -- copy WordPress install process
+	GP_User::create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
 	return array();
 }
