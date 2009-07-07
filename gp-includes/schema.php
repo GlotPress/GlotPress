@@ -16,13 +16,13 @@ function gp_schema_get() {
 	*/
 	$gp_schema['translations'] = "CREATE TABLE IF NOT EXISTS `$gpdb->translations` (
 		`id` INT(10) NOT NULL auto_increment,
-		`original_id` INT(10) NOT NULL default 0,
-		`translation_set_id` INT(10) NOT NULL default 0,
+		`original_id` INT(10) DEFAULT NULL,
+		`translation_set_id` INT(10) DEFAULT NULL,
 		`translation_0` TEXT NOT NULL,
 		`translation_1` TEXT DEFAULT NULL,
 		`translation_2` TEXT DEFAULT NULL,
 		`translation_3` TEXT DEFAULT NULL,
-		`user_id` INT(10) NOT NULL default 0,
+		`user_id` INT(10) DEFAULT NULL,
 		`status` VARCHAR(20) NOT NULL default 'new',
 		PRIMARY KEY (`id`),
 		KEY `original_id` (`original_id`),
@@ -38,9 +38,9 @@ function gp_schema_get() {
     	`id` INT(10) NOT NULL auto_increment,
     	`name` VARCHAR(255) NOT NULL,
     	`slug` VARCHAR(255) NOT NULL,
-		`project_id` INT(10) NOT NULL default 0,
+		`project_id` INT(10) DEFAULT NULL,
     	`locale` VARCHAR(10) DEFAULT NULL,
-    	`user_id` INT(10) NOT NULL default 0,
+    	`user_id` INT(10) NOT NULL DEFAULT 0,
     	PRIMARY KEY (`id`),
     ) TYPE = MYISAM;";
 
@@ -51,7 +51,7 @@ function gp_schema_get() {
 	 */
 	$gp_schema['originals'] = "CREATE TABLE IF NOT EXISTS `$gpdb->originals` (
 		`id` INT(10) NOT NULL auto_increment,
-		`project_id` INT(10) NOT NULL default 0,
+		`project_id` INT(10) DEFAULT NULL,
 		`context` VARCHAR(255) DEFAULT NULL,
 		`singular` TEXT NOT NULL,
 		`plural` TEXT DEFAULT NULL,
@@ -72,7 +72,7 @@ function gp_schema_get() {
 		`slug` VARCHAR(255) NOT NULL,
 		`path` VARCHAR(255) NOT NULL,
 		`description` TEXT NOT NULL,
-		`parent_project_id` INT(10) NOT NULL default 0,
+		`parent_project_id` INT(10) default NULL,
 		PRIMARY KEY (`id`),
 		UNIQUE KEY `path` (`path`)
 	);";
@@ -114,8 +114,8 @@ function gp_schema_get() {
 		`meta_id` bigint(20) NOT NULL auto_increment,
 		`object_type` varchar(16) NOT NULL default 'gp_option',
 		`object_id` bigint(20) NOT NULL default 0,
-		`meta_key` varchar(255) default NULL,
-		`meta_value` longtext default NULL,
+		`meta_key` varchar(255) DEFAULT NULL,
+		`meta_value` longtext DEFAULT NULL,
 		PRIMARY KEY (`meta_id`),
 		KEY `object_type__meta_key` (`object_type`, `meta_key`),
 		KEY `object_type__object_id__meta_key` (`object_type`, `object_id`, `meta_key`)
@@ -124,7 +124,7 @@ function gp_schema_get() {
 	// permissions
 	$gp_schema['permissions'] = "CREATE TABLE IF NOT EXISTS `$gpdb->permissions` (
 		`id` INT(10) NOT NULL AUTO_INCREMENT,
-		`user_id` INT(10) NOT NULL DEFAULT 0,
+		`user_id` INT(10) DEFAULT NULL,
 		`action` VARCHAR(16) DEFAULT NULL,
 		`object_type` VARCHAR(16) DEFAULT NULL,
 		`object_id` BIGINT(20) DEFAULT NULL,
