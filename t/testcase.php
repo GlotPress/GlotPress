@@ -12,13 +12,13 @@ class GP_UnitTestCase extends UnitTestCase {
     
     function setUp() {
         global $gpdb;
+        error_reporting(E_ALL);
         // TODO: drop all tables, on most hosts users can't drop their databases
         $gpdb->query("DROP DATABASE ".GPDB_NAME.";");
         $gpdb->query("CREATE DATABASE ".GPDB_NAME.";");
         $gpdb->select( GPDB_NAME, $gpdb->dbh );
         gp_install();
 		wp_cache_flush();
-        error_reporting(E_ALL);
         ini_set('display_errors', 1);
     }
 
