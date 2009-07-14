@@ -12,7 +12,6 @@ class GP_UnitTestCase extends UnitTestCase {
     
     function setUp() {
         global $gpdb;
-        error_reporting(E_ALL ^ E_NOTICE);
         // TODO: drop all tables, on most hosts users can't drop their databases
         $gpdb->query("DROP DATABASE ".GPDB_NAME.";");
         $gpdb->query("CREATE DATABASE ".GPDB_NAME.";");
