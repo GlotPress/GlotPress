@@ -30,4 +30,9 @@ class GP_Project {
 		return GP_Project::map( $gpdb->get_results(
 			$gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE parent_project_id = %d", $this->id ) ) );
 	}
+	
+	function top_level() {
+		global $gpdb;
+		return GP_Project::map( $gpdb->get_results("SELECT * FROM $gpdb->projects WHERE parent_project_id IS NULL") );
+	}
 }
