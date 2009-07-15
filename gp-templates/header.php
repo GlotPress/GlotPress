@@ -12,6 +12,7 @@ wp_enqueue_style( 'base' );
 	<body>
 	    <div id="gp-js-message"></div>		
 		<h1>
+			<img alt="GlotPress logo" src="<?php echo gp_url_img( 'glotpress-logo.png' ); ?>" />
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
 			<?php if (GP_User::logged_in()):

@@ -88,7 +88,7 @@ function textareas( $entry, $index = 0 ) {
 	</tr>
 <?php endforeach; ?>
 </table>
-<p><?php gp_link( gp_url_project( $project, arary( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?></p>
+<p><?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?></p>
 <p><?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?></p>
 
 <?php gp_tmpl_footer(); ?>

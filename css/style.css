@@ -1,18 +1,24 @@
 html, body, textarea, input, textarea {
-	font-family: "Lucida Grande", "MS Trebuchet", sans-serif;
+	font-family: "Helvetica", "Arial", sans-serif;
 	color: #333;
 }
 input, textarea {
     font-size: 1em;
 }
 h1 {
-	font-family: "Georgia", serif;
-	font-weight: normal;
-	letter-spacing: -0.1em;
+	font-family: "HelveticaNeue-CondensedBold", "Arial", "Georgia", serif;
+	letter-spacing: -0.03em;
 	font-size: 2em;
 }
+h1 img {
+    vertical-align: text-bottom;
+    margin-right: 1em;
+}
+.breadcrumb a {
+    color: #3A7399;
+}
 #hello {
-	font-family: "Lucida Grande", "MS Trebuchet", sans-serif;
+	font-family: "Helvetica", "Arial", sans-serif;
 	color: #333;
 	font-weight: normal;
 	float: right;
@@ -66,7 +72,8 @@ table.translations tr.preview.status-current {
 	font-size: 85%;
 }
 .separator {
-	font-size: 85%;
+	font-size: 80%;
+	margin: 0.25em;
 }
 .clear {
 	clear: both;
