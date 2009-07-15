@@ -8,7 +8,7 @@
 function guess_uri()
 {
 	$schema = 'http://';
-	if ( isset( $_SERVER['HTTPS'] ) && strtolower( $_SERVER['HTTPS'] ) == 'on' ) {
+	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
 		$schema = 'https://';
 	}
 	$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'REQUEST_URI' ) );
