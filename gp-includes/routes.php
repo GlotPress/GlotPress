@@ -16,11 +16,15 @@ function gp_get_routes() {
 		'get:/logout' => array('GP_Route_Login', 'logout'),
 		"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 		"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
-		"get:/$project/$locale/$dir" => array('GP_Route_Project', 'translations_get'),
-		"post:/$project/$locale/$dir" => array('GP_Route_Project', 'translations_post'),
-		"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Project', 'import_translations_get'),
-		"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Project', 'import_translations_post'),
-		"/$project/$locale/$dir/export-translations" => array('GP_Route_Project', 'export_translations_get'),
+		
+		"get:/$project/edit" => array('GP_Route_Project', 'edit_get'),
+		"post:/$project/edit" => array('GP_Route_Project', 'edit_post'),
+		
+		"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
+		"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
+		"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
+		"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
+		"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 		// keep this one at the bottom, because it will catch anything
 		"/$path" => array('GP_Route_Project', 'index'),
 	) );
