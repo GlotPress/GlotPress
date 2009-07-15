@@ -26,7 +26,7 @@ class GP_Route_Project {
 		GP_Route_Project::_import('mo-file', 'MO', $block, array($project)) or
 		GP_Route_Project::_import('pot-file', 'PO', $block, array($project));
 
-		wp_redirect( gp_url_join( gp_url_project( $project ), 'import-originals' ) );
+		wp_redirect( gp_url_project( $project, 'import-originals' ) );
 	}
 
 	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
@@ -52,7 +52,7 @@ class GP_Route_Project {
 		GP_Route_Project::_import('mo-file', 'MO', $block, array($project, $locale, $translation_set)) or
 		GP_Route_Project::_import('pot-file', 'PO', $block, array($project, $locale, $translation_set));
 
-		wp_redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
+		wp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
 	}
 
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {

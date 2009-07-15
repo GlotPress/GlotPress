@@ -20,6 +20,7 @@ function gp_url_path( $url = null ) {
 function gp_url_join() {
 	$args = func_get_args();
 	if ( empty( $args ) ) return '';
+	$args = gp_array_flatten( $args );
 	$start_slash = gp_startswith( $args[0], '/' ) && trim($args[0], '/') != '' ? '/' : '';
 	$end_slash = gp_endswith( $args[ count($args) - 1 ] , '/' ) && trim($args[ count($args) - 1 ], '/') != '' ? '/' : '';
 	$args = array_map( create_function( '$x', 'return trim($x, "/");'), $args );
@@ -37,7 +38,7 @@ function gp_url($path, $query = null ) {
 
 function gp_url_project( $project_or_path, $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
-	return gp_url( gp_url_join( $project_path, $path ), $query );
+	return gp_url( array( $project_path, $path ), $query );
 }
 
 /**
@@ -45,5 +46,9 @@ function gp_url_project( $project_or_path, $path = '', $query = null ) {
  * /<project-path>/<locale>/<path>/<page>
  */
 function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = null ) {
-	return gp_url_project( $project_or_path, gp_url_join( $locale, $path ), $query );
+	return gp_url_project( $project_or_path, array( $locale, $path ), $query );
+}
+
+function gp_url_img( $file ) {
+	return gp_url( array( 'img', $file ) );
 }

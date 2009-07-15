@@ -9,7 +9,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	function setUp() {
         parent::setUp();
 		$this->url = 'http://example.org/gp/';
-		gp_update_option( 'uri', $this->url );		
+		gp_update_option( 'uri', $this->url );
 	}
 
 	function test_gp_url() {
@@ -37,5 +37,13 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$this->assertEqual( '/baba/', gp_url_join( '//', '/baba/' ) );
 		$this->assertEqual( '/', gp_url_join( '/', '/' ) );
 		$this->assertEqual( '/', gp_url_join( '///', '///' ) );
+	}
+	
+	function test_gp_url_with_arrays() {
+		$this->assertEqual( 'baba', gp_url_join( array( 'baba' ) ));
+		$this->assertEqual( 'baba/dyado', gp_url_join( array( 'baba', 'dyado' ) ));
+		// test some shortcuts -- arrays instead of gp_url_join calls
+ 		$this->assertEqual( gp_url_join( gp_url_project( '/x' ), 'import-originals' ), gp_url_project( '/x', 'import-originals' ));
+		$this->assertEqual( gp_url_project( '/x', gp_url_join( 'slug', 'slugslug', 'import-translations' ) ), gp_url_project( '/x', array( 'slug', 'slugslug', 'import-translations' ) ) );
 	}
 }
