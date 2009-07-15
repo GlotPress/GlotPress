@@ -9,7 +9,7 @@ foreach( glob("test_*.php") as $test_file ) {
 	include_once $test_file;
 }
 
-class All {
+class all {
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite();
