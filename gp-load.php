@@ -4,8 +4,8 @@
  */
 
 // Die if PHP is not new enough
-if ( version_compare( PHP_VERSION, '4.3', '<' ) ) {
-	die( sprintf( 'Your server is running PHP version %s but GlotPress requires at least 4.3', PHP_VERSION ) );
+if ( version_compare( PHP_VERSION, '5', '<' ) ) {
+	die( sprintf( "Your server is running PHP version %s but GlotPress requires at least 5.\n", PHP_VERSION ) );
 }
 
 //TODO: honor GP_DEBUG and show less errors
@@ -17,7 +17,7 @@ if ( empty($PHP_SELF) )
     $_SERVER['PHP_SELF'] = $PHP_SELF = preg_replace("/(\?.*)?$/",'',$_SERVER["REQUEST_URI"]);
 
 /**
- * Define GP_PATH as this files directory
+ * Define GP_PATH as this file's parent directory
  */
 define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 
