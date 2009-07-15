@@ -106,6 +106,7 @@ $gpdb->table_names = array('translations', 'translation_sets', 'originals', 'pro
 foreach( $gpdb->table_names as $table ) {
 	$gpdb->tables[$table] = false;
 }
+unset( $table );
 
 if ( defined('CUSTOM_USER_TABLE') )
     $gpdb->users = CUSTOM_USER_TABLE;
@@ -175,14 +176,14 @@ require_once( POMO_PATH . 'mo.php' );
 require_once( POMO_PATH . 'po.php' );
 require_once( GP_PATH . GP_INC . 'l10n.php' );
 
+require_once( GP_PATH . GP_INC . 'locales.php' );
+
+// Users and authentication
 if ( !class_exists( 'WP_Users' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-users.php' );
 	$wp_users_object = new WP_Users( $gpdb );
 }
 
-require_once( GP_PATH . GP_INC . 'locales.php' );
-
-// Users and roles
 
 if ( !defined( 'WP_AUTH_COOKIE_VERSION' ) ) {
 	define( 'WP_AUTH_COOKIE_VERSION', 2 );
@@ -193,11 +194,10 @@ if ( !class_exists( 'WP_Pass' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-pass.php' );
 }
 
-// WP_Users
-if ( !class_exists( 'WP_Users' ) ) {
-	require_once( BACKPRESS_PATH . 'class.wp-users.php' );
-	$wp_users_object = new WP_Users( $gpdb );
-}
+// We assume all variables set in this file will be global.
+// If the file is inovked inside a function, we will lose them all.
+// So, make all local variables, global
+gp_set_globals( get_defined_vars() );
 
 if ( !class_exists( 'WP_Auth' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-auth.php' );
@@ -212,9 +212,11 @@ if ( !class_exists( 'WP_Auth' ) ) {
 		'path' => gp_url_path(),
 		'name' => 'glotpress_logged_in',
 	);
-	$wp_auth_object = new WP_Auth( $bbdb, $wp_users_object, $cookies );
+	$wp_auth_object = new WP_Auth( $gpdb, $wp_users_object, $cookies );
 	unset( $cookies );
 }
+
+
 
 require_once( GP_PATH . GP_INC . 'user.php' );
 require_once( GP_PATH . GP_INC . 'permission.php' );
@@ -223,6 +225,11 @@ require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
 	require_once $route;
 }
+
+$gp_router = new GP_Router( gp_get_routes() );
+
+// Let's do it again, there are more variables added since last time we called it
+gp_set_globals( get_defined_vars() );
 
 if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 	return;
@@ -240,5 +247,4 @@ if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
 
 gp_populate_notices();
 
-$gp_router = new GP_Router( gp_get_routes() );
 $gp_router->route();

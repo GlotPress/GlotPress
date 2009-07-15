@@ -37,3 +37,12 @@ function gp_is_installed() {
 	$gpdb->suppress_errors(false);
 	return !((bool)$gpdb->last_error);
 }
+
+/**
+ * Makes all key/value pairs in $vars global variables
+ */
+function gp_set_globals( &$vars ) {
+	foreach( $vars as $name => &$value ) {
+		$GLOBALS[$name] = &$value;
+	}
+}
