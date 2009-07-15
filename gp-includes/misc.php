@@ -2,17 +2,51 @@
 
 /**
  * Retrieves a value from $_POST
+ *
+ * @param string $key name of post value
+ * @param mixed $default value to return if $_POST[$key] doesn't exist. Default is ''
+ * @return mixed $_POST[$key] if exists or $default
  */
 function gp_post( $key, $default = '' ) {
 	return gp_array_get( $_POST, $key, $default );
 }
 
+/**
+ * Retrieves a value from $_GET
+ *
+ * @param string $key name of get value
+ * @param mixed $default value to return if $_GET[$key] doesn't exist. Default is ''
+ * @return mixed $_GET[$key] if exists or $default
+ */
 function gp_get( $key, $default = '' ) {
 	return gp_array_get( $_GET, $key, $default );
 }
 
+/**
+ * Retrieves a value from $array
+ *
+ * @param array $array
+ * @param string $key name of array value
+ * @param mixed $default value to return if $array[$key] doesn't exist. Default is ''
+ * @return mixed $array[$key] if exists or $default
+ */
+
 function gp_array_get( $array, $key, $default = '' ) {
 	return isset( $array[$key] )? $array[$key] : $default;
+}
+
+/**
+ * Makes from an array of arrays a flat array.
+ *
+ * @param array $array the arra to flatten
+ * @return array flattenned array
+ */
+function gp_array_flatten( $array ) {
+    $res = array();
+    foreach( $array as $value ) {
+        $res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
+    }
+    return $res;
 }
 
 /**
@@ -103,7 +137,10 @@ function wp_sanitize_redirect($location) {
 }
 endif;
 
-function gp_parity_factory( ) {
+/**
+ * Returns a function, which returns the string "odd" or the string "even" alternatively.
+ */
+function gp_parity_factory() {
 	return create_function( '', 'static $parity = "odd"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
 }
 
@@ -120,7 +157,7 @@ function gp_limit_for_page( $page, $per_page ) {
 }
 
 
-function _gp_get_key( $key, $default_key = false ) {
+function _gp_get_secret_key( $key, $default_key = false ) {
 	if ( !$default_key ) {
 		global $gp_default_secret_key;
 		$default_key = $gp_default_secret_key;
@@ -161,26 +198,26 @@ function _gp_get_salt( $constants, $option = false ) {
 
 if ( !function_exists( 'gp_salt' ) ) :
 function gp_salt($scheme = 'auth') {
-	$secret_key = _gp_get_key( 'GP_SECRET_KEY' );
+	$secret_key = _gp_get_secret_key( 'GP_SECRET_KEY' );
 
 	switch ($scheme) {
 		case 'auth':
-			$secret_key = _gp_get_key( 'GP_AUTH_KEY', $secret_key );
+			$secret_key = _gp_get_secret_key( 'GP_AUTH_KEY', $secret_key );
 			$salt = _gp_get_salt( array( 'GP_AUTH_SALT', 'GP_SECRET_SALT' ) );
 			break;
 
 		case 'secure_auth':
-			$secret_key = _gp_get_key( 'GP_SECURE_AUTH_KEY', $secret_key );
+			$secret_key = _gp_get_secret_key( 'GP_SECURE_AUTH_KEY', $secret_key );
 			$salt = _gp_get_salt( 'GP_SECURE_AUTH_SALT' );
 			break;
 
 		case 'logged_in':
-			$secret_key = _gp_get_key( 'GP_LOGGED_IN_KEY', $secret_key );
+			$secret_key = _gp_get_secret_key( 'GP_LOGGED_IN_KEY', $secret_key );
 			$salt = _gp_get_salt( 'GP_LOGGED_IN_SALT' );
 			break;
 
 		case 'nonce':
-			$secret_key = _gp_get_key( 'GP_NONCE_KEY', $secret_key );
+			$secret_key = _gp_get_secret_key( 'GP_NONCE_KEY', $secret_key );
 			$salt = _gp_get_salt( 'GP_NONCE_SALT' );
 			break;
 

@@ -18,4 +18,10 @@ class GP_Test_Misc extends GP_UnitTestCase {
 		$this->assertEqual( "odd", $gen() );
 		$this->assertEqual( "odd", $concurrent() );
 	}
+	
+	function test_gp_array_flatten() {
+	    $this->assertEqual( array(), gp_array_flatten( array() ) );
+        $this->assertEqual( array( 1, 2, 3 ), gp_array_flatten( array( 1, array( 2, 3 ) ) ) );
+        $this->assertEqual( array( 1, 2, 3, 4, 5, 6, 7 ), gp_array_flatten( array( 1, array( 2, array( 3, 4 ), 5, ), 6, array( 7 ) ) ) );
+	}
 }
