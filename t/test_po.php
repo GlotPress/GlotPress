@@ -3,8 +3,6 @@ require_once('init.php');
 
 class GP_Test_PO extends GP_UnitTestCase {
     function GP_Test_PO() {
-        $this->UnitTestCase('PO');
-
 		// not so random wordpress.pot string -- multiple lines
 		$this->mail = "Your new WordPress blog has been successfully set up at:
 
@@ -39,86 +37,86 @@ http://wordpress.org/
     }
 
 	function test_prepend_each_line() {
-		$this->assertEqual('baba_', PO::prepend_each_line('', 'baba_'));
-		$this->assertEqual('baba_dyado', PO::prepend_each_line('dyado', 'baba_'));
-		$this->assertEqual("# baba\n# dyado\n# \n", PO::prepend_each_line("baba\ndyado\n\n", '# '));
+		$this->assertEquals('baba_', PO::prepend_each_line('', 'baba_'));
+		$this->assertEquals('baba_dyado', PO::prepend_each_line('dyado', 'baba_'));
+		$this->assertEquals("# baba\n# dyado\n# \n", PO::prepend_each_line("baba\ndyado\n\n", '# '));
 	}
 
 	function test_poify() {
 		//simple
-		$this->assertEqual('"baba"', PO::poify('baba'));
+		$this->assertEquals('"baba"', PO::poify('baba'));
 		//long word		
-		$this->assertEqual($this->po_a90, PO::poify($this->a90));
+		$this->assertEquals($this->po_a90, PO::poify($this->a90));
 		// tab
-		$this->assertEqual('"ba\tba"', PO::poify("ba\tba"));
+		$this->assertEquals('"ba\tba"', PO::poify("ba\tba"));
 		// do not add leading empty string of one-line string ending on a newline
-		$this->assertEqual('"\\\\a\\\\n\\n"', PO::poify("\a\\n\n"));
+		$this->assertEquals('"\\\\a\\\\n\\n"', PO::poify("\a\\n\n"));
 		// backslash
-		$this->assertEqual('"ba\\\\ba"', PO::poify('ba\\ba'));
+		$this->assertEquals('"ba\\\\ba"', PO::poify('ba\\ba'));
 		// random wordpress.pot string
 		$src = 'Categories can be selectively converted to tags using the <a href="%s">category to tag converter</a>.';
-		$this->assertEqual("\"Categories can be selectively converted to tags using the <a href=\\\"%s\\\">category to tag converter</a>.\"", PO::poify($src));
+		$this->assertEquals("\"Categories can be selectively converted to tags using the <a href=\\\"%s\\\">category to tag converter</a>.\"", PO::poify($src));
 
-		$this->assertEqual($this->po_mail, PO::poify($this->mail));
+		$this->assertEquals($this->po_mail, PO::poify($this->mail));
 	}
 	
 	function test_unpoify() {
-		$this->assertEqual('baba', PO::unpoify('"baba"'));
-		$this->assertEqual("baba\ngugu", PO::unpoify('"baba\n"'."\t\t\t\n".'"gugu"'));
-		$this->assertEqual($this->a90, PO::unpoify($this->po_a90));
-		$this->assertEqual('\\t\\n', PO::unpoify('"\\\\t\\\\n"'));
+		$this->assertEquals('baba', PO::unpoify('"baba"'));
+		$this->assertEquals("baba\ngugu", PO::unpoify('"baba\n"'."\t\t\t\n".'"gugu"'));
+		$this->assertEquals($this->a90, PO::unpoify($this->po_a90));
+		$this->assertEquals('\\t\\n', PO::unpoify('"\\\\t\\\\n"'));
 		// wordwrapped
-		$this->assertEqual('babadyado', PO::unpoify("\"\"\n\"baba\"\n\"dyado\""));
-		$this->assertEqual($this->mail, PO::unpoify($this->po_mail));
+		$this->assertEquals('babadyado', PO::unpoify("\"\"\n\"baba\"\n\"dyado\""));
+		$this->assertEquals($this->mail, PO::unpoify($this->po_mail));
 	}
 
 	function test_export_entry() {
 		$entry = new Translation_Entry(array('singular' => 'baba'));
-		$this->assertEqual("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
 		// plural
 		$entry = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas'));
-		$this->assertEqual('msgid "baba"
+		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] ""
 msgstr[1] ""', PO::export_entry($entry));
 		$entry = new Translation_Entry(array('singular' => 'baba', 'translator_comments' => "baba\ndyado"));
-		$this->assertEqual('#  baba
+		$this->assertEquals('#  baba
 #  dyado
 msgid "baba"
 msgstr ""', PO::export_entry($entry));
 		$entry = new Translation_Entry(array('singular' => 'baba', 'extracted_comments' => "baba"));
-		$this->assertEqual('#. baba
+		$this->assertEquals('#. baba
 msgid "baba"
 msgstr ""', PO::export_entry($entry));
 		$entry = new Translation_Entry(array(
 			'singular' => 'baba',
 			'extracted_comments' => "baba",
 			'references' => range(1, 29)));
-		$this->assertEqual('#. baba
+		$this->assertEquals('#. baba
 #: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
 #: 29
 msgid "baba"
 msgstr ""', PO::export_entry($entry));
 		$entry = new Translation_Entry(array('singular' => 'baba', 'translations' => array()));
-		$this->assertEqual("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"", PO::export_entry($entry));
 
 		$entry = new Translation_Entry(array('singular' => 'baba', 'translations' => array('куку', 'буку')));
-		$this->assertEqual("msgid \"baba\"\nmsgstr \"куку\"", PO::export_entry($entry));
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"куку\"", PO::export_entry($entry));
 
 		$entry = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку')));
-		$this->assertEqual('msgid "baba"
+		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] "кукубуку"', PO::export_entry($entry));
 
 		$entry = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга')));
-		$this->assertEqual('msgid "baba"
+		$this->assertEquals('msgid "baba"
 msgid_plural "babas"
 msgstr[0] "кукубуку"
 msgstr[1] "кукуруку"
 msgstr[2] "бабаяга"', PO::export_entry($entry));
 		// context
 		$entry = new Translation_Entry(array('context' => 'ctxt', 'singular' => 'baba', 'plural' => 'babas', 'translations' => array('кукубуку', 'кукуруку', 'бабаяга'), 'flags' => array('fuzzy', 'php-format')));
-		$this->assertEqual('#, fuzzy, php-format
+		$this->assertEquals('#, fuzzy, php-format
 msgctxt "ctxt"
 msgid "baba"
 msgid_plural "babas"
@@ -133,14 +131,14 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$po = new PO();
 		$po->add_entry($entry);
 		$po->add_entry($entry2);
-		$this->assertEqual("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export_entries());
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export_entries());
 	}
 
 	function test_export_headers() {
 		$po = new PO();
 		$po->set_header('Project-Id-Version', 'WordPress 2.6-bleeding');
 		$po->set_header('POT-Creation-Date', '2008-04-08 18:00+0000');
-		$this->assertEqual("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"", $po->export_headers());
+		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"", $po->export_headers());
 	}
 
 	function test_export() {
@@ -151,8 +149,8 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$po->set_header('POT-Creation-Date', '2008-04-08 18:00+0000');
 		$po->add_entry($entry);
 		$po->add_entry($entry2);
-		$this->assertEqual("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export(false));
-		$this->assertEqual("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"\n\nmsgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export());
+		$this->assertEquals("msgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export(false));
+		$this->assertEquals("msgid \"\"\nmsgstr \"\"\n\"Project-Id-Version: WordPress 2.6-bleeding\\n\"\n\"POT-Creation-Date: 2008-04-08 18:00+0000\\n\"\n\nmsgid \"baba\"\nmsgstr \"\"\n\nmsgid \"dyado\"\nmsgstr \"\"", $po->export());
 	}
 
 
@@ -167,41 +165,41 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 		$temp_fn = $this->temp_filename();
 		$po->export_to_file($temp_fn, false);
-		$this->assertEqual($po->export(false), file_get_contents($temp_fn));
+		$this->assertEquals($po->export(false), file_get_contents($temp_fn));
 
 		$temp_fn2 = $this->temp_filename();
 		$po->export_to_file($temp_fn2);
-		$this->assertEqual($po->export(), file_get_contents($temp_fn2));
+		$this->assertEquals($po->export(), file_get_contents($temp_fn2));
 	}
 	
 	function test_import_from_file() {
 		$po = new PO();
 		$res = $po->import_from_file('data/simple.po');
-		$this->assertEqual(true, $res);
+		$this->assertEquals(true, $res);
 
-		$this->assertEqual(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Plural-Forms' => 'nplurals=2; plural=n != 1;'), $po->headers);
+		$this->assertEquals(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Plural-Forms' => 'nplurals=2; plural=n != 1;'), $po->headers);
 		
 		$simple_entry = new Translation_Entry(array('singular' => 'moon',));
-		$this->assertEqual($simple_entry, $po->entries[$simple_entry->key()]);
+		$this->assertEquals($simple_entry, $po->entries[$simple_entry->key()]);
 		
 		$all_types_entry = new Translation_Entry(array('singular' => 'strut', 'plural' => 'struts', 'context' => 'brum',
 			'translations' => array('ztrut0', 'ztrut1', 'ztrut2')));
-		$this->assertEqual($all_types_entry, $po->entries[$all_types_entry->key()]);
+		$this->assertEquals($all_types_entry, $po->entries[$all_types_entry->key()]);
 		
 		$multiple_line_entry = new Translation_Entry(array('singular' => 'The first thing you need to do is tell Blogger to let WordPress access your account. You will be sent back here after providing authorization.', 'translations' => array("baba\ndyadogugu")));
-		$this->assertEqual($multiple_line_entry, $po->entries[$multiple_line_entry->key()]);
+		$this->assertEquals($multiple_line_entry, $po->entries[$multiple_line_entry->key()]);
 		
 		$multiple_line_all_types_entry = new Translation_Entry(array('context' => 'context', 'singular' => 'singular',
 			'plural' => 'plural', 'translations' => array('translation0', 'translation1', 'translation2')));
-		$this->assertEqual($multiple_line_all_types_entry, $po->entries[$multiple_line_all_types_entry->key()]);
+		$this->assertEquals($multiple_line_all_types_entry, $po->entries[$multiple_line_all_types_entry->key()]);
 		
 		$comments_entry = new Translation_Entry(array('singular' => 'a', 'translator_comments' => "baba\nbrubru",
 			'references' => array('wp-admin/x.php:111', 'baba:333', 'baba'), 'extracted_comments' => "translators: buuu",
 			'flags' => array('fuzzy')));
-		$this->assertEqual($comments_entry, $po->entries[$comments_entry->key()]);
+		$this->assertEquals($comments_entry, $po->entries[$comments_entry->key()]);
 			
 		$end_quote_entry = new Translation_Entry(array('singular' => 'a"'));
-		$this->assertEqual($end_quote_entry, $po->entries[$end_quote_entry->key()]);
+		$this->assertEquals($end_quote_entry, $po->entries[$end_quote_entry->key()]);
 
 	}
 	

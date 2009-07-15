@@ -2,11 +2,7 @@
 require_once('init.php');
 
 class GP_Test_Translation_Entry extends GP_UnitTestCase {
-
-    function GP_Test_Translation_Entry() {
-
-    }
-
+	
     function test_create_entry() {
 		// no singular => empty object
 		$entry = new Translation_Entry();
@@ -21,12 +17,12 @@ class GP_Test_Translation_Entry extends GP_UnitTestCase {
 			'references' => 'should be array here',
 			'flags' => 'baba',
 		));
-		$this->assertEqual('baba', $entry->singular);
-		$this->assertEqual('babas', $entry->plural);
+		$this->assertEquals('baba', $entry->singular);
+		$this->assertEquals('babas', $entry->plural);
 		$this->assertTrue($entry->is_plural);
-		$this->assertEqual(array('баба', 'баби'), $entry->translations);
-		$this->assertEqual(array(), $entry->references);
-		$this->assertEqual(array(), $entry->flags);
+		$this->assertEquals(array('баба', 'баби'), $entry->translations);
+		$this->assertEquals(array(), $entry->references);
+		$this->assertEquals(array(), $entry->flags);
 	}
 
 	function test_key() {
@@ -34,10 +30,10 @@ class GP_Test_Translation_Entry extends GP_UnitTestCase {
 		$entry_dyado = new Translation_Entry(array('singular' => 'dyado',));
 		$entry_baba_ctxt = new Translation_Entry(array('singular' => 'baba', 'context' => 'x'));
 		$entry_baba_plural = new Translation_Entry(array('singular' => 'baba', 'plural' => 'babas'));
-		$this->assertEqual($entry_baba->key(), $entry_baba_plural->key());
-		$this->assertNotEqual($entry_baba->key(), $entry_baba_ctxt->key());
-		$this->assertNotEqual($entry_baba_plural->key(), $entry_baba_ctxt->key());
-		$this->assertNotEqual($entry_baba->key(), $entry_dyado->key());
+		$this->assertEquals($entry_baba->key(), $entry_baba_plural->key());
+		$this->assertNotEquals($entry_baba->key(), $entry_baba_ctxt->key());
+		$this->assertNotEquals($entry_baba_plural->key(), $entry_baba_ctxt->key());
+		$this->assertNotEquals($entry_baba->key(), $entry_dyado->key());
 	}
 
 

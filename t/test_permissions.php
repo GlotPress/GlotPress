@@ -2,10 +2,6 @@
 require_once('init.php');
 
 class GP_Test_Permissions extends GP_UnitTestCase {
-    function GP_Test_Permissions() {
-        $this->UnitTestCase('Permissions');
-	}
-	
 	function test_create_find() {
 		$args = array( 'user' => 1, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => 5 );
 		GP_Permission::create( $args );
@@ -26,6 +22,6 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		unset( $actual->id );
 		$expected->user_id = $expected->user;
 		unset( $expected->user );
-		$this->assertEqual( $expected, $actual );
+		$this->assertEquals( $expected, $actual );
 	}
 }
