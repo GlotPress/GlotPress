@@ -18,7 +18,7 @@ function textareas( $entry, $index = 0 ) {
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
 		<ul class="refs">
 <?php foreach($entry->references as $reference):
-			list( $file, $line ) = explode( ':', $reference );
+			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
 			// TODO: keep the trac/reference link in both project and let the user override it
 			// so that she can use textmate or whatever scheme she wants
 ?>
