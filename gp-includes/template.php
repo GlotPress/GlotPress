@@ -49,6 +49,14 @@ function gp_h( $s ) {
 	return wp_specialchars( $s, ENT_NOQUOTES, false, true );
 }
 
+/**
+ * TODO: sync with WordPress
+ */
+function gp_a( $s ) {
+	return wp_specialchars( $s, ENT_NOQUOTES, false, true );
+}
+
+
 function gp_attr( $s ) {
 	return attribute_escape( $s );
 }
@@ -71,4 +79,18 @@ function gp_breadcrumb( $breadcrumb = null ) {
 	} else {
 		return apply_filters( 'gp_breadcrumb', '' );
 	}
+}
+
+function gp_js_focus_on( $html_id ) {
+	return '<script type="text/javascript">document.getElementById("project[name]").focus();</script>';
+}
+
+function gp_select( $name_and_id, $options, $selected_key ) {
+	$res = "<select name='" . gp_a( $name_and_id ) . "' id='" . gp_a( $name_and_id ) . "'>\n";
+	foreach( $options as $value => $label ) {
+		$selected = $value == $selected_key? " selected='selected'" : '';
+		$res .= "\t<option value='".gp_a( $value )."' $selected>" . gp_h( $label ) . "</option>\n";
+	}
+	$res .= "</select>\n";
+	return $res;
 }

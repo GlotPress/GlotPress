@@ -4,7 +4,7 @@ require_once('init.php');
 class GP_Test_User extends GP_UnitTestCase {
 	
 	function test_can() {
-		$user = new GP_User( array( 'id' => 1 ) );
+		$user = new GP_User( array( 'id' => 111 ) );
 		$args = array( 'user' => $user, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => 1 );
 		GP_Permission::create( $args );
 		$this->assertEquals( true, $user->can( 'write', 'translation-set', 1 ) );
@@ -30,4 +30,5 @@ class GP_Test_User extends GP_UnitTestCase {
 		$from_db = GP_User::by_login( 'pijo' );
 		$this->assertEquals( $user->id, $from_db->id );
 	}
+	
 }

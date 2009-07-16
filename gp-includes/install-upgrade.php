@@ -51,6 +51,7 @@ function gp_install() {
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
 	
 	// TODO: ask the user for an e-mail -- copy WordPress install process
-	GP_User::create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
+	$admin = GP_User::create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
+	GP_Permission::create( array( 'user' => $admin, 'action' => 'admin' ) );
 	return array();
 }

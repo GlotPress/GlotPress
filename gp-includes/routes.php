@@ -17,8 +17,8 @@ function gp_get_routes() {
 		"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 		"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
 		
-		"get:/$project/edit" => array('GP_Route_Project', 'edit_get'),
-		"post:/$project/edit" => array('GP_Route_Project', 'edit_post'),
+		"get:/$project/_edit" => array('GP_Route_Project', 'edit_get'),
+		"post:/$project" => array('GP_Route_Project', 'edit_post'),
 		
 		"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
 		"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),

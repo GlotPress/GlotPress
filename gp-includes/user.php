@@ -28,8 +28,8 @@ class GP_User {
 	 * @static
 	 */
 	function coerce( $user ) {
-		if ( is_wp_error($user) || !$user )
-			return $user;
+		if ( is_wp_error( $user ) || !$user )
+			return false;
 		else
 			return new GP_User( $user );
 	}
@@ -39,7 +39,8 @@ class GP_User {
 	 */
 	function logged_in() {
 		global $wp_auth_object;
-		return GP_User::coerce( $wp_auth_object->get_current_user() );
+		$coerced = GP_User::coerce( $wp_auth_object->get_current_user() );
+		return ( $coerced && $coerced->id );
 	}
 	
 	/**
@@ -47,7 +48,10 @@ class GP_User {
 	 */
 	function current() {
 		global $wp_auth_object;
-		return GP_User::coerce( $wp_auth_object->get_current_user() );
+		if ( self::logged_in() )
+			return GP_User::coerce( $wp_auth_object->get_current_user() );
+		else
+			return new GP_User( array( 'id' => 0, ) );
 	}
 	
 	/**

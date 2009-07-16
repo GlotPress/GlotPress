@@ -19,6 +19,19 @@ function gp_link_project() {
 	echo call_user_func_array('gp_link_project_get', $args);
 }
 
+function gp_link_project_edit_get( &$project_or_path, $text = false, $attrs = array() ) {
+	if ( !GP_User::current()->can('admin')) {
+		return '';
+	}
+	$text = $text? $text : __( 'Edit' );
+	return gp_link_get( gp_url_project( $project_or_path, '_edit' ), $text, $attrs );
+}
+
+function gp_link_project_edit() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_project_edit_get', $args);
+}
+
 function gp_link_home_get() {
 	return gp_link_get( gp_url( '/' ), __( 'Home' ), array( 'title' => __('Home Is Where The Heart Is') ) );
 }

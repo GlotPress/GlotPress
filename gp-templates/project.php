@@ -10,7 +10,7 @@ gp_tmpl_header();
 <?php if ($sub_projects): ?>
 <ul>
 <?php foreach($sub_projects as $sub_project) ?>
-	<li><?php gp_link_project( $sub_project, gp_h( $sub_project->name )); ?></li>
+	<li><?php gp_link_project( $sub_project, gp_h( $sub_project->name )); ?> <?php gp_link_project_edit( $sub_project ); ?></li>
 </ul>	
 <?php endif; ?>
 <?php _e('Translations:'); ?>

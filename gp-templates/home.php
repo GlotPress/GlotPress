@@ -5,6 +5,6 @@ gp_tmpl_header();
 ?>
 <h2>Projects</h2>
 <?php foreach($projects as $project): ?>
-	<li><?php gp_link_project( $project, gp_h( $project->name ) ); ?></li>
+	<li><?php gp_link_project( $project, gp_h( $project->name ) ); ?> <?php gp_link_project_edit( $project ); ?></li>
 <?php endforeach; ?>
 <?php gp_tmpl_footer(); ?>

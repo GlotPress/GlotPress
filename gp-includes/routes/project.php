@@ -11,6 +11,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function import_originals_get( $project_path ) {
 		$project = GP_Project::by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
 		$kind = 'originals';
 		gp_tmpl_load( 'project-import', get_defined_vars() );
 	}
@@ -48,5 +49,57 @@ class GP_Route_Project extends GP_Route_Main {
 		$gpdb->update( $gpdb->originals, array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
 		// TODO: were they really added?
 		gp_notice_set( sprintf(__("%s strings were added."), count($originals_added) ) );
+	}
+	
+	function _options_from_projects( $projects ) {
+		$tree = array();
+		$top = array();
+		foreach( $projects as $p ) {
+			$tree[$p->id] = array( 'self' => $p, 'children' => array(), 'level' => 0 );
+			if ( $p->parent_project_id ) {
+				$tree[$p->parent_project_id]['children'][] = $p->id;
+				$tree[$p->id]['level'] = $tree[$p->parent_project_id]['level'] + 1;
+			} else {
+				$top[] = $p->id;
+			}
+		}
+		$options = array( '' => __('No parent') );
+		$stack = array();
+		// TODO: do not start only from top nodes, we can have orphaned ones, whicl will be left out this way
+		foreach( $top as $top_id ) {
+			$stack = array( $top_id );
+			while ( !empty( $stack ) ) {
+				$id = array_pop( $stack );
+				$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
+				foreach( $tree[$id]['children'] as $child_id ) {
+					$stack[] = $child_id;
+				}
+			}
+		}
+		return $options;
+	}
+	
+	function edit_get( $project_path ) {
+		$project = GP_Project::by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$form_action = gp_url_project( $project );
+		$options = self::_options_from_projects( GP_Project::all() );
+		gp_tmpl_load( 'project-edit', get_defined_vars() );
+	}
+	
+	function edit_post( $project_path ) {
+		// TODO: check permissions for project and parent project
+		$project = GP_Project::by_path( $project_path );
+		$new_project = gp_post( 'project' );
+		if ( !$project ) gp_tmpl_404();
+		// validate here? or in GP_Project?
+		if ( $project->id == $new_project['parent_project_id'] )
+			gp_notice_set( __('The project cannot be parent of itself!'), 'error' );
+		elseif ( !is_null( $project->save( $new_project ) ) )
+			gp_notice_set( __('The project was saved.') );
+		else
+			gp_notice_set( __('Error in saving project!'), 'error' );
+		$project->reload();
+		wp_redirect( gp_url_project( $project, '_edit') );
 	}
 }

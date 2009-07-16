@@ -22,7 +22,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . <?php echo $path; ?>index.php [L]
 &lt;/IfModule&gt;
 # END GlotPress
-	
 </pre>
+The defult username is <code>admin</code>, whose password is simple <code>a</code>.
 </p>
 <?php gp_tmpl_footer(); ?>
