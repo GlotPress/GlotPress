@@ -131,10 +131,6 @@ require_once( GP_PATH . GP_INC . 'misc.php');
 require_once( GP_PATH . GP_INC . 'url.php');
 require_once( GP_PATH . GP_INC . 'strings.php');
 
-require_once GP_PATH . GP_INC . 'project.php';
-require_once GP_PATH . GP_INC . 'translation.php';
-require_once GP_PATH . GP_INC . 'translation-set.php';
-
 require_once( GP_PATH . GP_INC . 'template.php');
 require_once( GP_PATH . GP_INC . 'template-links.php');
 
@@ -216,10 +212,9 @@ if ( !class_exists( 'WP_Auth' ) ) {
 	unset( $cookies );
 }
 
-
-
-require_once( GP_PATH . GP_INC . 'user.php' );
-require_once( GP_PATH . GP_INC . 'permission.php' );
+foreach( glob( GP_PATH . GP_INC . 'things/*.php') as $thing ) {
+	require_once $thing;
+}
 
 require_once( GP_PATH . GP_INC . 'routes.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
