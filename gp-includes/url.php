@@ -38,7 +38,7 @@ function gp_url($path, $query = null ) {
 
 function gp_url_project( $project_or_path, $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
-	return gp_url( array( $project_path, $path ), $query );
+	return gp_url( array( 'project', $project_path, $path ), $query );
 }
 
 /**

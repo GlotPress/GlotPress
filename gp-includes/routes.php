@@ -6,7 +6,7 @@
 function gp_get_routes() {
 	$dir = '([^/]+)';
 	$path = '(.+?)';
-	$project = $path;
+	$project = 'project/'.$path;
 	$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 	// overall structure
 	return apply_filters( 'routes', array(
@@ -14,6 +14,7 @@ function gp_get_routes() {
 		'get:/login' => array('GP_Route_Login', 'login_get'),
 		'post:/login' => array('GP_Route_Login', 'login_post'),
 		'get:/logout' => array('GP_Route_Login', 'logout'),
+		
 		"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 		"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
 		
@@ -25,8 +26,10 @@ function gp_get_routes() {
 		"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
 		"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
 		"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
-		// keep this one at the bottom, because it will catch anything
-		"/$path" => array('GP_Route_Project', 'index'),
+		// keep this one at the bottom of the project, because it will catch anything starting with project
+		"/$project" => array('GP_Route_Project', 'index'),
+		
+		
 	) );
 }
 
