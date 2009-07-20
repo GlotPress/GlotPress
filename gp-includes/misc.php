@@ -59,7 +59,7 @@ function gp_array_flatten( $array ) {
  * A key has one message. The default is 'notice'.
  */
 function gp_notice_set( $message, $key = 'notice' ) {
-	setcookie( '_gp_notice_'.$key, $message );
+	setcookie( '_gp_notice_'.$key, $message, 0, gp_url_path() );
 }
 
 /**
@@ -80,7 +80,7 @@ function gp_populate_notices() {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
 			$gp_redirect_notices[$suffix] = $value;
 		}
-		setcookie( $key, '' );
+		setcookie( $key, '', 0, gp_url_path() );
 	}
 }
 
