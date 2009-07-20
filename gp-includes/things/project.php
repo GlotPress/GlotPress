@@ -119,14 +119,6 @@ class GP_Project {
 		return GP_Project::map( $gpdb->get_results("SELECT * FROM $gpdb->projects") );
 	}
 
-	/**
-	 * @static
-	 */
-	function get_results() {
-		global $gpdb;
-		return GP_Project::map( $gpdb->get_results( $query ) );
-	}
-	
 	function save( $args = false ) {
 		global $gpdb;
 		if ( !$args ) $args = get_object_vars( $this );
