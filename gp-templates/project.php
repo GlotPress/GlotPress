@@ -9,8 +9,9 @@ gp_tmpl_header();
 ?>
 <?php if ($sub_projects): ?>
 <ul>
-<?php foreach($sub_projects as $sub_project) ?>
+<?php foreach($sub_projects as $sub_project): ?>
 	<li><?php gp_link_project( $sub_project, gp_h( $sub_project->name )); ?> <?php gp_link_project_edit( $sub_project ); ?></li>
+<?php endforeach; ?>
 </ul>	
 <?php endif; ?>
 <?php _e('Translations:'); ?>
@@ -22,4 +23,5 @@ gp_tmpl_header();
 <?php endforeach; ?>
 </ul>
 <p><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></p>
+<p><?php gp_link( gp_url( '/project/_new', array( 'parent_project_id' => $project->id ) ), __('Create a New Sub-Project') ); ?></p>
 <?php gp_tmpl_footer(); ?>

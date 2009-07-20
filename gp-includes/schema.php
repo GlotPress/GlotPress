@@ -74,7 +74,7 @@ function gp_schema_get() {
 		`description` TEXT NOT NULL,
 		`parent_project_id` INT(10) default NULL,
 		PRIMARY KEY (`id`),
-		UNIQUE KEY `path` (`path`)
+		KEY `path` (`path`)
 	);";
 
 	/*

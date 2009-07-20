@@ -17,8 +17,16 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( 'root/cool/p2/p3', $p3->path);
 	}
 	
-	function test_save_update_path() {
-		
+	function test_valid_path_on_create() {
+		$root = GP_Project::create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root' ) );
+		$p1 = GP_Project::create( array( 'name' => 'P1', 'slug' => 'p1', 'parent_project_id' => $root->id ) );
+		$q = GP_Project::create( array( 'name' => 'Invader', 'slug' => 'invader', 'path' => '' ) );
+		$root->reload();
+		$p1->reload();
+		$q->reload();
+		$this->assertEquals( 'root', $root->path );
+		$this->assertEquals( 'root/p1', $p1->path );
+		$this->assertEquals( 'invader', $q->path );
 	}
 	
 	function test_save_no_args() {

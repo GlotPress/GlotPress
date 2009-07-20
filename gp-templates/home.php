@@ -7,4 +7,5 @@ gp_tmpl_header();
 <?php foreach($projects as $project): ?>
 	<li><?php gp_link_project( $project, gp_h( $project->name ) ); ?> <?php gp_link_project_edit( $project ); ?></li>
 <?php endforeach; ?>
+<p><?php gp_link( gp_url( '/project/_new' ), __('Create a New Project') ); ?></p>
 <?php gp_tmpl_footer(); ?>

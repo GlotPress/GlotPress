@@ -4,8 +4,8 @@
  */
 
 // Die if PHP is not new enough
-if ( version_compare( PHP_VERSION, '5', '<' ) ) {
-	die( sprintf( "Your server is running PHP version %s but GlotPress requires at least 5.\n", PHP_VERSION ) );
+if ( version_compare( PHP_VERSION, '5.2', '<' ) ) {
+	die( sprintf( "Your server is running PHP version %s but GlotPress requires at least 5.2.\n", PHP_VERSION ) );
 }
 
 //TODO: honor GP_DEBUG and show less errors

@@ -19,7 +19,10 @@ function gp_get_routes() {
 		"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
 		
 		"get:/$project/_edit" => array('GP_Route_Project', 'edit_get'),
-		"post:/$project" => array('GP_Route_Project', 'edit_post'),
+		"post:/$project/_edit" => array('GP_Route_Project', 'edit_post'),
+		
+		"get:/project/_new" => array('GP_Route_Project', 'new_get'),
+		"post:/project/_new" => array('GP_Route_Project', 'new_post'),
 		
 		"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
 		"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
@@ -32,7 +35,6 @@ function gp_get_routes() {
 		
 	) );
 }
-
 
 class GP_Router {
 	
@@ -63,6 +65,7 @@ class GP_Router {
 				if ( gp_startswith( $re, $method.':' ) ) {
 					if ( $method != $request_method ) continue;
 					$re = substr( $re, strlen( $method.':' ));
+					break;
 				}
 			}
 			if ( preg_match("@^$re$@", $request_uri, $matches ) ) {

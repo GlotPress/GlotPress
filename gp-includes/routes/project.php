@@ -52,27 +52,28 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 	
 	function _options_from_projects( $projects ) {
+		// TODO: mark which nodes are editable by the current user
 		$tree = array();
 		$top = array();
 		foreach( $projects as $p ) {
-			$tree[$p->id] = array( 'self' => $p, 'children' => array(), 'level' => 0 );
+			$tree[$p->id]['self'] = $p;
 			if ( $p->parent_project_id ) {
 				$tree[$p->parent_project_id]['children'][] = $p->id;
-				$tree[$p->id]['level'] = $tree[$p->parent_project_id]['level'] + 1;
 			} else {
 				$top[] = $p->id;
 			}
 		}
 		$options = array( '' => __('No parent') );
 		$stack = array();
-		// TODO: do not start only from top nodes, we can have orphaned ones, whicl will be left out this way
 		foreach( $top as $top_id ) {
 			$stack = array( $top_id );
 			while ( !empty( $stack ) ) {
 				$id = array_pop( $stack );
+				$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
 				$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
-				foreach( $tree[$id]['children'] as $child_id ) {
+				foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
 					$stack[] = $child_id;
+					$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
 				}
 			}
 		}
@@ -82,24 +83,46 @@ class GP_Route_Project extends GP_Route_Main {
 	function edit_get( $project_path ) {
 		$project = GP_Project::by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
-		$form_action = gp_url_project( $project );
-		$options = self::_options_from_projects( GP_Project::all() );
+		$all_project_options = self::_options_from_projects( GP_Project::all() );
 		gp_tmpl_load( 'project-edit', get_defined_vars() );
 	}
 	
 	function edit_post( $project_path ) {
 		// TODO: check permissions for project and parent project
 		$project = GP_Project::by_path( $project_path );
-		$new_project = gp_post( 'project' );
 		if ( !$project ) gp_tmpl_404();
+		$updated_project = gp_post( 'project' );
 		// validate here? or in GP_Project?
-		if ( $project->id == $new_project['parent_project_id'] )
+		if ( $project->id == $updated_project['parent_project_id'] )
 			gp_notice_set( __('The project cannot be parent of itself!'), 'error' );
-		elseif ( !is_null( $project->save( $new_project ) ) )
+		elseif ( !is_null( $project->save( $updated_project ) ) )
 			gp_notice_set( __('The project was saved.') );
 		else
 			gp_notice_set( __('Error in saving project!'), 'error' );
 		$project->reload();
-		wp_redirect( gp_url_project( $project, '_edit') );
+		wp_redirect( gp_url_project( $project, '_edit' ) );
+	}
+	
+	function new_get() {
+		// TODO: check permissions for project and parent project		
+		$project = new GP_Project();
+		$project->parent_project_id = gp_get( 'parent_project_id' );
+		$form_action = "";
+		$all_project_options = self::_options_from_projects( GP_Project::all() );
+		gp_tmpl_load( 'project-new', get_defined_vars() );
+	}
+	
+	function new_post() {
+		// TODO: check permissions for project and parent project		
+		$project = GP_Project::create_and_select( gp_post( 'project' ) );
+		if ( !$project ) {
+			$project = new GP_Project();
+			gp_notice_set( __('Error in creating project!'), 'error' );
+			$all_project_options = self::_options_from_projects( GP_Project::all() );
+			gp_tmpl_load( 'project-new', get_defined_vars() );
+		} else {
+			gp_notice_set( __('The project was created!') );
+			wp_redirect( gp_url_project( $project, '_edit' ) );
+		}
 	}
 }
