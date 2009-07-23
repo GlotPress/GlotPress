@@ -14,14 +14,20 @@ gp_tmpl_header();
 <?php endforeach; ?>
 </ul>	
 <?php endif; ?>
-<?php _e('Translations:'); ?>
-<ul>
-<?php foreach( $translation_sets as $translation_set ):
-    $locale = GP_Locales::by_slug( $translation_set->locale );
-?>    
-	<li><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ), $locale->combined_name().' > '.$translation_set->name ); ?></li>
-<?php endforeach; ?>
-</ul>
-<p><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></p>
-<p><?php gp_link( gp_url( '/project/_new', array( 'parent_project_id' => $project->id ) ), __('Create a New Sub-Project') ); ?></p>
+<?php if ( $translation_sets ): ?>
+	<?php _e('Translations:'); ?>
+	<ul>
+	<?php foreach( $translation_sets as $translation_set ):
+	    $locale = GP_Locales::by_slug( $translation_set->locale );
+	?>    
+		<li><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ), $locale->combined_name().' > '.$translation_set->name ); ?></li>
+	<?php endforeach; ?>
+	</ul>
+<?php else: ?>
+	<p>There are no translations of this project.</p>
+<?php endif; ?>
+<?php if ( GP_User::current()->can( 'write', 'project', $project->id ) ): ?>
+	<p><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></p>
+	<p><?php gp_link( gp_url( '/project/_new', array( 'parent_project_id' => $project->id ) ), __('Create a New Sub-Project') ); ?></p>
+<?php endif; ?>
 <?php gp_tmpl_footer(); ?>
