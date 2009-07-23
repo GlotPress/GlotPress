@@ -15,6 +15,7 @@ There were some errors:
 <?php else: ?>
 <?php echo $success_message; ?>
 <?php endif; ?>
+<?php if ( $show_htaccess_instructions ): ?>
 <p>
 Please add this to your <code>.htacess</code> file:
 <pre>
@@ -30,4 +31,5 @@ RewriteRule . <?php echo $path; ?>index.php [L]
 </pre>
 <strong>The default username is <code>admin</code>, whose password is simply <code>a</code>.</strong>
 </p>
+<?php endif; ?>
 <?php gp_tmpl_footer(); ?>

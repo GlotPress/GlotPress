@@ -26,7 +26,6 @@ function gp_upgrade_db() {
 	$alterations = BP_SQL_Schema_Parser::delta( $gpdb, gp_schema_get() );
 	$messages = $alterations['messages'];
 	$errors = $alterations['errors'];
-	
 	if ( $errors ) return $errors;
 
 	gp_update_db_version();
@@ -52,7 +51,7 @@ function gp_install() {
 	
 	$gpdb->insert( $gpdb->translation_sets, array( 'name' => 'My Translation', 'slug' => 'my', 'project_id' => 1, 'locale' => 'bg', ) );
 	
-	// TODO: ask the user for an e-mail -- copy WordPress install process
+	// TODO: ask the user for an e-mail -- borrow WordPress install process
 	$admin = GP_User::create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
 	GP_Permission::create( array( 'user' => $admin, 'action' => 'admin' ) );
 	return array();
