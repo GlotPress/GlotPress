@@ -72,6 +72,10 @@ table.translations tr.preview.status-fuzzy {
 table.translations tr.preview.status-current {
 	background-color: #CF6;
 }
+table.translations a.edit {
+    font-size: 100%;
+    font-style: normal;
+}
 
 #footer {
 	text-align: center;
@@ -131,4 +135,8 @@ span.context {
 }
 .notice, .error {
 	padding: 0.5em;    
+}
+a.edit {
+    font-style: italic;
+    font-size: 85%;
 }

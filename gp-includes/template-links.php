@@ -33,7 +33,7 @@ function gp_link_project_edit_get( &$project_or_path, $text = false, $attrs = ar
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );
-	return gp_link_get( gp_url_project( $project_or_path, '_edit' ), $text, $attrs );
+	return gp_link_get( gp_url_project( $project_or_path, '_edit' ), $text, gp_attrs_add_class( $attrs, 'edit' ) );
 }
 
 function gp_link_project_edit() {
@@ -67,4 +67,9 @@ function gp_html_attributes( $attrs ) {
 		$strings[] = $key.'="'.esc_attr( $value ).'"';
 	}
 	return implode( ' ', $strings );
+}
+
+function gp_attrs_add_class( $attrs, $class_name ) {
+	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
+	return $attrs;
 }
