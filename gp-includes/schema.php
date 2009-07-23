@@ -40,7 +40,6 @@ function gp_schema_get() {
     	`slug` VARCHAR(255) NOT NULL,
 		`project_id` INT(10) DEFAULT NULL,
     	`locale` VARCHAR(10) DEFAULT NULL,
-    	`user_id` INT(10) NOT NULL DEFAULT 0,
     	PRIMARY KEY (`id`),
     ) TYPE = MYISAM;";
 
