@@ -1,8 +1,16 @@
 <?php
 
 function gp_link_get( $url, $text, $attrs = array() ) {
+	$before = $after = '';
+	foreach ( array('before', 'after') as $key ) {
+		if ( isset( $attrs[$key] ) ) {
+			$$key = $attrs[$key];
+			unset( $attrs[$key] );
+		}
+	}
 	$attributes = gp_html_attributes( $attrs );
-	return sprintf('<a href="%1$s" %2$s>%3$s</a>', clean_url( $url ), $attributes, $text );
+	$attributes = $attributes? " $attributes" : '';
+	return sprintf('%1$s<a href="%2$s"%3$s>%4$s</a>%5$s', $before, clean_url( $url ), $attributes, $text, $after );
 }
 
 function gp_link() {
@@ -20,6 +28,7 @@ function gp_link_project() {
 }
 
 function gp_link_project_edit_get( &$project_or_path, $text = false, $attrs = array() ) {
+	// TODO: check proper permissions
 	if ( !GP_User::current()->can('admin')) {
 		return '';
 	}
@@ -55,7 +64,7 @@ function gp_html_attributes( $attrs ) {
 	$attrs = wp_parse_args( $attrs );
 	$strings = array();
 	foreach( $attrs as $key => $value ) {
-		$strings[] = $key.'="'.attribute_escape( $value ).'"';
+		$strings[] = $key.'="'.esc_attr( $value ).'"';
 	}
 	return implode( ' ', $strings );
 }
