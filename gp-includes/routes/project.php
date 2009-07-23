@@ -29,18 +29,18 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function _merge_originals( $project, $translations ) {
 		global $gpdb;
-		$originals_added = 0;
-		$gpdb->update( $gpdb->originals, array('status' => '+obsolete'), array('project_id' => $project->id));
+		$originals_added = $originals_existing = 0;
+		$gpdb->update( $gpdb->originals, array( 'status' => '+obsolete' ), array( 'project_id' => $project->id ) );
 		foreach( $translations->entries as $entry ) {
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
-			if ( is_null( $entry->context ) ) unset($data['context']);
-			if ( is_null( $entry->plural ) ) unset($data['plural']);
+			// TODO: fuzzy
 			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields			
 			$existing = self::_find_original( $project, $entry );
 			if ( $existing ) {
-				$gpdb->update( $gpdb->originals, $data, array('id' => $existing->id ) );
+				$gpdb->update( $gpdb->originals, $data, array( 'id' => $existing->id ) );
+				$originals_existing++;
 			} else {
 				$gpdb->insert( $gpdb->originals, $data );
 				$originals_added++;
@@ -48,7 +48,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		$gpdb->update( $gpdb->originals, array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
 		// TODO: were they really added?
-		gp_notice_set( sprintf(__("%s strings were added."), count($originals_added) ) );
+		gp_notice_set( sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing ) );
 	}
 	
 	function _options_from_projects( $projects ) {
