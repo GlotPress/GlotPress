@@ -50,6 +50,8 @@ function gp_install() {
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'GlotPress FTW', 'comment' => 'FTW means For The Win', 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
 	
+	$gpdb->insert( $gpdb->translation_sets, array( 'name' => 'My Translation', 'slug' => 'my', 'project_id' => 1, 'locale' => 'bg', ) );
+	
 	// TODO: ask the user for an e-mail -- copy WordPress install process
 	$admin = GP_User::create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
 	GP_Permission::create( array( 'user' => $admin, 'action' => 'admin' ) );

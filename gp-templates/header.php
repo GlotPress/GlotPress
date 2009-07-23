@@ -34,4 +34,4 @@ wp_enqueue_style( 'base' );
 			<div class="notice">
 				<?php echo gp_notice(); ?>
 			</div>
-		<?php endif; ?>		
+		<?php endif; ?>

@@ -24,6 +24,6 @@ if ( gp_get_option( 'gp_db_version' ) <= gp_get_option_from_db( 'gp_db_version' 
 
 // TODO: check if the .htaccess is in place or try to write it
 
-$title = "Install GlotPress";
 $path = gp_add_slash( gp_url_path() );
+$action = gp_get( 'action', 'install' );
 gp_tmpl_load( 'install',  get_defined_vars() );
