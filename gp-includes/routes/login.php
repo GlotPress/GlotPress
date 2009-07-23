@@ -22,7 +22,7 @@ class GP_Route_Login {
 			if ( gp_post( 'redirect_to' ) ) {
 				wp_redirect( gp_url( gp_post( 'redirect_to' ) ) );
 			} else {
-				gp_notice_set( __("Welcome, gonzo &amp; bonzo!") );
+				gp_notice_set( sprintf( __("Welcome, %s!"), $_POST['user_login'] ) );
 				wp_redirect( gp_url( '/' ) );
 			}
 		} else {
