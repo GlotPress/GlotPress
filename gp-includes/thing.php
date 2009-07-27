@@ -27,7 +27,7 @@ class GP_Thing {
 	}
 	
 	function _map( $results ) {
-		return array_map( create_function( '$r', 'return '.$thos->class.'::coerce($r);' ), $results );
+		return array_map( create_function( '$r', 'return '.$this->class.'::coerce($r);' ), $results );
 	}
 	
 	/**
