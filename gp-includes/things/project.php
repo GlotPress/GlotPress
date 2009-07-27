@@ -1,27 +1,25 @@
 <?php
-class GP_Project {
+class GP_Project extends GP_Thing {
 	
-	static $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
-	
+	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
+	var $non_updatable_attributes = array( 'id', 'array' );
 	var $errors = array();
+	var $table;
+	var $class = __CLASS__;
 	
 	function GP_Project( $db_object = array() ) {
-		foreach( self::$field_names as $field_name )
-			$this->$field_name = null;
-		$this->_merge( $db_object );
-	}
-	
-	function _merge( $db_object ) {
-		$db_object = self::_map_args( (array)$db_object );
-		foreach( $db_object as $key => $value ) {
-			$this->$key = $value;
+		global $gpdb;
+		$this->table = $gpdb->projects;
+		if ( $db_object) {
+			$this->_init( $db_object );
 		}
 	}
-
+	
 	/**
-	 * @static
+	 * Normalizes an array with key-values pairs representing
+	 * a GP_Project object.
 	 */
-	function _map_args( $args ) {
+	function normalize_values( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['parent_project_id'] ) && !$args['parent_project_id'] ) {
 			$args['parent_project_id'] = null;
@@ -29,63 +27,18 @@ class GP_Project {
 		return $args;
 	}
 
-	/**
-	 * @static
-	 */
-	function _map_args_before_save( $args ) {
-		$args = self::_map_args( $args );
-		unset( $args['id'] );
-		unset( $args['path'] );
-		foreach( $args as $key => $value ) {
-			if ( !in_array( $key, self::$field_names ) ) {
-				unset( $args[$key] );
-			}
-		}
-		return $args;
-	}
-	
-	/**
-	 * @static
-	 */
-	function map( &$results ) {
-		return array_map( create_function( '$r', 'return GP_Project::coerce($r);' ), $results );
-	}
-	
-	function coerce( $project ) {
-		if ( is_wp_error( $project ) || !$project )
-			return false;
-		else
-			return new GP_Project( $project );
-	}
-	
-	/**
-	 * @static
-	 */
-	function create( $args ) {
-		global $gpdb;
-		$res = $gpdb->insert( $gpdb->projects, self::_map_args_before_save( $args ) );
-		if ( $res === false ) return false;
-		$inserted = new GP_Project( $args );
-		$inserted->id = $gpdb->insert_id;
+
+	function after_create() {
+		// TODO: pass some args to pre/after_create?
 		// TODO: transaction? uninsert?
-		if ( is_null( $inserted->update_path() ) ) return false;
-		return $inserted;
+		if ( is_null( $this->update_path() ) ) return false;
 	}
 	
-	function create_and_select( $args ) {
-		$created = self::create( $args );
-		if ( !$created ) return false;
-		$created->reload();
-		return $created;
-	}
-	
-	/**
-	 * @static
-	 */
-	function get( &$project_or_id ) {
-		global $gpdb;
-		if ( is_object( $project_or_id ) ) $project_or_id = $project_or_id->id;
-		return GP_Project::coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE `id` = '%s'", $project_or_id ) ) );
+	function after_save() {
+		// TODO: pass the update args to after/pre_save?
+		//if ( isset( $args['slug'] ) || isset( $args['parent_project_id'] ) ) {
+			return $this->update_path();
+		//}		
 	}
 	
 	/**
@@ -94,13 +47,16 @@ class GP_Project {
 	function by_path( $path ) {
 		global $gpdb;
 		$path = trim( $path, '/' );
-		return self::coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", $path ) ) );
+		return self::$i->_coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", $path ) ) );
 	}
 	
+	/**
+	 * Get all sub-projects of this project.
+	 */
 	function sub_projects() {
 		global $gpdb;
-		return GP_Project::map( $gpdb->get_results(
-			$gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE parent_project_id = %d", $this->id ) ) );
+		return self::map( $gpdb->get_results(
+			$gpdb->prepare( "SELECT * FROM $this->table WHERE parent_project_id = %d", $this->id ) ) );
 	}
 	
 	/**
@@ -108,7 +64,7 @@ class GP_Project {
 	 */
 	function top_level() {
 		global $gpdb;
-		return GP_Project::map( $gpdb->get_results("SELECT * FROM $gpdb->projects WHERE parent_project_id IS NULL") );
+		return self::map( $gpdb->get_results("SELECT * FROM $gpdb->projects WHERE parent_project_id IS NULL") );
 	}
 	
 	/**
@@ -116,20 +72,7 @@ class GP_Project {
 	 */
 	function all() {
 		global $gpdb;
-		return GP_Project::map( $gpdb->get_results("SELECT * FROM $gpdb->projects") );
-	}
-
-	function save( $args = false ) {
-		global $gpdb;
-		if ( !$args ) $args = get_object_vars( $this );
-		if ( !is_array( $args ) ) $args = (array)$args;
-		$update_res  = $gpdb->update( $gpdb->projects, self::_map_args_before_save( $args ), array( 'id' => $this->id ) );
-		$this->_merge( $args );
-		if ( is_null( $update_res ) ) return $update_res;
-		if ( isset( $args['slug'] ) || isset( $args['parent_project_id'] ) ) {
-			return $this->update_path();
-		}
-		return $update_res;
+		return self::map( $gpdb->get_results("SELECT * FROM $gpdb->projects") );
 	}
 	
 	/**
@@ -156,7 +99,34 @@ class GP_Project {
 		}
 	}
 	
-	function reload() {
-		$this->_merge( self::get( $this->id ) );
+	/*
+	Static methods, which need late binding -- just proxy them through the instance in self::$i
+	TODO: think of a way not to copy/paste them
+	*/
+	function map() {
+		$args = func_get_args();
+		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
 	}
+	
+	function coerce( $project ) {
+		$args = func_get_args();
+		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
+	}
+	
+	function create() {
+		$args = func_get_args();
+		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
+	}
+	
+	function create_and_select() {
+		$args = func_get_args();
+		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
+	}
+	
+	function get( $project_or_id ) {
+		$args = func_get_args();
+		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
+	}
+	
 }
+GP_Project::$i = new GP_Project();
