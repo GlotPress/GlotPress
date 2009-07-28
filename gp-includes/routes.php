@@ -32,6 +32,9 @@ function gp_get_routes() {
 		// keep this one at the bottom of the project, because it will catch anything starting with project
 		"/$project" => array('GP_Route_Project', 'index'),
 		
+		"get:/set/_new" => array('GP_Route_Translation_Set', 'new_get'),
+		"post:/set/_new" => array('GP_Route_Translation_Set', 'new_post'),
+		
 		
 	) );
 }

@@ -29,5 +29,6 @@ gp_tmpl_header();
 <?php if ( GP::$user->current()->can( 'write', 'project', $project->id ) ): ?>
 	<p><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></p>
 	<p><?php gp_link( gp_url( '/project/_new', array( 'parent_project_id' => $project->id ) ), __('Create a New Sub-Project') ); ?></p>
+	<p><?php gp_link( gp_url( '/set/_new', array( 'project_id' => $project->id ) ), __('Create a New Translation Set') ); ?></p>
 <?php endif; ?>
 <?php gp_tmpl_footer(); ?>

@@ -4,7 +4,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
-		$translation_sets = GP_Translation_Set::by_project_id( $project->id );
+		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 		$title = sprintf( __('%s project '), gp_h( $project->name ) );
 		gp_tmpl_load( 'project', get_defined_vars() );
 	}
@@ -50,36 +50,7 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: were they really added?
 		gp_notice_set( sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing ) );
 	}
-	
-	function _options_from_projects( $projects ) {
-		// TODO: mark which nodes are editable by the current user
-		$tree = array();
-		$top = array();
-		foreach( $projects as $p ) {
-			$tree[$p->id]['self'] = $p;
-			if ( $p->parent_project_id ) {
-				$tree[$p->parent_project_id]['children'][] = $p->id;
-			} else {
-				$top[] = $p->id;
-			}
-		}
-		$options = array( '' => __('No parent') );
-		$stack = array();
-		foreach( $top as $top_id ) {
-			$stack = array( $top_id );
-			while ( !empty( $stack ) ) {
-				$id = array_pop( $stack );
-				$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
-				$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
-				foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
-					$stack[] = $child_id;
-					$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
-				}
-			}
-		}
-		return $options;
-	}
-	
+		
 	function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
@@ -107,7 +78,6 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: check permissions for project and parent project		
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id' );
-		$form_action = "";
 		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-new', get_defined_vars() );
 	}

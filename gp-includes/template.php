@@ -1,6 +1,5 @@
 <?php
 function gp_tmpl_load( $template, $args = array() ) {
-	$all_locales = GP_Locales::locales();
 	$args = gp_tmpl_filter_args( $args );
  	$file = GP_TMPL_PATH . "$template.php";
 	if ( is_readable( $file ) ) {
@@ -82,7 +81,7 @@ function gp_breadcrumb( $breadcrumb = null ) {
 }
 
 function gp_js_focus_on( $html_id ) {
-	return '<script type="text/javascript">document.getElementById("project[name]").focus();</script>';
+	return '<script type="text/javascript">document.getElementById("'.$html_id.'").focus();</script>';
 }
 
 function gp_select( $name_and_id, $options, $selected_key ) {
