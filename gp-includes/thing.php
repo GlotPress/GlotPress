@@ -2,7 +2,6 @@
 class GP_Thing {
 	var $table = null;
 	var $field_names = array();
-	var $class = __CLASS__;
 	static $i;
 	
 	function reload() {
@@ -27,7 +26,7 @@ class GP_Thing {
 	}
 	
 	function _map( $results ) {
-		return array_map( create_function( '$r', 'return '.$this->class.'::coerce($r);' ), $results );
+		return array_map( create_function( '$r', 'return '.get_class( $this ).'::coerce($r);' ), $results );
 	}
 	
 	/**
@@ -53,7 +52,7 @@ class GP_Thing {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
-			$class = new ReflectionClass( $this->class );
+			$class = new ReflectionClass( get_class( $this ) );
 			return $class->newInstance( $thing );
 		}
 	}
@@ -62,7 +61,7 @@ class GP_Thing {
 		global $gpdb;
 		$res = $gpdb->insert( $this->table, $this->prepare_values_for_save( $args ) );
 		if ( $res === false ) return false;
-		$class = new ReflectionClass( $this->class );
+		$class = new ReflectionClass( get_class( $this ) );
 		$inserted = $class->newInstance( $args );
 		$inserted->id = $gpdb->insert_id;
 		$inserted->after_create();

@@ -5,7 +5,6 @@ class GP_Project extends GP_Thing {
 	var $non_updatable_attributes = array( 'id', 'array' );
 	var $errors = array();
 	var $table;
-	var $class = __CLASS__;
 	
 	function GP_Project( $db_object = array() ) {
 		global $gpdb;
@@ -46,8 +45,7 @@ class GP_Project extends GP_Thing {
 	 */
 	function by_path( $path ) {
 		global $gpdb;
-		$path = trim( $path, '/' );
-		return self::$i->_coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", $path ) ) );
+		return self::$i->_coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", trim( $path, '/' ) ) ) );
 	}
 	
 	/**
@@ -100,8 +98,8 @@ class GP_Project extends GP_Thing {
 	}
 	
 	/*
-	Static methods, which need late binding -- just proxy them through the instance in self::$i
-	TODO: think of a way not to copy/paste them
+	Static methods, which need late binding -- just proxy them through the singleton instance in self::$i
+	TODO TODO: think of a way not to copy/paste them. It's as lame as growing potatoes for your chicken soup.
 	*/
 	function map() {
 		$args = func_get_args();
