@@ -1,17 +1,12 @@
 <?php
 class GP_Project extends GP_Thing {
 	
+	var $table_basename = 'projects';
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
 	var $non_updatable_attributes = array( 'id', 'path' );
-	var $errors = array();
-	var $table;
 	
-	function __construct( $db_object = array() ) {
-		global $gpdb;
-		$this->table = $gpdb->projects;
-		if ( $db_object) {
-			$this->init( $db_object );
-		}
+	function __construct( $fields = array() ) {
+		parent::__construct( $fields );
 	}
 	
 	/**
@@ -26,7 +21,6 @@ class GP_Project extends GP_Thing {
 		return $args;
 	}
 
-
 	function after_create() {
 		// TODO: pass some args to pre/after_create?
 		// TODO: transaction? uninsert?
@@ -34,40 +28,21 @@ class GP_Project extends GP_Thing {
 	}
 	
 	function after_save() {
+		// TODO: only call it if the slug or parent project were changed
 		// TODO: pass the update args to after/pre_save?
-		//if ( isset( $args['slug'] ) || isset( $args['parent_project_id'] ) ) {
-			return $this->update_path();
-		//}		
+		return $this->update_path();
 	}
 	
 	function by_path( $path ) {
-		global $gpdb;
-		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", trim( $path, '/' ) ) ) );
+		return $this->one( "SELECT * FROM $this->table WHERE path = '%s'", trim( $path, '/' ) );
 	}
 	
-	/**
-	 * Get all sub-projects of this project.
-	 */
 	function sub_projects() {
-		global $gpdb;
-		return $this->map( $gpdb->get_results(
-			$gpdb->prepare( "SELECT * FROM $this->table WHERE parent_project_id = %d", $this->id ) ) );
+		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d", $this->id );
 	}
 	
-	/**
-	 * @static
-	 */
 	function top_level() {
-		global $gpdb;
-		return $this->map( $gpdb->get_results("SELECT * FROM $gpdb->projects WHERE parent_project_id IS NULL") );
-	}
-	
-	/**
-	 * @static
-	 */
-	function all() {
-		global $gpdb;
-		return $this->map( $gpdb->get_results("SELECT * FROM $gpdb->projects") );
+		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL" );
 	}
 	
 	/**
@@ -88,7 +63,7 @@ class GP_Project extends GP_Thing {
 		// update children's paths, too
 		if ( $old_path ) {
 			$query = "UPDATE $gpdb->projects SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $gpdb->query( $gpdb->prepare( $query, $path, strlen($old_path) + 1, like_escape( $old_path).'%' ) );
+			return $this->query( $query, $path, strlen($old_path) + 1, like_escape( $old_path).'%' );
 		} else {
 			return $res_self;
 		}

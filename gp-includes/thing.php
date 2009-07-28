@@ -2,16 +2,19 @@
 class GP_Thing {
 	var $table = null;
 	var $field_names = array();
+	var $errors = array();
 	static $i;
+	
+	function __construct( $fields = array() ) {
+		global $gpdb;
+		$this->table = $gpdb->{$this->table_basename};
+		foreach( $this->field_names as $field_name )
+			$this->$field_name = null;
+		$this->set_fields( $fields );
+	}
 	
 	function reload() {
 		$this->set_fields( $this->get( $this->id ) );
-	}
-	
-	function init( $db_object ) {
-		foreach( $this->field_names as $field_name )
-			$this->$field_name = null;
-		$this->set_fields( $db_object );
 	}
 	
 	function set_fields( $db_object ) {
@@ -20,7 +23,11 @@ class GP_Thing {
 			$this->$key = $value;
 		}
 	}
-	
+
+	function all() {
+		return $this->many( "SELECT * FROM $this->table" );
+	}
+
 	function normalize_fields( $args ) {
 		return $args;
 	}
@@ -31,6 +38,25 @@ class GP_Thing {
 			$mapped[] = $this->coerce( $result );
 		}
 		return $mapped;
+	}
+	
+	function one() {
+		global $gpdb;
+		$args = func_get_args();
+		return $this->coerce( $gpdb->get_row( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
+	}
+
+	function many() {
+		global $gpdb;
+		$args = func_get_args();
+		return $this->map( $gpdb->get_results( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
+	}
+
+	function query() {
+		global $gpdb;
+		$args = func_get_args();
+		return $gpdb->query( call_user_func_array( array($gpdb, 'prepare'), $args ) );
+		
 	}
 	
 	/**
