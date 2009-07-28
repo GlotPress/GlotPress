@@ -5,30 +5,8 @@ class GP_Project extends GP_Thing {
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
 	var $non_updatable_attributes = array( 'id', 'path' );
 	
-	/**
-	 * Normalizes an array with key-value pairs representing
-	 * a GP_Project object.
-	 */
-	function normalize_fields( $args ) {
-		$args = (array)$args;
-		if ( isset( $args['parent_project_id'] ) && !$args['parent_project_id'] ) {
-			$args['parent_project_id'] = null;
-		}
-		return $args;
-	}
+	// Additional queries
 
-	function after_create() {
-		// TODO: pass some args to pre/after_create?
-		// TODO: transaction? uninsert?
-		if ( is_null( $this->update_path() ) ) return false;
-	}
-	
-	function after_save() {
-		// TODO: only call it if the slug or parent project were changed
-		// TODO: pass the update args to after/pre_save?
-		return $this->update_path();
-	}
-	
 	function by_path( $path ) {
 		return $this->one( "SELECT * FROM $this->table WHERE path = '%s'", trim( $path, '/' ) );
 	}
@@ -40,6 +18,34 @@ class GP_Project extends GP_Thing {
 	function top_level() {
 		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL" );
 	}
+
+	// Triggers
+	
+	function after_save() {
+		// TODO: only call it if the slug or parent project were changed
+		// TODO: pass the update args to after/pre_save?
+		return $this->update_path();
+	}
+	
+
+	function after_create() {
+		// TODO: pass some args to pre/after_create?
+		// TODO: transaction? uninsert?
+		if ( is_null( $this->update_path() ) ) return false;
+	}
+
+
+	// Field handling
+
+	function normalize_fields( $args ) {
+		$args = (array)$args;
+		if ( isset( $args['parent_project_id'] ) && !$args['parent_project_id'] ) {
+			$args['parent_project_id'] = null;
+		}
+		return $args;
+	}
+
+	// Helpers
 	
 	/**
 	 * Updates this project's and its chidlren's paths, according to its current slug.

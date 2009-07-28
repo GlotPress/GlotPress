@@ -13,33 +13,16 @@ class GP_Thing {
 		$this->set_fields( $fields );
 	}
 	
-	function reload() {
-		$this->set_fields( $this->get( $this->id ) );
-	}
-	
-	function set_fields( $db_object ) {
-		$db_object = $this->normalize_fields( (array)$db_object );
-		foreach( $db_object as $key => $value ) {
-			$this->$key = $value;
-		}
-	}
+	// CRUD
 
 	function all() {
 		return $this->many( "SELECT * FROM $this->table" );
 	}
+	
+	function reload() {
+		$this->set_fields( $this->get( $this->id ) );
+	}
 
-	function normalize_fields( $args ) {
-		return $args;
-	}
-	
-	function map( $results ) {
-		$mapped = array();
-		foreach( $results as $result ) {
-			$mapped[] = $this->coerce( $result );
-		}
-		return $mapped;
-	}
-	
 	function one() {
 		global $gpdb;
 		$args = func_get_args();
@@ -57,34 +40,6 @@ class GP_Thing {
 		$args = func_get_args();
 		return $gpdb->query( call_user_func_array( array($gpdb, 'prepare'), $args ) );
 		
-	}
-	
-	/**
-	 * Prepares for enetering the database an array with
-	 * key-value pairs, preresenting a GP_Thing object.
-	 * 
-	 */
-	function prepare_fields_for_save( $args ) {
-		$args = $this->normalize_fields( $args );
-		unset( $args['id'] );
-		foreach ($this->non_updatable_attributes as $attribute ) {
-			unset( $args[$attribute] );
-		}
-		foreach( $args as $key => $value ) {
-			if ( !in_array( $key, $this->field_names ) ) {
-				unset( $args[$key] );
-			}
-		}
-		return $args;
-	}
-	
-	function coerce( $thing ) {
-		if ( !$thing || is_wp_error( $thing ) ) {
-			return false;
-		} else {
-			$class = new ReflectionClass( get_class( $this ) );
-			return $class->newInstance( $thing );
-		}
 	}
 
 	function create( $args ) {
@@ -122,6 +77,63 @@ class GP_Thing {
 		return $update_res;
 	}
 
+
+	// Fields handling
+	
+	function set_fields( $db_object ) {
+		$db_object = $this->normalize_fields( (array)$db_object );
+		foreach( $db_object as $key => $value ) {
+			$this->$key = $value;
+		}
+	}
+
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Project object.
+	 */
+	function normalize_fields( $args ) {
+		return $args;
+	}
+	
+		
+	/**
+	 * Prepares for enetering the database an array with
+	 * key-value pairs, preresenting a GP_Thing object.
+	 * 
+	 */
+	function prepare_fields_for_save( $args ) {
+		$args = $this->normalize_fields( $args );
+		unset( $args['id'] );
+		foreach ($this->non_updatable_attributes as $attribute ) {
+			unset( $args[$attribute] );
+		}
+		foreach( $args as $key => $value ) {
+			if ( !in_array( $key, $this->field_names ) ) {
+				unset( $args[$key] );
+			}
+		}
+		return $args;
+	}
+	
+	function coerce( $thing ) {
+		if ( !$thing || is_wp_error( $thing ) ) {
+			return false;
+		} else {
+			$class = new ReflectionClass( get_class( $this ) );
+			return $class->newInstance( $thing );
+		}
+	}
+
+	function map( $results ) {
+		$mapped = array();
+		foreach( $results as $result ) {
+			$mapped[] = $this->coerce( $result );
+		}
+		return $mapped;
+	}
+
+	// Triggers
+	
 	function after_create() {
 		return true;
 	}
