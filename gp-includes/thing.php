@@ -5,23 +5,23 @@ class GP_Thing {
 	static $i;
 	
 	function reload() {
-		$this->set_values( $this->get( $this->id ) );
+		$this->set_fields( $this->get( $this->id ) );
 	}
 	
 	function _init( $db_object ) {
 		foreach( $this->field_names as $field_name )
 			$this->$field_name = null;
-		$this->set_values( $db_object );
+		$this->set_fields( $db_object );
 	}
 	
-	function set_values( $db_object ) {
-		$db_object = $this->normalize_values( (array)$db_object );
+	function set_fields( $db_object ) {
+		$db_object = $this->normalize_fields( (array)$db_object );
 		foreach( $db_object as $key => $value ) {
 			$this->$key = $value;
 		}
 	}
 	
-	function normalize_values( $args ) {
+	function normalize_fields( $args ) {
 		return $args;
 	}
 	
@@ -34,8 +34,8 @@ class GP_Thing {
 	 * key-value pairs, preresenting a GP_Project object.
 	 * 
 	 */
-	function prepare_values_for_save( $args ) {
-		$args = $this->normalize_values( $args );
+	function prepare_fields_for_save( $args ) {
+		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
 		foreach ($this->non_updatable_attributes as $attribute ) {
 			unset( $args[$attribute] );
@@ -59,7 +59,7 @@ class GP_Thing {
 
 	function _create( $args ) {
 		global $gpdb;
-		$res = $gpdb->insert( $this->table, $this->prepare_values_for_save( $args ) );
+		$res = $gpdb->insert( $this->table, $this->prepare_fields_for_save( $args ) );
 		if ( $res === false ) return false;
 		$class = new ReflectionClass( get_class( $this ) );
 		$inserted = $class->newInstance( $args );
@@ -85,8 +85,8 @@ class GP_Thing {
 		global $gpdb;
 		if ( false === $args ) $args = get_object_vars( $this );
 		if ( !is_array( $args ) ) $args = (array)$args;
-		$update_res  = $gpdb->update( $this->table, $this->prepare_values_for_save( $args ), array( 'id' => $this->id ) );
-		$this->set_values( $args );
+		$update_res  = $gpdb->update( $this->table, $this->prepare_fields_for_save( $args ), array( 'id' => $this->id ) );
+		$this->set_fields( $args );
 		if ( is_null( $update_res ) ) return $update_res;
 		$update_res = $this->after_save();
 		return $update_res;

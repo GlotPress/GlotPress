@@ -15,10 +15,10 @@ class GP_Project extends GP_Thing {
 	}
 	
 	/**
-	 * Normalizes an array with key-values pairs representing
+	 * Normalizes an array with key-value pairs representing
 	 * a GP_Project object.
 	 */
-	function normalize_values( $args ) {
+	function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['parent_project_id'] ) && !$args['parent_project_id'] ) {
 			$args['parent_project_id'] = null;
