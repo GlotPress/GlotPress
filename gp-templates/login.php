@@ -2,7 +2,7 @@
 gp_title( sprintf( __('%s &lt; GlotPress'), __('Login') ) );
 gp_breadcrumb( array(
 	gp_link_home_get(),
-	gp_link_login_get(),
+	__('Login'),
 ) );
 gp_tmpl_header();
 ?>

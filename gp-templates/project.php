@@ -26,7 +26,7 @@ gp_tmpl_header();
 <?php else: ?>
 	<p>There are no translations of this project.</p>
 <?php endif; ?>
-<?php if ( GP_User::current()->can( 'write', 'project', $project->id ) ): ?>
+<?php if ( GP::$user->current()->can( 'write', 'project', $project->id ) ): ?>
 	<p><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></p>
 	<p><?php gp_link( gp_url( '/project/_new', array( 'parent_project_id' => $project->id ) ), __('Create a New Sub-Project') ); ?></p>
 <?php endif; ?>

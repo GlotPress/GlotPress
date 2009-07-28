@@ -1,82 +1,60 @@
 <?php
-class GP_User {
+class GP_User extends GP_Thing {
 	
-	/**
-	 * @static
-	 */
+	var $table_basename = 'users';
+	var $field_names = array( 'id', 'user_login', 'user_pass', 'user_nicename', 'user_email', 'user_url', 'user_registered', 'user_status', 'display_name' );
+	var $non_updatable_attributes = array( 'ID' );
+	
 	function create( $args ) {
 		global $wp_users_object;
 		if ( isset( $args['id'] ) ) {
 			$args['ID'] = $args['id'];
 			unset( $args['id'] );
 		}
-		return GP_User::coerce( $wp_users_object->new_user( $args ) );
+		return $this->coerce( $wp_users_object->new_user( $args ) );
 	}
 	
-	/**
-	 * @static
-	 */
+	function normalize_fields( $args ) {
+		$args = (array)$args;
+		if ( isset( $args['ID'] ) ) {
+			$args['id'] = $args['ID'];
+			unset( $args['ID'] );
+		}
+		return $args;
+	}
+	
+
+	function get( $user_or_id) {
+		global $wp_users_object;
+		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
+		return $this->coerce( $wp_users_object->get_user( $user_or_id ) );
+	}
+	
 	function by_login( $login ) {
 		global $wp_users_object;
 		$user = $wp_users_object->get_user( $login, array( 'by' => 'login' ) );
-		return GP_User::coerce( $user );
+		return $this->coerce( $user );
 	}
 	
-	/**
-	 * Converts a user object to the database or from $wp_users_object to GP_User
-	 *
-	 * @static
-	 */
-	function coerce( $user ) {
-		if ( is_wp_error( $user ) || !$user )
-			return false;
-		else
-			return new GP_User( $user );
-	}
-	
-	/**
-	 * @static
-	 */
 	function logged_in() {
 		global $wp_auth_object;
-		$coerced = GP_User::coerce( $wp_auth_object->get_current_user() );
+		$coerced = $this->coerce( $wp_auth_object->get_current_user() );
 		return ( $coerced && $coerced->id );
 	}
 	
-	/**
-	 * @static
-	 */
 	function current() {
 		global $wp_auth_object;
-		if ( self::logged_in() )
-			return GP_User::coerce( $wp_auth_object->get_current_user() );
+		if ( $this->logged_in() )
+			return $this->coerce( $wp_auth_object->get_current_user() );
 		else
 			return new GP_User( array( 'id' => 0, ) );
 	}
 	
-	/**
-	 * @static
-	 */
 	function logout() {
 		global $wp_auth_object;
 		$wp_auth_object->clear_auth_cookie();
 	}
 		
-	function GP_User( $user ) {
-		if ( is_numeric( $user) )
-			$user = $wp_users_object->get_user( $id );
-		elseif ( is_array( $user ))
-			$user = (object)$user;
-			
-		foreach ( get_object_vars( $user ) as $key => $value ) {
-			$this->{$key} = $value;
-		}
-
-		if ( !isset( $this->id) && isset( $this->ID ) ) {
-			$this->id = $this->ID;
-		}
-	}
-	
 	/**
 	 * Determines whether the user is an admin
 	 */
@@ -116,8 +94,8 @@ class GP_User {
 		$user = null;
 		if ( isset( $this ) )
 			$user = $this;
-		elseif ( GP_User::logged_in() )
-			$user = GP_User::current();
+		elseif ( GP::$user->logged_in() )
+			$user = GP::$user->current();
 		$args = compact( 'user', 'action', 'object_type', 'object_id' );
 		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $args );
 		if ( is_bool( $preliminary ) ) {
@@ -131,3 +109,4 @@ class GP_User {
 		return apply_filters( 'can_user', $verdict, $args );
 	}
 }
+GP::$user = new GP_User();

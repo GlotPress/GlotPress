@@ -5,10 +5,6 @@ class GP_Project extends GP_Thing {
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
 	var $non_updatable_attributes = array( 'id', 'path' );
 	
-	function __construct( $fields = array() ) {
-		parent::__construct( $fields );
-	}
-	
 	/**
 	 * Normalizes an array with key-value pairs representing
 	 * a GP_Project object.

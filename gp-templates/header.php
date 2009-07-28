@@ -15,8 +15,8 @@ wp_enqueue_style( 'base' );
 			<img alt="GlotPress logo" src="<?php echo gp_url_img( 'glotpress-logo.png' ); ?>" />
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
-			<?php if (GP_User::logged_in()):
-					$user = GP_User::current();
+			<?php if (GP::$user->logged_in()):
+					$user = GP::$user->current();
 			?>
 				Hi, <?php echo $user->user_login; ?>.
 				<a href="<?php echo gp_url('/logout')?>">Log out</a>

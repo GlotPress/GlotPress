@@ -1,7 +1,7 @@
 <?php
 class GP_Route_Login {
 	function login_get() {
-		if ( !GP_User::logged_in() ) {
+		if ( !GP::$user->logged_in() ) {
 			gp_tmpl_load( 'login', array() );
 		}  else {
 			wp_redirect( gp_url( '/' ) );
@@ -11,7 +11,7 @@ class GP_Route_Login {
 	function login_post() {
 		global $wp_users_object, $wp_auth_object;
 				
-		$user = GP_User::by_login( $_POST['user_login'] );
+		$user = GP::$user->by_login( $_POST['user_login'] );
 				
 		if ( !$user || is_wp_error($user) ) {
 			gp_notice_set( __("Invalid username!"), 'error' );
@@ -32,7 +32,7 @@ class GP_Route_Login {
 	}
 	
 	function logout() {
-		GP_User::logout();
+		GP::$user->logout();
 		wp_redirect( gp_url( '/' ) );
 	}
 }

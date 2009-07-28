@@ -29,7 +29,7 @@ function gp_link_project() {
 
 function gp_link_project_edit_get( &$project_or_path, $text = false, $attrs = array() ) {
 	// TODO: check proper permissions
-	if ( !GP_User::current()->can('admin')) {
+	if ( !GP::$user->current()->can('admin')) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );

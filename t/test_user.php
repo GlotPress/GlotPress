@@ -25,9 +25,14 @@ class GP_Test_User extends GP_UnitTestCase {
 	}
 	
 	function test_create() {
-		global $gpdb;
-		$user = GP_User::create( array( 'user_login' => 'pijo', 'user_url' => 'http://dir.bg/', 'user_pass' => 'baba', 'user_email' => 'pijo@example.org' ) );
-		$from_db = GP_User::by_login( 'pijo' );
+		$user = GP::$user->create( array( 'user_login' => 'pijo', 'user_url' => 'http://dir.bg/', 'user_pass' => 'baba', 'user_email' => 'pijo@example.org' ) );
+		$from_db = GP::$user->by_login( 'pijo' );
+		$this->assertEquals( $user->id, $from_db->id );
+	}
+	
+	function test_get() {
+		$user = GP::$user->create( array( 'user_login' => 'pijo', 'user_url' => 'http://dir.bg/', 'user_pass' => 'baba', 'user_email' => 'pijo@example.org' ) );
+		$from_db = GP::$user->get( $user );
 		$this->assertEquals( $user->id, $from_db->id );
 	}
 	

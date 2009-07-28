@@ -61,7 +61,7 @@ class GP_Thing {
 	
 	/**
 	 * Prepares for enetering the database an array with
-	 * key-value pairs, preresenting a GP_Project object.
+	 * key-value pairs, preresenting a GP_Thing object.
 	 * 
 	 */
 	function prepare_fields_for_save( $args ) {
@@ -108,7 +108,7 @@ class GP_Thing {
 	function get( $thing_or_id ) {
 		global $gpdb;
 		if ( is_object( $thing_or_id ) ) $thing_or_id = $thing_or_id->id;
-		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE `id` = '%s'", $thing_or_id ) ) );
+		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $this->table WHERE `id` = '%s'", $thing_or_id ) ) );
 	}
 
 	function save( $args = false ) {
