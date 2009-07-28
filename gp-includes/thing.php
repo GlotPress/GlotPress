@@ -8,7 +8,7 @@ class GP_Thing {
 		$this->set_fields( $this->get( $this->id ) );
 	}
 	
-	function _init( $db_object ) {
+	function init( $db_object ) {
 		foreach( $this->field_names as $field_name )
 			$this->$field_name = null;
 		$this->set_fields( $db_object );
@@ -25,8 +25,12 @@ class GP_Thing {
 		return $args;
 	}
 	
-	function _map( $results ) {
-		return array_map( create_function( '$r', 'return '.get_class( $this ).'::coerce($r);' ), $results );
+	function map( $results ) {
+		$mapped = array();
+		foreach( $results as $result ) {
+			$mapped[] = $this->coerce( $result );
+		}
+		return $mapped;
 	}
 	
 	/**
@@ -48,7 +52,7 @@ class GP_Thing {
 		return $args;
 	}
 	
-	function _coerce( $thing ) {
+	function coerce( $thing ) {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
@@ -57,7 +61,7 @@ class GP_Thing {
 		}
 	}
 
-	function _create( $args ) {
+	function create( $args ) {
 		global $gpdb;
 		$res = $gpdb->insert( $this->table, $this->prepare_fields_for_save( $args ) );
 		if ( $res === false ) return false;
@@ -68,17 +72,17 @@ class GP_Thing {
 		return $inserted;
 	}
 
-	function _create_and_select( $args ) {
-		$created = $this->_create( $args );
+	function create_and_select( $args ) {
+		$created = $this->create( $args );
 		if ( !$created ) return false;
 		$created->reload();
 		return $created;
 	}
 
-	function _get( $thing_or_id ) {
+	function get( $thing_or_id ) {
 		global $gpdb;
 		if ( is_object( $thing_or_id ) ) $thing_or_id = $thing_or_id->id;
-		return $this->_coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE `id` = '%s'", $thing_or_id ) ) );
+		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE `id` = '%s'", $thing_or_id ) ) );
 	}
 
 	function save( $args = false ) {

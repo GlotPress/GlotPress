@@ -1,7 +1,7 @@
 <?php
 class GP_Route_Project extends GP_Route_Main {
 	function index( $project_path ) {
-		$project = GP_Project::by_path( $project_path );
+		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP_Translation_Set::by_project_id( $project->id );
@@ -10,14 +10,14 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	function import_originals_get( $project_path ) {
-		$project = GP_Project::by_path( $project_path );
+		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$kind = 'originals';
 		gp_tmpl_load( 'project-import', get_defined_vars() );
 	}
 
 	function import_originals_post( $project_path ) {
-		$project = GP_Project::by_path( $project_path );
+		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		
 		$block = array( 'GP_Route_Project', '_merge_originals');
@@ -81,15 +81,15 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 	
 	function edit_get( $project_path ) {
-		$project = GP_Project::by_path( $project_path );
+		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
-		$all_project_options = self::_options_from_projects( GP_Project::all() );
+		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-edit', get_defined_vars() );
 	}
 	
 	function edit_post( $project_path ) {
 		// TODO: check permissions for project and parent project
-		$project = GP_Project::by_path( $project_path );
+		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$updated_project = gp_post( 'project' );
 		// validate here? or in GP_Project?
@@ -108,17 +108,17 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id' );
 		$form_action = "";
-		$all_project_options = self::_options_from_projects( GP_Project::all() );
+		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-new', get_defined_vars() );
 	}
 	
 	function new_post() {
 		// TODO: check permissions for project and parent project		
-		$project = GP_Project::create_and_select( gp_post( 'project' ) );
+		$project = GP::$project->create_and_select( gp_post( 'project' ) );
 		if ( !$project ) {
 			$project = new GP_Project();
 			gp_notice_set( __('Error in creating project!'), 'error' );
-			$all_project_options = self::_options_from_projects( GP_Project::all() );
+			$all_project_options = self::_options_from_projects( GP::$project->all() );
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
 			gp_notice_set( __('The project was created!') );

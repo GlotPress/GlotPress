@@ -6,7 +6,7 @@ $progname = array_shift( $argv );
 
 list( $project_path, $locale_slug, $translation_set_slug ) = $argv;
 
-$project = GP_Project::by_path( $project_path );
+$project = GP::$project->by_path( $project_path );
 $locale = GP_Locales::by_slug( $locale_slug );
 $translation_set = &GP_Translation_Set::by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 

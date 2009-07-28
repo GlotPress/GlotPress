@@ -2,15 +2,15 @@
 class GP_Project extends GP_Thing {
 	
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
-	var $non_updatable_attributes = array( 'id', 'array' );
+	var $non_updatable_attributes = array( 'id', 'path' );
 	var $errors = array();
 	var $table;
 	
-	function GP_Project( $db_object = array() ) {
+	function __construct( $db_object = array() ) {
 		global $gpdb;
 		$this->table = $gpdb->projects;
 		if ( $db_object) {
-			$this->_init( $db_object );
+			$this->init( $db_object );
 		}
 	}
 	
@@ -40,12 +40,9 @@ class GP_Project extends GP_Thing {
 		//}		
 	}
 	
-	/**
-	 * @static
-	 */
 	function by_path( $path ) {
 		global $gpdb;
-		return self::$i->_coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", trim( $path, '/' ) ) ) );
+		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $gpdb->projects WHERE path = '%s'", trim( $path, '/' ) ) ) );
 	}
 	
 	/**
@@ -53,7 +50,7 @@ class GP_Project extends GP_Thing {
 	 */
 	function sub_projects() {
 		global $gpdb;
-		return self::map( $gpdb->get_results(
+		return $this->map( $gpdb->get_results(
 			$gpdb->prepare( "SELECT * FROM $this->table WHERE parent_project_id = %d", $this->id ) ) );
 	}
 	
@@ -62,7 +59,7 @@ class GP_Project extends GP_Thing {
 	 */
 	function top_level() {
 		global $gpdb;
-		return self::map( $gpdb->get_results("SELECT * FROM $gpdb->projects WHERE parent_project_id IS NULL") );
+		return $this->map( $gpdb->get_results("SELECT * FROM $gpdb->projects WHERE parent_project_id IS NULL") );
 	}
 	
 	/**
@@ -70,7 +67,7 @@ class GP_Project extends GP_Thing {
 	 */
 	function all() {
 		global $gpdb;
-		return self::map( $gpdb->get_results("SELECT * FROM $gpdb->projects") );
+		return $this->map( $gpdb->get_results("SELECT * FROM $gpdb->projects") );
 	}
 	
 	/**
@@ -79,7 +76,7 @@ class GP_Project extends GP_Thing {
 	function update_path() {
 		global $gpdb;
 		$old_path = isset( $this->path )? $this->path : '';
-		$parent_project = self::get( $this->parent_project_id );
+		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project )
 			$path = gp_url_join( $parent_project->path, $this->slug );
 		elseif ( !$gpdb->last_error )
@@ -96,35 +93,5 @@ class GP_Project extends GP_Thing {
 			return $res_self;
 		}
 	}
-	
-	/*
-	Static methods, which need late binding -- just proxy them through the singleton instance in self::$i
-	TODO TODO: think of a way not to copy/paste them. It's as lame as growing potatoes for your chicken soup.
-	*/
-	function map() {
-		$args = func_get_args();
-		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
-	}
-	
-	function coerce( $project ) {
-		$args = func_get_args();
-		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
-	}
-	
-	function create() {
-		$args = func_get_args();
-		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
-	}
-	
-	function create_and_select() {
-		$args = func_get_args();
-		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
-	}
-	
-	function get( $project_or_id ) {
-		$args = func_get_args();
-		return call_user_func_array( array( self::$i, '_'.__FUNCTION__ ), $args );
-	}
-	
 }
-GP_Project::$i = new GP_Project();
+GP::$project = new GP_Project();
