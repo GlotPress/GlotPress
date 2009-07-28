@@ -5,6 +5,8 @@ class GP_User extends GP_Thing {
 	var $field_names = array( 'id', 'user_login', 'user_pass', 'user_nicename', 'user_email', 'user_url', 'user_registered', 'user_status', 'display_name' );
 	var $non_updatable_attributes = array( 'ID' );
 	
+	// TODO: overrride Thing methods, using WP_Users functionality
+	
 	function create( $args ) {
 		global $wp_users_object;
 		if ( isset( $args['id'] ) ) {
@@ -23,7 +25,6 @@ class GP_User extends GP_Thing {
 		return $args;
 	}
 	
-
 	function get( $user_or_id) {
 		global $wp_users_object;
 		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
