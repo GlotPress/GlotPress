@@ -122,4 +122,9 @@ class GP_Test_MO extends GP_UnitTestCase {
 			$this->assertEquals(array('Табло'), $mo->entries['Dashboard']->translations);
 		}
 	}
+	
+	function test_load_pot_file() {
+		$mo = new MO();
+		$this->assertEquals( false, $mo->import_from_file('data/mo.pot') );
+	}
 }
