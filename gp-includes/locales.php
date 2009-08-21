@@ -62,6 +62,15 @@ class GP_Locales {
 		$fr->wp_locale = 'fr_FR';
 		$fr->slug = 'fr';
 
+		$zh = new GP_Locale();
+		$zh->english_name = 'Chinese';
+		$zh->native_name = '汉语/漢語';
+		$zh->lang_code_iso_639_1 = 'zh';
+		$zh->country_code = 'cn';
+		$zh->wp_locale = 'zh_CN';
+		$zh->slug = 'zh';
+
+
 		foreach(get_defined_vars() as $value) {
 			if ( isset( $value->english_name ) ) {
 				if (!isset( $value->nplurals)) {
