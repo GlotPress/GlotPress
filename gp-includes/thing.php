@@ -39,7 +39,6 @@ class GP_Thing {
 		global $gpdb;
 		$args = func_get_args();
 		return $gpdb->query( call_user_func_array( array($gpdb, 'prepare'), $args ) );
-		
 	}
 
 	function create( $args ) {
@@ -77,6 +76,9 @@ class GP_Thing {
 		return $update_res;
 	}
 
+	function delete() {
+		return $this->query( "DELETE FROM $this->table WHERE id = %d", $this->id );
+	}
 
 	// Fields handling
 	
@@ -94,8 +96,7 @@ class GP_Thing {
 	function normalize_fields( $args ) {
 		return $args;
 	}
-	
-		
+			
 	/**
 	 * Prepares for enetering the database an array with
 	 * key-value pairs, preresenting a GP_Thing object.

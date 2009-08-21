@@ -53,7 +53,7 @@ function textareas( $entry, $index = 0 ) {
 		</td>
 		<td class="translation"><?php echo gp_h( $t->translations[0] ); ?></td>
 		<td class="actions">
-			<a href="#" original="<?php echo $t->original_id; ?>" class="edit"><?php _e('Edit'); ?></a>
+			<a href="#" original="<?php echo $t->original_id; ?>" class="action edit"><?php _e('Edit'); ?></a>
 		</td>
 	</tr>
 	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
@@ -88,7 +88,9 @@ function textareas( $entry, $index = 0 ) {
 	</tr>
 <?php endforeach; ?>
 </table>
-<p><?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?></p>
-<p><?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?></p>
+<p>
+	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?> |
+	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?>
+</p>
 
 <?php gp_tmpl_footer(); ?>

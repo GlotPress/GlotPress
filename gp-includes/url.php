@@ -20,14 +20,14 @@ function gp_url_path( $url = null ) {
 function gp_url_join() {
 	$args = func_get_args();
 	if ( empty( $args ) ) return '';
-	$args = gp_array_flatten( $args );
+	$args = array_filter( gp_array_flatten( $args ) );
 	$start_slash = gp_startswith( $args[0], '/' ) && trim($args[0], '/') != '' ? '/' : '';
 	$end_slash = gp_endswith( $args[ count($args) - 1 ] , '/' ) && trim($args[ count($args) - 1 ], '/') != '' ? '/' : '';
 	$args = array_map( create_function( '$x', 'return trim($x, "/");'), $args );
 	return $start_slash . implode( '/', $args ) . $end_slash;
 }
 
-function gp_url($path, $query = null ) {
+function gp_url( $path, $query = null ) {
 	$url = gp_url_join( gp_url_path( gp_get_option( 'url' ) ), $path );
 	if ( $query && is_array( $query ) )
 		$url = add_query_arg( urlencode_deep( $query ), $url );
@@ -38,7 +38,7 @@ function gp_url($path, $query = null ) {
 
 function gp_url_project( $project_or_path, $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
-	return gp_url( array( 'project', $project_path, $path ), $query );
+	return gp_url( array( 'projects', $project_path, $path ), $query );
 }
 
 /**

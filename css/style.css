@@ -1,6 +1,7 @@
 html, body, textarea, input, textarea {
 	font-family: "Helvetica", "Arial", sans-serif;
 	color: #333;
+	line-height: 1.5em;
 }
 input, textarea {
     font-size: 1em;
@@ -72,11 +73,10 @@ table.translations tr.preview.status-fuzzy {
 table.translations tr.preview.status-current {
 	background-color: #CF6;
 }
-table.translations a.edit {
+table.translations a.action {
     font-size: 100%;
     font-style: normal;
 }
-
 #footer {
 	text-align: center;
 	font-size: 85%;
@@ -93,9 +93,12 @@ table.translations a.edit {
 	width: 50%;
 }
 span.context {
-	background-color: #666;
+	background-color: #aaa;
 	color: white;
-	padding: 0.2em;
+	padding: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-moz-border-radius: 0.3em;	
+	text-align: center;
 }
 .editor .comment {
 	font-style: italic;
@@ -136,7 +139,18 @@ span.context {
 .notice, .error {
 	padding: 0.5em;    
 }
-a.edit {
-    font-style: italic;
-    font-size: 85%;
+ul a.action {
+    font-size: 70%;
+    color: white;
+    padding: 0.2em 0.2em 0.1em 0.2em;
+    text-decoration: none;
+    -webkit-border-radius: 0.2em;
+    -moz-border-radius: 0.2em;
+    text-align: center;
+}
+ul a.edit {
+    background-color: #777;    
+}
+ul a.delete {
+    background-color: #FF4F50;
 }

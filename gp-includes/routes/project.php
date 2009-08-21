@@ -1,6 +1,13 @@
 <?php
 class GP_Route_Project extends GP_Route_Main {
-	function index( $project_path ) {
+	
+	function index() {
+		$title = __('Projects');
+		$projects = GP::$project->top_level();
+		gp_tmpl_load( 'projects', get_defined_vars() );
+	}
+	
+	function single( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
@@ -73,6 +80,21 @@ class GP_Route_Project extends GP_Route_Main {
 		$project->reload();
 		wp_redirect( gp_url_project( $project, '_edit' ) );
 	}
+
+	function delete_get( $project_path ) {
+		// TODO: check permissions for project and parent project
+		// TODO: do not delete using a GET request but POST
+		// TODO: decide what to do with child projects and translation sets
+		// TODO: just deactivate, do not actually delete
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		if ( $project->delete() )
+			gp_notice_set( __('The project was deleted.') );
+		else
+			gp_notice_set( __('Error in deleting project!'), 'error' );
+		wp_redirect( gp_url_project( '' ) );
+	}
+
 	
 	function new_get() {
 		// TODO: check permissions for project and parent project		

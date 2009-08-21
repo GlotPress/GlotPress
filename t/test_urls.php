@@ -34,6 +34,8 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$this->assertEquals( '/baba/', gp_url_join( '//', '/baba/' ) );
 		$this->assertEquals( '/', gp_url_join( '/', '/' ) );
 		$this->assertEquals( '/', gp_url_join( '///', '///' ) );
+		// skip empty
+		$this->assertEquals( 'a', gp_url_join( 'a', '' ) );
 	}
 	
 	function test_gp_url_with_arrays() {

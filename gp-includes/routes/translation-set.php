@@ -11,14 +11,12 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	
 	function new_post() {
 		// TODO: check permissions for project and parent project
-		//error_log( print_r(gp_post('set'), true));
-		//die();
 		$set = GP::$translation_set->create_and_select( gp_post( 'set' ) );
 		$project = GP::$project->get( $set->project_id );
 		if ( !$set ) {
 			$set = new GP_Translation_Set();
 			gp_notice_set( __('Error in creating translation set!'), 'error' );
-			wp_redirect( gp_url('/set/_new') );
+			wp_redirect( gp_url('/sets/_new') );
 		} else {
 			gp_notice_set( __('The translation set was created!') );
 			wp_redirect( gp_url_project_locale( $project, $set->locale, $set->slug ) );

@@ -33,12 +33,26 @@ function gp_link_project_edit_get( &$project_or_path, $text = false, $attrs = ar
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );
-	return gp_link_get( gp_url_project( $project_or_path, '_edit' ), $text, gp_attrs_add_class( $attrs, 'edit' ) );
+	return gp_link_get( gp_url_project( $project_or_path, '_edit' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
 function gp_link_project_edit() {
 	$args = func_get_args();
 	echo call_user_func_array('gp_link_project_edit_get', $args);
+}
+
+function gp_link_project_delete_get( &$project_or_path, $text = false, $attrs = array() ) {
+	// TODO: check proper permissions
+	if ( !GP::$user->current()->can('admin')) {
+		return '';
+	}
+	$text = $text? $text : __( 'Delete' );
+	return gp_link_get( gp_url_project( $project_or_path, '_delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
+}
+
+function gp_link_project_delete() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_project_delete_get', $args);
 }
 
 function gp_link_home_get() {

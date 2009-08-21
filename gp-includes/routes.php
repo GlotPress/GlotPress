@@ -6,7 +6,8 @@
 function gp_get_routes() {
 	$dir = '([^/]+)';
 	$path = '(.+?)';
-	$project = 'project/'.$path;
+	$projects = 'projects';
+	$project = $projects.'/'.$path;
 	$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 	// overall structure
 	return apply_filters( 'routes', array(
@@ -20,9 +21,14 @@ function gp_get_routes() {
 		
 		"get:/$project/_edit" => array('GP_Route_Project', 'edit_get'),
 		"post:/$project/_edit" => array('GP_Route_Project', 'edit_post'),
+
+		"get:/$project/_delete" => array('GP_Route_Project', 'delete_get'),
+		"post:/$project/_delete" => array('GP_Route_Project', 'delete_post'),
 		
-		"get:/project/_new" => array('GP_Route_Project', 'new_get'),
-		"post:/project/_new" => array('GP_Route_Project', 'new_post'),
+		"get:/$projects" => array('GP_Route_Project', 'index'),
+		"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
+		"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
+		"post:/$projects/_new" => array('GP_Route_Project', 'new_post'),
 		
 		"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
 		"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
@@ -30,10 +36,10 @@ function gp_get_routes() {
 		"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
 		"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 		// keep this one at the bottom of the project, because it will catch anything starting with project
-		"/$project" => array('GP_Route_Project', 'index'),
+		"/$project" => array('GP_Route_Project', 'single'),
 		
-		"get:/set/_new" => array('GP_Route_Translation_Set', 'new_get'),
-		"post:/set/_new" => array('GP_Route_Translation_Set', 'new_post'),
+		"get:/sets/_new" => array('GP_Route_Translation_Set', 'new_get'),
+		"post:/sets/_new" => array('GP_Route_Translation_Set', 'new_post'),
 		
 		
 	) );
@@ -77,4 +83,8 @@ class GP_Router {
 		}
 		return gp_tmpl_404();
 	}
+}
+
+function gp_route_index() {
+	wp_redirect( gp_url_project( '' ) );
 }
