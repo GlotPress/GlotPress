@@ -224,7 +224,7 @@ foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
 	require_once $route;
 }
 
-$gp_router = new GP_Router( gp_get_routes() );
+$gp_router = new GP_Router();
 
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );

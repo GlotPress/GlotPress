@@ -22,15 +22,15 @@ class GP_Project extends GP_Thing {
 	// Triggers
 	
 	function after_save() {
+		// TODO: pass the update args to after/pre_save?		
 		// TODO: only call it if the slug or parent project were changed
-		// TODO: pass the update args to after/pre_save?
 		return $this->update_path();
 	}
 	
 
 	function after_create() {
 		// TODO: pass some args to pre/after_create?
-		// TODO: transaction? uninsert?
+		// TODO: transaction? uninsert on failure?
 		if ( is_null( $this->update_path() ) ) return false;
 	}
 
@@ -68,6 +68,25 @@ class GP_Project extends GP_Thing {
 			return $this->query( $query, $path, strlen($old_path) + 1, like_escape( $old_path).'%' );
 		} else {
 			return $res_self;
+		}
+	}
+
+	/**
+	 * Regenrate the paths of all projects from its parents slugs
+	 */
+	function regenerate_paths( $parent_project_id = null ) {
+		// TODO: do it with one query. Use the tree generation code from GP_Route_Main::_options_from_projects()
+		if ( $parent_project_id ) {
+			$parent_project = $this->get( $parent_project_id );
+			$path = $parent_project->path;
+		} else {
+			$path = '';
+			$parent_project_id = null;
+		}
+		$projects = $this->find( array( 'parent_project_id' => $parent_project_id ) );
+		foreach( (array)$projects as $project ) {
+			$project->update( array( 'path' => gp_url_join( $path, $project->slug ) ) );
+			$this->regenerate_paths( $project->id );
 		}
 	}
 }

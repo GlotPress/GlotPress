@@ -23,7 +23,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 	
 	function test_gp_url_join() {
-		$this->assertEquals( 'baba', gp_url_join( 'baba') );
+		$this->assertEquals( 'baba', gp_url_join( 'baba' ) );
 		$this->assertEquals( 'baba/dyado', gp_url_join( 'baba', 'dyado' ) );
 		$this->assertEquals( 'baba/dyado', gp_url_join( 'baba/', '/dyado' ) );
 		$this->assertEquals( '/baba/dyado/', gp_url_join( '/baba//', '/dyado/' ) );

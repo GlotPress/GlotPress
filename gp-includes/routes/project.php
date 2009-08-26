@@ -74,7 +74,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( $project->id == $updated_project['parent_project_id'] )
 			gp_notice_set( __('The project cannot be parent of itself!'), 'error' );
 		elseif ( !is_null( $project->save( $updated_project ) ) )
-			gp_notice_set( __('The project was saved.') );
+			$this->notices[] = __('The project was saved.');
 		else
 			gp_notice_set( __('Error in saving project!'), 'error' );
 		$project->reload();

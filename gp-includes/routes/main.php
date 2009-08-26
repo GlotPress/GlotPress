@@ -2,7 +2,7 @@
 /**
  * Holds common functionality for routes.
  */
-class GP_Route_Main {
+class GP_Route_Main extends GP_Route {
 	function _import($file_key, $class, $block, $block_args) {
 		global $gpdb;
 		if ( is_uploaded_file( $_FILES[$file_key]['tmp_name'] ) ) {

@@ -1,5 +1,6 @@
 <?php
 class GP_Thing {
+	
 	var $table = null;
 	var $field_names = array();
 	var $errors = array();
@@ -19,10 +20,19 @@ class GP_Thing {
 		return $this->many( "SELECT * FROM $this->table" );
 	}
 	
+	/**
+	 * Reloads the object data from the database, based on its id
+	 */
 	function reload() {
 		$this->set_fields( $this->get( $this->id ) );
 	}
 
+	/**
+	 * Retrieves single row from this table
+	 * 
+	 * For parameters description see BPDB::prepare()
+	 * @return mixed an object, containing the selected row or false on error
+	 */
 	function one() {
 		global $gpdb;
 		$args = func_get_args();
@@ -34,13 +44,28 @@ class GP_Thing {
 		$args = func_get_args();
 		return $this->map( $gpdb->get_results( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
 	}
-
+	
+	function find( $conditions ) {
+		$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
+		$string_conditions = array();
+		foreach( $conditions as $field => $sql_condition ) {
+			$string_conditions[] = "$field $sql_condition";
+		}
+		return $this->many( "SELECT * FROM $this->table WHERE " . implode( ' AND ', $string_conditions ) );
+	}
+	
 	function query() {
 		global $gpdb;
 		$args = func_get_args();
 		return $gpdb->query( call_user_func_array( array($gpdb, 'prepare'), $args ) );
 	}
 
+	/**
+	 * Inserts a new row
+	 * 
+	 * @param $args array associative array with fields as keys and values as values
+	 * @return mixed the object corresponding to the inserted row or false on error
+	 */
 	function create( $args ) {
 		global $gpdb;
 		$res = $gpdb->insert( $this->table, $this->prepare_fields_for_save( $args ) );
@@ -51,12 +76,29 @@ class GP_Thing {
 		$inserted->after_create();
 		return $inserted;
 	}
-
+	
+	/**
+	 * Inserts a record and then selects it back based on the id
+	 * 
+	 * @param $args array see create()
+	 * @param mixed the selected object or false on error
+	 */
 	function create_and_select( $args ) {
 		$created = $this->create( $args );
 		if ( !$created ) return false;
 		$created->reload();
 		return $created;
+	}
+	
+	/**
+	 * Updates a single row
+	 * 
+	 * @param $data array associative array with fields as keys and updated values as values
+	 */
+	function update( $data ) {
+		global $gpdb;
+		$args = func_get_args();
+		return $gpdb->update( $this->table, $data, array( 'id' => $this->id ) );
 	}
 
 	function get( $thing_or_id ) {
@@ -141,5 +183,16 @@ class GP_Thing {
 	
 	function after_save() {
 		return true;
+	}
+	
+	function sql_condition_from_php_value( $php_value ) {
+		global $gpdb;
+		$operator = '=';
+		$sql_value = "'".$gpdb->escape( $php_value )."'";
+		if ( is_null( $php_value ) ) {
+			$operator = 'IS';
+			$sql_value = 'NULL';
+		}
+		return "$operator $sql_value";
 	}
 }

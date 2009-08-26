@@ -16,6 +16,7 @@ class GP_Route_Login {
 		if ( !$user || is_wp_error($user) ) {
 			gp_notice_set( __("Invalid username!"), 'error' );
 			wp_redirect( gp_url( '/login' ) );
+			return;
 		}
 		
 		if ( $user->login( $_POST['user_pass'] ) ) {

@@ -19,9 +19,10 @@ function gp_url_path( $url = null ) {
  */
 function gp_url_join() {
 	$args = func_get_args();
+	// we need array_values() in order to make sure the indices of $args are consecutive from 0 to count()-1
+	$args = array_values( array_filter( gp_array_flatten( $args ) ) );
 	if ( empty( $args ) ) return '';
-	$args = array_filter( gp_array_flatten( $args ) );
-	$start_slash = gp_startswith( $args[0], '/' ) && trim($args[0], '/') != '' ? '/' : '';
+	$start_slash = gp_startswith( $args[0], '/' ) && trim( $args[0], '/' ) != '' ? '/' : '';
 	$end_slash = gp_endswith( $args[ count($args) - 1 ] , '/' ) && trim($args[ count($args) - 1 ], '/') != '' ? '/' : '';
 	$args = array_map( create_function( '$x', 'return trim($x, "/");'), $args );
 	return $start_slash . implode( '/', $args ) . $end_slash;
