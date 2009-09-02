@@ -4,7 +4,8 @@ class GP_Thing {
 	var $table = null;
 	var $field_names = array();
 	var $errors = array();
-	static $i;
+	var $validation_rules = null;
+	static $per_class_validation_rules = array();
 	
 	function __construct( $fields = array() ) {
 		global $gpdb;
@@ -12,6 +13,14 @@ class GP_Thing {
 		foreach( $this->field_names as $field_name )
 			$this->$field_name = null;
 		$this->set_fields( $fields );
+		if ( is_null( $this->validation_rules ) ) {
+			if ( !isset( GP_Thing::$per_class_validation_rules[get_class( $this )] ) ) {
+				$rules = new GP_Validation_Rules( $this->field_names );
+				$this->restrict_fields( $rules );
+				GP_Thing::$per_class_validation_rules[get_class( $this )] = &$rules;
+			}
+			$this->validation_rules = &GP_Thing::$per_class_validation_rules[get_class( $this )];
+		}
 	}
 	
 	// CRUD
@@ -194,5 +203,9 @@ class GP_Thing {
 			$sql_value = 'NULL';
 		}
 		return "$operator $sql_value";
+	}
+	
+	function restrict_fields( $thing ) {
+		
 	}
 }

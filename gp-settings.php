@@ -214,6 +214,8 @@ if ( !class_exists( 'WP_Auth' ) ) {
 	unset( $cookies );
 }
 
+require_once( GP_PATH . GP_INC . 'validation.php' );
+
 require_once GP_PATH . GP_INC . 'thing.php';
 foreach( glob( GP_PATH . GP_INC . 'things/*.php' ) as $thing ) {
 	require_once $thing;
