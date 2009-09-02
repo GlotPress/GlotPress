@@ -1,5 +1,5 @@
 <?php
-class GP_Route_Login {
+class GP_Route_Login extends GP_Route_Main {
 	function login_get() {
 		if ( !GP::$user->logged_in() ) {
 			gp_tmpl_load( 'login', array() );
