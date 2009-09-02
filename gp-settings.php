@@ -41,9 +41,9 @@ require_once( BACKPRESS_PATH . 'functions.formatting.php' );
 
 // alleviate the magic_quotes_gpc effects
 if ( get_magic_quotes_gpc() ) {
-	$_GET    = stripslashes_deep($_GET   );
-	$_POST   = stripslashes_deep($_POST  );
-	$_COOKIE = stripslashes_deep($_COOKIE);
+	$_GET    = stripslashes_deep( $_GET );
+	$_POST   = stripslashes_deep( $_POST );
+	$_COOKIE = stripslashes_deep( $_COOKIE );
 }
 
 
@@ -108,10 +108,10 @@ foreach( $gpdb->table_names as $table ) {
 }
 unset( $table );
 
-if ( defined('CUSTOM_USER_TABLE') )
+if ( defined( 'CUSTOM_USER_TABLE' ) )
     $gpdb->users = CUSTOM_USER_TABLE;
 
-if ( defined('CUSTOM_USER_META_TABLE') )
+if ( defined( 'CUSTOM_USER_META_TABLE' ) )
     $gpdb->usermeta = CUSTOM_USER_META_TABLE;
 
 // Set the prefix on the tables
@@ -128,13 +128,13 @@ if ( !defined( 'GP_TMPL_PATH' ) )
 	
 require_once( GP_PATH . GP_INC . 'gp.php');
 
-require_once( GP_PATH . GP_INC . 'meta.php');
-require_once( GP_PATH . GP_INC . 'misc.php');
-require_once( GP_PATH . GP_INC . 'url.php');
-require_once( GP_PATH . GP_INC . 'strings.php');
+require_once( GP_PATH . GP_INC . 'meta.php' );
+require_once( GP_PATH . GP_INC . 'misc.php' );
+require_once( GP_PATH . GP_INC . 'url.php' );
+require_once( GP_PATH . GP_INC . 'strings.php' );
 
-require_once( GP_PATH . GP_INC . 'template.php');
-require_once( GP_PATH . GP_INC . 'template-links.php');
+require_once( GP_PATH . GP_INC . 'template.php' );
+require_once( GP_PATH . GP_INC . 'template-links.php' );
 
 /**
  * Define the full path to the object cache functions include
@@ -151,7 +151,7 @@ if ( GP_OBJECT_CACHE_FUNCTIONS_INCLUDE && !function_exists( 'wp_cache_init' ) ) 
 // Instantiate the $wp_object_cache object using wp_cache_init()
 if ( !isset( $wp_object_cache ) && function_exists( 'wp_cache_init' ) ) {
 	wp_cache_init();
-	if ( function_exists('wp_cache_add_global_groups') ) {
+	if ( function_exists( 'wp_cache_add_global_groups' ) ) {
 		wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'usermail', 'usernicename' ) );
 	}
 }
@@ -165,9 +165,9 @@ require_once( BACKPRESS_PATH . 'class.wp-styles.php' );
 require_once( BACKPRESS_PATH . 'functions.wp-styles.php' );
 require_once( BACKPRESS_PATH . 'class.wp-scripts.php' );
 require_once( BACKPRESS_PATH . 'functions.wp-scripts.php' );
-require_once( GP_PATH . GP_INC . 'assets-loader.php');
+require_once( GP_PATH . GP_INC . 'assets-loader.php' );
 
-require_once( GP_PATH . GP_INC . 'default-filters.php');
+require_once( GP_PATH . GP_INC . 'default-filters.php' );
 require_once( BACKPRESS_PATH . 'functions.kses.php' );
 
 require_once( POMO_PATH . 'mo.php' );
@@ -215,12 +215,12 @@ if ( !class_exists( 'WP_Auth' ) ) {
 }
 
 require_once GP_PATH . GP_INC . 'thing.php';
-foreach( glob( GP_PATH . GP_INC . 'things/*.php') as $thing ) {
+foreach( glob( GP_PATH . GP_INC . 'things/*.php' ) as $thing ) {
 	require_once $thing;
 }
 
 require_once( GP_PATH . GP_INC . 'routes.php' );
-foreach( glob( GP_PATH . GP_INC . 'routes/*.php') as $route ) {
+foreach( glob( GP_PATH . GP_INC . 'routes/*.php' ) as $route ) {
 	require_once $route;
 }
 
