@@ -9,8 +9,6 @@ class GP_Project extends GP_Thing {
 	function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
 		$project->slug_should_not_be('empty');
-		$project->parent_project_id_can_be('null');
-		$project->parent_project_id_should_not_be('empty');
 	}
 	
 	// Additional queries
@@ -47,8 +45,8 @@ class GP_Project extends GP_Thing {
 
 	function normalize_fields( $args ) {
 		$args = (array)$args;
-		if ( isset( $args['parent_project_id'] ) && !$args['parent_project_id'] ) {
-			$args['parent_project_id'] = null;
+		if ( isset( $args['parent_project_id'] ) ) {
+			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
 		return $args;
 	}

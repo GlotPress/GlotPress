@@ -5,22 +5,17 @@ class GP_Thing {
 	var $field_names = array();
 	var $errors = array();
 	var $validation_rules = null;
-	static $per_class_validation_rules = array();
 	
 	function __construct( $fields = array() ) {
 		global $gpdb;
 		$this->table = $gpdb->{$this->table_basename};
-		foreach( $this->field_names as $field_name )
+		foreach( $this->field_names as $field_name ) {
 			$this->$field_name = null;
-		$this->set_fields( $fields );
-		if ( is_null( $this->validation_rules ) ) {
-			if ( !isset( GP_Thing::$per_class_validation_rules[get_class( $this )] ) ) {
-				$rules = new GP_Validation_Rules( $this->field_names );
-				$this->restrict_fields( $rules );
-				GP_Thing::$per_class_validation_rules[get_class( $this )] = &$rules;
-			}
-			$this->validation_rules = &GP_Thing::$per_class_validation_rules[get_class( $this )];
 		}
+		$this->set_fields( $fields );
+		$this->validation_rules = new GP_Validation_Rules( $this );
+		// we give the rules here solely as a syntax sugar
+		$this->restrict_fields( $this->validation_rules );
 	}
 	
 	// CRUD
@@ -134,7 +129,7 @@ class GP_Thing {
 	// Fields handling
 	
 	function set_fields( $db_object ) {
-		$db_object = $this->normalize_fields( (array)$db_object );
+		$db_object = $this->normalize_fields( $db_object );
 		foreach( $db_object as $key => $value ) {
 			$this->$key = $value;
 		}
@@ -142,7 +137,7 @@ class GP_Thing {
 
 	/**
 	 * Normalizes an array with key-value pairs representing
-	 * a GP_Project object.
+	 * a GP_Thing object.
 	 */
 	function normalize_fields( $args ) {
 		return $args;
@@ -206,6 +201,16 @@ class GP_Thing {
 	}
 	
 	function restrict_fields( $thing ) {
-		
+		// Don't restrict any fields by default
+	}
+	
+	function validate() {
+		$verdict = $this->validation_rules->run();
+		$this->errors = $this->validation_rules->errors;
+		return $verdict;
+	}
+	
+	function force_false_to_null( $value ) {
+		return $value? $value : null;
 	}
 }

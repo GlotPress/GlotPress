@@ -125,7 +125,8 @@ if ( !function_exists( 'add_filter' ) ) {
 
 if ( !defined( 'GP_TMPL_PATH' ) )
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
-	
+
+require_once( GP_PATH . GP_INC . 'lambda.php');
 require_once( GP_PATH . GP_INC . 'gp.php');
 
 require_once( GP_PATH . GP_INC . 'meta.php' );
