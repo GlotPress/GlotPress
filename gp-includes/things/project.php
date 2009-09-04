@@ -38,6 +38,7 @@ class GP_Project extends GP_Thing {
 		// TODO: pass some args to pre/after_create?
 		// TODO: transaction? uninsert on failure?
 		if ( is_null( $this->update_path() ) ) return false;
+		if ( !$this->copy_permissions_from_parent() ) return false;
 	}
 
 
@@ -66,17 +67,30 @@ class GP_Project extends GP_Thing {
 			$path = $this->slug;
 		else
 			return null;
-		$res_self = $gpdb->update( $gpdb->projects, array( 'path' => $path ), array( 'id' => $this->id ) );
+		$res_self = $this->update( array( 'path' => $path ) );
 		if ( is_null( $res_self ) ) return $res_self;
 		// update children's paths, too
 		if ( $old_path ) {
-			$query = "UPDATE $gpdb->projects SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
+			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
 			return $this->query( $query, $path, strlen($old_path) + 1, like_escape( $old_path).'%' );
 		} else {
 			return $res_self;
 		}
 	}
 	
+	function copy_permissions_from_parent() {
+		if ( !$this->parent_project_id ) return true;
+		$permissions = GP::$permission->find( array( 'action' => 'write', 'object_type' => 'project',  'object_id' => $this->parent_project_id )  );
+		if ( !is_array( $permissions ) ) return false;
+		foreach( $permissions as $permission ) {
+			if ( !GP::$permission->create( array( 'user_id' => $permission->user_id, 'action' => 'write',
+					'object_type' => 'project',  'object_id' => $this->id ) ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Regenrate the paths of all projects from its parents slugs
 	 */

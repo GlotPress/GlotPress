@@ -103,11 +103,10 @@ class GP_User extends GP_Thing {
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
 		}
-		if ( $user && $user->admin() ) {
-			$verdict = true;
-		} else {
-			$verdict = (bool) GP::$permission->find_one( $args );
-		}
+		$verdict =
+			( $user && $user->admin() ) ||
+			GP::$permission->find_one( $args ) ||
+			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 		return apply_filters( 'can_user', $verdict, $args );
 	}
 }
