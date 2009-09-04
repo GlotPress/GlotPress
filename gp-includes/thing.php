@@ -14,7 +14,7 @@ class GP_Thing {
 		}
 		$this->set_fields( $fields );
 		$this->validation_rules = new GP_Validation_Rules( $this );
-		// we give the rules here solely as a syntax sugar
+		// we give the rules as a parameter here solely as a syntax sugar
 		$this->restrict_fields( $this->validation_rules );
 	}
 	
@@ -111,9 +111,9 @@ class GP_Thing {
 		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $this->table WHERE `id` = '%s'", $thing_or_id ) ) );
 	}
 
-	function save( $args = false ) {
+	function save( $args = null ) {
 		global $gpdb;
-		if ( false === $args ) $args = get_object_vars( $this );
+		if ( is_null( $args ) ) $args = get_object_vars( $this );
 		if ( !is_array( $args ) ) $args = (array)$args;
 		$update_res  = $gpdb->update( $this->table, $this->prepare_fields_for_save( $args ), array( 'id' => $this->id ) );
 		$this->set_fields( $args );
