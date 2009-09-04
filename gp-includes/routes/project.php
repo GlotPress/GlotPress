@@ -69,16 +69,19 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: check permissions for project and parent project
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
-		$updated_project = gp_post( 'project' );
-		// validate here? or in GP_Project?
-		if ( $project->id == $updated_project['parent_project_id'] )
+		$updated_project = new GP_Project( gp_post( 'project' ) );
+		$redirect_url = gp_url_project( $project, '_edit' );
+		$this->validate_or_redirect( $updated_project, $redirect_url );
+		// TODO: add id check as a validation rule
+		if ( $project->id == $updated_project->parent_project_id )
 			gp_notice_set( __('The project cannot be parent of itself!'), 'error' );
 		elseif ( !is_null( $project->save( $updated_project ) ) )
 			$this->notices[] = __('The project was saved.');
 		else
 			gp_notice_set( __('Error in saving project!'), 'error' );
 		$project->reload();
-		wp_redirect( gp_url_project( $project, '_edit' ) );
+
+		wp_redirect( $redirect_url );
 	}
 
 	function delete_get( $project_path ) {

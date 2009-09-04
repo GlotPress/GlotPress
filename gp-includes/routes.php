@@ -86,8 +86,12 @@ class GP_Router {
 					$class = new ReflectionClass( $func[0] );
 					$route = $class->newInstance();
 					$route->before_request();
+					$route->request_running = true;
+					// make sure after_request() is called even if we exit() in the request
+					register_shutdown_function( array( &$route, 'after_request'));
 					call_user_func_array( array( $route, $func[1] ), array_slice( $matches, 1 ) );
 					$route->after_request();
+					$route->request_running = false;
 				} else {
 					call_user_func_array( $func, array_slice( $matches, 1 ) );
 				}
@@ -102,15 +106,53 @@ class GP_Route {
 	
 	var $errors = array();
 	var $notices = array();
+	var $request_running = false;
 	
 	function before_request() {
 	}
-	
+
 	function after_request() {
+		// we can't unregister this as a shutdown function
+		// this prevents the method from being run twice
+		if ( !$this->request_running ) return;
 		// set errors and notices
 		foreach( $this->notices as $notice ) {
 			gp_notice_set( $notice );
 		}
+		foreach( $this->errors as $error ) {
+			gp_notice_set( $error, 'error' );
+		}
+	}
+
+	/**
+	 * Validates a thing and add its errors to the route's errors.
+	 * 
+	 * @param object $thing a GP_Thing instance to validate
+	 * @return bool whether the thing is valid
+	 */
+	function validate( $thing ) {
+		$verdict = $thing->validate();
+		$this->errors = array_merge( $this->errors, $thing->errors );
+		return $verdict;
+	}
+	
+	/**
+	 * Same as validate(), but redirects to $url if the thing isn't valid.
+	 * 
+	 * Note: this method calls exit() after the redirect and the code after it won't
+	 * be executed.
+	 * 
+	 * @param object $thing a GP_Thing instance to validate
+	 * @param string $url where to redirect if the thing doesn't validate
+	 * @return bool whether the thing is valid
+	 */
+	function validate_or_redirect( $thing, $url ) {
+		$verdict = $this->validate( $thing );
+		if ( !$verdict ) {
+			wp_redirect( $url );
+			exit();
+		}
+		return $verdict;
 	}
 }
 
