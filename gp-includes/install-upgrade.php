@@ -53,6 +53,6 @@ function gp_install() {
 	
 	// TODO: ask the user for an e-mail -- borrow WordPress install process
 	$admin = GP::$user->create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
-	GP_Permission::create( array( 'user' => $admin, 'action' => 'admin' ) );
+	GP::$permission->create( array( 'user_id' => $admin->id, 'action' => 'admin' ) );
 	return array();
 }

@@ -76,7 +76,7 @@ class GP_Project extends GP_Thing {
 			return $res_self;
 		}
 	}
-
+	
 	/**
 	 * Regenrate the paths of all projects from its parents slugs
 	 */

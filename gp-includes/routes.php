@@ -35,7 +35,7 @@ class GP_Router {
 		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 		// overall structure
 		return apply_filters( 'routes', array(
-			'/' => 'gp_route_index',
+			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'post:/login' => array('GP_Route_Login', 'login_post'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
@@ -154,8 +154,19 @@ class GP_Route {
 		}
 		return $verdict;
 	}
-}
-
-function gp_route_index() {
-	wp_redirect( gp_url_project( '' ) );
+	
+	function can( $action, $object_type = null, $object_id = null ) {
+		return GP::$user->current()->can( $action, $object_type, $object_id );
+	}
+	
+	function can_or_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
+		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
+		$can = $this->can( $action, $object_type, $object_id );
+		if ( !$can ) {
+			gp_notice_set( __('You are not allowed to do that!'), 'error' );
+			wp_redirect( $url );
+			exit();
+		}
+	}
+	
 }

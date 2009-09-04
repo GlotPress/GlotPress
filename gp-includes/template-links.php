@@ -18,8 +18,8 @@ function gp_link() {
 	echo call_user_func_array('gp_link_get', $args);
 }
 
-function gp_link_project_get( &$project_or_slug, $text, $attrs = array() ) {
-	return gp_link_get( gp_url_project( $project_or_slug ), $text, $attrs );
+function gp_link_project_get( &$project_or_path, $text, $attrs = array() ) {
+	return gp_link_get( gp_url_project( $project_or_path ), $text, $attrs );
 }
 
 function gp_link_project() {
@@ -27,13 +27,12 @@ function gp_link_project() {
 	echo call_user_func_array('gp_link_project_get', $args);
 }
 
-function gp_link_project_edit_get( &$project_or_path, $text = false, $attrs = array() ) {
-	// TODO: check proper permissions
-	if ( !GP::$user->current()->can('admin')) {
+function gp_link_project_edit_get( &$project, $text = false, $attrs = array() ) {
+	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );
-	return gp_link_get( gp_url_project( $project_or_path, '_edit' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
+	return gp_link_get( gp_url_project( $project, '_edit' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
 function gp_link_project_edit() {
@@ -41,13 +40,12 @@ function gp_link_project_edit() {
 	echo call_user_func_array('gp_link_project_edit_get', $args);
 }
 
-function gp_link_project_delete_get( &$project_or_path, $text = false, $attrs = array() ) {
-	// TODO: check proper permissions
-	if ( !GP::$user->current()->can('admin')) {
+function gp_link_project_delete_get( &$project, $text = false, $attrs = array() ) {
+	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Delete' );
-	return gp_link_get( gp_url_project( $project_or_path, '_delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
+	return gp_link_get( gp_url_project( $project, '_delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
 }
 
 function gp_link_project_delete() {

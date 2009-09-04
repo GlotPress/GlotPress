@@ -5,8 +5,8 @@ class GP_Test_User extends GP_UnitTestCase {
 	
 	function test_can() {
 		$user = new GP_User( array( 'id' => 111 ) );
-		$args = array( 'user' => $user, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => 1 );
-		GP_Permission::create( $args );
+		$args = array( 'user_id' => $user->id, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => 1 );
+		GP::$permission->create( $args );
 		$this->assertEquals( true, $user->can( 'write', 'translation-set', 1 ) );
 		$this->assertEquals( false, $user->can( 'write', 'translation-set', 2 ) );
 		$this->assertEquals( false, $user->can( 'write', 'translation-set' ) );
@@ -14,9 +14,9 @@ class GP_Test_User extends GP_UnitTestCase {
 	}
 	
 	function test_admin() {
-		$admin_user = new GP_User( array( 'id' => 1 ) );
-		GP_Permission::create( array( 'user' => $admin_user, 'action' => 'admin' ) );
-		$nonadmin_user = new GP_User( array( 'id' => 2 ) );
+		$admin_user = new GP_User( array( 'id' => 2 ) );
+		GP::$permission->create( array( 'user_id' => $admin_user->id, 'action' => 'admin' ) );
+		$nonadmin_user = new GP_User( array( 'id' => 3 ) );
 		$this->assertEquals( true, $admin_user->admin() );
 		$this->assertEquals( false, $nonadmin_user->admin() );
 		$this->assertEquals( true, $admin_user->can( 'milk', 'a cow' ) );

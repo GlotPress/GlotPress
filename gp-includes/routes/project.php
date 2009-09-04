@@ -13,6 +13,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 		$title = sprintf( __('%s project '), gp_h( $project->name ) );
+		$can_write = $this->can( 'write', 'project', $project->id );
 		gp_tmpl_load( 'project', get_defined_vars() );
 	}
 
@@ -61,17 +62,17 @@ class GP_Route_Project extends GP_Route_Main {
 	function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
 		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-edit', get_defined_vars() );
 	}
 	
 	function edit_post( $project_path ) {
-		// TODO: check permissions for project and parent project
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
 		$updated_project = new GP_Project( gp_post( 'project' ) );
-		$redirect_url = gp_url_project( $project, '_edit' );
-		$this->validate_or_redirect( $updated_project, $redirect_url );
+		$this->validate_or_redirect( $updated_project, gp_url_project( $project, '_edit' ) );
 		// TODO: add id check as a validation rule
 		if ( $project->id == $updated_project->parent_project_id )
 			$this->errors[] = __('The project cannot be parent of itself!');
@@ -81,16 +82,16 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __('Error in saving project!');
 		$project->reload();
 
-		wp_redirect( $redirect_url );
+		wp_redirect( gp_url_project( $project, '_edit' ) );
 	}
 
 	function delete_get( $project_path ) {
-		// TODO: check permissions for project and parent project
 		// TODO: do not delete using a GET request but POST
 		// TODO: decide what to do with child projects and translation sets
 		// TODO: just deactivate, do not actually delete
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
 		if ( $project->delete() )
 			$this->notices[] = __('The project was deleted.');
 		else
@@ -100,16 +101,18 @@ class GP_Route_Project extends GP_Route_Main {
 
 	
 	function new_get() {
-		// TODO: check permissions for project and parent project		
 		$project = new GP_Project();
-		$project->parent_project_id = gp_get( 'parent_project_id' );
+		$project->parent_project_id = gp_get( 'parent_project_id', null );
+		$this->can_or_redirect( 'write', 'project', $project->parent_project_id );
 		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-new', get_defined_vars() );
 	}
 	
 	function new_post() {
-		// TODO: check permissions for project and parent project		
-		$project = GP::$project->create_and_select( gp_post( 'project' ) );
+		$post = gp_post( 'project' );
+		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
+		$this->can_or_redirect( 'write', 'project', $parent_project_id );
+		$project = GP::$project->create_and_select( $post );
 		if ( !$project ) {
 			$project = new GP_Project();
 			$this->errors[] = __('Error in creating project!');

@@ -30,7 +30,7 @@ gp_tmpl_header();
 <?php else: ?>
 	<p>There are no translations of this project.</p>
 <?php endif; ?>
-<?php if ( GP::$user->current()->can( 'write', 'project', $project->id ) ): ?>
+<?php if ( $can_write ): ?>
 	<p>
 		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> |
 		<?php gp_link( gp_url_project( '', '_new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> |

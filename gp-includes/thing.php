@@ -49,13 +49,16 @@ class GP_Thing {
 		return $this->map( $gpdb->get_results( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
 	}
 	
+	function find_many( $conditions ) {
+		return $this->many( $this->sql_from_conditions( $conditions ) );
+	}
+
+	function find_one( $conditions ) {
+		return $this->one( $this->sql_from_conditions( $conditions ) );
+	}
+
 	function find( $conditions ) {
-		$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
-		$string_conditions = array();
-		foreach( $conditions as $field => $sql_condition ) {
-			$string_conditions[] = "$field $sql_condition";
-		}
-		return $this->many( "SELECT * FROM $this->table WHERE " . implode( ' AND ', $string_conditions ) );
+		return $this->find_many( $conditions );
 	}
 	
 	function query() {
@@ -115,9 +118,10 @@ class GP_Thing {
 		global $gpdb;
 		if ( is_null( $args ) ) $args = get_object_vars( $this );
 		if ( !is_array( $args ) ) $args = (array)$args;
-		$update_res  = $gpdb->update( $this->table, $this->prepare_fields_for_save( $args ), array( 'id' => $this->id ) );
+		$args = $this->prepare_fields_for_save( $args );
+		$update_res  = $gpdb->update( $this->table, $args, array( 'id' => $this->id ) );
 		$this->set_fields( $args );
-		if ( is_null( $update_res ) ) return $update_res;
+		if ( is_null( $update_res ) ) return null;
 		$update_res = $this->after_save();
 		return $update_res;
 	}
@@ -200,6 +204,15 @@ class GP_Thing {
 		return "$operator $sql_value";
 	}
 	
+	function sql_from_conditions( $conditions ) {
+		$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
+		$string_conditions = array();
+		foreach( $conditions as $field => $sql_condition ) {
+			$string_conditions[] = "$field $sql_condition";
+		}
+		return "SELECT * FROM $this->table WHERE " . implode( ' AND ', $string_conditions );
+	}
+	
 	function restrict_fields( $thing ) {
 		// Don't restrict any fields by default
 	}
@@ -212,5 +225,15 @@ class GP_Thing {
 	
 	function force_false_to_null( $value ) {
 		return $value? $value : null;
+	}
+	
+	function fields() {
+		$result = array();
+		foreach( $this->field_names as $field_name ) {
+			if ( isset( $this->$field_name ) ) {
+				$result[$field_name] = $this->$field_name;
+			}
+		}
+		return $result;
 	}
 }
