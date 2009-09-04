@@ -35,7 +35,9 @@ class GP_Validation_Rules {
 		$this->errors = array();
 		$verdict = true;
 		foreach( $this->thing->field_names as $field_name ) {
-			$value = isset( $this->thing->$field_name )? $this->thing->$field_name : null;
+			// do not try to validate missing fields
+			if ( !isset( $this->thing->$field_name ) ) continue;
+			$value = $this->thing->$field_name;
 			$field_verdict = $this->run_on_single_field( $field_name, $value );
 			$verdict = $verdict && $field_verdict;
 		}
@@ -79,7 +81,7 @@ class GP_Validation_Rules {
 	
 	function construct_error_message( $rule, $value ) {
 		// TODO: better error messages, should include info from callback
-		return sprintf( __('The field %s has invalid value!'), $rule['field'], $value );
+		return sprintf( __('The field <strong>%s</strong> has invalid value!'), $rule['field'], $value );
 	}
 }
 
