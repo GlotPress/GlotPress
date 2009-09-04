@@ -32,8 +32,8 @@ gp_tmpl_header();
 <?php endif; ?>
 <?php if ( $can_write ): ?>
 	<p>
-		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> |
-		<?php gp_link( gp_url_project( '', '_new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> |
+		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> &bull;
+		<?php gp_link( gp_url_project( '', '_new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> &bull;
 		<?php gp_link( gp_url( '/sets/_new', array( 'project_id' => $project->id ) ), __('Create a New Translation Set') ); ?>
 	</p>
 <?php endif; ?>
