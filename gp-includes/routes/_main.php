@@ -9,7 +9,7 @@ class GP_Route_Main extends GP_Route {
 			$translations = new $class();
 			$result = $translations->import_from_file( $_FILES[$file_key]['tmp_name'] );
 			if ( !$result ) {
-				gp_notice_set( __("Couldn&#8217;t load translations from file!"), 'error' );
+				$this->errors[] = __("Couldn&#8217;t load translations from file!");
 			} else {
 				$block_args[] = $translations;
 				call_user_func_array( $block, $block_args );

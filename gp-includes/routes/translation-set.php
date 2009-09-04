@@ -15,10 +15,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$project = GP::$project->get( $set->project_id );
 		if ( !$set ) {
 			$set = new GP_Translation_Set();
-			gp_notice_set( __('Error in creating translation set!'), 'error' );
+			$this->errors[] = __('Error in creating translation set!');
 			wp_redirect( gp_url('/sets/_new') );
 		} else {
-			gp_notice_set( __('The translation set was created!') );
+			$this->notices[] = __('The translation set was created!');
 			wp_redirect( gp_url_project_locale( $project, $set->locale, $set->slug ) );
 		}
 	}

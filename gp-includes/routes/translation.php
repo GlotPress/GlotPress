@@ -19,7 +19,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		
-		$block = array( 'GP_Route_Translation', '_merge_translations');
+		$block = array( &$this, '_merge_translations');
 		self::_import('mo-file', 'MO', $block, array($project, $locale, $translation_set)) or
 		self::_import('pot-file', 'PO', $block, array($project, $locale, $translation_set));
 
@@ -116,7 +116,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 		}
-		gp_notice_set( sprintf(__("%s translations were added"), $translations_added ) );
+		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
 	}
 
 	function _find_translation( $original, $translation_set, $entry ) {

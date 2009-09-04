@@ -14,7 +14,7 @@ class GP_Route_Login extends GP_Route_Main {
 		$user = GP::$user->by_login( $_POST['user_login'] );
 				
 		if ( !$user || is_wp_error($user) ) {
-			gp_notice_set( __("Invalid username!"), 'error' );
+			$this->errors[] = __("Invalid username!");
 			wp_redirect( gp_url( '/login' ) );
 			return;
 		}
@@ -23,11 +23,11 @@ class GP_Route_Login extends GP_Route_Main {
 			if ( gp_post( 'redirect_to' ) ) {
 				wp_redirect( gp_url( gp_post( 'redirect_to' ) ) );
 			} else {
-				gp_notice_set( sprintf( __("Welcome, %s!"), $_POST['user_login'] ) );
+				$this->notices[] = sprintf( __("Welcome, %s!"), $_POST['user_login'] );
 				wp_redirect( gp_url( '/' ) );
 			}
 		} else {
-			gp_notice_set( __("Invalid password!"), 'error' );
+			$this->errors[] = __("Invalid password!");
 			wp_redirect( gp_url( '/login' ) );
 		}
 	}

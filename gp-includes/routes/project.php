@@ -27,7 +27,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		
-		$block = array( 'GP_Route_Project', '_merge_originals');
+		$block = array( &$this, '_merge_originals');
 		self::_import('mo-file', 'MO', $block, array($project)) or
 		self::_import('pot-file', 'PO', $block, array($project));
 
@@ -55,7 +55,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		$gpdb->update( $gpdb->originals, array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
 		// TODO: were they really added?
-		gp_notice_set( sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing ) );
+		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
 	}
 		
 	function edit_get( $project_path ) {
@@ -74,11 +74,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->validate_or_redirect( $updated_project, $redirect_url );
 		// TODO: add id check as a validation rule
 		if ( $project->id == $updated_project->parent_project_id )
-			gp_notice_set( __('The project cannot be parent of itself!'), 'error' );
+			$this->errors[] = __('The project cannot be parent of itself!');
 		elseif ( !is_null( $project->save( $updated_project ) ) )
 			$this->notices[] = __('The project was saved.');
 		else
-			gp_notice_set( __('Error in saving project!'), 'error' );
+			$this->errors[] = __('Error in saving project!');
 		$project->reload();
 
 		wp_redirect( $redirect_url );
@@ -92,9 +92,9 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		if ( $project->delete() )
-			gp_notice_set( __('The project was deleted.') );
+			$this->notices[] = __('The project was deleted.');
 		else
-			gp_notice_set( __('Error in deleting project!'), 'error' );
+			$this->errors[] = __('Error in deleting project!');
 		wp_redirect( gp_url_project( '' ) );
 	}
 
@@ -112,11 +112,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->create_and_select( gp_post( 'project' ) );
 		if ( !$project ) {
 			$project = new GP_Project();
-			gp_notice_set( __('Error in creating project!'), 'error' );
+			$this->errors[] = __('Error in creating project!');
 			$all_project_options = self::_options_from_projects( GP::$project->all() );
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
-			gp_notice_set( __('The project was created!') );
+			$this->notices[] = __('The project was created!');
 			wp_redirect( gp_url_project( $project, '_edit' ) );
 		}
 	}
