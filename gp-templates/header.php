@@ -27,11 +27,11 @@ wp_enqueue_style( 'base' );
 		</h1>
 		<?php if (gp_notice('error')): ?>
 			<div class="error">
-				<?php echo esc_html( gp_notice( 'error' ) ); ?>
+				<?php echo gp_notice( 'error' ); //TODO: run kses on notices ?>
 			</div>
 		<?php endif; ?>
 		<?php if (gp_notice()): ?>
 			<div class="notice">
-				<?php echo esc_html( gp_notice() ); ?>
+				<?php echo gp_notice(); ?>
 			</div>
 		<?php endif; ?>
