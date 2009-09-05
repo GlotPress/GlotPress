@@ -30,6 +30,14 @@ if ( !defined( 'GP_LANG_PATH' ) ) {
 	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
 }
 
+/*
+ * In most cases the default internal encoding is latin1, which is of no use,
+ * since we want to use the mb_ functions for UTF-8 strings
+ */
+if (function_exists('mb_internal_encoding')) {
+	mb_internal_encoding('UTF-8');
+}
+
 require_once( BACKPRESS_PATH . 'class.bp-log.php' );
 $gp_log = new BP_Log();
 if ( defined( 'GP_LOG_LEVEL' ) ) {
@@ -241,6 +249,11 @@ $gp_router = new GP_Router();
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );
 
+foreach( glob( GP_PATH . 'plugins/*.php' ) as $plugin ) {
+	require_once $plugin;
+}
+do_action( 'plugins_loaded' );
+
 if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 	return;
 else
@@ -256,5 +269,7 @@ if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
 }
 
 gp_populate_notices();
+
+do_action( 'init' );
 
 $gp_router->route();
