@@ -28,7 +28,6 @@ class BP_Options
 				return 'GlotPress/' . gp_get_option('version');
 				break;
 			case 'hash_function_name':
-			 	//TODO: add the gp_hash function
 				return 'gp_hash';
 				break;
 			default:

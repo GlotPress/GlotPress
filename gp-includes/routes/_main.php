@@ -22,7 +22,6 @@ class GP_Route_Main extends GP_Route {
 	function _find_original( $project, $entry ) {
 		global $gpdb;
 		$where = array();
-		// TODO: fix db::prepare to understand %1$s
 		// now each condition has to contain a %s not to break the sequence
 		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
 		$where[] = 'BINARY singular = %s';

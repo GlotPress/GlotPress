@@ -36,7 +36,6 @@ class GP_Project extends GP_Thing {
 
 	function after_create() {
 		// TODO: pass some args to pre/after_create?
-		// TODO: transaction? uninsert on failure?
 		if ( is_null( $this->update_path() ) ) return false;
 		if ( !$this->copy_permissions_from_parent() ) return false;
 	}
