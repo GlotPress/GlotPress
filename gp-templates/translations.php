@@ -13,7 +13,7 @@ $i = 0;
 function textareas( $entry, $index = 0 ) {
 ?>
 <div class="textareas">
-	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo gp_h($entry->translations[$index]); ?></textarea>
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo esc_html($entry->translations[$index]); ?></textarea>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
 		<ul class="refs">
@@ -45,13 +45,13 @@ function textareas( $entry, $index = 0 ) {
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
 		<td><?php echo $i++; ?></td>
 		<td class="original">			
-			<?php echo gp_h( $t->singular ); ?>
+			<?php echo esc_html( $t->singular ); ?>
 			<?php if ( $t->context ): ?>
-			<span class="context" title="<?php printf( __('Context: %s'), gp_h($t->context) ); ?>"><?php echo gp_h($t->context); ?></span>
+			<span class="context" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 			<?php endif; ?>
 
 		</td>
-		<td class="translation"><?php echo gp_h( $t->translations[0] ); ?></td>
+		<td class="translation"><?php echo esc_html( $t->translations[0] ); ?></td>
 		<td class="actions">
 			<a href="#" original="<?php echo $t->original_id; ?>" class="action edit"><?php _e('Edit'); ?></a>
 		</td>
@@ -59,25 +59,25 @@ function textareas( $entry, $index = 0 ) {
 	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
 		<td colspan="3">
 			<?php if ( !$t->plural ): ?>
-			<p class="original"><?php echo gp_h($t->singular); ?></p>
+			<p class="original"><?php echo esc_html($t->singular); ?></p>
 			<?php textareas( $t ); ?>
 			<?php else: ?>
 				<!--
 					TODO: use the correct number of plurals
 					TODO: dynamically set the number of rows
 				-->				
-				<p><?php printf(__('Singular: %s'), '<span class="original">'.gp_h($t->singular).'</span>'); ?></p>
+				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_html($t->singular).'</span>'); ?></p>
 				<?php textareas( $t, 0 ); ?>
-				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.gp_h($t->plural).'</span>'); ?></p>
+				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_html($t->plural).'</span>'); ?></p>
 				<?php textareas( $t, 1 ); ?>				
 			
 			<?php endif; ?>
 			<div class="meta">
 				<?php if ( $t->context ): ?>
-				<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.gp_h($t->context).'</span>' ); ?></p>
+				<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.esc_html($t->context).'</span>' ); ?></p>
 				<?php endif; ?>
 				<?php if ( $t->extracted_comment ): ?>
-				<p class="comment"><?php printf( __('Comment: %s'), make_clickable( gp_h($t->extracted_comment) ) ); ?></p>
+				<p class="comment"><?php printf( __('Comment: %s'), make_clickable( esc_html($t->extracted_comment) ) ); ?></p>
 				<?php endif; ?>
 			</div>
 			<div class="actions">

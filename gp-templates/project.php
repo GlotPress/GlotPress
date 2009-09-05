@@ -1,5 +1,5 @@
 <?php
-gp_title( sprintf( __('%s &lt; GlotPress'), gp_h( $project->name ) ) );
+gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb( array(
 	gp_link_home_get(),
 	// TODO: add parent projects to breadcrumb
@@ -11,7 +11,7 @@ gp_tmpl_header();
 <ul>
 <?php foreach($sub_projects as $sub_project): ?>
 	<li>
-		<?php gp_link_project( $sub_project, gp_h( $sub_project->name )); ?>			
+		<?php gp_link_project( $sub_project, esc_html( $sub_project->name )); ?>			
 		<?php gp_link_project_edit( $sub_project ); ?>			
 		<?php gp_link_project_delete( $sub_project ); ?>
 	</li>

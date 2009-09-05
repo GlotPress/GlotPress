@@ -12,7 +12,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
-		$title = sprintf( __('%s project '), gp_h( $project->name ) );
+		$title = sprintf( __('%s project '), esc_html( $project->name ) );
 		$can_write = $this->can( 'write', 'project', $project->id );
 		gp_tmpl_load( 'project', get_defined_vars() );
 	}

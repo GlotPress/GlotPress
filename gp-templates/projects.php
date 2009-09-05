@@ -6,7 +6,7 @@ gp_tmpl_header();
 <h2>Projects</h2>
 <ul>
 <?php foreach($projects as $project): ?>
-	<li><?php gp_link_project( $project, gp_h( $project->name ) ); ?> <?php gp_link_project_edit( $project ); ?> <?php gp_link_project_delete( $project ); ?></li>
+	<li><?php gp_link_project( $project, esc_html( $project->name ) ); ?> <?php gp_link_project_edit( $project ); ?> <?php gp_link_project_delete( $project ); ?></li>
 <?php endforeach; ?>
 </ul>
 <?php if ( GP::$user->current()->can( 'write', 'project' ) ): ?>

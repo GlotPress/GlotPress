@@ -44,22 +44,6 @@ function gp_tmpl_404( $args = array()) {
 	exit();
 }
 
-function gp_h( $s ) {
-	return wp_specialchars( $s, ENT_NOQUOTES, false, true );
-}
-
-/**
- * TODO: sync with WordPress
- */
-function gp_a( $s ) {
-	return wp_specialchars( $s, ENT_NOQUOTES, false, true );
-}
-
-
-function gp_attr( $s ) {
-	return attribute_escape( $s );
-}
-
 function gp_title( $title = null ) {
 	if ( !is_null( $title ) )
 		add_filter( 'gp_title', create_function( '$x', 'return '.var_export($title, true).';'), 5 );
@@ -85,10 +69,10 @@ function gp_js_focus_on( $html_id ) {
 }
 
 function gp_select( $name_and_id, $options, $selected_key ) {
-	$res = "<select name='" . gp_a( $name_and_id ) . "' id='" . gp_a( $name_and_id ) . "'>\n";
+	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "'>\n";
 	foreach( $options as $value => $label ) {
 		$selected = $value == $selected_key? " selected='selected'" : '';
-		$res .= "\t<option value='".gp_a( $value )."' $selected>" . gp_h( $label ) . "</option>\n";
+		$res .= "\t<option value='".esc_attr( $value )."' $selected>" . esc_html( $label ) . "</option>\n";
 	}
 	$res .= "</select>\n";
 	return $res;
