@@ -1,3 +1,3 @@
 <?php
-define( 'GP_ROUTE', true );
+define( 'GP_ROUTING', true );
 require( './gp-load.php' );
