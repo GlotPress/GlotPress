@@ -8,9 +8,6 @@ if ( version_compare( PHP_VERSION, '5.2', '<' ) ) {
 	die( sprintf( "Your server is running PHP version %s but GlotPress requires at least 5.2.\n", PHP_VERSION ) );
 }
 
-//TODO: honor GP_DEBUG and show less errors
-error_reporting( E_ALL );
-
 // Fix empty PHP_SELF
 $PHP_SELF = $_SERVER['PHP_SELF'];
 if ( empty($PHP_SELF) )

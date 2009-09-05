@@ -5,6 +5,15 @@
  * routing logic in the end.
  */
 
+if ( defined( 'GP_DEBUG' ) && GP_DEBUG ) {
+	error_reporting( E_ALL );
+} else {
+    if ( defined( 'E_RECOVERABLE_ERROR' ) )
+        error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
+    else
+        error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING );
+}
+
 require_once( GP_PATH . GP_INC . '/system.php' );
 
 gp_unregister_GLOBALS();
