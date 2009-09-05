@@ -246,7 +246,7 @@ if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 else
 	define( 'GP_INSTALLING', false );
 
-if ( defined( 'GP_NO_ROUTING') && GP_NO_ROUTING )
+if ( !defined( 'GP_ROUTING') || !GP_ROUTING )
 	return;
 
 if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {

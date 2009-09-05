@@ -1,5 +1,4 @@
 <?php
-define( 'GP_NO_ROUTING', true );
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 $progname = array_shift( $argv );
