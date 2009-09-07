@@ -16,6 +16,7 @@ ini_set('auto_detect_line_endings', 1);
 /**
  * Routines for working with PO files
  */
+if ( !class_exists( 'PO' ) ):
 class PO extends Gettext_Translations {
 	
 
@@ -357,4 +358,4 @@ class PO extends Gettext_Translations {
 		return $s;
 	}
 }
-?>
+endif;
