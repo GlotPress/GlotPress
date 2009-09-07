@@ -7,7 +7,7 @@
  * @subpackage entry
  */
 
-
+if ( !class_exists( 'Translation_Entry' ) ):
 /**
  * Translation_Entry class encapsulates a translatable string
  */
@@ -67,4 +67,4 @@ class Translation_Entry {
 		return is_null($this->context)? $this->singular : $this->context.chr(4).$this->singular;
 	}
 }
-?>
+endif;

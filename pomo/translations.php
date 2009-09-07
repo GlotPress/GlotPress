@@ -9,6 +9,7 @@
 
 require_once dirname(__FILE__) . '/entry.php';
 
+if ( !class_exists( 'Translations' ) ):
 class Translations {
 	var $entries = array();
 	var $headers = array();
@@ -192,8 +193,5 @@ class Gettext_Translations extends Translations {
 		if ('Plural-Forms' == $header)
 			$this->_gettext_select_plural_form = $this->_make_gettext_select_plural_form($value);
 	}
-
-	
 }
-
-?>
+endif;
