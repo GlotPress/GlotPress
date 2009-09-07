@@ -9,6 +9,7 @@
  */
 
 
+if ( !class_exists( 'POMO_StringReader' ) ):
 /**
  * Provides file-like methods for manipulating a string instead
  * of a physical file.
@@ -61,7 +62,9 @@ class POMO_StringReader {
 	}
 
 }
+endif;
 
+if ( !class_exists( 'POMO_CachedFileReader' ) ):
 /**
  * Reads the contents of the file in the beginning.
  */
@@ -74,7 +77,9 @@ class POMO_CachedFileReader extends POMO_StringReader {
 		$this->_pos = 0;
 	}
 }
+endif;
 
+if ( !class_exists( 'POMO_CachedIntFileReader' ) ):
 /**
  * Allows reading integers from a file.
  */
@@ -133,5 +138,4 @@ class POMO_CachedIntFileReader extends POMO_CachedFileReader {
 		return unpack($endian_letter.$count, $bytes);
 	}
 }
-
-?>
+endif;
