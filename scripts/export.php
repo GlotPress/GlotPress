@@ -17,7 +17,7 @@ $po->set_header('Content-Transfer-Encoding', '8bit');
 $po->set_header('X-Generator', 'GlotPress/' . gp_get_option('version'));
 $po->set_header('Content-Type', 'text/plain; charset=UTF-8');
 $po->set_header('Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;");
-$po->merge_with(GP_Translation::by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
+$po->merge_with(GP::$translation->by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
 echo "# Translation of {$project->name} in {$locale->english_name}\n";
 echo "# This file is distributed under the same license as the {$project->name} package.\n";
 echo $po->export();

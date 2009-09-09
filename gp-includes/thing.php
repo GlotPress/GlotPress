@@ -20,6 +20,9 @@ class GP_Thing {
 	
 	// CRUD
 
+	/**
+	 * Retrieves all rows from this table
+	 */
 	function all() {
 		return $this->many( "SELECT * FROM $this->table" );
 	}
@@ -32,7 +35,7 @@ class GP_Thing {
 	}
 
 	/**
-	 * Retrieves single row from this table
+	 * Retrieves a single row from this table
 	 * 
 	 * For parameters description see BPDB::prepare()
 	 * @return mixed an object, containing the selected row or false on error
@@ -43,6 +46,12 @@ class GP_Thing {
 		return $this->coerce( $gpdb->get_row( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
 	}
 
+	/**
+	 * Retrieves multiple rows from this table
+	 * 
+	 * For parameters description see BPDB::prepare()
+	 * @return mixed an object, containing the selected row or false on error
+	 */
 	function many() {
 		global $gpdb;
 		$args = func_get_args();
@@ -235,5 +244,14 @@ class GP_Thing {
 			}
 		}
 		return $result;
+	}
+	
+	function sql_limit_for_paging( $page ) {
+		return sprintf( "LIMIT %d OFFSET %d", $this->per_page, ($page-1)*$this->per_page );
+	}
+	
+	function found_rows() {
+		global $gpdb;
+		return $gpdb->get_var("SELECT FOUND_ROWS();");
 	}
 }

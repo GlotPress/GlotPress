@@ -77,3 +77,52 @@ function gp_select( $name_and_id, $options, $selected_key ) {
 	$res .= "</select>\n";
 	return $res;
 }
+
+function gp_pagination( $page, $per_page, $objects ) {
+	$page = intval( $page )? intval( $page ) : 1;
+	$pages = ceil( $objects / $per_page );
+	if ( $page > $pages ) return '';
+	if ( $page > 1 )
+		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array('class' => 'previous') );
+	else
+		$prev = '<span class="previous disabled">&larr;</span>';
+	if ( $page < $pages )
+		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1)), '&rarr;', array('class' => 'next') );
+	else
+		$next = '<span class="next disabled">&rarr;</span>';
+	$current = '<span class="current">'.$page.'</span>';
+	$linked = array();
+	$surrounding = 3;
+	if ( $page > 1 ) {
+		$prev_pages = array();
+		foreach( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {
+			$prev_pages[] = gp_link_get( add_query_arg( array( 'page' => $prev_page ) ), $prev_page );
+		}
+		$prev_pages = implode( ' ', $prev_pages );
+		if ( $page - $surrounding > 1 ) $prev_dots = '<span class="dots">&hellip</span>';
+	}
+	if ( $page < $pages ) {
+		$next_pages = array();
+		foreach( range( $page + 1, min( $pages, $page + $surrounding ) ) as $next_page ) {
+			$next_pages[] = gp_link_get( add_query_arg( array( 'page' => $next_page ) ), $next_page );
+		}
+		$next_pages = implode( ' ', $next_pages );
+		if ( $next + $surrounding < $pages ) $next_dots = '<span class="dots">&hellip</span>';
+	}
+	if ( $prev_dots ) $first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
+	if ( $next_dots ) $last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );
+ 	$html = <<<HTML
+	<div class="paging">
+		$prev
+		$first
+		$prev_dots
+		$prev_pages
+		$current
+		$next_pages
+		$next_dots
+		$last
+		$next
+	</div>
+HTML;
+	return $html;
+}

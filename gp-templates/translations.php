@@ -30,8 +30,9 @@ function textareas( $entry, $index = 0 ) {
 </div>
 <?php
 }
+echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
-<table id="translations" class="translations">
+<table id="translations" class="translations clear">
 	<tr>
 		<th>#</th>
 		<th class="original"><?php _e('Original string'); ?></th>
@@ -88,7 +89,8 @@ function textareas( $entry, $index = 0 ) {
 	</tr>
 <?php endforeach; ?>
 </table>
-<p>
+<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
+<p class="clear">
 	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?> |
 	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?>
 </p>

@@ -36,7 +36,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
 		// TODO: extract as Translation_Set::export
 		$po = new PO();
-		$po->merge_with(GP_Translation::by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
+		$po->merge_with(GP::$translation->by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
 		$po->set_header('Project-Id-Version', $project->name);
 		// TODO: add more meta info in the project
 		$po->set_header('Report-Msgid-Bugs-To', 'wp-polyglots@lists.automattic.com');
@@ -60,10 +60,13 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		global $gpdb;
+		$page = gp_get( 'page', 1 );
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$translations = GP_Translation::by_project_and_translation_set( $project, $translation_set );
+		$translations = GP::$translation->by_project_and_translation_set( $project, $translation_set, $page );
+		$total_translations_count = GP::$translation->found_rows();
+		$per_page = GP::$translation->per_page;
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
 

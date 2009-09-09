@@ -4,4 +4,5 @@ class GP {
 	static $user;
 	static $translation_set;
 	static $permission;
+	static $translation;
 }

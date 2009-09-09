@@ -154,3 +154,23 @@ ul a.edit {
 ul a.delete {
     background-color: #FF4F50;
 }
+.paging a, .paging span {
+    color: blue;
+    display: block;
+    width: 2em;
+    height: 2em;
+    border: 1px solid #ddd;
+    float: left;
+    text-align: center;
+    line-height: 2em;
+    margin: 0.3em;
+    text-decoration: none;
+}
+.paging .current, .paging .dots {
+    border-color: transparent;
+    color: black;    
+}
+.paging .disabled {
+    color: #999;
+    border-color: #eee;;
+}

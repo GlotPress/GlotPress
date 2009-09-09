@@ -12,10 +12,12 @@ There were some errors:
 <pre>
 	<?php echo implode("\n", $errors); ?>
 </pre>
-<?php else: ?>
-<?php echo $success_message; ?>
-<?php endif; ?>
-<?php if ( $show_htaccess_instructions ): ?>
+<?php
+	else:
+		echo $success_message;
+	endif;
+	// TODO: deny access for scripts
+	if ( $show_htaccess_instructions ): ?>
 <p>
 Please add this to your <code>.htacess</code> file:
 <pre>
