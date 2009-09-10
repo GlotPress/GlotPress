@@ -17,6 +17,6 @@ gp_tmpl_header();
 		<label for="pot-file"><?php echo __('PO/POT file'); ?></label><input type="file" name="pot-file" id="pot-file" />
 	</p>
 
-	<p><input type="submit" value="<?php echo gp_attr( __('Import') ); ?>"></p>
+	<p><input type="submit" value="<?php echo esc_attr( __('Import') ); ?>"></p>
 </form>
 <?php gp_tmpl_footer(); ?>
