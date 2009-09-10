@@ -1,7 +1,7 @@
 <?php 
 class GP_Translation extends GP_Thing {
 	
-	var $per_page = 50;
+	var $per_page = 10;
 	
 	var $table_basename = 'translations';
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3',

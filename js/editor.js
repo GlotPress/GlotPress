@@ -18,6 +18,7 @@ $gp.editor = function($){ return {
 		$('a.copy').click($gp.editor.hooks.copy);
 		editor.show();
 		editor.preview.hide();
+		$('tr:first', $gp.editor.table).hide();
 		$('textarea:first', editor).focus();
 	},
 	next: function() {
@@ -30,6 +31,7 @@ $gp.editor = function($){ return {
 		if (!editor) return;
 		editor.hide();
 		editor.preview.show();
+		$('tr:first', $gp.editor.table).show();
 		$gp.editor.current = null;
 	},
 	install_hooks: function() {

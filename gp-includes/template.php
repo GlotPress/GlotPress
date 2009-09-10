@@ -79,6 +79,7 @@ function gp_select( $name_and_id, $options, $selected_key ) {
 }
 
 function gp_pagination( $page, $per_page, $objects ) {
+	$surrounding = 2;
 	$page = intval( $page )? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
 	if ( $page > $pages ) return '';
@@ -92,7 +93,6 @@ function gp_pagination( $page, $per_page, $objects ) {
 		$next = '<span class="next disabled">&rarr;</span>';
 	$current = '<span class="current">'.$page.'</span>';
 	$linked = array();
-	$surrounding = 3;
 	if ( $page > 1 ) {
 		$prev_pages = array();
 		foreach( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {

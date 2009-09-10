@@ -40,9 +40,16 @@ function references( $project, $entry ) {
 			</ul>
 <?php
 }
-
-echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
+<form class="filters-wrapper" action="" method="get" accept-charset="utf-8">
+	<a href="#" class="revealing">Filter &darr;</a> &bull;
+	<a href="#" class="revealing">Sort &darr;</a> <strong style="font-size: 1.8em; vertical-align: bottom;">&bull;</strong>
+	<a href="#">Untranslated</a> &bull;
+	<a href="#">With Warnings</a> &bull;
+	<a href="#">High Priority</a>
+</form>
+
+<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <table id="translations" class="translations clear">
 	<tr>
 		<th>#</th>
@@ -93,7 +100,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 				<?php references( $project, $t ); ?>				
 			</div>
 			<div class="actions">
-				<button class="ok">Add translation</button>
+				<button class="ok">Add translation &rarr;</button>
 				<a href="#" class="close"><?php _e('Close'); ?></a>
 			</div>
 		</td>
@@ -102,7 +109,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 </table>
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <p class="clear">
-	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?> |
+	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?> &bull;
 	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?>
 </p>
 

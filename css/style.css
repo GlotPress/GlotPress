@@ -170,9 +170,22 @@ ul a.delete {
 }
 .paging .current, .paging .dots {
     border-color: transparent;
-    color: black;    
+    color: black;
+    width: 1.3em;
+}
+.paging .current {
+    font-weight: bold;
 }
 .paging .disabled {
     color: #999;
     border-color: #eee;
+}
+form.filters-wrapper {
+    float: left;
+}
+form.filters-wrapper ul {
+    list-style-type: none;    
+}
+form.filters-wrapper a.revealing {
+    text-decoration: none;
 }
