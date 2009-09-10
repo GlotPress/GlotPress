@@ -105,6 +105,7 @@ span.context {
 }
 .editor .original {
 	font-weight: bold;
+	white-space: pre-wrap;
 }
 .editor .textareas, .editor .actions {
 	clear: both;
@@ -154,7 +155,11 @@ ul a.edit {
 ul a.delete {
     background-color: #FF4F50;
 }
+.paging {
+    float: right;
+}
 .paging a, .paging span {
+    font-size: 0.9em;
     color: blue;
     display: block;
     width: 2em;
@@ -172,5 +177,5 @@ ul a.delete {
 }
 .paging .disabled {
     color: #999;
-    border-color: #eee;;
+    border-color: #eee;
 }
