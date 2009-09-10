@@ -1,6 +1,6 @@
 <?php
-gp_title( __('Home &lt; GlotPress') );
-gp_breadcrumb(array( gp_link_home_get() ));
+gp_title( __('Projects &lt; GlotPress') );
+gp_breadcrumb(array( __('Projects') ));
 gp_tmpl_header();
 ?>
 <h2>Projects</h2>

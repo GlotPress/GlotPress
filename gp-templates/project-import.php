@@ -3,7 +3,6 @@ gp_title( $kind == 'originals'?
  	sprintf( __('Import Originals &lt; %s &lt; GlotPress'), esc_html( $project->name ) ) :
 	sprintf( __('Import Translations &lt; %s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb( array(
-	gp_link_home_get(),
 	gp_link_project_get( $project, $project->name ),
 	$kind == 'originals'? __('Import originals') : __('Import translations'),
 ) );

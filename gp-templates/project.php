@@ -1,7 +1,6 @@
 <?php
 gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb( array(
-	gp_link_home_get(),
 	// TODO: add parent projects to breadcrumb
 	gp_link_project_get( $project, $project->name ),
 ) );

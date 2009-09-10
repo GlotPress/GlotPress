@@ -1,7 +1,6 @@
 <?php
 gp_title( __('Install &lt; GlotPress') );
 gp_breadcrumb( array(
-	gp_link_home_get(),
 	'install' == $action? __('Install') : __('Upgrade'),
 ) );
 

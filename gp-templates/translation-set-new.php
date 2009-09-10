@@ -1,7 +1,6 @@
 <?php
 gp_title( __( 'Create New Translation Set &lt; GlotPress' ) );
 gp_breadcrumb( array(
-	gp_link_home_get(),
 	__('Create New Translation Set'),
 ) );
 gp_tmpl_header();
