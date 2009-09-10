@@ -2,7 +2,7 @@
 class GP_Project extends GP_Thing {
 	
 	var $table_basename = 'projects';
-	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id' );
+	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template' );
 	var $non_updatable_attributes = array( 'id', 'path' );
 
 
@@ -107,6 +107,13 @@ class GP_Project extends GP_Thing {
 			$project->update( array( 'path' => gp_url_join( $path, $project->slug ) ) );
 			$this->regenerate_paths( $project->id );
 		}
+	}
+	
+	function source_url( $file, $line ) {
+		if ( $this->source_url_template ) {
+			return str_replace( array('%file%', '%line%'), array($file, $line), $this->source_url_template );
+		}
+		return false;
 	}
 }
 GP::$project = new GP_Project();

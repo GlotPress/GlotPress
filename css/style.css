@@ -100,9 +100,6 @@ span.context {
 	-moz-border-radius: 0.3em;	
 	text-align: center;
 }
-.editor .comment {
-	font-style: italic;
-}
 .editor .original {
 	font-weight: bold;
 	white-space: pre-wrap;

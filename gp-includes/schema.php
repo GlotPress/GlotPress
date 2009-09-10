@@ -56,7 +56,7 @@ function gp_schema_get() {
 		`plural` TEXT DEFAULT NULL,
 		`references` TEXT DEFAULT NULL,
 		`comment` TEXT DEFAULT NULL,
-		`status` VARCHAR(255) NOT NULL default '+active',
+		`status` VARCHAR(255) NOT NULL DEFAULT '+active',
 		PRIMARY KEY (`id`),
 	) TYPE = MYISAM;";
 
@@ -71,7 +71,8 @@ function gp_schema_get() {
 		`slug` VARCHAR(255) NOT NULL,
 		`path` VARCHAR(255) NOT NULL,
 		`description` TEXT NOT NULL,
-		`parent_project_id` INT(10) default NULL,
+		`parent_project_id` INT(10) DEFAULT NULL,
+		`source_url_template` VARCHAR(255) DEFAULT '',
 		PRIMARY KEY (`id`),
 		KEY `path` (`path`)
 	);";

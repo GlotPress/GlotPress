@@ -15,20 +15,32 @@ function textareas( $entry, $index = 0 ) {
 	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo esc_html($entry->translations[$index]); ?></textarea>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
-		<ul class="refs">
-<?php foreach($entry->references as $reference):
-			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			// TODO: keep the trac/reference link in both project and let the user override it
-			// so that she can use textmate or whatever scheme she wants
-?>
-<!--			<li><a tabindex="-1" href="http://core.trac.wordpress.org/browser/trunk/<?php echo $file ?>#L<?php echo $line ?>"><?php echo $file ?></a></li> -->
-			<li><a tabindex="-1" href="txmt://open?url=file://~/wordpress/trunk/<?php echo $file ?>&amp;line=<?php echo $line ?>"><?php echo $file ?></a></li>
-<?php endforeach; ?>
-		</ul>
 	</p>
 </div>
 <?php
 }
+
+function references( $project, $entry ) {
+	if ( !$project->source_url_template ) return;
+?>
+	References:
+			<ul class="refs">
+	<?php
+		foreach( $entry->references as $reference ):
+			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
+			// TODO: allow the user to override the project setting
+			if ( $source_url = $project->source_url( $file, $line ) ):
+	?>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
+
+	<?php
+			endif;
+		endforeach;
+	?>
+			</ul>
+<?php
+}
+
 echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 <table id="translations" class="translations clear">
@@ -70,15 +82,15 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 				<?php textareas( $t, 0 ); ?>
 				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_html($t->plural).'</span>'); ?></p>
 				<?php textareas( $t, 1 ); ?>				
-			
 			<?php endif; ?>
 			<div class="meta">
 				<?php if ( $t->context ): ?>
-				<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.esc_html($t->context).'</span>' ); ?></p>
+					<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.esc_html($t->context).'</span>' ); ?></p>
 				<?php endif; ?>
 				<?php if ( $t->extracted_comment ): ?>
-				<p class="comment"><?php printf( __('Comment: %s'), make_clickable( esc_html($t->extracted_comment) ) ); ?></p>
+					<p class="comment"><?php printf( __('Comment: %s'), make_clickable( esc_html($t->extracted_comment) ) ); ?></p>
 				<?php endif; ?>
+				<?php references( $project, $t ); ?>				
 			</div>
 			<div class="actions">
 				<button class="ok">Add translation</button>

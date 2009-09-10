@@ -50,7 +50,8 @@ class GP_Translation extends GP_Thing {
 			$row->translations = array($row->translation_0, $row->translation_1, $row->translation_2, $row->translation_3);
 			$row->translations = array_slice( $row->translations, 0, $locale->nplurals );
 			$row->extracted_comment = $row->comment;
-			$row->references = preg_split('/\s+/', $row->references, PREG_SPLIT_NO_EMPTY);
+			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
+			
 			unset($row->comment);
 			foreach(range(0, 3) as $i) {
 				$member = "translation_$i";
