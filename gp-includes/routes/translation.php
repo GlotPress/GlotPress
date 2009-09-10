@@ -63,8 +63,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		$page = gp_get( 'page', 1 );
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
+		$filters = gp_get( 'filters', array() );
+		$sort = gp_get( 'sort', array() );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$translations = GP::$translation->by_project_and_translation_set( $project, $translation_set, $page );
+		$translations = GP::$translation->for_translation( $project, $translation_set, '+', $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows();
 		$per_page = GP::$translation->per_page;
 		gp_tmpl_load( 'translations', get_defined_vars() );

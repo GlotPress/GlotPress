@@ -78,8 +78,20 @@ function gp_select( $name_and_id, $options, $selected_key ) {
 	return $res;
 }
 
+function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
+	$res = '';
+	foreach( $radio_buttons as $value => $label ) {
+		$checked = $value == $checked_key? " checked='checked'" : '';
+		// TODO: something more flexible than <br />
+		$res .= "\t<input type='radio' name='$name' value='".esc_attr( $value )."' $checked id='{$name}[{$value}]'/>&nbsp;";
+		$res .= "<label for='{$name}[{$value}]'>".esc_html( $label )."</label><br />\n";
+	}
+	return $res;
+}
+
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
+	$prev = $first = $prev_dots = $prev_pages = $current = $next_pages = $next_dots = $last = $next = '';
 	$page = intval( $page )? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
 	if ( $page > $pages ) return '';

@@ -25,7 +25,7 @@ class GP_Translation extends GP_Thing {
 		return $this->by_project_and_translation_set_and_status( $project, $translation_set, '+', $page );
 	}
 	
-	function by_project_and_translation_set_and_status( $project, $translation_set, $status, $page = 1 ) {
+	function for_translation( $project, $translation_set, $status, $page, $filters = array(), $sort = array() ) {
 		global $gpdb;
 		$page = intval( $page )? intval( $page ) : 1;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
@@ -39,12 +39,34 @@ class GP_Translation extends GP_Thing {
 		} else {
 			$status_cond = $gpdb->prepare('t.status = %s', $status);
 		}
+		
+		$sort_bys = array('original' => 'o.singular', 'translation' => 't.translation_0', 'priority' => 'o.priority',
+			'random' => 'RAND()');
+		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.singular' );
+		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
+		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), 'ASC' );
+
+		$where = array();
+		if ( gp_array_get( $filters, 'term' ) ) {
+			// TODO: make it work if first letter is s. %%s is causing db::prepare trouble
+			$like = "LIKE '%%".$this->like_escape_printf($gpdb->escape($filters['term']))."%%'";
+			$where[] = '('.implode(' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0')) ).')';
+		}
+		if ( 'yes' == gp_array_get( $filters, 'translated' ) ) {
+			$where[] = 't.translation_0 IS NOT NULL';
+		} elseif ( 'no' == gp_array_get( $filters, 'translated' ) ) {
+			$where[] = 't.translation_0 IS NULL';
+		}
+		$where = implode(' AND ', $where );
+		if ( $where ) {
+			$where = 'AND '.$where;
+		}
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many( "
 		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND $status_cond AND t.translation_set_id = %d
-		    WHERE o.project_id = %d AND o.status LIKE '+%%' ORDER BY t.status ASC $limit", $translation_set->id, $project->id );
+		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
 		$translations = new Translations();
 		foreach( $rows as $row ) {
 			$row->translations = array($row->translation_0, $row->translation_1, $row->translation_2, $row->translation_3);

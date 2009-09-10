@@ -185,6 +185,7 @@ class GP_Thing {
 	}
 
 	function map( $results ) {
+		if ( !$results || !is_array( $results ) ) $results = array();
 		$mapped = array();
 		foreach( $results as $result ) {
 			$mapped[] = $this->coerce( $result );
@@ -253,5 +254,9 @@ class GP_Thing {
 	function found_rows() {
 		global $gpdb;
 		return $gpdb->get_var("SELECT FOUND_ROWS();");
+	}
+	
+	function like_escape_printf( $s ) {
+		return str_replace( '%', '%%', like_escape( $s ) );
 	}
 }
