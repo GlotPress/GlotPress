@@ -24,6 +24,7 @@ function gp_schema_get() {
 		`translation_3` TEXT DEFAULT NULL,
 		`user_id` INT(10) DEFAULT NULL,
 		`status` VARCHAR(20) NOT NULL default 'new',
+		`date_added` DATETIME NOT NULL,
 		PRIMARY KEY (`id`),
 		KEY `original_id` (`original_id`),
 		KEY `user_id` (`user_id`)
@@ -58,6 +59,7 @@ function gp_schema_get() {
 		`comment` TEXT DEFAULT NULL,
 		`status` VARCHAR(255) NOT NULL DEFAULT '+active',
 		`priority` TINYINT NOT NULL DEFAULT 0,
+		`date_added` DATETIME NOT NULL,
 		PRIMARY KEY (`id`),
 	) TYPE = MYISAM;";
 
