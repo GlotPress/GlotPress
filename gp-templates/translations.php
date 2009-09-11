@@ -52,13 +52,13 @@ function references( $project, $entry ) {
 <?php
 }
 ?>
-<form id="upper-filters-wrapper" class="filters-wrapper" action="" method="get" accept-charset="utf-8">
+<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<a href="#" class="revealing filter">Filter &darr;</a> &bull;	
 	<a href="#" class="revealing sort">Sort &darr;</a> <strong style="font-size: 1.8em; vertical-align: bottom;">&bull;</strong>
 	<a href="<?php echo add_query_arg( array(urlencode('filters[translated]') => 'no')); ?>">Untranslated</a> &bull;
 	<a href="#">With Warnings</a> &bull;
 	<a href="#">High Priority</a>
-	<dl class="filters hidden">		
+	<dl class="filters-expanded filters hidden">		
  		<dt><label for="filters[term]">Term:</label></dt>
 		<dd><input type="text" value="<?php echo esc_html( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
  		<dt><label for="filters[translated]">Translated:</label></dt>
@@ -85,10 +85,11 @@ function references( $project, $entry ) {
 			?>			
 		</dd>		
 		
-		<input type="submit" value="Filter" />
+		<dd><input type="submit" value="Filter" /></dd>
 	</dl>
-	<dl class="sort hidden">		
-		By:<br />
+	<dl class="filters-expanded sort hidden">		
+		<dt>By:</dt>
+		<dd>
 		<?php echo gp_radio_buttons('sort[by]',
 			array(
 				'date_added' => 'Date added',
@@ -98,14 +99,17 @@ function references( $project, $entry ) {
 				'random' => 'Random',
 			), gp_array_get( $sort, 'by', 'priority' ) );
 		?>
-		How:<br />
+		</dd>
+		<dt>How:</dt>
+		<dd>
 		<?php echo gp_radio_buttons('sort[how]',
 			array(
 				'asc' => 'Ascending',
 				'desc' => 'Descending',
 			), gp_array_get( $sort, 'how', 'desc' ) );
-		?>		
-		<input type="submit" value="Sort" />
+		?>
+		</dd>
+		<dd><input type="submit" value="Sort" /></dd>
 	</dl>	
 </form>
 
@@ -182,7 +186,7 @@ function references( $project, $entry ) {
 	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?>
 </p>
 <script type="text/javascript" charset="utf-8">
-	$gp.showhide('#upper-filters-wrapper a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-wrapper dl.sort');
-	$gp.showhide('#upper-filters-wrapper a.filter', 'Filter &darr;', 'Filter &uarr;', '#upper-filters-wrapper dl.filters', '#filters\\[term\\]');
+	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');
+	$gp.showhide('#upper-filters-toolbar a.filter', 'Filter &darr;', 'Filter &uarr;', '#upper-filters-toolbar dl.filters', '#filters\\[term\\]');
 </script>
 <?php gp_tmpl_footer(); ?>

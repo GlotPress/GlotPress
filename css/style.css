@@ -192,15 +192,31 @@ ul a.delete {
     color: #999;
     border-color: #eee;
 }
-form.filters-wrapper {
+form.filters-toolbar {
     float: left;
 }
-form.filters-wrapper ul {
+form.filters-toolbar ul {
     list-style-type: none;    
 }
-form.filters-wrapper a.revealing {
+form.filters-toolbar a.revealing {
     text-decoration: none;
 }
+dl.filters-expanded {
+    font-size: 80%;
+}
+dl.filters-expanded dt, dl.filters-expanded dd {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+dl.filters-expanded dt {
+    margin-right: 0.5em;
+    
+}
+dl.filters-expanded dd {
+    margin-right: 2em;
+}
+
 .hidden {
     display: none;
 }
