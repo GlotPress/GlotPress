@@ -116,7 +116,7 @@ function references( $project, $entry ) {
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th><?php _e('Actions'); ?></th>
 	</tr>
-<?php foreach( $translations->entries as $t ):
+<?php foreach( $translations as $t ):
 		$class = str_replace( array( '+', '-' ), '', $t->translation_status );
 		if ( !$class )  $class = 'untranslated';
 ?>
@@ -168,7 +168,7 @@ function references( $project, $entry ) {
 	</tr>
 <?php endforeach; ?>
 <?php
-	if ( !$translations->entries ):
+	if ( !$translations ):
 ?>
 	<tr><td colspan="4">No translations were found!</td></tr>
 <?php

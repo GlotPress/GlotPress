@@ -73,11 +73,10 @@ class GP_Translation extends GP_Thing {
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = %d $join_where
 		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
-		$translations = new Translations();
+		$translations = array();
 		foreach( $rows as $row ) {
 			$row->translations = array($row->translation_0, $row->translation_1, $row->translation_2, $row->translation_3);
 			$row->translations = array_slice( $row->translations, 0, $locale->nplurals );
-			$row->extracted_comment = $row->comment;
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
 			
 			unset($row->comment);
@@ -85,8 +84,9 @@ class GP_Translation extends GP_Thing {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
-			$translations->add_entry((array)$row);
+			$translations[] = new Translation_Entry( (array)$row );
 		}
+		unset( $rows );
 		return $translations;
 	}
 }
