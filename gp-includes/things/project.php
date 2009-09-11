@@ -30,7 +30,7 @@ class GP_Project extends GP_Thing {
 	function after_save() {
 		// TODO: pass the update args to after/pre_save?		
 		// TODO: only call it if the slug or parent project were changed
-		return $this->update_path();
+		if ( is_null( $this->update_path() ) ) return false;
 	}
 	
 
