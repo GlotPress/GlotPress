@@ -91,6 +91,7 @@ function references( $project, $entry ) {
 		By:<br />
 		<?php echo gp_radio_buttons('sort[by]',
 			array(
+				'date_added' => 'Date added',
 				'original' => 'Original string',
 				'translation' => 'Translation',
 				'priority' => 'Priority',
