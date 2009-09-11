@@ -163,10 +163,13 @@ class GP_Route {
 		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
-			gp_notice_set( __('You are not allowed to do that!'), 'error' );
-			wp_redirect( $url );
-			exit();
+			$this->redirect_with_error( $url, __('You are not allowed to do that!') );
 		}
 	}
 	
+	function redirect_with_error( $url, $message ) {
+		gp_notice_set( $message, 'error' );
+		wp_redirect( $url );
+		exit();
+	}
 }

@@ -57,6 +57,7 @@ function gp_schema_get() {
 		`references` TEXT DEFAULT NULL,
 		`comment` TEXT DEFAULT NULL,
 		`status` VARCHAR(255) NOT NULL DEFAULT '+active',
+		`priority` TINYINT NOT NULL DEFAULT 0,
 		PRIMARY KEY (`id`),
 	) TYPE = MYISAM;";
 

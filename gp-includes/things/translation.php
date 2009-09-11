@@ -25,26 +25,17 @@ class GP_Translation extends GP_Thing {
 		return $this->by_project_and_translation_set_and_status( $project, $translation_set, '+', $page );
 	}
 	
-	function for_translation( $project, $translation_set, $status, $page, $filters = array(), $sort = array() ) {
+	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $gpdb;
 		$page = intval( $page )? intval( $page ) : 1;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 		$status_cond = '';
-		if ( in_array( $status, array('+', '-') ) ) {
-			$status_cond = "t.status LIKE '$status%%'";
-		} elseif ( is_array($status) ) {
-			$args = array( implode( ' OR ', 't.status = %s' ) );
-			$args = array_merge( $args, $status );
-			$status_cond = call_user_func_array( array(&$gpdb, 'prepare'), $args );
-		} else {
-			$status_cond = $gpdb->prepare('t.status = %s', $status);
-		}
-		
+
 		$sort_bys = array('original' => 'o.singular', 'translation' => 't.translation_0', 'priority' => 'o.priority',
 			'random' => 'RAND()');
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.singular' );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
-		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), 'ASC' );
+		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), 'DESC' );
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
@@ -57,15 +48,31 @@ class GP_Translation extends GP_Thing {
 		} elseif ( 'no' == gp_array_get( $filters, 'translated' ) ) {
 			$where[] = 't.translation_0 IS NULL';
 		}
-		$where = implode(' AND ', $where );
+		$where = implode( ' AND ', $where );
 		if ( $where ) {
 			$where = 'AND '.$where;
 		}
+		
+		$join_where = array();
+		// TODO: keep possible values in central place and use it from the template, too
+		// TODO: filterable
+		$statuses = array('-rejected', '-waiting', '-old', '+current');
+		$status = gp_array_get( $filters, 'status' );
+		if ( in_array( $status, $statuses ) ) {
+			$join_where[] = $gpdb->prepare( 't.status = %s', $status );
+		} elseif ( in_array( $status, array('+', '-') ) ) {
+			$join_where[] = "t.status LIKE '$status%'";
+		}
+		$join_where = implode( ' AND ', $join_where );
+		if ( $join_where ) {
+			$join_where = 'AND '.$join_where;
+		}
+		
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many( "
 		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status
 		    FROM $gpdb->originals as o
-		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND $status_cond AND t.translation_set_id = %d
+		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = %d $join_where
 		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
 		$translations = new Translations();
 		foreach( $rows as $row ) {

@@ -9,13 +9,16 @@ wp_enqueue_script( 'editor' );
 $parity = gp_parity_factory();
 gp_tmpl_header();
 $i = 0;
-function textareas( $entry, $index = 0 ) {
+function textareas( $entry, $can_edit, $index = 0 ) {
+	$disabled = $can_edit? '' : 'disabled="disabled"';
 ?>
 <div class="textareas">
-	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80"><?php echo esc_html($entry->translations[$index]); ?></textarea>
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80" <?php echo $disabled; ?>><?php echo esc_html($entry->translations[$index]); ?></textarea>
+<?php if ( $can_edit ): ?>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
 	</p>
+<?php endif; ?>
 </div>
 <?php
 }
@@ -58,8 +61,20 @@ function references( $project, $entry ) {
 					'no' => 'No',
 					'either' => 'Either',
 				), gp_array_get( $filters, 'translated', 'either' ) );
-			?>
-			
+			?>			
+		</dd>		
+
+ 		<dt><label for="filters[status]">Status:</label></dt>
+		<dd>
+			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
+				array(
+					'+current' => 'Current',
+					'-old' => 'Approved, but obsoleted by another string',
+					'-waiting' => 'Waiting',
+					'-rejected' => 'Rejected',
+					'either' => 'Any',
+				), gp_array_get( $filters, 'status', '+current' ) );
+			?>			
 		</dd>		
 		
 		<input type="submit" value="Filter" />
@@ -108,23 +123,23 @@ function references( $project, $entry ) {
 		</td>
 		<td class="translation"><?php echo esc_html( $t->translations[0] ); ?></td>
 		<td class="actions">
-			<a href="#" original="<?php echo $t->original_id; ?>" class="action edit"><?php _e('Edit'); ?></a>
+			<a href="#" original="<?php echo $t->original_id; ?>" class="action edit"><?php $can_edit? _e('Edit') : _e('View'); ?></a>
 		</td>
 	</tr>
 	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
 		<td colspan="3">
 			<?php if ( !$t->plural ): ?>
 			<p class="original"><?php echo esc_html($t->singular); ?></p>
-			<?php textareas( $t ); ?>
+			<?php textareas( $t, $can_edit ); ?>
 			<?php else: ?>
 				<!--
 					TODO: use the correct number of plurals
 					TODO: dynamically set the number of rows
 				-->				
 				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_html($t->singular).'</span>'); ?></p>
-				<?php textareas( $t, 0 ); ?>
+				<?php textareas( $t, $can_edit, 0 ); ?>
 				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_html($t->plural).'</span>'); ?></p>
-				<?php textareas( $t, 1 ); ?>				
+				<?php textareas( $t, $can_edit, 1 ); ?>				
 			<?php endif; ?>
 			<div class="meta">
 				<?php if ( $t->context ): ?>
@@ -136,7 +151,9 @@ function references( $project, $entry ) {
 				<?php references( $project, $t ); ?>				
 			</div>
 			<div class="actions">
+<?php if ( $can_edit ): ?>				
 				<button class="ok">Add translation &rarr;</button>
+<?php endif; ?>				
 				<a href="#" class="close"><?php _e('Close'); ?></a>
 			</div>
 		</td>

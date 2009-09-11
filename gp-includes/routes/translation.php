@@ -66,19 +66,24 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$translations = GP::$translation->for_translation( $project, $translation_set, '+', $page, $filters, $sort );
+		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows();
 		$per_page = GP::$translation->per_page;
+		$can_edit = GP::$user->logged_in();
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
 
 	function translations_post ($project_path, $locale_slug, $translation_set_slug ) {
 		global $gpdb;
+		if ( !GP::$user->logged_in() ) {
+			status_header( 403 );
+			die('Forbidden');
+		}
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		//TODO: multiple insert
-		foreach($_POST['translation'] as $original_id => $translations) {
+		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 		    $data = compact('original_id');
 		    $data['translation_set_id'] = $translation_set->id;
 		    foreach(range(0, 3) as $i) {
@@ -89,10 +94,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		    and set all the previous translations of the same original to sth else
 		    */
 		    $data['status'] = '+current';
-		    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
-		    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
-		
-	    
+		    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+		    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
 	        $gpdb->insert($gpdb->translations, $data);
 		}
 	}
@@ -113,8 +116,8 @@ class GP_Route_Translation extends GP_Route_Main {
 				    }
 					// TODO: extract setting the current translation to GP_Translation::set_current()					
 				    $data['status'] = in_array( 'fuzzy', $entry->flags )? '+fuzzy' : '+current';
-				    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
-				    $gpdb->update($gpdb->translations, array('status' => '-approved'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
+				    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+				    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
 				
 			        $gpdb->insert($gpdb->translations, $data);
 					$translations_added++;

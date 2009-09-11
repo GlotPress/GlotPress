@@ -50,10 +50,11 @@ $gp.editor = function($){ return {
 		} );
 		p.addClass('status-current');
 	},
-	save: function() {
+	save: function(button) {
 		if (!$gp.editor.current) return;
 		var editor = $gp.editor.current;
-		//TODO: concurrent events will confuse the notice system
+		// TODO: concurrent events will confuse the notice system
+		button.attr('disabled', 'disabled');
 		$gp.notices.notice('Saving...');
 		name = "translation["+editor.original_id+"][]";
 		data = $("textarea[name='"+name+"']", editor).map(function() {
@@ -61,13 +62,18 @@ $gp.editor = function($){ return {
 		}).get().join('&');
 		$.ajax({type: "POST", url: '', data: data,
 			success: function(msg){
+				button.attr('disabled', '');
 				$gp.notices.success('Saved!');
+				$gp.editor.update_preview();
+				// TODO: next untranslated
+				$gp.editor.next();
 			},
-			error: function(xhr, msg, o){ $gp.notices.error(msg); },
+			error: function(xhr, msg, error){
+				button.attr('disabled', '');
+				msg = xhr.responseText? 'Error: '+xhr.responseText : 'Error saving the translation!';
+				$gp.notices.error(msg);
+			},
 		});
-		$gp.editor.update_preview();
-		// TODO: next untranslated
-		$gp.editor.next();
 	},
 	copy: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
@@ -84,7 +90,7 @@ $gp.editor = function($){ return {
 			return false;
 		},
 		ok: function() {
-			$gp.editor.save();
+			$gp.editor.save($(this));
 			return false;
 		},
 		copy: function() {
