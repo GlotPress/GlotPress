@@ -36,9 +36,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
 		// TODO: extract as Translation_Set::export
 		$po = new PO();
-		$po->merge_with(GP::$translation->by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
+		// TODO: do not hack per_page, find a smarter way
+		$old_per_page = GP::$translation->per_page;
+		GP::$translation->per_page = 'no-limit';
+		$po->merge_with(GP::$translation->for_translation( $project, $translation_set, null, array('status' => '+current') ) );
+		GP::$translation->per_page = $old_per_page;
 		$po->set_header('Project-Id-Version', $project->name);
-		// TODO: add more meta info in the project
+		// TODO: add more meta data in the project
 		$po->set_header('Report-Msgid-Bugs-To', 'wp-polyglots@lists.automattic.com');
 		// TODO: last updated for a translation set
 		$po->set_header('PO-Revision-Date', gmdate('Y-m-d H:i:s+0000'));
