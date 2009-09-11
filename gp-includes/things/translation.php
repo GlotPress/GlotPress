@@ -16,8 +16,7 @@ class GP_Translation extends GP_Thing {
 		$translation->translation_set_id_should_be( 'positive_int' );
 		$translation->user_id_should_be( 'positive_int' );
 	}
-	
-	
+		
 	/**
 	 * The best translation for each original string in the project
 	 */

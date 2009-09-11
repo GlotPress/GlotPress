@@ -9,11 +9,19 @@ wp_enqueue_script( 'editor' );
 $parity = gp_parity_factory();
 gp_tmpl_header();
 $i = 0;
+
+/**
+ * Similar to esc_html() but allows double-encoding.
+ */
+function esc_translation( $text ) {
+	return wp_specialchars( $text, ENT_NOQUOTES, false, true );
+}
+
 function textareas( $entry, $can_edit, $index = 0 ) {
 	$disabled = $can_edit? '' : 'disabled="disabled"';
 ?>
 <div class="textareas">
-	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80" <?php echo $disabled; ?>><?php echo esc_html($entry->translations[$index]); ?></textarea>
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80" <?php echo $disabled; ?>><?php echo esc_translation($entry->translations[$index]); ?></textarea>
 <?php if ( $can_edit ): ?>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
@@ -115,13 +123,13 @@ function references( $project, $entry ) {
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
 		<td><?php echo $i++; ?></td>
 		<td class="original">			
-			<?php echo esc_html( $t->singular ); ?>
+			<?php echo esc_translation( $t->singular ); ?>
 			<?php if ( $t->context ): ?>
 			<span class="context" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 			<?php endif; ?>
 
 		</td>
-		<td class="translation"><?php echo esc_html( $t->translations[0] ); ?></td>
+		<td class="translation"><?php echo esc_translation( $t->translations[0] ); ?></td>
 		<td class="actions">
 			<a href="#" original="<?php echo $t->original_id; ?>" class="action edit"><?php $can_edit? _e('Edit') : _e('View'); ?></a>
 		</td>
@@ -129,24 +137,24 @@ function references( $project, $entry ) {
 	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
 		<td colspan="3">
 			<?php if ( !$t->plural ): ?>
-			<p class="original"><?php echo esc_html($t->singular); ?></p>
+			<p class="original"><?php echo esc_translation($t->singular); ?></p>
 			<?php textareas( $t, $can_edit ); ?>
 			<?php else: ?>
 				<!--
 					TODO: use the correct number of plurals
 					TODO: dynamically set the number of rows
 				-->				
-				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_html($t->singular).'</span>'); ?></p>
+				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
 				<?php textareas( $t, $can_edit, 0 ); ?>
-				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_html($t->plural).'</span>'); ?></p>
+				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?></p>
 				<?php textareas( $t, $can_edit, 1 ); ?>				
 			<?php endif; ?>
 			<div class="meta">
 				<?php if ( $t->context ): ?>
-					<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.esc_html($t->context).'</span>' ); ?></p>
+					<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.esc_translation($t->context).'</span>' ); ?></p>
 				<?php endif; ?>
 				<?php if ( $t->extracted_comment ): ?>
-					<p class="comment"><?php printf( __('Comment: %s'), make_clickable( esc_html($t->extracted_comment) ) ); ?></p>
+					<p class="comment"><?php printf( __('Comment: %s'), make_clickable( esc_translation($t->extracted_comment) ) ); ?></p>
 				<?php endif; ?>
 				<?php references( $project, $t ); ?>				
 			</div>
