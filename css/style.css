@@ -211,7 +211,7 @@ dl.filters-expanded dt, dl.filters-expanded dd {
 }
 dl.filters-expanded dt {
     margin-right: 0.5em;
-    
+    font-weight: bold;
 }
 dl.filters-expanded dd {
     margin-right: 2em;
