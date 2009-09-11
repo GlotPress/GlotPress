@@ -3,6 +3,7 @@ class GP_Thing {
 	
 	var $table = null;
 	var $field_names = array();
+	var $date_fields = array();
 	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
@@ -14,6 +15,7 @@ class GP_Thing {
 			$this->$field_name = null;
 		}
 		$this->set_fields( $fields );
+		$this->date_fields = array_filter( $this->field_names, lambda( '$f', 'gp_startswith($f, "date_");' ) );
 		$this->validation_rules = new GP_Validation_Rules( $this );
 		// we give the rules as a parameter here solely as a syntax sugar
 		$this->restrict_fields( $this->validation_rules );
@@ -112,10 +114,10 @@ class GP_Thing {
 	 * 
 	 * @param $data array associative array with fields as keys and updated values as values
 	 */
-	function update( $data ) {
+	function update( $data, $where = null ) {
 		global $gpdb;
-		$args = func_get_args();
-		return $gpdb->update( $this->table, $data, array( 'id' => $this->id ) );
+		$where = is_null( $where )? $where : array( 'id' => $this->id );
+		return $gpdb->update( $this->table, $data, $where );
 	}
 
 	function get( $thing_or_id ) {
@@ -166,12 +168,18 @@ class GP_Thing {
 		$args = (array)$args;
 		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
-		foreach ($this->non_updatable_attributes as $attribute ) {
+		foreach( $this->non_updatable_attributes as $attribute ) {
 			unset( $args[$attribute] );
 		}
 		foreach( $args as $key => $value ) {
 			if ( !in_array( $key, $this->field_names ) ) {
 				unset( $args[$key] );
+			}
+		}
+		foreach( $this->date_fields as $date_field ) {
+			if ( !isset( $args[$date_field] ) ) {
+				$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+				$args[$date_field] = $now->format( DATE_MYSQL );
 			}
 		}
 		return $args;

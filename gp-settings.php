@@ -30,6 +30,10 @@ if ( !defined( 'GP_LANG_PATH' ) ) {
 	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
 }
 
+if ( !defined( 'DATE_MYSQL' ) ) {
+	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
+}
+
 /*
  * In most cases the default internal encoding is latin1, which is of no use,
  * since we want to use the mb_ functions for UTF-8 strings
