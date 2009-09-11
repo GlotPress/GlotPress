@@ -5,6 +5,7 @@ class GP_Thing {
 	var $field_names = array();
 	var $errors = array();
 	var $validation_rules = null;
+	var $per_page = 30;
 	
 	function __construct( $fields = array() ) {
 		global $gpdb;
@@ -248,7 +249,9 @@ class GP_Thing {
 		return $result;
 	}
 	
-	function sql_limit_for_paging( $page ) {
+	function sql_limit_for_paging( $page, $per_page = null ) {
+		$per_page = is_null( $per_page )? $this->per_page : $per_page;
+		if ( 'no-limit' == $per_page ) return '';
 		return sprintf( "LIMIT %d OFFSET %d", $this->per_page, ($page-1)*$this->per_page );
 	}
 	
