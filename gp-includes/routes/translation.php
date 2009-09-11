@@ -99,9 +99,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		    and set all the previous translations of the same original to sth else
 		    */
 		    $data['status'] = '+current';
-		    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
-		    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
-	        $gpdb->insert($gpdb->translations, $data);
+		    GP::$translation->update( array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+		    GP::$translation->update( array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
+			// TODO: validate
+			GP::$translation->create( $data );
 		}
 	}
 
