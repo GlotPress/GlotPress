@@ -87,14 +87,14 @@ function references( $project, $entry ) {
 				'translation' => 'Translation',
 				'priority' => 'Priority',
 				'random' => 'Random',
-			), gp_array_get( $sort, 'by', 'original' ) );
+			), gp_array_get( $sort, 'by', 'priority' ) );
 		?>
 		How:<br />
 		<?php echo gp_radio_buttons('sort[how]',
 			array(
 				'asc' => 'Ascending',
 				'desc' => 'Descending',
-			), gp_array_get( $sort, 'how', 'asc' ) );
+			), gp_array_get( $sort, 'how', 'desc' ) );
 		?>		
 		<input type="submit" value="Sort" />
 	</dl>	
