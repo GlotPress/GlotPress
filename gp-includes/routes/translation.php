@@ -89,6 +89,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		//TODO: multiple insert
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 		    $data = compact('original_id');
+			$data['user_id'] = GP::$user->current()->id;
 		    $data['translation_set_id'] = $translation_set->id;
 		    foreach(range(0, 3) as $i) {
 		        if (isset($translations[$i])) $data["translation_$i"] = $translations[$i];
