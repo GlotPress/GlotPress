@@ -162,6 +162,7 @@ class GP_Thing {
 	 * 
 	 */
 	function prepare_fields_for_save( $args ) {
+		$args = (array)$args;
 		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
 		foreach ($this->non_updatable_attributes as $attribute ) {

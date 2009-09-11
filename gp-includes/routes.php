@@ -168,7 +168,7 @@ class GP_Route {
 	}
 	
 	function redirect_with_error( $url, $message ) {
-		gp_notice_set( $message, 'error' );
+		$this->errors[] = $message;
 		wp_redirect( $url );
 		exit();
 	}

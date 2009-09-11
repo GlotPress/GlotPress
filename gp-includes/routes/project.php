@@ -112,6 +112,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 		$this->can_or_redirect( 'write', 'project', $parent_project_id );
+		// TODO: validation
 		$project = GP::$project->create_and_select( $post );
 		if ( !$project ) {
 			$project = new GP_Project();
