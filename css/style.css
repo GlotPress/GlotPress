@@ -10,7 +10,8 @@ h1 {
 	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue Condensed Bold", "Arial Narrow", Arial, sans-serif;
 	letter-spacing: -0.03em;
 	font-size: 2em;
-	border-bottom: 0.08em solid #CCC;	
+	padding-bottom: 0.1em;
+	border-bottom: 0.06em solid #CCC;	
 }
 h1 img {
     vertical-align: text-bottom;
@@ -21,6 +22,9 @@ a img {
 }
 h2 {
     border-bottom: 0.08em solid #CCC;
+}
+h3 {
+    color: #999;
 }
 .breadcrumb a {
     color: #3A7399;
@@ -51,6 +55,23 @@ table.translations th {
 }
 table.translations tr {
 	border: 0;
+}
+table.translations td.translation ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+table.translations td.translation li {
+    padding-bottom: 0.25em;
+    border-bottom: 1px dotted #ccc;
+}
+table.translations td.translation li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+table.translations td.translation span.missing {
+    color: #ddd;
+    font-style: italic;
 }
 table.translations td, table.translations th {
 	padding: 0.5em;
@@ -83,7 +104,10 @@ table.translations tr.preview.status-current {
 	background-color: #E9FFD8;
 }
 table.translations tr.preview.status-old {
-	background-color: #E9FFD8;
+	background-color: #FEE4F8;
+}
+table.translations tr.preview.status-waiting {
+	background-color: #FFFFC2;
 }
 table.translations a.action {
     font-size: 100%;
@@ -116,6 +140,10 @@ span.context {
 	font-weight: bold;
 	white-space: pre-wrap;
 }
+.editor .strings {
+    float: left;
+    width: 60%;
+}
 .editor .textareas, .editor .actions {
 	clear: both;
 }
@@ -125,6 +153,16 @@ span.context {
 .editor .meta {
 	float: left;
 	margin-left: 2em;
+}
+.editor .meta dl {
+    margin-left: 1em;
+}
+.editor .meta dt, .editor .meta dd {
+    display: inline;
+    margin: 0;
+}
+.editor .meta dt {
+    margin-right: 0.5em;
 }
 #gp-js-message {
 	position: fixed;

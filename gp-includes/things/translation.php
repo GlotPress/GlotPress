@@ -55,20 +55,19 @@ class GP_Translation extends GP_Thing {
 		// TODO: keep possible values in central place and use it from the template, too
 		// TODO: filterable
 		$statuses = array('-rejected', '-waiting', '-old', '+current');
-		$status = gp_array_get( $filters, 'status' );
+		$status = gp_array_get( $filters, 'status', '+current' );
 		if ( in_array( $status, $statuses ) ) {
 			$join_where[] = $gpdb->prepare( 't.status = %s', $status );
 		} elseif ( in_array( $status, array('+', '-') ) ) {
 			$join_where[] = "t.status LIKE '$status%'";
-		}
-		$join_where = implode( ' AND ', $join_where );
+		}		$join_where = implode( ' AND ', $join_where );
 		if ( $join_where ) {
 			$join_where = 'AND '.$join_where;
 		}
 		
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many( "
-		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status
+		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = %d $join_where
 		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
@@ -83,6 +82,7 @@ class GP_Translation extends GP_Thing {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
+			$row->row_id = $row->original_id . ( $row->id? "-$row->id" : '' );
 			$translations[] = new Translation_Entry( (array)$row );
 		}
 		unset( $rows );

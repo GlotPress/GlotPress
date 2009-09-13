@@ -5,13 +5,17 @@ $gp.editor = function($){ return {
 		$gp.editor.table = table;
 		$gp.editor.install_hooks();
 	},
+	original_id_from_row_id: function(row_id) {
+		return row_id.split('-')[0];
+	},
 	show: function(element) {
-		var original_id = element.attr('original');
-		var editor = $('#editor-' + original_id);
+		var row_id = element.attr('row');
+		var editor = $('#editor-' + row_id);
 		if (!editor.length) return;
 		if ($gp.editor.current) $gp.editor.hide();
-		editor.preview = $('#preview-' + original_id);
-		editor.original_id = original_id;
+		editor.preview = $('#preview-' + row_id);
+		editor.row_id = row_id;
+		editor.original_id = $gp.editor.original_id_from_row_id(row_id);
 		$gp.editor.current = editor;
 		$('a.close', editor).click($gp.editor.hooks.hide);
 		$('button.ok', editor).click($gp.editor.hooks.ok);
@@ -42,13 +46,13 @@ $gp.editor = function($){ return {
 		if (!$gp.editor.current) return;
 		var p = $gp.editor.current.preview;
 		$('td.translation', p).text($('textarea:first', $gp.editor.current).val());
-		// TODO: is the next status always current?
 		$.each( $.grep(p.attr('class').split(' '), function(x) {
 			return x.substr(0, 7) == 'status-';
 		}), function(status) {
 			p.removeClass(status);
 		} );
-		p.addClass('status-current');
+		// TODO: are we using update_preview() only when we add a new translation?
+		p.addClass($gp_editor_options.can_approve? 'status-current' : 'status-waiting');
 	},
 	save: function(button) {
 		if (!$gp.editor.current) return;
@@ -65,7 +69,7 @@ $gp.editor = function($){ return {
 				button.attr('disabled', '');
 				$gp.notices.success('Saved!');
 				$gp.editor.update_preview();
-				// TODO: next untranslated
+				// TODO: next untranslated, not just next
 				$gp.editor.next();
 			},
 			error: function(xhr, msg, error){

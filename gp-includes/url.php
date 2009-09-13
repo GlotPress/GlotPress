@@ -53,3 +53,11 @@ function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = 
 function gp_url_img( $file ) {
 	return gp_url( array( 'img', $file ) );
 }
+
+function gp_url_current() {
+	// TODO: https
+	// TODO: port
+	$host = gp_array_get( $_SERVER, 'HTTP_HOST' );
+	$path_and_args = gp_array_get( $_SERVER, 'REQUEST_URI');
+	return "http://{$host}{$path_and_args}";
+}

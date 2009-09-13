@@ -10,7 +10,8 @@ function gp_link_get( $url, $text, $attrs = array() ) {
 	}
 	$attributes = gp_html_attributes( $attrs );
 	$attributes = $attributes? " $attributes" : '';
-	return sprintf('%1$s<a href="%2$s"%3$s>%4$s</a>%5$s', $before, clean_url( $url ), $attributes, $text, $after );
+	// TODO: clean_url(), but make it allow [ and ]
+	return sprintf('%1$s<a href="%2$s"%3$s>%4$s</a>%5$s', $before, $url, $attributes, $text, $after );
 }
 
 function gp_link() {

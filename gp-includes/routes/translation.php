@@ -1,6 +1,7 @@
 <?php
-class GP_Route_Translation extends GP_Route_Main {
+class GP_Route_Translation extends GP_Route_Main {	
 	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+		// TODO: permissions
 		global $gpdb;
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -12,7 +13,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
-		global $gpdb;
+		// TODO: permissions
 		global $gpdb;
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -36,7 +37,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
 		// TODO: extract as Translation_Set::export
 		$po = new PO();
-		// TODO: do not hack per_page, find a smarter way
+		// TODO: do not hack per_page, find a smarter way to disable paging
 		$old_per_page = GP::$translation->per_page;
 		GP::$translation->per_page = 'no-limit';
 		$po->merge_with(GP::$translation->for_translation( $project, $translation_set, null, array('status' => '+current') ) );
@@ -70,10 +71,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows();
 		$per_page = GP::$translation->per_page;
 		$can_edit = GP::$user->logged_in();
+		$can_approve = $this->can( 'approve', 'project', $project->id );
+		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
 
@@ -98,10 +102,18 @@ class GP_Route_Translation extends GP_Route_Main {
 		    Since we still don't have status updates, just insert with status current
 		    and set all the previous translations of the same original to sth else
 		    */
-		    $data['status'] = '+current';
-		    GP::$translation->update( array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
-		    GP::$translation->update( array('status' => '-old'), array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
+			if ( $this->can( 'approve', 'project', $project->id ) || $this->can( 'write', 'project', $project->id ) ) {
+				$data['status'] = '+current';
+			} else {
+				$data['status'] = '-waiting';
+			}
 			// TODO: validate
+			if ( '+current' == $data['status'] ) {
+			    GP::$translation->update( array('status' => '-old'),
+					array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
+			    GP::$translation->update( array('status' => '-old'),
+					array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '-fuzzy'));
+			}
 			GP::$translation->create( $data );
 		}
 	}

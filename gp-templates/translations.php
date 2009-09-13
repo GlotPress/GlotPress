@@ -6,6 +6,8 @@ gp_breadcrumb( array(
 	$translation_set->name,
 ) );
 wp_enqueue_script( 'editor' );
+// localizer adds var in front of the variable name, so we can't use $gp.editor.options
+wp_localize_script( 'editor', '$gp_editor_options', compact('can_approve') );
 $parity = gp_parity_factory();
 gp_tmpl_header();
 $i = 0;
@@ -55,9 +57,18 @@ function references( $project, $entry ) {
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<a href="#" class="revealing filter">Filter &darr;</a> &bull;	
 	<a href="#" class="revealing sort">Sort &darr;</a> <strong style="font-size: 1.8em; vertical-align: bottom;">&bull;</strong>
-	<a href="<?php echo add_query_arg( array(urlencode('filters[translated]') => 'no')); ?>">Untranslated</a> &bull;
-	<a href="#">With Warnings</a> &bull;
-	<a href="#">High Priority</a>
+	<?php
+	$filter_links = array();
+	$filter_links[] = gp_link_get( $url, 'Current' );
+	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no'), $url ), 'Untranslated' );
+	if ( $can_approve ) {
+		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => '-waiting'), $url ),
+				'Waiting' );
+	}
+	// TODO: with warnings
+	// TODO: saved searches
+	echo implode( '&nbsp;&bull;&nbsp;', $filter_links );
+	?>
 	<dl class="filters-expanded filters hidden">		
  		<dt><label for="filters[term]">Term:</label></dt>
 		<dd><input type="text" value="<?php echo esc_html( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
@@ -125,7 +136,7 @@ function references( $project, $entry ) {
 		$class = str_replace( array( '+', '-' ), '', $t->translation_status );
 		if ( !$class )  $class = 'untranslated';
 ?>
-	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->original_id ?>" original="<?php echo $t->original_id; ?>">
+	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
 		<td><?php echo $i++; ?></td>
 		<td class="original">			
 			<?php echo esc_translation( $t->singular ); ?>
@@ -134,15 +145,37 @@ function references( $project, $entry ) {
 			<?php endif; ?>
 
 		</td>
-		<td class="translation"><?php echo esc_translation( $t->translations[0] ); ?></td>
+		<td class="translation">
+		<?php
+			$missing_text = "<span class='missing'>Missing</span>";
+			if ( !count( array_filter( $t->translations ) ) ):
+				echo $missing_text;
+			elseif ( !$t->plural ):
+				echo $t->translations[0];
+			else: ?>				
+			<ul>
+				<?php
+					foreach( $t->translations as $translation ):
+				?>			
+					<li><?php echo $translation? esc_translation( $translation ) : $missing_text; ?></li>
+				<?php
+					endforeach;
+				?>
+			</ul>
+		<?php
+			endif;
+		?>
+		</td>
 		<td class="actions">
-			<a href="#" original="<?php echo $t->original_id; ?>" class="action edit"><?php $can_edit? _e('Edit') : _e('View'); ?></a>
+			<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php $can_edit? _e('More') : _e('View'); echo $t->row_id; ?></a>
 		</td>
 	</tr>
-	<tr class="editor" id="editor-<?php echo $t->original_id; ?>" original="<?php echo $t->original_id; ?>">
-		<td colspan="3">
+	<tr class="editor" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
+		<td colspan="4">
+			<div class="strings">
 			<?php if ( !$t->plural ): ?>
 			<p class="original"><?php echo esc_translation($t->singular); ?></p>
+			
 			<?php textareas( $t, $can_edit ); ?>
 			<?php else: ?>
 				<!--
@@ -154,19 +187,52 @@ function references( $project, $entry ) {
 				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?></p>
 				<?php textareas( $t, $can_edit, 1 ); ?>				
 			<?php endif; ?>
+			</div>
 			<div class="meta">
+				<h3>Meta</h3>
+				<dl>
+					<dt>Status:</dt>
+					<dd><?php echo $t->translation_status? $t->translation_status : 'untranslated'; ?></dd>
+				<?php if ( $can_approve ): ?>
+					<?php if ( gp_startswith( $t->translation_status, '-' ) ): ?>
+					<dd><a href="#" tabindex="-1">Make current</a></dd>
+					<?php endif; ?>
+					<?php if ( $t->translation_status ): ?>
+					<dd><a href="#" tabindex="-1">Reject</a></dd>
+					<?php endif; ?>
+				<?php endif; ?>
+				</dl>
+				<dl>					
+					<dt>Priority:</dt>
+					<dd><?php echo esc_html($t->priority); ?></dd>
+				</dl>	
+				
 				<?php if ( $t->context ): ?>
-					<p class="context"><?php printf( __('Context: %s'), '<span class="context">'.esc_translation($t->context).'</span>' ); ?></p>
-				<?php endif; ?>
+				<dl>					
+					<dt>Context:</dt>
+					<dd><span class="context"><?php echo esc_translation($t->context); ?></span></dd>
+				</dl>	
+				<?php endif; ?>				
 				<?php if ( $t->extracted_comment ): ?>
-					<p class="comment"><?php printf( __('Comment: %s'), make_clickable( esc_translation($t->extracted_comment) ) ); ?></p>
+				<dl>					
+					<dt>Comment:</dt>
+					<dd><?php echo make_clickable( esc_translation($t->extracted_comment) ); ?></dd>
+				</dl>
 				<?php endif; ?>
-				<?php references( $project, $t ); ?>				
+				<?php if ( $t->translation_added ): ?>
+				<dl>
+					<dt>Date added:</dt>
+					<dd><?php echo $t->translation_added; ?></dd>				
+				</dl>
+				<?php endif; ?>
+				<?php references( $project, $t ); ?>
 			</div>
 			<div class="actions">
-<?php if ( $can_edit ): ?>				
-				<button class="ok">Add translation &rarr;</button>
-<?php endif; ?>				
+			<?php if ( $can_edit ): ?>
+				<button class="ok">
+					<?php echo $can_approve? 'Add translation &rarr;' : 'Suggest translation &rarr;'; ?>
+				</button>
+			<?php endif; ?>				
 				<a href="#" class="close"><?php _e('Close'); ?></a>
 			</div>
 		</td>

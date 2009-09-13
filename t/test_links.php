@@ -20,7 +20,8 @@ class GP_Test_Links extends GP_UnitTestCase {
 	
 	function test_gp_link_get_escape() {
 		$this->assertEquals( '<a href="http://dir.bg/">Baba & Dyado</a>', gp_link_get( 'http://dir.bg/', 'Baba & Dyado' ) );
-		$this->assertEquals( '<a href="http://dir.bg/?x=5&#038;y=11">Baba</a>', gp_link_get( 'http://dir.bg/?x=5&y=11', 'Baba' ) );
+		// clean_url() is too restrictive, so it isn't called
+		//$this->assertEquals( '<a href="http://dir.bg/?x=5&#038;y=11">Baba</a>', gp_link_get( 'http://dir.bg/?x=5&y=11', 'Baba' ) );
 		$this->assertEquals( '<a href="http://dir.bg/" a="&quot;">Baba</a>', gp_link_get( 'http://dir.bg/', 'Baba', array( 'a' => '"') ) );
 	}
 }
