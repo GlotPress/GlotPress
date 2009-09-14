@@ -69,7 +69,7 @@ function references( $project, $entry ) {
 	<?php
 	$filter_links = array();
 	$filter_links[] = gp_link_get( $url, 'Current' );
-	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no'), $url ), 'Untranslated' );
+	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random'), $url ), 'Random Untranslated' );
 	if ( $can_approve ) {
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => '-waiting'), $url ),
 				'Waiting' );
@@ -117,7 +117,7 @@ function references( $project, $entry ) {
 				'translation' => 'Translation',
 				'priority' => 'Priority',
 				'random' => 'Random',
-			), gp_array_get( $sort, 'by', 'priority' ) );
+			), gp_array_get( $sort, 'by', 'date_added' ) );
 		?>
 		</dd>
 		<dt>How:</dt>
