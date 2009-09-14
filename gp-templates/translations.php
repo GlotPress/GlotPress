@@ -6,6 +6,7 @@ gp_breadcrumb( array(
 	$translation_set->name,
 ) );
 wp_enqueue_script( 'editor' );
+wp_enqueue_script( 'translations-page' );
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 wp_localize_script( 'editor', '$gp_editor_options', compact('can_approve') );
 $parity = gp_parity_factory();
@@ -54,7 +55,7 @@ function references( $project, $entry ) {
 <?php
 }
 ?>
-<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
+<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">	
 	<a href="#" class="revealing bulk">Bulk &darr;</a> <strong class="separator">&bull;</strong>	
 	<a href="#" class="revealing filter">Filter &darr;</a> <span class="separator">&bull;</span>
 	<a href="#" class="revealing sort">Sort &darr;</a> <strong class="separator">&bull;</strong>
@@ -68,9 +69,9 @@ function references( $project, $entry ) {
 	}
 	// TODO: with warnings
 	// TODO: saved searches
-	echo implode( '&nbsp;&bull;&nbsp;', $filter_links );
+	echo implode( '&nbsp;<span class="separator">&bull;</span>&nbsp;', $filter_links );
 	?>
-	<dl class="filters-expanded filters hidden">		
+	<dl class="filters-expanded filters hidden clearfix">		
  		<dt><label for="filters[term]">Term:</label></dt>
 		<dd><input type="text" value="<?php echo esc_html( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
  		<dt><label for="filters[translated]">Translated:</label></dt>
@@ -97,9 +98,9 @@ function references( $project, $entry ) {
 			?>			
 		</dd>		
 		
-		<dd><input type="submit" value="Filter" /></dd>
+		<dd><input type="submit" value="Filter" name="filter" /></dd>
 	</dl>
-	<dl class="filters-expanded sort hidden">		
+	<dl class="filters-expanded sort hidden clearfix">		
 		<dt>By:</dt>
 		<dd>
 		<?php echo gp_radio_buttons('sort[by]',
@@ -121,8 +122,35 @@ function references( $project, $entry ) {
 			), gp_array_get( $sort, 'how', 'desc' ) );
 		?>
 		</dd>
-		<dd><input type="submit" value="Sort" /></dd>
-	</dl>	
+		<dd><input type="submit" value="Sort" name="sort" /></dd>
+	</dl>
+	<dl class="hidden bulk-actions filters-expanded clearfix">
+		<dt class="select">Select:</dt>
+		<dd>
+			<a href="#" class="all">All</a>
+			<a href="#" class="none">None</a>			
+		</dd>
+		<dt>Approve:</dt>
+		<dd>
+			<?php echo gp_radio_buttons('bulk',
+				array(
+					'approve-all' => 'All',
+					'approve-selected' => 'Selected',
+				), null );
+			?>			
+		</dd>
+		<dt>Reject:</dt>
+		<dd>
+			<?php echo gp_radio_buttons('bulk',
+				array(
+					'reject-all' => 'All',
+					'reject-selected' => 'Selected',
+				), null );
+			?>			
+		</dd>
+		<dd><input type="submit" value="Approve/Reject" name="approve" /></dd>
+	</dl>
+	
 </form>
 
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
@@ -138,7 +166,7 @@ function references( $project, $entry ) {
 		if ( !$class )  $class = 'untranslated';
 ?>
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
-		<td class="selected">&nbsp;</td>
+		<td class="checkbox"><input type="checkbox" name="bubu" id="bubu"></td>
 		<td class="original">			
 			<?php echo esc_translation( $t->singular ); ?>
 			<?php if ( $t->context ): ?>
@@ -258,8 +286,4 @@ function references( $project, $entry ) {
 		echo implode( ' &bull; ', $footer_links );
 	?>
 </p>
-<script type="text/javascript" charset="utf-8">
-	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');
-	$gp.showhide('#upper-filters-toolbar a.filter', 'Filter &darr;', 'Filter &uarr;', '#upper-filters-toolbar dl.filters', '#filters\\[term\\]');
-</script>
 <?php gp_tmpl_footer(); ?>

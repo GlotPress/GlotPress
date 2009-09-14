@@ -47,6 +47,7 @@ textarea {
 table.translations {
 	font-size: 90%;
 	width: 100%;
+	border-spacing: 0.1em;
 }
 table.translations th {
 	font-weight: bold;
@@ -79,6 +80,10 @@ table.translations td, table.translations th {
 	/* white-space: pre-wrap; */
 	margin: 0;
 	border-spacing: 0;
+}
+table.translations td.checkbox {
+    vertical-align: middle;
+    text-align: center;
 }
 table.translations td.actions {
     text-align: center;
@@ -239,12 +244,26 @@ form.filters-toolbar ul {
 form.filters-toolbar a.revealing {
     text-decoration: none;
 }
+form.filters-toolbar a.revealing, form.filters-toolbar .separator {
+    margin-bottom: 0;
+}
+form.filters-toolbar a.revealing.open {
+}
+form.filters-toolbar a.revealing:first-child {
+    margin-left: 0.5em;
+}
 form.filters-toolbar strong.separator {
     font-size: 1.8em;
     vertical-align: bottom;
 }
 dl.filters-expanded {
-    font-size: 80%;
+    font-size: 80%;    
+    padding: 0.5em;
+    margin: 0 0 0.5em 0.2em;
+    background-color: #eee;
+    border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
 }
 dl.filters-expanded dt, dl.filters-expanded dd {
     float: left;
@@ -258,7 +277,16 @@ dl.filters-expanded dt {
 dl.filters-expanded dd {
     margin-right: 2em;
 }
-
+dl.filters-expanded.bulk-actions a {
+    display: block;
+}
 .hidden {
     display: none;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }

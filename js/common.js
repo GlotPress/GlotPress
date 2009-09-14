@@ -32,17 +32,3 @@ var $gp = function($) { return {
 		$gp.notices.init();
 	}
 }}(jQuery);
-$gp.showhide = function($) { return function(link, show_text, hide_text, container, focus) {
-	link = $(link);
-	container = $(container);
-	var on_hidden = function() {
-		container.show();
-		if (focus) $(focus, container).focus();
-		link.html(hide_text);
-	}
-	var on_shown = function() {
-		container.hide();
-		link.html(show_text);
-	}
-	link.toggle(on_hidden, on_shown);
-}}(jQuery);
