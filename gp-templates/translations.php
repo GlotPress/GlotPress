@@ -9,6 +9,7 @@ wp_enqueue_script( 'editor' );
 wp_enqueue_script( 'translations-page' );
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 wp_localize_script( 'editor', '$gp_editor_options', compact('can_approve') );
+wp_localize_script( 'translations-page', '$gp_translations_options', array('action' => $approve_action) );
 $parity = gp_parity_factory();
 gp_tmpl_header();
 $i = 0;
@@ -55,6 +56,7 @@ function references( $project, $entry ) {
 <?php
 }
 ?>
+<!-- TODO: use another form for bulk actions -->
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">	
 	<a href="#" class="revealing bulk">Bulk &darr;</a> <strong class="separator">&bull;</strong>	
 	<a href="#" class="revealing filter">Filter &darr;</a> <span class="separator">&bull;</span>
@@ -74,7 +76,7 @@ function references( $project, $entry ) {
 	<dl class="filters-expanded filters hidden clearfix">		
  		<dt><label for="filters[term]">Term:</label></dt>
 		<dd><input type="text" value="<?php echo esc_html( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
- 		<dt><label for="filters[translated]">Translated:</label></dt>
+ 		<dt><label for="filters[translated]">With translation:</label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[translated]',
 				array(
@@ -132,7 +134,7 @@ function references( $project, $entry ) {
 		</dd>
 		<dt>Approve:</dt>
 		<dd>
-			<?php echo gp_radio_buttons('bulk',
+			<?php echo gp_radio_buttons('bulk[action]',
 				array(
 					'approve-all' => 'All',
 					'approve-selected' => 'Selected',
@@ -141,14 +143,18 @@ function references( $project, $entry ) {
 		</dd>
 		<dt>Reject:</dt>
 		<dd>
-			<?php echo gp_radio_buttons('bulk',
+			<?php echo gp_radio_buttons('bulk[action]',
 				array(
 					'reject-all' => 'All',
 					'reject-selected' => 'Selected',
 				), null );
 			?>			
 		</dd>
-		<dd><input type="submit" value="Approve/Reject" name="approve" /></dd>
+		<dd>
+			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]">
+			<input type="hidden" name="bulk[translation-ids]" value="" id="bulk[translation-ids]">
+			<input type="submit" value="Approve/Reject" name="approve" />
+		</dd>
 	</dl>
 	
 </form>
@@ -166,7 +172,7 @@ function references( $project, $entry ) {
 		if ( !$class )  $class = 'untranslated';
 ?>
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
-		<td class="checkbox"><input type="checkbox" name="bubu" id="bubu"></td>
+		<td class="checkbox"><input type="checkbox" name="selected-row[]" /></td>
 		<td class="original">			
 			<?php echo esc_translation( $t->singular ); ?>
 			<?php if ( $t->context ): ?>

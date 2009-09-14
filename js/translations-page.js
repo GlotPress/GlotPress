@@ -43,10 +43,24 @@ jQuery(function($) {
 	});
 	
 	var approve_submit = $('input[name=approve]', bulk_dl);
+	var radios = $('input[name=bulk\[action\]]', bulk_dl);
 	approve_submit.attr('disabled', 'disabled');
-	$('input[name=bulk]', bulk_dl).change(function() {
+	radios.change(function() {
 		approve_submit.removeAttr('disabled');
-		approve_submit.attr('value', this.id.match('bulk\\[approve')? 'Approve' : 'Reject');
+		approve_submit.attr('value', this.id.match('bulk\\[action\\]\\[approve')? 'Approve' : 'Reject');
+	});
+	
+	$('form.filters-toolbar').submit(function(e) {
+		if (approve_submit.is(':visible')) {
+			this.method = 'post';
+			this.action = $gp_translations_options.action;
+			var checkbox_filter = radios.filter(':checked').val().match('-selected')? 'input:checked' : 'input';
+			var	translation_ids = $(checkbox_filter, checkbox_cells).map(function() {
+				return $(this).parents('tr.preview').attr('row').split('-')[1];
+			}).get().join(',');
+			$('input[name=bulk\[translation-ids\]]', $(this)).val(translation_ids);
+		}
+		return true;
 	});
 	
 	// 

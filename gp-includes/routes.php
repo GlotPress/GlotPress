@@ -54,6 +54,7 @@ class GP_Router {
 			"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
 			"post:/$projects/_new" => array('GP_Route_Project', 'new_post'),
 
+			"post:/$project/$locale/$dir/_approve" => array('GP_Route_Translation', 'approve_post'),
 			"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
 			"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
 			"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),

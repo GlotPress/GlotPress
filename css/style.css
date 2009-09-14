@@ -17,6 +17,13 @@ h1 img {
     vertical-align: text-bottom;
     margin-right: 1em;
 }
+/* we take the liberty to make visited the same as link */
+a, a:link, a:visited {
+    color: #2F34B8;
+}
+a:active {
+    color: red;
+}
 a img {
     border: 0;
 }
@@ -212,7 +219,6 @@ ul a.delete {
 }
 .paging a, .paging span {
     font-size: 0.9em;
-    color: blue;
     display: block;
     width: 2em;
     height: 2em;
@@ -248,6 +254,7 @@ form.filters-toolbar a.revealing, form.filters-toolbar .separator {
     margin-bottom: 0;
 }
 form.filters-toolbar a.revealing.open {
+    font-weight: bold;
 }
 form.filters-toolbar a.revealing:first-child {
     margin-left: 0.5em;
@@ -258,7 +265,7 @@ form.filters-toolbar strong.separator {
 }
 dl.filters-expanded {
     font-size: 80%;    
-    padding: 0.5em;
+    padding: 0.8em;
     margin: 0 0 0.5em 0.2em;
     background-color: #eee;
     border-radius: 0.3em;

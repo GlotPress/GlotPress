@@ -88,5 +88,17 @@ class GP_Translation extends GP_Thing {
 		unset( $rows );
 		return $translations;
 	}
+	
+	function set_as_current() {
+		return $this->update( array('status' => '-old'),
+			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => '+current') )
+	    && $this->update( array('status' => '-old'),
+			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => '-fuzzy') )
+		&& $this->update( array('status' => '+current') );
+	}
+	
+	function reject() {
+		$this->update( array('status' => '-rejected') );
+	}
 }
 GP::$translation = new GP_Translation();

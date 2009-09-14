@@ -117,7 +117,7 @@ class GP_Thing {
 	function update( $data, $where = null ) {
 		global $gpdb;
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where ;
-		return $gpdb->update( $this->table, $data, $where );
+		return !is_null( $gpdb->update( $this->table, $data, $where ) );
 	}
 
 	function get( $thing_or_id ) {
