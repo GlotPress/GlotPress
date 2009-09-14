@@ -218,7 +218,7 @@ function references( $project, $entry ) {
 			
 			<?php textareas( $t, $can_edit ); ?>
 			<?php else: ?>
-				<?php if ( $locale->nplurals == 2 && $locale->plural_expresion == ' n != 1'): ?>
+				<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>
 					<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
 					<?php textareas( $t, $can_edit, 0 ); ?>
 					<p class="clear">

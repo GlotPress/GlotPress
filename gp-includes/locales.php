@@ -35,8 +35,6 @@ class GP_Locales {
 		$bg->country_code = 'bg';
 		$bg->wp_locale = 'bg_BG';
 		$bg->slug = 'bg';
-		$bg->nplurals = 2;
-		$bg->plural_expression = 'n != 1';
 
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish';
@@ -98,9 +96,9 @@ class GP_Locales {
 		$ja->plural_expression = '0';
 
 		
-		foreach(get_defined_vars() as $value) {
+		foreach( get_defined_vars() as $value ) {
 			if ( isset( $value->english_name ) ) {
-				if (!isset( $value->nplurals)) {
+				if ( !isset( $value->nplurals ) ) {
 					$value->nplurals = 2;
 					$value->plural_expression = 'n != 1';
 				}
