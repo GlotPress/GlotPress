@@ -76,7 +76,7 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: add id check as a validation rule
 		if ( $project->id == $updated_project->parent_project_id )
 			$this->errors[] = __('The project cannot be parent of itself!');
-		elseif ( !is_null( $project->save( $updated_project ) ) )
+		elseif ( $project->save( $updated_project ) )
 			$this->notices[] = __('The project was saved.');
 		else
 			$this->errors[] = __('Error in saving project!');

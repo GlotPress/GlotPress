@@ -127,13 +127,12 @@ class GP_Thing {
 	}
 
 	function save( $args = null ) {
-		global $gpdb;
 		if ( is_null( $args ) ) $args = get_object_vars( $this );
 		if ( !is_array( $args ) ) $args = (array)$args;
 		$args = $this->prepare_fields_for_save( $args );
-		$update_res  = $gpdb->update( $this->table, $args, array( 'id' => $this->id ) );
+		$update_res  = $this->update( $args );
 		$this->set_fields( $args );
-		if ( is_null( $update_res ) ) return null;
+		if ( !$update_res ) return null;
 		$update_res = $this->after_save();
 		return $update_res;
 	}
