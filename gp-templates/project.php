@@ -23,7 +23,8 @@ gp_tmpl_header();
 	<?php foreach( $translation_sets as $translation_set ):
 	    $locale = GP_Locales::by_slug( $translation_set->locale );
 	?>    
-		<li><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ), $locale->combined_name().' &rarr; '.$translation_set->name ); ?></li>
+		<li><?php gp_link( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ),
+				$locale->english_name.( 'default' != $translation_set->slug? ' &rarr; '.$translation_set->name : '') ); ?></li>
 	<?php endforeach; ?>
 	</ul>
 <?php else: ?>

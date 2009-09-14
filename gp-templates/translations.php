@@ -2,8 +2,8 @@
 gp_title( sprintf( __( 'Translations &lt; %s &lt; %s &lt; GlotPress' ), $translation_set->name, $project->name ) );
 gp_breadcrumb( array(
 	gp_link_project_get( $project, $project->name ),
-	$locale->combined_name(),
-	$translation_set->name,
+	$locale->english_name,
+	'default' != $translation_set->slug? $translation_set->name : '',
 ) );
 wp_enqueue_script( 'editor' );
 wp_enqueue_script( 'translations-page' );
@@ -13,6 +13,11 @@ wp_localize_script( 'translations-page', '$gp_translations_options', array('acti
 $parity = gp_parity_factory();
 gp_tmpl_header();
 $i = 0;
+
+function display_status( $status ) {
+	$status = preg_replace( '/^[+-]/', '', $status);
+	return $status? $status : 'untranslated';
+}
 
 /**
  * Similar to esc_html() but allows double-encoding.
@@ -124,7 +129,7 @@ function references( $project, $entry ) {
 			), gp_array_get( $sort, 'how', 'desc' ) );
 		?>
 		</dd>
-		<dd><input type="submit" value="Sort" name="sort" /></dd>
+		<dd><input type="submit" value="Sort" name="sorts" /></dd>
 	</dl>
 	<dl class="hidden bulk-actions filters-expanded clearfix">
 		<dt class="select">Select:</dt>
@@ -227,15 +232,18 @@ function references( $project, $entry ) {
 				<h3>Meta</h3>
 				<dl>
 					<dt>Status:</dt>
-					<dd><?php echo $t->translation_status? $t->translation_status : 'untranslated'; ?></dd>
+					<dd><?php echo display_status( $t->translation_status ); ?></dd>
+					<!--
+					TODO: ajaxy actions for approve/set as current/reject
 				<?php if ( $can_approve ): ?>
 					<?php if ( gp_startswith( $t->translation_status, '-' ) ): ?>
-					<dd><a href="#" tabindex="-1">Make current</a></dd>
+					<dd><a href="#" tabindex="-1">Set as current</a></dd>
 					<?php endif; ?>
 					<?php if ( $t->translation_status ): ?>
 					<dd><a href="#" tabindex="-1">Reject</a></dd>
 					<?php endif; ?>
 				<?php endif; ?>
+					-->
 				</dl>
 				<dl>					
 					<dt>Priority:</dt>
@@ -258,8 +266,15 @@ function references( $project, $entry ) {
 				<dl>
 					<dt>Date added:</dt>
 					<dd><?php echo $t->translation_added; ?></dd>				
-				</dl>
+				</dl>								
 				<?php endif; ?>
+				<?php if ( $t->user_login ): ?>
+				<dl>
+					<dt>By:</dt>
+					<dd><?php echo $t->user_login; ?></dd>				
+				</dl>								
+				<?php endif; ?>
+				
 				<?php references( $project, $t ); ?>
 			</div>
 			<div class="actions">
