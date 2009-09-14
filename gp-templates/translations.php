@@ -245,10 +245,12 @@ function references( $project, $entry ) {
 				<?php endif; ?>
 					-->
 				</dl>
+				<!--
 				<dl>					
 					<dt>Priority:</dt>
 					<dd><?php echo esc_html($t->priority); ?></dd>
-				</dl>	
+				</dl>
+				-->	
 				
 				<?php if ( $t->context ): ?>
 				<dl>					
