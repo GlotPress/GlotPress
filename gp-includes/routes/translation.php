@@ -103,13 +103,10 @@ class GP_Route_Translation extends GP_Route_Main {
 				$data['status'] = '-waiting';
 			}
 			// TODO: validate
+			$translation = GP::$translation->create( $data );
 			if ( '+current' == $data['status'] ) {
-			    GP::$translation->update( array('status' => '-old'),
-					array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
-			    GP::$translation->update( array('status' => '-old'),
-					array('original_id' => $original_id, 'translation_set_id' => $translation_set->id, 'status' => '-fuzzy'));
+				$translation->set_as_current();
 			}
-			GP::$translation->create( $data );
 		}
 	}
 	
