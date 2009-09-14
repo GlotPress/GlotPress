@@ -218,14 +218,25 @@ function references( $project, $entry ) {
 			
 			<?php textareas( $t, $can_edit ); ?>
 			<?php else: ?>
-				<!--
-					TODO: use the correct number of plurals
-					TODO: dynamically set the number of rows
-				-->				
-				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
-				<?php textareas( $t, $can_edit, 0 ); ?>
-				<p class="clear"><?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?></p>
-				<?php textareas( $t, $can_edit, 1 ); ?>				
+				<?php if ( $locale->nplurals == 2 && $locale->plural_expresion == ' n != 1'): ?>
+					<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
+					<?php textareas( $t, $can_edit, 0 ); ?>
+					<p class="clear">
+						<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
+					</p>
+					<?php textareas( $t, $can_edit, 1 ); ?>
+				<?php else: ?>
+					<!--
+					TODO: labels for each plural textarea and a sample number
+					-->
+					<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
+					<p class="clear">
+						<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
+					</p>
+					<?php foreach( range( 0, $locale->nplurals - 1 ) as $plural_index ): ?>
+						<?php textareas( $t, $can_edit, $plural_index ); ?>
+					<?php endforeach; ?>
+				<?php endif; ?>
 			<?php endif; ?>
 			</div>
 			<div class="meta">
