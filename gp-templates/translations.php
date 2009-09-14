@@ -167,7 +167,7 @@ function references( $project, $entry ) {
 		?>
 		</td>
 		<td class="actions">
-			<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php $can_edit? _e('More') : _e('View'); echo $t->row_id; ?></a>
+			<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php _e('Details'); ?></a>
 		</td>
 	</tr>
 	<tr class="editor" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
