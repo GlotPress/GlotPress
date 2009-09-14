@@ -25,7 +25,7 @@ class GP_User extends GP_Thing {
 		return $args;
 	}
 	
-	function get( $user_or_id) {
+	function get( $user_or_id ) {
 		global $wp_users_object;
 		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
 		return $this->coerce( $wp_users_object->get_user( $user_or_id ) );

@@ -67,13 +67,18 @@ class GP_Translation extends GP_Thing {
 		
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many( "
-		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added, u.ID as user_id, u.user_login
+		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = %d $join_where
-			LEFT JOIN $gpdb->users AS u ON t.user_id = u.ID
 		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
 		$translations = array();
 		foreach( $rows as $row ) {
+			if ( $row->user_id && $this->per_page != 'no-limit' ) {
+				$user = GP::$user->get( $row->user_id );
+				if ( $user ) $row->user_login = $user->user_login;
+			} else {
+				$row->user_login = '';
+			}
 			$row->translations = array($row->translation_0, $row->translation_1, $row->translation_2, $row->translation_3);
 			$row->translations = array_slice( $row->translations, 0, $locale->nplurals );
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
