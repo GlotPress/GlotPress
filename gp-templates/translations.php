@@ -55,8 +55,9 @@ function references( $project, $entry ) {
 }
 ?>
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
-	<a href="#" class="revealing filter">Filter &darr;</a> &bull;	
-	<a href="#" class="revealing sort">Sort &darr;</a> <strong style="font-size: 1.8em; vertical-align: bottom;">&bull;</strong>
+	<a href="#" class="revealing bulk">Bulk &darr;</a> <strong class="separator">&bull;</strong>	
+	<a href="#" class="revealing filter">Filter &darr;</a> <span class="separator">&bull;</span>
+	<a href="#" class="revealing sort">Sort &darr;</a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
 	$filter_links[] = gp_link_get( $url, 'Current' );
@@ -127,17 +128,17 @@ function references( $project, $entry ) {
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <table id="translations" class="translations clear">
 	<tr>
-		<th>#</th>
+		<th>&bull;</th>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
-		<th><?php _e('Actions'); ?></th>
+		<th>&mdash;</th>
 	</tr>
 <?php foreach( $translations as $t ):
 		$class = str_replace( array( '+', '-' ), '', $t->translation_status );
 		if ( !$class )  $class = 'untranslated';
 ?>
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
-		<td><?php echo $i++; ?></td>
+		<td class="selected">&nbsp;</td>
 		<td class="original">			
 			<?php echo esc_translation( $t->singular ); ?>
 			<?php if ( $t->context ): ?>
@@ -248,8 +249,14 @@ function references( $project, $entry ) {
 </table>
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <p class="clear">
-	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') ); ?> &bull;
-	<?php gp_link( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export translations') ); ?>
+	<?php
+		$footer_links = array();
+		if ( GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') );
+		}
+		$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export as PO file') );
+		echo implode( ' &bull; ', $footer_links );
+	?>
 </p>
 <script type="text/javascript" charset="utf-8">
 	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');

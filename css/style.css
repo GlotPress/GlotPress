@@ -239,6 +239,10 @@ form.filters-toolbar ul {
 form.filters-toolbar a.revealing {
     text-decoration: none;
 }
+form.filters-toolbar strong.separator {
+    font-size: 1.8em;
+    vertical-align: bottom;
+}
 dl.filters-expanded {
     font-size: 80%;
 }
