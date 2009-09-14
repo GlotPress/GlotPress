@@ -40,7 +40,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		// TODO: do not hack per_page, find a smarter way to disable paging
 		$old_per_page = GP::$translation->per_page;
 		GP::$translation->per_page = 'no-limit';
-		$po->merge_with(GP::$translation->for_translation( $project, $translation_set, null, array('status' => '+current') ) );
+		$entries = GP::$translation->for_translation( $project, $translation_set, null, array('status' => '+current') );
+		foreach( $entries as $entry ) {
+			$po->add_entry( $entry );
+		}
 		GP::$translation->per_page = $old_per_page;
 		$po->set_header('Project-Id-Version', $project->name);
 		// TODO: add more meta data in the project
