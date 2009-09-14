@@ -69,8 +69,35 @@ class GP_Locales {
 		$zh->country_code = 'cn';
 		$zh->wp_locale = 'zh_CN';
 		$zh->slug = 'zh';
+		
+		$pt = new GP_Locale();
+		$pt->english_name = 'Portuguese';
+		$pt->native_name = 'Português';
+		$pt->lang_code_iso_639_1 = 'pt';
+		$pt->country_code = 'pt';
+		$pt->wp_locale = 'pt_PT';
+		$pt->slug = 'pt';
 
+		$he = new GP_Locale();
+		$he->english_name = 'Hebrew';
+		$he->native_name = 'עִבְרִית';
+		$he->lang_code_iso_639_1 = 'he';
+		$he->country_code = 'il';
+		$he->wp_locale = 'he_IL';
+		$he->slug = 'he';
+		$he->rtl = true;
 
+		$ja = new GP_Locale();
+		$ja->english_name = 'Japanese';
+		$ja->native_name = '日本語';
+		$ja->lang_code_iso_639_1 = 'ja';
+		$ja->country_code = 'jp';
+		$ja->wp_locale = 'ja';
+		$ja->slug = 'ja';
+		$ja->nplurals = 1;
+		$ja->plural_expression = '0';
+
+		
 		foreach(get_defined_vars() as $value) {
 			if ( isset( $value->english_name ) ) {
 				if (!isset( $value->nplurals)) {
