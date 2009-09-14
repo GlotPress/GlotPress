@@ -129,16 +129,19 @@ foreach( $gpdb->table_names as $table ) {
 }
 unset( $table );
 
+// Set the prefix on the tables
+if ( is_wp_error( $gpdb->set_prefix( $gp_table_prefix ) ) ) {
+	die( 'Your table prefix may only contain letters, numbers and underscores.' );
+}
+
 if ( defined( 'CUSTOM_USER_TABLE' ) )
     $gpdb->users = CUSTOM_USER_TABLE;
 
 if ( defined( 'CUSTOM_USER_META_TABLE' ) )
     $gpdb->usermeta = CUSTOM_USER_META_TABLE;
 
-// Set the prefix on the tables
-if ( is_wp_error( $gpdb->set_prefix( $gp_table_prefix ) ) ) {
-	die( 'Your table prefix may only contain letters, numbers and underscores.' );
-}
+if ( defined( 'CUSTOM_PERMISSIONS_TABLE' ) )
+    $gpdb->permissions = CUSTOM_PERMISSIONS_TABLE;
 
 if ( !function_exists( 'add_filter' ) ) {
 	require_once( BACKPRESS_PATH . 'functions.plugin-api.php' );
