@@ -191,7 +191,7 @@ function references( $project, $entry ) {
 			if ( !count( array_filter( $t->translations ) ) ):
 				echo $missing_text;
 			elseif ( !$t->plural ):
-				echo $t->translations[0];
+				echo esc_translation( $t->translations[0] );
 			else: ?>				
 			<ul>
 				<?php
