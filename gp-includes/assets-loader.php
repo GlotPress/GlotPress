@@ -19,9 +19,11 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->base_url = gp_url( 'js' );
     $scripts->default_version = gp_get_option( 'version' );
 	
-	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.2.6-min' );
-	$scripts->add( 'jquery-ui-core', '/jquery/ui.core.js', array('jquery'), '1.5.2' );
-	$scripts->add( 'jquery-ui-tabs', '/jquery/ui.tabs.js', array('jquery-ui-core'), '1.5.2' );
+	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.3.2-min' );
+	$scripts->add( 'jquery-ui-core', '/jquery/ui.core.js', array('jquery'), '1.7.2' );
+	$scripts->add( 'jquery-ui-tabs', '/jquery/ui.tabs.js', array('jquery-ui-core'), '1.7.2' );
+	$scripts->add( 'jquery-ui-tabs', '/jquery/ui.tabs.js', array('jquery-ui-core'), '1.7.2' );
+	$scripts->add( 'jquery-ui-selectable', '/jquery/ui.selectable.js', array('jquery-ui-core'), '1.7.2' );
 	$scripts->add( 'common', '/common.js', array( 'jquery' ) );
 	$scripts->add( 'editor', '/editor.js', array( 'common', 'jquery-ui-tabs' ) );
 }
