@@ -28,6 +28,12 @@ function gp_url_join() {
 	return $start_slash . implode( '/', $args ) . $end_slash;
 }
 
+/**
+ * Builds a URL relative to the GlotPress base
+ * 
+ * @param mixed $path string path or array of path components
+ * @param array $query associative array of query arguments (optional)
+ */
 function gp_url( $path, $query = null ) {
 	$url = gp_url_join( gp_url_path( gp_get_option( 'url' ) ), $path );
 	if ( $query && is_array( $query ) )
@@ -60,4 +66,8 @@ function gp_url_current() {
 	$host = gp_array_get( $_SERVER, 'HTTP_HOST' );
 	$path_and_args = gp_array_get( $_SERVER, 'REQUEST_URI');
 	return "http://{$host}{$path_and_args}";
+}
+
+function gp_url_base() {
+	return gp_get_option( 'url' );
 }

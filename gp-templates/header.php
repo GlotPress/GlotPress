@@ -21,7 +21,7 @@ wp_enqueue_style( 'base' );
 				Hi, <?php echo $user->user_login; ?>.
 				<a href="<?php echo gp_url('/logout')?>">Log out</a>
 			<?php else: ?>
-				<a href="<?php echo gp_url('/login'); ?>">Log in</a>
+				<a href="<?php echo gp_url('/login', array('redirect_to' => gp_url_current())); ?>">Log in</a>
 			<?php endif; ?>
 			</span>
 		</h1>
