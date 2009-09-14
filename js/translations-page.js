@@ -2,17 +2,29 @@
 $gp.showhide = function($) { return function(link, show_text, hide_text, container, focus) {
 	link = $(link);
 	container = $(container);
-	var on_show = function() {
+	var show = function() {
+		console.log($gp.showhide.registry);
+		for(var i=0; i<$gp.showhide.registry.length; ++i) {
+			$gp.showhide.registry[i].hide();
+		}
 		container.show();
 		if (focus) $(focus, container).focus();
 		link.html(hide_text).addClass('open');
 	}
-	var on_hide = function() {
+	var hide = function() {
 		container.hide();
 		link.html(show_text).removeClass('open');
 	}
-	link.toggle(on_show, on_hide);
+	$gp.showhide.registry.push({show: show, hide: hide});
+	link.click(function() {
+		if ( container.is(':visible') )
+			hide();
+		else
+			show();
+	})
+	//link.toggle(show, hide);
 }}(jQuery);
+$gp.showhide.registry = [];
 
 jQuery(function($) {
 	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');
@@ -59,6 +71,9 @@ jQuery(function($) {
 				return $(this).parents('tr.preview').attr('row').split('-')[1];
 			}).get().join(',');
 			$('input[name=bulk\[translation-ids\]]', $(this)).val(translation_ids);
+		} else {
+			// do not litter the GET form with the long redirect_to
+			$('input[name^=bulk]', $(this)).remove();
 		}
 		return true;
 	});
