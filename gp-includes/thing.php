@@ -153,6 +153,8 @@ class GP_Thing {
 	/**
 	 * Normalizes an array with key-value pairs representing
 	 * a GP_Thing object.
+	 * 
+	 * @todo Include default type handling. For example dates 0000-00-00 should be set to null
 	 */
 	function normalize_fields( $args ) {
 		return $args;

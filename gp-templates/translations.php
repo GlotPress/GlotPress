@@ -275,7 +275,7 @@ function references( $project, $entry ) {
 					<dd><?php echo make_clickable( esc_translation($t->extracted_comment) ); ?></dd>
 				</dl>
 				<?php endif; ?>
-				<?php if ( $t->translation_added ): ?>
+				<?php if ( $t->translation_added && $t->translation_added != '0000-00-00 00:00:00' ): ?>
 				<dl>
 					<dt>Date added:</dt>
 					<dd><?php echo $t->translation_added; ?></dd>				
