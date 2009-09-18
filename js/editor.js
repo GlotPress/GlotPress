@@ -64,7 +64,7 @@ $gp.editor = function($){ return {
 		data = $("textarea[name='"+name+"']", editor).map(function() {
 			return name+'='+encodeURIComponent($(this).val());
 		}).get().join('&');
-		$.ajax({type: "POST", url: '', data: data,
+		$.ajax({type: "POST", url: $gp_editor_options.url, data: data,
 			success: function(msg){
 				button.attr('disabled', '');
 				$gp.notices.success('Saved!');
