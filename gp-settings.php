@@ -161,6 +161,8 @@ require_once( GP_PATH . GP_INC . 'strings.php' );
 require_once( GP_PATH . GP_INC . 'template.php' );
 require_once( GP_PATH . GP_INC . 'template-links.php' );
 
+require_once( GP_PATH . GP_INC . 'cli.php' );
+
 /**
  * Define the full path to the object cache functions include
  */

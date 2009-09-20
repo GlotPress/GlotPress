@@ -32,35 +32,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 
 		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
-		// TODO: extract as Translation_Set::export
-		$po = new PO();
-		// TODO: do not hack per_page, find a smarter way to disable paging
-		$old_per_page = GP::$translation->per_page;
-		GP::$translation->per_page = 'no-limit';
-		$entries = GP::$translation->for_translation( $project, $translation_set, null, array('status' => '+current') );
-		foreach( $entries as $entry ) {
-			$po->add_entry( $entry );
-		}
-		GP::$translation->per_page = $old_per_page;
-		$po->set_header('Project-Id-Version', $project->name);
-		// TODO: add more meta data in the project
-		$po->set_header('Report-Msgid-Bugs-To', 'wp-polyglots@lists.automattic.com');
-		// TODO: last updated for a translation set
-		$po->set_header('PO-Revision-Date', gmdate('Y-m-d H:i:s+0000'));
-		// TODO: Language Team
-		$po->set_header('MIME-Version', '1.0');
-		$po->set_header('Content-Type', 'text/plain; charset=UTF-8');
-		$po->set_header('Content-Transfer-Encoding', '8bit');
-		$po->set_header('Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;");
-		$po->set_header('X-Generator', 'GlotPress/' . gp_get_option('version'));
+		$this->headers_for_download( $filename );
 				
-		header('Content-Description: File Transfer');
-		header("Content-Disposition: attachment; filename=$filename");
-		header("Content-Type: application/octet-stream", true);
 		echo "# Translation of {$project->name} in {$locale->english_name}\n";
 		echo "# This file is distributed under the same license as the {$project->name} package.\n";
-		echo $po->export();
-		
+		echo $translation_set->export_as_po();
 	}
 
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {

@@ -1,25 +1,29 @@
 <?php
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
-$progname = array_shift( $argv );
+class GP_Script_Export extends GP_CLI {
+	
+	var $short_options = 'p:l:t:';
+	
+	var $usage = "-p <project-path> -l <locale> [-t <translation-set-slug>]";
+	
+	function run() {
+		if ( !isset( $this->options['l'] ) || !isset( $this->options['p'] ) ) {
+			$this->usage();
+		}
+		$project = GP::$project->by_path( $this->options['p'] );
+		if ( !$project ) $this->error( 'Project not found!' );
+		
+		$locale = GP_Locales::by_slug( $this->options['l'] );
+		if ( !$locale ) $this->error( 'Locale not found!' );
+		
+		$this->options['t'] = gp_array_get( $this->options, 't', 'default' );
+		
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $this->options['t'], $locale->slug );
+		if ( !$translation_set ) $this->error( 'Translation set not found!' );
 
-list( $project_path, $locale_slug, $translation_set_slug ) = $argv;
-
-$project = GP::$project->by_path( $project_path );
-$locale = GP_Locales::by_slug( $locale_slug );
-$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-
-
-$po = new PO();
-
-$po->set_header('MIME-Version', '1.0');
-$po->set_header('Content-Transfer-Encoding', '8bit');
-$po->set_header('X-Generator', 'GlotPress/' . gp_get_option('version'));
-$po->set_header('Content-Type', 'text/plain; charset=UTF-8');
-$po->set_header('Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;");
-$po->merge_with(GP::$translation->by_project_and_translation_set_and_status( $project, $translation_set, '+current' ));
-echo "# Translation of {$project->name} in {$locale->english_name}\n";
-echo "# This file is distributed under the same license as the {$project->name} package.\n";
-echo $po->export();
-echo "\n"
-?>
+		echo $translation_set->export_as_po() . "\n";
+	}
+}
+$gp_script_export = new GP_Script_Export;
+$gp_script_export->run();

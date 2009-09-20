@@ -173,4 +173,14 @@ class GP_Route {
 		wp_redirect( $url );
 		exit();
 	}
+	
+	function headers_for_download( $filename ) {
+		header('Content-Description: File Transfer');
+		header('Pragma: public');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Content-Type: application/octet-stream", true);
+		header('Connection: close');
+	}
 }
