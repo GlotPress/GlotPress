@@ -7,6 +7,7 @@ class GP_Thing {
 	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
+	var $map_results = true;
 	
 	function __construct( $fields = array() ) {
 		global $gpdb;
@@ -19,6 +20,17 @@ class GP_Thing {
 		$this->validation_rules = new GP_Validation_Rules( $this );
 		// we give the rules as a parameter here solely as a syntax sugar
 		$this->restrict_fields( $this->validation_rules );
+	}
+	
+	function __call( $name, $args ) {
+		$suffix = '_no_map';
+		if ( gp_endswith( $name, $suffix ) ) {
+			$name = substr( $name, 0, strlen( $name ) - strlen( $suffix ) );
+			$this->map_results = false;
+			return call_user_func_array( array( &$this, $name ), $args );
+			$this->map_results = true;
+		}
+		//trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
 	
 	// CRUD
@@ -60,7 +72,7 @@ class GP_Thing {
 		$args = func_get_args();
 		return $this->map( $gpdb->get_results( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
 	}
-	
+
 	function find_many( $conditions ) {
 		return $this->many( $this->sql_from_conditions( $conditions ) );
 	}
@@ -196,6 +208,7 @@ class GP_Thing {
 	}
 
 	function map( $results ) {
+		if ( isset( $this->map_results ) && !$this->map_results ) return $results;
 		if ( !$results || !is_array( $results ) ) $results = array();
 		$mapped = array();
 		foreach( $results as $result ) {
