@@ -64,9 +64,10 @@ class GP_Route_Main extends GP_Route {
 	}
 
 	function _options_from_locales( $locales ) {
-		return array_combine(
-			array_map( create_function( '$l', 'return $l->slug;'), $locales ),
-			array_map( create_function( '$l', 'return $l->wp_locale." - ". $l->english_name;'), $locales )
-		);
+		$values = array_map( create_function( '$l', 'return $l->slug;'), $locales );
+		$labels = array_map( create_function( '$l', 'return $l->slug." - ". $l->english_name;'), $locales );
+		sort( $values );
+		sort( $labels );
+		return array_combine($values, $labels);
 	}
 }
