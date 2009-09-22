@@ -230,12 +230,19 @@ if ( !class_exists( 'WP_Auth' ) ) {
 	$cookies['auth'][] = array(
 		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
 		'path' => gp_url_path(),
-		'name' => 'glotpress_auth',
+		'name' => gp_const_get( 'GP_AUTH_COOKIE', 'glotpress_auth' ),
 	);
+	$cookies['secure_auth'][] = array(
+		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
+		'path' => gp_url_path(),
+		'name' => gp_const_get( 'GP_SECURE_AUTH_COOKIE', 'glotpress_sec_auth' ),
+		'secure' => 'true',
+	);
+
 	$cookies['logged_in'][] = array(
 		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
 		'path' => gp_url_path(),
-		'name' => 'glotpress_logged_in',
+		'name' => gp_const_get( 'GP_LOGGED_IN_COOKIE', 'glotpress_logged_in' ),
 	);
 	$wp_auth_object = new WP_Auth( $gpdb, $wp_users_object, $cookies );
 	unset( $cookies );
