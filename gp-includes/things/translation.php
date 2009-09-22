@@ -7,6 +7,16 @@ class GP_Translation extends GP_Thing {
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', );
 	var $non_updatable_attributes = array( 'id', );
 
+	function normalize_fields( $args ) {
+		$args = (array)$args;
+		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
+		    foreach(range(0, 3) as $i) {
+		        if ( isset( $args['translations'][$i] ) ) $args["translation_$i"] = $args['translations'][$i];
+		    }
+			unset( $args['translations'] );
+		}
+		return $args;
+	}
 
 	function restrict_fields( $translation ) {
 		$translation->translation_0_should_not_be( 'empty' );
@@ -16,16 +26,8 @@ class GP_Translation extends GP_Thing {
 		$translation->user_id_should_be( 'positive_int' );
 	}
 		
-	/**
-	 * The best translation for each original string in the project
-	 */
-	function by_project_and_translation_set( $project, $translation_set, $page = 1 ) {
-		return $this->by_project_and_translation_set_and_status( $project, $translation_set, '+', $page );
-	}
-	
 	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $gpdb;
-		$page = intval( $page )? intval( $page ) : 1;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 		$status_cond = '';
 

@@ -61,6 +61,7 @@ function gp_schema_get() {
 		`priority` TINYINT NOT NULL DEFAULT 0,
 		`date_added` DATETIME DEFAULT NULL,
 		PRIMARY KEY (`id`),
+		KEY `project_id` (`project_id`)
 	) TYPE = MYISAM;";
 
 	/*

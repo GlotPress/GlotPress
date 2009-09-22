@@ -19,18 +19,6 @@ class GP_Route_Main extends GP_Route {
 		return false;
 	}
 
-	function _find_original( $project, $entry ) {
-		global $gpdb;
-		$where = array();
-		// now each condition has to contain a %s not to break the sequence
-		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
-		$where[] = 'BINARY singular = %s';
-		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
-		$where[] = 'project_id = %d';
-		$where = implode( ' AND ', $where );
-		return GP::$original->one( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
-	}
-
 	// TODO: move these as a template helper
 	
 	function _options_from_projects( $projects ) {

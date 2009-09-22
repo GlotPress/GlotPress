@@ -37,28 +37,7 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	function _merge_originals( $project, $translations ) {
-		global $gpdb;
-		$originals_added = $originals_existing = 0;
-		$gpdb->update( $gpdb->originals, array( 'status' => '+obsolete' ), array( 'project_id' => $project->id ) );
-		foreach( $translations->entries as $entry ) {
-			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
-				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
-				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
-				
-			// TODO: do not obsolete similar translations
-			
-			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields			
-			$existing = self::_find_original( $project, $entry );
-			if ( $existing ) {
-				$existing->update( $data );
-				$originals_existing++;
-			} else {
-				GP::$original->create( $data );
-				$originals_added++;
-			}
-		}
-		$gpdb->update( $gpdb->originals, array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
-		// TODO: were they really added?
+		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
 		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
 	}
 		

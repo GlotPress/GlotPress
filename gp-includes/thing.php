@@ -273,7 +273,8 @@ class GP_Thing {
 	
 	function sql_limit_for_paging( $page, $per_page = null ) {
 		$per_page = is_null( $per_page )? $this->per_page : $per_page;
-		if ( 'no-limit' == $per_page ) return '';
+		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
+		$page = intval( $page )? intval( $page ) : 1;
 		return sprintf( "LIMIT %d OFFSET %d", $this->per_page, ($page-1)*$this->per_page );
 	}
 	

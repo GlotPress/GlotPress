@@ -33,6 +33,7 @@ class GP_Translation_Set extends GP_Thing {
 	
 	function export_as_po() {
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
+		// TODO: rename locale column to locale_slug and use freely $this->locale as the locale object
 		$locale = GP_Locales::by_slug( $this->locale );
 		
 		$po = new PO();
@@ -45,16 +46,55 @@ class GP_Translation_Set extends GP_Thing {
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . gp_get_option('version') );
 		
-		// TODO: do not hack per_page, find a smarter way to disable paging
-		$old_per_page = GP::$translation->per_page;
-		GP::$translation->per_page = 'no-limit';
-		$entries = GP::$translation->for_translation( $this->project, $this, null, array('status' => '+current') );
+		$entries = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => '+current') );
 		foreach( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}
-		GP::$translation->per_page = $old_per_page;
 		$po->set_header( 'Project-Id-Version', $this->project->name );
 		return $po->export();
+	}
+	
+	function import( $translations ) {
+		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
+		$locale = GP_Locales::by_slug( $this->locale );
+		
+		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => '+current', 'translated' => 'yes') );
+		$current_translations = new Translations();
+		foreach( $current_translations_list as $entry ) {
+			$current_translations->add_entry( $entry );
+		}
+		//var_dump(count($current_translations->entries));
+		unset( $current_translations_list );
+		$translations_added = 0;
+		foreach( $translations->entries as $entry ) {
+			if ( empty( $entry->translations ) ) continue;
+			if ( in_array( 'fuzzy', $entry->flags ) ) continue;
+			
+			$create = false;
+			
+			if ( $translated = $current_translations->translate_entry( $entry ) ) {
+				// we have the same string translated
+				// create a new one if they don't match
+				$entry->original_id = $translated->original_id;
+				$create  = ( array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations );
+			} else {
+				// we don't have the string translated, let's see if the original is there
+				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry );
+				if ( $original ) {
+					$entry->original_id = $original->id;
+					$create = true;
+				}
+			}
+			if ( $create ) {
+				$entry->translation_set_id = $this->id;
+				$entry->status = '+current';
+				// check for errors
+				$translation = GP::$translation->create( $entry );
+				$translation->set_as_current();
+				$translations_added += 1;
+			}
+		}
+		return $translations_added;
 	}
 }
 GP::$translation_set = new GP_Translation_Set();

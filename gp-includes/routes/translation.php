@@ -19,12 +19,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		
 		$block = array( &$this, '_merge_translations');
-		self::_import('mo-file', 'MO', $block, array($project, $locale, $translation_set)) or
-		self::_import('pot-file', 'PO', $block, array($project, $locale, $translation_set));
-
+		self::_import( 'mo-file', 'MO', $block, array($translation_set) ) or
+		self::_import( 'pot-file', 'PO', $block, array($translation_set) );
+	
 		wp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
 	}
-
+	
+	function _merge_translations( $translation_set, $translations ) {
+		$translations_added = $translation_set->import( $translations );
+		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
+	}
+	
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -138,43 +143,5 @@ class GP_Route_Translation extends GP_Route_Main {
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
 		wp_redirect( $bulk['redirect_to'] );
-	}
-
-	function _merge_translations( $project, $locale, $translation_set, $translations ) {
-		global $gpdb;
-		$translations_added = 0;
-		foreach( $translations->entries as $entry ) {
-			if ( empty( $entry->translations ) ) continue;
-			if ( in_array( 'fuzzy', $entry->flags ) ) continue;
-			$original = self::_find_original( $project, $entry );
-			if ( $original ) {
-				$translation = self::_find_translation( $original, $translation_set, $entry );
-				if ( !$translation ) {
-					$data = array( 'original_id' => $original->id, 'status' => '+current' );
-					$data['translation_set_id'] = $translation_set->id;
-				    foreach(range(0, 3) as $i) {
-				        if (isset($entry->translations[$i])) $data["translation_$i"] = $entry->translations[$i];
-				    }
-					// TODO: check for errors
-					$translation = GP::$translation->create( $data );
-					if ( '+current' == $data['status'] ) {
-						$translation->set_as_current();
-					}
-					$translations_added++;
-				}
-			}
-		}
-		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
-	}
-
-	function _find_translation( $original, $translation_set, $entry ) {
-		global $gpdb;
-		$where = array( 'original_id = %d', 'translation_set_id = %d', 'status = "+current"' );
-		$tr = array_pad( $entry->translations, 4, null );
-		foreach( range(0, 3) as $i ) {
-			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s IS NULL)" : "BINARY translation_$i = %s";
-		}
-		$where = implode( ' AND ', $where );
-		return GP::$translation->one( "SELECT * FROM $gpdb->translations WHERE $where", $original->id, $translation_set->id, $tr[0], $tr[1], $tr[2], $tr[3] );
 	}
 }
