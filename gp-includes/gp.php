@@ -5,4 +5,5 @@ class GP {
 	static $translation_set;
 	static $permission;
 	static $translation;
+	static $original;
 }

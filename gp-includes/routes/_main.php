@@ -3,7 +3,7 @@
  * Holds common functionality for routes.
  */
 class GP_Route_Main extends GP_Route {
-	function _import($file_key, $class, $block, $block_args) {
+	function _import( $file_key, $class, $block, $block_args ) {
 		global $gpdb;
 		if ( is_uploaded_file( $_FILES[$file_key]['tmp_name'] ) ) {
 			$translations = new $class();
@@ -28,8 +28,7 @@ class GP_Route_Main extends GP_Route {
 		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
 		$where[] = 'project_id = %d';
 		$where = implode( ' AND ', $where );
-		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
-		return $gpdb->get_row( $sql );
+		return GP::$original->one( "SELECT * FROM $gpdb->originals WHERE $where", $entry->context, $entry->singular, $entry->plural, $project->id );
 	}
 
 	// TODO: move these as a template helper

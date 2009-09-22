@@ -18,11 +18,11 @@ class GP_Project extends GP_Thing {
 	}
 	
 	function sub_projects() {
-		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d", $this->id );
+		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY name ASC", $this->id );
 	}
 	
 	function top_level() {
-		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL" );
+		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL ORDER BY name ASC" );
 	}
 
 	// Triggers
@@ -33,13 +33,11 @@ class GP_Project extends GP_Thing {
 		return !is_null( $this->update_path() );
 	}
 	
-
 	function after_create() {
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
 		if ( !$this->copy_permissions_from_parent() ) return false;
 	}
-
 
 	// Field handling
 

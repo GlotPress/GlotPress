@@ -12,6 +12,13 @@ class GP_Translation_Set extends GP_Thing {
 		// TODO: do not allow translations sets with the same project, locale and slug. Might be a good to constraint it in the DB
 	}
 	
+	function name_with_locale( $separator = '&rarr;') {
+		$locale = GP_Locales::by_slug( $this->locale );
+		$parts = array( $locale->english_name );
+		if ( 'default' != $this->slug ) $parts[] = $this->name;
+		return implode( '&nbsp;'.$separator.'&nbsp;', $parts );
+	}
+	
 	function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
 		return $this->one( "
 		    SELECT * FROM $this->table
@@ -21,7 +28,7 @@ class GP_Translation_Set extends GP_Thing {
 	function by_project_id( $project_id ) {
 		return $this->many( "
 		    SELECT * FROM $this->table
-		    WHERE project_id = %d", $project_id );
+		    WHERE project_id = %d ORDER BY name ASC", $project_id );
 	}
 	
 	function export_as_po() {

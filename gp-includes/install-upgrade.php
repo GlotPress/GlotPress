@@ -52,7 +52,9 @@ function gp_install() {
 	$gpdb->insert( $gpdb->translation_sets, array( 'name' => 'My Translation', 'slug' => 'my', 'project_id' => 1, 'locale' => 'bg', ) );
 	
 	// TODO: ask the user for an e-mail -- borrow WordPress install process
-	$admin = GP::$user->create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
-	GP::$permission->create( array( 'user_id' => $admin->id, 'action' => 'admin' ) );
+	if ( !defined('CUSTOM_USER_TABLE') ) {
+		$admin = GP::$user->create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
+		GP::$permission->create( array( 'user_id' => $admin->id, 'action' => 'admin' ) );
+	}
 	return array();
 }

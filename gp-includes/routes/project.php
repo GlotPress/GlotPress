@@ -12,6 +12,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
+		usort( $translation_sets, lambda('$a, $b', 'strcmp($a->name_with_locale(), $b->name_with_locale());') );
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
 		$can_write = $this->can( 'write', 'project', $project->id );
 		gp_tmpl_load( 'project', get_defined_vars() );
@@ -29,8 +30,8 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) gp_tmpl_404();
 		
 		$block = array( &$this, '_merge_originals');
-		self::_import('mo-file', 'MO', $block, array($project)) or
-		self::_import('pot-file', 'PO', $block, array($project));
+		self::_import( 'mo-file', 'MO', $block, array($project) ) or
+		self::_import( 'pot-file', 'PO', $block, array($project) );
 
 		wp_redirect( gp_url_project( $project, 'import-originals' ) );
 	}
@@ -43,14 +44,16 @@ class GP_Route_Project extends GP_Route_Main {
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
-			// TODO: fuzzy
+				
+			// TODO: do not obsolete similar translations
+			
 			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields			
 			$existing = self::_find_original( $project, $entry );
 			if ( $existing ) {
-				$gpdb->update( $gpdb->originals, $data, array( 'id' => $existing->id ) );
+				$existing->update( $data );
 				$originals_existing++;
 			} else {
-				$gpdb->insert( $gpdb->originals, $data );
+				GP::$original->create( $data );
 				$originals_added++;
 			}
 		}

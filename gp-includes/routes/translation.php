@@ -144,22 +144,22 @@ class GP_Route_Translation extends GP_Route_Main {
 		global $gpdb;
 		$translations_added = 0;
 		foreach( $translations->entries as $entry ) {
-			if ( empty( $entry->translations )) continue;
+			if ( empty( $entry->translations ) ) continue;
+			if ( in_array( 'fuzzy', $entry->flags ) ) continue;
 			$original = self::_find_original( $project, $entry );
 			if ( $original ) {
 				$translation = self::_find_translation( $original, $translation_set, $entry );
 				if ( !$translation ) {
-					$data = array( 'original_id' => $original->id );
+					$data = array( 'original_id' => $original->id, 'status' => '+current' );
 					$data['translation_set_id'] = $translation_set->id;
 				    foreach(range(0, 3) as $i) {
 				        if (isset($entry->translations[$i])) $data["translation_$i"] = $entry->translations[$i];
 				    }
-					// TODO: extract setting the current translation to GP_Translation::set_current()					
-				    $data['status'] = in_array( 'fuzzy', $entry->flags )? '+fuzzy' : '+current';
-				    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+current'));
-				    $gpdb->update($gpdb->translations, array('status' => '-old'), array('original_id' => $original->id, 'translation_set_id' => $translation_set->id, 'status' => '+fuzzy'));
-				
-			        $gpdb->insert($gpdb->translations, $data);
+					// TODO: check for errors
+					$translation = GP::$translation->create( $data );
+					if ( '+current' == $data['status'] ) {
+						$translation->set_as_current();
+					}
 					$translations_added++;
 				}
 			}
@@ -169,15 +169,12 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	function _find_translation( $original, $translation_set, $entry ) {
 		global $gpdb;
-		$where = array();
-		$where[] = 'original_id = %s';
-		$where[] = 'translation_set_id = %s';
+		$where = array( 'original_id = %d', 'translation_set_id = %d', 'status = "+current"' );
 		$tr = array_pad( $entry->translations, 4, null );
-		foreach(range(0, 3) as $i) {
+		foreach( range(0, 3) as $i ) {
 			$where[] = is_null($tr[$i])? "(translation_$i IS NULL OR %s IS NULL)" : "BINARY translation_$i = %s";
 		}
 		$where = implode( ' AND ', $where );
-		$sql = $gpdb->prepare( "SELECT * FROM $gpdb->translations WHERE $where", $original->id, $translation_set->id, $tr[0], $tr[1], $tr[2], $tr[3] );
-		return $gpdb->get_row( $sql );
+		return GP::$translation->one( "SELECT * FROM $gpdb->translations WHERE $where", $original->id, $translation_set->id, $tr[0], $tr[1], $tr[2], $tr[3] );
 	}
 }
