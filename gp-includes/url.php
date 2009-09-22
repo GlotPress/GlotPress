@@ -71,3 +71,11 @@ function gp_url_current() {
 function gp_url_base() {
 	return gp_get_option( 'url' );
 }
+
+function gp_url_login( $redirect_to = null ) {
+	return gp_url( '/login', array( 'redirect_to' => $redirect_to? $redirect_to : gp_url_current() ) );
+}
+
+function gp_url_logout() {
+	return gp_url( '/logout' );
+}

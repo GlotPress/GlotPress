@@ -35,6 +35,11 @@ function textareas( $entry, $can_edit, $index = 0 ) {
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
 	</p>
+<?php else: ?>
+	<p>
+		You <a href="<?php echo gp_url_login(); ?>">have to log in</a> to edit this translation.
+	</p>
+	
 <?php endif; ?>
 </div>
 <?php
@@ -187,7 +192,8 @@ function references( $project, $entry ) {
 		</td>
 		<td class="translation">
 		<?php
-			$missing_text = "<span class='missing'>Missing</span>";
+			$edit_text = $can_edit? 'Double-click to add' : 'You <a href="'.gp_url_login().'">have to login</a> to add a translation.';
+			$missing_text = "<span class='missing'>$edit_text</span>";
 			if ( !count( array_filter( $t->translations ) ) ):
 				echo $missing_text;
 			elseif ( !$t->plural ):

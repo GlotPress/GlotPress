@@ -81,6 +81,11 @@ table.translations td.translation span.missing {
     color: #ddd;
     font-style: italic;
 }
+table.translations td.translation span.missing a {
+    color: #ccc;
+    font-style: italic;
+}
+
 table.translations td, table.translations th {
 	padding: 0.5em;
 	border: 1px solid #eee;
