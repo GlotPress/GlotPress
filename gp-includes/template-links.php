@@ -19,7 +19,7 @@ function gp_link() {
 	echo call_user_func_array('gp_link_get', $args);
 }
 
-function gp_link_project_get( &$project_or_path, $text, $attrs = array() ) {
+function gp_link_project_get( $project_or_path, $text, $attrs = array() ) {
 	return gp_link_get( gp_url_project( $project_or_path ), $text, $attrs );
 }
 
@@ -28,7 +28,7 @@ function gp_link_project() {
 	echo call_user_func_array('gp_link_project_get', $args);
 }
 
-function gp_link_project_edit_get( &$project, $text = false, $attrs = array() ) {
+function gp_link_project_edit_get( $project, $text = false, $attrs = array() ) {
 	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
@@ -41,7 +41,7 @@ function gp_link_project_edit() {
 	echo call_user_func_array('gp_link_project_edit_get', $args);
 }
 
-function gp_link_project_delete_get( &$project, $text = false, $attrs = array() ) {
+function gp_link_project_delete_get( $project, $text = false, $attrs = array() ) {
 	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
