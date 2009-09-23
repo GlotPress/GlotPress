@@ -317,7 +317,9 @@ class PO extends Gettext_Translations {
 				return false;
 			}
 		}
-		if (array() == array_filter($entry->translations)) $entry->translations = array();
+		if (array() == array_filter($entry->translations, create_function('$t', 'return $t || "0" === $t;'))) {
+			$entry->translations = array();
+		}
 		return array('entry' => $entry, 'lineno' => $lineno);
 	}
 	
