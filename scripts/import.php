@@ -12,7 +12,8 @@ class GP_Script_Import extends GP_Translation_Set_Script {
 	function action_on_translation_set( $translation_set ) {
 		$po = new PO();
 		$po->import_from_file( $this->options['f'] );
-		$translation_set->import( $po );
+		$added = $translation_set->import( $po );
+		printf( _n( "%s translation were added", "%s translations were added", $added ), $added );
 	}
 	
 }
