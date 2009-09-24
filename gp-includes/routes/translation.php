@@ -53,7 +53,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
-		$total_translations_count = GP::$translation->found_rows();
+		$total_translations_count = GP::$translation->found_rows;
 		$per_page = GP::$translation->per_page;
 		$can_edit = GP::$user->logged_in();
 		$can_approve = $this->can( 'approve', 'project', $project->id );

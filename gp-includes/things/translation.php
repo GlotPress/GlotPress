@@ -73,6 +73,7 @@ class GP_Translation extends GP_Thing {
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = %d $join_where
 		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
+		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( $rows as $row ) {
 			if ( $row->user_id && $this->per_page != 'no-limit' ) {
