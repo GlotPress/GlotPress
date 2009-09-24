@@ -33,7 +33,6 @@ class GP_Original extends GP_Thing {
 		$where[] = 'BINARY singular = %s';
 		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
 		$where[] = 'project_id = %d';
-		$where[] = 'status = "+active"';
 		$where = implode( ' AND ', $where );
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}
@@ -43,6 +42,7 @@ class GP_Original extends GP_Thing {
 		$originals_added = $originals_existing = 0;
 		$this->update( array( 'status' => '+obsolete' ), array( 'project_id' => $project->id ) );
 		foreach( $translations->entries as $entry ) {
+			$gpdb->queries = array();
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
