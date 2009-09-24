@@ -84,8 +84,7 @@ class GP_Router {
 			}
 			if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
 				if ( is_array( $func ) ) {
-					$class = new ReflectionClass( $func[0] );
-					$route = $class->newInstance();
+					$route = new $func[0];
 					$route->before_request();
 					$route->request_running = true;
 					// make sure after_request() is called even if we exit() in the request

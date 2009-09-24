@@ -101,8 +101,8 @@ class GP_Thing {
 		global $gpdb;
 		$res = $gpdb->insert( $this->table, $this->prepare_fields_for_save( $args ) );
 		if ( $res === false ) return false;
-		$class = new ReflectionClass( get_class( $this ) );
-		$inserted = $class->newInstance( $args );
+		$class = get_class( $this );
+		$inserted = new $class( $args );
 		$inserted->id = $gpdb->insert_id;
 		$inserted->after_create();
 		return $inserted;
@@ -202,8 +202,8 @@ class GP_Thing {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
-			$class = new ReflectionClass( get_class( $this ) );
-			return $class->newInstance( $thing );
+			$class = get_class( $this );
+			return new $class( $thing );
 		}
 	}
 
