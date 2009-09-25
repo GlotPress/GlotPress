@@ -113,7 +113,7 @@ if ( !$gp_table_prefix ) {
 
 // Setup the global database connection
 $gpdb_class = GP_DATABASE_CLASS;
-$gpdb = &new $gpdb_class( array(
+$gpdb = new $gpdb_class( array(
 	'name' => GPDB_NAME,
 	'user' => GPDB_USER,
 	'password' => GPDB_PASSWORD,
