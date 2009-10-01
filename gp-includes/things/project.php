@@ -3,7 +3,7 @@ class GP_Project extends GP_Thing {
 	
 	var $table_basename = 'projects';
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template' );
-	var $non_updatable_attributes = array( 'id', 'path' );
+	var $non_updatable_attributes = array( 'id' );
 
 
 	function restrict_fields( $project ) {

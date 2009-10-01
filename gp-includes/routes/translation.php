@@ -1,23 +1,21 @@
 <?php
 class GP_Route_Translation extends GP_Route_Main {	
 	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
-		// TODO: permissions
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		
+		$this->can_or_redirect( 'approve', 'project', $project->id );
 		$kind = 'translations';
 		gp_tmpl_load( 'project-import', get_defined_vars() );
 	}
 
 	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
-		// TODO: permissions
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		
+		$this->can_or_redirect( 'approve', 'project', $project->id );
 		$block = array( &$this, '_merge_translations');
 		self::_import( 'mo-file', 'MO', $block, array($translation_set) ) or
 		self::_import( 'pot-file', 'PO', $block, array($translation_set) );
@@ -70,6 +68,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 		    $data = compact('original_id');
@@ -96,6 +95,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		$this->can_or_redirect( 'approve', 'project', $project->id );
+		
 		$bulk = gp_post('bulk');
 		$action = gp_startswith( $bulk['action'], 'approve-' )? 'approve' : 'reject';
 		$bulk['translation-ids'] = array_filter( explode( ',', $bulk['translation-ids'] ) );

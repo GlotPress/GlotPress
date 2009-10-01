@@ -3,7 +3,6 @@ $gp.showhide = function($) { return function(link, show_text, hide_text, contain
 	link = $(link);
 	container = $(container);
 	var show = function() {
-		console.log($gp.showhide.registry);
 		for(var i=0; i<$gp.showhide.registry.length; ++i) {
 			$gp.showhide.registry[i].hide();
 		}
@@ -30,6 +29,8 @@ jQuery(function($) {
 	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');
 	$gp.showhide('#upper-filters-toolbar a.filter', 'Filter &darr;', 'Filter &uarr;', '#upper-filters-toolbar dl.filters', '#filters\\[term\\]');
 	$gp.showhide('#upper-filters-toolbar a.bulk', 'Bulk &darr;', 'Bulk &uarr;', '#upper-filters-toolbar dl.bulk-actions', '#filters\\[term\\]');
+	$('#bulk\\[action\\]\\[approve-selected\\]').change(function() { $gp.editor.hide(); });
+	$('#bulk\\[action\]\\[reject-selected\\]').change(function() { $gp.editor.hide(); });
 
 	var checkbox_cells = $('table#translations td.checkbox');
 	var bulk_dl = $('.filters-toolbar dl.bulk-actions');

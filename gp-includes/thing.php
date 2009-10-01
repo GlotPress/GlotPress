@@ -3,7 +3,6 @@ class GP_Thing {
 	
 	var $table = null;
 	var $field_names = array();
-	var $date_fields = array();
 	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
@@ -16,7 +15,6 @@ class GP_Thing {
 			$this->$field_name = null;
 		}
 		$this->set_fields( $fields );
-		$this->date_fields = array_filter( $this->field_names, lambda( '$f', 'gp_startswith($f, "date_");' ) );
 		$this->validation_rules = new GP_Validation_Rules( $this );
 		// we give the rules as a parameter here solely as a syntax sugar
 		$this->restrict_fields( $this->validation_rules );
@@ -99,7 +97,9 @@ class GP_Thing {
 	 */
 	function create( $args ) {
 		global $gpdb;
-		$res = $gpdb->insert( $this->table, $this->prepare_fields_for_save( $args ) );
+		$args = $this->prepare_fields_for_save( $args );
+		$args = $this->prepare_fields_for_create( $args );
+		$res = $gpdb->insert( $this->table, $args );
 		if ( $res === false ) return false;
 		$class = get_class( $this );
 		$inserted = new $class( $args );
@@ -129,7 +129,7 @@ class GP_Thing {
 	function update( $data, $where = null ) {
 		global $gpdb;
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where ;
-		return !is_null( $gpdb->update( $this->table, $data, $where ) );
+		return !is_null( $gpdb->update( $this->table, $this->prepare_fields_for_save( $data ), $where ) );
 	}
 
 	function get( $thing_or_id ) {
@@ -189,11 +189,19 @@ class GP_Thing {
 				unset( $args[$key] );
 			}
 		}
-		foreach( $this->date_fields as $date_field ) {
-			if ( !isset( $args[$date_field] ) ) {
-				$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-				$args[$date_field] = $now->format( DATE_MYSQL );
-			}
+		
+		if ( in_array( 'date_modified', $this->field_names ) ) {
+			$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+			$args['date_modified'] = $now->format( DATE_MYSQL );
+		}
+				
+		return $args;
+	}
+	
+	function prepare_fields_for_create( $args ) {
+		if ( in_array( 'date_added', $this->field_names ) ) {
+			$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+			$args['date_added'] = $now->format( DATE_MYSQL );
 		}
 		return $args;
 	}

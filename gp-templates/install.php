@@ -15,7 +15,7 @@ There were some errors:
 	else:
 		echo $success_message;
 	endif;
-	// TODO: deny access for scripts
+	// TODO: deny access to scripts folder
 	if ( $show_htaccess_instructions ): ?>
 <p>
 Please add this to your <code>.htacess</code> file:

@@ -25,6 +25,7 @@ function gp_schema_get() {
 		`user_id` INT(10) DEFAULT NULL,
 		`status` VARCHAR(20) NOT NULL default 'new',
 		`date_added` DATETIME DEFAULT NULL,
+		`date_modified` DATETIME DEFAULT NULL,
 		PRIMARY KEY (`id`),
 		KEY `original_id` (`original_id`),
 		KEY `user_id` (`user_id`)

@@ -160,6 +160,8 @@ class GP_Route {
 	}
 	
 	function can_or_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
+		// TODO: do not redirect to projects, but to /
+		// currently it goes to /projects, because / redirects too and the notice is gone
 		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {

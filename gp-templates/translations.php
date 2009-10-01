@@ -67,8 +67,10 @@ function references( $project, $entry ) {
 }
 ?>
 <!-- TODO: use another form for bulk actions -->
-<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">	
-	<a href="#" class="revealing bulk">Bulk &darr;</a> <strong class="separator">&bull;</strong>	
+<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
+	<?php if ( $can_approve ): ?>	
+	<a href="#" class="revealing bulk">Bulk &darr;</a> <strong class="separator">&bull;</strong>
+	<?php endif; ?>
 	<a href="#" class="revealing filter">Filter &darr;</a> <span class="separator">&bull;</span>
 	<a href="#" class="revealing sort">Sort &darr;</a> <strong class="separator">&bull;</strong>
 	<?php
@@ -240,6 +242,7 @@ function references( $project, $entry ) {
 						<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
 					</p>
 					<?php foreach( range( 0, $locale->nplurals - 1 ) as $plural_index ): ?>
+						<p class="plural-numbers">Plural form for: <span class="numbers"><?php  echo implode(', ', $locale->numbers_for_index( $plural_index) ); ?></span></p>
 						<?php textareas( $t, $can_edit, $plural_index ); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -299,7 +302,7 @@ function references( $project, $entry ) {
 			<div class="actions">
 			<?php if ( $can_edit ): ?>
 				<button class="ok">
-					<?php echo $can_approve? 'Add translation &rarr;' : 'Suggest translation &rarr;'; ?>
+					<?php echo $can_approve? 'Add translation &rarr;' : 'Suggest new translation &rarr;'; ?>
 				</button>
 			<?php endif; ?>				
 				<a href="#" class="close"><?php _e('Close'); ?></a>
@@ -322,7 +325,9 @@ function references( $project, $entry ) {
 		if ( GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') );
 		}
-		$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export as PO file') );
+		if ( GP::$user->logged_in() ) {
+			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export as PO file') );
+		}
 		echo implode( ' &bull; ', $footer_links );
 	?>
 </p>

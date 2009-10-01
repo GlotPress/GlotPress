@@ -7,11 +7,26 @@ class GP_Locale {
 	var $country_code;
 	var $wp_locale;
 	var $slug;
+	var $nplurals = 2;
+	var $plural_expression = 'n != 1';
 	// TODO: days, months, decimals, quotes
 	
 	function combined_name() {
 		/* translators: combined name for locales: 1: name in English, 2: native name */
 		return sprintf( _x( '%1$s/%2$s', 'locales' ), $this->english_name, $this->native_name );
+	}
+	
+	function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000 ) {
+		$expression = Gettext_Translations::parenthesize_plural_exression( $this->plural_expression );
+		$index_from_number = Gettext_Translations::make_plural_form_function( $this->nplurals, $expression );
+		$numbers = array();
+		for( $number = 0; $number < $test_up_to; ++$number ) {
+			if ( $index_from_number( $number ) == $index ) {
+				$numbers[] = $number;
+				if ( count( $numbers ) >= $how_many ) break;
+			}
+		}
+		return $numbers;
 	}
 }
 
@@ -644,10 +659,6 @@ class GP_Locales {
 
 		foreach( get_defined_vars() as $value ) {
 			if ( isset( $value->english_name ) ) {
-				if ( !isset( $value->nplurals ) ) {
-					$value->nplurals = 2;
-					$value->plural_expression = 'n != 1';
-				}
 				if ( !isset( $value->direction ) ) {
 					$value->direction = 'ltr';
 				}

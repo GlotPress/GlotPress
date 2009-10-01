@@ -69,7 +69,6 @@ $gp.editor = function($){ return {
 				button.attr('disabled', '');
 				$gp.notices.success('Saved!');
 				$gp.editor.update_preview();
-				// TODO: next untranslated, not just next
 				$gp.editor.next();
 			},
 			error: function(xhr, msg, error){

@@ -4,7 +4,7 @@ class GP_Translation extends GP_Thing {
 	var $per_page = 10;
 	
 	var $table_basename = 'translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', );
+	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', 'date_modified', );
 	var $non_updatable_attributes = array( 'id', );
 
 	function normalize_fields( $args ) {
@@ -107,7 +107,7 @@ class GP_Translation extends GP_Thing {
 	}
 	
 	function reject() {
-		$this->update( array('status' => '-rejected') );
+		return $this->update( array('status' => '-rejected') );
 	}
 }
 GP::$translation = new GP_Translation();

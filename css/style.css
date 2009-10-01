@@ -161,11 +161,13 @@ span.context {
     float: left;
     width: 60%;
 }
+.editor .strings p.plural-numbers {
+}
+.editor .strings p.plural-numbers span.numbers {
+    font-weight: bold;
+}
 .editor .textareas, .editor .actions {
 	clear: both;
-}
-.editor .textareas {
-    float: left;
 }
 .editor .meta {
 	float: left;

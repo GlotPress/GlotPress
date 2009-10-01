@@ -56,5 +56,6 @@ function gp_install() {
 		$admin = GP::$user->create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
 		GP::$permission->create( array( 'user_id' => $admin->id, 'action' => 'admin' ) );
 	}
+	// TODO: ask the user to choose an admin user if using custom table
 	return array();
 }
