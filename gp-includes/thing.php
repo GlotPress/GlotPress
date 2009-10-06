@@ -7,17 +7,46 @@ class GP_Thing {
 	var $validation_rules = null;
 	var $per_page = 30;
 	var $map_results = true;
+	var $static = array();
+	
+	static $static_by_class = array();
+	static $validation_rules_by_class = array();
 	
 	function __construct( $fields = array() ) {
 		global $gpdb;
+		$this->class = get_class( $this );
 		$this->table = $gpdb->{$this->table_basename};
 		foreach( $this->field_names as $field_name ) {
 			$this->$field_name = null;
 		}
 		$this->set_fields( $fields );
-		$this->validation_rules = new GP_Validation_Rules( $this );
-		// we give the rules as a parameter here solely as a syntax sugar
-		$this->restrict_fields( $this->validation_rules );
+		
+		if ( isset(self::$validation_rules_by_class[$this->class])) {
+			$this->validation_rules = &self::$validation_rules_by_class[$this->class];
+		} else {
+			$this->validation_rules = new GP_Validation_Rules( $this->field_names );
+			// we give the rules as a parameter here solely as a syntax sugar
+			$this->restrict_fields( $this->validation_rules );
+			self::$validation_rules_by_class[$this->class] = &$this->validation_rules;
+		}
+		if ( !$this->get_static( 'static-vars-are-set' ) ) {
+			foreach( get_class_vars( $this->class ) as $name => $value ) {
+				$this->set_static( $name, $value );
+			}
+			$this->set_static( 'static-vars-are-set', true );
+		}
+	}
+	
+	function get_static( $name, $default = null ) {
+		return isset( self::$static_by_class[$this->class][$name] )? self::$static_by_class[$this->class][$name] : $default;
+	}
+	
+	function has_static( $name ) {
+		return isset( self::$static_by_class[$this->class][$name] );
+	}
+	
+	function set_static( $name, $value ) {
+		self::$static_by_class[$this->class][$name] = $value;
 	}
 	
 	function __call( $name, $args ) {
@@ -28,7 +57,7 @@ class GP_Thing {
 			return call_user_func_array( array( &$this, $name ), $args );
 			$this->map_results = true;
 		}
-		//trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
+		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
 	
 	// CRUD
@@ -101,7 +130,7 @@ class GP_Thing {
 		$args = $this->prepare_fields_for_create( $args );
 		$res = $gpdb->insert( $this->table, $args );
 		if ( $res === false ) return false;
-		$class = get_class( $this );
+		$class = $this->class;
 		$inserted = new $class( $args );
 		$inserted->id = $gpdb->insert_id;
 		$inserted->after_create();
@@ -128,7 +157,7 @@ class GP_Thing {
 	 */
 	function update( $data, $where = null ) {
 		global $gpdb;
-		$where = is_null( $where )? array( 'id' => $this->id ) : $where ;
+		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
 		return !is_null( $gpdb->update( $this->table, $this->prepare_fields_for_save( $data ), $where ) );
 	}
 
@@ -210,7 +239,7 @@ class GP_Thing {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
-			$class = get_class( $this );
+			$class = $this->class;
 			return new $class( $thing );
 		}
 	}
@@ -260,7 +289,7 @@ class GP_Thing {
 	}
 	
 	function validate() {
-		$verdict = $this->validation_rules->run();
+		$verdict = $this->validation_rules->run( $this );
 		$this->errors = $this->validation_rules->errors;
 		return $verdict;
 	}

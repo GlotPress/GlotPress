@@ -9,7 +9,7 @@ class GP_Translation_Set extends GP_Thing {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
 		$set->locale_should_not_be('empty');
-		// TODO: do not allow translations sets with the same project, locale and slug. Might be a good to constraint it in the DB
+		// TODO: do not allow translations sets with the same project, locale and slug. Might be good to constraint it in the DB
 	}
 	
 	function name_with_locale( $separator = '&rarr;') {
@@ -46,7 +46,7 @@ class GP_Translation_Set extends GP_Thing {
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . gp_get_option('version') );
 		
-		$entries = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => '+current') );
+		$entries = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current') );
 		foreach( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}
@@ -55,15 +55,15 @@ class GP_Translation_Set extends GP_Thing {
 	}
 	
 	function import( $translations ) {
+		@ini_set('memory_limit', '256M');
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
 		$locale = GP_Locales::by_slug( $this->locale );
 		
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => '+current', 'translated' => 'yes') );
+		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current', 'translated' => 'yes') );
 		$current_translations = new Translations();
 		foreach( $current_translations_list as $entry ) {
 			$current_translations->add_entry( $entry );
 		}
-		//var_dump(count($current_translations->entries));
 		unset( $current_translations_list );
 		$translations_added = 0;
 		foreach( $translations->entries as $entry ) {
@@ -87,7 +87,7 @@ class GP_Translation_Set extends GP_Thing {
 			}
 			if ( $create ) {
 				$entry->translation_set_id = $this->id;
-				$entry->status = '+current';
+				$entry->status = 'current';
 				// check for errors
 				$translation = GP::$translation->create( $entry );
 				$translation->set_as_current();
@@ -95,6 +95,42 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		}
 		return $translations_added;
+	}
+	
+	function waiting_count() {
+		if ( !isset( $this->waiting_count ) ) $this->update_status_breakdown();
+		return $this->waiting_count;
+	}
+	
+	function untranslated_count() {
+		if ( !isset( $this->untranslated_count ) ) $this->update_status_breakdown();
+		return $this->untranslated_count;
+	}
+	
+	function current_count() {
+		if ( !isset( $this->current_count ) ) $this->update_status_breakdown();
+		return $this->current_count;
+	}
+	
+	function update_status_breakdown() {
+		/*
+		 * TODO:
+		 *	- join on originals and count as translated only these, which correspond to an active original string
+		 *  - calculate weighted coefficient by priority to know how much of the strings are translated
+		 * 	- calculate untranslated
+		 */
+		$table = GP::$translation->table;
+		$counts = GP::$translation->many_no_map("SELECT status, COUNT(*) as n FROM $table WHERE translation_set_id = %d GROUP BY status", $this->id);
+		$statuses = GP::$translation->get_static( 'statuses' );
+		foreach( $statuses as $status ) {
+			$this->{$status.'_count'} = 0;
+		}
+		$this->untranslated_count = 0;
+		foreach( $counts as $count ) {
+			if ( in_array( $count->status, $statuses ) ) {
+				$this->{$count->status.'_count'} = $count->n;
+			}
+		}
 	}
 }
 GP::$translation_set = new GP_Translation_Set();

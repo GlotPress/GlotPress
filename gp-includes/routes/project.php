@@ -15,6 +15,7 @@ class GP_Route_Project extends GP_Route_Main {
 		usort( $translation_sets, lambda('$a, $b', 'strcmp($a->name_with_locale(), $b->name_with_locale());') );
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
 		$can_write = $this->can( 'write', 'project', $project->id );
+		$can_approve = $this->can( 'approve', 'project', $project->id );
 		gp_tmpl_load( 'project', get_defined_vars() );
 	}
 

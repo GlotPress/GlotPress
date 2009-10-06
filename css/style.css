@@ -304,3 +304,16 @@ dl.filters-expanded.bulk-actions a {
     clear: both;
     visibility: hidden;
 }
+ul.translation-sets .stats {
+    font-weight: bold;
+}
+
+ul.translation-sets .translated {
+    color: #090;
+}
+ul.translation-sets .untranslated {
+    color: #d00;
+}
+ul.translation-sets .waiting {
+    color: #d90;
+}

@@ -78,13 +78,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		        if (isset($translations[$i])) $data["translation_$i"] = $translations[$i];
 		    }
 			if ( $this->can( 'approve', 'project', $project->id ) || $this->can( 'write', 'project', $project->id ) ) {
-				$data['status'] = '+current';
+				$data['status'] = 'current';
 			} else {
-				$data['status'] = '-waiting';
+				$data['status'] = 'waiting';
 			}
 			// TODO: validate
 			$translation = GP::$translation->create( $data );
-			if ( '+current' == $data['status'] ) {
+			if ( 'current' == $data['status'] ) {
 				$translation->set_as_current();
 			}
 		}

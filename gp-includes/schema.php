@@ -23,7 +23,7 @@ function gp_schema_get() {
 		`translation_2` TEXT DEFAULT NULL,
 		`translation_3` TEXT DEFAULT NULL,
 		`user_id` INT(10) DEFAULT NULL,
-		`status` VARCHAR(20) NOT NULL default 'new',
+		`status` VARCHAR(20) NOT NULL default 'waiting',
 		`date_added` DATETIME DEFAULT NULL,
 		`date_modified` DATETIME DEFAULT NULL,
 		PRIMARY KEY (`id`),

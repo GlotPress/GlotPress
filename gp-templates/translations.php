@@ -78,7 +78,7 @@ function references( $project, $entry ) {
 	$filter_links[] = gp_link_get( $url, 'Current' );
 	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random'), $url ), 'Random Untranslated' );
 	if ( $can_approve ) {
-		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => '-waiting'), $url ),
+		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
 				'Waiting' );
 	}
 	// TODO: with warnings
@@ -103,12 +103,12 @@ function references( $project, $entry ) {
 		<dd>
 			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
 				array(
-					'+current' => 'Current',
-					'-old' => 'Approved, but obsoleted by another string',
-					'-waiting' => 'Waiting',
-					'-rejected' => 'Rejected',
+					'current' => 'Current',
+					'old' => 'Approved, but obsoleted by another string',
+					'waiting' => 'Waiting',
+					'rejected' => 'Rejected',
 					'either' => 'Any',
-				), gp_array_get( $filters, 'status', '+current' ) );
+				), gp_array_get( $filters, 'status', 'current' ) );
 			?>			
 		</dd>		
 		
@@ -180,7 +180,7 @@ function references( $project, $entry ) {
 		<th>&mdash;</th>
 	</tr>
 <?php foreach( $translations as $t ):
-		$class = str_replace( array( '+', '-' ), '', $t->translation_status );
+		$class = $t->translation_status;
 		if ( !$class )  $class = 'untranslated';
 ?>
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">

@@ -12,15 +12,15 @@ class GP_Validation_Rules {
 		'should_not_be', 'should_not', 'cant', 'cant_be',
 	);
 	
-	function __construct( &$thing ) {
-		$this->thing = &$thing;
+	function __construct( $field_names ) {
+		$this->field_names = $field_names;
 	}
 	
 	function __call( $name, $args ) {
 		foreach( array( 'positive', 'negative' ) as $kind ) {
 			$suffices = "{$kind}_suffices";
 			foreach( self::$$suffices as $suffix ) {
-				foreach( $this->thing->field_names as $field_name ) {
+				foreach( $this->field_names as $field_name ) {
 					if ( $name == "{$field_name}_{$suffix}" ) {
 						$this->rules[$field_name][] = array( 'field' => $field_name, 'rule' => $args[0], 'kind' => $kind, 'args' => array_slice( $args, 1 ) );
 						return true;
@@ -31,13 +31,13 @@ class GP_Validation_Rules {
 		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
 	
-	function run() {
+	function run( $thing ) {
 		$this->errors = array();
 		$verdict = true;
-		foreach( $this->thing->field_names as $field_name ) {
+		foreach( $this->field_names as $field_name ) {
 			// do not try to validate missing fields
-			if ( !isset( $this->thing->$field_name ) ) continue;
-			$value = $this->thing->$field_name;
+			if ( !isset( $thing->$field_name ) ) continue;
+			$value = $thing->$field_name;
 			$field_verdict = $this->run_on_single_field( $field_name, $value );
 			$verdict = $verdict && $field_verdict;
 		}

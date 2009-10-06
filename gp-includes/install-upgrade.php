@@ -27,6 +27,8 @@ function gp_upgrade_db() {
 	$messages = $alterations['messages'];
 	$errors = $alterations['errors'];
 	if ( $errors ) return $errors;
+	
+	gp_upgrade_data( gp_get_option_from_db( 'gp_db_version' ) );
 
 	gp_update_db_version();
     
@@ -34,6 +36,13 @@ function gp_upgrade_db() {
 
 function gp_upgrade() {
     return gp_upgrade_db();
+}
+
+function gp_upgrade_data( $db_version ) {
+	global $gpdb;
+	if ( $db_version < 190 ) {
+		$gpdb->query("UPDATE $gpdb->translations SET status = REPLACE(REPLACE(status, '-', ''), '+', '');");
+	}
 }
 
 function gp_install() {
