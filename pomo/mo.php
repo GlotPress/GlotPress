@@ -149,7 +149,14 @@ class MO extends Gettext_Translations {
 	}
 
 	/**
+	 * Build a Translation_Entry from original string and translation strings,
+	 * found in a MO file
+	 * 
 	 * @static
+	 * @param string $original original string to translate from MO file. Might contain
+	 * 	0x04 as context separator or 0x00 as singular/plural separator
+	 * @param string $translation translation string from MO file. Might contain
+	 * 	0x00 as a plural translations separator
 	 */
 	function &make_entry($original, $translation) {
 		$args = array();
