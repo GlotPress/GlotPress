@@ -35,5 +35,15 @@ class GP_Test_User extends GP_UnitTestCase {
 		$from_db = GP::$user->get( $user );
 		$this->assertEquals( $user->id, $from_db->id );
 	}
-	
+
+	function test_meta() {
+		$user = GP::$user->create( array( 'user_login' => 'pijo', 'user_url' => 'http://dir.bg/', 'user_pass' => 'baba', 'user_email' => 'pijo@example.org' ) );
+		$user = GP::$user->get( $user );
+		$user->set_meta( 'int', 5 );
+		$this->assertEquals( 5, $user->get_meta( 'int') );
+		$user->delete_meta( 'int' );
+		$this->assertEquals( null, $user->get_meta( 'int') );
+		$user->set_meta( 'mixed', array(1, 2, 3) );
+		$this->assertEquals( array(1, 2, 3), $user->get_meta( 'mixed' ) );
+	}
 }

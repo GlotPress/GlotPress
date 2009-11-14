@@ -109,5 +109,26 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 		return apply_filters( 'can_user', $verdict, $args );
 	}
+	
+	function get_meta( $key ) {
+		global $wp_users_object;
+		if ( !$user = $wp_users_object->get_user( $this->id ) ) {
+			return;
+		}
+
+		$key = gp_sanitize_meta_key( $key );
+		if ( !isset( $user->$key ) ) {
+			return;
+		}
+		return $user->$key;
+	}
+	
+	function set_meta( $key, $value ) {
+		return gp_update_meta( $this->id, $key, $value, 'user' );
+	}
+	
+	function delete_meta( $key ) {
+		return gp_delete_meta( $this->id, $key, '', 'user' );
+	}
 }
 GP::$user = new GP_User();
