@@ -32,3 +32,29 @@ var $gp = function($) { return {
 		$gp.notices.init();
 	}
 }}(jQuery);
+
+
+$gp.showhide = function($) { return function(link, show_text, hide_text, container, focus) {
+	link = $(link);
+	container = $(container);
+	var show = function() {
+		for(var i=0; i<$gp.showhide.registry.length; ++i) {
+			$gp.showhide.registry[i].hide();
+		}
+		container.show();
+		if (focus) $(focus, container).focus();
+		link.html(hide_text).addClass('open');
+	}
+	var hide = function() {
+		container.hide();
+		link.html(show_text).removeClass('open');
+	}
+	$gp.showhide.registry.push({show: show, hide: hide});
+	link.click(function() {
+		if ( container.is(':visible') )
+			hide();
+		else
+			show();
+	})
+}}(jQuery);
+$gp.showhide.registry = [];

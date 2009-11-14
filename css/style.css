@@ -317,3 +317,6 @@ ul.translation-sets .untranslated {
 ul.translation-sets .waiting {
     color: #d90;
 }
+.personal-options #source-url-template {
+    width: 20em;
+}

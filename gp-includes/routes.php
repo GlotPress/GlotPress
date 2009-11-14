@@ -49,6 +49,8 @@ class GP_Router {
 			"get:/$project/_delete" => array('GP_Route_Project', 'delete_get'),
 			"post:/$project/_delete" => array('GP_Route_Project', 'delete_post'),
 
+			"post:/$project/_personal" => array('GP_Route_Project', 'personal_options_post'),
+
 			"get:/$projects" => array('GP_Route_Project', 'index'),
 			"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
 			"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
@@ -166,6 +168,13 @@ class GP_Route {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
 			$this->redirect_with_error( $url, __('You are not allowed to do that!') );
+		}
+	}
+	
+	function logged_in_or_forbidden() {
+		if ( !GP::$user->logged_in() ) {
+			status_header( 403 );
+			die('Forbidden');
 		}
 	}
 	

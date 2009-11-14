@@ -370,25 +370,3 @@ function gp_update_option( $option, $value ) {
 function gp_delete_option( $option, $value = '' ) {
 	return gp_delete_meta( 0, $option, $value, 'option', true );
 }
-
-/* User meta */
-
-function gp_get_usermeta( $user_id, $meta_key ) {
-	if ( !$user = gp_get_user( $user_id ) ) {
-		return;
-	}
-
-	$meta_key = gp_sanitize_meta_key( $meta_key );
-	if ( !isset( $user->$meta_key ) ) {
-		return;
-	}
-	return $user->$meta_key;
-}
-
-function gp_update_usermeta( $user_id, $meta_key, $meta_value ) {
-	return gp_update_meta( $user_id, $meta_key, $meta_value, 'user' );
-}
-
-function gp_delete_usermeta( $user_id, $meta_key, $meta_value = '' ) {
-	return gp_delete_meta( $user_id, $meta_key, $meta_value, 'user' );
-}

@@ -61,10 +61,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	function translations_post ( $project_path, $locale_slug, $translation_set_slug ) {
-		if ( !GP::$user->logged_in() ) {
-			status_header( 403 );
-			die('Forbidden');
-		}
+		$this->logged_in_or_forbidden();
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );

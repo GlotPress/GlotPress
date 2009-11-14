@@ -108,10 +108,24 @@ class GP_Project extends GP_Thing {
 	}
 	
 	function source_url( $file, $line ) {
-		if ( $this->source_url_template ) {
-			return str_replace( array('%file%', '%line%'), array($file, $line), $this->source_url_template );
+		if ( $this->source_url_template() ) {
+			return str_replace( array('%file%', '%line%'), array($file, $line), $this->source_url_template() );
 		}
 		return false;
+	}
+	
+	function source_url_template() {
+		if ( isset( $this->user_source_url_template ) )
+			return $this->user_source_url_template;
+		else {
+			if ( $this->id && GP::$user->logged_in() && ($templates = GP::$user->current()->get_meta( 'source_url_templates' ))
+					 && isset( $templates[$this->id] ) ) {
+				$this->user_source_url_template = $templates[$this->id];
+				return $this->user_source_url_template;
+			} else {
+				return $this->source_url_template;
+			}
+		}
 	}
 }
 GP::$project = new GP_Project();

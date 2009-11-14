@@ -18,10 +18,26 @@ class GP_Route_Project extends GP_Route_Main {
 		$can_approve = $this->can( 'approve', 'project', $project->id );
 		gp_tmpl_load( 'project', get_defined_vars() );
 	}
+	
+	function personal_options_post( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$user = GP::$user->current();
+		$source_url_templates = $user->get_meta( 'source_url_templates' );
+		if ( !is_array( $source_url_templates ) ) $source_url_templates = array();
+		$source_url_templates[$project->id] = gp_post( 'source-url-template' );
+		if ( $user->set_meta( 'source_url_templates', $source_url_templates ) )
+			$this->notices[] = 'Source URL template was successfully updated.';
+		else
+			$this->errors[] = 'Error in updating source URL template.';
+		wp_redirect( gp_url_project( $project ) );
+	}
 
 	function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
 		$kind = 'originals';
 		gp_tmpl_load( 'project-import', get_defined_vars() );
 	}
@@ -29,7 +45,7 @@ class GP_Route_Project extends GP_Route_Main {
 	function import_originals_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
-		
+		$this->can_or_redirect( 'write', 'project', $project->id );
 		$block = array( &$this, '_merge_originals');
 		self::_import( 'mo-file', 'MO', $block, array($project) ) or
 		self::_import( 'pot-file', 'PO', $block, array($project) );

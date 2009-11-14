@@ -1,30 +1,3 @@
-// TODO: hide other containers in the same group on show
-$gp.showhide = function($) { return function(link, show_text, hide_text, container, focus) {
-	link = $(link);
-	container = $(container);
-	var show = function() {
-		for(var i=0; i<$gp.showhide.registry.length; ++i) {
-			$gp.showhide.registry[i].hide();
-		}
-		container.show();
-		if (focus) $(focus, container).focus();
-		link.html(hide_text).addClass('open');
-	}
-	var hide = function() {
-		container.hide();
-		link.html(show_text).removeClass('open');
-	}
-	$gp.showhide.registry.push({show: show, hide: hide});
-	link.click(function() {
-		if ( container.is(':visible') )
-			hide();
-		else
-			show();
-	})
-	//link.toggle(show, hide);
-}}(jQuery);
-$gp.showhide.registry = [];
-
 jQuery(function($) {
 	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');
 	$gp.showhide('#upper-filters-toolbar a.filter', 'Filter &darr;', 'Filter &uarr;', '#upper-filters-toolbar dl.filters', '#filters\\[term\\]');
