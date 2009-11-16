@@ -51,10 +51,8 @@ $gp.showhide = function($) { return function(link, show_text, hide_text, contain
 	}
 	$gp.showhide.registry.push({show: show, hide: hide});
 	link.click(function() {
-		if ( container.is(':visible') )
-			hide();
-		else
-			show();
+		container.is(':visible')? hide() : show();
+		return false;
 	})
 }}(jQuery);
 $gp.showhide.registry = [];
