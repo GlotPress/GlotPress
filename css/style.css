@@ -320,3 +320,9 @@ ul.translation-sets .waiting {
 .personal-options #source-url-template {
     width: 20em;
 }
+.invisibles {
+    color: #888;
+    font-size: 85%;
+    padding: 0;
+    margin-left: 2px;
+}

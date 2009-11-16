@@ -26,13 +26,17 @@ function esc_translation( $text ) {
 	return wp_specialchars( $text, ENT_NOQUOTES, false, true );
 }
 
+function prepare_original( $text ) {
+	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='New line'>&crarr;</span>\n", $text);
+	$text = str_replace( "\t", "<span class='invisibles' title='Tab character'>&rarr;</span>\t", $text);
+	return $text;
+}
+
 function textareas( $entry, $can_edit, $index = 0 ) {
 	$disabled = $can_edit? '' : 'disabled="disabled"';
 ?>
 <div class="textareas">
-	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80" <?php echo $disabled; ?>>
-		<?php echo esc_translation(gp_array_get($entry->translations, $index)); ?>
-	</textarea>
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
 <?php if ( $can_edit ): ?>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>
@@ -188,7 +192,7 @@ function references( $project, $entry ) {
 	<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
 		<td class="checkbox"><input type="checkbox" name="selected-row[]" /></td>
 		<td class="original">			
-			<?php echo esc_translation( $t->singular ); ?>
+			<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
 			<?php if ( $t->context ): ?>
 			<span class="context" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 			<?php endif; ?>
@@ -224,7 +228,7 @@ function references( $project, $entry ) {
 		<td colspan="4">
 			<div class="strings">
 			<?php if ( !$t->plural ): ?>
-			<p class="original"><?php echo esc_translation($t->singular); ?></p>
+			<p class="original"><?php echo prepare_original( esc_translation($t->singular) ); ?></p>
 			
 			<?php textareas( $t, $can_edit ); ?>
 			<?php else: ?>
@@ -307,7 +311,7 @@ function references( $project, $entry ) {
 					<?php echo $can_approve? 'Add translation &rarr;' : 'Suggest new translation &rarr;'; ?>
 				</button>
 			<?php endif; ?>				
-				<a href="#" class="close"><?php _e('Close'); ?></a>
+				<a href="#" class="close"><?php _e('Cancel'); ?></a>
 			</div>
 		</td>
 	</tr>
