@@ -20,6 +20,7 @@ function gp_link() {
 }
 
 function gp_link_project_get( $project_or_path, $text, $attrs = array() ) {
+	$attrs = array_merge( array( 'title' => 'Project: '.$text ), $attrs );
 	return gp_link_get( gp_url_project( $project_or_path ), $text, $attrs );
 }
 
