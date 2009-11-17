@@ -325,7 +325,7 @@ function references( $project, $entry ) {
 ?>
 </table>
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
-<p class="clear">
+<p class="clear actionlist secondary">
 	<?php
 		$footer_links = array();
 		if ( GP::$user->current()->can( 'write', 'project', $project->id ) ) {

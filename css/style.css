@@ -326,3 +326,15 @@ ul.translation-sets .waiting {
     padding: 0;
     margin-left: 2px;
 }
+.secondary {
+    font-size: 0.85em;
+}
+.ternary {
+    font-size: 0.7em;
+}
+.actinlist a, .actionlist a:link, .actionlist a:visited {
+    color: #4D56DC;
+}
+.actionlist a:active {
+    color: red;
+}

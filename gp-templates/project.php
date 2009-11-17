@@ -52,13 +52,13 @@ gp_tmpl_header();
 		</dl>
 		<p>
 			<input type="submit" name="submit" value="Save &rarr;" id="save" />
-			<a href="javascript:jQuery('#personal-options-toggle').click();">Cancel</a>
+			<a class="ternary" href="javascript:jQuery('#personal-options-toggle').click();">Cancel</a>
 		</p>		
 		</form>
 	</div>
 <?php endif; ?>
 <?php if ( $can_write ): ?>
-	<p>
+	<p class="secondary actionlist">
 		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> &bull;
 		<?php gp_link( gp_url_project( '', '_new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> &bull;
 		<?php gp_link( gp_url( '/sets/_new', array( 'project_id' => $project->id ) ), __('Create a New Translation Set') ); ?>
