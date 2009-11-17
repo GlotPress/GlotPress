@@ -17,7 +17,7 @@
 	
 	
 </dl>
-<?php echo gp_js_focus_on( 'set[name]' ); ?>
+<?php echo gp_js_focus_on( 'set[locale]' ); ?>
 <script type="text/javascript">
 	jQuery(function($){
 		$('#copy').click(function() {
