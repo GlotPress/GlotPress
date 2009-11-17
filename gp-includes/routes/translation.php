@@ -20,7 +20,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		self::_import( 'mo-file', 'MO', $block, array($translation_set) ) or
 		self::_import( 'pot-file', 'PO', $block, array($translation_set) );
 	
-		wp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
+		gp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
 	}
 	
 	function _merge_translations( $translation_set, $translations ) {
@@ -140,6 +140,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
-		wp_redirect( $bulk['redirect_to'] );
+		gp_redirect( $bulk['redirect_to'] );
 	}
 }

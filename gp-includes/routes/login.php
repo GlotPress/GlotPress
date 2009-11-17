@@ -4,7 +4,7 @@ class GP_Route_Login extends GP_Route_Main {
 		if ( !GP::$user->logged_in() ) {
 			gp_tmpl_load( 'login', array() );
 		}  else {
-			wp_redirect( gp_url( '/' ) );
+			gp_redirect( gp_url( '/' ) );
 		}
 	}
 	
@@ -15,25 +15,25 @@ class GP_Route_Login extends GP_Route_Main {
 				
 		if ( !$user || is_wp_error($user) ) {
 			$this->errors[] = __("Invalid username!");
-			wp_redirect( gp_url( '/login' ) );
+			gp_redirect( gp_url( '/login' ) );
 			return;
 		}
 		
 		if ( $user->login( $_POST['user_pass'] ) ) {
 			if ( gp_post( 'redirect_to' ) && gp_startswith( gp_post( 'redirect_to' ), gp_url_base() ) ) {
-				wp_redirect( gp_post( 'redirect_to' ) );
+				gp_redirect( gp_post( 'redirect_to' ) );
 			} else {
 				$this->notices[] = sprintf( __("Welcome, %s!"), $_POST['user_login'] );
-				wp_redirect( gp_url( '/' ) );
+				gp_redirect( gp_url( '/' ) );
 			}
 		} else {
 			$this->errors[] = __("Invalid password!");
-			wp_redirect( gp_url( '/login' ) );
+			gp_redirect( gp_url( '/login' ) );
 		}
 	}
 	
 	function logout() {
 		GP::$user->logout();
-		wp_redirect( gp_url( '/' ) );
+		gp_redirect( gp_url( '/' ) );
 	}
 }

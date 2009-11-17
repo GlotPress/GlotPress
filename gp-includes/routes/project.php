@@ -32,7 +32,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->notices[] = 'Source URL template was successfully updated.';
 		else
 			$this->errors[] = 'Error in updating source URL template.';
-		wp_redirect( gp_url_project( $project ) );
+		gp_redirect( gp_url_project( $project ) );
 	}
 
 	function import_originals_get( $project_path ) {
@@ -51,7 +51,7 @@ class GP_Route_Project extends GP_Route_Main {
 		self::_import( 'mo-file', 'MO', $block, array($project) ) or
 		self::_import( 'pot-file', 'PO', $block, array($project) );
 
-		wp_redirect( gp_url_project( $project, 'import-originals' ) );
+		gp_redirect( gp_url_project( $project, 'import-originals' ) );
 	}
 
 	function _merge_originals( $project, $translations ) {
@@ -82,7 +82,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __('Error in saving project!');
 		$project->reload();
 
-		wp_redirect( gp_url_project( $project, '_edit' ) );
+		gp_redirect( gp_url_project( $project, '_edit' ) );
 	}
 
 	function delete_get( $project_path ) {
@@ -96,7 +96,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->notices[] = __('The project was deleted.');
 		else
 			$this->errors[] = __('Error in deleting project!');
-		wp_redirect( gp_url_project( '' ) );
+		gp_redirect( gp_url_project( '' ) );
 	}
 
 	
@@ -122,7 +122,7 @@ class GP_Route_Project extends GP_Route_Main {
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
 			$this->notices[] = __('The project was created!');
-			wp_redirect( gp_url_project( $project, '_edit' ) );
+			gp_redirect( gp_url_project( $project, '_edit' ) );
 		}
 	}
 }

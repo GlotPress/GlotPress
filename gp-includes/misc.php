@@ -96,17 +96,15 @@ function gp_populate_notices() {
  * @param int $status Status code to use
  * @return bool False if $location is not set
  */
-function wp_redirect($location, $status = 302) {
+function gp_redirect($location, $status = 302) {
 	// TODO: add server-guessing code from bb-load.php in a function in gp-includes/system.php
     global $is_IIS;
 
-    $location = apply_filters('wp_redirect', $location, $status);
-    $status = apply_filters('wp_redirect_status', $status, $location);
+    $location = apply_filters('gp_redirect', $location, $status);
+    $status = apply_filters('gp_redirect_status', $status, $location);
 
-    if ( !$location ) // allows the wp_redirect filter to cancel a redirect
+    if ( !$location ) // allows the gp_redirect filter to cancel a redirect
         return false;
-
-    $location = wp_sanitize_redirect($location);
 
     if ( $is_IIS ) {
         header("Refresh: 0;url=$location");
@@ -116,31 +114,6 @@ function wp_redirect($location, $status = 302) {
         header("Location: $location");
     }
 }
-
-if ( !function_exists('wp_sanitize_redirect') ) : // [WP6134]
-/**
- * sanitizes a URL for use in a redirect
- * @return string redirect-sanitized URL
- */
-function wp_sanitize_redirect($location) {
-    $location = preg_replace('|[^a-z0-9-~+_.?#=&;,/:%]|i', '', $location);
-    $location = wp_kses_no_null($location);
-
-    // remove %0d and %0a from location
-    $strip = array('%0d', '%0a');
-    $found = true;
-    while($found) {
-        $found = false;
-        foreach($strip as $val) {
-            while(strpos($location, $val) !== false) {
-                $found = true;
-                $location = str_replace($val, '', $location);
-            }
-        }
-    }
-    return $location;
-}
-endif;
 
 /**
  * Returns a function, which returns the string "odd" or the string "even" alternatively.
