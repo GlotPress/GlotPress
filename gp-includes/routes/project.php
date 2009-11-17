@@ -8,7 +8,6 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 	
 	function single( $project_path ) {
-		error_log(urldecode($project_path));
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
