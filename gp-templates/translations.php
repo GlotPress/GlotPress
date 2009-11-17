@@ -81,7 +81,7 @@ function references( $project, $entry ) {
 	<a href="#" class="revealing sort">Sort &darr;</a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
-	$filter_links[] = gp_link_get( $url, 'Current' );
+	$filter_links[] = gp_link_get( $url, 'All' );
 	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random'), $url ), 'Random Untranslated' );
 	if ( $can_approve ) {
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
@@ -172,8 +172,9 @@ function references( $project, $entry ) {
 			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]">
 			<input type="hidden" name="bulk[translation-ids]" value="" id="bulk[translation-ids]">
 			<input type="submit" value="Approve/Reject" name="approve" />
-		</dd>
-	</dl>
+			<p class="ternary"><strong>Note:</strong>&nbsp;Bulk edit works only on the current page.</p>
+		</dd>		
+	</dl>	
 	
 </form>
 
