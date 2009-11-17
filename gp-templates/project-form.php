@@ -4,7 +4,10 @@
 	
 	<!-- TODO: make slug edit WordPress style -->
 	<dt><label for="project[slug]"><?php _e('Slug');  ?></label></dt>
-	<dd><input type="text" name="project[slug]" value="<?php echo esc_html( $project->slug ); ?>" id="project[slug]"></dd>
+	<dd>
+		<input type="text" name="project[slug]" value="<?php echo esc_html( $project->slug ); ?>" id="project[slug]">
+		<small>If you leave the slug empty, it will be derived from the name.</small>
+	</dd>	
 
 	<dt><label for="project[description]"><?php _e('Description');  ?></label></dt>
 	<dd><textarea name="project[description]" rows="4" cols="40" id="project[description]"><?php echo esc_html( $project->description ); ?></textarea></dd>
