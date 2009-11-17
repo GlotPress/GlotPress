@@ -67,6 +67,8 @@ if ( get_magic_quotes_gpc() ) {
 	$_COOKIE = stripslashes_deep( $_COOKIE );
 }
 
+$_GET = gp_urldecode_deep( $_GET );
+$_SERVER['REQUEST_URI'] = urldecode( $_SERVER['REQUEST_URI'] );
 
 require_once( BACKPRESS_PATH . 'class.wp-error.php' );
 

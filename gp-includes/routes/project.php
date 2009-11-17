@@ -8,6 +8,7 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 	
 	function single( $project_path ) {
+		error_log(urldecode($project_path));
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
@@ -111,8 +112,9 @@ class GP_Route_Project extends GP_Route_Main {
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 		$this->can_or_redirect( 'write', 'project', $parent_project_id );
-		// TODO: validation
-		$project = GP::$project->create_and_select( $post );
+		$new_project = new GP_Project( $post );
+		$this->validate_or_redirect( $new_project );
+		$project = GP::$project->create_and_select( $new_project );
 		if ( !$project ) {
 			$project = new GP_Project();
 			$this->errors[] = __('Error in creating project!');

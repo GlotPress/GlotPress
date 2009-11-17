@@ -26,6 +26,11 @@ function gp_unregister_GLOBALS() {
 	}
 }
 
+function gp_urldecode_deep($value) {
+	$value = is_array( $value ) ? array_map( 'gp_urldecode_deep', $value ) : urldecode( $value );
+	return $value;
+}
+
 //TODO: add server-guessing code from bb-load.php in a function here
 
 // TODO: query something that will be cached and used after that

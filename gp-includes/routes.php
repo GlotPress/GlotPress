@@ -118,11 +118,13 @@ class GP_Route {
 		// this prevents the method from being run twice
 		if ( !$this->request_running ) return;
 		// set errors and notices
-		foreach( $this->notices as $notice ) {
-			gp_notice_set( $notice );
-		}
-		foreach( $this->errors as $error ) {
-			gp_notice_set( $error, 'error' );
+		if ( !headers_sent() ) {
+			foreach( $this->notices as $notice ) {
+				gp_notice_set( $notice );
+			}
+			foreach( $this->errors as $error ) {
+				gp_notice_set( $error, 'error' );
+			}
 		}
 	}
 
@@ -148,11 +150,10 @@ class GP_Route {
 	 * @param string $url where to redirect if the thing doesn't validate
 	 * @return bool whether the thing is valid
 	 */
-	function validate_or_redirect( $thing, $url ) {
+	function validate_or_redirect( $thing, $url = null ) {
 		$verdict = $this->validate( $thing );
 		if ( !$verdict ) {
-			wp_redirect( $url );
-			exit();
+			$this->_redirect( $url );
 		}
 		return $verdict;
 	}
@@ -162,9 +163,6 @@ class GP_Route {
 	}
 	
 	function can_or_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
-		// TODO: do not redirect to projects, but to /
-		// currently it goes to /projects, because / redirects too and the notice is gone
-		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
 			$this->redirect_with_error( $url, __('You are not allowed to do that!') );
@@ -180,6 +178,13 @@ class GP_Route {
 	
 	function redirect_with_error( $url, $message ) {
 		$this->errors[] = $message;
+		$this->_redirect( $url );
+	}
+	
+	function _redirect( $url = null ) {
+		// TODO: do not redirect to projects, but to /
+		// currently it goes to /projects, because / redirects too and the notice is gone
+		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
 		wp_redirect( $url );
 		exit();
 	}

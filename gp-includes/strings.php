@@ -18,3 +18,25 @@ function gp_endswith( $haystack, $needle ) {
 function gp_add_slash( $string ) {
 	return rtrim( $string, '/' ) . '/';
 }
+
+if ( function_exists('mb_strtolower') ):
+function gp_strtolower( $str ) {
+	return mb_strtolower( $str );
+}
+else:
+function gp_strtolower( $str ) {
+	return strtolower( $str );
+}
+endif;
+
+function gp_sanitize_for_url( $name ) {
+	$name = trim( $name );
+	$name = gp_strtolower( $name );
+	$name = preg_replace( '/&.+?;/', '', $name ); // kill entities
+	$name = str_replace( '.', '-', $name );
+	$name = preg_replace('|[#$%&~/.\-;:=,?@\[\]+]|', '', $name);
+	$name = preg_replace( '/\s+/', '-', $name );
+	$name = preg_replace( '|-+|', '-', $name );
+	$name = trim($name, '-');
+	return $name;
+}
