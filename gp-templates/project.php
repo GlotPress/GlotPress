@@ -24,7 +24,7 @@ gp_tmpl_header();
 	<?php foreach( $translation_sets as $set ): ?>    
 		<li>
 			<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?>
-			<span class="stats">
+			<span class="stats secondary">
 				<!--
 				<span class="translated" title="translated"><?php echo $set->current_count(); ?></span>
 				<span class="untranslated" title="untranslated"><?php echo $set->untranslated_count(); ?></span>
@@ -40,6 +40,7 @@ gp_tmpl_header();
 	<p>There are no translations of this project.</p>
 <?php endif; ?>
 <?php if ( $can_write ): ?>
+	<div class="secondary actionlist">
 	<a href="#" class="personal-options" id="personal-options-toggle">Personal project options &darr;</a>
 	<div class="personal-options">
 		<form action="<?php echo gp_url_project( $project, '_personal' ); ?>" method="post">
@@ -55,6 +56,7 @@ gp_tmpl_header();
 			<a class="ternary" href="javascript:jQuery('#personal-options-toggle').click();">Cancel</a>
 		</p>		
 		</form>
+	</div>
 	</div>
 <?php endif; ?>
 <?php if ( $can_write ): ?>
