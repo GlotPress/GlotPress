@@ -125,12 +125,13 @@ function references( $project, $entry ) {
 		<dd>
 		<?php echo gp_radio_buttons('sort[by]',
 			array(
-				'date_added' => 'Date added',
+				'original_date_added' => 'Date added (original)',
+				'translation_date_added' => 'Date added (translation)',
 				'original' => 'Original string',
 				'translation' => 'Translation',
 				'priority' => 'Priority',
 				'random' => 'Random',
-			), gp_array_get( $sort, 'by', 'date_added' ) );
+			), gp_array_get( $sort, 'by', 'original_date_added' ) );
 		?>
 		</dd>
 		<dt>How:</dt>

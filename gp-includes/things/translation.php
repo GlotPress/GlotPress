@@ -33,8 +33,8 @@ class GP_Translation extends GP_Thing {
 		$status_cond = '';
 
 		$sort_bys = array('original' => 'o.singular', 'translation' => 't.translation_0', 'priority' => 'o.priority',
-			'random' => 'RAND()', 'date_added' => 't.date_added' );
-		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.singular' );
+			'random' => 'RAND()', 'translation_date_added' => 't.date_added', 'original_date_added' => 'o.date_added' );
+		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.date_added' );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), 'DESC' );
 
