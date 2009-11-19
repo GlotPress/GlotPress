@@ -288,6 +288,12 @@ if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
 
 gp_populate_notices();
 
+function gp_shutdown_action_hook() {
+	do_action( 'shutdown' );
+}
+register_shutdown_function( 'gp_shutdown_action_hook' );
+
+
 do_action( 'init' );
 
 $gp_router->route();
