@@ -28,7 +28,9 @@ function gp_schema_get() {
 		`date_modified` DATETIME DEFAULT NULL,
 		PRIMARY KEY (`id`),
 		KEY `original_id` (`original_id`),
-		KEY `user_id` (`user_id`)
+		KEY `user_id` (`user_id`),
+		KEY `translation_set_id` (`translation_set_id`),
+		KEY `translation_set_id_status` (`translation_set_id`,`status`)
 	) TYPE = MYISAM;";
 
     /*
@@ -79,7 +81,8 @@ function gp_schema_get() {
 		`parent_project_id` INT(10) DEFAULT NULL,
 		`source_url_template` VARCHAR(255) DEFAULT '',
 		PRIMARY KEY (`id`),
-		KEY `path` (`path`)
+		KEY `path` (`path`),
+		KEY `parent_project_id` (`parent_project_id`)
 	);";
 
 	/*
@@ -134,7 +137,8 @@ function gp_schema_get() {
 		`action` VARCHAR(16) DEFAULT NULL,
 		`object_type` VARCHAR(16) DEFAULT NULL,
 		`object_id` BIGINT(20) DEFAULT NULL,
-		PRIMARY KEY (`id`),		
+		PRIMARY KEY (`id`),
+		KEY `user_id_action` (`user_id`,`action`)
 	);";
 
 	$gp_schema = apply_filters( 'gp_schema_pre_charset', $gp_schema );
