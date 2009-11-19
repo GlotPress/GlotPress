@@ -55,15 +55,26 @@ class GP_Translation extends GP_Thing {
 		}
 		
 		$join_where = array();
-		$status = gp_array_get( $filters, 'status', 'current' );
-		if ( in_array( $status, $this->get_static( 'statuses' ) ) ) {
-			$join_where[] = $gpdb->prepare( 't.status = %s', $status );
+		$status = gp_array_get( $filters, 'status', 'current_or_waiting' );
+		$all_in = true;
+		$statuses = explode( '_or_', $status );
+		foreach( $statuses as $single_status ) {
+			if ( !in_array( $single_status, $this->get_static( 'statuses' ) ) ) {
+				$all_in = false;
+				break;
+			}
+		}
+		if ( $all_in ) {
+			$statuses_where = array();
+			foreach( $statuses as $single_status ) {
+				$statuses_where[] = $gpdb->prepare( 't.status = %s', $single_status );
+			}
+			$join_where[] = '(' . implode( ' OR ', $statuses_where ) . ')';
 		}
 		$join_where = implode( ' AND ', $join_where );
 		if ( $join_where ) {
 			$join_where = 'AND '.$join_where;
 		}
-		
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many_no_map( "
 		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added

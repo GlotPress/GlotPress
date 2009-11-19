@@ -109,12 +109,13 @@ function references( $project, $entry ) {
 		<dd>
 			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
 				array(
-					'current' => 'Current',
+					'current_or_waiting' => 'Current or waiting',
+					'current' => 'Current only',
 					'old' => 'Approved, but obsoleted by another string',
-					'waiting' => 'Waiting',
+					'waiting' => 'Waiting approval',
 					'rejected' => 'Rejected',
 					'either' => 'Any',
-				), gp_array_get( $filters, 'status', 'current' ) );
+				), gp_array_get( $filters, 'status', 'current_or_waiting' ) );
 			?>			
 		</dd>		
 		
