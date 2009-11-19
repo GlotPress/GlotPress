@@ -136,5 +136,5 @@ function gp_pagination( $page, $per_page, $objects ) {
 		$next
 	</div>
 HTML;
-	return $html;
+	return apply_filters( 'gp_pagination', $html, $page, $per_page, $objects );
 }

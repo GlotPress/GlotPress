@@ -50,6 +50,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		$page = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
+		if ( 'random' == gp_array_get( $sort, 'by') ) {
+			add_filter( 'gp_pagination', create_function( '$html', 'return "";' ) );
+		}
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 		$per_page = GP::$translation->per_page;
