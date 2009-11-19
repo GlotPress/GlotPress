@@ -40,7 +40,7 @@ function gp_url( $path, $query = null ) {
 		$url = add_query_arg( urlencode_deep( $query ), $url );
 	elseif ( $query )
 		$url .= '?' . ltrim( $query, '?' );
-	return $url;
+	return apply_filters( 'gp_url', $url, $path, $query );
 }
 
 function gp_url_project( $project_or_path, $path = '', $query = null ) {
