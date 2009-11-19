@@ -296,12 +296,12 @@ function references( $project, $entry ) {
 				<?php if ( $t->translation_added && $t->translation_added != '0000-00-00 00:00:00' ): ?>
 				<dl>
 					<dt>Date added:</dt>
-					<dd><?php echo $t->translation_added; ?></dd>				
+					<dd><?php echo $t->translation_added; ?> GMT</dd>
 				</dl>								
 				<?php endif; ?>
 				<?php if ( $t->user_login ): ?>
 				<dl>
-					<dt>By:</dt>
+					<dt>Translated by:</dt>
 					<dd><?php echo $t->user_login; ?></dd>				
 				</dl>								
 				<?php endif; ?>

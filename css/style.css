@@ -174,7 +174,7 @@ span.context {
 	margin-left: 2em;
 }
 .editor .meta dl {
-    margin-left: 1em;
+    margin: 0.1em 1em;
 }
 .editor .meta dt, .editor .meta dd {
     display: inline;
@@ -183,6 +183,14 @@ span.context {
 .editor .meta dt {
     margin-right: 0.5em;
 }
+.editor .meta dt {
+    margin-right: 0.5em;    
+}
+.editor .meta dd {
+    color: #444;
+    font-weight: bold;
+}
+
 #gp-js-message {
 	position: fixed;
 	top: 0;
