@@ -331,7 +331,7 @@ function references( $project, $entry ) {
 <p class="clear actionlist secondary">
 	<?php
 		$footer_links = array();
-		if ( GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+		if ( $can_approve ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') );
 		}
 		if ( GP::$user->logged_in() ) {
