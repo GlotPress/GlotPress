@@ -5,7 +5,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_redirect( 'approve', 'project', $project->id );
+		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
 		$kind = 'translations';
 		gp_tmpl_load( 'project-import', get_defined_vars() );
 	}
@@ -15,7 +15,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_redirect( 'approve', 'project', $project->id );
+		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
 		$block = array( &$this, '_merge_translations');
 		self::_import( 'mo-file', 'MO', $block, array($translation_set) ) or
 		self::_import( 'pot-file', 'PO', $block, array($translation_set) );
@@ -57,7 +57,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$total_translations_count = GP::$translation->found_rows;
 		$per_page = GP::$translation->per_page;
 		$can_edit = GP::$user->logged_in();
-		$can_approve = $this->can( 'approve', 'project', $project->id );
+		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		$approve_action = gp_url_join( $url, '_approve' );
 		gp_tmpl_load( 'translations', get_defined_vars() );
@@ -74,10 +74,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		    $data = compact('original_id');
 			$data['user_id'] = GP::$user->current()->id;
 		    $data['translation_set_id'] = $translation_set->id;
-		    foreach(range(0, 3) as $i) {
-		        if (isset($translations[$i])) $data["translation_$i"] = $translations[$i];
+		    foreach( range(0, 3) as $i ) {
+		        if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
 		    }
-			if ( $this->can( 'approve', 'project', $project->id ) || $this->can( 'write', 'project', $project->id ) ) {
+			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
 				$data['status'] = 'current';
 			} else {
 				$data['status'] = 'waiting';
@@ -95,7 +95,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_redirect( 'approve', 'project', $project->id );
+		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
 		
 		$bulk = gp_post('bulk');
 		$action = gp_startswith( $bulk['action'], 'approve-' )? 'approve' : 'reject';
@@ -145,4 +145,63 @@ class GP_Route_Translation extends GP_Route_Main {
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
 		gp_redirect( $bulk['redirect_to'] );
 	}
+
+	function permissions_post( $project_path, $locale_slug, $translation_set_slug ) {
+		$project = GP::$project->by_path( $project_path );
+		$locale = GP_Locales::by_slug( $locale_slug );
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		if ( 'add-approver' == gp_post( 'action' ) ) {
+			$user = GP::$user->by_login( gp_post( 'user_login' ) );
+			if ( $user ) {
+				$res = GP::$permission->create( array(
+					'user_id' => $user->id,
+					'action' => 'approve',
+					'object_type' => 'translation-set',
+					'object_id' => $translation_set->id,
+				) );
+				$res?
+					$this->notices[] = 'Validator was added.' :
+					$this->errors[] = 'Error in adding validator.';
+			} else {
+				$this->errors[] = 'User wasn&#8217;t found!';
+			}
+		}
+		gp_redirect( gp_url_current() );
+	}
+	
+	function permissions_get( $project_path, $locale_slug, $translation_set_slug ) {
+		$project = GP::$project->by_path( $project_path );
+		$locale = GP_Locales::by_slug( $locale_slug );
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$permissions = GP::$permission->by_translation_set_id( $translation_set->id );
+		// we can't join on users table
+		foreach( (array)$permissions as $permission ) {
+			$permission->user = GP::$user->get( $permission->user_id );
+		}
+		gp_tmpl_load( 'translation-set-permissions', get_defined_vars() );
+	}
+	
+	function permissions_delete( $project_path, $locale_slug, $translation_set_slug, $permission_id ) {
+		$project = GP::$project->by_path( $project_path );
+		$locale = GP_Locales::by_slug( $locale_slug );
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$permission = GP::$permission->get( $permission_id );
+		if ( $permission ) {
+			if ( $permission->delete() ) {
+				$this->notices[] = 'Permissin was deleted.';
+			} else {
+				$this->errors[] = 'Error in deleting permission!';
+			}
+		} else {
+			$this->errors[] = 'Permission wasn&#8217;t found!';
+		}
+		gp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ) );
+	}
+	
 }

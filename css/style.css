@@ -340,9 +340,16 @@ ul.translation-sets .waiting {
 .ternary {
     font-size: 0.7em;
 }
-.actinlist a, .actionlist a:link, .actionlist a:visited {
+.actionlist a, .actionlist a:link, .actionlist a:visited {
     color: #4D56DC;
 }
 .actionlist a:active {
     color: red;
+}
+#translation-set-permissions .user {
+    font-weight: bold;
+}
+#translation-set-permissions .permission-action {
+    font-style: italic;
+    color: #999;
 }

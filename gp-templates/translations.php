@@ -337,6 +337,7 @@ function references( $project, $entry ) {
 		if ( GP::$user->logged_in() ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export as PO file') );
 		}
+		$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ), 'Permissions' );
 		echo implode( ' &bull; ', $footer_links );
 	?>
 </p>

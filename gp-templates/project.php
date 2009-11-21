@@ -29,7 +29,7 @@ gp_tmpl_header();
 				<span class="translated" title="translated"><?php echo $set->current_count(); ?></span>
 				<span class="untranslated" title="untranslated"><?php echo $set->untranslated_count(); ?></span>
 				-->
-			<?php if ( $can_approve && $waiting = $set->waiting_count() ): ?>
+			<?php if ( $can_write && $waiting = $set->waiting_count() ):  // TODO: check if the user can approve this locale ?>
 				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ), array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), "$waiting waiting", array('class' => 'waiting') ); ?>
 			<?php endif; ?>
 			</span>

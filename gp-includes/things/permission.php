@@ -15,5 +15,9 @@ class GP_Permission extends GP_Thing {
 		}
 		return $args;
 	}
+	
+	function by_translation_set_id( $translation_set_id ) {
+		return $this->many( "SELECT * FROM $this->table WHERE object_type='translation-set' AND object_id = %d", $translation_set_id );
+	}
 }
 GP::$permission = new GP_Permission();

@@ -61,6 +61,9 @@ class GP_Router {
 			"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
 			"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
 			"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
+			"get:/$project/$locale/$dir/_permissions" => array('GP_Route_Translation', 'permissions_get'),
+			"post:/$project/$locale/$dir/_permissions" => array('GP_Route_Translation', 'permissions_post'),
+			"get:/$project/$locale/$dir/_permissions/_delete/$dir" => array('GP_Route_Translation', 'permissions_delete'),
 			"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 			// keep this one at the bottom of the project, because it will catch anything starting with project
 			"/$project" => array('GP_Route_Project', 'single'),
