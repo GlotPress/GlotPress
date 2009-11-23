@@ -700,4 +700,3 @@ class GP_Locales {
 		return isset( $instance->locales[$slug] )? $instance->locales[$slug] : null;
 	}
 }
-?>
