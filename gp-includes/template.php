@@ -104,7 +104,6 @@ function gp_pagination( $page, $per_page, $objects ) {
 	else
 		$next = '<span class="next disabled">&rarr;</span>';
 	$current = '<span class="current">'.$page.'</span>';
-	$linked = array();
 	if ( $page > 1 ) {
 		$prev_pages = array();
 		foreach( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {
@@ -119,7 +118,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 			$next_pages[] = gp_link_get( add_query_arg( array( 'page' => $next_page ) ), $next_page );
 		}
 		$next_pages = implode( ' ', $next_pages );
-		if ( $next + $surrounding < $pages ) $next_dots = '<span class="dots">&hellip</span>';
+		if ( $page + $surrounding < $pages ) $next_dots = '<span class="dots">&hellip</span>';
 	}
 	if ( $prev_dots ) $first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
 	if ( $next_dots ) $last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );
