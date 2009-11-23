@@ -120,6 +120,14 @@ class GP_Locales {
 		$af->wp_locale = 'af';
 		$af->slug = 'af';
 
+		$am = new GP_Locale();
+		$am->english_name = 'Armenian';
+		$am->native_name = 'հայերեն';
+		$am->lang_code_iso_639_1 = 'hy';
+		$am->lang_code_iso_639_2 = 'hye';
+		$am->country_code = 'am';
+		$am->slug = 'am';
+
 		$af = new GP_Locale();
 		$af->english_name = 'Asturian';
 		$af->native_name = 'Asturianu';
