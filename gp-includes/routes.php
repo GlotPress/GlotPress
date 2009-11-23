@@ -19,7 +19,7 @@ class GP_Router {
 	function request_uri() {
 		$subdir = rtrim( gp_url_path(), '/' );
 		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
-			return $match[1];
+			return urldecode( $match[1] );
 		return false;
 	}
 	
