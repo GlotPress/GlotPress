@@ -93,7 +93,7 @@ function references( $project, $entry ) {
 	?>
 	<dl class="filters-expanded filters hidden clearfix">		
  		<dt><label for="filters[term]">Term:</label></dt>
-		<dd><input type="text" value="<?php echo esc_html( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
+		<dd><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
  		<dt><label for="filters[translated]">With translation:</label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[translated]',

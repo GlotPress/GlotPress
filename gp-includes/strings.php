@@ -40,3 +40,13 @@ function gp_sanitize_for_url( $name ) {
 	$name = trim($name, '-');
 	return $name;
 }
+
+/**
+ * Similar to {@link esc_attr()}, but double encode entities
+ */
+function gp_esc_attr_with_entities( $text ) {
+	$safe_text = wp_check_invalid_utf8( $text );
+	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES, false, true );
+	return apply_filters( 'attribute_escape', $safe_text, $text );
+	
+}
