@@ -42,7 +42,7 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'term' ) ) {
 			// TODO: make it work if first letter is s. %%s is causing db::prepare trouble
 			$like = "LIKE '%%".$this->like_escape_printf($gpdb->escape($filters['term']))."%%'";
-			$where[] = '('.implode(' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0')) ).')';
+			$where[] = '('.implode(' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1')) ).')';
 		}
 		if ( 'yes' == gp_array_get( $filters, 'translated' ) ) {
 			$where[] = 't.translation_0 IS NOT NULL';
