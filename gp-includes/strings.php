@@ -29,6 +29,16 @@ function gp_strtolower( $str ) {
 }
 endif;
 
+if ( function_exists('mb_strlen') ):
+function gp_strlen( $str ) {
+	return mb_strlen( $str );
+}
+else:
+function gp_strlen( $str ) {
+	return preg_match_all("/.{1}/us", $str, $dummy);
+}
+endif;
+
 function gp_sanitize_for_url( $name ) {
 	$name = trim( $name );
 	$name = gp_strtolower( $name );
