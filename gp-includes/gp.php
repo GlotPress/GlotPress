@@ -10,6 +10,7 @@ class GP {
 	// other singletons
 	static $router;
 	static $redirect_notices = array();
+	static $translation_warnings;
 	// plugins can use this space
 	static $vars = array();
 }
