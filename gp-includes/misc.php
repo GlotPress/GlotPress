@@ -73,17 +73,15 @@ function gp_notice_set( $message, $key = 'notice' ) {
  * @param string $key Optional. Message key. The default is 'notice'
  */
 function gp_notice( $key = 'notice' ) {
-	global $gp_redirect_notices;
-	return gp_array_get( $gp_redirect_notices, $key );
+	return gp_array_get( GP::$redirect_notices, $key );
 }
 
 function gp_populate_notices() {
-	global $gp_redirect_notices;
-	$gp_redirect_notices = array();
+	GP::$redirect_notices = array();
 	$prefix = '_gp_notice_';
 	foreach ($_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
-			$gp_redirect_notices[$suffix] = $value;
+			GP::$redirect_notices[$suffix] = $value;
 		}
 		setcookie( $key, '', 0, gp_url_path() );
 	}

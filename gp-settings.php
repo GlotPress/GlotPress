@@ -34,6 +34,8 @@ if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
 
+require_once( GP_PATH . GP_INC . 'gp.php');
+
 /*
  * In most cases the default internal encoding is latin1, which is of no use,
  * since we want to use the mb_ functions for UTF-8 strings
@@ -152,7 +154,6 @@ if ( !defined( 'GP_TMPL_PATH' ) )
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 
 require_once( GP_PATH . GP_INC . 'lambda.php');
-require_once( GP_PATH . GP_INC . 'gp.php');
 
 require_once( GP_PATH . GP_INC . 'meta.php' );
 require_once( GP_PATH . GP_INC . 'misc.php' );
@@ -261,7 +262,7 @@ foreach( glob( GP_PATH . GP_INC . 'routes/*.php' ) as $route ) {
 	require_once $route;
 }
 
-$gp_router = new GP_Router();
+GP::$router = new GP_Router();
 
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );
@@ -292,7 +293,6 @@ function gp_shutdown_action_hook() {
 }
 register_shutdown_function( 'gp_shutdown_action_hook' );
 
-
 do_action( 'init' );
 
-$gp_router->route();
+GP::$router->route();
