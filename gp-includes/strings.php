@@ -11,6 +11,10 @@ function gp_endswith( $haystack, $needle ) {
 	return $needle === substr( $haystack, -strlen( $needle ));
 }
 
+function gp_in( $needle, $haystack ) {
+	return false !== strpos( $haystack, $needle );
+}
+
 /**
  * Adds a slash after the string, while makes sure not to double it
  * if it already exists
