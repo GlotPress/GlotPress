@@ -70,8 +70,6 @@ class GP_Router {
 
 			"get:/sets/_new" => array('GP_Route_Translation_Set', 'new_get'),
 			"post:/sets/_new" => array('GP_Route_Translation_Set', 'new_post'),
-
-
 		) );
 	}
 
@@ -80,22 +78,27 @@ class GP_Router {
 		$request_uri = $this->request_uri();
 		$request_method = strtolower( $this->request_method() );
 		foreach( $this->urls as $re => $func ) {
-			foreach (array('get', 'post', 'head', 'put', 'delete') as $method) {
-				if ( gp_startswith( $re, $method.':' ) ) {
-					if ( $method != $request_method ) continue;
-					$re = substr( $re, strlen( $method.':' ));
+			foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
+				if ( gp_startswith( $re, $http_method.':' ) ) {
+					if ( $http_method != $request_method ) continue;
+					$re = substr( $re, strlen( $http_method.':' ));
 					break;
 				}
 			}
 			if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
 				if ( is_array( $func ) ) {
-					$route = new $func[0];
+					list( $class, $method ) = $func;
+					$route = new $class;
+					$route->last_method_called = $method;
+					$route->class_name = $class;
+					GP::$current_route = &$route;
 					$route->before_request();
 					$route->request_running = true;
 					// make sure after_request() is called even if we exit() in the request
 					register_shutdown_function( array( &$route, 'after_request'));
-					call_user_func_array( array( $route, $func[1] ), array_slice( $matches, 1 ) );
+					call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 					$route->after_request();
+					do_action( 'after_request', $class, $method );
 					$route->request_running = false;
 				} else {
 					call_user_func_array( $func, array_slice( $matches, 1 ) );
@@ -114,11 +117,12 @@ class GP_Route {
 	var $request_running = false;
 	
 	function before_request() {
+		do_action( 'before_request', $this->class_name, $this->last_method_called );
 	}
 
 	function after_request() {
-		// we can't unregister this as a shutdown function
-		// this prevents the method from being run twice
+		// we can't unregister a shutdown function
+		// this check prevents this method from being run twice
 		if ( !$this->request_running ) return;
 		// set errors and notices
 		if ( !headers_sent() ) {
@@ -129,6 +133,7 @@ class GP_Route {
 				gp_notice_set( $error, 'error' );
 			}
 		}
+		do_action( 'after_request', $this->class_name, $this->last_method_called );
 	}
 
 	/**
