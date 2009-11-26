@@ -89,6 +89,20 @@ class GP_Thing {
 	}
 
 	/**
+	 * Retrieves a single value from this table
+	 * 
+	 * For parameters description see BPDB::prepare()
+	 * @return scalar the result of the query or false on error
+	 */
+	function value() {
+		global $gpdb;
+		$args = func_get_args();
+		$res = $gpdb->get_var( call_user_func_array( array($gpdb, 'prepare'), $args ) );
+		return is_null( $res )? false : $res;
+	}
+
+
+	/**
 	 * Retrieves multiple rows from this table
 	 * 
 	 * For parameters description see BPDB::prepare()
