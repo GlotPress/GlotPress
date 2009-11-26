@@ -30,8 +30,10 @@ gp_tmpl_header();
 				<span class="untranslated" title="untranslated"><?php echo $set->untranslated_count(); ?></span>
 				-->
 			<?php if ( $can_write && $waiting = $set->waiting_count() ):  // TODO: check if the user can approve this locale ?>
-				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ), array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), "$waiting waiting", array('class' => 'waiting') ); ?>
+				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
+						array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $waiting, array('class' => 'waiting', 'title' => 'waiting') ); ?>
 			<?php endif; ?>
+			<?php do_action( 'project_template_translation_set_extra', $set, $project ); ?>
 			</span>
 		</li>
 	<?php endforeach; ?>
@@ -70,4 +72,4 @@ gp_tmpl_header();
 	$gp.showhide('a.personal-options', 'Personal project options &darr;', 'Personal project options &uarr;', 'div.personal-options', '#source-url-template');
 	$('div.personal-options').hide();
 </script>
-<?php gp_tmpl_footer(); ?>
+<?php gp_tmpl_footer();

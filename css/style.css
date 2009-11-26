@@ -312,18 +312,25 @@ dl.filters-expanded.bulk-actions a {
     clear: both;
     visibility: hidden;
 }
-ul.translation-sets .stats {
-    font-weight: bold;
+ul.translation-sets .stats a {
+    color: white;
+    text-decoration: none;
+	-webkit-border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	padding: 0.1em 0.2em;
+	font-weight: bold;
+	font-size: 1.1em;
+	text-align: center;
 }
 
 ul.translation-sets .translated {
-    color: #090;
+    background-color: #090;
 }
 ul.translation-sets .untranslated {
-    color: #d00;
+    background-color: #d00;
 }
 ul.translation-sets .waiting {
-    color: #d90;
+    background-color: #d90;
 }
 .personal-options #source-url-template {
     width: 20em;
