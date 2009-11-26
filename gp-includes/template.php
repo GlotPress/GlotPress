@@ -1,11 +1,13 @@
 <?php
 function gp_tmpl_load( $template, $args = array() ) {
 	$args = gp_tmpl_filter_args( $args );
+	do_action_ref_array( 'pre_tmpl_load', array( $template, &$args ) );
  	$file = GP_TMPL_PATH . "$template.php";
 	if ( is_readable( $file ) ) {
 		extract( $args, EXTR_SKIP );
 		include $file;
 	}
+	do_action_ref_array( 'post_tmpl_load', array( $template, &$args ) );
 }
 
 function gp_tmpl_header( $args = array( ) ) {
