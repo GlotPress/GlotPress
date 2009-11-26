@@ -11,6 +11,10 @@ class GP {
 	static $router;
 	static $redirect_notices = array();
 	static $translation_warnings;
+	static $current_route = null;
 	// plugins can use this space
 	static $vars = array();
+	// for plugin singletons
+	static $plugins;
 }
+GP::$plugins = new stdClass();

@@ -263,10 +263,13 @@ foreach( glob( GP_PATH . GP_INC . 'routes/*.php' ) as $route ) {
 	require_once $route;
 }
 
+GP::$translation_warnings = new GP_Translation_Warnings();
 GP::$router = new GP_Router();
 
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );
+
+require_once( GP_PATH . GP_INC . 'plugin.php' );
 
 foreach( glob( GP_PATH . 'plugins/*.php' ) as $plugin ) {
 	require_once $plugin;
