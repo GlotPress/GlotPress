@@ -30,7 +30,8 @@ function gp_schema_get() {
 		KEY `original_id` (`original_id`),
 		KEY `user_id` (`user_id`),
 		KEY `translation_set_id` (`translation_set_id`),
-		KEY `translation_set_id_status` (`translation_set_id`,`status`)
+		KEY `translation_set_id_status` (`translation_set_id`,`status`),
+		KEY `date_added` (`date_added`)
 	) TYPE = MYISAM;";
 
     /*
