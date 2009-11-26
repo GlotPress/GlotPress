@@ -281,12 +281,15 @@ if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 else
 	define( 'GP_INSTALLING', false );
 
-if ( !defined( 'GP_ROUTING') || !GP_ROUTING )
-	return;
+if ( !defined( 'GP_ROUTING') ) {
+	define( 'GP_ROUTING', false );
+}
 
 if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
-	$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';
-	header( 'Location: ' . $install_uri );
+	if ( GP_ROUTING ) {
+		$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';
+		header( 'Location: ' . $install_uri );
+	}
 	die();
 }
 
@@ -299,4 +302,6 @@ register_shutdown_function( 'gp_shutdown_action_hook' );
 
 do_action( 'init' );
 
-GP::$router->route();
+if ( GP_ROUTING ) {
+	GP::$router->route();
+}
