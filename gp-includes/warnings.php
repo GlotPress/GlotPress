@@ -18,7 +18,7 @@ class GP_Translation_Warnings {
 		return isset( $this->callbacks[$id] );
 	}
 	
-	function test_entry( $entry, $locale ) {
+	function check_entry( $entry, $locale ) {
 		$problems = array();
 		foreach( $entry->translations as $translation_index => $translation ) {
 			$problems[$translation_index] = array();
