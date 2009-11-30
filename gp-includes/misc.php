@@ -224,3 +224,44 @@ function gp_generate_password( $length = 12, $special_chars = true ) {
 	return WP_Pass::generate_password( $length, $special_chars );
 }
 endif;
+
+/**
+ * Returns an array of arrays, where the i-th array contains the i-th element from
+ * each of the argument arrays. The returned array is truncated in length to the length
+ * of the shortest argument array.
+ * 
+ * The function works only with numerical arrays.
+ */
+function gp_array_zip() {
+	$args = func_get_args();
+	if ( !is_array( $args ) ) {
+		return false;
+	}
+	if ( empty( $args ) ) {
+		return array();
+	}
+	$res = array();
+	foreach ( $args as &$array ) {
+		if ( !is_array( $array) ) {
+			return false;
+		}
+		reset( $array );
+	}
+	$all_have_more = true;
+	while (true) {
+		$this_round = array();
+		foreach ( $args as &$array ) {
+			$all_have_more = ( list( $key, $value ) = each( $array ) );
+			if ( !$all_have_more ) {
+				break;
+			}
+			$this_round[] = $value;
+		}
+		if ( $all_have_more ) {
+			$res[] = $this_round;
+		} else {
+			break;
+		}
+	}
+	return $res;
+}
