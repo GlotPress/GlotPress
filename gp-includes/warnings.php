@@ -53,7 +53,7 @@ class GP_Builtin_Translation_Warnings {
 		$len_trans = gp_strlen( $translation );
 		if ( !( $this->length_lower_bound*$len_src < $len_trans && $len_trans < $this->length_upper_bound*$len_src ) &&
 				( !gp_in( '_abbreviation', $original ) && !gp_in( '_initial', $original ) ) ) {
-			return 'Lenghts of source and translation differ too much';
+			return 'Lenghts of source and translation differ too much.';
 		}
 		return true;
 	}
@@ -64,18 +64,19 @@ class GP_Builtin_Translation_Warnings {
 		$original_parts = preg_split($tag_re, $original, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$translation_parts = preg_split($tag_re, $translation, -1, PREG_SPLIT_DELIM_CAPTURE);
 		if ( count( $original_parts) > count( $translation_parts ) ) {
-			return 'Missing tags from translation';
+			return 'Missing tags from translation.';
 		}
 		if ( count( $original_parts) < count( $translation_parts ) ) {
-			return 'Too many tags in translation';
+			return 'Too many tags in translation.';
 		}
 		foreach( gp_array_zip( $original_parts, $translation_parts ) as $tags ) {
 			list( $original_tag, $translation_tag ) = $tags;
-			$expected_error_msg = "Expected $original_tag, got $translation_tag";
+			$expected_error_msg = "Expected $original_tag, got $translation_tag.";
 			$original_is_tag = preg_match( "/^$tag_pattern$/", $original_tag );
 			$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
 			// translations should never need a quote in their title attribute 
 			if ( $original_is_tag && $translation_is_tag && $original_tag != $translation_tag ) {
+				// we allow translations to have a different title tag
 				$title_re_single = '\s*title=\'[^\']+\'\s*';
 				$title_re = '%'.$title_re_single.'|'.str_replace( "'", '"', $title_re_single ).'%';
 				$original_tag = preg_replace( $title_re, '', $original_tag );
@@ -86,6 +87,34 @@ class GP_Builtin_Translation_Warnings {
 			}
 		}
 		return true;
+	}
+	
+	function warning_placeholders( $original, $translation, $locale ) {
+		$placeholders_re = apply_filters( 'warning_placeholders_re', '%[a-z]*|%\d+\$(?:s|d)' );
+
+		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
+		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
+		$all_placeholders = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
+		foreach( $all_placeholders as $placeholder ) {
+			$original_count = gp_array_get( $original_counts, $placeholder, 0 );
+			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
+			if ( $original_count > $translation_count ) {
+				return 'Missing '.$placeholder.' placeholder in translaion.';
+			}
+			if ( $original_count < $translation_count ) {
+				return 'Extra '.$placeholder.' placeholder in translaion.';
+			}
+		}
+		return true;
+	}
+	
+	function _placeholders_counts( $string, $re ) {
+		$counts = array();
+		preg_match_all( "/$re/", $string, $matches );
+		foreach( $matches[0] as $match ) {
+			$counts[$match]++;
+		}
+		return $counts;
 	}
 	
 	function add_all( &$translation_warnings ) {
