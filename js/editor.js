@@ -28,7 +28,11 @@ $gp.editor = function($){ return {
 	next: function() {
 		if (!$gp.editor.current) return;
 		//TODO: go to next page if needed
-		$gp.editor.show($gp.editor.current.nextAll('tr.editor').eq(0));
+		var next = $gp.editor.current.nextAll('tr.editor');
+		if (next.length)
+			$gp.editor.show(next.eq(0));
+		else
+			$gp.editor.hide();
 	},
 	hide: function(editor) {
 		editor = editor? editor : $gp.editor.current;
