@@ -50,8 +50,8 @@ $gp.editor = function($){ return {
 		if (!$gp.editor.current) return;
 		var p = $gp.editor.current.preview;
 		$('td.translation', p).text($('textarea:first', $gp.editor.current).val());
-		$.each( $.grep(p.attr('class').split(' '), function(x) {
-			return x.substr(0, 7) == 'status-';
+		$.each( $.grep(p.attr('class').split(' '), function(cls) {
+			return cls.substr(0, 7) == 'status-';
 		}), function(status) {
 			p.removeClass(status);
 		} );
