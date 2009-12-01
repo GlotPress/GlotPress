@@ -52,6 +52,9 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $gpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
 		}
+		if ( gp_array_get( $filters, 'translation_id' ) ) {
+			$where[] = $gpdb->prepare( 't.id = %d', gp_array_get( $filters, 'translation_id' ) );
+		}
 		$where = implode( ' AND ', $where );
 		if ( $where ) {
 			$where = 'AND '.$where;
