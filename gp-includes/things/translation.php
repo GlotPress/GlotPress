@@ -16,7 +16,20 @@ class GP_Translation extends GP_Thing {
 		    }
 			unset( $args['translations'] );
 		}
+	    foreach(range(0, 3) as $i) {
+	        if ( isset( $args["translation_$i"] ) ) {
+				$args["translation_$i"] = $this->fix_translation( $args["translation_$i"] );
+			}
+	    }
+		
 		return $args;
+	}
+	
+	function fix_translation( $translation ) {
+		// when selecting some browsers take the newlines and some don't
+		// that's why we don't want to insert too many newlines for each ↵
+		$translation = str_replace( "↵\n", "↵", $translation );
+		return str_replace( '↵', "\n", $translation );
 	}
 
 	function restrict_fields( $translation ) {
