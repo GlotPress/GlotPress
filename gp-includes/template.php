@@ -2,12 +2,21 @@
 function gp_tmpl_load( $template, $args = array() ) {
 	$args = gp_tmpl_filter_args( $args );
 	do_action_ref_array( 'pre_tmpl_load', array( $template, &$args ) );
+	require_once GP_TMPL_PATH . 'helper-functions.php';
  	$file = GP_TMPL_PATH . "$template.php";
 	if ( is_readable( $file ) ) {
 		extract( $args, EXTR_SKIP );
 		include $file;
 	}
 	do_action_ref_array( 'post_tmpl_load', array( $template, &$args ) );
+}
+
+function gp_tmpl_get_output( $template, $args = array() ) {
+	ob_start();
+	gp_tmpl_load( $template, $args );
+	$contents = ob_get_contents();
+	ob_end_clean();
+	return $contents;
 }
 
 function gp_tmpl_header( $args = array( ) ) {

@@ -70,6 +70,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		
+		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 		    $data = compact('original_id');
 			$data['user_id'] = GP::$user->current()->id;
@@ -87,7 +88,18 @@ class GP_Route_Translation extends GP_Route_Main {
 			if ( 'current' == $data['status'] ) {
 				$translation->set_as_current();
 			}
+			$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
+			if ( $translations ) {
+				$t = $translations[0];
+				$parity = returner( 'even' );
+				$can_edit = GP::$user->logged_in();
+				$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+				$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
+			} else {
+				$output[$original_id] = false;
+			}
 		}
+		echo json_encode( $output );
 	}
 	
 	function approve_post( $project_path, $locale_slug, $translation_set_slug ) {

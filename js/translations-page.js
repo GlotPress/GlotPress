@@ -5,26 +5,25 @@ jQuery(function($) {
 	$('#bulk\\[action\\]\\[approve-selected\\]').change(function() { $gp.editor.hide(); });
 	$('#bulk\\[action\]\\[reject-selected\\]').change(function() { $gp.editor.hide(); });
 
-	var checkbox_cells = $('table#translations td.checkbox');
 	var bulk_dl = $('.filters-toolbar dl.bulk-actions');
 
 	// make the whole table cell, containing the checkbox clickable
-	checkbox_cells.click( function (e) {
+	$('table#translations td.checkbox').live( 'click', function (e) {
 		if ($(e.target).is('input')) return true;
 		var cb = this.getElementsByTagName('input')[0];
 		cb.checked = !cb.checked;
 	});
 
 	var set_all = function (value) {
-		$(':checkbox', checkbox_cells).each(function() {
+		$(':checkbox', $('table#translations td.checkbox')).each(function() {
 			this.checked = value;
 		});
 	}
 	
-	$('a.all', bulk_dl).click(function() {
+	$('.filters-toolbar dl.bulk-actions a.all').live( 'click', function() {
 		set_all(true);
 	});
-	$('a.none', bulk_dl).click(function() {
+	$('.filters-toolbar dl.bulk-actions a.none').live( 'click', function() {
 		set_all(false);
 	});
 	
@@ -41,7 +40,7 @@ jQuery(function($) {
 			this.method = 'post';
 			this.action = $gp_translations_options.action;
 			var checkbox_filter = radios.filter(':checked').val().match('-selected')? 'input:checked' : 'input';
-			var	translation_ids = $(checkbox_filter, checkbox_cells).map(function() {
+			var	translation_ids = $(checkbox_filter, $('table#translations td.checkbox')).map(function() {
 				return $(this).parents('tr.preview').attr('row').split('-')[1];
 			}).get().join(',');
 			$('input[name=bulk\[translation-ids\]]', $(this)).val(translation_ids);
@@ -54,5 +53,3 @@ jQuery(function($) {
 	
 	// 
 });
-
-

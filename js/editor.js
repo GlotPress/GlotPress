@@ -46,17 +46,14 @@ $gp.editor = function($){ return {
 		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show);
 		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);
 	},
-	update_preview: function() {
+	append_translation: function(original_id, html) {
 		if (!$gp.editor.current) return;
-		var p = $gp.editor.current.preview;
-		$('td.translation', p).text($('textarea:first', $gp.editor.current).val());
-		$.each( $.grep(p.attr('class').split(' '), function(cls) {
-			return cls.substr(0, 7) == 'status-';
-		}), function(status) {
-			p.removeClass(status);
-		} );
-		// TODO: are we using update_preview() only when we add a new translation?
-		p.addClass($gp_editor_options.can_approve? 'status-current' : 'status-waiting');
+		$gp.editor.current.after(html);
+		var old_current = $gp.editor.current;
+		$gp.editor.next();
+		old_current.preview.remove();
+		old_current.remove();
+		$gp.editor.install_hooks();
 	},
 	save: function(button) {
 		if (!$gp.editor.current) return;
@@ -68,11 +65,13 @@ $gp.editor = function($){ return {
 		data = $("textarea[name='"+name+"']", editor).map(function() {
 			return name+'='+encodeURIComponent($(this).val());
 		}).get().join('&');
-		$.ajax({type: "POST", url: $gp_editor_options.url, data: data,
-			success: function(msg){
+		$.ajax({type: "POST", url: $gp_editor_options.url, data: data, dataType: 'json',
+			success: function(data){
 				button.attr('disabled', '');
 				$gp.notices.success('Saved!');
-				$gp.editor.update_preview();
+				for(original_id in data) {
+					$gp.editor.append_translation(original_id, data[original_id]);
+				}
 				$gp.editor.next();
 			},
 			error: function(xhr, msg, error){
