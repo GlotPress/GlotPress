@@ -118,7 +118,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 	
 	function add_all( &$translation_warnings ) {
-		$warnigs = array_filter( get_class_methods( get_class( &$this ) ), create_function( '$f', 'return gp_startswith($f, "warning_");' ) );
+		$warnigs = array_filter( get_class_methods( get_class( $this ) ), create_function( '$f', 'return gp_startswith($f, "warning_");' ) );
 		foreach( $warnigs as $warning ) {
 			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( &$this, $warning ) );
 		}
