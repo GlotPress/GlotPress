@@ -157,7 +157,7 @@ class GP_Locales {
 		$be->country_code = 'by';
 		$be->slug = 'be';
 		$be->nplurals = 3;
-		$be->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$be->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$bg = new GP_Locale();
 		$bg->english_name = 'Bulgarian';
@@ -229,7 +229,7 @@ class GP_Locales {
 		$bs->wp_locale = 'bs_BA';
 		$bs->slug = 'bs';
 		$bs->nplurals = 3;
-		$bs->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$bs->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$ca = new GP_Locale();
 		$ca->english_name = 'Catalan';
@@ -578,7 +578,7 @@ class GP_Locales {
 		$hr->wp_locale = 'hr';
 		$hr->slug = 'hr';
 		$hr->nplurals = 3;
-		$hr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$hr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$hu = new GP_Locale();
 		$hu->english_name = 'Hungarian';
@@ -893,7 +893,7 @@ class GP_Locales {
 		$pl->wp_locale = 'pl_PL';
 		$pl->slug = 'pl';
 		$pl->nplurals = 3;
-		$pl->plural_expression = '(n==1 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$pl->plural_expression = '(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 
 		$pt_br = new GP_Locale();
@@ -935,7 +935,7 @@ class GP_Locales {
 		$ru_ua->wp_locale = 'ru_UA';
 		$ru_ua->slug = 'ru-ua';
 		$ru_ua->nplurals = 3;
-		$ru_ua->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$ru_ua->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
@@ -946,7 +946,7 @@ class GP_Locales {
 		$ru->wp_locale = 'ru_RU';
 		$ru->slug = 'ru';
 		$ru->nplurals = 3;
-		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$sc = new GP_Locale();
 		$sc->english_name = 'Sardinian';
@@ -1119,7 +1119,7 @@ class GP_Locales {
 		$uk->wp_locale = 'uk';
 		$uk->slug = 'uk';
 		$uk->nplurals = 3;
-		$uk->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$uk->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$ur = new GP_Locale();
 		$ur->english_name = 'Urdu';
