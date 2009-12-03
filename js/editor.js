@@ -54,6 +54,7 @@ $gp.editor = function($){ return {
 		old_current.preview.remove();
 		old_current.remove();
 		$gp.editor.install_hooks();
+		$gp.editor.current.preview.fadeIn(800);
 	},
 	save: function(button) {
 		if (!$gp.editor.current) return;

@@ -10,7 +10,16 @@ function textareas( $entry, $can_edit, $index = 0 ) {
 	$disabled = $can_edit? '' : 'disabled="disabled"';
 ?>
 <div class="textareas">
-	<textarea name="translation[<?php echo $entry->original_id; ?>][]" rows="8" cols="80" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
+	<?php if( isset( $entry->warnings[$index] ) ):
+			$warning = each( $entry->warnings[$index] );
+	?>
+		<div class="warning secondary">
+			<strong>Warning:</strong> <?php  echo esc_html( $warning['value'] ); ?>
+			<?php if( GP::$user->current()->admin() ): // TODO: allow users with write permissions, too ?>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+	<textarea name="translation[<?php echo $entry->original_id; ?>][]" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
 <?php if ( $can_edit ): ?>
 	<p>
 		<a href="#" class="copy" tabindex="-1">Copy from original</a>

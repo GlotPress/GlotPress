@@ -11,6 +11,7 @@ class GP {
 	static $router;
 	static $redirect_notices = array();
 	static $translation_warnings;
+	static $builtin_translation_warnings;
 	static $current_route = null;
 	// plugins can use this space
 	static $vars = array();

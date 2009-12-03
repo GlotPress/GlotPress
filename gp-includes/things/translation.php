@@ -3,7 +3,7 @@ class GP_Translation extends GP_Thing {
 	
 	var $per_page = 10;
 	var $table_basename = 'translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', 'date_modified', );
+	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', 'date_modified', 'warnings');
 	var $non_updatable_attributes = array( 'id', );
 	
 	static $statuses = array('rejected', 'waiting', 'old', 'current');
@@ -31,13 +31,21 @@ class GP_Translation extends GP_Thing {
 		$translation = str_replace( "↵\n", "↵", $translation );
 		return str_replace( '↵', "\n", $translation );
 	}
-
+	
 	function restrict_fields( $translation ) {
 		$translation->translation_0_should_not_be( 'empty' );
 		$translation->status_should_not_be( 'empty' );
 		$translation->original_id_should_be( 'positive_int' );
 		$translation->translation_set_id_should_be( 'positive_int' );
 		$translation->user_id_should_be( 'positive_int' );
+	}
+	
+	
+	function set_fields( $db_object ) {
+		parent::set_fields( $db_object );
+		if ( $this->warnings ) {
+			$this->warnings = maybe_unserialize( $this->warnings );
+		}
 	}
 		
 	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
@@ -68,6 +76,15 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'translation_id' ) ) {
 			$where[] = $gpdb->prepare( 't.id = %d', gp_array_get( $filters, 'translation_id' ) );
 		}
+		if ( gp_array_get( $filters, 'original_id' ) ) {
+			$where[] = $gpdb->prepare( 'o.id = %d', gp_array_get( $filters, 'original_id' ) );
+		}
+		if ( 'yes' == gp_array_get( $filters, 'warnings' ) ) {
+			$where[] = 't.warnings IS NOT NULL';
+		} elseif ( 'no' == gp_array_get( $filters, 'warnings' ) ) {
+			$where[] = 't.warnings IS NULL';
+		}
+				
 		$where = implode( ' AND ', $where );
 		if ( $where ) {
 			$where = 'AND '.$where;
@@ -113,6 +130,7 @@ class GP_Translation extends GP_Thing {
 			$row->translations = array_slice( $row->translations, 0, $locale->nplurals );
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
 			$row->extracted_comment = $row->comment;
+			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
 			foreach(range(0, 3) as $i) {
 				$member = "translation_$i";

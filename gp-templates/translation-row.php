@@ -1,8 +1,9 @@
 <?php
-$class = $t->translation_status;
-if ( !$class ) $class = 'untranslated';
+$status_class = $t->translation_status;
+if ( !$status_class ) $class = 'untranslated';
+$warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
 ?>
-<tr class="preview <?php echo $parity().' status-'.$class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
+<tr class="preview <?php echo $parity().' status-'.$status_class.' '.$warning_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
 	<td class="checkbox"><input type="checkbox" name="selected-row[]" /></td>
 	<td class="original">			
 		<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
@@ -37,12 +38,11 @@ if ( !$class ) $class = 'untranslated';
 		<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php _e('Details'); ?></a>
 	</td>
 </tr>
-<tr class="editor" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
+<tr class="editor <?php echo $warning_class; ?>" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
 	<td colspan="4">
 		<div class="strings">
 		<?php if ( !$t->plural ): ?>
 		<p class="original"><?php echo prepare_original( esc_translation($t->singular) ); ?></p>
-		
 		<?php textareas( $t, $can_edit ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>

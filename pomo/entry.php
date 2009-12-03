@@ -46,7 +46,6 @@ class Translation_Entry {
 			return;
 		}
 		// get member variable values from args hash
-		$object_varnames = array_keys(get_object_vars($this));
 		foreach ($args as $varname => $value) {
 			$this->$varname = $value;
 		}

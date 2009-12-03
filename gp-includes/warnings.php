@@ -18,24 +18,23 @@ class GP_Translation_Warnings {
 		return isset( $this->callbacks[$id] );
 	}
 	
-	function check_entry( $entry, $locale ) {
+	function check( $singular, $plural, $translations, $locale ) {
 		$problems = array();
-		foreach( $entry->translations as $translation_index => $translation ) {
-			$problems[$translation_index] = array();
+		foreach( $translations as $translation_index => $translation ) {
 			foreach( $this->callbacks as $callback_id => $callback ) {
-				$singular_test = call_user_func( $callback, $entry->singular, $translation, $locale );
+				$singular_test = call_user_func( $callback, $singular, $translation, $locale );
 				if ( true !== $singular_test ) {
 					$problems[$translation_index][$callback_id] = $singular_test;
 				}
-				if ( $entry->is_plural ) {
-					$plural_test = call_user_func( $callback, $entry->plural, $translation, $locale );
+				if ( !is_null( $plural ) ) {
+					$plural_test = call_user_func( $callback, $plural, $translation, $locale );
 					if ( true !== $plural_test ) {
 						$problems[$translation_index][$callback_id] = $plural_test;
 					}
 				}
 			}
 		}
-		return $problems;
+		return empty($problems)? null : $problems;
 	}
 }
 
@@ -110,13 +109,16 @@ class GP_Builtin_Translation_Warnings {
 	
 	function _placeholders_counts( $string, $re ) {
 		$counts = array();
-		preg_match_all( "/$re/", $string, $matches );
+		preg_match_all( "/$re/i", $string, $matches );
 		foreach( $matches[0] as $match ) {
-			$counts[$match]++;
+			$counts[$match] = gp_array_get( $counts, $match, 0) + 1;
 		}
 		return $counts;
 	}
 	
+	/**
+	 * Adds all methods starting with warning_ to $translation_warnings
+	 */
 	function add_all( &$translation_warnings ) {
 		$warnigs = array_filter( get_class_methods( get_class( $this ) ), create_function( '$f', 'return gp_startswith($f, "warning_");' ) );
 		foreach( $warnigs as $warning ) {

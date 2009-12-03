@@ -1,4 +1,4 @@
-html, body, textarea, input, textarea {
+html, body, textarea, input {
 	font-family: "Helvetica", "Arial", sans-serif;
 	color: #333;
 	line-height: 1.5em;
@@ -126,6 +126,10 @@ table.translations tr.preview.status-old {
 table.translations tr.preview.status-waiting {
 	background-color: #FFFFC2;
 }
+table.translations tr.preview.has-warnings td.original {
+    border-left: 2px solid red;
+}
+
 table.translations a.action {
     font-size: 100%;
     font-style: normal;
@@ -156,6 +160,7 @@ span.context {
 .editor .original {
 	font-weight: bold;
 	white-space: pre-wrap;
+	width: 50em;
 }
 .editor .strings {
     float: left;
@@ -168,6 +173,10 @@ span.context {
 }
 .editor .textareas, .editor .actions {
 	clear: both;
+}
+.editor .textareas textarea {
+    width: 45em;
+    min-height: 8em;
 }
 .editor .meta {
 	float: left;
@@ -359,4 +368,17 @@ ul.translation-sets .waiting {
 #translation-set-permissions .permission-action {
     font-style: italic;
     color: #999;
+}
+.warning {
+    background-color: white;
+    color: #E44B3E;
+    border: 1px solid #E44B3E;
+    margin: 1em 0;
+    padding: 0.5em;
+}
+.warning a.discard {
+    float: right;
+}
+.textareas .warning {
+    width: 53em;
 }

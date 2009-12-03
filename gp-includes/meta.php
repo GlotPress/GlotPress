@@ -225,7 +225,7 @@ function gp_get_option( $option ) {
 			return '0.1'; // Don't filter
 			break;
 		case 'gp_db_version' :
-			return '338'; // Don't filter
+			return '351'; // Don't filter
 			break;
 		case 'html_type':
 			$r = 'text/html';

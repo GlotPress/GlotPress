@@ -28,6 +28,9 @@ $i = 0;
 	if ( $can_approve ) {
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
 				'Waiting' );
+		$filter_links[] = gp_link_get( add_query_arg( array('filters[warnings]' => 'yes', 'filters[status]' => 'current_or_waiting', 'sort[by]' => 'translation_date_added'), $url ),
+				'Warnings' );
+				
 	}
 	// TODO: with warnings
 	// TODO: saved searches

@@ -264,6 +264,8 @@ foreach( glob( GP_PATH . GP_INC . 'routes/*.php' ) as $route ) {
 }
 
 GP::$translation_warnings = new GP_Translation_Warnings();
+GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
+GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
 GP::$router = new GP_Router();
 
 // Let's do it again, there are more variables added since last time we called it
