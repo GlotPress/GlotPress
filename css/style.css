@@ -376,7 +376,7 @@ ul.translation-sets .waiting {
     margin: 1em 0;
     padding: 0.5em;
 }
-.warning a.discard {
+.warning a.discard-warning {
     float: right;
 }
 .textareas .warning {

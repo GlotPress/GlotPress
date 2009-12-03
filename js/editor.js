@@ -8,6 +8,9 @@ $gp.editor = function($){ return {
 	original_id_from_row_id: function(row_id) {
 		return row_id.split('-')[0];
 	},
+	translation_id_from_row_id: function(row_id) {
+		return row_id.split('-')[1];
+	},
 	show: function(element) {
 		var row_id = element.attr('row');
 		var editor = $('#editor-' + row_id);
@@ -16,6 +19,7 @@ $gp.editor = function($){ return {
 		editor.preview = $('#preview-' + row_id);
 		editor.row_id = row_id;
 		editor.original_id = $gp.editor.original_id_from_row_id(row_id);
+		editor.translation_id = $gp.editor.translation_id_from_row_id(row_id);
 		$gp.editor.current = editor;
 		$('a.close', editor).click($gp.editor.hooks.hide);
 		$('button.ok', editor).click($gp.editor.hooks.ok);
@@ -45,8 +49,9 @@ $gp.editor = function($){ return {
 	install_hooks: function() {
 		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show);
 		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);
+		$('a.discard-warning', $gp.editor.table).click($gp.editor.hooks.discard_warning);
 	},
-	append_translation: function(original_id, html) {
+	replace_current: function(html) {
 		if (!$gp.editor.current) return;
 		$gp.editor.current.after(html);
 		var old_current = $gp.editor.current;
@@ -59,9 +64,8 @@ $gp.editor = function($){ return {
 	save: function(button) {
 		if (!$gp.editor.current) return;
 		var editor = $gp.editor.current;
-		// TODO: concurrent events will confuse the notice system
 		button.attr('disabled', 'disabled');
-		$gp.notices.notice('Saving...');
+		$gp.notices.notice('Saving&hellip;');
 		name = "translation["+editor.original_id+"][]";
 		data = $("textarea[name='"+name+"']", editor).map(function() {
 			return name+'='+encodeURIComponent($(this).val());
@@ -71,15 +75,34 @@ $gp.editor = function($){ return {
 				button.attr('disabled', '');
 				$gp.notices.success('Saved!');
 				for(original_id in data) {
-					$gp.editor.append_translation(original_id, data[original_id]);
+					$gp.editor.replace_current(data[original_id]);
 				}
-				$gp.editor.next();
+				if ($gp.editor.current.hasClass('no-warnings')) {
+					$gp.editor.next();
+				} else {
+					$gp.editor.current.preview.hide();
+				}
 			},
-			error: function(xhr, msg, error){
+			error: function(xhr, msg, error) {
 				button.attr('disabled', '');
-				msg = xhr.responseText? 'Error: '+xhr.responseText : 'Error saving the translation!';
+				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the translation!';
 				$gp.notices.error(msg);
+			}
+		});
+	},
+	discard_warning: function(link) {
+		if (!$gp.editor.current) return;
+		$gp.notices.notice('Discarding&hellip;');
+		data = {translation_id: $gp.editor.current.translation_id, key: link.attr('key'), index: link.attr('index')};
+		$.ajax({type: "POST", url: $gp_editor_options.discard_warning_url, data: data,
+			success: function(data) {
+				$gp.notices.success('Saved!');
+				$gp.editor.replace_current(data);
 			},
+			error: function(xhr, msg, error) {
+				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the translation!';
+				$gp.notices.error(msg);
+			}
 		});
 	},
 	copy: function(link) {
@@ -104,6 +127,10 @@ $gp.editor = function($){ return {
 			$gp.editor.copy($(this));
 			return false;
 		},
+		discard_warning: function() {
+			$gp.editor.discard_warning($(this));
+			return false;
+		}
 	}
 }}(jQuery);
 

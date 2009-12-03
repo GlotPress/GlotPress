@@ -11,11 +11,13 @@ function textareas( $entry, $can_edit, $index = 0 ) {
 ?>
 <div class="textareas">
 	<?php if( isset( $entry->warnings[$index] ) ):
-			$warning = each( $entry->warnings[$index] );
+			$referenceable = $entry->warnings[$index];
+			$warning = each( $referenceable );
 	?>
 		<div class="warning secondary">
 			<strong>Warning:</strong> <?php  echo esc_html( $warning['value'] ); ?>
 			<?php if( GP::$user->current()->admin() ): // TODO: allow users with write permissions, too ?>
+			<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>">Discard</a>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>

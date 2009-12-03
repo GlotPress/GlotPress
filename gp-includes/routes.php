@@ -64,6 +64,7 @@ class GP_Router {
 			"get:/$project/$locale/$dir/_permissions" => array('GP_Route_Translation', 'permissions_get'),
 			"post:/$project/$locale/$dir/_permissions" => array('GP_Route_Translation', 'permissions_post'),
 			"get:/$project/$locale/$dir/_permissions/_delete/$dir" => array('GP_Route_Translation', 'permissions_delete'),
+			"post:/$project/$locale/$dir/_discard-warning" => array('GP_Route_Translation', 'discard_warning'),
 			"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 			// keep this one at the bottom of the project, because it will catch anything starting with project
 			"/$project" => array('GP_Route_Project', 'single'),
@@ -115,6 +116,11 @@ class GP_Route {
 	var $errors = array();
 	var $notices = array();
 	var $request_running = false;
+	
+	function die_with_error( $message, $status = 500 ) {
+		status_header( $status );
+		exit( $message );
+	}
 	
 	function before_request() {
 		do_action( 'before_request', $this->class_name, $this->last_method_called );
@@ -176,11 +182,18 @@ class GP_Route {
 			$this->redirect_with_error( $url, __('You are not allowed to do that!') );
 		}
 	}
+
+	function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
+		$can = $this->can( $action, $object_type, $object_id );
+		if ( !$can ) {
+			$this->die_with_error( $message, 403 );
+		}
+	}
+
 	
 	function logged_in_or_forbidden() {
 		if ( !GP::$user->logged_in() ) {
-			status_header( 403 );
-			die('Forbidden');
+			$this->die_with_error( 'Forbidden', 403 );
 		}
 	}
 	

@@ -21,7 +21,17 @@ class GP_Translation extends GP_Thing {
 				$args["translation_$i"] = $this->fix_translation( $args["translation_$i"] );
 			}
 	    }
-		
+		if ( gp_array_get( $args, 'warnings' ) == array() ) {
+			$args['warnings'] = null;
+		}
+		return $args;
+	}
+	
+	function prepare_fields_for_save( $args ) {
+		$args = parent::prepare_fields_for_save( $args );
+		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
+			$args['warnings'] = serialize( $args['warnings'] );
+		}
 		return $args;
 	}
 	

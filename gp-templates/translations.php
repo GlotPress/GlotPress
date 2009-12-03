@@ -8,7 +8,7 @@ gp_breadcrumb( array(
 wp_enqueue_script( 'editor' );
 wp_enqueue_script( 'translations-page' );
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
-wp_localize_script( 'editor', '$gp_editor_options', compact('can_approve', 'url') );
+wp_localize_script( 'editor', '$gp_editor_options', compact('can_approve', 'url', 'discard_warning_url') );
 wp_localize_script( 'translations-page', '$gp_translations_options', array('action' => $approve_action) );
 $parity = gp_parity_factory();
 gp_tmpl_header();
