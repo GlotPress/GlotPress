@@ -273,9 +273,14 @@ gp_set_globals( get_defined_vars() );
 
 require_once( GP_PATH . GP_INC . 'plugin.php' );
 
-foreach( glob( GP_PATH . 'plugins/*.php' ) as $plugin ) {
-	require_once $plugin;
+$plugins = glob( GP_PATH . 'plugins/*.php' );
+if ($plugins) {
+	foreach( $plugins as $plugin ) {
+		require_once $plugin;
+	}
 }
+unset ($plugins, $plugin);
+
 do_action( 'plugins_loaded' );
 
 if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
