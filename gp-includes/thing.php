@@ -115,11 +115,11 @@ class GP_Thing {
 	}
 
 	function find_many( $conditions ) {
-		return $this->many( $this->sql_from_conditions( $conditions ) );
+		return $this->many( $this->select_all_from_conditions( $conditions ) );
 	}
 
 	function find_one( $conditions ) {
-		return $this->one( $this->sql_from_conditions( $conditions ) );
+		return $this->one( $this->select_all_from_conditions( $conditions ) );
 	}
 
 	function find( $conditions ) {
