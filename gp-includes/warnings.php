@@ -21,12 +21,25 @@ class GP_Translation_Warnings {
 	function check( $singular, $plural, $translations, $locale ) {
 		$problems = array();
 		foreach( $translations as $translation_index => $translation ) {
-			foreach( $this->callbacks as $callback_id => $callback ) {
-				$singular_test = call_user_func( $callback, $singular, $translation, $locale );
-				if ( true !== $singular_test ) {
-					$problems[$translation_index][$callback_id] = $singular_test;
+			if ( !$translation ) continue;
+			$skip = array( 'singular' => false, 'plural' => false );
+			if ( !is_null( $plural ) ) {
+				$numbers_for_index = $locale->numbers_for_index( $translation_index );
+				if ( $numbers_for_index == array(1) ) {
+					$skip['plural'] = true;
 				}
-				if ( !is_null( $plural ) ) {
+				if ( !in_array( 1, $numbers_for_index ) ) {
+					$skip['singular'] = true;
+				}
+			}
+			foreach( $this->callbacks as $callback_id => $callback ) {
+				if ( !$skip['singular']) {
+					$singular_test = call_user_func( $callback, $singular, $translation, $locale );
+					if ( true !== $singular_test ) {
+						$problems[$translation_index][$callback_id] = $singular_test;
+					}
+				}
+				if ( !is_null( $plural ) && !$skip['plural'] ) {
 					$plural_test = call_user_func( $callback, $plural, $translation, $locale );
 					if ( true !== $plural_test ) {
 						$problems[$translation_index][$callback_id] = $plural_test;
@@ -48,6 +61,9 @@ class GP_Builtin_Translation_Warnings {
 		if ( in_array( $locale->slug, $this->length_exclude_languages ) ) {
 			return true;
 		}
+		if ( gp_startswith( $original, 'number_format_' ) ) {
+			return true;
+		}
 		$len_src = gp_strlen( $original );
 		$len_trans = gp_strlen( $translation );
 		if ( !( $this->length_lower_bound*$len_src < $len_trans && $len_trans < $this->length_upper_bound*$len_src ) &&
@@ -58,7 +74,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 	
 	function warning_tags( $original, $translation, $locale ) {
-		$tag_pattern = "(<.*>)";
+		$tag_pattern = "(<[^>]*>)";
 		$tag_re = "/$tag_pattern/Us";
 		$original_parts = preg_split($tag_re, $original, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$translation_parts = preg_split($tag_re, $translation, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -98,10 +114,10 @@ class GP_Builtin_Translation_Warnings {
 			$original_count = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
 			if ( $original_count > $translation_count ) {
-				return 'Missing '.$placeholder.' placeholder in translaion.';
+				return 'Missing '.$placeholder.' placeholder in translation.';
 			}
 			if ( $original_count < $translation_count ) {
-				return 'Extra '.$placeholder.' placeholder in translaion.';
+				return 'Extra '.$placeholder.' placeholder in translation.';
 			}
 		}
 		return true;

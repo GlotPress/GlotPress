@@ -166,5 +166,13 @@ class GP_Translation extends GP_Thing {
 	function reject() {
 		return $this->update( array('status' => 'rejected') );
 	}
+	
+	function translations() {
+		$translations = array();
+	    foreach(range(0, 3) as $i) {
+	        $translations[$i] = isset( $this->{"translation_$i"} )? $this->{"translation_$i"} : null;
+	    }
+		return $translations;
+	}
 }
 GP::$translation = new GP_Translation();

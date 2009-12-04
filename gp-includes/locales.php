@@ -17,17 +17,26 @@ class GP_Locale {
 	}
 	
 	function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000 ) {
-		$expression = Gettext_Translations::parenthesize_plural_exression( $this->plural_expression );
-		$index_from_number = Gettext_Translations::make_plural_form_function( $this->nplurals, $expression );
 		$numbers = array();
 		for( $number = 0; $number < $test_up_to; ++$number ) {
-			if ( $index_from_number( $number ) == $index ) {
+			if ( $this->index_for_number( $number ) == $index ) {
 				$numbers[] = $number;
 				if ( count( $numbers ) >= $how_many ) break;
 			}
 		}
 		return $numbers;
 	}
+	
+	function index_for_number( $number ) {
+		if ( !isset( $this->_index_for_number ) ) {
+			$expression = Gettext_Translations::parenthesize_plural_exression( $this->plural_expression );
+			$this->_index_for_number = Gettext_Translations::make_plural_form_function( $this->nplurals, $expression );
+		}
+		$f = $this->_index_for_number;
+		return $f( $number );
+		
+	}
+	
 }
 
 class GP_Locales {
