@@ -21,7 +21,7 @@ class GP_Thing {
 		}
 		$this->set_fields( $fields );
 		
-		if ( isset(self::$validation_rules_by_class[$this->class])) {
+		if ( isset( self::$validation_rules_by_class[$this->class] ) ) {
 			$this->validation_rules = &self::$validation_rules_by_class[$this->class];
 		} else {
 			$this->validation_rules = new GP_Validation_Rules( $this->field_names );
@@ -280,8 +280,14 @@ class GP_Thing {
 	
 	function sql_condition_from_php_value( $php_value ) {
 		global $gpdb;
+		if ( is_array( $php_value ) ) {
+			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
+		}
 		$operator = '=';
-		$sql_value = "'".$gpdb->escape( $php_value )."'";
+		if ( is_integer( $php_value ) || ctype_digit( $php_value) )
+		 	$sql_value = $php_value;
+		else
+			$sql_value = "'".$gpdb->escape( $php_value )."'";
 		if ( is_null( $php_value ) ) {
 			$operator = 'IS';
 			$sql_value = 'NULL';
@@ -293,9 +299,16 @@ class GP_Thing {
 		$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
 		$string_conditions = array();
 		foreach( $conditions as $field => $sql_condition ) {
-			$string_conditions[] = "$field $sql_condition";
+			if ( is_array( $sql_condition ) )
+				$string_conditions[] = '('. implode( ' OR ', array_map( lambda( '$cond', '"$field $cond"', compact('field') ), $sql_condition ) ) . ')';
+			else
+				$string_conditions[] = "$field $sql_condition";
 		}
-		return "SELECT * FROM $this->table WHERE " . implode( ' AND ', $string_conditions );
+		return implode( ' AND ', $string_conditions );
+	}
+	
+	function select_all_from_conditions( $conditions ) {
+		return "SELECT * FROM $this->table WHERE " . $this->sql_from_conditions( $conditions );
 	}
 	
 	function restrict_fields( $thing ) {
