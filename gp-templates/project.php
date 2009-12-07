@@ -55,7 +55,7 @@ gp_tmpl_header();
 		</dl>
 		<p>
 			<input type="submit" name="submit" value="Save &rarr;" id="save" />
-			<a class="ternary" href="javascript:jQuery('#personal-options-toggle').click();">Cancel</a>
+			<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;">Cancel</a>
 		</p>		
 		</form>
 	</div>
