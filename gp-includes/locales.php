@@ -513,6 +513,14 @@ class GP_Locales {
 		$fr_be->wp_locale = 'fr_BE';
 		$fr_be->slug = 'fr-be';
 
+		$fr_ch = new GP_Locale();
+	 	$fr_ch->english_name = 'Swiss French';
+	 	$fr_ch->native_name = 'Français de Suisse';
+	 	$fr_ch->lang_code_iso_639_1 = 'fr';
+	 	$fr_ch->lang_code_iso_639_2 = 'fra';
+	 	$fr_ch->country_code = 'ch';
+	 	$fr_ch->slug = 'fr-ch';
+
 		$ga = new GP_Locale();
 		$ga->english_name = 'Irish';
 		$ga->native_name = 'Gaelige';
