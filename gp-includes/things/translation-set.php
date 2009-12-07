@@ -119,16 +119,19 @@ class GP_Translation_Set extends GP_Thing {
 		 *  - calculate weighted coefficient by priority to know how much of the strings are translated
 		 * 	- calculate untranslated
 		 */
-		$table = GP::$translation->table;
-		$counts = GP::$translation->many_no_map("SELECT status, COUNT(*) as n FROM $table WHERE translation_set_id = %d GROUP BY status", $this->id);
+		$t = GP::$translation->table;
+		$o = GP::$original->table;
+		$counts = GP::$translation->many_no_map("
+			SELECT t.status as translation_status, COUNT(*) as n
+			FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status LIKE '+%%' GROUP BY t.status", $this->id);
 		$statuses = GP::$translation->get_static( 'statuses' );
 		foreach( $statuses as $status ) {
 			$this->{$status.'_count'} = 0;
 		}
 		$this->untranslated_count = 0;
 		foreach( $counts as $count ) {
-			if ( in_array( $count->status, $statuses ) ) {
-				$this->{$count->status.'_count'} = $count->n;
+			if ( in_array( $count->translation_status, $statuses ) ) {
+				$this->{$count->translation_status.'_count'} = $count->n;
 			}
 		}
 	}
