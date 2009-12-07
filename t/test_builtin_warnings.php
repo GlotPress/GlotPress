@@ -51,7 +51,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMock( 'GP_Translation_Warnings' );
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 3 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 4 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 	
@@ -68,5 +68,12 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', '%ququ baba', '%ququ баба' );
 		$this->assertHasWarnings( 'placeholders', '%1$s baba', 'баба' );
 		$this->assertNoWarnings( 'placeholders', '%1$s baba', '%1$s баба' );
+	}
+	
+	function test_both_end_on_newlines() {
+		$this->assertHasWarnings( 'both_end_on_newlines', "baba\n", "baba" );
+		$this->assertHasWarnings( 'both_end_on_newlines', "baba", "baba\n" );
+		$this->assertNoWarnings( 'both_end_on_newlines', "baba", "baba" );
+		$this->assertNoWarnings( 'both_end_on_newlines', "baba\n", "baba\n" );
 	}
 }
