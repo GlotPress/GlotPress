@@ -167,6 +167,9 @@ span.context {
     width: 60%;
 }
 .editor .strings p.plural-numbers {
+    margin-bottom: 0;
+    color: #555;
+    font-size: 0.75em;
 }
 .editor .strings p.plural-numbers span.numbers {
     font-weight: bold;

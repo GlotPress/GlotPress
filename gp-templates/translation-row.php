@@ -61,8 +61,10 @@ $warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
 					<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
 				</p>
 				<?php foreach( range( 0, $locale->nplurals - 1 ) as $plural_index ): ?>
-					<p class="plural-numbers">Plural form for: <span class="numbers"><?php  echo implode(', ', $locale->numbers_for_index( $plural_index) ); ?></span></p>
-					<?php textareas( $t, $can_edit, $plural_index ); ?>
+					<?php if ( $locale->nplurals > 1 ): ?>
+					<p class="plural-numbers">This plural form is used for numbers like: <span class="numbers"><?php  echo implode(', ', $locale->numbers_for_index( $plural_index) ); ?></span></p>										
+					<?php endif; ?>
+					<?php textareas( $t, $can_edit, $plural_index ); ?>					
 				<?php endforeach; ?>
 			<?php endif; ?>
 		<?php endif; ?>
