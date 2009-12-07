@@ -31,6 +31,9 @@ class GP_Translation_Warnings {
 				if ( !in_array( 1, $numbers_for_index ) ) {
 					$skip['singular'] = true;
 				}
+				if ( $locale->nplurals == 1 ) {
+					$skip['singular'] = true;
+				}
 			}
 			foreach( $this->callbacks as $callback_id => $callback ) {
 				if ( !$skip['singular']) {

@@ -34,9 +34,7 @@ class GP_Locale {
 		}
 		$f = $this->_index_for_number;
 		return $f( $number );
-		
 	}
-	
 }
 
 class GP_Locales {
