@@ -1081,6 +1081,16 @@ class GP_Locales {
 		$th->nplurals = 1;
 		$th->plural_expression = '0';
 		
+		$tlh = new GP_Locale();
+		$tlh->english_name = 'Klingon';
+		$tlh->native_name = 'TlhIngan';
+		$tlh->lang_code_iso_639_1 = '';
+		$tlh->lang_code_iso_639_2 = 'tlh';
+		$tlh->country_code = '';
+		$tlh->slug = 'tlh';
+		$tlh->nplurals = 1;
+		$tlh->plural_expression = '0';
+
 		$tl = new GP_Locale();
 		$tl->english_name = 'Tagalog';
 		$tl->native_name = 'Tagalog';
