@@ -95,10 +95,6 @@ class GP_Translation extends GP_Thing {
 			$where[] = 't.warnings IS NULL';
 		}
 				
-		$where = implode( ' AND ', $where );
-		if ( $where ) {
-			$where = 'AND '.$where;
-		}
 		
 		$join_where = array();
 		$status = gp_array_get( $filters, 'status', 'current_or_waiting' );
@@ -115,12 +111,29 @@ class GP_Translation extends GP_Thing {
 			foreach( $statuses as $single_status ) {
 				$statuses_where[] = $gpdb->prepare( 't.status = %s', $single_status );
 			}
-			$join_where[] = '(' . implode( ' OR ', $statuses_where ) . ')';
+			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
+			$join_where[] = $statuses_where;
+			/*
+				usually we want the status to be part of the ON clause, because we want to include
+				the untranslated strings in the listing. This, however is not the case if the filter
+				explictly forbids untranslated strings
+			*/
+			if ( 'no' == gp_array_get( $filters, 'translated' ) ) {
+				$where[] = $statuses_where;
+			}
 		}
+		
+		$where = implode( ' AND ', $where );
+		if ( $where ) {
+			$where = 'AND '.$where;
+		}
+		
+		
 		$join_where = implode( ' AND ', $join_where );
 		if ( $join_where ) {
 			$join_where = 'AND '.$join_where;
 		}
+		
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many_no_map( "
 		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
