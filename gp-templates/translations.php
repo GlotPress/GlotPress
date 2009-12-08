@@ -24,7 +24,7 @@ $i = 0;
 	<?php
 	$filter_links = array();
 	$filter_links[] = gp_link_get( $url, 'All' );
-	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random', 'filters[status]' => 'any'), $url ), 'Random Untranslated' );
+	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random', 'filters[status]' => 'either'), $url ), 'Random Untranslated' );
 	if ( $can_approve ) {
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
 				'Waiting' );
