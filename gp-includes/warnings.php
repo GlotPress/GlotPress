@@ -135,9 +135,12 @@ class GP_Builtin_Translation_Warnings {
 		return $counts;
 	}
 	
-	function warning_both_end_on_newlines( $original, $translation, $locale ) {
+	function warning_both_begin_end_on_newlines( $original, $translation, $locale ) {
 		if ( gp_endswith( $original, "\n" ) xor gp_endswith( $translation, "\n" ) ) {
 			return 'Original and translation should both end on newline.';
+		}
+		if ( gp_startswith( $original, "\n" ) xor gp_startswith( $translation, "\n" ) ) {
+			return 'Original and translation should both begin on newline.';
 		}
 		return true;
 	}

@@ -70,10 +70,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', '%1$s baba', '%1$s баба' );
 	}
 	
-	function test_both_end_on_newlines() {
-		$this->assertHasWarnings( 'both_end_on_newlines', "baba\n", "baba" );
-		$this->assertHasWarnings( 'both_end_on_newlines', "baba", "baba\n" );
-		$this->assertNoWarnings( 'both_end_on_newlines', "baba", "baba" );
-		$this->assertNoWarnings( 'both_end_on_newlines', "baba\n", "baba\n" );
+	function test_both_begin_end_on_newlines() {
+		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba\n", "baba" );
+		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba", "baba\n" );
+		$this->assertNoWarnings( 'both_begin_end_on_newlines', "baba", "baba" );
+		$this->assertNoWarnings( 'both_begin_end_on_newlines', "baba\n", "baba\n" );
+		$this->assertHasWarnings( 'both_begin_end_on_newlines', "\nbaba", "baba" );
+		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba", "\nbaba" );
+		$this->assertNoWarnings( 'both_begin_end_on_newlines', "\nbaba", "\nbaba" );
 	}
 }
