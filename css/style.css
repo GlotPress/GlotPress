@@ -344,6 +344,10 @@ ul.translation-sets .untranslated {
 ul.translation-sets .waiting {
     background-color: #d90;
 }
+ul.translation-sets .warnings {
+    background-color: #d00;
+}
+
 .personal-options #source-url-template {
     width: 20em;
 }

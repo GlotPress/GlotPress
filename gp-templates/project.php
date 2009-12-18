@@ -33,6 +33,11 @@ gp_tmpl_header();
 				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
 						array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $waiting, array('class' => 'waiting', 'title' => 'waiting') ); ?>
 			<?php endif; ?>
+			<?php if ( $warnings = $set->warnings_count() ): ?>
+				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
+						array('filters[translated]' => 'yes', 'filters[warnings]' => 'yes' ) ), $warnings, array('class' => 'warnings', 'title' => 'with warnings') ); ?>
+			<?php endif; ?>
+			
 			<?php do_action( 'project_template_translation_set_extra', $set, $project ); ?>
 			</span>
 		</li>

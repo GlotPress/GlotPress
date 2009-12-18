@@ -111,11 +111,15 @@ class GP_Translation_Set extends GP_Thing {
 		if ( !isset( $this->current_count ) ) $this->update_status_breakdown();
 		return $this->current_count;
 	}
-	
+
+	function warnings_count() {
+		if ( !isset( $this->warnings_count ) ) $this->update_status_breakdown();
+		return $this->warnings_count;
+	}
+
 	function update_status_breakdown() {
 		/*
 		 * TODO:
-		 *	- join on originals and count as translated only these, which correspond to an active original string
 		 *  - calculate weighted coefficient by priority to know how much of the strings are translated
 		 * 	- calculate untranslated
 		 */
@@ -124,6 +128,9 @@ class GP_Translation_Set extends GP_Thing {
 		$counts = GP::$translation->many_no_map("
 			SELECT t.status as translation_status, COUNT(*) as n
 			FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status LIKE '+%%' GROUP BY t.status", $this->id);
+		$this->warnings_count = GP::$translation->value_no_map("
+			SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
+			WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
 		$statuses = GP::$translation->get_static( 'statuses' );
 		foreach( $statuses as $status ) {
 			$this->{$status.'_count'} = 0;
