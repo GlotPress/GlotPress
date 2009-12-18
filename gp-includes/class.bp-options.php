@@ -12,6 +12,9 @@ class BP_Options
 	
 	function get($option) {
 		switch ($option) {
+			case 'application_id':
+				return 'glotpress';
+				break;
 			case 'application_uri':
 				return bb_get_uri(null, null, BB_URI_CONTEXT_NONE);
 				break;

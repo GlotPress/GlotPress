@@ -94,6 +94,7 @@ class GP_Translation_Set extends GP_Thing {
 				$translations_added += 1;
 			}
 		}
+		wp_cache_delete( $this->id, 'translation_set_status_breakdown' );
 		return $translations_added;
 	}
 	
@@ -118,20 +119,26 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	function update_status_breakdown() {
-		/*
-		 * TODO:
-		 *  - calculate weighted coefficient by priority to know how much of the strings are translated
-		 * 	- calculate untranslated
-		 */
-		$t = GP::$translation->table;
-		$o = GP::$original->table;
-		$counts = GP::$translation->many_no_map("
-			SELECT t.status as translation_status, COUNT(*) as n
-			FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status LIKE '+%%' GROUP BY t.status", $this->id);
-		$this->warnings_count = GP::$translation->value_no_map("
-			SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
-			WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
+		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
+		if ( !is_array( $counts ) ) {
+			/*
+			 * TODO:
+			 *  - calculate weighted coefficient by priority to know how much of the strings are translated
+			 * 	- calculate untranslated
+			 */
+			$t = GP::$translation->table;
+			$o = GP::$original->table;
+			$counts = GP::$translation->many_no_map("
+				SELECT t.status as translation_status, COUNT(*) as n
+				FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status LIKE '+%%' GROUP BY t.status", $this->id);
+			$warnings_count = GP::$translation->value_no_map("
+				SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
+				WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
+			$counts[] = (object)array( 'translation_status' => 'warnings', 'n' => $warnings_count );
+			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
+		}
 		$statuses = GP::$translation->get_static( 'statuses' );
+		$statuses[] = 'warnings';
 		foreach( $statuses as $status ) {
 			$this->{$status.'_count'} = 0;
 		}

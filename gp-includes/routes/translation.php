@@ -91,6 +91,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			if ( 'current' == $data['status'] ) {
 				$translation->set_as_current();
 			}
+			wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
 			$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 			if ( $translations ) {
 				$t = $translations[0];
@@ -157,6 +158,8 @@ class GP_Route_Translation extends GP_Route_Main {
 								'Error with rejecting all %s translation.', $error), $error );
 			}
 		}
+
+		wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
 		gp_redirect( $bulk['redirect_to'] );
