@@ -201,7 +201,7 @@ class MO extends Gettext_Translations {
 	 * 	0x00 as a plural translations separator
 	 */
 	function &make_entry($original, $translation) {
-		$entry = & new Translation_Entry();
+		$entry = new Translation_Entry();
 		// look for context
 		$parts = explode(chr(4), $original);
 		if (isset($parts[1])) {
