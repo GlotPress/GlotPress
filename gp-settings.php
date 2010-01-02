@@ -297,7 +297,7 @@ if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
 		$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';
 		header( 'Location: ' . $install_uri );
 	}
-	die();
+	return;
 }
 
 gp_populate_notices();
