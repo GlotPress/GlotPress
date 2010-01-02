@@ -61,5 +61,17 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', 18881));
 		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', -18881));
 	}
+	
+	function test_digit_and_merge() {
+		$entry_digit_1 = new Translation_Entry(array('singular' => 1, 'translations' => array('1')));
+		$entry_digit_2 = new Translation_Entry(array('singular' => 2, 'translations' => array('2')));
+		$domain = new Translations();
+		$domain->add_entry($entry_digit_1);
+		$domain->add_entry($entry_digit_2);
+		$dummy_translation = new Translations;
+		$this->assertEquals( '1', $domain->translate( '1' ) );
+		$domain->merge_with( $dummy_translation );
+		$this->assertEquals( '1', $domain->translate( '1' ) );
+	}
    
 }

@@ -104,7 +104,9 @@ class Translations {
 	 * @return void
 	 **/
 	function merge_with(&$other) {
-		$this->entries = array_merge($this->entries, $other->entries);
+		foreach( $other->entries as &$entry ) {
+			$this->entries[$entry->key()] = $entry;
+		}
 	}
 }
 
