@@ -76,6 +76,7 @@ $i = 0;
 				'original' => 'Original string',
 				'translation' => 'Translation',
 				'priority' => 'Priority',
+				'references' => 'Filename in source',
 				'random' => 'Random',
 			), gp_array_get( $sort, 'by', 'original_date_added' ) );
 		?>
