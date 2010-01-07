@@ -9,7 +9,6 @@ class GP_Translation_Set extends GP_Thing {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
 		$set->locale_should_not_be('empty');
-		// TODO: do not allow translations sets with the same project, locale and slug. Might be good to constraint it in the DB
 	}
 	
 	function name_with_locale( $separator = '&rarr;') {

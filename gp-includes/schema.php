@@ -48,6 +48,7 @@ function gp_schema_get() {
 		`project_id` INT(10) DEFAULT NULL,
     	`locale` VARCHAR(10) DEFAULT NULL,
     	PRIMARY KEY (`id`),
+    	UNIQUE KEY `project_id_slug_locale` (`project_id`, `slug`, `locale`)
     ) TYPE = MYISAM;";
 
 	/*

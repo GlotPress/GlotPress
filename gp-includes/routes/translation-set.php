@@ -21,10 +21,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		}
 		$this->validate_or_redirect( $new_set, gp_url( '/sets/_new', array( 'project_id' => $new_set->project_id ) ) );
 		$set = GP::$translation_set->create_and_select( $new_set );
-		$project = GP::$project->get( $set->project_id );
+		if ( $set ) $project = GP::$project->get( $set->project_id );
 		if ( !$set ) {
 			$this->errors[] = __('Error in creating translation set!');
-			gp_redirect( gp_url( '/sets/_new', array( 'project_id' => $new_set['project_id'] ) ) );
+			gp_redirect( gp_url( '/sets/_new', array( 'project_id' => $new_set->project_id ) ) );
 		} else {
 			$this->notices[] = __('The translation set was created!');
 			gp_redirect( gp_url_project_locale( $project, $set->locale, $set->slug ) );
