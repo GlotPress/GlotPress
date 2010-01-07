@@ -97,6 +97,10 @@ table.translations td.checkbox {
     vertical-align: middle;
     text-align: center;
 }
+table.translations td.priority {
+    text-align: center;
+    font-size: 1.3em;
+}
 table.translations td.actions {
     text-align: center;
 }

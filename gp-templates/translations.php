@@ -132,6 +132,7 @@ $i = 0;
 <table id="translations" class="translations clear">
 	<tr>
 		<th>&bull;</th>
+		<th>Prio</th>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th>&mdash;</th>
