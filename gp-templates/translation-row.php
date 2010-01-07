@@ -1,9 +1,9 @@
 <?php
-$status_class = $t->translation_status;
-if ( !$status_class ) $class = 'untranslated';
+$status_class = $t->translation_status? 'status-'.$t->translation_status : 'untranslated';
 $warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
+$priority_class = 'priority-'.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority );
 ?>
-<tr class="preview <?php echo $parity().' status-'.$status_class.' '.$warning_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
+<tr class="preview <?php echo $parity().' '.$status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
 	<td class="checkbox"><input type="checkbox" name="selected-row[]" /></td>
 	<td class="original">			
 		<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
@@ -97,7 +97,7 @@ $warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
 			<dl>					
 				<dt>Context:</dt>
 				<dd><span class="context"><?php echo esc_translation($t->context); ?></span></dd>
-			</dl>	
+			</dl>
 			<?php endif; ?>				
 			<?php if ( $t->extracted_comment ): ?>
 			<dl>					
@@ -119,6 +119,15 @@ $warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
 			<?php endif; ?>
 			
 			<?php references( $project, $t ); ?>
+			
+			<dl>
+			    <dt>Priority of the original:</dt>
+			<?php if ( $can_write ): ?>
+			    <?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority') ); ?>
+			<?php else: ?>
+			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
+			<?php endif; ?>
+			</dl>
 		</div>
 		<div class="actions">
 		<?php if ( $can_edit ): ?>

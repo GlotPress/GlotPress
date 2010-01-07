@@ -50,6 +50,7 @@ $gp.editor = function($){ return {
 		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show);
 		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);
 		$('a.discard-warning', $gp.editor.table).click($gp.editor.hooks.discard_warning);
+		$('select.priority', $gp.editor.table).change($gp.editor.hooks.set_priority);
 	},
 	replace_current: function(html) {
 		if (!$gp.editor.current) return;
@@ -90,6 +91,28 @@ $gp.editor = function($){ return {
 			}
 		});
 	},
+	set_priority: function(select) {
+		if (!$gp.editor.current) return;
+		var editor = $gp.editor.current;
+		select.attr('disabled', 'disabled');
+		$gp.notices.notice('Setting priority&hellip;');
+		data = {priority: $('option:selected', select).attr('value')};
+		$.ajax({type: "POST", url: $gp_editor_options.set_priority_url.replace('%original-id%', editor.original_id), data: data,
+			success: function(data){
+				select.attr('disabled', '');
+				$gp.notices.success('Priority set!');
+				// set CSS class
+				var new_priority_class = 'priority-'+$('option:selected', select).text();
+				$gp.editor.current.addClass(new_priority_class);
+				$gp.editor.current.preview.addClass(new_priority_class);
+			},
+			error: function(xhr, msg, error) {
+				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the priority!';
+				$gp.notices.error(msg);
+			}
+		});
+		
+	},
 	discard_warning: function(link) {
 		if (!$gp.editor.current) return;
 		$gp.notices.notice('Discarding&hellip;');
@@ -129,6 +152,10 @@ $gp.editor = function($){ return {
 		},
 		discard_warning: function() {
 			$gp.editor.discard_warning($(this));
+			return false;
+		},
+		set_priority: function() {
+			$gp.editor.set_priority($(this));
 			return false;
 		}
 	}

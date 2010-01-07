@@ -1,5 +1,5 @@
 <?php
-class GP_Route_Translation extends GP_Route_Main {	
+class GP_Route_Translation extends GP_Route_Main {
 	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -57,8 +57,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		$total_translations_count = GP::$translation->found_rows;
 		$per_page = GP::$translation->per_page;
 		$can_edit = GP::$user->logged_in();
+		$can_write = $this->can( 'write', 'project', $project->id );
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
+		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '_discard-warning' ) );
 		$approve_action = gp_url_join( $url, '_approve' );
 		gp_tmpl_load( 'translations', get_defined_vars() );
@@ -97,6 +99,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				$t = $translations[0];
 				$parity = returner( 'even' );
 				$can_edit = GP::$user->logged_in();
+				$can_write = $this->can( 'write', 'project', $project->id );
 				$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 				$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
 			} else {

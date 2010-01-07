@@ -58,7 +58,6 @@ class GP_Validation_Rules {
 			}
 			$args = $rule['args'];
 			array_unshift( $args, $value );
-			// TODO: refactor
 			if ( 'positive' == $rule['kind'] ) {
 				if ( !call_user_func_array( $callback['positive'], $args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule, $value );
@@ -104,5 +103,8 @@ class GP_Validators {
 
 GP_Validators::register( 'empty', lambda( '$value', 'empty($value)' ) );
 GP_Validators::register( 'positive_int', lambda( '$value', '((int)$value > 0)' ) );
+GP_Validators::register( 'int', lambda( '$value', '(bool)preg_match("/^-?\d+$/", $value)' ) );
 GP_Validators::register( 'null', lambda( '$value', 'is_null($value)' ) );
+GP_Validators::register( 'between', lambda( '$value, $start, $end', '$value >= $start && $value <= $end' ) );
+GP_Validators::register( 'between_exclusive', lambda( '$value, $start, $end', '$value > $start && $value < $end' ) );
 

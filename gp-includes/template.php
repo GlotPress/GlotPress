@@ -79,8 +79,10 @@ function gp_js_focus_on( $html_id ) {
 	return '<script type="text/javascript">document.getElementById("'.$html_id.'").focus();</script>';
 }
 
-function gp_select( $name_and_id, $options, $selected_key ) {
-	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "'>\n";
+function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
+	$attributes = gp_html_attributes( $attrs );
+	$attributes = $attributes? " $attributes" : '';
+	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
 	foreach( $options as $value => $label ) {
 		$selected = $value == $selected_key? " selected='selected'" : '';
 		$res .= "\t<option value='".esc_attr( $value )."' $selected>" . esc_html( $label ) . "</option>\n";
@@ -147,4 +149,18 @@ function gp_pagination( $page, $per_page, $objects ) {
 	</div>
 HTML;
 	return apply_filters( 'gp_pagination', $html, $page, $per_page, $objects );
+}
+
+function gp_html_attributes( $attrs ) {
+	$attrs = wp_parse_args( $attrs );
+	$strings = array();
+	foreach( $attrs as $key => $value ) {
+		$strings[] = $key.'="'.esc_attr( $value ).'"';
+	}
+	return implode( ' ', $strings );
+}
+
+function gp_attrs_add_class( $attrs, $class_name ) {
+	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
+	return $attrs;
 }

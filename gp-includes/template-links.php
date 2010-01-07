@@ -72,18 +72,3 @@ function gp_link_login() {
 	$args = func_get_args();
 	echo call_user_func_array('gp_link_login_get', $args);
 }
-
-
-function gp_html_attributes( $attrs ) {
-	$attrs = wp_parse_args( $attrs );
-	$strings = array();
-	foreach( $attrs as $key => $value ) {
-		$strings[] = $key.'="'.esc_attr( $value ).'"';
-	}
-	return implode( ' ', $strings );
-}
-
-function gp_attrs_add_class( $attrs, $class_name ) {
-	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
-	return $attrs;
-}

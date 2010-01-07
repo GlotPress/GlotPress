@@ -30,4 +30,25 @@ class GP_Test_Validation extends GP_UnitTestCase {
 		$minnie = new Mouse( array( 'id' => 5, 'name' => '', 'rating' => 11, 'cat_id' => 1, ) );
 		$this->assertEquals( false, $minnie->validate() );
 	}
+	
+	function test_is_int() {
+	   $callback = GP_Validators::get( 'int' );
+	   $f = $callback['positive'];
+	   $this->assertEquals( true, $f('0') );
+	   $this->assertEquals( true, $f('1') );
+	   $this->assertEquals( true, $f('-1') );
+	   $this->assertEquals( true, $f('514') );
+	   $this->assertEquals( true, $f('-514') );
+	   $this->assertEquals( false, $f('aaa1aaa') );
+	   $this->assertEquals( false, $f('2.3') );
+	   $this->assertEquals( false, $f('aaa1') );
+	   $this->assertEquals( false, $f('1aaa') );
+	}
+	
+	function test_between() {
+	   $callback = GP_Validators::get( 'between' );
+	   $f = $callback['positive'];
+	   $this->assertEquals( true, $f( 0, -1, 2 ) );
+	}
+	
 }

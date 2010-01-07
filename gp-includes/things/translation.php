@@ -96,7 +96,10 @@ class GP_Translation extends GP_Thing {
 		} elseif ( 'no' == gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NULL';
 		}
-				
+		
+		if ( !GP::$user->current()->can( 'admin' ) ) {
+		    $where[] = 'o.priority > -2';
+		}
 		
 		$join_where = array();
 		$status = gp_array_get( $filters, 'status', 'current_or_waiting' );

@@ -32,6 +32,7 @@ class GP_Router {
 		$path = '(.+?)';
 		$projects = 'projects';
 		$project = $projects.'/'.$path;
+		$id = '(\d+)';
 		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 		// overall structure
 		return apply_filters( 'routes', array(
@@ -71,6 +72,8 @@ class GP_Router {
 
 			"get:/sets/_new" => array('GP_Route_Translation_Set', 'new_get'),
 			"post:/sets/_new" => array('GP_Route_Translation_Set', 'new_post'),
+			
+			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
 		) );
 	}
 
@@ -190,7 +193,6 @@ class GP_Route {
 		}
 	}
 
-	
 	function logged_in_or_forbidden() {
 		if ( !GP::$user->logged_in() ) {
 			$this->die_with_error( 'Forbidden', 403 );

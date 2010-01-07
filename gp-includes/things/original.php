@@ -4,12 +4,15 @@ class GP_Original extends GP_Thing {
 	var $table_basename = 'originals';
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $non_updatable_attributes = array( 'id', 'path' );
-
+	
+    static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 
 	function restrict_fields( $original ) {
 		$original->singular_should_not_be('empty');
 		$original->status_should_not_be('empty');
 		$original->project_id_should_be('positive_int');
+		$original->priority_should_be('int');
+		$original->priority_should_be('between', -2, 1);
 	}
 
 	function normalize_fields( $args ) {
@@ -49,8 +52,7 @@ class GP_Original extends GP_Thing {
 				
 			// TODO: do not obsolete similar translations
 			
-			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields
-						
+			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields						
 			$existing = GP::$original->by_project_id_and_entry( $project->id, $entry );
 			if ( $existing ) {
 				$existing->update( $data );
