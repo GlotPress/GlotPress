@@ -43,6 +43,17 @@ function gp_url( $path, $query = null ) {
 	return apply_filters( 'gp_url', $url, $path, $query );
 }
 
+/**
+ * Converts an absolute URL to the corresponding SSL URL if the GlotPress
+ * settings allow SSL
+ */
+function gp_url_ssl( $url ) {
+	if ( defined( 'GP_SSL' ) && GP_SSL ) {
+		$url = preg_replace( '/^http:/', 'https:', $url );
+	}
+	return $url;
+}
+
 function gp_url_project( $project_or_path, $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
 	return gp_url( array( 'projects', $project_path, $path ), $query );

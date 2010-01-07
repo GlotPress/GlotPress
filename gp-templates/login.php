@@ -5,7 +5,7 @@ gp_breadcrumb( array(
 ) );
 gp_tmpl_header();
 ?>
-<form action="" method="post">
+	<form action="<?php echo gp_url_ssl( gp_url_current() ); ?>" method="post">
 	<dl>
 		<dt><label for="user_login"><?php _e('Username'); ?></label></dt>
 		<dd><input type="text" value="" id="user_login" name="user_login" /></dd>
