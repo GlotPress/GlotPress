@@ -20,5 +20,4 @@ gp_tmpl_header();
 <script type="text/javascript" charset="utf-8">
 	document.getElementById('user_login').focus();
 </script>
-<?php gp_tmpl_footer(); ?>
-
+<?php gp_tmpl_footer();
