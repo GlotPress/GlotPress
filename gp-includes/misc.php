@@ -82,8 +82,8 @@ function gp_populate_notices() {
 	foreach ($_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
 			GP::$redirect_notices[$suffix] = $value;
+			setcookie( $key, '', 0, gp_url_path() );
 		}
-		setcookie( $key, '', 0, gp_url_path() );
 	}
 }
 

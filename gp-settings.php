@@ -226,23 +226,32 @@ if ( !class_exists( 'WP_Pass' ) ) {
 // So, make all local variables, global
 gp_set_globals( get_defined_vars() );
 
+/**
+ * It is possible to define this in wp-config.php and it will be used as the domain for all cookies.
+ * Set it carefully for sharing cookies amonst subdomains
+ * 
+ * @link http://curl.haxx.se/rfc/cookie_spec.html
+ */
+if ( !defined('GP_COOKIE_DOMAIN') )
+	define('GP_COOKIE_DOMAIN', false);
+
 if ( !class_exists( 'WP_Auth' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-auth.php' );
 	$cookies = array();
 	$cookies['auth'][] = array(
-		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
+		'domain' => GP_COOKIE_DOMAIN,
 		'path' => gp_url_path(),
 		'name' => gp_const_get( 'GP_AUTH_COOKIE', 'glotpress_auth' ),
 	);
 	$cookies['secure_auth'][] = array(
-		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
+		'domain' => GP_COOKIE_DOMAIN,
 		'path' => gp_url_path(),
 		'name' => gp_const_get( 'GP_SECURE_AUTH_COOKIE', 'glotpress_sec_auth' ),
 		'secure' => 'true',
 	);
 
 	$cookies['logged_in'][] = array(
-		'domain' => isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : '' ,
+		'domain' => GP_COOKIE_DOMAIN,
 		'path' => gp_url_path(),
 		'name' => gp_const_get( 'GP_LOGGED_IN_COOKIE', 'glotpress_logged_in' ),
 	);
