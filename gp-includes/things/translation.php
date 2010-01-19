@@ -75,7 +75,7 @@ class GP_Translation extends GP_Thing {
 			// if the first letters is s, %%s is causing db::prepare trouble, capital S doesn't
 			$no_leading_s_term = preg_replace( '/^s/', 'S', $filters['term']);
 			$like = "LIKE '%%".$this->like_escape_printf($gpdb->escape($no_leading_s_term))."%%'";
-			$where[] = '('.implode(' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1')) ).')';
+			$where[] = '('.implode(' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context')) ).')';
 		}
 		if ( 'yes' == gp_array_get( $filters, 'translated' ) ) {
 			$where[] = 't.translation_0 IS NOT NULL';
