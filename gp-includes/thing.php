@@ -85,7 +85,7 @@ class GP_Thing {
 	function one() {
 		global $gpdb;
 		$args = func_get_args();
-		return $this->coerce( $gpdb->get_row( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
+		return $this->coerce( $gpdb->get_row( $this->prepare( $args ) ) );
 	}
 
 	/**
@@ -97,10 +97,19 @@ class GP_Thing {
 	function value() {
 		global $gpdb;
 		$args = func_get_args();
-		$res = $gpdb->get_var( call_user_func_array( array($gpdb, 'prepare'), $args ) );
+		$res = $gpdb->get_var( $this->prepare( $args ) );
 		return is_null( $res )? false : $res;
 	}
 
+	function prepare( $args ) {
+		global $gpdb;
+		if ( 1 == count( $args ) ) {
+			return $args[0];
+		} else {
+			$query = array_shift( $args );
+			return $gpdb->prepare( $query, $args );
+		}
+	}
 
 	/**
 	 * Retrieves multiple rows from this table
@@ -111,7 +120,7 @@ class GP_Thing {
 	function many() {
 		global $gpdb;
 		$args = func_get_args();
-		return $this->map( $gpdb->get_results( call_user_func_array( array($gpdb, 'prepare'), $args ) ) );
+		return $this->map( $gpdb->get_results( $this->prepare( $args ) ) );
 	}
 
 	function find_many( $conditions ) {
@@ -129,7 +138,7 @@ class GP_Thing {
 	function query() {
 		global $gpdb;
 		$args = func_get_args();
-		return $gpdb->query( call_user_func_array( array($gpdb, 'prepare'), $args ) );
+		return $gpdb->query( $this->prepare( $args ) );
 	}
 
 	/**

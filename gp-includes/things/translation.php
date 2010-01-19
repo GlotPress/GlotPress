@@ -72,10 +72,8 @@ class GP_Translation extends GP_Thing {
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			// if the first letters is s, %%s is causing db::prepare trouble, capital S doesn't
-			$no_leading_s_term = preg_replace( '/^s/', 'S', $filters['term']);
-			$like = "LIKE '%%".$this->like_escape_printf($gpdb->escape($no_leading_s_term))."%%'";
-			$where[] = '('.implode(' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context')) ).')';
+			$like = "LIKE '%" . like_escape( $gpdb->escape( gp_array_get( $filters, 'term' ) ) ) . "%'";
+			$where[] = '(' . implode( ' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context')) ) . ')';
 		}
 		if ( 'yes' == gp_array_get( $filters, 'translated' ) ) {
 			$where[] = 't.translation_0 IS NOT NULL';
@@ -143,11 +141,11 @@ class GP_Translation extends GP_Thing {
 		$rows = $this->many_no_map( "
 		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 		    FROM $gpdb->originals as o
-		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = %d $join_where
-		    WHERE o.project_id = %d AND o.status LIKE '+%%' $where ORDER BY $sort_by $sort_how $limit", $translation_set->id, $project->id );
+		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
+		    WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sort_by $sort_how $limit" );
 		$this->found_rows = $this->found_rows();
 		$translations = array();
-		foreach( $rows as $row ) {
+		foreach( (array)$rows as $row ) {
 			if ( $row->user_id && $this->per_page != 'no-limit' ) {
 				$user = GP::$user->get( $row->user_id );
 				if ( $user ) $row->user_login = $user->user_login;
