@@ -72,7 +72,7 @@ class GP_Translation extends GP_Thing {
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			$like = "LIKE '%" . like_escape( $gpdb->escape( gp_array_get( $filters, 'term' ) ) ) . "%'";
+			$like = "LIKE '%" . ( $gpdb->escape( like_escape ( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			$where[] = '(' . implode( ' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context')) ) . ')';
 		}
 		if ( 'yes' == gp_array_get( $filters, 'translated' ) ) {
