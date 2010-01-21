@@ -30,7 +30,7 @@ class GP_Translation_Set extends GP_Thing {
 		    WHERE project_id = %d ORDER BY name ASC", $project_id );
 	}
 	
-	function export_as_po() {
+	function export_as_po( $filters = array() ) {
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
 		// TODO: rename locale column to locale_slug and use freely $this->locale as the locale object
 		$locale = GP_Locales::by_slug( $this->locale );
@@ -45,7 +45,9 @@ class GP_Translation_Set extends GP_Thing {
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . gp_get_option('version') );
 		
-		$entries = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current') );
+		$filters['status'] = 'current';
+		
+		$entries = GP::$translation->for_translation( $this->project, $this, 'no-limit', $filters );
 		foreach( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}

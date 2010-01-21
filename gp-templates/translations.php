@@ -104,7 +104,7 @@ $i = 0;
 		<dd>
 			<?php echo gp_radio_buttons('bulk[action]',
 				array(
-					'approve-all' => 'All',
+ 					'approve-all' => 'All',
 					'approve-selected' => 'Selected',
 				), null );
 			?>			
@@ -157,7 +157,10 @@ $i = 0;
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') );
 		}
 		if ( GP::$user->logged_in() ) {
-			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) ), __('Export as PO file') );
+			$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
+			$export_link = gp_link_get( $export_url , __('Export as PO file') );
+			$export_link .= ' (' . gp_link_get( add_query_arg( array( 'filters' => $filters ), $export_url ), 'filtered only' ).')';
+			$footer_links[] = $export_link;
 		}
 		if ( $can_write ) {
 		    $footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ), 'Permissions' );

@@ -39,7 +39,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				
 		echo "# Translation of {$project->name} in {$locale->english_name}\n";
 		echo "# This file is distributed under the same license as the {$project->name} package.\n";
-		echo $translation_set->export_as_po();
+		echo $translation_set->export_as_po( gp_get( 'filters', array() ) );
 	}
 
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
