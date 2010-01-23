@@ -5,6 +5,8 @@
 
 class GP_Router {
 	
+	var $api_prefix = 'api';
+	
 	function GP_Router( $urls = null ) {
 		if ( is_null( $urls ) )
 			$this->urls = $this->routes();
@@ -79,35 +81,43 @@ class GP_Router {
 
 	
 	function route() {
-		$request_uri = $this->request_uri();
+		$real_request_uri = $this->request_uri();
+		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
-		foreach( $this->urls as $re => $func ) {
-			foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
-				if ( gp_startswith( $re, $http_method.':' ) ) {
-					if ( $http_method != $request_method ) continue;
-					$re = substr( $re, strlen( $http_method.':' ));
-					break;
+		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
+		if ( $api ) {
+			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
+		}
+		foreach( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
+			foreach( $this->urls as $re => $func ) {
+				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
+					if ( gp_startswith( $re, $http_method.':' ) ) {
+						if ( $http_method != $request_method ) continue;
+						$re = substr( $re, strlen( $http_method.':' ));
+						break;
+					}
 				}
-			}
-			if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
-				if ( is_array( $func ) ) {
-					list( $class, $method ) = $func;
-					$route = new $class;
-					$route->last_method_called = $method;
-					$route->class_name = $class;
-					GP::$current_route = &$route;
-					$route->before_request();
-					$route->request_running = true;
-					// make sure after_request() is called even if we exit() in the request
-					register_shutdown_function( array( &$route, 'after_request'));
-					call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
-					$route->after_request();
-					do_action( 'after_request', $class, $method );
-					$route->request_running = false;
-				} else {
-					call_user_func_array( $func, array_slice( $matches, 1 ) );
+				if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
+					if ( is_array( $func ) ) {
+						list( $class, $method ) = $func;
+						$route = new $class;
+						$route->api = $api;
+						$route->last_method_called = $method;
+						$route->class_name = $class;
+						GP::$current_route = &$route;
+						$route->before_request();
+						$route->request_running = true;
+						// make sure after_request() is called even if we exit() in the request
+						register_shutdown_function( array( &$route, 'after_request'));
+						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
+						$route->after_request();
+						do_action( 'after_request', $class, $method );
+						$route->request_running = false;
+					} else {
+						call_user_func_array( $func, array_slice( $matches, 1 ) );
+					}
+					return;
 				}
-				return;
 			}
 		}
 		return gp_tmpl_404();
@@ -220,5 +230,18 @@ class GP_Route {
 		header("Content-Disposition: attachment; filename=$filename");
 		header("Content-Type: application/octet-stream", true);
 		header('Connection: close');
+	}
+	
+	/**
+	 * Loads a template.
+	 * 
+	 * @param string $template template name to load
+	 * @param array $args Associative array with arguements, which will be exported in the template PHP file
+	 * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
+	 * 		the template name will be suffixed with .api. The actual file loaded will be template.api.php
+	 */
+	function tmpl( $template, $args = array(), $honor_api = true ) {
+		if ( $this->api && $honor_api !== false && 'no-api' != $honor_api ) $template = $template.'.api';
+		return gp_tmpl_load( $template, $args );
 	}
 }

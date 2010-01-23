@@ -4,7 +4,7 @@ class GP_Route_Project extends GP_Route_Main {
 	function index() {
 		$title = __('Projects');
 		$projects = GP::$project->top_level();
-		gp_tmpl_load( 'projects', get_defined_vars() );
+		$this->tmpl( 'projects', get_defined_vars() );
 	}
 	
 	function single( $project_path ) {

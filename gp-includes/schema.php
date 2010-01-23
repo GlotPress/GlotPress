@@ -145,6 +145,16 @@ function gp_schema_get() {
 		KEY `user_id_action` (`user_id`,`action`)
 	);";
 
+	// API keys
+	$gp_schema['api_keys'] = "CREATE TABLE IF NOT EXISTS `$gpdb->api_keys` (
+		`id` INT(10) NOT NULL AUTO_INCREMENT,
+		`user_id` INT(10) NOT NULL,
+		`api_key` VARCHAR(16) NOT NULL,
+		PRIMARY KEY (`id`),
+		UNIQUE KEY `user_id` (`user_id`),
+		UNIQUE KEY `api_key` (`api_key`)
+	);";
+
 	$gp_schema = apply_filters( 'gp_schema_pre_charset', $gp_schema );
 
 	// Set the charset and collation on each table

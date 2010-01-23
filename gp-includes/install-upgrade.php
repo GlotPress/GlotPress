@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Guesses the final installed URI based on the location of the install script
  *
@@ -31,7 +30,6 @@ function gp_upgrade_db() {
 	gp_upgrade_data( gp_get_option_from_db( 'gp_db_version' ) );
 
 	gp_update_db_version();
-    
 }
 
 function gp_upgrade() {

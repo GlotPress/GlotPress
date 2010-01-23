@@ -57,7 +57,7 @@ class GP_Translation extends GP_Thing {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
-		
+
 	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $gpdb;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
