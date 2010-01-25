@@ -16,135 +16,134 @@ $i = 0;
 ?>
 <!-- TODO: use another form for bulk actions -->
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
-	<?php if ( $can_approve ): ?>	
-	<a href="#" class="revealing bulk">Bulk &darr;</a> <strong class="separator">&bull;</strong>
+	<?php if ( $can_approve ): ?>
+	<a href="#" class="revealing bulk"><?php _e('Bulk &darr;'); ?></a> <strong class="separator">&bull;</strong>
 	<?php endif; ?>
-	<a href="#" class="revealing filter">Filter &darr;</a> <span class="separator">&bull;</span>
-	<a href="#" class="revealing sort">Sort &darr;</a> <strong class="separator">&bull;</strong>
+	<a href="#" class="revealing filter"><?php _e('Filter &darr;'); ?></a> <span class="separator">&bull;</span>
+	<a href="#" class="revealing sort"><?php _e('Sort &darr;'); ?></a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
-	$filter_links[] = gp_link_get( $url, 'All' );
-	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'priority', 'sort[how]' => 'desc',
-	    'filters[status]' => 'either'), $url ), 'Untranslated' );
-	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random', 'filters[status]' => 'either'), $url ), 'Random Untranslated' );
+	$filter_links[] = gp_link_get( $url, __('All') );
+	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'priority', 'sort[how]' => 'desc', 'filters[status]' => 'either'), $url ), __('Untranslated') );
+	$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random', 'filters[status]' => 'either'), $url ), __('Random Untranslated') );
 	if ( $can_approve ) {
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
-				'Waiting' );
+				__('Waiting') );
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[warnings]' => 'yes', 'filters[status]' => 'current_or_waiting', 'sort[by]' => 'translation_date_added'), $url ),
-				'Warnings' );
-				
+				__('Warnings') );
+	
 	}
 	// TODO: with warnings
 	// TODO: saved searches
 	echo implode( '&nbsp;<span class="separator">&bull;</span>&nbsp;', $filter_links );
 	?>
-	<dl class="filters-expanded filters hidden clearfix">		
- 		<dt><label for="filters[term]">Term:</label></dt>
-		<dd><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>		
- 		<dt><label for="filters[translated]">With translation:</label></dt>
+	<dl class="filters-expanded filters hidden clearfix">
+ 		<dt><label for="filters[term]"><?php _e('Term:'); ?></label></dt>
+		<dd><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>
+ 		<dt><label for="filters[translated]"><?php _e('With translation:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[translated]',
 				array(
-					'yes' => 'Yes',
-					'no' => 'No',
-					'either' => 'Either',
+					'yes' => __('Yes'),
+					'no'  => __('No'),
+					'either' => __('Either'),
 				), gp_array_get( $filters, 'translated', 'either' ) );
-			?>			
-		</dd>		
-
- 		<dt><label for="filters[status]">Status:</label></dt>
+			?>
+		</dd>
+ 		
+ 		<dt><label for="filters[status]"><?php _e('Status:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
 				array(
-					'current_or_waiting' => 'Current or waiting',
-					'current' => 'Current only',
-					'old' => 'Approved, but obsoleted by another string',
-					'waiting' => 'Waiting approval',
-					'rejected' => 'Rejected',
-					'either' => 'Any',
+					'current_or_waiting' => __('Current or waiting'),
+					'current' => __('Current only'),
+					'old' => __('Approved, but obsoleted by another string'),
+					'waiting' => __('Waiting approval'),
+					'rejected' => __('Rejected'),
+					'either' => __('Any'),
 				), gp_array_get( $filters, 'status', 'current_or_waiting' ) );
-			?>			
-		</dd>		
+			?>
+		</dd>
 		
-		<dd><input type="submit" value="Filter" name="filter" /></dd>
+		<dd><input type="submit" value="<?php esc_attr(__('Filter')); ?>" name="filter" /></dd>
 	</dl>
-	<dl class="filters-expanded sort hidden clearfix">		
-		<dt>By:</dt>
+	<dl class="filters-expanded sort hidden clearfix">
+		<dt><?php _e('By:'); ?></dt>
 		<dd>
 		<?php echo gp_radio_buttons('sort[by]',
 			array(
-				'original_date_added' => 'Date added (original)',
-				'translation_date_added' => 'Date added (translation)',
-				'original' => 'Original string',
-				'translation' => 'Translation',
-				'priority' => 'Priority',
-				'references' => 'Filename in source',
-				'random' => 'Random',
+				'original_date_added' => __('Date added (original)'),
+				'translation_date_added' => __('Date added (translation)'),
+				'original' => __('Original string'),
+				'translation' => __('Translation'),
+				'priority' => __('Priority'),
+				'references' => __('Filename in source'),
+				'random' => __('Random'),
 			), gp_array_get( $sort, 'by', 'original_date_added' ) );
 		?>
 		</dd>
-		<dt>How:</dt>
+		<dt><?php _e('How:'); ?></dt>
 		<dd>
 		<?php echo gp_radio_buttons('sort[how]',
 			array(
-				'asc' => 'Ascending',
-				'desc' => 'Descending',
+				'asc' => __('Ascending'),
+				'desc' => __('Descending'),
 			), gp_array_get( $sort, 'how', 'desc' ) );
 		?>
 		</dd>
-		<dd><input type="submit" value="Sort" name="sorts" /></dd>
+		<dd><input type="submit" value="<?php esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
 	<dl class="hidden bulk-actions filters-expanded clearfix">
-		<dt class="select">Select:</dt>
+		<dt class="select"><?php _e('Select:'); ?></dt>
 		<dd>
-			<a href="#" class="all">All</a>
-			<a href="#" class="none">None</a>			
+			<a href="#" class="all"><?php _e('All'); ?></a>
+			<a href="#" class="none"><?php _e('None'); ?></a>
 		</dd>
-		<dt>Approve:</dt>
+		<dt><?php _e('Approve:'); ?></dt>
 		<dd>
 			<?php echo gp_radio_buttons('bulk[action]',
 				array(
- 					'approve-all' => 'All',
-					'approve-selected' => 'Selected',
+ 					'approve-all' => __('All'),
+					'approve-selected' => __('Selected'),
 				), null );
-			?>			
+			?>
 		</dd>
-		<dt>Reject:</dt>
+		<dt><?php _e('Reject:'); ?></dt>
 		<dd>
 			<?php echo gp_radio_buttons('bulk[action]',
 				array(
-					'reject-all' => 'All',
-					'reject-selected' => 'Selected',
+					'reject-all' => __('All'),
+					'reject-selected' => __('Selected'),
 				), null );
-			?>			
+			?>
 		</dd>
 		<dd>
 			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]">
 			<input type="hidden" name="bulk[translation-ids]" value="" id="bulk[translation-ids]">
-			<input type="submit" value="Approve/Reject" name="approve" />
-			<p class="ternary"><strong>Note:</strong>&nbsp;Bulk edit works only on the current page.</p>
-		</dd>		
-	</dl>	
-	
+			<input type="submit" value="<?php esc_attr(__('Approve/Reject')); ?>" name="approve" />
+			<p class="ternary"><?php _e('<strong>Note:</strong>&nbsp;Bulk edit works only on the current page.'); ?></p>
+		</dd>
+	</dl>
+
 </form>
 
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <table id="translations" class="translations clear">
 	<tr>
-		<th>&bull;</th>
-		<th>Prio</th>
+		<th><?php _e('&bull;'); ?></th>
+		<th><?php _e('Prio'); ?></th>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th>&mdash;</th>
 	</tr>
 <?php foreach( $translations as $t ):
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
-?>	
+?>
 <?php endforeach; ?>
 <?php
 	if ( !$translations ):
 ?>
-	<tr><td colspan="4">No translations were found!</td></tr>
+	<tr><td colspan="4"><?php _e('No translations were found!'); ?></td></tr>
 <?php
 	endif;
 ?>
@@ -163,7 +162,7 @@ $i = 0;
 			$footer_links[] = $export_link;
 		}
 		if ( $can_write ) {
-		    $footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ), 'Permissions' );
+		    $footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ), __('Permissions') );
 		}
 		echo implode( ' &bull; ', $footer_links );
 	?>

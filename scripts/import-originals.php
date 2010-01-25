@@ -12,11 +12,11 @@ class GP_Script_Import_Originals extends GP_CLI {
 			$this->usage();
 		}
 		$project = GP::$project->by_path( $this->options['p'] );
-		if ( !$project ) $this->error( 'Project not found!' );
+		if ( !$project ) $this->error( __('Project not found!') );
 		
 		$translations = new PO();
 		$translations->import_from_file( $this->options['f'] );
-		if ( !$translations ) $this->error( 'Error importing from POT file!' );
+		if ( !$translations ) $this->error( __('Error importing from POT file!') );
 		
 		GP::$original->import_for_project( $project, $translations );
 	}

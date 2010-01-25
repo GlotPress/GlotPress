@@ -34,6 +34,16 @@ define('GP_NONCE_KEY', 'put your unique phrase here');
 /**#@-*/
 
 /**
+ * GlotPress Localized Language, defaults to English.
+ *
+ * Change this to localize WordPress.  A corresponding MO file for the chosen
+ * language must be installed to languages/. For example, install
+ * fr_FR.mo to languages/ and set GP_LANG to 'fr_FR' to enable French
+ * language support.
+ */
+define('GP_LANG', '');
+
+/**
  * GlotPress Database Table prefix.
  *
  * You can have multiple installations in one database if you give each a unique

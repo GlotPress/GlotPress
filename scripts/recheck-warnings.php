@@ -10,7 +10,7 @@ class GP_Script_Recheck_Warnings extends GP_Translation_Set_Script {
 			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale );
 			if ( $warnings != $entry->warnings ) {
 				$translation = new GP_Translation( array('id' => $entry->id) );
-				echo "Updating warnings for $entry->id\n";
+				echo sprintf( __("Updating warnings for %s"), $entry->id ) . "\n";
 				$translation->update( array('warnings' => $warnings) );
 			}
 		}

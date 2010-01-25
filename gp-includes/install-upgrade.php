@@ -52,11 +52,11 @@ function gp_install() {
 	
 	gp_update_option( 'uri', guess_uri() );
 	
-	$gpdb->insert( $gpdb->projects, array('name' => 'Sample', 'slug' => 'sample', 'description' => 'A Sample Project', 'path' => 'sample') );
-	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'GlotPress FTW', 'comment' => 'FTW means For The Win', 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
-	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => 'A GlotPress', 'plural' => 'Many GlotPresses' ) );
+	$gpdb->insert( $gpdb->projects, array('name' => __('Sample'), 'slug' => __('sample'), 'description' => __('A Sample Project'), 'path' => __('sample') ) );
+	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => __('GlotPress FTW'), 'comment' => __('FTW means For The Win'), 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
+	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => __('A GlotPress'), 'plural' => __('Many GlotPresses') ) );
 	
-	$gpdb->insert( $gpdb->translation_sets, array( 'name' => 'My Translation', 'slug' => 'my', 'project_id' => 1, 'locale' => 'bg', ) );
+	$gpdb->insert( $gpdb->translation_sets, array( 'name' => __('My Translation'), 'slug' => __('my'), 'project_id' => 1, 'locale' => 'bg', ) );
 	
 	// TODO: ask the user for an e-mail -- borrow WordPress install process
 	if ( !defined('CUSTOM_USER_TABLE') ) {

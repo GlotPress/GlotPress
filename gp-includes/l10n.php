@@ -10,6 +10,10 @@ function get_locale() {
 	if (isset($locale))
 		return apply_filters( 'locale', $locale );
 
+	// GP_LANG is defined in gp-config.
+	if ( defined('GP_LANG') )
+		$locale = GP_LANG;
+		
 	// TODO: get locale from DB
 
 	if (empty($locale))

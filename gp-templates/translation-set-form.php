@@ -2,7 +2,7 @@
 	<dt><label for="set[locale]"><?php _e('Locale');  ?></label></dt>
 	<dd>
 		<?php echo gp_select( 'set[locale]', $all_locale_options, $set->locale); ?>
-		<a href="#" id="copy">Use as name</a>
+		<a href="#" id="copy"><?php _e('Use as name'); ?></a>
 	</dd>
 	
 	<dt><label for="set[name]"><?php _e('Name');  ?></label></dt>

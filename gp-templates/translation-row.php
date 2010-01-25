@@ -16,26 +16,26 @@ $priority_char = array(
 	<td class="priority" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
 	   <?php echo $priority_char[$t->priority][0] ?>
 	</td>
-	<td class="original">			
+	<td class="original">
 		<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
 		<?php if ( $t->context ): ?>
 		<span class="context" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 		<?php endif; ?>
-
+	
 	</td>
 	<td class="translation">
 	<?php
-		$edit_text = $can_edit? 'Double-click to add' : 'You <a href="'.gp_url_login().'">have to login</a> to add a translation.';
+		$edit_text = $can_edit? __('Double-click to add') : sprintf(__('You <a href="%s">have to login</a> to add a translation.'), gp_url_login());
 		$missing_text = "<span class='missing'>$edit_text</span>";
 		if ( !count( array_filter( $t->translations ) ) ):
 			echo $missing_text;
 		elseif ( !$t->plural ):
 			echo esc_translation( $t->translations[0] );
-		else: ?>				
+		else: ?>
 		<ul>
 			<?php
 				foreach( $t->translations as $translation ):
-			?>			
+			?>
 				<li><?php echo $translation? esc_translation( $translation ) : $missing_text; ?></li>
 			<?php
 				endforeach;
@@ -73,66 +73,68 @@ $priority_char = array(
 				</p>
 				<?php foreach( range( 0, $locale->nplurals - 1 ) as $plural_index ): ?>
 					<?php if ( $locale->nplurals > 1 ): ?>
-					<p class="plural-numbers">This plural form is used for numbers like: <span class="numbers"><?php  echo implode(', ', $locale->numbers_for_index( $plural_index) ); ?></span></p>										
+					<p class="plural-numbers"><?php printf(__('This plural form is used for numbers like: %s'),
+							'<span class="numbers">'.implode(', ', $locale->numbers_for_index( $plural_index ) ).'</span>' ); ?></p>
 					<?php endif; ?>
-					<?php textareas( $t, $can_edit, $plural_index ); ?>					
+					<?php textareas( $t, $can_edit, $plural_index ); ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		<?php endif; ?>
 		</div>
+		
 		<div class="meta">
-			<h3>Meta</h3>
+			<h3><?php _e('Meta'); ?></h3>
 			<dl>
-				<dt>Status:</dt>
+				<dt><?php _e('Status:'); ?></dt>
 				<dd><?php echo display_status( $t->translation_status ); ?></dd>
 				<!--
 				TODO: ajaxy actions for approve/set as current/reject
 			<?php if ( $can_approve ): ?>
 				<?php if ( gp_startswith( $t->translation_status, '-' ) ): ?>
-				<dd><a href="#" tabindex="-1">Set as current</a></dd>
+				<dd><a href="#" tabindex="-1"><?php _e('Set as current'); ?></a></dd>
 				<?php endif; ?>
 				<?php if ( $t->translation_status ): ?>
-				<dd><a href="#" tabindex="-1">Reject</a></dd>
+				<dd><a href="#" tabindex="-1"><?php _e('Reject'); ?></a></dd>
 				<?php endif; ?>
 			<?php endif; ?>
 				-->
 			</dl>
 			<!--
-			<dl>					
-				<dt>Priority:</dt>
+			<dl>
+				<dt><?php _e('Priority:'); ?></dt>
 				<dd><?php echo esc_html($t->priority); ?></dd>
 			</dl>
-			-->	
+			-->
 			
 			<?php if ( $t->context ): ?>
-			<dl>					
-				<dt>Context:</dt>
+			<dl>
+				<dt><?php _e('Context:'); ?></dt>
 				<dd><span class="context"><?php echo esc_translation($t->context); ?></span></dd>
 			</dl>
-			<?php endif; ?>				
+			<?php endif; ?>
 			<?php if ( $t->extracted_comment ): ?>
-			<dl>					
-				<dt>Comment:</dt>
+			<dl>
+				<dt><?php _e('Comment:'); ?></dt>
 				<dd><?php echo make_clickable( esc_translation($t->extracted_comment) ); ?></dd>
 			</dl>
 			<?php endif; ?>
 			<?php if ( $t->translation_added && $t->translation_added != '0000-00-00 00:00:00' ): ?>
 			<dl>
-				<dt>Date added:</dt>
+				<dt><?php _e('Date added:'); ?></dt>
 				<dd><?php echo $t->translation_added; ?> GMT</dd>
-			</dl>								
+			</dl>
 			<?php endif; ?>
 			<?php if ( $t->user_login ): ?>
 			<dl>
-				<dt>Translated by:</dt>
-				<dd><?php echo $t->user_login; ?></dd>				
-			</dl>								
+				<dt><?php _e('Translated by:'); ?></dt>
+				<dd><?php echo $t->user_login; ?></dd>
+			</dl>
 			<?php endif; ?>
 			
 			<?php references( $project, $t ); ?>
 			
 			<dl>
-			    <dt>Priority of the original:</dt>
+			    <dt><?php _e('Priority of the original:'); ?></dt>
 			<?php if ( $can_write ): ?>
 			    <?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority') ); ?>
 			<?php else: ?>
@@ -143,9 +145,9 @@ $priority_char = array(
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
 			<button class="ok">
-				<?php echo $can_approve? 'Add translation &rarr;' : 'Suggest new translation &rarr;'; ?>
+				<?php echo $can_approve? __('Add translation &rarr;') : __('Suggest new translation &rarr;'); ?>
 			</button>
-		<?php endif; ?>				
+		<?php endif; ?>
 			<a href="#" class="close"><?php _e('Cancel'); ?></a>
 		</div>
 	</td>

@@ -11,18 +11,23 @@ wp_enqueue_script( 'jquery' );
 		<?php gp_head(); ?>
 	</head>
 	<body>
-	    <div id="gp-js-message"></div>		
+	    <div id="gp-js-message"></div>
 		<h1>
-			<a href="<?php echo gp_url( '/' ); ?>"><img alt="GlotPress logo" src="<?php echo gp_url_img( 'glotpress-logo.png' ); ?>" /></a>
+			<a href="<?php echo gp_url( '/' ); ?>">
+				<img alt="<?php esc_attr(__('GlotPress logo')); ?>" src="<?php echo gp_url_img( 'glotpress-logo.png' ); ?>" />
+			</a>
+			
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
-			<?php if (GP::$user->logged_in()):
-					$user = GP::$user->current();
-			?>
-				Hi, <?php echo $user->user_login; ?>.
-				<a href="<?php echo gp_url('/logout')?>">Log out</a>
+			<?php 
+			if (GP::$user->logged_in()):
+				$user = GP::$user->current();
+				
+				printf( __('Hi, %s.'), $user->user_login );
+				?>
+				<a href="<?php echo gp_url('/logout')?>"><?php _e('Log out'); ?></a>
 			<?php else: ?>
-				<a href="<?php echo gp_url_login(); ?>">Log in</a>
+				<a href="<?php echo gp_url_login(); ?>"><?php _e('Log in'); ?></a>
 			<?php endif; ?>
 			</span>
 		</h1>

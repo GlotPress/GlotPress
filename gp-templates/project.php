@@ -44,23 +44,23 @@ gp_tmpl_header();
 	<?php endforeach; ?>
 	</ul>
 <?php else: ?>
-	<p>There are no translations of this project.</p>
+	<p><?php _e('There are no translations of this project.'); ?></p>
 <?php endif; ?>
 <?php if ( $can_write ): ?>
 	<div class="secondary actionlist">
-	<a href="#" class="personal-options" id="personal-options-toggle">Personal project options &darr;</a>
+	<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
 	<div class="personal-options">
 		<form action="<?php echo gp_url_project( $project, '_personal' ); ?>" method="post">
 		<dl>
 			<dt><label for="source-url-template"><?php _e('Source file URL');  ?></label></dt>
 			<dd>
 				<input type="text" value="<?php echo esc_html( $project->source_url_template() ); ?>" name="source-url-template" id="source-url-template" />
-				<small>URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>http://trac.example.org/browser/%file%#L%line%</code></small>
+				<small><?php _e('URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>http://trac.example.org/browser/%file%#L%line%</code>'); ?></small>
 			</dd>
 		</dl>
 		<p>
-			<input type="submit" name="submit" value="Save &rarr;" id="save" />
-			<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;">Cancel</a>
+			<input type="submit" name="submit" value="<?php esc_attr(__('Save &rarr;')); ?>" id="save" />
+			<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;"><?php _e('Cancel'); ?></a>
 		</p>		
 		</form>
 	</div>
