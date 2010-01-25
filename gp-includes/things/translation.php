@@ -63,10 +63,10 @@ class GP_Translation extends GP_Thing {
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 		$status_cond = '';
 
-		$sort_bys = array('original' => 'o.singular', 'translation' => 't.translation_0', 'priority' => 'o.priority',
-			'random' => 'RAND()', 'translation_date_added' => 't.date_added', 'original_date_added' => 'o.date_added',
+		$sort_bys = array('original' => 'o.singular %s', 'translation' => 't.translation_0 %s', 'priority' => 'o.priority %s, o.date_added DESC',
+			'random' => 'RAND()', 'translation_date_added' => 't.date_added %s', 'original_date_added' => 'o.date_added %s',
 			'references' => 'o.references' );
-		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.priority DESC, o.date_added' );
+		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.priority %s, o.date_added' );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), 'DESC' );
 
@@ -136,13 +136,14 @@ class GP_Translation extends GP_Thing {
 		if ( $join_where ) {
 			$join_where = 'AND '.$join_where;
 		}
-		
+
+		$sql_sort = sprintf( $sort_by, $sort_how );
 		$limit = $this->sql_limit_for_paging( $page );
 		$rows = $this->many_no_map( "
 		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 		    FROM $gpdb->originals as o
 		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
-		    WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sort_by $sort_how $limit" );
+		    WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit" );
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( (array)$rows as $row ) {
