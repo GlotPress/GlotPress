@@ -108,7 +108,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 	
 	function warning_placeholders( $original, $translation, $locale ) {
-		$placeholders_re = apply_filters( 'warning_placeholders_re', '%[a-z]*|%\d+\$(?:s|d)' );
+		$placeholders_re = apply_filters( 'warning_placeholders_re', '%[a-z]*|%[A-Z]+|%\d+\$(?:s|d)' );
 
 		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -128,7 +128,7 @@ class GP_Builtin_Translation_Warnings {
 	
 	function _placeholders_counts( $string, $re ) {
 		$counts = array();
-		preg_match_all( "/$re/i", $string, $matches );
+		preg_match_all( "/$re/", $string, $matches );
 		foreach( $matches[0] as $match ) {
 			$counts[$match] = gp_array_get( $counts, $match, 0) + 1;
 		}
