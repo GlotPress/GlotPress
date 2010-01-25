@@ -65,7 +65,7 @@ $i = 0;
 			?>
 		</dd>
 		
-		<dd><input type="submit" value="<?php esc_attr(__('Filter')); ?>" name="filter" /></dd>
+		<dd><input type="submit" value="<?php echo esc_attr(__('Filter')); ?>" name="filter" /></dd>
 	</dl>
 	<dl class="filters-expanded sort hidden clearfix">
 		<dt><?php _e('By:'); ?></dt>
@@ -91,7 +91,7 @@ $i = 0;
 			), gp_array_get( $sort, 'how', 'desc' ) );
 		?>
 		</dd>
-		<dd><input type="submit" value="<?php esc_attr(__('Sort')); ?>" name="sorts" /></dd>
+		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
 	<dl class="hidden bulk-actions filters-expanded clearfix">
 		<dt class="select"><?php _e('Select:'); ?></dt>
