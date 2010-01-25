@@ -79,7 +79,7 @@ $i = 0;
 				'priority' => __('Priority'),
 				'references' => __('Filename in source'),
 				'random' => __('Random'),
-			), gp_array_get( $sort, 'by', 'original_date_added' ) );
+			), gp_array_get( $sort, 'by', 'priority' ) );
 		?>
 		</dd>
 		<dt><?php _e('How:'); ?></dt>
