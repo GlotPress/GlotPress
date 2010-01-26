@@ -120,7 +120,7 @@ $i = 0;
 		<dd>
 			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]">
 			<input type="hidden" name="bulk[translation-ids]" value="" id="bulk[translation-ids]">
-			<input type="submit" value="<?php esc_attr(__('Approve/Reject')); ?>" name="approve" />
+			<input type="submit" value="<?php echo esc_attr(__('Approve/Reject')); ?>" name="approve" />
 			<p class="ternary"><?php _e('<strong>Note:</strong>&nbsp;Bulk edit works only on the current page.'); ?></p>
 		</dd>
 	</dl>

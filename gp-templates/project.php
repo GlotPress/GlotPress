@@ -59,7 +59,7 @@ gp_tmpl_header();
 			</dd>
 		</dl>
 		<p>
-			<input type="submit" name="submit" value="<?php esc_attr(__('Save &rarr;')); ?>" id="save" />
+			<input type="submit" name="submit" value="<?php echo esc_attr(__('Save &rarr;')); ?>" id="save" />
 			<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;"><?php _e('Cancel'); ?></a>
 		</p>		
 		</form>

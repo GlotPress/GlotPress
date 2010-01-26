@@ -31,7 +31,7 @@ gp_tmpl_header();
 		<input type="text" name="user_login" value="" id="user_login" />
 	</p>
 	<p>
-		<input type="submit" name="submit" value="<?php esc_attr(__('Add &rarr;')); ?>" id="submit" />
+		<input type="submit" name="submit" value="<?php echo esc_attr(__('Add &rarr;')); ?>" id="submit" />
 	</p>
 	
 	<input type="hidden" name="action" value="add-approver" />
