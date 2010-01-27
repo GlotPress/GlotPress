@@ -6,7 +6,7 @@ class GP_Translation extends GP_Thing {
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', 'date_modified', 'warnings');
 	var $non_updatable_attributes = array( 'id', );
 	
-	static $statuses = array('rejected', 'waiting', 'old', 'current');
+	static $statuses = array('rejected', 'waiting', 'old', 'fuzzy', 'current');
 
 	function normalize_fields( $args ) {
 		$args = (array)$args;
@@ -100,7 +100,7 @@ class GP_Translation extends GP_Thing {
 		}
 		
 		$join_where = array();
-		$status = gp_array_get( $filters, 'status', 'current_or_waiting' );
+		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy' );
 		$all_in = true;
 		$statuses = explode( '_or_', $status );
 		foreach( $statuses as $single_status ) {
@@ -176,7 +176,7 @@ class GP_Translation extends GP_Thing {
 		&& 	$this->update( array('status' => 'old'),
 				array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting') )
 	    && $this->update( array('status' => 'old'),
-			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => '-fuzzy') )
+			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->update( array('status' => 'current') );
 	}
 	
