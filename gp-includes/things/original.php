@@ -43,19 +43,22 @@ class GP_Original extends GP_Thing {
 	function import_for_project( $project, $translations ) {
 		global $gpdb;
 		$originals_added = $originals_existing = 0;
+		$originals = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project->id );
 		$this->update( array( 'status' => '+obsolete' ), array( 'project_id' => $project->id ) );
+		$current_entries = array();
+		foreach( $originals as $original ) {
+			$entry = new Translation_Entry( array( 'singular' => $original->singular, 'plural' => $original->plural, 'context' => $original->context ) );
+			$current_entries[$entry->key()] = $original->id;
+		}
 		foreach( $translations->entries as $entry ) {
 			$gpdb->queries = array();
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
 				
-			// TODO: do not obsolete similar translations
-			
-			// Do not insert duplicates. This is tricky, because we can't add unique index on the TEXT fields						
-			$existing = GP::$original->by_project_id_and_entry( $project->id, $entry );
-			if ( $existing ) {
-				$existing->update( $data );
+			// TODO: do not obsolete similar translations			
+			if ( isset( $current_entries[$entry->key()] ) ) {
+				$this->update( $data, array( 'id' => $current_entries[$entry->key()] ) );
 				$originals_existing++;
 			} else {
 				GP::$original->create( $data );
