@@ -24,6 +24,7 @@ $gp.editor = function($){ return {
 		$('a.close', editor).click($gp.editor.hooks.hide);
 		$('button.ok', editor).click($gp.editor.hooks.ok);
 		$('a.copy').click($gp.editor.hooks.copy);
+		$('a.gtranslate').click($gp.editor.hooks.google_translate);
 		editor.show();
 		editor.preview.hide();
 		$('tr:first', $gp.editor.table).hide();
@@ -133,6 +134,32 @@ $gp.editor = function($){ return {
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
 		link.parent('p').siblings('textarea').html(original_text).focus();
 	},
+	google_translate: function(link) {
+		original_text = link.parents('.textareas').siblings('.original').html();
+		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
+		$gp.notices.notice('Translating via Google Translate&hellip;');
+		google.language.translate({text: original_text, type: 'html'}, 'en', $gp_editor_options.google_translate_language+'sadsad', function(result) {
+			if (!result.error) {
+				// fix common google translate misbehaviours
+				result.translation = result.translation.replace(/% (s|d)/gi, function(m, letter) {
+					return '%'+letter.toLowerCase();
+				});
+				result.translation = result.translation.replace(/% (\d+) \$ (S|D)/gi, function(m, number, letter) {
+					return '%'+number+'$'+letter.toLowerCase();
+				});
+				result.translation = result.translation.replace(/&lt;\/\s+([A-Z]+)&gt;/g, function(m, tag) {
+					return '&lt;/'+tag.toLowerCase()+'&gt;';
+				});
+
+				link.parent('p').siblings('textarea').html(result.translation).focus();
+				$gp.notices.success('Translated!');
+			} else {
+				$gp.notices.error('Error in translating via Google Translate: '+result.message+'!');
+				link.parent('p').siblings('textarea').focus();
+			}
+		});
+		
+	},
 	hooks: {
 		show: function() {
 			$gp.editor.show($(this));
@@ -150,6 +177,10 @@ $gp.editor = function($){ return {
 			$gp.editor.copy($(this));
 			return false;
 		},
+		google_translate: function() {
+			$gp.editor.google_translate($(this));
+			return false;
+		},
 		discard_warning: function() {
 			$gp.editor.discard_warning($(this));
 			return false;
@@ -160,6 +191,8 @@ $gp.editor = function($){ return {
 		}
 	}
 }}(jQuery);
+
+google.load("language", "1");
 
 jQuery(function($) {
 	$gp.editor.init($('#translations'));

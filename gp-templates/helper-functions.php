@@ -26,7 +26,8 @@ function textareas( $entry, $can_edit, $index = 0 ) {
 
 		<?php if ( $can_edit ): ?>
 			<p>
-				<a href="#" class="copy" tabindex="-1"><?php _e('Copy from original'); ?></a>
+				<a href="#" class="copy" tabindex="-1"><?php _e('Copy from original'); ?></a> &bull;
+				<a href="#" class="gtranslate" tabindex="-1"><?php _e('Translation from Google'); ?></a>
 			</p>
 		<?php else: ?>
 			<p>

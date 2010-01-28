@@ -25,8 +25,9 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->add( 'jquery-ui-tabs', '/jquery/ui.tabs.js', array('jquery-ui-core'), '1.7.2' );
 	$scripts->add( 'jquery-ui-selectable', '/jquery/ui.selectable.js', array('jquery-ui-core'), '1.7.2' );
 	$scripts->add( 'common', '/common.js', array( 'jquery' ) );
-	$scripts->add( 'editor', '/editor.js', array( 'common' ) );
+	$scripts->add( 'editor', '/editor.js', array( 'common', 'google-js-api' ) );
 	$scripts->add( 'translations-page', '/translations-page.js', array( 'common' ) );
+	$scripts->add( 'google-js-api', 'http://www.google.com/jsapi', array(), '' );
 }
 
 add_action( 'wp_default_scripts', 'gp_scripts_default' );
