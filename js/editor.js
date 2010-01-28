@@ -138,7 +138,7 @@ $gp.editor = function($){ return {
 		original_text = link.parents('.textareas').siblings('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
 		$gp.notices.notice('Translating via Google Translate&hellip;');
-		google.language.translate({text: original_text, type: 'html'}, 'en', $gp_editor_options.google_translate_language+'sadsad', function(result) {
+		google.language.translate({text: original_text, type: 'html'}, 'en', $gp_editor_options.google_translate_language, function(result) {
 			if (!result.error) {
 				// fix common google translate misbehaviours
 				result.translation = result.translation.replace(/% (s|d)/gi, function(m, letter) {
