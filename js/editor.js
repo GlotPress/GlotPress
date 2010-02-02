@@ -132,12 +132,14 @@ $gp.editor = function($){ return {
 	copy: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
-		link.parent('p').siblings('textarea').html(original_text).focus();
+		link.parent('p').siblings('textarea').val(original_text).focus();
 	},
 	google_translate: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
+		if (!original_text) return;
 		$gp.notices.notice('Translating via Google Translate&hellip;');
+		console.log({text: original_text, type: 'html'});
 		google.language.translate({text: original_text, type: 'html'}, 'en', $gp_editor_options.google_translate_language, function(result) {
 			if (!result.error) {
 				// fix common google translate misbehaviours
@@ -151,7 +153,7 @@ $gp.editor = function($){ return {
 					return '&lt;/'+tag.toLowerCase()+'&gt;';
 				});
 
-				link.parent('p').siblings('textarea').html(result.translation).focus();
+				link.parent('p').siblings('textarea').val(result.translation).focus();
 				$gp.notices.success('Translated!');
 			} else {
 				$gp.notices.error('Error in translating via Google Translate: '+result.message+'!');
