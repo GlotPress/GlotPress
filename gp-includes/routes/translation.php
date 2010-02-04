@@ -193,7 +193,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		$singulars = array();
 		$original_ids = array();
 		foreach( $bulk['row-ids'] as $row_id ) {
-			if ( gp_in( '-', $row_id) ) continue;
+			if ( gp_in( '-', $row_id) ) {
+				$skipped++;
+				continue;
+			}
 			$original_id = gp_array_get( split( '-', $row_id ), 0 );
 			$original = GP::$original->get( $original_id );
 			if ( !$original || $original->plural ) {
@@ -227,10 +230,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 		if ( $google_errors > 0 || $insert_errors > 0 ) {
 			$message = array();
-			if ( $ok ) $message[] = sprintf( __('Added: %d.', $ok ) );
-			if ( $google_errors ) $message[] = sprintf( __('Error from Google Translate: %d.', $google_errors ) );
-			if ( $insert_errors ) $message[] = sprintf( __('Error adding: %d.', $insert_errors ) );
-			if ( $skipped ) $message[] = sprintf( __('Skipped: %d.', $skipped ) );
+			if ( $ok ) $message[] = sprintf( __('Added: %d.' ), $ok );
+			if ( $google_errors ) $message[] = sprintf( __('Error from Google Translate: %d.' ), $google_errors );
+			if ( $insert_errors ) $message[] = sprintf( __('Error adding: %d.' ), $insert_errors );
+			if ( $skipped ) $message[] = sprintf( __('Skipped: %d.' ), $skipped );
 			$this->errors[] = implode( '', $message );
 		} else {
 			$this->notices[] = sprintf( __('%d fuzzy translation from Google Translate were added.' ), $ok );
