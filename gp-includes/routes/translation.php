@@ -62,7 +62,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '_discard-warning' ) );
-		$approve_action = gp_url_join( $url, '_approve' );
+		$bulk_action = gp_url_join( $url, '_bulk' );
 		gp_tmpl_load( 'translations', get_defined_vars() );
 	}
 
@@ -109,22 +109,43 @@ class GP_Route_Translation extends GP_Route_Main {
 		echo json_encode( $output );
 	}
 	
-	function approve_post( $project_path, $locale_slug, $translation_set_slug ) {
+	function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
+
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
-		
+
 		$bulk = gp_post('bulk');
-		$action = gp_startswith( $bulk['action'], 'approve-' )? 'approve' : 'reject';
-		$bulk['translation-ids'] = array_filter( explode( ',', $bulk['translation-ids'] ) );
-		if ( empty( $bulk['translation-ids'] ) ) {
+		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
+		if ( !empty( $bulk['row-ids'] ) ) {
+			if ( gp_post( 'approve' ) || gp_post( 'reject' ) ) {
+				$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
+			}
+
+			if ( gp_post( 'gtranslate' ) ) {
+				$this->_bulk_google_translate( $project, $locale, $translation_set, $bulk );
+			}
+		} else {
 			$this->errors[] = 'No translations were supplied.';
 		}
+		
+		wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
+		
+		// hack, until we make clean_url() to allow [ and ]
+		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
+		gp_redirect( $bulk['redirect_to'] );
+	}
+	
+	function _bulk_approve( $project, $locale, $translation_set, $bulk ) {
+		
+		$action = gp_post( 'approve' )? 'approve' : 'reject';
+		
 		$ok = $error = 0;
 		$method_name = 'approve' == $action? 'set_as_current' : 'reject';
-		foreach( $bulk['translation-ids'] as $translation_id ) {
+		foreach( $bulk['row-ids'] as $row_id ) {
+			$translation_id = gp_array_get( split( '-', $row_id ), 1 );
 			$translation = GP::$translation->get( $translation_id );
 			if ( !$translation ) continue;
 			if ( $translation->$method_name() )
@@ -133,7 +154,6 @@ class GP_Route_Translation extends GP_Route_Main {
 				$error++;
 		}
 
-		// TODo: refactor this, out in another method
 		if ( 0 === $error) {
 			$this->notices[] = 'approve' == $action?
 					sprintf( _n('One translation approved.', '%d translations approved.', $ok), $ok ):
@@ -151,6 +171,7 @@ class GP_Route_Translation extends GP_Route_Main {
 						sprintf( _n(
 								'The remaining translation was rejected successfully.',
 								'The remaining %s translations were rejected successfully.', $ok), $ok );
+				$this->errors[] = $message;
 			} else {
 				$this->errors[] = 'approve' == $action?
 						sprintf( _n(
@@ -161,12 +182,61 @@ class GP_Route_Translation extends GP_Route_Main {
 								'Error with rejecting all %s translation.', $error), $error );
 			}
 		}
-
-		wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
-		// hack, until we make clean_url() to allow [ and ]
-		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
-		gp_redirect( $bulk['redirect_to'] );
 	}
+	
+	function _bulk_google_translate( $project, $locale, $translation_set, $bulk ) {
+		$google_errors = 0;
+		$insert_errors = 0;
+		$ok = 0;
+		$skipped = 0;
+		
+		$singulars = array();
+		$original_ids = array();
+		foreach( $bulk['row-ids'] as $row_id ) {
+			if ( gp_in( '-', $row_id) ) continue;
+			$original_id = gp_array_get( split( '-', $row_id ), 0 );
+			$original = GP::$original->get( $original_id );
+			if ( !$original || $original->plural ) {
+				$skipped++;
+				continue;
+			}
+			$singulars[] = $original->singular;
+			$original_ids[] = $original_id;
+		}
+		$results = google_translate_batch( $locale, $singulars );
+		if ( is_wp_error( $results ) ) {
+			error_log( print_r( $results, true ) );
+			$this->errors[] = $results->get_error_message();
+			return;
+		}
+		foreach( gp_array_zip( $original_ids, $singulars, $results )  as $item ) {
+			list( $original_id, $singular, $translation ) = $item;
+			if ( is_wp_error( $translation ) ) {
+				$google_errors++;
+				error_log( $translation->get_error_message() );
+				continue;
+			}
+			$data = compact( 'original_id' );
+			$data['user_id'] = GP::$user->current()->id;
+			$data['translation_set_id'] = $translation_set->id;
+			$data['translation_0'] = $translation;
+			$data['status'] = 'fuzzy';
+			$data['warnings'] = GP::$translation_warnings->check( $singular, null, array( $translation ), $locale );
+			$inserted = GP::$translation->create( $data );
+			$inserted? $ok++ : $insert_errors++;
+		}
+		if ( $google_errors > 0 || $insert_errors > 0 ) {
+			$message = array();
+			if ( $ok ) $message[] = sprintf( __('Added: %d.', $ok ) );
+			if ( $google_errors ) $message[] = sprintf( __('Error from Google Translate: %d.', $google_errors ) );
+			if ( $insert_errors ) $message[] = sprintf( __('Error adding: %d.', $insert_errors ) );
+			if ( $skipped ) $message[] = sprintf( __('Skipped: %d.', $skipped ) );
+			$this->errors[] = implode( '', $message );
+		} else {
+			$this->notices[] = sprintf( __('%d fuzzy translation from Google Translate were added.' ), $ok );
+		}
+	}
+	
 
 	function permissions_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );

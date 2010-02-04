@@ -315,6 +315,11 @@ dl.filters-expanded dt {
 dl.filters-expanded dd {
     margin-right: 2em;
 }
+dl.filters-expanded dd.separator {
+    border-left: 1px dotted #777;
+    height: 4em;
+    width: 1em;
+}
 dl.filters-expanded.bulk-actions a {
     display: block;
 }

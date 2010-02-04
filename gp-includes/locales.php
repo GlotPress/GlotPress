@@ -102,7 +102,7 @@ class GP_Locales {
 		$ar->country_code = '';
 		$ar->wp_locale = 'ar';
 		$ar->slug = 'ar';
-		$af->google_code = 'ar';
+		$ar->google_code = 'ar';
 		$ar->nplurals = 6;
 		$ar->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$ar->rtl = true;

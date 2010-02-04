@@ -11,7 +11,7 @@ wp_enqueue_script( 'translations-page' );
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url');
 $editor_options['google_translate_language'] = $locale->google_code;
 wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
-wp_localize_script( 'translations-page', '$gp_translations_options', array('action' => $approve_action) );
+wp_localize_script( 'translations-page', '$gp_translations_options', array('action' => $bulk_action) );
 $parity = gp_parity_factory();
 gp_tmpl_header();
 $i = 0;
@@ -104,32 +104,21 @@ $i = 0;
 			<a href="#" class="all"><?php _e('All'); ?></a>
 			<a href="#" class="none"><?php _e('None'); ?></a>
 		</dd>
-		<dt><?php _e('Approve:'); ?></dt>
-		<dd>
-			<?php echo gp_radio_buttons('bulk[action]',
-				array(
- 					'approve-all' => __('All'),
-					'approve-selected' => __('Selected'),
-				), null );
-			?>
-		</dd>
-		<dt><?php _e('Reject:'); ?></dt>
-		<dd>
-			<?php echo gp_radio_buttons('bulk[action]',
-				array(
-					'reject-all' => __('All'),
-					'reject-selected' => __('Selected'),
-				), null );
-			?>
-		</dd>
+		<dd class="separator"></dd>
 		<dd>
 			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]">
-			<input type="hidden" name="bulk[translation-ids]" value="" id="bulk[translation-ids]">
-			<input type="submit" value="<?php echo esc_attr(__('Approve/Reject')); ?>" name="approve" />
+			<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]">
+			<input type="submit" value="<?php echo esc_attr(__('Approve Selected')); ?>" name="approve" /><br />
+			<input type="submit" value="<?php echo esc_attr(__('Reject Selected')); ?>" name="reject" />
+		</dd>
+		<dd class="separator"></dd>
+		<dd>
+			<input type="submit" value="<?php echo esc_attr(__('Translate via Google')); ?>" name="gtranslate" />
+		</dd>
+		<dd style="clear: both;">
 			<p class="ternary"><?php _e('<strong>Note:</strong>&nbsp;Bulk edit works only on the current page.'); ?></p>
 		</dd>
 	</dl>
-
 </form>
 
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>

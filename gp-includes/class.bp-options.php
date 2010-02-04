@@ -16,7 +16,7 @@ class BP_Options
 				return 'glotpress';
 				break;
 			case 'application_uri':
-				return bb_get_uri(null, null, BB_URI_CONTEXT_NONE);
+				return gp_get_option( 'url' );
 				break;
 			case 'cron_uri':
 				return '';
