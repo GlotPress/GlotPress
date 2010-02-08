@@ -241,7 +241,12 @@ class GP_Route {
 	 * 		the template name will be suffixed with .api. The actual file loaded will be template.api.php
 	 */
 	function tmpl( $template, $args = array(), $honor_api = true ) {
-		if ( $this->api && $honor_api !== false && 'no-api' !== $honor_api ) $template = $template.'.api';
+		if ( $this->api && $honor_api !== false && 'no-api' !== $honor_api ) {
+			$template = $template.'.api';
+			header('Content-Type: application/json');
+		} else {
+			header('Content-Type: text/html; charset=utf-8');
+		}
 		return gp_tmpl_load( $template, $args );
 	}
 }
