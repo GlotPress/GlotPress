@@ -7,7 +7,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
 		$kind = 'translations';
-		gp_tmpl_load( 'project-import', get_defined_vars() );
+		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
 	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
@@ -63,7 +63,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '_discard-warning' ) );
 		$bulk_action = gp_url_join( $url, '_bulk' );
-		gp_tmpl_load( 'translations', get_defined_vars() );
+		$this->tmpl( 'translations', get_defined_vars() );
 	}
 
 	function translations_post ( $project_path, $locale_slug, $translation_set_slug ) {
@@ -277,7 +277,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		foreach( (array)$permissions as $permission ) {
 			$permission->user = GP::$user->get( $permission->user_id );
 		}
-		gp_tmpl_load( 'translation-set-permissions', get_defined_vars() );
+		$this->tmpl( 'translation-set-permissions', get_defined_vars() );
 	}
 	
 	function permissions_delete( $project_path, $locale_slug, $translation_set_slug, $permission_id ) {
@@ -329,7 +329,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$parity = returner( 'even' );
 			$can_edit = GP::$user->logged_in();
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-			gp_tmpl_load( 'translation-row', get_defined_vars() );
+			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			$this->die_with_error( 'Error in retrieving translation!' );
 		}
