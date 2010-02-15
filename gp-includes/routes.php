@@ -30,7 +30,7 @@ class GP_Router {
 	}
 	
 	function routes() {
-		$dir = '([^/]+)';
+		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
 		$projects = 'projects';
 		$project = $projects.'/'.$path;
@@ -92,8 +92,9 @@ class GP_Router {
 			foreach( $this->urls as $re => $func ) {
 				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
 					if ( gp_startswith( $re, $http_method.':' ) ) {
+						
 						if ( $http_method != $request_method ) continue;
-						$re = substr( $re, strlen( $http_method.':' ));
+						$re = substr( $re, strlen( $http_method . ':' ));
 						break;
 					}
 				}
