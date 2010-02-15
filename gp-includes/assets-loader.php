@@ -4,7 +4,7 @@
  */
 
 function gp_styles_default( &$styles ) {
-	$styles->base_url = gp_url( 'css' );
+	$styles->base_url = gp_url_base( 'css' );
     $styles->default_version = gp_get_option( 'version' );
 	// TODO: get text direction for current locale
     //$styles->text_direction = 'rtl' == get_bloginfo( 'text_direction' ) ? 'rtl' : 'ltr';
@@ -16,7 +16,7 @@ function gp_styles_default( &$styles ) {
 add_action( 'wp_default_styles', 'gp_styles_default' );
 
 function gp_scripts_default( &$scripts ) {
-	$scripts->base_url = gp_url( 'js' );
+	$scripts->base_url = gp_url_base( 'js' );
     $scripts->default_version = gp_get_option( 'version' );
 	
 	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.3.2-min' );
