@@ -30,6 +30,10 @@ if ( !defined( 'GP_LANG_PATH' ) ) {
 	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
 }
 
+if ( !defined( 'GP_PLUGINS_PATH' ) ) {
+	define( 'GP_PLUGINS_PATH', GP_PATH . 'plugins/' );
+}
+
 if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
@@ -284,7 +288,7 @@ gp_set_globals( get_defined_vars() );
 
 require_once( GP_PATH . GP_INC . 'plugin.php' );
 
-$plugins = glob( GP_PATH . 'plugins/*.php' );
+$plugins = glob( GP_PLUGINS_PATH . '*.php' );
 if ($plugins) {
 	foreach( $plugins as $plugin ) {
 		require_once $plugin;
