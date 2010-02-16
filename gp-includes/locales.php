@@ -448,15 +448,15 @@ class GP_Locales {
 		$es_pe->slug = 'es-pe';
 		$es_pe->google_code = 'es';
 
-		$es_pe = new GP_Locale();
-		$es_pe->english_name = 'Venezuelan Spanish';
-		$es_pe->native_name = 'Español de Venezuela';
-		$es_pe->lang_code_iso_639_1 = 'es';
-		$es_pe->lang_code_iso_639_2 = 'spa';
-		$es_pe->country_code = 'pe';
-		$es_pe->wp_locale = 'es_VE';
-		$es_pe->slug = 'es-ve';
-		$es_pe->google_code = 'es';
+		$es_ve = new GP_Locale();
+		$es_ve->english_name = 'Venezuelan Spanish';
+		$es_ve->native_name = 'Español de Venezuela';
+		$es_ve->lang_code_iso_639_1 = 'es';
+		$es_ve->lang_code_iso_639_2 = 'spa';
+		$es_ve->country_code = 'pe';
+		$es_ve->wp_locale = 'es_VE';
+		$es_ve->slug = 'es-ve';
+		$es_ve->google_code = 'es';
 
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish';
