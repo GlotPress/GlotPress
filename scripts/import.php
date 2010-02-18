@@ -13,7 +13,7 @@ class GP_Script_Import extends GP_Translation_Set_Script {
 		$po = new PO();
 		$po->import_from_file( $this->options['f'] );
 		$added = $translation_set->import( $po );
-		printf( _n( "%s translation were added", "%s translations were added", $added ), $added );
+		printf( _n( "%s translation were added\n", "%s translations were added\n", $added ), $added );
 	}
 	
 }
