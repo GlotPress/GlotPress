@@ -7,7 +7,12 @@ gp_breadcrumb( array(
 wp_enqueue_script( 'common' );
 gp_tmpl_header();
 ?>
+<p class="description">
+	<?php echo $project->description; ?>
+	<span class="secondary"><?php if ( $can_write ) gp_link_project_edit( $project, __('Edit project') ); ?></span>
+</p>
 <?php if ($sub_projects): ?>
+<p class="secondary"><?php printf( __('Sub-projects of %s:'), $project->name ); ?></p>
 <ul>
 <?php foreach($sub_projects as $sub_project): ?>
 	<li>
@@ -29,11 +34,11 @@ gp_tmpl_header();
 				<span class="translated" title="translated"><?php echo $set->current_count(); ?></span>
 				<span class="untranslated" title="untranslated"><?php echo $set->untranslated_count(); ?></span>
 				-->
-			<?php if ( $can_write && $waiting = $set->waiting_count() ):  // TODO: check if the user can approve this locale ?>
+			<?php if ( GP::$user->can( 'approve', 'translation-set', $set->id ) && $waiting = $set->waiting_count() ): ?>
 				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
 						array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $waiting, array('class' => 'waiting', 'title' => 'waiting') ); ?>
 			<?php endif; ?>
-			<?php if ( $warnings = $set->warnings_count() ): ?>
+			<?php if ( GP::$user->can( 'approve', 'translation-set', $set->id ) && $warnings = $set->warnings_count() ): ?>
 				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
 						array('filters[translated]' => 'yes', 'filters[warnings]' => 'yes' ) ), $warnings, array('class' => 'warnings', 'title' => 'with warnings') ); ?>
 			<?php endif; ?>
@@ -43,10 +48,10 @@ gp_tmpl_header();
 		</li>
 	<?php endforeach; ?>
 	</ul>
-<?php else: ?>
+<?php elseif ( !$sub_projects ): ?>
 	<p><?php _e('There are no translations of this project.'); ?></p>
 <?php endif; ?>
-<?php if ( $can_write ): ?>
+<?php if ( $can_write && $translation_sets ): ?>
 	<div class="secondary actionlist">
 	<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
 	<div class="personal-options">

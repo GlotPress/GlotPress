@@ -50,6 +50,7 @@ textarea {
 	font-size: 100%;
 	padding: 0.5em;
 	line-height: 1.5em;
+	width: 40em;
 }	
 table.translations {
 	font-size: 90%;
@@ -397,4 +398,8 @@ ul.translation-sets .warnings {
 }
 .textareas .warning {
     width: 53em;
+}
+p.description {
+	max-width: 60em;
+	margin-left: 2em;
 }
