@@ -5,7 +5,8 @@ function prepare_original( $text ) {
 	return $text;
 }
 
-function textareas( $entry, $can_edit, $index = 0 ) {
+function textareas( $entry, $permissions, $index = 0 ) {
+	list( $can_edit, $can_approve ) = $permissions;
 	$disabled = $can_edit? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
@@ -17,7 +18,7 @@ function textareas( $entry, $can_edit, $index = 0 ) {
 			<div class="warning secondary">
 				<?php printf( __('<strong>Warning:</strong> %s'), esc_html( $warning['value'] ) ); ?>
 				
-				<?php if( GP::$user->current()->admin() ): // TODO: allow users with write permissions, too ?>
+				<?php if( $can_approve ): ?>
 					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e('Discard'); ?></a>
 				<?php endif; ?>
 			</div>

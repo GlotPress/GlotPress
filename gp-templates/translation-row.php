@@ -54,15 +54,15 @@ $priority_char = array(
 		<div class="strings">
 		<?php if ( !$t->plural ): ?>
 		<p class="original"><?php echo prepare_original( esc_translation($t->singular) ); ?></p>
-		<?php textareas( $t, $can_edit ); ?>
+		<?php textareas( $t, array( $can_edit, $can_approve ) ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>
 				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
-				<?php textareas( $t, $can_edit, 0 ); ?>
+				<?php textareas( $t, array( $can_edit, $can_approve ), 0 ); ?>
 				<p class="clear">
 					<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
 				</p>
-				<?php textareas( $t, $can_edit, 1 ); ?>
+				<?php textareas( $t, array( $can_edit, $can_approve ), 1 ); ?>
 			<?php else: ?>
 				<!--
 				TODO: labels for each plural textarea and a sample number
@@ -76,7 +76,7 @@ $priority_char = array(
 					<p class="plural-numbers"><?php printf(__('This plural form is used for numbers like: %s'),
 							'<span class="numbers">'.implode(', ', $locale->numbers_for_index( $plural_index ) ).'</span>' ); ?></p>
 					<?php endif; ?>
-					<?php textareas( $t, $can_edit, $plural_index ); ?>
+					<?php textareas( $t, array( $can_edit, $can_approve ), $plural_index ); ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		<?php endif; ?>
