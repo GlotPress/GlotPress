@@ -50,7 +50,7 @@ function gp_url_add_path_and_query( $base, $path, $query ) {
 		$url = add_query_arg( urlencode_deep( $query ), $url );
 	elseif ( $query )
 		$url .= '?' . ltrim( $query, '?' );
-	return apply_filters( 'gp_url_add_path_and_query', $url, $path, $query, $base );
+	return apply_filters( 'gp_url_add_path_and_query', $url, $base, $path, $query );
 }
 
 /**
@@ -65,7 +65,8 @@ function gp_url_ssl( $url ) {
 }
 
 function gp_url_base_root() {
-	return gp_const_get( 'GP_BASE_URL', gp_get_option( 'url' ) );
+	$url_from_db = gp_get_option( 'url' );
+	return gp_const_get( 'GP_BASE_URL', $url_from_db? $url_from_db : '' );
 }
 
 function gp_url_public_root() {
