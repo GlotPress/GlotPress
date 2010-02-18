@@ -401,5 +401,7 @@ ul.translation-sets .warnings {
 }
 p.description {
 	max-width: 60em;
-	margin-left: 2em;
+	margin-left: 1em;
+	padding-left: 1em;
+	border-left: 3px solid #aaa;
 }
