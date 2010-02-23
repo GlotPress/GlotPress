@@ -429,7 +429,7 @@ class GP_Locales {
 		$eo->google_code = 'eo';
 
 		$es_cl = new GP_Locale();
-		$es_cl->english_name = 'Chilean Spanish';
+		$es_cl->english_name = 'Spanish (Chile)';
 		$es_cl->native_name = 'Español de Chile';
 		$es_cl->lang_code_iso_639_1 = 'es';
 		$es_cl->lang_code_iso_639_2 = 'spa';
