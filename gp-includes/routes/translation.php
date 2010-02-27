@@ -34,12 +34,14 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 
-		$filename = sprintf( '%s-%s.po', str_replace( '/', '-', $project->path ), $locale->wp_locale );
-		$this->headers_for_download( $filename );
-				
-		echo "# Translation of {$project->name} in {$locale->english_name}\n";
-		echo "# This file is distributed under the same license as the {$project->name} package.\n";
-		echo $translation_set->export_as_po( gp_get( 'filters', array() ) );
+		$format = gp_array_get( GP::$formats, gp_get( 'format', 'po' ), null );
+		if ( !$format ) gp_tmpl_404();
+
+		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
+		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
+		$entries = GP::$translation->for_translation( $project, $translation_set, 'no-limit', gp_get( 'filters', array() ) );
+		$this->headers_for_download( $filename );		
+		echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
 	}
 
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {

@@ -29,7 +29,6 @@ function translate( $text, $domain = 'default' ) {
 	return apply_filters('gettext', $translations->translate($text), $text, $domain);
 }
 
-
 function translate_with_gettext_context( $text, $context, $domain = 'default' ) {
 	$translations = &get_translations_for_domain( $domain );
 	return apply_filters( 'gettext_with_context', $translations->translate( $text, $context ), $text, $context, $domain);
@@ -39,12 +38,36 @@ function __( $text, $domain = 'default' ) {
 	return translate( $text, $domain );
 }
 
+function esc_attr__( $text, $domain = 'default' ) {
+	return esc_attr( translate( $text, $domain ) );
+}
+
+function esc_html__( $text, $domain = 'default' ) {
+	return esc_html( translate( $text, $domain ) );
+}
+
 function _e( $text, $domain = 'default' ) {
 	echo translate( $text, $domain );
 }
 
+function esc_attr_e( $text, $domain = 'default' ) {
+	echo esc_attr( translate( $text, $domain ) );
+}
+
+function esc_html_e( $text, $domain = 'default' ) {
+	echo esc_html( translate( $text, $domain ) );
+}
+
 function _x( $single, $context, $domain = 'default' ) {
 	return translate_with_gettext_context( $single, $context, $domain );
+}
+
+function esc_attr_x( $single, $context, $domain = 'default' ) {
+	return esc_attr( translate_with_gettext_context( $single, $context, $domain ) );
+}
+
+function esc_html_x( $single, $context, $domain = 'default' ) {
+	return esc_html( translate_with_gettext_context( $single, $context, $domain ) );
 }
 
 function _n($single, $plural, $number, $domain = 'default') {

@@ -13,6 +13,7 @@ class GP {
 	static $translation_warnings;
 	static $builtin_translation_warnings;
 	static $current_route = null;
+	static $formats;
 	// plugins can use this space
 	static $vars = array();
 	// for plugin singletons

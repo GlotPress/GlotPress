@@ -27,4 +27,8 @@ class GP_Plugin {
 	function add_action( $tag, $priority = 10, $accepted_args = 1 ) {
 		add_action( $tag, array( &$this, $tag ), $priority, $accepted_args );
 	}
+
+	function add_filter( $tag, $priority = 10, $accepted_args = 1 ) {
+		add_filter( $tag, array( &$this, $tag ), $priority, $accepted_args );
+	}
 }
