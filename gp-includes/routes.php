@@ -193,7 +193,7 @@ class GP_Route {
 	function can_or_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
-			$this->redirect_with_error( $url, __('You are not allowed to do that!') );
+			$this->redirect_with_error( __('You are not allowed to do that!'), $url );
 		}
 	}
 
@@ -210,7 +210,7 @@ class GP_Route {
 		}
 	}
 	
-	function redirect_with_error( $url, $message ) {
+	function redirect_with_error( $message, $url = null ) {
 		$this->errors[] = $message;
 		$this->_redirect( $url );
 	}

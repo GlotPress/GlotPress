@@ -3,22 +3,6 @@
  * Holds common functionality for routes.
  */
 class GP_Route_Main extends GP_Route {
-	function _import( $file_key, $class, $block, $block_args ) {
-		global $gpdb;
-		if ( is_uploaded_file( $_FILES[$file_key]['tmp_name'] ) ) {
-			$translations = new $class();
-			$result = $translations->import_from_file( $_FILES[$file_key]['tmp_name'] );
-			if ( !$result ) {
-				$this->errors[] = __("Couldn&#8217;t load translations from file!");
-			} else {
-				$block_args[] = $translations;
-				call_user_func_array( $block, $block_args );
-			}
-			return true;
-		}
-		return false;
-	}
-
 	// TODO: move these as a template helper
 	
 	function _options_from_projects( $projects ) {

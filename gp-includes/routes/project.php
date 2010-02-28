@@ -45,18 +45,27 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$this->can_or_redirect( 'write', 'project', $project->id );
-		$block = array( &$this, '_merge_originals');
-		self::_import( 'mo-file', 'MO', $block, array($project) ) or
-		self::_import( 'pot-file', 'PO', $block, array($project) );
 
+		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
+		if ( !$format ) $this->redirect_with_error( __('No such format.') );;
+
+
+		if ( !is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
+			// TODO: different errors for different upload conditions
+			$this->redirect_with_error( __('Error uploading the file.') );
+		}
+
+		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'] );
+		if ( !$translations ) {
+			$this->redirect_with_error( __('Couldn&#8217;t load translations from file!') );
+		}
+		
+		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
+		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
+				
 		gp_redirect( gp_url_project( $project, 'import-originals' ) );
 	}
 
-	function _merge_originals( $project, $translations ) {
-		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
-		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
-	}
-		
 	function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();

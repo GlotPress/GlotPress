@@ -16,16 +16,23 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
-		$block = array( &$this, '_merge_translations');
-		self::_import( 'mo-file', 'MO', $block, array($translation_set) ) or
-		self::_import( 'pot-file', 'PO', $block, array($translation_set) );
-	
-		gp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ) );
-	}
-	
-	function _merge_translations( $translation_set, $translations ) {
+
+		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
+		if ( !$format ) $this->redirect_with_error( __('No such format.') );;
+
+		if ( !is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
+			$this->redirect_with_error( __('Error uploading the file.') );
+		}
+
+		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'] );
+		if ( !$translations ) {
+			$this->redirect_with_error( __('Couldn&#8217;t load translations from file!') );
+		}
+
 		$translations_added = $translation_set->import( $translations );
 		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
+				
+		gp_redirect( gp_url_project( $project, 'import-originals' ) );		
 	}
 	
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {

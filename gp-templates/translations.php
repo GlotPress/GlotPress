@@ -165,4 +165,4 @@ $i = 0;
 		echo implode( ' &bull; ', apply_filters( 'translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>
-<?php gp_tmpl_footer(); ?>
+<?php gp_tmpl_footer();

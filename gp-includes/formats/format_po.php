@@ -5,10 +5,6 @@ class GP_Format_PO {
 	var $extension = 'po';
 	
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
-
-		// TODO: rename locale column to locale_slug and use freely $this->locale as the locale object
-		$locale = GP_Locales::by_slug( $translation_set->locale );
-
 		$po = new PO();
 		// TODO: add more meta data in the project: language team, report URL
 		// TODO: last updated for a translation set
@@ -19,6 +15,7 @@ class GP_Format_PO {
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . gp_get_option('version') );
 
+		// force export only current translations
 		$filters['status'] = 'current';
 
 		foreach( $entries as $entry ) {
@@ -31,7 +28,13 @@ class GP_Format_PO {
 		echo "# This file is distributed under the same license as the {$project->name} package.\n";
 
 		echo $po->export();
-	}	
+	}
+	
+	function read_translations_from_file( $file_name ) {
+		$po = new PO();
+		$result = $po->import_from_file( $file_name );
+		return $result? $po : $result;
+	}
 }
 
 GP::$formats['po'] = new GP_Format_PO;
