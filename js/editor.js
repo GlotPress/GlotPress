@@ -138,8 +138,11 @@ $gp.editor = function($){ return {
 		original_text = link.parents('.textareas').siblings('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
 		if (!original_text) return;
-		$gp.notices.notice('Translating via Google Translate&hellip;');
-		console.log({text: original_text, type: 'html'});
+		if (typeof google == 'undefined') {
+			$gp.notices.error('Couldn&#8217;t load Google Translate library!');
+			return;
+		}
+		$gp.notices.notice('Translating via Google Translate&hellip;');		
 		google.language.translate({text: original_text, type: 'html'}, 'en', $gp_editor_options.google_translate_language, function(result) {
 			if (!result.error) {
 				// fix common google translate misbehaviours
@@ -159,8 +162,7 @@ $gp.editor = function($){ return {
 				$gp.notices.error('Error in translating via Google Translate: '+result.message+'!');
 				link.parent('p').siblings('textarea').focus();
 			}
-		});
-		
+		});		
 	},
 	hooks: {
 		show: function() {
@@ -194,7 +196,7 @@ $gp.editor = function($){ return {
 	}
 }}(jQuery);
 
-google.load("language", "1");
+if (typeof google != 'undefined') google.load("language", "1");
 
 jQuery(function($) {
 	$gp.editor.init($('#translations'));
