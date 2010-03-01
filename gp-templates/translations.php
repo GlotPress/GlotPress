@@ -156,7 +156,7 @@ $i = 0;
 			$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
 			$export_link = gp_link_get( $export_url , __('Export'), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );
 			$format_slugs = array_keys( GP::$formats );
-			$what_dropdown = gp_select( 'what-to-export', array('all' => _x('all', 'export choice'), 'page' => _x('this page', 'export choice')), 'all' );
+			$what_dropdown = gp_select( 'what-to-export', array('all' => _x('all', 'export choice'), 'filtered' => _x('filtered only', 'export choice')), 'all' );
 			$format_dropdown = gp_select( 'export-format', array_combine( $format_slugs, $format_slugs ), 'po' );
 			/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
 			$footer_links[] = sprintf( __('%1$s %2$s as %3$s'), $export_link, $what_dropdown, $format_dropdown );

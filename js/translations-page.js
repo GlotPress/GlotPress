@@ -71,10 +71,12 @@ jQuery(function($) {
 		var format = $('#export-format').val();
 		var what_to_export = $('#what-to-export').val();
 		var url = '';
-		if (what_to_export == 'page')
-			url = $(this).attr('filters') + '&format='+format;
-		else
+		if (what_to_export == 'filtered') {
+			var separator = ( $(this).attr('filters').indexOf('?') == -1 )? '?' : '&';
+			url = $(this).attr('filters') + separator + 'format='+format;
+		} else {
 			url = $(this).attr('href') + '?format='+format;
+		}
 		console.log(url);
 		window.location = url;
 		return false;
