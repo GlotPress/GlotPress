@@ -3,9 +3,9 @@ require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_Import_Originals extends GP_CLI {
 	
-	var $short_options = 'p:f:';
+	var $short_options = 'p:f:t:';
 	
-	var $usage = "-p <project-path> -f <pot-file>";
+	var $usage = "-p <project-path> -f <file> -t <format (default=po)>";
 	
 	function run() {
 		if ( !isset( $this->options['p'] ) ) {
@@ -13,12 +13,17 @@ class GP_Script_Import_Originals extends GP_CLI {
 		}
 		$project = GP::$project->by_path( $this->options['p'] );
 		if ( !$project ) $this->error( __('Project not found!') );
-		
-		$translations = new PO();
-		$translations->import_from_file( $this->options['f'] );
-		if ( !$translations ) $this->error( __('Error importing from POT file!') );
-		
-		GP::$original->import_for_project( $project, $translations );
+
+		$format = gp_array_get( GP::$formats, isset( $this->options['t'] )? $this->options['t'] : 'po', null );
+		if ( !$format ) $this->error( __('No such format.') );;
+
+		$translations = $format->read_translations_from_file( $this->options['f'] );
+		if ( !$translations ) {
+			$this->error( __("Couldn't load translations from file!") );
+		}
+
+		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
+		echo sprintf( __("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing )."\n";
 	}
 }
 
