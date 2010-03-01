@@ -1,0 +1,9 @@
+WITH_LATIN1#0="für";
+WITH_UNICODE_ESCAPES#0="\u0431\u0430\u0431\u0430";
+WITH_SLASHES#0="Twinkle,\nTwinkle,litle\tstar!";
+MULTIPLE#0={
+	"Off",
+	"1",
+	"2",
+	"brun!\nbrun!",
+};

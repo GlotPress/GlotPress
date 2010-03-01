@@ -7,26 +7,26 @@ class GP_Format_RRC {
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$rrc = array();
 		foreach( $entries as $entry ) {
-			if ( !preg_match( '/^([A-Z0-9_]+)(?:\[|(\d+)\])$/', $entry->singular, $matches ) ) {
+			if ( !preg_match( '/^([A-Z0-9_]+)(?:\[(\d+)\])?$/', $entry->singular, $matches ) ) {
 				error_log( 'RRC Export: Bad Entry: '.$entry->singular );
 				continue;
 			}
-			if ( gp_array_get( $matches, 2 ) ) {
+			if ( isset( $matches[2] ) ) {
 				$key = $matches[1];
 				$index = $matches[2];
 				$rrc[$key][$index] = $entry->translations[0];
-			} elseif ( preg_match( )) {
+			} else {
 				$rrc[$entry->singular] = $entry->translations[0];
 			}
 		}
 		$result = '';
 		foreach( $rrc as $key => $translation ) {
 			if ( !is_array( $translation ) ) {
-				$result .= "$key#0=" . $this->quote( $translation ) . ";\n";
+				$result .= "$key#0=\"". $this->escape( $translation ) . "\";\n";
 			} else {
 				$result .= "$key#0={\n";
 				foreach( $translation as $single_translation ) {
-					$result .= "\t" . $this->quote( $single_translation ) . ",\n";
+					$result .= "\t\"" . $this->escape( $single_translation ) . "\",\n";
 				}
 				$result .= "};\n";
 			}
@@ -80,21 +80,44 @@ class GP_Format_RRC {
 		return $entries;
 	}
 	
+
+	/**
+	 * Escapes a UTF-8 string to be used in RRC file
+	 * 
+	 * Suitable characters are encoded in ISO-8859-1, all non-latin1 unicode
+	 * characters are encoded via \uXXXX notation, where XXXX is 0-paded hex unicode code-point
+	 * Newlines, tabs and carriage returns are backslash-escaped.
+	 */
 	function escape( $string ) {
 		$string = addcslashes( $string, "\"\n\t\r" );
+		preg_match_all( '/./us', $string, $matches );
+		$characters = $matches[0];
+		$string = '';
+		foreach( $characters as $c ) {
+			if ( 1 == strlen( $c ) ) {
+				$string .= $c;
+			} else {
+				if ( ( $c_latin1 = mb_convert_encoding( $c, 'ISO-8859-1', 'UTF-8' ) ) != '?' ) {
+					$string .= $c_latin1;
+				} else {
+					$entity = mb_encode_numericentity( $c, array(0x0, 0xffff, 0, 0xffff), 'UTF-8' );
+					$code_point = str_replace( array('&', '#', ';'), '', $entity );				
+					$string .= '\\u' . str_pad( strtoupper( dechex( $code_point ) ), 4, '0', STR_PAD_LEFT );
+				}
+			}
+		}
 		return $string;
 	}
 	
-	function quote( $string ) {
-		return '"' . $this->escape( $string ) . '"';
-	}
-	
-	function unquote( $string ) {
-		$string = trim( $string );
-		return substr( $string, 1, strlen( $string ) - 2 );
-	}
-	
+	/**
+	 * The reverse of {@see escape}
+	 */
 	function unescape( $string ) {
+		// in the resource file all the strings should be in iso-8859-1
+		$string = utf8_encode( $string );
+		// except for the unicode code points like \uABCD
+		$decode_codepoints_callback = lambda( '$m', 'html_entity_decode("&#x".$m[1].";", ENT_NOQUOTES, "UTF-8");' );
+		$string = preg_replace_callback( '/\\\\u([a-fA-F0-9]{4})/', $decode_codepoints_callback, $string );
 		return stripcslashes( $string );
 	}
 }
