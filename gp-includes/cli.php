@@ -41,18 +41,18 @@ class GP_Translation_Set_Script extends GP_CLI {
 		if ( !isset( $this->options['l'] ) || !isset( $this->options['p'] ) ) {
 			$this->usage();
 		}
-		$project = GP::$project->by_path( $this->options['p'] );
-		if ( !$project ) $this->error( __('Project not found!') );
+		$this->project = GP::$project->by_path( $this->options['p'] );
+		if ( !$this->project ) $this->error( __('Project not found!') );
 		
-		$locale = GP_Locales::by_slug( $this->options['l'] );
-		if ( !$locale ) $this->error( __('Locale not found!') );
+		$this->locale = GP_Locales::by_slug( $this->options['l'] );
+		if ( !$this->locale ) $this->error( __('Locale not found!') );
 		
 		$this->options['t'] = gp_array_get( $this->options, 't', 'default' );
 		
-		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $this->options['t'], $locale->slug );
-		if ( !$translation_set ) $this->error( __('Translation set not found!') );
+		$this->translation_set = GP::$translation_set->by_project_id_slug_and_locale( $this->project->id, $this->options['t'], $this->locale->slug );
+		if ( !$this->translation_set ) $this->error( __('Translation set not found!') );
 
-		$this->action_on_translation_set( $translation_set );
+		$this->action_on_translation_set( $this->translation_set );
 	}
 	
 	function action_on_translation_set( $translation_set ) {

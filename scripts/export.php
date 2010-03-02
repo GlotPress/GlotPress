@@ -2,9 +2,20 @@
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_Export extends GP_Translation_Set_Script {
-	
+
+	function __construct() {
+		$this->short_options .= 'o:';
+		$this->usage = $this->usage.' [-o <format (default=po)>]';
+		parent::__construct();
+	}
+
 	function action_on_translation_set( $translation_set ) {
-		echo $translation_set->export_as_po() . "\n";
+
+		$format = gp_array_get( GP::$formats, isset( $this->options['o'] )? $this->options['o'] : 'po', null );
+		if ( !$format ) $this->error( __('No such format.') );;
+		
+		$entries = GP::$translation->for_translation( $this->project, $translation_set, 'no-limit', gp_get( 'filters', array() ) );
+		echo $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries )."\n";
 	}
 	
 }

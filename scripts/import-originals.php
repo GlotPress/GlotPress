@@ -5,7 +5,7 @@ class GP_Script_Import_Originals extends GP_CLI {
 	
 	var $short_options = 'p:f:t:';
 	
-	var $usage = "-p <project-path> -f <file> -t <format (default=po)>";
+	var $usage = "-p <project-path> -f <file> [-o <format>]";
 	
 	function run() {
 		if ( !isset( $this->options['p'] ) ) {
@@ -14,7 +14,7 @@ class GP_Script_Import_Originals extends GP_CLI {
 		$project = GP::$project->by_path( $this->options['p'] );
 		if ( !$project ) $this->error( __('Project not found!') );
 
-		$format = gp_array_get( GP::$formats, isset( $this->options['t'] )? $this->options['t'] : 'po', null );
+		$format = gp_array_get( GP::$formats, isset( $this->options['o'] )? $this->options['o'] : 'po', null );
 		if ( !$format ) $this->error( __('No such format.') );;
 
 		$translations = $format->read_translations_from_file( $this->options['f'] );
