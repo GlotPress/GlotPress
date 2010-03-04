@@ -3,7 +3,7 @@ require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_Import_Originals extends GP_CLI {
 	
-	var $short_options = 'p:f:t:';
+	var $short_options = 'p:f:o:';
 	
 	var $usage = "-p <project-path> -f <file> [-o <format>]";
 	
