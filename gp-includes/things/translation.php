@@ -66,7 +66,7 @@ class GP_Translation extends GP_Thing {
 		$sort_bys = array('original' => 'o.singular %s', 'translation' => 't.translation_0 %s', 'priority' => 'o.priority %s, o.date_added DESC',
 			'random' => 'o.priority DESC, RAND()', 'translation_date_added' => 't.date_added %s', 'original_date_added' => 'o.date_added %s',
 			'references' => 'o.references' );
-		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.priority %s, o.date_added' );
+		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), 'o.priority %1$s, o.date_added %1$s' );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), 'DESC' );
 
