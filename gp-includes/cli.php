@@ -11,6 +11,9 @@ class GP_CLI {
 		if ( gp_array_get( $_SERVER, 'HTTP_HOST' ) ) {
 			die('CLI only!');
 		}
+		if ( !defined( 'STDERR' ) ) {
+			define( 'STDERR', fopen( 'php://stderr', 'w' ) );
+		}
 		
 		$this->program_name = array_shift( $argv );
 		$this->options = getopt( $this->short_options );
