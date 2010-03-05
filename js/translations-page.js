@@ -77,7 +77,6 @@ jQuery(function($) {
 		} else {
 			url = $(this).attr('href') + '?format='+format;
 		}
-		console.log(url);
 		window.location = url;
 		return false;
 	});
