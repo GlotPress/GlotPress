@@ -24,7 +24,7 @@ class GP_Route_Login extends GP_Route_Main {
 				gp_redirect( gp_post( 'redirect_to' ) );
 			} else {
 				$this->notices[] = sprintf( __("Welcome, %s!"), $_POST['user_login'] );
-				gp_redirect( gp_url( '/' ) );
+				gp_redirect( gp_url_public_root() );
 			}
 		} else {
 			$this->errors[] = __("Invalid password!");
