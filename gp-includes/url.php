@@ -89,9 +89,9 @@ function gp_url_img( $file ) {
  * The URL of the current page
  */
 function gp_url_current() {
-	// TODO: https, port
+	$default_port = is_ssl()? 443 : 80;
 	$host = gp_array_get( $_SERVER, 'HTTP_HOST' );
-	if ( gp_array_get( $_SERVER, 'SERVER_PORT', 80 ) != 80 ) $host .= ':' . gp_array_get( $_SERVER, 'SERVER_PORT' );
+	if ( gp_array_get( $_SERVER, 'SERVER_PORT', $default_port ) != $default_port ) $host .= ':' . gp_array_get( $_SERVER, 'SERVER_PORT' );
 	$path_and_args = gp_array_get( $_SERVER, 'REQUEST_URI' );
 	$protocol = is_ssl()? 'https' : 'http';
 	return "{$protocol}://{$host}{$path_and_args}";
