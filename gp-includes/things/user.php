@@ -108,7 +108,7 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
-		return apply_filters( 'can_user', $filter_args, $args );
+		return apply_filters( 'can_user', $verdict, $filter_args );
 	}
 	
 	function get_meta( $key ) {
