@@ -60,7 +60,7 @@ class GP_User extends GP_Thing {
 	 * Determines whether the user is an admin
 	 */
 	function admin() {
-		return (bool)GP::$permission->find_one( array( 'user_id' => $this->id, 'action' => 'admin' ));
+		return $this->can( 'admin' );
 	}
 	
 	/**
@@ -98,16 +98,17 @@ class GP_User extends GP_Thing {
 		elseif ( GP::$user->logged_in() )
 			$user = GP::$user->current();
 		$user_id = $user? $user->id : null;
-		$args = compact( 'user_id', 'action', 'object_type', 'object_id' );
-		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $args );
+		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
+		$filter_args['user'] = $user;
+		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $filter_args );
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
 		}
 		$verdict =
-			( $user && $user->admin() ) ||
+			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
-		return apply_filters( 'can_user', $verdict, $args );
+		return apply_filters( 'can_user', $filter_args, $args );
 	}
 	
 	function get_meta( $key ) {
