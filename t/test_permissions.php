@@ -18,6 +18,11 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertEqualPermissions( $args, $from_db );
 	}
 	
+	function test_logged_out_permissions() {
+		$this->assertFalse( (bool)GP::$user->current()->can( 'admin' ) );
+		$this->assertFalse( (bool)GP::$user->current()->can( 'write', 'project', 1 ) );
+	}
+	
 	function assertEqualPermissions( $expected, $actual ) {
 		$fields = $actual->fields();
 		unset($fields['id']);
