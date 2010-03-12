@@ -692,6 +692,7 @@ class GP_Locales {
 		$is->country_code = 'is';
 		$is->slug = 'is';
 		$is->google_code = 'is';
+		$is->wp_locale = 'is_IS';
 		$is->nplurals = 2;
 		$is->plural_expression = '(n % 100 != 1 && n % 100 != 21 && n % 100 != 31 && n % 100 != 41 && n % 100 != 51 && n % 100 != 61 && n % 100 != 71 && n % 100 != 81 && n % 100 != 91)';
 
