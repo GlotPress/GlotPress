@@ -17,7 +17,7 @@ class GP_Script_Import_Originals extends GP_CLI {
 		$format = gp_array_get( GP::$formats, isset( $this->options['o'] )? $this->options['o'] : 'po', null );
 		if ( !$format ) $this->error( __('No such format.') );;
 
-		$translations = $format->read_translations_from_file( $this->options['f'] );
+		$translations = $format->read_originals_from_file( $this->options['f'], $project );
 		if ( !$translations ) {
 			$this->error( __("Couldn't load translations from file!") );
 		}

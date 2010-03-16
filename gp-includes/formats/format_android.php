@@ -25,7 +25,11 @@ class GP_Format_Android {
 		return $this->exported;
 	}
 	
-	function read_translations_from_file( $file_name ) {
+	function read_translations_from_file( $file_name, $project = null ) {
+		return $this->read_originals_from_file( $file_name );
+	}
+
+	function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( 'true' );
 		$data = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
@@ -39,8 +43,9 @@ class GP_Format_Android {
 			$entry->translations = array( $translation );
 			$entries->add_entry( $entry );
 		}
-		return $entries;
+		return $entries;		
 	}
+
 	
 	function unescape( $string ) {
 		return stripcslashes( $string );		

@@ -1,0 +1,9 @@
+WITH_LATIN1#0="for";
+WITH_UNICODE_ESCAPES#0="baba";
+WITH_SLASHES#0="twinkle\ntwinkle";
+MULTIPLE#0={
+	"Off",
+	"1",
+	"2",
+	"brun",
+};

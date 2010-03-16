@@ -4,52 +4,58 @@ require_once('init.php');
 class GP_Test_Format_RRC extends GP_UnitTestCase {
     function GP_Test_Format_RRC() {
 		$this->rrc = new GP_Format_RRC;
+		$this->entries = array(
+			array('WITH_LATIN1', 'for', 'für'),
+			array('WITH_UNICODE_ESCAPES', 'baba', 'баба'),
+			array('WITH_SLASHES', "twinkle\ntwinkle", "Twinkle,\nTwinkle,litle\tstar!"),
+			array('MULTIPLE[0]', 'Off', 'Off'),
+			array('MULTIPLE[1]', '1', '1'),
+			array('MULTIPLE[2]', '2', '2'),
+			array('MULTIPLE[3]', 'brun', "brun!\nbrun!"),
+		);
 	}
 	
 	function test_export() {
-		$entries = array(
-			(object)array(
-				'singular' => 'WITH_LATIN1',
-				'translations' => array('für'),
-			),
-			(object)array(
-				'singular' => 'WITH_UNICODE_ESCAPES',
-				'translations' => array('баба'),
-			),
-			(object)array(
-				'singular' => 'WITH_SLASHES',
-				'translations' => array("Twinkle,\nTwinkle,litle\tstar!"),
-			),		
-			(object)array(
-				'singular' => 'MULTIPLE[0]',
-				'translations' => array('Off'),
-			),
-			(object)array(
-				'singular' => 'MULTIPLE[1]',
-				'translations' => array('1'),
-			),
-			(object)array(
-				'singular' => 'MULTIPLE[2]',
-				'translations' => array('2'),
-			),
-			(object)array(
-				'singular' => 'MULTIPLE[3]',
-				'translations' => array("brun!\nbrun!"),
-			),
-		);
-		$this->assertEquals( file_get_contents( 'data/sample.rrc' ), $this->rrc->print_exported_file( 'project', 'locale', 'translation_set', $entries ) );
+		$entries_for_export = array();
+		foreach( $this->entries as $sample ) {
+			list( $context, $original, $translation ) = $sample;
+			$entries_for_export[] = (object)array(
+				'context' => $context,
+				'singular' => $original,
+				'translations' => array($translation),
+			);
+		}
+		$this->assertEquals( file_get_contents( 'data/translation.rrc' ), $this->rrc->print_exported_file( 'project', 'locale', 'translation_set', $entries_for_export ) );
 	}
 	
-	function test_import() {
-		$translations = $this->rrc->read_translations_from_file( 'data/sample.rrc' );
-		$entries = $translations->entries;
-		$this->assertEquals( 'für', $entries['WITH_LATIN1']->translations[0] );
-		$this->assertEquals( true, gp_endswith( $entries['WITH_LATIN1']->extracted_comments, 'für' ) );
-		$this->assertEquals( 'баба', $entries['WITH_UNICODE_ESCAPES']->translations[0] );
-		$this->assertEquals( "Twinkle,\nTwinkle,litle\tstar!", $entries['WITH_SLASHES']->translations[0] );
-		$this->assertEquals( "Off", $entries['MULTIPLE[0]']->translations[0] );
-		$this->assertEquals( "1", $entries['MULTIPLE[1]']->translations[0] );
-		$this->assertEquals( "2", $entries['MULTIPLE[2]']->translations[0] );
-		$this->assertEquals( "brun!\nbrun!", $entries['MULTIPLE[3]']->translations[0] );
+	function test_read_originals() {
+		$translations = $this->rrc->read_originals_from_file( 'data/originals.rrc' );
+				
+		foreach( $this->entries as $sample ) {
+			list( $context, $original, $translation ) = $sample;
+			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context) );
+			$entry = $translations->translate_entry( $translatable_entry );
+			$this->assertEquals( $original, $entry->singular );
+			$this->assertEquals( $context, $entry->context );			
+		}
 	}
+	
+	function test_read_translations() {
+		$stubbed_originals = array();
+		foreach( $this->entries as $sample ) {
+			list( $context, $original, $translation ) = $sample;
+			$stubbed_originals[] = new GP_Original( array( 'singular' => $original, 'context' => $context ) );
+		}
+		GP::$original = $this->getMock( 'GP_Original', array('by_project_id') );
+		GP::$original->expects( $this->once() )
+					->method( 'by_project_id' )
+					->with( $this->equalTo(2) )
+					->will( $this->returnValue($stubbed_originals) );
+		$translations = $this->rrc->read_translations_from_file( 'data/translation.rrc', (object)array( 'id' => 2 ) );
+		foreach( $this->entries as $sample ) {
+			list( $context, $original, $translation ) = $sample;
+			$this->assertEquals( $translation, $translations->translate( $original, $context ) );
+		}
+	}
+	
 }

@@ -30,11 +30,16 @@ class GP_Format_PO {
 		echo $po->export();
 	}
 	
-	function read_translations_from_file( $file_name ) {
+	function read_translations_from_file( $file_name, $project = null ) {
 		$po = new PO();
 		$result = $po->import_from_file( $file_name );
 		return $result? $po : $result;
 	}
+	
+	function read_originals_from_file( $file_name ) {
+		return $this->read_translations_from_file( $file_name );
+	}
+
 }
 
 GP::$formats['po'] = new GP_Format_PO;

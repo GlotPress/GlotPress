@@ -55,7 +55,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->redirect_with_error( __('Error uploading the file.') );
 		}
 
-		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'] );
+		$translations = $format->read_originals_from_file( $_FILES['import-file']['tmp_name'] );
 		if ( !$translations ) {
 			$this->redirect_with_error( __('Couldn&#8217;t load translations from file!') );
 		}
