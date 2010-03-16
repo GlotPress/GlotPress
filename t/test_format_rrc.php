@@ -56,6 +56,5 @@ class GP_Test_Format_RRC extends GP_UnitTestCase {
 			list( $context, $original, $translation ) = $sample;
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );
 		}
-	}
-	
+	}	
 }

@@ -39,7 +39,6 @@ class GP_Format_RRC {
 		$translations = $this->read_originals_from_file( $file_name );
 		if ( !$translations ) return false;
 		$originals = GP::$original->by_project_id( $project->id );
-		$keys_to_remove = array();
 		$new_translations = new Translations;
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file

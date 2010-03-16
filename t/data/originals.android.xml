@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="normal_string">Normal String</string>
+	<string name="with_a_quote">I\'m with a quote</string>
+	<string name="with_newlines">new\nlines</string>
+	<string name="with_doublequotes">double "quotes"</string>
+	<string name="with_utf8">питка</string>
+	<string name="with_lt">you &lt; me</string>
+	<string name="with_gt">me > you</string>
+	<string name="with_amps">me &amp; you are not &amp;amp;</string>
+</resources>

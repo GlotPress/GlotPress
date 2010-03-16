@@ -15,18 +15,42 @@ class GP_Format_Android {
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
 		$this->line( '<resources>' );
 		foreach( $entries as $entry ) {
-			if ( !preg_match( '/^[a-z0-9_]+$/', $entry->singular ) ) {
-				error_log( 'Android XML Export: Bad Entry: '. $entry->singular );
+			if ( !preg_match( '/^[a-z0-9_]+$/', $entry->context ) ) {
+				error_log( 'Android XML Export: Bad Entry: '. $entry->context );
 				continue;
 			}
-			$this->line( '<string name="' . $entry->singular . '">' . $this->escape( $entry->translations[0] ) . '</string>', 1 );
+			$this->line( '<string name="' . $entry->context . '">' . $this->escape( $entry->translations[0] ) . '</string>', 1 );
 		}
 		$this->line( '</resources>' );
 		return $this->exported;
 	}
 	
 	function read_translations_from_file( $file_name, $project = null ) {
-		return $this->read_originals_from_file( $file_name );
+		if ( is_null( $project ) ) return false;
+		$translations = $this->read_originals_from_file( $file_name );
+		if ( !$translations ) return false;
+		$originals = GP::$original->by_project_id( $project->id );
+		$new_translations = new Translations;
+		foreach( $translations->entries as $key => $entry ) {
+			// we have been using read_originals_from_file to parse the file
+			// so we need to swap singular and translation			
+			$entry->translations = array( $entry->singular );
+			$entry->singular = null;
+			foreach( $originals as $original ) {
+				if ( $original->context == $entry->context ) {
+					$entry->singular = $original->singular;
+					break;
+				}
+			}
+			if ( !$entry->singular ) {
+				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
+				continue;
+			}
+			
+			$new_translations->add_entry( $entry );
+		}
+		return $new_translations;
+		
 	}
 
 	function read_originals_from_file( $file_name ) {
@@ -37,13 +61,12 @@ class GP_Format_Android {
 		$entries = new Translations;
 		foreach( $data->string as $string ) {
 			$entry = new Translation_Entry();
-			$entry->singular = (string)$string['name'];
-			$translation = $this->unescape( (string)$string[0] );
-			$entry->extracted_comments = 'Original: ' . $translation;
-			$entry->translations = array( $translation );
+			$entry->context = (string)$string['name'];
+			$entry->singular = $this->unescape( (string)$string[0] );
+			$entry->translations = array();
 			$entries->add_entry( $entry );
 		}
-		return $entries;		
+		return $entries;
 	}
 
 	
