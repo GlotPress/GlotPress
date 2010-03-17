@@ -32,7 +32,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translations_added = $translation_set->import( $translations );
 		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
 				
-		gp_redirect( gp_url_project( $project, 'import-originals' ) );		
+		gp_redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );		
 	}
 	
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
