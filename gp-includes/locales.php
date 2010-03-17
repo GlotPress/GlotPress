@@ -555,6 +555,14 @@ class GP_Locales {
 	 	$fr_ch->country_code = 'ch';
 	 	$fr_ch->slug = 'fr-ch';
 
+		$fy = new GP_Locale();
+	 	$fy->english_name = 'West Frisian';
+	 	$fy->native_name = 'Frysk';
+	 	$fy->lang_code_iso_639_1 = 'fy';
+	 	$fy->lang_code_iso_639_2 = 'fry';
+	 	$fy->country_code = 'fy';
+	 	$fy->slug = 'fy';
+                
 		$ga = new GP_Locale();
 		$ga->english_name = 'Irish';
 		$ga->native_name = 'Gaelige';
