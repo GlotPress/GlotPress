@@ -458,6 +458,16 @@ class GP_Locales {
 		$es_ve->slug = 'es-ve';
 		$es_ve->google_code = 'es';
 
+		$es_co = new GP_Locale();
+		$es_co->english_name = 'Spanish (Colombia)';
+		$es_co->native_name = 'Español de Colombia';
+		$es_co->lang_code_iso_639_1 = 'es';
+		$es_co->lang_code_iso_639_2 = 'spa';
+		$es_co->country_code = 'co';
+		$es_co->wp_locale = 'es_CO';
+		$es_co->slug = 'es-co';
+		$es_co->google_code = 'es';
+
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish (Spain)';
 		$es->native_name = 'Español';
