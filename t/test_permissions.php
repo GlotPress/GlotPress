@@ -22,9 +22,23 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertFalse( (bool)GP::$user->current()->can( 'admin' ) );
 		$this->assertFalse( (bool)GP::$user->current()->can( 'write', 'project', 1 ) );
 	}
+
+	function test_recursive_project_permissions() {
+		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
+		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );
+		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
+		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
+		
+		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'write', 'object_type' => 'project', 'object_id' => $root->id ) );
+		$this->assertTrue( (bool)$user->can( 'write', 'project', $root->id ) );
+		$this->assertTrue( (bool)$user->can( 'write', 'project', $sub->id ) );
+		$this->assertFalse( (bool)$user->can( 'write', 'project', $other->id ) );
+	}
 	
 	function assertEqualPermissions( $expected, $actual ) {
 		$fields = $actual->fields();
 		unset($fields['id']);
 	}
+	
+	
 }

@@ -19,5 +19,10 @@ class GP_Permission extends GP_Thing {
 	function by_translation_set_id( $translation_set_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE object_type='translation-set' AND object_id = %d", $translation_set_id );
 	}
+	
+	function by_project_id_locale_slug_set_slug( $project_id, $locale_slug, $set_slug = 'default' ) {
+		return $this->many( "SELECT * FROM $this->table WHERE object_type='project|locale|set' AND object_id = %s",
+			$project_id.'|'.$locale_slug.'|'.$set_slug );
+	}
 }
 GP::$permission = new GP_Permission();

@@ -47,4 +47,13 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$root->reload();
 		$this->assertEquals( 'Buuu', $root->name );
 	}
+	
+	function test_path_to_root() {
+		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
+		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
+		$subsub = GP::$project->create( array( 'name' => 'SubSub', 'slug' => 'subsub', 'parent_project_id' => $sub->id, 'path' => 'root/sub/subsub' ) );
+		$this->assertEquals( array( $subsub, $sub, $root ), $subsub->path_to_root() );
+		$this->assertEquals( array( $sub, $root ), $sub->path_to_root() );
+		$this->assertEquals( array( $root ), $root->path_to_root() );
+	}
 }

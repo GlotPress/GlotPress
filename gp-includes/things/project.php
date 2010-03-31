@@ -132,5 +132,14 @@ class GP_Project extends GP_Thing {
 			}
 		}
 	}
+	
+	function path_to_root() {
+		$path = array();
+		if ( $this->parent_project_id ) {
+			$parent_project = $this->get( $this->parent_project_id );
+			$path = $parent_project->path_to_root();
+		}
+		return array_merge( array( &$this ), $path );
+	}
 }
 GP::$project = new GP_Project();

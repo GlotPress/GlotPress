@@ -140,7 +140,7 @@ function gp_schema_get() {
 		`user_id` INT(10) DEFAULT NULL,
 		`action` VARCHAR(16) DEFAULT NULL,
 		`object_type` VARCHAR(16) DEFAULT NULL,
-		`object_id` BIGINT(20) DEFAULT NULL,
+		`object_id` VARCHAR(256) DEFAULT NULL,
 		PRIMARY KEY (`id`),
 		KEY `user_id_action` (`user_id`,`action`)
 	);";
