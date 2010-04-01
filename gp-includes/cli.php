@@ -17,6 +17,7 @@ class GP_CLI {
 		
 		$this->program_name = array_shift( $argv );
 		$this->options = getopt( $this->short_options );
+		$this->args = $argv;
 	}
 	
 	function usage() {
