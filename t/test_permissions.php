@@ -34,11 +34,51 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertTrue( (bool)$user->can( 'write', 'project', $sub->id ) );
 		$this->assertFalse( (bool)$user->can( 'write', 'project', $other->id ) );
 	}
+
+	function test_recursive_project_locale_set_slug_permissions() {
+		$object_type = 'project|locale|set-slug';
+		$action = 'whetever';
+		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
+		
+		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );
+		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
+		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
+		
+		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'whatever',
+			'object_type' => $object_type, 'object_id' => $root->id.'|bg|default' ) );
+		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, $root->id.'|bg|default' ) );
+		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, $sub->id.'|bg|default' ) );
+		$this->assertFalse( (bool)$user->can( 'other', $object_type, $sub->id.'|bg|default' ) );
+		$this->assertFalse( (bool)$user->can( 'whatever', $object_type, $sub->id.'|en|default' ) );
+		$this->assertFalse( (bool)$user->can( 'whatever', $object_type, $sub->id.'|bg|slug' ) );
+	}
+
+
+	function test_approve_translation_set_permissions() {
+		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
+		
+		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );
+		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
+		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
+
+		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'approve',
+			'object_type' => 'project|locale|set-slug', 'object_id' => $root->id.'|bg|default' ) );
+		
+		$set_root_bg = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $root->id, 'locale' => 'bg') );
+		$set_sub_bg = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $sub->id, 'locale' => 'bg') );
+		$set_root_en = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $root->id, 'locale' => 'en') );
+		$set_root_bg_slug = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'baba', 'project_id' => $root->id, 'locale' => 'bg') );
+		$set_other_bg = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $other->id, 'locale' => 'bg') );
+		$this->assertTrue( (bool)$user->can( 'approve', 'translation-set', $set_root_bg->id ) );
+		$this->assertTrue( (bool)$user->can( 'approve', 'translation-set', $set_sub_bg->id ) );
+		$this->assertTrue( (bool)$user->can( 'approve', 'translation-set', $set_root_bg->id, array('set' => $set_root_bg) ) );
+		$this->assertFalse( (bool)$user->can( 'approve', 'translation-set', $set_root_en->id ) );
+		$this->assertFalse( (bool)$user->can( 'approve', 'translation-set', $set_root_bg_slug->id ) );
+		$this->assertFalse( (bool)$user->can( 'approve', 'translation-set', $set_other_bg->id ) );
+	}
 	
 	function assertEqualPermissions( $expected, $actual ) {
 		$fields = $actual->fields();
 		unset($fields['id']);
-	}
-	
-	
+	}	
 }

@@ -89,7 +89,7 @@ class GP_User extends GP_Thing {
 	 * 
 	 * Example: $user->can( 'read', 'translation-set', 11 );
 	 */
-	function can( $action, $object_type = null, $object_id = null) {
+	function can( $action, $object_type = null, $object_id = null, $extra = null ) {
 		$user = null;
 		if ( isset( $this ) && $this->id )
 			$user = $this;
@@ -98,6 +98,7 @@ class GP_User extends GP_Thing {
 		$user_id = $user? $user->id : null;
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
+		$filter_args['extra'] = $extra;
 		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $filter_args );
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
