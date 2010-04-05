@@ -138,9 +138,9 @@ function gp_schema_get() {
 	$gp_schema['permissions'] = "CREATE TABLE IF NOT EXISTS `$gpdb->permissions` (
 		`id` INT(10) NOT NULL AUTO_INCREMENT,
 		`user_id` INT(10) DEFAULT NULL,
-		`action` VARCHAR(16) DEFAULT NULL,
-		`object_type` VARCHAR(16) DEFAULT NULL,
-		`object_id` VARCHAR(256) DEFAULT NULL,
+		`action` VARCHAR(255) DEFAULT NULL,
+		`object_type` VARCHAR(255) DEFAULT NULL,
+		`object_id` VARCHAR(255) DEFAULT NULL,
 		PRIMARY KEY (`id`),
 		KEY `user_id_action` (`user_id`,`action`)
 	);";
