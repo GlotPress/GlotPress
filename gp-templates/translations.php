@@ -149,9 +149,6 @@ $i = 0;
 		if ( $can_approve ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __('Import translations') );
 		}
-		if ( $can_write ) {
-		    $footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ), __('Permissions') );
-		}
 		if ( GP::$user->logged_in() ) {
 			$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
 			$export_link = gp_link_get( $export_url , __('Export'), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );

@@ -379,10 +379,10 @@ ul.translation-sets .warnings {
 .actionlist a:active {
     color: red;
 }
-#translation-set-permissions .user {
+.permissions .user {
     font-weight: bold;
 }
-#translation-set-permissions .permission-action {
+.permissions .permission-action {
     font-style: italic;
     color: #999;
 }

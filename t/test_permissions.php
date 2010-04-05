@@ -35,8 +35,8 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertFalse( (bool)$user->can( 'write', 'project', $other->id ) );
 	}
 
-	function test_recursive_project_locale_set_slug_permissions() {
-		$object_type = 'project|locale|set-slug';
+	function test_recursive_validator_permissions() {
+		$object_type = GP::$validator_permission->object_type;
 		$action = 'whetever';
 		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
 		
@@ -44,10 +44,12 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
 		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
 		
-		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'whatever',
-			'object_type' => $object_type, 'object_id' => $root->id.'|bg|default' ) );
-		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, $root->id.'|bg|default' ) );
-		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, $sub->id.'|bg|default' ) );
+		GP::$validator_permission->create( array( 'user_id' => $user->id, 'action' => 'whatever',
+			'project_id' => $root->id, 'locale_slug' => 'bg', 'set_slug' => 'default' ) );
+			
+		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, GP::$validator_permission->object_id( $root->id, 'bg', 'default' ) ) );
+		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, GP::$validator_permission->object_id( $sub->id, 'bg', 'default' ) ) );
+		$this->assertTrue( (bool)$user->can( 'whatever', $object_type, GP::$validator_permission->object_id( $sub->id, 'bg', 'default' ) ) );
 		$this->assertFalse( (bool)$user->can( 'other', $object_type, $sub->id.'|bg|default' ) );
 		$this->assertFalse( (bool)$user->can( 'whatever', $object_type, $sub->id.'|en|default' ) );
 		$this->assertFalse( (bool)$user->can( 'whatever', $object_type, $sub->id.'|bg|slug' ) );
@@ -61,8 +63,8 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
 		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
 
-		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'approve',
-			'object_type' => 'project|locale|set-slug', 'object_id' => $root->id.'|bg|default' ) );
+		GP::$validator_permission->create( array( 'user_id' => $user->id, 'action' => 'approve',
+			'project_id' => $root->id, 'locale_slug' => 'bg', 'set_slug' => 'default' ) );
 		
 		$set_root_bg = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $root->id, 'locale' => 'bg') );
 		$set_sub_bg = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $sub->id, 'locale' => 'bg') );

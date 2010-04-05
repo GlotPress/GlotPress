@@ -164,3 +164,11 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
 	return $attrs;
 }
+
+function gp_locales_dropdown( $name_and_id, $selected_slug = '', $attrs = array() ) {
+	$options = array( '' => '&mdash; Locale &mdash;' );
+	foreach( GP_Locales::locales() as $locale ) {
+		$options[$locale->slug] = sprintf( '%s &ndash; %s', $locale->slug, $locale->english_name );
+	}
+	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
+}

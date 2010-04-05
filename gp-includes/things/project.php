@@ -35,7 +35,6 @@ class GP_Project extends GP_Thing {
 	function after_create() {
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
-		if ( !$this->copy_permissions_from_parent() ) return false;
 	}
 
 	// Field handling
@@ -80,19 +79,6 @@ class GP_Project extends GP_Thing {
 		}
 	}
 	
-	function copy_permissions_from_parent() {
-		if ( !$this->parent_project_id ) return true;
-		$permissions = GP::$permission->find( array( 'action' => 'write', 'object_type' => 'project',  'object_id' => $this->parent_project_id )  );
-		if ( !is_array( $permissions ) ) return false;
-		foreach( $permissions as $permission ) {
-			if ( !GP::$permission->create( array( 'user_id' => $permission->user_id, 'action' => 'write',
-					'object_type' => 'project',  'object_id' => $this->id ) ) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	/**
 	 * Regenrate the paths of all projects from its parents slugs
 	 */

@@ -248,66 +248,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->notices[] = sprintf( __('%d fuzzy translation from Google Translate were added.' ), $ok );
 		}
 	}
-	
-
-	function permissions_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
-		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_redirect( 'write', 'project', $project->id );
-		if ( 'add-approver' == gp_post( 'action' ) ) {
-			$user = GP::$user->by_login( gp_post( 'user_login' ) );
-			if ( $user ) {
-				$res = GP::$permission->create( array(
-					'user_id' => $user->id,
-					'action' => 'approve',
-					'object_type' => 'translation-set',
-					'object_id' => $translation_set->id,
-				) );
-				$res?
-					$this->notices[] = 'Validator was added.' :
-					$this->errors[] = 'Error in adding validator.';
-			} else {
-				$this->errors[] = 'User wasn&#8217;t found!';
-			}
-		}
-		gp_redirect( gp_url_current() );
-	}
-	
-	function permissions_get( $project_path, $locale_slug, $translation_set_slug ) {
-		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
-		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_redirect( 'write', 'project', $project->id );
-		$permissions = GP::$permission->by_translation_set_id( $translation_set->id );
-		// we can't join on users table
-		foreach( (array)$permissions as $permission ) {
-			$permission->user = GP::$user->get( $permission->user_id );
-		}
-		$this->tmpl( 'translation-set-permissions', get_defined_vars() );
-	}
-	
-	function permissions_delete( $project_path, $locale_slug, $translation_set_slug, $permission_id ) {
-		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
-		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_redirect( 'write', 'project', $project->id );
-		$permission = GP::$permission->get( $permission_id );
-		if ( $permission ) {
-			if ( $permission->delete() ) {
-				$this->notices[] = 'Permissin was deleted.';
-			} else {
-				$this->errors[] = 'Error in deleting permission!';
-			}
-		} else {
-			$this->errors[] = 'Permission wasn&#8217;t found!';
-		}
-		gp_redirect( gp_url_project( $project, array( $locale->slug, $translation_set->slug, '_permissions' ) ) );
-	}
-	
+			
 	function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );

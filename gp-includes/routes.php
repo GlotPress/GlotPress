@@ -53,6 +53,11 @@ class GP_Router {
 			"post:/$project/_delete" => array('GP_Route_Project', 'delete_post'),
 
 			"post:/$project/_personal" => array('GP_Route_Project', 'personal_options_post'),
+			
+			"get:/$project/_permissions" => array('GP_Route_Project', 'permissions_get'),
+			"post:/$project/_permissions" => array('GP_Route_Project', 'permissions_post'),
+			"get:/$project/_permissions/_delete/$dir" => array('GP_Route_Project', 'permissions_delete'),
+			
 
 			"get:/$projects" => array('GP_Route_Project', 'index'),
 			"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
@@ -64,9 +69,6 @@ class GP_Router {
 			"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
 			"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
 			"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
-			"get:/$project/$locale/$dir/_permissions" => array('GP_Route_Translation', 'permissions_get'),
-			"post:/$project/$locale/$dir/_permissions" => array('GP_Route_Translation', 'permissions_post'),
-			"get:/$project/$locale/$dir/_permissions/_delete/$dir" => array('GP_Route_Translation', 'permissions_delete'),
 			"post:/$project/$locale/$dir/_discard-warning" => array('GP_Route_Translation', 'discard_warning'),
 			"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 			// keep this one at the bottom of the project, because it will catch anything starting with project

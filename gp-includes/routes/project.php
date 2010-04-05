@@ -47,7 +47,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->can_or_redirect( 'write', 'project', $project->id );
 
 		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
-		if ( !$format ) $this->redirect_with_error( __('No such format.') );;
+		if ( !$format ) $this->redirect_with_error( __('No such format.') );
 
 
 		if ( !is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
@@ -132,4 +132,66 @@ class GP_Route_Project extends GP_Route_Main {
 			gp_redirect( gp_url_project( $project, '_edit' ) );
 		}
 	}
+	
+	function permissions_get( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$path_to_root = array_slice( $project->path_to_root(), 1 );
+		$permissions = GP::$validator_permission->by_project_id( $project->id );
+		$parent_permissions = array();
+		foreach( $path_to_root as $parent_project ) {
+			$this_parent_permissions = GP::$validator_permission->by_project_id( $parent_project->id );
+			foreach( $this_parent_permissions as $permission ) {
+				$permission->project = $parent_project;
+			}
+			$parent_permissions = array_merge( $parent_permissions, (array)$this_parent_permissions );
+		}
+		// we can't join on users table
+		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
+			$permission->user = GP::$user->get( $permission->user_id );
+		}
+		$this->tmpl( 'project-permissions', get_defined_vars() );
+	}
+
+	function permissions_post( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		if ( 'add-validator' == gp_post( 'action' ) ) {
+			$user = GP::$user->by_login( gp_post( 'user_login' ) );
+			if ( !$user ) {
+				$this->redirect_with_error( __('User wasn&#8217;t found!'), gp_url_current() );
+			}
+			$new_permission = new GP_Validator_Permission( array(
+				'user_id' => $user->id,
+				'action' => 'approve',
+				'project_id' => $project->id,
+				'locale_slug' => gp_post( 'locale' ),
+				'set_slug' => gp_post( 'set-slug' ),
+			) );
+			$this->validate_or_redirect( $new_permission, gp_url_current() );
+			$permission = GP::$validator_permission->create( $new_permission );
+			$permission?
+				$this->notices[] = __('Validator was added.') : $this->errors[] = __('Error in adding validator.');
+		}
+		gp_redirect( gp_url_current() );
+	}
+	
+	function permissions_delete( $project_path, $permission_id ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$permission = GP::$permission->get( $permission_id );
+		if ( $permission ) {
+			if ( $permission->delete() ) {
+				$this->notices[] = __('Permission was deleted.');
+			} else {
+				$this->errors[] = __('Error in deleting permission!');
+			}
+		} else {
+			$this->errors[] = __('Permission wasn&#8217;t found!');
+		}
+		gp_redirect( gp_url_project( $project, array( '_permissions' ) ) );
+	}	
 }

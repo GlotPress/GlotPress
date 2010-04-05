@@ -3,6 +3,7 @@ class GP_Thing {
 	
 	var $table = null;
 	var $field_names = array();
+	var $non_db_field_names = array();
 	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
@@ -24,7 +25,7 @@ class GP_Thing {
 		if ( isset( self::$validation_rules_by_class[$this->class] ) ) {
 			$this->validation_rules = &self::$validation_rules_by_class[$this->class];
 		} else {
-			$this->validation_rules = new GP_Validation_Rules( $this->field_names );
+			$this->validation_rules = new GP_Validation_Rules( array_merge( $this->field_names, $this->non_db_field_names ) );
 			// we give the rules as a parameter here solely as a syntax sugar
 			$this->restrict_fields( $this->validation_rules );
 			self::$validation_rules_by_class[$this->class] = &$this->validation_rules;
@@ -186,8 +187,9 @@ class GP_Thing {
 
 	function get( $thing_or_id ) {
 		global $gpdb;
-		if ( is_object( $thing_or_id ) ) $thing_or_id = $thing_or_id->id;
-		return $this->coerce( $gpdb->get_row( $gpdb->prepare( "SELECT * FROM $this->table WHERE `id` = '%s'", $thing_or_id ) ) );
+		if ( !$thing_or_id ) return false;
+		$id = is_object( $thing_or_id )? $thing_or_id->id : $thing_or_id;
+		return $this->find_one( array( 'id' => $id ) );
 	}
 
 	function save( $args = null ) {
@@ -305,15 +307,20 @@ class GP_Thing {
 	}
 	
 	function sql_from_conditions( $conditions ) {
-		$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
-		$string_conditions = array();
-		foreach( $conditions as $field => $sql_condition ) {
-			if ( is_array( $sql_condition ) )
-				$string_conditions[] = '('. implode( ' OR ', array_map( lambda( '$cond', '"$field $cond"', compact('field') ), $sql_condition ) ) . ')';
-			else
-				$string_conditions[] = "$field $sql_condition";
+		if ( is_string( $conditions ) ) {
+			$conditions;
+		} elseif ( is_array( $conditions ) ) {
+			$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
+			$string_conditions = array();
+			foreach( $conditions as $field => $sql_condition ) {
+				if ( is_array( $sql_condition ) )
+					$string_conditions[] = '('. implode( ' OR ', array_map( lambda( '$cond', '"$field $cond"', compact('field') ), $sql_condition ) ) . ')';
+				else
+					$string_conditions[] = "$field $sql_condition";
+			}
+			$conditions = implode( ' AND ', $string_conditions );
 		}
-		return implode( ' AND ', $string_conditions );
+		return $this->apply_default_conditions( $conditions );
 	}
 	
 	function select_all_from_conditions( $conditions ) {
@@ -358,5 +365,12 @@ class GP_Thing {
 	
 	function like_escape_printf( $s ) {
 		return str_replace( '%', '%%', like_escape( $s ) );
+	}
+	
+	function apply_default_conditions( $conditions_str ) {
+		$conditions = array();
+		if ( isset( $this->default_conditions ) )  $conditions[] = $this->default_conditions;
+		if ( $conditions_str ) $conditions[] = $conditions_str;
+		return implode( ' AND ', $conditions );
 	}
 }

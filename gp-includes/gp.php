@@ -5,6 +5,7 @@ class GP {
 	static $user;
 	static $translation_set;
 	static $permission;
+	static $validator_permission;
 	static $translation;
 	static $original;
 	// other singletons
