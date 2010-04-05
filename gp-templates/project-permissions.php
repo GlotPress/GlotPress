@@ -62,5 +62,4 @@ gp_tmpl_header();
 		</dt>
 </form>
 <?php
-echo gp_js_focus_on('user_login');
 gp_tmpl_footer();
