@@ -7,7 +7,12 @@ gp_breadcrumb( array(
 gp_tmpl_header();
 ?>
 <h2><?php _e('Permissions'); ?></h2>
-<h3 id="validators"><?php _e('Validators'); ?></h3>
+<h3 id="validators">
+	<?php _e('Validators'); ?>
+	<?php if ( $permissions && count( $permissions ) > 1 ): ?>
+	<a href="#add" onclick="jQuery('#user_login').focus(); return false;" class="secondary">Add &rarr;</a>
+	<?php endif; ?>
+</h3>
 	<?php if ( $permissions ): ?>
 	<?php if ( $parent_permissions ): ?>
 <h4 id="validators"><?php _e('Validators for this project'); ?></h4>
@@ -47,7 +52,7 @@ gp_tmpl_header();
 		<strong><?php _e('No validators defined for this project.'); ?></strong>
 	<?php endif; ?>
 <form action="" method="post" class="secondary">
-	<h3><?php _e('Add a validator for this project'); ?></h3>
+	<h3 id="add"><?php _e('Add a validator for this project'); ?></h3>
 	<dl>
 		<dt><label for="user_login"><?php _e('Username:'); ?></label></dt>
 		<dd><input type="text" name="user_login" value="" id="user_login" /></dd>
