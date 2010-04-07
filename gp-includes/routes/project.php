@@ -139,9 +139,12 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->can_or_redirect( 'write', 'project', $project->id );
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions = GP::$validator_permission->by_project_id( $project->id );
+		$cmp_fn = lambda( '$x, $y', 'strcmp($x->locale_slug, $y->locale_slug);' );
+		usort( $permissions, $cmp_fn );
 		$parent_permissions = array();
 		foreach( $path_to_root as $parent_project ) {
 			$this_parent_permissions = GP::$validator_permission->by_project_id( $parent_project->id );
+			usort( $this_parent_permissions, $cmp_fn );
 			foreach( $this_parent_permissions as $permission ) {
 				$permission->project = $parent_project;
 			}
