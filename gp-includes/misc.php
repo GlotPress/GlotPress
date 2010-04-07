@@ -35,10 +35,14 @@ function gp_array_get( $array, $key, $default = '' ) {
 	return isset( $array[$key] )? $array[$key] : $default;
 }
 
-
 function gp_const_get( $name, $default = '' ) {
 	return defined( $name )? constant( $name ) : $default;
 }
+
+function gp_member_get( $object, $key, $default = '' ) {
+	return isset( $object->$key )? $object->$key : $default;
+}
+
 
 /**
  * Makes from an array of arrays a flat array.

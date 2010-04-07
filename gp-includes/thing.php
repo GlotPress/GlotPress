@@ -66,8 +66,8 @@ class GP_Thing {
 	/**
 	 * Retrieves all rows from this table
 	 */
-	function all() {
-		return $this->many( "SELECT * FROM $this->table" );
+	function all( $order = null ) {
+		return $this->many( $this->select_all_from_conditions_and_order( array(), $order ) );
 	}
 	
 	/**
@@ -124,16 +124,16 @@ class GP_Thing {
 		return $this->map( $gpdb->get_results( $this->prepare( $args ) ) );
 	}
 
-	function find_many( $conditions ) {
-		return $this->many( $this->select_all_from_conditions( $conditions ) );
+	function find_many( $conditions, $order = null ) {
+		return $this->many( $this->select_all_from_conditions_and_order( $conditions, $order ) );
 	}
 
-	function find_one( $conditions ) {
-		return $this->one( $this->select_all_from_conditions( $conditions ) );
+	function find_one( $conditions, $order = null ) {
+		return $this->one( $this->select_all_from_conditions_and_order( $conditions, $order ) );
 	}
 
-	function find( $conditions ) {
-		return $this->find_many( $conditions );
+	function find( $conditions, $order = null ) {
+		return $this->find_many( $conditions, $order );
 	}
 	
 	function query() {
@@ -323,8 +323,23 @@ class GP_Thing {
 		return $this->apply_default_conditions( $conditions );
 	}
 	
-	function select_all_from_conditions( $conditions ) {
-		return "SELECT * FROM $this->table WHERE " . $this->sql_from_conditions( $conditions );
+	function sql_from_order( $order_by, $order_how = '' ) {		
+		if ( is_array( $order_by ) ) {
+			$order_by = implode( ' ', $order_by );
+			$order_how = '';
+		}
+		$order_by = trim( $order_by );
+		if ( !$order_by ) return gp_member_get( $this, 'default_order' );		
+		return 'ORDER BY ' . $order_by . ( $order_how? " $order_how" : '' );
+	}
+	
+	function select_all_from_conditions_and_order( $conditions, $order = null ) {
+		$query = "SELECT * FROM $this->table";
+		$conditions_sql = $this->sql_from_conditions( $conditions );
+		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
+		$order_sql = $this->sql_from_order( $order );
+		if ( $order_sql ) $query .= " $order_sql";
+		return $query;
 	}
 	
 	function restrict_fields( $thing ) {

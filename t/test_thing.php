@@ -27,4 +27,18 @@ class GP_Test_Thing extends GP_UnitTestCase {
 		$this->assertEquals( 'a = 5', $this->t->sql_from_conditions( array('a' => 5) ) );
 		$this->assertEquals( "(a = 5 OR a = 6) AND b = 'baba'", $this->t->sql_from_conditions( array('a' => array(5, 6), 'b' => 'baba' ) ) );
 	}
+	
+	function test_sql_from_order() {
+		$this->assertEquals( '', $this->t->sql_from_order( null ) );
+		$this->assertEquals( '', $this->t->sql_from_order( '' ) );
+		$this->assertEquals( '', $this->t->sql_from_order( array() ) );
+		$this->assertEquals( '', $this->t->sql_from_order( array(), 'baba' ) );
+		$this->assertEquals( 'ORDER BY x', $this->t->sql_from_order( 'x' ) );
+		$this->assertEquals( 'ORDER BY table.field', $this->t->sql_from_order( 'table.field' ) );
+		$this->assertEquals( 'ORDER BY table.field ASC', $this->t->sql_from_order( 'table.field ASC' ) );
+		$this->assertEquals( 'ORDER BY table.field', $this->t->sql_from_order( array( 'table.field' ) ) );
+		$this->assertEquals( 'ORDER BY table.field ASC', $this->t->sql_from_order( 'table.field', 'ASC' ) );
+		$this->assertEquals( 'ORDER BY table.field ASC', $this->t->sql_from_order( array( 'table.field', 'ASC' ) ) );
+		$this->assertEquals( 'ORDER BY table.field ASC', $this->t->sql_from_order( array( 'table.field', 'ASC' ), 'baba' ) );
+	}
 }
