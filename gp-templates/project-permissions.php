@@ -9,7 +9,7 @@ gp_tmpl_header();
 <h2><?php _e('Permissions'); ?></h2>
 <h3 id="validators">
 	<?php _e('Validators'); ?>
-	<?php if ( $permissions && count( $permissions ) > 1 ): ?>
+	<?php if ( count( $permissions ) + count( $parent_permissions ) > 10 ): ?>
 	<a href="#add" onclick="jQuery('#user_login').focus(); return false;" class="secondary">Add &rarr;</a>
 	<?php endif; ?>
 </h3>
