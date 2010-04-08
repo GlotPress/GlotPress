@@ -26,7 +26,7 @@ gp_tmpl_header();
 			<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
 			<span class="permission-action">and slug</span>
 			<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
-			<a href="<?php echo gp_url_join( gp_url_current(), '_delete/'.$permission->id ); ?>" class="action delete"><?php _e('Remove'); ?></a>
+			<a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); ?>" class="action delete"><?php _e('Remove'); ?></a>
 		</li>
 	<? endforeach; ?>
 </ul>	

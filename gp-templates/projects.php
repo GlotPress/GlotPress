@@ -10,6 +10,6 @@ gp_tmpl_header();
 <?php endforeach; ?>
 </ul>
 <?php if ( GP::$user->current()->can( 'write', 'project' ) ): ?>
-	<p class="actionlist secondary"><?php gp_link( gp_url_project( '_new' ), __('Create a New Project') ); ?></p>
+	<p class="actionlist secondary"><?php gp_link( gp_url_project( '-new' ), __('Create a New Project') ); ?></p>
 <?php endif; ?>
 <?php gp_tmpl_footer(); ?>

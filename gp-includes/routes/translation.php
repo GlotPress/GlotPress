@@ -70,8 +70,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
-		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '_discard-warning' ) );
-		$bulk_action = gp_url_join( $url, '_bulk' );
+		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
+		$bulk_action = gp_url_join( $url, '-bulk' );
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
 

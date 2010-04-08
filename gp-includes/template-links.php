@@ -34,7 +34,7 @@ function gp_link_project_edit_get( $project, $text = false, $attrs = array() ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );
-	return gp_link_get( gp_url_project( $project, '_edit' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
+	return gp_link_get( gp_url_project( $project, '-edit' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
 function gp_link_project_edit() {
@@ -47,7 +47,7 @@ function gp_link_project_delete_get( $project, $text = false, $attrs = array() )
 		return '';
 	}
 	$text = $text? $text : __( 'Delete' );
-	return gp_link_get( gp_url_project( $project, '_delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
+	return gp_link_get( gp_url_project( $project, '-delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
 }
 
 function gp_link_project_delete() {

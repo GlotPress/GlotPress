@@ -46,36 +46,35 @@ class GP_Router {
 			"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 			"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
 
-			"get:/$project/_edit" => array('GP_Route_Project', 'edit_get'),
-			"post:/$project/_edit" => array('GP_Route_Project', 'edit_post'),
+			"get:/$project/-edit" => array('GP_Route_Project', 'edit_get'),
+			"post:/$project/-edit" => array('GP_Route_Project', 'edit_post'),
 
-			"get:/$project/_delete" => array('GP_Route_Project', 'delete_get'),
-			"post:/$project/_delete" => array('GP_Route_Project', 'delete_post'),
+			"get:/$project/-delete" => array('GP_Route_Project', 'delete_get'),
+			"post:/$project/-delete" => array('GP_Route_Project', 'delete_post'),
 
-			"post:/$project/_personal" => array('GP_Route_Project', 'personal_options_post'),
+			"post:/$project/-personal" => array('GP_Route_Project', 'personal_options_post'),
 			
-			"get:/$project/_permissions" => array('GP_Route_Project', 'permissions_get'),
-			"post:/$project/_permissions" => array('GP_Route_Project', 'permissions_post'),
-			"get:/$project/_permissions/_delete/$dir" => array('GP_Route_Project', 'permissions_delete'),
+			"get:/$project/-permissions" => array('GP_Route_Project', 'permissions_get'),
+			"post:/$project/-permissions" => array('GP_Route_Project', 'permissions_post'),
+			"get:/$project/-permissions/-delete/$dir" => array('GP_Route_Project', 'permissions_delete'),
 			
 
 			"get:/$projects" => array('GP_Route_Project', 'index'),
-			"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
-			"get:/$projects/_new" => array('GP_Route_Project', 'new_get'),
-			"post:/$projects/_new" => array('GP_Route_Project', 'new_post'),
+			"get:/$projects/-new" => array('GP_Route_Project', 'new_get'),
+			"post:/$projects/-new" => array('GP_Route_Project', 'new_post'),
 
-			"post:/$project/$locale/$dir/_bulk" => array('GP_Route_Translation', 'bulk_post'),
+			"post:/$project/$locale/$dir/-bulk" => array('GP_Route_Translation', 'bulk_post'),
 			"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
 			"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
 			"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
 			"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
-			"post:/$project/$locale/$dir/_discard-warning" => array('GP_Route_Translation', 'discard_warning'),
+			"post:/$project/$locale/$dir/-discard-warning" => array('GP_Route_Translation', 'discard_warning'),
 			"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 			// keep this one at the bottom of the project, because it will catch anything starting with project
 			"/$project" => array('GP_Route_Project', 'single'),
 
-			"get:/sets/_new" => array('GP_Route_Translation_Set', 'new_get'),
-			"post:/sets/_new" => array('GP_Route_Translation_Set', 'new_post'),
+			"get:/sets/-new" => array('GP_Route_Translation_Set', 'new_get'),
+			"post:/sets/-new" => array('GP_Route_Translation_Set', 'new_post'),
 			
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
 		) );

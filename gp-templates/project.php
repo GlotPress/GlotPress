@@ -55,7 +55,7 @@ gp_tmpl_header();
 	<div class="secondary actionlist">
 	<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
 	<div class="personal-options">
-		<form action="<?php echo gp_url_project( $project, '_personal' ); ?>" method="post">
+		<form action="<?php echo gp_url_project( $project, '-personal' ); ?>" method="post">
 		<dl>
 			<dt><label for="source-url-template"><?php _e('Source file URL');  ?></label></dt>
 			<dd>
@@ -74,9 +74,9 @@ gp_tmpl_header();
 <?php if ( $can_write ): ?>
 	<p class="secondary actionlist">
 		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> &bull;
-		<?php gp_link( gp_url_project( $project, array( '_permissions' ) ), __('Permissions') ); ?> &bull;
-		<?php gp_link( gp_url_project( '', '_new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> &bull;
-		<?php gp_link( gp_url( '/sets/_new', array( 'project_id' => $project->id ) ), __('Create a New Translation Set') ); ?>
+		<?php gp_link( gp_url_project( $project, array( '-permissions' ) ), __('Permissions') ); ?> &bull;
+		<?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> &bull;
+		<?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('Create a New Translation Set') ); ?>
 	</p>
 <?php endif; ?>
 <script type="text/javascript" charset="utf-8">

@@ -79,7 +79,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) gp_tmpl_404();
 		$this->can_or_redirect( 'write', 'project', $project->id );
 		$updated_project = new GP_Project( gp_post( 'project' ) );
-		$this->validate_or_redirect( $updated_project, gp_url_project( $project, '_edit' ) );
+		$this->validate_or_redirect( $updated_project, gp_url_project( $project, '-edit' ) );
 		// TODO: add id check as a validation rule
 		if ( $project->id == $updated_project->parent_project_id )
 			$this->errors[] = __('The project cannot be parent of itself!');
@@ -89,7 +89,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __('Error in saving project!');
 		$project->reload();
 
-		gp_redirect( gp_url_project( $project, '_edit' ) );
+		gp_redirect( gp_url_project( $project, '-edit' ) );
 	}
 
 	function delete_get( $project_path ) {
@@ -129,7 +129,7 @@ class GP_Route_Project extends GP_Route_Main {
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
 			$this->notices[] = __('The project was created!');
-			gp_redirect( gp_url_project( $project, '_edit' ) );
+			gp_redirect( gp_url_project( $project, '-edit' ) );
 		}
 	}
 	
@@ -195,6 +195,6 @@ class GP_Route_Project extends GP_Route_Main {
 		} else {
 			$this->errors[] = __('Permission wasn&#8217;t found!');
 		}
-		gp_redirect( gp_url_project( $project, array( '_permissions' ) ) );
-	}	
+		gp_redirect( gp_url_project( $project, array( '-permissions' ) ) );
+	}
 }
