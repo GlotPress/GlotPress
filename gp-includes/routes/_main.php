@@ -3,42 +3,4 @@
  * Holds common functionality for routes.
  */
 class GP_Route_Main extends GP_Route {
-	// TODO: move these as a template helper
-	
-	function _options_from_projects( $projects ) {
-		// TODO: mark which nodes are editable by the current user
-		$tree = array();
-		$top = array();
-		foreach( $projects as $p ) {
-			$tree[$p->id]['self'] = $p;
-			if ( $p->parent_project_id ) {
-				$tree[$p->parent_project_id]['children'][] = $p->id;
-			} else {
-				$top[] = $p->id;
-			}
-		}
-		$options = array( '' => __('No parent') );
-		$stack = array();
-		foreach( $top as $top_id ) {
-			$stack = array( $top_id );
-			while ( !empty( $stack ) ) {
-				$id = array_pop( $stack );
-				$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
-				$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
-				foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
-					$stack[] = $child_id;
-					$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
-				}
-			}
-		}
-		return $options;
-	}
-
-	function _options_from_locales( $locales ) {
-		$values = array_map( create_function( '$l', 'return $l->slug;'), $locales );
-		$labels = array_map( create_function( '$l', 'return $l->slug." - ". $l->english_name;'), $locales );
-		sort( $values );
-		sort( $labels );
-		return array_combine($values, $labels);
-	}
 }

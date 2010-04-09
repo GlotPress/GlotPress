@@ -127,5 +127,25 @@ class GP_Project extends GP_Thing {
 		}
 		return array_merge( array( &$this ), $path );
 	}
+	
+	function set_difference_from( $other_project ) {
+		$this_sets = (array)GP::$translation_set->by_project_id( $this->id );
+		$other_sets = (array)GP::$translation_set->by_project_id( $other_project->id );
+		$added = array();
+		$removed = array();
+		foreach( $other_sets as $other_set ) {
+			$vars = array( 'locale' => $other_set->locale, 'slug' => $other_set->slug );
+			if ( !gp_array_any( lambda('$set', '$set->locale == $locale && $set->slug == $slug', $vars ), $this_sets ) ) {
+				$added[] = $other_set;
+			}
+		}
+		foreach( $this_sets as $this_set ) {
+			$vars = array( 'locale' => $this_set->locale, 'slug' => $this_set->slug );
+			if ( !gp_array_any( lambda('$set', '$set->locale == $locale && $set->slug == $slug', $vars ), $other_sets ) ) {
+				$removed[] = $this_set;
+			}
+		}
+		return compact( 'added', 'removed' );
+	}
 }
 GP::$project = new GP_Project();

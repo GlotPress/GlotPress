@@ -28,11 +28,13 @@ var $gp = function($) { return {
 			$gp.notices.element.css('left', ($(document).width() - $gp.notices.element.width()) / 2);
 		}
 	},
+	esc_html: function(s) {
+		return $('<div/>').text(s).html();
+	},
 	init: function() {
 		$gp.notices.init();
 	}
 }}(jQuery);
-
 
 $gp.showhide = function($) { return function(link, show_text, hide_text, container, focus) {
 	link = $(link);

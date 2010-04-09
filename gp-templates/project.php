@@ -75,8 +75,9 @@ gp_tmpl_header();
 	<p class="secondary actionlist">
 		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> &bull;
 		<?php gp_link( gp_url_project( $project, array( '-permissions' ) ), __('Permissions') ); ?> &bull;
-		<?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('Create a New Sub-Project') ); ?> &bull;
-		<?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('Create a New Translation Set') ); ?>
+		<?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ); ?> &bull;
+		<?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ); ?> &bull;
+		<?php gp_link( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ); ?>
 	</p>
 <?php endif; ?>
 <script type="text/javascript" charset="utf-8">

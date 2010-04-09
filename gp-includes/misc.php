@@ -43,7 +43,6 @@ function gp_member_get( $object, $key, $default = '' ) {
 	return isset( $object->$key )? $object->$key : $default;
 }
 
-
 /**
  * Makes from an array of arrays a flat array.
  *
@@ -268,4 +267,22 @@ function gp_array_zip() {
 		}
 	}
 	return $res;
+}
+
+function gp_array_any( $callback, $array ) {
+	foreach( $array as $item ) {
+		if ( $callback( $item ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function gp_array_all( $callback, $array ) {
+	foreach( $array as $item ) {
+		if ( !$callback( $item ) ) {
+			return false;
+		}
+	}
+	return false;
 }

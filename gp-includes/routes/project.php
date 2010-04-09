@@ -70,7 +70,6 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
 		$this->can_or_redirect( 'write', 'project', $project->id );
-		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-edit', get_defined_vars() );
 	}
 	
@@ -111,7 +110,6 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 		$this->can_or_redirect( 'write', 'project', $project->parent_project_id );
-		$all_project_options = self::_options_from_projects( GP::$project->all() );
 		gp_tmpl_load( 'project-new', get_defined_vars() );
 	}
 	
@@ -125,7 +123,6 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) {
 			$project = new GP_Project();
 			$this->errors[] = __('Error in creating project!');
-			$all_project_options = self::_options_from_projects( GP::$project->all() );
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
 			$this->notices[] = __('The project was created!');
@@ -197,4 +194,47 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		gp_redirect( gp_url_project( $project, array( '-permissions' ) ) );
 	}
+
+	function mass_create_sets_get( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$this->tmpl( 'project-mass-create-sets', get_defined_vars() );
+	}
+
+	function mass_create_sets_post( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$other_project = GP::$project->get( gp_post( 'project_id' ) );
+		if ( !$other_project ) {
+			$this->die_with_error( __('Project wasn&#8217;found') );
+		}
+		$changes = $project->set_difference_from( $other_project );
+		$errors = 0;
+		foreach( $changes['added'] as $to_add ) {
+			if ( !GP::$translation_set->create( array('project_id' => $project->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug) ) ) {
+				$this->errors[] = __('Couldn&#8217;t add translation set named %s', esc_html( $to_add->name ) );
+			}
+		}
+		foreach( $changes['removed'] as $to_remove ) {
+			if ( !$to_remove->delete() ) {
+				$this->errors[] = __('Couldn&#8217;t delete translation set named %s', esc_html( $to_remove->name ) );
+			}
+		}
+		if ( !$this->errors ) $this->notices[] = __('Translation sets were added and removed successfully');
+		gp_redirect( gp_url_project( $project ) );
+	}
+
+	function mass_create_sets_preview_post( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) gp_tmpl_404();
+		$this->can_or_redirect( 'write', 'project', $project->id );
+		$other_project = GP::$project->get( gp_post( 'project_id' ) );
+		if ( !$other_project ) {
+			$this->die_with_error( __('Project wasn&#8217;found') );
+		}
+		header('Content-Type: application/json');
+		echo json_encode( $project->set_difference_from( $other_project ) );
+	}	
 }

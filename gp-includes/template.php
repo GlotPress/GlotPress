@@ -29,7 +29,6 @@ function gp_tmpl_footer( $args = array( ) ) {
 	gp_tmpl_load( 'footer', $args );
 }
 
-
 function gp_head() {
 	do_action( 'gp_head' );
 }
@@ -165,10 +164,41 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 	return $attrs;
 }
 
-function gp_locales_dropdown( $name_and_id, $selected_slug = '', $attrs = array() ) {
-	$options = array( '' => '&mdash; Locale &mdash;' );
-	foreach( GP_Locales::locales() as $locale ) {
-		$options[$locale->slug] = sprintf( '%s &ndash; %s', $locale->slug, $locale->english_name );
+function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
+	$locales = GP_Locales::locales();
+	$values = array_map( create_function( '$l', 'return $l->slug;'), $locales );
+	$labels = array_map( create_function( '$l', 'return $l->slug." &mdash; ". $l->english_name;'), $locales );
+	sort( $values );
+	sort( $labels );
+	return gp_select( $name_and_id, array_merge( array( '' => __('&mdash; Locale &mdash;') ), array_combine( $values, $labels ) ), $selected_slug, $attrs );
+}
+
+function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array() ) {
+	$projects = GP::$project->all();
+	// TODO: mark which nodes are editable by the current user
+	$tree = array();
+	$top = array();
+	foreach( $projects as $p ) {
+		$tree[$p->id]['self'] = $p;
+		if ( $p->parent_project_id ) {
+			$tree[$p->parent_project_id]['children'][] = $p->id;
+		} else {
+			$top[] = $p->id;
+		}
 	}
-	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
+	$options = array( '' => __('&mdash; No parent &mdash;') );
+	$stack = array();
+	foreach( $top as $top_id ) {
+		$stack = array( $top_id );
+		while ( !empty( $stack ) ) {
+			$id = array_pop( $stack );
+			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
+			$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
+			foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
+				$stack[] = $child_id;
+				$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
+			}
+		}
+	}
+	return gp_select( $name_and_id, $options, $selected_project_id, $attrs );
 }

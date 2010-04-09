@@ -31,4 +31,12 @@ class GP_Test_Misc extends GP_UnitTestCase {
 		$this->assertEquals( array( array('baba', 'dyado') ), gp_array_zip( array('baba', 'boom'), array('dyado') ) );
 		$this->assertEquals( array( array( array('baba'), 'dyado') ), gp_array_zip( array( array('baba'), 'boom'), array('dyado') ) );
 	}
+	
+	function test_gp_array_any() {
+		$this->assertEquals( false, gp_array_any( 'intval', array( 0 ) ) );
+		$this->assertEquals( false, gp_array_any( returner(false), array( 1, 2, 3, 4 ) ) );
+		$this->assertEquals( false, gp_array_any( returner(true), array() ) );
+		$this->assertEquals( true, gp_array_any( returner(true), array( 1, 2, 3, 4 ) ) );
+		$this->assertEquals( true, gp_array_any( returner('$x', '$x % 2'), array( 1, 2, 3, 4 ) ) );
+	}
 }

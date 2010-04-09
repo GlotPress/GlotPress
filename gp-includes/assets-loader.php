@@ -27,6 +27,7 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->add( 'common', '/common.js', array( 'jquery' ) );
 	$scripts->add( 'editor', '/editor.js', array( 'common', 'google-js-api' ) );
 	$scripts->add( 'translations-page', '/translations-page.js', array( 'common' ) );
+	$scripts->add( 'mass-create-sets-page', '/mass-create-sets-page.js', array( 'common' ) );
 	$scripts->add( 'google-js-api', 'http://www.google.com/jsapi', array(), '' );
 }
 

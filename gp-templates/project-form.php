@@ -19,7 +19,7 @@
 	</dd>
 
 	<dt><label for="project[parent_project_id]"><?php _e('Parent Project');  ?></label></dt>
-	<dd><?php echo gp_select( 'project[parent_project_id]', $all_project_options, $project->parent_project_id); ?></dd>
+	<dd><?php echo gp_projects_dropdown( 'project[parent_project_id]', $project->parent_project_id); ?></dd>
 </dl>
 
 <?php echo gp_js_focus_on( 'project[name]' ); ?>

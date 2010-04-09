@@ -6,8 +6,6 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		if ( $set->project_id ) {
 			$this->can_or_redirect( 'write', 'project', $set->project_id, gp_url_project( GP::$project->get( $set->project_id ) ) );
 		}
-		$all_project_options = self::_options_from_projects( GP::$project->all() );
-		$all_locale_options = self::_options_from_locales( GP_Locales::locales() );
 		gp_tmpl_load( 'translation-set-new', get_defined_vars() );
 	}
 	
