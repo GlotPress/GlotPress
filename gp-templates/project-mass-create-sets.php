@@ -17,7 +17,7 @@ Usually this is one of the parent projects.'); ?></p>
 <form action="<?php echo esc_url( gp_url_current() ); ?>" method="post">
 	<dl>
 		<dt><label for="project_id"><?php _e('Project to take translation sets from:');  ?></label></dt>
-		<dd><?php echo gp_projects_dropdown( 'project_id', $project->parent_project_id ); ?></dd>
+		<dd><?php echo gp_projects_dropdown( 'project_id', null ); ?></dd>
 	</dl>
 	<div id="preview"></div>
 	<p><input type="submit" name="submit" value="<?php echo esc_attr( __('Create Translation Sets') ); ?>" id="submit" /></p>
