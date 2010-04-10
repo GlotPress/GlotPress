@@ -12,8 +12,7 @@ var $gp = function($) { return {
 		},
 		success: function(message) {
 			$gp.notices.generic_message('gp-js-success', message);
-			$gp.notices.element.fadeOut(2000);
-			$gp.notices.clear();
+			$gp.notices.element.fadeOut(10000);
 		},
 		clear: function(message) {
 			$gp.notices.element.html('').hide();
