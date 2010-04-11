@@ -125,19 +125,19 @@ table.translations tr.editor {
 	background-color: #F8FFEC;
 	display: none;
 }
-table.translations tr.preview.status-fuzzy {
+table.translations tr.preview.status-fuzzy, #legend .status-fuzzy {
 	background-color: #FC6;
 }
-table.translations tr.preview.status-current {
+table.translations tr.preview.status-current, #legend .status-current {
 	background-color: #E9FFD8;
 }
-table.translations tr.preview.status-old {
+table.translations tr.preview.status-old, #legend .status-old {
 	background-color: #FEE4F8;
 }
-table.translations tr.preview.status-waiting {
+table.translations tr.preview.status-waiting, #legend .status-waiting {
 	background-color: #FFFFC2;
 }
-table.translations tr.preview.has-warnings td.original {
+table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
     border-left: 2px solid red;
 }
 
@@ -416,4 +416,18 @@ span.added {
 }
 span.removed {
     color: red;
+}
+#legend {
+    margin-top: 1em;
+}
+#legend div {
+    margin-right: .5em;
+    float: left;
+    line-height: 1.5em;
+}
+#legend .box {
+    border: 1px solid #ccc;
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0;
 }

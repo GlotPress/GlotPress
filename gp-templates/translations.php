@@ -142,6 +142,19 @@ $i = 0;
 	endif;
 ?>
 </table>
+<div id="legend" class="secondary clearfix">
+	<div><strong><?php _e('Legend:'); ?></strong></div>
+<?php 
+	foreach( GP::$translation->get_static( 'statuses' ) as $status ):
+		if ( 'rejected' == $status ) continue;
+?>
+	<div class="box status-<?php echo $status; ?>"></div>
+	<div><?php echo $status; ?></div>
+<?php endforeach; ?>
+	<div class="box has-warnings"></div>
+	<div><?php _e('with warnings'); ?></div>
+
+</div>
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <p class="clear actionlist secondary">
 	<?php

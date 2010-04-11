@@ -6,7 +6,7 @@ class GP_Translation extends GP_Thing {
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', 'date_modified', 'warnings');
 	var $non_updatable_attributes = array( 'id', );
 	
-	static $statuses = array('rejected', 'waiting', 'old', 'fuzzy', 'current');
+	static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old', );
 
 	function normalize_fields( $args ) {
 		$args = (array)$args;
