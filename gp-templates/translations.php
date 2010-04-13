@@ -66,7 +66,7 @@ $i = 0;
 					'waiting' => __('Waiting approval'),
 					'rejected' => __('Rejected'),
 					'either' => __('Any'),
-				), gp_array_get( $filters, 'status', 'current_or_waiting' ) );
+				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy' ) );
 			?>
 		</dd>
 		
