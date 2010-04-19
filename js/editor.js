@@ -132,7 +132,7 @@ $gp.editor = function($){ return {
 	copy: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
-		link.parent('p').siblings('textarea').val(original_text).focus();
+		link.parent('p').siblings('textarea').html(original_text).focus();
 	},
 	google_translate: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
@@ -156,7 +156,7 @@ $gp.editor = function($){ return {
 					return '&lt;/'+tag.toLowerCase()+'&gt;';
 				});
 
-				link.parent('p').siblings('textarea').val(result.translation).focus();
+				link.parent('p').siblings('textarea').html(result.translation).focus();
 				$gp.notices.success('Translated!');
 			} else {
 				$gp.notices.error('Error in translating via Google Translate: '+result.message+'!');
