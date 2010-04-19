@@ -2,7 +2,7 @@
 
 function google_translate_batch( $locale, $strings ) {
 	if ( !$locale->google_code ) {
-		return new WP_Error( sprintf( "The locale %s isn't supported by Google Translate.", $locale->slug ) );
+		return new WP_Error( 'google_translate', sprintf( "The locale %s isn't supported by Google Translate.", $locale->slug ) );
 	}
 	$url = 'http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=' . urlencode( 'en|'.$locale->google_code );
 	foreach ( $strings as $string ) {
