@@ -20,7 +20,7 @@ class GP_Route_Login extends GP_Route_Main {
 		}
 		
 		if ( $user->login( $_POST['user_pass'] ) ) {
-			if ( gp_post( 'redirect_to' ) && gp_startswith( gp_post( 'redirect_to' ), gp_url_base() ) ) {
+			if ( gp_post( 'redirect_to' ) ) {
 				gp_redirect( gp_post( 'redirect_to' ) );
 			} else {
 				$this->notices[] = sprintf( __("Welcome, %s!"), $_POST['user_login'] );
