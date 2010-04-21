@@ -330,6 +330,10 @@ dl.filters-expanded dd.separator {
 dl.filters-expanded.bulk-actions a {
     display: block;
 }
+dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
 .hidden {
     display: none;
 }

@@ -43,8 +43,14 @@ $i = 0;
 	echo implode( '&nbsp;<span class="separator">&bull;</span>&nbsp;', $filter_links );
 	?>
 	<dl class="filters-expanded filters hidden clearfix">
- 		<dt><label for="filters[term]"><?php _e('Term:'); ?></label></dt>
-		<dd><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></dd>
+ 		<dt>
+			<p><label for="filters[term]"><?php _e('Term:'); ?></label></p>
+			<p><label for="filters[user_login]"><?php _e('User:'); ?></label></p>
+		</dt>
+		<dd>
+			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
+			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
+		</dd>
  		<dt><label for="filters[translated]"><?php _e('With translation:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[translated]',

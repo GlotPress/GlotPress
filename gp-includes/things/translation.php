@@ -94,7 +94,13 @@ class GP_Translation extends GP_Thing {
 		} elseif ( 'no' == gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NULL';
 		}
-		
+	
+		if ( gp_array_get( $filters, 'user_login' ) ) {
+			$user = GP::$user->by_login( $filters['user_login'] );
+			// do not return any entries if the user doesn't exist
+			$where[] = $gpdb->prepare( 't.user_id = %d', ($user && $user->id)? $user->id : -1 );
+		}
+				
 		if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 		    $where[] = 'o.priority > -2';
 		}
