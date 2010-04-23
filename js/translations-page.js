@@ -8,7 +8,7 @@ jQuery(function($) {
 	
 
 	// make the whole table cell, containing the checkbox clickable
-	$('table#translations td.checkbox').live( 'click', function (e) {
+	$('table#translations td.checkbox').live('click', function (e) {
 		if ($(e.target).is('input')) return true;
 		var cb = this.getElementsByTagName('input')[0];
 		cb.checked = !cb.checked;

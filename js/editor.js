@@ -21,10 +21,6 @@ $gp.editor = function($){ return {
 		editor.original_id = $gp.editor.original_id_from_row_id(row_id);
 		editor.translation_id = $gp.editor.translation_id_from_row_id(row_id);
 		$gp.editor.current = editor;
-		$('a.close', editor).click($gp.editor.hooks.hide);
-		$('button.ok', editor).click($gp.editor.hooks.ok);
-		$('a.copy').click($gp.editor.hooks.copy);
-		$('a.gtranslate').click($gp.editor.hooks.google_translate);
 		editor.show();
 		editor.preview.hide();
 		$('tr:first', $gp.editor.table).hide();
@@ -48,10 +44,14 @@ $gp.editor = function($){ return {
 		$gp.editor.current = null;
 	},
 	install_hooks: function() {
-		$('a.edit', $gp.editor.table).click($gp.editor.hooks.show);
-		$('tr.preview', $gp.editor.table).dblclick($gp.editor.hooks.show);
-		$('a.discard-warning', $gp.editor.table).click($gp.editor.hooks.discard_warning);
-		$('select.priority', $gp.editor.table).change($gp.editor.hooks.set_priority);
+		$('a.edit', $gp.editor.table).live('click', $gp.editor.hooks.show);
+		$('a.close', 'tr.editor').live('click', $gp.editor.hooks.hide);
+		$('a.copy', 'tr.editor').live('click', $gp.editor.hooks.copy);
+		$('a.gtranslate', 'tr.editor').live('click', $gp.editor.hooks.google_translate);
+		$('a.discard-warning', 'tr.editor').live('click', $gp.editor.hooks.discard_warning);
+		$('button.ok', 'tr.editor').live('click', $gp.editor.hooks.ok);
+		$('tr.preview', $gp.editor.table).live('dblclick', $gp.editor.hooks.show);
+		$('select.priority', $gp.editor.table).live('change', $gp.editor.hooks.set_priority);
 	},
 	replace_current: function(html) {
 		if (!$gp.editor.current) return;
@@ -60,11 +60,10 @@ $gp.editor = function($){ return {
 		$gp.editor.next();
 		old_current.preview.remove();
 		old_current.remove();
-		$gp.editor.install_hooks();
 		$gp.editor.current.preview.fadeIn(800);
 	},
 	save: function(button) {
-		if (!$gp.editor.current) return;
+		if (!$gp.editor.current) return;		
 		var editor = $gp.editor.current;
 		button.attr('disabled', 'disabled');
 		$gp.notices.notice('Saving&hellip;');
@@ -102,7 +101,6 @@ $gp.editor = function($){ return {
 			success: function(data){
 				select.attr('disabled', '');
 				$gp.notices.success('Priority set!');
-				// set CSS class
 				var new_priority_class = 'priority-'+$('option:selected', select).text();
 				$gp.editor.current.addClass(new_priority_class);
 				$gp.editor.current.preview.addClass(new_priority_class);
