@@ -122,7 +122,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 			$prev_pages[] = gp_link_get( add_query_arg( array( 'page' => $prev_page ) ), $prev_page );
 		}
 		$prev_pages = implode( ' ', $prev_pages );
-		if ( $page - $surrounding > 1 ) $prev_dots = '<span class="dots">&hellip</span>';
+		if ( $page - $surrounding > 1 ) $prev_dots = '<span class="dots">&hellip;</span>';
 	}
 	if ( $page < $pages ) {
 		$next_pages = array();
@@ -130,7 +130,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 			$next_pages[] = gp_link_get( add_query_arg( array( 'page' => $next_page ) ), $next_page );
 		}
 		$next_pages = implode( ' ', $next_pages );
-		if ( $page + $surrounding < $pages ) $next_dots = '<span class="dots">&hellip</span>';
+		if ( $page + $surrounding < $pages ) $next_dots = '<span class="dots">&hellip;</span>';
 	}
 	if ( $prev_dots ) $first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
 	if ( $next_dots ) $last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );

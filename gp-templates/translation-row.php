@@ -136,7 +136,7 @@ $priority_char = array(
 			<dl>
 			    <dt><?php _e('Priority of the original:'); ?></dt>
 			<?php if ( $can_write ): ?>
-			    <?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority') ); ?>
+			    <dd><?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority') ); ?></dd>
 			<?php else: ?>
 			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
 			<?php endif; ?>

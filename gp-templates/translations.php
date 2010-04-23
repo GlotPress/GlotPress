@@ -18,6 +18,7 @@ $i = 0;
 ?>
 <!-- TODO: use another form for bulk actions -->
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
+	<div>
 	<?php if ( $can_approve ): ?>
 	<a href="#" class="revealing bulk"><?php _e('Bulk &darr;'); ?></a> <strong class="separator">&bull;</strong>
 	<?php endif; ?>
@@ -42,6 +43,7 @@ $i = 0;
 	// TODO: saved searches
 	echo implode( '&nbsp;<span class="separator">&bull;</span>&nbsp;', $filter_links );
 	?>
+	</div>
 	<dl class="filters-expanded filters hidden clearfix">
  		<dt>
 			<p><label for="filters[term]"><?php _e('Term:'); ?></label></p>
@@ -51,7 +53,7 @@ $i = 0;
 			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
 			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
 		</dd>
- 		<dt><label for="filters[translated]"><?php _e('With translation:'); ?></label></dt>
+ 		<dt><label><?php _e('With translation:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[translated]',
 				array(
@@ -62,7 +64,7 @@ $i = 0;
 			?>
 		</dd>
  		
- 		<dt><label for="filters[status]"><?php _e('Status:'); ?></label></dt>
+ 		<dt><label><?php _e('Status:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
 				array(
@@ -112,8 +114,8 @@ $i = 0;
 		</dd>
 		<dd class="separator"></dd>
 		<dd>
-			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]">
-			<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]">
+			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
+			<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
 			<input type="submit" value="<?php echo esc_attr(__('Approve Selected')); ?>" name="approve" /><br />
 			<input type="submit" value="<?php echo esc_attr(__('Reject Selected')); ?>" name="reject" />
 		</dd>
