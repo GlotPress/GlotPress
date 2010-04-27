@@ -34,7 +34,7 @@ function gp_schema_get() {
 		KEY `translation_set_id_status` (`translation_set_id`,`status`),
 		KEY `date_added` (`date_added`),
 		KEY `warnings` (`warnings` (1))
-	) TYPE = MYISAM;";
+	);";
 
     /*
     Translations sets: a translation set holds specific translation of a project in a specific language
@@ -49,7 +49,7 @@ function gp_schema_get() {
     	`locale` VARCHAR(10) DEFAULT NULL,
     	PRIMARY KEY (`id`),
     	UNIQUE KEY `project_id_slug_locale` (`project_id`, `slug`, `locale`)
-    ) TYPE = MYISAM;";
+    );";
 
 	/*
 	Original strings
@@ -69,7 +69,7 @@ function gp_schema_get() {
 		`date_added` DATETIME DEFAULT NULL,
 		PRIMARY KEY (`id`),
 		KEY `project_id` (`project_id`)
-	) TYPE = MYISAM;";
+	);";
 
 	/*
 	Projects
@@ -201,7 +201,7 @@ function gp_schema_get() {
 			if ($_charset_collate) {
 				// Modify the SQL
 				$gp_schema[$_table_name] = str_replace(';', $_charset_collate . ';', $_sql);
-			}
+			}			
 		}
 		unset($_database, $_charset_collate);
 	}
