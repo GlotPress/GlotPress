@@ -4,7 +4,7 @@ require_once('init.php');
 class GP_Test_Urls extends GP_UnitTestCase {
 	
 	function setUp() {
-        parent::setUp();
+		parent::setUp();
 		$this->url = '/gp/';
 		gp_update_option( 'uri', 'http://example.org'.$this->url );
 	}

@@ -3,6 +3,7 @@ require_once('init.php');
 
 class GP_Test_Translation_Warnings extends GP_UnitTestCase {
 	function setUp() {
+		parent::setUp();
 		$this->is_baba = create_function('$o, $t, $l', 'return $t == "баба"? true : "error";');
 		$this->is_equal = create_function('$o, $t, $l', 'return $t == $o? true : "error";');
 		$this->w = new GP_Translation_Warnings;

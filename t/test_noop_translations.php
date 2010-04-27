@@ -3,10 +3,10 @@ require_once('init.php');
 
 class GP_Test_NOOP_Translations extends GP_UnitTestCase {
 	function setUp() {
+		parent::setUp();
 		$this->noop = new NOOP_Translations;
 		$this->entry = new Translation_Entry( array( 'singular' => 'baba' ) );
 		$this->plural_entry = new Translation_Entry(array('singular' => 'dyado', 'plural' => 'dyados', 'translations' => array('dyadox', 'dyadoy')));
-		parent::setUp();
 	}
 	
 	function test_get_header() {

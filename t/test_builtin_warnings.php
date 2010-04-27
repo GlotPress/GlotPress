@@ -4,6 +4,7 @@ require_once('init.php');
 class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 	
 	function setUp() {
+		parent::setUp();
 		$this->w = new GP_Builtin_Translation_Warnings;
 		$this->bg = GP_Locales::by_slug( 'bg' );
 		$this->longer_than_20 = 'The little boy hid behind the counter and then came the wizard of all green wizards!';
