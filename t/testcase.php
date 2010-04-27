@@ -6,7 +6,7 @@ require_once '../gp-includes/install-upgrade.php';
 class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
     
 	function setUp() {
-		global $gpdb, $wp_auth_object, $wp_users_object;
+		global $gpdb;
 		error_reporting( E_ALL );
 		ini_set('display_errors', 1);
 		if ( !gp_const_get( 'GP_IS_TEST_DB_INSTALLED' ) ) {
@@ -16,21 +16,29 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 			add_filter( 'gp_schema_pre_charset', array( &$this, 'force_innodb' ) );
 			gp_install();
 			define( 'GP_IS_TEST_DB_INSTALLED', true );
-		} else {
-			// cleanup the global scope after previous tests
-			$wp_users_object = new WP_Users( $gpdb );
-			$wp_auth_object->users = $wp_users_object;
 		}
-		$gpdb->query( 'SET autocommit = 0;' );
-		$gpdb->query( 'SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;' );
-		$gpdb->query( 'START TRANSACTION;' );
-		wp_cache_flush();
+		$this->clean_up_global_scope();
+		$this->start_transaction();
 		ini_set( 'display_errors', 1 );
     }
 
 	function tearDown() {
 		global $gpdb;
 		$gpdb->query( 'ROLLBACK' );
+	}
+	
+	function clean_up_global_scope() {
+		global $gpdb, $wp_auth_object, $wp_users_object;
+		$wp_users_object = new WP_Users( $gpdb );
+		$wp_auth_object->users = $wp_users_object;
+		wp_cache_flush();
+	}
+	
+	function start_transaction() {
+		global $gpdb;
+		$gpdb->query( 'SET autocommit = 0;' );
+		$gpdb->query( 'SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;' );
+		$gpdb->query( 'START TRANSACTION;' );		
 	}
 
 	function force_innodb( $schema ) {
