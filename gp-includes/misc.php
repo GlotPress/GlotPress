@@ -39,6 +39,15 @@ function gp_const_get( $name, $default = '' ) {
 	return defined( $name )? constant( $name ) : $default;
 }
 
+function gp_const_set( $name, $value ) {
+    if ( defined( $name) ) {
+        return false;
+    }
+    define( $name, $value );
+    return true;
+}
+
+
 function gp_member_get( $object, $key, $default = '' ) {
 	return isset( $object->$key )? $object->$key : $default;
 }
@@ -114,6 +123,7 @@ function gp_redirect($location, $status = 302) {
             status_header($status); // This causes problems on IIS and some FastCGI setups
         header("Location: $location");
     }
+    echo "Redirecting to: $location";
 }
 
 /**

@@ -4,22 +4,26 @@ require_once('init.php');
 class GP_Test_Urls extends GP_UnitTestCase {
 	
 	function setUp() {
+	    $this->sub_dir = '/gp/';
+	    $this->url = 'http://example.org' . $this->sub_dir;
 		parent::setUp();
-		$this->url = '/gp/';
-		gp_update_option( 'uri', 'http://example.org'.$this->url );
+	}
+	
+	function tearDown() {
+	    parent::tearDown();	    
 	}
 
 	function test_gp_url() {
-		$this->assertEquals( $this->url . 'baba', gp_url( 'baba' ) );
-		$this->assertEquals( $this->url . 'baba', gp_url( 'baba', '' ) );
-		$this->assertEquals( $this->url . 'baba', gp_url( 'baba', array() ) );
-		$this->assertEquals( $this->url . '?a=b', gp_url( '', 'a=b' ) );
-		$this->assertEquals( $this->url . '?a=b', gp_url( '', '?a=b' ) );
-		$this->assertEquals( $this->url . '?a=b', gp_url( '', array('a' => 'b') ) );
-		$this->assertEquals( $this->url . '?a=b&b=c', gp_url( '', array('a' => 'b', 'b' => 'c') ) );
-		$this->assertEquals( $this->url . 'baba?a=b&b=c', gp_url( 'baba', array('a' => 'b', 'b' => 'c') ) );
-		$this->assertEquals( $this->url . 'baba/wink?a=b&b=c', gp_url( '/baba/wink', array('a' => 'b', 'b' => 'c') ) );
-		$this->assertEquals( $this->url . 'baba/wink?a=a%26b&b=c', gp_url( '/baba/wink', array('a' => 'a&b', 'b' => 'c') ) );
+		$this->assertEquals( $this->sub_dir . 'baba', gp_url( 'baba' ) );
+		$this->assertEquals( $this->sub_dir . 'baba', gp_url( 'baba', '' ) );
+		$this->assertEquals( $this->sub_dir . 'baba', gp_url( 'baba', array() ) );
+		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', 'a=b' ) );
+		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', '?a=b' ) );
+		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', array('a' => 'b') ) );
+		$this->assertEquals( $this->sub_dir . '?a=b&b=c', gp_url( '', array('a' => 'b', 'b' => 'c') ) );
+		$this->assertEquals( $this->sub_dir . 'baba?a=b&b=c', gp_url( 'baba', array('a' => 'b', 'b' => 'c') ) );
+		$this->assertEquals( $this->sub_dir . 'baba/wink?a=b&b=c', gp_url( '/baba/wink', array('a' => 'b', 'b' => 'c') ) );
+		$this->assertEquals( $this->sub_dir . 'baba/wink?a=a%26b&b=c', gp_url( '/baba/wink', array('a' => 'a&b', 'b' => 'c') ) );
 	}
 	
 	function test_gp_url_join() {

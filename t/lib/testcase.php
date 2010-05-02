@@ -1,10 +1,15 @@
 <?php
-require_once '../gp-includes/backpress/class.bp-sql-schema-parser.php';
-require_once '../gp-includes/schema.php';
-require_once '../gp-includes/install-upgrade.php';
+require_once dirname( __FILE__ ) . '/../../gp-includes/backpress/class.bp-sql-schema-parser.php';
+require_once dirname( __FILE__ ) . '/../../gp-includes/schema.php';
+require_once dirname( __FILE__ ) . '/../../gp-includes/install-upgrade.php';
+
+require_once dirname( __FILE__ ) . '/request.php';
 
 class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
-    
+
+    var $methods_from_request = array();
+    var $url = 'http://example.org/';
+
 	function setUp() {
 		global $gpdb;
 		error_reporting( E_ALL );
@@ -20,13 +25,18 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$this->clean_up_global_scope();
 		$this->start_transaction();
 		ini_set( 'display_errors', 1 );
+		$this->request = new GP_UnitTest_Request( $this );
+		$this->methods_from_request = $this->request->exported_methods;
+		$this->url_filter = returner( $this->url );
+		add_filter( 'gp_get_option_uri', $this->url_filter );
     }
 
 	function tearDown() {
 		global $gpdb;
 		$gpdb->query( 'ROLLBACK' );
+		remove_filter( 'gp_get_option_uri', $this->url_filter );
 	}
-	
+
 	function clean_up_global_scope() {
 		global $gpdb, $wp_auth_object, $wp_users_object;
 		$wp_users_object = new WP_Users( $gpdb );
@@ -60,4 +70,11 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$dir = realpath( $dir );
 		return tempnam( $dir, 'testpomo' );
 	}
+	
+	function __call( $name, $args ) {
+	    if ( is_array( $this->methods_from_request ) && in_array( $name, $this->methods_from_request ) ) {
+	        return call_user_func_array( array( &$this->request, $name ), $args );
+	    }
+		trigger_error( sprintf( 'Call to undefined function: %s::%s().', get_class( $this ), $name ), E_USER_ERROR );
+	}	
 }
