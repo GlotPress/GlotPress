@@ -141,6 +141,15 @@ $priority_char = array(
 			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
 			<?php endif; ?>
 			</dl>
+			
+			<?php $extra_args = $t->translation_status? array( 'filters[translation_id]' => $t->id ) : array(); ?>
+			<dl>
+<?php
+    $permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
+        array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id ), $extra_args ) );
+?>
+			    <dt><a href="<?php echo $permalink; ?>" title="Permanent link to this translation">&infin;</a></dt>
+			</dl>
 		</div>
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
