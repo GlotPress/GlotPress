@@ -301,7 +301,15 @@ if ( $plugins ) {
 		require_once $plugin;
 	}
 }
-unset( $plugins, $plugin );
+
+$plugin_dirs = glob( GP_PLUGINS_PATH . '*', GLOB_ONLYDIR );
+if ( $plugin_dirs ) {
+	foreach( $plugin_dirs as $plugin_dir ) {
+		$plugin = "$plugin_dir/" . basename( $plugin_dir ) . '.php';
+		if ( is_readable( $plugin ) ) require_once $plugin;
+	}
+}
+unset( $plugins, $plugin, $plugin_dirs, $plugin_dir );
 
 do_action( 'plugins_loaded' );
 
