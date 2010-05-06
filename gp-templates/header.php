@@ -29,7 +29,8 @@ wp_enqueue_script( 'jquery' );
 			<?php else: ?>
 				<a href="<?php echo gp_url_login(); ?>"><?php _e('Log in'); ?></a>
 			<?php endif; ?>
-			</span>
+			<?php do_action( 'after_hello' ); ?>
+			</span>			
 		</h1>
 		<?php if (gp_notice('error')): ?>
 			<div class="error">
@@ -41,3 +42,4 @@ wp_enqueue_script( 'jquery' );
 				<?php echo gp_notice(); ?>
 			</div>
 		<?php endif; ?>
+		<?php do_action( 'after_notices' ); ?>
