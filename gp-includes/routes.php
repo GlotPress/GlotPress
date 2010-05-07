@@ -9,7 +9,7 @@ class GP_Router {
 	
 	function GP_Router( $urls = null ) {
 		if ( is_null( $urls ) )
-			$this->urls = $this->routes();
+			$this->urls = $this->default_routes();
 		else
 			$this->urls = $urls;
 	}
@@ -28,8 +28,12 @@ class GP_Router {
 	function request_method() {
 		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
 	}
+		
+	function add( $re, $function, $method = 'get' ) {
+		$this->urls["$method:$re"] = $function;
+	}
 	
-	function routes() {
+	function default_routes() {
 		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
 		$projects = 'projects';
@@ -114,7 +118,7 @@ class GP_Router {
 						$route->before_request();
 						$route->request_running = true;
 						// make sure after_request() is called even if we exit() in the request
-						register_shutdown_function( array( &$route, 'after_request'));
+						register_shutdown_function( array( &$route, 'after_request') );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
 						do_action( 'after_request', $class, $method );
@@ -135,6 +139,11 @@ class GP_Route {
 	var $errors = array();
 	var $notices = array();
 	var $request_running = false;
+	var $template_path = null;
+	
+	function __construct() {
+		
+	}
 	
 	function die_with_error( $message, $status = 500 ) {
 		status_header( $status );
@@ -253,6 +262,6 @@ class GP_Route {
 		} else {
 			header('Content-Type: text/html; charset=utf-8');
 		}
-		return gp_tmpl_load( $template, $args );
+		return gp_tmpl_load( $template, $args, $this->template_path );
 	}
 }

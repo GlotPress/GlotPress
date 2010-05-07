@@ -1,12 +1,19 @@
 <?php
-function gp_tmpl_load( $template, $args = array() ) {
+function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$args = gp_tmpl_filter_args( $args );
 	do_action_ref_array( 'pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
- 	$file = GP_TMPL_PATH . "$template.php";
-	if ( is_readable( $file ) ) {
-		extract( $args, EXTR_SKIP );
-		include $file;
+	$locations = array( GP_TMPL_PATH );
+	if ( !is_null( $template_path ) ) {
+		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
+	}
+	foreach( $locations as $location ) {
+	 	$file = $location . "$template.php";
+		if ( is_readable( $file ) ) {
+			extract( $args, EXTR_SKIP );
+			include $file;
+			break;
+		}
 	}
 	do_action_ref_array( 'post_tmpl_load', array( $template, &$args ) );
 }
