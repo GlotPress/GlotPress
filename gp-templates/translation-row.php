@@ -148,7 +148,7 @@ $priority_char = array(
     $permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
         array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id ), $extra_args ) );
 ?>
-			    <dt><a href="<?php echo $permalink; ?>" title="Permanent link to this translation">&infin;</a></dt>
+			    <dt><a tabindex="-1" href="<?php echo $permalink; ?>" title="Permanent link to this translation">&infin;</a></dt>
 			</dl>
 		</div>
 		<div class="actions">
