@@ -27,7 +27,7 @@ wp_enqueue_script( 'jquery' );
 				?>
 				<a href="<?php echo gp_url('/logout')?>"><?php _e('Log out'); ?></a>
 			<?php else: ?>
-				<a href="<?php echo gp_url_login(); ?>"><?php _e('Log in'); ?></a>
+				<strong><a href="<?php echo gp_url_login(); ?>"><?php _e('Log in'); ?></a></strong>
 			<?php endif; ?>
 			<?php do_action( 'after_hello' ); ?>
 			</span>			
