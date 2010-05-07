@@ -435,3 +435,7 @@ span.removed {
     height: 1.5em;
     padding: 0;
 }
+.text {
+	width: 45em;
+	margin-left: 6em;
+}
