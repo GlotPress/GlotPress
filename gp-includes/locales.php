@@ -566,7 +566,7 @@ class GP_Locales {
 	 	$fr_ch->slug = 'fr-ch';
 
 		$fy = new GP_Locale();
-	 	$fy->english_name = 'West Frisian';
+	 	$fy->english_name = 'Frisian';
 	 	$fy->native_name = 'Frysk';
 	 	$fy->lang_code_iso_639_1 = 'fy';
 	 	$fy->lang_code_iso_639_2 = 'fry';
