@@ -1142,8 +1142,8 @@ class GP_Locales {
 		$sr->wp_locale = 'sr_RS';
 		$sr->slug = 'sr';
 		$sr->google_code = 'sr';
-		$sr->nplurals = 4;
-		$sr->plural_expression = 'n==1? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2';
+		$sr->nplurals = 3;
+		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
 
 		$su = new GP_Locale();
 		$su->english_name = 'Sundanese';
