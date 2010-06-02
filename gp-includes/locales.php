@@ -993,7 +993,7 @@ class GP_Locales {
 		$oc->slug = 'oc';
 		
 		$pa = new GP_Locale();
-		$pa->english_name = 'Panjabi';
+		$pa->english_name = 'Punjabi';
 		$pa->native_name = 'ਪੰਜਾਬੀ';
 		$pa->lang_code_iso_639_1 = 'pa';
 		$pa->lang_code_iso_639_2 = 'pan';
