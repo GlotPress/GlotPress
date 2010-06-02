@@ -209,3 +209,12 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	}
 	return gp_select( $name_and_id, $options, $selected_project_id, $attrs );
 }
+
+function gp_array_of_things_to_json( $array ) {
+	return json_encode( array_map( lambda( '$thing', '$thing->fields();' ), $array ) );
+}
+
+function gp_array_of_array_of_things_to_json( $array ) {
+	$map_to_fields = create_function( '$array', 'return array_map( lambda( \'$thing\', \'$thing->fields();\' ), $array );' );
+	return json_encode( array_map( $map_to_fields, $array ) );
+}

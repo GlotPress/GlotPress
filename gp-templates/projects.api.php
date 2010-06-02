@@ -1,2 +1,2 @@
 <?php
-	echo json_encode( array_map( lambda( '$p', '$p->fields();' ), $projects ) );
+	echo gp_array_of_things_to_json( $projects );
