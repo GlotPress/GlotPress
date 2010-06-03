@@ -22,9 +22,14 @@ if ( !defined( 'BACKPRESS_PATH' ) ) {
 	define( 'BACKPRESS_PATH', GP_PATH . GP_INC . 'backpress/' );
 }
 
-if ( !defined( 'POMO_PATH' ) ) {
-	define( 'POMO_PATH', GP_PATH . 'pomo/' );
+if ( !defined( 'GP_POMO_PATH' ) ) {
+	define( 'GP_POMO_PATH', GP_PATH . 'pomo/' );
 }
+
+if ( !defined( 'GP_LOCALES_PATH' ) ) {
+	define( 'GP_LOCALES_PATH', GP_PATH . 'locales/' );
+}
+
 
 if ( !defined( 'GP_LANG_PATH' ) ) {
 	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
@@ -204,11 +209,11 @@ require_once( GP_PATH . GP_INC . 'assets-loader.php' );
 require_once( GP_PATH . GP_INC . 'default-filters.php' );
 require_once( BACKPRESS_PATH . 'functions.kses.php' );
 
-require_once( POMO_PATH . 'mo.php' );
-require_once( POMO_PATH . 'po.php' );
+require_once( GP_POMO_PATH . 'mo.php' );
+require_once( GP_POMO_PATH . 'po.php' );
 require_once( GP_PATH . GP_INC . 'l10n.php' );
 
-require_once( GP_PATH . GP_INC . 'locales.php' );
+require_once( GP_LOCALES_PATH . 'locales.php' );
 
 // Users and authentication
 if ( !class_exists( 'WP_Users' ) ) {
