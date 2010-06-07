@@ -21,7 +21,7 @@ class GP_CLI {
 	}
 	
 	function usage() {
-		$this->error( $this->program_name.' '.$this->usage );
+		$this->error( 'php '.$this->program_name.' '.$this->usage );
 	}
 	
 	function to_stderr( $text, $no_new_line = false ) {
