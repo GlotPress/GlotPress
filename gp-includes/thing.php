@@ -202,11 +202,18 @@ class GP_Thing {
 		$update_res = $this->after_save();
 		return $update_res;
 	}
-
+	
 	function delete() {
-		return $this->query( "DELETE FROM $this->table WHERE id = %d", $this->id );
+		return $this->delete_all( array( 'id' => $this->id ) );
 	}
 
+	function delete_all( $where = null  ) {
+		$query = "DELETE FROM $this->table";
+		$conditions_sql = $this->sql_from_conditions( $where );
+		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
+		return $this->query( $query, $this->id );
+	}
+	
 	// Fields handling
 	
 	function set_fields( $db_object ) {
