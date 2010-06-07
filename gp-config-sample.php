@@ -44,6 +44,12 @@ define('GP_NONCE_KEY', 'put your unique phrase here');
 define('GP_LANG', '');
 
 /**
+ * Custom users and usermate tables for integration with WordPress user system
+ */
+// define('CUSTOM_USER_TABLE', 'wp_users');
+// define('CUSTOM_USER_META_TABLE', 'wp_usermeta');
+
+/**
  * GlotPress Database Table prefix.
  *
  * You can have multiple installations in one database if you give each a unique
