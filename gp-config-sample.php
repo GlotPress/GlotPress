@@ -45,6 +45,11 @@ define('GP_LANG', '');
 
 /**
  * Custom users and usermate tables for integration with WordPress user system
+ * 
+ * You might want to delet your current permissions, since they will point to different
+ * users in the custom table. You can use `php scripts/wipe-permissions.php` for that.
+ * 
+ * If you start with fresh permissions, you can admins via `php scripts/add-admin.php`
  */
 // define('CUSTOM_USER_TABLE', 'wp_users');
 // define('CUSTOM_USER_META_TABLE', 'wp_usermeta');
@@ -56,5 +61,3 @@ define('GP_LANG', '');
  * prefix. Only numbers, letters, and underscores please!
  */
 $gp_table_prefix = 'gp_';
-
-?>
