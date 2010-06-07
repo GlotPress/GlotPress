@@ -72,13 +72,14 @@ class GP_Router {
 			"post:/$projects/-new" => array('GP_Route_Project', 'new_post'),
 
 			"post:/$project/$locale/$dir/-bulk" => array('GP_Route_Translation', 'bulk_post'),
-			"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
-			"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
 			"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
 			"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
 			"post:/$project/$locale/$dir/-discard-warning" => array('GP_Route_Translation', 'discard_warning'),
 			"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
-			// keep this one at the bottom of the project, because it will catch anything starting with project
+			// keep this below all URLs ending with a literal string, because it may catch one of them
+			"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
+			"post:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_post'),
+			// keep this one at the bottom of the project, because it will catch anything starting with project			
 			"/$project" => array('GP_Route_Project', 'single'),
 
 			"get:/sets/-new" => array('GP_Route_Translation_Set', 'new_get'),
