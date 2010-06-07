@@ -15,7 +15,7 @@ class GP_Route_Project extends GP_Route_Main {
 		usort( $translation_sets, lambda('$a, $b', 'strcmp($a->name_with_locale(), $b->name_with_locale());') );
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
 		$can_write = $this->can( 'write', 'project', $project->id );
-		gp_tmpl_load( 'project', get_defined_vars() );
+		$this->tmpl( 'project', get_defined_vars() );
 	}
 	
 	function personal_options_post( $project_path ) {
@@ -30,7 +30,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->notices[] = 'Source URL template was successfully updated.';
 		else
 			$this->errors[] = 'Error in updating source URL template.';
-		gp_redirect( gp_url_project( $project ) );
+		$this->redirect( gp_url_project( $project ) );
 	}
 
 	function import_originals_get( $project_path ) {
@@ -47,12 +47,16 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->can_or_redirect( 'write', 'project', $project->id );
 
 		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
-		if ( !$format ) $this->redirect_with_error( __('No such format.') );
+		if ( !$format ) {
+			$this->redirect_with_error( __('No such format.') );
+			return;
+		}
 
 
 		if ( !is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
 			// TODO: different errors for different upload conditions
 			$this->redirect_with_error( __('Error uploading the file.') );
+			return;
 		}
 
 		$translations = $format->read_originals_from_file( $_FILES['import-file']['tmp_name'] );
@@ -63,7 +67,7 @@ class GP_Route_Project extends GP_Route_Main {
 		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
 		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
 				
-		gp_redirect( gp_url_project( $project, 'import-originals' ) );
+		$this->redirect( gp_url_project( $project, 'import-originals' ) );
 	}
 
 	function edit_get( $project_path ) {
@@ -88,7 +92,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __('Error in saving project!');
 		$project->reload();
 
-		gp_redirect( gp_url_project( $project, '-edit' ) );
+		$this->redirect( gp_url_project( $project, '-edit' ) );
 	}
 
 	function delete_get( $project_path ) {
@@ -102,7 +106,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->notices[] = __('The project was deleted.');
 		else
 			$this->errors[] = __('Error in deleting project!');
-		gp_redirect( gp_url_project( '' ) );
+		$this->redirect( gp_url_project( '' ) );
 	}
 
 	
@@ -126,7 +130,7 @@ class GP_Route_Project extends GP_Route_Main {
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
 			$this->notices[] = __('The project was created!');
-			gp_redirect( gp_url_project( $project, '-edit' ) );
+			$this->redirect( gp_url_project( $project, '-edit' ) );
 		}
 	}
 	
@@ -162,6 +166,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$user = GP::$user->by_login( gp_post( 'user_login' ) );
 			if ( !$user ) {
 				$this->redirect_with_error( __('User wasn&#8217;t found!'), gp_url_current() );
+				return;
 			}
 			$new_permission = new GP_Validator_Permission( array(
 				'user_id' => $user->id,
@@ -175,7 +180,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$permission?
 				$this->notices[] = __('Validator was added.') : $this->errors[] = __('Error in adding validator.');
 		}
-		gp_redirect( gp_url_current() );
+		$this->redirect( gp_url_current() );
 	}
 	
 	function permissions_delete( $project_path, $permission_id ) {
@@ -192,7 +197,7 @@ class GP_Route_Project extends GP_Route_Main {
 		} else {
 			$this->errors[] = __('Permission wasn&#8217;t found!');
 		}
-		gp_redirect( gp_url_project( $project, array( '-permissions' ) ) );
+		$this->redirect( gp_url_project( $project, array( '-permissions' ) ) );
 	}
 
 	function mass_create_sets_get( $project_path ) {
@@ -223,7 +228,7 @@ class GP_Route_Project extends GP_Route_Main {
 			}
 		}
 		if ( !$this->errors ) $this->notices[] = __('Translation sets were added and removed successfully');
-		gp_redirect( gp_url_project( $project ) );
+		$this->redirect( gp_url_project( $project ) );
 	}
 
 	function mass_create_sets_preview_post( $project_path ) {

@@ -100,30 +100,29 @@ function gp_populate_notices() {
 }
 
 /**
- * Redirects to another page.
+ * Sets headers, which redirect to another page.
  * 
  * @param string $location The path to redirect to
  * @param int $status Status code to use
  * @return bool False if $location is not set
  */
-function gp_redirect($location, $status = 302) {
+function gp_redirect( $location, $status = 302 ) {
 	// TODO: add server-guessing code from bb-load.php in a function in gp-includes/system.php
     global $is_IIS;
 
-    $location = apply_filters('gp_redirect', $location, $status);
-    $status = apply_filters('gp_redirect_status', $status, $location);
+    $location = apply_filters( 'gp_redirect', $location, $status );
+    $status = apply_filters( 'gp_redirect_status', $status, $location );
 
     if ( !$location ) // allows the gp_redirect filter to cancel a redirect
         return false;
 
     if ( $is_IIS ) {
-        header("Refresh: 0;url=$location");
+        header( "Refresh: 0;url=$location" );
     } else {
         if ( php_sapi_name() != 'cgi-fcgi' )
-            status_header($status); // This causes problems on IIS and some FastCGI setups
-        header("Location: $location");
+            status_header( $status ); // This causes problems on IIS and some FastCGI setups
+        header( "Location: $location" );
     }
-    echo "Redirecting to: $location";
 }
 
 /**

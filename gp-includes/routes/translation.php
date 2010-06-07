@@ -18,21 +18,26 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->can_or_redirect( 'approve', 'translation-set', $translation_set->id );
 
 		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
-		if ( !$format ) $this->redirect_with_error( __('No such format.') );;
+		if ( !$format ) {
+			$this->redirect_with_error( __('No such format.') );
+			return;
+		}
 
 		if ( !is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
 			$this->redirect_with_error( __('Error uploading the file.') );
+			return;
 		}
 
 		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'], $project );
 		if ( !$translations ) {
 			$this->redirect_with_error( __('Couldn&#8217;t load translations from file!') );
+			return;
 		}
 
 		$translations_added = $translation_set->import( $translations );
 		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
 				
-		gp_redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );		
+		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );		
 	}
 	
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
@@ -144,7 +149,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
-		gp_redirect( $bulk['redirect_to'] );
+		$this->redirect( $bulk['redirect_to'] );
 	}
 	
 	function _bulk_approve( $project, $locale, $translation_set, $bulk ) {

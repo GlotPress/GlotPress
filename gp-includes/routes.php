@@ -161,12 +161,7 @@ class GP_Route {
 		if ( !$this->request_running ) return;
 		// set errors and notices
 		if ( !headers_sent() ) {
-			foreach( $this->notices as $notice ) {
-				gp_notice_set( $notice );
-			}
-			foreach( $this->errors as $error ) {
-				gp_notice_set( $error, 'error' );
-			}
+			$this->set_notices_and_errors();
 		}
 		do_action( 'after_request', $this->class_name, $this->last_method_called );
 	}
@@ -196,7 +191,8 @@ class GP_Route {
 	function validate_or_redirect( $thing, $url = null ) {
 		$verdict = $this->validate( $thing );
 		if ( !$verdict ) {
-			$this->_redirect( $url );
+			$this->redirect( $url );
+			exit();
 		}
 		return $verdict;
 	}
@@ -205,10 +201,19 @@ class GP_Route {
 		return GP::$user->current()->can( $action, $object_type, $object_id );
 	}
 	
+	/**
+	 * If the current user isn't allowed to do an action, redirect and exit the current request
+	 * 
+	 * @param string $action
+	 * @param`string $object_type
+	 * @param string $object_id
+	 * @param string $url	The URL to redirect. Default value: referrer or index page, if referrer is missing
+	 */
 	function can_or_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
 			$this->redirect_with_error( __('You are not allowed to do that!'), $url );
+			exit();
 		}
 	}
 
@@ -227,14 +232,16 @@ class GP_Route {
 	
 	function redirect_with_error( $message, $url = null ) {
 		$this->errors[] = $message;
-		$this->_redirect( $url );
+		$this->redirect( $url );
 	}
 	
-	function _redirect( $url = null ) {
+	function redirect( $url = null ) {
+		$this->set_notices_and_errors();
 		// TODO: do not redirect to projects, but to /
 		// currently it goes to /projects, because / redirects too and the notice is gone
 		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
 		gp_redirect( $url );
+		$this->tmpl( 'redirect', compact( 'url' ) );
 		exit();
 	}
 	
@@ -247,6 +254,18 @@ class GP_Route {
 		header("Content-Type: application/octet-stream", true);
 		header('Connection: close');
 	}
+
+	function set_notices_and_errors() {
+		foreach( $this->notices as $notice ) {
+			gp_notice_set( $notice );
+		}
+		$this->notices = array();
+		
+		foreach( $this->errors as $error ) {
+			gp_notice_set( $error, 'error' );
+		}
+		$this->errors = array();
+	}
 	
 	/**
 	 * Loads a template.
@@ -257,6 +276,7 @@ class GP_Route {
 	 * 		the template name will be suffixed with .api. The actual file loaded will be template.api.php
 	 */
 	function tmpl( $template, $args = array(), $honor_api = true ) {
+		$this->set_notices_and_errors();
 		if ( $this->api && $honor_api !== false && 'no-api' !== $honor_api ) {
 			$template = $template.'.api';
 			header('Content-Type: application/json');
