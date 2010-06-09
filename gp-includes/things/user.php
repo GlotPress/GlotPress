@@ -11,7 +11,8 @@ class GP_User extends GP_Thing {
 			$args['ID'] = $args['id'];
 			unset( $args['id'] );
 		}
-		return $this->coerce( $wp_users_object->new_user( $args ) );
+		$user = $wp_users_object->new_user( $args );
+		return $this->coerce( $user );
 	}
 	
 	function normalize_fields( $args ) {
@@ -129,6 +130,13 @@ class GP_User extends GP_Thing {
 	
 	function delete_meta( $key ) {
 		return gp_delete_meta( $this->id, $key, '', 'user' );
+	}
+	
+	
+	function reintialize_wp_users_object() {
+		global $gpdb, $wp_auth_object, $wp_users_object;
+		$wp_users_object = new WP_Users( $gpdb );
+		$wp_auth_object->users = $wp_users_object;
 	}
 }
 GP::$user = new GP_User();

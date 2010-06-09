@@ -4,14 +4,19 @@ require_once dirname( __FILE__ ) . '/../../gp-includes/schema.php';
 require_once dirname( __FILE__ ) . '/../../gp-includes/install-upgrade.php';
 
 require_once dirname( __FILE__ ) . '/request.php';
+require_once dirname( __FILE__ ) . '/fixtures.php';
 
 class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
     var $methods_from_request = array();
     var $url = 'http://example.org/';
 
+	static $fixtures = null;
+
 	function setUp() {
 		global $gpdb;
+		$gpdb->suppress_errors = false;
+		$gpdb->show_errors = false;
 		error_reporting( E_ALL );
 		ini_set('display_errors', 1);
 		if ( !gp_const_get( 'GP_IS_TEST_DB_INSTALLED' ) ) {
@@ -20,8 +25,11 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 			$gpdb->select( GPDB_NAME, $gpdb->dbh );
 			add_filter( 'gp_schema_pre_charset', array( &$this, 'force_innodb' ) );
 			gp_install();
+			self::$fixtures = new GP_UnitTest_Fixtures;
+			self::$fixtures->load();
 			define( 'GP_IS_TEST_DB_INSTALLED', true );
 		}
+		$this->fixtures = self::$fixtures;
 		$this->clean_up_global_scope();
 		$this->start_transaction();
 		ini_set( 'display_errors', 1 );
@@ -38,9 +46,7 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 	}
 
 	function clean_up_global_scope() {
-		global $gpdb, $wp_auth_object, $wp_users_object;
-		$wp_users_object = new WP_Users( $gpdb );
-		$wp_auth_object->users = $wp_users_object;
+		GP::$user->reintialize_wp_users_object();
 		wp_cache_flush();
 	}
 	

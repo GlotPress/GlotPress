@@ -37,7 +37,7 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 
 	function test_recursive_validator_permissions() {
 		$object_type = GP::$validator_permission->object_type;
-		$action = 'whetever';
+		$action = 'whatever';
 		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
 		
 		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );

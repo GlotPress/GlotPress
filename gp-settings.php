@@ -43,6 +43,11 @@ if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
 
+if ( !defined( 'GP_TESTS_PATH' ) ) {
+	define( 'GP_TESTS_PATH', GP_PATH . 't/' );
+}
+
+
 require_once( GP_PATH . GP_INC . 'gp.php');
 
 /*
