@@ -25,7 +25,7 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->add( 'jquery-ui-selectable', null, array('jquery-ui'), '1.8' );
 	$scripts->add( 'jquery-ui-tabs', null, array('jquery-ui'), '1.8' );
 	$scripts->add( 'common', '/common.js', array( 'jquery' ), '20100423' );
-	$scripts->add( 'editor', '/editor.js', array( 'common', 'google-js-api' ), '20100423' );
+	$scripts->add( 'editor', '/editor.js', array( 'common', 'google-js-api' ), '20100614' );
 	$scripts->add( 'translations-page', '/translations-page.js', array( 'common' ), '20100423' );
 	$scripts->add( 'mass-create-sets-page', '/mass-create-sets-page.js', array( 'common' ), '20100423' );
 	$scripts->add( 'google-js-api', 'http://www.google.com/jsapi', array(), '' );
