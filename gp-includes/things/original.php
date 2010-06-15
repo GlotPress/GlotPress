@@ -29,13 +29,15 @@ class GP_Original extends GP_Thing {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
 
-	function by_project_id_and_entry( $project_id, $entry ) {
+	function by_project_id_and_entry( $project_id, $entry, $status = null ) {
+		global $gpdb;
 		$where = array();
 		// now each condition has to contain a %s not to break the sequence
 		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
 		$where[] = 'BINARY singular = %s';
 		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
 		$where[] = 'project_id = %d';
+		if ( !is_null( $status ) ) $where[] = $gpdb->prepare( 'status = %s', $status );
 		$where = implode( ' AND ', $where );
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}

@@ -55,7 +55,7 @@ class GP_Translation_Set extends GP_Thing {
 				$create  = ( array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations );
 			} else {
 				// we don't have the string translated, let's see if the original is there
-				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry );
+				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
 					$entry->original_id = $original->id;
 					$create = true;
