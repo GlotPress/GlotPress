@@ -45,10 +45,10 @@ class GP_Original extends GP_Thing {
 	function import_for_project( $project, $translations ) {
 		global $gpdb;
 		$originals_added = $originals_existing = 0;
-		$originals = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project->id );
-		$this->update( array( 'status' => '+obsolete' ), array( 'project_id' => $project->id ) );
+		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
+		$this->update( array( 'status' => '+obsolete' ), array( 'project_id' => $project->id, 'status' => '+active' ) );
 		$current_entries = array();
-		foreach( $originals as $original ) {
+		foreach( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry( array( 'singular' => $original->singular, 'plural' => $original->plural, 'context' => $original->context ) );
 			$current_entries[$entry->key()] = $original->id;
 		}

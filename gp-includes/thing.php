@@ -330,7 +330,7 @@ class GP_Thing {
 		return $this->apply_default_conditions( $conditions );
 	}
 	
-	function sql_from_order( $order_by, $order_how = '' ) {		
+	function sql_from_order( $order_by, $order_how = '' ) {
 		if ( is_array( $order_by ) ) {
 			$order_by = implode( ' ', $order_by );
 			$order_how = '';
