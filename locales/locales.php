@@ -955,6 +955,7 @@ class GP_Locales {
 		$nb->country_code = 'no';
 		$nb->wp_locale = 'nb_NO';
 		$nb->slug = 'nb';
+		$nb->google_code = 'no';
 
 		$nl = new GP_Locale();
 		$nl->english_name = 'Dutch';
