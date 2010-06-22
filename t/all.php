@@ -5,9 +5,12 @@ $tests_dir = dirname( __FILE__ );
 $old_cwd = getcwd();
 chdir( $tests_dir );
 
-foreach( glob("test_*.php") as $test_file ) {
-	include_once $test_file;
+for( $depth = 0; $depth <= 3; $depth++ ) {
+	foreach( glob( str_repeat( 'tests_*/', $depth ) . 'test_*.php' ) as $test_file ) {
+		include_once $test_file;
+	}	
 }
+
 
 class all {
     public static function suite()

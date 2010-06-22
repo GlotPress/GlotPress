@@ -4,14 +4,12 @@ require_once dirname( __FILE__ ) . '/../../gp-includes/schema.php';
 require_once dirname( __FILE__ ) . '/../../gp-includes/install-upgrade.php';
 
 require_once dirname( __FILE__ ) . '/request.php';
-require_once dirname( __FILE__ ) . '/fixtures.php';
+require_once dirname( __FILE__ ) . '/factory.php';
 
 class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
     var $methods_from_request = array();
     var $url = 'http://example.org/';
-
-	static $fixtures = null;
 
 	function setUp() {
 		global $gpdb;
@@ -25,11 +23,9 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 			$gpdb->select( GPDB_NAME, $gpdb->dbh );
 			add_filter( 'gp_schema_pre_charset', array( &$this, 'force_innodb' ) );
 			gp_install();
-			self::$fixtures = new GP_UnitTest_Fixtures;
-			self::$fixtures->load();
 			define( 'GP_IS_TEST_DB_INSTALLED', true );
 		}
-		$this->fixtures = self::$fixtures;
+		$this->factory = new GP_UnitTest_Factory;
 		$this->clean_up_global_scope();
 		$this->start_transaction();
 		ini_set( 'display_errors', 1 );
@@ -82,5 +78,9 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 	        return call_user_func_array( array( &$this->request, $name ), $args );
 	    }
 		trigger_error( sprintf( 'Call to undefined function: %s::%s().', get_class( $this ), $name ), E_USER_ERROR );
-	}	
+	}
+	
+	function assertWPError( $actual, $message = '' ) {
+		$this->assertTrue( is_wp_error( $actual ), $message );
+	}
 }
