@@ -7,7 +7,7 @@ class GP_UnitTest_Factory {
 
 class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
 	function __construct() {
-		parent::__construct( 'GP_Project', array(
+		parent::__construct( new GP_Project, array(
 			'name' => new GP_UnitTest_Generator_Sequence( 'Project %s' ),
 			'description' => 'I am a project',
 			'parent_project_id' => null,
