@@ -83,4 +83,12 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 	function assertWPError( $actual, $message = '' ) {
 		$this->assertTrue( is_wp_error( $actual ), $message );
 	}
+	
+	function assertEqualFields( $object, $fields ) {
+		foreach( $fields as $field_name => $field_value ) {
+			if ( $object->$field_name != $field_value ) {
+				$this->fail();
+			}			
+		}
+	}
 }
