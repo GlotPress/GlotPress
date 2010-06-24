@@ -181,8 +181,11 @@ class GP_Thing {
 	 */
 	function update( $data, $where = null ) {
 		global $gpdb;
+		if ( !$data ) return false;
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
-		return !is_null( $gpdb->update( $this->table, $this->prepare_fields_for_save( $data ), $where ) );
+		$fields_for_save = $this->prepare_fields_for_save( $data );
+		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
+		return !is_null( $gpdb->update( $this->table, $fields_for_save, $where ) );
 	}
 
 	function get( $thing_or_id ) {
