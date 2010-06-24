@@ -252,17 +252,20 @@ class GP_Thing {
 		}
 		
 		if ( in_array( 'date_modified', $this->field_names ) ) {
-			$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-			$args['date_modified'] = $now->format( DATE_MYSQL );
+			$args['date_modified'] = $this->now_in_mysql_format();
 		}
 				
 		return $args;
 	}
 	
+	function now_in_mysql_format() {
+		$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		return $now->format( DATE_MYSQL );		
+	}
+	
 	function prepare_fields_for_create( $args ) {
 		if ( in_array( 'date_added', $this->field_names ) ) {
-			$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-			$args['date_added'] = $now->format( DATE_MYSQL );
+			$args['date_added'] = $this->now_in_mysql_format();
 		}
 		return $args;
 	}
