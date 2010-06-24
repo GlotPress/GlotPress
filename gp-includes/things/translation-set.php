@@ -125,5 +125,24 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		}
 	}
+
+	/**
+	 * Copies translations from a translation set to the current one
+	 * 
+	 * This function doesn't merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
+	 */
+	function copy_translations_from( $source_translation_set_id ) {
+		global $gpdb;
+		$current_date = $this->now_in_mysql_format();
+		return $this->query("
+			INSERT INTO $gpdb->translations (
+				original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
+			)
+			SELECT
+				original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
+			FROM $gpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+		); 
+	}
+
 }
 GP::$translation_set = new GP_Translation_Set();
