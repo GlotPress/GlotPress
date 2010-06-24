@@ -3,6 +3,8 @@ class GP_UnitTest_Factory {
 	function __construct() {
 		$this->project = new GP_UnitTest_Factory_For_Project;
 		$this->original = new GP_UnitTest_Factory_For_Original;
+		$this->translation_set = new GP_UnitTest_Factory_For_Translation_Set;
+		$this->translation = new GP_UnitTest_Factory_For_Translation;
 	}
 	
 	function callback( $function ) {
@@ -31,12 +33,20 @@ class GP_UnitTest_Factory_For_Translation_Set extends GP_UnitTest_Factory_For_Th
 	}
 }
 
-
 class GP_UnitTest_Factory_For_Original extends GP_UnitTest_Factory_For_Thing {
 	function __construct() {
 		parent::__construct( new GP_Original );
 		$this->default_generation_definitions = array(
-			'singular' => new GP_UnitTest_Generator_Sequence( 'Original %s' )
+			'singular' => new GP_UnitTest_Generator_Sequence( 'Original %s' ),
+		);
+	}
+}
+
+class GP_UnitTest_Factory_For_Translation extends GP_UnitTest_Factory_For_Thing {
+	function __construct() {
+		parent::__construct( new GP_Translation );
+		$this->default_generation_definitions = array(
+			'translation_0' => new GP_UnitTest_Generator_Sequence( 'Translation %s' ),
 		);
 	}
 }
@@ -64,7 +74,6 @@ class GP_UnitTest_Factory_For_Thing {
 		if ( !$created || is_wp_error( $created ) ) return $created;
 		if ( $callbacks ) {
 			foreach( $callbacks as $field_name => $generator ) {
-				var_dump($created);
 				$updated_fields[$field_name] = $generator->call( $created );
 			}
 			$save_result = $created->save( $updated_fields );
