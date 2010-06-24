@@ -4,6 +4,10 @@ class GP_UnitTest_Factory {
 		$this->project = new GP_UnitTest_Factory_For_Project;
 		$this->original = new GP_UnitTest_Factory_For_Original;
 	}
+	
+	function callback( $function ) {
+		return new GP_UnitTest_Generator_Callback_After_Create( $function );
+	}
 }
 
 class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
@@ -16,6 +20,17 @@ class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
 		);
 	}
 }
+
+class GP_UnitTest_Factory_For_Translation_Set extends GP_UnitTest_Factory_For_Thing {
+	function __construct() {
+		parent::__construct( new GP_Translation_Set );
+		$this->default_generation_definitions = array(
+			'name' => new GP_UnitTest_Generator_Sequence( 'Translation Set %s' ),
+			'slug' => 'default',
+		);
+	}
+}
+
 
 class GP_UnitTest_Factory_For_Original extends GP_UnitTest_Factory_For_Thing {
 	function __construct() {
@@ -37,7 +52,25 @@ class GP_UnitTest_Factory_For_Thing {
 	
 	function create( $args = array() ) {
 		$generated_args = $this->generate_args( $args );
-		return $this->thing->create( $generated_args );
+		$callbacks = array();
+		$updated_fields = array();
+		foreach( $generated_args as $field_name => $field_value ) {
+			if ( is_object( $field_value ) && method_exists( $field_value, 'call' ) ) {
+				unset( $args[$field_name] );
+				$callbacks[$field_name] = $field_value;
+			}
+		}
+		$created = $this->thing->create( $generated_args );
+		if ( !$created || is_wp_error( $created ) ) return $created;
+		if ( $callbacks ) {
+			foreach( $callbacks as $field_name => $generator ) {
+				var_dump($created);
+				$updated_fields[$field_name] = $generator->call( $created );
+			}
+			$save_result = $created->save( $updated_fields );
+			if ( !$save_result || is_wp_error( $save_result ) ) return $save_result;
+		}
+		return $created;
 	}
 	
 	function generate_args( $args = array(), $generation_definitions = null ) {
@@ -49,6 +82,8 @@ class GP_UnitTest_Factory_For_Thing {
 				}
 				$generator = $generation_definitions[$field_name];
 				if ( is_string( $generator ) || is_numeric( $generator ) )
+					$args[$field_name] = $generator;
+				elseif ( is_object( $generator ) && method_exists( $generator, 'call' ) )
 					$args[$field_name] = $generator;
 				elseif ( is_object( $generator ) )
 					$args[$field_name] = $generator->next();
@@ -73,5 +108,23 @@ class GP_UnitTest_Generator_Sequence {
 		$generated = sprintf( $this->template_string , $this->next );
 		$this->next++;
 		return $generated;
+	}
+}
+
+class GP_UnitTest_Generator_Locale_Name extends GP_UnitTest_Generator_Sequence {
+	function __construct() {
+		parent::__construct( '%s', 'aa' );
+	}
+}
+
+class GP_UnitTest_Factory_Callback_After_Create {
+	var $callback;
+
+	function __construct( $callback ) {
+		$this->callback = $callback;
+	}
+
+	function call( $object ) {
+		return call_user_func( $this->callback, $object );
 	}
 }
