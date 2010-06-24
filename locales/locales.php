@@ -3,13 +3,20 @@ class GP_Locale {
 	var $english_name;
 	var $native_name;
 	var $text_direction = 'ltr';
-	var $lang_code_iso_639_1;
+	var $lang_code_iso_639_1 = null;
 	var $country_code;
 	var $wp_locale;
 	var $slug;
 	var $nplurals = 2;
 	var $plural_expression = 'n != 1';
+	var $google_code = null;
 	// TODO: days, months, decimals, quotes
+	
+	function GP_Locale( $args = array() ) {
+		foreach( $args as $key => $value ) {
+			$this->$key = $value;
+		}
+	}
 	
 	function combined_name() {
 		/* translators: combined name for locales: 1: name in English, 2: native name */
@@ -1387,20 +1394,8 @@ class GP_Locales {
 		$zh->nplurals = 1;
 		$zh->plural_expression = '0';
 		
-		foreach( get_defined_vars() as $value ) {
-			if ( isset( $value->english_name ) ) {
-				if ( !isset( $value->direction ) ) {
-					$value->direction = 'ltr';
-				}
-				$value->rtl = $value->direction == 'rtl';
-				if ( !isset( $value->lang_code_iso_639_1 ) ) {
-					$value->lang_code_iso_639_1 = null;
-				}
-				if ( !isset( $value->google_code ) ) {
-					$value->google_code = null;
-				}
-				$this->locales[$value->slug] = $value;
-			}
+		foreach( get_defined_vars() as $locale ) {
+			$this->locales[$locale->slug] = $locale;
 		}
 	}
 	
