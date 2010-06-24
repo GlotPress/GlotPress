@@ -51,35 +51,40 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	}
 
 	function test_factory_for_thing_generate_args_should_not_touch_args_if_no_generation_definitions() {
-		$factory = $this->create_factory( array('name'), array() );
+		$factory = $this->create_factory( array('name') );
 		$args = array( 'name' => 'value' );
-		$this->assertEquals( $args, $factory->generate_args( $args ) );
+		$this->assertEquals( $args, $factory->generate_args( $args, array() ) );
 	}
 
 	function test_factory_for_thing_generate_args_should_not_touch_args_if_different_generation_defintions() {
-		$factory = $this->create_factory( array('name'), array( 'other_name' => 5 ) );
+		$factory = $this->create_factory( array('name') );
 		$args = array( 'name' => 'value' );
-		$this->assertEquals( $args, $factory->generate_args( $args ) );
+		$this->assertEquals( $args, $factory->generate_args( $args ), array( 'other_name' => 5 ) );
 	}
 
 	function test_factory_for_thing_generate_args_should_set_undefined_scalar_values() {
-		$default = array( 'name' => 'default' );
-		$factory = $this->create_factory( array('name'), $default );
-		$this->assertEquals( $default, $factory->generate_args( array() ) );
+		$factory = $this->create_factory( array('name') );
+		$this->assertEquals( array('name' => 'default'), $factory->generate_args( array(), array( 'name' => 'default' ) ) );
 	}
 	
 	function test_factory_for_thing_generate_args_should_use_generator() {
 		$generator_stub = $this->getMock( 'GP_UnitTest_Generator_Sequence' );
 		$generator_stub->expects( $this->exactly( 2 ) )->method( 'next' )->will( $this->onConsecutiveCalls( 'name 1', 'name 2' ) );
-		$factory = $this->create_factory( array('name'), array( 'name' =>  $generator_stub ) );
-		$this->assertEquals( array( 'name' => 'name 1'), $factory->generate_args( array() ) );
-		$this->assertEquals( array( 'name' => 'name 2'), $factory->generate_args( array() ) );
+		$factory = $this->create_factory( array('name') );
+		$generation_defintions = array( 'name' =>  $generator_stub );
+		$this->assertEquals( array( 'name' => 'name 1'), $factory->generate_args( array(), $generation_defintions ) );
+		$this->assertEquals( array( 'name' => 'name 2'), $factory->generate_args( array(), $generation_defintions ) );
 	}
 
 	function test_factory_for_thing_generate_args_should_return_error_on_bad_default_value() {
-		$factory = $this->create_factory( array('name'), array( 'name' => array( 'non-scalar default value' ) ) );
-		$this->assertWPError( $factory->generate_args( array() ) );
+		$factory = $this->create_factory( array('name') );
+		$this->assertWPError( $factory->generate_args( array(), array( 'name' => array( 'non-scalar default value' ) ) ) );
 	}	
+
+	function test_factory_for_thing_generate_args_should_use_default_generator_definition_if_non_given() {
+		$factory = $this->create_factory( array('name'), array('name' => 'default') );
+		$this->assertEquals( array('name' => 'default'), $factory->generate_args( array() ) );
+	}
 	
 	function test_factory_for_thing_create_should_call_create_once() {
 		$factory = $this->create_factory();

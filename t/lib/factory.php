@@ -2,25 +2,36 @@
 class GP_UnitTest_Factory {
 	function __construct() {
 		$this->project = new GP_UnitTest_Factory_For_Project;
+		$this->original = new GP_UnitTest_Factory_For_Original;
 	}
 }
 
 class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
 	function __construct() {
-		parent::__construct( new GP_Project, array(
+		parent::__construct( new GP_Project );
+		$this->default_generation_definitions = array(
 			'name' => new GP_UnitTest_Generator_Sequence( 'Project %s' ),
 			'description' => 'I am a project',
 			'parent_project_id' => null,
-		) );
+		);
+	}
+}
+
+class GP_UnitTest_Factory_For_Original extends GP_UnitTest_Factory_For_Thing {
+	function __construct() {
+		parent::__construct( new GP_Original );
+		$this->default_generation_definitions = array(
+			'singular' => new GP_UnitTest_Generator_Sequence( 'Original %s' )
+		);
 	}
 }
 
 class GP_UnitTest_Factory_For_Thing {
 	
-	var $argument_generation_defintions;
+	var $default_generation_definitions;
 	
-	function __construct( $thing, $argument_generation_defintions ) {
-		$this->argument_generation_defintions = $argument_generation_defintions;
+	function __construct( $thing, $default_generation_definitions = array() ) {
+		$this->default_generation_definitions = $default_generation_definitions;
 		$this->thing = $thing;
 	}
 	
@@ -29,13 +40,14 @@ class GP_UnitTest_Factory_For_Thing {
 		return $this->thing->create( $generated_args );
 	}
 	
-	function generate_args( $args = array() ) {
+	function generate_args( $args = array(), $generation_definitions = null ) {
+		if ( is_null( $generation_definitions ) ) $generation_definitions = $this->default_generation_definitions;
 		foreach( $this->thing->field_names as $field_name ) {
 			if ( !isset( $args[$field_name] ) ) {
-				if ( !isset( $this->argument_generation_defintions[$field_name] ) ) {
+				if ( !isset( $generation_definitions[$field_name] ) ) {
 					continue;
 				}
-				$generator = $this->argument_generation_defintions[$field_name];
+				$generator = $generation_definitions[$field_name];
 				if ( is_string( $generator ) || is_numeric( $generator ) )
 					$args[$field_name] = $generator;
 				elseif ( is_object( $generator ) )
