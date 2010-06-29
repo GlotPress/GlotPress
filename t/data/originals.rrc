@@ -7,3 +7,8 @@ MULTIPLE#0={
 	"2",
 	"brun",
 };
+UNTRANSLATED#0="English string";
+MULTIPLE_UNTRANSLATED#0={
+   	"English string#0",
+   	"English string#1",
+};

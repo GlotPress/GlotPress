@@ -12,6 +12,9 @@ class GP_Test_Format_RRC extends GP_UnitTestCase {
 			array('MULTIPLE[1]', '1', '1'),
 			array('MULTIPLE[2]', '2', '2'),
 			array('MULTIPLE[3]', 'brun', "brun!\nbrun!"),
+			array('UNTRANSLATED', 'English string', ''),
+			array('MULTIPLE_UNTRANSLATED[0]', 'English string#0', 'Partly'),
+			array('MULTIPLE_UNTRANSLATED[1]', 'English string#1', ''),
 		);
 	}
 	
@@ -22,12 +25,15 @@ class GP_Test_Format_RRC extends GP_UnitTestCase {
 			$entries_for_export[] = (object)array(
 				'context' => $context,
 				'singular' => $original,
-				'translations' => array($translation),
+				'translations' => $translation? array($translation) : array(),
 			);
 		}
-		$this->assertEquals( file_get_contents( 'data/translation.rrc' ), $this->rrc->print_exported_file( 'project', 'locale', 'translation_set', $entries_for_export ) );
+		$this->assertDiscardWhitespace(
+				file_get_contents( 'data/translation-exported.rrc' ),
+				$this->rrc->print_exported_file( 'project', 'locale', 'translation_set', $entries_for_export )
+		);
 	}
-	
+		
 	function test_read_originals() {
 		$translations = $this->rrc->read_originals_from_file( 'data/originals.rrc' );
 				

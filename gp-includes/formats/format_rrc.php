@@ -11,12 +11,13 @@ class GP_Format_RRC {
 				error_log( 'RRC Export: Bad Entry: '.$entry->context );
 				continue;
 			}
+			$translation_with_original_fallback = gp_array_get( $entry->translations, 0, $entry->singular );
 			if ( isset( $matches[2] ) ) {
 				$key = $matches[1];
 				$index = $matches[2];
-				$rrc[$key][$index] = $entry->translations[0];
+				$rrc[$key][$index] = $translation_with_original_fallback;
 			} else {
-				$rrc[$entry->context] = $entry->translations[0];
+				$rrc[$entry->context] = $translation_with_original_fallback;
 			}
 		}
 		$result = '';

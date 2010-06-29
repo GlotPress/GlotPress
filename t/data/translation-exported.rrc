@@ -1,4 +1,4 @@
-WITH_LATIN1#0="fÃ¼r";
+WITH_LATIN1#0="für";
 WITH_UNICODE_ESCAPES#0="\u0431\u0430\u0431\u0430";
 WITH_SLASHES#0="Twinkle,\nTwinkle,litle\tstar!";
 MULTIPLE#0={
@@ -7,8 +7,8 @@ MULTIPLE#0={
 	"2",
 	"brun!\nbrun!",
 };
-UNTRANSLATED#0="";
+UNTRANSLATED#0="English string";
 MULTIPLE_UNTRANSLATED#0={
    	"Partly",
-   	"",
+   	"English string#1",
 };

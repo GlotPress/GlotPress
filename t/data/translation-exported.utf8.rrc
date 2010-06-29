@@ -7,8 +7,8 @@ MULTIPLE#0={
 	"2",
 	"brun!\nbrun!",
 };
-UNTRANSLATED#0="";
+UNTRANSLATED#0="English string";
 MULTIPLE_UNTRANSLATED#0={
    	"Partly",
-   	"",
+   	"English string#1",
 };
