@@ -10,6 +10,7 @@ class GP_Locale {
 	var $nplurals = 2;
 	var $plural_expression = 'n != 1';
 	var $google_code = null;
+	var $preferred_sans_serif_font_family = null;
 	// TODO: days, months, decimals, quotes
 	
 	function GP_Locale( $args = array() ) {
@@ -113,6 +114,7 @@ class GP_Locales {
 		$ar->nplurals = 6;
 		$ar->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$ar->rtl = true;
+		$ar->preferred_sans_serif_font_family = 'Tahoma';
 
 		$as= new GP_Locale();
 		$as->english_name = 'Assamese';
