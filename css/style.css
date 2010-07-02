@@ -137,6 +137,9 @@ table.translations tr.preview.status-old, #legend .status-old {
 table.translations tr.preview.status-waiting, #legend .status-waiting {
 	background-color: #FFFFC2;
 }
+table.translations tr.preview.status-rejected, #legend .status-rejected {
+	background-color: #FF8E8E;
+}
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
     border-left: 2px solid red;
 }
