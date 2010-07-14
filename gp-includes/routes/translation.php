@@ -76,6 +76,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
+		$set_status_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
 		$bulk_action = gp_url_join( $url, '-bulk' );
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
@@ -105,7 +106,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			// TODO: validate
 			$translation = GP::$translation->create( $data );
 			if ( 'current' == $data['status'] ) {
-				$translation->set_as_current();
+				$translation->set_status( 'current' );
 			}
 			wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
 			$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
@@ -157,12 +158,12 @@ class GP_Route_Translation extends GP_Route_Main {
 		$action = gp_post( 'approve' )? 'approve' : 'reject';
 		
 		$ok = $error = 0;
-		$method_name = 'approve' == $action? 'set_as_current' : 'reject';
+		$new_status = 'approve' == $action? 'current' : 'rejected';
 		foreach( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( split( '-', $row_id ), 1 );
 			$translation = GP::$translation->get( $translation_id );
 			if ( !$translation ) continue;
-			if ( $translation->$method_name() )
+			if ( $translation->set_status( $new_status ) )
 				$ok++;
 			else
 				$error++;
@@ -255,6 +256,14 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 			
 	function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
+		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'discard_warning_edit_function' ) );
+	}
+	
+	function set_status( $project_path, $locale_slug, $translation_set_slug ) {
+		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
+	}
+			
+	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
@@ -265,6 +274,22 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( !$translation ) {
 			$this->die_with_error( 'Translation doesn&#8217;t exist!' );
 		}
+		
+		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
+
+		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
+		if ( $translations ) {
+			$t = $translations[0];
+			$parity = returner( 'even' );
+			$can_edit = GP::$user->logged_in();
+			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+			$this->tmpl( 'translation-row', get_defined_vars() );
+		} else {
+			$this->die_with_error( 'Error in retrieving translation!' );
+		}		
+	}
+	
+	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( !isset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] ) ) {
 			$this->die_with_error( 'The warning doesn&#8217;exist!' );
 		}
@@ -277,17 +302,15 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->die_with_error( 'Error in saving the translation!' );
 		}
 		
-		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit',
-															array('translation_id' => gp_post( 'translation_id' ) ), array() );
-		if ( $translations ) {
-			$t = $translations[0];
-			$parity = returner( 'even' );
-			$can_edit = GP::$user->logged_in();
-			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-			$this->tmpl( 'translation-row', get_defined_vars() );
-		} else {
-			$this->die_with_error( 'Error in retrieving translation!' );
+	}
+
+	private function set_status_edit_function( $project, $locale, $translation_set, $translation ) {
+		$res = $translation->set_status( gp_post( 'status' ) );
+		if ( !$res ) {
+			$this->die_with_error( 'Error in saving the translation status!' );
 		}
 	}
+
+
 	
 }

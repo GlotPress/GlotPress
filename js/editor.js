@@ -49,6 +49,8 @@ $gp.editor = function($){ return {
 		$('a.copy', 'tr.editor').live('click', $gp.editor.hooks.copy);
 		$('a.gtranslate', 'tr.editor').live('click', $gp.editor.hooks.google_translate);
 		$('a.discard-warning', 'tr.editor').live('click', $gp.editor.hooks.discard_warning);
+		$('button.approve', 'tr.editor').live('click', $gp.editor.hooks.set_status_current);
+		$('button.reject', 'tr.editor').live('click', $gp.editor.hooks.set_status_rejected);
 		$('button.ok', 'tr.editor').live('click', $gp.editor.hooks.ok);
 		$('tr.preview', $gp.editor.table).live('dblclick', $gp.editor.hooks.show);
 		$('select.priority', $gp.editor.table).live('change', $gp.editor.hooks.set_priority);
@@ -111,6 +113,24 @@ $gp.editor = function($){ return {
 			}
 		});
 		
+	},
+	set_status: function(button, status) {
+		if (!$gp.editor.current || !$gp.editor.current.translation_id) return;
+		var editor = $gp.editor.current;
+		button.attr('disabled', 'disabled');		
+		$gp.notices.notice('Setting status to &#8220;'+status+'&#8222;&hellip;');
+		var data = {translation_id: editor.translation_id, status: status};
+		$.ajax({type: "POST", url: $gp_editor_options.set_status_url, data: data,
+			success: function(data){
+				button.attr('disabled', '');
+				$gp.notices.success('Status set!');
+				$gp.editor.replace_current(data);
+			},
+			error: function(xhr, msg, error) {
+				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the status!';
+				$gp.notices.error(msg);
+			}
+		});		
 	},
 	discard_warning: function(link) {
 		if (!$gp.editor.current) return;
@@ -186,6 +206,14 @@ $gp.editor = function($){ return {
 		},
 		discard_warning: function() {
 			$gp.editor.discard_warning($(this));
+			return false;
+		},
+		set_status_current: function() {
+			$gp.editor.set_status($(this), 'current');
+			return false;
+		},
+		set_status_rejected: function() {
+			$gp.editor.set_status($(this), 'rejected');
 			return false;
 		},
 		set_priority: function() {

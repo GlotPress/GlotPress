@@ -66,7 +66,7 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->status = 'current';
 				// check for errors
 				$translation = GP::$translation->create( $entry );
-				$translation->set_as_current();
+				$translation->set_status( 'current' );
 				$translations_added += 1;
 			}
 		}

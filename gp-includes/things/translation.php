@@ -187,7 +187,14 @@ class GP_Translation extends GP_Thing {
 	}
 	
 	function reject() {
-		return $this->update( array('status' => 'rejected') );
+		$this->set_status( 'rejected' );
+	}
+	
+	function set_status( $status ) {
+		if ( 'current' == $status )
+			return $this->set_as_current();
+		else
+			return $this->update( array( 'status' => $status ) );
 	}
 	
 	function translations() {

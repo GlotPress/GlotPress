@@ -86,18 +86,18 @@ $priority_char = array(
 			<h3><?php _e('Meta'); ?></h3>
 			<dl>
 				<dt><?php _e('Status:'); ?></dt>
-				<dd><?php echo display_status( $t->translation_status ); ?></dd>
-				<!--
-				TODO: ajaxy actions for approve/set as current/reject
-			<?php if ( $can_approve ): ?>
-				<?php if ( gp_startswith( $t->translation_status, '-' ) ): ?>
-				<dd><a href="#" tabindex="-1"><?php _e('Set as current'); ?></a></dd>
-				<?php endif; ?>
-				<?php if ( $t->translation_status ): ?>
-				<dd><a href="#" tabindex="-1"><?php _e('Reject'); ?></a></dd>
-				<?php endif; ?>
-			<?php endif; ?>
-				-->
+				<dd>
+					<?php echo display_status( $t->translation_status ); ?>
+					<?php if ( $can_approve && $t->translation_status ): ?>
+					
+						<?php if ( $t->translation_status != 'current' ): ?>
+						<button class="approve" tabindex="-1"><strong>+</strong> Approve</button>
+						<?php endif; ?>
+						<?php if ( $t->translation_status != 'rejected' ): ?>
+						<button class="reject" tabindex="-1"><strong>&minus;</strong> Reject</button>
+						<?php endif; ?>
+					<?php endif; ?>
+				</dd>
 			</dl>
 			<!--
 			<dl>
@@ -136,7 +136,7 @@ $priority_char = array(
 			<dl>
 			    <dt><?php _e('Priority of the original:'); ?></dt>
 			<?php if ( $can_write ): ?>
-			    <dd><?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority') ); ?></dd>
+			    <dd><?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority', 'tabindex' => '-1') ); ?></dd>
 			<?php else: ?>
 			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
 			<?php endif; ?>

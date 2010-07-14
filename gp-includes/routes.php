@@ -75,6 +75,7 @@ class GP_Router {
 			"get:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
 			"post:/$project/$locale/$dir/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
 			"post:/$project/$locale/$dir/-discard-warning" => array('GP_Route_Translation', 'discard_warning'),
+			"post:/$project/$locale/$dir/-set-status" => array('GP_Route_Translation', 'set_status'),
 			"/$project/$locale/$dir/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
 			// keep this below all URLs ending with a literal string, because it may catch one of them
 			"get:/$project/$locale/$dir" => array('GP_Route_Translation', 'translations_get'),
