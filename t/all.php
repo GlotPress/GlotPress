@@ -11,10 +11,8 @@ for( $depth = 0; $depth <= 3; $depth++ ) {
 	}	
 }
 
-
 class all {
-    public static function suite()
-    {
+    public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite();
 		$gp_test_classes = array_filter( get_declared_classes(), create_function('$c', 'return preg_match("/^GP_Test_/", $c);'));
 		foreach( $gp_test_classes as $class ) {
