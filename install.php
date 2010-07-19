@@ -22,6 +22,9 @@ if ( gp_get_option( 'gp_db_version' ) <= gp_get_option_from_db( 'gp_db_version' 
     } else {
 	    $success_message = __( 'GlotPress was successully installed!' );
 	    $errors = gp_install();
+		if ( !$errors ) {
+			gp_create_initial_contents();
+		}
 	}
 }
 

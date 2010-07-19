@@ -51,7 +51,10 @@ function gp_install() {
 	if ( $errors ) return $errors;
 	
 	gp_update_option( 'uri', guess_uri() );
-	
+}
+
+function gp_create_initial_contents() {	
+	global $gpdb;
 	$gpdb->insert( $gpdb->projects, array('name' => __('Sample'), 'slug' => __('sample'), 'description' => __('A Sample Project'), 'path' => __('sample') ) );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => __('GlotPress FTW'), 'comment' => __('FTW means For The Win'), 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
 	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => __('A GlotPress'), 'plural' => __('Many GlotPresses') ) );
@@ -64,5 +67,4 @@ function gp_install() {
 		GP::$permission->create( array( 'user_id' => $admin->id, 'action' => 'admin' ) );
 	}
 	// TODO: ask the user to choose an admin user if using custom table
-	return array();
 }
