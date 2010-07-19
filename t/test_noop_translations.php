@@ -18,7 +18,7 @@ class GP_Test_NOOP_Translations extends GP_UnitTestCase {
 		$this->assertEquals( array(), $this->noop->entries );
 	}
 	
-	function test_set_headetr() {
+	function test_set_header() {
 		$this->noop->set_header( 'header', 'value' );
 		$this->assertEquals( array(), $this->noop->headers );
 	}
