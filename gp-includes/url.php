@@ -16,14 +16,21 @@ function gp_url_path( $url = null ) {
 
 /**
  * Joins paths, and takes care of slashes between them
+ * 
+ * Example: gp_url_join( '/project', array( 'wp', 'dev) ) -> '/project/wp/dev'
+ * 
+ * The function will keep leading and trailing slashes of the whole URL, but won't
+ * allow more than consecutive slash inside.
+ * 
+ * @param mixed components... arbitrary number of string or path components
+ * @return string URL, built of all the components, separated with /
  */
 function gp_url_join() {
-	$args = func_get_args();
-	$args_in_flat_array = gp_array_flatten( $args );
-	if ( empty( $args ) ) return '';
-	$args_with_slashes = implode( '/', $args_in_flat_array );
-	$args_without_consecutive_slashes = preg_replace( '|/{2,}|', '/', $args_with_slashes );
-	return $args_without_consecutive_slashes;
+	$components = func_get_args();
+	$components_in_flat_array = array_filter( gp_array_flatten( $components ) );
+	$components_with_slashes = implode( '/', $components_in_flat_array );
+	$components_without_consecutive_slashes = preg_replace( '|/{2,}|', '/', $components_with_slashes );
+	return $components_without_consecutive_slashes;
 }
 
 /**
@@ -95,7 +102,7 @@ function gp_url_current() {
 	return "{$protocol}://{$host}{$path_and_args}";
 }
 
-function gp_url_project( $project_or_path, $path = '', $query = null ) {
+function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
 	return gp_url( array( 'projects', $project_path, $path ), $query );
 }

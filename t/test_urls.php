@@ -5,14 +5,10 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	
 	function setUp() {
 	    $this->sub_dir = '/gp/';
-	    $this->url = 'http://example.org' . $this->sub_dir;
+		$this->url = 'http://example.org' . $this->sub_dir;
 		parent::setUp();
 	}
 	
-	function tearDown() {
-	    parent::tearDown();	    
-	}
-
 	function test_gp_url_should_just_add_simple_path_string_if_query_is_missing() {
 		$this->assertEquals( $this->sub_dir . 'baba', gp_url( 'baba' ) );
 	}
@@ -82,8 +78,15 @@ class GP_Test_Urls extends GP_UnitTestCase {
 			$this->assertEquals( '/baba/', gp_url_join( '//', '/baba/' ) );
 	}
 	
-	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_slashes() {	
+	function test_gp_url_join_should_return_only_one_slash_if_the_only_component_is_a_slash() {
+		$this->assertEquals( '/', gp_url_join( '/' ) );
+	}
+	
+	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_slashes() {
 		$this->assertEquals( '/', gp_url_join( '/', '/' ) );
+	}
+	
+	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_multiple_slashes() {
 		$this->assertEquals( '/', gp_url_join( '///', '///' ) );
 	}
 	
@@ -91,6 +94,14 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$this->assertEquals( 'a/b', gp_url_join( 'a', '', 'b' ) );
 	}
 	
+	function test_gp_url_join_should_skip_empty_components_in_the_beginning() {
+		$this->assertEquals( 'a/b', gp_url_join( '', 'a', 'b' ) );
+	}
+
+	function test_gp_url_join_should_skip_empty_components_in_the_end() {
+		$this->assertEquals( 'a/b', gp_url_join( 'a', 'b', '' ) );
+	}
+		
 	function test_gp_url_join_should_accept_array_component_with_one_element_and_return_this_element() {
 		$this->assertEquals( 'baba', gp_url_join( array( 'baba' ) ));
 	}
@@ -103,6 +114,10 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$this->assertEquals( 'baba/dyado/chicho/lelya', gp_url_join( array( 'baba', array( 'dyado', array( 'chicho' ), 'lelya' ) ) ) );
 	}
 	
+	function test_gp_url_join_should_return_empty_string_with_nested_empty_arrays() {
+		$this->assertEquals( '', gp_url_join( array( array() ), array() ) );
+	}
+	
 	function test_gp_url_project_should_join_its_arguments() {
 		$url_from_gp_url_project = gp_url_project( '/x', 'import-originals' );
 		$url_manually_joined = gp_url_join( gp_url_project( '/x' ), 'import-originals' );
@@ -111,6 +126,6 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	function test_gp_url_project_should_join_its_array_arguments() {
 		$url_from_gp_url_project = gp_url_project( '/x', array( 'slug', 'slugslug', 'import-translations' ) );
 		$url_manually_joined = gp_url_join( gp_url_project( '/x' ), 'slug', 'slugslug', 'import-translations' );
-		$this->assertEquals(  $url_manually_joined, $url_from_gp_url_project );
-	}
+		$this->assertEquals( $url_manually_joined, $url_from_gp_url_project );
+	}	
 }
