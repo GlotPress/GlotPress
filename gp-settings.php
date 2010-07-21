@@ -284,7 +284,8 @@ foreach( glob( GP_PATH . GP_INC . 'things/*.php' ) as $thing_file ) {
 	require_once $thing_file;
 }
 
-require_once( GP_PATH . GP_INC . 'routes.php' );
+require_once( GP_PATH . GP_INC . 'route.php' );
+require_once( GP_PATH . GP_INC . 'router.php' );
 foreach( glob( GP_PATH . GP_INC . 'routes/*.php' ) as $route_file ) {
 	require_once $route_file;
 }

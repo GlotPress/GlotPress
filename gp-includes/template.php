@@ -8,7 +8,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
 	foreach( $locations as $location ) {
-	 	$file = $location . "$template.php";
+	 	$file = $location . "$template.php";	
 		if ( is_readable( $file ) ) {
 			extract( $args, EXTR_SKIP );
 			include $file;
@@ -18,9 +18,10 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	do_action_ref_array( 'post_tmpl_load', array( $template, &$args ) );
 }
 
-function gp_tmpl_get_output( $template, $args = array() ) {
+function gp_tmpl_get_output() {
+	$args = func_get_args();
 	ob_start();
-	gp_tmpl_load( $template, $args );
+	call_user_func_array( 'gp_tmpl_load', $args );
 	$contents = ob_get_contents();
 	ob_end_clean();
 	return $contents;
@@ -57,7 +58,7 @@ function gp_tmpl_filter_args( $args ) {
 }
 
 function gp_tmpl_404( $args = array()) {
-	gp_tmpl_load( '404', array('title' => __('Not Found'), 'http_status' => 404 ) + $args );
+	gp_tmpl_load( '404', $args + array('title' => __('Not Found'), 'http_status' => 404 ) );
 	exit();
 }
 
