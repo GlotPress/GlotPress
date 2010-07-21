@@ -14,13 +14,21 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 
 	function create_factory( $field_names = array(), $defaults = array() ) {
 		$thing = (object)compact( 'field_names' );
-		$factory = new GP_UnitTest_Factory_For_Thing( $thing, $defaults );
+		$factory = new GP_UnitTest_Factory_For_Thing( null, $thing, $defaults );
 		return $factory;
 	}	
 	
 	function test_generator_sequence_should_start_with_1() {
 		$sequence = new GP_UnitTest_Generator_Sequence();		
 		$this->assertEquals( 1, $sequence->next() );
+	}
+
+	function test_generator_sequence_should_generate_consecutive_values() {
+		$sequence = new GP_UnitTest_Generator_Sequence();
+		$this->assertEquals( 1, $sequence->next() );
+		$this->assertEquals( 2, $sequence->next() );
+		$this->assertEquals( 3, $sequence->next() );
+		$this->assertEquals( 4, $sequence->next() );
 	}
 	
 	function test_generator_sequence_should_include_value_in_template() {
@@ -33,14 +41,6 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 		$this->assertEquals( 2, $sequence->next() );		
 	}
 	
-	function test_generator_sequence_should_generate_consecutive_values() {
-		$sequence = new GP_UnitTest_Generator_Sequence();
-		$this->assertEquals( 1, $sequence->next() );
-		$this->assertEquals( 2, $sequence->next() );
-		$this->assertEquals( 3, $sequence->next() );
-		$this->assertEquals( 4, $sequence->next() );
-	}
-
 	function test_generator_sequence_should_generate_consecutive_values_in_template() {
 		$sequence = new GP_UnitTest_Generator_Sequence( 'Baba %s' );
 		$this->assertEquals( 'Baba 1', $sequence->next() );
@@ -61,7 +61,7 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 		$this->assertEquals( 'ad', $locale_name->next() );
 	}
 
-	function test_factory_for_thing_should_construct_with_object() {
+	function test_factory_for_thing_should_construct_with_factory_and_thing_object() {
 		$factory = $this->create_factory();
 		$this->assertTrue( is_object( $factory->thing ) );
 	}
@@ -105,12 +105,12 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	function test_factory_for_thing_create_should_call_create_once() {
 		$factory = $this->create_factory();
 		$create_args = array( 'name' => 'value' );
-		$thing = $this->create_thing_mock_with_name_field_and_with_create_which_should_be_called_with( $create_args );
+		$thing = $this->create_thing_mock_with_name_field_and_with_create_which_should_be_called_once_with( $create_args );
 		$factory->thing = $thing;
 		$factory->create( $create_args );
 	}
 	
-	function create_thing_mock_with_name_field_and_with_create_which_should_be_called_with( $expected_create_args ) {
+	private function create_thing_mock_with_name_field_and_with_create_which_should_be_called_once_with( $expected_create_args ) {
 		$thing = $this->getMock( 'GP_Thing_Test_Factory' );
 		$thing->field_names = array('name');
 		$thing->expects( $this->once() )->method( 'create' )->with( $this->equalTo( $expected_create_args ) );
@@ -119,7 +119,7 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	
 	function test_factory_for_thing_create_should_use_function_generator() {
 		$generation_defintions = array(
-			'full_name' => new GP_UnitTest_Factory_Callback_After_Create( create_function( '$o', 'return $o->name . " baba";' ) )
+			'full_name' => GP_UnitTest_Factory_For_Thing::callback( create_function( '$o', 'return $o->name . " baba";' ) ),
 		);
 		$factory = $this->create_factory( null, $generation_defintions );
 		$create_args = array('name' => 'my name is');
@@ -128,8 +128,8 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 		$factory->thing = $thing;
 		$factory->create( $create_args );
 	}
-	
-	function create_thing_stub_with_name_and_full_name_which_on_create_returns_mock_whose_save_should_be_called_with( $create_args, $expected_save_args ) {
+
+	private function create_thing_stub_with_name_and_full_name_which_on_create_returns_mock_whose_save_should_be_called_with( $create_args, $expected_save_args ) {
 		$thing = $this->getMock( 'GP_Thing_Test_Factory' );
 		$thing->field_names = array('name', 'full_name');
 		$created_thing = $this->getMock( 'GP_Thing_Test_Factory' );
@@ -139,5 +139,5 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 		$created_thing->expects( $this->once() )->method( 'save' )->with( $this->equalTo( $expected_save_args ) );
 		$thing->expects( $this->once() )->method( 'create' )->will( $this->returnValue( $created_thing ) );
 		return $thing;
-	}
+	}	
 }
