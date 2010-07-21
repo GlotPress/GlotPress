@@ -1,7 +1,7 @@
 <?php
 require_once('init.php');
 
-class GP_Test_Requests extends GP_UnitTestCase {
+class GP_Test_Requests extends GP_UnitTestCase_Request {
     function test_index() {
         $this->get( '/' );
         $this->assertRedirect();

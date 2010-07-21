@@ -1,14 +1,8 @@
 <?php
 
-class GP_UnitTest_Request {
-    
-    var $exported_methods = array( 'get', 'post', 'assertRedirect', 'assertResponseContains', 'assertResponseNotContains' );
+class GP_UnitTestCase_Request extends GP_UnitTestCase {
     var $body = null;
     
-    function __construct( $case ) {
-        $this->case = $case;
-    }
-
     function get( $uri, $get_vars = array() ) {
         $this->request( $uri, 'GET', $get_vars );
     }
@@ -17,7 +11,7 @@ class GP_UnitTest_Request {
         $this->request( $uri, 'POST', $get_vars );
     }
 
-    function request( $uri, $method, $vars ) {
+    private function request( $uri, $method, $vars ) {
         $tmp_file_name = tempnam( sys_get_temp_dir(), 'gp-test-request-config' );
         if ( !$tmp_file_name) {
             return false;
@@ -47,15 +41,14 @@ CONFIG;
     }
 
     function assertRedirect() {
-        $this->case->assertTrue( gp_startswith( $this->body, 'Redirecting to: ') );
+        $this->assertTrue( gp_startswith( $this->body, 'Redirecting to: ') );
     }
     
     function assertResponseContains( $needle ) {
-        $this->case->assertTrue( gp_in( $needle, $this->body ) );
+        $this->assertTrue( gp_in( $needle, $this->body ) );
     }
     
     function assertResponseNotContains( $needle ) {
-        $this->case->assertFalse( gp_in( $needle, $this->body ) );
-    }
-    
+        $this->assertFalse( gp_in( $needle, $this->body ) );
+    }   
 }
