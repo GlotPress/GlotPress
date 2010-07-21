@@ -40,7 +40,7 @@ class GP_Test_Misc extends GP_UnitTestCase {
 		$this->assertEquals( true, gp_array_any( returner('$x', '$x % 2'), array( 1, 2, 3, 4 ) ) );
 	}
 	
-	function test_gp_gp_object_has_var_returs_true_if_var_is_null() {
+	function test_gp_object_has_var_returs_true_if_var_is_null() {
 		$this->assertTrue( gp_object_has_var( (object)array( 'baba' => null), 'baba' ) );
 	}
 }

@@ -3,12 +3,10 @@ require_once dirname( __FILE__ ) . '/../../gp-includes/backpress/class.bp-sql-sc
 require_once dirname( __FILE__ ) . '/../../gp-includes/schema.php';
 require_once dirname( __FILE__ ) . '/../../gp-includes/install-upgrade.php';
 
-require_once dirname( __FILE__ ) . '/request.php';
 require_once dirname( __FILE__ ) . '/factory.php';
 
 class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
-    var $methods_from_request = array();
     var $url = 'http://example.org/';
 
 	function setUp() {
@@ -29,8 +27,6 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$this->clean_up_global_scope();
 		$this->start_transaction();
 		ini_set( 'display_errors', 1 );
-		$this->request = new GP_UnitTest_Request( $this );
-		$this->methods_from_request = $this->request->exported_methods;
 		$this->url_filter = returner( $this->url );
 		add_filter( 'gp_get_option_uri', $this->url_filter );
     }
@@ -44,6 +40,10 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 	function clean_up_global_scope() {
 		GP::$user->reintialize_wp_users_object();
 		wp_cache_flush();
+		$locales = &GP_Locales::instance();
+		$locales->locales = array();
+		$_GET = array();
+		$_POST = array();
 	}
 	
 	function start_transaction() {
@@ -73,11 +73,16 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		return tempnam( $dir, 'testpomo' );
 	}
 	
-	function __call( $name, $args ) {
-	    if ( is_array( $this->methods_from_request ) && in_array( $name, $this->methods_from_request ) ) {
-	        return call_user_func_array( array( &$this->request, $name ), $args );
-	    }
-		trigger_error( sprintf( 'Call to undefined function: %s::%s().', get_class( $this ), $name ), E_USER_ERROR );
+	function set_normal_user_as_current() {
+		$user = $this->factory->user->create();
+		$user->set_as_current();
+		return $user;
+	}
+
+	function set_admin_user_as_current() {
+		$admin = $this->factory->user->create_admin();
+		$admin->set_as_current();
+		return $admin;
 	}
 	
 	function assertWPError( $actual, $message = '' ) {
@@ -94,5 +99,5 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 	
 	function assertDiscardWhitespace( $expected, $actual ) {
 		$this->assertEquals( preg_replace( '/\s*/', '', $expected ), preg_replace( '/\s*/', '', $actual ) );
-	}	
+	}
 }

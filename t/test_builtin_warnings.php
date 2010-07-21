@@ -6,13 +6,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		$this->w = new GP_Builtin_Translation_Warnings;
-		$this->bg = GP_Locales::by_slug( 'bg' );
+		$this->l = $this->factory->locale->create();
 		$this->longer_than_20 = 'The little boy hid behind the counter and then came the wizard of all green wizards!';
 		$this->shorter_than_5 = 'Boom';
 	}
 	
 	function _assertWarning( $assert, $warning, $original, $translation, $locale = null ) {
-		if ( is_null( $locale ) ) $locale = $this->bg;
+		if ( is_null( $locale ) ) $locale = $this->l;
 		$method = "warning_$warning";
 		$this->$assert( true, $this->w->$method( $original, $translation, $locale ) );
 	}
@@ -32,10 +32,10 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 	}
 	
 	function test_length_exclude() {
-		$w_without_bg = new GP_Builtin_Translation_Warnings;
-		$w_without_bg->length_exclude_languages = array( 'bg' );
-		$this->assertSame( true, $w_without_bg->warning_length( $this->longer_than_20, $this->longer_than_20, $this->bg ) );
-		$this->assertSame( true, $w_without_bg->warning_length( $this->longer_than_20, $this->shorter_than_5, $this->bg ) );
+		$w_without_locale = new GP_Builtin_Translation_Warnings;
+		$w_without_locale->length_exclude_languages = array( $this->l->slug );
+		$this->assertSame( true, $w_without_locale->warning_length( $this->longer_than_20, $this->longer_than_20, $this->l ) );
+		$this->assertSame( true, $w_without_locale->warning_length( $this->longer_than_20, $this->shorter_than_5, $this->l ) );
 	}
 	
 	function test_tags() {

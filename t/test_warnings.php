@@ -9,7 +9,7 @@ class GP_Test_Translation_Warnings extends GP_UnitTestCase {
 		$this->w = new GP_Translation_Warnings;
 		$this->with_equal = new GP_Translation_Warnings;
 		$this->with_equal->add( 'is_equal', $this->is_equal );
-		$this->standard_plural_locale = GP_Locales::by_slug( 'bg' );
+		$this->standard_plural_locale = $this->factory->locale->create();
 	}
 	
 	function test_add() {
