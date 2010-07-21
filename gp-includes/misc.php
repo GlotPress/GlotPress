@@ -76,7 +76,7 @@ function gp_array_flatten( $array ) {
  * A key has one message. The default is 'notice'.
  */
 function gp_notice_set( $message, $key = 'notice' ) {
-	setcookie( '_gp_notice_'.$key, $message, 0, gp_url_path() );
+	backpress_set_cookie( '_gp_notice_'.$key, $message, 0, gp_url_path() );
 }
 
 /**
@@ -94,7 +94,7 @@ function gp_populate_notices() {
 	foreach ($_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
 			GP::$redirect_notices[$suffix] = $value;
-			setcookie( $key, '', 0, gp_url_path() );
+			backpress_set_cookie( $key, '', 0, gp_url_path() );
 		}
 	}
 }
@@ -294,4 +294,15 @@ function gp_array_all( $callback, $array ) {
 		}
 	}
 	return false;
+}
+
+function gp_error_log_dump( $value ) {
+	if ( is_array( $value ) || is_object( $value ) ) {
+		$value = print_r( $value, true );
+	}
+	error_log( $value );
+}
+
+function gp_object_has_var( $object, $var_name ) {
+	return in_array( $var_name, array_keys( get_object_vars( $object ) ) );
 }
