@@ -457,6 +457,16 @@ class GP_Locales {
 		$es_pe->slug = 'es-pe';
 		$es_pe->google_code = 'es';
 
+		$es_pr = new GP_Locale();
+		$es_pr->english_name = 'Spanish (Puerto Rico)';
+		$es_pr->native_name = 'Español de Puerto Rico';
+		$es_pr->lang_code_iso_639_1 = 'es';
+		$es_pr->lang_code_iso_639_2 = 'spa';
+		$es_pr->country_code = 'pr';
+		$es_pr->wp_locale = 'es_PR';
+		$es_pr->slug = 'es-pr';
+		$es_pr->google_code = 'es';
+		
 		$es_ve = new GP_Locale();
 		$es_ve->english_name = 'Spanish (Venezuela)';
 		$es_ve->native_name = 'Español de Venezuela';
@@ -565,6 +575,14 @@ class GP_Locales {
 		$fr_be->country_code = 'be';
 		$fr_be->wp_locale = 'fr_BE';
 		$fr_be->slug = 'fr-be';
+
+		$fr_ca = new GP_Locale();
+	 	$fr_ca->english_name = 'French (Canada)';
+	 	$fr_ca->native_name = 'Français du Canada';
+	 	$fr_ca->lang_code_iso_639_1 = 'fr';
+	 	$fr_ca->lang_code_iso_639_2 = 'fra';
+	 	$fr_ca->country_code = 'ca';
+	 	$fr_ca->slug = 'fr-ca';
 
 		$fr_ch = new GP_Locale();
 	 	$fr_ch->english_name = 'French (Switzerland)';
