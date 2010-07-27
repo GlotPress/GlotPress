@@ -44,6 +44,11 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$locales->locales = array();
 		$_GET = array();
 		$_POST = array();
+		/**
+		 * @todo re-initialize all thing objects
+		 */
+		GP::$translation_set = new GP_Translation_Set;
+		GP::$original = new GP_Original;
 	}
 	
 	function start_transaction() {
