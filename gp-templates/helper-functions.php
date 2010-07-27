@@ -23,7 +23,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<textarea name="translation[<?php echo $entry->original_id; ?>][]" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
+		<textarea class="foreign-text" name="translation[<?php echo $entry->original_id; ?>][]" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
 
 		<?php if ( $can_edit ): ?>
 			<p>

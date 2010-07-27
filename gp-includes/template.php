@@ -219,3 +219,16 @@ function gp_array_of_array_of_things_to_json( $array ) {
 	$map_to_fields = create_function( '$array', 'return array_map( lambda( \'$thing\', \'$thing->fields();\' ), $array );' );
 	return json_encode( array_map( $map_to_fields, $array ) );
 }
+
+function gp_preferred_sans_serif_style_tag( $locale ) {
+	if ( $locale->preferred_sans_serif_font_family ) {
+		echo <<<HTML
+	<style type="text/css">
+		.foreign-text {
+			font-family: "$locale->preferred_sans_serif_font_family", inherit;
+		}
+	</style>
+
+HTML;
+	}
+}

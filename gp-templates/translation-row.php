@@ -23,7 +23,7 @@ $priority_char = array(
 		<?php endif; ?>
 	
 	</td>
-	<td class="translation">
+	<td class="translation foreign-text">
 	<?php
 		$edit_text = $can_edit? __('Double-click to add') : sprintf(__('You <a href="%s">have to login</a> to add a translation.'), gp_url_login());
 		$missing_text = "<span class='missing'>$edit_text</span>";

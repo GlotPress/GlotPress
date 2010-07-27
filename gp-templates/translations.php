@@ -12,6 +12,8 @@ $editor_options['google_translate_language'] = $locale->google_code;
 wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
 wp_localize_script( 'translations-page', '$gp_translations_options', array('action' => $bulk_action) );
 $parity = gp_parity_factory();
+add_action( 'gp_head', lambda( '', 'gp_preferred_sans_serif_style_tag($locale);', compact( 'locale' ) ) );
+
 gp_tmpl_header();
 $i = 0;
 ?>

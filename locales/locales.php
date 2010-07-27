@@ -19,6 +19,10 @@ class GP_Locale {
 		}
 	}
 	
+	static function __set_state( $state ) {
+		return new GP_Locale( $state );
+	}
+	
 	function combined_name() {
 		/* translators: combined name for locales: 1: name in English, 2: native name */
 		return sprintf( _x( '%1$s/%2$s', 'locales' ), $this->english_name, $this->native_name );
