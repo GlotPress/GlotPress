@@ -72,3 +72,16 @@ function gp_link_login() {
 	$args = func_get_args();
 	echo call_user_func_array('gp_link_login_get', $args);
 }
+
+function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
+	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+		return '';
+	}
+	$text = $text? $text : __( 'Edit' );
+	return gp_link_get( gp_url( gp_url_join( '/sets', $set->id, '-edit' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
+}
+
+function gp_link_set_edit() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_set_edit_get', $args);
+}
