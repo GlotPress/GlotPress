@@ -18,7 +18,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			$this->redirect( gp_url( '/sets/-new', array( 'project_id' => $new_set->project_id ) ) );
 		} else {
 			$this->notices[] = __('The translation set was created!');
-			$this->redirect( gp_url_project_locale( $project, $created_set->locale, $created_set->slug ) );
+			$this->redirect( gp_url_project_locale( GP::$project->get( $created_set->project_id ), $created_set->locale, $created_set->slug ) );
 		}
 	}
 	
@@ -43,17 +43,16 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		if ( !$items ) return;
 		list( $set, $project, $locale ) = $items;
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
+		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set, gp_url( '/sets/-new' ) ) ) return;
-		$updated_set = GP::$translation_set->update( $new_set );
-		if ( $updated_set ) $project = GP::$project->get( $updated_set->project_id );
-		if ( !$updated_set ) {
+		if ( !$set->update( $new_set ) ) {
 			$this->errors[] = __('Error in updating translation set!');
 			$this->redirect();
-		} else {
-			$this->notices[] = __('The translation set was updated!');
-			$this->redirect( gp_url_project_locale( $project, $created_set->locale, $created_set->slug ) );
+			return;
 		}
-		
+		$project = GP::$project->get( $new_set->project_id );
+		$this->notices[] = __( 'The translation set was updated!' );
+		$this->redirect( gp_url_project_locale( $project, $new_set->locale, $new_set->slug ) );
 	}
 
 	private function cannot_edit_set_and_redirect( $set ) {

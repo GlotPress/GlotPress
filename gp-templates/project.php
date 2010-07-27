@@ -16,7 +16,7 @@ gp_tmpl_header();
 <ul>
 <?php foreach($sub_projects as $sub_project): ?>
 	<li>
-		<?php gp_link_project( $sub_project, esc_html( $sub_project->name )); ?>			
+		<?php gp_link_project( $sub_project, esc_html( $sub_project->name )); ?>
 		<?php gp_link_project_edit( $sub_project ); ?>			
 		<?php gp_link_project_delete( $sub_project ); ?>
 	</li>
@@ -29,6 +29,7 @@ gp_tmpl_header();
 	<?php foreach( $translation_sets as $set ): ?>    
 		<li>
 			<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?>
+			<?php gp_link_set_edit( $set, $project ); ?>
 			<span class="stats secondary">
 				<!--
 				<span class="translated" title="translated"><?php echo $set->current_count(); ?></span>

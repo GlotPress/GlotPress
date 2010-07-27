@@ -9,6 +9,8 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->route = new $this->route_class;
 		$this->route->fake_request = true;
 		$this->cookies = array();
+		$this->route->errors = array();
+		$this->route->notices = array();
 		add_filter( 'backpress_set_cookie', array( &$this, 'filter_do_not_set_cookie' ) );		
 	}
 	
@@ -39,12 +41,12 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->assertThereIsAnArrayElementContaining( $text, $this->route->errors, "No error contains '$text'" );
 	}
 
-	function assertThereIsAnNoticeContaining( $text ) {
+	function assertThereIsANoticeContaining( $text ) {
 		$this->assertThereIsAnArrayElementContaining( $text, $this->route->notices, "No notice contains '$text'" );
 	}
 	
 	function assertThereIsAnArrayElementContaining( $text, $array, $message = null ) {
-		$this->assertGreaterThan( 0, count( $array ) );
+		$this->assertGreaterThan( 0, count( $array ), 'The array is empty.' );
 		$message = $message? $message : "No array element contains '$text'";
 		$this->assertTrue( gp_array_any( lambda( '$e', 'gp_in( $text, $e ); ', compact('text') ), $array ), $message );
 		
@@ -58,6 +60,11 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	function assertInvalidRedirect() {
 		$this->assertRedirected();
 		$this->assertThereIsAnErrorContaining( 'invalid' );
+	}
+
+	function assertErrorRedirect() {
+		$this->assertRedirected();
+		$this->assertThereIsAnErrorContaining( 'Error' );
 	}
 	
 	function assertTemplateLoadedIs( $template ) {
