@@ -165,7 +165,7 @@ class GP_Thing {
 	 * Inserts a record and then selects it back based on the id
 	 * 
 	 * @param $args array see create()
-	 * @param mixed the selected object or false on error
+	 * @return mixed the selected object or false on error
 	 */
 	function create_and_select( $args ) {
 		$created = $this->create( $args );
