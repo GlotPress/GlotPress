@@ -28,7 +28,7 @@ gp_tmpl_header();
 			<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
 			<a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); ?>" class="action delete"><?php _e('Remove'); ?></a>
 		</li>
-	<? endforeach; ?>
+	<?php endforeach; ?>
 </ul>	
 	<?php endif; ?>
 	<?php  if ( $parent_permissions ): ?>
@@ -45,7 +45,7 @@ gp_tmpl_header();
 				<span class="permission-action">in the project </span>
 				<span class="user"><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></span>
 			</li>
-		<? endforeach; ?>
+		<?php endforeach; ?>
 </ul>				
 	<?php endif; ?>
 	<?php if ( !$permissions && !$parent_permissions ): ?>
