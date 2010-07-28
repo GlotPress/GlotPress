@@ -1,9 +1,6 @@
 <?php
 gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
-gp_breadcrumb( array(
-	// TODO: add parent projects to breadcrumb
-	gp_link_project_get( $project, $project->name ),
-) );
+gp_breadcrumb_project( $project );
 wp_enqueue_script( 'common' );
 gp_tmpl_header();
 ?>

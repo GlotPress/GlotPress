@@ -1,7 +1,7 @@
 <?php
 gp_title( sprintf( __( 'Translations &lt; %s &lt; %s &lt; GlotPress' ), $translation_set->name, $project->name ) );
 gp_breadcrumb( array(
-	gp_link_project_get( $project, $project->name ),
+	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $locale->english_name . 'default' != $translation_set->slug? ' '.$translation_set->name : '' ),
 ) );
 wp_enqueue_script( 'editor' );

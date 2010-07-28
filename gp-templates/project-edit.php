@@ -1,8 +1,6 @@
 <?php
 gp_title( sprintf( __( 'Edit Project %s &lt; GlotPress' ),  $project->name ) );
-gp_breadcrumb( array(
-	gp_link_project_get( $project, $project->name ),
-) );
+gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
 <h2><?php _e( sprintf( __('Edit project <q>%s</q>'), esc_html( $project->name ) ) ); ?></h2>

@@ -69,17 +69,35 @@ function gp_title( $title = null ) {
 		return apply_filters( 'gp_title', '' );
 }
 
-function gp_breadcrumb( $breadcrumb = null ) {
+function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
+	$defaults = array(
+		/* translators: separates links in the navigation breadcrumb */
+		'separator' => '<span class="separator">'._x('&rarr;', 'breadcrumb').'</span>',
+		'breadcrumb-template' => '<span class="breadcrumb">{separator}{breadcrumb}</span>',
+	);
+	$args = array_merge( $defaults, $args );
 	if ( !is_null( $breadcrumb ) ) {
-		/* translators: separates links in the navigation breadcrumb */		
-		$separator = '<span class="separator">'._x('&rarr;', 'breadcrumb').'</span>';
-		$breadcrumb_string = '<span class="breadcrumb">'.$separator;
-		$breadcrumb_string .= implode( $separator, array_filter( $breadcrumb ) );
-		$breadcrumb_string .= '</span>';
-		add_filter( 'gp_breadcrumb', create_function( '$x', 'return '.var_export($breadcrumb_string, true).';'), 5 );
+		$breadcrumb = gp_array_flatten( $breadcrumb );
+		$breadcrumb_string = implode( $args['separator'], array_filter( $breadcrumb ) );
+		$whole_breadcrumb = str_replace( '{separator}', $args['separator'], $args['breadcrumb-template'] );
+		$whole_breadcrumb = str_replace( '{breadcrumb}', $breadcrumb_string, $whole_breadcrumb );
+		add_filter( 'gp_breadcrumb', lambda( '$x', '$whole_breadcrumb', compact( 'whole_breadcrumb' ) ), 5 );
 	} else {
 		return apply_filters( 'gp_breadcrumb', '' );
 	}
+}
+
+function gp_project_links_from_root( $leaf_project ) {
+	$links = array();
+	$path_from_root = array_reverse( $leaf_project->path_to_root() );
+	foreach( $path_from_root as $project ) {
+		$links[] = gp_link_project_get( $project, $project->name );
+	}
+	return $links;
+}
+
+function gp_breadcrumb_project( $project ) {
+	return gp_breadcrumb( gp_project_links_from_root( $project ) );
 }
 
 function gp_js_focus_on( $html_id ) {
