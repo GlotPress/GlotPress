@@ -1,8 +1,6 @@
 <?php
 gp_title( sprintf( __( 'Mass-create Translation Sets &lt; %s &lt; GlotPress' ),  $project->name ) );
-gp_breadcrumb( array(
-	gp_link_project_get( $project, $project->name ),
-) );
+gp_breadcrumb_project( $project );
 wp_enqueue_script( 'mass-create-sets-page' );
 wp_localize_script( 'mass-create-sets-page', '$gp_mass_create_sets_options', array(
 	'url' => gp_url_join( gp_url_current(), 'preview'),
@@ -10,7 +8,7 @@ wp_localize_script( 'mass-create-sets-page', '$gp_mass_create_sets_options', arr
 ));
 gp_tmpl_header();
 ?>
-<h2><?php _e( sprintf( __('Mass-create Project Sets in <q>%s</q>'), esc_html( $project->name ) ) ); ?></h2>
+<h2><?php _e('Mass-create Translation Sets'); ?></h2>
 <p><?php _e('Here you can mass-create translation sets in this project.
 The list of translation sets will be mirrored with the sets of a project you choose.
 Usually this is one of the parent projects.'); ?></p>

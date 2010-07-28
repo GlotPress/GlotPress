@@ -2,12 +2,10 @@
 gp_title( $kind == 'originals'?
  	sprintf( __('Import Originals &lt; %s &lt; GlotPress'), esc_html( $project->name ) ) :
 	sprintf( __('Import Translations &lt; %s &lt; GlotPress'), esc_html( $project->name ) ) );
-gp_breadcrumb( array(
-	gp_link_project_get( $project, $project->name ),
-	$kind == 'originals'? __('Import Originals') : __('Import Translations'),
-) );
+gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
+<h2><?php echo $kind == 'originals'? __('Import Originals') : __('Import Translations'); ?></h2>
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e('Import File:'); ?></label></dt>

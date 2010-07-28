@@ -1,8 +1,6 @@
 <?php
 gp_title( __( 'Create New Translation Set &lt; GlotPress' ) );
-gp_breadcrumb( array(
-	__('Create New Translation Set'),
-) );
+$project? gp_breadcrumb_project( $project ) : gp_breadcrumb( array( __('New Translation Set') ) );
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Create New Translation Set' ); ?></h2>

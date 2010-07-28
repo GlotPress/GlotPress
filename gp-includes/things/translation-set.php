@@ -9,6 +9,7 @@ class GP_Translation_Set extends GP_Thing {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
 		$set->locale_should_not_be('empty');
+		$set->project_id_should_not_be('empty');
 	}
 	
 	function name_with_locale( $separator = '&rarr;') {
