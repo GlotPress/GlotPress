@@ -2,12 +2,29 @@
 gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
 wp_enqueue_script( 'common' );
+$edit_link = gp_link_project_edit_get( $project, '(edit)', array( 'before' => '<span class="edit">', 'after' => '</span>' ) );
 gp_tmpl_header();
 ?>
+<h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
 <p class="description">
 	<?php echo $project->description; ?>
-	<span class="secondary"><?php if ( $can_write ) gp_link_project_edit( $project, __('Edit project') ); ?></span>
 </p>
+
+<?php if ( $can_write ): ?>
+<div class="actionlist">
+	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e('Project actions &darr;'); ?></a>
+	<div class="project-actions">
+		<ul>
+			<li><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></li>
+			<li><?php gp_link( gp_url_project( $project, array( '-permissions' ) ), __('Permissions') ); ?></li>
+			<li><?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ); ?></li>
+			<li><?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ); ?></li>
+			<li><?php gp_link( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ); ?></li>
+		</ul>
+	</div>
+</div>
+<?php endif; ?>
+
 <?php if ($sub_projects): ?>
 <p class="secondary"><?php printf( __('Sub-projects of %s:'), $project->name ); ?></p>
 <ul>
@@ -69,17 +86,11 @@ gp_tmpl_header();
 	</div>
 	</div>
 <?php endif; ?>
-<?php if ( $can_write ): ?>
-	<p class="secondary actionlist">
-		<?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?> &bull;
-		<?php gp_link( gp_url_project( $project, array( '-permissions' ) ), __('Permissions') ); ?> &bull;
-		<?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ); ?> &bull;
-		<?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ); ?> &bull;
-		<?php gp_link( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ); ?>
-	</p>
-<?php endif; ?>
 <script type="text/javascript" charset="utf-8">
 	$gp.showhide('a.personal-options', 'Personal project options &darr;', 'Personal project options &uarr;', 'div.personal-options', '#source-url-template');
 	$('div.personal-options').hide();
+	$gp.showhide('a.project-actions', 'Project Actions &darr;', 'Project Actions &uarr;', 'div.project-actions', null);
+	$('div.project-actions').hide();
+	
 </script>
 <?php gp_tmpl_footer();

@@ -13,7 +13,6 @@ h1 {
 	letter-spacing: -0.03em;
 	font-size: 2em;
 	padding-bottom: 0.1em;
-	border-bottom: 0.06em solid #CCC;	
 }
 h1 img {
     vertical-align: text-bottom;
@@ -34,7 +33,12 @@ a.disabled {
     text-decoration: none;
 }
 h2 {
-    border-bottom: 0.08em solid #CCC;
+	background-color: #ddd;
+	padding: 0.5em;
+}
+h2 a.edit {
+	font-size: 0.75em;
+	text-decoration: none;
 }
 h3 {
     color: #999;
@@ -441,4 +445,8 @@ span.removed {
 .text {
 	width: 45em;
 	margin-left: 6em;
+}
+a.project-actions {
+	font-weight: bold;
+	text-decoration: none;
 }
