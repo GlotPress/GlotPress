@@ -2,7 +2,7 @@
 class GP_Project extends GP_Thing {
 	
 	var $table_basename = 'projects';
-	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template' );
+	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
 	var $non_updatable_attributes = array( 'id' );
 
 
@@ -17,7 +17,7 @@ class GP_Project extends GP_Thing {
 	}
 	
 	function sub_projects() {
-		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY name ASC", $this->id );
+		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
 	}
 	
 	function top_level() {
@@ -49,6 +49,10 @@ class GP_Project extends GP_Thing {
 		}
 		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] )) {
 			unset( $args['path'] );
+		}
+		if ( isset( $args['active'] ) ) {
+			if ( 'on' == $args['active'] ) $args['active'] = 1;
+			if ( !$args['active'] ) $args['active'] = 0;
 		}
 		return $args;
 	}

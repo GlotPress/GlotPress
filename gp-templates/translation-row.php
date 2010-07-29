@@ -19,7 +19,7 @@ $priority_char = array(
 	<td class="original">
 		<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
 		<?php if ( $t->context ): ?>
-		<span class="context" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
+		<span class="context bubble" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 		<?php endif; ?>
 	
 	</td>
@@ -109,7 +109,7 @@ $priority_char = array(
 			<?php if ( $t->context ): ?>
 			<dl>
 				<dt><?php _e('Context:'); ?></dt>
-				<dd><span class="context"><?php echo esc_translation($t->context); ?></span></dd>
+				<dd><span class="context bubble"><?php echo esc_translation($t->context); ?></span></dd>
 			</dl>
 			<?php endif; ?>
 			<?php if ( $t->extracted_comment ): ?>

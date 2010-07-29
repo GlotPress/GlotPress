@@ -84,6 +84,7 @@ function gp_schema_get() {
 		`description` TEXT NOT NULL,
 		`parent_project_id` INT(10) DEFAULT NULL,
 		`source_url_template` VARCHAR(255) DEFAULT '',
+		`active` TINYINT DEFAULT 0,
 		PRIMARY KEY (`id`),
 		KEY `path` (`path`),
 		KEY `parent_project_id` (`parent_project_id`)

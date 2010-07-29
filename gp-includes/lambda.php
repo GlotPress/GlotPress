@@ -34,5 +34,5 @@ function echoer( $value ) {
  */
 function lambda( $args, $expression, $locals = array() ) {
 	$export_call = $locals? 'extract('.var_export( $locals, true ).', EXTR_PREFIX_SAME, "ext");' : '';
-	return create_function( $args, $export_call.' return '.$expression.';' );
+	return create_function( $args, $export_call.' return ('.$expression.');' );
 }

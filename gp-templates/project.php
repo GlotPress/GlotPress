@@ -2,8 +2,9 @@
 gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
 wp_enqueue_script( 'common' );
-$edit_link = gp_link_project_edit_get( $project, '(edit)', array( 'before' => '<span class="edit">', 'after' => '</span>' ) );
+$edit_link = gp_link_project_edit_get( $project, '(edit)' );
 $parity = gp_parity_factory();
+if ( $project->active ) add_filter( 'gp_breadcrumb', lambda( '$s', '$s . "<span class=\\"active bubble\\">Active</span>"' ) );
 gp_tmpl_header();
 ?>
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
@@ -33,7 +34,8 @@ gp_tmpl_header();
 <?php foreach($sub_projects as $sub_project): ?>
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
-		<?php gp_link_project_edit( $sub_project ); ?>
+		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
+		<?php if ( $sub_project->active ) echo "<span class='active bubble'>Active</span>"; ?>
 	</dt>
 	<dd>
 		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 111 ) ); ?>
@@ -62,6 +64,9 @@ gp_tmpl_header();
 			<tr class="<?php echo $parity(); ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
+					<?php if ($set->current_count >= $set->all_count * 0.9 ): ?>
+						<span class="bubble morethan90">90%+</span>
+					<?php endif; ?>
 				</td>
 				<td class="stats percent"><?php echo $set->percent_translated; ?></td>
 				<td class="stats translated" title="translated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),

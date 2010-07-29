@@ -259,3 +259,9 @@ function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;') {
 	}
 	return $excerpt;
 }
+
+function gp_checked( $checked ) {
+	if ( $checked ) {
+		echo 'checked="checked"';
+	}
+}

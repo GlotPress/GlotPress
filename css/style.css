@@ -182,11 +182,14 @@ table.translations a.action {
 span.context {
 	background-color: #aaa;
 	color: white;
+	font-size: 100%;
 	padding: 0.3em;
-	-webkit-border-radius: 0.3em;
-	-moz-border-radius: 0.3em;	
-	text-align: center;
 }
+span.morethan90 {
+	background-color: green;
+	color: white;
+}
+
 .editor .original {
 	font-weight: bold;
 	white-space: pre-wrap;
@@ -257,7 +260,8 @@ span.context {
 	clear: both;
 	padding: 0.5em;    
 }
-ul a.action, dt a.edit {
+
+a.bubble, .bubble {
     font-size: 80%;
     color: white;
     padding: 0.2em 0.3em 0.1em 0.2em;
@@ -265,6 +269,19 @@ ul a.action, dt a.edit {
     -webkit-border-radius: 0.2em;
     -moz-border-radius: 0.2em;
     text-align: center;
+}
+span.active {
+	background-color: yellow;
+	color: #555;
+	font-weight: bold;
+}
+h1 span.active {
+	font-size: 75%;	
+	float: left;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+	margin-top: 17px;
+	margin-left: .5em;
 }
 ul a.edit, dt a.edit {
     background-color: #777;    
