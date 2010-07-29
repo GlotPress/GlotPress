@@ -36,7 +36,7 @@ gp_tmpl_header();
 		<?php gp_link_project_edit( $sub_project ); ?>
 	</dt>
 	<dd>
-		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 100 ) ); ?>
+		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 111 ) ); ?>
 	</dd>
 <?php endforeach; ?>
 </dl>
@@ -46,32 +46,6 @@ gp_tmpl_header();
 <?php if ( $translation_sets ): ?>
 <div id="translation-sets">
 	<h3>Translations</h3>
-<?php /*
-	<ul class="translation-sets">
-	<?php foreach( $translation_sets as $set ): ?>    
-		<li>
-			<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?>
-			<?php gp_link_set_edit( $set, $project ); ?>
-			<span class="stats secondary">
-				<!--
-				<span class="translated" title="translated"><?php echo $set->current_count(); ?></span>
-				<span class="untranslated" title="untranslated"><?php echo $set->untranslated_count(); ?></span>
-				-->
-			<?php if ( GP::$user->can( 'approve', 'translation-set', $set->id ) && $waiting = $set->waiting_count() ): ?>
-				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-						array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $waiting, array('class' => 'waiting', 'title' => 'waiting') ); ?>
-			<?php endif; ?>
-			<?php if ( GP::$user->can( 'approve', 'translation-set', $set->id ) && $warnings = $set->warnings_count() ): ?>
-				<?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-						array('filters[translated]' => 'yes', 'filters[warnings]' => 'yes' ) ), $warnings, array('class' => 'warnings', 'title' => 'with warnings') ); ?>
-			<?php endif; ?>
-			
-			<?php do_action( 'project_template_translation_set_extra', $set, $project ); ?>
-			</span>
-		</li>
-	<?php endforeach; ?>
-	</ul>
-<?php */ ?>
 	<table class="translation-sets">
 		<thead>
 			<tr>
