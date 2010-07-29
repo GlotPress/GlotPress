@@ -133,7 +133,7 @@ class GP_Translation_Set extends GP_Thing {
 				$this->{$count->translation_status.'_count'} = $count->n;
 			}
 		}
-		$this->untranslated_count = $this->all_count() - $this->current_count - $this->waiting_count;
+		$this->untranslated_count = $this->all_count() - $this->current_count;
 	}
 
 	/**
