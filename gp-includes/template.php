@@ -64,7 +64,7 @@ function gp_tmpl_404( $args = array()) {
 
 function gp_title( $title = null ) {
 	if ( !is_null( $title ) )
-		add_filter( 'gp_title', create_function( '$x', 'return '.var_export($title, true).';'), 5 );
+		add_filter( 'gp_title', lambda( '$x', '$title', compact( 'title' ) ), 5 );
 	else
 		return apply_filters( 'gp_title', '' );
 }
@@ -90,8 +90,9 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 function gp_project_links_from_root( $leaf_project ) {
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
+	$links[] = empty( $path_from_root)? 'Projects' : gp_link_get( gp_url( '/projects' ), 'Projects' );
 	foreach( $path_from_root as $project ) {
-		$links[] = gp_link_project_get( $project, $project->name );
+		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}
 	return $links;
 }
@@ -249,4 +250,12 @@ function gp_preferred_sans_serif_style_tag( $locale ) {
 
 HTML;
 	}
+}
+
+function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;') {
+	$excerpt = trim( wp_html_excerpt( $str, $count ) );
+	if ( $str != $excerpt ) {
+		$excerpt .= $ellipsis;
+	}
+	return $excerpt;
 }

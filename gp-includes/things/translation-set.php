@@ -95,6 +95,12 @@ class GP_Translation_Set extends GP_Thing {
 		return $this->warnings_count;
 	}
 
+	function all_count() {
+		if ( !isset( $this->all_count ) ) $this->all_count  = GP::$original->count_by_project_id( $this->project_id );
+		return $this->all_count;
+	}
+
+
 	function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 		if ( !is_array( $counts ) ) {
@@ -112,10 +118,12 @@ class GP_Translation_Set extends GP_Thing {
 				SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
 				WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
 			$counts[] = (object)array( 'translation_status' => 'warnings', 'n' => $warnings_count );
+			$counts[] = (object)array( 'translation_status' => 'all', 'n' => $this->all_count() );
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
 		$statuses = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
+		$statuses[] = 'all';
 		foreach( $statuses as $status ) {
 			$this->{$status.'_count'} = 0;
 		}
@@ -125,6 +133,7 @@ class GP_Translation_Set extends GP_Thing {
 				$this->{$count->translation_status.'_count'} = $count->n;
 			}
 		}
+		$this->untranslated_count = $this->all_count() - $this->current_count - $this->waiting_count;
 	}
 
 	/**
@@ -145,5 +154,9 @@ class GP_Translation_Set extends GP_Thing {
 		); 
 	}
 
+	function percent_translated() {
+		$original_count = count( GP::$original->by_project_id( $this->project_id ) );
+		return sprintf( _x( '%d%%', 'language translation percent' ), $original_count ? $this->current_count() / $original_count * 100 : 0 );
+	}
 }
 GP::$translation_set = new GP_Translation_Set();

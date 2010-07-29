@@ -155,6 +155,6 @@ class GP_Project extends GP_Thing {
 			}
 		}
 		return compact( 'added', 'removed' );
-	}
+	}	
 }
 GP::$project = new GP_Project();

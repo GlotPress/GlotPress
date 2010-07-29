@@ -3,6 +3,7 @@ gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
 wp_enqueue_script( 'common' );
 $edit_link = gp_link_project_edit_get( $project, '(edit)', array( 'before' => '<span class="edit">', 'after' => '</span>' ) );
+$parity = gp_parity_factory();
 gp_tmpl_header();
 ?>
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
@@ -26,19 +27,26 @@ gp_tmpl_header();
 <?php endif; ?>
 
 <?php if ($sub_projects): ?>
-<p class="secondary"><?php printf( __('Sub-projects of %s:'), $project->name ); ?></p>
-<ul>
+<div id="sub-projects">
+<h3><?php _e('Sub-projects'); ?></h3>
+<dl>
 <?php foreach($sub_projects as $sub_project): ?>
-	<li>
-		<?php gp_link_project( $sub_project, esc_html( $sub_project->name )); ?>
-		<?php gp_link_project_edit( $sub_project ); ?>			
-		<?php gp_link_project_delete( $sub_project ); ?>
-	</li>
+	<dt>
+		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
+		<?php gp_link_project_edit( $sub_project ); ?>
+	</dt>
+	<dd>
+		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 100 ) ); ?>
+	</dd>
 <?php endforeach; ?>
-</ul>	
+</dl>
+</div>
 <?php endif; ?>
+
 <?php if ( $translation_sets ): ?>
-	<?php _e('Translations:'); ?>
+<div id="translation-sets">
+	<h3>Translations</h3>
+<?php /*
 	<ul class="translation-sets">
 	<?php foreach( $translation_sets as $set ): ?>    
 		<li>
@@ -63,29 +71,45 @@ gp_tmpl_header();
 		</li>
 	<?php endforeach; ?>
 	</ul>
+<?php */ ?>
+	<table class="translation-sets">
+		<thead>
+			<tr>
+				<th><?php _e( 'Language' ); ?></th>
+				<th><?php echo _x( '%', 'language translation percent header' ); ?></th>
+				<th><?php _e( 'Translated' ); ?></th>
+				<th><?php _e( 'Untranslated' ); ?></th>
+				<th><?php _e( 'Waiting' ); ?></th>
+				<th><?php _e( 'Extra' ); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach( $translation_sets as $set ): ?>
+			<tr class="<?php echo $parity(); ?>">
+				<td>
+					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
+				</td>
+				<td class="stats percent"><?php echo $set->percent_translated; ?></td>
+				<td class="stats translated" title="translated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
+							array('filters[translated]' => 'yes', 'filters[status]' => 'current') ), $set->current_count );; ?></td>
+				<td class="stats untranslated" title="untranslated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
+							array('filters[translated]' => 'no', 'filters[status]' => 'either') ), $set->untranslated_count ); ?></td>
+				<td class="stats waiting"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
+							array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $set->waiting_count ); ?></td>
+				<td>
+					<?php do_action( 'project_template_translation_set_extra', $set, $project ); ?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>
 <?php elseif ( !$sub_projects ): ?>
 	<p><?php _e('There are no translations of this project.'); ?></p>
 <?php endif; ?>
-<?php if ( $can_write && $translation_sets ): ?>
-	<div class="secondary actionlist">
-	<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
-	<div class="personal-options">
-		<form action="<?php echo gp_url_project( $project, '-personal' ); ?>" method="post">
-		<dl>
-			<dt><label for="source-url-template"><?php _e('Source file URL');  ?></label></dt>
-			<dd>
-				<input type="text" value="<?php echo esc_html( $project->source_url_template() ); ?>" name="source-url-template" id="source-url-template" />
-				<small><?php _e('URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>http://trac.example.org/browser/%file%#L%line%</code>'); ?></small>
-			</dd>
-		</dl>
-		<p>
-			<input type="submit" name="submit" value="<?php echo esc_attr(__('Save &rarr;')); ?>" id="save" />
-			<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;"><?php _e('Cancel'); ?></a>
-		</p>		
-		</form>
-	</div>
-	</div>
-<?php endif; ?>
+<div class="clear"></div>
+
+
 <script type="text/javascript" charset="utf-8">
 	$gp.showhide('a.personal-options', 'Personal project options &darr;', 'Personal project options &uarr;', 'div.personal-options', '#source-url-template');
 	$('div.personal-options').hide();

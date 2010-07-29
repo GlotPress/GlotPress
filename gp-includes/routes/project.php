@@ -12,7 +12,15 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) gp_tmpl_404();
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
-		usort( $translation_sets, lambda('$a, $b', 'strcmp($a->name_with_locale(), $b->name_with_locale());') );
+		foreach( $translation_sets as $set ) {
+			$set->name_with_locale = $set->name_with_locale();
+			$set->current_count = $set->current_count();
+			$set->untranslated_count = $set->untranslated_count();
+			$set->waiting_count = $set->waiting_count();
+			$set->percent_translated = $set->percent_translated();
+			$set->all_count = $set->all_count();
+		}
+		usort( $translation_sets, lambda('$a, $b', 'strcmp($b->current_count, $a->current_count);') );
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$this->tmpl( 'project', get_defined_vars() );

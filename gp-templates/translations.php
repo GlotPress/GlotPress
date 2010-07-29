@@ -17,7 +17,10 @@ add_action( 'gp_head', lambda( '', 'gp_preferred_sans_serif_style_tag($locale);'
 gp_tmpl_header();
 $i = 0;
 ?>
-<h2>Translation of <?php echo esc_html( $project->name ); ?>: <?php echo esc_html( $translation_set->name ); ?></h2>
+<h2>
+	Translation of <?php echo esc_html( $project->name ); ?>: <?php echo esc_html( $translation_set->name ); ?>
+	<?php gp_link_set_edit( $translation_set, $project, '(edit)' ); ?>
+</h2>
 <!-- TODO: use another form for bulk actions -->
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<div>

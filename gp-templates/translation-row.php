@@ -157,7 +157,7 @@ $priority_char = array(
 				<?php echo $can_approve? __('Add translation &rarr;') : __('Suggest new translation &rarr;'); ?>
 			</button>
 		<?php endif; ?>
-			<a href="#" class="close"><?php _e('Cancel'); ?></a>
+			or <a href="#" class="close"><?php _e('Cancel'); ?></a>
 		</div>
 	</td>
 </tr>

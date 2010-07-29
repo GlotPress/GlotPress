@@ -9,14 +9,19 @@ input, textarea {
     font-size: 1em;
 }
 h1 {
-	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue Condensed Bold", "Arial Narrow", Arial, sans-serif;
-	letter-spacing: -0.03em;
-	font-size: 2em;
-	padding-bottom: 0.1em;
+	font-size: 1.25em;
+	font-weight: normal;
+}
+h1 a.logo {
+	float: left;
 }
 h1 img {
-    vertical-align: text-bottom;
     margin-right: 1em;
+	vertical-align: middle;
+}
+h1 span.breadcrumb {
+	float: left;
+	margin-top: 19px;
 }
 /* we take the liberty to make visited the same as link */
 a, a:link, a:visited {
@@ -41,7 +46,11 @@ h2 a.edit {
 	text-decoration: none;
 }
 h3 {
-    color: #999;
+	font-size: 1.1em;
+	font-weight: bold;
+	background-color: #eee;
+	padding: 0.25em 0.5em;
+	color: #444;
 }
 .breadcrumb a {
     color: #3A7399;
@@ -52,8 +61,8 @@ h3 {
 	color: #333;
 	font-weight: normal;
 	float: right;
-	font-size: 0.5em;
-	letter-spacing: 0;	
+	font-size: 0.75em;
+	letter-spacing: 0;
 	margin-right: 1em;
 }
 textarea {
@@ -62,17 +71,18 @@ textarea {
 	line-height: 1.5em;
 	width: 40em;
 }	
-table.translations {
+table.translations, table.translation-sets {
 	font-size: 90%;
 	width: 100%;
 	border-spacing: 0.1em;
 }
-table.translations th {
+table.translations th, table.translation-sets th {
 	font-weight: bold;
 	color: #eee;
 	background-color: #555;	
+	padding: 0.5em;
 }
-table.translations tr {
+table.translations tr, table.translation-sets tr {
 	border: 0;
 }
 table.translations td.translation ul {
@@ -97,7 +107,7 @@ table.translations td.translation span.missing a {
     font-style: italic;
 }
 
-table.translations td, table.translations th {
+table.translations td, table.translations th, table.translation-sets td, table.translation-sets th {
 	padding: 0.5em;
 	border: 1px solid #eee;
 	/* white-space: pre-wrap; */
@@ -132,7 +142,7 @@ table.translations tr.editor {
 table.translations tr.preview.status-fuzzy, #legend .status-fuzzy {
 	background-color: #FC6;
 }
-table.translations tr.preview.status-current, #legend .status-current {
+table.translations tr.preview.status-current, #legend .status-current  {
 	background-color: #E9FFD8;
 }
 table.translations tr.preview.status-old, #legend .status-old {
@@ -155,6 +165,8 @@ table.translations a.action {
 #footer {
 	text-align: center;
 	font-size: 85%;
+	background-color: #ddd;
+	padding: 0.5em;
 }
 .separator {
 	font-size: 80%;
@@ -242,18 +254,19 @@ span.context {
 	background-color: #00DA12;
 }
 .notice, .error {
+	clear: both;
 	padding: 0.5em;    
 }
-ul a.action {
-    font-size: 70%;
+ul a.action, dt a.edit {
+    font-size: 80%;
     color: white;
-    padding: 0.2em 0.2em 0.1em 0.2em;
+    padding: 0.2em 0.3em 0.1em 0.2em;
     text-decoration: none;
     -webkit-border-radius: 0.2em;
     -moz-border-radius: 0.2em;
     text-align: center;
 }
-ul a.edit {
+ul a.edit, dt a.edit {
     background-color: #777;    
 }
 ul a.delete {
@@ -351,8 +364,8 @@ dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
     clear: both;
     visibility: hidden;
 }
-ul.translation-sets .stats a {
-    color: white;
+table.translation-sets .stats a {
+    color: black;
     text-decoration: none;
 	-webkit-border-radius: 0.3em;
 	-moz-border-radius: 0.3em;
@@ -360,19 +373,6 @@ ul.translation-sets .stats a {
 	font-weight: bold;
 	font-size: 1.1em;
 	text-align: center;
-}
-
-ul.translation-sets .translated {
-    background-color: #090;
-}
-ul.translation-sets .untranslated {
-    background-color: #d00;
-}
-ul.translation-sets .waiting {
-    background-color: #d90;
-}
-ul.translation-sets .warnings {
-    background-color: #d00;
 }
 
 .personal-options #source-url-template {
@@ -390,6 +390,11 @@ ul.translation-sets .warnings {
 .ternary {
     font-size: 0.7em;
 }
+
+.actionlist {
+	margin-left: 1em;
+}
+
 .actionlist a, .actionlist a:link, .actionlist a:visited {
     color: #4D56DC;
 }
@@ -421,6 +426,7 @@ p.description {
 	margin-left: 1em;
 	padding-left: 1em;
 	border-left: 3px solid #aaa;
+	margin-top: -0.75em;
 }
 span.added {
     color: green;
@@ -446,7 +452,70 @@ span.removed {
 	width: 45em;
 	margin-left: 6em;
 }
+
 a.project-actions {
 	font-weight: bold;
 	text-decoration: none;
+}
+#sub-projects {
+	float: left;
+	clear: both;
+	width: 20em;
+	margin-right: 4em;
+}
+
+#sub-projects dd {
+	font-size: 0.75em;
+	line-height: 1.3em;
+	color: #888;
+	margin: 0;
+}
+#sub-projects dl {
+	margin-left: 0.5em;
+}
+
+#sub-projects dt {
+	margin-top: 0.5em;
+}
+#sub-projects a {
+	font-weight: bold;
+	text-decoration: none;
+}
+#sub-projects a.action {
+	font-weight: normal;
+}
+
+#translation-sets {
+	float: left;
+	width: 60%;
+}
+
+.translation-sets .percent {
+	font-weight: bold;
+}
+.translation-sets .stats {
+	text-align: center;
+}
+.translation-sets td {
+	padding: 0.5em 0.75em;
+}
+
+.translation-sets tr {
+	background-color: #eee;
+}
+.translation-sets tr.even {
+	background-color: #fff;
+}
+.translation-sets tr:hover {
+	background-color: #dee;
+}
+.translation-sets tr.even:hover {
+	background-color: #eff;
+}
+#submit {
+	font-size: 1.5em;
+	margin: 0 0.1em 0 0;
+}
+span.or-cancel {
+	font-size: 0.85em;
 }
