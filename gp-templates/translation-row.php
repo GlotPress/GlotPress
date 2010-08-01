@@ -145,10 +145,18 @@ $priority_char = array(
 			<?php $extra_args = $t->translation_status? array( 'filters[translation_id]' => $t->id ) : array(); ?>
 			<dl>
 <?php
-    $permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-        array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id ), $extra_args ) );
+		$permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
+        	array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id ), $extra_args ) );
+		$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
+        	array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) ) );
+
 ?>
-			    <dt><a tabindex="-1" href="<?php echo $permalink; ?>" title="Permanent link to this translation">&infin;</a></dt>
+			    <dt>More links:
+				<ul>
+					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="Permanent link to this translation">Permalink to this translation</a></li>
+					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="Link to the history of translations of this original">All translations of this original</a></li>
+				</ul>
+				</dt>
 			</dl>
 		</div>
 		<div class="actions">
