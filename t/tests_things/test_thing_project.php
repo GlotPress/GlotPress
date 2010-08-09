@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Test_Project extends GP_UnitTestCase {
 	function test_update_path() {
@@ -49,9 +49,9 @@ class GP_Test_Project extends GP_UnitTestCase {
 	}
 	
 	function test_path_to_root() {
-		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
-		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
-		$subsub = GP::$project->create( array( 'name' => 'SubSub', 'slug' => 'subsub', 'parent_project_id' => $sub->id, 'path' => 'root/sub/subsub' ) );
+		$root = $this->factory->project->create( array( 'name' => 'Root' ) );
+		$sub = $this->factory->project->create( array( 'name' => 'Sub', 'parent_project_id' => $root->id ) );
+		$subsub = $this->factory->project->create( array( 'name' => 'SubSub', 'parent_project_id' => $sub->id ) );
 		$this->assertEquals( array( $subsub, $sub, $root ), $subsub->path_to_root() );
 		$this->assertEquals( array( $sub, $root ), $sub->path_to_root() );
 		$this->assertEquals( array( $root ), $root->path_to_root() );
