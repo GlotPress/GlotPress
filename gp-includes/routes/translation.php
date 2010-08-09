@@ -93,7 +93,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		    $data = compact('original_id');
 			$data['user_id'] = GP::$user->current()->id;
 		    $data['translation_set_id'] = $translation_set->id;
-		    foreach( range(0, 3) as $i ) {
+		    foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
 		        if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
 		    }
 			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {

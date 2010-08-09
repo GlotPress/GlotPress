@@ -3,20 +3,21 @@ class GP_Translation extends GP_Thing {
 	
 	var $per_page = 15;
 	var $table_basename = 'translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'user_id', 'status', 'date_added', 'date_modified', 'warnings');
+	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings');
 	var $non_updatable_attributes = array( 'id', );
 	
 	static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old', );
+	static $number_of_plural_translations = 6;
 
 	function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
-		    foreach(range(0, 3) as $i) {
+		    foreach( range( 0, $this->get_static( 'number_of_plural_translations') ) as $i ) {
 		        if ( isset( $args['translations'][$i] ) ) $args["translation_$i"] = $args['translations'][$i];
 		    }
 			unset( $args['translations'] );
 		}
-	    foreach(range(0, 3) as $i) {
+	    foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
 	        if ( isset( $args["translation_$i"] ) ) {
 				$args["translation_$i"] = $this->fix_translation( $args["translation_$i"] );
 			}
@@ -159,13 +160,15 @@ class GP_Translation extends GP_Thing {
 			} else {
 				$row->user_login = '';
 			}
-			$row->translations = array($row->translation_0, $row->translation_1, $row->translation_2, $row->translation_3);
-			$row->translations = array_slice( $row->translations, 0, $locale->nplurals );
+			$row->translations = array();
+			for( $i = 0; $i < $locale->nplurals; $i++ ) {
+				$row->translations[] = $row->{"translation_".$i};
+			}
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
 			$row->extracted_comment = $row->comment;
 			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
-			foreach(range(0, 3) as $i) {
+			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
@@ -199,7 +202,7 @@ class GP_Translation extends GP_Thing {
 	
 	function translations() {
 		$translations = array();
-	    foreach(range(0, 3) as $i) {
+	    foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
 	        $translations[$i] = isset( $this->{"translation_$i"} )? $this->{"translation_$i"} : null;
 	    }
 		return $translations;

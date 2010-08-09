@@ -48,9 +48,10 @@ class GP_UnitTest_Factory_For_Translation_Set extends GP_UnitTest_Factory_For_Th
 			'name' => new GP_UnitTest_Generator_Sequence( 'Translation Set %s' ),
 			'slug' => 'default',
 			'locale' => new GP_UnitTest_Generator_Locale_Name,
+			'project_id' => 1,
 		);
 	}
-	
+
 	function create_with_project_and_locale( $args = array(), $project_args = array() ) {
 		$locale = $this->factory->locale->create();
 		$project = $this->factory->project->create( $project_args );
