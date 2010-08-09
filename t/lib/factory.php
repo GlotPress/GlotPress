@@ -18,6 +18,7 @@ class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
 			'description' => 'I am a project',
 			'parent_project_id' => null,
 			'slug' => false,
+			'active' => 0,
 		);
 	}
 }
