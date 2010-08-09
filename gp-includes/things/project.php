@@ -72,6 +72,7 @@ class GP_Project extends GP_Thing {
 			$path = $this->slug;
 		else
 			return null;
+		$this->path = $path;
 		$res_self = $this->update( array( 'path' => $path ) );
 		if ( is_null( $res_self ) ) return $res_self;
 		// update children's paths, too
