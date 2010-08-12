@@ -23,6 +23,7 @@ gp_tmpl_header();
 			<li><?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ); ?></li>
 			<li><?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ); ?></li>
 			<li><?php gp_link( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ); ?></li>
+			<?php if ( $translation_sets ): ?>
 			<li>
 				<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
 				<div class="personal-options">
@@ -40,8 +41,8 @@ gp_tmpl_header();
 					</p>		
 					</form>
 				</div>
-				
 			</li>
+		<?php endif; ?>
 		</ul>
 	</div>
 </div>
