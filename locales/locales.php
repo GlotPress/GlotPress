@@ -865,6 +865,14 @@ class GP_Locales {
 		$la->country_code = '';
 		$la->slug = 'la';
 
+		$lb = new GP_Locale();
+		$lb->english_name = 'Luxembourgish';
+		$lb->native_name = 'Lëtzebuergesch';
+		$lb->lang_code_iso_639_1 = 'lb';
+		$lb->country_code = 'lu';
+		$lb->wp_locale = 'lb_LU';
+		$lb->slug = 'lb';
+
 		$lo = new GP_Locale();
 		$lo->english_name = 'Lao';
 		$lo->native_name = 'ພາສາລາວ';
