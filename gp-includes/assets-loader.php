@@ -10,7 +10,7 @@ function gp_styles_default( &$styles ) {
     //$styles->text_direction = 'rtl' == get_bloginfo( 'text_direction' ) ? 'rtl' : 'ltr';
 	$styles->text_direction = 'ltr';
 	
-	$styles->add( 'base', '/style.css', array(), '20100702' );
+	$styles->add( 'base', '/style.css', array(), '20100812' );
 }
 
 add_action( 'wp_default_styles', 'gp_styles_default' );
@@ -24,7 +24,7 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->add( 'jquery-ui-autocomplete', null, array('jquery-ui'), '1.8' );
 	$scripts->add( 'jquery-ui-selectable', null, array('jquery-ui'), '1.8' );
 	$scripts->add( 'jquery-ui-tabs', null, array('jquery-ui'), '1.8' );
-	$scripts->add( 'common', '/common.js', array( 'jquery' ), '20100423' );
+	$scripts->add( 'common', '/common.js', array( 'jquery' ), '20100812' );
 	$scripts->add( 'editor', '/editor.js', array( 'common', 'google-js-api' ), '20100715' );
 	$scripts->add( 'translations-page', '/translations-page.js', array( 'common' ), '20100423' );
 	$scripts->add( 'mass-create-sets-page', '/mass-create-sets-page.js', array( 'common' ), '20100423' );

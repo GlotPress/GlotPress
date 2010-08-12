@@ -13,6 +13,7 @@ gp_tmpl_header();
 </p>
 
 <?php if ( $can_write ): ?>
+
 <div class="actionlist">
 	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e('Project actions &darr;'); ?></a>
 	<div class="project-actions">
@@ -22,10 +23,30 @@ gp_tmpl_header();
 			<li><?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ); ?></li>
 			<li><?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ); ?></li>
 			<li><?php gp_link( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ); ?></li>
+			<li>
+				<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
+				<div class="personal-options">
+					<form action="<?php echo gp_url_project( $project, '-personal' ); ?>" method="post">
+					<dl>
+						<dt><label for="source-url-template"><?php _e('Source file URL');  ?></label></dt>
+						<dd>
+							<input type="text" value="<?php echo esc_html( $project->source_url_template() ); ?>" name="source-url-template" id="source-url-template" />
+							<small><?php _e('URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>http://trac.example.org/browser/%file%#L%line%</code>'); ?></small>
+						</dd>
+					</dl>
+					<p>
+						<input type="submit" name="submit" value="<?php echo esc_attr(__('Save &rarr;')); ?>" id="save" />
+						<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;"><?php _e('Cancel'); ?></a>
+					</p>		
+					</form>
+				</div>
+				
+			</li>
 		</ul>
 	</div>
 </div>
 <?php endif; ?>
+
 
 <?php if ($sub_projects): ?>
 <div id="sub-projects">
@@ -90,9 +111,19 @@ gp_tmpl_header();
 
 
 <script type="text/javascript" charset="utf-8">
-	$gp.showhide('a.personal-options', 'Personal project options &darr;', 'Personal project options &uarr;', 'div.personal-options', '#source-url-template');
+	$gp.showhide('a.personal-options', 'div.personal-options', {
+		show_text: 'Personal project options &darr;',
+		hide_text: 'Personal project options &uarr;',
+		focus: '#source-url-template',
+		group: 'personal'
+	});
 	$('div.personal-options').hide();
-	$gp.showhide('a.project-actions', 'Project Actions &darr;', 'Project Actions &uarr;', 'div.project-actions', null);
+	$gp.showhide('a.project-actions', 'div.project-actions', {
+		show_text: 'Project actions &darr;',
+		hide_text: 'Project actions &uarr;',
+		focus: '#source-url-template',
+		group: 'project'
+	});
 	$('div.project-actions').hide();
 	
 </script>

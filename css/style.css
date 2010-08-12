@@ -474,6 +474,9 @@ a.project-actions {
 	font-weight: bold;
 	text-decoration: none;
 }
+.project-actions ul {
+	margin-top: 0em;
+}
 #sub-projects {
 	float: left;
 	clear: both;

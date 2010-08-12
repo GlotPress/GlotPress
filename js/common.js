@@ -35,25 +35,34 @@ var $gp = function($) { return {
 	}
 }}(jQuery);
 
-$gp.showhide = function($) { return function(link, show_text, hide_text, container, focus) {
-	link = $(link);
-	container = $(container);
+$gp.showhide = function($) { return function(link, container, options) {
+	var defaults= {
+		show_text: 'Show',
+		hide_text: 'Hide',
+		focus: false,
+		group: 'default'
+	}
+	var options = $.extend({}, defaults, options);
+	var $link = $(link);
+	var $container = $(container);
+	if ( !$gp.showhide.registry[options.group] ) $gp.showhide.registry[options.group] = [];
+	var registry = $gp.showhide.registry[options.group]; 
 	var show = function() {
-		for(var i=0; i<$gp.showhide.registry.length; ++i) {
-			$gp.showhide.registry[i].hide();
+		for(var i = 0; i < registry.length; ++i) {
+			registry[i].hide();
 		}
-		container.show();
-		if (focus) $(focus, container).focus();
-		link.html(hide_text).addClass('open');
+		$container.show();
+		if (options.focus) $(options.focus, $container).focus();
+		$link.html(options.hide_text).addClass('open');
 	}
 	var hide = function() {
-		container.hide();
-		link.html(show_text).removeClass('open');
+		$container.hide();
+		$link.html(options.show_text).removeClass('open');
 	}
-	$gp.showhide.registry.push({show: show, hide: hide});
-	link.click(function() {
-		container.is(':visible')? hide() : show();
+	registry.push({show: show, hide: hide});
+	$link.click(function() {
+		$container.is(':visible')? hide() : show();
 		return false;
 	})
 }}(jQuery);
-$gp.showhide.registry = [];
+$gp.showhide.registry = {};

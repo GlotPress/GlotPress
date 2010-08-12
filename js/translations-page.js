@@ -1,7 +1,19 @@
 jQuery(function($) {
-	$gp.showhide('#upper-filters-toolbar a.sort', 'Sort &darr;', 'Sort &uarr;', '#upper-filters-toolbar dl.sort', '#sort\\[by\\]');
-	$gp.showhide('#upper-filters-toolbar a.filter', 'Filter &darr;', 'Filter &uarr;', '#upper-filters-toolbar dl.filters', '#filters\\[term\\]');
-	$gp.showhide('#upper-filters-toolbar a.bulk', 'Bulk &darr;', 'Bulk &uarr;', '#upper-filters-toolbar dl.bulk-actions', '#filters\\[term\\]');
+	$gp.showhide('#upper-filters-toolbar a.sort', '#upper-filters-toolbar dl.sort', {
+		show_text: 'Sort &darr;',
+		hide_text: 'Sort &uarr;', 
+		focus: '#sort\\[by\\]'
+	});
+	$gp.showhide('#upper-filters-toolbar a.filter', '#upper-filters-toolbar dl.filters', {
+		show_text: 'Filter &darr;',
+		hide_text: 'Filter &uarr;',
+		focus: '#filters\\[term\\]'
+	});
+	$gp.showhide('#upper-filters-toolbar a.bulk', '#upper-filters-toolbar dl.bulk-actions', {
+		show_text: 'Bulk &darr;',
+		hide_text: 'Bulk &uarr;',
+		focus: '#filters\\[term\\]'
+	});
 
 	var bulk_dl = $('.filters-toolbar dl.bulk-actions');
 	var submits = $('input[type=submit]', bulk_dl);
