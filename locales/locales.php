@@ -1438,22 +1438,22 @@ class GP_Locales {
 	}
 	
 	function locales() {
-		$instance = &GP_Locales::instance();
+		$instance = GP_Locales::instance();
 		return $instance->locales;
 	}
 	
 	function exists( $slug ) {
-		$instance = &GP_Locales::instance();
+		$instance = GP_Locales::instance();
 		return isset( $instance->locales[$slug] );
 	}
 	
 	function by_slug( $slug ) {
-		$instance = &GP_Locales::instance();
+		$instance = GP_Locales::instance();
 		return isset( $instance->locales[$slug] )? $instance->locales[$slug] : null;
 	}
 
 	function by_field( $field_name, $field_value ) {
-		$instance = &GP_Locales::instance();
+		$instance = GP_Locales::instance();
 		$result = false;
 		foreach( $instance->locales() as $locale ) {
 			if ( isset( $locale->$field_name ) && $locale->$field_name == $field_value ) {
