@@ -51,7 +51,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
-		$entries = GP::$translation->for_translation( $project, $translation_set, 'no-limit', gp_get( 'filters', array('status' => 'current') ) );
+		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
 		$this->headers_for_download( $filename );		
 		echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
 	}

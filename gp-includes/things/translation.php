@@ -58,6 +58,10 @@ class GP_Translation extends GP_Thing {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
+	
+	function for_export( $project, $translation_set, $filters =  null ) {
+		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current' ) );
+	}
 
 	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $gpdb;
