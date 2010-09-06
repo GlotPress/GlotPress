@@ -119,6 +119,6 @@ function load_default_textdomain() {
  */
 function get_translations_for_domain( $domain ) {
 	global $l10n;
-	$empty = &new Translations;
+	$empty = new Translations;
 	return isset($l10n[$domain])? $l10n[$domain] : $empty;
 }
