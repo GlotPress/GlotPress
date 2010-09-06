@@ -284,9 +284,10 @@ class GP_Locales {
 		$ch->slug = 'ch';
 
 		$ckb = new GP_Locale();
-		$ckb->english_name = 'Kurdish';
+		$ckb->english_name = 'Kurdish (Sorani)';
 		$ckb->native_name = 'كوردی‎';
 		$ckb->lang_code_iso_639_1 = 'ku';
+		$ckb->lang_code_iso_639_2 = 'ckb';
 		$ckb->country_code = 'ku';
 		$ckb->wp_locale = 'ckb';
 		$ckb->slug = 'ckb';
@@ -838,11 +839,11 @@ class GP_Locales {
 		$ks->slug = 'ks';
 
 		$ku = new GP_Locale();
-		$ku->english_name = 'Kurdish';
+		$ku->english_name = 'Kurdish (Kurmanji)';
 		$ku->native_name = 'Kurdî';
 		$ku->lang_code_iso_639_1 = 'ku';
 		$ku->lang_code_iso_639_2 = 'kur';
-		$ku->country_code = '';
+		$ku->country_code = 'ku';
 		$ku->slug = 'ku';
 		$ku->google_code = 'ku';
 
