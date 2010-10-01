@@ -1074,6 +1074,16 @@ class GP_Locales {
 		$pt->wp_locale = 'pt_PT';
 		$pt->slug = 'pt';
 		$pt->google_code = 'pt-PT';
+		
+		$ps = new GP_Locale();
+		$ps->english_name = 'Pashto';
+		$ps->native_name = 'پښتو';
+		$ps->lang_code_iso_639_1 = 'ps';
+		$ps->country_code = '';
+		$ps->wp_locale = 'ps';
+		$ps->slug = 'ps';
+		$ps->google_code = 'ps';
+		$ps->rtl = true;		
 
 		$ro = new GP_Locale();
 		$ro->english_name = 'Romanian';
