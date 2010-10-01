@@ -724,7 +724,7 @@ class GP_Locales {
 		$id->slug = 'id';
 		$id->google_code = 'id';
 		$id->nplurals = 2;
-		$id->plural_expression = 'nplurals=1; plural=0';
+		$id->plural_expression = 'n > 1';
 
 		$ilo = new GP_Locale();
 		$ilo->english_name = 'Iloko';
