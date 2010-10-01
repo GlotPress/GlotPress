@@ -723,8 +723,8 @@ class GP_Locales {
 		$id->wp_locale = 'id_ID';
 		$id->slug = 'id';
 		$id->google_code = 'id';
-		$id->nplurals = 1;
-		$id->plural_expression = '0';
+		$id->nplurals = 2;
+		$id->plural_expression = 'nplurals=1; plural=0';
 
 		$ilo = new GP_Locale();
 		$ilo->english_name = 'Iloko';
