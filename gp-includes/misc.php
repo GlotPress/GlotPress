@@ -293,7 +293,7 @@ function gp_array_all( $callback, $array ) {
 			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 function gp_error_log_dump( $value ) {
