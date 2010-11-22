@@ -31,6 +31,9 @@ class GP_Format_ResX {
 			}
 			$this->line( '<data name="' . $entry->context . '" xml:space="preserve">', 1 );
 			$this->line( '<value>' . $this->escape( $entry->translations[0] ) . '</value>', 2 );
+			if ( isset( $entry->extracted_comments ) && $entry->extracted_comments ) {
+				$this->line( '<comment>' . $this->escape( $entry->extracted_comments ) . '</comment>', 2 );
+			}
 			$this->line( '</data>', 1 );
 		}
 		$this->line( '</root>' );
@@ -75,6 +78,9 @@ class GP_Format_ResX {
 			$entry = new Translation_Entry();
 			$entry->context = (string)$string['name'];
 			$entry->singular = $this->unescape( (string)$string->value );
+			if ( isset( $string->comment ) && $string->comment ) {
+				$entry->extracted_comments = (string)$string->comment;
+			}
 			$entry->translations = array();
 			$entries->add_entry( $entry );
 		}

@@ -39,4 +39,8 @@ lines</value>
 	<data name="with_amps" xml:space="preserve">
 		<value>аз &amp; ти не сме &amp;amp;</value>
 	</data>
+	<data name="with_comment" xml:space="preserve">
+		<value>баба</value>
+		<comment>Me, myself &amp; Irene</comment>
+	</data>
 </root>
