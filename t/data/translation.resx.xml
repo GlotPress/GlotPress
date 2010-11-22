@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="normal_string" xml:space="preserve">
+		<value>Just A Normal String</value>
+	</data>
+	<data name="with_a_quote" xml:space="preserve">
+		<value>I'm with a quote</value>
+	</data>
+	<data name="with_newlines" xml:space="preserve">
+		<value>I
+have
+new
+lines</value>
+	</data>
+	<data name="with_doublequotes" xml:space="preserve">
+		<value>I have double "quotes"</value>
+	</data>
+	<data name="with_utf8" xml:space="preserve">
+		<value>баба ми омеси питка</value>
+	</data>
+	<data name="with_lt" xml:space="preserve">
+		<value>ти &lt; аз</value>
+	</data>
+	<data name="with_gt" xml:space="preserve">
+		<value>аз > ти</value>
+	</data>
+	<data name="with_amps" xml:space="preserve">
+		<value>аз &amp; ти не сме &amp;amp;</value>
+	</data>
+</root>
