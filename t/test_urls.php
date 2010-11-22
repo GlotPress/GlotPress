@@ -103,11 +103,11 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 		
 	function test_gp_url_join_should_accept_array_component_with_one_element_and_return_this_element() {
-		$this->assertEquals( 'baba', gp_url_join( array( 'baba' ) ));
+		$this->assertEquals( 'baba', gp_url_join( array( 'baba' ) ) );
 	}
 	
 	function test_gp_url_join_should_join_array_component_values_as_if_they_were_given_as_different_arguments() {
-		$this->assertEquals( 'baba/dyado', gp_url_join( array( 'baba', 'dyado' ) ));
+		$this->assertEquals( 'baba/dyado', gp_url_join( array( 'baba', 'dyado' ) ) );
 	}
 	
 	function test_gp_url_join_should_flatten_nested_arrays() {
