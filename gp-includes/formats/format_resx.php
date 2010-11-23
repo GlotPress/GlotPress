@@ -98,4 +98,4 @@ class GP_Format_ResX {
 	}
 }
 
-GP::$formats['android'] = new GP_Format_Android;
+GP::$formats['resx'] = new GP_Format_ResX;
