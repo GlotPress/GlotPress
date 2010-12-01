@@ -604,6 +604,7 @@ class GP_Locales {
 	 	$fy->lang_code_iso_639_2 = 'fry';
 	 	$fy->country_code = 'fy';
 	 	$fy->slug = 'fy';
+	 	$fy->wp_locale = 'fy';
                 
 		$ga = new GP_Locale();
 		$ga->english_name = 'Irish';
