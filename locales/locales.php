@@ -173,6 +173,15 @@ class GP_Locales {
 		$ba->wp_locale = 'ba';
 		$ba->slug = 'ba';
 
+		$bal = new GP_Locale();
+		$bal->english_name = 'Catalan (Balear)';
+		$bal->native_name = 'Català (Balear)';
+		$bal->lang_code_iso_639_1 = null;
+		$bal->lang_code_iso_639_2 = 'bal';
+		$bal->country_code = 'es';
+		$bal->wp_locale = 'bal';
+		$bal->slug = 'bal';
+
 		$be = new GP_Locale();
 		$be->english_name = 'Belarusian';
 		$be->native_name = 'Беларуская мова';
