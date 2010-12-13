@@ -1013,7 +1013,7 @@ class GP_Locales {
 		$nl->lang_code_iso_639_1 = 'nl';
 		$nl->lang_code_iso_639_2 = 'nld';
 		$nl->country_code = 'nl';
-		$nl->wp_locale = 'nl';
+		$nl->wp_locale = 'nl_NL';
 		$nl->slug = 'nl';
 		$nl->google_code = 'nl';
 
