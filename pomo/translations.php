@@ -108,6 +108,15 @@ class Translations {
 			$this->entries[$entry->key()] = $entry;
 		}
 	}
+	
+	function merge_originals_with(&$other) {
+		foreach( $other->entries as $entry ) {
+			if ( !isset( $this->entries[$entry->key()] ) )
+				$this->entries[$entry->key()] = $entry;
+			else
+				$this->entries[$entry->key()]->merge_with($entry);
+		}
+	}
 }
 
 class Gettext_Translations extends Translations {
