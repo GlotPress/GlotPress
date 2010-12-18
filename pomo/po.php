@@ -19,6 +19,7 @@ ini_set('auto_detect_line_endings', 1);
 if ( !class_exists( 'PO' ) ):
 class PO extends Gettext_Translations {
 	
+	var $comments_before_headers = '';
 
 	/**
 	 * Exports headers to a PO entry
@@ -31,7 +32,11 @@ class PO extends Gettext_Translations {
 			$header_string.= "$header: $value\n";
 		}
 		$poified = PO::poify($header_string);
-		return rtrim("msgid \"\"\nmsgstr $poified");
+		if ($this->comments_before_headers)
+			$before_headers = $this->prepend_each_line(rtrim($this->comments_before_headers)."\n", '# ');
+		else
+			$before_headers = '';
+		return rtrim("{$before_headers}msgid \"\"\nmsgstr $poified");
 	}
 
 	/**
@@ -74,6 +79,15 @@ class PO extends Gettext_Translations {
 		$res = fwrite($fh, $export);
 		if (false === $res) return false;
 		return fclose($fh);
+	}
+	
+	/**
+	 * Text to include as a comment before the start of the PO contents
+	 * 
+	 * Doesn't need to include # in the beginning of lines, these are added automatically
+	 */
+	function set_comment_before_headers( $text ) {
+		$this->comments_before_headers = $text;
 	}
 
 	/**
