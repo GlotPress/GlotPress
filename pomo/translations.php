@@ -29,6 +29,19 @@ class Translations {
 		$this->entries[$key] = &$entry;
 		return true;
 	}
+	
+	function add_entry_or_merge($entry) {
+		if (is_array($entry)) {
+			$entry = new Translation_Entry($entry);
+		}
+		$key = $entry->key();
+		if (false === $key) return false;
+		if (isset($this->entries[$key]))
+			$this->entries[$key]->merge_with($entry);
+		else
+			$this->entries[$key] = &$entry;
+		return true;
+	}
 
 	/**
 	 * Sets $header PO header to $value
