@@ -663,6 +663,15 @@ class GP_Locales {
 		$ha->country_code = '';
 		$ha->slug = 'ha';
 		$ha->rtl = true;
+		
+		$haw = new GP_Locale();
+		$haw->english_name = 'Hawaiian';
+		$haw->native_name = 'Ōlelo Hawaiʻi';
+		$haw->lang_code_iso_639_1 = null;
+		$haw->lang_code_iso_639_2 = 'haw';
+		$haw->country_code = 'us';
+		$haw->wp_locale = 'haw_US';
+		$haw->slug = 'haw';
 
 		$he = new GP_Locale();
 		$he->english_name = 'Hebrew';
