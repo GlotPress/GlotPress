@@ -68,7 +68,12 @@ $i = 0;
 				), gp_array_get( $filters, 'translated', 'either' ) );
 			?>
 		</dd>
- 		
+
+		<dd>
+			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment' ); ?></label><br />
+			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context' ); ?></label>
+		</dd>
+
  		<dt><label><?php _e('Status:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards

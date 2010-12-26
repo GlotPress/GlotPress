@@ -99,7 +99,13 @@ class GP_Translation extends GP_Thing {
 		} elseif ( 'no' == gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NULL';
 		}
-	
+		if ( 'yes' == gp_array_get( $filters, 'with_context' ) ) {
+			$where[] = 'o.context IS NOT NULL';
+		}
+		if ( 'yes' == gp_array_get( $filters, 'with_comment' ) ) {
+			$where[] = 'o.comment IS NOT NULL AND o.comment <> ""';
+		}
+
 		if ( gp_array_get( $filters, 'user_login' ) ) {
 			$user = GP::$user->by_login( $filters['user_login'] );
 			// do not return any entries if the user doesn't exist
