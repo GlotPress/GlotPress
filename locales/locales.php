@@ -1391,6 +1391,16 @@ class GP_Locales {
 		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
 
+		$xmf = new GP_Locale();
+		$xmf->english_name = 'Mingrelian';
+		$xmf->native_name = 'მარგალური ნინა';
+		$xmf->lang_code_iso_639_1 = null;
+		$xmf->lang_code_iso_639_2 = null;
+		$xmf->lang_code_iso_639_3 = 'xmf';
+		$xmf->country_code = 'ge';
+		$xmf->wp_locale = 'xmf';
+		$xmf->slug = 'xmf';
+
 		$yi = new GP_Locale();
 		$yi->english_name = 'Yiddish';
 		$yi->native_name = 'ייִדיש';
