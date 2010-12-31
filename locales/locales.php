@@ -1139,6 +1139,16 @@ class GP_Locales {
 		$ru->google_code = 'ru';
 		$ru->nplurals = 3;
 		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+		
+		$sah = new GP_Locale();
+		$sah->english_name = 'Sakha';
+		$sah->native_name = 'Sakha';
+		$sah->lang_code_iso_639_1 = null;
+		$sah->lang_code_iso_639_2 = 'sah';
+		$sah->lang_code_iso_639_3 = 'sah';
+		$sah->country_code = 'ru';
+		$sah->wp_locale = 'sah';
+		$sah->slug = 'sah';
 
 		$sc = new GP_Locale();
 		$sc->english_name = 'Sardinian';
