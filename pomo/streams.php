@@ -106,7 +106,7 @@ if ( !class_exists( 'POMO_FileReader' ) ):
 class POMO_FileReader extends POMO_Reader {
 	function POMO_FileReader($filename) {
 		parent::POMO_Reader();
-		$this->_f = fopen($filename, 'r');
+		$this->_f = fopen($filename, 'rb');
 	}
 	
 	function read($bytes) {
