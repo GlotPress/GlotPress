@@ -926,7 +926,16 @@ class GP_Locales {
 		$lv->google_code = 'lv';
 		$lv->nplurals = 3;
 		$lv->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)';
-
+		
+		$mg = new GP_Locale();
+		$mg->english_name = 'Malagasy';
+		$mg->native_name = 'Malagasy';
+		$mg->lang_code_iso_639_1 = 'mg';
+		$mg->lang_code_iso_639_2 = 'mlg';
+		$mg->country_code = 'mg';
+		$mg->wp_locale = 'mg_MG';
+		$mg->slug = 'mg';
+		
 		$mk = new GP_Locale();
 		$mk->english_name = 'Macedonian';
 		$mk->native_name = 'македонски јазик';
