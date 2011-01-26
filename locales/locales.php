@@ -1274,6 +1274,16 @@ class GP_Locales {
 		$ta->wp_locale = 'ta_IN';
 		$ta->slug = 'ta';
 		$ta->google_code = 'ta';
+		
+		$ta_lk = new GP_Locale();
+		$ta_lk->english_name = 'Tamil (Sri Lanka)';
+		$ta_lk->native_name = 'தமிழ்';
+		$ta_lk->lang_code_iso_639_1 = 'ta';
+		$ta_lk->lang_code_iso_639_2 = 'tam';
+		$ta_lk->country_code = 'LK';
+		$ta_lk->wp_locale = 'ta_LK';
+		$ta_lk->slug = 'ta-lk';
+		$ta_lk->google_code = 'ta';
 
 		$te = new GP_Locale();
 		$te->english_name = 'Telugu';
