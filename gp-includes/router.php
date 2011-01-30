@@ -96,7 +96,7 @@ class GP_Router {
 		$real_request_uri = $this->request_uri();
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
-		$api = gp_startswith( $real_request_uri, '/'.$this->is_api_request_prefix.'/' );
+		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
 		if ( $api ) {
 			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
 		}
