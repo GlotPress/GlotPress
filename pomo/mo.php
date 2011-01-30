@@ -10,9 +10,6 @@
 require_once dirname(__FILE__) . '/translations.php';
 require_once dirname(__FILE__) . '/streams.php';
 
-if ( !defined( 'STDOUT' ) ) define( 'STDOUT', fopen( 'php://stdout', 'w' ) );
-
-
 if ( !class_exists( 'MO' ) ):
 class MO extends Gettext_Translations {
 
