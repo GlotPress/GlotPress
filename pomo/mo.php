@@ -10,6 +10,9 @@
 require_once dirname(__FILE__) . '/translations.php';
 require_once dirname(__FILE__) . '/streams.php';
 
+if ( !defined( 'STDOUT' ) ) define( 'STDOUT', fopen( 'php://stdout', 'w' ) );
+
+
 if ( !class_exists( 'MO' ) ):
 class MO extends Gettext_Translations {
 
@@ -26,10 +29,24 @@ class MO extends Gettext_Translations {
 			return false;
 		return $this->import_from_reader($reader);
 	}
-	
+
 	function export_to_file($filename) {
 		$fh = fopen($filename, 'wb');
 		if ( !$fh ) return false;
+		$res = $this->export_to_file_handle( $fh );
+		fclose($fh);
+		return $res;
+	}
+	
+	function export() {
+		$tmp_fh = fopen("php://temp", 'r+');
+		if ( !$tmp_fh ) return false;
+		$this->export_to_file_handle( $tmp_fh );
+		rewind( $tmp_fh );
+		return stream_get_contents( $tmp_fh );
+	}
+	
+	function export_to_file_handle($fh) {
 		$entries = array_filter($this->entries, create_function('$e', 'return !empty($e->translations);'));
 		ksort($entries);
 		$magic = 0x950412de;
@@ -70,7 +87,7 @@ class MO extends Gettext_Translations {
 		
 		fwrite($fh, $originals_table);
 		fwrite($fh, $translations_table);
-		fclose($fh);
+		return true;
 	}
 	
 	function export_original($entry) {
