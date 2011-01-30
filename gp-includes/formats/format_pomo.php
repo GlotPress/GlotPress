@@ -3,9 +3,10 @@
 class GP_Format_PO {
 	
 	var $extension = 'po';
+	var $class = 'PO';
 	
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
-		$po = new PO();
+		$po = new $this->class;
 		// TODO: add more meta data in the project: language team, report URL
 		// TODO: last updated for a translation set
 		$po->set_header( 'PO-Revision-Date', gmdate( 'Y-m-d H:i:s+0000' ) );
@@ -24,14 +25,14 @@ class GP_Format_PO {
 		$po->set_header( 'Project-Id-Version', $project->name );
 
 		// TODO: include parent project's names in the comment
-		echo "# Translation of {$project->name} in {$locale->english_name}\n";
-		echo "# This file is distributed under the same license as the {$project->name} package.\n";
+		$po->comments_before_headers .= "Translation of {$project->name} in {$locale->english_name}\n";
+		$po->comments_before_headers .= "This file is distributed under the same license as the {$project->name} package.\n";
 
 		echo $po->export();
 	}
 	
 	function read_translations_from_file( $file_name, $project = null ) {
-		$po = new PO();
+		$po = new $this->class;
 		$result = $po->import_from_file( $file_name );
 		return $result? $po : $result;
 	}
@@ -42,4 +43,10 @@ class GP_Format_PO {
 
 }
 
+class GP_Format_MO extends GP_Format_PO {
+	var $extension = 'mo';
+	var $class = 'MO';
+}
+
 GP::$formats['po'] = new GP_Format_PO;
+GP::$formats['mo'] = new GP_Format_MO;
