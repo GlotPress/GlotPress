@@ -440,6 +440,17 @@ class GP_Locales {
 		$en->wp_locale = 'en_US';
 		$en->slug = 'en';
 		$en->google_code = 'en';
+		
+		$en_gb = new GP_Locale();
+		$en_gb->english_name = 'English (UK)';
+		$en_gb->native_name = 'English (UK)';
+		$en_gb->lang_code_iso_639_1 = 'en';
+		$en_gb->lang_code_iso_639_2 = 'eng';		
+		$en_gb->lang_code_iso_639_3 = 'eng';
+		$en_gb->country_code = 'gb';
+		$en_gb->wp_locale = 'en_GB';
+		$en_gb->slug = 'en-gb';
+		$en_gb->google_code = 'en';		
 
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
