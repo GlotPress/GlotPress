@@ -30,6 +30,7 @@ function gp_url_join() {
 	$components_in_flat_array = array_filter( gp_array_flatten( $components ) );
 	$components_with_slashes = implode( '/', $components_in_flat_array );
 	$components_without_consecutive_slashes = preg_replace( '|/{2,}|', '/', $components_with_slashes );
+	$components_without_consecutive_slashes = str_replace( 'http:/', 'http://', $components_without_consecutive_slashes );
 	return $components_without_consecutive_slashes;
 }
 
