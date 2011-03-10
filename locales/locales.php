@@ -1160,6 +1160,15 @@ class GP_Locales {
 		$ru->nplurals = 3;
 		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		
+		$rup = new GP_Locale();
+		$rup->english_name = 'Aromanian';
+		$rup->native_name = 'Armãneashce';
+		$rup->lang_code_iso_639_2 = 'rup';
+		$rup->lang_code_iso_639_3 = 'rup';
+		$rup->country_code = 'mk';
+		$rup->wp_locale = 'rup_MK';
+		$rup->slug = 'rup';
+
 		$sah = new GP_Locale();
 		$sah->english_name = 'Sakha';
 		$sah->native_name = 'Sakha';
