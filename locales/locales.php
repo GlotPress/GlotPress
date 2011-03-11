@@ -1014,7 +1014,7 @@ class GP_Locales {
 		$my->lang_code_iso_639_2 = 'mya';
 		$my->country_code = 'mm';
 		$my->wp_locale = 'my_MM';
-		$my->slug = 'my';
+		$my->slug = 'mya';
 		$my->google_code = 'my';
 
 		$ne = new GP_Locale();
