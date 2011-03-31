@@ -553,7 +553,20 @@ class GP_Locales {
 		$fa->nplurals = 1;
 		$fa->plural_expression = '0';
 		$fa->rtl = true;
-
+		
+		$fa_af = new GP_Locale();
+		$fa_af->english_name = 'Persian (Afghanistan)';
+		$fa_af->native_name = '(فارسی (افغانستان';
+		$fa_af->lang_code_iso_639_1 = 'fa';
+		$fa_af->lang_code_iso_639_2 = 'fas';
+		$fa_af->country_code = '';
+		$fa_af->wp_locale = 'fa_AF';
+		$fa_af->slug = 'fa-af';
+		$fa_af->google_code = 'fa';
+		$fa_af->nplurals = 1;
+		$fa_af->plural_expression = '0';
+		$fa_af->rtl = true;
+		
 		$fi = new GP_Locale();
 		$fi->english_name = 'Finnish';
 		$fi->native_name = 'Suomi';
@@ -636,6 +649,18 @@ class GP_Locales {
 		$ga->google_code = 'ga';
 		$ga->nplurals = 5;
 		$ga->plural_expression = 'n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4';
+		
+		$gd = new GP_Locale();
+		$gd->english_name = 'Scottish Gaelic';
+		$gd->native_name = 'Gàidhlig';
+		$gd->lang_code_iso_639_1 = 'gd';
+		$gd->lang_code_iso_639_2 = 'gla';
+		$gd->lang_code_iso_639_3 = 'gla';
+		$gd->country_code = 'uk';
+		$gd->slug = 'gd';
+		$gd->google_code = 'gd';
+		$gd->nplurals = 5;
+		$gd->plural_expression = 'n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4';		
 
 		$gl = new GP_Locale();
 		$gl->english_name = 'Galician';
