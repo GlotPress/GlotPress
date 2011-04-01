@@ -972,6 +972,16 @@ class GP_Locales {
 		$mg->wp_locale = 'mg_MG';
 		$mg->slug = 'mg';
 		
+		$mhr = new GP_Locale();
+		$mhr->english_name = 'Mari (Meadow)';
+		$mhr->native_name = 'олык марий';
+		$mhr->lang_code_iso_639_1 = null;
+		$mhr->lang_code_iso_639_2 = null;
+		$mhr->lang_code_iso_639_3 = 'mhr';
+		$mhr->country_code = 'ru';
+		$mhr->slug = 'mhr';
+		$mhr->google_code = 'chm';	
+				
 		$mk = new GP_Locale();
 		$mk->english_name = 'Macedonian';
 		$mk->native_name = 'македонски јазик';
@@ -1011,6 +1021,16 @@ class GP_Locales {
 		$mr->country_code = '';
 		$mr->slug = 'mr';
 		$mr->google_code = 'mr';
+		
+		$mrj = new GP_Locale();
+		$mrj->english_name = 'Mari (Hill)';
+		$mrj->native_name = 'кырык мары';
+		$mrj->lang_code_iso_639_1 = null;
+		$mrj->lang_code_iso_639_2 = null;
+		$mrj->lang_code_iso_639_3 = 'mrj';
+		$mrj->country_code = 'ru';
+		$mrj->slug = 'mrj';
+		$mrj->google_code = 'chm';		
 
 		$ms = new GP_Locale();
 		$ms->english_name = 'Malay';
