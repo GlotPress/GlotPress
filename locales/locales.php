@@ -1276,7 +1276,18 @@ class GP_Locales {
 		$sl->google_code = 'sl';
 		$sl->nplurals = 4;
 		$sl->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
-
+		
+		$so = new GP_Locale();
+		$so->english_name = 'Somali';
+		$so->native_name = 'Afsoomaali';
+		$so->lang_code_iso_639_1 = 'so';
+		$so->lang_code_iso_639_2 = 'som';
+		$so->lang_code_iso_639_3 = 'som';		
+		$so->country_code = 'so';
+		$so->wp_locale = 'so_SO';
+		$so->slug = 'so';
+		$so->google_code = 'so';
+		
 		$sq = new GP_Locale();
 		$sq->english_name = 'Albanian';
 		$sq->native_name = 'Shqip';
