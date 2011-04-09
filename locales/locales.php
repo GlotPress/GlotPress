@@ -928,7 +928,18 @@ class GP_Locales {
 		$lb->country_code = 'lu';
 		$lb->wp_locale = 'lb_LU';
 		$lb->slug = 'lb';
-
+		
+		$li = new GP_Locale();
+		$li->english_name = 'Limburgish';
+		$li->native_name = 'Limburgs';
+		$li->lang_code_iso_639_1 = 'li';
+		$li->lang_code_iso_639_2 = 'lim';
+		$li->lang_code_iso_639_3 = 'lim';		
+		$li->country_code = 'nl';
+		$li->wp_locale = 'li';
+		$li->slug = 'li';
+		$li->google_code = 'li';
+		
 		$lo = new GP_Locale();
 		$lo->english_name = 'Lao';
 		$lo->native_name = 'ພາສາລາວ';
