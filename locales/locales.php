@@ -757,7 +757,7 @@ class GP_Locales {
 		$hy->lang_code_iso_639_1 = 'hy';
 		$hy->lang_code_iso_639_2 = 'hye';
 		$hy->country_code = 'am';
-		$id->wp_locale = 'hy';
+		$hy->wp_locale = 'hy';
 		$hy->slug = 'hy';
 		$hy->nplurals = 1;
 		$hy->plural_expression = '0';
