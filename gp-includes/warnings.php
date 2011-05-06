@@ -71,7 +71,7 @@ class GP_Builtin_Translation_Warnings {
 		$len_trans = gp_strlen( $translation );
 		if ( !( $this->length_lower_bound*$len_src < $len_trans && $len_trans < $this->length_upper_bound*$len_src ) &&
 				( !gp_in( '_abbreviation', $original ) && !gp_in( '_initial', $original ) ) ) {
-			return __('Lenghts of source and translation differ too much.');
+			return __('Lengths of source and translation differ too much.');
 		}
 		return true;
 	}
