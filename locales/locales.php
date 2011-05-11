@@ -759,8 +759,7 @@ class GP_Locales {
 		$hy->country_code = 'am';
 		$hy->wp_locale = 'hy';
 		$hy->slug = 'hy';
-		$hy->nplurals = 1;
-		$hy->plural_expression = '0';
+		$hy->nplurals = 2;
 
 		$ia = new GP_Locale();
 		$ia->english_name = 'Interlingua';
