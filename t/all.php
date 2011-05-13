@@ -1,5 +1,5 @@
 <?php
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Autoload.php';
 
 $tests_dir = dirname( __FILE__ );
 $old_cwd = getcwd();
