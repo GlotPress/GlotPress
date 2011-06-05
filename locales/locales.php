@@ -974,6 +974,15 @@ class GP_Locales {
 		$lv->nplurals = 3;
 		$lv->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)';
 		
+		$me = new GP_Locale();
+		$me->english_name = 'Montenegrin';
+		$me->native_name = 'Crnogorski jezik';
+		$me->lang_code_iso_639_1 = 'me';
+		$me->country_code = 'me';
+		$me->wp_locale = 'me_ME';
+		$me->google_code = 'srp';
+		$me->slug = 'me';
+		
 		$mg = new GP_Locale();
 		$mg->english_name = 'Malagasy';
 		$mg->native_name = 'Malagasy';
