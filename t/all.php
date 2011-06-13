@@ -14,11 +14,14 @@ for( $depth = 0; $depth <= 3; $depth++ ) {
 class all {
     public static function suite() {
         $suite = new PHPUnit_Framework_TestSuite();
-		$gp_test_classes = array_filter( get_declared_classes(), create_function('$c', 'return preg_match("/^GP_Test_/", $c);'));
-		foreach( $gp_test_classes as $class ) {
-			$suite->addTestSuite( $class );
+		foreach( get_declared_classes() as $class ) {
+			if ( preg_match( '/^GP_Test_/', $class ) ) {
+				$suite->addTestSuite( $class );
+			}
 		}
 		
         return $suite;
     }
 }
+
+chdir( $old_cwd );
