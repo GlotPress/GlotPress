@@ -69,7 +69,10 @@ class Translation_Entry {
 	function merge_with(&$other) {
 		$this->flags = array_unique( array_merge( $this->flags, $other->flags ) );
 		$this->references = array_unique( array_merge( $this->references, $other->references ) );
-		$this->extracted_comments .= $other->extracted_comments;
+		if ( $this->extracted_comments != $other->extracted_comments ) {
+			$this->extracted_comments .= $other->extracted_comments;
+		}
+		
 	}
 }
 endif;
