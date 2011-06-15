@@ -25,7 +25,7 @@ class GP_Format_ResX {
 		$this->res_header( 'reader', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
 		$this->res_header( 'writer', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
 		foreach( $entries as $entry ) {
-			if ( !preg_match( '/^[a-z0-9_]+$/', $entry->context ) ) {
+			if ( !preg_match( '/^[a-zA-Z0-9_]+$/', $entry->context ) ) {
 				error_log( 'ResX Export: Bad Entry: '. $entry->context );
 				continue;
 			}

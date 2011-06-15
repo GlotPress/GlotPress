@@ -15,7 +15,7 @@ class GP_Format_Android {
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
 		$this->line( '<resources>' );
 		foreach( $entries as $entry ) {
-			if ( !preg_match( '/^[a-z0-9_]+$/', $entry->context ) ) {
+			if ( !preg_match( '/^[a-zA-Z0-9_]+$/', $entry->context ) ) {
 				error_log( 'Android XML Export: Bad Entry: '. $entry->context );
 				continue;
 			}
