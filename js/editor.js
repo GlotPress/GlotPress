@@ -125,12 +125,13 @@ $gp.editor = function($){ return {
 				button.attr('disabled', '');
 				$gp.notices.success('Status set!');
 				$gp.editor.replace_current(data);
+				$gp.editor.next();
 			},
 			error: function(xhr, msg, error) {
 				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the status!';
 				$gp.notices.error(msg);
 			}
-		});		
+		});
 	},
 	discard_warning: function(link) {
 		if (!$gp.editor.current) return;
