@@ -76,6 +76,9 @@ class GP_Format_ResX {
 		$entries = new Translations;
 		foreach( $data->data as $string ) {
 			$entry = new Translation_Entry();
+			if ( isset( $string['type'] ) && gp_in( 'System.Resources.ResXFileRef', (string)$string['type'] ) ) {
+				continue;
+			}
 			$entry->context = (string)$string['name'];
 			$entry->singular = $this->unescape( (string)$string->value );
 			if ( isset( $string->comment ) && $string->comment ) {

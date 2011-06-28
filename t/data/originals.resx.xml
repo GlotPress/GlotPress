@@ -12,6 +12,9 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="Eula" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>Eula.txt;System.String, mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e;Windows-1252</value>
+	</data>	
 	<data name="normal_string" xml:space="preserve">
 		<value>Normal String</value>
 	</data>

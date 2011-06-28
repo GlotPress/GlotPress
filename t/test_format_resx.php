@@ -34,6 +34,7 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 	
 	function test_read_originals() {
 		$translations = $this->resx->read_originals_from_file( 'data/originals.resx.xml' );
+		$this->assertEquals( count($this->entries ), count( $translations->entries ), 'number of read originals is different from the expected' );
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
 			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context, 'extracted_comments' => $comment ) );
