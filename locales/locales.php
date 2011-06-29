@@ -1431,8 +1431,8 @@ class GP_Locales {
 		$tr->wp_locale = 'tr_TR';
 		$tr->slug = 'tr';
 		$tr->google_code = 'tr';
-		$tr->nplurals = 1;
-		$tr->plural_expression = '0';
+		$tr->nplurals = 2;
+		$tr->plural_expression = '(n > 1)';
 
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
