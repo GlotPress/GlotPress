@@ -781,6 +781,14 @@ class GP_Locales {
 		$id->nplurals = 2;
 		$id->plural_expression = 'n > 1';
 
+		$ike = new GP_Locale();
+		$ike->english_name = 'Inuktitut';
+		$ike->native_name = 'ᐃᓄᒃᑎᑐᑦ';
+		$ike->lang_code_iso_639_1 = 'iu';
+		$ike->lang_code_iso_639_2 = 'iku';
+		$ike->country_code = 'ca';
+		$ike->slug = 'ike';
+
 		$ilo = new GP_Locale();
 		$ilo->english_name = 'Iloko';
 		$ilo->native_name = 'Pagsasao nga Iloko';
