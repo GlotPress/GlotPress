@@ -1150,7 +1150,8 @@ class GP_Locales {
 		$pa->native_name = 'ਪੰਜਾਬੀ';
 		$pa->lang_code_iso_639_1 = 'pa';
 		$pa->lang_code_iso_639_2 = 'pan';
-		$pa->country_code = '';
+		$pa->country_code = 'in';
+		$pa->wp_locale = 'pa_IN';
 		$pa->slug = 'pa';
 
 		$pl = new GP_Locale();
