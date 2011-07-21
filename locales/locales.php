@@ -1253,15 +1253,6 @@ class GP_Locales {
 		$sah->wp_locale = 'sah';
 		$sah->slug = 'sah';
 
-		$sc = new GP_Locale();
-		$sc->english_name = 'Sardinian';
-		$sc->native_name = 'sardu';
-		$sc->lang_code_iso_639_1 = 'sc';
-		$sc->lang_code_iso_639_2 = 'srd';
-		$sc->country_code = '';
-		$sc->wp_locale = 'sc';
-		$sc->slug = 'sc';
-
 		$sd = new GP_Locale();
 		$sd->english_name = 'Sindhi';
 		$sd->native_name = 'سندھ';
@@ -1338,6 +1329,15 @@ class GP_Locales {
 		$sr->google_code = 'sr';
 		$sr->nplurals = 3;
 		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+
+		$srd = new GP_Locale();
+		$srd->english_name = 'Sardinian';
+		$srd->native_name = 'sardu';
+		$srd->lang_code_iso_639_1 = 'sc';
+		$srd->lang_code_iso_639_2 = 'srd';
+		$srd->country_code = 'srd';
+		$srd->wp_locale = 'srd';
+		$srd->slug = 'srd';
 
 		$su = new GP_Locale();
 		$su->english_name = 'Sundanese';
