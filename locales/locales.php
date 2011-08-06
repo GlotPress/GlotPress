@@ -1119,6 +1119,16 @@ class GP_Locales {
 		$nl->slug = 'nl';
 		$nl->google_code = 'nl';
 
+		$nl_be = new GP_Locale();
+		$nl_be->english_name = 'Dutch (Belgium)';
+		$nl_be->native_name = 'Nederlands (België)';
+		$nl_be->lang_code_iso_639_1 = 'nl';
+		$nl_be->lang_code_iso_639_2 = 'nld';
+		$nl_be->country_code = 'be';
+		$nl_be->wp_locale = 'nl_BE';
+		$nl_be->slug = 'nl-be';
+		$nl_be->google_code = 'nl';
+		
 		$nn = new GP_Locale();
 		$nn->english_name = 'Norwegian (Nynorsk)';
 		$nn->native_name = 'Norsk nynorsk';
