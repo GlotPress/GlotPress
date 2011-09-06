@@ -857,6 +857,7 @@ class GP_Locales {
 		$kk->lang_code_iso_639_1 = 'kk';
 		$kk->lang_code_iso_639_2 = 'kaz';
 		$kk->country_code = 'kz';
+		$ka->wp_locale = 'kk';
 		$kk->slug = 'kk';
 		$kk->google_code = 'kk';
 
