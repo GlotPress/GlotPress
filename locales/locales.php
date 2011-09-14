@@ -1221,18 +1221,6 @@ class GP_Locales {
 		$ro->nplurals = 3;
 		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);';
 
-		$ru_ua = new GP_Locale();
-		$ru_ua->english_name = 'Russian (Ukraine)';
-		$ru_ua->native_name = 'Ukrainian Russian'; // TODO
-		$ru_ua->lang_code_iso_639_1 = 'ru';
-		$ru_ua->lang_code_iso_639_2 = 'rus';
-		$ru_ua->country_code = 'ua';
-		$ru_ua->wp_locale = 'ru_UA';
-		$ru_ua->slug = 'ru-ua';
-		$ru_ua->google_code = 'ru';
-		$ru_ua->nplurals = 3;
-		$ru_ua->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
-
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
 		$ru->native_name = 'Русский';
@@ -1244,6 +1232,30 @@ class GP_Locales {
 		$ru->google_code = 'ru';
 		$ru->nplurals = 3;
 		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+
+		$ru_ua = new GP_Locale();
+		$ru_ua->english_name = 'Russian (Ukraine)';
+		$ru_ua->native_name = 'украї́нська мо́ва';
+		$ru_ua->lang_code_iso_639_1 = 'ru';
+		$ru_ua->lang_code_iso_639_2 = 'rus';
+		$ru_ua->country_code = 'ua';
+		$ru_ua->wp_locale = 'ru_UA';
+		$ru_ua->slug = 'ru-ua';
+		$ru_ua->google_code = 'ru';
+		$ru_ua->nplurals = 3;
+		$ru_ua->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+	
+		$rue = new GP_Locale();
+		$rue->english_name = 'Rusyn';
+		$rue->native_name = 'Русиньскый';
+		$rue->lang_code_iso_639_1 = null;
+		$rue->lang_code_iso_639_2 = null;
+		$rue->lang_code_iso_639_3 = 'rue';
+		$rue->country_code = null;
+		$rue->wp_locale = 'rue';
+		$rue->slug = 'rue';
+		$rue->nplurals = 3;
+		$rue->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';		
 		
 		$rup = new GP_Locale();
 		$rup->english_name = 'Aromanian';
