@@ -1276,6 +1276,16 @@ class GP_Locales {
 		$sah->wp_locale = 'sah';
 		$sah->slug = 'sah';
 
+		$sa_in = new GP_Locale();
+		$sa_in->english_name = 'Sanskrit';
+		$sa_in->native_name = 'भारतम्';
+		$sa_in->lang_code_iso_639_1 = null;
+		$sa_in->lang_code_iso_639_2 = 'san';
+		$sa_in->lang_code_iso_639_3 = 'san';
+		$sa_in->country_code = 'in';
+		$sa_in->wp_locale = 'sa-in';
+		$sa_in->slug = 'sa-in';
+
 		$sd = new GP_Locale();
 		$sd->english_name = 'Sindhi';
 		$sd->native_name = 'سندھ';
