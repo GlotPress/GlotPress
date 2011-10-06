@@ -57,7 +57,7 @@ class GP_UnitTest_Factory_For_Translation_Set extends GP_UnitTest_Factory_For_Th
 		$project = $this->factory->project->create( $project_args );
 		$set = $this->create( array( 'project_id' => $project->id, 'locale' => $locale->slug ) + $args );
 		$set->project = $project;
-		$set->locale = $locale;
+		$set->locale = $locale->slug;
 		return $set;
 	}
 }
@@ -77,6 +77,14 @@ class GP_UnitTest_Factory_For_Translation extends GP_UnitTest_Factory_For_Thing 
 		$this->default_generation_definitions = array(
 			'translation_0' => new GP_UnitTest_Generator_Sequence( 'Translation %s' ),
 		);
+	}
+	
+	function create_with_original_for_translation_set( $set, $args = array() ) {
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$translation = $this->create( array_merge( $args, array( 'original_id' => $original->id, 'translation_set_id' => $set->id ) ) );
+		$translation->original = $original;
+		$translation->translation_set = $set;
+		return $translation;
 	}
 }
 
