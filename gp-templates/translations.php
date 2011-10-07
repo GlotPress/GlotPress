@@ -69,7 +69,7 @@ $i = 0;
 					'rejected' => __('Rejected'),
 					'untranslated' => __('Without current translation'),					
 					'either' => __('Any'),
-				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy' ) );
+				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
 			?>
 		</dd>
 		<dd>
