@@ -1,11 +1,11 @@
-<?php 
+<?php
 class GP_Translation extends GP_Thing {
-	
+
 	var $per_page = 15;
 	var $table_basename = 'translations';
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings');
 	var $non_updatable_attributes = array( 'id', );
-	
+
 	static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
@@ -27,7 +27,7 @@ class GP_Translation extends GP_Thing {
 		}
 		return $args;
 	}
-	
+
 	function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
 		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
@@ -35,14 +35,14 @@ class GP_Translation extends GP_Thing {
 		}
 		return $args;
 	}
-	
+
 	function fix_translation( $translation ) {
 		// when selecting some browsers take the newlines and some don't
 		// that's why we don't want to insert too many newlines for each ↵
 		$translation = str_replace( "↵\n", "↵", $translation );
 		return str_replace( '↵', "\n", $translation );
 	}
-	
+
 	function restrict_fields( $translation ) {
 		$translation->translation_0_should_not_be( 'empty' );
 		$translation->status_should_not_be( 'empty' );
@@ -50,15 +50,15 @@ class GP_Translation extends GP_Thing {
 		$translation->translation_set_id_should_be( 'positive_int' );
 		$translation->user_id_should_be( 'positive_int' );
 	}
-	
-	
+
+
 	function set_fields( $db_object ) {
 		parent::set_fields( $db_object );
 		if ( $this->warnings ) {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
-	
+
 	function for_export( $project, $translation_set, $filters =  null ) {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current' ) );
 	}
@@ -67,6 +67,7 @@ class GP_Translation extends GP_Thing {
 		global $gpdb;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 		$status_cond = '';
+		$join_type = 'INNER';
 
 		$sort_bys = array('original' => 'o.singular %s', 'translation' => 't.translation_0 %s', 'priority' => 'o.priority %s, o.date_added DESC',
 			'random' => 'o.priority DESC, RAND()', 'translation_date_added' => 't.date_added %s', 'original_date_added' => 'o.date_added %s',
@@ -79,11 +80,6 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'term' ) ) {
 			$like = "LIKE '%" . ( $gpdb->escape( like_escape ( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			$where[] = '(' . implode( ' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
-		}
-		if ( 'yes' == gp_array_get( $filters, 'translated' ) ) {
-			$where[] = 't.translation_0 IS NOT NULL';
-		} elseif ( 'no' == gp_array_get( $filters, 'translated' ) ) {
-			$where[] = 't.translation_0 IS NULL';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $gpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
@@ -111,44 +107,38 @@ class GP_Translation extends GP_Thing {
 			// do not return any entries if the user doesn't exist
 			$where[] = $gpdb->prepare( 't.user_id = %d', ($user && $user->id)? $user->id : -1 );
 		}
-				
+
 		if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
 		    $where[] = 'o.priority > -2';
 		}
-		
+
 		$join_where = array();
-		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy' );
-		$all_in = true;
+		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
-		foreach( $statuses as $single_status ) {
-			if ( !in_array( $single_status, $this->get_static( 'statuses' ) ) ) {
-				$all_in = false;
-				break;
+		if ( in_array( 'untranslated', $statuses ) ) {
+			if ( $statuses == array( 'untranslated' ) ) {
+				$where[] = 't.translation_0 IS NULL';
 			}
+			$join_type = 'LEFT';
+			$join_where[] = 't.status != "rejected"';
+			$statuses = array_filter( $statuses, lambda( '$x', '$x != "untranslated"' ) );
 		}
-		if ( $all_in ) {
+		
+		$statuses = array_filter( $statuses, lambda( '$s', 'in_array($s, $statuses)', array( 'statuses' => $this->get_static( 'statuses' ) ) ) );
+		if ( $statuses ) {
 			$statuses_where = array();
 			foreach( $statuses as $single_status ) {
 				$statuses_where[] = $gpdb->prepare( 't.status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
 			$join_where[] = $statuses_where;
-			/*
-				usually we want the status to be part of the ON clause, because we want to include
-				the untranslated strings in the listing. This, however is not the case if the filter
-				explictly forbids untranslated strings
-			*/
-			if ( 'no' == gp_array_get( $filters, 'translated' ) ) {
-				$where[] = $statuses_where;
-			}
 		}
-		
+
 		$where = implode( ' AND ', $where );
 		if ( $where ) {
 			$where = 'AND '.$where;
 		}
-		
-		
+
 		$join_where = implode( ' AND ', $join_where );
 		if ( $join_where ) {
 			$join_where = 'AND '.$join_where;
@@ -156,11 +146,12 @@ class GP_Translation extends GP_Thing {
 
 		$sql_sort = sprintf( $sort_by, $sort_how );
 		$limit = $this->sql_limit_for_paging( $page );
-		$rows = $this->many_no_map( "
-		    SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
+		$sql_for_translations = "
+			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 		    FROM $gpdb->originals as o
-		    LEFT JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
-		    WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit" );
+		    $join_type JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
+		    WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
+		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( (array)$rows as $row ) {
@@ -188,7 +179,7 @@ class GP_Translation extends GP_Thing {
 		unset( $rows );
 		return $translations;
 	}
-	
+
 	function set_as_current() {
 		return $this->update( array('status' => 'old'),
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current') )
@@ -198,18 +189,18 @@ class GP_Translation extends GP_Thing {
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->update( array('status' => 'current') );
 	}
-	
+
 	function reject() {
 		$this->set_status( 'rejected' );
 	}
-	
+
 	function set_status( $status ) {
 		if ( 'current' == $status )
 			return $this->set_as_current();
 		else
 			return $this->update( array( 'status' => $status ) );
 	}
-	
+
 	function translations() {
 		$translations = array();
 	    foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {

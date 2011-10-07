@@ -32,8 +32,8 @@ $i = 0;
 	<?php
 	$filter_links = array();
 	$filter_links[] = gp_link_get( $url, __('All') );
-	$untranslated = gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'priority', 'sort[how]' => 'desc', 'filters[status]' => 'either'), $url ), __('Untranslated') );
-	$untranslated .= '&nbsp;('.gp_link_get( add_query_arg( array('filters[translated]' => 'no', 'sort[by]' => 'random', 'filters[status]' => 'either'), $url ), __('random') ).')';
+	$untranslated = gp_link_get( add_query_arg( array('filters[status]' => 'untranslated', 'sort[by]' => 'priority', 'sort[how]' => 'desc'), $url ), __('Untranslated') );
+	$untranslated .= '&nbsp;('.gp_link_get( add_query_arg( array('filters[status]' => 'untranslated', 'sort[by]' => 'random'), $url ), __('random') ).')';
 	$filter_links[] = $untranslated;
 	if ( $can_approve ) {
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
@@ -58,35 +58,25 @@ $i = 0;
 			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
 			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
 		</dd>
- 		<dt><label><?php _e('With translation:'); ?></label></dt>
-		<dd>
-			<?php echo gp_radio_buttons('filters[translated]',
-				array(
-					'yes' => __('Yes'),
-					'no'  => __('No'),
-					'either' => __('Either'),
-				), gp_array_get( $filters, 'translated', 'either' ) );
-			?>
-		</dd>
-
-		<dd>
-			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment' ); ?></label><br />
-			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context' ); ?></label>
-		</dd>
-
  		<dt><label><?php _e('Status:'); ?></label></dt>
 		<dd>
 			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
 				array(
-					'current_or_waiting_or_fuzzy' => __('Current/waiting/fuzzy'),
+					'current_or_waiting_or_fuzzy_or_untranslated' => __('Current/waiting/fuzzy + untranslated (All)'),
 					'current' => __('Current only'),
 					'old' => __('Approved, but obsoleted by another string'),
 					'waiting' => __('Waiting approval'),
 					'rejected' => __('Rejected'),
+					'untranslated' => __('Without current translation'),					
 					'either' => __('Any'),
 				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy' ) );
 			?>
 		</dd>
+		<dd>
+			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment' ); ?></label><br />
+			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context' ); ?></label>
+		</dd>
+		
 		
 		<dd><input type="submit" value="<?php echo esc_attr(__('Filter')); ?>" name="filter" /></dd>
 	</dl>
