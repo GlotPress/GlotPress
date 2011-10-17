@@ -75,6 +75,7 @@ class GP_Thing {
 	 */
 	function reload() {
 		$this->set_fields( $this->get( $this->id ) );
+		return $this;
 	}
 
 	/**
