@@ -73,7 +73,7 @@ class GP_Original extends GP_Thing {
 			// TODO: do not obsolete similar translations
 			$original = $originals_by_key[$entry->key()];
 			if ( isset( $original ) ) {
-				if ( $this->should_be_updated_with( $data ) ) {
+				if ( $original->should_be_updated_with( $data ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
 				}
 				$originals_existing++;
