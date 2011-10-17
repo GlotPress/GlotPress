@@ -59,10 +59,10 @@ class GP_Original extends GP_Thing {
 		$originals_added = $originals_existing = 0;
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$this->update( array( 'status' => '+obsolete' ), array( 'project_id' => $project->id, 'status' => '+active' ) );
-		$current_entries = array();
+		$originals_by_key = array();
 		foreach( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry( array( 'singular' => $original->singular, 'plural' => $original->plural, 'context' => $original->context ) );
-			$current_entries[$entry->key()] = $original->id;
+			$originals_by_key[$entry->key()] = $original;
 		}
 		foreach( $translations->entries as $entry ) {
 			$gpdb->queries = array();
@@ -70,9 +70,12 @@ class GP_Original extends GP_Thing {
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
 				
-			// TODO: do not obsolete similar translations			
-			if ( isset( $current_entries[$entry->key()] ) ) {
-				$this->update( $data, array( 'id' => $current_entries[$entry->key()] ) );
+			// TODO: do not obsolete similar translations
+			$original = $originals_by_key[$entry->key()];
+			if ( isset( $original ) ) {
+				if ( $this->should_be_updated_with( $data ) ) {
+					$this->update( $data, array( 'id' => $original->id ) );
+				}
 				$originals_existing++;
 			} else {
 				GP::$original->create( $data );
@@ -81,6 +84,13 @@ class GP_Original extends GP_Thing {
 		}
 		$this->update( array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
 		return array( $originals_added, $originals_existing );
+	}
+	
+	function should_be_updated_with( $data ) {
+		foreach( $data as $field => $value ) {
+			if ( $this->$field != $value ) return true;
+		}
+		return false;
 	}
 }
 GP::$original = new GP_Original();
