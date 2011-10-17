@@ -41,11 +41,11 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 	
 	function test_should_be_updated_with_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
 		$original = $this->factory->original->create();
-		$this->assertFalse( $original->should_be_updated_with( array( 'singular' => $original->singular ) ) );
+		$this->assertFalse( GP::$original->should_be_updated_with( $original, array( 'singular' => $original->singular ) ) );
 	}
 	
 	function test_should_be_updated_with_should_return_true_if_one_value_is_empty_string_and_the_other_is_null() {
 		$original = $this->factory->original->create( array( 'comment' => NULL ) );
-		$this->assertFalse( $original->should_be_updated_with( array( 'singular' => $original->singular, 'comment' => '' ) ) );
+		$this->assertFalse( GP::$original->should_be_updated_with( $original, array( 'singular' => $original->singular, 'comment' => '' ) ) );
 	}
 }
