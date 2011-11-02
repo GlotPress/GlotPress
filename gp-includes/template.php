@@ -7,6 +7,8 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	if ( !is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
+	if ( isset( $args['http_status'] ) )
+		status_header( $args['http_status'] );
 	foreach( $locations as $location ) {
 	 	$file = $location . "$template.php";	
 		if ( is_readable( $file ) ) {
@@ -28,8 +30,6 @@ function gp_tmpl_get_output() {
 }
 
 function gp_tmpl_header( $args = array( ) ) {
-	if ( isset( $args['http_status'] ) )
-		status_header( $args['http_status'] );
 	gp_tmpl_load( 'header', $args );
 }
 
