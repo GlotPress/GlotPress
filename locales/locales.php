@@ -1155,6 +1155,14 @@ class GP_Locales {
 		$oc->lang_code_iso_639_2 = 'oci';
 		$oc->country_code = '';
 		$oc->slug = 'oc';
+
+		$os = new GP_Locale();
+		$os->english_name = 'Ossetic';
+		$os->native_name = 'Ирон';
+		$os->lang_code_iso_639_1 = 'os';
+		$os->lang_code_iso_639_2 = 'oss';
+		$os->country_code = '';
+		$os->slug = 'os';
 		
 		$pa = new GP_Locale();
 		$pa->english_name = 'Punjabi';
