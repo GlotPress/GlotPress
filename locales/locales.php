@@ -441,6 +441,17 @@ class GP_Locales {
 		$en->slug = 'en';
 		$en->google_code = 'en';
 		
+		$en_ca = new GP_Locale();
+		$en_ca->english_name = 'English (Canada)';
+		$en_ca->native_name = 'English (Canada)';
+		$en_ca->lang_code_iso_639_1 = 'en';
+		$en_ca->lang_code_iso_639_2 = 'eng';		
+		$en_ca->lang_code_iso_639_3 = 'eng';
+		$en_ca->country_code = 'ca';
+		$en_ca->wp_locale = 'en_CA';
+		$en_ca->slug = 'en-ca';
+		$en_ca->google_code = 'en';
+				
 		$en_gb = new GP_Locale();
 		$en_gb->english_name = 'English (UK)';
 		$en_gb->native_name = 'English (UK)';
