@@ -671,8 +671,8 @@ class GP_Locales {
 		$gd->wp_locale = 'gd';
 		$gd->slug = 'gd';
 		$gd->google_code = 'gd';
-		$gd->nplurals = 5;
-		$gd->plural_expression = 'n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4';		
+		$gd->nplurals = 4;
+		$gd->plural_expression = '(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3';		
 
 		$gl = new GP_Locale();
 		$gl->english_name = 'Galician';
