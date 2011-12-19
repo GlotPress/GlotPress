@@ -163,6 +163,15 @@ class GP_Locales {
 		$az->wp_locale = 'az';
 		$az->slug = 'az';
 		$az->google_code = 'az';
+		
+		$az_tr = new GP_Locale();
+		$az_tr->english_name = 'Azerbaijani (Turkey)';
+		$az_tr->native_name = 'Azərbaycan Türkcəsi';
+		$az_tr->lang_code_iso_639_1 = 'az';
+		$az_tr->lang_code_iso_639_2 = 'aze';
+		$az_tr->country_code = 'tr';
+		$az_tr->wp_locale = 'az_TR';
+		$az_tr->slug = 'az-tr';
 
 		$ba = new GP_Locale();
 		$ba->english_name = 'Bashkir';
