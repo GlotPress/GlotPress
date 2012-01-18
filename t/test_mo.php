@@ -98,6 +98,20 @@ class GP_Test_MO extends GP_UnitTestCase {
 		}
 	}
 	
+	function test_export_should_not_include_empty_translations() {
+		$entries = array(  );
+		$mo = new MO;
+		$mo->add_entry( array( 'singular' => 'baba', 'translations' => array( '', '' ) ) );
+		
+		$temp_fn = $this->temp_filename();
+		$mo->export_to_file( $temp_fn );
+
+		$again = new MO();
+		$again->import_from_file($temp_fn);
+
+		$this->assertEquals( 0, count( $again->entries ) );
+	}
+	
 	function test_nplurals_with_backslashn() {
 		$mo = new MO();
 		$mo->import_from_file('data/bad_nplurals.mo');

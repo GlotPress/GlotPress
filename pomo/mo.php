@@ -43,8 +43,20 @@ class MO extends Gettext_Translations {
 		return stream_get_contents( $tmp_fh );
 	}
 	
+	function is_entry_good_for_export( $entry ) {
+		if ( empty( $entry->translations ) ) {
+			return false;
+		}
+		
+		if ( !array_filter( $entry->translations ) ) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	function export_to_file_handle($fh) {
-		$entries = array_filter($this->entries, create_function('$e', 'return !empty($e->translations);'));
+		$entries = array_filter( $this->entries, array( $this, 'is_entry_good_for_export' ) );
 		ksort($entries);
 		$magic = 0x950412de;
 		$revision = 0;
