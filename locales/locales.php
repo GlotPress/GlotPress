@@ -401,7 +401,7 @@ class GP_Locales {
 		$dv->lang_code_iso_639_1 = 'dv';
 		$dv->lang_code_iso_639_1 = 'div';
 		$dv->country_code = 'mv';
-		$de->wp_locale = 'dv';
+		$dv->wp_locale = 'dv';
 		$dv->slug = 'dv';
 		$dv->google_code = 'dv';
 		$dv->rtl = true;
