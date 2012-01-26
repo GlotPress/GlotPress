@@ -6,7 +6,7 @@ First, GlotPress shares a lot with WordPress, bbPress and actually uses BackPres
 
 The structure of the project is very MVC-like. Models are called Things, Views are Templates and Controllers are Routes.
 
-*** ROUTES ***
+*** Routes ***
 
 Each route is reponsible for some URL pattern. For example the method single() of the class GP_Route_Project is reponsible for
 URLs like /project/{project-slug}.
@@ -46,6 +46,15 @@ All Things live in gp-includes/things/*.php
 These are just plain PHP files. Some variables come from above. And we can load other templates.
 
 All templates live in gp-templates/*.php
+
+*** Testing ***
+
+All tests live in t/. Go in t/ and run:
+
+$ phpunit all
+
+You will need to install phpunit: http://www.phpunit.de/manual/current/en/installation.html
+
 
 *** TODO ***
 - routes: notices & errors
