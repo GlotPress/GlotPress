@@ -1,10 +1,10 @@
 <?php
 class GP_Original extends GP_Thing {
-	
+
 	var $table_basename = 'originals';
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $non_updatable_attributes = array( 'id', 'path' );
-	
+
     static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
@@ -25,7 +25,7 @@ class GP_Original extends GP_Thing {
 		}
 		return $args;
 	}
-	
+
 	function by_project_id( $project_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
@@ -33,7 +33,7 @@ class GP_Original extends GP_Thing {
 	function count_by_project_id( $project_id ) {
 		if ( false !== ( $cached = wp_cache_get( $project_id, self::$count_cache_group ) ) ) {
 			return $cached;
-		} 
+		}
 		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 		wp_cache_set( $project_id, $count, self::$count_cache_group );
 		return $count;
@@ -52,13 +52,12 @@ class GP_Original extends GP_Thing {
 		$where = implode( ' AND ', $where );
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}
-	
+
 	function import_for_project( $project, $translations ) {
 		global $gpdb;
 		wp_cache_delete( $project->id, self::$count_cache_group );
 		$originals_added = $originals_existing = 0;
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
-		$this->update( array( 'status' => '+obsolete' ), array( 'project_id' => $project->id, 'status' => '+active' ) );
 		$originals_by_key = array();
 		foreach( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry( array( 'singular' => $original->singular, 'plural' => $original->plural, 'context' => $original->context ) );
@@ -69,7 +68,7 @@ class GP_Original extends GP_Thing {
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
-				
+
 			// TODO: do not obsolete similar translations
 			$original = $originals_by_key[$entry->key()];
 			if ( isset( $original ) ) {
@@ -82,10 +81,15 @@ class GP_Original extends GP_Thing {
 				$originals_added++;
 			}
 		}
-		$this->update( array('status' => '-obsolete'), array('project_id' => $project->id, 'status' => '+obsolete'));
+		// Mark previously active, but now removed strings as obsolete
+		foreach ( $originals_by_key as $key => $value) {
+			if ( !key_exists($key, $translations->entries ) ) {
+				$this->update( array('status' => '-obsolete'), array( 'id' => $original->id ) );
+			}
+		}
 		return array( $originals_added, $originals_existing );
 	}
-	
+
 	function should_be_updated_with( $original, $data ) {
 		foreach( $data as $field => $value ) {
 			if ( $original->$field != $value ) return true;
