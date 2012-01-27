@@ -74,4 +74,13 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $originals_for_project ) );
 		$this->assertEquals( 'baba', $originals_for_project[0]->singular );
 	}
+	
+	function test_import_should_remove_from_active_missing_strings() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active' ) );
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active' ) );
+		$original->import_for_project( $project, new Translations );
+		$originals_for_project = $original->by_project_id( $project->id );
+		$this->assertEquals( 0, count( $originals_for_project ) );
+	}	
 }

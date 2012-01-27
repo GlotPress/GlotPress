@@ -84,7 +84,7 @@ class GP_Original extends GP_Thing {
 		// Mark previously active, but now removed strings as obsolete
 		foreach ( $originals_by_key as $key => $value) {
 			if ( !key_exists($key, $translations->entries ) ) {
-				$this->update( array('status' => '-obsolete'), array( 'id' => $original->id ) );
+				$this->update( array('status' => '-obsolete'), array( 'id' => $value->id ) );
 			}
 		}
 		return array( $originals_added, $originals_existing );
