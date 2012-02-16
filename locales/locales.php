@@ -1313,7 +1313,7 @@ class GP_Locales {
 		$sa_in->lang_code_iso_639_2 = 'san';
 		$sa_in->lang_code_iso_639_3 = 'san';
 		$sa_in->country_code = 'in';
-		$sa_in->wp_locale = 'sa-in';
+		$sa_in->wp_locale = 'sa_IN';
 		$sa_in->slug = 'sa-in';
 
 		$sd = new GP_Locale();
