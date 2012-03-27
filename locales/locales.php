@@ -316,6 +316,7 @@ class GP_Locales {
 		$co->lang_code_iso_639_1 = 'co';
 		$co->lang_code_iso_639_2 = 'cos';
 		$co->country_code = 'it';
+		$ckb->wp_locale = 'co';
 		$co->slug = 'co';
 
 		$cr = new GP_Locale();
