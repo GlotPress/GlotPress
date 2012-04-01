@@ -1184,6 +1184,7 @@ class GP_Locales {
 		$os->native_name = 'Ирон';
 		$os->lang_code_iso_639_1 = 'os';
 		$os->lang_code_iso_639_2 = 'oss';
+		$os->wp_locale = 'os';
 		$os->country_code = '';
 		$os->slug = 'os';
 		
