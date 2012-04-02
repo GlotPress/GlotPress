@@ -200,7 +200,11 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 			
 		$end_quote_entry = new Translation_Entry(array('singular' => 'a"'));
 		$this->assertEquals($end_quote_entry, $po->entries[$end_quote_entry->key()]);
-
+	}
+	
+	function test_import_from_entry_file_should_give_false() {
+		$po = new PO();
+		$this->assertFalse( $po->import_from_file( 'data/empty.po' ) );
 	}
 	
 	//TODO: add tests for bad files

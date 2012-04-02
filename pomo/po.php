@@ -229,7 +229,13 @@ class PO extends Gettext_Translations {
 			}
 		}
 		PO::read_line($f, 'clear');
-		return $res !== false;
+		if ( false === $res ) {
+			return false;
+		}
+		if ( !$this->headers && !$this->entries ) {
+			return false;
+		}
+		return true;
 	}
 	
 	function read_entry($f, $lineno = 0) {
