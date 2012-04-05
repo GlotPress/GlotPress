@@ -33,14 +33,19 @@ function gp_urldecode_deep($value) {
 
 //TODO: add server-guessing code from bb-load.php in a function here
 
-// TODO: query something that will be cached and used after that
 function gp_is_installed() {
+	// Check cache first. If the tables go away and we have true cached, oh well.
+	if ( wp_cache_get( 'gp_is_installed' ) )
+		return true;
+
 	global $gpdb;
 	$gpdb->flush();
 	$gpdb->suppress_errors();
 	$gpdb->query("SELECT id FROM $gpdb->translations WHERE 1=0");
 	$gpdb->suppress_errors(false);
-	return !((bool)$gpdb->last_error);
+	$installed = ! (bool) $gpdb->last_error;
+	wp_cache_set( 'gp_is_installed', $installed );
+	return $installed;
 }
 
 /**
