@@ -155,7 +155,7 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	function percent_translated() {
-		$original_count = count( GP::$original->by_project_id( $this->project_id ) );
+		$original_count = GP::$original->count_by_project_id( $this->project_id );
 		return sprintf( _x( '%d%%', 'language translation percent' ), $original_count ? $this->current_count() / $original_count * 100 : 0 );
 	}
 }
