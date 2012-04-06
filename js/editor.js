@@ -149,10 +149,11 @@ $gp.editor = function($){ return {
 		});
 	},
 	copy: function(link) {
-		original_text = link.parents('.textareas').prev().find('.original').html();
-		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
+		original_text = link.parents('.textareas').prev();
+		if ( ! original_text.hasClass('original') ) original_text = original_text.find('.original');
+		original_text = original_text.text();
 		original_text = original_text.replace(/<span class=.invisibles.*?<\/span>/g, '');
-		link.parent('p').siblings('textarea').html(original_text).focus();
+		a = link.parents('.textareas').find('textarea').val(original_text).focus();
 	},
 	google_translate: function(link) {
 		original_text = link.parents('.textareas').siblings('.original').html();
