@@ -149,7 +149,7 @@ $gp.editor = function($){ return {
 		});
 	},
 	copy: function(link) {
-		original_text = link.parents('.textareas').siblings('.original').html();
+		original_text = link.parents('.textareas').prev().find('.original').html();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
 		original_text = original_text.replace(/<span class=.invisibles.*?<\/span>/g, '');
 		link.parent('p').siblings('textarea').html(original_text).focus();
