@@ -20,7 +20,7 @@ jQuery(function($) {
 	
 
 	// make the whole table cell, containing the checkbox clickable
-	$('table#translations td.checkbox').live('click', function (e) {
+	$('table#translations').on('click', 'td.checkbox', function (e) {
 		if ($(e.target).is('input')) return true;
 		var cb = this.getElementsByTagName('input')[0];
 		cb.checked = !cb.checked;
@@ -37,7 +37,7 @@ jQuery(function($) {
 	
 	var change_row_checked = function(num) {
 		rows_checked += num;
-		submits.attr('disabled', rows_checked? '' : 'disabled');
+		submits.prop('disabled', ! rows_checked);
 	}
 	
 	$(':checkbox', $('table#translations td.checkbox')).each(function() {
@@ -55,14 +55,14 @@ jQuery(function($) {
 		});
 	}
 	
-	$('.filters-toolbar dl.bulk-actions a.all').live( 'click', function() {
+	$('.filters-toolbar dl.bulk-actions a.all').click( function() {
 		set_all(true);
 	});
-	$('.filters-toolbar dl.bulk-actions a.none').live( 'click', function() {
+	$('.filters-toolbar dl.bulk-actions a.none').click( function() {
 		set_all(false);
 	});
 	
-	submits.attr('disabled', 'disabled');
+	submits.prop('disabled', true);
 	
 	$('form.filters-toolbar').submit(function(e) {
 		if ($('input[name=approve]', bulk_dl).is(':visible')) {
@@ -71,10 +71,10 @@ jQuery(function($) {
 			var	row_ids = $('input:checked', $('table#translations td.checkbox')).map(function() {
 				return $(this).parents('tr.preview').attr('row');
 			}).get().join(',');
-			$('input[name=bulk\[row-ids\]]', $(this)).val(row_ids);
+			$('input[name="bulk[row-ids]"]', $(this)).val(row_ids);
 		} else {
 			// do not litter the GET form with the long redirect_to
-			$('input[name^=bulk]', $(this)).remove();
+			$('input[name^="bulk"]', $(this)).remove();
 		}
 		return true;
 	});

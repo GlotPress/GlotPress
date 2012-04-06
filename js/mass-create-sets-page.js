@@ -4,17 +4,17 @@ jQuery(function($) {
 		var select = $(this);
 		var project_id = $('option:selected', select).attr('value');
 		if ( !project_id ) {
-			$('#submit').attr('disabled', 'disabled');
+			$('#submit').prop('disabled', true);
 			$('#preview').hide();
 			return;
 		}
 		$gp.notices.notice($gp_mass_create_sets_options.loading);
-		select.attr('disabled', 'disabled');
+		select.prop('disabled', true);
 		$.ajax({type: "POST", url: $gp_mass_create_sets_options.url, data: {project_id: project_id}, dataType: 'json',
 			success: function(data){
-				select.attr('disabled', '');
+				select.prop('disabled', false);
 				$gp.notices.clear();
-				if (data.added.length || data.removed.length) $('#submit').attr('disabled', '');
+				if (data.added.length || data.removed.length) $('#submit').prop('disabled', false);
 				var preview = $('#preview');
 				preview.html('<h3>Preview changes:</h3>');
 				var preview_html = '';
@@ -40,12 +40,12 @@ jQuery(function($) {
 				preview.fadeIn();
 			},
 			error: function(xhr, msg, error) {
-				select.attr('disabled', '');
+				select.prop('disabled', false);
 				msg = xhr.responsehtml? 'Error: '+ xhr.responsehtml : 'Error saving the translation!';
 				$gp.notices.error(msg);
 			}
 		});		
 	});
-	$('#submit').attr('disabled', 'disabled');
+	$('#submit').prop('disabled', true);
 	$('#preview').hide();
 });

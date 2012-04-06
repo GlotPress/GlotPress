@@ -44,16 +44,16 @@ $gp.editor = function($){ return {
 		$gp.editor.current = null;
 	},
 	install_hooks: function() {
-		$('a.edit', $gp.editor.table).live('click', $gp.editor.hooks.show);
-		$('a.close', 'tr.editor').live('click', $gp.editor.hooks.hide);
-		$('a.copy', 'tr.editor').live('click', $gp.editor.hooks.copy);
-		$('a.gtranslate', 'tr.editor').live('click', $gp.editor.hooks.google_translate);
-		$('a.discard-warning', 'tr.editor').live('click', $gp.editor.hooks.discard_warning);
-		$('button.approve', 'tr.editor').live('click', $gp.editor.hooks.set_status_current);
-		$('button.reject', 'tr.editor').live('click', $gp.editor.hooks.set_status_rejected);
-		$('button.ok', 'tr.editor').live('click', $gp.editor.hooks.ok);
-		$('tr.preview', $gp.editor.table).live('dblclick', $gp.editor.hooks.show);
-		$('select.priority', $gp.editor.table).live('change', $gp.editor.hooks.set_priority);
+		$($gp.editor.table).on('click', 'a.edit', $gp.editor.hooks.show)
+			.on('dblclick', 'tr.preview', $gp.editor.hooks.show)
+			.on('change', 'select.priority', $gp.editor.hooks.set_priority)
+			.on('click', 'a.close', $gp.editor.hooks.hide)
+			.on('click', 'a.copy', $gp.editor.hooks.copy)
+			.on('click', 'a.gtranslate', $gp.editor.hooks.google_translate)
+			.on('click', 'a.discard-warning', $gp.editor.hooks.discard_warning)
+			.on('click', 'button.approve', $gp.editor.hooks.set_status_current)
+			.on('click', 'button.reject', $gp.editor.hooks.set_status_rejected)
+			.on('click', 'button.ok', $gp.editor.hooks.ok);
 	},
 	replace_current: function(html) {
 		if (!$gp.editor.current) return;
@@ -67,7 +67,7 @@ $gp.editor = function($){ return {
 	save: function(button) {
 		if (!$gp.editor.current) return;		
 		var editor = $gp.editor.current;
-		button.attr('disabled', 'disabled');
+		button.prop('disabled', true);
 		$gp.notices.notice('Saving&hellip;');
 		name = "translation["+editor.original_id+"][]";
 		data = $("textarea[name='"+name+"']", editor).map(function() {
@@ -75,7 +75,7 @@ $gp.editor = function($){ return {
 		}).get().join('&');
 		$.ajax({type: "POST", url: $gp_editor_options.url, data: data, dataType: 'json',
 			success: function(data){
-				button.attr('disabled', '');
+				button.prop('disabled', false);
 				$gp.notices.success('Saved!');
 				for(original_id in data) {
 					$gp.editor.replace_current(data[original_id]);
@@ -87,7 +87,7 @@ $gp.editor = function($){ return {
 				}
 			},
 			error: function(xhr, msg, error) {
-				button.attr('disabled', '');
+				button.prop('disabled', false);
 				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the translation!';
 				$gp.notices.error(msg);
 			}
@@ -96,12 +96,12 @@ $gp.editor = function($){ return {
 	set_priority: function(select) {
 		if (!$gp.editor.current) return;
 		var editor = $gp.editor.current;
-		select.attr('disabled', 'disabled');
+		select.prop('disabled', true);
 		$gp.notices.notice('Setting priority&hellip;');
 		data = {priority: $('option:selected', select).attr('value')};
 		$.ajax({type: "POST", url: $gp_editor_options.set_priority_url.replace('%original-id%', editor.original_id), data: data,
 			success: function(data){
-				select.attr('disabled', '');
+				select.prop('disabled', false);
 				$gp.notices.success('Priority set!');
 				var new_priority_class = 'priority-'+$('option:selected', select).text();
 				$gp.editor.current.addClass(new_priority_class);
@@ -117,12 +117,12 @@ $gp.editor = function($){ return {
 	set_status: function(button, status) {
 		if (!$gp.editor.current || !$gp.editor.current.translation_id) return;
 		var editor = $gp.editor.current;
-		button.attr('disabled', 'disabled');		
+		button.prop('disabled', true);
 		$gp.notices.notice('Setting status to &#8220;'+status+'&#8222;&hellip;');
 		var data = {translation_id: editor.translation_id, status: status};
 		$.ajax({type: "POST", url: $gp_editor_options.set_status_url, data: data,
 			success: function(data){
-				button.attr('disabled', '');
+				button.prop('disabled', false);
 				$gp.notices.success('Status set!');
 				$gp.editor.replace_current(data);
 				$gp.editor.next();
@@ -194,6 +194,7 @@ $gp.editor = function($){ return {
 			return false;
 		},
 		ok: function() {
+			console.log( 'ok' );
 			$gp.editor.save($(this));
 			return false;
 		},
@@ -210,10 +211,12 @@ $gp.editor = function($){ return {
 			return false;
 		},
 		set_status_current: function() {
+			console.log( 'current' );
 			$gp.editor.set_status($(this), 'current');
 			return false;
 		},
 		set_status_rejected: function() {
+			console.log( 'rejected' );
 			$gp.editor.set_status($(this), 'rejected');
 			return false;
 		},
