@@ -194,7 +194,6 @@ $gp.editor = function($){ return {
 			return false;
 		},
 		ok: function() {
-			console.log( 'ok' );
 			$gp.editor.save($(this));
 			return false;
 		},
@@ -211,12 +210,10 @@ $gp.editor = function($){ return {
 			return false;
 		},
 		set_status_current: function() {
-			console.log( 'current' );
 			$gp.editor.set_status($(this), 'current');
 			return false;
 		},
 		set_status_rejected: function() {
-			console.log( 'rejected' );
 			$gp.editor.set_status($(this), 'rejected');
 			return false;
 		},
