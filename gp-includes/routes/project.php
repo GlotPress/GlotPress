@@ -100,7 +100,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __('Error in saving project!');
 		$project->reload();
 
-		$this->redirect( gp_url_project( $project, '-edit' ) );
+		$this->redirect( gp_url_project( $project ) );
 	}
 
 	function delete_get( $project_path ) {
@@ -138,7 +138,7 @@ class GP_Route_Project extends GP_Route_Main {
 			gp_tmpl_load( 'project-new', get_defined_vars() );
 		} else {
 			$this->notices[] = __('The project was created!');
-			$this->redirect( gp_url_project( $project, '-edit' ) );
+			$this->redirect( gp_url_project( $project ) );
 		}
 	}
 	
