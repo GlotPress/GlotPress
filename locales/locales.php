@@ -1394,7 +1394,7 @@ class GP_Locales {
 		$sr->slug = 'sr';
 		$sr->google_code = 'sr';
 		$sr->nplurals = 3;
-		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 or n%100>=20) ? 1 : 2)';
+		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 
 		$srd = new GP_Locale();
 		$srd->english_name = 'Sardinian';
