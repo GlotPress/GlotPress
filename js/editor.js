@@ -12,7 +12,7 @@ $gp.editor = function($){ return {
 		return row_id.split('-')[1];
 	},
 	show: function(element) {
-		var row_id = element.attr('row');
+		var row_id = element.closest('tr').attr('row');
 		var editor = $('#editor-' + row_id);
 		if (!editor.length) return;
 		if ($gp.editor.current) $gp.editor.hide();
@@ -45,7 +45,7 @@ $gp.editor = function($){ return {
 	},
 	install_hooks: function() {
 		$($gp.editor.table).on('click', 'a.edit', $gp.editor.hooks.show)
-			.on('dblclick', 'tr.preview', $gp.editor.hooks.show)
+			.on('dblclick', 'tr.preview td', $gp.editor.hooks.show)
 			.on('change', 'select.priority', $gp.editor.hooks.set_priority)
 			.on('click', 'a.close', $gp.editor.hooks.hide)
 			.on('click', 'a.copy', $gp.editor.hooks.copy)

@@ -76,7 +76,10 @@ table.translations, table.translation-sets {
 	width: 100%;
 	border-spacing: 0.1em;
 }
-table.translations th, table.translation-sets th {
+table.translations thead th,
+table.translations tfoot th,
+table.translation-sets thead th,
+table.translations tfoot th {
 	font-weight: bold;
 	color: #eee;
 	background-color: #555;	

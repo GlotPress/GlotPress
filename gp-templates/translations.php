@@ -107,12 +107,6 @@ $i = 0;
 		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
 	<dl class="hidden bulk-actions filters-expanded clearfix">
-		<dt class="select"><?php _e('Select:'); ?></dt>
-		<dd>
-			<a href="#" class="all"><?php _e('All'); ?></a>
-			<a href="#" class="none"><?php _e('None'); ?></a>
-		</dd>
-		<dd class="separator"></dd>
 		<dd>
 			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
 			<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
@@ -123,21 +117,20 @@ $i = 0;
 		<dd>
 			<input type="submit" value="<?php echo esc_attr(__('Translate via Google')); ?>" name="gtranslate" />
 		</dd>
-		<dd style="clear: both;">
-			<p class="ternary"><?php _e('<strong>Note:</strong>&nbsp;Bulk edit works only on the current page.'); ?></p>
-		</dd>
 	</dl>
 </form>
 
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <table id="translations" class="translations clear">
+	<thead>
 	<tr>
-		<th><?php _e('&bull;'); ?></th>
-		<th><?php _e('Prio'); ?></th>
+		<th class="checkbox"><input type="checkbox" /></th>
+		<th><?php /* Translators: Priority */ _e('Prio'); ?></th>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
 		<th>&mdash;</th>
 	</tr>
+	</thead>
 <?php foreach( $translations as $t ):
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
 ?>

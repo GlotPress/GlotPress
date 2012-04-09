@@ -10,9 +10,10 @@ $priority_char = array(
 );
 ?>
 <tr class="preview <?php echo $parity().' '.$status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
-	<td class="checkbox"><input type="checkbox" name="selected-row[]" /></td>
-	<!--<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
-	-->
+	<th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th>
+	<?php /*
+	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
+	*/ ?>
 	<td class="priority" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
 	   <?php echo $priority_char[$t->priority][0] ?>
 	</td>

@@ -18,29 +18,19 @@ jQuery(function($) {
 	var bulk_dl = $('.filters-toolbar dl.bulk-actions');
 	var submits = $('input[type=submit]', bulk_dl);
 	
-
-	// make the whole table cell, containing the checkbox clickable
-	$('table#translations').on('click', 'td.checkbox', function (e) {
-		if ($(e.target).is('input')) return true;
-		var cb = this.getElementsByTagName('input')[0];
-		cb.checked = !cb.checked;
-		$(cb).change();
-	});
-	
 	var rows_checked = 0;
 
 	$('#upper-filters-toolbar a.bulk').click(function() {
-		rows_checked = $('input:checked', $('table#translations td.checkbox')).length;
+		rows_checked = $('input:checked', $('table#translations th.checkbox')).length;
 		change_row_checked(0);
 	});
-
 	
 	var change_row_checked = function(num) {
 		rows_checked += num;
 		submits.prop('disabled', ! rows_checked);
 	}
 	
-	$(':checkbox', $('table#translations td.checkbox')).each(function() {
+	$(':checkbox', $('table#translations th.checkbox')).each(function() {
 		$(this).change(function() {
 			this.checked? change_row_checked(+1) : change_row_checked(-1);
 		});
@@ -48,7 +38,7 @@ jQuery(function($) {
 	
 
 	var set_all = function (value) {
-		$(':checkbox', $('table#translations td.checkbox')).each(function() {
+		$(':checkbox', $('table#translations th.checkbox')).each(function() {
 			if ( !this.checked && value) change_row_checked(+1);
 			if ( this.checked && !value) change_row_checked(-1);
 			this.checked = value;
@@ -68,7 +58,7 @@ jQuery(function($) {
 		if ($('input[name=approve]', bulk_dl).is(':visible')) {
 			this.method = 'post';
 			this.action = $gp_translations_options.action;
-			var	row_ids = $('input:checked', $('table#translations td.checkbox')).map(function() {
+			var	row_ids = $('input:checked', $('table#translations th.checkbox')).map(function() {
 				return $(this).parents('tr.preview').attr('row');
 			}).get().join(',');
 			$('input[name="bulk[row-ids]"]', $(this)).val(row_ids);
@@ -91,5 +81,56 @@ jQuery(function($) {
 		}
 		window.location = url;
 		return false;
+	});
+
+	var lastClicked = false;
+	// Check all checkboxes from WP common.js, synced with [20400]
+	$('tbody').children().children('.checkbox').find(':checkbox').click( function(e) {
+		if ( 'undefined' == e.shiftKey ) { return true; }
+		if ( e.shiftKey ) {
+			if ( !lastClicked ) { return true; }
+			checks = $( lastClicked ).closest( 'table' ).find( ':checkbox' );
+			first = checks.index( lastClicked );
+			last = checks.index( this );
+			checked = $(this).prop('checked');
+			if ( 0 < first && 0 < last && first != last ) {
+				checks.slice( first, last ).prop( 'checked', function(){
+					if ( $(this).closest('tr').is(':visible') )
+						return checked;
+
+					return false;
+				});
+			}
+		}
+		lastClicked = this;
+		return true;
+	});
+
+	$('thead, tfoot').find('.checkbox :checkbox').click( function(e) {
+		var c = $(this).prop('checked'),
+			kbtoggle = 'undefined' == typeof toggleWithKeyboard ? false : toggleWithKeyboard,
+			toggle = e.shiftKey || kbtoggle;
+
+		$(this).closest( 'table' ).children( 'tbody' ).filter(':visible')
+		.children().children('.checkbox').find(':checkbox')
+		.prop('checked', function() {
+			if ( $(this).closest('tr').is(':hidden') )
+				return false;
+			if ( toggle )
+				return $(this).prop( 'checked' );
+			else if (c)
+				return true;
+			return false;
+		});
+
+		$(this).closest('table').children('thead,  tfoot').filter(':visible')
+		.children().children('.checkbox').find(':checkbox')
+		.prop('checked', function() {
+			if ( toggle )
+				return false;
+			else if (c)
+				return true;
+			return false;
+		});
 	});
 });
