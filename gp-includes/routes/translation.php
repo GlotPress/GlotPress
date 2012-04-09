@@ -135,11 +135,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		$bulk = gp_post('bulk');
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
 		if ( !empty( $bulk['row-ids'] ) ) {
-			if ( gp_post( 'approve' ) || gp_post( 'reject' ) ) {
+			if ( 'approve' == $bulk['action'] || 'reject' == $bulk['action'] ) {
 				$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
 			}
 
-			if ( gp_post( 'gtranslate' ) ) {
+			if ( 'gtranslate' == $bulk['action'] ) {
 				$this->_bulk_google_translate( $project, $locale, $translation_set, $bulk );
 			}
 		} else {
@@ -155,7 +155,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	
 	function _bulk_approve( $project, $locale, $translation_set, $bulk ) {
 		
-		$action = gp_post( 'approve' )? 'approve' : 'reject';
+		$action = $bulk['action'];
 		
 		$ok = $error = 0;
 		$new_status = 'approve' == $action? 'current' : 'rejected';

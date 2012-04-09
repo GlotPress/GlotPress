@@ -9,64 +9,14 @@ jQuery(function($) {
 		hide_text: 'Filter &uarr;',
 		focus: '#filters\\[term\\]'
 	});
-	$gp.showhide('#upper-filters-toolbar a.bulk', '#upper-filters-toolbar dl.bulk-actions', {
-		show_text: 'Bulk &darr;',
-		hide_text: 'Bulk &uarr;',
-		focus: '#filters\\[term\\]'
-	});
-
-	var bulk_dl = $('.filters-toolbar dl.bulk-actions');
-	var submits = $('input[type=submit]', bulk_dl);
 	
 	var rows_checked = 0;
 
-	$('#upper-filters-toolbar a.bulk').click(function() {
-		rows_checked = $('input:checked', $('table#translations th.checkbox')).length;
-		change_row_checked(0);
-	});
-	
-	var change_row_checked = function(num) {
-		rows_checked += num;
-		submits.prop('disabled', ! rows_checked);
-	}
-	
-	$(':checkbox', $('table#translations th.checkbox')).each(function() {
-		$(this).change(function() {
-			this.checked? change_row_checked(+1) : change_row_checked(-1);
-		});
-	});
-	
-
-	var set_all = function (value) {
-		$(':checkbox', $('table#translations th.checkbox')).each(function() {
-			if ( !this.checked && value) change_row_checked(+1);
-			if ( this.checked && !value) change_row_checked(-1);
-			this.checked = value;
-		});
-	}
-	
-	$('.filters-toolbar dl.bulk-actions a.all').click( function() {
-		set_all(true);
-	});
-	$('.filters-toolbar dl.bulk-actions a.none').click( function() {
-		set_all(false);
-	});
-	
-	submits.prop('disabled', true);
-	
-	$('form.filters-toolbar').submit(function(e) {
-		if ($('input[name=approve]', bulk_dl).is(':visible')) {
-			this.method = 'post';
-			this.action = $gp_translations_options.action;
-			var	row_ids = $('input:checked', $('table#translations th.checkbox')).map(function() {
-				return $(this).parents('tr.preview').attr('row');
-			}).get().join(',');
-			$('input[name="bulk[row-ids]"]', $(this)).val(row_ids);
-		} else {
-			// do not litter the GET form with the long redirect_to
-			$('input[name^="bulk"]', $(this)).remove();
-		}
-		return true;
+	$('form.filters-toolbar.bulk-actions').submit(function(e) {
+		var	row_ids = $('input:checked', $('table#translations th.checkbox')).map(function() {
+			return $(this).parents('tr.preview').attr('row');
+		}).get().join(',');
+		$('input[name="bulk[row-ids]"]', $(this)).val(row_ids);
 	});
 	
 	$('a#export').click(function() {

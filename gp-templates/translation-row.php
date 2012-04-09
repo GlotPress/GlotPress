@@ -10,7 +10,7 @@ $priority_char = array(
 );
 ?>
 <tr class="preview <?php echo $parity().' '.$status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
-	<th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th>
+	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
 	<?php /*
 	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
 	*/ ?>
@@ -51,7 +51,7 @@ $priority_char = array(
 	</td>
 </tr>
 <tr class="editor <?php echo $warning_class; ?>" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
-	<td colspan="5">
+	<td colspan="<?php echo $can_approve ? 5 : 4 ?>">
 		<div class="strings">
 		<?php if ( !$t->plural ): ?>
 		<p class="original"><?php echo prepare_original( esc_translation($t->singular) ); ?></p>

@@ -10,7 +10,6 @@ wp_enqueue_script( 'translations-page' );
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
 $editor_options['google_translate_language'] = $locale->google_code;
 wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
-wp_localize_script( 'translations-page', '$gp_translations_options', array('action' => $bulk_action) );
 $parity = gp_parity_factory();
 add_action( 'gp_head', lambda( '', 'gp_preferred_sans_serif_style_tag($locale);', compact( 'locale' ) ) );
 
@@ -21,12 +20,24 @@ $i = 0;
 	Translation of <?php echo esc_html( $project->name ); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, '(edit)' ); ?>
 </h2>
-<!-- TODO: use another form for bulk actions -->
+<?php if ( $can_approve ): ?>
+<form id="bulk-actions-toolbar" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; ?>" method="post">
+	<div>
+	<select name="bulk[action]">
+		<option value="" selected="selected">Bulk Actions</option>
+		<option value="approve">Approve</option>
+		<option value="reject">Reject</option>
+		<option value="gtranslate">Translate via Google</option>
+	</select>
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
+	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
+	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply' ); ?>" />
+	</div>
+</form>
+<?php endif; ?>
+<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<div>
-	<?php if ( $can_approve ): ?>
-	<a href="#" class="revealing bulk"><?php _e('Bulk &darr;'); ?></a> <strong class="separator">&bull;</strong>
-	<?php endif; ?>
 	<a href="#" class="revealing filter"><?php _e('Filter &darr;'); ?></a> <span class="separator">&bull;</span>
 	<a href="#" class="revealing sort"><?php _e('Sort &darr;'); ?></a> <strong class="separator">&bull;</strong>
 	<?php
@@ -106,25 +117,11 @@ $i = 0;
 		</dd>
 		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
-	<dl class="hidden bulk-actions filters-expanded clearfix">
-		<dd>
-			<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
-			<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
-			<input type="submit" value="<?php echo esc_attr(__('Approve Selected')); ?>" name="approve" /><br />
-			<input type="submit" value="<?php echo esc_attr(__('Reject Selected')); ?>" name="reject" />
-		</dd>
-		<dd class="separator"></dd>
-		<dd>
-			<input type="submit" value="<?php echo esc_attr(__('Translate via Google')); ?>" name="gtranslate" />
-		</dd>
-	</dl>
 </form>
-
-<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <table id="translations" class="translations clear">
 	<thead>
 	<tr>
-		<th class="checkbox"><input type="checkbox" /></th>
+		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
 		<th><?php /* Translators: Priority */ _e('Prio'); ?></th>
 		<th class="original"><?php _e('Original string'); ?></th>
 		<th class="translation"><?php _e('Translation'); ?></th>
@@ -138,11 +135,12 @@ $i = 0;
 <?php
 	if ( !$translations ):
 ?>
-	<tr><td colspan="4"><?php _e('No translations were found!'); ?></td></tr>
+	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e('No translations were found!'); ?></td></tr>
 <?php
 	endif;
 ?>
 </table>
+<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e('Legend:'); ?></strong></div>
 <?php 
@@ -156,7 +154,6 @@ $i = 0;
 	<div><?php _e('with warnings'); ?></div>
 
 </div>
-<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <p class="clear actionlist secondary">
 	<?php
 		$footer_links = array();

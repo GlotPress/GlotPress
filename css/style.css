@@ -52,6 +52,38 @@ h3 {
 	padding: 0.25em 0.5em;
 	color: #444;
 }
+select {
+	font-size: 12px;
+	line-height: 14px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #dfdfdf;
+	background-color: #fff;
+	padding: 2px;
+	height: 2em;
+}
+input.button {
+	text-decoration: none;
+	font-size: 12px;
+	line-height: 14px;
+	padding: 3px 8px;
+	cursor: pointer;
+	border: 1px solid #bbb;
+	color: #464646;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
+	background-color: #f2f2f2; /* Fallback */
+	background-image: -ms-linear-gradient(bottom, #ededed, #fff); /* IE10 */
+	background-image: -moz-linear-gradient(bottom, #ededed, #fff); /* Firefox */
+	background-image: -o-linear-gradient(bottom, #ededed, #fff); /* Opera */
+	background-image: -webkit-gradient(linear, left bottom, left top, from(#ededed), to(#fff)); /* old Webkit  */
+	background-image: -webkit-linear-gradient(bottom, #ededed, #fff); /* new Webkit */
+	background-image: linear-gradient(bottom, #ededed, #fff); /* proposed W3C Markup */
+	text-shadow: #fff 0 1px 0;
+}
 .breadcrumb a {
     color: #3A7399;
     text-decoration: none;
@@ -315,12 +347,24 @@ ul a.delete {
 .paging .current {
     font-weight: bold;
 }
+.paging .next {
+	margin-right: 1px;
+}
 .paging .disabled {
     color: #999;
     border-color: #eee;
 }
-form.filters-toolbar {
-    float: left;
+.bulk-actions {
+	float: left;
+}
+.bulk-actions input {
+	margin-right: 8px;
+}
+.bulk-actions select {
+	width: 130px;
+}
+form.filters-toolbar > div {
+	line-height: 2em;
 }
 form.filters-toolbar ul {
     list-style-type: none;    
@@ -342,6 +386,7 @@ form.filters-toolbar strong.separator {
     vertical-align: bottom;
 }
 dl.filters-expanded {
+	float: left;
     font-size: 80%;    
     padding: 0.8em;
     margin: 0 0 0.5em 0.2em;
