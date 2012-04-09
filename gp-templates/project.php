@@ -16,7 +16,7 @@ gp_tmpl_header();
 
 <div class="actionlist">
 	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e('Project actions &darr;'); ?></a>
-	<div class="project-actions">
+	<div class="project-actions hide-if-js">
 		<ul>
 			<li><?php gp_link( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ); ?></li>
 			<li><?php gp_link( gp_url_project( $project, array( '-permissions' ) ), __('Permissions') ); ?></li>
@@ -125,7 +125,5 @@ gp_tmpl_header();
 		focus: '#source-url-template',
 		group: 'project'
 	});
-	$('div.project-actions').hide();
-	
 </script>
 <?php gp_tmpl_footer();

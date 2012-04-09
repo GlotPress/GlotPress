@@ -419,7 +419,9 @@ dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
     margin-top: 0;
     padding-top: 0;
 }
-.hidden {
+.hidden,
+.js .hide-if-js,
+.no-js .hide-if-no-js {
     display: none;
 }
 .clearfix:after {
