@@ -207,6 +207,12 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$this->assertFalse( $po->import_from_file( 'data/empty.po' ) );
 	}
 	
+	function test_import_from_file_with_windows_line_endings_should_work_as_with_unix_line_endings() {
+		$po = new PO();
+		$this->assertTrue( $po->import_from_file( 'data/windows-line-endings.po' ) );
+		$this->assertEquals( 1, count( $po->entries ) );
+	}
+	
 	//TODO: add tests for bad files
 }
 ?>
