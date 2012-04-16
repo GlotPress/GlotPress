@@ -38,7 +38,7 @@ $i = 0;
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<div>
-	<a href="#" class="revealing filter"><?php _e('Filter &darr;'); ?></a> <span class="separator">&bull;</span>
+	<a href="#" class="revealing filter"><?php _e('Search &darr;'); ?></a> <span class="separator">&bull;</span>
 	<a href="#" class="revealing sort"><?php _e('Sort &darr;'); ?></a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
