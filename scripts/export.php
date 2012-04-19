@@ -11,7 +11,7 @@ class GP_Script_Export extends GP_Translation_Set_Script {
 	function __construct() {
 		$this->short_options .= 'o:';
 		$this->usage .= ' [-o <format (default=po)>]';
-		$this->add_filters_to_otpions_and_usage();
+		$this->add_filters_to_options_and_usage();
 		parent::__construct();
 	}
 	
@@ -24,7 +24,7 @@ class GP_Script_Export extends GP_Translation_Set_Script {
 		echo $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries )."\n";
 	}
 	
-	function add_filters_to_otpions_and_usage() {
+	function add_filters_to_options_and_usage() {
 		foreach( $this->filter_options as $option => $details ) {
 			$this->short_options .= "$option:";
 			$this->usage .= " [-$option <{$details['desc']}>]";
