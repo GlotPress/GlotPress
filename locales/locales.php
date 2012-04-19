@@ -1252,7 +1252,7 @@ class GP_Locales {
 		$ro->slug = 'ro';
 		$ro->google_code = 'ro';
 		$ro->nplurals = 3;
-		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);';
+		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2)';
 
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
