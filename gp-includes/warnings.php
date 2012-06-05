@@ -9,15 +9,15 @@ class GP_Translation_Warnings {
 	function add( $id, $callback ) {
 		$this->callbacks[$id] = $callback;
 	}
-	
+
 	function remove( $id ) {
 		unset( $this->callbacks[$id] );
 	}
-	
+
 	function has( $id ) {
 		return isset( $this->callbacks[$id] );
 	}
-	
+
 	function check( $singular, $plural, $translations, $locale ) {
 		$problems = array();
 		foreach( $translations as $translation_index => $translation ) {
@@ -55,11 +55,11 @@ class GP_Translation_Warnings {
 }
 
 class GP_Builtin_Translation_Warnings {
-	
+
 	var $length_lower_bound = 0.2;
 	var $length_upper_bound = 5.0;
 	var $length_exclude_languages = array('ja', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
-	
+
 	function warning_length( $original, $translation, $locale ) {
 		if ( in_array( $locale->slug, $this->length_exclude_languages ) ) {
 			return true;
@@ -75,7 +75,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return true;
 	}
-	
+
 	function warning_tags( $original, $translation, $locale ) {
 		$tag_pattern = "(<[^>]*>)";
 		$tag_re = "/$tag_pattern/Us";
@@ -92,7 +92,7 @@ class GP_Builtin_Translation_Warnings {
 			$expected_error_msg = "Expected $original_tag, got $translation_tag.";
 			$original_is_tag = preg_match( "/^$tag_pattern$/", $original_tag );
 			$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
-			// translations should never need a quote in their title attribute 
+			// translations should never need a quote in their title attribute
 			if ( $original_is_tag && $translation_is_tag && $original_tag != $translation_tag ) {
 				// we allow translations to have a different title tag
 				$title_re_single = '\s*title=\'[^\']+\'\s*';
@@ -106,7 +106,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return true;
 	}
-	
+
 	function warning_placeholders( $original, $translation, $locale ) {
 		$placeholders_re = apply_filters( 'warning_placeholders_re', '%[a-z]*|%[A-Z]+|%\d+\$(?:s|d)' );
 
@@ -125,7 +125,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return true;
 	}
-	
+
 	function _placeholders_counts( $string, $re ) {
 		$counts = array();
 		preg_match_all( "/$re/", $string, $matches );
@@ -134,7 +134,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return $counts;
 	}
-	
+
 	function warning_both_begin_end_on_newlines( $original, $translation, $locale ) {
 		if ( gp_endswith( $original, "\n" ) xor gp_endswith( $translation, "\n" ) ) {
 			return __('Original and translation should both end on newline.');
@@ -144,7 +144,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Adds all methods starting with warning_ to $translation_warnings
 	 */
