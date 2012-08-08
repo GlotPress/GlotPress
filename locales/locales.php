@@ -1686,6 +1686,14 @@ class GP_Locales {
 		$yi->slug = 'yi';
 		$yi->google_code = 'yi';
 		$yi->rtl = true;
+		
+		$yo = new GP_Locale();
+		$yo->english_name = 'Yorùbá';
+		$yo->native_name = 'èdè Yorùbá';
+		$yo->lang_code_iso_639_1 = 'yo';
+		$yo->lang_code_iso_639_2 = 'yor';
+		$yo->country_code = '';
+		$yo->slug = 'yo';
 
 		$zh_cn = new GP_Locale();
 		$zh_cn->english_name = 'Chinese (China)';
