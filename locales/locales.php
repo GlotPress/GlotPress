@@ -1537,6 +1537,18 @@ class GP_Locales {
 		$te->google_code = 'te';
 		$te->facebook_locale = 'te_IN';
 
+		$tg = new GP_Locale();
+		$tg->english_name = 'Tajik';
+		$tg->native_name = 'тоҷикӣ';
+		$tg->lang_code_iso_639_1 = 'tg';
+		$tg->lang_code_iso_639_2 = 'tgk';
+		$tg->country_code = '';
+		$tg->wp_locale = 'tg';
+		$tg->slug = 'tg';
+		$tg->google_code = 'tg';
+		$tg->nplurals = 2;
+		$tg->plural_expression = 'n != 1;';
+		
 		$th = new GP_Locale();
 		$th->english_name = 'Thai';
 		$th->native_name = 'ไทย';
