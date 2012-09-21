@@ -1064,6 +1064,8 @@ class GP_Locales {
 		$me->wp_locale = 'me_ME';
 		$me->google_code = 'srp';
 		$me->slug = 'me';
+		$me->nplurals = 3;
+		$me->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 
 		$mg = new GP_Locale();
 		$mg->english_name = 'Malagasy';
