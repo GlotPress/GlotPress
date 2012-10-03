@@ -1037,6 +1037,7 @@ class GP_Locales {
 		$lt->lang_code_iso_639_1 = 'lt';
 		$lt->lang_code_iso_639_2 = 'lit';
 		$lt->country_code = 'lt';
+		$lt->wp_locale = 'lt_LT';
 		$lt->slug = 'lt';
 		$lt->google_code = 'lt';
 		$lt->facebook_locale = 'lt_LT';
