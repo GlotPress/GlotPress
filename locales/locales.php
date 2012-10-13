@@ -1581,7 +1581,7 @@ class GP_Locales {
 		$tl->lang_code_iso_639_1 = 'tl';
 		$tl->lang_code_iso_639_2 = 'tgl';
 		$tl->country_code = 'ph';
-		$th->wp_locale = 'th';
+		$th->wp_locale = 'tl';
 		$tl->slug = 'tl';
 		$tl->google_code = 'tl';
 		$tl->facebook_locale = 'tl_PH';
