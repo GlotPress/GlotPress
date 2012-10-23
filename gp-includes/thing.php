@@ -1,6 +1,6 @@
 <?php
 class GP_Thing {
-	
+
 	var $table = null;
 	var $field_names = array();
 	var $non_db_field_names = array();
@@ -9,10 +9,10 @@ class GP_Thing {
 	var $per_page = 30;
 	var $map_results = true;
 	var $static = array();
-	
+
 	static $static_by_class = array();
 	static $validation_rules_by_class = array();
-	
+
 	function __construct( $fields = array() ) {
 		global $gpdb;
 		$this->class = get_class( $this );
@@ -21,7 +21,7 @@ class GP_Thing {
 			$this->$field_name = null;
 		}
 		$this->set_fields( $fields );
-		
+
 		if ( isset( self::$validation_rules_by_class[$this->class] ) ) {
 			$this->validation_rules = &self::$validation_rules_by_class[$this->class];
 		} else {
@@ -37,19 +37,19 @@ class GP_Thing {
 			$this->set_static( 'static-vars-are-set', true );
 		}
 	}
-	
+
 	function get_static( $name, $default = null ) {
 		return isset( self::$static_by_class[$this->class][$name] )? self::$static_by_class[$this->class][$name] : $default;
 	}
-	
+
 	function has_static( $name ) {
 		return isset( self::$static_by_class[$this->class][$name] );
 	}
-	
+
 	function set_static( $name, $value ) {
 		self::$static_by_class[$this->class][$name] = $value;
 	}
-	
+
 	function __call( $name, $args ) {
 		$suffix = '_no_map';
 		if ( gp_endswith( $name, $suffix ) ) {
@@ -60,7 +60,7 @@ class GP_Thing {
 		}
 		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
-	
+
 	// CRUD
 
 	/**
@@ -69,7 +69,7 @@ class GP_Thing {
 	function all( $order = null ) {
 		return $this->many( $this->select_all_from_conditions_and_order( array(), $order ) );
 	}
-	
+
 	/**
 	 * Reloads the object data from the database, based on its id
 	 */
@@ -80,7 +80,7 @@ class GP_Thing {
 
 	/**
 	 * Retrieves a single row from this table
-	 * 
+	 *
 	 * For parameters description see BPDB::prepare()
 	 * @return mixed an object, containing the selected row or false on error
 	 */
@@ -92,7 +92,7 @@ class GP_Thing {
 
 	/**
 	 * Retrieves a single value from this table
-	 * 
+	 *
 	 * For parameters description see BPDB::prepare()
 	 * @return scalar the result of the query or false on error
 	 */
@@ -115,7 +115,7 @@ class GP_Thing {
 
 	/**
 	 * Retrieves multiple rows from this table
-	 * 
+	 *
 	 * For parameters description see BPDB::prepare()
 	 * @return mixed an object, containing the selected row or false on error
 	 */
@@ -136,7 +136,7 @@ class GP_Thing {
 	function find( $conditions, $order = null ) {
 		return $this->find_many( $conditions, $order );
 	}
-	
+
 	function query() {
 		global $gpdb;
 		$args = func_get_args();
@@ -145,7 +145,7 @@ class GP_Thing {
 
 	/**
 	 * Inserts a new row
-	 * 
+	 *
 	 * @param $args array associative array with fields as keys and values as values
 	 * @return mixed the object corresponding to the inserted row or false on error
 	 */
@@ -161,10 +161,10 @@ class GP_Thing {
 		$inserted->after_create();
 		return $inserted;
 	}
-	
+
 	/**
 	 * Inserts a record and then selects it back based on the id
-	 * 
+	 *
 	 * @param $args array see create()
 	 * @return mixed the selected object or false on error
 	 */
@@ -174,10 +174,10 @@ class GP_Thing {
 		$created->reload();
 		return $created;
 	}
-	
+
 	/**
 	 * Updates a single row
-	 * 
+	 *
 	 * @param $data array associative array with fields as keys and updated values as values
 	 */
 	function update( $data, $where = null ) {
@@ -206,7 +206,7 @@ class GP_Thing {
 		$update_res = $this->after_save();
 		return $update_res;
 	}
-	
+
 	function delete() {
 		return $this->delete_all( array( 'id' => $this->id ) );
 	}
@@ -217,9 +217,9 @@ class GP_Thing {
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
 		return $this->query( $query, $this->id );
 	}
-	
+
 	// Fields handling
-	
+
 	function set_fields( $db_object ) {
 		$db_object = $this->normalize_fields( $db_object );
 		foreach( $db_object as $key => $value ) {
@@ -230,17 +230,17 @@ class GP_Thing {
 	/**
 	 * Normalizes an array with key-value pairs representing
 	 * a GP_Thing object.
-	 * 
+	 *
 	 * @todo Include default type handling. For example dates 0000-00-00 should be set to null
 	 */
 	function normalize_fields( $args ) {
 		return $args;
 	}
-			
+
 	/**
 	 * Prepares for enetering the database an array with
 	 * key-value pairs, preresenting a GP_Thing object.
-	 * 
+	 *
 	 */
 	function prepare_fields_for_save( $args ) {
 		$args = (array)$args;
@@ -254,26 +254,26 @@ class GP_Thing {
 				unset( $args[$key] );
 			}
 		}
-		
+
 		if ( in_array( 'date_modified', $this->field_names ) ) {
 			$args['date_modified'] = $this->now_in_mysql_format();
 		}
-				
+
 		return $args;
 	}
-	
+
 	function now_in_mysql_format() {
 		$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
-		return $now->format( DATE_MYSQL );		
+		return $now->format( DATE_MYSQL );
 	}
-	
+
 	function prepare_fields_for_create( $args ) {
 		if ( in_array( 'date_added', $this->field_names ) ) {
 			$args['date_added'] = $this->now_in_mysql_format();
 		}
 		return $args;
 	}
-	
+
 	function coerce( $thing ) {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
@@ -294,15 +294,15 @@ class GP_Thing {
 	}
 
 	// Triggers
-	
+
 	function after_create() {
 		return true;
 	}
-	
+
 	function after_save() {
 		return true;
 	}
-	
+
 	function sql_condition_from_php_value( $php_value ) {
 		global $gpdb;
 		if ( is_array( $php_value ) ) {
@@ -319,7 +319,7 @@ class GP_Thing {
 		}
 		return "$operator $sql_value";
 	}
-	
+
 	function sql_from_conditions( $conditions ) {
 		if ( is_string( $conditions ) ) {
 			$conditions;
@@ -336,17 +336,17 @@ class GP_Thing {
 		}
 		return $this->apply_default_conditions( $conditions );
 	}
-	
+
 	function sql_from_order( $order_by, $order_how = '' ) {
 		if ( is_array( $order_by ) ) {
 			$order_by = implode( ' ', $order_by );
 			$order_how = '';
 		}
 		$order_by = trim( $order_by );
-		if ( !$order_by ) return gp_member_get( $this, 'default_order' );		
+		if ( !$order_by ) return gp_member_get( $this, 'default_order' );
 		return 'ORDER BY ' . $order_by . ( $order_how? " $order_how" : '' );
 	}
-	
+
 	function select_all_from_conditions_and_order( $conditions, $order = null ) {
 		$query = "SELECT * FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $conditions );
@@ -355,21 +355,21 @@ class GP_Thing {
 		if ( $order_sql ) $query .= " $order_sql";
 		return $query;
 	}
-	
+
 	function restrict_fields( $thing ) {
 		// Don't restrict any fields by default
 	}
-	
+
 	function validate() {
 		$verdict = $this->validation_rules->run( $this );
 		$this->errors = $this->validation_rules->errors;
 		return $verdict;
 	}
-	
+
 	function force_false_to_null( $value ) {
 		return $value? $value : null;
 	}
-	
+
 	function fields() {
 		$result = array();
 		foreach( $this->field_names as $field_name ) {
@@ -379,23 +379,23 @@ class GP_Thing {
 		}
 		return $result;
 	}
-	
+
 	function sql_limit_for_paging( $page, $per_page = null ) {
 		$per_page = is_null( $per_page )? $this->per_page : $per_page;
 		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
 		$page = intval( $page )? intval( $page ) : 1;
 		return sprintf( "LIMIT %d OFFSET %d", $this->per_page, ($page-1)*$this->per_page );
 	}
-	
+
 	function found_rows() {
 		global $gpdb;
 		return $gpdb->get_var("SELECT FOUND_ROWS();");
 	}
-	
+
 	function like_escape_printf( $s ) {
 		return str_replace( '%', '%%', like_escape( $s ) );
 	}
-	
+
 	function apply_default_conditions( $conditions_str ) {
 		$conditions = array();
 		if ( isset( $this->default_conditions ) )  $conditions[] = $this->default_conditions;
