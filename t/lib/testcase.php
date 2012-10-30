@@ -7,7 +7,9 @@ require_once dirname( __FILE__ ) . '/factory.php';
 
 class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
-    var $url = 'http://example.org/';
+	protected $backupGlobalsBlacklist = array( 'gpdb' );
+
+	var $url = 'http://example.org/';
 
 	function setUp() {
 		global $gpdb;
