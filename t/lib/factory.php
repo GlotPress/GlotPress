@@ -64,7 +64,7 @@ class GP_UnitTest_Factory_For_Translation_Set extends GP_UnitTest_Factory_For_Th
 
 class GP_UnitTest_Factory_For_Original extends GP_UnitTest_Factory_For_Thing {
 	function __construct( $factory = null, $thing = null ) {
-		parent::__construct( $factory, $thing? $thing : $thing? $thing : new GP_Original );
+		parent::__construct( $factory, $thing? $thing : new GP_Original );
 		$this->default_generation_definitions = array(
 			'singular' => new GP_UnitTest_Generator_Sequence( 'Original %s' ),
 		);
