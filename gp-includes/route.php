@@ -3,14 +3,14 @@
  * Base controller class
  */
 class GP_Route {
-	
+
 	var $api = false;
-	
+
 	var $errors = array();
 	var $notices = array();
 	var $request_running = false;
 	var $template_path = null;
-	
+
 	var $fake_request = false;
 	var $exited = false;
 	var $exit_message;
@@ -20,16 +20,16 @@ class GP_Route {
 	var $loaded_template = null;
 	var $template_output = null;
 	var $headers = array();
-		
+
 	function __construct() {
-		
+
 	}
-	
+
 	function die_with_error( $message, $status = 500 ) {
 		$this->status_header( $status );
 		$this->exit_( $message );
 	}
-	
+
 	function before_request() {
 		do_action( 'before_request', $this->class_name, $this->last_method_called );
 	}
@@ -47,7 +47,7 @@ class GP_Route {
 
 	/**
 	 * Validates a thing and add its errors to the route's errors.
-	 * 
+	 *
 	 * @param object $thing a GP_Thing instance to validate
 	 * @return bool whether the thing is valid
 	 */
@@ -56,13 +56,13 @@ class GP_Route {
 		$this->errors = array_merge( $this->errors, $thing->errors );
 		return $verdict;
 	}
-	
+
 	/**
 	 * Same as validate(), but redirects to $url if the thing isn't valid.
-	 * 
+	 *
 	 * Note: this method calls $this->exit_() after the redirect and the code after it won't
 	 * be executed.
-	 * 
+	 *
 	 * @param object $thing a GP_Thing instance to validate
 	 * @param string $url where to redirect if the thing doesn't validate
 	 * @return bool whether the thing is valid
@@ -75,14 +75,14 @@ class GP_Route {
 		}
 		return false;
 	}
-	
+
 	function can( $action, $object_type = null, $object_id = null ) {
 		return GP::$user->current()->can( $action, $object_type, $object_id );
 	}
-	
+
 	/**
 	 * If the current user isn't allowed to do an action, redirect and exit the current request
-	 * 
+	 *
 	 * @param string $action
 	 * @param`string $object_type
 	 * @param string $object_id
@@ -110,12 +110,12 @@ class GP_Route {
 			$this->die_with_error( 'Forbidden', 403 );
 		}
 	}
-	
+
 	function redirect_with_error( $message, $url = null ) {
 		$this->errors[] = $message;
 		$this->redirect( $url );
 	}
-	
+
 	function redirect( $url = null ) {
 		if ( $this->fake_request ) {
 			$this->redirected = true;
@@ -130,7 +130,7 @@ class GP_Route {
 		gp_redirect( $url );
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
-	
+
 	function headers_for_download( $filename ) {
 		$this->header('Content-Description: File Transfer');
 		$this->header('Pragma: public');
@@ -143,21 +143,21 @@ class GP_Route {
 
 	function set_notices_and_errors() {
 		if ( $this->fake_request ) return;
-		
+
 		foreach( $this->notices as $notice ) {
 			gp_notice_set( $notice );
 		}
 		$this->notices = array();
-		
+
 		foreach( $this->errors as $error ) {
 			gp_notice_set( $error, 'error' );
 		}
 		$this->errors = array();
 	}
-	
+
 	/**
 	 * Loads a template.
-	 * 
+	 *
 	 * @param string $template template name to load
 	 * @param array $args Associative array with arguements, which will be exported in the template PHP file
 	 * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
@@ -179,14 +179,14 @@ class GP_Route {
 			$this->template_output = gp_tmpl_get_output( $template, $args, $this->template_path );
 			return true;
 		}
-		
+
 		return gp_tmpl_load( $template, $args, $this->template_path );
 	}
-	
+
 	function tmpl_404( $args ) {
 		$this->tmpl( '404', $args + array('title' => __('Not Found'), 'http_status' => 404 ) );
 	}
-	
+
 	function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {
 			$this->exited = true;
@@ -194,16 +194,16 @@ class GP_Route {
 		}
 		exit( $message );
 	}
-	
+
 	function header( $string ) {
 		if ( $this->fake_request ) {
 			list( $header, $value ) = explode( ':', $string, 2 );
 			$this->headers[$header] = $value;
 		} else {
 			header( $string );
-		}		
+		}
 	}
-	
+
 	function status_header( $status ) {
 		if ( $this->fake_request ) {
 			$this->http_status = $status;
