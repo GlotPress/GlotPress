@@ -121,6 +121,10 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	function test_gp_url_join_should_not_break_http() {
 		$this->assertEquals( 'http://dir.bg/baba', gp_url_join( 'http://dir.bg/', 'baba' ) );
 	}
+
+	function test_gp_url_join_should_not_break_https() {
+		$this->assertEquals( 'https://dir.bg/baba', gp_url_join( 'https://dir.bg/', 'baba' ) );
+	}
 	
 	function test_gp_url_project_should_join_its_arguments() {
 		$url_from_gp_url_project = gp_url_project( '/x', 'import-originals' );
