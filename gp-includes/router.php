@@ -44,6 +44,9 @@ class GP_Router {
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'post:/login' => array('GP_Route_Login', 'login_post'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
+			
+			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
+			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
 			"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 			"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),

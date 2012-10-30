@@ -117,7 +117,6 @@ class GP_User extends GP_Thing {
 			return;
 		}
 
-		$key = gp_sanitize_meta_key( $key );
 		if ( !isset( $user->$key ) ) {
 			return;
 		}

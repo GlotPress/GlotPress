@@ -17,6 +17,7 @@ function gp_sanitize_meta_key( $key ) {
  */
 function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global = false ) {
 	global $gpdb;
+
 	if ( !is_numeric( $object_id ) || empty( $object_id ) && !$global ) {
 		return false;
 	}

@@ -94,7 +94,16 @@ $i = 0;
 	<dl class="filters-expanded sort hidden clearfix">
 		<dt><?php _e('By:'); ?></dt>
 		<dd>
-		<?php echo gp_radio_buttons('sort[by]',
+		<?php 
+		$default_sort = GP::$user->current()->get_meta('default_sort');
+		if ( ! is_array($default_sort) ) {
+			$default_sort = array(
+				'by' => 'priority',
+				'how' => 'desc'
+			);
+		} 
+		
+		echo gp_radio_buttons('sort[by]',
 			array(
 				'original_date_added' => __('Date added (original)'),
 				'translation_date_added' => __('Date added (translation)'),
@@ -103,16 +112,16 @@ $i = 0;
 				'priority' => __('Priority'),
 				'references' => __('Filename in source'),
 				'random' => __('Random'),
-			), gp_array_get( $sort, 'by', 'priority' ) );
+			), gp_array_get( $sort, 'by', $default_sort['by'] ) );
 		?>
 		</dd>
-		<dt><?php _e('How:'); ?></dt>
+		<dt><?php _e('Order:'); ?></dt>
 		<dd>
 		<?php echo gp_radio_buttons('sort[how]',
 			array(
 				'asc' => __('Ascending'),
 				'desc' => __('Descending'),
-			), gp_array_get( $sort, 'how', 'desc' ) );
+			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
 		?>
 		</dd>
 		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>

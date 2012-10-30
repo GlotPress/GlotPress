@@ -384,7 +384,7 @@ class GP_Thing {
 		$per_page = is_null( $per_page )? $this->per_page : $per_page;
 		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
 		$page = intval( $page )? intval( $page ) : 1;
-		return sprintf( "LIMIT %d OFFSET %d", $this->per_page, ($page-1)*$this->per_page );
+		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page-1)*$per_page );
 	}
 
 	function found_rows() {
