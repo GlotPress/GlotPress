@@ -2,7 +2,7 @@
 
 class GP_UnitTestCase_Request extends GP_UnitTestCase {
     var $body = null;
-    
+
     function get( $uri, $get_vars = array() ) {
         $this->request( $uri, 'GET', $get_vars );
     }
@@ -31,7 +31,7 @@ class GP_UnitTestCase_Request extends GP_UnitTestCase {
 \$_SERVER['REQUEST_METHOD'] = $upper_method;
 define( 'GP_CONFIG_FILE', $gp_config_path );
 CONFIG;
-        file_put_contents( $tmp_file_name, $config_php_code );        
+        file_put_contents( $tmp_file_name, $config_php_code );
         ob_start();
         /* We need to start a new PHP process, because header() doesn't like previous output and we have plenty */
         system('php '.escapeshellarg( dirname( __FILE__ ) . '/../bin/request.php' ).' '.escapeshellarg( $tmp_file_name ) );
@@ -43,12 +43,12 @@ CONFIG;
     function assertRedirect() {
         $this->assertTrue( gp_startswith( $this->body, 'Redirecting to: ') );
     }
-    
+
     function assertResponseContains( $needle ) {
         $this->assertTrue( gp_in( $needle, $this->body ) );
     }
-    
+
     function assertResponseNotContains( $needle ) {
         $this->assertFalse( gp_in( $needle, $this->body ) );
-    }   
+    }
 }

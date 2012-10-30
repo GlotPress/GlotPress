@@ -45,9 +45,9 @@ function gp_upgrade_data( $db_version ) {
 
 function gp_install() {
     global $gpdb;
-    
+
     $errors = gp_upgrade_db();
-    
+
 	if ( $errors ) return $errors;
 	
 	gp_update_option( 'uri', guess_uri() );

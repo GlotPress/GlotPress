@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Retrieves a value from $_POST
@@ -70,7 +70,7 @@ function gp_array_flatten( $array ) {
  * Passes the message set through the next redirect.
  *
  * Works best for edit requests, which want to pass error message or notice back to the listing page.
- * 
+ *
  * @param string $message The message to be passed
  * @param string $key Optional. Key for the message. You can pass several messages under different keys.
  * A key has one message. The default is 'notice'.
@@ -81,7 +81,7 @@ function gp_notice_set( $message, $key = 'notice' ) {
 
 /**
  * Retrieves a notice message, set by {@link gp_notice()}
- * 
+ *
  * @param string $key Optional. Message key. The default is 'notice'
  */
 function gp_notice( $key = 'notice' ) {
@@ -101,7 +101,7 @@ function gp_populate_notices() {
 
 /**
  * Sets headers, which redirect to another page.
- * 
+ *
  * @param string $location The path to redirect to
  * @param int $status Status code to use
  * @return bool False if $location is not set
@@ -134,7 +134,7 @@ function gp_parity_factory() {
 
 /**
  * Builds SQL LIMIT/OFFSET clause for the given page
- * 
+ *
  * @param integer $page The page number. The first page is 1.
  * @param integer $per_page How many items are there in a page
  */
@@ -241,7 +241,7 @@ endif;
  * Returns an array of arrays, where the i-th array contains the i-th element from
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
- * 
+ *
  * The function works only with numerical arrays.
  */
 function gp_array_zip() {

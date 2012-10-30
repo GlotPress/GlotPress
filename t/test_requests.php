@@ -6,10 +6,10 @@ class GP_Test_Requests extends GP_UnitTestCase_Request {
         $this->get( '/' );
         $this->assertRedirect();
     }
-    
+
     function test_projects() {
         $this->get( '/projects' );
         $this->assertResponseContains( 'Projects' );
         $this->assertResponseNotContains( 'baba' );
-    }   
+    }
 }

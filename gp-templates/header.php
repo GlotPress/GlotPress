@@ -19,7 +19,7 @@ wp_enqueue_script( 'jquery' );
 			</a>
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
-			<?php 
+			<?php
 			if (GP::$user->logged_in()):
 				$user = GP::$user->current();
 				

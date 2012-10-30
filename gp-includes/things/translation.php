@@ -79,7 +79,7 @@ class GP_Translation extends GP_Thing {
 				'by' => 'priority',
 				'how' => 'desc'
 			);
-		} 
+		}
 		
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );

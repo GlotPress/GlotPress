@@ -83,7 +83,7 @@ class PO extends Gettext_Translations {
 	
 	/**
 	 * Text to include as a comment before the start of the PO contents
-	 * 
+	 *
 	 * Doesn't need to include # in the beginning of lines, these are added automatically
 	 */
 	function set_comment_before_headers( $text ) {
@@ -123,7 +123,7 @@ class PO extends Gettext_Translations {
 	
 	/**
 	 * Gives back the original string from a PO-formatted string
-	 * 
+	 *
 	 * @static
 	 * @param string $string PO-formatted string
 	 * @return string enascaped string
@@ -153,7 +153,7 @@ class PO extends Gettext_Translations {
 	}
 
 	/**
-	 * Inserts $with in the beginning of every new line of $string and 
+	 * Inserts $with in the beginning of every new line of $string and
 	 * returns the modified string
 	 *
 	 * @static

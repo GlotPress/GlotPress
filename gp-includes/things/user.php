@@ -85,9 +85,9 @@ class GP_User extends GP_Thing {
 	
 	/**
 	 * Determines whether the user can do $action on the instance of $object_type with id $object_id.
-	 * 
+	 *
 	 * If the method is called statically, it uses the current session user.
-	 * 
+	 *
 	 * Example: $user->can( 'read', 'translation-set', 11 );
 	 */
 	function can( $action, $object_type = null, $object_id = null, $extra = null ) {

@@ -10,7 +10,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	$disabled = $can_edit? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
-		<?php 
+		<?php
 		if( isset( $entry->warnings[$index] ) ):
 			$referenceable = $entry->warnings[$index];
 			$warning = each( $referenceable );

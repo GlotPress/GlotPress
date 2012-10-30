@@ -244,7 +244,7 @@ gp_set_globals( get_defined_vars() );
 /**
  * It is possible to define this in wp-config.php and it will be used as the domain for all cookies.
  * Set it carefully for sharing cookies amonst subdomains
- * 
+ *
  * @link http://curl.haxx.se/rfc/cookie_spec.html
  */
 if ( !defined('GP_COOKIE_DOMAIN') )

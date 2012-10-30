@@ -1,6 +1,6 @@
 <?php
 
-$index = dirname( __FILE__ ) . '/../../index.php'; 
+$index = dirname( __FILE__ ) . '/../../index.php';
 
 require $argv[1];
 $_SERVER['SCRIPT_NAME'] = '/index.php';

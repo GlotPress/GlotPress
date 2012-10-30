@@ -120,7 +120,7 @@ class GP_UnitTest_Factory_For_Thing {
 	
 	/**
 	 * Creates a new factory, which will create objects of a specific Thing
-	 * 
+	 *
 	 * @param object $factory GLobal factory that can be used to create other objects on the system
 	 * @param object $thing Instance of a GP_Thing subclass. This factory will create objects of this type
 	 * @param array $default_generation_definitions Defines what default values should the properties of the object have. The default values

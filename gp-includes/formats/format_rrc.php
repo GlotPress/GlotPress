@@ -106,7 +106,7 @@ class GP_Format_RRC {
 
 	/**
 	 * Escapes a UTF-8 string to be used in RRC file
-	 * 
+	 *
 	 * Suitable characters are encoded in ISO-8859-1, all non-latin1 unicode
 	 * characters are encoded via \uXXXX notation, where XXXX is 0-paded hex unicode code-point
 	 * Newlines, tabs and carriage returns are backslash-escaped.

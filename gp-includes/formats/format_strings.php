@@ -22,7 +22,7 @@ class GP_Format_Strings {
 		foreach ( $sorted_entries as $entry ) {
 			$original = str_replace( "\n", "\\n", $entry->context );
 			$translation = str_replace( "\n", "\\n", empty( $entry->translations ) ? $entry->context : $entry->translations[0] );
-			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments ); 
+			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
 			if ( $comment == "" ) {
 				$comment = "No comment provided by engineer.";
 			}

@@ -94,14 +94,14 @@ $i = 0;
 	<dl class="filters-expanded sort hidden clearfix">
 		<dt><?php _e('By:'); ?></dt>
 		<dd>
-		<?php 
+		<?php
 		$default_sort = GP::$user->current()->get_meta('default_sort');
 		if ( ! is_array($default_sort) ) {
 			$default_sort = array(
 				'by' => 'priority',
 				'how' => 'desc'
 			);
-		} 
+		}
 		
 		echo gp_radio_buttons('sort[by]',
 			array(
@@ -152,7 +152,7 @@ $i = 0;
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e('Legend:'); ?></strong></div>
-<?php 
+<?php
 	foreach( GP::$translation->get_static( 'statuses' ) as $status ):
 		if ( 'rejected' == $status ) continue;
 ?>

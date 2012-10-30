@@ -127,10 +127,10 @@ class GP_Project extends GP_Thing {
 	/**
 	 * Gives an array of project objects starting from the current project
 	 * then its parent, its parent and up to the root
-	 * 
+	 *
 	 * @todo Cache the results. Invalidation is tricky, because on each project update we need to invalidate the cache
 	 * for all of its children.
-	 * 
+	 *
 	 * @return array
 	 */
 	function path_to_root() {

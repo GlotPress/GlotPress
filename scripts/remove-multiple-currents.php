@@ -13,7 +13,7 @@ class GP_Script extends GP_CLI {
 				if ( $translation->original_id == $prev_original_id ) {
 					echo "Duplicate with original_id#$prev_original_id. Translation#$translation->id\n";
 					$translation->delete();
-				} 
+				}
 				$prev_original_id = $translation->original_id;
 			}
 		}

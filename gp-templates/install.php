@@ -12,7 +12,7 @@ gp_tmpl_header();
 	<pre>
 		<?php echo implode("\n", $errors); ?>
 	</pre>
-<?php 
+<?php
 	else:
 		echo $success_message;
 	endif;

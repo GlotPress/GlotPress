@@ -73,5 +73,5 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		$domain->merge_with( $dummy_translation );
 		$this->assertEquals( '1', $domain->translate( '1' ) );
 	}
-   
+
 }

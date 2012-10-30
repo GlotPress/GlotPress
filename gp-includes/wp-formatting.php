@@ -470,8 +470,8 @@ if ( !function_exists( 'urlencode_deep' ) ) : // Current at [WP9840]
 /**
  * Navigates through an array and encodes the values to be used in a URL.
  *
- * Uses a callback to pass the value of the array back to the function as a 
- * string. 
+ * Uses a callback to pass the value of the array back to the function as a
+ * string.
  *
  * @since WP 2.2.0
  *

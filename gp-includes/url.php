@@ -16,12 +16,12 @@ function gp_url_path( $url = null ) {
 
 /**
  * Joins paths, and takes care of slashes between them
- * 
+ *
  * Example: gp_url_join( '/project', array( 'wp', 'dev) ) -> '/project/wp/dev'
- * 
+ *
  * The function will keep leading and trailing slashes of the whole URL, but won't
  * allow more than consecutive slash inside.
- * 
+ *
  * @param mixed components... arbitrary number of string or path components
  * @return string URL, built of all the components, separated with /
  */
@@ -36,7 +36,7 @@ function gp_url_join() {
 
 /**
  * Builds a URL relative to the GlotPress' domain root
- * 
+ *
  * @param mixed $path string path or array of path components
  * @param array $query associative array of query arguments (optional)
  */
