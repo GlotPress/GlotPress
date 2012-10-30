@@ -26,6 +26,15 @@ $gp.editor = function($){ return {
 		$('tr:first', $gp.editor.table).hide();
 		$('textarea:first', editor).focus();
 	},
+	prev: function() {
+		if (!$gp.editor.current) return;
+		//TODO: go to previous page if needed
+		var prev = $gp.editor.current.prevAll('tr.editor');
+		if (prev.length)
+			$gp.editor.show(next.filter(':last'));
+		else
+			$gp.editor.hide();
+	},
 	next: function() {
 		if (!$gp.editor.current) return;
 		//TODO: go to next page if needed
@@ -54,6 +63,24 @@ $gp.editor = function($){ return {
 			.on('click', 'button.approve', $gp.editor.hooks.set_status_current)
 			.on('click', 'button.reject', $gp.editor.hooks.set_status_rejected)
 			.on('click', 'button.ok', $gp.editor.hooks.ok);
+		$('tr.editor').on('keydown', 'textarea', $gp.editor.hooks.keydown);
+	},
+	keydown: function(e) {
+		if (e.keyCode == 27)
+			$gp.editor.hide();
+		else if (e.keyCode == 33)
+			$gp.editor.prev();
+		else if (e.keyCode == 34)
+			$gp.editor.next();
+		else if (e.keyCode == 13 && e.shiftKey) {
+			var target = $(e.target);
+			if (target.nextAll('textarea').length)
+				target.nextAll('textarea').eq(0).focus()
+			else
+				$gp.editor.save(target.parents('tr.editor').find('button.ok'));
+		} else
+			return true;
+		return false;
 	},
 	replace_current: function(html) {
 		if (!$gp.editor.current) return;
@@ -197,6 +224,9 @@ $gp.editor = function($){ return {
 		ok: function() {
 			$gp.editor.save($(this));
 			return false;
+		},
+		keydown: function(e) {
+			return $gp.editor.keydown(e);
 		},
 		copy: function() {
 			$gp.editor.copy($(this));
