@@ -15,6 +15,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	}
 	
 	function tearDown() {
+		parent::tearDown();
 		remove_filter( 'backpress_set_cookie', array( &$this, 'filter_do_not_set_cookie' ) );
 	}
 	
