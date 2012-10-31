@@ -53,7 +53,7 @@ function display_status( $status ) {
 }
 
 function references( $project, $entry ) {
-	if ( !$project->source_url_template() ) return;
+	if ( ! $entry->references ) return;
 	?>
 	<?php _e('References:'); ?>
 	<ul class="refs">
@@ -65,6 +65,8 @@ function references( $project, $entry ) {
 				?>
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
+			else :
+				echo "<li>$file:$line</li>";
 			endif;
 		endforeach;
 		?>
