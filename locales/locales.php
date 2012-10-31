@@ -185,6 +185,19 @@ class GP_Locales {
 		$ba->country_code = '';
 		$ba->wp_locale = 'ba';
 		$ba->slug = 'ba';
+		
+		$ber = new GP_Locale();
+		$ber->english_name = 'Berber';
+		$ber->native_name = 'ⵜⴰⵎⴰⵣⵉⵖⵜ';
+		$ber->lang_code_iso_639_1 = '';
+		$ber->lang_code_iso_639_2 = 'ber';
+		$ber->country_code = '';
+		$ber->wp_locale = 'ber';
+		$ber->slug = 'ber';
+		$ber->google_code = 'ber';
+		$ber->nplurals = 2;
+		$ber->plural_expression = '(n > 1)';
+		$ber->preferred_sans_serif_font_family = 'Tifinaghe-IrcamUnicosansserif';
 
 		$bal = new GP_Locale();
 		$bal->english_name = 'Catalan (Balear)';
