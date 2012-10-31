@@ -23,7 +23,6 @@ gp_tmpl_header();
 			<li><?php gp_link( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ); ?></li>
 			<li><?php gp_link( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ); ?></li>
 			<li><?php gp_link( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ); ?></li>
-			<li><?php gp_link_with_ays( gp_url_project( $project, '-delete'), __('Delete Project'), array( 'ays-text' => 'Do you really want to delete this project?' ) ); ?></li>
 			<?php if ( $translation_sets ): ?>
 			<li>
 				<a href="#" class="personal-options" id="personal-options-toggle"><?php _e('Personal project options &darr;'); ?></a>
@@ -39,7 +38,7 @@ gp_tmpl_header();
 					<p>
 						<input type="submit" name="submit" value="<?php echo esc_attr(__('Save &rarr;')); ?>" id="save" />
 						<a class="ternary" href="#" onclick="jQuery('#personal-options-toggle').click();return false;"><?php _e('Cancel'); ?></a>
-					</p>
+					</p>		
 					</form>
 				</div>
 			</li>
@@ -87,8 +86,10 @@ gp_tmpl_header();
 			<tr class="<?php echo $parity(); ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
-					<?php if ($set->current_count >= $set->all_count * 0.9 ): ?>
-						<span class="bubble morethan90">90%+</span>
+					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):
+							$percent = floor( $set->current_count / $set->all_count * 100 );
+					?>
+						<span class="bubble morethan90"><?php echo $percent; ?>%</span>
 					<?php endif; ?>
 				</td>
 				<td class="stats percent"><?php echo $set->percent_translated; ?></td>
