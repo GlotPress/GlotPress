@@ -511,6 +511,17 @@ class GP_Locales {
 		$es_cl->slug = 'es-cl';
 		$es_cl->google_code = 'es';
 		$es_cl->facebook_locale = 'es_LA';
+		
+		$es_mx = new GP_Locale(); 
+		$es_mx->english_name = 'Spanish (Mexico)'; 
+		$es_mx->native_name = 'Español de México'; 
+		$es_mx->lang_code_iso_639_1 = 'es'; 
+		$es_mx->lang_code_iso_639_2 = 'spa'; 
+		$es_mx->country_code = 'mx'; 
+		$es_mx->wp_locale = 'es_MX'; 
+		$es_mx->slug = 'es-mx'; 
+		$es_mx->google_code = 'es'; 
+		$es_mx->facebook_locale = 'es_LA';
 
 		$es_pe = new GP_Locale();
 		$es_pe->english_name = 'Spanish (Peru)';
