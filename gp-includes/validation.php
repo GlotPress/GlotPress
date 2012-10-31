@@ -1,21 +1,21 @@
 <?php
 
 class GP_Validation_Rules {
-	
+
 	var $rules = array();
 	var $errors = array();
-	
+
 	static $positive_suffices = array(
 		'should_be', 'should', 'can', 'can_be',
 	);
 	static $negative_suffices = array(
 		'should_not_be', 'should_not', 'cant', 'cant_be',
 	);
-	
+
 	function __construct( $field_names ) {
 		$this->field_names = $field_names;
 	}
-	
+
 	function __call( $name, $args ) {
 		foreach( array( 'positive', 'negative' ) as $kind ) {
 			$suffices = "{$kind}_suffices";
@@ -30,7 +30,7 @@ class GP_Validation_Rules {
 		}
 		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
-	
+
 	function run( $thing ) {
 		$this->errors = array();
 		$verdict = true;
@@ -43,7 +43,7 @@ class GP_Validation_Rules {
 		}
 		return $verdict;
 	}
-	
+
 	function run_on_single_field( $field, $value ) {
 		if ( !isset( $this->rules[$field] ) || !is_array( $this->rules[$field] ) ) {
 			// no rules means always valid
@@ -77,7 +77,7 @@ class GP_Validation_Rules {
 		}
 		return $verdict;
 	}
-	
+
 	function construct_error_message( $rule, $value ) {
 		// TODO: better error messages, should include info from callback
 		return sprintf( __('The field <strong>%s</strong> has invalid value!'), $rule['field'], $value );
@@ -86,16 +86,16 @@ class GP_Validation_Rules {
 
 class GP_Validators {
 	static $callbacks = array();
-	
+
 	static function register( $key, $callback, $negative_callback = null ) {
-		// TODO: add data for easier generation of error messages		
+		// TODO: add data for easier generation of error messages
 		self::$callbacks[$key] = array( 'positive' => $callback, 'negative' => $negative_callback );
 	}
-	
+
 	static function unregister( $key ) {
 		unset( self::$callbacks[$key] );
 	}
-	
+
 	static function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}

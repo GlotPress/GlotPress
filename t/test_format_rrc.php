@@ -17,7 +17,7 @@ class GP_Test_Format_RRC extends GP_UnitTestCase {
 			array('MULTIPLE_UNTRANSLATED[1]', 'English string#1', ''),
 		);
 	}
-	
+
 	function test_export() {
 		$entries_for_export = array();
 		foreach( $this->entries as $sample ) {
@@ -33,19 +33,19 @@ class GP_Test_Format_RRC extends GP_UnitTestCase {
 				$this->rrc->print_exported_file( 'project', 'locale', 'translation_set', $entries_for_export )
 		);
 	}
-		
+
 	function test_read_originals() {
 		$translations = $this->rrc->read_originals_from_file( 'data/originals.rrc' );
-				
+
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation ) = $sample;
 			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context) );
 			$entry = $translations->translate_entry( $translatable_entry );
 			$this->assertEquals( $original, $entry->singular );
-			$this->assertEquals( $context, $entry->context );			
+			$this->assertEquals( $context, $entry->context );
 		}
 	}
-	
+
 	function test_read_translations() {
 		$stubbed_originals = array();
 		foreach( $this->entries as $sample ) {
@@ -62,5 +62,5 @@ class GP_Test_Format_RRC extends GP_UnitTestCase {
 			list( $context, $original, $translation ) = $sample;
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );
 		}
-	}	
+	}
 }

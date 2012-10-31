@@ -1,10 +1,10 @@
 <?php
 
 class GP_Format_PO {
-	
+
 	var $extension = 'po';
 	var $class = 'PO';
-	
+
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$po = new $this->class;
 		// TODO: add more meta data in the project: language team, report URL
@@ -30,13 +30,13 @@ class GP_Format_PO {
 
 		echo $po->export();
 	}
-	
+
 	function read_translations_from_file( $file_name, $project = null ) {
 		$po = new $this->class;
 		$result = $po->import_from_file( $file_name );
 		return $result? $po : $result;
 	}
-	
+
 	function read_originals_from_file( $file_name ) {
 		return $this->read_translations_from_file( $file_name );
 	}

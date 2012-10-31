@@ -57,12 +57,12 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		GP::$translation_set = new GP_Translation_Set;
 		GP::$original = new GP_Original;
 	}
-	
+
 	function start_transaction() {
 		global $gpdb;
 		$gpdb->query( 'SET autocommit = 0;' );
 		$gpdb->query( 'SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;' );
-		$gpdb->query( 'START TRANSACTION;' );		
+		$gpdb->query( 'START TRANSACTION;' );
 	}
 
 	function temp_filename() {
@@ -77,7 +77,7 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$dir = realpath( $dir );
 		return tempnam( $dir, 'testpomo' );
 	}
-	
+
 	function set_normal_user_as_current() {
 		$user = $this->factory->user->create();
 		$user->set_as_current();
@@ -89,19 +89,19 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$admin->set_as_current();
 		return $admin;
 	}
-	
+
 	function assertWPError( $actual, $message = '' ) {
 		$this->assertTrue( is_wp_error( $actual ), $message );
 	}
-	
+
 	function assertEqualFields( $object, $fields ) {
 		foreach( $fields as $field_name => $field_value ) {
 			if ( $object->$field_name != $field_value ) {
 				$this->fail();
-			}			
+			}
 		}
 	}
-	
+
 	function assertDiscardWhitespace( $expected, $actual ) {
 		$this->assertEquals( preg_replace( '/\s*/', '', $expected ), preg_replace( '/\s*/', '', $actual ) );
 	}

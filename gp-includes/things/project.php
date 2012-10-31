@@ -1,6 +1,6 @@
 <?php
 class GP_Project extends GP_Thing {
-	
+
 	var $table_basename = 'projects';
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
 	var $non_updatable_attributes = array( 'id' );
@@ -9,29 +9,29 @@ class GP_Project extends GP_Thing {
 	function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
 	}
-	
+
 	// Additional queries
 
 	function by_path( $path ) {
 		return $this->one( "SELECT * FROM $this->table WHERE path = '%s'", trim( $path, '/' ) );
 	}
-	
+
 	function sub_projects() {
 		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
 	}
-	
+
 	function top_level() {
 		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL ORDER BY name ASC" );
 	}
 
 	// Triggers
-	
+
 	function after_save() {
-		// TODO: pass the update args to after/pre_save?		
+		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
 		return !is_null( $this->update_path() );
 	}
-	
+
 	function after_create() {
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
@@ -58,7 +58,7 @@ class GP_Project extends GP_Thing {
 	}
 
 	// Helpers
-	
+
 	/**
 	 * Updates this project's and its chidlren's paths, according to its current slug.
 	 */
@@ -83,7 +83,7 @@ class GP_Project extends GP_Thing {
 			return $res_self;
 		}
 	}
-	
+
 	/**
 	 * Regenrate the paths of all projects from its parents slugs
 	 */
@@ -102,14 +102,14 @@ class GP_Project extends GP_Thing {
 			$this->regenerate_paths( $project->id );
 		}
 	}
-	
+
 	function source_url( $file, $line ) {
 		if ( $this->source_url_template() ) {
 			return str_replace( array('%file%', '%line%'), array($file, $line), $this->source_url_template() );
 		}
 		return false;
 	}
-	
+
 	function source_url_template() {
 		if ( isset( $this->user_source_url_template ) )
 			return $this->user_source_url_template;
@@ -123,7 +123,7 @@ class GP_Project extends GP_Thing {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gives an array of project objects starting from the current project
 	 * then its parent, its parent and up to the root
@@ -141,7 +141,7 @@ class GP_Project extends GP_Thing {
 		}
 		return array_merge( array( &$this ), $path );
 	}
-	
+
 	function set_difference_from( $other_project ) {
 		$this_sets = (array)GP::$translation_set->by_project_id( $this->id );
 		$other_sets = (array)GP::$translation_set->by_project_id( $other_project->id );
@@ -160,6 +160,6 @@ class GP_Project extends GP_Thing {
 			}
 		}
 		return compact( 'added', 'removed' );
-	}	
+	}
 }
 GP::$project = new GP_Project();

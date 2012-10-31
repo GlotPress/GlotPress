@@ -22,7 +22,7 @@ $priority_char = array(
 		<?php if ( $t->context ): ?>
 		<span class="context bubble" title="<?php printf( __('Context: %s'), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 		<?php endif; ?>
-	
+
 	</td>
 	<td class="translation foreign-text">
 	<?php
@@ -82,7 +82,7 @@ $priority_char = array(
 			<?php endif; ?>
 		<?php endif; ?>
 		</div>
-		
+
 		<div class="meta">
 			<h3><?php _e('Meta'); ?></h3>
 			<dl>
@@ -90,7 +90,7 @@ $priority_char = array(
 				<dd>
 					<?php echo display_status( $t->translation_status ); ?>
 					<?php if ( $can_approve && $t->translation_status ): ?>
-					
+
 						<?php if ( $t->translation_status != 'current' ): ?>
 						<button class="approve" tabindex="-1"><strong>+</strong> Approve</button>
 						<?php endif; ?>
@@ -106,7 +106,7 @@ $priority_char = array(
 				<dd><?php echo esc_html($t->priority); ?></dd>
 			</dl>
 			-->
-			
+
 			<?php if ( $t->context ): ?>
 			<dl>
 				<dt><?php _e('Context:'); ?></dt>
@@ -131,9 +131,9 @@ $priority_char = array(
 				<dd><?php echo $t->user_login; ?></dd>
 			</dl>
 			<?php endif; ?>
-			
+
 			<?php references( $project, $t ); ?>
-			
+
 			<dl>
 			    <dt><?php _e('Priority of the original:'); ?></dt>
 			<?php if ( $can_write ): ?>
@@ -142,7 +142,7 @@ $priority_char = array(
 			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
 			<?php endif; ?>
 			</dl>
-			
+
 			<?php $extra_args = $t->translation_status? array( 'filters[translation_id]' => $t->id ) : array(); ?>
 			<dl>
 <?php

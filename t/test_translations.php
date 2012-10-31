@@ -20,7 +20,7 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		// add empty entry
 		$this->assertEquals(false, $po->add_entry($empty));
 		$this->assertEquals(array($entry->key() => $entry, $entry2->key() => $entry2), $po->entries);
-		
+
 		// give add_entry() the arguments and let it create the entry itself
 		$po = new Translations();
 		$po->add_entry(array('singular' => 'baba',));
@@ -61,7 +61,7 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', 18881));
 		$this->assertEquals('dyadoy', $domain->translate_plural('dyado', 'dyados', -18881));
 	}
-	
+
 	function test_digit_and_merge() {
 		$entry_digit_1 = new Translation_Entry(array('singular' => 1, 'translations' => array('1')));
 		$entry_digit_2 = new Translation_Entry(array('singular' => 2, 'translations' => array('2')));

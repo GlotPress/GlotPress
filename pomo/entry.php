@@ -65,14 +65,14 @@ class Translation_Entry {
 		// prepend context and EOT, like in MO files
 		return is_null($this->context)? $this->singular : $this->context.chr(4).$this->singular;
 	}
-	
+
 	function merge_with(&$other) {
 		$this->flags = array_unique( array_merge( $this->flags, $other->flags ) );
 		$this->references = array_unique( array_merge( $this->references, $other->references ) );
 		if ( $this->extracted_comments != $other->extracted_comments ) {
 			$this->extracted_comments .= $other->extracted_comments;
 		}
-		
+
 	}
 }
 endif;

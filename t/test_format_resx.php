@@ -14,9 +14,9 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 			array('with_gt', 'me > you', "аз > ти", ''),
 			array('with_amps', 'me & you are not &amp;', 'аз & ти не сме &amp;', ''),
 			array('with_comment', 'baba', 'баба', 'Me, myself & Irene'),
-		);		
+		);
 	}
-	
+
 	function test_export() {
 		$entries_for_export = array();
 		foreach( $this->entries as $sample ) {
@@ -30,8 +30,8 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 		}
 		$this->assertEquals( file_get_contents( 'data/translation.resx.xml' ), $this->resx->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
 	}
-	
-	
+
+
 	function test_read_originals() {
 		$translations = $this->resx->read_originals_from_file( 'data/originals.resx.xml' );
 		$this->assertEquals( count($this->entries ), count( $translations->entries ), 'number of read originals is different from the expected' );
@@ -44,7 +44,7 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 			$this->assertEquals( $comment, $entry->extracted_comments );
 		}
 	}
-	
+
 	function test_read_translations() {
 		$stubbed_originals = array();
 		foreach( $this->entries as $sample ) {

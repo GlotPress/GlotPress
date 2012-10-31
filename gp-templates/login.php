@@ -11,7 +11,7 @@ gp_tmpl_header();
 	<dl>
 		<dt><label for="user_login"><?php _e('Username'); ?></label></dt>
 		<dd><input type="text" value="" id="user_login" name="user_login" /></dd>
-		
+
 		<dt><label for="user_pass"><?php _e('Password'); ?></label></dt>
 		<dd><input type="password" value="" id="user_pass" name="user_pass" /></dd>
 	</dl>

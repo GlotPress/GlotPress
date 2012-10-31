@@ -4,7 +4,7 @@ require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 class GP_Script_Add_Admin extends GP_CLI {
 
 	var $usage = "<username-to-make-an-admin>";
-	
+
 	function run() {
 		if ( empty( $this->args ) ) {
 			$this->usage();
@@ -20,7 +20,7 @@ class GP_Script_Add_Admin extends GP_CLI {
 				exit( 2 );
 			}
 		}
-		
+
 	}
 }
 

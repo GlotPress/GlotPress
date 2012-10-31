@@ -3,14 +3,14 @@
 class GP_Router {
 
 	var $api_prefix = 'api';
-	
+
 	function __construct( $urls = null ) {
 		if ( is_null( $urls ) )
 			$this->urls = $this->default_routes();
 		else
 			$this->urls = $urls;
 	}
-	
+
 	/**
 	* Returns the current request URI path, relative to
 	* the application URI and without the query string
@@ -21,15 +21,15 @@ class GP_Router {
 			return urldecode( $match[1] );
 		return false;
 	}
-	
+
 	function request_method() {
 		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
 	}
-		
+
 	function add( $re, $function, $method = 'get' ) {
 		$this->urls["$method:$re"] = $function;
 	}
-	
+
 	function default_routes() {
 		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
@@ -44,7 +44,7 @@ class GP_Router {
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'post:/login' => array('GP_Route_Login', 'login_post'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
-			
+
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
@@ -58,15 +58,15 @@ class GP_Router {
 			"post:/$project/-delete" => array('GP_Route_Project', 'delete_post'),
 
 			"post:/$project/-personal" => array('GP_Route_Project', 'personal_options_post'),
-			
+
 			"get:/$project/-permissions" => array('GP_Route_Project', 'permissions_get'),
 			"post:/$project/-permissions" => array('GP_Route_Project', 'permissions_post'),
 			"get:/$project/-permissions/-delete/$dir" => array('GP_Route_Project', 'permissions_delete'),
-			
+
 			"get:/$project/-mass-create-sets" => array('GP_Route_Project', 'mass_create_sets_get'),
 			"post:/$project/-mass-create-sets" => array('GP_Route_Project', 'mass_create_sets_post'),
 			"post:/$project/-mass-create-sets/preview" => array('GP_Route_Project', 'mass_create_sets_preview_post'),
-			
+
 
 			"get:/$projects" => array('GP_Route_Project', 'index'),
 			"get:/$projects/-new" => array('GP_Route_Project', 'new_get'),
@@ -89,12 +89,12 @@ class GP_Router {
 			"get:/sets/$id" => array('GP_Route_Translation_Set', 'single'),
 			"get:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_get'),
 			"post:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_post'),
-			
+
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
 		) );
 	}
 
-	
+
 	function route() {
 		$real_request_uri = $this->request_uri();
 		$api_request_uri = $real_request_uri;
@@ -107,7 +107,7 @@ class GP_Router {
 			foreach( $this->urls as $re => $func ) {
 				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
 					if ( gp_startswith( $re, $http_method.':' ) ) {
-						
+
 						if ( $http_method != $request_method ) continue;
 						$re = substr( $re, strlen( $http_method . ':' ));
 						break;

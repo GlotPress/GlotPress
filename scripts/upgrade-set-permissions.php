@@ -2,7 +2,7 @@
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_Upgrade_Permissions extends GP_CLI {
-	
+
 	function run() {
 		$permissions = GP::$permission->find_many( array( 'object_type' => 'translation-set', 'action' => 'approve' ) );
 		foreach( $permissions as $permission ) {

@@ -13,9 +13,9 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			array('with_lt', 'you < me', 'ти < аз'),
 			array('with_gt', 'me > you', "аз > ти"),
 			array('with_amps', 'me & you are not &amp;', 'аз & ти не сме &amp;'),
-		);		
+		);
 	}
-	
+
 	function test_export() {
 		$entries_for_export = array();
 		foreach( $this->entries as $sample ) {
@@ -28,11 +28,11 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 		}
 		$this->assertEquals( file_get_contents( 'data/translation.android.xml' ), $this->android->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
 	}
-	
-	
+
+
 	function test_read_originals() {
 		$translations = $this->android->read_originals_from_file( 'data/originals.android.xml' );
-				
+
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation ) = $sample;
 			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context) );
@@ -41,7 +41,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			$this->assertEquals( $context, $entry->context );
 		}
 	}
-	
+
 	function test_read_translations() {
 		$stubbed_originals = array();
 		foreach( $this->entries as $sample ) {
@@ -59,5 +59,5 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );
 		}
 	}
-	
+
 }

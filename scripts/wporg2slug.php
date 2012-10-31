@@ -2,9 +2,9 @@
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_WPorg2Slug extends GP_CLI {
-	
+
 	var $usage = "<wporg-locale>";
-	
+
 	function run() {
 		if ( !isset( $this->args[0] ) ) {
 			$this->usage();

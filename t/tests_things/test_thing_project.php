@@ -16,7 +16,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( 'root/cool/p2', $p2->path);
 		$this->assertEquals( 'root/cool/p2/p3', $p3->path);
 	}
-	
+
 	function test_valid_path_on_create() {
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root' ) );
 		$p1 = GP::$project->create( array( 'name' => 'P1', 'slug' => 'p1', 'parent_project_id' => $root->id ) );
@@ -28,7 +28,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( 'root/p1', $p1->path );
 		$this->assertEquals( 'invader', $q->path );
 	}
-	
+
 	function test_save_no_args() {
 		$p1 = GP::$project->create( array( 'name' => 'P1', 'slug' => 'p1', 'path' => 'p1', ) );
 		$id = $p1->id;
@@ -39,7 +39,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( 'P2', $p1->name );
 		$this->assertEquals( 'P2', GP::$project->get( $id )->name );
 	}
-	
+
 	function test_reload() {
 		global $gpdb;
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root'  ) );
@@ -47,7 +47,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$root->reload();
 		$this->assertEquals( 'Buuu', $root->name );
 	}
-	
+
 	function test_path_to_root() {
 		$root = $this->factory->project->create( array( 'name' => 'Root' ) );
 		$sub = $this->factory->project->create( array( 'name' => 'Sub', 'parent_project_id' => $root->id ) );

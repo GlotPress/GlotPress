@@ -2,7 +2,7 @@
 require_once('init.php');
 
 class GP_Test_Translation_Entry extends GP_UnitTestCase {
-	
+
     function test_create_entry() {
 		// no singular => empty object
 		$entry = new Translation_Entry();

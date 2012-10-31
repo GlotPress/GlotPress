@@ -7,13 +7,13 @@ class GP_Test_Default_Factories extends GP_UnitTestCase {
 		$project = $project_factory->create();
 		$this->assertEquals( 'Project 1', $project->name );
 	}
-	
+
 	function test_project_factory_original() {
 		$original_factory = new GP_UnitTest_Factory_For_Original;
 		$original = $original_factory->create();
 		$this->assertEquals( 'Original 1', $original->singular );
 	}
-	
+
 	function test_locale_factory_create() {
 		$locale_factory =  new GP_UnitTest_Factory_For_Locale;
 		$locale = $locale_factory->create();

@@ -1,22 +1,22 @@
 <?php
 
 class GP_Format_Strings {
-	
+
 	var $extension = 'strings';
-	
+
 	var $exported = '';
-	
+
 	function sort_entries( $a, $b ) {
 		if ( $a->context == $b->context ) {
 			return 0;
 		}
 		return ( $a->context > $b->context ) ? +1 : -1;
 	}
-	
+
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = '';
 		$prefix = pack( 'CC', 0xff, 0xfe ); // Add BOM
-		
+
 		$sorted_entries = $entries;
 		usort( $sorted_entries, array( 'GP_Format_Strings', 'sort_entries' ) );
 		foreach ( $sorted_entries as $entry ) {
@@ -28,10 +28,10 @@ class GP_Format_Strings {
 			}
 			$result .= "/* $comment */\n\"$original\" = \"$translation\";\n\n";
 		}
-		
+
 		return $prefix . mb_convert_encoding( $result, 'UTF-16LE' );
 	}
-	
+
 	function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) return false;
 		$translations = $this->read_originals_from_file( $file_name );
@@ -40,11 +40,11 @@ class GP_Format_Strings {
 		$new_translations = new Translations;
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation			
+			// so we need to swap singular and translation
 			if ( $entry->context == $entry->singular ) {
 				$entry->translations = array();
 			} else {
-				$entry->translations = array( $entry->singular );				
+				$entry->translations = array( $entry->singular );
 			}
 			$entry->singular = null;
 			foreach( $originals as $original ) {
@@ -57,11 +57,11 @@ class GP_Format_Strings {
 				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
 				continue;
 			}
-			
+
 			$new_translations->add_entry( $entry );
 		}
 		return $new_translations;
-		
+
 	}
 
 	function read_originals_from_file( $file_name ) {
@@ -102,11 +102,11 @@ class GP_Format_Strings {
 		return $entries;
 	}
 
-	
+
 	function unescape( $string ) {
-		return stripcslashes( $string );		
+		return stripcslashes( $string );
 	}
-	
+
 	function escape( $string ) {
 		$string = addcslashes( $string, "'\n");
 		return $string;

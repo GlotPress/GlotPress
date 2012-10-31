@@ -11,31 +11,31 @@ class GP_Translation_Set extends GP_Thing {
 		$set->locale_should_not_be('empty');
 		$set->project_id_should_not_be('empty');
 	}
-	
+
 	function name_with_locale( $separator = '&rarr;') {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$parts = array( $locale->english_name );
 		if ( 'default' != $this->slug ) $parts[] = $this->name;
 		return implode( '&nbsp;'.$separator.'&nbsp;', $parts );
 	}
-	
+
 	function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
 		return $this->one( "
 		    SELECT * FROM $this->table
 		    WHERE slug = '%s' AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
 	}
-	
+
 	function by_project_id( $project_id ) {
 		return $this->many( "
 		    SELECT * FROM $this->table
 		    WHERE project_id = %d ORDER BY name ASC", $project_id );
 	}
-	
+
 	function import( $translations ) {
 		@ini_set('memory_limit', '256M');
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
 		$locale = GP_Locales::by_slug( $this->locale );
-		
+
 		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current', 'translated' => 'yes') );
 		$current_translations = new Translations();
 		foreach( $current_translations_list as $entry ) {
@@ -46,9 +46,9 @@ class GP_Translation_Set extends GP_Thing {
 		foreach( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) continue;
 			if ( in_array( 'fuzzy', $entry->flags ) ) continue;
-			
+
 			$create = false;
-			
+
 			if ( $translated = $current_translations->translate_entry( $entry ) ) {
 				// we have the same string translated
 				// create a new one if they don't match
@@ -74,17 +74,17 @@ class GP_Translation_Set extends GP_Thing {
 		wp_cache_delete( $this->id, 'translation_set_status_breakdown' );
 		return $translations_added;
 	}
-	
+
 	function waiting_count() {
 		if ( !isset( $this->waiting_count ) ) $this->update_status_breakdown();
 		return $this->waiting_count;
 	}
-	
+
 	function untranslated_count() {
 		if ( !isset( $this->untranslated_count ) ) $this->update_status_breakdown();
 		return $this->untranslated_count;
 	}
-	
+
 	function current_count() {
 		if ( !isset( $this->current_count ) ) $this->update_status_breakdown();
 		return $this->current_count;

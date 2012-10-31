@@ -1,12 +1,12 @@
 <?php
 class GP_Route_Project extends GP_Route_Main {
-	
+
 	function index() {
 		$title = __('Projects');
 		$projects = GP::$project->top_level();
 		$this->tmpl( 'projects', get_defined_vars() );
 	}
-	
+
 	function single( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
@@ -25,7 +25,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$this->tmpl( 'project', get_defined_vars() );
 	}
-	
+
 	function personal_options_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
@@ -71,10 +71,10 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$translations ) {
 			$this->redirect_with_error( __('Couldn&#8217;t load translations from file!') );
 		}
-		
+
 		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
 		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
-				
+
 		$this->redirect( gp_url_project( $project, 'import-originals' ) );
 	}
 
@@ -84,7 +84,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		gp_tmpl_load( 'project-edit', get_defined_vars() );
 	}
-	
+
 	function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
@@ -117,14 +117,14 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( '' ) );
 	}
 
-	
+
 	function new_get() {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->parent_project_id ) ) return;
 		gp_tmpl_load( 'project-new', get_defined_vars() );
 	}
-	
+
 	function new_post() {
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
@@ -141,7 +141,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->redirect( gp_url_project( $project ) );
 		}
 	}
-	
+
 	function permissions_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
@@ -190,7 +190,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		$this->redirect( gp_url_current() );
 	}
-	
+
 	function permissions_delete( $project_path, $permission_id ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( !$project ) gp_tmpl_404();
@@ -249,5 +249,5 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		header('Content-Type: application/json');
 		echo json_encode( $project->set_difference_from( $other_project ) );
-	}	
+	}
 }

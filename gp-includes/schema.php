@@ -124,7 +124,7 @@ function gp_schema_get() {
 		KEY `user_id` (`user_id`),
 		KEY `meta_key` (`meta_key`)
 	);";
-	
+
 	// meta
 	$gp_schema['meta'] = "CREATE TABLE IF NOT EXISTS `$gpdb->meta` (
 		`meta_id` bigint(20) NOT NULL auto_increment,
@@ -136,7 +136,7 @@ function gp_schema_get() {
 		KEY `object_type__meta_key` (`object_type`, `meta_key`),
 		KEY `object_type__object_id__meta_key` (`object_type`, `object_id`, `meta_key`)
 	);";
-	
+
 	// permissions
 	$gp_schema['permissions'] = "CREATE TABLE IF NOT EXISTS `$gpdb->permissions` (
 		`id` INT(10) NOT NULL AUTO_INCREMENT,
@@ -166,12 +166,12 @@ function gp_schema_get() {
 		if (!preg_match('@^\s*CREATE\s+TABLE\s+@im', $_sql)) {
 			continue;
 		}
-	
+
 		// Skip if the table's database doesn't support collation
 		if (!$gpdb->has_cap('collation', $gpdb->$_table_name)) {
 			continue;
 		}
-	
+
 		// Find out if the table has a custom database set
 		if (
 			isset($gpdb->db_tables) &&
@@ -184,7 +184,7 @@ function gp_schema_get() {
 			// Set the default global database
 			$_database = 'dbh_global';
 		}
-	
+
 		// Make sure the database exists
 		if (
 			isset($gpdb->db_servers) &&
@@ -204,7 +204,7 @@ function gp_schema_get() {
 			if ($_charset_collate) {
 				// Modify the SQL
 				$gp_schema[$_table_name] = str_replace(';', $_charset_collate . ';', $_sql);
-			}			
+			}
 		}
 		unset($_database, $_charset_collate);
 	}

@@ -37,5 +37,5 @@ if ( $show_htaccess_instructions ): ?>
 		<?php _e('<strong>The default username is <code>admin</code>, whose password is simply <code>a</code>.</strong>'); ?>
 	</p>
 <?php endif; ?>
-	
+
 <?php gp_tmpl_footer(); ?>

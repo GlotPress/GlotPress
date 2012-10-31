@@ -53,7 +53,7 @@ $i = 0;
 				__('Fuzzy') );
 		$filter_links[] = gp_link_get( add_query_arg( array('filters[warnings]' => 'yes', 'filters[status]' => 'current_or_waiting', 'sort[by]' => 'translation_date_added'), $url ),
 				__('Warnings') );
-	
+
 	}
 	// TODO: with warnings
 	// TODO: saved searches
@@ -78,7 +78,7 @@ $i = 0;
 					'old' => __('Approved, but obsoleted by another string'),
 					'waiting' => __('Waiting approval'),
 					'rejected' => __('Rejected'),
-					'untranslated' => __('Without current translation'),					
+					'untranslated' => __('Without current translation'),
 					'either' => __('Any'),
 				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
 			?>
@@ -87,8 +87,8 @@ $i = 0;
 			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment' ); ?></label><br />
 			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context' ); ?></label>
 		</dd>
-		
-		
+
+
 		<dd><input type="submit" value="<?php echo esc_attr(__('Filter')); ?>" name="filter" /></dd>
 	</dl>
 	<dl class="filters-expanded sort hidden clearfix">
@@ -102,7 +102,7 @@ $i = 0;
 				'how' => 'desc'
 			);
 		}
-		
+
 		echo gp_radio_buttons('sort[by]',
 			array(
 				'original_date_added' => __('Date added (original)'),
@@ -176,7 +176,7 @@ $i = 0;
 		$format_dropdown = gp_select( 'export-format', array_combine( $format_slugs, $format_slugs ), 'po' );
 		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
 		$footer_links[] = sprintf( __('%1$s %2$s as %3$s'), $export_link, $what_dropdown, $format_dropdown );
-		
+
 		echo implode( ' &bull; ', apply_filters( 'translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>

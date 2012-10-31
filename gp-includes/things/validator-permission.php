@@ -13,7 +13,7 @@ class GP_Validator_Permission extends GP_Permission {
 		$permission->action_should_not_be('empty');
 		$permission->set_slug_should_not_be('empty');
 	}
-	
+
 	function set_fields( $db_object ) {
 		parent::set_fields( $db_object );
 		if ( $this->object_id ) {
@@ -33,15 +33,15 @@ class GP_Validator_Permission extends GP_Permission {
 		$args = parent::prepare_fields_for_save( $args );
 		return $args;
 	}
-	
+
 	function project_id_locale_slug_set_slug( $object_id ) {
 		return explode( '|', $object_id );
 	}
-	
+
 	function object_id( $project_id, $locale_slug, $set_slug = 'default' ) {
 		return implode( '|', array( $project_id, $locale_slug, $set_slug ) );
 	}
-	
+
 	function by_project_id( $project_id ) {
 		$project_id = (int)$project_id;
 		return $this->find_many( "object_id LIKE '$project_id|%'" );

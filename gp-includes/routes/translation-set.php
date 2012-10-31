@@ -7,7 +7,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		if ( $this->cannot_edit_set_and_redirect( $set ) ) return;
 		$this->tmpl( 'translation-set-new', get_defined_vars() );
 	}
-	
+
 	function new_post() {
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
@@ -22,14 +22,14 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			$this->redirect( gp_url_project_locale( GP::$project->get( $created_set->project_id ), $created_set->locale, $created_set->slug ) );
 		}
 	}
-	
+
 	function single( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items) return;
 		list( $set, $project, $locale ) = $items;
 		$this->redirect( gp_url_project( $project, array( $set->locale, $set->slug ) ) );
 	}
-	
+
 	function edit_get( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;
@@ -38,7 +38,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$url = gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) );
 		$this->tmpl( 'translation-set-edit', get_defined_vars() );
 	}
-	
+
 	function edit_post( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;
@@ -59,7 +59,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	private function cannot_edit_set_and_redirect( $set ) {
 		return $this->cannot_and_redirect( 'write', 'project', $set->project_id );
 	}
-		
+
 	private function get_set_project_and_locale_from_set_id_or_404( $set_id ) {
 		$set = GP::$translation_set->get( $set_id );
 		if ( !$set ) {

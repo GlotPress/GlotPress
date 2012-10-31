@@ -39,7 +39,7 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 		$set = GP::$translation_set->get( $args['object_id'] );
 	return $args['user']->can( 'approve', GP::$validator_permission->object_type,
 		GP::$validator_permission->object_id( $set->project_id, $set->locale, $set->slug ) );
-	
+
 }
 
 add_filter( 'can_user', 'gp_recurse_project_permissions', 10, 2 );

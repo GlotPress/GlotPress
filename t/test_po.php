@@ -45,7 +45,7 @@ http://wordpress.org/
 	function test_poify() {
 		//simple
 		$this->assertEquals('"baba"', PO::poify('baba'));
-		//long word		
+		//long word
 		$this->assertEquals($this->po_a90, PO::poify($this->a90));
 		// tab
 		$this->assertEquals('"ba\tba"', PO::poify("ba\tba"));
@@ -59,7 +59,7 @@ http://wordpress.org/
 
 		$this->assertEquals($this->po_mail, PO::poify($this->mail));
 	}
-	
+
 	function test_unpoify() {
 		$this->assertEquals('baba', PO::unpoify('"baba"'));
 		$this->assertEquals("baba\ngugu", PO::unpoify('"baba\n"'."\t\t\t\n".'"gugu"'));
@@ -171,48 +171,48 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$po->export_to_file($temp_fn2);
 		$this->assertEquals($po->export(), file_get_contents($temp_fn2));
 	}
-	
+
 	function test_import_from_file() {
 		$po = new PO();
 		$res = $po->import_from_file('data/simple.po');
 		$this->assertEquals(true, $res);
 
 		$this->assertEquals(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Plural-Forms' => 'nplurals=2; plural=n != 1;'), $po->headers);
-		
+
 		$simple_entry = new Translation_Entry(array('singular' => 'moon',));
 		$this->assertEquals($simple_entry, $po->entries[$simple_entry->key()]);
-		
+
 		$all_types_entry = new Translation_Entry(array('singular' => 'strut', 'plural' => 'struts', 'context' => 'brum',
 			'translations' => array('ztrut0', 'ztrut1', 'ztrut2')));
 		$this->assertEquals($all_types_entry, $po->entries[$all_types_entry->key()]);
-		
+
 		$multiple_line_entry = new Translation_Entry(array('singular' => 'The first thing you need to do is tell Blogger to let WordPress access your account. You will be sent back here after providing authorization.', 'translations' => array("baba\ndyadogugu")));
 		$this->assertEquals($multiple_line_entry, $po->entries[$multiple_line_entry->key()]);
-		
+
 		$multiple_line_all_types_entry = new Translation_Entry(array('context' => 'context', 'singular' => 'singular',
 			'plural' => 'plural', 'translations' => array('translation0', 'translation1', 'translation2')));
 		$this->assertEquals($multiple_line_all_types_entry, $po->entries[$multiple_line_all_types_entry->key()]);
-		
+
 		$comments_entry = new Translation_Entry(array('singular' => 'a', 'translator_comments' => "baba\nbrubru",
 			'references' => array('wp-admin/x.php:111', 'baba:333', 'baba'), 'extracted_comments' => "translators: buuu",
 			'flags' => array('fuzzy')));
 		$this->assertEquals($comments_entry, $po->entries[$comments_entry->key()]);
-			
+
 		$end_quote_entry = new Translation_Entry(array('singular' => 'a"'));
 		$this->assertEquals($end_quote_entry, $po->entries[$end_quote_entry->key()]);
 	}
-	
+
 	function test_import_from_entry_file_should_give_false() {
 		$po = new PO();
 		$this->assertFalse( $po->import_from_file( 'data/empty.po' ) );
 	}
-	
+
 	function test_import_from_file_with_windows_line_endings_should_work_as_with_unix_line_endings() {
 		$po = new PO();
 		$this->assertTrue( $po->import_from_file( 'data/windows-line-endings.po' ) );
 		$this->assertEquals( 1, count( $po->entries ) );
 	}
-	
+
 	//TODO: add tests for bad files
 }
 ?>

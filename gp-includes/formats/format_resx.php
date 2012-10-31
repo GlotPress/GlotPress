@@ -1,21 +1,21 @@
 <?php
 
 class GP_Format_ResX {
-	
+
 	var $extension = 'resx.xml';
-	
+
 	var $exported = '';
-	
+
 	function line( $string, $prepend_tabs = 0 ) {
 		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
 	}
-	
+
 	function res_header( $name, $value ) {
 		$this->line( '<resheader name="'.$name.'">', 1 );
 		$this->line( '<value>'.$value.'</value>', 2 );
-		$this->line( '</resheader>', 1 );		
+		$this->line( '</resheader>', 1 );
 	}
-		
+
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
@@ -39,7 +39,7 @@ class GP_Format_ResX {
 		$this->line( '</root>' );
 		return $this->exported;
 	}
-	
+
 	function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) return false;
 		$translations = $this->read_originals_from_file( $file_name );
@@ -48,7 +48,7 @@ class GP_Format_ResX {
 		$new_translations = new Translations;
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation			
+			// so we need to swap singular and translation
 			$entry->translations = array( $entry->singular );
 			$entry->singular = null;
 			foreach( $originals as $original ) {
@@ -61,11 +61,11 @@ class GP_Format_ResX {
 				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
 				continue;
 			}
-			
+
 			$new_translations->add_entry( $entry );
 		}
 		return $new_translations;
-		
+
 	}
 
 	function read_originals_from_file( $file_name ) {
@@ -90,11 +90,11 @@ class GP_Format_ResX {
 		return $entries;
 	}
 
-	
+
 	function unescape( $string ) {
 		return $string;
 	}
-	
+
 	function escape( $string ) {
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
 		return $string;

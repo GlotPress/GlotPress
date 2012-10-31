@@ -80,7 +80,7 @@ class GP_Translation extends GP_Thing {
 				'how' => 'desc'
 			);
 		}
-		
+
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
@@ -132,7 +132,7 @@ class GP_Translation extends GP_Thing {
 			$join_where[] = 't.status != "rejected"';
 			$statuses = array_filter( $statuses, lambda( '$x', '$x != "untranslated"' ) );
 		}
-		
+
 		$statuses = array_filter( $statuses, lambda( '$s', 'in_array($s, $statuses)', array( 'statuses' => $this->get_static( 'statuses' ) ) ) );
 		if ( $statuses ) {
 			$statuses_where = array();
@@ -147,7 +147,7 @@ class GP_Translation extends GP_Thing {
 		if ( $where ) {
 			$where = 'AND '.$where;
 		}
-		
+
 		$join_where = implode( ' AND ', $join_where );
 		if ( $join_where ) {
 			$join_where = 'AND '.$join_where;
@@ -156,7 +156,7 @@ class GP_Translation extends GP_Thing {
 		$sql_sort = sprintf( $sort_by, $sort_how );
 
 		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
-		
+
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 		    FROM $gpdb->originals as o

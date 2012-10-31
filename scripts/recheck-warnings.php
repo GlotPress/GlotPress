@@ -2,7 +2,7 @@
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_Recheck_Warnings extends GP_Translation_Set_Script {
-	
+
 	function action_on_translation_set( $translation_set ) {
 		$project = GP::$project->get( $translation_set->project_id );
 		$locale = GP_Locales::by_slug( $translation_set->locale );
@@ -15,7 +15,7 @@ class GP_Script_Recheck_Warnings extends GP_Translation_Set_Script {
 			}
 		}
 	}
-	
+
 }
 $gp_script_recheck_warnings = new GP_Script_Recheck_Warnings;
 $gp_script_recheck_warnings->run();

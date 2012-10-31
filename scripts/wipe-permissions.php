@@ -2,7 +2,7 @@
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script_Wipe_Permissions extends GP_CLI {
-	
+
 	function run() {
 		echo "This will erase all current permissions!\nAre you sure you want to delete them? [y/N]\n";
 		$response = fgets( STDIN );

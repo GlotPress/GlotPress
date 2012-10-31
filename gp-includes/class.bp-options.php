@@ -9,7 +9,7 @@ class BP_Options
 	function prefix() {
 		return 'bp_glotpress_';
 	}
-	
+
 	function get($option) {
 		switch ($option) {
 			case 'application_id':
@@ -38,15 +38,15 @@ class BP_Options
 				break;
 		}
 	}
-	
+
 	function add($option, $value) {
 		return BP_Options::update($option, $value);
 	}
-	
+
 	function update($option, $value) {
 		return bb_update_option(BP_Options::prefix() . $option, $value);
 	}
-	
+
 	function delete($option) {
 		return bb_delete_option(BP_Options::prefix() . $option);
 	}

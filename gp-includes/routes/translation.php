@@ -36,10 +36,10 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translations_added = $translation_set->import( $translations );
 		$this->notices[] = sprintf(__("%s translations were added"), $translations_added );
-				
-		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );		
+
+		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
-	
+
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -52,7 +52,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
-		$this->headers_for_download( $filename );		
+		$this->headers_for_download( $filename );
 		echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
 	}
 
@@ -76,7 +76,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
-		
+
 		$can_edit = GP::$user->logged_in();
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
@@ -94,7 +94,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		
+
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 		    $data = compact('original_id');
@@ -130,7 +130,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 		echo json_encode( $output );
 	}
-	
+
 	function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
 
 		$project = GP::$project->by_path( $project_path );
@@ -152,18 +152,18 @@ class GP_Route_Translation extends GP_Route_Main {
 		} else {
 			$this->errors[] = 'No translations were supplied.';
 		}
-		
+
 		wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
-		
+
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
 		$this->redirect( $bulk['redirect_to'] );
 	}
-	
+
 	function _bulk_approve( $project, $locale, $translation_set, $bulk ) {
-		
+
 		$action = $bulk['action'];
-		
+
 		$ok = $error = 0;
 		$new_status = 'approve' == $action? 'current' : 'rejected';
 		foreach( $bulk['row-ids'] as $row_id ) {
@@ -205,13 +205,13 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 		}
 	}
-	
+
 	function _bulk_google_translate( $project, $locale, $translation_set, $bulk ) {
 		$google_errors = 0;
 		$insert_errors = 0;
 		$ok = 0;
 		$skipped = 0;
-		
+
 		$singulars = array();
 		$original_ids = array();
 		foreach( $bulk['row-ids'] as $row_id ) {
@@ -261,27 +261,27 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->notices[] = sprintf( __('%d fuzzy translation from Google Translate were added.' ), $ok );
 		}
 	}
-			
+
 	function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'discard_warning_edit_function' ) );
 	}
-	
+
 	function set_status( $project_path, $locale_slug, $translation_set_slug ) {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
 	}
-			
+
 	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
 		$this->can_or_forbidden( 'approve', 'translation-set', $translation_set->id );
-		
+
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
 		if ( !$translation ) {
 			$this->die_with_error( 'Translation doesn&#8217;t exist!' );
 		}
-		
+
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
@@ -293,9 +293,9 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			$this->die_with_error( 'Error in retrieving translation!' );
-		}		
+		}
 	}
-	
+
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( !isset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] ) ) {
 			$this->die_with_error( 'The warning doesn&#8217;exist!' );
@@ -308,7 +308,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( !$res ) {
 			$this->die_with_error( 'Error in saving the translation!' );
 		}
-		
+
 	}
 
 	private function set_status_edit_function( $project, $locale, $translation_set, $translation ) {
@@ -319,5 +319,5 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 
-	
+
 }

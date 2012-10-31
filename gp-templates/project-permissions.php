@@ -26,11 +26,11 @@ gp_tmpl_header();
 			<a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); ?>" class="action delete"><?php _e('Remove'); ?></a>
 		</li>
 	<?php endforeach; ?>
-</ul>	
+</ul>
 	<?php endif; ?>
 	<?php  if ( $parent_permissions ): ?>
 <h4 id="validators"><?php _e('Validators for parent projects'); ?></h4>
-<ul class="permissions">		
+<ul class="permissions">
 		<?php foreach( $parent_permissions as $permission ): ?>
 			<li>
 				<span class="permission-action"><?php _e('user'); ?></span>
@@ -43,7 +43,7 @@ gp_tmpl_header();
 				<span class="user"><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></span>
 			</li>
 		<?php endforeach; ?>
-</ul>				
+</ul>
 	<?php endif; ?>
 	<?php if ( !$permissions && !$parent_permissions ): ?>
 		<strong><?php _e('No validators defined for this project.'); ?></strong>
@@ -57,7 +57,7 @@ gp_tmpl_header();
 		<dd><?php echo gp_locales_dropdown( 'locale' ); ?></dd>
 		<dt><label for="set-slug"><?php _e('Translation set slug:'); ?></label></dt>
 		<dd><input type="text" name="set-slug" value="default" id="set-slug" /></dd>
-				
+
 		<dt>
 			<input type="submit" name="submit" value="<?php echo esc_attr(__('Add')); ?>" id="submit" />
 			<input type="hidden" name="action" value="add-validator" />

@@ -17,7 +17,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			?>
 			<div class="warning secondary">
 				<?php printf( __('<strong>Warning:</strong> %s'), esc_html( $warning['value'] ) ); ?>
-				
+
 				<?php if( $can_approve ): ?>
 					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e('Discard'); ?></a>
 				<?php endif; ?>
@@ -56,7 +56,7 @@ function references( $project, $entry ) {
 	if ( !$project->source_url_template() ) return;
 	?>
 	<?php _e('References:'); ?>
-	<ul class="refs">	
+	<ul class="refs">
 		<?php
 		foreach( $entry->references as $reference ):
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );

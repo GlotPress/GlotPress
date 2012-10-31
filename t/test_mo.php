@@ -32,7 +32,7 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
 		$this->assertEquals('manyey dragoney', $mo->translate_plural('one dragon', '%d dragons', 11));
 		$this->assertEquals('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', 3));
-		
+
 		$mo->set_header('Plural-Forms', 'nplurals=2; plural=n !=1;');
 		$this->assertEquals('oney dragoney', $mo->translate_plural('one dragon', '%d dragons', 1));
 		$this->assertEquals('twoey dragoney', $mo->translate_plural('one dragon', '%d dragons', 2));
@@ -52,7 +52,7 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEquals("not so dragon", $mo->entries[$single_entry->key()]->context);
 
 	}
-	
+
 	function test_translations_merge() {
 		$host = new Translations();
 		$host->add_entry(new Translation_Entry(array('singular' => 'pink',)));
@@ -64,7 +64,7 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEquals(3, count($host->entries));
 		$this->assertEquals(array(), array_diff(array('pink', 'green', 'red'), array_keys($host->entries)));
 	}
-	
+
 	function test_export_mo_file() {
 		$entries = array();
 		$entries[] = new Translation_Entry(array('singular' => 'pink',
@@ -85,10 +85,10 @@ class GP_Test_MO extends GP_UnitTestCase {
 			$mo->add_entry($entry);
 		}
 		$mo->add_entry($no_translation_entry);
-		
+
 		$temp_fn = $this->temp_filename();
 		$mo->export_to_file($temp_fn);
-		
+
 		$again = new MO();
 		$again->import_from_file($temp_fn);
 
@@ -97,12 +97,12 @@ class GP_Test_MO extends GP_UnitTestCase {
 			$this->assertEquals($entry, $again->entries[$entry->key()]);
 		}
 	}
-	
+
 	function test_export_should_not_include_empty_translations() {
 		$entries = array(  );
 		$mo = new MO;
 		$mo->add_entry( array( 'singular' => 'baba', 'translations' => array( '', '' ) ) );
-		
+
 		$temp_fn = $this->temp_filename();
 		$mo->export_to_file( $temp_fn );
 
@@ -111,7 +111,7 @@ class GP_Test_MO extends GP_UnitTestCase {
 
 		$this->assertEquals( 0, count( $again->entries ) );
 	}
-	
+
 	function test_nplurals_with_backslashn() {
 		$mo = new MO();
 		$mo->import_from_file('data/bad_nplurals.mo');
@@ -119,14 +119,14 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEquals('%d foros', $mo->translate_plural('%d forum', '%d forums', 2));
 		$this->assertEquals('%d foros', $mo->translate_plural('%d forum', '%d forums', -1));
 	}
-	
+
 	function disabled_test_performance() {
 		$start = microtime(true);
 		$mo = new MO();
 		$mo->import_from_file('data/de_DE-2.8.mo');
 		// echo "\nPerformance: ".(microtime(true) - $start)."\n";
 	}
-	
+
 	function test_overloaded_mb_functions() {
 		// skipIf() method skips the whole test case, not only this method
 		// that's why we are skipping it the stupid way
@@ -136,7 +136,7 @@ class GP_Test_MO extends GP_UnitTestCase {
 			$this->assertEquals(array('Табло'), $mo->entries['Dashboard']->translations);
 		}
 	}
-	
+
 	function test_load_pot_file() {
 		$mo = new MO();
 		$this->assertEquals( false, $mo->import_from_file('data/mo.pot') );

@@ -24,15 +24,15 @@ if ( defined( 'GP_CONFIG_FILE' ) && GP_CONFIG_FILE ) {
 	require_once GP_CONFIG_FILE;
 	require_once( GP_PATH . 'gp-settings.php' );
 } elseif ( file_exists( GP_PATH . 'gp-config.php') ) {
-	
+
 	require_once( GP_PATH . 'gp-config.php');
 	require_once( GP_PATH . 'gp-settings.php' );
-	
+
 } elseif ( file_exists( dirname( GP_PATH ) . '/gp-config.php') ) {
-	
+
 	require_once( dirname( GP_PATH ) . '/gp-config.php' );
 	require_once( GP_PATH . 'gp-settings.php' );
-	
+
 } elseif ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) {
 
 	$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';

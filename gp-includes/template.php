@@ -10,7 +10,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	if ( isset( $args['http_status'] ) )
 		status_header( $args['http_status'] );
 	foreach( $locations as $location ) {
-	 	$file = $location . "$template.php";	
+	 	$file = $location . "$template.php";
 		if ( is_readable( $file ) ) {
 			extract( $args, EXTR_SKIP );
 			include $file;

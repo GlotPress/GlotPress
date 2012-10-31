@@ -2,7 +2,7 @@
 require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
 class GP_Script extends GP_CLI {
-	
+
 	function run() {
 		$sets = GP::$translation_set->all();
 		foreach( $sets as $set ) {

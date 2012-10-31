@@ -1,9 +1,9 @@
 <?php
 
 class GP_Format_RRC {
-	
+
 	var $extension = 'rrc';
-	
+
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$rrc = array();
 		foreach( $entries as $entry ) {
@@ -34,7 +34,7 @@ class GP_Format_RRC {
 		}
 		return $result;
 	}
-	
+
 	function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) return false;
 		$translations = $this->read_originals_from_file( $file_name );
@@ -43,7 +43,7 @@ class GP_Format_RRC {
 		$new_translations = new Translations;
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation			
+			// so we need to swap singular and translation
 			$entry->translations = array( $entry->singular );
 			$entry->singular = null;
 			foreach( $originals as $original ) {
@@ -56,7 +56,7 @@ class GP_Format_RRC {
 				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
 				continue;
 			}
-			
+
 			$new_translations->add_entry( $entry );
 		}
 		return $new_translations;
@@ -66,7 +66,7 @@ class GP_Format_RRC {
 		$entries = new Translations;
 		$f = fopen( $file_name, 'r' );
 		if ( !$f ) return false;
-		$context = $index = $base_singular = $entry = null;		
+		$context = $index = $base_singular = $entry = null;
 		while ( false !== ( $line = fgets( $f ) ) ) {
 			$line = trim( $line );
 			if ( is_null( $context) ) {
@@ -100,9 +100,9 @@ class GP_Format_RRC {
 				}
 			}
 		}
-		return $entries;	
+		return $entries;
 	}
-	
+
 
 	/**
 	 * Escapes a UTF-8 string to be used in RRC file
@@ -124,14 +124,14 @@ class GP_Format_RRC {
 					$string .= $c_latin1;
 				} else {
 					$entity = mb_encode_numericentity( $c, array(0x0, 0xffff, 0, 0xffff), 'UTF-8' );
-					$code_point = str_replace( array('&', '#', ';'), '', $entity );				
+					$code_point = str_replace( array('&', '#', ';'), '', $entity );
 					$string .= '\\u' . str_pad( strtoupper( dechex( $code_point ) ), 4, '0', STR_PAD_LEFT );
 				}
 			}
 		}
 		return $string;
 	}
-	
+
 	/**
 	 * The reverse of {@see escape}
 	 */

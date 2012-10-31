@@ -1,15 +1,15 @@
 <?php
 
 class GP_Format_Android {
-	
+
 	var $extension = 'xml';
-	
+
 	var $exported = '';
-	
+
 	function line( $string, $prepend_tabs = 0 ) {
 		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
 	}
-		
+
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
@@ -24,7 +24,7 @@ class GP_Format_Android {
 		$this->line( '</resources>' );
 		return $this->exported;
 	}
-	
+
 	function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) return false;
 		$translations = $this->read_originals_from_file( $file_name );
@@ -33,7 +33,7 @@ class GP_Format_Android {
 		$new_translations = new Translations;
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation			
+			// so we need to swap singular and translation
 			$entry->translations = array( $entry->singular );
 			$entry->singular = null;
 			foreach( $originals as $original ) {
@@ -46,11 +46,11 @@ class GP_Format_Android {
 				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
 				continue;
 			}
-			
+
 			$new_translations->add_entry( $entry );
 		}
 		return $new_translations;
-		
+
 	}
 
 	function read_originals_from_file( $file_name ) {
@@ -69,11 +69,11 @@ class GP_Format_Android {
 		return $entries;
 	}
 
-	
+
 	function unescape( $string ) {
-		return stripcslashes( $string );		
+		return stripcslashes( $string );
 	}
-	
+
 	function escape( $string ) {
 		$string = addcslashes( $string, "'\n");
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );

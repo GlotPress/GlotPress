@@ -7,7 +7,7 @@ class GP_UnitTest_Factory {
 		$this->translation = new GP_UnitTest_Factory_For_Translation( $this );
 		$this->user = new GP_UnitTest_Factory_For_User( $this );
 		$this->locale = new GP_UnitTest_Factory_For_Locale( $this );
-	}	
+	}
 }
 
 class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
@@ -32,12 +32,12 @@ class GP_UnitTest_Factory_For_User extends GP_UnitTest_Factory_For_Thing {
 			'user_email' => new GP_UnitTest_Generator_Sequence( 'user_%s@example.org' ),
 		);
 	}
-	
+
 	function create_admin( $args = array() ) {
 		$user = $this->create( $args );
 		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'admin' ) );
 		return $user;
-	}	
+	}
 }
 
 
@@ -78,7 +78,7 @@ class GP_UnitTest_Factory_For_Translation extends GP_UnitTest_Factory_For_Thing 
 			'translation_0' => new GP_UnitTest_Generator_Sequence( 'Translation %s' ),
 		);
 	}
-	
+
 	function create_with_original_for_translation_set( $set, $args = array() ) {
 		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
 		$translation = $this->create( array_merge( $args, array( 'original_id' => $original->id, 'translation_set_id' => $set->id ) ) );
@@ -97,7 +97,7 @@ class GP_UnitTest_Factory_For_Locale extends GP_UnitTest_Factory_For_Thing {
 			'english_name' => new GP_UnitTest_Generator_Sequence( 'Locale %s' ),
 		);
 	}
-	
+
 	function create( $args = array(), $generation_definitions = null ) {
 		if ( is_null( $generation_definitions ) ) $generation_definitions = $this->default_generation_definitions;
 		$generated_args = $this->generate_args( $args, $generation_definitions, $callbacks );
@@ -113,11 +113,11 @@ class GP_UnitTest_Factory_For_Locale extends GP_UnitTest_Factory_For_Thing {
 }
 
 class GP_UnitTest_Factory_For_Thing {
-	
+
 	var $default_generation_definitions;
 	var $thing;
 	var $factory;
-	
+
 	/**
 	 * Creates a new factory, which will create objects of a specific Thing
 	 *
@@ -132,7 +132,7 @@ class GP_UnitTest_Factory_For_Thing {
 		$this->default_generation_definitions = $default_generation_definitions;
 		$this->thing = $thing;
 	}
-	
+
 	function create( $args = array(), $generation_definitions = null ) {
 		if ( is_null( $generation_definitions ) ) $generation_definitions = $this->default_generation_definitions;
 		$generated_args = $this->generate_args( $args, $generation_definitions, $callbacks );
@@ -145,7 +145,7 @@ class GP_UnitTest_Factory_For_Thing {
 		}
 		return $created;
 	}
-	
+
 	function generate_args( $args = array(), $generation_definitions = null, &$callbacks = null ) {
 		$callbacks = array();
 		if ( is_null( $generation_definitions ) ) $generation_definitions = $this->default_generation_definitions;
@@ -163,12 +163,12 @@ class GP_UnitTest_Factory_For_Thing {
 					$args[$field_name] = $generator->next();
 				else
 					return new WP_Error( 'invalid_argument', 'Factory default value should be either a scalar or an generator object.' );
-				
+
 			}
 		}
 		return $args;
 	}
-	
+
 	function apply_callbacks( $callbacks, $created ) {
 		$updated_fields = array();
 		foreach( $callbacks as $field_name => $generator ) {
@@ -176,21 +176,21 @@ class GP_UnitTest_Factory_For_Thing {
 		}
 		return $updated_fields;
 	}
-	
+
 	function callback( $function ) {
 		return new GP_UnitTest_Factory_Callback_After_Create( $function );
-	}	
+	}
 }
 
 class GP_UnitTest_Generator_Sequence {
 	var $next;
 	var $template_string;
-	
+
 	function __construct( $template_string = '%s', $start = 1 ) {
 		$this->next = $start;
 		$this->template_string = $template_string;
 	}
-	
+
 	function next() {
 		$generated = sprintf( $this->template_string , $this->next );
 		$this->next++;

@@ -9,20 +9,20 @@ class GP_Plugin {
 	 * @var $id unique id of the plugin. It will be used as a plugin slug in the plugin repository
 	 */
 	var $id;
-	
+
 	/**
 	 * If you override the constructor, always call the parent one.
 	 */
 	function __construct() {
 		$this->_object_type = 'plugin_'.$this->id;
 	}
-	
-	
+
+
 	/**
 	 * Retrieve an option, specific to your plugin.
 	 *
 	 * You don't have to prefix the key or to tie its name to your plugin.
-	 * 	
+	 *
 	 * @param string $key
 	 * @return mixed the value of the option, or null if it wasn't found
 	 */
@@ -37,7 +37,7 @@ class GP_Plugin {
 		}
 		return $r;
 	}
-	
+
 	/**
 	 * Update an option, specific to your plugin.
 	 *
@@ -50,7 +50,7 @@ class GP_Plugin {
 	function update_option( $key, $value ) {
 		return gp_update_meta( 0, $key, $value, $this->_object_type, true );
 	}
-	
+
 	/**
 	 * Adds a method in this class as an action with the same name.
 	 *
@@ -89,11 +89,11 @@ class GP_Plugin {
 		$args = array_merge( $defaults, $args );
 		return $wp_function( $args['tag'], array( &$this, $args['tag'] ), $args['priority'], $args['args'] );
 	}
-	
+
 	function remove_action( $action_name, $args = array() ) {
 		return $this->remove_filter( $action_name, $args );
 	}
-	
+
 	function remove_filter( $filter_name, $args = array() ) {
 		return $this->_call_wp_plugin_api_function( 'remove_filter', $filter_name, $args );
 	}

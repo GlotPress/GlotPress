@@ -9,7 +9,7 @@ function gp_styles_default( &$styles ) {
 	// TODO: get text direction for current locale
 	//$styles->text_direction = 'rtl' == get_bloginfo( 'text_direction' ) ? 'rtl' : 'ltr';
 	$styles->text_direction = 'ltr';
-	
+
 	$styles->add( 'base', '/style.css', array(), '20120410' );
 }
 
