@@ -19,6 +19,18 @@ function gp_link() {
 	echo call_user_func_array('gp_link_get', $args);
 }
 
+function gp_link_with_ays_get( $url, $text, $attrs = array() ) {
+	$ays_text = $attrs['ays-text'];
+	unset( $attrs['ays-text'] );
+	$attrs['onclick'] = "return confirm('".esc_js( $ays_text )."');";
+	return gp_link_get( $url, $text, $attrs );
+}
+
+function gp_link_with_ays() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_with_ays_get', $args);
+}
+
 function gp_link_project_get( $project_or_path, $text, $attrs = array() ) {
 	$attrs = array_merge( array( 'title' => 'Project: '.$text ), $attrs );
 	return gp_link_get( gp_url_project( $project_or_path ), $text, $attrs );
