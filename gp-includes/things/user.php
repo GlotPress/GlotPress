@@ -36,6 +36,12 @@ class GP_User extends GP_Thing {
 		return $this->coerce( $user );
 	}
 
+	function by_email( $email ) {
+		global $wp_users_object;
+		$user = $wp_users_object->get_user( $email, array( 'by' => 'email' ) );
+		return $this->coerce( $user );
+	}
+
 	function logged_in() {
 		global $wp_auth_object;
 		$coerced = $this->coerce( $wp_auth_object->get_current_user() );
