@@ -2,6 +2,7 @@
 
 class GP_Format_RRC {
 
+	var $name = 'Blackberry Resource (.rrc)';
 	var $extension = 'rrc';
 
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {

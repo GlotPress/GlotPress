@@ -2,6 +2,7 @@
 
 class GP_Format_Strings {
 
+	var $name = 'Mac OS X / iOS Strings File (.strings)';
 	var $extension = 'strings';
 
 	var $exported = '';

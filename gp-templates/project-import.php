@@ -11,8 +11,11 @@ gp_tmpl_header();
 	<dt><label for="import-file"><?php _e('Import File:'); ?></label></dt>
 	<dd><input type="file" name="import-file" id="import-file" /></dd>
 <?php
-	$format_slugs = array_keys( GP::$formats );
-	$format_dropdown = gp_select( 'format', array_combine( $format_slugs, $format_slugs ), 'po' );
+	$format_options = array();
+	foreach ( GP::$formats as $slug => $format ) {
+		$format_options[$slug] = $format->name;
+	}
+	$format_dropdown = gp_select( 'format', $format_options, 'po' );
 ?>
 	<dt><label	for="format"><?php _e('Format:'); ?></label></dt>
 	<dd><?php echo $format_dropdown; ?></dd>
