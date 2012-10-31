@@ -280,15 +280,24 @@ require_once( GP_PATH . GP_INC . 'google.php' );
 require_once( GP_PATH . GP_INC . 'advanced-permissions.php' );
 
 require_once GP_PATH . GP_INC . 'thing.php';
-foreach( glob( GP_PATH . GP_INC . 'things/*.php' ) as $thing_file ) {
-	require_once $thing_file;
-}
+require_once GP_PATH . GP_INC . 'things/original.php';
+require_once GP_PATH . GP_INC . 'things/permission.php';
+require_once GP_PATH . GP_INC . 'things/project.php';
+require_once GP_PATH . GP_INC . 'things/translation-set.php';
+require_once GP_PATH . GP_INC . 'things/translation.php';
+require_once GP_PATH . GP_INC . 'things/user.php';
+require_once GP_PATH . GP_INC . 'things/validator-permission.php';
 
 require_once( GP_PATH . GP_INC . 'route.php' );
 require_once( GP_PATH . GP_INC . 'router.php' );
-foreach( glob( GP_PATH . GP_INC . 'routes/*.php' ) as $route_file ) {
-	require_once $route_file;
-}
+
+require_once GP_PATH . GP_INC . 'routes/_main.php';
+require_once GP_PATH . GP_INC . 'routes/index.php';
+require_once GP_PATH . GP_INC . 'routes/login.php';
+require_once GP_PATH . GP_INC . 'routes/original.php';
+require_once GP_PATH . GP_INC . 'routes/project.php';
+require_once GP_PATH . GP_INC . 'routes/translation-set.php';
+require_once GP_PATH . GP_INC . 'routes/translation.php';
 
 GP::$translation_warnings = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
@@ -296,31 +305,27 @@ GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
 GP::$router = new GP_Router();
 GP::$formats = array();
 
-foreach( glob( GP_PATH . GP_INC . 'formats/format_*.php' ) as $format_file ) {
-	require_once $format_file;
-}
-unset( $format_file );
+require_once GP_PATH . GP_INC . 'formats/format_android.php';
+require_once GP_PATH . GP_INC . 'formats/format_pomo.php';
+require_once GP_PATH . GP_INC . 'formats/format_resx.php';
+require_once GP_PATH . GP_INC . 'formats/format_rrc.php';
+require_once GP_PATH . GP_INC . 'formats/format_strings.php';
 
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );
 
 require_once( GP_PATH . GP_INC . 'plugin.php' );
 
-$plugins = glob( GP_PLUGINS_PATH . '*.php' );
-if ( $plugins ) {
-	foreach( $plugins as $plugin ) {
-		require_once $plugin;
+$plugins = scandir( GP_PLUGINS_PATH );
+foreach ( $plugins as $plugin ) {
+	if ( is_dir( GP_PLUGINS_PATH . '/' . $plugin ) ) {
+		if ( is_readable( GP_PLUGINS_PATH . "/$plugin/$plugin.php" ) )
+			require_once GP_PLUGINS_PATH . "/$plugin/$plugin.php";
+	} else {
+		require_once GP_PLUGINS_PATH . $plugin;
 	}
 }
-
-$plugin_dirs = glob( GP_PLUGINS_PATH . '*', GLOB_ONLYDIR );
-if ( $plugin_dirs ) {
-	foreach( $plugin_dirs as $plugin_dir ) {
-		$plugin = "$plugin_dir/" . basename( $plugin_dir ) . '.php';
-		if ( is_readable( $plugin ) ) require_once $plugin;
-	}
-}
-unset( $plugins, $plugin, $plugin_dirs, $plugin_dir );
+unset( $plugins, $plugin );
 
 do_action( 'plugins_loaded' );
 
