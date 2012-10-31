@@ -128,7 +128,13 @@ $priority_char = array(
 			<?php if ( $t->user_login ): ?>
 			<dl>
 				<dt><?php _e('Translated by:'); ?></dt>
-				<dd><?php echo $t->user_login; ?></dd>
+				<dd><?php
+				if ( $t->user_display_name && $t->user_display_name != $t->user_login ) {
+					printf( '%s (%s)', $t->user_display_name, $t->user_login );
+				} else {
+					echo $t->user_login;
+				}
+				?></dd>
 			</dl>
 			<?php endif; ?>
 

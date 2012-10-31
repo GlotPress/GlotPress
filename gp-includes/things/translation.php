@@ -168,9 +168,12 @@ class GP_Translation extends GP_Thing {
 		foreach( (array)$rows as $row ) {
 			if ( $row->user_id && $this->per_page != 'no-limit' ) {
 				$user = GP::$user->get( $row->user_id );
-				if ( $user ) $row->user_login = $user->user_login;
+				if ( $user ) {
+					$row->user_login = $user->user_login;
+					$row->user_display_name = $user->display_name;
+				}
 			} else {
-				$row->user_login = '';
+				$row->user_login = $row->user_display_name = '';
 			}
 			$row->translations = array();
 			for( $i = 0; $i < $locale->nplurals; $i++ ) {
