@@ -275,12 +275,12 @@ class GP_Route_Translation extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
-		$this->can_or_forbidden( 'approve', 'translation-set', $translation_set->id );
 
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
 		if ( !$translation ) {
 			$this->die_with_error( 'Translation doesn&#8217;t exist!' );
 		}
+		$this->can_approve_translation_or_forbidden( $translation );
 
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
@@ -318,6 +318,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
-
-
+	private function can_approve_translation_or_forbidden( $translation ) {
+		$can_reject_self = (GP::$user->current()->id == $translation->user_id && $translation->status == "waiting");
+		if ( $can_reject_self ) {
+			return;
+		}
+		$this->can_or_forbidden( 'approve', 'translation-set', $translation->translation_set_id );
+	}
 }

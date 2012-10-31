@@ -8,6 +8,7 @@ $priority_char = array(
     '0' => array('', 'transparent', 'white'),
     '1' => array('&uarr;', 'transparent', 'green'),
 );
+$can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->translation_status == "waiting");
 ?>
 <tr class="preview <?php echo $parity().' '.$status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
 	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
@@ -89,13 +90,16 @@ $priority_char = array(
 				<dt><?php _e('Status:'); ?></dt>
 				<dd>
 					<?php echo display_status( $t->translation_status ); ?>
-					<?php if ( $can_approve && $t->translation_status ): ?>
-
-						<?php if ( $t->translation_status != 'current' ): ?>
-						<button class="approve" tabindex="-1"><strong>+</strong> Approve</button>
-						<?php endif; ?>
-						<?php if ( $t->translation_status != 'rejected' ): ?>
-						<button class="reject" tabindex="-1"><strong>&minus;</strong> Reject</button>
+					<?php if ( $t->translation_status ): ?>
+						<?php if ( $can_approve ): ?>
+							<?php if ( $t->translation_status != 'current' ): ?>
+							<button class="approve" tabindex="-1"><strong>+</strong> Approve</button>
+							<?php endif; ?>
+							<?php if ( $t->translation_status != 'rejected' ): ?>
+							<button class="reject" tabindex="-1"><strong>&minus;</strong> Reject</button>
+							<?php endif; ?>
+						<?php elseif ( $can_reject_self ): ?>
+							<button class="reject" tabindex="-1"><strong>&minus;</strong> Reject Suggestion</button>
 						<?php endif; ?>
 					<?php endif; ?>
 				</dd>
