@@ -775,7 +775,16 @@ class GP_Locales {
 		$haw->country_code = 'us';
 		$haw->wp_locale = 'haw_US';
 		$haw->slug = 'haw';
-
+		
+		$haz = new GP_Locale();
+		$haz->english_name = 'Hazaragi';
+		$haz->native_name = 'هزاره گی';
+		$haz->lang_code_iso_639_1 = null;
+		$haz->lang_code_iso_639_2 = 'haz';
+		$haz->country_code = 'af';
+		$haz->wp_locale = 'haz';
+		$haz->slug = 'haz';
+		
 		$he = new GP_Locale();
 		$he->english_name = 'Hebrew';
 		$he->native_name = 'עִבְרִית';
