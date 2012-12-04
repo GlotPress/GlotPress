@@ -176,6 +176,7 @@ class GP_Locales {
 		$az_tr->country_code = 'tr';
 		$az_tr->wp_locale = 'az_TR';
 		$az_tr->slug = 'az-tr';
+		$az_tr->rtl = true;
 
 		$ba = new GP_Locale();
 		$ba->english_name = 'Bashkir';
@@ -784,6 +785,7 @@ class GP_Locales {
 		$haz->country_code = 'af';
 		$haz->wp_locale = 'haz';
 		$haz->slug = 'haz';
+		$haz->rtl = true;
 		
 		$he = new GP_Locale();
 		$he->english_name = 'Hebrew';
