@@ -129,7 +129,10 @@ class GP_Locales {
 		$as->lang_code_iso_639_1 = 'asm';
 		$as->lang_code_iso_639_2 = 'as';
 		$as->country_code = 'in';
+		$as->wp_locale = 'as';
 		$as->slug = 'as';
+		$as->nplurals = 2;
+		$as->plural_expression = '(n != 1)';
 
 		$ast = new GP_Locale();
 		$ast->english_name = 'Asturian';
