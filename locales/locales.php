@@ -171,6 +171,16 @@ class GP_Locales {
 		$az->google_code = 'az';
 		$az->facebook_locale = 'az_AZ';
 
+		$azb = new GP_Locale();
+		$azb->english_name = 'South Azerbaijani';
+		$azb->native_name = 'گؤنئی آذربایجان';
+		$azb->lang_code_iso_639_1 = 'az';
+		$azb->lang_code_iso_639_2 = 'azb';
+		$azb->country_code = 'az';
+		$azb->wp_locale = 'azb';
+		$azb->slug = 'azb';
+		$azb->rtl = true;
+
 		$az_tr = new GP_Locale();
 		$az_tr->english_name = 'Azerbaijani (Turkey)';
 		$az_tr->native_name = 'Azərbaycan Türkcəsi';
