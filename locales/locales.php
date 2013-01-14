@@ -1164,6 +1164,17 @@ class GP_Locales {
 		$mr->slug = 'mr';
 		$mr->google_code = 'mr';
 
+		$mri = new GP_Locale();
+		$mri->english_name = 'Maori';
+		$mri->native_name = 'Te Reo Māori';
+		$mri->lang_code_iso_639_1 = null;
+		$mri->lang_code_iso_639_2 = null;
+		$mri->lang_code_iso_639_3 = 'mri';
+		$mri->country_code = 'nz';
+		$mri->slug = 'mri';
+		$mri->nplurals = 2;
+		$mri->plural_expression = '(n > 1)';
+
 		$mrj = new GP_Locale();
 		$mrj->english_name = 'Mari (Hill)';
 		$mrj->native_name = 'кырык мары';
