@@ -1647,7 +1647,7 @@ class GP_Locales {
 
 		$tuk = new GP_Locale();
 		$tuk->english_name = 'Turkmen';
-		$tuk->native_name = 'Türkmençe,';
+		$tuk->native_name = 'Türkmençe';
 		$tuk->lang_code_iso_639_1 = 'tk';
 		$tuk->lang_code_iso_639_2 = 'tuk';
 		$tuk->country_code = 'tm';
