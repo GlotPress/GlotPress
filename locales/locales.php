@@ -215,7 +215,7 @@ class GP_Locales {
 		$be->lang_code_iso_639_1 = 'be';
 		$be->lang_code_iso_639_2 = 'bel';
 		$be->country_code = 'by';
-		$be->slug = 'be';
+		$be->slug = 'bel';
 		$be->google_code = 'be';
 		$be->facebook_locale = 'be_BY';
 		$be->nplurals = 3;
@@ -1644,6 +1644,17 @@ class GP_Locales {
 		$tr->facebook_locale = 'tr_TR';
 		$tr->nplurals = 2;
 		$tr->plural_expression = '(n > 1)';
+
+		$tuk = new GP_Locale();
+		$tuk->english_name = 'Turkmen';
+		$tuk->native_name = 'Türkmençe,';
+		$tuk->lang_code_iso_639_1 = 'tk';
+		$tuk->lang_code_iso_639_2 = 'tuk';
+		$tuk->country_code = 'tm';
+		$tuk->wp_locale = 'tuk';
+		$tuk->slug = 'tuk';
+		$tuk->nplurals = 2;
+		$tuk->plural_expression = '(n > 1)';		
 
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
