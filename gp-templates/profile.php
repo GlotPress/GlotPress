@@ -48,3 +48,5 @@ if ( ! is_array($default_sort) ) {
 	<br>
 	<input type="submit" name="submit" value="<?php esc_attr_e("Change Settings"); ?>">
 </form>
+
+<?php gp_tmpl_footer();
