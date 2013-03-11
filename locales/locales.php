@@ -1645,6 +1645,18 @@ class GP_Locales {
 		$tr->nplurals = 2;
 		$tr->plural_expression = '(n > 1)';
 
+		$tt_ru = new GP_Locale();
+		$tt_ru->english_name = 'Tatar';
+		$tt_ru->native_name = 'Татар теле';
+		$tt_ru->lang_code_iso_639_1 = 'tt';
+		$tt_ru->lang_code_iso_639_2 = 'tat';
+		$tt_ru->country_code = 'tt';
+		$tt_ru->wp_locale = 'tt_RU';
+		$tt_ru->slug = 'tt';
+		$tt_ru->google_code = 'tt';
+		$tt_ru->nplurals = 3;
+		$tt_ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+
 		$tuk = new GP_Locale();
 		$tuk->english_name = 'Turkmen';
 		$tuk->native_name = 'Türkmençe';
