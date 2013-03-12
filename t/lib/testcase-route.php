@@ -80,4 +80,12 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	function assert404() {
 		$this->assertTemplateLoadedIs( '404' );
 	}
+
+  /**
+   * Parses and returns the API response.
+   */
+  function api_response() {
+    return json_decode( $this->route->template_output );
+  }
+
 }
