@@ -3,7 +3,16 @@ class GP_Translation_Set extends GP_Thing {
 
 	var $table_basename = 'translation_sets';
 	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
+	var $non_db_field_names = array( 'wp_locale' ); 
 	var $non_updatable_attributes = array( 'id' );
+
+	function __construct( $fields = array() ) {
+		parent::__construct( $fields );
+
+		$locales = GP_Locales::instance();
+		$locale  = $locales->by_slug( $this->locale );
+		$this->wp_locale = $locale->wp_locale;
+	}
 
 	function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');
