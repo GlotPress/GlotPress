@@ -9,8 +9,7 @@ class GP_Translation_Set extends GP_Thing {
 	function __construct( $fields = array() ) {
 		parent::__construct( $fields );
 
-		$locales = GP_Locales::instance();
-		$locale  = $locales->by_slug( $this->locale );
+		$locale = GP_Locales::by_slug( $this->locale );
 
 		if( $locale )
 			$this->wp_locale = $locale->wp_locale;
