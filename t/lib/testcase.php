@@ -15,9 +15,16 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		global $gpdb;
 		$gpdb->suppress_errors = false;
 		$gpdb->show_errors = false;
-		if ( defined( 'GP_DEBUG' ) && GP_DEBUG )
-			error_reporting( E_ALL );
+
+		if ( defined( 'GP_DEBUG' ) && GP_DEBUG ) {
+			if ( defined( 'E_DEPRECATED' ) )
+				error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
+			else
+				error_reporting( E_ALL );
+		}
+
 		ini_set('display_errors', 1);
+
 		if ( !gp_const_get( 'GP_IS_TEST_DB_INSTALLED' ) ) {
 			$gpdb->query( 'DROP DATABASE '.GPDB_NAME.";" );
 			$gpdb->query( 'CREATE DATABASE '.GPDB_NAME.";" );

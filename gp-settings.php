@@ -6,7 +6,10 @@
  */
 
 if ( defined( 'GP_DEBUG' ) && GP_DEBUG ) {
-	error_reporting( E_ALL );
+	if ( defined( 'E_DEPRECATED' ) )
+		error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
+	else
+		error_reporting( E_ALL );
 } else {
     if ( defined( 'E_RECOVERABLE_ERROR' ) )
         error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
