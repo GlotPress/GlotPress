@@ -11,7 +11,9 @@ class GP_Translation_Set extends GP_Thing {
 
 		$locales = GP_Locales::instance();
 		$locale  = $locales->by_slug( $this->locale );
-		$this->wp_locale = $locale->wp_locale;
+
+		if( $locale )
+			$this->wp_locale = $locale->wp_locale;
 	}
 
 	function restrict_fields( $set ) {
