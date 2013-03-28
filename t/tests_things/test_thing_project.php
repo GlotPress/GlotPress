@@ -29,6 +29,13 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( 'invader', $q->path );
 	}
 
+	function test_create_and_select() { 
+		$project = new GP_Project( array( 'name' => '@@@@', 'slug' => '' ) ); 
+		$verdict = $project->validate(); 
+
+		$this->assertFalse( $verdict ); 
+	} 
+
 	function test_save_no_args() {
 		$p1 = GP::$project->create( array( 'name' => 'P1', 'slug' => 'p1', 'path' => 'p1', ) );
 		$id = $p1->id;

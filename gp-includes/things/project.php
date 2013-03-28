@@ -8,6 +8,7 @@ class GP_Project extends GP_Thing {
 
 	function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
+		$project->slug_should_not_be('empty');
 	}
 
 	// Additional queries
