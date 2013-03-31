@@ -763,6 +763,15 @@ class GP_Locales {
 		$gn->slug = 'gn';
 		$gn->google_code = 'gn';
 
+		$gsw = new GP_Locale();
+		$gsw->english_name = 'Swiss German';
+		$gsw->native_name = 'Schwyzerdütsch';
+		$gsw->lang_code_iso_639_2 = 'gsw';
+		$gsw->lang_code_iso_639_3 = 'gsw';
+		$gsw->country_code = 'ch';
+		$gsw->wp_locale = 'gsw';
+		$gsw->slug = 'gsw';
+
 		$gu = new GP_Locale();
 		$gu->english_name = 'Gujarati';
 		$gu->native_name = 'ગુજરાતી';
