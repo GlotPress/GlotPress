@@ -34,6 +34,10 @@ class GP_Format_ResX {
 				error_log( 'ResX Export: Bad Entry: '. $entry->context );
 				continue;
 			}
+
+			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )
+				continue;
+
 			$this->line( '<data name="' . $entry->context . '" xml:space="preserve">', 1 );
 			$this->line( '<value>' . $this->escape( $entry->translations[0] ) . '</value>', 2 );
 			if ( isset( $entry->extracted_comments ) && $entry->extracted_comments ) {
