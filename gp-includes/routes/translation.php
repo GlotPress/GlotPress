@@ -52,8 +52,15 @@ class GP_Route_Translation extends GP_Route_Main {
 		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
-		$this->headers_for_download( $filename );
-		echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
+
+		if ( gp_has_translation_been_updated( $translation_set ) ) {
+			$this->headers_for_download( $filename, $translation_set );
+			echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
+
+		// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
+		} else {
+			$this->header( 'HTTP/1.1 304 Not Modified' );
+		}
 	}
 
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {

@@ -306,3 +306,23 @@ function gp_error_log_dump( $value ) {
 function gp_object_has_var( $object, $var_name ) {
 	return in_array( $var_name, array_keys( get_object_vars( $object ) ) );
 }
+
+/**
+ * Has this translation been updated since the passed timestamp?
+ *
+ * @param GP_Translation_Set $translation_set Translation to check
+ * @param int $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
+ * @return bool
+ */
+function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
+
+	// If $timestamp isn't set, try to default to the HTTP_IF_MODIFIED_SINCE header.
+	if ( ! $timestamp && isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) )
+		$timestamp = backpress_gmt_strtotime( $_SERVER['HTTP_IF_MODIFIED_SINCE'] );
+
+	// If nothing to compare against, then always assume there's an update available
+	if ( ! $timestamp )
+		return true;
+
+	return backpress_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) > $timestamp;
+}

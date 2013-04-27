@@ -74,4 +74,21 @@ class GP_Test_Translations extends GP_UnitTestCase {
 		$this->assertEquals( '1', $domain->translate( '1' ) );
 	}
 
+	function test_if_translation_has_been_updated_since_timestamp() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertTrue( gp_has_translation_been_updated( $set ) );
+
+		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = 'Sat, 27 Apr 2012 15:49:29 GMT';
+		$this->assertTrue( gp_has_translation_been_updated( $set ) );
+
+		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = 'Wed, 2 Feb 2022 22:22:22 GMT';
+		$this->assertFalse( gp_has_translation_been_updated( $set ) );
+	}
 }

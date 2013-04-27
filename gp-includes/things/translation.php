@@ -222,5 +222,11 @@ class GP_Translation extends GP_Thing {
 	    }
 		return $translations;
 	}
+
+	function last_modified( $translation_set ) {
+		global $gpdb;
+
+		return $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
+	}
 }
 GP::$translation = new GP_Translation();
