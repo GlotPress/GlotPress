@@ -50,6 +50,7 @@ class GP_Validation_Rules {
 			return true;
 		}
 		$verdict = true;
+
 		foreach( $this->rules[$field] as $rule ) {
 			$callback = GP_Validators::get( $rule['rule'] );
 			if ( is_null( $callback ) ) {
@@ -79,8 +80,19 @@ class GP_Validation_Rules {
 	}
 
 	function construct_error_message( $rule, $value ) {
-		// TODO: better error messages, should include info from callback
-		return sprintf( __('The field <strong>%s</strong> has invalid value!'), $rule['field'], $value );
+		$type_field = 'field';
+		$name_field = $rule['field'];
+		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
+
+		if( strpos( $name_field, 'translation_' ) === 0 ) {
+			$type_field = 'textarea';
+			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
+		}
+
+		if ( 'positive' == $rule['kind'] )
+			return sprintf( __('The %s <strong>%s</strong> is invalid and should be %s!'), $type_field, $name_field, $name_rule );
+		else //if ( 'negative' == $rule['kind'] )
+			return sprintf( __('The %s <strong>%s</strong> is invalid and should not be %s!'), $type_field, $name_field, $name_rule );
 	}
 }
 

@@ -97,35 +97,50 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
-		    $data = compact('original_id');
+			$data = compact('original_id');
 			$data['user_id'] = GP::$user->current()->id;
-		    $data['translation_set_id'] = $translation_set->id;
-		    foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
-		        if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
-		    }
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
-				$data['status'] = 'current';
-			} else {
-				$data['status'] = 'waiting';
+			$data['translation_set_id'] = $translation_set->id;
+
+			foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
+				if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
 			}
+
+			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )
+				$data['status'] = 'current';
+			else
+				$data['status'] = 'waiting';
+
 			$original = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
-			// TODO: validate
+
 			$translation = GP::$translation->create( $data );
-			if ( 'current' == $data['status'] ) {
-				$translation->set_status( 'current' );
+			if ( ! $translation->validate() ) {
+				$error_output = '<ul>';
+				foreach ($translation->errors as $error) {
+					$error_output .= '<li>' . $error . '</li>';
+				}
+				$error_output .= '</ul>';
+				$translation->delete();
+				$this->die_with_error( $error_output, 200 );
 			}
-			wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
-			$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
-			if ( $translations ) {
-				$t = $translations[0];
-				$parity = returner( 'even' );
-				$can_edit = GP::$user->logged_in();
-				$can_write = $this->can( 'write', 'project', $project->id );
-				$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-				$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
-			} else {
-				$output[$original_id] = false;
+			else {
+				if ( 'current' == $data['status'] )
+					$translation->set_status( 'current' );
+
+				wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
+				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
+
+				if ( $translations ) {
+					$t = $translations[0];
+					$parity = returner( 'even' );
+					$can_edit = GP::$user->logged_in();
+					$can_write = $this->can( 'write', 'project', $project->id );
+					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
+				}
+				else {
+					$output[$original_id] = false;
+				}
 			}
 		}
 		echo json_encode( $output );
