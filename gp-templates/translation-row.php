@@ -10,6 +10,7 @@ $priority_char = array(
 );
 $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->translation_status == "waiting");
 ?>
+
 <tr class="preview <?php echo $parity().' '.$status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
 	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
 	<?php /*
@@ -93,13 +94,13 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 					<?php if ( $t->translation_status ): ?>
 						<?php if ( $can_approve ): ?>
 							<?php if ( $t->translation_status != 'current' ): ?>
-							<button class="approve" tabindex="-1"><strong>+</strong> Approve</button>
+							<button class="approve" tabindex="-1"><strong>+</strong> <?php _e('Approve'); ?></button>
 							<?php endif; ?>
 							<?php if ( $t->translation_status != 'rejected' ): ?>
-							<button class="reject" tabindex="-1"><strong>&minus;</strong> Reject</button>
+							<button class="reject" tabindex="-1"><strong>&minus;</strong> <?php _e('Reject'); ?></button>
 							<?php endif; ?>
 						<?php elseif ( $can_reject_self ): ?>
-							<button class="reject" tabindex="-1"><strong>&minus;</strong> Reject Suggestion</button>
+							<button class="reject" tabindex="-1"><strong>&minus;</strong> <?php _e('Reject Suggestion'); ?></button>
 						<?php endif; ?>
 					<?php endif; ?>
 				</dd>
@@ -164,8 +165,8 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 ?>
 			    <dt>More links:
 				<ul>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="Permanent link to this translation">Permalink to this translation</a></li>
-					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="Link to the history of translations of this original">All translations of this original</a></li>
+					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php _e('Permanent link to this translation'); ?>"><?php _e('Permalink to this translation'); ?></a></li>
+					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php _e('Link to the history of translations of this original'); ?>"><?php _e('All translations of this original'); ?></a></li>
 				</ul>
 				</dt>
 			</dl>

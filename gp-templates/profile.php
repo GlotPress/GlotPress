@@ -16,7 +16,7 @@ if ( ! is_array($default_sort) ) {
 }
 ?>
 <h2><?php _e( "Profile" ); ?></h2>
-<form method="post">
+<form action="" method="post">
 	<table class="form-table">
 		<tr>
 			<th><label for="per_page"><?php _e( "Number of items per page:" ); ?></label></th>

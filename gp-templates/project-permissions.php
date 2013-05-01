@@ -19,9 +19,9 @@ gp_tmpl_header();
 		<li>
 			<span class="permission-action"><?php _e('user'); ?></span>
 			<span class="user"><?php echo esc_html( $permission->user->user_login ); ?></span>
-			<span class="permission-action">can <?php echo esc_html( $permission->action ); ?> strings with locale</span>
+			<span class="permission-action"><?php printf( __('can %s strings with locale'), esc_html( $permission->action ) ); ?></span>
 			<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
-			<span class="permission-action">and slug</span>
+			<span class="permission-action"><?php _e('and slug'); ?></span>
 			<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
 			<a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); ?>" class="action delete"><?php _e('Remove'); ?></a>
 		</li>
@@ -35,17 +35,17 @@ gp_tmpl_header();
 			<li>
 				<span class="permission-action"><?php _e('user'); ?></span>
 				<span class="user"><?php echo esc_html( $permission->user->user_login ); ?></span>
-				<span class="permission-action">can <?php echo esc_html( $permission->action ); ?> strings with locale</span>
+				<span class="permission-action"><?php printf(__('can %s strings with locale'), esc_html( $permission->action )); ?></span>
 				<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
-				<span class="permission-action">and slug</span>
+				<span class="permission-action"><?php _e('and slug'); ?></span>
 				<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
-				<span class="permission-action">in the project </span>
+				<span class="permission-action"><?php _e('in the project'); ?> </span>
 				<span class="user"><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></span>
 			</li>
 		<?php endforeach; ?>
 </ul>
 	<?php endif; ?>
-	<?php if ( !$permissions && !$parent_permissions ): ?>
+	<?php if ( ! $permissions && !$parent_permissions ): ?>
 		<strong><?php _e('No validators defined for this project.'); ?></strong>
 	<?php endif; ?>
 <form action="" method="post" class="secondary">
