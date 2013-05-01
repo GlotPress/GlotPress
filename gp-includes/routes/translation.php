@@ -42,23 +42,31 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( ! $project || ! $locale || ! $translation_set ) gp_tmpl_404();
 
 		$format = gp_array_get( GP::$formats, gp_get( 'format', 'po' ), null );
-		if ( !$format ) gp_tmpl_404();
+		if ( ! $format ) gp_tmpl_404();
 
-		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
-		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
+
+		if( method_exists( $format, 'get_filename' ) ) {
+			$filename = call_user_func( array( $format, 'get_filename' ), $project, $locale );
+		}
+		else {
+			// If format didn't implement it
+			$export_locale = apply_filters( 'export_locale', $locale->slug, $locale, $format );
+			$filename = sprintf( '%s-%s.' . $format->extension, str_replace( '/', '-', $project->path ), $export_locale );
+		}
+
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
 
 		if ( gp_has_translation_been_updated( $translation_set ) ) {
 			$this->headers_for_download( $filename, $translation_set );
 			echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
-
-		// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
-		} else {
+		}
+		else {
+			// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
 			$this->header( 'HTTP/1.1 304 Not Modified' );
 		}
 	}

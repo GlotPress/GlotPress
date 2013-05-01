@@ -42,6 +42,14 @@ class GP_Format_PO {
 		return $this->read_translations_from_file( $file_name );
 	}
 
+	function get_filename( $project, $locale ) {
+		if( isset( $locale->wp_locale ) )
+			$export_locale = apply_filters( 'export_locale', $locale->wp_locale, $locale, $this );
+		else
+			$export_locale = apply_filters( 'export_locale', $locale->slug, $locale, $this );
+
+		return sprintf( '%s-%s.' . $this->extension, str_replace( '/', '-', $project->path ), $export_locale );
+	}
 }
 
 class GP_Format_MO extends GP_Format_PO {
