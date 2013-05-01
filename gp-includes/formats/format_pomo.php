@@ -35,7 +35,7 @@ class GP_Format_PO {
 	function read_translations_from_file( $file_name, $project = null ) {
 		$po = new $this->class;
 		$result = $po->import_from_file( $file_name );
-		return $result? $po : $result;
+		return $result ? $po : $result;
 	}
 
 	function read_originals_from_file( $file_name ) {
