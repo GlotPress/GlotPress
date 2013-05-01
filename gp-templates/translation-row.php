@@ -163,7 +163,7 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
         	array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) ) );
 
 ?>
-			    <dt>More links:
+			    <dt><?php _e('More links:'); ?>
 				<ul>
 					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php _e('Permanent link to this translation'); ?>"><?php _e('Permalink to this translation'); ?></a></li>
 					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php _e('Link to the history of translations of this original'); ?>"><?php _e('All translations of this original'); ?></a></li>

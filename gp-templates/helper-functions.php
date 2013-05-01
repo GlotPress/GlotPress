@@ -49,7 +49,7 @@ function esc_translation( $text ) {
 
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
-	return $status ? $status : 'untranslated';
+	return $status ? $status : __('untranslated');
 }
 
 function references( $project, $entry ) {

@@ -6,6 +6,8 @@ gp_breadcrumb( array(
 ) );
 wp_enqueue_script( 'editor' );
 wp_enqueue_script( 'translations-page' );
+wp_localize_script( 'translations-page', '$gp_translations_options', array( 'sort' => __('Sort'), 'filter' => __('Filter') ) );
+
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
 $editor_options['google_translate_language'] = $locale->google_code;
@@ -17,17 +19,17 @@ gp_tmpl_header();
 $i = 0;
 ?>
 <h2>
-	Translation of <?php echo esc_html( $project->name ); ?>: <?php echo esc_html( $translation_set->name ); ?>
-	<?php gp_link_set_edit( $translation_set, $project, '(edit)' ); ?>
+	<?php printf( __("Translation of %s"), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
+	<?php gp_link_set_edit( $translation_set, $project, __('(edit)') ); ?>
 </h2>
 <?php if ( $can_approve ): ?>
 <form id="bulk-actions-toolbar" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; ?>" method="post">
 	<div>
 	<select name="bulk[action]">
-		<option value="" selected="selected">Bulk Actions</option>
-		<option value="approve">Approve</option>
-		<option value="reject">Reject</option>
-		<option value="gtranslate">Translate via Google</option>
+		<option value="" selected="selected"><?php _e('Bulk Actions'); ?></option>
+		<option value="approve"><?php _e('Approve'); ?></option>
+		<option value="reject"><?php _e('Reject'); ?></option>
+		<option value="gtranslate"><?php _e('Translate via Google'); ?></option>
 	</select>
 	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />

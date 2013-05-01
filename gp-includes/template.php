@@ -90,7 +90,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 function gp_project_links_from_root( $leaf_project ) {
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
-	$links[] = empty( $path_from_root)? 'Projects' : gp_link_get( gp_url( '/projects' ), 'Projects' );
+	$links[] = empty( $path_from_root)? __('Projects') : gp_link_get( gp_url( '/projects' ), __('Projects') );
 	foreach( $path_from_root as $project ) {
 		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}

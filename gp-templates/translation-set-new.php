@@ -8,7 +8,7 @@ gp_tmpl_header();
 <?php gp_tmpl_load( 'translation-set-form', get_defined_vars()); ?>
 	<p>
 		<input type="submit" name="submit" value="<?php echo esc_attr( __('Create') ); ?>" id="submit" />
-		<span class="or-cancel">or <a href="javascript:history.back();">Cancel</a></span>
+		<span class="or-cancel"><?php _e('or'); ?> <a href="javascript:history.back();"><?php _e('Cancel'); ?></a></span>
 	</p>
 </form>
 <?php gp_tmpl_footer();

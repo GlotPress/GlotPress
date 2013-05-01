@@ -1,12 +1,12 @@
 jQuery(function($) {
 	$gp.showhide('#upper-filters-toolbar a.sort', '#upper-filters-toolbar dl.sort', {
-		show_text: 'Sort &darr;',
-		hide_text: 'Sort &uarr;', 
+		show_text: $gp_translations_options.sort + ' &darr;',
+		hide_text: $gp_translations_options.sort + ' &uarr;', 
 		focus: '#sort\\[by\\]'
 	});
 	$gp.showhide('#upper-filters-toolbar a.filter', '#upper-filters-toolbar dl.filters', {
-		show_text: 'Filter &darr;',
-		hide_text: 'Filter &uarr;',
+		show_text: $gp_translations_options.filter + ' &darr;',
+		hide_text: $gp_translations_options.filter + ' &uarr;',
 		focus: '#filters\\[term\\]'
 	});
 	

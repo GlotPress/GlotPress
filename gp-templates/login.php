@@ -5,7 +5,7 @@ gp_breadcrumb( array(
 ) );
 gp_tmpl_header();
 ?>
-	<h2>Login</h2>
+	<h2><? _e('Login'); ?></h2>
 	<?php do_action( 'before_login_form' ); ?>
 	<form action="<?php echo gp_url_ssl( gp_url_current() ); ?>" method="post">
 	<dl>

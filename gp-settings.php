@@ -223,6 +223,9 @@ require_once( GP_PATH . GP_INC . 'l10n.php' );
 
 require_once( GP_LOCALES_PATH . 'locales.php' );
 
+if ( defined('GP_LANG') )
+	load_default_textdomain();
+
 // Users and authentication
 if ( !class_exists( 'WP_Users' ) ) {
 	require_once( BACKPRESS_PATH . 'class.wp-users.php' );
