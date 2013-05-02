@@ -20,7 +20,10 @@ class GP_Route_Project extends GP_Route_Main {
 			$set->percent_translated = $set->percent_translated();
 			$set->all_count = $set->all_count();
 		}
+
 		usort( $translation_sets, lambda('$a, $b', '$a->current_count < $b->current_count' ) );
+		$translation_sets = apply_filters( 'translation_sets_sort', $translation_sets );
+
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$this->tmpl( 'project', get_defined_vars() );
