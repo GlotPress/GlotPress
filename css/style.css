@@ -160,6 +160,10 @@ table.translations td.priority {
 table.translations td.actions {
     text-align: center;
 }
+table.translations.translation-sets-rtl .foreign-text {
+	direction: rtl;
+}
+
 table.translations td.original, table.translations td.translation {
     width: 40%;
 }

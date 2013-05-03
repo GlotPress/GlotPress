@@ -129,7 +129,7 @@ $i = 0;
 		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
 </form>
-<table id="translations" class="translations clear">
+<table id="translations" class="translations clear<?php if( isset( $locale->rtl ) && $locale->rtl ) { echo ' translation-sets-rtl'; } ?>">
 	<thead>
 	<tr>
 		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
