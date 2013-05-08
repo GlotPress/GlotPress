@@ -70,7 +70,7 @@ gp_tmpl_header();
 <?php endif; ?>
 
 <?php if ( $translation_sets ): ?>
-<div id="translation-sets">
+<div id="translation-sets"<?php if ( $sub_projects ) { echo ' class="with-sub-projects"'; } ?>>
 	<h3><? _e('Translations');?></h3>
 	<table class="translation-sets tablesorter">
 		<thead>

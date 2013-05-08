@@ -559,9 +559,8 @@ a.project-actions {
 	font-weight: normal;
 }
 
-#translation-sets {
-	float: left;
-	width: 60%;
+#translation-sets.with-sub-projects {
+	margin-left: 24em;
 }
 
 .translation-sets .percent {

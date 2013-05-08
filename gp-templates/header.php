@@ -10,7 +10,7 @@ wp_enqueue_script( 'jquery' );
 		<title><?php echo gp_title(); ?></title>
 		<?php gp_head(); ?>
 	</head>
-	<body class="no-js">
+	<body <?php body_class(); ?>>
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
 	    <div id="gp-js-message"></div>
 		<h1>
