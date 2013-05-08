@@ -577,13 +577,13 @@ a.project-actions {
 .translation-sets tr {
 	background-color: #eee;
 }
-.translation-sets tr.even {
+.translation-sets tr.odd {
 	background-color: #fff;
 }
 .translation-sets tr:hover {
 	background-color: #dee;
 }
-.translation-sets tr.even:hover {
+.translation-sets tr.odd:hover {
 	background-color: #eff;
 }
 #submit {
@@ -600,3 +600,19 @@ table.form-table th {
 table.form-table th, table.form-table td {
 	padding: 10px 0 0 0;
 }
+
+.tablesorter th.header {
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+
+.tablesorter th.headerSortUp { 
+	background-image: url(../img/asc.gif); 
+	background-color: #3399FF; 
+}
+
+.tablesorter th.headerSortDown { 
+	background-image: url(../img/desc.gif); 
+	background-color: #3399FF; 
+} 

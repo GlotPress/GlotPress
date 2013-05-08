@@ -129,7 +129,7 @@ function gp_redirect( $location, $status = 302 ) {
  * Returns a function, which returns the string "odd" or the string "even" alternatively.
  */
 function gp_parity_factory() {
-	return create_function( '', 'static $parity = "odd"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
+	return create_function( '', 'static $parity = "even"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
 }
 
 /**
