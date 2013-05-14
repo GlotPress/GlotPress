@@ -531,11 +531,16 @@ a.project-actions {
 .project-actions ul {
 	margin-top: 0em;
 }
+
+.with-sub-projects {
+	margin-left: 24em;
+}
+
 #sub-projects {
 	float: left;
-	clear: both;
 	width: 20em;
 	margin-right: 4em;
+	margin-left: -24em;
 }
 
 #sub-projects dd {
@@ -559,8 +564,9 @@ a.project-actions {
 	font-weight: normal;
 }
 
-#translation-sets.with-sub-projects {
-	margin-left: 24em;
+.with-sub-projects #translation-sets {
+	float: right;
+	width: 100%;
 }
 
 .translation-sets .percent {
@@ -614,4 +620,15 @@ table.form-table th, table.form-table td {
 .tablesorter th.headerSortDown { 
 	background-image: url(../img/desc.gif); 
 	background-color: #3399FF; 
-} 
+}
+
+
+@media (max-width: 800px) {
+	#sub-projects {
+		float: none;
+	}
+
+	#translation-sets.with-sub-projects {
+		margin: 0;
+	}
+}

@@ -50,27 +50,10 @@ gp_tmpl_header();
 </div>
 <?php endif; ?>
 
-
-<?php if ($sub_projects): ?>
-<div id="sub-projects">
-<h3><?php _e('Sub-projects'); ?></h3>
-<dl>
-<?php foreach($sub_projects as $sub_project): ?>
-	<dt>
-		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
-		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
-		<?php if ( $sub_project->active ) echo "<span class='active bubble'>" . __('Active') . "</span>"; ?>
-	</dt>
-	<dd>
-		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 111 ) ); ?>
-	</dd>
-<?php endforeach; ?>
-</dl>
-</div>
-<?php endif; ?>
+<div id="project" <?php if ( $sub_projects ) { echo ' class="with-sub-projects"'; } ?>>
 
 <?php if ( $translation_sets ): ?>
-<div id="translation-sets"<?php if ( $sub_projects ) { echo ' class="with-sub-projects"'; } ?>>
+<div id="translation-sets">
 	<h3><? _e('Translations');?></h3>
 	<table class="translation-sets tablesorter">
 		<thead>
@@ -112,6 +95,28 @@ gp_tmpl_header();
 <?php elseif ( !$sub_projects ): ?>
 	<p><?php _e('There are no translations of this project.'); ?></p>
 <?php endif; ?>
+
+
+<?php if ($sub_projects): ?>
+<div id="sub-projects">
+<h3><?php _e('Sub-projects'); ?></h3>
+<dl>
+<?php foreach($sub_projects as $sub_project): ?>
+	<dt>
+		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
+		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
+		<?php if ( $sub_project->active ) echo "<span class='active bubble'>" . __('Active') . "</span>"; ?>
+	</dt>
+	<dd>
+		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 111 ) ); ?>
+	</dd>
+<?php endforeach; ?>
+</dl>
+</div>
+<?php endif; ?>
+
+</div>
+
 <div class="clear"></div>
 
 
