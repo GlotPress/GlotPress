@@ -3,16 +3,17 @@ require_once('init.php');
 
 class GP_Test_Misc extends GP_UnitTestCase {
 	function test_gp_parity_factory() {
-		$gen = gp_parity_factory();
+		$gen        = gp_parity_factory();
 		$concurrent = gp_parity_factory();
-		$this->assertEquals( "even", $gen() );
-		$this->assertEquals( "even", $concurrent() );
-		$this->assertEquals( "odd", $gen() );
-		$this->assertEquals( "even", $gen() );
-		$this->assertEquals( "odd", $concurrent() );
-		$this->assertEquals( "even", $concurrent() );
+
 		$this->assertEquals( "odd", $gen() );
 		$this->assertEquals( "odd", $concurrent() );
+		$this->assertEquals( "even", $gen() );
+		$this->assertEquals( "odd", $gen() );
+		$this->assertEquals( "even", $concurrent() );
+		$this->assertEquals( "odd", $concurrent() );
+		$this->assertEquals( "even", $gen() );
+		$this->assertEquals( "even", $concurrent() );
 	}
 
 	function test_gp_array_flatten() {
