@@ -15,7 +15,7 @@ wp_enqueue_script( 'jquery' );
 	    <div id="gp-js-message"></div>
 		<h1>
 			<a class="logo" href="<?php echo gp_url( '/' ); ?>" rel="home">
-				<img alt="<?php esc_attr_e('GlotPress'); ?>" src="<?php echo gp_url_img( 'glotpress-logo.png' ); ?>" />
+				<img alt="GlotPress" src="<?php echo gp_url_img( 'glotpress-logo.png' ); ?>" />
 			</a>
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
