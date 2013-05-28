@@ -943,7 +943,7 @@ class GP_Locales {
 		$jv->english_name = 'Javanese';
 		$jv->native_name = 'Basa Jawa';
 		$jv->lang_code_iso_639_1 = 'jv';
-		$jv->lang_code_iso_639_1 = 'jav';
+		$jv->lang_code_iso_639_2 = 'jav';
 		$jv->country_code = 'id';
 		$jv->wp_locale = 'jv_ID';
 		$jv->slug = 'jv';
@@ -1414,6 +1414,7 @@ class GP_Locales {
 		$rup = new GP_Locale();
 		$rup->english_name = 'Aromanian';
 		$rup->native_name = 'Armãneashce';
+		$rup->lang_code_iso_639_1 = null;
 		$rup->lang_code_iso_639_2 = 'rup';
 		$rup->lang_code_iso_639_3 = 'rup';
 		$rup->country_code = 'mk';
