@@ -427,7 +427,7 @@ class GP_Locales {
 		$dv->english_name = 'Divehi';
 		$dv->native_name = 'ދިވެހި';
 		$dv->lang_code_iso_639_1 = 'dv';
-		$dv->lang_code_iso_639_1 = 'div';
+		$dv->lang_code_iso_639_2 = 'div';
 		$dv->country_code = 'mv';
 		$dv->wp_locale = 'dv';
 		$dv->slug = 'dv';
@@ -438,7 +438,7 @@ class GP_Locales {
 		$dz->english_name = 'Dzongkha';
 		$dz->native_name = 'རྫོང་ཁ';
 		$dz->lang_code_iso_639_1 = 'dz';
-		$dz->lang_code_iso_639_1 = 'dzo';
+		$dz->lang_code_iso_639_2 = 'dzo';
 		$dz->country_code = 'bt';
 		$dz->slug = 'dz';
 		$dz->nplurals = 1;
@@ -448,7 +448,7 @@ class GP_Locales {
 		$ee->english_name = 'Ewe';
 		$ee->native_name = 'Eʋegbe';
 		$ee->lang_code_iso_639_1 = 'ee';
-		$ee->lang_code_iso_639_1 = 'ewe';
+		$ee->lang_code_iso_639_2 = 'ewe';
 		$ee->country_code = '';
 		$ee->slug = 'ee';
 
