@@ -766,6 +766,7 @@ class GP_Locales {
 		$gsw = new GP_Locale();
 		$gsw->english_name = 'Swiss German';
 		$gsw->native_name = 'Schwyzerdütsch';
+		$gsw->lang_code_iso_639_1 = null;
 		$gsw->lang_code_iso_639_2 = 'gsw';
 		$gsw->lang_code_iso_639_3 = 'gsw';
 		$gsw->country_code = 'ch';
