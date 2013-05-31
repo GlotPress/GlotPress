@@ -10,7 +10,7 @@ function gp_styles_default( &$styles ) {
 	//$styles->text_direction = 'rtl' == get_bloginfo( 'text_direction' ) ? 'rtl' : 'ltr';
 	$styles->text_direction = 'ltr';
 
-	$styles->add( 'base', '/style.css', array(), '20130509' );
+	$styles->add( 'base', '/style.css', array(), '20130531' );
 }
 
 add_action( 'wp_default_styles', 'gp_styles_default' );
