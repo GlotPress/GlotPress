@@ -63,7 +63,9 @@ gp_tmpl_header();
 				<th><?php _e( 'Translated' ); ?></th>
 				<th><?php _e( 'Untranslated' ); ?></th>
 				<th><?php _e( 'Waiting' ); ?></th>
-				<th><?php _e( 'Extra' ); ?></th>
+				<?php if ( has_action( 'project_template_translation_set_extra' ) ) : ?>
+				<th class="extra"><?php _e( 'Extra' ); ?></th>
+				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,9 +86,11 @@ gp_tmpl_header();
 							array('filters[status]' => 'untranslated' ) ), $set->untranslated_count ); ?></td>
 				<td class="stats waiting"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
 							array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $set->waiting_count ); ?></td>
-				<td>
+				<?php if ( has_action( 'project_template_translation_set_extra' ) ) : ?>
+				<td class="extra">
 					<?php do_action( 'project_template_translation_set_extra', $set, $project ); ?>
 				</td>
+				<?php endif; ?>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

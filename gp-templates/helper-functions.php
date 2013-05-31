@@ -55,6 +55,7 @@ function display_status( $status ) {
 function references( $project, $entry ) {
 	if ( ! $entry->references ) return;
 	?>
+	<dl><dt>
 	<?php _e('References:'); ?>
 	<ul class="refs">
 		<?php
@@ -70,6 +71,6 @@ function references( $project, $entry ) {
 			endif;
 		endforeach;
 		?>
-	</ul>
+	</ul></dt></dl>
 <?php
 }

@@ -1,11 +1,17 @@
-html, body, textarea, input {
+body, html,
+.gp-content,
+.gp-content textarea,
+.gp-content input {
 	font-family: "Helvetica", "Arial", sans-serif;
 	color: #333;
 	line-height: 1.5em;
 	font-size: 14px;
-	margin: 0 .5em 0 .5em;
 }
-input, textarea {
+body, html {
+	margin: 0 0.5em;
+}
+.gp-content input,
+.gp-content textarea {
     font-size: 1em;
 }
 h1 {
@@ -37,11 +43,11 @@ a.disabled {
     color: #aaa;
     text-decoration: none;
 }
-h2 {
+.gp-content h2 {
 	background-color: #ddd;
 	padding: 0.5em;
 }
-h2 a.edit {
+.gp-content h2 a.edit {
 	font-size: 0.75em;
 	text-decoration: none;
 }
@@ -62,7 +68,7 @@ select {
 	padding: 2px;
 	height: 2em;
 }
-input.button {
+.gp-content input.button {
 	text-decoration: none;
 	font-size: 12px;
 	line-height: 14px;
@@ -201,7 +207,7 @@ table.translations a.action {
     font-size: 100%;
     font-style: normal;
 }
-#footer {
+#gp-footer {
 	text-align: center;
 	font-size: 85%;
 	background-color: #ddd;
@@ -232,7 +238,7 @@ span.morethan90 {
 .editor .original {
 	font-weight: bold;
 	white-space: pre-wrap;
-	width: 50em;
+	max-width: 50em;
 }
 .editor .strings {
     float: left;
@@ -519,7 +525,7 @@ span.removed {
     height: 1.5em;
     padding: 0;
 }
-.text {
+.gp-content .text {
 	width: 45em;
 	margin-left: 6em;
 }

@@ -12,6 +12,7 @@ wp_enqueue_script( 'jquery' );
 	</head>
 	<body <?php body_class(); ?>>
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
+		<div class="gp-content">
 	    <div id="gp-js-message"></div>
 		<h1>
 			<a class="logo" href="<?php echo gp_url( '/' ); ?>" rel="home">
