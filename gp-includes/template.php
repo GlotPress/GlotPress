@@ -7,6 +7,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	if ( !is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
+	$locations = apply_filters( 'tmpl_load_locations', $locations, $template, $args, $template_path );
 	if ( isset( $args['http_status'] ) )
 		status_header( $args['http_status'] );
 	foreach( $locations as $location ) {
