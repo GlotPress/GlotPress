@@ -1677,8 +1677,19 @@ class GP_Locales {
 		$tuk->wp_locale = 'tuk';
 		$tuk->slug = 'tuk';
 		$tuk->nplurals = 2;
-		$tuk->plural_expression = '(n > 1)';		
+		$tuk->plural_expression = '(n > 1)';
 
+		$tzm = new GP_Locale();
+		$tzm->english_name = 'Tamazight (Central Atlas)';
+		$tzm->native_name = 'ⵜⴰⵎⴰⵣⵉⵖⵜ';
+		$tzm->lang_code_iso_639_1 = null;
+		$tzm->lang_code_iso_639_2 = 'tzm';
+		$tzm->country_code = 'ma';
+		$tzm->wp_locale = 'tzm';
+		$tzm->slug = 'tzm';
+		$tzm->nplurals = 2;
+		$tzm->plural_expression = '(n > 1)';
+		
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
 		$udm->native_name = 'удмурт кыл';
