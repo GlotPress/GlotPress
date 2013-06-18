@@ -63,6 +63,7 @@ class GP_Original extends GP_Thing {
 			$entry = new Translation_Entry( array( 'singular' => $original->singular, 'plural' => $original->plural, 'context' => $original->context ) );
 			$originals_by_key[$entry->key()] = $original;
 		}
+
 		foreach( $translations->entries as $entry ) {
 			$gpdb->queries = array();
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
@@ -70,17 +71,21 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
 
 			// TODO: do not obsolete similar translations
-			$original = $originals_by_key[$entry->key()];
-			if ( isset( $original ) ) {
+			if ( isset( $originals_by_key[$entry->key()] ) ) {
+				$original = $originals_by_key[$entry->key()];
+
 				if ( GP::$original->should_be_updated_with( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
 				}
+
 				$originals_existing++;
-			} else {
+			}
+			else {
 				GP::$original->create( $data );
 				$originals_added++;
 			}
 		}
+
 		// Mark previously active, but now removed strings as obsolete
 		foreach ( $originals_by_key as $key => $value) {
 			if ( !key_exists($key, $translations->entries ) ) {
