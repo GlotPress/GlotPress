@@ -95,7 +95,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
 
-	function translations_post ( $project_path, $locale_slug, $translation_set_slug ) {
+	function translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$this->logged_in_or_forbidden();
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -134,7 +134,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( 'current' == $data['status'] )
 					$translation->set_status( 'current' );
 
-				wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
+				gp_translation_set_cache_delete( $translation_set->id );
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 
 				if ( $translations ) {
@@ -175,7 +175,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->errors[] = 'No translations were supplied.';
 		}
 
-		wp_cache_delete( $translation_set->id, 'translation_set_status_breakdown' );
+		gp_translation_set_cache_delete( $translation_set->id );
 
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);

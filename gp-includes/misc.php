@@ -326,3 +326,29 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
 
 	return backpress_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) > $timestamp;
 }
+
+
+/**
+ * Delete translation set counts cache
+ *
+ * @param int $id translation set ID
+ */
+function gp_translation_set_cache_delete( $id ) {
+	wp_cache_delete( $id, 'translation_set_status_breakdown' ); 
+}
+
+/**
+ * Delete counts cache for all translation sets of a project
+ *
+ * @param int $project_id project ID
+ */
+function gp_project_cache_delete_translation_sets( $project_id ) {
+	$translation_sets = GP::$translation_set->by_project_id( $project_id );
+
+	if ( ! $translation_sets )
+		return;
+
+	foreach ( $translation_sets as $set ) {
+		gp_translation_set_cache_delete( $set->id );
+	}
+}

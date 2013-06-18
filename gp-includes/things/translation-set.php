@@ -81,7 +81,9 @@ class GP_Translation_Set extends GP_Thing {
 				$translations_added += 1;
 			}
 		}
-		wp_cache_delete( $this->id, 'translation_set_status_breakdown' );
+
+		gp_translation_set_cache_delete( $this->id );
+
 		return $translations_added;
 	}
 

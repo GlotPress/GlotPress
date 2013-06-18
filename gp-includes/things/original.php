@@ -56,7 +56,9 @@ class GP_Original extends GP_Thing {
 	function import_for_project( $project, $translations ) {
 		global $gpdb;
 		wp_cache_delete( $project->id, self::$count_cache_group );
-		$originals_added = $originals_existing = 0;
+
+		$originals_added = $originals_existing = $originals_obsoleted = 0;
+
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key = array();
 		foreach( $all_originals_for_project as $original ) {
@@ -88,10 +90,17 @@ class GP_Original extends GP_Thing {
 
 		// Mark previously active, but now removed strings as obsolete
 		foreach ( $originals_by_key as $key => $value) {
-			if ( !key_exists($key, $translations->entries ) ) {
+			if ( ! key_exists( $key, $translations->entries ) && '-obsolete' != $value->status ) {
 				$this->update( array('status' => '-obsolete'), array( 'id' => $value->id ) );
+				$originals_obsoleted++; 
 			}
 		}
+
+		// Clear cache when the amount of strings are changed
+		if ( $originals_added > 0 || $originals_obsoleted > 0 ) {
+			gp_project_cache_delete_translation_sets( $project->id );
+		}
+
 		return array( $originals_added, $originals_existing );
 	}
 
