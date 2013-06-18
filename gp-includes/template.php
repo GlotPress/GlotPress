@@ -274,3 +274,42 @@ function gp_checked( $checked ) {
 		echo 'checked="checked"';
 	}
 }
+
+function gp_project_actions( $project, $translation_sets ) {
+	$actions = array(
+		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import originals' ) ),
+		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __('Permissions') ),
+		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ),
+		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ),
+		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ),
+		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __('Delete Project'), array( 'ays-text' => 'Do you really want to delete this project?' ) )
+	);
+
+	if ( $translation_sets ) {
+		$actions[] = '
+			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __('Personal project options &darr;') . '</a>
+			<div class="personal-options">
+				<form action="' . gp_url_project( $project, '-personal' ) . '" method="post">
+				<dl>
+					<dt><label for="source-url-template">' . __('Source file URL') . '</label></dt>
+					<dd>
+						<input type="text" value="' . esc_html( $project->source_url_template() ) . '" name="source-url-template" id="source-url-template" />
+						<small>' . __('URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>http://trac.example.org/browser/%file%#L%line%</code>') .'</small>
+					</dd>
+				</dl>
+				<p>
+					<input type="submit" name="submit" value="' . esc_attr( __('Save &rarr;') ) . '" id="save" />
+					<a class="ternary" href="#" onclick="jQuery("#personal-options-toggle").click();return false;">' . __('Cancel') . '</a>
+				</p>
+				</form>
+			</div>';
+	}
+
+	$actions = apply_filters( 'gp_project_actions', $actions, $project );
+
+	echo '<ul>';
+	foreach( $actions as $action ) {
+		echo '<li>' . $action . '</li>';
+	}
+	echo '</ul>';
+}
