@@ -177,7 +177,7 @@ class GP_UnitTest_Factory_For_Thing {
 		return $updated_fields;
 	}
 
-	function callback( $function ) {
+	public static function callback( $function ) {
 		return new GP_UnitTest_Factory_Callback_After_Create( $function );
 	}
 }
