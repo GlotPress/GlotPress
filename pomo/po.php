@@ -97,7 +97,7 @@ class PO extends Gettext_Translations {
 	 * @param string $string the string to format
 	 * @return string the poified string
 	 */
-	function poify($string) {
+	public static function poify($string) {
 		$quote = '"';
 		$slash = '\\';
 		$newline = "\n";
@@ -128,7 +128,7 @@ class PO extends Gettext_Translations {
 	 * @param string $string PO-formatted string
 	 * @return string enascaped string
 	 */
-	function unpoify($string) {
+	public static function unpoify($string) {
 		$escapes = array('t' => "\t", 'n' => "\n", '\\' => '\\');
 		$lines = array_map('trim', explode("\n", $string));
 		$lines = array_map(array('PO', 'trim_quotes'), $lines);
@@ -160,7 +160,7 @@ class PO extends Gettext_Translations {
 	 * @param string $string prepend lines in this string
 	 * @param string $with prepend lines with this string
 	 */
-	function prepend_each_line($string, $with) {
+	public static function prepend_each_line($string, $with) {
 		$php_with = var_export($with, true);
 		$lines = explode("\n", $string);
 		// do not prepend the string on the last empty line, artefact by explode
@@ -180,7 +180,7 @@ class PO extends Gettext_Translations {
 	 * @param string $char character to denote a special PO comment,
 	 * 	like :, default is a space
 	 */
-	function comment_block($text, $char=' ') {
+	public static function comment_block($text, $char=' ') {
 		$text = wordwrap($text, PO_MAX_LINE_LEN - 3);
 		return PO::prepend_each_line($text, "#$char ");
 	}
@@ -193,7 +193,7 @@ class PO extends Gettext_Translations {
 	 * @return string|bool PO-style formatted string for the entry or
 	 * 	false if the entry is empty
 	 */
-	function export_entry(&$entry) {
+	public static function export_entry(&$entry) {
 		if (is_null($entry->singular)) return false;
 		$po = array();
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
@@ -223,7 +223,8 @@ class PO extends Gettext_Translations {
 			$res = $this->read_entry($f, $lineno);
 			if (!$res) break;
 			if ($res['entry']->singular == '') {
-				$this->set_headers($this->make_headers($res['entry']->translations[0]));
+				$headers = $this->make_headers($res['entry']->translations[0]);
+				$this->set_headers($headers);
 			} else {
 				$this->add_entry($res['entry']);
 			}
@@ -375,7 +376,7 @@ class PO extends Gettext_Translations {
 		}
 	}
 
-	function trim_quotes($s) {
+	public static function trim_quotes($s) {
 		if ( substr($s, 0, 1) == '"') $s = substr($s, 1);
 		if ( substr($s, -1, 1) == '"') $s = substr($s, 0, -1);
 		return $s;
