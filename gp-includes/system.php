@@ -51,8 +51,8 @@ function gp_is_installed() {
 /**
  * Makes all key/value pairs in $vars global variables
  */
-function gp_set_globals( &$vars ) {
-	foreach( $vars as $name => &$value ) {
-		$GLOBALS[$name] = &$value;
+function gp_set_globals( $vars ) {
+	foreach( $vars as $name => $value ) {
+		$GLOBALS[ $name ] = $value;
 	}
 }
