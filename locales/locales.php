@@ -216,6 +216,7 @@ class GP_Locales {
 		$be->lang_code_iso_639_1 = 'be';
 		$be->lang_code_iso_639_2 = 'bel';
 		$be->country_code = 'by';
+		$be->wp_locale = 'bel';
 		$be->slug = 'bel';
 		$be->google_code = 'be';
 		$be->facebook_locale = 'be_BY';
