@@ -6,12 +6,12 @@
 
 class BP_Options
 {
-	function prefix() {
+	public static function prefix() {
 		return 'bp_glotpress_';
 	}
 
-	function get($option) {
-		switch ($option) {
+	public static function get( $option ) {
+		switch ( $option ) {
 			case 'application_id':
 				return 'glotpress';
 				break;
@@ -34,20 +34,20 @@ class BP_Options
 				return 'gp_hash';
 				break;
 			default:
-				return gp_get_option(BP_Options::prefix() . $option);
+				return gp_get_option( BP_Options::prefix() . $option );
 				break;
 		}
 	}
 
-	function add($option, $value) {
-		return BP_Options::update($option, $value);
+	public static function add( $option, $value ) {
+		return BP_Options::update( $option, $value );
 	}
 
-	function update($option, $value) {
-		return bb_update_option(BP_Options::prefix() . $option, $value);
+	public static function update($option, $value) {
+		return bb_update_option( BP_Options::prefix() . $option, $value );
 	}
 
-	function delete($option) {
-		return bb_delete_option(BP_Options::prefix() . $option);
+	public static function delete($option) {
+		return bb_delete_option( BP_Options::prefix() . $option );
 	}
 } // END class BP_Options
