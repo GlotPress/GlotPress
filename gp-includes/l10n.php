@@ -25,12 +25,12 @@ function get_locale() {
 }
 
 function translate( $text, $domain = 'default' ) {
-	$translations = &get_translations_for_domain( $domain );
+	$translations = get_translations_for_domain( $domain );
 	return apply_filters('gettext', $translations->translate($text), $text, $domain);
 }
 
 function translate_with_gettext_context( $text, $context, $domain = 'default' ) {
-	$translations = &get_translations_for_domain( $domain );
+	$translations = get_translations_for_domain( $domain );
 	return apply_filters( 'gettext_with_context', $translations->translate( $text, $context ), $text, $context, $domain);
 }
 
@@ -71,13 +71,13 @@ function esc_html_x( $single, $context, $domain = 'default' ) {
 }
 
 function _n($single, $plural, $number, $domain = 'default') {
-	$translations = &get_translations_for_domain( $domain );
+	$translations = get_translations_for_domain( $domain );
 	$translation = $translations->translate_plural( $single, $plural, $number );
 	return apply_filters( 'ngettext', $translation, $single, $plural, $number );
 }
 
 function _nx($single, $plural, $number, $context, $domain = 'default') {
-	$translations = &get_translations_for_domain( $domain );
+	$translations = get_translations_for_domain( $domain );
 	$translation = $translations->translate_plural( $single, $plural, $number, $context );
 	return apply_filters( 'ngettext_with_context ', $translation, $single, $plural, $number, $context );
 }
@@ -119,6 +119,9 @@ function load_default_textdomain() {
  */
 function get_translations_for_domain( $domain ) {
 	global $l10n;
-	$empty = new Translations;
-	return isset($l10n[$domain])? $l10n[$domain] : $empty;
+
+	if( ! isset( $l10n[ $domain ] ) )
+		$l10n[ $domain ] = new Translations;
+
+	return $l10n[ $domain ];
 }
