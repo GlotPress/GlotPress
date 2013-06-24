@@ -134,7 +134,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( 'current' == $data['status'] )
 					$translation->set_status( 'current' );
 
-				gp_translation_set_cache_delete( $translation_set->id );
+				gp_clean_translation_set_cache( $translation_set->id );
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 
 				if ( $translations ) {
@@ -175,7 +175,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->errors[] = 'No translations were supplied.';
 		}
 
-		gp_translation_set_cache_delete( $translation_set->id );
+		gp_clean_translation_set_cache( $translation_set->id );
 
 		// hack, until we make clean_url() to allow [ and ]
 		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);

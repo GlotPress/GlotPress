@@ -98,7 +98,7 @@ class GP_Original extends GP_Thing {
 
 		// Clear cache when the amount of strings are changed
 		if ( $originals_added > 0 || $originals_obsoleted > 0 ) {
-			gp_project_cache_delete_translation_sets( $project->id );
+			gp_clean_translation_sets_cache( $project->id );
 		}
 
 		return array( $originals_added, $originals_existing );

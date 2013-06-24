@@ -82,7 +82,7 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		}
 
-		gp_translation_set_cache_delete( $this->id );
+		gp_clean_translation_set_cache( $this->id );
 
 		return $translations_added;
 	}

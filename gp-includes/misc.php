@@ -333,7 +333,7 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
  *
  * @param int $id translation set ID
  */
-function gp_translation_set_cache_delete( $id ) {
+function gp_clean_translation_set_cache( $id ) {
 	wp_cache_delete( $id, 'translation_set_status_breakdown' ); 
 }
 
@@ -342,13 +342,13 @@ function gp_translation_set_cache_delete( $id ) {
  *
  * @param int $project_id project ID
  */
-function gp_project_cache_delete_translation_sets( $project_id ) {
+function gp_clean_translation_sets_cache( $project_id ) {
 	$translation_sets = GP::$translation_set->by_project_id( $project_id );
 
 	if ( ! $translation_sets )
 		return;
 
 	foreach ( $translation_sets as $set ) {
-		gp_translation_set_cache_delete( $set->id );
+		gp_clean_translation_set_cache( $set->id );
 	}
 }
