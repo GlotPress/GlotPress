@@ -313,3 +313,18 @@ function gp_project_actions( $project, $translation_sets ) {
 	}
 	echo '</ul>';
 }
+
+function gp_entry_actions( $seperator = ' &bull; ' ) {
+	$actions = array(
+		'<a href="#" class="copy" tabindex="-1">' . __('Copy from original') . '</a>'
+	);
+
+	$actions = apply_filters( 'gp_entry_actions', $actions );
+
+
+	echo implode( $seperator, $actions );
+	/*
+	<a href="#" class="copy" tabindex="-1"><?php _e('Copy from original'); ?></a> &bull;
+	<a href="#" class="gtranslate" tabindex="-1"><?php _e('Translation from Google'); ?></a>
+	*/
+}

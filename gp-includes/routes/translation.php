@@ -168,10 +168,9 @@ class GP_Route_Translation extends GP_Route_Main {
 				$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
 			}
 
-			if ( 'gtranslate' == $bulk['action'] ) {
-				$this->_bulk_google_translate( $project, $locale, $translation_set, $bulk );
-			}
-		} else {
+			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
+		}
+		else {
 			$this->errors[] = 'No translations were supplied.';
 		}
 
@@ -225,62 +224,6 @@ class GP_Route_Translation extends GP_Route_Main {
 								'Error with rejecting the translation.',
 								'Error with rejecting all %s translation.', $error), $error );
 			}
-		}
-	}
-
-	function _bulk_google_translate( $project, $locale, $translation_set, $bulk ) {
-		$google_errors = 0;
-		$insert_errors = 0;
-		$ok = 0;
-		$skipped = 0;
-
-		$singulars = array();
-		$original_ids = array();
-		foreach( $bulk['row-ids'] as $row_id ) {
-			if ( gp_in( '-', $row_id) ) {
-				$skipped++;
-				continue;
-			}
-			$original_id = gp_array_get( split( '-', $row_id ), 0 );
-			$original = GP::$original->get( $original_id );
-			if ( !$original || $original->plural ) {
-				$skipped++;
-				continue;
-			}
-			$singulars[] = $original->singular;
-			$original_ids[] = $original_id;
-		}
-		$results = google_translate_batch( $locale, $singulars );
-		if ( is_wp_error( $results ) ) {
-			error_log( print_r( $results, true ) );
-			$this->errors[] = $results->get_error_message();
-			return;
-		}
-		foreach( gp_array_zip( $original_ids, $singulars, $results )  as $item ) {
-			list( $original_id, $singular, $translation ) = $item;
-			if ( is_wp_error( $translation ) ) {
-				$google_errors++;
-				error_log( $translation->get_error_message() );
-				continue;
-			}
-			$data = compact( 'original_id' );
-			$data['user_id'] = GP::$user->current()->id;
-			$data['translation_set_id'] = $translation_set->id;
-			$data['translation_0'] = $translation;
-			$data['status'] = 'fuzzy';
-			$data['warnings'] = GP::$translation_warnings->check( $singular, null, array( $translation ), $locale );
-			$inserted = GP::$translation->create( $data );
-			$inserted? $ok++ : $insert_errors++;
-		}
-		if ( $google_errors > 0 || $insert_errors > 0 ) {
-			$message = array();
-			if ( $ok ) $message[] = sprintf( __('Added: %d.' ), $ok );
-			if ( $google_errors ) $message[] = sprintf( __('Error from Google Translate: %d.' ), $google_errors );
-			if ( $insert_errors ) $message[] = sprintf( __('Error adding: %d.' ), $insert_errors );
-			if ( $skipped ) $message[] = sprintf( __('Skipped: %d.' ), $skipped );
-			$this->errors[] = implode( '', $message );
-		} else {
-			$this->notices[] = sprintf( __('%d fuzzy translation from Google Translate were added.' ), $ok );
 		}
 	}
 

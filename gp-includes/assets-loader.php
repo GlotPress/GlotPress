@@ -19,7 +19,7 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->base_url = gp_url_base( 'js' );
 	$scripts->default_version = gp_get_option( 'version' );
 
-	$bump = '20130501';
+	$bump = '20130702';
 
 	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.7.2' );
 	$scripts->add( 'jquery-ui', '/jquery/jquery-ui.js', array('jquery'), '1.8.18' );
@@ -29,11 +29,9 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->add( 'tablesorter', '/jquery.tablesorter.min.js', array('jquery'), '1.8.18' );
 
 	$scripts->add( 'common', '/common.js', array( 'jquery' ), $bump );
-	$scripts->add( 'editor', '/editor.js', array( 'common', 'google-js-api' ), $bump );
+	$scripts->add( 'editor', '/editor.js', array( 'common' ), $bump );
 	$scripts->add( 'translations-page', '/translations-page.js', array( 'common' ), $bump );
 	$scripts->add( 'mass-create-sets-page', '/mass-create-sets-page.js', array( 'common' ), $bump );
-
-	$scripts->add( 'google-js-api', 'http://www.google.com/jsapi', array(), '' );
 }
 
 add_action( 'wp_default_scripts', 'gp_scripts_default' );

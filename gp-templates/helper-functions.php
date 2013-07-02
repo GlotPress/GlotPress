@@ -28,8 +28,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 		<?php if ( $can_edit ): ?>
 			<p>
-				<a href="#" class="copy" tabindex="-1"><?php _e('Copy from original'); ?></a> &bull;
-				<a href="#" class="gtranslate" tabindex="-1"><?php _e('Translation from Google'); ?></a>
+				<?php gp_entry_actions(); ?>
 			</p>
 		<?php else: ?>
 			<p>

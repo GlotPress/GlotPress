@@ -10,7 +10,6 @@ wp_localize_script( 'translations-page', '$gp_translations_options', array( 'sor
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
-$editor_options['google_translate_language'] = $locale->google_code;
 wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
 $parity = gp_parity_factory();
 add_action( 'gp_head', lambda( '', 'gp_preferred_sans_serif_style_tag($locale);', compact( 'locale' ) ) );
@@ -29,7 +28,7 @@ $i = 0;
 		<option value="" selected="selected"><?php _e('Bulk Actions'); ?></option>
 		<option value="approve"><?php _e('Approve'); ?></option>
 		<option value="reject"><?php _e('Reject'); ?></option>
-		<option value="gtranslate"><?php _e('Translate via Google'); ?></option>
+		<?php do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
 	</select>
 	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
