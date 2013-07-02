@@ -1,7 +1,7 @@
 <?php
 
 class GP_Google_Translate extends GP_Plugin {
-	public $id = 'gtrans';
+	public $id = 'google-translate';
 
 	private $key;
 
