@@ -101,6 +101,8 @@ class GP_Original extends GP_Thing {
 			gp_clean_translation_sets_cache( $project->id );
 		}
 
+		do_action( 'originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted );
+
 		return array( $originals_added, $originals_existing );
 	}
 

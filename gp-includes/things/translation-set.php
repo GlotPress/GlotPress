@@ -84,6 +84,8 @@ class GP_Translation_Set extends GP_Thing {
 
 		gp_clean_translation_set_cache( $this->id );
 
+		do_action( 'translations_imported', $this->id );
+
 		return $translations_added;
 	}
 
