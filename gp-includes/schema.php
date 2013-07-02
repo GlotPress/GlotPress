@@ -128,7 +128,7 @@ function gp_schema_get() {
 	// meta
 	$gp_schema['meta'] = "CREATE TABLE IF NOT EXISTS `$gpdb->meta` (
 		`meta_id` bigint(20) NOT NULL auto_increment,
-		`object_type` varchar(16) NOT NULL default 'gp_option',
+		`object_type` varchar(32) NOT NULL default 'gp_option',
 		`object_id` bigint(20) NOT NULL default 0,
 		`meta_key` varchar(255) DEFAULT NULL,
 		`meta_value` longtext DEFAULT NULL,
