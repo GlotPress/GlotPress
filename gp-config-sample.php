@@ -1,7 +1,14 @@
 <?php
-// ** MySQL settings - You can get this info from your web host ** //
+/**
+ *	The base configuration of the GlotPress
+ *
+ *	This file has the following configurations: MySQL settings, table prefix,
+ *	secret keys, GlotPress language and integration with WordPress user system.
+ *	You can get the MySQL settings from your web host.
+ *
+ */
 
-/** The name of the database for bbPress */
+/** The name of the database for GlotPress */
 define('GPDB_NAME', 'glotpress');
 
 /** MySQL database username */
@@ -36,7 +43,7 @@ define('GP_NONCE_KEY', 'put your unique phrase here');
 /**
  * GlotPress Localized Language, defaults to English.
  *
- * Change this to localize WordPress.  A corresponding MO file for the chosen
+ * Change this to localize GlotPress. A corresponding MO file for the chosen
  * language must be installed to languages/. For example, install
  * fr_FR.mo to languages/ and set GP_LANG to 'fr_FR' to enable French
  * language support.
