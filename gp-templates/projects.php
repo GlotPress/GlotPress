@@ -2,7 +2,7 @@
 gp_title( __('Projects &lt; GlotPress') );
 gp_tmpl_header();
 ?>
-<h2>Projects</h2>
+<h2><?php printf( __('Projects')); ?></h2>
 <ul>
 <?php foreach($projects as $project): ?>
 	<li><?php gp_link_project( $project, esc_html( $project->name ) ); ?> <?php gp_link_project_edit( $project, null, array('class' => 'bubble') ); ?></li>
