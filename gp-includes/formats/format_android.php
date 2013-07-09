@@ -43,7 +43,7 @@ class GP_Format_Android {
 	{
 		$mapping = array();
 
-		asort( $entries );
+		uasort( $entries, array( $this, 'cmp_context' ) );
 
 		foreach( $entries as $entry )
 		{
@@ -73,6 +73,10 @@ class GP_Format_Android {
 
 			$this->line( '</string-array>', 1 );
 		}
+	}
+
+	function cmp_context( $a, $b ) {
+	    return strnatcmp( $a->context, $b->context );
 	}
 
 	function read_translations_from_file( $file_name, $project = null ) {
