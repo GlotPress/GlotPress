@@ -285,8 +285,23 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __('Delete Project'), array( 'ays-text' => 'Do you really want to delete this project?' ) )
 	);
 
+	$actions = apply_filters( 'gp_project_actions', $actions, $project );
+
+	echo '<ul>';
+
+	foreach( $actions as $action ) {
+		echo '<li>' . $action . '</li>';
+	}
+
 	if ( $translation_sets ) {
-		$actions[] = '
+		echo '<li>' . gp_project_options_form( $project ) . '</li>';
+	}
+
+	echo '</ul>';
+}
+
+function gp_project_options_form( $project ) {
+	return '
 			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __('Personal project options &darr;') . '</a>
 			<div class="personal-options">
 				<form action="' . gp_url_project( $project, '-personal' ) . '" method="post">
@@ -303,15 +318,6 @@ function gp_project_actions( $project, $translation_sets ) {
 				</p>
 				</form>
 			</div>';
-	}
-
-	$actions = apply_filters( 'gp_project_actions', $actions, $project );
-
-	echo '<ul>';
-	foreach( $actions as $action ) {
-		echo '<li>' . $action . '</li>';
-	}
-	echo '</ul>';
 }
 
 function gp_entry_actions( $seperator = ' &bull; ' ) {
