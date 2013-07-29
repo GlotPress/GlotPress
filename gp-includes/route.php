@@ -131,13 +131,13 @@ class GP_Route {
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 
-	function headers_for_download( $filename, $translation_set = '' ) {
+	function headers_for_download( $filename, $last_modified = '' ) {
 		$this->header('Content-Description: File Transfer');
 		$this->header('Pragma: public');
 		$this->header('Expires: 0');
 
-		if ( $translation_set )
-			$this->header( sprintf( 'Last-Modified: %s', gmdate( 'D, d M Y H:i:s', backpress_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) ) . ' GMT' ) );
+		if ( $last_modified )
+			$this->header( sprintf( 'Last-Modified: %s', $last_modified ) );
 
 		$this->header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		$this->header("Content-Disposition: attachment; filename=$filename");
