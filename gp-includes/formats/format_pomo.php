@@ -9,8 +9,7 @@ class GP_Format_PO {
 	function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$po = new $this->class;
 		// TODO: add more meta data in the project: language team, report URL
-		// TODO: last updated for a translation set
-		$po->set_header( 'PO-Revision-Date', gmdate( 'Y-m-d H:i:s+0000' ) );
+		$po->set_header( 'PO-Revision-Date', GP::$translation->last_modified( $translation_set ) . '+0000' );
 		$po->set_header( 'MIME-Version', '1.0' );
 		$po->set_header( 'Content-Type', 'text/plain; charset=UTF-8' );
 		$po->set_header( 'Content-Transfer-Encoding', '8bit' );
