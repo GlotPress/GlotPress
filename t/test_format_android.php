@@ -2,7 +2,7 @@
 require_once('init.php');
 
 class GP_Test_Format_Android extends GP_UnitTestCase {
-    function GP_Test_Format_Android() {
+    function setUp() {
 		$this->android = new GP_Format_Android;
 		$this->entries = array(
 			array('normal_string', 'Normal String', 'Just A Normal String'),

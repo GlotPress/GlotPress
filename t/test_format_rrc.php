@@ -2,7 +2,7 @@
 require_once('init.php');
 
 class GP_Test_Format_RRC extends GP_UnitTestCase {
-    function GP_Test_Format_RRC() {
+    function setUp() {
 		$this->rrc = new GP_Format_RRC;
 		$this->entries = array(
 			array('WITH_LATIN1', 'for', 'für'),
