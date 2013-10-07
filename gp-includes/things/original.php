@@ -92,7 +92,7 @@ class GP_Original extends GP_Thing {
 		foreach ( $originals_by_key as $key => $value) {
 			if ( ! key_exists( $key, $translations->entries ) && '-obsolete' != $value->status ) {
 				$this->update( array('status' => '-obsolete'), array( 'id' => $value->id ) );
-				$originals_obsoleted++; 
+				$originals_obsoleted++;
 			}
 		}
 
