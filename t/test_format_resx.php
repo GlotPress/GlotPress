@@ -3,6 +3,7 @@ require_once('init.php');
 
 class GP_Test_Format_ResX extends GP_UnitTestCase {
     function setUp() {
+		parent::setUp();
 		$this->resx = new GP_Format_ResX;
 		$this->entries = array(
 			array('normal_string', 'Normal String', 'Just A Normal String', ''),
