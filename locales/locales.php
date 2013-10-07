@@ -1758,7 +1758,6 @@ class GP_Locales {
 		$uz->wp_locale = 'uz_UZ';
 		$uz->slug = 'uz';
 		$uz->google_code = 'uz';
-		$uz->rtl = true;
 		$uz->nplurals = 1;
 		$uz->plural_expression = '0';
 
