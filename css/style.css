@@ -151,10 +151,10 @@ table.translations td.translation span.missing a {
 table.translations td, table.translations th, table.translation-sets td, table.translation-sets th {
 	padding: 0.5em;
 	border: 1px solid #eee;
-	/* white-space: pre-wrap; */
 	margin: 0;
 	border-spacing: 0;
 }
+
 table.translations td.checkbox {
     vertical-align: middle;
     text-align: center;
@@ -171,12 +171,11 @@ table.translations.translation-sets-rtl .foreign-text {
 }
 
 table.translations td.original, table.translations td.translation {
-    width: 40%;
+    width: 45%;
+  	word-break: break-word;
+	word-wrap: break-word;
 }
 
-table.translations th.original, table.translations th.translation  {
-	width: 45%;
-}
 table.translations tr.even {
 	background-color: #fcfcfc;
 }
