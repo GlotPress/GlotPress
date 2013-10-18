@@ -327,7 +327,7 @@ foreach ( $plugins as $plugin ) {
 	if ( is_dir( GP_PLUGINS_PATH . '/' . $plugin ) ) {
 		if ( is_readable( GP_PLUGINS_PATH . "/$plugin/$plugin.php" ) )
 			require_once GP_PLUGINS_PATH . "/$plugin/$plugin.php";
-	} else {
+	} else if ( substr( $plugin, -4 ) == '.php' ) {
 		require_once GP_PLUGINS_PATH . $plugin;
 	}
 }
