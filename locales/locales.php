@@ -274,6 +274,7 @@ class GP_Locales {
 		$bo->lang_code_iso_639_1 = 'bo';
 		$bo->lang_code_iso_639_2 = 'tib';
 		$bo->country_code = '';
+		$bo->wp_locale = 'bo';
 		$bo->slug = 'bo';
 		$bo->google_code = 'bo';
 		$bo->nplurals = 1;
@@ -530,15 +531,15 @@ class GP_Locales {
 		$es_cl->google_code = 'es';
 		$es_cl->facebook_locale = 'es_LA';
 
-		$es_mx = new GP_Locale(); 
-		$es_mx->english_name = 'Spanish (Mexico)'; 
-		$es_mx->native_name = 'Español de México'; 
-		$es_mx->lang_code_iso_639_1 = 'es'; 
-		$es_mx->lang_code_iso_639_2 = 'spa'; 
-		$es_mx->country_code = 'mx'; 
-		$es_mx->wp_locale = 'es_MX'; 
-		$es_mx->slug = 'es-mx'; 
-		$es_mx->google_code = 'es'; 
+		$es_mx = new GP_Locale();
+		$es_mx->english_name = 'Spanish (Mexico)';
+		$es_mx->native_name = 'Español de México';
+		$es_mx->lang_code_iso_639_1 = 'es';
+		$es_mx->lang_code_iso_639_2 = 'spa';
+		$es_mx->country_code = 'mx';
+		$es_mx->wp_locale = 'es_MX';
+		$es_mx->slug = 'es-mx';
+		$es_mx->google_code = 'es';
 		$es_mx->facebook_locale = 'es_LA';
 
 		$es_pe = new GP_Locale();
@@ -1707,7 +1708,7 @@ class GP_Locales {
 		$tzm->slug = 'tzm';
 		$tzm->nplurals = 2;
 		$tzm->plural_expression = '(n > 1)';
-		
+
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
 		$udm->native_name = 'удмурт кыл';
