@@ -486,6 +486,17 @@ class GP_Locales {
 		$en->google_code = 'en';
 		$en->facebook_locale = 'en_US';
 
+		$en_au = new GP_Locale();
+		$en_au->english_name = 'English (Australia)';
+		$en_au->native_name = 'English (Australia)';
+		$en_au->lang_code_iso_639_1 = 'en';
+		$en_au->lang_code_iso_639_2 = 'eng';
+		$en_au->lang_code_iso_639_3 = 'eng';
+		$en_au->country_code = 'au';
+		$en_au->wp_locale = 'en_AU';
+		$en_au->slug = 'en-au';
+		$en_au->google_code = 'en';
+
 		$en_ca = new GP_Locale();
 		$en_ca->english_name = 'English (Canada)';
 		$en_ca->native_name = 'English (Canada)';
