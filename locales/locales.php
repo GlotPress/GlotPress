@@ -531,6 +531,17 @@ class GP_Locales {
 		$eo->google_code = 'eo';
 		$eo->facebook_locale = 'eo_EO';
 
+		$es_ar = new GP_Locale();
+		$es_ar->english_name = 'Spanish (Argentina)';
+		$es_ar->native_name = 'Español de Argentina';
+		$es_ar->lang_code_iso_639_1 = 'es';
+		$es_ar->lang_code_iso_639_2 = 'spa';
+		$es_ar->country_code = 'ar';
+		$es_ar->wp_locale = 'es_AR';
+		$es_ar->slug = 'es-ar';
+		$es_ar->google_code = 'es';
+		$es_ar->facebook_locale = 'es_AR';
+
 		$es_cl = new GP_Locale();
 		$es_cl->english_name = 'Spanish (Chile)';
 		$es_cl->native_name = 'Español de Chile';
