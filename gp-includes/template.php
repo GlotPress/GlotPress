@@ -59,7 +59,14 @@ function gp_tmpl_filter_args( $args ) {
 }
 
 function gp_tmpl_404( $args = array()) {
-	gp_tmpl_load( '404', $args + array('title' => __('Not Found'), 'http_status' => 404 ) );
+	if( GP::$current_route->api  ) {
+		status_header(404);
+		echo json_encode( array( 'success' => false, 'error' => __('Not Found') ) );
+	}
+	else {
+		gp_tmpl_load( '404', $args + array('title' => __('Not Found'), 'http_status' => 404 ) );
+	}
+
 	exit();
 }
 
