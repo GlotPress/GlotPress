@@ -1019,6 +1019,7 @@ class GP_Locales {
 		$km->lang_code_iso_639_1 = 'km';
 		$km->lang_code_iso_639_2 = 'khm';
 		$km->country_code = 'kh';
+		$km->wp_locale = 'km';
 		$km->slug = 'km';
 		$km->google_code = 'km';
 		$km->facebook_locale = 'km_KH';
