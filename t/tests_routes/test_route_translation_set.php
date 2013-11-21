@@ -10,7 +10,8 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	}
 
 	function test_single_with_a_non_existent_set_gives_404() {
-		$this->route->single( 11 );
+		$this->route->single( 11123123 );
+		$this->assert404();
 	}
 
 	function test_single_redirects_to_existing_set() {

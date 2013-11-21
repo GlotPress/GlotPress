@@ -6,7 +6,7 @@ class GP_Route_Profile extends GP_Route_Main {
 			return;
 		}
 
-		gp_tmpl_load( 'profile', array() );
+		$this->tmpl( 'profile' );
 	}
 
 	function profile_post() {

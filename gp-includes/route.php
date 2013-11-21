@@ -187,14 +187,17 @@ class GP_Route {
 		return gp_tmpl_load( $template, $args, $this->template_path );
 	}
 
-	function tmpl_404( $args ) {
-		$this->tmpl( '404', $args + array('title' => __('Not Found'), 'http_status' => 404 ) );
+	function die_with_404( $args = array() ) {
+		status_header( 404 );
+		$this->tmpl( '404', $args + array( 'title' => __('Not Found'), 'http_status' => 404 ) );
+		$this->exit_();
 	}
 
 	function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {
 			$this->exited = true;
 			$this->exit_message = $message;
+			return;
 		}
 		exit( $message );
 	}

@@ -9,7 +9,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function single( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 		foreach( $translation_sets as $set ) {
@@ -31,7 +31,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function personal_options_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$user = GP::$user->current();
 		$source_url_templates = $user->get_meta( 'source_url_templates' );
@@ -46,15 +46,15 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$kind = 'originals';
-		gp_tmpl_load( 'project-import', get_defined_vars() );
+		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
 	function import_originals_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 
 		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
@@ -83,14 +83,14 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
-		gp_tmpl_load( 'project-edit', get_defined_vars() );
+		$this->tmpl( 'project-edit', get_defined_vars() );
 	}
 
 	function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$updated_project = new GP_Project( gp_post( 'project' ) );
 		if ( $this->invalid_and_redirect( $updated_project, gp_url_project( $project, '-edit' ) ) ) return;
@@ -111,7 +111,7 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: decide what to do with child projects and translation sets
 		// TODO: just deactivate, do not actually delete
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		if ( $project->delete() )
 			$this->notices[] = __('The project was deleted.');
@@ -125,7 +125,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->parent_project_id ) ) return;
-		gp_tmpl_load( 'project-new', get_defined_vars() );
+		$this->tmpl( 'project-new', get_defined_vars() );
 	}
 
 	function new_post() {
@@ -138,7 +138,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( !$project ) {
 			$project = new GP_Project();
 			$this->errors[] = __('Error in creating project!');
-			gp_tmpl_load( 'project-new', get_defined_vars() );
+			$this->tmpl( 'project-new', get_defined_vars() );
 		} else {
 			$this->notices[] = __('The project was created!');
 			$this->redirect( gp_url_project( $project ) );
@@ -147,7 +147,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function permissions_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions = GP::$validator_permission->by_project_id( $project->id );
@@ -171,7 +171,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function permissions_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		if ( 'add-validator' == gp_post( 'action' ) ) {
 			$user = GP::$user->by_login( gp_post( 'user_login' ) );
@@ -196,7 +196,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function permissions_delete( $project_path, $permission_id ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$permission = GP::$permission->get( $permission_id );
 		if ( $permission ) {
@@ -213,14 +213,14 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function mass_create_sets_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$this->tmpl( 'project-mass-create-sets', get_defined_vars() );
 	}
 
 	function mass_create_sets_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 		if ( !$other_project ) {
@@ -244,7 +244,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 	function mass_create_sets_preview_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
-		if ( !$project ) gp_tmpl_404();
+		if ( !$project ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) return;
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 		if ( !$other_project ) {

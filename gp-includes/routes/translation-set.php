@@ -63,17 +63,17 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	private function get_set_project_and_locale_from_set_id_or_404( $set_id ) {
 		$set = GP::$translation_set->get( $set_id );
 		if ( !$set ) {
-			$this->tmpl_404( array( 'title' => "Translation set wasn't found" ) );
+			$this->die_with_404( array( 'title' => "Translation set wasn't found" ) );
 			return;
 		}
 		$project =  GP::$project->get( $set->project_id );
 		if ( !$project ) {
-			$this->tmpl_404( array( 'title' => "The project associated with this translation set wasn't found" ) );
+			$this->die_with_404( array( 'title' => "The project associated with this translation set wasn't found" ) );
 			return;
 		}
 		$locale = $locale = GP_Locales::by_slug( $set->locale );
 		if ( !$locale ) {
-			$this->tmpl_404( array( 'title' => "The locale associated with this translation set wasn't found" ) );
+			$this->die_with_404( array( 'title' => "The locale associated with this translation set wasn't found" ) );
 			return;
 		}
 		return array( $set, $project, $locale );

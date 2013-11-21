@@ -4,7 +4,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
 		$kind = 'translations';
 		$this->tmpl( 'project-import', get_defined_vars() );
@@ -14,7 +14,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
 
 		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
@@ -44,10 +44,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 
 		$format = gp_array_get( GP::$formats, gp_get( 'format', 'po' ), null );
-		if ( !$format ) gp_tmpl_404();
+		if ( !$format ) $this->die_with_404();
 
 		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
@@ -69,7 +69,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 		$page = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
@@ -102,7 +102,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
@@ -160,7 +160,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
 
 		$bulk = gp_post('bulk');
@@ -241,7 +241,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( !$project || !$locale || !$translation_set ) gp_tmpl_404();
+		if ( !$project || !$locale || !$translation_set ) $this->die_with_404();
 
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
 		if ( !$translation ) {

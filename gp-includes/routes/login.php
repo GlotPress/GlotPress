@@ -5,7 +5,7 @@ class GP_Route_Login extends GP_Route_Main {
 			$this->redirect( gp_url( '/' ) );
 			return;
 		}
-		gp_tmpl_load( 'login', array() );
+		$this->tmpl( 'login' );
 	}
 
 	function login_post() {
