@@ -23,6 +23,10 @@ class GP_Original extends GP_Thing {
 				$args[$field] = $this->force_false_to_null( $args[$field] );
 			}
 		}
+		if ( isset( $args['priority'] ) && is_string( $args['priority'] ) ) {
+			$args['priority'] = $this->priority_by_name( $args['priority'] );
+		}
+
 		return $args;
 	}
 
@@ -71,6 +75,7 @@ class GP_Original extends GP_Thing {
 			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
 				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
+			$data = apply_filters( 'import_original_array', $data );
 
 			// TODO: do not obsolete similar translations
 			if ( isset( $originals_by_key[$entry->key()] ) ) {
@@ -112,6 +117,11 @@ class GP_Original extends GP_Thing {
 			if ( $original->$field != $value ) return true;
 		}
 		return false;
+	}
+
+	function priority_by_name( $name ) {
+		$by_name = array_flip( self::$priorities );
+		return $by_name[$name];
 	}
 }
 GP::$original = new GP_Original();
