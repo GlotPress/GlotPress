@@ -83,4 +83,22 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$originals_for_project = $original->by_project_id( $project->id );
 		$this->assertEquals( 0, count( $originals_for_project ) );
 	}
+
+	function test_normalize_fields_should_convert_named_priorities_to_numeric_by_name() {
+		$original = new GP_Original;
+		$normalized_args = 	$original->normalize_fields( array( 'priority' => 'hidden' ) );
+		$this->assertEquals( -2, $normalized_args['priority'] );
+	}
+
+	function test_normalize_fields_should_not_convert_numeric_priorities_to_numeric_by_name() {
+		$original = new GP_Original;
+		$normalized_args = 	$original->normalize_fields( array( 'priority' => '1' ) );
+		$this->assertEquals( 1, $normalized_args['priority'] );
+	}
+
+	function test_normalize_fields_should_unset_priority_if_named_priority_is_missing() {
+		$original = new GP_Original;
+		$normalized_args = 	$original->normalize_fields( array( 'priority' => 'baba' ) );
+		$this->assertFalse( isset( $args['priority'] ) );
+	}
 }

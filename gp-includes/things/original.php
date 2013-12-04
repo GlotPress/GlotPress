@@ -23,8 +23,12 @@ class GP_Original extends GP_Thing {
 				$args[$field] = $this->force_false_to_null( $args[$field] );
 			}
 		}
-		if ( isset( $args['priority'] ) && is_string( $args['priority'] ) ) {
+
+		if ( isset( $args['priority'] ) && !is_numeric( $args['priority'] ) ) {
 			$args['priority'] = $this->priority_by_name( $args['priority'] );
+			if ( is_null( $args['priority'] ) ) {
+				unset( $args['priority'] );
+			}
 		}
 
 		return $args;
@@ -121,7 +125,7 @@ class GP_Original extends GP_Thing {
 
 	function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
-		return $by_name[$name];
+		return isset( $by_name[$name] )? $by_name[$name] : null;
 	}
 }
 GP::$original = new GP_Original();
