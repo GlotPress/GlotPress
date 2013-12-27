@@ -124,7 +124,11 @@ class GP_Format_Android {
 
 		$entries = new Translations;
 
-		foreach( $data->string as $string ) {
+		foreach ( $data->string as $string ) {
+			if ( isset( $string['translatable'] ) && 'false' == $string['translatable'] ) {
+				continue;
+			}
+
 			$entry = new Translation_Entry();
 			$entry->context = (string)$string['name'];
 			$entry->singular = $this->unescape( (string)$string[0] );
@@ -134,6 +138,10 @@ class GP_Format_Android {
 
 		foreach ( $data->{'string-array'} as $string_array )
 		{
+			if ( isset( $string_array['translatable'] ) && 'false' == $string_array['translatable'] ) {
+				continue;
+			}
+
 			$array_name = (string) $string_array['name'];
 			$item_index = 0;
 
