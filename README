@@ -12,7 +12,7 @@ Don't forget to create the .htaccess file, mentioned by the installer script.
 UPGRADING
 
 * Run svn up in your local checkout directory
-* Visit <glotpress-root>/install.php?action=upgrade -- this will upgrade the database structure
+* Visit <glotpress-root>/install.php -- this will upgrade the database structure
 
 QUESTIONS
 
