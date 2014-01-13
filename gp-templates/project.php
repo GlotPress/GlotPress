@@ -27,7 +27,7 @@ gp_tmpl_header();
 
 <?php if ( $translation_sets ): ?>
 <div id="translation-sets">
-	<h3><? _e('Translations');?></h3>
+	<h3><?php _e('Translations');?></h3>
 	<table class="translation-sets tablesorter">
 		<thead>
 			<tr>
