@@ -1224,6 +1224,7 @@ class GP_Locales {
 		$mr->lang_code_iso_639_1 = 'mr';
 		$mr->lang_code_iso_639_2 = 'mar';
 		$mr->country_code = '';
+		$mr->wp_locale = 'mr';
 		$mr->slug = 'mr';
 		$mr->google_code = 'mr';
 
