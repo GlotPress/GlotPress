@@ -21,12 +21,12 @@ function gp_scripts_default( &$scripts ) {
 
 	$bump = '20130702';
 
-	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.7.2' );
-	$scripts->add( 'jquery-ui', '/jquery/jquery-ui.js', array('jquery'), '1.8.18' );
-	$scripts->add( 'jquery-ui-autocomplete', null, array('jquery-ui'), '1.8.18' );
-	$scripts->add( 'jquery-ui-selectable', null, array('jquery-ui'), '1.8.18' );
-	$scripts->add( 'jquery-ui-tabs', null, array('jquery-ui'), '1.8.18' );
-	$scripts->add( 'tablesorter', '/jquery.tablesorter.min.js', array('jquery'), '1.8.18' );
+	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.11' );
+	$scripts->add( 'jquery-ui', '/jquery/jquery-ui.js', array('jquery'), '1.10.4' );
+	$scripts->add( 'jquery-ui-autocomplete', null, array('jquery-ui'), '1.10.4' );
+	$scripts->add( 'jquery-ui-selectable', null, array('jquery-ui'), '1.10.4' );
+	$scripts->add( 'jquery-ui-tabs', null, array('jquery-ui'), '1.10.4' );
+	$scripts->add( 'tablesorter', '/jquery.tablesorter.min.js', array('jquery'), '1.10.4' );
 
 	$scripts->add( 'common', '/common.js', array( 'jquery' ), $bump );
 	$scripts->add( 'editor', '/editor.js', array( 'common' ), $bump );
