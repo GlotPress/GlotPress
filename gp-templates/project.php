@@ -104,14 +104,14 @@ gp_tmpl_header();
 		focus: '#source-url-template',
 		group: 'personal'
 	});
-	$('div.personal-options').hide();
+	jQuery('div.personal-options').hide();
 	$gp.showhide('a.project-actions', 'div.project-actions', {
 		show_text: '<?php _e('Project actions &darr;'); ?>',
 		hide_text: '<?php _e('Project actions &uarr;'); ?>',
 		focus: '#source-url-template',
 		group: 'project'
 	});
-	$(document).ready(function() {
+	jQuery(document).ready(function($) {
 		$(".translation-sets").tablesorter({
 			headers: {
 				0: {
