@@ -10,7 +10,13 @@ function guess_uri()
 	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
 		$schema = 'https://';
 	}
-	$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'REQUEST_URI' ) );
+
+	if( gp_array_get( $_SERVER, 'DOCUMENT_URI' ) ) {
+		$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'DOCUMENT_URI' ) );
+	}
+	else {
+		$uri = $schema . gp_array_get( $_SERVER, 'HTTP_HOST');
+	}
 
 	return rtrim( $uri, " \t\n\r\0\x0B/" ) . '/';
 }
