@@ -13,6 +13,7 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
 	function setUp() {
 		global $gpdb;
+
 		$gpdb->suppress_errors = false;
 		$gpdb->show_errors = false;
 
