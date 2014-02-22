@@ -1,12 +1,12 @@
 <?php
 require_once 'PHPUnit/Autoload.php';
 
-$tests_dir = dirname( __FILE__ );
+$tests_dir = dirname( __FILE__ ) . '/tests';
 $old_cwd = getcwd();
 chdir( $tests_dir );
 
 for( $depth = 0; $depth <= 3; $depth++ ) {
-	foreach( glob( str_repeat( 'tests/tests_*/', $depth ) . 'tests/test_*.php' ) as $test_file ) {
+	foreach( glob( str_repeat( 'tests_*/', $depth ) . 'test_*.php' ) as $test_file ) {
 		include_once $test_file;
 	}
 }
