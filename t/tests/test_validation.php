@@ -19,10 +19,15 @@ class Mouse extends GP_Thing {
 	}
 }
 
-$gpdb->mice = '';
-
 
 class GP_Test_Validation extends GP_UnitTestCase {
+	function setUp() {
+		parent::setUp();
+
+		global $gpdb;
+		$gpdb->mice = '';
+	}
+
 	function test_basic() {
 		$mickey = new Mouse( array( 'id' => 5, 'name' => 'Mickey', 'rating' => 11, 'cat_id' => 1, ) );
 		$this->assertEquals( true, $mickey->validate() );

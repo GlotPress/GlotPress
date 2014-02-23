@@ -1,7 +1,5 @@
 <?php
 
-$GLOBALS['gpdb']->mytable = 'mytable';
-
 class GP_My_Table extends GP_Thing {
 	var $field_names = array('id', 'name', 'description');
 	var $table_basename = 'mytable';
@@ -11,6 +9,8 @@ class GP_Test_Thing extends GP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
+
+		$GLOBALS['gpdb']->mytable = 'mytable';
 		$this->t = new GP_My_Table;
 	}
 
