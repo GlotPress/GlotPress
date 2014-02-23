@@ -9,4 +9,14 @@
 	<logging>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>
 	</logging>
+	<filter>
+		<blacklist>
+			<directory suffix=".php">../gp-templates</directory>
+			<directory suffix=".php">../plugins</directory>
+			<directory suffix=".php">./</directory>
+			<exclude>
+				<directory suffix=".php">../plugins/google-translate</directory>
+			</exclude>
+		</blacklist>
+	</filter>
 </phpunit>
