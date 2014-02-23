@@ -43,6 +43,16 @@ function gp_strlen( $str ) {
 }
 endif;
 
+if ( function_exists('mb_stripos') ):
+function gp_stripos( $haystack, $needle ) {
+	return mb_stripos( $haystack, $needle );
+}
+else:
+function gp_stripos( $haystack, $needle ) {
+	return stripos( $haystack, $needle );
+}
+endif;
+
 function gp_sanitize_for_url( $name ) {
 	$name = trim( $name );
 	$name = gp_strtolower( $name );

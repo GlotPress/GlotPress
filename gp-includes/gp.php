@@ -8,6 +8,9 @@ class GP {
 	static $validator_permission;
 	static $translation;
 	static $original;
+	static $glossary;
+	static $glossary_entry;
+
 	// other singletons
 	static $router;
 	static $redirect_notices = array();

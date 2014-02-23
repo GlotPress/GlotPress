@@ -112,6 +112,29 @@ class GP_UnitTest_Factory_For_Locale extends GP_UnitTest_Factory_For_Thing {
 	}
 }
 
+class GP_UnitTest_Factory_For_Glossary extends GP_UnitTest_Factory_For_Thing {
+	function __construct( $factory = null, $thing = null ) {
+		parent::__construct( $factory, $thing? $thing : new GP_Glossary );
+
+		$this->default_generation_definitions = array(
+			'description'        => new GP_UnitTest_Generator_Sequence( 'Glossary Set %s' ),
+			'translation_set_id' => 1,
+		);
+	}
+
+	function create_with_project_set_and_locale( $args = array(), $project_args = array() ) {
+		$locale       = $this->factory->locale->create();
+		$project      = $this->factory->project->create( $project_args );
+		$set          = $this->factory->set->create( array( 'project_id' => $project->id, 'locale' => $locale->slug ) + $args );
+		$set->project = $project;
+		$set->locale  = $locale->slug;
+		$glossary     = $this->create( array('translation_set_id' => $set->id ) );
+
+		return $glossary;
+	}
+}
+
+
 class GP_UnitTest_Factory_For_Thing {
 
 	var $default_generation_definitions;

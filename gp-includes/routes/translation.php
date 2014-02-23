@@ -81,6 +81,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		if ( ! $translation_set ) $this->die_with_404();
 
+		$glossary = GP::$glossary->by_set_id( $translation_set->id );
+
 		$page = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );

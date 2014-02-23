@@ -74,6 +74,31 @@ function gp_schema_get() {
 	);";
 
 	/*
+	Glossary Entries
+	*/
+	$gp_schema['glossary_entries'] = "CREATE TABLE IF NOT EXISTS `$gpdb->glossary_entries` (
+		`id` INT(10) unsigned NOT NULL auto_increment,
+		`glossary_id` INT(10) unsigned NOT NULL,
+		`term` VARCHAR(255) NOT NULL,
+		`part_of_speech` VARCHAR(255) DEFAULT NULL,
+		`comment` TEXT DEFAULT NULL,
+		`translation` VARCHAR(255) DEFAULT NULL,
+		`date_modified` DATETIME NOT NULL,
+		`last_edited_by` BIGINT(20) NOT NULL,
+		PRIMARY KEY (`id`)
+	);";
+
+	/*
+	Glossaries
+	*/
+	$gp_schema['glossaries'] = "CREATE TABLE IF NOT EXISTS `$gpdb->glossaries` (
+		`id` INT(10) unsigned NOT NULL auto_increment,
+		`translation_set_id` INT(10)  NOT NULL,
+		`description` TEXT DEFAULT NULL,
+		PRIMARY KEY (`id`)
+	);";
+
+	/*
 	Projects
 	- Has a project -- its parent
 	- The path is the combination of the slugs of all its parents, separated by /

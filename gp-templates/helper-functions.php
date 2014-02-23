@@ -2,7 +2,54 @@
 function prepare_original( $text ) {
 	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
 	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);
+
 	return $text;
+}
+
+function map_glossary_entries_to_translations_originals( $translations, $glossary ) {
+	$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
+
+	if ( empty ( $glossary_entries ) ) {
+		return $translations;
+	}
+
+	$glossary_entries_terms = array();
+
+	//Create array of glossary terms, longest first
+	foreach ( $glossary_entries as $key => $value ) {
+		$glossary_entries_terms[ $key ] = $value->term;
+	}
+
+	uasort( $glossary_entries_terms, lambda('$a, $b', 'gp_strlen($a) < gp_strlen($b)' ) );
+
+	foreach ( $translations as $key => $t ) {
+		//Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.
+		$translations[$key]->singular_glossary_markup = esc_translation( $t->singular );
+		$translations[$key]->plural_glossary_markup   = esc_translation( $t->plural );
+
+		//Search for glossary terms in our strings
+		$matching_entries = array();
+
+		foreach( $glossary_entries_terms as $i => $term ) {
+			$glossary_entry = $glossary_entries[ $i ];
+
+			if ( gp_stripos( $t->singular . ' ' . $t->plural, $term ) !== false ) {
+				$matching_entries[$term][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment );
+			}
+		}
+
+		//Replace terms in strings with markup
+		foreach( $matching_entries as $term => $glossary_data ) {
+			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
+			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . $term . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
+
+			if ( $t->plural ) {
+				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . $term . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup, 1 );
+			}
+		}
+	}
+
+	return $translations;
 }
 
 function textareas( $entry, $permissions, $index = 0 ) {

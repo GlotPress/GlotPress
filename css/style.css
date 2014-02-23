@@ -12,7 +12,7 @@ body, html {
 }
 .gp-content input,
 .gp-content textarea {
-    font-size: 1em;
+	font-size: 1em;
 }
 h1 {
 	font-size: 1.25em;
@@ -22,7 +22,7 @@ h1 a.logo {
 	float: left;
 }
 h1 img {
-    margin-right: 1em;
+	margin-right: 1em;
 	vertical-align: middle;
 }
 h1 span.breadcrumb {
@@ -31,17 +31,17 @@ h1 span.breadcrumb {
 }
 /* we take the liberty to make visited the same as link */
 a, a:link, a:visited {
-    color: #2F34B8;
+	color: #2F34B8;
 }
 a:active {
-    color: red;
+	color: red;
 }
 a img {
-    border: 0;
+	border: 0;
 }
 a.disabled {
-    color: #aaa;
-    text-decoration: none;
+	color: #aaa;
+	text-decoration: none;
 }
 .gp-content h2 {
 	background-color: #ddd;
@@ -50,6 +50,12 @@ a.disabled {
 .gp-content h2 a.edit {
 	font-size: 0.75em;
 	text-decoration: none;
+}
+.gp-content h2 a.glossary-link {
+	font-size: 0.75em;
+	text-decoration: none;
+	display:inline-block;
+	float:right;
 }
 h3 {
 	font-size: 1.1em;
@@ -91,8 +97,8 @@ select {
 	text-shadow: #fff 0 1px 0;
 }
 .breadcrumb a {
-    color: #3A7399;
-    text-decoration: none;
+	color: #3A7399;
+	text-decoration: none;
 }
 #hello {
 	font-family: "Helvetica", "Arial", sans-serif;
@@ -108,8 +114,8 @@ textarea {
 	padding: 0.5em;
 	line-height: 1.5em;
 	width: 40em;
-}	
-table.translations, table.translation-sets {
+}
+table.translations, table.translation-sets, table.glossary {
 	font-size: 90%;
 	width: 100%;
 	border-spacing: 0.1em;
@@ -117,38 +123,39 @@ table.translations, table.translation-sets {
 table.translations thead th,
 table.translations tfoot th,
 table.translation-sets thead th,
-table.translations tfoot th {
+table.translations tfoot th,
+table.glossary thead th {
 	font-weight: bold;
 	color: #eee;
-	background-color: #555;	
+	background-color: #555;
 	padding: 0.5em;
 }
-table.translations tr, table.translation-sets tr {
+table.translations tr, table.translation-sets tr, table.glossary tr {
 	border: 0;
 }
 table.translations td.translation ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
 }
 table.translations td.translation li {
-    padding-bottom: 0.25em;
-    border-bottom: 1px dotted #ccc;
+	padding-bottom: 0.25em;
+	border-bottom: 1px dotted #ccc;
 }
 table.translations td.translation li:last-child {
-    padding-bottom: 0;
-    border-bottom: none;
+	padding-bottom: 0;
+	border-bottom: none;
 }
 table.translations td.translation span.missing {
-    color: #ddd;
-    font-style: italic;
+	color: #ddd;
+	font-style: italic;
 }
 table.translations td.translation span.missing a {
-    color: #ccc;
-    font-style: italic;
+	color: #ccc;
+	font-style: italic;
 }
 
-table.translations td, table.translations th, table.translation-sets td, table.translation-sets th {
+table.translations td, table.translations th, table.translation-sets td, table.translation-sets th, table.glossary th, table.glossary td {
 	padding: 0.5em;
 	border: 1px solid #eee;
 	margin: 0;
@@ -156,23 +163,23 @@ table.translations td, table.translations th, table.translation-sets td, table.t
 }
 
 table.translations td.checkbox {
-    vertical-align: middle;
-    text-align: center;
+	vertical-align: middle;
+	text-align: center;
 }
 table.translations td.priority {
-    text-align: center;
-    font-size: 1.3em;
+	text-align: center;
+	font-size: 1.3em;
 }
 table.translations td.actions {
-    text-align: center;
+	text-align: center;
 }
 table.translations.translation-sets-rtl .foreign-text {
 	direction: rtl;
 }
 
 table.translations td.original, table.translations td.translation {
-    width: 45%;
-  	word-break: break-word;
+	width: 45%;
+	word-break: break-word;
 	word-wrap: break-word;
 }
 
@@ -199,13 +206,14 @@ table.translations tr.preview.status-rejected, #legend .status-rejected {
 	background-color: #FF8E8E;
 }
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
-    border-left: 2px solid red;
+	border-left: 2px solid red;
 }
 
 table.translations a.action {
-    font-size: 100%;
-    font-style: normal;
+	font-size: 100%;
+	font-style: normal;
 }
+
 #gp-footer {
 	text-align: center;
 	font-size: 85%;
@@ -240,44 +248,44 @@ span.morethan90 {
 	max-width: 50em;
 }
 .editor .strings {
-    float: left;
-    width: 60%;
+	float: left;
+	width: 60%;
 }
 .editor .strings p.plural-numbers {
-    margin-bottom: 0;
-    color: #555;
-    font-size: 0.75em;
+	margin-bottom: 0;
+	color: #555;
+	font-size: 0.75em;
 }
 .editor .strings p.plural-numbers span.numbers {
-    font-weight: bold;
+	font-weight: bold;
 }
 .editor .textareas, .editor .actions {
 	clear: both;
 }
 .editor .textareas textarea {
-    width: 45em;
-    min-height: 8em;
+	width: 45em;
+	min-height: 8em;
 }
 .editor .meta {
 	float: left;
 	margin-left: 2em;
 }
 .editor .meta dl {
-    margin: 0.1em 1em;
+	margin: 0.1em 1em;
 }
 .editor .meta dt, .editor .meta dd {
-    display: inline;
-    margin: 0;
+	display: inline;
+	margin: 0;
 }
 .editor .meta dt {
-    margin-right: 0.5em;
+	margin-right: 0.5em;
 }
 .editor .meta dt {
-    margin-right: 0.5em;    
+	margin-right: 0.5em;
 }
 .editor .meta dd {
-    color: #444;
-    font-weight: bold;
+	color: #444;
+	font-weight: bold;
 }
 
 #gp-js-message {
@@ -290,7 +298,7 @@ span.morethan90 {
 }
 .gp-js-error, .error {
 	color: white;
-	background-color: red;	
+	background-color: red;
 }
 .gp-js-notice, .notice {
 	color: #222;
@@ -302,17 +310,17 @@ span.morethan90 {
 }
 .notice, .error {
 	clear: both;
-	padding: 0.5em;    
+	padding: 0.5em;
 }
 
 a.bubble, .bubble {
-    font-size: 80%;
-    color: white;
-    padding: 0.2em 0.3em 0.1em 0.2em;
-    text-decoration: none;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
-    text-align: center;
+	font-size: 80%;
+	color: white;
+	padding: 0.2em 0.3em 0.1em 0.2em;
+	text-decoration: none;
+	-webkit-border-radius: 0.2em;
+	-moz-border-radius: 0.2em;
+	text-align: center;
 }
 span.active {
 	background-color: yellow;
@@ -320,48 +328,48 @@ span.active {
 	font-weight: bold;
 }
 h1 span.active {
-	font-size: 75%;	
+	font-size: 75%;
 	float: left;
-    -webkit-border-radius: 0.4em;
-    -moz-border-radius: 0.4em;
+	-webkit-border-radius: 0.4em;
+	-moz-border-radius: 0.4em;
 	margin-top: 17px;
 	margin-left: .5em;
 }
 ul a.edit, dt a.edit {
-    background-color: #777;    
+	background-color: #777;
 }
 ul a.delete {
-    background-color: #FF4F50;
+	background-color: #FF4F50;
 }
 .paging {
-    float: right;
+	float: right;
 }
 .paging a, .paging span {
-    font-size: 0.9em;
-    display: block;
-    width: 2em;
-    height: 2em;
-    border: 1px solid #ddd;
-    float: left;
-    text-align: center;
-    line-height: 2em;
-    margin: 0.3em;
-    text-decoration: none;
+	font-size: 0.9em;
+	display: block;
+	width: 2em;
+	height: 2em;
+	border: 1px solid #ddd;
+	float: left;
+	text-align: center;
+	line-height: 2em;
+	margin: 0.3em;
+	text-decoration: none;
 }
 .paging .current, .paging .dots {
-    border-color: transparent;
-    color: black;
-    width: 1.3em;
+	border-color: transparent;
+	color: black;
+	width: 1.3em;
 }
 .paging .current {
-    font-weight: bold;
+	font-weight: bold;
 }
 .paging .next {
 	margin-right: 1px;
 }
 .paging .disabled {
-    color: #999;
-    border-color: #eee;
+	color: #999;
+	border-color: #eee;
 }
 .bulk-actions {
 	float: left;
@@ -376,73 +384,73 @@ form.filters-toolbar > div {
 	line-height: 2em;
 }
 form.filters-toolbar ul {
-    list-style-type: none;    
+	list-style-type: none;
 }
 form.filters-toolbar a.revealing {
-    text-decoration: none;
+	text-decoration: none;
 }
 form.filters-toolbar a.revealing, form.filters-toolbar .separator {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 form.filters-toolbar a.revealing.open {
-    font-weight: bold;
+	font-weight: bold;
 }
 form.filters-toolbar a.revealing:first-child {
-    margin-left: 0.5em;
+	margin-left: 0.5em;
 }
 form.filters-toolbar strong.separator {
-    font-size: 1.8em;
-    vertical-align: bottom;
+	font-size: 1.8em;
+	vertical-align: bottom;
 }
 dl.filters-expanded {
 	float: left;
-    font-size: 80%;    
-    padding: 0.8em;
-    margin: 0 0 0.5em 0.2em;
-    background-color: #eee;
-    border-radius: 0.3em;
-    -webkit-border-radius: 0.3em;
-    -moz-border-radius: 0.3em;
+	font-size: 80%;
+	padding: 0.8em;
+	margin: 0 0 0.5em 0.2em;
+	background-color: #eee;
+	border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
 }
 dl.filters-expanded dt, dl.filters-expanded dd {
-    float: left;
-    margin: 0;
-    padding: 0;
+	float: left;
+	margin: 0;
+	padding: 0;
 }
 dl.filters-expanded dt {
-    margin-right: 0.5em;
-    font-weight: bold;
+	margin-right: 0.5em;
+	font-weight: bold;
 }
 dl.filters-expanded dd {
-    margin-right: 2em;
+	margin-right: 2em;
 }
 dl.filters-expanded dd.separator {
-    border-left: 1px dotted #777;
-    height: 4em;
-    width: 1em;
+	border-left: 1px dotted #777;
+	height: 4em;
+	width: 1em;
 }
 dl.filters-expanded.bulk-actions a {
-    display: block;
+	display: block;
 }
 dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
-    margin-top: 0;
-    padding-top: 0;
+	margin-top: 0;
+	padding-top: 0;
 }
 .hidden,
 .js .hide-if-js,
 .no-js .hide-if-no-js {
-    display: none;
+	display: none;
 }
 .clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
 }
 table.translation-sets .stats a {
-    color: black;
-    text-decoration: none;
+	color: black;
+	text-decoration: none;
 	-webkit-border-radius: 0.3em;
 	-moz-border-radius: 0.3em;
 	padding: 0.1em 0.2em;
@@ -452,19 +460,19 @@ table.translation-sets .stats a {
 }
 
 .personal-options #source-url-template {
-    width: 20em;
+	width: 20em;
 }
 .invisibles {
-    color: #888;
-    font-size: 85%;
-    padding: 0;
-    margin-left: 2px;
+	color: #888;
+	font-size: 85%;
+	padding: 0;
+	margin-left: 2px;
 }
 .secondary {
-    font-size: 0.85em;
+	font-size: 0.85em;
 }
 .ternary {
-    font-size: 0.7em;
+	font-size: 0.7em;
 }
 
 .actionlist {
@@ -472,30 +480,30 @@ table.translation-sets .stats a {
 }
 
 .actionlist a, .actionlist a:link, .actionlist a:visited {
-    color: #4D56DC;
+	color: #4D56DC;
 }
 .actionlist a:active {
-    color: red;
+	color: red;
 }
 .permissions .user {
-    font-weight: bold;
+	font-weight: bold;
 }
 .permissions .permission-action {
-    font-style: italic;
-    color: #999;
+	font-style: italic;
+	color: #999;
 }
 .warning {
-    background-color: white;
-    color: #E44B3E;
-    border: 1px solid #E44B3E;
-    margin: 1em 0;
-    padding: 0.5em;
+	background-color: white;
+	color: #E44B3E;
+	border: 1px solid #E44B3E;
+	margin: 1em 0;
+	padding: 0.5em;
 }
 .warning a.discard-warning {
-    float: right;
+	float: right;
 }
 .textareas .warning {
-    width: 53em;
+	width: 53em;
 }
 p.description {
 	max-width: 60em;
@@ -505,24 +513,24 @@ p.description {
 	margin-top: -0.75em;
 }
 span.added {
-    color: green;
+	color: green;
 }
 span.removed {
-    color: red;
+	color: red;
 }
 #legend {
-    margin-top: 1em;
+	margin-top: 1em;
 }
 #legend div {
-    margin-right: .5em;
-    float: left;
-    line-height: 1.5em;
+	margin-right: .5em;
+	float: left;
+	line-height: 1.5em;
 }
 #legend .box {
-    border: 1px solid #ccc;
-    width: 1.5em;
-    height: 1.5em;
-    padding: 0;
+	border: 1px solid #ccc;
+	width: 1.5em;
+	height: 1.5em;
+	padding: 0;
 }
 .gp-content .text {
 	width: 45em;
@@ -617,16 +625,110 @@ table.form-table th, table.form-table td {
 	cursor: pointer;
 }
 
-.tablesorter th.headerSortUp { 
-	background-image: url(../img/asc.gif); 
-	background-color: #3399FF; 
+.tablesorter th.headerSortUp {
+	background-image: url(../img/asc.gif);
+	background-color: #3399FF;
 }
 
-.tablesorter th.headerSortDown { 
-	background-image: url(../img/desc.gif); 
-	background-color: #3399FF; 
+.tablesorter th.headerSortDown {
+	background-image: url(../img/desc.gif);
+	background-color: #3399FF;
 }
 
+.glossary-description {
+	height: 150px;
+}
+
+.glossary td {
+	padding: 0.5em 0.75em;
+}
+
+.glossary tr {
+	background-color: #fcfcfc;
+}
+.glossary tr:nth-child(4n+1) {
+	background-color: #fff;
+}
+.glossary tr.active {
+	background-color: #F8FFEC;
+}
+
+.glossary td.actions {
+	text-align: center;
+}
+
+.glossary td.actions ul {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+.glossary td.actions ul li{
+	display: inline;
+	padding-right: 10px;
+}
+
+.glossary td.actions ul a {
+	background: none;
+}
+
+.glossary-word {
+	display: inline-block;
+	text-decoration: none;
+	border-bottom:1px dashed;
+	cursor: help;
+}
+
+.ui-tooltip {
+	background-color: #eee;
+	margin: 2px;
+	padding: 6px;
+	text-align: left;
+	max-width: 250px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.ui-tooltip ul {
+	list-style-type: none;
+	margin: 2px;
+	padding-left: 10px;
+}
+.ui-tooltip ul li {
+	padding: 0;
+	margin: 0;
+}
+
+.ui-tooltip .pos {
+	display:inline-block;
+	font-style: italic;
+	padding-right: 10px;
+}
+.ui-tooltip .translation{
+	font-weight: bold;
+}
+.ui-tooltip .comment {
+	display: block;
+	font-size: small;
+}
+
+.ui-tooltip:after {
+	display: block;
+	content: "";
+	border-color: #eee transparent;
+	border-style: solid;
+	border-width: 0 10px 10px;
+	width: 0;
+	position: absolute;
+	top: -8px;
+	left: 1em;
+}
+
+#add-entry input {
+	width: 200px;
+	padding: 5px;
+}
 
 @media (max-width: 800px) {
 	#sub-projects {

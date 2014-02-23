@@ -63,6 +63,22 @@ $gp.editor = function($){ return {
 			.on('click', 'button.reject', $gp.editor.hooks.set_status_rejected)
 			.on('click', 'button.ok', $gp.editor.hooks.ok);
 		$('tr.editor').on('keydown', 'textarea', $gp.editor.hooks.keydown);
+		$( '#translations' ).tooltip({
+			items: '.glossary-word',
+			content: function(){
+				var content = $('<ul>');
+				$.each( $(this).data('translations'), function( i, e ){
+					var def = $('<li>');
+					def.append( $('<span>', {text: e.pos }).addClass('pos') );
+					def.append( $('<span>', {text: e.translation}).addClass('translation') );
+					def.append( $('<span>', {text: e.comment}).addClass('comment') );
+					content.append(def);
+				});
+				return content;
+			},
+			hide: false,
+			show: false
+		});
 	},
 	keydown: function(e) {
 		if (e.keyCode == 27)
@@ -138,7 +154,6 @@ $gp.editor = function($){ return {
 				$gp.notices.error(msg);
 			}
 		});
-		
 	},
 	set_status: function(button, status) {
 		if (!$gp.editor.current || !$gp.editor.current.translation_id) return;

@@ -4,6 +4,7 @@ gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $translation_set->name ),
 ) );
+wp_enqueue_script( 'jquery-ui' );
 wp_enqueue_script( 'editor' );
 wp_enqueue_script( 'translations-page' );
 wp_localize_script( 'translations-page', '$gp_translations_options', array( 'sort' => __('Sort'), 'filter' => __('Filter') ) );
@@ -20,6 +21,11 @@ $i = 0;
 <h2>
 	<?php printf( __("Translation of %s"), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __('(edit)') ); ?>
+	<?php if ( $glossary ): ?>
+	<?php echo gp_link( gp_url_project_locale( $project, $locale->slug, $translation_set->slug ) . '/glossary', __('glossary'), array('class'=>'glossary-link') ); ?>
+	<?php elseif ( $can_approve ): ?>
+		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __('Create glossary'), array('class'=>'glossary-link') ); ?>
+	<?php endif; ?>
 </h2>
 <?php if ( $can_approve ): ?>
 <form id="bulk-actions-toolbar" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; ?>" method="post">
@@ -138,6 +144,11 @@ $i = 0;
 		<th>&mdash;</th>
 	</tr>
 	</thead>
+<?php
+	if ( $glossary ) {
+		$translations = map_glossary_entries_to_translations_originals( $translations, $glossary ); 
+	}
+?>
 <?php foreach( $translations as $t ):
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
 ?>

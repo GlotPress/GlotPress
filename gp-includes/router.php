@@ -38,6 +38,7 @@ class GP_Router {
 		$id = '(\d+)';
 		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
 		$set = "$project/$locale/$dir";
+
 		// overall structure
 		return apply_filters( 'routes', array(
 			'/' => array('GP_Route_Index', 'index'),
@@ -47,6 +48,14 @@ class GP_Router {
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
+
+			"get:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_get'),
+			"post:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_post'),
+			"post:/$set/glossary/-new" => array('GP_Route_Glossary_Entry', 'glossary_entry_add_post'),
+			"post:/$set/glossary/-delete" => array('GP_Route_Glossary_Entry', 'glossary_entry_delete_post'),
+			"get:/$set/glossary/-export" => array('GP_Route_Glossary_Entry', 'export_glossary_entries_get'),
+			"get:/$set/glossary/-import" => array('GP_Route_Glossary_Entry', 'import_glossary_entries_get'),
+			"post:/$set/glossary/-import" => array('GP_Route_Glossary_Entry', 'import_glossary_entries_post'),
 
 			"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
 			"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
@@ -81,6 +90,7 @@ class GP_Router {
 			// keep this below all URLs ending with a literal string, because it may catch one of them
 			"get:/$set" => array('GP_Route_Translation', 'translations_get'),
 			"post:/$set" => array('GP_Route_Translation', 'translations_post'),
+
 			// keep this one at the bottom of the project, because it will catch anything starting with project
 			"/$project" => array('GP_Route_Project', 'single'),
 
@@ -89,6 +99,11 @@ class GP_Router {
 			"get:/sets/$id" => array('GP_Route_Translation_Set', 'single'),
 			"get:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_get'),
 			"post:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_post'),
+
+			"get:/glossaries/-new" => array('GP_Route_Glossary', 'new_get'),
+			"post:/glossaries/-new" => array('GP_Route_Glossary', 'new_post'),
+			"get:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_get'),
+			"post:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_post'),
 
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
 		) );
@@ -107,7 +122,6 @@ class GP_Router {
 			foreach( $this->urls as $re => $func ) {
 				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
 					if ( gp_startswith( $re, $http_method.':' ) ) {
-
 						if ( $http_method != $request_method ) continue;
 						$re = substr( $re, strlen( $http_method . ':' ));
 						break;

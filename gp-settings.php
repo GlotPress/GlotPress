@@ -143,7 +143,7 @@ $gpdb = new $gpdb_class( array(
 ) );
 unset( $gpdb_class );
 
-$gpdb->table_names = array('translations', 'translation_sets', 'originals', 'projects', 'users', 'usermeta', 'meta', 'permissions', 'api_keys', );
+$gpdb->table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'users', 'usermeta', 'meta', 'permissions', 'api_keys', );
 foreach( $gpdb->table_names as $table ) {
 	$gpdb->tables[$table] = false;
 }
@@ -292,6 +292,9 @@ require_once GP_PATH . GP_INC . 'things/translation-set.php';
 require_once GP_PATH . GP_INC . 'things/translation.php';
 require_once GP_PATH . GP_INC . 'things/user.php';
 require_once GP_PATH . GP_INC . 'things/validator-permission.php';
+require_once GP_PATH . GP_INC . 'things/glossary.php';
+require_once GP_PATH . GP_INC . 'things/glossary-entry.php';
+
 
 require_once( GP_PATH . GP_INC . 'route.php' );
 require_once( GP_PATH . GP_INC . 'router.php' );
@@ -304,6 +307,9 @@ require_once GP_PATH . GP_INC . 'routes/profile.php';
 require_once GP_PATH . GP_INC . 'routes/project.php';
 require_once GP_PATH . GP_INC . 'routes/translation-set.php';
 require_once GP_PATH . GP_INC . 'routes/translation.php';
+require_once GP_PATH . GP_INC . 'routes/glossary.php';
+require_once GP_PATH . GP_INC . 'routes/glossary-entry.php';
+
 
 GP::$translation_warnings = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();

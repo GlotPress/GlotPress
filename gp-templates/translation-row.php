@@ -55,24 +55,29 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 <tr class="editor <?php echo $warning_class; ?>" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
 	<td colspan="<?php echo $can_approve ? 5 : 4 ?>">
 		<div class="strings">
-		<?php if ( !$t->plural ): ?>
-		<p class="original"><?php echo prepare_original( esc_translation($t->singular) ); ?></p>
+		<?php
+			$singular = isset( $t->singular_glossary_markup ) ? $t->singular_glossary_markup : esc_translation( $t->singular );
+			$plural   = isset( $t->plural_glossary_markup ) ? $t->plural_glossary_markup : esc_translation( $t->plural );
+		?>
+
+		<?php if ( ! $t->plural ): ?>
+		<p class="original"><?php echo prepare_original( $singular ); ?></p>
 		<?php textareas( $t, array( $can_edit, $can_approve ) ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>
-				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
+				<p><?php printf(__('Singular: %s'), '<span class="original">'. $singular .'</span>'); ?></p>
 				<?php textareas( $t, array( $can_edit, $can_approve ), 0 ); ?>
 				<p class="clear">
-					<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
+					<?php printf(__('Plural: %s'), '<span class="original">'. $plural .'</span>'); ?>
 				</p>
 				<?php textareas( $t, array( $can_edit, $can_approve ), 1 ); ?>
 			<?php else: ?>
 				<!--
 				TODO: labels for each plural textarea and a sample number
 				-->
-				<p><?php printf(__('Singular: %s'), '<span class="original">'.esc_translation($t->singular).'</span>'); ?></p>
+				<p><?php printf(__('Singular: %s'), '<span class="original">'. $singular .'</span>'); ?></p>
 				<p class="clear">
-					<?php printf(__('Plural: %s'), '<span class="original">'.esc_translation($t->plural).'</span>'); ?>
+					<?php printf(__('Plural: %s'), '<span class="original">'. $plural .'</span>'); ?>
 				</p>
 				<?php foreach( range( 0, $locale->nplurals - 1 ) as $plural_index ): ?>
 					<?php if ( $locale->nplurals > 1 ): ?>
