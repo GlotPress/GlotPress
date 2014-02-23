@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Autoload.php';
 
-$tests_dir = dirname( __FILE__ ) . '/tests';
+$tests_dir = dirname( __FILE__ );
 $old_cwd = getcwd();
 chdir( $tests_dir );
 
