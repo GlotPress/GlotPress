@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class Mouse extends GP_Thing {
 	var $table_basename = 'mice';

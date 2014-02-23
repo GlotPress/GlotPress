@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 $GLOBALS['gpdb']->mytable = 'mytable';
 

@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_Misc extends GP_UnitTestCase {
 	function test_gp_parity_factory() {

@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_PO extends GP_UnitTestCase {
     function GP_Test_PO() {

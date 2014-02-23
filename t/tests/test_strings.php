@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_Strings extends GP_UnitTestCase {
 	function test_gp_sanitize_for_url() {

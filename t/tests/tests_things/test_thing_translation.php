@@ -1,5 +1,4 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	function test_translation_should_support_6_plurals() {

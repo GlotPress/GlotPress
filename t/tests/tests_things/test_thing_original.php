@@ -1,7 +1,5 @@
 <?php
 
-require_once( dirname( __FILE__ ) . '/../init.php');
-
 global $update_invocation_count;
 $update_invocation_count = 0;
 

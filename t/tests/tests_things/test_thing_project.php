@@ -1,5 +1,4 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Test_Project extends GP_UnitTestCase {
 	function test_update_path() {

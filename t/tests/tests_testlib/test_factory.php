@@ -1,5 +1,4 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Thing_Test_Factory {
 	function create( $args ) {

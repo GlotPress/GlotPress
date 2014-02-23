@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_Template_Functions extends GP_UnitTestCase {
 	function test_gp_breadcrumb_should_return_empty_string_without_params() {

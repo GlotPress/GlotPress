@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_Translation_Entry extends GP_UnitTestCase {
 

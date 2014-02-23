@@ -1,5 +1,4 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 	function test_copy_translations_from_should_copy_into_empty_set() {

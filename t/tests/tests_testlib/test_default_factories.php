@@ -1,5 +1,4 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Test_Default_Factories extends GP_UnitTestCase {
 	function test_project_factory_create() {

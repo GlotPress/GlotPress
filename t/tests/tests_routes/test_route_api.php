@@ -1,5 +1,4 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../init.php');
 
 class GP_Test_Projects_API extends GP_UnitTestCase_Route {
   var $route_class = 'GP_Route_Project';

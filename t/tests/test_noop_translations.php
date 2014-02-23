@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_NOOP_Translations extends GP_UnitTestCase {
 	function setUp() {

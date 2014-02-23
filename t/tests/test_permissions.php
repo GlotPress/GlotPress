@@ -1,5 +1,4 @@
 <?php
-require_once('init.php');
 
 class GP_Test_Permissions extends GP_UnitTestCase {
 	function test_create_find() {

@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Autoload.php';
 
 define( 'GP_CONFIG_FILE', dirname( __FILE__ ) . '/unittests-config.php' );
 
