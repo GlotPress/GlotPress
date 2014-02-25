@@ -1215,6 +1215,7 @@ class GP_Locales {
 		$mn->lang_code_iso_639_1 = 'mn';
 		$mn->lang_code_iso_639_2 = 'mon';
 		$mn->country_code = 'mn';
+		$mn->wp_locale = 'mn';
 		$mn->slug = 'mn';
 		$mn->google_code = 'mn';
 
