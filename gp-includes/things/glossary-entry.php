@@ -1,11 +1,11 @@
 <?php
 class GP_Glossary_Entry extends GP_Thing {
 
-	var $table_basename           = 'glossary_entries';
-	var $field_names              = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
-	var $non_updatable_attributes = array( 'id', );
+	var $table_basename = 'glossary_entries';
+	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
+	var $non_updatable_attributes = array( 'id' );
 
-	var $parts_of_speech       = array();
+	var $parts_of_speech = array();
 
 	function __construct( $fields = array() ) {
 		parent::__construct( $fields );
