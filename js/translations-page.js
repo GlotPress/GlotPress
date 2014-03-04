@@ -1,7 +1,7 @@
 jQuery(function($) {
 	$gp.showhide('#upper-filters-toolbar a.sort', '#upper-filters-toolbar dl.sort', {
 		show_text: $gp_translations_options.sort + ' &darr;',
-		hide_text: $gp_translations_options.sort + ' &uarr;', 
+		hide_text: $gp_translations_options.sort + ' &uarr;',
 		focus: '#sort\\[by\\]'
 	});
 	$gp.showhide('#upper-filters-toolbar a.filter', '#upper-filters-toolbar dl.filters', {
@@ -9,7 +9,7 @@ jQuery(function($) {
 		hide_text: $gp_translations_options.filter + ' &uarr;',
 		focus: '#filters\\[term\\]'
 	});
-	
+
 	var rows_checked = 0;
 
 	$('form.filters-toolbar.bulk-actions').submit(function(e) {
@@ -18,7 +18,7 @@ jQuery(function($) {
 		}).get().join(',');
 		$('input[name="bulk[row-ids]"]', $(this)).val(row_ids);
 	});
-	
+
 	$('a#export').click(function() {
 		var format = $('#export-format').val();
 		var what_to_export = $('#what-to-export').val();

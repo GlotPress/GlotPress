@@ -107,7 +107,7 @@ $gp.editor = function($){ return {
 		$gp.editor.current.preview.fadeIn(800);
 	},
 	save: function(button) {
-		if (!$gp.editor.current) return;		
+		if (!$gp.editor.current) return;
 		var editor = $gp.editor.current;
 		button.prop('disabled', true);
 		$gp.notices.notice('Saving&hellip;');

@@ -21,7 +21,7 @@ jQuery(function($) {
 				preview_html += '<ul>';
 				function preview_html_for(kind, text) {
 					var sets = data[kind];
-					var html = '';					
+					var html = '';
 					html += '<li><span class="'+kind+'">'+text.replace('{count}', sets.length)+'</span>';
 					if (sets.length) {
 						html += '<ul>';
@@ -44,7 +44,7 @@ jQuery(function($) {
 				msg = xhr.responsehtml? 'Error: '+ xhr.responsehtml : 'Error saving the translation!';
 				$gp.notices.error(msg);
 			}
-		});		
+		});
 	});
 	$('#submit').prop('disabled', true);
 	$('#preview').hide();
