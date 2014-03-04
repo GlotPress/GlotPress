@@ -93,7 +93,7 @@ $gp.glossary = function($){ return {
 			var data = editor.find('input, select, textarea').map(function() {
 				return $(this).attr('name')+'='+encodeURIComponent($(this).val());
 			}).get().join('&');
-			$.ajax({type: "POST", url: $gp_glossary_options.delete_url, data: data, dataType: 'json',
+			$.ajax({type: "POST", url: $gp_glossary_options.delete_url, data: data,
 				success: function(data){
 					$gp.notices.success('Deleted!');
 					editor.fadeOut('fast', function(){

@@ -133,7 +133,6 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->die_with_error( $error_output, 200 );
 		}
 
-		echo json_encode('');
 		exit();
 	}
 

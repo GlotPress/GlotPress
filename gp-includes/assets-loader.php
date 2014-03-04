@@ -19,7 +19,7 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->base_url = gp_url_base( 'js' );
 	$scripts->default_version = gp_get_option( 'version' );
 
-	$bump = '20140224';
+	$bump = '20140304';
 
 	$scripts->add( 'jquery', '/jquery/jquery.js', array(), '1.11' );
 	$scripts->add( 'jquery-ui', '/jquery/jquery-ui.js', array('jquery'), '1.10.4' );
