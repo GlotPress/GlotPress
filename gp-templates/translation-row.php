@@ -170,8 +170,8 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 ?>
 			    <dt><?php _e('More links:'); ?>
 				<ul>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php _e('Permanent link to this translation'); ?>"><?php _e('Permalink to this translation'); ?></a></li>
-					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php _e('Link to the history of translations of this original'); ?>"><?php _e('All translations of this original'); ?></a></li>
+					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e('Permanent link to this translation'); ?>"><?php _e('Permalink to this translation'); ?></a></li>
+					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php esc_attr_e('Link to the history of translations of this original'); ?>"><?php _e('All translations of this original'); ?></a></li>
 				</ul>
 				</dt>
 			</dl>
