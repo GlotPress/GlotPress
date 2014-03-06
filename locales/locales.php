@@ -1417,6 +1417,14 @@ class GP_Locales {
 		$ps->facebook_locale = 'ps_AF';
 		$ps->rtl = true;
 
+		$rhg = new GP_Locale();
+		$rhg->english_name = 'Rohingya';
+		$rhg->native_name = 'Rohingya';
+		$rhg->lang_code_iso_639_2 = 'rhg';
+		$rhg->country_code = 'bd';
+		$rhg->wp_locale = 'rhg';
+		$rhg->slug = 'rhg';
+
 		$ro = new GP_Locale();
 		$ro->english_name = 'Romanian';
 		$ro->native_name = 'Română';
