@@ -20,13 +20,19 @@ class GP_Format_Strings {
 
 		$sorted_entries = $entries;
 		usort( $sorted_entries, array( 'GP_Format_Strings', 'sort_entries' ) );
+
 		foreach ( $sorted_entries as $entry ) {
+			$entry->context = addcslashes( $entry->context, '"\\/');
+			$translation = empty( $entry->translations ) ? $entry->context : addcslashes( $entry->translations[0], '"\\/');
+
 			$original = str_replace( "\n", "\\n", $entry->context );
-			$translation = str_replace( "\n", "\\n", empty( $entry->translations ) ? $entry->context : $entry->translations[0] );
+			$translation = str_replace( "\n", "\\n", $translation );
 			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
+
 			if ( $comment == "" ) {
 				$comment = "No comment provided by engineer.";
 			}
+
 			$result .= "/* $comment */\n\"$original\" = \"$translation\";\n\n";
 		}
 
