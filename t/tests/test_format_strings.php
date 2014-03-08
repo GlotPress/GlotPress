@@ -18,7 +18,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 	}
 
 	function test_read_originals() {
-		$translations = $this->strings->read_originals_from_file( 'data/originals.utf16be.strings' );
+		$translations = $this->strings->read_originals_from_file( 'data/originals.utf16le.strings' );
 		$this->assertEquals( count( $this->entries ), count( $translations->entries ), 'number of read originals is different from the expected' );
 
 		foreach( $this->entries as $sample ) {

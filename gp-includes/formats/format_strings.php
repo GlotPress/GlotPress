@@ -67,17 +67,13 @@ class GP_Format_Strings {
 
 	function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
-		$f = fopen( $file_name, 'r' );
-		if ( !$f ) return false;
+		$file = file_get_contents( $file_name );
+		if ( false === $file ) return false;
+		$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
+
 		$context = $comment = null;
-		$lineno = 1;
-		while ( false !== ( $line = fgets( $f ) ) ) {
-			if ( $lineno == 1 ) {
-				if ( substr( $line, 0, 2 ) == pack( "CC", 0xef, 0xff ) ) {
-					$line = substr( $line, 2 );
-				}
-			}
-			$line = mb_convert_encoding( $line, 'UTF-8', 'UTF-16BE' );
+		$lines = explode( "\n", $file );
+		foreach ( $lines as $line ) {
 			if ( is_null( $context ) ) {
 				if ( preg_match( '/^\/\*\s*(.*)\s*\*\/$/', $line, $matches ) ) {
 					$matches[1] = trim( $matches[1] );
@@ -100,7 +96,6 @@ class GP_Format_Strings {
 					$entry = null;
 				}
 			}
-			$lineno++;
 		}
 		return $entries;
 	}
