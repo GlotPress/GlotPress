@@ -80,6 +80,8 @@ class GP_Format_Strings {
 			$line = mb_convert_encoding( $line, 'UTF-8', 'UTF-16BE' );
 			if ( is_null( $context ) ) {
 				if ( preg_match( '/^\/\*\s*(.*)\s*\*\/$/', $line, $matches ) ) {
+					$matches[1] = trim( $matches[1] );
+
 					if ( $matches[1] !== "No comment provided by engineer." ) {
 						$comment = $matches[1];
 					} else {
