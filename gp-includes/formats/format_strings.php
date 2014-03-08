@@ -22,8 +22,8 @@ class GP_Format_Strings {
 		usort( $sorted_entries, array( 'GP_Format_Strings', 'sort_entries' ) );
 
 		foreach ( $sorted_entries as $entry ) {
-			$entry->context = addcslashes( $entry->context, '"\\/');
-			$translation = empty( $entry->translations ) ? $entry->context : addcslashes( $entry->translations[0], '"\\/');
+			$entry->context = $this->escape( $entry->context );
+			$translation = empty( $entry->translations ) ? $entry->context : $this->escape( $entry->translations[0] );
 
 			$original = str_replace( "\n", "\\n", $entry->context );
 			$translation = str_replace( "\n", "\\n", $translation );
@@ -112,8 +112,7 @@ class GP_Format_Strings {
 	}
 
 	function escape( $string ) {
-		$string = addcslashes( $string, "'\n");
-		return $string;
+		return addcslashes( $string, '"\\/' );
 	}
 }
 
