@@ -35,7 +35,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 		$exported = $this->strings->print_exported_file( 'p', 'l', 't', $entries_for_export );
 
 		$file     = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
-		$exported = mb_convert_encoding( $exported, 'UTF-8', 'UTF-16LE' );
+		$exported = mb_convert_encoding( $exported, 'UTF-8', 'UTF-16' );
 
 		$this->assertEquals( $file, $exported );
 	}
