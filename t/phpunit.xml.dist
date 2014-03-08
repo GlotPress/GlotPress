@@ -11,6 +11,7 @@
 	</logging>
 	<filter>
 		<blacklist>
+			<directory suffix=".php">../gp-includes/backpress</directory>
 			<directory suffix=".php">../gp-templates</directory>
 			<directory suffix=".php">../plugins</directory>
 			<directory suffix=".php">./</directory>
