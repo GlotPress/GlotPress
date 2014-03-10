@@ -98,6 +98,7 @@ class GP_Locales {
 		$am->lang_code_iso_639_1 = 'am';
 		$am->lang_code_iso_639_2 = 'amh';
 		$am->country_code = 'et';
+		$am->wp_locale = 'am';
 		$am->slug = 'am';
 		$am->google_code = 'am';
 
