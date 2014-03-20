@@ -1420,11 +1420,13 @@ class GP_Locales {
 
 		$rhg = new GP_Locale();
 		$rhg->english_name = 'Rohingya';
-		$rhg->native_name = 'Rohingya';
+		$rhg->native_name = 'Ruáinga';
 		$rhg->lang_code_iso_639_2 = 'rhg';
-		$rhg->country_code = 'bd';
+		$rhg->country_code = 'mm';
 		$rhg->wp_locale = 'rhg';
 		$rhg->slug = 'rhg';
+		$rhg->nplurals = 1;
+		$rhg->plural_expression = '0';
 
 		$ro = new GP_Locale();
 		$ro->english_name = 'Romanian';
