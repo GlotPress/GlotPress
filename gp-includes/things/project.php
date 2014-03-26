@@ -215,8 +215,13 @@ class GP_Project extends GP_Thing {
 		$running_parent_project_id = $this->id;
 		foreach ( $source_sub_projects as $sub ) {
 
-			$sub->parent_project_id = $running_parent_project_id;
-			$copy = GP::$project->create( $sub );
+			$copy_project = new GP_Project( $sub->fields() );
+			$copy_project->parent_project_id = $running_parent_project_id;
+
+			$parent_project = $copy_project->get( $copy_project->parent_project_id );
+			$copy_project->path = gp_url_join( $parent_project->path, $copy_project->slug );
+
+			$copy = GP::$project->create( $copy_project );
 
 			$copy->copy_originals_from( $sub->id );
 			$copy->copy_sets_and_translations_from( $sub->id );
