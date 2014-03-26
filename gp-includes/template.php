@@ -282,6 +282,7 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __('New Sub-Project') ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __('New Translation Set') ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __('Mass-create Translation Sets') ),
+		gp_link_get( gp_url_project( $project, '-branch'), __('Branch Project') ),
 		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __('Delete Project'), array( 'ays-text' => 'Do you really want to delete this project?' ) )
 	);
 

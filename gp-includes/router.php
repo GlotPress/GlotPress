@@ -76,6 +76,8 @@ class GP_Router {
 			"post:/$project/-mass-create-sets" => array('GP_Route_Project', 'mass_create_sets_post'),
 			"post:/$project/-mass-create-sets/preview" => array('GP_Route_Project', 'mass_create_sets_preview_post'),
 
+			"get:/$project/-branch" => array('GP_Route_Project', 'branch_project_get'),
+			"post:/$project/-branch" => array('GP_Route_Project', 'branch_project_post'),
 
 			"get:/$projects" => array('GP_Route_Project', 'index'),
 			"get:/$projects/-new" => array('GP_Route_Project', 'new_get'),

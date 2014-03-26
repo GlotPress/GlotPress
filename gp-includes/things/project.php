@@ -162,5 +162,68 @@ class GP_Project extends GP_Thing {
 		}
 		return compact( 'added', 'removed' );
 	}
+
+	function copy_sets_and_translations_from( $source_project_id ) {
+		$sets = GP::$translation_set->by_project_id( $source_project_id );
+
+		foreach( $sets as $to_add ) {
+			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
+			if ( ! $new_set  ) {
+				$this->errors[] = __( 'Couldn&#8217;t add translation set named %s', esc_html( $to_add->name ) );
+			} else {
+				//Duplicate translations
+				$new_set->copy_translations_from( $to_add->id );
+			}
+		}
+	}
+
+	function copy_originals_from( $source_project_id ) {
+		global $gpdb;
+		return $this->query("
+			INSERT INTO $gpdb->originals (
+				`project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
+			)
+			SELECT
+				%s AS `project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
+			FROM $gpdb->originals WHERE project_id = %s", $this->id, $source_project_id
+		);
+	}
+
+	/**
+	 * Gives an array of project objects starting from the current project children
+	 * then its grand children etc
+	 *
+	 * @return array
+	 */
+	function inclusive_sub_projects() {
+		$sub_projects = $this->sub_projects();
+		foreach ( $sub_projects as $sub ) {
+			$sub_projects = array_merge( $sub_projects, $sub->inclusive_sub_projects() );
+		}
+
+		return $sub_projects;
+	}
+
+	function duplicate_project_contents_from( $source_project ){
+		$source_sub_projects = $source_project->inclusive_sub_projects();
+
+		//Duplicate originals, translations sets and translations for the root project
+		$this->copy_originals_from( $source_project->id ) ;
+		$this->copy_sets_and_translations_from( $source_project->id );
+
+		//Duplicate originals, translations sets and translations for the child projects
+		$running_parent_project_id = $this->id;
+		foreach ( $source_sub_projects as $sub ) {
+
+			$sub->parent_project_id = $running_parent_project_id;
+			$copy = GP::$project->create( $sub );
+
+			$copy->copy_originals_from( $sub->id );
+			$copy->copy_sets_and_translations_from( $sub->id );
+
+			$running_parent_project_id = $copy->id;
+		}
+	}
+
 }
 GP::$project = new GP_Project();

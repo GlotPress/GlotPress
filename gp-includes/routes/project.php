@@ -253,4 +253,48 @@ class GP_Route_Project extends GP_Route_Main {
 		header('Content-Type: application/json');
 		echo json_encode( $project->set_difference_from( $other_project ) );
 	}
+
+	function branch_project_get( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) {
+			$this->die_with_404();
+		}
+		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+			return;
+		}
+
+		$this->tmpl( 'project-branch', get_defined_vars() );
+	}
+
+
+	function branch_project_post( $project_path ) {
+		$post = gp_post( 'project' );
+		$project = GP::$project->by_path( $project_path );
+		if ( !$project ) {
+			$this->die_with_404();
+		}
+
+		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
+
+		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
+			return;
+		}
+
+		$new_project_data = new GP_Project( $post );
+		if ( $this->invalid_and_redirect( $new_project_data ) ){
+			return;
+		}
+
+		$new_project = GP::$project->create_and_select( $new_project_data );
+
+		if ( !$new_project ) {
+			$new_project = new GP_Project();
+			$this->errors[] = __('Error in creating project!');
+			$this->tmpl( 'project-branch', get_defined_vars() );
+		} else {
+			$new_project->duplicate_project_contents_from( $project );
+		}
+
+		$this->redirect( gp_url_project( $new_project ) );
+	}
 }

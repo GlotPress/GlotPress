@@ -110,4 +110,113 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( $s1->id, $difference['removed'][0]->id );
 	}
 
+	function test_copy_originals_from() {
+		$s1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'P1' ) );
+		$s2 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'nl' ), array( 'name' => 'P2' ) );
+
+		$this->factory->translation->create_with_original_for_translation_set( $s1 );
+
+		$s2->project->copy_originals_from( $s1->project->id );
+
+		$s1_original = array_shift( GP::$original->by_project_id( $s1->project->id ) );
+		$s2_original = array_shift( GP::$original->by_project_id( $s2->project->id ) );
+
+		$this->assertNotEquals( $s1_original->id, $s2_original->id );
+		$this->assertNotEquals( $s1_original->project_id, $s2_original->project_id );
+		$this->assertEqualFields( $s2_original,
+			array( 'singular' => $s1_original->singular, 'plural' => $s1_original->plural, 'references' => $s1_original->references, 'comment' =>$s1_original->comment, 'status' =>$s1_original->status, 'date_added' => $s1_original->date_added )
+		);
+	}
+
+	function test_sets_in_copy_sets_and_translations_from() {
+		$s1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'P1' ) );
+		$this->factory->translation->create_with_original_for_translation_set( $s1 );
+
+		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$branch->copy_sets_and_translations_from( $s1->project->id );
+
+		$difference = $branch->set_difference_from( $s1->project );
+
+		$this->assertEmpty( $difference['added'] );
+		$this->assertEmpty( $difference['removed'] );
+
+	}
+
+	function test_translations_in_copy_sets_and_translations_from() {
+		$original = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'P1' ) );
+		$this->factory->translation->create_with_original_for_translation_set( $original );
+
+		$copy = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$copy->copy_sets_and_translations_from( $original->project->id );
+
+		$copy_set = array_shift( GP::$translation_set->by_project_id( $copy->id ) );
+
+		$original_translation = array_shift( GP::$translation->find( array( 'translation_set_id' => $original->id ) ) );
+		$copy_translation = array_shift( GP::$translation->find( array( 'translation_set_id' => $copy_set->id ) ) );
+
+		$this->assertEqualFields( $copy_translation,
+			array( 'translation_0' => $original_translation->translation_0, 'date_added' => $original_translation->date_added, 'original_id' => $original_translation->original_id )
+		);
+
+	}
+
+	function test_branching_translation_sets(){
+		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
+		$root = $root_set->project;
+
+		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'SubSub', 'parent_project_id' => $root->id ) );
+		$sub = $sub_set->project;
+
+		$subsub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'SubSub', 'parent_project_id' => $sub->id ) );
+		$subsub = $subsub_set->project;
+
+		$this->factory->translation->create_with_original_for_translation_set( $root_set );
+		$this->factory->translation->create_with_original_for_translation_set( $sub_set );
+		$this->factory->translation->create_with_original_for_translation_set( $subsub_set );
+
+		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$branch->duplicate_project_contents_from( $root );
+
+		$branch_sub = array_shift( $branch->sub_projects() );
+		$branch_subsub = array_shift( $branch_sub->sub_projects() );
+
+		$difference_root = $root->set_difference_from( $branch );
+		$difference_sub = $sub->set_difference_from( $branch_sub );
+		$difference_subsub = $subsub->set_difference_from( $branch_subsub );
+
+		$this->assertEmpty( $difference_root['added'] );
+		$this->assertEmpty( $difference_root['removed'] );
+
+		$this->assertEmpty( $difference_sub['added'] );
+		$this->assertEmpty( $difference_sub['removed'] );
+
+		$this->assertEmpty( $difference_subsub['added'] );
+		$this->assertEmpty( $difference_subsub['removed'] );
+	}
+
+	function test_branching_originals(){
+		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
+		$root = $root_set->project;
+
+		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'SubSub', 'parent_project_id' => $root->id ) );
+		$sub = $sub_set->project;
+
+		$this->factory->translation->create_with_original_for_translation_set( $root_set );
+		$this->factory->translation->create_with_original_for_translation_set( $sub_set );
+
+		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$branch->duplicate_project_contents_from( $root );
+
+		$branch_sub = array_shift( $branch->sub_projects() );
+
+		$originals_root = GP::$original->by_project_id( $root->id );
+		$originals_sub = GP::$original->by_project_id( $sub->id );
+
+		$originals_branch = GP::$original->by_project_id( $branch->id );
+		$originals_branch_sub = GP::$original->by_project_id( $branch_sub->id );
+
+		$this->assertEquals( count( $originals_root ), count( $originals_branch ) );
+		$this->assertEquals( count( $originals_sub ), count( $originals_branch_sub ) );
+	}
+
 }
