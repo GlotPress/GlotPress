@@ -246,23 +246,27 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				$data = array_splice( $data, 2, -2 );
 			}
 
+			$entry_data = array(
+				'glossary_id' => $glossary_id,
+				'term' => $data[0],
+				'translation' => $data[1],
+				'part_of_speech' => $data[2],
+				'comment' => $data[3],
+				'last_edited_by' => GP::$user->current()->id
+			);
+
 			$new_glossary_entry = new GP_Glossary_Entry(
-				array(
-					'glossary_id' => $glossary_id,
-					'term' => $data[0],
-					'translation' => $data[1],
-					'part_of_speech' => $data[2],
-					'comment' => $data[3],
-					'last_edited_by' => GP::$user->current()->id
-				)
+				$entry_data
 			);
 
 			if ( ! $new_glossary_entry->validate() ) {
 				continue;
-			}
-			else {
+			} else {
+				$entry_exists = GP::$glossary_entry->find_one( $entry_data );
+				if ( $entry_exists ) {
+					continue;
+				}
 				$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
-
 				if ( $created_glossary_entry ) {
 					$glossary_entries++;
 				}
