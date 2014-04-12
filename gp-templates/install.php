@@ -22,19 +22,11 @@ gp_tmpl_header();
 // TODO: deny access to scripts folder
 if ( $show_htaccess_instructions ): ?>
 	<p>
-		<?php _e('Please add this to your <code>.htaccess</code> file:'); ?>
-		<pre>
-		# BEGIN GlotPress
-		&lt;IfModule mod_rewrite.c&gt;
-		RewriteEngine On
-		RewriteBase <?php echo $path . "\n"; ?>
-		RewriteCond %{REQUEST_FILENAME} !-f
-		RewriteCond %{REQUEST_FILENAME} !-d
-		RewriteRule . <?php echo $path; ?>index.php [L]
-		&lt;/IfModule&gt;
-		# END GlotPress
-		</pre>
-		<?php _e('<strong>The default username is <code>admin</code>, whose password is simply <code>a</code>.</strong>'); ?>
+		<?php _e( 'If your <code>.htaccess</code> file were writable, we could do this automatically, but it isn&#8217;t so these are the mod_rewrite rules you should have in your <code>.htaccess</code> file.' ); ?>
+
+		<pre><?php echo esc_html( gp_mod_rewrite_rules() ); ?></pre>
+
+		<?php _e( '<strong>The default username is <code>admin</code>, whose password is simply <code>a</code>.</strong>' ); ?>
 	</p>
 <?php endif; ?>
 
