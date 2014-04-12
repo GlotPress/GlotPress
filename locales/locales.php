@@ -4,6 +4,8 @@ class GP_Locale {
 	var $native_name;
 	var $text_direction = 'ltr';
 	var $lang_code_iso_639_1 = null;
+	var $lang_code_iso_639_2 = null;
+	var $lang_code_iso_639_3 = null;
 	var $country_code;
 	var $wp_locale;
 	var $slug;
