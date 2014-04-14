@@ -432,7 +432,7 @@ class GP_Locales {
 		$de->facebook_locale = 'de_DE';
 
 		$dv = new GP_Locale();
-		$dv->english_name = 'Divehi';
+		$dv->english_name = 'Dhivehi';
 		$dv->native_name = 'ދިވެހި';
 		$dv->lang_code_iso_639_1 = 'dv';
 		$dv->lang_code_iso_639_2 = 'div';
