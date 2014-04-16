@@ -930,6 +930,16 @@ class GP_Locales {
 		$id->nplurals = 2;
 		$id->plural_expression = 'n > 1';
 
+		$ido = new GP_Locale();
+		$ido->english_name = 'Ido';
+		$ido->native_name = 'Ido';
+		$ido->lang_code_iso_639_1 = 'id';
+		$ido->lang_code_iso_639_2 = 'ido';
+		$ido->lang_code_iso_639_3 = 'ido';
+		$ido->country_code = '';
+		$ido->wp_locale = 'ido';
+		$ido->slug = 'ido';
+
 		$ike = new GP_Locale();
 		$ike->english_name = 'Inuktitut';
 		$ike->native_name = 'ᐃᓄᒃᑎᑐᑦ';
