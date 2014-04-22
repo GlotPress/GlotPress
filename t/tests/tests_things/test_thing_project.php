@@ -164,7 +164,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
 		$root = $root_set->project;
 
-		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'SubSub', 'parent_project_id' => $root->id ) );
+		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'Sub', 'parent_project_id' => $root->id ) );
 		$sub = $sub_set->project;
 
 		$subsub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'SubSub', 'parent_project_id' => $sub->id ) );
@@ -226,6 +226,9 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
 		$sub = $sub_set->project;
 
+		$other_sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'other_sub', 'parent_project_id' => $root->id ) );
+		$other_sub = $other_sub_set->project;
+
 		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
 		$branch->duplicate_project_contents_from( $root );
 
@@ -235,6 +238,9 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( $branch->path, 'branch' );
 		$this->assertEquals( $sub->path, 'root/sub' );
 		$this->assertEquals( $branch_sub->path, 'branch/sub' );
+
+		$branch_other_sub = GP::$project->by_path('branch/other_sub');
+		$this->assertNotEquals( false, $branch_other_sub );
 	}
 
 }

@@ -211,22 +211,22 @@ class GP_Project extends GP_Thing {
 		$this->copy_originals_from( $source_project->id ) ;
 		$this->copy_sets_and_translations_from( $source_project->id );
 
+		//Keep a list of parents to preserve hierarchy
+		$parents = array();
+		$parents[$source_project->id] = $this->id;
+
 		//Duplicate originals, translations sets and translations for the child projects
-		$running_parent_project_id = $this->id;
 		foreach ( $source_sub_projects as $sub ) {
-
 			$copy_project = new GP_Project( $sub->fields() );
-			$copy_project->parent_project_id = $running_parent_project_id;
-
+			$copy_project->parent_project_id = $parents[$sub->parent_project_id];
 			$parent_project = $copy_project->get( $copy_project->parent_project_id );
-			$copy_project->path = gp_url_join( $parent_project->path, $copy_project->slug );
 
+			$copy_project->path = gp_url_join( $parent_project->path, $copy_project->slug );
 			$copy = GP::$project->create( $copy_project );
+			$parents[$sub->id] = $copy->id;
 
 			$copy->copy_originals_from( $sub->id );
 			$copy->copy_sets_and_translations_from( $sub->id );
-
-			$running_parent_project_id = $copy->id;
 		}
 	}
 
