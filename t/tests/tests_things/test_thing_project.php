@@ -219,4 +219,22 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( count( $originals_sub ), count( $originals_branch_sub ) );
 	}
 
+	function test_branching_paths(){
+		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
+		$root = $root_set->project;
+
+		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
+		$sub = $sub_set->project;
+
+		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$branch->duplicate_project_contents_from( $root );
+
+		$branch_sub = array_shift( $branch->sub_projects() );
+
+		$this->assertEquals( $root->path, 'root' );
+		$this->assertEquals( $branch->path, 'branch' );
+		$this->assertEquals( $sub->path, 'root/sub' );
+		$this->assertEquals( $branch_sub->path, 'branch/sub' );
+	}
+
 }
