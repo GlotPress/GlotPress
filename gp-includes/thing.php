@@ -55,8 +55,9 @@ class GP_Thing {
 		if ( gp_endswith( $name, $suffix ) ) {
 			$name = substr( $name, 0, strlen( $name ) - strlen( $suffix ) );
 			$this->map_results = false;
-			return call_user_func_array( array( &$this, $name ), $args );
+			$result = call_user_func_array( array( &$this, $name ), $args );
 			$this->map_results = true;
+			return $result;
 		}
 		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
