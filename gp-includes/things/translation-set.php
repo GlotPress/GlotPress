@@ -3,7 +3,7 @@ class GP_Translation_Set extends GP_Thing {
 
 	var $table_basename = 'translation_sets';
 	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count' ); 
+	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count' );
 	var $non_updatable_attributes = array( 'id' );
 
 	function restrict_fields( $set ) {
@@ -88,6 +88,11 @@ class GP_Translation_Set extends GP_Thing {
 	function untranslated_count() {
 		if ( !isset( $this->untranslated_count ) ) $this->update_status_breakdown();
 		return $this->untranslated_count;
+	}
+
+	function fuzzy_count() {
+		if ( !isset( $this->fuzzy_count ) ) $this->update_status_breakdown();
+		return $this->fuzzy_count;
 	}
 
 	function current_count() {

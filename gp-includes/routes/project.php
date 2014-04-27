@@ -17,6 +17,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$set->current_count = $set->current_count();
 			$set->untranslated_count = $set->untranslated_count();
 			$set->waiting_count = $set->waiting_count();
+			$set->fuzzy_count = $set->fuzzy_count();
 			$set->percent_translated = $set->percent_translated();
 			$set->all_count = $set->all_count();
 		}
