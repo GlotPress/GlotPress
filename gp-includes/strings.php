@@ -53,6 +53,16 @@ function gp_stripos( $haystack, $needle ) {
 }
 endif;
 
+if ( function_exists('mb_substr') ):
+	function gp_substr( $haystack, $needle ) {
+		return mb_substr( $haystack, $needle );
+	}
+else:
+	function gp_substr( $haystack, $needle ) {
+		return substr( $haystack, $needle );
+	}
+endif;
+
 function gp_sanitize_for_url( $name ) {
 	$name = trim( $name );
 	$name = gp_strtolower( $name );
@@ -73,4 +83,67 @@ function gp_esc_attr_with_entities( $text ) {
 	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES, false, true );
 	return apply_filters( 'attribute_escape', $safe_text, $text );
 
+}
+
+function gp_string_similarity( $str1, $str2 ) {
+
+	$length1 = gp_strlen( $str1 );
+	$length2 = gp_strlen( $str2 );
+
+	$len = min( $length1, $length2);
+	if ( $len > 5000 ) {
+		//Arbitrary limit on character length for speed purpose.
+		$distance = $len;
+	} else {
+		$distance = gp_levenshtein( $str1, $str2, $length1, $length2 );
+	}
+
+	$similarity = 1 - ( $distance * 0.9 / $len );
+
+	return $similarity;
+}
+
+/*
+	PHP native implementation of levensthein is limited to 255 bytes, so let's extend that
+	Source: https://github.com/wikimedia/mediawiki-extensions-Translate/blob/master/ttmserver/TTMServer.php#L90
+
+*/
+function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
+
+	if ( $length1 == 0 ) {
+		return $length2;
+	}
+
+	if ( $length2 == 0 ) {
+		return $length1;
+	}
+
+	if ( $str1 === $str2 ) {
+		return 0;
+	}
+
+	$bytelength1 = strlen( $str1 );
+	$bytelength2 = strlen( $str2 );
+
+	if ( $bytelength1 === $length1 && $bytelength1 <= 255
+	     && $bytelength2 === $length2 && $bytelength2 <= 255 ) {
+		return levenshtein( $str1, $str2 );
+	}
+
+	$prevRow = range( 0, $length2 );
+	for ( $i = 0; $i < $length1; $i++ ) {
+		$currentRow = array();
+		$currentRow[0] = $i + 1;
+		$c1 = gp_substr( $str1, $i, 1 );
+		for ( $j = 0; $j < $length2; $j++ ) {
+			$c2 = gp_substr( $str2, $j, 1 );
+			$insertions = $prevRow[$j + 1] + 1;
+			$deletions = $currentRow[$j] + 1;
+			$substitutions = $prevRow[$j] + ( ( $c1 != $c2 ) ? 1 : 0 );
+			$currentRow[] = min( $insertions, $deletions, $substitutions );
+		}
+		$prevRow = $currentRow;
+	}
+
+	return $prevRow[$length2];
 }
