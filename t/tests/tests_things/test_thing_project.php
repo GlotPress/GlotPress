@@ -147,6 +147,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->factory->translation->create_with_original_for_translation_set( $original );
 
 		$copy = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$copy->copy_originals_from( $original->project->id );
 		$copy->copy_sets_and_translations_from( $original->project->id );
 
 		$copy_set = array_shift( GP::$translation_set->by_project_id( $copy->id ) );
@@ -154,8 +155,10 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$original_translation = array_shift( GP::$translation->find( array( 'translation_set_id' => $original->id ) ) );
 		$copy_translation = array_shift( GP::$translation->find( array( 'translation_set_id' => $copy_set->id ) ) );
 
+		$this->assertNotEquals( $original_translation->original_id, $copy_translation->original_id );
+
 		$this->assertEqualFields( $copy_translation,
-			array( 'translation_0' => $original_translation->translation_0, 'date_added' => $original_translation->date_added, 'original_id' => $original_translation->original_id )
+			array( 'translation_0' => $original_translation->translation_0, 'date_added' => $original_translation->date_added  )
 		);
 
 	}

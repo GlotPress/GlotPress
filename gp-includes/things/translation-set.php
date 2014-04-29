@@ -150,19 +150,36 @@ class GP_Translation_Set extends GP_Thing {
 	 * Copies translations from a translation set to the current one
 	 *
 	 * This function doesn't merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
+	 * When copying translations from another project, it will search to find the original first.
 	 */
 	function copy_translations_from( $source_translation_set_id ) {
 		global $gpdb;
 		$current_date = $this->now_in_mysql_format();
-		return $this->query("
-			INSERT INTO $gpdb->translations (
-				original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
-			)
-			SELECT
-				original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-			FROM $gpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
-		);
+
+		$source_set = GP::$translation_set->get( $source_translation_set_id );
+		if ( $source_set->project_id != $this->project_id ) {
+			$translations = GP::$translation->find_many( "translation_set_id = '{$source_set->id}'" );
+			foreach ( $translations as $entry ) {
+				$source_original = GP::$original->get( $entry->original_id );
+				$original = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
+				if ( $original ) {
+					$entry->original_id = $original->id;
+					$entry->translation_set_id = $this->id;
+					$translation = GP::$translation->create( $entry );
+				}
+			}
+		} else {
+			return $this->query( "
+				INSERT INTO $gpdb->translations (
+					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
+				)
+				SELECT
+					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
+				FROM $gpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+			);
+		}
 	}
+
 
 	function percent_translated() {
 		$original_count = GP::$original->count_by_project_id( $this->project_id );
