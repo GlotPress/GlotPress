@@ -286,6 +286,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
+		$new_project_data->active = $project->active;
 		$new_project = GP::$project->create_and_select( $new_project_data );
 
 		if ( !$new_project ) {
