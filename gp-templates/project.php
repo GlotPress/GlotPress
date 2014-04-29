@@ -34,6 +34,7 @@ gp_tmpl_header();
 				<th><?php _e( 'Language' ); ?></th>
 				<th><?php echo _x( '%', 'language translation percent header' ); ?></th>
 				<th><?php _e( 'Translated' ); ?></th>
+				<th><?php _e( 'Fuzzy' ); ?></th>
 				<th><?php _e( 'Untranslated' ); ?></th>
 				<th><?php _e( 'Waiting' ); ?></th>
 				<?php if ( has_action( 'project_template_translation_set_extra' ) ) : ?>
@@ -54,7 +55,9 @@ gp_tmpl_header();
 				</td>
 				<td class="stats percent"><?php echo $set->percent_translated; ?></td>
 				<td class="stats translated" title="translated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-							array('filters[translated]' => 'yes', 'filters[status]' => 'current') ), $set->current_count );; ?></td>
+							array('filters[translated]' => 'yes', 'filters[status]' => 'current') ), $set->current_count ); ?></td>
+				<td class="stats fuzzy" title="fuzzy"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
+						array('filters[status]' => 'fuzzy') ), $set->fuzzy_count ); ?></td>
 				<td class="stats untranslated" title="untranslated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
 							array('filters[status]' => 'untranslated' ) ), $set->untranslated_count ); ?></td>
 				<td class="stats waiting"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
