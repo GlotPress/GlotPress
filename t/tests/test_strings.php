@@ -10,4 +10,17 @@ class GP_Test_Strings extends GP_UnitTestCase {
 		$this->assertEquals( 'баба-дядо', gp_sanitize_for_url( 'Баба &amp; дядо') );
 		$this->assertEquals( 'caca-и-цацабууу', gp_sanitize_for_url( 'Caca и цацаБУУУ') );
 	}
+
+	function test_gp_string_similarity() {
+		$string1 = 'Word';
+		$string2 = 'Word!';
+		$string3 = 'Word';
+
+		$similarity = gp_string_similarity( $string1, $string2 );
+		$similarity_2 = gp_string_similarity( $string1, $string3 );
+
+		$this->assertEquals( $similarity, 0.775 );
+		$this->assertEquals( $similarity_2, 1 );
+	}
+
 }
