@@ -287,6 +287,16 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( !isset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] ) ) {
 			$this->die_with_error( 'The warning doesn&#8217;exist!' );
 		}
+
+		$warning = array(
+			'project_id' => $project->id,
+			'translation_set' =>$translation_set->id,
+			'translation' => $translation->id,
+			'warning' => gp_post( 'key' ),
+			'user' => GP::$user->current()->id
+		);
+		do_action_ref_array( 'warning_discarded', $warning );
+
 		unset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] );
 		if ( empty( $translation->warnings[gp_post( 'index' )] ) ) {
 			unset( $translation->warnings[gp_post( 'index' )] );
