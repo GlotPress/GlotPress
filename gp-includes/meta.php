@@ -10,6 +10,31 @@ function gp_sanitize_meta_key( $key ) {
 	return preg_replace( '|[^a-z0-9_]|i', '', $key );
 }
 
+
+/**
+ * Retrieves and returns a meta value from the database
+ *
+ * @param $meta_type object type
+ * @param $object_id
+ * @param $meta_key
+ *
+ * @return mixed|null
+ */
+function gp_get_meta( $meta_type, $object_id, $meta_key ) {
+	global $gpdb;
+	$meta_key = gp_sanitize_meta_key( $meta_key );
+
+	if ( ! $meta_type ) {
+		return false;
+	}
+
+	if ( ! is_numeric( $object_id ) || empty( $object_id ) ) {
+		return false;
+	}
+
+	return $gpdb->get_var( $gpdb->prepare( "SELECT `meta_value` FROM `$gpdb->meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $meta_type, $object_id, $meta_key ) );
+}
+
 /**
  * Adds and updates meta data in the database
  *
