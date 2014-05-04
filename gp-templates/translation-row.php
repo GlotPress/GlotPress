@@ -161,16 +161,20 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 
 			<?php $extra_args = $t->translation_status? array( 'filters[translation_id]' => $t->id ) : array(); ?>
 			<dl>
-<?php
-		$permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-        	array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id ), $extra_args ) );
-		$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-        	array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) ) );
-
-?>
+			<?php
+					$permalink_filters = $t->translation_status ? array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id ) : array( 'filters[original_id]' => $t->original_id );
+					$permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
+						array_merge( $permalink_filters, $extra_args ) );
+					$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
+						array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) ) );
+			?>
 			    <dt><?php _e('More links:'); ?>
 				<ul>
+				<?php if ( $t->translation_status ) : ?>
 					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e('Permanent link to this translation'); ?>"><?php _e('Permalink to this translation'); ?></a></li>
+				<?php else : ?>
+					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e('Permanent link to this original'); ?>"><?php _e('Permalink to this original'); ?></a></li>
+				<?php endif; ?>
 					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php esc_attr_e('Link to the history of translations of this original'); ?>"><?php _e('All translations of this original'); ?></a></li>
 				</ul>
 				</dt>
