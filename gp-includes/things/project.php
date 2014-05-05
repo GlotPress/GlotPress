@@ -18,11 +18,17 @@ class GP_Project extends GP_Thing {
 	}
 
 	function sub_projects() {
-		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
+		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
+		$sub_projects = apply_filters( 'projects', $sub_projects, $this->id );
+
+		return $sub_projects;
 	}
 
 	function top_level() {
-		return $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL ORDER BY name ASC" );
+		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL ORDER BY name ASC" );
+		$projects = apply_filters( 'projects', $projects, 0 );
+
+		return $projects;
 	}
 
 	// Triggers
