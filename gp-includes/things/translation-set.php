@@ -35,7 +35,9 @@ class GP_Translation_Set extends GP_Thing {
 	function import( $translations ) {
 		@ini_set('memory_limit', '256M');
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
+
 		$locale = GP_Locales::by_slug( $this->locale );
+		$user = GP::$user->current();
 
 		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current', 'translated' => 'yes') );
 		$current_translations = new Translations();
@@ -49,7 +51,6 @@ class GP_Translation_Set extends GP_Thing {
 			if ( in_array( 'fuzzy', $entry->flags ) ) continue;
 
 			$create = false;
-
 			if ( $translated = $current_translations->translate_entry( $entry ) ) {
 				// we have the same string translated
 				// create a new one if they don't match
@@ -64,6 +65,10 @@ class GP_Translation_Set extends GP_Thing {
 				}
 			}
 			if ( $create ) {
+				if ( $user ) {
+					$entry->user_id = $user->id;
+				}
+
 				$entry->translation_set_id = $this->id;
 				$entry->status = 'current';
 				// check for errors
