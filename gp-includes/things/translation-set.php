@@ -6,14 +6,6 @@ class GP_Translation_Set extends GP_Thing {
 	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count' );
 	var $non_updatable_attributes = array( 'id' );
 
-	function __construct( $fields = array() ) {
-		parent::__construct( $fields );
-
-		if( 'default' == $this->slug ) { 
-			$this->slug = '';
-		}
-	}
-
 	function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
