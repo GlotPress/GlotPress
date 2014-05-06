@@ -31,13 +31,13 @@ class GP_Router {
 	}
 
 	function default_routes() {
-		$dir = '([^_/][^/]*)';
+		$dir = '([^_/][^/]*)?';
 		$path = '(.+?)';
 		$projects = 'projects';
 		$project = $projects.'/'.$path;
 		$id = '(\d+)';
 		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
-		$set = "$project/$locale/$dir";
+		$set = "$project/$locale/?$dir";
 
 		// overall structure
 		return apply_filters( 'routes', array(

@@ -1,6 +1,6 @@
 <?php
 class GP_Route_Translation extends GP_Route_Main {
-	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	function import_translations_get( $project_path, $locale_slug, $translation_set_slug = 'default' ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		if ( ! $project || ! $locale ) $this->die_with_404();
@@ -13,7 +13,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
-	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
+	function import_translations_post( $project_path, $locale_slug, $translation_set_slug = 'default' ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		if ( ! $project || ! $locale ) $this->die_with_404();
@@ -46,7 +46,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
 
-	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	function export_translations_get( $project_path, $locale_slug, $translation_set_slug = 'default' ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		if ( ! $project || ! $locale ) $this->die_with_404();
@@ -73,7 +73,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
-	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	function translations_get( $project_path, $locale_slug, $translation_set_slug = 'default' ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 		if ( ! $project || ! $locale ) $this->die_with_404();
@@ -110,7 +110,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
 
-	function translations_post( $project_path, $locale_slug, $translation_set_slug ) {
+	function translations_post( $project_path, $locale_slug, $translation_set_slug = 'default' ) {
 		$this->logged_in_or_forbidden();
 
 		$project = GP::$project->by_path( $project_path );
