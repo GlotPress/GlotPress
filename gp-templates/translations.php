@@ -30,12 +30,25 @@ $i = 0;
 <?php if ( $can_approve ): ?>
 <form id="bulk-actions-toolbar" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; ?>" method="post">
 	<div>
-	<select name="bulk[action]">
+	<select name="bulk[action]" id="bulk-action">
 		<option value="" selected="selected"><?php _e('Bulk Actions'); ?></option>
 		<option value="approve"><?php _e('Approve'); ?></option>
 		<option value="reject"><?php _e('Reject'); ?></option>
+	<?php if( $can_write ) : ?>
+		<option value="set-priority"><?php _e('Set Priority'); ?></option>
+	<?php endif; ?>
 		<?php do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
 	</select>
+	<?php if( $can_write ) : ?>
+	<select name="bulk[priority]" id="bulk-priority">
+	<?php
+	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		$selected = $value == 'normal' ? " selected='selected'" : '';
+		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n";
+	}
+	?>
+	</select>
+	<?php endif; ?>
 	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply' ); ?>" />

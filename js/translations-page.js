@@ -12,6 +12,15 @@ jQuery(function($) {
 
 	var rows_checked = 0;
 
+    $('#bulk-priority').hide();
+    $('#bulk-action').on( 'change', function (e) {
+        var optionSelected = $("option:selected", this);
+         if ( 'set-priority' == optionSelected.val() ) {
+             $('#bulk-priority').show();
+         } else {
+             $('#bulk-priority').hide();
+         }
+    });
 	$('form.filters-toolbar.bulk-actions').submit(function(e) {
 		var	row_ids = $('input:checked', $('table#translations th.checkbox')).map(function() {
 			return $(this).parents('tr.preview').attr('row');
@@ -83,4 +92,5 @@ jQuery(function($) {
 			return false;
 		});
 	});
+
 });

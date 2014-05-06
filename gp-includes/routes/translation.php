@@ -183,9 +183,14 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$bulk = gp_post('bulk');
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
-		if ( !empty( $bulk['row-ids'] ) ) {
-			if ( 'approve' == $bulk['action'] || 'reject' == $bulk['action'] ) {
-				$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
+		if ( ! empty( $bulk['row-ids'] ) ) {
+			switch( $bulk['action'] ) {
+				case 'approve':
+				case 'reject' :
+					$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
+					break;
+				case 'set-priority':
+					$this->_bulk_set_priority( $project, $locale, $translation_set, $bulk );
 			}
 
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
@@ -208,7 +213,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$ok = $error = 0;
 		$new_status = 'approve' == $action? 'current' : 'rejected';
 		foreach( $bulk['row-ids'] as $row_id ) {
-			$translation_id = gp_array_get( split( '-', $row_id ), 1 );
+			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
 			$translation = GP::$translation->get( $translation_id );
 			if ( !$translation ) continue;
 			if ( $translation->set_status( $new_status ) )
@@ -245,6 +250,49 @@ class GP_Route_Translation extends GP_Route_Main {
 								'Error with rejecting all %s translation.', $error), $error );
 			}
 		}
+	}
+
+	function _bulk_set_priority( $project, $locale, $translation_set, $bulk ) {
+
+		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ){
+			return;
+		}
+
+		$ok = $error = 0;
+		foreach( $bulk['row-ids'] as $row_id ) {
+			$original_id = gp_array_get( explode( '-', $row_id ), 0 );
+			$original = GP::$original->get( $original_id );
+
+			if ( ! $original ) {
+				continue;
+			}
+
+			$original->priority = $bulk['priority'];
+
+			if ( ! $original->validate() ) {
+				$this->die_with_error( 'Invalid priority value!' );
+			}
+
+			if ( ! $original->save() ) {
+				$error++;
+			} else {
+				$ok ++;
+			}
+		}
+
+		if ( 0 === $error) {
+			$this->notices[] = sprintf( _n( 'Priority of one original modified.', 'Priority of %d originals modified.', $ok ), $ok );
+		} else {
+			if ( $ok > 0 ) {
+				$message = sprintf( _n( 'Error modifying priority of one original.', 'Error modifying priority of %d originals.', $error ), $error );
+				$message.= sprintf( _n( 'The remaining original was modified successfully.', 'The remaining %d originals were modified successfully.', $ok ), $ok );
+
+				$this->errors[] = $message;
+			} else {
+				$this->errors[] = sprintf( _n( 'Error modifying priority of the original.', 'Error modifying priority of all %d originals.', $error ), $error );
+			}
+		}
+
 	}
 
 	function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
