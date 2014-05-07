@@ -30,7 +30,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 	}
 
 	function new_post() {
-		$new_glossary    = new GP_Glossary( gp_post('glossary'), array() );
+		$new_glossary    = new GP_Glossary( gp_post('glossary') );
 		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
 
 		if ( ! $translation_set ) {
@@ -77,7 +77,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 
 	function edit_post( $glossary_id ) {
 		$glossary     = GP::$glossary->get( $glossary_id );
-		$new_glossary = new GP_Glossary( gp_post('glossary'), array() );
+		$new_glossary = new GP_Glossary( gp_post('glossary') );
 
 		if ( $this->cannot_edit_glossary_and_redirect( $glossary ) ) {
 			return;

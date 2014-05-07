@@ -37,7 +37,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 
-		$new_glossary_entry = new GP_Glossary_Entry( gp_post('new_glossary_entry'), array() );
+		$new_glossary_entry = new GP_Glossary_Entry( gp_post('new_glossary_entry') );
 		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
 
 		if ( ! $new_glossary_entry->validate() ) {
@@ -72,7 +72,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$project = GP::$project->get( $translation_set->project_id );
 		$locale  = GP_Locales::by_slug( $translation_set->locale );
 
-		$new_glossary_entry = new GP_Glossary_Entry( $ge, array() );
+		$new_glossary_entry = new GP_Glossary_Entry( $ge );
 		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
 
 		if ( ! $new_glossary_entry->validate() ) {
@@ -255,9 +255,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				'last_edited_by' => GP::$user->current()->id
 			);
 
-			$new_glossary_entry = new GP_Glossary_Entry(
-				$entry_data
-			);
+			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );
 
 			if ( ! $new_glossary_entry->validate() ) {
 				continue;
