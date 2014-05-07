@@ -13,6 +13,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			array('with_lt', 'you < me', 'ти < аз'),
 			array('with_gt', 'me > you', "аз > ти"),
 			array('with_amps', 'me & you are not &amp;', 'аз & ти не сме &amp;'),
+			array('with_comment', 'baba', 'баба', 'Me, myself & Irene'),
 		);
 	}
 
@@ -34,11 +35,12 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 		$translations = $this->android->read_originals_from_file( 'data/originals.android.xml' );
 
 		foreach( $this->entries as $sample ) {
-			list( $context, $original, $translation ) = $sample;
+			list( $context, $original, $translation, $comment ) = $sample;
 			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context) );
 			$entry = $translations->translate_entry( $translatable_entry );
 			$this->assertEquals( $original, $entry->singular );
 			$this->assertEquals( $context, $entry->context );
+			$this->assertEquals( $comment, $entry->extracted_comments );
 		}
 	}
 

@@ -8,4 +8,5 @@
 	<string name="with_lt">ти &lt; аз</string>
 	<string name="with_gt">аз > ти</string>
 	<string name="with_amps">аз &amp; ти не сме &amp;amp;</string>
+	<string name="with_comment">баба</string>
 </resources>

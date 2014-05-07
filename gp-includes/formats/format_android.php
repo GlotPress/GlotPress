@@ -115,7 +115,7 @@ class GP_Format_Android {
 	}
 
 	function read_originals_from_file( $file_name ) {
-		$errors = libxml_use_internal_errors( 'true' );
+		$errors = libxml_use_internal_errors( true );
 		$data = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
 
@@ -133,6 +133,11 @@ class GP_Format_Android {
 			$entry->context = (string)$string['name'];
 			$entry->singular = $this->unescape( (string)$string[0] );
 			$entry->translations = array();
+
+			if ( isset( $string['comment'] ) && $string['comment'] ) {
+				$entry->extracted_comments = $string['comment'];
+			}
+
 			$entries->add_entry( $entry );
 		}
 

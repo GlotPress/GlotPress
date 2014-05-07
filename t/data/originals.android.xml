@@ -8,4 +8,5 @@
 	<string name="with_lt">you &lt; me</string>
 	<string name="with_gt">me > you</string>
 	<string name="with_amps">me &amp; you are not &amp;amp;</string>
+	<string name="with_comment" comment="Me, myself &amp; Irene">baba</string>
 </resources>
