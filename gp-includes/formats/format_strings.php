@@ -1,20 +1,13 @@
 <?php
 
-class GP_Format_Strings {
+class GP_Format_Strings extends GP_Format {
 
-	var $name = 'Mac OS X / iOS Strings File (.strings)';
-	var $extension = 'strings';
+	public $name = 'Mac OS X / iOS Strings File (.strings)';
+	public $extension = 'strings';
 
-	var $exported = '';
+	public $exported = '';
 
-	function sort_entries( $a, $b ) {
-		if ( $a->context == $b->context ) {
-			return 0;
-		}
-		return ( $a->context > $b->context ) ? +1 : -1;
-	}
-
-	function print_exported_file( $project, $locale, $translation_set, $entries ) {
+	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = '';
 		$prefix = pack( 'CC', 0xff, 0xfe ); // Add BOM
 
@@ -39,12 +32,20 @@ class GP_Format_Strings {
 		return $prefix . mb_convert_encoding( $result, 'UTF-16LE' );
 	}
 
-	function read_translations_from_file( $file_name, $project = null ) {
-		if ( is_null( $project ) ) return false;
+	public function read_translations_from_file( $file_name, $project = null ) {
+		if ( is_null( $project ) ) {
+			return false;
+		}
+
 		$translations = $this->read_originals_from_file( $file_name );
-		if ( !$translations ) return false;
-		$originals = GP::$original->by_project_id( $project->id );
+
+		if ( ! $translations ) {
+			return false;
+		}
+
+		$originals        = GP::$original->by_project_id( $project->id );
 		$new_translations = new Translations;
+
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
 			// so we need to swap singular and translation
@@ -53,25 +54,28 @@ class GP_Format_Strings {
 			} else {
 				$entry->translations = array( $entry->singular );
 			}
+
 			$entry->singular = null;
+
 			foreach( $originals as $original ) {
 				if ( $original->context == $entry->context ) {
 					$entry->singular = $original->singular;
 					break;
 				}
 			}
-			if ( !$entry->singular ) {
+
+			if ( ! $entry->singular ) {
 				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
 				continue;
 			}
 
 			$new_translations->add_entry( $entry );
 		}
-		return $new_translations;
 
+		return $new_translations;
 	}
 
-	function read_originals_from_file( $file_name ) {
+	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
 		$file = file_get_contents( $file_name );
 		if ( false === $file ) return false;
@@ -107,13 +111,22 @@ class GP_Format_Strings {
 	}
 
 
-	function unescape( $string ) {
+	private function sort_entries( $a, $b ) {
+		if ( $a->context == $b->context ) {
+			return 0;
+		}
+
+		return ( $a->context > $b->context ) ? +1 : -1;
+	}
+
+	private function unescape( $string ) {
 		return stripcslashes( $string );
 	}
 
-	function escape( $string ) {
+	private function escape( $string ) {
 		return addcslashes( $string, '"\\/' );
 	}
+
 }
 
 GP::$formats['strings'] = new GP_Format_Strings;

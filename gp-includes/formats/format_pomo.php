@@ -1,12 +1,13 @@
 <?php
 
-class GP_Format_PO {
+class GP_Format_PO extends GP_Format {
 
-	var $name = 'Portable Object Message Catalog (.po)';
-	var $extension = 'po';
-	var $class = 'PO';
+	public $name = 'Portable Object Message Catalog (.po)';
+	public $extension = 'po';
 
-	function print_exported_file( $project, $locale, $translation_set, $entries ) {
+	public $class = 'PO';
+
+	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$po = new $this->class;
 		// TODO: add more meta data in the project: language team, report URL
 		$po->set_header( 'PO-Revision-Date', GP::$translation->last_modified( $translation_set ) . '+0000' );
@@ -31,22 +32,24 @@ class GP_Format_PO {
 		echo $po->export();
 	}
 
-	function read_translations_from_file( $file_name, $project = null ) {
-		$po = new $this->class;
+	public function read_translations_from_file( $file_name, $project = null ) {
+		$po     = new $this->class;
 		$result = $po->import_from_file( $file_name );
+
 		return $result ? $po : $result;
 	}
 
-	function read_originals_from_file( $file_name ) {
+	public function read_originals_from_file( $file_name ) {
 		return $this->read_translations_from_file( $file_name );
 	}
 
 }
 
 class GP_Format_MO extends GP_Format_PO {
-	var $name = 'Machine Object Message Catalog (.mo)';
-	var $extension = 'mo';
-	var $class = 'MO';
+	public $name = 'Machine Object Message Catalog (.mo)';
+	public $extension = 'mo';
+
+	public $class = 'MO';
 }
 
 GP::$formats['po'] = new GP_Format_PO;

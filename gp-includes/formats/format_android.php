@@ -1,17 +1,13 @@
 <?php
 
-class GP_Format_Android {
+class GP_Format_Android extends GP_Format {
 
-	var $name = 'Android XML (.xml)';
-	var $extension = 'xml';
+	public $name = 'Android XML (.xml)';
+	public $extension = 'xml';
 
-	var $exported = '';
-
-	function line( $string, $prepend_tabs = 0 ) {
-		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
-	}
+	public $exported = '';
 	
-	function print_exported_file( $project, $locale, $translation_set, $entries ) {
+	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
 		$this->line( '<resources>' );
@@ -39,82 +35,7 @@ class GP_Format_Android {
 		return $this->exported;
 	}
 
-	function string_arrays($entries)
-	{
-		$mapping = array();
-
-		uasort( $entries, array( $this, 'cmp_context' ) );
-
-		foreach( $entries as $entry )
-		{
-			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
-
-			if ( ! isset( $mapping[ $array_name ] ) )
-				$mapping[ $array_name ] = array();
-
-			//Because android doesn't fallback on the original language
-			//in string-arrays, we fill the non-translated ones with original language string.
-			$value = $entry->translations[0];
-
-			if ( ! $value )
-				$value = $entry->singular;
-
-			$mapping[ $array_name ][] = $this->escape( $value );
-		}
-
-		foreach ( array_keys( $mapping ) as $array_name )
-		{
-			$this->line( '<string-array name="' . $array_name . '">', 1 );
-
-			foreach ( $mapping[ $array_name ] as $item )
-			{
-				$this->line('<item>' . $item . '</item>', 2);
-			}
-
-			$this->line( '</string-array>', 1 );
-		}
-	}
-
-	function cmp_context( $a, $b ) {
-	    return strnatcmp( $a->context, $b->context );
-	}
-
-	function read_translations_from_file( $file_name, $project = null ) {
-		if ( is_null( $project ) )
-			return false;
-
-		$translations = $this->read_originals_from_file( $file_name );
-
-		if ( ! $translations )
-			return false;
-
-		$originals = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
-
-		foreach( $translations->entries as $key => $entry ) {
-			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
-			$entry->translations = array( $entry->singular );
-			$entry->singular = null;
-			foreach( $originals as $original ) {
-				if ( $original->context == $entry->context ) {
-					$entry->singular = $original->singular;
-					break;
-				}
-			}
-
-			if ( ! $entry->singular ) {
-				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
-				continue;
-			}
-
-			$new_translations->add_entry( $entry );
-		}
-
-		return $new_translations;
-	}
-
-	function read_originals_from_file( $file_name ) {
+	public function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( true );
 		$data = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
@@ -167,15 +88,61 @@ class GP_Format_Android {
 	}
 
 
-	function unescape( $string ) {
+	private function line( $string, $prepend_tabs = 0 ) {
+		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
+	}
+
+	private function string_arrays($entries)
+	{
+		$mapping = array();
+
+		uasort( $entries, array( $this, 'cmp_context' ) );
+
+		foreach( $entries as $entry )
+		{
+			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
+
+			if ( ! isset( $mapping[ $array_name ] ) )
+				$mapping[ $array_name ] = array();
+
+			//Because android doesn't fallback on the original language
+			//in string-arrays, we fill the non-translated ones with original language string.
+			$value = $entry->translations[0];
+
+			if ( ! $value )
+				$value = $entry->singular;
+
+			$mapping[ $array_name ][] = $this->escape( $value );
+		}
+
+		foreach ( array_keys( $mapping ) as $array_name )
+		{
+			$this->line( '<string-array name="' . $array_name . '">', 1 );
+
+			foreach ( $mapping[ $array_name ] as $item )
+			{
+				$this->line('<item>' . $item . '</item>', 2);
+			}
+
+			$this->line( '</string-array>', 1 );
+		}
+	}
+
+	private function cmp_context( $a, $b ) {
+	    return strnatcmp( $a->context, $b->context );
+	}
+
+	private function unescape( $string ) {
 		return stripcslashes( $string );
 	}
 
-	function escape( $string ) {
+	private function escape( $string ) {
 		$string = addcslashes( $string, "'\n");
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
+
 		return $string;
 	}
+
 }
 
 GP::$formats['android'] = new GP_Format_Android;

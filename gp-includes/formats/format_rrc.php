@@ -1,11 +1,11 @@
 <?php
 
-class GP_Format_RRC {
+class GP_Format_RRC extends GP_Format {
 
-	var $name = 'Blackberry Resource (.rrc)';
-	var $extension = 'rrc';
+	public $name = 'Blackberry Resource (.rrc)';
+	public $extension = 'rrc';
 
-	function print_exported_file( $project, $locale, $translation_set, $entries ) {
+	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$rrc = array();
 		foreach( $entries as $entry ) {
 			if ( !preg_match( '/^([A-Z0-9_]+)(?:\[(\d+)\])?$/', $entry->context, $matches ) ) {
@@ -36,34 +36,7 @@ class GP_Format_RRC {
 		return $result;
 	}
 
-	function read_translations_from_file( $file_name, $project = null ) {
-		if ( is_null( $project ) ) return false;
-		$translations = $this->read_originals_from_file( $file_name );
-		if ( !$translations ) return false;
-		$originals = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
-		foreach( $translations->entries as $key => $entry ) {
-			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
-			$entry->translations = array( $entry->singular );
-			$entry->singular = null;
-			foreach( $originals as $original ) {
-				if ( $original->context == $entry->context ) {
-					$entry->singular = $original->singular;
-					break;
-				}
-			}
-			if ( !$entry->singular ) {
-				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
-				continue;
-			}
-
-			$new_translations->add_entry( $entry );
-		}
-		return $new_translations;
-	}
-
-	function read_originals_from_file( $file_name ) {
+	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
 		$f = fopen( $file_name, 'r' );
 		if ( !$f ) return false;
@@ -112,7 +85,7 @@ class GP_Format_RRC {
 	 * characters are encoded via \uXXXX notation, where XXXX is 0-paded hex unicode code-point
 	 * Newlines, tabs and carriage returns are backslash-escaped.
 	 */
-	function escape( $string ) {
+	private function escape( $string ) {
 		$string = addcslashes( $string, "\"\n\t\r" );
 		preg_match_all( '/./us', $string, $matches );
 		$characters = $matches[0];
@@ -136,7 +109,7 @@ class GP_Format_RRC {
 	/**
 	 * The reverse of {@see escape}
 	 */
-	function unescape( $string ) {
+	private function unescape( $string ) {
 		// in the resource file all the strings should be in iso-8859-1
 		$string = utf8_encode( $string );
 		// except for the unicode code points like \uABCD
@@ -144,6 +117,7 @@ class GP_Format_RRC {
 		$string = preg_replace_callback( '/\\\\u([a-fA-F0-9]{4})/', $decode_codepoints_callback, $string );
 		return stripcslashes( $string );
 	}
+
 }
 
 GP::$formats['rrc'] = new GP_Format_RRC;

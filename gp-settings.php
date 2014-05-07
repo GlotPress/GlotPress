@@ -317,6 +317,7 @@ GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
 GP::$router = new GP_Router();
 GP::$formats = array();
 
+require_once GP_PATH . GP_INC . 'format.php';
 require_once GP_PATH . GP_INC . 'formats/format_android.php';
 require_once GP_PATH . GP_INC . 'formats/format_pomo.php';
 require_once GP_PATH . GP_INC . 'formats/format_resx.php';

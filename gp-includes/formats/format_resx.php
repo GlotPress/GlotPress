@@ -1,23 +1,13 @@
 <?php
 
-class GP_Format_ResX {
+class GP_Format_ResX extends GP_Format {
 
-	var $name = '.NET Resource (.resx)';
-	var $extension = 'resx.xml';
+	public $name = '.NET Resource (.resx)';
+	public $extension = 'resx.xml';
 
-	var $exported = '';
+	public $exported = '';
 
-	function line( $string, $prepend_tabs = 0 ) {
-		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
-	}
-
-	function res_header( $name, $value ) {
-		$this->line( '<resheader name="'.$name.'">', 1 );
-		$this->line( '<value>'.$value.'</value>', 2 );
-		$this->line( '</resheader>', 1 );
-	}
-
-	function print_exported_file( $project, $locale, $translation_set, $entries ) {
+	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
 		$this->line( '<root>' );
@@ -49,35 +39,7 @@ class GP_Format_ResX {
 		return $this->exported;
 	}
 
-	function read_translations_from_file( $file_name, $project = null ) {
-		if ( is_null( $project ) ) return false;
-		$translations = $this->read_originals_from_file( $file_name );
-		if ( !$translations ) return false;
-		$originals = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
-		foreach( $translations->entries as $key => $entry ) {
-			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
-			$entry->translations = array( $entry->singular );
-			$entry->singular = null;
-			foreach( $originals as $original ) {
-				if ( $original->context == $entry->context ) {
-					$entry->singular = $original->singular;
-					break;
-				}
-			}
-			if ( !$entry->singular ) {
-				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
-				continue;
-			}
-
-			$new_translations->add_entry( $entry );
-		}
-		return $new_translations;
-
-	}
-
-	function read_originals_from_file( $file_name ) {
+	public function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( 'true' );
 		$data = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
@@ -100,11 +62,21 @@ class GP_Format_ResX {
 	}
 
 
-	function unescape( $string ) {
+	private function line( $string, $prepend_tabs = 0 ) {
+		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
+	}
+
+	private function res_header( $name, $value ) {
+		$this->line( '<resheader name="'.$name.'">', 1 );
+		$this->line( '<value>'.$value.'</value>', 2 );
+		$this->line( '</resheader>', 1 );
+	}
+
+	private function unescape( $string ) {
 		return $string;
 	}
 
-	function escape( $string ) {
+	private function escape( $string ) {
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
 		return $string;
 	}
