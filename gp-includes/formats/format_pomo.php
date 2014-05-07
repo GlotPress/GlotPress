@@ -18,6 +18,7 @@ class GP_Format_PO extends GP_Format {
 		$po->set_header( 'X-Generator', 'GlotPress/' . gp_get_option('version') );
 
 		// force export only current translations
+		$filters = array();
 		$filters['status'] = 'current';
 
 		foreach( $entries as $entry ) {

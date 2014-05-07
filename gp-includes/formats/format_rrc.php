@@ -39,8 +39,13 @@ class GP_Format_RRC extends GP_Format {
 	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
 		$f = fopen( $file_name, 'r' );
-		if ( !$f ) return false;
-		$context = $index = $base_singular = $entry = null;
+
+		if ( ! $f ) {
+			return false;
+		}
+
+		$context = $index = $base_string_id = null;
+
 		while ( false !== ( $line = fgets( $f ) ) ) {
 			$line = trim( $line );
 			if ( is_null( $context) ) {
@@ -74,6 +79,7 @@ class GP_Format_RRC extends GP_Format {
 				}
 			}
 		}
+
 		return $entries;
 	}
 
