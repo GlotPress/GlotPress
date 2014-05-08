@@ -16,12 +16,8 @@ class GP_Translation_Set extends GP_Thing {
 	function name_with_locale( $separator = '&rarr;') {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$parts = array( $locale->english_name );
-
-		if ( 'default' != $this->slug ) {
-			$parts[] = $this->name;
-		}
-
-		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
+		if ( 'default' != $this->slug ) $parts[] = $this->name;
+		return implode( '&nbsp;'.$separator.'&nbsp;', $parts );
 	}
 
 	function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
