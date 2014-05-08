@@ -9,7 +9,7 @@ $gp.google_translate = function($){ return {
 		$($gp.google_translate.table).on('click', 'a.gtranslate', $gp.google_translate.hooks.google_translate)
 	},
 	google_translate: function(link) {
-		original_text = link.parents('.textareas').siblings('.original').html();
+		original_text = link.parents('.textareas').siblings('.original').text();
 		if (!original_text) original_text = link.parents('.textareas').siblings('p:last').children('.original').html();
 		if (!original_text) return;
 
