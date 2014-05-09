@@ -66,7 +66,7 @@ class GP_Translation extends GP_Thing {
 	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $gpdb;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
-		$status_cond = '';
+
 		$join_type = 'INNER';
 
 		$sort_bys = array('original' => 'o.singular %s', 'translation' => 't.translation_0 %s', 'priority' => 'o.priority %s, o.date_added DESC',
