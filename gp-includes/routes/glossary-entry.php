@@ -8,7 +8,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
 
 		if ( ! $glossary ){
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
@@ -48,7 +48,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 
 			if ( ! $created_glossary_entry ) {
-				$this->errors[] = __('Error in creating glossary entry!');
+				$this->errors[] = __('Error in creating glossary ∂
+
+
+					entry!');
 				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
 			}
 			else {
@@ -91,7 +94,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 			$error_output .= '</ul>';
 
-			$this->die_with_error( $error_output, 200 );
+			return $this->die_with_error( $error_output, 200 );
 		}
 		else {
 			$ge     = $glossary_entry->reload();
@@ -108,7 +111,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ) {
-			$this->die_with_error( __('The glossary entry cannot be found'), 200 );
+			return $this->die_with_error( __('The glossary entry cannot be found'), 200 );
 		}
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
@@ -116,7 +119,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
 
 		if ( ! $can_edit ) {
-			$this->die_with_error( __('Forbidden'), 403 );
+			return $this->die_with_error( __('Forbidden'), 403 );
 		}
 
 		if ( ! $glossary_entry->delete() ) {
@@ -130,7 +133,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 			$error_output .= '</ul>';
 
-			$this->die_with_error( $error_output, 200 );
+			return $this->die_with_error( $error_output, 200 );
 		}
 
 		exit();
@@ -141,14 +144,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
 
 		if ( ! $translation_set || ! $glossary ) {
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
@@ -164,13 +167,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		if ( ! $translation_set ) {
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
@@ -185,14 +188,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
 
 		if ( ! $translation_set || ! $glossary ) {
-			$this->die_with_404();
+			return $this->die_with_404();
 		}
 
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
