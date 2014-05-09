@@ -1,26 +1,27 @@
 <?php
 class GP {
 	// models
-	static $project;
-	static $user;
-	static $translation_set;
-	static $permission;
-	static $validator_permission;
-	static $translation;
-	static $original;
-	static $glossary;
-	static $glossary_entry;
+	public static $project;
+	public static $user;
+	public static $translation_set;
+	public static $permission;
+	public static $validator_permission;
+	public static $translation;
+	public static $original;
+	public static $glossary;
+	public static $glossary_entry;
 
 	// other singletons
-	static $router;
-	static $redirect_notices = array();
-	static $translation_warnings;
-	static $builtin_translation_warnings;
-	static $current_route = null;
-	static $formats;
+	public static $router;
+	public static $redirect_notices = array();
+	public static $translation_warnings;
+	public static $builtin_translation_warnings;
+	public static $current_route = null;
+	public static $formats;
 	// plugins can use this space
-	static $vars = array();
+	public static $vars = array();
 	// for plugin singletons
-	static $plugins;
+	public static $plugins;
 }
+
 GP::$plugins = new stdClass();
