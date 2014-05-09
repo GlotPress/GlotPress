@@ -29,9 +29,11 @@ function gp_upgrade_db() {
 	global $gpdb;
 
 	$alterations = BP_SQL_Schema_Parser::delta( $gpdb, gp_schema_get() );
-	$messages = $alterations['messages'];
 	$errors = $alterations['errors'];
-	if ( $errors ) return $errors;
+
+	if ( $errors ) {
+		return $errors;
+	}
 
 	gp_upgrade_data( gp_get_option_from_db( 'gp_db_version' ) );
 
