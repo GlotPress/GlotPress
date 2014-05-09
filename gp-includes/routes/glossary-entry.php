@@ -66,7 +66,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
 
 		if ( ! $can_edit ) {
-			$this->die_with_error( __('Forbidden'), 403 );
+			return $this->die_with_error( __('Forbidden'), 403 );
 		}
 
 		$project = GP::$project->get( $translation_set->project_id );
