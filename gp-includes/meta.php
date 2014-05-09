@@ -59,7 +59,6 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 				return false;
 			}
 			return $return;
-			break;
 		default :
 			$object_type = $type;
 			break;
@@ -112,7 +111,6 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 			global $wp_users_object;
 			$id = $object_id;
 			return $wp_users_object->update_meta( compact( 'id', 'meta_key', 'meta_value' ) );
-			break;
 		default:
 			$object_type = $type;
 			break;
@@ -160,7 +158,6 @@ function gp_append_meta( $object, $type )
 		case 'user':
 			global $wp_users_object;
 			return $wp_users_object->append_meta( $object );
-			break;
 	}
 
 	if ( is_array( $object ) && $object ) {
@@ -249,10 +246,8 @@ function gp_get_option( $option ) {
 			break;
 		case 'version':
 			return '0.1'; // Don't filter
-			break;
 		case 'gp_db_version' :
 			return '847'; // Don't filter
-			break;
 		case 'html_type':
 			$r = 'text/html';
 			break;
@@ -263,7 +258,6 @@ function gp_get_option( $option ) {
 		case 'table_prefix':
 			global $gpdb;
 			return $gpdb->prefix; // Don't filter;
-			break;
 		case 'url':
 			$option = 'uri';
 		default:
