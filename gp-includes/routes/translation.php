@@ -1,14 +1,24 @@
 <?php
 class GP_Route_Translation extends GP_Route_Main {
+
 	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
+
+		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+			return;
+		}
+
 		$kind = 'translations';
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
@@ -16,15 +26,24 @@ class GP_Route_Translation extends GP_Route_Main {
 	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
+
+		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+			return;
+		}
 
 		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
-		if ( !$format ) {
+
+		if ( ! $format ) {
 			$this->redirect_with_error( __('No such format.') );
 			return;
 		}
@@ -49,13 +68,22 @@ class GP_Route_Translation extends GP_Route_Main {
 	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
+
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
 
 		$format = gp_array_get( GP::$formats, gp_get( 'format', 'po' ), null );
-		if ( !$format ) $this->die_with_404();
+
+		if ( ! $format ) {
+			return $this->die_with_404();
+		}
 
 		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
@@ -76,10 +104,16 @@ class GP_Route_Translation extends GP_Route_Main {
 	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
+
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
 
 		$glossary = GP::$glossary->by_set_id( $translation_set->id );
 
@@ -115,10 +149,16 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
+
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
 
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
@@ -146,7 +186,8 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 				$error_output .= '</ul>';
 				$translation->delete();
-				$this->die_with_error( $error_output, 200 );
+
+				return $this->die_with_error( $error_output, 200 );
 			}
 			else {
 				if ( 'current' == $data['status'] )
@@ -174,10 +215,16 @@ class GP_Route_Translation extends GP_Route_Main {
 	function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
+
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
 
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
 
@@ -270,7 +317,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$original->priority = $bulk['priority'];
 
 			if ( ! $original->validate() ) {
-				$this->die_with_error( 'Invalid priority value!' );
+				return $this->die_with_error( 'Invalid priority value!' );
 			}
 
 			if ( ! $original->save() ) {
@@ -306,15 +353,23 @@ class GP_Route_Translation extends GP_Route_Main {
 	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
-		if ( ! $project || ! $locale ) $this->die_with_404();
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ) $this->die_with_404();
+
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
 
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
-		if ( !$translation ) {
-			$this->die_with_error( 'Translation doesn&#8217;t exist!' );
+
+		if ( ! $translation ) {
+			return $this->die_with_error( 'Translation doesn&#8217;t exist!' );
 		}
+
 		$this->can_approve_translation_or_forbidden( $translation );
 
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
@@ -327,13 +382,13 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
-			$this->die_with_error( 'Error in retrieving translation!' );
+			return $this->die_with_error( 'Error in retrieving translation!' );
 		}
 	}
 
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
-		if ( !isset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] ) ) {
-			$this->die_with_error( 'The warning doesn&#8217;exist!' );
+		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
+			return $this->die_with_error( 'The warning doesn&#8217;exist!' );
 		}
 
 		$warning = array(
@@ -349,17 +404,20 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( empty( $translation->warnings[gp_post( 'index' )] ) ) {
 			unset( $translation->warnings[gp_post( 'index' )] );
 		}
+
 		$res = $translation->save();
-		if ( !$res ) {
-			$this->die_with_error( 'Error in saving the translation!' );
+
+		if ( ! $res ) {
+			return $this->die_with_error( 'Error in saving the translation!' );
 		}
 
 	}
 
 	private function set_status_edit_function( $project, $locale, $translation_set, $translation ) {
 		$res = $translation->set_status( gp_post( 'status' ) );
-		if ( !$res ) {
-			$this->die_with_error( 'Error in saving the translation status!' );
+
+		if ( ! $res ) {
+			return $this->die_with_error( 'Error in saving the translation status!' );
 		}
 	}
 
