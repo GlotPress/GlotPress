@@ -141,7 +141,7 @@ class GP_Route {
 
 		$this->header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		$this->header("Content-Disposition: attachment; filename=$filename");
-		$this->header("Content-Type: application/octet-stream", true);
+		$this->header("Content-Type: application/octet-stream");
 		$this->header('Connection: close');
 	}
 
