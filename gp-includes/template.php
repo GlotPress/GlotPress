@@ -139,18 +139,21 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
-	$prev = $first = $prev_dots = $prev_pages = $current = $next_pages = $next_dots = $last = $next = '';
+	$first = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
 	$page = intval( $page )? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
 	if ( $page > $pages ) return '';
+
 	if ( $page > 1 )
 		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array('class' => 'previous') );
 	else
 		$prev = '<span class="previous disabled">&larr;</span>';
+
 	if ( $page < $pages )
 		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1)), '&rarr;', array('class' => 'next') );
 	else
 		$next = '<span class="next disabled">&rarr;</span>';
+
 	$current = '<span class="current">'.$page.'</span>';
 	if ( $page > 1 ) {
 		$prev_pages = array();
@@ -222,10 +225,12 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 			$top[] = $p->id;
 		}
 	}
+
 	$options = array( '' => __('&mdash; No parent &mdash;') );
-	$stack = array();
+
 	foreach( $top as $top_id ) {
 		$stack = array( $top_id );
+
 		while ( !empty( $stack ) ) {
 			$id = array_pop( $stack );
 			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
@@ -236,6 +241,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 			}
 		}
 	}
+
 	return gp_select( $name_and_id, $options, $selected_project_id, $attrs );
 }
 
