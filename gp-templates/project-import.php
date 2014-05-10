@@ -5,6 +5,7 @@ gp_title( $kind == 'originals'?
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
+
 <h2><?php echo $kind == 'originals'? __('Import Originals') : __('Import Translations'); ?></h2>
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
@@ -21,4 +22,5 @@ gp_tmpl_header();
 	<dd><?php echo $format_dropdown; ?></dd>
 	<dt><input type="submit" value="<?php echo esc_attr( __('Import') ); ?>"></dt>
 </form>
-<?php gp_tmpl_footer(); ?>
+
+<?php gp_tmpl_footer();

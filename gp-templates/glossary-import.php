@@ -22,4 +22,4 @@ gp_tmpl_header();
 	<p><input type="submit" value="<?php echo esc_attr( __('Import') ); ?>"></p>
 </form>
 
-<?php gp_tmpl_footer(); ?>
+<?php gp_tmpl_footer();

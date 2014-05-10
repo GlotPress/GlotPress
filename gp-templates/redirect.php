@@ -1,1 +1,1 @@
-<?php printf( __( 'Redirecting to: %s...' ), $url ); ?>
+<?php printf( __( 'Redirecting to: %s...' ), $url );

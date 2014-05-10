@@ -30,4 +30,4 @@ if ( $show_htaccess_instructions ): ?>
 	</p>
 <?php endif; ?>
 
-<?php gp_tmpl_footer(); ?>
+<?php gp_tmpl_footer();

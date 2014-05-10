@@ -37,4 +37,3 @@ class GP_Test_Translation_Entry extends GP_UnitTestCase {
 
 
 }
-?>

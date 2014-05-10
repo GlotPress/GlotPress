@@ -60,4 +60,3 @@ printf(__n('You have one new message.', 'You have %s new messages.', $messages).
 echo __("A string with low priority!", 'side')."\n";
 
 _e("Bye\n");
-?>

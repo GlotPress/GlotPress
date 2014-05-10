@@ -2,6 +2,7 @@
 gp_title( __('Projects &lt; GlotPress') );
 gp_tmpl_header();
 ?>
+
 <h2><?php _e('Projects'); ?></h2>
 <ul>
 <?php foreach($projects as $project): ?>
@@ -11,4 +12,5 @@ gp_tmpl_header();
 <?php if ( GP::$user->current()->can( 'write', 'project' ) ): ?>
 	<p class="actionlist secondary"><?php gp_link( gp_url_project( '-new' ), __('Create a New Project') ); ?></p>
 <?php endif; ?>
-<?php gp_tmpl_footer(); ?>
+
+<?php gp_tmpl_footer();

@@ -214,4 +214,3 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 	//TODO: add tests for bad files
 }
-?>
