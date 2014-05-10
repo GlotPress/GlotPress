@@ -74,15 +74,22 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
 	function temp_filename() {
 		$tmp_dir = '';
-		$dirs = array( 'TMP', 'TMPDIR', 'TEMP' );
-		foreach( $dirs as $dir )
-			if ( isset( $_ENV[$dir] ) && !empty( $_ENV[$dir] ) ) {
+		$dirs    = array( 'TMP', 'TMPDIR', 'TEMP' );
+
+		foreach( $dirs as $dir ) {
+			if ( isset( $_ENV[ $dir ] ) && ! empty( $_ENV[ $dir ] ) ) {
 				$tmp_dir = $dir;
 				break;
 			}
-		if (empty($dir)) $dir = '/tmp';
-		$dir = realpath( $dir );
-		return tempnam( $dir, 'testpomo' );
+		}
+
+		if ( empty( $tmp_dir ) ) {
+			$tmp_dir = '/tmp';
+		}
+
+		$tmp_dir = realpath( $tmp_dir );
+
+		return tempnam( $tmp_dir, 'testpomo' );
 	}
 
 	function set_normal_user_as_current() {
