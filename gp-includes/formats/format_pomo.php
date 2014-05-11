@@ -30,7 +30,7 @@ class GP_Format_PO extends GP_Format {
 		$po->comments_before_headers .= "Translation of {$project->name} in {$locale->english_name}\n";
 		$po->comments_before_headers .= "This file is distributed under the same license as the {$project->name} package.\n";
 
-		echo $po->export();
+		return $po->export();
 	}
 
 	public function read_translations_from_file( $file_name, $project = null ) {
