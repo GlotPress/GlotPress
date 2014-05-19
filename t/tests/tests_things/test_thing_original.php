@@ -76,7 +76,6 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 	function test_import_should_remove_from_active_missing_strings() {
 		$project = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active' ) );
-		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active' ) );
 		$original->import_for_project( $project, new Translations );
 		$originals_for_project = $original->by_project_id( $project->id );
 		$this->assertEquals( 0, count( $originals_for_project ) );
@@ -97,6 +96,6 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 	function test_normalize_fields_should_unset_priority_if_named_priority_is_missing() {
 		$original = new GP_Original;
 		$normalized_args = 	$original->normalize_fields( array( 'priority' => 'baba' ) );
-		$this->assertFalse( isset( $args['priority'] ) );
+		$this->assertFalse( isset( $normalized_args['priority'] ) );
 	}
 }
