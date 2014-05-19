@@ -47,8 +47,9 @@ class GP_Translation_Set extends GP_Thing {
 		unset( $current_translations_list );
 		$translations_added = 0;
 		foreach( $translations->entries as $entry ) {
-			if ( empty( $entry->translations ) ) continue;
-			if ( in_array( 'fuzzy', $entry->flags ) ) continue;
+			if ( empty( $entry->translations ) ) {
+				continue;
+			}
 
 			$create = false;
 			if ( $translated = $current_translations->translate_entry( $entry ) ) {
@@ -70,10 +71,10 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->translation_set_id = $this->id;
-				$entry->status = 'current';
+				$entry->status = in_array( 'fuzzy', $entry->flags ) ? 'fuzzy' : 'current';
 				// check for errors
 				$translation = GP::$translation->create( $entry );
-				$translation->set_status( 'current' );
+				$translation->set_status( $entry->status );
 				$translations_added += 1;
 			}
 		}
