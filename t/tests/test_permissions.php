@@ -1,6 +1,7 @@
 <?php
 
 class GP_Test_Permissions extends GP_UnitTestCase {
+
 	function test_create_find() {
 		$args = array( 'user_id' => 2, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => 5 );
 		GP::$permission->create( $args );
@@ -36,10 +37,8 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 
 	function test_recursive_validator_permissions() {
 		$object_type = GP::$validator_permission->object_type;
-		$action = 'whatever';
 		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
 
-		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
 		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
 
@@ -82,4 +81,5 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$fields = $actual->fields();
 		unset($fields['id']);
 	}
+
 }
