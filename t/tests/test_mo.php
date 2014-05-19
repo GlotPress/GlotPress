@@ -98,7 +98,6 @@ class GP_Test_MO extends GP_UnitTestCase {
 	}
 
 	function test_export_should_not_include_empty_translations() {
-		$entries = array(  );
 		$mo = new MO;
 		$mo->add_entry( array( 'singular' => 'baba', 'translations' => array( '', '' ) ) );
 
@@ -117,13 +116,6 @@ class GP_Test_MO extends GP_UnitTestCase {
 		$this->assertEquals('%d foro', $mo->translate_plural('%d forum', '%d forums', 1));
 		$this->assertEquals('%d foros', $mo->translate_plural('%d forum', '%d forums', 2));
 		$this->assertEquals('%d foros', $mo->translate_plural('%d forum', '%d forums', -1));
-	}
-
-	function disabled_test_performance() {
-		$start = microtime(true);
-		$mo = new MO();
-		$mo->import_from_file('data/de_DE-2.8.mo');
-		// echo "\nPerformance: ".(microtime(true) - $start)."\n";
 	}
 
 	function test_overloaded_mb_functions() {
