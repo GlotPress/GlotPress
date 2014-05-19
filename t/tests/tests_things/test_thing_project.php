@@ -230,7 +230,6 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$sub = $sub_set->project;
 
 		$other_sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'other_sub', 'parent_project_id' => $root->id ) );
-		$other_sub = $other_sub_set->project;
 
 		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
 		$branch->duplicate_project_contents_from( $root );
