@@ -45,10 +45,12 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
 		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
-		$this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
 
+		$translation1_old = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$translation1_current = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
-		$translation1_current->set_as_current();
+		$translation1_current->set_as_current(); //$translation1_old is now old
+
 		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array(), array('by' => 'translation', 'how' => 'asc') );
 
 		$this->assertEquals( 2, count( $for_translation ) );
@@ -61,6 +63,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
 		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) ); //This isn't going to be translated
 
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array('status' => 'current'), array('by' => 'translation', 'how' => 'asc') );
@@ -73,7 +76,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
 		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
-		$this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
 
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$for_export = GP::$translation->for_export( $set->project, $set, 0, array('status' => 'current') );
