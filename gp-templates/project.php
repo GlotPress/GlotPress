@@ -10,7 +10,7 @@ gp_tmpl_header();
 ?>
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
 <p class="description">
-	<?php echo $project->description; ?>
+	<?php echo apply_filters( 'project_description', $project->description, $project );?>
 </p>
 
 <?php if ( $can_write ): ?>
@@ -88,7 +88,7 @@ gp_tmpl_header();
 		<?php if ( $sub_project->active ) echo "<span class='active bubble'>" . __('Active') . "</span>"; ?>
 	</dt>
 	<dd>
-		<?php echo esc_html( gp_html_excerpt( $sub_project->description, 111 ) ); ?>
+		<?php echo esc_html( gp_html_excerpt( apply_filters( 'sub_project_description', $sub_project->description, $sub_project ), 111 ) ); ?>
 	</dd>
 <?php endforeach; ?>
 </dl>
