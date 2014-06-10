@@ -143,6 +143,8 @@ class GP_Translation extends GP_Thing {
 			$join_where[] = $statuses_where;
 		}
 
+		$where = apply_filters( 'for_translation_where', $where, $translation_set );
+
 		$where = implode( ' AND ', $where );
 		if ( $where ) {
 			$where = 'AND '.$where;
