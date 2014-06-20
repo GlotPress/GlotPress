@@ -1511,7 +1511,7 @@ class GP_Locales {
 
 		$sah = new GP_Locale();
 		$sah->english_name = 'Sakha';
-		$sah->native_name = 'Sakha';
+		$sah->native_name = 'Сахалыы';
 		$sah->lang_code_iso_639_1 = null;
 		$sah->lang_code_iso_639_2 = 'sah';
 		$sah->lang_code_iso_639_3 = 'sah';
