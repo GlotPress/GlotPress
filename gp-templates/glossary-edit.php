@@ -9,7 +9,7 @@ gp_breadcrumb( array(
 gp_tmpl_header();
 ?>
 
-<h2><?php_e( 'Edit Glossary'); ?></h2>
+<h2><?php _e( 'Edit Glossary'); ?></h2>
 
 <form action="" method="post">
 	<p>
