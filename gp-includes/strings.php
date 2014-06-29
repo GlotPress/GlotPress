@@ -54,12 +54,12 @@ function gp_stripos( $haystack, $needle ) {
 endif;
 
 if ( function_exists('mb_substr') ):
-	function gp_substr( $haystack, $needle ) {
-		return mb_substr( $haystack, $needle );
+	function gp_substr( $str, $start, $length ) {
+		return mb_substr( $str, $start, $length );
 	}
 else:
-	function gp_substr( $haystack, $needle ) {
-		return substr( $haystack, $needle );
+	function gp_substr( $str, $start, $length ) {
+		return substr( $str, $start, $length );
 	}
 endif;
 
