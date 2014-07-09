@@ -56,7 +56,8 @@ class GP_Translation_Set extends GP_Thing {
 				// we have the same string translated
 				// create a new one if they don't match
 				$entry->original_id = $translated->original_id;
-				$create  = ( array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations );
+				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
+				$create = apply_filters( 'translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
