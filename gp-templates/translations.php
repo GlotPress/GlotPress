@@ -144,6 +144,7 @@ $i = 0;
 			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
 		?>
 		</dd>
+		<?php do_action( 'translation_set_filters' );?>
 		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
 </form>
