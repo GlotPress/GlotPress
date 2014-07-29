@@ -18,6 +18,8 @@ class GP_Route_Project extends GP_Route_Main {
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 
 		foreach( $translation_sets as $set ) {
+			$locale = GP_Locales::by_slug( $set->locale );
+
 			$set->name_with_locale = $set->name_with_locale();
 			$set->current_count = $set->current_count();
 			$set->untranslated_count = $set->untranslated_count();
@@ -25,6 +27,8 @@ class GP_Route_Project extends GP_Route_Main {
 			$set->fuzzy_count = $set->fuzzy_count();
 			$set->percent_translated = $set->percent_translated();
 			$set->all_count = $set->all_count();
+
+			$set->wp_locale = $locale->wp_locale;
 		}
 
 		usort( $translation_sets, lambda('$a, $b', '$a->current_count < $b->current_count' ) );
