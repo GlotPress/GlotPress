@@ -33,7 +33,7 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 			$errors = gp_install();
 			if ( $errors ) {
 				gp_error_log_dump($errors);
-				die();
+				die( 'ERROR: gp_install() returned errors! Check the error_log for complete SQL error message' );
 			}
 			define( 'GP_IS_TEST_DB_INSTALLED', true );
 		}
