@@ -39,7 +39,7 @@ gp_tmpl_header();
 						<?php echo esc_html( $projects[$sub_project_id]->name ); ?>
 					</th>
 				</tr>
-			<?php foreach ( $sets['data'] as $set_slug => $set_data ) : ?>
+			<?php foreach ( $sets['sets'] as $set_slug => $set_data ) : ?>
 				<tr>
 					<td class="set-name">
 						<strong><?php gp_link( gp_url_project( $sets['project'], gp_url_join( $locale->slug, $set_slug ) ), $set_data->name ); ?></strong>

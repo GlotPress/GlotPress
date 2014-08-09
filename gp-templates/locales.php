@@ -21,7 +21,7 @@ gp_tmpl_header();
 		</tr>
 		</thead>
 		<tbody>
-		<?php foreach ( GP_Locales::locales() as $locale  ) :?>
+		<?php foreach ( $locales as $locale ) : ?>
 			<tr class="<?php echo $parity(); ?>">
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . "</td>" ?>
