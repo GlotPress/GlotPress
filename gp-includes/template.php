@@ -254,6 +254,19 @@ function gp_array_of_array_of_things_to_json( $array ) {
 	return json_encode( array_map( $map_to_fields, $array ) );
 }
 
+function things_to_fields( $data ) {
+	if( is_array( $data ) ) {
+		foreach( $data as $item_id => $item ) {
+			$data[ $item_id ] = things_to_fields( $item );
+		}
+	}
+	else if ( $data instanceof GP_Thing ) {
+		$data = $data->fields();
+	}
+
+	return $data;
+}
+
 function gp_preferred_sans_serif_style_tag( $locale ) {
 	if ( $locale->preferred_sans_serif_font_family ) {
 		echo <<<HTML
