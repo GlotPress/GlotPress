@@ -49,6 +49,9 @@ class GP_Router {
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
+			'get:/languages' => array('GP_Route_Locale', 'locales_get'),
+			"get:/languages/$locale" => array('GP_Route_Locale', 'single'),
+
 			"get:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_get'),
 			"post:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_post'),
 			"post:/$set/glossary/-new" => array('GP_Route_Glossary_Entry', 'glossary_entry_add_post'),

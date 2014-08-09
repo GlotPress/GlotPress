@@ -26,6 +26,13 @@ class GP_Translation_Set extends GP_Thing {
 		    WHERE slug = '%s' AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
 	}
 
+	function by_locale( $locale_slug ) {
+		return $this->many( "
+		    SELECT * FROM $this->table
+		    WHERE locale = '%s'", $locale_slug );
+	}
+
+
 	function by_project_id( $project_id ) {
 		return $this->many( "
 		    SELECT * FROM $this->table

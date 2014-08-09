@@ -247,7 +247,7 @@ function gp_get_option( $option ) {
 		case 'version':
 			return '0.1'; // Don't filter
 		case 'gp_db_version' :
-			return '918'; // Don't filter
+			return '940'; // Don't filter
 		case 'html_type':
 			$r = 'text/html';
 			break;

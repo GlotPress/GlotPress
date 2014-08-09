@@ -115,7 +115,7 @@ textarea {
 	line-height: 1.5em;
 	width: 40em;
 }
-table.translations, table.translation-sets, table.glossary {
+table.translations, table.translation-sets, table.glossary, table.language-sub-projects {
 	font-size: 90%;
 	width: 100%;
 	border-spacing: 0.1em;
@@ -124,13 +124,18 @@ table.translations thead th,
 table.translations tfoot th,
 table.translation-sets thead th,
 table.translations tfoot th,
-table.glossary thead th {
+table.glossary thead th,
+table.language-sub-projects thead th,
+table.locales thead th {
 	font-weight: bold;
 	color: #eee;
 	background-color: #555;
 	padding: 0.5em;
 }
-table.translations tr, table.translation-sets tr, table.glossary tr {
+table.locales thead th {
+	width: 33%;
+}
+table.translations tr, table.translation-sets tr, table.glossary tr, table.language-sub-projects {
 	border: 0;
 }
 table.translations td.translation ul {
@@ -155,7 +160,12 @@ table.translations td.translation span.missing a {
 	font-style: italic;
 }
 
-table.translations td, table.translations th, table.translation-sets td, table.translation-sets th, table.glossary th, table.glossary td {
+table.translations td,table.translations th,
+table.translation-sets td, table.translation-sets th,
+table.locales td, table.locales th,
+table.glossary th, table.glossary td,
+table.language-sub-projects th,
+table.language-sub-projects td {
 	padding: 0.5em;
 	border: 1px solid #eee;
 	margin: 0;
@@ -448,7 +458,7 @@ dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
 	clear: both;
 	visibility: hidden;
 }
-table.translation-sets .stats a {
+table.translation-sets .stats a, table.language-sub-projects .stats a {
 	color: black;
 	text-decoration: none;
 	-webkit-border-radius: 0.3em;
@@ -469,10 +479,10 @@ table.translation-sets .stats a {
 	margin-left: 2px;
 }
 .secondary {
-	font-size: 0.85em;
+	font-size: 0.95em;
 }
 .ternary {
-	font-size: 0.7em;
+	font-size: 0.8em;
 }
 
 .actionlist {
@@ -582,26 +592,26 @@ a.project-actions {
 	width: 100%;
 }
 
-.translation-sets .percent {
+.translation-sets .percent, .language-sub-projects .percent {
 	font-weight: bold;
 }
 .translation-sets .stats {
 	text-align: center;
 }
-.translation-sets td {
+.translation-sets td, .locales td {
 	padding: 0.5em 0.75em;
 }
 
-.translation-sets tr {
+.translation-sets tr, .locales tr {
 	background-color: #eee;
 }
-.translation-sets tr.odd {
+.translation-sets tr.odd, .locales tr.odd {
 	background-color: #fff;
 }
-.translation-sets tr:hover {
+.translation-sets tr:hover, .locales tr:hover {
 	background-color: #dee;
 }
-.translation-sets tr.odd:hover {
+.translation-sets tr.odd:hover, .locales tr.odd:hover {
 	background-color: #eff;
 }
 #submit {
@@ -730,6 +740,70 @@ table.form-table th, table.form-table td {
 	padding: 5px;
 }
 
+.language-project {
+	margin-left: 20em;
+}
+
+.language-project .project-description {
+	float:left;
+	margin-left: -20em;
+	width:16em;
+	padding-left: 10px;
+}
+
+table.language-sub-projects {
+	empty-cells: hide;
+}
+
+table.language-sub-projects thead th {
+	text-align:left;
+}
+
+.language-sub-projects .project-name {
+	border-collapse: separate;
+	border-spacing: 20px 5px;
+	border: 2px solid #0ff;
+}
+.language-sub-projects .project-name th {
+	font-size: 1.1em;
+	font-weight: bold;
+	background-color: #eee;
+	padding: 0.25em 0.5em 1em 0.5em;
+	color: #444;
+}
+
+table.language-sub-projects td {
+	border:none;
+	border-bottom: 1px solid #eee;
+}
+table.language-sub-projects tr:hover td {
+	background-color:#eff;
+}
+
+.language-sub-projects .sub-project {
+	border:none;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 2px solid #eee;
+}
+
+table.language-sub-projects tbody tr:last-child td {
+	border-bottom:2px solid #eee;
+}
+
+
+table.language-sub-projects {
+	margin-bottom: 30px;
+}
+
+table.language-sub-projects thead th:nth-child(-n+2) {
+	width: 20%;
+}
+table.language-sub-projects thead th:nth-child(n+3) {
+	width: 15%;
+}
+
+
 @media (max-width: 800px) {
 	#sub-projects {
 		float: none;
@@ -737,5 +811,14 @@ table.form-table th, table.form-table td {
 
 	#translation-sets.with-sub-projects {
 		margin: 0;
+	}
+
+	.language-project {
+		margin-left: 0;
+	}
+
+	.language-project .project-description {
+		float: none;
+		margin-left: 0;
 	}
 }
