@@ -42,10 +42,12 @@ gp_tmpl_header();
 				widgets: ['zebra']
 			});
 
+			$('.locales').width($('.locales').width());
+
 			$rows = $('.locales tbody').find('tr');
-			$('#locales-filter').keyup( function(){
-				var twidth = $('.locales').width();
+			$('#locales-filter').bind("change keyup input",function() {
 				var words = this.value.toLowerCase().split(' ');
+
 				if ( '' == this.value.trim() ) {
 					$rows.show();
 				} else {
@@ -59,7 +61,6 @@ gp_tmpl_header();
 						}
 						return false;
 					}).show();
-					$('.locales').width(twidth );
 				}
 			});
 		});
