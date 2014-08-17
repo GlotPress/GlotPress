@@ -115,7 +115,7 @@ textarea {
 	line-height: 1.5em;
 	width: 40em;
 }
-table.translations, table.translation-sets, table.glossary, table.language-sub-projects {
+table.translations, table.translation-sets, table.glossary, table.locale-sub-projects {
 	font-size: 90%;
 	width: 100%;
 	border-spacing: 0.1em;
@@ -125,7 +125,7 @@ table.translations tfoot th,
 table.translation-sets thead th,
 table.translations tfoot th,
 table.glossary thead th,
-table.language-sub-projects thead th,
+table.locale-sub-projects thead th,
 table.locales thead th {
 	font-weight: bold;
 	color: #eee;
@@ -135,7 +135,7 @@ table.locales thead th {
 table.locales thead th {
 	width: 33%;
 }
-table.translations tr, table.translation-sets tr, table.glossary tr, table.language-sub-projects {
+table.translations tr, table.translation-sets tr, table.glossary tr, table.locale-sub-projects {
 	border: 0;
 }
 table.translations td.translation ul {
@@ -164,8 +164,8 @@ table.translations td,table.translations th,
 table.translation-sets td, table.translation-sets th,
 table.locales td, table.locales th,
 table.glossary th, table.glossary td,
-table.language-sub-projects th,
-table.language-sub-projects td {
+table.locale-sub-projects th,
+table.locale-sub-projects td {
 	padding: 0.5em;
 	border: 1px solid #eee;
 	margin: 0;
@@ -458,7 +458,7 @@ dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
 	clear: both;
 	visibility: hidden;
 }
-table.translation-sets .stats a, table.language-sub-projects .stats a {
+table.translation-sets .stats a, table.locale-sub-projects .stats a {
 	color: black;
 	text-decoration: none;
 	-webkit-border-radius: 0.3em;
@@ -592,7 +592,7 @@ a.project-actions {
 	width: 100%;
 }
 
-.translation-sets .percent, .language-sub-projects .percent {
+.translation-sets .percent, .locale-sub-projects .percent {
 	font-weight: bold;
 }
 .translation-sets .stats {
@@ -740,31 +740,20 @@ table.form-table th, table.form-table td {
 	padding: 5px;
 }
 
-.language-project {
-	margin-left: 20em;
-}
-
-.language-project .project-description {
-	float:left;
-	margin-left: -20em;
-	width:16em;
-	padding-left: 10px;
-}
-
-table.language-sub-projects {
+table.locale-sub-projects {
 	empty-cells: hide;
 }
 
-table.language-sub-projects thead th {
+table.locale-sub-projects thead th {
 	text-align:left;
 }
 
-.language-sub-projects .project-name {
+.locale-sub-projects .project-name {
 	border-collapse: separate;
 	border-spacing: 20px 5px;
 	border: 2px solid #0ff;
 }
-.language-sub-projects .project-name th {
+.locale-sub-projects .project-name th {
 	font-size: 1.1em;
 	font-weight: bold;
 	background-color: #eee;
@@ -772,34 +761,35 @@ table.language-sub-projects thead th {
 	color: #444;
 }
 
-table.language-sub-projects td {
+.locale-sub-projects th div.stats {
+    font-weight:normal;
+}
+
+
+.locale-sub-projects td {
 	border:none;
 	border-bottom: 1px solid #eee;
 }
-table.language-sub-projects tr:hover td {
+.locale-sub-projects tr:hover td {
 	background-color:#eff;
 }
 
-.language-sub-projects .sub-project {
+.locale-sub-projects .sub-project {
 	border:none;
 	text-align: left;
 	vertical-align: top;
-	border-bottom: 2px solid #eee;
-}
-
-table.language-sub-projects tbody tr:last-child td {
-	border-bottom:2px solid #eee;
+	border-bottom: 1px solid #eee;
 }
 
 
-table.language-sub-projects {
+.locale-sub-projects {
 	margin-bottom: 30px;
 }
 
-table.language-sub-projects thead th:nth-child(-n+2) {
+.locale-sub-projects thead th:nth-child(-n+2) {
 	width: 20%;
 }
-table.language-sub-projects thead th:nth-child(n+3) {
+.locale-sub-projects thead th:nth-child(n+3) {
 	width: 15%;
 }
 
@@ -813,11 +803,11 @@ table.language-sub-projects thead th:nth-child(n+3) {
 		margin: 0;
 	}
 
-	.language-project {
+	.locale-project {
 		margin-left: 0;
 	}
 
-	.language-project .project-description {
+	.locale-project .project-description {
 		float: none;
 		margin-left: 0;
 	}

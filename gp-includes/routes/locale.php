@@ -46,7 +46,8 @@ class GP_Route_Locale extends GP_Route_Main {
 
 			if ( ! in_array( $set_project->parent_project_id, $locale_projects ) ) {
 				$projects_data[$parent_id][$set_project->id]['project'] = $set_project;
-				$projects_data[$parent_id][$set_project->id]['sets'][$set->slug] = $this->set_data( $set );
+				$projects_data[$parent_id][$set_project->id]['sets'][$set->id] = $this->set_data( $set, $set_project );
+				$projects_data[$parent_id][$set_project->id]['totals'] = $this->set_data( $set, $set_project );
 
 				if ( ! isset( $projects_data[$parent_id][$set_project->id]['project'] ) ) {
 					$projects_data[$parent_id][$set_project->id]['project'] = $set_project;
@@ -67,18 +68,21 @@ class GP_Route_Locale extends GP_Route_Main {
 					$previous_parent = $parent_id;
 				}
 
-				$set_data = $projects_data[$parent_id][$previous_parent]['sets'][$set->slug];
-				$projects_data[$parent_id][$previous_parent]['sets'][$set->slug] = $this->set_data( $set, $set_data );
+				$set_data = $projects_data[$parent_id][$previous_parent]['totals'];
+				$projects_data[$parent_id][$previous_parent]['sets'][$set->id] = $this->set_data( $set, $set_project  );
+				$projects_data[$parent_id][$previous_parent]['totals'] = $this->set_data( $set, $set_project, $set_data );
 			}
 		}
 
 		$this->tmpl( 'locale', get_defined_vars() );
 	}
 
-	private function set_data( $set, $set_data = null ) {
+	private function set_data( $set, $project, $set_data = null ) {
 		if ( ! $set_data ) {
 			$set_data = new stdClass;
 
+			$set_data->slug = $set->slug;
+			$set_data->project_path = $project->path;
 			$set_data->waiting_count = $set->waiting_count();
 			$set_data->current_count = $set->current_count();
 			$set_data->fuzzy_count   = $set->fuzzy_count();
@@ -92,7 +96,7 @@ class GP_Route_Locale extends GP_Route_Main {
 		}
 
 		if ( ! isset( $set_data->name ) ) {
-			$set_data->name = $set->name;
+			$set_data->name = $project->name;
 		}
 
 		return $set_data;

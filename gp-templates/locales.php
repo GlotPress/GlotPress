@@ -8,7 +8,7 @@ gp_tmpl_header();
 
 	<h2><?php _e('Locales and Languages'); ?></h2>
 	<div class="locales-filter">
-		<?php _e( 'Filter:' );?><input id="locales-filter" type="search" placeholder="<?php esc_attr_e('Search string'); ?>" />
+		<?php _e( 'Filter:' );?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e('search'); ?>" />
 	</div>
 
 	<table class="tablesorter locales">
