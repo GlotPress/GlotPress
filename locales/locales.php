@@ -67,7 +67,7 @@ class GP_Locales {
 
 		$ae = new GP_Locale();
 		$ae->english_name = 'Avestan';
-		$ae->native_name = 'avesta';
+		$ae->native_name = 'Avesta';
 		$ae->lang_code_iso_639_1 = 'ae';
 		$ae->lang_code_iso_639_2 = 'ave';
 		$ae->slug = 'ae';
@@ -273,7 +273,7 @@ class GP_Locales {
 
 		$br = new GP_Locale();
 		$br->english_name = 'Breton';
-		$br->native_name = 'brezhoneg';
+		$br->native_name = 'Brezhoneg';
 		$br->lang_code_iso_639_1 = 'br';
 		$br->lang_code_iso_639_2 = 'bre';
 		$br->country_code = 'fr';
@@ -329,7 +329,7 @@ class GP_Locales {
 
 		$co = new GP_Locale();
 		$co->english_name = 'Corsican';
-		$co->native_name = 'corsu';
+		$co->native_name = 'Corsu';
 		$co->lang_code_iso_639_1 = 'co';
 		$co->lang_code_iso_639_2 = 'cos';
 		$co->country_code = 'it';
@@ -346,7 +346,7 @@ class GP_Locales {
 
 		$cs = new GP_Locale();
 		$cs->english_name = 'Czech';
-		$cs->native_name = 'čeština‎';
+		$cs->native_name = 'Čeština‎';
 		$cs->lang_code_iso_639_1 = 'cs';
 		$cs->lang_code_iso_639_2 = 'ces';
 		$cs->country_code = 'cz';
@@ -679,7 +679,7 @@ class GP_Locales {
 
 		$fj = new GP_Locale();
 		$fj->english_name = 'Fijian';
-		$fj->native_name = 'vosa Vakaviti';
+		$fj->native_name = 'Vosa Vakaviti';
 		$fj->lang_code_iso_639_1 = 'fj';
 		$fj->lang_code_iso_639_2 = 'fij';
 		$fj->country_code = 'fj';
@@ -687,7 +687,7 @@ class GP_Locales {
 
 		$fo = new GP_Locale();
 		$fo->english_name = 'Faroese';
-		$fo->native_name = 'føroyskt';
+		$fo->native_name = 'Føroyskt';
 		$fo->lang_code_iso_639_1 = 'fo';
 		$fo->lang_code_iso_639_2 = 'fao';
 		$fo->country_code = 'fo';
@@ -1079,7 +1079,7 @@ class GP_Locales {
 
 		$la = new GP_Locale();
 		$la->english_name = 'Latin';
-		$la->native_name = 'latine';
+		$la->native_name = 'Latine';
 		$la->lang_code_iso_639_1 = 'la';
 		$la->lang_code_iso_639_2 = 'lat';
 		$la->slug = 'la';
@@ -1130,7 +1130,7 @@ class GP_Locales {
 
 		$lv = new GP_Locale();
 		$lv->english_name = 'Latvian';
-		$lv->native_name = 'latviešu valoda';
+		$lv->native_name = 'Latviešu valoda';
 		$lv->lang_code_iso_639_1 = 'lv';
 		$lv->lang_code_iso_639_2 = 'lav';
 		$lv->country_code = 'lv';
@@ -1163,7 +1163,7 @@ class GP_Locales {
 
 		$mhr = new GP_Locale();
 		$mhr->english_name = 'Mari (Meadow)';
-		$mhr->native_name = 'олык марий';
+		$mhr->native_name = 'Олык марий';
 		$mhr->lang_code_iso_639_3 = 'mhr';
 		$mhr->country_code = 'ru';
 		$mhr->slug = 'mhr';
@@ -1171,7 +1171,7 @@ class GP_Locales {
 
 		$mk = new GP_Locale();
 		$mk->english_name = 'Macedonian';
-		$mk->native_name = 'македонски јазик';
+		$mk->native_name = 'Македонски јазик';
 		$mk->lang_code_iso_639_1 = 'mk';
 		$mk->lang_code_iso_639_2 = 'mkd';
 		$mk->country_code = 'mk';
@@ -1223,7 +1223,7 @@ class GP_Locales {
 
 		$mrj = new GP_Locale();
 		$mrj->english_name = 'Mari (Hill)';
-		$mrj->native_name = 'кырык мары';
+		$mrj->native_name = 'Кырык мары';
 		$mrj->lang_code_iso_639_3 = 'mrj';
 		$mrj->country_code = 'ru';
 		$mrj->slug = 'mrj';
@@ -1509,7 +1509,7 @@ class GP_Locales {
 
 		$sl = new GP_Locale();
 		$sl->english_name = 'Slovenian';
-		$sl->native_name = 'slovenščina';
+		$sl->native_name = 'Slovenščina';
 		$sl->lang_code_iso_639_1 = 'sl';
 		$sl->lang_code_iso_639_2 = 'slv';
 		$sl->country_code = 'si';
@@ -1557,7 +1557,7 @@ class GP_Locales {
 
 		$srd = new GP_Locale();
 		$srd->english_name = 'Sardinian';
-		$srd->native_name = 'sardu';
+		$srd->native_name = 'Sardu';
 		$srd->lang_code_iso_639_1 = 'sc';
 		$srd->lang_code_iso_639_2 = 'srd';
 		$srd->country_code = 'srd';
@@ -1629,7 +1629,7 @@ class GP_Locales {
 
 		$tg = new GP_Locale();
 		$tg->english_name = 'Tajik';
-		$tg->native_name = 'тоҷикӣ';
+		$tg->native_name = 'Тоҷикӣ';
 		$tg->lang_code_iso_639_1 = 'tg';
 		$tg->lang_code_iso_639_2 = 'tgk';
 		$tg->wp_locale = 'tg';
@@ -1728,7 +1728,7 @@ class GP_Locales {
 
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
-		$udm->native_name = 'удмурт кыл';
+		$udm->native_name = 'Удмурт кыл';
 		$udm->lang_code_iso_639_2 = 'udm';
 		$udm->slug = 'udm';
 
@@ -1778,7 +1778,7 @@ class GP_Locales {
 
 		$vec = new GP_Locale();
 		$vec->english_name = 'Venetian';
-		$vec->native_name = 'vèneta';
+		$vec->native_name = 'Vèneta';
 		$vec->lang_code_iso_639_2 = 'roa';
 		$vec->country_code = 'uz';
 		$vec->slug = 'vec';
@@ -1824,7 +1824,7 @@ class GP_Locales {
 
 		$yo = new GP_Locale();
 		$yo->english_name = 'Yorùbá';
-		$yo->native_name = 'èdè Yorùbá';
+		$yo->native_name = 'Èdè Yorùbá';
 		$yo->lang_code_iso_639_1 = 'yo';
 		$yo->lang_code_iso_639_2 = 'yor';
 		$yo->slug = 'yo';
