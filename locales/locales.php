@@ -582,7 +582,7 @@ class GP_Locales {
 		$es_ve->native_name = 'Español de Venezuela';
 		$es_ve->lang_code_iso_639_1 = 'es';
 		$es_ve->lang_code_iso_639_2 = 'spa';
-		$es_ve->country_code = 'pe';
+		$es_ve->country_code = 've';
 		$es_ve->wp_locale = 'es_VE';
 		$es_ve->slug = 'es-ve';
 		$es_ve->google_code = 'es';
