@@ -16,7 +16,7 @@ gp_tmpl_header();
 			<?php gp_link( gp_url_project( '-new' ), __('Create a New Project') ); ?>  &bull;&nbsp;
 		<?php endif; ?>
 
-		<?php gp_link( '/languages', __('Projects by language') ); ?>
+		<?php gp_link( gp_url( '/languages' ), __('Projects by language') ); ?>
 	</p>
 
 <?php gp_tmpl_footer();
