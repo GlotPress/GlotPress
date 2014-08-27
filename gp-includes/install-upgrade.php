@@ -87,7 +87,7 @@ function gp_mod_rewrite_rules() {
 
 	return '
 # BEGIN GlotPress
-	<IfModule mod_rewrite.c>;
+	<IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase ' . $path . '
 	RewriteCond %{REQUEST_FILENAME} !-f
