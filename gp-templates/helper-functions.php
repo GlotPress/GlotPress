@@ -99,7 +99,9 @@ function display_status( $status ) {
 }
 
 function references( $project, $entry ) {
-	if ( !$project->source_url_template() ) return;
+	$show_references = apply_filters( 'show_references', (bool) $entry->references, $project, $entry );
+
+	if ( ! $show_references ) return;
 	?>
 	<dl><dt>
 	<?php _e('References:'); ?>
@@ -112,6 +114,8 @@ function references( $project, $entry ) {
 				?>
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
+			else :
+				echo "<li>$file:$line</li>"; 
 			endif;
 		endforeach;
 		?>
