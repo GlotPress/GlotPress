@@ -53,7 +53,7 @@ gp_tmpl_header();
 						<span class="bubble morethan90"><?php echo $percent; ?>%</span>
 					<?php endif; ?>
 				</td>
-				<td class="stats percent"><?php echo $set->percent_translated; ?></td>
+				<td class="stats percent"><?php echo $set->percent_translated; ?>%</td>
 				<td class="stats translated" title="translated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
 							array('filters[translated]' => 'yes', 'filters[status]' => 'current') ), $set->current_count ); ?></td>
 				<td class="stats fuzzy" title="fuzzy"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
