@@ -72,11 +72,34 @@ function gp_url_ssl( $url ) {
 
 function gp_url_base_root() {
 	$url_from_db = gp_get_option( 'url' );
-	return gp_const_get( 'GP_BASE_URL', $url_from_db? $url_from_db : '' );
+
+	return gp_const_get( 'GP_BASE_URL', $url_from_db ? $url_from_db : guess_uri() );
 }
 
 function gp_url_public_root() {
 	return gp_const_get( 'GP_URL', gp_url_base_root() );
+}
+
+/**
+ * Guesses the final installed URI based on the location of the install script
+ *
+ * @return string The guessed URI
+ */
+function guess_uri()
+{
+	$schema = 'http://';
+	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
+		$schema = 'https://';
+	}
+
+	if( gp_array_get( $_SERVER, 'DOCUMENT_URI' ) ) {
+		$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'DOCUMENT_URI' ) );
+	}
+	else {
+		$uri = $schema . gp_array_get( $_SERVER, 'HTTP_HOST');
+	}
+
+	return rtrim( $uri, " \t\n\r\0\x0B/" ) . '/';
 }
 
 /**

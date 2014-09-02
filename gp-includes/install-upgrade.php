@@ -1,25 +1,4 @@
 <?php
-/**
- * Guesses the final installed URI based on the location of the install script
- *
- * @return string The guessed URI
- */
-function guess_uri()
-{
-	$schema = 'http://';
-	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
-		$schema = 'https://';
-	}
-
-	if( gp_array_get( $_SERVER, 'DOCUMENT_URI' ) ) {
-		$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'DOCUMENT_URI' ) );
-	}
-	else {
-		$uri = $schema . gp_array_get( $_SERVER, 'HTTP_HOST');
-	}
-
-	return rtrim( $uri, " \t\n\r\0\x0B/" ) . '/';
-}
 
 function gp_update_db_version() {
 	gp_update_option( 'gp_db_version', gp_get_option( 'gp_db_version' ) );
@@ -83,7 +62,7 @@ function gp_set_htaccess() {
  * @return string Rewrite rules
  */
 function gp_mod_rewrite_rules() {
-	$path = gp_add_slash( gp_url_path() );
+	$path = gp_add_slash( gp_url_path( guess_uri() ) );
 
 	return '
 # BEGIN GlotPress
@@ -116,18 +95,17 @@ function gp_install() {
 	gp_update_option( 'uri', guess_uri() );
 }
 
-function gp_create_initial_contents() {
+function gp_create_initial_contents( $user_name =  null, $admin_password = null, $admin_email = null ) {
 	global $gpdb;
-	$gpdb->insert( $gpdb->projects, array('name' => __('Sample'), 'slug' => __('sample'), 'description' => __('A Sample Project'), 'path' => __('sample') ) );
-	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => __('GlotPress FTW'), 'comment' => __('FTW means For The Win'), 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
-	$gpdb->insert( $gpdb->originals, array('project_id' => 1, 'singular' => __('A GlotPress'), 'plural' => __('Many GlotPresses') ) );
+
+	$gpdb->insert( $gpdb->projects, array( 'name' => __('Sample'), 'slug' => __('sample'), 'description' => __('A Sample Project'), 'path' => __('sample') ) );
+	$gpdb->insert( $gpdb->originals, array( 'project_id' => 1, 'singular' => __('GlotPress FTW'), 'comment' => __('FTW means For The Win'), 'context' => 'dashboard', 'references' => 'bigfile:666 little-dir/small-file.php:71' ) );
+	$gpdb->insert( $gpdb->originals, array( 'project_id' => 1, 'singular' => __('A GlotPress'), 'plural' => __('Many GlotPresses') ) );
 
 	$gpdb->insert( $gpdb->translation_sets, array( 'name' => __('My Translation'), 'slug' => __('my'), 'project_id' => 1, 'locale' => 'bg', ) );
 
-	// TODO: ask the user for an e-mail -- borrow WordPress install process
-	if ( !defined('CUSTOM_USER_TABLE') ) {
-		$admin = GP::$user->create( array( 'user_login' => 'admin', 'user_pass' => 'a', 'user_email' => 'baba@baba.net' ) );
+	if ( isset( $user_name, $admin_password, $admin_email ) ) {
+		$admin = GP::$user->create( array( 'user_login' => $user_name, 'user_pass' => $admin_password, 'user_email' => $admin_email ) );
 		GP::$permission->create( array( 'user_id' => $admin->id, 'action' => 'admin' ) );
 	}
-	// TODO: ask the user to choose an admin user if using custom table
 }

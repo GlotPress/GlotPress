@@ -11,6 +11,7 @@ function gp_styles_default( &$styles ) {
 	$styles->text_direction = 'ltr';
 
 	$styles->add( 'base', '/style.css', array(), '20140224' );
+	$styles->add( 'install', '/install.css', array('base'), '20140902' );
 }
 
 add_action( 'wp_default_styles', 'gp_styles_default' );
