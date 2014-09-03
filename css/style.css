@@ -509,12 +509,15 @@ table.translation-sets .stats a, table.locale-sub-projects .stats a {
 	margin: 1em 0;
 	padding: 0.5em;
 }
+.warning:after {
+	clear:both;
+	content: "";
+	display: block;
+}
 .warning a.discard-warning {
 	float: right;
 }
-.textareas .warning {
-	width: 47em;
-}
+
 p.description {
 	max-width: 60em;
 	margin-left: 1em;
