@@ -130,6 +130,7 @@ class GP_Translation extends GP_Thing {
 			}
 			$join_type = 'LEFT';
 			$join_where[] = 't.status != "rejected"';
+			$join_where[] = 't.status != "old"';
 			$statuses = array_filter( $statuses, lambda( '$x', '$x != "untranslated"' ) );
 		}
 
