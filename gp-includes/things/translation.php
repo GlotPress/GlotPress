@@ -229,7 +229,17 @@ class GP_Translation extends GP_Thing {
 	function last_modified( $translation_set ) {
 		global $gpdb;
 
-		return $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
+		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
+		// Cached as "" if no translations.
+		if ( "" === $last_modified ) {
+			return false;
+		} elseif ( false !== $last_modified ) {
+			return $last_modified;
+		}
+
+		$last_modified = $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
+		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
+		return $last_modified;
 	}
 }
 GP::$translation = new GP_Translation();

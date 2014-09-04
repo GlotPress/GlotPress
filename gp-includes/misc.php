@@ -335,6 +335,7 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
  */
 function gp_clean_translation_set_cache( $id ) {
 	wp_cache_delete( $id, 'translation_set_status_breakdown' ); 
+	wp_cache_delete( $id, 'translation_set_last_modified' );
 }
 
 /**

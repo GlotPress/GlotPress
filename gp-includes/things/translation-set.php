@@ -3,7 +3,7 @@ class GP_Translation_Set extends GP_Thing {
 
 	var $table_basename = 'translation_sets';
 	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count', 'percent_translated', 'wp_locale' );
+	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count', 'percent_translated', 'wp_locale', 'last_modified' );
 	var $non_updatable_attributes = array( 'id' );
 
 	function restrict_fields( $set ) {
@@ -208,6 +208,10 @@ class GP_Translation_Set extends GP_Thing {
 		$original_count = GP::$original->count_by_project_id( $this->project_id );
 
 		return $original_count ? floor( $this->current_count() / $original_count * 100 ) : 0;
+	}
+
+	function last_modified() {
+		return GP::$translation->last_modified( $this );
 	}
 }
 GP::$translation_set = new GP_Translation_Set();

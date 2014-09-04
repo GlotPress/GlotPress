@@ -27,8 +27,10 @@ class GP_Route_Project extends GP_Route_Main {
 			$set->fuzzy_count = $set->fuzzy_count();
 			$set->percent_translated = $set->percent_translated();
 			$set->all_count = $set->all_count();
-
 			$set->wp_locale = $locale->wp_locale;
+			if ( $this->api ) {
+				$set->last_modified = $set->current_count ? $set->last_modified() : false;
+			}
 		}
 
 		usort( $translation_sets, lambda('$a, $b', '$a->current_count < $b->current_count' ) );
