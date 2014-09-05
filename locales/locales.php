@@ -1831,7 +1831,7 @@ class GP_Locales {
 
 		$zh_cn = new GP_Locale();
 		$zh_cn->english_name = 'Chinese (China)';
-		$zh_cn->native_name = '中文';
+		$zh_cn->native_name = '简体中文';
 		$zh_cn->lang_code_iso_639_1 = 'zh';
 		$zh_cn->lang_code_iso_639_2 = 'zho';
 		$zh_cn->country_code = 'cn';
@@ -1866,7 +1866,7 @@ class GP_Locales {
 
 		$zh_tw = new GP_Locale();
 		$zh_tw->english_name = 'Chinese (Taiwan)';
-		$zh_tw->native_name = '中文';
+		$zh_tw->native_name = '繁體中文';
 		$zh_tw->lang_code_iso_639_1 = 'zh';
 		$zh_tw->lang_code_iso_639_2 = 'zho';
 		$zh_tw->country_code = 'tw';
