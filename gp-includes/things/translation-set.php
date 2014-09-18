@@ -184,7 +184,7 @@ class GP_Translation_Set extends GP_Thing {
 				$where[] = 'project_id = %d';
 				$where = implode( ' AND ', $where );
 
-				$original_id = $this->query( "SELECT id FROM $gpdb->originals WHERE $where", $source_original->context, $source_original->singular, $source_original->plural, $this->project_id );
+				$original_id = $gpdb->get_var( $gpdb->prepare( "SELECT id FROM $gpdb->originals WHERE $where", $source_original->context, $source_original->singular, $source_original->plural, $this->project_id ) );
 				if ( $original_id ) {
 					$entry->original_id = $original_id;
 					$entry->translation_set_id = $this->id;
