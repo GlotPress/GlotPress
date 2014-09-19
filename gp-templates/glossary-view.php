@@ -20,9 +20,13 @@ gp_tmpl_header();
 <h2><?php printf( _x( 'Glossary for %1$s translation of %2$s', '{language} / { project name}' ), esc_html( $translation_set->name ), esc_html( $project->name ) ); ?>
 	<?php gp_link_glossary_edit( $glossary, $translation_set, __('(edit)') ); ?>
 </h2>
-<p class="description">
-	<?php echo make_clickable( nl2br( wp_kses_post( $glossary->description ) ) ); ?>
-</p>
+
+<?php
+if ( $glossary->description ) {
+	echo '<p class="description">' . make_clickable( nl2br( wp_kses_post( $glossary->description ) ) ) . '</p>';
+}
+?>
+
 <table class="glossary" id="glossary">
 	<thead>
 		<tr>
