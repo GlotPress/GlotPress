@@ -2,7 +2,17 @@
 class GP_Route_Locale extends GP_Route_Main {
 
 	function locales_get() {
-		$locales = GP_Locales::locales();
+		if ( isset( $_GET['all'] ) ) {
+			$locales = GP_Locales::locales();
+		}
+		else {
+			$existing_locales = GP::$translation_set->existing_locales();
+			$locales = array();
+
+			foreach ( $existing_locales as $locale ) {
+				$locales[] = GP_Locales::by_slug( $locale );
+			}
+		}
 
 		$this->tmpl( 'locales', get_defined_vars() );
 	}

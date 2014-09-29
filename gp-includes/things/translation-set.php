@@ -32,6 +32,11 @@ class GP_Translation_Set extends GP_Thing {
 		    WHERE locale = '%s'", $locale_slug );
 	}
 
+	function existing_locales() {
+		global $gpdb;
+
+		return $gpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
+	}
 
 	function by_project_id( $project_id ) {
 		return $this->many( "
