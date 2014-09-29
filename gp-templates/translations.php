@@ -112,7 +112,7 @@ $i = 0;
 		<dd><input type="submit" value="<?php echo esc_attr(__('Filter')); ?>" name="filter" /></dd>
 	</dl>
 	<dl class="filters-expanded sort hidden clearfix">
-		<dt><?php _e('By:'); ?></dt>
+		<dt><?php _x('By:','sort by'); ?></dt>
 		<dd>
 		<?php
 		$default_sort = GP::$user->current()->get_meta('default_sort');

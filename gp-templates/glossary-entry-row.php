@@ -48,7 +48,7 @@
 			</dl>
 			<?php if ( $entry->user_login ): ?>
 			<dl>
-				<dt><?php _e('By:'); ?></dt>
+				<dt><?php _x('By:','by author'); ?></dt>
 				<dd><?php
 				if ( $entry->user_display_name && $entry->user_display_name != $entry->user_login ) {
 					printf( '%s (%s)', $entry->user_display_name, $entry->user_login );
