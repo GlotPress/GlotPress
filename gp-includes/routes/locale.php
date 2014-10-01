@@ -1,7 +1,7 @@
 <?php
 class GP_Route_Locale extends GP_Route_Main {
 
-	function locales_get() {
+	public function locales_get() {
 		if ( isset( $_GET['all'] ) ) {
 			$locales = GP_Locales::locales();
 		}
@@ -12,12 +12,14 @@ class GP_Route_Locale extends GP_Route_Main {
 			foreach ( $existing_locales as $locale ) {
 				$locales[] = GP_Locales::by_slug( $locale );
 			}
+
+			usort( $locales, array( $this, 'sort_locales') );
 		}
 
 		$this->tmpl( 'locales', get_defined_vars() );
 	}
 
-	function single( $locale_slug ) {
+	public function single( $locale_slug ) {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$sets = GP::$translation_set->by_locale( $locale_slug );
 
@@ -112,4 +114,7 @@ class GP_Route_Locale extends GP_Route_Main {
 		return $set_data;
 	}
 
+	private function sort_locales( $a, $b ) {
+		return $a->english_name > $b->english_name;
+	}
 }
