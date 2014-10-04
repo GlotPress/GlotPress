@@ -58,7 +58,8 @@ else if( isset( $_POST['user_name'], $_POST['user_name'], $_POST['admin_password
 	if( ! $errors ) {
 		$errors = gp_install();
 
-		$success_message = __( 'GlotPress was successully installed!' );
+		$success_message  = __( 'GlotPress was successully installed!' );
+		$success_message .= ' <a href="' . gp_url_login() . '">' . __('Log in') . '</a>';
 
 		if ( ! $errors ) {
 			gp_create_initial_contents( $user_name, $admin_password, $admin_email );

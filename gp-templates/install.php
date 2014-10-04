@@ -16,7 +16,7 @@ if ( isset( $errors ) ) {
 	echo '</pre>';
 }
 else if ( isset( $success_message ) ) {
-		echo $success_message;
+	echo '<p>' . $success_message . '</p>';
 }
 ?>
 
