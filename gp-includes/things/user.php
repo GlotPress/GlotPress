@@ -138,10 +138,73 @@ class GP_User extends GP_Thing {
 	}
 
 
+	public function get_avatar( $size = 80 ) {
+		return 'http://www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
+	}
+
+	public function get_recent_projects() {
+		global $gpdb;
+
+		$translated = GP::$translation_set->many_no_map("
+			SELECT translation_set_id, t.user_id, t.date_added, ts.locale, tmax.count
+			FROM $gpdb->translations AS t
+			INNER JOIN (
+				SELECT MAX(date_added) AS date_added, count(*) AS count
+				FROM $gpdb->translations
+				WHERE user_id = %s
+				GROUP BY translation_set_id
+			) AS tmax ON tmax.date_added = t.date_added
+			INNER JOIN $gpdb->translation_sets AS ts WHERE ts.id = t.translation_set_id
+			ORDER BY t.date_added DESC
+		", $this->id );
+
+		$projects = array();
+
+		foreach ( $translated as $translations ) {
+			$set = new stdClass;
+			$set->id = $translations->translation_set_id;
+			$set->count = $translations->count;
+			$set->locale = $translations->locale;
+			$set->date_added = $translations->date_added;
+
+			$projects[ $translations->translation_set_id ] = $set;
+		}
+
+		return $projects;
+	}
+
+	public function locales_known() {
+		global $gpdb;
+
+		$translations = GP::$translation_set->many_no_map("
+			SELECT ts.locale, count(*) AS count
+			FROM $gpdb->translations as t
+			INNER JOIN $gpdb->translation_sets AS ts ON ts.id = t.translation_set_id
+			WHERE user_id = %s
+			GROUP BY ts.locale
+			ORDER BY count DESC
+		", $this->id );
+
+		$locales = array();
+
+		foreach ( $translations as $data ) {
+			$locale = GP_Locales::by_slug( $data->locale );
+
+			$locales[ $locale->english_name ] = array(
+				'locale' => $data->locale,
+				'count'  => (int) $data->count,
+			);
+		}
+
+		return $locales;
+	}
+
+
 	function reintialize_wp_users_object() {
 		global $gpdb, $wp_auth_object, $wp_users_object;
 		$wp_users_object = new WP_Users( $gpdb );
 		$wp_auth_object->users = $wp_users_object;
 	}
+
 }
 GP::$user = new GP_User();
