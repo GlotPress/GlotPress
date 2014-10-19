@@ -96,6 +96,19 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	}
 }
 
+function gp_project_names_from_root( $leaf_project ) {
+	$names = array();
+	$path_from_root = array_reverse( $leaf_project->path_to_root() );
+
+	foreach ( $path_from_root as $project ) {
+		$names[] = esc_html($project->name);
+	}
+
+	$project_path = implode( " | ", $names );
+
+	return $project_path;
+}
+
 function gp_project_links_from_root( $leaf_project ) {
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );

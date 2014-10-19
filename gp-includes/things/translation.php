@@ -174,9 +174,10 @@ class GP_Translation extends GP_Thing {
 				if ( $user ) {
 					$row->user_login = $user->user_login;
 					$row->user_display_name = $user->display_name;
+					$row->user_nicename = $user->user_nicename;
 				}
 			} else {
-				$row->user_login = $row->user_display_name = '';
+				$row->user_login = $row->user_display_name = $row->user_nicename = '';
 			}
 			$row->translations = array();
 			for( $i = 0; $i < $locale->nplurals; $i++ ) {
@@ -241,5 +242,7 @@ class GP_Translation extends GP_Thing {
 		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
 		return $last_modified;
 	}
+
 }
+
 GP::$translation = new GP_Translation();

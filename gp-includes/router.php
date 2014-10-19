@@ -47,6 +47,7 @@ class GP_Router {
 			'get:/logout' => array('GP_Route_Login', 'logout'),
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
+			"get:/profile/$path" => array('GP_Route_Profile', 'profile_view'),
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
 			'get:/languages' => array('GP_Route_Locale', 'locales_get'),

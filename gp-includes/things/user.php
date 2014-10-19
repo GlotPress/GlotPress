@@ -138,7 +138,7 @@ class GP_User extends GP_Thing {
 	}
 
 
-	public function get_avatar( $size = 80 ) {
+	public function get_avatar( $size = 100 ) {
 		return 'http://www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
 	}
 
@@ -165,7 +165,7 @@ class GP_User extends GP_Thing {
 			$set->id = $translations->translation_set_id;
 			$set->count = $translations->count;
 			$set->locale = $translations->locale;
-			$set->date_added = $translations->date_added;
+			$set->last_updated = $translations->date_added;
 
 			$projects[ $translations->translation_set_id ] = $set;
 		}

@@ -101,7 +101,6 @@ select {
 	text-decoration: none;
 }
 #hello {
-	font-family: "Helvetica", "Arial", sans-serif;
 	color: #333;
 	font-weight: normal;
 	float: right;
@@ -736,6 +735,63 @@ table.form-table th, table.form-table td {
 	position: absolute;
 	top: -8px;
 	left: 1em;
+}
+
+
+#profile {
+	overflow: hidden;
+}
+
+.user-card {
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+.user-card .user-avatar {
+	float: left;
+	margin: 0 12px 0 0;
+	width: 100px;
+	height: 100px;
+}
+.user-card dl.user-info dt {
+	font-size: 12px;
+	color: #888;
+	margin: 5px 6px 0 0px;
+	font-weight: bold;
+}
+
+.recent-projects {
+	float:left;
+	width:47%;
+}
+
+.recent-projects li {
+	padding: 8px;
+}
+
+.recent-projects p {
+	margin: 0;
+	padding: 0;
+}
+
+.recent-projects .ago {
+	color: #888;
+	font-size: 13px;
+	font-style:italic;
+	margin: 0;
+	padding: 0;
+}
+
+.validates-projects {
+	margin-left:50%;
+}
+
+.validates-projects p {
+	margin: 0;
+	padding: 0;
+}
+
+.validates-projects li {
+	padding: 8px;
 }
 
 #add-entry input {
