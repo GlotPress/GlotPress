@@ -85,7 +85,7 @@ class GP_Original extends GP_Thing {
 			if ( isset( $originals_by_key[$entry->key()] ) ) {
 				$original = $originals_by_key[$entry->key()];
 
-				if ( GP::$original->should_be_updated_with( $data, $original ) ) {
+				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
 				}
 
@@ -115,7 +115,7 @@ class GP_Original extends GP_Thing {
 		return array( $originals_added, $originals_existing );
 	}
 
-	function should_be_updated_with( $data, $original = null ) {
+	function is_different_from( $data, $original = null ) {
 		if ( !$original ) $original = $this;
 		foreach( $data as $field => $value ) {
 			if ( $original->$field != $value ) return true;

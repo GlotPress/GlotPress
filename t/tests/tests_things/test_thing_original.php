@@ -47,20 +47,20 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, $GLOBALS['update_invocation_count'], 'update should be invoked 3 times' );
 	}
 
-	function test_should_be_updated_with_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
+	function test_is_different_from_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
 		$original = $this->factory->original->create();
-		$this->assertFalse( GP::$original->should_be_updated_with( array( 'singular' => $original->singular ), $original ) );
+		$this->assertFalse( GP::$original->is_different_from( array( 'singular' => $original->singular ), $original ) );
 	}
 
-	function test_should_be_updated_with_should_return_true_if_one_value_is_empty_string_and_the_other_is_null() {
+	function test_is_different_from_should_return_true_if_one_value_is_empty_string_and_the_other_is_null() {
 		$original = $this->factory->original->create( array( 'comment' => NULL ) );
-		$this->assertFalse( GP::$original->should_be_updated_with( array( 'singular' => $original->singular, 'comment' => '' ), $original ) );
+		$this->assertFalse( GP::$original->is_different_from( array( 'singular' => $original->singular, 'comment' => '' ), $original ) );
 	}
 
-	function test_should_be_updated_with_should_use_this_if_second_argument_is_not_supplied() {
+	function test_is_different_from_should_use_this_if_second_argument_is_not_supplied() {
 		$original = $this->factory->original->create();
 		$data = array( 'singular' => 'baba' );
-		$this->assertEquals( GP::$original->should_be_updated_with( $data, $original ), $original->should_be_updated_with( $data )  );
+		$this->assertEquals( GP::$original->is_different_from( $data, $original ), $original->is_different_from( $data )  );
 	}
 
 	function test_import_should_leave_unchanged_strings_as_active() {
