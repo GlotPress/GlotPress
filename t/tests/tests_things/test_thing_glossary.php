@@ -3,7 +3,7 @@
 class GP_Test_Glossary extends GP_UnitTestCase {
 
 	function test_empty_translation_set_id() {
-		$glossary = GP::$glossary->create( array( 'translation_set_id' => '' ) );
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => '' ) );
 		$verdict = $glossary->validate();
 
 		$this->assertFalse( $verdict );
