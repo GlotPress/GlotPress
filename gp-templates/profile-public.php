@@ -28,9 +28,13 @@ gp_tmpl_header();
 		<ul>
 		<?php foreach ( $recent_projects as $project ): ?>
 			<li>
-				<p><?php printf( '%s: %s contributions', gp_link_get( $project->project_url, $project->set_name ), $project->count ); ?></p>
+				<p><?php
+					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
+					echo gp_link_get( $project->project_url . '?filters[status]=either&filters[user_login]=' . $user->display_name,
+						sprintf( _n( '%s contribution', '%s contributions',$project->count ), $project->count ) );
+				?></p>
 				<p class="ago">
-					<?php printf( 'last translation about %s ago (UTC)', $project->human_time ); ?>
+					<?php printf( __( 'last translation about %s ago (UTC)' ), $project->human_time ); ?>
 				</p>
 			</li>
 		<?php endforeach; ?>
