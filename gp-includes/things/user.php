@@ -156,6 +156,7 @@ class GP_User extends GP_Thing {
 			) AS tmax ON tmax.date_added = t.date_added
 			INNER JOIN $gpdb->translation_sets AS ts WHERE ts.id = t.translation_set_id
 			ORDER BY t.date_added DESC
+			LIMIT 10
 		", $this->id );
 
 		$projects = array();
