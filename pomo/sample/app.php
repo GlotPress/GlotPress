@@ -1,7 +1,7 @@
 <?php
 
-require_once '../translations.php';
-require_once '../mo.php';
+require_once dirname( dirname(__FILE__) ) . '/translations.php';
+require_once dirname( dirname(__FILE__) ) . '/mo.php';
 
 
 function __($text, $domain = 'default') {
