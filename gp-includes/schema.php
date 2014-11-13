@@ -72,7 +72,7 @@ function gp_schema_get() {
 		`date_added` DATETIME DEFAULT NULL,
 		PRIMARY KEY (`id`),
 		KEY `project_id_status` (`project_id`, `status`),
-		KEY `singular_plural_context` (`singular`(255), `plural`(255), `context`)
+		KEY `singular_plural_context` (`singular`(83), `plural`(83), `context`(83))
 	);";
 
 	/*
