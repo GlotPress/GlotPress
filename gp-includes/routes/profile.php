@@ -51,26 +51,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		}
 
 		//validate to
-		$permissions = GP::$permission->find_many_no_map( array( 'user_id' => $user->id, 'action' => 'approve' ) );
-		foreach ( $permissions as $key => &$permission ) {
-			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
-			$set = GP::$translation_set->find_one(
-				array(
-					'project_id' => $object_id[0],
-					'locale' => $object_id[1],
-					'slug' => $object_id[2]
-				)
-			);
-
-			unset( $permission->id, $permission->action, $permission->object_type, $permission->object_id );
-
-			if ( $set ) {
-				$permission = (object) array_merge( (array) $permission, (array) $this->get_project( $set ) );
-				$permission->set_id = $set->id;
-			} else {
-				unset( $permissions[$key] );
-			}
-		}
+		$permissions = GP::$user->get_permissions();
 
 		$this->tmpl( 'profile-public', get_defined_vars() );
 	}

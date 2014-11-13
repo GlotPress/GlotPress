@@ -207,5 +207,36 @@ class GP_User extends GP_Thing {
 		$wp_auth_object->users = $wp_users_object;
 	}
 
+	/**
+	 * Retrieve a users permissions.
+	 *
+	 * @return array Array of permissions
+	 */
+	public function get_permissions() {
+		$permissions = GP::$permission->find_many_no_map( array( 'user_id' => $this->id, 'action' => 'approve' ) );
+
+		foreach ( $permissions as $key => &$permission ) {
+			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
+			$set = GP::$translation_set->find_one(
+				array(
+					'project_id' => $object_id[0],
+					'locale' => $object_id[1],
+					'slug' => $object_id[2]
+				)
+			);
+
+			unset( $permission->id, $permission->action, $permission->object_type, $permission->object_id );
+
+			if ( $set ) {
+				$permission = (object) array_merge( (array) $permission, (array) $this->get_project( $set ) );
+				$permission->set_id = $set->id;
+			} else {
+				unset( $permissions[$key] );
+			}
+		}
+
+		return $permissions;
+	}
+
 }
 GP::$user = new GP_User();
