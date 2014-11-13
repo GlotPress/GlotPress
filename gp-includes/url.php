@@ -88,16 +88,12 @@ function gp_url_public_root() {
 function guess_uri()
 {
 	$schema = 'http://';
+
 	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
 		$schema = 'https://';
 	}
 
-	if( gp_array_get( $_SERVER, 'DOCUMENT_URI' ) ) {
-		$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'DOCUMENT_URI' ) );
-	}
-	else {
-		$uri = $schema . gp_array_get( $_SERVER, 'HTTP_HOST');
-	}
+	$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'SCRIPT_NAME' ) );
 
 	return rtrim( $uri, " \t\n\r\0\x0B/" ) . '/';
 }
