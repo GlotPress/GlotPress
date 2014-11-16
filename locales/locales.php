@@ -1325,15 +1325,15 @@ class GP_Locales {
 		$oc->lang_code_iso_639_2 = 'oci';
 		$oc->slug = 'oc';
 
-		$or = new GP_Locale();
-		$or->english_name = 'Oriya';
-		$or->native_name = 'ଓଡ଼ିଆ';
-		$or->lang_code_iso_639_1 = 'or';
-		$or->lang_code_iso_639_2 = 'ori';
-		$or->country_code = 'in';
-		$or->wp_locale = 'ori';
-		$or->google_code = 'or';
-		$or->slug = 'ori';
+		$ory = new GP_Locale();
+		$ory->english_name = 'Oriya';
+		$ory->native_name = 'ଓଡ଼ିଆ';
+		$ory->lang_code_iso_639_1 = 'or';
+		$ory->lang_code_iso_639_2 = 'ory';
+		$ory->country_code = 'in';
+		$ory->wp_locale = 'ory';
+		$ory->google_code = 'or';
+		$ory->slug = 'ory';
 
 		$os = new GP_Locale();
 		$os->english_name = 'Ossetic';
