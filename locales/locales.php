@@ -1104,6 +1104,16 @@ class GP_Locales {
 		$li->slug = 'li';
 		$li->google_code = 'li';
 
+		$lin = new GP_Locale();
+		$lin->english_name = 'Lingala';
+		$lin->native_name = 'Ngala';
+		$lin->lang_code_iso_639_1 = 'ln';
+		$lin->lang_code_iso_639_2 = 'lin';
+		$lin->wp_locale = 'lin';
+		$lin->slug = 'lin';
+		$lin->nplurals = 2;
+		$lin->plural_expression = 'n>1';
+
 		$lo = new GP_Locale();
 		$lo->english_name = 'Lao';
 		$lo->native_name = 'ພາສາລາວ';
