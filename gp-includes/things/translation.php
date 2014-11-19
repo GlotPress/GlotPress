@@ -184,7 +184,7 @@ class GP_Translation extends GP_Thing {
 				$row->translations[] = $row->{"translation_".$i};
 			}
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
-			$row->extracted_comment = $row->comment;
+			$row->extracted_comments = $row->comment;
 			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
 			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {

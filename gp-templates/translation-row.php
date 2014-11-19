@@ -123,10 +123,10 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 				<dd><span class="context bubble"><?php echo esc_translation($t->context); ?></span></dd>
 			</dl>
 			<?php endif; ?>
-			<?php if ( $t->extracted_comment ): ?>
+			<?php if ( $t->extracted_comments ): ?>
 			<dl>
 				<dt><?php _e('Comment:'); ?></dt>
-				<dd><?php echo make_clickable( esc_translation($t->extracted_comment) ); ?></dd>
+				<dd><?php echo make_clickable( esc_translation($t->extracted_comments) ); ?></dd>
 			</dl>
 			<?php endif; ?>
 			<?php if ( $t->translation_added && $t->translation_added != '0000-00-00 00:00:00' ): ?>
