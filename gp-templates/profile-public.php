@@ -34,7 +34,7 @@ gp_tmpl_header();
 						sprintf( _n( '%s contribution', '%s contributions',$project->count ), $project->count ) );
 				?></p>
 				<p class="ago">
-					<?php printf( __( 'last translation about %s ago (UTC)' ), $project->human_time ); ?>
+					<?php printf( __( 'last translation about %s ago (UTC)' ), gp_time_since( backpress_gmt_strtotime( $project->last_updated ) ) ); ?>
 				</p>
 			</li>
 		<?php endforeach; ?>

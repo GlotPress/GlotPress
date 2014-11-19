@@ -1,5 +1,7 @@
 <?php
 class GP_User extends GP_Thing {
+	// For caching purposes
+	private $projects = array();
 
 	var $table_basename = 'users';
 	var $field_names = array( 'id', 'user_login', 'user_pass', 'user_nicename', 'user_email', 'user_url', 'user_registered', 'user_status', 'display_name' );
@@ -138,40 +140,66 @@ class GP_User extends GP_Thing {
 	}
 
 
-	public function get_avatar( $size = 100 ) {
-		return 'http://www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
+	function reintialize_wp_users_object() {
+		global $gpdb, $wp_auth_object, $wp_users_object;
+		$wp_users_object = new WP_Users( $gpdb );
+		$wp_auth_object->users = $wp_users_object;
 	}
 
-	public function get_recent_projects() {
+
+	public function get_avatar( $size = 100 ) {
+		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
+	}
+
+	public function get_recent_translation_sets( $amount = 5 ) {
 		global $gpdb;
 
-		$translated = GP::$translation_set->many_no_map("
-			SELECT translation_set_id, t.user_id, t.date_added, ts.locale, tmax.count
-			FROM $gpdb->translations AS t
-			INNER JOIN (
-				SELECT MAX(date_added) AS date_added, count(*) AS count
-				FROM $gpdb->translations
-				WHERE user_id = %s
-				GROUP BY translation_set_id
-			) AS tmax ON tmax.date_added = t.date_added
-			INNER JOIN $gpdb->translation_sets AS ts WHERE ts.id = t.translation_set_id
-			ORDER BY t.date_added DESC
-			LIMIT 10
+		$translations = GP::$translation_set->many_no_map("
+			SELECT translation_set_id, date_added
+			FROM $gpdb->translations as t
+			WHERE
+				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
+				user_id = %s AND
+				status != 'rejected'
+			ORDER BY date_added DESC
 		", $this->id );
 
-		$projects = array();
+		$set_ids          = array();
+		$translation_sets = array();
 
-		foreach ( $translated as $translations ) {
-			$set = new stdClass;
-			$set->id = $translations->translation_set_id;
-			$set->count = $translations->count;
-			$set->locale = $translations->locale;
-			$set->last_updated = $translations->date_added;
+		$i = 0;
+		foreach ( $translations as $translation ) {
+			if ( in_array( $translation->translation_set_id, $set_ids ) ) {
+				continue;
+			}
 
-			$projects[ $translations->translation_set_id ] = $set;
+			$set_ids[] = $translation->translation_set_id;
+
+			$set = GP::$translation_set->find_one( array( 'id' => (int) $translation->translation_set_id ) );
+
+			if ( $set ) {
+				$translation_set = $this->get_translation_set( $set );
+
+				if ( ! $project ) {
+					continue;
+				}
+
+				$translation_set->set_id       = $set->id;
+				$translation_set->last_updated = $translation->date_added;
+				$translation_set->count        = $gpdb->get_var( $gpdb->prepare( "SELECT COUNT(*) FROM $gpdb->translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
+
+				$translation_sets[] = $translation_set;
+
+				$i++;
+
+				// Bail early if we have already the amount requested
+				if ( $i >= $amount ) {
+					break;
+				}
+			}
 		}
 
-		return $projects;
+		return $translation_sets;
 	}
 
 	public function locales_known() {
@@ -200,13 +228,6 @@ class GP_User extends GP_Thing {
 		return $locales;
 	}
 
-
-	function reintialize_wp_users_object() {
-		global $gpdb, $wp_auth_object, $wp_users_object;
-		$wp_users_object = new WP_Users( $gpdb );
-		$wp_auth_object->users = $wp_users_object;
-	}
-
 	/**
 	 * Retrieve a users permissions.
 	 *
@@ -228,7 +249,7 @@ class GP_User extends GP_Thing {
 			unset( $permission->id, $permission->action, $permission->object_type, $permission->object_id );
 
 			if ( $set ) {
-				$permission = (object) array_merge( (array) $permission, (array) $this->get_project( $set ) );
+				$permission = (object) array_merge( (array) $permission, (array) $this->get_translation_set( $set ) );
 				$permission->set_id = $set->id;
 			} else {
 				unset( $permissions[$key] );
@@ -236,6 +257,29 @@ class GP_User extends GP_Thing {
 		}
 
 		return $permissions;
+	}
+
+
+
+	private function get_translation_set( $set ) {
+		if ( ! isset( $this->projects[ $set->project_id ] ) ) {
+			 $this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
+		}
+
+		$project = $this->projects[$set->project_id];
+
+		if ( ! $project ) {
+			return false;
+		}
+
+		$project_url = gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) );
+		$set_name = gp_project_names_from_root( $project ) . ' | ' . $set->name_with_locale();
+
+		return (object) array(
+			'project_id' => $project->id,
+			'project_url' => $project_url,
+			'set_name' => $set_name
+		);
 	}
 
 }
