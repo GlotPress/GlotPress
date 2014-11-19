@@ -180,7 +180,7 @@ class GP_User extends GP_Thing {
 			if ( $set ) {
 				$translation_set = $this->get_translation_set( $set );
 
-				if ( ! $project ) {
+				if ( ! $translation_set ) {
 					continue;
 				}
 
