@@ -31,7 +31,7 @@ $gp.editor = function($){ return {
 		//TODO: go to previous page if needed
 		var prev = $gp.editor.current.prevAll('tr.editor');
 		if (prev.length)
-			$gp.editor.show(next.filter(':last'));
+			$gp.editor.show(prev.eq(0));
 		else
 			$gp.editor.hide();
 	},
@@ -61,8 +61,8 @@ $gp.editor = function($){ return {
 			.on('click', 'a.discard-warning', $gp.editor.hooks.discard_warning)
 			.on('click', 'button.approve', $gp.editor.hooks.set_status_current)
 			.on('click', 'button.reject', $gp.editor.hooks.set_status_rejected)
-			.on('click', 'button.ok', $gp.editor.hooks.ok);
-		$('tr.editor').on('keydown', 'textarea', $gp.editor.hooks.keydown);
+			.on('click', 'button.ok', $gp.editor.hooks.ok)
+			.on('keydown', 'tr.editor textarea', $gp.editor.hooks.keydown);
 		$( '#translations' ).tooltip({
 			items: '.glossary-word',
 			content: function(){
