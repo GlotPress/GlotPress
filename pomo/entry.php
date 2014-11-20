@@ -63,7 +63,7 @@ class Translation_Entry {
 	function key() {
 		if (is_null($this->singular)) return false;
 		// prepend context and EOT, like in MO files
-		return is_null($this->context)? $this->singular : $this->context.chr(4).$this->singular;
+		return $this->context? $this->singular : $this->context.chr(4).$this->singular;
 	}
 
 	function merge_with(&$other) {
