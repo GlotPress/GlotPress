@@ -248,8 +248,10 @@ class GP_User extends GP_Thing {
 
 			unset( $permission->id, $permission->action, $permission->object_type, $permission->object_id );
 
-			if ( $set ) {
-				$permission = (object) array_merge( (array) $permission, (array) $this->get_translation_set( $set ) );
+			$translation_set = $this->get_translation_set( $set );
+
+			if ( $set && $translation_set ) {
+				$permission = (object) array_merge( (array) $permission, (array) $translation_set );
 				$permission->set_id = $set->id;
 			} else {
 				unset( $permissions[$key] );

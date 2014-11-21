@@ -33,7 +33,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		$locales         = $user->locales_known();
 
 		//validate to
-		$permissions = GP::$user->get_permissions();
+		$permissions = $user->get_permissions();
 
 		$this->tmpl( 'profile-public', get_defined_vars() );
 	}
