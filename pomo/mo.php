@@ -103,7 +103,7 @@ class MO extends Gettext_Translations {
 		//TODO: warnings for control characters
 		$exported = $entry->singular;
 		if ($entry->is_plural) $exported .= chr(0).$entry->plural;
-		if (!is_null($entry->context)) $exported = $entry->context . chr(4) . $exported;
+		if ($entry->context) $exported = $entry->context . chr(4) . $exported;
 		return $exported;
 	}
 

@@ -194,13 +194,13 @@ class PO extends Gettext_Translations {
 	 * 	false if the entry is empty
 	 */
 	public static function export_entry(&$entry) {
-		if (is_null($entry->singular)) return false;
+		if (!$entry->singular) return false;
 		$po = array();
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
 		if (!empty($entry->extracted_comments)) $po[] = PO::comment_block($entry->extracted_comments, '.');
 		if (!empty($entry->references)) $po[] = PO::comment_block(implode(' ', $entry->references), ':');
 		if (!empty($entry->flags)) $po[] = PO::comment_block(implode(", ", $entry->flags), ',');
-		if (!is_null($entry->context)) $po[] = 'msgctxt '.PO::poify($entry->context);
+		if ($entry->context) $po[] = 'msgctxt '.PO::poify($entry->context);
 		$po[] = 'msgid '.PO::poify($entry->singular);
 		if (!$entry->is_plural) {
 			$translation = empty($entry->translations)? '' : $entry->translations[0];

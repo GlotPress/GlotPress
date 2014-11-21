@@ -49,7 +49,7 @@ class Translation_Entry {
 		foreach ($args as $varname => $value) {
 			$this->$varname = $value;
 		}
-		if (isset($args['plural'])) $this->is_plural = true;
+		if (isset($args['plural']) && $args['plural']) $this->is_plural = true;
 		if (!is_array($this->translations)) $this->translations = array();
 		if (!is_array($this->references)) $this->references = array();
 		if (!is_array($this->flags)) $this->flags = array();
@@ -61,7 +61,7 @@ class Translation_Entry {
 	 * @return string|bool the key or false if the entry is empty
 	 */
 	function key() {
-		if (is_null($this->singular)) return false;
+		if (!$this->singular) return false;
 		// prepend context and EOT, like in MO files
 		return !$this->context? $this->singular : $this->context.chr(4).$this->singular;
 	}
