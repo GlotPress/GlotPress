@@ -322,7 +322,6 @@ require_once GP_PATH . GP_INC . 'format.php';
 require_once GP_PATH . GP_INC . 'formats/format_android.php';
 require_once GP_PATH . GP_INC . 'formats/format_pomo.php';
 require_once GP_PATH . GP_INC . 'formats/format_resx.php';
-require_once GP_PATH . GP_INC . 'formats/format_rrc.php';
 require_once GP_PATH . GP_INC . 'formats/format_strings.php';
 
 // Let's do it again, there are more variables added since last time we called it
