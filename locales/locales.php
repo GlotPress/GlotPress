@@ -993,15 +993,13 @@ class GP_Locales {
 
 		$kin = new GP_Locale();
 		$kin->english_name = 'Kinyarwanda';
-		$kin->native_name = 'Kinyarwanda';
+		$kin->native_name = 'Ikinyarwanda';
 		$kin->lang_code_iso_639_1 = 'rw';
 		$kin->lang_code_iso_639_2 = 'kin';
 		$kin->lang_code_iso_639_3 = 'kin';
 		$kin->wp_locale = 'kin';
 		$kin->country_code = 'rw';
-		$kin->slug = 'rw';
-		$kin->nplurals = 2;
-		$kin->plural_expression = '(n > 1)';
+		$kin->slug = 'kin';
 
 		$kk = new GP_Locale();
 		$kk->english_name = 'Kazakh';
