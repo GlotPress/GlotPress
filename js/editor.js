@@ -101,6 +101,7 @@ $gp.editor = function($){ return {
 		if (!$gp.editor.current) return;
 		$gp.editor.current.after(html);
 		var old_current = $gp.editor.current;
+		old_current.attr('id', old_current.attr('id') + '-old');
 		$gp.editor.next();
 		old_current.preview.remove();
 		old_current.remove();
