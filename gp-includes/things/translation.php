@@ -9,6 +9,16 @@ class GP_Translation extends GP_Thing {
 	static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
+	function create( $args ) {
+		$inserted = parent::create( $args );
+
+		if ( $inserted ) {
+			gp_clean_translation_set_cache( $args['translation_set_id'] );
+		}
+
+		return $inserted;
+	}
+
 	function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
@@ -213,10 +223,18 @@ class GP_Translation extends GP_Thing {
 	}
 
 	function set_status( $status ) {
-		if ( 'current' == $status )
-			return $this->set_as_current();
-		else
-			return $this->update( array( 'status' => $status ) );
+		if ( 'current' == $status ) {
+			$updated = $this->set_as_current();
+		}
+		else {
+			$updated = $this->update( array( 'status' => $status ) );
+		}
+
+		if ( $updated && $this->status != $status ) {
+			gp_clean_translation_set_cache( $this->translation_set_id );
+		}
+
+		return $updated;
 	}
 
 	function translations() {
