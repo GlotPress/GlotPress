@@ -12,7 +12,7 @@ class GP_Translation extends GP_Thing {
 	function create( $args ) {
 		$inserted = parent::create( $args );
 
-		if ( $inserted ) {
+		if ( $inserted && is_array( $args ) ) {
 			gp_clean_translation_set_cache( $args['translation_set_id'] );
 		}
 
