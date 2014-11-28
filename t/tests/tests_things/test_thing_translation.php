@@ -2,6 +2,22 @@
 
 class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
+	function test_translation_approve_change_status() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		// Put the current count already in the cache
+		$set->current_count();
+
+		$translation->set_status('current');
+		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
+		
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'current' ) );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+		$this->assertEquals( 1, $set->current_count() );
+	}
+
 	function test_translation_should_support_6_plurals() {
 		$plurals = array( 'translation_0' => 'Zero', 'translation_1' => 'One', 'translation_2' => 'Two', 'translation_3' => 'Three', 'translation_4' => 'Four', 'translation_5' => 'Five' );
 		$translation = $this->factory->translation->create( $plurals );
