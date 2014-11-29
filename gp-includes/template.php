@@ -64,10 +64,13 @@ function gp_tmpl_404( $args = array()) {
 }
 
 function gp_title( $title = null ) {
-	if ( !is_null( $title ) )
-		add_filter( 'gp_title', lambda( '$x', '$title', compact( 'title' ) ), 5 );
-	else
+	if ( ! is_null( $title ) ) {
+		add_filter( 'gp_title', function( $x ) use ( $title ) {
+			return $title;
+		}, 5 );
+	} else {
 		return apply_filters( 'gp_title', '' );
+	}
 }
 
 function body_class() {
@@ -85,12 +88,16 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 		'breadcrumb-template' => '<span class="breadcrumb">{separator}{breadcrumb}</span>',
 	);
 	$args = array_merge( $defaults, $args );
-	if ( !is_null( $breadcrumb ) ) {
-		$breadcrumb = gp_array_flatten( $breadcrumb );
+
+	if ( ! is_null( $breadcrumb ) ) {
+		$breadcrumb        = gp_array_flatten( $breadcrumb );
 		$breadcrumb_string = implode( $args['separator'], array_filter( $breadcrumb ) );
-		$whole_breadcrumb = str_replace( '{separator}', $args['separator'], $args['breadcrumb-template'] );
-		$whole_breadcrumb = str_replace( '{breadcrumb}', $breadcrumb_string, $whole_breadcrumb );
-		add_filter( 'gp_breadcrumb', lambda( '$x', '$whole_breadcrumb', compact( 'whole_breadcrumb' ) ), 5 );
+		$whole_breadcrumb  = str_replace( '{separator}', $args['separator'], $args['breadcrumb-template'] );
+		$whole_breadcrumb  = str_replace( '{breadcrumb}', $breadcrumb_string, $whole_breadcrumb );
+
+		add_filter( 'gp_breadcrumb', function( $x ) use ( $whole_breadcrumb ) {
+			return $whole_breadcrumb;
+		}, 5 );
 	} else {
 		return apply_filters( 'gp_breadcrumb', '' );
 	}

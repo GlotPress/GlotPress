@@ -13,7 +13,10 @@ wp_localize_script( 'translations-page', '$gp_translations_options', array( 'sor
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
 wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
 $parity = gp_parity_factory();
-add_action( 'gp_head', lambda( '', 'gp_preferred_sans_serif_style_tag($locale);', compact( 'locale' ) ) );
+
+add_action( 'gp_head', function() use ( $locale ) {
+	return gp_preferred_sans_serif_style_tag( $locale );
+} );
 
 gp_tmpl_header();
 $i = 0;

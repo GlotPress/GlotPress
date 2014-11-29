@@ -153,23 +153,35 @@ class GP_Project extends GP_Thing {
 	}
 
 	function set_difference_from( $other_project ) {
-		$this_sets = (array)GP::$translation_set->by_project_id( $this->id );
-		$other_sets = (array)GP::$translation_set->by_project_id( $other_project->id );
-		$added = array();
-		$removed = array();
-		foreach( $other_sets as $other_set ) {
-			$vars = array( 'locale' => $other_set->locale, 'slug' => $other_set->slug );
-			if ( !gp_array_any( lambda('$set', '$set->locale == $locale && $set->slug == $slug', $vars ), $this_sets ) ) {
+		$this_sets  = (array) GP::$translation_set->by_project_id( $this->id );
+		$other_sets = (array) GP::$translation_set->by_project_id( $other_project->id );
+		$added      = array();
+		$removed    = array();
+
+		foreach ( $other_sets as $other_set ) {
+			$found = gp_array_any( function( $set ) use ( $other_set ) {
+				return ( $set->locale == $other_set->locale && $set->slug = $other_set->slug );
+			}, $this_sets );
+
+			if ( ! $found ) {
 				$added[] = $other_set;
 			}
 		}
-		foreach( $this_sets as $this_set ) {
-			$vars = array( 'locale' => $this_set->locale, 'slug' => $this_set->slug );
-			if ( !gp_array_any( lambda('$set', '$set->locale == $locale && $set->slug == $slug', $vars ), $other_sets ) ) {
+
+		foreach ( $this_sets as $this_set ) {
+			$found = gp_array_any( function( $set ) use ( $this_set ) {
+				return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
+			}, $other_sets );
+
+			if ( ! $found ) {
 				$removed[] = $this_set;
 			}
 		}
-		return compact( 'added', 'removed' );
+
+		return array(
+			'added' => $added,
+			'removed' => $removed
+		);
 	}
 
 	function copy_sets_and_translations_from( $source_project_id ) {

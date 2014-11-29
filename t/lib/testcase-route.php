@@ -49,8 +49,8 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	function assertThereIsAnArrayElementContaining( $text, $array, $message = null ) {
 		$this->assertGreaterThan( 0, count( $array ), 'The array is empty.' );
 		$message = $message? $message : "No array element contains '$text'";
-		$this->assertTrue( gp_array_any( lambda( '$e', 'gp_in( $text, $e ); ', compact('text') ), $array ), $message );
 
+		$this->assertTrue( gp_array_any( function( $e ) use ( $text) { return gp_in( $text, $e ); }, $array ), $message );
 	}
 
 	function assertNotAllowedRedirect() {

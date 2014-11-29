@@ -327,12 +327,17 @@ class GP_Thing {
 		} elseif ( is_array( $conditions ) ) {
 			$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
 			$string_conditions = array();
-			foreach( $conditions as $field => $sql_condition ) {
-				if ( is_array( $sql_condition ) )
-					$string_conditions[] = '('. implode( ' OR ', array_map( lambda( '$cond', '"$field $cond"', compact('field') ), $sql_condition ) ) . ')';
-				else
+
+			foreach ( $conditions as $field => $sql_condition ) {
+				if ( is_array( $sql_condition ) ) {
+					$string_conditions[] = '(' . implode( ' OR ', array_map( function( $cond ) use ( $field ) {
+							return "$field $cond";
+						}, $sql_condition ) ) . ')';
+				} else {
 					$string_conditions[] = "$field $sql_condition";
+				}
 			}
+
 			$conditions = implode( ' AND ', $string_conditions );
 		}
 		return $this->apply_default_conditions( $conditions );

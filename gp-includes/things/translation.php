@@ -98,7 +98,7 @@ class GP_Translation extends GP_Thing {
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
 			$like = "LIKE '%" . ( $gpdb->escape( like_escape ( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
-			$where[] = '(' . implode( ' OR ', array_map( lambda('$x', '"($x $like)"', compact('like')), array('o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
+			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $gpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
