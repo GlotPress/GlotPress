@@ -383,3 +383,66 @@ function gp_time_since( $time ) {
 		return $numberOfUnits . ' ' . $text . ( ( $numberOfUnits > 1 ) ? 's' : '' );
 	}
 }
+
+
+/**
+ * Checks if the passed value is empty.
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_empty( $value ) {
+	return empty( $value );
+}
+
+/**
+ * Checks if the passed value is a positive integer.
+ *
+ * @param int $value The value you want to check.
+ * @return bool
+ */
+function gp_is_positive_int( $value ) {
+	return (int) $value > 0;
+}
+
+/**
+ * Checks if the passed value is an integer.
+ *
+ * @param int|string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_int( $value ) {
+	return (bool) preg_match( '/^-?\d+$/', $value );
+}
+
+/**
+ * Checks if the passed value is null.
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_null( $value ) {
+	return is_null( $value );
+}
+
+/**
+ * Checks if the passed value is between the start and end value or is the same.
+ *
+ * @param string $value The value you want to check.
+ * @param string $value The lower value you want to check against.
+ * @param string $value The upper value you want to check against.
+ * @return bool
+ */
+function gp_is_between( $value, $start, $end ) {
+	return $value >= $start && $value <= $end;
+}
+
+/**
+ * Checks if the passed value is between the start and end value.
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_between_exclusive( $value, $start, $end ) {
+	return $value > $start && $value < $end;
+}

@@ -113,10 +113,10 @@ class GP_Validators {
 	}
 }
 
-GP_Validators::register( 'empty', lambda( '$value', 'empty($value)' ) );
-GP_Validators::register( 'positive_int', lambda( '$value', '((int)$value > 0)' ) );
-GP_Validators::register( 'int', lambda( '$value', '(bool)preg_match("/^-?\d+$/", $value)' ) );
-GP_Validators::register( 'null', lambda( '$value', 'is_null($value)' ) );
-GP_Validators::register( 'between', lambda( '$value, $start, $end', '$value >= $start && $value <= $end' ) );
-GP_Validators::register( 'between_exclusive', lambda( '$value, $start, $end', '$value > $start && $value < $end' ) );
+GP_Validators::register( 'empty', 'gp_is_empty' );
+GP_Validators::register( 'positive_int', 'gp_is_positive_int' );
+GP_Validators::register( 'int', 'gp_is_int' );
+GP_Validators::register( 'null', 'gp_is_null' );
+GP_Validators::register( 'between', 'gp_is_between' );
+GP_Validators::register( 'between_exclusive', 'gp_is_between_exclusive' );
 
