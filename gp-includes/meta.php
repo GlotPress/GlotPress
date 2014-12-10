@@ -245,7 +245,7 @@ function gp_get_option( $option ) {
 			$r = $gp_locale->text_direction;
 			break;
 		case 'version':
-			return '0.1'; // Don't filter
+			return '1.0-alpha-1000'; // Don't filter
 		case 'gp_db_version' :
 			return '940'; // Don't filter
 		case 'html_type':
