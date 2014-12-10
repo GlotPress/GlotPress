@@ -30,7 +30,7 @@ gp_tmpl_header();
 			<li>
 				<p><?php
 					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
-					echo gp_link_get( $project->project_url . '?filters[status]=either&filters[user_login]=' . $user->display_name,
+					echo gp_link_get( $project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
 						sprintf( _n( '%s contribution', '%s contributions',$project->count ), $project->count ) );
 				?></p>
 				<p class="ago">
