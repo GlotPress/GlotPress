@@ -349,7 +349,7 @@ function gp_project_options_form( $project ) {
 					<dt><label for="source-url-template">' . __('Source file URL') . '</label></dt>
 					<dd>
 						<input type="text" value="' . esc_html( $project->source_url_template() ) . '" name="source-url-template" id="source-url-template" />
-						<small>' . __('URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>http://trac.example.org/browser/%file%#L%line%</code>') .'</small>
+						<small>' . __('URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>https://trac.example.org/browser/%file%#L%line%</code>') .'</small>
 					</dd>
 				</dl>
 				<p>
