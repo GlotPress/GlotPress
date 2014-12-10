@@ -18,7 +18,7 @@ gp_tmpl_header();
 	<?php foreach( $permissions as $permission ): ?>
 		<li>
 			<span class="permission-action"><?php _e('user'); ?></span>
-			<span class="user"><?php echo esc_html( $permission->user->user_login ); ?></span>
+			<span class="user"><?php printf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ); ?></span>
 			<span class="permission-action"><?php printf( __('can %s strings with locale'), esc_html( $permission->action ) ); ?></span>
 			<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
 			<span class="permission-action"><?php _e('and slug'); ?></span>
@@ -34,7 +34,7 @@ gp_tmpl_header();
 		<?php foreach( $parent_permissions as $permission ): ?>
 			<li>
 				<span class="permission-action"><?php _e('user'); ?></span>
-				<span class="user"><?php echo esc_html( $permission->user->user_login ); ?></span>
+				<span class="user"><?php printf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ); ?></span>
 				<span class="permission-action"><?php printf(__('can %s strings with locale'), esc_html( $permission->action )); ?></span>
 				<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
 				<span class="permission-action"><?php _e('and slug'); ?></span>
