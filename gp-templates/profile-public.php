@@ -12,9 +12,16 @@ gp_tmpl_header();
 		<div class="user-avatar"><img src="<?php echo $user->get_avatar(); ?>" /> </div>
 
 		<dl class="user-info">
-			<dd><?php vprintf( _n( '%s is a polyglot who contributes to %s',
-									'%s is a polyglot who knows %s but also knows %s.', count( $locales ) ),
-									array_merge( array( $user->display_name ), array_keys( $locales ) ) ); ?></dd>
+			<dd><?php
+				$locale_keys = array_keys( $locales );
+
+				if ( 1 < count( $locales ) ) {
+					vprintf( __( '%s is a polyglot who knows %s but also knows %s.' ), array_merge( array( $user->display_name ), $locale_keys ) );
+				}
+				else {
+					printf( __( '%s is a polyglot who contributes to %s' ), $user->display_name, $locale_keys[0] );
+				}
+			?></dd>
 			<dt><?php _e( 'Member Since' ); ?></dt>
 			<dd><?php echo date( 'M j, Y', strtotime( $user->user_registered ) ); ?></dd>
 		</dl>
