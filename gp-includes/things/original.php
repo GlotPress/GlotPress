@@ -50,14 +50,23 @@ class GP_Original extends GP_Thing {
 
 	function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $gpdb;
+
+		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null; 
+		$entry->context = isset( $entry->context ) ? $entry->context : null; 
+
 		$where = array();
 		// now each condition has to contain a %s not to break the sequence
-		$where[] = is_null( $entry->context )? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
+		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
 		$where[] = 'BINARY singular = %s';
-		$where[] = is_null( $entry->plural )? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
+		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
 		$where[] = 'project_id = %d';
-		if ( !is_null( $status ) ) $where[] = $gpdb->prepare( 'status = %s', $status );
+
+		if ( ! is_null( $status ) ) {
+			$where[] = $gpdb->prepare( 'status = %s', $status );
+		}
+
 		$where = implode( ' AND ', $where );
+
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}
 
