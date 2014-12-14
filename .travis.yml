@@ -1,0 +1,25 @@
+language: php
+
+php:
+    - "5.3"
+    - "5.4"
+    - "5.5"
+    - "5.6"
+
+before_script:
+    - mysql -e "CREATE DATABASE glotpress_test;" -uroot
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar install --dev --no-interaction
+    - wget https://scrutinizer-ci.com/ocular.phar
+    - cd t
+    - cp unittests-config-sample.php unittests-config.php
+    - sed -i "s/username/travis/" unittests-config.php
+    - sed -i "s/password//" unittests-config.php
+
+script:
+    - mkdir -p build/logs
+    - phpunit
+
+after_script:
+    - php ../vendor/bin/coveralls --config .coveralls.yml -v
+    - php ../ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml

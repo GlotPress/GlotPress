@@ -1,0 +1,32 @@
+filter:
+    excluded_paths:
+        - 't/*'
+tools:
+    js_hint: true
+    php_code_sniffer:
+        config:
+            sniffs: { generic: { php: { disallow_short_open_tag_sniff: true } } }
+    php_analyzer:
+        extensions:
+            - php
+        filter:
+            excluded_paths:
+                - 't/*'
+    php_cpd:
+        enabled: true
+        names:
+            - '*.php'
+        min_lines: 5
+        min_tokens: 70
+        filter:
+            excluded_paths:
+                - 't/*'
+    php_pdepend:
+        enabled: true
+        suffixes:
+            - php
+        filter:
+            excluded_paths:
+                - 't/*'
+    external_code_coverage:
+        timeout: 300
