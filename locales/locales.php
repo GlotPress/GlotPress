@@ -803,6 +803,7 @@ class GP_Locales {
 		$gu->native_name = 'ગુજરાતી';
 		$gu->lang_code_iso_639_1 = 'gu';
 		$gu->lang_code_iso_639_2 = 'guj';
+		$gu->wp_locale = 'gu';
 		$gu->slug = 'gu';
 		$gu->google_code = 'gu';
 
