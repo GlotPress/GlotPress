@@ -1,7 +1,8 @@
 <?php
 
 class GP_Test_PO extends GP_UnitTestCase {
-    function GP_Test_PO() {
+	function setUp() {
+		parent::setUp();
 		// not so random wordpress.pot string -- multiple lines
 		$this->mail = "Your new WordPress blog has been successfully set up at:
 
@@ -210,6 +211,30 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		$po = new PO();
 		$this->assertTrue( $po->import_from_file( 'data/windows-line-endings.po' ) );
 		$this->assertEquals( 1, count( $po->entries ) );
+	}
+
+	function data_match_begin_and_end_newlines() {
+		$o = "This is the original";
+		$t = "This is the translation";
+		$n = "\n";
+		return array(
+			array( "$o", "$t", "$t", "no new lines" ),
+			array( "$n$o", "$t", "$n$t", "original starts with new line, translation does not" ),
+			array( "$n$o", "$n$t", "$n$t", "original and translation starts with new line" ),
+			array( "$o", "$n$t", "$t", "translation starts with new line, original does not" ),
+			array( "$o", "$t$n", "$t", "translation ends with new line, original does not" ),
+			array( "$o$n", "$t", "$t$n", "original ends with new line, translation does not" ),
+			array( "$o$n", "$t$n", "$t$n", "original and translation ends with new line" ),
+			array( "$n$o$n", "$t", "$n$t$n", "original starts and ends with new line, translation does not" ),
+			array( "$n$o", "$t$n", "$n$t", "original starts with new line, translation ends with new line" ),
+		);
+	}
+
+	/**
+	 * @dataProvider data_match_begin_and_end_newlines
+	 */
+	function test_match_begin_and_end_newlines( $original, $translation, $expected_translation, $message ) {
+		$this->assertEquals( $expected_translation, PO::match_begin_and_end_newlines( $translation, $original ), $message );
 	}
 
 	//TODO: add tests for bad files

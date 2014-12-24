@@ -204,15 +204,42 @@ class PO extends Gettext_Translations {
 		$po[] = 'msgid '.PO::poify($entry->singular);
 		if (!$entry->is_plural) {
 			$translation = empty($entry->translations)? '' : $entry->translations[0];
+			$translation = PO::match_begin_and_end_newlines( $translation, $entry->singular );
 			$po[] = 'msgstr '.PO::poify($translation);
 		} else {
 			$po[] = 'msgid_plural '.PO::poify($entry->plural);
 			$translations = empty($entry->translations)? array('', '') : $entry->translations;
 			foreach($translations as $i => $translation) {
+				$translation = PO::match_begin_and_end_newlines( $translation, $entry->plural );
 				$po[] = "msgstr[$i] ".PO::poify($translation);
 			}
 		}
 		return implode("\n", $po);
+	}
+
+	public static function match_begin_and_end_newlines( $translation, $original ) {
+		$original_begin = "\n" === substr( $original, 0, 1 );
+		$original_end = "\n" === substr( $original, -1 );
+		$translation_begin = "\n" === substr( $translation, 0, 1 );
+		$translation_end = "\n" === substr( $translation, -1 );
+
+		if ( $original_begin ) {
+			if ( ! $translation_begin ) {
+				$translation = "\n" . $translation;
+			}
+		} elseif ( $translation_begin ) {
+			$translation = ltrim( $translation, "\n" );
+		}
+
+		if ( $original_end ) {
+			if ( ! $translation_end ) {
+				$translation .= "\n";
+			}
+		} elseif ( $translation_end ) {
+			$translation = rtrim( $translation, "\n" );
+		}
+
+		return $translation;
 	}
 
 	function import_from_file($filename) {
