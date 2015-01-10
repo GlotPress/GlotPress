@@ -23,6 +23,8 @@ class GP_Route_Locale extends GP_Route_Main {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$sets = GP::$translation_set->by_locale( $locale_slug );
 
+		usort( $sets, array( $this, 'sort_sets_by_project_id' ) );
+
 		//TODO: switch to wp_list_pluck
 		$locale_projects = $projects_data = $projects = $parents = array();
 		foreach ( $sets as $key => $value ) {
@@ -116,5 +118,9 @@ class GP_Route_Locale extends GP_Route_Main {
 
 	private function sort_locales( $a, $b ) {
 		return $a->english_name > $b->english_name;
+	}
+
+	private function sort_sets_by_project_id( $a, $b ) {
+		return $a->project_id > $b->project_id;
 	}
 }
