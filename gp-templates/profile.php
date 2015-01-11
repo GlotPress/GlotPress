@@ -11,7 +11,7 @@ $default_sort = GP::$user->current()->get_meta('default_sort');
 if ( ! is_array($default_sort) ) {
 	$default_sort = array(
 		'by' => 'priority',
-		'how' => 'DESC'
+		'how' => 'desc'
 	);
 }
 ?>
