@@ -19,19 +19,26 @@ class GP_Route_Locale extends GP_Route_Main {
 		$this->tmpl( 'locales', get_defined_vars() );
 	}
 
-	public function single( $locale_slug ) {
+	public function single( $locale_slug, $current_set_slug = 'default' ) {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$sets = GP::$translation_set->by_locale( $locale_slug );
 
 		usort( $sets, array( $this, 'sort_sets_by_project_id' ) );
 
+		$locale_projects = $projects_data = $projects = $parents = $set_slugs = $set_list = array();
+
 		//TODO: switch to wp_list_pluck
-		$locale_projects = $projects_data = $projects = $parents = array();
 		foreach ( $sets as $key => $value ) {
 			$locale_projects[ $key ] = $value->project_id;
 		}
 
 		foreach ( $sets as $set ) {
+			$set_slugs[ $set->slug ] = $set;
+
+			if ( $current_set_slug != $set->slug ) {
+				continue;
+			}
+
 			// Store project data for later use
 			if ( isset( $projects[ $set->project_id ] ) ) {
 				$set_project = $projects[$set->project_id];
@@ -85,6 +92,31 @@ class GP_Route_Locale extends GP_Route_Main {
 				$set_data = $projects_data[$parent_id][$previous_parent]['totals'];
 				$projects_data[$parent_id][$previous_parent]['sets'][$set->id] = $this->set_data( $set, $set_project  );
 				$projects_data[$parent_id][$previous_parent]['totals'] = $this->set_data( $set, $set_project, $set_data );
+			}
+		}
+
+		if ( $set_slugs ) {
+			// Make default the first item.
+			if ( ! empty( $set_slugs[ 'default' ] ) ) {
+				$default = $set_slugs[ 'default' ];
+				unset( $set_slugs[ 'default' ] );
+				array_unshift( $set_slugs, $default );
+			}
+
+			foreach ( $set_slugs as $set ) {
+				if ( 'default' == $set->slug ) {
+					if ( 'default' != $current_set_slug ) {
+						$set_list[ $set->slug ] = gp_link_get( gp_url_join( '/languages', $locale->slug ), __( 'Default' ) );
+					} else {
+						$set_list[ $set->slug ] = __( 'Default' );
+					}
+				} else {
+					if ( $set->slug != $current_set_slug ) {
+						$set_list[ $set->slug ] = gp_link_get( gp_url_join('/languages', $locale->slug, $set->slug ), esc_html( $set->name ) );
+					} else {
+						$set_list[ $set->slug ] = esc_html( $set->name );
+					}
+				}
 			}
 		}
 

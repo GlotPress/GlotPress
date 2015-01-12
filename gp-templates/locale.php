@@ -1,13 +1,26 @@
 <?php
 gp_title( sprintf( __( 'Projects translated to %s &lt; GlotPress' ),  esc_html( $locale->english_name ) ) );
-gp_breadcrumb( array(
-	gp_link_get( '/languages', __( 'Locales' ) ),
-	esc_html( $locale->english_name )
-) );
+
+$breadcrumb = array();
+$breadcrumb[] = gp_link_get( '/languages', __( 'Locales' ) );
+if ( 'default' == $current_set_slug ) {
+	$breadcrumb[] = esc_html( $locale->english_name );
+} else {
+	$breadcrumb[] = gp_link_get( gp_url_join( '/languages', $locale->slug ), esc_html( $locale->english_name ) );
+	$breadcrumb[] = $set_list[ $current_set_slug ];
+}
+gp_breadcrumb( $breadcrumb );
 gp_tmpl_header();
 ?>
 
 	<h2><?php printf( __( 'Active Projects translated to %s' ), esc_html( $locale->english_name ) ); ?></h2>
+
+<?php if ( count( $set_list ) > 1 ) : ?>
+	<p class="actionlist secondary">
+		<?php echo implode( ' &bull;&nbsp;', $set_list ); ?>
+	</p>
+<?php endif; ?>
+
 <?php
 if ( empty( $projects_data ) ) {
 	_e( 'No active projects found.' );

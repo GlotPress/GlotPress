@@ -38,6 +38,12 @@ class GP_Translation_Set extends GP_Thing {
 		return $gpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
+	function existing_slugs() {
+		global $gpdb;
+
+		return $gpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
+	}
+
 	function by_project_id( $project_id ) {
 		return $this->many( "
 		    SELECT * FROM $this->table
