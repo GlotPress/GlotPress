@@ -204,6 +204,18 @@ class GP_Locales {
 		$bal->wp_locale = 'bal';
 		$bal->slug = 'bal';
 
+		$bcc = new GP_Locale();
+		$bcc->english_name = 'Balochi Southern';
+		$bcc->native_name = 'بلوچی مکرانی';
+		$bcc->lang_code_iso_639_2 = 'bal';
+		$bcc->lang_code_iso_639_3 = 'bcc';
+		$bcc->country_code = 'pk';
+		$bcc->wp_locale = 'bcc';
+		$bcc->slug = 'bcc';
+		$bcc->nplurals = 1;
+		$bcc->plural_expression = 0;
+		$bcc->rtl = true;
+
 		$be = new GP_Locale();
 		$be->english_name = 'Belarusian';
 		$be->native_name = 'Беларуская мова';
