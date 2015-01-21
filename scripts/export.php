@@ -38,6 +38,9 @@ class GP_Script_Export extends GP_Translation_Set_Script {
 				$filters[$option_details['key']] = $this->options[$option];
 			}
 		}
+		// Default to status=current for critical query efficiency
+		if ( empty( $filters['status'] ) )
+			$filters['status'] = 'current';
 		return $filters;
 	}
 }
