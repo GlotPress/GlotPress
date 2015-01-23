@@ -194,7 +194,7 @@ class PO extends Gettext_Translations {
 	 * 	false if the entry is empty
 	 */
 	public static function export_entry(&$entry) {
-		if (!$entry->singular) return false;
+		if ( null === $this->singular || '' === $this->singular ) return false;
 		$po = array();
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
 		if (!empty($entry->extracted_comments)) $po[] = PO::comment_block($entry->extracted_comments, '.');
