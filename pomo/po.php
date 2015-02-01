@@ -218,6 +218,10 @@ class PO extends Gettext_Translations {
 	}
 
 	public static function match_begin_and_end_newlines( $translation, $original ) {
+		if ( '' === $translation ) {
+			return $translation;
+		}
+
 		$original_begin = "\n" === substr( $original, 0, 1 );
 		$original_end = "\n" === substr( $original, -1 );
 		$translation_begin = "\n" === substr( $translation, 0, 1 );
