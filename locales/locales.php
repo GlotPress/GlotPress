@@ -745,6 +745,16 @@ class GP_Locales {
 		$fr_ch->country_code = 'ch';
 		$fr_ch->slug = 'fr-ch';
 
+		$frp = new GP_Locale();
+		$frp->english_name = 'Arpitan';
+		$frp->native_name = 'Arpitan';
+		$frp->lang_code_iso_639_3 = 'frp';
+		$frp->country_code = 'fr';
+		$frp->wp_locale = 'frp';
+		$frp->slug = 'frp';
+		$frp->nplurals = 2;
+		$frp->plural_expression = 'n > 1';
+
 		$fy = new GP_Locale();
 		$fy->english_name = 'Frisian';
 		$fy->native_name = 'Frysk';
