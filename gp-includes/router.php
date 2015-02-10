@@ -37,6 +37,7 @@ class GP_Router {
 		$project = $projects.'/'.$path;
 		$id = '(\d+)';
 		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
+		$set_slug = '(' . implode( '|', GP::$translation_set->existing_slugs() ) . ')';
 		$set = "$project/$locale/$dir";
 
 		// overall structure
@@ -51,6 +52,7 @@ class GP_Router {
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
 			'get:/languages' => array('GP_Route_Locale', 'locales_get'),
+			"get:/languages/$locale/$set_slug" => array('GP_Route_Locale', 'single'),
 			"get:/languages/$locale" => array('GP_Route_Locale', 'single'),
 
 			"get:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_get'),

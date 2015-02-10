@@ -220,10 +220,12 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		return array(
 			array( "$o", "$t", "$t", "no new lines" ),
 			array( "$n$o", "$t", "$n$t", "original starts with new line, translation does not" ),
+			array( "$n$o", "", "", "original starts with new line, translation is empty" ),
 			array( "$n$o", "$n$t", "$n$t", "original and translation starts with new line" ),
 			array( "$o", "$n$t", "$t", "translation starts with new line, original does not" ),
 			array( "$o", "$t$n", "$t", "translation ends with new line, original does not" ),
 			array( "$o$n", "$t", "$t$n", "original ends with new line, translation does not" ),
+			array( "$o$n", "", "", "original ends with new line, translation is empty" ),
 			array( "$o$n", "$t$n", "$t$n", "original and translation ends with new line" ),
 			array( "$n$o$n", "$t", "$n$t$n", "original starts and ends with new line, translation does not" ),
 			array( "$n$o", "$t$n", "$n$t", "original starts with new line, translation ends with new line" ),

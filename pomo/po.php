@@ -194,7 +194,7 @@ class PO extends Gettext_Translations {
 	 * 	false if the entry is empty
 	 */
 	public static function export_entry(&$entry) {
-		if (!$entry->singular) return false;
+		if ( null === $entry->singular || '' === $entry->singular ) return false;
 		$po = array();
 		if (!empty($entry->translator_comments)) $po[] = PO::comment_block($entry->translator_comments);
 		if (!empty($entry->extracted_comments)) $po[] = PO::comment_block($entry->extracted_comments, '.');
@@ -218,6 +218,10 @@ class PO extends Gettext_Translations {
 	}
 
 	public static function match_begin_and_end_newlines( $translation, $original ) {
+		if ( '' === $translation ) {
+			return $translation;
+		}
+
 		$original_begin = "\n" === substr( $original, 0, 1 );
 		$original_end = "\n" === substr( $original, -1 );
 		$translation_begin = "\n" === substr( $translation, 0, 1 );

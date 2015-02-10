@@ -204,6 +204,18 @@ class GP_Locales {
 		$bal->wp_locale = 'bal';
 		$bal->slug = 'bal';
 
+		$bcc = new GP_Locale();
+		$bcc->english_name = 'Balochi Southern';
+		$bcc->native_name = 'بلوچی مکرانی';
+		$bcc->lang_code_iso_639_2 = 'bal';
+		$bcc->lang_code_iso_639_3 = 'bcc';
+		$bcc->country_code = 'pk';
+		$bcc->wp_locale = 'bcc';
+		$bcc->slug = 'bcc';
+		$bcc->nplurals = 1;
+		$bcc->plural_expression = 0;
+		$bcc->rtl = true;
+
 		$be = new GP_Locale();
 		$be->english_name = 'Belarusian';
 		$be->native_name = 'Беларуская мова';
@@ -732,6 +744,16 @@ class GP_Locales {
 		$fr_ch->lang_code_iso_639_2 = 'fra';
 		$fr_ch->country_code = 'ch';
 		$fr_ch->slug = 'fr-ch';
+
+		$frp = new GP_Locale();
+		$frp->english_name = 'Arpitan';
+		$frp->native_name = 'Arpitan';
+		$frp->lang_code_iso_639_3 = 'frp';
+		$frp->country_code = 'fr';
+		$frp->wp_locale = 'frp';
+		$frp->slug = 'frp';
+		$frp->nplurals = 2;
+		$frp->plural_expression = 'n > 1';
 
 		$fy = new GP_Locale();
 		$fy->english_name = 'Frisian';
