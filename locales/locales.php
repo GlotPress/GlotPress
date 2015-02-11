@@ -428,7 +428,7 @@ class GP_Locales {
 
 		$de_ch = new GP_Locale();
 		$de_ch->english_name = 'German (Switzerland)';
-		$de_ch->native_name = 'Schweizer Hochdeutsch';
+		$de_ch->native_name = 'Deutsch (Schweiz)';
 		$de_ch->lang_code_iso_639_1 = 'de';
 		$de_ch->country_code = 'ch';
 		$de_ch->wp_locale = 'de_CH';
