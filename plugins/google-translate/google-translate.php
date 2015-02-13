@@ -17,10 +17,14 @@ class GP_Google_Translate extends GP_Plugin {
 
 		parent::__construct();
 
-		add_action( 'pre_tmpl_load', array( $this, 'load_script' ), 10, 2 );
+		$this->add_action( 'pre_tmpl_load', array( 'args' => 2 ) );
+		$this->add_filter( 'gp_entry_actions' );
+
+		$this->add_action( 'gp_translation_set_bulk_action' );
+		$this->add_action( 'gp_translation_set_bulk_action_post', array( 'args' => 4 ) );
 	}
 
-	public function load_script( $template, $args ) {
+	public function pre_tmpl_load( $template, $args ) {
 		if ( 'translations' != $template ) {
 			return;
 		}
@@ -43,10 +47,6 @@ class GP_Google_Translate extends GP_Plugin {
 		wp_enqueue_script( 'google-translate', $url . '/plugins/google-translate/google-translate.js', array( 'jquery', 'editor' ) );
 		wp_localize_script( 'google-translate', 'gp_google_translate', $options );
 
-		$this->add_filter( 'gp_entry_actions' );
-
-		$this->add_action( 'gp_translation_set_bulk_action' );
-		$this->add_action( 'gp_translation_set_bulk_action_post', array( 'args' => 4 ) );
 	}
 
 	public function gp_entry_actions( $actions ) {
