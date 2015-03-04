@@ -446,15 +446,16 @@ class GP_Locales {
 		$dv->google_code = 'dv';
 		$dv->rtl = true;
 
-		$dz = new GP_Locale();
-		$dz->english_name = 'Dzongkha';
-		$dz->native_name = 'རྫོང་ཁ';
-		$dz->lang_code_iso_639_1 = 'dz';
-		$dz->lang_code_iso_639_2 = 'dzo';
-		$dz->country_code = 'bt';
-		$dz->slug = 'dz';
-		$dz->nplurals = 1;
-		$dz->plural_expression = '0';
+		$dzo = new GP_Locale();
+		$dzo->english_name = 'Dzongkha';
+		$dzo->native_name = 'རྫོང་ཁ';
+		$dzo->lang_code_iso_639_1 = 'dz';
+		$dzo->lang_code_iso_639_2 = 'dzo';
+		$dzo->country_code = 'bt';
+		$dzo->wp_locale = 'dzo';
+		$dzo->slug = 'dzo';
+		$dzo->nplurals = 1;
+		$dzo->plural_expression = '0';
 
 		$ee = new GP_Locale();
 		$ee->english_name = 'Ewe';
