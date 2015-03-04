@@ -1014,6 +1014,17 @@ class GP_Locales {
 		$ka->nplurals = 1;
 		$ka->plural_expression = '0';
 
+		$kab = new GP_Locale();
+		$kab->english_name = 'Kabyle';
+		$kab->native_name = 'Taqbaylit';
+		$kab->lang_code_iso_639_2 = 'kab';
+		$kab->lang_code_iso_639_3 = 'kab';
+		$kab->country_code = 'dz';
+		$kab->wp_locale = 'kab';
+		$kab->slug = 'kab';
+		$kab->nplurals = 2;
+		$kab->plural_expression = '(n > 1)';
+
 		$kin = new GP_Locale();
 		$kin->english_name = 'Kinyarwanda';
 		$kin->native_name = 'Ikinyarwanda';
