@@ -1454,6 +1454,15 @@ class GP_Locales {
 		$ro->nplurals = 3;
 		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2)';
 
+		$roh = new GP_Locale();
+		$roh->english_name = 'Romansh Vallader';
+		$roh->native_name = 'Rumantsch Vallader';
+		$roh->lang_code_iso_639_2 = 'rm';
+		$roh->lang_code_iso_639_3 = 'roh';
+		$roh->country_code = 'ch';
+		$roh->wp_locale = 'roh';
+		$roh->slug = 'roh';
+
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
 		$ru->native_name = 'Русский';
