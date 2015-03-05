@@ -123,6 +123,17 @@ class GP_Locales {
 		$ar->rtl = true;
 		$ar->preferred_sans_serif_font_family = 'Tahoma';
 
+		$arq = new GP_Locale();
+		$arq->english_name = 'Algerian Arabic';
+		$arq->native_name = 'الدارجة الجزايرية';
+		$arq->lang_code_iso_639_3 = 'arq';
+		$arq->country_code = 'dz';
+		$arq->wp_locale = 'arq';
+		$arq->slug = 'arq';
+		$arq->nplurals = 6;
+		$arq->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
+		$arq->rtl = true;
+
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
 		$as->native_name = 'অসমীয়া';
