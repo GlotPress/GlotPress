@@ -123,6 +123,17 @@ class GP_Locales {
 		$ar->rtl = true;
 		$ar->preferred_sans_serif_font_family = 'Tahoma';
 
+		$arq = new GP_Locale();
+		$arq->english_name = 'Algerian Arabic';
+		$arq->native_name = 'الدارجة الجزايرية';
+		$arq->lang_code_iso_639_3 = 'arq';
+		$arq->country_code = 'dz';
+		$arq->wp_locale = 'arq';
+		$arq->slug = 'arq';
+		$arq->nplurals = 6;
+		$arq->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
+		$arq->rtl = true;
+
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
 		$as->native_name = 'অসমীয়া';
@@ -428,7 +439,7 @@ class GP_Locales {
 
 		$de_ch = new GP_Locale();
 		$de_ch->english_name = 'German (Switzerland)';
-		$de_ch->native_name = 'Schweizer Hochdeutsch';
+		$de_ch->native_name = 'Deutsch (Schweiz)';
 		$de_ch->lang_code_iso_639_1 = 'de';
 		$de_ch->country_code = 'ch';
 		$de_ch->wp_locale = 'de_CH';
@@ -446,15 +457,16 @@ class GP_Locales {
 		$dv->google_code = 'dv';
 		$dv->rtl = true;
 
-		$dz = new GP_Locale();
-		$dz->english_name = 'Dzongkha';
-		$dz->native_name = 'རྫོང་ཁ';
-		$dz->lang_code_iso_639_1 = 'dz';
-		$dz->lang_code_iso_639_2 = 'dzo';
-		$dz->country_code = 'bt';
-		$dz->slug = 'dz';
-		$dz->nplurals = 1;
-		$dz->plural_expression = '0';
+		$dzo = new GP_Locale();
+		$dzo->english_name = 'Dzongkha';
+		$dzo->native_name = 'རྫོང་ཁ';
+		$dzo->lang_code_iso_639_1 = 'dz';
+		$dzo->lang_code_iso_639_2 = 'dzo';
+		$dzo->country_code = 'bt';
+		$dzo->wp_locale = 'dzo';
+		$dzo->slug = 'dzo';
+		$dzo->nplurals = 1;
+		$dzo->plural_expression = '0';
 
 		$ee = new GP_Locale();
 		$ee->english_name = 'Ewe';
@@ -1014,6 +1026,17 @@ class GP_Locales {
 		$ka->nplurals = 1;
 		$ka->plural_expression = '0';
 
+		$kab = new GP_Locale();
+		$kab->english_name = 'Kabyle';
+		$kab->native_name = 'Taqbaylit';
+		$kab->lang_code_iso_639_2 = 'kab';
+		$kab->lang_code_iso_639_3 = 'kab';
+		$kab->country_code = 'dz';
+		$kab->wp_locale = 'kab';
+		$kab->slug = 'kab';
+		$kab->nplurals = 2;
+		$kab->plural_expression = '(n > 1)';
+
 		$kin = new GP_Locale();
 		$kin->english_name = 'Kinyarwanda';
 		$kin->native_name = 'Ikinyarwanda';
@@ -1453,6 +1476,15 @@ class GP_Locales {
 		$ro->facebook_locale = 'ro_RO';
 		$ro->nplurals = 3;
 		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2)';
+
+		$roh = new GP_Locale();
+		$roh->english_name = 'Romansh Vallader';
+		$roh->native_name = 'Rumantsch Vallader';
+		$roh->lang_code_iso_639_2 = 'rm';
+		$roh->lang_code_iso_639_3 = 'roh';
+		$roh->country_code = 'ch';
+		$roh->wp_locale = 'roh';
+		$roh->slug = 'roh';
 
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
