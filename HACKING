@@ -1,6 +1,6 @@
 HOW TO FIND YOUR WAY AROUND THE GLOTPRESS CODEBASE?
 
-Say you want to fix a bug, add a feature, or understand how something in GlotPress works. You came to the rigth place.
+Say you want to fix a bug, add a feature, or understand how something in GlotPress works. You came to the right place.
 
 First, GlotPress shares a lot with WordPress, bbPress and actually uses BackPress. Familiarity with these systems will be helpful.
 
@@ -8,7 +8,7 @@ The structure of the project is very MVC-like. Models are called Things, Views a
 
 *** Routes ***
 
-Each route is reponsible for some URL pattern. For example the method single() of the class GP_Route_Project is reponsible for
+Each route is responsible for some URL pattern. For example the method single() of the class GP_Route_Project is responsible for
 URLs like /project/{project-slug}.
 
 The active route is chosen by the router in gp-includes/router.php. It's a simple loop over some regular expressions. The first match wins.
@@ -62,7 +62,7 @@ You will need to install phpunit: http://www.phpunit.de/manual/current/en/instal
 - route: capabilities checks
 - route: headers for download, stuff like that
 - templates: helpers
-- tamplates: links function
+- templates: links function
 - tests
 - init phase
 - plugins: where to put
