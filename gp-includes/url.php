@@ -114,12 +114,11 @@ function gp_url_img( $file ) {
  * The URL of the current page
  */
 function gp_url_current() {
-	$default_port = is_ssl()? 443 : 80;
-	$host = gp_array_get( $_SERVER, 'HTTP_HOST' );
-	if ( gp_array_get( $_SERVER, 'SERVER_PORT', $default_port ) != $default_port ) $host .= ':' . gp_array_get( $_SERVER, 'SERVER_PORT' );
+	$protocol      = is_ssl()? 'https://' : 'http://';
+	$host          = gp_array_get( $_SERVER, 'HTTP_HOST' );
 	$path_and_args = gp_array_get( $_SERVER, 'REQUEST_URI' );
-	$protocol = is_ssl()? 'https' : 'http';
-	return "{$protocol}://{$host}{$path_and_args}";
+
+	return $protocol . $host . $path_and_args;
 }
 
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
