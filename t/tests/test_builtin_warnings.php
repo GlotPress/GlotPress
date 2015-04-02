@@ -62,13 +62,12 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', '%s baba', 'баба %s' );
 		$this->assertNoWarnings( 'placeholders', '%s baba', 'баба %s' );
 		$this->assertNoWarnings( 'placeholders', '%1$s baba %2$s dyado', '%1$sбабадядо%2$s' );
-		$this->assertHasWarnings( 'placeholders', '% baba', 'баба' );
+		$this->assertNoWarnings( 'placeholders', '% baba', 'баба' );
 		$this->assertNoWarnings( 'placeholders', '% baba', '% баба' );
-		$this->assertHasWarnings( 'placeholders', '%ququ baba', 'баба' );
-		$this->assertNoWarnings( 'placeholders', '%ququ baba', '%ququ баба' );
 		$this->assertHasWarnings( 'placeholders', '%1$s baba', 'баба' );
 		$this->assertNoWarnings( 'placeholders', '%1$s baba', '%1$s баба' );
 		$this->assertNoWarnings( 'placeholders', '%sHome%s', '%sНачало%s' );
+		$this->assertNoWarnings( 'placeholders', 'This string has %stwo variables%s.', 'Deze string heeft %stwee variabelen%s.' );
 	}
 
 	function test_both_begin_end_on_newlines() {
