@@ -1,6 +1,7 @@
 filter:
     excluded_paths:
-        - 't/*'
+        - gp-includes/backpress/*
+        - t/*
 tools:
     js_hint: true
     php_code_sniffer:
