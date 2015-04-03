@@ -12,7 +12,8 @@ tools:
             - php
         filter:
             excluded_paths:
-                - 't/*'
+                - gp-includes/backpress/*
+                - t/*
     php_cpd:
         enabled: true
         names:
@@ -21,13 +22,15 @@ tools:
         min_tokens: 70
         filter:
             excluded_paths:
-                - 't/*'
+                - gp-includes/backpress/*
+                - t/*
     php_pdepend:
         enabled: true
         suffixes:
             - php
         filter:
             excluded_paths:
-                - 't/*'
+                - gp-includes/backpress/*
+                - t/*
     external_code_coverage:
         timeout: 300
