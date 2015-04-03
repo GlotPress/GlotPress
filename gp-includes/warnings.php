@@ -108,7 +108,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	function warning_placeholders( $original, $translation, $locale ) {
-		$placeholders_re = apply_filters( 'warning_placeholders_re', '%[a-z]*|%[A-Z]+|%\d+\$(?:s|d)' );
+		$placeholders_re = apply_filters( 'warning_placeholders_re', '%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX]' );
 
 		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );

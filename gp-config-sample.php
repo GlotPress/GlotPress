@@ -51,7 +51,7 @@ define('GP_NONCE_KEY', 'put your unique phrase here');
 define('GP_LANG', '');
 
 /**
- * Custom users and usermate tables for integration with WordPress user system
+ * Custom users and usermeta tables for integration with WordPress user system.
  * 
  * You might want to delete your current permissions, since they will point to different
  * users in the custom table. You can use `php scripts/wipe-permissions.php` for that.

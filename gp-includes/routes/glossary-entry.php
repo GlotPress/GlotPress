@@ -48,10 +48,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 
 			if ( ! $created_glossary_entry ) {
-				$this->errors[] = __('Error in creating glossary ∂
-
-
-					entry!');
+				$this->errors[] = __('Error in creating glossary entry!');
 				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
 			}
 			else {
