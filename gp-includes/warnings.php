@@ -25,13 +25,11 @@ class GP_Translation_Warnings {
 			$skip = array( 'singular' => false, 'plural' => false );
 			if ( !is_null( $plural ) ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
-				if ( $numbers_for_index == array(1) ) {
-					$skip['plural'] = true;
-				}
-				if ( !in_array( 1, $numbers_for_index ) ) {
-					$skip['singular'] = true;
-				}
 				if ( $locale->nplurals == 1 ) {
+					$skip['singular'] = true;
+				} else if ( in_array( 1, $numbers_for_index ) ) {
+					$skip['plural'] = true;
+				} else {
 					$skip['singular'] = true;
 				}
 			}
