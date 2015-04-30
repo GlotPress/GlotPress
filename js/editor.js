@@ -213,8 +213,10 @@ $gp.editor = function($){ return {
 		});
 	},
 	copy: function(link) {
-		original_text = link.parents('.textareas').prev();
-		if ( ! original_text.hasClass('original') ) original_text = original_text.find('.original');
+		var original_text = link.parents('.textareas').prev().find('.original');
+		if ( ! original_text.hasClass('original') ) {
+			original_text = link.parents('.strings').find('.original').last();
+		}
 		original_text = original_text.text();
 		original_text = original_text.replace(/<span class=.invisibles.*?<\/span>/g, '');
 		a = link.parents('.textareas').find('textarea').val(original_text).focus();
