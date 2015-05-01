@@ -5,7 +5,7 @@ class GP_Original extends GP_Thing {
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $non_updatable_attributes = array( 'id', 'path' );
 
-    static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
+	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	function restrict_fields( $original ) {
@@ -51,8 +51,8 @@ class GP_Original extends GP_Thing {
 	function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $gpdb;
 
-		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null; 
-		$entry->context = isset( $entry->context ) ? $entry->context : null; 
+		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null;
+		$entry->context = isset( $entry->context ) ? $entry->context : null;
 
 		$where = array();
 		// now each condition has to contain a %s not to break the sequence
@@ -74,67 +74,188 @@ class GP_Original extends GP_Thing {
 		global $gpdb;
 		wp_cache_delete( $project->id, self::$count_cache_group );
 
-		$originals_added = $originals_existing = $originals_obsoleted = 0;
+		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key = array();
 		foreach( $all_originals_for_project as $original ) {
-			$entry = new Translation_Entry( array( 'singular' => $original->singular, 'plural' => $original->plural, 'context' => $original->context ) );
-			$originals_by_key[$entry->key()] = $original;
+			$entry = new Translation_Entry( array(
+				'singular' => $original->singular,
+				'plural'   => $original->plural,
+				'context'  => $original->context
+			) );
+			$originals_by_key[ $entry->key() ] = $original;
 		}
+
+		$obsolete_originals = array_filter( $originals_by_key, function( $entry ) {
+			return ( '-obsolete' == $entry->status );
+		} );
+
+		$possibly_added = $possibly_dropped = array();
 
 		foreach( $translations->entries as $entry ) {
 			$gpdb->queries = array();
-			$data = array('project_id' => $project->id, 'context' => $entry->context, 'singular' => $entry->singular,
-				'plural' => $entry->plural, 'comment' => $entry->extracted_comments,
-				'references' => implode( ' ', $entry->references ), 'status' => '+active' );
+			$data = array(
+				'project_id' => $project->id,
+				'context'    => $entry->context,
+				'singular'   => $entry->singular,
+				'plural'     => $entry->plural,
+				'comment'    => $entry->extracted_comments,
+				'references' => implode( ' ', $entry->references ),
+				'status'     => '+active'
+			);
 			$data = apply_filters( 'import_original_array', $data );
 
-			// TODO: do not obsolete similar translations
-			if ( isset( $originals_by_key[$entry->key()] ) ) {
-				$original = $originals_by_key[$entry->key()];
-
-				if ( GP::$original->is_different_from( $data, $original ) ) {
+			// Original exists, let's update it.
+			if ( isset( $originals_by_key[ $entry->key() ] ) ) {
+				$original = $originals_by_key[ $entry->key() ];
+				if ( $original->status == '-obsolete' || GP::$original->should_be_updated_with( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
 				}
 
 				$originals_existing++;
+			} else {
+				// We can't find this in our originals. Let's keep it for later.
+				$possibly_added[] = $entry;
 			}
-			else {
+		}
+
+		// Mark missing strings as possible removals.
+		foreach ( $originals_by_key as $key => $value) {
+			if ( $value->status != '-obsolete' && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
+				$possibly_dropped[ $key ] = $value;
+			}
+		}
+		$comparison_array = array_unique( array_merge( array_keys( $possibly_dropped ), array_keys( $obsolete_originals ) ) );
+
+		foreach ( $possibly_added as $entry ) {
+			$data = array(
+				'project_id' => $project->id,
+				'context'    => $entry->context,
+				'singular'   => $entry->singular,
+				'plural'     => $entry->plural,
+				'comment'    => $entry->extracted_comments,
+				'references' => implode( ' ', $entry->references ),
+				'status'     => '+active'
+			);
+			$data = apply_filters( 'import_original_array', $data );
+
+			// Search for match in the dropped strings and existing obsolete strings.
+			$close_original = $this->closest_original( $entry->key(), $comparison_array );
+
+			// We found a match - probably a slightly changed string.
+			if ( $close_original ) {
+				$original = $originals_by_key[ $close_original ];
+
+				// We'll update the old original...
+				$this->update( $data, array( 'id' => $original->id ) );
+
+				// and set existing translations to fuzzy.
+				$this->set_translations_for_original_to_fuzzy( $original->id );
+
+				// No need to obsolete it now.
+				unset( $possibly_dropped[ $close_original ] );
+
+				$originals_fuzzied++;
+				continue;
+			} else { // Completely new string
 				GP::$original->create( $data );
 				$originals_added++;
 			}
 		}
 
-		// Mark previously active, but now removed strings as obsolete
-		foreach ( $originals_by_key as $key => $value) {
-			if ( ! key_exists( $key, $translations->entries ) && '-obsolete' != $value->status ) {
-				$this->update( array('status' => '-obsolete'), array( 'id' => $value->id ) );
-				$originals_obsoleted++;
-			}
+		// Mark remaining possibly dropped strings as obsolete.
+		foreach ( $possibly_dropped as $key => $value) {
+			$this->update( array( 'status' => '-obsolete' ), array( 'id' => $value->id ) );
+			$originals_obsoleted++;
 		}
 
-		// Clear cache when the amount of strings are changed
-		if ( $originals_added > 0 || $originals_obsoleted > 0 ) {
+		// Clear cache when the amount of strings are changed.
+		if ( $originals_added > 0 || $originals_fuzzied	> 0 || $originals_obsoleted > 0 ) {
 			gp_clean_translation_sets_cache( $project->id );
 		}
 
-		do_action( 'originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted );
+		do_action( 'originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
 
-		return array( $originals_added, $originals_existing );
+		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted );
+	}
+
+	function set_translations_for_original_to_fuzzy( $original_id ) {
+		$translations = GP::$translation->find_many( "original_id = '$original_id' AND status = 'current'" );
+		foreach ( $translations as $translation ) {
+			$translation->set_status( 'fuzzy' );
+		}
+	}
+
+	function should_be_updated_with( $data, $original = null ) {
+		if ( ! $original ) {
+			$original = $this;
+		}
+
+		foreach ( $data as $field => $value ) {
+			if ( $original->$field != $value ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function is_different_from( $data, $original = null ) {
-		if ( !$original ) $original = $this;
-		foreach( $data as $field => $value ) {
-			if ( $original->$field != $value ) return true;
+		if ( ! $original ) {
+			$original = $this;
+		}
+
+		foreach ( $data as $field => $value ) {
+			if ( $original->$field != $value ) {
+				return true;
+			}
 		}
 		return false;
 	}
 
 	function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
-		return isset( $by_name[$name] )? $by_name[$name] : null;
+		return isset( $by_name[ $name ] )? $by_name[ $name ] : null;
+	}
+
+	function closest_original( $input, $other_strings ) {
+		if ( empty( $other_strings ) ) {
+			return null;
+		}
+
+		$input_length = gp_strlen( $input );
+		$closest_similarity = 0;
+
+		foreach ( $other_strings as $compared_string ) {
+			$compared_string_length = gp_strlen( $compared_string );
+			$max_length_diff = apply_filters( 'gp_original_import_max_length_diff', 0.5 );
+
+			if ( abs( ( $input_length - $compared_string_length ) / $input_length ) > $max_length_diff ) {
+				continue;
+			}
+
+			$similarity = gp_string_similarity( $input, $compared_string );
+
+			if ( $similarity > $closest_similarity ) {
+				$closest = $compared_string;
+				$closest_similarity = $similarity;
+			}
+		}
+
+		if ( ! isset( $closest ) ) {
+			return null;
+		}
+
+		$min_score = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
+		$close_enough = ( $closest_similarity > $min_score );
+
+		do_action( 'post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
+
+		if ( $close_enough ) {
+			return $closest;
+		} else {
+			return null;
+		}
 	}
 }
 GP::$original = new GP_Original();

@@ -110,8 +110,14 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
-		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations );
+		$this->notices[] = sprintf(
+			__( '%1$s new strings added, %2$s updated, %3$s fuzzied, and %4$s obsoleted.' ),
+			$originals_added,
+			$originals_existing,
+			$originals_fuzzied,
+			$originals_obsoleted
+		);
 
 		$this->redirect( gp_url_project( $project, 'import-originals' ) );
 	}
