@@ -159,7 +159,8 @@ class GP_Original extends GP_Thing {
 				$originals_fuzzied++;
 				continue;
 			} else { // Completely new string
-				GP::$original->create( $data );
+				$created = GP::$original->create( $data );
+				$created->add_translations_from_other_projects();
 				$originals_added++;
 			}
 		}
@@ -255,6 +256,74 @@ class GP_Original extends GP_Thing {
 			return $closest;
 		} else {
 			return null;
+		}
+	}
+
+	function get_matching_originals_in_other_projects() {
+		$where = array();
+		$where[] = 'singular = %s';
+		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
+		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = %s';
+		$where[] = 'project_id != %d';
+		$where[] = "status = '+active'";
+		$where = implode( ' AND ', $where );
+
+		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
+	}
+
+	function add_translations_from_other_projects() {
+		global $gpdb;
+
+		$other_projects_originals = $this->get_matching_originals_in_other_projects();
+		if ( ! $other_projects_originals ) {
+			return;
+		}
+
+		$matched_sets = array();
+
+		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $gpdb->translation_sets WHERE project_id = %d", $this->project_id );
+
+		if ( empty( $project_translations_sets ) ) {
+			return;
+		}
+
+		foreach ( $other_projects_originals as $o ) {
+			$current_translations = GP::$translation->many( "SELECT * FROM $gpdb->translations WHERE original_id = %d AND status = %s ORDER by date_modified DESC",  $o->id, 'current' );
+			if ( ! $current_translations ) {
+				continue;
+			}
+
+			foreach ( $current_translations as $t ) {
+				if ( ! $t->translation_set_id ) {
+					continue;
+				}
+
+				$t_translation_set = GP::$translation_set->get( $t->translation_set_id );
+
+				if ( ! $t_translation_set ) {
+					continue;
+				}
+
+				$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t_translation_set ) {
+					return $set->locale == $t_translation_set->locale && $set->slug == $t_translation_set->slug;
+				} );
+
+				if ( empty( $o_translation_set ) ) {
+					continue;
+				}
+
+				$o_translation_set = reset( $o_translation_set );
+
+				if ( in_array( $o_translation_set->id, $matched_sets ) ) {
+					// We already have a translation for this set.
+					continue;
+				}
+
+				$matched_sets[] = $o_translation_set->id;
+
+				$copy_status = apply_filters( 'translations_from_other_projects_status', 'current' );
+				$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
+			}
 		}
 	}
 }

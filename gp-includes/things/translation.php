@@ -3,10 +3,10 @@ class GP_Translation extends GP_Thing {
 
 	var $per_page = 15;
 	var $table_basename = 'translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings');
+	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
 	var $non_updatable_attributes = array( 'id', );
 
-	static $statuses = array('current', 'waiting', 'rejected', 'fuzzy', 'old', );
+	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
 	function create( $args ) {
@@ -22,16 +22,18 @@ class GP_Translation extends GP_Thing {
 	function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
-		    foreach( range( 0, $this->get_static( 'number_of_plural_translations') ) as $i ) {
-		        if ( isset( $args['translations'][$i] ) ) $args["translation_$i"] = $args['translations'][$i];
-		    }
+			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
+				if ( isset( $args['translations'][ $i ] ) ) {
+					$args["translation_$i"] = $args['translations'][ $i ];
+				}
+			}
 			unset( $args['translations'] );
 		}
-	    foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
-	        if ( isset( $args["translation_$i"] ) ) {
+		foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
+			if ( isset( $args["translation_$i"] ) ) {
 				$args["translation_$i"] = $this->fix_translation( $args["translation_$i"] );
 			}
-	    }
+		}
 		if ( gp_array_get( $args, 'warnings' ) == array() ) {
 			$args['warnings'] = null;
 		}
@@ -128,7 +130,7 @@ class GP_Translation extends GP_Thing {
 		}
 
 		if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
-		    $where[] = 'o.priority > -2';
+			$where[] = 'o.priority > -2';
 		}
 
 		$join_where = array();
@@ -172,9 +174,9 @@ class GP_Translation extends GP_Thing {
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
-		    FROM $gpdb->originals as o
-		    $join_type JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
-		    WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
+			FROM $gpdb->originals as o
+			$join_type JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
+			WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
 		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();
 		$translations = array();
@@ -209,17 +211,65 @@ class GP_Translation extends GP_Thing {
 	}
 
 	function set_as_current() {
-		return $this->update( array('status' => 'old'),
+		$result = $this->update( array('status' => 'old'),
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current') )
 		&& 	$this->update( array('status' => 'old'),
 				array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting') )
-	    && $this->update( array('status' => 'old'),
+		&& $this->update( array('status' => 'old'),
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->update( array('status' => 'current') );
+
+		$this->propagate_across_projects();
+
+		return $result;
 	}
 
 	function reject() {
 		$this->set_status( 'rejected' );
+	}
+
+	function copy_into_set( $new_translation_set_id, $new_original_id, $status = 'fuzzy' ) {
+		if ( ! in_array( $status, $this->get_static( 'statuses' ) ) ) {
+			return;
+		}
+
+		$copy = new GP_Translation( $this->fields() );
+		$copy->original_id = $new_original_id;
+		$copy->translation_set_id = $new_translation_set_id;
+		$copy->status = $status;
+
+		GP::$translation->create( $copy );
+		// Flush cache, create() doesn't flush caches for copies, see r994.
+		gp_clean_translation_set_cache( $new_translation_set_id );
+	}
+
+	function propagate_across_projects() {
+		if ( $this->status != 'current' ) {
+			return;
+		}
+
+		$original = GP::$original->get( $this->original_id );
+		$originals_in_other_projects = $original->get_matching_originals_in_other_projects();
+
+		if ( ! $originals_in_other_projects ) {
+			return;
+		}
+
+		$translation_set = GP::$translation_set->get( $this->translation_set_id );
+		foreach ( $originals_in_other_projects as $o ) {
+			$o_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $o->project_id, $translation_set->slug, $translation_set->locale );
+
+			if ( ! $o_translation_set ) {
+				continue;
+			}
+
+			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
+
+			if ( ! $current_translation  ) {
+				$copy_status = apply_filters( 'translations_to_other_projects_status', 'current' );
+				$this->copy_into_set( $o_translation_set->id, $o->id, $copy_status );
+			}
+		}
 	}
 
 	function set_status( $status ) {
@@ -239,9 +289,9 @@ class GP_Translation extends GP_Thing {
 
 	function translations() {
 		$translations = array();
-	    foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
-	        $translations[$i] = isset( $this->{"translation_$i"} )? $this->{"translation_$i"} : null;
-	    }
+		foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
+			$translations[ $i ] = isset( $this->{"translation_$i"} ) ? $this->{"translation_$i"} : null;
+		}
 		return $translations;
 	}
 
