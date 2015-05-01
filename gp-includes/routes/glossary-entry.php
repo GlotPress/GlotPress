@@ -241,7 +241,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		while ( ( $data = fgetcsv( $f, 0, ',') ) !== FALSE ) {
-			//We're only parsing one language per file right now
+			// We're only parsing one locale per file right now
 			if ( count ($data) > 4 ) {
 				$data = array_splice( $data, 2, -2 );
 			}
