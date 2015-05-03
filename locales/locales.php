@@ -1373,12 +1373,16 @@ class GP_Locales {
 		$no->slug = 'no';
 		$no->google_code = 'no';
 
-		$oc = new GP_Locale();
-		$oc->english_name = 'Occitan';
-		$oc->native_name = 'Occitan';
-		$oc->lang_code_iso_639_1 = 'oc';
-		$oc->lang_code_iso_639_2 = 'oci';
-		$oc->slug = 'oc';
+		$oci = new GP_Locale();
+		$oci->english_name = 'Occitan';
+		$oci->native_name = 'Occitan';
+		$oci->lang_code_iso_639_1 = 'oc';
+		$oci->lang_code_iso_639_2 = 'oci';
+		$oci->country_code = 'fr';
+		$oci->wp_locale = 'oci';
+		$oci->slug = 'oci';
+		$oci->nplurals = 2;
+		$oci->plural_expression = '(n > 1)';
 
 		$ory = new GP_Locale();
 		$ory->english_name = 'Oriya';
