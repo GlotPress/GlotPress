@@ -946,7 +946,7 @@ class GP_Locales {
 		$ido = new GP_Locale();
 		$ido->english_name = 'Ido';
 		$ido->native_name = 'Ido';
-		$ido->lang_code_iso_639_1 = 'id';
+		$ido->lang_code_iso_639_1 = 'io';
 		$ido->lang_code_iso_639_2 = 'ido';
 		$ido->lang_code_iso_639_3 = 'ido';
 		$ido->wp_locale = 'ido';
