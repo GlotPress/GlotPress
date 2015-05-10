@@ -109,7 +109,7 @@ class GP_Original extends GP_Thing {
 			// Original exists, let's update it.
 			if ( isset( $originals_by_key[ $entry->key() ] ) ) {
 				$original = $originals_by_key[ $entry->key() ];
-				if ( $original->status == '-obsolete' || GP::$original->should_be_updated_with( $data, $original ) ) {
+				if ( $original->status == '-obsolete' || GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
 				}
 
@@ -186,19 +186,6 @@ class GP_Original extends GP_Thing {
 		foreach ( $translations as $translation ) {
 			$translation->set_status( 'fuzzy' );
 		}
-	}
-
-	function should_be_updated_with( $data, $original = null ) {
-		if ( ! $original ) {
-			$original = $this;
-		}
-
-		foreach ( $data as $field => $value ) {
-			if ( $original->$field != $value ) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	function is_different_from( $data, $original = null ) {
