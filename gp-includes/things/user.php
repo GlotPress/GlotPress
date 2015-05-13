@@ -238,6 +238,13 @@ class GP_User extends GP_Thing {
 
 		foreach ( $permissions as $key => &$permission ) {
 			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
+
+			// Skip admin permissions
+			if ( ! isset(  $object_id[1] ) ) {
+				unset( $permissions[$key] );
+				continue;
+			}
+
 			$set = GP::$translation_set->find_one(
 				array(
 					'project_id' => $object_id[0],
