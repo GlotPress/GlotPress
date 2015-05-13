@@ -85,8 +85,7 @@ function gp_url_public_root() {
  *
  * @return string The guessed URI
  */
-function guess_uri()
-{
+function guess_uri() {
 	$schema = 'http://';
 
 	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
