@@ -253,6 +253,12 @@ class GP_User extends GP_Thing {
 				)
 			);
 
+			// Skip permissions for non existing sets
+			if ( ! $set ) {
+				unset( $permissions[$key] );
+				continue;
+			}
+
 			unset( $permission->id, $permission->action, $permission->object_type, $permission->object_id );
 
 			$translation_set = $this->get_translation_set( $set );
