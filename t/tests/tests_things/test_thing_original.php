@@ -118,4 +118,19 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$normalized_args = 	$original->normalize_fields( array( 'priority' => 'baba' ) );
 		$this->assertFalse( isset( $normalized_args['priority'] ) );
 	}
+	
+	function test_by_project_id_and_entry_should_match_case() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Baba' ) );
+
+		$entry = new stdClass();
+		$entry->singular = 'BABA';
+
+		$by_project_id_and_entry = GP::$original->by_project_id_and_entry( $project->id, $entry );
+		$this->assertEquals( false, $by_project_id_and_entry );
+
+		$entry->singular = 'Baba';
+		$by_project_id_and_entry = GP::$original->by_project_id_and_entry( $project->id, $entry );
+		$this->assertSame( $original->singular, $by_project_id_and_entry->singular );
+	}
 }

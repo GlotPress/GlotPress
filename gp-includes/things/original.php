@@ -56,9 +56,9 @@ class GP_Original extends GP_Thing {
 
 		$where = array();
 		// now each condition has to contain a %s not to break the sequence
-		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'BINARY context = %s';
-		$where[] = 'BINARY singular = %s';
-		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'BINARY plural = %s';
+		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
+		$where[] = 'singular = BINARY %s';
+		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
 		$where[] = 'project_id = %d';
 
 		if ( ! is_null( $status ) ) {
