@@ -186,18 +186,9 @@ class GP_Translation_Set extends GP_Thing {
 			$translations = GP::$translation->find_many_no_map( "translation_set_id = '{$source_set->id}'" );
 			foreach ( $translations as $entry ) {
 				$source_original = GP::$original->get( $entry->original_id );
-
-				//Not using GP_Original::by_project_id_and_entry because the binary comparison doesn't use the index.
-				$where = array();
-				$where[] = is_null( $source_original->context )? '(context IS NULL OR %s IS NULL)' : 'context = %s';
-				$where[] = 'singular = %s';
-				$where[] = is_null( $source_original->plural )? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
-				$where[] = 'project_id = %d';
-				$where = implode( ' AND ', $where );
-
-				$original_id = $gpdb->get_var( $gpdb->prepare( "SELECT id FROM $gpdb->originals WHERE $where", $source_original->context, $source_original->singular, $source_original->plural, $this->project_id ) );
-				if ( $original_id ) {
-					$entry->original_id = $original_id;
+				$original = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
+				if ( $original ) {
+					$entry->original_id = $original->id;
 					$entry->translation_set_id = $this->id;
 					GP::$translation->create( $entry );
 				}
