@@ -3,8 +3,9 @@
 class GP_Router {
 
 	public $api_prefix = 'api';
+	private $urls = array();
 
-	public function __construct( $urls = null ) {
+	public function __construct( $urls = array() ) {
 		$this->urls = $urls;
 	}
 
