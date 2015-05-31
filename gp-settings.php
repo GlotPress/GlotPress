@@ -340,7 +340,10 @@ foreach ( $plugins as $plugin ) {
 }
 unset( $plugins, $plugin );
 
+GP::$router->set_default_routes();
+
 do_action( 'plugins_loaded' );
+
 
 if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 	return;

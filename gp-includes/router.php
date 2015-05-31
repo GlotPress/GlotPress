@@ -2,35 +2,39 @@
 
 class GP_Router {
 
-	var $api_prefix = 'api';
+	public $api_prefix = 'api';
 
-	function __construct( $urls = null ) {
-		if ( is_null( $urls ) )
-			$this->urls = $this->default_routes();
-		else
-			$this->urls = $urls;
+	public function __construct( $urls = null ) {
+		$this->urls = $urls;
+	}
+
+	/** 
+	 * Sets the default routes that GlotPress needs.
+	 */ 
+	public function set_default_routes() {
+		$this->urls = array_merge( $this->urls, $this->default_routes() );
 	}
 
 	/**
 	* Returns the current request URI path, relative to
 	* the application URI and without the query string
 	*/
-	function request_uri() {
+	public function request_uri() {
 		$subdir = rtrim( gp_url_path(), '/' );
 		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
 			return urldecode( $match[1] );
 		return false;
 	}
 
-	function request_method() {
+	public function request_method() {
 		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
 	}
 
-	function add( $re, $function, $method = 'get' ) {
+	public function add( $re, $function, $method = 'get' ) {
 		$this->urls["$method:$re"] = $function;
 	}
 
-	function default_routes() {
+	private function default_routes() {
 		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
 		$projects = 'projects';
@@ -118,7 +122,7 @@ class GP_Router {
 	}
 
 
-	function route() {
+	public function route() {
 		$real_request_uri = $this->request_uri();
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
@@ -160,4 +164,5 @@ class GP_Router {
 		}
 		return gp_tmpl_404();
 	}
+
 }
