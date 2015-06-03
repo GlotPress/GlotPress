@@ -3,15 +3,15 @@
 class GP_Router {
 
 	public $api_prefix = 'api';
-	private $urls = array();
+	public $urls = array();
 
 	public function __construct( $urls = array() ) {
 		$this->urls = $urls;
 	}
 
-	/** 
+	/**
 	 * Sets the default routes that GlotPress needs.
-	 */ 
+	 */
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
 	}
