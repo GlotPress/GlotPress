@@ -113,6 +113,7 @@ class GP_Translation extends GP_Thing {
 		}
 		if ( 'yes' == gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NOT NULL';
+			$where[] = 't.warnings != ""';
 		} elseif ( 'no' == gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NULL';
 		}
