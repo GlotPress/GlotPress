@@ -20,7 +20,7 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		$glossary_entries_terms[ $key ] = $value->term;
 	}
 
-	uasort( $glossary_entries_terms, lambda('$a, $b', 'gp_strlen($a) < gp_strlen($b)' ) );
+	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
 
 	foreach ( $translations as $key => $t ) {
 		//Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.

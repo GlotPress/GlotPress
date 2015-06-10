@@ -5,7 +5,11 @@ wp_enqueue_script( 'common' );
 wp_enqueue_script('tablesorter');
 $edit_link = gp_link_project_edit_get( $project, __('(edit)') );
 $parity = gp_parity_factory();
-if ( $project->active ) add_filter( 'gp_breadcrumb', lambda( '$s', '$s . "<span class=\\"active bubble\\">' . __('Active') . '</span>"' ) );
+
+if ( $project->active ) {
+	add_filter( 'gp_breadcrumb', function( $s ) { return $s . '<span class="active bubble">' . __('Active') . '</span>'; } );
+}
+
 gp_tmpl_header();
 ?>
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>

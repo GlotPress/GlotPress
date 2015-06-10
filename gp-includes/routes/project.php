@@ -33,7 +33,9 @@ class GP_Route_Project extends GP_Route_Main {
 			}
 		}
 
-		usort( $translation_sets, lambda('$a, $b', '$a->current_count < $b->current_count' ) );
+		usort( $translation_sets, function( $a, $b ) {
+			return( $a->current_count < $b->current_count );
+		});
 		$translation_sets = apply_filters( 'translation_sets_sort', $translation_sets );
 
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
@@ -243,7 +245,9 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn = lambda( '$x, $y', 'strcmp($x->locale_slug, $y->locale_slug);' );
+		$cmp_fn = function( $x, $y ){
+			return strcmp( $x->locale_slug, $y->locale_slug );
+		};
 		usort( $permissions, $cmp_fn );
 		$parent_permissions = array();
 
