@@ -95,6 +95,10 @@ class GP_Route_Locale extends GP_Route_Main {
 			}
 		}
 
+		if ( 'default' !== $current_set_slug && ! isset( $set_slugs[ $current_set_slug ] ) ) {
+			return $this->die_with_404();
+		}
+
 		if ( $set_slugs ) {
 			// Make default the first item.
 			if ( ! empty( $set_slugs[ 'default' ] ) ) {
