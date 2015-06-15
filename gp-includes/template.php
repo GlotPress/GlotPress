@@ -359,7 +359,7 @@ function gp_project_options_form( $project ) {
 				</dl>
 				<p>
 					<input type="submit" name="submit" value="' . esc_attr( __('Save &rarr;') ) . '" id="save" />
-					<a class="ternary" href="#" onclick="jQuery("#personal-options-toggle").click();return false;">' . __('Cancel') . '</a>
+					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __('Cancel') . '</a>
 				</p>
 				</form>
 			</div>';
