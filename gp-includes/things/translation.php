@@ -147,8 +147,9 @@ class GP_Translation extends GP_Thing {
 			$statuses = array_filter( $statuses, function( $x ) { return $x != 'untranslated'; } );
 		}
 
-		$statuses = array_filter( $statuses, function( $s ) {
-			return in_array( $s, $this->get_static( 'statuses' ) );
+		$all_statuses = $this->get_static( 'statuses' );
+		$statuses = array_filter( $statuses, function( $s ) use ( $all_statuses ) {
+			return in_array( $s, $all_statuses );
 		} );
 
 		if ( $statuses ) {
