@@ -30,7 +30,7 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 	<?php
 		$edit_text = $can_edit? __('Double-click to add') : sprintf(__('You <a href="%s">have to login</a> to add a translation.'), gp_url_login());
 		$missing_text = "<span class='missing'>$edit_text</span>";
-		if ( !count( array_filter( $t->translations ) ) ):
+		if ( ! count( array_filter( $t->translations, 'gp_is_not_empty_string' ) ) ):
 			echo $missing_text;
 		elseif ( !$t->plural ):
 			echo esc_translation( $t->translations[0] );
@@ -39,7 +39,7 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 			<?php
 				foreach( $t->translations as $translation ):
 			?>
-				<li><?php echo $translation? esc_translation( $translation ) : $missing_text; ?></li>
+				<li><?php echo gp_is_empty_string( $translation ) ? $missing_text : esc_translation( $translation ); ?></li>
 			<?php
 				endforeach;
 			?>

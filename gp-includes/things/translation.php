@@ -56,7 +56,7 @@ class GP_Translation extends GP_Thing {
 	}
 
 	function restrict_fields( $translation ) {
-		$translation->translation_0_should_not_be( 'empty' );
+		$translation->translation_0_should_not_be( 'empty_string' );
 		$translation->status_should_not_be( 'empty' );
 		$translation->original_id_should_be( 'positive_int' );
 		$translation->translation_set_id_should_be( 'positive_int' );

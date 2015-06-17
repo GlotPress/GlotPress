@@ -334,7 +334,7 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
  * @param int $id translation set ID
  */
 function gp_clean_translation_set_cache( $id ) {
-	wp_cache_delete( $id, 'translation_set_status_breakdown' ); 
+	wp_cache_delete( $id, 'translation_set_status_breakdown' );
 	wp_cache_delete( $id, 'translation_set_last_modified' );
 }
 
@@ -393,6 +393,26 @@ function gp_time_since( $time ) {
  */
 function gp_is_empty( $value ) {
 	return empty( $value );
+}
+
+/**
+ * Checks if the passed value is an empty string.
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_empty_string( $value ) {
+	return '' === $value;
+}
+
+/**
+ * Checks if the passed value isn't an empty string.
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_not_empty_string( $value ) {
+	return '' !== $value;
 }
 
 /**
