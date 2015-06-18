@@ -40,3 +40,6 @@ define('GP_NONCE_KEY', 'put your unique phrase here');
  * prefix. Only numbers, letters, and underscores please!
  */
 $gp_table_prefix = 'gp_';
+
+// Test with GlotPress debug mode (default).
+define( 'GP_DEBUG', true );
