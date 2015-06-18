@@ -6,15 +6,9 @@
  */
 
 if ( defined( 'GP_DEBUG' ) && GP_DEBUG ) {
-	if ( defined( 'E_DEPRECATED' ) )
-		error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
-	else
-		error_reporting( E_ALL );
+	error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
 } else {
-    if ( defined( 'E_RECOVERABLE_ERROR' ) )
-        error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
-    else
-        error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING );
+	error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
 }
 
 require_once( GP_PATH . GP_INC . '/system.php' );
