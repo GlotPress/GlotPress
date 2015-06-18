@@ -377,6 +377,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$t = $translations[0];
 			$parity = returner( 'even' );
 			$can_edit = GP::$user->logged_in();
+			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
