@@ -4,6 +4,7 @@ class GP_Translation extends GP_Thing {
 	var $per_page = 15;
 	var $table_basename = 'translations';
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
+	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );
 
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
@@ -99,7 +100,7 @@ class GP_Translation extends GP_Thing {
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			$like = "LIKE '%" . ( $gpdb->escape( like_escape ( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+			$like = "LIKE '%" . ( esc_sql( $gpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
@@ -180,8 +181,8 @@ class GP_Translation extends GP_Thing {
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 			FROM $gpdb->originals as o
-			$join_type JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = ".$gpdb->escape($translation_set->id)." $join_where
-			WHERE o.project_id = ".$gpdb->escape( $project->id )." AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
+			$join_type JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
+			WHERE o.project_id = " . (int) $project->id . " AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
 		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();
 		$translations = array();

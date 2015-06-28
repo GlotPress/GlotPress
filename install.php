@@ -5,7 +5,7 @@
 
 define('GP_INSTALLING', true);
 require_once( 'gp-load.php' );
-require_once( BACKPRESS_PATH . 'class.bp-sql-schema-parser.php' );
+require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 require_once( GP_PATH . GP_INC . 'install-upgrade.php' );
 require_once( GP_PATH . GP_INC . 'schema.php' );
 

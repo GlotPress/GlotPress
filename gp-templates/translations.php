@@ -5,8 +5,8 @@ gp_breadcrumb( array(
 	gp_link_get( $url, $translation_set->name ),
 ) );
 wp_enqueue_script( 'jquery-ui' );
-wp_enqueue_script( 'editor' );
-wp_enqueue_script( 'translations-page' );
+wp_enqueue_script( 'gp-editor' );
+wp_enqueue_script( 'gp-translations-page' );
 wp_localize_script( 'translations-page', '$gp_translations_options', array( 'sort' => __('Sort'), 'filter' => __('Filter') ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options

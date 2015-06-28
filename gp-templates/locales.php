@@ -1,6 +1,6 @@
 <?php
 gp_title( __('Locales &lt; GlotPress') );
-wp_enqueue_script('common');
+wp_enqueue_script('gp-common');
 wp_enqueue_script('tablesorter');
 $parity = gp_parity_factory();
 gp_tmpl_header();

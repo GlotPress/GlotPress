@@ -27,12 +27,12 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 				'translations' => array($translation),
 			);
 		}
-		$this->assertEquals( file_get_contents( 'data/translation.android.xml' ), $this->android->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
+		$this->assertEquals( file_get_contents( GP_DIR_TESTDATA . '/translation.android.xml' ), $this->android->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
 	}
 
 
 	function test_read_originals() {
-		$translations = $this->android->read_originals_from_file( 'data/originals.android.xml' );
+		$translations = $this->android->read_originals_from_file( GP_DIR_TESTDATA . '/originals.android.xml' );
 
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
@@ -55,7 +55,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 					->method( 'by_project_id' )
 					->with( $this->equalTo(2) )
 					->will( $this->returnValue($stubbed_originals) );
-		$translations = $this->android->read_translations_from_file( 'data/translation.android.xml', (object)array( 'id' => 2 ) );
+		$translations = $this->android->read_translations_from_file( GP_DIR_TESTDATA . '/translation.android.xml', (object)array( 'id' => 2 ) );
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation ) = $sample;
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );

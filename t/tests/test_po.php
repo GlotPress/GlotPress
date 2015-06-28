@@ -174,7 +174,7 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 	function test_import_from_file() {
 		$po = new PO();
-		$res = $po->import_from_file('data/simple.po');
+		$res = $po->import_from_file(GP_DIR_TESTDATA . '/simple.po');
 		$this->assertEquals(true, $res);
 
 		$this->assertEquals(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Plural-Forms' => 'nplurals=2; plural=n != 1;'), $po->headers);
@@ -204,12 +204,12 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 	function test_import_from_entry_file_should_give_false() {
 		$po = new PO();
-		$this->assertFalse( $po->import_from_file( 'data/empty.po' ) );
+		$this->assertFalse( $po->import_from_file( GP_DIR_TESTDATA . '/empty.po' ) );
 	}
 
 	function test_import_from_file_with_windows_line_endings_should_work_as_with_unix_line_endings() {
 		$po = new PO();
-		$this->assertTrue( $po->import_from_file( 'data/windows-line-endings.po' ) );
+		$this->assertTrue( $po->import_from_file( GP_DIR_TESTDATA . '/windows-line-endings.po' ) );
 		$this->assertEquals( 1, count( $po->entries ) );
 	}
 

@@ -8,16 +8,30 @@ class GP_User extends GP_Thing {
 	var $non_updatable_attributes = array( 'ID' );
 
 	function create( $args ) {
-		global $wp_users_object;
 		if ( isset( $args['id'] ) ) {
 			$args['ID'] = $args['id'];
 			unset( $args['id'] );
 		}
-		$user = $wp_users_object->new_user( $args );
+		$user = wp_insert_user( $args );
+		$user = get_userdata( $user );
 		return $this->coerce( $user );
 	}
 
+	function update( $data, $where = null ) {
+		return false;
+	}
+
+	function delete() {
+		return false;
+	}
+
+	function delete_all( $where = false ) {
+		return false;
+	}
 	function normalize_fields( $args ) {
+		if ( $args instanceof WP_User ) {
+			$args = $args->data;
+		}
 		$args = (array)$args;
 		if ( isset( $args['ID'] ) ) {
 			$args['id'] = $args['ID'];
@@ -27,40 +41,34 @@ class GP_User extends GP_Thing {
 	}
 
 	function get( $user_or_id ) {
-		global $wp_users_object;
 		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
-		return $this->coerce( $wp_users_object->get_user( $user_or_id ) );
+		return $this->coerce( get_userdata( $user_or_id ) );
 	}
 
 	function by_login( $login ) {
-		global $wp_users_object;
-		$user = $wp_users_object->get_user( $login, array( 'by' => 'login' ) );
+		$user = get_user_by( 'login', $login );
 		return $this->coerce( $user );
 	}
 
 	function by_email( $email ) {
-		global $wp_users_object;
-		$user = $wp_users_object->get_user( $email, array( 'by' => 'email' ) );
+		$user = get_user_by( 'email', $email );
 		return $this->coerce( $user );
 	}
 
 	function logged_in() {
-		global $wp_auth_object;
-		$coerced = $this->coerce( $wp_auth_object->get_current_user() );
+		$coerced = $this->coerce( wp_get_current_user() );
 		return ( $coerced && $coerced->id );
 	}
 
 	function current() {
-		global $wp_auth_object;
 		if ( $this->logged_in() )
-			return $this->coerce( $wp_auth_object->get_current_user() );
+			return $this->coerce( wp_get_current_user() );
 		else
 			return new GP_User( array( 'id' => 0, ) );
 	}
 
 	function logout() {
-		global $wp_auth_object;
-		$wp_auth_object->clear_auth_cookie();
+		wp_logout();
 	}
 
 	/**
@@ -72,23 +80,22 @@ class GP_User extends GP_Thing {
 
 	/**
 	 * Set $this as the current user if $password patches this user's password
+	 * and sets the auth cookies.
 	 */
 	function login( $password ) {
- 		if ( !WP_Pass::check_password( $password, $this->user_pass, $this->id ) ) {
+		if ( ! wp_check_password( $password, $this->user_pass, $this->id ) ) {
 			return false;
 		}
 		$this->set_as_current();
+		wp_set_auth_cookie( $this->id );
 		return true;
 	}
 
 	/**
-	 * Makes the user the current user of this session. Sets the cookies and such.
+	 * Makes the user the current user of this session.
 	 */
 	function set_as_current() {
-		global $wp_auth_object;
-		$wp_auth_object->set_current_user( $this->id );
-		$wp_auth_object->set_auth_cookie( $this->id );
-		$wp_auth_object->set_auth_cookie( $this->id, 0, 0, 'logged_in');
+		wp_set_current_user( $this->id );
 	}
 
 	/**
@@ -120,8 +127,7 @@ class GP_User extends GP_Thing {
 	}
 
 	function get_meta( $key ) {
-		global $wp_users_object;
-		if ( !$user = $wp_users_object->get_user( $this->id ) ) {
+		if ( !$user = get_userdata( $this->id ) ) {
 			return;
 		}
 
@@ -138,14 +144,6 @@ class GP_User extends GP_Thing {
 	function delete_meta( $key ) {
 		return gp_delete_meta( $this->id, $key, '', 'user' );
 	}
-
-
-	function reintialize_wp_users_object() {
-		global $gpdb, $wp_auth_object, $wp_users_object;
-		$wp_users_object = new WP_Users( $gpdb );
-		$wp_auth_object->users = $wp_users_object;
-	}
-
 
 	public function get_avatar( $size = 100 ) {
 		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;

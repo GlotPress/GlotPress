@@ -28,12 +28,12 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 				'extracted_comments' => $comment,
 			);
 		}
-		$this->assertEquals( file_get_contents( 'data/translation.resx.xml' ), $this->resx->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
+		$this->assertEquals( file_get_contents( GP_DIR_TESTDATA . '/translation.resx.xml' ), $this->resx->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
 	}
 
 
 	function test_read_originals() {
-		$translations = $this->resx->read_originals_from_file( 'data/originals.resx.xml' );
+		$translations = $this->resx->read_originals_from_file( GP_DIR_TESTDATA . '/originals.resx.xml' );
 		$this->assertEquals( count($this->entries ), count( $translations->entries ), 'number of read originals is different from the expected' );
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
@@ -56,7 +56,7 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 					->method( 'by_project_id' )
 					->with( $this->equalTo(2) )
 					->will( $this->returnValue($stubbed_originals) );
-		$translations = $this->resx->read_translations_from_file( 'data/translation.resx.xml', (object)array( 'id' => 2 ) );
+		$translations = $this->resx->read_translations_from_file( GP_DIR_TESTDATA . '/translation.resx.xml', (object)array( 'id' => 2 ) );
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation ) = $sample;
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );

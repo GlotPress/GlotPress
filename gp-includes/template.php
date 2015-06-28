@@ -73,14 +73,6 @@ function gp_title( $title = null ) {
 	}
 }
 
-function body_class() {
-	$classes = apply_filters( 'body_class', array( 'no-js' ) );
-
-	// Separates classes with a single space, collates classes for body element
-	echo 'class="' . join( ' ', $classes ) . '"';
-}
-
-
 function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	$defaults = array(
 		/* translators: separates links in the navigation breadcrumb */

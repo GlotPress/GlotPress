@@ -1,7 +1,7 @@
 <?php
 gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
-wp_enqueue_script( 'common' );
+wp_enqueue_script( 'gp-common' );
 wp_enqueue_script('tablesorter');
 $edit_link = gp_link_project_edit_get( $project, __('(edit)') );
 $parity = gp_parity_factory();

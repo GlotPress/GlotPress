@@ -9,8 +9,6 @@ class GP_Route_Login extends GP_Route_Main {
 	}
 
 	function login_post() {
-		global $wp_users_object, $wp_auth_object;
-
 		$user = GP::$user->by_login( $_POST['user_login'] );
 
 		if ( !$user || is_wp_error($user) ) {

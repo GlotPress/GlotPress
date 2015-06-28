@@ -466,3 +466,30 @@ function gp_is_between( $value, $start, $end ) {
 function gp_is_between_exclusive( $value, $start, $end ) {
 	return $value > $start && $value < $end;
 }
+
+/**
+ * Acts the same as core PHP setcookie() but its arguments are run through the backpress_set_cookie filter.
+ *
+ * If the filter returns false, setcookie() isn't called.
+ */
+function backpress_set_cookie() {
+	$args = func_get_args();
+	$args = apply_filters( 'backpress_set_cookie', $args );
+	if ( $args === false ) return;
+	call_user_func_array( 'setcookie', $args );
+}
+
+function backpress_gmt_strtotime( $string ) {
+	if ( is_numeric($string) )
+		return $string;
+	if ( !is_string($string) )
+		return -1;
+
+	if ( stristr($string, 'utc') || stristr($string, 'gmt') || stristr($string, '+0000') )
+		return strtotime($string);
+
+	if ( -1 == $time = strtotime($string . ' +0000') )
+		return strtotime($string);
+
+	return $time;
+}
