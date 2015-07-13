@@ -1270,6 +1270,7 @@ class GP_Locales {
 		$mri->lang_code_iso_639_3 = 'mri';
 		$mri->country_code = 'nz';
 		$mri->slug = 'mri';
+		$mri->wp_locale = 'mri';
 		$mri->nplurals = 2;
 		$mri->plural_expression = '(n > 1)';
 		$mri->google_code = 'mi';
