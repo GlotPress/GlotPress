@@ -222,7 +222,6 @@ class GP_Locales {
 		$az_tr->country_code = 'tr';
 		$az_tr->wp_locale = 'az_TR';
 		$az_tr->slug = 'az-tr';
-		$az_tr->text_direction = 'rtl';
 
 		$ba = new GP_Locale();
 		$ba->english_name = 'Bashkir';
@@ -373,6 +372,7 @@ class GP_Locales {
 		$ckb->country_code = 'ku';
 		$ckb->wp_locale = 'ckb';
 		$ckb->slug = 'ckb';
+		$ckb->text_direction = 'rtl';
 
 		$co = new GP_Locale();
 		$co->english_name = 'Corsican';
@@ -1851,6 +1851,7 @@ class GP_Locales {
 		$ug->country_code = 'cn';
 		$ug->wp_locale = 'ug_CN';
 		$ug->slug = 'ug';
+		$ug->text_direction = 'rtl';
 
 		$uk = new GP_Locale();
 		$uk->english_name = 'Ukrainian';
@@ -1873,6 +1874,7 @@ class GP_Locales {
 		$ur->wp_locale = 'ur';
 		$ur->slug = 'ur';
 		$ur->google_code = 'ur';
+		$ur->text_direction = 'rtl';
 
 		$uz = new GP_Locale();
 		$uz->english_name = 'Uzbek';
