@@ -408,4 +408,32 @@ class GP_Thing {
 		if ( $conditions_str ) $conditions[] = $conditions_str;
 		return implode( ' AND ', $conditions );
 	}
+
+
+	// set memory limits.
+	public function set_memory_limit( $new_limit ) {
+		$current_limit     = ini_get( 'memory_limit' );
+
+		if ( '-1' == $current_limit ) {
+			return false;
+		}
+
+		$current_limit_int = intval( $current_limit );
+		if ( false !== strpos( $current_limit, 'G' ) ) {
+			$current_limit_int *= 1024;
+		}
+
+		$new_limit_int = intval( $new_limit );
+		if ( false !== strpos( $new_limit, 'G' ) ) {
+			$new_limit_int *= 1024;
+		}
+
+		if ( -1 != $current_limit && ( -1 == $new_limit || $current_limit_int < $new_limit_int ) ) {
+			ini_set( 'memory_limit', $new_limit );
+			return true;
+		}
+
+		return false;
+	}
+
 }

@@ -51,7 +51,8 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	function import( $translations ) {
-		@ini_set('memory_limit', '256M');
+		$this->set_memory_limit('256M');
+
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
 
 		$locale = GP_Locales::by_slug( $this->locale );
