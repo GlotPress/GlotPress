@@ -3,7 +3,7 @@
 class GP_Router {
 
 	public $api_prefix = 'api';
-	public $urls = array();
+	private $urls = array();
 
 	public function __construct( $urls = array() ) {
 		$this->urls = $urls;
@@ -14,6 +14,8 @@ class GP_Router {
 	 */
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
+
+		do_action( 'gp_router_default_routes_set', $this );
 	}
 
 	/**
@@ -33,17 +35,30 @@ class GP_Router {
 		$this->urls["$method:$re"] = $function;
 	}
 
+	public function prepend( $re, $function, $method = 'get' ) {
+		$this->urls = array( "$method:$re" => $function ) + $this->urls;
+	}
+
+	public function remove( $re, $method = 'get' ) {
+		if ( isset( $this->urls["$method:$re"] ) ) {
+			unset( $this->urls["$method:$re"] );
+			return true;
+		}
+
+		return false;
+	}
+
 	private function default_routes() {
 		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
 		$projects = 'projects';
 		$project = $projects.'/'.$path;
 		$id = '(\d+)';
-		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
+		$locale = '(' . implode('|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
 		$set = "$project/$locale/$dir";
 
 		// overall structure
-		return apply_filters( 'routes', array(
+		return array(
 			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
@@ -115,7 +130,7 @@ class GP_Router {
 			"post:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_post'),
 
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
-		) );
+		);
 	}
 
 
@@ -160,7 +175,7 @@ class GP_Router {
 						register_shutdown_function( array( &$route, 'after_request') );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
-						do_action( 'after_request', $class, $method );
+						do_action( 'gp_after_request', $class, $method );
 						$route->request_running = false;
 					} else {
 						call_user_func_array( $func, array_slice( $matches, 1 ) );
