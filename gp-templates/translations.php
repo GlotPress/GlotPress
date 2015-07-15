@@ -25,7 +25,7 @@ $i = 0;
 	<?php printf( __("Translation of %s"), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __('(edit)') ); ?>
 	<?php if ( $glossary ): ?>
-	<?php echo gp_link( gp_url_project_locale( $project, $locale->slug, $translation_set->slug ) . '/glossary', __('glossary'), array('class'=>'glossary-link') ); ?>
+	<?php echo gp_link( $glossary->path(), __('glossary'), array('class'=>'glossary-link') ); ?>
 	<?php elseif ( $can_approve ): ?>
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __('Create glossary'), array('class'=>'glossary-link') ); ?>
 	<?php endif; ?>
