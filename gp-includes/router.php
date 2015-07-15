@@ -3,7 +3,7 @@
 class GP_Router {
 
 	public $api_prefix = 'api';
-	public $urls = array();
+	private $urls = array();
 
 	public function __construct( $urls = array() ) {
 		$this->urls = $urls;
@@ -14,6 +14,8 @@ class GP_Router {
 	 */
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
+
+		do_action( 'router_default_routes_set', $this ); 
 	}
 
 	/**
@@ -22,8 +24,10 @@ class GP_Router {
 	*/
 	public function request_uri() {
 		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
+		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) ) {
 			return urldecode( $match[1] );
+		}
+
 		return false;
 	}
 
@@ -33,6 +37,19 @@ class GP_Router {
 
 	public function add( $re, $function, $method = 'get' ) {
 		$this->urls["$method:$re"] = $function;
+	}
+
+	public function prepend( $re, $function, $method = 'get' ) {
+		$this->urls = array( "$method:$re" => $function ) + $this->urls;
+	}
+
+	public function remove( $re, $method = 'get' ) {
+		if ( isset( $this->urls["$method:$re"] ) ) {
+			unset( $this->urls["$method:$re"] );
+			return true;
+		}
+
+		return false;
 	}
 
 	private function default_routes() {
@@ -45,7 +62,7 @@ class GP_Router {
 		$set = "$project/$locale/$dir";
 
 		// overall structure
-		return apply_filters( 'routes', array(
+		return array(
 			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'post:/login' => array('GP_Route_Login', 'login_post'),
@@ -118,7 +135,7 @@ class GP_Router {
 			"post:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_post'),
 
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
-		) );
+		);
 	}
 
 
