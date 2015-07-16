@@ -72,7 +72,6 @@ class GP_Original extends GP_Thing {
 
 	function import_for_project( $project, $translations ) {
 		global $gpdb;
-		wp_cache_delete( $project->id, self::$count_cache_group );
 
 		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
 
