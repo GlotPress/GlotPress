@@ -47,6 +47,18 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, $GLOBALS['update_invocation_count'], 'update should be invoked 3 times' );
 	}
 
+	function test_import_for_project_should_update_cache() {
+		$project  = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
+		$count    = $original->count_by_project_id( $project->id );
+
+		$translations_array = array( array( 'singular' => $original->singular ), array( 'singular' => 'dyado' ) );
+		$translations       = $this->create_translations_with( $translations_array );
+		$original->import_for_project( $project, $translations );
+
+		$this->assertEquals( count( $translations_array ), $original->count_by_project_id( $project->id ) );
+	}
+
 	function test_is_different_from_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
 		$original = $this->factory->original->create();
 		$this->assertFalse( GP::$original->is_different_from( array( 'singular' => $original->singular ), $original ) );
