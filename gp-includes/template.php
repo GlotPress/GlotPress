@@ -217,11 +217,14 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 
 function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
 	$locales = GP_Locales::locales();
-	$locales = wp_list_pluck( $locales, 'name_with_slug' );
-
 	ksort( $locales );
 
-	return gp_select( $name_and_id, array_merge( array( '' => __('&mdash; Locale &mdash;') ), $locales ), $selected_slug, $attrs );
+	$options = array( '' => __('&mdash; Locale &mdash;') );
+	foreach ( $locales as $key => $locale ) {
+		$options[ $key ] = sprintf( '%s &mdash; %s', $locale->slug, $locale->english_name );
+	}
+
+	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
 }
 
 function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
