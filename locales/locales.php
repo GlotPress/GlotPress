@@ -41,6 +41,9 @@ class GP_Locale {
 		if ( 'rtl' == $name ) {
 			return ( 'rtl' === $this->text_direction );
 		}
+		if ( 'name_with_slug' == $name ) {
+			return sprintf( '%s &mdash; %s', $this->slug, $this->english_name );
+		}
 	}
 
 
