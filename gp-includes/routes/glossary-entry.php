@@ -97,7 +97,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$ge     = $glossary_entry->reload();
 			$output = gp_tmpl_get_output( 'glossary-entry-row', get_defined_vars() );
 
-			echo json_encode( $output );
+			echo gp_json_encode( $output );
 		}
 
 		exit();

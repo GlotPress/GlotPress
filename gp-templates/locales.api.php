@@ -1,2 +1,2 @@
 <?php
-	echo json_encode( $locales );
+	echo gp_json_encode( $locales );
