@@ -205,10 +205,17 @@ class GP_Google_Translate extends GP_Plugin {
 	}
 
 	public function google_translate_fix( $string ) {
-		$string = preg_replace_callback( '/% (s|d)/i', lambda( '$m', '"%".strtolower($m[1])' ), $string );
-		$string = preg_replace_callback( '/% (\d+) \$ (s|d)/i', lambda( '$m', '"%".$m[1]."\\$".strtolower($m[2])' ), $string );
+		$string = preg_replace_callback( '/% (s|d)/i', function( $m ) {
+			return "%" . strtolower( $m[1] );
+		}, $string );
+
+		$string = preg_replace_callback( '/% (\d+) \$ (s|d)/i', function( $m ) {
+			return "%" . $m[1] . "\\$" . strtolower( $m[2] );
+		}, $string );
+
 		return $string;
 	}
+
 }
 
 GP::$plugins->gp_google_translate = new GP_Google_Translate;
