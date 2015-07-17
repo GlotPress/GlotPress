@@ -9,10 +9,21 @@
  * @param WP_Styles $styles
  */
 function gp_styles_default( &$styles ) {
+<<<<<<< HEAD
 	$url = gp_plugin_url( 'assets/css' );
 
 	$styles->add( 'base', $url . '/style.css', array(), '20141019' );
 	$styles->add( 'install', $url . '/install.css', array( 'base' ), '20140902' );
+=======
+	$styles->base_url = gp_url_base( 'css' );
+	$styles->default_version = gp_get_option( 'version' );
+	// TODO: get text direction for current locale
+	//$styles->text_direction = 'rtl' == get_bloginfo( 'text_direction' ) ? 'rtl' : 'ltr';
+	$styles->text_direction = 'ltr';
+
+	$styles->add( 'base', '/style.css', array(), '20150717' );
+	$styles->add( 'install', '/install.css', array('base'), '20140902' );
+>>>>>>> Deprecate gp_parity_factory in favor of CSS3 for alternate row colors.
 }
 
 add_action( 'wp_default_styles', 'gp_styles_default' );

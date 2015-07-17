@@ -4,15 +4,14 @@ gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $translation_set->name ),
 ) );
-gp_enqueue_script( 'jquery-ui-core' );
-gp_enqueue_script( 'gp-editor' );
-gp_enqueue_script( 'gp-translations-page' );
-wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __('Sort'), 'filter' => __('Filter') ) );
+wp_enqueue_script( 'jquery-ui' );
+wp_enqueue_script( 'editor' );
+wp_enqueue_script( 'translations-page' );
+wp_localize_script( 'translations-page', '$gp_translations_options', array( 'sort' => __('Sort'), 'filter' => __('Filter') ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
-wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
-$parity = gp_parity_factory();
+wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
 
 gp_tmpl_header();
 $i = 0;
@@ -160,7 +159,7 @@ $i = 0;
 	</thead>
 <?php
 	if ( $glossary ) {
-		$translations = map_glossary_entries_to_translations_originals( $translations, $glossary );
+		$translations = map_glossary_entries_to_translations_originals( $translations, $glossary ); 
 	}
 ?>
 <?php foreach( $translations as $t ):
