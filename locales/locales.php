@@ -564,6 +564,17 @@ class GP_Locales {
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
 
+		$en_za = new GP_Locale();
+		$en_za->english_name = 'English (South Africa)';
+		$en_za->native_name = 'English (South Africa)';
+		$en_za->lang_code_iso_639_1 = 'en';
+		$en_za->lang_code_iso_639_2 = 'eng';
+		$en_za->lang_code_iso_639_3 = 'eng';
+		$en_za->country_code = 'za';
+		$en_za->wp_locale = 'en_ZA';
+		$en_za->slug = 'en-za';
+		$en_za->google_code = 'en';
+
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
 		$eo->native_name = 'Esperanto';
