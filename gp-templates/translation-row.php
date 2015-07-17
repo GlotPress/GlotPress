@@ -28,7 +28,16 @@ $can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->tr
 	</td>
 	<td class="translation foreign-text">
 	<?php
-		$edit_text = $can_edit? __('Double-click to add') : sprintf(__('You <a href="%s">have to login</a> to add a translation.'), gp_url_login());
+		if ( $can_edit ) {
+			$edit_text = __('Double-click to add');
+		}
+		elseif ( GP::$user->logged_in() ) {
+			$edit_text = __('You are not allowed to add a translation.');
+		}
+		else {
+			$edit_text = sprintf( __('You <a href="%s">have to login</a> to add a translation.'), gp_url_login() );
+		}
+
 		$missing_text = "<span class='missing'>$edit_text</span>";
 		if ( ! count( array_filter( $t->translations, 'gp_is_not_empty_string' ) ) ):
 			echo $missing_text;

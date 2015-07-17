@@ -133,7 +133,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 
-		$can_edit = GP::$user->logged_in();
+		$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
@@ -145,8 +145,6 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	public function translations_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$this->logged_in_or_forbidden();
-
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 
@@ -155,6 +153,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+
+		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
 
 		if ( ! $translation_set ) {
 			return $this->die_with_404();
@@ -199,7 +199,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( $translations ) {
 					$t = $translations[0];
 					$parity = returner( 'even' );
-					$can_edit = GP::$user->logged_in();
+					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 					$can_write = $this->can( 'write', 'project', $project->id );
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
@@ -376,7 +376,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $translations ) {
 			$t = $translations[0];
 			$parity = returner( 'even' );
-			$can_edit = GP::$user->logged_in();
+			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$this->tmpl( 'translation-row', get_defined_vars() );
