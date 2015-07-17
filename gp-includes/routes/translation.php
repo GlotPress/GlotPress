@@ -122,8 +122,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		$page = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
+
 		if ( 'random' == gp_array_get( $sort, 'by') ) {
-			add_filter( 'gp_pagination', create_function( '$html', 'return "";' ) );
+			add_filter( 'gp_pagination', '__return_null' );
 		}
 
 		$per_page = GP::$user->current()->get_meta('per_page');
