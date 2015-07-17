@@ -325,7 +325,9 @@ class GP_Locales {
 		$br->native_name = 'Brezhoneg';
 		$br->lang_code_iso_639_1 = 'br';
 		$br->lang_code_iso_639_2 = 'bre';
+		$br->lang_code_iso_639_3 = 'bre';
 		$br->country_code = 'fr';
+		$br->wp_locale = 'bre';
 		$br->slug = 'br';
 		$br->nplurals = 2;
 		$br->plural_expression = '(n > 1)';
