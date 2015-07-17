@@ -58,7 +58,7 @@ class GP_Router {
 		$projects = 'projects';
 		$project = $projects.'/'.$path;
 		$id = '(\d+)';
-		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
+		$locale = '(' . implode('|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
 		$set = "$project/$locale/$dir";
 
 		// overall structure
