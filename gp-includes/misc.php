@@ -126,13 +126,6 @@ function gp_redirect( $location, $status = 302 ) {
 }
 
 /**
- * Returns a function, which returns the string "odd" or the string "even" alternatively.
- */
-function gp_parity_factory() {
-	return create_function( '', 'static $parity = "even"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
-}
-
-/**
  * Builds SQL LIMIT/OFFSET clause for the given page
  *
  * @param integer $page The page number. The first page is 1.

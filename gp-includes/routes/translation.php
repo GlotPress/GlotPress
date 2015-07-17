@@ -206,7 +206,6 @@ class GP_Route_Translation extends GP_Route_Main {
 
 				if ( $translations ) {
 					$t = $translations[0];
-					$parity = returner( 'even' );
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 					$can_write = $this->can( 'write', 'project', $project->id );
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
@@ -383,7 +382,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
 		if ( $translations ) {
 			$t = $translations[0];
-			$parity = returner( 'even' );
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
