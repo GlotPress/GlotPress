@@ -26,23 +26,29 @@ class GP_Locale {
 		return new GP_Locale( $state );
 	}
 
-
 	/**
-	 * __isset() magic method for rtl that has been deprecated
+	 * Make deprecated properties checkable for backwards compatibility.
+	 *
+	 * @param string $name Property to check if set.
+	 * @return bool Whether the property is set.
 	 */
 	public function __isset( $name ) {
-		return ( 'rtl' === $this->text_direction );
+		if ( 'rtl' == $name ) {
+			return isset( $this->text_direction );
+		}
 	}
 
 	/**
-	 * __get() magic method for rtl that has been deprecated
+	 * Make deprecated properties readable for backwards compatibility.
+	 *
+	 * @param string $name Property to get.
+	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
 		if ( 'rtl' == $name ) {
 			return ( 'rtl' === $this->text_direction );
 		}
 	}
-
 
 	public function combined_name() {
 		/* translators: combined name for locales: 1: name in English, 2: native name */
