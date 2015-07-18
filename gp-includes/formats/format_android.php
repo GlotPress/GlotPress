@@ -6,7 +6,7 @@ class GP_Format_Android extends GP_Format {
 	public $extension = 'xml';
 
 	public $exported = '';
-	
+
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
@@ -40,7 +40,7 @@ class GP_Format_Android extends GP_Format {
 		$data = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
 
-		if ( ! is_object( $data ) )		
+		if ( ! is_object( $data ) )
 			return false;
 
 		$entries = new Translations;
@@ -77,7 +77,7 @@ class GP_Format_Android extends GP_Format {
 				$entry->context      = $array_name . "[$item_index]";
 				$entry->singular     = $this->unescape( $item[0] );
 				$entry->translations = array();
-	
+
 				$entries->add_entry( $entry );
 
 				$item_index++;
@@ -105,8 +105,8 @@ class GP_Format_Android extends GP_Format {
 			if ( ! isset( $mapping[ $array_name ] ) )
 				$mapping[ $array_name ] = array();
 
-			//Because android doesn't fallback on the original language
-			//in string-arrays, we fill the non-translated ones with original language string.
+			// Because Android doesn't fallback on the original locale
+			// in string-arrays, we fill the non-translated ones with original locale string.
 			$value = $entry->translations[0];
 
 			if ( ! $value )

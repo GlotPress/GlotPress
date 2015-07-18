@@ -20,7 +20,7 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		$glossary_entries_terms[ $key ] = $value->term;
 	}
 
-	uasort( $glossary_entries_terms, lambda('$a, $b', 'gp_strlen($a) < gp_strlen($b)' ) );
+	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
 
 	foreach ( $translations as $key => $t ) {
 		//Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.
@@ -40,7 +40,7 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 
 		//Replace terms in strings with markup
 		foreach( $matching_entries as $term => $glossary_data ) {
-			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
+			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( gp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
 			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
 
 			if ( $t->plural ) {
@@ -73,15 +73,19 @@ function textareas( $entry, $permissions, $index = 0 ) {
 		<blockquote><em><small><?php echo esc_translation( gp_array_get( $entry->translations, $index ) ); ?></small></em></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo $entry->original_id; ?>][]" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
 
-		<?php if ( $can_edit ): ?>
-			<p>
-				<?php gp_entry_actions(); ?>
-			</p>
-		<?php else: ?>
-			<p>
-				<?php printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() ); ?>
-			</p>
-		<?php endif; ?>
+		<p>
+			<?php
+			if ( $can_edit ) { 
+				gp_entry_actions(); 
+			} 
+			elseif ( GP::$user->logged_in() ) { 
+				_e('You are not allowed to edit this translation.'); 
+			} 
+			else { 
+				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() ); 
+			} 
+			?> 
+		</p>
 	</div>
 	<?php
 }
@@ -115,7 +119,7 @@ function references( $project, $entry ) {
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
 			else :
-				echo "<li>$file:$line</li>"; 
+				echo "<li>$file:$line</li>";
 			endif;
 		endforeach;
 		?>

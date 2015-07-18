@@ -5,7 +5,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$project         = GP::$project->by_path( $project_path );
 		$locale          = GP_Locales::by_slug( $locale_slug );
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
+		$glossary        = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
 		if ( ! $glossary ){
 			return $this->die_with_404();
@@ -97,7 +97,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$ge     = $glossary_entry->reload();
 			$output = gp_tmpl_get_output( 'glossary-entry-row', get_defined_vars() );
 
-			echo json_encode( $output );
+			echo gp_json_encode( $output );
 		}
 
 		exit();
@@ -241,7 +241,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		while ( ( $data = fgetcsv( $f, 0, ',') ) !== FALSE ) {
-			//We're only parsing one language per file right now
+			// We're only parsing one locale per file right now
 			if ( count ($data) > 4 ) {
 				$data = array_splice( $data, 2, -2 );
 			}

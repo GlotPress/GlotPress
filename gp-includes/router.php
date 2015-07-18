@@ -2,46 +2,67 @@
 
 class GP_Router {
 
-	var $api_prefix = 'api';
+	public $api_prefix = 'api';
+	private $urls = array();
 
-	function __construct( $urls = null ) {
-		if ( is_null( $urls ) )
-			$this->urls = $this->default_routes();
-		else
-			$this->urls = $urls;
+	public function __construct( $urls = array() ) {
+		$this->urls = $urls;
+	}
+
+	/**
+	 * Sets the default routes that GlotPress needs.
+	 */
+	public function set_default_routes() {
+		$this->urls = array_merge( $this->urls, $this->default_routes() );
+
+		do_action( 'router_default_routes_set', $this ); 
 	}
 
 	/**
 	* Returns the current request URI path, relative to
 	* the application URI and without the query string
 	*/
-	function request_uri() {
+	public function request_uri() {
 		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
+		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) ) {
 			return urldecode( $match[1] );
+		}
+
 		return false;
 	}
 
-	function request_method() {
+	public function request_method() {
 		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
 	}
 
-	function add( $re, $function, $method = 'get' ) {
+	public function add( $re, $function, $method = 'get' ) {
 		$this->urls["$method:$re"] = $function;
 	}
 
-	function default_routes() {
+	public function prepend( $re, $function, $method = 'get' ) {
+		$this->urls = array( "$method:$re" => $function ) + $this->urls;
+	}
+
+	public function remove( $re, $method = 'get' ) {
+		if ( isset( $this->urls["$method:$re"] ) ) {
+			unset( $this->urls["$method:$re"] );
+			return true;
+		}
+
+		return false;
+	}
+
+	private function default_routes() {
 		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
 		$projects = 'projects';
 		$project = $projects.'/'.$path;
 		$id = '(\d+)';
-		$locale = '('.implode('|', array_map( create_function( '$x', 'return $x->slug;' ), GP_Locales::locales() ) ).')';
-		$set_slug = '(' . implode( '|', GP::$translation_set->existing_slugs() ) . ')';
+		$locale = '(' . implode('|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
 		$set = "$project/$locale/$dir";
 
 		// overall structure
-		return apply_filters( 'routes', array(
+		return array(
 			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'post:/login' => array('GP_Route_Login', 'login_post'),
@@ -52,7 +73,7 @@ class GP_Router {
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
 			'get:/languages' => array('GP_Route_Locale', 'locales_get'),
-			"get:/languages/$locale/$set_slug" => array('GP_Route_Locale', 'single'),
+			"get:/languages/$locale/$path" => array('GP_Route_Locale', 'single'),
 			"get:/languages/$locale" => array('GP_Route_Locale', 'single'),
 
 			"get:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_get'),
@@ -114,11 +135,11 @@ class GP_Router {
 			"post:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_post'),
 
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
-		) );
+		);
 	}
 
 
-	function route() {
+	public function route() {
 		$real_request_uri = $this->request_uri();
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
@@ -160,4 +181,5 @@ class GP_Router {
 		}
 		return gp_tmpl_404();
 	}
+
 }

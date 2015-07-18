@@ -4,8 +4,11 @@ gp_breadcrumb_project( $project );
 wp_enqueue_script( 'common' );
 wp_enqueue_script('tablesorter');
 $edit_link = gp_link_project_edit_get( $project, __('(edit)') );
-$parity = gp_parity_factory();
-if ( $project->active ) add_filter( 'gp_breadcrumb', lambda( '$s', '$s . "<span class=\\"active bubble\\">' . __('Active') . '</span>"' ) );
+
+if ( $project->active ) {
+	add_filter( 'gp_breadcrumb', function( $s ) { return $s . '<span class="active bubble">' . __('Active') . '</span>'; } );
+}
+
 gp_tmpl_header();
 ?>
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
@@ -31,8 +34,8 @@ gp_tmpl_header();
 	<table class="translation-sets tablesorter">
 		<thead>
 			<tr>
-				<th><?php _e( 'Language' ); ?></th>
-				<th><?php echo _x( '%', 'language translation percent header' ); ?></th>
+				<th><?php _e( 'Locale' ); ?></th>
+				<th><?php echo _x( '%', 'locale translation percent header' ); ?></th>
 				<th><?php _e( 'Translated' ); ?></th>
 				<th><?php _e( 'Fuzzy' ); ?></th>
 				<th><?php _e( 'Untranslated' ); ?></th>
@@ -44,7 +47,7 @@ gp_tmpl_header();
 		</thead>
 		<tbody>
 		<?php foreach( $translation_sets as $set ): ?>
-			<tr class="<?php echo $parity(); ?>">
+			<tr>
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):

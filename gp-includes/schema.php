@@ -9,7 +9,7 @@ function gp_schema_get() {
 
 	/*
 	Translations
-	 - There are fields to take all the plural forms (no known language has more than 4 plural forms)
+	 - There are fields to take all the plural forms (no known locale has more than 4 plural forms)
 	 - Belongs to an original string
 	 - Belongs to a user
 	 - Status can be: new, approved, unaproved, current, spam or whatever you'd like
@@ -38,21 +38,21 @@ function gp_schema_get() {
 		KEY `warnings` (`warnings` (1))
 	);";
 
-    /*
-    Translations sets: a translation set holds specific translation of a project in a specific language
-    For example each WordPress Spanish translation (formal, informal and that of Diego) will be different sets.
-    Most projects will have only one translation set per language.
-    */
-    $gp_schema['translation_sets'] = "CREATE TABLE IF NOT EXISTS `$gpdb->translation_sets` (
-    	`id` INT(10) NOT NULL auto_increment,
-    	`name` VARCHAR(255) NOT NULL,
-    	`slug` VARCHAR(255) NOT NULL,
+	/*
+	Translations sets: A "translation set" holds all translated strings within a project for a specific locale.
+	For example each WordPress Spanish translation (formal, informal and that of Diego) will be different sets.
+	Most projects will have only one translation set per locale.
+	*/
+	$gp_schema['translation_sets'] = "CREATE TABLE IF NOT EXISTS `$gpdb->translation_sets` (
+		`id` INT(10) NOT NULL auto_increment,
+		`name` VARCHAR(255) NOT NULL,
+		`slug` VARCHAR(255) NOT NULL,
 		`project_id` INT(10) DEFAULT NULL,
-    	`locale` VARCHAR(10) DEFAULT NULL,
-    	PRIMARY KEY (`id`),
-    	UNIQUE KEY `project_id_slug_locale` (`project_id`, `slug`, `locale`),
-    	KEY `locale_slug` (`locale`, `slug`)
-    );";
+		`locale` VARCHAR(10) DEFAULT NULL,
+		PRIMARY KEY (`id`),
+		UNIQUE KEY `project_id_slug_locale` (`project_id`, `slug`, `locale`),
+		KEY `locale_slug` (`locale`, `slug`)
+	);";
 
 	/*
 	Original strings

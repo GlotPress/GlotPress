@@ -26,11 +26,7 @@ class GP_Route_Locale extends GP_Route_Main {
 		usort( $sets, array( $this, 'sort_sets_by_project_id' ) );
 
 		$locale_projects = $projects_data = $projects = $parents = $set_slugs = $set_list = array();
-
-		//TODO: switch to wp_list_pluck
-		foreach ( $sets as $key => $value ) {
-			$locale_projects[ $key ] = $value->project_id;
-		}
+		$locale_projects = wp_list_pluck( $sets, 'project_id' );
 
 		foreach ( $sets as $set ) {
 			$set_slugs[ $set->slug ] = $set;
@@ -93,6 +89,10 @@ class GP_Route_Locale extends GP_Route_Main {
 				$projects_data[$parent_id][$previous_parent]['sets'][$set->id] = $this->set_data( $set, $set_project  );
 				$projects_data[$parent_id][$previous_parent]['totals'] = $this->set_data( $set, $set_project, $set_data );
 			}
+		}
+
+		if ( 'default' !== $current_set_slug && ! isset( $set_slugs[ $current_set_slug ] ) ) {
+			return $this->die_with_404();
 		}
 
 		if ( $set_slugs ) {

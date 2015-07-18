@@ -65,7 +65,7 @@ function gp_tmpl_404( $args = array()) {
 
 function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
-		add_filter( 'gp_title', function( $x ) use ( $title ) {
+		add_filter( 'gp_title', function() use ( $title ) {
 			return $title;
 		}, 5 );
 	} else {
@@ -95,7 +95,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 		$whole_breadcrumb  = str_replace( '{separator}', $args['separator'], $args['breadcrumb-template'] );
 		$whole_breadcrumb  = str_replace( '{breadcrumb}', $breadcrumb_string, $whole_breadcrumb );
 
-		add_filter( 'gp_breadcrumb', function( $x ) use ( $whole_breadcrumb ) {
+		add_filter( 'gp_breadcrumb', function() use ( $whole_breadcrumb ) {
 			return $whole_breadcrumb;
 		}, 5 );
 	} else {
@@ -225,11 +225,14 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 
 function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
 	$locales = GP_Locales::locales();
-	$values = array_map( create_function( '$l', 'return $l->slug;'), $locales );
-	$labels = array_map( create_function( '$l', 'return $l->slug." &mdash; ". $l->english_name;'), $locales );
-	sort( $values );
-	sort( $labels );
-	return gp_select( $name_and_id, array_merge( array( '' => __('&mdash; Locale &mdash;') ), array_combine( $values, $labels ) ), $selected_slug, $attrs );
+	ksort( $locales );
+
+	$options = array( '' => __('&mdash; Locale &mdash;') );
+	foreach ( $locales as $key => $locale ) {
+		$options[ $key ] = sprintf( '%s &mdash; %s', $locale->slug, $locale->english_name );
+	}
+
+	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
 }
 
 function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array() ) {
@@ -266,12 +269,17 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 }
 
 function gp_array_of_things_to_json( $array ) {
-	return json_encode( array_map( lambda( '$thing', '$thing->fields();' ), $array ) );
+	return gp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
-	$map_to_fields = create_function( '$array', 'return array_map( lambda( \'$thing\', \'$thing->fields();\' ), $array );' );
-	return json_encode( array_map( $map_to_fields, $array ) );
+	$map_to_fields = function( $array ) {
+		return array_map( function( $thing ) {
+			return $thing->fields();
+		}, $array );
+	};
+
+	return gp_json_encode( array_map( $map_to_fields, $array ) );
 }
 
 function things_to_fields( $data ) {
@@ -354,7 +362,7 @@ function gp_project_options_form( $project ) {
 				</dl>
 				<p>
 					<input type="submit" name="submit" value="' . esc_attr( __('Save &rarr;') ) . '" id="save" />
-					<a class="ternary" href="#" onclick="jQuery("#personal-options-toggle").click();return false;">' . __('Cancel') . '</a>
+					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __('Cancel') . '</a>
 				</p>
 				</form>
 			</div>';

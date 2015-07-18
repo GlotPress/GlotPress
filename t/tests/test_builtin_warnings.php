@@ -79,4 +79,59 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba", "\nbaba" );
 		$this->assertNoWarnings( 'both_begin_end_on_newlines', "\nbaba", "\nbaba" );
 	}
+
+	function test_placeholders_using_check() {
+		$w = new GP_Translation_Warnings;
+		$builtin = new GP_Builtin_Translation_Warnings;
+		$w->add( 'placeholder', array( $builtin, 'warning_placeholders' ) );
+
+		$fr = new GP_Locale( array(
+			'nplurals' => 2,
+			'plural_expression' => 'n > 1'
+		));
+		$this->assertEquals( null,
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation %2$s' ), $fr ) );
+		$this->assertEquals( null,
+			$w->check( 'original', 'original %s', array( 'translation', 'translation %s' ), $fr ) );
+		$this->assertEquals( array( 1 => array( 'placeholder' => 'Missing %2$s placeholder in translation.' ) ),
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation' ), $fr ) );
+
+		$de = new GP_Locale( array(
+			'nplurals' => 2,
+			'plural_expression' => 'n != 1'
+		));
+		$this->assertEquals( null,
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation %2$s' ), $de ) );
+		$this->assertEquals( null,
+			$w->check( 'original', 'original %s', array( 'translation', 'translation %s' ), $de ) );
+
+		$ja = new GP_Locale( array(
+			'nplurals' => 1,
+			'plural_expression' => '0'
+		));
+
+		$this->assertEquals( null,
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation %2$s' ), $ja ) );
+		$this->assertEquals( null,
+			$w->check( 'original', 'original %s', array( 'translation %s' ), $ja ) );
+		$this->assertEquals( array( 0 => array( 'placeholder' => 'Missing %2$s placeholder in translation.' ) ),
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation' ), $ja ) );
+
+		$ru = new GP_Locale( array(
+			'nplurals' => 3,
+			'plural_expression' => '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)'
+		));
+
+		$this->assertEquals( null,
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation %2$s', 'translation 2 %2$s' ), $ru ) );
+		$this->assertEquals( null,
+			$w->check( 'original', 'original %s', array( 'translation', 'translation 2 %s', 'translation 3 %s' ), $ru ) );
+		$this->assertEquals( array( 1 => array( 'placeholder' => 'Missing %2$s placeholder in translation.' ) ),
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation 2', 'translation 3 %2$s' ), $ru ) );
+		$this->assertEquals( array( 2 => array( 'placeholder' => 'Missing %s placeholder in translation.' ) ),
+			$w->check( 'original', 'original %s', array( 'translation', 'translation 2 %s', 'translation 3' ), $ru ) );
+		$this->assertEquals( array( 1 => array( 'placeholder' => 'Missing %s placeholder in translation.' ),
+			2 => array( 'placeholder' => 'Missing %s placeholder in translation.' ) ),
+			$w->check( 'original', 'original %s', array( 'translation', 'translation 2', 'translation 3' ), $ru ) );
+	}
 }

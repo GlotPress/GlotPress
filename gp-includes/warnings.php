@@ -25,13 +25,11 @@ class GP_Translation_Warnings {
 			$skip = array( 'singular' => false, 'plural' => false );
 			if ( !is_null( $plural ) ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
-				if ( $numbers_for_index == array(1) ) {
-					$skip['plural'] = true;
-				}
-				if ( !in_array( 1, $numbers_for_index ) ) {
-					$skip['singular'] = true;
-				}
 				if ( $locale->nplurals == 1 ) {
+					$skip['singular'] = true;
+				} else if ( in_array( 1, $numbers_for_index ) ) {
+					$skip['plural'] = true;
+				} else {
 					$skip['singular'] = true;
 				}
 			}
@@ -149,9 +147,13 @@ class GP_Builtin_Translation_Warnings {
 	 * Adds all methods starting with warning_ to $translation_warnings
 	 */
 	function add_all( &$translation_warnings ) {
-		$warnigs = array_filter( get_class_methods( get_class( $this ) ), create_function( '$f', 'return gp_startswith($f, "warning_");' ) );
-		foreach( $warnigs as $warning ) {
-			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( &$this, $warning ) );
+		$warnings = array_filter( get_class_methods( get_class( $this ) ), function( $key ) {
+			return gp_startswith( $key, 'warning_' );
+		} );
+
+		foreach( $warnings as $warning ) {
+			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );
 		}
 	}
+
 }

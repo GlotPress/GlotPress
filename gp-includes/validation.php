@@ -114,6 +114,7 @@ class GP_Validators {
 }
 
 GP_Validators::register( 'empty', 'gp_is_empty' );
+GP_Validators::register( 'empty_string', 'gp_is_empty_string' );
 GP_Validators::register( 'positive_int', 'gp_is_positive_int' );
 GP_Validators::register( 'int', 'gp_is_int' );
 GP_Validators::register( 'null', 'gp_is_null' );

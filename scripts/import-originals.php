@@ -22,8 +22,15 @@ class GP_Script_Import_Originals extends GP_CLI {
 			$this->error( __("Couldn't load translations from file!") );
 		}
 
-		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
-		echo sprintf( __("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing )."\n";
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations );
+		printf(
+			__( '%1$s new strings added, %2$s updated, %3$s fuzzied, and %4$s obsoleted.' ),
+			$originals_added,
+			$originals_existing,
+			$originals_fuzzied,
+			$originals_obsoleted
+		);
+		echo "\n";
 	}
 }
 

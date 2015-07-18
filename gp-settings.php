@@ -6,15 +6,9 @@
  */
 
 if ( defined( 'GP_DEBUG' ) && GP_DEBUG ) {
-	if ( defined( 'E_DEPRECATED' ) )
-		error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
-	else
-		error_reporting( E_ALL );
+	error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
 } else {
-    if ( defined( 'E_RECOVERABLE_ERROR' ) )
-        error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
-    else
-        error_reporting( E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING );
+	error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
 }
 
 require_once( GP_PATH . GP_INC . '/system.php' );
@@ -170,7 +164,8 @@ if ( !function_exists( 'add_filter' ) ) {
 if ( !defined( 'GP_TMPL_PATH' ) )
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 
-require_once( GP_PATH . GP_INC . 'lambda.php');
+// Functions that aren't used anymore.
+require_once( GP_PATH . GP_INC . 'deprecated.php');
 
 require_once( GP_PATH . GP_INC . 'meta.php' );
 require_once( GP_PATH . GP_INC . 'misc.php' );
@@ -340,7 +335,10 @@ foreach ( $plugins as $plugin ) {
 }
 unset( $plugins, $plugin );
 
+GP::$router->set_default_routes();
+
 do_action( 'plugins_loaded' );
+
 
 if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
 	return;

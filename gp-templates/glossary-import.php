@@ -11,7 +11,7 @@ gp_tmpl_header();
 
 <h2><?php _e( 'Import Glossary Entries'); ?></h2>
 <p>
-	<?php printf( __( 'Use this from to bulk upload glossary entries. The entries should be stored in a CSV file,  matching the custom glossary format from <a href="%s">Google Translator Toolkit</a>' ), 'https://support.google.com/translate/toolkit/answer/147854' ) ;?><br/>
+	<?php printf( __( 'Use this form to bulk upload glossary entries. The entries should be stored in a CSV file, matching the custom glossary format from <a href="%s">Google Translator Toolkit</a>.' ), 'https://support.google.com/translate/toolkit/answer/147854' ); ?><br/>
 </p>
 
 <form action="" method="post" enctype="multipart/form-data">
