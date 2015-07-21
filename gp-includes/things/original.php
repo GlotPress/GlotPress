@@ -249,9 +249,9 @@ class GP_Original extends GP_Thing {
 
 	function get_matching_originals_in_other_projects() {
 		$where = array();
-		$where[] = 'singular = %s';
-		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
-		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = %s';
+		$where[] = 'singular = BINARY %s';
+		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
+		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
 		$where[] = 'project_id != %d';
 		$where[] = "status = '+active'";
 		$where = implode( ' AND ', $where );

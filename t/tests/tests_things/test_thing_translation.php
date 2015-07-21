@@ -118,7 +118,23 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array('status' => 'current') );
 
 		$this->assertEquals( 1, count( $set2_current_translations ) );
+	}
 
+	function test_propagate_across_projects_propagates_case_sensitiv() {
+		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
+
+		$project2 = $this->factory->project->create( array( 'name'=>'project_two' ) );
+		$set2 = $this->factory->translation_set->create( array( 'locale' => $set1->locale, 'project_id' => $project2->id ) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set1->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original3 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => 'Baba' ) );
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation1->set_as_current(); //calls propagate_across_projects
+
+		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array( 'status' => 'current' ) );
+		$this->assertEquals( 1, count( $set2_current_translations ) );
 	}
 
 	function test_propagate_across_projects_does_not_create_more_than_one_current() {
@@ -145,6 +161,5 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set3_current_translations = GP::$translation->for_export( $project3, $set3, array('status' => 'current') );
 
 		$this->assertEquals( 1, count( $set3_current_translations ) );
-
 	}
 }
