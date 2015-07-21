@@ -11,7 +11,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$translation->set_status('current');
 		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
-		
+
 		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'current' ) );
 
 		$this->assertEquals( 1, count( $for_translation ) );
@@ -95,7 +95,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
 
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
-		$for_export = GP::$translation->for_export( $set->project, $set, 0, array('status' => 'current') );
+		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_untranslated' ) );
 
 		$this->assertEquals( 2, count( $for_export ) );
 		$this->assertEquals( $translation1->id, $for_export[0]->id );
@@ -115,7 +115,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$translation1->set_as_current(); //calls propagate_across_projects
 
-		$set2_current_translations = GP::$translation->for_export( $project2, $set2, 0, array('status' => 'current') );
+		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array('status' => 'current') );
 
 		$this->assertEquals( 1, count( $set2_current_translations ) );
 
@@ -142,7 +142,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$translation1->set_as_current(); //calls propagate_across_projects
 		$translation2->set_as_current(); //calls propagate_across_projects
 
-		$set3_current_translations = GP::$translation->for_export( $project3, $set3, 0, array('status' => 'current') );
+		$set3_current_translations = GP::$translation->for_export( $project3, $set3, array('status' => 'current') );
 
 		$this->assertEquals( 1, count( $set3_current_translations ) );
 
