@@ -225,7 +225,9 @@ class GP_Translation extends GP_Thing {
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->update( array('status' => 'current') );
 
-		$this->propagate_across_projects();
+		if ( apply_filters( 'enable_propagate_translations_across_projects', true ) ) {
+			$this->propagate_across_projects();
+		}
 
 		return $result;
 	}

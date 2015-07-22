@@ -160,7 +160,11 @@ class GP_Original extends GP_Thing {
 				continue;
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
-				$created->add_translations_from_other_projects();
+
+				if ( apply_filters( 'enable_add_translations_from_other_projects', true ) ) {
+					$created->add_translations_from_other_projects();
+				}
+
 				$originals_added++;
 			}
 		}
