@@ -262,56 +262,50 @@ class GP_Original extends GP_Thing {
 	function add_translations_from_other_projects() {
 		global $gpdb;
 
-		$other_projects_originals = $this->get_matching_originals_in_other_projects();
-		if ( ! $other_projects_originals ) {
+		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $gpdb->translation_sets WHERE project_id = %d", $this->project_id );
+		if ( empty( $project_translations_sets ) ) {
 			return;
 		}
 
 		$matched_sets = array();
 
-		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $gpdb->translation_sets WHERE project_id = %d", $this->project_id );
+		$sql_project  = $gpdb->prepare( 'o.project_id != %d', $this->project_id );
+		$sql_singular = $gpdb->prepare( 'o.singular = BINARY %s', $this->singular );
+		$sql_plural = is_null( $this->plural ) ? 'o.plural IS NULL' : $gpdb->prepare( 'o.plural = BINARY %s', $this->plural );
+		$sql_context = is_null( $this->context ) ? 'o.context IS NULL' : $gpdb->prepare( 'o.context = BINARY %s', $this->context );
 
-		if ( empty( $project_translations_sets ) ) {
-			return;
-		}
+		$sql = "SELECT t.*, s.locale, s.slug
+			FROM {$this->table} o
+				JOIN {$gpdb->translations} t ON o.id = t.original_id
+				JOIN {$gpdb->translation_sets} s ON t.translation_set_id = s.id
+			WHERE
+				$sql_context AND $sql_singular AND $sql_plural
+				AND o.status = '+active' AND $sql_project
+				AND t.status = 'current'
+			GROUP BY t.translation_0, t.translation_1, t.translation_2, t.translation_3, t.translation_4, t.translation_5, s.locale, s.slug
+			ORDER BY t.date_modified DESC, t.id DESC";
 
-		foreach ( $other_projects_originals as $o ) {
-			$current_translations = GP::$translation->many( "SELECT * FROM $gpdb->translations WHERE original_id = %d AND status = %s ORDER by date_modified DESC",  $o->id, 'current' );
-			if ( ! $current_translations ) {
+		$other_project_translations = GP::$translation->many( $sql );
+
+		foreach ( $other_project_translations as $t ) {
+			$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t ) {
+				return $set->locale == $t->locale && $set->slug == $t->slug;
+			} );
+
+			if ( empty( $o_translation_set ) ) {
 				continue;
 			}
 
-			foreach ( $current_translations as $t ) {
-				if ( ! $t->translation_set_id ) {
-					continue;
-				}
-
-				$t_translation_set = GP::$translation_set->get( $t->translation_set_id );
-
-				if ( ! $t_translation_set ) {
-					continue;
-				}
-
-				$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t_translation_set ) {
-					return $set->locale == $t_translation_set->locale && $set->slug == $t_translation_set->slug;
-				} );
-
-				if ( empty( $o_translation_set ) ) {
-					continue;
-				}
-
-				$o_translation_set = reset( $o_translation_set );
-
-				if ( in_array( $o_translation_set->id, $matched_sets ) ) {
-					// We already have a translation for this set.
-					continue;
-				}
-
-				$matched_sets[] = $o_translation_set->id;
-
-				$copy_status = apply_filters( 'translations_from_other_projects_status', 'current' );
-				$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
+			$o_translation_set = reset( $o_translation_set );
+			if ( in_array( $o_translation_set->id, $matched_sets ) ) {
+				// We already have a translation for this set.
+				continue;
 			}
+
+			$matched_sets[] = $o_translation_set->id;
+
+			$copy_status = apply_filters( 'translations_from_other_projects_status', 'current' );
+			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
 		}
 	}
 }
