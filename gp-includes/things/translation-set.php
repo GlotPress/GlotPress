@@ -133,14 +133,15 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	function all_count() {
-		if ( !isset( $this->all_count ) ) $this->all_count  = GP::$original->count_by_project_id( $this->project_id );
+		$this->all_count = GP::$original->count_by_project_id( $this->project_id );
 		return $this->all_count;
 	}
 
 
 	function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
-		if ( !is_array( $counts ) ) {
+
+		if ( ! is_array( $counts ) ) {
 			/*
 			 * TODO:
 			 *  - calculate weighted coefficient by priority to know how much of the strings are translated
@@ -155,9 +156,10 @@ class GP_Translation_Set extends GP_Thing {
 				SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
 				WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
 			$counts[] = (object)array( 'translation_status' => 'warnings', 'n' => $warnings_count );
-			$counts[] = (object)array( 'translation_status' => 'all', 'n' => $this->all_count() );
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
+		$counts[] = (object)array( 'translation_status' => 'all', 'n' => $this->all_count() );
+
 		$statuses = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
 		$statuses[] = 'all';

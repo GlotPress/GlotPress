@@ -178,7 +178,6 @@ class GP_Original extends GP_Thing {
 		// Clear cache when the amount of strings are changed.
 		if ( $originals_added > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
 			wp_cache_delete( $project->id, self::$count_cache_group );
-			gp_clean_translation_sets_cache( $project->id );
 		}
 
 		do_action( 'originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
