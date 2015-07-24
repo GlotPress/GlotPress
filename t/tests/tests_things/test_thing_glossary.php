@@ -24,13 +24,18 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		$root_set = $this->factory->translation_set->create( array( 'project_id' => $root->id, 'locale' => $locale->slug ) );
 
 		$sub = 	$this->factory->project->create( array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
+		$sub_set = $this->factory->translation_set->create( array( 'project_id' => $sub->id, 'locale' => $locale->slug ) );
 
 		$subsub = 	$this->factory->project->create( array( 'name' => 'subsub', 'parent_project_id' => $sub->id ) );
 		$subsub_set = $this->factory->translation_set->create( array( 'project_id' => $subsub->id, 'locale' => $locale->slug ) );
 
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $root_set->id ) );
-		$subsub_glossary = GP::$glossary->by_set_or_parent_project( $subsub_set, $subsub );
 
+		$sub_glossary = GP::$glossary->by_set_or_parent_project( $sub_set, $sub );
+		$this->assertEquals( $glossary, $sub_glossary );
+		$this->assertEquals( $glossary->path(), $sub_glossary->path() );
+
+		$subsub_glossary = GP::$glossary->by_set_or_parent_project( $subsub_set, $subsub );
 		$this->assertEquals( $glossary, $subsub_glossary );
 		$this->assertEquals( $glossary->path(), $subsub_glossary->path() );
 	}
