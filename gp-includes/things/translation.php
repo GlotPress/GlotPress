@@ -85,13 +85,7 @@ class GP_Translation extends GP_Thing {
 			'random' => 'o.priority DESC, RAND()', 'translation_date_added' => 't.date_added %s', 'original_date_added' => 'o.date_added %s',
 			'references' => 'o.references' );
 
-		$default_sort = GP::$user->current()->get_meta('default_sort');
-		if ( ! is_array($default_sort) ) {
-			$default_sort = array(
-				'by' => 'priority',
-				'how' => 'desc'
-			);
-		}
+		$default_sort = GP::$user->current()->sort_defaults();
 
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
@@ -224,7 +218,9 @@ class GP_Translation extends GP_Thing {
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->update( array('status' => 'current') );
 
-		$this->propagate_across_projects();
+		if ( apply_filters( 'enable_propagate_translations_across_projects', true ) ) {
+			$this->propagate_across_projects();
+		}
 
 		return $result;
 	}

@@ -187,6 +187,14 @@ class GP_Route_Translation extends GP_Route_Main {
 			$original = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 
+
+			$existing_translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('original_id' => $original_id, 'status' => 'current_or_waiting' ), array() );
+			foreach( $existing_translations as $e ) {
+				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
+					return $this->die_with_error( __( 'Identical current or waiting translation already exists.' ), 200 );
+				}
+			}
+
 			$translation = GP::$translation->create( $data );
 			if ( ! $translation->validate() ) {
 				$error_output = '<ul>';

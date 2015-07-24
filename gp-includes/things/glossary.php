@@ -39,13 +39,13 @@ class GP_Glossary extends GP_Thing {
 			$slug            = $translation_set->slug;
 			$translation_set = false;
 
-			while ( ! $translation_set && $project->parent_project_id  ) {
+			while ( ! $glossary && $project->parent_project_id  ) {
 				$project         = GP::$project->get( $project->parent_project_id );
 				$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
-			}
 
-			if ( $translation_set ) {
-				$glossary = $this->by_set_id( $translation_set->id );
+				if ( $translation_set ) {
+					$glossary = $this->by_set_id( $translation_set->id );
+				}
 			}
 		}
 

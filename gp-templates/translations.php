@@ -113,13 +113,7 @@ $i = 0;
 		<dt><?php _x('By:','sort by'); ?></dt>
 		<dd>
 		<?php
-		$default_sort = GP::$user->current()->get_meta('default_sort');
-		if ( ! is_array($default_sort) ) {
-			$default_sort = array(
-				'by' => 'priority',
-				'how' => 'desc'
-			);
-		}
+		$default_sort = GP::$user->current()->sort_defaults();
 
 		echo gp_radio_buttons('sort[by]',
 			array(

@@ -31,7 +31,7 @@ function gp_upgrade() {
 function gp_set_htaccess() {
 	// The server doesn't support mod rewrite
 	if ( ! apache_mod_loaded( 'mod_rewrite', true ) ) {
-		//return false;
+		return false;
 	}
 
 	if ( file_exists( '.htaccess' ) && ! is_writeable( '.htaccess' ) ) {
