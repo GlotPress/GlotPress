@@ -4,6 +4,7 @@ class GP_CLI {
 
 	public $short_options = '';
 	public $long_options = array();
+	public $options = array();
 	public $program_name = '';
 	public $usage = '';
 

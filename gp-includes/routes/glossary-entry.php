@@ -82,7 +82,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ){
-			return $this->die_with_404( __('The glossary entry cannot be found'), 200 );
+			return $this->die_with_error( __('The glossary entry cannot be found'), 200 );
 		}
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
