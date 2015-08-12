@@ -281,7 +281,7 @@ class GP_Translation extends GP_Thing {
 			$updated = $this->save( array( 'status' => $status ) );
 		}
 
-		if ( $updated && $this->status != $status ) {
+		if ( $updated ) {
 			gp_clean_translation_set_cache( $this->translation_set_id );
 		}
 
