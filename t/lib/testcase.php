@@ -53,16 +53,29 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
 	function clean_up_global_scope() {
 		GP::$user->reintialize_wp_users_object();
-		wp_cache_flush();
 		$locales = &GP_Locales::instance();
 		$locales->locales = array();
 		$_GET = array();
 		$_POST = array();
+		$this->flush_cache();
 		/**
 		 * @todo re-initialize all thing objects
 		 */
 		GP::$translation_set = new GP_Translation_Set;
 		GP::$original = new GP_Original;
+	}
+
+	function flush_cache() {
+		global $wp_object_cache;
+		$wp_object_cache->group_ops = array();
+		$wp_object_cache->stats = array();
+		$wp_object_cache->memcache_debug = array();
+		$wp_object_cache->cache = array();
+		if ( method_exists( $wp_object_cache, '__remoteset' ) ) {
+			$wp_object_cache->__remoteset();
+		}
+		wp_cache_flush();
+		wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'usermail', 'usernicename' ) );
 	}
 
 	function start_transaction() {
@@ -114,6 +127,12 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 				$this->fail();
 			}
 		}
+	}
+
+	function assertEqualSets( $expected, $actual ) {
+		sort( $expected );
+		sort( $actual );
+		$this->assertEquals( $expected, $actual );
 	}
 
 	function assertDiscardWhitespace( $expected, $actual ) {

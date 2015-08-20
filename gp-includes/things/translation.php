@@ -216,7 +216,7 @@ class GP_Translation extends GP_Thing {
 				array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting') )
 		&& $this->update( array('status' => 'old'),
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
-		&& $this->update( array('status' => 'current') );
+		&& $this->save( array('status' => 'current') );
 
 		if ( apply_filters( 'enable_propagate_translations_across_projects', true ) ) {
 			$this->propagate_across_projects();
@@ -276,12 +276,11 @@ class GP_Translation extends GP_Thing {
 	function set_status( $status ) {
 		if ( 'current' == $status ) {
 			$updated = $this->set_as_current();
-		}
-		else {
-			$updated = $this->update( array( 'status' => $status ) );
+		} else {
+			$updated = $this->save( array( 'status' => $status ) );
 		}
 
-		if ( $updated && $this->status != $status ) {
+		if ( $updated ) {
 			gp_clean_translation_set_cache( $this->translation_set_id );
 		}
 
@@ -310,6 +309,16 @@ class GP_Translation extends GP_Thing {
 		$last_modified = $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
 		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
 		return $last_modified;
+	}
+
+	function after_create() {
+		do_action( 'translation_created', $this );
+		return true;
+	}
+
+	function after_save() {
+		do_action( 'translation_saved', $this );
+		return true;
 	}
 
 }

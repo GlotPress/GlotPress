@@ -310,5 +310,10 @@ class GP_Original extends GP_Thing {
 			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
 		}
 	}
+
+	function after_create() {
+		do_action( 'original_created', $this );
+		return true;
+	}
 }
 GP::$original = new GP_Original();
