@@ -14,25 +14,45 @@ function gp_sanitize_meta_key( $key ) {
 /**
  * Retrieves and returns a meta value from the database
  *
- * @param $meta_type object type
- * @param $object_id
- * @param $meta_key
+ * @param string      $object_type The object type.
+ * @param int         $object_id   ID of the object metadata is for.
+ * @param string|null $meta_key    Optional. Metadata key. Default null.
  *
- * @return mixed|null
+ * @return mixed|false Metadata or false.
  */
-function gp_get_meta( $meta_type, $object_id, $meta_key ) {
+function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
 	global $gpdb;
 	$meta_key = gp_sanitize_meta_key( $meta_key );
 
-	if ( ! $meta_type ) {
+	if ( ! $object_type ) {
 		return false;
 	}
 
 	if ( ! is_numeric( $object_id ) || empty( $object_id ) ) {
 		return false;
 	}
+	$object_id = (int) $object_id;
 
-	return $gpdb->get_var( $gpdb->prepare( "SELECT `meta_value` FROM `$gpdb->meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $meta_type, $object_id, $meta_key ) );
+	$object_meta = wp_cache_get( $object_id, $object_type );
+
+	if ( false === $object_meta ) {
+		$db_object_meta = $gpdb->get_results( $gpdb->prepare( "SELECT `meta_key`, `meta_value` FROM `$gpdb->meta` WHERE `object_type` = %s AND `object_id` = %d", $object_type, $object_id ) );
+
+		$object_meta = array();
+		foreach ( $db_object_meta as $meta ) {
+			$object_meta[ $meta->meta_key ] = maybe_unserialize( $meta->meta_value );
+		}
+
+		wp_cache_add( $object_id, $object_meta, $object_type );
+	}
+
+	if ( $meta_key && isset( $object_meta[ $meta_key ] ) ) {
+		return $object_meta[ $meta_key ];
+	} elseif ( ! $meta_key ) {
+		return $object_meta;
+	} else {
+		return false;
+	}
 }
 
 /**
@@ -212,8 +232,7 @@ function _gp_append_meta_sort( $a, $b )
  * @param string The option to be echoed
  * @return void
  */
-function gp_option( $option )
-{
+function gp_option( $option ) {
 	echo apply_filters( 'gp_option_' . $option, gp_get_option( $option ) );
 }
 

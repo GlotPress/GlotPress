@@ -129,6 +129,12 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	function assertEqualSets( $expected, $actual ) {
+		sort( $expected );
+		sort( $actual );
+		$this->assertEquals( $expected, $actual );
+	}
+
 	function assertDiscardWhitespace( $expected, $actual ) {
 		$this->assertEquals( preg_replace( '/\s*/', '', $expected ), preg_replace( '/\s*/', '', $actual ) );
 	}
