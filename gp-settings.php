@@ -25,11 +25,10 @@ require_once( GP_PATH . GP_INC . 'gp.php');
 
 $_GET = gp_urldecode_deep( $_GET );
 
-require_wp_db();
 $gpdb = $GLOBALS['wpdb'];
 
 if ( ! isset( $gp_table_prefix ) ) {
-	$gp_table_prefix = $table_prefix;
+	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 }
 
 $table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
@@ -54,8 +53,6 @@ require_once( GP_PATH . GP_INC . 'template.php' );
 require_once( GP_PATH . GP_INC . 'template-links.php' );
 
 require_once( GP_PATH . GP_INC . 'cli.php' );
-
-wp_start_object_cache();
 
 require_once( GP_PATH . GP_INC . 'assets-loader.php' );
 
@@ -121,50 +118,24 @@ require_once GP_PATH . GP_INC . 'formats/format_strings.php';
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );
 
-require_once( GP_PATH . GP_INC . 'plugin.php' );
-
-$plugins = scandir( GP_PLUGINS_PATH );
-foreach ( $plugins as $plugin ) {
-	if ( is_dir( GP_PLUGINS_PATH . '/' . $plugin ) ) {
-		if ( is_readable( GP_PLUGINS_PATH . "/$plugin/$plugin.php" ) )
-			require_once GP_PLUGINS_PATH . "/$plugin/$plugin.php";
-	} else if ( substr( $plugin, -4 ) == '.php' ) {
-		require_once GP_PLUGINS_PATH . $plugin;
-	}
-}
-unset( $plugins, $plugin );
-
 GP::$router->set_default_routes();
-
-do_action( 'plugins_loaded' );
-
-
-if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING )
-	return;
-else
-	define( 'GP_INSTALLING', false );
 
 if ( !defined( 'GP_ROUTING') ) {
 	define( 'GP_ROUTING', false );
 }
 
-if ( ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) && !gp_is_installed() ) {
-	if ( GP_ROUTING ) {
-		$install_uri = preg_replace( '|/[^/]+?$|', '/', $_SERVER['PHP_SELF'] ) . 'install.php';
-		header( 'Location: ' . $install_uri );
+function gp_activate_plugin() {
+	if ( gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		require_once GP_PATH . GP_INC . 'install-upgrade.php';
+		require_once GP_PATH . GP_INC . 'schema.php';
+		gp_upgrade_db();
 	}
-	return;
 }
+register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 
 gp_populate_notices();
 
-function gp_shutdown_action_hook() {
-	do_action( 'shutdown' );
-}
-register_shutdown_function( 'gp_shutdown_action_hook' );
-
-do_action( 'init' );
-
-if ( GP_ROUTING ) {
+if ( GP_ROUTING && ! is_admin() ) {
 	GP::$router->route();
 }

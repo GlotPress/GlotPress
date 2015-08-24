@@ -169,19 +169,15 @@ function _gp_get_salt( $constants, $option = false ) {
 		}
 	}
 
-	if ( !defined( 'GP_INSTALLING' ) || !GP_INSTALLING ) {
-		if ( !$option ) {
-			$option = strtolower( $constants[0] );
-		}
-		$salt = gp_get_option( $option );
-		if ( empty( $salt ) ) {
-			$salt = gp_generate_password();
-			gp_update_option( $option, $salt );
-		}
-		return $salt;
+	if ( !$option ) {
+		$option = strtolower( $constants[0] );
 	}
-
-	return '';
+	$salt = gp_get_option( $option );
+	if ( empty( $salt ) ) {
+		$salt = gp_generate_password();
+		gp_update_option( $option, $salt );
+	}
+	return $salt;
 }
 
 if ( !function_exists( 'gp_salt' ) ) :
