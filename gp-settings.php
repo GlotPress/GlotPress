@@ -1,16 +1,4 @@
 <?php
-/**
- * Loads needed libraries and does the preliminary work. You should not have to
- * edit this file. Everything should be configurable from the outside. Starts the
- * routing logic in the end.
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'GlotPress requires a WordPress <code>ABSPATH</code> to operate.' );
-}
-
-require_once ABSPATH . '/wp-load.php';
-
 require_once( GP_PATH . GP_INC . '/system.php' );
 
 if ( !defined( 'GP_LOCALES_PATH' ) ) {
