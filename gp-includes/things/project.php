@@ -58,7 +58,7 @@ class GP_Project extends GP_Thing {
 			unset( $args['path'] );
 		}
 		if ( isset( $args['active'] ) ) {
-			if ( 'on' == $args['active'] ) $args['active'] = 1;
+			if ( 'on' === $args['active'] ) $args['active'] = 1;
 			if ( !$args['active'] ) $args['active'] = 0;
 		}
 		return $args;
