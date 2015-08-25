@@ -44,11 +44,6 @@ function gp_url( $path = '/', $query = null ) {
 	return apply_filters( 'gp_url', gp_url_add_path_and_query( gp_url_path( gp_url_public_root() ), $path, $query ), $path, $query );
 }
 
-function gp_url_base( $path = '/', $query = null ) {
-	return apply_filters( 'gp_url_base', gp_url_add_path_and_query( gp_url_path( gp_url_base_root() ), $path, $query ), $path, $query );
-}
-
-
 function gp_url_add_path_and_query( $base, $path, $query ) {
 	// todo: same domain with current url?
 	$url = gp_url_join( $base, $path );
@@ -70,31 +65,8 @@ function gp_url_ssl( $url ) {
 	return $url;
 }
 
-function gp_url_base_root() {
-	$url_from_db = gp_get_option( 'url' );
-
-	return gp_const_get( 'GP_BASE_URL', $url_from_db ? $url_from_db : guess_uri() );
-}
-
 function gp_url_public_root() {
-	return gp_const_get( 'GP_URL', gp_url_base_root() );
-}
-
-/**
- * Guesses the final installed URI based on the location of the install script
- *
- * @return string The guessed URI
- */
-function guess_uri() {
-	$schema = 'http://';
-
-	if ( strtolower( gp_array_get( $_SERVER, 'HTTPS' ) ) == 'on' ) {
-		$schema = 'https://';
-	}
-
-	$uri = preg_replace( '|/[^/]*$|i', '/', $schema . gp_array_get( $_SERVER, 'HTTP_HOST') . gp_array_get( $_SERVER, 'SCRIPT_NAME' ) );
-
-	return rtrim( $uri, " \t\n\r\0\x0B/" ) . '/';
+	return home_url( gp_url_base_path() ) . '/';
 }
 
 /**
@@ -106,7 +78,7 @@ function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = 
 }
 
 function gp_url_img( $file ) {
-	return gp_url_base( array( 'img', $file ) );
+	return gp_plugin_url( "img/$file" );
 }
 
 /**
@@ -135,4 +107,12 @@ function gp_url_login( $redirect_to = null ) {
 
 function gp_url_logout() {
 	return gp_url( '/logout' );
+}
+
+function gp_url_base_path() {
+	return '/' . trim( gp_const_get( 'GP_URL_BASE', 'glotpress' ), '/' ) . '/';
+}
+
+function gp_plugin_url( $path = '' ) {
+	return plugins_url( $path, GP_PLUGIN_FILE );
 }

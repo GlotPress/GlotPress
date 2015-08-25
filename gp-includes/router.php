@@ -127,9 +127,18 @@ class GP_Router {
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
 		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
+
 		if ( $api ) {
 			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
 		}
+
+		$url_base = gp_url_base_path();
+
+		// If the request URL doesn't match our base URL, don't bother trying to match
+		if ( $url_base && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_base ) ) {
+			return;
+		}
+
 		foreach( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
 			foreach( $this->urls as $re => $func ) {
 				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
@@ -139,6 +148,7 @@ class GP_Router {
 						break;
 					}
 				}
+
 				if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
 					if ( is_array( $func ) ) {
 						list( $class, $method ) = $func;
@@ -158,11 +168,12 @@ class GP_Router {
 					} else {
 						call_user_func_array( $func, array_slice( $matches, 1 ) );
 					}
-					return;
+					exit;
 				}
 			}
 		}
-		return gp_tmpl_404();
+
+		gp_tmpl_404();
 	}
 
 }

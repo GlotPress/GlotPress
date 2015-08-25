@@ -131,11 +131,19 @@ function gp_activate_plugin() {
 		require_once GP_PATH . GP_INC . 'schema.php';
 		gp_upgrade_db();
 	}
+
+	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
+	if ( ! $admins ) {
+		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
+	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 
 gp_populate_notices();
 
-if ( GP_ROUTING && ! is_admin() ) {
-	GP::$router->route();
+function gp_run_route() {
+	if ( GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
+		GP::$router->route();
+	}
 }
+add_action( 'template_redirect', 'gp_run_route' );
