@@ -3,7 +3,7 @@ gp_title( __('Install &lt; GlotPress') );
 gp_breadcrumb( array(
 	'upgrade' == $action? __('Upgrade') : __('Install'),
 ) );
-wp_enqueue_style( 'install' );
+gp_enqueue_style( 'install' );
 gp_tmpl_header();
 ?>
 
