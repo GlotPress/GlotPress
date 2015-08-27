@@ -7,7 +7,7 @@ function gp_styles_default( &$styles ) {
 	$url = gp_plugin_url( 'css' );
 
 	$styles->add( 'base', $url . '/style.css', array(), '20141019' );
-	$styles->add( 'install', $url . '/install.css', array('base'), '20140902' );
+	$styles->add( 'install', $url . '/install.css', array( 'base' ), '20140902' );
 }
 
 add_action( 'wp_default_styles', 'gp_styles_default' );
@@ -17,7 +17,7 @@ function gp_scripts_default( &$scripts ) {
 
 	$bump = '20150430';
 
-	$scripts->add( 'tablesorter', $url . '/jquery.tablesorter.min.js', array('jquery'), '1.10.4' );
+	$scripts->add( 'tablesorter', $url . '/jquery.tablesorter.min.js', array( 'jquery' ), '1.10.4' );
 
 	$scripts->add( 'gp-common', $url . '/common.js', array( 'jquery' ), $bump );
 	$scripts->add( 'gp-editor', $url . '/editor.js', array( 'gp-common', 'jquery-ui-tooltip' ), $bump );
@@ -39,12 +39,16 @@ add_action( 'wp_default_scripts', 'gp_scripts_default' );
 function gp_enqueue_scripts() {
 	global $gp_enqueued_styles, $gp_enqueued_scripts;
 
-	foreach ( $gp_enqueued_scripts as $handle ) {
-		wp_enqueue_script( $handle );
+	if ( ! empty( $gp_enqueued_scripts ) ) {
+		foreach ( $gp_enqueued_scripts as $handle ) {
+			wp_enqueue_script( $handle );
+		}
 	}
 
-	foreach ( $gp_enqueued_styles as $handle ) {
-		wp_enqueue_style( $handle );
+	if ( ! empty( $gp_enqueued_styles ) ) {
+		foreach ( $gp_enqueued_styles as $handle ) {
+			wp_enqueue_style( $handle );
+		}
 	}
 }
 
