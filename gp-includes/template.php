@@ -224,7 +224,11 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
 	return gp_select( $name_and_id, array_merge( array( '' => __('&mdash; Locale &mdash;') ), array_combine( $values, $labels ) ), $selected_slug, $attrs );
 }
 
-function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array() ) {
+function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
+	if ( ! is_array( $exclude ) ) {
+		$exclude = array( $exclude );
+	}
+
 	$projects = GP::$project->all();
 	// TODO: mark which nodes are editable by the current user
 	$tree = array();
@@ -245,6 +249,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 
 		while ( !empty( $stack ) ) {
 			$id = array_pop( $stack );
+
+			if ( in_array( $id, $exclude ) ) {
+				continue;
+			}
+
 			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
 			$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
 			foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
