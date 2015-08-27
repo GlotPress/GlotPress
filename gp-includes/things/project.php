@@ -25,7 +25,7 @@ class GP_Project extends GP_Thing {
 	}
 
 	function top_level() {
-		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL ORDER BY name ASC" );
+		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
 		$projects = apply_filters( 'projects', $projects, 0 );
 
 		return $projects;
