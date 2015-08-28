@@ -22,7 +22,7 @@ function gp_scripts_default( &$scripts ) {
 	$scripts->add( 'gp-common', $url . '/common.js', array( 'jquery' ), $bump );
 	$scripts->add( 'gp-editor', $url . '/editor.js', array( 'gp-common', 'jquery-ui-tooltip' ), $bump );
 	$scripts->add( 'gp-glossary', $url . '/glossary.js', array( 'gp-common' ), $bump );
-	$scripts->add( 'translations-page', $url . '/translations-page.js', array( 'gp-common' ), $bump );
+	$scripts->add( 'gp-translations-page', $url . '/translations-page.js', array( 'gp-common' ), $bump );
 	$scripts->add( 'mass-create-sets-page', $url . '/mass-create-sets-page.js', array( 'gp-common' ), $bump );
 }
 
