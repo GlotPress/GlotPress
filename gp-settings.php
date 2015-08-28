@@ -141,8 +141,32 @@ register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 
 gp_populate_notices();
 
+/**
+ * Add WP rewrite rules to avoid WP thinking that GP pages are 404
+ *
+ * @since    0.1
+ */
+function gp_rewrite_rules() {
+	$gp_base = trim( gp_url_base_path(), '/' );
+	add_rewrite_rule( '^' . $gp_base . '/?(.*)$', 'index.php?gp_route=$matches[1]', 'top' );
+}
+add_action( 'init', 'gp_rewrite_rules' );
+
+
+/**
+ * Query vars for GP rewrite rules
+ *
+ * @since    0.1
+ */
+function gp_query_vars( $query_vars ) {
+	$query_vars[] = 'gp_route';
+	return $query_vars;
+}
+add_filter( 'query_vars', 'gp_query_vars' );
+
 function gp_run_route() {
-	if ( GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
+	global $wp;
+	if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
 		GP::$router->route();
 	}
 }

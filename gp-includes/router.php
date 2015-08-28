@@ -21,10 +21,8 @@ class GP_Router {
 	* the application URI and without the query string
 	*/
 	public function request_uri() {
-		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
-			return urldecode( $match[1] );
-		return false;
+		global $wp;
+		return urldecode( '/' . rtrim( $wp->query_vars['gp_route'], '/' ) );
 	}
 
 	public function request_method() {
