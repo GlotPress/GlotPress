@@ -157,6 +157,12 @@ class GP_Router {
 						$route->last_method_called = $method;
 						$route->class_name = $class;
 						GP::$current_route = &$route;
+
+						// AJAX post requests fail with 404 error if status_header not explicitly set
+						if ( 'post' === $http_method ) {
+							status_header( 200 );
+						}
+
 						$route->before_request();
 						$route->request_running = true;
 						// make sure after_request() is called even if we $this->exit_() in the request
