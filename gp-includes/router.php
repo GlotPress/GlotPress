@@ -46,7 +46,6 @@ class GP_Router {
 		return apply_filters( 'routes', array(
 			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
-			'post:/login' => array('GP_Route_Login', 'login_post'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
