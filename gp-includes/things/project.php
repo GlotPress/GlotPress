@@ -121,7 +121,7 @@ class GP_Project extends GP_Thing {
 		if ( isset( $this->user_source_url_template ) )
 			return $this->user_source_url_template;
 		else {
-			if ( $this->id && GP::$user->logged_in() && ($templates = GP::$user->current()->get_meta( 'source_url_templates' ))
+			if ( $this->id && is_user_logged_in() && ($templates = GP::$user->current()->get_meta( 'source_url_templates' ))
 					 && isset( $templates[$this->id] ) ) {
 				$this->user_source_url_template = $templates[$this->id];
 				return $this->user_source_url_template;

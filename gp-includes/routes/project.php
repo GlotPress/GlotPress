@@ -278,13 +278,13 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( 'add-validator' == gp_post( 'action' ) ) {
-			$user = GP::$user->by_login( gp_post( 'user_login' ) );
+			$user = get_user_by( 'login', gp_post( 'user_login' ) );
 			if ( !$user ) {
 				$this->redirect_with_error( __('User wasn&#8217;t found!'), gp_url_current() );
 				return;
 			}
 			$new_permission = new GP_Validator_Permission( array(
-				'user_id' => $user->id,
+				'user_id' => $user->ID,
 				'action' => 'approve',
 				'project_id' => $project->id,
 				'locale_slug' => gp_post( 'locale' ),

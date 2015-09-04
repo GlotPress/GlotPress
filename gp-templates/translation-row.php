@@ -8,7 +8,8 @@ $priority_char = array(
     '0' => array('', 'transparent', 'white'),
     '1' => array('&uarr;', 'transparent', 'green'),
 );
-$can_reject_self = (GP::$user->current()->user_login == $t->user_login && $t->translation_status == "waiting");
+$user = wp_get_current_user();
+$can_reject_self = ($user->user_login == $t->user_login && $t->translation_status == "waiting");
 ?>
 
 <tr class="preview <?php echo $parity().' '.$status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">

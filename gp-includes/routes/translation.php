@@ -133,7 +133,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 
-		$can_edit = GP::$user->logged_in();
+		$can_edit = is_user_logged_in();
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
@@ -163,7 +163,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 			$data = compact('original_id');
-			$data['user_id'] = GP::$user->current()->id;
+			$data['user_id'] = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
 			foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
@@ -199,7 +199,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( $translations ) {
 					$t = $translations[0];
 					$parity = returner( 'even' );
-					$can_edit = GP::$user->logged_in();
+					$can_edit = is_user_logged_in();
 					$can_write = $this->can( 'write', 'project', $project->id );
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
@@ -376,7 +376,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $translations ) {
 			$t = $translations[0];
 			$parity = returner( 'even' );
-			$can_edit = GP::$user->logged_in();
+			$can_edit = is_user_logged_in();
 			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$this->tmpl( 'translation-row', get_defined_vars() );
@@ -395,7 +395,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			'translation_set' =>$translation_set->id,
 			'translation' => $translation->id,
 			'warning' => gp_post( 'key' ),
-			'user' => GP::$user->current()->id
+			'user' => get_current_user_id()
 		);
 		do_action_ref_array( 'warning_discarded', $warning );
 
@@ -421,7 +421,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	private function can_approve_translation_or_forbidden( $translation ) {
-		$can_reject_self = (GP::$user->current()->id == $translation->user_id && $translation->status == "waiting");
+		$can_reject_self = (get_current_user_id() == $translation->user_id && $translation->status == "waiting");
 		if ( $can_reject_self ) {
 			return;
 		}

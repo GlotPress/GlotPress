@@ -14,7 +14,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
 
 		foreach ( $glossary_entries as $key => $entry ) {
-			$user = GP::$user->get( $entry->last_edited_by );
+			$user = get_userdata( $entry->last_edited_by );
 
 			if ( $user ) {
 				$glossary_entries[$key]->user_login = $user->user_login;
@@ -38,7 +38,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$new_glossary_entry = new GP_Glossary_Entry( gp_post('new_glossary_entry') );
-		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
+		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -73,7 +73,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$locale  = GP_Locales::by_slug( $translation_set->locale );
 
 		$new_glossary_entry = new GP_Glossary_Entry( $ge );
-		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
+		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -252,7 +252,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				'translation' => $data[1],
 				'part_of_speech' => $data[2],
 				'comment' => $data[3],
-				'last_edited_by' => GP::$user->current()->id
+				'last_edited_by' => get_current_user_id()
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );

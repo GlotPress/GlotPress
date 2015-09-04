@@ -2,8 +2,8 @@
 class GP_Route_Profile extends GP_Route_Main {
 
 	function profile_get() {
-		if ( !GP::$user->logged_in() ) {
-			$this->redirect( gp_url( '/login?redirect_to=' ).urlencode( gp_url( '/profile') ) );
+		if ( ! is_user_logged_in() ) {
+			$this->redirect( gp_url( '/login?redirect_to=' ).urlencode( gp_url( '/profile' ) ) );
 			return;
 		}
 

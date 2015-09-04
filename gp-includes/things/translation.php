@@ -126,12 +126,12 @@ class GP_Translation extends GP_Thing {
 		}
 
 		if ( gp_array_get( $filters, 'user_login' ) ) {
-			$user = GP::$user->by_login( $filters['user_login'] );
+			$user = get_user_by( 'login', $filters['user_login'] );
 			// do not return any entries if the user doesn't exist
-			$where[] = $gpdb->prepare( 't.user_id = %d', ($user && $user->id)? $user->id : -1 );
+			$where[] = $gpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
 		}
 
-		if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			$where[] = 'o.priority > -2';
 		}
 
@@ -188,7 +188,7 @@ class GP_Translation extends GP_Thing {
 		$translations = array();
 		foreach( (array)$rows as $row ) {
 			if ( $row->user_id && $this->per_page != 'no-limit' ) {
-				$user = GP::$user->get( $row->user_id );
+				$user = get_userdata( $row->user_id );
 				if ( $user ) {
 					$row->user_login = $user->user_login;
 					$row->user_display_name = $user->display_name;

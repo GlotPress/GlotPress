@@ -106,7 +106,7 @@ class GP_Route {
 	}
 
 	function logged_in_or_forbidden() {
-		if ( !GP::$user->logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 			$this->die_with_error( 'Forbidden', 403 );
 		}
 	}

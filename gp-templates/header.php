@@ -21,8 +21,8 @@ gp_enqueue_script( 'jquery' );
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
 			<?php
-			if (GP::$user->logged_in()):
-				$user = GP::$user->current();
+			if ( is_user_logged_in() ):
+				$user = wp_get_current_user();
 
 				printf( __('Hi, %s.'), '<a href="'.gp_url( '/profile' ).'">'.$user->user_login.'</a>' );
 				?>

@@ -42,7 +42,7 @@ function gp_link_project() {
 }
 
 function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
-	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );
@@ -55,7 +55,7 @@ function gp_link_project_edit() {
 }
 
 function gp_link_project_delete_get( $project, $text = false, $attrs = array() ) {
-	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Delete' );
@@ -86,7 +86,7 @@ function gp_link_login() {
 }
 
 function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
-	if ( !GP::$user->current()->can( 'write', 'project', $project->id ) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit' );
@@ -99,7 +99,7 @@ function gp_link_set_edit() {
 }
 
 function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = array() ) {
-	if ( ! GP::$user->current()->can( 'approve', 'translation_set', $set->id ) ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
 
