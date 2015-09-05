@@ -157,6 +157,7 @@ class GP_Locales {
 		$arq = new GP_Locale();
 		$arq->english_name = 'Algerian Arabic';
 		$arq->native_name = 'الدارجة الجزايرية';
+		$arq->lang_code_iso_639_1 = 'ar_DZ';
 		$arq->lang_code_iso_639_3 = 'arq';
 		$arq->country_code = 'dz';
 		$arq->wp_locale = 'arq';
@@ -164,6 +165,18 @@ class GP_Locales {
 		$arq->nplurals = 6;
 		$arq->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$arq->text_direction = 'rtl';
+
+		$ary = new GP_Locale();
+		$ary->english_name = 'Moroccan Arabic';
+		$ary->native_name = 'العربية المغربية';
+		$ary->lang_code_iso_639_1 = 'ar_MA';
+		$ary->lang_code_iso_639_3 = 'ary';
+		$ary->country_code = 'ma';
+		$ary->wp_locale = 'ary';
+		$ary->slug = 'ary';
+		$ary->nplurals = 6;
+		$ary->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
+		$ary->text_direction = 'rtl';
 
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
