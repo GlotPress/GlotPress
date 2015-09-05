@@ -181,8 +181,9 @@ class GP_Locales {
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
 		$as->native_name = 'অসমীয়া';
-		$as->lang_code_iso_639_1 = 'asm';
-		$as->lang_code_iso_639_2 = 'as';
+		$as->lang_code_iso_639_1 = 'as';
+		$as->lang_code_iso_639_2 = 'asm';
+		$as->lang_code_iso_639_3 = 'asm';
 		$as->country_code = 'in';
 		$as->wp_locale = 'as';
 		$as->slug = 'as';
