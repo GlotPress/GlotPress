@@ -1612,6 +1612,7 @@ class GP_Locales {
 		$sa_in = new GP_Locale();
 		$sa_in->english_name = 'Sanskrit';
 		$sa_in->native_name = 'भारतम्';
+		$sa_in->lang_code_iso_639_1 = 'sa';
 		$sa_in->lang_code_iso_639_2 = 'san';
 		$sa_in->lang_code_iso_639_3 = 'san';
 		$sa_in->country_code = 'in';
