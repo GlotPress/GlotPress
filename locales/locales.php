@@ -1528,7 +1528,7 @@ class GP_Locales {
 		$rhg = new GP_Locale();
 		$rhg->english_name = 'Rohingya';
 		$rhg->native_name = 'Ruáinga';
-		$rhg->lang_code_iso_639_2 = 'rhg';
+		$rhg->lang_code_iso_639_3 = 'rhg';
 		$rhg->country_code = 'mm';
 		$rhg->wp_locale = 'rhg';
 		$rhg->slug = 'rhg';
