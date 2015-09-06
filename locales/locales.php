@@ -1520,6 +1520,8 @@ class GP_Locales {
 		$ps->english_name = 'Pashto';
 		$ps->native_name = 'پښتو';
 		$ps->lang_code_iso_639_1 = 'ps';
+		$ps->lang_code_iso_639_2 = 'pus';
+		$ps->country_code = 'af';
 		$ps->wp_locale = 'ps';
 		$ps->slug = 'ps';
 		$ps->facebook_locale = 'ps_AF';
