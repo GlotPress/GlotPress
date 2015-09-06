@@ -831,6 +831,15 @@ class GP_Locales {
 		$frp->nplurals = 2;
 		$frp->plural_expression = 'n > 1';
 
+		$fur = new GP_Locale();
+		$fur->english_name = 'Friulian';
+		$fur->native_name = 'Friulian';
+		$fur->lang_code_iso_639_2 = 'fur';
+		$fur->lang_code_iso_639_3 = 'fur';
+		$fur->country_code = 'it';
+		$fur->wp_locale = 'fur';
+		$fur->slug = 'fur';
+
 		$fy = new GP_Locale();
 		$fy->english_name = 'Frisian';
 		$fy->native_name = 'Frysk';
