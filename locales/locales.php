@@ -927,7 +927,7 @@ class GP_Locales {
 		$haz = new GP_Locale();
 		$haz->english_name = 'Hazaragi';
 		$haz->native_name = 'هزاره گی';
-		$haz->lang_code_iso_639_2 = 'haz';
+		$haz->lang_code_iso_639_3 = 'haz';
 		$haz->country_code = 'af';
 		$haz->wp_locale = 'haz';
 		$haz->slug = 'haz';
