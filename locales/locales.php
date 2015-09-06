@@ -1932,7 +1932,8 @@ class GP_Locales {
 		$vec->english_name = 'Venetian';
 		$vec->native_name = 'Vèneta';
 		$vec->lang_code_iso_639_2 = 'roa';
-		$vec->country_code = 'uz';
+		$vec->lang_code_iso_639_3 = 'vec';
+		$vec->country_code = 'it';
 		$vec->slug = 'vec';
 
 		$vi = new GP_Locale();
