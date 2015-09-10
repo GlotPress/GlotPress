@@ -1985,13 +1985,16 @@ class GP_Locales {
 		$yi->google_code = 'yi';
 		$yi->text_direction = 'rtl';
 
-		$yo = new GP_Locale();
-		$yo->english_name = 'Yorùbá';
-		$yo->native_name = 'Èdè Yorùbá';
-		$yo->lang_code_iso_639_1 = 'yo';
-		$yo->lang_code_iso_639_2 = 'yor';
-		$yo->slug = 'yo';
-		$yo->google_code = 'yo';
+		$yor = new GP_Locale();
+		$yor->english_name = 'Yoruba';
+		$yor->native_name = 'Yorùbá';
+		$yor->lang_code_iso_639_1 = 'yo';
+		$yor->lang_code_iso_639_2 = 'yor';
+		$yor->lang_code_iso_639_3 = 'yor';
+		$yor->country_code = 'ng';
+		$yor->wp_locale = 'yor';
+		$yor->slug = 'yor';
+		$yor->google_code = 'yo';
 
 		$zh_cn = new GP_Locale();
 		$zh_cn->english_name = 'Chinese (China)';
