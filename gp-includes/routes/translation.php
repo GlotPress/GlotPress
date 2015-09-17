@@ -434,7 +434,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		// Translations with warnings aren't propagated, try again.
+<<<<<<< HEAD
 		if ( apply_filters( 'gp_enable_propagate_translations_across_projects', true ) ) {
+=======
+		if ( apply_filters( 'enable_propagate_translations_across_projects', true ) ) {
+>>>>>>> Translations: If a warning is discarded try to propagate again.
 			$translation->propagate_across_projects();
 		}
 	}
