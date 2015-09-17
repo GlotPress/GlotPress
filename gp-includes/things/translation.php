@@ -246,7 +246,8 @@ class GP_Translation extends GP_Thing {
 	}
 
 	function propagate_across_projects() {
-		if ( $this->status != 'current' ) {
+		// Only propagte current translations without warnings.
+		if ( $this->status != 'current' || ! empty( $this->warnings ) ) {
 			return;
 		}
 
