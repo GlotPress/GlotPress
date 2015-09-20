@@ -16,7 +16,7 @@ class GP_Locale {
 	public $facebook_locale = null;
 	// TODO: days, months, decimals, quotes
 
-	public function GP_Locale( $args = array() ) {
+	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
 		}
@@ -89,7 +89,7 @@ class GP_Locales {
 
 	public $locales = array();
 
-	public function GP_Locales() {
+	public function __construct() {
 		$aa = new GP_Locale();
 		$aa->english_name = 'Afar';
 		$aa->native_name = 'Afaraf';
