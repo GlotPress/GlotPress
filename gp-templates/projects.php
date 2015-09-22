@@ -12,7 +12,7 @@ gp_tmpl_header();
 	</ul>
 
 	<p class="actionlist secondary">
-		<?php if ( GP::$user->current()->can( 'write', 'project' ) ): ?>
+		<?php if ( current_user_can( 'manage_options' ) ): ?>
 			<?php gp_link( gp_url_project( '-new' ), __('Create a New Project') ); ?>  &bull;&nbsp;
 		<?php endif; ?>
 

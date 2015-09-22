@@ -1,39 +1,23 @@
 <?php
+
 class GP_Route_Login extends GP_Route_Main {
+
 	function login_get() {
-		if ( GP::$user->logged_in() ) {
+		if ( is_user_logged_in() ) {
 			$this->redirect( gp_url( '/' ) );
-			return;
-		}
-		$this->tmpl( 'login' );
-	}
 
-	function login_post() {
-		global $wp_users_object, $wp_auth_object;
-
-		$user = GP::$user->by_login( $_POST['user_login'] );
-
-		if ( !$user || is_wp_error($user) ) {
-			$this->errors[] = __("Invalid username!");
-			$this->redirect(  gp_url_login() );
 			return;
 		}
 
-		if ( $user->login( gp_post( 'user_pass' ) ) ) {
-			if ( gp_post( 'redirect_to' ) ) {
-				$this->redirect( gp_post( 'redirect_to' ) );
-			} else {
-				$this->notices[] = sprintf( __("Welcome, %s!"), $_POST['user_login'] );
-				$this->redirect( gp_url_public_root() );
-			}
-		} else {
-			$this->errors[] = __("Invalid password!");
-			$this->redirect(  gp_url_login() );
+		$redirect_to = gp_url( '/' );
+		if ( isset( $_GET['redirect_to'] ) && $_GET['redirect_to'] ) {
+			$redirect_to = $_GET['redirect_to'];
 		}
+
+		$this->redirect( wp_login_url( $redirect_to ) );
 	}
 
 	function logout() {
-		GP::$user->logout();
-		$this->redirect( gp_url( '/' ) );
+		$this->redirect( wp_logout_url( gp_url( '/' ) ) );
 	}
 }

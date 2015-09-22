@@ -16,10 +16,8 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 	}
 
 	function test_import_should_save_user_info() {
-		global $wp_auth_object;
-
 		$user = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
-		$wp_auth_object->set_current_user( $user->id );
+		wp_set_current_user( $user->id );
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );

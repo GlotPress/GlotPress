@@ -1,5 +1,5 @@
 <?php
-class GP_UnitTest_Factory {
+class GP_UnitTest_Factory extends WP_UnitTest_Factory {
 	function __construct() {
 		$this->project = new GP_UnitTest_Factory_For_Project( $this );
 		$this->original = new GP_UnitTest_Factory_For_Original( $this );

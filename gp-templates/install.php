@@ -3,7 +3,7 @@ gp_title( __('Install &lt; GlotPress') );
 gp_breadcrumb( array(
 	'upgrade' == $action? __('Upgrade') : __('Install'),
 ) );
-wp_enqueue_style( 'install' );
+gp_enqueue_style( 'install' );
 gp_tmpl_header();
 ?>
 
@@ -57,7 +57,7 @@ if ( $show_htaccess_instructions ): ?>
 					<p><?php _e( 'Double-check your email address before continuing.' ); ?></p></td>
 			</tr>
 		</table>
-		<p class="step"><input type="submit" name="Submit" value="<?php esc_attr_e( 'Install Glotpress' ); ?>" /></p>
+		<p class="step"><input type="submit" name="Submit" value="<?php esc_attr_e( 'Install GlotPress' ); ?>" /></p>
 	</form>
 <?php endif; ?>
 

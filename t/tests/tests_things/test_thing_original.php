@@ -73,6 +73,26 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 'baba', $originals_for_project[0]->singular );
 	}
 
+	function test_import_should_mark_translation_of_changed_strings_as_fuzzy() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'baba baba' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => 'baba baba.' ) ) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 0, $originals_existing );
+		$this->assertEquals( 1, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+
+		$current_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'current'" );
+		$fuzzy_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'fuzzy'" );
+
+		$this->assertEquals( 0, count( $current_translations ) );
+		$this->assertEquals( 1, count( $fuzzy_translations ) );
+	}
+
 	function test_import_should_remove_from_active_missing_strings() {
 		$project = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active' ) );
@@ -97,5 +117,20 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$original = new GP_Original;
 		$normalized_args = 	$original->normalize_fields( array( 'priority' => 'baba' ) );
 		$this->assertFalse( isset( $normalized_args['priority'] ) );
+	}
+	
+	function test_by_project_id_and_entry_should_match_case() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Baba' ) );
+
+		$entry = new stdClass();
+		$entry->singular = 'BABA';
+
+		$by_project_id_and_entry = GP::$original->by_project_id_and_entry( $project->id, $entry );
+		$this->assertEquals( false, $by_project_id_and_entry );
+
+		$entry->singular = 'Baba';
+		$by_project_id_and_entry = GP::$original->by_project_id_and_entry( $project->id, $entry );
+		$this->assertSame( $original->singular, $by_project_id_and_entry->singular );
 	}
 }

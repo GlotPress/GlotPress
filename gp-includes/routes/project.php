@@ -33,7 +33,9 @@ class GP_Route_Project extends GP_Route_Main {
 			}
 		}
 
-		usort( $translation_sets, lambda('$a, $b', '$a->current_count < $b->current_count' ) );
+		usort( $translation_sets, function( $a, $b ) {
+			return( $a->current_count < $b->current_count );
+		});
 		$translation_sets = apply_filters( 'translation_sets_sort', $translation_sets );
 
 		$title = sprintf( __('%s project '), esc_html( $project->name ) );
@@ -110,8 +112,14 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		list( $originals_added, $originals_existing ) = GP::$original->import_for_project( $project, $translations );
-		$this->notices[] = sprintf(__("%s new strings were added, %s existing were updated."), $originals_added, $originals_existing );
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations );
+		$this->notices[] = sprintf(
+			__( '%1$s new strings added, %2$s updated, %3$s fuzzied, and %4$s obsoleted.' ),
+			$originals_added,
+			$originals_existing,
+			$originals_fuzzied,
+			$originals_obsoleted
+		);
 
 		$this->redirect( gp_url_project( $project, 'import-originals' ) );
 	}
@@ -237,7 +245,9 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn = lambda( '$x, $y', 'strcmp($x->locale_slug, $y->locale_slug);' );
+		$cmp_fn = function( $x, $y ){
+			return strcmp( $x->locale_slug, $y->locale_slug );
+		};
 		usort( $permissions, $cmp_fn );
 		$parent_permissions = array();
 
@@ -268,13 +278,13 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( 'add-validator' == gp_post( 'action' ) ) {
-			$user = GP::$user->by_login( gp_post( 'user_login' ) );
+			$user = get_user_by( 'login', gp_post( 'user_login' ) );
 			if ( !$user ) {
 				$this->redirect_with_error( __('User wasn&#8217;t found!'), gp_url_current() );
 				return;
 			}
 			$new_permission = new GP_Validator_Permission( array(
-				'user_id' => $user->id,
+				'user_id' => $user->ID,
 				'action' => 'approve',
 				'project_id' => $project->id,
 				'locale_slug' => gp_post( 'locale' ),

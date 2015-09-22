@@ -4,6 +4,7 @@ class GP_Thing {
 	var $table = null;
 	var $field_names = array();
 	var $non_db_field_names = array();
+	var $int_fields = array();
 	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
@@ -154,7 +155,8 @@ class GP_Thing {
 		global $gpdb;
 		$args = $this->prepare_fields_for_save( $args );
 		$args = $this->prepare_fields_for_create( $args );
-		$res = $gpdb->insert( $this->table, $args );
+		$field_formats = $this->get_db_field_formats( $args );
+		$res = $gpdb->insert( $this->table, $args, $field_formats );
 		if ( $res === false ) return false;
 		$class = $this->class;
 		$inserted = new $class( $args );
@@ -187,7 +189,11 @@ class GP_Thing {
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
 		$fields_for_save = $this->prepare_fields_for_save( $data );
 		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
-		return !is_null( $gpdb->update( $this->table, $fields_for_save, $where ) );
+
+		$field_formats = $this->get_db_field_formats( $fields_for_save );
+		$where_formats = $this->get_db_field_formats( $where );
+
+		return !is_null( $gpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
 	}
 
 	function get( $thing_or_id ) {
@@ -275,6 +281,11 @@ class GP_Thing {
 		return $args;
 	}
 
+	function get_db_field_formats( $args ) {
+		$formats = array_fill_keys( array_keys( $args ), '%s' );
+		return array_merge( $formats, array_fill_keys( $this->int_fields, '%d' ) );
+	}
+
 	function coerce( $thing ) {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
@@ -313,7 +324,7 @@ class GP_Thing {
 		if ( is_integer( $php_value ) || ctype_digit( $php_value) )
 		 	$sql_value = $php_value;
 		else
-			$sql_value = "'".$gpdb->escape( $php_value )."'";
+			$sql_value = "'" . esc_sql( $php_value )  ."'";
 		if ( is_null( $php_value ) ) {
 			$operator = 'IS';
 			$sql_value = 'NULL';
@@ -399,7 +410,8 @@ class GP_Thing {
 	}
 
 	function like_escape_printf( $s ) {
-		return str_replace( '%', '%%', like_escape( $s ) );
+		global $gpdb;
+		return str_replace( '%', '%%', $gpdb->esc_like( $s ) );
 	}
 
 	function apply_default_conditions( $conditions_str ) {

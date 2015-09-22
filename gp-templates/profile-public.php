@@ -17,8 +17,7 @@ gp_tmpl_header();
 
 				if ( 1 < count( $locales ) ) {
 					vprintf( __( '%s is a polyglot who knows %s but also knows %s.' ), array_merge( array( $user->display_name ), $locale_keys ) );
-				}
-				else {
+				} else if( ! empty ( $locale_keys ) ) {
 					printf( __( '%s is a polyglot who contributes to %s' ), $user->display_name, $locale_keys[0] );
 				}
 			?></dd>

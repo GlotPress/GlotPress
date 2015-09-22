@@ -14,7 +14,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
 
 		foreach ( $glossary_entries as $key => $entry ) {
-			$user = GP::$user->get( $entry->last_edited_by );
+			$user = get_userdata( $entry->last_edited_by );
 
 			if ( $user ) {
 				$glossary_entries[$key]->user_login = $user->user_login;
@@ -38,7 +38,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$new_glossary_entry = new GP_Glossary_Entry( gp_post('new_glossary_entry') );
-		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
+		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -48,10 +48,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 
 			if ( ! $created_glossary_entry ) {
-				$this->errors[] = __('Error in creating glossary ∂
-
-
-					entry!');
+				$this->errors[] = __('Error in creating glossary entry!');
 				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
 			}
 			else {
@@ -76,7 +73,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$locale  = GP_Locales::by_slug( $translation_set->locale );
 
 		$new_glossary_entry = new GP_Glossary_Entry( $ge );
-		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
+		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -244,7 +241,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		while ( ( $data = fgetcsv( $f, 0, ',') ) !== FALSE ) {
-			//We're only parsing one language per file right now
+			// We're only parsing one locale per file right now
 			if ( count ($data) > 4 ) {
 				$data = array_splice( $data, 2, -2 );
 			}
@@ -255,7 +252,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				'translation' => $data[1],
 				'part_of_speech' => $data[2],
 				'comment' => $data[3],
-				'last_edited_by' => GP::$user->current()->id
+				'last_edited_by' => get_current_user_id()
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );

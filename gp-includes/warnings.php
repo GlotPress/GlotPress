@@ -25,13 +25,11 @@ class GP_Translation_Warnings {
 			$skip = array( 'singular' => false, 'plural' => false );
 			if ( !is_null( $plural ) ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
-				if ( $numbers_for_index == array(1) ) {
-					$skip['plural'] = true;
-				}
-				if ( !in_array( 1, $numbers_for_index ) ) {
-					$skip['singular'] = true;
-				}
 				if ( $locale->nplurals == 1 ) {
+					$skip['singular'] = true;
+				} else if ( in_array( 1, $numbers_for_index ) ) {
+					$skip['plural'] = true;
+				} else {
 					$skip['singular'] = true;
 				}
 			}
@@ -108,7 +106,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	function warning_placeholders( $original, $translation, $locale ) {
-		$placeholders_re = apply_filters( 'warning_placeholders_re', '%[a-z]*|%[A-Z]+|%\d+\$(?:s|d)' );
+		$placeholders_re = apply_filters( 'warning_placeholders_re', '%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX]' );
 
 		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );

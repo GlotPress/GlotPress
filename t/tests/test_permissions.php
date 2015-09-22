@@ -24,7 +24,7 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 	}
 
 	function test_recursive_project_permissions() {
-		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
+		$user = $this->factory->user->create();
 		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
 		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
@@ -37,7 +37,7 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 
 	function test_recursive_validator_permissions() {
 		$object_type = GP::$validator_permission->object_type;
-		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
+		$user = $this->factory->user->create();
 
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );
 		$sub = GP::$project->create( array( 'name' => 'Sub', 'slug' => 'sub', 'parent_project_id' => $root->id, 'path' => 'root/sub' ) );
@@ -53,9 +53,8 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertFalse( (bool)$user->can( 'whatever', $object_type, $sub->id.'|bg|slug' ) );
 	}
 
-
 	function test_approve_translation_set_permissions() {
-		$user = GP::$user->create( array( 'user_login' => 'gugu', 'user_email' => 'gugu@gugu.net' ) );
+		$user = $this->factory->user->create();
 
 		$other = GP::$project->create( array( 'name' => 'Other', 'slug' => 'other', 'path' => 'other') );
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root') );

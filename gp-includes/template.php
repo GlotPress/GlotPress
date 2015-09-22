@@ -65,21 +65,13 @@ function gp_tmpl_404( $args = array()) {
 
 function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
-		add_filter( 'gp_title', function( $x ) use ( $title ) {
+		add_filter( 'gp_title', function() use ( $title ) {
 			return $title;
 		}, 5 );
 	} else {
 		return apply_filters( 'gp_title', '' );
 	}
 }
-
-function body_class() {
-	$classes = apply_filters( 'body_class', array( 'no-js' ) );
-
-	// Separates classes with a single space, collates classes for body element
-	echo 'class="' . join( ' ', $classes ) . '"';
-}
-
 
 function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	$defaults = array(
@@ -95,7 +87,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 		$whole_breadcrumb  = str_replace( '{separator}', $args['separator'], $args['breadcrumb-template'] );
 		$whole_breadcrumb  = str_replace( '{breadcrumb}', $breadcrumb_string, $whole_breadcrumb );
 
-		add_filter( 'gp_breadcrumb', function( $x ) use ( $whole_breadcrumb ) {
+		add_filter( 'gp_breadcrumb', function() use ( $whole_breadcrumb ) {
 			return $whole_breadcrumb;
 		}, 5 );
 	} else {
@@ -232,7 +224,11 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
 	return gp_select( $name_and_id, array_merge( array( '' => __('&mdash; Locale &mdash;') ), array_combine( $values, $labels ) ), $selected_slug, $attrs );
 }
 
-function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array() ) {
+function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
+	if ( ! is_array( $exclude ) ) {
+		$exclude = array( $exclude );
+	}
+
 	$projects = GP::$project->all();
 	// TODO: mark which nodes are editable by the current user
 	$tree = array();
@@ -253,6 +249,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 
 		while ( !empty( $stack ) ) {
 			$id = array_pop( $stack );
+
+			if ( in_array( $id, $exclude ) ) {
+				continue;
+			}
+
 			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
 			$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
 			foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
@@ -266,11 +267,16 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 }
 
 function gp_array_of_things_to_json( $array ) {
-	return json_encode( array_map( lambda( '$thing', '$thing->fields();' ), $array ) );
+	return json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
-	$map_to_fields = create_function( '$array', 'return array_map( lambda( \'$thing\', \'$thing->fields();\' ), $array );' );
+	$map_to_fields = function( $array ) {
+		return array_map( function( $thing ) {
+			return $thing->fields();
+		}, $array );
+	};
+
 	return json_encode( array_map( $map_to_fields, $array ) );
 }
 
@@ -354,7 +360,7 @@ function gp_project_options_form( $project ) {
 				</dl>
 				<p>
 					<input type="submit" name="submit" value="' . esc_attr( __('Save &rarr;') ) . '" id="save" />
-					<a class="ternary" href="#" onclick="jQuery("#personal-options-toggle").click();return false;">' . __('Cancel') . '</a>
+					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __('Cancel') . '</a>
 				</p>
 				</form>
 			</div>';

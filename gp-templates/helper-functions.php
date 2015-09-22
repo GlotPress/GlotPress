@@ -20,7 +20,7 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		$glossary_entries_terms[ $key ] = $value->term;
 	}
 
-	uasort( $glossary_entries_terms, lambda('$a, $b', 'gp_strlen($a) < gp_strlen($b)' ) );
+	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
 
 	foreach ( $translations as $key => $t ) {
 		//Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.
@@ -41,10 +41,10 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		//Replace terms in strings with markup
 		foreach( $matching_entries as $term => $glossary_data ) {
 			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
-			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . $term . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
+			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
 
 			if ( $t->plural ) {
-				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . $term . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup, 1 );
+				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup, 1 );
 			}
 		}
 	}

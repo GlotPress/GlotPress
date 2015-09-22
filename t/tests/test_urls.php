@@ -130,9 +130,40 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$url_manually_joined = gp_url_join( gp_url_project( '/x' ), 'import-originals' );
  		$this->assertEquals( $url_manually_joined, $url_from_gp_url_project );
 	}
+
 	function test_gp_url_project_should_join_its_array_arguments() {
 		$url_from_gp_url_project = gp_url_project( '/x', array( 'slug', 'slugslug', 'import-translations' ) );
 		$url_manually_joined = gp_url_join( gp_url_project( '/x' ), 'slug', 'slugslug', 'import-translations' );
 		$this->assertEquals( $url_manually_joined, $url_from_gp_url_project );
+	}
+
+	function test_gp_url_current_should_return_http_url() {
+		$server_vars = $_SERVER;
+		$_SERVER['HTTPS'] = 0;
+		$_SERVER['HTTP_HOST'] = 'glotpress.org';
+		$_SERVER['REQUEST_URI'] = '/';
+		$_SERVER['SERVER_PORT'] = 80;
+		$this->assertEquals( 'http://glotpress.org/', gp_url_current() );
+		$_SERVER = $server_vars;
+	}
+
+	function test_gp_url_current_should_return_https_url() {
+		$server_vars = $_SERVER;
+		$_SERVER['HTTPS'] = 1;
+		$_SERVER['HTTP_HOST'] = 'glotpress.org';
+		$_SERVER['REQUEST_URI'] = '/';
+		$_SERVER['SERVER_PORT'] = 443;
+		$this->assertEquals( 'https://glotpress.org/', gp_url_current() );
+		$_SERVER = $server_vars;
+	}
+
+	function test_gp_url_current_should_return_non_standard_port_url() {
+		$server_vars = $_SERVER;
+		$_SERVER['HTTPS'] = 0;
+		$_SERVER['HTTP_HOST'] = 'glotpress.org:8888';
+		$_SERVER['REQUEST_URI'] = '/';
+		$_SERVER['SERVER_PORT'] = 8888;
+		$this->assertEquals( 'http://glotpress.org:8888/', gp_url_current() );
+		$_SERVER = $server_vars;
 	}
 }

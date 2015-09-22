@@ -31,7 +31,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 			);
 		}
 
-		$file     = file_get_contents( 'data/translation.strings' );
+		$file     = file_get_contents( GP_DIR_TESTDATA . '/translation.strings' );
 		$exported = $this->strings->print_exported_file( 'p', 'l', 't', $entries_for_export );
 
 		$file     = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
@@ -41,7 +41,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 	}
 
 	function test_read_originals() {
-		$translations = $this->strings->read_originals_from_file( 'data/originals.utf16le.strings' );
+		$translations = $this->strings->read_originals_from_file( GP_DIR_TESTDATA . '/originals.utf16le.strings' );
 		$this->assertEquals( count( $this->entries ), count( $translations->entries ), 'number of read originals is different from the expected' );
 
 		foreach( $this->entries as $sample ) {
@@ -68,7 +68,7 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 					->with( $this->equalTo(2) )
 					->will( $this->returnValue($stubbed_originals) );
 
-		$translations = $this->strings->read_translations_from_file( 'data/translation.strings', (object)array( 'id' => 2 ) );
+		$translations = $this->strings->read_translations_from_file( GP_DIR_TESTDATA . '/translation.strings', (object)array( 'id' => 2 ) );
 
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation ) = $sample;

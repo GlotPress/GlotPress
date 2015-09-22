@@ -81,20 +81,39 @@ $gp.editor = function($){ return {
 		});
 	},
 	keydown: function(e) {
-		if (e.keyCode == 27)
+		if ( e.keyCode == 27 ) {
 			$gp.editor.hide();
-		else if (e.keyCode == 33)
+		}
+		else if ( e.keyCode == 33 ) {
 			$gp.editor.prev();
-		else if (e.keyCode == 34)
+		}
+		else if ( e.keyCode == 34 ) {
 			$gp.editor.next();
-		else if (e.keyCode == 13 && e.shiftKey) {
+		}
+		else if ( e.keyCode == 13 && e.shiftKey ) {
 			var target = $(e.target);
-			if (target.nextAll('textarea').length)
-				target.nextAll('textarea').eq(0).focus()
-			else
+
+			if ( e.altKey && target.val().length == 0 ) {
+				var container = target.closest('.textareas').prev();
+
+				if ( container.children() ) {
+					target.val( container.find('.original').text() );
+				}
+				else {
+					target.val( container.text() );
+				}
+			}
+
+			if ( target.nextAll('textarea').length ) {
+				target.nextAll('textarea').eq(0).focus();
+			}
+			else {
 				$gp.editor.save(target.parents('tr.editor').find('button.ok'));
-		} else
+			}
+		} else {
 			return true;
+		}
+
 		return false;
 	},
 	replace_current: function(html) {
@@ -151,6 +170,7 @@ $gp.editor = function($){ return {
 				$gp.editor.current.preview.addClass(new_priority_class);
 			},
 			error: function(xhr, msg, error) {
+				button.prop('disabled', false);
 				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the priority!';
 				$gp.notices.error(msg);
 			}
@@ -162,6 +182,7 @@ $gp.editor = function($){ return {
 		button.prop('disabled', true);
 		$gp.notices.notice('Setting status to &#8220;'+status+'&#8221;&hellip;');
 		var data = {translation_id: editor.translation_id, status: status};
+
 		$.ajax({type: "POST", url: $gp_editor_options.set_status_url, data: data,
 			success: function(data){
 				button.prop('disabled', false);
@@ -170,6 +191,7 @@ $gp.editor = function($){ return {
 				$gp.editor.next();
 			},
 			error: function(xhr, msg, error) {
+				button.prop('disabled', false);
 				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the status!';
 				$gp.notices.error(msg);
 			}
@@ -191,8 +213,10 @@ $gp.editor = function($){ return {
 		});
 	},
 	copy: function(link) {
-		original_text = link.parents('.textareas').prev();
-		if ( ! original_text.hasClass('original') ) original_text = original_text.find('.original');
+		var original_text = link.parents('.textareas').prev().find('.original');
+		if ( ! original_text.hasClass('original') ) {
+			original_text = link.parents('.strings').find('.original').last();
+		}
 		original_text = original_text.text();
 		original_text = original_text.replace(/<span class=.invisibles.*?<\/span>/g, '');
 		a = link.parents('.textareas').find('textarea').val(original_text).focus();

@@ -1,6 +1,6 @@
 <?php
-wp_enqueue_style( 'base' );
-wp_enqueue_script( 'jquery' );
+gp_enqueue_style( 'base' );
+gp_enqueue_script( 'jquery' );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -21,13 +21,13 @@ wp_enqueue_script( 'jquery' );
 			<?php echo gp_breadcrumb(); ?>
 			<span id="hello">
 			<?php
-			if (GP::$user->logged_in()):
-				$user = GP::$user->current();
+			if ( is_user_logged_in() ):
+				$user = wp_get_current_user();
 
 				printf( __('Hi, %s.'), '<a href="'.gp_url( '/profile' ).'">'.$user->user_login.'</a>' );
 				?>
 				<a href="<?php echo gp_url('/logout')?>"><?php _e('Log out'); ?></a>
-			<?php elseif( ! GP_INSTALLING ): ?>
+			<?php else: ?>
 				<strong><a href="<?php echo gp_url_login(); ?>"><?php _e('Log in'); ?></a></strong>
 			<?php endif; ?>
 			<?php do_action( 'after_hello' ); ?>

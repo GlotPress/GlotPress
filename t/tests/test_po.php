@@ -174,7 +174,7 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 	function test_import_from_file() {
 		$po = new PO();
-		$res = $po->import_from_file('data/simple.po');
+		$res = $po->import_from_file(GP_DIR_TESTDATA . '/simple.po');
 		$this->assertEquals(true, $res);
 
 		$this->assertEquals(array('Project-Id-Version' => 'WordPress 2.6-bleeding', 'Plural-Forms' => 'nplurals=2; plural=n != 1;'), $po->headers);
@@ -204,12 +204,12 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 
 	function test_import_from_entry_file_should_give_false() {
 		$po = new PO();
-		$this->assertFalse( $po->import_from_file( 'data/empty.po' ) );
+		$this->assertFalse( $po->import_from_file( GP_DIR_TESTDATA . '/empty.po' ) );
 	}
 
 	function test_import_from_file_with_windows_line_endings_should_work_as_with_unix_line_endings() {
 		$po = new PO();
-		$this->assertTrue( $po->import_from_file( 'data/windows-line-endings.po' ) );
+		$this->assertTrue( $po->import_from_file( GP_DIR_TESTDATA . '/windows-line-endings.po' ) );
 		$this->assertEquals( 1, count( $po->entries ) );
 	}
 
@@ -220,10 +220,12 @@ msgstr[2] "бабаяга"', PO::export_entry($entry));
 		return array(
 			array( "$o", "$t", "$t", "no new lines" ),
 			array( "$n$o", "$t", "$n$t", "original starts with new line, translation does not" ),
+			array( "$n$o", "", "", "original starts with new line, translation is empty" ),
 			array( "$n$o", "$n$t", "$n$t", "original and translation starts with new line" ),
 			array( "$o", "$n$t", "$t", "translation starts with new line, original does not" ),
 			array( "$o", "$t$n", "$t", "translation ends with new line, original does not" ),
 			array( "$o$n", "$t", "$t$n", "original ends with new line, translation does not" ),
+			array( "$o$n", "", "", "original ends with new line, translation is empty" ),
 			array( "$o$n", "$t$n", "$t$n", "original and translation ends with new line" ),
 			array( "$n$o$n", "$t", "$n$t$n", "original starts and ends with new line, translation does not" ),
 			array( "$n$o", "$t$n", "$n$t", "original starts with new line, translation ends with new line" ),

@@ -52,13 +52,7 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 			$object_type = 'gp_option';
 			break;
 		case 'user' :
-			global $wp_users_object;
-			$id = $object_id;
-			$return = $wp_users_object->update_meta( compact( 'id', 'meta_key', 'meta_value' ) );
-			if ( is_wp_error( $return ) ) {
-				return false;
-			}
-			return $return;
+			return update_user_meta( $object_id, $meta_key, $meta_value );
 		default :
 			$object_type = $type;
 			break;
@@ -108,9 +102,7 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 			$object_type = 'gp_option';
 			break;
 		case 'user':
-			global $wp_users_object;
-			$id = $object_id;
-			return $wp_users_object->update_meta( compact( 'id', 'meta_key', 'meta_value' ) );
+			return delete_user_meta( $object_id, $meta_key, $meta_value );
 		default:
 			$object_type = $type;
 			break;
@@ -154,10 +146,8 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 function gp_append_meta( $object, $type )
 {
 	global $gpdb;
-	switch ( $type ) {
-		case 'user':
-			global $wp_users_object;
-			return $wp_users_object->append_meta( $object );
+	if ( 'user' === $type ) {
+		return $object;
 	}
 
 	if ( is_array( $object ) && $object ) {
@@ -283,13 +273,7 @@ function gp_get_option_from_db( $option ) {
 	} elseif ( false !== $_r = wp_cache_get( $option, 'gp_option' ) ) {
 		$r = $_r;
 	} else {
-		if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING ) {
-			$gpdb->suppress_errors();
-		}
 		$row = $gpdb->get_row( $gpdb->prepare( "SELECT `meta_value` FROM `$gpdb->meta` WHERE `object_type` = 'gp_option' AND `meta_key` = %s", $option ) );
-		if ( defined( 'GP_INSTALLING' ) && GP_INSTALLING ) {
-			$gpdb->suppress_errors( false );
-		}
 
 		if ( is_object( $row ) ) {
 			$r = maybe_unserialize( $row->meta_value );

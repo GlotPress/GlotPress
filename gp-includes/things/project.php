@@ -3,8 +3,8 @@ class GP_Project extends GP_Thing {
 
 	var $table_basename = 'projects';
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
+	var $int_fields = array( 'id', 'parent_project_id', 'active' );
 	var $non_updatable_attributes = array( 'id' );
-
 
 	function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
@@ -25,7 +25,7 @@ class GP_Project extends GP_Thing {
 	}
 
 	function top_level() {
-		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL ORDER BY name ASC" );
+		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
 		$projects = apply_filters( 'projects', $projects, 0 );
 
 		return $projects;
@@ -85,7 +85,7 @@ class GP_Project extends GP_Thing {
 		// update children's paths, too
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen($old_path) + 1, like_escape( $old_path).'%' );
+			return $this->query( $query, $path, strlen($old_path) + 1, $gpdb->esc_like( $old_path).'%' );
 		} else {
 			return $res_self;
 		}
@@ -121,7 +121,7 @@ class GP_Project extends GP_Thing {
 		if ( isset( $this->user_source_url_template ) )
 			return $this->user_source_url_template;
 		else {
-			if ( $this->id && GP::$user->logged_in() && ($templates = GP::$user->current()->get_meta( 'source_url_templates' ))
+			if ( $this->id && is_user_logged_in() && ($templates = GP::$user->current()->get_meta( 'source_url_templates' ))
 					 && isset( $templates[$this->id] ) ) {
 				$this->user_source_url_template = $templates[$this->id];
 				return $this->user_source_url_template;

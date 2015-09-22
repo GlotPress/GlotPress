@@ -2,35 +2,38 @@
 
 class GP_Router {
 
-	var $api_prefix = 'api';
+	public $api_prefix = 'api';
+	public $urls = array();
 
-	function __construct( $urls = null ) {
-		if ( is_null( $urls ) )
-			$this->urls = $this->default_routes();
-		else
-			$this->urls = $urls;
+	public function __construct( $urls = array() ) {
+		$this->urls = $urls;
+	}
+
+	/**
+	 * Sets the default routes that GlotPress needs.
+	 */
+	public function set_default_routes() {
+		$this->urls = array_merge( $this->urls, $this->default_routes() );
 	}
 
 	/**
 	* Returns the current request URI path, relative to
 	* the application URI and without the query string
 	*/
-	function request_uri() {
-		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) )
-			return urldecode( $match[1] );
-		return false;
+	public function request_uri() {
+		global $wp;
+		return urldecode( '/' . rtrim( $wp->query_vars['gp_route'], '/' ) );
 	}
 
-	function request_method() {
+	public function request_method() {
 		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
 	}
 
-	function add( $re, $function, $method = 'get' ) {
+	public function add( $re, $function, $method = 'get' ) {
 		$this->urls["$method:$re"] = $function;
 	}
 
-	function default_routes() {
+	private function default_routes() {
 		$dir = '([^_/][^/]*)';
 		$path = '(.+?)';
 		$projects = 'projects';
@@ -43,7 +46,6 @@ class GP_Router {
 		return apply_filters( 'routes', array(
 			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
-			'post:/login' => array('GP_Route_Login', 'login_post'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
@@ -51,6 +53,7 @@ class GP_Router {
 			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
 
 			'get:/languages' => array('GP_Route_Locale', 'locales_get'),
+			"get:/languages/$locale/$path" => array('GP_Route_Locale', 'single'),
 			"get:/languages/$locale" => array('GP_Route_Locale', 'single'),
 
 			"get:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_get'),
@@ -116,14 +119,23 @@ class GP_Router {
 	}
 
 
-	function route() {
+	public function route() {
 		$real_request_uri = $this->request_uri();
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
 		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
+
 		if ( $api ) {
 			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
 		}
+
+		$url_base = gp_url_base_path();
+
+		// If the request URL doesn't match our base URL, don't bother trying to match
+		if ( $url_base && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_base ) ) {
+			return;
+		}
+
 		foreach( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
 			foreach( $this->urls as $re => $func ) {
 				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
@@ -133,6 +145,7 @@ class GP_Router {
 						break;
 					}
 				}
+
 				if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
 					if ( is_array( $func ) ) {
 						list( $class, $method ) = $func;
@@ -141,6 +154,12 @@ class GP_Router {
 						$route->last_method_called = $method;
 						$route->class_name = $class;
 						GP::$current_route = &$route;
+
+						// AJAX post requests fail with 404 error if status_header not explicitly set
+						if ( 'post' === $http_method ) {
+							status_header( 200 );
+						}
+
 						$route->before_request();
 						$route->request_running = true;
 						// make sure after_request() is called even if we $this->exit_() in the request
@@ -152,10 +171,12 @@ class GP_Router {
 					} else {
 						call_user_func_array( $func, array_slice( $matches, 1 ) );
 					}
-					return;
+					exit;
 				}
 			}
 		}
-		return gp_tmpl_404();
+
+		gp_tmpl_404();
 	}
+
 }
