@@ -66,7 +66,7 @@ function gp_url_ssl( $url ) {
 }
 
 function gp_url_public_root() {
-	return home_url( gp_url_base_path() ) . '/';
+	return gp_url_base_path() . '/';
 }
 
 /**
