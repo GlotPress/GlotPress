@@ -266,31 +266,6 @@ class WP_Object_Cache {
 	}
 
 	/**
-	 * PHP4 constructor; Calls PHP 5 style constructor
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return WP_Object_Cache
-	 */
-	function WP_Object_Cache() {
-		return $this->__construct();
-	}
-
-	/**
-	 * Sets up object properties; PHP 5 style constructor
-	 *
-	 * @since 2.0.8
-	 * @return null|WP_Object_Cache If cache is disabled, returns null.
-	 */
-	function __construct() {
-		/**
-		 * @todo This should be moved to the PHP4 style constructor, PHP5
-		 * already calls __destruct()
-		 */
-		register_shutdown_function(array(&$this, "__destruct"));
-	}
-
-	/**
 	 * Will save the object cache before object is completely destroyed.
 	 *
 	 * Called upon object destruction, which should be when PHP ends.

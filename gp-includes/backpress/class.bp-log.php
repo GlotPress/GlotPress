@@ -72,7 +72,7 @@ class BP_Log
 	 *
 	 * @return void
 	 */
-	function BP_log($level = false, $type = false, $filename = false)
+	function __construct( $level = false, $type = false, $filename = false )
 	{
 		$this->set_level($level);
 		$this->set_type($type);

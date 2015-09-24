@@ -99,7 +99,7 @@ class BP_User {
 	var $last_name = '';
 
 	/**
-	 * PHP4 Constructor - Sets up the object properties.
+	 * Sets up the object properties.
 	 *
 	 * Retrieves the userdata and then assigns all of the data keys to direct
 	 * properties of the object. Calls {@link BP_User::_init_caps()} after
@@ -112,7 +112,7 @@ class BP_User {
 	 * @param int $name Optional. User's username
 	 * @return BP_User
 	 */
-	function BP_User( $id, $name = '' ) {
+	function __construct( $id, $name = '' ) {
 		global $wp_users_object;
 
 		if ( empty( $id ) && empty( $name ) )

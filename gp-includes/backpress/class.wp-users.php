@@ -3,17 +3,9 @@
 class WP_Users {
 	var $db;
 
-	function WP_Users( &$db ) {
-		$this->__construct( $db );
-//		register_shutdown_function( array(&$this, '__destruct') );
-	}
-
 	function __construct( &$db ) {
 		$this->db =& $db;
 	}
-
-//	function __destruct() {
-//	}
 
 	function _put_user( $args = null ) {
 		$defaults = array(

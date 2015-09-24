@@ -8,11 +8,6 @@ class WP_Auth
 
 	var $current = 0;
 
-	function WP_Auth( &$db, &$users, $cookies )
-	{
-		$this->__construct( $db, $users, $cookies );
-	}
-
 	/**
 	 * @param array $cookies Array indexed by internal name of cookie.  Values are arrays of array defining cookie parameters.
 	 * $cookies = array(
