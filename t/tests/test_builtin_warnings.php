@@ -51,7 +51,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMock( 'GP_Translation_Warnings' );
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 4 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 7 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -70,14 +70,26 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', 'This string has %stwo variables%s.', 'Deze string heeft %stwee variabelen%s.' );
 	}
 
-	function test_both_begin_end_on_newlines() {
-		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba\n", "baba" );
-		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba", "baba\n" );
-		$this->assertNoWarnings( 'both_begin_end_on_newlines', "baba", "baba" );
-		$this->assertNoWarnings( 'both_begin_end_on_newlines', "baba\n", "baba\n" );
-		$this->assertHasWarnings( 'both_begin_end_on_newlines', "\nbaba", "baba" );
-		$this->assertHasWarnings( 'both_begin_end_on_newlines', "baba", "\nbaba" );
-		$this->assertNoWarnings( 'both_begin_end_on_newlines', "\nbaba", "\nbaba" );
+	function test_should_begin_end_on_newline() {
+		$this->assertHasWarnings( 'should_begin_on_newline', "\nbaba", "baba" );
+		$this->assertHasWarnings( 'should_not_begin_on_newline', "baba", "\nbaba" );
+		$this->assertHasWarnings( 'should_end_on_newline', "baba\n", "baba" );
+		$this->assertHasWarnings( 'should_not_end_on_newline', "baba", "baba\n" );
+
+		$this->assertNoWarnings( 'should_begin_on_newline', "baba", "baba" );
+		$this->assertNoWarnings( 'should_not_begin_on_newline', "baba", "baba" );
+		$this->assertNoWarnings( 'should_end_on_newline', "baba", "baba" );
+		$this->assertNoWarnings( 'should_not_end_on_newline', "baba", "baba" );
+
+		$this->assertNoWarnings( 'should_begin_on_newline', "baba\n", "baba\n" );
+		$this->assertNoWarnings( 'should_not_begin_on_newline', "baba\n", "baba\n" );
+		$this->assertNoWarnings( 'should_end_on_newline', "baba\n", "baba\n" );
+		$this->assertNoWarnings( 'should_not_end_on_newline', "baba\n", "baba\n" );
+
+		$this->assertNoWarnings( 'should_begin_on_newline', "\nbaba", "\nbaba" );
+		$this->assertNoWarnings( 'should_not_begin_on_newline', "\nbaba", "\nbaba" );
+		$this->assertNoWarnings( 'should_end_on_newline', "\nbaba", "\nbaba" );
+		$this->assertNoWarnings( 'should_not_end_on_newline', "\nbaba", "\nbaba" );
 	}
 
 	function test_placeholders_using_check() {
