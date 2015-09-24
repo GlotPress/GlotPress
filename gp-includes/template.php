@@ -50,6 +50,39 @@ function gp_content() {
 	do_action( 'gp_content' );
 }
 
+function gp_nav_menu( $location = 'main' ) {
+	$html  = '';
+	$items = gp_nav_menu_items( $location );
+
+	foreach ( $items as $link => $title ) {
+		$html .= '<a href="' . $link . '">' . $title . '</a>';
+	}
+
+	return $html;
+}
+
+function gp_nav_menu_items( $location = 'main' ) {
+	$items = array();
+
+	if ( 'main' === $location ) {
+		$items[ gp_url( '/projects' ) ]  = __('Projects');
+		$items[ gp_url( '/languages' ) ] = __('Locales');
+	}
+	elseif ( 'side' === $location ) {
+		if ( GP::$user->logged_in() ) {
+			$user = GP::$user->current();
+
+			$items[ gp_url( '/profile' ) ] = __('Profile');
+			$items[ gp_url( '/logout' ) ]  = __('Log out');
+		}
+		elseif ( ! GP_INSTALLING ) {
+			$items[ gp_url_login() ] = __('Log in');
+		}
+	}
+
+	return apply_filters( 'gp_nav_menu_items', $items, $location );
+}
+
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach( $args as $k => $v )
@@ -74,24 +107,34 @@ function gp_title( $title = null ) {
 }
 
 function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
-	$defaults = array(
-		/* translators: separates links in the navigation breadcrumb */
-		'separator' => '<span class="separator">'._x('&rarr;', 'breadcrumb').'</span>',
-		'breadcrumb-template' => '<span class="breadcrumb">{separator}{breadcrumb}</span>',
-	);
-	$args = array_merge( $defaults, $args );
-
 	if ( ! is_null( $breadcrumb ) ) {
-		$breadcrumb        = gp_array_flatten( $breadcrumb );
-		$breadcrumb_string = implode( $args['separator'], array_filter( $breadcrumb ) );
-		$whole_breadcrumb  = str_replace( '{separator}', $args['separator'], $args['breadcrumb-template'] );
-		$whole_breadcrumb  = str_replace( '{breadcrumb}', $breadcrumb_string, $whole_breadcrumb );
+		$breadcrumb = gp_array_flatten( $breadcrumb );
 
-		add_filter( 'gp_breadcrumb', function() use ( $whole_breadcrumb ) {
-			return $whole_breadcrumb;
-		}, 5 );
+		add_filter( 'gp_breadcrumb_items', function( $breadcrumbs ) use ( $breadcrumb ) {
+			return array_merge( $breadcrumbs, $breadcrumb );
+		}, 1 );
 	} else {
-		return apply_filters( 'gp_breadcrumb', '' );
+		$breadcrumbs = apply_filters( 'gp_breadcrumb_items', array() );
+
+		if ( $breadcrumbs ) {
+			$defaults = array(
+				/* translators: separates links in the navigation breadcrumb */
+				'before'              => '<li>',
+				'after'               => '</li>',
+				'breadcrumb-template' => '<ul class="breadcrumb">{breadcrumb}</ul>',
+			);
+			$args = array_merge( $defaults, $args );
+
+			$whole_breadcrumb = '';
+
+			foreach ( $breadcrumbs as $breadcrumb ) {
+				$whole_breadcrumb .= $args['before'] . $breadcrumb . $args['after'];
+			}
+
+			$whole_breadcrumb  = str_replace( '{breadcrumb}', $whole_breadcrumb, $args['breadcrumb-template'] );
+
+			return apply_filters( 'gp_breadcrumb', $whole_breadcrumb );
+		}
 	}
 }
 

@@ -1,4 +1,8 @@
 <?php
+gp_enqueue_style( 'base' );
+gp_enqueue_script( 'jquery' );
+
+
 function prepare_original( $text ) {
 	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
 	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);
@@ -75,16 +79,16 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 		<p>
 			<?php
-			if ( $can_edit ) { 
-				gp_entry_actions(); 
-			} 
-			elseif ( GP::$user->logged_in() ) { 
-				_e('You are not allowed to edit this translation.'); 
-			} 
-			else { 
-				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() ); 
-			} 
-			?> 
+			if ( $can_edit ) {
+				gp_entry_actions();
+			}
+			elseif ( GP::$user->logged_in() ) {
+				_e('You are not allowed to edit this translation.');
+			}
+			else {
+				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() );
+			}
+			?>
 		</p>
 	</div>
 	<?php
