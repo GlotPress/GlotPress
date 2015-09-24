@@ -1,4 +1,8 @@
 <?php
+wp_enqueue_style( 'base' );
+wp_enqueue_script( 'jquery' );
+
+
 function prepare_original( $text ) {
 	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
 	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);

@@ -6,7 +6,11 @@ wp_enqueue_script('tablesorter');
 $edit_link = gp_link_project_edit_get( $project, __('(edit)') );
 
 if ( $project->active ) {
-	add_filter( 'gp_breadcrumb', function( $s ) { return $s . '<span class="active bubble">' . __('Active') . '</span>'; } );
+	add_filter( 'gp_breadcrumb_items', function( $items ) {
+		$items[ count($items) - 1 ] .= ' <span class="active bubble">' . __('Active') . '</span>';
+
+		return $items;
+	} );
 }
 
 gp_tmpl_header();
