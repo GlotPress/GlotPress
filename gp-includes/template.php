@@ -75,7 +75,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 			$items[ gp_url( '/profile' ) ] = __('Profile');
 			$items[ gp_url( '/logout' ) ]  = __('Log out');
 		}
-		elseif ( ! GP_INSTALLING ) {
+		else {
 			$items[ gp_url_login() ] = __('Log in');
 		}
 	}
@@ -107,7 +107,7 @@ function gp_title( $title = null ) {
 }
 
 function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
-	if ( ! is_null( $breadcrumb ) ) {
+	if ( $breadcrumb ) {
 		$breadcrumb = gp_array_flatten( $breadcrumb );
 
 		add_filter( 'gp_breadcrumb_items', function( $breadcrumbs ) use ( $breadcrumb ) {
