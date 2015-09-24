@@ -133,12 +133,30 @@ class GP_Builtin_Translation_Warnings {
 		return $counts;
 	}
 
-	function warning_both_begin_end_on_newlines( $original, $translation, $locale ) {
-		if ( gp_endswith( $original, "\n" ) xor gp_endswith( $translation, "\n" ) ) {
-			return __('Original and translation should both end on newline.');
+	function warning_should_begin_on_newline( $original, $translation, $locale ) {
+		if ( gp_startswith( $original, "\n" ) && ! gp_startswith( $translation, "\n" ) ) {
+			return __( 'Original and translation should both begin on newline.' );
 		}
-		if ( gp_startswith( $original, "\n" ) xor gp_startswith( $translation, "\n" ) ) {
-			return __('Original and translation should both begin on newline.');
+		return true;
+	}
+
+	function warning_should_not_begin_on_newline( $original, $translation, $locale ) {
+		if ( ! gp_startswith( $original, "\n" ) && gp_startswith( $translation, "\n" ) ) {
+			return __( 'Translation should not begin on newline.' );
+		}
+		return true;
+	}
+
+	function warning_should_end_on_newline( $original, $translation, $locale ) {
+		if ( gp_endswith( $original, "\n" ) && ! gp_endswith( $translation, "\n" ) ) {
+			return __( 'Original and translation should both end on newline.' );
+		}
+		return true;
+	}
+
+	function warning_should_not_end_on_newline( $original, $translation, $locale ) {
+		if ( ! gp_endswith( $original, "\n" ) && gp_endswith( $translation, "\n" ) ) {
+			return __( 'Translation should not end on newline.' );
 		}
 		return true;
 	}
