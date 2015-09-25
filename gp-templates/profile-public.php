@@ -5,7 +5,7 @@ gp_breadcrumb( array( __('Profile') ) );
 gp_tmpl_header();
 ?>
 
-<h2><?php echo $user->display_name; ?> <?php if ( $user->admin() ) { _e('(Admin)'); }; ?></h2>
+<h2><?php echo $user->display_name; ?> <?php if ( current_user_can( 'manage_options' ) ) { _e('(Admin)'); }; ?></h2>
 
 <div>
 	<div class="user-card">
