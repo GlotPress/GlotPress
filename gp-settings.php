@@ -58,6 +58,9 @@ require_once( GP_PATH . GP_INC . 'assets-loader.php' );
 
 require_once( GP_PATH . GP_INC . 'default-filters.php' );
 
+require_once( GP_PATH . GP_INC . '/wp-admin/class-glotpress-wp-admin.php' );
+GlotPress_WP_Admin::get_instance();
+
 require_once( ABSPATH . WPINC . '/pomo/mo.php' );
 require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
