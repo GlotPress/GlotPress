@@ -66,7 +66,7 @@ function gp_url_ssl( $url ) {
 }
 
 function gp_url_public_root() {
-	return home_url( gp_url_base_path() ) . '/';
+	return home_url( gp_url_base_path() );
 }
 
 /**
@@ -77,8 +77,15 @@ function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = 
 	return gp_url_project( $project_or_path, array( $locale, $path ), $query );
 }
 
+/**
+ * Get the URL for an image file
+ *
+ * @param string $file Image filename
+ *
+ * @return string
+ */
 function gp_url_img( $file ) {
-	return gp_plugin_url( "img/$file" );
+	return gp_plugin_url( "assets/img/$file" );
 }
 
 /**

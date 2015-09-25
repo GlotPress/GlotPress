@@ -129,10 +129,10 @@ class GP_Router {
 			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
 		}
 
-		$url_base = gp_url_base_path();
+		$url_path = gp_url_path( gp_url_public_root() );
 
 		// If the request URL doesn't match our base URL, don't bother trying to match
-		if ( $url_base && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_base ) ) {
+		if ( $url_path && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_path ) ) {
 			return;
 		}
 
@@ -154,12 +154,6 @@ class GP_Router {
 						$route->last_method_called = $method;
 						$route->class_name = $class;
 						GP::$current_route = &$route;
-
-						// AJAX post requests fail with 404 error if status_header not explicitly set
-						if ( 'post' === $http_method ) {
-							status_header( 200 );
-						}
-
 						$route->before_request();
 						$route->request_running = true;
 						// make sure after_request() is called even if we $this->exit_() in the request
