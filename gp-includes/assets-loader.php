@@ -4,7 +4,7 @@
  */
 
 function gp_styles_default( &$styles ) {
-	$url = gp_plugin_url( 'css' );
+	$url = gp_plugin_url( 'assets/css' );
 
 	$styles->add( 'base', $url . '/style.css', array(), '20141019' );
 	$styles->add( 'install', $url . '/install.css', array( 'base' ), '20140902' );
@@ -13,7 +13,7 @@ function gp_styles_default( &$styles ) {
 add_action( 'wp_default_styles', 'gp_styles_default' );
 
 function gp_scripts_default( &$scripts ) {
-	$url = gp_plugin_url( 'js' );
+	$url = gp_plugin_url( 'assets/js' );
 
 	$bump = '20150430';
 
