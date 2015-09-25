@@ -29,6 +29,9 @@ class GlotPress_WP_Admin_Menu {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
+	/**
+	 * Add the GlotPress menu items in the dashboard
+	 */
 	public function admin_menu() {
 		// Add top level GlotPress menu item
 		add_menu_page( $this->menu_name, $this->menu_name, 'manage_options', $this->menu_slug, array( $this, 'render_page' ), 'dashicons-format-chat' );
