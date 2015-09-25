@@ -42,7 +42,7 @@ class GP_Test_User extends GP_UnitTestCase {
 
 	function test_select_by_email() {
 		$user = $this->factory->user->create( array( 'user_login' => 'pijo', 'user_email' => 'pijo@glotpress.org' ) );
-		$from_db = GP::$user->by_email( 'pijo@glotpress.org' );
+		$from_db = get_user_by( 'email', 'pijo@glotpress.org' );
 		$this->assertEquals( $user->id, $from_db->id );
 	}
 
