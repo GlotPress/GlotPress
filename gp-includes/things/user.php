@@ -40,11 +40,6 @@ class GP_User extends GP_Thing {
 		return $args;
 	}
 
-	function by_email( $email ) {
-		$user = get_user_by( 'email', $email );
-		return $this->coerce( $user );
-	}
-
 	function logged_in() {
 		$coerced = $this->coerce( wp_get_current_user() );
 		return ( $coerced && $coerced->id );
