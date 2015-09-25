@@ -3,11 +3,11 @@ gp_title( __('Profile &lt; GlotPress') );
 gp_breadcrumb( array( __('Profile') ) );
 gp_tmpl_header();
 
-$per_page = GP::$user->current()->get_meta('per_page');
+$per_page = get_user_meta( get_current_user_id(), 'gp_per_page', true );
 if ( 0 == $per_page )
 	$per_page = 15;
 
-$default_sort = GP::$user->current()->get_meta('default_sort');
+$default_sort = get_user_meta( get_current_user_id(), 'gp_default_sort', true );
 if ( ! is_array($default_sort) ) {
 	$default_sort = array(
 		'by' => 'priority',

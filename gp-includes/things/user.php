@@ -49,25 +49,6 @@ class GP_User extends GP_Thing {
 		return apply_filters( 'can_user', $verdict, $filter_args );
 	}
 
-	function get_meta( $key ) {
-		if ( !$user = get_userdata( $this->id ) ) {
-			return;
-		}
-
-		if ( !isset( $user->$key ) ) {
-			return;
-		}
-		return $user->$key;
-	}
-
-	function set_meta( $key, $value ) {
-		return gp_update_meta( $this->id, $key, $value, 'user' );
-	}
-
-	function delete_meta( $key ) {
-		return gp_delete_meta( $this->id, $key, '', 'user' );
-	}
-
 	public function get_avatar( $size = 100 ) {
 		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
 	}

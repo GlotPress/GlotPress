@@ -13,10 +13,10 @@ class GP_Route_Profile extends GP_Route_Main {
 	function profile_post() {
 		if ( isset( $_POST['submit'] ) ) {
 			$per_page = (int) $_POST['per_page'];
-			GP::$user->current()->set_meta( 'per_page', $per_page );
+			update_user_meta( get_current_user_id(), 'gp_per_page', $per_page );
 
 			$default_sort = $_POST['default_sort'];
-			GP::$user->current()->set_meta( 'default_sort', $default_sort );
+			update_user_meta( get_current_user_id(), 'gp_default_sort', $default_sort );
 		}
 
 		$this->redirect( gp_url( '/profile' ) );
