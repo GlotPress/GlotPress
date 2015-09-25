@@ -15,7 +15,12 @@ class GlotPress_WP_Admin {
 	 * @var GlotPress_WP_Admin
 	 */
 	protected static $instance = null;
-	
+
+	/**
+	 * @var GlotPress_WP_Admin_Menu
+	 */
+	protected $menu;
+
 	/**
 	 * GlotPress_WP_Admin constructor.
 	 */
@@ -47,8 +52,10 @@ class GlotPress_WP_Admin {
 	}
 
 	protected function includes() {
+		require_once dirname( __FILE__ ) . '/classes/class-menu.php';
 	}
 
 	protected function loader() {
+		$this->menu = new GlotPress_WP_Admin_Menu();
 	}
 }
