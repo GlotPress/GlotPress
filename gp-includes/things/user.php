@@ -47,28 +47,11 @@ class GP_User extends GP_Thing {
 			return new GP_User( array( 'id' => 0, ) );
 	}
 
-	function logout() {
-		wp_logout();
-	}
-
 	/**
 	 * Determines whether the user is an admin
 	 */
 	function admin() {
 		return $this->can( 'admin' );
-	}
-
-	/**
-	 * Set $this as the current user if $password patches this user's password
-	 * and sets the auth cookies.
-	 */
-	function login( $password ) {
-		if ( ! wp_check_password( $password, $this->user_pass, $this->id ) ) {
-			return false;
-		}
-		$this->set_as_current();
-		wp_set_auth_cookie( $this->id );
-		return true;
 	}
 
 	/**
