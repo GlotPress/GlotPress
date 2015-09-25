@@ -21,10 +21,6 @@ if ( !defined( 'GP_TESTS_PATH' ) ) {
 	define( 'GP_TESTS_PATH', GP_PATH . 't/' );
 }
 
-if ( !defined( 'GP_URL_BASE' ) ) {
-    define( 'GP_URL_BASE', parse_url(get_site_url(null, 'glotpress'), PHP_URL_PATH ) );
-}
-
 require_once( GP_PATH . GP_INC . 'gp.php');
 
 $_GET = gp_urldecode_deep( $_GET );
