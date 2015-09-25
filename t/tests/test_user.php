@@ -35,8 +35,8 @@ class GP_Test_User extends GP_UnitTestCase {
 	}
 
 	function test_select_by_login() {
-		$user = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
-		$from_db = GP::$user->by_login( 'pijo' );
+		$user    = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
+		$from_db = get_user_by( 'login', 'pijo' );
 		$this->assertEquals( $user->id, $from_db->id );
 	}
 
