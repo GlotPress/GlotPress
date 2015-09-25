@@ -5,10 +5,6 @@ if ( !defined( 'GP_LOCALES_PATH' ) ) {
 	define( 'GP_LOCALES_PATH', GP_PATH . 'locales/' );
 }
 
-if ( !defined( 'GP_LANG_PATH' ) ) {
-	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
-}
-
 if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
@@ -59,9 +55,6 @@ require_once( ABSPATH . WPINC . '/pomo/mo.php' );
 require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
 require_once( GP_LOCALES_PATH . 'locales.php' );
-
-if ( defined('GP_LANG') )
-	load_default_textdomain();
 
 // We assume all variables set in this file will be global.
 // If the file is inovked inside a function, we will lose them all.
@@ -180,3 +173,6 @@ function gp_run_route() {
 	}
 }
 add_action( 'template_redirect', 'gp_run_route' );
+
+// Load the plugin's translated strings
+load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
