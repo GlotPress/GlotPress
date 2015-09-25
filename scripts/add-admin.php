@@ -10,7 +10,7 @@ class GP_Script_Add_Admin extends GP_CLI {
 			$this->usage();
 		}
 		foreach( $this->args as $user_login ) {
-			$user_to_make_admin = GP::$user->by_login( $user_login );
+			$user_to_make_admin = get_user_by( 'login', $user_login );
 			if ( !$user_to_make_admin ) {
 				$this->to_stderr( "User '$user_login' doesn't exist." );
 				exit( 1 );

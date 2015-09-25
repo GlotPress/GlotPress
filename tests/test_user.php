@@ -34,12 +34,6 @@ class GP_Test_User extends GP_UnitTestCase {
 		$this->assertFalse( $nonadmin_user->can( 'milk', 'a cow', 5 ) );
 	}
 
-	function test_select_by_login() {
-		$user = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
-		$from_db = GP::$user->by_login( 'pijo' );
-		$this->assertEquals( $user->id, $from_db->id );
-	}
-
 	function test_select_by_email() {
 		$user = $this->factory->user->create( array( 'user_login' => 'pijo', 'user_email' => 'pijo@glotpress.org' ) );
 		$from_db = GP::$user->by_email( 'pijo@glotpress.org' );
