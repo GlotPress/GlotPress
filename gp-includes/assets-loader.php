@@ -3,6 +3,11 @@
  * Defines default styles and scripts
  */
 
+/**
+ * Register the GlotPress styles
+ *
+ * @param WP_Styles $styles
+ */
 function gp_styles_default( &$styles ) {
 	$url = gp_plugin_url( 'assets/css' );
 
@@ -12,6 +17,11 @@ function gp_styles_default( &$styles ) {
 
 add_action( 'wp_default_styles', 'gp_styles_default' );
 
+/**
+ * Register the GlotPress scripts
+ *
+ * @param WP_Scripts $scripts
+ */
 function gp_scripts_default( &$scripts ) {
 	$url = gp_plugin_url( 'assets/js' );
 

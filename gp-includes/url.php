@@ -77,6 +77,13 @@ function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = 
 	return gp_url_project( $project_or_path, array( $locale, $path ), $query );
 }
 
+/**
+ * Get the URL for an image file
+ *
+ * @param string $file Image filename
+ *
+ * @return string
+ */
 function gp_url_img( $file ) {
 	return gp_plugin_url( "assets/img/$file" );
 }
