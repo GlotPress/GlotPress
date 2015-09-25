@@ -54,20 +54,23 @@ class GP_Test_User extends GP_UnitTestCase {
 
 	function test_set_meta_should_set_meta() {
 		$user = $this->factory->user->create();
-		$user->set_meta( 'int', 5 );
-		$this->assertEquals( 5, $user->get_meta( 'int') );
+		wp_set_current_user( $user->id );
+		update_user_meta( get_current_user_id(), 'gp_int', 5 );
+		$this->assertEquals( 5, get_user_meta( get_current_user_id(), 'gp_int', true ) );
 	}
 
 	function test_delete_meta_should_delete_the_meta() {
 		$user = $this->factory->user->create();
-		$user->set_meta( 'int', 5 );
-		$user->delete_meta( 'int' );
-		$this->assertEquals( null, $user->get_meta( 'int') );
+		wp_set_current_user( $user->id );
+		update_user_meta( get_current_user_id(), 'gp_int', 5 );
+		delete_user_meta( get_current_user_id(), 'gp_int' );
+		$this->assertEquals( null, get_user_meta( get_current_user_id(), 'gp_int', true ) );
 	}
 
 	function test_setting_array_value_as_meta_should_come_out_as_an_array() {
 		$user = $this->factory->user->create();
-		$user->set_meta( 'mixed', array(1, 2, 3) );
-		$this->assertEquals( array(1, 2, 3), $user->get_meta( 'mixed' ) );
+		wp_set_current_user( $user->id );
+		update_user_meta( get_current_user_id(), 'gp_mixed', array(1, 2, 3) );
+		$this->assertEquals( array(1, 2, 3), get_user_meta( get_current_user_id(), 'gp_mixed', true ) );
 	}
 }
