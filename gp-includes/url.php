@@ -78,7 +78,7 @@ function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = 
 }
 
 function gp_url_img( $file ) {
-	return gp_plugin_url( "img/$file" );
+	return gp_plugin_url( "assets/img/$file" );
 }
 
 /**
