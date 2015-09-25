@@ -40,11 +40,6 @@ class GP_User extends GP_Thing {
 		return $args;
 	}
 
-	function by_login( $login ) {
-		$user = get_user_by( 'login', $login );
-		return $this->coerce( $user );
-	}
-
 	function by_email( $email ) {
 		$user = get_user_by( 'email', $email );
 		return $this->coerce( $user );
