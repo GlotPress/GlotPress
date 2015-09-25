@@ -40,11 +40,6 @@ class GP_User extends GP_Thing {
 		return $args;
 	}
 
-	function get( $user_or_id ) {
-		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
-		return $this->coerce( get_userdata( $user_or_id ) );
-	}
-
 	function by_login( $login ) {
 		$user = get_user_by( 'login', $login );
 		return $this->coerce( $user );

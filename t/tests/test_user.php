@@ -48,7 +48,7 @@ class GP_Test_User extends GP_UnitTestCase {
 
 	function test_get() {
 		$user = $this->factory->user->create();
-		$from_db = GP::$user->get( $user );
+		$from_db = get_userdate( $user );
 		$this->assertEquals( $user->id, $from_db->id );
 	}
 
