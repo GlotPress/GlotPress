@@ -22,13 +22,6 @@ class GP_User extends GP_Thing {
 	}
 
 	/**
-	 * Makes the user the current user of this session.
-	 */
-	function set_as_current() {
-		wp_set_current_user( $this->id );
-	}
-
-	/**
 	 * Determines whether the user can do $action on the instance of $object_type with id $object_id.
 	 *
 	 * If the method is called statically, it uses the current session user.
