@@ -7,39 +7,6 @@ class GP_User extends GP_Thing {
 	var $field_names = array( 'id', 'user_login', 'user_pass', 'user_nicename', 'user_email', 'user_url', 'user_registered', 'user_status', 'display_name' );
 	var $non_updatable_attributes = array( 'ID' );
 
-	function create( $args ) {
-		if ( isset( $args['id'] ) ) {
-			$args['ID'] = $args['id'];
-			unset( $args['id'] );
-		}
-		$user = wp_insert_user( $args );
-		$user = get_userdata( $user );
-		return $this->coerce( $user );
-	}
-
-	function update( $data, $where = null ) {
-		return false;
-	}
-
-	function delete() {
-		return false;
-	}
-
-	function delete_all( $where = false ) {
-		return false;
-	}
-	function normalize_fields( $args ) {
-		if ( $args instanceof WP_User ) {
-			$args = $args->data;
-		}
-		$args = (array)$args;
-		if ( isset( $args['ID'] ) ) {
-			$args['id'] = $args['ID'];
-			unset( $args['ID'] );
-		}
-		return $args;
-	}
-
 	function current() {
 		if ( is_user_logged_in() )
 			return $this->coerce( wp_get_current_user() );
