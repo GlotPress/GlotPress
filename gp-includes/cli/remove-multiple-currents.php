@@ -1,9 +1,7 @@
 <?php
-require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
-class GP_Script extends GP_CLI {
-
-	function run() {
+class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
+	public function __invoke() {
 		$sets = GP::$translation_set->all();
 		foreach( $sets as $set ) {
 			echo "Processing set#$set->id...\n";
@@ -19,6 +17,3 @@ class GP_Script extends GP_CLI {
 		}
 	}
 }
-
-$gp_script = new GP_Script;
-$gp_script->run();

@@ -1,5 +1,29 @@
 <?php
 
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	gp_cli_register();
+}
+
+function gp_cli_register() {
+	require_once dirname( __FILE__ ) . '/cli/add-admin.php';
+	require_once dirname( __FILE__ ) . '/cli/branch-project.php';
+	require_once dirname( __FILE__ ) . '/cli/import-originals.php';
+	require_once dirname( __FILE__ ) . '/cli/regenerate-paths.php';
+	require_once dirname( __FILE__ ) . '/cli/remove-multiple-currents.php';
+	require_once dirname( __FILE__ ) . '/cli/upgrade-set-permissions.php';
+	require_once dirname( __FILE__ ) . '/cli/wipe-permissions.php';
+	require_once dirname( __FILE__ ) . '/cli/wporg2slug.php';
+
+	WP_CLI::add_command( 'glotpress add-admin', 'GP_CLI_Add_Admin' );
+	WP_CLI::add_command( 'glotpress branch-project', 'GP_CLI_Branch_Project' );
+	WP_CLI::add_command( 'glotpress import-originals', 'GP_CLI_Import_Originals' );
+	WP_CLI::add_command( 'glotpress regenerate-paths', 'GP_CLI_Regenerate_Paths' );
+	WP_CLI::add_command( 'glotpress remove-multiple-currents', 'GP_CLI_Remove_Multiple_Currents' );
+	WP_CLI::add_command( 'glotpress upgrade-set-permissions', 'GP_CLI_Upgrade_Set_Permissions' );
+	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
+	WP_CLI::add_command( 'glotpress wporg2slug', 'GP_CLI_WPorg2Slug' );
+}
+
 class GP_CLI {
 
 	var $short_options = '';

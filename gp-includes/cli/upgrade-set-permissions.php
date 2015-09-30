@@ -1,9 +1,8 @@
 <?php
-require_once dirname( dirname( __FILE__ ) ) . '/gp-load.php';
 
-class GP_Script_Upgrade_Permissions extends GP_CLI {
+class GP_CLI_Upgrade_Set_Permissions extends WP_CLI_Command {
 
-	function run() {
+	public function __invoke() {
 		$permissions = GP::$permission->find_many( array( 'object_type' => 'translation-set', 'action' => 'approve' ) );
 		foreach( $permissions as $permission ) {
 			$set = GP::$translation_set->get( $permission->object_id );
@@ -17,5 +16,3 @@ class GP_Script_Upgrade_Permissions extends GP_CLI {
 		}
 	}
 }
-$gp_script_upgrade_permissions = new GP_Script_Upgrade_Permissions;
-$gp_script_upgrade_permissions->run();
