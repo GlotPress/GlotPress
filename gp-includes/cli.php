@@ -36,6 +36,8 @@ class GP_CLI {
 	var $usage = '';
 
 	function __construct() {
+		_deprecated_function( 'GP_CLI::__construct', '', 'WP_CLI_Command' );
+
 		global $argv;
 		if ( gp_array_get( $_SERVER, 'HTTP_HOST' ) ) {
 			die('CLI only!');
