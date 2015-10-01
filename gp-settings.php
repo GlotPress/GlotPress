@@ -139,7 +139,6 @@ function gp_activate_plugin() {
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 
-gp_populate_notices();
 
 /**
  * Add WP rewrite rules to avoid WP thinking that GP pages are 404
@@ -165,6 +164,7 @@ function gp_query_vars( $query_vars ) {
 add_filter( 'query_vars', 'gp_query_vars' );
 
 function gp_run_route() {
+	gp_populate_notices();
 	global $wp;
 	if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
 		GP::$router->route();
