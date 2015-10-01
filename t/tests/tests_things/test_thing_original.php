@@ -47,6 +47,18 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, $GLOBALS['update_invocation_count'], 'update should be invoked 3 times' );
 	}
 
+	function test_import_for_project_should_update_cache() {
+		$project  = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
+		$count    = $original->count_by_project_id( $project->id );
+
+		$translations_array = array( array( 'singular' => $original->singular ), array( 'singular' => 'dyado' ) );
+		$translations       = $this->create_translations_with( $translations_array );
+		$original->import_for_project( $project, $translations );
+
+		$this->assertEquals( count( $translations_array ), $original->count_by_project_id( $project->id ) );
+	}
+
 	function test_is_different_from_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
 		$original = $this->factory->original->create();
 		$this->assertFalse( GP::$original->is_different_from( array( 'singular' => $original->singular ), $original ) );
@@ -118,7 +130,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$normalized_args = 	$original->normalize_fields( array( 'priority' => 'baba' ) );
 		$this->assertFalse( isset( $normalized_args['priority'] ) );
 	}
-	
+
 	function test_by_project_id_and_entry_should_match_case() {
 		$project = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Baba' ) );
@@ -132,5 +144,77 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$entry->singular = 'Baba';
 		$by_project_id_and_entry = GP::$original->by_project_id_and_entry( $project->id, $entry );
 		$this->assertSame( $original->singular, $by_project_id_and_entry->singular );
+	}
+
+	/**
+	 * @ticket 327
+	 */
+	function test_add_translations_from_other_projects() {
+		$set1 = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'project_one' ) );
+		$set2 = $this->factory->translation_set->create_with_project( array( 'locale' => $set1->locale ), array( 'name' => 'project_two' ) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set1->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set1->project_id, 'status' => '+active', 'singular' => 'bubu' ) );
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation2 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original2->id, 'status' => 'waiting' ) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => 'bubu' ) );
+
+		$original1->add_translations_from_other_projects();
+		$original2->add_translations_from_other_projects();
+
+		$set2_current_translations = GP::$translation->for_export( $set2->project, $set2, array( 'status' => 'current' ) );
+		$this->assertEquals( 1, count( $set2_current_translations ) );
+	}
+
+	/**
+	 * @ticket 327
+	 */
+	function test_add_translations_from_other_projects_with_placeholders_in_original() {
+		$set1 = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'project_one' ) );
+		$set2 = $this->factory->translation_set->create_with_project( array( 'locale' => $set1->locale ), array( 'name' => 'project_two' ) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set1->project_id, 'status' => '+active', 'singular' => '%s baba', 'plural' => '%s babas' ) );
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+
+		$original2 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => '%s baba', 'plural' => '%s babas' ) );
+		$original2->add_translations_from_other_projects();
+
+		$set2_current_translations = GP::$translation->for_export( $set2->project, $set2, array( 'status' => 'current' ) );
+		$this->assertEquals( 1, count( $set2_current_translations ) );
+		$this->assertEquals( $translation1->translation_0, $set2_current_translations[0]->translations[0] );
+	}
+
+	/**
+	 * @ticket 327
+	 */
+	function test_add_translations_from_other_projects_not_creating_duplicate_translations() {
+		$set1 = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'project_one' ) );
+		$set2 = $this->factory->translation_set->create_with_project( array( 'locale' => $set1->locale ), array( 'name' => 'project_two' ) );
+		$set3 = $this->factory->translation_set->create_with_project( array( 'locale' => $set1->locale ), array( 'name' => 'project_three' ) );
+		$set4 = $this->factory->translation_set->create_with_project( array( 'locale' => $set1->locale ), array( 'name' => 'project_four' ) );
+
+		// Insert first original with a waiting translation in project 1.
+		$original1 = $this->factory->original->create( array( 'project_id' => $set1->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'waiting' ) );
+
+		// Insert the same original with a current translation in project 2.
+		$original2 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$translation2 = $this->factory->translation->create( array( 'translation_set_id' => $set2->id, 'original_id' => $original2->id, 'status' => 'current' ) );
+
+		// Insert the same original with a current translation in project 3.
+		$original3 = $this->factory->original->create( array( 'project_id' => $set3->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$translation3 = $this->factory->translation->create( array( 'translation_set_id' => $set3->id, 'original_id' => $original3->id, 'status' => 'current' ) );
+
+		// Insert the same original with no translation in project 4.
+		$original4 = $this->factory->original->create( array( 'project_id' => $set4->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original4->add_translations_from_other_projects();
+
+		// The translation of the fourth original should be equal with the translation in project 3, because it's the newest.
+		$set4_current_translations = GP::$translation->for_export( $set4->project, $set4, array( 'status' => 'current' ) );
+		$this->assertEquals( 1, count( $set4_current_translations ) );
+		$this->assertEquals( $translation3->translation_0, $set4_current_translations[0]->translations[0] );
 	}
 }

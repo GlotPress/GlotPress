@@ -7,13 +7,7 @@ $per_page = GP::$user->current()->get_meta('per_page');
 if ( 0 == $per_page )
 	$per_page = 15;
 
-$default_sort = GP::$user->current()->get_meta('default_sort');
-if ( ! is_array($default_sort) ) {
-	$default_sort = array(
-		'by' => 'priority',
-		'how' => 'desc'
-	);
-}
+$default_sort = GP::$user->current()->sort_defaults();
 ?>
 <h2><?php _e( "Profile" ); ?></h2>
 <form action="" method="post">

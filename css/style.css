@@ -192,7 +192,7 @@ table.translations td.original, table.translations td.translation {
 	word-wrap: break-word;
 }
 
-table.translations tr.even {
+table.translations tr:nth-child(4n+3) {  
 	background-color: #fcfcfc;
 }
 table.translations tr.editor {
@@ -607,13 +607,13 @@ a.project-actions {
 .translation-sets tr, .locales tr {
 	background-color: #eee;
 }
-.translation-sets tr.odd, .locales tr.odd {
+.translation-sets tr:nth-child(odd), .locales tr:nth-child(odd) {
 	background-color: #fff;
 }
 .translation-sets tr:hover, .locales tr:hover {
 	background-color: #dee;
 }
-.translation-sets tr.odd:hover, .locales tr.odd:hover {
+.translation-sets tr:nth-child(odd):hover, .locales tr:nth-child(odd):hover {
 	background-color: #eff;
 }
 #submit {

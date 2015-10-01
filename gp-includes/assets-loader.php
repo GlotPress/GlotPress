@@ -6,7 +6,7 @@
 function gp_styles_default( &$styles ) {
 	$url = gp_url_public_root() . 'css';
 
-	$styles->add( 'base', $url . '/style.css', array(), '20141019' );
+	$styles->add( 'base', $url . '/style.css', array(), '20150717' );
 	$styles->add( 'install', $url . '/install.css', array('base'), '20140902' );
 }
 
