@@ -217,11 +217,14 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 
 function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
 	$locales = GP_Locales::locales();
-	$values = array_map( create_function( '$l', 'return $l->slug;'), $locales );
-	$labels = array_map( create_function( '$l', 'return $l->slug." &mdash; ". $l->english_name;'), $locales );
-	sort( $values );
-	sort( $labels );
-	return gp_select( $name_and_id, array_merge( array( '' => __('&mdash; Locale &mdash;') ), array_combine( $values, $labels ) ), $selected_slug, $attrs );
+	ksort( $locales );
+
+	$options = array( '' => __('&mdash; Locale &mdash;') );
+	foreach ( $locales as $key => $locale ) {
+		$options[ $key ] = sprintf( '%s &mdash; %s', $locale->slug, $locale->english_name );
+	}
+
+	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
 }
 
 function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
@@ -267,7 +270,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 }
 
 function gp_array_of_things_to_json( $array ) {
-	return json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
+	return gp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
@@ -277,7 +280,7 @@ function gp_array_of_array_of_things_to_json( $array ) {
 		}, $array );
 	};
 
-	return json_encode( array_map( $map_to_fields, $array ) );
+	return gp_json_encode( array_map( $map_to_fields, $array ) );
 }
 
 function things_to_fields( $data ) {

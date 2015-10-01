@@ -36,3 +36,10 @@ function lambda( $args, $expression, $locals = array() ) {
 	$export_call = $locals? 'extract('.var_export( $locals, true ).', EXTR_PREFIX_SAME, "ext");' : '';
 	return create_function( $args, $export_call.' return ('.rtrim( $expression, '; ' ).');' );
 }
+
+/**
+ * Returns a function, which returns the string "odd" or the string "even" alternatively.
+ */
+function gp_parity_factory() {
+	return create_function( '', 'static $parity = "even"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
+}

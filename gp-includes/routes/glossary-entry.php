@@ -1,11 +1,21 @@
 <?php
 class GP_Route_Glossary_Entry extends GP_Route_Main {
 
-	function glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
+	public function glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project         = GP::$project->by_path( $project_path );
 		$locale          = GP_Locales::by_slug( $locale_slug );
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
+
+		if ( ! $translation_set ){
+			return $this->die_with_404();
+		}
+
+		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
 		if ( ! $glossary ){
 			return $this->die_with_404();
@@ -28,10 +38,19 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->tmpl( 'glossary-view', get_defined_vars() );
 	}
 
-	function glossary_entry_add_post( $project_path, $locale_slug, $translation_set_slug ) {
+	public function glossary_entry_add_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project         = GP::$project->by_path( $project_path );
 		$locale          = GP_Locales::by_slug( $locale_slug );
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+
+		if ( ! $translation_set ){
+			return $this->die_with_404();
+		}
 
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
@@ -58,9 +77,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 	}
 
-	function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
+	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$ge              = array_shift( gp_post('glossary_entry') );
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
+
+		if ( ! $glossary_entry ){
+			return $this->die_with_error( __('The glossary entry cannot be found'), 200 );
+		}
+
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
 		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
@@ -97,13 +121,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$ge     = $glossary_entry->reload();
 			$output = gp_tmpl_get_output( 'glossary-entry-row', get_defined_vars() );
 
-			echo json_encode( $output );
+			echo gp_json_encode( $output );
 		}
 
 		exit();
 	}
 
-	function glossary_entry_delete_post( $project_path, $locale_slug, $translation_set_slug ) {
+	public function glossary_entry_delete_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$ge             = array_shift( gp_post('glossary_entry') );
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
@@ -136,7 +160,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		exit();
 	}
 
-	function export_glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
+	public function export_glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
@@ -145,9 +169,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
 
-		if ( ! $translation_set || ! $glossary ) {
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
+
+		$glossary = GP::$glossary->by_set_id( $translation_set->id );
+
+		if ( ! $glossary ) {
 			return $this->die_with_404();
 		}
 
@@ -159,7 +188,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->print_export_file( $locale->slug, $glossary_entries );
 	}
 
-	function import_glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
+	public function import_glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
@@ -180,7 +209,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->tmpl( 'glossary-import', get_defined_vars() );
 	}
 
-	function import_glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
+	public function import_glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
@@ -189,9 +218,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		$glossary        = GP::$glossary->by_set_id( $translation_set->id );
 
-		if ( ! $translation_set || ! $glossary ) {
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
+
+		$glossary = GP::$glossary->by_set_id( $translation_set->id );
+
+		if ( ! $glossary ) {
 			return $this->die_with_404();
 		}
 
@@ -213,7 +247,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
 	}
 
-	function print_export_file( $locale_slug, $entries ) {
+	private function print_export_file( $locale_slug, $entries ) {
 		$outstream = fopen("php://output", 'w');
 
 		fputcsv( $outstream, array( 'en', $locale_slug, 'pos', 'description' ) );
@@ -226,7 +260,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		fclose( $outstream );
 	}
 
-	function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
+	private function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
 		$f = fopen( $file, 'r' );
 		$glossary_entries = 0;
 
