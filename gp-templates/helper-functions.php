@@ -45,10 +45,10 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		//Replace terms in strings with markup
 		foreach( $matching_entries as $term => $glossary_data ) {
 			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( gp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
-			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
+			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup );
 
 			if ( $t->plural ) {
-				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup, 1 );
+				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup );
 			}
 		}
 	}
