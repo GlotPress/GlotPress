@@ -28,11 +28,6 @@ do
 done
 
 function init_env() {
-    # Composer install
-    cd "${PLUGIN_DIR}"
-    composer install
-    export PATH="${PLUGIN_DIR}/vendor/bin:${PATH}"
-
     # Drop database.
     if [ 'true' == ${DROP_DB} ]
     then
