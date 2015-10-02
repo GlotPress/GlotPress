@@ -20,7 +20,7 @@ class GP_Route_Login extends GP_Route_Main {
 		}
 
 		if ( $user->login( gp_post( 'user_pass' ) ) ) {
-			if ( gp_post( 'redirect_to' ) ) {
+			if ( gp_post( 'redirect_to' ) && ! strpos( gp_post( 'redirect_to' ), 'install.php' ) ) {
 				$this->redirect( gp_post( 'redirect_to' ) );
 			} else {
 				$this->notices[] = sprintf( __("Welcome, %s!"), $_POST['user_login'] );

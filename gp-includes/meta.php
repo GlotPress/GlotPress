@@ -256,6 +256,9 @@ function gp_get_option( $option ) {
 	global $bb;
 
 	switch ( $option ) {
+		case 'title':
+			$r = 'GlotPress';
+			break;
 		case 'language':
 			$r = str_replace( '_', '-', get_locale() );
 			break;
