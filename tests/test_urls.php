@@ -3,7 +3,7 @@
 class GP_Test_Urls extends GP_UnitTestCase {
 
 	function setUp() {
-	    $this->sub_dir = '/gp/';
+	    $this->sub_dir = '/glotpress/';
 		$this->url = 'http://example.org' . $this->sub_dir;
 		parent::setUp();
 	}
