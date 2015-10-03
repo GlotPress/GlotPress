@@ -99,7 +99,7 @@ function gp_link_set_edit() {
 }
 
 function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! GP::$user->current()->can( 'approve', 'translation-set', $set->id ) ) {
 		return '';
 	}
 
