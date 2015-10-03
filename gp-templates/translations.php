@@ -118,7 +118,7 @@ $i = 0;
 		<dt><?php _x('By:','sort by'); ?></dt>
 		<dd>
 		<?php
-		$default_sort = GP::$user->current()->get_meta('default_sort');
+		$default_sort = get_user_meta( get_current_user_id(), 'gp_default_sort', true );
 		if ( ! is_array($default_sort) ) {
 			$default_sort = array(
 				'by' => 'priority',

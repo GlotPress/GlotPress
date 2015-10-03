@@ -55,10 +55,10 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$user = GP::$user->current();
-		$source_url_templates = $user->get_meta( 'source_url_templates' );
+		$source_url_templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
 		if ( !is_array( $source_url_templates ) ) $source_url_templates = array();
 		$source_url_templates[$project->id] = gp_post( 'source-url-template' );
-		if ( $user->set_meta( 'source_url_templates', $source_url_templates ) )
+		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) )
 			$this->notices[] = 'Source URL template was successfully updated.';
 		else
 			$this->errors[] = 'Error in updating source URL template.';
@@ -261,7 +261,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		// we can't join on users table
 		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
-			$permission->user = GP::$user->get( $permission->user_id );
+			$permission->user = get_userdata( $permission->user_id );
 		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
 	}

@@ -124,7 +124,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			add_filter( 'gp_pagination', create_function( '$html', 'return "";' ) );
 		}
 
-		$per_page = GP::$user->current()->get_meta('per_page');
+		$per_page = get_user_meta( get_current_user_id(), 'gp_per_page', true );
 		if ( 0 == $per_page )
 			$per_page = GP::$translation->per_page;
 		else
