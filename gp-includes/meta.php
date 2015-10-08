@@ -319,7 +319,6 @@ function gp_cache_all_options()
 		'page_topics',
 		'edit_lock',
 		'gp_active_theme',
-		'active_plugins',
 		'mod_rewrite',
 		'datetime_format',
 		'date_format',
