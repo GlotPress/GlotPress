@@ -9,10 +9,6 @@ if ( !defined( 'GP_LANG_PATH' ) ) {
 	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
 }
 
-if ( !defined( 'GP_PLUGINS_PATH' ) ) {
-	define( 'GP_PLUGINS_PATH', GP_PATH . 'plugins/' );
-}
-
 if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
