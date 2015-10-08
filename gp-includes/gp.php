@@ -20,8 +20,4 @@ class GP {
 	public static $formats;
 	// plugins can use this space
 	public static $vars = array();
-	// for plugin singletons
-	public static $plugins;
 }
-
-GP::$plugins = new stdClass();
