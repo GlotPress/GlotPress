@@ -3,12 +3,52 @@ class GP_Glossary extends GP_Thing {
 
 	var $table_basename = 'glossaries';
 	var $field_names = array( 'id', 'translation_set_id', 'description' );
-	var $non_db_field_names = array( 'translation_set' );
 	var $int_fields = array( 'id', 'translation_set_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	function restrict_fields( $glossary ) {
 		$glossary->translation_set_id_should_not_be('empty');
+	}
+
+	/**
+	 * Get the path to the glossary.
+	 *
+	 * @return string
+	 */
+	public function path() {
+		$translation_set = GP::$translation_set->get( $this->translation_set_id );
+		$project         = GP::$project->get( $translation_set->project_id );
+
+		return gp_url_join( gp_url_project_locale( $project->path, $translation_set->locale, $translation_set->slug ), 'glossary' );
+	}
+
+	/**
+	 * Get the glossary by set/project.
+	 * If there's no glossary for this specific project, get the nearest parent glossary
+	 *
+	 * @param GP_Project $project
+	 * @param GP_Translation_Set $translation_set
+	 *
+	 * @return GP_Glossary
+	 */
+	public function by_set_or_parent_project( $translation_set, $project ) {
+		$glossary = $this->by_set_id( $translation_set->id );
+
+		if ( ! $glossary && $project->parent_project_id ) {
+			$locale = $translation_set->locale;
+			$slug   = $translation_set->slug;
+
+			while ( ! $glossary && $project->parent_project_id  ) {
+				$project         = GP::$project->get( $project->parent_project_id );
+				$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+
+				if ( $translation_set ) {
+					$glossary = $this->by_set_id( $translation_set->id );
+				}
+			}
+		}
+
+		return $glossary;
 	}
 
 	function by_set_id( $set_id ) {
@@ -17,10 +57,14 @@ class GP_Glossary extends GP_Thing {
 		    WHERE translation_set_id = %d LIMIT 1", $set_id );
 	}
 
+
 	/**
 	 * Copies glossary items from a glossary to the current one
+	 * This function does not merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
 	 *
-	 * This function doesn't merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
+	 * @param int $source_glossary_id
+	 *
+	 * @return mixed
 	 */
 	function copy_glossary_items_from( $source_glossary_id ) {
 		global $gpdb;
