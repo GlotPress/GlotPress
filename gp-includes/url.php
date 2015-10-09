@@ -117,7 +117,7 @@ function gp_url_logout() {
 }
 
 function gp_url_base_path() {
-	return '/' . trim( gp_const_get( 'GP_URL_BASE', 'glotpress' ), '/' ) . '/';
+	return trailingslashit( '/' . trim( gp_const_get( 'GP_URL_BASE', 'glotpress' ), '/' ) );
 }
 
 function gp_plugin_url( $path = '' ) {

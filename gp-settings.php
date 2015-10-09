@@ -147,7 +147,18 @@ register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
  */
 function gp_rewrite_rules() {
 	$gp_base = trim( gp_url_base_path(), '/' );
-	add_rewrite_rule( '^' . $gp_base . '/?(.*)$', 'index.php?gp_route=$matches[1]', 'top' );
+
+	if ( ! $gp_base ) {
+		// When GlotPress is set to take over the root of the site,
+		// add a special rule that WordPress uses to route requests to root.
+		add_rewrite_rule( '$', 'index.php?gp_route', 'top' );
+
+		$match_regex = '^(.*)$';
+	} else {
+		$match_regex = '^' . $gp_base . '/?(.*)$';
+	}
+
+	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
 }
 add_action( 'init', 'gp_rewrite_rules' );
 
