@@ -72,12 +72,12 @@ class GP_Project extends GP_Thing {
 	 * Updates this project's and its chidlren's paths, according to its current slug.
 	 */
 	function update_path() {
-		global $gpdb;
+		global $wpdb;
 		$old_path = isset( $this->path )? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project )
 			$path = gp_url_join( $parent_project->path, $this->slug );
-		elseif ( !$gpdb->last_error )
+		elseif ( !$wpdb->last_error )
 			$path = $this->slug;
 		else
 			return null;
@@ -87,7 +87,7 @@ class GP_Project extends GP_Thing {
 		// update children's paths, too
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen($old_path) + 1, $gpdb->esc_like( $old_path).'%' );
+			return $this->query( $query, $path, strlen($old_path) + 1, $wpdb->esc_like( $old_path).'%' );
 		} else {
 			return $res_self;
 		}
@@ -201,14 +201,14 @@ class GP_Project extends GP_Thing {
 	}
 
 	function copy_originals_from( $source_project_id ) {
-		global $gpdb;
+		global $wpdb;
 		return $this->query("
-			INSERT INTO $gpdb->originals (
+			INSERT INTO $wpdb->originals (
 				`project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
 			)
 			SELECT
 				%s AS `project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
-			FROM $gpdb->originals WHERE project_id = %s", $this->id, $source_project_id
+			FROM $wpdb->originals WHERE project_id = %s", $this->id, $source_project_id
 		);
 	}
 

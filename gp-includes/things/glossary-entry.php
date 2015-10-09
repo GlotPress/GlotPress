@@ -43,9 +43,9 @@ class GP_Glossary_Entry extends GP_Thing {
 	}
 
 	function last_modified( $glossary ) {
-		global $gpdb;
+		global $wpdb;
 
-		return $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
+		return $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
 	}
 }
 
