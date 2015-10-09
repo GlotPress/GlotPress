@@ -15,8 +15,13 @@ class GP_Route_Profile extends GP_Route_Main {
 			$per_page = (int) $_POST['per_page'];
 			GP::$user->current()->set_meta( 'per_page', $per_page );
 
-			$default_sort = $_POST['default_sort'];
-			GP::$user->current()->set_meta( 'default_sort', $default_sort );
+			$default_sort = array(
+				'by'  => 'priority',
+				'how' => 'desc'
+			);
+			$user_sort = wp_parse_args( $_POST['default_sort'], $default_sort );
+
+			GP::$user->current()->set_meta( 'default_sort', $user_sort );
 		}
 
 		$this->redirect( gp_url( '/profile' ) );

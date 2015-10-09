@@ -52,6 +52,13 @@ class GP_UnitTest_Factory_For_Translation_Set extends GP_UnitTest_Factory_For_Th
 		);
 	}
 
+	function create_with_project( $args = array(), $project_args = array() ) {
+		$project = $this->factory->project->create( $project_args );
+		$set = $this->create( array( 'project_id' => $project->id ) + $args );
+		$set->project = $project;
+		return $set;
+	}
+
 	function create_with_project_and_locale( $args = array(), $project_args = array() ) {
 		$locale = $this->factory->locale->create();
 		$project = $this->factory->project->create( $project_args );
