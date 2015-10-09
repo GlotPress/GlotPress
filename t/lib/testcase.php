@@ -32,7 +32,6 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 		GP::$original = new GP_Original;
 	}
 
-
 	function set_normal_user_as_current() {
 		$user = $this->factory->user->create();
 		$user->set_as_current();

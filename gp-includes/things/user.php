@@ -145,6 +145,19 @@ class GP_User extends GP_Thing {
 		return gp_delete_meta( $this->id, $key, '', 'user' );
 	}
 
+	public function sort_defaults() {
+		$defaults = $this->get_meta('default_sort');
+
+		if ( ! is_array( $defaults ) ) {
+			$defaults = array(
+				'by' => 'priority',
+				'how' => 'desc'
+			);
+		}
+
+		return $defaults;
+	}
+
 	public function get_avatar( $size = 100 ) {
 		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
 	}

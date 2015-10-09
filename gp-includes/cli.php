@@ -2,9 +2,11 @@
 
 class GP_CLI {
 
-	var $short_options = '';
-	var $program_name = '';
-	var $usage = '';
+	public $short_options = '';
+	public $long_options = array();
+	public $options = array();
+	public $program_name = '';
+	public $usage = '';
 
 	function __construct() {
 		global $argv;
@@ -16,7 +18,7 @@ class GP_CLI {
 		}
 
 		$this->program_name = array_shift( $argv );
-		$this->options = getopt( $this->short_options );
+		$this->options = getopt( $this->short_options, $this->long_options );
 		$this->args = $argv;
 	}
 
