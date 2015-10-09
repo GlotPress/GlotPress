@@ -99,7 +99,7 @@ function display_status( $status ) {
 }
 
 function references( $project, $entry ) {
-	$show_references = apply_filters( 'show_references', (bool) $entry->references, $project, $entry );
+	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
 	if ( ! $show_references ) return;
 	?>

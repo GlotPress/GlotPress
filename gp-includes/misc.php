@@ -211,7 +211,7 @@ function gp_salt($scheme = 'auth') {
 			break;
 	}
 
-	return apply_filters( 'salt', $secret_key . $salt, $scheme );
+	return apply_filters( 'gp_salt', $secret_key . $salt, $scheme );
 }
 endif;
 

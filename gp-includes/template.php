@@ -1,13 +1,13 @@
 <?php
 function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$args = gp_tmpl_filter_args( $args );
-	do_action_ref_array( 'pre_tmpl_load', array( $template, &$args ) );
+	do_action_ref_array( 'gp_pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
 	$locations = array( GP_TMPL_PATH );
 	if ( !is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
-	$locations = apply_filters( 'tmpl_load_locations', $locations, $template, $args, $template_path );
+	$locations = apply_filters( 'gp_tmpl_load_locations', $locations, $template, $args, $template_path );
 	if ( isset( $args['http_status'] ) )
 		status_header( $args['http_status'] );
 	foreach( $locations as $location ) {
@@ -18,7 +18,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 			break;
 		}
 	}
-	do_action_ref_array( 'post_tmpl_load', array( $template, &$args ) );
+	do_action_ref_array( 'gp_post_tmpl_load', array( $template, &$args ) );
 }
 
 function gp_tmpl_get_output() {

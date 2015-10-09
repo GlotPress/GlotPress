@@ -30,7 +30,7 @@ gp_enqueue_script( 'jquery' );
 			<?php else: ?>
 				<strong><a href="<?php echo gp_url_login(); ?>"><?php _e('Log in'); ?></a></strong>
 			<?php endif; ?>
-			<?php do_action( 'after_hello' ); ?>
+			<?php do_action( 'gp_after_hello' ); ?>
 			</span>
 			<div class="clearfix"></div>
 		</h1>
@@ -45,4 +45,4 @@ gp_enqueue_script( 'jquery' );
 				<?php echo gp_notice(); ?>
 			</div>
 		<?php endif; ?>
-		<?php do_action( 'after_notices' ); ?>
+		<?php do_action( 'gp_after_notices' ); ?>

@@ -162,7 +162,7 @@ class GP_Translation extends GP_Thing {
 			$join_where[] = $statuses_where;
 		}
 
-		$where = apply_filters( 'for_translation_where', $where, $translation_set );
+		$where = apply_filters( 'gp_for_translation_where', $where, $translation_set );
 
 		$where = implode( ' AND ', $where );
 		if ( $where ) {
@@ -272,7 +272,7 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				$copy_status = apply_filters( 'translations_to_other_projects_status', 'current' );
+				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', 'current' );
 				$this->copy_into_set( $o_translation_set->id, $o->id, $copy_status );
 			}
 		}

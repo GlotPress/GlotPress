@@ -85,7 +85,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$export_locale = apply_filters( 'export_locale', $locale->slug, $locale );
+		$export_locale = apply_filters( 'gp_export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
 
@@ -397,7 +397,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			'warning' => gp_post( 'key' ),
 			'user' => get_current_user_id()
 		);
-		do_action_ref_array( 'warning_discarded', $warning );
+		do_action_ref_array( 'gp_warning_discarded', $warning );
 
 		unset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] );
 		if ( empty( $translation->warnings[gp_post( 'index' )] ) ) {

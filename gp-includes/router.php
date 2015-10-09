@@ -43,7 +43,7 @@ class GP_Router {
 		$set = "$project/$locale/$dir";
 
 		// overall structure
-		return apply_filters( 'routes', array(
+		return apply_filters( 'gp_routes', array(
 			'/' => array('GP_Route_Index', 'index'),
 			'get:/login' => array('GP_Route_Login', 'login_get'),
 			'get:/logout' => array('GP_Route_Login', 'logout'),
@@ -160,7 +160,7 @@ class GP_Router {
 						register_shutdown_function( array( &$route, 'after_request') );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
-						do_action( 'after_request', $class, $method );
+						do_action( 'gp_after_request', $class, $method );
 						$route->request_running = false;
 					} else {
 						call_user_func_array( $func, array_slice( $matches, 1 ) );

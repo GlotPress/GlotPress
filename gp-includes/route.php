@@ -31,7 +31,7 @@ class GP_Route {
 	}
 
 	function before_request() {
-		do_action( 'before_request', $this->class_name, $this->last_method_called );
+		do_action( 'gp_before_request', $this->class_name, $this->last_method_called );
 	}
 
 	function after_request() {
@@ -42,7 +42,7 @@ class GP_Route {
 		if ( !headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
-		do_action( 'after_request', $this->class_name, $this->last_method_called );
+		do_action( 'gp_after_request', $this->class_name, $this->last_method_called );
 	}
 
 	/**

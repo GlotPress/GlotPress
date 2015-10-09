@@ -76,7 +76,7 @@ class GP_Translation_Set extends GP_Thing {
 				// create a new one if they don't match
 				$entry->original_id = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
-				$create = apply_filters( 'translation_set_import_over_existing', $translated_is_different );
+				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
@@ -91,7 +91,7 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->translation_set_id = $this->id;
-				$entry->status = apply_filters( 'translation_set_import_status', in_array( 'fuzzy', $entry->flags ) ? 'fuzzy' : 'current' );
+				$entry->status = apply_filters( 'gp_translation_set_import_status', in_array( 'fuzzy', $entry->flags ) ? 'fuzzy' : 'current' );
 				// check for errors
 				$translation = GP::$translation->create( $entry );
 				$translation->set_status( $entry->status );
@@ -101,7 +101,7 @@ class GP_Translation_Set extends GP_Thing {
 
 		gp_clean_translation_set_cache( $this->id );
 
-		do_action( 'translations_imported', $this->id );
+		do_action( 'gp_translations_imported', $this->id );
 
 		return $translations_added;
 	}
