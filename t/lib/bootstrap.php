@@ -9,7 +9,7 @@ define( 'GP_DIR_TESTDATA', dirname( __DIR__ ) . '/data' );
 
 $tables = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
 foreach ( $tables as $table ) {
-	$gpdb->query( "DROP TABLE IF EXISTS {$gpdb->$table}" );
+	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->$table}" );
 }
 
 require_once ABSPATH . 'wp-admin/includes/upgrade.php';

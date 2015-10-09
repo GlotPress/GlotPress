@@ -50,7 +50,7 @@ class GP_Original extends GP_Thing {
 
 
 	function by_project_id_and_entry( $project_id, $entry, $status = null ) {
-		global $gpdb;
+		global $wpdb;
 
 		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null;
 		$entry->context = isset( $entry->context ) ? $entry->context : null;
@@ -63,7 +63,7 @@ class GP_Original extends GP_Thing {
 		$where[] = 'project_id = %d';
 
 		if ( ! is_null( $status ) ) {
-			$where[] = $gpdb->prepare( 'status = %s', $status );
+			$where[] = $wpdb->prepare( 'status = %s', $status );
 		}
 
 		$where = implode( ' AND ', $where );
@@ -72,7 +72,7 @@ class GP_Original extends GP_Thing {
 	}
 
 	function import_for_project( $project, $translations ) {
-		global $gpdb;
+		global $wpdb;
 
 		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
 
@@ -94,7 +94,7 @@ class GP_Original extends GP_Thing {
 		$possibly_added = $possibly_dropped = array();
 
 		foreach( $translations->entries as $entry ) {
-			$gpdb->queries = array();
+			$wpdb->queries = array();
 			$data = array(
 				'project_id' => $project->id,
 				'context'    => $entry->context,
@@ -263,24 +263,24 @@ class GP_Original extends GP_Thing {
 	}
 
 	function add_translations_from_other_projects() {
-		global $gpdb;
+		global $wpdb;
 
-		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $gpdb->translation_sets WHERE project_id = %d", $this->project_id );
+		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->translation_sets WHERE project_id = %d", $this->project_id );
 		if ( empty( $project_translations_sets ) ) {
 			return;
 		}
 
 		$matched_sets = array();
 
-		$sql_project  = $gpdb->prepare( 'o.project_id != %d', $this->project_id );
-		$sql_singular = $gpdb->prepare( 'o.singular = BINARY %s', $this->singular );
-		$sql_plural = is_null( $this->plural ) ? 'o.plural IS NULL' : $gpdb->prepare( 'o.plural = BINARY %s', $this->plural );
-		$sql_context = is_null( $this->context ) ? 'o.context IS NULL' : $gpdb->prepare( 'o.context = BINARY %s', $this->context );
+		$sql_project  = $wpdb->prepare( 'o.project_id != %d', $this->project_id );
+		$sql_singular = $wpdb->prepare( 'o.singular = BINARY %s', $this->singular );
+		$sql_plural = is_null( $this->plural ) ? 'o.plural IS NULL' : $wpdb->prepare( 'o.plural = BINARY %s', $this->plural );
+		$sql_context = is_null( $this->context ) ? 'o.context IS NULL' : $wpdb->prepare( 'o.context = BINARY %s', $this->context );
 
 		$sql = "SELECT t.*, s.locale, s.slug
 			FROM {$this->table} o
-				JOIN {$gpdb->translations} t ON o.id = t.original_id
-				JOIN {$gpdb->translation_sets} s ON t.translation_set_id = s.id
+				JOIN {$wpdb->translations} t ON o.id = t.original_id
+				JOIN {$wpdb->translation_sets} s ON t.translation_set_id = s.id
 			WHERE
 				$sql_context AND $sql_singular AND $sql_plural
 				AND o.status = '+active' AND $sql_project

@@ -34,15 +34,15 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	function existing_locales() {
-		global $gpdb;
+		global $wpdb;
 
-		return $gpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
+		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
 	function existing_slugs() {
-		global $gpdb;
+		global $wpdb;
 
-		return $gpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
+		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 
 	function by_project_id( $project_id ) {
@@ -182,7 +182,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * When copying translations from another project, it will search to find the original first.
 	 */
 	function copy_translations_from( $source_translation_set_id ) {
-		global $gpdb;
+		global $wpdb;
 		$current_date = $this->now_in_mysql_format();
 
 		$source_set = GP::$translation_set->get( $source_translation_set_id );
@@ -199,12 +199,12 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		} else {
 			return $this->query( "
-				INSERT INTO $gpdb->translations (
+				INSERT INTO $wpdb->translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
 					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-				FROM $gpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+				FROM $wpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
 			);
 		}
 	}

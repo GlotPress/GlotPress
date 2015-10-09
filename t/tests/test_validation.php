@@ -24,8 +24,8 @@ class GP_Test_Validation extends GP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		global $gpdb;
-		$gpdb->mice = '';
+		global $wpdb;
+		$wpdb->mice = '';
 	}
 
 	function test_basic() {

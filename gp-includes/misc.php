@@ -132,7 +132,6 @@ function gp_redirect( $location, $status = 302 ) {
  * @param integer $per_page How many items are there in a page
  */
 function gp_limit_for_page( $page, $per_page ) {
-	global $gpdb;
 	$page = $page? $page - 1 : 0;
 	return sprintf( 'LIMIT %d OFFSET %d', $per_page, $per_page * $page );
 }
