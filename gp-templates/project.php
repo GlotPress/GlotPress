@@ -4,7 +4,6 @@ gp_breadcrumb_project( $project );
 gp_enqueue_script( 'gp-common' );
 gp_enqueue_script('tablesorter');
 $edit_link = gp_link_project_edit_get( $project, __('(edit)') );
-$parity = gp_parity_factory();
 
 if ( $project->active ) {
 	add_filter( 'gp_breadcrumb', function( $s ) { return $s . '<span class="active bubble">' . __('Active') . '</span>'; } );
@@ -48,7 +47,7 @@ gp_tmpl_header();
 		</thead>
 		<tbody>
 		<?php foreach( $translation_sets as $set ): ?>
-			<tr class="<?php echo $parity(); ?>">
+			<tr>
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):

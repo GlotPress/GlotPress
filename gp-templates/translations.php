@@ -11,12 +11,8 @@ wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( '
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
-wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
-$parity = gp_parity_factory();
 
-add_action( 'gp_head', function() use ( $locale ) {
-	return gp_preferred_sans_serif_style_tag( $locale );
-} );
+wp_localize_script( 'editor', '$gp_editor_options', $editor_options );
 
 gp_tmpl_header();
 $i = 0;
@@ -25,7 +21,7 @@ $i = 0;
 	<?php printf( __("Translation of %s"), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __('(edit)') ); ?>
 	<?php if ( $glossary ): ?>
-	<?php echo gp_link( gp_url_project_locale( $project, $locale->slug, $translation_set->slug ) . '/glossary', __('glossary'), array('class'=>'glossary-link') ); ?>
+	<?php echo gp_link( $glossary->path(), __('glossary'), array('class'=>'glossary-link') ); ?>
 	<?php elseif ( $can_approve ): ?>
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __('Create glossary'), array('class'=>'glossary-link') ); ?>
 	<?php endif; ?>
@@ -118,13 +114,7 @@ $i = 0;
 		<dt><?php _x('By:','sort by'); ?></dt>
 		<dd>
 		<?php
-		$default_sort = GP::$user->current()->get_meta('default_sort');
-		if ( ! is_array($default_sort) ) {
-			$default_sort = array(
-				'by' => 'priority',
-				'how' => 'desc'
-			);
-		}
+		$default_sort = GP::$user->current()->sort_defaults();
 
 		echo gp_radio_buttons('sort[by]',
 			array(
@@ -151,7 +141,8 @@ $i = 0;
 		<dd><input type="submit" value="<?php echo esc_attr(__('Sort')); ?>" name="sorts" /></dd>
 	</dl>
 </form>
-<table id="translations" class="translations clear<?php if( isset( $locale->rtl ) && $locale->rtl ) { echo ' translation-sets-rtl'; } ?>">
+
+<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
 	<thead>
 	<tr>
 		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>

@@ -34,12 +34,14 @@ class GP_Project extends GP_Thing {
 	// Triggers
 
 	function after_save() {
+		do_action( 'project_saved', $this );
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
 		return !is_null( $this->update_path() );
 	}
 
 	function after_create() {
+		do_action( 'project_created', $this );
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
 	}
@@ -58,7 +60,7 @@ class GP_Project extends GP_Thing {
 			unset( $args['path'] );
 		}
 		if ( isset( $args['active'] ) ) {
-			if ( 'on' == $args['active'] ) $args['active'] = 1;
+			if ( 'on' === $args['active'] ) $args['active'] = 1;
 			if ( !$args['active'] ) $args['active'] = 0;
 		}
 		return $args;

@@ -1,8 +1,8 @@
 <?php
 gp_title( __('Locales &lt; GlotPress') );
-gp_enqueue_script('gp-common');
-gp_enqueue_script('tablesorter');
-$parity = gp_parity_factory();
+
+wp_enqueue_script('gp-common');
+wp_enqueue_script('tablesorter');
 gp_tmpl_header();
 ?>
 
@@ -22,7 +22,7 @@ gp_tmpl_header();
 		</thead>
 		<tbody>
 		<?php foreach ( $locales as $locale ) : ?>
-			<tr class="<?php echo $parity(); ?>">
+			<tr>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . "</td>" ?>
