@@ -161,7 +161,7 @@ class GP_Original extends GP_Thing {
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
 
-				if ( apply_filters( 'enable_add_translations_from_other_projects', true ) ) {
+				if ( apply_filters( 'gp_enable_add_translations_from_other_projects', true ) ) {
 					$created->add_translations_from_other_projects();
 				}
 
@@ -313,7 +313,7 @@ class GP_Original extends GP_Thing {
 	}
 
 	function after_create() {
-		do_action( 'original_created', $this );
+		do_action( 'gp_original_created', $this );
 		return true;
 	}
 }

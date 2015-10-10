@@ -15,7 +15,7 @@ class GP_Router {
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
 
-		do_action( 'router_default_routes_set', $this );
+		do_action( 'gp_router_default_routes_set', $this );
 	}
 
 	/**
