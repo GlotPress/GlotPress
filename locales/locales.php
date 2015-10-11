@@ -375,6 +375,15 @@ class GP_Locales {
 		$ce->lang_code_iso_639_2 = 'che';
 		$ce->slug = 'ce';
 
+		$ceb = new GP_Locale();
+		$ceb->english_name = 'Cebuano';
+		$ceb->native_name = 'Cebuano';
+		$ceb->lang_code_iso_639_2 = 'ceb';
+		$ceb->lang_code_iso_639_3 = 'ceb';
+		$ceb->country_code = 'ph';
+		$ceb->wp_locale = 'ceb';
+		$ceb->slug = 'ceb';
+
 		$ch = new GP_Locale();
 		$ch->english_name = 'Chamorro';
 		$ch->native_name = 'Chamoru';
