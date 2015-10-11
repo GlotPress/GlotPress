@@ -59,7 +59,7 @@ class GP_Translation_Set extends GP_Thing {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$user = GP::$user->current();
 
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current', 'translated' => 'yes') );
+		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current_or_fuzzy', 'translated' => 'yes') );
 		$current_translations = new Translations();
 		foreach( $current_translations_list as $entry ) {
 			$current_translations->add_entry( $entry );
