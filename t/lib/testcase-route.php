@@ -8,25 +8,8 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		parent::setUp();
 		$this->route = new $this->route_class;
 		$this->route->fake_request = true;
-		$this->cookies = array();
 		$this->route->errors = array();
 		$this->route->notices = array();
-		add_filter( 'backpress_set_cookie', array( &$this, 'filter_do_not_set_cookie' ) );
-	}
-
-	function tearDown() {
-		parent::tearDown();
-		remove_filter( 'backpress_set_cookie', array( &$this, 'filter_do_not_set_cookie' ) );
-	}
-
-	function filter_do_not_set_cookie( $args ) {
-		if ( isset( $args[0] ) && !isset( $args[1] ) && isset( $this->cookies[$args[0]] ) ) {
-			unset( $this->cookies[$args[0]] );
-		}
-		if ( isset( $args[0] ) && isset( $args[1] ) ) {
-			$this->cookies[$args[0]] = $args[1];
-		}
-		return false;
 	}
 
 	function assertRedirected() {
