@@ -9,6 +9,8 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 
 	protected $backupGlobalsBlacklist = array( 'gpdb' );
 
+	private $cookies;
+
 	var $url = 'http://example.org/';
 
 	function setUp() {
@@ -37,18 +39,25 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 			}
 			define( 'GP_IS_TEST_DB_INSTALLED', true );
 		}
+
+		$this->cookies = array();
+		add_filter( 'backpress_set_cookie', array( $this, 'capture_cookies' ) );
+
 		$this->factory = new GP_UnitTest_Factory;
 		$this->clean_up_global_scope();
 		$this->start_transaction();
 		ini_set( 'display_errors', 1 );
 		$this->url_filter = returner( $this->url );
 		add_filter( 'gp_get_option_uri', $this->url_filter );
-    }
+	}
 
 	function tearDown() {
-		global $gpdb;
+		global $gpdb, $wp_auth_object;
 		$gpdb->query( 'ROLLBACK' );
 		remove_filter( 'gp_get_option_uri', $this->url_filter );
+		remove_filter( 'backpress_set_cookie', array( &$this, 'filter_do_not_set_cookie' ) );
+		$wp_auth_object->set_current_user( 0 );
+		$wp_auth_object->clear_auth_cookie();
 	}
 
 	function clean_up_global_scope() {
@@ -83,6 +92,18 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		$gpdb->query( 'SET autocommit = 0;' );
 		$gpdb->query( 'SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;' );
 		$gpdb->query( 'START TRANSACTION;' );
+	}
+
+	function capture_cookies( $args ) {
+		if ( isset( $args[0] ) && !isset( $args[1] ) && isset( $this->cookies[$args[0]] ) ) {
+			unset( $this->cookies[$args[0]] );
+		}
+
+		if ( isset( $args[0] ) && isset( $args[1] ) ) {
+			$this->cookies[$args[0]] = $args[1];
+		}
+
+		return false;
 	}
 
 	function temp_filename() {

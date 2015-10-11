@@ -250,6 +250,8 @@ class GP_Translation extends GP_Thing {
 			return;
 		}
 
+		$user = GP::$user->current();
+
 		$original = GP::$original->get( $this->original_id );
 		$originals_in_other_projects = $original->get_matching_originals_in_other_projects();
 
@@ -268,7 +270,12 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				$copy_status = apply_filters( 'translations_to_other_projects_status', 'current' );
+				if ( $user->logged_in() && ! $user->can( 'approve', 'translation-set', $o_translation_set->id ) ) {
+					$copy_status = 'waiting';
+				} else {
+					$copy_status = 'current';
+				}
+				$copy_status = apply_filters( 'translations_to_other_projects_status', $copy_status );
 				$this->copy_into_set( $o_translation_set->id, $o->id, $copy_status );
 			}
 		}

@@ -8,6 +8,8 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	 * @ticket 327
 	 */
 	function test_discard_warning_edit_function() {
+		$this->set_admin_user_as_current();
+
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
 		$project2 = $this->factory->project->create( array( 'name'=>'project_two' ) );
