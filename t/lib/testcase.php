@@ -43,7 +43,7 @@ class GP_UnitTestCase extends PHPUnit_Framework_TestCase {
 		ini_set( 'display_errors', 1 );
 		$this->url_filter = returner( $this->url );
 		add_filter( 'gp_get_option_uri', $this->url_filter );
-    }
+	}
 
 	function tearDown() {
 		global $gpdb;
