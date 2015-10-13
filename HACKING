@@ -65,6 +65,4 @@ You will need to install phpunit: http://www.phpunit.de/manual/current/en/instal
 - templates: links function
 - tests
 - init phase
-- plugins: where to put
-- plugins: GP_Plugin base class
 - API calls
