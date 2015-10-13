@@ -77,7 +77,7 @@ class GP_Translation extends GP_Thing {
 	}
 
 	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
-		global $gpdb;
+		global $wpdb;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 
 		$join_type = 'INNER';
@@ -94,17 +94,17 @@ class GP_Translation extends GP_Thing {
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			$like = "LIKE '%" . ( esc_sql( $gpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+			$like = "LIKE '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
-			$where[] = $gpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
+			$where[] = $wpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
 		}
 		if ( gp_array_get( $filters, 'translation_id' ) ) {
-			$where[] = $gpdb->prepare( 't.id = %d', gp_array_get( $filters, 'translation_id' ) );
+			$where[] = $wpdb->prepare( 't.id = %d', gp_array_get( $filters, 'translation_id' ) );
 		}
 		if ( gp_array_get( $filters, 'original_id' ) ) {
-			$where[] = $gpdb->prepare( 'o.id = %d', gp_array_get( $filters, 'original_id' ) );
+			$where[] = $wpdb->prepare( 'o.id = %d', gp_array_get( $filters, 'original_id' ) );
 		}
 		if ( 'yes' == gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NOT NULL';
@@ -122,7 +122,7 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'user_login' ) ) {
 			$user = get_user_by( 'login', $filters['user_login'] );
 			// do not return any entries if the user doesn't exist
-			$where[] = $gpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
+			$where[] = $wpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -150,7 +150,7 @@ class GP_Translation extends GP_Thing {
 		if ( $statuses ) {
 			$statuses_where = array();
 			foreach( $statuses as $single_status ) {
-				$statuses_where[] = $gpdb->prepare( 't.status = %s', $single_status );
+				$statuses_where[] = $wpdb->prepare( 't.status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
 			$join_where[] = $statuses_where;
@@ -174,8 +174,8 @@ class GP_Translation extends GP_Thing {
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
-			FROM $gpdb->originals as o
-			$join_type JOIN $gpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
+			FROM $wpdb->originals as o
+			$join_type JOIN $wpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
 			WHERE o.project_id = " . (int) $project->id . " AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
 		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();
@@ -298,7 +298,7 @@ class GP_Translation extends GP_Thing {
 	}
 
 	function last_modified( $translation_set ) {
-		global $gpdb;
+		global $wpdb;
 
 		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
 		// Cached as "" if no translations.
@@ -308,7 +308,7 @@ class GP_Translation extends GP_Thing {
 			return $last_modified;
 		}
 
-		$last_modified = $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
+		$last_modified = $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
 		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
 		return $last_modified;
 	}

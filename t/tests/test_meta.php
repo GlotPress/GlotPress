@@ -27,21 +27,21 @@ class GP_Test_Meta extends GP_UnitTestCase {
 	 * @ticket 480
 	 */
 	function test_get_meta_uses_cache() {
-		global $gpdb;
+		global $wpdb;
 
 		gp_update_meta( '1', 'foo', 'bar', 'thing' );
 
-		$num_queries = $gpdb->num_queries;
+		$num_queries = $wpdb->num_queries;
 
 		// Cache is not primed, expect 1 query.
 		gp_get_meta( 'thing', '1', 'foo' );
-		$this->assertEquals( $num_queries + 1, $gpdb->num_queries );
+		$this->assertEquals( $num_queries + 1, $wpdb->num_queries );
 
-		$num_queries = $gpdb->num_queries;
+		$num_queries = $wpdb->num_queries;
 
 		// Cache is primed, expect no queries.
 		gp_get_meta( 'thing', '1', 'foo' );
-		$this->assertEquals( $num_queries, $gpdb->num_queries );
+		$this->assertEquals( $num_queries, $wpdb->num_queries );
 	}
 
 	/**
