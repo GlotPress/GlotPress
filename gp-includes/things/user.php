@@ -108,7 +108,7 @@ class GP_User extends GP_Thing {
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
 		$filter_args['extra'] = $extra;
-		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $filter_args );
+		$preliminary = apply_filters( 'gp_pre_can_user', 'no-verdict', $filter_args );
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
 		}
@@ -116,7 +116,7 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
-		return apply_filters( 'can_user', $verdict, $filter_args );
+		return apply_filters( 'gp_can_user', $verdict, $filter_args );
 	}
 
 	function get_meta( $key ) {

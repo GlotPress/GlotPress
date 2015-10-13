@@ -104,7 +104,7 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active'
 			);
-			$data = apply_filters( 'import_original_array', $data );
+			$data = apply_filters( 'gp_import_original_array', $data );
 
 			// Original exists, let's update it.
 			if ( isset( $originals_by_key[ $entry->key() ] ) ) {
@@ -138,7 +138,7 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active'
 			);
-			$data = apply_filters( 'import_original_array', $data );
+			$data = apply_filters( 'gp_import_original_array', $data );
 
 			// Search for match in the dropped strings and existing obsolete strings.
 			$close_original = $this->closest_original( $entry->key(), $comparison_array );
@@ -161,7 +161,7 @@ class GP_Original extends GP_Thing {
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
 
-				if ( apply_filters( 'enable_add_translations_from_other_projects', true ) ) {
+				if ( apply_filters( 'gp_enable_add_translations_from_other_projects', true ) ) {
 					$created->add_translations_from_other_projects();
 				}
 
@@ -180,7 +180,7 @@ class GP_Original extends GP_Thing {
 			wp_cache_delete( $project->id, self::$count_cache_group );
 		}
 
-		do_action( 'originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
+		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
 
 		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted );
 	}
@@ -241,7 +241,7 @@ class GP_Original extends GP_Thing {
 		$min_score = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
 		$close_enough = ( $closest_similarity > $min_score );
 
-		do_action( 'post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
+		do_action( 'gp_post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
 
 		if ( $close_enough ) {
 			return $closest;
@@ -307,13 +307,13 @@ class GP_Original extends GP_Thing {
 
 			$matched_sets[] = $o_translation_set->id;
 
-			$copy_status = apply_filters( 'translations_from_other_projects_status', 'current' );
+			$copy_status = apply_filters( 'gp_translations_from_other_projects_status', 'current' );
 			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
 		}
 	}
 
 	function after_create() {
-		do_action( 'original_created', $this );
+		do_action( 'gp_original_created', $this );
 		return true;
 	}
 }
