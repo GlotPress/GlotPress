@@ -165,11 +165,11 @@ class GP_User extends GP_Thing {
 	}
 
 	public function get_recent_translation_sets( $amount = 5 ) {
-		global $gpdb;
+		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map("
 			SELECT translation_set_id, date_added
-			FROM $gpdb->translations as t
+			FROM $wpdb->translations as t
 			WHERE
 				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
 				user_id = %s AND
@@ -199,7 +199,7 @@ class GP_User extends GP_Thing {
 
 				$translation_set->set_id       = $set->id;
 				$translation_set->last_updated = $translation->date_added;
-				$translation_set->count        = $gpdb->get_var( $gpdb->prepare( "SELECT COUNT(*) FROM $gpdb->translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
+				$translation_set->count        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
 
 				$translation_sets[] = $translation_set;
 
@@ -216,12 +216,12 @@ class GP_User extends GP_Thing {
 	}
 
 	public function locales_known() {
-		global $gpdb;
+		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map("
 			SELECT ts.locale, count(*) AS count
-			FROM $gpdb->translations as t
-			INNER JOIN $gpdb->translation_sets AS ts ON ts.id = t.translation_set_id
+			FROM $wpdb->translations as t
+			INNER JOIN $wpdb->translation_sets AS ts ON ts.id = t.translation_set_id
 			WHERE user_id = %s
 			GROUP BY ts.locale
 			ORDER BY count DESC

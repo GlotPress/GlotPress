@@ -1,7 +1,7 @@
 <?php
 
 function gp_upgrade_db() {
-	global $gpdb;
+	global $wpdb;
 
 <<<<<<< HEAD
 	dbDelta( implode( "\n", gp_schema_get() ) );
@@ -57,8 +57,8 @@ function gp_set_htaccess() {
 }
 
 function gp_upgrade_data( $db_version ) {
-	global $gpdb;
+	global $wpdb;
 	if ( $db_version < 190 ) {
-		$gpdb->query("UPDATE $gpdb->translations SET status = REPLACE(REPLACE(status, '-', ''), '+', '');");
+		$wpdb->query("UPDATE $wpdb->translations SET status = REPLACE(REPLACE(status, '-', ''), '+', '');");
 	}
 }
