@@ -533,6 +533,15 @@ class GP_Locales {
 		$el->google_code = 'el';
 		$el->facebook_locale = 'el_GR';
 
+		$emoji = new GP_Locale();
+		$emoji->english_name = 'Emoji';
+		$emoji->native_name = "\xf0\x9f\x8c\x8f\xf0\x9f\x8c\x8d\xf0\x9f\x8c\x8e (Emoji)";
+		$emoji->lang_code_iso_639_2 = 'art';
+		$emoji->wp_locale = 'art_xemoji';
+		$emoji->slug = 'art-xemoji';
+		$emoji->nplurals = 1;
+		$emoji->plural_expression = '0';
+
 		$en = new GP_Locale();
 		$en->english_name = 'English';
 		$en->native_name = 'English';
