@@ -199,12 +199,12 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		} else {
 			return $this->query( "
-				INSERT INTO $wpdb->translations (
+				INSERT INTO $wpdb->gp_translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
 					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-				FROM $wpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+				FROM $wpdb->gp_translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
 			);
 		}
 	}

@@ -13,6 +13,6 @@ function gp_upgrade_db() {
 function gp_upgrade_data( $db_version ) {
 	global $wpdb;
 	if ( $db_version < 190 ) {
-		$wpdb->query("UPDATE $wpdb->translations SET status = REPLACE(REPLACE(status, '-', ''), '+', '');");
+		$wpdb->query("UPDATE $wpdb->gp_translations SET status = REPLACE(REPLACE(status, '-', ''), '+', '');");
 	}
 }

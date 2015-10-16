@@ -28,7 +28,7 @@ function gp_schema_get() {
 	 - Belongs to a user
 	 - Status can be: new, approved, unaproved, current, spam or whatever you'd like
 	*/
-	$gp_schema['translations'] = "CREATE TABLE $wpdb->translations (
+	$gp_schema['translations'] = "CREATE TABLE $wpdb->gp_translations (
 		id INT(10) NOT NULL auto_increment,
 		original_id INT(10) DEFAULT NULL,
 		translation_set_id INT(10) DEFAULT NULL,
@@ -57,7 +57,7 @@ function gp_schema_get() {
 	For example each WordPress Spanish translation (formal, informal and that of Diego) will be different sets.
 	Most projects will have only one translation set per locale.
 	*/
-	$gp_schema['translation_sets'] = "CREATE TABLE $wpdb->translation_sets (
+	$gp_schema['translation_sets'] = "CREATE TABLE $wpdb->gp_translation_sets (
 		id INT(10) NOT NULL auto_increment,
 		name VARCHAR(255) NOT NULL,
 		slug VARCHAR(255) NOT NULL,
@@ -73,7 +73,7 @@ function gp_schema_get() {
 	 - Has many translations
 	 - Belongs to a project
 	 */
-	$gp_schema['originals'] = "CREATE TABLE $wpdb->originals (
+	$gp_schema['originals'] = "CREATE TABLE $wpdb->gp_originals (
 		id INT(10) NOT NULL auto_increment,
 		project_id INT(10) DEFAULT NULL,
 		context VARCHAR(255) DEFAULT NULL,
@@ -92,7 +92,7 @@ function gp_schema_get() {
 	/*
 	Glossary Entries
 	*/
-	$gp_schema['glossary_entries'] = "CREATE TABLE $wpdb->glossary_entries (
+	$gp_schema['glossary_entries'] = "CREATE TABLE $wpdb->gp_glossary_entries (
 		id INT(10) unsigned NOT NULL auto_increment,
 		glossary_id INT(10) unsigned NOT NULL,
 		term VARCHAR(255) NOT NULL,
@@ -107,7 +107,7 @@ function gp_schema_get() {
 	/*
 	Glossaries
 	*/
-	$gp_schema['glossaries'] = "CREATE TABLE $wpdb->glossaries (
+	$gp_schema['glossaries'] = "CREATE TABLE $wpdb->gp_glossaries (
 		id INT(10) unsigned NOT NULL auto_increment,
 		translation_set_id INT(10)  NOT NULL,
 		description TEXT DEFAULT NULL,
@@ -119,7 +119,7 @@ function gp_schema_get() {
 	- Has a project -- its parent
 	- The path is the combination of the slugs of all its parents, separated by /
 	*/
-	$gp_schema['projects'] = "CREATE TABLE $wpdb->projects (
+	$gp_schema['projects'] = "CREATE TABLE $wpdb->gp_projects (
 		id INT(10) NOT NULL auto_increment,
 		name VARCHAR(255) NOT NULL,
 		slug VARCHAR(255) NOT NULL,
@@ -134,7 +134,7 @@ function gp_schema_get() {
 	) $charset_collate;";
 
 	// meta
-	$gp_schema['meta'] = "CREATE TABLE $wpdb->meta (
+	$gp_schema['meta'] = "CREATE TABLE $wpdb->gp_meta (
 		meta_id bigint(20) NOT NULL auto_increment,
 		object_type varchar(32) NOT NULL default 'gp_option',
 		object_id bigint(20) NOT NULL default 0,
@@ -146,7 +146,7 @@ function gp_schema_get() {
 	) $charset_collate;";
 
 	// permissions
-	$gp_schema['permissions'] = "CREATE TABLE $wpdb->permissions (
+	$gp_schema['permissions'] = "CREATE TABLE $wpdb->gp_permissions (
 		id INT(10) NOT NULL AUTO_INCREMENT,
 		user_id INT(10) DEFAULT NULL,
 		action VARCHAR(255) DEFAULT NULL,
@@ -157,7 +157,7 @@ function gp_schema_get() {
 	) $charset_collate;";
 
 	// API keys
-	$gp_schema['api_keys'] = "CREATE TABLE $wpdb->api_keys (
+	$gp_schema['api_keys'] = "CREATE TABLE $wpdb->gp_api_keys (
 		id INT(10) NOT NULL AUTO_INCREMENT,
 		user_id INT(10) NOT NULL,
 		api_key VARCHAR(16) NOT NULL,

@@ -174,8 +174,8 @@ class GP_Translation extends GP_Thing {
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
-			FROM $wpdb->originals as o
-			$join_type JOIN $wpdb->translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
+			FROM $wpdb->gp_originals as o
+			$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
 			WHERE o.project_id = " . (int) $project->id . " AND o.status LIKE '+%' $where ORDER BY $sql_sort $limit";
 		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();

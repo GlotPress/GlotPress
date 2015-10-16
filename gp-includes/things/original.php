@@ -265,7 +265,7 @@ class GP_Original extends GP_Thing {
 	function add_translations_from_other_projects() {
 		global $wpdb;
 
-		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->translation_sets WHERE project_id = %d", $this->project_id );
+		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->gp_translation_sets WHERE project_id = %d", $this->project_id );
 		if ( empty( $project_translations_sets ) ) {
 			return;
 		}
@@ -279,8 +279,8 @@ class GP_Original extends GP_Thing {
 
 		$sql = "SELECT t.*, s.locale, s.slug
 			FROM {$this->table} o
-				JOIN {$wpdb->translations} t ON o.id = t.original_id
-				JOIN {$wpdb->translation_sets} s ON t.translation_set_id = s.id
+				JOIN {$wpdb->gp_translations} t ON o.id = t.original_id
+				JOIN {$wpdb->gp_translation_sets} s ON t.translation_set_id = s.id
 			WHERE
 				$sql_context AND $sql_singular AND $sql_plural
 				AND o.status = '+active' AND $sql_project
