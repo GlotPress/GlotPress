@@ -125,14 +125,15 @@ if ( !defined( 'GP_ROUTING') ) {
 	define( 'GP_ROUTING', false );
 }
 
-function gp_activate_plugin() {
-	if ( gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		require_once GP_PATH . GP_INC . 'install-upgrade.php';
-		require_once GP_PATH . GP_INC . 'schema.php';
-		gp_upgrade_db();
-	}
+// Let's check to see if we need to run the upgrade routine but only run it on the admin side
+if ( is_admin() && gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once GP_PATH . GP_INC . 'install-upgrade.php';
+	require_once GP_PATH . GP_INC . 'schema.php';
+	gp_upgrade_db();
+}
 
+function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
 		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
