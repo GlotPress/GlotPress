@@ -10,7 +10,7 @@ gp_enqueue_script( 'jquery' );
 		<title><?php echo gp_title(); ?></title>
 		<?php gp_head(); ?>
 	</head>
-	<body <?php body_class(); ?>>
+	<body <?php body_class('no-js'); ?>>
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
 		<div class="gp-content">
 	    <div id="gp-js-message"></div>
