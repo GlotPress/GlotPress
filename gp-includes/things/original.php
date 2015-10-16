@@ -1,7 +1,7 @@
 <?php
 class GP_Original extends GP_Thing {
 
-	var $table_basename = 'originals';
+	var $table_basename = 'gp_originals';
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $int_fields = array( 'id', 'project_id', 'priority' );
 	var $non_updatable_attributes = array( 'id', 'path' );
