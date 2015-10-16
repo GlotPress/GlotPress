@@ -12,6 +12,7 @@ function gp_styles_default( &$styles ) {
 <<<<<<< HEAD
 	$url = gp_plugin_url( 'assets/css' );
 
+<<<<<<< HEAD
 	$styles->add( 'base', $url . '/style.css', array(), '20141019' );
 	$styles->add( 'install', $url . '/install.css', array( 'base' ), '20140902' );
 =======
@@ -24,6 +25,9 @@ function gp_styles_default( &$styles ) {
 	$styles->add( 'base', '/style.css', array(), '20150717' );
 	$styles->add( 'install', '/install.css', array('base'), '20140902' );
 >>>>>>> Deprecate gp_parity_factory in favor of CSS3 for alternate row colors.
+=======
+	$styles->add( 'base', $url . '/style.css', array(), '20150717' );
+>>>>>>> Remove the standalone install code.
 }
 
 add_action( 'wp_default_styles', 'gp_styles_default' );
