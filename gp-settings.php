@@ -125,7 +125,7 @@ if ( !defined( 'GP_ROUTING') ) {
 	define( 'GP_ROUTING', false );
 }
 
-function gp_activate_plugin() {
+function gp_activate_plugin( $network_wide ) {
 	if ( gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		require_once GP_PATH . GP_INC . 'install-upgrade.php';
@@ -136,6 +136,21 @@ function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
 		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
+	}
+
+	// If network activating, ensure we flush rules on every site
+	if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+		$mu_blogs = wp_get_sites();
+
+		foreach ( $mu_blogs as $mu_blog ) {
+			switch_to_blog( $mu_blog['blog_id'] );
+
+			gp_rewrite_rules();
+
+			restore_current_blog();
+		}
+	} else {
+		gp_rewrite_rules();
 	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
