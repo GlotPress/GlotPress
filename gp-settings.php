@@ -31,9 +31,9 @@ if ( ! isset( $gp_table_prefix ) ) {
 
 GLOBAL $wpdb;
 
-$table_names = array('gp_translations', 'gp_translation_sets', 'gp_glossaries', 'gp_glossary_entries', 'gp_originals', 'gp_projects', 'gp_meta', 'gp_permissions', 'gp_api_keys' );
+$table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
 foreach ( $table_names as $table ) {
-	$wpdb->$table = $gp_table_prefix . $table;
+	$wpdb->{'gp_' . $table} = $gp_table_prefix . $table;
 }
 
 if ( defined( 'CUSTOM_PERMISSIONS_TABLE' ) )

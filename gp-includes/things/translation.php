@@ -2,7 +2,7 @@
 class GP_Translation extends GP_Thing {
 
 	var $per_page = 15;
-	var $table_basename = 'translations';
+	var $table_basename = 'gp_translations';
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
 	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );

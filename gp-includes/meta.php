@@ -89,7 +89,7 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 
 	$cur = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key ) );
 	if ( !$cur ) {
-		$wpdb->insert( $wpdb->gp-meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
+		$wpdb->insert( $wpdb->gp_meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
 	} elseif ( $cur->meta_value != $meta_value ) {
 		$wpdb->update( $wpdb->gp_meta, array( 'meta_value' => $_meta_value), array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key ) );
 	}

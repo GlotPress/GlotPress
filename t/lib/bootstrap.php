@@ -7,7 +7,7 @@ require_once dirname( dirname( __DIR__ ) ) . '/gp-load.php';
 
 define( 'GP_DIR_TESTDATA', dirname( __DIR__ ) . '/data' );
 
-$tables = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
+$tables = array('gp_translations', 'gp_translation_sets', 'gp_glossaries', 'gp_glossary_entries', 'gp_originals', 'gp_projects', 'gp_meta', 'gp_permissions', 'gp_api_keys' );
 foreach ( $tables as $table ) {
 	$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->$table}" );
 }

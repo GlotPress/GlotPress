@@ -1,7 +1,7 @@
 <?php
 class GP_Glossary extends GP_Thing {
 
-	var $table_basename = 'glossaries';
+	var $table_basename = 'gp_glossaries';
 	var $field_names = array( 'id', 'translation_set_id', 'description' );
 	var $int_fields = array( 'id', 'translation_set_id' );
 	var $non_updatable_attributes = array( 'id' );
