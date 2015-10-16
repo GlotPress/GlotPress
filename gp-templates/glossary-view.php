@@ -11,7 +11,7 @@ $delete_url       = $url . '/-delete';
 $glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
 
 gp_enqueue_script( 'gp-glossary' );
-wp_localize_script( 'glossary', '$gp_glossary_options', $glossary_options );
+wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();
 ?>
