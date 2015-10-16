@@ -1,0 +1,112 @@
+p, li, dd, dt {
+	padding-bottom: 2px;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+ul, ol, dl {
+	padding: 5px 5px 5px 22px;
+}
+
+abbr {
+	border: 0;
+	font-variant: normal;
+}
+.step {
+	margin: 20px 0 15px;
+} 
+.step, th {
+	text-align: left;
+	padding: 0;
+}
+.step .button-large {
+	font-size: 14px;
+}
+textarea {
+	border: 1px solid #dfdfdf;
+	font-family: "Open Sans", sans-serif;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.form-table {
+	border-collapse: collapse;
+	margin-top: 1em;
+	width: 100%;
+}
+
+.form-table td {
+	margin-bottom: 9px;
+	padding: 10px 20px 10px 0;
+	border-bottom: 8px solid #fff;
+	font-size: 14px;
+	vertical-align: top;
+}
+
+.form-table th {
+	font-size: 14px;
+	text-align: left;
+	padding: 16px 20px 10px 0;
+	width: 140px;
+	vertical-align: top;
+}
+
+.form-table code {
+	line-height: 18px;
+	font-size: 14px;
+}
+
+.form-table p {
+	margin: 4px 0 0 0;
+	font-size: 11px;
+}
+
+.form-table input {
+	line-height: 20px;
+	font-size: 15px;
+	padding: 3px 5px;
+	border: 1px solid #ddd;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
+}
+
+.form-table input[type=text],
+.form-table input[type=password] {
+	width: 206px;
+}
+
+.form-table th p {
+	font-weight: normal;
+}
+
+.form-table.install-success td {
+	vertical-align: middle;
+	padding: 16px 20px 10px 0;
+}
+
+.form-table.install-success td p {
+	margin: 0;
+	font-size: 14px;
+}
+
+.form-table.install-success td code {
+	margin: 0;
+	font-size: 18px;
+}
+
+.message {
+	border: 1px solid #c00;
+	padding: 0.5em 0.7em;
+	margin: 5px 0 15px;
+	background-color: #ffebe8;
+}
+
+.form-table td input[type="password"] {
+	line-height: 1.5;
+	display: block;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
