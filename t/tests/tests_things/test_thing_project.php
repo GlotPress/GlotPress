@@ -65,7 +65,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 	function test_reload() {
 		global $wpdb;
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root' ) );
-		$wpdb->update( $wpdb->projects, array( 'name' => 'Buuu' ), array( 'id' => $root->id ) );
+		$wpdb->update( $wpdb->gp_projects, array( 'name' => 'Buuu' ), array( 'id' => $root->id ) );
 		$root->reload();
 		$this->assertEquals( 'Buuu', $root->name );
 	}
@@ -83,7 +83,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		global $wpdb;
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root' ) );
 		$sub  = $this->factory->project->create( array( 'name' => 'Sub', 'parent_project_id' => $root->id ) );
-		$wpdb->update( $wpdb->projects, array( 'path' => 'wrong-path' ), array( 'id' => $sub->id ) );
+		$wpdb->update( $wpdb->gp_projects, array( 'path' => 'wrong-path' ), array( 'id' => $sub->id ) );
 		$sub->reload();
 		$sub->regenerate_paths();
 		$sub->reload();

@@ -203,12 +203,12 @@ class GP_Project extends GP_Thing {
 	function copy_originals_from( $source_project_id ) {
 		global $wpdb;
 		return $this->query("
-			INSERT INTO $wpdb->originals (
+			INSERT INTO $wpdb->gp_originals (
 				`project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
 			)
 			SELECT
 				%s AS `project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
-			FROM $wpdb->originals WHERE project_id = %s", $this->id, $source_project_id
+			FROM $wpdb->gp_originals WHERE project_id = %s", $this->id, $source_project_id
 		);
 	}
 

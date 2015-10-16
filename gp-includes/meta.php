@@ -36,7 +36,7 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
 	$object_meta = wp_cache_get( $object_id, $object_type );
 
 	if ( false === $object_meta ) {
-		$db_object_meta = $wpdb->get_results( $wpdb->prepare( "SELECT `meta_key`, `meta_value` FROM `$wpdb->meta` WHERE `object_type` = %s AND `object_id` = %d", $object_type, $object_id ) );
+		$db_object_meta = $wpdb->get_results( $wpdb->prepare( "SELECT `meta_key`, `meta_value` FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d", $object_type, $object_id ) );
 
 		$object_meta = array();
 		foreach ( $db_object_meta as $meta ) {
@@ -87,11 +87,11 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	$meta_value = $_meta_value = maybe_serialize( $meta_value );
 	$meta_value = maybe_unserialize( $meta_value );
 
-	$cur = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$wpdb->meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key ) );
+	$cur = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key ) );
 	if ( !$cur ) {
-		$wpdb->insert( $wpdb->meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
+		$wpdb->insert( $wpdb->gp-meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
 	} elseif ( $cur->meta_value != $meta_value ) {
-		$wpdb->update( $wpdb->meta, array( 'meta_value' => $_meta_value), array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key ) );
+		$wpdb->update( $wpdb->gp_meta, array( 'meta_value' => $_meta_value), array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key ) );
 	}
 
 	if ( $object_type === 'gp_option' ) {
@@ -137,16 +137,16 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	$meta_value = maybe_serialize( $meta_value );
 
 	if ( empty( $meta_value ) ) {
-		$meta_sql = $wpdb->prepare( "SELECT `meta_id` FROM `$wpdb->meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key );
+		$meta_sql = $wpdb->prepare( "SELECT `meta_id` FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key );
 	} else {
-		$meta_sql = $wpdb->prepare( "SELECT `meta_id` FROM `$wpdb->meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s AND `meta_value` = %s", $object_type, $object_id, $meta_key, $meta_value );
+		$meta_sql = $wpdb->prepare( "SELECT `meta_id` FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s AND `meta_value` = %s", $object_type, $object_id, $meta_key, $meta_value );
 	}
 
 	if ( !$meta_id = $wpdb->get_var( $meta_sql ) ) {
 		return false;
 	}
 
-	$wpdb->query( $wpdb->prepare( "DELETE FROM `$wpdb->meta` WHERE `meta_id` = %d", $meta_id ) );
+	$wpdb->query( $wpdb->prepare( "DELETE FROM `$wpdb->gp_meta` WHERE `meta_id` = %d", $meta_id ) );
 
 	if ( $object_type == 'gp_option' ) {
 		$cache_object_id = $meta_key;
@@ -176,7 +176,7 @@ function gp_append_meta( $object, $type )
 			$trans[$object[$i]->$object_id_column] =& $object[$i];
 		}
 		$ids = join( ',', array_map( 'intval', array_keys( $trans ) ) );
-		if ( $metas = $wpdb->get_results( "SELECT `object_id`, `meta_key`, `meta_value` FROM `$wpdb->meta` WHERE `object_type` = '$object_type' AND `object_id` IN ($ids) /* gp_append_meta */" ) ) {
+		if ( $metas = $wpdb->get_results( "SELECT `object_id`, `meta_key`, `meta_value` FROM `$wpdb->gp_meta` WHERE `object_type` = '$object_type' AND `object_id` IN ($ids) /* gp_append_meta */" ) ) {
 			usort( $metas, '_gp_append_meta_sort' );
 			foreach ( $metas as $meta ) {
 				$trans[$meta->object_id]->{$meta->meta_key} = maybe_unserialize( $meta->meta_value );
@@ -193,7 +193,7 @@ function gp_append_meta( $object, $type )
 		}
 		return $object;
 	} elseif ( $object ) {
-		if ( $metas = $wpdb->get_results( $wpdb->prepare( "SELECT `meta_key`, `meta_value` FROM `$wpdb->meta` WHERE `object_type` = '$object_type' AND `object_id` = %d /* gp_append_meta */", $object->$object_id_column ) ) ) {
+		if ( $metas = $wpdb->get_results( $wpdb->prepare( "SELECT `meta_key`, `meta_value` FROM `$wpdb->gp_meta` WHERE `object_type` = '$object_type' AND `object_id` = %d /* gp_append_meta */", $object->$object_id_column ) ) ) {
 			usort( $metas, '_gp_append_meta_sort' );
 			foreach ( $metas as $meta ) {
 				$object->{$meta->meta_key} = maybe_unserialize( $meta->meta_value );
@@ -292,7 +292,7 @@ function gp_get_option_from_db( $option ) {
 	} elseif ( false !== $_r = wp_cache_get( $option, 'gp_option' ) ) {
 		$r = $_r;
 	} else {
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT `meta_value` FROM `$wpdb->meta` WHERE `object_type` = 'gp_option' AND `meta_key` = %s", $option ) );
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT `meta_value` FROM `$wpdb->gp_meta` WHERE `object_type` = 'gp_option' AND `meta_key` = %s", $option ) );
 
 		if ( is_object( $row ) ) {
 			$r = maybe_unserialize( $row->meta_value );
@@ -314,7 +314,7 @@ function gp_get_option_from_db( $option ) {
 function gp_cache_all_options()
 {
 	global $wpdb;
-	$results = $wpdb->get_results( "SELECT `meta_key`, `meta_value` FROM `$wpdb->meta` WHERE `object_type` = 'gp_option'" );
+	$results = $wpdb->get_results( "SELECT `meta_key`, `meta_value` FROM `$wpdb->gp_meta` WHERE `object_type` = 'gp_option'" );
 
 	if ( !$results || !is_array( $results ) || !count( $results ) ) {
 		return false;

@@ -72,12 +72,12 @@ class GP_Glossary extends GP_Thing {
 		$current_date = $this->now_in_mysql_format();
 
 		return $this->query("
-			INSERT INTO $wpdb->glossary_items (
+			INSERT INTO $wpdb->gp_glossary_items (
 				id, term, type, examples, comment, suggested_translation, last_update
 			)
 			SELECT
 				%s AS id, term, type, examples, comment, suggested_translation, %s AS last_update
-			FROM $wpdb->glossary_items WHERE id = %s", $this->id, $current_date, $source_glossary_id
+			FROM $wpdb->gp_glossary_items WHERE id = %s", $this->id, $current_date, $source_glossary_id
 		);
 	}
 
