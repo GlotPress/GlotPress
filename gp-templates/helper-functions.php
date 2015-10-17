@@ -1,4 +1,8 @@
 <?php
+gp_enqueue_style( 'base' );
+gp_enqueue_script( 'jquery' );
+
+
 function prepare_original( $text ) {
 	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
 	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);
@@ -41,10 +45,10 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		//Replace terms in strings with markup
 		foreach( $matching_entries as $term => $glossary_data ) {
 			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( gp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
-			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
+			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup );
 
 			if ( $t->plural ) {
-				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup, 1 );
+				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup );
 			}
 		}
 	}
@@ -75,16 +79,16 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 		<p>
 			<?php
-			if ( $can_edit ) { 
-				gp_entry_actions(); 
-			} 
-			elseif ( GP::$user->logged_in() ) { 
-				_e('You are not allowed to edit this translation.'); 
-			} 
-			else { 
-				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() ); 
-			} 
-			?> 
+			if ( $can_edit ) {
+				gp_entry_actions();
+			}
+			elseif ( GP::$user->logged_in() ) {
+				_e('You are not allowed to edit this translation.');
+			}
+			else {
+				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() );
+			}
+			?>
 		</p>
 	</div>
 	<?php

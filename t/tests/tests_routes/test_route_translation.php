@@ -8,6 +8,8 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	 * @ticket 327
 	 */
 	function test_discard_warning_edit_function() {
+		$this->set_admin_user_as_current();
+
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
 		$project2 = $this->factory->project->create( array( 'name'=>'project_two' ) );
@@ -19,7 +21,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		// Create a translation with two warnings
 		$warnings = array(
 			0 => array( 'placeholder' => 'Missing %2$s placeholder in translation.' ),
-			1 => array( 'both_begin_end_on_newlines' => 'Original and translation should both begin on newline.' ),
+			1 => array( 'should_begin_on_newline' => 'Original and translation should both begin on newline.' ),
 		);
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current', 'warnings' => $warnings ) );
 		$translation1->set_as_current(); //calls propagate_across_projects
@@ -39,7 +41,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$_POST['translation_id'] = $translation1->id;
 		$_POST['index'] = 1;
-		$_POST['key'] = 'both_begin_end_on_newlines';
+		$_POST['key'] = 'should_begin_on_newline';
 		$this->route->discard_warning( $project2->path, $set2->locale, $set2->slug );
 
 		// Second original should be translated now.
