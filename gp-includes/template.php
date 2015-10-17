@@ -313,7 +313,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 }
 
 function gp_array_of_things_to_json( $array ) {
-	return gp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
+	return wp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
@@ -323,7 +323,7 @@ function gp_array_of_array_of_things_to_json( $array ) {
 		}, $array );
 	};
 
-	return gp_json_encode( array_map( $map_to_fields, $array ) );
+	return wp_json_encode( array_map( $map_to_fields, $array ) );
 }
 
 function things_to_fields( $data ) {

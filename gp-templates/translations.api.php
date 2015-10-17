@@ -1,2 +1,2 @@
 <?php
-echo gp_json_encode( $translations );
+echo wp_json_encode( $translations );
