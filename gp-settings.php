@@ -21,19 +21,19 @@ require_once( GP_PATH . GP_INC . 'gp.php');
 
 $_GET = gp_urldecode_deep( $_GET );
 
-$gpdb = $GLOBALS['wpdb'];
-
 if ( ! isset( $gp_table_prefix ) ) {
 	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 }
 
+GLOBAL $wpdb;
+
 $table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
 foreach ( $table_names as $table ) {
-	$gpdb->$table = $gp_table_prefix . $table;
+	$wpdb->{'gp_' . $table} = $gp_table_prefix . $table;
 }
 
 if ( defined( 'CUSTOM_PERMISSIONS_TABLE' ) )
-    $gpdb->permissions = CUSTOM_PERMISSIONS_TABLE;
+    $wpdb->gp_permissions = CUSTOM_PERMISSIONS_TABLE;
 
 if ( !defined( 'GP_TMPL_PATH' ) )
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );

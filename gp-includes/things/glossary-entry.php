@@ -1,7 +1,7 @@
 <?php
 class GP_Glossary_Entry extends GP_Thing {
 
-	var $table_basename = 'glossary_entries';
+	var $table_basename = 'gp_glossary_entries';
 	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
 	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
 	var $non_updatable_attributes = array( 'id' );
@@ -43,9 +43,9 @@ class GP_Glossary_Entry extends GP_Thing {
 	}
 
 	function last_modified( $glossary ) {
-		global $gpdb;
+		global $wpdb;
 
-		return $gpdb->get_var( $gpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
+		return $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
 	}
 }
 
