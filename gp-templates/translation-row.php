@@ -36,7 +36,7 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 			$edit_text = __( 'You are not allowed to add a translation.', 'glotpress' );
 		}
 		else {
-			$edit_text = sprintf( __( 'You <a href="%s">have to login</a> to add a translation.', 'glotpress' ), gp_url_login() );
+			$edit_text = sprintf( __( 'You <a href="%s">have to login</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url() ) );
 		}
 
 		$missing_text = "<span class='missing'>$edit_text</span>";

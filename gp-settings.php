@@ -82,7 +82,6 @@ require_once( GP_PATH . GP_INC . 'router.php' );
 
 require_once GP_PATH . GP_INC . 'routes/_main.php';
 require_once GP_PATH . GP_INC . 'routes/index.php';
-require_once GP_PATH . GP_INC . 'routes/login.php';
 require_once GP_PATH . GP_INC . 'routes/original.php';
 require_once GP_PATH . GP_INC . 'routes/profile.php';
 require_once GP_PATH . GP_INC . 'routes/project.php';
