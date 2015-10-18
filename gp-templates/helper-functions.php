@@ -107,6 +107,16 @@ function display_status( $status ) {
 }
 
 function references( $project, $entry ) {
+
+	/**
+	 * Control whether to show references of a translation string on a translation row.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param boolean           $references Whether to show references.
+	 * @param GP_Project        $project    The current project.
+	 * @param Translation_Entry $entry      Translation entry object.
+	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
 	if ( ! $show_references ) return;
