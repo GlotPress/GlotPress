@@ -7,7 +7,7 @@ function gp_upgrade_db() {
 
 	gp_upgrade_data( get_option( 'gp_db_version' ) );
 
-	update_option( 'gp_db_version', gp_get_option( 'gp_db_version' ) );
+	update_option( 'gp_db_version', GP_DB_VERSION );
 }
 
 function gp_upgrade_data( $db_version ) {

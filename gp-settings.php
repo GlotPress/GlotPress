@@ -122,7 +122,7 @@ if ( !defined( 'GP_ROUTING') ) {
 }
 
 // Let's check to see if we need to run the upgrade routine but only run it on the admin side
-if ( is_admin() && gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
+if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	require_once GP_PATH . GP_INC . 'install-upgrade.php';
 	require_once GP_PATH . GP_INC . 'schema.php';
