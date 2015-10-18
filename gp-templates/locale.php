@@ -75,7 +75,7 @@ if ( empty( $projects_data ) ) {
 <?php endforeach; //top projects ?>
 
 	<p class="actionlist secondary">
-		<?php gp_link( '/projects', __('All projects') ); ?>
+		<?php gp_link( gp_url( '/projects' ), __('All projects') ); ?>
 	</p>
 
 <?php gp_tmpl_footer();
