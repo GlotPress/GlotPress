@@ -386,7 +386,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		header('Content-Type: application/json');
-		echo gp_json_encode( $project->set_difference_from( $other_project ) );
+		echo wp_json_encode( $project->set_difference_from( $other_project ) );
 	}
 
 	function branch_project_get( $project_path ) {

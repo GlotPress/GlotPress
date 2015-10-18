@@ -226,7 +226,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 		}
-		echo gp_json_encode( $output );
+		echo wp_json_encode( $output );
 	}
 
 	function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
