@@ -257,6 +257,24 @@ class GP_Route_Translation extends GP_Route_Main {
 					$this->_bulk_set_priority( $project, $locale, $translation_set, $bulk );
 			}
 
+			/**
+			 * Bulk action for translation set allows handling of custom actions.
+			 * 
+			 * @since 1.0.0
+			 * 
+			 * @param GP_Project         $project         The current project.
+			 * @param GP_Locale          $locale          The current locale.
+			 * @param GP_Translation_Set $translation_set The current translation set.
+			 * @param array              $bulk            {
+			 *     The bulk action data, read from the POST.
+			 *
+			 *     @type string $action      Action value chosen from the drop down menu.
+			 *     @type string $priority    The selected value from the priority drop down menu.
+			 *     @type string $redirect_to The URL that after the bulk actions are executed the
+			 *                               browser is redirected to.
+			 *     @type array  $row-ids     An array of strings of row IDs.
+			 * }
+			 */
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
 		}
 		else {
@@ -414,6 +432,20 @@ class GP_Route_Translation extends GP_Route_Main {
 			'warning' => gp_post( 'key' ),
 			'user' => get_current_user_id()
 		);
+
+		/**
+		 * When a warning is discarded.
+		 * 
+		 * @since 1.0.0
+		 * 
+		 * @param array $warning {
+		 *     @type string $project_id      ID of the project.
+		 *     @type string $translation_set ID of the translation set.
+		 *     @type string $translation     ID of the translation.
+		 *     @type type $warning           The warning key.
+		 *     @type int  $user              Current user's ID.
+		 * }
+		 */
 		do_action_ref_array( 'gp_warning_discarded', $warning );
 
 		unset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] );
