@@ -126,17 +126,6 @@ function gp_redirect( $location, $status = 302 ) {
 }
 
 /**
- * Builds SQL LIMIT/OFFSET clause for the given page
- *
- * @param integer $page The page number. The first page is 1.
- * @param integer $per_page How many items are there in a page
- */
-function gp_limit_for_page( $page, $per_page ) {
-	$page = $page? $page - 1 : 0;
-	return sprintf( 'LIMIT %d OFFSET %d', $per_page, $per_page * $page );
-}
-
-/**
  * Returns an array of arrays, where the i-th array contains the i-th element from
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
