@@ -182,7 +182,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
 		$filename         = sprintf( '%s-%s-glossary.csv', str_replace( '/', '-', $project->path ), $locale->slug );
-		$last_modified    = gmdate( 'D, d M Y H:i:s', backpress_gmt_strtotime( GP::$glossary_entry->last_modified( $glossary ) ) ) . ' GMT';
+		$last_modified    = gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( GP::$glossary_entry->last_modified( $glossary ) ) ) . ' GMT';
 
 		$this->headers_for_download( $filename, $last_modified );
 		$this->print_export_file( $locale->slug, $glossary_entries );

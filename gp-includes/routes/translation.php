@@ -92,7 +92,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
 
 		if ( gp_has_translation_been_updated( $translation_set ) ) {
-			$last_modified = gmdate( 'D, d M Y H:i:s', backpress_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) ) . ' GMT';
+			$last_modified = gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) ) . ' GMT';
 			$this->headers_for_download( $filename, $last_modified );
 
 			echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
