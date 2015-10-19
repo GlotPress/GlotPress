@@ -255,36 +255,6 @@ function gp_clean_translation_sets_cache( $project_id ) {
 
 
 /**
- * Shows the time past since the given time
- *
- * @param int $time Unix time stamp you want to compare against.
- */
-function gp_time_since( $time ) {
-	$time = time() - $time; // to get the time since that moment
-
-	$tokens = array (
-		31536000 => 'year',
-		2592000 => 'month',
-		604800 => 'week',
-		86400 => 'day',
-		3600 => 'hour',
-		60 => 'minute',
-		1 => 'second'
-	);
-
-	foreach ( $tokens as $unit => $text ) {
-		if ( $time < $unit ) {
-			continue;
-		}
-
-		$numberOfUnits = floor( $time / $unit );
-
-		return $numberOfUnits . ' ' . $text . ( ( $numberOfUnits > 1 ) ? 's' : '' );
-	}
-}
-
-
-/**
  * Checks if the passed value is empty.
  *
  * @param string $value The value you want to check.
