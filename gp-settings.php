@@ -21,11 +21,11 @@ require_once( GP_PATH . GP_INC . 'gp.php');
 
 $_GET = gp_urldecode_deep( $_GET );
 
+global $wpdb, $gp_table_prefix;
+
 if ( ! isset( $gp_table_prefix ) ) {
 	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 }
-
-GLOBAL $wpdb;
 
 $table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
 foreach ( $table_names as $table ) {
