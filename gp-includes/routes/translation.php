@@ -442,8 +442,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		 *     @type string $project_id      ID of the project.
 		 *     @type string $translation_set ID of the translation set.
 		 *     @type string $translation     ID of the translation.
-		 *     @type type $warning           The warning key.
-		 *     @type int  $user              Current user's ID.
+		 *     @type type   $warning         The warning key.
+		 *     @type int    $user            Current user's ID.
 		 * }
 		 */
 		do_action_ref_array( 'gp_warning_discarded', $warning );
