@@ -189,7 +189,9 @@ add_action( 'pre_get_posts', 'gp_not_is_home' );
  */
 function is_glotpress() {
 	global $wp;
-	if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
+
+	if ( ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) && GP_ROUTING
+		&& null != $wp->query_vars && array_key_exists( 'gp_route', $wp->query_vars ) ) {
 		return true;
 	}
 	return false;
