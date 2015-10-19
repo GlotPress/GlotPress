@@ -172,7 +172,7 @@ add_action( 'template_redirect', 'gp_run_route' );
 /**
  * Make WordPress understand GlotPress pages are not the home page.
  * 
- * @since 1.0
+ * @since 1.0.0
  */
 function gp_not_is_home( $query ) {
 	global $wp;
@@ -185,7 +185,7 @@ add_action( 'pre_get_posts', 'gp_not_is_home' );
 /**
  * Determine if the page requested is handled by GlotPress.
  * 
- * @since 1.0
+ * @since 1.0.0
  */
 function is_glotpress() {
 	global $wp;
