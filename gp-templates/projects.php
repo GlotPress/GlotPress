@@ -1,5 +1,6 @@
 <?php
 gp_title( __('Projects &lt; GlotPress') );
+gp_breadcrumb( array(__('Projects') ) );
 gp_tmpl_header();
 ?>
 
