@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<title><?php echo gp_title(); ?></title>
+<?php 
+add_filter( 'body_class', function( $classes ) {
+	$classes[] = 'no-js';
+    return $classes; 
+}, 10, 2 );
 
-	<?php gp_head(); ?>
-</head>
+add_action( 'get_header', 'gp_head' );
 
-<body <?php body_class( 'no-js' ); ?>>
+get_header();
+?>
+<div class="glotpress">
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
 
 	<header class="gp-bar clearfix">
