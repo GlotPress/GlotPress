@@ -85,8 +85,28 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		/**
+		 * Locale in the file name of the translation set export.
+		 * 
+		 * @since 1.0.0
+		 * 
+		 * @param string    $slug   Slug of the locale.
+		 * @param GP_Locale $locale The current locale.
+		 */
 		$export_locale = apply_filters( 'gp_export_locale', $locale->slug, $locale );
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
+
+		/**
+		 * Filename of the translation set export.
+		 * 
+		 * @since 1.0.0
+		 * 
+		 * @param string             $filename        Filename of the exported translation set.
+		 * @param GP_Format          $format          Format of the export.
+		 * @param GP_Locale          $locale          Locale of the export.
+		 * @param GP_Project         $project         Project the translation set belongs to.
+		 * @param GP_Translation_Set $translation_set The translation set to be exported.
+		 */
 		$filename = apply_filters( 'gp_export_translations_filename', $filename, $format, $locale, $project, $translation_set );
 
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
@@ -460,6 +480,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		// Translations with warnings aren't propagated, try again.
+		/** This filter is documented in gp-includes/things/translation.php */
 		if ( apply_filters( 'gp_enable_propagate_translations_across_projects', true ) ) {
 			$translation->propagate_across_projects();
 		}
