@@ -87,9 +87,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		/**
 		 * Locale in the file name of the translation set export.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param string    $slug   Slug of the locale.
 		 * @param GP_Locale $locale The current locale.
 		 */
@@ -98,9 +98,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		/**
 		 * Filename of the translation set export.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param string             $filename        Filename of the exported translation set.
 		 * @param GP_Format          $format          Format of the export.
 		 * @param GP_Locale          $locale          Locale of the export.
@@ -279,9 +279,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			/**
 			 * Bulk action for translation set allows handling of custom actions.
-			 * 
+			 *
 			 * @since 1.0.0
-			 * 
+			 *
 			 * @param GP_Project         $project         The current project.
 			 * @param GP_Locale          $locale          The current locale.
 			 * @param GP_Translation_Set $translation_set The current translation set.
@@ -455,9 +455,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		/**
 		 * When a warning is discarded.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param array $warning {
 		 *     @type string $project_id      ID of the project.
 		 *     @type string $translation_set ID of the translation set.

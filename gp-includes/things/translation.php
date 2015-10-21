@@ -158,9 +158,9 @@ class GP_Translation extends GP_Thing {
 
 		/**
 		 * SQL WHERE clause to get available translations.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param array              $where           An array of where conditions.
 		 * @param GP_Translation_Set $translation_set Current translation set.
 		 */
@@ -229,9 +229,9 @@ class GP_Translation extends GP_Thing {
 
 		/**
 		 * Control whether a translation should be propagated across projects.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param bool $propagate If a translation should be propagated across projects.
 		 */
 		if ( apply_filters( 'gp_enable_propagate_translations_across_projects', true ) ) {
@@ -294,9 +294,9 @@ class GP_Translation extends GP_Thing {
 
 				/**
 				 * Status that is set for translations propagated across projects.
-				 * 
+				 *
 				 * @since 1.0.0
-				 * 
+				 *
 				 * @param string $copy_status Status of the translation to be used.
 				 */
 				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', $copy_status );
@@ -347,9 +347,9 @@ class GP_Translation extends GP_Thing {
 
 		/**
 		 * After a translation was created.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param GP_Translation $translation Translation that was created.
 		 */
 		do_action( 'translation_created', $this );
@@ -360,9 +360,9 @@ class GP_Translation extends GP_Thing {
 
 		/**
 		 * After a translation was saved.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param GP_Translation $translation Translation that was saved.
 		 */
 		do_action( 'translation_saved', $this );
