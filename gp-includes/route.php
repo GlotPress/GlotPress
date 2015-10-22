@@ -91,7 +91,7 @@ class GP_Route {
 	function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
-			$this->redirect_with_error( __('You are not allowed to do that!'), $url );
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ), $url );
 			return true;
 		}
 		return false;
@@ -189,7 +189,7 @@ class GP_Route {
 
 	function die_with_404( $args = array() ) {
 		status_header( 404 );
-		$this->tmpl( '404', $args + array( 'title' => __('Not Found'), 'http_status' => 404 ) );
+		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
 		$this->exit_();
 	}
 

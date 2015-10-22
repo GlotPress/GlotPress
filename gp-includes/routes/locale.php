@@ -106,9 +106,9 @@ class GP_Route_Locale extends GP_Route_Main {
 			foreach ( $set_slugs as $set ) {
 				if ( 'default' == $set->slug ) {
 					if ( 'default' != $current_set_slug ) {
-						$set_list[ $set->slug ] = gp_link_get( gp_url_join( '/languages', $locale->slug ), __( 'Default' ) );
+						$set_list[ $set->slug ] = gp_link_get( gp_url_join( '/languages', $locale->slug ), __( 'Default', 'glotpress' ) );
 					} else {
-						$set_list[ $set->slug ] = __( 'Default' );
+						$set_list[ $set->slug ] = __( 'Default', 'glotpress' );
 					}
 				} else {
 					if ( $set->slug != $current_set_slug ) {

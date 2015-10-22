@@ -4,8 +4,8 @@ gp_enqueue_script( 'jquery' );
 
 
 function prepare_original( $text ) {
-	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
-	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);
+	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__( 'New line', 'glotpress' ))."'>&crarr;</span>\n", $text);
+	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__( 'Tab character', 'glotpress' ))."'>&rarr;</span>\t", $text);
 
 	return $text;
 }
@@ -67,10 +67,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$warning = each( $referenceable );
 			?>
 			<div class="warning secondary">
-				<?php printf( __('<strong>Warning:</strong> %s'), esc_html( $warning['value'] ) ); ?>
+				<?php printf( __( '<strong>Warning:</strong> %s', 'glotpress' ), esc_html( $warning['value'] ) ); ?>
 
 				<?php if( $can_approve ): ?>
-					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e('Discard'); ?></a>
+					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
@@ -83,10 +83,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 				gp_entry_actions();
 			}
 			elseif ( GP::$user->logged_in() ) {
-				_e('You are not allowed to edit this translation.');
+				_e( 'You are not allowed to edit this translation.', 'glotpress' );
 			}
 			else {
-				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() );
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), gp_url_login() );
 			}
 			?>
 		</p>
@@ -103,7 +103,7 @@ function esc_translation( $text ) {
 
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
-	return $status ? $status : __('untranslated');
+	return $status ? $status : __( 'untranslated', 'glotpress' );
 }
 
 function references( $project, $entry ) {
@@ -112,7 +112,7 @@ function references( $project, $entry ) {
 	if ( ! $show_references ) return;
 	?>
 	<dl><dt>
-	<?php _e('References:'); ?>
+	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 		<?php
 		foreach( $entry->references as $reference ):

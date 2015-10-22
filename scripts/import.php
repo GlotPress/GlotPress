@@ -28,7 +28,7 @@ class GP_Script_Import extends GP_Translation_Set_Script {
 			remove_filter( 'enable_propagate_translations_across_projects', '__return_false' );
 		}
 
-		printf( _n( "%s translation were added\n", "%s translations were added\n", $added ), $added );
+		printf( _n( "%s translation were added\n", "%s translations were added\n", $added, 'glotpress' ), $added );
 	}
 
 }

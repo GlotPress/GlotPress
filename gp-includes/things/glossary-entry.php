@@ -19,15 +19,15 @@ class GP_Glossary_Entry extends GP_Thing {
 		}
 
 		$this->parts_of_speech = array(
-			'noun'         => _x( 'noun', 'part-of-speech' ),
-			'verb'         => _x( 'verb','part-of-speech' ),
-			'adjective'    => _x( 'adjective', 'part-of-speech' ),
-			'adverb'       => _x( 'adverb', 'part-of-speech' ),
-			'interjection' => _x( 'interjection', 'part-of-speech' ),
-			'conjunction'  => _x( 'conjunction', 'part-of-speech' ),
-			'preposition'  => _x( 'preposition', 'part-of-speech' ),
-			'pronoun'      => _x( 'pronoun', 'part-of-speech' ),
-			'expression'   => _x( 'expression', 'part-of-speech' )
+			'noun'         => _x( 'noun', 'part-of-speech', 'glotpress' ),
+			'verb'         => _x( 'verb','part-of-speech', 'glotpress' ),
+			'adjective'    => _x( 'adjective', 'part-of-speech', 'glotpress' ),
+			'adverb'       => _x( 'adverb', 'part-of-speech', 'glotpress' ),
+			'interjection' => _x( 'interjection', 'part-of-speech', 'glotpress' ),
+			'conjunction'  => _x( 'conjunction', 'part-of-speech', 'glotpress' ),
+			'preposition'  => _x( 'preposition', 'part-of-speech', 'glotpress' ),
+			'pronoun'      => _x( 'pronoun', 'part-of-speech', 'glotpress' ),
+			'expression'   => _x( 'expression', 'part-of-speech', 'glotpress' )
 		);
 	}
 

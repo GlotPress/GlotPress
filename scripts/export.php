@@ -18,7 +18,7 @@ class GP_Script_Export extends GP_Translation_Set_Script {
 	function action_on_translation_set( $translation_set ) {
 
 		$format = gp_array_get( GP::$formats, isset( $this->options['o'] )? $this->options['o'] : 'po', null );
-		if ( !$format ) $this->error( __('No such format.') );;
+		if ( !$format ) $this->error( __( 'No such format.', 'glotpress' ) );;
 
 		$entries = GP::$translation->for_export( $this->project, $translation_set, $this->get_filters_for_translation() );
 		echo $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries )."\n";
