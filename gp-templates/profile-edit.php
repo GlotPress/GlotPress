@@ -6,8 +6,6 @@ if ( 0 == $per_page )
 
 $default_sort = GP::$user->current()->sort_defaults();
 ?>
-<h2><?php _e( "Profile" ); ?></h2>
-<form action="" method="post">
 	<table class="form-table">
 		<tr>
 			<th><label for="per_page"><?php _e( "Number of items per page:" ); ?></label></th>
@@ -36,7 +34,4 @@ $default_sort = GP::$user->current()->sort_defaults();
 			?></td>
 		</tr>
 	</table>
-	<br>
-	<input type="submit" name="submit" value="<?php esc_attr_e("Change Settings"); ?>">
-</form>
 
