@@ -15,6 +15,13 @@ class GP_Router {
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
 
+		/**
+		 * After default routes have been set.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Router $router The router object.
+		 */
 		do_action( 'gp_router_default_routes_set', $this );
 	}
 
@@ -175,6 +182,8 @@ class GP_Router {
 						register_shutdown_function( array( &$route, 'after_request') );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
+
+						/** This action is documented in gp-includes/route.php */
 						do_action( 'gp_after_request', $class, $method );
 						$route->request_running = false;
 					} else {
