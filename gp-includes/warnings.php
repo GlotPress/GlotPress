@@ -106,6 +106,14 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	function warning_placeholders( $original, $translation, $locale ) {
+
+		/**
+		 * The regular expression that is used to match placeholders in translations.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
+		 */
 		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX]' );
 
 		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
