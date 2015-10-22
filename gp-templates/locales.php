@@ -3,6 +3,7 @@ gp_title( __('Locales &lt; GlotPress') );
 
 wp_enqueue_script('gp-common');
 wp_enqueue_script('tablesorter');
+gp_breadcrumb( array(__('Locales') ) );
 gp_tmpl_header();
 ?>
 
