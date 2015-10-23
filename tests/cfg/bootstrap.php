@@ -2,7 +2,10 @@
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
+	$_tests_dir = '/tmp/wordpress-latest-tests-lib';
+	if ( ! file_exists( $_tests_dir ) ) {
+		$_tests_dir = '/tmp/wordpress-tests-lib';
+	}
 }
 
 require_once $_tests_dir . '/includes/functions.php';
@@ -12,10 +15,21 @@ function _manually_load_plugin() {
 
 	define( 'GP_DIR_TESTDATA', dirname( dirname( __FILE__ ) ) . '/data' );
 
-	global $gpdb;
-	$tables = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
+	global $wpdb;
+	$tables = array(
+		'gp_translations',
+		'gp_translation_sets',
+		'gp_glossaries',
+		'gp_glossary_entries',
+		'gp_originals',
+		'gp_projects',
+		'gp_meta',
+		'gp_permissions',
+		'gp_api_keys',
+	);
+
 	foreach ( $tables as $table ) {
-		$gpdb->query( "DROP TABLE IF EXISTS {$gpdb->$table}" );
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->$table}" );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -23,6 +37,7 @@ function _manually_load_plugin() {
 	require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/gp-includes/install-upgrade.php';
 	gp_upgrade_db();
 }
+
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 require $_tests_dir . '/includes/bootstrap.php';
