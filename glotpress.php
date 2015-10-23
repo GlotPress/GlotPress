@@ -35,6 +35,4 @@ define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 define( 'GP_INC', 'gp-includes/' );
 
-require_once GP_PATH . 'wp-actions.php';
-
 require_once GP_PATH . 'gp-settings.php';

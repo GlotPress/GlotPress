@@ -10,18 +10,24 @@ class GP_Route_Profile extends GP_Route_Main {
 		$this->tmpl( 'profile' );
 	}
 
-	function profile_post() {
+	function profile_post( $user_id = NULL ) {
 		if ( isset( $_POST['submit'] ) ) {
-			$per_page = (int) $_POST['per_page'];
-			GP::$user->current()->set_meta( 'per_page', $per_page );
+			if( NULL != $user_id ) {
+				$gp_user = GP::$user->get( $user_id );
+			} else {
+				$gp_user = GP::$user->current();
+			}
+			
+			$per_page = (int) $_POST['gp_items_per_page'];
+			$gp_user->set_meta( 'per_page', $per_page );
 
 			$default_sort = array(
 				'by'  => 'priority',
 				'how' => 'desc'
 			);
-			$user_sort = wp_parse_args( $_POST['default_sort'], $default_sort );
+			$user_sort = wp_parse_args( $_POST['gp_default_sort'], $default_sort );
 
-			GP::$user->current()->set_meta( 'default_sort', $user_sort );
+			$gp_user->set_meta( 'default_sort', $user_sort );
 		}
 
 		$this->redirect( gp_url( '/profile' ) );

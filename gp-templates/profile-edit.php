@@ -8,12 +8,12 @@ $default_sort = GP::$user->current()->sort_defaults();
 ?>
 	<table class="form-table">
 		<tr>
-			<th><label for="per_page"><?php _e( "Number of items per page:" ); ?></label></th>
-			<td><input type="number" id="per_page" name="per_page" value="<?php echo $per_page ?>"/></td>
+			<th><label for="gp_items_per_page"><?php _e( "Number of items per page:" ); ?></label></th>
+			<td><input type="number" id="gp_items_per_page" name="gp_items_per_page" value="<?php echo $per_page ?>"/></td>
 		</tr>
 		<tr>
-			<th><label for="default_sort[by]"><?php _e("Default Sort By:") ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[by]',
+			<th><label for="gp_default_sort[by]"><?php _e("Default Sort By:") ?></label></th>
+			<td><?php echo gp_radio_buttons('gp_default_sort[by]',
 		array(
 			'original_date_added' => __('Date added (original)'),
 			'translation_date_added' => __('Date added (translation)'),
@@ -25,8 +25,8 @@ $default_sort = GP::$user->current()->sort_defaults();
 		), gp_array_get( $default_sort, 'by', 'priority' ) ); ?></td>
 		</tr>
 		<tr>
-			<th><label for="default_sort[how]"><?php _e("Default Sort Order:") ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[how]',
+			<th><label for="gp_default_sort[how]"><?php _e("Default Sort Order:") ?></label></th>
+			<td><?php echo gp_radio_buttons('gp_default_sort[how]',
 				array(
 					'asc' => __('Ascending'),
 					'desc' => __('Descending'),
