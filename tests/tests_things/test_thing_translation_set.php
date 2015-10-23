@@ -80,9 +80,9 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$translations_for_import = new Translations;
 		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'abab' ) ) );
 
-		add_filter( 'translation_set_import_over_existing', '__return_false' );
+		add_filter( 'gp_translation_set_import_over_existing', '__return_false' );
 		$translations_added = $set->import( $translations_for_import );
-		remove_filter( 'translation_set_import_over_existing', '__return_false' );
+		remove_filter( 'gp_translation_set_import_over_existing', '__return_false' );
 
 		$this->assertEquals( $translations_added, 0 );
 	}

@@ -11,7 +11,7 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 		$this->factory = new GP_UnitTest_Factory;
 		$this->url_filter = returner( $this->url );
 		add_filter( 'gp_get_option_uri', $this->url_filter );
-    }
+	}
 
 	function tearDown() {
 		remove_filter( 'gp_get_option_uri', $this->url_filter );
@@ -31,7 +31,6 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 		GP::$translation_set = new GP_Translation_Set;
 		GP::$original = new GP_Original;
 	}
-
 
 	function set_normal_user_as_current() {
 		$user = $this->factory->user->create();

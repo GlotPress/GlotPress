@@ -126,114 +126,6 @@ function gp_redirect( $location, $status = 302 ) {
 }
 
 /**
- * Returns a function, which returns the string "odd" or the string "even" alternatively.
- */
-function gp_parity_factory() {
-	return create_function( '', 'static $parity = "even"; if ($parity == "even") $parity = "odd"; else $parity = "even"; return $parity;');
-}
-
-/**
- * Builds SQL LIMIT/OFFSET clause for the given page
- *
- * @param integer $page The page number. The first page is 1.
- * @param integer $per_page How many items are there in a page
- */
-function gp_limit_for_page( $page, $per_page ) {
-	global $gpdb;
-	$page = $page? $page - 1 : 0;
-	return sprintf( 'LIMIT %d OFFSET %d', $per_page, $per_page * $page );
-}
-
-
-function _gp_get_secret_key( $key, $default_key = false ) {
-	if ( !$default_key ) {
-		global $gp_default_secret_key;
-		$default_key = $gp_default_secret_key;
-	}
-
-	if ( defined( $key ) && '' != constant( $key ) && $default_key != constant( $key ) ) {
-		return constant( $key );
-	}
-
-	return $default_key;
-}
-
-function _gp_get_salt( $constants, $option = false ) {
-	if ( !is_array( $constants ) ) {
-		$constants = array( $constants );
-	}
-
-	foreach ($constants as $constant ) {
-		if ( defined( $constant ) ) {
-			return constant( $constant );
-		}
-	}
-
-	if ( !$option ) {
-		$option = strtolower( $constants[0] );
-	}
-	$salt = gp_get_option( $option );
-	if ( empty( $salt ) ) {
-		$salt = gp_generate_password();
-		gp_update_option( $option, $salt );
-	}
-	return $salt;
-}
-
-if ( !function_exists( 'gp_salt' ) ) :
-function gp_salt($scheme = 'auth') {
-	$secret_key = _gp_get_secret_key( 'GP_SECRET_KEY' );
-
-	switch ($scheme) {
-		case 'auth':
-			$secret_key = _gp_get_secret_key( 'GP_AUTH_KEY', $secret_key );
-			$salt = _gp_get_salt( array( 'GP_AUTH_SALT', 'GP_SECRET_SALT' ) );
-			break;
-
-		case 'secure_auth':
-			$secret_key = _gp_get_secret_key( 'GP_SECURE_AUTH_KEY', $secret_key );
-			$salt = _gp_get_salt( 'GP_SECURE_AUTH_SALT' );
-			break;
-
-		case 'logged_in':
-			$secret_key = _gp_get_secret_key( 'GP_LOGGED_IN_KEY', $secret_key );
-			$salt = _gp_get_salt( 'GP_LOGGED_IN_SALT' );
-			break;
-
-		case 'nonce':
-			$secret_key = _gp_get_secret_key( 'GP_NONCE_KEY', $secret_key );
-			$salt = _gp_get_salt( 'GP_NONCE_SALT' );
-			break;
-
-		default:
-			// ensure each auth scheme has its own unique salt
-			$salt = hash_hmac( 'md5', $scheme, $secret_key );
-			break;
-	}
-
-	return apply_filters( 'salt', $secret_key . $salt, $scheme );
-}
-endif;
-
-if ( !function_exists( 'gp_hash' ) ) :
-function gp_hash( $data, $scheme = 'auth' ) {
-	$salt = gp_salt( $scheme );
-
-	return hash_hmac( 'md5', $data, $salt );
-}
-endif;
-
-if ( !function_exists( 'gp_generate_password' ) ) :
-/**
- * Generates a random password drawn from the defined set of characters
- * @return string the password
- */
-function gp_generate_password( $length = 12, $special_chars = true ) {
-	return WP_Pass::generate_password( $length, $special_chars );
-}
-endif;
-
-/**
  * Returns an array of arrays, where the i-th array contains the i-th element from
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
@@ -352,36 +244,6 @@ function gp_clean_translation_sets_cache( $project_id ) {
 
 
 /**
- * Shows the time past since the given time
- *
- * @param int $time Unix time stamp you want to compare against.
- */
-function gp_time_since( $time ) {
-	$time = time() - $time; // to get the time since that moment
-
-	$tokens = array (
-		31536000 => 'year',
-		2592000 => 'month',
-		604800 => 'week',
-		86400 => 'day',
-		3600 => 'hour',
-		60 => 'minute',
-		1 => 'second'
-	);
-
-	foreach ( $tokens as $unit => $text ) {
-		if ( $time < $unit ) {
-			continue;
-		}
-
-		$numberOfUnits = floor( $time / $unit );
-
-		return $numberOfUnits . ' ' . $text . ( ( $numberOfUnits > 1 ) ? 's' : '' );
-	}
-}
-
-
-/**
  * Checks if the passed value is empty.
  *
  * @param string $value The value you want to check.
@@ -462,6 +324,7 @@ function gp_is_between( $value, $start, $end ) {
 function gp_is_between_exclusive( $value, $start, $end ) {
 	return $value > $start && $value < $end;
 }
+
 
 /**
  * Acts the same as core PHP setcookie() but its arguments are run through the backpress_set_cookie filter.

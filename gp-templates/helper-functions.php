@@ -1,7 +1,11 @@
 <?php
+gp_enqueue_style( 'base' );
+gp_enqueue_script( 'jquery' );
+
+
 function prepare_original( $text ) {
-	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
-	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);
+	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__( 'New line', 'glotpress' ))."'>&crarr;</span>\n", $text);
+	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__( 'Tab character', 'glotpress' ))."'>&rarr;</span>\t", $text);
 
 	return $text;
 }
@@ -40,11 +44,11 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 
 		//Replace terms in strings with markup
 		foreach( $matching_entries as $term => $glossary_data ) {
-			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
-			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup, 1 );
+			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
+			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup );
 
 			if ( $t->plural ) {
-				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup, 1 );
+				$translations[$key]->plural_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->plural_glossary_markup );
 			}
 		}
 	}
@@ -63,25 +67,29 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$warning = each( $referenceable );
 			?>
 			<div class="warning secondary">
-				<?php printf( __('<strong>Warning:</strong> %s'), esc_html( $warning['value'] ) ); ?>
+				<?php printf( __( '<strong>Warning:</strong> %s', 'glotpress' ), esc_html( $warning['value'] ) ); ?>
 
 				<?php if( $can_approve ): ?>
-					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e('Discard'); ?></a>
+					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 		<blockquote><em><small><?php echo esc_translation( gp_array_get( $entry->translations, $index ) ); ?></small></em></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo $entry->original_id; ?>][]" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
 
-		<?php if ( $can_edit ): ?>
-			<p>
-				<?php gp_entry_actions(); ?>
-			</p>
-		<?php else: ?>
-			<p>
-				<?php printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() ); ?>
-			</p>
-		<?php endif; ?>
+		<p>
+			<?php
+			if ( $can_edit ) {
+				gp_entry_actions();
+			}
+			elseif ( GP::$user->logged_in() ) {
+				_e( 'You are not allowed to edit this translation.', 'glotpress' );
+			}
+			else {
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), gp_url_login() );
+			}
+			?>
+		</p>
 	</div>
 	<?php
 }
@@ -95,16 +103,16 @@ function esc_translation( $text ) {
 
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
-	return $status ? $status : __('untranslated');
+	return $status ? $status : __( 'untranslated', 'glotpress' );
 }
 
 function references( $project, $entry ) {
-	$show_references = apply_filters( 'show_references', (bool) $entry->references, $project, $entry );
+	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
 	if ( ! $show_references ) return;
 	?>
 	<dl><dt>
-	<?php _e('References:'); ?>
+	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 		<?php
 		foreach( $entry->references as $reference ):
@@ -115,7 +123,7 @@ function references( $project, $entry ) {
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
 			else :
-				echo "<li>$file:$line</li>"; 
+				echo "<li>$file:$line</li>";
 			endif;
 		endforeach;
 		?>

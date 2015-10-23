@@ -5,14 +5,6 @@ if ( !defined( 'GP_LOCALES_PATH' ) ) {
 	define( 'GP_LOCALES_PATH', GP_PATH . 'locales/' );
 }
 
-if ( !defined( 'GP_LANG_PATH' ) ) {
-	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
-}
-
-if ( !defined( 'GP_PLUGINS_PATH' ) ) {
-	define( 'GP_PLUGINS_PATH', GP_PATH . 'plugins/' );
-}
-
 if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
@@ -25,7 +17,7 @@ require_once( GP_PATH . GP_INC . 'gp.php');
 
 $_GET = gp_urldecode_deep( $_GET );
 
-$gpdb = $GLOBALS['wpdb'];
+global $wpdb, $gp_table_prefix;
 
 if ( ! isset( $gp_table_prefix ) ) {
 	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
@@ -33,16 +25,17 @@ if ( ! isset( $gp_table_prefix ) ) {
 
 $table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
 foreach ( $table_names as $table ) {
-	$gpdb->$table = $gp_table_prefix . $table;
+	$wpdb->{'gp_' . $table} = $gp_table_prefix . $table;
 }
 
 if ( defined( 'CUSTOM_PERMISSIONS_TABLE' ) )
-    $gpdb->permissions = CUSTOM_PERMISSIONS_TABLE;
+    $wpdb->gp_permissions = CUSTOM_PERMISSIONS_TABLE;
 
 if ( !defined( 'GP_TMPL_PATH' ) )
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 
-require_once( GP_PATH . GP_INC . 'lambda.php');
+// Functions that aren't used anymore.
+require_once( GP_PATH . GP_INC . 'deprecated.php');
 
 require_once( GP_PATH . GP_INC . 'meta.php' );
 require_once( GP_PATH . GP_INC . 'misc.php' );
@@ -62,9 +55,6 @@ require_once( ABSPATH . WPINC . '/pomo/mo.php' );
 require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
 require_once( GP_LOCALES_PATH . 'locales.php' );
-
-if ( defined('GP_LANG') )
-	load_default_textdomain();
 
 // We assume all variables set in this file will be global.
 // If the file is inovked inside a function, we will lose them all.
@@ -124,14 +114,15 @@ if ( !defined( 'GP_ROUTING') ) {
 	define( 'GP_ROUTING', false );
 }
 
-function gp_activate_plugin() {
-	if ( gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		require_once GP_PATH . GP_INC . 'install-upgrade.php';
-		require_once GP_PATH . GP_INC . 'schema.php';
-		gp_upgrade_db();
-	}
+// Let's check to see if we need to run the upgrade routine but only run it on the admin side
+if ( is_admin() && gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once GP_PATH . GP_INC . 'install-upgrade.php';
+	require_once GP_PATH . GP_INC . 'schema.php';
+	gp_upgrade_db();
+}
 
+function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
 		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
@@ -139,7 +130,6 @@ function gp_activate_plugin() {
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 
-gp_populate_notices();
 
 /**
  * Add WP rewrite rules to avoid WP thinking that GP pages are 404
@@ -148,7 +138,18 @@ gp_populate_notices();
  */
 function gp_rewrite_rules() {
 	$gp_base = trim( gp_url_base_path(), '/' );
-	add_rewrite_rule( '^' . $gp_base . '/?(.*)$', 'index.php?gp_route=$matches[1]', 'top' );
+
+	if ( ! $gp_base ) {
+		// When GlotPress is set to take over the root of the site,
+		// add a special rule that WordPress uses to route requests to root.
+		add_rewrite_rule( '$', 'index.php?gp_route', 'top' );
+
+		$match_regex = '^(.*)$';
+	} else {
+		$match_regex = '^' . $gp_base . '/?(.*)$';
+	}
+
+	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
 }
 add_action( 'init', 'gp_rewrite_rules' );
 
@@ -165,9 +166,13 @@ function gp_query_vars( $query_vars ) {
 add_filter( 'query_vars', 'gp_query_vars' );
 
 function gp_run_route() {
+	gp_populate_notices();
 	global $wp;
 	if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
 		GP::$router->route();
 	}
 }
 add_action( 'template_redirect', 'gp_run_route' );
+
+// Load the plugin's translated strings
+load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );

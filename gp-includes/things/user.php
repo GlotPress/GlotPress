@@ -115,7 +115,7 @@ class GP_User extends GP_Thing {
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
 		$filter_args['extra'] = $extra;
-		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $filter_args );
+		$preliminary = apply_filters( 'gp_pre_can_user', 'no-verdict', $filter_args );
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
 		}
@@ -123,7 +123,7 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
-		return apply_filters( 'can_user', $verdict, $filter_args );
+		return apply_filters( 'gp_can_user', $verdict, $filter_args );
 	}
 
 	function get_meta( $key ) {
@@ -145,16 +145,29 @@ class GP_User extends GP_Thing {
 		return gp_delete_meta( $this->id, $key, '', 'user' );
 	}
 
+	public function sort_defaults() {
+		$defaults = $this->get_meta('default_sort');
+
+		if ( ! is_array( $defaults ) ) {
+			$defaults = array(
+				'by' => 'priority',
+				'how' => 'desc'
+			);
+		}
+
+		return $defaults;
+	}
+
 	public function get_avatar( $size = 100 ) {
 		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
 	}
 
 	public function get_recent_translation_sets( $amount = 5 ) {
-		global $gpdb;
+		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map("
 			SELECT translation_set_id, date_added
-			FROM $gpdb->translations as t
+			FROM $wpdb->gp_translations as t
 			WHERE
 				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
 				user_id = %s AND
@@ -184,7 +197,7 @@ class GP_User extends GP_Thing {
 
 				$translation_set->set_id       = $set->id;
 				$translation_set->last_updated = $translation->date_added;
-				$translation_set->count        = $gpdb->get_var( $gpdb->prepare( "SELECT COUNT(*) FROM $gpdb->translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
+				$translation_set->count        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->gp_translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
 
 				$translation_sets[] = $translation_set;
 
@@ -201,12 +214,12 @@ class GP_User extends GP_Thing {
 	}
 
 	public function locales_known() {
-		global $gpdb;
+		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map("
 			SELECT ts.locale, count(*) AS count
-			FROM $gpdb->translations as t
-			INNER JOIN $gpdb->translation_sets AS ts ON ts.id = t.translation_set_id
+			FROM $wpdb->gp_translations as t
+			INNER JOIN $wpdb->gp_translation_sets AS ts ON ts.id = t.translation_set_id
 			WHERE user_id = %s
 			GROUP BY ts.locale
 			ORDER BY count DESC

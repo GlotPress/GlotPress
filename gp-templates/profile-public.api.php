@@ -18,12 +18,12 @@ $arr = array_merge( $meta,
 
 switch ( gp_get('filter') ) {
 	case 'meta':
-		echo json_encode( $meta );
+		echo wp_json_encode( $meta );
 		break;
 	case 'recent_projects':
-		echo json_encode( compact('recent_projects') );
+		echo wp_json_encode( compact('recent_projects') );
 		break;
 	default:
-		echo json_encode( $arr );
+		echo wp_json_encode( $arr );
 		break;
 }
