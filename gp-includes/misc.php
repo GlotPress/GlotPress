@@ -100,32 +100,6 @@ function gp_populate_notices() {
 }
 
 /**
- * Sets headers, which redirect to another page.
- *
- * @param string $location The path to redirect to
- * @param int $status Status code to use
- * @return bool False if $location is not set
- */
-function gp_redirect( $location, $status = 302 ) {
-	// TODO: add server-guessing code from bb-load.php in a function in gp-includes/system.php
-    global $is_IIS;
-
-    $location = apply_filters( 'gp_redirect', $location, $status );
-    $status = apply_filters( 'gp_redirect_status', $status, $location );
-
-    if ( !$location ) // allows the gp_redirect filter to cancel a redirect
-        return false;
-
-    if ( $is_IIS ) {
-        header( "Refresh: 0;url=$location" );
-    } else {
-        if ( php_sapi_name() != 'cgi-fcgi' )
-            status_header( $status ); // This causes problems on IIS and some FastCGI setups
-        header( "Location: $location" );
-    }
-}
-
-/**
  * Returns an array of arrays, where the i-th array contains the i-th element from
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
