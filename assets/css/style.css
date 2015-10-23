@@ -1,4 +1,4 @@
-body, html,
+.gp-body, .gp-html,
 .gp-content,
 .gp-content textarea,
 .gp-content input {
@@ -7,7 +7,7 @@ body, html,
 	line-height: 1.5em;
 	font-size: 14px;
 }
-body, html {
+.gp-body, .gp-html {
 	margin: 0;
 }
 .gp-content input,
@@ -16,16 +16,16 @@ body, html {
 }
 
 /* we take the liberty to make visited the same as link */
-a, a:link, a:visited {
+.gp-a, .gp-a:link, .gp-a:visited {
 	color: #2F34B8;
 }
-a:active {
+.gp-a:active {
 	color: red;
 }
-a img {
+.gp-a img {
 	border: 0;
 }
-a.disabled {
+.gp-a.disabled {
 	color: #aaa;
 	text-decoration: none;
 }
@@ -43,14 +43,24 @@ a.disabled {
 	display:inline-block;
 	float:right;
 }
-h3 {
+.gp-h1 {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.gp-h3 {
 	font-size: 1.1em;
 	font-weight: bold;
 	background-color: #eee;
 	padding: 0.25em 0.5em;
 	color: #444;
 }
-select {
+.gp-select {
 	font-size: 12px;
 	line-height: 14px;
 	-webkit-border-radius: 3px;
@@ -183,7 +193,7 @@ select {
 	text-shadow: #fff 0 1px 0;
 }
 
-textarea {
+.gp-textarea {
 	font-size: 100%;
 	padding: 0.5em;
 	line-height: 1.5em;
@@ -401,15 +411,15 @@ a.bubble, .bubble {
 	-moz-border-radius: 0.2em;
 	text-align: center;
 }
-span.active {
+.gp-span.active {
 	background-color: yellow;
 	color: #555;
 	font-weight: bold;
 }
-ul a.edit, dt a.edit {
+.gp-ul a.edit, dt a.edit {
 	background-color: #777;
 }
-ul a.delete {
+.gp-ul a.delete {
 	background-color: #FF4F50;
 }
 .paging {

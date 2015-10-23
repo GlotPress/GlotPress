@@ -5,3 +5,5 @@
 	</p>
 </div> <!-- glotpress -->
 <?php wp_footer();?>
+</body>
+</html>
