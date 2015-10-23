@@ -150,7 +150,6 @@ function gp_rewrite_rules() {
 
 	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
 }
-add_action( 'init', 'gp_rewrite_rules' );
 
 
 /**
@@ -162,7 +161,6 @@ function gp_query_vars( $query_vars ) {
 	$query_vars[] = 'gp_route';
 	return $query_vars;
 }
-add_filter( 'query_vars', 'gp_query_vars' );
 
 function gp_run_route() {
 	gp_populate_notices();
@@ -171,7 +169,6 @@ function gp_run_route() {
 		GP::$router->route();
 	}
 }
-add_action( 'template_redirect', 'gp_run_route' );
 
 // Load the plugin's translated strings
 load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
