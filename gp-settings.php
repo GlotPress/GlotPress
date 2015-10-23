@@ -122,14 +122,3 @@ if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
 	require_once GP_PATH . GP_INC . 'schema.php';
 	gp_upgrade_db();
 }
-
-function gp_activate_plugin() {
-	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
-	if ( ! $admins ) {
-		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
-	}
-}
-register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
-
-// Load the plugin's translated strings
-load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
