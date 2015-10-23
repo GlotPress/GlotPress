@@ -12,7 +12,7 @@ get_header();
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
 
 	<header class="gp-bar clearfix">
-		<h1 class="gp-h1">
+		<h1>
 			<a href="<?php echo gp_url( '/' ); ?>" rel="home">
 				<?php echo gp_get_option('title'); ?>
 			</a>
