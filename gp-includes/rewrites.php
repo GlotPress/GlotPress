@@ -6,7 +6,7 @@
 /**
  * Add WP rewrite rules to avoid WP thinking that GP pages are 404
  *
- * @since    0.1
+ * @since 1.0.0
  */
 function gp_rewrite_rules() {
     $gp_base = trim( gp_url_base_path(), '/' );
@@ -27,7 +27,7 @@ function gp_rewrite_rules() {
 /**
  * Query vars for GP rewrite rules
  *
- * @since    0.1
+ * @since 1.0.0
  */
 function gp_query_vars( $query_vars ) {
     $query_vars[] = 'gp_route';
@@ -37,7 +37,7 @@ function gp_query_vars( $query_vars ) {
 /**
  * GP run route
  *
- * @since    0.1
+ * @since 1.0.0
  */
 function gp_run_route() {
     gp_populate_notices();
