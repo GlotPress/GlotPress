@@ -48,15 +48,15 @@ class GP_Translation_Set_Script extends GP_CLI {
 			$this->usage();
 		}
 		$this->project = GP::$project->by_path( $this->options['p'] );
-		if ( !$this->project ) $this->error( __('Project not found!') );
+		if ( !$this->project ) $this->error( __( 'Project not found!', 'glotpress' ) );
 
 		$this->locale = GP_Locales::by_slug( $this->options['l'] );
-		if ( !$this->locale ) $this->error( __('Locale not found!') );
+		if ( !$this->locale ) $this->error( __( 'Locale not found!', 'glotpress' ) );
 
 		$this->options['t'] = gp_array_get( $this->options, 't', 'default' );
 
 		$this->translation_set = GP::$translation_set->by_project_id_slug_and_locale( $this->project->id, $this->options['t'], $this->locale->slug );
-		if ( !$this->translation_set ) $this->error( __('Translation set not found!') );
+		if ( !$this->translation_set ) $this->error( __( 'Translation set not found!', 'glotpress' ) );
 
 		$this->action_on_translation_set( $this->translation_set );
 	}

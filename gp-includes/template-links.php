@@ -45,7 +45,7 @@ function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
-	$text = $text? $text : __( 'Edit' );
+	$text = $text? $text : __( 'Edit', 'glotpress' );
 	return gp_link_get( gp_url_project( $project, '-edit' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
@@ -58,7 +58,7 @@ function gp_link_project_delete_get( $project, $text = false, $attrs = array() )
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
-	$text = $text? $text : __( 'Delete' );
+	$text = $text? $text : __( 'Delete', 'glotpress' );
 	return gp_link_get( gp_url_project( $project, '-delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
 }
 
@@ -68,7 +68,7 @@ function gp_link_project_delete() {
 }
 
 function gp_link_home_get() {
-	return gp_link_get( gp_url( '/' ), __( 'Home' ), array( 'title' => __('Home Is Where The Heart Is') ) );
+	return gp_link_get( gp_url( '/' ), __( 'Home', 'glotpress' ), array( 'title' => __( 'Home Is Where The Heart Is', 'glotpress' ) ) );
 }
 
 function gp_link_home() {
@@ -76,20 +76,11 @@ function gp_link_home() {
 	echo call_user_func_array('gp_link_home_get', $args);
 }
 
-function gp_link_login_get() {
-	return gp_link_get( gp_url( '/login' ), __( 'Login' ), array( 'title' => __('Sign into GlotPress') ) );
-}
-
-function gp_link_login() {
-	$args = func_get_args();
-	echo call_user_func_array('gp_link_login_get', $args);
-}
-
 function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
-	$text = $text? $text : __( 'Edit' );
+	$text = $text? $text : __( 'Edit', 'glotpress' );
 	return gp_link_get( gp_url( gp_url_join( '/sets', $set->id, '-edit' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
@@ -103,7 +94,7 @@ function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = arr
 		return '';
 	}
 
-	$text = $text? $text : __( 'Edit' );
+	$text = $text? $text : __( 'Edit', 'glotpress' );
 	return gp_link_get( gp_url( gp_url_join( '/glossaries', $glossary->id, '-edit' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 

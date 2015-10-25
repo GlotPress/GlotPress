@@ -54,7 +54,7 @@ class GP_Validation_Rules {
 		foreach( $this->rules[$field] as $rule ) {
 			$callback = GP_Validators::get( $rule['rule'] );
 			if ( is_null( $callback ) ) {
-				trigger_error( __('Non-existent validator: ' . $rule['rule'] ) );
+				trigger_error( sprintf( __( 'Non-existent validator: %s', 'glotpress' ), $rule['rule'] ) );
 				continue;
 			}
 			$args = $rule['args'];
@@ -90,9 +90,9 @@ class GP_Validation_Rules {
 		}
 
 		if ( 'positive' == $rule['kind'] )
-			return sprintf( __('The %s <strong>%s</strong> is invalid and should be %s!'), $type_field, $name_field, $name_rule );
+			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
 		else //if ( 'negative' == $rule['kind'] )
-			return sprintf( __('The %s <strong>%s</strong> is invalid and should not be %s!'), $type_field, $name_field, $name_rule );
+			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should not be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
 	}
 }
 

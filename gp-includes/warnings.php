@@ -69,7 +69,7 @@ class GP_Builtin_Translation_Warnings {
 		$len_trans = gp_strlen( $translation );
 		if ( !( $this->length_lower_bound*$len_src < $len_trans && $len_trans < $this->length_upper_bound*$len_src ) &&
 				( !gp_in( '_abbreviation', $original ) && !gp_in( '_initial', $original ) ) ) {
-			return __('Lengths of source and translation differ too much.');
+			return __( 'Lengths of source and translation differ too much.', 'glotpress' );
 		}
 		return true;
 	}
@@ -80,10 +80,10 @@ class GP_Builtin_Translation_Warnings {
 		$original_parts = preg_split($tag_re, $original, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$translation_parts = preg_split($tag_re, $translation, -1, PREG_SPLIT_DELIM_CAPTURE);
 		if ( count( $original_parts) > count( $translation_parts ) ) {
-			return __('Missing tags from translation.');
+			return __( 'Missing tags from translation.', 'glotpress' );
 		}
 		if ( count( $original_parts) < count( $translation_parts ) ) {
-			return __('Too many tags in translation.');
+			return __( 'Too many tags in translation.', 'glotpress' );
 		}
 		foreach( gp_array_zip( $original_parts, $translation_parts ) as $tags ) {
 			list( $original_tag, $translation_tag ) = $tags;
@@ -115,10 +115,10 @@ class GP_Builtin_Translation_Warnings {
 			$original_count = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
 			if ( $original_count > $translation_count ) {
-				return sprintf(__('Missing %s placeholder in translation.'), $placeholder);
+				return sprintf( __( 'Missing %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 			if ( $original_count < $translation_count ) {
-				return sprintf(__('Extra %s placeholder in translation.'), $placeholder);
+				return sprintf( __( 'Extra %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 		}
 		return true;
@@ -135,28 +135,28 @@ class GP_Builtin_Translation_Warnings {
 
 	function warning_should_begin_on_newline( $original, $translation, $locale ) {
 		if ( gp_startswith( $original, "\n" ) && ! gp_startswith( $translation, "\n" ) ) {
-			return __( 'Original and translation should both begin on newline.' );
+			return __( 'Original and translation should both begin on newline.', 'glotpress' );
 		}
 		return true;
 	}
 
 	function warning_should_not_begin_on_newline( $original, $translation, $locale ) {
 		if ( ! gp_startswith( $original, "\n" ) && gp_startswith( $translation, "\n" ) ) {
-			return __( 'Translation should not begin on newline.' );
+			return __( 'Translation should not begin on newline.', 'glotpress' );
 		}
 		return true;
 	}
 
 	function warning_should_end_on_newline( $original, $translation, $locale ) {
 		if ( gp_endswith( $original, "\n" ) && ! gp_endswith( $translation, "\n" ) ) {
-			return __( 'Original and translation should both end on newline.' );
+			return __( 'Original and translation should both end on newline.', 'glotpress' );
 		}
 		return true;
 	}
 
 	function warning_should_not_end_on_newline( $original, $translation, $locale ) {
 		if ( ! gp_endswith( $original, "\n" ) && gp_endswith( $translation, "\n" ) ) {
-			return __( 'Translation should not end on newline.' );
+			return __( 'Translation should not end on newline.', 'glotpress' );
 		}
 		return true;
 	}

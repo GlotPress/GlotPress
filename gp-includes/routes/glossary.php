@@ -8,7 +8,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$translation_set = $glossary->translation_set_id ? GP::$translation_set->get( $glossary->translation_set_id ) : null;
 
 		if ( ! $translation_set ) {
-			$this->redirect_with_error( __('Cannot find translation set with this ID.') );
+			$this->redirect_with_error( __( 'Cannot find translation set with this ID.', 'glotpress' ) );
 			return;
 		}
 
@@ -16,7 +16,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 
 		if ( GP::$glossary->by_set_id( $glossary->translation_set_id ) ) {
 			$glossary_url = gp_url_join( gp_url_project( $project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') );
-			$this->redirect_with_error( __('The glossary for this translation set already exists.'), $glossary_url );
+			$this->redirect_with_error( __( 'The glossary for this translation set already exists.', 'glotpress' ), $glossary_url );
 			return;
 		}
 
@@ -34,12 +34,12 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
 
 		if ( ! $translation_set ) {
-			$this->redirect_with_error( __('Cannot find translation set with this ID.'), gp_url( '/glossaries/-new', array( 'translation_set_id' => $new_glossary->translation_set_id ) ) );
+			$this->redirect_with_error( __( 'Cannot find translation set with this ID.', 'glotpress' ), gp_url( '/glossaries/-new', array( 'translation_set_id' => $new_glossary->translation_set_id ) ) );
 			return;
 		}
 
 		if ( GP::$glossary->by_set_id( $new_glossary->translation_set_id ) ) {
-			$this->redirect_with_error( __('The glossary for this translation set already exists.'), gp_url( '/glossaries/-new', array( 'translation_set_id' => $new_glossary->translation_set_id ) ) );
+			$this->redirect_with_error( __( 'The glossary for this translation set already exists.', 'glotpress' ), gp_url( '/glossaries/-new', array( 'translation_set_id' => $new_glossary->translation_set_id ) ) );
 			return;
 		}
 
@@ -50,13 +50,13 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$created_glossary = GP::$glossary->create_and_select( $new_glossary );
 
 		if ( $created_glossary ) {
-			$this->notices[] = __('The glossary was created!');
+			$this->notices[] = __( 'The glossary was created!', 'glotpress' );
 			$set_project     = GP::$project->get( $translation_set->project_id );
 
 			$this->redirect( gp_url_join( gp_url_project( $set_project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') ) );
 		}
 		else {
-			$this->errors[] = __('Error in creating glossary!');
+			$this->errors[] = __( 'Error in creating glossary!', 'glotpress' );
 			$this->redirect( gp_url( '/glossaries/-new', array( 'translation_set_id' => $new_glossary->translation_set_id ) ) );
 		}
 	}
@@ -65,7 +65,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$glossary = GP::$glossary->get( $glossary_id );
 
 		if ( ! $glossary ) {
-			$this->redirect_with_error( __('Cannot find glossary.') );
+			$this->redirect_with_error( __( 'Cannot find glossary.', 'glotpress' ) );
 		}
 
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
@@ -84,12 +84,12 @@ class GP_Route_Glossary extends GP_Route_Main {
 		}
 
 		if ( ! $glossary->update( $new_glossary ) ) {
-			$this->errors[] = __('Error in updating glossary!');
+			$this->errors[] = __( 'Error in updating glossary!', 'glotpress' );
 			$this->redirect();
 			return;
 		}
 
-		$this->notices[] = __('The glossary was updated!');
+		$this->notices[] = __( 'The glossary was updated!', 'glotpress' );
 		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
 		$set_project     = GP::$project->get( $translation_set->project_id );
 

@@ -53,7 +53,7 @@ load_textdomain('side', "languages/$locale-side.mo");
 $user = 'apok';
 $messages = rand(0, 2);
 
-printf(__('Welcome %s!')."\n", $user);
+printf( __( 'Welcome %s!', 'glotpress' )."\n", $user);
 
 printf(__n('You have one new message.', 'You have %s new messages.', $messages)."\n", $messages);
 
