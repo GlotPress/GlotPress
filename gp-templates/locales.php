@@ -1,8 +1,8 @@
 <?php
 gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
 
-wp_enqueue_script('gp-common');
-wp_enqueue_script('tablesorter');
+gp_enqueue_script( 'gp-common' );
+gp_enqueue_script( 'tablesorter' );
 gp_tmpl_header();
 ?>
 
