@@ -13,7 +13,7 @@
 	<header class="gp-bar clearfix">
 		<h1>
 			<a href="<?php echo gp_url( '/' ); ?>" rel="home">
-				<?php echo gp_get_option('title'); ?>
+				<?php echo apply_filters( 'gp_home_title', 'GlotPress' ); ?>
 			</a>
 		</h1>
 

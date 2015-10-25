@@ -29,7 +29,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'GP_VERSION', '0.1' );
+define( 'GP_VERSION', '1.0-alpha-1100' );
+define( 'GP_DB_VERSION', '940' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', dirname( __FILE__ ) . '/' );

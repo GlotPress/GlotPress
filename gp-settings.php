@@ -5,10 +5,6 @@ if ( !defined( 'GP_LOCALES_PATH' ) ) {
 	define( 'GP_LOCALES_PATH', GP_PATH . 'locales/' );
 }
 
-if ( !defined( 'GP_LANG_PATH' ) ) {
-	define( 'GP_LANG_PATH', GP_PATH . 'languages/' );
-}
-
 if ( !defined( 'DATE_MYSQL' ) ) {
 	define( 'DATE_MYSQL', 'Y-m-d H:i:s' );
 }
@@ -21,11 +17,11 @@ require_once( GP_PATH . GP_INC . 'gp.php');
 
 $_GET = gp_urldecode_deep( $_GET );
 
+global $wpdb, $gp_table_prefix;
+
 if ( ! isset( $gp_table_prefix ) ) {
 	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 }
-
-GLOBAL $wpdb;
 
 $table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
 foreach ( $table_names as $table ) {
@@ -60,9 +56,6 @@ require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
 require_once( GP_LOCALES_PATH . 'locales.php' );
 
-if ( defined('GP_LANG') )
-	load_default_textdomain();
-
 // We assume all variables set in this file will be global.
 // If the file is inovked inside a function, we will lose them all.
 // So, make all local variables, global
@@ -89,7 +82,6 @@ require_once( GP_PATH . GP_INC . 'router.php' );
 
 require_once GP_PATH . GP_INC . 'routes/_main.php';
 require_once GP_PATH . GP_INC . 'routes/index.php';
-require_once GP_PATH . GP_INC . 'routes/login.php';
 require_once GP_PATH . GP_INC . 'routes/original.php';
 require_once GP_PATH . GP_INC . 'routes/profile.php';
 require_once GP_PATH . GP_INC . 'routes/project.php';
@@ -122,7 +114,7 @@ if ( !defined( 'GP_ROUTING') ) {
 }
 
 // Let's check to see if we need to run the upgrade routine but only run it on the admin side
-if ( is_admin() && gp_get_option( 'gp_db_version' ) > get_option( 'gp_db_version' ) ) {
+if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	require_once GP_PATH . GP_INC . 'install-upgrade.php';
 	require_once GP_PATH . GP_INC . 'schema.php';
@@ -145,7 +137,18 @@ register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
  */
 function gp_rewrite_rules() {
 	$gp_base = trim( gp_url_base_path(), '/' );
-	add_rewrite_rule( '^' . $gp_base . '/?(.*)$', 'index.php?gp_route=$matches[1]', 'top' );
+
+	if ( ! $gp_base ) {
+		// When GlotPress is set to take over the root of the site,
+		// add a special rule that WordPress uses to route requests to root.
+		add_rewrite_rule( '$', 'index.php?gp_route', 'top' );
+
+		$match_regex = '^(.*)$';
+	} else {
+		$match_regex = '^' . $gp_base . '/?(.*)$';
+	}
+
+	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
 }
 add_action( 'init', 'gp_rewrite_rules' );
 
@@ -169,3 +172,6 @@ function gp_run_route() {
 	}
 }
 add_action( 'template_redirect', 'gp_run_route' );
+
+// Load the plugin's translated strings
+load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );

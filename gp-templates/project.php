@@ -1,13 +1,13 @@
 <?php
-gp_title( sprintf( __('%s &lt; GlotPress'), esc_html( $project->name ) ) );
+gp_title( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
 gp_enqueue_script( 'gp-common' );
 gp_enqueue_script('tablesorter');
-$edit_link = gp_link_project_edit_get( $project, __('(edit)') );
+$edit_link = gp_link_project_edit_get( $project, __( '(edit)', 'glotpress' ) );
 
 if ( $project->active ) {
 	add_filter( 'gp_breadcrumb_items', function( $items ) {
-		$items[ count($items) - 1 ] .= ' <span class="active bubble">' . __('Active') . '</span>';
+		$items[ count($items) - 1 ] .= ' <span class="active bubble">' . __( 'Active', 'glotpress' ) . '</span>';
 
 		return $items;
 	} );
@@ -33,7 +33,7 @@ gp_tmpl_header();
 <?php if ( $can_write ): ?>
 
 <div class="actionlist">
-	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e('Project actions &darr;'); ?></a>
+	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e( 'Project actions &darr;', 'glotpress' ); ?></a>
 	<div class="project-actions hide-if-js">
 		<?php gp_project_actions( $project, $translation_sets ); ?>
 	</div>
@@ -44,18 +44,18 @@ gp_tmpl_header();
 
 <?php if ( $translation_sets ): ?>
 <div id="translation-sets">
-	<h3><?php _e('Translations');?></h3>
+	<h3><?php _e( 'Translations', 'glotpress' );?></h3>
 	<table class="translation-sets tablesorter">
 		<thead>
 			<tr>
-				<th><?php _e( 'Locale' ); ?></th>
-				<th><?php echo _x( '%', 'locale translation percent header' ); ?></th>
-				<th><?php _e( 'Translated' ); ?></th>
-				<th><?php _e( 'Fuzzy' ); ?></th>
-				<th><?php _e( 'Untranslated' ); ?></th>
-				<th><?php _e( 'Waiting' ); ?></th>
+				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th><?php echo _x( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+				<th><?php _e( 'Waiting', 'glotpress' ); ?></th>
 				<?php if ( has_action( 'project_template_translation_set_extra' ) ) : ?>
-				<th class="extra"><?php _e( 'Extra' ); ?></th>
+				<th class="extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -100,19 +100,19 @@ gp_tmpl_header();
 	</table>
 </div>
 <?php elseif ( !$sub_projects ): ?>
-	<p><?php _e('There are no translations of this project.'); ?></p>
+	<p><?php _e( 'There are no translations of this project.', 'glotpress' ); ?></p>
 <?php endif; ?>
 
 
 <?php if ($sub_projects): ?>
 <div id="sub-projects">
-<h3><?php _e('Sub-projects'); ?></h3>
+<h3><?php _e( 'Sub-projects', 'glotpress' ); ?></h3>
 <dl>
 <?php foreach($sub_projects as $sub_project): ?>
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
-		<?php if ( $sub_project->active ) echo "<span class='active bubble'>" . __('Active') . "</span>"; ?>
+		<?php if ( $sub_project->active ) echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . "</span>"; ?>
 	</dt>
 	<dd>
 		<?php
@@ -139,15 +139,15 @@ gp_tmpl_header();
 
 <script type="text/javascript" charset="utf-8">
 	$gp.showhide('a.personal-options', 'div.personal-options', {
-		show_text: '<?php _e('Personal project options &darr;'); ?>',
-		hide_text: '<?php _e('Personal project options &uarr;'); ?>',
+		show_text: '<?php _e( 'Personal project options &darr;', 'glotpress' ); ?>',
+		hide_text: '<?php _e( 'Personal project options &uarr;', 'glotpress' ); ?>',
 		focus: '#source-url-template',
 		group: 'personal'
 	});
 	jQuery('div.personal-options').hide();
 	$gp.showhide('a.project-actions', 'div.project-actions', {
-		show_text: '<?php _e('Project actions &darr;'); ?>',
-		hide_text: '<?php _e('Project actions &uarr;'); ?>',
+		show_text: '<?php _e( 'Project actions &darr;', 'glotpress' ); ?>',
+		hide_text: '<?php _e( 'Project actions &uarr;', 'glotpress' ); ?>',
 		focus: '#source-url-template',
 		group: 'project'
 	});
