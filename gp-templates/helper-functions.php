@@ -86,7 +86,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
 			}
 			else {
-				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), gp_url_login() );
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url() ) );
 			}
 			?>
 		</p>

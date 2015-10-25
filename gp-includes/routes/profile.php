@@ -3,7 +3,7 @@ class GP_Route_Profile extends GP_Route_Main {
 
 	function profile_get() {
 		if ( ! is_user_logged_in() ) {
-			$this->redirect( gp_url( '/login?redirect_to=' ).urlencode( gp_url( '/profile' ) ) );
+			$this->redirect( wp_login_url( gp_url_profile() ) );
 			return;
 		}
 

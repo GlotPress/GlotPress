@@ -73,10 +73,10 @@ function gp_nav_menu_items( $location = 'main' ) {
 			$user = GP::$user->current();
 
 			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );
-			$items[ gp_url( '/logout' ) ]  = __( 'Log out', 'glotpress' );
+			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
 		}
 		else {
-			$items[ gp_url_login() ] = __( 'Log in', 'glotpress' );
+			$items[ esc_url( wp_login_url( gp_url_current() ) ) ] = __( 'Log in', 'glotpress' );
 		}
 	}
 
