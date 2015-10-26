@@ -126,8 +126,10 @@ class GP_Route {
 		$this->set_notices_and_errors();
 		// TODO: do not redirect to projects, but to /
 		// currently it goes to /projects, because / redirects too and the notice is gone
-		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
-		gp_redirect( $url );
+		if ( is_null( $url ) ) {
+			$url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
+		}
+		wp_redirect( $url );
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 

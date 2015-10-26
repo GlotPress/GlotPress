@@ -60,8 +60,6 @@ class GP_Router {
 		// overall structure
 		return array(
 			'/' => array('GP_Route_Index', 'index'),
-			'get:/login' => array('GP_Route_Login', 'login_get'),
-			'get:/logout' => array('GP_Route_Login', 'logout'),
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
 			"get:/profile/$path" => array('GP_Route_Profile', 'profile_view'),

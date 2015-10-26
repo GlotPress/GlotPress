@@ -76,15 +76,6 @@ function gp_link_home() {
 	echo call_user_func_array('gp_link_home_get', $args);
 }
 
-function gp_link_login_get() {
-	return gp_link_get( gp_url( '/login' ), __( 'Login', 'glotpress' ), array( 'title' => __( 'Sign into GlotPress', 'glotpress' ) ) );
-}
-
-function gp_link_login() {
-	$args = func_get_args();
-	echo call_user_func_array('gp_link_login_get', $args);
-}
-
 function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';

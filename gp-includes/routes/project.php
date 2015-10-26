@@ -121,7 +121,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$originals_obsoleted
 		);
 
-		$this->redirect( gp_url_project( $project, 'import-originals' ) );
+		$this->redirect( gp_url_project( $project ) );
 	}
 
 	function edit_get( $project_path ) {
