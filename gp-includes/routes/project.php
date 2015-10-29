@@ -283,6 +283,8 @@ class GP_Route_Project extends GP_Route_Main {
 				$this->redirect_with_error( __( 'User wasn&#8217;t found!', 'glotpress' ), gp_url_current() );
 				return;
 			}
+			$user->add_role( 'validator' );
+
 			$new_permission = new GP_Validator_Permission( array(
 				'user_id' => $user->ID,
 				'action' => 'approve',
