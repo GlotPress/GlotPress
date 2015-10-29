@@ -270,7 +270,7 @@ class GP_Original extends GP_Thing {
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param float $max_length_diff The times compared string can be shorter than the input string.
+			 * @param float $max_length_diff The times compared string length can differ from the input string.
 			 */
 			$max_length_diff = apply_filters( 'gp_original_import_max_length_diff', 0.5 );
 
