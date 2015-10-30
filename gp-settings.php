@@ -49,7 +49,7 @@ require_once( GP_PATH . GP_INC . 'cli.php' );
 
 require_once( GP_PATH . GP_INC . 'assets-loader.php' );
 
-require_once( GP_PATH . GP_INC . 'rewrites.php' );
+require_once( GP_PATH . GP_INC . 'rewrite.php' );
 
 require_once( GP_PATH . GP_INC . 'default-filters.php' );
 
