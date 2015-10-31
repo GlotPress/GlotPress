@@ -49,6 +49,8 @@ require_once( GP_PATH . GP_INC . 'cli.php' );
 
 require_once( GP_PATH . GP_INC . 'assets-loader.php' );
 
+require_once( GP_PATH . GP_INC . 'rewrite.php' );
+
 require_once( GP_PATH . GP_INC . 'default-filters.php' );
 
 require_once( ABSPATH . WPINC . '/pomo/mo.php' );
@@ -120,58 +122,3 @@ if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
 	require_once GP_PATH . GP_INC . 'schema.php';
 	gp_upgrade_db();
 }
-
-function gp_activate_plugin() {
-	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
-	if ( ! $admins ) {
-		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
-	}
-}
-register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
-
-
-/**
- * Add WP rewrite rules to avoid WP thinking that GP pages are 404
- *
- * @since    0.1
- */
-function gp_rewrite_rules() {
-	$gp_base = trim( gp_url_base_path(), '/' );
-
-	if ( ! $gp_base ) {
-		// When GlotPress is set to take over the root of the site,
-		// add a special rule that WordPress uses to route requests to root.
-		add_rewrite_rule( '$', 'index.php?gp_route', 'top' );
-
-		$match_regex = '^(.*)$';
-	} else {
-		$match_regex = '^' . $gp_base . '/?(.*)$';
-	}
-
-	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
-}
-add_action( 'init', 'gp_rewrite_rules' );
-
-
-/**
- * Query vars for GP rewrite rules
- *
- * @since    0.1
- */
-function gp_query_vars( $query_vars ) {
-	$query_vars[] = 'gp_route';
-	return $query_vars;
-}
-add_filter( 'query_vars', 'gp_query_vars' );
-
-function gp_run_route() {
-	gp_populate_notices();
-	global $wp;
-	if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
-		GP::$router->route();
-	}
-}
-add_action( 'template_redirect', 'gp_run_route' );
-
-// Load the plugin's translated strings
-load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
