@@ -40,6 +40,8 @@ require_once GP_PATH . 'gp-settings.php';
 
 /**
  * Perform necessary actions on activation
+ *
+ * @since 1.0.0
  */
 function gp_activate_plugin() {
     $admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
@@ -48,6 +50,17 @@ function gp_activate_plugin() {
     }
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
+
+/**
+ * Run the plugin de-activation code.
+ *
+ * @since 1.0.0
+ */
+function gp_deactivate_plugin() {
+	// Flush the rewrite rule option so it will be re-generated next time the plugin is activated.
+	update_option( 'gp_rewrite_rule', '' );
+}
+register_deactivation_hook( GP_PLUGIN_FILE, 'gp_deactivate_plugin' );
 
 // Load the plugin's translated strings
 load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
