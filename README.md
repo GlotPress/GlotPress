@@ -19,3 +19,9 @@ $ git clone git@github.com:deliciousbrains/GlotPress.git glotpress
 
 * [WordPress Slack](https://chat.wordpress.org/): #glotpress
 * [Blog](http://blog.glotpress.org/)
+
+## Running Tests
+
+```bash
+$ ./tests/bin/run-unittests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [drop-db]
+```

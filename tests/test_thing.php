@@ -10,7 +10,7 @@ class GP_Test_Thing extends GP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$GLOBALS['gpdb']->mytable = 'mytable';
+		$GLOBALS['wpdb']->mytable = 'mytable';
 		$this->t = new GP_My_Table;
 	}
 

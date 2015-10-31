@@ -118,8 +118,10 @@ class GP_Test_Project extends GP_UnitTestCase {
 
 		$s2->project->copy_originals_from( $s1->project->id );
 
-		$s1_original = array_shift( GP::$original->by_project_id( $s1->project->id ) );
-		$s2_original = array_shift( GP::$original->by_project_id( $s2->project->id ) );
+		$s1_original = GP::$original->by_project_id( $s1->project->id );
+		$s2_original = GP::$original->by_project_id( $s2->project->id );
+		$s1_original = array_shift( $s1_original );
+		$s2_original = array_shift( $s2_original );
 
 		$this->assertNotEquals( $s1_original->id, $s2_original->id );
 		$this->assertNotEquals( $s1_original->project_id, $s2_original->project_id );
@@ -150,10 +152,13 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$copy->copy_originals_from( $original->project->id );
 		$copy->copy_sets_and_translations_from( $original->project->id );
 
-		$copy_set = array_shift( GP::$translation_set->by_project_id( $copy->id ) );
+		$copy_set = GP::$translation_set->by_project_id( $copy->id );
+		$copy_set = array_shift( $copy_set );
 
-		$original_translation = array_shift( GP::$translation->find( array( 'translation_set_id' => $original->id ) ) );
-		$copy_translation = array_shift( GP::$translation->find( array( 'translation_set_id' => $copy_set->id ) ) );
+		$original_translation = GP::$translation->find( array( 'translation_set_id' => $original->id ) );
+		$original_translation = array_shift( $original_translation );
+		$copy_translation = GP::$translation->find( array( 'translation_set_id' => $copy_set->id ) );
+		$copy_translation = array_shift( $copy_translation );
 
 		$this->assertNotEquals( $original_translation->original_id, $copy_translation->original_id );
 
@@ -180,8 +185,10 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
 		$branch->duplicate_project_contents_from( $root );
 
-		$branch_sub = array_shift( $branch->sub_projects() );
-		$branch_subsub = array_shift( $branch_sub->sub_projects() );
+		$branch_sub = $branch->sub_projects();
+		$branch_sub = array_shift( $branch_sub );
+		$branch_subsub = $branch_sub->sub_projects();
+		$branch_subsub = array_shift( $branch_subsub );
 
 		$difference_root = $root->set_difference_from( $branch );
 		$difference_sub = $sub->set_difference_from( $branch_sub );
@@ -210,7 +217,8 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
 		$branch->duplicate_project_contents_from( $root );
 
-		$branch_sub = array_shift( $branch->sub_projects() );
+		$branch_sub = $branch->sub_projects();
+		$branch_sub = array_shift( $branch_sub );
 
 		$originals_root = GP::$original->by_project_id( $root->id );
 		$originals_sub = GP::$original->by_project_id( $sub->id );
@@ -234,7 +242,8 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
 		$branch->duplicate_project_contents_from( $root );
 
-		$branch_sub = array_shift( $branch->sub_projects() );
+		$branch_sub = $branch->sub_projects();
+		$branch_sub = array_shift( $branch_sub );
 
 		$this->assertEquals( $root->path, 'root' );
 		$this->assertEquals( $branch->path, 'branch' );
