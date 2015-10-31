@@ -14,7 +14,7 @@ DB_NAME=$1
 DB_USER=$2
 DB_PASS=$3
 DB_HOST=${4-localhost}
-WP_VERSION=${5-latest}
+WP_VERSION=${5-nightly}
 DROP_DB=${6-false}
 
 for PROG in mysqladmin composer
