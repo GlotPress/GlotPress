@@ -108,14 +108,6 @@ function gp_url_profile( $user_nicename ) {
 	return apply_filters( 'gp_url_profile', gp_url( array( '/profile', $user_nicename ) ), $user_nicename );
 }
 
-function gp_url_login( $redirect_to = null ) {
-	return gp_url( '/login', array( 'redirect_to' => $redirect_to? $redirect_to : gp_url_current() ) );
-}
-
-function gp_url_logout() {
-	return gp_url( '/logout' );
-}
-
 function gp_url_base_path() {
 	return '/' . trim( gp_const_get( 'GP_URL_BASE', 'glotpress' ), '/' ) . '/';
 }

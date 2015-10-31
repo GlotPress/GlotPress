@@ -1,4 +1,4 @@
-# GlotPress
+# GlotPress [![Build Status](https://travis-ci.org/deliciousbrains/GlotPress.svg?branch=wordpress-plugin-dbi)](https://travis-ci.org/deliciousbrains/GlotPress)
 
 This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.
 
@@ -19,3 +19,9 @@ $ git clone git@github.com:deliciousbrains/GlotPress.git glotpress
 
 * [WordPress Slack](https://chat.wordpress.org/): #glotpress
 * [Blog](http://blog.glotpress.org/)
+
+## Running Tests
+
+```bash
+$ ./tests/bin/run-unittests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [drop-db]
+```

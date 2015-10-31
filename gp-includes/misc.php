@@ -19,7 +19,7 @@ function gp_post( $key, $default = '' ) {
  * @return mixed $_GET[$key] if exists or $default
  */
 function gp_get( $key, $default = '' ) {
-	return gp_array_get( $_GET, $key, $default );
+	return gp_urldecode_deep( gp_array_get( $_GET, $key, $default ) );
 }
 
 /**
@@ -97,32 +97,6 @@ function gp_populate_notices() {
 			backpress_set_cookie( $key, '', 0, gp_url_path() );
 		}
 	}
-}
-
-/**
- * Sets headers, which redirect to another page.
- *
- * @param string $location The path to redirect to
- * @param int $status Status code to use
- * @return bool False if $location is not set
- */
-function gp_redirect( $location, $status = 302 ) {
-	// TODO: add server-guessing code from bb-load.php in a function in gp-includes/system.php
-    global $is_IIS;
-
-    $location = apply_filters( 'gp_redirect', $location, $status );
-    $status = apply_filters( 'gp_redirect_status', $status, $location );
-
-    if ( !$location ) // allows the gp_redirect filter to cancel a redirect
-        return false;
-
-    if ( $is_IIS ) {
-        header( "Refresh: 0;url=$location" );
-    } else {
-        if ( php_sapi_name() != 'cgi-fcgi' )
-            status_header( $status ); // This causes problems on IIS and some FastCGI setups
-        header( "Location: $location" );
-    }
 }
 
 /**
