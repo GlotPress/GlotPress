@@ -15,8 +15,6 @@ if ( !defined( 'GP_TESTS_PATH' ) ) {
 
 require_once( GP_PATH . GP_INC . 'gp.php');
 
-$_GET = gp_urldecode_deep( $_GET );
-
 global $wpdb, $gp_table_prefix;
 
 if ( ! isset( $gp_table_prefix ) ) {

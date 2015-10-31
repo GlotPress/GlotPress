@@ -2,7 +2,7 @@
 class GP_Route_Locale extends GP_Route_Main {
 
 	public function locales_get() {
-		if ( isset( $_GET['all'] ) ) {
+		if ( NULL !== gp_get( 'all', NULL ) ) {
 			$locales = GP_Locales::locales();
 		}
 		else {

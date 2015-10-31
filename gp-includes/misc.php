@@ -19,7 +19,7 @@ function gp_post( $key, $default = '' ) {
  * @return mixed $_GET[$key] if exists or $default
  */
 function gp_get( $key, $default = '' ) {
-	return gp_array_get( $_GET, $key, $default );
+	return gp_urldecode_deep( gp_array_get( $_GET, $key, $default ) );
 }
 
 /**
