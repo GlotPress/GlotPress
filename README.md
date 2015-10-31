@@ -1,4 +1,4 @@
-# GlotPress
+# GlotPress [![Build Status](https://travis-ci.org/deliciousbrains/GlotPress.svg?branch=wordpress-plugin-dbi)](https://travis-ci.org/deliciousbrains/GlotPress)
 
 This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.
 
