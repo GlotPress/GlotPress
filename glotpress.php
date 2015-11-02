@@ -46,8 +46,38 @@ function gp_activate_plugin() {
     if ( ! $admins ) {
         GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
     }
+    gp_register_roles();
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 
 // Load the plugin's translated strings
 load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
+
+
+function gp_register_roles() {
+	global $wp_roles;
+
+	if ( ! class_exists( 'WP_Roles' ) ) {
+		return;
+	}
+
+	if ( ! isset( $wp_roles ) ) {
+		$wp_roles = new WP_Roles();
+	}
+	// translator role
+	add_role( 'translator', __( 'Translator', 'glotpress' ), array(
+		'edit-translation-set' => true,
+	) );
+	// validator role
+	add_role( 'validator', __( 'Validator', 'glotpress' ), array(
+		'validate-translation-set' => true,
+	) );
+}
+
+
+function gp_grant_translator_cap_on_register( $user_id ) {
+	$user = get_user_by( 'id', $user_id );
+
+	$user->add_role( 'translator' );
+}
+add_action( 'user_register', 'gp_grant_translator_cap_on_register' );

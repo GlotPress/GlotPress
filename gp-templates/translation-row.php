@@ -32,7 +32,7 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 		if ( $can_edit ) {
 			$edit_text = __( 'Double-click to add', 'glotpress' );
 		}
-		elseif ( GP::$user->logged_in() ) {
+		elseif ( is_user_logged_in() ) {
 			$edit_text = __( 'You are not allowed to add a translation.', 'glotpress' );
 		}
 		else {

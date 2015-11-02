@@ -7,95 +7,11 @@ class GP_User extends GP_Thing {
 	var $field_names = array( 'id', 'user_login', 'user_pass', 'user_nicename', 'user_email', 'user_url', 'user_registered', 'user_status', 'display_name' );
 	var $non_updatable_attributes = array( 'ID' );
 
-	function create( $args ) {
-		if ( isset( $args['id'] ) ) {
-			$args['ID'] = $args['id'];
-			unset( $args['id'] );
-		}
-		$user = wp_insert_user( $args );
-		$user = get_userdata( $user );
-		return $this->coerce( $user );
-	}
-
-	function update( $data, $where = null ) {
-		return false;
-	}
-
-	function delete() {
-		return false;
-	}
-
-	function delete_all( $where = false ) {
-		return false;
-	}
-	function normalize_fields( $args ) {
-		if ( $args instanceof WP_User ) {
-			$args = $args->data;
-		}
-		$args = (array)$args;
-		if ( isset( $args['ID'] ) ) {
-			$args['id'] = $args['ID'];
-			unset( $args['ID'] );
-		}
-		return $args;
-	}
-
-	function get( $user_or_id ) {
-		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
-		return $this->coerce( get_userdata( $user_or_id ) );
-	}
-
-	function by_login( $login ) {
-		$user = get_user_by( 'login', $login );
-		return $this->coerce( $user );
-	}
-
-	function by_email( $email ) {
-		$user = get_user_by( 'email', $email );
-		return $this->coerce( $user );
-	}
-
-	function logged_in() {
-		$coerced = $this->coerce( wp_get_current_user() );
-		return ( $coerced && $coerced->id );
-	}
-
 	function current() {
-		if ( $this->logged_in() )
+		if ( is_user_logged_in() )
 			return $this->coerce( wp_get_current_user() );
 		else
 			return new GP_User( array( 'id' => 0, ) );
-	}
-
-	function logout() {
-		wp_logout();
-	}
-
-	/**
-	 * Determines whether the user is an admin
-	 */
-	function admin() {
-		return $this->can( 'admin' );
-	}
-
-	/**
-	 * Set $this as the current user if $password patches this user's password
-	 * and sets the auth cookies.
-	 */
-	function login( $password ) {
-		if ( ! wp_check_password( $password, $this->user_pass, $this->id ) ) {
-			return false;
-		}
-		$this->set_as_current();
-		wp_set_auth_cookie( $this->id );
-		return true;
-	}
-
-	/**
-	 * Makes the user the current user of this session.
-	 */
-	function set_as_current() {
-		wp_set_current_user( $this->id );
 	}
 
 	/**
@@ -107,11 +23,13 @@ class GP_User extends GP_Thing {
 	 */
 	function can( $action, $object_type = null, $object_id = null, $extra = null ) {
 		$user = null;
-		if ( isset( $this ) && $this->id )
+		if ( isset( $this ) && $this->id ) {
 			$user = $this;
-		elseif ( GP::$user->logged_in() )
-			$user = GP::$user->current();
-		$user_id = $user? $user->id : null;
+		} elseif ( is_user_logged_in() ) {
+			$user = get_user_by( 'id', get_current_user_id() );
+		}
+
+		$user_id = $user? $user->ID : null;
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
 		$filter_args['extra'] = $extra;
@@ -124,38 +42,6 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 		return apply_filters( 'gp_can_user', $verdict, $filter_args );
-	}
-
-	function get_meta( $key ) {
-		if ( !$user = get_userdata( $this->id ) ) {
-			return;
-		}
-
-		if ( !isset( $user->$key ) ) {
-			return;
-		}
-		return $user->$key;
-	}
-
-	function set_meta( $key, $value ) {
-		return gp_update_meta( $this->id, $key, $value, 'user' );
-	}
-
-	function delete_meta( $key ) {
-		return gp_delete_meta( $this->id, $key, '', 'user' );
-	}
-
-	public function sort_defaults() {
-		$defaults = $this->get_meta('default_sort');
-
-		if ( ! is_array( $defaults ) ) {
-			$defaults = array(
-				'by' => 'priority',
-				'how' => 'desc'
-			);
-		}
-
-		return $defaults;
 	}
 
 	public function get_avatar( $size = 100 ) {
