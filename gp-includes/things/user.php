@@ -120,9 +120,12 @@ class GP_User extends GP_Thing {
 			return $preliminary;
 		}
 		$verdict =
-			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
-			GP::$permission->find_one( $args ) ||
-			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
+//			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
+			GP::$caps->can_user( $user_id, 'admin', 'admin' ) ||
+//			GP::$permission->find_one( $args ) ||
+			GP::$caps->can_user( $user_id, 'read', $object_type, $object_id ) ||
+//			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
+			GP::$caps->can_user( $user_id, 'read', $object_type );
 		return apply_filters( 'gp_can_user', $verdict, $filter_args );
 	}
 

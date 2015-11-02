@@ -77,7 +77,8 @@ class GP_Route {
 	}
 
 	function can( $action, $object_type = null, $object_id = null ) {
-		return GP::$user->current()->can( $action, $object_type, $object_id );
+		return GP::$caps->can( $action, $object_type, $object_id );
+		//return GP::$user->current()->can( $action, $object_type, $object_id );
 	}
 
 	/**

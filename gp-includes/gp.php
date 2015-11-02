@@ -6,6 +6,7 @@ class GP {
 	public static $translation_set;
 	public static $permission;
 	public static $validator_permission;
+	public static $caps;
 	public static $translation;
 	public static $original;
 	public static $glossary;

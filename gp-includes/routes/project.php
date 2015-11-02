@@ -283,17 +283,30 @@ class GP_Route_Project extends GP_Route_Main {
 				$this->redirect_with_error( __( 'User wasn&#8217;t found!', 'glotpress' ), gp_url_current() );
 				return;
 			}
-			$new_permission = new GP_Validator_Permission( array(
+			
+			$new_perms_array = array(
 				'user_id' => $user->ID,
 				'action' => 'approve',
 				'project_id' => $project->id,
 				'locale_slug' => gp_post( 'locale' ),
 				'set_slug' => gp_post( 'set-slug' ),
-			) );
-			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) return;
-			$permission = GP::$validator_permission->create( $new_permission );
-			$permission?
-				$this->notices[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );
+			);
+
+			$set = GP::$translation_set->by_project_id_slug_and_locale( $new_perms_array['project_id'], $new_perms_array['set_slug'], $new_perms_array['locale_slug'] );
+
+			if( null != $set ) {
+				$new_permission = new GP_Validator_Permission( $new_perms_array );
+				if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) return;
+	//			$permission = GP::$validator_permission->create( $new_permission );
+				$permission = GP::$caps->add_cap_user( $new_perms_array['user_id'], $new_perms_array['action'], 'translation-set', $set );
+				if( $permission ) {
+					$this->notices[] = __( 'Validator was added.', 'glotpress' );
+				} else { 
+					$this->errors[] = __( 'Error in adding validator.', 'glotpress' );
+				}
+			} else {
+				$this->errors[] = __( 'Error in adding validator, translation set does not exist.', 'glotpress' );
+			}
 		}
 		$this->redirect( gp_url_current() );
 	}

@@ -64,6 +64,7 @@ gp_set_globals( get_defined_vars() );
 require_once( GP_PATH . GP_INC . 'warnings.php' );
 require_once( GP_PATH . GP_INC . 'validation.php' );
 require_once( GP_PATH . GP_INC . 'advanced-permissions.php' );
+require_once( GP_PATH . GP_INC . 'caps.php' );
 
 require_once GP_PATH . GP_INC . 'thing.php';
 require_once GP_PATH . GP_INC . 'things/original.php';
