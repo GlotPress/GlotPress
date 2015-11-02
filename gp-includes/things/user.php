@@ -23,11 +23,13 @@ class GP_User extends GP_Thing {
 	 */
 	function can( $action, $object_type = null, $object_id = null, $extra = null ) {
 		$user = null;
-		if ( isset( $this ) && $this->id )
+		if ( isset( $this ) && $this->id ) {
 			$user = $this;
-		elseif ( is_user_logged_in() )
-			$user = GP::$user->current();
-		$user_id = $user? $user->id : null;
+		} elseif ( is_user_logged_in() ) {
+			$user = get_user_by( 'id', get_current_user_id() );
+		}
+
+		$user_id = $user? $user->ID : null;
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
 		$filter_args['extra'] = $extra;
