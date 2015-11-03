@@ -389,7 +389,7 @@ class GP_Thing {
 
 	function fields() {
 		$result = array();
-		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) { 
+		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
 			if ( isset( $this->$field_name ) ) {
 				$result[$field_name] = $this->$field_name;
 			}
