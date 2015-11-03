@@ -46,11 +46,34 @@ class GP_Caps {
 			return false;
 		}
 		
-		$cap_name = $this->get_cap_name( $action, $object_type, $object );
-		$admin_cap_name = $this->get_ap_name( $action, 'admin' );
+		$valid_cap_name = false;
+		if( $this->prefix == substr( $cap_name, 0, strlen( $this->prefix ) ) ) {
+			$valid_cap_name = true;
+		}
 		
-		if( false !== $admin_cap_name && user_can( $user, $admin_cap_name ) ) {
-			return $user->remove_cap( $cap_name );
+		if( $this->can( 'read', 'admin' ) && true == $valid_cap_name ) {
+			$user->remove_cap( $cap_name );
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public function delete_cap_user_by_name( $user_id = null, $cap_name ) {
+		$user = $this->get_user( $user_id );
+
+		if( false === $user ) {
+			return false;
+		}
+		
+		$valid_cap_name = false;
+		if( $this->prefix == substr( $cap_name, 0, strlen( $this->prefix ) ) ) {
+			$valid_cap_name = true;
+		}
+		
+		if( $this->can( 'read', 'admin' ) && true == $valid_cap_name ) {
+			$user->remove_cap( $cap_name );
+			return true;
 		}
 		
 		return false;
@@ -120,7 +143,7 @@ class GP_Caps {
 			$users = $this->get_user_list( 'approve', 'translation-set', $set->id );
 
 			foreach( $users as $user ) {
-				$permissions[] = (object) array( 'user_id' => $user->ID, 'user' => $user->data, 'action' => 'approve', 'locale_slug' => $set->locale, 'set_slug' => $set->slug, 'ID' => $project_id . '_' . $cap_name );
+				$permissions[] = (object) array( 'user_id' => $user->ID, 'user' => $user->data, 'action' => 'approve', 'locale_slug' => $set->locale, 'set_slug' => $set->slug, 'id' => $user->ID . '_' . $cap_name );
 			}
 		}
 

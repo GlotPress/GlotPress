@@ -324,9 +324,13 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$permission = GP::$permission->get( $permission_id );
-		if ( $permission ) {
-			if ( $permission->delete() ) {
+		list( $user_id, $cap_name ) = explode( '_', $permission_id, 2 );
+		$user_id = (int) $user_id;
+		
+		//$permission = GP::$permission->get( $permission_id );
+		//if ( $permission ) {
+		if ( $user_id > 0 && '' != $cap_name ) {
+			if ( GP::$caps->delete_cap_user_by_name( $user_id, $cap_name ) ) {
 				$this->notices[] = __( 'Permission was deleted.', 'glotpress' );
 			} else {
 				$this->errors[] = __( 'Error in deleting permission!', 'glotpress' );
