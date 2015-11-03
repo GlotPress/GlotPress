@@ -39,7 +39,7 @@ function gp_rewrite_rules() {
 		add_rewrite_rule( '$', 'index.php?gp_route', 'top' );
 	}
 
-	$match_regex = gp_generate_rewrite_rules();
+	$match_regex = gp_generate_rewrite_rules( $gp_base );
 
 	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
 
