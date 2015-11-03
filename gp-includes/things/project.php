@@ -14,7 +14,7 @@ class GP_Project extends GP_Thing {
 	// Additional queries
 
 	function by_path( $path ) {
-		return $this->one( "SELECT * FROM $this->table WHERE path = '%s'", trim( $path, '/' ) );
+		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
 	}
 
 	function sub_projects() {
