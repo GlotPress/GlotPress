@@ -51,7 +51,7 @@ function gp_rewrite_rules() {
 	 */
 	if ( $match_regex != get_option( 'gp_rewrite_rule' ) ) {
 		update_option( 'gp_rewrite_rule', $match_regex );
-		flush_rewrite_rules();
+		flush_rewrite_rules( false );
 	}
 }
 
