@@ -5,7 +5,7 @@
 class GP_Caps {
 
 	private $object_types = array( 'a' => 'admin', 'p' => 'project', 't' => 'translation-set', 'g' => 'glossary' );
-	private $actions = array( 'edit', 'view', 'write', 'delete' );
+	private $actions = array( 'edit', 'view', 'write', 'delete', 'approve' );
 	private $prefix = 'gp_perm_';
 
 	function __construct() {
@@ -93,18 +93,38 @@ class GP_Caps {
 		$cap_name = $this->get_cap_name( $action, $object_type, $object );
 		
 		if( false !== $cap_name ) {
-			$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM {$wpdb->usermeta} WHERE meta_key = wp_capabilities AND meta_value LIKE %s', '%' . $cap_name . '%' ) );
+			$sql = $wpdb->prepare( "SELECT * FROM {$wpdb->usermeta} WHERE meta_key = 'wp_capabilities' AND meta_value LIKE %s", '%' . $cap_name . '%' );
+			$results = $wpdb->get_results( $sql );
 			
 			foreach( $results as $usermeta ) {
-				if( is_array( $usermeta->meta_value ) ) {
-					if( in_array( $cap_name, $usermeta->meta_value ) ) {
+				$meta_value = unserialize( $usermeta->meta_value );
+				if( is_array( $meta_value ) ) {
+					if( in_array( $cap_name, $meta_value ) ) {
 						$users[$usermeta->user_id] = $this->get_user( $usermeta->user_id );
 					}					
 				}
 			}
 		}
-		
+
 		return $users;
+	}
+	
+	public function get_validators_by_project( $project_id ) {
+		$permissions = array();
+		
+		$translation_sets = GP::$translation_set->by_project_id( $project_id );
+		
+		foreach( $translation_sets as $set ) {
+			
+			$cap_name = $this->get_cap_name( 'approve', 'translation-set', $set->id );
+			$users = $this->get_user_list( 'approve', 'translation-set', $set->id );
+
+			foreach( $users as $user ) {
+				$permissions[] = (object) array( 'user_id' => $user->ID, 'user' => $user->data, 'action' => 'approve', 'locale_slug' => $set->locale, 'set_slug' => $set->slug, 'ID' => $project_id . '_' . $cap_name );
+			}
+		}
+
+		return $permissions;		
 	}
 	
 	private function get_cap_name( $action, $object_type, $object = null ) {
@@ -152,8 +172,8 @@ class GP_Caps {
 		if( null == $user ) {
 			$user_obj = wp_get_current_user();
 		}
-		
-		if( is_int( $user ) ) {
+
+		if( (int) $user > 0 ) {
 			$user_obj = get_user_by( 'id', $user );
 		}
 		

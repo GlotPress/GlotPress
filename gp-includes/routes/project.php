@@ -244,7 +244,8 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
-		$permissions = GP::$validator_permission->by_project_id( $project->id );
+//		$permissions = GP::$validator_permission->by_project_id( $project->id );
+		$permissions = GP::$caps->get_validators_by_project( $project->id );
 		$cmp_fn = function( $x, $y ){
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
@@ -252,7 +253,8 @@ class GP_Route_Project extends GP_Route_Main {
 		$parent_permissions = array();
 
 		foreach( $path_to_root as $parent_project ) {
-			$this_parent_permissions = GP::$validator_permission->by_project_id( $parent_project->id );
+//			$this_parent_permissions = GP::$validator_permission->by_project_id( $parent_project->id );
+			$this_parent_permissions = GP::$caps->get_validators_by_project( $parent_project->id );
 			usort( $this_parent_permissions, $cmp_fn );
 			foreach( $this_parent_permissions as $permission ) {
 				$permission->project = $parent_project;
@@ -260,9 +262,9 @@ class GP_Route_Project extends GP_Route_Main {
 			$parent_permissions = array_merge( $parent_permissions, (array)$this_parent_permissions );
 		}
 		// we can't join on users table
-		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
-			$permission->user = GP::$user->get( $permission->user_id );
-		}
+//		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
+//			$permission->user = GP::$user->get( $permission->user_id );
+//		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
 	}
 
