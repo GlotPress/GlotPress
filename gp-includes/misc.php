@@ -76,7 +76,7 @@ function gp_array_flatten( $array ) {
  * A key has one message. The default is 'notice'.
  */
 function gp_notice_set( $message, $key = 'notice' ) {
-	backpress_set_cookie( '_gp_notice_'.$key, $message, 0, gp_url_path() );
+	gp_set_cookie( '_gp_notice_'.$key, $message, 0, gp_url_path() );
 }
 
 /**
@@ -94,7 +94,7 @@ function gp_populate_notices() {
 	foreach ($_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
 			GP::$redirect_notices[$suffix] = $value;
-			backpress_set_cookie( $key, '', 0, gp_url_path() );
+			gp_set_cookie( $key, '', 0, gp_url_path() );
 		}
 	}
 }
@@ -180,13 +180,13 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
 
 	// If $timestamp isn't set, try to default to the HTTP_IF_MODIFIED_SINCE header.
 	if ( ! $timestamp && isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) )
-		$timestamp = backpress_gmt_strtotime( $_SERVER['HTTP_IF_MODIFIED_SINCE'] );
+		$timestamp = gp_gmt_strtotime( $_SERVER['HTTP_IF_MODIFIED_SINCE'] );
 
 	// If nothing to compare against, then always assume there's an update available
 	if ( ! $timestamp )
 		return true;
 
-	return backpress_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) > $timestamp;
+	return gp_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) > $timestamp;
 }
 
 
@@ -301,18 +301,18 @@ function gp_is_between_exclusive( $value, $start, $end ) {
 
 
 /**
- * Acts the same as core PHP setcookie() but its arguments are run through the backpress_set_cookie filter.
+ * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
  */
-function backpress_set_cookie() {
+function gp_set_cookie() {
 	$args = func_get_args();
-	$args = apply_filters( 'backpress_set_cookie', $args );
+	$args = apply_filters( 'gp_set_cookie', $args );
 	if ( $args === false ) return;
 	call_user_func_array( 'setcookie', $args );
 }
 
-function backpress_gmt_strtotime( $string ) {
+function gp_gmt_strtotime( $string ) {
 	if ( is_numeric($string) )
 		return $string;
 	if ( !is_string($string) )
