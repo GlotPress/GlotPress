@@ -27,19 +27,19 @@ class GP_Test_User extends GP_UnitTestCase {
 	function test_select_by_login() {
 		$user    = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
 		$from_db = get_user_by( 'login', 'pijo' );
-		$this->assertEquals( $user->id, $from_db->id );
+		$this->assertEquals( $user->ID, $from_db->id );
 	}
 
 	function test_select_by_email() {
 		$user = $this->factory->user->create( array( 'user_login' => 'pijo', 'user_email' => 'pijo@glotpress.org' ) );
 		$from_db = get_user_by( 'email', 'pijo@glotpress.org' );
-		$this->assertEquals( $user->id, $from_db->id );
+		$this->assertEquals( $user->ID, $from_db->id );
 	}
 
 	function test_get() {
 		$user = $this->factory->user->create();
-		$from_db = get_userdate( $user );
-		$this->assertEquals( $user->id, $from_db->id );
+		$from_db = get_user_by( 'id', $user->ID );
+		$this->assertEquals( $user->ID, $from_db->id );
 	}
 
 	function test_set_meta_should_set_meta() {
