@@ -222,7 +222,7 @@ class GP_Thing {
 		$query = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
-		return $this->query( $query, $this->id );
+		return $this->query( $query );
 	}
 
 	// Fields handling
