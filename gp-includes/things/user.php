@@ -55,13 +55,8 @@ class GP_User extends GP_Thing {
 		return $this->coerce( $user );
 	}
 
-	function logged_in() {
-		$coerced = $this->coerce( wp_get_current_user() );
-		return ( $coerced && $coerced->id );
-	}
-
 	function current() {
-		if ( $this->logged_in() )
+		if ( is_user_logged_in() )
 			return $this->coerce( wp_get_current_user() );
 		else
 			return new GP_User( array( 'id' => 0, ) );
@@ -109,7 +104,7 @@ class GP_User extends GP_Thing {
 		$user = null;
 		if ( isset( $this ) && $this->id )
 			$user = $this;
-		elseif ( GP::$user->logged_in() )
+		elseif ( is_user_logged_in() )
 			$user = GP::$user->current();
 		$user_id = $user? $user->id : null;
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
