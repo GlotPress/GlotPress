@@ -258,8 +258,21 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 	return $attrs;
 }
 
-function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
+function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array(), $project_id = null ) {
 	$locales = GP_Locales::locales();
+	if( null != $project_id  ) {
+		$sets = GP::$translation_set->by_project_id( $project_id );
+	
+		$temp_locales = array();
+		
+		foreach( $sets as $set ) {
+			$temp_locales[$set->locale] = $locales[$set->locale];
+		}
+		
+		if( count( $temp_locales ) > 0 ) {
+			$locales = $temp_locales;
+		}
+	}
 	ksort( $locales );
 
 	$options = array( '' => __( '&mdash; Locale &mdash;', 'glotpress' ) );
