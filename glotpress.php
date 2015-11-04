@@ -42,9 +42,8 @@ require_once GP_PATH . 'gp-settings.php';
  * Perform necessary actions on activation
  */
 function gp_activate_plugin() {
-    $admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
-    if ( ! $admins ) {
-        GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
+    if ( ! GP::$caps->can( 'read', 'admin') ) {
+        GP::$caps->add_cap( 'read', 'admin' );
     }
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
