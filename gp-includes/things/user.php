@@ -136,10 +136,6 @@ class GP_User extends GP_Thing {
 		return $defaults;
 	}
 
-	public function get_avatar( $size = 100 ) {
-		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
-	}
-
 	public function get_recent_translation_sets( $amount = 5 ) {
 		global $wpdb;
 

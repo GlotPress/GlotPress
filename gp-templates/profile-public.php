@@ -9,7 +9,7 @@ gp_tmpl_header();
 
 <div>
 	<div class="user-card">
-		<div class="user-avatar"><img src="<?php echo $user->get_avatar(); ?>" /> </div>
+		<div class="user-avatar"><?php echo get_avatar( $user->user_email, 100 ); ?></div>
 
 		<dl class="user-info">
 			<dd><?php
