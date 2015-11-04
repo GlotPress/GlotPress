@@ -43,7 +43,7 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 
 function gp_allow_everyone_to_translate( $verdict, $args ) {
 	if ( 'edit' == $args['action'] && 'translation-set' == $args['object_type'] ) {
-		return GP::$user->logged_in();
+		return is_user_logged_in();
 	}
 
 	return $verdict;
