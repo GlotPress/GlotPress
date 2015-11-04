@@ -182,7 +182,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	function test_propagate_across_projects_with_missing_permissions() {
 		$user = $this->factory->user->create();
 		add_filter( 'gp_set_cookie', '__return_false' );
-		$user->set_as_current();
+		wp_set_current_user( $user->id );
 		remove_filter( 'gp_set_cookie', '__return_false' );
 
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
