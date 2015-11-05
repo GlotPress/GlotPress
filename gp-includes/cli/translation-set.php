@@ -12,18 +12,18 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	protected function get_translation_set( $project, $locale, $set = 'default' ) {
 		$this->project = GP::$project->by_path( $project );
 		if ( ! $this->project ) {
-			return new WP_Error( 'gp_set_no_project', __( 'Project not found!' ) );
+			return new WP_Error( 'gp_set_no_project', __( 'Project not found!', 'glotpress' ) );
 		}
 
 		$this->locale = GP_Locales::by_slug( $locale );
 		if ( ! $this->locale ) {
-			return new WP_Error( 'gp_set_no_locale', __( 'Locale not found!' ) );
+			return new WP_Error( 'gp_set_no_locale', __( 'Locale not found!', 'glotpress' ) );
 		}
 
 		$this->translation_set = GP::$translation_set->by_project_id_slug_and_locale( $this->project->id, $set, $this->locale->slug );
 
 		if ( ! $this->translation_set ) {
-			return new WP_Error( 'gp_set_not_found', __( 'Translation set not found!' ) );
+			return new WP_Error( 'gp_set_not_found', __( 'Translation set not found!', 'glotpress' ) );
 		}
 
 		return $this->translation_set;
@@ -62,7 +62,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		$format = isset( $assoc_args['format'] ) ? $assoc_args['format'] : 'po';
 		$format = gp_array_get( GP::$formats, $format, null );
 		if ( ! $format ) {
-			WP_CLI::error( __( 'No such format.' ) );
+			WP_CLI::error( __( 'No such format.', 'glotpress' ) );
 		}
 
 		$filters = array();
@@ -102,7 +102,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		$po = new PO();
 		$po->import_from_file( $args[2] );
 		$added = $translation_set->import( $po );
-		printf( _n( "%s translation were added\n", "%s translations were added\n", $added ), $added );
+		printf( _n( "%s translation were added\n", "%s translations were added\n", $added, 'glotpress' ), $added );
 	}
 
 	/**
@@ -137,7 +137,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			}
 
 			$translation = new GP_Translation( array( 'id' => $entry->id ) );
-			WP_CLI::line( sprintf( __("Updating warnings for %s"), $entry->id ) );
+			WP_CLI::line( sprintf( __( "Updating warnings for %s", 'glotpress' ), $entry->id ) );
 			$translation->update( array( 'warnings' => $warnings ) );
 		}
 	}

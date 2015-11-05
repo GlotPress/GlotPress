@@ -13,10 +13,10 @@ class GP_CLI_Add_Admin extends WP_CLI_Command {
 		foreach( $args as $user_login ) {
 			$user_to_make_admin = GP::$user->by_login( $user_login );
 			if ( !$user_to_make_admin ) {
-				WP_CLI::error( "User '$user_login' doesn't exist." );
+				WP_CLI::error( sprintf( __( "User '%s' doesn't exist.", 'glotpress' ), $user_login ) );
 			}
 			if ( !GP::$permission->create( array( 'user_id' => $user_to_make_admin->id, 'action' => 'admin' ) ) ) {
-				WP_CLI::line( "Error in making '$user_login' an admin." );
+				WP_CLI::line( sprintf( __( "Error in making '%s' an admin.", 'glotpress' ), $user_login ) );
 			}
 		}
 	}

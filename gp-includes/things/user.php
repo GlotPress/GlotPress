@@ -55,20 +55,11 @@ class GP_User extends GP_Thing {
 		return $this->coerce( $user );
 	}
 
-	function logged_in() {
-		$coerced = $this->coerce( wp_get_current_user() );
-		return ( $coerced && $coerced->id );
-	}
-
 	function current() {
-		if ( $this->logged_in() )
+		if ( is_user_logged_in() )
 			return $this->coerce( wp_get_current_user() );
 		else
 			return new GP_User( array( 'id' => 0, ) );
-	}
-
-	function logout() {
-		wp_logout();
 	}
 
 	/**
@@ -76,26 +67,6 @@ class GP_User extends GP_Thing {
 	 */
 	function admin() {
 		return $this->can( 'admin' );
-	}
-
-	/**
-	 * Set $this as the current user if $password patches this user's password
-	 * and sets the auth cookies.
-	 */
-	function login( $password ) {
-		if ( ! wp_check_password( $password, $this->user_pass, $this->id ) ) {
-			return false;
-		}
-		$this->set_as_current();
-		wp_set_auth_cookie( $this->id );
-		return true;
-	}
-
-	/**
-	 * Makes the user the current user of this session.
-	 */
-	function set_as_current() {
-		wp_set_current_user( $this->id );
 	}
 
 	/**
@@ -109,13 +80,13 @@ class GP_User extends GP_Thing {
 		$user = null;
 		if ( isset( $this ) && $this->id )
 			$user = $this;
-		elseif ( GP::$user->logged_in() )
+		elseif ( is_user_logged_in() )
 			$user = GP::$user->current();
 		$user_id = $user? $user->id : null;
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
 		$filter_args['extra'] = $extra;
-		$preliminary = apply_filters( 'pre_can_user', 'no-verdict', $filter_args );
+		$preliminary = apply_filters( 'gp_pre_can_user', 'no-verdict', $filter_args );
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
 		}
@@ -123,7 +94,7 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
-		return apply_filters( 'can_user', $verdict, $filter_args );
+		return apply_filters( 'gp_can_user', $verdict, $filter_args );
 	}
 
 	function get_meta( $key ) {
@@ -145,16 +116,25 @@ class GP_User extends GP_Thing {
 		return gp_delete_meta( $this->id, $key, '', 'user' );
 	}
 
-	public function get_avatar( $size = 100 ) {
-		return '//www.gravatar.com/avatar/' . md5( strtolower( $this->user_email ) ) . '?s=' . $size;
+	public function sort_defaults() {
+		$defaults = $this->get_meta('default_sort');
+
+		if ( ! is_array( $defaults ) ) {
+			$defaults = array(
+				'by' => 'priority',
+				'how' => 'desc'
+			);
+		}
+
+		return $defaults;
 	}
 
 	public function get_recent_translation_sets( $amount = 5 ) {
-		global $gpdb;
+		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map("
 			SELECT translation_set_id, date_added
-			FROM $gpdb->translations as t
+			FROM $wpdb->gp_translations as t
 			WHERE
 				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
 				user_id = %s AND
@@ -184,7 +164,7 @@ class GP_User extends GP_Thing {
 
 				$translation_set->set_id       = $set->id;
 				$translation_set->last_updated = $translation->date_added;
-				$translation_set->count        = $gpdb->get_var( $gpdb->prepare( "SELECT COUNT(*) FROM $gpdb->translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
+				$translation_set->count        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->gp_translations WHERE user_id = %s AND status != 'rejected' AND translation_set_id = %s", $this->id, $translation->translation_set_id ) );
 
 				$translation_sets[] = $translation_set;
 
@@ -201,12 +181,12 @@ class GP_User extends GP_Thing {
 	}
 
 	public function locales_known() {
-		global $gpdb;
+		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map("
 			SELECT ts.locale, count(*) AS count
-			FROM $gpdb->translations as t
-			INNER JOIN $gpdb->translation_sets AS ts ON ts.id = t.translation_set_id
+			FROM $wpdb->gp_translations as t
+			INNER JOIN $wpdb->gp_translation_sets AS ts ON ts.id = t.translation_set_id
 			WHERE user_id = %s
 			GROUP BY ts.locale
 			ORDER BY count DESC

@@ -1,28 +1,29 @@
 <?php
-gp_title( __('Locales &lt; GlotPress') );
-gp_enqueue_script('gp-common');
-gp_enqueue_script('tablesorter');
-$parity = gp_parity_factory();
+gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
+
+gp_enqueue_script( 'gp-common' );
+gp_enqueue_script( 'tablesorter' );
+gp_breadcrumb( array( __( 'Locales', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
 
-	<h2><?php _e('Locales and Languages'); ?></h2>
+	<h2><?php _e( 'Locales and Languages', 'glotpress' ); ?></h2>
 	<div class="locales-filter">
-		<?php _e( 'Filter:' );?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e('search'); ?>" />
+		<?php _e( 'Filter:', 'glotpress' );?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e('search'); ?>" />
 	</div>
 
 	<table class="tablesorter locales">
 		<thead>
 		<tr>
-			<th class="header"><?php _e( 'Name (in English)' );?></th>
-			<th class="header"><?php _e( 'Native name' );?></th>
-			<th class="header"><?php _e( 'Language code' );?></th>
+			<th class="header"><?php _e( 'Name (in English)', 'glotpress' );?></th>
+			<th class="header"><?php _e( 'Native name', 'glotpress' );?></th>
+			<th class="header"><?php _e( 'Language code', 'glotpress' );?></th>
 
 		</tr>
 		</thead>
 		<tbody>
 		<?php foreach ( $locales as $locale ) : ?>
-			<tr class="<?php echo $parity(); ?>">
+			<tr>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . "</td>" ?>

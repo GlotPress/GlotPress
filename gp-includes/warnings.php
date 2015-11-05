@@ -69,7 +69,7 @@ class GP_Builtin_Translation_Warnings {
 		$len_trans = gp_strlen( $translation );
 		if ( !( $this->length_lower_bound*$len_src < $len_trans && $len_trans < $this->length_upper_bound*$len_src ) &&
 				( !gp_in( '_abbreviation', $original ) && !gp_in( '_initial', $original ) ) ) {
-			return __('Lengths of source and translation differ too much.');
+			return __( 'Lengths of source and translation differ too much.', 'glotpress' );
 		}
 		return true;
 	}
@@ -80,10 +80,10 @@ class GP_Builtin_Translation_Warnings {
 		$original_parts = preg_split($tag_re, $original, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$translation_parts = preg_split($tag_re, $translation, -1, PREG_SPLIT_DELIM_CAPTURE);
 		if ( count( $original_parts) > count( $translation_parts ) ) {
-			return __('Missing tags from translation.');
+			return __( 'Missing tags from translation.', 'glotpress' );
 		}
 		if ( count( $original_parts) < count( $translation_parts ) ) {
-			return __('Too many tags in translation.');
+			return __( 'Too many tags in translation.', 'glotpress' );
 		}
 		foreach( gp_array_zip( $original_parts, $translation_parts ) as $tags ) {
 			list( $original_tag, $translation_tag ) = $tags;
@@ -106,7 +106,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	function warning_placeholders( $original, $translation, $locale ) {
-		$placeholders_re = apply_filters( 'warning_placeholders_re', '%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX]' );
 
 		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -115,10 +115,10 @@ class GP_Builtin_Translation_Warnings {
 			$original_count = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
 			if ( $original_count > $translation_count ) {
-				return sprintf(__('Missing %s placeholder in translation.'), $placeholder);
+				return sprintf( __( 'Missing %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 			if ( $original_count < $translation_count ) {
-				return sprintf(__('Extra %s placeholder in translation.'), $placeholder);
+				return sprintf( __( 'Extra %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 		}
 		return true;
@@ -133,12 +133,30 @@ class GP_Builtin_Translation_Warnings {
 		return $counts;
 	}
 
-	function warning_both_begin_end_on_newlines( $original, $translation, $locale ) {
-		if ( gp_endswith( $original, "\n" ) xor gp_endswith( $translation, "\n" ) ) {
-			return __('Original and translation should both end on newline.');
+	function warning_should_begin_on_newline( $original, $translation, $locale ) {
+		if ( gp_startswith( $original, "\n" ) && ! gp_startswith( $translation, "\n" ) ) {
+			return __( 'Original and translation should both begin on newline.', 'glotpress' );
 		}
-		if ( gp_startswith( $original, "\n" ) xor gp_startswith( $translation, "\n" ) ) {
-			return __('Original and translation should both begin on newline.');
+		return true;
+	}
+
+	function warning_should_not_begin_on_newline( $original, $translation, $locale ) {
+		if ( ! gp_startswith( $original, "\n" ) && gp_startswith( $translation, "\n" ) ) {
+			return __( 'Translation should not begin on newline.', 'glotpress' );
+		}
+		return true;
+	}
+
+	function warning_should_end_on_newline( $original, $translation, $locale ) {
+		if ( gp_endswith( $original, "\n" ) && ! gp_endswith( $translation, "\n" ) ) {
+			return __( 'Original and translation should both end on newline.', 'glotpress' );
+		}
+		return true;
+	}
+
+	function warning_should_not_end_on_newline( $original, $translation, $locale ) {
+		if ( ! gp_endswith( $original, "\n" ) && gp_endswith( $translation, "\n" ) ) {
+			return __( 'Translation should not end on newline.', 'glotpress' );
 		}
 		return true;
 	}
@@ -147,9 +165,13 @@ class GP_Builtin_Translation_Warnings {
 	 * Adds all methods starting with warning_ to $translation_warnings
 	 */
 	function add_all( &$translation_warnings ) {
-		$warnigs = array_filter( get_class_methods( get_class( $this ) ), create_function( '$f', 'return gp_startswith($f, "warning_");' ) );
-		foreach( $warnigs as $warning ) {
-			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( &$this, $warning ) );
+		$warnings = array_filter( get_class_methods( get_class( $this ) ), function( $key ) {
+			return gp_startswith( $key, 'warning_' );
+		} );
+
+		foreach( $warnings as $warning ) {
+			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );
 		}
 	}
+
 }

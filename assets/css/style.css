@@ -8,27 +8,13 @@ body, html,
 	font-size: 14px;
 }
 body, html {
-	margin: 0 0.5em;
+	margin: 0;
 }
 .gp-content input,
 .gp-content textarea {
 	font-size: 1em;
 }
-h1 {
-	font-size: 1.25em;
-	font-weight: normal;
-}
-h1 a.logo {
-	float: left;
-}
-h1 img {
-	margin-right: 1em;
-	vertical-align: middle;
-}
-h1 span.breadcrumb {
-	float: left;
-	margin-top: 19px;
-}
+
 /* we take the liberty to make visited the same as link */
 a, a:link, a:visited {
 	color: #2F34B8;
@@ -74,6 +60,106 @@ select {
 	padding: 2px;
 	height: 2em;
 }
+
+
+
+/* GP BAR */
+.gp-bar {
+	background: #464646;
+	padding: 0 1em;
+}
+
+.gp-bar a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.gp-bar h1 {
+	float: left;
+	font-size: 1.2857em;
+	line-height: 1.4em;
+	margin-right: 10px;
+}
+
+.gp-bar nav a {
+	display: inline-block;
+	padding: 1em;
+}
+
+.gp-bar nav a:hover {
+	background: rgba(0,0,0,0.5);
+}
+
+.gp-bar #main-navigation {
+	float: left;
+}
+
+.gp-bar #side-navigation {
+	float: right;
+}
+
+
+
+/* BREADCRUMBS */
+.breadcrumb {
+	background-color: #eee;
+	border: 1px solid #ddd;
+	margin: 20px 0;
+	padding: 7px 14px;
+}
+
+.breadcrumb li {
+	display: inline-block;
+	text-shadow: 0 1px 0 #ffffff;
+}
+
+.breadcrumb li:after {
+	color: #999;
+	content: '/';
+	padding: 0 7px;
+}
+
+.breadcrumb li:last-child:after {
+	content: '';
+	color: red;
+}
+
+.breadcrumb a {
+	color: #08c;
+	text-decoration: none;
+}
+
+.breadcrumb a:hover {
+	color: #005580;
+	text-decoration: underline;
+}
+
+.breadcrumb span.active {
+	-webkit-border-radius: 0.4em;
+	-moz-border-radius: 0.4em;
+	margin-left: .3em;
+}
+
+
+/* GP CONTENT */
+.gp-content {
+	margin: 0 1em;
+}
+
+
+
+/* FOOTER */
+#gp-footer {
+	text-align: center;
+	font-size: 85%;
+	background-color: #ddd;
+	margin: 1em;
+	padding: 0.5em;
+}
+
+
+/* REST */
+
 .gp-content input.button {
 	text-decoration: none;
 	font-size: 12px;
@@ -96,18 +182,7 @@ select {
 	background-image: linear-gradient(bottom, #ededed, #fff); /* proposed W3C Markup */
 	text-shadow: #fff 0 1px 0;
 }
-.breadcrumb a {
-	color: #3A7399;
-	text-decoration: none;
-}
-#hello {
-	color: #333;
-	font-weight: normal;
-	float: right;
-	font-size: 0.75em;
-	letter-spacing: 0;
-	margin-right: 1em;
-}
+
 textarea {
 	font-size: 100%;
 	padding: 0.5em;
@@ -192,7 +267,7 @@ table.translations td.original, table.translations td.translation {
 	word-wrap: break-word;
 }
 
-table.translations tr.even {
+table.translations tr:nth-child(4n+3) {  
 	background-color: #fcfcfc;
 }
 table.translations tr.editor {
@@ -223,12 +298,7 @@ table.translations a.action {
 	font-style: normal;
 }
 
-#gp-footer {
-	text-align: center;
-	font-size: 85%;
-	background-color: #ddd;
-	padding: 0.5em;
-}
+
 .separator {
 	font-size: 80%;
 	margin: 0.25em;
@@ -335,14 +405,6 @@ span.active {
 	background-color: yellow;
 	color: #555;
 	font-weight: bold;
-}
-h1 span.active {
-	font-size: 75%;
-	float: left;
-	-webkit-border-radius: 0.4em;
-	-moz-border-radius: 0.4em;
-	margin-top: 17px;
-	margin-left: .5em;
 }
 ul a.edit, dt a.edit {
 	background-color: #777;
@@ -607,13 +669,13 @@ a.project-actions {
 .translation-sets tr, .locales tr {
 	background-color: #eee;
 }
-.translation-sets tr.odd, .locales tr.odd {
+.translation-sets tr:nth-child(odd), .locales tr:nth-child(odd) {
 	background-color: #fff;
 }
 .translation-sets tr:hover, .locales tr:hover {
 	background-color: #dee;
 }
-.translation-sets tr.odd:hover, .locales tr.odd:hover {
+.translation-sets tr:nth-child(odd):hover, .locales tr:nth-child(odd):hover {
 	background-color: #eff;
 }
 #submit {

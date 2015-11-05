@@ -24,7 +24,7 @@ class GP_CLI_WPorg2Slug extends WP_CLI_Command {
 		}
 
 		if ( ! $slug ) {
-			WP_CLI::error("No slug match for $wporg_slug.");
+			WP_CLI::error( sprintf( __( 'No slug match for %s.', 'glotpress' ), $wporg_slug ) );
 		}
 
 		echo $slug;

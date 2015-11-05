@@ -17,12 +17,12 @@ class GP_CLI_Branch_Project extends WP_CLI_Command {
 	public function __invoke( $args ) {
 		$source_project = GP::$project->by_path( $args[0] );
 		if ( ! $source_project ){
-			WP_CLI::error( __('Source project not found!') );
+			WP_CLI::error( __( 'Source project not found!', 'glotpress' ) );
 		}
 
 		$destination_project = GP::$project->by_path( $args[1] );
 		if ( ! $destination_project ){
-			WP_CLI::error( __('Destination project not found!') );
+			WP_CLI::error( __( 'Destination project not found!', 'glotpress' ) );
 		}
 
 		$destination_project->duplicate_project_contents_from( $source_project );

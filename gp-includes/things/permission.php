@@ -1,7 +1,7 @@
 <?php
 class GP_Permission extends GP_Thing {
 
-	var $table_basename = 'permissions';
+	var $table_basename = 'gp_permissions';
 	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id', );
 	var $int_fields = array( 'id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );

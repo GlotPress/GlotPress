@@ -9,7 +9,12 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 			$prev_original_id = null;
 			foreach( $translations as $translation ) {
 				if ( $translation->original_id == $prev_original_id ) {
-					echo "Duplicate with original_id#$prev_original_id. Translation#$translation->id\n";
+					WP_CLI::line( sprintf(
+						/* translators: 1: original ID, 2: new ID */
+						__( "Duplicate with original_id#%s. Translation#%s\n", 'glotpress' )
+						$prev_original_id,
+						$translation->id
+					) );
 					$translation->delete();
 				}
 				$prev_original_id = $translation->original_id;

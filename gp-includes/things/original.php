@@ -1,7 +1,7 @@
 <?php
 class GP_Original extends GP_Thing {
 
-	var $table_basename = 'originals';
+	var $table_basename = 'gp_originals';
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $int_fields = array( 'id', 'project_id', 'priority' );
 	var $non_updatable_attributes = array( 'id', 'path' );
@@ -50,7 +50,7 @@ class GP_Original extends GP_Thing {
 
 
 	function by_project_id_and_entry( $project_id, $entry, $status = null ) {
-		global $gpdb;
+		global $wpdb;
 
 		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null;
 		$entry->context = isset( $entry->context ) ? $entry->context : null;
@@ -63,7 +63,7 @@ class GP_Original extends GP_Thing {
 		$where[] = 'project_id = %d';
 
 		if ( ! is_null( $status ) ) {
-			$where[] = $gpdb->prepare( 'status = %s', $status );
+			$where[] = $wpdb->prepare( 'status = %s', $status );
 		}
 
 		$where = implode( ' AND ', $where );
@@ -72,8 +72,7 @@ class GP_Original extends GP_Thing {
 	}
 
 	function import_for_project( $project, $translations ) {
-		global $gpdb;
-		wp_cache_delete( $project->id, self::$count_cache_group );
+		global $wpdb;
 
 		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
 
@@ -95,7 +94,7 @@ class GP_Original extends GP_Thing {
 		$possibly_added = $possibly_dropped = array();
 
 		foreach( $translations->entries as $entry ) {
-			$gpdb->queries = array();
+			$wpdb->queries = array();
 			$data = array(
 				'project_id' => $project->id,
 				'context'    => $entry->context,
@@ -105,7 +104,7 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active'
 			);
-			$data = apply_filters( 'import_original_array', $data );
+			$data = apply_filters( 'gp_import_original_array', $data );
 
 			// Original exists, let's update it.
 			if ( isset( $originals_by_key[ $entry->key() ] ) ) {
@@ -139,7 +138,7 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active'
 			);
-			$data = apply_filters( 'import_original_array', $data );
+			$data = apply_filters( 'gp_import_original_array', $data );
 
 			// Search for match in the dropped strings and existing obsolete strings.
 			$close_original = $this->closest_original( $entry->key(), $comparison_array );
@@ -161,7 +160,11 @@ class GP_Original extends GP_Thing {
 				continue;
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
-				$created->add_translations_from_other_projects();
+
+				if ( apply_filters( 'gp_enable_add_translations_from_other_projects', true ) ) {
+					$created->add_translations_from_other_projects();
+				}
+
 				$originals_added++;
 			}
 		}
@@ -173,11 +176,11 @@ class GP_Original extends GP_Thing {
 		}
 
 		// Clear cache when the amount of strings are changed.
-		if ( $originals_added > 0 || $originals_fuzzied	> 0 || $originals_obsoleted > 0 ) {
-			gp_clean_translation_sets_cache( $project->id );
+		if ( $originals_added > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
+			wp_cache_delete( $project->id, self::$count_cache_group );
 		}
 
-		do_action( 'originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
+		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
 
 		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted );
 	}
@@ -238,7 +241,7 @@ class GP_Original extends GP_Thing {
 		$min_score = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
 		$close_enough = ( $closest_similarity > $min_score );
 
-		do_action( 'post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
+		do_action( 'gp_post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
 
 		if ( $close_enough ) {
 			return $closest;
@@ -249,9 +252,9 @@ class GP_Original extends GP_Thing {
 
 	function get_matching_originals_in_other_projects() {
 		$where = array();
-		$where[] = 'singular = %s';
-		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
-		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = %s';
+		$where[] = 'singular = BINARY %s';
+		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
+		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
 		$where[] = 'project_id != %d';
 		$where[] = "status = '+active'";
 		$where = implode( ' AND ', $where );
@@ -260,59 +263,58 @@ class GP_Original extends GP_Thing {
 	}
 
 	function add_translations_from_other_projects() {
-		global $gpdb;
+		global $wpdb;
 
-		$other_projects_originals = $this->get_matching_originals_in_other_projects();
-		if ( ! $other_projects_originals ) {
+		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->gp_translation_sets WHERE project_id = %d", $this->project_id );
+		if ( empty( $project_translations_sets ) ) {
 			return;
 		}
 
 		$matched_sets = array();
 
-		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $gpdb->translation_sets WHERE project_id = %d", $this->project_id );
+		$sql_project  = $wpdb->prepare( 'o.project_id != %d', $this->project_id );
+		$sql_singular = $wpdb->prepare( 'o.singular = BINARY %s', $this->singular );
+		$sql_plural = is_null( $this->plural ) ? 'o.plural IS NULL' : $wpdb->prepare( 'o.plural = BINARY %s', $this->plural );
+		$sql_context = is_null( $this->context ) ? 'o.context IS NULL' : $wpdb->prepare( 'o.context = BINARY %s', $this->context );
 
-		if ( empty( $project_translations_sets ) ) {
-			return;
-		}
+		$sql = "SELECT t.*, s.locale, s.slug
+			FROM {$this->table} o
+				JOIN {$wpdb->gp_translations} t ON o.id = t.original_id
+				JOIN {$wpdb->gp_translation_sets} s ON t.translation_set_id = s.id
+			WHERE
+				$sql_context AND $sql_singular AND $sql_plural
+				AND o.status = '+active' AND $sql_project
+				AND t.status = 'current'
+			GROUP BY t.translation_0, t.translation_1, t.translation_2, t.translation_3, t.translation_4, t.translation_5, s.locale, s.slug
+			ORDER BY t.date_modified DESC, t.id DESC";
 
-		foreach ( $other_projects_originals as $o ) {
-			$current_translations = GP::$translation->many( "SELECT * FROM $gpdb->translations WHERE original_id = %d AND status = %s ORDER by date_modified DESC",  $o->id, 'current' );
-			if ( ! $current_translations ) {
+		$other_project_translations = GP::$translation->many( $sql );
+
+		foreach ( $other_project_translations as $t ) {
+			$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t ) {
+				return $set->locale == $t->locale && $set->slug == $t->slug;
+			} );
+
+			if ( empty( $o_translation_set ) ) {
 				continue;
 			}
 
-			foreach ( $current_translations as $t ) {
-				if ( ! $t->translation_set_id ) {
-					continue;
-				}
-
-				$t_translation_set = GP::$translation_set->get( $t->translation_set_id );
-
-				if ( ! $t_translation_set ) {
-					continue;
-				}
-
-				$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t_translation_set ) {
-					return $set->locale == $t_translation_set->locale && $set->slug == $t_translation_set->slug;
-				} );
-
-				if ( empty( $o_translation_set ) ) {
-					continue;
-				}
-
-				$o_translation_set = reset( $o_translation_set );
-
-				if ( in_array( $o_translation_set->id, $matched_sets ) ) {
-					// We already have a translation for this set.
-					continue;
-				}
-
-				$matched_sets[] = $o_translation_set->id;
-
-				$copy_status = apply_filters( 'translations_from_other_projects_status', 'current' );
-				$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
+			$o_translation_set = reset( $o_translation_set );
+			if ( in_array( $o_translation_set->id, $matched_sets ) ) {
+				// We already have a translation for this set.
+				continue;
 			}
+
+			$matched_sets[] = $o_translation_set->id;
+
+			$copy_status = apply_filters( 'gp_translations_from_other_projects_status', 'current' );
+			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
 		}
+	}
+
+	function after_create() {
+		do_action( 'gp_original_created', $this );
+		return true;
 	}
 }
 GP::$original = new GP_Original();

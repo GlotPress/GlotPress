@@ -1,9 +1,10 @@
 <?php
-gp_title( __('Projects &lt; GlotPress') );
+gp_title( __( 'Projects &lt; GlotPress', 'glotpress' ) );
+gp_breadcrumb( array( __( 'Projects', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
 
-	<h2><?php _e('Projects'); ?></h2>
+	<h2><?php _e( 'Projects', 'glotpress' ); ?></h2>
 
 	<ul>
 		<?php foreach ( $projects as $project ): ?>
@@ -13,10 +14,10 @@ gp_tmpl_header();
 
 	<p class="actionlist secondary">
 		<?php if ( current_user_can( 'manage_options' ) ): ?>
-			<?php gp_link( gp_url_project( '-new' ), __('Create a New Project') ); ?>  &bull;&nbsp;
+			<?php gp_link( gp_url_project( '-new' ), __( 'Create a New Project', 'glotpress' ) ); ?>  &bull;&nbsp;
 		<?php endif; ?>
 
-		<?php gp_link( gp_url( '/languages' ), __('Projects by language') ); ?>
+		<?php gp_link( gp_url( '/languages' ), __( 'Projects by language', 'glotpress' ) ); ?>
 	</p>
 
 <?php gp_tmpl_footer();

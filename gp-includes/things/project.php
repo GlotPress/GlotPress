@@ -1,7 +1,7 @@
 <?php
 class GP_Project extends GP_Thing {
 
-	var $table_basename = 'projects';
+	var $table_basename = 'gp_projects';
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
 	var $int_fields = array( 'id', 'parent_project_id', 'active' );
 	var $non_updatable_attributes = array( 'id' );
@@ -14,19 +14,19 @@ class GP_Project extends GP_Thing {
 	// Additional queries
 
 	function by_path( $path ) {
-		return $this->one( "SELECT * FROM $this->table WHERE path = '%s'", trim( $path, '/' ) );
+		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
 	}
 
 	function sub_projects() {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
-		$sub_projects = apply_filters( 'projects', $sub_projects, $this->id );
+		$sub_projects = apply_filters( 'gp_projects', $sub_projects, $this->id );
 
 		return $sub_projects;
 	}
 
 	function top_level() {
 		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
-		$projects = apply_filters( 'projects', $projects, 0 );
+		$projects = apply_filters( 'gp_projects', $projects, 0 );
 
 		return $projects;
 	}
@@ -34,12 +34,14 @@ class GP_Project extends GP_Thing {
 	// Triggers
 
 	function after_save() {
+		do_action( 'gp_project_saved', $this );
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
 		return !is_null( $this->update_path() );
 	}
 
 	function after_create() {
+		do_action( 'gp_project_created', $this );
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
 	}
@@ -58,7 +60,7 @@ class GP_Project extends GP_Thing {
 			unset( $args['path'] );
 		}
 		if ( isset( $args['active'] ) ) {
-			if ( 'on' == $args['active'] ) $args['active'] = 1;
+			if ( 'on' === $args['active'] ) $args['active'] = 1;
 			if ( !$args['active'] ) $args['active'] = 0;
 		}
 		return $args;
@@ -70,12 +72,12 @@ class GP_Project extends GP_Thing {
 	 * Updates this project's and its chidlren's paths, according to its current slug.
 	 */
 	function update_path() {
-		global $gpdb;
+		global $wpdb;
 		$old_path = isset( $this->path )? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project )
 			$path = gp_url_join( $parent_project->path, $this->slug );
-		elseif ( !$gpdb->last_error )
+		elseif ( !$wpdb->last_error )
 			$path = $this->slug;
 		else
 			return null;
@@ -85,7 +87,7 @@ class GP_Project extends GP_Thing {
 		// update children's paths, too
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen($old_path) + 1, $gpdb->esc_like( $old_path).'%' );
+			return $this->query( $query, $path, strlen($old_path) + 1, $wpdb->esc_like( $old_path).'%' );
 		} else {
 			return $res_self;
 		}
@@ -190,7 +192,7 @@ class GP_Project extends GP_Thing {
 		foreach( $sets as $to_add ) {
 			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
 			if ( ! $new_set  ) {
-				$this->errors[] = __( 'Couldn&#8217;t add translation set named %s', esc_html( $to_add->name ) );
+				$this->errors[] = sprintf( __( 'Couldn&#8217;t add translation set named %s', 'glotpress' ), esc_html( $to_add->name ) );
 			} else {
 				//Duplicate translations
 				$new_set->copy_translations_from( $to_add->id );
@@ -199,14 +201,14 @@ class GP_Project extends GP_Thing {
 	}
 
 	function copy_originals_from( $source_project_id ) {
-		global $gpdb;
+		global $wpdb;
 		return $this->query("
-			INSERT INTO $gpdb->originals (
+			INSERT INTO $wpdb->gp_originals (
 				`project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
 			)
 			SELECT
 				%s AS `project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
-			FROM $gpdb->originals WHERE project_id = %s", $this->id, $source_project_id
+			FROM $wpdb->gp_originals WHERE project_id = %s", $this->id, $source_project_id
 		);
 	}
 
