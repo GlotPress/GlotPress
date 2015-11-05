@@ -40,6 +40,8 @@ require_once GP_PATH . 'gp-settings.php';
 
 /**
  * Perform necessary actions on activation
+ *
+ * @since 1.0.0
  */
 function gp_activate_plugin() {
     $admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
@@ -48,6 +50,35 @@ function gp_activate_plugin() {
     }
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
+
+/**
+ * Run the plugin de-activation code.
+ *
+ * @since 1.0.0
+ *
+ * @param bool $network_wide Whether the plugin is deactivated for all sites in the network
+ *                           or just the current site.
+ */
+function gp_deactivate_plugin( $network_wide ) {
+
+	/*
+	 * Flush the rewrite rule option so it will be re-generated next time the plugin is activated.
+	 * If network deactivating, ensure we flush the option on every site.
+	 */
+	if ( $network_wide ) {
+		$sites = wp_get_sites();
+
+		foreach ( $sites as $site ) {
+			switch_to_blog( $site['blog_id'] );
+			update_option( 'gp_rewrite_rule', '' );
+			restore_current_blog();
+		}
+	} else {
+		update_option( 'gp_rewrite_rule', '' );
+	}
+
+}
+register_deactivation_hook( GP_PLUGIN_FILE, 'gp_deactivate_plugin' );
 
 // Load the plugin's translated strings
 load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );

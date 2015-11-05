@@ -69,7 +69,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 		$items[ gp_url( '/languages' ) ] = __( 'Locales', 'glotpress' );
 	}
 	elseif ( 'side' === $location ) {
-		if ( GP::$user->logged_in() ) {
+		if ( is_user_logged_in() ) {
 			$user = GP::$user->current();
 
 			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );

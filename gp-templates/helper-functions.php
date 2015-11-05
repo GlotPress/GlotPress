@@ -82,7 +82,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			if ( $can_edit ) {
 				gp_entry_actions();
 			}
-			elseif ( GP::$user->logged_in() ) {
+			elseif ( is_user_logged_in() ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
 			}
 			else {

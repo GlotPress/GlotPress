@@ -271,7 +271,7 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				if ( $user->logged_in() && ! $user->can( 'approve', 'translation-set', $o_translation_set->id ) ) {
+				if ( is_user_logged_in() && ! $user->can( 'approve', 'translation-set', $o_translation_set->id ) ) {
 					$copy_status = 'waiting';
 				} else {
 					$copy_status = 'current';
