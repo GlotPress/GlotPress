@@ -254,8 +254,32 @@ function gp_attrs_add_class( $attrs, $class_name ) {
 	return $attrs;
 }
 
-function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
+/**
+ * Returns HTML markup for a select element for all locales of a project.
+ *
+ * @since 1.0.0
+ *
+ * @param int    $project_id    ID of a project.
+ * @param string $name_and_id   Name and ID of the select element.
+ * @param string $selected_slug Slug of the current selected locale.
+ * @param array  $attrs         Extra attributes.
+ * @return string HTML markup for a select element.
+ */
+function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_slug = null, $attrs = array() ) {
 	$locales = GP_Locales::locales();
+	if ( null != $project_id  ) {
+		$sets = GP::$translation_set->by_project_id( $project_id );
+
+		$temp_locales = array();
+
+		foreach( $sets as $set ) {
+			$temp_locales[ $set->locale ] = $locales[ $set->locale ];
+		}
+
+		if ( count( $temp_locales ) > 0 ) {
+			$locales = $temp_locales;
+		}
+	}
 	ksort( $locales );
 
 	$options = array( '' => __( '&mdash; Locale &mdash;', 'glotpress' ) );
@@ -264,6 +288,20 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
 	}
 
 	return gp_select( $name_and_id, $options, $selected_slug, $attrs );
+}
+
+/**
+ * Returns HTML markup for a select element for all locales.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name_and_id   Name and ID of the select element.
+ * @param string $selected_slug Slug of the current selected locale.
+ * @param array  $attrs         Extra attributes.
+ * @return string HTML markup for a select element.
+ */
+function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
+	return gp_locales_by_project_dropdown( null, $name_and_id, $selected_slug, $attrs );
 }
 
 function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
