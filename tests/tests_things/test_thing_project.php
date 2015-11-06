@@ -163,7 +163,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertNotEquals( $original_translation->original_id, $copy_translation->original_id );
 
 		$this->assertEqualFields( $copy_translation,
-			array( 'translation_0' => $original_translation->translation_0, 'date_added' => $original_translation->date_added  )
+			array( 'translation_0' => $original_translation->translation_0 )
 		);
 
 	}
