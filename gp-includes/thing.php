@@ -11,6 +11,10 @@ class GP_Thing {
 	var $map_results = true;
 	var $static = array();
 
+	private $_cache_one = array();
+	private $_cache_many = array();
+	private $_cache_value = array();
+	
 	static $static_by_class = array();
 	static $validation_rules_by_class = array();
 
@@ -39,6 +43,16 @@ class GP_Thing {
 		}
 	}
 
+	function flush_cache() {
+		unset( $this->_cache_one );
+		unset( $this->_cache_many );
+		unset( $this->_cache_value );
+		
+		$this->_cache_one = array();
+		$this->_cache_many = array();
+		$this->_cache_value = array();
+	}
+	
 	function get_static( $name, $default = null ) {
 		return isset( self::$static_by_class[$this->class][$name] )? self::$static_by_class[$this->class][$name] : $default;
 	}
@@ -76,6 +90,7 @@ class GP_Thing {
 	 * Reloads the object data from the database, based on its id
 	 */
 	function reload() {
+		$this->flush_cache();
 		$this->set_fields( $this->get( $this->id ) );
 		return $this;
 	}
@@ -89,7 +104,17 @@ class GP_Thing {
 	function one() {
 		global $wpdb;
 		$args = func_get_args();
-		return $this->coerce( $wpdb->get_row( $this->prepare( $args ) ) );
+		
+		$sql = $this->prepare( $args );
+		
+		if( array_key_exists( $sql, $this->_cache_one ) ) {
+			$result = $this->_cache_one[$sql];
+		} else {
+			$result = $this->coerce( $wpdb->get_row( $sql ) );
+			$this->_cache_one[$sql] = $result;
+		}
+		
+		return $result;
 	}
 
 	/**
@@ -101,7 +126,16 @@ class GP_Thing {
 	function value() {
 		global $wpdb;
 		$args = func_get_args();
-		$res = $wpdb->get_var( $this->prepare( $args ) );
+
+		$sql = $this->prepare( $args );
+
+		if( array_key_exists( $sql, $this->_cache_value ) ) {
+			$res = $this->_cache_value[$sql];
+		} else {
+			$res = $wpdb->get_var( $sql );
+			$this->_cache_value[$sql] = $res;
+		}
+		
 		return is_null( $res )? false : $res;
 	}
 
@@ -124,7 +158,17 @@ class GP_Thing {
 	function many() {
 		global $wpdb;
 		$args = func_get_args();
-		return $this->map( $wpdb->get_results( $this->prepare( $args ) ) );
+		
+		$sql = $this->prepare( $args );
+		
+		if( array_key_exists( $sql, $this->_cache_many ) ) {
+			$result = $this->_cache_many[$sql];
+		} else {
+			$result = $wpdb->get_results( $sql );
+			$this->_cache_many[$sql] = $result;
+		}
+		
+		return $this->map( $result );
 	}
 
 	function find_many( $conditions, $order = null ) {
@@ -153,6 +197,7 @@ class GP_Thing {
 	 */
 	function create( $args ) {
 		global $wpdb;
+		$this->flush_cache();
 		$args = $this->prepare_fields_for_save( $args );
 		$args = $this->prepare_fields_for_create( $args );
 		$field_formats = $this->get_db_field_formats( $args );
@@ -186,6 +231,7 @@ class GP_Thing {
 	function update( $data, $where = null ) {
 		global $wpdb;
 		if ( !$data ) return false;
+		$this->flush_cache();
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
 		$fields_for_save = $this->prepare_fields_for_save( $data );
 		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
@@ -215,10 +261,12 @@ class GP_Thing {
 	}
 
 	function delete() {
+		$this->flush_cache();
 		return $this->delete_all( array( 'id' => $this->id ) );
 	}
 
 	function delete_all( $where = null  ) {
+		$this->flush_cache();
 		$query = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
