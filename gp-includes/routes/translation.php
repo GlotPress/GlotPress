@@ -286,29 +286,29 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		if ( 0 === $error) {
 			$this->notices[] = 'approve' == $action?
-					sprintf( _n('One translation approved.', '%d translations approved.', $ok, 'glotpress' ), $ok ):
-					sprintf( _n('One translation rejected.', '%d translations rejected.', $ok, 'glotpress' ), $ok );
+					sprintf( _n('%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ), $ok ):
+					sprintf( _n('%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ), $ok );
 		} else {
 			if ( $ok > 0 ) {
 				$message = 'approve' == $action?
-						sprintf( _n('Error with approving one translation.', 'Error with approving %s translations.', $error, 'glotpress' ), $error ):
-						sprintf( _n('Error with rejecting one translation.', 'Error with rejecting %s translations.', $error, 'glotpress' ), $error );
+						sprintf( _n('Error with approving %s translation.', 'Error with approving %s translations.', $error, 'glotpress' ), $error ):
+						sprintf( _n('Error with rejecting %s translation.', 'Error with rejecting %s translations.', $error, 'glotpress' ), $error );
 				$message .= ' ';
 				$message .= 'approve' == $action?
 						sprintf( _n(
-								'The remaining translation was approved successfully.',
+								'The remaining %s translation was approved successfully.',
 								'The remaining %s translations were approved successfully.', $ok, 'glotpress' ), $ok ):
 						sprintf( _n(
-								'The remaining translation was rejected successfully.',
+								'The remaining %s translation was rejected successfully.',
 								'The remaining %s translations were rejected successfully.', $ok, 'glotpress' ), $ok );
 				$this->errors[] = $message;
 			} else {
 				$this->errors[] = 'approve' == $action?
 						sprintf( _n(
-								'Error with approving the translation.',
+								'Error with approving %s translation.',
 								'Error with approving all %s translation.', $error, 'glotpress' ), $error ):
 						sprintf( _n(
-								'Error with rejecting the translation.',
+								'Error with rejecting %s translation.',
 								'Error with rejecting all %s translation.', $error, 'glotpress' ), $error );
 			}
 		}
@@ -343,15 +343,15 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error) {
-			$this->notices[] = sprintf( _n( 'Priority of one original modified.', 'Priority of %d originals modified.', $ok, 'glotpress' ), $ok );
+			$this->notices[] = sprintf( _n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ), $ok );
 		} else {
 			if ( $ok > 0 ) {
-				$message = sprintf( _n( 'Error modifying priority of one original.', 'Error modifying priority of %d originals.', $error, 'glotpress' ), $error );
-				$message.= sprintf( _n( 'The remaining original was modified successfully.', 'The remaining %d originals were modified successfully.', $ok, 'glotpress' ), $ok );
+				$message = sprintf( _n( 'Error modifying priority of %d original.', 'Error modifying priority of %d originals.', $error, 'glotpress' ), $error );
+				$message.= sprintf( _n( 'The remaining %d original was modified successfully.', 'The remaining %d originals were modified successfully.', $ok, 'glotpress' ), $ok );
 
 				$this->errors[] = $message;
 			} else {
-				$this->errors[] = sprintf( _n( 'Error modifying priority of the original.', 'Error modifying priority of all %d originals.', $error, 'glotpress' ), $error );
+				$this->errors[] = sprintf( _n( 'Error modifying priority of %d original.', 'Error modifying priority of all %d originals.', $error, 'glotpress' ), $error );
 			}
 		}
 

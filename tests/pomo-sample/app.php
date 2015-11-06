@@ -55,7 +55,7 @@ $messages = rand(0, 2);
 
 printf( __( 'Welcome %s!', 'glotpress' )."\n", $user);
 
-printf(__n('You have one new message.', 'You have %s new messages.', $messages)."\n", $messages);
+printf(__n('You have %s new message.', 'You have %s new messages.', $messages)."\n", $messages);
 
 echo __("A string with low priority!", 'side')."\n";
 
