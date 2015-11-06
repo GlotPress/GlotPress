@@ -18,6 +18,6 @@ Usually this is one of the parent projects.', 'glotpress' ); ?></p>
 		<dd><?php echo gp_projects_dropdown( 'project_id', null ); ?></dd>
 	</dl>
 	<div id="preview"></div>
-	<p><input type="submit" name="submit" value="<?php echo esc_attr( __( 'Create Translation Sets', 'glotpress' ) ); ?>" id="submit" /></p>
+	<p><input type="submit" name="submit" value="<?php echo esc_attr__( 'Create Translation Sets', 'glotpress' ); ?>" id="submit" /></p>
 </form>
 <?php gp_tmpl_footer();

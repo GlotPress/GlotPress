@@ -401,7 +401,7 @@ function gp_project_options_form( $project ) {
 					</dd>
 				</dl>
 				<p>
-					<input type="submit" name="submit" value="' . esc_attr( __( 'Save &rarr;', 'glotpress' ) ) . '" id="save" />
+					<input type="submit" name="submit" value="' . esc_attr__( 'Save &rarr;', 'glotpress' ) . '" id="save" />
 					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __( 'Cancel', 'glotpress' ) . '</a>
 				</p>
 				</form>

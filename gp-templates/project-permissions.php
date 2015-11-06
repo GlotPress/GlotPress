@@ -59,7 +59,7 @@ gp_tmpl_header();
 		<dd><input type="text" name="set-slug" value="default" id="set-slug" /></dd>
 
 		<dt>
-			<input type="submit" name="submit" value="<?php echo esc_attr(__( 'Add', 'glotpress' )); ?>" id="submit" />
+			<input type="submit" name="submit" value="<?php echo esc_attr__( 'Add', 'glotpress' ); ?>" id="submit" />
 			<input type="hidden" name="action" value="add-validator" />
 		</dt>
 </form>
