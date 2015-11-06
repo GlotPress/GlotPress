@@ -11,10 +11,6 @@ class GP_Thing {
 	var $map_results = true;
 	var $static = array();
 
-	private $_cache_one = array();
-	private $_cache_many = array();
-	private $_cache_value = array();
-	
 	static $static_by_class = array();
 	static $validation_rules_by_class = array();
 
@@ -44,13 +40,9 @@ class GP_Thing {
 	}
 
 	function flush_cache() {
-		unset( $this->_cache_one );
-		unset( $this->_cache_many );
-		unset( $this->_cache_value );
-		
-		$this->_cache_one = array();
-		$this->_cache_many = array();
-		$this->_cache_value = array();
+		GP::$cache_one = array();
+		GP::$cache_many = array();
+		GP::$cache_value = array();
 	}
 	
 	function get_static( $name, $default = null ) {
@@ -107,11 +99,11 @@ class GP_Thing {
 		
 		$sql = $this->prepare( $args );
 		
-		if( array_key_exists( $sql, $this->_cache_one ) ) {
-			$result = $this->_cache_one[$sql];
+		if( array_key_exists( $sql, GP::$cache_one ) ) {
+			$result = GP::$cache_one[$sql];
 		} else {
 			$result = $this->coerce( $wpdb->get_row( $sql ) );
-			$this->_cache_one[$sql] = $result;
+			GP::$cache_one[$sql] = $result;
 		}
 		
 		return $result;
@@ -129,11 +121,11 @@ class GP_Thing {
 
 		$sql = $this->prepare( $args );
 
-		if( array_key_exists( $sql, $this->_cache_value ) ) {
-			$res = $this->_cache_value[$sql];
+		if( array_key_exists( $sql, GP::$cache_value ) ) {
+			$res = GP::$cache_value[$sql];
 		} else {
 			$res = $wpdb->get_var( $sql );
-			$this->_cache_value[$sql] = $res;
+			GP::$cache_value[$sql] = $res;
 		}
 		
 		return is_null( $res )? false : $res;
@@ -161,11 +153,11 @@ class GP_Thing {
 		
 		$sql = $this->prepare( $args );
 		
-		if( array_key_exists( $sql, $this->_cache_many ) ) {
-			$result = $this->_cache_many[$sql];
+		if( array_key_exists( $sql, GP::$cache_many ) ) {
+			$result = GP::$cache_many[$sql];
 		} else {
 			$result = $wpdb->get_results( $sql );
-			$this->_cache_many[$sql] = $result;
+			GP::$cache_many[$sql] = $result;
 		}
 		
 		return $this->map( $result );
