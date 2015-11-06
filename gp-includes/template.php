@@ -46,10 +46,6 @@ function gp_footer() {
 	do_action( 'gp_footer' );
 }
 
-function gp_content() {
-	do_action( 'gp_content' );
-}
-
 function gp_nav_menu( $location = 'main' ) {
 	$html  = '';
 	$items = gp_nav_menu_items( $location );
