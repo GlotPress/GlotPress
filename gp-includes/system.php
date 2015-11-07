@@ -13,3 +13,19 @@ function gp_set_globals( $vars ) {
 		$GLOBALS[ $name ] = $value;
 	}
 }
+
+/**
+ * Initializes rewrite rules and provides the 'gp_init' action.
+ *
+ * @since 1.0.0
+ */
+function gp_init() {
+	gp_rewrite_rules();
+
+	/**
+	 * Fires after GlotPress has finished loading but before any headers are sent.
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'gp_init' );
+}
