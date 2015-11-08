@@ -15,7 +15,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_import_translations', $translation_set->id ) ) {
 			return;
 		}
 
@@ -37,7 +37,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_import_translations', $translation_set->id ) ) {
 			return;
 		}
 
@@ -136,9 +136,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 
-		$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
-		$can_write = $this->can( 'write', 'project', $project->id );
-		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_edit = current_user_can( 'gp_suggest_translations', $translation_set->id );
+		$can_write = current_user_can( 'gp_edit_project', $project->id );
+		$can_approve = current_user_can( 'gp_approve_translations', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
@@ -163,7 +163,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
-		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
+		$this->can_or_forbidden( 'gp_suggest_translations', $translation_set->id );
 
 		if ( ! $translation_set ) {
 			return $this->die_with_404();
@@ -179,10 +179,11 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
 			}
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )
+			if ( current_user_can( 'gp_approve_translations', $translation_set->id ) ) {
 				$data['status'] = 'current';
-			else
+			} else {
 				$data['status'] = 'waiting';
+			}
 
 			$original = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
@@ -216,9 +217,9 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( $translations ) {
 					$t = $translations[0];
 
-					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
-					$can_write = $this->can( 'write', 'project', $project->id );
-					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+					$can_edit = current_user_can( 'gp_suggest_translations', $translation_set->id );
+					$can_write = current_user_can( 'gp_edit_project', $project->id );
+					$can_approve = current_user_can( 'gp_approve_translations', $translation_set->id );
 					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
 				}
 				else {
@@ -243,7 +244,9 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
+		if ( $this->cannot_and_redirect( 'gp_approve_translations', $translation_set->id ) ) {
+			return;
+		}
 
 		$bulk = gp_post('bulk');
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
@@ -316,7 +319,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	function _bulk_set_priority( $project, $locale, $translation_set, $bulk ) {
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ){
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ){
 			return;
 		}
 
@@ -393,9 +396,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $translations ) {
 			$t = $translations[0];
 
-			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
-			$can_write = $this->can( 'write', 'project', $project->id );
-			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+			$can_edit = current_user_can( 'gp_suggest_translations', $translation_set->id );
+			$can_write = current_user_can( 'gp_edit_project', $project->id );
+			$can_approve = current_user_can( 'gp_approve_translations', $translation_set->id );
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			return $this->die_with_error( 'Error in retrieving translation!' );
@@ -446,6 +449,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $can_reject_self ) {
 			return;
 		}
-		$this->can_or_forbidden( 'approve', 'translation-set', $translation->translation_set_id );
+		$this->can_or_forbidden( 'gp_approve_translations', $translation->translation_set_id );
 	}
 }

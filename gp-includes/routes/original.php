@@ -15,7 +15,8 @@ class GP_Route_Original extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$this->can_or_forbidden( 'write', 'project', $project->id );
+		$this->can_or_forbidden( 'gp_edit_project', $project->id );
+
 		$original->priority = gp_post( 'priority' );
 
 		if ( ! $original->validate() ) {
