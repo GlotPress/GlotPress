@@ -21,7 +21,7 @@ if ( ! isset( $gp_table_prefix ) ) {
 	$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 }
 
-$table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions', 'api_keys' );
+$table_names = array('translations', 'translation_sets', 'glossaries', 'glossary_entries', 'originals', 'projects', 'meta', 'permissions' );
 foreach ( $table_names as $table ) {
 	$wpdb->{'gp_' . $table} = $gp_table_prefix . $table;
 }

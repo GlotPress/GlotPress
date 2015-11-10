@@ -22,7 +22,6 @@ function _manually_load_plugin() {
 		'gp_projects',
 		'gp_meta',
 		'gp_permissions',
-		'gp_api_keys',
 	);
 
 	foreach ( $tables as $table ) {
