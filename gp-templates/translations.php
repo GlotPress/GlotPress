@@ -108,7 +108,7 @@ $i = 0;
 		</dd>
 
 
-		<dd><input type="submit" value="<?php echo esc_attr( __( 'Filter', 'glotpress' ) ); ?>" name="filter" /></dd>
+		<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
 	</dl>
 	<dl class="filters-expanded sort hidden clearfix">
 		<dt><?php _x( 'By:', 'sort by', 'glotpress' ); ?></dt>
@@ -138,7 +138,7 @@ $i = 0;
 		?>
 		</dd>
 		<?php do_action( 'gp_translation_set_filters' );?>
-		<dd><input type="submit" value="<?php echo esc_attr(__( 'Sort', 'glotpress' )); ?>" name="sorts" /></dd>
+		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 	</dl>
 </form>
 

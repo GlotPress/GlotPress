@@ -81,7 +81,7 @@ if ( $glossary->description ) {
 					</dl>
 					<p>
 						<input type="hidden" name="new_glossary_entry[glossary_id]" value="<?php echo esc_attr( $glossary->id ); ?>">
-						<input type="submit" name="submit" value="<?php echo esc_attr( __( 'Create', 'glotpress' ) ); ?>" id="submit" />
+						<input type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
 					</p>
 				</form>
 			</td>

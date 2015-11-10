@@ -24,7 +24,7 @@ gp_tmpl_header();
 	</dd>
 	<div id="preview"></div>
 	<input type="hidden" value="<?php echo esc_html( $project->parent_project_id ); ?>" name="project[parent_project_id]" id="project[parent_project_id]" />
-	<p><input type="submit" name="submit" value="<?php echo esc_attr( __( 'Branch project', 'glotpress' ) ); ?>" id="submit" /></p>
+	<p><input type="submit" name="submit" value="<?php esc_attr_e( 'Branch project', 'glotpress' ); ?>" id="submit" /></p>
 </form>
 
 <?php gp_tmpl_footer();
