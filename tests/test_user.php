@@ -46,12 +46,6 @@ class GP_Test_User extends GP_UnitTestCase {
 		$this->assertEquals( $user->id, $from_db->id );
 	}
 
-	function test_get() {
-		$user = $this->factory->user->create();
-		$from_db = GP::$user->get( $user );
-		$this->assertEquals( $user->id, $from_db->id );
-	}
-
 	function test_set_meta_should_set_meta() {
 		$user = $this->factory->user->create();
 		$user->set_meta( 'int', 5 );
