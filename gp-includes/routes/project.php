@@ -261,7 +261,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 		// we can't join on users table
 		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
-			$permission->user = GP::$user->get( $permission->user_id );
+			$permission->user = get_user_by( 'id', $permission->user_id );
 		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
 	}
