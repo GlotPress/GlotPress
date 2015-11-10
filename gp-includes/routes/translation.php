@@ -263,8 +263,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$this->errors[] = 'No translations were supplied.';
 		}
 
-		// hack, until we make clean_url() to allow [ and ]
-		$bulk['redirect_to'] = str_replace( array('[', ']'), array_map('urlencode', array('[', ']')), $bulk['redirect_to']);
+		$bulk['redirect_to'] = esc_url_raw( $bulk['redirect_to'] );
 		$this->redirect( $bulk['redirect_to'] );
 	}
 
