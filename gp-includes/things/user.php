@@ -82,38 +82,6 @@ class GP_User extends GP_Thing {
 		return apply_filters( 'gp_can_user', $verdict, $filter_args );
 	}
 
-	function get_meta( $key ) {
-		if ( !$user = get_userdata( $this->id ) ) {
-			return;
-		}
-
-		if ( !isset( $user->$key ) ) {
-			return;
-		}
-		return $user->$key;
-	}
-
-	function set_meta( $key, $value ) {
-		return gp_update_meta( $this->id, $key, $value, 'user' );
-	}
-
-	function delete_meta( $key ) {
-		return gp_delete_meta( $this->id, $key, '', 'user' );
-	}
-
-	public function sort_defaults() {
-		$defaults = $this->get_meta('default_sort');
-
-		if ( ! is_array( $defaults ) ) {
-			$defaults = array(
-				'by' => 'priority',
-				'how' => 'desc'
-			);
-		}
-
-		return $defaults;
-	}
-
 	public function get_recent_translation_sets( $amount = 5 ) {
 		global $wpdb;
 

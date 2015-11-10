@@ -114,7 +114,13 @@ $i = 0;
 		<dt><?php _x( 'By:', 'sort by', 'glotpress' ); ?></dt>
 		<dd>
 		<?php
-		$default_sort = GP::$user->current()->sort_defaults();
+		$default_sort = get_user_option( 'gp_default_sort' );
+		if ( ! is_array( $default_sort ) ) {
+			$default_sort = array(
+				'by'  => 'priority',
+				'how' => 'desc'
+			);
+		}
 
 		echo gp_radio_buttons('sort[by]',
 			array(
