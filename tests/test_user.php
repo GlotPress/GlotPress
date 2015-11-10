@@ -12,16 +12,6 @@ class GP_Test_User extends GP_UnitTestCase {
 		$this->assertFalse( $user->can( 'write' ) );
 	}
 
-	function test_admin_should_be_admin() {
-		$admin_user = $this->factory->user->create_admin();
-		$this->assertTrue( $admin_user->admin() );
-	}
-
-	function test_non_admin_user_should_not_be_admin() {
-		$nonadmin_user = $this->factory->user->create();
-		$this->assertFalse( $nonadmin_user->admin() );
-	}
-
 	function test_admin_should_be_able_to_do_random_actions() {
 		$admin_user = $this->factory->user->create_admin();
 		$this->assertTrue( $admin_user->can( 'milk', 'a cow' ) );

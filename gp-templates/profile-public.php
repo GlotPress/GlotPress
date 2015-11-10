@@ -5,7 +5,7 @@ gp_breadcrumb( array( __( 'Profile', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
 
-<h2><?php echo $user->display_name; ?> <?php if ( $user->admin() ) { _e( '(Admin)', 'glotpress' ); }; ?></h2>
+<h2><?php echo $user->display_name; ?></h2>
 
 <div>
 	<div class="user-card">

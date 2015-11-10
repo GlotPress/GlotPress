@@ -48,13 +48,6 @@ class GP_User extends GP_Thing {
 	}
 
 	/**
-	 * Determines whether the user is an admin
-	 */
-	function admin() {
-		return $this->can( 'admin' );
-	}
-
-	/**
 	 * Determines whether the user can do $action on the instance of $object_type with id $object_id.
 	 *
 	 * If the method is called statically, it uses the current session user.
