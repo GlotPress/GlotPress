@@ -20,7 +20,7 @@ gp_tmpl_header();
 ?>
 	<dt><label	for="format"><?php _e( 'Format:', 'glotpress' ); ?></label></dt>
 	<dd><?php echo $format_dropdown; ?></dd>
-	<dt><input type="submit" value="<?php echo esc_attr__( 'Import', 'glotpress' ); ?>"></dt>
+	<dt><input type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></dt>
 </form>
 
 <?php gp_tmpl_footer();

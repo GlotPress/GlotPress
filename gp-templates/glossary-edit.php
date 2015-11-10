@@ -20,7 +20,7 @@ gp_tmpl_header();
 	<p>
 		<input type="hidden" name="glossary[id]" value="<?php echo esc_attr( $glossary->id ); ?>"/>
 		<input type="hidden" name="glossary[translation_set_id]" value="<?php echo esc_attr( $glossary->translation_set_id ); ?>"/>
-		<input type="submit" name="submit" value="<?php echo esc_attr__( 'Save', 'glotpress' ); ?>" id="submit" />
+		<input type="submit" name="submit" value="<?php esc_attr_e( 'Save', 'glotpress' ); ?>" id="submit" />
 		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="javascript:history.back();"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
 </form>
