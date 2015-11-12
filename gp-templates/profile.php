@@ -5,15 +5,12 @@ gp_tmpl_header();
 
 $per_page = get_user_option( 'gp_per_page' );
 if ( 0 == $per_page ) {
-	$per_page = 15;
+	$per_page = gp_default_per_page();
 }
 
 $default_sort = get_user_option( 'gp_default_sort' );
 if ( ! is_array( $default_sort ) ) {
-	$default_sort = array(
-		'by'  => 'priority',
-		'how' => 'desc'
-	);
+	$default_sort = gp_default_sort_options();
 }
 ?>
 <h2><?php _e( 'Profile', 'glotpress' ); ?></h2>
@@ -25,25 +22,11 @@ if ( ! is_array( $default_sort ) ) {
 		</tr>
 		<tr>
 			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ) ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[by]',
-		array(
-			'original_date_added' => __( 'Date added (original)', 'glotpress' ),
-			'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
-			'original' => __( 'Original string', 'glotpress' ),
-			'translation' => __( 'Translation', 'glotpress' ),
-			'priority' => __( 'Priority', 'glotpress' ),
-			'references' => __( 'Filename in source', 'glotpress' ),
-			'random' => __( 'Random', 'glotpress' ),
-		), gp_array_get( $default_sort, 'by', 'priority' ) ); ?></td>
+			<td><?php echo gp_radio_buttons('default_sort[by]',	gp_sort_by_options(), gp_array_get( $default_sort, 'by', 'priority' ) ); ?></td>
 		</tr>
 		<tr>
 			<th><label for="default_sort[how]"><?php _e( 'Default Sort Order:', 'glotpress' ) ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[how]',
-				array(
-					'asc' => __( 'Ascending', 'glotpress' ),
-					'desc' => __( 'Descending', 'glotpress' ),
-				), gp_array_get( $default_sort, 'how', 'desc' ) );
-			?></td>
+			<td><?php echo gp_radio_buttons('default_sort[how]', gp_sort_order_options(), gp_array_get( $default_sort, 'how', 'desc' ) ); ?></td>
 		</tr>
 	</table>
 	<br>
