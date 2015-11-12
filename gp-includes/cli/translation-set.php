@@ -102,7 +102,8 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		$po = new PO();
 		$po->import_from_file( $args[2] );
 		$added = $translation_set->import( $po );
-		printf( _n( "%s translation were added\n", "%s translations were added\n", $added, 'glotpress' ), $added );
+		/* translators: %s: Number of imported translations */
+		WP_CLI::line( sprintf( _n( '%s translation were added', '%s translations were added', $added, 'glotpress' ), $added ) );
 	}
 
 	/**
@@ -137,7 +138,8 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			}
 
 			$translation = new GP_Translation( array( 'id' => $entry->id ) );
-			WP_CLI::line( sprintf( __( "Updating warnings for %s", 'glotpress' ), $entry->id ) );
+			/* translators: %s: ID of an original */
+			WP_CLI::line( sprintf( __( 'Updating warnings for %s', 'glotpress' ), $entry->id ) );
 			$translation->update( array( 'warnings' => $warnings ) );
 		}
 	}
