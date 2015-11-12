@@ -415,10 +415,200 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 
 	$actions = apply_filters( 'gp_entry_actions', $actions );
 
-
 	echo implode( $seperator, $actions );
 	/*
 	<a href="#" class="copy" tabindex="-1"><?php _e( 'Copy from original', 'glotpress' ); ?></a> &bull;
 	<a href="#" class="gtranslate" tabindex="-1"><?php _e( 'Translation from Google', 'glotpress' ); ?></a>
 	*/
+}
+
+function gp_sort_options() {
+	$default = array( 'by' => 'gp_sort_by_options', 'order' => 'gp_sort_order_options' );
+	
+	$default = apply_filters( 'gp_sort_options', $default );
+	
+	return $default;
+}
+
+function gp_default_sort_options() {
+	$default = array(
+		'by'  => 'priority',
+		'how' => 'desc'
+	);
+
+	$default = apply_filters( 'gp_default_sort_options', $default );
+	
+	return $default;
+}
+
+function gp_sort_by_options( $value = null ) {
+	$default = array(
+		'original_date_added' 	 => __( 'Date added (original)', 'glotpress' ),
+		'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
+		'original'				 => __( 'Original string', 'glotpress' ),
+		'translation' 			 => __( 'Translation', 'glotpress' ),
+		'priority' 				 => __( 'Priority', 'glotpress' ),
+		'references' 			 => __( 'Filename in source', 'glotpress' ),
+		'random' 				 => __( 'Random', 'glotpress' ),
+	);
+	
+	$default = apply_filters( 'gp_sort_by_options', $default );
+	
+	return $default;
+}
+
+function gp_sort_order_options( $value = null ) {
+	$default = array(
+		'asc'  => __( 'Ascending', 'glotpress' ),
+		'desc' => __( 'Descending', 'glotpress' ),
+	);
+	
+	$default = apply_filters( 'gp_sort_order_options', $default );
+	
+	return $default;
+}
+
+function gp_validate_sort_options( $options, $default = null ) {
+	if ( null == $default ) {
+		$default = gp_default_sort_options();	
+	}
+	
+	if ( ! is_array( $options ) ) { 
+		return $default;
+	}
+	
+	$options_list = gp_sort_options();
+	
+	foreach ( $options_list as $key => $option_function ) {
+		if ( array_key_exists( $key, $options ) ) {
+			$option_values = call_user_func( $option_function, $options[ $key ] );
+			
+			if ( array_key_exists( $options[ $key ], $option_values ) ) {
+				$validated[ $key ] = $option_values[ $options[ $key ] ];
+			} else {
+				$validated[ $key ] = $default[ $key ];
+			}
+		}
+	}
+	
+	$validated = apply_filters( 'gp_validate_sort_options', $validated, $options, $default );
+	
+	return $validated;
+}
+
+function gp_default_per_page() {
+	$default = 15;
+	
+	$default = apply_filters( 'gp_default_per_page', $default );
+	
+	return $default;
+}
+
+function gp_filter_options() {
+	$default = array( 
+		'term' 	  	 => 'gp_filter_term_options', 
+		'user_login' => 'gp_filter_user_options', 
+		'status'  	 => 'gp_filter_status_options', 
+		'context' 	 => 'gp_filter_context_options', 
+		'comment' 	 => 'gp_filter_comment_options' 
+	);
+	
+	$default = apply_filters( 'gp_filter_options', $default );
+	
+	return $default;
+}
+
+function gp_default_filter_options() {
+	$default = array(
+		'term' 	  	 => '', 
+		'user_login' => '', 
+		'status'  	 => 'current_or_waiting_or_fuzzy_or_untranslated', 
+		'context' 	 => '', 
+		'comment' 	 => '' 
+	);
+
+	$default = apply_filters( 'gp_default_filter_options', $default );
+	
+	return $default;
+}
+
+function gp_validate_filter_options( $options, $default = null ) {
+	if ( null == $default ) {
+		$default = gp_default_filter_options();	
+	}
+	
+	if ( ! is_array( $options ) ) { 
+		return $default;
+	}
+	
+	$options_list = gp_filter_options();
+
+	foreach ( $options_list as $key => $option_function ) {
+		if ( array_key_exists( $key, $options ) ) {
+			$option_values = call_user_func( $option_function, $options[ $key ] );
+			
+			if ( array_key_exists( $options[ $key ], $option_values ) ) {
+				$validated[ $key ] = $option_values[ $options[ $key ] ];
+			} else {
+				$validated[ $key ] = $default[ $key ];
+			}
+		}
+	}
+
+	$validated = apply_filters( 'gp_validate_sort_options', $validated, $options, $default );
+	
+	return $validated;
+}
+
+function gp_filter_term_options( $value = null ) {
+	$default = array( 'term' => $value );
+	
+	$default = apply_filters( 'gp_filter_term_options', $default );
+	
+	return $default;
+}
+
+function gp_filter_user_options( $value = null ) {
+	$default = array( 'user_login' => $value );
+	
+	if ( false === get_user_by( 'id', $value ) ) {
+		$default[ 'user_login' ] = '';
+		gp_notice_set( __( 'Filter Error: Invalid user ID supplied!', 'glotpress' ), 'error' );
+	}
+	
+	$default = apply_filters( 'gp_filter_user_options', $default );
+	
+	return $default;
+}
+
+function gp_filter_status_options( $value = null ) {
+	$default = array(
+		'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
+		'current' 									  => __( 'Current only', 'glotpress' ),
+		'old' 										  => __( 'Approved, but obsoleted by another string', 'glotpress' ),
+		'waiting' 									  => __( 'Waiting approval', 'glotpress' ),
+		'rejected' 									  => __( 'Rejected', 'glotpress' ),
+		'untranslated' 								  => __( 'Without current translation', 'glotpress' ),
+		'either' 									  => __( 'Any', 'glotpress' ),
+	);
+
+	$default = apply_filters( 'gp_filter_status_options', $default );
+	
+	return $default;
+}
+
+function gp_filter_context_options( $value = null ) {
+	$default = array( 'context' => $value );
+	
+	$default = apply_filters( 'gp_filter_context_options', $default );
+	
+	return $default;
+}
+
+function gp_filter_comment_options( $value = null ) {
+	$default = array( 'comment' => $value );
+	
+	$default = apply_filters( 'gp_filter_comment_options', $default );
+	
+	return $default;
 }

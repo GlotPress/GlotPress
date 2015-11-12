@@ -10,6 +10,12 @@ class GP_Translation extends GP_Thing {
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
+	function __construct() {
+		parent::__construct();
+		
+		$this->per_page = gp_default_per_page();
+	}
+	
 	function create( $args ) {
 		$inserted = parent::create( $args );
 
@@ -88,10 +94,7 @@ class GP_Translation extends GP_Thing {
 
 		$default_sort = get_user_option( 'gp_default_sort' );
 		if ( ! is_array( $default_sort ) ) {
-			$default_sort = array(
-				'by'  => 'priority',
-				'how' => 'desc'
-			);
+			$default_sort = gp_default_sort_options();
 		}
 
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
