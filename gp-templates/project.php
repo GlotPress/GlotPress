@@ -39,7 +39,7 @@ gp_tmpl_header();
 		<thead>
 			<tr>
 				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php echo _x( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+				<th><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
 				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
 				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
 				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>

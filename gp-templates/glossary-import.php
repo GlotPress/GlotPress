@@ -19,7 +19,7 @@ gp_tmpl_header();
 		<label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label>
 		<input type="file" name="import-file" id="import-file" />
 	</p>
-	<p><input type="submit" value="<?php echo esc_attr( __( 'Import', 'glotpress' ) ); ?>"></p>
+	<p><input type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></p>
 </form>
 
 <?php gp_tmpl_footer();
