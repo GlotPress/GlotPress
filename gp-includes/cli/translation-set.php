@@ -138,8 +138,8 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			}
 
 			$translation = new GP_Translation( array( 'id' => $entry->id ) );
-			/* translators: %s: ID of an original */
-			WP_CLI::line( sprintf( __( 'Updating warnings for %s', 'glotpress' ), $entry->id ) );
+			/* translators: %s: ID of a translation */
+			WP_CLI::line( sprintf( __( 'Updating warnings for #%s', 'glotpress' ), $entry->id ) );
 			$translation->update( array( 'warnings' => $warnings ) );
 		}
 	}
