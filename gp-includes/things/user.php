@@ -40,33 +40,11 @@ class GP_User extends GP_Thing {
 		return $args;
 	}
 
-	function get( $user_or_id ) {
-		if ( is_object( $user_or_id ) ) $user_or_id = $user_or_id->id;
-		return $this->coerce( get_userdata( $user_or_id ) );
-	}
-
-	function by_login( $login ) {
-		$user = get_user_by( 'login', $login );
-		return $this->coerce( $user );
-	}
-
-	function by_email( $email ) {
-		$user = get_user_by( 'email', $email );
-		return $this->coerce( $user );
-	}
-
 	function current() {
 		if ( is_user_logged_in() )
 			return $this->coerce( wp_get_current_user() );
 		else
 			return new GP_User( array( 'id' => 0, ) );
-	}
-
-	/**
-	 * Determines whether the user is an admin
-	 */
-	function admin() {
-		return $this->can( 'admin' );
 	}
 
 	/**
@@ -95,38 +73,6 @@ class GP_User extends GP_Thing {
 			GP::$permission->find_one( $args ) ||
 			GP::$permission->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 		return apply_filters( 'gp_can_user', $verdict, $filter_args );
-	}
-
-	function get_meta( $key ) {
-		if ( !$user = get_userdata( $this->id ) ) {
-			return;
-		}
-
-		if ( !isset( $user->$key ) ) {
-			return;
-		}
-		return $user->$key;
-	}
-
-	function set_meta( $key, $value ) {
-		return gp_update_meta( $this->id, $key, $value, 'user' );
-	}
-
-	function delete_meta( $key ) {
-		return gp_delete_meta( $this->id, $key, '', 'user' );
-	}
-
-	public function sort_defaults() {
-		$defaults = $this->get_meta('default_sort');
-
-		if ( ! is_array( $defaults ) ) {
-			$defaults = array(
-				'by' => 'priority',
-				'how' => 'desc'
-			);
-		}
-
-		return $defaults;
 	}
 
 	public function get_recent_translation_sets( $amount = 5 ) {

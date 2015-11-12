@@ -4,8 +4,8 @@ gp_enqueue_script( 'jquery' );
 
 
 function prepare_original( $text ) {
-	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__( 'New line', 'glotpress' ))."'>&crarr;</span>\n", $text);
-	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__( 'Tab character', 'glotpress' ))."'>&rarr;</span>\t", $text);
+	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text);
+	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text);
 
 	return $text;
 }

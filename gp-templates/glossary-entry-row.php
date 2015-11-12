@@ -17,9 +17,9 @@
 	<td colspan="5">
 		<div class="strings">
 			<dl>
-				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php echo _x( 'Original term:', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><input type="text" name="glossary_entry[<?php echo esc_attr( $entry->id );?>][term]" id="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->term ); ?>"></dd>
-				<dt><label for="glossary_entry_post_<?php echo esc_attr( $entry->id ); ?>"><?php echo _x( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dt><label for="glossary_entry_post_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><select name="glossary_entry[<?php echo esc_attr( $entry->id );?>][part_of_speech]" id="glossary_entry_pos_<?php echo esc_attr( $entry->id ); ?>">
 				<?php
 					foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
@@ -28,9 +28,9 @@
 					}
 				?>
 				</select></dd>
-				<dt><label for="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?><?php echo esc_attr( $entry->id ); ?>"><?php echo _x( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dt><label for="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?><?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><textarea type="text" name="glossary_entry[<?php echo esc_attr( $entry->id );?>][comment]" id="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?>"><?php echo esc_textarea( $entry->comment );?></textarea></dd>
-				<dt><label for="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>"><?php echo _x( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dt><label for="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><input type="text" name="glossary_entry[<?php echo esc_attr( $entry->id );?>][translation]" id="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->translation ); ?>"></dd>
 			</dl>
 			<p>
@@ -60,7 +60,7 @@
 			<dl>
 				<dt><?php _e( 'Actions:', 'glotpress' ); ?></dt>
 				<dd>
-					<button class="delete" tabindex="-1"><?php echo _x( 'Delete', 'delete glossary entry', 'glotpress' ); ?></button>
+					<button class="delete" tabindex="-1"><?php _ex( 'Delete', 'delete glossary entry', 'glotpress' ); ?></button>
 				</dd>
 			</dl>
 			<?php endif; ?>

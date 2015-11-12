@@ -29,10 +29,10 @@ if ( $glossary->description ) {
 <table class="glossary" id="glossary">
 	<thead>
 		<tr>
-			<th style="width:20%"><?php echo _x( 'Item', 'glossary entry', 'glotpress' ); ?></th>
-			<th style="width:20%"><?php echo _x( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
-			<th style="width:20%"><?php echo _x( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
-			<th style="width:30%"><?php echo _x( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<th style="width:20%"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
+			<th style="width:20%"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
+			<th style="width:20%"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
+			<th style="width:30%"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
 		<?php if ( $can_edit) : ?>
 			<th style="width:10%">&mdash;</th>
 		<?php endif; ?>
@@ -62,9 +62,9 @@ if ( $glossary->description ) {
 
 				<form action="<?php echo esc_url( $url . '/-new' ); ?>" method="post">
 					<dl>
-						<dt><label for="new_glossary_entry_term"><?php echo _x( 'Original term:', 'glossary entry', 'glotpress' ); ?></label><dt>
+						<dt><label for="new_glossary_entry_term"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label><dt>
 						<dd><input type="text" name="new_glossary_entry[term]" id="new_glossary_entry_term" value=""></dd>
-						<dt><label for="new_glossary_entry_post"><?php echo _x( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
+						<dt><label for="new_glossary_entry_post"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
 						<dd>
 							<select name="new_glossary_entry[part_of_speech]" id="new_glossary_entry_post">
 							<?php
@@ -74,14 +74,14 @@ if ( $glossary->description ) {
 							?>
 							</select>
 						</dd>
-						<dt><label for="new_glossary_entry_translation"><?php echo _x( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
+						<dt><label for="new_glossary_entry_translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
 						<dd><input type="text" name="new_glossary_entry[translation]" id="new_glossary_entry_translation" value=""></dd>
-						<dt><label for="new_glossary_entry_comments"><?php echo _x( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
+						<dt><label for="new_glossary_entry_comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
 						<dd><textarea type="text" name="new_glossary_entry[comment]" id="new_glossary_entry_comments"></textarea></dd>
 					</dl>
 					<p>
 						<input type="hidden" name="new_glossary_entry[glossary_id]" value="<?php echo esc_attr( $glossary->id ); ?>">
-						<input type="submit" name="submit" value="<?php echo esc_attr( __( 'Create', 'glotpress' ) ); ?>" id="submit" />
+						<input type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
 					</p>
 				</form>
 			</td>
