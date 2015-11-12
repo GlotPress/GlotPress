@@ -458,8 +458,18 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	*/
 }
 
+/**
+ * Returns the list of the sort options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @return array An array with each $key being the option tag and the $value being the function name to retreive the list of options available for option type.
+ */
 function gp_sort_options() {
-	$default = array( 'by' => 'gp_sort_by_options', 'order' => 'gp_sort_order_options' );
+	$default = array( 
+		'by' => 'gp_sort_by_options', 
+		'order' => 'gp_sort_order_options'
+	);
 	
 	$default = apply_filters( 'gp_sort_options', $default );
 	
