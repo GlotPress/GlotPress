@@ -42,7 +42,7 @@ function gp_link_project() {
 }
 
 function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'gp_edit_project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit', 'glotpress' );
@@ -55,7 +55,7 @@ function gp_link_project_edit() {
 }
 
 function gp_link_project_delete_get( $project, $text = false, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'gp_edit_project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Delete', 'glotpress' );
@@ -77,9 +77,10 @@ function gp_link_home() {
 }
 
 function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( 'gp_edit_translation_set', $set->id ) ) {
 		return '';
 	}
+
 	$text = $text? $text : __( 'Edit', 'glotpress' );
 	return gp_link_get( gp_url( gp_url_join( '/sets', $set->id, '-edit' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
@@ -90,7 +91,7 @@ function gp_link_set_edit() {
 }
 
 function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = array() ) {
-	if ( ! GP::$user->current()->can( 'approve', 'translation-set', $set->id ) ) {
+	if ( ! current_user_can( 'gp_edit_glossary', $glossary->id ) ) {
 		return '';
 	}
 

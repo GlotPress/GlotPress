@@ -39,7 +39,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$translation_sets = apply_filters( 'gp_translation_sets_sort', $translation_sets );
 
 		$title = sprintf( __( '%s project ', 'glotpress' ), esc_html( $project->name ) );
-		$can_write = $this->can( 'write', 'project', $project->id );
+		$can_write = current_user_can( 'gp_edit_project', $project->id );
 		$this->tmpl( 'project', get_defined_vars() );
 	}
 
@@ -50,7 +50,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -73,7 +73,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_import_originals', $project->id ) ) {
 			return;
 		}
 
@@ -88,7 +88,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_import_originals', $project->id ) ) {
 			return;
 		}
 
@@ -132,7 +132,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -146,7 +146,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -181,7 +181,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_delete_project', $project->id ) ) {
 			return;
 		}
 
@@ -200,7 +200,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->parent_project_id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_create_projects', $project->parent_project_id ) ) {
 			return;
 		}
 
@@ -211,7 +211,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_create_projects', $parent_project_id ) ) {
 			return;
 		}
 
@@ -240,7 +240,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -274,7 +274,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -306,7 +306,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -330,7 +330,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -343,7 +343,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -376,7 +376,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -397,7 +397,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $project->id ) ) {
 			return;
 		}
 
@@ -415,7 +415,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_edit_project', $parent_project_id ) ) {
 			return;
 		}
 

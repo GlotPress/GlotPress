@@ -76,8 +76,8 @@ class GP_Route {
 		return false;
 	}
 
-	function can( $action, $object_type = null, $object_id = null ) {
-		return GP::$user->current()->can( $action, $object_type, $object_id );
+	function can( $cap, $object_id = null ) {
+		return current_user_can( $cap, $object_id );
 	}
 
 	/**
@@ -88,8 +88,8 @@ class GP_Route {
 	 * @param string $object_id
 	 * @param string $url	The URL to redirect. Default value: referrer or index page, if referrer is missing
 	 */
-	function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
-		$can = $this->can( $action, $object_type, $object_id );
+	function cannot_and_redirect( $cap, $object_id = null, $url = null ) {
+		$can = $this->can( $cap, $object_id );
 		if ( !$can ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ), $url );
 			return true;
@@ -97,8 +97,8 @@ class GP_Route {
 		return false;
 	}
 
-	function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
-		$can = $this->can( $action, $object_type, $object_id );
+	function can_or_forbidden( $cap, $object_id = null, $message = 'You are not allowed to do that!' ) {
+		$can = $this->can( $cap, $object_id );
 		if ( !$can ) {
 			$this->die_with_error( $message, 403 );
 		}

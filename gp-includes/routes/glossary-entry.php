@@ -32,7 +32,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 		}
 
-		$can_edit = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_edit = current_user_can( 'gp_create_glossary_entry', $glossary->id );
 		$url      = gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') );
 
 		$this->tmpl( 'glossary-view', get_defined_vars() );
@@ -52,7 +52,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_create_glossary_entries', $glossary->id ) ) { // @todo $glossary
 			return;
 		}
 
@@ -87,7 +87,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
-		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_edit        = current_user_can( 'gp_edit_glossary_entry', $glossary_entry->id );
 
 		if ( ! $can_edit ) {
 			return $this->die_with_error( __( 'Forbidden', 'glotpress' ), 403 );
@@ -137,7 +137,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
-		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_edit        = current_user_can( 'gp_delete_glossary_entry', $glossary_entry->id );
 
 		if ( ! $can_edit ) {
 			return $this->die_with_error( __( 'Forbidden', 'glotpress' ), 403 );
@@ -202,7 +202,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_import_glossary_entries', $glossary->id ) ) { // @todo $glossary
 			return;
 		}
 
@@ -229,7 +229,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		if ( $this->cannot_and_redirect( 'gp_import_glossary_entries', $glossary->id ) ) { // @todo $glossary
 			return;
 		}
 
