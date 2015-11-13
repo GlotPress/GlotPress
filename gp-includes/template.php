@@ -782,14 +782,19 @@ function gp_validate_filter_options( $options, $default = null ) {
 			$option_values = call_user_func( $option_function, $options[ $key ] );
 			
 			// Now check to see if the value that was passed in is a valide value.
-			if ( array_key_exists( $options[ $key ], $option_values ) ) {
-				/* Yes?  Then let's set it to what was returned from the function.  
+			if ( is_array( $options_values ) && array_key_exists( $options[ $key ], $option_values ) ) {
+				// Yes and it's an array?  Then let's set it to the $key value.  
+				$validated[ $key ] = $key;
+				
+				print_r( $validated );
+			} else if ( null !== $options_values ) {
+				/* Yes but it's not an array?  Then let's set it to the returned value.  
 				
 				   Note this may be different that what passed in if validation occured and updated the value, 
 				   for example if a userid was passed in but was not found the options function may return
 				   a blank value instead of an non existant user.
 				 */
-				$validated[ $key ] = $option_values[ $options[ $key ] ];
+				$valudated[$key] = $options_values;
 			} else {
 				// No? Then use the default value so we pass something back that's valide.
 				$validated[ $key ] = $default[ $key ];
@@ -826,7 +831,7 @@ function gp_validate_filter_options( $options, $default = null ) {
  * }
  */
 function gp_filter_term_options( $value = null ) {
-	$default = array( 'term' => $value );
+	$default = $value;
 	
 	/**
 	 * Filter the filter options to return.
@@ -857,11 +862,11 @@ function gp_filter_term_options( $value = null ) {
  * }
  */
 function gp_filter_user_options( $value = null ) {
-	$default = array( 'user_login' => $value );
+	$default = $value;
 	
 	// Check to see the user exists, if not throw an error and blank out the $value.
-	if ( false === get_user_by( 'id', $value ) ) {
-		$default[ 'user_login' ] = '';
+	if ( '' != $value && false === get_user_by( 'id', $value ) ) {
+		$default = '';
 		gp_notice_set( __( 'Filter Error: Invalid user ID supplied!', 'glotpress' ), 'error' );
 	}
 	
@@ -931,7 +936,7 @@ function gp_filter_status_options( $value = null ) {
  * }
  */
 function gp_filter_context_options( $value = null ) {
-	$default = array( 'context' => $value );
+	$default = $value;
 	
 	/**
 	 * Filter the filter options to return.
@@ -962,7 +967,7 @@ function gp_filter_context_options( $value = null ) {
  * }
  */
 function gp_filter_comment_options( $value = null ) {
-	$default = array( 'comment' => $value );
+	$default = $value;
 	
 	/**
 	 * Filter the filter options to return.
