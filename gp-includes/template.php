@@ -459,11 +459,15 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 }
 
 /**
- * Returns the list of the sort options for the translation page.
+ * Returns the list of sort options for the translation page.
  *
  * @since 1.0.0
  *
- * @return array An array with each $key being the option tag and the $value being the function name to retreive the list of options available for option type.
+ * @return array $default {
+ *	   An array with each $key being the option tag and the $value being the function name to retreive the list of options available for option type.
+ *
+ *     @type string $tag		The function name to retreive the list of options available for the $tag.
+ * }
  */
 function gp_sort_options() {
 	$default = array( 
@@ -471,22 +475,66 @@ function gp_sort_options() {
 		'order' => 'gp_sort_order_options'
 	);
 	
+	/**
+	 * Filter the sort options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args {
+	 *	   An array with each $key being the option tag and the $value being the function name to retreive the list of options available for option type.
+	 *
+	 *     @type string $tag		The function name to retreive the list of options available for the $tag.
+	 * }
+	 */
 	$default = apply_filters( 'gp_sort_options', $default );
 	
 	return $default;
 }
 
+/**
+ * Returns the default sort options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @return array $default {
+ *	   An array with each $key being the option tag and the $value being default option.
+ *
+ *     @type string $tag		The default option for the $tag.
+ * }
+ */
 function gp_default_sort_options() {
 	$default = array(
 		'by'  => 'priority',
 		'how' => 'desc'
 	);
 
+	/**
+	 * Filter the default sort options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *	   An array with each $key being the option tag and the $value being default option.
+	 *
+	 *     @type string $tag		The default option for the $tag.
+	 * }
+	 */
 	$default = apply_filters( 'gp_default_sort_options', $default );
 	
 	return $default;
 }
 
+/**
+ * Returns the available sort by options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this sort option.
+ * 
+ * @return array $default {
+ *     @type string $option		The translated text to display to the user for the $option.
+ * }
+ */
 function gp_sort_by_options( $value = null ) {
 	$default = array(
 		'original_date_added' 	 => __( 'Date added (original)', 'glotpress' ),
@@ -498,22 +546,70 @@ function gp_sort_by_options( $value = null ) {
 		'random' 				 => __( 'Random', 'glotpress' ),
 	);
 	
-	$default = apply_filters( 'gp_sort_by_options', $default );
+	/**
+	 * Filter the sort by options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_sort_by_options', $default, $value );
 	
 	return $default;
 }
 
+/**
+ * Returns the available sort order options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this sort option.
+ * 
+ * @return array $default {
+ *     @type string $option		The translated text to display to the user for the $option.
+ * }
+ */
 function gp_sort_order_options( $value = null ) {
 	$default = array(
 		'asc'  => __( 'Ascending', 'glotpress' ),
 		'desc' => __( 'Descending', 'glotpress' ),
 	);
 	
-	$default = apply_filters( 'gp_sort_order_options', $default );
+	/**
+	 * Filter the sort order options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_sort_order_options', $default, $value );
 	
 	return $default;
 }
 
+/**
+ * Validates an array of sort options against the available options.
+ *
+ * @since 1.0.0
+ *
+ * @param array $options {
+ *     @type string $tag		The user selected option to validate.
+ * }
+ * @param array $default {
+ *     @type string $tag		The default options to use.
+ * }
+ * 
+ * 
+ * @return array $validated {
+ *     @type $sort	The validated $option for the sort style.
+ * }
+ */
 function gp_validate_sort_options( $options, $default = null ) {
 	if ( null == $default ) {
 		$default = gp_default_sort_options();	
@@ -525,23 +621,51 @@ function gp_validate_sort_options( $options, $default = null ) {
 	
 	$options_list = gp_sort_options();
 	
+	// Loop through the list of valide options.
 	foreach ( $options_list as $key => $option_function ) {
+		// Check to see if the option (represented by $key) exists in the $options that were passed in.
 		if ( array_key_exists( $key, $options ) ) {
+			// Get the list of values for the option by calling the assocaited function.
 			$option_values = call_user_func( $option_function, $options[ $key ] );
 			
+			// Now check to see if the value that was passed in is a valide value.
 			if ( array_key_exists( $options[ $key ], $option_values ) ) {
+				/* Yes?  Then let's set it to what was returned from the function.  
+				
+				   Note this may be different that what passed in if validation occured and updated the value, 
+				   for example if a userid was passed in but was not found the options function may return
+				   a blank value instead of an non existant user.
+				 */
 				$validated[ $key ] = $option_values[ $options[ $key ] ];
 			} else {
+				// No? Then use the default value so we pass something back that's valide.
 				$validated[ $key ] = $default[ $key ];
 			}
 		}
 	}
 	
+	/**
+	 * Filter the validation of the sort options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $validated {
+	 *     @type $sort	The validated $option for the sort style.
+	 * }
+	 * @param array $options {
+	 */
 	$validated = apply_filters( 'gp_validate_sort_options', $validated, $options, $default );
 	
 	return $validated;
 }
 
+/**
+ * Returns the default number of items to display for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @return int $default The number of items to display by default.
+ */
 function gp_default_per_page() {
 	$default = 15;
 	
@@ -550,6 +674,17 @@ function gp_default_per_page() {
 	return $default;
 }
 
+/**
+ * Returns the list of filter options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @return array $default {
+ *	   An array with each $key being the filter tag and the $value being the function name to retreive the list of options available for filter type.
+ *
+ *     @type string $tag		The function name to retreive the list of filters available for the $tag.
+ * }
+ */
 function gp_filter_options() {
 	$default = array( 
 		'term' 	  	 => 'gp_filter_term_options', 
@@ -559,11 +694,33 @@ function gp_filter_options() {
 		'comment' 	 => 'gp_filter_comment_options' 
 	);
 	
+	/**
+	 * Filter the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args {
+	 *	   An array with each $key being the filter tag and the $value being the function name to retreive the list of options available for filter type.
+	 *
+	 *     @type string $tag		The function name to retreive the list of options available for the $tag.
+	 * }
+	 */
 	$default = apply_filters( 'gp_filter_options', $default );
 	
 	return $default;
 }
 
+/**
+ * Returns the default filter options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @return array $default {
+ *	   An array with each $key being the filter tag and the $value being default option.
+ *
+ *     @type string $tag		The default option for the $tag.
+ * }
+ */
 function gp_default_filter_options() {
 	$default = array(
 		'term' 	  	 => '', 
@@ -573,11 +730,39 @@ function gp_default_filter_options() {
 		'comment' 	 => '' 
 	);
 
+	/**
+	 * Filter the default filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *	   An array with each $key being the filter tag and the $value being default option.
+	 *
+	 *     @type string $tag		The default option for the $tag.
+	 * }
+	 */
 	$default = apply_filters( 'gp_default_filter_options', $default );
 	
 	return $default;
 }
 
+/**
+ * Validates an array of filter options against the available options.
+ *
+ * @since 1.0.0
+ *
+ * @param array $options {
+ *     @type string $tag		The user selected option to validate.
+ * }
+ * @param array $default {
+ *     @type string $tag		The default options to use.
+ * }
+ * 
+ * 
+ * @return array $validated {
+ *     @type $sort	The validated $option for the filter style.
+ * }
+ */
 function gp_validate_filter_options( $options, $default = null ) {
 	if ( null == $default ) {
 		$default = gp_default_filter_options();	
@@ -589,44 +774,123 @@ function gp_validate_filter_options( $options, $default = null ) {
 	
 	$options_list = gp_filter_options();
 
+	// Loop through the list of valide options.
 	foreach ( $options_list as $key => $option_function ) {
+		// Check to see if the option (represented by $key) exists in the $options that were passed in.
 		if ( array_key_exists( $key, $options ) ) {
+			// Get the list of values for the option by calling the assocaited function.
 			$option_values = call_user_func( $option_function, $options[ $key ] );
 			
+			// Now check to see if the value that was passed in is a valide value.
 			if ( array_key_exists( $options[ $key ], $option_values ) ) {
+				/* Yes?  Then let's set it to what was returned from the function.  
+				
+				   Note this may be different that what passed in if validation occured and updated the value, 
+				   for example if a userid was passed in but was not found the options function may return
+				   a blank value instead of an non existant user.
+				 */
 				$validated[ $key ] = $option_values[ $options[ $key ] ];
 			} else {
+				// No? Then use the default value so we pass something back that's valide.
 				$validated[ $key ] = $default[ $key ];
 			}
 		}
 	}
 
-	$validated = apply_filters( 'gp_validate_sort_options', $validated, $options, $default );
+	/**
+	 * Filter the validation of the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $validated {
+	 *     @type $sort	The validated $option for the filter type.
+	 * }
+	 * @param array $options {
+	 */
+	$validated = apply_filters( 'gp_validate_filter_options', $validated, $options, $default );
 	
 	return $validated;
 }
 
+/**
+ * Returns the available term filter options for the translation page.
+ *
+ * Since the term filter option is a free form text box with no vaidation possible, just return the value that was passed in.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this filter option.
+ * 
+ * @return array $default {
+ *     @type string $option		The option value that was passed in..
+ * }
+ */
 function gp_filter_term_options( $value = null ) {
 	$default = array( 'term' => $value );
 	
-	$default = apply_filters( 'gp_filter_term_options', $default );
+	/**
+	 * Filter the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_filter_term_options', $default, $value );
 	
 	return $default;
 }
 
+/**
+ * Returns the available user filter options for the translation page.
+ *
+ * Since the user filter option is a free form text box vaidation the user and then return the value that was passed in.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this filter option.
+ * 
+ * @return array $default {
+ *     @type string $option		The translated text to display to the user for the $option.
+ * }
+ */
 function gp_filter_user_options( $value = null ) {
 	$default = array( 'user_login' => $value );
 	
+	// Check to see the user exists, if not throw an error and blank out the $value.
 	if ( false === get_user_by( 'id', $value ) ) {
 		$default[ 'user_login' ] = '';
 		gp_notice_set( __( 'Filter Error: Invalid user ID supplied!', 'glotpress' ), 'error' );
 	}
 	
-	$default = apply_filters( 'gp_filter_user_options', $default );
+	/**
+	 * Filter the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_filter_user_options', $default, $value );
 	
 	return $default;
 }
 
+/**
+ * Returns the available status filter options for the translation page.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this filter option.
+ * 
+ * @return array $default {
+ *     @type string $option		The translated text to display to the user for the $option.
+ * }
+ */
 function gp_filter_status_options( $value = null ) {
 	$default = array(
 		'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
@@ -638,23 +902,79 @@ function gp_filter_status_options( $value = null ) {
 		'either' 									  => __( 'Any', 'glotpress' ),
 	);
 
-	$default = apply_filters( 'gp_filter_status_options', $default );
+	/**
+	 * Filter the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_filter_status_options', $default, $value );
 	
 	return $default;
 }
 
+/**
+ * Returns the available context filter options for the translation page.
+ *
+ * Since the context filter option is a checkbox, just return the value that was passed in.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this sort option.
+ * 
+ * @return array $default {
+ *     @type string $option		The translated text to display to the user for the $option.
+ * }
+ */
 function gp_filter_context_options( $value = null ) {
 	$default = array( 'context' => $value );
 	
-	$default = apply_filters( 'gp_filter_context_options', $default );
+	/**
+	 * Filter the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_filter_context_options', $default, $value );
 	
 	return $default;
 }
 
+/**
+ * Returns the available comment filter options for the translation page.
+ *
+ * Since the comment filter option is a checkbox, just return the value that was passed in.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value The value that the user submitted to be validated for this sort option.
+ * 
+ * @return array $default {
+ *     @type string $option		The translated text to display to the user for the $option.
+ * }
+ */
 function gp_filter_comment_options( $value = null ) {
 	$default = array( 'comment' => $value );
 	
-	$default = apply_filters( 'gp_filter_comment_options', $default );
+	/**
+	 * Filter the filter options to return.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $default {
+	 *     @type string $option		The translated text to display to the user for the $option.
+	 * }
+	 * @param mixed $value The value that the user submitted to be validated for this sort option.
+	 */
+	$default = apply_filters( 'gp_filter_comment_options', $default, $value );
 	
 	return $default;
 }
