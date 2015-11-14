@@ -1,10 +1,17 @@
 <?php
 
-$per_page = GP::$user->current()->get_meta('per_page');
-if ( 0 == $per_page )
+$per_page = get_user_option( 'gp_per_page' );
+if ( 0 == $per_page ) {
 	$per_page = 15;
+}
 
-$default_sort = GP::$user->current()->sort_defaults();
+$default_sort = get_user_option( 'gp_default_sort' );
+if ( ! is_array( $default_sort ) ) {
+	$default_sort = array(
+		'by'  => 'priority',
+		'how' => 'desc'
+	);
+}
 ?>
 	<table class="form-table">
 		<tr>
