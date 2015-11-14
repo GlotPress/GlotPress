@@ -14,7 +14,7 @@ class GP_Project extends GP_Thing {
 	// Additional queries
 
 	function by_path( $path ) {
-		return $this->one( "SELECT * FROM $this->table WHERE path = '%s'", trim( $path, '/' ) );
+		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
 	}
 
 	function sub_projects() {
@@ -123,7 +123,7 @@ class GP_Project extends GP_Thing {
 		if ( isset( $this->user_source_url_template ) )
 			return $this->user_source_url_template;
 		else {
-			if ( $this->id && is_user_logged_in() && ($templates = GP::$user->current()->get_meta( 'source_url_templates' ))
+			if ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
 					 && isset( $templates[$this->id] ) ) {
 				$this->user_source_url_template = $templates[$this->id];
 				return $this->user_source_url_template;
@@ -192,7 +192,7 @@ class GP_Project extends GP_Thing {
 		foreach( $sets as $to_add ) {
 			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
 			if ( ! $new_set  ) {
-				$this->errors[] = __( 'Couldn&#8217;t add translation set named %s', esc_html( $to_add->name ) );
+				$this->errors[] = sprintf( __( 'Couldn&#8217;t add translation set named %s', 'glotpress' ), esc_html( $to_add->name ) );
 			} else {
 				//Duplicate translations
 				$new_set->copy_translations_from( $to_add->id );

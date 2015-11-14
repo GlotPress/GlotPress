@@ -60,8 +60,6 @@ class GP_Router {
 		// overall structure
 		return array(
 			'/' => array('GP_Route_Index', 'index'),
-			'get:/login' => array('GP_Route_Login', 'login_get'),
-			'get:/logout' => array('GP_Route_Login', 'logout'),
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
 			"get:/profile/$path" => array('GP_Route_Profile', 'profile_view'),
@@ -85,8 +83,11 @@ class GP_Router {
 			"get:/$project/-edit" => array('GP_Route_Project', 'edit_get'),
 			"post:/$project/-edit" => array('GP_Route_Project', 'edit_post'),
 
+			/*
+			// Currently the deletion of a project is not well defined so don't add routes to let it happen.
 			"get:/$project/-delete" => array('GP_Route_Project', 'delete_get'),
 			"post:/$project/-delete" => array('GP_Route_Project', 'delete_post'),
+			*/
 
 			"post:/$project/-personal" => array('GP_Route_Project', 'personal_options_post'),
 
@@ -175,7 +176,6 @@ class GP_Router {
 						register_shutdown_function( array( &$route, 'after_request') );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
-						do_action( 'gp_after_request', $class, $method );
 						$route->request_running = false;
 					} else {
 						call_user_func_array( $func, array_slice( $matches, 1 ) );

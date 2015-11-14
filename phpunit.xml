@@ -1,0 +1,23 @@
+<phpunit
+	bootstrap="tests/config/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
+	<testsuites>
+		<testsuite name="glotpress">
+			<directory prefix="test_" suffix=".php">./tests/</directory>
+		</testsuite>
+	</testsuites>
+    <filter>
+        <blacklist>
+            <directory suffix=".php">gp-templates</directory>
+            <directory suffix=".php">tests</directory>
+        </blacklist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="tests/build/logs/clover.xml"/>
+    </logging>
+</phpunit>

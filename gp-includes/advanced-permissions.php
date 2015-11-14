@@ -43,13 +43,13 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 
 function gp_allow_everyone_to_translate( $verdict, $args ) {
 	if ( 'edit' == $args['action'] && 'translation-set' == $args['object_type'] ) {
-		return GP::$user->logged_in();
+		return is_user_logged_in();
 	}
 
 	return $verdict;
 }
 
-add_filter( 'can_user', 'gp_recurse_project_permissions', 10, 2 );
-add_filter( 'can_user', 'gp_recurse_validator_permission', 10, 2 );
-add_filter( 'pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
-add_filter( 'pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );
+add_filter( 'gp_can_user', 'gp_recurse_project_permissions', 10, 2 );
+add_filter( 'gp_can_user', 'gp_recurse_validator_permission', 10, 2 );
+add_filter( 'gp_pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
+add_filter( 'gp_pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );

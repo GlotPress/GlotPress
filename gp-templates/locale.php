@@ -1,8 +1,8 @@
 <?php
-gp_title( sprintf( __( 'Projects translated to %s &lt; GlotPress' ),  esc_html( $locale->english_name ) ) );
+gp_title( sprintf( __( 'Projects translated to %s &lt; GlotPress', 'glotpress' ),  esc_html( $locale->english_name ) ) );
 
 $breadcrumb = array();
-$breadcrumb[] = gp_link_get( '/languages', __( 'Locales' ) );
+$breadcrumb[] = gp_link_get( '/languages', __( 'Locales', 'glotpress' ) );
 if ( 'default' == $current_set_slug ) {
 	$breadcrumb[] = esc_html( $locale->english_name );
 } else {
@@ -13,7 +13,7 @@ gp_breadcrumb( $breadcrumb );
 gp_tmpl_header();
 ?>
 
-	<h2><?php printf( __( 'Active Projects translated to %s' ), esc_html( $locale->english_name ) ); ?></h2>
+	<h2><?php printf( __( 'Active Projects translated to %s', 'glotpress' ), esc_html( $locale->english_name ) ); ?></h2>
 
 <?php if ( count( $set_list ) > 1 ) : ?>
 	<p class="actionlist secondary">
@@ -23,7 +23,7 @@ gp_tmpl_header();
 
 <?php
 if ( empty( $projects_data ) ) {
-	_e( 'No active projects found.' );
+	_e( 'No active projects found.', 'glotpress' );
 }
 ?>
 
@@ -33,12 +33,12 @@ if ( empty( $projects_data ) ) {
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
-				<th class="header" <?php if (count($sub_projects)>1 ) echo 'rowspan="'. count($sub_projects) . '"';?>><?php if (count($sub_projects)>1 ) _e( 'Project' ); ?></th>
-				<th class="header"><?php _e( 'Set / Sub Project' ); ?></th>
-				<th><?php _e( 'Translated' ); ?></th>
-				<th><?php _e( 'Fuzzy' ); ?></th>
-				<th><?php _e( 'Untranslated' ); ?></th>
-				<th><?php _e( 'Waiting' ); ?></th>
+				<th class="header" <?php if (count($sub_projects)>1 ) echo 'rowspan="'. count($sub_projects) . '"';?>><?php if (count($sub_projects)>1 ) _e( 'Project', 'glotpress' ); ?></th>
+				<th class="header"><?php _e( 'Set / Sub Project', 'glotpress' ); ?></th>
+				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+				<th><?php _e( 'Waiting', 'glotpress' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -47,8 +47,8 @@ if ( empty( $projects_data ) ) {
 				<th class="sub-project" rowspan="<?php echo count( $data['sets'] );  ?>">
 					<?php if (count($sub_projects)>1  ) echo esc_html( $projects[$sub_project_id]->name ); ?>
 					<div class="stats">
-						<div class="total-strings"><?php printf( __( '%d strings' ), $data['totals']->all_count ); ?></div>
-						<div class="percent-completed"><?php printf( __( '%d%% translated' ), $data['totals']->current_count ? floor( absint($data['totals']->current_count ) / absint( $data['totals']->all_count ) * 100 ) : 0 ); ?></div>
+						<div class="total-strings"><?php printf( __( '%d strings', 'glotpress' ), $data['totals']->all_count ); ?></div>
+						<div class="percent-completed"><?php printf( __( '%d%% translated', 'glotpress' ), $data['totals']->current_count ? floor( absint($data['totals']->current_count ) / absint( $data['totals']->all_count ) * 100 ) : 0 ); ?></div>
 					</div>
 				</th>
 				<?php foreach ( $data['sets'] as $set_id => $set_data ) : ?>
@@ -75,7 +75,7 @@ if ( empty( $projects_data ) ) {
 <?php endforeach; //top projects ?>
 
 	<p class="actionlist secondary">
-		<?php gp_link( gp_url( '/projects' ), __('All projects') ); ?>
+		<?php gp_link( gp_url( '/projects' ), __( 'All projects', 'glotpress' ) ); ?>
 	</p>
 
 <?php gp_tmpl_footer();

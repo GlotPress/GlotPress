@@ -1,5 +1,34 @@
 <?php
 
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	gp_cli_register();
+}
+
+function gp_cli_register() {
+	require_once GP_PATH . GP_INC . 'cli/add-admin.php';
+	require_once GP_PATH . GP_INC . 'cli/branch-project.php';
+	require_once GP_PATH . GP_INC . 'cli/import-originals.php';
+	require_once GP_PATH . GP_INC . 'cli/regenerate-paths.php';
+	require_once GP_PATH . GP_INC . 'cli/remove-multiple-currents.php';
+	require_once GP_PATH . GP_INC . 'cli/translation-set.php';
+	require_once GP_PATH . GP_INC . 'cli/upgrade-set-permissions.php';
+	require_once GP_PATH . GP_INC . 'cli/wipe-permissions.php';
+	require_once GP_PATH . GP_INC . 'cli/wporg2slug.php';
+
+	// Legacy commands
+	WP_CLI::add_command( 'glotpress add-admin', 'GP_CLI_Add_Admin' );
+	WP_CLI::add_command( 'glotpress branch-project', 'GP_CLI_Branch_Project' );
+	WP_CLI::add_command( 'glotpress import-originals', 'GP_CLI_Import_Originals' );
+	WP_CLI::add_command( 'glotpress regenerate-paths', 'GP_CLI_Regenerate_Paths' );
+	WP_CLI::add_command( 'glotpress remove-multiple-currents', 'GP_CLI_Remove_Multiple_Currents' );
+	WP_CLI::add_command( 'glotpress upgrade-set-permissions', 'GP_CLI_Upgrade_Set_Permissions' );
+	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
+	WP_CLI::add_command( 'glotpress wporg2slug', 'GP_CLI_WPorg2Slug' );
+
+	// New style commands
+	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
+}
+
 class GP_CLI {
 
 	public $short_options = '';
@@ -9,6 +38,8 @@ class GP_CLI {
 	public $usage = '';
 
 	function __construct() {
+		_deprecated_function( 'GP_CLI::__construct', '', 'WP_CLI_Command' );
+
 		global $argv;
 		if ( gp_array_get( $_SERVER, 'HTTP_HOST' ) ) {
 			die('CLI only!');
@@ -48,15 +79,15 @@ class GP_Translation_Set_Script extends GP_CLI {
 			$this->usage();
 		}
 		$this->project = GP::$project->by_path( $this->options['p'] );
-		if ( !$this->project ) $this->error( __('Project not found!') );
+		if ( !$this->project ) $this->error( __( 'Project not found!', 'glotpress' ) );
 
 		$this->locale = GP_Locales::by_slug( $this->options['l'] );
-		if ( !$this->locale ) $this->error( __('Locale not found!') );
+		if ( !$this->locale ) $this->error( __( 'Locale not found!', 'glotpress' ) );
 
 		$this->options['t'] = gp_array_get( $this->options, 't', 'default' );
 
 		$this->translation_set = GP::$translation_set->by_project_id_slug_and_locale( $this->project->id, $this->options['t'], $this->locale->slug );
-		if ( !$this->translation_set ) $this->error( __('Translation set not found!') );
+		if ( !$this->translation_set ) $this->error( __( 'Translation set not found!', 'glotpress' ) );
 
 		$this->action_on_translation_set( $this->translation_set );
 	}

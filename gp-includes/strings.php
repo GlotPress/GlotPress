@@ -15,14 +15,6 @@ function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-/**
- * Adds a slash after the string, while makes sure not to double it
- * if it already exists
- */
-function gp_add_slash( $string ) {
-	return rtrim( $string, '/' ) . '/';
-}
-
 if ( function_exists('mb_strtolower') ):
 function gp_strtolower( $str ) {
 	return mb_strtolower( $str );

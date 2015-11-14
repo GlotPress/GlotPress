@@ -15,7 +15,7 @@ class GP_Format_PO extends GP_Format {
 		$po->set_header( 'Content-Type', 'text/plain; charset=UTF-8' );
 		$po->set_header( 'Content-Transfer-Encoding', '8bit' );
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
-		$po->set_header( 'X-Generator', 'GlotPress/' . gp_get_option('version') );
+		$po->set_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
 
 		// force export only current translations
 		$filters = array();

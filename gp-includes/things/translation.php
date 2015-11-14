@@ -86,7 +86,13 @@ class GP_Translation extends GP_Thing {
 			'random' => 'o.priority DESC, RAND()', 'translation_date_added' => 't.date_added %s', 'original_date_added' => 'o.date_added %s',
 			'references' => 'o.references' );
 
-		$default_sort = GP::$user->current()->sort_defaults();
+		$default_sort = get_user_option( 'gp_default_sort' );
+		if ( ! is_array( $default_sort ) ) {
+			$default_sort = array(
+				'by'  => 'priority',
+				'how' => 'desc'
+			);
+		}
 
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
@@ -271,7 +277,7 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				if ( $user->logged_in() && ! $user->can( 'approve', 'translation-set', $o_translation_set->id ) ) {
+				if ( is_user_logged_in() && ! $user->can( 'approve', 'translation-set', $o_translation_set->id ) ) {
 					$copy_status = 'waiting';
 				} else {
 					$copy_status = 'current';
