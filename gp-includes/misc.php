@@ -328,13 +328,16 @@ function gp_gmt_strtotime( $string ) {
 }
 
 function gp_wp_profile( $user ) {
-	// If the user cannot edit their profile, then don't show the settings.
-	if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
 ?>
 	<h3 id="gp-profile"><?php _e('GlotPress Profile'); ?></h3>
 <?php		
 	
-	include( GP_PATH . './gp-templates/profile-view.php' );
+	// If the user can edit their profile, then show the edit screen otherwise only display a view of the settings.
+	if ( current_user_can( 'edit_user', $user_id ) ) { 
+		include( GP_PATH . './gp-templates/profile-edit.php' );
+	} else {
+		include( GP_PATH . './gp-templates/profile-view.php' );
+	}		
 }
 
 function gp_wp_profile_update( $user_id ) {
