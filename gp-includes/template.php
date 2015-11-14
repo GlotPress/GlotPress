@@ -651,11 +651,11 @@ function gp_default_per_page() {
  */
 function gp_filter_options() {
 	$default = array( 
-		'term' 	  	 => 'gp_filter_term_options', 
-		'user_login' => 'gp_filter_user_options', 
-		'status'  	 => 'gp_filter_status_options', 
-		'context' 	 => 'gp_filter_context_options', 
-		'comment' 	 => 'gp_filter_comment_options' 
+		'term' 	  	   => 'gp_filter_term_options', 
+		'user_login'   => 'gp_filter_user_options', 
+		'status'  	   => 'gp_filter_status_options', 
+		'with_context' => 'gp_filter_context_options', 
+		'with_comment' => 'gp_filter_comment_options' 
 	);
 	
 	/**
@@ -687,11 +687,11 @@ function gp_filter_options() {
  */
 function gp_default_filter_options() {
 	$default = array(
-		'term' 	  	 => '', 
-		'user_login' => '', 
-		'status'  	 => 'current_or_waiting_or_fuzzy_or_untranslated', 
-		'context' 	 => '', 
-		'comment' 	 => '' 
+		'term' 	  	 	=> '', 
+		'user_login' 	=> '', 
+		'status'  	 	=> 'current_or_waiting_or_fuzzy_or_untranslated', 
+		'wiht_context' 	=> '', 
+		'with_comment' 	=> '' 
 	);
 
 	/**
@@ -722,7 +722,6 @@ function gp_default_filter_options() {
  *     @type string $tag		The default options to use.
  * }
  * 
- * 
  * @return array $validated {
  *     @type $sort	The validated $option for the filter style.
  * }
@@ -746,19 +745,17 @@ function gp_validate_filter_options( $options, $default = null ) {
 			$option_values = call_user_func( $option_function, $options[ $key ] );
 			
 			// Now check to see if the value that was passed in is a valide value.
-			if ( is_array( $options_values ) && array_key_exists( $options[ $key ], $option_values ) ) {
+			if ( is_array( $option_values ) && array_key_exists( $options[ $key ], $option_values ) ) {
 				// Yes and it's an array?  Then let's set it to the $key value.  
-				$validated[ $key ] = $key;
-				
-				print_r( $validated );
-			} else if ( null !== $options_values ) {
+				$validated[ $key ] = $options[ $key ];
+			} else if ( ! is_array( $option_values ) && null !== $option_values ) {
 				/* Yes but it's not an array?  Then let's set it to the returned value.  
 				
 				   Note this may be different that what passed in if validation occured and updated the value, 
 				   for example if a userid was passed in but was not found the options function may return
 				   a blank value instead of an non existant user.
 				 */
-				$valudated[$key] = $options_values;
+				$validated[$key] = $option_values;
 			} else {
 				// No? Then use the default value so we pass something back that's valide.
 				$validated[ $key ] = $default[ $key ];
