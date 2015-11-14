@@ -334,7 +334,7 @@ function gp_wp_profile( $user ) {
 	<h3 id="gp-profile"><?php _e('GlotPress Profile'); ?></h3>
 <?php		
 	
-	include( GP_PATH . './gp-templates/profile-edit.php' );
+	include( GP_PATH . './gp-templates/profile-view.php' );
 }
 
 function gp_wp_profile_update( $user_id ) {
