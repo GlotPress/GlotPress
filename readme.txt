@@ -1,5 +1,5 @@
 === GlotPress ===
-Contributors: ocean90, bradt
+Contributors: a5hleyrich, bjork, bradt, gilbitron, gregross, javorszky, ocean90, polevaultweb, samuelsidler, tacoverdo, 
 Tags: translation
 Requires at least: 4.4
 Tested up to: 4.4
@@ -13,6 +13,8 @@ This is a community-backed experiment dedicated to converting [GlotPress](https:
 We are still in the process of converting GlotPress into a WordPress plugin. We're working through [the issues](https://github.com/deliciousbrains/GlotPress/milestones/1.0) to get it ready for its first release. The idea is to change as little as possible to get it working well.
 
 If you'd like to work on something and there's not currently an issue for it, open a new issue and describe your proposed change before jumping into coding.
+
+This plugin wouldn't be possible without all the hard word that has gone in to the standalone version of GlotPress and we'd like to thank all those who contribute to it.
 
 = Communication =
 
