@@ -66,8 +66,6 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 	elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
-			$user = GP::$user->current();
-
 			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
 		}

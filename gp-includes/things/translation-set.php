@@ -57,7 +57,7 @@ class GP_Translation_Set extends GP_Thing {
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
 
 		$locale = GP_Locales::by_slug( $this->locale );
-		$user = GP::$user->current();
+		$user = wp_get_current_user();
 
 		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current_or_fuzzy', 'translated' => 'yes') );
 		$current_translations = new Translations();
@@ -88,7 +88,7 @@ class GP_Translation_Set extends GP_Thing {
 			}
 			if ( $create ) {
 				if ( $user ) {
-					$entry->user_id = $user->id;
+					$entry->user_id = $user->ID;
 				}
 
 				$entry->translation_set_id = $this->id;
