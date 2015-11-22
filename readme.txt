@@ -1,14 +1,16 @@
 === GlotPress ===
-Contributors: a5hleyrich, bjork, bradt, gilbitron, gregross, javorszky, ocean90, polevaultweb, samuelsidler, tacoverdo, 
+Contributors: a5hleyrich, bjork, bradt, gilbitron, gregross, javorszky, ocean90, polevaultweb, samuelsidler
 Tags: translation
 Requires at least: 4.4
 Tested up to: 4.4
 Stable tag: 1.0
 License: GPL2+
 
-This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.
+GlotPress is a tool to help translators collaborate.
 
 == Description ==
+
+**This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.**
 
 We are still in the process of converting GlotPress into a WordPress plugin. We're working through [the issues](https://github.com/deliciousbrains/GlotPress/milestones/1.0) to get it ready for its first release. The idea is to change as little as possible to get it working well.
 
@@ -23,26 +25,25 @@ This plugin wouldn't be possible without all the hard word that has gone in to t
 
 == Installation ==
 
-`
-bash
-$ cd /your/wordpress/folder/wp-content/plugins/
-$ git clone git@github.com:deliciousbrains/GlotPress.git glotpress
-`
+Search for "GlotPress" and install it.
+
+= Manual Installation =
+
+1. Upload the entire `/glotpress` directory to the `/wp-content/plugins/` directory.
+2. Activate GlotPress through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
-= How can I contribute to GlotPress =
+= How can I contribute to GlotPress? =
 Drop by the [GlotPress GitHub](https://github.com/deliciousbrains/GlotPress) repository and look through the open issues and pull requests.
 
-== Screenshots ==
-1. Main screen.
-2. Transalation screen.
-3. Permissions screen.
-
-== Upgrade Notice ==
-= 1.0 =
-Initial release, no upgrade notes at this time.
-
 == Changelog ==
+
 = 1.0 =
 * Release Date: TBD
 * Inital release.
+
+== Upgrade Notice ==
+
+= 1.0 =
+Initial release, no upgrade notes at this time.
+
