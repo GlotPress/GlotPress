@@ -30,7 +30,6 @@ function gp_get( $key, $default = '' ) {
  * @param mixed $default value to return if $array[$key] doesn't exist. Default is ''
  * @return mixed $array[$key] if exists or $default
  */
-
 function gp_array_get( $array, $key, $default = '' ) {
 	return isset( $array[$key] )? $array[$key] : $default;
 }
@@ -40,11 +39,11 @@ function gp_const_get( $name, $default = '' ) {
 }
 
 function gp_const_set( $name, $value ) {
-    if ( defined( $name) ) {
-        return false;
-    }
-    define( $name, $value );
-    return true;
+	if ( defined( $name) ) {
+		return false;
+	}
+	define( $name, $value );
+	return true;
 }
 
 
@@ -59,11 +58,11 @@ function gp_member_get( $object, $key, $default = '' ) {
  * @return array flattenned array
  */
 function gp_array_flatten( $array ) {
-    $res = array();
-    foreach( $array as $value ) {
-        $res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
-    }
-    return $res;
+	$res = array();
+	foreach( $array as $value ) {
+		$res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
+	}
+	return $res;
 }
 
 /**
