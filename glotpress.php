@@ -4,11 +4,11 @@
  */
 /*
 Plugin Name: GlotPress
-Plugin URI: http://glotpress.org/
-Description: Translation app.
-Version: 0.1
-Author: deliciousbrains
-Author URI: http://deliciousbrains.com
+Plugin URI: https://wordpress.org/plugins/glotpress/
+Description: GlotPress is a tool to help translators collaborate.
+Version: 1.0-alpha
+Author: the GlotPress team
+Author URI: http://glotpress.org
 License: GPLv2 or later
 Text Domain: glotpress
 */
