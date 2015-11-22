@@ -109,11 +109,11 @@ class GP_Original extends GP_Thing {
 			// Original exists, let's update it.
 			if ( isset( $originals_by_key[ $entry->key() ] ) ) {
 				$original = $originals_by_key[ $entry->key() ];
-				if ( $original->status == '-obsolete' || GP::$original->is_different_from( $data, $original ) ) {
+				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
+				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
+					$originals_existing++;
 				}
-
-				$originals_existing++;
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
 				$possibly_added[] = $entry;
@@ -176,7 +176,7 @@ class GP_Original extends GP_Thing {
 		}
 
 		// Clear cache when the amount of strings are changed.
-		if ( $originals_added > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
+		if ( $originals_added > 0 || $originals_existing > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
 			wp_cache_delete( $project->id, self::$count_cache_group );
 		}
 

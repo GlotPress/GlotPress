@@ -196,6 +196,11 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 
 			$translation = GP::$translation->create( $data );
+
+			if ( ! $translation ) {
+				return $this->die_with_error( __( 'Error in saving the translation!', 'glotpress' ) );
+			}
+
 			if ( ! $translation->validate() ) {
 				$error_output = '<ul>';
 				foreach ($translation->errors as $error) {
