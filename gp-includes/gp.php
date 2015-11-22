@@ -2,7 +2,6 @@
 class GP {
 	// models
 	public static $project;
-	public static $user;
 	public static $translation_set;
 	public static $permission;
 	public static $validator_permission;

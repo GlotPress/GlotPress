@@ -71,7 +71,6 @@ require_once GP_PATH . GP_INC . 'things/permission.php';
 require_once GP_PATH . GP_INC . 'things/project.php';
 require_once GP_PATH . GP_INC . 'things/translation-set.php';
 require_once GP_PATH . GP_INC . 'things/translation.php';
-require_once GP_PATH . GP_INC . 'things/user.php';
 require_once GP_PATH . GP_INC . 'things/validator-permission.php';
 require_once GP_PATH . GP_INC . 'things/glossary.php';
 require_once GP_PATH . GP_INC . 'things/glossary-entry.php';
