@@ -85,18 +85,26 @@ class GP_Builtin_Translation_Warnings {
 		if ( count( $original_parts) < count( $translation_parts ) ) {
 			return __( 'Too many tags in translation.', 'glotpress' );
 		}
+
+		// We allow certain attributes to be different in translations.
+		$translatable_attributes = array( 'title', 'aria-label' );
+		$translatable_attr_regex = array();
+
+		foreach ( $translatable_attributes as $key => $attribute ) {
+			// Translations should never need a quote in a translatable attribute.
+			$attr_regex_single = '\s*' . $attribute . '=\'[^\']+\'\s*';
+			$translatable_attr_regex[ $key ] = '%' . $attr_regex_single . '|' . str_replace( "'", '"', $attr_regex_single ) . '%';
+		}
+
 		foreach( gp_array_zip( $original_parts, $translation_parts ) as $tags ) {
 			list( $original_tag, $translation_tag ) = $tags;
 			$expected_error_msg = "Expected $original_tag, got $translation_tag.";
 			$original_is_tag = preg_match( "/^$tag_pattern$/", $original_tag );
 			$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
-			// translations should never need a quote in their title attribute
+
 			if ( $original_is_tag && $translation_is_tag && $original_tag != $translation_tag ) {
-				// we allow translations to have a different title tag
-				$title_re_single = '\s*title=\'[^\']+\'\s*';
-				$title_re = '%'.$title_re_single.'|'.str_replace( "'", '"', $title_re_single ).'%';
-				$original_tag = preg_replace( $title_re, '', $original_tag );
-				$translation_tag = preg_replace( $title_re, '', $translation_tag );
+				$original_tag = preg_replace( $translatable_attr_regex, '', $original_tag );
+				$translation_tag = preg_replace( $translatable_attr_regex, '', $translation_tag );
 				if ( $original_tag != $translation_tag ) {
 					return $expected_error_msg;
 				}
