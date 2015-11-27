@@ -11,6 +11,10 @@
  * Generate the WP rewrite rules.
  *
  * @since 1.0.0
+ *
+ * @param string|bool $gp_base
+ *
+ * @return string
  */
 function gp_generate_rewrite_rules( $gp_base = false ) {
 	if ( false === $gp_base ) {
@@ -62,9 +66,14 @@ function gp_rewrite_rules() {
  * Query vars for GP rewrite rules
  *
  * @since 1.0.0
+ *
+ * @param array $query_vars
+ *
+ * @return array
  */
 function gp_query_vars( $query_vars ) {
 	$query_vars[] = 'gp_route';
+
 	return $query_vars;
 }
 
