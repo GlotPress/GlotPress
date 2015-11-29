@@ -166,4 +166,29 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$this->assertEquals( 'http://glotpress.org:8888/', gp_url_current() );
 		$_SERVER = $server_vars;
 	}
+
+	function test_gp_url_profile() {
+		$expected = '/glotpress/profile/test-username';
+		$this->assertEquals( $expected, gp_url_profile( 'test-username') );
+	}
+
+	function test_gp_url_img() {
+		$expected = plugins_url( 'assets/img/test.jpg', GP_PLUGIN_FILE );
+		$this->assertEquals( $expected, gp_url_img( 'test.jpg' ) );
+	}
+
+	function test_gp_url_ssl_http() {
+		$test_url = 'http://www.google.com';
+		$this->assertStringStartsWith( 'http', gp_url_ssl( $test_url ) );
+	}
+
+	/**
+	 * @preserveGlobalState disabled
+	 * @runInSeparateProcess
+	 */
+	function test_gp_url_ssl_https() {
+		define( 'GP_SSL', true );
+		$test_url = 'http://www.google.com';
+		$this->assertStringStartsWith( 'https', gp_url_ssl( $test_url ) );
+	}
 }
