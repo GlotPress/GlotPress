@@ -1,9 +1,10 @@
 <?php
 class GP_Translation_Set extends GP_Thing {
 
-	var $table_basename = 'translation_sets';
+	var $table_basename = 'gp_translation_sets';
 	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
 	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count', 'percent_translated', 'wp_locale', 'last_modified' );
+	var $int_fields = array( 'id', 'project_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	function restrict_fields( $set ) {
@@ -23,25 +24,25 @@ class GP_Translation_Set extends GP_Thing {
 	function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
 		return $this->one( "
 		    SELECT * FROM $this->table
-		    WHERE slug = '%s' AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
+		    WHERE slug = %s AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
 	}
 
 	function by_locale( $locale_slug ) {
 		return $this->many( "
 		    SELECT * FROM $this->table
-		    WHERE locale = '%s'", $locale_slug );
+		    WHERE locale = %s", $locale_slug );
 	}
 
 	function existing_locales() {
-		global $gpdb;
+		global $wpdb;
 
-		return $gpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
+		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
 	function existing_slugs() {
-		global $gpdb;
+		global $wpdb;
 
-		return $gpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
+		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 
 	function by_project_id( $project_id ) {
@@ -56,7 +57,7 @@ class GP_Translation_Set extends GP_Thing {
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
 
 		$locale = GP_Locales::by_slug( $this->locale );
-		$user = GP::$user->current();
+		$user = wp_get_current_user();
 
 		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current_or_fuzzy', 'translated' => 'yes') );
 		$current_translations = new Translations();
@@ -70,13 +71,20 @@ class GP_Translation_Set extends GP_Thing {
 				continue;
 			}
 
+			$is_fuzzy = in_array( 'fuzzy', $entry->flags );
+
+			if ( $is_fuzzy && ! apply_filters( 'gp_translation_set_import_fuzzy_translations', true, $entry, $translations ) ) {
+				continue;
+			}
+
+
 			$create = false;
 			if ( $translated = $current_translations->translate_entry( $entry ) ) {
 				// we have the same string translated
 				// create a new one if they don't match
 				$entry->original_id = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
-				$create = apply_filters( 'translation_set_import_over_existing', $translated_is_different );
+				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
@@ -87,11 +95,11 @@ class GP_Translation_Set extends GP_Thing {
 			}
 			if ( $create ) {
 				if ( $user ) {
-					$entry->user_id = $user->id;
+					$entry->user_id = $user->ID;
 				}
 
 				$entry->translation_set_id = $this->id;
-				$entry->status = apply_filters( 'translation_set_import_status', in_array( 'fuzzy', $entry->flags ) ? 'fuzzy' : 'current' );
+				$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : 'current' );
 				// check for errors
 				$translation = GP::$translation->create( $entry );
 				$translation->set_status( $entry->status );
@@ -101,7 +109,7 @@ class GP_Translation_Set extends GP_Thing {
 
 		gp_clean_translation_set_cache( $this->id );
 
-		do_action( 'translations_imported', $this->id );
+		do_action( 'gp_translations_imported', $this->id );
 
 		return $translations_added;
 	}
@@ -181,7 +189,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * When copying translations from another project, it will search to find the original first.
 	 */
 	function copy_translations_from( $source_translation_set_id ) {
-		global $gpdb;
+		global $wpdb;
 		$current_date = $this->now_in_mysql_format();
 
 		$source_set = GP::$translation_set->get( $source_translation_set_id );
@@ -198,12 +206,12 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		} else {
 			return $this->query( "
-				INSERT INTO $gpdb->translations (
+				INSERT INTO $wpdb->gp_translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
 					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-				FROM $gpdb->translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+				FROM $wpdb->gp_translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
 			);
 		}
 	}

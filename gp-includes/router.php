@@ -15,20 +15,16 @@ class GP_Router {
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
 
-		do_action( 'router_default_routes_set', $this ); 
+		do_action( 'gp_router_default_routes_set', $this );
 	}
 
 	/**
-	* Returns the current request URI path, relative to
-	* the application URI and without the query string
-	*/
+	 * Returns the current request URI path, relative to
+	 * the application URI and without the query string
+	 */
 	public function request_uri() {
-		$subdir = rtrim( gp_url_path(), '/' );
-		if ( preg_match( "@^$subdir(.*?)(\?.*)?$@", $_SERVER['REQUEST_URI'], $match ) ) {
-			return urldecode( $match[1] );
-		}
-
-		return false;
+		global $wp;
+		return urldecode( '/' . rtrim( $wp->query_vars['gp_route'], '/' ) );
 	}
 
 	public function request_method() {
@@ -64,9 +60,6 @@ class GP_Router {
 		// overall structure
 		return array(
 			'/' => array('GP_Route_Index', 'index'),
-			'get:/login' => array('GP_Route_Login', 'login_get'),
-			'post:/login' => array('GP_Route_Login', 'login_post'),
-			'get:/logout' => array('GP_Route_Login', 'logout'),
 
 			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
 			"get:/profile/$path" => array('GP_Route_Profile', 'profile_view'),
@@ -90,8 +83,11 @@ class GP_Router {
 			"get:/$project/-edit" => array('GP_Route_Project', 'edit_get'),
 			"post:/$project/-edit" => array('GP_Route_Project', 'edit_post'),
 
+			/*
+			// Currently the deletion of a project is not well defined so don't add routes to let it happen.
 			"get:/$project/-delete" => array('GP_Route_Project', 'delete_get'),
 			"post:/$project/-delete" => array('GP_Route_Project', 'delete_post'),
+			*/
 
 			"post:/$project/-personal" => array('GP_Route_Project', 'personal_options_post'),
 
@@ -144,9 +140,18 @@ class GP_Router {
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
 		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
+
 		if ( $api ) {
 			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
 		}
+
+		$url_path = gp_url_path( gp_url_public_root() );
+
+		// If the request URL doesn't match our base URL, don't bother trying to match
+		if ( $url_path && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_path ) ) {
+			return;
+		}
+
 		foreach( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
 			foreach( $this->urls as $re => $func ) {
 				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
@@ -156,6 +161,7 @@ class GP_Router {
 						break;
 					}
 				}
+
 				if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
 					if ( is_array( $func ) ) {
 						list( $class, $method ) = $func;
@@ -170,16 +176,16 @@ class GP_Router {
 						register_shutdown_function( array( &$route, 'after_request') );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
-						do_action( 'after_request', $class, $method );
 						$route->request_running = false;
 					} else {
 						call_user_func_array( $func, array_slice( $matches, 1 ) );
 					}
-					return;
+					exit;
 				}
 			}
 		}
-		return gp_tmpl_404();
+
+		gp_tmpl_404();
 	}
 
 }

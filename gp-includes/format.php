@@ -40,7 +40,7 @@ abstract class GP_Format {
 			}
 
 			if ( ! $entry->singular ) {
-				error_log( sprintf( __("Missing context %s in project #%d"), $entry->context, $project->id ) );
+				error_log( sprintf( __( "Missing context %s in project #%d", 'glotpress' ), $entry->context, $project->id ) );
 				continue;
 			}
 

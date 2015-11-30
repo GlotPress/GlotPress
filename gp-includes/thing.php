@@ -4,6 +4,7 @@ class GP_Thing {
 	var $table = null;
 	var $field_names = array();
 	var $non_db_field_names = array();
+	var $int_fields = array();
 	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
@@ -14,9 +15,9 @@ class GP_Thing {
 	static $validation_rules_by_class = array();
 
 	function __construct( $fields = array() ) {
-		global $gpdb;
+		global $wpdb;
 		$this->class = get_class( $this );
-		$this->table = $gpdb->{$this->table_basename};
+		$this->table = $wpdb->{$this->table_basename};
 		foreach( $this->field_names as $field_name ) {
 			$this->$field_name = null;
 		}
@@ -86,9 +87,9 @@ class GP_Thing {
 	 * @return mixed an object, containing the selected row or false on error
 	 */
 	function one() {
-		global $gpdb;
+		global $wpdb;
 		$args = func_get_args();
-		return $this->coerce( $gpdb->get_row( $this->prepare( $args ) ) );
+		return $this->coerce( $wpdb->get_row( $this->prepare( $args ) ) );
 	}
 
 	/**
@@ -98,19 +99,19 @@ class GP_Thing {
 	 * @return scalar the result of the query or false on error
 	 */
 	function value() {
-		global $gpdb;
+		global $wpdb;
 		$args = func_get_args();
-		$res = $gpdb->get_var( $this->prepare( $args ) );
+		$res = $wpdb->get_var( $this->prepare( $args ) );
 		return is_null( $res )? false : $res;
 	}
 
 	function prepare( $args ) {
-		global $gpdb;
+		global $wpdb;
 		if ( 1 == count( $args ) ) {
 			return $args[0];
 		} else {
 			$query = array_shift( $args );
-			return $gpdb->prepare( $query, $args );
+			return $wpdb->prepare( $query, $args );
 		}
 	}
 
@@ -121,9 +122,9 @@ class GP_Thing {
 	 * @return mixed an object, containing the selected row or false on error
 	 */
 	function many() {
-		global $gpdb;
+		global $wpdb;
 		$args = func_get_args();
-		return $this->map( $gpdb->get_results( $this->prepare( $args ) ) );
+		return $this->map( $wpdb->get_results( $this->prepare( $args ) ) );
 	}
 
 	function find_many( $conditions, $order = null ) {
@@ -139,9 +140,9 @@ class GP_Thing {
 	}
 
 	function query() {
-		global $gpdb;
+		global $wpdb;
 		$args = func_get_args();
-		return $gpdb->query( $this->prepare( $args ) );
+		return $wpdb->query( $this->prepare( $args ) );
 	}
 
 	/**
@@ -151,14 +152,15 @@ class GP_Thing {
 	 * @return mixed the object corresponding to the inserted row or false on error
 	 */
 	function create( $args ) {
-		global $gpdb;
+		global $wpdb;
 		$args = $this->prepare_fields_for_save( $args );
 		$args = $this->prepare_fields_for_create( $args );
-		$res = $gpdb->insert( $this->table, $args );
+		$field_formats = $this->get_db_field_formats( $args );
+		$res = $wpdb->insert( $this->table, $args, $field_formats );
 		if ( $res === false ) return false;
 		$class = $this->class;
 		$inserted = new $class( $args );
-		$inserted->id = $gpdb->insert_id;
+		$inserted->id = $wpdb->insert_id;
 		$inserted->after_create();
 		return $inserted;
 	}
@@ -182,16 +184,20 @@ class GP_Thing {
 	 * @param $data array associative array with fields as keys and updated values as values
 	 */
 	function update( $data, $where = null ) {
-		global $gpdb;
+		global $wpdb;
 		if ( !$data ) return false;
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
 		$fields_for_save = $this->prepare_fields_for_save( $data );
 		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
-		return !is_null( $gpdb->update( $this->table, $fields_for_save, $where ) );
+
+		$field_formats = $this->get_db_field_formats( $fields_for_save );
+		$where_formats = $this->get_db_field_formats( $where );
+
+		return !is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
 	}
 
 	function get( $thing_or_id ) {
-		global $gpdb;
+		global $wpdb;
 		if ( !$thing_or_id ) return false;
 		$id = is_object( $thing_or_id )? $thing_or_id->id : $thing_or_id;
 		return $this->find_one( array( 'id' => $id ) );
@@ -216,7 +222,7 @@ class GP_Thing {
 		$query = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
-		return $this->query( $query, $this->id );
+		return $this->query( $query );
 	}
 
 	// Fields handling
@@ -275,6 +281,11 @@ class GP_Thing {
 		return $args;
 	}
 
+	function get_db_field_formats( $args ) {
+		$formats = array_fill_keys( array_keys( $args ), '%s' );
+		return array_merge( $formats, array_fill_keys( $this->int_fields, '%d' ) );
+	}
+
 	function coerce( $thing ) {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
@@ -305,7 +316,7 @@ class GP_Thing {
 	}
 
 	function sql_condition_from_php_value( $php_value ) {
-		global $gpdb;
+		global $wpdb;
 		if ( is_array( $php_value ) ) {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
@@ -313,7 +324,7 @@ class GP_Thing {
 		if ( is_integer( $php_value ) || ctype_digit( $php_value) )
 		 	$sql_value = $php_value;
 		else
-			$sql_value = "'".$gpdb->escape( $php_value )."'";
+			$sql_value = "'" . esc_sql( $php_value )  ."'";
 		if ( is_null( $php_value ) ) {
 			$operator = 'IS';
 			$sql_value = 'NULL';
@@ -394,12 +405,13 @@ class GP_Thing {
 	}
 
 	function found_rows() {
-		global $gpdb;
-		return $gpdb->get_var("SELECT FOUND_ROWS();");
+		global $wpdb;
+		return $wpdb->get_var("SELECT FOUND_ROWS();");
 	}
 
 	function like_escape_printf( $s ) {
-		return str_replace( '%', '%%', like_escape( $s ) );
+		global $wpdb;
+		return str_replace( '%', '%%', $wpdb->esc_like( $s ) );
 	}
 
 	function apply_default_conditions( $conditions_str ) {

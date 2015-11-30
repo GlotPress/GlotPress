@@ -1655,15 +1655,6 @@ class GP_Locales {
 		$sa_in->wp_locale = 'sa_IN';
 		$sa_in->slug = 'sa-in';
 
-		$sd = new GP_Locale();
-		$sd->english_name = 'Sindhi';
-		$sd->native_name = 'سندھ';
-		$sd->lang_code_iso_639_1 = 'sd';
-		$sd->lang_code_iso_639_2 = 'snd';
-		$sd->country_code = 'pk';
-		$sd->wp_locale = 'sd_PK';
-		$sd->slug = 'sd';
-
 		$si = new GP_Locale();
 		$si->english_name = 'Sinhala';
 		$si->native_name = 'සිංහල';
@@ -1699,6 +1690,16 @@ class GP_Locales {
 		$sl->facebook_locale = 'sl_SI';
 		$sl->nplurals = 4;
 		$sl->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
+
+		$snd = new GP_Locale();
+		$snd->english_name = 'Sindhi';
+		$snd->native_name = 'سنڌي';
+		$snd->lang_code_iso_639_1 = 'sd';
+		$snd->lang_code_iso_639_2 = 'sd';
+		$snd->lang_code_iso_639_3 = 'snd';
+		$snd->country_code = 'pk';
+		$snd->wp_locale = 'snd';
+		$snd->slug = 'snd';
 
 		$so = new GP_Locale();
 		$so->english_name = 'Somali';
@@ -1903,6 +1904,14 @@ class GP_Locales {
 		$tuk->slug = 'tuk';
 		$tuk->nplurals = 2;
 		$tuk->plural_expression = '(n > 1)';
+
+		$twd = new GP_Locale();
+		$twd->english_name = 'Tweants';
+		$twd->native_name = 'Twents';
+		$twd->lang_code_iso_639_3 = 'twd';
+		$twd->country_code = 'nl';
+		$twd->wp_locale = 'twd';
+		$twd->slug = 'twd';
 
 		$tzm = new GP_Locale();
 		$tzm->english_name = 'Tamazight (Central Atlas)';

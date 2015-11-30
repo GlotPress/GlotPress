@@ -1,11 +1,31 @@
 <?php
-wp_enqueue_style( 'base' );
-wp_enqueue_script( 'jquery' );
+gp_enqueue_style( 'base' );
+gp_enqueue_script( 'jquery' );
 
 
 function prepare_original( $text ) {
-	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='".esc_attr(__('New line'))."'>&crarr;</span>\n", $text);
-	$text = str_replace( "\t", "<span class='invisibles' title='".esc_attr(__('Tab character'))."'>&rarr;</span>\t", $text);
+	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text);
+	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text);
+
+	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
+	$glossary_entries = array();
+	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+		$item_number = count( $glossary_entries );
+		$glossary_entries[ $item_number ] = $m[0];
+		return "<span GLOSSARY={$item_number}>";
+	}, $text );
+
+	// Wrap full HTML tags with a notranslate class
+	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
+	// Break out & back into notranslate for translatable attributes
+	$text = preg_replace( '/(title|aria-label)=([\'"])([^\\2]+?)\\2/', '\\1=\\2</span>\\3<span class="notranslate">\\2', $text );
+	// Wrap placeholders with notranslate
+	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
+
+	// Put the glossaries back!
+	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
+		return $glossary_entries[ $m[2] ];
+	}, $text );
 
 	return $text;
 }
@@ -44,7 +64,7 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 
 		//Replace terms in strings with markup
 		foreach( $matching_entries as $term => $glossary_data ) {
-			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( gp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
+			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8') . '">$1</span>';
 			$translations[$key]->singular_glossary_markup = preg_replace( '/\b(' . preg_quote( $term, '/' ) . '[es|s]?)(?![^<]*<\/span>)\b/iu', $replacement, $translations[$key]->singular_glossary_markup );
 
 			if ( $t->plural ) {
@@ -67,10 +87,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$warning = each( $referenceable );
 			?>
 			<div class="warning secondary">
-				<?php printf( __('<strong>Warning:</strong> %s'), esc_html( $warning['value'] ) ); ?>
+				<?php printf( __( '<strong>Warning:</strong> %s', 'glotpress' ), esc_html( $warning['value'] ) ); ?>
 
 				<?php if( $can_approve ): ?>
-					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e('Discard'); ?></a>
+					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
@@ -79,16 +99,16 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 		<p>
 			<?php
-			if ( $can_edit ) { 
-				gp_entry_actions(); 
-			} 
-			elseif ( GP::$user->logged_in() ) { 
-				_e('You are not allowed to edit this translation.'); 
-			} 
-			else { 
-				printf( __('You <a href="%s">have to log in</a> to edit this translation.'), gp_url_login() ); 
-			} 
-			?> 
+			if ( $can_edit ) {
+				gp_entry_actions();
+			}
+			elseif ( is_user_logged_in() ) {
+				_e( 'You are not allowed to edit this translation.', 'glotpress' );
+			}
+			else {
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url() ) );
+			}
+			?>
 		</p>
 	</div>
 	<?php
@@ -103,16 +123,16 @@ function esc_translation( $text ) {
 
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
-	return $status ? $status : __('untranslated');
+	return $status ? $status : __( 'untranslated', 'glotpress' );
 }
 
 function references( $project, $entry ) {
-	$show_references = apply_filters( 'show_references', (bool) $entry->references, $project, $entry );
+	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
 	if ( ! $show_references ) return;
 	?>
 	<dl><dt>
-	<?php _e('References:'); ?>
+	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 		<?php
 		foreach( $entry->references as $reference ):

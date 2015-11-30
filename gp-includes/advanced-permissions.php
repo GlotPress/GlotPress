@@ -10,7 +10,7 @@ function gp_recurse_project_permissions( $verdict, $args ) {
 	}
 	$project = GP::$project->get( $args['object_id'] );
 	if ( $project->parent_project_id ) {
-		return $args['user']->can( $args['action'], 'project', $project->parent_project_id );
+		return GP::$permission->user_can( $args['user'], $args['action'], 'project', $project->parent_project_id );
 	}
 	return false;
 }
@@ -22,7 +22,7 @@ function gp_recurse_validator_permission( $verdict, $args ) {
 	list( $project_id, $locale_slug, $set_slug ) = GP::$validator_permission->project_id_locale_slug_set_slug( $args['object_id'] );
 	$project = GP::$project->get( $project_id );
 	if ( $project->parent_project_id ) {
-		return $args['user']->can( $args['action'], $args['object_type'], $project->parent_project_id.'|'.$locale_slug.'|'.$set_slug );
+		return GP::$permission->user_can( $args['user'], $args['action'], $args['object_type'], $project->parent_project_id.'|'.$locale_slug.'|'.$set_slug );
 	}
 	return false;
 }
@@ -37,19 +37,19 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 		$set = $args['extra']['set'];
 	else
 		$set = GP::$translation_set->get( $args['object_id'] );
-	return $args['user']->can( 'approve', GP::$validator_permission->object_type,
+	return GP::$permission->user_can( $args['user'], 'approve', GP::$validator_permission->object_type,
 		GP::$validator_permission->object_id( $set->project_id, $set->locale, $set->slug ) );
 }
 
 function gp_allow_everyone_to_translate( $verdict, $args ) {
 	if ( 'edit' == $args['action'] && 'translation-set' == $args['object_type'] ) {
-		return GP::$user->logged_in();
+		return is_user_logged_in();
 	}
 
 	return $verdict;
 }
 
-add_filter( 'can_user', 'gp_recurse_project_permissions', 10, 2 );
-add_filter( 'can_user', 'gp_recurse_validator_permission', 10, 2 );
-add_filter( 'pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
-add_filter( 'pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );
+add_filter( 'gp_can_user', 'gp_recurse_project_permissions', 10, 2 );
+add_filter( 'gp_can_user', 'gp_recurse_validator_permission', 10, 2 );
+add_filter( 'gp_pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
+add_filter( 'gp_pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );
