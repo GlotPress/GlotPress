@@ -15,14 +15,6 @@ function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-/**
- * Adds a slash after the string, while makes sure not to double it
- * if it already exists
- */
-function gp_add_slash( $string ) {
-	return rtrim( $string, '/' ) . '/';
-}
-
 if ( function_exists('mb_strtolower') ):
 function gp_strtolower( $str ) {
 	return mb_strtolower( $str );
@@ -81,7 +73,7 @@ function gp_sanitize_for_url( $name ) {
 function gp_esc_attr_with_entities( $text ) {
 	$safe_text = wp_check_invalid_utf8( $text );
 	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES, false, true );
-	return apply_filters( 'attribute_escape', $safe_text, $text );
+	return apply_filters( 'gp_attribute_escape', $safe_text, $text );
 
 }
 

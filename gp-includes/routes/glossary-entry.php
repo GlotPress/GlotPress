@@ -24,7 +24,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
 
 		foreach ( $glossary_entries as $key => $entry ) {
-			$user = GP::$user->get( $entry->last_edited_by );
+			$user = get_userdata( $entry->last_edited_by );
 
 			if ( $user ) {
 				$glossary_entries[$key]->user_login = $user->user_login;
@@ -57,7 +57,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$new_glossary_entry = new GP_Glossary_Entry( gp_post('new_glossary_entry') );
-		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
+		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -67,11 +67,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 
 			if ( ! $created_glossary_entry ) {
-				$this->errors[] = __('Error in creating glossary entry!');
+				$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
 				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
 			}
 			else {
-				$this->notices[] = __('The glossary entry was created!');
+				$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
 				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
 			}
 		}
@@ -82,7 +82,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ){
-			return $this->die_with_error( __('The glossary entry cannot be found'), 200 );
+			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
 		}
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
@@ -90,14 +90,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
 
 		if ( ! $can_edit ) {
-			return $this->die_with_error( __('Forbidden'), 403 );
+			return $this->die_with_error( __( 'Forbidden', 'glotpress' ), 403 );
 		}
 
 		$project = GP::$project->get( $translation_set->project_id );
 		$locale  = GP_Locales::by_slug( $translation_set->locale );
 
 		$new_glossary_entry = new GP_Glossary_Entry( $ge );
-		$new_glossary_entry->last_edited_by = GP::$user->current()->id;
+		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -121,7 +121,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$ge     = $glossary_entry->reload();
 			$output = gp_tmpl_get_output( 'glossary-entry-row', get_defined_vars() );
 
-			echo gp_json_encode( $output );
+			echo wp_json_encode( $output );
 		}
 
 		exit();
@@ -132,7 +132,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ) {
-			return $this->die_with_error( __('The glossary entry cannot be found'), 200 );
+			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
 		}
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
@@ -140,11 +140,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
 
 		if ( ! $can_edit ) {
-			return $this->die_with_error( __('Forbidden'), 403 );
+			return $this->die_with_error( __( 'Forbidden', 'glotpress' ), 403 );
 		}
 
 		if ( ! $glossary_entry->delete() ) {
-			$this->errors[] = __('Error in deleting glossary entry!');
+			$this->errors[] = __( 'Error in deleting glossary entry!', 'glotpress' );
 		}
 
 		if ( $this->errors ) {
@@ -182,7 +182,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
 		$filename         = sprintf( '%s-%s-glossary.csv', str_replace( '/', '-', $project->path ), $locale->slug );
-		$last_modified    = gmdate( 'D, d M Y H:i:s', backpress_gmt_strtotime( GP::$glossary_entry->last_modified( $glossary ) ) ) . ' GMT';
+		$last_modified    = gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( GP::$glossary_entry->last_modified( $glossary ) ) ) . ' GMT';
 
 		$this->headers_for_download( $filename, $last_modified );
 		$this->print_export_file( $locale->slug, $glossary_entries );
@@ -234,14 +234,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
-			$this->redirect_with_error( __('Error uploading the file.') );
+			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
 			return;
 		}
 
 		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug );
 
 		if ( empty( $this->errors ) && is_int( $glossary_entries_added ) ) {
-			$this->notices[] = sprintf( __("%s glossary entries were added"), $glossary_entries_added );
+			$this->notices[] = sprintf( __( '%s glossary entries were added', 'glotpress' ), $glossary_entries_added );
 		}
 
 		$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
@@ -270,7 +270,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 		else if ( $data[1] !== $locale_slug ) {
-			$this->redirect_with_error( __('Unexpected values in the CSV file header row.') );
+			$this->redirect_with_error( __( 'Unexpected values in the CSV file header row.', 'glotpress' ) );
 			return;
 		}
 
@@ -286,7 +286,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				'translation' => $data[1],
 				'part_of_speech' => $data[2],
 				'comment' => $data[3],
-				'last_edited_by' => GP::$user->current()->id
+				'last_edited_by' => get_current_user_id()
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );

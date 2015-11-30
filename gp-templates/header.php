@@ -7,13 +7,13 @@
 	<?php gp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class( 'no-js' ); ?>>
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
 
 	<header class="gp-bar clearfix">
 		<h1>
 			<a href="<?php echo gp_url( '/' ); ?>" rel="home">
-				<?php echo gp_get_option('title'); ?>
+				<?php echo apply_filters( 'gp_home_title', 'GlotPress' ); ?>
 			</a>
 		</h1>
 
@@ -43,4 +43,5 @@
 			</div>
 		<?php endif; ?>
 
-		<?php do_action( 'after_notices' ); ?>
+		<?php do_action( 'gp_after_notices' ); ?>
+

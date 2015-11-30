@@ -1,9 +1,9 @@
 <?php
 class GP_Glossary extends GP_Thing {
 
-	var $table_basename = 'glossaries';
+	var $table_basename = 'gp_glossaries';
 	var $field_names = array( 'id', 'translation_set_id', 'description' );
-
+	var $int_fields = array( 'id', 'translation_set_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	function restrict_fields( $glossary ) {
@@ -67,17 +67,17 @@ class GP_Glossary extends GP_Thing {
 	 * @return mixed
 	 */
 	function copy_glossary_items_from( $source_glossary_id ) {
-		global $gpdb;
+		global $wpdb;
 
 		$current_date = $this->now_in_mysql_format();
 
 		return $this->query("
-			INSERT INTO $gpdb->glossary_items (
+			INSERT INTO $wpdb->gp_glossary_items (
 				id, term, type, examples, comment, suggested_translation, last_update
 			)
 			SELECT
 				%s AS id, term, type, examples, comment, suggested_translation, %s AS last_update
-			FROM $gpdb->glossary_items WHERE id = %s", $this->id, $current_date, $source_glossary_id
+			FROM $wpdb->gp_glossary_items WHERE id = %s", $this->id, $current_date, $source_glossary_id
 		);
 	}
 

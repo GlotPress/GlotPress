@@ -129,7 +129,7 @@ class GP_Format_Android extends GP_Format {
 	}
 
 	private function cmp_context( $a, $b ) {
-	    return strnatcmp( $a->context, $b->context );
+		return strnatcmp( $a->context, $b->context );
 	}
 
 	private function unescape( $string ) {

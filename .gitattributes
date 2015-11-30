@@ -1,0 +1,3 @@
+# In the tests/data folder there are some data files that need to use unix line endings to ensure the tests pass correctly.
+*.android.xml text eol=lf
+*.resx.xml text eol=lf

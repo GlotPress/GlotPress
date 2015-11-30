@@ -31,7 +31,7 @@ class GP_Route {
 	}
 
 	function before_request() {
-		do_action( 'before_request', $this->class_name, $this->last_method_called );
+		do_action( 'gp_before_request', $this->class_name, $this->last_method_called );
 	}
 
 	function after_request() {
@@ -42,7 +42,7 @@ class GP_Route {
 		if ( !headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
-		do_action( 'after_request', $this->class_name, $this->last_method_called );
+		do_action( 'gp_after_request', $this->class_name, $this->last_method_called );
 	}
 
 	/**
@@ -77,7 +77,7 @@ class GP_Route {
 	}
 
 	function can( $action, $object_type = null, $object_id = null ) {
-		return GP::$user->current()->can( $action, $object_type, $object_id );
+		return GP::$permission->current_user_can( $action, $object_type, $object_id );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class GP_Route {
 	function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
-			$this->redirect_with_error( __('You are not allowed to do that!'), $url );
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ), $url );
 			return true;
 		}
 		return false;
@@ -106,7 +106,7 @@ class GP_Route {
 	}
 
 	function logged_in_or_forbidden() {
-		if ( !GP::$user->logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 			$this->die_with_error( 'Forbidden', 403 );
 		}
 	}
@@ -126,8 +126,10 @@ class GP_Route {
 		$this->set_notices_and_errors();
 		// TODO: do not redirect to projects, but to /
 		// currently it goes to /projects, because / redirects too and the notice is gone
-		if ( is_null( $url ) )  $url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
-		gp_redirect( $url );
+		if ( is_null( $url ) ) {
+			$url = isset( $_SERVER['HTTP_REFERER'] )? $_SERVER['HTTP_REFERER'] : gp_url( '/projects' );
+		}
+		wp_redirect( $url );
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 
@@ -189,7 +191,7 @@ class GP_Route {
 
 	function die_with_404( $args = array() ) {
 		status_header( 404 );
-		$this->tmpl( '404', $args + array( 'title' => __('Not Found'), 'http_status' => 404 ) );
+		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
 		$this->exit_();
 	}
 
