@@ -17,7 +17,7 @@ We are still in the process of converting GlotPress into a WordPress plugin. We'
 
 If you'd like to work on something and there's not currently an issue for it, open a new issue and describe your proposed change before jumping into coding.
 
-This plugin wouldn't be possible without all the hard word that has gone in to the standalone version of GlotPress and we'd like to thank all those who contribute to it.
+This plugin wouldn't be possible without all the hard work that has gone in to the standalone version of GlotPress and we'd like to thank all those who contribute to it.
 
 = Communication =
 
