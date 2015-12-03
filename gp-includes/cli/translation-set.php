@@ -103,7 +103,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		$po->import_from_file( $args[2] );
 		$added = $translation_set->import( $po );
 		/* translators: %s: Number of imported translations */
-		WP_CLI::line( sprintf( _n( '%s translation were added', '%s translations were added', $added, 'glotpress' ), $added ) );
+		WP_CLI::line( sprintf( _n( '%s translation was added', '%s translations were added', $added, 'glotpress' ), $added ) );
 	}
 
 	/**
