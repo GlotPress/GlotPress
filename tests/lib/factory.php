@@ -23,19 +23,11 @@ class GP_UnitTest_Factory_For_Project extends GP_UnitTest_Factory_For_Thing {
 	}
 }
 
-class GP_UnitTest_Factory_For_User extends GP_UnitTest_Factory_For_Thing {
-	function __construct( $factory = null, $thing = null ) {
-		parent::__construct( $factory, $thing? $thing : new GP_User );
-		$this->default_generation_definitions = array(
-			'user_login' => new GP_UnitTest_Generator_Sequence( 'User %s' ),
-			'user_pass' => 'a',
-			'user_email' => new GP_UnitTest_Generator_Sequence( 'user_%s@example.org' ),
-		);
-	}
+class GP_UnitTest_Factory_For_User extends WP_UnitTest_Factory_For_User {
 
 	function create_admin( $args = array() ) {
 		$user = $this->create( $args );
-		GP::$permission->create( array( 'user_id' => $user->id, 'action' => 'admin' ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'admin' ) );
 		return $user;
 	}
 }

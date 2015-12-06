@@ -182,7 +182,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	function test_propagate_across_projects_with_missing_permissions() {
 		$user = $this->factory->user->create();
 		add_filter( 'gp_set_cookie', '__return_false' );
-		wp_set_current_user( $user->id );
+		wp_set_current_user( $user );
 		remove_filter( 'gp_set_cookie', '__return_false' );
 
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
@@ -192,7 +192,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		// User has only validator permissions for project 1
 		GP::$validator_permission->create( array(
-			'user_id'     => $user->id,
+			'user_id'     => $user,
 			'action'      => 'approve',
 			'project_id'  => $set1->project_id,
 			'locale_slug' => $set1->locale,

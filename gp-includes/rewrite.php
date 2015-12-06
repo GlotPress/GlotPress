@@ -1,6 +1,9 @@
 <?php
 /**
- * Defines WordPress rewrites and query vars
+ * Defines GlotPress rewrite rules and query vars.
+ *
+ * @package GlotPress
+ * @subpackage Rewrite
  */
 
 
@@ -61,8 +64,8 @@ function gp_rewrite_rules() {
  * @since 1.0.0
  */
 function gp_query_vars( $query_vars ) {
-    $query_vars[] = 'gp_route';
-    return $query_vars;
+	$query_vars[] = 'gp_route';
+	return $query_vars;
 }
 
 /**
@@ -71,9 +74,9 @@ function gp_query_vars( $query_vars ) {
  * @since 1.0.0
  */
 function gp_run_route() {
-    gp_populate_notices();
-    global $wp;
-    if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
-        GP::$router->route();
-    }
+	gp_populate_notices();
+	global $wp;
+	if ( array_key_exists( 'gp_route', $wp->query_vars ) && GP_ROUTING && ! is_admin() && ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_CRON' ) ) {
+		GP::$router->route();
+	}
 }

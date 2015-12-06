@@ -260,7 +260,7 @@ class GP_Translation extends GP_Thing {
 			return;
 		}
 
-		$user = GP::$user->current();
+		$user = wp_get_current_user();
 
 		$original = GP::$original->get( $this->original_id );
 		$originals_in_other_projects = $original->get_matching_originals_in_other_projects();
@@ -280,7 +280,7 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				if ( is_user_logged_in() && ! $user->can( 'approve', 'translation-set', $o_translation_set->id ) ) {
+				if ( is_user_logged_in() && ! GP::$permission->user_can( $user, 'approve', 'translation-set', $o_translation_set->id ) ) {
 					$copy_status = 'waiting';
 				} else {
 					$copy_status = 'current';
