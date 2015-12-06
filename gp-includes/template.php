@@ -464,9 +464,9 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  * @since 1.0.0
  *
  * @return array $default {
- *	   An array with each $key being the option tag and the $value being the function name to retreive the list of options available for option type.
+ *	   An array with each $key being the option tag and the $value being the function name to retrieve the list of options available for option type.
  *
- *     @type string $tag		The function name to retreive the list of options available for the $tag.
+ *     @type string $tag		The function name to retrieve the list of options available for the $tag.
  * }
  */
 function gp_sort_options() {
@@ -481,9 +481,9 @@ function gp_sort_options() {
 	 * @since 1.0.0
 	 *
 	 * @param array $args {
-	 *	   An array with each $key being the option tag and the $value being the function name to retreive the list of options available for option type.
+	 *	   An array with each $key being the option tag and the $value being the function name to retrieve the list of options available for option type.
 	 *
-	 *     @type string $tag		The function name to retreive the list of options available for the $tag.
+	 *     @type string $tag		The function name to retrieve the list of options available for the $tag.
 	 * }
 	 */
 	$default = apply_filters( 'gp_sort_options', $default );
@@ -621,24 +621,24 @@ function gp_validate_sort_options( $options, $default = null ) {
 	
 	$options_list = gp_sort_options();
 	
-	// Loop through the list of valide options.
+	// Loop through the list of valid options.
 	foreach ( $options_list as $key => $option_function ) {
 		// Check to see if the option (represented by $key) exists in the $options that were passed in.
 		if ( array_key_exists( $key, $options ) ) {
-			// Get the list of values for the option by calling the assocaited function.
+			// Get the list of values for the option by calling the associated function.
 			$option_values = call_user_func( $option_function, $options[ $key ] );
 			
-			// Now check to see if the value that was passed in is a valide value.
+			// Now check to see if the value that was passed in is a valid value.
 			if ( array_key_exists( $options[ $key ], $option_values ) ) {
 				/* Yes?  Then let's set it to what was returned from the function.  
 				
-				   Note this may be different that what passed in if validation occured and updated the value, 
+				   Note this may be different that what passed in if validation occurred and updated the value, 
 				   for example if a userid was passed in but was not found the options function may return
-				   a blank value instead of an non existant user.
+				   a blank value instead of an non existent user.
 				 */
 				$validated[ $key ] = $option_values[ $options[ $key ] ];
 			} else {
-				// No? Then use the default value so we pass something back that's valide.
+				// No? Then use the default value so we pass something back that's valid.
 				$validated[ $key ] = $default[ $key ];
 			}
 		}
@@ -680,9 +680,9 @@ function gp_default_per_page() {
  * @since 1.0.0
  *
  * @return array $default {
- *	   An array with each $key being the filter tag and the $value being the function name to retreive the list of options available for filter type.
+ *	   An array with each $key being the filter tag and the $value being the function name to retrieve the list of options available for filter type.
  *
- *     @type string $tag		The function name to retreive the list of filters available for the $tag.
+ *     @type string $tag		The function name to retrieve the list of filters available for the $tag.
  * }
  */
 function gp_filter_options() {
@@ -700,9 +700,9 @@ function gp_filter_options() {
 	 * @since 1.0.0
 	 *
 	 * @param array $args {
-	 *	   An array with each $key being the filter tag and the $value being the function name to retreive the list of options available for filter type.
+	 *	   An array with each $key being the filter tag and the $value being the function name to retrieve the list of options available for filter type.
 	 *
-	 *     @type string $tag		The function name to retreive the list of options available for the $tag.
+	 *     @type string $tag		The function name to retrieve the list of options available for the $tag.
 	 * }
 	 */
 	$default = apply_filters( 'gp_filter_options', $default );
@@ -773,27 +773,27 @@ function gp_validate_filter_options( $options, $default = null ) {
 	
 	$options_list = gp_filter_options();
 
-	// Loop through the list of valide options.
+	// Loop through the list of valid options.
 	foreach ( $options_list as $key => $option_function ) {
 		// Check to see if the option (represented by $key) exists in the $options that were passed in.
 		if ( array_key_exists( $key, $options ) ) {
-			// Get the list of values for the option by calling the assocaited function.
+			// Get the list of values for the option by calling the associated function.
 			$option_values = call_user_func( $option_function, $options[ $key ] );
 			
-			// Now check to see if the value that was passed in is a valide value.
+			// Now check to see if the value that was passed in is a valid value.
 			if ( is_array( $option_values ) && array_key_exists( $options[ $key ], $option_values ) ) {
 				// Yes and it's an array?  Then let's set it to the $key value.  
 				$validated[ $key ] = $options[ $key ];
 			} else if ( ! is_array( $option_values ) && null !== $option_values ) {
 				/* Yes but it's not an array?  Then let's set it to the returned value.  
 				
-				   Note this may be different that what passed in if validation occured and updated the value, 
+				   Note this may be different that what passed in if validation occurred and updated the value, 
 				   for example if a userid was passed in but was not found the options function may return
-				   a blank value instead of an non existant user.
+				   a blank value instead of an non existent user.
 				 */
 				$validated[$key] = $option_values;
 			} else {
-				// No? Then use the default value so we pass something back that's valide.
+				// No? Then use the default value so we pass something back that's valid.
 				$validated[ $key ] = $default[ $key ];
 			}
 		}
@@ -817,7 +817,7 @@ function gp_validate_filter_options( $options, $default = null ) {
 /**
  * Returns the available term filter options for the translation page.
  *
- * Since the term filter option is a free form text box with no vaidation possible, just return the value that was passed in.
+ * Since the term filter option is a free form text box with no validation possible, just return the value that was passed in.
  *
  * @since 1.0.0
  *
@@ -848,7 +848,7 @@ function gp_filter_term_options( $value = null ) {
 /**
  * Returns the available user filter options for the translation page.
  *
- * Since the user filter option is a free form text box vaidation the user and then return the value that was passed in.
+ * Since the user filter option is a free form text box validation the user and then return the value that was passed in.
  *
  * @since 1.0.0
  *
