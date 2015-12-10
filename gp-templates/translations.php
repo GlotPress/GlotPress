@@ -184,10 +184,24 @@ $i = 0;
 ?>
 	<div class="box status-<?php echo $status; ?>"></div>
 	<div>
-		<?php if ('current' == $status ) { _e( 'Current', 'glotpress' ); } ?>
-		<?php if ('waiting' == $status ) { _e( 'Waiting', 'glotpress' ); } ?>
-		<?php if ('fuzzy' == $status ) { _e( 'Fuzzy', 'glotpress' ); } ?>
-		<?php if ('old' == $status ) { _e( 'Old', 'glotpress' ); } ?>
+<?php
+		switch( $status ) {
+			case 'current':
+				_e( 'Current', 'glotpress' );
+				break;
+			case 'waiting':
+				_e( 'Waiting', 'glotpress' );
+				break;
+			case 'fuzzy':
+				_e( 'Fuzzy', 'glotpress' );
+				break;
+			case 'old':
+				_e( 'Old', 'glotpress' );
+				break;
+			default:
+				echo $status;
+		}
+?>
 	</div>
 <?php endforeach; ?>
 	<div class="box has-warnings"></div>
