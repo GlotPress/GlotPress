@@ -17,7 +17,7 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 	function test_import_should_save_user_info() {
 		$user = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
-		wp_set_current_user( $user->id );
+		wp_set_current_user( $user );
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
@@ -27,7 +27,7 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$set->import( $translations_for_import );
 
 		$translations = GP::$translation->all();
-		$this->assertEquals( $translations[0]->user_id, $user->id );
+		$this->assertEquals( $translations[0]->user_id, $user );
 	}
 
 	function test_import_should_save_fuzzy() {
@@ -87,4 +87,39 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $translations_added, 0 );
 	}
 
+	/**
+	 * @ticket 512
+	 */
+	function test_filter_translation_set_import_fuzzy_translations() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$translations_for_import = new Translations;
+
+		// Create 3 originals and 3 fuzzy translations
+		for ( $i = 0; $i < 3; $i++ ) {
+			$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => "A string #$i" ) );
+			$translations_for_import->add_entry( array(
+				'singular' => "A string #$i",
+				'translations' => array( "A translated string #$i" ),
+				'flags' => array( 'fuzzy' )
+			) );
+		}
+
+		// Create 3 originals and 3 non-fuzzy translations
+		for ( $i = 0; $i < 3; $i++ ) {
+			$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => "A second string #$i" ) );
+			$translations_for_import->add_entry( array(
+				'singular' => "A second string #$i",
+				'translations' => array( "A second translated string #$i" ),
+			) );
+		}
+
+		// Import 6 translations
+		add_filter( 'gp_translation_set_import_fuzzy_translations', '__return_false' );
+		$translations_added = $set->import( $translations_for_import );
+		remove_filter( 'gp_translation_set_import_fuzzy_translations', '__return_false' );
+
+		// Expect only 3 imported translations, fuzzy translations are ignored.
+		$this->assertEquals( $translations_added, 3 );
+	}
 }

@@ -105,6 +105,29 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $fuzzy_translations ) );
 	}
 
+	/**
+	 * @ticket 508
+	 */
+	function test_import_should_clean_project_count_cache() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+obsolete', 'singular' => 'baba baba' ) );
+
+		$count = $original->count_by_project_id( $set->project->id );
+		$this->assertEquals( 0, $count );
+
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => 'baba baba' ) ) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 1, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+
+		$count = $original->count_by_project_id( $set->project->id );
+		$this->assertEquals( 1, $count );
+	}
+
 	function test_import_should_remove_from_active_missing_strings() {
 		$project = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active' ) );

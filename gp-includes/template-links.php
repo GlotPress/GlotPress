@@ -90,7 +90,7 @@ function gp_link_set_edit() {
 }
 
 function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = array() ) {
-	if ( ! GP::$user->current()->can( 'approve', 'translation-set', $set->id ) ) {
+	if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $set->id ) ) {
 		return '';
 	}
 
