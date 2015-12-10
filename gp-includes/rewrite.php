@@ -18,9 +18,10 @@ function gp_generate_rewrite_rules( $gp_base = false ) {
 	}
 
 	if ( ! $gp_base ) {
-		$match_regex = '^(.*)$';
+		$match_regex[] = '^(.*)$';
 	} else {
-		$match_regex = '^' . $gp_base . '/?(.*)$';
+		$match_regex[] = '^' . $gp_base . '$';
+		$match_regex[] = '^' . $gp_base . '\/+(.*)$';
 	}
 
 	return $match_regex;
@@ -44,7 +45,9 @@ function gp_rewrite_rules() {
 
 	$match_regex = gp_generate_rewrite_rules( $gp_base );
 
-	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
+	foreach ( $match_regex as $regex ) {
+		add_rewrite_rule( $regex, 'index.php?gp_route=$matches[1]', 'top' );
+	}
 
 	/*
 	 * Check to see if the rewrite rule has changed, if so, update the option
