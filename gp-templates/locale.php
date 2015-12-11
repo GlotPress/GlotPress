@@ -2,7 +2,7 @@
 gp_title( sprintf( __( 'Projects translated to %s &lt; GlotPress', 'glotpress' ),  esc_html( $locale->english_name ) ) );
 
 $breadcrumb = array();
-$breadcrumb[] = gp_link_get( '/languages', __( 'Locales', 'glotpress' ) );
+$breadcrumb[] = gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) );
 if ( 'default' == $current_set_slug ) {
 	$breadcrumb[] = esc_html( $locale->english_name );
 } else {
