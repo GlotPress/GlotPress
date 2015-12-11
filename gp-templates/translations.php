@@ -183,7 +183,12 @@ $i = 0;
 		if ( 'rejected' == $status ) continue;
 ?>
 	<div class="box status-<?php echo $status; ?>"></div>
-	<div><?php echo $status; ?></div>
+	<div>
+		<?php if ('current' == $status ) { _e( 'Current', 'glotpress' ); } ?>
+		<?php if ('waiting' == $status ) { _e( 'Waiting', 'glotpress' ); } ?>
+		<?php if ('fuzzy' == $status ) { _e( 'Fuzzy', 'glotpress' ); } ?>
+		<?php if ('old' == $status ) { _e( 'Old', 'glotpress' ); } ?>
+	</div>
 <?php endforeach; ?>
 	<div class="box has-warnings"></div>
 	<div><?php _e( 'with warnings', 'glotpress' ); ?></div>
