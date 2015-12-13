@@ -15,15 +15,12 @@ gp_tmpl_header();
 <h4 id="validators"><?php _e( 'Validators for this project', 'glotpress' ); ?></h4>
 	<?php endif; ?>
 <ul class="permissions">
-	<?php foreach( $permissions as $permission ): ?>
+	<?php foreach( $permissions as $permission ):
+				$user_link = '<span class="user">' . sprintf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ) . '</span>';
+				$remove_link = '<a href="' . gp_url_join( gp_url_current(), '-delete/'.$permission->id ) . '" class="action delete">' . __('Remove', 'glotpress' ) . '</a>';
+	?>
 		<li>
-			<span class="permission-action"><?php _e( 'user', 'glotpress' ); ?></span>
-			<span class="user"><?php printf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ); ?></span>
-			<span class="permission-action"><?php printf( __( 'can %s strings with locale', 'glotpress' ), esc_html( $permission->action ) ); ?></span>
-			<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
-			<span class="permission-action"><?php _e( 'and slug', 'glotpress' ); ?></span>
-			<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
-			<a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); ?>" class="action delete"><?php _e( 'Remove', 'glotpress' ); ?></a>
+			<span class="permission-action"><?php echo sprintf( __( 'user %s can %s strings with locale %s and slug %s %s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', $remove_link ); ?></span>
 		</li>
 	<?php endforeach; ?>
 </ul>
@@ -31,16 +28,11 @@ gp_tmpl_header();
 	<?php  if ( $parent_permissions ): ?>
 <h4 id="validators"><?php _e( 'Validators for parent projects', 'glotpress' ); ?></h4>
 <ul class="permissions">
-		<?php foreach( $parent_permissions as $permission ): ?>
+		<?php foreach( $parent_permissions as $permission ): 
+				$user_link = '<span class="user">' . sprintf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ) . '</span>';
+		?>
 			<li>
-				<span class="permission-action"><?php _e( 'user', 'glotpress' ); ?></span>
-				<span class="user"><?php printf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ); ?></span>
-				<span class="permission-action"><?php printf(__( 'can %s strings with locale', 'glotpress' ), esc_html( $permission->action )); ?></span>
-				<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
-				<span class="permission-action"><?php _e( 'and slug', 'glotpress' ); ?></span>
-				<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
-				<span class="permission-action"><?php _e( 'in the project', 'glotpress' ); ?> </span>
-				<span class="user"><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></span>
+				<span class="permission-action"><?php echo sprintf( __( 'user %s can %s strings with locale %s and slug %s in the project %s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', '<span class="user">' . gp_link_project( $permission->project, esc_html( $permission->project->name ) ) . '</span>'  ); ?></span>
 			</li>
 		<?php endforeach; ?>
 </ul>
