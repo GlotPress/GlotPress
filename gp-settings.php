@@ -40,6 +40,15 @@ require_once( GP_PATH . GP_INC . 'misc.php' );
 require_once( GP_PATH . GP_INC . 'url.php' );
 require_once( GP_PATH . GP_INC . 'strings.php' );
 
+// We need strings.php loaded for gp_endswith() to be defined.
+if ( !defined( 'GP_PERMALINK_ENDING' ) ) {
+	if ( gp_endswith( get_option( 'permalink_structure' ), '/' ) ) {
+		define( 'GP_PERMALINK_ENDING', '/' );
+	} else {
+		define( 'GP_PERMALINK_ENDING', '' );
+	}
+}
+
 require_once( GP_PATH . GP_INC . 'template.php' );
 require_once( GP_PATH . GP_INC . 'template-links.php' );
 
