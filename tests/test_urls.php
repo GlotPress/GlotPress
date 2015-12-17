@@ -4,7 +4,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 
 	function setUp() {
 	    $this->sub_dir = '/glotpress/';
-		$this->url = 'http://example.org' . $this->sub_dir;
+		$this->url = user_trailingslashit( 'http://example.org' . $this->sub_dir );
 		parent::setUp();
 	}
 
@@ -20,7 +20,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 
 	function test_gp_url_should_properly_add_query_string_if_path_is_empty() {
-		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', '?a=b' ) );
+		$this->assertEquals( user_trailingslashit( $this->sub_dir ) . '?a=b', gp_url( '', '?a=b' ) );
 	}
 
 	function test_gp_url_should_add_question_mark_if_query_string_does_not_have_one() {
@@ -28,11 +28,11 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 
 	function test_gp_url_should_expand_query_array() {
-		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', array('a' => 'b') ) );
+		$this->assertEquals( user_trailingslashit( $this->sub_dir ) . '?a=b', gp_url( '', array('a' => 'b') ) );
 	}
 
 	function test_gp_url_should_add_ampersand_if_path_is_empty_and_query_array_has_more_than_one_value() {
-		$this->assertEquals( $this->sub_dir . '?a=b&b=c', gp_url( '', array('a' => 'b', 'b' => 'c') ) );
+		$this->assertEquals( user_trailingslashit( $this->sub_dir ) . '?a=b&b=c', gp_url( '', array('a' => 'b', 'b' => 'c') ) );
 	}
 
 	function test_gp_url_should_add_ampersand_if_query_array_has_more_than_one_value() {
@@ -68,25 +68,25 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 
 	function test_gp_url_join_should_not_discard_slash_if_the_whole_first_component_is_slash() {
-			$this->assertEquals( '/baba/', gp_url_join( '/baba/', '/' ) );
-			$this->assertEquals( '/baba/', gp_url_join( '/baba/', '//' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '/baba/', '/' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '/baba/', '//' ) );
 	}
 
 	function test_gp_url_join_should_not_discard_slash_if_the_whole_last_component_is_slash() {
-			$this->assertEquals( '/baba/', gp_url_join( '/', '/baba/' ) );
-			$this->assertEquals( '/baba/', gp_url_join( '//', '/baba/' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '/', '/baba/' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '//', '/baba/' ) );
 	}
 
 	function test_gp_url_join_should_return_only_one_slash_if_the_only_component_is_a_slash() {
-		$this->assertEquals( '/', gp_url_join( '/' ) );
+		$this->assertEquals( user_trailingslashit( '/' ), gp_url_join( '/' ) );
 	}
 
 	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_slashes() {
-		$this->assertEquals( '/', gp_url_join( '/', '/' ) );
+		$this->assertEquals( user_trailingslashit( '/' ), gp_url_join( '/', '/' ) );
 	}
 
 	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_multiple_slashes() {
-		$this->assertEquals( '/', gp_url_join( '///', '///' ) );
+		$this->assertEquals( user_trailingslashit( '/' )	, gp_url_join( '///', '///' ) );
 	}
 
 	function test_gp_url_join_should_skip_empty_components() {

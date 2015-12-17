@@ -24,3 +24,6 @@ add_action( 'template_redirect', 'gp_run_route' );
 
 // Users
 add_action( 'deleted_user', 'gp_delete_user_permissions' );
+
+// Query
+add_action( 'pre_get_posts', 'gp_not_is_home' );

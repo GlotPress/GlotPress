@@ -119,38 +119,3 @@ if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
 	require_once GP_PATH . GP_INC . 'schema.php';
 	gp_upgrade_db();
 }
-function gp_run_route() {
-	gp_populate_notices();
-	if ( is_glotpress() ) {
-		GP::$router->route();
-	}
-}
-add_action( 'template_redirect', 'gp_run_route' );
-
-/**
- * Make WordPress understand GlotPress pages are not the home page.
- * 
- * @since 1.0
- */
-function gp_not_is_home( $query ) {
-	global $wp;
-	if ( is_glotpress() && $query->is_home() && $query->is_main_query() ) {
-		$query->is_home = false;
-	}
-}
-add_action( 'pre_get_posts', 'gp_not_is_home' );
-
-/**
- * Determine if the page requested is handled by GlotPress.
- * 
- * @since 1.0
- */
-function is_glotpress() {
-	global $wp;
-
-	if ( ! is_admin() && GP_ROUTING && null != $wp->query_vars
-		&& array_key_exists( 'gp_route', $wp->query_vars ) ) {
-		return true;
-	}
-	return false;
-}

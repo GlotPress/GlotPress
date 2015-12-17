@@ -29,6 +29,10 @@ function gp_url_join() {
 	$components = func_get_args();
 	$components_in_flat_array = array_filter( gp_array_flatten( $components ) );
 	$components_with_slashes = implode( '/', $components_in_flat_array );
+
+	// Make sure all instances of the final URL are returned with a proper permalink ending.
+	$components_with_slashes = user_trailingslashit( $components_with_slashes );
+	
 	$components_without_consecutive_slashes = preg_replace( '|/{2,}|', '/', $components_with_slashes );
 	$components_without_consecutive_slashes = str_replace( array( 'http:/', 'https:/' ), array( 'http://', 'https://' ), $components_without_consecutive_slashes );
 	return $components_without_consecutive_slashes;
@@ -48,15 +52,12 @@ function gp_url_add_path_and_query( $base, $path, $query ) {
 	// todo: same domain with current url?
 	$url = gp_url_join( $base, $path );
 
-	// Respect the WordPress permalink settings
-	if ( gp_endswith( get_option( 'permalink_structure' ), '/' ) ) {
-		$url .= '/';
+	if ( $query && is_array( $query ) ) {
+		$url = add_query_arg( urlencode_deep( $query ), $url );
+	} elseif ( $query ) {
+		$url .= '?' . ltrim( $query, '?' );
 	}
 
-	if ( $query && is_array( $query ) )
-		$url = add_query_arg( urlencode_deep( $query ), $url );
-	elseif ( $query )
-		$url .= '?' . ltrim( $query, '?' );
 	return apply_filters( 'gp_url_add_path_and_query', $url, $base, $path, $query );
 }
 
