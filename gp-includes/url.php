@@ -47,10 +47,18 @@ function gp_url( $path = '/', $query = null ) {
 function gp_url_add_path_and_query( $base, $path, $query ) {
 	// todo: same domain with current url?
 	$url = gp_url_join( $base, $path );
-	if ( $query && is_array( $query ) )
+
+	// Respect the WordPress permalink settings
+	if ( gp_endswith( get_option( 'permalink_structure' ), '/' ) ) {
+		$url .= '/';
+	}
+
+	if ( $query && is_array( $query ) ) {
 		$url = add_query_arg( urlencode_deep( $query ), $url );
-	elseif ( $query )
+	} elseif ( $query ) {
 		$url .= '?' . ltrim( $query, '?' );
+	}
+
 	return apply_filters( 'gp_url_add_path_and_query', $url, $base, $path, $query );
 }
 

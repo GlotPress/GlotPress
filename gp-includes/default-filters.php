@@ -21,4 +21,4 @@ add_action( 'gp_head', 'gp_print_scripts' );
 // Rewrite rules
 add_filter( 'query_vars', 'gp_query_vars' );
 add_action( 'template_redirect', 'gp_run_route' );
-
+add_action( 'pre_get_posts', 'gp_not_is_home' );
