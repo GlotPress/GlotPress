@@ -29,3 +29,17 @@ function gp_init() {
 	 */
 	do_action( 'gp_init' );
 }
+
+/**
+ * Deletes user's permissions when they are deleted from WordPress
+ * via WP's 'deleted_user' action.
+ *
+ * @since 1.0.0
+ */
+function gp_delete_user_permissions( $user_id ) {
+	$permissions = GP::$permission->find_many( array( 'user_id' => $user_id ) );
+
+	foreach( $permissions as $permission ) {
+		$permission->delete();
+	}
+}
