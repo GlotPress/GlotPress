@@ -1,6 +1,9 @@
 <?php
 /**
- * Meta and options functions
+ * Functions for retrieving and manipulating metadata of various GlotPress object types.
+ *
+ * @package GlotPress
+ * @subpackage Meta
  */
 
 

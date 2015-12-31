@@ -32,13 +32,13 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 
 	function set_normal_user_as_current() {
 		$user = $this->factory->user->create();
-		wp_set_current_user( $user->id );
+		wp_set_current_user( $user );
 		return $user;
 	}
 
 	function set_admin_user_as_current() {
 		$admin = $this->factory->user->create_admin();
-		wp_set_current_user( $admin->id );
+		wp_set_current_user( $admin );
 		return $admin;
 	}
 }

@@ -4,11 +4,11 @@
  */
 /*
 Plugin Name: GlotPress
-Plugin URI: http://glotpress.org/
-Description: Translation app.
-Version: 0.1
-Author: deliciousbrains
-Author URI: http://deliciousbrains.com
+Plugin URI: https://wordpress.org/plugins/glotpress/
+Description: GlotPress is a tool to help translators collaborate.
+Version: 1.0-alpha
+Author: the GlotPress team
+Author URI: http://glotpress.org
 License: GPLv2 or later
 Text Domain: glotpress
 */
@@ -44,10 +44,10 @@ require_once GP_PATH . 'gp-settings.php';
  * @since 1.0.0
  */
 function gp_activate_plugin() {
-    $admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
-    if ( ! $admins ) {
-        GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
-    }
+	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
+	if ( ! $admins ) {
+		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
+	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
 

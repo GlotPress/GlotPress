@@ -19,9 +19,9 @@ class GP_Router {
 	}
 
 	/**
-	* Returns the current request URI path, relative to
-	* the application URI and without the query string
-	*/
+	 * Returns the current request URI path, relative to
+	 * the application URI and without the query string
+	 */
 	public function request_uri() {
 		global $wp;
 		return urldecode( '/' . rtrim( $wp->query_vars['gp_route'], '/' ) );
