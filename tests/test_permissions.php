@@ -104,4 +104,22 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		unset($fields['id']);
 	}
 
+	/**
+	 * @ticket gh194
+	 */
+	function test_permissions_delete_on_user_delete() {
+		$user = $this->factory->user->create();
+		$project = $this->factory->project->create();
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve',
+			'project_id' => $project->id, 'locale_slug' => 'bg', 'set_slug' => 'default' ) );
+
+		$permissions = GP::$permission->find_many( array( 'user_id' => $user ) );
+		$this->assertSame( 1, count( $permissions ) );
+
+		wp_delete_user( $user );
+
+		$permissions = GP::$permission->find_many( array( 'user_id' => $user ) );
+		$this->assertSame( 0, count( $permissions ) );
+	}
 }

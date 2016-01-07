@@ -21,3 +21,6 @@ add_action( 'gp_head', 'gp_print_scripts' );
 // Rewrite rules
 add_filter( 'query_vars', 'gp_query_vars' );
 add_action( 'template_redirect', 'gp_run_route' );
+
+// Users
+add_action( 'deleted_user', 'gp_delete_user_permissions' );
