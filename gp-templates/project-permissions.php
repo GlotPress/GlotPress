@@ -23,7 +23,7 @@ gp_tmpl_header();
 			<span class="permission-action"><?php 
 			
 			/* translators: 1: user nice name, 2: permission type, 3: locale slug, 4: translation set slug 5: Remove button/link */
-			echo sprintf( __( 'user %1$s can %2$s strings with locale %3$s and slug %4$s %5$s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', $remove_link ); 
+			printf( __( 'user %1$s can %2$s strings with locale %3$s and slug %4$s %5$s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', $remove_link ); 
 			
 			?></span>
 		</li>
@@ -40,7 +40,7 @@ gp_tmpl_header();
 				<span class="permission-action"><?php 
 				
 				/* translators: 1: user nice name, 2: permission type, 3: locale id, 4: translation set slug 5: Link to project */
-				echo sprintf( __( 'user %1$s can %2$s strings with locale %3$s and slug %4$s in the project %5$s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', '<span class="user">' . gp_link_project( $permission->project, esc_html( $permission->project->name ) ) . '</span>'  );
+				printf( __( 'user %1$s can %2$s strings with locale %3$s and slug %4$s in the project %5$s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', '<span class="user">' . gp_link_project( $permission->project, esc_html( $permission->project->name ) ) . '</span>'  );
 
 				?></span>
 			</li>
