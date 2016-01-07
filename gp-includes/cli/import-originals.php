@@ -34,7 +34,7 @@ class GP_CLI_Import_Originals extends WP_CLI_Command {
 
 		$translations = $format->read_originals_from_file( $args[1], $project );
 		if ( !$translations ) {
-			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
+			WP_CLI::error( __( 'Couldn&#8217;t load translations from file!', 'glotpress' ) );
 		}
 
 		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations );
