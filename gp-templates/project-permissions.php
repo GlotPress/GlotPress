@@ -20,7 +20,12 @@ gp_tmpl_header();
 				$remove_link = '<a href="' . gp_url_join( gp_url_current(), '-delete/'.$permission->id ) . '" class="action delete">' . __('Remove', 'glotpress' ) . '</a>';
 	?>
 		<li>
-			<span class="permission-action"><?php echo sprintf( __( 'user %s can %s strings with locale %s and slug %s %s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', $remove_link ); ?></span>
+			<span class="permission-action"><?php 
+			
+			/* translators: 1: user nice name, 2: permission type, 3: locale slug, 4: translation set slug 5: Remove button/link */
+			echo sprintf( __( 'user %1$s can %2$s strings with locale %3$s and slug %4$s %5$s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', $remove_link ); 
+			
+			?></span>
 		</li>
 	<?php endforeach; ?>
 </ul>
@@ -32,7 +37,12 @@ gp_tmpl_header();
 				$user_link = '<span class="user">' . sprintf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ) . '</span>';
 		?>
 			<li>
-				<span class="permission-action"><?php echo sprintf( __( 'user %s can %s strings with locale %s and slug %s in the project %s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', '<span class="user">' . gp_link_project( $permission->project, esc_html( $permission->project->name ) ) . '</span>'  ); ?></span>
+				<span class="permission-action"><?php 
+				
+				/* translators: 1: user nice name, 2: permission type, 3: locale id, 4: translation set slug 5: Link to project */
+				echo sprintf( __( 'user %1$s can %2$s strings with locale %3$s and slug %4$s in the project %5$s', 'glotpress' ), $user_link, esc_html( $permission->action ), '<span class="user">' . esc_html( $permission->locale_slug ). '</span>', '<span class="user">' . esc_html( $permission->set_slug ) . '</span>', '<span class="user">' . gp_link_project( $permission->project, esc_html( $permission->project->name ) ) . '</span>'  );
+
+				?></span>
 			</li>
 		<?php endforeach; ?>
 </ul>
