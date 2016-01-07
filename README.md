@@ -25,5 +25,5 @@ $ git clone git@github.com:deliciousbrains/GlotPress.git glotpress
 ## Running Tests
 
 ```bash
-$ ./tests/bin/run-unittests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [drop-db]
+$ ./tests/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassword ] [ -h dbhost ] [ -x dbprefix ] [ -w wpversion ] [ -D (drop-db) ] [ -c coverage_file ] [ -f phpunit_filter ]
 ```
