@@ -87,7 +87,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$warning = each( $referenceable );
 			?>
 			<div class="warning secondary">
-				<?php printf( __( '<strong>Warning:</strong> %s', 'glotpress' ), esc_html( $warning['value'] ) ); ?>
+				<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php esc_html_e( $warning['value'] ); ?>
 
 				<?php if( $can_approve ): ?>
 					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
