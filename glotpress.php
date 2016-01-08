@@ -38,7 +38,7 @@ define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.4' );
 
 // Load the plugin's translated strings
-load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );
+load_plugin_textdomain( 'glotpress' );
 
 /**
  * Adds a message if an incompatible version of WordPress is running.
