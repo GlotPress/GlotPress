@@ -86,6 +86,8 @@ function gp_run_route() {
  * Determine if the page requested is handled by GlotPress.
  *
  * @since 1.0.0
+ *
+ * @return bool Whether the request is handled by GlotPress.
  */
 function is_glotpress() {
 	global $wp;
@@ -97,13 +99,14 @@ function is_glotpress() {
 }
 
 /**
- * Make WordPress understand GlotPress pages are not the home page.
+ * Sets `WP_Query->is_home` to false during GlotPress requests.
  *
  * @since 1.0.0
+ *
+ * @param WP_Query $query The WP_Query instance.
  */
-function gp_not_is_home( $query ) {
+function gp_set_is_home_false( $query ) {
 	if ( is_glotpress() && $query->is_home() && $query->is_main_query() ) {
 		$query->is_home = false;
 	}
 }
-
