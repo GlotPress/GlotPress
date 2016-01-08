@@ -38,13 +38,3 @@ Search for "GlotPress" and install it.
 Drop by the [GlotPress GitHub](https://github.com/deliciousbrains/GlotPress) repository and look through the open issues and pull requests.
 
 == Changelog ==
-
-= 1.0 =
-* Release Date: TBD
-* Inital release.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Initial release, no upgrade notes at this time.
-
