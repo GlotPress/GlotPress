@@ -11,19 +11,27 @@
  * Generate the WP rewrite rules.
  *
  * @since 1.0.0
+ *
+ * @param string|bool $gp_base Optional. The base of all GlotPress URLs.
+ *                             Defaults to the `GP_URL_BASE` constant.
+ * @return array Rewrite rules that transform the URL structure
+ *               to a set of query vars
  */
 function gp_generate_rewrite_rules( $gp_base = false ) {
 	if ( false === $gp_base ) {
 		$gp_base = trim( gp_url_base_path(), '/' );
 	}
 
+	$rules = array();
 	if ( ! $gp_base ) {
-		$match_regex = '^(.*)$';
+		$rules['$'] = 'index.php?gp_route';
+		$rules['^(.*)$'] = 'index.php?gp_route=$matches[1]';
 	} else {
-		$match_regex = '^' . $gp_base . '/?(.*)$';
+		$rules['^' . $gp_base . '$'] = 'index.php?gp_route';
+		$rules['^' . $gp_base . '\/+(.*)$'] = 'index.php?gp_route=$matches[1]';
 	}
 
-	return $match_regex;
+	return $rules;
 }
 
 /**
@@ -32,19 +40,10 @@ function gp_generate_rewrite_rules( $gp_base = false ) {
  * @since 1.0.0
  */
 function gp_rewrite_rules() {
-	$gp_base = trim( gp_url_base_path(), '/' );
-
-	if ( ! $gp_base ) {
-		/*
-		 * When GlotPress is set to take over the root of the site,
-		 * add a special rule that WordPress uses to route requests to root.
-		 */
-		add_rewrite_rule( '$', 'index.php?gp_route', 'top' );
+	$rewrite_rules = gp_generate_rewrite_rules();
+	foreach ( $rewrite_rules as $regex => $query ) {
+		add_rewrite_rule( $regex, $query, 'top' );
 	}
-
-	$match_regex = gp_generate_rewrite_rules( $gp_base );
-
-	add_rewrite_rule( $match_regex, 'index.php?gp_route=$matches[1]', 'top' );
 
 	/*
 	 * Check to see if the rewrite rule has changed, if so, update the option
@@ -52,8 +51,8 @@ function gp_rewrite_rules() {
 	 * Save the rewrite rule to an option so we have something to compare against later.
 	 * We don't need to worry about the root rewrite rule above as it is always the same.
 	 */
-	if ( $match_regex != get_option( 'gp_rewrite_rule' ) ) {
-		update_option( 'gp_rewrite_rule', $match_regex );
+	if ( $rewrite_rules != get_option( 'gp_rewrite_rule' ) ) {
+		update_option( 'gp_rewrite_rule', $rewrite_rules );
 		flush_rewrite_rules( false );
 	}
 }
