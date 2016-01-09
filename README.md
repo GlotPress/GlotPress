@@ -17,6 +17,14 @@ $ cd /your/wordpress/folder/wp-content/plugins/
 $ git clone git@github.com:deliciousbrains/GlotPress.git glotpress
 ```
 
+After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
+
+To access GlotPress under a different path, modify the `GP_URL_BASE` constant in `wp-config.php`, for example to run it in /, you'd add
+
+```
+define( 'GP_URL_BASE', '/' );
+```
+
 ## Communication
 
 * [WordPress Slack](https://chat.wordpress.org/): #glotpress
