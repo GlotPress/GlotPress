@@ -3,9 +3,10 @@
 class GP_Test_Urls extends GP_UnitTestCase {
 
 	function setUp() {
-	    $this->sub_dir = '/glotpress/';
-		$this->url = user_trailingslashit( 'http://example.org' . $this->sub_dir );
 		parent::setUp();
+
+		$this->sub_dir = '/glotpress/';
+		$this->url = user_trailingslashit( 'http://example.org' . $this->sub_dir );
 	}
 
 	function test_gp_url_should_just_add_simple_path_string_if_query_is_missing() {
@@ -165,5 +166,23 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$_SERVER['SERVER_PORT'] = 8888;
 		$this->assertEquals( 'http://glotpress.org:8888/', gp_url_current() );
 		$_SERVER = $server_vars;
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_public_root_has_no_trailing_slash_when_permalinks_have_no_trailing_slash() {
+		$this->set_permalink_structure( '/%postname%' );
+
+		$this->assertTrue( '/' !== substr( gp_url_public_root(), -1 ) );
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_public_root_has_a_trailing_slash_when_permalinks_have_a_trailing_slash() {
+		$this->set_permalink_structure( '/%postname%/' );
+
+		$this->assertTrue( '/' === substr( gp_url_public_root(), -1 ) );
 	}
 }

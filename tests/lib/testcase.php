@@ -18,10 +18,6 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 		}
 	}
 
-	function tearDown() {
-		parent::tearDown();
-	}
-
 	function clean_up_global_scope() {
 		parent::clean_up_global_scope();
 
