@@ -4,14 +4,20 @@
  */
 
 /**
- * Gives the path of an URL
+ * Returns the path of an URL.
  *
- * @param string $url Optional. The default is the GlotPress URL
+ * @since 1.0.0
+ *
+ * @param string $url Optional. The URL to parse. Defaults to GlotPress URL.
+ * @return string Path of the URL. Empty string if no path was parsed.
  */
 function gp_url_path( $url = null ) {
-	if ( is_null( $url ) ) $url = gp_url();
+	if ( null === $url ) {
+		$url = gp_url();
+	}
+
 	$parsed = parse_url( $url );
-	return $parsed['path'];
+	return isset( $parsed['path'] ) ? $parsed['path'] : '';
 }
 
 /**
@@ -32,7 +38,7 @@ function gp_url_join() {
 
 	// Make sure all instances of the final URL are returned with a proper permalink ending.
 	$components_with_slashes = user_trailingslashit( $components_with_slashes );
-	
+
 	$components_without_consecutive_slashes = preg_replace( '|/{2,}|', '/', $components_with_slashes );
 	$components_without_consecutive_slashes = str_replace( array( 'http:/', 'https:/' ), array( 'http://', 'https://' ), $components_without_consecutive_slashes );
 	return $components_without_consecutive_slashes;
