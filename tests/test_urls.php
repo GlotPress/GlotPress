@@ -171,6 +171,20 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	/**
 	 * @ticket gh-203
 	 */
+	function test_gp_url_path_returns_single_slash() {
+		$this->assertSame( '/', gp_url_path( 'http://glotpress.org/' ) );
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_path_returns_empty_string_if_url_has_no_path() {
+		$this->assertSame( '', gp_url_path( 'http://glotpress.org' ) );
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
 	function test_gp_url_public_root_has_no_trailing_slash_when_permalinks_have_no_trailing_slash() {
 		$this->set_permalink_structure( '/%postname%' );
 
