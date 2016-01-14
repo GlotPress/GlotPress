@@ -45,13 +45,15 @@ function gp_url_join() {
 }
 
 /**
- * Builds a URL relative to the GlotPress' domain root
+ * Builds a URL relative to the GlotPress' domain root.
  *
  * @param mixed $path string path or array of path components
  * @param array $query associative array of query arguments (optional)
  */
 function gp_url( $path = '/', $query = null ) {
-	return apply_filters( 'gp_url', gp_url_add_path_and_query( gp_url_path( gp_url_public_root() ), $path, $query ), $path, $query );
+	$base = gp_url_path( gp_url_public_root() );
+	$base = '/' . ltrim( $base, '/' ); // Make sure `$base` has always a leading slash.
+	return apply_filters( 'gp_url', gp_url_add_path_and_query( $base, $path, $query ), $path, $query );
 }
 
 function gp_url_add_path_and_query( $base, $path, $query ) {
