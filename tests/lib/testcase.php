@@ -8,8 +8,14 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
+
 		$this->factory = new GP_UnitTest_Factory;
 		$this->url_filter = returner( $this->url );
+
+		global $wp_rewrite;
+		if ( $wp_rewrite->permalink_structure ) {
+			$this->set_permalink_structure( '' );
+		}
 	}
 
 	function tearDown() {
