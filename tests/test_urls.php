@@ -7,6 +7,8 @@ class GP_Test_Urls extends GP_UnitTestCase {
 
 		$this->sub_dir = '/glotpress/';
 		$this->url = user_trailingslashit( 'http://example.org' . $this->sub_dir );
+
+		$this->alternate_sub_dir = '/';
 	}
 
 	function test_gp_url_should_just_add_simple_path_string_if_query_is_missing() {
@@ -166,6 +168,22 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$_SERVER['SERVER_PORT'] = 8888;
 		$this->assertEquals( 'http://glotpress.org:8888/', gp_url_current() );
 		$_SERVER = $server_vars;
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_base_path_filter() {
+		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter' ) );
+
+		$this->assertSame( $this->alternate_sub_dir, gp_url_base_path() );
+		$this->assertSame( 'http://example.org' . $this->alternate_sub_dir, gp_url_public_root() );
+
+		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter' ) );
+	}
+
+	function _gp_url_base_path_filter() {
+		return $this->alternate_sub_dir;
 	}
 
 	/**

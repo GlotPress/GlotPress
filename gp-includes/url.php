@@ -122,7 +122,7 @@ function gp_url_profile( $user_nicename ) {
 }
 
 function gp_url_base_path() {
-	return user_trailingslashit( '/' .  gp_const_get( 'GP_URL_BASE', 'glotpress' ) );
+	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' .  gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
 }
 
 function gp_plugin_url( $path = '' ) {
