@@ -13,6 +13,9 @@
 // Actions
 add_action( 'init', 'gp_init' );
 
+// WP
+add_action( 'parse_request', 'gp_parse_request' );
+
 // Styles and scripts
 add_action( 'gp_head', 'wp_enqueue_scripts' );
 add_action( 'gp_head', 'gp_print_styles' );
