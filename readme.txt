@@ -28,10 +28,17 @@ This plugin wouldn't be possible without all the hard work that has gone in to t
 
 Search for "GlotPress" and install it.
 
+After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
+
 = Manual Installation =
 
 1. Upload the entire `/glotpress` directory to the `/wp-content/plugins/` directory.
 2. Activate GlotPress through the 'Plugins' menu in WordPress.
+3. GlotPress can then be accessed via `<home_url>/glotpress/`
+
+To access GlotPress under a different path, modify the `GP_URL_BASE` constant in `wp-config.php`, for example to run it in /, you'd add
+
+`define( 'GP_URL_BASE', '/' );`
 
 == Frequently Asked Questions ==
 = How can I contribute to GlotPress? =
