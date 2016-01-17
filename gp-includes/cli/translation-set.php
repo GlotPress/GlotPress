@@ -21,7 +21,6 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		}
 
 		$this->translation_set = GP::$translation_set->by_project_id_slug_and_locale( $this->project->id, $set, $this->locale->slug );
-
 		if ( ! $this->translation_set ) {
 			return new WP_Error( 'gp_set_not_found', __( 'Translation set not found!', 'glotpress' ) );
 		}
@@ -91,6 +90,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--set=<set>]
 	 * : Translation set slug; default is "default"
+	 *
+	 * [--disable-propagating]
+	 * : If set, propagation will be disabled.
 	 */
 	public function import( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -100,8 +102,22 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		}
 
 		$po = new PO();
-		$po->import_from_file( $args[2] );
+		$imported = $po->import_from_file( $args[2] );
+		if ( ! $imported ) {
+			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
+		}
+
+		$disable_propagating = isset( $assoc_args['disable-propagating'] );
+		if ( $disable_propagating ) {
+			add_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
+		}
+
 		$added = $translation_set->import( $po );
+
+		if ( $disable_propagating ) {
+			remove_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
+		}
+
 		/* translators: %s: Number of imported translations */
 		WP_CLI::line( sprintf( _n( '%s translation was added', '%s translations were added', $added, 'glotpress' ), $added ) );
 	}
