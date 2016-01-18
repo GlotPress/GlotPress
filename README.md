@@ -1,6 +1,6 @@
 # GlotPress
 
-This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.
+This is a community-backed plugin which brings [GlotPress](https://github.com/GlotPress/GlotPress) into WordPress as a plugin.
 
 [![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=master)](https://travis-ci.org/GlotPress/GlotPress-WP) [![Code Coverage](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=master)
 
