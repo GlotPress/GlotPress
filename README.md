@@ -2,7 +2,7 @@
 
 This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.
 
-[![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=wordpress-plugin-dbi)](https://travis-ci.org/GlotPress/GlotPress-WP) [![Code Coverage](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/coverage.png?b=wordpress-plugin-dbi)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=wordpress-plugin-dbi) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=wordpress-plugin-dbi)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=wordpress-plugin-dbi)
+[![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=master)](https://travis-ci.org/GlotPress/GlotPress-WP) [![Code Coverage](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=master)
 
 ## Contributing
 
