@@ -11,7 +11,7 @@ GlotPress is a tool to help translators collaborate.
 
 == Description ==
 
-**This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.**
+This is a community-backed plugin which brings [GlotPress](https://github.com/GlotPress/GlotPress) into WordPress as a plugin.
 
 We are still in the process of converting GlotPress into a WordPress plugin. We're working through [the issues](https://github.com/GlotPress/GlotPress-WP/milestones/1.0) to get it ready for its first release. The idea is to change as little as possible to get it working well.
 
