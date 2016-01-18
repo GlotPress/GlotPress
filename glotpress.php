@@ -6,7 +6,7 @@
 Plugin Name: GlotPress
 Plugin URI: https://wordpress.org/plugins/glotpress/
 Description: GlotPress is a tool to help translators collaborate.
-Version: 1.0.0-rc.2
+Version: 1.0.0
 Author: the GlotPress team
 Author URI: http://glotpress.org
 License: GPLv2 or later
@@ -29,7 +29,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'GP_VERSION', '1.0.0-rc.2' );
+define( 'GP_VERSION', '1.0.0' );
 define( 'GP_DB_VERSION', '940' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
