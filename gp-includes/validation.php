@@ -90,9 +90,9 @@ class GP_Validation_Rules {
 		}
 
 		if ( 'positive' == $rule['kind'] )
-			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
+			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>'.$name_field.'</strong>', $name_rule );
 		else //if ( 'negative' == $rule['kind'] )
-			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should not be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
+			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>'.$name_field.'</strong>', $name_rule );
 	}
 }
 
