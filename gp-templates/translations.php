@@ -36,7 +36,18 @@ $i = 0;
 	<?php if( $can_write ) : ?>
 		<option value="set-priority"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
-		<?php do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
+		<?php
+
+		/**
+		 * Option elements for the translation set bulk action menu.
+		 *
+		 * Printing out option elements here will add those to the translation bulk options drop down menu.
+		 * 
+		 * @since 1.0.0
+		 * 
+		 * @param GP_Translation_Set $set The translation set.
+		 */
+		do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
 	</select>
 	<?php if( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority">
@@ -143,7 +154,16 @@ $i = 0;
 			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
 		?>
 		</dd>
-		<?php do_action( 'gp_translation_set_filters' );?>
+		<?php
+
+		/**
+		 * After the translation set sort options.
+		 * 
+		 * This action is inside a DL element.
+		 * 
+		 * @since 1.0.0
+		 */
+		do_action( 'gp_translation_set_filters' ); ?>
 		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 	</dl>
 </form>
@@ -224,6 +244,16 @@ $i = 0;
 		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
 		$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );
 
+		/**
+		 * Footer links in translations.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array              $footer_links    Default links.
+		 * @param GP_Project         $project         The current project.
+		 * @param GP_Locale          $locale          The current locale.
+		 * @param GP_Translation_Set $translation_set The current translation set.
+		 */
 		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>
