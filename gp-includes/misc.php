@@ -312,6 +312,21 @@ function gp_is_between_exclusive( $value, $start, $end ) {
  */
 function gp_set_cookie() {
 	$args = func_get_args();
+
+	/**
+	 * Whether GlotPress should set a cookie. If filter returns false, a cookie will not be set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args {
+	 *     The cookie that is about to be set.
+	 *
+	 *     @type string $name    The name of the cookie.
+	 *     @type string $value   The value of the cookie.
+	 *     @type int    $expires The time the cookie expires.
+	 *     @type string $path    The path on the server in which the cookie will be available on.
+	 * }
+	 */
 	$args = apply_filters( 'gp_set_cookie', $args );
 	if ( $args === false ) return;
 	call_user_func_array( 'setcookie', $args );

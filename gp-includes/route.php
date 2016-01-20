@@ -8,7 +8,7 @@ class GP_Route {
 
 	public $errors = array();
 	public $notices = array();
-	
+
 	var $request_running = false;
 	var $template_path = null;
 
@@ -35,6 +35,14 @@ class GP_Route {
 	}
 
 	public function before_request() {
+		/**
+		 * Fires before a route method is called.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $class_name         The class name of the route.
+		 * @param string $last_method_called The route method that will be called.
+		 */
 		do_action( 'gp_before_request', $this->class_name, $this->last_method_called );
 	}
 
@@ -46,6 +54,15 @@ class GP_Route {
 		if ( !headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
+
+		/**
+		 * After a route method was called.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $class_name         The class name of the route.
+		 * @param string $last_method_called The route method that will be called.
+		 */
 		do_action( 'gp_after_request', $this->class_name, $this->last_method_called );
 	}
 

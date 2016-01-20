@@ -156,6 +156,13 @@ function gp_schema_get() {
 		KEY user_id_action (user_id,action)
 	) $charset_collate;";
 
+	/**
+	 * GlotPress database schema.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $gp_schema Schema definitions in SQL, table names without prefixes as keys.
+	 */
 	$gp_schema = apply_filters( 'gp_schema', $gp_schema );
 
 	return $gp_schema;
