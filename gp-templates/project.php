@@ -87,7 +87,7 @@ gp_tmpl_header();
 					 * Extra information column for a translation set.
 					 *
 					 * @since 1.0.0
-					 * 
+					 *
 					 * @param GP_Translation_Set $set     The translation set.
 					 * @param GP_Project         $project The current project.
 					 */

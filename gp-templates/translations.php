@@ -42,9 +42,9 @@ $i = 0;
 		 * Option elements for the translation set bulk action menu.
 		 *
 		 * Printing out option elements here will add those to the translation bulk options drop down menu.
-		 * 
+		 *
 		 * @since 1.0.0
-		 * 
+		 *
 		 * @param GP_Translation_Set $set The translation set.
 		 */
 		do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
@@ -158,9 +158,9 @@ $i = 0;
 
 		/**
 		 * After the translation set sort options.
-		 * 
+		 *
 		 * This action is inside a DL element.
-		 * 
+		 *
 		 * @since 1.0.0
 		 */
 		do_action( 'gp_translation_set_filters' ); ?>
