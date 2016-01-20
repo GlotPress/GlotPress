@@ -13,8 +13,8 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 		$this->url_filter = returner( $this->url );
 
 		global $wp_rewrite;
-		if ( $wp_rewrite->permalink_structure ) {
-			$this->set_permalink_structure( '' );
+		if ( '' == $wp_rewrite->permalink_structure ) {
+			$this->set_permalink_structure( '/%postname%' );
 		}
 	}
 
