@@ -43,5 +43,12 @@
 			</div>
 		<?php endif; ?>
 
-		<?php do_action( 'gp_after_notices' ); ?>
+		<?php
+
+		/**
+		 * After the error and notice elements on the header.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'gp_after_notices' ); ?>
 
