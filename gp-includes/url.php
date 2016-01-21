@@ -108,8 +108,8 @@ function gp_url_img( $file ) {
  */
 function gp_url_current() {
 	$protocol      = is_ssl()? 'https://' : 'http://';
-	$host          = gp_array_get( $_SERVER, 'HTTP_HOST' );
-	$path_and_args = gp_array_get( $_SERVER, 'REQUEST_URI' );
+	$host          = wp_unslash( gp_array_get( $_SERVER, 'HTTP_HOST' ) );
+	$path_and_args = wp_unslash( gp_array_get( $_SERVER, 'REQUEST_URI' ) );
 
 	return $protocol . $host . $path_and_args;
 }

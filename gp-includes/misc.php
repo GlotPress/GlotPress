@@ -8,7 +8,7 @@
  * @return mixed $_POST[$key] if exists or $default
  */
 function gp_post( $key, $default = '' ) {
-	return gp_array_get( $_POST, $key, $default );
+	return wp_unslash( gp_array_get( $_POST, $key, $default ) );
 }
 
 /**
@@ -19,7 +19,7 @@ function gp_post( $key, $default = '' ) {
  * @return mixed $_GET[$key] if exists or $default
  */
 function gp_get( $key, $default = '' ) {
-	return gp_urldecode_deep( gp_array_get( $_GET, $key, $default ) );
+	return gp_urldecode_deep( wp_unslash( gp_array_get( $_GET, $key, $default ) ) );
 }
 
 /**
@@ -92,7 +92,7 @@ function gp_populate_notices() {
 	$prefix = '_gp_notice_';
 	foreach ($_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
-			GP::$redirect_notices[$suffix] = $value;
+			GP::$redirect_notices[$suffix] = wp_unslash( $value );
 			gp_set_cookie( $key, '', 0, gp_url_path() );
 		}
 	}
@@ -179,7 +179,7 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
 
 	// If $timestamp isn't set, try to default to the HTTP_IF_MODIFIED_SINCE header.
 	if ( ! $timestamp && isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) )
-		$timestamp = gp_gmt_strtotime( $_SERVER['HTTP_IF_MODIFIED_SINCE'] );
+		$timestamp = gp_gmt_strtotime( wp_unslash( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) );
 
 	// If nothing to compare against, then always assume there's an update available
 	if ( ! $timestamp )
