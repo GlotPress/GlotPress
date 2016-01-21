@@ -7,7 +7,7 @@ gp_breadcrumb( array(
 ) );
 
 $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpress' );
-$delete_url       = $url . '/-delete';
+$delete_url       = gp_url_join( $url, '-delete' );
 $glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
 
 gp_enqueue_script( 'gp-glossary' );
@@ -60,7 +60,7 @@ if ( $glossary->description ) {
 			<td colspan="5">
 				<h4><?php _e( 'Create an entry', 'glotpress' );?></h4>
 
-				<form action="<?php echo esc_url( $url . '/-new' ); ?>" method="post">
+				<form action="<?php echo esc_url( gp_url_join( $url, '-new' ) ); ?>" method="post">
 					<dl>
 						<dt><label for="new_glossary_entry_term"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label><dt>
 						<dd><input type="text" name="new_glossary_entry[term]" id="new_glossary_entry_term" value=""></dd>

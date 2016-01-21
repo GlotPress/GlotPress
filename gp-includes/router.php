@@ -28,7 +28,7 @@ class GP_Router {
 	}
 
 	public function request_method() {
-		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
+		return wp_unslash( gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' ) );
 	}
 
 	public function add( $re, $function, $method = 'get' ) {
@@ -150,7 +150,7 @@ class GP_Router {
 		$url_path = gp_url_path( gp_url_public_root() );
 
 		// If the request URL doesn't match our base URL, don't bother trying to match
-		if ( $url_path && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_path ) ) {
+		if ( $url_path && ! gp_startswith( wp_unslash( $_SERVER['REQUEST_URI'] ), $url_path ) ) {
 			return;
 		}
 
