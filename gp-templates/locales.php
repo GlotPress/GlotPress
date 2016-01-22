@@ -18,15 +18,21 @@ gp_tmpl_header();
 			<th class="header"><?php _e( 'Name (in English)', 'glotpress' );?></th>
 			<th class="header"><?php _e( 'Native name', 'glotpress' );?></th>
 			<th class="header"><?php _e( 'Language code', 'glotpress' );?></th>
-
+			<th class="header"><?php _e( 'Text Direction', 'glotpress' );?></th>
+			<th class="header"><?php _e( 'Country Code', 'glotpress' );?></th>
+			<th class="header"><?php _e( 'Plurals?', 'glotpress' );?></th>
 		</tr>
 		</thead>
 		<tbody>
 		<?php foreach ( $locales as $locale ) : ?>
 			<tr>
-				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . "</td>" ?>
-				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . "</td>" ?>
-				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . "</td>" ?>
+				<td><?php echo gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ); ?></td>
+				<td><?php echo gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ); ?></td>
+				<td><?php echo gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ); ?></td>
+				<td><?php 'ltr' == $locale->text_direction ? _e( 'Left to Right', 'glotpress' ) : _e( 'Right to Left', 'glotpress' ); ?></td>
+				<td><?php echo $locale->country_code; ?></td>
+				<td><?php $locale->nplurals > 2 ? _e( 'Yes', 'glotpress' ) : _e( 'No', 'glotpress' ); ?></td>
+				
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
