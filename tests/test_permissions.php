@@ -122,4 +122,16 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$permissions = GP::$permission->find_many( array( 'user_id' => $user ) );
 		$this->assertSame( 0, count( $permissions ) );
 	}
+
+	/**
+	 * @ticket gh-233
+	 */
+	function test_administrator_permissions_create() {
+		$user = $this->factory->user->create();
+
+		GP::$administrator_permission->create( array( 'user_id' => $user ) );
+
+		$permissions = GP::$administrator_permission->find( array( 'user_id' => $user ) );
+		$this->assertSame( 1, count( $permissions ) );
+	}
 }

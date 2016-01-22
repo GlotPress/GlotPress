@@ -317,6 +317,14 @@ function gp_set_cookie() {
 	call_user_func_array( 'setcookie', $args );
 }
 
+/**
+ * Converts a string represented time/date to a utime int, adding a GMT offset if not found.
+ *
+ * @since 1.0.0
+ *
+ * @param string $string The string representation of the time to convert.
+ * @return int
+ */
 function gp_gmt_strtotime( $string ) {
 	if ( is_numeric($string) )
 		return $string;
@@ -330,4 +338,60 @@ function gp_gmt_strtotime( $string ) {
 		return strtotime($string);
 
 	return $time;
+}
+
+/**
+ * Displays the GlotPress administrator option in the user profile screen for WordPress administrators.
+ *
+ * @since 1.1.0
+ *
+ * @param WP_User $user The WP_User object to display the profile for.
+ */
+function gp_wp_profile_options( $user ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+?>
+	<h2 id="glotpress"><?php _e( 'GlotPress', 'glotpress' ); ?></h2>
+
+	<table class="form-table">
+		<tr id="gp-admin">
+			<th scope="row"><?php _e( 'Administrator', 'glotpress' ); ?></th>
+			<td>
+				<fieldset>
+					<legend class="screen-reader-text"><span><?php _e( 'GlotPress Administrator', 'glotpress' ); ?></span></legend>
+					<label for="gp_administrator">
+						<input name="gp_administrator" type="checkbox" id="gp_administrator" value="1"<?php checked( GP::$permission->user_can( $user, 'admin' ) ); ?> />
+						<?php _e( 'Grant this user administrative privileges in GlotPress.', 'glotpress' ); ?>
+					</label>
+				</fieldset>
+			</td>
+		</tr>
+	</table>
+<?php
+}
+
+/**
+ * Saves the settings for the GlotPress administrator option in the user profile screen for WordPress administrators.
+ *
+ * @since 1.1.0
+ *
+ * @param int $user_id The WordPress user id to save the setting for.
+ */
+function gp_wp_profile_options_update( $user_id ) {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$is_user_gp_admin = GP::$permission->user_can( $user_id, 'admin' );
+
+	if ( array_key_exists( 'gp_administrator', $_POST ) && ! $is_user_gp_admin ) {
+		GP::$administrator_permission->create( array( 'user_id' => $user_id, 'action' => 'admin', 'object_type' => null ) );
+	}
+
+	if ( ! array_key_exists( 'gp_administrator', $_POST ) && $is_user_gp_admin ) {
+		$current_perm = GP::$administrator_permission->find_one( array( 'user_id' => $user_id, 'action' => 'admin' ) );
+		$current_perm->delete();
+	}
 }
