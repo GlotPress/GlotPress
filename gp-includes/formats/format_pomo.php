@@ -2,7 +2,7 @@
 
 class GP_Format_PO extends GP_Format {
 
-	public $name = 'Portable Object Message Catalog (.po)';
+	public $name = 'Portable Object Message Catalog (.po/.pot)';
 	public $extension = 'po';
 
 	public $class = 'PO';
