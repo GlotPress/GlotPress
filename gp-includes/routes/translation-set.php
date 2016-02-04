@@ -1,6 +1,6 @@
 <?php
 class GP_Route_Translation_Set extends GP_Route_Main {
-	function new_get() {
+	public function new_get() {
 		$set = new GP_Translation_Set;
 		$set->project_id = gp_get( 'project_id' );
 		$project = $set->project_id? GP::$project->get( $set->project_id ) : null;
@@ -8,7 +8,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->tmpl( 'translation-set-new', get_defined_vars() );
 	}
 
-	function new_post() {
+	public function new_post() {
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set ) ) return;
@@ -23,14 +23,14 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		}
 	}
 
-	function single( $set_id ) {
+	public function single( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items) return;
 		list( $set, $project, $locale ) = $items;
 		$this->redirect( gp_url_project( $project, array( $set->locale, $set->slug ) ) );
 	}
 
-	function edit_get( $set_id ) {
+	public function edit_get( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;
 		list( $set, $project, $locale ) = $items;
@@ -39,7 +39,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->tmpl( 'translation-set-edit', get_defined_vars() );
 	}
 
-	function edit_post( $set_id ) {
+	public function edit_post( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;
 		list( $set, $project, $locale ) = $items;
