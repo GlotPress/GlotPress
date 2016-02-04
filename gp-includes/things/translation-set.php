@@ -13,51 +13,51 @@ class GP_Translation_Set extends GP_Thing {
 	public $project_id;
 	public $locale;
 
-	function restrict_fields( $set ) {
+	public function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
 		$set->locale_should_not_be('empty');
 		$set->project_id_should_not_be('empty');
 	}
 
-	function name_with_locale( $separator = '&rarr;') {
+	public function name_with_locale( $separator = '&rarr;') {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$parts = array( $locale->english_name );
 		if ( 'default' != $this->slug ) $parts[] = $this->name;
 		return implode( '&nbsp;'.$separator.'&nbsp;', $parts );
 	}
 
-	function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
+	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
 		return $this->one( "
 		    SELECT * FROM $this->table
 		    WHERE slug = %s AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
 	}
 
-	function by_locale( $locale_slug ) {
+	public function by_locale( $locale_slug ) {
 		return $this->many( "
 		    SELECT * FROM $this->table
 		    WHERE locale = %s", $locale_slug );
 	}
 
-	function existing_locales() {
+	public function existing_locales() {
 		global $wpdb;
 
 		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
-	function existing_slugs() {
+	public function existing_slugs() {
 		global $wpdb;
 
 		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 
-	function by_project_id( $project_id ) {
+	public function by_project_id( $project_id ) {
 		return $this->many( "
 		    SELECT * FROM $this->table
 		    WHERE project_id = %d ORDER BY name ASC", $project_id );
 	}
 
-	function import( $translations ) {
+	public function import( $translations ) {
 		$this->set_memory_limit('256M');
 
 		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
@@ -120,38 +120,38 @@ class GP_Translation_Set extends GP_Thing {
 		return $translations_added;
 	}
 
-	function waiting_count() {
+	public function waiting_count() {
 		if ( !isset( $this->waiting_count ) ) $this->update_status_breakdown();
 		return $this->waiting_count;
 	}
 
-	function untranslated_count() {
+	public function untranslated_count() {
 		if ( !isset( $this->untranslated_count ) ) $this->update_status_breakdown();
 		return $this->untranslated_count;
 	}
 
-	function fuzzy_count() {
+	public function fuzzy_count() {
 		if ( !isset( $this->fuzzy_count ) ) $this->update_status_breakdown();
 		return $this->fuzzy_count;
 	}
 
-	function current_count() {
+	public function current_count() {
 		if ( !isset( $this->current_count ) ) $this->update_status_breakdown();
 		return $this->current_count;
 	}
 
-	function warnings_count() {
+	public function warnings_count() {
 		if ( !isset( $this->warnings_count ) ) $this->update_status_breakdown();
 		return $this->warnings_count;
 	}
 
-	function all_count() {
+	public function all_count() {
 		$this->all_count = GP::$original->count_by_project_id( $this->project_id );
 		return $this->all_count;
 	}
 
 
-	function update_status_breakdown() {
+	public function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 
 		if ( ! is_array( $counts ) ) {
@@ -194,7 +194,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * This function doesn't merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
 	 * When copying translations from another project, it will search to find the original first.
 	 */
-	function copy_translations_from( $source_translation_set_id ) {
+	public function copy_translations_from( $source_translation_set_id ) {
 		global $wpdb;
 		$current_date = $this->now_in_mysql_format();
 
@@ -223,13 +223,13 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 
-	function percent_translated() {
+	public function percent_translated() {
 		$original_count = GP::$original->count_by_project_id( $this->project_id );
 
 		return $original_count ? floor( $this->current_count() / $original_count * 100 ) : 0;
 	}
 
-	function last_modified() {
+	public function last_modified() {
 		return GP::$translation->last_modified( $this );
 	}
 }
