@@ -127,8 +127,9 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		exit();
 	}
 
-	public function glossary_entry_delete_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$ge             = array_shift( gp_post('glossary_entry') );
+	public function glossary_entry_delete_post() {
+		$ge_post 		= gp_post('glossary_entry');
+		$ge             = array_shift( $ge_post );
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ) {
