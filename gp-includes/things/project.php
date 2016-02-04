@@ -15,25 +15,25 @@ class GP_Project extends GP_Thing {
 	public $source_url_template;
 	public $active;
 
-	function restrict_fields( $project ) {
+	public function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
 		$project->slug_should_not_be('empty');
 	}
 
 	// Additional queries
 
-	function by_path( $path ) {
+	public function by_path( $path ) {
 		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
 	}
 
-	function sub_projects() {
+	public function sub_projects() {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
 		$sub_projects = apply_filters( 'gp_projects', $sub_projects, $this->id );
 
 		return $sub_projects;
 	}
 
-	function top_level() {
+	public function top_level() {
 		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
 		$projects = apply_filters( 'gp_projects', $projects, 0 );
 
@@ -42,14 +42,14 @@ class GP_Project extends GP_Thing {
 
 	// Triggers
 
-	function after_save() {
+	public function after_save() {
 		do_action( 'gp_project_saved', $this );
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
 		return !is_null( $this->update_path() );
 	}
 
-	function after_create() {
+	public function after_create() {
 		do_action( 'gp_project_created', $this );
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
@@ -57,7 +57,7 @@ class GP_Project extends GP_Thing {
 
 	// Field handling
 
-	function normalize_fields( $args ) {
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['parent_project_id'] ) ) {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
@@ -80,7 +80,7 @@ class GP_Project extends GP_Thing {
 	/**
 	 * Updates this project's and its chidlren's paths, according to its current slug.
 	 */
-	function update_path() {
+	public function update_path() {
 		global $wpdb;
 		$old_path = isset( $this->path )? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
@@ -105,7 +105,7 @@ class GP_Project extends GP_Thing {
 	/**
 	 * Regenrate the paths of all projects from its parents slugs
 	 */
-	function regenerate_paths( $parent_project_id = null ) {
+	public function regenerate_paths( $parent_project_id = null ) {
 		// TODO: do it with one query. Use the tree generation code from GP_Route_Main::_options_from_projects()
 		if ( $parent_project_id ) {
 			$parent_project = $this->get( $parent_project_id );
@@ -121,14 +121,14 @@ class GP_Project extends GP_Thing {
 		}
 	}
 
-	function source_url( $file, $line ) {
+	public function source_url( $file, $line ) {
 		if ( $this->source_url_template() ) {
 			return str_replace( array('%file%', '%line%'), array($file, $line), $this->source_url_template() );
 		}
 		return false;
 	}
 
-	function source_url_template() {
+	public function source_url_template() {
 		if ( isset( $this->user_source_url_template ) )
 			return $this->user_source_url_template;
 		else {
@@ -151,7 +151,7 @@ class GP_Project extends GP_Thing {
 	 *
 	 * @return array
 	 */
-	function path_to_root() {
+	public function path_to_root() {
 		$path = array();
 		if ( $this->parent_project_id ) {
 			$parent_project = $this->get( $this->parent_project_id );
@@ -163,7 +163,7 @@ class GP_Project extends GP_Thing {
 		return array_merge( array( &$this ), $path );
 	}
 
-	function set_difference_from( $other_project ) {
+	public function set_difference_from( $other_project ) {
 		$this_sets  = (array) GP::$translation_set->by_project_id( $this->id );
 		$other_sets = (array) GP::$translation_set->by_project_id( $other_project->id );
 		$added      = array();
@@ -195,7 +195,7 @@ class GP_Project extends GP_Thing {
 		);
 	}
 
-	function copy_sets_and_translations_from( $source_project_id ) {
+	public function copy_sets_and_translations_from( $source_project_id ) {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
 		foreach( $sets as $to_add ) {
@@ -209,7 +209,7 @@ class GP_Project extends GP_Thing {
 		}
 	}
 
-	function copy_originals_from( $source_project_id ) {
+	public function copy_originals_from( $source_project_id ) {
 		global $wpdb;
 		return $this->query("
 			INSERT INTO $wpdb->gp_originals (
@@ -227,7 +227,7 @@ class GP_Project extends GP_Thing {
 	 *
 	 * @return array
 	 */
-	function inclusive_sub_projects() {
+	public function inclusive_sub_projects() {
 		$sub_projects = $this->sub_projects();
 		foreach ( $sub_projects as $sub ) {
 			$sub_projects = array_merge( $sub_projects, $sub->inclusive_sub_projects() );
@@ -236,7 +236,7 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
-	function duplicate_project_contents_from( $source_project ){
+	public function duplicate_project_contents_from( $source_project ){
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
 		//Duplicate originals, translations sets and translations for the root project
