@@ -1,7 +1,7 @@
 <?php
 class GP_Route_Glossary extends GP_Route_Main {
 
-	function new_get() {
+	public function new_get() {
 		$glossary = new GP_Glossary;
 		$glossary->translation_set_id = gp_get( 'translation_set_id' );
 
@@ -29,7 +29,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$this->tmpl( 'glossary-new', get_defined_vars() );
 	}
 
-	function new_post() {
+	public function new_post() {
 		$new_glossary    = new GP_Glossary( gp_post('glossary') );
 		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
 
@@ -61,7 +61,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		}
 	}
 
-	function edit_get( $glossary_id ) {
+	public function edit_get( $glossary_id ) {
 		$glossary = GP::$glossary->get( $glossary_id );
 
 		if ( ! $glossary ) {
@@ -75,7 +75,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$this->tmpl( 'glossary-edit', get_defined_vars() );
 	}
 
-	function edit_post( $glossary_id ) {
+	public function edit_post( $glossary_id ) {
 		$glossary     = GP::$glossary->get( $glossary_id );
 		$new_glossary = new GP_Glossary( gp_post('glossary') );
 
