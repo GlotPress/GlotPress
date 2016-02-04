@@ -5,16 +5,15 @@ class GP_Glossary_Entry extends GP_Thing {
 	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
 	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
 	var $non_updatable_attributes = array( 'id' );
-	var $id;
-	var $glossary_id;
-	var $term;
-	var $part_of_speach;
-	var $comment;
-	var $translation;
-	var $date_modified;
-	var $last_edited_by;
 
-	var $parts_of_speech = array();
+	public $id;
+	public $glossary_id;
+	public $term;
+	public $part_of_speach = array();
+	public $comment;
+	public $translation;
+	public $date_modified;
+	public $last_edited_by;
 
 	function __construct( $fields = array() ) {
 		parent::__construct( $fields );

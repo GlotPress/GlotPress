@@ -5,16 +5,17 @@ class GP_Original extends GP_Thing {
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $int_fields = array( 'id', 'project_id', 'priority' );
 	var $non_updatable_attributes = array( 'id', 'path' );
-	var $id;
-	var $project_id;
-	var $context;
-	var $singular;
-	var $plural;
-	var $references;
-	var $comment;
-	var $status;
-	var $priority;
-	var $date_added;	
+	
+	public $id;
+	public $project_id;
+	public $context;
+	public $singular;
+	public $plural;
+	public $references;
+	public $comment;
+	public $status;
+	public $priority;
+	public $date_added;	
 
 	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 	static $count_cache_group = 'active_originals_count_by_project_id';
