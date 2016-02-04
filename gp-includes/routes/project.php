@@ -364,7 +364,10 @@ class GP_Route_Project extends GP_Route_Main {
 				$this->errors[] = sprintf( __( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ), esc_html( $to_remove->name ) );
 			}
 		}
-		if ( !$this->errors ) $this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+		if ( empty( $this->errors ) ) {
+			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+		}
+		
 		$this->redirect( gp_url_project( $project ) );
 	}
 
