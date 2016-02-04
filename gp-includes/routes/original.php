@@ -2,7 +2,7 @@
 
 class GP_Route_Original extends GP_Route_Main {
 
-	function set_priority( $original_id ) {
+	public function set_priority( $original_id ) {
 		$original = GP::$original->get( $original_id );
 
 		if ( ! $original ) {
