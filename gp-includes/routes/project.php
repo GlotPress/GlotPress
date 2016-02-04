@@ -319,7 +319,7 @@ class GP_Route_Project extends GP_Route_Main {
 		} else {
 			$this->errors[] = __( 'Permission wasn&#8217;t found!', 'glotpress' );
 		}
-		$this->redirect( gp_url_project( $project, array( '-permissions' ) ) );
+		$this->redirect( gp_url_project( $project, '-permissions' ) );
 	}
 
 	public function mass_create_sets_get( $project_path ) {
