@@ -91,7 +91,7 @@ class GP_Format_ResX extends GP_Format {
 	}
 
 
-	function add_schema_info() {
+	private function add_schema_info() {
 		$this->line('<!--', 1 );
 		$this->line('Microsoft ResX Schema', 2 );
 		$this->line('', 0 );
@@ -153,7 +153,7 @@ class GP_Format_ResX extends GP_Format {
 		$this->line('-->', 1 );
 	}
 
-	function add_schema_declaration() {
+	private function add_schema_declaration() {
 		$this->line( '<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">', 1 );
 		$this->line( '<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />', 2 );
 		$this->line( '<xsd:element name="root" msdata:IsDataSet="true">', 2 );
