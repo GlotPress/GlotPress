@@ -12,11 +12,11 @@ class GP_Validation_Rules {
 		'should_not_be', 'should_not', 'cant', 'cant_be',
 	);
 
-	function __construct( $field_names ) {
+	public function __construct( $field_names ) {
 		$this->field_names = $field_names;
 	}
 
-	function __call( $name, $args ) {
+	public function __call( $name, $args ) {
 		foreach( array( 'positive', 'negative' ) as $kind ) {
 			$suffices = "{$kind}_suffices";
 			foreach( self::$$suffices as $suffix ) {
@@ -31,7 +31,7 @@ class GP_Validation_Rules {
 		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
 
-	function run( $thing ) {
+	public function run( $thing ) {
 		$this->errors = array();
 		$verdict = true;
 		foreach( $this->field_names as $field_name ) {
@@ -44,7 +44,7 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
-	function run_on_single_field( $field, $value ) {
+	public function run_on_single_field( $field, $value ) {
 		if ( !isset( $this->rules[$field] ) || !is_array( $this->rules[$field] ) ) {
 			// no rules means always valid
 			return true;
@@ -79,7 +79,7 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
-	function construct_error_message( $rule, $value ) {
+	public function construct_error_message( $rule, $value ) {
 		$type_field = 'field';
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
