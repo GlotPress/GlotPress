@@ -5,7 +5,8 @@ class GP_Glossary_Entry extends GP_Thing {
 	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
 	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
 	var $non_updatable_attributes = array( 'id' );
-	var $parts_of_speech = array();
+	
+	public $parts_of_speech = array();
 	
 	public $id;
 	public $glossary_id;
