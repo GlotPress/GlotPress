@@ -33,7 +33,7 @@ class GP_Translation extends GP_Thing {
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
-	function create( $args ) {
+	public function create( $args ) {
 		$inserted = parent::create( $args );
 
 		if ( $inserted && is_array( $args ) && isset( $args['translation_set_id'] ) ) {
@@ -43,7 +43,7 @@ class GP_Translation extends GP_Thing {
 		return $inserted;
 	}
 
-	function normalize_fields( $args ) {
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
 			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
@@ -64,7 +64,7 @@ class GP_Translation extends GP_Thing {
 		return $args;
 	}
 
-	function prepare_fields_for_save( $args ) {
+	public function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
 		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
 			$args['warnings'] = serialize( $args['warnings'] );
@@ -72,14 +72,14 @@ class GP_Translation extends GP_Thing {
 		return $args;
 	}
 
-	function fix_translation( $translation ) {
+	public function fix_translation( $translation ) {
 		// when selecting some browsers take the newlines and some don't
 		// that's why we don't want to insert too many newlines for each ↵
 		$translation = str_replace( "↵\n", "↵", $translation );
 		return str_replace( '↵', "\n", $translation );
 	}
 
-	function restrict_fields( $translation ) {
+	public function restrict_fields( $translation ) {
 		$translation->translation_0_should_not_be( 'empty_string' );
 		$translation->status_should_not_be( 'empty' );
 		$translation->original_id_should_be( 'positive_int' );
@@ -88,18 +88,18 @@ class GP_Translation extends GP_Thing {
 	}
 
 
-	function set_fields( $db_object ) {
+	public function set_fields( $db_object ) {
 		parent::set_fields( $db_object );
 		if ( $this->warnings ) {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
 
-	function for_export( $project, $translation_set, $filters =  null ) {
+	public function for_export( $project, $translation_set, $filters =  null ) {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
-	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
+	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 
@@ -239,7 +239,7 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
-	function set_as_current() {
+	public function set_as_current() {
 		$result = $this->update( array('status' => 'old'),
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current') )
 		&& 	$this->update( array('status' => 'old'),
@@ -255,11 +255,11 @@ class GP_Translation extends GP_Thing {
 		return $result;
 	}
 
-	function reject() {
+	public function reject() {
 		$this->set_status( 'rejected' );
 	}
 
-	function copy_into_set( $new_translation_set_id, $new_original_id, $status = 'fuzzy' ) {
+	public function copy_into_set( $new_translation_set_id, $new_original_id, $status = 'fuzzy' ) {
 		if ( ! in_array( $status, $this->get_static( 'statuses' ) ) ) {
 			return;
 		}
@@ -274,7 +274,7 @@ class GP_Translation extends GP_Thing {
 		gp_clean_translation_set_cache( $new_translation_set_id );
 	}
 
-	function propagate_across_projects() {
+	public function propagate_across_projects() {
 		// Only propagte current translations without warnings.
 		if ( $this->status != 'current' || ! empty( $this->warnings ) ) {
 			return;
@@ -311,7 +311,7 @@ class GP_Translation extends GP_Thing {
 		}
 	}
 
-	function set_status( $status ) {
+	public function set_status( $status ) {
 		if ( 'current' == $status ) {
 			$updated = $this->set_as_current();
 		} else {
@@ -325,7 +325,7 @@ class GP_Translation extends GP_Thing {
 		return $updated;
 	}
 
-	function translations() {
+	public function translations() {
 		$translations = array();
 		foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
 			$translations[ $i ] = isset( $this->{"translation_$i"} ) ? $this->{"translation_$i"} : null;
@@ -333,7 +333,7 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
-	function last_modified( $translation_set ) {
+	public function last_modified( $translation_set ) {
 		global $wpdb;
 
 		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
@@ -349,12 +349,12 @@ class GP_Translation extends GP_Thing {
 		return $last_modified;
 	}
 
-	function after_create() {
+	public function after_create() {
 		do_action( 'translation_created', $this );
 		return true;
 	}
 
-	function after_save() {
+	public function after_save() {
 		do_action( 'translation_saved', $this );
 		return true;
 	}
