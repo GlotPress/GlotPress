@@ -259,7 +259,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					$this->_bulk_approve( $bulk );
 					break;
 				case 'set-priority':
-					$this->_bulk_set_priority( $project, $locale, $translation_set, $bulk );
+					$this->_bulk_set_priority( $project, $bulk );
 			}
 
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
@@ -318,7 +318,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
-	private function _bulk_set_priority( $project, $locale, $translation_set, $bulk ) {
+	private function _bulk_set_priority( $project, $bulk ) {
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ){
 			return;
