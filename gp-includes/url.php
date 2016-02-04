@@ -118,7 +118,7 @@ function gp_url_current() {
  * Get the URL for a project
  *
  * @param bool|string|object $project_or_path Project path or object
- * @param string $path Addition path to append to the base path
+ * @param string|array $path Addition path to append to the base path
  * @param array $query associative array of query arguments (optional)
  *
  * @return string
