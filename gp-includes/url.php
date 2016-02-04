@@ -114,6 +114,15 @@ function gp_url_current() {
 	return $protocol . $host . $path_and_args;
 }
 
+/**
+ * Get the URL for a project
+ *
+ * @param string|object $project_or_path Project path or object
+ * @param string $path Addition path to append to the base path
+ * @param array $query associative array of query arguments (optional)
+ *
+ * @return string
+ */
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
 	return gp_url( array( 'projects', $project_path, $path ), $query );
