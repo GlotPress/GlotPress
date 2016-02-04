@@ -5,11 +5,12 @@ class GP_Thing {
 	var $field_names = array();
 	var $non_db_field_names = array();
 	var $int_fields = array();
-	var $errors = array();
 	var $validation_rules = null;
 	var $per_page = 30;
 	var $map_results = true;
 	var $static = array();
+
+	public $errors = array();
 
 	static $static_by_class = array();
 	static $validation_rules_by_class = array();
