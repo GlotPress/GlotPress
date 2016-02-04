@@ -16,6 +16,8 @@ class GP_Locale {
 	public $facebook_locale = null;
 	// TODO: days, months, decimals, quotes
 
+	private _index_for_number;
+	
 	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
@@ -264,7 +266,7 @@ class GP_Locales {
 		$bcc->wp_locale = 'bcc';
 		$bcc->slug = 'bcc';
 		$bcc->nplurals = 1;
-		$bcc->plural_expression = 0;
+		$bcc->plural_expression = '0';
 		$bcc->text_direction = 'rtl';
 
 		$be = new GP_Locale();
