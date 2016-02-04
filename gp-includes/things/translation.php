@@ -1,4 +1,8 @@
 <?php
+/**
+ * @method object|array many_no_map()
+ * @method object|array find_no_map()
+ */
 class GP_Translation extends GP_Thing {
 
 	var $per_page = 15;
