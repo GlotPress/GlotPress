@@ -124,7 +124,7 @@ function gp_array_zip() {
 	while (true) {
 		$this_round = array();
 		foreach ( $args as &$array ) {
-			$all_have_more = ( list( $key, $value ) = each( $array ) );
+			$all_have_more = ( list( , $value ) = each( $array ) );
 			if ( !$all_have_more ) {
 				break;
 			}
