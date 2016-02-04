@@ -4,7 +4,7 @@
  */
 class GP_Route {
 
-	var $api = false;
+	public $api = false;
 
 	public $errors = array();
 	public $notices = array();
