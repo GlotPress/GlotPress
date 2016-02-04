@@ -15,7 +15,7 @@ class GP_Thing {
 	static $static_by_class = array();
 	static $validation_rules_by_class = array();
 
-	function __construct( $fields = array() ) {
+	public function __construct( $fields = array() ) {
 		global $wpdb;
 		$this->class = get_class( $this );
 		$this->table = $wpdb->{$this->table_basename};
@@ -40,19 +40,19 @@ class GP_Thing {
 		}
 	}
 
-	function get_static( $name, $default = null ) {
+	public function get_static( $name, $default = null ) {
 		return isset( self::$static_by_class[$this->class][$name] )? self::$static_by_class[$this->class][$name] : $default;
 	}
 
-	function has_static( $name ) {
+	public function has_static( $name ) {
 		return isset( self::$static_by_class[$this->class][$name] );
 	}
 
-	function set_static( $name, $value ) {
+	public function set_static( $name, $value ) {
 		self::$static_by_class[$this->class][$name] = $value;
 	}
 
-	function __call( $name, $args ) {
+	public function __call( $name, $args ) {
 		$suffix = '_no_map';
 		if ( gp_endswith( $name, $suffix ) ) {
 			$name = substr( $name, 0, strlen( $name ) - strlen( $suffix ) );
@@ -69,14 +69,14 @@ class GP_Thing {
 	/**
 	 * Retrieves all rows from this table
 	 */
-	function all( $order = null ) {
+	public function all( $order = null ) {
 		return $this->many( $this->select_all_from_conditions_and_order( array(), $order ) );
 	}
 
 	/**
 	 * Reloads the object data from the database, based on its id
 	 */
-	function reload() {
+	public function reload() {
 		$this->set_fields( $this->get( $this->id ) );
 		return $this;
 	}
@@ -87,7 +87,7 @@ class GP_Thing {
 	 * For parameters description see BPDB::prepare()
 	 * @return mixed an object, containing the selected row or false on error
 	 */
-	function one() {
+	public function one() {
 		global $wpdb;
 		$args = func_get_args();
 		return $this->coerce( $wpdb->get_row( $this->prepare( $args ) ) );
@@ -99,14 +99,14 @@ class GP_Thing {
 	 * For parameters description see BPDB::prepare()
 	 * @return scalar the result of the query or false on error
 	 */
-	function value() {
+	public function value() {
 		global $wpdb;
 		$args = func_get_args();
 		$res = $wpdb->get_var( $this->prepare( $args ) );
 		return is_null( $res )? false : $res;
 	}
 
-	function prepare( $args ) {
+	public function prepare( $args ) {
 		global $wpdb;
 		if ( 1 == count( $args ) ) {
 			return $args[0];
@@ -122,25 +122,25 @@ class GP_Thing {
 	 * For parameters description see BPDB::prepare()
 	 * @return mixed an object, containing the selected row or false on error
 	 */
-	function many() {
+	public function many() {
 		global $wpdb;
 		$args = func_get_args();
 		return $this->map( $wpdb->get_results( $this->prepare( $args ) ) );
 	}
 
-	function find_many( $conditions, $order = null ) {
+	public function find_many( $conditions, $order = null ) {
 		return $this->many( $this->select_all_from_conditions_and_order( $conditions, $order ) );
 	}
 
-	function find_one( $conditions, $order = null ) {
+	public function find_one( $conditions, $order = null ) {
 		return $this->one( $this->select_all_from_conditions_and_order( $conditions, $order ) );
 	}
 
-	function find( $conditions, $order = null ) {
+	public function find( $conditions, $order = null ) {
 		return $this->find_many( $conditions, $order );
 	}
 
-	function query() {
+	public function query() {
 		global $wpdb;
 		$args = func_get_args();
 		return $wpdb->query( $this->prepare( $args ) );
@@ -152,7 +152,7 @@ class GP_Thing {
 	 * @param $args array associative array with fields as keys and values as values
 	 * @return mixed the object corresponding to the inserted row or false on error
 	 */
-	function create( $args ) {
+	public function create( $args ) {
 		global $wpdb;
 		$args = $this->prepare_fields_for_save( $args );
 		$args = $this->prepare_fields_for_create( $args );
@@ -172,7 +172,7 @@ class GP_Thing {
 	 * @param $args array see create()
 	 * @return mixed the selected object or false on error
 	 */
-	function create_and_select( $args ) {
+	public function create_and_select( $args ) {
 		$created = $this->create( $args );
 		if ( !$created ) return false;
 		$created->reload();
@@ -184,7 +184,7 @@ class GP_Thing {
 	 *
 	 * @param $data array associative array with fields as keys and updated values as values
 	 */
-	function update( $data, $where = null ) {
+	public function update( $data, $where = null ) {
 		global $wpdb;
 		if ( !$data ) return false;
 		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
@@ -197,14 +197,14 @@ class GP_Thing {
 		return !is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
 	}
 
-	function get( $thing_or_id ) {
+	public function get( $thing_or_id ) {
 		global $wpdb;
 		if ( !$thing_or_id ) return false;
 		$id = is_object( $thing_or_id )? $thing_or_id->id : $thing_or_id;
 		return $this->find_one( array( 'id' => $id ) );
 	}
 
-	function save( $args = null ) {
+	public function save( $args = null ) {
 		if ( is_null( $args ) ) $args = get_object_vars( $this );
 		if ( !is_array( $args ) ) $args = (array)$args;
 		$args = $this->prepare_fields_for_save( $args );
@@ -215,11 +215,11 @@ class GP_Thing {
 		return $update_res;
 	}
 
-	function delete() {
+	public function delete() {
 		return $this->delete_all( array( 'id' => $this->id ) );
 	}
 
-	function delete_all( $where = null  ) {
+	public function delete_all( $where = null  ) {
 		$query = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
@@ -228,7 +228,7 @@ class GP_Thing {
 
 	// Fields handling
 
-	function set_fields( $db_object ) {
+	public function set_fields( $db_object ) {
 		$db_object = $this->normalize_fields( $db_object );
 		foreach( $db_object as $key => $value ) {
 			$this->$key = $value;
@@ -241,7 +241,7 @@ class GP_Thing {
 	 *
 	 * @todo Include default type handling. For example dates 0000-00-00 should be set to null
 	 */
-	function normalize_fields( $args ) {
+	public function normalize_fields( $args ) {
 		return $args;
 	}
 
@@ -250,7 +250,7 @@ class GP_Thing {
 	 * key-value pairs, preresenting a GP_Thing object.
 	 *
 	 */
-	function prepare_fields_for_save( $args ) {
+	public function prepare_fields_for_save( $args ) {
 		$args = (array)$args;
 		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
@@ -270,24 +270,24 @@ class GP_Thing {
 		return $args;
 	}
 
-	function now_in_mysql_format() {
+	public function now_in_mysql_format() {
 		$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 		return $now->format( DATE_MYSQL );
 	}
 
-	function prepare_fields_for_create( $args ) {
+	public function prepare_fields_for_create( $args ) {
 		if ( in_array( 'date_added', $this->field_names ) ) {
 			$args['date_added'] = $this->now_in_mysql_format();
 		}
 		return $args;
 	}
 
-	function get_db_field_formats( $args ) {
+	public function get_db_field_formats( $args ) {
 		$formats = array_fill_keys( array_keys( $args ), '%s' );
 		return array_merge( $formats, array_fill_keys( $this->int_fields, '%d' ) );
 	}
 
-	function coerce( $thing ) {
+	public function coerce( $thing ) {
 		if ( !$thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
@@ -296,7 +296,7 @@ class GP_Thing {
 		}
 	}
 
-	function map( $results ) {
+	public function map( $results ) {
 		if ( isset( $this->map_results ) && !$this->map_results ) return $results;
 		if ( !$results || !is_array( $results ) ) $results = array();
 		$mapped = array();
@@ -308,15 +308,15 @@ class GP_Thing {
 
 	// Triggers
 
-	function after_create() {
+	public function after_create() {
 		return true;
 	}
 
-	function after_save() {
+	public function after_save() {
 		return true;
 	}
 
-	function sql_condition_from_php_value( $php_value ) {
+	public function sql_condition_from_php_value( $php_value ) {
 		global $wpdb;
 		if ( is_array( $php_value ) ) {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
@@ -333,7 +333,7 @@ class GP_Thing {
 		return "$operator $sql_value";
 	}
 
-	function sql_from_conditions( $conditions ) {
+	public function sql_from_conditions( $conditions ) {
 		if ( is_string( $conditions ) ) {
 			$conditions;
 		} elseif ( is_array( $conditions ) ) {
@@ -355,7 +355,7 @@ class GP_Thing {
 		return $this->apply_default_conditions( $conditions );
 	}
 
-	function sql_from_order( $order_by, $order_how = '' ) {
+	public function sql_from_order( $order_by, $order_how = '' ) {
 		if ( is_array( $order_by ) ) {
 			$order_by = implode( ' ', $order_by );
 			$order_how = '';
@@ -365,7 +365,7 @@ class GP_Thing {
 		return 'ORDER BY ' . $order_by . ( $order_how? " $order_how" : '' );
 	}
 
-	function select_all_from_conditions_and_order( $conditions, $order = null ) {
+	public function select_all_from_conditions_and_order( $conditions, $order = null ) {
 		$query = "SELECT * FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $conditions );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
@@ -374,21 +374,21 @@ class GP_Thing {
 		return $query;
 	}
 
-	function restrict_fields( $thing ) {
+	public function restrict_fields( $thing ) {
 		// Don't restrict any fields by default
 	}
 
-	function validate() {
+	public function validate() {
 		$verdict = $this->validation_rules->run( $this );
 		$this->errors = $this->validation_rules->errors;
 		return $verdict;
 	}
 
-	function force_false_to_null( $value ) {
+	public function force_false_to_null( $value ) {
 		return $value? $value : null;
 	}
 
-	function fields() {
+	public function fields() {
 		$result = array();
 		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) { 
 			if ( isset( $this->$field_name ) ) {
@@ -398,24 +398,24 @@ class GP_Thing {
 		return $result;
 	}
 
-	function sql_limit_for_paging( $page, $per_page = null ) {
+	public function sql_limit_for_paging( $page, $per_page = null ) {
 		$per_page = is_null( $per_page )? $this->per_page : $per_page;
 		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
 		$page = intval( $page )? intval( $page ) : 1;
 		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page-1)*$per_page );
 	}
 
-	function found_rows() {
+	public function found_rows() {
 		global $wpdb;
 		return $wpdb->get_var("SELECT FOUND_ROWS();");
 	}
 
-	function like_escape_printf( $s ) {
+	public function like_escape_printf( $s ) {
 		global $wpdb;
 		return str_replace( '%', '%%', $wpdb->esc_like( $s ) );
 	}
 
-	function apply_default_conditions( $conditions_str ) {
+	public function apply_default_conditions( $conditions_str ) {
 		$conditions = array();
 		if ( isset( $this->default_conditions ) )  $conditions[] = $this->default_conditions;
 		if ( $conditions_str ) $conditions[] = $conditions_str;
