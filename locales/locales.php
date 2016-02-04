@@ -16,7 +16,7 @@ class GP_Locale {
 	public $facebook_locale = null;
 	// TODO: days, months, decimals, quotes
 
-	private _index_for_number;
+	private $_index_for_number;
 	
 	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
