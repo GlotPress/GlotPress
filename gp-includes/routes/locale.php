@@ -95,7 +95,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $set_slugs ) {
+		if ( ! empty( $set_slugs ) ) {
 			// Make default the first item.
 			if ( ! empty( $set_slugs[ 'default' ] ) ) {
 				$default = $set_slugs[ 'default' ];
