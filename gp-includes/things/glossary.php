@@ -5,6 +5,9 @@ class GP_Glossary extends GP_Thing {
 	var $field_names = array( 'id', 'translation_set_id', 'description' );
 	var $int_fields = array( 'id', 'translation_set_id' );
 	var $non_updatable_attributes = array( 'id' );
+	var $id;
+	var $translation_set_id;
+	var $description;
 
 	function restrict_fields( $glossary ) {
 		$glossary->translation_set_id_should_not_be('empty');
