@@ -78,7 +78,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	}
 
 	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$ge              = array_shift( gp_post('glossary_entry') );
+		$ge_post 		= gp_post('glossary_entry');
+		$ge             = array_shift( $ge_post );
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ){
@@ -148,7 +149,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->errors[] = __( 'Error in deleting glossary entry!', 'glotpress' );
 		}
 
-		if ( $this->errors ) {
+		if ( ! empty( $this->errors ) ) {
 			$error_output = '<ul>';
 			foreach ( $this->errors as $error ) {
 				$error_output .= '<li>' . $error . '</li>';
