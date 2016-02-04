@@ -21,8 +21,9 @@ class GP_Route {
 	var $loaded_template = null;
 	var $template_output = null;
 	var $headers = array();
-	var $class;
+	var $class_name;
 	var $http_status;
+	var $last_method_called;
 
 	public function __construct() {
 
