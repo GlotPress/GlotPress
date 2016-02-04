@@ -218,7 +218,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 
-				if ( $translations ) {
+				if ( ! empty( $translations ) ) {
 					$t = $translations[0];
 
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
@@ -256,7 +256,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			switch( $bulk['action'] ) {
 				case 'approve':
 				case 'reject' :
-					$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
+					$this->_bulk_approve( $bulk );
 					break;
 				case 'set-priority':
 					$this->_bulk_set_priority( $project, $locale, $translation_set, $bulk );
@@ -272,7 +272,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->redirect( $bulk['redirect_to'] );
 	}
 
-	private function _bulk_approve( $project, $locale, $translation_set, $bulk ) {
+	private function _bulk_approve( $bulk ) {
 
 		$action = $bulk['action'];
 
