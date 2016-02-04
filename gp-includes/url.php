@@ -119,7 +119,7 @@ function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
 	return gp_url( array( 'projects', $project_path, $path ), $query );
 }
 
-function gp_url_profile( $user_nicename ) {
+function gp_url_profile( $user_nicename = '' ) {
 	return apply_filters( 'gp_url_profile', gp_url( array( '/profile', $user_nicename ) ), $user_nicename );
 }
 
