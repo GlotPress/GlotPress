@@ -42,7 +42,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	public function edit_post( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;
-		list( $set, $project, $locale ) = $items;
+		list( $set, ,  ) = $items;
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set, gp_url( '/sets/-new' ) ) ) return;
