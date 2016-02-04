@@ -98,8 +98,7 @@ class GP_Translation_Set_Script extends GP_CLI {
 
 	public function action_on_translation_set( $translation_set ) {
 		// define this function in a subclass
-		
-		// Return the translation set so scrutinizer doesn't get upset with an empty function.
-		return $translation_set;
+
+		do_action( 'gp_cli_action_on_translation_set', $translation_set );
 	}
 }
