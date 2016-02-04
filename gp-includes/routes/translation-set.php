@@ -26,7 +26,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	public function single( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items) return;
-		list( $set, $project, $locale ) = $items;
+		list( $set, $project, ) = $items;
 		$this->redirect( gp_url_project( $project, array( $set->locale, $set->slug ) ) );
 	}
 
