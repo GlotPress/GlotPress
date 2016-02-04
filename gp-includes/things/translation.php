@@ -6,20 +6,21 @@ class GP_Translation extends GP_Thing {
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
 	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );
-	var $id;
-	var $original_id;
-	var $translation_set_id;
-	var $translation_0;
-	var $translation_1;
-	var $translation_2;
-	var $translation_3;
-	var $translation_4;
-	var $translation_5;
-	var $user_id;
-	var $status;
-	var $date_added;
-	var $date_modified;
-	var $warningsvar;
+
+	public $id;
+	public $original_id;
+	public $translation_set_id;
+	public $translation_0;
+	public $translation_1;
+	public $translation_2;
+	public $translation_3;
+	public $translation_4;
+	public $translation_5;
+	public $user_id;
+	public $status;
+	public $date_added;
+	public $date_modified;
+	public $warningsvar;
 
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
