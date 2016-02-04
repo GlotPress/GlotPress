@@ -13,11 +13,11 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set ) ) return;
 		$created_set = GP::$translation_set->create_and_select( $new_set );
-		if ( $created_set ) $project = GP::$project->get( $created_set->project_id );
 		if ( !$created_set ) {
 			$this->errors[] = __( 'Error in creating translation set!', 'glotpress' );
 			$this->redirect( gp_url( '/sets/-new', array( 'project_id' => $new_set->project_id ) ) );
 		} else {
+			GP::$project->get( $created_set->project_id );
 			$this->notices[] = __( 'The translation set was created!', 'glotpress' );
 			$this->redirect( gp_url_project_locale( GP::$project->get( $created_set->project_id ), $created_set->locale, $created_set->slug ) );
 		}
