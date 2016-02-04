@@ -6,8 +6,9 @@ class GP_Route {
 
 	var $api = false;
 
-	var $errors = array();
-	var $notices = array();
+	public $errors = array();
+	public $notices = array();
+	
 	var $request_running = false;
 	var $template_path = null;
 
