@@ -6,6 +6,11 @@ class GP_Translation_Set extends GP_Thing {
 	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count', 'percent_translated', 'wp_locale', 'last_modified' );
 	var $int_fields = array( 'id', 'project_id' );
 	var $non_updatable_attributes = array( 'id' );
+	var $id;
+	var $name;
+	var $slug;
+	var $project_id;
+	var $locale;
 
 	function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');

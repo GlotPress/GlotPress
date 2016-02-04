@@ -5,6 +5,14 @@ class GP_Project extends GP_Thing {
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
 	var $int_fields = array( 'id', 'parent_project_id', 'active' );
 	var $non_updatable_attributes = array( 'id' );
+	var $id;
+	var $name;
+	var $slug;
+	var $path;
+	var $description;
+	var $parent_project_id;
+	var $source_url_template;
+	var $active;
 
 	function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
