@@ -15,45 +15,45 @@ function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-if ( function_exists('mb_strtolower') ):
-function gp_strtolower( $str ) {
-	return mb_strtolower( $str );
+if ( function_exists('mb_strtolower') ) {
+	function gp_strtolower( $str ) {
+		return mb_strtolower( $str );
+	}
+} else {
+	function gp_strtolower( $str ) {
+		return strtolower( $str );
+	}
 }
-else:
-function gp_strtolower( $str ) {
-	return strtolower( $str );
-}
-endif;
 
-if ( function_exists('mb_strlen') ):
-function gp_strlen( $str ) {
-	return mb_strlen( $str );
+if ( function_exists('mb_strlen') ) {
+	function gp_strlen( $str ) {
+		return mb_strlen( $str );
+	}
+} else {
+	function gp_strlen( $str ) {
+		return preg_match_all("/.{1}/us", $str, $dummy);
+	}
 }
-else:
-function gp_strlen( $str ) {
-	return preg_match_all("/.{1}/us", $str, $dummy);
-}
-endif;
 
-if ( function_exists('mb_stripos') ):
-function gp_stripos( $haystack, $needle ) {
-	return mb_stripos( $haystack, $needle );
+if ( function_exists('mb_stripos') ) {
+	function gp_stripos( $haystack, $needle ) {
+		return mb_stripos( $haystack, $needle );
+	}
+} else {
+	function gp_stripos( $haystack, $needle ) {
+		return stripos( $haystack, $needle );
+	}
 }
-else:
-function gp_stripos( $haystack, $needle ) {
-	return stripos( $haystack, $needle );
-}
-endif;
 
-if ( function_exists('mb_substr') ):
+if ( function_exists('mb_substr') ) {
 	function gp_substr( $str, $start, $length ) {
 		return mb_substr( $str, $start, $length );
 	}
-else:
+} else {
 	function gp_substr( $str, $start, $length ) {
 		return substr( $str, $start, $length );
 	}
-endif;
+}
 
 function gp_sanitize_for_url( $name ) {
 	$name = trim( $name );
