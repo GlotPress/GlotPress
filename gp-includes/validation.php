@@ -5,6 +5,7 @@ class GP_Validation_Rules {
 	var $rules = array();
 	
 	public $errors = array();
+	public $field_names;
 
 	static $positive_suffices = array(
 		'should_be', 'should', 'can', 'can_be',
@@ -62,17 +63,17 @@ class GP_Validation_Rules {
 			array_unshift( $args, $value );
 			if ( 'positive' == $rule['kind'] ) {
 				if ( !call_user_func_array( $callback['positive'], $args ) ) {
-					$this->errors[] = $this->construct_error_message( $rule, $value );
+					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict = false;
 				}
 			} else {
 				if ( is_null( $callback['negative'] ) ) {
 					if ( call_user_func_array( $callback['positive'], $args ) ) {
-						$this->errors[] = $this->construct_error_message( $rule, $value );
+						$this->errors[] = $this->construct_error_message( $rule );
 						$verdict = false;
 					}
 				} else if ( !call_user_func_array( $callback['negative'], $args ) ) {
-					$this->errors[] = $this->construct_error_message( $rule, $value );
+					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict = false;
 				}
 			}
@@ -80,7 +81,7 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
-	public function construct_error_message( $rule, $value ) {
+	public function construct_error_message( $rule ) {
 		$type_field = 'field';
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
