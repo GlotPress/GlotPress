@@ -3,7 +3,8 @@
 class GP_Validation_Rules {
 
 	var $rules = array();
-	var $errors = array();
+	
+	public $errors = array();
 
 	static $positive_suffices = array(
 		'should_be', 'should', 'can', 'can_be',
