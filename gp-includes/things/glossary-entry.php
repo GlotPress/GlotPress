@@ -18,12 +18,12 @@ class GP_Glossary_Entry extends GP_Thing {
 	public $last_edited_by;
 
 	
-	function __construct( $fields = array() ) {
+	public function __construct( $fields = array() ) {
 		parent::__construct( $fields );
 		$this->setup_pos();
 	}
 
-	function setup_pos(){
+	private function setup_pos(){
 		if ( ! empty( $this->parts_of_speech ) ) {
 			return;
 		}
@@ -41,18 +41,18 @@ class GP_Glossary_Entry extends GP_Thing {
 		);
 	}
 
-	function restrict_fields( $glossary_entry ) {
+	public function restrict_fields( $glossary_entry ) {
 		$glossary_entry->term_should_not_be( 'empty' );
 		$glossary_entry->part_of_speech_should_not_be( 'empty' );
 		$glossary_entry->glossary_id_should_be( 'positive_int' );
 		$glossary_entry->last_edited_by_should_be( 'positive_int' );
 	}
 
-	function by_glossary_id( $glossary_id ) {
+	public function by_glossary_id( $glossary_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE glossary_id= %d ORDER by term ASC", $glossary_id );
 	}
 
-	function last_modified( $glossary ) {
+	public function last_modified( $glossary ) {
 		global $wpdb;
 
 		return $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
