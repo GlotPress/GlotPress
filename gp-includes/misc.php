@@ -139,9 +139,9 @@ function gp_array_zip() {
 	return $res;
 }
 
-function gp_array_any( $callback, $array ) {
+function gp_array_any( $callback, $array, $arg = null ) {
 	foreach( $array as $item ) {
-		if ( $callback( $item ) ) {
+		if ( $callback( $item, $arg ) ) {
 			return true;
 		}
 	}
