@@ -13,7 +13,7 @@ class GP_Thing {
 	public $table_basename;
 	public $id;
 	public $non_updatable_attributes;
-	
+	public $default_conditions;
 	public $table = null;
 	public $errors = array();
 
