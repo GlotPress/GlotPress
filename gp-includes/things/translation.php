@@ -176,7 +176,7 @@ class GP_Translation extends GP_Thing {
 			return in_array( $s, $all_statuses );
 		} );
 
-		if ( $statuses ) {
+		if ( ! empty( $statuses ) ) {
 			$statuses_where = array();
 			foreach( $statuses as $single_status ) {
 				$statuses_where[] = $wpdb->prepare( 't.status = %s', $single_status );
