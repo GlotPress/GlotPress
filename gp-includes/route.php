@@ -89,7 +89,7 @@ class GP_Route {
 	 *
 	 * @param string $action
 	 * @param`string $object_type
-	 * @param string $object_id
+	 * @param string|array $object_id
 	 * @param string $url	The URL to redirect. Default value: referrer or index page, if referrer is missing
 	 */
 	public function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
