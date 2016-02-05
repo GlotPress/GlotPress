@@ -1,7 +1,6 @@
 <?php
 class GP_Thing {
 
-	var $table = null;
 	var $field_names = array();
 	var $non_db_field_names = array();
 	var $int_fields = array();
@@ -10,6 +9,7 @@ class GP_Thing {
 	var $map_results = true;
 	var $static = array();
 
+	public $table = null;
 	public $errors = array();
 
 	static $static_by_class = array();
