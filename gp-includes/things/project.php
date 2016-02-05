@@ -14,7 +14,8 @@ class GP_Project extends GP_Thing {
 	public $parent_project_id;
 	public $source_url_template;
 	public $active;
-
+	public $user_source_url_template;
+	
 	public function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
 		$project->slug_should_not_be('empty');
