@@ -12,7 +12,7 @@ class GP_Permission extends GP_Thing {
 	public $object_type;
 	public $object_id;
 
-	function normalize_fields( $args ) {
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		foreach( $this->field_names as $field_name ) {
 			if ( isset( $args[$field_name] ) ) {
