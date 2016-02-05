@@ -1,4 +1,7 @@
 <?php
+/**
+ * @method object|array many_no_map( string $sql, int $id ) 
+ */
 class GP_Original extends GP_Thing {
 
 	var $table_basename = 'gp_originals';
