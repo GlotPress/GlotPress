@@ -171,21 +171,13 @@ class GP_Project extends GP_Thing {
 		$removed    = array();
 
 		foreach ( $other_sets as $other_set ) {
-			$found = gp_array_any( function( $set ) use ( $other_set ) {
-				return ( $set->locale == $other_set->locale && $set->slug = $other_set->slug );
-			}, $this_sets );
-
-			if ( ! $found ) {
+			if ( ! gp_array_any( array( $this, '_compare_set_item' ), $this_sets, $other_set ) ) {
 				$added[] = $other_set;
 			}
 		}
 
 		foreach ( $this_sets as $this_set ) {
-			$found = gp_array_any( function( $set ) use ( $this_set ) {
-				return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
-			}, $other_sets );
-
-			if ( ! $found ) {
+			if ( ! gp_array_any( array( $this, '_compare_set_item' ), $other_sets, $this_set ) ) {
 				$removed[] = $this_set;
 			}
 		}
@@ -196,6 +188,10 @@ class GP_Project extends GP_Thing {
 		);
 	}
 
+	public function _compare_set_item( $set, $this_set ) {
+		return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
+	}
+	
 	public function copy_sets_and_translations_from( $source_project_id ) {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
