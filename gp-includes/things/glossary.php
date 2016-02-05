@@ -33,7 +33,7 @@ class GP_Glossary extends GP_Thing {
 	 * @param GP_Project $project
 	 * @param GP_Translation_Set $translation_set
 	 *
-	 * @return GP_Glossary
+	 * @return GP_Glossary|bool
 	 */
 	public function by_set_or_parent_project( $translation_set, $project ) {
 		$glossary = $this->by_set_id( $translation_set->id );
