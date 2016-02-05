@@ -141,8 +141,14 @@ function gp_array_zip() {
 
 function gp_array_any( $callback, $array, $arg = null ) {
 	foreach( $array as $item ) {
-		if ( $callback( $item, $arg ) ) {
-			return true;
+		if( is_array( $callback ) ) {
+			if (  $callback[0]->{$callback[1]}( $item, $arg ) ) {
+				return true;
+			}
+		} else {
+			if ( $callback( $item, $arg ) ) {
+				return true;
+			}
 		}
 	}
 	return false;
