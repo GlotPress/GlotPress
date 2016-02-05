@@ -101,16 +101,16 @@ class GP_Validation_Rules {
 class GP_Validators {
 	static $callbacks = array();
 
-	static function register( $key, $callback, $negative_callback = null ) {
+	static public function register( $key, $callback, $negative_callback = null ) {
 		// TODO: add data for easier generation of error messages
 		self::$callbacks[$key] = array( 'positive' => $callback, 'negative' => $negative_callback );
 	}
 
-	static function unregister( $key ) {
+	static public function unregister( $key ) {
 		unset( self::$callbacks[$key] );
 	}
 
-	static function get( $key ) {
+	static public function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}
 }
