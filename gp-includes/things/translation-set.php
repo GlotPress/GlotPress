@@ -1,4 +1,8 @@
 <?php
+/**
+ * @method object|array many_no_map( string $sql ) 
+ * @method object|array find_many_no_map( string|array $sql )
+ */
 class GP_Translation_Set extends GP_Thing {
 
 	var $table_basename = 'gp_translation_sets';
