@@ -53,7 +53,7 @@ function gp_parse_request() {
  *
  * @since 1.0.0
  *
- * @param array    $request  The complete SQL query.
+ * @param array    $sql  The complete SQL query.
  * @param WP_Query $wp_query The WP_Query instance (passed by reference).
  * @return string|false False if GlotPress request, SQL query if not.
  */
