@@ -96,17 +96,21 @@ class GP_Builtin_Translation_Warnings {
 			$translatable_attr_regex[ $key ] = '%' . $attr_regex_single . '|' . str_replace( "'", '"', $attr_regex_single ) . '%';
 		}
 
-		foreach( gp_array_zip( $original_parts, $translation_parts ) as $tags ) {
-			list( $original_tag, $translation_tag ) = $tags;
-			$expected_error_msg = "Expected $original_tag, got $translation_tag.";
-			$original_is_tag = preg_match( "/^$tag_pattern$/", $original_tag );
-			$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
+		$parts_tags = gp_array_zip( $original_parts, $translation_parts );
+		
+		if ( ! empty( $parts_tags ) ) {
+			foreach( $parts_tags as $tags ) {
+				list( $original_tag, $translation_tag ) = $tags;
+				$expected_error_msg = "Expected $original_tag, got $translation_tag.";
+				$original_is_tag = preg_match( "/^$tag_pattern$/", $original_tag );
+				$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
 
-			if ( $original_is_tag && $translation_is_tag && $original_tag != $translation_tag ) {
-				$original_tag = preg_replace( $translatable_attr_regex, '', $original_tag );
-				$translation_tag = preg_replace( $translatable_attr_regex, '', $translation_tag );
-				if ( $original_tag != $translation_tag ) {
-					return $expected_error_msg;
+				if ( $original_is_tag && $translation_is_tag && $original_tag != $translation_tag ) {
+					$original_tag = preg_replace( $translatable_attr_regex, '', $original_tag );
+					$translation_tag = preg_replace( $translatable_attr_regex, '', $translation_tag );
+					if ( $original_tag != $translation_tag ) {
+						return $expected_error_msg;
+					}
 				}
 			}
 		}
