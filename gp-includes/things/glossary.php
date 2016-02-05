@@ -55,7 +55,7 @@ class GP_Glossary extends GP_Thing {
 		return $glossary;
 	}
 
-	function by_set_id( $set_id ) {
+	public function by_set_id( $set_id ) {
 		return $this->one( "
 		    SELECT * FROM $this->table
 		    WHERE translation_set_id = %d LIMIT 1", $set_id );
@@ -70,7 +70,7 @@ class GP_Glossary extends GP_Thing {
 	 *
 	 * @return mixed
 	 */
-	function copy_glossary_items_from( $source_glossary_id ) {
+	public function copy_glossary_items_from( $source_glossary_id ) {
 		global $wpdb;
 
 		$current_date = $this->now_in_mysql_format();
