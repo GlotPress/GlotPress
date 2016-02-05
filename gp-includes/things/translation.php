@@ -27,7 +27,7 @@ class GP_Translation extends GP_Thing {
 	public $status;
 	public $date_added;
 	public $date_modified;
-	public $warningsvar;
+	public $warnings;
 	public $found_rows;
 	
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
