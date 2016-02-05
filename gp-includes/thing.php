@@ -8,7 +8,12 @@ class GP_Thing {
 	var $per_page = 30;
 	var $map_results = true;
 	var $static = array();
-
+	
+	public $class;
+	public $table_basename;
+	public $id;
+	public $non_updatable_attributes;
+	
 	public $table = null;
 	public $errors = array();
 
