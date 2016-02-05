@@ -2,7 +2,6 @@
 /**
  * @method object|array many_no_map( string $sql ) 
  * @method object|array find_many_no_map( string|array $sql )
- * @method object|array find_many_no_map( string|array $sql, int $id )
  */
 class GP_Translation_Set extends GP_Thing {
 
