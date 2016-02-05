@@ -76,7 +76,7 @@ function gp_link_home() {
 	echo call_user_func_array('gp_link_home_get', $args);
 }
 
-function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
+function gp_link_set_edit_get( $set, $text = false, $attrs = array() ) {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return '';
 	}
