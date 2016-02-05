@@ -16,7 +16,14 @@ class GP_Translation_Set extends GP_Thing {
 	public $slug;
 	public $project_id;
 	public $locale;
-
+	public $project;
+	public $waiting_count;
+	public $fuzzy_count;
+	public $untranslated_count;
+	public $current_count;
+	public $warnings_count;
+	public $all_count;
+	
 	public function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
