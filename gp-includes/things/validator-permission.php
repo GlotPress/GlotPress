@@ -7,6 +7,9 @@ class GP_Validator_Permission extends GP_Permission {
 	var $non_updatable_attributes = array( 'id', );
 
 	public $object_type;
+	public $project_id;
+	public $locale_slug;
+	public $set_slug;
 
 	public function restrict_fields( $permission ) {
 		$permission->project_id_should_not_be('empty');
