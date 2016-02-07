@@ -19,6 +19,15 @@ class GP_Project extends GP_Thing {
 
 	function sub_projects() {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
+
+		/**
+		 * Sub projects of a project.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array  $sub_projects An array of sub projects as GP_Project.
+		 * @param string $project_id   ID of the current project. Can be zero at the top level.
+		 */
 		$sub_projects = apply_filters( 'gp_projects', $sub_projects, $this->id );
 
 		return $sub_projects;
@@ -26,6 +35,8 @@ class GP_Project extends GP_Thing {
 
 	function top_level() {
 		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
+
+		/** This filter is documented in gp-includes/things/project.php */
 		$projects = apply_filters( 'gp_projects', $projects, 0 );
 
 		return $projects;
@@ -34,6 +45,14 @@ class GP_Project extends GP_Thing {
 	// Triggers
 
 	function after_save() {
+
+		/**
+		 * After saving a project.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Project $project The project that was saved.
+		 */
 		do_action( 'gp_project_saved', $this );
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
@@ -41,6 +60,14 @@ class GP_Project extends GP_Thing {
 	}
 
 	function after_create() {
+
+		/**
+		 * After creating a project.
+		 * 
+		 * @since 1.0.0
+		 * 
+		 * @param GP_Project $project The project that was created.
+		 */
 		do_action( 'gp_project_created', $this );
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
