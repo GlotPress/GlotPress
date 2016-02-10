@@ -113,12 +113,17 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$translation1->set_as_current(); //calls propagate_across_projects
 
-		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array('status' => 'current') );
+		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array('status' => 'waiting') );
 
 		$this->assertEquals( 1, count( $set2_current_translations ) );
 	}
 
+	function __string_status_current() {
+		return 'current';
+	}
+
 	function test_propagate_across_projects_propagates_case_sensitiv() {
+		add_filter( 'gp_translations_to_other_projects_status', array( $this, '__string_status_current' ) );
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
 		$project2 = $this->factory->project->create( array( 'name'=>'project_two' ) );
@@ -133,9 +138,11 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array( 'status' => 'current' ) );
 		$this->assertEquals( 1, count( $set2_current_translations ) );
+		remove_filter( 'gp_translations_to_other_projects_status', array( $this, '__string_status_current' ) );
 	}
 
 	function test_propagate_across_projects_propagates_ignores_translations_with_warnings() {
+		add_filter( 'gp_translations_to_other_projects_status', array( $this, '__string_status_current' ) );
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
 		$project2 = $this->factory->project->create( array( 'name'=>'project_two' ) );
@@ -150,9 +157,11 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array( 'status' => 'current' ) );
 		$this->assertEquals( 0, count( $set2_current_translations ) );
+		remove_filter( 'gp_translations_to_other_projects_status', array( $this, '__string_status_current' ) );
 	}
 
 	function test_propagate_across_projects_does_not_create_more_than_one_current() {
+		add_filter( 'gp_translations_to_other_projects_status', array( $this, '__string_status_current' ) );
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
 		$project2 = $this->factory->project->create( array('name'=>'project_two') );
@@ -174,6 +183,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set3_current_translations = GP::$translation->for_export( $project3, $set3, array('status' => 'current') );
 
 		$this->assertEquals( 1, count( $set3_current_translations ) );
+		remove_filter( 'gp_translations_to_other_projects_status', array( $this, '__string_status_current' ) );
 	}
 
 	/**
