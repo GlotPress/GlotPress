@@ -1700,6 +1700,7 @@ class GP_Locales {
 		$snd->country_code = 'pk';
 		$snd->wp_locale = 'snd';
 		$snd->slug = 'snd';
+		$snd->text_direction = 'rtl';
 
 		$so = new GP_Locale();
 		$so->english_name = 'Somali';
