@@ -17,4 +17,10 @@ class GP {
 	public static $builtin_translation_warnings;
 	public static $current_route = null;
 	public static $formats;
+
+	// Object cache placeholders
+	public static $cache_one = array();
+	public static $cache_many = array();
+	public static $cache_value = array();
+	
 }
