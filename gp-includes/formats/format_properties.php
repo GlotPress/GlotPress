@@ -18,7 +18,8 @@ class GP_Format_Properties extends GP_Format {
 			$entry->context = $this->escape( $entry->context );
 			$translation = empty( $entry->translations ) ? $entry->context : $this->escape( $entry->translations[0] );
 
-			$original = str_replace( "\n", "\\n", $entry->singular );
+			$original = empty( $entry->context ) ? $entry->singular : $entry->context;
+			$original = str_replace( "\n", "\\n", $original );
 			$translation = str_replace( "\n", "\\n", $translation );
 			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
 
@@ -98,10 +99,10 @@ class GP_Format_Properties extends GP_Format {
 					} else {
 						$comment = null;
 					}
-				} else if ( preg_match( '/^(.*) = (.*)$/', $line, $matches ) ) {
+				} else if ( preg_match( '/^(.*)=(.*)$/', $line, $matches ) ) {
 					$entry = new Translation_Entry();
-					$entry->context = $this->unescape( $matches[1] );
-					$entry->singular = $this->unescape( $matches[2] );
+					$entry->context = rtrim( $this->unescape( $matches[1] ) );
+					$entry->singular = ltrim( $this->unescape( $matches[2] ) );
 
 					if ( ! is_null( $comment )) {
 						$entry->extracted_comments = $comment;
