@@ -27,7 +27,7 @@ class GP_Format_Properties extends GP_Format {
 				$comment = "No comment provided.";
 			}
 
-			$result .= "# $comment\n$original = $translation\n\n";
+			$result .= "# $comment\n" . $this->escape_key( $original ) . " = $translation\n\n";
 		}
 
 		return $prefix . mb_convert_encoding( $result, 'UTF-16LE' );
@@ -135,6 +135,10 @@ class GP_Format_Properties extends GP_Format {
 		return addcslashes( $string, '"\\/' );
 	}
 
+	private function escape_key( $string ) {
+		return addcslashes( $string, '=:' );
+	}
+	
 }
 
 GP::$formats['properties'] = new GP_Format_Properties;
