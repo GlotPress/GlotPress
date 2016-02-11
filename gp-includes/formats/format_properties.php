@@ -23,11 +23,11 @@ class GP_Format_Properties extends GP_Format {
 			$translation = str_replace( "\n", "\\n", $translation );
 			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
 
-			if ( $comment == "" ) {
-				$comment = "No comment provided.";
+			if ( $comment != "" ) {
+				$result .= "# $comment\n";
 			}
 
-			$result .= "# $comment\n" . $this->escape_key( $original ) . " = $translation\n\n";
+			$result .= $this->escape_key( $original ) . " = $translation\n";
 		}
 
 		return $prefix . mb_convert_encoding( $result, 'UTF-16LE' );
