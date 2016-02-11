@@ -90,16 +90,9 @@ $i = 0;
 		</dd>
  		<dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
 		<dd>
-			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
-				array(
-					'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-					'current' => __( 'Current only', 'glotpress' ),
-					'old' => __( 'Approved, but obsoleted by another string', 'glotpress' ),
-					'waiting' => __( 'Waiting approval', 'glotpress' ),
-					'rejected' => __( 'Rejected', 'glotpress' ),
-					'untranslated' => __( 'Without current translation', 'glotpress' ),
-					'either' => __( 'Any', 'glotpress' ),
-				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
+			<?php 
+				//TODO: show only these, which user is allowed to see afterwards
+				echo gp_radio_buttons('filters[status]', gp_filter_status_options(), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
 			?>
 		</dd>
 		<dd>
@@ -116,31 +109,15 @@ $i = 0;
 		<?php
 		$default_sort = get_user_option( 'gp_default_sort' );
 		if ( ! is_array( $default_sort ) ) {
-			$default_sort = array(
-				'by'  => 'priority',
-				'how' => 'desc'
-			);
+			$default_sort = gp_default_sort_options();
 		}
 
-		echo gp_radio_buttons('sort[by]',
-			array(
-				'original_date_added' => __( 'Date added (original)', 'glotpress' ),
-				'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
-				'original' => __( 'Original string', 'glotpress' ),
-				'translation' => __( 'Translation', 'glotpress' ),
-				'priority' => __( 'Priority', 'glotpress' ),
-				'references' => __( 'Filename in source', 'glotpress' ),
-				'random' => __( 'Random', 'glotpress' ),
-			), gp_array_get( $sort, 'by', $default_sort['by'] ) );
+		echo gp_radio_buttons('sort[by]', gp_sort_by_options(), gp_array_get( $sort, 'by', $default_sort['by'] ) );
 		?>
 		</dd>
 		<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
 		<dd>
-		<?php echo gp_radio_buttons('sort[how]',
-			array(
-				'asc' => __( 'Ascending', 'glotpress' ),
-				'desc' => __( 'Descending', 'glotpress' ),
-			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
+		<?php echo gp_radio_buttons('sort[how]', gp_default_sort_options(), gp_array_get( $sort, 'how', $default_sort['how'] ) );
 		?>
 		</dd>
 		<?php do_action( 'gp_translation_set_filters' );?>
