@@ -136,4 +136,4 @@ class GP_Format_Properties extends GP_Format {
 
 }
 
-GP::$formats['strings'] = new GP_Format_Properties;
+GP::$formats['properties'] = new GP_Format_Properties;
