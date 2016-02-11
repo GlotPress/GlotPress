@@ -2,7 +2,7 @@
 
 class GP_Format_Properties extends GP_Format {
 
-	public $name = 'Java Strings File (.properties)';
+	public $name = 'Java Properties File (.properties)';
 	public $extension = 'properties';
 
 	public $exported = '';
@@ -99,7 +99,7 @@ class GP_Format_Properties extends GP_Format {
 					} else {
 						$comment = null;
 					}
-				} else if ( preg_match( '/^(.*)=(.*)$/', $line, $matches ) ) {
+				} else if ( preg_match( '/^(.*)(=|:)(.*)$/', $line, $matches ) ) {
 					$entry = new Translation_Entry();
 					$entry->context = rtrim( $this->unescape( $matches[1] ) );
 					$entry->singular = ltrim( $this->unescape( $matches[2] ) );
