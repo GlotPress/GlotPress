@@ -1,9 +1,9 @@
 === GlotPress ===
-Contributors: a5hleyrich, akibjorklund, bradt, gilbitron, gregross, javorszky, nacin, ocean90, polevaultweb, samuelsidler
+Contributors: a5hleyrich, akibjorklund, bradt, chantalc, gilbitron, gregross, javorszky, nacin, ocean90, polevaultweb, samuelsidler
 Tags: translation
 Requires at least: 4.4
 Tested up to: 4.4
-Stable tag: trunk
+Stable tag: {{TAG}}
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,9 +11,9 @@ GlotPress is a tool to help translators collaborate.
 
 == Description ==
 
-**This is a community-backed experiment dedicated to converting [GlotPress](https://github.com/GlotPress/GlotPress) into a WordPress plugin.**
+This is a community-backed plugin which brings [GlotPress](https://github.com/GlotPress/GlotPress) into WordPress as a plugin.
 
-We are still in the process of converting GlotPress into a WordPress plugin. We're working through [the issues](https://github.com/deliciousbrains/GlotPress/milestones/1.0) to get it ready for its first release. The idea is to change as little as possible to get it working well.
+GlotPress as a WordPress plugin is still a work in progress, we're working through [the issues](https://github.com/GlotPress/GlotPress-WP/issues) to keep improving it in future releases.
 
 If you'd like to work on something and there's not currently an issue for it, open a new issue and describe your proposed change before jumping into coding.
 
@@ -28,23 +28,20 @@ This plugin wouldn't be possible without all the hard work that has gone in to t
 
 Search for "GlotPress" and install it.
 
+After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
+
 = Manual Installation =
 
 1. Upload the entire `/glotpress` directory to the `/wp-content/plugins/` directory.
 2. Activate GlotPress through the 'Plugins' menu in WordPress.
+3. GlotPress can then be accessed via `<home_url>/glotpress/`
+
+To access GlotPress under a different path, modify the `GP_URL_BASE` constant in `wp-config.php`, for example to run it in /, you'd add
+
+`define( 'GP_URL_BASE', '/' );`
 
 == Frequently Asked Questions ==
 = How can I contribute to GlotPress? =
-Drop by the [GlotPress GitHub](https://github.com/deliciousbrains/GlotPress) repository and look through the open issues and pull requests.
+Drop by the [GlotPress GitHub](https://github.com/GlotPress/GlotPress-WP) repository and look through the open issues and pull requests.
 
 == Changelog ==
-
-= 1.0 =
-* Release Date: TBD
-* Inital release.
-
-== Upgrade Notice ==
-
-= 1.0 =
-Initial release, no upgrade notes at this time.
-

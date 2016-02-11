@@ -3,9 +3,13 @@
 class GP_Test_Urls extends GP_UnitTestCase {
 
 	function setUp() {
-	    $this->sub_dir = '/glotpress/';
-		$this->url = 'http://example.org' . $this->sub_dir;
 		parent::setUp();
+
+		$this->sub_dir = '/glotpress/';
+		$this->url = user_trailingslashit( 'http://example.org' . $this->sub_dir );
+
+		$this->base_path_emtpy_string = '';
+		$this->base_path_single_slash = '/';
 	}
 
 	function test_gp_url_should_just_add_simple_path_string_if_query_is_missing() {
@@ -20,7 +24,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 
 	function test_gp_url_should_properly_add_query_string_if_path_is_empty() {
-		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', '?a=b' ) );
+		$this->assertEquals( user_trailingslashit( $this->sub_dir ) . '?a=b', gp_url( '', '?a=b' ) );
 	}
 
 	function test_gp_url_should_add_question_mark_if_query_string_does_not_have_one() {
@@ -28,11 +32,11 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 
 	function test_gp_url_should_expand_query_array() {
-		$this->assertEquals( $this->sub_dir . '?a=b', gp_url( '', array('a' => 'b') ) );
+		$this->assertEquals( user_trailingslashit( $this->sub_dir ) . '?a=b', gp_url( '', array('a' => 'b') ) );
 	}
 
 	function test_gp_url_should_add_ampersand_if_path_is_empty_and_query_array_has_more_than_one_value() {
-		$this->assertEquals( $this->sub_dir . '?a=b&b=c', gp_url( '', array('a' => 'b', 'b' => 'c') ) );
+		$this->assertEquals( user_trailingslashit( $this->sub_dir ) . '?a=b&b=c', gp_url( '', array('a' => 'b', 'b' => 'c') ) );
 	}
 
 	function test_gp_url_should_add_ampersand_if_query_array_has_more_than_one_value() {
@@ -68,25 +72,25 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	}
 
 	function test_gp_url_join_should_not_discard_slash_if_the_whole_first_component_is_slash() {
-			$this->assertEquals( '/baba/', gp_url_join( '/baba/', '/' ) );
-			$this->assertEquals( '/baba/', gp_url_join( '/baba/', '//' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '/baba/', '/' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '/baba/', '//' ) );
 	}
 
 	function test_gp_url_join_should_not_discard_slash_if_the_whole_last_component_is_slash() {
-			$this->assertEquals( '/baba/', gp_url_join( '/', '/baba/' ) );
-			$this->assertEquals( '/baba/', gp_url_join( '//', '/baba/' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '/', '/baba/' ) );
+			$this->assertEquals( user_trailingslashit( '/baba/' ), gp_url_join( '//', '/baba/' ) );
 	}
 
 	function test_gp_url_join_should_return_only_one_slash_if_the_only_component_is_a_slash() {
-		$this->assertEquals( '/', gp_url_join( '/' ) );
+		$this->assertEquals( user_trailingslashit( '/' ), gp_url_join( '/' ) );
 	}
 
 	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_slashes() {
-		$this->assertEquals( '/', gp_url_join( '/', '/' ) );
+		$this->assertEquals( user_trailingslashit( '/' ), gp_url_join( '/', '/' ) );
 	}
 
 	function test_gp_url_join_should_return_only_one_slash_if_all_components_are_multiple_slashes() {
-		$this->assertEquals( '/', gp_url_join( '///', '///' ) );
+		$this->assertEquals( user_trailingslashit( '/' )	, gp_url_join( '///', '///' ) );
 	}
 
 	function test_gp_url_join_should_skip_empty_components() {
@@ -165,5 +169,69 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		$_SERVER['SERVER_PORT'] = 8888;
 		$this->assertEquals( 'http://glotpress.org:8888/', gp_url_current() );
 		$_SERVER = $server_vars;
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_base_path_filter() {
+		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_single_slash' ) );
+
+		$this->assertSame( $this->base_path_single_slash, gp_url_base_path() );
+		$this->assertSame( 'http://example.org' . $this->base_path_single_slash, gp_url_public_root() );
+
+		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_single_slash' ) );
+	}
+
+	function _gp_url_base_path_filter_single_slash() {
+		return $this->base_path_single_slash;
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_returns_leading_slash_when_permalinks_have_no_trailing_slash() {
+		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_empty_string' ) );
+		$this->set_permalink_structure( '/%postname%' );
+
+		$this->assertSame( '/foo/bar', gp_url( 'foo/bar' ) );
+
+		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_empty_string' ) );
+	}
+
+	function _gp_url_base_path_filter_empty_string() {
+		return $this->base_path_emtpy_string;
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_path_returns_single_slash() {
+		$this->assertSame( '/', gp_url_path( 'http://glotpress.org/' ) );
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_path_returns_empty_string_if_url_has_no_path() {
+		$this->assertSame( '', gp_url_path( 'http://glotpress.org' ) );
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_public_root_has_no_trailing_slash_when_permalinks_have_no_trailing_slash() {
+		$this->set_permalink_structure( '/%postname%' );
+
+		$this->assertTrue( '/' !== substr( gp_url_public_root(), -1 ) );
+	}
+
+	/**
+	 * @ticket gh-203
+	 */
+	function test_gp_url_public_root_has_a_trailing_slash_when_permalinks_have_a_trailing_slash() {
+		$this->set_permalink_structure( '/%postname%/' );
+
+		$this->assertTrue( '/' === substr( gp_url_public_root(), -1 ) );
 	}
 }

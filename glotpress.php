@@ -6,7 +6,7 @@
 Plugin Name: GlotPress
 Plugin URI: https://wordpress.org/plugins/glotpress/
 Description: GlotPress is a tool to help translators collaborate.
-Version: 1.0-alpha
+Version: 1.0.1
 Author: the GlotPress team
 Author URI: http://glotpress.org
 License: GPLv2 or later
@@ -29,17 +29,61 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'GP_VERSION', '1.0-alpha-1100' );
+define( 'GP_VERSION', '1.0.1' );
 define( 'GP_DB_VERSION', '940' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 define( 'GP_INC', 'gp-includes/' );
+define( 'GP_WP_REQUIRED_VERSION', '4.4' );
+
+// Load the plugin's translated strings
+load_plugin_textdomain( 'glotpress' );
+
+/**
+ * Adds a message if an incompatible version of WordPress is running.
+ *
+ * Message is only displayed on the plugin screen.
+ *
+ * @since 1.0.0
+ */
+function gp_unsupported_version_admin_notice() {
+	global $wp_version;
+
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+	?>
+	<div class="notice notice-error">
+		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php _e( '&#151; You are running an unsupported version of WordPress.', 'glotpress' ); ?></p>
+		<p style="max-width:800px;"><?php
+			printf(
+				/* translators: 1: Required version of WordPress 2: Current version of WordPress */
+				__( 'GlotPress requires WordPress %1$s or later and has detected you are running %2$s. Upgrade your WordPress install or deactivate the GlotPress plugin to remove this message.', 'glotpress' ),
+				esc_html( GP_WP_REQUIRED_VERSION ),
+				esc_html( $wp_version ) );
+		?></p>
+	</div>
+	<?php
+}
+
+/*
+ * Check the WP version, if we don't meet the minimum version to run GlotPress
+ * return so we don't cause any errors and add show an admin notice.
+ */
+if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
+	add_action( 'admin_notices', 'gp_unsupported_version_admin_notice', 10, 2 );
+
+	// Bail out now so no additional code is run.
+	return;
+}
 
 require_once GP_PATH . 'gp-settings.php';
 
 /**
- * Perform necessary actions on activation
+ * Perform necessary actions on activation.
  *
  * @since 1.0.0
  */
@@ -79,6 +123,3 @@ function gp_deactivate_plugin( $network_wide ) {
 
 }
 register_deactivation_hook( GP_PLUGIN_FILE, 'gp_deactivate_plugin' );
-
-// Load the plugin's translated strings
-load_plugin_textdomain( 'glotpress', false, dirname( plugin_basename( GP_PLUGIN_FILE ) ) . '/languages/' );

@@ -28,7 +28,7 @@ class GP_Router {
 	}
 
 	public function request_method() {
-		return gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' );
+		return wp_unslash( gp_array_get( $_SERVER, 'REQUEST_METHOD', 'GET' ) );
 	}
 
 	public function add( $re, $function, $method = 'get' ) {
@@ -136,6 +136,8 @@ class GP_Router {
 
 
 	public function route() {
+		global $wp_query;
+
 		$real_request_uri = $this->request_uri();
 		$api_request_uri = $real_request_uri;
 		$request_method = strtolower( $this->request_method() );
@@ -148,7 +150,7 @@ class GP_Router {
 		$url_path = gp_url_path( gp_url_public_root() );
 
 		// If the request URL doesn't match our base URL, don't bother trying to match
-		if ( $url_path && ! gp_startswith( $_SERVER['REQUEST_URI'], $url_path ) ) {
+		if ( $url_path && ! gp_startswith( wp_unslash( $_SERVER['REQUEST_URI'] ), $url_path ) ) {
 			return;
 		}
 
@@ -163,6 +165,15 @@ class GP_Router {
 				}
 
 				if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
+					/*
+					 * WordPress will be returning a 404 status header by default for GlotPress pages
+					 * as nothing is found by WP_Query.
+					 * This overrides the status header and the `$is_404` property of WP_Query if we've matched
+					 * something here. Route controllers still can return a 404 status header.
+					 */
+					status_header( '200' );
+					$wp_query->is_404 = false;
+
 					if ( is_array( $func ) ) {
 						list( $class, $method ) = $func;
 						$route = new $class;
