@@ -91,7 +91,7 @@ class GP_Format_Properties extends GP_Format {
 
 		foreach ( $lines as $line ) {
 			if ( is_null( $context ) ) {
-				if ( preg_match( '/^\/\*\s*(.*)\s*\*\/$/', $line, $matches ) ) {
+				if ( preg_match( '/^\(#|!)\s*(.*)\s*$/', $line, $matches ) ) {
 					$matches[1] = trim( $matches[1] );
 
 					if ( $matches[1] !== "No comment provided." ) {
