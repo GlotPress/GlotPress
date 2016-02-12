@@ -23,25 +23,37 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$p1 = GP::$project->create( array( 'name' => 'P1', 'slug' => 'cool', 'path' => 'root/p1', 'parent_project_id' => $root->id ) );
 		$p2 = GP::$project->create( array( 'name' => 'P2', 'slug' => 'p2', 'path' => 'root/p1/p2', 'parent_project_id' => $p1->id ) );
 		$p3 = GP::$project->create( array( 'name' => 'P3', 'slug' => 'p3', 'path' => 'root/p1/p2/p3', 'parent_project_id' => $p2->id ) );
+		$p4 = GP::$project->create( array( 'name' => 'P4', 'slug' => 'p4', 'path' => 'root/p4/', 'parent_project_id' => $root->id ) );
+		$p5 = GP::$project->create( array( 'name' => 'P5', 'slug' => 'p5', 'path' => 'root/p4/p5/', 'parent_project_id' => $p4->id ) );
 		$p1->update_path();
 		$p1->reload();
 		$p2->reload();
 		$p3->reload();
+		$p4->reload();
+		$p5->reload();
 		$this->assertEquals( 'root/cool', $p1->path);
 		$this->assertEquals( 'root/cool/p2', $p2->path);
 		$this->assertEquals( 'root/cool/p2/p3', $p3->path);
+		$this->assertEquals( 'root/p4', $p4->path);
+		$this->assertEquals( 'root/p4/p5', $p5->path);
 	}
 
 	function test_valid_path_on_create() {
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root', 'path' => 'root' ) );
 		$p1 = GP::$project->create( array( 'name' => 'P1', 'slug' => 'p1', 'parent_project_id' => $root->id ) );
 		$q = GP::$project->create( array( 'name' => 'Invader', 'slug' => 'invader', 'path' => '' ) );
+		$p4 = GP::$project->create( array( 'name' => 'P4', 'slug' => 'p4', 'path' => 'root/p4/', 'parent_project_id' => $root->id ) );
+		$p5 = GP::$project->create( array( 'name' => 'P5', 'slug' => 'p5', 'path' => 'root/p4/p5/', 'parent_project_id' => $p4->id ) );
 		$root->reload();
 		$p1->reload();
 		$q->reload();
+		$p4->reload();
+		$p5->reload();
 		$this->assertEquals( 'root', $root->path );
 		$this->assertEquals( 'root/p1', $p1->path );
 		$this->assertEquals( 'invader', $q->path );
+		$this->assertEquals( 'root/p4', $p4->path);
+		$this->assertEquals( 'root/p4/p5', $p5->path);
 	}
 
 	function test_create_and_select() {
@@ -88,6 +100,15 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$sub->regenerate_paths();
 		$sub->reload();
 		$this->assertEquals( 'root/sub', $sub->path );
+		
+		// Run the same test a second time with a permalink structure that includes a trailing slash.
+		$this->set_permalink_structure( '/%postname%/' );
+		$wpdb->update( $wpdb->gp_projects, array( 'path' => 'wrong-path' ), array( 'id' => $sub->id ) );
+		$sub->reload();
+		$sub->regenerate_paths();
+		$sub->reload();
+		$this->assertEquals( 'root/sub', $sub->path );
+
 	}
 
 	function test_set_difference_from_same() {
