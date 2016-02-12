@@ -131,7 +131,7 @@ class GP_Translation extends GP_Thing {
 			$where[] = $wpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
 			$where[] = 'o.priority > -2';
 		}
 
