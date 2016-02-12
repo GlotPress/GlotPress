@@ -9,7 +9,6 @@ class GP_Format_Properties extends GP_Format {
 
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = '';
-		$prefix = pack( 'CC', 0xff, 0xfe ); // Add BOM
 
 		$sorted_entries = $entries;
 		usort( $sorted_entries, array( 'GP_Format_Properties', 'sort_entries' ) );
@@ -30,7 +29,7 @@ class GP_Format_Properties extends GP_Format {
 			$result .= "# $comment\n" . $this->escape_key( $original ) . " = $translation\n\n";
 		}
 
-		return $prefix . mb_convert_encoding( $result, 'UTF-16LE' );
+		return $result;
 	}
 
 	public function read_translations_from_file( $file_name, $project = null ) {
@@ -136,7 +135,7 @@ class GP_Format_Properties extends GP_Format {
 	}
 
 	private function escape_key( $string ) {
-		return addcslashes( $string, '=:' );
+		return addcslashes( $string, '=: ' );
 	}
 	
 }
