@@ -7,8 +7,6 @@ gp_tmpl_header();
 <form action="" method="post">
 	<p>
 		<?php _e( 'Note this will delete all translations, translation sets and child projects!', 'glotpress' ); ?>
-		<input type="hidden" name="project" value="<?php echo $project->id; ?>" id="project" />
-		<input type="hidden" name="project_name" value="<?php echo $project->name; ?>" id="project_name" />
 	</p>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Delete', 'glotpress' ); ?>" id="submit" />

@@ -192,12 +192,10 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	public function delete_post() {
-		$project_id = gp_post( 'project' );
-		$project_name = gp_post( 'project_name' );
+	public function delete_post( $project_id ) {
 		$project = GP::$project->find_one( array( 'id' => $project_id ) );
 		
-		if ( $project_name != $project->name || null == $project_id ) {
+		if ( ! empty( $project_id ) ) {
 			
 			$this->redirect( gp_url_public_root() );
 			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );

@@ -14,7 +14,6 @@ gp_tmpl_header();
 <form action="" method="post">
 	<p>
 		<?php _e( 'Note this will delete all entries associated with this glossary!', 'glotpress' ); ?>
-		<input type="hidden" name="glossary" value="<?php echo $glossary->id; ?>" id="glossary" />
 	</p>
 
 	<p>

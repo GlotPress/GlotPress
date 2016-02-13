@@ -10,7 +10,6 @@ gp_tmpl_header();
 <form action="" method="post">
 	<p>
 		<?php _e( 'Note this will delete all translations associated with this set!', 'glotpress' ); ?>
-		<input type="hidden" name="translation_set" value="<?php echo $set->id; ?>" id="translation_set" />
 	</p>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Delete', 'glotpress' ); ?>" id="submit" />
