@@ -369,5 +369,39 @@ class GP_Project extends GP_Thing {
 		}
 	}
 
+	public function delete() {
+		$child_projects = GP::$project->find_many( array( 'parent_project_id' => $this->id ) );
+
+		if ( $child_projects ) {
+			foreach ( $child_projects as $project ) {
+				if ( ! $project->delete() ) {
+					return false;
+				}
+			}
+		}
+		
+		$translation_sets = GP::$translation_set->find_many( array( 'project_id' => $this->id ) );
+		
+		if ( $translation_sets ) {
+			foreach ( $tranlsation_sets as $set ) {
+				if ( ! $set->delete() ) {
+					return false;
+				}
+			}
+		}
+		
+		$originals = GP::$original->find_many( array( 'project_id' => $this->id ) );
+		
+		if ( $originals ) {
+			foreach ( $originals as $original ) {
+				if ( ! $original->delete() ) {
+					return false;
+				}
+			}
+		}
+
+		return parent::delete();
+	}
+	
 }
 GP::$project = new GP_Project();
