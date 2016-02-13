@@ -109,6 +109,41 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$this->redirect( gp_url_join( gp_url_project( $set_project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') ) );
 	}
 
+	public function delete_get( $glossary_id ) {
+		$glossary = GP::$glossary->get( $glossary_id );
+
+		if ( ! $glossary ) {
+			$this->redirect_with_error( __( 'Cannot find glossary.', 'glotpress' ) );
+		}
+
+		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
+		$locale          = GP_Locales::by_slug( $translation_set->locale );
+		$project         = GP::$project->get( $translation_set->project_id );
+
+		$this->tmpl( 'glossary-delete', get_defined_vars() );
+	}
+
+	public function delete_post( $glossary_id ) {
+		$glossary     = GP::$glossary->get( $glossary_id );
+
+		if ( $this->cannot_edit_glossary_and_redirect( $glossary ) ) {
+			return;
+		}
+
+		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
+		$project         = GP::$project->get( $translation_set->project_id );
+
+		if ( ! $glossary->delete() ) {
+			$this->errors[] = __( 'Error deleting glossary!', 'glotpress' );
+			$this->redirect();
+			return;
+		}
+
+		$this->notices[] = __( 'The glossary was deleted!', 'glotpress' );
+
+		$this->redirect( gp_url_join( gp_url_project( $project ), array( $translation_set->locale, $translation_set->slug ) ) );
+	}
+
 	private function cannot_edit_glossary_and_redirect( $glossary ) {
 		return $this->cannot_and_redirect( 'approve', 'translation-set', $glossary->translation_set_id );
 	}
