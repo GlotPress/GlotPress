@@ -249,7 +249,22 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $set4_current_translations ) );
 		$this->assertEquals( $translation3->translation_0, $set4_current_translations[0]->translations[0] );
 	}
+	
+	function test_delete() {
+		$set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'project_one' ) );
 
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'status' => '+active', 'singular' => '%s baba', 'plural' => '%s babas' ) );
+		
+		$pre_delete = GP::$original->find_one( array( 'id' => $original->id ) );
+		
+		$original->delete();
+		
+		$post_delete = GP::$original->find_one( array( 'id' => $original->id ) );
+		
+		$this->assertFalse( empty( $pre_delete ) );
+		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
+	
 	/**
 	 * @ticket gh-332
 	 */

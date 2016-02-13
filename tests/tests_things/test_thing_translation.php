@@ -321,4 +321,18 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array( 'status' => 'waiting' ) );
 		$this->assertEquals( 0, count( $set2_current_translations ) );
 	}
+	
+	function test_delete() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		
+		$pre_delete = GP::$translation->find_one( array( 'id' => $translation->id ) );
+		
+		$translation->delete();
+		
+		$post_delete = GP::$translation->find_one( array( 'id' => $translation->id ) );
+		
+		$this->assertFalse( empty( $pre_delete ) );
+		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
 }

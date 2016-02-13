@@ -49,5 +49,18 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertCount( 9, GP::$glossary_entry->parts_of_speech );
 		$this->assertArrayHasKey( 'noun', GP::$glossary_entry->parts_of_speech );
 	}
+	
+	function test_delete() {
+		$entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );
+		
+		$pre_delete = GP::$glossary_entry->find_one( array( 'id' => $entry->id ) );
+
+		$entry->delete();
+		
+		$post_delete = GP::$glossary_entry->find_one( array( 'id' => $entry->id ) );
+
+		$this->assertFalse( empty( $pre_delete ) );
+		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
 
 }
