@@ -190,7 +190,7 @@ class GP_Route {
 	}
 
 	function die_with_404( $args = array() ) {
-		status_header( 404 );
+		$this->status_header( 404 );
 		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
 		$this->exit_();
 	}

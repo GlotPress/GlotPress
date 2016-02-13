@@ -99,7 +99,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
 		} else {
-			$this->header( 'HTTP/1.1 304 Not Modified' );
+			$this->status_header( 304 );
 		}
 	}
 
