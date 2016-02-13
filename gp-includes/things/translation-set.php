@@ -338,7 +338,7 @@ class GP_Translation_Set extends GP_Thing {
 		return GP::$translation->last_modified( $this );
 	}
 	
-	function delete() {
+	public function delete() {
 		$translations = GP::$translation->find_many( array( 'translation_set_id' => $this->id ) );
 
 		if ( $translations ) {
