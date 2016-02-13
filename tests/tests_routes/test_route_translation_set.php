@@ -139,4 +139,20 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$this->set->reload();
 		$this->assertEquals( $_POST['set']['name'], $this->set->name );
 	}
+
+	function test_delete_post_with_a_non_existent_set_gives_404() {
+		$this->route->delete_post( 11 );
+	}
+
+	function test_delete_post_forbidden_redirect_if_not_logged_in() {
+		$this->route->delete_post( $this->set->id );
+		$this->assertNotAllowedRedirect();
+	}
+
+	function test_delete_post_forbidden_redirect_if_logged_in_but_without_sufficient_permissions() {
+		$this->set_normal_user_as_current();
+		$this->route->delete_post( $this->set->id );
+		$this->assertNotAllowedRedirect();
+	}
+
 }
