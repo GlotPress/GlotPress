@@ -130,6 +130,8 @@ class GP_Router {
 			"get:/sets/$id" => array('GP_Route_Translation_Set', 'single'),
 			"get:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_get'),
 			"post:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_post'),
+			"get:/sets/$id/-delete" => array('GP_Route_Translation_Set', 'delete_get'),
+			"post:/sets/$id/-delete" => array('GP_Route_Translation_Set', 'delete_post'),
 
 			"get:/glossaries/-new" => array('GP_Route_Glossary', 'new_get'),
 			"post:/glossaries/-new" => array('GP_Route_Glossary', 'new_post'),
