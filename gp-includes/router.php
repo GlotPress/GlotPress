@@ -137,6 +137,8 @@ class GP_Router {
 			"post:/glossaries/-new" => array('GP_Route_Glossary', 'new_post'),
 			"get:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_get'),
 			"post:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_post'),
+			"get:/glossaries/$id/-delete" => array('GP_Route_Glossary', 'delete_get'),
+			"post:/glossaries/$id/-delete" => array('GP_Route_Glossary', 'delete_post'),
 
 			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
 		);
