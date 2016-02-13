@@ -105,6 +105,19 @@ class GP_Glossary extends GP_Thing {
 		);
 	}
 
+	public function delete() {
+		$glossary_entries = GP::$glossary_entries->find_many( array( 'glossary_id', $this->id ) );
+		
+		if ( ! empty( $glossary_entries ) ) {
+			foreach ( $glossary_entries as $entry ) {
+				if ( ! $entry->delete() ) {
+					return false;
+				}
+			}
+		}
+		
+		return parent::delete();
+	}
 }
 
 GP::$glossary = new GP_Glossary();
