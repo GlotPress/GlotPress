@@ -6,7 +6,13 @@ class GP_Permission extends GP_Thing {
 	var $int_fields = array( 'id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );
 
-	function normalize_fields( $args ) {
+	public $id;
+	public $user_id;
+	public $action;
+	public $object_type;
+	public $object_id;
+
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		foreach( $this->field_names as $field_name ) {
 			if ( isset( $args[$field_name] ) ) {

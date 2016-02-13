@@ -1,13 +1,13 @@
 <?php
 class GP_Route_Project extends GP_Route_Main {
 
-	function index() {
+	public function index() {
 		$title = __( 'Projects', 'glotpress' );
 		$projects = GP::$project->top_level();
 		$this->tmpl( 'projects', get_defined_vars() );
 	}
 
-	function single( $project_path ) {
+	public function single( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -43,7 +43,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project', get_defined_vars() );
 	}
 
-	function personal_options_post( $project_path ) {
+	public function personal_options_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -65,7 +65,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function import_originals_get( $project_path ) {
+	public function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
  		if ( ! $project ) {
@@ -80,7 +80,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
-	function import_originals_post( $project_path ) {
+	public function import_originals_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -124,7 +124,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function edit_get( $project_path ) {
+	public function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -138,7 +138,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-edit', get_defined_vars() );
 	}
 
-	function edit_post( $project_path ) {
+	public function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( !$project ) {
@@ -170,7 +170,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function delete_get( $project_path ) {
+	public function delete_get( $project_path ) {
 		// TODO: do not delete using a GET request but POST
 		// TODO: decide what to do with child projects and translation sets
 		// TODO: just deactivate, do not actually delete
@@ -195,7 +195,7 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 
-	function new_get() {
+	public function new_get() {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 
@@ -206,7 +206,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-new', get_defined_vars() );
 	}
 
-	function new_post() {
+	public function new_post() {
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
@@ -232,7 +232,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 	}
 
-	function permissions_get( $project_path ) {
+	public function permissions_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -266,7 +266,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-permissions', get_defined_vars() );
 	}
 
-	function permissions_post( $project_path ) {
+	public function permissions_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -298,7 +298,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_current() );
 	}
 
-	function permissions_delete( $project_path, $permission_id ) {
+	public function permissions_delete( $project_path, $permission_id ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -319,10 +319,10 @@ class GP_Route_Project extends GP_Route_Main {
 		} else {
 			$this->errors[] = __( 'Permission wasn&#8217;t found!', 'glotpress' );
 		}
-		$this->redirect( gp_url_project( $project, array( '-permissions' ) ) );
+		$this->redirect( gp_url_project( $project, '-permissions' ) );
 	}
 
-	function mass_create_sets_get( $project_path ) {
+	public function mass_create_sets_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -336,7 +336,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-mass-create-sets', get_defined_vars() );
 	}
 
-	function mass_create_sets_post( $project_path ) {
+	public function mass_create_sets_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( ! $project ) {
 			return $this->die_with_404();
@@ -364,11 +364,14 @@ class GP_Route_Project extends GP_Route_Main {
 				$this->errors[] = sprintf( __( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ), esc_html( $to_remove->name ) );
 			}
 		}
-		if ( !$this->errors ) $this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+		if ( empty( $this->errors ) ) {
+			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+		}
+		
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function mass_create_sets_preview_post( $project_path ) {
+	public function mass_create_sets_preview_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -389,7 +392,7 @@ class GP_Route_Project extends GP_Route_Main {
 		echo wp_json_encode( $project->set_difference_from( $other_project ) );
 	}
 
-	function branch_project_get( $project_path ) {
+	public function branch_project_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -404,7 +407,7 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 
-	function branch_project_post( $project_path ) {
+	public function branch_project_post( $project_path ) {
 		$post = gp_post( 'project' );
 		$project = GP::$project->by_path( $project_path );
 

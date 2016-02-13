@@ -1,15 +1,29 @@
 <?php
+/**
+ * @method object|array many_no_map( string $sql, int $id ) 
+ */
 class GP_Original extends GP_Thing {
 
 	var $table_basename = 'gp_originals';
 	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 	var $int_fields = array( 'id', 'project_id', 'priority' );
 	var $non_updatable_attributes = array( 'id', 'path' );
+	
+	public $id;
+	public $project_id;
+	public $context;
+	public $singular;
+	public $plural;
+	public $references;
+	public $comment;
+	public $status;
+	public $priority;
+	public $date_added;	
 
 	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
-	function restrict_fields( $original ) {
+	public function restrict_fields( $original ) {
 		$original->singular_should_not_be('empty');
 		$original->status_should_not_be('empty');
 		$original->project_id_should_be('positive_int');
@@ -17,7 +31,7 @@ class GP_Original extends GP_Thing {
 		$original->priority_should_be('between', -2, 1);
 	}
 
-	function normalize_fields( $args ) {
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		foreach ( array('plural', 'context', 'references', 'comment') as $field ) {
 			if ( isset( $args['parent_project_id'] ) ) {
@@ -35,11 +49,11 @@ class GP_Original extends GP_Thing {
 		return $args;
 	}
 
-	function by_project_id( $project_id ) {
+	public function by_project_id( $project_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
 
-	function count_by_project_id( $project_id ) {
+	public function count_by_project_id( $project_id ) {
 		if ( false !== ( $cached = wp_cache_get( $project_id, self::$count_cache_group ) ) ) {
 			return $cached;
 		}
@@ -49,7 +63,7 @@ class GP_Original extends GP_Thing {
 	}
 
 
-	function by_project_id_and_entry( $project_id, $entry, $status = null ) {
+	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
 
 		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null;
@@ -71,7 +85,7 @@ class GP_Original extends GP_Thing {
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}
 
-	function import_for_project( $project, $translations ) {
+	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
 		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
@@ -185,14 +199,14 @@ class GP_Original extends GP_Thing {
 		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted );
 	}
 
-	function set_translations_for_original_to_fuzzy( $original_id ) {
+	public function set_translations_for_original_to_fuzzy( $original_id ) {
 		$translations = GP::$translation->find_many( "original_id = '$original_id' AND status = 'current'" );
 		foreach ( $translations as $translation ) {
 			$translation->set_status( 'fuzzy' );
 		}
 	}
 
-	function is_different_from( $data, $original = null ) {
+	public function is_different_from( $data, $original = null ) {
 		if ( ! $original ) {
 			$original = $this;
 		}
@@ -205,12 +219,12 @@ class GP_Original extends GP_Thing {
 		return false;
 	}
 
-	function priority_by_name( $name ) {
+	public function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
 		return isset( $by_name[ $name ] )? $by_name[ $name ] : null;
 	}
 
-	function closest_original( $input, $other_strings ) {
+	public function closest_original( $input, $other_strings ) {
 		if ( empty( $other_strings ) ) {
 			return null;
 		}
@@ -250,7 +264,7 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
-	function get_matching_originals_in_other_projects() {
+	public function get_matching_originals_in_other_projects() {
 		$where = array();
 		$where[] = 'singular = BINARY %s';
 		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
@@ -262,7 +276,7 @@ class GP_Original extends GP_Thing {
 		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
 	}
 
-	function add_translations_from_other_projects() {
+	public function add_translations_from_other_projects() {
 		global $wpdb;
 
 		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->gp_translation_sets WHERE project_id = %d", $this->project_id );
@@ -312,7 +326,7 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
-	function after_create() {
+	public function after_create() {
 		do_action( 'gp_original_created', $this );
 		return true;
 	}

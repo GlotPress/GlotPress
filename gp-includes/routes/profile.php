@@ -1,9 +1,13 @@
 <?php
+/**
+ * @method object|array many_no_map()
+ * @method object|array find_many_no_map()
+ */
 class GP_Route_Profile extends GP_Route_Main {
 	// For caching purposes
 	private $projects = array();
 
-	function profile_get() {
+	public function profile_get() {
 		if ( ! is_user_logged_in() ) {
 			$this->redirect( wp_login_url( gp_url_profile() ) );
 			return;
@@ -12,7 +16,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		$this->tmpl( 'profile' );
 	}
 
-	function profile_post() {
+	public function profile_post() {
 		if ( isset( $_POST['submit'] ) ) {
 			$per_page = (int) $_POST['per_page'];
 			update_user_option( get_current_user_id(), 'gp_per_page', $per_page );

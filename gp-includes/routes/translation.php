@@ -1,7 +1,7 @@
 <?php
 class GP_Route_Translation extends GP_Route_Main {
 
-	function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	public function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 
@@ -23,7 +23,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
-	function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
+	public function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 
@@ -65,7 +65,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
 
-	function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	public function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 
@@ -103,7 +103,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
-	function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
+	public function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 
@@ -218,7 +218,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 
-				if ( $translations ) {
+				if ( ! empty( $translations ) ) {
 					$t = $translations[0];
 
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
@@ -234,7 +234,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		echo wp_json_encode( $output );
 	}
 
-	function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
+	public function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
 
@@ -256,10 +256,10 @@ class GP_Route_Translation extends GP_Route_Main {
 			switch( $bulk['action'] ) {
 				case 'approve':
 				case 'reject' :
-					$this->_bulk_approve( $project, $locale, $translation_set, $bulk );
+					$this->_bulk_approve( $bulk );
 					break;
 				case 'set-priority':
-					$this->_bulk_set_priority( $project, $locale, $translation_set, $bulk );
+					$this->_bulk_set_priority( $project, $bulk );
 			}
 
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
@@ -272,7 +272,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->redirect( $bulk['redirect_to'] );
 	}
 
-	function _bulk_approve( $project, $locale, $translation_set, $bulk ) {
+	private function _bulk_approve( $bulk ) {
 
 		$action = $bulk['action'];
 
@@ -318,7 +318,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
-	function _bulk_set_priority( $project, $locale, $translation_set, $bulk ) {
+	private function _bulk_set_priority( $project, $bulk ) {
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ){
 			return;
@@ -361,11 +361,11 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	}
 
-	function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
+	public function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'discard_warning_edit_function' ) );
 	}
 
-	function set_status( $project_path, $locale_slug, $translation_set_slug ) {
+	public function set_status( $project_path, $locale_slug, $translation_set_slug ) {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
 	}
 
