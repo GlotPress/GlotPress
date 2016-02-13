@@ -59,7 +59,7 @@ function gp_link_project_delete_get( $project, $text = false, $attrs = array() )
 		return '';
 	}
 	$text = $text? $text : __( 'Delete', 'glotpress' );
-	return gp_link_get( gp_url_project( $project, '-delete' ), $text, gp_attrs_add_class( $attrs, 'action delete' ) );
+	return gp_link_get( gp_url_project( $project, '-delete' ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
 function gp_link_project_delete() {
@@ -87,6 +87,19 @@ function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() )
 function gp_link_set_edit() {
 	$args = func_get_args();
 	echo call_user_func_array('gp_link_set_edit_get', $args);
+}
+
+function gp_link_set_delete_get( $set, $project, $text = false, $attrs = array() ) {
+	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
+		return '';
+	}
+	$text = $text? $text : __( 'Delete', 'glotpress' );
+	return gp_link_get( gp_url( gp_url_join( '/sets', $set->id, '-delete' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
+}
+
+function gp_link_set_delete() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_set_delete_get', $args);
 }
 
 function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = array() ) {
