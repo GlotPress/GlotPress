@@ -92,11 +92,8 @@ class GP_Router {
 			"get:/$project/-edit" => array('GP_Route_Project', 'edit_get'),
 			"post:/$project/-edit" => array('GP_Route_Project', 'edit_post'),
 
-			/*
-			// Currently the deletion of a project is not well defined so don't add routes to let it happen.
 			"get:/$project/-delete" => array('GP_Route_Project', 'delete_get'),
 			"post:/$project/-delete" => array('GP_Route_Project', 'delete_post'),
-			*/
 
 			"post:/$project/-personal" => array('GP_Route_Project', 'personal_options_post'),
 
