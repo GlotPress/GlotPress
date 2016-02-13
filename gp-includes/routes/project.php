@@ -192,10 +192,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function delete_post() {
-		// TODO: do not delete using a GET request but POST
-		// TODO: decide what to do with child projects and translation sets
-		// TODO: just deactivate, do not actually delete
+	public function delete_post() {
 		$project_id = gp_post( 'project' );
 		$project_name = gp_post( 'project_name' );
 		$project = GP::$project->find_one( array( 'id' => $project_id ) );
@@ -222,7 +219,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_public_root() );
 	}
 	
-	function delete_get( $project_path ) {
+	public function delete_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
