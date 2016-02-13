@@ -115,3 +115,17 @@ function gp_link_glossary_edit() {
 	$args = func_get_args();
 	echo call_user_func_array('gp_link_glossary_edit_get', $args);
 }
+
+function gp_link_glossary_delete_get( $glossary, $set, $text = false, $attrs = array() ) {
+	if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $set->id ) ) {
+		return '';
+	}
+
+	$text = $text? $text : __( 'Delete', 'glotpress' );
+	return gp_link_get( gp_url( gp_url_join( '/glossaries', $glossary->id, '-delete' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
+}
+
+function gp_link_glossary_delete() {
+	$args = func_get_args();
+	echo call_user_func_array('gp_link_glossary_delete_get', $args);
+}
