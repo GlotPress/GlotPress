@@ -81,6 +81,9 @@ class GP_Project extends GP_Thing {
 			$path = $this->slug;
 		else
 			return null;
+
+		$path = trim( $path, '/' );
+
 		$this->path = $path;
 		$res_self = $this->update( array( 'path' => $path ) );
 		if ( is_null( $res_self ) ) return $res_self;
@@ -105,9 +108,10 @@ class GP_Project extends GP_Thing {
 			$path = '';
 			$parent_project_id = null;
 		}
+
 		$projects = $this->find( array( 'parent_project_id' => $parent_project_id ) );
 		foreach( (array)$projects as $project ) {
-			$project->update( array( 'path' => gp_url_join( $path, $project->slug ) ) );
+			$project->update( array( 'path' => trim( gp_url_join( $path, $project->slug ), '/' ) ) );
 			$this->regenerate_paths( $project->id );
 		}
 	}

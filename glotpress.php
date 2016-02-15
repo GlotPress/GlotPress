@@ -80,6 +80,43 @@ if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 	return;
 }
 
+/**
+ * Adds a message if no permalink structure is detected and lets the user know.
+ *
+ * Message is only displayed on the plugin screen.
+ *
+ * @since 1.1.0
+ */
+function gp_unsupported_permalink_structure_admin_notice() {
+	global $wp_version;
+
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+	?>
+	<div class="notice notice-error">
+		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php _e( '&#151; You are running an unsupported permalink structure.', 'glotpress' ); ?></p>
+		<p style="max-width:800px;"><?php
+				printf( __( 'GlotPress requires "Pretty Permalinks" be enabled in WordPress, please go to %s and enable an option other than "Plain". ', 'glotpress' ), '<a href="' . get_admin_url() . 'options-permalink.php">' . __('Settings->Permalinks', 'glotpress') . '</a>'	);
+		?></p>
+	</div>
+	<?php
+}
+
+/*
+ * Check the permalink structure, if we don't have one (aka the rewrite engine is disabled)
+ * return without running any more code as the user will not be able to access GlotPress
+ * any errors and add show an admin notice.
+ */
+if( ! get_option('permalink_structure') ) {
+	add_action( 'admin_notices', 'gp_unsupported_permalink_structure_admin_notice', 10, 2 );
+
+	// Bail out now so no additional code is run.
+	return;
+}
+
 require_once GP_PATH . 'gp-settings.php';
 
 /**

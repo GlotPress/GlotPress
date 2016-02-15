@@ -29,8 +29,13 @@ abstract class GP_Format {
 		foreach( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
 			// so we need to swap singular and translation
-			$entry->translations = array( $entry->singular );
-			$entry->singular     = null;
+			if ( $entry->context == $entry->singular ) {
+				$entry->translations = array();
+			} else {
+				$entry->translations = array( $entry->singular );
+			}
+
+			$entry->singular = null;
 
 			foreach( $originals as $original ) {
 				if ( $original->context == $entry->context ) {
@@ -40,7 +45,7 @@ abstract class GP_Format {
 			}
 
 			if ( ! $entry->singular ) {
-				error_log( sprintf( __( "Missing context %s in project #%d", 'glotpress' ), $entry->context, $project->id ) );
+				error_log( sprintf( __( 'Missing context %s in project #%d', 'glotpress' ), $entry->context, $project->id ) );
 				continue;
 			}
 

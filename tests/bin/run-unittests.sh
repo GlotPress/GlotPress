@@ -39,7 +39,7 @@ DB_PREFIX=${DB_PREFIX-wptests_}
 WP_VERSION=${WP_VERSION-nightly}
 DROP_DB=${DROP_DB-false}
 
-for PROG in mysqladmin composer
+for PROG in mysqladmin
 do
     which ${PROG}
     if [ 0 -ne $? ]
