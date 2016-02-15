@@ -241,6 +241,36 @@ class GP_Translation extends GP_Thing {
 			return;
 		}
 
+		/*
+		 * Don't propagate a waiting/fuzzy translation if the same translation
+		 * with the same status exists already.
+		 */
+		if ( in_array( $status, array( 'waiting', 'fuzzy' ) ) ) {
+			$new_translation_set = GP::$translation_set->get( $new_translation_set_id );
+			$locale = GP_Locales::by_slug( $new_translation_set->locale );
+
+			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+				$new_translation[] = $this->{"translation_{$i}"};
+			}
+
+			$existing_translations = GP::$translation->find_no_map( array(
+				'translation_set_id' => $new_translation_set_id,
+				'original_id'        => $new_original_id,
+				'status'             => $status,
+			) );
+
+			foreach ( $existing_translations as $existing_translation ) {
+				$translation = array();
+				for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+					$translation[] = $existing_translation->{"translation_{$i}"};
+				}
+
+				if ( $translation == $new_translation ) {
+					return;
+				}
+			}
+		}
+
 		$copy = new GP_Translation( $this->fields() );
 		$copy->original_id = $new_original_id;
 		$copy->translation_set_id = $new_translation_set_id;
