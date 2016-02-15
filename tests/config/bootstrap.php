@@ -36,6 +36,9 @@ function _manually_load_plugin() {
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
+GLOBAL $wp_tests_options;
+$wp_tests_options['permalink_structure'] = '/%postname%';
+
 require $_tests_dir . '/includes/bootstrap.php';
 
 require_once dirname( dirname( __FILE__ ) ) . '/lib/testcase.php';
