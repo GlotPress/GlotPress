@@ -32,49 +32,6 @@ class GP_Format_Strings extends GP_Format {
 		return $prefix . mb_convert_encoding( $result, 'UTF-16LE' );
 	}
 
-	public function read_translations_from_file( $file_name, $project = null ) {
-		if ( is_null( $project ) ) {
-			return false;
-		}
-
-		$translations = $this->read_originals_from_file( $file_name );
-
-		if ( ! $translations ) {
-			return false;
-		}
-
-		$originals        = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
-
-		foreach( $translations->entries as $key => $entry ) {
-			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
-			if ( $entry->context == $entry->singular ) {
-				$entry->translations = array();
-			} else {
-				$entry->translations = array( $entry->singular );
-			}
-
-			$entry->singular = null;
-
-			foreach( $originals as $original ) {
-				if ( $original->context == $entry->context ) {
-					$entry->singular = $original->singular;
-					break;
-				}
-			}
-
-			if ( ! $entry->singular ) {
-				error_log( sprintf( __( 'Missing context %s in project #%d', 'glotpress' ), $entry->context, $project->id ) );
-				continue;
-			}
-
-			$new_translations->add_entry( $entry );
-		}
-
-		return $new_translations;
-	}
-
 	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
 		$file = file_get_contents( $file_name );
