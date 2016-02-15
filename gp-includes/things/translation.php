@@ -258,6 +258,7 @@ class GP_Translation extends GP_Thing {
 		}
 
 		$user = wp_get_current_user();
+		$is_user_logged_in = is_user_logged_in();
 
 		$original = GP::$original->get( $this->original_id );
 		$originals_in_other_projects = $original->get_matching_originals_in_other_projects();
@@ -277,12 +278,14 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				if ( is_user_logged_in() && ! GP::$permission->user_can( $user, 'approve', 'translation-set', $o_translation_set->id ) ) {
-					$copy_status = 'waiting';
-				} else {
+				if ( $is_user_logged_in && ! GP::$permission->user_can( $user, 'edit', 'translation-set', $o_translation_set->id ) ) {
+					continue;
+				} elseif ( $is_user_logged_in && GP::$permission->user_can( $user, 'approve', 'translation-set', $o_translation_set->id ) ) {
 					$copy_status = 'current';
+				} else {
+					$copy_status = 'waiting';
 				}
-				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', $copy_status );
+				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', $copy_status, $this, $o_translation_set->id, $o->id );
 				$this->copy_into_set( $o_translation_set->id, $o->id, $copy_status );
 			}
 		}
