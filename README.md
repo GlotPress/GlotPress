@@ -1,6 +1,6 @@
 # GlotPress
 
-GlotPress is a plugin for standalone installation of WordPress to help translators collaborate.
+GlotPress is a WordPress plugin to let you set up your own collaborative, web-based software translation tool.
 
 [![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=master)](https://travis-ci.org/GlotPress/GlotPress-WP) [![Code Coverage](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=master)
 
