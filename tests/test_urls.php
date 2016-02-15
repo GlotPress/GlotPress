@@ -230,8 +230,18 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	 * @ticket gh-203
 	 */
 	function test_gp_url_public_root_has_a_trailing_slash_when_permalinks_have_a_trailing_slash() {
+		GLOBAL $wp_tests_options, $wp_rewrite;
+		
 		$this->set_permalink_structure( '/%postname%/' );
+		$wp_rewrite->use_trailing_slashes = true;
+		update_option( 'permalink_structure', '/%postname%/' );
+		$wp_tests_options['permalink_structure'] = '/%postname%/';
 
 		$this->assertTrue( '/' === substr( gp_url_public_root(), -1 ) );
+		
+		$this->set_permalink_structure( '/%postname%' );
+		$wp_rewrite->use_trailing_slashes = false;
+		update_option( 'permalink_structure', '/%postname%' );
+		$wp_tests_options['permalink_structure'] = '/%postname%';
 	}
 }
