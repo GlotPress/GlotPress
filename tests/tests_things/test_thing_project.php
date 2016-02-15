@@ -102,7 +102,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( 'root/sub', $sub->path );
 		
 		// Run the same test a second time with a permalink structure that includes a trailing slash.
-		$this->set_permalink_structure( '/%postname%/' );
+		$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE_WITH_TRAILING_SLASH );
 		$wpdb->update( $wpdb->gp_projects, array( 'path' => 'wrong-path' ), array( 'id' => $sub->id ) );
 		$sub->reload();
 		$sub->regenerate_paths();

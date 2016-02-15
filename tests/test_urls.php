@@ -192,7 +192,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	 */
 	function test_gp_url_returns_leading_slash_when_permalinks_have_no_trailing_slash() {
 		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_empty_string' ) );
-		$this->set_permalink_structure( '/%postname%' );
+		$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE );
 
 		$this->assertSame( '/foo/bar', gp_url( 'foo/bar' ) );
 
@@ -221,7 +221,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	 * @ticket gh-203
 	 */
 	function test_gp_url_public_root_has_no_trailing_slash_when_permalinks_have_no_trailing_slash() {
-		$this->set_permalink_structure( '/%postname%' );
+		$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE );
 
 		$this->assertTrue( '/' !== substr( gp_url_public_root(), -1 ) );
 	}
@@ -230,7 +230,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	 * @ticket gh-203
 	 */
 	function test_gp_url_public_root_has_a_trailing_slash_when_permalinks_have_a_trailing_slash() {
-		$this->set_permalink_structure( '/%postname%/' );
+		$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE_WITH_TRAILING_SLASH );
 
 		$this->assertTrue( '/' === substr( gp_url_public_root(), -1 ) );
 	}
