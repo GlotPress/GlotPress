@@ -36,9 +36,45 @@ define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.4' );
+define( 'GP_PHP_REQUIRED_VERSION', '5.3' );
 
 // Load the plugin's translated strings
 load_plugin_textdomain( 'glotpress' );
+
+/**
+ * Adds a message if the required minimum PHP version is not detected.
+ *
+ * Message is only displayed on the plugin screen.
+ *
+ * @since 1.1.0
+ */
+function gp_unsupported_php_version_notice() {
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+	?>
+	<div class="notice notice-error">
+		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php _e( '&#151; You are running an unsupported version of PHP.', 'glotpress' ); ?></p>
+		<p style="max-width:800px;"><?php
+				printf( __( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress. ', 'glotpress' ), GP_PHP_REQUIRED_VERSION );
+		?></p>
+	</div>
+	<?php
+}
+
+/*
+ * Check the PHP version, if it's not a supported version, return without running
+ * any more code as the user will not be able to access GlotPress
+ * any errors and show an admin notice.
+ */
+if ( version_compare(  phpversion(), GP_PHP_REQUIRED_VERSION, '<' ) ) {
+	add_action( 'admin_notices', 'gp_unsupported_php_version_notice', 10, 2 );
+
+	// Bail out now so no additional code is run.
+	return;
+}
 
 /**
  * Adds a message if an incompatible version of WordPress is running.
@@ -71,7 +107,7 @@ function gp_unsupported_version_admin_notice() {
 
 /*
  * Check the WP version, if we don't meet the minimum version to run GlotPress
- * return so we don't cause any errors and add show an admin notice.
+ * return so we don't cause any errors and show an admin notice.
  */
 if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 	add_action( 'admin_notices', 'gp_unsupported_version_admin_notice', 10, 2 );
@@ -81,7 +117,7 @@ if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 }
 
 /**
- * Adds a message if no permalink structure is detected and lets the user know.
+ * Adds a message if no permalink structure is detected .
  *
  * Message is only displayed on the plugin screen.
  *
@@ -110,7 +146,7 @@ function gp_unsupported_permalink_structure_admin_notice() {
 /*
  * Check the permalink structure, if we don't have one (aka the rewrite engine is disabled)
  * return without running any more code as the user will not be able to access GlotPress
- * any errors and add show an admin notice.
+ * any errors and show an admin notice.
  */
 if ( ! get_option('permalink_structure') ) {
 	add_action( 'admin_notices', 'gp_unsupported_permalink_structure_admin_notice', 10, 2 );
