@@ -51,18 +51,6 @@ class GP_Thing {
 		self::$static_by_class[$this->class][$name] = $value;
 	}
 
-	function __call( $name, $args ) {
-		$suffix = '_no_map';
-		if ( gp_endswith( $name, $suffix ) ) {
-			$name = substr( $name, 0, strlen( $name ) - strlen( $suffix ) );
-			$this->map_results = false;
-			$result = call_user_func_array( array( &$this, $name ), $args );
-			$this->map_results = true;
-			return $result;
-		}
-		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
-	}
-
 	// CRUD
 
 	/**
@@ -115,28 +103,114 @@ class GP_Thing {
 		}
 	}
 
+
 	/**
 	 * Retrieves multiple rows from this table
 	 *
-	 * For parameters description see BPDB::prepare()
-	 * @return mixed an object, containing the selected row or false on error
+	 * For parameters description see `$wpdb->prepare()`.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return mixed An object, containing the selected row or false on error.
 	 */
-	function many() {
+	public function many() {
 		global $wpdb;
 		$args = func_get_args();
 		return $this->map( $wpdb->get_results( $this->prepare( $args ) ) );
 	}
 
-	function find_many( $conditions, $order = null ) {
+	/**
+	 * [many_no_map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return mixed
+	 */
+	public function many_no_map() {
+		$args = func_get_args();
+		return $this->_no_map( 'many', $args );
+	}
+
+	/**
+	 * [find_many description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string|array $conditions
+	 * @param string|array $order Optional.
+	 * @return mixed
+	 */
+	public function find_many( $conditions, $order = null ) {
 		return $this->many( $this->select_all_from_conditions_and_order( $conditions, $order ) );
 	}
 
-	function find_one( $conditions, $order = null ) {
+	/**
+	 * [find_many_no_map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string|array $conditions
+	 * @param string|array $order Optional.
+	 * @return mixed
+	 */
+	public function find_many_no_map( $conditions, $order = null ) {
+		return $this->_no_map( 'find_many', array( $conditions, $order ) );
+	}
+
+	/**
+	 * [find_one description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string|array $conditions
+	 * @param string|array $order Optional.
+	 * @return mixed
+	 */
+	public function find_one( $conditions, $order = null ) {
 		return $this->one( $this->select_all_from_conditions_and_order( $conditions, $order ) );
 	}
 
-	function find( $conditions, $order = null ) {
+	/**
+	 * [find description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string|array $conditions
+	 * @param string|array $order Optional.
+	 * @return mixed
+	 */
+	public function find( $conditions, $order = null ) {
 		return $this->find_many( $conditions, $order );
+	}
+
+	/**
+	 * [find_no_map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string|array $conditions
+	 * @param string|array $order Optional.
+	 * @return mixed
+	 */
+	public function find_no_map( $conditions, $order = null ) {
+		return $this->_no_map( 'find', array( $conditions, $order ) );
+	}
+
+	/**
+	 * [_no_map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $name Method name.
+	 * @param mixed  $args Method-dependent arguments.
+	 * @return mixed
+	 */
+	private function _no_map( $name, $args ) {
+		$this->map_results = false;
+		$result = call_user_func_array( array( $this, $name ), $args );
+		$this->map_results = true;
+
+		return $result;
 	}
 
 	function query() {
@@ -305,6 +379,10 @@ class GP_Thing {
 		return $mapped;
 	}
 
+	function map_no_map( $results ) {
+		return $this->_no_map( 'map', $results );
+	}
+
 	// Triggers
 
 	function after_create() {
@@ -389,7 +467,7 @@ class GP_Thing {
 
 	function fields() {
 		$result = array();
-		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) { 
+		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
 			if ( isset( $this->$field_name ) ) {
 				$result[$field_name] = $this->$field_name;
 			}

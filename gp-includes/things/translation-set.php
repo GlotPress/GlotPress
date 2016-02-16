@@ -159,7 +159,7 @@ class GP_Translation_Set extends GP_Thing {
 			$counts = GP::$translation->many_no_map("
 				SELECT t.status as translation_status, COUNT(*) as n
 				FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status LIKE '+%%' GROUP BY t.status", $this->id);
-			$warnings_count = GP::$translation->value_no_map("
+			$warnings_count = GP::$translation->value("
 				SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
 				WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
 			$counts[] = (object)array( 'translation_status' => 'warnings', 'n' => $warnings_count );
