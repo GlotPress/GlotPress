@@ -119,9 +119,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
-		$page = gp_get( 'page', 1 );
-		$filters = gp_get( 'filters', array() );
-		$sort = gp_get( 'sort', array() );
+		$page = (int) gp_get( 'page', 1 );
+		$filters = gp_validate_filter_options( gp_get( 'filters', array() ) );
+		$sort = gp_validate_sort_options( gp_get( 'sort', array() ) );
 
 		if ( 'random' == gp_array_get( $sort, 'by') ) {
 			add_filter( 'gp_pagination', '__return_null' );
