@@ -434,7 +434,7 @@ function gp_project_options_form( $project ) {
 					<dd>
 						<input type="text" value="' . esc_html( $project->source_url_template() ) . '" name="source-url-template" id="source-url-template" />
 						<small>' . sprintf(
-							__( 'Public URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
+							__( 'URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
 							'<code>%file%</code>',
 							'<code>%line%</code>',
 							'<code>https://trac.example.org/browser/%file%#L%line%</code>'
