@@ -118,7 +118,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
  * Similar to esc_html() but allows double-encoding.
  */
 function esc_translation( $text ) {
-	return _wp_specialchars( $text, ENT_NOQUOTES, false, true );
+	return htmlspecialchars( $text, ENT_NOQUOTES, false, true );
 }
 
 function display_status( $status ) {
