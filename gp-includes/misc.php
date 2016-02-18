@@ -124,7 +124,7 @@ function gp_array_zip() {
 	while (true) {
 		$this_round = array();
 		foreach ( $args as &$array ) {
-			$all_have_more = ( list( $key, $value ) = each( $array ) );
+			$all_have_more = ( list( , $value ) = each( $array ) );
 			if ( !$all_have_more ) {
 				break;
 			}
@@ -139,10 +139,16 @@ function gp_array_zip() {
 	return $res;
 }
 
-function gp_array_any( $callback, $array ) {
+function gp_array_any( $callback, $array, $arg = null ) {
 	foreach( $array as $item ) {
-		if ( $callback( $item ) ) {
-			return true;
+		if( is_array( $callback ) ) {
+			if (  $callback[0]->{$callback[1]}( $item, $arg ) ) {
+				return true;
+			}
+		} else {
+			if ( $callback( $item, $arg ) ) {
+				return true;
+			}
 		}
 	}
 	return false;
