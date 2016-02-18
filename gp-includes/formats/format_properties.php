@@ -20,6 +20,7 @@ class GP_Format_Properties extends GP_Format {
 			$original = empty( $entry->context ) ? $entry->singular : $entry->context;
 			$original = str_replace( "\n", "\\n", $original );
 			$translation = str_replace( "\n", "\\n", $translation );
+			$translation = substr( json_encode( $translation ), 1, -1 );
 			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
 
 			if ( $comment == "" ) {
@@ -135,7 +136,7 @@ class GP_Format_Properties extends GP_Format {
 	}
 
 	private function escape_key( $string ) {
-		return addcslashes( $string, '=: ' );
+		return addcslashes( substr( json_encode( $string ), 1, -1 ), '=: ' );
 	}
 	
 }
