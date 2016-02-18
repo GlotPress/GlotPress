@@ -370,36 +370,12 @@ class GP_Project extends GP_Thing {
 	}
 
 	public function delete() {
-		$child_projects = GP::$project->find_many( array( 'parent_project_id' => $this->id ) );
-
-		if ( ! empty( $child_projects ) ) {
-			foreach ( $child_projects as $project ) {
-				if ( ! $project->delete() ) {
-					return false;
-				}
-			}
-		}
+		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
 		
-		$translation_sets = GP::$translation_set->find_many( array( 'project_id' => $this->id ) );
+		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
 
-		if ( ! empty( $translation_sets ) ) {
-			foreach ( $translation_sets as $set ) {
-				if ( ! $set->delete() ) {
-					return false;
-				}
-			}
-		}
+		GP::$original->delete_many( array( 'project_id' => $this->id ) );
 		
-		$originals = GP::$original->find_many( array( 'project_id' => $this->id ) );
-		
-		if ( ! empty( $originals ) ) {
-			foreach ( $originals as $original ) {
-				if ( ! $original->delete() ) {
-					return false;
-				}
-			}
-		}
-
 		return parent::delete();
 	}
 	

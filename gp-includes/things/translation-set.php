@@ -339,25 +339,9 @@ class GP_Translation_Set extends GP_Thing {
 	}
 	
 	public function delete() {
-		$translations = GP::$translation->find_many( array( 'translation_set_id' => $this->id ) );
+		GP::$translation->delete_many( array( 'translation_set_id' => $this->id ) );
 
-		if ( ! empty( $translations ) ) {
-			foreach ( $translations as $translation ) {
-				if ( ! $translation->delete() ) {
-					return false;
-				}
-			}
-		}
-
-		$glossaries = GP::$glossary->find_many( array( 'translation_set_id', $this->id ) );
-		
-		if ( ! empty( $glossaries ) ) {
-			foreach ( $glossaries as $glossary ) {
-				if ( ! $glossary->delete() ) {
-					return false;
-				}
-			}
-		}
+		GP::$glossary->delete_many( array( 'translation_set_id', $this->id ) );
 		
 		return parent::delete();
 	}
