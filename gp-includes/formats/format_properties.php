@@ -85,14 +85,12 @@ class GP_Format_Properties extends GP_Format {
 			return false;
 		}
 
-		$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
-
 		$context = $comment = null;
 		$lines = explode( "\n", $file );
 
 		foreach ( $lines as $line ) {
 			if ( is_null( $context ) ) {
-				if ( preg_match( '/^\(#|!)\s*(.*)\s*$/', $line, $matches ) ) {
+				if ( preg_match( '/^(#|!)\s*(.*)\s*$/', $line, $matches ) ) {
 					$matches[1] = trim( $matches[1] );
 
 					if ( $matches[1] !== "No comment provided." ) {
@@ -103,7 +101,7 @@ class GP_Format_Properties extends GP_Format {
 				} else if ( preg_match( '/^(.*)(=|:)(.*)$/', $line, $matches ) ) {
 					$entry = new Translation_Entry();
 					$entry->context = rtrim( $this->unescape( $matches[1] ) );
-					$entry->singular = ltrim( $this->unescape( $matches[2] ) );
+					$entry->singular = ltrim( json_decode( '"' . $matches[3] . '"' ) );
 
 					if ( ! is_null( $comment )) {
 						$entry->extracted_comments = $comment;
@@ -137,7 +135,7 @@ class GP_Format_Properties extends GP_Format {
 	}
 
 	private function escape_key( $string ) {
-		return addcslashes( substr( json_encode( $string ), 1, -1 ), '=: ' );
+		return addcslashes( $string, '=: ' );
 	}
 	
 }
