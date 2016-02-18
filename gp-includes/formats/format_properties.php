@@ -16,7 +16,7 @@ class GP_Format_Properties extends GP_Format {
 
 		foreach ( $sorted_entries as $entry ) {
 			$entry->context = $this->escape( $entry->context );
-			$translation = empty( $entry->translations ) ? $entry->context : $this->escape( $entry->translations[0] );
+			$translation = empty( $entry->translations ) ? $entry->context : $entry->translations[0];
 
 			$original = empty( $entry->context ) ? $entry->singular : $entry->context;
 			$original = str_replace( "\n", "\\n", $original );
