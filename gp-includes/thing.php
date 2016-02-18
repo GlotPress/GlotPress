@@ -383,7 +383,7 @@ class GP_Thing {
 	 *
 	 * @param $where array An array of conditions to use to for a SQL "where" clause, if not passed, no rows will be deleted.
 	 */
-	function delete_many( $where = null ) {
+	public function delete_many( $where = null ) {
 		if ( null != $where ) {
 			return $this->delete_all( $where );
 		}
