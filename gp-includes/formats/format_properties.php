@@ -4,6 +4,7 @@ class GP_Format_Properties extends GP_Format {
 
 	public $name = 'Java Properties File (.properties)';
 	public $extension = 'properties';
+	public $filename_pattern = '%s_%s';
 
 	public $exported = '';
 
