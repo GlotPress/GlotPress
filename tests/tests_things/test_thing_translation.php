@@ -191,9 +191,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	 */
 	function test_propagate_across_projects_with_missing_permissions() {
 		$user = $this->factory->user->create();
-		add_filter( 'gp_set_cookie', '__return_false' );
 		wp_set_current_user( $user );
-		remove_filter( 'gp_set_cookie', '__return_false' );
 
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
@@ -227,9 +225,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	 */
 	function test_propagate_across_projects_with_missing_permissions_does_not_create_duplicates() {
 		$user = $this->factory->user->create();
-		add_filter( 'gp_set_cookie', '__return_false' );
 		wp_set_current_user( $user );
-		remove_filter( 'gp_set_cookie', '__return_false' );
 
 		$set1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'project_one' ) );
 
@@ -248,7 +244,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$original1 = $this->factory->original->create( array( 'project_id' => $set1->project_id, 'status' => '+active', 'singular' => 'baba' ) );
 		$original2 = $this->factory->original->create( array( 'project_id' => $set2->project_id, 'status' => '+active', 'singular' => 'baba' ) );
 
-		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'user_id' => $user, 'status' => 'current' ) );
 
 		// Add the same translation as waiting to another set.
 		$translation_waiting = $translation1->fields();
@@ -264,5 +260,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$set2_current_translations = GP::$translation->for_export( $project2, $set2, array( 'status' => 'waiting' ) );
 		$this->assertEquals( 1, count( $set2_current_translations ) );
+
+		$this->assertEquals( $set2_current_translations[0]->user_login, wp_get_current_user()->user_login );
 	}
 }
