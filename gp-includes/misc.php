@@ -358,6 +358,38 @@ function gp_gmt_strtotime( $string ) {
 }
 
 /**
+ * Determines the format to use based on the selected format type or by auto detection based on the file name.
+ *
+ * Used during import of translations and originals.
+ *
+ * @param string $selected_format The format that the user selected on the import page.
+ * @param string $filename The filname that was uploaded by the user.
+ * @return object|null A GP_Format child object or null if not found.
+ */
+function gp_get_import_file_format( $selected_format, $filename ) {
+	$format = gp_array_get( GP::$formats, $selected_format, null );
+
+	if ( ! $format ) {
+		$matched_ext_len = 0;
+		
+		foreach( GP::$formats as $format_entry ) {
+			$format_extensions = $format_entry->get_file_extensions();
+
+			foreach( $format_extensions as $extension ) {
+				$current_ext_len = strlen( $extension );
+				
+				if ( gp_endswith( $filename, $extension ) && $current_ext_len > $matched_ext_len ) {
+					$format = $format_entry;
+					$matched_ext_len = $current_ext_len;
+				}
+			}
+		}
+	}
+
+	return $format;
+}
+
+/**
  * Displays the GlotPress administrator option in the user profile screen for WordPress administrators.
  *
  * @since 1.1.0

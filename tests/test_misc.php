@@ -31,4 +31,19 @@ class GP_Test_Misc extends GP_UnitTestCase {
 		$this->assertTrue( gp_object_has_var( (object)array( 'baba' => null), 'baba' ) );
 	}
 
+	function test_gp_get_import_file_format() {
+		// Test to make sure we detect each file format extension correctly.
+		foreach( GP::$formats as $format ) {
+			foreach( $format->get_file_extensions() as $extension ) {
+				$this->assertEquals( $format, gp_get_import_file_format( null, 'filename.' . $extension ) );
+			}
+		}
+		
+		// Test to make sure we don't auto detect if a known file format is passed in.
+		$this->assertEquals( GP::$formats[ 'po' ], gp_get_import_file_format( 'po', 'filename.strings' ) );
+		
+		// Test to make sure we return null when no file format is found.
+		$this->assertEquals( null, gp_get_import_file_format( 'thiswillneverbeafileformat', 'filename.thiswillneverbeafileformat' ) );
+		$this->assertEquals( null, gp_get_import_file_format( null, 'filename.thiswillneverbeafileformat' ) );
+	}
 }
