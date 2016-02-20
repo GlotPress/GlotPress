@@ -1,4 +1,4 @@
-jQuery(function() {
+jQuery( document ).ready(function() {
     jQuery('table.translations')
 	.on('click', 'a.edit', gd_add_terms)
 	.on('dblclick', 'tr td', gd_add_terms);
@@ -10,6 +10,7 @@ jQuery(function() {
 	if (!editor.length) {
 		return;
 	}
+	//chrome.extension.getURL("images/myimage.png");
 	add_term('saved', '#editor-' + row_id + ' .original');
         jQuery('.glossary-word-glotdict').css({'cursor': 'help','border-bottom':'1px dashed'});
 	editor.tooltip({

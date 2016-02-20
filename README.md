@@ -7,3 +7,4 @@ The goal of this browser extension is add that dictonaries when the user is tran
 Contributors:
 
 * [Olegs Belousovs](https://github.com/sgelob) - The ideator
+* [Daniele Scasciafratte](https://github.com/Mte90) - The developer
