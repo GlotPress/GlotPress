@@ -24,7 +24,8 @@
   ],
   "web_accessible_resources": [
       "glotdict.js",
-      "dictionaries/it_IT.json"
+      "dictionaries/it_IT.json",
+      "dictionaries/fr_FR.json"
   ]
 
 }
