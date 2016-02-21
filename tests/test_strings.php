@@ -27,17 +27,32 @@ class GP_Test_Strings extends GP_UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider date_attributes_with_entities
+	 * @dataProvider data_attributes_with_entities
 	 */
 	function test_gp_esc_attr_with_entities( $expected, $attribute ) {
 		$this->assertEquals( $expected, gp_esc_attr_with_entities( $attribute ) );
 	}
 
-	function date_attributes_with_entities() {
+	function data_attributes_with_entities() {
 		return array(
 			array( '&amp;#8212;', '&#8212;' ), // https://glotpress.trac.wordpress.org/ticket/12
 			array( 'Foo &amp; Bar', 'Foo & Bar' ),
 			array( '&quot;&amp;hellip;&quot;', '"&hellip;"' ),
+		);
+	}
+
+	/**
+	 * @dataProvider data_translations_with_entities
+	 */
+	function test_esc_translation( $expected, $translation ) {
+		$this->assertEquals( $expected, esc_translation( $translation ) );
+	}
+
+	function data_translations_with_entities() {
+		return array(
+			array( 'Foo bar&amp;hellip;', 'Foo bar&hellip;' ),
+			array( 'Foo &lt;span class="count"&gt;(%s)&lt;/span&gt;', 'Foo <span class="count">(%s)</span>' ),
+			array( '"&amp;hellip;"', '"&hellip;"' ),
 		);
 	}
 }

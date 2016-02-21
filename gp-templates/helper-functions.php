@@ -114,13 +114,6 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	<?php
 }
 
-/**
- * Similar to esc_html() but allows double-encoding.
- */
-function esc_translation( $text ) {
-	return htmlspecialchars( $text, ENT_NOQUOTES, false, true );
-}
-
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
 	return $status ? $status : __( 'untranslated', 'glotpress' );
