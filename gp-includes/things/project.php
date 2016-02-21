@@ -15,7 +15,7 @@ class GP_Project extends GP_Thing {
 	public $source_url_template;
 	public $active;
 	public $user_source_url_template;
-	
+
 	public function restrict_fields( $project ) {
 		$project->name_should_not_be('empty');
 		$project->slug_should_not_be('empty');
@@ -29,6 +29,15 @@ class GP_Project extends GP_Thing {
 
 	public function sub_projects() {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
+
+		/**
+		 * Filter the list of sub-projects of a project.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array  $sub_projects An array of sub projects as GP_Project.
+		 * @param string $project_id   ID of the current project. Can be zero at the top level.
+		 */
 		$sub_projects = apply_filters( 'gp_projects', $sub_projects, $this->id );
 
 		return $sub_projects;
@@ -36,6 +45,8 @@ class GP_Project extends GP_Thing {
 
 	public function top_level() {
 		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
+
+		/** This filter is documented in gp-includes/things/project.php */
 		$projects = apply_filters( 'gp_projects', $projects, 0 );
 
 		return $projects;
@@ -44,13 +55,28 @@ class GP_Project extends GP_Thing {
 	// Triggers
 
 	public function after_save() {
+		/**
+		 * Fires after saving a project.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Project $project The project that was saved.
+		 */
 		do_action( 'gp_project_saved', $this );
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
 		return !is_null( $this->update_path() );
 	}
 
+
 	public function after_create() {
+		/**
+		 * Fires after creating a project.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Project $project The project that was created.
+		 */
 		do_action( 'gp_project_created', $this );
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) return false;
@@ -195,7 +221,7 @@ class GP_Project extends GP_Thing {
 	public function _compare_set_item( $set, $this_set ) {
 		return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
 	}
-	
+
 	public function copy_sets_and_translations_from( $source_project_id ) {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 

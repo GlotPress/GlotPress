@@ -1,6 +1,6 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql ) 
+ * @method object|array many_no_map( string $sql )
  * @method object|array find_many_no_map( string|array $sql )
  */
 class GP_Translation_Set extends GP_Thing {
@@ -23,7 +23,7 @@ class GP_Translation_Set extends GP_Thing {
 	public $current_count;
 	public $warnings_count;
 	public $all_count;
-	
+
 	public function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
@@ -90,10 +90,18 @@ class GP_Translation_Set extends GP_Thing {
 
 			$is_fuzzy = in_array( 'fuzzy', $entry->flags );
 
+			/**
+			 * Filter whether to import fuzzy translations.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param bool              $import_over  Import fuzzy translation. Default true.
+			 * @param Translation_Entry $entry        Translation entry object to import.
+			 * @param Translations      $translations Translations collection.
+			 */
 			if ( $is_fuzzy && ! apply_filters( 'gp_translation_set_import_fuzzy_translations', true, $entry, $translations ) ) {
 				continue;
 			}
-
 
 			$create = false;
 			if ( $translated = $current_translations->translate_entry( $entry ) ) {
@@ -101,6 +109,14 @@ class GP_Translation_Set extends GP_Thing {
 				// create a new one if they don't match
 				$entry->original_id = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
+
+				/**
+				 * Filter whether to import over an existing translation on a translation set.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param bool $import_over Import over an existing translation.
+				 */
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
@@ -116,6 +132,14 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->translation_set_id = $this->id;
+
+				/**
+				 * Filter the the status of imported translations of a translation set.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $status The status of imported translations.
+				 */
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : 'current' );
 				// check for errors
 				$translation = GP::$translation->create( $entry );
@@ -126,6 +150,13 @@ class GP_Translation_Set extends GP_Thing {
 
 		gp_clean_translation_set_cache( $this->id );
 
+		/**
+		 * Fires after translations have been imported to a translation set.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param int $translation_set The ID of the translation set the import was made into.
+		 */
 		do_action( 'gp_translations_imported', $this->id );
 
 		return $translations_added;

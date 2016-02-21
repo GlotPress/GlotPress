@@ -36,6 +36,16 @@ class GP_Route_Project extends GP_Route_Main {
 		usort( $translation_sets, function( $a, $b ) {
 			return( $a->current_count < $b->current_count );
 		});
+
+		/**
+		 * Filter the list of translation sets of a project.
+		 *
+		 * Can also be used to sort the sets to a custom order.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Sets[] $translation_sets An array of translation sets.
+		 */
 		$translation_sets = apply_filters( 'gp_translation_sets_sort', $translation_sets );
 
 		$title = sprintf( __( '%s project ', 'glotpress' ), esc_html( $project->name ) );
@@ -367,7 +377,7 @@ class GP_Route_Project extends GP_Route_Main {
 		if ( empty( $this->errors ) ) {
 			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
 		}
-		
+
 		$this->redirect( gp_url_project( $project ) );
 	}
 

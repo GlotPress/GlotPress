@@ -185,6 +185,14 @@ class GP_Translation extends GP_Thing {
 			$join_where[] = $statuses_where;
 		}
 
+		/**
+		 * Filter the SQL WHERE clause to get available translations.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array              $where           An array of where conditions.
+		 * @param GP_Translation_Set $translation_set Current translation set.
+		 */
 		$where = apply_filters( 'gp_for_translation_where', $where, $translation_set );
 
 		$where = implode( ' AND ', $where );
@@ -248,6 +256,7 @@ class GP_Translation extends GP_Thing {
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->save( array('status' => 'current') );
 
+		/** This filter is documented in gp-includes/routes/translation.php */
 		if ( apply_filters( 'gp_enable_propagate_translations_across_projects', true ) ) {
 			$this->propagate_across_projects();
 		}
@@ -368,6 +377,19 @@ class GP_Translation extends GP_Thing {
 				} else {
 					$copy_status = 'waiting';
 				}
+
+				/**
+				 * Filter the status that is set for translations propagated across projects.
+				 *
+				 * @since 1.0.0
+				 * @since 1.1.0 Added the `$translation`, `$translation_set_id`, and
+				 *              `$original_id` parameters
+				 *
+				 * @param string         $copy_status        Status of the translation to be used.
+				 * @param GP_Translation $translation        The instance of the translation.
+				 * @param int            $translation_set_id The ID of the new translation set.
+				 * @param int            $original_id        The ID of the new original.
+				 */
 				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', $copy_status, $this, $o_translation_set->id, $o->id );
 				$this->copy_into_set( $o_translation_set->id, $o->id, $copy_status );
 			}
@@ -413,11 +435,25 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function after_create() {
+		/**
+		 * Fires after a translation was created.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation $translation Translation that was created.
+		 */
 		do_action( 'translation_created', $this );
 		return true;
 	}
 
 	public function after_save() {
+		/**
+		 * Fires after a translation was saved.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation $translation Translation that was saved.
+		 */
 		do_action( 'translation_saved', $this );
 		return true;
 	}

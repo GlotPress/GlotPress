@@ -15,6 +15,13 @@ class GP_Router {
 	public function set_default_routes() {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
 
+		/**
+		 * Fires after default routes have been set.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Router $router The router object.
+		 */
 		do_action( 'gp_router_default_routes_set', $this );
 	}
 
