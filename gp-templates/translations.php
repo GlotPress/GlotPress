@@ -39,9 +39,10 @@ $i = 0;
 		<?php
 
 		/**
-		 * Option elements for the translation set bulk action menu.
+		 * Fires inside the bulk action menu for translation sets.
 		 *
-		 * Printing out option elements here will add those to the translation bulk options drop down menu.
+		 * Printing out option elements here will add those to the translation
+		 * bulk options drop down menu.
 		 *
 		 * @since 1.0.0
 		 *
@@ -157,7 +158,7 @@ $i = 0;
 		<?php
 
 		/**
-		 * After the translation set sort options.
+		 * Fires after the translation set sort options.
 		 *
 		 * This action is inside a DL element.
 		 *
@@ -245,7 +246,7 @@ $i = 0;
 		$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );
 
 		/**
-		 * Footer links in translations.
+		 * Filter footer links in translations.
 		 *
 		 * @since 1.0.0
 		 *

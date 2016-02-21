@@ -314,7 +314,9 @@ function gp_set_cookie() {
 	$args = func_get_args();
 
 	/**
-	 * Whether GlotPress should set a cookie. If filter returns false, a cookie will not be set.
+	 * Filter whether GlotPress should set a cookie.
+	 *
+	 * If the filter returns false, a cookie will not be set.
 	 *
 	 * @since 1.0.0
 	 *

@@ -186,7 +186,7 @@ class GP_Translation extends GP_Thing {
 		}
 
 		/**
-		 * SQL WHERE clause to get available translations.
+		 * Filter the SQL WHERE clause to get available translations.
 		 *
 		 * @since 1.0.0
 		 *

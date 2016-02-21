@@ -122,7 +122,7 @@ function display_status( $status ) {
 function references( $project, $entry ) {
 
 	/**
-	 * Control whether to show references of a translation string on a translation row.
+	 * Filter whether to show references of a translation string on a translation row.
 	 *
 	 * @since 1.0.0
 	 *

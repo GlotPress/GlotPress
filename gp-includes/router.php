@@ -16,7 +16,7 @@ class GP_Router {
 		$this->urls = array_merge( $this->urls, $this->default_routes() );
 
 		/**
-		 * After default routes have been set.
+		 * Fires after default routes have been set.
 		 *
 		 * @since 1.0.0
 		 *

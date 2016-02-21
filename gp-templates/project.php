@@ -18,9 +18,8 @@ gp_tmpl_header();
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
 <p class="description">
 	<?php
-
 	/**
-	 * Project description.
+	 * Filter a project description.
 	 *
 	 * @since 1.0.0
 	 *
@@ -82,9 +81,8 @@ gp_tmpl_header();
 				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
 				<td class="extra">
 					<?php
-
 					/**
-					 * Extra information column for a translation set.
+					 * Fires in an extra information column of a translation set.
 					 *
 					 * @since 1.0.0
 					 *
@@ -116,9 +114,8 @@ gp_tmpl_header();
 	</dt>
 	<dd>
 		<?php
-
 		/**
-		 * Sub-project description.
+		 * Filter a sub-project description.
 		 *
 		 * @since 1.0.0
 		 *

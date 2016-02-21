@@ -3,7 +3,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$args = gp_tmpl_filter_args( $args );
 
 	/**
-	 * Before a template is loaded.
+	 * Fires before a template is loaded.
 	 *
 	 * @since 1.0.0
 	 *
@@ -18,7 +18,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	}
 
 	/**
-	 * Locations to load template files from.
+	 * Filter the locations to load template files from.
 	 *
 	 * @since 1.0.0
 	 *
@@ -40,7 +40,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	}
 
 	/**
-	 * After a template was loaded.
+	 * Fires after a template was loaded.
 	 *
 	 * @since 1.0.0
 	 *
@@ -68,9 +68,8 @@ function gp_tmpl_footer( $args = array( ) ) {
 }
 
 function gp_head() {
-
 	/**
-	 * Inside the head element on the header template.
+	 * Fires inside the head element on the header template.
 	 *
 	 * @since 1.0.0
 	 */
@@ -78,9 +77,8 @@ function gp_head() {
 }
 
 function gp_footer() {
-
 	/**
-	 * End of the page, on the footer template.
+	 * Fires at the end of the page, on the footer template.
 	 *
 	 * @since 1.0.0
 	 */
@@ -116,7 +114,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 
 	/**
-	 * Navigation menu items.
+	 * Filter the list of navigation menu items.
 	 *
 	 * @since 1.0.0
 	 *
@@ -147,11 +145,11 @@ function gp_title( $title = null ) {
 	} else {
 
 		/**
-		 * The title of the page.
+		 * Filter the title of a page.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $title The title of the page.
+		 * @param string $title The title of a page.
 		 */
 		return apply_filters( 'gp_title', '' );
 	}
@@ -167,7 +165,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	} else {
 
 		/**
-		 * Breadcrumb navigation items.
+		 * Filter the list of breadcrumb navigation items.
 		 *
 		 * @since 1.0.0
 		 *
@@ -193,7 +191,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 			$whole_breadcrumb  = str_replace( '{breadcrumb}', $whole_breadcrumb, $args['breadcrumb-template'] );
 
 			/**
-			 * Combined breadcrumb HTML.
+			 * Filter the breadcrumb HTML output.
 			 *
 			 * @since 1.0.0
 			 *
@@ -309,7 +307,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 HTML;
 
 	/**
-	 * Pagination HTML.
+	 * Filter the pagination HTML output.
 	 *
 	 * @since 1.0.0
 	 *
@@ -541,7 +539,7 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	);
 
 	/**
-	 * Entry action links.
+	 * Filter entry action links.
 	 *
 	 * @since 1.0.0
 	 *

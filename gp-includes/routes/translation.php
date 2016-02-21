@@ -86,7 +86,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		/**
-		 * Locale in the file name of the translation set export.
+		 * Filter the locale in the file name of the translation set export.
 		 *
 		 * @since 1.0.0
 		 *
@@ -97,7 +97,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
 
 		/**
-		 * Filename of the translation set export.
+		 * Filter the filename of the translation set export.
 		 *
 		 * @since 1.0.0
 		 *
@@ -458,7 +458,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		);
 
 		/**
-		 * When a warning is discarded.
+		 * Fires before a warning gets discarded.
 		 *
 		 * @since 1.0.0
 		 *
@@ -485,7 +485,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		// Translations with warnings aren't propagated, try again.
 		/**
-		 * Control whether a translation should be propagated across projects.
+		 * Filter whether a translation should be propagated across projects.
 		 *
 		 * @since 1.0.0
 		 *

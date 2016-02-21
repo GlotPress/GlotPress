@@ -157,7 +157,7 @@ function gp_schema_get() {
 	) $charset_collate;";
 
 	/**
-	 * GlotPress database schema.
+	 * Filter the GlotPress database schema.
 	 *
 	 * @since 1.0.0
 	 *

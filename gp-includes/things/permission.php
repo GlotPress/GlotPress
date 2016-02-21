@@ -65,7 +65,9 @@ class GP_Permission extends GP_Thing {
 		$filter_args['extra'] = $extra;
 
 		/**
-		 * Whether user can do an action. Return boolean to skip doing a verdict.
+		 * Filter whether a user can do an action.
+		 *
+		 * Return boolean to skip doing a verdict.
 		 *
 		 * @since 1.0.0
 		 *
@@ -92,7 +94,7 @@ class GP_Permission extends GP_Thing {
 			$this->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 
 		/**
-		 * Whether user can do an action.
+		 * Filter whether an user can do an action.
 		 *
 		 * @since 1.0.0
 		 *

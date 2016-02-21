@@ -120,7 +120,7 @@ class GP_Original extends GP_Thing {
 			);
 
 			/**
-			 * Translation original being imported or updated.
+			 * Filter the data of an original being imported or updated.
 			 *
 			 * This filter is called twice per each entry. First time during determining if the original
 			 * already exists. The second time it is called before a new original is added or a close
@@ -202,11 +202,11 @@ class GP_Original extends GP_Thing {
 				$created = GP::$original->create( $data );
 
 				/**
-				 * Control whether translations should be added from other projects for newly created originals.
+				 * Filter whether translations should be added from other projects for newly created originals.
 				 *
 				 * @since 1.0.0
 				 *
-				 * @param bool $add_translations Add translations from other projects.
+				 * @param bool $add_translations Add translations from other projects. Default true.
 				 */
 				if ( apply_filters( 'gp_enable_add_translations_from_other_projects', true ) ) {
 					$created->add_translations_from_other_projects();
@@ -228,11 +228,11 @@ class GP_Original extends GP_Thing {
 		}
 
 		/**
-		 * After originals have been imported.
+		 * Fires after originals have been imported.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param string $project_id          Project id the import was made to.
+		 * @param string $project_id          Project ID the import was made to.
 		 * @param int    $originals_added     Number or total originals added.
 		 * @param int    $originals_existing  Number of existing originals updated.
 		 * @param int    $originals_obsoleted Number of originals that were marked as obsolete.
@@ -280,7 +280,7 @@ class GP_Original extends GP_Thing {
 			$compared_string_length = gp_strlen( $compared_string );
 
 			/**
-			 * The maximum length difference allowed when comparing originals for a close match when importing.
+			 * Filter the maximum length difference allowed when comparing originals for a close match when importing.
 			 *
 			 * @since 1.0.0
 			 *
@@ -305,7 +305,7 @@ class GP_Original extends GP_Thing {
 		}
 
 		/**
-		 * Minimum allowed similarity to be considered as a close match.
+		 * Filter the minimum allowed similarity to be considered as a close match.
 		 *
 		 * @since 1.0.0
 		 *
@@ -315,7 +315,7 @@ class GP_Original extends GP_Thing {
 		$close_enough = ( $closest_similarity > $min_score );
 
 		/**
-		 * Before determining string similarity.
+		 * Fires before determining string similarity.
 		 *
 		 * @since 1.0.0
 		 *
@@ -391,11 +391,11 @@ class GP_Original extends GP_Thing {
 			$matched_sets[] = $o_translation_set->id;
 
 			/**
-			 * The status of translations copied over from other projects.
+			 * Filter the status of translations copied over from other projects.
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param string $status The status of the copied translation.
+			 * @param string $status The status of the copied translation. Default 'current'.
 			 */
 			$copy_status = apply_filters( 'gp_translations_from_other_projects_status', 'current' );
 			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );

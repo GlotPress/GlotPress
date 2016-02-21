@@ -31,7 +31,7 @@ class GP_Project extends GP_Thing {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
 
 		/**
-		 * Sub projects of a project.
+		 * Filter the list of sub-projects of a project.
 		 *
 		 * @since 1.0.0
 		 *

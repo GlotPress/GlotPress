@@ -1,6 +1,6 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql ) 
+ * @method object|array many_no_map( string $sql )
  * @method object|array find_many_no_map( string|array $sql )
  */
 class GP_Translation_Set extends GP_Thing {
@@ -23,7 +23,7 @@ class GP_Translation_Set extends GP_Thing {
 	public $current_count;
 	public $warnings_count;
 	public $all_count;
-	
+
 	public function restrict_fields( $set ) {
 		$set->name_should_not_be('empty');
 		$set->slug_should_not_be('empty');
@@ -91,18 +91,17 @@ class GP_Translation_Set extends GP_Thing {
 			$is_fuzzy = in_array( 'fuzzy', $entry->flags );
 
 			/**
-			 * Whether to import fuzzy translations.
+			 * Filter whether to import fuzzy translations.
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param bool              $import_over  Import fuzzy translation.
+			 * @param bool              $import_over  Import fuzzy translation. Default true.
 			 * @param Translation_Entry $entry        Translation entry object to import.
 			 * @param Translations      $translations Translations collection.
 			 */
 			if ( $is_fuzzy && ! apply_filters( 'gp_translation_set_import_fuzzy_translations', true, $entry, $translations ) ) {
 				continue;
 			}
-
 
 			$create = false;
 			if ( $translated = $current_translations->translate_entry( $entry ) ) {
@@ -112,7 +111,7 @@ class GP_Translation_Set extends GP_Thing {
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
 
 				/**
-				 * Whether to import over an existing translation on a translation set.
+				 * Filter whether to import over an existing translation on a translation set.
 				 *
 				 * @since 1.0.0
 				 *
@@ -135,7 +134,7 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->translation_set_id = $this->id;
 
 				/**
-				 * The status of imported translations of a translation set.
+				 * Filter the the status of imported translations of a translation set.
 				 *
 				 * @since 1.0.0
 				 *
@@ -152,7 +151,7 @@ class GP_Translation_Set extends GP_Thing {
 		gp_clean_translation_set_cache( $this->id );
 
 		/**
-		 * After translations have been imported to a translation set.
+		 * Fires after translations have been imported to a translation set.
 		 *
 		 * @since 1.0.0
 		 *

@@ -16,7 +16,7 @@
 				<?php
 
 				/**
-				 * The main heading (H1) of a GlotPress page that links to the home page.
+				 * Filter the main heading (H1) of a GlotPress page that links to the home page.
 				 *
 				 * @since 1.0.0
 				 *
@@ -53,11 +53,9 @@
 		<?php endif; ?>
 
 		<?php
-
 		/**
-		 * After the error and notice elements on the header.
+		 * Fires after the error and notice elements on the header.
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'gp_after_notices' ); ?>
-
+		do_action( 'gp_after_notices' );

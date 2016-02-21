@@ -56,7 +56,7 @@ class GP_Route {
 		}
 
 		/**
-		 * After a route method was called.
+		 * Fires after a route method was called.
 		 *
 		 * @since 1.0.0
 		 *

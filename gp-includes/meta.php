@@ -86,11 +86,12 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	$meta_tuple = compact( 'object_type', 'object_id', 'meta_key', 'meta_value', 'type' );
 
 	/**
-	 * Where clause to update meta according to.
+	 * Filter the meta data before it gets updated.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $meta_tuple Key value pairs of database columns and their values according to update meta values from the database.
+	 * @param array $meta_tuple Key value pairs of database columns and their values according
+	 *                          to update meta values from the database.
 	 */
 	$meta_tuple = apply_filters( 'gp_update_meta', $meta_tuple );
 	extract( $meta_tuple, EXTR_OVERWRITE );
@@ -143,7 +144,7 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	$meta_tuple = compact( 'object_type', 'object_id', 'meta_key', 'meta_value', 'type' );
 
 	/**
-	 * Where clause to delete meta according to.
+	 * Filter the meta data before it gets deleted.
 	 *
 	 * @since 1.0.0
 	 *

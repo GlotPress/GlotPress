@@ -55,7 +55,7 @@ function gp_url( $path = '/', $query = null ) {
 	$base = '/' . ltrim( $base, '/' ); // Make sure `$base` has always a leading slash.
 
 	/**
-	 * GlotPress URL.
+	 * Filter a URL relative to GlotPress' domain root.
 	 *
 	 * @since 1.0.0
 	 *
@@ -77,7 +77,7 @@ function gp_url_add_path_and_query( $base, $path, $query ) {
 	}
 
 	/**
-	 * GlotPress URL with path and query.
+	 * Filter a GlotPress URL with path and query.
 	 *
 	 * @since 1.0.0
 	 *
