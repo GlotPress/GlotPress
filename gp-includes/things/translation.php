@@ -1,6 +1,6 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql ) 
+ * @method object|array many_no_map( string $sql )
  * @method object|array find_no_map( array $options )
  * @method object|array find_many_no_map( string|array $sql )
  * @method object|array value_no_map( string|array $sql )
@@ -8,7 +8,7 @@
 class GP_Translation extends GP_Thing {
 
 	public $per_page = 15;
-	
+
 	var $table_basename = 'gp_translations';
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
 	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
@@ -29,7 +29,7 @@ class GP_Translation extends GP_Thing {
 	public $date_modified;
 	public $warnings;
 	public $found_rows;
-	
+
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
@@ -264,18 +264,18 @@ class GP_Translation extends GP_Thing {
 			return;
 		}
 
+		$new_translation_set = GP::$translation_set->get( $new_translation_set_id );
+		$locale = GP_Locales::by_slug( $new_translation_set->locale );
+
+		for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+			$new_translation[] = $this->{"translation_{$i}"};
+		}
+
 		/*
 		 * Don't propagate a waiting/fuzzy translation if the same translation
 		 * with the same status exists already.
 		 */
 		if ( in_array( $status, array( 'waiting', 'fuzzy' ) ) ) {
-			$new_translation_set = GP::$translation_set->get( $new_translation_set_id );
-			$locale = GP_Locales::by_slug( $new_translation_set->locale );
-
-			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
-				$new_translation[] = $this->{"translation_{$i}"};
-			}
-
 			$existing_translations = GP::$translation->find_no_map( array(
 				'translation_set_id' => $new_translation_set_id,
 				'original_id'        => $new_original_id,
@@ -294,6 +294,36 @@ class GP_Translation extends GP_Thing {
 			}
 		}
 
+		/*
+		 * Set a waiting translation as current if it's the same translation.
+		 */
+		if ( 'current' === $status ) {
+			$existing_translations = GP::$translation->find( array(
+				'translation_set_id' => $new_translation_set_id,
+				'original_id'        => $new_original_id,
+				'status'             => 'waiting',
+			) );
+
+			foreach ( $existing_translations as $existing_translation ) {
+				$translation = array();
+				for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+					$translation[] = $existing_translation->{"translation_{$i}"};
+				}
+
+				if ( $translation == $new_translation ) {
+					// Mark as current and avoid recursion.
+					add_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
+					$existing_translation->set_as_current();
+					remove_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
+					return;
+				}
+			}
+		}
+
+		/*
+		 * If none of the above cases are matching, copy the same translation
+		 * into the new translation set.
+		 */
 		$copy = new GP_Translation( $this->fields() );
 		$copy->original_id = $new_original_id;
 		$copy->translation_set_id = $new_translation_set_id;
