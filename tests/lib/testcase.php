@@ -13,9 +13,26 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 		$this->url_filter = returner( $this->url );
 
 		global $wp_rewrite;
-		if ( $wp_rewrite->permalink_structure ) {
-			$this->set_permalink_structure( '' );
+		if ( GP_TESTS_PERMALINK_STRUCTURE != $wp_rewrite->permalink_structure ) {
+			$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE );
 		}
+	}
+
+	/**
+	 * Utility method that resets permalinks and flushes rewrites.
+	 *
+	 * Also updates the pre_option filter for `permalink_structure`.
+	 *
+	 * @global WP_Rewrite $wp_rewrite
+	 *
+	 * @param string $structure Optional. Permalink structure to set. Default empty.
+	 */
+	public function set_permalink_structure( $structure = '' ) {
+		global $wp_tests_options;
+
+		$wp_tests_options['permalink_structure'] = $structure;
+
+		parent::set_permalink_structure( $structure );
 	}
 
 	function clean_up_global_scope() {
