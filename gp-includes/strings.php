@@ -68,13 +68,32 @@ function gp_sanitize_for_url( $name ) {
 }
 
 /**
- * Similar to {@link esc_attr()}, but double encode entities
+ * Escaping for HTML attributes.
+ *
+ * Similar to esc_attr(), but double encode entities.
+ *
+ * @since 1.0.0
+ *
+ * @param string $text The text prior to being escaped.
+ * @return string The text after it has been escaped.
  */
 function gp_esc_attr_with_entities( $text ) {
 	$safe_text = wp_check_invalid_utf8( $text );
 	$safe_text = htmlspecialchars( $safe_text, ENT_QUOTES, false, true );
-	return apply_filters( 'gp_attribute_escape', $safe_text, $text );
 
+	/**
+	 * Filter a string cleaned and escaped for output in an HTML attribute.
+	 *
+	 * Text passed to gp_esc_attr_with_entities() is stripped of invalid or
+	 * special characters before output. Unlike esc_attr() it double encodes
+	 * entities.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $safe_text The text after it has been escaped.
+	 * @param string $text      The text prior to being escaped.
+	 */
+	return apply_filters( 'gp_attribute_escape', $safe_text, $text );
 }
 
 function gp_string_similarity( $str1, $str2 ) {

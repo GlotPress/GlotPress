@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @group strings
+ */
 class GP_Test_Strings extends GP_UnitTestCase {
 	function test_gp_sanitize_for_url() {
 		$this->assertEquals( 'baba', gp_sanitize_for_url( 'baba') );
@@ -23,4 +26,18 @@ class GP_Test_Strings extends GP_UnitTestCase {
 		$this->assertEquals( $similarity_2, 1 );
 	}
 
+	/**
+	 * @dataProvider date_attributes_with_entities
+	 */
+	function test_gp_esc_attr_with_entities( $expected, $attribute ) {
+		$this->assertEquals( $expected, gp_esc_attr_with_entities( $attribute ) );
+	}
+
+	function date_attributes_with_entities() {
+		return array(
+			array( '&amp;#8212;', '&#8212;' ), // https://glotpress.trac.wordpress.org/ticket/12
+			array( 'Foo &amp; Bar', 'Foo & Bar' ),
+			array( '&quot;&amp;hellip;&quot;', '"&hellip;"' ),
+		);
+	}
 }
