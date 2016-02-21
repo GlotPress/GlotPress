@@ -1,7 +1,13 @@
 <?php
-gp_title( $kind == 'originals'?
- 	sprintf( __( 'Import Originals &lt; %s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) :
-	sprintf( __( 'Import Translations &lt; %s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) );
+if ( 'originals' == $kind ) {
+ 	$title = sprintf( __( 'Import Originals &lt; %s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) );
+	$return_link = gp_url_project( $project );
+} else {
+	$title = sprintf( __( 'Import Translations &lt; %s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) );
+	$return_link = gp_url_project_locale( $project, $locale->slug, $translation_set->slug );
+}
+
+gp_title( $title );
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
@@ -20,7 +26,12 @@ gp_tmpl_header();
 ?>
 	<dt><label	for="format"><?php _e( 'Format:', 'glotpress' ); ?></label></dt>
 	<dd><?php echo $format_dropdown; ?></dd>
-	<dt><input type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></dt>
+	<dt>
+	<p>
+		<input type="submit" name="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>" id="submit" />
+		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo $return_link; ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
+	</p>
+	</dt>
 </form>
 
 <?php gp_tmpl_footer();
