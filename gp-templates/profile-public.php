@@ -16,9 +16,11 @@ gp_tmpl_header();
 				$locale_keys = array_keys( $locales );
 
 				if ( 1 < count( $locales ) ) {
-					vprintf( __( '%s is a polyglot who knows %s but also knows %s.', 'glotpress' ), array_merge( array( $user->display_name ), $locale_keys ) );
+					/* translators: 1: display name of a user, 2: language, 3: language */
+					vprintf( __( '%1$s is a polyglot who knows %2$s but also knows %3$s.', 'glotpress' ), array_merge( array( $user->display_name ), $locale_keys ) );
 				} else if( ! empty ( $locale_keys ) ) {
-					printf( __( '%s is a polyglot who contributes to %s', 'glotpress' ), $user->display_name, $locale_keys[0] );
+					/* translators: 1: display name of a user, 2: language */
+					printf( __( '%1$s is a polyglot who contributes to %2$s', 'glotpress' ), $user->display_name, $locale_keys[0] );
 				}
 			?></dd>
 			<dt><?php _e( 'Member Since', 'glotpress' ); ?></dt>

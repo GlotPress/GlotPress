@@ -3,7 +3,7 @@
 class GP_Validation_Rules {
 
 	var $rules = array();
-	
+
 	public $errors = array();
 	public $field_names;
 
@@ -91,10 +91,13 @@ class GP_Validation_Rules {
 			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
 		}
 
-		if ( 'positive' == $rule['kind'] )
-			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
-		else //if ( 'negative' == $rule['kind'] )
-			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should not be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
+		if ( 'positive' == $rule['kind'] ) {
+			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
+			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+		} else { //if ( 'negative' == $rule['kind'] )
+			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
+			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+		}
 	}
 }
 
