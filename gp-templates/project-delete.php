@@ -3,7 +3,7 @@ gp_title( sprintf( __( 'Delete Project %s &lt; GlotPress', 'glotpress' ),  $proj
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
-<h2><?php echo wptexturize( sprintf( __( 'Delete project "%s"', 'glotpress' ), esc_html( $project->name ) ) ); ?></h2>
+<h2><?php echo sprintf( __( 'Delete project &#8220;%s&#8221;', 'glotpress' ), esc_html( $project->name ) ); ?></h2>
 <form action="" method="post">
 	<p>
 		<?php _e( 'Note this will delete all translations, translation sets and child projects!', 'glotpress' ); ?>
