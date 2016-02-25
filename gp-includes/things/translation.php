@@ -442,7 +442,7 @@ class GP_Translation extends GP_Thing {
 		 *
 		 * @param GP_Translation $translation Translation that was created.
 		 */
-		do_action( 'translation_created', $this );
+		do_action( 'gp_translation_created', $this );
 		return true;
 	}
 
@@ -454,7 +454,7 @@ class GP_Translation extends GP_Thing {
 		 *
 		 * @param GP_Translation $translation Translation that was saved.
 		 */
-		do_action( 'translation_saved', $this );
+		do_action( 'gp_translation_saved', $this );
 		return true;
 	}
 
