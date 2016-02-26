@@ -302,7 +302,9 @@ class GP_Thing {
 		$query = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
-		return $this->query( $query );
+		$result = $this->query( $query );
+		$this->after_delete();
+		return $result;
 	}
 
 	// Fields handling
@@ -391,11 +393,36 @@ class GP_Thing {
 
 	// Triggers
 
+	/**
+	 * Is called after an object is created in the database.
+	 *
+	 * This is a placeholder function which should be implemented in the child classes.
+	 *
+	 * @return bool
+	 */
 	public function after_create() {
 		return true;
 	}
 
+	/**
+	 * Is called after an object is saved to the database.
+	 *
+	 * This is a placeholder function which should be implemented in the child classes.
+	 *
+	 * @return bool
+	 */
 	public function after_save() {
+		return true;
+	}
+	
+	/**
+	 * Is called after an object is deleted from the database.
+	 *
+	 * This is a placeholder function which should be implemented in the child classes.
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
 		return true;
 	}
 
