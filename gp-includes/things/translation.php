@@ -79,17 +79,17 @@ class GP_Translation extends GP_Thing {
 		return str_replace( '↵', "\n", $translation );
 	}
 
-	public function restrict_fields( $translation ) {
-		$translation->translation_0_should_not_be( 'empty_string' );
-		$translation->translation_1_should_not_be( 'empty_string' );
-		$translation->translation_2_should_not_be( 'empty_string' );
-		$translation->translation_3_should_not_be( 'empty_string' );
-		$translation->translation_4_should_not_be( 'empty_string' );
-		$translation->translation_5_should_not_be( 'empty_string' );
-		$translation->status_should_not_be( 'empty' );
-		$translation->original_id_should_be( 'positive_int' );
-		$translation->translation_set_id_should_be( 'positive_int' );
-		$translation->user_id_should_be( 'positive_int' );
+	public function restrict_fields( $rules ) {
+		$rules->translation_0_should_not_be( 'empty_string' );
+		$rules->translation_1_should_not_be( 'empty_string' );
+		$rules->translation_2_should_not_be( 'empty_string' );
+		$rules->translation_3_should_not_be( 'empty_string' );
+		$rules->translation_4_should_not_be( 'empty_string' );
+		$rules->translation_5_should_not_be( 'empty_string' );
+		$rules->status_should_not_be( 'empty' );
+		$rules->original_id_should_be( 'positive_int' );
+		$rules->translation_set_id_should_be( 'positive_int' );
+		$rules->user_id_should_be( 'positive_int' );
 	}
 
 
@@ -458,7 +458,7 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was created.
 		 */
 		do_action( 'gp_translation_created', $this );
-		
+
 		return true;
 	}
 
@@ -478,7 +478,7 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was saved.
 		 */
 		do_action( 'gp_translation_saved', $this );
-		
+
 		return true;
 	}
 
@@ -498,7 +498,7 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was deleted.
 		 */
 		do_action( 'gp_translation_deleted', $this );
-		
+
 		return true;
 	}
 }

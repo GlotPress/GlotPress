@@ -23,12 +23,12 @@ class GP_Original extends GP_Thing {
 	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
-	public function restrict_fields( $original ) {
-		$original->singular_should_not_be('empty_string');
-		$original->status_should_not_be('empty');
-		$original->project_id_should_be('positive_int');
-		$original->priority_should_be('int');
-		$original->priority_should_be('between', -2, 1);
+	public function restrict_fields( $rules ) {
+		$rules->singular_should_not_be('empty_string');
+		$rules->status_should_not_be('empty');
+		$rules->project_id_should_be('positive_int');
+		$rules->priority_should_be('int');
+		$rules->priority_should_be('between', -2, 1);
 	}
 
 	public function normalize_fields( $args ) {

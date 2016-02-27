@@ -10,8 +10,8 @@ class GP_Glossary extends GP_Thing {
 	public $translation_set_id;
 	public $description;
 
-	function restrict_fields( $glossary ) {
-		$glossary->translation_set_id_should_not_be('empty');
+	function restrict_fields( $rules ) {
+		$rules->translation_set_id_should_not_be('empty');
 	}
 
 	/**

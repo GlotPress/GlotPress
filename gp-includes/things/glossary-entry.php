@@ -41,11 +41,11 @@ class GP_Glossary_Entry extends GP_Thing {
 		);
 	}
 
-	public function restrict_fields( $glossary_entry ) {
-		$glossary_entry->term_should_not_be( 'empty' );
-		$glossary_entry->part_of_speech_should_not_be( 'empty' );
-		$glossary_entry->glossary_id_should_be( 'positive_int' );
-		$glossary_entry->last_edited_by_should_be( 'positive_int' );
+	public function restrict_fields( $rules ) {
+		$rules->term_should_not_be( 'empty' );
+		$rules->part_of_speech_should_not_be( 'empty' );
+		$rules->glossary_id_should_be( 'positive_int' );
+		$rules->last_edited_by_should_be( 'positive_int' );
 	}
 
 	public function by_glossary_id( $glossary_id ) {

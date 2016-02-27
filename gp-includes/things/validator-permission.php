@@ -11,12 +11,12 @@ class GP_Validator_Permission extends GP_Permission {
 	public $locale_slug;
 	public $set_slug;
 
-	public function restrict_fields( $permission ) {
-		$permission->project_id_should_not_be('empty');
-		$permission->locale_slug_should_not_be('empty');
-		$permission->user_id_should_not_be('empty');
-		$permission->action_should_not_be('empty');
-		$permission->set_slug_should_not_be('empty');
+	public function restrict_fields( $rules ) {
+		$rules->project_id_should_not_be('empty');
+		$rules->locale_slug_should_not_be('empty');
+		$rules->user_id_should_not_be('empty');
+		$rules->action_should_not_be('empty');
+		$rules->set_slug_should_not_be('empty');
 	}
 
 	public function set_fields( $db_object ) {
