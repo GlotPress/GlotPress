@@ -9,7 +9,7 @@ class GP_Administrator_Permission extends GP_Permission {
 	/**
 	 * Adds restrictions to the fields in the object.
 	 *
-	 * @param GP_Permission $permission The permission object to set the field restrictions on.
+	 * @param object $permission The permission object to set the field restrictions on.
 	 *
 	 * @since 1.1.0
 	 */
