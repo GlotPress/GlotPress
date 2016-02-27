@@ -444,6 +444,16 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Discard a warning.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Project $project
+	 * @param GP_Locale $locale
+	 * @param GP_Translation_Set $translation_set
+	 * @param Translation $translation
+	 */
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
 			return $this->die_with_error( 'The warning doesn&#8217;exist!' );
