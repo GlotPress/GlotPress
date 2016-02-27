@@ -452,7 +452,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	 * @param GP_Project $project
 	 * @param GP_Locale $locale
 	 * @param GP_Translation_Set $translation_set
-	 * @param Translation $translation
+	 * @param GP_Translation $translation
 	 */
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
