@@ -9,9 +9,11 @@ class GP_Administrator_Permission extends GP_Permission {
 	/**
 	 * Adds restrictions to the fields in the object.
 	 *
+	 * @param GP_Administrator_Permission $permission The permission object to set the field restrictions on.
+	 *
 	 * @since 1.1.0
 	 */
-	function restrict_fields( $permission ) {
+	public function restrict_fields( $permission ) {
 		$permission->user_id_should_not_be( 'empty' );
 		$permission->action_should_not_be( 'empty' );
 		$permission->object_type_should_be( 'empty' );
