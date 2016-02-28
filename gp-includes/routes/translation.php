@@ -79,7 +79,14 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$format = gp_array_get( GP::$formats, gp_get( 'format', 'po' ), null );
+		$get_format = gp_get( 'format', 'po' );
+		
+		// If for some reason we were passed in an array or object from the get parameters, don't use it.
+		if( ! is_string( $get_format ) ) {
+			$get_format = '.po';
+		}
+
+		$format = gp_array_get( GP::$formats, $get_format, null );
 
 		if ( ! $format ) {
 			return $this->die_with_404();
@@ -143,7 +150,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
 
-		if ( 'random' == gp_array_get( $sort, 'by') ) {
+		if ( is_array( $sort ) && 'random' == gp_array_get( $sort, 'by') ) {
 			add_filter( 'gp_pagination', '__return_null' );
 		}
 
@@ -153,6 +160,14 @@ class GP_Route_Translation extends GP_Route_Main {
 		else
 			GP::$translation->per_page = $per_page;
 
+		if ( ! is_array( $filters ) ) {
+			$filters = array();
+		}
+		
+		if ( ! is_array( $sort ) ) {
+			$sort = array();
+		}
+		
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 
