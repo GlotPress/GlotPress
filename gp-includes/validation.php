@@ -1,5 +1,14 @@
 <?php
+/*
+	Class to handle validation of data, uses magic methods in the format of [field]_[rule].
+	
+	The below is a list of all (work in progress) magic methods called to ensure Scrutinizer recognizes them.
 
+	@method bool user_id_should_not_be( string $name, array $args )
+	@method bool action_should_not_be( string $name, array $args )
+	@method bool object_type_should_be( string $name, array $args )
+	@method bool object_id_should_be( string $name, array $args )
+*/
 class GP_Validation_Rules {
 
 	var $rules = array();
