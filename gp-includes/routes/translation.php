@@ -489,7 +489,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$res = $translation->save();
 
-		if ( ! $res ) {
+		if ( false === $res || null === $res ) {
 			return $this->die_with_error( 'Error in saving the translation!' );
 		}
 
