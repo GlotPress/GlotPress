@@ -130,6 +130,8 @@ class GP_Thing {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param mixed ... A series of parameters to query with.
+	 *
 	 * @return mixed
 	 */
 	public function many_no_map() {
