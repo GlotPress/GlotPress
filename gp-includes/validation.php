@@ -2,12 +2,51 @@
 /*
 	Class to handle validation of data, uses magic methods in the format of [field]_[rule].
 	
-	The below is a list of all (work in progress) magic methods called to ensure Scrutinizer recognizes them.
+	The below is a list of all magic methods called to ensure Scrutinizer recognizes them.
+	
+	Note that once a method has been defined from one file it will not be redefine in subsequent file sections.
 
-	@method bool user_id_should_not_be( string $name, array $args = null)
-	@method bool action_should_not_be( string $name, array $args = null )
-	@method bool object_type_should_be( string $name, array $args = null )
-	@method bool object_id_should_be( string $name, array $args = null )
+	From gp_includes/things/administrative-permissions.php:
+		@method bool user_id_should_not_be( string $name, array $args = null)
+		@method bool action_should_not_be( string $name, array $args = null )
+		@method bool object_type_should_be( string $name, array $args = null )
+		@method bool object_id_should_be( string $name, array $args = null )
+
+	From gp_includes/things/glossary-entry.php:
+		@method bool term_should_not_be( string $name, array $args = null)
+		@method bool part_of_speech_should_not_be( string $name, array $args = null )
+		@method bool glossary_id_should_be( string $name, array $args = null )
+		@method bool last_edited_by_should_be( string $name, array $args = null )
+
+	From gp_includes/things/original.php:
+		@method bool singular_should_not_be( string $name, array $args = null)
+		@method bool status_should_not_be( string $name, array $args = null )
+		@method bool project_id_should_be( string $name, array $args = null )
+		@method bool priority_should_be( string $name, array $args = null )
+	
+	From gp_includes/things/translation.php:
+		@method bool translation_0_should_not_be( string $name, array $args = null)
+		@method bool original_id_should_be( string $name, array $args = null )
+		@method bool translation_set_id_should_be( string $name, array $args = null )
+		@method bool user_id_should_be( string $name, array $args = null )
+	
+	From gp_includes/things/glossary.php:
+		@method bool translation_set_id_should_not_be( string $name, array $args = null)
+	
+	From gp_includes/things/project.php:
+		@method bool name_should_not_be( string $name, array $args = null)
+		@method bool slug_should_not_be( string $name, array $args = null)
+	
+	From gp_includes/things/translation-set.php:
+		@method bool locale_should_not_be( string $name, array $args = null)
+		@method bool project_id_should_not_be( string $name, array $args = null)
+	
+	From gp_includes/things/validator-permission.php:
+		@method bool locale_slug_should_not_be( string $name, array $args = null)
+		@method bool user_id_should_not_be( string $name, array $args = null)
+		@method bool action_should_not_be( string $name, array $args = null)
+		@method bool set_slug_should_not_be( string $name, array $args = null)
+	
 */
 class GP_Validation_Rules {
 
