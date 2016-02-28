@@ -1,10 +1,4 @@
 <?php
-/**
- * @method object|array many_no_map( string $sql )
- * @method object|array find_no_map( array $options )
- * @method object|array find_many_no_map( string|array $sql )
- * @method object|array value_no_map( string|array $sql )
- */
 class GP_Translation extends GP_Thing {
 
 	public $per_page = 15;
