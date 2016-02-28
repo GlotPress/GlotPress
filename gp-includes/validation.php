@@ -4,10 +4,10 @@
 	
 	The below is a list of all (work in progress) magic methods called to ensure Scrutinizer recognizes them.
 
-	@method bool user_id_should_not_be( string $name, array $args )
-	@method bool action_should_not_be( string $name, array $args )
-	@method bool object_type_should_be( string $name, array $args )
-	@method bool object_id_should_be( string $name, array $args )
+	@method bool user_id_should_not_be( string $name, array $args = null)
+	@method bool action_should_not_be( string $name, array $args = null )
+	@method bool object_type_should_be( string $name, array $args = null )
+	@method bool object_id_should_be( string $name, array $args = null )
 */
 class GP_Validation_Rules {
 
