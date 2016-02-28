@@ -389,7 +389,7 @@ class GP_Thing {
 		return $mapped;
 	}
 
-	function map_no_map( $results ) {
+	public function map_no_map( $results ) {
 		return $this->_no_map( 'map', $results );
 	}
 
