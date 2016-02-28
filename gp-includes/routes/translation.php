@@ -432,7 +432,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
-		if ( $translations ) {
+		if ( ! empty( $translations ) ) {
 			$t = $translations[0];
 
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
