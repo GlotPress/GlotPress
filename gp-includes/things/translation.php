@@ -281,6 +281,7 @@ class GP_Translation extends GP_Thing {
 
 		$new_translation_set = GP::$translation_set->get( $new_translation_set_id );
 		$locale = GP_Locales::by_slug( $new_translation_set->locale );
+		$new_translation = array();
 
 		for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 			$new_translation[] = $this->{"translation_{$i}"};
