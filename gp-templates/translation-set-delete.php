@@ -13,7 +13,7 @@ gp_tmpl_header();
 	</p>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Delete', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel">or <a href="javascript:history.back();"><?php esc_attr_e( 'Cancel', 'glotpress' ); ?></a></span>
+		<span class="or-cancel">or <a href="<?php echo gp_url_project_locale( $project, $locale->slug, $set->slug ); ?>"><?php esc_attr_e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
 </form>
 <?php gp_tmpl_footer();
