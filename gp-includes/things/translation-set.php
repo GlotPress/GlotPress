@@ -338,6 +338,13 @@ class GP_Translation_Set extends GP_Thing {
 		return GP::$translation->last_modified( $this );
 	}
 	
+	/**
+	 * Deletes a translation set and all of it's translations and glossaries.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
 	public function delete() {
 		GP::$translation->delete_many( array( 'translation_set_id' => $this->id ) );
 
