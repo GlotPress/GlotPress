@@ -197,11 +197,11 @@ class GP_Route_Project extends GP_Route_Main {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param int $project_id The id of the project to delete.
+	 * @param int $project_path The path of the project to delete.
 	 */
-	public function delete_post( $project_id ) {
-		$project = GP::$project->find_one( array( 'id' => $project_id ) );
-		
+	public function delete_post( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+
 		if ( ! empty( $project_id ) ) {
 			
 			$this->redirect( gp_url_public_root() );
