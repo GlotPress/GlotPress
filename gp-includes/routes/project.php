@@ -229,7 +229,7 @@ class GP_Route_Project extends GP_Route_Main {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param int $glossary_id The id of the project to delete.
+	 * @param string $project_path The path of the project to delete.
 	 */
 	public function delete_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
