@@ -17,7 +17,16 @@ gp_tmpl_header();
 ?>
 <h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
 <p class="description">
-	<?php echo apply_filters( 'gp_project_description', $project->description, $project );?>
+	<?php
+	/**
+	 * Filter a project description.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string     $description Project description.
+	 * @param GP_Project $project     The current project.
+	 */
+	echo apply_filters( 'gp_project_description', $project->description, $project );?>
 </p>
 
 <?php if ( $can_write ): ?>
@@ -71,7 +80,16 @@ gp_tmpl_header();
 							array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $set->waiting_count ); ?></td>
 				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
 				<td class="extra">
-					<?php do_action( 'gp_project_template_translation_set_extra', $set, $project ); ?>
+					<?php
+					/**
+					 * Fires in an extra information column of a translation set.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param GP_Translation_Set $set     The translation set.
+					 * @param GP_Project         $project The current project.
+					 */
+					do_action( 'gp_project_template_translation_set_extra', $set, $project ); ?>
 				</td>
 				<?php endif; ?>
 			</tr>
@@ -95,7 +113,16 @@ gp_tmpl_header();
 		<?php if ( $sub_project->active ) echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . "</span>"; ?>
 	</dt>
 	<dd>
-		<?php echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) ); ?>
+		<?php
+		/**
+		 * Filter a sub-project description.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string     $description Sub-project description.
+		 * @param GP_Project $project     The sub-project.
+		 */
+		echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) ); ?>
 	</dd>
 <?php endforeach; ?>
 </dl>

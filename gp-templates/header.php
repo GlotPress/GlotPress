@@ -13,7 +13,16 @@
 	<header class="gp-bar clearfix">
 		<h1>
 			<a href="<?php echo gp_url( '/' ); ?>" rel="home">
-				<?php echo apply_filters( 'gp_home_title', 'GlotPress' ); ?>
+				<?php
+
+				/**
+				 * Filter the main heading (H1) of a GlotPress page that links to the home page.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $title The text linking to home page.
+				 */
+				echo apply_filters( 'gp_home_title', 'GlotPress' ); ?>
 			</a>
 		</h1>
 
@@ -43,5 +52,10 @@
 			</div>
 		<?php endif; ?>
 
-		<?php do_action( 'gp_after_notices' ); ?>
-
+		<?php
+		/**
+		 * Fires after the error and notice elements on the header.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'gp_after_notices' );

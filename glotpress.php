@@ -6,7 +6,7 @@
 Plugin Name: GlotPress
 Plugin URI: https://wordpress.org/plugins/glotpress/
 Description: GlotPress is a tool to help translators collaborate.
-Version: 1.0.1
+Version: 1.1.0-alpha
 Author: the GlotPress team
 Author URI: http://glotpress.org
 License: GPLv2 or later
@@ -29,16 +29,52 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-define( 'GP_VERSION', '1.0.1' );
+define( 'GP_VERSION', '1.1.0-alpha' );
 define( 'GP_DB_VERSION', '940' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', dirname( __FILE__ ) . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.4' );
+define( 'GP_PHP_REQUIRED_VERSION', '5.3' );
 
 // Load the plugin's translated strings
 load_plugin_textdomain( 'glotpress' );
+
+/**
+ * Adds a message if the required minimum PHP version is not detected.
+ *
+ * Message is only displayed on the plugin screen.
+ *
+ * @since 1.1.0
+ */
+function gp_unsupported_php_version_notice() {
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+	?>
+	<div class="notice notice-error">
+		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php _e( '&#151; You are running an unsupported version of PHP.', 'glotpress' ); ?></p>
+		<p style="max-width:800px;"><?php
+				printf( __( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress. ', 'glotpress' ), GP_PHP_REQUIRED_VERSION );
+		?></p>
+	</div>
+	<?php
+}
+
+/*
+ * Check the PHP version, if it's not a supported version, return without running
+ * any more code as the user will not be able to access GlotPress
+ * any errors and show an admin notice.
+ */
+if ( version_compare(  phpversion(), GP_PHP_REQUIRED_VERSION, '<' ) ) {
+	add_action( 'admin_notices', 'gp_unsupported_php_version_notice', 10, 2 );
+
+	// Bail out now so no additional code is run.
+	return;
+}
 
 /**
  * Adds a message if an incompatible version of WordPress is running.
@@ -71,10 +107,49 @@ function gp_unsupported_version_admin_notice() {
 
 /*
  * Check the WP version, if we don't meet the minimum version to run GlotPress
- * return so we don't cause any errors and add show an admin notice.
+ * return so we don't cause any errors and show an admin notice.
  */
 if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 	add_action( 'admin_notices', 'gp_unsupported_version_admin_notice', 10, 2 );
+
+	// Bail out now so no additional code is run.
+	return;
+}
+
+/**
+ * Adds a message if no permalink structure is detected .
+ *
+ * Message is only displayed on the plugin screen.
+ *
+ * @since 1.1.0
+ */
+function gp_unsupported_permalink_structure_admin_notice() {
+	$screen = get_current_screen();
+
+	if ( 'plugins' !== $screen->id ) {
+		return;
+	}
+	?>
+	<div class="notice notice-error">
+		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php _e( '&#151; You are running an unsupported permalink structure.', 'glotpress' ); ?></p>
+		<p style="max-width:800px;"><?php
+			/* translators: %s: URL to permalink settings */
+			printf(
+				__( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' ),
+				admin_url( 'options-permalink.php' )
+			);
+		?></p>
+	</div>
+	<?php
+}
+
+/*
+ * Check the permalink structure, if we don't have one (aka the rewrite engine is disabled)
+ * return without running any more code as the user will not be able to access GlotPress
+ * any errors and show an admin notice.
+ */
+if ( ! get_option('permalink_structure') ) {
+	add_action( 'admin_notices', 'gp_unsupported_permalink_structure_admin_notice', 10, 2 );
 
 	// Bail out now so no additional code is run.
 	return;

@@ -1,12 +1,32 @@
 <?php
 function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$args = gp_tmpl_filter_args( $args );
+
+	/**
+	 * Fires before a template is loaded.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $template The template name.
+	 * @param array  $args     Arguments passed to the template. Passed by reference.
+	 */
 	do_action_ref_array( 'gp_pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
 	$locations = array( GP_TMPL_PATH );
 	if ( !is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
+
+	/**
+	 * Filter the locations to load template files from.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array       $locations     File paths of template locations.
+	 * @param string      $template      The template name.
+	 * @param array       $args          Arguments passed to the template.
+	 * @param string|null $template_path Priority template location, if any.
+	 */
 	$locations = apply_filters( 'gp_tmpl_load_locations', $locations, $template, $args, $template_path );
 	if ( isset( $args['http_status'] ) )
 		status_header( $args['http_status'] );
@@ -18,6 +38,15 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 			break;
 		}
 	}
+
+	/**
+	 * Fires after a template was loaded.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $template The template name.
+	 * @param array  $args     Arguments passed to the template. Passed by reference.
+	 */
 	do_action_ref_array( 'gp_post_tmpl_load', array( $template, &$args ) );
 }
 
@@ -39,10 +68,20 @@ function gp_tmpl_footer( $args = array( ) ) {
 }
 
 function gp_head() {
+	/**
+	 * Fires inside the head element on the header template.
+	 *
+	 * @since 1.0.0
+	 */
 	do_action( 'gp_head' );
 }
 
 function gp_footer() {
+	/**
+	 * Fires at the end of the page, on the footer template.
+	 *
+	 * @since 1.0.0
+	 */
 	do_action( 'gp_footer' );
 }
 
@@ -74,6 +113,14 @@ function gp_nav_menu_items( $location = 'main' ) {
 		}
 	}
 
+	/**
+	 * Filter the list of navigation menu items.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array  $items    Menu items. URL as the key, menu label as the value.
+	 * @param string $location Location of the menu.
+	 */
 	return apply_filters( 'gp_nav_menu_items', $items, $location );
 }
 
@@ -96,6 +143,14 @@ function gp_title( $title = null ) {
 			return $title;
 		}, 5 );
 	} else {
+
+		/**
+		 * Filter the title of a page.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $title The title of a page.
+		 */
 		return apply_filters( 'gp_title', '' );
 	}
 }
@@ -108,6 +163,14 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 			return array_merge( $breadcrumbs, $breadcrumb );
 		}, 1 );
 	} else {
+
+		/**
+		 * Filter the list of breadcrumb navigation items.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $breadcrumb_items Breadcrumb items as HTML string.
+		 */
 		$breadcrumbs = apply_filters( 'gp_breadcrumb_items', array() );
 
 		if ( $breadcrumbs ) {
@@ -127,6 +190,13 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 
 			$whole_breadcrumb  = str_replace( '{breadcrumb}', $whole_breadcrumb, $args['breadcrumb-template'] );
 
+			/**
+			 * Filter the breadcrumb HTML output.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $whole_breadcrumb Breadcrumb HTML.
+			 */
 			return apply_filters( 'gp_breadcrumb', $whole_breadcrumb );
 		}
 	}
@@ -235,6 +305,17 @@ function gp_pagination( $page, $per_page, $objects ) {
 		$next
 	</div>
 HTML;
+
+	/**
+	 * Filter the pagination HTML output.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $html     The pagination HTML.
+	 * @param int    $page     Current page number.
+	 * @param int    $per_page Objects per page.
+	 * @param int    $objects  Total number of objects to page.
+	 */
 	return apply_filters( 'gp_pagination', $html, $page, $per_page, $objects );
 }
 
@@ -409,6 +490,14 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __( 'Delete Project', 'glotpress' ), array( 'ays-text' => __( 'Do you really want to delete this project?', 'glotpress' ) ) )
 	);
 
+	/**
+	 * Project action links.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array      $actions Links as HTML strings.
+	 * @param GP_Project $project The project.
+	 */
 	$actions = apply_filters( 'gp_project_actions', $actions, $project );
 
 	echo '<ul>';
@@ -433,7 +522,13 @@ function gp_project_options_form( $project ) {
 					<dt><label for="source-url-template">' . __( 'Source file URL', 'glotpress' ) . '</label></dt>
 					<dd>
 						<input type="text" value="' . esc_html( $project->source_url_template() ) . '" name="source-url-template" id="source-url-template" />
-						<small>' . __( 'URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>https://trac.example.org/browser/%file%#L%line%</code>', 'glotpress' ) .'</small>
+						<small>' . sprintf(
+							/* translators: 1: %file%, 2: %line%, 3: https://trac.example.org/browser/%file%#L%line% */
+							__( 'URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
+							'<code>%file%</code>',
+							'<code>%line%</code>',
+							'<code>https://trac.example.org/browser/%file%#L%line%</code>'
+						) . '</small>
 					</dd>
 				</dl>
 				<p>
@@ -449,6 +544,13 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 		'<a href="#" class="copy" tabindex="-1">' . __( 'Copy from original', 'glotpress' ) . '</a>'
 	);
 
+	/**
+	 * Filter entry action links.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $actions Links as HTML strings.
+	 */
 	$actions = apply_filters( 'gp_entry_actions', $actions );
 
 

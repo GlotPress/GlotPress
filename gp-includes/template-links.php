@@ -42,7 +42,7 @@ function gp_link_project() {
 }
 
 function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit', 'glotpress' );
@@ -55,7 +55,7 @@ function gp_link_project_edit() {
 }
 
 function gp_link_project_delete_get( $project, $text = false, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Delete', 'glotpress' );
@@ -77,7 +77,7 @@ function gp_link_home() {
 }
 
 function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Edit', 'glotpress' );

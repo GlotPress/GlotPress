@@ -6,7 +6,13 @@ class GP_Permission extends GP_Thing {
 	var $int_fields = array( 'id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );
 
-	function normalize_fields( $args ) {
+	public $id;
+	public $user_id;
+	public $action;
+	public $object_type;
+	public $object_id;
+
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		foreach( $this->field_names as $field_name ) {
 			if ( isset( $args[$field_name] ) ) {
@@ -57,6 +63,26 @@ class GP_Permission extends GP_Thing {
 		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
 		$filter_args['user'] = $user;
 		$filter_args['extra'] = $extra;
+
+		/**
+		 * Filter whether a user can do an action.
+		 *
+		 * Return boolean to skip doing a verdict.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string|bool $verdict Whether user can do an action.
+		 * @param array $args {
+		 *     Arguments of the permission check.
+		 *
+		 *     @type int     $user_id     The user being evaluated.
+		 *     @type string  $action      Action to be executed.
+		 *     @type string  $object_type Object type to execute against.
+		 *     @type string  $object_id   Object ID to execute against.
+		 *     @type WP_User $user        The user being evaluated.
+		 *     @type mixed   $extra       Extra information given to the permission check.
+		 * }
+		 */
 		$preliminary = apply_filters( 'gp_pre_can_user', 'no-verdict', $filter_args );
 		if ( is_bool( $preliminary ) ) {
 			return $preliminary;
@@ -67,6 +93,23 @@ class GP_Permission extends GP_Thing {
 			$this->find_one( $args ) ||
 			$this->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 
+		/**
+		 * Filter whether an user can do an action.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param bool $verdict Whether user can do an action.
+		 * @param array $args {
+		 *     Arguments of the permission check.
+		 *
+		 *     @type int     $user_id     The user being evaluated.
+		 *     @type string  $action      Action to be executed.
+		 *     @type string  $object_type Object type to execute against.
+		 *     @type string  $object_id   Object ID to execute against.
+		 *     @type WP_User $user        The user being evaluated.
+		 *     @type mixed   $extra       Extra information given to the permission check.
+		 * }
+		 */
 		return apply_filters( 'gp_can_user', $verdict, $filter_args );
 	}
 }

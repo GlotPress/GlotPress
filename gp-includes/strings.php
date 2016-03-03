@@ -15,45 +15,45 @@ function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-if ( function_exists('mb_strtolower') ):
-function gp_strtolower( $str ) {
-	return mb_strtolower( $str );
+if ( function_exists('mb_strtolower') ) {
+	function gp_strtolower( $str ) {
+		return mb_strtolower( $str );
+	}
+} else {
+	function gp_strtolower( $str ) {
+		return strtolower( $str );
+	}
 }
-else:
-function gp_strtolower( $str ) {
-	return strtolower( $str );
-}
-endif;
 
-if ( function_exists('mb_strlen') ):
-function gp_strlen( $str ) {
-	return mb_strlen( $str );
+if ( function_exists('mb_strlen') ) {
+	function gp_strlen( $str ) {
+		return mb_strlen( $str );
+	}
+} else {
+	function gp_strlen( $str ) {
+		return preg_match_all("/.{1}/us", $str, $dummy);
+	}
 }
-else:
-function gp_strlen( $str ) {
-	return preg_match_all("/.{1}/us", $str, $dummy);
-}
-endif;
 
-if ( function_exists('mb_stripos') ):
-function gp_stripos( $haystack, $needle ) {
-	return mb_stripos( $haystack, $needle );
+if ( function_exists('mb_stripos') ) {
+	function gp_stripos( $haystack, $needle ) {
+		return mb_stripos( $haystack, $needle );
+	}
+} else {
+	function gp_stripos( $haystack, $needle ) {
+		return stripos( $haystack, $needle );
+	}
 }
-else:
-function gp_stripos( $haystack, $needle ) {
-	return stripos( $haystack, $needle );
-}
-endif;
 
-if ( function_exists('mb_substr') ):
+if ( function_exists('mb_substr') ) {
 	function gp_substr( $str, $start, $length ) {
 		return mb_substr( $str, $start, $length );
 	}
-else:
+} else {
 	function gp_substr( $str, $start, $length ) {
 		return substr( $str, $start, $length );
 	}
-endif;
+}
 
 function gp_sanitize_for_url( $name ) {
 	$name = trim( $name );
@@ -68,13 +68,47 @@ function gp_sanitize_for_url( $name ) {
 }
 
 /**
- * Similar to {@link esc_attr()}, but double encode entities
+ * Escaping for HTML attributes.
+ *
+ * Similar to esc_attr(), but double encode entities.
+ *
+ * @since 1.0.0
+ *
+ * @param string $text The text prior to being escaped.
+ * @return string The text after it has been escaped.
  */
 function gp_esc_attr_with_entities( $text ) {
 	$safe_text = wp_check_invalid_utf8( $text );
-	$safe_text = _wp_specialchars( $safe_text, ENT_QUOTES, false, true );
-	return apply_filters( 'gp_attribute_escape', $safe_text, $text );
+	$safe_text = htmlspecialchars( $safe_text, ENT_QUOTES, false, true );
 
+	/**
+	 * Filter a string cleaned and escaped for output in an HTML attribute.
+	 *
+	 * Text passed to gp_esc_attr_with_entities() is stripped of invalid or
+	 * special characters before output. Unlike esc_attr() it double encodes
+	 * entities.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $safe_text The text after it has been escaped.
+	 * @param string $text      The text prior to being escaped.
+	 */
+	return apply_filters( 'gp_attribute_escape', $safe_text, $text );
+}
+
+/**
+ * Escapes translations for HTML blocks.
+ *
+ * Similar to esc_html(), but double encode entities.
+ *
+ * @since 1.0.0
+ *
+ * @param string $text The text prior to being escaped.
+ * @return string The text after it has been escaped.
+ */
+function esc_translation( $text ) {
+	$safe_text = wp_check_invalid_utf8( $text );
+	return htmlspecialchars( $safe_text, ENT_NOQUOTES, false, true );
 }
 
 function gp_string_similarity( $str1, $str2 ) {

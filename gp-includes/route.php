@@ -4,10 +4,11 @@
  */
 class GP_Route {
 
-	var $api = false;
+	public $api = false;
 
-	var $errors = array();
-	var $notices = array();
+	public $errors = array();
+	public $notices = array();
+
 	var $request_running = false;
 	var $template_path = null;
 
@@ -20,21 +21,32 @@ class GP_Route {
 	var $loaded_template = null;
 	var $template_output = null;
 	var $headers = array();
+	var $class_name;
+	var $http_status;
+	var $last_method_called;
 
-	function __construct() {
+	public function __construct() {
 
 	}
 
-	function die_with_error( $message, $status = 500 ) {
+	public function die_with_error( $message, $status = 500 ) {
 		$this->status_header( $status );
 		$this->exit_( $message );
 	}
 
-	function before_request() {
+	public function before_request() {
+		/**
+		 * Fires before a route method is called.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $class_name         The class name of the route.
+		 * @param string $last_method_called The route method that will be called.
+		 */
 		do_action( 'gp_before_request', $this->class_name, $this->last_method_called );
 	}
 
-	function after_request() {
+	public function after_request() {
 		// we can't unregister a shutdown function
 		// this check prevents this method from being run twice
 		if ( !$this->request_running ) return;
@@ -42,6 +54,15 @@ class GP_Route {
 		if ( !headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
+
+		/**
+		 * Fires after a route method was called.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $class_name         The class name of the route.
+		 * @param string $last_method_called The route method that will be called.
+		 */
 		do_action( 'gp_after_request', $this->class_name, $this->last_method_called );
 	}
 
@@ -51,7 +72,7 @@ class GP_Route {
 	 * @param object $thing a GP_Thing instance to validate
 	 * @return bool whether the thing is valid
 	 */
-	function validate( $thing ) {
+	public function validate( $thing ) {
 		$verdict = $thing->validate();
 		$this->errors = array_merge( $this->errors, $thing->errors );
 		return $verdict;
@@ -67,7 +88,7 @@ class GP_Route {
 	 * @param string $url where to redirect if the thing doesn't validate
 	 * @return bool whether the thing is valid
 	 */
-	function invalid_and_redirect( $thing, $url = null ) {
+	public function invalid_and_redirect( $thing, $url = null ) {
 		$valid = $this->validate( $thing );
 		if ( !$valid ) {
 			$this->redirect( $url );
@@ -76,7 +97,7 @@ class GP_Route {
 		return false;
 	}
 
-	function can( $action, $object_type = null, $object_id = null ) {
+	public function can( $action, $object_type = null, $object_id = null ) {
 		return GP::$permission->current_user_can( $action, $object_type, $object_id );
 	}
 
@@ -85,10 +106,10 @@ class GP_Route {
 	 *
 	 * @param string $action
 	 * @param`string $object_type
-	 * @param string $object_id
+	 * @param string|array $object_id
 	 * @param string $url	The URL to redirect. Default value: referrer or index page, if referrer is missing
 	 */
-	function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
+	public function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ), $url );
@@ -97,7 +118,7 @@ class GP_Route {
 		return false;
 	}
 
-	function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
+	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
 			$this->die_with_error( $message, 403 );
@@ -105,18 +126,18 @@ class GP_Route {
 		return false;
 	}
 
-	function logged_in_or_forbidden() {
+	public function logged_in_or_forbidden() {
 		if ( ! is_user_logged_in() ) {
 			$this->die_with_error( 'Forbidden', 403 );
 		}
 	}
 
-	function redirect_with_error( $message, $url = null ) {
+	public function redirect_with_error( $message, $url = null ) {
 		$this->errors[] = $message;
 		$this->redirect( $url );
 	}
 
-	function redirect( $url = null ) {
+	public function redirect( $url = null ) {
 		if ( $this->fake_request ) {
 			$this->redirected = true;
 			$this->redirected_to = $url;
@@ -133,7 +154,7 @@ class GP_Route {
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 
-	function headers_for_download( $filename, $last_modified = '' ) {
+	public function headers_for_download( $filename, $last_modified = '' ) {
 		$this->header('Content-Description: File Transfer');
 		$this->header('Pragma: public');
 		$this->header('Expires: 0');
@@ -147,7 +168,7 @@ class GP_Route {
 		$this->header('Connection: close');
 	}
 
-	function set_notices_and_errors() {
+	public function set_notices_and_errors() {
 		if ( $this->fake_request ) return;
 
 		foreach( $this->notices as $notice ) {
@@ -169,7 +190,7 @@ class GP_Route {
 	 * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
 	 * 		the template name will be suffixed with .api. The actual file loaded will be template.api.php
 	 */
-	function tmpl( $template, $args = array(), $honor_api = true ) {
+	public function tmpl( $template, $args = array(), $honor_api = true ) {
 		if ( $this->fake_request ) {
 			$this->rendered_template = true;
 			$this->loaded_template = $template;
@@ -189,13 +210,13 @@ class GP_Route {
 		return gp_tmpl_load( $template, $args, $this->template_path );
 	}
 
-	function die_with_404( $args = array() ) {
-		status_header( 404 );
+	public function die_with_404( $args = array() ) {
+		$this->status_header( 404 );
 		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
 		$this->exit_();
 	}
 
-	function exit_( $message = 0 ) {
+	public function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {
 			$this->exited = true;
 			$this->exit_message = $message;
@@ -204,7 +225,7 @@ class GP_Route {
 		exit( $message );
 	}
 
-	function header( $string ) {
+	public function header( $string ) {
 		if ( $this->fake_request ) {
 			list( $header, $value ) = explode( ':', $string, 2 );
 			$this->headers[$header] = $value;
@@ -213,7 +234,7 @@ class GP_Route {
 		}
 	}
 
-	function status_header( $status ) {
+	public function status_header( $status ) {
 		if ( $this->fake_request ) {
 			$this->http_status = $status;
 			return;

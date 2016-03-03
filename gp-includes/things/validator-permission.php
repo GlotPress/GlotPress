@@ -6,7 +6,12 @@ class GP_Validator_Permission extends GP_Permission {
 	var $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
 	var $non_updatable_attributes = array( 'id', );
 
-	function restrict_fields( $permission ) {
+	public $object_type;
+	public $project_id;
+	public $locale_slug;
+	public $set_slug;
+
+	public function restrict_fields( $permission ) {
 		$permission->project_id_should_not_be('empty');
 		$permission->locale_slug_should_not_be('empty');
 		$permission->user_id_should_not_be('empty');
@@ -14,7 +19,7 @@ class GP_Validator_Permission extends GP_Permission {
 		$permission->set_slug_should_not_be('empty');
 	}
 
-	function set_fields( $db_object ) {
+	public function set_fields( $db_object ) {
 		parent::set_fields( $db_object );
 		if ( $this->object_id ) {
 			list( $this->project_id, $this->locale_slug, $this->set_slug ) = $this->project_id_locale_slug_set_slug( $this->object_id );
@@ -23,7 +28,7 @@ class GP_Validator_Permission extends GP_Permission {
 		$this->default_conditions = "object_type = '".$this->object_type."'";
 	}
 
-	function prepare_fields_for_save( $args ) {
+	public function prepare_fields_for_save( $args ) {
 		$args = (array)$args;
 		$args['object_type'] = $this->object_type;
 		if ( gp_array_get( $args, 'project_id' ) && gp_array_get( $args, 'locale_slug' )
@@ -34,15 +39,15 @@ class GP_Validator_Permission extends GP_Permission {
 		return $args;
 	}
 
-	function project_id_locale_slug_set_slug( $object_id ) {
+	public function project_id_locale_slug_set_slug( $object_id ) {
 		return explode( '|', $object_id );
 	}
 
-	function object_id( $project_id, $locale_slug, $set_slug = 'default' ) {
+	public function object_id( $project_id, $locale_slug, $set_slug = 'default' ) {
 		return implode( '|', array( $project_id, $locale_slug, $set_slug ) );
 	}
 
-	function by_project_id( $project_id ) {
+	public function by_project_id( $project_id ) {
 		$project_id = (int)$project_id;
 		return $this->find_many( "object_id LIKE '$project_id|%'" );
 	}

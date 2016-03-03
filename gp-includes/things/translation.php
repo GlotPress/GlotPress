@@ -1,16 +1,39 @@
 <?php
+/**
+ * @method object|array many_no_map( string $sql )
+ * @method object|array find_no_map( array $options )
+ * @method object|array find_many_no_map( string|array $sql )
+ * @method object|array value_no_map( string|array $sql )
+ */
 class GP_Translation extends GP_Thing {
 
-	var $per_page = 15;
+	public $per_page = 15;
+
 	var $table_basename = 'gp_translations';
 	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
 	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
 	var $non_updatable_attributes = array( 'id', );
 
+	public $id;
+	public $original_id;
+	public $translation_set_id;
+	public $translation_0;
+	public $translation_1;
+	public $translation_2;
+	public $translation_3;
+	public $translation_4;
+	public $translation_5;
+	public $user_id;
+	public $status;
+	public $date_added;
+	public $date_modified;
+	public $warnings;
+	public $found_rows;
+
 	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
 	static $number_of_plural_translations = 6;
 
-	function create( $args ) {
+	public function create( $args ) {
 		$inserted = parent::create( $args );
 
 		if ( $inserted && is_array( $args ) && isset( $args['translation_set_id'] ) ) {
@@ -20,7 +43,7 @@ class GP_Translation extends GP_Thing {
 		return $inserted;
 	}
 
-	function normalize_fields( $args ) {
+	public function normalize_fields( $args ) {
 		$args = (array)$args;
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
 			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
@@ -41,7 +64,7 @@ class GP_Translation extends GP_Thing {
 		return $args;
 	}
 
-	function prepare_fields_for_save( $args ) {
+	public function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
 		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
 			$args['warnings'] = serialize( $args['warnings'] );
@@ -49,14 +72,14 @@ class GP_Translation extends GP_Thing {
 		return $args;
 	}
 
-	function fix_translation( $translation ) {
+	public function fix_translation( $translation ) {
 		// when selecting some browsers take the newlines and some don't
 		// that's why we don't want to insert too many newlines for each ↵
 		$translation = str_replace( "↵\n", "↵", $translation );
 		return str_replace( '↵', "\n", $translation );
 	}
 
-	function restrict_fields( $translation ) {
+	public function restrict_fields( $translation ) {
 		$translation->translation_0_should_not_be( 'empty_string' );
 		$translation->status_should_not_be( 'empty' );
 		$translation->original_id_should_be( 'positive_int' );
@@ -65,18 +88,18 @@ class GP_Translation extends GP_Thing {
 	}
 
 
-	function set_fields( $db_object ) {
+	public function set_fields( $db_object ) {
 		parent::set_fields( $db_object );
 		if ( $this->warnings ) {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
 
-	function for_export( $project, $translation_set, $filters =  null ) {
+	public function for_export( $project, $translation_set, $filters =  null ) {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
-	function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
+	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 
@@ -131,7 +154,7 @@ class GP_Translation extends GP_Thing {
 			$where[] = $wpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
 		}
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
 			$where[] = 'o.priority > -2';
 		}
 
@@ -153,7 +176,7 @@ class GP_Translation extends GP_Thing {
 			return in_array( $s, $all_statuses );
 		} );
 
-		if ( $statuses ) {
+		if ( ! empty( $statuses ) ) {
 			$statuses_where = array();
 			foreach( $statuses as $single_status ) {
 				$statuses_where[] = $wpdb->prepare( 't.status = %s', $single_status );
@@ -162,6 +185,14 @@ class GP_Translation extends GP_Thing {
 			$join_where[] = $statuses_where;
 		}
 
+		/**
+		 * Filter the SQL WHERE clause to get available translations.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array              $where           An array of where conditions.
+		 * @param GP_Translation_Set $translation_set Current translation set.
+		 */
 		$where = apply_filters( 'gp_for_translation_where', $where, $translation_set );
 
 		$where = implode( ' AND ', $where );
@@ -216,7 +247,7 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
-	function set_as_current() {
+	public function set_as_current() {
 		$result = $this->update( array('status' => 'old'),
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current') )
 		&& 	$this->update( array('status' => 'old'),
@@ -225,6 +256,7 @@ class GP_Translation extends GP_Thing {
 			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
 		&& $this->save( array('status' => 'current') );
 
+		/** This filter is documented in gp-includes/routes/translation.php */
 		if ( apply_filters( 'gp_enable_propagate_translations_across_projects', true ) ) {
 			$this->propagate_across_projects();
 		}
@@ -232,15 +264,75 @@ class GP_Translation extends GP_Thing {
 		return $result;
 	}
 
-	function reject() {
+	public function reject() {
 		$this->set_status( 'rejected' );
 	}
 
-	function copy_into_set( $new_translation_set_id, $new_original_id, $status = 'fuzzy' ) {
+	public function copy_into_set( $new_translation_set_id, $new_original_id, $status = 'fuzzy' ) {
 		if ( ! in_array( $status, $this->get_static( 'statuses' ) ) ) {
 			return;
 		}
 
+		$new_translation_set = GP::$translation_set->get( $new_translation_set_id );
+		$locale = GP_Locales::by_slug( $new_translation_set->locale );
+
+		for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+			$new_translation[] = $this->{"translation_{$i}"};
+		}
+
+		/*
+		 * Don't propagate a waiting/fuzzy translation if the same translation
+		 * with the same status exists already.
+		 */
+		if ( in_array( $status, array( 'waiting', 'fuzzy' ) ) ) {
+			$existing_translations = GP::$translation->find_no_map( array(
+				'translation_set_id' => $new_translation_set_id,
+				'original_id'        => $new_original_id,
+				'status'             => $status,
+			) );
+
+			foreach ( $existing_translations as $existing_translation ) {
+				$translation = array();
+				for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+					$translation[] = $existing_translation->{"translation_{$i}"};
+				}
+
+				if ( $translation == $new_translation ) {
+					return;
+				}
+			}
+		}
+
+		/*
+		 * Set a waiting translation as current if it's the same translation.
+		 */
+		if ( 'current' === $status ) {
+			$existing_translations = GP::$translation->find( array(
+				'translation_set_id' => $new_translation_set_id,
+				'original_id'        => $new_original_id,
+				'status'             => 'waiting',
+			) );
+
+			foreach ( $existing_translations as $existing_translation ) {
+				$translation = array();
+				for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+					$translation[] = $existing_translation->{"translation_{$i}"};
+				}
+
+				if ( $translation == $new_translation ) {
+					// Mark as current and avoid recursion.
+					add_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
+					$existing_translation->set_as_current();
+					remove_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
+					return;
+				}
+			}
+		}
+
+		/*
+		 * If none of the above cases are matching, copy the same translation
+		 * into the new translation set.
+		 */
 		$copy = new GP_Translation( $this->fields() );
 		$copy->original_id = $new_original_id;
 		$copy->translation_set_id = $new_translation_set_id;
@@ -251,13 +343,14 @@ class GP_Translation extends GP_Thing {
 		gp_clean_translation_set_cache( $new_translation_set_id );
 	}
 
-	function propagate_across_projects() {
+	public function propagate_across_projects() {
 		// Only propagte current translations without warnings.
 		if ( $this->status != 'current' || ! empty( $this->warnings ) ) {
 			return;
 		}
 
 		$user = wp_get_current_user();
+		$is_user_logged_in = is_user_logged_in();
 
 		$original = GP::$original->get( $this->original_id );
 		$originals_in_other_projects = $original->get_matching_originals_in_other_projects();
@@ -277,18 +370,33 @@ class GP_Translation extends GP_Thing {
 			$current_translation = GP::$translation->find_no_map( array( 'translation_set_id' => $o_translation_set->id, 'original_id' => $o->id, 'status' => 'current' ) );
 
 			if ( ! $current_translation  ) {
-				if ( is_user_logged_in() && ! GP::$permission->user_can( $user, 'approve', 'translation-set', $o_translation_set->id ) ) {
-					$copy_status = 'waiting';
-				} else {
+				if ( $is_user_logged_in && ! GP::$permission->user_can( $user, 'edit', 'translation-set', $o_translation_set->id ) ) {
+					continue;
+				} elseif ( $is_user_logged_in && GP::$permission->user_can( $user, 'approve', 'translation-set', $o_translation_set->id ) ) {
 					$copy_status = 'current';
+				} else {
+					$copy_status = 'waiting';
 				}
-				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', $copy_status );
+
+				/**
+				 * Filter the status that is set for translations propagated across projects.
+				 *
+				 * @since 1.0.0
+				 * @since 1.1.0 Added the `$translation`, `$translation_set_id`, and
+				 *              `$original_id` parameters
+				 *
+				 * @param string         $copy_status        Status of the translation to be used.
+				 * @param GP_Translation $translation        The instance of the translation.
+				 * @param int            $translation_set_id The ID of the new translation set.
+				 * @param int            $original_id        The ID of the new original.
+				 */
+				$copy_status = apply_filters( 'gp_translations_to_other_projects_status', $copy_status, $this, $o_translation_set->id, $o->id );
 				$this->copy_into_set( $o_translation_set->id, $o->id, $copy_status );
 			}
 		}
 	}
 
-	function set_status( $status ) {
+	public function set_status( $status ) {
 		if ( 'current' == $status ) {
 			$updated = $this->set_as_current();
 		} else {
@@ -302,7 +410,7 @@ class GP_Translation extends GP_Thing {
 		return $updated;
 	}
 
-	function translations() {
+	public function translations() {
 		$translations = array();
 		foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
 			$translations[ $i ] = isset( $this->{"translation_$i"} ) ? $this->{"translation_$i"} : null;
@@ -310,7 +418,7 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
-	function last_modified( $translation_set ) {
+	public function last_modified( $translation_set ) {
 		global $wpdb;
 
 		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
@@ -326,13 +434,27 @@ class GP_Translation extends GP_Thing {
 		return $last_modified;
 	}
 
-	function after_create() {
-		do_action( 'translation_created', $this );
+	public function after_create() {
+		/**
+		 * Fires after a translation was created.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation $translation Translation that was created.
+		 */
+		do_action( 'gp_translation_created', $this );
 		return true;
 	}
 
-	function after_save() {
-		do_action( 'translation_saved', $this );
+	public function after_save() {
+		/**
+		 * Fires after a translation was saved.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation $translation Translation that was saved.
+		 */
+		do_action( 'gp_translation_saved', $this );
 		return true;
 	}
 
