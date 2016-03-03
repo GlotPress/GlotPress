@@ -101,17 +101,16 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
-
-		if ( ! $format ) {
-			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
-			return;
-		}
-
-
 		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
 			// TODO: different errors for different upload conditions
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
+			return;
+		}
+
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES[ 'import-file' ][ 'name' ] );
+
+		if ( ! $format ) {
+			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
 			return;
 		}
 

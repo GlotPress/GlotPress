@@ -19,10 +19,11 @@ gp_tmpl_header();
 	<dd><input type="file" name="import-file" id="import-file" /></dd>
 <?php
 	$format_options = array();
+	$format_options[ 'auto' ] = __( 'Auto Detect', 'glotpress' );
 	foreach ( GP::$formats as $slug => $format ) {
 		$format_options[$slug] = $format->name;
 	}
-	$format_dropdown = gp_select( 'format', $format_options, 'po' );
+	$format_dropdown = gp_select( 'format', $format_options, 'auto' );
 ?>
 	<dt><label	for="format"><?php _e( 'Format:', 'glotpress' ); ?></label></dt>
 	<dd><?php echo $format_dropdown; ?></dd>
