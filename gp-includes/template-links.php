@@ -89,17 +89,43 @@ function gp_link_set_edit() {
 	echo call_user_func_array('gp_link_set_edit_get', $args);
 }
 
+/**
+ * Creates a html link to the delete page for translations sets.  Does the heavy lifting for gp_link_set_delete.
+ *
+ * @since 1.1.0
+ *
+ * @param GP_Translation_Set $set The translation set to link to.
+ * @param GP_Project $project The project the translation set belongs to.
+ * @param string $text The text to use for the link.
+ * @param array $attrs Additional attributes to use to determine the classes for the link.
+ *
+ * @return string $link
+ */
 function gp_link_set_delete_get( $set, $project, $text = false, $attrs = array() ) {
 	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
 		return '';
 	}
-	$text = $text? $text : __( 'Delete', 'glotpress' );
+	
+	if ( false === $text ) {
+		$text = __( 'Delete', 'glotpress' );
+	}
+	
 	return gp_link_get( gp_url( gp_url_join( '/sets', $set->id, '-delete' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
-function gp_link_set_delete() {
-	$args = func_get_args();
-	echo call_user_func_array('gp_link_set_delete_get', $args);
+/*
+ * Outputs a html link to the delete page for translations sets.  Does the heavy lifting for gp_link_set_delete.
+ *
+ * @since 1.1.0
+ *
+ * @param GP_Translation_Set $set The translation set to link to.
+ * @param GP_Project $project The project the translation set belongs to.
+ * @param string $text The text to use for the link.
+ * @param array $attrs Additional attributes to use to determine the classes for the link.
+ *
+ */
+function gp_link_set_delete( $set, $project, $text = false, $attrs = array() ) {
+	echo gp_link_set_delete_get( $set, $project, $text, $attrs );
 }
 
 function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = array() ) {
@@ -116,6 +142,18 @@ function gp_link_glossary_edit() {
 	echo call_user_func_array('gp_link_glossary_edit_get', $args);
 }
 
+/**
+ * Creates a html link to the delete page for translations sets.  Does the heavy lifting for gp_link_glossary_delete.
+ *
+ * @since 1.1.0
+ *
+ * @param GP_Glossary $glossary The glossary to link to.
+ * @param GP_Translation_Set $set The translation set the glossary is for.
+ * @param string $text The text to use for the link.
+ * @param array $attrs Additional attributes to use to determine the classes for the link.
+ *
+ * @return string $link
+ */
 function gp_link_glossary_delete_get( $glossary, $set, $text = false, $attrs = array() ) {
 	if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $set->id ) ) {
 		return '';
@@ -125,7 +163,17 @@ function gp_link_glossary_delete_get( $glossary, $set, $text = false, $attrs = a
 	return gp_link_get( gp_url( gp_url_join( '/glossaries', $glossary->id, '-delete' ) ), $text, gp_attrs_add_class( $attrs, 'action edit' ) );
 }
 
-function gp_link_glossary_delete() {
-	$args = func_get_args();
-	echo call_user_func_array('gp_link_glossary_delete_get', $args);
+/*
+ * Outputs a html link to the delete page for glossaries.
+ *
+ * @since 1.1.0
+ *
+ * @param GP_Glossary $glossary The glossary to link to.
+ * @param GP_Translation_Set $set The translation set the glossary is for.
+ * @param string $text The text to use for the link.
+ * @param array $attrs Additional attributes to use to determine the classes for the link.
+ *
+ */
+function gp_link_glossary_delete( $glossary, $set, $text = false, $attrs = array() ) {
+	echo gp_link_glossary_delete_get( $glossary, $set, $text, $attrs ); 
 }

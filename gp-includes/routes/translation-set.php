@@ -69,6 +69,13 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->redirect( gp_url_project_locale( $project, $new_set->locale, $new_set->slug ) );
 	}
 
+	/**
+	 * Deletes a translation set.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $set_id The id of the translation set to delete.
+	 */
 	public function delete_post( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;
@@ -83,6 +90,13 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 	
+	/**
+	 * Displays the delete page for translations sets.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $set_id The id of the translation set to delete.
+	 */
 	public function delete_get( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( !$items ) return;

@@ -109,6 +109,13 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$this->redirect( gp_url_join( gp_url_project( $set_project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') ) );
 	}
 
+	/**
+	 * Displays the delete page for glossaries.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $glossary_id The id of the glossary to delete.
+	 */
 	public function delete_get( $glossary_id ) {
 		$glossary = GP::$glossary->get( $glossary_id );
 
@@ -127,6 +134,13 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$this->tmpl( 'glossary-delete', get_defined_vars() );
 	}
 
+	/**
+	 * Delete a glossary.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $glossary_id The id of the glossary to delete.
+	 */
 	public function delete_post( $glossary_id ) {
 		$glossary     = GP::$glossary->get( $glossary_id );
 
@@ -148,10 +162,24 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$this->redirect( gp_url_join( gp_url_project( $project ), array( $translation_set->locale, $translation_set->slug ) ) );
 	}
 
+	/**
+	 * Checks to see if the current user can edit a glossary or not.  If they cannot it redirects back to the project page.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Glossary $glossary The glossary object to check.
+	 */
 	private function cannot_edit_glossary_and_redirect( $glossary ) {
 		return $this->cannot_and_redirect( 'approve', 'translation-set', $glossary->translation_set_id );
 	}
 
+	/**
+	 * Checks to see if the current user can delete a glossary or not.  If they cannot it redirects back to the project page.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param GP_Glossary $glossary The glossary object to check.
+	 */
 	private function cannot_delete_glossary_and_redirect( $glossary ) {
 		return $this->cannot_and_redirect( 'delete', 'translation-set', $glossary->translation_set_id );
 	}
