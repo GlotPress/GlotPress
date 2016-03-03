@@ -55,7 +55,7 @@ function gp_link_project_edit() {
 }
 
 function gp_link_project_delete_get( $project, $text = false, $attrs = array() ) {
-	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
+	if ( ! GP::$permission->current_user_can( 'delete', 'project', $project->id ) ) {
 		return '';
 	}
 	$text = $text? $text : __( 'Delete', 'glotpress' );
