@@ -24,7 +24,7 @@ class GP_Original extends GP_Thing {
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	public function restrict_fields( $original ) {
-		$original->singular_should_not_be('empty');
+		$original->singular_should_not_be('empty_string');
 		$original->status_should_not_be('empty');
 		$original->project_id_should_be('positive_int');
 		$original->priority_should_be('int');
