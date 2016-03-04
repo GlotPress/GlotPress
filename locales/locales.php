@@ -1469,6 +1469,15 @@ class GP_Locales {
 		$nb->google_code = 'no';
 		$nb->facebook_locale = 'nb_NO';
 
+        $nso = new GP_Locale();
+        $nso->english_name = 'Northern Sotho';
+        $nso->native_name = 'Sesotho sa Leboa';
+        $nso->lang_code_iso_639_1 = 'nso';
+        $nso->lang_code_iso_639_2 = 'nso';
+        $nso->country_code = 'za';
+        $nso->wp_locale = 'nso_ZA';
+        $nso->slug = 'nso';
+
 		$nl = new GP_Locale();
 		$nl->english_name = 'Dutch';
 		$nl->native_name = 'Nederlands';
