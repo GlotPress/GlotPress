@@ -782,6 +782,17 @@ class GP_Locales {
 		$fa_af->text_direction = 'rtl';
 		$fa_af->google_code = 'fa';
 
+        $ff = new GP_Locale();
+        $ff->english_name = 'Fula';
+        $ff->native_name = 'Fulfulde';
+        $ff->lang_code_iso_639_1 = 'ff';
+        $ff->lang_code_iso_639_2 = 'ful';
+        $ff->country_code = 'ff';
+        $ff->wp_locale = 'ff';
+        $ff->slug = 'ful';
+        $ff->google_code = 'ff';
+        $ff->facebook_locale = 'ff';
+
 		$ff_sn = new GP_Locale();
 		$ff_sn->english_name = 'Fulah';
 		$ff_sn->native_name = 'Pulaar';
