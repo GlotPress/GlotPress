@@ -1431,6 +1431,17 @@ class GP_Locales {
 		$ms->google_code = 'ms';
 		$ms->facebook_locale = 'ms_MY';
 
+        $mt = new GP_Locale();
+        $mt->english_name = 'Maltese';
+        $mt->native_name = 'Malti';
+        $mt->lang_code_iso_639_1 = 'mt';
+        $mt->lang_code_iso_639_2 = 'mlt';
+        $mt->lang_code_iso_639_3 = 'mlt';
+        $mt->country_code = '';
+        $mt->wp_locale = 'mt_MT';
+        $mt->slug = 'mt';
+        $mt->google_code = 'mt';
+
 		$mwl = new GP_Locale();
 		$mwl->english_name = 'Mirandese';
 		$mwl->native_name = 'Mirandés';
