@@ -2187,6 +2187,16 @@ class GP_Locales {
 		$zh->nplurals = 1;
 		$zh->plural_expression = '0';
 
+        $zu = new GP_Locale();
+        $zu->english_name = 'Zulu';
+        $zu->native_name = 'isiZulu';
+        $zu->lang_code_iso_639_1 = 'zu';
+        $zu->lang_code_iso_639_2 = 'zul';
+        $zu->country_code = '';
+        $zu->slug = 'zu';
+        $zu->nplurals = 1;
+        $zu->plural_expression = '0';
+
 		foreach( get_defined_vars() as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
 		}
