@@ -163,7 +163,12 @@ class GP_Translation extends GP_Thing {
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses ) ) {
 			if ( $statuses == array( 'untranslated' ) ) {
-				$where[] = 't.translation_0 IS NULL';
+				$empty_plural_translation = '(' . implode( ' OR ', array_map(
+					function( $x ) { return "$x = ''"; },
+					array( 't.translation_0', 't.translation_1', 't.translation_2', 't.translation_3', 't.translation_4', 't.translation_5', )
+				) ) . ')';
+
+				$where[] = "t.translation_0 IS NULL OR (o.plural IS NOT NULL AND $empty_plural_translation)";
 			}
 			$join_type = 'LEFT';
 			$join_where[] = 't.status != "rejected"';
