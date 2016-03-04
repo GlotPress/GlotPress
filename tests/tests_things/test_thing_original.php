@@ -75,6 +75,15 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( GP::$original->is_different_from( $data, $original ), $original->is_different_from( $data )  );
 	}
 
+	/**
+	 * @ticket gh-301
+	 */
+	function test_original_should_validate_if_singular_is_zero() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => '0', 'priority' => -1 ) );
+		$this->assertTrue( $original->validate() );
+	}
+
 	function test_import_should_leave_unchanged_strings_as_active() {
 		$project = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
