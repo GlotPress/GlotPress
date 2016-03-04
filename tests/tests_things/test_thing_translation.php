@@ -33,6 +33,17 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEqualFields( $translation, $plurals );
 	}
 
+	/**
+	 * @ticket 149
+	 * @ticket gh-236
+	 */
+	function test_translation_should_not_validate_with_empty_plurals() {
+		$plurals = array( 'translation_0' => 'Zero', 'translation_1' => '', 'translation_2' => '' );
+		$translation = $this->factory->translation->create( $plurals );
+
+		$this->assertFalse( $translation->validate() );
+	}
+
 	function test_for_translation_shouldnt_exclude_originals_with_rejected_translation_if_status_has_untranslated() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );

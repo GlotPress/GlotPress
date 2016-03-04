@@ -81,6 +81,11 @@ class GP_Translation extends GP_Thing {
 
 	public function restrict_fields( $translation ) {
 		$translation->translation_0_should_not_be( 'empty_string' );
+		$translation->translation_1_should_not_be( 'empty_string' );
+		$translation->translation_2_should_not_be( 'empty_string' );
+		$translation->translation_3_should_not_be( 'empty_string' );
+		$translation->translation_4_should_not_be( 'empty_string' );
+		$translation->translation_5_should_not_be( 'empty_string' );
 		$translation->status_should_not_be( 'empty' );
 		$translation->original_id_should_be( 'positive_int' );
 		$translation->translation_set_id_should_be( 'positive_int' );
@@ -163,7 +168,12 @@ class GP_Translation extends GP_Thing {
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses ) ) {
 			if ( $statuses == array( 'untranslated' ) ) {
-				$where[] = 't.translation_0 IS NULL';
+				$empty_plural_translation = '(' . implode( ' OR ', array_map(
+					function( $x ) { return "$x = ''"; },
+					array( 't.translation_0', 't.translation_1', 't.translation_2', 't.translation_3', 't.translation_4', 't.translation_5', )
+				) ) . ')';
+
+				$where[] = "t.translation_0 IS NULL OR (o.plural IS NOT NULL AND $empty_plural_translation)";
 			}
 			$join_type = 'LEFT';
 			$join_where[] = 't.status != "rejected"';
