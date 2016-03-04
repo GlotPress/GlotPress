@@ -17,7 +17,7 @@ class GP_Locale {
 	// TODO: days, months, decimals, quotes
 
 	private $_index_for_number;
-	
+
 	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
@@ -1558,6 +1558,24 @@ class GP_Locales {
 		$pa->slug = 'pa';
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
+
+        $pap_aw = new GP_Locale();
+        $pap_aw->english_name = 'Papiamento (Aruba)';
+        $pap_aw->native_name = 'Papiamento';
+        $pap_aw->lang_code_iso_639_1 = 'pap';
+        $pap_aw->lang_code_iso_639_2 = 'pap';
+        $pap_aw->country_code = '';
+        $pap_aw->wp_locale = 'pap';
+        $pap_aw->slug = 'pap-aw';
+
+        $pap_cw = new GP_Locale();
+        $pap_cw->english_name = 'Papiamento (Curaçao and Bonaire)';
+        $pap_cw->native_name = 'Papiamentu';
+        $pap_cw->lang_code_iso_639_1 = 'pap';
+        $pap_cw->lang_code_iso_639_2 = 'pap';
+        $pap_cw->country_code = '';
+        $pap_cw->wp_locale = 'pap';
+        $pap_cw->slug = 'pap-cw';
 
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
