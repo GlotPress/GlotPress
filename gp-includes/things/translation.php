@@ -120,10 +120,11 @@ class GP_Translation extends GP_Thing {
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
+		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			$like = "LIKE '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+			$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
