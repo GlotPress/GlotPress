@@ -134,8 +134,15 @@ class GP_Original extends GP_Thing {
 
 		$possibly_added = $possibly_dropped = array();
 
-		foreach( $translations->entries as $entry ) {
+		foreach( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();
+
+			// Context needs to match VARCHAR(255) in the database schema.
+			if ( gp_strlen( $entry->context ) > 255 ) {
+				$entry->context = gp_substr( $entry->context, 0, 255 );
+				$translations->entries[ $entry->key() ] = $entry;
+			}
+
 			$data = array(
 				'project_id' => $project->id,
 				'context'    => $entry->context,
