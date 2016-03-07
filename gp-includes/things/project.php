@@ -54,21 +54,13 @@ class GP_Project extends GP_Thing {
 
 	// Triggers
 
-	public function after_save() {
-		/**
-		 * Fires after saving a project.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param GP_Project $project The project that was saved.
-		 */
-		do_action( 'gp_project_saved', $this );
-		// TODO: pass the update args to after/pre_save?
-		// TODO: only call it if the slug or parent project were changed
-		return !is_null( $this->update_path() );
-	}
-
-
+	/**
+	 * Executes after creating a project.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
 	public function after_create() {
 		/**
 		 * Fires after creating a project.
@@ -78,8 +70,55 @@ class GP_Project extends GP_Thing {
 		 * @param GP_Project $project The project that was created.
 		 */
 		do_action( 'gp_project_created', $this );
+		
 		// TODO: pass some args to pre/after_create?
-		if ( is_null( $this->update_path() ) ) return false;
+		if ( is_null( $this->update_path() ) ) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Executes after saving a project.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
+	public function after_save() {
+		/**
+		 * Fires after saving a project.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Project $project The project that was saved.
+		 */
+		do_action( 'gp_project_saved', $this );
+		
+		// TODO: pass the update args to after/pre_save?
+		// TODO: only call it if the slug or parent project were changed
+		return ! is_null( $this->update_path() );
+	}
+
+	/**
+	 * Executes after deleting a project.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
+		/**
+		 * Fires after deleting a project.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param GP_Project $project The project that was deleted.
+		 */
+		do_action( 'gp_project_deleted', $this );
+
+		return true;
 	}
 
 	// Field handling
