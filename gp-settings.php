@@ -35,7 +35,6 @@ if ( !defined( 'GP_TMPL_PATH' ) )
 // Functions that aren't used anymore.
 require_once( GP_PATH . GP_INC . 'deprecated.php');
 
-require_once( GP_PATH . GP_INC . 'meta.php' );
 require_once( GP_PATH . GP_INC . 'misc.php' );
 require_once( GP_PATH . GP_INC . 'url.php' );
 require_once( GP_PATH . GP_INC . 'strings.php' );
