@@ -82,7 +82,7 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
  * @param string  $object_type The object type.
  * @param bool    $global      Overrides the requirement of $object_id to be a number OR not empty.
  *
- * @return bool|null
+ * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
  */
 function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
@@ -113,17 +113,32 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 
 	$cur = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key ) );
 	
-	if ( !$cur ) {
-		$wpdb->insert( $wpdb->gp_meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
-	} elseif ( $cur->meta_value != $meta_value ) {
-		$wpdb->update( $wpdb->gp_meta, array( 'meta_value' => $_meta_value), array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key ) );
+	// Setup a default return value, if any error happens we will abort immediately and return false so it won't be used.
+	// Otherwise we'll default to true, but this may be changed to the id of the inserted row later.
+	$ret = true;
+	
+	// If no rows are returned we need to insert the meta data instead of updating it.
+	if ( null === $cur ) {
+		$result = $wpdb->insert( $wpdb->gp_meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
+		
+		// If the insert failed, return false, otherwise return the id of the inserted row.
+		if ( false === $result ) {
+			return false;
+		} else {
+			$ret = $wpdb->insert_id;
+		}
+	} else if ( $cur->meta_value != $meta_value ) {
+		$result = $wpdb->update( $wpdb->gp_meta, array( 'meta_value' => $_meta_value), array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key ) );
+		
+		// If the update failed, return false.
+		if ( false === $result ) {
+			return false;
+		}
 	}
 
 	wp_cache_delete( $cache_object_id, $object_type );
 
-	if ( !$cur ) {
-		return true;
-	}
+	return $ret;
 }
 
 /**
