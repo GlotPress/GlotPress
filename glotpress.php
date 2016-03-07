@@ -35,7 +35,7 @@ define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.4' );
 define( 'GP_PHP_REQUIRED_VERSION', '5.3' );
 
-// Load the plugin's translated strings
+// Load the plugin's translated strings.
 load_plugin_textdomain( 'glotpress' );
 
 /**
