@@ -134,7 +134,7 @@ class GP_Original extends GP_Thing {
 
 		$possibly_added = $possibly_dropped = array();
 
-		foreach( $translations->entries as $key => $entry ) {
+		foreach ( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();
 
 			// Context needs to match VARCHAR(255) in the database schema.
