@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
   gd_add_terms();
   
   function select_language() {
-    jQuery('.filters-toolbar div').append('<select class="glotdict_language"></select>');
+    jQuery('.filters-toolbar div').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
     jQuery.each(['it_IT', 'fr_FR'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(localStorage.getItem('gd_language') === value) {
@@ -22,13 +22,16 @@ jQuery(document).ready(function () {
   
   function gd_add_terms() {
     jQuery.ajax({
-      url: glotdict_path + '/' + localStorage.getItem('gd_language') + '.json',
-      dataType: 'json'
+      url: glotdict_path + '/' + get_lang() + '.json',
+       dataType: 'json',
+       contentType : "application/json; charset=utf-8",
     }).done(function (data) {
       jQuery('.editor .original').each(function () {
         var loop_editor = this;
         jQuery.each(data, function (i, item) {
-          add_term(i, loop_editor, item.translation, item.pos, item.comment);
+            if(i !== '&') {
+                add_term(i, loop_editor, item.translation, item.pos, item.comment);
+            }
         });
       });
       jQuery('.editor .original .glossary-word-glotdict').css({'cursor': 'help','border-bottom': '1px dashed'});
@@ -47,13 +50,21 @@ jQuery(document).ready(function () {
         }
       });
     }).fail(function () {
-      console.log('error on loading ' + localStorage.getItem('gd_language') + '.json');
+      console.log('GlotDict: error on loading ' + get_lang() + '.json');
     });
   }
   
   function add_term(word, element, translation, pos, comment) {
-    var rgxp = new RegExp(word, 'g');
+    var rgxp = new RegExp('(?!([^<]+)?>)\\b(' + word + ')\\b(?!([^>]+)?>)', 'g');
     var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>' + word + '</span>';
     jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
+  }
+  
+  function get_lang() {
+      var lang = localStorage.getItem('gd_language');
+      if(lang === '') {
+          lang = jQuery('.glotdict_language option:first-child').text();
+      }
+      return lang;
   }
 });
