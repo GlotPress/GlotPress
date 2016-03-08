@@ -23,8 +23,7 @@ jQuery(document).ready(function () {
   function gd_add_terms() {
     jQuery.ajax({
       url: glotdict_path + '/' + get_lang() + '.json',
-       dataType: 'json',
-       contentType : "application/json; charset=utf-8",
+       dataType: 'json'
     }).done(function (data) {
       jQuery('.editor .original').each(function () {
         var loop_editor = this;
