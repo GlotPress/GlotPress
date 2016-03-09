@@ -42,7 +42,7 @@
 
 		<?php if (gp_notice('error')): ?>
 			<div class="error">
-				<?php echo gp_notice( 'error' ); //TODO: run kses on notices ?>
+				<?php echo gp_notice( 'error' ); ?>
 			</div>
 		<?php endif; ?>
 
