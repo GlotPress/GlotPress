@@ -84,7 +84,31 @@ function gp_notice_set( $message, $key = 'notice' ) {
  * @param string $key Optional. Message key. The default is 'notice'
  */
 function gp_notice( $key = 'notice' ) {
-	return gp_array_get( GP::$redirect_notices, $key );
+	// Sanitize fields 
+ 	$allowed_tags = array( 
+		'a'       => array( 'href' => true ),
+		'abbr'    => array(), 
+		'acronym' => array(), 
+		'b'       => array(),
+		'br'      => array(),
+		'button'  => array( 'disabled' => true, 'name' => true, 'type' => true, 'value' => true ),
+		'em'      => array(),
+		'i'       => array(),
+		'img'     => array( 'src' => true, 'width' => true, 'height' => true ),
+		'p'       => array(),
+		'pre'     => array(),
+		's'       => array(),
+		'strike'  => array(),
+		'strong'  => array(),
+		'sub'     => array(),
+		'sup'     => array(),
+		'u'       => array(),
+ 	); 
+	
+	// Adds class, id, style, title, role attributes to all of the above allowed tags.
+	$allowed_tags = array_map( '_wp_add_global_attributes', $allowed_tags );
+
+	return wp_kses( gp_array_get( GP::$redirect_notices, $key ), $allowed_tags );
 }
 
 function gp_populate_notices() {
