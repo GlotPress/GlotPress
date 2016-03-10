@@ -435,6 +435,15 @@ class GP_Translation extends GP_Thing {
 		return $last_modified;
 	}
 
+	// Triggers
+
+	/**
+	 * Executes after creating a translation.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
 	public function after_create() {
 		/**
 		 * Fires after a translation was created.
@@ -444,9 +453,17 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was created.
 		 */
 		do_action( 'gp_translation_created', $this );
+		
 		return true;
 	}
 
+	/**
+	 * Executes after saving a translation.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
 	public function after_save() {
 		/**
 		 * Fires after a translation was saved.
@@ -456,9 +473,29 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was saved.
 		 */
 		do_action( 'gp_translation_saved', $this );
+		
 		return true;
 	}
 
+	/**
+	 * Executes after deleting a translation.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
+		/**
+		 * Fires after a translation was deleted.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param GP_Translation $translation Translation that was deleted.
+		 */
+		do_action( 'gp_translation_deleted', $this );
+		
+		return true;
+	}
 }
 
 GP::$translation = new GP_Translation();

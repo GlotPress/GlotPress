@@ -402,6 +402,15 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
+	// Triggers
+
+	/**
+	 * Executes after creating an original.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
 	public function after_create() {
 		/**
 		 * Fires after a new original is created.
@@ -411,6 +420,47 @@ class GP_Original extends GP_Thing {
 		 * @param GP_original $original The original that was created.
 		 */
 		do_action( 'gp_original_created', $this );
+		
+		return true;
+	}
+
+	/**
+	 * Executes after saving an original.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function after_save() {
+		/**
+		 * Fires after an original is saved.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param GP_original $original The original that was saved.
+		 */
+		do_action( 'gp_original_saved', $this );
+		
+		return true;
+	}
+
+	/**
+	 * Executes after deleting an original.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
+		/**
+		 * Fires after an original is deleted.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param GP_original $original The original that was deleted.
+		 */
+		do_action( 'gp_original_deleted', $this );
+		
 		return true;
 	}
 }
