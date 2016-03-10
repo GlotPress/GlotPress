@@ -143,8 +143,10 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : 'current' );
 				// check for errors
 				$translation = GP::$translation->create( $entry );
-				$translation->set_status( $entry->status );
-				$translations_added += 1;
+				if ( is_object( $translation ) ) {
+					$translation->set_status( $entry->status );
+					$translations_added += 1;
+				}
 			}
 		}
 

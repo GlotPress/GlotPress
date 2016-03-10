@@ -8,6 +8,7 @@ abstract class GP_Format {
 	public $name = '';
 	public $extension = '';
 	public $alt_extensions = array();
+	public $filename_pattern = '%s-%s';
 
 	public abstract function print_exported_file( $project, $locale, $translation_set, $entries );
 	public abstract function read_originals_from_file( $file_name );

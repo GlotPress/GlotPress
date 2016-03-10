@@ -94,7 +94,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		 * @param GP_Locale $locale The current locale.
 		 */
 		$export_locale = apply_filters( 'gp_export_locale', $locale->slug, $locale );
-		$filename = sprintf( '%s-%s.'.$format->extension, str_replace( '/', '-', $project->path ), $export_locale );
+		$filename = sprintf( $format->filename_pattern . '.' . $format->extension, str_replace( '/', '-', $project->path ), $export_locale );
 
 		/**
 		 * Filter the filename of the translation set export.
