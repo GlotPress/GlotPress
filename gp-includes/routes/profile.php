@@ -13,7 +13,15 @@ class GP_Route_Profile extends GP_Route_Main {
 			return;
 		}
 
-		$this->tmpl( 'profile' );
+		$user = wp_get_current_user();
+
+		$recent_projects = $this->get_recent_translation_sets( $user, 5 );
+		$locales         = $this->locales_known( $user );
+
+		//validate to
+		$permissions = $this->get_permissions( $user );
+
+		$this->tmpl( 'profile', get_defined_vars() );
 	}
 
 	public function profile_post( $user_id = null ) {
