@@ -1,21 +1,27 @@
 <?php
 gp_title( __( 'Profile &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Profile', 'glotpress' ) ) );
+
 gp_tmpl_header();
 
-$per_page = get_user_option( 'gp_per_page' );
-if ( 0 == $per_page ) {
-	$per_page = 15;
-}
+$current_user = wp_get_current_user();
 
-$default_sort = get_user_option( 'gp_default_sort' );
-if ( ! is_array( $default_sort ) ) {
-	$default_sort = array(
-		'by'  => 'priority',
-		'how' => 'desc'
-	);
+if ( $current_user->ID == $user->ID ) {
+	$per_page = get_user_option( 'gp_per_page' );
+	if ( 0 == $per_page ) {
+		$per_page = 15;
+	}
+
+	$default_sort = get_user_option( 'gp_default_sort' );
+	if ( ! is_array( $default_sort ) ) {
+		$default_sort = array(
+			'by'  => 'priority',
+			'how' => 'desc'
+		);
+	}
 }
 ?>
+
 <h2><?php echo $user->display_name; ?></h2>
 
 <div>
@@ -41,6 +47,7 @@ if ( ! is_array( $default_sort ) ) {
 </div>
 
 <div id="profile">
+<?php if ( $current_user->ID == $user->ID ) : ?>
 	<div class="profile-settings">
 		<h3><?php _e( 'Settings', 'glotpress' ); ?></h3>
 		
@@ -52,6 +59,7 @@ if ( ! is_array( $default_sort ) ) {
 			<input type="submit" name="submit" value="<?php esc_attr_e( 'Change Settings', 'glotpress' ); ?>">
 		</form>
 	</div>
+<?php endif; ?>
 	<div class="recent-projects">
 		<h3><?php _e( 'Recent Projects', 'glotpress' ); ?></h3>
 
@@ -86,6 +94,5 @@ if ( ! is_array( $default_sort ) ) {
 		<?php endif ?>
 	</div>
 </div>
-
 
 <?php gp_tmpl_footer();
