@@ -55,18 +55,6 @@ if ( function_exists('mb_substr') ) {
 	}
 }
 
-function gp_sanitize_for_url( $name ) {
-	$name = trim( $name );
-	$name = gp_strtolower( $name );
-	$name = preg_replace( '/&.+?;/', '', $name ); // kill entities
-	$name = str_replace( '.', '-', $name );
-	$name = preg_replace('|[#$%&~/.\-;:=,?@\[\]+]|', '', $name);
-	$name = preg_replace( '/\s+/', '-', $name );
-	$name = preg_replace( '|-+|', '-', $name );
-	$name = trim($name, '-');
-	return $name;
-}
-
 /**
  * Escaping for HTML attributes.
  *

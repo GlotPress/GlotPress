@@ -129,7 +129,7 @@ class GP_Project extends GP_Thing {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
 		if ( isset( $args['slug'] ) && !$args['slug'] ) {
-			$args['slug'] = gp_sanitize_for_url( $args['name'] );
+			$args['slug'] = sanitize_title( $args['name'] );
 		}
 		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] )) {
 			unset( $args['path'] );
