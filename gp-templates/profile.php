@@ -51,7 +51,7 @@ if ( $current_user->ID == $user->ID ) {
 	<div class="profile-settings">
 		<h3><?php _e( 'Settings', 'glotpress' ); ?></h3>
 		
-		<form action="" method="post">
+		<form action="<?php echo gp_url_join( gp_url_public_root(), '/profile' ); ?>" method="post">
 		<?php 
 		include_once( dirname( __FILE__ ) . '/profile-edit.php' );
 		?>
