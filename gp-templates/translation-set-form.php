@@ -13,7 +13,7 @@
 	<dd><input type="text" name="set[slug]" value="<?php echo esc_html( $set->slug? $set->slug : 'default' ); ?>" id="set[slug]"></dd>
 
 	<dt><label for="set[project_id]"><?php _e( 'Project', 'glotpress' ); ?></label></dt>
-	<dd><?php echo gp_projects_dropdown( 'set[project_id]', $set->project_id ); ?></dd>
+	<dd><?php echo gp_projects_dropdown( 'set[project_id]', $set->project_id, null, null, true ); ?></dd>
 </dl>
 <?php echo gp_js_focus_on( 'set[locale]' ); ?>
 <script type="text/javascript">
