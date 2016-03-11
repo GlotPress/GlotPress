@@ -166,6 +166,8 @@ class GP_Original extends GP_Thing {
 		}
 		$comparison_array = array_unique( array_merge( array_keys( $possibly_dropped ), array_keys( $obsolete_originals ) ) );
 
+		$prev_suspend_cache = wp_suspend_cache_invalidation( true );
+
 		foreach ( $possibly_added as $entry ) {
 			$data = array(
 				'project_id' => $project->id,
@@ -222,9 +224,12 @@ class GP_Original extends GP_Thing {
 			$originals_obsoleted++;
 		}
 
+		wp_suspend_cache_invalidation( $prev_suspend_cache );
+
 		// Clear cache when the amount of strings are changed.
 		if ( $originals_added > 0 || $originals_existing > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
 			wp_cache_delete( $project->id, self::$count_cache_group );
+			gp_clean_translation_sets_cache( $project->id );
 		}
 
 		/**
@@ -420,7 +425,7 @@ class GP_Original extends GP_Thing {
 		 * @param GP_original $original The original that was created.
 		 */
 		do_action( 'gp_original_created', $this );
-		
+
 		return true;
 	}
 
@@ -440,7 +445,7 @@ class GP_Original extends GP_Thing {
 		 * @param GP_original $original The original that was saved.
 		 */
 		do_action( 'gp_original_saved', $this );
-		
+
 		return true;
 	}
 
@@ -460,7 +465,7 @@ class GP_Original extends GP_Thing {
 		 * @param GP_original $original The original that was deleted.
 		 */
 		do_action( 'gp_original_deleted', $this );
-		
+
 		return true;
 	}
 }

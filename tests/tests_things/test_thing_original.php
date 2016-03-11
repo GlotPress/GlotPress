@@ -249,4 +249,31 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $set4_current_translations ) );
 		$this->assertEquals( $translation3->translation_0, $set4_current_translations[0]->translations[0] );
 	}
+
+	/**
+	 * @ticket gh-332
+	 */
+	function test_import_for_project_cleans_cache_for_translation_sets() {
+		$set1 = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'project_one' ) );
+		$set2 = $this->factory->translation_set->create_with_project( array( 'locale' => $set1->locale ), array( 'name' => 'project_two' ) );
+
+		$this->assertEquals( 0, $set2->current_count() );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set1->project->id, 'status' => '+active', 'singular' => 'baba baba' ) );
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set1->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => $original1->singular ) ) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = $original1->import_for_project( $set2->project, $translations_for_import );
+
+		$this->assertEquals( 1, $originals_added );
+		$this->assertEquals( 0, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+
+		// `GP_Translation_Set` stores the counts as a property too, set it null to force recalculation.
+		$set2->current_count = null;
+
+		$this->assertEquals( 1, $set2->current_count() );
+	}
 }
