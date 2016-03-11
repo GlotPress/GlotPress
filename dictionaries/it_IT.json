@@ -7,287 +7,282 @@
     "Appearance": {
         "comment": "", 
         "pos": "", 
-        "translation": "archivio"
-    }, 
-    "Cookie": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "personale"
-    }, 
-    "Customizer": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "Bacheca"
-    }, 
-    "Dashboard": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "predefinito"
-    }, 
-    "Display": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "dominio"
-    }, 
-    "Follower": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "pi\u00e8 di pagina"
-    }, 
-    "Forum": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
-    "Found": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "galleria"
-    }, 
-    "Header": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "Immagine della testata"
-    }, 
-    "Header Image": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "provider di hosting"
-    }, 
-    "ID": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "immagine"
-    }, 
-    "IP address": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "collegamento"
-    }, 
-    "Notifications": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "articolo meno recente"
-    }, 
-    "Pending": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "parametro"
-    }, 
-    "Please...": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "plugin"
-    }, 
-    "Quando raggiungiamo un accordo confermiamo!": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "account"
-    }, 
-    "RSS feed": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "salvare"
-    }, 
-    "Redirect": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "rinfrescare"
-    }, 
-    "Toggle": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "barra degli strumenti"
-    }, 
-    "Toolbar": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "trackback"
-    }, 
-    "URL": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "utente"
-    }, 
-    "Widget": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "XML-RPC"
-    }, 
-    "XML-RPC": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
-    "account": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "action hook"
-    }, 
-    "action hook": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "attivare"
-    }, 
-    "activate": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "attivato"
-    }, 
-    "activated": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "indirizzare"
-    }, 
-    "address": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "amministratore"
-    }, 
-    "administrator": {
-        "comment": "", 
-        "pos": "", 
         "translation": "Aspetto"
     }, 
-    "archive": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "archivi"
-    }, 
-    "archives": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "desideri"
-    }, 
-    "are you sure you want": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "argomento"
-    }, 
-    "argument": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "array"
-    }, 
-    "array": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "articolo"
-    }, 
-    "article": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "digressione"
-    }, 
-    "aside": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "digressioni"
-    }, 
-    "asides": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "allegato"
-    }, 
-    "attachment": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "audio"
-    }, 
-    "audio": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "autore"
-    }, 
-    "author": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "sfondo"
-    }, 
-    "background": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "colore di sfondo"
-    }, 
-    "background color": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "immagine di sfondo"
-    }, 
-    "background image": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "bitrate"
-    }, 
-    "bitrate": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "blog"
-    }, 
-    "blog": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "browser"
-    }, 
-    "browser": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "errore di programma"
-    }, 
-    "bug": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "pulsante"
-    }, 
-    "button": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "categoria"
-    }, 
-    "category": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "spunta"
-    }, 
-    "check": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "click"
-    }, 
-    "click": {
-        "comment": "Non utilizzare mai il neologismo \"cliccare\"", 
-        "pos": "", 
-        "translation": "fare click/facendo click"
-    }, 
-    "clicking": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "schema colori"
-    }, 
-    "color scheme": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "commentare"
-    }, 
-    "comment": {
-        "comment": "", 
-        "pos": "", 
-        "translation": "costante"
-    }, 
-    "constant": {
+    "Cookie": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "Cookie"
     }, 
-    "custom": {
+    "Customizer": {
         "comment": "", 
         "pos": "", 
         "translation": "Customizer"
     }, 
-    "default": {
+    "Dashboard": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "Bacheca"
+    }, 
+    "Display": {
         "comment": "", 
         "pos": "", 
         "translation": ""
+    }, 
+    "Follower": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "Forum": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "Forum"
+    }, 
+    "Found": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "Header": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "Testata/Intestazione"
+    }, 
+    "Header Image": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "Immagine della testata"
+    }, 
+    "ID": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "ID"
+    }, 
+    "IP address": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "indirizzo IP"
+    }, 
+    "Notifications": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "notifiche"
+    }, 
+    "Pending": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "Please...": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "N/A"
+    }, 
+    "Quando raggiungiamo un accordo confermiamo!": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "RSS feed": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "feed RSS"
+    }, 
+    "Redirect": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "Redirect"
+    }, 
+    "Toggle": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "Toolbar": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "barra degli strumenti"
+    }, 
+    "URL": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "URL"
+    }, 
+    "Widget": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "widget"
+    }, 
+    "XML-RPC": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "XML-RPC"
+    }, 
+    "account": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "account"
+    }, 
+    "action hook": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "action hook"
+    }, 
+    "activated": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "attivato"
+    }, 
+    "address": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "indirizzare"
+    }, 
+    "administrator": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "amministratore"
+    }, 
+    "archive": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "archivio"
+    }, 
+    "archives": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "archivi"
+    }, 
+    "are you sure you want": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "desideri"
+    }, 
+    "argument": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "argomento"
+    }, 
+    "array": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "array"
+    }, 
+    "article": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "articolo"
+    }, 
+    "aside": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "digressione"
+    }, 
+    "asides": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "digressioni"
+    }, 
+    "attachment": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "allegato"
+    }, 
+    "audio": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "audio"
+    }, 
+    "author": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "autore"
+    }, 
+    "background": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "sfondo"
+    }, 
+    "background color": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "colore di sfondo"
+    }, 
+    "background image": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "immagine di sfondo"
+    }, 
+    "bitrate": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "bitrate"
+    }, 
+    "blog": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "blog"
+    }, 
+    "browser": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "browser"
+    }, 
+    "bug": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "errore di programma"
+    }, 
+    "button": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "pulsante"
+    }, 
+    "category": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "categoria"
+    }, 
+    "check": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "spunta"
+    }, 
+    "click": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "click"
+    }, 
+    "clicking": {
+        "comment": "Non utilizzare mai il neologismo \"cliccare\"", 
+        "pos": "", 
+        "translation": "fare click/facendo click"
+    }, 
+    "color scheme": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "schema colori"
+    }, 
+    "comment": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "commento"
+    }, 
+    "constant": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "costante"
+    }, 
+    "custom": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "personale"
+    }, 
+    "default": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "predefinito"
     }, 
     "delete": {
         "comment": "", 
@@ -297,471 +292,471 @@
     "deleted": {
         "comment": "", 
         "pos": "", 
-        "translation": "deprecato"
+        "translation": ""
     }, 
     "deprecated": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "deprecato"
+    }, 
+    "directory": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "directory"
     }, 
-    "directory": {
+    "domain": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "dominio"
     }, 
-    "domain": {
+    "draft": {
         "comment": "", 
         "pos": "", 
         "translation": "bozza"
     }, 
-    "draft": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "editor"
-    }, 
     "editor": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "editore"
+    }, 
+    "email": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "email"
     }, 
-    "email": {
+    "email address": {
         "comment": "", 
         "pos": "", 
         "translation": "indirizzo email"
     }, 
-    "email address": {
+    "embed": {
         "comment": "", 
         "pos": "", 
         "translation": ""
     }, 
-    "embed": {
+    "emoticon": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "emoticon"
     }, 
-    "emoticon": {
+    "error": {
         "comment": "", 
         "pos": "", 
         "translation": "errore"
     }, 
-    "error": {
+    "excerpt": {
         "comment": "", 
         "pos": "", 
         "translation": "estratto"
     }, 
-    "excerpt": {
+    "featured image": {
         "comment": "", 
         "pos": "", 
         "translation": "immagine in evidenza"
     }, 
-    "featured image": {
+    "feed": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "feed"
     }, 
-    "feed": {
+    "filter": {
         "comment": "", 
         "pos": "", 
         "translation": "filtro"
     }, 
-    "filter": {
+    "folder": {
         "comment": "", 
         "pos": "", 
         "translation": "cartella"
     }, 
-    "folder": {
+    "footer": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
-    }, 
-    "footer": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "Forum"
+        "translation": "pi\u00e8 di pagina"
     }, 
     "gallery": {
         "comment": "", 
         "pos": "", 
-        "translation": "Testata/Intestazione"
+        "translation": "galleria"
     }, 
     "host": {
         "comment": "", 
         "pos": "", 
-        "translation": "fornitore di hosting"
+        "translation": "ospitare"
     }, 
     "hosting provider": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "fornitore di hosting"
+    }, 
+    "hosts": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "host"
     }, 
-    "hosts": {
+    "howdy": {
         "comment": "", 
         "pos": "", 
         "translation": "ciao"
     }, 
-    "howdy": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "icon": {
         "comment": "", 
         "pos": "", 
-        "translation": "non valido"
+        "translation": ""
     }, 
     "image": {
         "comment": "", 
         "pos": "", 
-        "translation": "importare"
+        "translation": "immagine"
     }, 
     "import": {
         "comment": "", 
         "pos": "", 
-        "translation": "indirizzo IP"
+        "translation": "importare"
     }, 
     "invalid": {
         "comment": "", 
         "pos": "", 
-        "translation": "ID"
+        "translation": "non valido"
     }, 
     "link": {
         "comment": "", 
         "pos": "", 
-        "translation": "accesso"
+        "translation": "collegamento"
     }, 
     "log in": {
         "comment": "", 
         "pos": "", 
-        "translation": "disconnessione"
+        "translation": "accesso"
     }, 
     "log out": {
         "comment": "", 
         "pos": "", 
-        "translation": "connesso"
+        "translation": "disconnessione"
     }, 
     "logged in": {
         "comment": "", 
         "pos": "", 
-        "translation": "disconnesso"
+        "translation": "connesso"
     }, 
     "logged out": {
         "comment": "", 
         "pos": "", 
-        "translation": "accedere"
+        "translation": "disconnesso"
     }, 
     "login": {
         "comment": "", 
         "pos": "", 
-        "translation": "uscire"
+        "translation": "accedere"
     }, 
     "logout": {
         "comment": "", 
         "pos": "", 
-        "translation": "elemento multimediale"
+        "translation": "uscire"
     }, 
     "media item": {
         "comment": "", 
         "pos": "", 
-        "translation": "meta"
+        "translation": "elemento multimediale"
     }, 
     "meta": {
         "comment": "", 
         "pos": "", 
-        "translation": "moderare"
+        "translation": "meta"
     }, 
     "moderate": {
         "comment": "", 
         "pos": "", 
-        "translation": "navigazione"
+        "translation": "moderare"
     }, 
     "navigation": {
         "comment": "", 
         "pos": "", 
-        "translation": "articolo successivo"
+        "translation": "navigazione"
     }, 
     "next post": {
         "comment": "", 
         "pos": "", 
-        "translation": "nonce"
+        "translation": "articolo successivo"
     }, 
     "nonce": {
         "comment": "", 
         "pos": "", 
-        "translation": "notifiche"
+        "translation": "nonce"
     }, 
     "older post": {
         "comment": "", 
         "pos": "", 
-        "translation": "opzione"
+        "translation": "articolo meno recente"
     }, 
     "option": {
         "comment": "", 
         "pos": "", 
-        "translation": "pagina"
+        "translation": "opzione"
     }, 
     "page": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "pagina"
     }, 
     "parameter": {
         "comment": "", 
         "pos": "", 
-        "translation": "permalink"
+        "translation": "parametro"
     }, 
     "permalink": {
         "comment": "", 
         "pos": "", 
-        "translation": "autorizzazione"
+        "translation": "permalink"
     }, 
     "permission": {
         "comment": "", 
         "pos": "", 
-        "translation": "pingback"
+        "translation": "autorizzazione"
     }, 
     "pingback": {
         "comment": "", 
         "pos": "", 
-        "translation": "N/A"
+        "translation": "pingback"
     }, 
     "plugin": {
         "comment": "", 
         "pos": "", 
-        "translation": "articolo"
+        "translation": "plugin"
     }, 
     "post": {
         "comment": "", 
         "pos": "", 
-        "translation": "miniatura articolo"
+        "translation": "articolo"
     }, 
     "post thumbnail": {
         "comment": "", 
         "pos": "", 
-        "translation": "tipo di articolo"
+        "translation": "miniatura articolo"
     }, 
     "post type": {
         "comment": "", 
         "pos": "", 
-        "translation": "visualizzare in anteprima"
+        "translation": "tipo di articolo"
     }, 
     "preview": {
         "comment": "", 
         "pos": "", 
-        "translation": "articolo precedente"
+        "translation": "anteprima"
     }, 
     "previous post": {
         "comment": "", 
         "pos": "", 
-        "translation": "profilo"
+        "translation": "articolo precedente"
     }, 
     "profile": {
         "comment": "", 
         "pos": "", 
-        "translation": "query"
+        "translation": "profilo"
     }, 
     "query": {
         "comment": "", 
         "pos": "", 
-        "translation": "Redirect"
+        "translation": "query"
     }, 
     "refresh": {
         "comment": "", 
         "pos": "", 
-        "translation": "richiesto"
+        "translation": "rinfrescare"
     }, 
     "required": {
         "comment": "", 
         "pos": "", 
-        "translation": "ruolo"
+        "translation": "richiesto"
     }, 
     "ribbon": {
         "comment": "", 
         "pos": "", 
-        "translation": "feed RSS"
+        "translation": ""
     }, 
     "role": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "ruolo"
     }, 
     "save": {
         "comment": "", 
         "pos": "", 
-        "translation": "schermo"
+        "translation": "salvare"
     }, 
     "screen": {
         "comment": "", 
         "pos": "", 
-        "translation": "server"
+        "translation": "schermo"
     }, 
     "server": {
         "comment": "", 
         "pos": "", 
-        "translation": "condivisione"
+        "translation": "server"
     }, 
     "share": {
         "comment": "", 
         "pos": "", 
-        "translation": "condividere/condividi"
+        "translation": "condivisione"
     }, 
     "sharing": {
         "comment": "", 
         "pos": "", 
-        "translation": "shortcode"
+        "translation": "condividere/condividi"
     }, 
     "shortcode": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "shortcode"
     }, 
     "show": {
         "comment": "", 
         "pos": "", 
-        "translation": "barra laterale"
+        "translation": ""
     }, 
     "sidebar": {
         "comment": "", 
         "pos": "", 
-        "translation": "sito"
+        "translation": "barra laterale"
     }, 
     "site": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "sito"
     }, 
     "slideshow": {
         "comment": "", 
         "pos": "", 
-        "translation": "abbreviazione"
+        "translation": ""
     }, 
     "slug": {
         "comment": "", 
         "pos": "", 
-        "translation": "spam"
+        "translation": "abbreviazione"
     }, 
     "spam": {
         "comment": "", 
         "pos": "", 
-        "translation": "stato"
+        "translation": "spam"
     }, 
     "status": {
         "comment": "", 
         "pos": "", 
-        "translation": "mettere in evidenza"
+        "translation": "stato"
     }, 
     "stick": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "mettere in evidenza"
     }, 
     "sticky": {
         "comment": "", 
         "pos": "", 
-        "translation": "stringa"
+        "translation": ""
     }, 
     "string": {
         "comment": "", 
         "pos": "", 
-        "translation": "scheda"
+        "translation": "stringa"
     }, 
     "tab": {
         "comment": "", 
         "pos": "", 
-        "translation": "tag"
+        "translation": "scheda"
     }, 
     "tag": {
         "comment": "", 
         "pos": "", 
-        "translation": "tassonomia"
+        "translation": "tag"
     }, 
     "taxonomy": {
         "comment": "", 
         "pos": "", 
-        "translation": "modello"
+        "translation": "tassonomia"
     }, 
     "template": {
         "comment": "", 
         "pos": "", 
-        "translation": "termine"
+        "translation": "modello"
     }, 
     "template hierarchy": {
         "comment": "", 
         "pos": "", 
-        "translation": "editor di testo"
+        "translation": "gerarchia di template"
     }, 
     "term": {
         "comment": "", 
         "pos": "", 
-        "translation": "gerarchia di template"
+        "translation": "termine"
     }, 
     "text editor": {
         "comment": "", 
         "pos": "", 
-        "translation": "tema"
+        "translation": "editor di testo"
     }, 
     "theme": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "tema"
     }, 
     "trackback": {
         "comment": "", 
         "pos": "", 
-        "translation": "cestino"
+        "translation": "trackback"
     }, 
     "trash": {
         "comment": "", 
         "pos": "", 
-        "translation": "ripristinare"
+        "translation": "cestinare"
     }, 
     "untrash": {
         "comment": "", 
         "pos": "", 
-        "translation": "aggiornamento"
+        "translation": "ripristinare"
     }, 
     "update": {
         "comment": "", 
         "pos": "", 
-        "translation": "caricare"
+        "translation": "aggiornare"
     }, 
     "upload": {
         "comment": "", 
         "pos": "", 
-        "translation": "uploader"
+        "translation": "caricare"
     }, 
     "uploader": {
         "comment": "", 
         "pos": "", 
-        "translation": "URL"
+        "translation": ""
     }, 
     "user": {
         "comment": "", 
         "pos": "", 
-        "translation": "nome utente"
+        "translation": "utente"
     }, 
     "username": {
         "comment": "", 
         "pos": "", 
-        "translation": "valido"
+        "translation": "nome utente"
     }, 
     "valid": {
         "comment": "", 
         "pos": "", 
-        "translation": "video"
+        "translation": "valido"
     }, 
     "video": {
         "comment": "", 
         "pos": "", 
-        "translation": "visualizzare"
+        "translation": "video"
     }, 
     "view": {
         "comment": "", 
         "pos": "", 
-        "translation": "sito web"
+        "translation": "visualizzare"
     }, 
     "website": {
         "comment": "", 
         "pos": "", 
-        "translation": "widget"
+        "translation": "sito web"
     }
 }
