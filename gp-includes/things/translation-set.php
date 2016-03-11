@@ -47,6 +47,29 @@ class GP_Translation_Set extends GP_Thing {
 		$rules->project_id_should_not_be( 'empty' );
 	}
 
+	// Field handling
+
+	public function normalize_fields( $args ) {
+		$args = (array)$args;
+
+		if ( isset( $args['name'] ) && empty( $args['name'] ) ) {
+			if ( isset( $args['locale'] ) && ! empty( $args['locale'] ) ) {
+				$locale = GP_locales::by_slug( $args['locale'] );
+				$args['name'] = $locale->english_name;
+			}
+		}
+		
+		if ( isset( $args['slug'] ) && !$args['slug'] ) {
+			$args['slug'] = $args['name'];
+		}
+
+		if ( ! empty( $args['slug'] ) ) {
+			$args['slug'] = sanitize_title( $args['slug'] );
+		}
+		
+		return $args;
+	}
+
 	public function name_with_locale( $separator = '&rarr;') {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$parts = array( $locale->english_name );
