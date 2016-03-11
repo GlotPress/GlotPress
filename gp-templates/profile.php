@@ -52,7 +52,7 @@ if ( ! is_array( $default_sort ) ) {
 			<input type="submit" name="submit" value="<?php esc_attr_e( 'Change Settings', 'glotpress' ); ?>">
 		</form>
 	</div>
-	<div class="recent-projects recent-projects-right">
+	<div class="recent-projects">
 		<h3><?php _e( 'Recent Projects', 'glotpress' ); ?></h3>
 
 		<ul>
