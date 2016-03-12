@@ -84,11 +84,11 @@ function gp_notice_set( $message, $key = 'notice' ) {
  * @param string $key Optional. Message key. The default is 'notice'
  */
 function gp_notice( $key = 'notice' ) {
-	// Sanitize fields 
- 	$allowed_tags = array( 
+	// Sanitize fields
+	$allowed_tags = array(
 		'a'       => array( 'href' => true ),
-		'abbr'    => array(), 
-		'acronym' => array(), 
+		'abbr'    => array(),
+		'acronym' => array(),
 		'b'       => array(),
 		'br'      => array(),
 		'button'  => array( 'disabled' => true, 'name' => true, 'type' => true, 'value' => true ),
@@ -103,8 +103,8 @@ function gp_notice( $key = 'notice' ) {
 		'sub'     => array(),
 		'sup'     => array(),
 		'u'       => array(),
- 	); 
-	
+	);
+
 	// Adds class, id, style, title, role attributes to all of the above allowed tags.
 	$allowed_tags = array_map( '_wp_add_global_attributes', $allowed_tags );
 
@@ -220,11 +220,19 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
 
 
 /**
- * Delete translation set counts cache
+ * Delete translation set counts cache.
  *
- * @param int $id translation set ID
+ * @global bool $_wp_suspend_cache_invalidation
+ *
+ * @param int $id Translation set ID.
  */
 function gp_clean_translation_set_cache( $id ) {
+	global $_wp_suspend_cache_invalidation;
+
+	if ( ! empty( $_wp_suspend_cache_invalidation ) ) {
+		return;
+	}
+
 	wp_cache_delete( $id, 'translation_set_status_breakdown' );
 	wp_cache_delete( $id, 'translation_set_last_modified' );
 }
@@ -395,13 +403,13 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 
 	if ( ! $format ) {
 		$matched_ext_len = 0;
-		
+
 		foreach( GP::$formats as $format_entry ) {
 			$format_extensions = $format_entry->get_file_extensions();
 
 			foreach( $format_extensions as $extension ) {
 				$current_ext_len = strlen( $extension );
-				
+
 				if ( gp_endswith( $filename, $extension ) && $current_ext_len > $matched_ext_len ) {
 					$format = $format_entry;
 					$matched_ext_len = $current_ext_len;
