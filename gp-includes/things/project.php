@@ -125,19 +125,33 @@ class GP_Project extends GP_Thing {
 
 	public function normalize_fields( $args ) {
 		$args = (array)$args;
+		
 		if ( isset( $args['parent_project_id'] ) ) {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
+		
 		if ( isset( $args['slug'] ) && !$args['slug'] ) {
-			$args['slug'] = gp_sanitize_for_url( $args['name'] );
+			$args['slug'] = $args['name'];
 		}
+		
+		if ( ! empty( $args['slug'] ) ) {
+			$args['slug'] = sanitize_title( $args['slug'] );
+		}
+		
 		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] )) {
 			unset( $args['path'] );
 		}
+		
 		if ( isset( $args['active'] ) ) {
-			if ( 'on' === $args['active'] ) $args['active'] = 1;
-			if ( !$args['active'] ) $args['active'] = 0;
+			if ( 'on' === $args['active'] ) {
+				$args['active'] = 1;
+			}
+			
+			if ( !$args['active'] ) {
+				$args['active'] = 0;
+			}
 		}
+		
 		return $args;
 	}
 
