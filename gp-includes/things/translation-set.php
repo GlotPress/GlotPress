@@ -60,7 +60,7 @@ class GP_Translation_Set extends GP_Thing {
 		}
 		
 		if ( isset( $args['slug'] ) && !$args['slug'] ) {
-			$args['slug'] = $args['name'];
+			$args['slug'] = 'default';
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
