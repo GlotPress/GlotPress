@@ -58,7 +58,7 @@ class GP_Translation_Set extends GP_Thing {
 				$args['name'] = $locale->english_name;
 			}
 		}
-		
+
 		if ( isset( $args['slug'] ) && !$args['slug'] ) {
 			$args['slug'] = 'default';
 		}
@@ -66,7 +66,7 @@ class GP_Translation_Set extends GP_Thing {
 		if ( ! empty( $args['slug'] ) ) {
 			$args['slug'] = sanitize_title( $args['slug'] );
 		}
-		
+
 		return $args;
 	}
 
