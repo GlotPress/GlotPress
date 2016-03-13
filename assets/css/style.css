@@ -267,7 +267,7 @@ table.translations td.original, table.translations td.translation {
 	word-wrap: break-word;
 }
 
-table.translations tr:nth-child(4n+3) {  
+table.translations tr:nth-child(4n+3) {
 	background-color: #fcfcfc;
 }
 table.translations tr.editor {
