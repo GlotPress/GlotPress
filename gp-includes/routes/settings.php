@@ -1,4 +1,12 @@
 <?php
+/**
+ * The Settings Route Class.
+ *
+ * Handles the settings page display and saving of settings.
+ *
+ * @since 1.1.0
+ */
+
 class GP_Route_Settings extends GP_Route_Main {
 
 	/**
@@ -33,7 +41,7 @@ class GP_Route_Settings extends GP_Route_Main {
 
 			$default_sort = array(
 				'by'  => 'priority',
-				'how' => 'desc'
+				'how' => 'desc',
 			);
 
 			$user_sort = wp_parse_args( $_POST['default_sort'], $default_sort );

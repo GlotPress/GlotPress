@@ -1,4 +1,12 @@
 <?php
+/**
+ * The settings page.
+ *
+ * Displays the settings page for a user.
+ *
+ * @since 1.1.0
+ */
+
 gp_title( __( 'Your Settings &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Your Settings', 'glotpress' ) ) );
 gp_tmpl_header();
@@ -12,13 +20,13 @@ $default_sort = get_user_option( 'gp_default_sort' );
 if ( ! is_array( $default_sort ) ) {
 	$default_sort = array(
 		'by'  => 'priority',
-		'how' => 'desc'
+		'how' => 'desc',
 	);
 }
 ?>
 <h2><?php _e( 'Your Settings', 'glotpress' ); ?></h2>
 <form action="" method="post">
-<?php 
+<?php
 include_once( dirname( __FILE__ ) . '/settings-edit.php' );
 ?>
 	<br>
