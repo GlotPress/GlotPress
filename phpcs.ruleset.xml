@@ -3,7 +3,9 @@
 
 	<rule ref="WordPress-Core" />
 	<rule ref="WordPress-Docs" />
-	<rule ref="WordPress-Extra" />
+	<rule ref="WordPress-Extra">
+		<exclude name="WordPress.XSS.EscapeOutput.UnsafePrintingFunction" />
+	</rule>
 
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/dev-lib/*</exclude-pattern>
