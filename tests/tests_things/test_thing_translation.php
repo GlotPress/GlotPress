@@ -36,6 +36,8 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	/**
 	 * @ticket 149
 	 * @ticket gh-236
+	 *
+	 * @covers GP_Translation::restrict_fields
 	 */
 	function test_translation_should_not_validate_with_empty_plurals() {
 		$data = array(
