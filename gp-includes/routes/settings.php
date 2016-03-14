@@ -1,11 +1,5 @@
 <?php
-/**
- * @method object|array many_no_map()
- * @method object|array find_many_no_map()
- */
 class GP_Route_Settings extends GP_Route_Main {
-	// For caching purposes
-	private $projects = array();
 
 	public function settings_get() {
 		if ( ! is_user_logged_in() ) {
