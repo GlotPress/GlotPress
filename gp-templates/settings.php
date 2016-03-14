@@ -1,6 +1,6 @@
 <?php
-gp_title( __( 'Profile &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb( array( __( 'Profile', 'glotpress' ) ) );
+gp_title( __( 'Your Settings &lt; GlotPress', 'glotpress' ) );
+gp_breadcrumb( array( __( 'Your Settings', 'glotpress' ) ) );
 gp_tmpl_header();
 
 $per_page = get_user_option( 'gp_per_page' );
@@ -16,10 +16,10 @@ if ( ! is_array( $default_sort ) ) {
 	);
 }
 ?>
-<h2><?php _e( 'Profile', 'glotpress' ); ?></h2>
+<h2><?php _e( 'Your Settings', 'glotpress' ); ?></h2>
 <form action="" method="post">
 <?php 
-include_once( dirname( __FILE__ ) . '/profile-edit.php' );
+include_once( dirname( __FILE__ ) . '/settings-edit.php' );
 ?>
 	<br>
 	<input type="submit" name="submit" value="<?php esc_attr_e( 'Change Settings', 'glotpress' ); ?>">

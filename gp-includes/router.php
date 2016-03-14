@@ -68,9 +68,11 @@ class GP_Router {
 		return array(
 			'/' => array('GP_Route_Index', 'index'),
 
-			'get:/profile' => array('GP_Route_Profile', 'profile_get'),
+			'get:/profile' => array('GP_Route_Profile', 'profile_view'),
 			"get:/profile/$path" => array('GP_Route_Profile', 'profile_view'),
-			'post:/profile' => array('GP_Route_Profile', 'profile_post'),
+
+			'get:/settings' => array('GP_Route_Settings', 'settings_get'),
+			'post:/settings' => array('GP_Route_Settings', 'settings_post'),
 
 			'get:/languages' => array('GP_Route_Locale', 'locales_get'),
 			"get:/languages/$locale/$path" => array('GP_Route_Locale', 'single'),

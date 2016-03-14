@@ -105,7 +105,10 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 	elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
-			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );
+			$user = wp_get_current_user();
+			$login = esc_html( $user->user_login );
+			$items[ gp_url( '/profile/' . $login ) ] = __( 'Profile', 'glotpress' );
+			$items[ gp_url( '/settings' ) ] = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
 		}
 		else {

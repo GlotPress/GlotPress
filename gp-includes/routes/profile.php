@@ -50,8 +50,12 @@ class GP_Route_Profile extends GP_Route_Main {
 		$this->redirect( gp_url( '/profile' ) );
 	}
 
-	public function profile_view( $user ) {
-		$user = get_user_by( 'slug', $user );
+	public function profile_view( $user = '' ) {
+		if ( '' == $user ) { 
+			$user = wp_get_current_user(); 
+		} else {		
+			$user = get_user_by( 'slug', $user );
+		}
 
 		if ( ! $user ) {
 			return $this->die_with_404();
