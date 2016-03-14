@@ -1,9 +1,12 @@
 <?php
 /**
- * The settings page.
+ * The settings page
  *
  * Displays the settings page for a user.
  *
+ * @link http://glotpress.org
+ *
+ * @package GlotPress
  * @since 1.1.0
  */
 

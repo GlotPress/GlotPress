@@ -1,12 +1,20 @@
 <?php
 /**
- * The Settings Route Class.
+ * The Settings Route Class
  *
  * Handles the settings page display and saving of settings.
  *
+ * @link http://glotpress.org
+ *
+ * @package GlotPress
  * @since 1.1.0
  */
 
+/**
+* The Settings Route Class.
+*
+* @since 1.1.0
+*/
 class GP_Route_Settings extends GP_Route_Main {
 
 	/**

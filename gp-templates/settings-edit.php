@@ -1,9 +1,12 @@
 <?php
 /**
- * The user settings block.
+ * The user settings block
  *
  * A single table that contains all of the user settings, which is included as part of gp-templates/settings.php.
  *
+ * @link http://glotpress.org
+ *
+ * @package GlotPress
  * @since 1.1.0
  */
 
@@ -23,7 +26,7 @@ if ( ! is_array( $default_sort ) ) {
 	<table class="form-table">
 		<tr>
 			<th><label for="per_page"><?php _e( 'Number of items per page:', 'glotpress' ); ?></label></th>
-			<td><input type="number" id="per_page" name="per_page" value="<?php echo $per_page; //xss ok  ?>"/></td>
+			<td><input type="number" id="per_page" name="per_page" value="<?php echo $per_page; // This is xss ok. ?>"/></td>
 		</tr>
 		<tr>
 			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ) ?></label></th>
@@ -36,15 +39,15 @@ if ( ! is_array( $default_sort ) ) {
 					'priority'               => __( 'Priority', 'glotpress' ),
 					'references'             => __( 'Filename in source', 'glotpress' ),
 					'random'                 => __( 'Random', 'glotpress' ),
-				), gp_array_get( $default_sort, 'by', 'priority' ) ); //xss ok ?></td>
+				), gp_array_get( $default_sort, 'by', 'priority' ) ); // This is xss ok. ?></td>
 		</tr>
 		<tr>
 			<th><label for="default_sort[how]"><?php _e( 'Default Sort Order:', 'glotpress' ) ?></label></th>
 			<td><?php echo gp_radio_buttons('default_sort[how]',
-				array(
-					'asc' => __( 'Ascending', 'glotpress' ),
-					'desc' => __( 'Descending', 'glotpress' ),
-				), gp_array_get( $default_sort, 'how', 'desc' ) ); //xss ok 
+			array(
+				'asc' => __( 'Ascending', 'glotpress' ),
+				'desc' => __( 'Descending', 'glotpress' ),
+			), gp_array_get( $default_sort, 'how', 'desc' ) ); // This is xss ok.
 			?></td>
 		</tr>
 	</table>
