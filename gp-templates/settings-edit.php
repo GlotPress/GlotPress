@@ -30,7 +30,7 @@ if ( ! is_array( $default_sort ) ) {
 		</tr>
 		<tr>
 			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ) ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[by]',
+			<td><?php echo gp_radio_buttons('default_sort[by]', // This is xss ok.
 				array(
 					'original_date_added'    => __( 'Date added (original)', 'glotpress' ),
 					'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
@@ -39,15 +39,15 @@ if ( ! is_array( $default_sort ) ) {
 					'priority'               => __( 'Priority', 'glotpress' ),
 					'references'             => __( 'Filename in source', 'glotpress' ),
 					'random'                 => __( 'Random', 'glotpress' ),
-				), gp_array_get( $default_sort, 'by', 'priority' ) ); // This is xss ok. ?></td>
+				), gp_array_get( $default_sort, 'by', 'priority' ) ); ?></td>
 		</tr>
 		<tr>
 			<th><label for="default_sort[how]"><?php _e( 'Default Sort Order:', 'glotpress' ) ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[how]',
+			<td><?php echo gp_radio_buttons('default_sort[how]', // This is xss ok.
 			array(
 				'asc' => __( 'Ascending', 'glotpress' ),
 				'desc' => __( 'Descending', 'glotpress' ),
-			), gp_array_get( $default_sort, 'how', 'desc' ) ); // This is xss ok.
+			), gp_array_get( $default_sort, 'how', 'desc' ) );
 			?></td>
 		</tr>
 	</table>

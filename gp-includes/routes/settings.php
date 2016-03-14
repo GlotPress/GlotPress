@@ -11,10 +11,10 @@
  */
 
 /**
-* The Settings Route Class.
-*
-* @since 1.1.0
-*/
+ * The Settings Route Class.
+ *
+ * @since 1.1.0
+ */
 class GP_Route_Settings extends GP_Route_Main {
 
 	/**
