@@ -16,6 +16,9 @@ class GP_Route_Profile extends GP_Route_Main {
 	// For caching purposes
 	private $projects = array();
 
+	/**
+	 * Displays the profile page, requires a user to be logged in.
+	 */
 	public function profile_get() {
 		if ( ! is_user_logged_in() ) {
 			$this->redirect( wp_login_url( gp_url_profile() ) );
@@ -25,6 +28,11 @@ class GP_Route_Profile extends GP_Route_Main {
 		$this->tmpl( 'profile' );
 	}
 
+	/**
+	 * Displays the profile page for a given user.
+	 *
+	 * @param string $user A user nicename.
+	 */
 	public function profile_view( $user = '' ) {
 		if ( '' == $user ) {
 			$user = wp_get_current_user();
@@ -45,6 +53,14 @@ class GP_Route_Profile extends GP_Route_Main {
 		$this->tmpl( 'profile-public', get_defined_vars() );
 	}
 
+	/**
+	 * Gets an array of recent translation sets the user has worked on.
+	 *
+	 * @param WP_User $user   A user object.
+	 * @param int     $amount Number of recent translations to return.
+	 *
+	 * @return array $translation_sets An array of translation set objects
+	 */
 	private function get_recent_translation_sets( $user, $amount = 5 ) {
 		global $wpdb;
 
@@ -96,6 +112,13 @@ class GP_Route_Profile extends GP_Route_Main {
 		return $translation_sets;
 	}
 
+	/**
+	 * Gets an array of locales the user has contributed to.
+	 *
+	 * @param WP_User $user   A user object.
+	 *
+	 * @return array $locales An array of locale objects
+	 */
 	private function locales_known( $user ) {
 		global $wpdb;
 
@@ -124,6 +147,8 @@ class GP_Route_Profile extends GP_Route_Main {
 
 	/**
 	 * Retrieve a users permissions.
+	 *
+	 * @param WP_User $user The user object.
 	 *
 	 * @return array Array of permissions
 	 */
@@ -168,6 +193,13 @@ class GP_Route_Profile extends GP_Route_Main {
 		return $permissions;
 	}
 
+	/**
+	 * Gets an object representing the project id, project url and translation set name of the supplied set.
+	 *
+	 * @param GP_Translation_set $set   A translation set object.
+	 *
+	 * @return object
+	 */
 	private function get_translation_set( $set ) {
 		if ( ! isset( $this->projects[ $set->project_id ] ) ) {
 			 $this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
