@@ -267,7 +267,7 @@ table.translations td.original, table.translations td.translation {
 	word-wrap: break-word;
 }
 
-table.translations tr:nth-child(4n+3) {  
+table.translations tr:nth-child(4n+3) {
 	background-color: #fcfcfc;
 }
 table.translations tr.editor {
@@ -822,8 +822,9 @@ table.form-table th, table.form-table td {
 }
 
 .recent-projects {
-	float:left;
-	width:47%;
+	min-width: 400px;
+	float: left;
+	margin-right: 10px;
 }
 
 .recent-projects li {
@@ -844,7 +845,9 @@ table.form-table th, table.form-table td {
 }
 
 .validates-projects {
-	margin-left:50%;
+	min-width: 400px;
+	float: left;
+	margin-right: 10px;
 }
 
 .validates-projects p {
@@ -854,6 +857,12 @@ table.form-table th, table.form-table td {
 
 .validates-projects li {
 	padding: 8px;
+}
+
+.profile-settings {
+	min-width: 400px;
+	float: left;
+	margin-right: 10px;
 }
 
 #add-entry input {
