@@ -38,10 +38,26 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	 * @ticket gh-236
 	 */
 	function test_translation_should_not_validate_with_empty_plurals() {
-		$plurals = array( 'translation_0' => 'Zero', 'translation_1' => '', 'translation_2' => '' );
-		$translation = $this->factory->translation->create( $plurals );
+		$data = array(
+			'user_id'            => 1,
+			'original_id'        => 1,
+			'translation_set_id' => 1,
+			'status'             => 'current',
+		);
+		$plurals = array(
+			'translation_0' => 'Zero',
+			'translation_1' => '',
+			'translation_2' => '',
+			'translation_3' => '',
+			'translation_4' => '',
+			'translation_5' => '',
+		);
 
+		$data = array_merge( $data, $plurals );
+
+		$translation = $this->factory->translation->create( $data );
 		$this->assertFalse( $translation->validate() );
+		$this->assertCount( 5, $translation->errors );
 	}
 
 	function test_for_translation_shouldnt_exclude_originals_with_rejected_translation_if_status_has_untranslated() {
