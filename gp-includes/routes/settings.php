@@ -1,6 +1,9 @@
 <?php
 class GP_Route_Settings extends GP_Route_Main {
 
+	/**
+	 * Displays the settings page, requires a user to be logged in.
+	 */
 	public function settings_get() {
 		if ( ! is_user_logged_in() ) {
 			$this->redirect( wp_login_url( gp_url_profile() ) );
@@ -10,6 +13,11 @@ class GP_Route_Settings extends GP_Route_Main {
 		$this->tmpl( 'settings' );
 	}
 
+	/**
+	 * Saves settings for a user and redirects back to the settings page.
+	 *
+	 * @param int $user_id Optional. A user id, if not provided the id of the currently logged in user will be used.
+	 */
 	public function settings_post( $user_id = null ) {
 		if ( isset( $_POST['submit'] ) ) {
 			// Sometimes we get null, sometimes we get 0, depending on where it comes from.
