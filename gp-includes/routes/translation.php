@@ -95,7 +95,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$get_format = gp_get( 'format', 'po' );
 
 		// If for some reason we were passed in an array or object from the get parameters, don't use it.
-		if( ! is_string( $get_format ) ) {
+		if ( ! is_string( $get_format ) ) {
 			$get_format = '.po';
 		}
 
@@ -163,15 +163,16 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
 
-		if ( is_array( $sort ) && 'random' == gp_array_get( $sort, 'by') ) {
+		if ( is_array( $sort ) && 'random' === gp_array_get( $sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
 		}
 
-		$per_page = get_user_option( 'gp_per_page' );
-		if ( 0 == $per_page )
+		$per_page = (int) get_user_option( 'gp_per_page' );
+		if ( 0 === $per_page ) {
 			$per_page = GP::$translation->per_page;
-		else
+		} else {
 			GP::$translation->per_page = $per_page;
+		}
 
 		if ( ! is_array( $filters ) ) {
 			$filters = array();
@@ -477,10 +478,10 @@ class GP_Route_Translation extends GP_Route_Main {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param GP_Project $project
-	 * @param GP_Locale $locale
-	 * @param GP_Translation_Set $translation_set
-	 * @param GP_Translation $translation
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Locale          $locale          The GlotPress locale.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param GP_Translation     $translation     The translation object.
 	 */
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
