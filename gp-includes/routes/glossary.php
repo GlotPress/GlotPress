@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Glossary class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the glossary route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Glossary extends GP_Route_Main {
 
 	public function new_get() {

@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Locale class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the locale route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Locale extends GP_Route_Main {
 
 	public function locales_get() {

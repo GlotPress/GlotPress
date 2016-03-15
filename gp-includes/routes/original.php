@@ -1,5 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Original class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
 
+/**
+ * Core class used to implement the original route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Original extends GP_Route_Main {
 
 	public function set_priority( $original_id ) {

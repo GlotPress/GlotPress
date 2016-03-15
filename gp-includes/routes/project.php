@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Project class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the project route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Project extends GP_Route_Main {
 
 	public function index() {

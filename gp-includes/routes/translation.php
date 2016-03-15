@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Translation class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translation route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Translation extends GP_Route_Main {
 
 	public function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
@@ -80,7 +93,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$get_format = gp_get( 'format', 'po' );
-		
+
 		// If for some reason we were passed in an array or object from the get parameters, don't use it.
 		if( ! is_string( $get_format ) ) {
 			$get_format = '.po';
@@ -163,11 +176,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( ! is_array( $filters ) ) {
 			$filters = array();
 		}
-		
+
 		if ( ! is_array( $sort ) ) {
 			$sort = array();
 		}
-		
+
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 
