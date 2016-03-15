@@ -61,6 +61,12 @@ class GP_Test_Meta extends GP_UnitTestCase {
 		$this->assertEquals( 'bar', gp_get_meta( 'thing', '1', 'foo' ) );
 	}
 
+	function test_gp_update_meta_updates_an_existing_meta_value() {
+		$this->assertInternalType( 'int', gp_update_meta( '1', 'key', 'value-1', 'thing' ) );
+		$this->assertTrue( gp_update_meta( '1', 'key', 'value-2', 'thing'  ) );
+		$this->assertSame( 'value-2', gp_get_meta( 'thing', '1', 'key' ) );
+	}
+
 	function test_delete_meta_without_value_should_delete_meta() {
 		gp_update_meta( '1', 'foo', 'bar', 'thing' );
 		gp_delete_meta( '1', 'foo', null, 'thing' );
