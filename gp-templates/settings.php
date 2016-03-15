@@ -15,7 +15,7 @@ gp_breadcrumb( array( __( 'Your Settings', 'glotpress' ) ) );
 gp_tmpl_header();
 
 $per_page = get_user_option( 'gp_per_page' );
-if ( 0 == $per_page ) {
+if ( 0 == $per_page ) { // WPCS: loose comparison ok.
 	$per_page = 15;
 }
 
