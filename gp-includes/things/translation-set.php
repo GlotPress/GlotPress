@@ -20,11 +20,18 @@ class GP_Translation_Set extends GP_Thing {
 	public $warnings_count;
 	public $all_count;
 
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
 	public function restrict_fields( $rules ) {
-		$rules->name_should_not_be('empty');
-		$rules->slug_should_not_be('empty');
-		$rules->locale_should_not_be('empty');
-		$rules->project_id_should_not_be('empty');
+		$rules->name_should_not_be( 'empty' );
+		$rules->slug_should_not_be( 'empty' );
+		$rules->locale_should_not_be( 'empty' );
+		$rules->project_id_should_not_be( 'empty' );
 	}
 
 	public function name_with_locale( $separator = '&rarr;') {

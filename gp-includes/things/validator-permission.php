@@ -11,12 +11,19 @@ class GP_Validator_Permission extends GP_Permission {
 	public $locale_slug;
 	public $set_slug;
 
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
 	public function restrict_fields( $rules ) {
-		$rules->project_id_should_not_be('empty');
-		$rules->locale_slug_should_not_be('empty');
-		$rules->user_id_should_not_be('empty');
-		$rules->action_should_not_be('empty');
-		$rules->set_slug_should_not_be('empty');
+		$rules->project_id_should_not_be( 'empty' );
+		$rules->locale_slug_should_not_be( 'empty' );
+		$rules->user_id_should_not_be( 'empty' );
+		$rules->action_should_not_be( 'empty' );
+		$rules->set_slug_should_not_be( 'empty' );
 	}
 
 	public function set_fields( $db_object ) {

@@ -10,8 +10,15 @@ class GP_Glossary extends GP_Thing {
 	public $translation_set_id;
 	public $description;
 
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
 	public function restrict_fields( $rules ) {
-		$rules->translation_set_id_should_not_be('empty');
+		$rules->translation_set_id_should_not_be( 'empty' );
 	}
 
 	/**

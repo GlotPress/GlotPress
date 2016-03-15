@@ -5,9 +5,9 @@ class GP_Glossary_Entry extends GP_Thing {
 	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
 	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
 	var $non_updatable_attributes = array( 'id' );
-	
+
 	public $parts_of_speech = array();
-	
+
 	public $id;
 	public $glossary_id;
 	public $term;
@@ -17,7 +17,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	public $date_modified;
 	public $last_edited_by;
 
-	
+
 	public function __construct( $fields = array() ) {
 		parent::__construct( $fields );
 		$this->setup_pos();
@@ -41,6 +41,13 @@ class GP_Glossary_Entry extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
 	public function restrict_fields( $rules ) {
 		$rules->term_should_not_be( 'empty' );
 		$rules->part_of_speech_should_not_be( 'empty' );

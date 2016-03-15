@@ -73,6 +73,13 @@ class GP_Translation extends GP_Thing {
 		return str_replace( '↵', "\n", $translation );
 	}
 
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
 	public function restrict_fields( $rules ) {
 		$rules->translation_0_should_not_be( 'empty_string' );
 		$rules->translation_1_should_not_be( 'empty_string' );

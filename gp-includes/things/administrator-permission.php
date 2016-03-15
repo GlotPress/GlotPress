@@ -7,11 +7,11 @@ class GP_Administrator_Permission extends GP_Permission {
 	var $non_updatable_attributes = array( 'id' );
 
 	/**
-	 * Adds restrictions to the fields in the object.
-	 *
-	 * @param GP_Validation_Rules $rules The validation rules object to set the field restrictions on.
+	 * Sets restriction rules for fields.
 	 *
 	 * @since 1.1.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
 	 */
 	public function restrict_fields( $rules ) {
 		$rules->user_id_should_not_be( 'empty' );

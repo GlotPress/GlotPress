@@ -8,7 +8,7 @@ class GP_Thing {
 	var $per_page = 30;
 	var $map_results = true;
 	var $static = array();
-	
+
 	public $class;
 	public $table_basename;
 	public $id;
@@ -416,7 +416,7 @@ class GP_Thing {
 	public function after_save() {
 		return true;
 	}
-	
+
 	/**
 	 * Is called after an object is deleted from the database.
 	 *
@@ -486,8 +486,15 @@ class GP_Thing {
 		return $query;
 	}
 
-	public function restrict_fields( $thing ) {
-		// Don't restrict any fields by default
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		// Don't restrict any fields by default.
 	}
 
 	public function validate() {
