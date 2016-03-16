@@ -10,8 +10,8 @@
  * @since 1.1.0
  */
 
-$per_page = get_user_option( 'gp_per_page' );
-if ( 0 == $per_page ) { // WPCS: loose comparison ok.
+$per_page = (int) get_user_option( 'gp_per_page' );
+if ( 0 === $per_page ) {
 	$per_page = 15;
 }
 
@@ -30,24 +30,33 @@ if ( ! is_array( $default_sort ) ) {
 		</tr>
 		<tr>
 			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ) ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[by]', // WPCS: xss ok.
-				array(
-					'original_date_added'    => __( 'Date added (original)', 'glotpress' ),
-					'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
-					'original'               => __( 'Original string', 'glotpress' ),
-					'translation'            => __( 'Translation', 'glotpress' ),
-					'priority'               => __( 'Priority', 'glotpress' ),
-					'references'             => __( 'Filename in source', 'glotpress' ),
-					'random'                 => __( 'Random', 'glotpress' ),
-				), gp_array_get( $default_sort, 'by', 'priority' ) ); ?></td>
+			<td><?php
+				echo gp_radio_buttons(
+					'default_sort[by]',
+					array(
+						'original_date_added'    => __( 'Date added (original)', 'glotpress' ),
+						'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
+						'original'               => __( 'Original string', 'glotpress' ),
+						'translation'            => __( 'Translation', 'glotpress' ),
+						'priority'               => __( 'Priority', 'glotpress' ),
+						'references'             => __( 'Filename in source', 'glotpress' ),
+						'random'                 => __( 'Random', 'glotpress' ),
+					),
+					gp_array_get( $default_sort, 'by', 'priority' )
+				);
+			?></td>
 		</tr>
 		<tr>
 			<th><label for="default_sort[how]"><?php _e( 'Default Sort Order:', 'glotpress' ) ?></label></th>
-			<td><?php echo gp_radio_buttons('default_sort[how]', // WPCS: xss ok.
-			array(
-				'asc' => __( 'Ascending', 'glotpress' ),
-				'desc' => __( 'Descending', 'glotpress' ),
-			), gp_array_get( $default_sort, 'how', 'desc' ) );
+			<td><?php
+				echo gp_radio_buttons(
+					'default_sort[how]',
+					array(
+						'asc' => __( 'Ascending', 'glotpress' ),
+						'desc' => __( 'Descending', 'glotpress' ),
+					),
+					gp_array_get( $default_sort, 'how', 'desc' )
+				);
 			?></td>
 		</tr>
 	</table>

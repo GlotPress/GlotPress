@@ -44,6 +44,12 @@ class GP_Route_Settings extends GP_Route_Main {
 				$user_id = get_current_user_id();
 			}
 
+			if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'update-settings_' . $user_id ) ) {
+				gp_notice_set( __( 'An error has occurred. Please try again.', 'glotpress' ), 'error' );
+				$this->redirect( gp_url( '/settings' ) );
+				exit;
+			}
+
 			$per_page = (int) $_POST['per_page'];
 			update_user_option( $user_id, 'gp_per_page', $per_page );
 
