@@ -230,17 +230,6 @@ class GP_Original extends GP_Thing {
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
 
-				/**
-				 * Filter whether translations should be added from other projects for newly created originals.
-				 *
-				 * @since 1.0.0
-				 *
-				 * @param bool $add_translations Add translations from other projects. Default true.
-				 */
-				if ( apply_filters( 'gp_enable_add_translations_from_other_projects', true ) ) {
-					$created->add_translations_from_other_projects();
-				}
-
 				$originals_added++;
 			}
 		}
@@ -375,63 +364,6 @@ class GP_Original extends GP_Thing {
 		$where = implode( ' AND ', $where );
 
 		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
-	}
-
-	public function add_translations_from_other_projects() {
-		global $wpdb;
-
-		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->gp_translation_sets WHERE project_id = %d", $this->project_id );
-		if ( empty( $project_translations_sets ) ) {
-			return;
-		}
-
-		$matched_sets = array();
-
-		$sql_project  = $wpdb->prepare( 'o.project_id != %d', $this->project_id );
-		$sql_singular = $wpdb->prepare( 'o.singular = BINARY %s', $this->singular );
-		$sql_plural = is_null( $this->plural ) ? 'o.plural IS NULL' : $wpdb->prepare( 'o.plural = BINARY %s', $this->plural );
-		$sql_context = is_null( $this->context ) ? 'o.context IS NULL' : $wpdb->prepare( 'o.context = BINARY %s', $this->context );
-
-		$sql = "SELECT t.*, s.locale, s.slug
-			FROM {$this->table} o
-				JOIN {$wpdb->gp_translations} t ON o.id = t.original_id
-				JOIN {$wpdb->gp_translation_sets} s ON t.translation_set_id = s.id
-			WHERE
-				$sql_context AND $sql_singular AND $sql_plural
-				AND o.status = '+active' AND $sql_project
-				AND t.status = 'current'
-			GROUP BY t.translation_0, t.translation_1, t.translation_2, t.translation_3, t.translation_4, t.translation_5, s.locale, s.slug
-			ORDER BY t.date_modified DESC, t.id DESC";
-
-		$other_project_translations = GP::$translation->many( $sql );
-
-		foreach ( $other_project_translations as $t ) {
-			$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t ) {
-				return $set->locale == $t->locale && $set->slug == $t->slug;
-			} );
-
-			if ( empty( $o_translation_set ) ) {
-				continue;
-			}
-
-			$o_translation_set = reset( $o_translation_set );
-			if ( in_array( $o_translation_set->id, $matched_sets ) ) {
-				// We already have a translation for this set.
-				continue;
-			}
-
-			$matched_sets[] = $o_translation_set->id;
-
-			/**
-			 * Filter the status of translations copied over from other projects.
-			 *
-			 * @since 1.0.0
-			 *
-			 * @param string $status The status of the copied translation. Default 'current'.
-			 */
-			$copy_status = apply_filters( 'gp_translations_from_other_projects_status', 'current' );
-			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
-		}
 	}
 
 	// Triggers

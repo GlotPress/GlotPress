@@ -521,18 +521,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( false === $res || null === $res ) {
 			return $this->die_with_error( 'Error in saving the translation!' );
 		}
-
-		// Translations with warnings aren't propagated, try again.
-		/**
-		 * Filter whether a translation should be propagated across projects.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param bool $propagate If a translation should be propagated across projects.
-		 */
-		if ( apply_filters( 'gp_enable_propagate_translations_across_projects', true ) ) {
-			$translation->propagate_across_projects();
-		}
 	}
 
 	private function set_status_edit_function( $project, $locale, $translation_set, $translation ) {
