@@ -1,17 +1,14 @@
 <?php
 /**
- * The Settings Route Class
- *
- * Handles the settings page display and saving of settings.
- *
- * @link http://glotpress.org
+ * Routes: GP_Route_Settings class
  *
  * @package GlotPress
+ * @subpackage Routes
  * @since 1.1.0
  */
 
 /**
- * The Settings Route Class.
+ * Core class used to implement the settings route.
  *
  * @since 1.1.0
  */
@@ -23,7 +20,7 @@ class GP_Route_Settings extends GP_Route_Main {
 	public function settings_get() {
 		if ( ! is_user_logged_in() ) {
 			$this->redirect( wp_login_url( gp_url_profile() ) );
-			return;
+			exit;
 		}
 
 		$this->tmpl( 'settings' );
@@ -63,5 +60,6 @@ class GP_Route_Settings extends GP_Route_Main {
 		}
 
 		$this->redirect( gp_url( '/settings' ) );
+		exit;
 	}
 }
