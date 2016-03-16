@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Thing class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core base class extended to register things.
+ *
+ * @since 1.0.0
+ */
 class GP_Thing {
 
 	var $field_names = array();
@@ -8,7 +21,7 @@ class GP_Thing {
 	var $per_page = 30;
 	var $map_results = true;
 	var $static = array();
-	
+
 	public $class;
 	public $table_basename;
 	public $id;
@@ -219,6 +232,50 @@ class GP_Thing {
 		return $result;
 	}
 
+	/**
+	 * [map_no_map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $results The results, unmapped.
+	 * @return mixed
+	 */
+	public function map_no_map( $results ) {
+		return $this->_no_map( 'map', $results );
+	}
+
+	/**
+	 * [map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $results The results, mapped.
+	 * @return mixed
+	 */
+	public function map( $results ) {
+		if ( isset( $this->map_results ) && ! $this->map_results ) {
+			return $results;
+		}
+
+		if ( ! $results || ! is_array( $results ) ) {
+			$results = array();
+		}
+
+		$mapped = array();
+		foreach ( $results as $result ) {
+			$mapped[] = $this->coerce( $result );
+		}
+
+		return $mapped;
+	}
+
+	/**
+	 * Performs a database query.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return mixed
+	 */
 	public function query() {
 		global $wpdb;
 		$args = func_get_args();
@@ -377,20 +434,6 @@ class GP_Thing {
 		}
 	}
 
-	public function map( $results ) {
-		if ( isset( $this->map_results ) && !$this->map_results ) return $results;
-		if ( !$results || !is_array( $results ) ) $results = array();
-		$mapped = array();
-		foreach( $results as $result ) {
-			$mapped[] = $this->coerce( $result );
-		}
-		return $mapped;
-	}
-
-	function map_no_map( $results ) {
-		return $this->_no_map( 'map', $results );
-	}
-
 	// Triggers
 
 	/**
@@ -414,7 +457,7 @@ class GP_Thing {
 	public function after_save() {
 		return true;
 	}
-	
+
 	/**
 	 * Is called after an object is deleted from the database.
 	 *
@@ -484,8 +527,15 @@ class GP_Thing {
 		return $query;
 	}
 
-	public function restrict_fields( $thing ) {
-		// Don't restrict any fields by default
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		// Don't restrict any fields by default.
 	}
 
 	public function validate() {

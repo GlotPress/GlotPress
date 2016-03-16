@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Translation class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translation route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Translation extends GP_Route_Main {
 
 	public function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
@@ -79,7 +92,14 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$format = gp_array_get( GP::$formats, gp_get( 'format', 'po' ), null );
+		$get_format = gp_get( 'format', 'po' );
+
+		// If for some reason we were passed in an array or object from the get parameters, don't use it.
+		if ( ! is_string( $get_format ) ) {
+			$get_format = '.po';
+		}
+
+		$format = gp_array_get( GP::$formats, $get_format, null );
 
 		if ( ! $format ) {
 			return $this->die_with_404();
@@ -143,15 +163,24 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filters = gp_get( 'filters', array() );
 		$sort = gp_get( 'sort', array() );
 
-		if ( 'random' == gp_array_get( $sort, 'by') ) {
+		if ( is_array( $sort ) && 'random' === gp_array_get( $sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
 		}
 
-		$per_page = get_user_option( 'gp_per_page' );
-		if ( 0 == $per_page )
+		$per_page = (int) get_user_option( 'gp_per_page' );
+		if ( 0 === $per_page ) {
 			$per_page = GP::$translation->per_page;
-		else
+		} else {
 			GP::$translation->per_page = $per_page;
+		}
+
+		if ( ! is_array( $filters ) ) {
+			$filters = array();
+		}
+
+		if ( ! is_array( $sort ) ) {
+			$sort = array();
+		}
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
@@ -432,7 +461,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
-		if ( $translations ) {
+		if ( ! empty( $translations ) ) {
 			$t = $translations[0];
 
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
@@ -444,6 +473,16 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Discard a warning.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Locale          $locale          The GlotPress locale.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param GP_Translation     $translation     The translation object.
+	 */
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
 			return $this->die_with_error( 'The warning doesn&#8217;exist!' );
@@ -479,7 +518,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$res = $translation->save();
 
-		if ( ! $res ) {
+		if ( false === $res || null === $res ) {
 			return $this->die_with_error( 'Error in saving the translation!' );
 		}
 

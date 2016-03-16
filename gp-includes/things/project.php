@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Project class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the projects.
+ *
+ * @since 1.0.0
+ */
 class GP_Project extends GP_Thing {
 
 	var $table_basename = 'gp_projects';
@@ -16,9 +29,16 @@ class GP_Project extends GP_Thing {
 	public $active;
 	public $user_source_url_template;
 
-	public function restrict_fields( $project ) {
-		$project->name_should_not_be('empty');
-		$project->slug_should_not_be('empty');
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		$rules->name_should_not_be( 'empty' );
+		$rules->slug_should_not_be( 'empty' );
 	}
 
 	// Additional queries
@@ -70,12 +90,12 @@ class GP_Project extends GP_Thing {
 		 * @param GP_Project $project The project that was created.
 		 */
 		do_action( 'gp_project_created', $this );
-		
+
 		// TODO: pass some args to pre/after_create?
 		if ( is_null( $this->update_path() ) ) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -95,7 +115,7 @@ class GP_Project extends GP_Thing {
 		 * @param GP_Project $project The project that was saved.
 		 */
 		do_action( 'gp_project_saved', $this );
-		
+
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed
 		return ! is_null( $this->update_path() );
@@ -125,33 +145,33 @@ class GP_Project extends GP_Thing {
 
 	public function normalize_fields( $args ) {
 		$args = (array)$args;
-		
+
 		if ( isset( $args['parent_project_id'] ) ) {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
-		
+
 		if ( isset( $args['slug'] ) && !$args['slug'] ) {
 			$args['slug'] = $args['name'];
 		}
-		
+
 		if ( ! empty( $args['slug'] ) ) {
 			$args['slug'] = sanitize_title( $args['slug'] );
 		}
-		
+
 		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] )) {
 			unset( $args['path'] );
 		}
-		
+
 		if ( isset( $args['active'] ) ) {
 			if ( 'on' === $args['active'] ) {
 				$args['active'] = 1;
 			}
-			
+
 			if ( !$args['active'] ) {
 				$args['active'] = 0;
 			}
 		}
-		
+
 		return $args;
 	}
 

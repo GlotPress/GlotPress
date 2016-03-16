@@ -1,7 +1,16 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql )
- * @method object|array find_many_no_map( string|array $sql )
+ * Things: GP_Translation_Set class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translation sets.
+ *
+ * @since 1.0.0
  */
 class GP_Translation_Set extends GP_Thing {
 
@@ -24,11 +33,18 @@ class GP_Translation_Set extends GP_Thing {
 	public $warnings_count;
 	public $all_count;
 
-	public function restrict_fields( $set ) {
-		$set->name_should_not_be('empty');
-		$set->slug_should_not_be('empty');
-		$set->locale_should_not_be('empty');
-		$set->project_id_should_not_be('empty');
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		$rules->name_should_not_be( 'empty' );
+		$rules->slug_should_not_be( 'empty' );
+		$rules->locale_should_not_be( 'empty' );
+		$rules->project_id_should_not_be( 'empty' );
 	}
 
 	public function name_with_locale( $separator = '&rarr;') {

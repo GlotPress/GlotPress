@@ -1,9 +1,16 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql )
- * @method object|array find_no_map( array $options )
- * @method object|array find_many_no_map( string|array $sql )
- * @method object|array value_no_map( string|array $sql )
+ * Things: GP_Translation class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translations.
+ *
+ * @since 1.0.0
  */
 class GP_Translation extends GP_Thing {
 
@@ -79,17 +86,24 @@ class GP_Translation extends GP_Thing {
 		return str_replace( '↵', "\n", $translation );
 	}
 
-	public function restrict_fields( $translation ) {
-		$translation->translation_0_should_not_be( 'empty_string' );
-		$translation->translation_1_should_not_be( 'empty_string' );
-		$translation->translation_2_should_not_be( 'empty_string' );
-		$translation->translation_3_should_not_be( 'empty_string' );
-		$translation->translation_4_should_not_be( 'empty_string' );
-		$translation->translation_5_should_not_be( 'empty_string' );
-		$translation->status_should_not_be( 'empty' );
-		$translation->original_id_should_be( 'positive_int' );
-		$translation->translation_set_id_should_be( 'positive_int' );
-		$translation->user_id_should_be( 'positive_int' );
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		$rules->translation_0_should_not_be( 'empty_string' );
+		$rules->translation_1_should_not_be( 'empty_string' );
+		$rules->translation_2_should_not_be( 'empty_string' );
+		$rules->translation_3_should_not_be( 'empty_string' );
+		$rules->translation_4_should_not_be( 'empty_string' );
+		$rules->translation_5_should_not_be( 'empty_string' );
+		$rules->status_should_not_be( 'empty' );
+		$rules->original_id_should_be( 'positive_int' );
+		$rules->translation_set_id_should_be( 'positive_int' );
+		$rules->user_id_should_be( 'positive_int' );
 	}
 
 
@@ -281,6 +295,7 @@ class GP_Translation extends GP_Thing {
 
 		$new_translation_set = GP::$translation_set->get( $new_translation_set_id );
 		$locale = GP_Locales::by_slug( $new_translation_set->locale );
+		$new_translation = array();
 
 		for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 			$new_translation[] = $this->{"translation_{$i}"};
@@ -458,7 +473,7 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was created.
 		 */
 		do_action( 'gp_translation_created', $this );
-		
+
 		return true;
 	}
 
@@ -478,7 +493,7 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was saved.
 		 */
 		do_action( 'gp_translation_saved', $this );
-		
+
 		return true;
 	}
 
@@ -498,7 +513,7 @@ class GP_Translation extends GP_Thing {
 		 * @param GP_Translation $translation Translation that was deleted.
 		 */
 		do_action( 'gp_translation_deleted', $this );
-		
+
 		return true;
 	}
 }

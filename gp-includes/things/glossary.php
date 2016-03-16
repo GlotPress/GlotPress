@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Glossary class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the glossaries.
+ *
+ * @since 1.0.0
+ */
 class GP_Glossary extends GP_Thing {
 
 	var $table_basename = 'gp_glossaries';
@@ -10,8 +23,15 @@ class GP_Glossary extends GP_Thing {
 	public $translation_set_id;
 	public $description;
 
-	function restrict_fields( $glossary ) {
-		$glossary->translation_set_id_should_not_be('empty');
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		$rules->translation_set_id_should_not_be( 'empty' );
 	}
 
 	/**

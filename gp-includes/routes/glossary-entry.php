@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Glossary_Entry class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the glossary entry route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 	public function glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {

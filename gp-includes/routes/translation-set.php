@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Translation_Set class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translation set route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Translation_Set extends GP_Route_Main {
 	public function new_get() {
 		$set = new GP_Translation_Set;

@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Permission class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the permissions.
+ *
+ * @since 1.0.0
+ */
 class GP_Permission extends GP_Thing {
 
 	var $table_basename = 'gp_permissions';

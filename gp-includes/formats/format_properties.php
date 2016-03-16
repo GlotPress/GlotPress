@@ -345,7 +345,7 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @param string $file_name The filename of the uploaded properties file.
 	 *
-	 * @return Translations
+	 * @return Translations|bool
 	 */
 	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
@@ -443,7 +443,6 @@ class GP_Format_Properties extends GP_Format {
 		// Make sure we save the last entry if it is a multi-line entry.
 		if ( true === $inline ) {
 			$entries->add_entry( $entry );
-			$inline = false;
 		}
 
 		return $entries;
