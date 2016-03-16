@@ -130,8 +130,6 @@ class GP_Thing {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed ... A series of parameters to query with.
-	 *
 	 * @return mixed
 	 */
 	public function many_no_map() {
@@ -221,6 +219,50 @@ class GP_Thing {
 		return $result;
 	}
 
+	/**
+	 * [map_no_map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $results The results, unmapped.
+	 * @return mixed
+	 */
+	public function map_no_map( $results ) {
+		return $this->_no_map( 'map', $results );
+	}
+
+	/**
+	 * [map description]
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $results The results, mapped.
+	 * @return mixed
+	 */
+	public function map( $results ) {
+		if ( isset( $this->map_results ) && ! $this->map_results ) {
+			return $results;
+		}
+
+		if ( ! $results || ! is_array( $results ) ) {
+			$results = array();
+		}
+
+		$mapped = array();
+		foreach ( $results as $result ) {
+			$mapped[] = $this->coerce( $result );
+		}
+
+		return $mapped;
+	}
+
+	/**
+	 * Performs a database query.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return mixed
+	 */
 	public function query() {
 		global $wpdb;
 		$args = func_get_args();
@@ -377,20 +419,6 @@ class GP_Thing {
 			$class = $this->class;
 			return new $class( $thing );
 		}
-	}
-
-	public function map( $results ) {
-		if ( isset( $this->map_results ) && !$this->map_results ) return $results;
-		if ( !$results || !is_array( $results ) ) $results = array();
-		$mapped = array();
-		foreach( $results as $result ) {
-			$mapped[] = $this->coerce( $result );
-		}
-		return $mapped;
-	}
-
-	public function map_no_map( $results ) {
-		return $this->_no_map( 'map', $results );
 	}
 
 	// Triggers
