@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Administrator_Permission class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.1.0
+ */
+
+/**
+ * Core class used to implement the administrator permissions.
+ *
+ * @since 1.1.0
+ */
 class GP_Administrator_Permission extends GP_Permission {
 
 	var $table_basename = 'gp_permissions';

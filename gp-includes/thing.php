@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Thing class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core base class extended to register things.
+ *
+ * @since 1.0.0
+ */
 class GP_Thing {
 
 	var $field_names = array();

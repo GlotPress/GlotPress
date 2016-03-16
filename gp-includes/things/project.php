@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Project class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the projects.
+ *
+ * @since 1.0.0
+ */
 class GP_Project extends GP_Thing {
 
 	var $table_basename = 'gp_projects';

@@ -1,6 +1,16 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql, int $id )
+ * Things: GP_Original class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the originals.
+ *
+ * @since 1.0.0
  */
 class GP_Original extends GP_Thing {
 

@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Translation_Set class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translation sets.
+ *
+ * @since 1.0.0
+ */
 class GP_Translation_Set extends GP_Thing {
 
 	var $table_basename = 'gp_translation_sets';

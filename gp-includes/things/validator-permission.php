@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Validator_Permission class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the validator permissions.
+ *
+ * @since 1.0.0
+ */
 class GP_Validator_Permission extends GP_Permission {
 
 	var $table_basename = 'gp_permissions';

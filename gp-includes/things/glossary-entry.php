@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Glossary_Entry class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the glossary entries.
+ *
+ * @since 1.0.0
+ */
 class GP_Glossary_Entry extends GP_Thing {
 
 	var $table_basename = 'gp_glossary_entries';

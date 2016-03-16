@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Translation class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the translations.
+ *
+ * @since 1.0.0
+ */
 class GP_Translation extends GP_Thing {
 
 	public $per_page = 15;
