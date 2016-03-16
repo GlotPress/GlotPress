@@ -11,6 +11,12 @@
 		<severity>0</severity>
 	</rule>
 
+	<rule ref="WordPress.XSS.EscapeOutput">
+		<properties>
+			<property name="customAutoEscapedFunctions" value="gp_radio_buttons" type="array" />
+		</properties>
+	</rule>
+
 	<exclude-pattern>*/tests/*</exclude-pattern>
 	<exclude-pattern>*/dev-lib/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
