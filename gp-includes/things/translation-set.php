@@ -77,11 +77,26 @@ class GP_Translation_Set extends GP_Thing {
 		return $args;
 	}
 
-	public function name_with_locale( $separator = '&rarr;') {
+	/**
+	 * Returns the English name of a locale.
+	 *
+	 * If the slug of the locale is not 'default' then the name of the
+	 * current translation sets gets added as a suffix.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $separator Separator, in case the slug is not 'default'. Default: '&rarr;'.
+	 * @return string The English name of a locale.
+	 */
+	public function name_with_locale( $separator = '&rarr;' ) {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$parts = array( $locale->english_name );
-		if ( 'default' != $this->slug ) $parts[] = $this->name;
-		return implode( '&nbsp;'.$separator.'&nbsp;', $parts );
+
+		if ( 'default' !== $this->slug ) {
+			$parts[] = $this->name;
+		}
+
+		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
