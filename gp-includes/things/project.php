@@ -378,13 +378,12 @@ class GP_Project extends GP_Thing {
 	 */
 	public function delete() {
 		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
-		
+
 		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
 
 		GP::$original->delete_many( array( 'project_id' => $this->id ) );
-		
+
 		return parent::delete();
 	}
-	
 }
 GP::$project = new GP_Project();

@@ -365,9 +365,9 @@ class GP_Thing {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $where array An array of conditions to use to for a SQL "where" clause, if null, not used and all matching rows will be deleted.
+	 * @param array $where An array of conditions to use to for a SQL "where" clause, if null, not used and all matching rows will be deleted.
 	 */
-	public function delete_all( $where = null  ) {
+	public function delete_all( $where = null ) {
 		$query = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
 		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
@@ -381,17 +381,15 @@ class GP_Thing {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param $where array An array of conditions to use to for a SQL "where" clause, if not passed, no rows will be deleted.
+	 * @param array $where An array of conditions to use to for a SQL "where" clause, if not passed, no rows will be deleted.
 	 */
 	public function delete_many( $where = null ) {
-		if ( null != $where ) {
+		if ( null !== $where ) {
 			return $this->delete_all( $where );
 		}
-		
+
 		return false;
 	}
-	
-	// Fields handling
 
 	public function set_fields( $db_object ) {
 		$db_object = $this->normalize_fields( $db_object );

@@ -13,9 +13,7 @@
 
 	<rule ref="WordPress.XSS.EscapeOutput">
 		<properties>
-			<property name="customAutoEscapedFunctions" value="gp_radio_buttons" type="array" />
-			<property name="customAutoEscapedFunctions" value="gp_select" type="array" />
-			<property name="customAutoEscapedFunctions" value="gp_projects_dropdown" type="array" />
+			<property name="customAutoEscapedFunctions" value="gp_radio_buttons=>gp_radio_buttons,gp_select=>gp_select,gp_projects_dropdown=>gp_projects_dropdown,gp_link_glossary_delete_get=>gp_link_glossary_delete_get,gp_link_set_delete_get=>gp_link_set_delete_get,__=>__" type="array" />
 		</properties>
 	</rule>
 

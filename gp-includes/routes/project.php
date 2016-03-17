@@ -203,10 +203,10 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! is_object( $project ) ) {
-			
+
 			$this->redirect( gp_url_public_root() );
 			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
-			
+
 			return;
 		}
 
@@ -223,7 +223,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$this->redirect( gp_url_public_root() );
 	}
-	
+
 	/**
 	 * Displays the delete page for projects.
 	 *

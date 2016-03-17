@@ -114,7 +114,7 @@ class GP_Glossary extends GP_Thing {
 	 */
 	public function delete() {
 		GP::$glossary_entry->delete_many( array( 'glossary_id', $this->id ) );
-		
+
 		return parent::delete();
 	}
 }
