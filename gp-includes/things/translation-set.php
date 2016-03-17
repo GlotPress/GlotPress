@@ -341,7 +341,7 @@ class GP_Translation_Set extends GP_Thing {
 	/**
 	 * Deletes a translation set and all of it's translations and glossaries.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */

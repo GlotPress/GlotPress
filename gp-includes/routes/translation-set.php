@@ -94,7 +94,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	/**
 	 * Deletes a translation set.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param int $set_id The id of the translation set to delete.
 	 */
@@ -122,7 +122,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	/**
 	 * Displays the delete page for translations sets.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param int $set_id The id of the translation set to delete.
 	 */

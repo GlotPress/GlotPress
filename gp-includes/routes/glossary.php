@@ -112,7 +112,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 	/**
 	 * Displays the delete page for glossaries.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param int $glossary_id The id of the glossary to delete.
 	 */
@@ -137,7 +137,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 	/**
 	 * Delete a glossary.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param int $glossary_id The id of the glossary to delete.
 	 */
@@ -178,7 +178,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 	/**
 	 * Checks to see if the current user can delete a glossary or not.  If they cannot it redirects back to the project page.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param GP_Glossary $glossary The glossary object to check.
 	 *

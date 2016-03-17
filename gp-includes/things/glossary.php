@@ -108,7 +108,7 @@ class GP_Glossary extends GP_Thing {
 	/**
 	 * Deletes a glossary and all of it's entries.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */

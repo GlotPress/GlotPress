@@ -404,7 +404,7 @@ class GP_Original extends GP_Thing {
 	/**
 	 * Executes after saving an original.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
@@ -412,7 +412,7 @@ class GP_Original extends GP_Thing {
 		/**
 		 * Fires after an original is saved.
 		 *
-		 * @since 1.1.0
+		 * @since 2.0.0
 		 *
 		 * @param GP_original $original The original that was saved.
 		 */
@@ -424,7 +424,7 @@ class GP_Original extends GP_Thing {
 	/**
 	 * Executes after deleting an original.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
@@ -432,7 +432,7 @@ class GP_Original extends GP_Thing {
 		/**
 		 * Fires after an original is deleted.
 		 *
-		 * @since 1.1.0
+		 * @since 2.0.0
 		 *
 		 * @param GP_original $original The original that was deleted.
 		 */

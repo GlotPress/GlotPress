@@ -4,13 +4,13 @@
  *
  * @package GlotPress
  * @subpackage Routes
- * @since 1.1.0
+ * @since 2.0.0
  */
 
 /**
  * Core class used to implement the settings route.
  *
- * @since 1.1.0
+ * @since 2.0.0
  */
 class GP_Route_Settings extends GP_Route_Main {
 

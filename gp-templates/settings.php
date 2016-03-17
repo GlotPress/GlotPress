@@ -7,7 +7,7 @@
  * @link http://glotpress.org
  *
  * @package GlotPress
- * @since 1.1.0
+ * @since 2.0.0
  */
 
 gp_title( __( 'Your Settings &lt; GlotPress', 'glotpress' ) );

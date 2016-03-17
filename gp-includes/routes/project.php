@@ -206,7 +206,7 @@ class GP_Route_Project extends GP_Route_Main {
 	/**
 	 * Deletes a project, including sub projects, glossaries, originals, translations sets and translations.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param int $project_path The path of the project to delete.
 	 */
@@ -238,7 +238,7 @@ class GP_Route_Project extends GP_Route_Main {
 	/**
 	 * Displays the delete page for projects.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $project_path The path of the project to delete.
 	 */

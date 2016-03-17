@@ -376,7 +376,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Executes after deleting a translation.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
@@ -384,7 +384,7 @@ class GP_Translation extends GP_Thing {
 		/**
 		 * Fires after a translation was deleted.
 		 *
-		 * @since 1.1.0
+		 * @since 2.0.0
 		 *
 		 * @param GP_Translation $translation Translation that was deleted.
 		 */

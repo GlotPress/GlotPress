@@ -4,7 +4,7 @@
  *
  * @package GlotPress
  * @subpackage Templates
- * @since 1.1.0
+ * @since 2.0.0
  */
 
 gp_title( sprintf( __( 'Delete Project %s &lt; GlotPress', 'glotpress' ),  $project->name ) );

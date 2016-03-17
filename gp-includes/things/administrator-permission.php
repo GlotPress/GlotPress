@@ -4,13 +4,13 @@
  *
  * @package GlotPress
  * @subpackage Things
- * @since 1.1.0
+ * @since 2.0.0
  */
 
 /**
  * Core class used to implement the administrator permissions.
  *
- * @since 1.1.0
+ * @since 2.0.0
  */
 class GP_Administrator_Permission extends GP_Permission {
 
@@ -22,7 +22,7 @@ class GP_Administrator_Permission extends GP_Permission {
 	/**
 	 * Sets restriction rules for fields.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param GP_Validation_Rules $rules The validation rules instance.
 	 */

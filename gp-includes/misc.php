@@ -424,7 +424,7 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 /**
  * Displays the GlotPress administrator option in the user profile screen for WordPress administrators.
  *
- * @since 1.1.0
+ * @since 2.0.0
  *
  * @param WP_User $user The WP_User object to display the profile for.
  */
@@ -456,7 +456,7 @@ function gp_wp_profile_options( $user ) {
 /**
  * Saves the settings for the GlotPress administrator option in the user profile screen for WordPress administrators.
  *
- * @since 1.1.0
+ * @since 2.0.0
  *
  * @param int $user_id The WordPress user id to save the setting for.
  */

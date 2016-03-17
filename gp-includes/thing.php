@@ -379,7 +379,7 @@ class GP_Thing {
 	/**
 	 * Deletes multiple rows
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param array $where An array of conditions to use to for a SQL "where" clause, if not passed, no rows will be deleted.
 	 */
