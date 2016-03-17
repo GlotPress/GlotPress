@@ -31,7 +31,7 @@ if ( ! is_array( $default_sort ) ) {
 <form action="" method="post">
 	<?php include_once __DIR__ . '/settings-edit.php'; ?>
 	<br>
-	<?php wp_nonce_field( 'update-settings_' . get_current_user_id() ); ?>
+	<?php gp_route_nonce_field( 'update-settings_' . get_current_user_id() ); ?>
 	<input type="submit" name="submit" value="<?php esc_attr_e( 'Change Settings', 'glotpress' ); ?>">
 </form>
 

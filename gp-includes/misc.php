@@ -23,6 +23,19 @@ function gp_get( $key, $default = '' ) {
 }
 
 /**
+ * Prints a nonce hidden field for route actions.
+ *
+ * @since 1.1.0
+ *
+ * @see wp_nonce_field()
+ *
+ * @param int|string $action Action name.
+ */
+function gp_route_nonce_field( $action ) {
+	wp_nonce_field( $action , '_gp_route_nonce', true, true );
+}
+
+/**
  * Retrieves a value from $array
  *
  * @param array $array

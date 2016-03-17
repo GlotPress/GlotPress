@@ -118,6 +118,38 @@ class GP_Route {
 		return false;
 	}
 
+	/**
+	 * Verifies a nonce for a route.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $action Context for the created nonce.
+	 * @return bool False if the nonce is invalid, true if valid.
+	 */
+	public function verify_nonce( $action ) {
+		if ( empty( $_REQUEST['_gp_route_nonce'] ) ) {
+			return false;
+		}
+
+		if ( ! wp_verify_nonce( $_REQUEST['_gp_route_nonce'], $action ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determines whether a user can perfom an action and redirects in case of a failure.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string      $action      The action.
+	 * @param string|null $object_type Optional. Type of an object. Default null.
+	 * @param int|null    $object_id   Otional. ID of an object Default null.
+	 * @param string      $message     Error message in case of a failure.
+	 *                                 Default: 'You are not allowed to do that!'.
+	 * @return false
+	 */
 	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
