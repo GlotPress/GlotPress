@@ -115,7 +115,7 @@ class GP_Original extends GP_Thing {
 	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
-		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
+		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = $originals_error = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key = array();
@@ -134,8 +134,15 @@ class GP_Original extends GP_Thing {
 
 		$possibly_added = $possibly_dropped = array();
 
-		foreach( $translations->entries as $entry ) {
+		foreach ( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();
+
+			// Context needs to match VARCHAR(255) in the database schema.
+			if ( gp_strlen( $entry->context ) > 255 ) {
+				$entry->context = gp_substr( $entry->context, 0, 255 );
+				$translations->entries[ $entry->key() ] = $entry;
+			}
+
 			$data = array(
 				'project_id' => $project->id,
 				'context'    => $entry->context,
@@ -230,6 +237,11 @@ class GP_Original extends GP_Thing {
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
 
+				if ( ! $created ) {
+					$originals_error++;
+					continue;
+				}
+
 				$originals_added++;
 			}
 		}
@@ -258,10 +270,11 @@ class GP_Original extends GP_Thing {
 		 * @param int    $originals_existing  Number of existing originals updated.
 		 * @param int    $originals_obsoleted Number of originals that were marked as obsolete.
 		 * @param int    $originals_fuzzied   Number of originals that were close matches of old ones and thus marked as fuzzy.
+		 * @param int    $originals_error     Number of originals that were not imported due to an error.
 		 */
-		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
+		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error );
 
-		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted );
+		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error );
 	}
 
 	public function set_translations_for_original_to_fuzzy( $original_id ) {

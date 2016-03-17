@@ -49,5 +49,15 @@ class GP_CLI_Import_Originals extends WP_CLI_Command {
 				$originals_obsoleted
 			)
 		);
+
+		if ( $originals_error ) {
+			$notice = ' ' . sprintf(
+				/* translators: %s: number of errors */
+				_n( '%s new string was not imported due to an error.', '%s new strings were not imported due to an error.', $originals_error, 'glotpress' ),
+				$originals_error
+			);
+		}
+
+		WP_CLI::line( $notice );
 	}
 }
