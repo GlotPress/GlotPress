@@ -47,10 +47,17 @@ class GP_Translation_Set extends GP_Thing {
 		$rules->project_id_should_not_be( 'empty' );
 	}
 
-	// Field handling
-
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Translation_Set object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Translation_Set object.
+	 * @return array Normalized arguments for a GP_Translation_Set object.
+	 */
 	public function normalize_fields( $args ) {
-		$args = (array)$args;
+		$args = (array) $args;
 
 		if ( isset( $args['name'] ) && empty( $args['name'] ) ) {
 			if ( isset( $args['locale'] ) && ! empty( $args['locale'] ) ) {
@@ -59,7 +66,7 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		}
 
-		if ( isset( $args['slug'] ) && !$args['slug'] ) {
+		if ( isset( $args['slug'] ) && ! $args['slug'] ) {
 			$args['slug'] = 'default';
 		}
 

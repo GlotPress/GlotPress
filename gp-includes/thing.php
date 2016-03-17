@@ -378,6 +378,11 @@ class GP_Thing {
 	 * a GP_Thing object.
 	 *
 	 * @todo Include default type handling. For example dates 0000-00-00 should be set to null
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Thing object.
+	 * @return array Normalized arguments for a GP_Thing object.
 	 */
 	public function normalize_fields( $args ) {
 		return $args;

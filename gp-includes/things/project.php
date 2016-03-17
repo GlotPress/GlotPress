@@ -141,10 +141,17 @@ class GP_Project extends GP_Thing {
 		return true;
 	}
 
-	// Field handling
-
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Project object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Project object.
+	 * @return array Normalized arguments for a GP_Project object.
+	 */
 	public function normalize_fields( $args ) {
-		$args = (array)$args;
+		$args = (array) $args;
 
 		if ( isset( $args['parent_project_id'] ) ) {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
