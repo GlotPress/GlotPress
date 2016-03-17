@@ -47,11 +47,56 @@ class GP_Translation_Set extends GP_Thing {
 		$rules->project_id_should_not_be( 'empty' );
 	}
 
-	public function name_with_locale( $separator = '&rarr;') {
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Translation_Set object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Translation_Set object.
+	 * @return array Normalized arguments for a GP_Translation_Set object.
+	 */
+	public function normalize_fields( $args ) {
+		$args = (array) $args;
+
+		if ( isset( $args['name'] ) && empty( $args['name'] ) ) {
+			if ( isset( $args['locale'] ) && ! empty( $args['locale'] ) ) {
+				$locale = GP_locales::by_slug( $args['locale'] );
+				$args['name'] = $locale->english_name;
+			}
+		}
+
+		if ( isset( $args['slug'] ) && ! $args['slug'] ) {
+			$args['slug'] = 'default';
+		}
+
+		if ( ! empty( $args['slug'] ) ) {
+			$args['slug'] = sanitize_title( $args['slug'] );
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Returns the English name of a locale.
+	 *
+	 * If the slug of the locale is not 'default' then the name of the
+	 * current translation sets gets added as a suffix.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $separator Separator, in case the slug is not 'default'. Default: '&rarr;'.
+	 * @return string The English name of a locale.
+	 */
+	public function name_with_locale( $separator = '&rarr;' ) {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$parts = array( $locale->english_name );
-		if ( 'default' != $this->slug ) $parts[] = $this->name;
-		return implode( '&nbsp;'.$separator.'&nbsp;', $parts );
+
+		if ( 'default' !== $this->slug ) {
+			$parts[] = $this->name;
+		}
+
+		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {

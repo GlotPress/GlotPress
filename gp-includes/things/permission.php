@@ -25,16 +25,26 @@ class GP_Permission extends GP_Thing {
 	public $object_type;
 	public $object_id;
 
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Permission object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Permission object.
+	 * @return array Normalized arguments for a GP_Permission object.
+	 */
 	public function normalize_fields( $args ) {
-		$args = (array)$args;
-		foreach( $this->field_names as $field_name ) {
-			if ( isset( $args[$field_name] ) ) {
-				$args[$field_name] = $this->force_false_to_null( $args[$field_name] );
+		$args = (array) $args;
+
+		foreach ( $this->field_names as $field_name ) {
+			if ( isset( $args[ $field_name ] ) ) {
+				$args[ $field_name ] = $this->force_false_to_null( $args[ $field_name ] );
 			}
 		}
+
 		return $args;
 	}
-
 
 	/**
 	 * Determines whether the current user can do $action on the instance of $object_type with id $object_id.

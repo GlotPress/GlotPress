@@ -48,11 +48,21 @@ class GP_Original extends GP_Thing {
 		$rules->priority_should_be( 'between', -2, 1 );
 	}
 
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Original object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Original object.
+	 * @return array Normalized arguments for a GP_Original object.
+	 */
 	public function normalize_fields( $args ) {
-		$args = (array)$args;
-		foreach ( array('plural', 'context', 'references', 'comment') as $field ) {
+		$args = (array) $args;
+
+		foreach ( array( 'plural', 'context', 'references', 'comment' ) as $field ) {
 			if ( isset( $args['parent_project_id'] ) ) {
-				$args[$field] = $this->force_false_to_null( $args[$field] );
+				$args[ $field ] = $this->force_false_to_null( $args[ $field ] );
 			}
 		}
 

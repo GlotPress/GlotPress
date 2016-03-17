@@ -237,11 +237,11 @@ function gp_js_focus_on( $html_id ) {
 
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
-	$attributes = $attributes? " $attributes" : '';
+	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
 	foreach( $options as $value => $label ) {
-		$selected = $value == $selected_key? " selected='selected'" : '';
-		$res .= "\t<option value='".esc_attr( $value )."' $selected>" . esc_html( $label ) . "</option>\n";
+		$selected = checked( $value, $selected_key, false );
+		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 	}
 	$res .= "</select>\n";
 	return $res;
@@ -344,6 +344,7 @@ function gp_attrs_add_class( $attrs, $class_name ) {
  * @param string $name_and_id   Name and ID of the select element.
  * @param string $selected_slug Slug of the current selected locale.
  * @param array  $attrs         Extra attributes.
+ *
  * @return string HTML markup for a select element.
  */
 function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_slug = null, $attrs = array() ) {
@@ -379,13 +380,27 @@ function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_sl
  * @param string $name_and_id   Name and ID of the select element.
  * @param string $selected_slug Slug of the current selected locale.
  * @param array  $attrs         Extra attributes.
+ *
  * @return string HTML markup for a select element.
  */
 function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
 	return gp_locales_by_project_dropdown( null, $name_and_id, $selected_slug, $attrs );
 }
 
-function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
+/**
+ * Returns HTML markup for a select element for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name_and_id         Name and ID of the select element.
+ * @param string $selected_project_id The project id to mark as the currently selected.
+ * @param array  $attrs               Extra attributes.
+ * @param array  $exclude             An array of locales to exclude from the list.
+ * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of locales.
+ *
+ * @return string HTML markup for a select element.
+ */
+function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array(), $exclude_no_parent = false ) {
 	if ( ! is_array( $exclude ) ) {
 		$exclude = array( $exclude );
 	}
@@ -403,7 +418,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 		}
 	}
 
-	$options = array( '' => __( '&mdash; No parent &mdash;', 'glotpress' ) );
+	if ( ! $exclude_no_parent ) {
+		$options = array( '' => __( '&mdash; No parent &mdash;', 'glotpress' ) );
+	} else {
+		$options = array();
+	}
 
 	foreach( $top as $top_id ) {
 		$stack = array( $top_id );

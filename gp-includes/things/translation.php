@@ -50,8 +50,18 @@ class GP_Translation extends GP_Thing {
 		return $inserted;
 	}
 
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Translation object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Translation object.
+	 * @return array Normalized arguments for a GP_Translation object.
+	 */
 	public function normalize_fields( $args ) {
-		$args = (array)$args;
+		$args = (array) $args;
+
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
 			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
 				if ( isset( $args['translations'][ $i ] ) ) {
