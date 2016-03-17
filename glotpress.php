@@ -44,7 +44,7 @@ load_plugin_textdomain( 'glotpress' );
  * @param string $short_notice The message to display on the first line of the notice beside "GlotPress Disabled".
  * @param string $long_notice The message to display below the "GlotPress Disabled" line.
  *
- * @since 1.1.0
+ * @since 2.0.0
  */
 function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
 	$screen = get_current_screen();
@@ -65,7 +65,7 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
  *
  * Message is only displayed on the plugin screen.
  *
- * @since 1.1.0
+ * @since 2.0.0
  */
 function gp_unsupported_php_version_notice() {
 	$short_notice = __( '&#151; You are running an unsupported version of PHP.', 'glotpress' );
@@ -123,7 +123,7 @@ if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
  *
  * Message is only displayed on the plugin screen.
  *
- * @since 1.1.0
+ * @since 2.0.0
  */
 function gp_unsupported_permalink_structure_admin_notice() {
 	$short_notice = __( '&#151; You are running an unsupported permalink structure.', 'glotpress' );

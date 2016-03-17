@@ -11,13 +11,13 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Generates a string the contains the $entries to export in the Properties file format.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param GP_Project         $project         The project the strings are being exported for, not used
 	 *                                            in this format but part of the scaffold of the parent object.
 	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
 	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Translation_Set $translation_set The locale object the strings are being 
+	 * @param GP_Translation_Set $translation_set The locale object the strings are being
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
 	 * @param GP_Translation     $entries         The entries to export.
@@ -46,7 +46,7 @@ class GP_Format_Properties extends GP_Format {
 			} else {
 				$original = $entry->context;
 			}
-			
+
 			$original = str_replace( "\n", "\\n", $original );
 
 			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
@@ -60,7 +60,7 @@ class GP_Format_Properties extends GP_Format {
 			foreach ( $comment_lines as $line ) {
 				$result .= "# $line\n";
 			}
-			
+
 			$result .= $this->escape_key( $original ) . " = $translation\n\n";
 		}
 
@@ -70,7 +70,7 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Encodes a PHP string in UTF8 format to a unicode escaped string (multi-byte characters are encoded in the \uXXXX format).
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param $string string The string to encode.
 	 *
@@ -79,7 +79,7 @@ class GP_Format_Properties extends GP_Format {
 	private function utf8_uni_encode( $string ) {
 		$result = '';
 		$offset = 0;
-		
+
 		while ( $offset >= 0 ) {
 			$val = $this->ordutf8( $string, $offset );
 
@@ -91,14 +91,14 @@ class GP_Format_Properties extends GP_Format {
 				$result .= chr( $val );
 			}
 		}
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Encodes a PHP string in ascii format to a unicode escaped string (multi-byte characters are encoded in the \uXXXX format).
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $string The string to encode.
 	 *
@@ -116,28 +116,28 @@ class GP_Format_Properties extends GP_Format {
 				$result .= $string[ $i ] ;
 			}
 		}
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Decodes a unicode escaped string to a PHP string.
 	 *
 	 * @param string $string The string to decode.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return string
 	 */
 	private function uni_decode( $string ) {
 		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, "uni_decode_callback" ), $string );
 	}
-	
+
 	/**
 	 * Part of uni_decode(), this is the call back function that does the heavy lifting of converting a \uXXXX
 	 * value to a UTF-8 encoded character sequence.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param array $matches The array of matches from preg_replace_callback().
 	 *
@@ -146,41 +146,41 @@ class GP_Format_Properties extends GP_Format {
 	private function uni_decode_callback( $matches ) {
 		$binary = decbin( hexdec( $matches[1] ) );
 		$bin_length = strlen( $binary );
-		
+
 		$byte = array();
-		
-		// UTF-8 encoding is a little complex, see https://en.wikipedia.org/wiki/UTF-8#Description for details of the below values.	
-		if( $bin_length > 16 ) {        // > 16 bits, need 4 unicode bytes to encode
+
+		// UTF-8 encoding is a little complex, see https://en.wikipedia.org/wiki/UTF-8#Description for details of the below values.
+		if ( $bin_length > 16 ) {        // > 16 bits, need 4 unicode bytes to encode.
 			$byte[0] = chr( bindec( '11110' . sprintf( '%03s', substr( $binary, 0, $bin_length - 18 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 3 ), 6 ) ) ) );
 			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 2 ), 6 ) ) ) );
 			$byte[3] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6) ) ) );
-		} else if( $bin_length > 11 ) {	// > 11 bits, need 3 unicode bytes to encode
+		} else if ( $bin_length > 11 ) {	// > 11 bits, need 3 unicode bytes to encode.
 			$byte[0] = chr( bindec( '1110' . sprintf( '%04s', substr( $binary, 0, $bin_length - 12 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 2 ), 6 ) ) ) );
 			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6) ) ) );
-		} else if( $bin_length > 7 ) {  // > 7 bites, need 2 unicode bytes to encode
+		} else if ( $bin_length > 7 ) {  // > 7 bites, need 2 unicode bytes to encode.
 			$byte[0] = chr( bindec( '110' . sprintf( '%05s', substr( $binary, 0, $bin_length - 6 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
-		} else {                        // < 8 bites, need 1 unicode bytes to encode
+		} else {                        // < 8 bites, need 1 unicode bytes to encode.
 			$byte[0] = chr( bindec( '0' . sprintf(  '%07s', $binary ) ) );
 		}
-		
+
 		/* This is an alternate way to encode the character but it needs the iconv functions available:
 		 *
 		 *		iconv( 'UCS-4LE', 'UTF-8', pack( 'V', hexdec( $matches[ 1 ] ) ) );
 		 *
 		 */
-		
+
 		return implode( $byte );
 	}
-	
+
 	/**
 	 * Part of utf8_uni_encode(), this returns the character value of a UTF-8 encoded string.
 	 *
 	 * From http://php.net/manual/en/function.ord.php#109812
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $string The UTF-8 string to process.
 	 * @param int    $offset The offset of the string to return the character value of.
@@ -189,20 +189,20 @@ class GP_Format_Properties extends GP_Format {
 	 */
 	private function ordutf8( $string, &$offset ) {
 		$character = substr( $string, $offset, 1 );
-		
+
 		// If substr returned false, we are past the end of line so no need to process it.
 		if( false === $character ) {
 			// Set the offset back to -1 to indicate we're done.
 			$offset = -1;
 			return false;
 		}
-		
-		$code = ord( $character ); 
+
+		$code = ord( $character );
 		$bytesnumber = 1;
-		
+
 		if ( $code >= 128 ) {             //otherwise 0xxxxxxx
 			$codetemp = $code - 192;
-			
+
 			if ( $code < 224 ) {
 				$bytesnumber = 2;        //110xxxxx
 			} else if ($code < 240) {
@@ -212,31 +212,31 @@ class GP_Format_Properties extends GP_Format {
 				$bytesnumber = 4;        //11110xxx
 				$codetemp -= ( 32 + 16 );
 			}
-			
+
 			for ( $i = 2; $i <= $bytesnumber; $i++ ) {
 				$offset ++;
 				$code2 = ord( substr( $string, $offset, 1 ) ) - 128;        //10xxxxxx
 				$codetemp = ( $codetemp * 64 ) + $code2;
 			}
-			
+
 			$code = $codetemp;
 		}
-		
+
 		$offset += 1;
-		
+
 		if ( $offset >= strlen( $string ) ) {
 			$offset = -1;
 		}
-		
+
 		return $code;
 	}
-	
+
 	/**
 	 * Splits a properties file line on the = or : character.
 	 *
 	 * Skips escaped values (\= or \:) in the key and matches the first unescaped instance.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $line  The line to split.
 	 * @param string $key   The key part of the properties file string if found.
@@ -248,10 +248,10 @@ class GP_Format_Properties extends GP_Format {
 		// Make sure to reset the key/value before continuing.
 		$key = '';
 		$value = '';
-		
+
 		// Split the string on any = or :, get back where the string was split.
 		$matches = preg_split( '/[=|:]/', $line, null, PREG_SPLIT_OFFSET_CAPTURE );
-		
+
 		// Check the number of matches.
 		$num_matches = sizeof( $matches );
 
@@ -266,14 +266,14 @@ class GP_Format_Properties extends GP_Format {
 				if ( $location < 2 ) {
 					continue;
 				}
-				
-				// If the character before it (-2 as the separator character is still part of the match) 
+
+				// If the character before it (-2 as the separator character is still part of the match)
 				// is an escape, we don't have a match yet.
 				if ( '\\' != $line[ $location - 2 ] ) {
 					// Set the return values for the key and value.
-					$key = substr( $line, 0, $location - 1 ); 
+					$key = substr( $line, 0, $location - 1 );
 					$value = substr( $line, $location );
-					
+
 					// Handle the special case where the separator is actually " = " or " : ".
 					if ( gp_endswith( $key, ' ' ) && gp_startswith( $value, ' ' ) ) {
 						$key = substr( $key, 0, -1 );
@@ -283,16 +283,16 @@ class GP_Format_Properties extends GP_Format {
 					return true;
 				}
 			}
-		} 
+		}
 
 		// Return false since we didn't find a valid line to split.
 		return false;
 	}
-	
+
 	/**
 	 * Reads a set of translations from a properties file.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string     $file_name The filename of the uploaded properties file.
 	 * @param GP_Project $project   The project object to read the translations in to.
@@ -341,7 +341,7 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Reads a set of original strings from a properties file.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $file_name The filename of the uploaded properties file.
 	 *
@@ -368,7 +368,7 @@ class GP_Format_Properties extends GP_Format {
 					$entries->add_entry( $entry );
 					$inline = false;
 				}
-				
+
 				$matches[1] = trim( $matches[1] );
 
 				if ( $matches[1] !== "No comment provided." ) {
@@ -386,10 +386,10 @@ class GP_Format_Properties extends GP_Format {
 					$inline = true;
 					$value = trim( $value, '\\' );
 				}
-				
+
 				$entry = new Translation_Entry();
 				$entry->context = rtrim( $this->unescape( $key ) );
-				
+
 				/* So the following line looks a little weird, why encode just to decode?
 				 *
 				 * The reason is simple, properties files are in ISO-8859-1 aka Latin-1 format
@@ -397,7 +397,7 @@ class GP_Format_Properties extends GP_Format {
 				 * single byte.  That will break things later as PHP/MySQL will not accept
 				 * a mixed encoding string with these high single byte characters in them.
 				 *
-				 * So let's convert everything to escaped unicode first and then decode 
+				 * So let's convert everything to escaped unicode first and then decode
 				 * the whole kit and kaboodle to UTF-8.
 				 */
 				$entry->singular = $this->uni_decode( $this->ascii_uni_encode( $value ) );
@@ -451,7 +451,7 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * The callback to sort the entries by, used above in print_exported_file().
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param Translations $a The first translation to compare.
 	 * @param Translations $b The second translation to compare.
@@ -469,7 +469,7 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Unescape a string to be used as a value in the properties file.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $string The string to unescape.
 	 *
@@ -482,7 +482,7 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Escape a string to be used as a value in the properties file.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $string The string to escape.
 	 *
@@ -495,7 +495,7 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Escape a string to be used as a key name in the properties file.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @param string $string The string to escape.
 	 *
@@ -504,7 +504,7 @@ class GP_Format_Properties extends GP_Format {
 	private function escape_key( $string ) {
 		return addcslashes( $string, '=: ' );
 	}
-	
+
 }
 
 GP::$formats['properties'] = new GP_Format_Properties;

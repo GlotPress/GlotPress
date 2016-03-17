@@ -16,14 +16,14 @@ abstract class GP_Format {
 	/**
 	 * Gets the list of supported file extensions.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return array Supported file extensions.
 	 */
 	public function get_file_extensions() {
 		return array_merge( array( $this->extension ), $this->alt_extensions );
 	}
-	
+
 	public function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) {
 			return false;

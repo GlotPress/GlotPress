@@ -94,7 +94,7 @@ function gp_link_set_edit() {
  *
  * Does the heavy lifting for gp_link_set_delete().
  *
- * @since 1.1.0
+ * @since 2.0.0
  *
  * @param GP_Translation_Set $set     The translation set to link to.
  * @param GP_Project         $project The project the translation set belongs to.
@@ -120,7 +120,7 @@ function gp_link_set_delete_get( $set, $project, $text = false, $attrs = array()
  *
  * Does the heavy lifting for gp_link_set_delete().
  *
- * @since 1.1.0
+ * @since 2.0.0
  *
  * @param GP_Translation_Set $set     The translation set to link to.
  * @param GP_Project         $project The project the translation set belongs to.
@@ -163,7 +163,7 @@ function gp_link_glossary_edit() {
  *
  * Does the heavy lifting for gp_link_glossary_delete.
  *
- * @since 1.1.0
+ * @since 2.0.0
  *
  * @param GP_Glossary        $glossary The glossary to link to.
  * @param GP_Translation_Set $set      The translation set the glossary is for.
@@ -183,7 +183,7 @@ function gp_link_glossary_delete_get( $glossary, $set, $text = false, $attrs = a
 /**
  * Outputs a HTML link to the delete page for glossaries.
  *
- * @since 1.1.0
+ * @since 2.0.0
  *
  * @param GP_Glossary        $glossary The glossary to link to.
  * @param GP_Translation_Set $set      The translation set the glossary is for.

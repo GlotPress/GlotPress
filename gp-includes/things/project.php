@@ -124,7 +124,7 @@ class GP_Project extends GP_Thing {
 	/**
 	 * Executes after deleting a project.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
@@ -132,7 +132,7 @@ class GP_Project extends GP_Thing {
 		/**
 		 * Fires after deleting a project.
 		 *
-		 * @since 1.1.0
+		 * @since 2.0.0
 		 *
 		 * @param GP_Project $project The project that was deleted.
 		 */
@@ -372,7 +372,7 @@ class GP_Project extends GP_Thing {
 	/**
 	 * Deletes a project and all of sub projects, translations, translation sets, originals and glossaries.
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
