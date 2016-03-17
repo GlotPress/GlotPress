@@ -237,11 +237,11 @@ function gp_js_focus_on( $html_id ) {
 
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
-	$attributes = $attributes? " $attributes" : '';
+	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
 	foreach( $options as $value => $label ) {
-		$selected = $value == $selected_key? " selected='selected'" : '';
-		$res .= "\t<option value='".esc_attr( $value )."' $selected>" . esc_html( $label ) . "</option>\n";
+		$selected = checked( $value, $selected_key, false );
+		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 	}
 	$res .= "</select>\n";
 	return $res;
