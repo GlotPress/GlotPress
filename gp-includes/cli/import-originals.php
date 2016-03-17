@@ -14,12 +14,6 @@ class GP_CLI_Import_Originals extends WP_CLI_Command {
 	 *
 	 * [--format=<format>]
 	 * : Accepted values: po, mo, android, resx, strings. Default: po
-	 *
-	 * [--disable-propagating]
-	 * : If set, propagation will be disabled.
-	 *
-	 * [--disable-matching]
-	 * : If set, matching will be disabled.
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		// Double-check for compatibility
@@ -43,24 +37,7 @@ class GP_CLI_Import_Originals extends WP_CLI_Command {
 			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
 		}
 
-		$disable_propagating = isset( $assoc_args['disable-propagating'] );
-		$disable_matching = isset( $assoc_args['disable-matching'] );
-
-		if ( $disable_propagating ) {
-			add_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
-		}
-		if ( $disable_matching ) {
-			add_filter( 'gp_enable_add_translations_from_other_projects', '__return_false' );
-		}
-
 		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations );
-
-		if ( $disable_matching ) {
-			remove_filter( 'gp_enable_add_translations_from_other_projects', '__return_false' );
-		}
-		if ( $disable_propagating ) {
-			remove_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
-		}
 
 		WP_CLI::line(
 			sprintf(
