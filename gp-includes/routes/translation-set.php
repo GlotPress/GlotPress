@@ -62,7 +62,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	public function edit_post( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 
-		if ( !$items ) {
+		if ( ! $items ) {
 			return;
 		}
 
@@ -78,7 +78,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			return;
 		}
 
-		if ( !$set->update( $new_set ) ) {
+		if ( ! $set->update( $new_set ) ) {
 			$this->errors[] = __( 'Error in updating translation set!', 'glotpress' );
 			$this->redirect();
 			return;
