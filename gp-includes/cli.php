@@ -23,7 +23,6 @@ function gp_cli_register() {
 	WP_CLI::add_command( 'glotpress remove-multiple-currents', 'GP_CLI_Remove_Multiple_Currents' );
 	WP_CLI::add_command( 'glotpress upgrade-set-permissions', 'GP_CLI_Upgrade_Set_Permissions' );
 	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
-	WP_CLI::add_command( 'glotpress wporg2slug', 'GP_CLI_WPorg2Slug' );
 
 	// New style commands
 	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
