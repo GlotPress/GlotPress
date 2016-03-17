@@ -240,7 +240,7 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
 	foreach( $options as $value => $label ) {
-		$selected = checked( $value, $selected_key, false );
+		$selected = selected( $value, $selected_key, false );
 		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 	}
 	$res .= "</select>\n";
