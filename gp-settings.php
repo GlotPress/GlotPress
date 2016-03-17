@@ -84,6 +84,7 @@ require_once GP_PATH . GP_INC . 'routes/_main.php';
 require_once GP_PATH . GP_INC . 'routes/index.php';
 require_once GP_PATH . GP_INC . 'routes/original.php';
 require_once GP_PATH . GP_INC . 'routes/profile.php';
+require_once GP_PATH . GP_INC . 'routes/settings.php';
 require_once GP_PATH . GP_INC . 'routes/project.php';
 require_once GP_PATH . GP_INC . 'routes/translation-set.php';
 require_once GP_PATH . GP_INC . 'routes/translation.php';

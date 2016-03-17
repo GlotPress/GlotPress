@@ -105,7 +105,9 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 	elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
-			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );
+			$user = wp_get_current_user();
+			$items[ gp_url_profile( $user->user_nicename ) ] = __( 'Profile', 'glotpress' );
+			$items[ gp_url( '/settings' ) ] = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
 		}
 		else {
@@ -248,10 +250,10 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	$res = '';
 	foreach( $radio_buttons as $value => $label ) {
-		$checked = $value == $checked_key? " checked='checked'" : '';
+		$checked = checked( $value, $checked_key, false );
 		// TODO: something more flexible than <br />
-		$res .= "\t<input type='radio' name='$name' value='".esc_attr( $value )."' $checked id='{$name}[{$value}]'/>&nbsp;";
-		$res .= "<label for='{$name}[{$value}]'>".esc_html( $label )."</label><br />\n";
+		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked'/>&nbsp;";
+		$res .= "<label for='" . esc_attr( "{$name}[{$value}]" ) . "'>" . esc_html( $label ) . "</label><br />\n";
 	}
 	return $res;
 }
