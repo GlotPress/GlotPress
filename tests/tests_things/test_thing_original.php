@@ -179,4 +179,28 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$by_project_id_and_entry = GP::$original->by_project_id_and_entry( $project->id, $entry );
 		$this->assertSame( $original->singular, $by_project_id_and_entry->singular );
 	}
+
+	/**
+	 * @ticket gh-302
+	 */
+	function test_import_for_project_with_context_which_exceeds_the_maximum_length_of_255() {
+		$project = $this->factory->project->create();
+		$translations_for_import = $this->create_translations_with( array(
+			array( 'singular' => 'fooo', 'context' => str_repeat( 'a', 256 ) )
+		) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations_for_import );
+
+		$this->assertEquals( 1, $originals_added );
+		$this->assertEquals( 0, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+
+		$originals = GP::$original->by_project_id( $project->id );
+		$this->assertCount( 1, $originals );
+
+		// Get the first item.
+		$original = reset( $originals );
+		$this->assertSame( str_repeat( 'a', 255 ), $original->context );
+	}
 }
