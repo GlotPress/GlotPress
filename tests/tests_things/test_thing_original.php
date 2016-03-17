@@ -185,19 +185,54 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 	 */
 	function test_import_for_project_with_context_which_exceeds_the_maximum_length_of_255() {
 		$project = $this->factory->project->create();
+
+		// Insert an original with an context with 255 chars. It shouldn't be removed.
+		$this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'foo', 'context' => str_repeat( 'a', 255 ) ) );
+
+		/*
+		 * Create three originals.
+		 * 1) Same as existing original, but with 256 chars.
+		 * 2) New original wit 256 chars.
+		 * 3) New original with 255 chars.
+		 */
 		$translations_for_import = $this->create_translations_with( array(
-			array( 'singular' => 'fooo', 'context' => str_repeat( 'a', 256 ) )
+			array( 'singular' => 'foo', 'context' => str_repeat( 'a', 256 ) ),
+			array( 'singular' => 'bar', 'context' => str_repeat( 'b', 256 ) ),
+			array( 'singular' => 'bab', 'context' => str_repeat( 'c', 255 ) ),
 		) );
 
-		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations_for_import );
+		// First import:
 
-		$this->assertEquals( 1, $originals_added );
+		// Create a copy because import_for_project() will change it.
+		$translations_for_import_orig = clone $translations_for_import;
+		$this->assertCount( 3, $translations_for_import->entries );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = GP::$original->import_for_project( $project, $translations_for_import );
+
+		// Only two new originals.
+		$this->assertEquals( 2, $originals_added );
 		$this->assertEquals( 0, $originals_existing );
 		$this->assertEquals( 0, $originals_fuzzied );
 		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
+
+		// Second import:
+
+		//$this->assertCount( 3, $translations_for_import->entries );  That's 5...
+
+		$this->assertCount( 3, $translations_for_import_orig->entries );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = GP::$original->import_for_project( $project, $translations_for_import_orig );
+
+		// Originals are already imported, no change.
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 0, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
 
 		$originals = GP::$original->by_project_id( $project->id );
-		$this->assertCount( 1, $originals );
+		$this->assertCount( 3, $originals );
 
 		// Get the first item.
 		$original = reset( $originals );
