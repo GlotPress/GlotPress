@@ -39,4 +39,12 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		$this->assertEquals( $glossary, $subsub_glossary );
 		$this->assertEquals( $glossary->path(), $subsub_glossary->path() );
 	}
+	
+	function test_delete() {
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => '1' ) );
+		$glossary->delete();
+		$new = GP::$glossary->by_set_id( '1' );
+		$this->assertNotEquals( $glossary, $new );
+		
+	}
 }

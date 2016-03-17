@@ -105,6 +105,18 @@ class GP_Glossary extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Deletes a glossary and all of it's entries.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		GP::$glossary_entry->delete_many( array( 'glossary_id', $this->id ) );
+
+		return parent::delete();
+	}
 }
 
 GP::$glossary = new GP_Glossary();

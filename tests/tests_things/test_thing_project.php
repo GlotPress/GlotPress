@@ -275,4 +275,17 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertNotEquals( false, $branch_other_sub );
 	}
 
+	function test_delete() {
+		$project = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root' ) );
+		
+		$pre_delete = GP::$project->find_one( array( 'id' => $project->id ) );
+
+		$project->delete();
+		
+		$post_delete = GP::$project->find_one( array( 'id' => $project->id ) );
+		
+		$this->assertFalse( empty( $pre_delete ) );
+		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
+
 }

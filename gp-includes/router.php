@@ -66,80 +66,81 @@ class GP_Router {
 
 		// overall structure
 		return array(
-			'/' => array('GP_Route_Index', 'index'),
+			'/' => array( 'GP_Route_Index', 'index' ),
 
 			'get:/profile' => array( 'GP_Route_Profile', 'profile_view' ),
-			"get:/profile/$path" => array('GP_Route_Profile', 'profile_view'),
+			"get:/profile/$path" => array( 'GP_Route_Profile', 'profile_view' ),
 
 			'get:/settings' => array( 'GP_Route_Settings', 'settings_get' ),
 			'post:/settings' => array( 'GP_Route_Settings', 'settings_post' ),
 
-			'get:/languages' => array('GP_Route_Locale', 'locales_get'),
-			"get:/languages/$locale/$path" => array('GP_Route_Locale', 'single'),
-			"get:/languages/$locale" => array('GP_Route_Locale', 'single'),
+			'get:/languages' => array( 'GP_Route_Locale', 'locales_get' ),
+			"get:/languages/$locale/$path" => array( 'GP_Route_Locale', 'single' ),
+			"get:/languages/$locale" => array( 'GP_Route_Locale', 'single' ),
 
-			"get:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_get'),
-			"post:/$set/glossary" => array('GP_Route_Glossary_Entry', 'glossary_entries_post'),
-			"post:/$set/glossary/-new" => array('GP_Route_Glossary_Entry', 'glossary_entry_add_post'),
-			"post:/$set/glossary/-delete" => array('GP_Route_Glossary_Entry', 'glossary_entry_delete_post'),
-			"get:/$set/glossary/-export" => array('GP_Route_Glossary_Entry', 'export_glossary_entries_get'),
-			"get:/$set/glossary/-import" => array('GP_Route_Glossary_Entry', 'import_glossary_entries_get'),
-			"post:/$set/glossary/-import" => array('GP_Route_Glossary_Entry', 'import_glossary_entries_post'),
+			"get:/$set/glossary" => array( 'GP_Route_Glossary_Entry', 'glossary_entries_get' ),
+			"post:/$set/glossary" => array( 'GP_Route_Glossary_Entry', 'glossary_entries_post' ),
+			"post:/$set/glossary/-new" => array( 'GP_Route_Glossary_Entry', 'glossary_entry_add_post' ),
+			"post:/$set/glossary/-delete" => array( 'GP_Route_Glossary_Entry', 'glossary_entry_delete_post' ),
+			"get:/$set/glossary/-export" => array( 'GP_Route_Glossary_Entry', 'export_glossary_entries_get' ),
+			"get:/$set/glossary/-import" => array( 'GP_Route_Glossary_Entry', 'import_glossary_entries_get' ),
+			"post:/$set/glossary/-import" => array( 'GP_Route_Glossary_Entry', 'import_glossary_entries_post' ),
 
-			"get:/$project/import-originals" => array('GP_Route_Project', 'import_originals_get'),
-			"post:/$project/import-originals" => array('GP_Route_Project', 'import_originals_post'),
+			"get:/$project/import-originals" => array( 'GP_Route_Project', 'import_originals_get' ),
+			"post:/$project/import-originals" => array( 'GP_Route_Project', 'import_originals_post' ),
 
-			"get:/$project/-edit" => array('GP_Route_Project', 'edit_get'),
-			"post:/$project/-edit" => array('GP_Route_Project', 'edit_post'),
+			"get:/$project/-edit" => array( 'GP_Route_Project', 'edit_get' ),
+			"post:/$project/-edit" => array( 'GP_Route_Project', 'edit_post' ),
 
-			/*
-			// Currently the deletion of a project is not well defined so don't add routes to let it happen.
-			"get:/$project/-delete" => array('GP_Route_Project', 'delete_get'),
-			"post:/$project/-delete" => array('GP_Route_Project', 'delete_post'),
-			*/
+			"get:/$project/-delete" => array( 'GP_Route_Project', 'delete_get' ),
+			"post:/$project/-delete" => array( 'GP_Route_Project', 'delete_post' ),
 
-			"post:/$project/-personal" => array('GP_Route_Project', 'personal_options_post'),
+			"post:/$project/-personal" => array( 'GP_Route_Project', 'personal_options_post' ),
 
-			"get:/$project/-permissions" => array('GP_Route_Project', 'permissions_get'),
-			"post:/$project/-permissions" => array('GP_Route_Project', 'permissions_post'),
-			"get:/$project/-permissions/-delete/$dir" => array('GP_Route_Project', 'permissions_delete'),
+			"get:/$project/-permissions" => array( 'GP_Route_Project', 'permissions_get' ),
+			"post:/$project/-permissions" => array( 'GP_Route_Project', 'permissions_post' ),
+			"get:/$project/-permissions/-delete/$dir" => array( 'GP_Route_Project', 'permissions_delete' ),
 
-			"get:/$project/-mass-create-sets" => array('GP_Route_Project', 'mass_create_sets_get'),
-			"post:/$project/-mass-create-sets" => array('GP_Route_Project', 'mass_create_sets_post'),
-			"post:/$project/-mass-create-sets/preview" => array('GP_Route_Project', 'mass_create_sets_preview_post'),
+			"get:/$project/-mass-create-sets" => array( 'GP_Route_Project', 'mass_create_sets_get' ),
+			"post:/$project/-mass-create-sets" => array( 'GP_Route_Project', 'mass_create_sets_post' ),
+			"post:/$project/-mass-create-sets/preview" => array( 'GP_Route_Project', 'mass_create_sets_preview_post' ),
 
-			"get:/$project/-branch" => array('GP_Route_Project', 'branch_project_get'),
-			"post:/$project/-branch" => array('GP_Route_Project', 'branch_project_post'),
+			"get:/$project/-branch" => array( 'GP_Route_Project', 'branch_project_get' ),
+			"post:/$project/-branch" => array( 'GP_Route_Project', 'branch_project_post' ),
 
-			"get:/$projects" => array('GP_Route_Project', 'index'),
-			"get:/$projects/-new" => array('GP_Route_Project', 'new_get'),
-			"post:/$projects/-new" => array('GP_Route_Project', 'new_post'),
+			"get:/$projects" => array( 'GP_Route_Project', 'index' ),
+			"get:/$projects/-new" => array( 'GP_Route_Project', 'new_get' ),
+			"post:/$projects/-new" => array( 'GP_Route_Project', 'new_post' ),
 
-			"post:/$set/-bulk" => array('GP_Route_Translation', 'bulk_post'),
-			"get:/$set/import-translations" => array('GP_Route_Translation', 'import_translations_get'),
-			"post:/$set/import-translations" => array('GP_Route_Translation', 'import_translations_post'),
-			"post:/$set/-discard-warning" => array('GP_Route_Translation', 'discard_warning'),
-			"post:/$set/-set-status" => array('GP_Route_Translation', 'set_status'),
-			"/$set/export-translations" => array('GP_Route_Translation', 'export_translations_get'),
-			// keep this below all URLs ending with a literal string, because it may catch one of them
-			"get:/$set" => array('GP_Route_Translation', 'translations_get'),
-			"post:/$set" => array('GP_Route_Translation', 'translations_post'),
+			"post:/$set/-bulk" => array( 'GP_Route_Translation', 'bulk_post' ),
+			"get:/$set/import-translations" => array( 'GP_Route_Translation', 'import_translations_get' ),
+			"post:/$set/import-translations" => array( 'GP_Route_Translation', 'import_translations_post' ),
+			"post:/$set/-discard-warning" => array( 'GP_Route_Translation', 'discard_warning' ),
+			"post:/$set/-set-status" => array( 'GP_Route_Translation', 'set_status' ),
+			"/$set/export-translations" => array( 'GP_Route_Translation', 'export_translations_get' ),
+			// Keep this below all URLs ending with a literal string, because it may catch one of them.
+			"get:/$set" => array( 'GP_Route_Translation', 'translations_get' ),
+			"post:/$set" => array( 'GP_Route_Translation', 'translations_post' ),
 
-			// keep this one at the bottom of the project, because it will catch anything starting with project
-			"/$project" => array('GP_Route_Project', 'single'),
+			// Keep this one at the bottom of the project, because it will catch anything starting with project.
+			"/$project" => array( 'GP_Route_Project', 'single' ),
 
-			"get:/sets/-new" => array('GP_Route_Translation_Set', 'new_get'),
-			"post:/sets/-new" => array('GP_Route_Translation_Set', 'new_post'),
-			"get:/sets/$id" => array('GP_Route_Translation_Set', 'single'),
-			"get:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_get'),
-			"post:/sets/$id/-edit" => array('GP_Route_Translation_Set', 'edit_post'),
+			'get:/sets/-new' => array( 'GP_Route_Translation_Set', 'new_get' ),
+			'post:/sets/-new' => array( 'GP_Route_Translation_Set', 'new_post' ),
+			"get:/sets/$id" => array( 'GP_Route_Translation_Set', 'single' ),
+			"get:/sets/$id/-edit" => array( 'GP_Route_Translation_Set', 'edit_get' ),
+			"post:/sets/$id/-edit" => array( 'GP_Route_Translation_Set', 'edit_post' ),
+			"get:/sets/$id/-delete" => array( 'GP_Route_Translation_Set', 'delete_get' ),
+			"post:/sets/$id/-delete" => array( 'GP_Route_Translation_Set', 'delete_post' ),
 
-			"get:/glossaries/-new" => array('GP_Route_Glossary', 'new_get'),
-			"post:/glossaries/-new" => array('GP_Route_Glossary', 'new_post'),
-			"get:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_get'),
-			"post:/glossaries/$id/-edit" => array('GP_Route_Glossary', 'edit_post'),
+			'get:/glossaries/-new' => array( 'GP_Route_Glossary', 'new_get' ),
+			'post:/glossaries/-new' => array( 'GP_Route_Glossary', 'new_post' ),
+			"get:/glossaries/$id/-edit" => array( 'GP_Route_Glossary', 'edit_get' ),
+			"post:/glossaries/$id/-edit" => array( 'GP_Route_Glossary', 'edit_post' ),
+			"get:/glossaries/$id/-delete" => array( 'GP_Route_Glossary', 'delete_get' ),
+			"post:/glossaries/$id/-delete" => array( 'GP_Route_Glossary', 'delete_post' ),
 
-			"post:/originals/$id/set_priority" => array('GP_Route_Original', 'set_priority'),
+			"post:/originals/$id/set_priority" => array( 'GP_Route_Original', 'set_priority' ),
 		);
 	}
 

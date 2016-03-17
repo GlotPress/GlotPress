@@ -507,8 +507,8 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, '-branch'), __( 'Branch Project', 'glotpress' ) ),
-		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __( 'Delete Project', 'glotpress' ), array( 'ays-text' => __( 'Do you really want to delete this project?', 'glotpress' ) ) )
+		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, '-delete' ), __( 'Delete Project', 'glotpress' ) ),
 	);
 
 	/**

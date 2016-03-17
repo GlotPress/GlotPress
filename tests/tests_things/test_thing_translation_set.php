@@ -122,4 +122,17 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		// Expect only 3 imported translations, fuzzy translations are ignored.
 		$this->assertEquals( $translations_added, 3 );
 	}
+
+	function test_delete() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$pre_delete = GP::$translation_set->find_one( array( 'id' => $set->id ) );
+		
+		$set->delete();
+		
+		$post_delete = GP::$translation_set->find_one( array( 'id' => $set->id ) );
+		
+		$this->assertFalse( empty( $pre_delete ) );
+		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
 }

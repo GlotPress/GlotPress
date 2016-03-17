@@ -18,6 +18,7 @@ gp_tmpl_header();
 
 <h2><?php printf( _x( 'Glossary for %1$s translation of %2$s', '{language} / { project name}', 'glotpress' ), esc_html( $translation_set->name ), esc_html( $project->name ) ); ?>
 	<?php gp_link_glossary_edit( $glossary, $translation_set, __( '(edit)', 'glotpress' ) ); ?>
+	<?php gp_link_glossary_delete( $glossary, $translation_set, __( '(delete)', 'glotpress' ) ); ?>
 </h2>
 
 <?php

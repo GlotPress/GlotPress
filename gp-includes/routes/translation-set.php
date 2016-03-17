@@ -69,6 +69,61 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->redirect( gp_url_project_locale( $project, $new_set->locale, $new_set->slug ) );
 	}
 
+	/**
+	 * Deletes a translation set.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $set_id The id of the translation set to delete.
+	 */
+	public function delete_post( $set_id ) {
+		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
+		if ( ! $items ) {
+			return;
+		}
+
+		list( $set, $project, $locale ) = $items;
+		if ( $this->cannot_edit_set_and_redirect( $set ) ) {
+			return;
+		}
+
+		if ( ! $set->delete() ) {
+			$this->errors[] = __( 'Error deleting translation set!', 'glotpress' );
+			$this->redirect();
+			return;
+		}
+
+		$this->notices[] = __( 'The translation set was deleted!', 'glotpress' );
+		$this->redirect( gp_url_project( $project ) );
+	}
+
+	/**
+	 * Displays the delete page for translations sets.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $set_id The id of the translation set to delete.
+	 */
+	public function delete_get( $set_id ) {
+		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
+		if ( ! $items ) {
+			return;
+		}
+
+		list( $set, $project, $locale ) = $items;
+		if ( $this->cannot_and_redirect( 'delete', 'project', $set->project_id, gp_url_project( $project ) ) ) {
+			return;
+		}
+
+		$url = gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) );
+		$this->tmpl( 'translation-set-delete', get_defined_vars() );
+	}
+
+	/**
+	 * Determines whether the current user can edit a translation set.
+	 *
+	 * @param GP_Translation_Set $set The translation set to edit.
+	 */
 	private function cannot_edit_set_and_redirect( $set ) {
 		return $this->cannot_and_redirect( 'write', 'project', $set->project_id );
 	}

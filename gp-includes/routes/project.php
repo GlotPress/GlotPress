@@ -192,28 +192,53 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	public function delete_get( $project_path ) {
-		// TODO: do not delete using a GET request but POST
-		// TODO: decide what to do with child projects and translation sets
-		// TODO: just deactivate, do not actually delete
+	/**
+	 * Deletes a project, including sub projects, glossaries, originals, translations sets and translations.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $project_path The path of the project to delete.
+	 */
+	public function delete_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
-		if ( !$project ) {
-			return $this->die_with_404();
+		if ( ! is_object( $project ) ) {
+
+			$this->redirect( gp_url_public_root() );
+			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
+
+			return;
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->cannot_and_redirect( 'delete', 'project', $project->id ) ) {
 			return;
 		}
 
 		if ( $project->delete() ) {
-			$this->notices[] = __( 'The project was deleted.', 'glotpress' );
+			$this->notices[] = sprintf( __( 'The project "%s" was deleted.', 'glotpress' ), $project->name );
 		}
 		else {
-			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
+			$this->errors[] = sprintf( __( 'Error deleting project "%s"!', 'glotpress' ), $project->name );
 		}
 
-		$this->redirect( gp_url_project( '' ) );
+		$this->redirect( gp_url_public_root() );
+	}
+
+	/**
+	 * Displays the delete page for projects.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $project_path The path of the project to delete.
+	 */
+	public function delete_get( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+
+		if ( $this->cannot_and_redirect( 'delete', 'project', $project->id ) ) {
+			return;
+		}
+
+		$this->tmpl( 'project-delete', get_defined_vars() );
 	}
 
 

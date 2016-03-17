@@ -369,5 +369,21 @@ class GP_Project extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Deletes a project and all of sub projects, translations, translation sets, originals and glossaries.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
+
+		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
+
+		GP::$original->delete_many( array( 'project_id' => $this->id ) );
+
+		return parent::delete();
+	}
 }
 GP::$project = new GP_Project();
