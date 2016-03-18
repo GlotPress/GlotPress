@@ -26,12 +26,66 @@ class GP_Translation_Set extends GP_Thing {
 	public $project_id;
 	public $locale;
 	public $project;
-	public $waiting_count;
-	public $fuzzy_count;
-	public $untranslated_count;
-	public $current_count;
-	public $warnings_count;
-	public $all_count;
+
+	/**
+	 * Holds number of waiting translations.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int
+	 */
+	private $waiting_count;
+
+	/**
+	 * Holds number of fuzzy translations.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int
+	 */
+	private $fuzzy_count;
+
+	/**
+	 * Holds number of untranslated strings.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int
+	 */
+	private $untranslated_count;
+
+	/**
+	 * Holds number of current translations.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int
+	 */
+	private $current_count;
+
+	/**
+	 * Holds number of translations with warnings.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int
+	 */
+	private $warnings_count;
+
+	/**
+	 * Holds number of all originals.
+	 *
+	 * @since 1.0.0
+	 * @access private
+	 *
+	 * @var int
+	 */
+	private $all_count;
 
 	/**
 	 * Sets restriction rules for fields.
@@ -329,7 +383,7 @@ class GP_Translation_Set extends GP_Thing {
 
 
 	public function percent_translated() {
-		$original_count = GP::$original->count_by_project_id( $this->project_id );
+		$original_count = $this->all_count();
 
 		return $original_count ? floor( $this->current_count() / $original_count * 100 ) : 0;
 	}
