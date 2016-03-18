@@ -41,10 +41,8 @@ class GP_Route_Settings extends GP_Route_Main {
 				$user_id = get_current_user_id();
 			}
 
-			if ( ! $this->verify_nonce( 'update-settings_' . $user_id ) ) {
-				gp_notice_set( __( 'An error has occurred. Please try again.', 'glotpress' ), 'error' );
-				$this->redirect( gp_url( '/settings' ) );
-				exit;
+			if ( $this->verify_nonce_and_redirect( 'update-settings_' . $user_id ) ) {
+				return;
 			}
 
 			$per_page = (int) $_POST['per_page'];
