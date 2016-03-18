@@ -13,7 +13,6 @@ function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/translation-set.php';
 	require_once GP_PATH . GP_INC . 'cli/upgrade-set-permissions.php';
 	require_once GP_PATH . GP_INC . 'cli/wipe-permissions.php';
-	require_once GP_PATH . GP_INC . 'cli/wporg2slug.php';
 
 	// Legacy commands
 	WP_CLI::add_command( 'glotpress add-admin', 'GP_CLI_Add_Admin' );
