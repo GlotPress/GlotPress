@@ -25,7 +25,7 @@ function _manually_load_plugin() {
 	);
 
 	foreach ( $tables as $table ) {
-		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->$table}" );
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->$table}" ); 
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
