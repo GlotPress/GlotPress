@@ -1,49 +1,28 @@
 <?php
+/**
+ * Bootstraps unit-tests.
+ *
+ * @package GlotPress
+ * @subpackage Tests
+ */
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
-}
+require __DIR__ . '/includes/constants.php';
 
-require_once $_tests_dir . '/includes/functions.php';
+require_once WP_TESTS_DIR . '/includes/functions.php';
 
+/**
+ * Load GlotPress.
+ */
 function _manually_load_plugin() {
-	require dirname( __FILE__ ) . '/../../glotpress.php';
-
-	define( 'GP_DIR_TESTDATA', dirname( dirname( __FILE__ ) ) . '/data' );
-
-	global $wpdb;
-	$tables = array(
-		'gp_translations',
-		'gp_translation_sets',
-		'gp_glossaries',
-		'gp_glossary_entries',
-		'gp_originals',
-		'gp_projects',
-		'gp_meta',
-		'gp_permissions',
-	);
-
-	foreach ( $tables as $table ) {
-		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->$table}" ); 
-	}
-
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-	require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/gp-includes/schema.php';
-	require_once dirname( dirname( dirname( __FILE__ ) ) ) . '/gp-includes/install-upgrade.php';
-	gp_upgrade_db();
+	require GP_TESTS_DIR . '/includes/loader.php';
 }
-
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
-
-define( 'GP_TESTS_PERMALINK_STRUCTURE', '/%postname%' );
-define( 'GP_TESTS_PERMALINK_STRUCTURE_WITH_TRAILING_SLASH', '/%postname%/' );
 
 global $wp_tests_options;
 $wp_tests_options['permalink_structure'] = GP_TESTS_PERMALINK_STRUCTURE;
 
-require $_tests_dir . '/includes/bootstrap.php';
+require WP_TESTS_DIR . '/includes/bootstrap.php';
 
-require_once dirname( dirname( __FILE__ ) ) . '/lib/testcase.php';
-require_once dirname( dirname( __FILE__ ) ) . '/lib/testcase-route.php';
-require_once dirname( dirname( __FILE__ ) ) . '/lib/testcase-request.php';
+require_once GP_TESTS_DIR . '/lib/testcase.php';
+require_once GP_TESTS_DIR . '/lib/testcase-route.php';
+require_once GP_TESTS_DIR . '/lib/testcase-request.php';
