@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/index.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/package-GlotPress.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/package-GlotPress.Meta.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/package-GlotPress.Rewrite.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/package-GlotPress.Routes.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/package-GlotPress.Things.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/package-None.html</loc>
+</url>
+
+
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Administrator_Permission.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Builtin_Translation_Warnings.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Add_Admin.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Branch_Project.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Import_Originals.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Regenerate_Paths.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Remove_Multiple_Currents.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Translation_Set.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Upgrade_Set_Permissions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_CLI_Wipe_Permissions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format_Android.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format_MO.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format_PO.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format_Properties.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format_ResX.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Format_Strings.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Glossary.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Glossary_Entry.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Original.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Permission.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Project.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Glossary.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Glossary_Entry.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Index.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Locale.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Main.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Original.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Profile.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Project.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Settings.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Translation.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Route_Translation_Set.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Router.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Thing.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Translation.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Translation_Set.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Translation_Set_Script.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Translation_Warnings.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Validation_Rules.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Validator_Permission.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/class-GP_Validators.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-echoer.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-esc_translation.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_abort_main_wp_query.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_activate_plugin.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_allow_everyone_to_translate.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_all.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_any.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_flatten.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_of_array_of_things_to_json.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_of_things_to_json.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_array_zip.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_attrs_add_class.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_breadcrumb.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_breadcrumb_project.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_checked.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_clean_translation_set_cache.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_clean_translation_sets_cache.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_cli_register.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_const_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_const_set.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_deactivate_plugin.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_delete_user_permissions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_display_disabled_admin_notice.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_endswith.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_enqueue_script.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_enqueue_scripts.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_enqueue_style.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_entry_actions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_error_log_dump.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_esc_attr_with_entities.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_footer.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_generate_rewrite_rules.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_get_import_file_format.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_get_meta.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_gmt_strtotime.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_has_translation_been_updated.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_head.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_html_attributes.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_html_excerpt.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_in.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_init.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_between.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_between_exclusive.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_empty.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_empty_string.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_int.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_not_empty_string.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_null.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_is_positive_int.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_js_focus_on.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_levenshtein.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_glossary_delete.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_glossary_delete_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_glossary_edit.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_glossary_edit_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_home.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_home_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_project.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_project_delete.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_project_delete_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_project_edit.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_project_edit_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_project_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_set_delete.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_set_delete_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_set_edit.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_set_edit_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_with_ays.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_link_with_ays_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_locales_by_project_dropdown.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_locales_dropdown.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_member_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_nav_menu.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_nav_menu_items.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_notice.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_notice_set.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_object_has_var.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_pagination.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_parity_factory.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_parse_request.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_plugin_url.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_populate_notices.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_post.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_preferred_sans_serif_style_tag.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_print_scripts.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_print_styles.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_project_actions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_project_links_from_root.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_project_names_from_root.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_project_options_form.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_projects_dropdown.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_query_vars.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_radio_buttons.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_recurse_project_permissions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_recurse_validator_permission.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_rewrite_rules.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_route_translation_set_permissions_to_validator_permissions.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_run_route.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_sanitize_meta_key.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_schema_get.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_scripts_default.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_select.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_set_cookie.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_set_globals.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_set_is_home_false.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_startswith.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_string_similarity.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_stripos.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_strlen.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_strtolower.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_styles_default.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_substr.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_title.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_tmpl_404.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_tmpl_filter_args.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_tmpl_footer.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_tmpl_get_output.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_tmpl_header.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_tmpl_load.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_unsupported_permalink_structure_admin_notice.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_unsupported_php_version_notice.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_unsupported_version_admin_notice.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_upgrade_data.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_upgrade_db.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_add_path_and_query.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_base_path.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_current.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_img.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_join.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_path.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_profile.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_project.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_project_locale.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_public_root.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_url_ssl.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_urldecode_deep.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_wp_profile_options.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-gp_wp_profile_options_update.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-is_glotpress.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-lambda.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-returner.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/glotpress-wp/function-things_to_fields.html</loc>
+</url>
+</urlset>

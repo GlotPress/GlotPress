@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://glotpress.github.io/glotpress-wp/sitemap.xml

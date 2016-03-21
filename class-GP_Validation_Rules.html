@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class GP_Validation_Rules | GlotPress</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?973e37a8502921d56bc02bb55321f45b072b6f71">
+	<link rel="stylesheet" href="resources/style.css?49f43d3208c5d7e33fa16d36107a345bf11cc00d">
+
+</head>
+
+<body>
+	<nav id="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand">GlotPress</a>
+			</div>
+			<div class="collapse navbar-collapse">
+
+                <form id="search" class="navbar-form navbar-left" role="search">
+                    <input type="hidden" name="cx" value="">
+                    <input type="hidden" name="ie" value="UTF-8">
+                    <div class="form-group">
+                        <input type="text" name="q" class="search-query form-control" placeholder="Search">
+					</div>
+				</form>
+
+				<ul class="nav navbar-nav">
+					<li>
+<span>Package</span>					</li>
+					<li class="active">
+<span>Class</span>					</li>
+
+
+
+
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="left">
+	<div id="menu">
+
+		<div id="groups">
+				<h3>Packages</h3>
+			<ul>
+					<li>
+						<a href="package-GlotPress.html">
+							GlotPress<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="package-GlotPress.Meta.html">
+							Meta						</a>
+							</li>
+					<li>
+						<a href="package-GlotPress.Rewrite.html">
+							Rewrite						</a>
+							</li>
+					<li>
+						<a href="package-GlotPress.Routes.html">
+							Routes						</a>
+							</li>
+					<li>
+						<a href="package-GlotPress.Things.html">
+							Things						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="package-None.html">
+							None						</a>
+							</li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-GP_Validation_Rules.html">GP_Validation_Rules</a></li>
+				<li><a href="class-GP_Validators.html">GP_Validators</a></li>
+			</ul>
+
+
+
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-gp_activate_plugin.html">gp_activate_plugin</a></li>
+				<li><a href="function-gp_deactivate_plugin.html">gp_deactivate_plugin</a></li>
+				<li><a href="function-gp_display_disabled_admin_notice.html">gp_display_disabled_admin_notice</a></li>
+				<li><a href="function-gp_unsupported_permalink_structure_admin_notice.html">gp_unsupported_permalink_structure_admin_notice</a></li>
+				<li><a href="function-gp_unsupported_php_version_notice.html">gp_unsupported_php_version_notice</a></li>
+				<li><a href="function-gp_unsupported_version_admin_notice.html">gp_unsupported_version_admin_notice</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class GP_Validation_Rules</h1>
+
+
+	<div class="description">
+	<p>Core class to handle validation of translations.</p>
+
+<p>Uses magic methods in the format of [field]_[rule].</p>
+
+<p>The below is a list of all magic methods called to ensure Scrutinizer recognizes them.
+Note that once a method has been defined from one file it will not be redefine in subsequent file sections.</p>
+
+<p>From gp_includes/things/administrative-permissions.php:</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		
+		<b>Package:</b> <a href="package-GlotPress.html">GlotPress</a><br>
+
+			<b>Located at</b> <a href="source-class-GP_Validation_Rules.html#9-165" title="Go to source code">validation.php</a>
+		<br>
+	</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading"><h2>Methods summary</h2></div>
+			<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="__construct" id="___construct">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#___construct">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#80-82" title="Go to source code">__construct</a>( <span> <var>$field_names</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="__call" id="___call">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#___call">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#84-97" title="Go to source code">__call</a>( <span> <var>$name</var></span>, <span> <var>$args</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="run" id="_run">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_run">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#99-110" title="Go to source code">run</a>( <span> <var>$thing</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="run_on_single_field" id="_run_on_single_field">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_run_on_single_field">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#112-145" title="Go to source code">run_on_single_field</a>( <span> <var>$field</var></span>, <span> <var>$value</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="construct_error_message" id="_construct_error_message">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_construct_error_message">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#147-164" title="Go to source code">construct_error_message</a>( <span> <var>$rule</var></span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+		<div class="panel panel-default">
+	        <div class="panel-heading"><h3>Magic methods summary</h3></div>
+			<table class="summary table table-bordered table-striped methods" id="magicMethods">
+		<tr data-order="user_id_should_not_be" id="m_user_id_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_user_id_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#19" title="Go to source code">user_id_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="action_should_not_be" id="m_action_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_action_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#20" title="Go to source code">action_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="object_type_should_be" id="m_object_type_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_object_type_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#21" title="Go to source code">object_type_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="object_id_should_be" id="m_object_id_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_object_id_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#22-24" title="Go to source code">object_id_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/glossary-entry.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/glossary-entry.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="term_should_not_be" id="m_term_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_term_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#26" title="Go to source code">term_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="part_of_speech_should_not_be" id="m_part_of_speech_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_part_of_speech_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#27" title="Go to source code">part_of_speech_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="glossary_id_should_be" id="m_glossary_id_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_glossary_id_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#28" title="Go to source code">glossary_id_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="last_edited_by_should_be" id="m_last_edited_by_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_last_edited_by_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#29-31" title="Go to source code">last_edited_by_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/original.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/original.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="singular_should_not_be" id="m_singular_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_singular_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#33" title="Go to source code">singular_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="status_should_not_be" id="m_status_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_status_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#34" title="Go to source code">status_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="project_id_should_be" id="m_project_id_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_project_id_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#35" title="Go to source code">project_id_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="priority_should_be" id="m_priority_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_priority_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#36-38" title="Go to source code">priority_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/translation.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/translation.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="translation_0_should_not_be" id="m_translation_0_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_translation_0_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#40" title="Go to source code">translation_0_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="original_id_should_be" id="m_original_id_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_original_id_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#41" title="Go to source code">original_id_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="translation_set_id_should_be" id="m_translation_set_id_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_translation_set_id_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#42" title="Go to source code">translation_set_id_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="user_id_should_be" id="m_user_id_should_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_user_id_should_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#43-45" title="Go to source code">user_id_should_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/glossary.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/glossary.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="translation_set_id_should_not_be" id="m_translation_set_id_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_translation_set_id_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#47-49" title="Go to source code">translation_set_id_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/project.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/project.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="name_should_not_be" id="m_name_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_name_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#51" title="Go to source code">name_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="slug_should_not_be" id="m_slug_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_slug_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#52-54" title="Go to source code">slug_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/translation-set.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/translation-set.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="locale_should_not_be" id="m_locale_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_locale_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#56" title="Go to source code">locale_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="project_id_should_not_be" id="m_project_id_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_project_id_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#57-59" title="Go to source code">project_id_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>From gp_includes/things/validator-permission.php:</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>From gp_includes/things/validator-permission.php:</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="locale_slug_should_not_be" id="m_locale_slug_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_locale_slug_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#61" title="Go to source code">locale_slug_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="set_slug_should_not_be" id="m_set_slug_should_not_be">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#m_set_slug_should_not_be">#</a>
+			<code><a href="source-class-GP_Validation_Rules.html#64" title="Go to source code">set_slug_should_not_be</a>( <span>string <var>$name</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$name</var></dt>
+						<dd></dd>
+						<dt><var>$args</var></dt>
+						<dd></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+
+
+		<div class="panel panel-default">
+            <div class="panel-heading"><h2>Properties summary</h2></div>
+			<table class="summary table table-bordered table-striped properties" id="properties">
+		<tr data-order="rules" id="$rules">
+			<td class="attributes"><code>
+				public  
+				array
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-GP_Validation_Rules.html#68" title="Go to source code"><var>$rules</var></a>
+
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$rules" class="anchor">#</a>
+					<code><span class="php-keyword1">array</span>()</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="errors" id="$errors">
+			<td class="attributes"><code>
+				public  
+				array
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-GP_Validation_Rules.html#70" title="Go to source code"><var>$errors</var></a>
+
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$errors" class="anchor">#</a>
+					<code><span class="php-keyword1">array</span>()</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="field_names" id="$field_names">
+			<td class="attributes"><code>
+				public  
+				
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-GP_Validation_Rules.html#71" title="Go to source code"><var>$field_names</var></a>
+
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$field_names" class="anchor">#</a>
+					<code></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="positive_suffices" id="$positive_suffices">
+			<td class="attributes"><code>
+				public static 
+				array
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-GP_Validation_Rules.html#73-75" title="Go to source code"><var>$positive_suffices</var></a>
+
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$positive_suffices" class="anchor">#</a>
+					<code><span class="php-keyword1">array</span>(
+    <span class="php-quote">'should_be'</span>, <span class="php-quote">'should'</span>, <span class="php-quote">'can'</span>, <span class="php-quote">'can_be'</span>,
+)</code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="negative_suffices" id="$negative_suffices">
+			<td class="attributes"><code>
+				public static 
+				array
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-GP_Validation_Rules.html#76-78" title="Go to source code"><var>$negative_suffices</var></a>
+
+				<div class="description short">
+					
+				</div>
+
+				<div class="description detailed hidden">
+					
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#$negative_suffices" class="anchor">#</a>
+					<code><span class="php-keyword1">array</span>(
+    <span class="php-quote">'should_not_be'</span>, <span class="php-quote">'should_not'</span>, <span class="php-quote">'cant'</span>, <span class="php-quote">'cant_be'</span>,
+)</code>
+				</div>
+			</td>
+		</tr>
+			</table>
+		</div>
+
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		GlotPress API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>
