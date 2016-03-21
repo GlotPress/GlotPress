@@ -24,6 +24,16 @@ function _load_glotpress() {
 }
 tests_add_filter( 'muplugins_loaded', '_load_glotpress' );
 
+/**
+ * Sets a permalink structure so GlotPress doesn't skip loading.
+ *
+ * @return string
+ */
+function _set_permalink_structure() {
+	return '/%postname%';
+}
+tests_add_filter( 'pre_option_permalink_structure', '_set_permalink_structure' );
+
 $_SERVER['HTTP_HOST'] = WP_TESTS_DOMAIN;
 // @codingStandardsIgnoreStart
 $PHP_SELF = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
@@ -46,7 +56,6 @@ foreach ( $wpdb->get_col( "SHOW TABLES LIKE '" . $wpdb->prefix . "gp%'" ) as $gp
  */
 function _install_glotpress() {
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-	require_once dirname( dirname( dirname( __DIR__ ) ) ) . '/gp-settings.php'; // For $wpdb->table properties.
 	require_once dirname( dirname( dirname( __DIR__ ) ) ) . '/gp-includes/schema.php';
 	require_once dirname( dirname( dirname( __DIR__ ) ) ) . '/gp-includes/install-upgrade.php';
 	gp_upgrade_db();
