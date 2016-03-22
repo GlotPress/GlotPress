@@ -9,7 +9,7 @@ function gp_recurse_project_permissions( $verdict, $args ) {
 		return $verdict;
 	}
 	$project = GP::$project->get( $args['object_id'] );
-	if ( $project->parent_project_id ) {
+	if ( $project && $project->parent_project_id ) {
 		return GP::$permission->user_can( $args['user'], $args['action'], 'project', $project->parent_project_id );
 	}
 	return false;
@@ -21,7 +21,7 @@ function gp_recurse_validator_permission( $verdict, $args ) {
 	}
 	list( $project_id, $locale_slug, $set_slug ) = GP::$validator_permission->project_id_locale_slug_set_slug( $args['object_id'] );
 	$project = GP::$project->get( $project_id );
-	if ( $project->parent_project_id ) {
+	if ( $project && $project->parent_project_id ) {
 		return GP::$permission->user_can( $args['user'], $args['action'], $args['object_type'], $project->parent_project_id.'|'.$locale_slug.'|'.$set_slug );
 	}
 	return false;

@@ -37,19 +37,22 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$this->assertTemplateOutputNotEmpty();
 	}
 
-	function test_new_post_forbidden_redirect_if_not_logged_in() {
+	function test_new_post_invalid_nonce_redirect_if_not_logged_in() {
 		$this->route->new_post();
-		$this->assertNotAllowedRedirect();
+		$this->assertInvalidNonceRedirect();
 	}
 
 	function test_new_post_forbidden_redirect_if_logged_in_but_without_sufficient_permissions() {
 		$this->set_normal_user_as_current();
+		$_POST['set'] = $this->factory->translation_set->generate_args();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
 		$this->route->new_post();
 		$this->assertNotAllowedRedirect();
 	}
 
 	function test_new_post_invalid_redirect_if_empty_set() {
 		$this->set_admin_user_as_current();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
 		$this->route->new_post();
 		$this->assertInvalidRedirect();
 	}
@@ -59,6 +62,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		GP::$translation_set = $this->getMock( 'GP_Translation_Set', array( 'create_and_select' ) );
 		GP::$translation_set->expects( $this->any() )->method( 'create_and_select' );
 		$_POST['set'] = $this->factory->translation_set->generate_args();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
 		$this->route->new_post();
 		$this->assertErrorRedirect();
 	}
@@ -66,6 +70,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	function test_new_post_should_add_notice_if_create_was_successful() {
 		$this->set_admin_user_as_current();
 		$_POST['set'] = $this->factory->translation_set->generate_args();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
 		$this->route->new_post();
 		$this->assertThereIsANoticeContaining( 'created' );
 	}
@@ -89,22 +94,27 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	}
 
 	function test_edit_post_with_a_non_existent_set_gives_404() {
+		$this->set_admin_user_as_current();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_11' );
 		$this->route->edit_post( 11 );
+		$this->assert404();
 	}
 
-	function test_edit_post_forbidden_redirect_if_not_logged_in() {
+	function test_edit_post_invalid_nonce_redirect_if_not_logged_in() {
 		$this->route->edit_post( $this->set->id );
-		$this->assertNotAllowedRedirect();
+		$this->assertInvalidNonceRedirect();
 	}
 
 	function test_edit_post_forbidden_redirect_if_logged_in_but_without_sufficient_permissions() {
 		$this->set_normal_user_as_current();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
 		$this->assertNotAllowedRedirect();
 	}
 
 	function test_edit_post_invalid_redirect_if_empty_set() {
 		$this->set_admin_user_as_current();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
 		$this->assertInvalidRedirect();
 	}
@@ -113,6 +123,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$this->set_admin_user_as_current();
 		$_POST['set'] = $this->factory->translation_set->generate_args();
 		unset( $_POST['set']['name'] );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
 		$this->assertInvalidRedirect();
 	}
@@ -120,6 +131,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	function test_edit_post_should_add_notice_if_update_was_successful() {
 		$this->set_admin_user_as_current();
 		$_POST['set'] = $this->factory->translation_set->generate_args();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
 		$this->assertThereIsANoticeContaining( 'updated' );
 	}
@@ -128,6 +140,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$this->set_admin_user_as_current();
 		GP::$translation_set = $this->getMock( 'GP_Translation_Set', array( 'update' ) );
 		$_POST['set'] = $this->factory->translation_set->generate_args();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
 		$this->assertErrorRedirect();
 	}
@@ -135,22 +148,27 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	function test_edit_post_the_set_name_should_be_updated() {
 		$this->set_admin_user_as_current();
 		$_POST['set'] = $this->factory->translation_set->generate_args();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
 		$this->set->reload();
 		$this->assertEquals( $_POST['set']['name'], $this->set->name );
 	}
 
 	function test_delete_post_with_a_non_existent_set_gives_404() {
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-translation-set_11' );
 		$this->route->delete_post( 11 );
+		$this->assert404();
 	}
 
 	function test_delete_post_forbidden_redirect_if_not_logged_in() {
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-translation-set_' . $this->set->id );
 		$this->route->delete_post( $this->set->id );
 		$this->assertNotAllowedRedirect();
 	}
 
 	function test_delete_post_forbidden_redirect_if_logged_in_but_without_sufficient_permissions() {
 		$this->set_normal_user_as_current();
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-translation-set_' . $this->set->id );
 		$this->route->delete_post( $this->set->id );
 		$this->assertNotAllowedRedirect();
 	}
