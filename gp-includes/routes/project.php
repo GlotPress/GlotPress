@@ -343,6 +343,10 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'add-project-permissions_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
@@ -369,6 +373,10 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	public function permissions_delete( $project_path, $permission_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $permission_id ) ) {
+			return;
+		}
+
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
