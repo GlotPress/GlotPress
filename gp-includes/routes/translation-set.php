@@ -107,6 +107,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	 * @param int $set_id The id of the translation set to delete.
 	 */
 	public function delete_post( $set_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'delete-translation-set_' . $set_id ) ) {
+			return;
+		}
+
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( ! $items ) {
 			return;
