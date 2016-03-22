@@ -41,7 +41,7 @@ class GP_Route_Settings extends GP_Route_Main {
 				$user_id = get_current_user_id();
 			}
 
-			if ( $this->verify_nonce_and_redirect( 'update-settings_' . $user_id ) ) {
+			if ( $this->invalid_nonce_and_redirect( 'update-settings_' . $user_id ) ) {
 				return;
 			}
 

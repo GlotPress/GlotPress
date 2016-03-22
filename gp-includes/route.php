@@ -147,7 +147,7 @@ class GP_Route {
 	 * @param string|null $url    The URL to redirect. Default: 'null', the referrer.
 	 * @return bool False if the nonce is valid, true if the redirect has happened.
 	 */
-	public function verify_nonce_and_redirect( $action, $url = null ) {
+	public function invalid_nonce_and_redirect( $action, $url = null ) {
 		if ( $this->verify_nonce( $action ) ) {
 			return false;
 		}
