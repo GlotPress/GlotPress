@@ -15,43 +15,99 @@ function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-if ( function_exists('mb_strtolower') ) {
-	function gp_strtolower( $str ) {
-		return mb_strtolower( $str );
+/**
+ * Compat function to mimic mb_strtolower().
+ *
+ * Falls back to `strtolower()` if `mb_strtolower()` doesn't exists.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $str      The string being lowercased.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return int String length of `$str`.
+ */
+function gp_strtolower( $str, $encoding = null ) {
+	if ( function_exists( 'mb_strtolower' ) ) {
+		if ( isset( $encoding ) ) {
+			return mb_strtolower( $str, $encoding );
+		} else {
+			return mb_strtolower( $str ); // Uses mb_internal_encoding().
+		}
 	}
-} else {
-	function gp_strtolower( $str ) {
-		return strtolower( $str );
+
+	return strtolower( $str );
+}
+
+/**
+ * Compat function to mimic mb_strlen().
+ *
+ * Without a `function_exists()` check because WordPress includes
+ * a compat function for `mb_strlen()`.
+ *
+ * @since 1.0.0
+ *
+ * @see _mb_strlen()
+ *
+ * @param string      $str      The string to retrieve the character length from.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return int String length of `$str`.
+ */
+function gp_strlen( $str, $encoding = null ) {
+	if ( isset( $encoding ) ) {
+		return mb_strlen( $str, $encoding );
+	} else {
+		return mb_strlen( $str ); // Uses mb_internal_encoding().
 	}
 }
 
-if ( function_exists('mb_strlen') ) {
-	function gp_strlen( $str ) {
-		return mb_strlen( $str );
+/**
+ * Compat function to mimic mb_stripos().
+ *
+ * Falls back to `stripos()` if `mb_stripos()` doesn't exists.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $haystack The string from which to get the position of the first occurrence of needle.
+ * @param string      $needle   The string to find in haystack.
+ * @param int         $offset   The position in haystack to start searching.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return int|false The numeric position of the first occurrence of needle in the haystack string,
+ *                   or false if needle is not found.
+ */
+function gp_stripos( $haystack, $needle, $offset = 0, $encoding = null ) {
+	if ( function_exists( 'mb_stripos' ) ) {
+		if ( isset( $encoding ) ) {
+			return mb_stripos( $haystack, $needle, $offset, $encoding );
+		} else {
+			return mb_stripos( $haystack, $needle, $offset ); // Uses mb_internal_encoding().
+		}
 	}
-} else {
-	function gp_strlen( $str ) {
-		return preg_match_all("/.{1}/us", $str, $dummy);
-	}
+
+	return stripos( $haystack, $needle, $offset );
 }
 
-if ( function_exists('mb_stripos') ) {
-	function gp_stripos( $haystack, $needle ) {
-		return mb_stripos( $haystack, $needle );
-	}
-} else {
-	function gp_stripos( $haystack, $needle ) {
-		return stripos( $haystack, $needle );
-	}
-}
-
-if ( function_exists('mb_substr') ) {
-	function gp_substr( $str, $start, $length ) {
-		return mb_substr( $str, $start, $length );
-	}
-} else {
-	function gp_substr( $str, $start, $length ) {
-		return substr( $str, $start, $length );
+/**
+ * Compat function to mimic mb_substr().
+ *
+ * Without a `function_exists()` check because WordPress includes
+ * a compat function for `mb_substr()`.
+ *
+ * @since 1.0.0
+ *
+ * @see _mb_substr()
+ *
+ * @param string      $str      The string to extract the substring from.
+ * @param int         $start    Position to being extraction from in `$str`.
+ * @param int|null    $length   Optional. Maximum number of characters to extract from `$str`.
+ *                              Default null.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return string Extracted substring.
+ */
+function gp_substr( $str, $start, $length, $encoding = null ) {
+	if ( isset( $encoding ) ) {
+		return mb_substr( $str, $start, $length, $encoding );
+	} else {
+		return mb_substr( $str, $start, $length ); // Uses mb_internal_encoding().
 	}
 }
 
