@@ -178,6 +178,10 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'edit-project_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
