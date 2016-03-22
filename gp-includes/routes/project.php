@@ -485,6 +485,10 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'branch-project_' . $project->id ) ) {
+			return;
+		}
+
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
