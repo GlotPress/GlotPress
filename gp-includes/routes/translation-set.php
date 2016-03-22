@@ -22,6 +22,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	}
 
 	public function new_post() {
+		if ( $this->invalid_nonce_and_redirect( 'add-translation-set' ) ) {
+			return;
+		}
+
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set ) ) return;
