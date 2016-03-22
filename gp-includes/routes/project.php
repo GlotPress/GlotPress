@@ -221,6 +221,10 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'delete-project_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'delete', 'project', $project->id ) ) {
 			return;
 		}
