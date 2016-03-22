@@ -265,6 +265,10 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	public function new_post() {
+		if ( $this->invalid_nonce_and_redirect( 'add-project' ) ) {
+			return;
+		}
+
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
