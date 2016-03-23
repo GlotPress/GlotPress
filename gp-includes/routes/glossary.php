@@ -93,6 +93,10 @@ class GP_Route_Glossary extends GP_Route_Main {
 	}
 
 	public function edit_post( $glossary_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'edit-glossary_' . $glossary_id ) ) {
+			return;
+		}
+
 		$glossary     = GP::$glossary->get( $glossary_id );
 		$new_glossary = new GP_Glossary( gp_post('glossary') );
 

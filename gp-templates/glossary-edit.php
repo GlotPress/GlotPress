@@ -23,6 +23,7 @@ gp_tmpl_header();
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Save', 'glotpress' ); ?>" id="submit" />
 		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo gp_url_join( gp_url_project_locale( $project, $locale->slug, $translation_set->slug ), '/glossary' ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
+	<?php gp_route_nonce_field( 'edit-glossary_' . $glossary->id ); ?>
 </form>
 
 <?php gp_tmpl_footer();
