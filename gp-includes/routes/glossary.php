@@ -43,7 +43,11 @@ class GP_Route_Glossary extends GP_Route_Main {
 	}
 
 	public function new_post() {
-		$new_glossary    = new GP_Glossary( gp_post('glossary') );
+		if ( $this->invalid_nonce_and_redirect( 'add-glossary' ) ) {
+			return;
+		}
+
+		$new_glossary    = new GP_Glossary( gp_post( 'glossary' ) );
 		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
 
 		if ( ! $translation_set ) {
