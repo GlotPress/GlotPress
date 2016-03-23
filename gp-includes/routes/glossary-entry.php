@@ -65,6 +65,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'add-glossary-entry_' . $project_path . $locale_slug . $translation_set_slug ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
 		}
