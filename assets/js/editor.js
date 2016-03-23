@@ -177,11 +177,21 @@ $gp.editor = function($){ return {
 		});
 	},
 	set_status: function(button, status) {
-		if (!$gp.editor.current || !$gp.editor.current.translation_id) return;
-		var editor = $gp.editor.current;
-		button.prop('disabled', true);
-		$gp.notices.notice('Setting status to &#8220;'+status+'&#8221;&hellip;');
-		var data = {translation_id: editor.translation_id, status: status};
+		var editor, data;
+
+		if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
+			return;
+		}
+
+		editor = $gp.editor.current;
+		button.prop( 'disabled', true );
+		$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
+
+		data = {
+			translation_id: editor.translation_id,
+			status: status,
+			_gp_route_nonce: button.data( 'nonce' )
+		};
 
 		$.ajax({type: "POST", url: $gp_editor_options.set_status_url, data: data,
 			success: function(data){

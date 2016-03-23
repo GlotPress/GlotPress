@@ -109,13 +109,13 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 					<?php if ( $t->translation_status ): ?>
 						<?php if ( $can_approve ): ?>
 							<?php if ( $t->translation_status != 'current' ): ?>
-							<button class="approve" tabindex="-1"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
+							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
 							<?php endif; ?>
 							<?php if ( $t->translation_status != 'rejected' ): ?>
-							<button class="reject" tabindex="-1"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
+							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
 							<?php endif; ?>
 						<?php elseif ( $can_reject_self ): ?>
-							<button class="reject" tabindex="-1"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
+							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
 						<?php endif; ?>
 					<?php endif; ?>
 				</dd>

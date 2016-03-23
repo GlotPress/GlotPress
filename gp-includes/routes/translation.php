@@ -437,6 +437,13 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	public function set_status( $project_path, $locale_slug, $translation_set_slug ) {
+		$status         = gp_post( 'status' );
+		$translation_id = gp_post( 'translation_id' );
+
+		if ( ! $this->verify_nonce( 'update-translation-status-' . $status . '_' . $translation_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
 	}
 
