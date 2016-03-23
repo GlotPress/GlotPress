@@ -150,7 +150,11 @@ class GP_Route_Glossary extends GP_Route_Main {
 	 * @param int $glossary_id The id of the glossary to delete.
 	 */
 	public function delete_post( $glossary_id ) {
-		$glossary     = GP::$glossary->get( $glossary_id );
+		if ( $this->invalid_nonce_and_redirect( 'delete-glossary_' . $glossary_id ) ) {
+			return;
+		}
+
+		$glossary = GP::$glossary->get( $glossary_id );
 
 		if ( $this->cannot_delete_glossary_and_redirect( $glossary ) ) {
 			return;
