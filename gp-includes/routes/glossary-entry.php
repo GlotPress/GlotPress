@@ -132,7 +132,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_error( $error_output, 200 );
 		}
 		else {
-			$ge     = $glossary_entry->reload();
+			$entry = $glossary_entry->reload();
+			$user = get_userdata( $entry->last_edited_by );
+			$entry->user_login = $user ? $user->user_login : '';
+			$entry->user_display_name = $user ? $user->display_name : '';
 			$output = gp_tmpl_get_output( 'glossary-entry-row', get_defined_vars() );
 
 			echo wp_json_encode( $output );
