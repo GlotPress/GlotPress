@@ -307,7 +307,13 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
+		if ( $this->invalid_nonce_and_redirect( 'bulk-actions' ) ) {
+			return;
+		}
+
+		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+			return;
+		}
 
 		$bulk = gp_post('bulk');
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
