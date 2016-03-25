@@ -411,6 +411,7 @@ ul a.edit, dt a.edit {
 }
 ul a.delete {
 	background-color: #FF4F50;
+	font-style: normal;
 }
 .paging {
 	float: right;
@@ -557,6 +558,8 @@ table.translation-sets .stats a, table.locale-sub-projects .stats a {
 	color: red;
 }
 .permissions .user {
+	color: black;
+	font-style: normal;
 	font-weight: bold;
 }
 .permissions .permission-action {
