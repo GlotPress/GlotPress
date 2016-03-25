@@ -216,7 +216,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$original_id = gp_post( 'original_id' );
 
-		if ( ! $this->verify_nonce( 'add-translation-_' . $original_id ) ) {
+		if ( ! $this->verify_nonce( 'add-translation_' . $original_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 

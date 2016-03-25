@@ -179,24 +179,39 @@ $gp.editor = function($){ return {
 			}
 		});
 	},
-	set_priority: function(select) {
-		if (!$gp.editor.current) return;
-		var editor = $gp.editor.current;
-		select.prop('disabled', true);
-		$gp.notices.notice('Setting priority&hellip;');
-		data = {priority: $('option:selected', select).attr('value')};
-		$.ajax({type: "POST", url: $gp_editor_options.set_priority_url.replace('%original-id%', editor.original_id), data: data,
-			success: function(data){
-				select.prop('disabled', false);
-				$gp.notices.success('Priority set!');
-				var new_priority_class = 'priority-'+$('option:selected', select).text();
-				$gp.editor.current.addClass(new_priority_class);
-				$gp.editor.current.preview.addClass(new_priority_class);
+	set_priority: function( select ) {
+		var editor, data;
+
+		if ( ! $gp.editor.current ) {
+			return;
+		}
+
+		editor = $gp.editor.current;
+		select.prop( 'disabled', true );
+		$gp.notices.notice( 'Setting priority&hellip;' );
+
+		data = {
+			priority: $( 'option:selected', select ).val(),
+			_gp_route_nonce: select.data( 'nonce' )
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_editor_options.set_priority_url.replace( '%original-id%', editor.original_id ),
+			data: data,
+			success: function() {
+				var new_priority_class;
+
+				select.prop( 'disabled', false );
+				$gp.notices.success( 'Priority set!' );
+				new_priority_class = 'priority-' + $( 'option:selected', select ).text();
+				$gp.editor.current.addClass( new_priority_class );
+				$gp.editor.current.preview.addClass( new_priority_class );
 			},
-			error: function(xhr, msg, error) {
-				button.prop('disabled', false);
-				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the priority!';
-				$gp.notices.error(msg);
+			error: function( xhr, msg ) {
+				select.prop( 'disabled', false );
+				msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the priority!';
+				$gp.notices.error( msg );
 			}
 		});
 	},

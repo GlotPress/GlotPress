@@ -170,9 +170,20 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 			<dl>
 			    <dt><?php _e( 'Priority of the original:', 'glotpress' ); ?></dt>
 			<?php if ( $can_write ): ?>
-			    <dd><?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority', 'tabindex' => '-1') ); ?></dd>
-			<?php else: ?>
-			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
+				<dd><?php
+					echo gp_select(
+						'priority-' . $t->original_id,
+						GP::$original->get_static( 'priorities' ),
+						$t->priority,
+						array(
+							'class'      => 'priority',
+							'tabindex'   => '-1',
+							'data-nonce' => wp_create_nonce( 'set-priority_' . $t->original_id ),
+						)
+					);
+					?></dd>
+			<?php else : ?>
+				<dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); // WPCS: XSS ok. ?></dd>
 			<?php endif; ?>
 			</dl>
 
@@ -199,7 +210,7 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 		</div>
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
-			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation-_' . $t->original_id ) ); ?>">
+			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
 				<?php echo $can_approve? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 			</button>
 		<?php endif; ?>
