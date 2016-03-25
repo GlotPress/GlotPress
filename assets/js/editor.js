@@ -1,3 +1,4 @@
+// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 $gp.editor = function($){ return {
 	current: null,
 	init: function(table) {
@@ -207,18 +208,33 @@ $gp.editor = function($){ return {
 			}
 		});
 	},
-	discard_warning: function(link) {
-		if (!$gp.editor.current) return;
-		$gp.notices.notice('Discarding&hellip;');
-		data = {translation_id: $gp.editor.current.translation_id, key: link.attr('key'), index: link.attr('index')};
-		$.ajax({type: "POST", url: $gp_editor_options.discard_warning_url, data: data,
-			success: function(data) {
-				$gp.notices.success('Saved!');
-				$gp.editor.replace_current(data);
+	discard_warning: function( link ) {
+		var data;
+		if ( ! $gp.editor.current ) {
+			return;
+		}
+
+		$gp.notices.notice( 'Discarding&hellip;' );
+
+		data = {
+			translation_id: $gp.editor.current.translation_id,
+			key: link.data( 'key' ),
+			index: link.data( 'index' ),
+			_gp_route_nonce: link.data( 'nonce' )
+
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_editor_options.discard_warning_url,
+			data: data,
+			success: function( data ) {
+				$gp.notices.success( 'Saved!' );
+				$gp.editor.replace_current( data );
 			},
-			error: function(xhr, msg, error) {
-				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the translation!';
-				$gp.notices.error(msg);
+			error: function( xhr, msg ) {
+				msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
+				$gp.notices.error( msg );
 			}
 		});
 	},

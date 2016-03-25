@@ -90,7 +90,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 				<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $warning['value'] ); ?>
 
 				<?php if( $can_approve ): ?>
-					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
+					<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $warning['key'] ) ); ?>" data-key="<?php echo esc_attr( $warning['key'] ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>

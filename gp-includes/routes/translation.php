@@ -433,6 +433,13 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	public function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
+		$index = gp_post( 'index' );
+		$key = gp_post( 'key' );
+
+		if ( ! $this->verify_nonce( 'discard-warning_' . $index . $key ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'discard_warning_edit_function' ) );
 	}
 
