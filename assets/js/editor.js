@@ -1,4 +1,5 @@
-// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+/* global $gp_editor_options, $gp */
+/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 $gp.editor = function($){ return {
 	current: null,
 	init: function(table) {
@@ -127,23 +128,45 @@ $gp.editor = function($){ return {
 		old_current.remove();
 		$gp.editor.current.preview.fadeIn(800);
 	},
-	save: function(button) {
-		if (!$gp.editor.current) return;
-		var editor = $gp.editor.current;
-		button.prop('disabled', true);
-		$gp.notices.notice('Saving&hellip;');
-		name = "translation["+editor.original_id+"][]";
-		data = $("textarea[name='"+name+"']", editor).map(function() {
-			return name+'='+encodeURIComponent($(this).val());
-		}).get().join('&');
-		$.ajax({type: "POST", url: $gp_editor_options.url, data: data, dataType: 'json',
-			success: function(data){
-				button.prop('disabled', false);
-				$gp.notices.success('Saved!');
-				for(original_id in data) {
-					$gp.editor.replace_current(data[original_id]);
+	save: function( button ) {
+		var editor, textareaName, data = [], translations;
+
+		if ( ! $gp.editor.current ) {
+			return;
+		}
+
+		editor = $gp.editor.current;
+		button.prop( 'disabled', true );
+		$gp.notices.notice( 'Saving&hellip;' );
+
+		data = {
+			original_id: editor.original_id,
+			_gp_route_nonce: button.data( 'nonce' )
+		};
+
+		textareaName = 'translation[' + editor.original_id + '][]';
+		translations = $( 'textarea[name="' + textareaName + '"]', editor ).map( function() {
+			return this.value;
+		}).get();
+
+		data[ textareaName ] = translations;
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_editor_options.url,
+			data: data,
+			dataType: 'json',
+			success: function( data ) {
+				var original_id;
+
+				button.prop( 'disabled', false );
+				$gp.notices.success( 'Saved!' );
+
+				for ( original_id in data ) {
+					$gp.editor.replace_current( data[ original_id ] );
 				}
-				if ($gp.editor.current.hasClass('no-warnings')) {
+
+				if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 					$gp.editor.next();
 				} else {
 					$gp.editor.current.preview.hide();

@@ -199,7 +199,7 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 		</div>
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
-			<button class="ok">
+			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation-_' . $t->original_id ) ); ?>">
 				<?php echo $can_approve? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 			</button>
 		<?php endif; ?>

@@ -214,6 +214,12 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		$original_id = gp_post( 'original_id' );
+
+		if ( ! $this->verify_nonce( 'add-translation-_' . $original_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
