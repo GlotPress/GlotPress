@@ -1,4 +1,4 @@
-/* global $gp_glossary_options, $gp */
+/* global $gp_glossary_options, $gp, confirm */
 /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 $gp.glossary = function($){ return {
 
@@ -93,32 +93,43 @@ $gp.glossary = function($){ return {
 		});
 	},
 
-	del: function(e, element) {
-		e.preventDefault();
+	del: function( event, button ) {
+		var result, editor, data, preview;
+
+		event.preventDefault();
+
 		result = confirm( $gp_glossary_options.ge_delete_ays );
-		if ( !result ) {
+		if ( ! result ) {
 			return;
 		} else {
-			var editor = element.closest('tr');
-			var preview = editor.prev('tr');
-			var row_id = preview.data('id');
-			var data = editor.find('input, select, textarea').map(function() {
-				return $(this).attr('name')+'='+encodeURIComponent($(this).val());
-			}).get().join('&');
-			$.ajax({type: "POST", url: $gp_glossary_options.delete_url, data: data,
-				success: function(data){
-					$gp.notices.success('Deleted!');
-					editor.fadeOut('fast', function(){
+			editor = button.closest( 'tr' );
+			preview = editor.prev( 'tr' );
+
+			data = {
+				_gp_route_nonce: button.data( 'nonce' )
+			};
+
+			editor.find( 'input, select, textarea' ).each( function() {
+				data[ $( this ).attr( 'name' ) ] = this.value;
+			});
+
+			$.ajax({
+				type: 'POST',
+				url: $gp_glossary_options.delete_url,
+				data: data,
+				success: function() {
+					$gp.notices.success( 'Deleted!' );
+					editor.fadeOut( 'fast', function() {
 						this.remove();
 					});
 					preview.remove();
-					if ( $('tr', $gp.glossary.table).length == 1 ) {
+					if ( 1 === $( 'tr', $gp.glossary.table ).length ) {
 						$gp.glossary.table.remove();
 					}
 				},
-				error: function(xhr, msg, error) {
-					msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error deleting the glossary item!';
-					$gp.notices.error(msg);
+				error: function( xhr, msg ) {
+					msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
+					$gp.notices.error( msg );
 				}
 			});
 		}

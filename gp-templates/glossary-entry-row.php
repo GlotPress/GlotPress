@@ -60,7 +60,7 @@
 			<dl>
 				<dt><?php _e( 'Actions:', 'glotpress' ); ?></dt>
 				<dd>
-					<button class="delete" tabindex="-1"><?php _ex( 'Delete', 'delete glossary entry', 'glotpress' ); ?></button>
+					<button class="delete" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-glossary-entry_' . $entry->id ) ); ?>"><?php _ex( 'Delete', 'delete glossary entry', 'glotpress' ); ?></button>
 				</dd>
 			</dl>
 			<?php endif; ?>

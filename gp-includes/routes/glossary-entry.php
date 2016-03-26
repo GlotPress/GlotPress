@@ -161,6 +161,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
 		}
 
+		if ( ! $this->verify_nonce( 'delete-glossary-entry_' . $glossary_entry->id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
 		$can_edit        = $this->can( 'approve', 'translation-set', $translation_set->id );
