@@ -30,9 +30,11 @@ function gp_get( $key, $default = '' ) {
  * @see wp_nonce_field()
  *
  * @param int|string $action Action name.
+ * @param bool       $echo   Optional. Whether to display or return hidden form field. Default true.
+ * @return string Nonce field HTML markup.
  */
-function gp_route_nonce_field( $action ) {
-	wp_nonce_field( $action , '_gp_route_nonce', true, true );
+function gp_route_nonce_field( $action, $echo = true ) {
+	return wp_nonce_field( $action , '_gp_route_nonce', true, $echo );
 }
 
 /**
