@@ -34,7 +34,7 @@ function gp_get( $key, $default = '' ) {
  * @return string Nonce field HTML markup.
  */
 function gp_route_nonce_field( $action, $echo = true ) {
-	return wp_nonce_field( $action , '_gp_route_nonce', true, $echo );
+	return wp_nonce_field( $action, '_gp_route_nonce', true, $echo );
 }
 
 /**
