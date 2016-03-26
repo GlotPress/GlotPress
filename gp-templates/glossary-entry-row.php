@@ -36,7 +36,7 @@
 			<p>
 				<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id );?>][glossary_id]" value="<?php echo esc_attr( $entry->glossary_id );?>">
 				<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id );?>][glossary_entry_id]" value="<?php echo esc_attr( $entry->id );?>">
-				<button class="action save"><?php _e( 'Save', 'glotpress' ); ?></button><span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="#" class="action cancel"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
+				<button class="action save" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-glossary-entry_' . $entry->id ) ); ?>"><?php _e( 'Save', 'glotpress' ); ?></button><span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="#" class="action cancel"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 			</p>
 		</div>
 

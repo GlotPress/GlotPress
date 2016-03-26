@@ -1,3 +1,5 @@
+/* global $gp_glossary_options, $gp */
+/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 $gp.glossary = function($){ return {
 
 	current: null,
@@ -53,30 +55,40 @@ $gp.glossary = function($){ return {
 		$gp.glossary.current = null;
 	},
 
-	save: function(button) {
-		if (!$gp.glossary.current) {
+	save: function( button ) {
+		var editor, data;
+
+		if ( ! $gp.glossary.current ) {
 			return;
 		}
 
-		button.prop('disabled', true);
-		$gp.notices.notice('Saving&hellip;');
+		button.prop( 'disabled', true );
+		$gp.notices.notice( 'Saving&hellip;' );
 
-		var editor = $gp.glossary.current;
-		var name = "glossary_entry["+editor.row_id+"]";
+		editor = $gp.glossary.current;
 
-		var data = $("#editor-" + editor.row_id).find('input, select, textarea').map(function() {
-			return $(this).attr('name')+'='+encodeURIComponent($(this).val());
-		}).get().join('&');
-		$.ajax({type: "POST", url: $gp_glossary_options.url, data: data, dataType: 'json',
-			success: function(data){
-				button.prop('disabled', false);
-				$gp.notices.success('Saved!');
-				$gp.glossary.replace_current(data);
+		data = {
+			_gp_route_nonce: button.data( 'nonce' )
+		};
+
+		$( '#editor-' + editor.row_id ).find( 'input, select, textarea' ).each( function() {
+			data[ $( this ).attr( 'name' ) ] = this.value;
+		});
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_glossary_options.url,
+			data: data,
+			dataType: 'json',
+			success: function( data ) {
+				button.prop( 'disabled', false );
+				$gp.notices.success( 'Saved!' );
+				$gp.glossary.replace_current( data );
 			},
-			error: function(xhr, msg, error) {
-				button.prop('disabled', false);
-				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the glossary item!';
-				$gp.notices.error(msg);
+			error: function( xhr, msg ) {
+				button.prop( 'disabled', false );
+				msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the glossary item!';
+				$gp.notices.error( msg );
 			}
 		});
 	},
