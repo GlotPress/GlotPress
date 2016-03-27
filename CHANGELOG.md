@@ -42,7 +42,7 @@
 * BREAKING: Don't store counts as a public property of GP_Translation_Set ([#334](https://github.com/GlotPress/GlotPress-WP/issues/334))
 * Bugfix: Prevent a PHP fatal error when importing originals ([#302](https://github.com/GlotPress/GlotPress-WP/pull/302))
 
-Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Dominik Schilling, Gabor Javorszky, Greg Ross, Peter Dave Hello, Rami, Sergey Biryukov
+Thanks to all the contributors so far: Aki BjÃ¶rklund, Daisuke Takahashi, Dominik Schilling, Gabor Javorszky, Greg Ross, Peter Dave Hello, Rami, Sergey Biryukov
 
 ## 1.0.2 (March 09, 2016)
 
