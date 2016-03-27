@@ -41,6 +41,11 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->assertThereIsAnErrorContaining( 'allowed' );
 	}
 
+	function assertInvalidNonceRedirect() {
+		$this->assertRedirected();
+		$this->assertThereIsAnErrorContaining( 'occurred' );
+	}
+
 	function assertInvalidRedirect() {
 		$this->assertRedirected();
 		$this->assertThereIsAnErrorContaining( 'invalid' );

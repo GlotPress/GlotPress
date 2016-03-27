@@ -118,6 +118,56 @@ class GP_Route {
 		return false;
 	}
 
+	/**
+	 * Verifies a nonce for a route.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $action Context for the created nonce.
+	 * @return bool False if the nonce is invalid, true if valid.
+	 */
+	public function verify_nonce( $action ) {
+		if ( empty( $_REQUEST['_gp_route_nonce'] ) ) {
+			return false;
+		}
+
+		if ( ! wp_verify_nonce( $_REQUEST['_gp_route_nonce'], $action ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Verifies a nonce for a route and redirects in case the nonce is invalid.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string      $action Context for the created nonce.
+	 * @param string|null $url    The URL to redirect. Default: 'null', the referrer.
+	 * @return bool False if the nonce is valid, true if the redirect has happened.
+	 */
+	public function invalid_nonce_and_redirect( $action, $url = null ) {
+		if ( $this->verify_nonce( $action ) ) {
+			return false;
+		}
+
+		$this->redirect_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), $url );
+		return true;
+	}
+
+	/**
+	 * Determines whether a user can perfom an action and redirects in case of a failure.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string      $action      The action.
+	 * @param string|null $object_type Optional. Type of an object. Default null.
+	 * @param int|null    $object_id   Otional. ID of an object Default null.
+	 * @param string      $message     Error message in case of a failure.
+	 *                                 Default: 'You are not allowed to do that!'.
+	 * @return false
+	 */
 	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
 		$can = $this->can( $action, $object_type, $object_id );
 		if ( !$can ) {
@@ -145,15 +195,69 @@ class GP_Route {
 		}
 
 		$this->set_notices_and_errors();
-		// TODO: do not redirect to projects, but to /
-		// currently it goes to /projects, because / redirects too and the notice is gone
+
 		if ( is_null( $url ) ) {
-			$url = isset( $_SERVER['HTTP_REFERER'] )? wp_unslash( $_SERVER['HTTP_REFERER'] ) : gp_url( '/projects' );
+			$url = $this->get_http_referer();
 		}
+
+		/*
+		 * TODO: do not redirect to projects, but to /.
+		 * Currently it goes to /projects, because / redirects too and the notice is gone.
+		 */
+		if ( ! $url ) {
+			$url = gp_url( '/projects' );
+		}
+
 		wp_redirect( $url );
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 
+	/**
+	 * Retrieves referer from '_wp_http_referer' or HTTP referer.
+	 *
+	 * Unlike `wp_get_referer()`, it doesn't check if the referer is
+	 * the same as the current request URL.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return false|string False on failure. Referer URL on success.
+	 */
+	private function get_http_referer() {
+		if ( ! function_exists( 'wp_validate_redirect' ) ) {
+			return false;
+		}
+
+		$ref = $this->get_raw_referer();
+		if ( $ref ) {
+			return wp_validate_redirect( $ref, false );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Retrieves unvalidated referer from '_wp_http_referer' or HTTP referer.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string|false Referer URL on success, false on failure.
+	 */
+	private function get_raw_referer() {
+		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
+			return wp_unslash( gp_array_get( $_REQUEST, '_wp_http_referer' ) );
+		} else if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+			return wp_unslash( gp_array_get( $_SERVER, 'HTTP_REFERER' ) );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Sets HTTP headers for content download.
+	 *
+	 * @param string $filename      The name of the file.
+	 * @param string $last_modified Optional. Date when the file was last modified. Default: ''.
+	 */
 	public function headers_for_download( $filename, $last_modified = '' ) {
 		$this->header('Content-Description: File Transfer');
 		$this->header('Pragma: public');

@@ -65,6 +65,7 @@ $i = 0;
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
 	</div>
+	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
 </form>
 <?php endif; ?>
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>

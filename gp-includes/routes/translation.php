@@ -44,6 +44,10 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'import-translations_' . $project->id ) ) {
+			return;
+		}
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		if ( ! $translation_set ) {
@@ -210,6 +214,12 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		$original_id = gp_post( 'original_id' );
+
+		if ( ! $this->verify_nonce( 'add-translation_' . $original_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
@@ -297,7 +307,13 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) return;
+		if ( $this->invalid_nonce_and_redirect( 'bulk-actions' ) ) {
+			return;
+		}
+
+		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+			return;
+		}
 
 		$bulk = gp_post('bulk');
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
@@ -429,10 +445,24 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	public function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
+		$index = gp_post( 'index' );
+		$key = gp_post( 'key' );
+
+		if ( ! $this->verify_nonce( 'discard-warning_' . $index . $key ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'discard_warning_edit_function' ) );
 	}
 
 	public function set_status( $project_path, $locale_slug, $translation_set_slug ) {
+		$status         = gp_post( 'status' );
+		$translation_id = gp_post( 'translation_id' );
+
+		if ( ! $this->verify_nonce( 'update-translation-status-' . $status . '_' . $translation_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
 	}
 

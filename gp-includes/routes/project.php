@@ -73,6 +73,10 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'set-personal-options_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
@@ -108,6 +112,10 @@ class GP_Route_Project extends GP_Route_Main {
 
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'import-originals_' . $project->id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -178,6 +186,10 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'edit-project_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
@@ -218,6 +230,10 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->redirect( gp_url_public_root() );
 			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
 
+			return;
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'delete-project_' . $project->id ) ) {
 			return;
 		}
 
@@ -265,6 +281,10 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	public function new_post() {
+		if ( $this->invalid_nonce_and_redirect( 'add-project' ) ) {
+			return;
+		}
+
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
@@ -331,6 +351,10 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'add-project-permissions_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
@@ -357,6 +381,10 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	public function permissions_delete( $project_path, $permission_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $permission_id ) ) {
+			return;
+		}
+
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -398,6 +426,10 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'mass-create-transation-sets_' . $project->id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -471,6 +503,10 @@ class GP_Route_Project extends GP_Route_Main {
 
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'branch-project_' . $project->id ) ) {
+			return;
 		}
 
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );

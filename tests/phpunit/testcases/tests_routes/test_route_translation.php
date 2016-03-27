@@ -18,7 +18,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 			'translation_set_id' => $set->id,
 			'original_id'        => $original->id,
 			'status'             => 'current',
-			'warnings'           => $warnings
+			'warnings'           => $warnings,
 		) );
 		$translation->set_as_current();
 
@@ -29,6 +29,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$_POST['translation_id'] = $translation->id;
 		$_POST['index'] = 0;
 		$_POST['key'] = 'placeholder';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'discard-warning_0placeholder' );
 		$this->route->discard_warning( $set->project->path, $set->locale, $set->slug );
 
 		$translations = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
@@ -38,6 +39,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$_POST['translation_id'] = $translation->id;
 		$_POST['index'] = 1;
 		$_POST['key'] = 'should_begin_on_newline';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'discard-warning_1should_begin_on_newline' );
 		$this->route->discard_warning( $set->project->path, $set->locale, $set->slug );
 
 		$translations = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );

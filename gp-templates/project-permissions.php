@@ -23,7 +23,11 @@ gp_tmpl_header();
 			<span class="user"><?php echo esc_html( $permission->locale_slug ); ?></span>
 			<span class="permission-action"><?php _e( 'and slug', 'glotpress' ); ?></span>
 			<span class="user"><?php echo esc_html( $permission->set_slug ); ?></span>
-			<a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); ?>" class="action delete"><?php _e( 'Remove', 'glotpress' ); ?></a>
+			<?php
+			$delete_url = gp_url_join( gp_url_current(), '-delete', $permission->id );
+			$delete_url = gp_route_nonce_url( $delete_url, 'delete-project-permission_' . $permission->id );
+			?>
+			<a href="<?php echo esc_url( $delete_url ); ?>" class="action delete"><?php _e( 'Remove', 'glotpress' ); ?></a>
 		</li>
 	<?php endforeach; ?>
 </ul>
@@ -62,6 +66,7 @@ gp_tmpl_header();
 			<input type="submit" name="submit" value="<?php esc_attr_e( 'Add', 'glotpress' ); ?>" id="submit" />
 			<input type="hidden" name="action" value="add-validator" />
 		</dt>
+		<?php gp_route_nonce_field( 'add-project-permissions_' . $project->id ); ?>
 </form>
 <?php
 gp_tmpl_footer();

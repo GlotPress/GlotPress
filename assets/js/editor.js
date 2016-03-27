@@ -1,3 +1,5 @@
+/* global $gp_editor_options, $gp */
+/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 $gp.editor = function($){ return {
 	current: null,
 	init: function(table) {
@@ -126,23 +128,45 @@ $gp.editor = function($){ return {
 		old_current.remove();
 		$gp.editor.current.preview.fadeIn(800);
 	},
-	save: function(button) {
-		if (!$gp.editor.current) return;
-		var editor = $gp.editor.current;
-		button.prop('disabled', true);
-		$gp.notices.notice('Saving&hellip;');
-		name = "translation["+editor.original_id+"][]";
-		data = $("textarea[name='"+name+"']", editor).map(function() {
-			return name+'='+encodeURIComponent($(this).val());
-		}).get().join('&');
-		$.ajax({type: "POST", url: $gp_editor_options.url, data: data, dataType: 'json',
-			success: function(data){
-				button.prop('disabled', false);
-				$gp.notices.success('Saved!');
-				for(original_id in data) {
-					$gp.editor.replace_current(data[original_id]);
+	save: function( button ) {
+		var editor, textareaName, data = [], translations;
+
+		if ( ! $gp.editor.current ) {
+			return;
+		}
+
+		editor = $gp.editor.current;
+		button.prop( 'disabled', true );
+		$gp.notices.notice( 'Saving&hellip;' );
+
+		data = {
+			original_id: editor.original_id,
+			_gp_route_nonce: button.data( 'nonce' )
+		};
+
+		textareaName = 'translation[' + editor.original_id + '][]';
+		translations = $( 'textarea[name="' + textareaName + '"]', editor ).map( function() {
+			return this.value;
+		}).get();
+
+		data[ textareaName ] = translations;
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_editor_options.url,
+			data: data,
+			dataType: 'json',
+			success: function( data ) {
+				var original_id;
+
+				button.prop( 'disabled', false );
+				$gp.notices.success( 'Saved!' );
+
+				for ( original_id in data ) {
+					$gp.editor.replace_current( data[ original_id ] );
 				}
-				if ($gp.editor.current.hasClass('no-warnings')) {
+
+				if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 					$gp.editor.next();
 				} else {
 					$gp.editor.current.preview.hide();
@@ -155,33 +179,58 @@ $gp.editor = function($){ return {
 			}
 		});
 	},
-	set_priority: function(select) {
-		if (!$gp.editor.current) return;
-		var editor = $gp.editor.current;
-		select.prop('disabled', true);
-		$gp.notices.notice('Setting priority&hellip;');
-		data = {priority: $('option:selected', select).attr('value')};
-		$.ajax({type: "POST", url: $gp_editor_options.set_priority_url.replace('%original-id%', editor.original_id), data: data,
-			success: function(data){
-				select.prop('disabled', false);
-				$gp.notices.success('Priority set!');
-				var new_priority_class = 'priority-'+$('option:selected', select).text();
-				$gp.editor.current.addClass(new_priority_class);
-				$gp.editor.current.preview.addClass(new_priority_class);
+	set_priority: function( select ) {
+		var editor, data;
+
+		if ( ! $gp.editor.current ) {
+			return;
+		}
+
+		editor = $gp.editor.current;
+		select.prop( 'disabled', true );
+		$gp.notices.notice( 'Setting priority&hellip;' );
+
+		data = {
+			priority: $( 'option:selected', select ).val(),
+			_gp_route_nonce: select.data( 'nonce' )
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_editor_options.set_priority_url.replace( '%original-id%', editor.original_id ),
+			data: data,
+			success: function() {
+				var new_priority_class;
+
+				select.prop( 'disabled', false );
+				$gp.notices.success( 'Priority set!' );
+				new_priority_class = 'priority-' + $( 'option:selected', select ).text();
+				$gp.editor.current.addClass( new_priority_class );
+				$gp.editor.current.preview.addClass( new_priority_class );
 			},
-			error: function(xhr, msg, error) {
-				button.prop('disabled', false);
-				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error setting the priority!';
-				$gp.notices.error(msg);
+			error: function( xhr, msg ) {
+				select.prop( 'disabled', false );
+				msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the priority!';
+				$gp.notices.error( msg );
 			}
 		});
 	},
 	set_status: function(button, status) {
-		if (!$gp.editor.current || !$gp.editor.current.translation_id) return;
-		var editor = $gp.editor.current;
-		button.prop('disabled', true);
-		$gp.notices.notice('Setting status to &#8220;'+status+'&#8221;&hellip;');
-		var data = {translation_id: editor.translation_id, status: status};
+		var editor, data;
+
+		if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
+			return;
+		}
+
+		editor = $gp.editor.current;
+		button.prop( 'disabled', true );
+		$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
+
+		data = {
+			translation_id: editor.translation_id,
+			status: status,
+			_gp_route_nonce: button.data( 'nonce' )
+		};
 
 		$.ajax({type: "POST", url: $gp_editor_options.set_status_url, data: data,
 			success: function(data){
@@ -197,18 +246,33 @@ $gp.editor = function($){ return {
 			}
 		});
 	},
-	discard_warning: function(link) {
-		if (!$gp.editor.current) return;
-		$gp.notices.notice('Discarding&hellip;');
-		data = {translation_id: $gp.editor.current.translation_id, key: link.attr('key'), index: link.attr('index')};
-		$.ajax({type: "POST", url: $gp_editor_options.discard_warning_url, data: data,
-			success: function(data) {
-				$gp.notices.success('Saved!');
-				$gp.editor.replace_current(data);
+	discard_warning: function( link ) {
+		var data;
+		if ( ! $gp.editor.current ) {
+			return;
+		}
+
+		$gp.notices.notice( 'Discarding&hellip;' );
+
+		data = {
+			translation_id: $gp.editor.current.translation_id,
+			key: link.data( 'key' ),
+			index: link.data( 'index' ),
+			_gp_route_nonce: link.data( 'nonce' )
+
+		};
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_editor_options.discard_warning_url,
+			data: data,
+			success: function( data ) {
+				$gp.notices.success( 'Saved!' );
+				$gp.editor.replace_current( data );
 			},
-			error: function(xhr, msg, error) {
-				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the translation!';
-				$gp.notices.error(msg);
+			error: function( xhr, msg ) {
+				msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
+				$gp.notices.error( msg );
 			}
 		});
 	},

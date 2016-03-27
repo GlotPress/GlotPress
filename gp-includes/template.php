@@ -556,6 +556,7 @@ function gp_project_options_form( $project ) {
 					<input type="submit" name="submit" value="' . esc_attr__( 'Save &rarr;', 'glotpress' ) . '" id="save" />
 					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __( 'Cancel', 'glotpress' ) . '</a>
 				</p>
+				' . gp_route_nonce_field( 'set-personal-options_' . $project->id, false ) . '
 				</form>
 			</div>';
 }

@@ -33,6 +33,8 @@ gp_tmpl_header();
 		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo $return_link; ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
 	</dt>
+	</dl>
+	<?php gp_route_nonce_field( ( 'originals' === $kind ? 'import-originals_' : 'import-translations_' ) . $project->id ); ?>
 </form>
 
 <?php gp_tmpl_footer();

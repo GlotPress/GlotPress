@@ -1,3 +1,5 @@
+/* global $gp_glossary_options, $gp, confirm */
+/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 $gp.glossary = function($){ return {
 
 	current: null,
@@ -53,60 +55,81 @@ $gp.glossary = function($){ return {
 		$gp.glossary.current = null;
 	},
 
-	save: function(button) {
-		if (!$gp.glossary.current) {
+	save: function( button ) {
+		var editor, data;
+
+		if ( ! $gp.glossary.current ) {
 			return;
 		}
 
-		button.prop('disabled', true);
-		$gp.notices.notice('Saving&hellip;');
+		button.prop( 'disabled', true );
+		$gp.notices.notice( 'Saving&hellip;' );
 
-		var editor = $gp.glossary.current;
-		var name = "glossary_entry["+editor.row_id+"]";
+		editor = $gp.glossary.current;
 
-		var data = $("#editor-" + editor.row_id).find('input, select, textarea').map(function() {
-			return $(this).attr('name')+'='+encodeURIComponent($(this).val());
-		}).get().join('&');
-		$.ajax({type: "POST", url: $gp_glossary_options.url, data: data, dataType: 'json',
-			success: function(data){
-				button.prop('disabled', false);
-				$gp.notices.success('Saved!');
-				$gp.glossary.replace_current(data);
+		data = {
+			_gp_route_nonce: button.data( 'nonce' )
+		};
+
+		$( '#editor-' + editor.row_id ).find( 'input, select, textarea' ).each( function() {
+			data[ $( this ).attr( 'name' ) ] = this.value;
+		});
+
+		$.ajax({
+			type: 'POST',
+			url: $gp_glossary_options.url,
+			data: data,
+			dataType: 'json',
+			success: function( data ) {
+				button.prop( 'disabled', false );
+				$gp.notices.success( 'Saved!' );
+				$gp.glossary.replace_current( data );
 			},
-			error: function(xhr, msg, error) {
-				button.prop('disabled', false);
-				msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error saving the glossary item!';
-				$gp.notices.error(msg);
+			error: function( xhr, msg ) {
+				button.prop( 'disabled', false );
+				msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the glossary item!';
+				$gp.notices.error( msg );
 			}
 		});
 	},
 
-	del: function(e, element) {
-		e.preventDefault();
+	del: function( event, button ) {
+		var result, editor, data, preview;
+
+		event.preventDefault();
+
 		result = confirm( $gp_glossary_options.ge_delete_ays );
-		if ( !result ) {
+		if ( ! result ) {
 			return;
 		} else {
-			var editor = element.closest('tr');
-			var preview = editor.prev('tr');
-			var row_id = preview.data('id');
-			var data = editor.find('input, select, textarea').map(function() {
-				return $(this).attr('name')+'='+encodeURIComponent($(this).val());
-			}).get().join('&');
-			$.ajax({type: "POST", url: $gp_glossary_options.delete_url, data: data,
-				success: function(data){
-					$gp.notices.success('Deleted!');
-					editor.fadeOut('fast', function(){
+			editor = button.closest( 'tr' );
+			preview = editor.prev( 'tr' );
+
+			data = {
+				_gp_route_nonce: button.data( 'nonce' )
+			};
+
+			editor.find( 'input, select, textarea' ).each( function() {
+				data[ $( this ).attr( 'name' ) ] = this.value;
+			});
+
+			$.ajax({
+				type: 'POST',
+				url: $gp_glossary_options.delete_url,
+				data: data,
+				success: function() {
+					$gp.notices.success( 'Deleted!' );
+					editor.fadeOut( 'fast', function() {
 						this.remove();
 					});
 					preview.remove();
-					if ( $('tr', $gp.glossary.table).length == 1 ) {
+					if ( 1 === $( 'tr', $gp.glossary.table ).length ) {
 						$gp.glossary.table.remove();
 					}
 				},
-				error: function(xhr, msg, error) {
-					msg = xhr.responseText? 'Error: '+ xhr.responseText : 'Error deleting the glossary item!';
-					$gp.notices.error(msg);
+				error: function( xhr, msg ) {
+					msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
+					$gp.notices.error( msg );
 				}
 			});
 		}

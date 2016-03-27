@@ -22,6 +22,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	}
 
 	public function new_post() {
+		if ( $this->invalid_nonce_and_redirect( 'add-translation-set' ) ) {
+			return;
+		}
+
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set ) ) return;
@@ -60,6 +64,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	 * @param int $set_id A translation set id to edit the settings of.
 	 */
 	public function edit_post( $set_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'edit-translation-set_' . $set_id ) ) {
+			return;
+		}
+
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 
 		if ( ! $items ) {
@@ -99,6 +107,10 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 	 * @param int $set_id The id of the translation set to delete.
 	 */
 	public function delete_post( $set_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'delete-translation-set_' . $set_id ) ) {
+			return;
+		}
+
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( ! $items ) {
 			return;

@@ -84,6 +84,7 @@ if ( $glossary->description ) {
 						<input type="hidden" name="new_glossary_entry[glossary_id]" value="<?php echo esc_attr( $glossary->id ); ?>">
 						<input type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
 					</p>
+					<?php gp_route_nonce_field( 'add-glossary-entry_' . $project->path . $locale->slug . $translation_set->slug ); ?>
 				</form>
 			</td>
 		</tr>

@@ -21,6 +21,10 @@ class GP_Route_Original extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( ! $this->verify_nonce( 'set-priority_' . $original_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
 		$project = GP::$project->get( $original->project_id );
 
 		if ( ! $project ) {
