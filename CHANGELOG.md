@@ -1,5 +1,9 @@
-All notable changes to this project will be documented in this file.  
+All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
+
+## 2.0.0-rc.1 (March 29, 2016)
+
+(this space intentionally left blank)
 
 ## 2.0.0-beta.2 (March 27, 2016)
 
