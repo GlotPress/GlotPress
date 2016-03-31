@@ -2,13 +2,17 @@
 if ( 'originals' == $kind ) {
  	$title = sprintf( __( 'Import Originals &lt; %s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) );
 	$return_link = gp_url_project( $project );
+	gp_breadcrumb_project( $project );
 } else {
 	$title = sprintf( __( 'Import Translations &lt; %s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) );
 	$return_link = gp_url_project_locale( $project, $locale->slug, $translation_set->slug );
+	gp_breadcrumb( array(
+		gp_project_links_from_root( $project ),
+		gp_link_get( $return_link, $translation_set->name ),
+	) );
 }
 
 gp_title( $title );
-gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
 
@@ -24,9 +28,28 @@ gp_tmpl_header();
 		$format_options[$slug] = $format->name;
 	}
 	$format_dropdown = gp_select( 'format', $format_options, 'auto' );
+
+	$status_options = array();
+	if ( isset( $can_import_current ) && $can_import_current ) {
+		$status_options['current'] = __( 'Current', 'glotpress' );
+	}
+	if ( isset( $can_import_waiting ) && $can_import_waiting ) {
+		$status_options['waiting'] = __( 'Waiting', 'glotpress' );
+	}
 ?>
-	<dt><label	for="format"><?php _e( 'Format:', 'glotpress' ); ?></label></dt>
+	<dt><label for="format"><?php _e( 'Format:', 'glotpress' ); ?></label></dt>
 	<dd><?php echo $format_dropdown; ?></dd>
+<?php if ( ! empty( $status_options ) ) : ?>
+	<dt><label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
+	<dd>
+		<?php if ( count( $status_options ) === 1 ) : ?>
+			<input type="hidden" name="status" value="<?php echo esc_attr( reset( array_keys( $status_options ) ) ); ?>" />
+			<?php echo esc_html( reset( array_values( $status_options ) ) ); ?>
+		<?php elseif ( count( $status_options ) > 1 ) : ?>
+			<?php echo gp_select( 'status', $status_options, 'waiting' ); ?>
+		<?php endif; ?>
+	</dd>
+<?php endif; ?>
 	<dt>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>" id="submit" />
