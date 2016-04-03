@@ -17,10 +17,9 @@
 </dl>
 <?php echo gp_js_focus_on( 'set[locale]' ) . "\n"; ?>
 <script type="text/javascript">
-	jQuery(function($){
-		$('#copy').click(function() {
-			$('#set\\[name\\]').val($('#set\\[locale\\] option:selected').html().replace(/^\S+\s+\S+\s+/, '').replace(/&mdash|—/, ''));
-			return false;
-		});
+	jQuery('#copy').click(function() {
+		var text = jQuery('#set\\[locale\\] option:selected').html().replace(/^\S+\s+\S+\s+/, '').replace(/&mdash|—/, '');
+		jQuery('#set\\[name\\]').val(text);
+		return false;
 	});
 </script>
