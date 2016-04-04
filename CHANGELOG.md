@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0 (April 04, 2016)
+
+**Bugfixes**
+
+* Delete cookies for notices on installs without a base. ([#379](https://github.com/GlotPress/GlotPress-WP/issues/379))
+* Fix "Use as name" link on translation set creation page. ([#381](https://github.com/GlotPress/GlotPress-WP/issues/381))
+
 ## 2.0.0-rc.1 (March 29, 2016)
 
 (this space intentionally left blank)
