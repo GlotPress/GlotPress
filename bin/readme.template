@@ -1,8 +1,8 @@
 === GlotPress ===
-Contributors: a5hleyrich, akibjorklund, bradt, chantalc, gilbitron, gregross, javorszky, nacin, ocean90, polevaultweb, samuelsidler
+Contributors: a5hleyrich, akibjorklund, bradt, chantalc, gilbitron, gregross, javorszky, nacin, ocean90, polevaultweb, rmccue, samuelsidler, SergeyBiryukov
 Tags: translation
 Requires at least: 4.4
-Tested up to: 4.4
+Tested up to: 4.5
 Stable tag: {{TAG}}
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,13 +13,13 @@ GlotPress is a WordPress plugin to let you set up your own collaborative, web-ba
 
 Many open source projects span regions, countries and dialects and need to support a variety of translations, GlotPress is here to help you collaborate online with your translators to ensure your users see your software in their native language.
 
-GlotPress has two versions, a standalone version and this WordPress plugin version.  At this time these two versions are functionally similar, but the plugin version is likely to start moving away from the standalone version in future versions.  For the rest of this document, any reference to "GlotPress" should be taken as the plugin.
+GlotPress has two versions, a standalone version and this WordPress plugin version. At this time these two versions are functionally similar, but the plugin version is likely to start moving away from the standalone version in future versions. For the rest of this document, any reference to "GlotPress" should be taken as the plugin.
 
 For more information about GlotPress, feel free to visit the channels listed below in the "Communication" section.
 
 So who should use GlotPress?
 
-Any developer of software that uses [gettext](http://www.gnu.org/software/gettext/), like WordPress theme or plugin authors.  But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
+Any developer of software that uses [gettext](http://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
 
 This plugin wouldn't be possible without all the hard work that has gone in to the standalone version of GlotPress and we'd like to thank all those who contribute to it.
 
@@ -51,7 +51,7 @@ After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress
 
 = More Info =
 
-More information can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/6.-The-Manual).
+More information can be found in the [GlotPress Manual](http://blog.glotpress.org/the-manual/).
 
 == Frequently Asked Questions ==
 = How can I contribute to GlotPress? =
@@ -66,11 +66,6 @@ There's a conversion document on the [GlotPress wiki](https://github.com/GlotPre
 = I've written a custom plugin for the standalone version, will it work with the plugin? =
 Short answer, no.
 
-You will need to update the plugin to be a WordPress plugin.  Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/1.2-Converting-Plugins).
-
-== Screenshots ==
-1. Main projects page.
-2. A translation set page.
-3. Editing a translation.
+You will need to update the plugin to be a WordPress plugin. Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/1.2-Converting-Plugins).
 
 == Changelog ==
