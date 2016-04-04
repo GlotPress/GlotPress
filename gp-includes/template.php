@@ -232,7 +232,7 @@ function gp_breadcrumb_project( $project ) {
 }
 
 function gp_js_focus_on( $html_id ) {
-	return '<script type="text/javascript">document.getElementById("'.$html_id.'").focus();</script>';
+	return '<script type="text/javascript">document.getElementById(\'' . esc_js( $html_id ) . '\').focus();</script>';
 }
 
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
