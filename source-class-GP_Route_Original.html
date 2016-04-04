@@ -234,6 +234,8 @@
 				<li><a href="function-gp_recurse_project_permissions.html">gp_recurse_project_permissions</a></li>
 				<li><a href="function-gp_recurse_validator_permission.html">gp_recurse_validator_permission</a></li>
 				<li><a href="function-gp_rewrite_rules.html">gp_rewrite_rules</a></li>
+				<li><a href="function-gp_route_nonce_field.html">gp_route_nonce_field</a></li>
+				<li><a href="function-gp_route_nonce_url.html">gp_route_nonce_url</a></li>
 				<li><a href="function-gp_route_translation_set_permissions_to_validator_permissions.html">gp_route_translation_set_permissions_to_validator_permissions</a></li>
 				<li><a href="function-gp_run_route.html">gp_run_route</a></li>
 				<li><a href="function-gp_sanitize_meta_key.html">gp_sanitize_meta_key</a></li>
@@ -245,11 +247,11 @@
 				<li><a href="function-gp_set_is_home_false.html">gp_set_is_home_false</a></li>
 				<li><a href="function-gp_startswith.html">gp_startswith</a></li>
 				<li><a href="function-gp_string_similarity.html">gp_string_similarity</a></li>
-				<li><a href="function-gp_stripos.html" class="invalid">gp_stripos</a></li>
-				<li><a href="function-gp_strlen.html" class="invalid">gp_strlen</a></li>
-				<li><a href="function-gp_strtolower.html" class="invalid">gp_strtolower</a></li>
+				<li><a href="function-gp_stripos.html">gp_stripos</a></li>
+				<li><a href="function-gp_strlen.html">gp_strlen</a></li>
+				<li><a href="function-gp_strtolower.html">gp_strtolower</a></li>
 				<li><a href="function-gp_styles_default.html">gp_styles_default</a></li>
-				<li><a href="function-gp_substr.html" class="invalid">gp_substr</a></li>
+				<li><a href="function-gp_substr.html">gp_substr</a></li>
 				<li><a href="function-gp_title.html">gp_title</a></li>
 				<li><a href="function-gp_tmpl_404.html">gp_tmpl_404</a></li>
 				<li><a href="function-gp_tmpl_filter_args.html">gp_tmpl_filter_args</a></li>
@@ -313,26 +315,30 @@
 </span><span id="21" class="l"><a href="#21">21 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_404();
 </span><span id="22" class="l"><a href="#22">22 </a>        }
 </span><span id="23" class="l"><a href="#23">23 </a>
-</span><span id="24" class="l"><a href="#24">24 </a>        <span class="php-var">$project</span> = GP::<span class="php-var">$project</span>-&gt;get( <span class="php-var">$original</span>-&gt;project_id );
-</span><span id="25" class="l"><a href="#25">25 </a>
-</span><span id="26" class="l"><a href="#26">26 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$project</span> ) {
-</span><span id="27" class="l"><a href="#27">27 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_404();
-</span><span id="28" class="l"><a href="#28">28 </a>        }
+</span><span id="24" class="l"><a href="#24">24 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$this</span>-&gt;verify_nonce( <span class="php-quote">'set-priority_'</span> . <span class="php-var">$original_id</span> ) ) {
+</span><span id="25" class="l"><a href="#25">25 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_error( __( <span class="php-quote">'An error has occurred. Please try again.'</span>, <span class="php-quote">'glotpress'</span> ), <span class="php-num">403</span> );
+</span><span id="26" class="l"><a href="#26">26 </a>        }
+</span><span id="27" class="l"><a href="#27">27 </a>
+</span><span id="28" class="l"><a href="#28">28 </a>        <span class="php-var">$project</span> = GP::<span class="php-var">$project</span>-&gt;get( <span class="php-var">$original</span>-&gt;project_id );
 </span><span id="29" class="l"><a href="#29">29 </a>
-</span><span id="30" class="l"><a href="#30">30 </a>        <span class="php-var">$this</span>-&gt;can_or_forbidden( <span class="php-quote">'write'</span>, <span class="php-quote">'project'</span>, <span class="php-var">$project</span>-&gt;id );
-</span><span id="31" class="l"><a href="#31">31 </a>        <span class="php-var">$original</span>-&gt;priority = gp_post( <span class="php-quote">'priority'</span> );
-</span><span id="32" class="l"><a href="#32">32 </a>
-</span><span id="33" class="l"><a href="#33">33 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$original</span>-&gt;validate() ) {
-</span><span id="34" class="l"><a href="#34">34 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_error( <span class="php-quote">'Invalid priority value!'</span> );
-</span><span id="35" class="l"><a href="#35">35 </a>        }
+</span><span id="30" class="l"><a href="#30">30 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$project</span> ) {
+</span><span id="31" class="l"><a href="#31">31 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_404();
+</span><span id="32" class="l"><a href="#32">32 </a>        }
+</span><span id="33" class="l"><a href="#33">33 </a>
+</span><span id="34" class="l"><a href="#34">34 </a>        <span class="php-var">$this</span>-&gt;can_or_forbidden( <span class="php-quote">'write'</span>, <span class="php-quote">'project'</span>, <span class="php-var">$project</span>-&gt;id );
+</span><span id="35" class="l"><a href="#35">35 </a>        <span class="php-var">$original</span>-&gt;priority = gp_post( <span class="php-quote">'priority'</span> );
 </span><span id="36" class="l"><a href="#36">36 </a>
-</span><span id="37" class="l"><a href="#37">37 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$original</span>-&gt;save() ) {
-</span><span id="38" class="l"><a href="#38">38 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_error( <span class="php-quote">'Error in saving original!'</span> );
+</span><span id="37" class="l"><a href="#37">37 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$original</span>-&gt;validate() ) {
+</span><span id="38" class="l"><a href="#38">38 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_error( <span class="php-quote">'Invalid priority value!'</span> );
 </span><span id="39" class="l"><a href="#39">39 </a>        }
-</span><span id="40" class="l"><a href="#40">40 </a>    }
-</span><span id="41" class="l"><a href="#41">41 </a>
-</span><span id="42" class="l"><a href="#42">42 </a>}
-</span><span id="43" class="l"><a href="#43">43 </a></span></code></pre>
+</span><span id="40" class="l"><a href="#40">40 </a>
+</span><span id="41" class="l"><a href="#41">41 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$original</span>-&gt;save() ) {
+</span><span id="42" class="l"><a href="#42">42 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;die_with_error( <span class="php-quote">'Error in saving original!'</span> );
+</span><span id="43" class="l"><a href="#43">43 </a>        }
+</span><span id="44" class="l"><a href="#44">44 </a>    }
+</span><span id="45" class="l"><a href="#45">45 </a>
+</span><span id="46" class="l"><a href="#46">46 </a>}
+</span><span id="47" class="l"><a href="#47">47 </a></span></code></pre>
 	</div>
 
 	<div id="footer">
@@ -340,6 +346,6 @@
 	</div>
 </div>
 <script src="resources/combined.js?d70efe0a4c5f4974924671fd3e90613370182ebe"></script>
-<script src="elementlist.js?4ce36b23d06d170407b7f6fcfdf04ff122317084"></script>
+<script src="elementlist.js?ef10b4e1741c71b65c39e1f2d3aa26116a362ea4"></script>
 </body>
 </html>

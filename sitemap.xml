@@ -459,6 +459,12 @@
 	<loc>https://glotpress.github.io/GlotPress-WP/function-gp_rewrite_rules.html</loc>
 </url>
 <url>
+	<loc>https://glotpress.github.io/GlotPress-WP/function-gp_route_nonce_field.html</loc>
+</url>
+<url>
+	<loc>https://glotpress.github.io/GlotPress-WP/function-gp_route_nonce_url.html</loc>
+</url>
+<url>
 	<loc>https://glotpress.github.io/GlotPress-WP/function-gp_route_translation_set_permissions_to_validator_permissions.html</loc>
 </url>
 <url>

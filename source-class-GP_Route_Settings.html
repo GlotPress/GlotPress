@@ -234,6 +234,8 @@
 				<li><a href="function-gp_recurse_project_permissions.html">gp_recurse_project_permissions</a></li>
 				<li><a href="function-gp_recurse_validator_permission.html">gp_recurse_validator_permission</a></li>
 				<li><a href="function-gp_rewrite_rules.html">gp_rewrite_rules</a></li>
+				<li><a href="function-gp_route_nonce_field.html">gp_route_nonce_field</a></li>
+				<li><a href="function-gp_route_nonce_url.html">gp_route_nonce_url</a></li>
 				<li><a href="function-gp_route_translation_set_permissions_to_validator_permissions.html">gp_route_translation_set_permissions_to_validator_permissions</a></li>
 				<li><a href="function-gp_run_route.html">gp_run_route</a></li>
 				<li><a href="function-gp_sanitize_meta_key.html">gp_sanitize_meta_key</a></li>
@@ -245,11 +247,11 @@
 				<li><a href="function-gp_set_is_home_false.html">gp_set_is_home_false</a></li>
 				<li><a href="function-gp_startswith.html">gp_startswith</a></li>
 				<li><a href="function-gp_string_similarity.html">gp_string_similarity</a></li>
-				<li><a href="function-gp_stripos.html" class="invalid">gp_stripos</a></li>
-				<li><a href="function-gp_strlen.html" class="invalid">gp_strlen</a></li>
-				<li><a href="function-gp_strtolower.html" class="invalid">gp_strtolower</a></li>
+				<li><a href="function-gp_stripos.html">gp_stripos</a></li>
+				<li><a href="function-gp_strlen.html">gp_strlen</a></li>
+				<li><a href="function-gp_strtolower.html">gp_strtolower</a></li>
 				<li><a href="function-gp_styles_default.html">gp_styles_default</a></li>
-				<li><a href="function-gp_substr.html" class="invalid">gp_substr</a></li>
+				<li><a href="function-gp_substr.html">gp_substr</a></li>
 				<li><a href="function-gp_title.html">gp_title</a></li>
 				<li><a href="function-gp_tmpl_404.html">gp_tmpl_404</a></li>
 				<li><a href="function-gp_tmpl_filter_args.html">gp_tmpl_filter_args</a></li>
@@ -333,29 +335,27 @@
 </span><span id="41" class="l"><a href="#41">41 </a>                <span class="php-var">$user_id</span> = get_current_user_id();
 </span><span id="42" class="l"><a href="#42">42 </a>            }
 </span><span id="43" class="l"><a href="#43">43 </a>
-</span><span id="44" class="l"><a href="#44">44 </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$_POST</span>[<span class="php-quote">'_wpnonce'</span>] ) || ! wp_verify_nonce( <span class="php-var">$_POST</span>[<span class="php-quote">'_wpnonce'</span>], <span class="php-quote">'update-settings_'</span> . <span class="php-var">$user_id</span> ) ) {
-</span><span id="45" class="l"><a href="#45">45 </a>                gp_notice_set( __( <span class="php-quote">'An error has occurred. Please try again.'</span>, <span class="php-quote">'glotpress'</span> ), <span class="php-quote">'error'</span> );
-</span><span id="46" class="l"><a href="#46">46 </a>                <span class="php-var">$this</span>-&gt;redirect( gp_url( <span class="php-quote">'/settings'</span> ) );
-</span><span id="47" class="l"><a href="#47">47 </a>                <span class="php-keyword1">exit</span>;
-</span><span id="48" class="l"><a href="#48">48 </a>            }
-</span><span id="49" class="l"><a href="#49">49 </a>
-</span><span id="50" class="l"><a href="#50">50 </a>            <span class="php-var">$per_page</span> = (int) <span class="php-var">$_POST</span>[<span class="php-quote">'per_page'</span>];
-</span><span id="51" class="l"><a href="#51">51 </a>            update_user_option( <span class="php-var">$user_id</span>, <span class="php-quote">'gp_per_page'</span>, <span class="php-var">$per_page</span> );
-</span><span id="52" class="l"><a href="#52">52 </a>
-</span><span id="53" class="l"><a href="#53">53 </a>            <span class="php-var">$default_sort</span> = <span class="php-keyword1">array</span>(
-</span><span id="54" class="l"><a href="#54">54 </a>                <span class="php-quote">'by'</span>  =&gt; <span class="php-quote">'priority'</span>,
-</span><span id="55" class="l"><a href="#55">55 </a>                <span class="php-quote">'how'</span> =&gt; <span class="php-quote">'desc'</span>,
-</span><span id="56" class="l"><a href="#56">56 </a>            );
-</span><span id="57" class="l"><a href="#57">57 </a>
-</span><span id="58" class="l"><a href="#58">58 </a>            <span class="php-var">$user_sort</span> = wp_parse_args( <span class="php-var">$_POST</span>[<span class="php-quote">'default_sort'</span>], <span class="php-var">$default_sort</span> );
-</span><span id="59" class="l"><a href="#59">59 </a>            update_user_option( <span class="php-var">$user_id</span>, <span class="php-quote">'gp_default_sort'</span>, <span class="php-var">$user_sort</span> );
-</span><span id="60" class="l"><a href="#60">60 </a>        }
-</span><span id="61" class="l"><a href="#61">61 </a>
-</span><span id="62" class="l"><a href="#62">62 </a>        <span class="php-var">$this</span>-&gt;redirect( gp_url( <span class="php-quote">'/settings'</span> ) );
-</span><span id="63" class="l"><a href="#63">63 </a>        <span class="php-keyword1">exit</span>;
-</span><span id="64" class="l"><a href="#64">64 </a>    }
-</span><span id="65" class="l"><a href="#65">65 </a>}
-</span><span id="66" class="l"><a href="#66">66 </a></span></code></pre>
+</span><span id="44" class="l"><a href="#44">44 </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;invalid_nonce_and_redirect( <span class="php-quote">'update-settings_'</span> . <span class="php-var">$user_id</span> ) ) {
+</span><span id="45" class="l"><a href="#45">45 </a>                <span class="php-keyword1">return</span>;
+</span><span id="46" class="l"><a href="#46">46 </a>            }
+</span><span id="47" class="l"><a href="#47">47 </a>
+</span><span id="48" class="l"><a href="#48">48 </a>            <span class="php-var">$per_page</span> = (int) <span class="php-var">$_POST</span>[<span class="php-quote">'per_page'</span>];
+</span><span id="49" class="l"><a href="#49">49 </a>            update_user_option( <span class="php-var">$user_id</span>, <span class="php-quote">'gp_per_page'</span>, <span class="php-var">$per_page</span> );
+</span><span id="50" class="l"><a href="#50">50 </a>
+</span><span id="51" class="l"><a href="#51">51 </a>            <span class="php-var">$default_sort</span> = <span class="php-keyword1">array</span>(
+</span><span id="52" class="l"><a href="#52">52 </a>                <span class="php-quote">'by'</span>  =&gt; <span class="php-quote">'priority'</span>,
+</span><span id="53" class="l"><a href="#53">53 </a>                <span class="php-quote">'how'</span> =&gt; <span class="php-quote">'desc'</span>,
+</span><span id="54" class="l"><a href="#54">54 </a>            );
+</span><span id="55" class="l"><a href="#55">55 </a>
+</span><span id="56" class="l"><a href="#56">56 </a>            <span class="php-var">$user_sort</span> = wp_parse_args( <span class="php-var">$_POST</span>[<span class="php-quote">'default_sort'</span>], <span class="php-var">$default_sort</span> );
+</span><span id="57" class="l"><a href="#57">57 </a>            update_user_option( <span class="php-var">$user_id</span>, <span class="php-quote">'gp_default_sort'</span>, <span class="php-var">$user_sort</span> );
+</span><span id="58" class="l"><a href="#58">58 </a>        }
+</span><span id="59" class="l"><a href="#59">59 </a>
+</span><span id="60" class="l"><a href="#60">60 </a>        <span class="php-var">$this</span>-&gt;redirect( gp_url( <span class="php-quote">'/settings'</span> ) );
+</span><span id="61" class="l"><a href="#61">61 </a>        <span class="php-keyword1">exit</span>;
+</span><span id="62" class="l"><a href="#62">62 </a>    }
+</span><span id="63" class="l"><a href="#63">63 </a>}
+</span><span id="64" class="l"><a href="#64">64 </a></span></code></pre>
 	</div>
 
 	<div id="footer">
@@ -363,6 +363,6 @@
 	</div>
 </div>
 <script src="resources/combined.js?d70efe0a4c5f4974924671fd3e90613370182ebe"></script>
-<script src="elementlist.js?4ce36b23d06d170407b7f6fcfdf04ff122317084"></script>
+<script src="elementlist.js?ef10b4e1741c71b65c39e1f2d3aa26116a362ea4"></script>
 </body>
 </html>

@@ -80,7 +80,6 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="class-GP.html">GP</a></li>
 				<li><a href="class-GP_Builtin_Translation_Warnings.html">GP_Builtin_Translation_Warnings</a></li>
 				<li><a href="class-GP_CLI.html">GP_CLI</a></li>
 				<li><a href="class-GP_CLI_Add_Admin.html">GP_CLI_Add_Admin</a></li>
@@ -203,6 +202,8 @@
 				<li><a href="function-gp_radio_buttons.html">gp_radio_buttons</a></li>
 				<li><a href="function-gp_recurse_project_permissions.html">gp_recurse_project_permissions</a></li>
 				<li><a href="function-gp_recurse_validator_permission.html">gp_recurse_validator_permission</a></li>
+				<li><a href="function-gp_route_nonce_field.html">gp_route_nonce_field</a></li>
+				<li><a href="function-gp_route_nonce_url.html">gp_route_nonce_url</a></li>
 				<li><a href="function-gp_route_translation_set_permissions_to_validator_permissions.html">gp_route_translation_set_permissions_to_validator_permissions</a></li>
 				<li><a href="function-gp_schema_get.html">gp_schema_get</a></li>
 				<li><a href="function-gp_scripts_default.html">gp_scripts_default</a></li>
@@ -211,11 +212,11 @@
 				<li><a href="function-gp_set_globals.html">gp_set_globals</a></li>
 				<li><a href="function-gp_startswith.html">gp_startswith</a></li>
 				<li><a href="function-gp_string_similarity.html">gp_string_similarity</a></li>
-				<li><a href="function-gp_stripos.html" class="invalid">gp_stripos</a></li>
-				<li><a href="function-gp_strlen.html" class="invalid">gp_strlen</a></li>
-				<li><a href="function-gp_strtolower.html" class="invalid">gp_strtolower</a></li>
+				<li><a href="function-gp_stripos.html">gp_stripos</a></li>
+				<li><a href="function-gp_strlen.html">gp_strlen</a></li>
+				<li><a href="function-gp_strtolower.html">gp_strtolower</a></li>
 				<li><a href="function-gp_styles_default.html">gp_styles_default</a></li>
-				<li><a href="function-gp_substr.html" class="invalid">gp_substr</a></li>
+				<li><a href="function-gp_substr.html">gp_substr</a></li>
 				<li><a href="function-gp_title.html">gp_title</a></li>
 				<li><a href="function-gp_tmpl_404.html">gp_tmpl_404</a></li>
 				<li><a href="function-gp_tmpl_filter_args.html">gp_tmpl_filter_args</a></li>
@@ -295,7 +296,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-GP_Route.html#2-244" title="Go to source code">route.php</a>
+			<b>Located at</b> <a href="source-class-GP_Route.html#2-348" title="Go to source code">route.php</a>
 		<br>
 	</div>
 
@@ -574,30 +575,136 @@ be executed.</p>
 			</div>
 			</div></td>
 		</tr>
+		<tr data-order="verify_nonce" id="_verify_nonce">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_verify_nonce">#</a>
+			<code><a href="source-class-GP_Route.html#121-139" title="Go to source code">verify_nonce</a>( <span>string <var>$action</var></span> )</code>
+
+			<div class="description short">
+				<p>Verifies a nonce for a route.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Verifies a nonce for a route.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$action</var></dt>
+						<dd>Context for the created nonce.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>False if the nonce is invalid, true if valid.
+					</div>
+
+
+					<h4>Since</h4>
+					<div class="list">
+							2.0.0<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="invalid_nonce_and_redirect" id="_invalid_nonce_and_redirect">
+
+			<td class="attributes"><code>
+				 public 
+				boolean
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_invalid_nonce_and_redirect">#</a>
+			<code><a href="source-class-GP_Route.html#141-157" title="Go to source code">invalid_nonce_and_redirect</a>( <span>string <var>$action</var></span>, <span>string|null <var>$url</var> = <span class="php-keyword1">null</span> </span> )</code>
+
+			<div class="description short">
+				<p>Verifies a nonce for a route and redirects in case the nonce is invalid.</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Verifies a nonce for a route and redirects in case the nonce is invalid.</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$action</var></dt>
+						<dd>Context for the created nonce.</dd>
+						<dt><var>$url</var></dt>
+						<dd>The URL to redirect. Default: 'null', the referrer.</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						boolean<br>False if the nonce is valid, true if the redirect has happened.
+					</div>
+
+
+					<h4>Since</h4>
+					<div class="list">
+							2.0.0<br>
+					</div>
+
+
+			</div>
+			</div></td>
+		</tr>
 		<tr data-order="can_or_forbidden" id="_can_or_forbidden">
 
 			<td class="attributes"><code>
 				 public 
-				
+				false
 				
 				</code>
 			</td>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_can_or_forbidden">#</a>
-			<code><a href="source-class-GP_Route.html#121-127" title="Go to source code">can_or_forbidden</a>( <span> <var>$action</var></span>, <span> <var>$object_type</var> = <span class="php-keyword1">null</span></span>, <span> <var>$object_id</var> = <span class="php-keyword1">null</span></span>, <span> <var>$message</var> = <span class="php-quote">'You are not allowed to do that!'</span> </span> )</code>
+			<code><a href="source-class-GP_Route.html#159-177" title="Go to source code">can_or_forbidden</a>( <span>string <var>$action</var></span>, <span>string|null <var>$object_type</var> = <span class="php-keyword1">null</span></span>, <span>integer|null <var>$object_id</var> = <span class="php-keyword1">null</span></span>, <span>string <var>$message</var> = <span class="php-quote">'You are not allowed to do that!'</span> </span> )</code>
 
 			<div class="description short">
-				
+				<p>Determines whether a user can perfom an action and redirects in case of a failure.</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>Determines whether a user can perfom an action and redirects in case of a failure.</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$action</var></dt>
+						<dd>The action.</dd>
+						<dt><var>$object_type</var></dt>
+						<dd>Optional. Type of an object. Default null.</dd>
+						<dt><var>$object_id</var></dt>
+						<dd>Otional. ID of an object Default null.</dd>
+						<dt><var>$message</var></dt>
+						<dd><p>Error message in case of a failure.
+                                Default: 'You are not allowed to do that!'.</p></dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						false
+					</div>
 
 
-
+					<h4>Since</h4>
+					<div class="list">
+							1.0.0<br>
+					</div>
 
 
 			</div>
@@ -614,7 +721,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_logged_in_or_forbidden">#</a>
-			<code><a href="source-class-GP_Route.html#129-133" title="Go to source code">logged_in_or_forbidden</a>( )</code>
+			<code><a href="source-class-GP_Route.html#179-183" title="Go to source code">logged_in_or_forbidden</a>( )</code>
 
 			<div class="description short">
 				
@@ -643,7 +750,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_redirect_with_error">#</a>
-			<code><a href="source-class-GP_Route.html#135-138" title="Go to source code">redirect_with_error</a>( <span> <var>$message</var></span>, <span> <var>$url</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code><a href="source-class-GP_Route.html#185-188" title="Go to source code">redirect_with_error</a>( <span> <var>$message</var></span>, <span> <var>$url</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -672,7 +779,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_redirect">#</a>
-			<code><a href="source-class-GP_Route.html#140-155" title="Go to source code">redirect</a>( <span> <var>$url</var> = <span class="php-keyword1">null</span> </span> )</code>
+			<code><a href="source-class-GP_Route.html#190-213" title="Go to source code">redirect</a>( <span> <var>$url</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -701,16 +808,23 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_headers_for_download">#</a>
-			<code><a href="source-class-GP_Route.html#157-169" title="Go to source code">headers_for_download</a>( <span> <var>$filename</var></span>, <span> <var>$last_modified</var> = <span class="php-quote">''</span> </span> )</code>
+			<code><a href="source-class-GP_Route.html#255-273" title="Go to source code">headers_for_download</a>( <span>string <var>$filename</var></span>, <span>string <var>$last_modified</var> = <span class="php-quote">''</span> </span> )</code>
 
 			<div class="description short">
-				
+				<p>Sets HTTP headers for content download.</p>
 			</div>
 
 			<div class="description detailed hidden">
-				
+				<p>Sets HTTP headers for content download.</p>
 
 
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$filename</var></dt>
+						<dd>The name of the file.</dd>
+						<dt><var>$last_modified</var></dt>
+						<dd>Optional. Date when the file was last modified. Default: ''.</dd>
+					</dl></div>
 
 
 
@@ -730,7 +844,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_set_notices_and_errors">#</a>
-			<code><a href="source-class-GP_Route.html#171-183" title="Go to source code">set_notices_and_errors</a>( )</code>
+			<code><a href="source-class-GP_Route.html#275-287" title="Go to source code">set_notices_and_errors</a>( )</code>
 
 			<div class="description short">
 				
@@ -759,7 +873,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_tmpl">#</a>
-			<code><a href="source-class-GP_Route.html#185-211" title="Go to source code">tmpl</a>( <span>string <var>$template</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean|string <var>$honor_api</var> = <span class="php-keyword1">true</span> </span> )</code>
+			<code><a href="source-class-GP_Route.html#289-315" title="Go to source code">tmpl</a>( <span>string <var>$template</var></span>, <span>array <var>$args</var> = <span class="php-keyword1">array</span>()</span>, <span>boolean|string <var>$honor_api</var> = <span class="php-keyword1">true</span> </span> )</code>
 
 			<div class="description short">
 				<p>Loads a template.</p>
@@ -798,7 +912,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_die_with_404">#</a>
-			<code><a href="source-class-GP_Route.html#213-217" title="Go to source code">die_with_404</a>( <span> <var>$args</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<code><a href="source-class-GP_Route.html#317-321" title="Go to source code">die_with_404</a>( <span> <var>$args</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -827,7 +941,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_exit_">#</a>
-			<code><a href="source-class-GP_Route.html#219-226" title="Go to source code">exit_</a>( <span> <var>$message</var> = <span class="php-num">0</span> </span> )</code>
+			<code><a href="source-class-GP_Route.html#323-330" title="Go to source code">exit_</a>( <span> <var>$message</var> = <span class="php-num">0</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -856,7 +970,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_header">#</a>
-			<code><a href="source-class-GP_Route.html#228-235" title="Go to source code">header</a>( <span> <var>$string</var></span> )</code>
+			<code><a href="source-class-GP_Route.html#332-339" title="Go to source code">header</a>( <span> <var>$string</var></span> )</code>
 
 			<div class="description short">
 				
@@ -885,7 +999,7 @@ be executed.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_status_header">#</a>
-			<code><a href="source-class-GP_Route.html#237-243" title="Go to source code">status_header</a>( <span> <var>$status</var></span> )</code>
+			<code><a href="source-class-GP_Route.html#341-347" title="Go to source code">status_header</a>( <span> <var>$status</var></span> )</code>
 
 			<div class="description short">
 				

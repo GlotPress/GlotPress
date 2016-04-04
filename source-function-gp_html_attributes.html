@@ -234,6 +234,8 @@
 				<li><a href="function-gp_recurse_project_permissions.html">gp_recurse_project_permissions</a></li>
 				<li><a href="function-gp_recurse_validator_permission.html">gp_recurse_validator_permission</a></li>
 				<li><a href="function-gp_rewrite_rules.html">gp_rewrite_rules</a></li>
+				<li><a href="function-gp_route_nonce_field.html">gp_route_nonce_field</a></li>
+				<li><a href="function-gp_route_nonce_url.html">gp_route_nonce_url</a></li>
 				<li><a href="function-gp_route_translation_set_permissions_to_validator_permissions.html">gp_route_translation_set_permissions_to_validator_permissions</a></li>
 				<li><a href="function-gp_run_route.html">gp_run_route</a></li>
 				<li><a href="function-gp_sanitize_meta_key.html">gp_sanitize_meta_key</a></li>
@@ -245,11 +247,11 @@
 				<li><a href="function-gp_set_is_home_false.html">gp_set_is_home_false</a></li>
 				<li><a href="function-gp_startswith.html">gp_startswith</a></li>
 				<li><a href="function-gp_string_similarity.html">gp_string_similarity</a></li>
-				<li><a href="function-gp_stripos.html" class="invalid">gp_stripos</a></li>
-				<li><a href="function-gp_strlen.html" class="invalid">gp_strlen</a></li>
-				<li><a href="function-gp_strtolower.html" class="invalid">gp_strtolower</a></li>
+				<li><a href="function-gp_stripos.html">gp_stripos</a></li>
+				<li><a href="function-gp_strlen.html">gp_strlen</a></li>
+				<li><a href="function-gp_strtolower.html">gp_strtolower</a></li>
 				<li><a href="function-gp_styles_default.html">gp_styles_default</a></li>
-				<li><a href="function-gp_substr.html" class="invalid">gp_substr</a></li>
+				<li><a href="function-gp_substr.html">gp_substr</a></li>
 				<li><a href="function-gp_title.html">gp_title</a></li>
 				<li><a href="function-gp_tmpl_404.html">gp_tmpl_404</a></li>
 				<li><a href="function-gp_tmpl_filter_args.html">gp_tmpl_filter_args</a></li>
@@ -524,7 +526,7 @@
 </span><span id="232" class="l"><a href="#232">232 </a>}
 </span><span id="233" class="l"><a href="#233">233 </a>
 </span><span id="234" class="l"><a href="#234">234 </a><span class="php-keyword1">function</span> gp_js_focus_on( <span class="php-var">$html_id</span> ) {
-</span><span id="235" class="l"><a href="#235">235 </a>    <span class="php-keyword1">return</span> <span class="php-quote">'&lt;script type=&quot;text/javascript&quot;&gt;document.getElementById(&quot;'</span>.<span class="php-var">$html_id</span>.<span class="php-quote">'&quot;).focus();&lt;/script&gt;'</span>;
+</span><span id="235" class="l"><a href="#235">235 </a>    <span class="php-keyword1">return</span> <span class="php-quote">'&lt;script type=&quot;text/javascript&quot;&gt;document.getElementById(\''</span> . esc_js( <span class="php-var">$html_id</span> ) . <span class="php-quote">'\').focus();&lt;/script&gt;'</span>;
 </span><span id="236" class="l"><a href="#236">236 </a>}
 </span><span id="237" class="l"><a href="#237">237 </a>
 </span><span id="238" class="l"><a href="#238">238 </a><span class="php-keyword1">function</span> gp_select( <span class="php-var">$name_and_id</span>, <span class="php-var">$options</span>, <span class="php-var">$selected_key</span>, <span class="php-var">$attrs</span> = <span class="php-keyword1">array</span>() ) {
@@ -848,32 +850,33 @@
 </span></span><span id="556" class="l"><a href="#556">556 </a><span class="php-quote">                    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;'</span> . esc_attr__( <span class="php-quote">'Save &amp;rarr;'</span>, <span class="php-quote">'glotpress'</span> ) . <span class="php-quote">'&quot; id=&quot;save&quot; /&gt;
 </span></span><span id="557" class="l"><a href="#557">557 </a><span class="php-quote">                    &lt;a class=&quot;ternary&quot; href=&quot;#&quot; onclick=&quot;jQuery(\'#personal-options-toggle\').click();return false;&quot;&gt;'</span> . __( <span class="php-quote">'Cancel'</span>, <span class="php-quote">'glotpress'</span> ) . <span class="php-quote">'&lt;/a&gt;
 </span></span><span id="558" class="l"><a href="#558">558 </a><span class="php-quote">                &lt;/p&gt;
-</span></span><span id="559" class="l"><a href="#559">559 </a><span class="php-quote">                &lt;/form&gt;
-</span></span><span id="560" class="l"><a href="#560">560 </a><span class="php-quote">            &lt;/div&gt;'</span>;
-</span><span id="561" class="l"><a href="#561">561 </a>}
-</span><span id="562" class="l"><a href="#562">562 </a>
-</span><span id="563" class="l"><a href="#563">563 </a><span class="php-keyword1">function</span> gp_entry_actions( <span class="php-var">$seperator</span> = <span class="php-quote">' &amp;bull; '</span> ) {
-</span><span id="564" class="l"><a href="#564">564 </a>    <span class="php-var">$actions</span> = <span class="php-keyword1">array</span>(
-</span><span id="565" class="l"><a href="#565">565 </a>        <span class="php-quote">'&lt;a href=&quot;#&quot; class=&quot;copy&quot; tabindex=&quot;-1&quot;&gt;'</span> . __( <span class="php-quote">'Copy from original'</span>, <span class="php-quote">'glotpress'</span> ) . <span class="php-quote">'&lt;/a&gt;'</span>
-</span><span id="566" class="l"><a href="#566">566 </a>    );
-</span><span id="567" class="l"><a href="#567">567 </a>
-</span><span id="568" class="l"><a href="#568">568 </a>    <span class="php-comment">/**
-</span></span><span id="569" class="l"><a href="#569">569 </a><span class="php-comment">     * Filter entry action links.
-</span></span><span id="570" class="l"><a href="#570">570 </a><span class="php-comment">     *
-</span></span><span id="571" class="l"><a href="#571">571 </a><span class="php-comment">     * @since 1.0.0
-</span></span><span id="572" class="l"><a href="#572">572 </a><span class="php-comment">     *
-</span></span><span id="573" class="l"><a href="#573">573 </a><span class="php-comment">     * @param array $actions Links as HTML strings.
-</span></span><span id="574" class="l"><a href="#574">574 </a><span class="php-comment">     */</span>
-</span><span id="575" class="l"><a href="#575">575 </a>    <span class="php-var">$actions</span> = apply_filters( <span class="php-quote">'gp_entry_actions'</span>, <span class="php-var">$actions</span> );
-</span><span id="576" class="l"><a href="#576">576 </a>
+</span></span><span id="559" class="l"><a href="#559">559 </a><span class="php-quote">                '</span> . gp_route_nonce_field( <span class="php-quote">'set-personal-options_'</span> . <span class="php-var">$project</span>-&gt;id, <span class="php-keyword1">false</span> ) . <span class="php-quote">'
+</span></span><span id="560" class="l"><a href="#560">560 </a><span class="php-quote">                &lt;/form&gt;
+</span></span><span id="561" class="l"><a href="#561">561 </a><span class="php-quote">            &lt;/div&gt;'</span>;
+</span><span id="562" class="l"><a href="#562">562 </a>}
+</span><span id="563" class="l"><a href="#563">563 </a>
+</span><span id="564" class="l"><a href="#564">564 </a><span class="php-keyword1">function</span> gp_entry_actions( <span class="php-var">$seperator</span> = <span class="php-quote">' &amp;bull; '</span> ) {
+</span><span id="565" class="l"><a href="#565">565 </a>    <span class="php-var">$actions</span> = <span class="php-keyword1">array</span>(
+</span><span id="566" class="l"><a href="#566">566 </a>        <span class="php-quote">'&lt;a href=&quot;#&quot; class=&quot;copy&quot; tabindex=&quot;-1&quot;&gt;'</span> . __( <span class="php-quote">'Copy from original'</span>, <span class="php-quote">'glotpress'</span> ) . <span class="php-quote">'&lt;/a&gt;'</span>
+</span><span id="567" class="l"><a href="#567">567 </a>    );
+</span><span id="568" class="l"><a href="#568">568 </a>
+</span><span id="569" class="l"><a href="#569">569 </a>    <span class="php-comment">/**
+</span></span><span id="570" class="l"><a href="#570">570 </a><span class="php-comment">     * Filter entry action links.
+</span></span><span id="571" class="l"><a href="#571">571 </a><span class="php-comment">     *
+</span></span><span id="572" class="l"><a href="#572">572 </a><span class="php-comment">     * @since 1.0.0
+</span></span><span id="573" class="l"><a href="#573">573 </a><span class="php-comment">     *
+</span></span><span id="574" class="l"><a href="#574">574 </a><span class="php-comment">     * @param array $actions Links as HTML strings.
+</span></span><span id="575" class="l"><a href="#575">575 </a><span class="php-comment">     */</span>
+</span><span id="576" class="l"><a href="#576">576 </a>    <span class="php-var">$actions</span> = apply_filters( <span class="php-quote">'gp_entry_actions'</span>, <span class="php-var">$actions</span> );
 </span><span id="577" class="l"><a href="#577">577 </a>
-</span><span id="578" class="l"><a href="#578">578 </a>    <span class="php-keyword1">echo</span> <span class="php-keyword2">implode</span>( <span class="php-var">$seperator</span>, <span class="php-var">$actions</span> );
-</span><span id="579" class="l"><a href="#579">579 </a>    <span class="php-comment">/*
-</span></span><span id="580" class="l"><a href="#580">580 </a><span class="php-comment">    &lt;a href=&quot;#&quot; class=&quot;copy&quot; tabindex=&quot;-1&quot;&gt;&lt;?php _e( 'Copy from original', 'glotpress' ); ?&gt;&lt;/a&gt; &amp;bull;
-</span></span><span id="581" class="l"><a href="#581">581 </a><span class="php-comment">    &lt;a href=&quot;#&quot; class=&quot;gtranslate&quot; tabindex=&quot;-1&quot;&gt;&lt;?php _e( 'Translation from Google', 'glotpress' ); ?&gt;&lt;/a&gt;
-</span></span><span id="582" class="l"><a href="#582">582 </a><span class="php-comment">    */</span>
-</span><span id="583" class="l"><a href="#583">583 </a>}
-</span><span id="584" class="l"><a href="#584">584 </a></span></code></pre>
+</span><span id="578" class="l"><a href="#578">578 </a>
+</span><span id="579" class="l"><a href="#579">579 </a>    <span class="php-keyword1">echo</span> <span class="php-keyword2">implode</span>( <span class="php-var">$seperator</span>, <span class="php-var">$actions</span> );
+</span><span id="580" class="l"><a href="#580">580 </a>    <span class="php-comment">/*
+</span></span><span id="581" class="l"><a href="#581">581 </a><span class="php-comment">    &lt;a href=&quot;#&quot; class=&quot;copy&quot; tabindex=&quot;-1&quot;&gt;&lt;?php _e( 'Copy from original', 'glotpress' ); ?&gt;&lt;/a&gt; &amp;bull;
+</span></span><span id="582" class="l"><a href="#582">582 </a><span class="php-comment">    &lt;a href=&quot;#&quot; class=&quot;gtranslate&quot; tabindex=&quot;-1&quot;&gt;&lt;?php _e( 'Translation from Google', 'glotpress' ); ?&gt;&lt;/a&gt;
+</span></span><span id="583" class="l"><a href="#583">583 </a><span class="php-comment">    */</span>
+</span><span id="584" class="l"><a href="#584">584 </a>}
+</span><span id="585" class="l"><a href="#585">585 </a></span></code></pre>
 	</div>
 
 	<div id="footer">
@@ -881,6 +884,6 @@
 	</div>
 </div>
 <script src="resources/combined.js?d70efe0a4c5f4974924671fd3e90613370182ebe"></script>
-<script src="elementlist.js?4ce36b23d06d170407b7f6fcfdf04ff122317084"></script>
+<script src="elementlist.js?ef10b4e1741c71b65c39e1f2d3aa26116a362ea4"></script>
 </body>
 </html>
