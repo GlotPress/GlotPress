@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Glossary_Entry class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the glossary entry route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 	public function glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
@@ -52,6 +65,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'add-glossary-entry_' . $project_path . $locale_slug . $translation_set_slug ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
 		}
@@ -78,11 +95,16 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	}
 
 	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$ge              = array_shift( gp_post('glossary_entry') );
+		$ge_post 		= gp_post('glossary_entry');
+		$ge             = array_shift( $ge_post );
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ){
 			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
+		}
+
+		if ( ! $this->verify_nonce( 'edit-glossary-entry_' . $glossary_entry->id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
@@ -118,7 +140,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return $this->die_with_error( $error_output, 200 );
 		}
 		else {
-			$ge     = $glossary_entry->reload();
+			$entry = $glossary_entry->reload();
+			$user = get_userdata( $entry->last_edited_by );
+			$entry->user_login = $user ? $user->user_login : '';
+			$entry->user_display_name = $user ? $user->display_name : '';
 			$output = gp_tmpl_get_output( 'glossary-entry-row', get_defined_vars() );
 
 			echo wp_json_encode( $output );
@@ -127,12 +152,17 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		exit();
 	}
 
-	public function glossary_entry_delete_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$ge             = array_shift( gp_post('glossary_entry') );
+	public function glossary_entry_delete_post() {
+		$ge_post 		= gp_post('glossary_entry');
+		$ge             = array_shift( $ge_post );
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ) {
 			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
+		}
+
+		if ( ! $this->verify_nonce( 'delete-glossary-entry_' . $glossary_entry->id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
 		$glossary        = GP::$glossary->get( $glossary_entry->glossary_id );
@@ -147,7 +177,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->errors[] = __( 'Error in deleting glossary entry!', 'glotpress' );
 		}
 
-		if ( $this->errors ) {
+		if ( ! empty( $this->errors ) ) {
 			$error_output = '<ul>';
 			foreach ( $this->errors as $error ) {
 				$error_output .= '<li>' . $error . '</li>';
@@ -227,6 +257,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		if ( ! $glossary ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'import-glossary-entries_' . $project_path . $locale_slug . $translation_set_slug ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {

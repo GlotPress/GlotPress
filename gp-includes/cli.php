@@ -13,7 +13,6 @@ function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/translation-set.php';
 	require_once GP_PATH . GP_INC . 'cli/upgrade-set-permissions.php';
 	require_once GP_PATH . GP_INC . 'cli/wipe-permissions.php';
-	require_once GP_PATH . GP_INC . 'cli/wporg2slug.php';
 
 	// Legacy commands
 	WP_CLI::add_command( 'glotpress add-admin', 'GP_CLI_Add_Admin' );
@@ -23,7 +22,6 @@ function gp_cli_register() {
 	WP_CLI::add_command( 'glotpress remove-multiple-currents', 'GP_CLI_Remove_Multiple_Currents' );
 	WP_CLI::add_command( 'glotpress upgrade-set-permissions', 'GP_CLI_Upgrade_Set_Permissions' );
 	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
-	WP_CLI::add_command( 'glotpress wporg2slug', 'GP_CLI_WPorg2Slug' );
 
 	// New style commands
 	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
@@ -36,8 +34,12 @@ class GP_CLI {
 	public $options = array();
 	public $program_name = '';
 	public $usage = '';
+	public $args;
+	public $project;
+	public $locale;
+	public $translation_set;
 
-	function __construct() {
+	public function __construct() {
 		_deprecated_function( 'GP_CLI::__construct', '', 'WP_CLI_Command' );
 
 		global $argv;
@@ -53,16 +55,16 @@ class GP_CLI {
 		$this->args = $argv;
 	}
 
-	function usage() {
+	public function usage() {
 		$this->error( 'php '.$this->program_name.' '.$this->usage );
 	}
 
-	function to_stderr( $text, $no_new_line = false ) {
+	public function to_stderr( $text, $no_new_line = false ) {
 		$text .= ($no_new_line? '' : "\n");
 		fwrite( STDERR, $text );
 	}
 
-	function error( $message, $exit_code = 1 ) {
+	public function error( $message, $exit_code = 1 ) {
 		$this->to_stderr( $message );
 		exit( $exit_code );
 	}
@@ -74,7 +76,7 @@ class GP_Translation_Set_Script extends GP_CLI {
 
 	var $usage = "-p <project-path> -l <locale> [-t <translation-set-slug>]";
 
-	function run() {
+	public function run() {
 		if ( !isset( $this->options['l'] ) || !isset( $this->options['p'] ) ) {
 			$this->usage();
 		}
@@ -92,7 +94,9 @@ class GP_Translation_Set_Script extends GP_CLI {
 		$this->action_on_translation_set( $this->translation_set );
 	}
 
-	function action_on_translation_set( $translation_set ) {
+	public function action_on_translation_set( $translation_set ) {
 		// define this function in a subclass
+
+		do_action( 'gp_cli_action_on_translation_set', $translation_set );
 	}
 }

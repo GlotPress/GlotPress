@@ -1,9 +1,74 @@
 <?php
+/**
+ * Translation Validation API
+ *
+ * @package GlotPress
+ * @since 1.0.0
+ */
 
+/**
+ * Core class to handle validation of translations.
+ *
+ * Uses magic methods in the format of [field]_[rule].
+ *
+ * The below is a list of all magic methods called to ensure Scrutinizer recognizes them.
+ * Note that once a method has been defined from one file it will not be redefine in subsequent file sections.
+ *
+ * From gp_includes/things/administrative-permissions.php:
+ *
+ *     @method bool user_id_should_not_be( string $name, array $args = null )
+ *     @method bool action_should_not_be( string $name, array $args = null )
+ *     @method bool object_type_should_be( string $name, array $args = null )
+ *     @method bool object_id_should_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/glossary-entry.php:
+ *
+ *     @method bool term_should_not_be( string $name, array $args = null )
+ *     @method bool part_of_speech_should_not_be( string $name, array $args = null )
+ *     @method bool glossary_id_should_be( string $name, array $args = null )
+ *     @method bool last_edited_by_should_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/original.php:
+ *
+ *     @method bool singular_should_not_be( string $name, array $args = null )
+ *     @method bool status_should_not_be( string $name, array $args = null )
+ *     @method bool project_id_should_be( string $name, array $args = null )
+ *     @method bool priority_should_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/translation.php:
+ *
+ *     @method bool translation_0_should_not_be( string $name, array $args = null )
+ *     @method bool original_id_should_be( string $name, array $args = null )
+ *     @method bool translation_set_id_should_be( string $name, array $args = null )
+ *     @method bool user_id_should_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/glossary.php:
+ *
+ *     @method bool translation_set_id_should_not_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/project.php:
+ *
+ *     @method bool name_should_not_be( string $name, array $args = null )
+ *     @method bool slug_should_not_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/translation-set.php:
+ *
+ *     @method bool locale_should_not_be( string $name, array $args = null )
+ *     @method bool project_id_should_not_be( string $name, array $args = null )
+ *
+ * From gp_includes/things/validator-permission.php:
+ *
+ *     @method bool locale_slug_should_not_be( string $name, array $args = null )
+ *     @method bool user_id_should_not_be( string $name, array $args = null )
+ *     @method bool action_should_not_be( string $name, array $args = null )
+ *     @method bool set_slug_should_not_be( string $name, array $args = null )
+ */
 class GP_Validation_Rules {
 
 	var $rules = array();
-	var $errors = array();
+
+	public $errors = array();
+	public $field_names;
 
 	static $positive_suffices = array(
 		'should_be', 'should', 'can', 'can_be',
@@ -12,11 +77,11 @@ class GP_Validation_Rules {
 		'should_not_be', 'should_not', 'cant', 'cant_be',
 	);
 
-	function __construct( $field_names ) {
+	public function __construct( $field_names ) {
 		$this->field_names = $field_names;
 	}
 
-	function __call( $name, $args ) {
+	public function __call( $name, $args ) {
 		foreach( array( 'positive', 'negative' ) as $kind ) {
 			$suffices = "{$kind}_suffices";
 			foreach( self::$$suffices as $suffix ) {
@@ -31,7 +96,7 @@ class GP_Validation_Rules {
 		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
 	}
 
-	function run( $thing ) {
+	public function run( $thing ) {
 		$this->errors = array();
 		$verdict = true;
 		foreach( $this->field_names as $field_name ) {
@@ -44,7 +109,7 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
-	function run_on_single_field( $field, $value ) {
+	public function run_on_single_field( $field, $value ) {
 		if ( !isset( $this->rules[$field] ) || !is_array( $this->rules[$field] ) ) {
 			// no rules means always valid
 			return true;
@@ -61,17 +126,17 @@ class GP_Validation_Rules {
 			array_unshift( $args, $value );
 			if ( 'positive' == $rule['kind'] ) {
 				if ( !call_user_func_array( $callback['positive'], $args ) ) {
-					$this->errors[] = $this->construct_error_message( $rule, $value );
+					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict = false;
 				}
 			} else {
 				if ( is_null( $callback['negative'] ) ) {
 					if ( call_user_func_array( $callback['positive'], $args ) ) {
-						$this->errors[] = $this->construct_error_message( $rule, $value );
+						$this->errors[] = $this->construct_error_message( $rule );
 						$verdict = false;
 					}
 				} else if ( !call_user_func_array( $callback['negative'], $args ) ) {
-					$this->errors[] = $this->construct_error_message( $rule, $value );
+					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict = false;
 				}
 			}
@@ -79,7 +144,7 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
-	function construct_error_message( $rule, $value ) {
+	public function construct_error_message( $rule ) {
 		$type_field = 'field';
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
@@ -89,26 +154,29 @@ class GP_Validation_Rules {
 			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
 		}
 
-		if ( 'positive' == $rule['kind'] )
-			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
-		else //if ( 'negative' == $rule['kind'] )
-			return sprintf( __( 'The %s <strong>%s</strong> is invalid and should not be %s!', 'glotpress' ), $type_field, $name_field, $name_rule );
+		if ( 'positive' == $rule['kind'] ) {
+			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
+			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+		} else { //if ( 'negative' == $rule['kind'] )
+			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
+			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+		}
 	}
 }
 
 class GP_Validators {
 	static $callbacks = array();
 
-	static function register( $key, $callback, $negative_callback = null ) {
+	static public function register( $key, $callback, $negative_callback = null ) {
 		// TODO: add data for easier generation of error messages
 		self::$callbacks[$key] = array( 'positive' => $callback, 'negative' => $negative_callback );
 	}
 
-	static function unregister( $key ) {
+	static public function unregister( $key ) {
 		unset( self::$callbacks[$key] );
 	}
 
-	static function get( $key ) {
+	static public function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}
 }

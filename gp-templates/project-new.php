@@ -10,7 +10,8 @@ gp_tmpl_header();
 <?php gp_tmpl_load( 'project-form', get_defined_vars()); ?>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="javascript:history.back();"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
+		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo gp_url(); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
+	<?php gp_route_nonce_field( 'add-project' ); ?>
 </form>
 <?php gp_tmpl_footer();

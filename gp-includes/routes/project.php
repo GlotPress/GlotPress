@@ -1,13 +1,26 @@
 <?php
+/**
+ * Routes: GP_Route_Project class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the project route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Project extends GP_Route_Main {
 
-	function index() {
+	public function index() {
 		$title = __( 'Projects', 'glotpress' );
 		$projects = GP::$project->top_level();
 		$this->tmpl( 'projects', get_defined_vars() );
 	}
 
-	function single( $project_path ) {
+	public function single( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -36,6 +49,16 @@ class GP_Route_Project extends GP_Route_Main {
 		usort( $translation_sets, function( $a, $b ) {
 			return( $a->current_count < $b->current_count );
 		});
+
+		/**
+		 * Filter the list of translation sets of a project.
+		 *
+		 * Can also be used to sort the sets to a custom order.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Sets[] $translation_sets An array of translation sets.
+		 */
 		$translation_sets = apply_filters( 'gp_translation_sets_sort', $translation_sets );
 
 		$title = sprintf( __( '%s project ', 'glotpress' ), esc_html( $project->name ) );
@@ -43,11 +66,15 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project', get_defined_vars() );
 	}
 
-	function personal_options_post( $project_path ) {
+	public function personal_options_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'set-personal-options_' . $project->id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -65,7 +92,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function import_originals_get( $project_path ) {
+	public function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
  		if ( ! $project ) {
@@ -80,28 +107,31 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
-	function import_originals_post( $project_path ) {
+	public function import_originals_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
 			return $this->die_with_404();
 		}
 
+		if ( $this->invalid_nonce_and_redirect( 'import-originals_' . $project->id ) ) {
+			return;
+		}
+
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
 
-		$format = gp_array_get( GP::$formats, gp_post( 'format', 'po' ), null );
-
-		if ( ! $format ) {
-			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
-			return;
-		}
-
-
 		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
 			// TODO: different errors for different upload conditions
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
+			return;
+		}
+
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES[ 'import-file' ][ 'name' ] );
+
+		if ( ! $format ) {
+			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
 			return;
 		}
 
@@ -112,8 +142,9 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted ) = GP::$original->import_for_project( $project, $translations );
-		$this->notices[] = sprintf(
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = GP::$original->import_for_project( $project, $translations );
+
+		$notice = sprintf(
 			__( '%1$s new strings added, %2$s updated, %3$s fuzzied, and %4$s obsoleted.', 'glotpress' ),
 			$originals_added,
 			$originals_existing,
@@ -121,10 +152,20 @@ class GP_Route_Project extends GP_Route_Main {
 			$originals_obsoleted
 		);
 
+		if ( $originals_error ) {
+			$notice .= ' ' . sprintf(
+				/* translators: %s: number of errors */
+				_n( '%s new string was not imported due to an error.', '%s new strings were not imported due to an error.', $originals_error, 'glotpress' ),
+				$originals_error
+			);
+		}
+
+		$this->notices[] = $notice;
+
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function edit_get( $project_path ) {
+	public function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -138,11 +179,15 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-edit', get_defined_vars() );
 	}
 
-	function edit_post( $project_path ) {
+	public function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( !$project ) {
 			$this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'edit-project_' . $project->id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -170,32 +215,61 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function delete_get( $project_path ) {
-		// TODO: do not delete using a GET request but POST
-		// TODO: decide what to do with child projects and translation sets
-		// TODO: just deactivate, do not actually delete
+	/**
+	 * Deletes a project, including sub projects, glossaries, originals, translations sets and translations.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param int $project_path The path of the project to delete.
+	 */
+	public function delete_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
-		if ( !$project ) {
-			return $this->die_with_404();
+		if ( ! is_object( $project ) ) {
+
+			$this->redirect( gp_url_public_root() );
+			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
+
+			return;
 		}
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
+		if ( $this->invalid_nonce_and_redirect( 'delete-project_' . $project->id ) ) {
+			return;
+		}
+
+		if ( $this->cannot_and_redirect( 'delete', 'project', $project->id ) ) {
 			return;
 		}
 
 		if ( $project->delete() ) {
-			$this->notices[] = __( 'The project was deleted.', 'glotpress' );
+			$this->notices[] = sprintf( __( 'The project "%s" was deleted.', 'glotpress' ), $project->name );
 		}
 		else {
-			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
+			$this->errors[] = sprintf( __( 'Error deleting project "%s"!', 'glotpress' ), $project->name );
 		}
 
-		$this->redirect( gp_url_project( '' ) );
+		$this->redirect( gp_url_public_root() );
+	}
+
+	/**
+	 * Displays the delete page for projects.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $project_path The path of the project to delete.
+	 */
+	public function delete_get( $project_path ) {
+		$project = GP::$project->by_path( $project_path );
+
+		if ( $this->cannot_and_redirect( 'delete', 'project', $project->id ) ) {
+			return;
+		}
+
+		$this->tmpl( 'project-delete', get_defined_vars() );
 	}
 
 
-	function new_get() {
+	public function new_get() {
 		$project = new GP_Project();
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 
@@ -206,7 +280,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-new', get_defined_vars() );
 	}
 
-	function new_post() {
+	public function new_post() {
+		if ( $this->invalid_nonce_and_redirect( 'add-project' ) ) {
+			return;
+		}
+
 		$post = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
@@ -232,7 +310,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 	}
 
-	function permissions_get( $project_path ) {
+	public function permissions_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -266,11 +344,15 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-permissions', get_defined_vars() );
 	}
 
-	function permissions_post( $project_path ) {
+	public function permissions_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'add-project-permissions_' . $project->id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -298,7 +380,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_current() );
 	}
 
-	function permissions_delete( $project_path, $permission_id ) {
+	public function permissions_delete( $project_path, $permission_id ) {
+		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $permission_id ) ) {
+			return;
+		}
+
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -319,10 +405,10 @@ class GP_Route_Project extends GP_Route_Main {
 		} else {
 			$this->errors[] = __( 'Permission wasn&#8217;t found!', 'glotpress' );
 		}
-		$this->redirect( gp_url_project( $project, array( '-permissions' ) ) );
+		$this->redirect( gp_url_project( $project, '-permissions' ) );
 	}
 
-	function mass_create_sets_get( $project_path ) {
+	public function mass_create_sets_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -336,10 +422,14 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-mass-create-sets', get_defined_vars() );
 	}
 
-	function mass_create_sets_post( $project_path ) {
+	public function mass_create_sets_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'mass-create-transation-sets_' . $project->id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -364,11 +454,14 @@ class GP_Route_Project extends GP_Route_Main {
 				$this->errors[] = sprintf( __( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ), esc_html( $to_remove->name ) );
 			}
 		}
-		if ( !$this->errors ) $this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+		if ( empty( $this->errors ) ) {
+			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+		}
+
 		$this->redirect( gp_url_project( $project ) );
 	}
 
-	function mass_create_sets_preview_post( $project_path ) {
+	public function mass_create_sets_preview_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -389,7 +482,7 @@ class GP_Route_Project extends GP_Route_Main {
 		echo wp_json_encode( $project->set_difference_from( $other_project ) );
 	}
 
-	function branch_project_get( $project_path ) {
+	public function branch_project_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -404,12 +497,16 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 
-	function branch_project_post( $project_path ) {
+	public function branch_project_post( $project_path ) {
 		$post = gp_post( 'project' );
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'branch-project_' . $project->id ) ) {
+			return;
 		}
 
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );

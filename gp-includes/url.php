@@ -53,6 +53,16 @@ function gp_url_join() {
 function gp_url( $path = '/', $query = null ) {
 	$base = gp_url_path( gp_url_public_root() );
 	$base = '/' . ltrim( $base, '/' ); // Make sure `$base` has always a leading slash.
+
+	/**
+	 * Filter a URL relative to GlotPress' domain root.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string        $base The base path.
+	 * @param string|array  $path The GlotPress path or the components as an array.
+	 * @param string $query The query part of the URL.
+	 */
 	return apply_filters( 'gp_url', gp_url_add_path_and_query( $base, $path, $query ), $path, $query );
 }
 
@@ -66,6 +76,16 @@ function gp_url_add_path_and_query( $base, $path, $query ) {
 		$url .= '?' . ltrim( $query, '?' );
 	}
 
+	/**
+	 * Filter a GlotPress URL with path and query.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $url Generated URL.
+	 * @param string $base The base path.
+	 * @param array  $path The GlotPress path or the components as an array.
+	 * @param string $query The query part of the URL.
+	 */
 	return apply_filters( 'gp_url_add_path_and_query', $url, $base, $path, $query );
 }
 
@@ -114,16 +134,41 @@ function gp_url_current() {
 	return $protocol . $host . $path_and_args;
 }
 
+/**
+ * Get the URL for a project
+ *
+ * @param bool|string|object $project_or_path Project path or object
+ * @param string|array $path Addition path to append to the base path
+ * @param array $query associative array of query arguments (optional)
+ *
+ * @return string
+ */
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
 	return gp_url( array( 'projects', $project_path, $path ), $query );
 }
 
-function gp_url_profile( $user_nicename ) {
-	return apply_filters( 'gp_url_profile', gp_url( array( '/profile', $user_nicename ) ), $user_nicename );
+function gp_url_profile( $user_nicename = '' ) {
+	$url = gp_url( array( '/profile', $user_nicename ) );
+	/**
+	 * Filter the URL of a user profile.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $url           The URL of the profile.
+	 * @param string $user_nicename User's nicename; the slug of the user.
+	 */
+	return apply_filters( 'gp_url_profile', $url, $user_nicename );
 }
 
 function gp_url_base_path() {
+	/**
+	 * Filter the base path of a GlotPress URL.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $url The url.
+	 */
 	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' .  gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
 }
 

@@ -1,4 +1,17 @@
 <?php
+/**
+ * Things: GP_Glossary class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the glossaries.
+ *
+ * @since 1.0.0
+ */
 class GP_Glossary extends GP_Thing {
 
 	var $table_basename = 'gp_glossaries';
@@ -6,8 +19,19 @@ class GP_Glossary extends GP_Thing {
 	var $int_fields = array( 'id', 'translation_set_id' );
 	var $non_updatable_attributes = array( 'id' );
 
-	function restrict_fields( $glossary ) {
-		$glossary->translation_set_id_should_not_be('empty');
+	public $id;
+	public $translation_set_id;
+	public $description;
+
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		$rules->translation_set_id_should_not_be( 'empty' );
 	}
 
 	/**
@@ -29,7 +53,7 @@ class GP_Glossary extends GP_Thing {
 	 * @param GP_Project $project
 	 * @param GP_Translation_Set $translation_set
 	 *
-	 * @return GP_Glossary
+	 * @return GP_Glossary|bool
 	 */
 	public function by_set_or_parent_project( $translation_set, $project ) {
 		$glossary = $this->by_set_id( $translation_set->id );
@@ -51,7 +75,7 @@ class GP_Glossary extends GP_Thing {
 		return $glossary;
 	}
 
-	function by_set_id( $set_id ) {
+	public function by_set_id( $set_id ) {
 		return $this->one( "
 		    SELECT * FROM $this->table
 		    WHERE translation_set_id = %d LIMIT 1", $set_id );
@@ -66,7 +90,7 @@ class GP_Glossary extends GP_Thing {
 	 *
 	 * @return mixed
 	 */
-	function copy_glossary_items_from( $source_glossary_id ) {
+	public function copy_glossary_items_from( $source_glossary_id ) {
 		global $wpdb;
 
 		$current_date = $this->now_in_mysql_format();
@@ -81,6 +105,18 @@ class GP_Glossary extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Deletes a glossary and all of it's entries.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		GP::$glossary_entry->delete_many( array( 'glossary_id', $this->id ) );
+
+		return parent::delete();
+	}
 }
 
 GP::$glossary = new GP_Glossary();

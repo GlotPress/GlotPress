@@ -20,11 +20,18 @@ gp_tmpl_header();
 	<dt><label for="project[source_url_template]"><?php _e( 'Source file URL', 'glotpress' ); ?></label></dt>
 	<dd>
 		<input type="text" value="<?php echo esc_html( $project->source_url_template ); ?>" name="project[source_url_template]" id="project[source_url_template]" style="width: 30em;" />
-		<span class="ternary"><?php _e( 'Public URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>https://trac.example.org/browser/%file%#L%line%</code>', 'glotpress' ); ?></span>
+		<span class="ternary"><?php printf(
+			/* translators: 1: %file%, 2: %line%, 3: https://trac.example.org/browser/%file%#L%line% */
+			__( 'Public URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
+			'<code>%file%</code>',
+			'<code>%line%</code>',
+			'<code>https://trac.example.org/browser/%file%#L%line%</code>'
+		); ?></span>
 	</dd>
 	<div id="preview"></div>
 	<input type="hidden" value="<?php echo esc_html( $project->parent_project_id ); ?>" name="project[parent_project_id]" id="project[parent_project_id]" />
 	<p><input type="submit" name="submit" value="<?php esc_attr_e( 'Branch project', 'glotpress' ); ?>" id="submit" /></p>
+	<?php gp_route_nonce_field( 'branch-project_' . $project->id ); ?>
 </form>
 
 <?php gp_tmpl_footer();

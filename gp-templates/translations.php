@@ -20,6 +20,7 @@ $i = 0;
 <h2>
 	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
+	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary ): ?>
 	<?php echo gp_link( $glossary->path(), __( 'glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php elseif ( $can_approve ): ?>
@@ -36,7 +37,19 @@ $i = 0;
 	<?php if( $can_write ) : ?>
 		<option value="set-priority"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
-		<?php do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
+		<?php
+
+		/**
+		 * Fires inside the bulk action menu for translation sets.
+		 *
+		 * Printing out option elements here will add those to the translation
+		 * bulk options drop down menu.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Set $set The translation set.
+		 */
+		do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
 	</select>
 	<?php if( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority">
@@ -52,6 +65,7 @@ $i = 0;
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
 	</div>
+	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
 </form>
 <?php endif; ?>
 <?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
@@ -103,8 +117,9 @@ $i = 0;
 			?>
 		</dd>
 		<dd>
-			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment' ); ?></label><br />
-			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context' ); ?></label>
+			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
+			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
+			<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
 		</dd>
 
 
@@ -143,7 +158,16 @@ $i = 0;
 			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
 		?>
 		</dd>
-		<?php do_action( 'gp_translation_set_filters' );?>
+		<?php
+
+		/**
+		 * Fires after the translation set sort options.
+		 *
+		 * This action is inside a DL element.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'gp_translation_set_filters' ); ?>
 		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 	</dl>
 </form>
@@ -224,6 +248,16 @@ $i = 0;
 		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
 		$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );
 
+		/**
+		 * Filter footer links in translations.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array              $footer_links    Default links.
+		 * @param GP_Project         $project         The current project.
+		 * @param GP_Locale          $locale          The current locale.
+		 * @param GP_Translation_Set $translation_set The current translation set.
+		 */
 		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>

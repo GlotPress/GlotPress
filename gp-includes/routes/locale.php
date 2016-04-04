@@ -1,4 +1,17 @@
 <?php
+/**
+ * Routes: GP_Route_Locale class
+ *
+ * @package GlotPress
+ * @subpackage Routes
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the locale route.
+ *
+ * @since 1.0.0
+ */
 class GP_Route_Locale extends GP_Route_Main {
 
 	public function locales_get() {
@@ -95,7 +108,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $set_slugs ) {
+		if ( ! empty( $set_slugs ) ) {
 			// Make default the first item.
 			if ( ! empty( $set_slugs[ 'default' ] ) ) {
 				$default = $set_slugs[ 'default' ];

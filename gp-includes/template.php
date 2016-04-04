@@ -1,12 +1,32 @@
 <?php
 function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$args = gp_tmpl_filter_args( $args );
+
+	/**
+	 * Fires before a template is loaded.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $template The template name.
+	 * @param array  $args     Arguments passed to the template. Passed by reference.
+	 */
 	do_action_ref_array( 'gp_pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
 	$locations = array( GP_TMPL_PATH );
 	if ( !is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
+
+	/**
+	 * Filter the locations to load template files from.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array       $locations     File paths of template locations.
+	 * @param string      $template      The template name.
+	 * @param array       $args          Arguments passed to the template.
+	 * @param string|null $template_path Priority template location, if any.
+	 */
 	$locations = apply_filters( 'gp_tmpl_load_locations', $locations, $template, $args, $template_path );
 	if ( isset( $args['http_status'] ) )
 		status_header( $args['http_status'] );
@@ -18,6 +38,15 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 			break;
 		}
 	}
+
+	/**
+	 * Fires after a template was loaded.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $template The template name.
+	 * @param array  $args     Arguments passed to the template. Passed by reference.
+	 */
 	do_action_ref_array( 'gp_post_tmpl_load', array( $template, &$args ) );
 }
 
@@ -39,10 +68,20 @@ function gp_tmpl_footer( $args = array( ) ) {
 }
 
 function gp_head() {
+	/**
+	 * Fires inside the head element on the header template.
+	 *
+	 * @since 1.0.0
+	 */
 	do_action( 'gp_head' );
 }
 
 function gp_footer() {
+	/**
+	 * Fires at the end of the page, on the footer template.
+	 *
+	 * @since 1.0.0
+	 */
 	do_action( 'gp_footer' );
 }
 
@@ -66,7 +105,9 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 	elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
-			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );
+			$user = wp_get_current_user();
+			$items[ gp_url_profile( $user->user_nicename ) ] = __( 'Profile', 'glotpress' );
+			$items[ gp_url( '/settings' ) ] = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
 		}
 		else {
@@ -74,6 +115,14 @@ function gp_nav_menu_items( $location = 'main' ) {
 		}
 	}
 
+	/**
+	 * Filter the list of navigation menu items.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array  $items    Menu items. URL as the key, menu label as the value.
+	 * @param string $location Location of the menu.
+	 */
 	return apply_filters( 'gp_nav_menu_items', $items, $location );
 }
 
@@ -96,6 +145,14 @@ function gp_title( $title = null ) {
 			return $title;
 		}, 5 );
 	} else {
+
+		/**
+		 * Filter the title of a page.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $title The title of a page.
+		 */
 		return apply_filters( 'gp_title', '' );
 	}
 }
@@ -108,6 +165,14 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 			return array_merge( $breadcrumbs, $breadcrumb );
 		}, 1 );
 	} else {
+
+		/**
+		 * Filter the list of breadcrumb navigation items.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $breadcrumb_items Breadcrumb items as HTML string.
+		 */
 		$breadcrumbs = apply_filters( 'gp_breadcrumb_items', array() );
 
 		if ( $breadcrumbs ) {
@@ -127,6 +192,13 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 
 			$whole_breadcrumb  = str_replace( '{breadcrumb}', $whole_breadcrumb, $args['breadcrumb-template'] );
 
+			/**
+			 * Filter the breadcrumb HTML output.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $whole_breadcrumb Breadcrumb HTML.
+			 */
 			return apply_filters( 'gp_breadcrumb', $whole_breadcrumb );
 		}
 	}
@@ -160,16 +232,16 @@ function gp_breadcrumb_project( $project ) {
 }
 
 function gp_js_focus_on( $html_id ) {
-	return '<script type="text/javascript">document.getElementById("'.$html_id.'").focus();</script>';
+	return '<script type="text/javascript">document.getElementById(\'' . esc_js( $html_id ) . '\').focus();</script>';
 }
 
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
-	$attributes = $attributes? " $attributes" : '';
+	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
 	foreach( $options as $value => $label ) {
-		$selected = $value == $selected_key? " selected='selected'" : '';
-		$res .= "\t<option value='".esc_attr( $value )."' $selected>" . esc_html( $label ) . "</option>\n";
+		$selected = selected( $value, $selected_key, false );
+		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 	}
 	$res .= "</select>\n";
 	return $res;
@@ -178,10 +250,10 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	$res = '';
 	foreach( $radio_buttons as $value => $label ) {
-		$checked = $value == $checked_key? " checked='checked'" : '';
+		$checked = checked( $value, $checked_key, false );
 		// TODO: something more flexible than <br />
-		$res .= "\t<input type='radio' name='$name' value='".esc_attr( $value )."' $checked id='{$name}[{$value}]'/>&nbsp;";
-		$res .= "<label for='{$name}[{$value}]'>".esc_html( $label )."</label><br />\n";
+		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked'/>&nbsp;";
+		$res .= "<label for='" . esc_attr( "{$name}[{$value}]" ) . "'>" . esc_html( $label ) . "</label><br />\n";
 	}
 	return $res;
 }
@@ -235,6 +307,17 @@ function gp_pagination( $page, $per_page, $objects ) {
 		$next
 	</div>
 HTML;
+
+	/**
+	 * Filter the pagination HTML output.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $html     The pagination HTML.
+	 * @param int    $page     Current page number.
+	 * @param int    $per_page Objects per page.
+	 * @param int    $objects  Total number of objects to page.
+	 */
 	return apply_filters( 'gp_pagination', $html, $page, $per_page, $objects );
 }
 
@@ -261,6 +344,7 @@ function gp_attrs_add_class( $attrs, $class_name ) {
  * @param string $name_and_id   Name and ID of the select element.
  * @param string $selected_slug Slug of the current selected locale.
  * @param array  $attrs         Extra attributes.
+ *
  * @return string HTML markup for a select element.
  */
 function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_slug = null, $attrs = array() ) {
@@ -296,13 +380,27 @@ function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_sl
  * @param string $name_and_id   Name and ID of the select element.
  * @param string $selected_slug Slug of the current selected locale.
  * @param array  $attrs         Extra attributes.
+ *
  * @return string HTML markup for a select element.
  */
 function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
 	return gp_locales_by_project_dropdown( null, $name_and_id, $selected_slug, $attrs );
 }
 
-function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
+/**
+ * Returns HTML markup for a select element for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name_and_id         Name and ID of the select element.
+ * @param string $selected_project_id The project id to mark as the currently selected.
+ * @param array  $attrs               Extra attributes.
+ * @param array  $exclude             An array of locales to exclude from the list.
+ * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of locales.
+ *
+ * @return string HTML markup for a select element.
+ */
+function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array(), $exclude_no_parent = false ) {
 	if ( ! is_array( $exclude ) ) {
 		$exclude = array( $exclude );
 	}
@@ -320,7 +418,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 		}
 	}
 
-	$options = array( '' => __( '&mdash; No parent &mdash;', 'glotpress' ) );
+	if ( ! $exclude_no_parent ) {
+		$options = array( '' => __( '&mdash; No parent &mdash;', 'glotpress' ) );
+	} else {
+		$options = array();
+	}
 
 	foreach( $top as $top_id ) {
 		$stack = array( $top_id );
@@ -405,10 +507,18 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, '-branch'), __( 'Branch Project', 'glotpress' ) ),
-		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __( 'Delete Project', 'glotpress' ), array( 'ays-text' => __( 'Do you really want to delete this project?', 'glotpress' ) ) )
+		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, '-delete' ), __( 'Delete Project', 'glotpress' ) ),
 	);
 
+	/**
+	 * Project action links.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array      $actions Links as HTML strings.
+	 * @param GP_Project $project The project.
+	 */
 	$actions = apply_filters( 'gp_project_actions', $actions, $project );
 
 	echo '<ul>';
@@ -433,13 +543,20 @@ function gp_project_options_form( $project ) {
 					<dt><label for="source-url-template">' . __( 'Source file URL', 'glotpress' ) . '</label></dt>
 					<dd>
 						<input type="text" value="' . esc_html( $project->source_url_template() ) . '" name="source-url-template" id="source-url-template" />
-						<small>' . __( 'URL to a source file in the project. You can use <code>%file%</code> and <code>%line%</code>. Ex. <code>https://trac.example.org/browser/%file%#L%line%</code>', 'glotpress' ) .'</small>
+						<small>' . sprintf(
+							/* translators: 1: %file%, 2: %line%, 3: https://trac.example.org/browser/%file%#L%line% */
+							__( 'URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
+							'<code>%file%</code>',
+							'<code>%line%</code>',
+							'<code>https://trac.example.org/browser/%file%#L%line%</code>'
+						) . '</small>
 					</dd>
 				</dl>
 				<p>
 					<input type="submit" name="submit" value="' . esc_attr__( 'Save &rarr;', 'glotpress' ) . '" id="save" />
 					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __( 'Cancel', 'glotpress' ) . '</a>
 				</p>
+				' . gp_route_nonce_field( 'set-personal-options_' . $project->id, false ) . '
 				</form>
 			</div>';
 }
@@ -449,6 +566,13 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 		'<a href="#" class="copy" tabindex="-1">' . __( 'Copy from original', 'glotpress' ) . '</a>'
 	);
 
+	/**
+	 * Filter entry action links.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $actions Links as HTML strings.
+	 */
 	$actions = apply_filters( 'gp_entry_actions', $actions );
 
 

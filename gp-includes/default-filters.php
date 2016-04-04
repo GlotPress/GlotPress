@@ -30,3 +30,9 @@ add_action( 'deleted_user', 'gp_delete_user_permissions' );
 
 // Query
 add_action( 'pre_get_posts', 'gp_set_is_home_false' );
+
+// WordPress profile options
+add_action( 'show_user_profile', 'gp_wp_profile_options' );
+add_action( 'edit_user_profile', 'gp_wp_profile_options' );
+add_action( 'personal_options_update', 'gp_wp_profile_options_update' );
+add_action( 'edit_user_profile_update', 'gp_wp_profile_options_update' );

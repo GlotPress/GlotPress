@@ -3,8 +3,7 @@ filter:
   excluded_paths: [tests/*]
 
 tools:
-  external_code_coverage:
-    timeout: 10800
+  external_code_coverage: false
 
   php_sim:
     enabled: true

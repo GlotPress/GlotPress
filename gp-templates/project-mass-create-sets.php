@@ -19,5 +19,6 @@ Usually this is one of the parent projects.', 'glotpress' ); ?></p>
 	</dl>
 	<div id="preview"></div>
 	<p><input type="submit" name="submit" value="<?php esc_attr_e( 'Create Translation Sets', 'glotpress' ); ?>" id="submit" /></p>
+	<?php gp_route_nonce_field( 'mass-create-transation-sets_' . $project->id ); ?>
 </form>
 <?php gp_tmpl_footer();

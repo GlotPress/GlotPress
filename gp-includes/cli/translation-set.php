@@ -90,9 +90,6 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--set=<set>]
 	 * : Translation set slug; default is "default"
-	 *
-	 * [--disable-propagating]
-	 * : If set, propagation will be disabled.
 	 */
 	public function import( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -107,16 +104,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
 		}
 
-		$disable_propagating = isset( $assoc_args['disable-propagating'] );
-		if ( $disable_propagating ) {
-			add_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
-		}
-
 		$added = $translation_set->import( $po );
-
-		if ( $disable_propagating ) {
-			remove_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
-		}
 
 		/* translators: %s: Number of imported translations */
 		WP_CLI::line( sprintf( _n( '%s translation was added', '%s translations were added', $added, 'glotpress' ), $added ) );

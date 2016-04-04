@@ -87,10 +87,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$warning = each( $referenceable );
 			?>
 			<div class="warning secondary">
-				<?php printf( __( '<strong>Warning:</strong> %s', 'glotpress' ), esc_html( $warning['value'] ) ); ?>
+				<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $warning['value'] ); ?>
 
 				<?php if( $can_approve ): ?>
-					<a href="#" class="discard-warning" key="<?php echo $warning['key'] ?>" index="<?php echo $index; ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
+					<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $warning['key'] ) ); ?>" data-key="<?php echo esc_attr( $warning['key'] ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
@@ -114,19 +114,22 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	<?php
 }
 
-/**
- * Similar to esc_html() but allows double-encoding.
- */
-function esc_translation( $text ) {
-	return _wp_specialchars( $text, ENT_NOQUOTES, false, true );
-}
-
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
 	return $status ? $status : __( 'untranslated', 'glotpress' );
 }
 
 function references( $project, $entry ) {
+
+	/**
+	 * Filter whether to show references of a translation string on a translation row.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param boolean           $references Whether to show references.
+	 * @param GP_Project        $project    The current project.
+	 * @param Translation_Entry $entry      Translation entry object.
+	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
 	if ( ! $show_references ) return;
