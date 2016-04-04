@@ -100,12 +100,13 @@ function gp_array_flatten( $array ) {
  *
  * Works best for edit requests, which want to pass error message or notice back to the listing page.
  *
- * @param string $message The message to be passed
- * @param string $key Optional. Key for the message. You can pass several messages under different keys.
- * A key has one message. The default is 'notice'.
+ * @param string $message The message to be passed.
+ * @param string $key     Optional. Key for the message. You can pass several messages under different keys.
+ *                        A key has one message. The default is 'notice'.
  */
 function gp_notice_set( $message, $key = 'notice' ) {
-	gp_set_cookie( '_gp_notice_'.$key, $message, 0, gp_url_path() );
+	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
+	gp_set_cookie( '_gp_notice_' . $key, $message, 0, $cookie_path );
 }
 
 /**
@@ -144,10 +145,11 @@ function gp_notice( $key = 'notice' ) {
 function gp_populate_notices() {
 	GP::$redirect_notices = array();
 	$prefix = '_gp_notice_';
+	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
 	foreach ($_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
 			GP::$redirect_notices[$suffix] = wp_unslash( $value );
-			gp_set_cookie( $key, '', 0, gp_url_path() );
+			gp_set_cookie( $key, '', 0, $cookie_path );
 		}
 	}
 }
