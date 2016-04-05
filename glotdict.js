@@ -14,7 +14,7 @@ jQuery(document).ready(function () {
     if(jQuery('select option:selected').length === 0 ) {
         localStorage.setItem('gd_language', jQuery('.glotdict_language option:first-child').text());
     }
-    jQuery('.glotdict_language').change(function() {
+    jQuery('.glotdict_language').click(function() {
        localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());
        location.reload();
     });
@@ -56,7 +56,7 @@ jQuery(document).ready(function () {
   
   function add_term(word, element, translation, pos, comment) {
     var rgxp = new RegExp('(?!([^<]+)?>)\\b(' + word + ')\\b(?!([^>]+)?>)', 'gi');
-    var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>' + word + '</span>';
+    var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>$2</span>';
     jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
   }
   
