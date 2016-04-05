@@ -4,7 +4,7 @@ jQuery(document).ready(function () {
   
   function select_language() {
     jQuery('.filters-toolbar div').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
-    jQuery.each(['it_IT', 'fr_FR'], function(key, value) {  
+    jQuery.each(['it_IT'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(localStorage.getItem('gd_language') === value) {
            new_option.attr('selected',true);
@@ -23,10 +23,9 @@ jQuery(document).ready(function () {
   function gd_add_terms() {
     jQuery.ajax({
       url: glotdict_path + '/' + get_lang() + '.json',
-       dataType: 'json',/*
-       contentType: 'application/json',
-       cache: true,*/
+      dataType: 'text'
     }).done(function (data) {
+      data = JSON.parse(data);
       jQuery('.editor .original').each(function () {
         var loop_editor = this;
         jQuery.each(data, function (i, item) {
@@ -50,7 +49,7 @@ jQuery(document).ready(function () {
           return content;
         }
       });
-    }).fail(function () {
+    }).fail(function (xhr, ajaxOptions, thrownError) {
       console.log('GlotDict: error on loading ' + get_lang() + '.json');
     });
   }
