@@ -23,7 +23,9 @@ jQuery(document).ready(function () {
   function gd_add_terms() {
     jQuery.ajax({
       url: glotdict_path + '/' + get_lang() + '.json',
-       dataType: 'json'
+       dataType: 'json',/*
+       contentType: 'application/json',
+       cache: true,*/
     }).done(function (data) {
       jQuery('.editor .original').each(function () {
         var loop_editor = this;
@@ -54,14 +56,14 @@ jQuery(document).ready(function () {
   }
   
   function add_term(word, element, translation, pos, comment) {
-    var rgxp = new RegExp('(?!([^<]+)?>)\\b(' + word + ')\\b(?!([^>]+)?>)', 'g');
+    var rgxp = new RegExp('(?!([^<]+)?>)\\b(' + word + ')\\b(?!([^>]+)?>)', 'gi');
     var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>' + word + '</span>';
     jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
   }
   
   function get_lang() {
       var lang = localStorage.getItem('gd_language');
-      if(lang === '') {
+      if(lang === '' || lang === 'null') {
           lang = jQuery('.glotdict_language option:first-child').text();
       }
       return lang;
