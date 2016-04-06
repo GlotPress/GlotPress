@@ -248,16 +248,17 @@ class GP_Translation extends GP_Thing {
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( (array)$rows as $row ) {
-			if ( $row->user_id && $this->per_page != 'no-limit' ) {
+			$row->user_login = $row->user_display_name = $row->user_nicename = '';
+
+			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
 				$user = get_userdata( $row->user_id );
 				if ( $user ) {
 					$row->user_login = $user->user_login;
 					$row->user_display_name = $user->display_name;
 					$row->user_nicename = $user->user_nicename;
 				}
-			} else {
-				$row->user_login = $row->user_display_name = $row->user_nicename = '';
 			}
+
 			$row->translations = array();
 			for( $i = 0; $i < $locale->nplurals; $i++ ) {
 				$row->translations[] = $row->{"translation_".$i};
