@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
   gd_add_terms();
   
   function select_language() {
-    jQuery('.filters-toolbar div').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
+    jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
     jQuery.each(['it_IT'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(localStorage.getItem('gd_language') === value) {
@@ -11,7 +11,7 @@ jQuery(document).ready(function () {
        }
        jQuery('.glotdict_language').append(new_option); 
     });
-    if(jQuery('select option:selected').length === 0 ) {
+    if(jQuery('.glotdict_language option:selected').length === 0 ) {
         localStorage.setItem('gd_language', jQuery('.glotdict_language option:first-child').text());
     }
     jQuery('.glotdict_language').click(function() {
