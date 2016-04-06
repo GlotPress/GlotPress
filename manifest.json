@@ -3,7 +3,7 @@
   "description": "Add custom dictonaries on translate.wordpress.org",
   "manifest_version": 2,
   "name": "GlotDict",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage_url": "https://github.com/Mte90/GlotDict",
   "icons": {
     "48": "icons/icon-48.png"
