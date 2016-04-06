@@ -16,3 +16,4 @@ The Italian community use a Google Docs for the glossary, there is a converter t
 
 * [Olegs Belousovs](https://github.com/sgelob) - The ideator
 * [Daniele Scasciafratte](https://github.com/Mte90) - The developer
+* Pascal Casier - French and Nederland glossaries

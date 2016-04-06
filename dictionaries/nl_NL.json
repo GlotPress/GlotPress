@@ -1,0 +1,571 @@
+{
+    " Hoofdletter gebruik en titels": {
+        "comment": "Bij titels gebruiken we alleen bij het eerste woord een hoofdletter.",
+        "pos": "",
+        "translation": ""
+    }
+,
+    "add": {
+        "comment": "",
+        "pos": "",
+        "translation": "toevoegen"
+    }
+,
+    "add new": {
+        "comment": "Het is gebruikelijk om 'add new [noun]' te vertalen naar 'Nieuwe [noun] toevoegen'.",
+        "pos": "",
+        "translation": "toevoegen"
+    }
+,
+    "add to": {
+        "comment": "In het Nederlands gebruiken we volledige werkwoordsvormen.",
+        "pos": "",
+        "translation": "toevoegen"
+    }
+,
+    "adjective": {
+        "comment": ";",
+        "pos": "",
+        "translation": "bijvoeglijk naamwoord"
+    }
+,
+    "admin bar": {
+        "comment": ";",
+        "pos": "",
+        "translation": "toolbar"
+    }
+,
+    "adverb": {
+        "comment": ";",
+        "pos": "",
+        "translation": "bijwoord"
+    }
+,
+    "all": {
+        "comment": ";",
+        "pos": "",
+        "translation": "alle"
+    }
+,
+    "appearance": {
+        "comment": ";",
+        "pos": "",
+        "translation": "weergave"
+    }
+,
+    "approval ": {
+        "comment": "of 'goedkeuren', afhankelijk van de context.",
+        "pos": "",
+        "translation": "toestaan"
+    }
+,
+    "approve": {
+        "comment": "of 'goedkeuren', afhankelijk van de context.",
+        "pos": "",
+        "translation": "toestaan"
+    }
+,
+    "approved": {
+        "comment": "of 'goedgekeurd', afhankelijk van de context.",
+        "pos": "",
+        "translation": "toegestaan"
+    }
+,
+    "archive": {
+        "comment": ";",
+        "pos": "",
+        "translation": "archief"
+    }
+,
+    "archives": {
+        "comment": ";",
+        "pos": "",
+        "translation": "archief"
+    }
+,
+    "area": {
+        "comment": "Afhankelijk van constructie. Soms is het 'gebied' zoals in: tekstgebied.",
+        "pos": "",
+        "translation": "ruimte\/gebied"
+    }
+,
+    "\u00e8": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e8"
+    }
+,
+    "\u00e9": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e9"
+    }
+,
+    "\u00eb": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00eb"
+    }
+,
+    "\u00ef": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00ef"
+    }
+,
+    "box": {
+        "comment": ";",
+        "pos": "",
+        "translation": "box"
+    }
+,
+    "boxen": {
+        "comment": ";",
+        "pos": "",
+        "translation": "boxen"
+    }
+,
+    "browsing": {
+        "comment": ";",
+        "pos": "",
+        "translation": "bladeren"
+    }
+,
+    "cancel": {
+        "comment": "",
+        "pos": "",
+        "translation": "annuleren"
+    }
+,
+    "checkboxes": {
+        "comment": ";",
+        "pos": "",
+        "translation": "selectievakjes"
+    }
+,
+    "child": {
+        "comment": ";",
+        "pos": "",
+        "translation": "sub"
+    }
+,
+    "close": {
+        "comment": "",
+        "pos": "",
+        "translation": "sluiten"
+    }
+,
+    "comment": {
+        "comment": ";",
+        "pos": "",
+        "translation": "reactie"
+    }
+,
+    "conjunction": {
+        "comment": ";",
+        "pos": "",
+        "translation": "conjunctie"
+    }
+,
+    "crop": {
+        "comment": ";",
+        "pos": "",
+        "translation": "bijsnijden"
+    }
+,
+    "customizer": {
+        "comment": "",
+        "pos": "",
+        "translation": "customizer"
+    }
+,
+    "delete": {
+        "comment": "",
+        "pos": "",
+        "translation": "verwijderen"
+    }
+,
+    "drag and drop": {
+        "comment": ";",
+        "pos": "",
+        "translation": "drag en drop"
+    }
+,
+    "dropdown": {
+        "comment": ";",
+        "pos": "",
+        "translation": "dropdown"
+    }
+,
+    "edit": {
+        "comment": ";",
+        "pos": "",
+        "translation": "Bewerken"
+    }
+,
+    "email": {
+        "comment": "In de Nederlandse taal is het gebruikelijk om een koppelstreep na de 'e' te plaatsen.",
+        "pos": "",
+        "translation": "e-mail"
+    }
+,
+    "email addresss": {
+        "comment": ";",
+        "pos": "",
+        "translation": "e-mailadres"
+    }
+,
+    "error": {
+        "comment": "",
+        "pos": "",
+        "translation": "fout"
+    }
+,
+    "etc.": {
+        "comment": ";",
+        "pos": "",
+        "translation": "enz."
+    }
+,
+    "excerpt": {
+        "comment": "",
+        "pos": "",
+        "translation": "samenvatting"
+    }
+,
+    "expression": {
+        "comment": ";",
+        "pos": "",
+        "translation": "uitdrukking"
+    }
+,
+    "Filter by": {
+        "comment": "",
+        "pos": "",
+        "translation": "Filteren"
+    }
+,
+    "footer": {
+        "comment": "",
+        "pos": "",
+        "translation": "footer"
+    }
+,
+    "format": {
+        "comment": ";",
+        "pos": "",
+        "translation": "format"
+    }
+,
+    "forums": {
+        "comment": "",
+        "pos": "",
+        "translation": "forums"
+    }
+,
+    "galleries": {
+        "comment": "",
+        "pos": "",
+        "translation": "galerijen"
+    }
+,
+    "gallery": {
+        "comment": "",
+        "pos": "",
+        "translation": "galerij"
+    }
+,
+    "header": {
+        "comment": ";",
+        "pos": "",
+        "translation": "header"
+    }
+,
+    "header image": {
+        "comment": "",
+        "pos": "",
+        "translation": "kopafbeelding"
+    }
+,
+    "home page": {
+        "comment": ";",
+        "pos": "",
+        "translation": "homepagina"
+    }
+,
+    "hoveren": {
+        "comment": ";",
+        "pos": "",
+        "translation": "hoveren"
+    }
+,
+    "image": {
+        "comment": "",
+        "pos": "",
+        "translation": "afbeelding"
+    }
+,
+    "images": {
+        "comment": "",
+        "pos": "",
+        "translation": "afbeeldingen"
+    }
+,
+    "importer": {
+        "comment": ";",
+        "pos": "",
+        "translation": "importeerfunctie"
+    }
+,
+    "Interjection": {
+        "comment": ";",
+        "pos": "",
+        "translation": "tussenvoegsel"
+    }
+,
+    "keyword": {
+        "comment": "",
+        "pos": "",
+        "translation": "trefwoord"
+    }
+,
+    "links": {
+        "comment": ";",
+        "pos": "",
+        "translation": "links"
+    }
+,
+    "location": {
+        "comment": "Met een c, niet met een k.",
+        "pos": "",
+        "translation": "locatie"
+    }
+,
+    "menu": {
+        "comment": ";",
+        "pos": "",
+        "translation": "menu"
+    }
+,
+    "menus": {
+        "comment": "",
+        "pos": "",
+        "translation": "menu's"
+    }
+,
+    "Multiline textarea": {
+        "comment": "",
+        "pos": "",
+        "translation": "Tekstveld met meerdere regels"
+    }
+,
+    "notice": {
+        "comment": "",
+        "pos": "",
+        "translation": "bericht"
+    }
+,
+    "noun": {
+        "comment": ";",
+        "pos": "",
+        "translation": "zelfstandig naamwoord"
+    }
+,
+    "page": {
+        "comment": ";",
+        "pos": "",
+        "translation": "pagina"
+    }
+,
+    "pages": {
+        "comment": "",
+        "pos": "",
+        "translation": "pagina's"
+    }
+,
+    "parent": {
+        "comment": ";",
+        "pos": "",
+        "translation": "hoofd"
+    }
+,
+    "post": {
+        "comment": ";",
+        "pos": "",
+        "translation": "bericht"
+    }
+,
+    "post format": {
+        "comment": ";",
+        "pos": "",
+        "translation": "berichtformaat"
+    }
+,
+    "post type": {
+        "comment": "",
+        "pos": "",
+        "translation": "berichttype"
+    }
+,
+    "posts": {
+        "comment": ";",
+        "pos": "",
+        "translation": "berichten"
+    }
+,
+    "preposition": {
+        "comment": ";",
+        "pos": "",
+        "translation": "voorzetsel"
+    }
+,
+    "pronoun": {
+        "comment": ";",
+        "pos": "",
+        "translation": "voornaamwoord"
+    }
+,
+    "reactivate": {
+        "comment": ";",
+        "pos": "",
+        "translation": "opnieuw activeren"
+    }
+,
+    "Remove": {
+        "comment": "",
+        "pos": "",
+        "translation": "Verwijderen"
+    }
+,
+    "run": {
+        "comment": "Soms draaien, zoals: op internet meedraaien en soms gebruikt zoals in: je gebruikt versie 4.6",
+        "pos": "",
+        "translation": "uitvoeren"
+    }
+,
+    "Screen Options": {
+        "comment": "",
+        "pos": "",
+        "translation": "Scherminstellingen"
+    }
+,
+    "search": {
+        "comment": "",
+        "pos": "",
+        "translation": "zoeken"
+    }
+,
+    "select": {
+        "comment": ";",
+        "pos": "",
+        "translation": "selecteren"
+    }
+,
+    "sending": {
+        "comment": "",
+        "pos": "",
+        "translation": "verzenden"
+    }
+,
+    "sent": {
+        "comment": "",
+        "pos": "",
+        "translation": "verzonden"
+    }
+,
+    "sidebar": {
+        "comment": ";",
+        "pos": "",
+        "translation": "sidebar"
+    }
+,
+    "site": {
+        "comment": "Geen website of blog;",
+        "pos": "",
+        "translation": "site"
+    }
+,
+    "sticky": {
+        "comment": ";",
+        "pos": "",
+        "translation": "sticky"
+    }
+,
+    "tag\/tagged": {
+        "comment": ";",
+        "pos": "",
+        "translation": "tag\/getagd"
+    }
+,
+    "template": {
+        "comment": ";",
+        "pos": "",
+        "translation": "template"
+    }
+,
+    "theme": {
+        "comment": ";",
+        "pos": "",
+        "translation": "thema"
+    }
+,
+    "themes": {
+        "comment": "",
+        "pos": "",
+        "translation": "thema's"
+    }
+,
+    "thumbnail": {
+        "comment": ";",
+        "pos": "",
+        "translation": "thumbnail"
+    }
+,
+    "toolbar": {
+        "comment": ";",
+        "pos": "",
+        "translation": "toolbar"
+    }
+,
+    "topic(s)": {
+        "comment": ";",
+        "pos": "",
+        "translation": "onderwerp(en)"
+    }
+,
+    "unapprove": {
+        "comment": ";",
+        "pos": "",
+        "translation": "weigeren"
+    }
+,
+    "unapproved": {
+        "comment": ";",
+        "pos": "",
+        "translation": "geweigerd"
+    }
+,
+    "verb": {
+        "comment": ";",
+        "pos": "",
+        "translation": "werkwoord"
+    }
+,
+    "view": {
+        "comment": "Dit kan gebruikt worden in de context als 'View site'. Vertaling is in dit geval: 'Site bekijken'.",
+        "pos": "",
+        "translation": "bekijken"
+    }
+,
+    "you": {
+        "comment": "En geen jij of u. Voor de Nederlandse vertaling gebruiken we informeel taalgebruik.",
+        "pos": "",
+        "translation": "je"
+    }
+,
+    "your": {
+        "comment": "En geen jouw of uw;",
+        "pos": "",
+        "translation": "je"
+    }
+}

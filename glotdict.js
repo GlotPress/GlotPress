@@ -4,7 +4,7 @@ jQuery(document).ready(function () {
   
   function select_language() {
     jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
-    jQuery.each(['it_IT'], function(key, value) {  
+    jQuery.each(['it_IT', 'fr_FR', 'nl_NL'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(localStorage.getItem('gd_language') === value) {
            new_option.attr('selected',true);
@@ -14,7 +14,7 @@ jQuery(document).ready(function () {
     if(jQuery('.glotdict_language option:selected').length === 0 ) {
         localStorage.setItem('gd_language', jQuery('.glotdict_language option:first-child').text());
     }
-    jQuery('.glotdict_language').click(function() {
+    jQuery('.glotdict_language').change(function() {
        localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());
        location.reload();
     });
@@ -50,6 +50,7 @@ jQuery(document).ready(function () {
         }
       });
     }).fail(function (xhr, ajaxOptions, thrownError) {
+      console.error(thrownError);
       console.log('GlotDict: error on loading ' + get_lang() + '.json');
     });
   }

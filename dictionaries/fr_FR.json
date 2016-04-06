@@ -1,12 +1,1141 @@
 {
-   "saved":{
-      "pos":"",
-      "translation":"i have no idea",
-      "comment":""
-   },
-   "parameter":{
-      "pos":"",
-      "translation":"parametre",
-      "comment":""
-   }
+    "action hook": {
+        "comment": "",
+        "pos": "",
+        "translation": "crochet d'action"
+    }
+,
+    "activate": {
+        "comment": "",
+        "pos": "",
+        "translation": "activer"
+    }
+,
+    "activated": {
+        "comment": "",
+        "pos": "",
+        "translation": "activ\u00e9"
+    }
+,
+    "admin bar": {
+        "comment": "",
+        "pos": "",
+        "translation": "barre d\u2019administration"
+    }
+,
+    "admin panel": {
+        "comment": "",
+        "pos": "",
+        "translation": "panneau d\u2019administration"
+    }
+,
+    "administrator": {
+        "comment": "",
+        "pos": "",
+        "translation": "administrateur"
+    }
+,
+    "After the Deadline": {
+        "comment": "",
+        "pos": "",
+        "translation": "After the Deadline"
+    }
+,
+    "Akismet": {
+        "comment": "",
+        "pos": "",
+        "translation": "Akismet"
+    }
+,
+    "Appearance": {
+        "comment": "UI Menu",
+        "pos": "",
+        "translation": "Apparence"
+    }
+,
+    "archive": {
+        "comment": "",
+        "pos": "",
+        "translation": "archive"
+    }
+,
+    "archive": {
+        "comment": "",
+        "pos": "",
+        "translation": "archiver"
+    }
+,
+    "argument": {
+        "comment": "",
+        "pos": "",
+        "translation": "argument"
+    }
+,
+    "array": {
+        "comment": "",
+        "pos": "",
+        "translation": "tableau"
+    }
+,
+    "attachment": {
+        "comment": "",
+        "pos": "",
+        "translation": "fichier joint"
+    }
+,
+    "audio": {
+        "comment": "",
+        "pos": "",
+        "translation": "son"
+    }
+,
+    "author": {
+        "comment": "Author of contents such as posts and pages.",
+        "pos": "",
+        "translation": "auteur"
+    }
+,
+    "author": {
+        "comment": "Author of plugins and themes.",
+        "pos": "",
+        "translation": "auteur"
+    }
+,
+    "binary": {
+        "comment": "",
+        "pos": "",
+        "translation": "binaire"
+    }
+,
+    "blog": {
+        "comment": "",
+        "pos": "",
+        "translation": "blog"
+    }
+,
+    "bookmarklet": {
+        "comment": "",
+        "pos": "",
+        "translation": "bookmarklet"
+    }
+,
+    "browser": {
+        "comment": "",
+        "pos": "",
+        "translation": "navigateur"
+    }
+,
+    "BuddyPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "BuddyPress"
+    }
+,
+    "bug": {
+        "comment": "",
+        "pos": "",
+        "translation": "bug"
+    }
+,
+    "category": {
+        "comment": "",
+        "pos": "",
+        "translation": "cat\u00e9gorie"
+    }
+,
+    "Changes": {
+        "comment": "",
+        "pos": "",
+        "translation": "Modifications"
+    }
+,
+    "character entity reference": {
+        "comment": "",
+        "pos": "",
+        "translation": "r\u00e9f\u00e9rence d\u2019entit\u00e9 de caract\u00e8re"
+    }
+,
+    "character set": {
+        "comment": "",
+        "pos": "",
+        "translation": "jeu de caract\u00e8res"
+    }
+,
+    "chracteter code": {
+        "comment": "",
+        "pos": "",
+        "translation": "code de caract\u00e8res"
+    }
+,
+    "click": {
+        "comment": "",
+        "pos": "",
+        "translation": "clic"
+    }
+,
+    "color scheme": {
+        "comment": "",
+        "pos": "",
+        "translation": "jeu de couleurs"
+    }
+,
+    "color scheme": {
+        "comment": "",
+        "pos": "",
+        "translation": "jeu de couleurs"
+    }
+,
+    "comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "commenter"
+    }
+,
+    "comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "commentaire"
+    }
+,
+    "computer": {
+        "comment": "",
+        "pos": "",
+        "translation": "ordinateur"
+    }
+,
+    "conditional tag": {
+        "comment": "",
+        "pos": "",
+        "translation": "balise conditionnelle"
+    }
+,
+    "constant": {
+        "comment": "",
+        "pos": "",
+        "translation": "constante"
+    }
+,
+    "Cookie": {
+        "comment": "Browser cookie",
+        "pos": "",
+        "translation": "Cookie"
+    }
+,
+    "crop": {
+        "comment": "",
+        "pos": "",
+        "translation": "recadrer"
+    }
+,
+    "Custom Design": {
+        "comment": "WordPress.com paid upgrade product name",
+        "pos": "",
+        "translation": "Design sur mesure"
+    }
+,
+    "Custom Header Image": {
+        "comment": "",
+        "pos": "",
+        "translation": "Image d\u2019en-t\u00eate personnalis\u00e9e"
+    }
+,
+    "Custom Post Type": {
+        "comment": "",
+        "pos": "",
+        "translation": "Type de contenu personnalis\u00e9"
+    }
+,
+    "customize": {
+        "comment": "",
+        "pos": "",
+        "translation": "personnaliser"
+    }
+,
+    "Dashboard": {
+        "comment": "",
+        "pos": "",
+        "translation": "Tableau de bord"
+    }
+,
+    "deactivate": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9sactiver"
+    }
+,
+    "debug": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9bogage"
+    }
+,
+    "debug": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9boguer"
+    }
+,
+    "default": {
+        "comment": "",
+        "pos": "",
+        "translation": "par d\u00e9faut"
+    }
+,
+    "default theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "th\u00e8me par d\u00e9faut"
+    }
+,
+    "deprecated": {
+        "comment": "",
+        "pos": "",
+        "translation": "obsol\u00e8te"
+    }
+,
+    "developer": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9veloppeur"
+    }
+,
+    "directory": {
+        "comment": "",
+        "pos": "",
+        "translation": "r\u00e9pertoire"
+    }
+,
+    "draft": {
+        "comment": "",
+        "pos": "",
+        "translation": "brouillon"
+    }
+,
+    "edit": {
+        "comment": "",
+        "pos": "",
+        "translation": "modifier"
+    }
+,
+    "editor": {
+        "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
+        "pos": "",
+        "translation": "\u00e9diteur"
+    }
+,
+    "editor": {
+        "comment": "User role group.",
+        "pos": "",
+        "translation": "\u00e9diteur"
+    }
+,
+    "email": {
+        "comment": "",
+        "pos": "",
+        "translation": "e-mail"
+    }
+,
+    "Enter": {
+        "comment": "",
+        "pos": "",
+        "translation": "Saisir \/ Saisissez"
+    }
+,
+    "error": {
+        "comment": "",
+        "pos": "",
+        "translation": "erreur"
+    }
+,
+    "excerpt": {
+        "comment": "",
+        "pos": "",
+        "translation": "extrait"
+    }
+,
+    "Extra Storage": {
+        "comment": "Upgrade that adds more storage space to the user's blog. More info: http:\/\/en.support.wordpress.com\/space-upgrade\/",
+        "pos": "",
+        "translation": "Stockage suppl\u00e9mentaire"
+    }
+,
+    "Facebook": {
+        "comment": "",
+        "pos": "",
+        "translation": "Facebook"
+    }
+,
+    "featured image": {
+        "comment": "",
+        "pos": "",
+        "translation": "image \u00e0 la Une"
+    }
+,
+    "featured post": {
+        "comment": "",
+        "pos": "",
+        "translation": "article \u00e0 la Une"
+    }
+,
+    "feed": {
+        "comment": "",
+        "pos": "",
+        "translation": "flux"
+    }
+,
+    "filter": {
+        "comment": "",
+        "pos": "",
+        "translation": "filtre"
+    }
+,
+    "filter hook": {
+        "comment": "",
+        "pos": "",
+        "translation": "crochet de filtre"
+    }
+,
+    "find": {
+        "comment": "",
+        "pos": "",
+        "translation": "chercher"
+    }
+,
+    "folder": {
+        "comment": "",
+        "pos": "",
+        "translation": "dossier"
+    }
+,
+    "Follower": {
+        "comment": "",
+        "pos": "",
+        "translation": "abonn\u00e9"
+    }
+,
+    "Freshly Pressed": {
+        "comment": "",
+        "pos": "",
+        "translation": "Fra\u00eechement press\u00e9"
+    }
+,
+    "front end": {
+        "comment": "",
+        "pos": "",
+        "translation": "public"
+    }
+,
+    "front end": {
+        "comment": "",
+        "pos": "",
+        "translation": "interface publique"
+    }
+,
+    "gallery": {
+        "comment": "",
+        "pos": "",
+        "translation": "galerie"
+    }
+,
+    "Happiness Engineer": {
+        "comment": "No need to translate that one",
+        "pos": "",
+        "translation": "Happiness Engineer"
+    }
+,
+    "Happiness Engineers": {
+        "comment": "No need to translate that one",
+        "pos": "",
+        "translation": "Happiness Engineers"
+    }
+,
+    "Hide": {
+        "comment": "",
+        "pos": "",
+        "translation": "Masquer"
+    }
+,
+    "hook": {
+        "comment": "",
+        "pos": "",
+        "translation": "crochet"
+    }
+,
+    "hook": {
+        "comment": "",
+        "pos": "",
+        "translation": "point d'accroche"
+    }
+,
+    "hosting provider": {
+        "comment": "",
+        "pos": "",
+        "translation": "h\u00e9bergeur"
+    }
+,
+    "hosts": {
+        "comment": "",
+        "pos": "",
+        "translation": "h\u00f4tes"
+    }
+,
+    "invalid": {
+        "comment": "",
+        "pos": "",
+        "translation": "non valide"
+    }
+,
+    "IP address": {
+        "comment": "",
+        "pos": "",
+        "translation": "adresse\u00a0IP"
+    }
+,
+    "Jetpack": {
+        "comment": "",
+        "pos": "",
+        "translation": "Jetpack"
+    }
+,
+    "Like": {
+        "comment": "",
+        "pos": "",
+        "translation": "J\u2019aime"
+    }
+,
+    "Likes": {
+        "comment": "",
+        "pos": "",
+        "translation": "J\u2019aime"
+    }
+,
+    "log in": {
+        "comment": "",
+        "pos": "",
+        "translation": "se connecter"
+    }
+,
+    "log in": {
+        "comment": "",
+        "pos": "",
+        "translation": "connexion"
+    }
+,
+    "log out": {
+        "comment": "",
+        "pos": "",
+        "translation": "se d\u00e9connecter"
+    }
+,
+    "log out": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9connexion"
+    }
+,
+    "logged in": {
+        "comment": "",
+        "pos": "",
+        "translation": "connect\u00e9"
+    }
+,
+    "logged out": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9connect\u00e9"
+    }
+,
+    "login": {
+        "comment": "",
+        "pos": "",
+        "translation": "connexion"
+    }
+,
+    "logout": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9connexion"
+    }
+,
+    "media attachment": {
+        "comment": "\"media file\" is now prefered for this string",
+        "pos": "",
+        "translation": "fichier m\u00e9dia joint"
+    }
+,
+    "Media Uploader": {
+        "comment": "",
+        "pos": "",
+        "translation": "Outil de mise en ligne des m\u00e9dias"
+    }
+,
+    "meta": {
+        "comment": "",
+        "pos": "",
+        "translation": "m\u00e9ta"
+    }
+,
+    "meta": {
+        "comment": "",
+        "pos": "",
+        "translation": "m\u00e9ta, m\u00e9tadonn\u00e9es"
+    }
+,
+    "multisite": {
+        "comment": "",
+        "pos": "",
+        "translation": "multisite"
+    }
+,
+    "navigation": {
+        "comment": "",
+        "pos": "",
+        "translation": "navigation"
+    }
+,
+    "next post": {
+        "comment": "",
+        "pos": "",
+        "translation": "article suivant"
+    }
+,
+    "nonce": {
+        "comment": "",
+        "pos": "",
+        "translation": "nonce"
+    }
+,
+    "not sticky": {
+        "comment": "For sticky post status.",
+        "pos": "",
+        "translation": "pas mis en avant"
+    }
+,
+    "Note:": {
+        "comment": "",
+        "pos": "",
+        "translation": "Note\u00a0:"
+    }
+,
+    "older post": {
+        "comment": "",
+        "pos": "",
+        "translation": "article plus ancien"
+    }
+,
+    "option": {
+        "comment": "",
+        "pos": "",
+        "translation": "option"
+    }
+,
+    "optional": {
+        "comment": "",
+        "pos": "",
+        "translation": "facultatif"
+    }
+,
+    "page": {
+        "comment": "",
+        "pos": "",
+        "translation": "page"
+    }
+,
+    "parameter": {
+        "comment": "",
+        "pos": "",
+        "translation": "param\u00e8tre"
+    }
+,
+    "permalink": {
+        "comment": "",
+        "pos": "",
+        "translation": "permalien"
+    }
+,
+    "permission": {
+        "comment": "",
+        "pos": "",
+        "translation": "droit"
+    }
+,
+    "ping": {
+        "comment": "",
+        "pos": "",
+        "translation": "ping"
+    }
+,
+    "pingback": {
+        "comment": "",
+        "pos": "",
+        "translation": "ping"
+    }
+,
+    "plugin": {
+        "comment": "",
+        "pos": "",
+        "translation": "extension"
+    }
+,
+    "poll": {
+        "comment": "",
+        "pos": "",
+        "translation": "sondage"
+    }
+,
+    "Polldaddy": {
+        "comment": "",
+        "pos": "",
+        "translation": "Polldaddy"
+    }
+,
+    "post": {
+        "comment": "",
+        "pos": "",
+        "translation": "article"
+    }
+,
+    "post": {
+        "comment": "",
+        "pos": "",
+        "translation": "publier"
+    }
+,
+    "post format": {
+        "comment": "",
+        "pos": "",
+        "translation": "format d\u2019article"
+    }
+,
+    "post status": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e9tat d\u2019article"
+    }
+,
+    "post thumbnail": {
+        "comment": "",
+        "pos": "",
+        "translation": "miniature d\u2019article"
+    }
+,
+    "post type": {
+        "comment": "",
+        "pos": "",
+        "translation": "type de contenu"
+    }
+,
+    "premium theme": {
+        "comment": "WordPress.com paid upgrade product name",
+        "pos": "",
+        "translation": "th\u00e8me premium"
+    }
+,
+    "Press This": {
+        "comment": "",
+        "pos": "",
+        "translation": "Publier un article"
+    }
+,
+    "previous post": {
+        "comment": "",
+        "pos": "",
+        "translation": "article pr\u00e9c\u00e9dent"
+    }
+,
+    "Publicize": {
+        "comment": "",
+        "pos": "",
+        "translation": "Publicize"
+    }
+,
+    "query": {
+        "comment": "",
+        "pos": "",
+        "translation": "requ\u00eate"
+    }
+,
+    "Quick Post": {
+        "comment": "",
+        "pos": "",
+        "translation": "Article rapide"
+    }
+,
+    "Reader": {
+        "comment": "",
+        "pos": "",
+        "translation": "Lecteur"
+    }
+,
+    "Reblog": {
+        "comment": "",
+        "pos": "",
+        "translation": "Rebloguer"
+    }
+,
+    "Related Posts": {
+        "comment": "",
+        "pos": "",
+        "translation": "Articles similaires"
+    }
+,
+    "Repository": {
+        "comment": "",
+        "pos": "",
+        "translation": "D\u00e9p\u00f4t"
+    }
+,
+    "required": {
+        "comment": "",
+        "pos": "",
+        "translation": "obligatoire"
+    }
+,
+    "required": {
+        "comment": "",
+        "pos": "",
+        "translation": "obligatoire, n\u00e9cessaire"
+    }
+,
+    "return value": {
+        "comment": "",
+        "pos": "",
+        "translation": "valeur de retour"
+    }
+,
+    "role": {
+        "comment": "",
+        "pos": "",
+        "translation": "r\u00f4le"
+    }
+,
+    "RSS": {
+        "comment": "",
+        "pos": "",
+        "translation": "RSS"
+    }
+,
+    "Save": {
+        "comment": "",
+        "pos": "",
+        "translation": "Enregistrer"
+    }
+,
+    "Scale": {
+        "comment": "",
+        "pos": "",
+        "translation": "Redimensionner"
+    }
+,
+    "search": {
+        "comment": "",
+        "pos": "",
+        "translation": "rechercher"
+    }
+,
+    "self-hosted": {
+        "comment": "",
+        "pos": "",
+        "translation": "auto-h\u00e9berg\u00e9"
+    }
+,
+    "server": {
+        "comment": "",
+        "pos": "",
+        "translation": "serveur"
+    }
+,
+    "shortcode": {
+        "comment": "",
+        "pos": "",
+        "translation": "code court"
+    }
+,
+    "show": {
+        "comment": "",
+        "pos": "",
+        "translation": "afficher"
+    }
+,
+    "sidebar": {
+        "comment": "",
+        "pos": "",
+        "translation": "colonne lat\u00e9rale"
+    }
+,
+    "single post": {
+        "comment": "",
+        "pos": "",
+        "translation": "article unique"
+    }
+,
+    "slug": {
+        "comment": "",
+        "pos": "",
+        "translation": "identifiant"
+    }
+,
+    "spam": {
+        "comment": "",
+        "pos": "",
+        "translation": "ind\u00e9sirable"
+    }
+,
+    "status": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e9tat"
+    }
+,
+    "stick": {
+        "comment": "",
+        "pos": "",
+        "translation": "mettre en avant"
+    }
+,
+    "sticky": {
+        "comment": "",
+        "pos": "",
+        "translation": "mis en avant"
+    }
+,
+    "string": {
+        "comment": "",
+        "pos": "",
+        "translation": "cha\u00eene"
+    }
+,
+    "subpanel": {
+        "comment": "",
+        "pos": "",
+        "translation": "panneau secondaire"
+    }
+,
+    "subscription": {
+        "comment": "",
+        "pos": "",
+        "translation": "abonnement"
+    }
+,
+    "Subversion": {
+        "comment": "",
+        "pos": "",
+        "translation": "Subversion"
+    }
+,
+    "survey": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e9tude"
+    }
+,
+    "tag": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e9tiquette"
+    }
+,
+    "tagline": {
+        "comment": "",
+        "pos": "",
+        "translation": "description"
+    }
+,
+    "taxonomy": {
+        "comment": "",
+        "pos": "",
+        "translation": "taxinomie"
+    }
+,
+    "template hierarchy": {
+        "comment": "",
+        "pos": "",
+        "translation": "hi\u00e9rarchie des fichiers mod\u00e8les"
+    }
+,
+    "term": {
+        "comment": "",
+        "pos": "",
+        "translation": "terme"
+    }
+,
+    "text editor": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u00e9diteur de texte"
+    }
+,
+    "theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "th\u00e8me"
+    }
+,
+    "toggle": {
+        "comment": "",
+        "pos": "",
+        "translation": "Ouvrir\/fermer, permuter, ..."
+    }
+,
+    "Toolbar": {
+        "comment": "",
+        "pos": "",
+        "translation": "barre d\u2019outils"
+    }
+,
+    "trackback": {
+        "comment": "",
+        "pos": "",
+        "translation": "r\u00e9trolien"
+    }
+,
+    "Transient": {
+        "comment": "",
+        "pos": "",
+        "translation": "Transient"
+    }
+,
+    "trash": {
+        "comment": "",
+        "pos": "",
+        "translation": "Corbeille"
+    }
+,
+    "troubleshooting": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9pannage"
+    }
+,
+    "Twitter": {
+        "comment": "",
+        "pos": "",
+        "translation": "Twitter"
+    }
+,
+    "two factor authentication": {
+        "comment": "",
+        "pos": "",
+        "translation": "authentification \u00e0 deux facteurs"
+    }
+,
+    "upgrade": {
+        "comment": "Describes the paid upgrades you can purchase on wpcom",
+        "pos": "",
+        "translation": "extension"
+    }
+,
+    "upload": {
+        "comment": "",
+        "pos": "",
+        "translation": "mettre en ligne"
+    }
+,
+    "uploader": {
+        "comment": "",
+        "pos": "",
+        "translation": "outil de mise en ligne"
+    }
+,
+    "URL": {
+        "comment": "",
+        "pos": "",
+        "translation": "URL"
+    }
+,
+    "user": {
+        "comment": "",
+        "pos": "",
+        "translation": "utilisateur"
+    }
+,
+    "username": {
+        "comment": "",
+        "pos": "",
+        "translation": "nom d\u2019utilisateur"
+    }
+,
+    "valid": {
+        "comment": "",
+        "pos": "",
+        "translation": "valide"
+    }
+,
+    "VaultPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "VaultPress"
+    }
+,
+    "video": {
+        "comment": "",
+        "pos": "",
+        "translation": "vid\u00e9o"
+    }
+,
+    "VideoPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "VideoPress"
+    }
+,
+    "view": {
+        "comment": "",
+        "pos": "",
+        "translation": "voir"
+    }
+,
+    "web server": {
+        "comment": "",
+        "pos": "",
+        "translation": "serveur Web"
+    }
+,
+    "WordCamp": {
+        "comment": "",
+        "pos": "",
+        "translation": "WordCamp"
+    }
+,
+    "WordPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "WordPress"
+    }
+,
+    "WordPress Dashboard": {
+        "comment": "",
+        "pos": "",
+        "translation": "Tableau de bord WordPress"
+    }
+,
+    "WordPress.com": {
+        "comment": "",
+        "pos": "",
+        "translation": "WordPress.com"
+    }
+,
+    "WordPress.com Business": {
+        "comment": "WordPress.com paid upgrade product name",
+        "pos": "",
+        "translation": "WordPress.com Business"
+    }
+,
+    "WordPress.com Enterprise": {
+        "comment": "WordPress.com paid upgrade product name",
+        "pos": "",
+        "translation": "WordPress.com Enterprise"
+    }
+,
+    "WordPress.com Premium": {
+        "comment": "WordPress.com paid upgrade product name",
+        "pos": "",
+        "translation": "WordPress.com Premium"
+    }
+,
+    "XML-RPC": {
+        "comment": "",
+        "pos": "",
+        "translation": "XML-RPC"
+    }
 }
