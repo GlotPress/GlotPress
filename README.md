@@ -36,4 +36,4 @@ After that step we have to wait 1 day for Chrome and 2 or 3 for Firefox and all 
 
 * [Olegs Belousovs](https://github.com/sgelob) - The ideator
 * [Daniele Scasciafratte](https://github.com/Mte90) - The developer
-* Pascal Casier - French and Nederland glossaries
+* Pascal Casier - French, Dutch, German glossaries

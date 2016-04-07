@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
   gd_add_terms();
   
   function select_language() {
-    jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
+    jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
     jQuery.each(['de_DE', 'fr_FR', 'it_IT', 'nl_NL'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(localStorage.getItem('gd_language') === value) {
