@@ -4,7 +4,7 @@ jQuery(document).ready(function () {
   
   function select_language() {
     jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><span>Pick the glossary: </span><select class="glotdict_language"></select>');
-    jQuery.each(['it_IT', 'fr_FR', 'nl_NL'], function(key, value) {  
+    jQuery.each(['de_DE', 'fr_FR', 'it_IT', 'nl_NL'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(localStorage.getItem('gd_language') === value) {
            new_option.attr('selected',true);
@@ -63,7 +63,7 @@ jQuery(document).ready(function () {
   
   function get_lang() {
       var lang = localStorage.getItem('gd_language');
-      if(lang === '' || lang === 'null') {
+      if(lang === '' || lang === null) {
           lang = jQuery('.glotdict_language option:first-child').text();
       }
       return lang;
