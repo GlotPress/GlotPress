@@ -56,9 +56,11 @@ jQuery(document).ready(function () {
   }
   
   function add_term(word, element, translation, pos, comment) {
-    var rgxp = new RegExp('(?!([^<]+)?>)\\b(' + word + ')\\b(?!([^>]+)?>)', 'gi');
-    var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>$2</span>';
-    jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
+    if(translation !== '') {
+        var rgxp = new RegExp('(?!([^<]+)?>)\\b(' + word + ')\\b(?!([^>]+)?>)', 'gi');
+        var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>$2</span>';
+        jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
+    }
   }
   
   function get_lang() {
