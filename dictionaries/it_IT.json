@@ -54,6 +54,11 @@
         "pos": "", 
         "translation": "Immagine della testata"
     }, 
+    "Home Page": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "Pagina Principale"
+    }, 
     "ID": {
         "comment": "", 
         "pos": "", 
@@ -69,17 +74,17 @@
         "pos": "", 
         "translation": "notifiche"
     }, 
-    "Pending": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "Please...": {
         "comment": "", 
         "pos": "", 
         "translation": "N/A"
     }, 
-    "Quando raggiungiamo un accordo confermiamo!": {
+    "Proudly powered by WordPress": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "Proudly powered by WordPress"
+    }, 
+    "Quando raggiungiamo un accordo confermiamo! Inserire le nuove righe con colore di sfondo GIALLO": {
         "comment": "", 
         "pos": "", 
         "translation": ""
@@ -124,15 +129,10 @@
         "pos": "", 
         "translation": "account"
     }, 
-    "action hook": {
-        "comment": "Lasciare invariato", 
-        "pos": "", 
-        "translation": "action hook"
-    }, 
-    "activated": {
+    "activate": {
         "comment": "", 
         "pos": "", 
-        "translation": "attivato"
+        "translation": "attivare"
     }, 
     "address": {
         "comment": "", 
@@ -359,6 +359,11 @@
         "pos": "", 
         "translation": "feed"
     }, 
+    "file": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
     "filter": {
         "comment": "", 
         "pos": "", 
@@ -373,6 +378,11 @@
         "comment": "", 
         "pos": "", 
         "translation": "pi\u00e8 di pagina"
+    }, 
+    "form": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "modulo (modulo di contatto)"
     }, 
     "gallery": {
         "comment": "", 
@@ -399,6 +409,11 @@
         "pos": "", 
         "translation": "ciao"
     }, 
+    "hyperlink": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
     "icon": {
         "comment": "", 
         "pos": "", 
@@ -418,6 +433,11 @@
         "comment": "", 
         "pos": "", 
         "translation": "non valido"
+    }, 
+    "layout": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "layout"
     }, 
     "link": {
         "comment": "", 
@@ -504,6 +524,16 @@
         "pos": "", 
         "translation": "parametro"
     }, 
+    "password": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "pending": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
     "permalink": {
         "comment": "", 
         "pos": "", 
@@ -588,6 +618,11 @@
         "comment": "", 
         "pos": "", 
         "translation": "schermo"
+    }, 
+    "screenshot": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "schermata"
     }, 
     "server": {
         "comment": "", 
