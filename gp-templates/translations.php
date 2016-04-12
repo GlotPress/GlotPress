@@ -121,7 +121,16 @@ $i = 0;
 			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
 			<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
 		</dd>
+		<?php
 
+		/**
+		 * Fires after the translation set filters options.
+		 *
+		 * This action is inside a DL element.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( 'gp_translation_set_filters_form' ); ?>
 
 		<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
 	</dl>
@@ -164,10 +173,19 @@ $i = 0;
 		 * Fires after the translation set sort options.
 		 *
 		 * This action is inside a DL element.
-		 *
+		 * @deprecated 2.1.0 Call gp_translation_set_sort_form instead
 		 * @since 1.0.0
 		 */
-		do_action( 'gp_translation_set_filters' ); ?>
+		do_action( 'gp_translation_set_filters' );
+
+		/**
+		* Fires after the translation set sort options.
+		*
+		* This action is inside a DL element.
+		* @since 2.1.0
+		*/
+		do_action( 'gp_translation_set_sort_form' ); ?>
+
 		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 	</dl>
 </form>
