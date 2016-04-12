@@ -266,6 +266,7 @@ function gp_clean_translation_set_cache( $id ) {
 	}
 
 	wp_cache_delete( $id, 'translation_set_status_breakdown' );
+	wp_cache_delete( $id, 'translation_set_status_breakdown_no_hidden' );
 	wp_cache_delete( $id, 'translation_set_last_modified' );
 }
 

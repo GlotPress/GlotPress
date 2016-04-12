@@ -265,7 +265,11 @@ class GP_Translation_Set extends GP_Thing {
 
 
 	public function update_status_breakdown() {
-		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
+
+		$exclude_hidden = ! GP::$permission->current_user_can( 'write', 'project', $this->project_id );
+		$cache_key = $exclude_hidden ? 'translation_set_status_breakdown_no_hidden' : 'translation_set_status_breakdown';
+
+		$counts = wp_cache_get( $this->id, $cache_key );
 
 		if ( ! is_array( $counts ) ) {
 			/*
@@ -275,14 +279,17 @@ class GP_Translation_Set extends GP_Thing {
 			 */
 			$t = GP::$translation->table;
 			$o = GP::$original->table;
+
+			$maybe_exclude_hidden = $exclude_hidden ? "AND o.priority != '-2'" : '';
+
 			$counts = GP::$translation->many_no_map("
 				SELECT t.status as translation_status, COUNT(*) as n
-				FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status = '+active' GROUP BY t.status", $this->id);
+				FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status = '+active' $maybe_exclude_hidden GROUP BY t.status", $this->id);
 			$warnings_count = GP::$translation->value("
 				SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
 				WHERE t.translation_set_id = %d AND o.status = '+active' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
 			$counts[] = (object)array( 'translation_status' => 'warnings', 'n' => $warnings_count );
-			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
+			wp_cache_set( $this->id, $counts, $cache_key );
 		}
 		$counts[] = (object)array( 'translation_status' => 'all', 'n' => $this->all_count() );
 
