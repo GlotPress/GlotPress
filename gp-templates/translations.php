@@ -173,17 +173,19 @@ $i = 0;
 		 * Fires after the translation set sort options.
 		 *
 		 * This action is inside a DL element.
+		 *
 		 * @deprecated 2.1.0 Call gp_translation_set_sort_form instead
 		 * @since 1.0.0
 		 */
 		do_action( 'gp_translation_set_filters' );
 
 		/**
-		* Fires after the translation set sort options.
-		*
-		* This action is inside a DL element.
-		* @since 2.1.0
-		*/
+		 * Fires after the translation set sort options.
+		 *
+		 * This action is inside a DL element.
+		 *
+		 * @since 2.1.0
+		 */
 		do_action( 'gp_translation_set_sort_form' ); ?>
 
 		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
