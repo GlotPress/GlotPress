@@ -188,6 +188,24 @@ class GP_Translation extends GP_Thing {
 			$where[] = 'o.priority > -2';
 		}
 
+		$priorities = gp_array_get( $filters, 'priority' );
+		if ( $priorities ) {
+			$valid_priorities = array_keys( GP::$original->get_static( 'priorities' ) );
+			$priorities = array_filter( gp_array_get( $filters, 'priority' ), function( $p ) use ( $valid_priorities ) {
+				return in_array( $p, $valid_priorities, true );
+			} );
+
+			$priorities_where = array();
+			foreach ( $priorities as $single_priority ) {
+				$priorities_where[] = $wpdb->prepare( 'o.priority = %s', $single_priority );
+			}
+
+			if ( ! empty( $priorities_where ) ) {
+				$priorities_where = '(' . implode( ' OR ', $priorities_where ) . ')';
+				$where[] = $priorities_where;
+			}
+		};
+
 		$join_where = array();
 		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
