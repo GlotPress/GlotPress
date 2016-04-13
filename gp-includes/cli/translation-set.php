@@ -53,6 +53,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--priority=<priorities>]
 	 * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
+	 *
+	 * [--deep]
+	 * : If set, the export will match all child projects as well
 	 */
 	public function export( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -90,7 +93,11 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			}
 		}
 
+		if ( isset( $assoc_args['deep'] ) ) {
+			add_filter( 'gp_for_translation_include_subprojects', '__return_true' );
+		}
 		$entries = GP::$translation->for_export( $this->project, $translation_set, $filters );
+
 		WP_CLI::line( $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries ) );
 	}
 
