@@ -192,6 +192,7 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->user_id = $user->ID;
 				}
 
+				$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
 				$entry->translation_set_id = $this->id;
 
 				/**
