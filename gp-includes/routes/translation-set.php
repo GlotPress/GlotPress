@@ -117,7 +117,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		}
 
 		list( $set, $project, $locale ) = $items;
-		if ( $this->cannot_edit_set_and_redirect( $set ) ) {
+		if ( $this->cannot_and_redirect( 'delete', 'project', $set->project_id, gp_url_project( $project ) ) ) {
 			return;
 		}
 
