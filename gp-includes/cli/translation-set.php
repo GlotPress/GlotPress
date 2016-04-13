@@ -68,7 +68,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		if ( isset( $assoc_args['search'] ) ) {
 			$filters['term'] = $assoc_args['search'];
 		}
-		$assoc_args['status'] = isset( $assoc_args['status'] ) ? $assoc_args['status'] : 'current';
+		$filters['status'] = isset( $assoc_args['status'] ) ? $assoc_args['status'] : 'current';
 
 		$entries = GP::$translation->for_export( $this->project, $translation_set, $filters );
 		WP_CLI::line( $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries ) );
