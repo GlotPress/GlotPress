@@ -27,7 +27,7 @@ function gp_upgrade_db() {
  *
  * @since 1.0.0
  *
- * @param $db_version The current version of the database before the upgrade.
+ * @param int $db_version The current version of the database before the upgrade.
  */
 function gp_upgrade_data( $db_version ) {
 	global $wpdb;
