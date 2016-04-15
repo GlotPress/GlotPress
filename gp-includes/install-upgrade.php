@@ -10,7 +10,6 @@
  * Runs the install/upgrade of the database.
  *
  * @since 1.0.0
- *
  */
 function gp_upgrade_db() {
 	global $wpdb;
