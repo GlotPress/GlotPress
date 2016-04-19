@@ -36,6 +36,6 @@ function gp_upgrade_data( $db_version ) {
 	}
 
 	if ( $db_version < 950 ) {
-		$wpdb->query( "UPDATE {$wpdb->gp_projects} SET `path`=SUBSTR(`path`, 1, LENGTH(`path`) - 1) WHERE `path` LIKE '%/';" );
+		$wpdb->query( "UPDATE {$wpdb->gp_projects} SET `path` = SUBSTRING(`path`, 1, CHAR_LENGTH(`path`) - 1) WHERE `path` LIKE '%/';" );
 	}
 }
