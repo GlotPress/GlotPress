@@ -201,7 +201,7 @@ class GP_Locales {
 		$ast->country_code = 'es';
 		$ast->wp_locale = 'ast';
 		$ast->slug = 'ast';
-		
+
 		$av = new GP_Locale();
 		$av->english_name = 'Avaric';
 		$av->native_name = 'авар мацӀ';
