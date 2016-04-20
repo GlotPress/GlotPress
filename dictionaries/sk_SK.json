@@ -1,0 +1,175 @@
+{
+    "administrator": {
+        "comment": "",
+        "pos": "",
+        "translation": "administr\u00e1tor"
+    }
+,
+    "bookmarklet": {
+        "comment": "",
+        "pos": "",
+        "translation": "bookmarklet"
+    }
+,
+    "BuddyPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "BuddyPress"
+    }
+,
+    "category": {
+        "comment": "",
+        "pos": "",
+        "translation": "kateg\u00f3ria"
+    }
+,
+    "comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "koment\u00e1r"
+    }
+,
+    "custom": {
+        "comment": "vlastn\u00e9 polia, vlastn\u00fd typ obsahu a pod.",
+        "pos": "",
+        "translation": "vlastn\u00e9"
+    }
+,
+    "dashboard": {
+        "comment": "",
+        "pos": "",
+        "translation": "n\u00e1stenka"
+    }
+,
+    "folder": {
+        "comment": "",
+        "pos": "",
+        "translation": "prie\u010dinok"
+    }
+,
+    "leave a comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "pridajte koment\u00e1r"
+    }
+,
+    "menu": {
+        "comment": "aj v mno\u017enom \u010d\u00edsle, napr. \"3 menu\"",
+        "pos": "",
+        "translation": "menu"
+    }
+,
+    "network": {
+        "comment": "",
+        "pos": "",
+        "translation": "sie\u0165"
+    }
+,
+    "network admin": {
+        "comment": "",
+        "pos": "",
+        "translation": "administr\u00e1cia siete"
+    }
+,
+    "page": {
+        "comment": "Vo v\u00fdzname str\u00e1nka na webovej str\u00e1nke",
+        "pos": "",
+        "translation": "str\u00e1nka"
+    }
+,
+    "pagination": {
+        "comment": "",
+        "pos": "",
+        "translation": "str\u00e1nkovanie"
+    }
+,
+    "permalink": {
+        "comment": "",
+        "pos": "",
+        "translation": "trval\u00fd odkaz"
+    }
+,
+    "plugin": {
+        "comment": "",
+        "pos": "",
+        "translation": "modul"
+    }
+,
+    "post": {
+        "comment": "pozor: \"post type\" m\u00e1 in\u00fd preklad",
+        "pos": "",
+        "translation": "\u010dl\u00e1nok"
+    }
+,
+    "post type": {
+        "comment": "",
+        "pos": "",
+        "translation": "typ obsahu"
+    }
+,
+    "Press This": {
+        "comment": "",
+        "pos": "",
+        "translation": "Press This"
+    }
+,
+    "site": {
+        "comment": "nepou\u017e\u00edva\u0165 skr\u00e1ten\u00fd v\u00fdraz v tvare \"str\u00e1nka\"",
+        "pos": "",
+        "translation": "webov\u00e1 str\u00e1nka"
+    }
+,
+    "slug": {
+        "comment": "",
+        "pos": "",
+        "translation": "slug"
+    }
+,
+    "spam": {
+        "comment": "",
+        "pos": "",
+        "translation": "spam"
+    }
+,
+    "theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "t\u00e9ma"
+    }
+,
+    "toolbar": {
+        "comment": "",
+        "pos": "",
+        "translation": "panel n\u00e1strojov"
+    }
+,
+    "user": {
+        "comment": "",
+        "pos": "",
+        "translation": "pou\u017e\u00edvate\u013e"
+    }
+,
+    "username": {
+        "comment": "",
+        "pos": "",
+        "translation": "pou\u017e\u00edvate\u013esk\u00e9 meno"
+    }
+,
+    "website": {
+        "comment": "",
+        "pos": "",
+        "translation": "webov\u00e1 str\u00e1nka"
+    }
+,
+    "widget": {
+        "comment": "",
+        "pos": "",
+        "translation": "widget"
+    }
+,
+    "WordPress": {
+        "comment": "Nesklo\u0148ova\u0165! Pozor na ve\u013ek\u00e9 W a P.",
+        "pos": "",
+        "translation": "WordPress"
+    }
+}

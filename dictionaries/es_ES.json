@@ -1,0 +1,601 @@
+{
+    "Account": {
+        "comment": "",
+        "pos": "",
+        "translation": "Cuenta"
+    }
+,
+    "Activate": {
+        "comment": "",
+        "pos": "",
+        "translation": "Activar"
+    }
+,
+    "Activated": {
+        "comment": "",
+        "pos": "",
+        "translation": "Activado"
+    }
+,
+    "address\/ed": {
+        "comment": "",
+        "pos": "",
+        "translation": "soluciona\/ba"
+    }
+,
+    "Admin": {
+        "comment": "Se refiere al rol dentro del sistema",
+        "pos": "",
+        "translation": "Administrador"
+    }
+,
+    "After the Deadline": {
+        "comment": "Nombre de un producto de software http:\/\/afterthedeadline.com",
+        "pos": "",
+        "translation": "After the Deadline"
+    }
+,
+    "Ajax": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "Ajax"
+    }
+,
+    "Array": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "Array"
+    }
+,
+    "Aside": {
+        "comment": "",
+        "pos": "",
+        "translation": "Minientrada"
+    }
+,
+    "Attachment": {
+        "comment": "",
+        "pos": "",
+        "translation": "Adjunto"
+    }
+,
+    "Author": {
+        "comment": "",
+        "pos": "",
+        "translation": "Autor"
+    }
+,
+    "Autosave": {
+        "comment": "",
+        "pos": "",
+        "translation": "Autoguardado"
+    }
+,
+    "Bitrate": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "Bitrate"
+    }
+,
+    "Blog": {
+        "comment": "(No se traduce)",
+        "pos": "",
+        "translation": "Blog"
+    }
+,
+    "Bookmarklet": {
+        "comment": "",
+        "pos": "",
+        "translation": "Marcador"
+    }
+,
+    "Browser": {
+        "comment": "",
+        "pos": "",
+        "translation": "Navegador"
+    }
+,
+    "BuddyPress": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "BuddyPress"
+    }
+,
+    "Category": {
+        "comment": "",
+        "pos": "",
+        "translation": "Categor\u00eda"
+    }
+,
+    "Click": {
+        "comment": "Se pone \"clic\" sin K \n(http:\/\/www.fundeu.es\/consulta\/hacer-clic-1753\/)",
+        "pos": "",
+        "translation": "Hacer clic"
+    }
+,
+    "Comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "Comentario"
+    }
+,
+    "Comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "Comentar"
+    }
+,
+    "contact with your host": {
+        "comment": "",
+        "pos": "",
+        "translation": "contactar con tu proveedor de alojamiento web"
+    }
+,
+    "Content": {
+        "comment": "",
+        "pos": "",
+        "translation": "Contenido"
+    }
+,
+    "Cookie": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "Cookie"
+    }
+,
+    "Customize": {
+        "comment": "",
+        "pos": "",
+        "translation": "Personalizar"
+    }
+,
+    "Customizer": {
+        "comment": "",
+        "pos": "",
+        "translation": "Personalizador"
+    }
+,
+    "Dashboard": {
+        "comment": "No utilizar \"Tablero\"",
+        "pos": "",
+        "translation": "Escritorio"
+    }
+,
+    "Deprecated": {
+        "comment": "",
+        "pos": "",
+        "translation": "Obsoleto \/ Obsoleta"
+    }
+,
+    "Draft": {
+        "comment": "",
+        "pos": "",
+        "translation": "Borrador"
+    }
+,
+    "Drop-in\/s": {
+        "comment": "",
+        "pos": "",
+        "translation": "Dependiente\/s"
+    }
+,
+    "Email": {
+        "comment": "No utiilzar: \nemail (Incorrecto).\ncorreo e (Incorrecto).\ne-mail (Incorrecto).\nCorreo Electr\u00f3nico (con E may\u00fascula) (Incorrecto)\nemail adress = direcci\u00f3n de correo electr\u00f3nico (Correcto)",
+        "pos": "",
+        "translation": "Correo electr\u00f3nico"
+    }
+,
+    "Embed": {
+        "comment": "",
+        "pos": "",
+        "translation": "Incrustar"
+    }
+,
+    "Embeded": {
+        "comment": "",
+        "pos": "",
+        "translation": "Incrustado"
+    }
+,
+    "Excerpt": {
+        "comment": "",
+        "pos": "",
+        "translation": "Extracto"
+    }
+,
+    "Footer": {
+        "comment": "",
+        "pos": "",
+        "translation": "Pie de p\u00e1gina"
+    }
+,
+    "Front page": {
+        "comment": "",
+        "pos": "",
+        "translation": "P\u00e1gina de inicio"
+    }
+,
+    "Gallery": {
+        "comment": "",
+        "pos": "",
+        "translation": "Galer\u00eda"
+    }
+,
+    "Header": {
+        "comment": "",
+        "pos": "",
+        "translation": "Cabecera"
+    }
+,
+    "Home": {
+        "comment": "(Hay que definir los contextos en los que una u otra son v\u00e1lidas)",
+        "pos": "",
+        "translation": "Inicio o p\u00e1gina de inicio"
+    }
+,
+    "Howdy": {
+        "comment": "",
+        "pos": "",
+        "translation": "Hola"
+    }
+,
+    "inline": {
+        "comment": "",
+        "pos": "",
+        "translation": "Integrado\/a"
+    }
+,
+    "Invalid": {
+        "comment": "No utilizar: Inv\u00e1lido (Incorrecto).",
+        "pos": "",
+        "translation": "No v\u00e1lido"
+    }
+,
+    "issue\/s": {
+        "comment": "",
+        "pos": "",
+        "translation": "problema\/s conflicto\/s"
+    }
+,
+    "Item \/s": {
+        "comment": "",
+        "pos": "",
+        "translation": "Elemento\/s"
+    }
+,
+    "Javascript": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "Javascript"
+    }
+,
+    "JetPack": {
+        "comment": "No se traduce\nSe refiere al plugin JetPack. Puedes encontrar m\u00e1s informaci\u00f3n en jetpack.me",
+        "pos": "",
+        "translation": "JetPack"
+    }
+,
+    "Large": {
+        "comment": "",
+        "pos": "",
+        "translation": "Grande"
+    }
+,
+    "Library": {
+        "comment": "No usar librer\u00eda, que solo se refiere a libros",
+        "pos": "",
+        "translation": "Biblioteca"
+    }
+,
+    "Login": {
+        "comment": "Usar \"Acceso\" cuando sea un enlace a una p\u00e1gina de acceso.\r\nUsar \"Acceder\" cuando sea \r\n1) una etiqueta de un bot\u00f3n, cuando se haga la acci\u00f3n de acceder  al pulsarlo.\r\n2) se refiera en un texto a la acci\u00f3n de acceder.\r\nNo utilizar:\r\nIniciar Sesi\u00f3n (Incorrecto).\r\nEntrar (Incorrecto).\r\nIdentificarse (Incorrecto)",
+        "pos": "",
+        "translation": "Acceder "
+    }
+,
+    "Manage": {
+        "comment": "No utilizar: Administrar (Incorrecto)",
+        "pos": "",
+        "translation": "Gestionar"
+    }
+,
+    "Management": {
+        "comment": "No utilzar: Administraci\u00f3n (Incorrecto)",
+        "pos": "",
+        "translation": "Gesti\u00f3n"
+    }
+,
+    "Media": {
+        "comment": "",
+        "pos": "",
+        "translation": "Multimedia"
+    }
+,
+    "Next": {
+        "comment": "",
+        "pos": "",
+        "translation": "Siguiente"
+    }
+,
+    "Nickname": {
+        "comment": "No utilizar: \nApodo (Incorrecto) \nNickname (Incorrecto)",
+        "pos": "",
+        "translation": "Alias"
+    }
+,
+    "nonce": {
+        "comment": "(no se traduce)",
+        "pos": "",
+        "translation": "nonce"
+    }
+,
+    "Options": {
+        "comment": "No utilizar: Ajustes (Incorrecto)",
+        "pos": "",
+        "translation": "Opciones"
+    }
+,
+    "Page": {
+        "comment": "",
+        "pos": "",
+        "translation": "P\u00e1gina"
+    }
+,
+    "Permalink": {
+        "comment": "",
+        "pos": "",
+        "translation": "Enlace permanente"
+    }
+,
+    "Permalinks": {
+        "comment": "",
+        "pos": "",
+        "translation": "Enlaces permanentes"
+    }
+,
+    "pixel": {
+        "comment": "Con tilde",
+        "pos": "",
+        "translation": "p\u00edxel"
+    }
+,
+    "pixels": {
+        "comment": "Con tilde",
+        "pos": "",
+        "translation": "p\u00edxeles"
+    }
+,
+    "plugin\/s": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "plugin\/s"
+    }
+,
+    "Post": {
+        "comment": "Usar entrada o publicaci\u00f3n seg\u00fan el contexto",
+        "pos": "",
+        "translation": "Entrada \/ Publicaci\u00f3n"
+    }
+,
+    "Post type": {
+        "comment": "Hay varios tipos de publicaci\u00f3n (entradas, p\u00e1ginas, etc)",
+        "pos": "",
+        "translation": "Tipo de publicaci\u00f3n"
+    }
+,
+    "Posts": {
+        "comment": "",
+        "pos": "",
+        "translation": "Entradas"
+    }
+,
+    "Previous": {
+        "comment": "",
+        "pos": "",
+        "translation": "Anterior"
+    }
+,
+    "query": {
+        "comment": "",
+        "pos": "",
+        "translation": "consulta"
+    }
+,
+    "QuickPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "Publicaci\u00f3n r\u00e1pida"
+    }
+,
+    "Release": {
+        "comment": "No confudir con Released --> Lanzamiento",
+        "pos": "",
+        "translation": "Versi\u00f3n"
+    }
+,
+    "responsive": {
+        "comment": "",
+        "pos": "",
+        "translation": "adaptable"
+    }
+,
+    "RSS Feed": {
+        "comment": "",
+        "pos": "",
+        "translation": "Feed RSS"
+    }
+,
+    "scope": {
+        "comment": "Se refiere a la extensi\u00f3n de la cabecera en una tabla. Valores: col, row, colgroup, rowgroup",
+        "pos": "",
+        "translation": "extensi\u00f3n"
+    }
+,
+    "Screen": {
+        "comment": "",
+        "pos": "",
+        "translation": "Pantalla"
+    }
+,
+    "Set": {
+        "comment": "",
+        "pos": "",
+        "translation": "Establecer"
+    }
+,
+    "Settings": {
+        "comment": "No utilizar: Opciones (Incorrecto)",
+        "pos": "",
+        "translation": "Ajustes"
+    }
+,
+    "shortcode": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "shortcode"
+    }
+,
+    "Shortcut": {
+        "comment": "Plural: Shortcuts --> Atajos",
+        "pos": "",
+        "translation": "Atajo"
+    }
+,
+    "Shortcuts": {
+        "comment": "",
+        "pos": "",
+        "translation": "Atajos"
+    }
+,
+    "Sidebar": {
+        "comment": "",
+        "pos": "",
+        "translation": "Barra lateral"
+    }
+,
+    "site": {
+        "comment": "No traducir como \"p\u00e1gina web\" o \"sitio web\", solo como \"sitio\"",
+        "pos": "",
+        "translation": "sitio"
+    }
+,
+    "Site Identity": {
+        "comment": "Secci\u00f3n del Personalizador",
+        "pos": "",
+        "translation": "Identidad del sitio"
+    }
+,
+    "slug": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "slug"
+    }
+,
+    "Sorry": {
+        "comment": "No utilizar:\nLo sentimos (Incorrecto)\nPerdona (Incorrecto)",
+        "pos": "",
+        "translation": "Lo siento"
+    }
+,
+    "Sticky": {
+        "comment": "",
+        "pos": "",
+        "translation": "Fija"
+    }
+,
+    "String": {
+        "comment": "",
+        "pos": "",
+        "translation": "Cadena"
+    }
+,
+    "Stylesheet": {
+        "comment": "",
+        "pos": "",
+        "translation": "Hoja de estilos"
+    }
+,
+    "Template": {
+        "comment": "No utilizar: Tema (Incorrecto)",
+        "pos": "",
+        "translation": "Plantilla"
+    }
+,
+    "Theme": {
+        "comment": "No utilizar: Plantilla (Incorrecto)",
+        "pos": "",
+        "translation": "Tema"
+    }
+,
+    "Tools": {
+        "comment": "Nombre de men\u00fa principal de WordPress",
+        "pos": "",
+        "translation": "Herramientas"
+    }
+,
+    "Unable": {
+        "comment": "",
+        "pos": "",
+        "translation": "No ha sido posible"
+    }
+,
+    "Update": {
+        "comment": "",
+        "pos": "",
+        "translation": "Actualizaci\u00f3n"
+    }
+,
+    "Update": {
+        "comment": "",
+        "pos": "",
+        "translation": "Actualizar"
+    }
+,
+    "Updated": {
+        "comment": "",
+        "pos": "",
+        "translation": "Actualizado"
+    }
+,
+    "Upload": {
+        "comment": "No utilizar: Carga (incorrecta)",
+        "pos": "",
+        "translation": "Subida"
+    }
+,
+    "Upload": {
+        "comment": "No utilizar: Cargar (incorrecta)",
+        "pos": "",
+        "translation": "Subir"
+    }
+,
+    "Uploaded": {
+        "comment": "",
+        "pos": "",
+        "translation": "Subido"
+    }
+,
+    "Username": {
+        "comment": "",
+        "pos": "",
+        "translation": "Nombre de usuario"
+    }
+,
+    "Walker": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "Walker"
+    }
+,
+    "XML-RPC": {
+        "comment": "No se traduce",
+        "pos": "",
+        "translation": "XML-RPC"
+    }
+,
+    "You are not allowed ": {
+        "comment": "",
+        "pos": "",
+        "translation": "No tienes permisos"
+    }
+}

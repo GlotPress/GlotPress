@@ -28,7 +28,13 @@
       "dictionaries/fr_FR.json",
       "dictionaries/nl_NL.json",
       "dictionaries/de_DE.json",
-      "dictionaries/bg_BG.json"
+      "dictionaries/bg_BG.json",
+      "dictionaries/es_ES.json",
+      "dictionaries/ja.json",
+      "dictionaries/lt_LT.json",
+      "dictionaries/sk_SK.json",
+      "dictionaries/sv_SE.json",
+      "dictionaries/fi.json",
   ]
 
 }

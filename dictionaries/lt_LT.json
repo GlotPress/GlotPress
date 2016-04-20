@@ -1,0 +1,223 @@
+{
+    "Account": {
+        "comment": "Nes s\u0105skaitos tik banke",
+        "pos": "",
+        "translation": "Paskyra"
+    }
+,
+    "Area": {
+        "comment": "",
+        "pos": "",
+        "translation": "zona"
+    }
+,
+    "Aside": {
+        "comment": "",
+        "pos": "",
+        "translation": "U\u017era\u0161as"
+    }
+,
+    "Attach": {
+        "comment": "Ir visos susijusios formos, pvz. unattached - neprisegtas ir pan.",
+        "pos": "",
+        "translation": "Prisegti"
+    }
+,
+    "Blog": {
+        "comment": "",
+        "pos": "",
+        "translation": "Tinklara\u0161tis"
+    }
+,
+    "Browser": {
+        "comment": "",
+        "pos": "",
+        "translation": "Nar\u0161ykl\u0117"
+    }
+,
+    "Child theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "Potem\u0117"
+    }
+,
+    "Clipboard": {
+        "comment": "",
+        "pos": "",
+        "translation": "I\u0161karpin\u0117"
+    }
+,
+    "Customize": {
+        "comment": "",
+        "pos": "",
+        "translation": "Pritaikyti, keisti"
+    }
+,
+    "Customizer": {
+        "comment": "Turima omenyje temos ar valdikli\u0173 nustatym\u0173 keitimas \"live\"",
+        "pos": "",
+        "translation": "Vaizdusis re\u017eimas"
+    }
+,
+    "Delete": {
+        "comment": "",
+        "pos": "",
+        "translation": "I\u0161trinti"
+    }
+,
+    "Distraction-free (writing) mode": {
+        "comment": "Nieko padoresnio nesugalvota. Open to suggestions.",
+        "pos": "",
+        "translation": "D\u0117mesio nebla\u0161kantis (ra\u0161ymo) re\u017eimas"
+    }
+,
+    "Edit": {
+        "comment": "",
+        "pos": "",
+        "translation": "Redaguoti"
+    }
+,
+    "Editor": {
+        "comment": "Ra\u0161ykl\u0117 - teksto kontekste. Tik d\u0117l to, kad i\u0161vengtume \"teksto redagavimo vieta\". Geriau trumpas ir kvailas \u017eodis, nei 3 atskiri \u017eod\u017eiai vienam daiktui...\nRedaktorius - tem\u0173, \u012fskiepi\u0173 ir pan. kontekste",
+        "pos": "",
+        "translation": "Ra\u0161ykl\u0117 \/ Redaktorius"
+    }
+,
+    "Enable": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u012egalinti"
+    }
+,
+    "File": {
+        "comment": "Nes bylos tik prokurat\u016broje",
+        "pos": "",
+        "translation": "Failas"
+    }
+,
+    "Footer": {
+        "comment": "",
+        "pos": "",
+        "translation": "Pora\u0161t\u0117"
+    }
+,
+    "Install": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u012ediegti"
+    }
+,
+    "Library": {
+        "comment": "Kaip Media Library, Files Library -> fail\u0173 saugykla",
+        "pos": "",
+        "translation": "Saugykla"
+    }
+,
+    "Log, logs": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u017durnalas"
+    }
+,
+    "Manage": {
+        "comment": "Tvarkyti temas, \u012fskiepius ir pan.",
+        "pos": "",
+        "translation": "Tvarkyti"
+    }
+,
+    "Multisite": {
+        "comment": "Visi\u0161kai pa\u017eod\u017eiui, bet jokio man \u017einomo pana\u0161aus termino kaip ir n\u0117ra",
+        "pos": "",
+        "translation": "Multitinklalapis"
+    }
+,
+    "Parent theme": {
+        "comment": "Motinin\u0117 skamba tikrai blogiau",
+        "pos": "",
+        "translation": "T\u0117vin\u0117 tema"
+    }
+,
+    "Pingback": {
+        "comment": "",
+        "pos": "",
+        "translation": "(Atgalinis) prane\u0161imas"
+    }
+,
+    "Required": {
+        "comment": "",
+        "pos": "",
+        "translation": "B\u016btinas"
+    }
+,
+    "Shortcut": {
+        "comment": "Nieko geresnio (kol kas) nesugalvota",
+        "pos": "",
+        "translation": "(Klaviat\u016bros) \u0161aukiniai"
+    }
+,
+    "Site": {
+        "comment": "",
+        "pos": "",
+        "translation": "Tinklalapis"
+    }
+,
+    "Tag": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u017dyma"
+    }
+,
+    "Thumbnail": {
+        "comment": "",
+        "pos": "",
+        "translation": "Miniati\u016bra"
+    }
+,
+    "Trackback": {
+        "comment": "",
+        "pos": "",
+        "translation": "(Atgalin\u0117) citata"
+    }
+,
+    "Trash": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u0160iuk\u0161lin\u0117"
+    }
+,
+    "Trash": {
+        "comment": "",
+        "pos": "",
+        "translation": "Perkelti \u012f \u0161iuk\u0161lin\u0119"
+    }
+,
+    "Troubleshooting": {
+        "comment": "Google'as taip naudoja, naudosim ir mes.",
+        "pos": "",
+        "translation": "Trik\u010di\u0173 \u0161alinimas"
+    }
+,
+    "Username": {
+        "comment": "",
+        "pos": "",
+        "translation": "Vartotojo vardas"
+    }
+,
+    "View": {
+        "comment": "",
+        "pos": "",
+        "translation": "Per\u017ei\u016br\u0117ti"
+    }
+,
+    "Widget": {
+        "comment": "",
+        "pos": "",
+        "translation": "Valdiklis"
+    }
+,
+    "You": {
+        "comment": "Naudojame formal\u0173 kalbos ton\u0105",
+        "pos": "",
+        "translation": "J\u016bs"
+    }
+}
