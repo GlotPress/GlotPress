@@ -27,7 +27,8 @@
       "dictionaries/it_IT.json",
       "dictionaries/fr_FR.json",
       "dictionaries/nl_NL.json",
-      "dictionaries/de_DE.json"
+      "dictionaries/de_DE.json",
+      "dictionaries/bg_BG.json"
   ]
 
 }
