@@ -48,6 +48,7 @@ function gp_schema_get() {
 		KEY user_id (user_id),
 		KEY translation_set_id (translation_set_id),
 		KEY translation_set_id_status (translation_set_id,status),
+		KEY original_id_translation_set_id_status (original_id,translation_set_id,status),
 		KEY date_added (date_added),
 		KEY warnings (warnings(1))
 	) $charset_collate;";
@@ -93,7 +94,8 @@ function gp_schema_get() {
 		date_added DATETIME DEFAULT NULL,
 		PRIMARY KEY  (id),
 		KEY project_id_status (project_id,status),
-		KEY singular_plural_context (singular(63),plural(63),context(63))
+		KEY singular_plural_context (singular(63),plural(63),context(63)),
+		KEY project_id_status_priority_date_added (project_id,status,priority,date_added)
 	) $charset_collate;";
 
 	/*
