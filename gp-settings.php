@@ -54,7 +54,9 @@ require_once( GP_PATH . GP_INC . 'default-filters.php' );
 require_once( ABSPATH . WPINC . '/pomo/mo.php' );
 require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
-require_once( GP_LOCALES_PATH . 'locales.php' );
+if ( ! class_exists( 'GP_Locale' ) || ! class_exists( 'GP_Locales' ) ) {
+	require_once( GP_LOCALES_PATH . 'locales.php' );
+}
 
 // We assume all variables set in this file will be global.
 // If the file is inovked inside a function, we will lose them all.
