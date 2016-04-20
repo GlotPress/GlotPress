@@ -56,7 +56,12 @@ class GP_Builtin_Translation_Warnings {
 
 	var $length_lower_bound = 0.2;
 	var $length_upper_bound = 5.0;
-	var $length_exclude_languages = array('ja', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw');
+	/**
+	 * List of locales which are excluded from length checks.
+	 *
+	 * @var array
+	 */
+	public $length_exclude_languages = array( 'art-xemoji', 'ja', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw' );
 
 	public function warning_length( $original, $translation, $locale ) {
 		if ( in_array( $locale->slug, $this->length_exclude_languages ) ) {
