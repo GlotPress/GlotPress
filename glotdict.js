@@ -1,13 +1,16 @@
 jQuery(document).ready(function () {
-  select_language();
-  gd_add_terms();
+  if(jQuery('.filters-toolbar div:first').length > 0) {
+    select_language();
+    gd_add_terms();
+  }
   
   function select_language() {
     jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
     jQuery('.glossary-word').contents().unwrap();
+    var lang = localStorage.getItem('gd_language');
     jQuery.each(['bg_BG', 'de_DE', 'es_ES', 'fi', 'fr_FR', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'sk_SK', 'sv_SE'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
-       if(localStorage.getItem('gd_language') === value) {
+       if(lang === value) {
            new_option.attr('selected',true);
        }
        jQuery('.glotdict_language').append(new_option); 
