@@ -1,6 +1,6 @@
 {
     "account": {
-        "comment": "test2",
+        "comment": "",
         "pos": "",
         "translation": "Konto"
     }
@@ -273,6 +273,12 @@
         "comment": "",
         "pos": "",
         "translation": "anpassen"
+    }
+,
+    "Customizer": {
+        "comment": "See https:\/\/teamwpde.wordpress.com\/2014\/08\/27\/begriffsklarung-customizer\/.",
+        "pos": "",
+        "translation": "Customizer"
     }
 ,
     "Dashboard": {

@@ -594,6 +594,11 @@
         "pos": "", 
         "translation": "rinfrescare"
     }, 
+    "release": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "versione"
+    }, 
     "required": {
         "comment": "", 
         "pos": "", 

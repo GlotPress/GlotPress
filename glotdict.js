@@ -8,7 +8,7 @@ jQuery(document).ready(function () {
     jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
     jQuery('.glossary-word').contents().unwrap();
     var lang = localStorage.getItem('gd_language');
-    jQuery.each(['bg_BG', 'de_DE', 'es_ES', 'fi', 'fr_FR', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'sk_SK', 'sv_SE'], function(key, value) {  
+    jQuery.each(['bg_BG', 'de_DE', 'es_ES', 'fi', 'fr_FR', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'sk_SK', 'sv_SE'], function(key, value) {  
        var new_option = jQuery('<option></option>').attr('value',value).text(value);
        if(lang === value) {
            new_option.attr('selected',true);

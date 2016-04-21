@@ -47,6 +47,12 @@
         "translation": "alle"
     }
 ,
+    "Allow": {
+        "comment": "Bij vertaling van 'Allow x op deze pagina', is 'X toestaan op deze pagina' de beste vertaling.",
+        "pos": "",
+        "translation": "Toestaan"
+    }
+,
     "appearance": {
         "comment": ";",
         "pos": "",
@@ -87,6 +93,12 @@
         "comment": "Afhankelijk van constructie. Soms is het 'gebied' zoals in: tekstgebied.",
         "pos": "",
         "translation": "ruimte\/gebied"
+    }
+,
+    "available": {
+        "comment": "Wanneer er nieuwe plugins, thema's zijn, is de context: \"Er is een nieuwe versie van x beschikbaar\".",
+        "pos": "",
+        "translation": "beschikbaar"
     }
 ,
     "\u00e8": {
@@ -215,6 +227,12 @@
         "translation": "e-mailadres"
     }
 ,
+    "embed": {
+        "comment": "",
+        "pos": "",
+        "translation": "insluiten"
+    }
+,
     "error": {
         "comment": "",
         "pos": "",
@@ -339,6 +357,12 @@
         "comment": "Met een c, niet met een k.",
         "pos": "",
         "translation": "locatie"
+    }
+,
+    "Media file": {
+        "comment": "In de Nederlandse taal is dit \u00e9\u00e9n woord. We schrijven dit niet los.",
+        "pos": "",
+        "translation": "Mediabestand"
     }
 ,
     "menu": {
