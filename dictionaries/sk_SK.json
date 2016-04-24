@@ -1,175 +1,907 @@
 {
-    "administrator": {
-        "comment": "",
-        "pos": "",
-        "translation": "administr\u00e1tor"
-    }
-,
-    "bookmarklet": {
-        "comment": "",
-        "pos": "",
-        "translation": "bookmarklet"
-    }
-,
-    "BuddyPress": {
-        "comment": "",
-        "pos": "",
-        "translation": "BuddyPress"
-    }
-,
-    "category": {
-        "comment": "",
-        "pos": "",
-        "translation": "kateg\u00f3ria"
-    }
-,
-    "comment": {
-        "comment": "",
-        "pos": "",
-        "translation": "koment\u00e1r"
-    }
-,
-    "custom": {
-        "comment": "vlastn\u00e9 polia, vlastn\u00fd typ obsahu a pod.",
-        "pos": "",
-        "translation": "vlastn\u00e9"
-    }
-,
-    "dashboard": {
-        "comment": "",
-        "pos": "",
-        "translation": "n\u00e1stenka"
-    }
-,
-    "folder": {
-        "comment": "",
-        "pos": "",
-        "translation": "prie\u010dinok"
-    }
-,
-    "leave a comment": {
-        "comment": "",
-        "pos": "",
-        "translation": "pridajte koment\u00e1r"
-    }
-,
-    "menu": {
-        "comment": "aj v mno\u017enom \u010d\u00edsle, napr. \"3 menu\"",
-        "pos": "",
-        "translation": "menu"
-    }
-,
-    "network": {
-        "comment": "",
-        "pos": "",
-        "translation": "sie\u0165"
-    }
-,
-    "network admin": {
-        "comment": "",
-        "pos": "",
-        "translation": "administr\u00e1cia siete"
-    }
-,
-    "page": {
-        "comment": "Vo v\u00fdzname str\u00e1nka na webovej str\u00e1nke",
-        "pos": "",
-        "translation": "str\u00e1nka"
-    }
-,
-    "pagination": {
-        "comment": "",
-        "pos": "",
-        "translation": "str\u00e1nkovanie"
-    }
-,
-    "permalink": {
-        "comment": "",
-        "pos": "",
-        "translation": "trval\u00fd odkaz"
-    }
-,
-    "plugin": {
-        "comment": "",
-        "pos": "",
-        "translation": "modul"
-    }
-,
-    "post": {
-        "comment": "pozor: \"post type\" m\u00e1 in\u00fd preklad",
-        "pos": "",
-        "translation": "\u010dl\u00e1nok"
-    }
-,
-    "post type": {
-        "comment": "",
-        "pos": "",
-        "translation": "typ obsahu"
-    }
-,
-    "Press This": {
-        "comment": "",
-        "pos": "",
-        "translation": "Press This"
-    }
-,
-    "site": {
-        "comment": "nepou\u017e\u00edva\u0165 skr\u00e1ten\u00fd v\u00fdraz v tvare \"str\u00e1nka\"",
-        "pos": "",
-        "translation": "webov\u00e1 str\u00e1nka"
-    }
-,
-    "slug": {
-        "comment": "",
-        "pos": "",
-        "translation": "slug"
-    }
-,
-    "spam": {
-        "comment": "",
-        "pos": "",
-        "translation": "spam"
-    }
-,
-    "theme": {
-        "comment": "",
-        "pos": "",
-        "translation": "t\u00e9ma"
-    }
-,
-    "toolbar": {
-        "comment": "",
-        "pos": "",
-        "translation": "panel n\u00e1strojov"
-    }
-,
-    "user": {
-        "comment": "",
-        "pos": "",
-        "translation": "pou\u017e\u00edvate\u013e"
-    }
-,
-    "username": {
-        "comment": "",
-        "pos": "",
-        "translation": "pou\u017e\u00edvate\u013esk\u00e9 meno"
-    }
-,
-    "website": {
-        "comment": "",
-        "pos": "",
-        "translation": "webov\u00e1 str\u00e1nka"
-    }
-,
-    "widget": {
-        "comment": "",
-        "pos": "",
-        "translation": "widget"
-    }
-,
     "WordPress": {
-        "comment": "Nesklo\u0148ova\u0165! Pozor na ve\u013ek\u00e9 W a P.",
+        "comment": "Slovo WordPress NIKDY neskloňujeme a vždy dodržiavame kapitalizáciu W a P",
         "pos": "",
         "translation": "WordPress"
+    },
+    "site": {
+        "comment": "zvazit preklad \"webová lokalita\"",
+        "pos": "",
+        "translation": "webová stránka"
+    },
+    "website": {
+		"comment": "",
+        "pos": "",
+        "translation": "webová stránka"
+    },
+    "page": {
+		"comment": "",
+        "pos": "",
+        "translation": "stránka"
+    },
+    "plugin": {
+		"comment": "",
+        "pos": "",
+        "translation": "modul"
+    },
+    "post": {
+        "comment": "pozor: v samotnom WordPress sa post prekladá ako článok",
+        "pos": "",
+        "translation": "príspevok"
+    },
+    "post type": {
+		"comment": "",
+        "pos": "",
+        "translation": "typ obsahu"
+    },
+    "theme": {
+		"comment": "",
+        "pos": "",
+        "translation": "téma"
+    },
+    "admin": {
+        "comment": "podľa kontextu, či ide o rolu alebo o rozhranie pre správu webu",
+        "pos": "",
+        "translation": "administrátor, administrácia"
+    },
+    "administrator": {
+        "comment": "nie správca",
+        "pos": "",
+        "translation": "administrátor"
+    },
+    "Media Library": {
+		"comment": "",
+        "pos": "",
+        "translation": "knižnica súborov"
+    },
+    "media": {
+		"comment": "",
+        "pos": "",
+        "translation": "súbor/súbory"
+    },
+    "media file": {
+		"comment": "",
+        "pos": "",
+        "translation": "mediálny súbor"
+    },
+    "multimedia": {
+		"comment": "",
+        "pos": "",
+        "translation": "súbor/súbory"
+    },
+    "box": {
+        "comment": "blok / karta / sekcia / panel ?",
+        "pos": "",
+        "translation": "oddiel"
+    },
+    "uploader": {
+        "comment": "ten istý preklad aj pre browser uploader",
+        "pos": "",
+        "translation": "nástroj na nahrávanie"
+    },
+    "button": {
+        "comment": "nie gombík! nie tlačítko!",
+        "pos": "",
+        "translation": "tlačidlo"
+    },
+    "capabilities": {
+		"comment": "",
+        "pos": "",
+        "translation": "možnosti"
+    },
+    "category": {
+		"comment": "",
+        "pos": "",
+        "translation": "kategória"
+    },
+    "child themes": {
+		"comment": "",
+        "pos": "",
+        "translation": "odvodené témy"
+    },
+    "Closed": {
+		"comment": "",
+        "pos": "",
+        "translation": "nie je povolené"
+    },
+    "title": {
+        "comment": "nie titulok",
+        "pos": "",
+        "translation": "nadpis"
+    },
+    "comment": {
+		"comment": "",
+        "pos": "",
+        "translation": "komentár"
+    },
+    "threaded comments": {
+		"comment": "",
+        "pos": "",
+        "translation": "viacúrovňové komentáre "
+    },
+    "Comments RSS": {
+		"comment": "",
+        "pos": "",
+        "translation": "RSS komentárov"
+    },
+    "custom": {
+        "comment": "vlastný typ obsahu, vlastné polia, vlastné CSS, ...",
+        "pos": "",
+        "translation": "vlastné"
+    },
+    "Dashboard": {
+        "comment": "Nie prístrojová doska",
+        "pos": "",
+        "translation": "Nástenka"
+    },
+    "Dear user": {
+        "comment": "nie drahý užívateľ",
+        "pos": "",
+        "translation": "Vážený používateľ"
+    },
+    "delete": {
+		"comment": "",
+        "pos": "",
+        "translation": "zmazať"
+    },
+    "details": {
+		"comment": "",
+        "pos": "",
+        "translation": "podrobnosti"
+    },
+    "enable": {
+		"comment": "",
+        "pos": "",
+        "translation": "povoliť"
+    },
+    "disable": {
+        "comment": "MS pouziva tieto: neaktivny/vypnute/zakazane/deaktivovane",
+        "pos": "",
+        "translation": "zakázať (resp. nepovoliť)"
+    },
+    "entry": {
+        "comment": "(predtým obsah)..nesedelo..",
+        "pos": "",
+        "translation": "záznam"
+    },
+    "Excerpt": {
+        "comment": "nie výňatok , nie je to len istá časť, súhrn = matematika",
+        "pos": "",
+        "translation": "Zhrnutie"
+    },
+    "existing": {
+        "comment": "opraviť existujúcich",
+        "pos": "",
+        "translation": "súčasný"
+    },
+    "expand or collapse": {
+        "comment": "v preklade veľa rozielov, check on it",
+        "pos": "",
+        "translation": "rozbaliť alebo zbaliť <----  rozložiť alebo zložiť"
+    },
+    "Featured Image": {
+        "comment": "predtým sa prekladalo ako Prezentačný obrázok",
+        "pos": "",
+        "translation": "Ilustračný obrázok"
+    },
+    "Flash-based uploader, flash uploader": {
+		"comment": "",
+        "pos": "",
+        "translation": "flashový nahrávač"
+    },
+    "Follow": {
+        "comment": "(ak komentáre/rss tak \"sledovať\" inak nasledovať)",
+        "pos": "",
+        "translation": "sledovať"
+    },
+    "frontend": {
+        "comment": "Vymyslieť slovenský preklad..popredný? a jeho tvary?",
+        "pos": "",
+        "translation": "klientské rozhranie"
+    },
+    "in seconds": {
+		"comment": "",
+        "pos": "",
+        "translation": "za pár sekúnd"
+    },
+    "recurrent event": {
+		"comment": "",
+        "pos": "",
+        "translation": "opakujúca sa udalosť"
+    },
+    "inline editor": {
+		"comment": "",
+        "pos": "",
+        "translation": "priamy editor"
+    },
+    "label": {
+        "comment": "v preklade veľa rozdielov, check on it",
+        "pos": "",
+        "translation": "menovka"
+    },
+    "leave a comment": {
+		"comment": "",
+        "pos": "",
+        "translation": "zanechať komentár"
+    },
+    "link": {
+		"comment": "",
+        "pos": "",
+        "translation": "odkaz"
+    },
+    "manage": {
+		"comment": "",
+        "pos": "",
+        "translation": "spravovať"
+    },
+    "moderate": {
+		"comment": "",
+        "pos": "",
+        "translation": "správa (článkov,komentárov) ..nie moderovanie."
+    },
+    "moderated": {
+        "comment": "v preklade veľa rozielov, check on it",
+        "pos": "",
+        "translation": "spracované"
+    },
+    "optional": {
+        "comment": "doplnková",
+        "pos": "",
+        "translation": "voliteľná/é"
+    },
+    "undefined": {
+		"comment": "",
+        "pos": "",
+        "translation": "nedefinované"
+    },
+    "Pagination": {
+		"comment": "",
+        "pos": "",
+        "translation": "stránkovanie"
+    },
+    "parent theme": {
+        "comment": "nie rodičovská téma",
+        "pos": "",
+        "translation": "nadradená téma"
+    },
+    "Permalink": {
+        "comment": "Pekná blbosť,ale budeme zaužívať..lepší by bol názov priamy odkaz..trvalé nie sú ani náhodou  ",
+        "pos": "",
+        "translation": "Trvalý odkaz"
+    },
+    "Pingback": {
+        "comment": "zvážiť tento termín neprekladať",
+        "pos": "",
+        "translation": "Spätné upozornenie"
+    },
+    "post a comment": {
+		"comment": "",
+        "pos": "",
+        "translation": "pridajte komentár"
+    },
+    "Posted in": {
+        "comment": "vztahuje sa na kategórie, nie pridáné, nie zverejnené,nie pulikované!",
+        "pos": "",
+        "translation": "zaradené v"
+    },
+    "redo": {
+        "comment": "navigácia v historii",
+        "pos": "",
+        "translation": "dopredu"
+    },
+    "remove": {
+		"comment": "",
+        "pos": "",
+        "translation": "odstrániť"
+    },
+    "role": {
+        "comment": "(nie úloha)",
+        "pos": "",
+        "translation": "rola"
+    },
+    "screen": {
+		"comment": "",
+        "pos": "",
+        "translation": "obrazovka"
+    },
+    "set up ": {
+		"comment": "",
+        "pos": "",
+        "translation": "nastaviť"
+    },
+    "Sticked": {
+        "comment": "nie prilepené (to je len všeobecný tvar), články sa môžu vypichnúť(ako prišpendliť), alebo zvýrazniť",
+        "pos": "",
+        "translation": "pripnuté,pripnúť"
+    },
+    "Stylesheet": {
+		"comment": "",
+        "pos": "",
+        "translation": "Šablóna štýlov"
+    },
+    "stylesheet": {
+        "comment": "CSS - kaskádový štýl,",
+        "pos": "",
+        "translation": "šablóna štýlu"
+    },
+    "syndicated feeds": {
+		"comment": "",
+        "pos": "",
+        "translation": "syndikovaný kanál"
+    },
+    "Tag": {
+		"comment": "",
+        "pos": "",
+        "translation": "značka"
+    },
+    "Tagline": {
+        "comment": "predtym popis stranky - evokuje dlhy popis",
+        "pos": "",
+        "translation": "Slogan"
+    },
+    "tagged": {
+        "comment": "nie marked - označený(marked as spam) a nie oštítkovaný",
+        "pos": "",
+        "translation": "označkovaný"
+    },
+    "Template": {
+		"comment": "",
+        "pos": "",
+        "translation": "šablóna"
+    },
+    "thumbnail": {
+        "comment": "nie náhľad ani nadhľad!",
+        "pos": "",
+        "translation": "miniatúra"
+    },
+    "to bookmark": {
+		"comment": "",
+        "pos": "",
+        "translation": " založiť si"
+    },
+    "Trackback": {
+        "comment": "inlink",
+        "pos": "",
+        "translation": "spätný odkaz"
+    },
+    "ugprade": {
+        "comment": "nie upgradovať",
+        "pos": "",
+        "translation": "aktualizovať"
+    },
+    "upload": {
+        "comment": "nie uploadovať",
+        "pos": "",
+        "translation": "nahrať"
+    },
+    "uploading": {
+		"comment": "",
+        "pos": "",
+        "translation": "nahrať súbor (obrazovka,nastavenia nahrávania) (obidva tvary nahraný súbor aj nahratý sú správne) Krátky slovník slovenského jazyka v4 (nahrať -á -tý/-ný dok.) čo robím? nahrávam/ nahráva sa"
+    },
+    "URL": {
+        "comment": "nepoužívať samostnatne URL, alebe pridať slovo adresa",
+        "pos": "",
+        "translation": "URL adresa"
+    },
+    "user": {
+        "comment": "http://sk.wikipedia.org/wiki/Pou%C5%BE%C3%ADvate%C4%BE",
+        "pos": "",
+        "translation": "používateľ"
+    },
+    "username": {
+        "comment": "aj nicename",
+        "pos": "",
+        "translation": "používatelské meno"
+    },
+    "latest": {
+        "comment": "nie posledné",
+        "pos": "",
+        "translation": "najnovšie"
+    },
+    "while": {
+        "comment": "nie \"pri\" while je viazane na čas rovnako ako počas, pri je viac viazane na miesto",
+        "pos": "",
+        "translation": "počas"
+    },
+    "WordPress Support Forums": {
+        "comment": "(sk.forums.wordpress.org / forums.wordpress.org) - fora na sk.wordpress.org sa nebudu vyuzivat",
+        "pos": "",
+        "translation": "Fóra podpory WordPress"
+    },
+    "WordPress.org Theme Directory": {
+        "comment": "nie adresár WordPress.org s témamy",
+        "pos": "",
+        "translation": "Katalóg tém WordPress.org"
+    },
+    "WordPress Plugin Directory": {
+		"comment": "",
+        "pos": "",
+        "translation": "Katalóg WordPress modulov"
+    },
+    "WordPress Theme Directory": {
+		"comment": "",
+        "pos": "",
+        "translation": "Katalóg WordPress tém"
+    },
+    "update/updated": {
+		"comment": "",
+        "pos": "",
+        "translation": "aktualizácia/aktualizovať/aktualizované"
+    },
+    "subcategory/children category": {
+		"comment": "",
+        "pos": "",
+        "translation": "podkategória"
+    },
+    "drop-down list/menu": {
+        "comment": "nemalo by to byť \"roletové menu\" ???",
+        "pos": "",
+        "translation": "rozbaľovací zoznam/rozbaľovacie menu"
+    },
+    "drow-down list/menu": {
+		"comment": "",
+        "pos": "",
+        "translation": "vysúvací zoznam/vysúvacie menu"
+    },
+    "toolbar": {
+		"comment": "",
+        "pos": "",
+        "translation": "panel nástrojov"
+    },
+    "email": {
+		"comment": "",
+        "pos": "",
+        "translation": "e-mail"
+    },
+    "Select List": {
+		"comment": "",
+        "pos": "",
+        "translation": "výberový zoznam"
+    },
+    "responsive design ": {
+		"comment": "",
+        "pos": "",
+        "translation": "responzívny dizajn"
+    },
+    "radio button": {
+		"comment": "",
+        "pos": "",
+        "translation": "prepínač"
+    },
+    "checkbox": {
+		"comment": "",
+        "pos": "",
+        "translation": "zaškrtávacie políčko"
+    },
+    "textarea": {
+		"comment": "",
+        "pos": "",
+        "translation": "textové pole"
+    },
+    "edit/edited": {
+        "comment": "nie editovať/editované",
+        "pos": "",
+        "translation": "upraviť/upravené"
+    },
+    "view": {
+        "comment": "nie prezerať",
+        "pos": "",
+        "translation": "zobraziť"
+    },
+    "field/category(/...) name": {
+        "comment": "nie meno poľa/kategórie(/...)",
+        "pos": "",
+        "translation": "názov poľa/kategórie(/...)"
+    },
+    "indicated": {
+        "comment": "nie indikovaný, you indicated = uviedli ste",
+        "pos": "",
+        "translation": "uvedený"
+    },
+    "fullscreen (mode)": {
+        "comment": "nie celoobrazovkový (nie je to spisovne)",
+        "pos": "",
+        "translation": "režim celej obrazovky"
+    },
+    "required": {
+		"comment": "",
+        "pos": "",
+        "translation": "požadovaný"
+    },
+    "embed": {
+		"comment": "",
+        "pos": "",
+        "translation": "vložiť/ vložený prvok"
+    },
+    "embeds": {
+        "comment": "?",
+        "pos": "",
+        "translation": "vložené prvky"
+    },
+    "activate/deactivate": {
+		"comment": "",
+        "pos": "",
+        "translation": "aktivovať/deaktivovať"
+    },
+    "description": {
+		"comment": "",
+        "pos": "",
+        "translation": "popis"
+    },
+    "caption": {
+		"comment": "",
+        "pos": "",
+        "translation": "titulok"
+    },
+    "subtitles": {
+		"comment": "",
+        "pos": "",
+        "translation": "titulky"
+    },
+    "homepage": {
+		"comment": "",
+        "pos": "",
+        "translation": "domovská stránka"
+    },
+    "draft": {
+		"comment": "",
+        "pos": "",
+        "translation": "koncept"
+    },
+    "deprecated": {
+        "comment": "ide o WordPress funkcie, ktoré boli nahradené novšími a už by sa nemali používať",
+        "pos": "",
+        "translation": "nepoužíva sa / už sa nepoužíva"
+    },
+    "metadata": {
+		"comment": "",
+        "pos": "",
+        "translation": "metadáta"
+    },
+    "mode": {
+		"comment": "",
+        "pos": "",
+        "translation": "režim"
+    },
+    "query": {
+		"comment": "",
+        "pos": "",
+        "translation": "dotaz"
+    },
+    "term": {
+		"comment": "",
+        "pos": "",
+        "translation": "výraz"
+    },
+    "widget area": {
+		"comment": "",
+        "pos": "",
+        "translation": "oblasť pre widgety"
+    },
+    "directory": {
+        "comment": "adresár/zoznam?",
+        "pos": "",
+        "translation": 1
+    },
+    "sticky post": {
+		"comment": "",
+        "pos": "",
+        "translation": "pripnutý článok"
+    },
+    "free": {
+        "comment": "v zmysle free WordPress temes",
+        "pos": "",
+        "translation": "voľne dostupné"
+    },
+    "sitemap": {
+        "comment": "mapa webovej stránky, mn.č.: mapy (webových) stránok",
+        "pos": "",
+        "translation": "mapa stránky"
+    },
+    "slider": {
+		"comment": "",
+        "pos": "",
+        "translation": "slajder"
+    },
+    "slideshow": {
+		"comment": "",
+        "pos": "",
+        "translation": "prezentácia"
+    },
+    "carousel": {
+		"comment": "",
+        "pos": "",
+        "translation": "karusel"
+    },
+    "howdy": {
+		"comment": "",
+        "pos": "",
+        "translation": "ahoj"
+    },
+    "codex": {
+		"comment": "",
+        "pos": "",
+        "translation": "kódex"
+    },
+    "account": {
+		"comment": "",
+        "pos": "",
+        "translation": "účet"
+    },
+    "sign up": {
+		"comment": "",
+        "pos": "",
+        "translation": "registrovať sa"
+    },
+    "sign in": {
+		"comment": "",
+        "pos": "",
+        "translation": "prihlásiť sa"
+    },
+    "sorry": {
+        "comment": "Ľutujeme?(prilis citove?)",
+        "pos": "",
+        "translation": "Ospravedlňujeme sa"
+    },
+    "offline": {
+        "comment": "you are currently offline -> práve nie ste pripojený",
+        "pos": "",
+        "translation": 1
+    },
+    "Neprekladané termíny": {
+		"comment": "",
+        "pos": "",
+        "translation": "v slovenčine sme nenašli vhodný preklad, a preto ich neprekladáme"
+    },
+    "widget": {
+        "comment": "s kým / s čím s widgetami (podla vegety:)",
+        "pos": "",
+        "translation": "widget"
+    },
+    "slug": {
+        "comment": "nemame zatial slovensky ekvivalent",
+        "pos": "",
+        "translation": "slug"
+    },
+    "PressThis": {
+		"comment": "",
+        "pos": "",
+        "translation": "PressThis"
+    },
+    "bookmarklet": {
+		"comment": "",
+        "pos": "",
+        "translation": "bookmarklet"
+    },
+    "spam": {
+		"comment": "",
+        "pos": "",
+        "translation": "spam"
+    },
+    "hook": {
+		"comment": "",
+        "pos": "",
+        "translation": "hook"
+    },
+    "webhook": {
+		"comment": "",
+        "pos": "",
+        "translation": "webhook"
+    },
+    "newsletter": {
+        "comment": "informačný leták",
+        "pos": "",
+        "translation": "newsletter"
+    },
+    "menu": {
+        "comment": "vždy používať len menu, aj v množnom čísle (neskloňuje sa)",
+        "pos": "",
+        "translation": "menu"
+    },
+    "shortcode": {
+        "comment": "zvážiť prekladanie ako \"skrátený kód\"",
+        "pos": "",
+        "translation": "shortcode"
+    },
+    "meta": {
+		"comment": "",
+        "pos": "",
+        "translation": "meta"
+    },
+    "nonce": {
+        "comment": "number used once",
+        "pos": "",
+        "translation": "nonce"
+    },
+    "Multisite": {
+		"comment": "",
+        "pos": "",
+        "translation": "Multisite"
+    },
+    "Network Admin": {
+        "comment": "položka v menu",
+        "pos": "",
+        "translation": "Administrácia siete"
+    },
+    "network admin/network administrator": {
+        "comment": "administrátorská rola v sieti Multisite",
+        "pos": "",
+        "translation": "administrátor Siete"
+    },
+    "super admin": {
+		"comment": "",
+        "pos": "",
+        "translation": "super administrátor",
+    },
+    "BuddyPress": {
+		"comment": "",
+        "pos": "",
+        "translation": "BuddyPress"
+    },
+    "Site Wide": {
+		"comment": "",
+        "pos": "",
+        "translation": "globálne"
+    },
+    "activity stream": {
+        "comment": "fb to prekladá ako novinky",
+        "pos": "",
+        "translation": "prehľad aktivít"
+    },
+    "activity": {
+		"comment": "",
+        "pos": "",
+        "translation": "aktivita"
+    },
+    "activity feed": {
+		"comment": "",
+        "pos": "",
+        "translation": "kanál s prehľadom aktivít"
+    },
+    "avatar": {
+        "comment": "profilový obrázok? alebo nechat avatar?",
+        "pos": "",
+        "translation": "obrázok profilu"
+    },
+    "update (activity)": {
+		"comment": "",
+        "pos": "",
+        "translation": "aktualizácia/aktualizovať"
+    },
+    "sticky": {
+        "comment": "???",
+        "pos": "",
+        "translation": "hlavná"
+    },
+    "ban": {
+        "comment": "???",
+        "pos": "",
+        "translation": "zákaz/zablokovať"
+    },
+    "dropdown, selectbox, radio button checkbox": {
+		"comment": "",
+        "pos": "",
+        "translation": 1
+    },
+    "post (reply)": {
+		"comment": "",
+        "pos": "",
+        "translation": "Odoslať (odpoveď)"
+    },
+    "group forum": {
+		"comment": "",
+        "pos": "",
+        "translation": "fórum skupiny"
+    },
+    "component": {
+        "comment": "komponent/prvok? súčasť",
+        "pos": "",
+        "translation": "súčasť"
+    },
+    "members": {
+		"comment": "",
+        "pos": "",
+        "translation": "členovia"
+    },
+    "(activity) items": {
+		"comment": "",
+        "pos": "",
+        "translation": "aktivity"
+    },
+    "situation": {
+		"comment": "",
+        "pos": "",
+        "translation": "stav"
+    },
+    "Cover image": {
+		"comment": "",
+        "pos": "",
+        "translation": "titulný obrázok"
+    },
+    "bbPress": {
+		"comment": "",
+        "pos": "",
+        "translation": 1
+    },
+    "Group Forums": {
+		"comment": "",
+        "pos": "",
+        "translation": "fóra skupiny"
+    },
+    "day, hour, minute": {
+        "comment": "použité v kontexte ako \"pred x dňami, x hodinami...\"",
+        "pos": "",
+        "translation": "dňom, hodinou, minútou"
+    },
+    "follower": {
+		"comment": "",
+        "pos": "",
+        "translation": 1
+    },
+    "publish": {
+        "comment": "dame zverejnit alebo publikovat?",
+        "pos": "",
+        "translation": "zverejniť\n"
+    },
+    "notifications": {
+		"comment": "",
+        "pos": "",
+        "translation": "upozornenia"
+    },
+    "reply": {
+		"comment": "",
+        "pos": "",
+        "translation": "odpoveď"
+    },
+    "subsription": {
+        "comment": "subscriber = odberateľ, subscribe = odoberať, prihlásiť sa na odber",
+        "pos": "",
+        "translation": "odber"
+    },
+    "topic": {
+		"comment": "",
+        "pos": "",
+        "translation": "téma"
+    },
+    "voice": {
+        "comment": "(1 diskutujúci, viac diskutujúcich)",
+        "pos": "",
+        "translation": "diskutujúci"
+    },
+    "freshness": {
+		"comment": "",
+        "pos": "",
+        "translation": "aktuálne/aktuálnosť"
+    },
+    "viewing": {
+		"comment": "",
+        "pos": "",
+        "translation": "zobrazuje sa"
+    },
+    "WP aplikacie (ios, android)": {
+		"comment": "",
+        "pos": "",
+        "translation": 1
+    },
+    "like": {
+        "comment": "este treba porediskutovat, alternetivy: lajk, pacik",
+        "pos": "",
+        "translation": "lajk"
+    },
+    "stream": {
+		"comment": "",
+        "pos": "",
+        "translation": 1
+    },
+    "tap": {
+		"comment": "",
+        "pos": "",
+        "translation": "ťuknúť"
+    },
+    "root directory": {
+		"comment": "",
+        "pos": "",
+        "translation": "koreňový adresár"
     }
 }
