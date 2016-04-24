@@ -1,0 +1,71 @@
+{
+   "canceling": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "cancelling"
+,
+   "catalog": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "catalogue"
+,
+    "center": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "centre"
+,
+    "centered": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "centred"
+,
+    "color": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "colour"
+,
+    "dialog": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "dialogue"
+,
+    "favorite": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "favourite"
+,
+    "favorited": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "favourited"
+,
+    "favorites": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "favourites"
+,
+    "gray": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "grey"
+,
+    "huh?": {
+        "comment": "For the cheating messages.",
+        "pos": "expression",
+        "translation": "eh?"
+,
+    "license": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "licence"
+,
+    "neighbor": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "neighbour"
+,
+    "traveling": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "travelling"
+}
