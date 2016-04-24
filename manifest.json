@@ -3,7 +3,7 @@
   "description": "Add custom dictonaries on translate.wordpress.org",
   "manifest_version": 2,
   "name": "GlotDict",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "homepage_url": "https://github.com/Mte90/GlotDict",
   "icons": {
     "48": "icons/icon-48.png"
@@ -39,7 +39,8 @@
       "dictionaries/he_IL.json",
       "dictionaries/th.json",
       "dictionaries/en_AU.json",
-      "dictionaries/ro_RO.json"
+      "dictionaries/ro_RO.json",
+      "dictionaries/en_CA.json"
   ]
 
 }
