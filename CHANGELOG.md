@@ -3,6 +3,8 @@
 * New UI on first use
 * No defaultlanguage on first use
 * Shortcut on ctrl+enter to click "Suggest new translation"
+* Shortcut on Page Down to open the next string to translate
+* Shortcut on Page Up to open the previous string to translate
 * New glossaries: he_IL, ro_RO, th, en_AU
 
 #1.0.5

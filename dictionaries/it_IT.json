@@ -5,7 +5,7 @@
         "translation": ""
     }, 
     "AJAX": {
-        "comment": "Lasciare invariato", 
+        "comment": "", 
         "pos": "", 
         "translation": "AJAX"
     }, 
@@ -317,7 +317,7 @@
     "delete": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "elimina"
     }, 
     "deleted": {
         "comment": "", 
