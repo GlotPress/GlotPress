@@ -1,5 +1,6 @@
 #1.0.6
 * Fix for terms detection near <>() symbols
+* Fix alignment of toolbar for PTE
 * Enhancement: New UI on first use
 * Enhancement: No default language on first use
 * Feature: Shortcut on Ctrl+Enter to click "Suggest new translation" or "Add translation"

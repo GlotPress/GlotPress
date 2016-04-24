@@ -28,14 +28,18 @@ jQuery.multipress = function (keys, handler) {
 };
 
 jQuery(document).ready(function () {
-  if (jQuery('.filters-toolbar div:first').length > 0) {
+  if (jQuery('.filters-toolbar:last div:first').length > 0) {
+    //Fix for PTE align
+    if (jQuery('#bulk-actions-toolbar').length > 0) {
+      jQuery('#upper-filters-toolbar').css('clear', 'both');
+    }
     gd_select_language();
     gd_add_terms();
     gd_hotkeys();
   }
 
   function gd_select_language() {
-    jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
+    jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
     jQuery('.glossary-word').contents().unwrap();
     var lang = localStorage.getItem('gd_language');
     jQuery('.glotdict_language').append(jQuery('<option></option>'));
@@ -47,7 +51,7 @@ jQuery(document).ready(function () {
       jQuery('.glotdict_language').append(new_option);
     });
     if (lang === '') {
-      jQuery('.filters-toolbar div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display: inline;margin-left:4px;">&larr; Set the glossary!</span>');
+      jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display: inline;margin-left:4px;">&larr; Set the glossary!</span>');
     }
     jQuery('.glotdict_language').change(function () {
       localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());
