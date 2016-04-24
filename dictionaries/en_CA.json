@@ -1,71 +1,85 @@
 {
-   "canceling": {
+    "canceling": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "cancelling"
+    }
 ,
-   "catalog": {
+    "catalog": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "catalogue"
+    }
 ,
     "center": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "centre"
+    }
 ,
     "centered": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "centred"
+    }
 ,
     "color": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "colour"
+    }
 ,
     "dialog": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "dialogue"
+    }
 ,
     "favorite": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "favourite"
+    }
 ,
     "favorited": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "favourited"
+    }
 ,
     "favorites": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "favourites"
+    }
 ,
     "gray": {
         "comment": "",
-        "pos": "adjective",
+        "pos": "",
         "translation": "grey"
+    }
 ,
     "huh?": {
         "comment": "For the cheating messages.",
-        "pos": "expression",
+        "pos": "",
         "translation": "eh?"
+    }
 ,
     "license": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "licence"
+    }
 ,
     "neighbor": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "neighbour"
+    }
 ,
     "traveling": {
         "comment": "",
-        "pos": "verb",
+        "pos": "",
         "translation": "travelling"
+    }
 }
