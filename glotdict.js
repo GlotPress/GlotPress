@@ -97,7 +97,8 @@ jQuery(document).ready(function () {
 
   function gd_add_term(word, element, translation, pos, comment) {
     if (translation !== '') {
-      var rgxp = new RegExp('(?!([^<()]+)?>)\\b(' + word + ')\\b(?!([^>()]+)?>)', 'gi');
+      var rgxp = new RegExp('(?!([^<>()]+)?>)\\b(' + word + ')\\b(?!([^<>()]+)?>)', 'gi');
+      console.log(rgxp)
       var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>$2</span>';
       jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
     }
