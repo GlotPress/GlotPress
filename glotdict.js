@@ -117,6 +117,20 @@ jQuery(document).ready(function () {
         jQuery('.editor:visible .actions button.ok').trigger('click');
       }
     });
+    jQuery(window).keydown(function (e) {
+      if (e.keycode === 34) {
+        if (jQuery('.editor:visible').length > 0) {
+          jQuery('.editor').next().trigger('click');
+        }
+      }
+    });
+    jQuery(window).keydown(function (e) {
+      if (e.keycode === 33) {
+        if (jQuery('.editor:visible').length > 0) {
+          jQuery('.editor').prev().trigger('click');
+        }
+      }
+    });
   }
 });
 
