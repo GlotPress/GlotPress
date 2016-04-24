@@ -78,7 +78,7 @@
     }
 ,
     "administrator": {
-        "comment": "The most powerful user role on a WordPress site.",
+        "comment": "Anv\u00e4ndartypen med mest beh\u00f6righet i en WordPress-installation (bortr\u00e4knat WordPress Multisite)",
         "pos": "",
         "translation": "administrat\u00f6r"
     }
@@ -90,7 +90,7 @@
     }
 ,
     "allow": {
-        "comment": "This file type is not allowed = Denna filtyp \u00e4r inte till\u00e5ten",
+        "comment": "Ex.vis.: \"This file type is not allowed\" = \"Denna filtyp \u00e4r inte till\u00e5ten\"",
         "pos": "",
         "translation": "till\u00e5t"
     }
@@ -102,7 +102,7 @@
     }
 ,
     "Appearance": {
-        "comment": "A top-level menu item in WordPress dashboard. Includes Themes, Customizer, Widgets, Menus, Header, Background, etc.",
+        "comment": "En gruppering f\u00f6r menyval i WordPress adminpanel.",
         "pos": "",
         "translation": "Utseende"
     }
@@ -141,18 +141,6 @@
         "comment": "",
         "pos": "",
         "translation": "\u00e4r du s\u00e4ker p\u00e5 att du vill"
-    }
-,
-    "argument": {
-        "comment": "",
-        "pos": "",
-        "translation": "argument"
-    }
-,
-    "array": {
-        "comment": "Development term",
-        "pos": "",
-        "translation": "array"
     }
 ,
     "article": {
@@ -227,22 +215,10 @@
         "translation": "beh\u00f6righet\/befogenhet"
     }
 ,
-    "automatic renewal": {
-        "comment": "A fee, usually annual, that gets collected on a recurring basis for a service. Automatic renewal is in contrast with the manual renewal, where the user needs to make the purchase each time.",
-        "pos": "",
-        "translation": "automatisk f\u00f6rnyelse"
-    }
-,
     "Automattic": {
-        "comment": "The company that produces WordPress.com, Akismet, Jetpack, etc. More info: http:\/\/automattic.com\/about\/",
+        "comment": "F\u00f6retaget bakom WordPress.com och andra tj\u00e4nster. Mer info: http:\/\/automattic.com\/about\/",
         "pos": "",
         "translation": "Automattic"
-    }
-,
-    "Automattician": {
-        "comment": "Employee of Automattic",
-        "pos": "",
-        "translation": "Automattic-medarbetare"
     }
 ,
     "autosave": {
@@ -288,7 +264,7 @@
     }
 ,
     "background pattern": {
-        "comment": "Pattern used for the blog theme background",
+        "comment": "Ett m\u00f6nster som anv\u00e4nds som bakgrund, eller som en del av en bakgrund f\u00f6r en sida eller ett objekt p\u00e5 en sida.",
         "pos": "",
         "translation": "bakgrundsm\u00f6nster"
     }
@@ -305,12 +281,6 @@
         "translation": "reservkod"
     }
 ,
-    "Basic": {
-        "comment": "See WordPress.com Basic",
-        "pos": "",
-        "translation": "Basic"
-    }
-,
     "below": {
         "comment": "F\u00f6rs\u00f6ker h\u00e5lla oss borta fr\u00e5n \"nedanf\u00f6r\"",
         "pos": "",
@@ -318,27 +288,15 @@
     }
 ,
     "billing": {
-        "comment": "ex Billing History = Faktureringshistorik",
+        "comment": "Ex.vis: \"Billing History\" = \"Faktureringshistorik\"",
         "pos": "",
-        "translation": "fakturerings-"
-    }
-,
-    "billing history": {
-        "comment": "A page showing all transactions made with WordPress.com (or another Automattic service). More info: https:\/\/en.support.wordpress.com\/billing-history\/",
-        "pos": "",
-        "translation": "faktureringshistorik"
+        "translation": "fakturering\/fakturerings-"
     }
 ,
     "binary": {
         "comment": "",
         "pos": "",
         "translation": "bin\u00e4r"
-    }
-,
-    "blavatar": {
-        "comment": "A term we came up with by combining Blog and Avatar. Your blog\u2019s avatar, used as a favicon or in browser bookmarks. More info: http:\/\/support.wordpress.com\/avatars\/#what-is-a-blavatar",
-        "pos": "",
-        "translation": "webbplatsbild\/blavatar"
     }
 ,
     "blog": {
@@ -354,39 +312,21 @@
     }
 ,
     "blog address": {
-        "comment": "URL where a blog can be found, e.g. Example.wordpress.com or example.com",
+        "comment": "URL d\u00e4r det finns en blogg, kan t.ex. vara \"blog.minwebbplats.dom\u00e4n\"",
         "pos": "",
         "translation": "bloggadress"
     }
 ,
     "blog post": {
-        "comment": "See \u201cpost\u201d. A longer way to refer to a blog's posts",
+        "comment": "Ett mer direkt s\u00e4tt att tala om ett inl\u00e4gg i en WordPress-installation. Mer info: se \"inl\u00e4gg\".",
         "pos": "",
         "translation": "blogginl\u00e4gg"
-    }
-,
-    "blog theme": {
-        "comment": "Look and feel of your site, often referred to as simply \"theme\". More info: https:\/\/en.support.wordpress.com\/themes\/",
-        "pos": "",
-        "translation": "bloggtema"
-    }
-,
-    "Blogs I Follow": {
-        "comment": "Refers to the blogs the reader is subscribed to, often displayed as a list or a grid. More info: https:\/\/en.support.wordpress.com\/widgets\/blogs-i-follow-widget\/",
-        "pos": "",
-        "translation": "Bloggar jag f\u00f6ljer"
     }
 ,
     "bookmarklet": {
         "comment": "",
         "pos": "",
         "translation": "skriptbokm\u00e4rke"
-    }
-,
-    "booming": {
-        "comment": "\"Your traffic is booming!\" = \"Din webbplatstrafik blomstrar!\"",
-        "pos": "",
-        "translation": "blomstrar"
     }
 ,
     "breadcrumbs": {
@@ -402,7 +342,7 @@
     }
 ,
     "BuddyPress": {
-        "comment": "WordPress.org plugin - http:\/\/buddypress.org\/",
+        "comment": "Ett WordPress-till\u00e4gg som l\u00e4gger till ett socialt n\u00e4tverk i en WordPress-installation - http:\/\/buddypress.org\/",
         "pos": "",
         "translation": "BuddyPress"
     }
@@ -419,50 +359,38 @@
         "translation": "mass\u00e5tg\u00e4rder"
     }
 ,
-    "bundle": {
-        "comment": "Legacy term for \"plan\". More info: http:\/\/store.wordpress.com\/bundles\/",
-        "pos": "",
-        "translation": "uppgraderingspaket"
-    }
-,
-    "bundle purchase": {
-        "comment": "Purchase of a premium plan (sometimes also called \u201cbundle\u201d), e.g. WordPress.com Premium or WordPress.com Business",
-        "pos": "",
-        "translation": "paketk\u00f6p"
-    }
-,
-    "Business plan": {
-        "comment": "",
-        "pos": "",
-        "translation": "Business-paket"
-    }
-,
     "button": {
-        "comment": "Refers to button on the screen that the user is expected\/directed to click",
+        "comment": "H\u00e4nvisar till en knapp som anv\u00e4ndaren f\u00f6rv\u00e4ntas eller instrueras att anv\u00e4nda.",
         "pos": "",
         "translation": "knapp"
     }
 ,
     "cancel": {
-        "comment": "\"Cancel [action]\" = \"Avbryt [aktivitet]\", \"cancel upgrade\" = \"Avsluta uppgradering\", \"cancel subscription\" = \"sluta prenumerera\"",
+        "comment": "\"Cancel [action]\" = \"Avbryt [aktivitet]\", \"cancel upgrade\" = \"Avsluta uppgradering\"",
         "pos": "",
-        "translation": "avbryt \/ avsluta \/ sluta prenumerera"
+        "translation": "avbryt \/ avsluta"
     }
 ,
     "cancelled": {
         "comment": "cancelled action = avbruten aktivitet, cancelled upgrade = avslutad uppgradering, cancelled subscription = avslutad prenumeration",
         "pos": "",
-        "translation": "avbruten \/ avslutad \/ prenumeration avslutad"
+        "translation": "avbruten \/ avslutad"
     }
 ,
     "cart": {
-        "comment": "Shopping cart",
+        "comment": "En plats d\u00e4r produkter man valt att k\u00f6pa g\u00e5r att se och hantera.",
         "pos": "",
         "translation": "kundvagn"
     }
 ,
+    "categories": {
+        "comment": "Ett s\u00e4tt att gruppera inneh\u00e5ll som sidor p\u00e5 en webbplats baserade p\u00e5 vad de handlar om i stora svep. Kategorier kan ocks\u00e5 ha under- och \u00f6verkategorier. Mer info: http:\/\/support.wordpress.com\/posts\/categories\/",
+        "pos": "",
+        "translation": "kategorier"
+    }
+,
     "category": {
-        "comment": "Used to group posts of similar content together to aid in the navigation of a site. More info: http:\/\/support.wordpress.com\/posts\/categories\/",
+        "comment": "Ett s\u00e4tt att gruppera inneh\u00e5ll som sidor p\u00e5 en webbplats baserade p\u00e5 vad de handlar om i stora svep. Kategorier kan ocks\u00e5 ha under- och \u00f6verkategorier. Mer info: http:\/\/support.wordpress.com\/posts\/categories\/",
         "pos": "",
         "translation": "kategori"
     }
@@ -528,13 +456,13 @@
     }
 ,
     "comment": {
-        "comment": "",
+        "comment": "Att kommentera betyder att man l\u00e4mnar en kommentar f\u00f6r andra att se p\u00e5 en sida eller i ett inl\u00e4gg. Notera att engelskan anv\u00e4nder verbet och susbstantivet \"comment\" \u00e4ven om de betyder olika saker.",
         "pos": "",
         "translation": "kommentera"
     }
 ,
     "comment": {
-        "comment": "A reply left by visitors to your site on a blog post or page. Comments are typically left in response to the blog owner\u2019s post and generate discussion on the site. More info: http:\/\/support.wordpress.com\/comments\/",
+        "comment": "En kommentar \u00e4r oftast ett svar p\u00e5 en sida eller ett inl\u00e4gg. De \u00e4r ett s\u00e4tt f\u00f6r l\u00e4sare av inneh\u00e5ll p\u00e5 n\u00e4tet att komma i kontakt med dem som har publicerat det. Notera att engelskan anv\u00e4nder verbet och susbstantivet \"comment\" \u00e4ven om de betyder olika saker.",
         "pos": "",
         "translation": "kommentar"
     }
@@ -582,7 +510,7 @@
     }
 ,
     "contact form": {
-        "comment": "A form that allows others contact the site owner without knowing the email address. More info: http:\/\/en.support.wordpress.com\/contact-form\/",
+        "comment": "Ett formul\u00e4r som l\u00e5ter bes\u00f6kare kontakta webbplatsadministrat\u00f6ren utan att n\u00f6dv\u00e4ndigtvis k\u00e4nna till deras e-postadress.",
         "pos": "",
         "translation": "kontaktformul\u00e4r"
     }
@@ -594,7 +522,7 @@
     }
 ,
     "Content Area": {
-        "comment": "Where the main blog content is displayed. Context: \u201cContent Area Background\u201d",
+        "comment": "D\u00e4r huvuddelen av en webbplats inneh\u00e5ll visas. For example: \u201cContent Area Background\u201d = \"Bakgrund f\u00f6r inneh\u00e5llsomr\u00e5de\"",
         "pos": "",
         "translation": "Inneh\u00e5llsomr\u00e5de"
     }
@@ -611,14 +539,8 @@
         "translation": "Cookie"
     }
 ,
-    "cron": {
-        "comment": "The software utility cron is a time-based job scheduler in Unix-like computer operating systems.",
-        "pos": "",
-        "translation": "cron"
-    }
-,
     "crop": {
-        "comment": "Remove portions of an image. See more: https:\/\/en.support.wordpress.com\/images\/image-editing\/#cropping",
+        "comment": "Att ta bort delar av en bild f\u00f6r att skapa en ny bild. Mer info: https:\/\/en.support.wordpress.com\/images\/image-editing\/#cropping",
         "pos": "",
         "translation": "besk\u00e4r"
     }
@@ -632,37 +554,7 @@
     "custom": {
         "comment": "",
         "pos": "",
-        "translation": "anpassade"
-    }
-,
-    "Custom Colors": {
-        "comment": "Part of the Custom Design upgrade, allows users to customize the color palette of their sites. More info: http:\/\/en.support.wordpress.com\/custom-design\/custom-colors\/",
-        "pos": "",
-        "translation": "Anpassade f\u00e4rger"
-    }
-,
-    "Custom CSS": {
-        "comment": "CSS stands for \u201cCascading Style Sheets.\u201d CSS is a language that\u2019s used to control the layout and appearance of websites. Custom CSS is a part of the Custom Design upgrade, allows users to edit and add custom CSS on their site. More info: http:\/\/en.support.wordpress.com\/custom-design\/custom-css\/",
-        "pos": "",
-        "translation": "Anpassad CSS"
-    }
-,
-    "Custom Design": {
-        "comment": "WordPress.com product name (paid upgrade)",
-        "pos": "",
-        "translation": "Anpassad design"
-    }
-,
-    "Custom Domain": {
-        "comment": "An address like example.com or example.ru, as opposed to example.wordpress.com. More info: http:\/\/store.wordpress.com\/premium-upgrades\/custom-domains\/",
-        "pos": "",
-        "translation": "Anpassad dom\u00e4n"
-    }
-,
-    "Custom Fonts": {
-        "comment": "Part of the Custom Design upgrade, allows users to add Typekit fonts to their site. More info: http:\/\/en.support.wordpress.com\/custom-design\/custom-fonts\/",
-        "pos": "",
-        "translation": "Anpassade typsnitt"
+        "translation": "anpassad \/ anpassade"
     }
 ,
     "Custom Header Image": {
@@ -684,7 +576,7 @@
     }
 ,
     "Customizer": {
-        "comment": "A feature that allows users to customize and preview any theme before activating the changes. More info: http:\/\/en.support.wordpress.com\/customizer\/",
+        "comment": "En funktion och menyval i WordPress adminpanel som l\u00e5ter anv\u00e4ndaren f\u00f6r\u00e4ndra utseendet p\u00e5 sin webbplats och samtidigt se resultatet i realtid bredvid. I anpassaren kan man ocks\u00e5 redigera webbplatsikonen, sidans titel, m.m. Mer info: http:\/\/en.support.wordpress.com\/customizer\/",
         "pos": "",
         "translation": "Anpassare"
     }
@@ -746,7 +638,7 @@
     "disabled": {
         "comment": "",
         "pos": "",
-        "translation": "inaktiverat"
+        "translation": "inaktiverad\/inaktiverat\/inaktiverade"
     }
 ,
     "disconnect": {
@@ -768,33 +660,27 @@
     }
 ,
     "Distraction Free Writing": {
-        "comment": "A full-screen editing mode, more info: http:\/\/en.support.wordpress.com\/distraction-free-writing\/",
+        "comment": "Ett fullsk\u00e4rmsl\u00e4ge utan distraherande element f\u00f6r inl\u00e4ggsredigeraren.",
         "pos": "",
         "translation": "Fullsk\u00e4rmsl\u00e4ge"
     }
 ,
     "domain": {
-        "comment": "",
+        "comment": "Ett dom\u00e4nnamn (f\u00f6rkortning \"dom\u00e4n\") \u00e4r addressen till en webbplats p\u00e5 n\u00e4tet. T.ex. \"https:\/\/sv.wordpress.org\/&quot;",
         "pos": "",
         "translation": "dom\u00e4n"
     }
 ,
-    "Domain Mapping": {
-        "comment": "WordPress.com premium upgrade, allows user to change from e.g. yourgroovysite.wordpress.com to yourgroovydomain.com. More info:  http:\/\/en.support.wordpress.com\/domains\/",
-        "pos": "",
-        "translation": "Dom\u00e4npekning"
-    }
-,
     "domain name": {
-        "comment": "A domain name is a name used for identification purposes on the Internet. An example of a domain name is yoursite.com.",
+        "comment": "Ett dom\u00e4nnamn (f\u00f6rkortning \"dom\u00e4n\") \u00e4r addressen till en webbplats p\u00e5 n\u00e4tet. T.ex. \"https:\/\/sv.wordpress.org\/&quot;",
         "pos": "",
         "translation": "dom\u00e4nnamn"
     }
 ,
     "download": {
-        "comment": "",
+        "comment": "En fil som kan laddas ner. Notera att detta inte \u00e4r verb-formen.",
         "pos": "",
-        "translation": "nerladdning"
+        "translation": "nedladdning"
     }
 ,
     "download": {
@@ -840,9 +726,9 @@
     }
 ,
     "editor": {
-        "comment": "User role group. More info: http:\/\/en.support.wordpress.com\/user-roles\/#editor",
+        "comment": "Anv\u00e4ndarroll i WordPress med stor beh\u00f6righet, dock inte lika extensiv tillg\u00e5ng till alla funktioner som en administrat\u00f6r.",
         "pos": "",
-        "translation": "redigerare\/redakt\u00f6r"
+        "translation": "redakt\u00f6r"
     }
 ,
     "email": {
@@ -857,20 +743,14 @@
         "translation": "e-postadress"
     }
 ,
-    "Email Forwarding": {
-        "comment": "Feature name to forward emails to another address.",
-        "pos": "",
-        "translation": "Vidarebefordran av e-post"
-    }
-,
     "Embed": {
-        "comment": "..I brist p\u00e5 annat :)",
+        "comment": "",
         "pos": "",
         "translation": "B\u00e4dda in"
     }
 ,
     "Embed": {
-        "comment": "Se \"Embed\" som verb",
+        "comment": "Notera att detta \u00e4r substantiv-formen. Verbet \"embed\" ska \u00f6vers\u00e4ttas som \"b\u00e4dda in\".",
         "pos": "",
         "translation": "Inb\u00e4ddning"
     }
@@ -890,25 +770,25 @@
     "enabled": {
         "comment": "",
         "pos": "",
-        "translation": "aktiverad\/aktiverad\/aktiverade"
+        "translation": "aktiverad\/aktiverat\/aktiverade"
     }
 ,
     "enter": {
-        "comment": "Generally used for form instructions, \"Enter your email address\" = \"Ange din e-postadress\"",
+        "comment": "Vanligtvis anv\u00e4nds detta i formul\u00e4r f\u00f6r att s\u00e4ga till anv\u00e4ndaren att ange information. T.ex. \"Enter your email address\" = \"Ange din e-postadress\"",
         "pos": "",
         "translation": "ange"
     }
 ,
     "entry": {
-        "comment": "",
+        "comment": "Ett annat ord f\u00f6r \"post\", b\u00e5da \u00f6vers\u00e4tts som \"inl\u00e4gg\".",
         "pos": "",
         "translation": "inl\u00e4gg"
     }
 ,
-    "Entry title": {
-        "comment": "Title of an entry (post or page)",
+    "entry title": {
+        "comment": "En rubrik f\u00f6r ett inl\u00e4gg.",
         "pos": "",
-        "translation": "Inl\u00e4ggsrubrik"
+        "translation": "inl\u00e4ggsrubrik"
     }
 ,
     "error": {
@@ -936,7 +816,7 @@
     }
 ,
     "expire": {
-        "comment": "Ex \"The upgrade expires on %s\" = \"Uppgraderingen l\u00f6per ut %s\"",
+        "comment": "Ex.vis.: \"The upgrade expires on %s\" = \"Uppgraderingen l\u00f6per ut %s\"",
         "pos": "",
         "translation": "l\u00f6per ut"
     }
@@ -965,20 +845,14 @@
         "translation": "ut\u00f6ka"
     }
 ,
-    "Extra Storage": {
-        "comment": "Upgrade that adds more storage space to the user's blog. More info: http:\/\/en.support.wordpress.com\/space-upgrade\/",
-        "pos": "",
-        "translation": "Extra lagringsutrymme"
-    }
-,
     "Facebook": {
-        "comment": "Social media service - http:\/\/facebook.com\/",
+        "comment": "Ett bl\u00e5tt socialt n\u00e4tverk. Mer info: http:\/\/facebook.com\/",
         "pos": "",
         "translation": "Facebook"
     }
 ,
     "favicon": {
-        "comment": "The tiny image that usually shows up in the browser address bar when visiting a site. See also Blavatar",
+        "comment": "Den lilla bilden som visas i webbl\u00e4sarens flik n\u00e4r en webbplats bes\u00f6ks. Se \u00e4ven \"Site Icon\".",
         "pos": "",
         "translation": "favicon"
     }
@@ -1008,7 +882,7 @@
     }
 ,
     "feed": {
-        "comment": "I brist p\u00e5 b\u00e4ttre... se\u00a0http:\/\/computersweden.idg.se\/2.2683\/1.12594",
+        "comment": "T. ex. \"RSS-fl\u00f6de\"",
         "pos": "",
         "translation": "webbfl\u00f6de"
     }
@@ -1025,16 +899,16 @@
         "translation": "filtrera"
     }
 ,
+    "filter": {
+        "comment": "Notera att detta \u00e4r substantivet \"filter\". Verbet \"filter\" skall \u00f6vers\u00e4ttas \"filtrera\".",
+        "pos": "",
+        "translation": "filter"
+    }
+,
     "filter hook": {
         "comment": "WordPress development term",
         "pos": "",
         "translation": "filter-hook"
-    }
-,
-    "Find Friends": {
-        "comment": "'Find Friends' \u00e4r en funktion f\u00f6r att hitta v\u00e4nner som bloggar p\u00e5 WordPress.com genom att ansluta till Twitter, Facebook, eller kolla adressboken f\u00f6r e-postadresser WordPress.com redan k\u00e4nner till.",
-        "pos": "",
-        "translation": "Hitta v\u00e4nner"
     }
 ,
     "folder": {
@@ -1044,19 +918,19 @@
     }
 ,
     "Follow": {
-        "comment": "The process of subscribing to updates (in the Reader or via email) when a blog publishes new content. More info: http:\/\/en.support.wordpress.com\/following\/",
+        "comment": "Vanligtvis en knapp som l\u00e5ter dig f\u00e5 uppdateringar om vad en annan person eller tj\u00e4nst g\u00f6r i framtiden.",
         "pos": "",
         "translation": "F\u00f6lj"
     }
 ,
     "Follower": {
-        "comment": "A person who receives updates or notifications when a blog publishes new content. More info: http:\/\/en.support.wordpress.com\/followers\/",
+        "comment": "En ben\u00e4mning p\u00e5 en person som har valt att f\u00e5 uppdateringar om vad en annan person eller tj\u00e4nst g\u00f6r.",
         "pos": "",
         "translation": "F\u00f6ljare"
     }
 ,
     "Following": {
-        "comment": "Status, as in \"you are already following this blog\". More info: http:\/\/en.support.wordpress.com\/followers\/",
+        "comment": "In indikation f\u00f6r att anv\u00e4ndaren redan har valt att f\u00f6lja en person eller tj\u00e4nst, detta kan t.ex. visas i en knapp d\u00e4r det tidigare stod \"F\u00f6lj\", nu \"F\u00f6ljer\". Det kan ocks\u00e5 vara en titel p\u00e5 en lista som visar personer som anv\u00e4ndaren f\u00f6ljer.",
         "pos": "",
         "translation": "F\u00f6ljer"
     }
@@ -1067,34 +941,22 @@
         "translation": "typsnitt"
     }
 ,
-    "Font Editor": {
-        "comment": "",
-        "pos": "",
-        "translation": "Typsnittsredigeraren"
-    }
-,
     "footer": {
-        "comment": "The area below the main post or page content which usually includes information such as copyright notices, the theme, and hosting information.",
+        "comment": "Utrymmet l\u00e4ngst ner i en sidmall som vanligtvis inneh\u00e5ller n\u00e5gon eller flera av f\u00f6ljande: Widgets, menyer, reklam, copyright-notiser.",
         "pos": "",
         "translation": "sidfot"
     }
 ,
     "Forum": {
-        "comment": "User support forum. More info: https:\/\/en.support.wordpress.com\/getting-help-in-the-forums\/",
+        "comment": "En plats att diskutera saker och\/eller f\u00e5 hj\u00e4lp med n\u00e5got. Anv\u00e4ndare skapar inl\u00e4gg i tr\u00e5dar som kan svaras p\u00e5 i kronologisk ordning.",
         "pos": "",
         "translation": "Forum"
     }
 ,
     "forwarding": {
-        "comment": "When it's about email forwarding or using the service Email Forwarding",
+        "comment": "Anv\u00e4nd \"vidarebefordring\" om det handlar om e-postinst\u00e4llingar eller j\u00e4mf\u00f6relsebara funktioner.",
         "pos": "",
         "translation": "vidarebefordran"
-    }
-,
-    "Freshly Pressed": {
-        "comment": "WordPress.com tool name. Editorial picks from WordPress.com, updated daily: https:\/\/wordpress.com\/fresh\/",
-        "pos": "",
-        "translation": "Freshly Pressed"
     }
 ,
     "front end": {
@@ -1116,13 +978,13 @@
     }
 ,
     "gallery": {
-        "comment": "A collection of images attached to a post. Also refers to the collection itself within the Media Library as well as the images as displayed within a post or page, typically as a series of thumbnails. More info: http:\/\/support.wordpress.com\/images\/gallery\/",
+        "comment": "En samling bilder som lagts till i ett inl\u00e4gg eller p\u00e5 en sida. Denna term beskriver ocks\u00e5 samlingen i sig i Mediebiblioteket. Oftast visas ett galleri som miniatyrer p\u00e5 rad i publicerat inneh\u00e5ll, men utformningen varierar.",
         "pos": "",
         "translation": "galleri"
     }
 ,
     "general": {
-        "comment": "General settings = Allm\u00e4nna inst\u00e4llningar",
+        "comment": "Ex.vis.: \"General settings\" = \"Allm\u00e4nna inst\u00e4llningar\"",
         "pos": "",
         "translation": "allm\u00e4nt"
     }
@@ -1134,13 +996,13 @@
     }
 ,
     "Gravatar": {
-        "comment": "An image or picture that represents a user. More info: http:\/\/support.wordpress.com\/avatars\/#what-is-a-gravatar",
+        "comment": "En bild som representerar en anv\u00e4ndare, med den unika funktionen att den kan visas var som helst p\u00e5 n\u00e4tet d\u00e4r man uppger sin e-postadress. Fotnot: Avatar betyder \"profilbild\".",
         "pos": "",
         "translation": "Gravatar"
     }
 ,
     "Gravatar Profile": {
-        "comment": "Image and personal information a user chooses to associate and share. Example of a Gravatar profile: gravatar.com\/matt",
+        "comment": "En profilsida fr\u00e5n tj\u00e4nsten Gravatar. Se http:\/\/gravatar.com\/matt",
         "pos": "",
         "translation": "Gravatarprofil"
     }
@@ -1158,7 +1020,7 @@
     }
 ,
     "Headers": {
-        "comment": "",
+        "comment": "Om det handlar om den visuella sidstrukturen, ex.vis rubriken \"Arkiv\" p\u00e5 en webbplats arkivsida.",
         "pos": "",
         "translation": "Rubriker"
     }
@@ -1182,25 +1044,25 @@
     }
 ,
     "host": {
-        "comment": "The home for your self-hosted WordPress site. Also known as hosting provider.",
+        "comment": "Den plats p\u00e5 n\u00e4tet d\u00e4r webbplatsen finns och skickas till bes\u00f6kare.",
         "pos": "",
         "translation": "server\/webbhotell"
     }
 ,
     "hosting": {
-        "comment": "",
+        "comment": "Den plats p\u00e5 n\u00e4tet d\u00e4r webbplatsen finns och skickas till bes\u00f6kare.",
         "pos": "",
         "translation": "server\/webbhotell"
     }
 ,
     "hosting provider": {
-        "comment": "",
+        "comment": "En tj\u00e4nst som tillhandah\u00e5ller serverutrymme f\u00f6r webbplatser, oftast mot en avgift.",
         "pos": "",
         "translation": "webbhotell"
     }
 ,
     "hosts": {
-        "comment": "",
+        "comment": "Tj\u00e4nster som tillhandah\u00e5ller serverutrymme f\u00f6r webbplatser, oftast mot en avgift.",
         "pos": "",
         "translation": "server\/webbhotell"
     }
@@ -1224,7 +1086,7 @@
     }
 ,
     "howdy": {
-        "comment": "Often used on WordPress.com instead of Hello.",
+        "comment": "Anv\u00e4nds ibland i kommunikation ist\u00e4llet f\u00f6r andra mer traditionella h\u00e4lsningsfraser. \"Howdy\" h\u00e4rstammar fr\u00e5n amerikanska s\u00f6dern, s\u00e5 vi g\u00f6r samma sak och \u00f6vers\u00e4tter med \"Hej\", allts\u00e5 samma s\u00e4tt som man h\u00e4lsar p\u00e5 varandra i Sk\u00e5ne och i hela resten av landet f\u00f6r den delen.",
         "pos": "",
         "translation": "hej"
     }
@@ -1268,31 +1130,13 @@
     "individual": {
         "comment": "",
         "pos": "",
-        "translation": "enskilda"
+        "translation": "enskild\/enskilda"
     }
 ,
     "instant": {
         "comment": "",
         "pos": "",
         "translation": "realtid"
-    }
-,
-    "instant comment email": {
-        "comment": "An email notification that is sent as soon as a comment is posted on the blog being followed.",
-        "pos": "",
-        "translation": "e-post om kommentarer i realtid"
-    }
-,
-    "instant post": {
-        "comment": "",
-        "pos": "",
-        "translation": "inl\u00e4gg i realtid"
-    }
-,
-    "instant post email": {
-        "comment": "An email notification that is sent as soon as a post is posted on the blog being followed.",
-        "pos": "",
-        "translation": "e-post om inl\u00e4gg i realtid"
     }
 ,
     "invalid": {
@@ -1314,15 +1158,9 @@
     }
 ,
     "Jetpack": {
-        "comment": "WordPress.org plugin - http:\/\/jetpack.me\/",
+        "comment": "Namn p\u00e5 till\u00e4gget Jetpack fr\u00e5n Automattic - http:\/\/jetpack.me\/",
         "pos": "",
         "translation": "Jetpack"
-    }
-,
-    "keep on": {
-        "comment": "Keep on goin'! = Forts\u00e4tt s\u00e5!",
-        "pos": "",
-        "translation": "forts\u00e4tt [s\u00e5]"
     }
 ,
     "keyword": {
@@ -1337,40 +1175,28 @@
         "translation": "layout"
     }
 ,
-    "Learn WordPress": {
-        "comment": "A mini-website from WordPress.com getting new users up to speed on how to use their newfangled websites. https:\/\/learn.wordpress.com\/",
-        "pos": "",
-        "translation": "L\u00e4r dig WordPress"
-    }
-,
     "like": {
-        "comment": "komplicerat att \u00f6vers\u00e4tta, men anv\u00e4nd \"gillar\" n\u00e4r det handlar om sj\u00e4lva saken (som bloggaren sj\u00e4lv ser). Verbet \"like\" ska vara \"gilla\".",
+        "comment": "Anv\u00e4nd \"gillar\" n\u00e4r det handlar om sj\u00e4lva saken (som bloggaren sj\u00e4lv ser). Verbet \"like\" ska vara \"gilla\".",
         "pos": "",
         "translation": "gillar"
     }
 ,
-    "Like": {
-        "comment": "A way for people to show their appreciation for posts they come across on WordPress.com. It\u2019s also a way for authors to show the world how popular their content has become.",
-        "pos": "",
-        "translation": "Gillar"
-    }
-,
     "like": {
-        "comment": "In the context of liking a blog post",
+        "comment": "\"Like this\" = \"Gilla detta\"",
         "pos": "",
         "translation": "gilla"
     }
 ,
     "liked": {
-        "comment": "Someone liked this comment = N\u00e5gon gillar denna kommentar",
+        "comment": "\"Someone liked this comment\" = \"N\u00e5gon gillar denna kommentar\"",
         "pos": "",
         "translation": "gillar"
     }
 ,
-    "Likes": {
-        "comment": "See \u201clike\u201d",
+    "likes": {
+        "comment": "Plural av \"Like\", t.ex. \"2 like this\" = \"2 gillar detta\"",
         "pos": "",
-        "translation": "Gillar"
+        "translation": "gillar"
     }
 ,
     "limit": {
@@ -1392,13 +1218,7 @@
     }
 ,
     "live chat": {
-        "comment": "Embedded online chat (way to provide customer support). More info: http:\/\/en.support.wordpress.com\/live-chat\/",
-        "pos": "",
-        "translation": "chattsupport"
-    }
-,
-    "live chat support": {
-        "comment": "See \u201clive chat\u201d",
+        "comment": "Ett s\u00e4tt att f\u00e5 hj\u00e4lp med en produkt eller tj\u00e4nst via ett chattf\u00f6nster.",
         "pos": "",
         "translation": "chattsupport"
     }
@@ -2181,6 +2001,12 @@
         "comment": "N\u00e4r det handlar om att spara data, ex: \"No clicks recorded yet\" = \" Inga klick registrerade \u00e4n\"",
         "pos": "",
         "translation": "registrerade \/ sparade"
+    }
+,
+    "recover": {
+        "comment": "Ex.vis \"The data can't be recovered in the future\" = \"Data kan inte \u00e5terskapas i framtiden\"",
+        "pos": "",
+        "translation": "\u00e5terskapa"
     }
 ,
     "Redirect": {

@@ -113,6 +113,12 @@
         "translation": "Automatische Speicherung"
     }
 ,
+    "Backend": {
+        "comment": "",
+        "pos": "",
+        "translation": "Backend"
+    }
+,
     "binary": {
         "comment": "",
         "pos": "",
@@ -423,6 +429,12 @@
         "comment": "",
         "pos": "",
         "translation": "Follower"
+    }
+,
+    "Footer": {
+        "comment": "",
+        "pos": "",
+        "translation": "Footer"
     }
 ,
     "Freshly Pressed": {

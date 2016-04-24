@@ -671,6 +671,12 @@
         "translation": "ping"
     }
 ,
+    "Please": {
+        "comment": "",
+        "pos": "",
+        "translation": "Veuillez"
+    }
+,
     "plugin": {
         "comment": "",
         "pos": "",
@@ -867,6 +873,12 @@
         "comment": "",
         "pos": "",
         "translation": "article unique"
+    }
+,
+    "Slider": {
+        "comment": "",
+        "pos": "",
+        "translation": "Diaporama"
     }
 ,
     "slug": {

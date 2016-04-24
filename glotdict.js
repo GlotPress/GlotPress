@@ -39,7 +39,7 @@ jQuery(document).ready(function () {
     jQuery('.glossary-word').contents().unwrap();
     var lang = localStorage.getItem('gd_language');
     jQuery('.glotdict_language').append(jQuery('<option></option>'));
-    jQuery.each(['bg_BG', 'de_DE', 'es_ES', 'fi', 'fr_FR', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'sk_SK', 'sv_SE'], function (key, value) {
+    jQuery.each(['bg_BG', 'de_DE', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'sk_SK', 'sv_SE'], function (key, value) {
       var new_option = jQuery('<option></option>').attr('value', value).text(value);
       if (lang === value) {
         new_option.attr('selected', true);

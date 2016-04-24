@@ -138,7 +138,7 @@
     }
 ,
     "Cookie": {
-        "comment": "No se traduce",
+        "comment": "Plural \"Cookies\". No se traduce.",
         "pos": "",
         "translation": "Cookie"
     }
@@ -203,6 +203,12 @@
         "translation": "Extracto"
     }
 ,
+    "FAQ": {
+        "comment": "No se traduce.",
+        "pos": "",
+        "translation": "FAQ"
+    }
+,
     "Footer": {
         "comment": "",
         "pos": "",
@@ -231,6 +237,12 @@
         "comment": "(Hay que definir los contextos en los que una u otra son v\u00e1lidas)",
         "pos": "",
         "translation": "Inicio o p\u00e1gina de inicio"
+    }
+,
+    "hook": {
+        "comment": "Action hook -> gancho de acci\u00f3n\r\nFilter hook -> gancho de filtro",
+        "pos": "",
+        "translation": "gancho"
     }
 ,
     "Howdy": {
@@ -279,6 +291,12 @@
         "comment": "",
         "pos": "",
         "translation": "Grande"
+    }
+,
+    "legacy": {
+        "comment": "",
+        "pos": "",
+        "translation": "heredado"
     }
 ,
     "Library": {

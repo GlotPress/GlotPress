@@ -4,6 +4,11 @@
         "pos": "", 
         "translation": ""
     }, 
+    "AJAX": {
+        "comment": "Lasciare invariato", 
+        "pos": "", 
+        "translation": "AJAX"
+    }, 
     "Appearance": {
         "comment": "", 
         "pos": "", 
@@ -25,6 +30,11 @@
         "translation": "Bacheca"
     }, 
     "Display": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
+    "Enter": {
         "comment": "", 
         "pos": "", 
         "translation": ""
@@ -98,6 +108,21 @@
         "comment": "", 
         "pos": "", 
         "translation": "Redirect"
+    }, 
+    "Settings": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "impostazioni"
+    }, 
+    "Source": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "sorgente"
+    }, 
+    "Thumbnail": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "miniatura"
     }, 
     "Toggle": {
         "comment": "", 
@@ -239,6 +264,11 @@
         "pos": "", 
         "translation": "pulsante"
     }, 
+    "capability": {
+        "comment": "Come lo traduciamo? Tipo in \"User Capability\"", 
+        "pos": "", 
+        "translation": ""
+    }, 
     "category": {
         "comment": "", 
         "pos": "", 
@@ -252,12 +282,12 @@
     "click": {
         "comment": "Lasciare invariato", 
         "pos": "", 
-        "translation": "click"
+        "translation": "clic"
     }, 
     "clicking": {
         "comment": "Non utilizzare mai il neologismo \"cliccare\"", 
         "pos": "", 
-        "translation": "fare click/facendo click"
+        "translation": "fare clic/facendo clic"
     }, 
     "color scheme": {
         "comment": "", 
@@ -369,6 +399,11 @@
         "pos": "", 
         "translation": "filtro"
     }, 
+    "fix": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "modifica"
+    }, 
     "folder": {
         "comment": "", 
         "pos": "", 
@@ -429,6 +464,11 @@
         "pos": "", 
         "translation": "importare"
     }, 
+    "importer": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "sistema di importazione"
+    }, 
     "invalid": {
         "comment": "", 
         "pos": "", 
@@ -478,6 +518,11 @@
         "comment": "", 
         "pos": "", 
         "translation": "elemento multimediale"
+    }, 
+    "media library": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
     }, 
     "meta": {
         "comment": "", 
@@ -699,6 +744,16 @@
         "pos": "", 
         "translation": "stringa"
     }, 
+    "submit": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "invia"
+    }, 
+    "switch-off": {
+        "comment": "", 
+        "pos": "", 
+        "translation": ""
+    }, 
     "tab": {
         "comment": "", 
         "pos": "", 
@@ -748,6 +803,11 @@
         "comment": "", 
         "pos": "", 
         "translation": "cestinare"
+    }, 
+    "two-factor authentication": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "autenticazione a due fattori"
     }, 
     "untrash": {
         "comment": "", 

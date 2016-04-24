@@ -1,0 +1,469 @@
+{
+    "admin bar": {
+        "comment": "\u05dc\u05d0 \u05d1\u05e8 \u05e0\u05d9\u05d4\u05d5\u05dc",
+        "pos": "",
+        "translation": "\u05e1\u05e8\u05d2\u05dc \u05e0\u05d9\u05d4\u05d5\u05dc"
+    }
+,
+    "akismet": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d0\u05e7\u05d9\u05d6\u05de\u05d8"
+    }
+,
+    "archive": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d0\u05e8\u05db\u05d9\u05d5\u05df"
+    }
+,
+    "array": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05de\u05e2\u05e8\u05da"
+    }
+,
+    "avatar": {
+        "comment": "\u05dc\u05d0 \u05d0\u05d5\u05d5\u05d8\u05e8",
+        "pos": "",
+        "translation": "\u05e6\u05dc\u05de\u05d9\u05ea \u05de\u05e9\u05ea\u05de\u05e9"
+    }
+,
+    "bbpress": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d1\u05d9\u05d1\u05d9\u05e4\u05e8\u05e1"
+    }
+,
+    "blog": {
+        "comment": "\u05dc\u05d0 \u05d1\u05dc\u05d5\u05d2",
+        "pos": "",
+        "translation": "\u05d0\u05ea\u05e8"
+    }
+,
+    "browser": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d3\u05e4\u05d3\u05e4\u05df"
+    }
+,
+    "BuddyPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d1\u05d0\u05d3\u05d9\u05e4\u05e8\u05e1"
+    }
+,
+    "bug": {
+        "comment": "\u05dc\u05d0 \u05d1\u05d0\u05d2",
+        "pos": "",
+        "translation": "\u05ea\u05e7\u05dc\u05d4"
+    }
+,
+    "comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05d2\u05d5\u05d1\u05d4"
+    }
+,
+    "comment": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05dc\u05d4\u05d2\u05d9\u05d1"
+    }
+,
+    "crop": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d7\u05d9\u05ea\u05d5\u05da"
+    }
+,
+    "dashboard": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05dc\u05d5\u05d7 \u05d1\u05e7\u05e8\u05d4"
+    }
+,
+    "default": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d1\u05e8\u05d9\u05e8\u05ea \u05de\u05d7\u05d3\u05dc"
+    }
+,
+    "default theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05d1\u05e0\u05d9\u05ea \u05d1\u05e8\u05d9\u05e8\u05ea \u05de\u05d7\u05d3\u05dc"
+    }
+,
+    "deprecated": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d4\u05d5\u05e6\u05d0 \u05de\u05e9\u05d9\u05de\u05d5\u05e9"
+    }
+,
+    "developer": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05de\u05e4\u05ea\u05d7"
+    }
+,
+    "draft": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d8\u05d9\u05d5\u05d8\u05d4"
+    }
+,
+    "email": {
+        "comment": "\u05dc\u05d0 \u05d3\u05d5\u05d0\u05dc \u05d0\u05d5 \u05d3\u05d5\u05d0\"\u05dc",
+        "pos": "",
+        "translation": "\u05d0\u05d9\u05de\u05d9\u05d9\u05dc"
+    }
+,
+    "embed": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d4\u05d8\u05de\u05e2\u05d4"
+    }
+,
+    "error": {
+        "comment": "\u05dc\u05d0 \u05ea\u05e7\u05dc\u05d4 \u05d0\u05d5 \u05d1\u05e2\u05d9\u05d4",
+        "pos": "",
+        "translation": "\u05e9\u05d2\u05d9\u05d0\u05d4"
+    }
+,
+    "excerpt": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05e7\u05e6\u05d9\u05e8"
+    }
+,
+    "favicon": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e1\u05de\u05dc \u05d0\u05ea\u05e8"
+    }
+,
+    "featured image": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05de\u05d5\u05e0\u05d4 \u05e8\u05d0\u05e9\u05d9\u05ea"
+    }
+,
+    "formatting shortcuts": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e7\u05d9\u05e6\u05d5\u05e8\u05d9 \u05e2\u05d9\u05e6\u05d5\u05d1"
+    }
+,
+    "GlotPress": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d2\u05dc\u05d5\u05d8\u05e4\u05e8\u05e1"
+    }
+,
+    "help tab": {
+        "comment": "\u05dc\u05d0 \u05ea\u05d5\u05d5\u05d9\u05ea \u05e2\u05d6\u05e8\u05d4 \u05d0\u05d5 \u05db\u05e4\u05ea\u05d5\u05e8 \u05e2\u05d6\u05e8\u05d4",
+        "pos": "",
+        "translation": "\u05dc\u05e9\u05d5\u05e0\u05d9\u05ea \u05e2\u05d6\u05e8\u05d4"
+    }
+,
+    "hook": {
+        "comment": "\u05dc\u05d0 \u05d4\u05d5\u05e7",
+        "pos": "",
+        "translation": "\u05d5\u05d5"
+    }
+,
+    "howdy": {
+        "comment": "\u05dc\u05d0 \u05d0\u05d4\u05dc\u05df",
+        "pos": "",
+        "translation": "\u05e9\u05dc\u05d5\u05dd"
+    }
+,
+    "icon": {
+        "comment": "\u05dc\u05d0 \u05d0\u05d9\u05d9\u05e7\u05d5\u05df \u05d0\u05d5 \u05dc\u05d5\u05d2\u05d5 \u05d0\u05d5 \u05e6\u05dc\u05de\u05d9\u05ea \u05d0\u05d5 \u05e1\u05de\u05dc\u05d9\u05dc",
+        "pos": "",
+        "translation": "\u05e1\u05de\u05dc"
+    }
+,
+    "lost your password?": {
+        "comment": "\u05dc\u05d0 \u05e9\u05db\u05d7\u05ea \u05d0\u05ea \u05d4\u05e1\u05d9\u05e1\u05de\u05d4 \u05e9\u05dc\u05da",
+        "pos": "",
+        "translation": "\u05e9\u05d7\u05d6\u05d5\u05e8 \u05e1\u05d9\u05e1\u05de\u05d4"
+    }
+,
+    "multisite": {
+        "comment": "\u05dc\u05d0 \u05de\u05d5\u05dc\u05d8\u05d9\u05e1\u05d9\u05d9\u05d8 \u05d0\u05d5 \u05de\u05d5\u05dc\u05d8\u05d9-\u05d9\u05d5\u05d6\u05e8",
+        "pos": "",
+        "translation": "\u05e8\u05e9\u05ea \u05d0\u05ea\u05e8\u05d9\u05dd"
+    }
+,
+    "pagination": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e0\u05d9\u05d5\u05d5\u05d8 \u05d1\u05e2\u05de\u05d5\u05d3\u05d9\u05dd"
+    }
+,
+    "permalink": {
+        "comment": "\u05dc\u05d0 \u05e7\u05d9\u05e9\u05d5\u05e8\u05d9\u05dd \u05e7\u05d1\u05d5\u05e2\u05d9\u05dd",
+        "pos": "",
+        "translation": "\u05de\u05d1\u05e0\u05d4 \u05e7\u05d9\u05e9\u05d5\u05e8"
+    }
+,
+    "plugin": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05d5\u05e1\u05e3"
+    }
+,
+    "post": {
+        "comment": " \u05dc\u05d0 \u05e8\u05e9\u05d5\u05de\u05d4 \u05d0\u05d5 \u05e4\u05e8\u05e1\u05d5\u05dd",
+        "pos": "",
+        "translation": "\u05e4\u05d5\u05e1\u05d8"
+    }
+,
+    "post": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05dc\u05e4\u05e8\u05e1\u05dd"
+    }
+,
+    "post format": {
+        "comment": "\u05dc\u05d0 \u05e4\u05d5\u05e8\u05de\u05d8",
+        "pos": "",
+        "translation": "\u05e1\u05d5\u05d2 \u05ea\u05d5\u05db\u05df"
+    }
+,
+    "post status": {
+        "comment": "\u05dc\u05d0 \u05e1\u05d8\u05d8\u05d5\u05e1",
+        "pos": "",
+        "translation": "\u05de\u05e6\u05d1 \u05e2\u05e8\u05d9\u05db\u05d4"
+    }
+,
+    "post type": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e1\u05d5\u05d2 \u05ea\u05d5\u05db\u05df"
+    }
+,
+    "press this": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e4\u05e8\u05e1\u05dd \u05d0\u05ea \u05d6\u05d4"
+    }
+,
+    "preview": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05e6\u05d5\u05d2\u05d4 \u05de\u05e7\u05d3\u05d9\u05de\u05d4"
+    }
+,
+    "profile": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e4\u05e8\u05d5\u05e4\u05d9\u05dc"
+    }
+,
+    "query": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e9\u05d0\u05d9\u05dc\u05ea\u05d0"
+    }
+,
+    "quickpress": {
+        "comment": "\u05dc\u05d0 \u05e4\u05d5\u05e1\u05d8 \u05de\u05d4\u05d9\u05e8",
+        "pos": "",
+        "translation": "\u05e4\u05e8\u05e1\u05d5\u05dd \u05de\u05d4\u05d9\u05e8"
+    }
+,
+    "register": {
+        "comment": "\u05dc\u05d0 \u05dc\u05d4\u05e8\u05e9\u05dd \u05d0\u05d5 \u05dc\u05d4\u05d9\u05e8\u05e9\u05dd",
+        "pos": "",
+        "translation": "\u05d4\u05e8\u05e9\u05de\u05d4"
+    }
+,
+    "role": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05ea\u05e4\u05e7\u05d9\u05d3"
+    }
+,
+    "short code": {
+        "comment": "\u05dc\u05d0 \u05e9\u05d5\u05e8\u05d8\u05e7\u05d5\u05d3 \u05d0\u05d5 \u05e7\u05d5\u05d3 \u05e7\u05e6\u05e8",
+        "pos": "",
+        "translation": "\u05e4\u05e7\u05d5\u05d3\u05ea \u05de\u05e7\u05e8\u05d5"
+    }
+,
+    "shortcode": {
+        "comment": "\u05dc\u05d0 \u05e9\u05d5\u05e8\u05d8\u05e7\u05d5\u05d3 \u05d0\u05d5 \u05e7\u05d5\u05d3 \u05e7\u05e6\u05e8",
+        "pos": "",
+        "translation": "\u05e4\u05e7\u05d5\u05d3\u05ea \u05de\u05e7\u05e8\u05d5"
+    }
+,
+    "sidebar": {
+        "comment": "\u05dc\u05d0 \u05e1\u05d9\u05d9\u05d3\u05d1\u05e8 \u05d0\u05d5 \u05ea\u05e4\u05e8\u05d9\u05d8 \u05e6\u05d3\u05d3\u05d9 \u05d0\u05d5 \u05e1\u05e8\u05d2\u05dc \u05e6\u05d9\u05d3\u05d9",
+        "pos": "",
+        "translation": "\u05e1\u05e8\u05d2\u05dc \u05e6\u05d3\u05d3\u05d9"
+    }
+,
+    "site": {
+        "comment": "\u05dc\u05d0 \u05d1\u05dc\u05d5\u05d2",
+        "pos": "",
+        "translation": "\u05d0\u05ea\u05e8"
+    }
+,
+    "spam": {
+        "comment": "\u05dc\u05d0 \u05e1\u05e4\u05d0\u05dd",
+        "pos": "",
+        "translation": "\u05ea\u05d2\u05d5\u05d1\u05ea \u05d6\u05d1\u05dc"
+    }
+,
+    "stick": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05dc\u05d4\u05d3\u05d1\u05d9\u05e7"
+    }
+,
+    "sticky": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d3\u05d1\u05d9\u05e7"
+    }
+,
+    "sticky post": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e4\u05d5\u05e1\u05d8 \u05d3\u05d1\u05d9\u05e7"
+    }
+,
+    "sub-directory": {
+        "comment": "\u05dc\u05d0 \u05e1\u05e4\u05e8\u05d9\u05d9\u05ea \u05de\u05e9\u05e0\u05d4",
+        "pos": "",
+        "translation": "\u05ea\u05ea-\u05e1\u05e4\u05e8\u05d9\u05d9\u05d4"
+    }
+,
+    "sub-domain": {
+        "comment": "\u05dc\u05d0 \u05e1\u05d0\u05d1-\u05d3\u05d5\u05de\u05d9\u05d9\u05df",
+        "pos": "",
+        "translation": "\u05ea\u05ea-\u05d3\u05d5\u05de\u05d9\u05d9\u05df"
+    }
+,
+    "subdirectory": {
+        "comment": "\u05dc\u05d0 \u05e1\u05e4\u05e8\u05d9\u05d9\u05ea \u05de\u05e9\u05e0\u05d4",
+        "pos": "",
+        "translation": "\u05ea\u05ea-\u05e1\u05e4\u05e8\u05d9\u05d9\u05d4"
+    }
+,
+    "subdomain": {
+        "comment": "\u05dc\u05d0 \u05e1\u05d0\u05d1-\u05d3\u05d5\u05de\u05d9\u05d9\u05df",
+        "pos": "",
+        "translation": "\u05ea\u05ea-\u05d3\u05d5\u05de\u05d9\u05d9\u05df"
+    }
+,
+    "tag": {
+        "comment": "\u05dc\u05d0 \u05ea\u05d2\/\u05ea\u05d2\u05d9\u05dd \u05d0\u05d5 \u05de\u05d9\u05dc\u05ea \u05de\u05e4\u05ea\u05d7",
+        "pos": "",
+        "translation": "\u05ea\u05d2\u05d9\u05ea\/\u05ea\u05d2\u05d9\u05d5\u05ea"
+    }
+,
+    "taxonomy": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d8\u05e7\u05e1\u05d5\u05e0\u05d5\u05de\u05d9\u05d4"
+    }
+,
+    "template": {
+        "comment": "\u05dc\u05d0 \u05e2\u05e8\u05db\u05ea \u05e2\u05d9\u05e6\u05d5\u05d1 \u05d0\u05d5 \u05e2\u05e8\u05db\u05ea \u05e0\u05d5\u05e9\u05d0",
+        "pos": "",
+        "translation": "\u05ea\u05d1\u05e0\u05d9\u05ea"
+    }
+,
+    "template hierarchy": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d4\u05d9\u05e8\u05e8\u05db\u05d9\u05ea \u05ea\u05d1\u05e0\u05d9\u05ea"
+    }
+,
+    "term": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05de\u05d5\u05e0\u05d7"
+    }
+,
+    "theme": {
+        "comment": "\u05dc\u05d0 \u05e2\u05e8\u05db\u05ea \u05e2\u05d9\u05e6\u05d5\u05d1 \u05d0\u05d5 \u05e2\u05e8\u05db\u05ea \u05e0\u05d5\u05e9\u05d0",
+        "pos": "",
+        "translation": "\u05ea\u05d1\u05e0\u05d9\u05ea"
+    }
+,
+    "toolbar": {
+        "comment": "\u05dc\u05d0 \u05d1\u05e8 \u05e0\u05d9\u05d4\u05d5\u05dc",
+        "pos": "",
+        "translation": "\u05e1\u05e8\u05d2\u05dc \u05db\u05dc\u05d9\u05dd"
+    }
+,
+    "trackback": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d8\u05e8\u05d0\u05e7\u05d1\u05d0\u05e7"
+    }
+,
+    "trash": {
+        "comment": "\u05dc\u05d0 \u05e1\u05dc \u05de\u05d7\u05d6\u05d5\u05e8 \u05d0\u05d5 \u05e4\u05d7 \u05de\u05d7\u05d6\u05d5\u05e8 \u05d0\u05d5 \u05e4\u05d7 \u05d0\u05e9\u05e4\u05d4",
+        "pos": "",
+        "translation": "\u05e4\u05d7"
+    }
+,
+    "upgrade": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e9\u05d3\u05e8\u05d5\u05d2"
+    }
+,
+    "upgrade": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05dc\u05e9\u05d3\u05e8\u05d2"
+    }
+,
+    "user": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05de\u05e9\u05ea\u05de\u05e9"
+    }
+,
+    "username": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e9\u05dd \u05de\u05e9\u05ea\u05de\u05e9"
+    }
+,
+    "verification code": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05e7\u05d5\u05d3 \u05d0\u05d9\u05de\u05d5\u05ea"
+    }
+,
+    "video": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d5\u05d9\u05d3\u05d0\u05d5"
+    }
+,
+    "view": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05dc\u05d4\u05e6\u05d9\u05d2"
+    }
+,
+    "widget": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d5\u05d9\u05d3\u05d2'\u05d8"
+    }
+,
+    "wordpress": {
+        "comment": "",
+        "pos": "",
+        "translation": "\u05d5\u05d5\u05e8\u05d3\u05e4\u05e8\u05e1"
+    }
+}

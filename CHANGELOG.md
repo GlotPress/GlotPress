@@ -3,6 +3,7 @@
 * New UI on first use
 * No defaultlanguage on first use
 * Shortcut on ctrl+enter to click "Suggest new translation"
+* New glossaries: he_IL
 
 #1.0.5
 * Fix remember the language chosen now is working at 100%

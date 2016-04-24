@@ -1,0 +1,1171 @@
+{
+    "activate": {
+        "comment": "",
+        "pos": "",
+        "translation": "ativar"
+    }
+,
+    "address": {
+        "comment": "Ex. \u201cversion x addresses\u2026\u201d \u2013 \u201ca vers\u00e3o x corrige\u2026\u201d",
+        "pos": "",
+        "translation": "corrige"
+    }
+,
+    "are you sure you want": {
+        "comment": "",
+        "pos": "",
+        "translation": "tem certeza de que deseja"
+    }
+,
+    "array": {
+        "comment": "Termo de programa\u00e7\u00e3o, n\u00e3o traduzir",
+        "pos": "",
+        "translation": "array"
+    }
+,
+    "aside": {
+        "comment": "Post format - formato de post",
+        "pos": "",
+        "translation": "nota"
+    }
+,
+    "at the bottom": {
+        "comment": "",
+        "pos": "",
+        "translation": "na parte inferior"
+    }
+,
+    "at the top": {
+        "comment": "",
+        "pos": "",
+        "translation": "na parte superior"
+    }
+,
+    "backup": {
+        "comment": " Masculino",
+        "pos": "",
+        "translation": "backup"
+    }
+,
+    "backup": {
+        "comment": "",
+        "pos": "",
+        "translation": "fazer backup"
+    }
+,
+    "banner": {
+        "comment": "",
+        "pos": "",
+        "translation": "banner"
+    }
+,
+    "batch": {
+        "comment": "",
+        "pos": "",
+        "translation": "lote"
+    }
+,
+    "batch": {
+        "comment": "",
+        "pos": "",
+        "translation": "em lote"
+    }
+,
+    "bitrate": {
+        "comment": "",
+        "pos": "",
+        "translation": "taxa de bits"
+    }
+,
+    "blogroll": {
+        "comment": "",
+        "pos": "",
+        "translation": "lista de links"
+    }
+,
+    "browse": {
+        "comment": "omitir nos casos onde a tradu\u00e7\u00e3o exprime uma obviedade. Ex.: \u201cYou are currently browsing the archives for\u2026\u201d traduzir como: \u201cVoc\u00ea est\u00e1 no arquivo do\u2026\u201d",
+        "pos": "",
+        "translation": "procurar"
+    }
+,
+    "browser": {
+        "comment": "",
+        "pos": "",
+        "translation": "navegador"
+    }
+,
+    "by default": {
+        "comment": "",
+        "pos": "",
+        "translation": "por padr\u00e3o"
+    }
+,
+    "Can\u2019t": {
+        "comment": "",
+        "pos": "",
+        "translation": "n\u00e3o \u00e9 poss\u00edvel"
+    }
+,
+    "captioning ID": {
+        "comment": "Masculino",
+        "pos": "",
+        "translation": "ID de legenda"
+    }
+,
+    "chat": {
+        "comment": "",
+        "pos": "",
+        "translation": "bate-papo"
+    }
+,
+    "cheating, uh?": {
+        "comment": "",
+        "pos": "",
+        "translation": "Trapaceando, \u00e9?"
+    }
+,
+    "check": {
+        "comment": "ou conferir (conforme contexto)",
+        "pos": "",
+        "translation": "marcar"
+    }
+,
+    "check out": {
+        "comment": "",
+        "pos": "",
+        "translation": "consultar"
+    }
+,
+    "child theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "tema filho"
+    }
+,
+    "child theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "tema filho"
+    }
+,
+    "clean": {
+        "comment": "Ex: a clean theme, um tema simples.",
+        "pos": "",
+        "translation": "simples"
+    }
+,
+    "clear": {
+        "comment": "",
+        "pos": "",
+        "translation": "liberar"
+    }
+,
+    "closed": {
+        "comment": "",
+        "pos": "",
+        "translation": "encerrado"
+    }
+,
+    "color picker": {
+        "comment": "",
+        "pos": "",
+        "translation": "seletor de cor"
+    }
+,
+    "complete": {
+        "comment": "",
+        "pos": "",
+        "translation": "conclu\u00eddo"
+    }
+,
+    "connect to x": {
+        "comment": "",
+        "pos": "",
+        "translation": "conectar a x"
+    }
+,
+    "core": {
+        "comment": "",
+        "pos": "",
+        "translation": "arquivos b\u00e1sicos"
+    }
+,
+    "Costumizer": {
+        "comment": "Nome da ferramenta, usar inicial mai\u00fascula.",
+        "pos": "",
+        "translation": "Personalizar"
+    }
+,
+    "Couldn\u2019t": {
+        "comment": "",
+        "pos": "",
+        "translation": "n\u00e3o foi poss\u00edvel"
+    }
+,
+    "crop": {
+        "comment": "",
+        "pos": "",
+        "translation": "recortar"
+    }
+,
+    "customization": {
+        "comment": "",
+        "pos": "",
+        "translation": "personaliza\u00e7\u00e3o"
+    }
+,
+    "customizer": {
+        "comment": "",
+        "pos": "",
+        "translation": "personalizador"
+    }
+,
+    "database": {
+        "comment": "",
+        "pos": "",
+        "translation": "banco de dados"
+    }
+,
+    "deactivate": {
+        "comment": "",
+        "pos": "",
+        "translation": "desativar"
+    }
+,
+    "debug": {
+        "comment": "Derivados devem seguir a mesma tradu\u00e7\u00e3o, ex: debugging (n) - depura\u00e7\u00e3o",
+        "pos": "",
+        "translation": "depurar"
+    }
+,
+    "default": {
+        "comment": "usar Padr\u00f5es quando o plural for necess\u00e1rio",
+        "pos": "",
+        "translation": "padr\u00e3o"
+    }
+,
+    "default": {
+        "comment": "invari\u00e1vel -sem plural",
+        "pos": "",
+        "translation": "padr\u00e3o"
+    }
+,
+    "delete": {
+        "comment": "",
+        "pos": "",
+        "translation": "excluir"
+    }
+,
+    "design": {
+        "comment": "",
+        "pos": "",
+        "translation": "design"
+    }
+,
+    "device": {
+        "comment": "",
+        "pos": "",
+        "translation": "dispositivo"
+    }
+,
+    "disable": {
+        "comment": "",
+        "pos": "",
+        "translation": "desativar"
+    }
+,
+    "dismiss": {
+        "comment": "",
+        "pos": "",
+        "translation": "dispensar"
+    }
+,
+    "display": {
+        "comment": "",
+        "pos": "",
+        "translation": "exibir"
+    }
+,
+    "display": {
+        "comment": "",
+        "pos": "",
+        "translation": "exibi\u00e7\u00e3o"
+    }
+,
+    "distraction free": {
+        "comment": "",
+        "pos": "",
+        "translation": "escrita sem distra\u00e7\u00f5es"
+    }
+,
+    "distraction-free writing": {
+        "comment": "",
+        "pos": "",
+        "translation": "escrita sem distra\u00e7\u00f5es"
+    }
+,
+    "don\u2019t be stupid": {
+        "comment": "n\u00e3o seja bobo",
+        "pos": "",
+        "translation": "n\u00e3o marque bobeira"
+    }
+,
+    "done": {
+        "comment": "",
+        "pos": "",
+        "translation": "conclu\u00eddo"
+    }
+,
+    "download": {
+        "comment": "",
+        "pos": "",
+        "translation": "download"
+    }
+,
+    "download": {
+        "comment": "",
+        "pos": "",
+        "translation": "fazer download"
+    }
+,
+    "draft": {
+        "comment": "",
+        "pos": "",
+        "translation": "rascunho"
+    }
+,
+    "email": {
+        "comment": "Com hifen, academia brasileira de letras reconhece apenas desta forma.",
+        "pos": "",
+        "translation": "e-mail"
+    }
+,
+    "embed": {
+        "comment": "",
+        "pos": "",
+        "translation": "m\u00eddia incorporada"
+    }
+,
+    "enable": {
+        "comment": "",
+        "pos": "",
+        "translation": "ativar"
+    }
+,
+    "enter": {
+        "comment": "",
+        "pos": "",
+        "translation": "digite"
+    }
+,
+    "entry": {
+        "comment": " ou entrada conforme o contexto",
+        "pos": "",
+        "translation": "post"
+    }
+,
+    "escaping": {
+        "comment": "Termo de programa\u00e7\u00e3o, n\u00e3o traduzir.",
+        "pos": "",
+        "translation": "escaping"
+    }
+,
+    "feature": {
+        "comment": "",
+        "pos": "",
+        "translation": "recurso"
+    }
+,
+    "feeds": {
+        "comment": "",
+        "pos": "",
+        "translation": "feeds"
+    }
+,
+    "fetch": {
+        "comment": "",
+        "pos": "",
+        "translation": "coletar"
+    }
+,
+    "first name": {
+        "comment": "",
+        "pos": "",
+        "translation": "nome"
+    }
+,
+    "flip": {
+        "comment": "",
+        "pos": "",
+        "translation": "virar"
+    }
+,
+    "follow-up": {
+        "comment": "",
+        "pos": "",
+        "translation": ""
+    }
+,
+    "font": {
+        "comment": "",
+        "pos": "",
+        "translation": "fonte"
+    }
+,
+    "frame": {
+        "comment": "",
+        "pos": "",
+        "translation": "frame"
+    }
+,
+    "freshness": {
+        "comment": "",
+        "pos": "",
+        "translation": "tempo desde a publica\u00e7\u00e3o"
+    }
+,
+    "fullscreen": {
+        "comment": "",
+        "pos": "",
+        "translation": "tela cheia"
+    }
+,
+    "gatekeeper": {
+        "comment": "",
+        "pos": "",
+        "translation": "guardi\u00e3o"
+    }
+,
+    "global dashboard": {
+        "comment": "",
+        "pos": "",
+        "translation": "painel geral"
+    }
+,
+    "header": {
+        "comment": "",
+        "pos": "",
+        "translation": "cabe\u00e7alho"
+    }
+,
+    "held": {
+        "comment": "",
+        "pos": "",
+        "translation": "retido"
+    }
+,
+    "help on": {
+        "comment": "",
+        "pos": "",
+        "translation": "ajuda sobre"
+    }
+,
+    "hidden Gui": {
+        "comment": "",
+        "pos": "",
+        "translation": "GUI oculta"
+    }
+,
+    "hold": {
+        "comment": "",
+        "pos": "",
+        "translation": "reter"
+    }
+,
+    "homepage": {
+        "comment": "",
+        "pos": "",
+        "translation": "p\u00e1gina inicial"
+    }
+,
+    "hot tag": {
+        "comment": "",
+        "pos": "",
+        "translation": "tag popular"
+    }
+,
+    "hotkeys": {
+        "comment": "",
+        "pos": "",
+        "translation": "teclas de acesso"
+    }
+,
+    "ID": {
+        "comment": "feminino",
+        "pos": "",
+        "translation": "ID"
+    }
+,
+    "invoke URLs": {
+        "comment": "",
+        "pos": "",
+        "translation": "chamar URLs"
+    }
+,
+    "keep in mind that": {
+        "comment": "",
+        "pos": "",
+        "translation": "lembre-se de que"
+    }
+,
+    "key master": {
+        "comment": "",
+        "pos": "",
+        "translation": "admin-mestre"
+    }
+,
+    "last name": {
+        "comment": "",
+        "pos": "",
+        "translation": "sobrenome"
+    }
+,
+    "latest": {
+        "comment": "",
+        "pos": "",
+        "translation": "mais recentes"
+    }
+,
+    "link to": {
+        "comment": "",
+        "pos": "",
+        "translation": "apontar para"
+    }
+,
+    "live preview": {
+        "comment": "",
+        "pos": "",
+        "translation": "ver ao vivo"
+    }
+,
+    "log": {
+        "comment": "",
+        "pos": "",
+        "translation": "resumo"
+    }
+,
+    "log in": {
+        "comment": "",
+        "pos": "",
+        "translation": "fazer login"
+    }
+,
+    "log out": {
+        "comment": "",
+        "pos": "",
+        "translation": "fazer logout"
+    }
+,
+    "logged": {
+        "comment": "Por\u00e9m log in - fazer login e log out - fazer logout.",
+        "pos": "",
+        "translation": "conectado"
+    }
+,
+    "logged out": {
+        "comment": "idem",
+        "pos": "",
+        "translation": "desconectado"
+    }
+,
+    "logo": {
+        "comment": "",
+        "pos": "",
+        "translation": "logo"
+    }
+,
+    "loop": {
+        "comment": " masculino",
+        "pos": "",
+        "translation": "loop"
+    }
+,
+    "loop": {
+        "comment": "",
+        "pos": "",
+        "translation": "fazer loop"
+    }
+,
+    "malware": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "malware"
+    }
+,
+    "manage": {
+        "comment": "",
+        "pos": "",
+        "translation": "gerenciar"
+    }
+,
+    "mapping": {
+        "comment": "",
+        "pos": "",
+        "translation": "mapeamento"
+    }
+,
+    "mapping": {
+        "comment": "",
+        "pos": "",
+        "translation": "mapeando"
+    }
+,
+    "matching x": {
+        "comment": "",
+        "pos": "",
+        "translation": "correspondente a x"
+    }
+,
+    "media attachment": {
+        "comment": "",
+        "pos": "",
+        "translation": "m\u00eddia"
+    }
+,
+    "metadata": {
+        "comment": "traduzir no plural.",
+        "pos": "",
+        "translation": "metadados"
+    }
+,
+    "moderate": {
+        "comment": "",
+        "pos": "",
+        "translation": "moderar"
+    }
+,
+    "newest": {
+        "comment": "",
+        "pos": "",
+        "translation": "mais recente"
+    }
+,
+    "nickname": {
+        "comment": "",
+        "pos": "",
+        "translation": "apelido"
+    }
+,
+    "no x found": {
+        "comment": "",
+        "pos": "",
+        "translation": "nenhum x encontrado"
+    }
+,
+    "offine": {
+        "comment": " sem h\u00edfen",
+        "pos": "",
+        "translation": "offine"
+    }
+,
+    "on\/off": {
+        "comment": "",
+        "pos": "",
+        "translation": "ativado\/desativado"
+    }
+,
+    "online": {
+        "comment": "sem h\u00ed\u00adfen",
+        "pos": "",
+        "translation": "online"
+    }
+,
+    "Oops": {
+        "comment": "",
+        "pos": "",
+        "translation": "Opa"
+    }
+,
+    "parent category": {
+        "comment": "",
+        "pos": "",
+        "translation": "categoria m\u00e3e"
+    }
+,
+    "parent theme": {
+        "comment": "",
+        "pos": "",
+        "translation": "tema pai"
+    }
+,
+    "password strength": {
+        "comment": "",
+        "pos": "",
+        "translation": "n\u00edvel de seguran\u00e7a da senha"
+    }
+,
+    "permalink": {
+        "comment": "",
+        "pos": "",
+        "translation": "link permanente"
+    }
+,
+    "pingback": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "pingback"
+    }
+,
+    "please": {
+        "comment": "n\u00e3o traduzir (n\u00e3o pedir por favor ao usu\u00e1rio)",
+        "pos": "",
+        "translation": ""
+    }
+,
+    "plugin": {
+        "comment": "sem h\u00ed\u00adfen",
+        "pos": "",
+        "translation": "plugin"
+    }
+,
+    "post": {
+        "comment": "",
+        "pos": "",
+        "translation": "post"
+    }
+,
+    "post": {
+        "comment": "",
+        "pos": "",
+        "translation": "publicar"
+    }
+,
+    "prefetch": {
+        "comment": "",
+        "pos": "",
+        "translation": "pr\u00e9-carregar"
+    }
+,
+    "preview": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualizar"
+    }
+,
+    "preview": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualiza\u00e7\u00e3o"
+    }
+,
+    "query": {
+        "comment": "",
+        "pos": "",
+        "translation": "consulta"
+    }
+,
+    "rating": {
+        "comment": "",
+        "pos": "",
+        "translation": "classifica\u00e7\u00e3o"
+    }
+,
+    "refresh": {
+        "comment": "",
+        "pos": "",
+        "translation": "atualizar"
+    }
+,
+    "release": {
+        "comment": "",
+        "pos": "",
+        "translation": "release"
+    }
+,
+    "reply to": {
+        "comment": "",
+        "pos": "",
+        "translation": "responder a"
+    }
+,
+    "request": {
+        "comment": "",
+        "pos": "",
+        "translation": "solicitar"
+    }
+,
+    "reset": {
+        "comment": "",
+        "pos": "",
+        "translation": "redefinir"
+    }
+,
+    "respond to": {
+        "comment": "",
+        "pos": "",
+        "translation": "responder a"
+    }
+,
+    "Rich Editor": {
+        "comment": "",
+        "pos": "",
+        "translation": "Editor visual"
+    }
+,
+    "role": {
+        "comment": "",
+        "pos": "",
+        "translation": "fun\u00e7\u00e3o"
+    }
+,
+    "RSS feed": {
+        "comment": "",
+        "pos": "",
+        "translation": "feed RSS"
+    }
+,
+    "save": {
+        "comment": "",
+        "pos": "",
+        "translation": "salvar"
+    }
+,
+    "saved": {
+        "comment": "",
+        "pos": "",
+        "translation": "salvo"
+    }
+,
+    "schedule": {
+        "comment": "",
+        "pos": "",
+        "translation": "agenda"
+    }
+,
+    "schedule": {
+        "comment": "",
+        "pos": "",
+        "translation": "agendar"
+    }
+,
+    "scheduled": {
+        "comment": "",
+        "pos": "",
+        "translation": "agendado"
+    }
+,
+    "search": {
+        "comment": "",
+        "pos": "",
+        "translation": "pesquisa"
+    }
+,
+    "search": {
+        "comment": "",
+        "pos": "",
+        "translation": "pesquisar"
+    }
+,
+    "search engine": {
+        "comment": "",
+        "pos": "",
+        "translation": "mecanismo de busca"
+    }
+,
+    "search for": {
+        "comment": "",
+        "pos": "",
+        "translation": "procurar por"
+    }
+,
+    "secret key": {
+        "comment": "",
+        "pos": "",
+        "translation": "chave secreta"
+    }
+,
+    "set a password": {
+        "comment": "",
+        "pos": "",
+        "translation": "definir uma senha"
+    }
+,
+    "settings": {
+        "comment": "",
+        "pos": "",
+        "translation": "configura\u00e7\u00f5es"
+    }
+,
+    "show": {
+        "comment": "",
+        "pos": "",
+        "translation": "mostrar"
+    }
+,
+    "shuffle": {
+        "comment": "",
+        "pos": "",
+        "translation": "embaralhar"
+    }
+,
+    "sidebar": {
+        "comment": " \u00e1rea de widget?",
+        "pos": "",
+        "translation": "barral lateral"
+    }
+,
+    "slug": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "slug"
+    }
+,
+    "so you cannot": {
+        "comment": "",
+        "pos": "",
+        "translation": "portanto, voc\u00ea n\u00e3o pode"
+    }
+,
+    "soon": {
+        "comment": "",
+        "pos": "",
+        "translation": "mais tarde"
+    }
+,
+    "spam": {
+        "comment": "em min\u00fasculas",
+        "pos": "",
+        "translation": "spam"
+    }
+,
+    "start": {
+        "comment": "",
+        "pos": "",
+        "translation": "iniciar"
+    }
+,
+    "state-of-the-art": {
+        "comment": "de vanguarda",
+        "pos": "",
+        "translation": "avan\u00e7ado"
+    }
+,
+    "status": {
+        "comment": "",
+        "pos": "",
+        "translation": "status"
+    }
+,
+    "sticky": {
+        "comment": "",
+        "pos": "",
+        "translation": "fixo"
+    }
+,
+    "stretch to fit": {
+        "comment": "",
+        "pos": "",
+        "translation": "aumentar para ajustar ao tamanho"
+    }
+,
+    "submit": {
+        "comment": "",
+        "pos": "",
+        "translation": "enviar"
+    }
+,
+    "subscribe": {
+        "comment": "",
+        "pos": "",
+        "translation": "assinar"
+    }
+,
+    "subscribed": {
+        "comment": "",
+        "pos": "",
+        "translation": "assinou"
+    }
+,
+    "subscriptions": {
+        "comment": "",
+        "pos": "",
+        "translation": "assinaturas"
+    }
+,
+    "tab": {
+        "comment": "",
+        "pos": "",
+        "translation": "aba"
+    }
+,
+    "tag": {
+        "comment": "feminino",
+        "pos": "",
+        "translation": "tag"
+    }
+,
+    "target": {
+        "comment": "",
+        "pos": "",
+        "translation": "destino"
+    }
+,
+    "team": {
+        "comment": "Ex: WordPress team - Equipe do WordPress",
+        "pos": "",
+        "translation": "equipe"
+    }
+,
+    "template": {
+        "comment": "",
+        "pos": "",
+        "translation": "modelo"
+    }
+,
+    "thank you": {
+        "comment": "n\u00e3o traduzir (n\u00e3o agradecer o usu\u00e1rio)",
+        "pos": "",
+        "translation": ""
+    }
+,
+    "theme customizer": {
+        "comment": "",
+        "pos": "",
+        "translation": "personalizador de tema"
+    }
+,
+    "then": {
+        "comment": "",
+        "pos": "",
+        "translation": "ent\u00e3o"
+    }
+,
+    "throttling": {
+        "comment": "",
+        "pos": "",
+        "translation": "controle de fluxo"
+    }
+,
+    "tile": {
+        "comment": "",
+        "pos": "",
+        "translation": "repetir"
+    }
+,
+    "timezone": {
+        "comment": "",
+        "pos": "",
+        "translation": "fuso hor\u00e1rio"
+    }
+,
+    "trackback": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "trackback"
+    }
+,
+    "trash": {
+        "comment": "Lixo (objeto exclu\u00eddo).Lixeira (local onde os objetos s\u00e3o exclu\u00eddos)",
+        "pos": "",
+        "translation": "lixeira"
+    }
+,
+    "undelete": {
+        "comment": "",
+        "pos": "",
+        "translation": "restaurar"
+    }
+,
+    "unfollow": {
+        "comment": "Igual ao Facebook",
+        "pos": "",
+        "translation": "deixar de seguir"
+    }
+,
+    "upload": {
+        "comment": "",
+        "pos": "",
+        "translation": "upload"
+    }
+,
+    "upload": {
+        "comment": "",
+        "pos": "",
+        "translation": "fazer upload"
+    }
+,
+    "URL": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "URL"
+    }
+,
+    "username": {
+        "comment": "",
+        "pos": "",
+        "translation": "nome de usu\u00e1rio"
+    }
+,
+    "view": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualiza\u00e7\u00e3o"
+    }
+,
+    "view": {
+        "comment": "",
+        "pos": "",
+        "translation": "ver"
+    }
+,
+    "warning": {
+        "comment": "",
+        "pos": "",
+        "translation": "aten\u00e7\u00e3o"
+    }
+,
+    "website": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "site"
+    }
+,
+    "widget": {
+        "comment": "masculino",
+        "pos": "",
+        "translation": "widget"
+    }
+,
+    "with success": {
+        "comment": "",
+        "pos": "",
+        "translation": "com sucesso"
+    }
+,
+    "write": {
+        "comment": "",
+        "pos": "",
+        "translation": "gravar"
+    }
+,
+    "you are about to": {
+        "comment": "",
+        "pos": "",
+        "translation": "voc\u00ea est\u00e1 prestes a"
+    }
+,
+    "you are not allowed to": {
+        "comment": "",
+        "pos": "",
+        "translation": "sem permiss\u00e3o para"
+    }
+,
+    "you can just\/only": {
+        "comment": "",
+        "pos": "",
+        "translation": "basta"
+    }
+,
+    "you cannot to": {
+        "comment": "",
+        "pos": "",
+        "translation": "sem permiss\u00e3o para"
+    }
+,
+    "you must have x": {
+        "comment": "",
+        "pos": "",
+        "translation": "voc\u00ea deve ter x"
+    }
+}

@@ -197,6 +197,12 @@
         "translation": "verwijderen"
     }
 ,
+    "Dismiss": {
+        "comment": "",
+        "pos": "",
+        "translation": "Negeren"
+    }
+,
     "drag and drop": {
         "comment": ";",
         "pos": "",
@@ -261,6 +267,12 @@
         "comment": "",
         "pos": "",
         "translation": "Filteren"
+    }
+,
+    "font": {
+        "comment": "",
+        "pos": "",
+        "translation": "lettertype"
     }
 ,
     "footer": {
