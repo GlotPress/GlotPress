@@ -1,11 +1,11 @@
 #1.0.6
 * Fix for terms detection near <>() symbols
-* New UI on first use
-* No default language on first use
-* Shortcut on ctrl+enter to click "Suggest new translation" or "Add translation"
-* Shortcut on Page Down to open the next string to translate
-* Shortcut on Page Up to open the previous string to translate
-* New glossaries: he_IL, ro_RO, th, en_AU, en_CA
+* Enhancement: New UI on first use
+* Enhancement: No default language on first use
+* Feature: Shortcut on Ctrl+Enter to click "Suggest new translation" or "Add translation"
+* Feature: Shortcut on Page Down to open the previous string to translate
+* Feature: Shortcut on Page Up to open the next string to translate
+* Enhancement: New glossaries: he_IL, ro_RO, th, en_AU, en_CA
 
 #1.0.5
 * Fix remember the language chosen now is working at 100%
