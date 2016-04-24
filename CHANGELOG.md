@@ -3,7 +3,7 @@
 * New UI on first use
 * No defaultlanguage on first use
 * Shortcut on ctrl+enter to click "Suggest new translation"
-* New glossaries: he_IL
+* New glossaries: he_IL, ro_RO, th, en_AU
 
 #1.0.5
 * Fix remember the language chosen now is working at 100%
