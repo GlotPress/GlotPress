@@ -1,0 +1,1007 @@
+{
+  "add-on" : {
+    "comment": "supliment?",
+    "pos": "noun",
+    "translation": "adițional"
+  },
+  "are you sure ...?" : {
+    "comment": "În loc de: Ești sigur/sigură că ...? - evitarea genului",
+    "pos": "expression",
+    "translation": "sigur ...?"
+  },
+  "aside" : {
+    "comment": "format de articol (en: post format)",
+    "pos": "noun",
+    "translation": "notă"
+  },
+  "backend" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "partea administrativă a sitului"
+  },
+  "bandwith" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "lățime de bandă"
+  },
+  "blogger" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "bloger"
+  },
+  "bookmark" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "pune un semn de carte"
+  },
+  "bookmarklet" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "marcator"
+  },
+  "bot(s), botnet" : {
+    "comment": "pl.: boți (parte a cuvântului ro-bot)",
+    "pos": "expression",
+    "translation": "bot de rețea"
+  },
+  "bounce rate" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "rata de revenire"
+  },
+  "box" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "casetă"
+  },
+  "boxed" : {
+    "comment": "stil de \"layout\" -> aranjament",
+    "pos": "adjective",
+    "translation": "încasetat"
+  },
+  "breadcrumbs" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "firimituri"
+  },
+  "browse" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "răsfoi"
+  },
+  "browser" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "navigator"
+  },
+  "built-in" : {
+    "comment": "built-in post type -> tip de articol nativ",
+    "pos": "adjective",
+    "translation": "nativ"
+  },
+  "bug" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "eroare"
+  },
+  "cache" : {
+    "comment": "intraductibil?!",
+    "pos": "noun",
+    "translation": "cache"
+  },
+  "callback" : {
+    "comment": "... sau retro-apel; tip de funcție",
+    "pos": "adjective",
+    "translation": "apelînapoi"
+  },
+  "cancel" : {
+    "comment": "anulare, anulează",
+    "pos": "verb",
+    "translation": "anula"
+  },
+  "caption" : {
+    "comment": "imaginilor",
+    "pos": "expression",
+    "translation": "text asociat"
+  },
+  "carousel" : {
+    "comment": "sin. \"slider\"; mai jos",
+    "pos": "noun",
+    "translation": "carusel"
+  },
+  "change" : {
+    "comment": "... sau schimbă (dacă modificarea se face între un număr finit de valori)",
+    "pos": "verb",
+    "translation": "modifica"
+  },
+  "changelog" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "listă modificări"
+  },
+  "chart" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "diagramă"
+  },
+  "checkbox" : {
+    "comment": "ca element de interfață; \"check the option\" -> bifează opțiunea",
+    "pos": "noun",
+    "translation": "bifă"
+  },
+  "clipboard" : {
+    "comment": "spațiu de stocare temporară în editare",
+    "pos": "noun",
+    "translation": "clipbord"
+  },
+  "codec" : {
+    "comment": "pl. codecuri",
+    "pos": "noun",
+    "translation": "codec"
+  },
+  "commit" : {
+    "comment": "sin.: \"contribute\"",
+    "pos": "verb",
+    "translation": "contribui"
+  },
+  "commiter" : {
+    "comment": "cel care contribuie la cod",
+    "pos": "noun",
+    "translation": "contributor"
+  },
+  "copyright" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "drepturi de autor"
+  },
+  "core" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "nucleu"
+  },
+  "create" : {
+    "comment": "creează, pers II sg., imperativ",
+    "pos": "verb",
+    "translation": "crea"
+  },
+  "credits" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "recunoștințe"
+  },
+  "cross browser compatible" : {
+    "comment": "backwards browser compatible -> compatibilitate cu navigatoare mai vechi",
+    "pos": "expression",
+    "translation": "compatibilitate între navigatoare"
+  },
+  "custom post type" : {
+    "comment": "la fel pentru taxonomii",
+    "pos": "expression",
+    "translation": "tip de articol personalizat"
+  },
+  "debug" : {
+    "comment": "subst.: depanare",
+    "pos": "verb",
+    "translation": "depana"
+  },
+  "cut and paste" : {
+    "comment": "MS a tradus taie și lipește",
+    "pos": "expression",
+    "translation": "taie și plasează"
+  },
+  "deprecated" : {
+    "comment": "... sau abandonat",
+    "pos": "adjective",
+    "translation": "învechit"
+  },
+  "display" : {
+    "comment": "afișează, afișat (subs.: evran, vitrină)",
+    "pos": "verb",
+    "translation": "afișa"
+  },
+  "docked" : {
+    "comment": "... sau andocat?!",
+    "pos": "adjective",
+    "translation": "ancorat"
+  },
+  "downgrade" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "retrograda"
+  },
+  "download" : {
+    "comment": "vezi și \"upload\"",
+    "pos": "verb",
+    "translation": "descărca"
+  },
+  "draft" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "ciornă"
+  },
+  "drag and drop" : {
+    "comment": "la fel și în utilizări separate",
+    "pos": "expression",
+    "translation": "trage și plasează"
+  },
+  "dropdown menu" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "meniu derulant"
+  },
+  "easing effect" : {
+    "comment": "pentru animații",
+    "pos": "expression",
+    "translation": "efect de tranziție"
+  },
+  "edit" : {
+    "comment": "editare, editează",
+    "pos": "verb",
+    "translation": "edita"
+  },
+  "e-mail" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "email"
+  },
+  "embed" : {
+    "comment": "înglobat",
+    "pos": "verb",
+    "translation": "îngloba"
+  },
+  "emojis" : {
+    "comment": "pl. sg.:emoticon",
+    "pos": "noun",
+    "translation": "emoticoane"
+  },
+  "escaping" : {
+    "comment": "înlocuirea caracterelor speciale dintr-un șir cu codul lor (hexazecimal) de ex: \"adi pop!\" -> \"adi%20pop%21\"",
+    "pos": "verb",
+    "translation": "escapare"
+  },
+  "excerpt" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "rezumat"
+  },
+  "fade in / fade out" : {
+    "comment": "efecte de animație cu o anumită viteză de desfășurare pentru modul de aparitie/dispariție a unui element",
+    "pos": "expression",
+    "translation": "apariția / dispariția"
+  },
+  "fail" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "eșua"
+  },
+  "FAQ" : {
+    "comment": "Întrebări frecvente (puse frecvent)",
+    "pos": "expression",
+    "translation": "ÎF, ÎPF"
+  },
+  "fetching" : {
+    "comment": "se scot, se extrag...",
+    "pos": "verb",
+    "translation": "se aduc"
+  },
+  "feature" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "evidenția"
+  },
+  "feature" : {
+    "comment": "facilitate",
+    "pos": "noun",
+    "translation": "funcționalitate"
+  },
+  "feature image" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "imagine reprezentativă"
+  },
+  "featured" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "reprezentativ"
+  },
+  "feed" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "flux"
+  },
+  "feedback" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "impresii"
+  },
+  "fix" : {
+    "comment": "reparație (cod); verb: \"to fix\" -> a corecta / a repara",
+    "pos": "noun",
+    "translation": "corecție"
+  },
+  "folower" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "urmăritor"
+  },
+  "font" : {
+    "comment": "pl. fonturi",
+    "pos": "noun",
+    "translation": "font"
+  },
+  "footer" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "subsol"
+  },
+  "front page" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "pagina din față"
+  },
+  "frontend" : {
+    "comment": "fațadă?!",
+    "pos": "expression",
+    "translation": "partea din față a sitului"
+  },
+  "geotagging" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "geo-etichetare"
+  },
+  "grid" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "grid"
+  },
+  "hastag" : {
+    "comment": "preluare homofonică :)",
+    "pos": "noun",
+    "translation": "haștag"
+  },
+  "header" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "antet"
+  },
+  "home page" : {
+    "comment": "homepage la fel; poate fi si pagina de pornire",
+    "pos": "expression",
+    "translation": "prima pagină"
+  },
+  "hook" : {
+    "comment": "... sau cârlig; \"hook function\" -> funcție agățată",
+    "pos": "noun",
+    "translation": "agățătoare"
+  },
+  "hover" : {
+    "comment": "pluti?! \"hoover the link\" -> treci peste legătură",
+    "pos": "verb",
+    "translation": "trece peste"
+  },
+  "hovercard" : {
+    "comment": "ctxt.: Jetpack",
+    "pos": "noun",
+    "translation": "pluticard"
+  },
+  "icon" : {
+    "comment": "icon, iconuri",
+    "pos": "noun",
+    "translation": "icon"
+  },
+  "importer" : {
+    "comment": "module importatoare/exportatoare (de conținut)",
+    "pos": "noun",
+    "translation": "importator"
+  },
+  "impressions" : {
+    "comment": "ctxt.: Google Analytics",
+    "pos": "noun",
+    "translation": "impresionări"
+  },
+  "inbox" : {
+    "comment": "outbox -> ieșiri",
+    "pos": "noun",
+    "translation": "intrări"
+  },
+  "indent" : {
+    "comment": "verb: a indenta",
+    "pos": "adjective",
+    "translation": "indentare"
+  },
+  "Initial release" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "Lansare inițială"
+  },
+  "inline" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "în-linie"
+  },
+  "insights" : {
+    "comment": "ctxt.: Google Analytics",
+    "pos": "noun",
+    "translation": "perspective"
+  },
+  "keychain connections" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "conexiuni înlănțuite"
+  },
+  "language pack" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "pachet lingvistic"
+  },
+  "layout" : {
+    "comment": "aranjare în pagină",
+    "pos": "noun",
+    "translation": "aranjament"
+  },
+  "lean & mean" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "simplu și semnificativ"
+  },
+  "library" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "bibliotecă"
+  },
+  "like" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "apreciere"
+  },
+  "link" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "legătură"
+  },
+  "locale" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "locală"
+  },
+  "logged in" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "autentificat"
+  },
+  "logged out" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "deautentificat"
+  },
+  "login" : {
+    "comment": "autentificare",
+    "pos": "verb",
+    "translation": "autentifica"
+  },
+  "look and feel" : {
+    "comment": "... sau: aspect și senzație?",
+    "pos": "expression",
+    "translation": "aspect și afect"
+  },
+  "ltr" : {
+    "comment": "nu se traduce! (tip scriere: left-to-right, rtl - right-to-left)",
+    "pos": "expression",
+    "translation": "ltr"
+  },
+  "markup" : {
+    "comment": "poate cu vremea... marcap | tagat ... :) limbaj markup, schemă (de) markup...",
+    "pos": "adjective",
+    "translation": "markup"
+  },
+  "media" : {
+    "comment": "media, element media",
+    "pos": "noun",
+    "translation": "media"
+  },
+  "merge" : {
+    "comment": "sau combină",
+    "pos": "verb",
+    "translation": "îmbină"
+  },
+  "metadata" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "metadate"
+  },
+  "minify" : {
+    "comment": "a minifica, minificare, minificat",
+    "pos": "verb",
+    "translation": "minifica"
+  },
+  "miscellaneous" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "diverse"
+  },
+  "mobile-first" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "întâi-mobil"
+  },
+  "module" : {
+    "comment": "ex.: Jetpack; \"complex plugins have several modules\" -> modulele complexe au mai multe extensii",
+    "pos": "noun",
+    "translation": "extensie"
+  },
+  "mouse" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "maus"
+  },
+  "nested" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "imbricat"
+  },
+  "namespace" : {
+    "comment": "numele spațiului de șiruri pentru o temă/modul utilizat în internaționalizare/localizare",
+    "pos": "expression",
+    "translation": "nume-spațiu"
+  },
+  "nonce" : {
+    "comment": "criptografie: n(umăr) unic - număr/șir folosit o singură dată",
+    "pos": "noun",
+    "translation": "nunic/nunice"
+  },
+  "obfuscated code" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "cod obscurizat"
+  },
+  "off" : {
+    "comment": "se traduce doar atunci când nu reprezintă o valoare de variabilă",
+    "pos": "adjective",
+    "translation": "oprit"
+  },
+  "on" : {
+    "comment": "se traduce doar atunci când nu reprezintă o valoare de variabilă",
+    "pos": "adjective",
+    "translation": "pornit"
+  },
+  "on the fly" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "din mers"
+  },
+  "override" : {
+    "comment": "adj.: contramandat (a contramada/opri o funcțiune automată)",
+    "pos": "verb",
+    "translation": "contramanda"
+  },
+  "padding" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "distanțare"
+  },
+  "parallax" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "paralaxă"
+  },
+  "parser" : {
+    "comment": "verb: a interpreta",
+    "pos": "noun",
+    "translation": "interpretor"
+  },
+  "patch" : {
+    "comment": "(de cod) - petec (de cod) sună ciudat :)",
+    "pos": "noun",
+    "translation": "corectură"
+  },
+  "picker" : {
+    "comment": "... sau pipetă?!",
+    "pos": "noun",
+    "translation": "selector"
+  },
+  "pie chart" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "diagramă (sectorial) circulară"
+  },
+  "placeholder" : {
+    "comment": "\"front-end placeholders\" -> substitueți de conținut (înlocuitori)",
+    "pos": "noun",
+    "translation": "substituent"
+  },
+  "play" : {
+    "comment": "\"to play a video\" -> \"a rula un video\"",
+    "pos": "verb",
+    "translation": "rula"
+  },
+  "player" : {
+    "comment": "pl. playere",
+    "pos": "noun",
+    "translation": "player"
+  },
+  "plays" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "rulări"
+  },
+  "please" : {
+    "comment": "formă de adresare",
+    "pos": "expression",
+    "translation": "te rog"
+  },
+  "plugin" : {
+    "comment": "vezi și \"module\" -> extensie",
+    "pos": "noun",
+    "translation": "modul"
+  },
+  "post" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "articol"
+  },
+  "post" : {
+    "comment": "... uneori a trimite",
+    "pos": "verb",
+    "translation": "publica"
+  },
+  "privacy" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "confidențialitate"
+  },
+  "proofread" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "corectură"
+  },
+  "publicize" : {
+    "comment": "... publicizare - există, pate fi adoptat?",
+    "pos": "verb",
+    "translation": "(a face) publicitate"
+  },
+  "push notifications" : {
+    "comment": "notificări \"împinse\" imediat",
+    "pos": "expression",
+    "translation": "notificări imediate"
+  },
+  "referal" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "referire"
+  },
+  "referrer" : {
+    "comment": "pl.: referenți",
+    "pos": "noun",
+    "translation": "referent"
+  },
+  "related" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "similar"
+  },
+  "remove" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "înlătura"
+  },
+  "repository" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "depozitar"
+  },
+  "responsive" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "responsiv"
+  },
+  "revamped" : {
+    "comment": "... sau reînnoit?",
+    "pos": "adjective",
+    "translation": "modernizat"
+  },
+  "review" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "recenzie"
+  },
+  "reviewer" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "recenzent"
+  },
+  "rtl" : {
+    "comment": "vezi \"ltr\"",
+    "pos": "expression",
+    "translation": "rtl"
+  },
+  "sanitize" : {
+    "comment": "\"to sanitize the code\" -> \"a sanitiza codul\" (sin.: a dezinfecta); cod sanitizat - cod imunizat",
+    "pos": "verb",
+    "translation": "sanitiza"
+  },
+  "screen" : {
+    "comment": "\"administrative screen\" -> ecran de administrare",
+    "pos": "noun",
+    "translation": "ecran"
+  },
+  "scroll" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "derula"
+  },
+  "send to Trash" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "arunca la gunoi"
+  },
+  "setup" : {
+    "comment": "setări inițiale, instalare",
+    "pos": "noun",
+    "translation": "inițializare"
+  },
+  "share" : {
+    "comment": "... sau a împărtăși?!",
+    "pos": "verb",
+    "translation": "partaja"
+  },
+  "shortcode" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "scurtcod"
+  },
+  "shortcut" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "scurtătură"
+  },
+  "shortlink" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "legătură scurtă"
+  },
+  "show" : {
+    "comment": "arată",
+    "pos": "verb",
+    "translation": "arăta"
+  },
+  "show" : {
+    "comment": "ant.: \"hide\" -> ascunde",
+    "pos": "verb",
+    "translation": "arata"
+  },
+  "site" : {
+    "comment": "situl, sitului, situri",
+    "pos": "noun",
+    "translation": "sit"
+  },
+  "sitemap" : {
+    "comment": "pl. hărți situri",
+    "pos": "expression",
+    "translation": "hartă sit"
+  },
+  "slider" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "carusel"
+  },
+  "slides" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "diapozitive"
+  },
+  "slug" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "descriptor"
+  },
+  "smooth" : {
+    "comment": "\"smooth scroll\" -> derulare lină",
+    "pos": "adjective",
+    "translation": "lin"
+  },
+  "sorry" : {
+    "comment": "\"Sorry, but...\" -> \"Regret, dar...\"",
+    "pos": "noun",
+    "translation": "regret"
+  },
+  "stiky" : {
+    "comment": "stiky post -> \"articol reprezentativ\" (\"lipicios\" nu are sens, \"ținut la început\" sau \"scos în față\" - cam mult)",
+    "pos": "adjective",
+    "translation": "reprezentativ"
+  },
+  "staging" : {
+    "comment": "punere în scenă, înscenare e prea departe...",
+    "pos": "noun",
+    "translation": "instanțiere"
+  },
+  "string" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "șir"
+  },
+  "styler" : {
+    "comment": "... sau a stileur?!",
+    "pos": "noun",
+    "translation": "stilizator"
+  },
+  "stylesheet" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "foaie de stiluri"
+  },
+  "submenu" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "sub-meniu"
+  },
+  "submit" : {
+    "comment": "",
+    "pos": "verb",
+    "translation": "trimite"
+  },
+  "superscript" : {
+    "comment": "(la putere)",
+    "pos": "adjective",
+    "translation": "indice-sus"
+  },
+  "subscript" : {
+    "comment": "(indice)",
+    "pos": "adjective",
+    "translation": "indice-jos"
+  },
+  "swich" : {
+    "comment": "sub.: comutator",
+    "pos": "verb",
+    "translation": "comuta"
+  },
+  "tab" : {
+    "comment": "\"tab control\" -> control cu file (multi-filă)",
+    "pos": "noun",
+    "translation": "filă"
+  },
+  "tag" : {
+    "comment": "excepție: pentru «HTML tag» se va folosi «tag HTML»",
+    "pos": "noun",
+    "translation": "etichetă"
+  },
+  "tap" : {
+    "comment": "intraductibil! \"tap the link\" -> \"dă tap pe legătură\"; similar cu clic, dar pe \"ecrane sensibile (la atingere)\" <- \"touch screen\"",
+    "pos": "verb",
+    "translation": "tap"
+  },
+  "task" : {
+    "comment": "pl. taskuri; multitask, mutitaskuri",
+    "pos": "noun",
+    "translation": "task"
+  },
+  "template" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "șablon"
+  },
+  "testimonial" : {
+    "comment": "mărturie?",
+    "pos": "noun",
+    "translation": "testimonial"
+  },
+  "text area" : {
+    "comment": "tip de câmp",
+    "pos": "expression",
+    "translation": "zonă text"
+  },
+  "text-domain" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "domeniu-text"
+  },
+  "theme" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "temă"
+  },
+  "thumbnail" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "miniatură"
+  },
+  "tiled" : {
+    "comment": "",
+    "pos": "adjective",
+    "translation": "placat"
+  },
+  "tips" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "sfaturi"
+  },
+  "toggle" : {
+    "comment": "vb. a comuta",
+    "pos": "noun",
+    "translation": "comutator"
+  },
+  "token" : {
+    "comment": "criptografie: garant/garanți?",
+    "pos": "noun",
+    "translation": "token, tokeni"
+  },
+  "toolbar" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "bară de unelte"
+  },
+  "trigger" : {
+    "comment": "",
+    "pos": "noun",
+    "translation": "declanșator"
+  },
+  "tweets" : {
+    "comment": "twit, twituri - mesaje de pe Twitter",
+    "pos": "noun",
+    "translation": "twituri"
+  },
+  "typografy" : {
+    "comment": "se referă la fonturi; ansamblul setărilor legate de aspectul textului",
+    "pos": "noun",
+    "translation": "tipografice"
+  },
+  "underscore" : {
+    "comment": "liniuțe-jos (pl.) \"_\"",
+    "pos": "expression",
+    "translation": "liniuță-jos"
+  },
+  "undo" : {
+    "comment": "revenire",
+    "pos": "verb",
+    "translation": "revino"
+  },
+  "unfollow site" : {
+    "comment": "ne-urmărire (scoatere de sub urmărire)",
+    "pos": "expression",
+    "translation": "sit ne-urmărit"
+  },
+  "update" : {
+    "comment": "(la zi)",
+    "pos": "noun",
+    "translation": "actualizare"
+  },
+  "upgrade" : {
+    "comment": "(la o versiune superioară)",
+    "pos": "noun",
+    "translation": "actualizare"
+  },
+  "upload" : {
+    "comment": "încărcare, încarcă",
+    "pos": "verb",
+    "translation": "încărca"
+  },
+  "usability" : {
+    "comment": "(expresie) ușurință în utilizare",
+    "pos": "adjective",
+    "translation": "uzabilitate"
+  },
+  "view" : {
+    "comment": "vezi; sub.: vizualizare",
+    "pos": "verb",
+    "translation": "vedea"
+  },
+  "widget" : {
+    "comment": "vezi motivația la: https://ro.wordpress.org/2015/05/09/o-piesa/",
+    "pos": "noun",
+    "translation": "piesă"
+  },
+  "widgetized area" : {
+    "comment": "",
+    "pos": "expression",
+    "translation": "zonă asamblabilă"
+  },
+  "wildcard" : {
+    "comment": "substitut",
+    "pos": "noun",
+    "translation": "metacaracter"
+  },
+  "workaround" : {
+    "comment": " (for a bug | pentru o eroare)",
+    "pos": "expression",
+    "translation": "soluție ocolitoare"
+  }
+}
