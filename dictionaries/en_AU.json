@@ -1,0 +1,793 @@
+{
+    "analyze": {
+        "comment": "",
+        "pos": "",
+        "translation": "analyse"
+    }
+,
+    "analyzed": {
+        "comment": "",
+        "pos": "",
+        "translation": "analysed"
+    }
+,
+    "analyzing": {
+        "comment": "",
+        "pos": "",
+        "translation": "analysing"
+    }
+,
+    "anonymize": {
+        "comment": "",
+        "pos": "",
+        "translation": "anonymise"
+    }
+,
+    "apologize": {
+        "comment": "",
+        "pos": "",
+        "translation": "apologise"
+    }
+,
+    "authorization": {
+        "comment": "",
+        "pos": "",
+        "translation": "authorisation"
+    }
+,
+    "authorize": {
+        "comment": "",
+        "pos": "",
+        "translation": "authorise"
+    }
+,
+    "authorized": {
+        "comment": "",
+        "pos": "",
+        "translation": "authorised"
+    }
+,
+    "back-end": {
+        "comment": "",
+        "pos": "",
+        "translation": "back end"
+    }
+,
+    "backend": {
+        "comment": "",
+        "pos": "",
+        "translation": "back end"
+    }
+,
+    "behavior": {
+        "comment": "",
+        "pos": "",
+        "translation": "behaviour"
+    }
+,
+    "canceled": {
+        "comment": "",
+        "pos": "",
+        "translation": "cancelled"
+    }
+,
+    "canceling": {
+        "comment": "",
+        "pos": "",
+        "translation": "cancelling"
+    }
+,
+    "capitalize": {
+        "comment": "",
+        "pos": "",
+        "translation": "capitalise"
+    }
+,
+    "capitalized": {
+        "comment": "",
+        "pos": "",
+        "translation": "capitalised"
+    }
+,
+    "catalog": {
+        "comment": "",
+        "pos": "",
+        "translation": "catalogue"
+    }
+,
+    "categorize": {
+        "comment": "",
+        "pos": "",
+        "translation": "categorise"
+    }
+,
+    "categorized": {
+        "comment": "",
+        "pos": "",
+        "translation": "categorised"
+    }
+,
+    "center": {
+        "comment": "",
+        "pos": "",
+        "translation": "centre"
+    }
+,
+    "centered": {
+        "comment": "",
+        "pos": "",
+        "translation": "centred"
+    }
+,
+    "centering": {
+        "comment": "",
+        "pos": "",
+        "translation": "centring"
+    }
+,
+    "centimeter": {
+        "comment": "",
+        "pos": "",
+        "translation": "centimetre"
+    }
+,
+    "centimeters": {
+        "comment": "",
+        "pos": "",
+        "translation": "centimetres"
+    }
+,
+    "centralize": {
+        "comment": "",
+        "pos": "",
+        "translation": "centralise"
+    }
+,
+    "centralized": {
+        "comment": "",
+        "pos": "",
+        "translation": "centralised"
+    }
+,
+    "color": {
+        "comment": "",
+        "pos": "",
+        "translation": "colour"
+    }
+,
+    "color": {
+        "comment": "",
+        "pos": "",
+        "translation": "colour"
+    }
+,
+    "customizable": {
+        "comment": "",
+        "pos": "",
+        "translation": "customisable"
+    }
+,
+    "customization": {
+        "comment": "",
+        "pos": "",
+        "translation": "customisation"
+    }
+,
+    "customizations": {
+        "comment": "",
+        "pos": "",
+        "translation": "customisations"
+    }
+,
+    "customize": {
+        "comment": "",
+        "pos": "",
+        "translation": "customise"
+    }
+,
+    "customized": {
+        "comment": "",
+        "pos": "",
+        "translation": "customised"
+    }
+,
+    "customizer": {
+        "comment": "",
+        "pos": "",
+        "translation": "customiser"
+    }
+,
+    "customizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "customising"
+    }
+,
+    "dialog": {
+        "comment": "",
+        "pos": "",
+        "translation": "dialogue"
+    }
+,
+    "digitize": {
+        "comment": "",
+        "pos": "",
+        "translation": "digitise"
+    }
+,
+    "digitized": {
+        "comment": "",
+        "pos": "",
+        "translation": "digitised"
+    }
+,
+    "e-mail": {
+        "comment": "",
+        "pos": "",
+        "translation": "email"
+    }
+,
+    "e-mail": {
+        "comment": "",
+        "pos": "",
+        "translation": "email"
+    }
+,
+    "favor": {
+        "comment": "",
+        "pos": "",
+        "translation": "favour"
+    }
+,
+    "favor": {
+        "comment": "",
+        "pos": "",
+        "translation": "favour"
+    }
+,
+    "favorite": {
+        "comment": "",
+        "pos": "",
+        "translation": "favourite"
+    }
+,
+    "favorited": {
+        "comment": "",
+        "pos": "",
+        "translation": "favourited"
+    }
+,
+    "favorites": {
+        "comment": "",
+        "pos": "",
+        "translation": "favourites"
+    }
+,
+    "finalize": {
+        "comment": "",
+        "pos": "",
+        "translation": "finalise"
+    }
+,
+    "finalized": {
+        "comment": "",
+        "pos": "",
+        "translation": "finalised"
+    }
+,
+    "front-end": {
+        "comment": "",
+        "pos": "",
+        "translation": "front end"
+    }
+,
+    "frontend": {
+        "comment": "",
+        "pos": "",
+        "translation": "front end"
+    }
+,
+    "honor": {
+        "comment": "",
+        "pos": "",
+        "translation": "honour"
+    }
+,
+    "honored": {
+        "comment": "",
+        "pos": "",
+        "translation": "honoured"
+    }
+,
+    "Howdy!": {
+        "comment": "",
+        "pos": "",
+        "translation": "G'day!"
+    }
+,
+    "initialize": {
+        "comment": "",
+        "pos": "",
+        "translation": "initialise"
+    }
+,
+    "initialized": {
+        "comment": "",
+        "pos": "",
+        "translation": "initialised"
+    }
+,
+    "initializing": {
+        "comment": "",
+        "pos": "",
+        "translation": "initialising"
+    }
+,
+    "internationalization": {
+        "comment": "",
+        "pos": "",
+        "translation": "internationalisation"
+    }
+,
+    "internationalize": {
+        "comment": "",
+        "pos": "",
+        "translation": "internationalise"
+    }
+,
+    "internationalized": {
+        "comment": "",
+        "pos": "",
+        "translation": "internationalised"
+    }
+,
+    "itemize": {
+        "comment": "",
+        "pos": "",
+        "translation": "itemise"
+    }
+,
+    "itemized": {
+        "comment": "",
+        "pos": "",
+        "translation": "itemised"
+    }
+,
+    "license": {
+        "comment": "",
+        "pos": "",
+        "translation": "licence"
+    }
+,
+    "localization": {
+        "comment": "",
+        "pos": "",
+        "translation": "localisation"
+    }
+,
+    "localize": {
+        "comment": "",
+        "pos": "",
+        "translation": "localise"
+    }
+,
+    "localized": {
+        "comment": "",
+        "pos": "",
+        "translation": "localised"
+    }
+,
+    "maximize": {
+        "comment": "",
+        "pos": "",
+        "translation": "maximise"
+    }
+,
+    "maximized": {
+        "comment": "",
+        "pos": "",
+        "translation": "maximised"
+    }
+,
+    "meter": {
+        "comment": "unit of measure",
+        "pos": "",
+        "translation": "metre"
+    }
+,
+    "meters": {
+        "comment": "unit of measure",
+        "pos": "",
+        "translation": "metres"
+    }
+,
+    "millimeter": {
+        "comment": "",
+        "pos": "",
+        "translation": "millimetre"
+    }
+,
+    "millimeters": {
+        "comment": "",
+        "pos": "",
+        "translation": "millimetres"
+    }
+,
+    "minimize": {
+        "comment": "",
+        "pos": "",
+        "translation": "minimise"
+    }
+,
+    "minimized": {
+        "comment": "",
+        "pos": "",
+        "translation": "minimised"
+    }
+,
+    "Modernize": {
+        "comment": "",
+        "pos": "",
+        "translation": "Modernise"
+    }
+,
+    "Modernized": {
+        "comment": "",
+        "pos": "",
+        "translation": "Modernised"
+    }
+,
+    "neighbor": {
+        "comment": "",
+        "pos": "",
+        "translation": "neighbour"
+    }
+,
+    "normalize": {
+        "comment": "",
+        "pos": "",
+        "translation": "normalise"
+    }
+,
+    "optimization": {
+        "comment": "",
+        "pos": "",
+        "translation": "optimisation"
+    }
+,
+    "optimization": {
+        "comment": "",
+        "pos": "",
+        "translation": "optimisation "
+    }
+,
+    "optimize": {
+        "comment": "",
+        "pos": "",
+        "translation": "optimise"
+    }
+,
+    "optimized": {
+        "comment": "",
+        "pos": "",
+        "translation": "optimised"
+    }
+,
+    "optimizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "optimising"
+    }
+,
+    "organization": {
+        "comment": "",
+        "pos": "",
+        "translation": "organisation"
+    }
+,
+    "organize": {
+        "comment": "",
+        "pos": "",
+        "translation": "organise"
+    }
+,
+    "organized": {
+        "comment": "",
+        "pos": "",
+        "translation": "organised"
+    }
+,
+    "organizer": {
+        "comment": "",
+        "pos": "",
+        "translation": "organiser"
+    }
+,
+    "organizers": {
+        "comment": "",
+        "pos": "",
+        "translation": "organisers"
+    }
+,
+    "organizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "organising"
+    }
+,
+    "personalization": {
+        "comment": "",
+        "pos": "",
+        "translation": "personalisation"
+    }
+,
+    "personalize": {
+        "comment": "",
+        "pos": "",
+        "translation": "personalise"
+    }
+,
+    "personalized": {
+        "comment": "",
+        "pos": "",
+        "translation": "personalised"
+    }
+,
+    "prioritization": {
+        "comment": "",
+        "pos": "",
+        "translation": "prioritisation"
+    }
+,
+    "publicize": {
+        "comment": "",
+        "pos": "",
+        "translation": "publicise"
+    }
+,
+    "publicized": {
+        "comment": "",
+        "pos": "",
+        "translation": "publicised"
+    }
+,
+    "publicizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "publicising"
+    }
+,
+    "randomize": {
+        "comment": "",
+        "pos": "",
+        "translation": "randomise"
+    }
+,
+    "randomizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "randomising"
+    }
+,
+    "realize": {
+        "comment": "",
+        "pos": "",
+        "translation": "realise"
+    }
+,
+    "realized": {
+        "comment": "",
+        "pos": "",
+        "translation": "realised"
+    }
+,
+    "recognize": {
+        "comment": "",
+        "pos": "",
+        "translation": "recognise"
+    }
+,
+    "recognized": {
+        "comment": "",
+        "pos": "",
+        "translation": "recognised"
+    }
+,
+    "recognizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "recognising"
+    }
+,
+    "reorganize": {
+        "comment": "",
+        "pos": "",
+        "translation": "reorganise"
+    }
+,
+    "reorganized": {
+        "comment": "",
+        "pos": "",
+        "translation": "reorganised"
+    }
+,
+    "sanitization": {
+        "comment": "",
+        "pos": "",
+        "translation": "sanitisation"
+    }
+,
+    "sanitize": {
+        "comment": "",
+        "pos": "",
+        "translation": "sanitise"
+    }
+,
+    "sanitized": {
+        "comment": "",
+        "pos": "",
+        "translation": "sanitised"
+    }
+,
+    "sanitizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "sanitising"
+    }
+,
+    "serialize": {
+        "comment": "",
+        "pos": "",
+        "translation": "serialise"
+    }
+,
+    "serialized": {
+        "comment": "",
+        "pos": "",
+        "translation": "serialised"
+    }
+,
+    "specialize": {
+        "comment": "",
+        "pos": "",
+        "translation": "specialise"
+    }
+,
+    "specialized": {
+        "comment": "",
+        "pos": "",
+        "translation": "specialised"
+    }
+,
+    "specializes": {
+        "comment": "",
+        "pos": "",
+        "translation": "specialises"
+    }
+,
+    "specializing": {
+        "comment": "",
+        "pos": "",
+        "translation": "specialising"
+    }
+,
+    "standardize": {
+        "comment": "",
+        "pos": "",
+        "translation": "standardise"
+    }
+,
+    "standardized": {
+        "comment": "",
+        "pos": "",
+        "translation": "standardised"
+    }
+,
+    "symbolize": {
+        "comment": "",
+        "pos": "",
+        "translation": "symbolise"
+    }
+,
+    "symbolizes": {
+        "comment": "",
+        "pos": "",
+        "translation": "symbolises"
+    }
+,
+    "synchronization": {
+        "comment": "",
+        "pos": "",
+        "translation": "synchronisation"
+    }
+,
+    "synchronize": {
+        "comment": "",
+        "pos": "",
+        "translation": "synchronise"
+    }
+,
+    "synchronized": {
+        "comment": "",
+        "pos": "",
+        "translation": "synchronised"
+    }
+,
+    "synchronizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "synchronising"
+    }
+,
+    "traveling": {
+        "comment": "",
+        "pos": "",
+        "translation": "travelling"
+    }
+,
+    "unauthorized": {
+        "comment": "",
+        "pos": "",
+        "translation": "unauthorised"
+    }
+,
+    "uncategorized": {
+        "comment": "",
+        "pos": "",
+        "translation": "uncategorised"
+    }
+,
+    "unsavory": {
+        "comment": "",
+        "pos": "",
+        "translation": "unsavoury"
+    }
+,
+    "utilize": {
+        "comment": "",
+        "pos": "",
+        "translation": "utilise"
+    }
+,
+    "utilized": {
+        "comment": "",
+        "pos": "",
+        "translation": "utilised"
+    }
+,
+    "utilizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "utilising"
+    }
+,
+    "visualization": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualisation"
+    }
+,
+    "visualize": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualise"
+    }
+,
+    "visualized": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualised"
+    }
+,
+    "visualizing": {
+        "comment": "",
+        "pos": "",
+        "translation": "visualising"
+    }
+,
+    "widgetized": {
+        "comment": "",
+        "pos": "",
+        "translation": "widgetised"
+    }
+}

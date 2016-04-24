@@ -474,6 +474,11 @@
         "pos": "", 
         "translation": "non valido"
     }, 
+    "label": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "etichetta"
+    }, 
     "layout": {
         "comment": "", 
         "pos": "", 
@@ -573,6 +578,11 @@
         "comment": "", 
         "pos": "", 
         "translation": ""
+    }, 
+    "path": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "path"
     }, 
     "pending": {
         "comment": "", 
