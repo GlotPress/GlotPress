@@ -9,11 +9,9 @@ jQuery.multipress = function (keys, handler) {
   jQuery(document).keydown(function (event) {
     down[event.keyCode] = true;
   }).keyup(function (event) {
-    var remaining = keys.slice(0),
-            pressed = Object.keys(down).map(function (num) {
+    var remaining = keys.slice(0), pressed = Object.keys(down).map(function (num) {
       return parseInt(num, 10);
-    }),
-            indexOfKey;
+    }), indexOfKey;
     jQuery.each(pressed, function (i, key) {
       if (down[key] === true) {
         down[key] = false;
@@ -40,6 +38,7 @@ jQuery(document).ready(function () {
     jQuery('.filters-toolbar div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
     jQuery('.glossary-word').contents().unwrap();
     var lang = localStorage.getItem('gd_language');
+    jQuery('.glotdict_language').append(jQuery('<option></option>'));
     jQuery.each(['bg_BG', 'de_DE', 'es_ES', 'fi', 'fr_FR', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'sk_SK', 'sv_SE'], function (key, value) {
       var new_option = jQuery('<option></option>').attr('value', value).text(value);
       if (lang === value) {
@@ -47,8 +46,8 @@ jQuery(document).ready(function () {
       }
       jQuery('.glotdict_language').append(new_option);
     });
-    if (jQuery('.glotdict_language option:selected').length === 0) {
-      localStorage.setItem('gd_language', jQuery('.glotdict_language option:first-child').text());
+    if (lang === '') {
+      jQuery('.filters-toolbar div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display: inline;margin-left:4px;">&larr; Set the glossary!</span>');
     }
     jQuery('.glotdict_language').change(function () {
       localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());
@@ -57,8 +56,13 @@ jQuery(document).ready(function () {
   }
 
   function gd_add_terms() {
+    var lang = gd_get_lang();
+    if (lang === false) {
+      console.log('GlotDict: missing lang');
+      return false;
+    }
     jQuery.ajax({
-      url: glotdict_path + '/' + gd_get_lang() + '.json',
+      url: glotdict_path + '/' + lang + '.json',
       dataType: 'text'
     }).done(function (data) {
       data = JSON.parse(data);
@@ -102,7 +106,7 @@ jQuery(document).ready(function () {
   function gd_get_lang() {
     var lang = localStorage.getItem('gd_language');
     if (lang === '' || lang === null) {
-      lang = jQuery('.glotdict_language option:first-child').text();
+      return false;
     }
     return lang;
   }
