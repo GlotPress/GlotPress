@@ -1,7 +1,11 @@
 {
 	"name": "glotpress/glotpress-wp",
 	"description": "GlotPress, a WordPress Plugin",
+<<<<<<< HEAD
 	"version": "2.1.0-alpha",
+=======
+	"version": "2.0.1",
+>>>>>>> 3d925b7... Release: Update version in composer.json
 	"type": "wordpress-plugin",
 	"keywords": [ "translations" ],
 	"homepage": "https://github.com/GlotPress/GlotPress-WP/",
