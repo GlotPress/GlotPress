@@ -92,7 +92,7 @@ function gp_schema_get() {
 		priority TINYINT NOT NULL DEFAULT 0,
 		date_added DATETIME DEFAULT NULL,
 		PRIMARY KEY  (id),
-		KEY project_id_status (project_id, status),
+		KEY project_id_status (project_id,status),
 		KEY singular_plural_context (singular(63),plural(63),context(63))
 	) $charset_collate;";
 
