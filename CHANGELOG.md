@@ -12,6 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Fix conflict with other plugins that also use the `GP_Locales` class. ([#413](https://github.com/GlotPress/GlotPress-WP/issues/413))
 * Exclude the art-xemoji locale from length check that caused spurious warnings. ([#417](https://github.com/GlotPress/GlotPress-WP/issues/417))
 
+**Features**
+
+* Add Haitian Creole locale definition. ([#411](https://github.com/GlotPress/GlotPress-WP/issues/411))
+* Update Asturian locale definition. ([#412](https://github.com/GlotPress/GlotPress-WP/issues/412))
+
 Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi
 
 ## 2.0.0 (April 04, 2016)
