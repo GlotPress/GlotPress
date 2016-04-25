@@ -104,7 +104,7 @@ function gp_link_set_edit() {
  * @return string $link
  */
 function gp_link_set_delete_get( $set, $project, $text = false, $attrs = array() ) {
-	if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
+	if ( ! GP::$permission->current_user_can( 'delete', 'project', $project->id ) ) {
 		return '';
 	}
 
@@ -172,7 +172,7 @@ function gp_link_glossary_edit() {
  * @return string The HTML link.
  */
 function gp_link_glossary_delete_get( $glossary, $set, $text = false, $attrs = array() ) {
-	if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $set->id ) ) {
+	if ( ! GP::$permission->current_user_can( 'delete', 'translation-set', $set->id ) ) {
 		return '';
 	}
 

@@ -1,4 +1,6 @@
 <?php
+if ( ! class_exists( 'GP_Locale' ) ) :
+
 class GP_Locale {
 	public $english_name;
 	public $native_name;
@@ -17,7 +19,7 @@ class GP_Locale {
 	// TODO: days, months, decimals, quotes
 
 	private $_index_for_number;
-	
+
 	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
@@ -86,6 +88,10 @@ class GP_Locale {
 	}
 
 }
+
+endif;
+
+if ( ! class_exists( 'GP_Locales' ) ) :
 
 class GP_Locales {
 
@@ -197,7 +203,9 @@ class GP_Locales {
 		$ast->english_name = 'Asturian';
 		$ast->native_name = 'Asturianu';
 		$ast->lang_code_iso_639_2 = 'ast';
+		$ast->lang_code_iso_639_3 = 'ast';
 		$ast->country_code = 'es';
+		$ast->wp_locale = 'ast';
 		$ast->slug = 'ast';
 
 		$av = new GP_Locale();
@@ -962,6 +970,16 @@ class GP_Locales {
 		$ha->text_direction = 'rtl';
 		$ha->google_code = 'ha';
 		$ha->facebook_locale = 'ha_NG';
+
+		$hat = new GP_Locale();
+		$hat->english_name = 'Haitian Creole';
+		$hat->native_name = 'Kreyol ayisyen';
+		$hat->lang_code_iso_639_1 = 'ht';
+		$hat->lang_code_iso_639_2 = 'hat';
+		$hat->lang_code_iso_639_3 = 'hat';
+		$hat->country_code = 'ht';
+		$hat->wp_locale = 'hat';
+		$hat->slug = 'hat';
 
 		$haw = new GP_Locale();
 		$haw->english_name = 'Hawaiian';
@@ -2190,3 +2208,5 @@ class GP_Locales {
 		return $result;
 	}
 }
+
+endif;
