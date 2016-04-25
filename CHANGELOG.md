@@ -8,9 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Fixed "undefined property" error if a user had made translations but the user id was then deleted. ([#386](https://github.com/GlotPress/GlotPress-WP/issues/386))
 * Updated all delete permission levels to be consistent in different areas of GlotPress. ([#390](https://github.com/GlotPress/GlotPress-WP/issues/390))
 * Fixed the cli export command to properly use the "status" option. ([#404](https://github.com/GlotPress/GlotPress-WP/issues/404))
-* Excluded art-xemoji character set from length check that caused spurious warnings. ([#417](https://github.com/GlotPress/GlotPress-WP/issues/417))
-* Fixed conflict with other plugins that also use the `GP_Locales` class. ([#413](https://github.com/GlotPress/GlotPress-WP/issues/413))
 * Added upgrade script to remove trailing slashes left of project paths from 1.0 which are no longer supported. ([#410](https://github.com/GlotPress/GlotPress-WP/issues/410))
+* Fixed conflict with other plugins that also use the `GP_Locales` class. ([#413](https://github.com/GlotPress/GlotPress-WP/issues/413))
+* Excluded art-xemoji character set from length check that caused spurious warnings. ([#417](https://github.com/GlotPress/GlotPress-WP/issues/417))
+
+Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi
 
 ## 2.0.0 (April 04, 2016)
 
