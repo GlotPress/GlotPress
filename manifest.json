@@ -6,7 +6,9 @@
   "version": "1.0.6",
   "homepage_url": "https://github.com/Mte90/GlotDict",
   "icons": {
-    "48": "icons/icon-48.png"
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
   },
 
   "applications": {
