@@ -1,0 +1,1547 @@
+{
+  "accent color": {
+    "comment": "Özelleştiricide kullanılan renk paletleri için",
+    "pos": "",
+    "translation": "vurgu rengi"
+  },
+  "account recovery": {
+    "comment": "Şifre unutulduğunda hesabınıza erişebilmek için gerekli seçenekler. Detaylı bilgi: http://en.support.wordpress.com/account-recovery/",
+    "pos": "",
+    "translation": "hesap kurtarma"
+  },
+  "action hook": {
+    "comment": "WordPress geliştirici şartları.",
+    "pos": "",
+    "translation": "eylem kancası"
+  },
+  "activate": {
+    "comment": "",
+    "pos": "",
+    "translation": "etkinleştir"
+  },
+  "activated": {
+    "comment": "",
+    "pos": "",
+    "translation": "etkinleştirildi"
+  },
+  "activation e-mail": {
+    "comment": "Wordpress.com ile bir kayıt oluşturulduğunda, otomatik e-posta gönderir.",
+    "pos": "",
+    "translation": "etkinleştirme e-postası"
+  },
+  "ad policy": {
+    "comment": "Wordpress.com tarafından kullanıcı bloglarına yerleştirilebilecek reklamların politikası.",
+    "pos": "",
+    "translation": "reklam politikası"
+  },
+  "add email": {
+    "comment": "Feature to connect email hosted with another provider. More info: http://en.support.wordpress.com/domains/add-email/",
+    "pos": "",
+    "translation": "e-posta ekle"
+  },
+  "address": {
+    "comment": "",
+    "pos": "",
+    "translation": "adres"
+  },
+  "admin bar": {
+    "comment": "",
+    "pos": "",
+    "translation": "yönetim çubuğu"
+  },
+  "admin panel": {
+    "comment": "",
+    "pos": "",
+    "translation": "yönetim paneli"
+  },
+  "administrator": {
+    "comment": "Wordpress sitesi üzerinde en güçlü kullanıcı rolü. Detaylı bilgi: http://en.support.wordpress.com/user-roles/",
+    "pos": "",
+    "translation": "yönetici"
+  },
+  "After the Deadline": {
+    "comment": "Dil kontrolörü (yazılım adı). Normalde çevirmeyin. http://afterthedeadline.com/",
+    "pos": "",
+    "translation": "Son Tarihten Sonra"
+  },
+  "Appearance": {
+    "comment": "Mevcut temalarınızı yönetebilir, onları özelleştirebilir ve yeni temalar yükleyebilirsiniz.",
+    "pos": "",
+    "translation": "Görünüm"
+  },
+  "applicable law": {
+    "comment": "Kabul edilebilecek tüm kurallar.",
+    "pos": "",
+    "translation": "geçerli yasa"
+  },
+  "arbitral decision": {
+    "comment": "",
+    "pos": "",
+    "translation": "tahkim kararı"
+  },
+  "archive": {
+    "comment": "",
+    "pos": "",
+    "translation": "arşiv"
+  },
+  "archives": {
+    "comment": "",
+    "pos": "",
+    "translation": "arşivler"
+  },
+  "are you sure you want": {
+    "comment": "",
+    "pos": "",
+    "translation": "istediğinizden emin misiniz"
+  },
+  "argument": {
+    "comment": "",
+    "pos": "",
+    "translation": "bağımsız değişken"
+  },
+  "array": {
+    "comment": "Geliştirici izinleri",
+    "pos": "",
+    "translation": "dizilim"
+  },
+  "article": {
+    "comment": "Temaya bağlı olarak, sayfalara ya da içeriklere değinilebilir.",
+    "pos": "",
+    "translation": "makale"
+  },
+  "aside": {
+    "comment": "",
+    "pos": "",
+    "translation": "ayrı"
+  },
+  "at the bottom": {
+    "comment": "",
+    "pos": "",
+    "translation": "altta"
+  },
+  "attachment": {
+    "comment": "",
+    "pos": "",
+    "translation": "ek"
+  },
+  "audio": {
+    "comment": "Blogda gömülü ses dosyaları.",
+    "pos": "",
+    "translation": "ses"
+  },
+  "Authenticator app": {
+    "comment": "",
+    "pos": "",
+    "translation": "Kimlik Doğrulayıcı uygulaması"
+  },
+  "author": {
+    "comment": "Eklenti veya Tema yapımcısı",
+    "pos": "",
+    "translation": "yazar"
+  },
+  "auto renew": {
+    "comment": "Bkz. \"otomatik yenileme\"",
+    "pos": "",
+    "translation": "otomatik yenileme"
+  },
+  "automatic renewal": {
+    "comment": "",
+    "pos": "",
+    "translation": "otomatik yenileme"
+  },
+  "avatar": {
+    "comment": "Bir kullanıcıyı temsil eden, görüntü veya resim.",
+    "pos": "",
+    "translation": "avatar"
+  },
+  "background": {
+    "comment": "Blog arka plan görüntü resmi veya rengi.",
+    "pos": "",
+    "translation": "arka plan"
+  },
+  "background color": {
+    "comment": "Arka plan rengi ",
+    "pos": "",
+    "translation": "arka plan rengi"
+  },
+  "background image": {
+    "comment": "",
+    "pos": "",
+    "translation": "arka plan görüntüsü"
+  },
+  "background pattern": {
+    "comment": "arka plan deseni",
+    "pos": "",
+    "translation": "arka plan deseni"
+  },
+  "backup code": {
+    "comment": "",
+    "pos": "",
+    "translation": "yedekleme kodu"
+  },
+  "Basic": {
+    "comment": "",
+    "pos": "",
+    "translation": "Temel"
+  },
+  "billing history": {
+    "comment": "",
+    "pos": "",
+    "translation": "fatura geçmişi"
+  },
+  "binary": {
+    "comment": "",
+    "pos": "",
+    "translation": "ikili"
+  },
+  "blavatar": {
+    "comment": "",
+    "pos": "",
+    "translation": "blavatar"
+  },
+  "blog": {
+    "comment": "",
+    "pos": "",
+    "translation": "blog"
+  },
+  "blog address": {
+    "comment": "",
+    "pos": "",
+    "translation": "blog adresi"
+  },
+  "blog post": {
+    "comment": "",
+    "pos": "",
+    "translation": "blog gönderisi"
+  },
+  "blog theme": {
+    "comment": "",
+    "pos": "",
+    "translation": "blog teması"
+  },
+  "blogger": {
+    "comment": "",
+    "pos": "",
+    "translation": "blog yazarı"
+  },
+  "bookmarklet": {
+    "comment": "",
+    "pos": "",
+    "translation": "kod içeren yer işareti"
+  },
+  "browser": {
+    "comment": "",
+    "pos": "",
+    "translation": "tarayıcı"
+  },
+  "BuddyPress": {
+    "comment": "WordPress.org eklentisi - http://buddypress.org/",
+    "pos": "",
+    "translation": "BuddyPress"
+  },
+  "bundle": {
+    "comment": "",
+    "pos": "",
+    "translation": "plan"
+  },
+  "button": {
+    "comment": "",
+    "pos": "",
+    "translation": "düğme"
+  },
+  "Carousel": {
+    "comment": "",
+    "pos": "",
+    "translation": "Carousel"
+  },
+  "cart": {
+    "comment": "Çevrimiçi alışveriş sepeti",
+    "pos": "",
+    "translation": "sepet"
+  },
+  "category": {
+    "comment": "",
+    "pos": "",
+    "translation": "kategori"
+  },
+  "character code": {
+    "comment": "",
+    "pos": "",
+    "translation": "karakter kodu"
+  },
+  "character entity reference": {
+    "comment": "",
+    "pos": "",
+    "translation": "karakter öğe referansı"
+  },
+  "character set": {
+    "comment": "",
+    "pos": "",
+    "translation": "karakter kümesi"
+  },
+  "chargeback": {
+    "comment": "kredi kartı iadesi",
+    "pos": "",
+    "translation": "Kredi kartı iadesi"
+  },
+  "click": {
+    "comment": "tıkla",
+    "pos": "",
+    "translation": "tıkla"
+  },
+  "CNAME record": {
+    "comment": "",
+    "pos": "",
+    "translation": "CNAME kaydı"
+  },
+  "color scheme": {
+    "comment": "",
+    "pos": "",
+    "translation": "renk düzeni"
+  },
+  "comment": {
+    "comment": "",
+    "pos": "",
+    "translation": "yorumlamak"
+  },
+  "computer": {
+    "comment": "",
+    "pos": "",
+    "translation": "bilgisayar"
+  },
+  "conditional tag": {
+    "comment": "",
+    "pos": "",
+    "translation": "koşullu etiket"
+  },
+  "constant": {
+    "comment": "",
+    "pos": "",
+    "translation": "sabit"
+  },
+  "contact form": {
+    "comment": "",
+    "pos": "",
+    "translation": "iletişim formu"
+  },
+  "Content Area": {
+    "comment": "Site/Blog içerik alanı ",
+    "pos": "",
+    "translation": "İçerik Alanı"
+  },
+  "contributor": {
+    "comment": "",
+    "pos": "",
+    "translation": "katkıda bulunan"
+  },
+  "Cookie": {
+    "comment": "Tarayıcı çerezi",
+    "pos": "",
+    "translation": "Tanımlama bilgisi"
+  },
+  "Creative Commons": {
+    "comment": "Yaratıcı çalışmalar için ücretsiz telif hakkı sağlayan bir kuruluştur detaylı bilgi: http://creativecommons.org/about",
+    "pos": "",
+    "translation": "Creative Commons"
+  },
+  "crop": {
+    "comment": "Görsel düzenlemek/Görseli kırpmak  https://en.support.wordpress.com/images/image-editing/#cropping",
+    "pos": "",
+    "translation": "kırpmak"
+  },
+  "Custom Colors": {
+    "comment": "Tema destekliyorsa özel renkler için detaylı bilgi: http://en.support.wordpress.com/custom-design/custom-colors/",
+    "pos": "",
+    "translation": "Özel Renkler"
+  },
+  "Custom CSS": {
+    "comment": "Tema destekliyorsa özel css için detaylı bilgi:",
+    "pos": "",
+    "translation": "Özel CSS"
+  },
+  "Custom Fonts": {
+    "comment": "Tema destekliyorsa özel yazı tipi için detaylı bilgi: http://en.support.wordpress.com/custom-design/custom-fonts/",
+    "pos": "",
+    "translation": "Özel Fontlar"
+  },
+  "Custom Post Type": {
+    "comment": "",
+    "pos": "",
+    "translation": "Özel Gönderi Türü"
+  },
+  "customize": {
+    "comment": "",
+    "pos": "",
+    "translation": "özelleştir"
+  },
+  "Customizer": {
+    "comment": "",
+    "pos": "",
+    "translation": "Özelleştirici"
+  },
+  "Dashboard": {
+    "comment": "",
+    "pos": "",
+    "translation": "Pano"
+  },
+  "deactivate": {
+    "comment": "",
+    "pos": "",
+    "translation": "devre dışı bırak"
+  },
+  "default": {
+    "comment": "",
+    "pos": "",
+    "translation": "varsayılan"
+  },
+  "default theme": {
+    "comment": "",
+    "pos": "",
+    "translation": "varsayılan tema"
+  },
+  "deprecated": {
+    "comment": "",
+    "pos": "",
+    "translation": "kullanım dışı"
+  },
+  "developer": {
+    "comment": "",
+    "pos": "",
+    "translation": "geliştirici"
+  },
+  "Digital Millennium Copyright Act": {
+    "comment": "",
+    "pos": "",
+    "translation": "Dijital Milenyum Telif Hakkı Yasası"
+  },
+  "directory": {
+    "comment": "",
+    "pos": "",
+    "translation": "dizin"
+  },
+  "Distraction Free Writing": {
+    "comment": "A full-screen editing mode, more info: http://en.support.wordpress.com/distraction-free-writing/",
+    "pos": "",
+    "translation": "Sadece Yazma"
+  },
+  "domain": {
+    "comment": "",
+    "pos": "",
+    "translation": "alan adı"
+  },
+  "draft": {
+    "comment": "",
+    "pos": "",
+    "translation": "taslak"
+  },
+  "editor": {
+    "comment": "Kullanıcı rolü",
+    "pos": "",
+    "translation": "editör"
+  },
+  "email": {
+    "comment": "",
+    "pos": "",
+    "translation": "e-posta"
+  },
+  "email address": {
+    "comment": "",
+    "pos": "",
+    "translation": "e-posta adresi"
+  },
+  "embed": {
+    "comment": "",
+    "pos": "",
+    "translation": "gömülü"
+  },
+  "emoji": {
+    "comment": "",
+    "pos": "",
+    "translation": "emoji"
+  },
+  "emoticon": {
+    "comment": "",
+    "pos": "",
+    "translation": "ifade"
+  },
+  "Entry title": {
+    "comment": "Bir girişin başlığı (yazı veya sayfa)",
+    "pos": "",
+    "translation": "Giriş başlığı"
+  },
+  "error": {
+    "comment": "Kodlamada veya internet üzerinde oluşan bir yanlış iş/işlem",
+    "pos": "",
+    "translation": "hata"
+  },
+  "excerpt": {
+    "comment": "",
+    "pos": "",
+    "translation": "alıntı"
+  },
+  "Extra Storage": {
+    "comment": "",
+    "pos": "",
+    "translation": "Ekstra Depolama Alanı"
+  },
+  "Facebook": {
+    "comment": "",
+    "pos": "",
+    "translation": "Facebook"
+  },
+  "favicon": {
+    "comment": "",
+    "pos": "",
+    "translation": "site simgesi"
+  },
+  "featured image": {
+    "comment": "Öne çıkarılan görsel",
+    "pos": "",
+    "translation": "öne çıkan resim"
+  },
+  "featured post": {
+    "comment": "Öne çıkarılan yazı",
+    "pos": "",
+    "translation": "öne çıkan yazı"
+  },
+  "feed": {
+    "comment": "Akış. Örneğin: (Takibedilen) Haber akışı. ",
+    "pos": "",
+    "translation": "besleme"
+  },
+  "filter": {
+    "comment": "Süzgeç. Görüntülenmesi istenenlerin belirtildiği durum/aralık.",
+    "pos": "",
+    "translation": "süzgeç/filtre"
+  },
+  "filter hook": {
+    "comment": "WordPress geliştirme terimi",
+    "pos": "",
+    "translation": "filtre kancası"
+  },
+  "Firehose": {
+    "comment": "",
+    "pos": "",
+    "translation": "Firehose"
+  },
+  "folder": {
+    "comment": "Klasör, dosya.",
+    "pos": "",
+    "translation": "klasör"
+  },
+  "Follow": {
+    "comment": "",
+    "pos": "",
+    "translation": "Takip Et"
+  },
+  "Follower": {
+    "comment": "",
+    "pos": "",
+    "translation": "Takipçi"
+  },
+  "Following": {
+    "comment": "",
+    "pos": "",
+    "translation": "Takip Ediliyor"
+  },
+  "footer": {
+    "comment": "Bir yazının ya da sayfanın alt kısmındaki içerik; genellikle yayın hakkı uyarısı, konu (tema) ve yayınlama bilgisini içerir.",
+    "pos": "",
+    "translation": "alt kısım"
+  },
+  "Forum": {
+    "comment": "",
+    "pos": "",
+    "translation": "Forum"
+  },
+  "free trial": {
+    "comment": "",
+    "pos": "",
+    "translation": "Ücretsiz deneme"
+  },
+  "Freshly Pressed": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yeni Çıktı"
+  },
+  "front end": {
+    "comment": "",
+    "pos": "",
+    "translation": "ön uç"
+  },
+  "gallery": {
+    "comment": "Bir yazıya iliştirilmiş resim grubu. Genellikle bir dizi pulresimlerin (thumbnails) yeraldığı bir yazı veya sayfadaki resimler kadar, ayrıca bir Medya Kütüphanesi'indeki bir grubu/koleksiyonu da ifade eder.",
+    "pos": "",
+    "translation": "galeri"
+  },
+  "gravatar": {
+    "comment": "",
+    "pos": "",
+    "translation": "gravatar"
+  },
+  "Gravatar Profile": {
+    "comment": "",
+    "pos": "",
+    "translation": "Gravatar Profili"
+  },
+  "Guided Transfer": {
+    "comment": "",
+    "pos": "",
+    "translation": "Kılavuzlu Aktarım"
+  },
+  "Ham": {
+    "comment": "",
+    "pos": "",
+    "translation": "Spam Değil"
+  },
+  "Hammiest": {
+    "comment": "",
+    "pos": "",
+    "translation": "En Az Spam İçeren"
+  },
+  "Happiness Engineer": {
+    "comment": "",
+    "pos": "",
+    "translation": "Mutluluk Mühendisi"
+  },
+  "Headers": {
+    "comment": "",
+    "pos": "",
+    "translation": "Üst Bilgiler"
+  },
+  "Help Center": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yardım Merkezi"
+  },
+  "host": {
+    "comment": "",
+    "pos": "",
+    "translation": "sunucu"
+  },
+  "hosting provider": {
+    "comment": "",
+    "pos": "",
+    "translation": "barındırma sağlayıcısı"
+  },
+  "hover": {
+    "comment": "",
+    "pos": "",
+    "translation": "üstte gösterilen"
+  },
+  "hovercard": {
+    "comment": "",
+    "pos": "",
+    "translation": "hovercard"
+  },
+  "howdy": {
+    "comment": "",
+    "pos": "",
+    "translation": "selam"
+  },
+  "Insights": {
+    "comment": "",
+    "pos": "",
+    "translation": "Tek Bakışta"
+  },
+  "instant comment email": {
+    "comment": "",
+    "pos": "",
+    "translation": "yorumlar için anında e-posta"
+  },
+  "instant post email": {
+    "comment": "",
+    "pos": "",
+    "translation": "gönderiler için anında e-posta"
+  },
+  "internet": {
+    "comment": "",
+    "pos": "",
+    "translation": "internet"
+  },
+  "Internet Corporation for Assigned Names and Numbers (ICANN)": {
+    "comment": "",
+    "pos": "",
+    "translation": "Internet Corporation for Assigned Names and Numbers (ICANN)"
+  },
+  "invalid": {
+    "comment": "",
+    "pos": "",
+    "translation": "geçersiz"
+  },
+  "IP address": {
+    "comment": "",
+    "pos": "",
+    "translation": "IP adresi"
+  },
+  "Jetpack": {
+    "comment": "WordPress eklentisi -> http://jetpack.me/",
+    "pos": "",
+    "translation": "Jetpack"
+  },
+  "Jetpack Monitor": {
+    "comment": "",
+    "pos": "",
+    "translation": "Jetpack İzleyici"
+  },
+  "keyword": {
+    "comment": "",
+    "pos": "",
+    "translation": "anahtar sözcük"
+  },
+  "Late Renewal Fee": {
+    "comment": "",
+    "pos": "",
+    "translation": "Gecikmiş Yenileme Bedeli"
+  },
+  "Like": {
+    "comment": "",
+    "pos": "",
+    "translation": "Beğen"
+  },
+  "like": {
+    "comment": "",
+    "pos": "",
+    "translation": "beğen"
+  },
+  "Likes": {
+    "comment": "",
+    "pos": "",
+    "translation": "Beğeniler"
+  },
+  "Link Hover": {
+    "comment": "",
+    "pos": "",
+    "translation": "Bağlantı Vurgusu"
+  },
+  "live chat": {
+    "comment": "",
+    "pos": "",
+    "translation": "canlı sohbet"
+  },
+  "live chat support": {
+    "comment": "",
+    "pos": "",
+    "translation": "canlı sohbet ile destek"
+  },
+  "log in": {
+    "comment": "",
+    "pos": "",
+    "translation": "oturum aç"
+  },
+  "log out": {
+    "comment": "",
+    "pos": "",
+    "translation": "oturumu kapat"
+  },
+  "logged in": {
+    "comment": "",
+    "pos": "",
+    "translation": "oturum açıldı"
+  },
+  "logged out": {
+    "comment": "",
+    "pos": "",
+    "translation": "oturum kapatıldı"
+  },
+  "login": {
+    "comment": "",
+    "pos": "",
+    "translation": "giriş"
+  },
+  "logout": {
+    "comment": "",
+    "pos": "",
+    "translation": "çıkış"
+  },
+  "mapped domain": {
+    "comment": "",
+    "pos": "",
+    "translation": "yönlendirilmiş alan adı"
+  },
+  "media item": {
+    "comment": "",
+    "pos": "",
+    "translation": "ortam ögesi"
+  },
+  "Media Uploader": {
+    "comment": "",
+    "pos": "",
+    "translation": "Ortam Yükleyicisi"
+  },
+  "menu": {
+    "comment": "",
+    "pos": "",
+    "translation": "menü"
+  },
+  "menu item": {
+    "comment": "",
+    "pos": "",
+    "translation": "menü elemanı"
+  },
+  "menu location": {
+    "comment": "",
+    "pos": "",
+    "translation": "menü konumu"
+  },
+  "meta": {
+    "comment": "",
+    "pos": "",
+    "translation": "meta"
+  },
+  "minimalist theme": {
+    "comment": "",
+    "pos": "",
+    "translation": "minimalist tema"
+  },
+  "mobile device": {
+    "comment": "iPhone, iPad, Android, Windows Phone, Samsung tablet, ya da BlackBerry gibi...",
+    "pos": "",
+    "translation": "mobil cihaz"
+  },
+  "moderate": {
+    "comment": "Yorumlarınızı yönetin, örneğin onay bekleyen ya da spam olarak işaretlenmiş gibi...",
+    "pos": "",
+    "translation": "yönet"
+  },
+  "modern design": {
+    "comment": "",
+    "pos": "",
+    "translation": "modern tasarım"
+  },
+  "multisite": {
+    "comment": "",
+    "pos": "",
+    "translation": "çoklu site"
+  },
+  "next post": {
+    "comment": "",
+    "pos": "",
+    "translation": "sonraki yazı"
+  },
+  "nonce": {
+    "comment": "",
+    "pos": "",
+    "translation": "geçici"
+  },
+  "not sticky": {
+    "comment": "Sabitlenmiş yazı durumu için.",
+    "pos": "",
+    "translation": "sabitlenmemiş"
+  },
+  "older post": {
+    "comment": "",
+    "pos": "",
+    "translation": "daha eski yazı"
+  },
+  "option": {
+    "comment": "",
+    "pos": "",
+    "translation": "seçenek"
+  },
+  "page": {
+    "comment": "",
+    "pos": "",
+    "translation": "sayfa"
+  },
+  "parameter": {
+    "comment": "",
+    "pos": "",
+    "translation": "parametre"
+  },
+  "pending": {
+    "comment": "Awaiting an approval or decision by the site owner (context: comment, review, subscription...)",
+    "pos": "",
+    "translation": "bekleyen"
+  },
+  "permalink": {
+    "comment": "WordPress linklerinizi istediğiniz gibi özelleştirebilirsiniz.",
+    "pos": "",
+    "translation": "kalıcı bağlantı"
+  },
+  "permission": {
+    "comment": "",
+    "pos": "",
+    "translation": "izin"
+  },
+  "personal blog": {
+    "comment": "",
+    "pos": "",
+    "translation": "kişisel blog"
+  },
+  "personal blogger": {
+    "comment": "",
+    "pos": "",
+    "translation": "kişisel blog yazarı"
+  },
+  "photoblogger": {
+    "comment": "",
+    "pos": "",
+    "translation": "fotoğraf blogu yazarı"
+  },
+  "ping": {
+    "comment": "",
+    "pos": "",
+    "translation": "ping"
+  },
+  "pingback": {
+    "comment": "",
+    "pos": "",
+    "translation": "pingback"
+  },
+  "plugin": {
+    "comment": "",
+    "pos": "",
+    "translation": "eklenti"
+  },
+  "poll": {
+    "comment": "",
+    "pos": "",
+    "translation": "anket"
+  },
+  "Polldaddy": {
+    "comment": "",
+    "pos": "",
+    "translation": "Polldaddy"
+  },
+  "Portfolio Page": {
+    "comment": "",
+    "pos": "",
+    "translation": "Portföy Sayfası"
+  },
+  "portfolio theme": {
+    "comment": "",
+    "pos": "",
+    "translation": "portföy teması"
+  },
+  "post": {
+    "comment": "",
+    "pos": "",
+    "translation": "yazı"
+  },
+  "Post Carousel": {
+    "comment": "",
+    "pos": "",
+    "translation": "Gönderi Döngüsü"
+  },
+  "post format": {
+    "comment": "",
+    "pos": "",
+    "translation": "yazı biçimi"
+  },
+  "Post List": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yazı Listesi"
+  },
+  "Post Meta": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yazı Meta Verileri"
+  },
+  "post status": {
+    "comment": "",
+    "pos": "",
+    "translation": "yazı durumu"
+  },
+  "post thumbnail": {
+    "comment": "",
+    "pos": "",
+    "translation": "yazı küçük resmi"
+  },
+  "post type": {
+    "comment": "",
+    "pos": "",
+    "translation": "yazı türü"
+  },
+  "posting goal": {
+    "comment": "",
+    "pos": "",
+    "translation": "yazı hedefi"
+  },
+  "premium theme": {
+    "comment": "",
+    "pos": "",
+    "translation": "premium tema"
+  },
+  "premium upgrade": {
+    "comment": "",
+    "pos": "",
+    "translation": "premium yükseltme"
+  },
+  "Press This": {
+    "comment": "",
+    "pos": "",
+    "translation": "Bas buna"
+  },
+  "preview": {
+    "comment": "",
+    "pos": "",
+    "translation": "ön izleme"
+  },
+  "previous post": {
+    "comment": "",
+    "pos": "",
+    "translation": "önceki yazı"
+  },
+  "primary domain": {
+    "comment": "",
+    "pos": "",
+    "translation": "birincil alan adı"
+  },
+  "Privacy Protection": {
+    "comment": "",
+    "pos": "",
+    "translation": "Privacy Protection"
+  },
+  "Privacy Upgrade": {
+    "comment": "",
+    "pos": "",
+    "translation": "Privacy Upgrade"
+  },
+  "Private Registration": {
+    "comment": "",
+    "pos": "",
+    "translation": "Private Registration"
+  },
+  "Private Whois upgrade": {
+    "comment": "",
+    "pos": "",
+    "translation": "Private Whois Upgrade"
+  },
+  "profile": {
+    "comment": "",
+    "pos": "",
+    "translation": "profil"
+  },
+  "Publicize": {
+    "comment": "Araç adı",
+    "pos": "",
+    "translation": "Duyuru"
+  },
+  "publish": {
+    "comment": "",
+    "pos": "",
+    "translation": "yayımlamak"
+  },
+  "publishing platform": {
+    "comment": "",
+    "pos": "",
+    "translation": "yayımlama platformu"
+  },
+  "query": {
+    "comment": "",
+    "pos": "",
+    "translation": "sorgu"
+  },
+  "Quick Post": {
+    "comment": "",
+    "pos": "",
+    "translation": "Hızlı Yazı"
+  },
+  "Reader": {
+    "comment": "",
+    "pos": "",
+    "translation": "Okuyucu"
+  },
+  "reader": {
+    "comment": "",
+    "pos": "",
+    "translation": "okuyucu"
+  },
+  "Reblog": {
+    "comment": "",
+    "pos": "",
+    "translation": "Reblog"
+  },
+  "Redirect": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yeniden Yönlendirme"
+  },
+  "referrer": {
+    "comment": "",
+    "pos": "",
+    "translation": "yönlendiren"
+  },
+  "refund policy": {
+    "comment": "",
+    "pos": "",
+    "translation": "iade ilkesi"
+  },
+  "registrar": {
+    "comment": "",
+    "pos": "",
+    "translation": "kayıt şirketi"
+  },
+  "related posts": {
+    "comment": "",
+    "pos": "",
+    "translation": "benzer yazılar"
+  },
+  "required": {
+    "comment": "",
+    "pos": "",
+    "translation": "gerekli"
+  },
+  "responsive": {
+    "comment": "",
+    "pos": "",
+    "translation": "duyarlı"
+  },
+  "return value": {
+    "comment": "",
+    "pos": "",
+    "translation": "geri dönüş değeri"
+  },
+  "revision": {
+    "comment": "",
+    "pos": "",
+    "translation": "revizyon"
+  },
+  "ribbon ": {
+    "comment": "",
+    "pos": "",
+    "translation": "şerit"
+  },
+  "role": {
+    "comment": "",
+    "pos": "",
+    "translation": "rol"
+  },
+  "RSS": {
+    "comment": "",
+    "pos": "",
+    "translation": "RSS"
+  },
+  "schedule": {
+    "comment": "",
+    "pos": "",
+    "translation": "zamanla"
+  },
+  "self-hosted": {
+    "comment": "",
+    "pos": "",
+    "translation": "kullanıcı tarafından barındırılan"
+  },
+  "server": {
+    "comment": "",
+    "pos": "",
+    "translation": "sunucu"
+  },
+  "share": {
+    "comment": "",
+    "pos": "",
+    "translation": "paylaş"
+  },
+  "sharing": {
+    "comment": "",
+    "pos": "",
+    "translation": "paylaşılıyor"
+  },
+  "sharing button": {
+    "comment": "",
+    "pos": "",
+    "translation": "paylaşım düğmesi"
+  },
+  "sharing settings": {
+    "comment": "",
+    "pos": "",
+    "translation": "paylaşım ayarları"
+  },
+  "shortcode": {
+    "comment": "",
+    "pos": "",
+    "translation": "kısa kod"
+  },
+  "Showcase": {
+    "comment": "",
+    "pos": "",
+    "translation": "Vitrin"
+  },
+  "sidebar": {
+    "comment": "",
+    "pos": "",
+    "translation": "kenar çubuğu"
+  },
+  "Simplenote": {
+    "comment": "",
+    "pos": "",
+    "translation": "Simplenote"
+  },
+  "single post": {
+    "comment": "",
+    "pos": "",
+    "translation": "tekil yazı"
+  },
+  "Single Sign-On": {
+    "comment": "",
+    "pos": "",
+    "translation": "Çoklu Oturum Açma"
+  },
+  "site": {
+    "comment": "",
+    "pos": "",
+    "translation": "site"
+  },
+  "Site Redirect": {
+    "comment": "",
+    "pos": "",
+    "translation": "Site Yönlendirme"
+  },
+  "Slider": {
+    "comment": "",
+    "pos": "",
+    "translation": "Slayt Gösterisi Aracı"
+  },
+  "slideshow": {
+    "comment": "",
+    "pos": "",
+    "translation": "slayt gösterisi"
+  },
+  "slug": {
+    "comment": "",
+    "pos": "",
+    "translation": "kısaltma"
+  },
+  "Social Media": {
+    "comment": "Twitter, Facebook, Pinterest ve diğerleri gibi sosyal ağ siteleri",
+    "pos": "",
+    "translation": "Sosyal Medya"
+  },
+  "Space Upgrade": {
+    "comment": "",
+    "pos": "",
+    "translation": "Space Upgrade"
+  },
+  "spam": {
+    "comment": "",
+    "pos": "",
+    "translation": "istenmeyen"
+  },
+  "Spammiest": {
+    "comment": "Bir zaman diliminde en çok spam alınması",
+    "pos": "",
+    "translation": "En Çok Spam İçeren"
+  },
+  "SRV record": {
+    "comment": "Özel bir SRV kaydı tipi",
+    "pos": "",
+    "translation": "SRV kaydı"
+  },
+  "staging site": {
+    "comment": "",
+    "pos": "",
+    "translation": "prova sitesi"
+  },
+  "status": {
+    "comment": "",
+    "pos": "",
+    "translation": "durum"
+  },
+  "stick": {
+    "comment": "",
+    "pos": "",
+    "translation": "çubuk"
+  },
+  "sticky": {
+    "comment": "",
+    "pos": "",
+    "translation": "yapışkan"
+  },
+  "Sticky Post": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yapışkan Gönderi"
+  },
+  "store": {
+    "comment": "",
+    "pos": "",
+    "translation": "mağaza"
+  },
+  "string": {
+    "comment": "",
+    "pos": "",
+    "translation": "dize"
+  },
+  "subpanel": {
+    "comment": "",
+    "pos": "",
+    "translation": "alt panel"
+  },
+  "subscribe": {
+    "comment": "",
+    "pos": "",
+    "translation": "abone olmak"
+  },
+  "subscription": {
+    "comment": "",
+    "pos": "",
+    "translation": "abonelik"
+  },
+  "subscription dashboard": {
+    "comment": "Kullanıcının abonelikleri görebileceği ve düzenleyebileceği abonelik sayfası.",
+    "pos": "",
+    "translation": "abonelik panosu"
+  },
+  "Subversion": {
+    "comment": "",
+    "pos": "",
+    "translation": "Subversion"
+  },
+  "summary emails": {
+    "comment": "Bir zaman aralığında birkaç yazı içeren blog abonelerine gönderilen e-postalar (anlık yazı e-postalarının aksine )",
+    "pos": "",
+    "translation": "özet e-postaları"
+  },
+  "super-charge": {
+    "comment": "Ekstra özellikler alma anlamına gelen yükseltme;  premium yükseltme tanımlamak için kullanılır. ",
+    "pos": "",
+    "translation": "süper yükseltme"
+  },
+  "support guide": {
+    "comment": "Destek kılavuzu sayfa/makale",
+    "pos": "",
+    "translation": "destek kılavuzu"
+  },
+  "support page": {
+    "comment": "",
+    "pos": "",
+    "translation": "destek sayfası"
+  },
+  "support team": {
+    "comment": "",
+    "pos": "",
+    "translation": "destek ekibi"
+  },
+  "survey": {
+    "comment": "",
+    "pos": "",
+    "translation": "anket"
+  },
+  "tag": {
+    "comment": "",
+    "pos": "",
+    "translation": "etiket"
+  },
+  "tagline": {
+    "comment": "",
+    "pos": "",
+    "translation": "etiket satırı"
+  },
+  "taxonomy": {
+    "comment": "",
+    "pos": "",
+    "translation": "sınıflandırma"
+  },
+  "template hierarchy": {
+    "comment": "",
+    "pos": "",
+    "translation": "şablon hiyerarşisi"
+  },
+  "term": {
+    "comment": "",
+    "pos": "",
+    "translation": "terim"
+  },
+  "terms and conditions": {
+    "comment": "Hizmet Şartları",
+    "pos": "",
+    "translation": "şartlar ve hükümler"
+  },
+  "terms of service": {
+    "comment": "",
+    "pos": "",
+    "translation": "hizmet koşulları"
+  },
+  "testimonial": {
+    "comment": "",
+    "pos": "",
+    "translation": "görüş"
+  },
+  "text editor": {
+    "comment": "",
+    "pos": "",
+    "translation": "metin editörü"
+  },
+  "theme": {
+    "comment": "",
+    "pos": "",
+    "translation": "tema"
+  },
+  "Theme Showcase": {
+    "comment": "",
+    "pos": "",
+    "translation": "Tema Vitrini"
+  },
+  "time stamp": {
+    "comment": "",
+    "pos": "",
+    "translation": "zaman damgası"
+  },
+  "timestamp": {
+    "comment": "",
+    "pos": "",
+    "translation": "zaman damgası"
+  },
+  "Toolbar": {
+    "comment": "",
+    "pos": "",
+    "translation": "Araç çubuğu"
+  },
+  "trackback": {
+    "comment": "",
+    "pos": "",
+    "translation": "geri izleme"
+  },
+  "traffic": {
+    "comment": "",
+    "pos": "",
+    "translation": "trafik"
+  },
+  "Transfer Code": {
+    "comment": "",
+    "pos": "",
+    "translation": "Aktarım Kodu"
+  },
+  "Transient": {
+    "comment": "",
+    "pos": "",
+    "translation": "Geçici"
+  },
+  "trial period": {
+    "comment": "",
+    "pos": "",
+    "translation": "deneme sürümü süresi"
+  },
+  "trophy": {
+    "comment": "",
+    "pos": "",
+    "translation": "kupa"
+  },
+  "troubleshooting": {
+    "comment": "",
+    "pos": "",
+    "translation": "sorun giderme"
+  },
+  "Twitter": {
+    "comment": "Sosyal Medya Servisi - http://twitter.com/",
+    "pos": "",
+    "translation": "Twitter"
+  },
+  "two factor authentication": {
+    "comment": "",
+    "pos": "",
+    "translation": "iki aşamalı kimlik doğrulama"
+  },
+  "Unfollow": {
+    "comment": "",
+    "pos": "",
+    "translation": "Takip Etmeyi Bırak"
+  },
+  "Unlimited Storage": {
+    "comment": "",
+    "pos": "",
+    "translation": "Sınırsız Depolama Alanı"
+  },
+  "Unlimited Themes": {
+    "comment": "",
+    "pos": "",
+    "translation": "Sınırsız Tema"
+  },
+  "unmute": {
+    "comment": "",
+    "pos": "",
+    "translation": "sesi aç"
+  },
+  "upgrade": {
+    "comment": "",
+    "pos": "",
+    "translation": "yükselt"
+  },
+  "Upgrades page": {
+    "comment": "",
+    "pos": "",
+    "translation": "Yükseltme sayfası"
+  },
+  "upload": {
+    "comment": "",
+    "pos": "",
+    "translation": "karşıya yükle"
+  },
+  "uploader": {
+    "comment": "",
+    "pos": "",
+    "translation": "yükleyici"
+  },
+  "URI": {
+    "comment": "",
+    "pos": "",
+    "translation": "URI"
+  },
+  "user": {
+    "comment": "",
+    "pos": "",
+    "translation": "kullanıcı"
+  },
+  "valid": {
+    "comment": "",
+    "pos": "",
+    "translation": "geçerli"
+  },
+  "verification code": {
+    "comment": "",
+    "pos": "",
+    "translation": "doğrulama kodu"
+  },
+  "video": {
+    "comment": "",
+    "pos": "",
+    "translation": "video"
+  },
+  "view": {
+    "comment": "",
+    "pos": "",
+    "translation": "gör"
+  },
+  "web server": {
+    "comment": "",
+    "pos": "",
+    "translation": "web sunucusu"
+  },
+  "website": {
+    "comment": "",
+    "pos": "",
+    "translation": "web sitesi"
+  },
+  "Widget": {
+    "comment": "",
+    "pos": "",
+    "translation": "Pencere öğesi"
+  },
+  "WordCamp": {
+    "comment": "WordPress topluluğu - http://wordcamp.org/",
+    "pos": "",
+    "translation": "WordCamp"
+  },
+  "WordPress": {
+    "comment": "",
+    "pos": "",
+    "translation": "WordPress"
+  },
+  "WordPress Dashboard": {
+    "comment": "",
+    "pos": "",
+    "translation": "WordPress Panosu"
+  },
+  "XML-RPC": {
+    "comment": "Detaylı bilgi için: http://codex.wordpress.org/XML-RPC_Support",
+    "pos": "",
+    "translation": "XML-RPC"
+  },
+  "Yummy Pie": {
+    "comment": "",
+    "pos": "",
+    "translation": "Pasta Grafik"
+  }
+}
