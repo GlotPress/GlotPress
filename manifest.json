@@ -42,7 +42,8 @@
       "dictionaries/th.json",
       "dictionaries/en_AU.json",
       "dictionaries/ro_RO.json",
-      "dictionaries/en_CA.json"
+      "dictionaries/en_CA.json",
+      "dictionaries/tr_TR.json"
   ]
 
 }
