@@ -1,649 +1,637 @@
 {
     "About": {
-        "comment": "Preferimos \"Acerca de\" antes que \"Sobre\", pero depender\u00e1 del contexto. \r\n\"Acerca del tema Baskerville\"\r\n\"Sobre el autor\"",
-        "pos": "",
+        "comment": "Preferimos \"Acerca de\" antes que \"Sobre\", pero depender\u00e1 del contexto. \r",
+        "pos": "adverb",
         "translation": "Acerca de"
-    }
-,
+    },
+    "Acerca del tema Baskerville\"\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Sobre el autor\"\"\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Account": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Cuenta"
-    }
-,
+    },
     "Activate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "Activar"
-    }
-,
+    },
     "Activated": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "Activado"
-    }
-,
+    },
     "address\/ed": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "soluciona\/ba"
-    }
-,
+    },
     "Admin": {
         "comment": "Se refiere al rol dentro del sistema",
-        "pos": "",
+        "pos": "noun",
         "translation": "Administrador"
-    }
-,
+    },
     "After the Deadline": {
         "comment": "Nombre de un producto de software http:\/\/afterthedeadline.com",
-        "pos": "",
+        "pos": "noun",
         "translation": "After the Deadline"
-    }
-,
+    },
     "Ajax": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "Ajax"
-    }
-,
+    },
     "Array": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "Array"
-    }
-,
+    },
     "Aside": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Minientrada"
-    }
-,
+    },
     "Attachment": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Adjunto"
-    }
-,
+    },
     "Author": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Autor"
-    }
-,
+    },
     "Autosave": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Autoguardado"
-    }
-,
+    },
     "Bitrate": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "Bitrate"
-    }
-,
+    },
     "Blog": {
         "comment": "(No se traduce)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Blog"
-    }
-,
+    },
     "Bookmarklet": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Marcador"
-    }
-,
+    },
     "Browser": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Navegador"
-    }
-,
+    },
     "BuddyPress": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "BuddyPress"
-    }
-,
+    },
     "Category": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Categor\u00eda"
-    }
-,
+    },
     "Click": {
-        "comment": "Se pone \"clic\" sin K \n(http:\/\/www.fundeu.es\/consulta\/hacer-clic-1753\/)",
-        "pos": "",
+        "comment": "Se pone \"clic\" sin K ",
+        "pos": "verb",
         "translation": "Hacer clic"
-    }
-,
+    },
+    "(http:\/\/www.fundeu.es\/consulta\/hacer-clic-1753\/)\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Comment": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Comentario"
-    }
-,
-    "Comment": {
-        "comment": "",
-        "pos": "",
-        "translation": "Comentar"
-    }
-,
+    },
     "contact with your host": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "contactar con tu proveedor de alojamiento web"
-    }
-,
+    },
     "Content": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Contenido"
-    }
-,
+    },
     "contributor": {
         "comment": "Role Contributor -> Rol colaborador",
-        "pos": "",
+        "pos": "noun",
         "translation": "colaborador"
-    }
-,
+    },
     "Cookie": {
         "comment": "Plural \"Cookies\". No se traduce.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Cookie"
-    }
-,
+    },
     "Customize": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "Personalizar"
-    }
-,
+    },
     "Customizer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Personalizador"
-    }
-,
+    },
     "Dashboard": {
         "comment": "No utilizar \"Tablero\"",
-        "pos": "",
+        "pos": "noun",
         "translation": "Escritorio"
-    }
-,
+    },
     "Deprecated": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "Obsoleto \/ Obsoleta"
-    }
-,
+    },
     "Draft": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Borrador"
-    }
-,
+    },
     "Drop-in\/s": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Dependiente\/s"
-    }
-,
+    },
     "Email": {
-        "comment": "No utiilzar: \nemail (Incorrecto).\ncorreo e (Incorrecto).\ne-mail (Incorrecto).\nCorreo Electr\u00f3nico (con E may\u00fascula) (Incorrecto)\nemail adress = direcci\u00f3n de correo electr\u00f3nico (Correcto)",
-        "pos": "",
+        "comment": "No utiilzar: ",
+        "pos": "noun",
         "translation": "Correo electr\u00f3nico"
-    }
-,
+    },
+    "email (Incorrecto).": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "correo e (Incorrecto).": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "e-mail (Incorrecto).": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Correo Electr\u00f3nico (con E may\u00fascula) (Incorrecto)": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "email adress = direcci\u00f3n de correo electr\u00f3nico (Correcto)\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Embed": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "Incrustar"
-    }
-,
+    },
     "Embeded": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "Incrustado"
-    }
-,
+    },
     "Excerpt": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Extracto"
-    }
-,
+    },
     "FAQ": {
         "comment": "No se traduce.",
-        "pos": "",
+        "pos": "noun",
         "translation": "FAQ"
-    }
-,
+    },
     "fee": {
         "comment": "WooCommerce",
-        "pos": "",
+        "pos": "noun",
         "translation": "couta"
-    }
-,
+    },
     "feed": {
         "comment": "No se traduce. Se refiere al feed RSS.",
-        "pos": "",
+        "pos": "noun",
         "translation": "feed"
-    }
-,
+    },
     "Footer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Pie de p\u00e1gina"
-    }
-,
+    },
     "Front page": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "P\u00e1gina de inicio"
-    }
-,
+    },
     "Gallery": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Galer\u00eda"
-    }
-,
+    },
     "Header": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Cabecera"
-    }
-,
+    },
     "Home": {
         "comment": "(Hay que definir los contextos en los que una u otra son v\u00e1lidas)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Inicio o p\u00e1gina de inicio"
-    }
-,
+    },
     "hook": {
-        "comment": "Action hook -> gancho de acci\u00f3n\r\nFilter hook -> gancho de filtro",
-        "pos": "",
+        "comment": "Action hook -> gancho de acci\u00f3n\r",
+        "pos": "noun",
         "translation": "gancho"
-    }
-,
+    },
+    "Filter hook -> gancho de filtro\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Howdy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Hola"
-    }
-,
+    },
     "inline": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "Integrado\/a"
-    }
-,
+    },
     "Invalid": {
         "comment": "No utilizar: Inv\u00e1lido (Incorrecto).",
-        "pos": "",
+        "pos": "noun",
         "translation": "No v\u00e1lido"
-    }
-,
+    },
     "issue\/s": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "problema\/s conflicto\/s"
-    }
-,
+    },
     "Item\/s": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Elemento\/s"
-    }
-,
+    },
     "Javascript": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "Javascript"
-    }
-,
+    },
     "JetPack": {
-        "comment": "No se traduce\nSe refiere al plugin JetPack. Puedes encontrar m\u00e1s informaci\u00f3n en jetpack.me",
-        "pos": "",
+        "comment": "No se traduce",
+        "pos": "noun",
         "translation": "JetPack"
-    }
-,
+    },
+    "Se refiere al plugin JetPack. Puedes encontrar m\u00e1s informaci\u00f3n en jetpack.me\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Large": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Grande"
-    }
-,
+    },
     "legacy": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "heredado"
-    }
-,
+    },
     "Library": {
         "comment": "No usar librer\u00eda, que solo se refiere a libros",
-        "pos": "",
+        "pos": "noun",
         "translation": "Biblioteca"
-    }
-,
+    },
     "Login": {
-        "comment": "Usar \"Acceso\" cuando sea un enlace a una p\u00e1gina de acceso.\r\nUsar \"Acceder\" cuando sea \r\n1) una etiqueta de un bot\u00f3n, cuando se haga la acci\u00f3n de acceder  al pulsarlo.\r\n2) se refiera en un texto a la acci\u00f3n de acceder.\r\nNo utilizar:\r\nIniciar Sesi\u00f3n (Incorrecto).\r\nEntrar (Incorrecto).\r\nIdentificarse (Incorrecto)",
-        "pos": "",
+        "comment": "Usar \"Acceso\" cuando sea un enlace a una p\u00e1gina de acceso.\r",
+        "pos": "verb",
         "translation": "Acceder "
-    }
-,
+    },
+    "Usar \"\"Acceder\"\" cuando sea ": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "1) una etiqueta de un bot\u00f3n": {
+        "comment": null,
+        "pos": null,
+        "translation": " cuando se haga la acci\u00f3n de acceder  al pulsarlo."
+    },
+    "2) se refiera en un texto a la acci\u00f3n de acceder.": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "No utilizar:": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Iniciar Sesi\u00f3n (Incorrecto).": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Entrar (Incorrecto).": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Identificarse (Incorrecto)\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Manage": {
         "comment": "No utilizar: Administrar (Incorrecto)",
-        "pos": "",
+        "pos": "verb",
         "translation": "Gestionar"
-    }
-,
+    },
     "Management": {
         "comment": "No utilzar: Administraci\u00f3n (Incorrecto)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Gesti\u00f3n"
-    }
-,
+    },
     "Media": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Multimedia"
-    }
-,
+    },
     "Next": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Siguiente"
-    }
-,
+    },
     "Nickname": {
-        "comment": "No utilizar: \nApodo (Incorrecto) \nNickname (Incorrecto)",
-        "pos": "",
+        "comment": "No utilizar: ",
+        "pos": "noun",
         "translation": "Alias"
-    }
-,
+    },
+    "Apodo (Incorrecto) ": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Nickname (Incorrecto)\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "nonce": {
         "comment": "(no se traduce)",
-        "pos": "",
+        "pos": "noun",
         "translation": "nonce"
-    }
-,
+    },
     "Options": {
         "comment": "No utilizar: Ajustes (Incorrecto)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Opciones"
-    }
-,
+    },
     "Page": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "P\u00e1gina"
-    }
-,
+    },
     "Permalink": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Enlace permanente"
-    }
-,
+    },
     "Permalinks": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Enlaces permanentes"
-    }
-,
+    },
     "pixel": {
         "comment": "Con tilde",
-        "pos": "",
+        "pos": "noun",
         "translation": "p\u00edxel"
-    }
-,
+    },
     "pixels": {
         "comment": "Con tilde",
-        "pos": "",
+        "pos": "noun",
         "translation": "p\u00edxeles"
-    }
-,
+    },
     "plugin\/s": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "plugin\/s"
-    }
-,
+    },
     "Post": {
         "comment": "Usar entrada o publicaci\u00f3n seg\u00fan el contexto",
-        "pos": "",
+        "pos": "noun",
         "translation": "Entrada \/ Publicaci\u00f3n"
-    }
-,
+    },
     "Post type": {
         "comment": "Hay varios tipos de publicaci\u00f3n (entradas, p\u00e1ginas, etc)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Tipo de publicaci\u00f3n"
-    }
-,
+    },
     "Posts": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Entradas"
-    }
-,
+    },
     "Powered by WordPress": {
         "comment": "Traducci\u00f3n actual. ",
-        "pos": "",
+        "pos": "expression",
         "translation": "Funciona gracias a WordPress"
-    }
-,
+    },
     "Previous": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Anterior"
-    }
-,
+    },
     "query": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "consulta"
-    }
-,
+    },
     "QuickPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Publicaci\u00f3n r\u00e1pida"
-    }
-,
+    },
     "Release": {
         "comment": "No confudir con Released --> Lanzamiento",
-        "pos": "",
+        "pos": "noun",
         "translation": "Versi\u00f3n"
-    }
-,
+    },
     "responsive": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "adaptable"
-    }
-,
+    },
     "RSS Feed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Feed RSS"
-    }
-,
+    },
     "scope": {
         "comment": "Se refiere a la extensi\u00f3n de la cabecera en una tabla. Valores: col, row, colgroup, rowgroup",
-        "pos": "",
+        "pos": "noun",
         "translation": "extensi\u00f3n"
-    }
-,
+    },
     "Screen": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Pantalla"
-    }
-,
+    },
     "Set": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "Establecer"
-    }
-,
+    },
     "Settings": {
         "comment": "No utilizar: Opciones (Incorrecto)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Ajustes"
-    }
-,
+    },
     "shortcode": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "shortcode"
-    }
-,
+    },
     "Shortcut": {
         "comment": "Plural: Shortcuts --> Atajos",
-        "pos": "",
+        "pos": "noun",
         "translation": "Atajo"
-    }
-,
+    },
     "Shortcuts": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Atajos"
-    }
-,
+    },
     "Sidebar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Barra lateral"
-    }
-,
+    },
     "site": {
         "comment": "No traducir como \"p\u00e1gina web\" o \"sitio web\", solo como \"sitio\"",
-        "pos": "",
+        "pos": "noun",
         "translation": "sitio"
-    }
-,
+    },
     "Site Identity": {
         "comment": "Secci\u00f3n del Personalizador",
-        "pos": "",
+        "pos": "noun",
         "translation": "Identidad del sitio"
-    }
-,
+    },
     "slug": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "slug"
-    }
-,
+    },
     "Sorry": {
-        "comment": "No utilizar:\nLo sentimos (Incorrecto)\nPerdona (Incorrecto)",
-        "pos": "",
+        "comment": "No utilizar:",
+        "pos": "noun",
         "translation": "Lo siento"
-    }
-,
+    },
+    "Lo sentimos (Incorrecto)": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
+    "Perdona (Incorrecto)\"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "Sticky": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "Fija"
-    }
-,
+    },
     "String": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Cadena"
-    }
-,
+    },
     "Stylesheet": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Hoja de estilos"
-    }
-,
+    },
     "Template": {
         "comment": "No utilizar: Tema (Incorrecto)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Plantilla"
-    }
-,
+    },
     "Theme": {
         "comment": "No utilizar: Plantilla (Incorrecto)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Tema"
-    }
-,
+    },
     "Tools": {
         "comment": "Nombre de men\u00fa principal de WordPress",
-        "pos": "",
+        "pos": "noun",
         "translation": "Herramientas"
-    }
-,
+    },
     "Unable": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "No ha sido posible"
-    }
-,
+    },
     "Update": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Actualizaci\u00f3n"
-    }
-,
-    "Update": {
-        "comment": "",
-        "pos": "",
-        "translation": "Actualizar"
-    }
-,
+    },
     "Updated": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Actualizado"
-    }
-,
+    },
     "Upload": {
         "comment": "No utilizar: Carga (incorrecta)",
-        "pos": "",
+        "pos": "noun",
         "translation": "Subida"
-    }
-,
-    "Upload": {
-        "comment": "No utilizar: Cargar (incorrecta)",
-        "pos": "",
-        "translation": "Subir"
-    }
-,
+    },
     "Uploaded": {
         "comment": "",
-        "pos": "",
+        "pos": "adverb",
         "translation": "Subido"
-    }
-,
+    },
     "Username": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Nombre de usuario"
-    }
-,
+    },
     "Walker": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "Walker"
-    }
-,
+    },
     "XML-RPC": {
         "comment": "No se traduce",
-        "pos": "",
+        "pos": "noun",
         "translation": "XML-RPC"
-    }
-,
+    },
     "You are not allowed ": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "No tienes permisos"
     }
 }

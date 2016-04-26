@@ -1,607 +1,507 @@
 {
     " Hoofdletter gebruik en titels": {
         "comment": "Bij titels gebruiken we alleen bij het eerste woord een hoofdletter.",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "add": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "toevoegen"
-    }
-,
+    },
     "add new": {
         "comment": "Het is gebruikelijk om 'add new [noun]' te vertalen naar 'Nieuwe [noun] toevoegen'.",
-        "pos": "",
+        "pos": "noun",
         "translation": "toevoegen"
-    }
-,
+    },
     "add to": {
         "comment": "In het Nederlands gebruiken we volledige werkwoordsvormen.",
-        "pos": "",
+        "pos": "noun",
         "translation": "toevoegen"
-    }
-,
+    },
     "adjective": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "bijvoeglijk naamwoord"
-    }
-,
+    },
     "admin bar": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "toolbar"
-    }
-,
+    },
     "adverb": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "bijwoord"
-    }
-,
+    },
     "all": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "alle"
-    }
-,
+    },
     "Allow": {
         "comment": "Bij vertaling van 'Allow x op deze pagina', is 'X toestaan op deze pagina' de beste vertaling.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Toestaan"
-    }
-,
+    },
     "appearance": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "weergave"
-    }
-,
+    },
     "approval ": {
         "comment": "of 'goedkeuren', afhankelijk van de context.",
-        "pos": "",
+        "pos": "verb",
         "translation": "toestaan"
-    }
-,
+    },
     "approve": {
         "comment": "of 'goedkeuren', afhankelijk van de context.",
-        "pos": "",
+        "pos": "verb",
         "translation": "toestaan"
-    }
-,
+    },
     "approved": {
         "comment": "of 'goedgekeurd', afhankelijk van de context.",
-        "pos": "",
+        "pos": "verb",
         "translation": "toegestaan"
-    }
-,
+    },
     "archive": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "archief"
-    }
-,
+    },
     "archives": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "archief"
-    }
-,
+    },
     "area": {
         "comment": "Afhankelijk van constructie. Soms is het 'gebied' zoals in: tekstgebied.",
-        "pos": "",
+        "pos": "noun",
         "translation": "ruimte\/gebied"
-    }
-,
+    },
     "available": {
         "comment": "Wanneer er nieuwe plugins, thema's zijn, is de context: \"Er is een nieuwe versie van x beschikbaar\".",
-        "pos": "",
+        "pos": "noun",
         "translation": "beschikbaar"
-    }
-,
+    },
     "\u00e8": {
         "comment": "",
-        "pos": "",
-        "translation": "\u00e8"
-    }
-,
+        "pos": "interjection",
+        "translation": "&#232;"
+    },
     "\u00e9": {
         "comment": "",
-        "pos": "",
-        "translation": "\u00e9"
-    }
-,
+        "pos": "interjection",
+        "translation": "&#233;"
+    },
     "\u00eb": {
         "comment": "",
-        "pos": "",
-        "translation": "\u00eb"
-    }
-,
+        "pos": "interjection",
+        "translation": "&#235;"
+    },
     "\u00ef": {
         "comment": "",
-        "pos": "",
-        "translation": "\u00ef"
-    }
-,
+        "pos": "noun",
+        "translation": "&#239;"
+    },
     "box": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "box"
-    }
-,
+    },
     "boxen": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "boxen"
-    }
-,
+    },
     "browsing": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "bladeren"
-    }
-,
+    },
     "cancel": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "annuleren"
-    }
-,
+    },
     "checkboxes": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "selectievakjes"
-    }
-,
+    },
     "child": {
         "comment": ";",
-        "pos": "",
+        "pos": "adjective",
         "translation": "sub"
-    }
-,
+    },
     "close": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "sluiten"
-    }
-,
+    },
     "comment": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "reactie"
-    }
-,
+    },
     "conjunction": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "conjunctie"
-    }
-,
+    },
     "crop": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "bijsnijden"
-    }
-,
+    },
     "customizer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "customizer"
-    }
-,
+    },
     "delete": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "verwijderen"
-    }
-,
+    },
     "Dismiss": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Negeren"
-    }
-,
+    },
     "drag and drop": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "drag en drop"
-    }
-,
+    },
     "dropdown": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "dropdown"
-    }
-,
+    },
     "edit": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "Bewerken"
-    }
-,
+    },
     "email": {
         "comment": "In de Nederlandse taal is het gebruikelijk om een koppelstreep na de 'e' te plaatsen.",
-        "pos": "",
+        "pos": "noun",
         "translation": "e-mail"
-    }
-,
+    },
     "email addresss": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "e-mailadres"
-    }
-,
+    },
     "embed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "insluiten"
-    }
-,
+    },
     "error": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "fout"
-    }
-,
+    },
     "etc.": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "enz."
-    }
-,
+    },
     "excerpt": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "samenvatting"
-    }
-,
+    },
     "expression": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "uitdrukking"
-    }
-,
+    },
     "Filter by": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "Filteren"
-    }
-,
+    },
     "font": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "lettertype"
-    }
-,
+    },
     "footer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "footer"
-    }
-,
+    },
     "format": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "format"
-    }
-,
+    },
     "forums": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "forums"
-    }
-,
+    },
     "galleries": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "galerijen"
-    }
-,
+    },
     "gallery": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "galerij"
-    }
-,
+    },
     "header": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "header"
-    }
-,
+    },
     "header image": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "kopafbeelding"
-    }
-,
+    },
     "home page": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "homepagina"
-    }
-,
+    },
     "hoveren": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "hoveren"
-    }
-,
+    },
     "image": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "afbeelding"
-    }
-,
+    },
     "images": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "afbeeldingen"
-    }
-,
+    },
     "importer": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "importeerfunctie"
-    }
-,
+    },
     "Interjection": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "tussenvoegsel"
-    }
-,
+    },
     "keyword": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "trefwoord"
-    }
-,
+    },
     "links": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "links"
-    }
-,
+    },
     "location": {
         "comment": "Met een c, niet met een k.",
-        "pos": "",
+        "pos": "noun",
         "translation": "locatie"
-    }
-,
+    },
     "Media file": {
         "comment": "In de Nederlandse taal is dit \u00e9\u00e9n woord. We schrijven dit niet los.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Mediabestand"
-    }
-,
+    },
     "menu": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "menu"
-    }
-,
+    },
     "menus": {
         "comment": "",
-        "pos": "",
-        "translation": "menu's"
-    }
-,
+        "pos": "noun",
+        "translation": "menu&#39;s"
+    },
     "Multiline textarea": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Tekstveld met meerdere regels"
-    }
-,
+    },
     "notice": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "bericht"
-    }
-,
+    },
     "noun": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "zelfstandig naamwoord"
-    }
-,
+    },
     "page": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "pagina"
-    }
-,
+    },
     "pages": {
         "comment": "",
-        "pos": "",
-        "translation": "pagina's"
-    }
-,
+        "pos": "noun",
+        "translation": "pagina&#39;s"
+    },
     "parent": {
         "comment": ";",
-        "pos": "",
+        "pos": "adverb",
         "translation": "hoofd"
-    }
-,
+    },
     "post": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "bericht"
-    }
-,
+    },
     "post format": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "berichtformaat"
-    }
-,
+    },
     "post type": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "berichttype"
-    }
-,
+    },
     "posts": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "berichten"
-    }
-,
+    },
     "preposition": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "voorzetsel"
-    }
-,
+    },
     "pronoun": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "voornaamwoord"
-    }
-,
+    },
     "reactivate": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "opnieuw activeren"
-    }
-,
+    },
     "Remove": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Verwijderen"
-    }
-,
+    },
     "run": {
         "comment": "Soms draaien, zoals: op internet meedraaien en soms gebruikt zoals in: je gebruikt versie 4.6",
-        "pos": "",
+        "pos": "verb",
         "translation": "uitvoeren"
-    }
-,
+    },
     "Screen Options": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Scherminstellingen"
-    }
-,
+    },
     "search": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "zoeken"
-    }
-,
+    },
     "select": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "selecteren"
-    }
-,
+    },
     "sending": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "verzenden"
-    }
-,
+    },
     "sent": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "verzonden"
-    }
-,
+    },
     "sidebar": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "sidebar"
-    }
-,
+    },
     "site": {
         "comment": "Geen website of blog;",
-        "pos": "",
+        "pos": "noun",
         "translation": "site"
-    }
-,
+    },
     "sticky": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "sticky"
-    }
-,
+    },
     "tag\/tagged": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "tag\/getagd"
-    }
-,
+    },
     "template": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "template"
-    }
-,
+    },
     "theme": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "thema"
-    }
-,
+    },
     "themes": {
         "comment": "",
-        "pos": "",
-        "translation": "thema's"
-    }
-,
+        "pos": "noun",
+        "translation": "thema&#39;s"
+    },
     "thumbnail": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "thumbnail"
-    }
-,
+    },
     "toolbar": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "toolbar"
-    }
-,
+    },
     "topic(s)": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "onderwerp(en)"
-    }
-,
+    },
     "unapprove": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "weigeren"
-    }
-,
+    },
     "unapproved": {
         "comment": ";",
-        "pos": "",
+        "pos": "verb",
         "translation": "geweigerd"
-    }
-,
+    },
     "verb": {
         "comment": ";",
-        "pos": "",
+        "pos": "noun",
         "translation": "werkwoord"
-    }
-,
+    },
     "view": {
         "comment": "Dit kan gebruikt worden in de context als 'View site'. Vertaling is in dit geval: 'Site bekijken'.",
-        "pos": "",
+        "pos": "verb",
         "translation": "bekijken"
-    }
-,
+    },
     "you": {
         "comment": "En geen jij of u. Voor de Nederlandse vertaling gebruiken we informeel taalgebruik.",
-        "pos": "",
+        "pos": "noun",
         "translation": "je"
-    }
-,
+    },
     "your": {
         "comment": "En geen jouw of uw;",
-        "pos": "",
+        "pos": "noun",
         "translation": "je"
     }
 }

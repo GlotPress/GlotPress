@@ -1,1171 +1,907 @@
 {
     "activate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "ativar"
-    }
-,
+    },
     "address": {
         "comment": "Ex. \u201cversion x addresses\u2026\u201d \u2013 \u201ca vers\u00e3o x corrige\u2026\u201d",
-        "pos": "",
+        "pos": "verb",
         "translation": "corrige"
-    }
-,
+    },
     "are you sure you want": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "tem certeza de que deseja"
-    }
-,
+    },
     "array": {
         "comment": "Termo de programa\u00e7\u00e3o, n\u00e3o traduzir",
-        "pos": "",
+        "pos": "noun",
         "translation": "array"
-    }
-,
+    },
     "aside": {
         "comment": "Post format - formato de post",
-        "pos": "",
+        "pos": "noun",
         "translation": "nota"
-    }
-,
+    },
     "at the bottom": {
         "comment": "",
-        "pos": "",
+        "pos": " expression",
         "translation": "na parte inferior"
-    }
-,
+    },
     "at the top": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "na parte superior"
-    }
-,
+    },
     "backup": {
         "comment": " Masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "backup"
-    }
-,
-    "backup": {
-        "comment": "",
-        "pos": "",
-        "translation": "fazer backup"
-    }
-,
+    },
     "banner": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "banner"
-    }
-,
+    },
     "batch": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "lote"
-    }
-,
-    "batch": {
-        "comment": "",
-        "pos": "",
-        "translation": "em lote"
-    }
-,
+    },
     "bitrate": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "taxa de bits"
-    }
-,
+    },
     "blogroll": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "lista de links"
-    }
-,
+    },
     "browse": {
         "comment": "omitir nos casos onde a tradu\u00e7\u00e3o exprime uma obviedade. Ex.: \u201cYou are currently browsing the archives for\u2026\u201d traduzir como: \u201cVoc\u00ea est\u00e1 no arquivo do\u2026\u201d",
-        "pos": "",
+        "pos": "verb",
         "translation": "procurar"
-    }
-,
+    },
     "browser": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "navegador"
-    }
-,
+    },
     "by default": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "por padr\u00e3o"
-    }
-,
+    },
     "Can\u2019t": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "n\u00e3o \u00e9 poss\u00edvel"
-    }
-,
+    },
     "captioning ID": {
         "comment": "Masculino",
-        "pos": "",
+        "pos": "expression",
         "translation": "ID de legenda"
-    }
-,
+    },
     "chat": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "bate-papo"
-    }
-,
+    },
     "cheating, uh?": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "Trapaceando, \u00e9?"
-    }
-,
+    },
     "check": {
         "comment": "ou conferir (conforme contexto)",
-        "pos": "",
+        "pos": "verb",
         "translation": "marcar"
-    }
-,
+    },
     "check out": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "consultar"
-    }
-,
+    },
     "child theme": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "tema filho"
-    }
-,
-    "child theme": {
-        "comment": "",
-        "pos": "",
-        "translation": "tema filho"
-    }
-,
+    },
     "clean": {
         "comment": "Ex: a clean theme, um tema simples.",
-        "pos": "",
+        "pos": "adjective",
         "translation": "simples"
-    }
-,
+    },
     "clear": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "liberar"
-    }
-,
+    },
     "closed": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "encerrado"
-    }
-,
+    },
     "color picker": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "seletor de cor"
-    }
-,
+    },
     "complete": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "conclu\u00eddo"
-    }
-,
+    },
     "connect to x": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "conectar a x"
-    }
-,
+    },
     "core": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "arquivos b\u00e1sicos"
-    }
-,
+    },
     "Costumizer": {
         "comment": "Nome da ferramenta, usar inicial mai\u00fascula.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Personalizar"
-    }
-,
+    },
     "Couldn\u2019t": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "n\u00e3o foi poss\u00edvel"
-    }
-,
+    },
     "crop": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "recortar"
-    }
-,
+    },
     "customization": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "personaliza\u00e7\u00e3o"
-    }
-,
+    },
     "customizer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "personalizador"
-    }
-,
+    },
     "database": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "banco de dados"
-    }
-,
+    },
     "deactivate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "desativar"
-    }
-,
+    },
     "debug": {
         "comment": "Derivados devem seguir a mesma tradu\u00e7\u00e3o, ex: debugging (n) - depura\u00e7\u00e3o",
-        "pos": "",
+        "pos": "verb",
         "translation": "depurar"
-    }
-,
+    },
     "default": {
         "comment": "usar Padr\u00f5es quando o plural for necess\u00e1rio",
-        "pos": "",
+        "pos": "noun",
         "translation": "padr\u00e3o"
-    }
-,
-    "default": {
-        "comment": "invari\u00e1vel -sem plural",
-        "pos": "",
-        "translation": "padr\u00e3o"
-    }
-,
+    },
     "delete": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "excluir"
-    }
-,
+    },
     "design": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "design"
-    }
-,
+    },
     "device": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "dispositivo"
-    }
-,
+    },
     "disable": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "desativar"
-    }
-,
+    },
     "dismiss": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "dispensar"
-    }
-,
+    },
     "display": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "exibir"
-    }
-,
-    "display": {
-        "comment": "",
-        "pos": "",
-        "translation": "exibi\u00e7\u00e3o"
-    }
-,
+    },
     "distraction free": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "escrita sem distra\u00e7\u00f5es"
-    }
-,
+    },
     "distraction-free writing": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "escrita sem distra\u00e7\u00f5es"
-    }
-,
+    },
     "don\u2019t be stupid": {
         "comment": "n\u00e3o seja bobo",
-        "pos": "",
+        "pos": "expression",
         "translation": "n\u00e3o marque bobeira"
-    }
-,
+    },
     "done": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "conclu\u00eddo"
-    }
-,
+    },
     "download": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "download"
-    }
-,
-    "download": {
-        "comment": "",
-        "pos": "",
-        "translation": "fazer download"
-    }
-,
+    },
     "draft": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "rascunho"
-    }
-,
+    },
     "email": {
         "comment": "Com hifen, academia brasileira de letras reconhece apenas desta forma.",
-        "pos": "",
+        "pos": "noun",
         "translation": "e-mail"
-    }
-,
+    },
     "embed": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "m\u00eddia incorporada"
-    }
-,
+    },
     "enable": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "ativar"
-    }
-,
+    },
     "enter": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "digite"
-    }
-,
+    },
     "entry": {
         "comment": " ou entrada conforme o contexto",
-        "pos": "",
+        "pos": "noun",
         "translation": "post"
-    }
-,
+    },
     "escaping": {
         "comment": "Termo de programa\u00e7\u00e3o, n\u00e3o traduzir.",
-        "pos": "",
+        "pos": "noun",
         "translation": "escaping"
-    }
-,
+    },
     "feature": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "recurso"
-    }
-,
+    },
     "feeds": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "feeds"
-    }
-,
+    },
     "fetch": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "coletar"
-    }
-,
+    },
     "first name": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "nome"
-    }
-,
+    },
     "flip": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "virar"
-    }
-,
+    },
     "follow-up": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": ""
-    }
-,
+    },
     "font": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "fonte"
-    }
-,
+    },
     "frame": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "frame"
-    }
-,
+    },
     "freshness": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "tempo desde a publica\u00e7\u00e3o"
-    }
-,
+    },
     "fullscreen": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "tela cheia"
-    }
-,
+    },
     "gatekeeper": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "guardi\u00e3o"
-    }
-,
+    },
     "global dashboard": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "painel geral"
-    }
-,
+    },
     "header": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "cabe\u00e7alho"
-    }
-,
+    },
     "held": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "retido"
-    }
-,
+    },
     "help on": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "ajuda sobre"
-    }
-,
+    },
     "hidden Gui": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "GUI oculta"
-    }
-,
+    },
     "hold": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "reter"
-    }
-,
+    },
     "homepage": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "p\u00e1gina inicial"
-    }
-,
+    },
     "hot tag": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "tag popular"
-    }
-,
+    },
     "hotkeys": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "teclas de acesso"
-    }
-,
+    },
     "ID": {
         "comment": "feminino",
-        "pos": "",
+        "pos": "noun",
         "translation": "ID"
-    }
-,
+    },
     "invoke URLs": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "chamar URLs"
-    }
-,
+    },
     "keep in mind that": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "lembre-se de que"
-    }
-,
+    },
     "key master": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "admin-mestre"
-    }
-,
+    },
     "last name": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "sobrenome"
-    }
-,
+    },
     "latest": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "mais recentes"
-    }
-,
+    },
     "link to": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "apontar para"
-    }
-,
+    },
     "live preview": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "ver ao vivo"
-    }
-,
+    },
     "log": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "resumo"
-    }
-,
+    },
     "log in": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "fazer login"
-    }
-,
+    },
     "log out": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "fazer logout"
-    }
-,
+    },
     "logged": {
         "comment": "Por\u00e9m log in - fazer login e log out - fazer logout.",
-        "pos": "",
+        "pos": "noun",
         "translation": "conectado"
-    }
-,
+    },
     "logged out": {
         "comment": "idem",
-        "pos": "",
+        "pos": "expression",
         "translation": "desconectado"
-    }
-,
+    },
     "logo": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "logo"
-    }
-,
+    },
     "loop": {
         "comment": " masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "loop"
-    }
-,
-    "loop": {
-        "comment": "",
-        "pos": "",
-        "translation": "fazer loop"
-    }
-,
+    },
     "malware": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "malware"
-    }
-,
+    },
     "manage": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "gerenciar"
-    }
-,
+    },
     "mapping": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "mapeamento"
-    }
-,
-    "mapping": {
-        "comment": "",
-        "pos": "",
-        "translation": "mapeando"
-    }
-,
+    },
     "matching x": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "correspondente a x"
-    }
-,
+    },
     "media attachment": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "m\u00eddia"
-    }
-,
+    },
     "metadata": {
         "comment": "traduzir no plural.",
-        "pos": "",
+        "pos": "noun",
         "translation": "metadados"
-    }
-,
+    },
     "moderate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "moderar"
-    }
-,
+    },
     "newest": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "mais recente"
-    }
-,
+    },
     "nickname": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "apelido"
-    }
-,
+    },
     "no x found": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "nenhum x encontrado"
-    }
-,
+    },
     "offine": {
         "comment": " sem h\u00edfen",
-        "pos": "",
+        "pos": "adjective",
         "translation": "offine"
-    }
-,
+    },
     "on\/off": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "ativado\/desativado"
-    }
-,
+    },
     "online": {
         "comment": "sem h\u00ed\u00adfen",
-        "pos": "",
+        "pos": "adjective",
         "translation": "online"
-    }
-,
+    },
     "Oops": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "Opa"
-    }
-,
+    },
     "parent category": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "categoria m\u00e3e"
-    }
-,
+    },
     "parent theme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "tema pai"
-    }
-,
+    },
     "password strength": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "n\u00edvel de seguran\u00e7a da senha"
-    }
-,
+    },
     "permalink": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "link permanente"
-    }
-,
+    },
     "pingback": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "pingback"
-    }
-,
+    },
     "please": {
         "comment": "n\u00e3o traduzir (n\u00e3o pedir por favor ao usu\u00e1rio)",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "plugin": {
         "comment": "sem h\u00ed\u00adfen",
-        "pos": "",
+        "pos": "noun",
         "translation": "plugin"
-    }
-,
+    },
     "post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "post"
-    }
-,
-    "post": {
-        "comment": "",
-        "pos": "",
-        "translation": "publicar"
-    }
-,
+    },
     "prefetch": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "pr\u00e9-carregar"
-    }
-,
+    },
     "preview": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "visualizar"
-    }
-,
-    "preview": {
-        "comment": "",
-        "pos": "",
-        "translation": "visualiza\u00e7\u00e3o"
-    }
-,
+    },
     "query": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "consulta"
-    }
-,
+    },
     "rating": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "classifica\u00e7\u00e3o"
-    }
-,
+    },
     "refresh": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "atualizar"
-    }
-,
+    },
     "release": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "release"
-    }
-,
+    },
     "reply to": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "responder a"
-    }
-,
+    },
     "request": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "solicitar"
-    }
-,
+    },
     "reset": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "redefinir"
-    }
-,
+    },
     "respond to": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "responder a"
-    }
-,
+    },
     "Rich Editor": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Editor visual"
-    }
-,
+    },
     "role": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "fun\u00e7\u00e3o"
-    }
-,
+    },
     "RSS feed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "feed RSS"
-    }
-,
+    },
     "save": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "salvar"
-    }
-,
+    },
     "saved": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "salvo"
-    }
-,
+    },
     "schedule": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "agenda"
-    }
-,
-    "schedule": {
-        "comment": "",
-        "pos": "",
-        "translation": "agendar"
-    }
-,
+    },
     "scheduled": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "agendado"
-    }
-,
+    },
     "search": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "pesquisa"
-    }
-,
-    "search": {
-        "comment": "",
-        "pos": "",
-        "translation": "pesquisar"
-    }
-,
+    },
     "search engine": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "mecanismo de busca"
-    }
-,
+    },
     "search for": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "procurar por"
-    }
-,
+    },
     "secret key": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "chave secreta"
-    }
-,
+    },
     "set a password": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "definir uma senha"
-    }
-,
+    },
     "settings": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "configura\u00e7\u00f5es"
-    }
-,
+    },
     "show": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "mostrar"
-    }
-,
+    },
     "shuffle": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "embaralhar"
-    }
-,
+    },
     "sidebar": {
         "comment": " \u00e1rea de widget?",
-        "pos": "",
+        "pos": "noun",
         "translation": "barral lateral"
-    }
-,
+    },
     "slug": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "slug"
-    }
-,
+    },
     "so you cannot": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "portanto, voc\u00ea n\u00e3o pode"
-    }
-,
+    },
     "soon": {
         "comment": "",
-        "pos": "",
+        "pos": "adverb",
         "translation": "mais tarde"
-    }
-,
+    },
     "spam": {
         "comment": "em min\u00fasculas",
-        "pos": "",
+        "pos": "noun",
         "translation": "spam"
-    }
-,
+    },
     "start": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "iniciar"
-    }
-,
+    },
     "state-of-the-art": {
         "comment": "de vanguarda",
-        "pos": "",
+        "pos": "expression",
         "translation": "avan\u00e7ado"
-    }
-,
+    },
     "status": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "status"
-    }
-,
+    },
     "sticky": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "fixo"
-    }
-,
+    },
     "stretch to fit": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "aumentar para ajustar ao tamanho"
-    }
-,
+    },
     "submit": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "enviar"
-    }
-,
+    },
     "subscribe": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "assinar"
-    }
-,
+    },
     "subscribed": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "assinou"
-    }
-,
+    },
     "subscriptions": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "assinaturas"
-    }
-,
+    },
     "tab": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "aba"
-    }
-,
+    },
     "tag": {
         "comment": "feminino",
-        "pos": "",
+        "pos": "noun",
         "translation": "tag"
-    }
-,
+    },
     "target": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "destino"
-    }
-,
+    },
     "team": {
         "comment": "Ex: WordPress team - Equipe do WordPress",
-        "pos": "",
+        "pos": "noun",
         "translation": "equipe"
-    }
-,
+    },
     "template": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "modelo"
-    }
-,
+    },
     "thank you": {
         "comment": "n\u00e3o traduzir (n\u00e3o agradecer o usu\u00e1rio)",
-        "pos": "",
+        "pos": "expression",
         "translation": ""
-    }
-,
+    },
     "theme customizer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "personalizador de tema"
-    }
-,
+    },
     "then": {
         "comment": "",
-        "pos": "",
+        "pos": "interjection",
         "translation": "ent\u00e3o"
-    }
-,
+    },
     "throttling": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "controle de fluxo"
-    }
-,
+    },
     "tile": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "repetir"
-    }
-,
+    },
     "timezone": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "fuso hor\u00e1rio"
-    }
-,
+    },
     "trackback": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "trackback"
-    }
-,
+    },
     "trash": {
         "comment": "Lixo (objeto exclu\u00eddo).Lixeira (local onde os objetos s\u00e3o exclu\u00eddos)",
-        "pos": "",
+        "pos": "noun",
         "translation": "lixeira"
-    }
-,
+    },
     "undelete": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "restaurar"
-    }
-,
+    },
     "unfollow": {
         "comment": "Igual ao Facebook",
-        "pos": "",
+        "pos": "verb",
         "translation": "deixar de seguir"
-    }
-,
+    },
     "upload": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "upload"
-    }
-,
-    "upload": {
-        "comment": "",
-        "pos": "",
-        "translation": "fazer upload"
-    }
-,
+    },
     "URL": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "URL"
-    }
-,
+    },
     "username": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "nome de usu\u00e1rio"
-    }
-,
+    },
     "view": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "visualiza\u00e7\u00e3o"
-    }
-,
-    "view": {
-        "comment": "",
-        "pos": "",
-        "translation": "ver"
-    }
-,
+    },
     "warning": {
         "comment": "",
-        "pos": "",
+        "pos": "interjection",
         "translation": "aten\u00e7\u00e3o"
-    }
-,
+    },
     "website": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "site"
-    }
-,
+    },
     "widget": {
         "comment": "masculino",
-        "pos": "",
+        "pos": "noun",
         "translation": "widget"
-    }
-,
+    },
     "with success": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "com sucesso"
-    }
-,
+    },
     "write": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "gravar"
-    }
-,
+    },
     "you are about to": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "voc\u00ea est\u00e1 prestes a"
-    }
-,
+    },
     "you are not allowed to": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "sem permiss\u00e3o para"
-    }
-,
+    },
     "you can just\/only": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "basta"
-    }
-,
+    },
     "you cannot to": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "sem permiss\u00e3o para"
-    }
-,
+    },
     "you must have x": {
         "comment": "",
-        "pos": "",
+        "pos": "expression",
         "translation": "voc\u00ea deve ter x"
     }
 }

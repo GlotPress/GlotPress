@@ -1,1153 +1,932 @@
 {
     "account": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1a\u0e31\u0e0d\u0e0a\u0e35"
-    }
-,
+    },
     "action hook": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "activate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e40\u0e1b\u0e34\u0e14\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19"
-    }
-,
+    },
     "activated": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e40\u0e1b\u0e34\u0e14\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19\u0e41\u0e25\u0e49\u0e27"
-    }
-,
+    },
     "admin bar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e41\u0e16\u0e1a\u0e1c\u0e39\u0e49\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21"
-    }
-,
+    },
     "admin panel": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e41\u0e1c\u0e07\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21"
-    }
-,
+    },
     "administrator": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21"
-    }
-,
+    },
     "After the Deadline": {
-        "comment": "http:\/\/www.afterthedeadline.com",
-        "pos": "",
+        "comment": "www.afterthedeadline.com",
+        "pos": "noun",
         "translation": "After the Deadline"
-    }
-,
+    },
     "Appearance": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e41\u0e1a\u0e1a"
-    }
-,
+    },
     "archive": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e04\u0e25\u0e31\u0e07\u0e40\u0e01\u0e47\u0e1a"
-    }
-,
-    "archive": {
-        "comment": "",
-        "pos": "",
-        "translation": "\u0e40\u0e01\u0e47\u0e1a\u0e40\u0e02\u0e49\u0e32\u0e04\u0e25\u0e31\u0e07"
-    }
-,
+    },
     "argument": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "array": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "aside": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "attachment": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "audio": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e2a\u0e35\u0e22\u0e07"
-    }
-,
+    },
     "author": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e40\u0e02\u0e35\u0e22\u0e19"
-    }
-,
+    },
     "autosave": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34"
-    }
-,
+    },
     "binary": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "blog": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1a\u0e25\u0e47\u0e2d\u0e01"
-    }
-,
+    },
     "bookmarklet": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "browser": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e1a\u0e23\u0e32\u0e27\u0e4c\u0e40\u0e0b\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "BuddyPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "BuddyPress"
-    }
-,
+    },
     "bulk actions": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e01\u0e32\u0e23\u0e01\u0e23\u0e30\u0e17\u0e33\u0e08\u0e33\u0e19\u0e27\u0e19\u0e21\u0e32\u0e01"
-    }
-,
+    },
     "bundle": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "button": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e38\u0e48\u0e21"
-    }
-,
+    },
     "cart": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e23\u0e30\u0e01\u0e23\u0e49\u0e32\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32"
-    }
-,
+    },
     "category": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2b\u0e21\u0e27\u0e14\u0e2b\u0e21\u0e39\u0e48"
-    }
-,
+    },
     "character code": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "character entity reference": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "character set": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "color scheme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e09\u0e14\u0e2a\u0e35"
-    }
-,
+    },
     "comment": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e41\u0e2a\u0e14\u0e07\u0e04\u0e27\u0e32\u0e21\u0e40\u0e2b\u0e47\u0e19"
-    }
-,
-    "comment": {
-        "comment": "",
-        "pos": "",
-        "translation": "\u0e04\u0e27\u0e32\u0e21\u0e40\u0e2b\u0e47\u0e19"
-    }
-,
+    },
     "computer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e04\u0e2d\u0e21\u0e1e\u0e34\u0e27\u0e40\u0e15\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "conditional tag": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "constant": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Contributors": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e2d\u0e38\u0e17\u0e34\u0e28"
-    }
-,
+    },
     "Cookie": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Cookie"
-    }
-,
+    },
     "Custom Colors": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07\u0e2a\u0e35"
-    }
-,
+    },
     "Custom CSS": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07 CSS"
-    }
-,
+    },
     "Custom Design": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07\u0e2b\u0e19\u0e49\u0e32\u0e15\u0e32"
-    }
-,
+    },
     "Custom Fonts": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07\u0e15\u0e31\u0e27\u0e2d\u0e31\u0e01\u0e29\u0e23"
-    }
-,
+    },
     "Custom Menu": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e21\u0e19\u0e39\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07"
-    }
-,
+    },
     "Custom Post Type": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07"
-    }
-,
+    },
     "customize": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e1b\u0e23\u0e31\u0e1a\u0e41\u0e15\u0e48\u0e07"
-    }
-,
+    },
     "Dashboard": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2b\u0e19\u0e49\u0e32\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21"
-    }
-,
+    },
     "database": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e10\u0e32\u0e19\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25"
-    }
-,
+    },
     "deactivate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": ""
-    }
-,
+    },
     "default": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e04\u0e48\u0e32\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19"
-    }
-,
+    },
     "default theme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e18\u0e35\u0e21\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19"
-    }
-,
+    },
     "deprecated": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": ""
-    }
-,
+    },
     "developer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e1e\u0e31\u0e12\u0e19\u0e32"
-    }
-,
+    },
     "dialog": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e01\u0e32\u0e23\u0e42\u0e15\u0e49\u0e15\u0e2d\u0e1a"
-    }
-,
+    },
     "directory": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e44\u0e14\u0e40\u0e23\u0e01\u0e17\u0e2d\u0e23\u0e35"
-    }
-,
+    },
     "draft": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e09\u0e1a\u0e31\u0e1a\u0e23\u0e48\u0e32\u0e07"
-    }
-,
+    },
     "editor": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e41\u0e01\u0e49\u0e44\u0e02"
-    }
-,
+    },
     "email": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2d\u0e35\u0e40\u0e21\u0e25"
-    }
-,
+    },
     "email address": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e2d\u0e35\u0e40\u0e21\u0e25"
-    }
-,
+    },
     "error": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e34\u0e14\u0e1e\u0e25\u0e32\u0e14"
-    }
-,
+    },
     "excerpt": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e22\u0e48\u0e2d"
-    }
-,
+    },
     "Facebook": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e1f\u0e0b\u0e1a\u0e38\u0e4a\u0e04"
-    }
-,
+    },
     "Featured": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1e\u0e34\u0e40\u0e28\u0e29"
-    }
-,
+    },
     "featured image": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e1e\u0e34\u0e40\u0e28\u0e29"
-    }
-,
+    },
     "featured post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e40\u0e14\u0e48\u0e19"
-    }
-,
+    },
     "feed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1f\u0e35\u0e14"
-    }
-,
+    },
     "filter": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e31\u0e27\u0e01\u0e23\u0e2d\u0e07"
-    }
-,
+    },
     "filter hook": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "folder": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e42\u0e1f\u0e25\u0e40\u0e14\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "Follower": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e15\u0e34\u0e14\u0e15\u0e32\u0e21"
-    }
-,
+    },
     "forbidden": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e15\u0e49\u0e2d\u0e07\u0e2b\u0e49\u0e32\u0e21"
-    }
-,
+    },
     "Freshly Pressed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "front end": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": ""
-    }
-,
-    "front end": {
-        "comment": "",
-        "pos": "",
-        "translation": ""
-    }
-,
+    },
     "gallery": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Happiness Engineer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Happiness Engineers": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Header": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e48\u0e27\u0e19\u0e2b\u0e31\u0e27"
-    }
-,
+    },
     "Header Image": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e2a\u0e48\u0e27\u0e19\u0e2b\u0e31\u0e27"
-    }
-,
+    },
     "Header Text": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e02\u0e49\u0e2d\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e48\u0e27\u0e19\u0e2b\u0e31\u0e27"
-    }
-,
+    },
     "Header Text Color": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e35\u0e02\u0e49\u0e2d\u0e04\u0e27\u0e32\u0e21\u0e2a\u0e48\u0e27\u0e19\u0e2b\u0e31\u0e27"
-    }
-,
+    },
     "hosting provider": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e43\u0e2b\u0e49\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23\u0e42\u0e2e\u0e2a\u0e17\u0e4c"
-    }
-,
+    },
     "hosts": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e42\u0e2e\u0e2a\u0e17\u0e4c"
-    }
-,
+    },
     "invalid": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": ""
-    }
-,
-    "invalid": {
-        "comment": "",
-        "pos": "",
-        "translation": "\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07"
-    }
-,
+    },
     "IP address": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e44\u0e2d\u0e1e\u0e35"
-    }
-,
+    },
     "Jetpack": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Jetpack"
-    }
-,
+    },
     "Like": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e0a\u0e37\u0e48\u0e19\u0e0a\u0e2d\u0e1a"
-    }
-,
+    },
     "Likes": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e0a\u0e37\u0e48\u0e19\u0e0a\u0e2d\u0e1a"
-    }
-,
+    },
     "link": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e25\u0e34\u0e07\u0e01\u0e4c"
-    }
-,
+    },
     "log in": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e02\u0e49\u0e32\u0e2a\u0e39\u0e48\u0e23\u0e30\u0e1a\u0e1a"
-    }
-,
+    },
     "log out": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2d\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e23\u0e30\u0e1a\u0e1a"
-    }
-,
+    },
     "logged in": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e40\u0e02\u0e49\u0e32\u0e2a\u0e39\u0e48\u0e23\u0e30\u0e1a\u0e1a\u0e41\u0e25\u0e49\u0e27"
-    }
-,
+    },
     "logged out": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e2d\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e23\u0e30\u0e1a\u0e1a\u0e41\u0e25\u0e49\u0e27"
-    }
-,
+    },
     "login": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e40\u0e02\u0e49\u0e32\u0e2a\u0e39\u0e48\u0e23\u0e30\u0e1a\u0e1a"
-    }
-,
+    },
     "logo": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e42\u0e25\u0e42\u0e01\u0e49"
-    }
-,
+    },
     "logout": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e2d\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e23\u0e30\u0e1a\u0e1a"
-    }
-,
+    },
     "media library": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e04\u0e25\u0e31\u0e07\u0e44\u0e1f\u0e25\u0e4c\u0e2a\u0e37\u0e48\u0e2d"
-    }
-,
+    },
     "Media Uploader": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e31\u0e27\u0e2d\u0e31\u0e1b\u0e42\u0e2b\u0e25\u0e14\u0e44\u0e1f\u0e25\u0e4c\u0e2a\u0e37\u0e48\u0e2d"
-    }
-,
+    },
     "meida file": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e44\u0e1f\u0e25\u0e4c\u0e2a\u0e37\u0e48\u0e2d"
-    }
-,
+    },
     "meta": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "meta"
-    }
-,
+    },
     "moderation": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e01\u0e32\u0e23\u0e08\u0e31\u0e14\u0e01\u0e32\u0e23"
-    }
-,
+    },
     "multisite": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2b\u0e25\u0e32\u0e22\u0e40\u0e27\u0e47\u0e1a\u0e44\u0e0b\u0e15\u0e4c"
-    }
-,
+    },
     "navigation": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e19\u0e33\u0e17\u0e32\u0e07"
-    }
-,
+    },
     "next post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e15\u0e48\u0e2d\u0e44\u0e1b"
-    }
-,
+    },
     "nonce": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "not sticky": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e44\u0e21\u0e48\u0e1b\u0e31\u0e01\u0e2b\u0e21\u0e38\u0e14"
-    }
-,
+    },
     "older post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e17\u0e35\u0e48\u0e40\u0e01\u0e48\u0e32\u0e01\u0e27\u0e48\u0e32"
-    }
-,
+    },
     "option": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e31\u0e27\u0e40\u0e25\u0e37\u0e2d\u0e01"
-    }
-,
+    },
     "page": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2b\u0e19\u0e49\u0e32"
-    }
-,
+    },
     "pagination": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "parameter": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1e\u0e32\u0e23\u0e32\u0e21\u0e34\u0e40\u0e15\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "pending": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a"
-    }
-,
+    },
     "permalink": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e25\u0e34\u0e07\u0e01\u0e4c\u0e16\u0e32\u0e27\u0e23"
-    }
-,
+    },
     "permission": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
-    }
-,
+    },
     "ping": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "pingback": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "plugin": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e25\u0e31\u0e4a\u0e01\u0e2d\u0e34\u0e19"
-    }
-,
+    },
     "poll": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e42\u0e1e\u0e25\u0e25\u0e4c"
-    }
-,
+    },
     "Polldaddy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Polldaddy"
-    }
-,
+    },
     "post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
-    }
-,
-    "post": {
-        "comment": "",
-        "pos": "",
-        "translation": "\u0e2a\u0e48\u0e07"
-    }
-,
+    },
     "post format": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e41\u0e1a\u0e1a\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
-    }
-,
+    },
     "post status": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
-    }
-,
+    },
     "post thumbnail": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e22\u0e48\u0e2d\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
-    }
-,
+    },
     "post type": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
-    }
-,
+    },
     "Press This": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Press This"
-    }
-,
+    },
     "previous post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e01\u0e48\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32"
-    }
-,
+    },
     "private": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e48\u0e27\u0e19\u0e15\u0e31\u0e27"
-    }
-,
+    },
     "publish": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e40\u0e1c\u0e22\u0e41\u0e1e\u0e23\u0e48"
-    }
-,
+    },
     "query": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Quick Post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e02\u0e35\u0e22\u0e19\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e40\u0e23\u0e47\u0e27"
-    }
-,
+    },
     "Reader": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e01\u0e32\u0e23\u0e2d\u0e48\u0e32\u0e19"
-    }
-,
+    },
     "reblog": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e23\u0e35\u0e1a\u0e25\u0e47\u0e2d\u0e01"
-    }
-,
+    },
     "required": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e49\u0e2d\u0e07\u0e01\u0e32\u0e23"
-    }
-,
+    },
     "responsive": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": ""
-    }
-,
+    },
     "return value": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e04\u0e37\u0e19\u0e04\u0e48\u0e32"
-    }
-,
+    },
     "role": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1a\u0e17\u0e1a\u0e32\u0e17"
-    }
-,
+    },
     "RSS": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "RSS"
-    }
-,
+    },
     "RTL": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e02\u0e35\u0e22\u0e19\u0e08\u0e32\u0e01\u0e02\u0e27\u0e32\u0e44\u0e1b\u0e0b\u0e49\u0e32\u0e22"
-    }
-,
+    },
     "Search results": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e25\u0e25\u0e31\u0e1e\u0e17\u0e4c\u0e01\u0e32\u0e23\u0e04\u0e49\u0e19\u0e2b\u0e32"
-    }
-,
+    },
     "self-hosted": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e43\u0e0a\u0e49\u0e42\u0e2e\u0e2a\u0e17\u0e4c\u0e02\u0e2d\u0e07\u0e15\u0e31\u0e27\u0e40\u0e2d\u0e07"
-    }
-,
+    },
     "server": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e0b\u0e34\u0e23\u0e4c\u0e1f\u0e40\u0e27\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "service": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23"
-    }
-,
+    },
     "sidebar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e14\u0e49\u0e32\u0e19\u0e02\u0e49\u0e32\u0e07"
-    }
-,
+    },
     "single post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e40\u0e14\u0e35\u0e48\u0e22\u0e27"
-    }
-,
+    },
     "site": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e27\u0e47\u0e1a"
-    }
-,
+    },
     "slug": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "spaces": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1e\u0e37\u0e49\u0e19\u0e17\u0e35\u0e48"
-    }
-,
+    },
     "spam": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e41\u0e1b\u0e21"
-    }
-,
+    },
     "status": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e16\u0e32\u0e19\u0e30"
-    }
-,
+    },
     "stick": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e1b\u0e31\u0e01\u0e2b\u0e21\u0e38\u0e14"
-    }
-,
+    },
     "sticky": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e1b\u0e31\u0e01\u0e2b\u0e21\u0e38\u0e14"
-    }
-,
+    },
     "string": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "subpanel": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Subversion": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "survey": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2a\u0e33\u0e23\u0e27\u0e08"
-    }
-,
+    },
     "tag": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1b\u0e49\u0e32\u0e22\u0e01\u0e33\u0e01\u0e31\u0e1a"
-    }
-,
+    },
     "tagline": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e04\u0e33\u0e42\u0e1b\u0e23\u0e22"
-    }
-,
+    },
     "taxonomies": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e25\u0e33\u0e14\u0e31\u0e1a\u0e02\u0e31\u0e49\u0e19"
-    }
-,
+    },
     "taxonomy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e25\u0e33\u0e14\u0e31\u0e1a\u0e02\u0e31\u0e49\u0e19"
-    }
-,
+    },
     "template hierarchy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e25\u0e33\u0e14\u0e31\u0e1a\u0e40\u0e17\u0e21\u0e40\u0e1e\u0e25\u0e15"
-    }
-,
+    },
     "term": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e07\u0e37\u0e48\u0e2d\u0e19\u0e44\u0e02"
-    }
-,
+    },
     "text editor": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e31\u0e27\u0e41\u0e01\u0e49\u0e44\u0e02\u0e02\u0e49\u0e2d\u0e04\u0e27\u0e32\u0e21"
-    }
-,
+    },
     "theme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e18\u0e35\u0e21"
-    }
-,
+    },
     "thumbnail": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e22\u0e48\u0e2d"
-    }
-,
+    },
     "Toolbar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e41\u0e16\u0e1a\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e21\u0e37\u0e2d"
-    }
-,
+    },
     "trackback": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Transient": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "troubleshooting": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "Twitter": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e17\u0e27\u0e35\u0e15\u0e40\u0e15\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "two factor authentication": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": ""
-    }
-,
+    },
     "upgrade": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2d\u0e31\u0e1b\u0e40\u0e01\u0e23\u0e14"
-    }
-,
+    },
     "uploader": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e15\u0e31\u0e27\u0e2d\u0e31\u0e1b\u0e42\u0e2b\u0e25\u0e14"
-    }
-,
+    },
     "URL": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "URL"
-    }
-,
+    },
     "user": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e1c\u0e39\u0e49\u0e43\u0e0a\u0e49"
-    }
-,
+    },
     "username": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e0a\u0e37\u0e48\u0e2d\u0e1c\u0e39\u0e49\u0e43\u0e0a\u0e49"
-    }
-,
+    },
     "valid": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19\u0e44\u0e14\u0e49"
-    }
-,
+    },
     "VaultPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "VaultPress"
-    }
-,
+    },
     "video": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e27\u0e35\u0e14\u0e35\u0e42\u0e2d"
-    }
-,
+    },
     "VideoPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "VideoPress"
-    }
-,
+    },
     "view": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "\u0e14\u0e39"
-    }
-,
-    "view": {
-        "comment": "",
-        "pos": "",
-        "translation": "\u0e01\u0e32\u0e23\u0e14\u0e39"
-    }
-,
+    },
     "web server": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e27\u0e47\u0e1a\u0e40\u0e0b\u0e34\u0e23\u0e4c\u0e1f\u0e40\u0e27\u0e2d\u0e23\u0e4c"
-    }
-,
+    },
     "WordCamp": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordCamp"
-    }
-,
+    },
     "WordPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e40\u0e27\u0e34\u0e23\u0e4c\u0e14\u0e40\u0e1e\u0e23\u0e2a"
-    }
-,
+    },
     "WordPress Dashboard": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u0e2b\u0e19\u0e49\u0e32\u0e04\u0e27\u0e1a\u0e04\u0e38\u0e21\u0e40\u0e27\u0e34\u0e23\u0e4c\u0e14\u0e40\u0e1e\u0e23\u0e2a"
-    }
-,
+    },
     "WordPress.com": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com"
-    }
-,
+    },
     "WordPress.com Business": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com Business"
-    }
-,
+    },
     "WordPress.com Enterprise": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com Enterprise"
-    }
-,
+    },
     "WordPress.com Premium": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com Premium"
-    }
-,
+    },
     "XML-RPC": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "XML-RPC"
     }
 }

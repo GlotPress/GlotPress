@@ -1,1159 +1,937 @@
 {
     "account": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Konto"
-    }
-,
+    },
     "action hook": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Action-Hook"
-    }
-,
+    },
     "activate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "aktivieren"
-    }
-,
+    },
     "activated": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "aktiviert"
-    }
-,
+    },
     "admin bar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Adminleiste"
-    }
-,
+    },
     "admin panel": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Adminpanel"
-    }
-,
+    },
     "administrator": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Administrator"
-    }
-,
+    },
     "After the Deadline": {
         "comment": "Software product name: http:\/\/afterthedeadline.com\/",
-        "pos": "",
+        "pos": "noun",
         "translation": "After the Deadline"
-    }
-,
+    },
     "Appearance": {
         "comment": "UI Menu",
-        "pos": "",
+        "pos": "noun",
         "translation": "Design"
-    }
-,
+    },
     "archive": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Archiv"
-    }
-,
-    "archive": {
-        "comment": "",
-        "pos": "",
-        "translation": "archivieren"
-    }
-,
+    },
     "argument": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Argument"
-    }
-,
+    },
     "array": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Array"
-    }
-,
+    },
     "aside": {
         "comment": "One of the post formats",
-        "pos": "",
+        "pos": "noun",
         "translation": "Kurzmitteilung"
-    }
-,
+    },
     "attachment": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Anhang"
-    }
-,
+    },
     "audio": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Audio"
-    }
-,
+    },
     "author": {
         "comment": "Author of contents such as posts and pages.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Autor"
-    }
-,
-    "author": {
-        "comment": "Author of plugins and themes.",
-        "pos": "",
-        "translation": "Autor"
-    }
-,
+    },
     "autosave": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Automatische Speicherung"
-    }
-,
+    },
     "Backend": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Backend"
-    }
-,
+    },
     "binary": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Bin\u00e4r-"
-    }
-,
+    },
     "bookmarklet": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Bookmarklet"
-    }
-,
+    },
     "browser": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Browser"
-    }
-,
+    },
     "BuddyPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "BuddyPress"
-    }
-,
+    },
     "bulk actions": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Sammelaktionen"
-    }
-,
+    },
     "bundle": {
         "comment": "WordPress.com store",
-        "pos": "",
+        "pos": "noun",
         "translation": "Paket"
-    }
-,
+    },
     "button": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Button"
-    }
-,
+    },
     "cart": {
         "comment": "Shopping cart",
-        "pos": "",
+        "pos": "noun",
         "translation": "Warenkorb"
-    }
-,
+    },
     "category": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Kategorie"
-    }
-,
+    },
     "character code": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Zeichencode"
-    }
-,
+    },
     "character entity reference": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Zeichenreferenz"
-    }
-,
+    },
     "character set": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Zeichensatz"
-    }
-,
+    },
     "color scheme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Farbschema"
-    }
-,
+    },
     "comment": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "kommentieren"
-    }
-,
-    "comment": {
-        "comment": "",
-        "pos": "",
-        "translation": "Kommentar"
-    }
-,
+    },
     "computer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Computer"
-    }
-,
+    },
     "conditional tag": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Conditional Tag"
-    }
-,
+    },
     "constant": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Konstante"
-    }
-,
+    },
     "Contributors": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Mitwirkende"
-    }
-,
+    },
     "Cookie": {
         "comment": "Browser cookie",
-        "pos": "",
+        "pos": "noun",
         "translation": "Cookie"
-    }
-,
+    },
     "Custom Colors": {
         "comment": "Part of the Custom Design Upgrade",
-        "pos": "",
+        "pos": "noun",
         "translation": "Individuelle Farben"
-    }
-,
+    },
     "Custom CSS": {
         "comment": "Part of the Custom Design Upgrade",
-        "pos": "",
+        "pos": "noun",
         "translation": "Individuelles CSS"
-    }
-,
+    },
     "Custom Design": {
         "comment": "WordPress.com paid upgrade product name",
-        "pos": "",
+        "pos": "noun",
         "translation": "Individuelles Design"
-    }
-,
+    },
     "Custom Fonts": {
         "comment": "Part of the Custom Design Upgrade",
-        "pos": "",
+        "pos": "noun",
         "translation": "Individuelle Schriften"
-    }
-,
+    },
     "Custom Menu": {
         "comment": "Widget",
-        "pos": "",
+        "pos": "noun",
         "translation": "Individuelles Men\u00fc"
-    }
-,
+    },
     "Custom Post Type": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Individueller Inhaltstyp"
-    }
-,
+    },
     "customize": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "anpassen"
-    }
-,
+    },
     "Customizer": {
         "comment": "See https:\/\/teamwpde.wordpress.com\/2014\/08\/27\/begriffsklarung-customizer\/.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Customizer"
-    }
-,
+    },
     "Dashboard": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Dashboard"
-    }
-,
+    },
     "deactivate": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "deaktivieren"
-    }
-,
+    },
     "default": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Standard"
-    }
-,
+    },
     "default theme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Standard-Theme"
-    }
-,
+    },
     "deprecated": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "veraltet"
-    }
-,
+    },
     "developer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Entwickler"
-    }
-,
+    },
     "directory": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Verzeichnis"
-    }
-,
+    },
     "draft": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Entwurf"
-    }
-,
+    },
     "drag and drop": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Drag & Drop"
-    }
-,
+    },
     "editor": {
         "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
-        "pos": "",
+        "pos": "noun",
         "translation": "Editor"
-    }
-,
-    "editor": {
-        "comment": "User role group.",
-        "pos": "",
-        "translation": "Redakteur"
-    }
-,
+    },
     "email": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "E-Mail"
-    }
-,
+    },
     "email address": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "E-Mail-Adresse"
-    }
-,
+    },
     "error": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Fehler"
-    }
-,
+    },
     "excerpt": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Auszug"
-    }
-,
+    },
     "Facebook": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Facebook"
-    }
-,
+    },
     "Featured": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Hervorgehoben"
-    }
-,
+    },
     "featured image": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Beitragsbild"
-    }
-,
+    },
     "featured post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "hervorgehobener Beitrag"
-    }
-,
+    },
     "feed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Feed"
-    }
-,
+    },
     "filter": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Filter"
-    }
-,
+    },
     "filter hook": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Filter-Hook"
-    }
-,
+    },
     "folder": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Ordner"
-    }
-,
+    },
     "Follower": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Follower"
-    }
-,
+    },
     "Footer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Footer"
-    }
-,
+    },
     "Freshly Pressed": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Druckfrisch"
-    }
-,
+    },
     "front end": {
         "comment": "Die Bindestriche am Ende kommen daher, weil damit zusammengesetzte W\u00f6rter gemeint sind. \u201efront end output\u201c w\u00e4re dann also zum Beispiel \u201eFrontend-Ausgabe\u201c.",
-        "pos": "",
+        "pos": "adjective",
         "translation": "Frontend-"
-    }
-,
-    "front end": {
-        "comment": "",
-        "pos": "",
-        "translation": "Frontend"
-    }
-,
+    },
     "gallery": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Galerie"
-    }
-,
+    },
     "Happiness Engineer": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Happiness Engineer"
-    }
-,
+    },
     "Happiness Engineers": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Happiness Engineers"
-    }
-,
+    },
     "Header": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Header"
-    }
-,
+    },
     "Header Image": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Header-Bild"
-    }
-,
+    },
     "Header Text": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Header-Text"
-    }
-,
+    },
     "Header Text Color": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Header-Textfarbe"
-    }
-,
+    },
     "Honeypot": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Honeypot"
-    }
-,
+    },
     "hosting provider": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Hosting-Anbieter"
-    }
-,
+    },
     "hosts": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Hosts"
-    }
-,
+    },
     "invalid": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "ung\u00fcltig"
-    }
-,
+    },
     "IP address": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "IP-Adresse"
-    }
-,
+    },
     "Jetpack": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Jetpack"
-    }
-,
+    },
     "Like": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Like"
-    }
-,
+    },
     "Likes": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Likes"
-    }
-,
+    },
     "log in": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Anmelden"
-    }
-,
+    },
     "log out": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Abmelden"
-    }
-,
+    },
     "logged in": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "angemeldet"
-    }
-,
+    },
     "logged out": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "abgemeldet"
-    }
-,
+    },
     "login": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "anmelden"
-    }
-,
+    },
     "logout": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "abmelden"
-    }
-,
+    },
     "media library": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Mediathek"
-    }
-,
+    },
     "Media Uploader": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Media Uploader"
-    }
-,
+    },
     "meta": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Meta"
-    }
-,
+    },
     "moderation": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Freischaltung"
-    }
-,
+    },
     "multisite": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Netzwerk"
-    }
-,
+    },
     "navigation": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Navigation"
-    }
-,
+    },
     "next post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "n\u00e4chster Beitrag"
-    }
-,
+    },
     "nonce": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Nonce"
-    }
-,
+    },
     "not sticky": {
         "comment": "For sticky post status.",
-        "pos": "",
+        "pos": "adjective",
         "translation": "nicht oben gehalten"
-    }
-,
+    },
     "older post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "\u00e4lterer Beitrag"
-    }
-,
+    },
     "option": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Option"
-    }
-,
+    },
     "page": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Seite"
-    }
-,
+    },
     "pagination": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Seitennummerierung"
-    }
-,
+    },
     "parameter": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Parameter"
-    }
-,
+    },
     "pending": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "ausstehend"
-    }
-,
+    },
     "permalink": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Permanentlink"
-    }
-,
+    },
     "permission": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Rechte"
-    }
-,
+    },
     "ping": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Ping"
-    }
-,
+    },
     "pingback": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Pingback"
-    }
-,
+    },
     "plugin": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Plugin"
-    }
-,
+    },
     "poll": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Umfrage"
-    }
-,
+    },
     "Polldaddy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Polldaddy"
-    }
-,
+    },
     "post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Beitrag"
-    }
-,
-    "post": {
-        "comment": "",
-        "pos": "",
-        "translation": "Beitrag ver\u00f6ffentlichen"
-    }
-,
+    },
     "post format": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Beitragsformat"
-    }
-,
+    },
     "post status": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Beitragsstatus"
-    }
-,
+    },
     "post thumbnail": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Beitrags-Vorschaubild"
-    }
-,
+    },
     "post type": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Inhaltstyp"
-    }
-,
+    },
     "Press This": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Press This"
-    }
-,
+    },
     "previous post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "vorheriger Beitrag"
-    }
-,
+    },
     "query": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Abfrage"
-    }
-,
+    },
     "Quick Post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Schnellbeitrag"
-    }
-,
+    },
     "Reader": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Leser\/Besucher\/Reader"
-    }
-,
+    },
     "required": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "erforderlich"
-    }
-,
+    },
     "responsive": {
         "comment": "see http:\/\/teamwpde.wordpress.com\/2014\/07\/01\/keine-ahnung-ob-das-auf\/",
-        "pos": "",
+        "pos": "adjective",
         "translation": "responsiv"
-    }
-,
+    },
     "return value": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "R\u00fcckgabewert"
-    }
-,
+    },
     "role": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Rolle"
-    }
-,
+    },
     "RSS": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "RSS"
-    }
-,
+    },
     "RTL": {
-        "comment": "See http:\/\/www.w3.org\/International\/questions\/qa-scripts.de.php\nAbbreviation: v.r.n.l. ",
-        "pos": "",
+        "comment": "See http:\/\/www.w3.org\/International\/questions\/qa-scripts.de.php",
+        "pos": "noun",
         "translation": "Rechts-nach-links-Schreibrichtung"
-    }
-,
+    },
+    "Abbreviation: v.r.n.l. \"": {
+        "comment": null,
+        "pos": null,
+        "translation": null
+    },
     "scheme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Vorlagen"
-    }
-,
+    },
     "Screen Options": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Ansicht anpassen"
-    }
-,
+    },
     "Search results": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Suchergebnisse"
-    }
-,
+    },
     "self-hosted": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "selbst gehostet"
-    }
-,
+    },
     "server": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Server"
-    }
-,
+    },
     "service": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Dienst"
-    }
-,
+    },
     "Shortcode": {
         "comment": "A WordPress-specific code that enables users to perform actions like embedding files or creating objects that would otherwise have required a lot of coding.",
-        "pos": "",
+        "pos": "noun",
         "translation": "Shortcode"
-    }
-,
+    },
     "sidebar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Seitenleiste"
-    }
-,
+    },
     "single post": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Einzelbeitrag"
-    }
-,
+    },
     "site": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Website"
-    }
-,
+    },
     "slug": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Titelform"
-    }
-,
+    },
     "spaces": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Leerzeichen"
-    }
-,
+    },
     "spam": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Spam"
-    }
-,
+    },
     "status": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Status"
-    }
-,
+    },
     "stick": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "oben halten"
-    }
-,
+    },
     "sticky": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "oben gehalten"
-    }
-,
+    },
     "string": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Zeichenfolge"
-    }
-,
+    },
     "subpanel": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Unterbereich"
-    }
-,
+    },
     "Subversion": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Subversion"
-    }
-,
+    },
     "survey": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Befragung"
-    }
-,
+    },
     "tab": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Tab"
-    }
-,
+    },
     "tabs": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Tabs"
-    }
-,
+    },
     "tag": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Schlagwort"
-    }
-,
+    },
     "tagline": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Untertitel"
-    }
-,
+    },
     "taxonomies": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Taxonomien"
-    }
-,
+    },
     "taxonomy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Taxonomie"
-    }
-,
+    },
     "template hierarchy": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Vorlagenhierarchie"
-    }
-,
+    },
     "term": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Begriff"
-    }
-,
+    },
     "text editor": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Texteditor"
-    }
-,
+    },
     "theme": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Theme"
-    }
-,
+    },
     "thumbnail": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Vorschaubild"
-    }
-,
+    },
     "Toolbar": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Werkzeugleiste"
-    }
-,
+    },
     "trackback": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Trackback"
-    }
-,
+    },
     "Transient": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Transient"
-    }
-,
+    },
     "troubleshooting": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Problembehandlung"
-    }
-,
+    },
     "Twitter": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Twitter"
-    }
-,
+    },
     "two factor authentication": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "zweistufige Authentifizierung"
-    }
-,
+    },
     "upgrade": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Upgrade"
-    }
-,
+    },
     "uploader": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Uploader"
-    }
-,
+    },
     "URL": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "URL"
-    }
-,
+    },
     "user": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Benutzer"
-    }
-,
+    },
     "username": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Benutzername"
-    }
-,
+    },
     "valid": {
         "comment": "",
-        "pos": "",
+        "pos": "adjective",
         "translation": "g\u00fcltig"
-    }
-,
+    },
     "VaultPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "VaultPress"
-    }
-,
+    },
     "video": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Video"
-    }
-,
+    },
     "VideoPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "VideoPress"
-    }
-,
+    },
     "view": {
         "comment": "",
-        "pos": "",
+        "pos": "verb",
         "translation": "anzeigen"
-    }
-,
-    "view": {
-        "comment": "If used in the stats screen",
-        "pos": "",
-        "translation": "Aufruf"
-    }
-,
+    },
     "web server": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "Webserver"
-    }
-,
+    },
     "WordCamp": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordCamp"
-    }
-,
+    },
     "WordPress": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress"
-    }
-,
+    },
     "WordPress Dashboard": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress Dashboard"
-    }
-,
+    },
     "WordPress.com": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com"
-    }
-,
+    },
     "WordPress.com Business": {
         "comment": "WordPress.com paid upgrade product name",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com Business"
-    }
-,
+    },
     "WordPress.com Enterprise": {
         "comment": "WordPress.com paid upgrade product name",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com Enterprise"
-    }
-,
+    },
     "WordPress.com Premium": {
         "comment": "WordPress.com paid upgrade product name",
-        "pos": "",
+        "pos": "noun",
         "translation": "WordPress.com Premium"
-    }
-,
+    },
     "XML-RPC": {
         "comment": "",
-        "pos": "",
+        "pos": "noun",
         "translation": "XML-RPC"
     }
 }
