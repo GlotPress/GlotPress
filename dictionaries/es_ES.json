@@ -1,4 +1,10 @@
 {
+    "About": {
+        "comment": "Preferimos \"Acerca de\" antes que \"Sobre\", pero depender\u00e1 del contexto. \r\n\"Acerca del tema Baskerville\"\r\n\"Sobre el autor\"",
+        "pos": "",
+        "translation": "Acerca de"
+    }
+,
     "Account": {
         "comment": "",
         "pos": "",
@@ -137,6 +143,12 @@
         "translation": "Contenido"
     }
 ,
+    "contributor": {
+        "comment": "Role Contributor -> Rol colaborador",
+        "pos": "",
+        "translation": "colaborador"
+    }
+,
     "Cookie": {
         "comment": "Plural \"Cookies\". No se traduce.",
         "pos": "",
@@ -209,6 +221,18 @@
         "translation": "FAQ"
     }
 ,
+    "fee": {
+        "comment": "WooCommerce",
+        "pos": "",
+        "translation": "couta"
+    }
+,
+    "feed": {
+        "comment": "No se traduce. Se refiere al feed RSS.",
+        "pos": "",
+        "translation": "feed"
+    }
+,
     "Footer": {
         "comment": "",
         "pos": "",
@@ -269,7 +293,7 @@
         "translation": "problema\/s conflicto\/s"
     }
 ,
-    "Item \/s": {
+    "Item\/s": {
         "comment": "",
         "pos": "",
         "translation": "Elemento\/s"
@@ -405,6 +429,12 @@
         "comment": "",
         "pos": "",
         "translation": "Entradas"
+    }
+,
+    "Powered by WordPress": {
+        "comment": "Traducci\u00f3n actual. ",
+        "pos": "",
+        "translation": "Funciona gracias a WordPress"
     }
 ,
     "Previous": {

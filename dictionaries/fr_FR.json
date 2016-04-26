@@ -161,6 +161,12 @@
         "translation": "jeu de caract\u00e8res"
     }
 ,
+    "checkbox": {
+        "comment": "",
+        "pos": "",
+        "translation": "case \u00e0 cocher"
+    }
+,
     "chracteter code": {
         "comment": "",
         "pos": "",
@@ -252,7 +258,7 @@
     }
 ,
     "Dashboard": {
-        "comment": "",
+        "comment": "Tableau prend une majuscule.",
         "pos": "",
         "translation": "Tableau de bord"
     }
@@ -297,6 +303,12 @@
         "comment": "",
         "pos": "",
         "translation": "d\u00e9veloppeur"
+    }
+,
+    "dimension": {
+        "comment": "",
+        "pos": "",
+        "translation": "taille"
     }
 ,
     "directory": {
@@ -363,6 +375,12 @@
         "comment": "",
         "pos": "",
         "translation": "Facebook"
+    }
+,
+    "feature": {
+        "comment": "",
+        "pos": "",
+        "translation": "fonctionnalit\u00e9"
     }
 ,
     "featured image": {
@@ -479,6 +497,12 @@
         "translation": "h\u00f4tes"
     }
 ,
+    "hover": {
+        "comment": "",
+        "pos": "",
+        "translation": "survol"
+    }
+,
     "invalid": {
         "comment": "",
         "pos": "",
@@ -507,6 +531,12 @@
         "comment": "",
         "pos": "",
         "translation": "J\u2019aime"
+    }
+,
+    "Link": {
+        "comment": "",
+        "pos": "",
+        "translation": "Lien"
     }
 ,
     "log in": {
@@ -597,6 +627,12 @@
         "comment": "",
         "pos": "",
         "translation": "article suivant"
+    }
+,
+    "No": {
+        "comment": "P.ex. No %s found = Aucun %s trouv\u00e9",
+        "pos": "",
+        "translation": "Aucun"
     }
 ,
     "nonce": {
@@ -767,6 +803,12 @@
         "translation": "Article rapide"
     }
 ,
+    "radio button": {
+        "comment": "",
+        "pos": "",
+        "translation": "bouton radio"
+    }
+,
     "Reader": {
         "comment": "",
         "pos": "",
@@ -783,6 +825,18 @@
         "comment": "",
         "pos": "",
         "translation": "Articles similaires"
+    }
+,
+    "Remove": {
+        "comment": "Exception : Supprimer pour les utilisateurs, extensions et th\u00e8mes.",
+        "pos": "",
+        "translation": "Retirer"
+    }
+,
+    "Remove permanently": {
+        "comment": "",
+        "pos": "",
+        "translation": "Supprimer d\u00e9finitivement"
     }
 ,
     "Repository": {
@@ -831,6 +885,18 @@
         "comment": "",
         "pos": "",
         "translation": "Redimensionner"
+    }
+,
+    "scroll": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9filement"
+    }
+,
+    "scroll": {
+        "comment": "",
+        "pos": "",
+        "translation": "d\u00e9filer"
     }
 ,
     "search": {
@@ -885,6 +951,12 @@
         "comment": "",
         "pos": "",
         "translation": "identifiant"
+    }
+,
+    "snippet": {
+        "comment": "",
+        "pos": "",
+        "translation": "extrait"
     }
 ,
     "spam": {

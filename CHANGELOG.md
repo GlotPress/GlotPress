@@ -7,6 +7,7 @@
 * Feature: Shortcut on Page Down to open the previous string to translate
 * Feature: Shortcut on Page Up to open the next string to translate
 * Enhancement: New glossaries: he_IL, ro_RO, th, en_AU, en_CA
+* New icon by Crowdedtent
 
 #1.0.5
 * Fix remember the language chosen now is working at 100%
