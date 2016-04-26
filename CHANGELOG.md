@@ -1,3 +1,8 @@
+#1.0.7
+* Glossaries generated with GLotDictJSON now contain also the `pos` value
+* Enhancement: New glossaries: tr_TR
+
+
 #1.0.6
 * Fix for terms detection near <>() symbols
 * Fix alignment of toolbar for PTE
