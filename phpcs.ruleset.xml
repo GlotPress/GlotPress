@@ -21,4 +21,8 @@
 	<exclude-pattern>*/dev-lib/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<exclude-pattern>*/gp-templates/*</exclude-pattern>
+	</rule>
 </ruleset>
