@@ -192,6 +192,12 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->user_id = $user->ID;
 				}
 
+				$entry->status = $is_fuzzy ? 'fuzzy' : 'current';
+
+				$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
+				if ( ! empty( $entry->warnings ) ) {
+					$entry->status = 'waiting';
+				}
 				$entry->translation_set_id = $this->id;
 
 				/**
@@ -199,10 +205,12 @@ class GP_Translation_Set extends GP_Thing {
 				 *
 				 * @since 1.0.0
 				 *
-				 * @param string $status The status of imported translations.
+				 * @param string            $status The status of imported translations.
+				 * @param Translation_Entry $entry  Translation entry object to import.
 				 */
-				$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : 'current' );
-				// check for errors
+				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry );
+
+				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
 					$translation->set_status( $entry->status );
