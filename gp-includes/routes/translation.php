@@ -29,7 +29,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$can_import_current = $this->can( 'approve', 'translation-set', $translation_set->id );
-		$can_import_waiting = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
+		$can_import_waiting = $can_import_current || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
 
 		if ( ! $can_import_current && ! $can_import_waiting ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
@@ -59,7 +59,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$can_import_current = $this->can( 'approve', 'translation-set', $translation_set->id );
-		$can_import_waiting = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
+		$can_import_waiting = $can_import_current || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
 
 		if ( ! $can_import_current && ! $can_import_waiting ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );

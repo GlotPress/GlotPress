@@ -46,7 +46,7 @@ gp_tmpl_header();
 			<input type="hidden" name="status" value="<?php echo esc_attr( reset( array_keys( $status_options ) ) ); ?>" />
 			<?php echo esc_html( reset( array_values( $status_options ) ) ); ?>
 		<?php elseif ( count( $status_options ) > 1 ) : ?>
-			<?php echo gp_select( 'status', $status_options, 'waiting' ); ?>
+			<?php echo gp_select( 'status', $status_options, 'current' ); ?>
 		<?php endif; ?>
 	</dd>
 <?php endif; ?>
