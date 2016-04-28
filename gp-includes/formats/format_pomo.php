@@ -10,6 +10,7 @@ class GP_Format_PO extends GP_Format {
 
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$po = new $this->class;
+		
 		// TODO: add more meta data in the project: language team, report URL
 		$po->set_header( 'PO-Revision-Date', GP::$translation->last_modified( $translation_set ) . '+0000' );
 		$po->set_header( 'MIME-Version', '1.0' );
@@ -17,6 +18,11 @@ class GP_Format_PO extends GP_Format {
 		$po->set_header( 'Content-Transfer-Encoding', '8bit' );
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
+		
+		$language_string =  $this->generate_language_string( $locale );
+		if ( false !== $language_string ) {
+			$po->set_header( 'Langauge', $language_string );
+		}
 
 		// force export only current translations
 		$filters = array();
@@ -43,6 +49,28 @@ class GP_Format_PO extends GP_Format {
 
 	public function read_originals_from_file( $file_name ) {
 		return $this->read_translations_from_file( $file_name );
+	}
+
+	private function generate_language_string( $locale ) {
+		$ret = '';
+
+		if ( $locale->lang_code_iso_639_1 ) {
+			$ret = $locale->lang_code_iso_639_1;
+		} else if ( $locale->lang_code_iso_639_2 ) {
+			$ret = $locale->lang_code_iso_639_2;
+		} else if ( $locale->lang_code_iso_639_3 ) {
+			$ret = $locale->lang_code_iso_639_3;
+		}
+
+		if ( '' === $ret ) {
+			return false;
+		}
+
+		if ( null != $locale->country_code && $ret !== $locale->country_code ) {
+			$ret .= '_' . $locale->country_code;
+		}
+
+		return $ret;
 	}
 
 }
