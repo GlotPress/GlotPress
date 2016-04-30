@@ -21,7 +21,7 @@ class GP_Format_PO extends GP_Format {
 
 		$language_string = $this->generate_language_string( $locale );
 		if ( false !== $language_string ) {
-			$po->set_header( 'Langauge', $language_string );
+			$po->set_header( 'Language', $language_string );
 		}
 
 		// Force export only current translations.
