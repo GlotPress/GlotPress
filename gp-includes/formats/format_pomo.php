@@ -56,7 +56,7 @@ class GP_Format_PO extends GP_Format {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param $locale GP_Locale The locale object.
+	 * @param GP_Locale $locale The locale object.
 	 *
 	 * @return string|false
 	 */
