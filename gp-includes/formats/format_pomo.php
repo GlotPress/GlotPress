@@ -24,7 +24,7 @@ class GP_Format_PO extends GP_Format {
 			$po->set_header( 'Langauge', $language_string );
 		}
 
-		// force export only current translations
+		// Force export only current translations.
 		$filters = array();
 		$filters['status'] = 'current';
 
@@ -51,6 +51,15 @@ class GP_Format_PO extends GP_Format {
 		return $this->read_translations_from_file( $file_name );
 	}
 
+	/**
+	 * Create a string that represents the value for the "Language:" header for a po file.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param $locale GP_Locale The locale object.
+	 *
+	 * @return string|false
+	 */
 	private function generate_language_string( $locale ) {
 		$ret = '';
 
