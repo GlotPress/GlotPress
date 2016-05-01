@@ -29,9 +29,16 @@ class GP_Original extends GP_Thing {
 	public $status;
 	public $priority;
 	public $date_added;
+	/**
+	 * Cache group used for caching counts
+	 *
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public $count_cache_group = 'active_originals_count_by_project_id';
 
 	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
-	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
 	 * Sets restriction rules for fields.
@@ -87,13 +94,16 @@ class GP_Original extends GP_Thing {
 			return $cached;
 		}
 
-		$maybe_exclude_hidden = gp_endswith( $cache_group, '_no_hidden' ) ? "AND priority != '-2'" : '';
+		if ( gp_endswith( $cache_group, '_no_hidden' ) ) {
+			$maybe_exclude_hidden = "AND priority != '-2'";
+		} else {
+			$maybe_exclude_hidden = '';
+		}
 
 		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active' $maybe_exclude_hidden", $project_id );
 		wp_cache_set( $project_id, $count, $cache_group );
 		return $count;
 	}
-
 
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
@@ -454,7 +464,7 @@ class GP_Original extends GP_Thing {
 	 * @return string
 	 */
 	private function count_cache_group() {
-		$cache_group = self::$count_cache_group;
+		$cache_group = $this->count_cache_group;
 
 		if ( ! GP::$permission->current_user_can( 'write', 'project', $this->project_id ) ) {
 			$cache_group .= '_no_hidden';
