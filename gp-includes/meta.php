@@ -71,8 +71,6 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
  *
  * @since 1.0.0
  *
- * @internal
- *
  * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
