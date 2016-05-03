@@ -19,7 +19,7 @@ class GP_Format_PO extends GP_Format {
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
 
-		$language_string = $this->generate_language_string( $locale );
+		$language_string = $this->get_language_code( $locale );
 		if ( false !== $language_string ) {
 			$po->set_header( 'Language', $language_string );
 		}
@@ -60,14 +60,14 @@ class GP_Format_PO extends GP_Format {
 	 *
 	 * @return string|false
 	 */
-	private function generate_language_string( $locale ) {
+	private function get_language_code( $locale ) {
 		$ret = '';
 
 		if ( $locale->lang_code_iso_639_1 ) {
 			$ret = $locale->lang_code_iso_639_1;
-		} else if ( $locale->lang_code_iso_639_2 ) {
+		} elseif ( $locale->lang_code_iso_639_2 ) {
 			$ret = $locale->lang_code_iso_639_2;
-		} else if ( $locale->lang_code_iso_639_3 ) {
+		} elseif ( $locale->lang_code_iso_639_3 ) {
 			$ret = $locale->lang_code_iso_639_3;
 		}
 
@@ -76,7 +76,7 @@ class GP_Format_PO extends GP_Format {
 		}
 
 		if ( null !== $locale->country_code && strcasecmp( $ret, $locale->country_code ) === 0 ) {
-			$ret .= '_' . $locale->country_code;
+			$ret .= '_' . strtoupper( $locale->country_code );
 		}
 
 		return $ret;
