@@ -134,4 +134,23 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$permissions = GP::$administrator_permission->find( array( 'user_id' => $user ) );
 		$this->assertSame( 1, count( $permissions ) );
 	}
+
+	/**
+	 * @ticket gh-377
+	 */
+	function test_import_permissions() {
+		$user = $this->factory->user->create();
+
+		$project = $this->factory->project->create();
+		$set = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $project->id, 'locale' => 'bg' ) );
+		$set2 = GP::$translation_set->create( array( 'name' => 'Set', 'slug' => 'default', 'project_id' => $project->id, 'locale' => 'de' ) );
+
+		$this->assertFalse( (bool) GP::$permission->user_can( $user, 'import-waiting', 'translation-set', $set->id ) );
+		$this->assertFalse( (bool) GP::$permission->user_can( $user, 'import-waiting', 'translation-set', $set2->id ) );
+
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'import-waiting', 'object_type' => 'translation-set', 'object_id' => $set2->id ) );
+
+		$this->assertTrue( (bool) GP::$permission->user_can( $user, 'import-waiting', 'translation-set', $set2->id ) );
+		$this->assertFalse( (bool) GP::$permission->user_can( $user, 'import-waiting', 'translation-set', $set->id ) );
+	}
 }

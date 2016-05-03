@@ -254,7 +254,7 @@ $i = 0;
 <p class="clear actionlist secondary">
 	<?php
 		$footer_links = array();
-		if ( $can_approve ) {
+		if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import translations', 'glotpress' ) );
 		}
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );

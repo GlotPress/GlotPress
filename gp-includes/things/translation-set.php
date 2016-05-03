@@ -129,27 +129,43 @@ class GP_Translation_Set extends GP_Thing {
 		    WHERE project_id = %d ORDER BY name ASC", $project_id );
 	}
 
-	public function import( $translations ) {
-		$this->set_memory_limit('256M');
+	/**
+	 * Import translations from a Translations object.
+	 *
+	 * @param  Translations $translations   the translations to be imported to this translation-set.
+	 * @param  string       $desired_status 'current' or 'waiting'.
+	 * @return boolean or void
+	 */
+	public function import( $translations, $desired_status = 'current' ) {
+		$this->set_memory_limit( '256M' );
 
-		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
+		if ( ! isset( $this->project ) || ! $this->project ) {
+			$this->project = GP::$project->get( $this->project_id );
+		}
+
+		if ( ! in_array( $desired_status, array( 'current', 'waiting' ), true ) ) {
+			return false;
+		}
 
 		$locale = GP_Locales::by_slug( $this->locale );
 		$user = wp_get_current_user();
 
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current', 'translated' => 'yes') );
-		$current_translations = new Translations();
-		foreach( $current_translations_list as $entry ) {
-			$current_translations->add_entry( $entry );
+		$existing_translations = array();
+
+		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => 'current', 'translated' => 'yes' ) );
+		$existing_translations['current'] = new Translations();
+		foreach ( $current_translations_list as $entry ) {
+			$existing_translations['current']->add_entry( $entry );
 		}
 		unset( $current_translations_list );
+
 		$translations_added = 0;
-		foreach( $translations->entries as $entry ) {
+		foreach ( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) {
 				continue;
 			}
 
-			$is_fuzzy = in_array( 'fuzzy', $entry->flags );
+			$is_fuzzy = in_array( 'fuzzy', $entry->flags, true );
 
 			/**
 			 * Filter whether to import fuzzy translations.
@@ -164,12 +180,36 @@ class GP_Translation_Set extends GP_Thing {
 				continue;
 			}
 
+			/**
+			 * Filter the the status of imported translations of a translation set.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $status The status of imported translations.
+			 */
+			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status );
+
+			// Lazy load other entries.
+			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
+				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => $entry->status, 'translated' => 'yes' ) );
+				$existing_translations[ $entry->status ] = new Translations();
+				foreach ( $existing_translations_list as $_entry ) {
+					$existing_translations[ $entry->status ]->add_entry( $_entry );
+				}
+				unset( $existing_translations_list );
+			}
+
 			$create = false;
-			if ( $translated = $current_translations->translate_entry( $entry ) ) {
-				// we have the same string translated
-				// create a new one if they don't match
+			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
+			if ( 'current' !== $entry->status && ! $translated ) {
+				// Don't create an entry if it already exists as current.
+				$translated = $existing_translations['current']->translate_entry( $entry );
+			}
+
+			if ( $translated ) {
+				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id = $translated->original_id;
-				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
+				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
@@ -192,7 +232,7 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->user_id = $user->ID;
 				}
 
-				$entry->status = $is_fuzzy ? 'fuzzy' : 'current';
+				$entry->status = $is_fuzzy ? 'fuzzy' : $desired_status;
 
 				$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
 				if ( ! empty( $entry->warnings ) ) {
