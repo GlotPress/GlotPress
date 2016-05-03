@@ -19,9 +19,9 @@ class GP_Format_PO extends GP_Format {
 		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
 		$po->set_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
 
-		$language_string = $this->get_language_code( $locale );
-		if ( false !== $language_string ) {
-			$po->set_header( 'Language', $language_string );
+		$language_code = $this->get_language_code( $locale );
+		if ( false !== $language_code ) {
+			$po->set_header( 'Language', $language_code );
 		}
 
 		// Force export only current translations.
