@@ -79,6 +79,11 @@
         "pos": "noun",
         "translation": "ruimte\/gebied"
     },
+    "attachment": {
+        "comment": "Deze term wordt in principe altijd vertaald. Vaak in de context: \"Bijlage invoegen\".",
+        "pos": "noun",
+        "translation": "bijlage"
+    },
     "available": {
         "comment": "Wanneer er nieuwe plugins, thema's zijn, is de context: \"Er is een nieuwe versie van x beschikbaar\".",
         "pos": "noun",
@@ -148,6 +153,11 @@
         "comment": ";",
         "pos": "noun",
         "translation": "conjunctie"
+    },
+    "Content": {
+        "comment": "Binnen WordPress verwijst 'Content' meestal naar de inhoud van een bericht. Daarom wordt dit altijd vertaald naar 'inhoud'. ",
+        "pos": "noun",
+        "translation": "Inhoud"
     },
     "crop": {
         "comment": ";",
@@ -353,6 +363,11 @@
         "comment": ";",
         "pos": "adverb",
         "translation": "hoofd"
+    },
+    "password": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Wachtwoord"
     },
     "post": {
         "comment": ";",

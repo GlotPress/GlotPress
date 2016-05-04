@@ -9,6 +9,11 @@
         "pos": "verb",
         "translation": "analysed"
     },
+    "analyzes": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "analyses"
+    },
     "analyzing": {
         "comment": "",
         "pos": "verb",
@@ -26,7 +31,7 @@
     },
     "authorization": {
         "comment": "",
-        "pos": "noun",
+        "pos": "verb",
         "translation": "authorisation"
     },
     "authorize": {
@@ -41,8 +46,8 @@
     },
     "back-end": {
         "comment": "",
-        "pos": "noun",
-        "translation": "back end"
+        "pos": "adjective",
+        "translation": "back-end"
     },
     "backend": {
         "comment": "",
@@ -53,6 +58,11 @@
         "comment": "",
         "pos": "noun",
         "translation": "behaviour"
+    },
+    "call-back": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "callback"
     },
     "canceled": {
         "comment": "",
@@ -73,6 +83,11 @@
         "comment": "",
         "pos": "verb",
         "translation": "capitalised"
+    },
+    "capitalizes": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "capitalises"
     },
     "catalog": {
         "comment": "",
@@ -124,10 +139,25 @@
         "pos": "verb",
         "translation": "centralised"
     },
+    "check": {
+        "comment": "A money cheque",
+        "pos": "noun",
+        "translation": "cheque"
+    },
     "color": {
         "comment": "",
         "pos": "noun",
         "translation": "colour"
+    },
+    "colorful": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "colourful"
+    },
+    "colors": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "colours"
     },
     "customizable": {
         "comment": "",
@@ -164,10 +194,30 @@
         "pos": "verb",
         "translation": "customising"
     },
+    "datacenter": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "datacentre"
+    },
+    "democratize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "democratise"
+    },
+    "democratizing": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "democratising"
+    },
     "dialog": {
         "comment": "",
         "pos": "verb",
         "translation": "dialogue"
+    },
+    "dialogs": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "dialogues"
     },
     "digitize": {
         "comment": "",
@@ -179,10 +229,35 @@
         "pos": "verb",
         "translation": "digitised"
     },
+    "disorganize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "disorganise"
+    },
+    "disorganized": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "disorganised"
+    },
+    "e-commerce": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "ecommerce"
+    },
     "e-mail": {
         "comment": "",
         "pos": "noun",
         "translation": "email"
+    },
+    "endeavor": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "endeavour"
+    },
+    "fall-back": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "fallback"
     },
     "favor": {
         "comment": "",
@@ -224,6 +299,21 @@
         "pos": "noun",
         "translation": "front end"
     },
+    "frontpage": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "front page"
+    },
+    "gray": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "grey"
+    },
+    "homepage": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "home page"
+    },
     "honor": {
         "comment": "",
         "pos": "verb",
@@ -233,6 +323,11 @@
         "comment": "",
         "pos": "verb",
         "translation": "honoured"
+    },
+    "hood": {
+        "comment": "As in \"Under the hood...\"",
+        "pos": "noun",
+        "translation": "bonnet"
     },
     "Howdy!": {
         "comment": "",
@@ -279,10 +374,15 @@
         "pos": "verb",
         "translation": "itemised"
     },
+    "labeled": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "labelled"
+    },
     "license": {
         "comment": "",
-        "pos": "noun",
-        "translation": "licence"
+        "pos": "verb",
+        "translation": "license"
     },
     "localization": {
         "comment": "",
@@ -298,6 +398,11 @@
         "comment": "",
         "pos": "verb",
         "translation": "localised"
+    },
+    "login": {
+        "comment": "i.e. the login screen",
+        "pos": "noun",
+        "translation": "login"
     },
     "maximize": {
         "comment": "",
@@ -339,15 +444,15 @@
         "pos": "verb",
         "translation": "minimised"
     },
-    "Modernize": {
+    "modernize": {
         "comment": "",
         "pos": "verb",
-        "translation": "Modernise"
+        "translation": "modernise"
     },
-    "Modernized": {
+    "modernized": {
         "comment": "",
         "pos": "verb",
-        "translation": "Modernised"
+        "translation": "modernised"
     },
     "neighbor": {
         "comment": "",
@@ -358,6 +463,11 @@
         "comment": "",
         "pos": "verb",
         "translation": "normalise"
+    },
+    "normalized": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "normalised"
     },
     "optimization": {
         "comment": "",
@@ -383,6 +493,11 @@
         "comment": "",
         "pos": "verb",
         "translation": "organisation"
+    },
+    "organizations": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "organisations"
     },
     "organize": {
         "comment": "",
@@ -428,6 +543,21 @@
         "comment": "",
         "pos": "verb",
         "translation": "prioritisation"
+    },
+    "prioritize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "prioritise"
+    },
+    "prioritized": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "prioritised"
+    },
+    "prioritizes": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "prioritises"
     },
     "publicize": {
         "comment": "",
@@ -489,6 +619,21 @@
         "pos": "verb",
         "translation": "reorganised"
     },
+    "reorganizing": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "reorganising"
+    },
+    "roll-back": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "rollback"
+    },
+    "roll-out": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "rollout"
+    },
     "sanitization": {
         "comment": "",
         "pos": "verb",
@@ -549,10 +694,20 @@
         "pos": "noun",
         "translation": "standardised"
     },
+    "stylesheet": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "style sheet"
+    },
     "symbolize": {
         "comment": "",
         "pos": "verb",
         "translation": "symbolise"
+    },
+    "symbolized": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "symbolised"
     },
     "symbolizes": {
         "comment": "",
@@ -579,6 +734,16 @@
         "pos": "conjunction",
         "translation": "synchronising"
     },
+    "tool bar": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "toolbar"
+    },
+    "tool-bar": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "toolbar"
+    },
     "traveling": {
         "comment": "",
         "pos": "verb",
@@ -594,10 +759,60 @@
         "pos": "verb",
         "translation": "uncategorised"
     },
+    "uninitialization": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "uninitialisation"
+    },
+    "uninitializational": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "uninitialisational"
+    },
+    "uninitialize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "uninitialise"
+    },
+    "uninitialized": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "uninitialised"
+    },
+    "uninitializing": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "uninitialising"
+    },
+    "unorganized": {
+        "comment": "i.e. not part of an organisation",
+        "pos": "verb",
+        "translation": "unorganised"
+    },
+    "unrecognizable": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "unrecognisable"
+    },
+    "unrecognized": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "unrecognised"
+    },
     "unsavory": {
         "comment": "",
         "pos": "adjective",
         "translation": "unsavoury"
+    },
+    "URL's": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "URLs"
+    },
+    "useable": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "usable"
     },
     "utilize": {
         "comment": "",
@@ -609,10 +824,45 @@
         "pos": "verb",
         "translation": "utilised"
     },
+    "utilizes": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "utilises"
+    },
     "utilizing": {
         "comment": "",
         "pos": "verb",
         "translation": "utilising"
+    },
+    "vectorize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "vectorise"
+    },
+    "virtualization": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "virtualisation"
+    },
+    "virtualize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "virtualise"
+    },
+    "virtualized": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "virtualised"
+    },
+    "virtualizes": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "virtualises"
+    },
+    "virtualizing": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "virtualising"
     },
     "visualization": {
         "comment": "",
@@ -629,6 +879,11 @@
         "pos": "verb",
         "translation": "visualised"
     },
+    "visualizes": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "visualises"
+    },
     "visualizing": {
         "comment": "",
         "pos": "verb",
@@ -638,5 +893,10 @@
         "comment": "",
         "pos": "verb",
         "translation": "widgetised"
+    },
+    "ZIP code": {
+        "comment": "Don't translate this, it's problematic because we cannot know the context of a plugin's visitor base; Americans don\u2019t know what a Postal Code is, Brits got confused with a ZIP code, etc.",
+        "pos": "noun",
+        "translation": ""
     }
 }

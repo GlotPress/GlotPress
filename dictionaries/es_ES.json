@@ -624,6 +624,11 @@
         "pos": "noun",
         "translation": "Walker"
     },
+    "Warning": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Atenci\u00f3n"
+    },
     "XML-RPC": {
         "comment": "No se traduce",
         "pos": "noun",

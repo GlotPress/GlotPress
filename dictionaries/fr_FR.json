@@ -79,6 +79,16 @@
         "pos": "noun",
         "translation": "auteur"
     },
+    "back-office": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "interface d\u2019administration"
+    },
+    "background": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "arri\u00e8re-plan"
+    },
     "binary": {
         "comment": "",
         "pos": "noun",
@@ -119,6 +129,11 @@
         "pos": "noun",
         "translation": "Modifications"
     },
+    "character code": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "code de caract\u00e8res"
+    },
     "character entity reference": {
         "comment": "",
         "pos": "noun",
@@ -129,15 +144,15 @@
         "pos": "noun",
         "translation": "jeu de caract\u00e8res"
     },
+    "Cheatin\u2019 uh?": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Une fausse manipulation&nbsp;?"
+    },
     "checkbox": {
         "comment": "",
         "pos": "noun",
         "translation": "case \u00e0 cocher"
-    },
-    "chracteter code": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "code de caract\u00e8res"
     },
     "click": {
         "comment": "",
@@ -255,7 +270,7 @@
         "translation": "modifier"
     },
     "editor": {
-        "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
+        "comment": "Outil d\u2019\u00e9dition (p.ex. \u00e9diteur visuel, \u00e9diteur de th\u00e8me, \u00e9diteur d\u2019extension)",
         "pos": "noun",
         "translation": "\u00e9diteur"
     },
@@ -263,6 +278,11 @@
         "comment": "",
         "pos": "noun",
         "translation": "e-mail"
+    },
+    "email address": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "adresse de messagerie"
     },
     "Enter": {
         "comment": "",
@@ -302,12 +322,12 @@
     "featured image": {
         "comment": "",
         "pos": "noun",
-        "translation": "image \u00e0 la Une"
+        "translation": "image mise en avant"
     },
     "featured post": {
         "comment": "",
         "pos": "noun",
-        "translation": "article \u00e0 la Une"
+        "translation": "article mis en avant"
     },
     "feed": {
         "comment": "",
@@ -355,12 +375,12 @@
         "translation": "galerie"
     },
     "Happiness Engineer": {
-        "comment": "No need to translate that one",
+        "comment": "Ne pas traduire",
         "pos": "noun",
         "translation": "Happiness Engineer"
     },
     "Happiness Engineers": {
-        "comment": "No need to translate that one",
+        "comment": "Ne pas traduire",
         "pos": "noun",
         "translation": "Happiness Engineers"
     },
@@ -462,7 +482,7 @@
     "meta": {
         "comment": "",
         "pos": "noun",
-        "translation": "m\u00e9ta"
+        "translation": "m\u00e9ta, m\u00e9tadonn\u00e9es"
     },
     "multisite": {
         "comment": "",
@@ -490,9 +510,9 @@
         "translation": "nonce"
     },
     "not sticky": {
-        "comment": "For sticky post status.",
+        "comment": "Pour le format d\u2019article \"Sticky - \u00c9pingl\u00e9\"",
         "pos": "adjective",
-        "translation": "pas mis en avant"
+        "translation": "non \u00e9pingl\u00e9"
     },
     "Note:": {
         "comment": "",
@@ -523,6 +543,11 @@
         "comment": "",
         "pos": "noun",
         "translation": "param\u00e8tre"
+    },
+    "password": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "mot de passe"
     },
     "permalink": {
         "comment": "",
@@ -624,6 +649,11 @@
         "pos": "noun",
         "translation": "bouton radio"
     },
+    "rate": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "\u00e9valuer"
+    },
     "Reader": {
         "comment": "",
         "pos": "noun",
@@ -663,6 +693,11 @@
         "comment": "",
         "pos": "noun",
         "translation": "obligatoire"
+    },
+    "responsive": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "responsive"
     },
     "return value": {
         "comment": "",
@@ -708,6 +743,11 @@
         "comment": "",
         "pos": "noun",
         "translation": "serveur"
+    },
+    "Settings": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "R\u00e9glages"
     },
     "shortcode": {
         "comment": "",
@@ -757,12 +797,12 @@
     "stick": {
         "comment": "",
         "pos": "verb",
-        "translation": "mettre en avant"
+        "translation": "\u00e9pingler"
     },
     "sticky": {
         "comment": "",
         "pos": "adjective",
-        "translation": "mis en avant"
+        "translation": "\u00e9pingl\u00e9"
     },
     "string": {
         "comment": "",
@@ -847,7 +887,7 @@
     "trash": {
         "comment": "",
         "pos": "noun",
-        "translation": "Corbeille"
+        "translation": "corbeille"
     },
     "troubleshooting": {
         "comment": "",
@@ -865,9 +905,9 @@
         "translation": "authentification \u00e0 deux facteurs"
     },
     "upgrade": {
-        "comment": "Describes the paid upgrades you can purchase on wpcom",
-        "pos": "noun",
-        "translation": "extension"
+        "comment": "Passer en version Pro",
+        "pos": "verb",
+        "translation": "mettre \u00e0 niveau"
     },
     "upload": {
         "comment": "",
@@ -918,6 +958,11 @@
         "comment": "",
         "pos": "verb",
         "translation": "voir"
+    },
+    "warning": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "avertissement"
     },
     "web server": {
         "comment": "",

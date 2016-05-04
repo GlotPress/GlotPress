@@ -10,7 +10,7 @@
         "translation": "AJAX"
     }, 
     "Appearance": {
-        "comment": "", 
+        "comment": "Per l'utilizzo di maiuscola o minuscola vedere Guida di Stile", 
         "pos": "", 
         "translation": "Aspetto"
     }, 
@@ -137,7 +137,7 @@
     "URL": {
         "comment": "", 
         "pos": "", 
-        "translation": "URL"
+        "translation": "URL (maschile)"
     }, 
     "Widget": {
         "comment": "", 
@@ -200,7 +200,7 @@
         "translation": "articolo"
     }, 
     "aside": {
-        "comment": "", 
+        "comment": "Formato di post simile a una nota, senza titolo", 
         "pos": "", 
         "translation": "digressione"
     }, 
@@ -345,7 +345,7 @@
         "translation": "bozza"
     }, 
     "editor": {
-        "comment": "", 
+        "comment": "Nel senso di ruolo in un sito", 
         "pos": "", 
         "translation": "editore"
     }, 
@@ -727,7 +727,7 @@
     "slug": {
         "comment": "", 
         "pos": "", 
-        "translation": "abbreviazione"
+        "translation": "slug"
     }, 
     "spam": {
         "comment": "", 
