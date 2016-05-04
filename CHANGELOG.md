@@ -1,7 +1,9 @@
 #1.0.7
 * Glossaries generated with GLotDictJSON now contain also the `pos` value
 * Enhancement: New glossaries: tr_TR
-
+* Feature: Shortcut on Ctrl+Shift+Z to click "Cancel"
+* Feature: Shortcut on Ctrl+Shift+A to click "Approve"
+* Feature: Shortcut on Ctrl+Shift+R to click "Reject"
 
 #1.0.6
 * Fix for terms detection near <>() symbols

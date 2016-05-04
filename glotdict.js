@@ -121,6 +121,22 @@ jQuery(document).ready(function () {
         jQuery('.editor:visible .actions button.ok').trigger('click');
       }
     });
+    jQuery.multipress([17, 16, 90], function () {
+      if (jQuery('.editor:visible').length > 0) {
+        jQuery('.editor:visible .actions a.close').trigger('click');
+      }
+    });
+    jQuery.multipress([17, 16, 65], function () {
+      if (jQuery('.editor:visible .meta button.approve').length > 0) {
+        console.log(123)
+        jQuery('.editor:visible .meta button.approve').trigger('click');
+      }
+    });
+    jQuery.multipress([17, 16, 82], function () {
+      if (jQuery('.editor:visible .meta button.reject').length > 0) {
+        jQuery('.editor:visible .meta button.reject').trigger('click');
+      }
+    });
     jQuery(window).keydown(function (e) {
       if (e.keycode === 34) {
         if (jQuery('.editor:visible').length > 0) {
