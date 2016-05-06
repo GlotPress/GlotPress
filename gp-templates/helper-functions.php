@@ -42,8 +42,7 @@ function prepare_original( $text ) {
 }
 
 function map_glossary_entries_to_translations_originals( $translations, $glossary ) {
-	$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
-
+	$glossary_entries = $glossary->get_entries();
 	if ( empty ( $glossary_entries ) ) {
 		return $translations;
 	}
@@ -86,7 +85,13 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		foreach ( $glossary_entries_terms as $i => $terms ) {
 			$glossary_entry = $glossary_entries[ $i ];
 			if ( preg_match( '/\b(' . $terms . ')\b/', $t->singular . ' ' . $t->plural, $m ) ) {
-				$matching_entries[ $m[1] ][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment );
+				$locale_entry = '';
+				if ( $glossary_entry->glossary_id !== $glossary->id ) {
+					/* translators: Denotes an entry from the locale glossary in the tooltip */
+					$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
+				}
+
+				$matching_entries[ $m[1] ][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment, 'locale_entry' => $locale_entry );
 			}
 		}
 

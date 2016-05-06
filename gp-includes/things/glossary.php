@@ -24,6 +24,14 @@ class GP_Glossary extends GP_Thing {
 	public $description;
 
 	/**
+	 * Caches the array of Glossary_Entry objects.
+	 *
+	 * @since 2.3.0
+	 * @var entries
+	 */
+	private $entries = array();
+
+	/**
 	 * Sets restriction rules for fields.
 	 *
 	 * @since 1.0.0
@@ -58,16 +66,21 @@ class GP_Glossary extends GP_Thing {
 	public function by_set_or_parent_project( $translation_set, $project ) {
 		$glossary = $this->by_set_id( $translation_set->id );
 
-		if ( ! $glossary && $project->parent_project_id ) {
-			$locale = $translation_set->locale;
-			$slug   = $translation_set->slug;
+		if ( ! $glossary ) {
+			if ( 0 === $project->id ) {
+				// Auto-create the Locale Glossary.
+				$glossary = $this->create( array( 'translation_set_id' => $translation_set->id ) );
+			} elseif ( $project->parent_project_id ) {
+				$locale = $translation_set->locale;
+				$slug   = $translation_set->slug;
 
-			while ( ! $glossary && $project->parent_project_id  ) {
-				$project         = GP::$project->get( $project->parent_project_id );
-				$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+				while ( ! $glossary && $project->parent_project_id  ) {
+					$project         = GP::$project->get( $project->parent_project_id );
+					$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
 
-				if ( $translation_set ) {
-					$glossary = $this->by_set_id( $translation_set->id );
+					if ( $translation_set ) {
+						$glossary = $this->by_set_id( $translation_set->id );
+					}
 				}
 			}
 		}
@@ -79,6 +92,53 @@ class GP_Glossary extends GP_Thing {
 		return $this->one( "
 		    SELECT * FROM $this->table
 		    WHERE translation_set_id = %d LIMIT 1", $set_id );
+
+	}
+
+	/**
+	 * Merges entries of a glossary with another one.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param GP_Glossary $merge The Glossary to merge into the current one.
+	 * @return array Array of Glossary_Entry.
+	 */
+	public function merge_with_glossary( GP_Glossary $merge ) {
+		$entry_map = array();
+		foreach ( $this->get_entries() as $i => $entry ) {
+			$entry_map[ $entry->key() ] = $i;
+		}
+
+		foreach ( $merge->get_entries() as $entry ) {
+			if ( isset( $entry_map[ $entry->key() ] ) ) {
+				// Overwrite entry.
+				$i = $entry_map[ $entry->key() ];
+				$this->entries[ $i ] = $entry;
+			} else {
+				$this->entries[] = $entry;
+			}
+		}
+
+		return $this->entries;
+	}
+
+	/**
+	 * Retrieves entries and cache them.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return array Array of Glossary_Entry.
+	 */
+	public function get_entries() {
+		if ( ! $this->id ) {
+			return false;
+		}
+
+		if ( ! empty( $this->entries ) ) {
+			return $this->entries;
+		}
+
+		return $this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
 	}
 
 
@@ -116,6 +176,22 @@ class GP_Glossary extends GP_Thing {
 		GP::$glossary_entry->delete_many( array( 'glossary_id', $this->id ) );
 
 		return parent::delete();
+	}
+
+	/**
+	 * Get the virtual Locale Glossary project
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return GP_Project The project
+	 */
+	public function get_locale_glossary_project() {
+		return new GP::$project( array(
+			'id'   => 0,
+			'name' => 'Locale Glossary',
+			'slug' => 0,
+			'path' => '//languages',
+		) );
 	}
 }
 

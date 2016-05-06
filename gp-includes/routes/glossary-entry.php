@@ -46,7 +46,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$can_edit = $this->can( 'approve', 'translation-set', $translation_set->id );
-		$url      = gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') );
+		$url      = gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) );
 
 		$this->tmpl( 'glossary-view', get_defined_vars() );
 	}
@@ -60,36 +60,36 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-
 		if ( ! $translation_set ){
 			return $this->die_with_404();
 		}
 
-		if ( $this->invalid_nonce_and_redirect( 'add-glossary-entry_' . $project_path . $locale_slug . $translation_set_slug ) ) {
+		if ( $this->invalid_nonce_and_redirect( 'add-glossary-entry_' . $project->path . $locale_slug . $translation_set_slug ) ) {
 			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
 		}
-
 		$new_glossary_entry = new GP_Glossary_Entry( gp_post('new_glossary_entry') );
 		$new_glossary_entry->last_edited_by = get_current_user_id();
 
+		$glossary = GP::$glossary->get( $new_glossary_entry->glossary_id );
+
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
-			$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary' ) ) );
+			$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 		}
 		else {
 			$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 
 			if ( ! $created_glossary_entry ) {
 				$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
-				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
+				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 			}
 			else {
 				$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
-				$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
+				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 			}
 		}
 	}
@@ -285,7 +285,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->notices[] = sprintf( __( '%s glossary entries were added', 'glotpress' ), $glossary_entries_added );
 		}
 
-		$this->redirect( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array('glossary') ) );
+		$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 	}
 
 	private function print_export_file( $locale_slug, $entries ) {

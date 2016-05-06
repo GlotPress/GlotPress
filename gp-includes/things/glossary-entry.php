@@ -36,7 +36,21 @@ class GP_Glossary_Entry extends GP_Thing {
 		$this->setup_pos();
 	}
 
-	private function setup_pos(){
+	/**
+	 * A determinate key for hash lookups.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return string The key
+	 */
+	public function key() {
+		return $this->term . '_' . $this->part_of_speech;
+	}
+
+	/**
+	 * Sets up the part of speech captions.
+	 */
+	private function setup_pos() {
 		if ( ! empty( $this->parts_of_speech ) ) {
 			return;
 		}

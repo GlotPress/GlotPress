@@ -19,7 +19,7 @@ $i = 0;
 	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
-	<?php if ( $glossary ): ?>
+	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
 	<?php echo gp_link( $glossary->path(), __( 'glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php elseif ( $can_approve ): ?>
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
