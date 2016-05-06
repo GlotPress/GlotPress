@@ -1,3 +1,7 @@
+#1.0.8
+* Fix: Better regular expression to ignore nested terms
+* Enhancement: New glossaries: ast
+
 #1.0.7
 * Glossaries generated with GLotDictJSON now contain also the `pos` value
 * Enhancement: New glossaries: tr_TR
