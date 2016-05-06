@@ -1,0 +1,542 @@
+{
+    "About": {
+        "comment": "La preferencia ye \"tocante a\" cuando se refier a los creadores d'una aplicaci\u00f3n o al so funcianomaientu. Pero depende del casu a veces podr\u00e1se poner \"en rellaci\u00f3n a esi tema\" o \"sobre l'autor \"",
+        "pos": "adverb",
+        "translation": "Tocante a"
+    },
+    "Account": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Cuenta"
+    },
+    "Activate": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Activar"
+    },
+    "Activated": {
+        "comment": "",
+        "pos": "adjetive",
+        "translation": "Activ\u00e1u"
+    },
+    "Add": {
+        "comment": "Ta perus\u00e1u n'otres aplicaciones, as\u00ed ye prefer\u00edu usalu tami\u00e9n. Nun usar \"a\u00f1edir\" pa qu'haya concordancia.",
+        "pos": "verb",
+        "translation": "Amestar"
+    },
+    "address": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Direici\u00f3n"
+    },
+    "address\/ed": {
+        "comment": "Tien dos significaos, facer dir nuna direici\u00f3n y en wordpress tomar las aiciones posibles pa que dalgu o dalguien funcione.",
+        "pos": "verb",
+        "translation": "Empobinar"
+    },
+    "Admin": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Alministrador"
+    },
+    "After the Deadline": {
+        "comment": "Nun cambia, Ye'l nome d'una aplicaci\u00f3n.",
+        "pos": "noun",
+        "translation": "After the Deadline"
+    },
+    "Ajax": {
+        "comment": "Nun cambia. Ye'l nome d'una tecnolox\u00eda.",
+        "pos": "noun",
+        "translation": "Ajax"
+    },
+    "Array": {
+        "comment": "Nun cambia. Ye'l nome d'un formatu de datos.",
+        "pos": "noun",
+        "translation": "Array"
+    },
+    "Attachment": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Axuntu"
+    },
+    "Author": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Autor"
+    },
+    "Autosave": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Autoguard\u00e1u"
+    },
+    "Bitrate": {
+        "comment": "Nun se traduz",
+        "pos": "noun",
+        "translation": "Bitrate"
+    },
+    "Blog": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Blog"
+    },
+    "Bookmarklet": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Marcador"
+    },
+    "Browser": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Restolador"
+    },
+    "BuddyPress": {
+        "comment": "Nun cambia. Ye'l nome d'una aplicaci\u00f3n.",
+        "pos": "noun",
+        "translation": "BuddyPress"
+    },
+    "Built-in": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Incorpor\u00e1u"
+    },
+    "Category": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Categor\u00eda"
+    },
+    "Choose": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Escoyer"
+    },
+    "Click": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Calcar"
+    },
+    "Comment": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Comentariu"
+    },
+    "contact with your host": {
+        "comment": "",
+        "pos": "expression",
+        "translation": "Contautar col to proveedor de agospamientu web"
+    },
+    "Content": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Conten\u00edu"
+    },
+    "contributor": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Collaborador"
+    },
+    "Cookie": {
+        "comment": "Nun se traduz.",
+        "pos": "noun",
+        "translation": "Cookie"
+    },
+    "Customize": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Personalizar"
+    },
+    "Customizer": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Personalizador"
+    },
+    "Dashboard": {
+        "comment": "Un \"Dasboard\"  nun ye un escritoriu nin tampoco un tableru.",
+        "pos": "noun",
+        "translation": "Panel"
+    },
+    "Deprecated": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Anticu\u00e1u"
+    },
+    "Draft": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Borrador"
+    },
+    "Email": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Corr\u00e9u ellectr\u00f3nicu"
+    },
+    "Embed": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Empotrar"
+    },
+    "Embeded": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Empotr\u00e1u"
+    },
+    "Enable": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Activar"
+    },
+    "Enabled": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Activ\u00e1u"
+    },
+    "Excerpt": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Estractu"
+    },
+    "FAQ": {
+        "comment": "Si hai sitiu Entrugues frecuentes, si non meyor poner FAQ.",
+        "pos": "noun",
+        "translation": "FAQ"
+    },
+    "Fee": {
+        "comment": "Nun pongo \"cuota\" porque una cuota s'entiende que se socede en periodos.",
+        "pos": "noun",
+        "translation": "Tasa"
+    },
+    "Feed": {
+        "comment": "RSS feed, nun se traduz.",
+        "pos": "noun",
+        "translation": "Feed"
+    },
+    "Footer": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Pie de p\u00e1xina"
+    },
+    "Front page": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "P\u00e1xina d'aniciu"
+    },
+    "Gallery": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Galer\u00eda"
+    },
+    "Header": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Cabecera"
+    },
+    "Home": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Llar, Aniciu, Entamu"
+    },
+    "Howdy": {
+        "comment": "",
+        "pos": "interjection",
+        "translation": "Hola"
+    },
+    "Image": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Imaxe"
+    },
+    "Invalid": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Nun val, Nun ye v\u00e1lidu"
+    },
+    "Issue": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Problema"
+    },
+    "Item": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Elementu"
+    },
+    "Javascript": {
+        "comment": "Nun cambia. Ye'l nome d'una tecnolox\u00eda.",
+        "pos": "noun",
+        "translation": "Javascript"
+    },
+    "JetPack": {
+        "comment": "Nun cambia, ye'l nome d'un plugin.",
+        "pos": "noun",
+        "translation": "Jetpack"
+    },
+    "legacy": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Hered\u00e1u"
+    },
+    "Library": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Llibrer\u00eda"
+    },
+    "Logged in": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Conect\u00e1u"
+    },
+    "Login": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Aniciar sesi\u00f3n"
+    },
+    "Manage": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Xestionar"
+    },
+    "Management": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Xesti\u00f3n"
+    },
+    "Media": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Multimedia"
+    },
+    "Next": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Siguiente"
+    },
+    "Nickname": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Nomatu"
+    },
+    "Page": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "P\u00e1xina"
+    },
+    "Permalink": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Enllaz permanente"
+    },
+    "pixel": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Pixel"
+    },
+    "pixels": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Pixeles"
+    },
+    "plugin\/s": {
+        "comment": "Nun cambia. Naide diz enchufables.",
+        "pos": "noun",
+        "translation": "Plugin\/s"
+    },
+    "Post": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Art\u00edculu"
+    },
+    "Post type": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Tipu d'art\u00edculu"
+    },
+    "Powered by WordPress": {
+        "comment": "",
+        "pos": "expression",
+        "translation": "Furrula con WordPress"
+    },
+    "Previous": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Anterior"
+    },
+    "Profile": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Perfil"
+    },
+    "query": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "consulta"
+    },
+    "QuickPress": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Publicaci\u00f3n r\u00e1pida"
+    },
+    "Release": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Llanzamientu"
+    },
+    "Remove": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Quitar"
+    },
+    "Removed": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Quit\u00e1u"
+    },
+    "responsive": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Adautable"
+    },
+    "RSS Feed": {
+        "comment": "Nun cambia.",
+        "pos": "noun",
+        "translation": "Rss Feed"
+    },
+    "Scope": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Estensi\u00f3n"
+    },
+    "Screen": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Pantalla"
+    },
+    "Send": {
+        "comment": "",
+        "pos": "verb",
+        "translation": "Unviar"
+    },
+    "Set": {
+        "comment": "Nun poner establecer.",
+        "pos": "verb",
+        "translation": "Afitar"
+    },
+    "Settings": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Axustes"
+    },
+    "shortcode": {
+        "comment": "Nun cabia.",
+        "pos": "noun",
+        "translation": "Shortcode"
+    },
+    "Shortcut": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Atayu"
+    },
+    "Sidebar": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Barra llateral"
+    },
+    "Site": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Sitiu"
+    },
+    "Site Identity": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Identid\u00e1 del sitiu"
+    },
+    "slug": {
+        "comment": "Nun cambia. Nun se traduz.",
+        "pos": "noun",
+        "translation": "Slug"
+    },
+    "Sorry": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Si\u00e9ntolu"
+    },
+    "Sticky": {
+        "comment": "Nel casu de \"Sticky Post\" sedr\u00eda Art\u00edculu fixu.",
+        "pos": "adjective",
+        "translation": "Fixu"
+    },
+    "String": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "cadena (de testu)"
+    },
+    "Stylesheet": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Fueya d'estilu"
+    },
+    "Template": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Plant\u00eda"
+    },
+    "Theme": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Tema"
+    },
+    "Tools": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Ferramientes"
+    },
+    "Unable": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Nun foi posible."
+    },
+    "Update": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Anovamientu"
+    },
+    "Updated": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Anov\u00e1u"
+    },
+    "Upload": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Xubida"
+    },
+    "Uploaded": {
+        "comment": "",
+        "pos": "adjective",
+        "translation": "Xub\u00edu"
+    },
+    "Username": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "Nome d'usuariu"
+    },
+    "Walker": {
+        "comment": "Nun se traduz.",
+        "pos": "noun",
+        "translation": "Walker"
+    },
+    "Widget": {
+        "comment": "Nun se traduz.",
+        "pos": "noun",
+        "translation": "Widget"
+    },
+    "XML-RPC": {
+        "comment": "Nun se traduz.",
+        "pos": "noun",
+        "translation": "XML-RPC"
+    },
+    "You are not allowed": {
+        "comment": "",
+        "pos": "expression",
+        "translation": "Nun ties permisos"
+    }
+}

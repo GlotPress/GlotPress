@@ -354,7 +354,7 @@
         "pos": "noun",
         "translation": "dossier"
     },
-    "Follower": {
+    "follower": {
         "comment": "",
         "pos": "noun",
         "translation": "abonn\u00e9"
@@ -384,10 +384,15 @@
         "pos": "noun",
         "translation": "Happiness Engineers"
     },
-    "Hide": {
+    "header": {
+        "comment": "",
+        "pos": "noun",
+        "translation": "en-t\u00eate"
+    },
+    "hide": {
         "comment": "",
         "pos": "verb",
-        "translation": "Masquer"
+        "translation": "masquer"
     },
     "hook": {
         "comment": "",
@@ -441,12 +446,12 @@
     },
     "log in": {
         "comment": "",
-        "pos": "noun",
+        "pos": "verb",
         "translation": "se connecter"
     },
     "log out": {
         "comment": "",
-        "pos": "noun",
+        "pos": "verb",
         "translation": "se d\u00e9connecter"
     },
     "logged in": {
@@ -461,12 +466,12 @@
     },
     "login": {
         "comment": "",
-        "pos": "verb",
+        "pos": "noun",
         "translation": "connexion"
     },
     "logout": {
         "comment": "",
-        "pos": "verb",
+        "pos": "noun",
         "translation": "d\u00e9connexion"
     },
     "media attachment": {
@@ -869,7 +874,7 @@
         "pos": "verb",
         "translation": "Ouvrir\/fermer, permuter, ..."
     },
-    "Toolbar": {
+    "toolbar": {
         "comment": "",
         "pos": "noun",
         "translation": "barre d\u2019outils"
