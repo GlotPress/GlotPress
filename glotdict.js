@@ -6,8 +6,13 @@ jQuery.multipress = function (keys, handler) {
   }
 
   var down = {};
-  jQuery(document).keydown(function (event) {
+  jQuery(window).keydown(function (event) {
     down[event.keyCode] = true;
+    if (jQuery.inArray(event.keyCode, keys) > 0) {
+      if (event.keyCode !== 17) {
+        event.preventDefault();
+      }
+    }
   }).keyup(function (event) {
     var remaining = keys.slice(0), pressed = Object.keys(down).map(function (num) {
       return parseInt(num, 10);
@@ -119,6 +124,8 @@ jQuery(document).ready(function () {
     jQuery.multipress([17, 13], function () {
       if (jQuery('.editor:visible').length > 0) {
         jQuery('.editor:visible .actions button.ok').trigger('click');
+      } else {
+        alert('No opened string to add!');
       }
     });
     jQuery.multipress([17, 16, 90], function () {
@@ -130,11 +137,15 @@ jQuery(document).ready(function () {
       if (jQuery('.editor:visible .meta button.approve').length > 0) {
         console.log(123)
         jQuery('.editor:visible .meta button.approve').trigger('click');
+      } else {
+        alert('No opened string to approve!');
       }
     });
     jQuery.multipress([17, 16, 82], function () {
       if (jQuery('.editor:visible .meta button.reject').length > 0) {
         jQuery('.editor:visible .meta button.reject').trigger('click');
+      } else {
+        alert('No opened string to reject!');
       }
     });
     jQuery(window).keydown(function (e) {

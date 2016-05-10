@@ -1,5 +1,7 @@
 #1.0.8
 * Fix: Better regular expression to ignore nested terms
+* Fix: Ignore browser hotkey shortcut
+* Enhancement: Alert with hotkeys when the string is not visible
 * Enhancement: New glossaries: ast
 
 #1.0.7
