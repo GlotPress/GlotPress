@@ -75,6 +75,8 @@ class GP_Format_PO extends GP_Format {
 			return false;
 		}
 
+		$ret = strtolower( $ret );
+		
 		if ( null !== $locale->country_code && 0 !== strcasecmp( $ret, $locale->country_code ) ) {
 			$ret .= '_' . strtoupper( $locale->country_code );
 		}
