@@ -76,7 +76,7 @@ class GP_Format_PO extends GP_Format {
 		}
 
 		$ret = strtolower( $ret );
-		
+
 		if ( null !== $locale->country_code && 0 !== strcasecmp( $ret, $locale->country_code ) ) {
 			$ret .= '_' . strtoupper( $locale->country_code );
 		}
@@ -97,7 +97,7 @@ class GP_Format_PO extends GP_Format {
 	protected function set_header( $format, $header, $text ) {
 		$format->set_header( $header, $text );
 	}
-	
+
 	/**
 	 * Add a comment before the headers for the selected format, overrideable by child classes.
 	 *
@@ -118,7 +118,7 @@ class GP_Format_MO extends GP_Format_PO {
 	public $alt_extensions = array();
 
 	public $class = 'MO';
-	
+
 	/**
 	 * Override the set header function as PO files do not use it.
 	 *
@@ -132,7 +132,7 @@ class GP_Format_MO extends GP_Format_PO {
 	protected function set_header( $format, $header, $text ) {
 		return;
 	}
-	
+
 	/**
 	 * Override the comments function as PO files do not use it.
 	 *

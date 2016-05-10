@@ -6,15 +6,15 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 	protected $translation_file;
 	protected $originals_file;
 	protected $has_comments = true;
-	
+
     public function setUp() {
 		parent::setUp();
-		
+
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.po';
 		$this->originals_file = GP_DIR_TESTDATA . '/originals.po';
-		
+
 		$this->format = new GP_Format_PO;
-		
+
 		$this->entries = array(
 								array( 'normal_string', 'Normal String', 'Just A Normal String', '' ),
 								array( 'with_a_quote', 'I\'m with a quote', 'I\'m with a quote', '' ),
@@ -32,12 +32,12 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$project = $set->project;
 		$locale = $this->factory->locale->create();
-		
+
 		$entries_for_export = array();
-		
+
 		foreach ( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
-			
+
 			$translation_entry = new GP_Translation;
 			$translation_entry->context = $context;
 			$translation_entry->singular = $original;
@@ -47,7 +47,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 			if ( true === $this->has_comments ) {
 				$translation_entry->extracted_comments = $comment;
 			}
-			
+
 			$entries_for_export[] = new Translation_Entry( (array)$translation_entry );
 		}
 
@@ -60,10 +60,10 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 
 		foreach ( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
-			
+
 			$translatable_entry = new Translation_Entry( array( 'singular' => $original, 'context' => $context ) );
 			$entry = $translations->translate_entry( $translatable_entry );
-			
+
 			$this->assertEquals( $original, $entry->singular );
 			$this->assertEquals( $context, $entry->context );
 			if ( true === $this->has_comments ) {
@@ -74,14 +74,14 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 
 	public function test_read_translations() {
 		$translations = $this->format->read_translations_from_file( $this->translation_file, (object)array( 'id' => 1 ) );
-		
+
 		foreach ( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
-			
+
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );
 		}
 	}
-	
+
 	public function test_get_language_code() {
 		$test_class = new Testable_GP_Format_PO_get_language_code;
 
@@ -107,18 +107,18 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 		// Change the country code to be different than the language code.
 		$as->country_code = 'in';
 		$this->assertEquals( 'as_IN', $test_class->testable_get_language_code( $as ) );
-		
+
 		// Remove the country code for the next tests.
 		$as->country_code = null;
-		
+
 		// Remove the 639_1 language code.
 		$as->lang_code_iso_639_1 = '';
 		$this->assertEquals( 'asn', $test_class->testable_get_language_code( $as ) );
-		
+
 		// Remove the 639_2 language code.
 		$as->lang_code_iso_639_2 = '';
 		$this->assertEquals( 'asm', $test_class->testable_get_language_code( $as ) );
-		
+
 		// Setup the locale to have the incorrect case in the locale information for country and language.
 		$as->lang_code_iso_639_1 = 'AS';
 		$as->country_code = 'IN';
@@ -129,11 +129,11 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 class GP_Test_Format_MO extends GP_Test_Format_PO {
    public function setUp() {
 		parent::setUp();
-		
+
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.mo';
 		$this->originals_file = GP_DIR_TESTDATA . '/originals.mo';
 		$this->has_comments = false;
-		
+
 		$this->format = new GP_Format_MO;
 	}
 }
