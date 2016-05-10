@@ -153,6 +153,15 @@ class GP_Router {
 		$request_method = strtolower( $this->request_method() );
 		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
 
+		/**
+		 * Filter the list of HTTP methods allowed
+		 *
+		 * @since 2.1
+		 *
+		 * @param array $http_methods Allowed http methods
+		 */
+		$http_methods = apply_filters( 'gp_router_http_methods', array( 'get', 'post', 'head', 'put', 'delete' ) );
+
 		if ( $api ) {
 			$real_request_uri = substr( $real_request_uri, strlen( $this->api_prefix ) + 1 );
 		}
@@ -166,7 +175,7 @@ class GP_Router {
 
 		foreach( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
 			foreach( $this->urls as $re => $func ) {
-				foreach (array('get', 'post', 'head', 'put', 'delete') as $http_method) {
+				foreach ( $http_methods as $http_method ) {
 					if ( gp_startswith( $re, $http_method.':' ) ) {
 						if ( $http_method != $request_method ) continue;
 						$re = substr( $re, strlen( $http_method . ':' ));
