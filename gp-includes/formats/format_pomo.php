@@ -92,7 +92,6 @@ class GP_Format_PO extends GP_Format {
 	 * @param GP_Format $format The format object to set the header for.
 	 * @param string    $header The header name to set.
 	 * @param string    $text   The text to set the header to.
-	 *
 	 */
 	protected function set_header( $format, $header, $text ) {
 		$format->set_header( $header, $text );
@@ -105,7 +104,6 @@ class GP_Format_PO extends GP_Format {
 	 *
 	 * @param GP_Format $format The format object to set the header for.
 	 * @param string    $text   The text to add to the comment.
-	 *
 	 */
 	protected function add_comments_before_headers( $format, $text ) {
 		$format->comments_before_headers .= $text;
@@ -127,7 +125,6 @@ class GP_Format_MO extends GP_Format_PO {
 	 * @param GP_Format $format The format object to set the header for.
 	 * @param string    $header The header name to set.
 	 * @param string    $text   The text to set the header to.
-	 *
 	 */
 	protected function set_header( $format, $header, $text ) {
 		return;
@@ -140,7 +137,6 @@ class GP_Format_MO extends GP_Format_PO {
 	 *
 	 * @param GP_Format $format The format object to set the header for.
 	 * @param string    $text   The text to add to the comment.
-	 *
 	 */
 	protected function add_comments_before_headers( $format, $text ) {
 		return;
