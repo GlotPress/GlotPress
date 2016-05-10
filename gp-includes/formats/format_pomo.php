@@ -58,7 +58,7 @@ class GP_Format_PO extends GP_Format {
 	 *
 	 * @param GP_Locale $locale The locale object.
 	 *
-	 * @return string|false
+	 * @return string|false Returns false if the locale object does not have any iso_639 language code, otherwise returns the shortest possible language code string.
 	 */
 	private function get_language_code( $locale ) {
 		$ret = '';
@@ -75,7 +75,7 @@ class GP_Format_PO extends GP_Format {
 			return false;
 		}
 
-		if ( null !== $locale->country_code && strcasecmp( $ret, $locale->country_code ) !== 0 ) {
+		if ( null !== $locale->country_code && 0 !== strcasecmp( $ret, $locale->country_code ) ) {
 			$ret .= '_' . strtoupper( $locale->country_code );
 		}
 
