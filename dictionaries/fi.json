@@ -449,11 +449,18 @@
         "pos": "verbi",
         "translation": "poistaa k\u00e4yt\u00f6st\u00e4"
     },
-    "debug": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "testaustila"
-    },
+    "debug": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "testaustila"
+        },
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "testaa"
+        }
+    ],
     "default": {
         "comment": "default sorting => lajittelu, oletustapa",
         "pos": "substantiivi",
@@ -619,11 +626,18 @@
         "pos": "ilmaisu",
         "translation": "UKK, FAQ"
     },
-    "feature": {
-        "comment": "A fully featured cart details flyout => T\u00e4ysin ominaisuuksin varustettu pudotusikkuna",
-        "pos": "verbi",
-        "translation": "korosta, nosta esille"
-    },
+    "feature": [
+        {
+            "comment": "A fully featured cart details flyout => T\u00e4ysin ominaisuuksin varustettu pudotusikkuna",
+            "pos": "verbi",
+            "translation": "korosta, nosta esille"
+        },
+        {
+            "comment": "monikko: toiminnot, ominaisuudet",
+            "pos": "substantiivi",
+            "translation": "toiminto, ominaisuus"
+        }
+    ],
     "feature filter": {
         "comment": "",
         "pos": "substantiivi",
@@ -869,11 +883,18 @@
         "pos": "verbi",
         "translation": "sisenn\u00e4"
     },
-    "index": {
-        "comment": "Main Index Template => P\u00e4\u00e4sivun sivupohja",
-        "pos": "substantiivi",
-        "translation": "hakemisto"
-    },
+    "index": [
+        {
+            "comment": "Main Index Template => P\u00e4\u00e4sivun sivupohja",
+            "pos": "substantiivi",
+            "translation": "hakemisto"
+        },
+        {
+            "comment": "(tehd\u00e4 hakemisto, sis\u00e4llytt\u00e4\u00e4 hakemistoon)",
+            "pos": "substantiivi",
+            "translation": "indeksointi"
+        }
+    ],
     "inline": {
         "comment": "Edit this item inline => Muokkaa t\u00e4t\u00e4 kohdetta",
         "pos": "ilmaisu",
@@ -1174,11 +1195,18 @@
         "pos": "substantiivi",
         "translation": "liittyminen, tilaaminen"
     },
-    "option": {
-        "comment": "Please select an option => Tee valinta",
-        "pos": "substantiivi",
-        "translation": "valinta"
-    },
+    "option": [
+        {
+            "comment": "Please select an option => Tee valinta",
+            "pos": "substantiivi",
+            "translation": "valinta"
+        },
+        {
+            "comment": "Shipping Options => Toimituksen asetukset",
+            "pos": "substantiivi",
+            "translation": "valinta, asetus"
+        }
+    ],
     "optional": {
         "comment": "",
         "pos": "substantiivi",
@@ -1279,16 +1307,30 @@
         "pos": "substantiivi",
         "translation": "ty\u00f6n\u00e4ytteet, portfolio"
     },
-    "Post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "artikkeli"
-    },
-    "post": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "artikkeli"
-    },
+    "Post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "artikkeli"
+        },
+        {
+            "comment": "tai l\u00e4het\u00e4, riippuen kontekstista",
+            "pos": "verb",
+            "translation": "julkaise"
+        }
+    ],
+    "post": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "artikkeli"
+        },
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "julkaise, kirjoita viesti, \u201dpostaa\u201d"
+        }
+    ],
     "post via e-mail": {
         "comment": "",
         "pos": "ilmaisu",
@@ -1379,11 +1421,18 @@
         "pos": "substantiivi",
         "translation": "valintanappi"
     },
-    "rate": {
-        "comment": "Flat Rate => Kiinte\u00e4 hinta (tai -prosentti)",
-        "pos": "substantiivi",
-        "translation": "m\u00e4\u00e4r\u00e4, nopeus, vero, veroprosentti, hinta"
-    },
+    "rate": [
+        {
+            "comment": "Flat Rate => Kiinte\u00e4 hinta (tai -prosentti)",
+            "pos": "substantiivi",
+            "translation": "m\u00e4\u00e4r\u00e4, nopeus, vero, veroprosentti, hinta"
+        },
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "arvostella, arvioida, asettaa luokka\/-taso"
+        }
+    ],
     "rating": {
         "comment": "Your Rating => Arvostelusi; Enable ratings on reviews => Ota k\u00e4ytt\u00f6\u00f6n tuotearvioiden arvostelut; Product Ratings => Tuotearvostelut; Link rating => Luokittelu",
         "pos": "substantiivi",
@@ -1469,11 +1518,18 @@
         "pos": "verbi",
         "translation": "jatka"
     },
-    "review": {
-        "comment": "Enable ratings on reviews => Ota k\u00e4ytt\u00f6\u00f6n tuotearvioiden arvostelut",
-        "pos": "substantiivi",
-        "translation": "arviointi, arvio, tarkastus"
-    },
+    "review": [
+        {
+            "comment": "Enable ratings on reviews => Ota k\u00e4ytt\u00f6\u00f6n tuotearvioiden arvostelut",
+            "pos": "substantiivi",
+            "translation": "arviointi, arvio, tarkastus"
+        },
+        {
+            "comment": "From this screen you can review, => T\u00e4ll\u00e4 sivulla voit tarkistaa,",
+            "pos": "verbi",
+            "translation": "tarkistaa, arvioida"
+        }
+    ],
     "revision": {
         "comment": "",
         "pos": "substantiivi",
@@ -1944,11 +2000,18 @@
         "pos": "substantiivi",
         "translation": "varmistus, varmennus"
     },
-    "view": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "n\u00e4kym\u00e4"
-    },
+    "view": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "n\u00e4kym\u00e4"
+        },
+        {
+            "comment": "View Site => N\u00e4yt\u00e4 sivusto; View All => N\u00e4yt\u00e4 kaikki",
+            "pos": "verbi",
+            "translation": "n\u00e4yt\u00e4"
+        }
+    ],
     "visual editor": {
         "comment": "",
         "pos": "substantiivi",

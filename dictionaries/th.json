@@ -44,11 +44,18 @@
         "pos": "noun",
         "translation": "\u0e23\u0e39\u0e1b\u0e41\u0e1a\u0e1a"
     },
-    "archive": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "\u0e04\u0e25\u0e31\u0e07\u0e40\u0e01\u0e47\u0e1a"
-    },
+    "archive": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u0e04\u0e25\u0e31\u0e07\u0e40\u0e01\u0e47\u0e1a"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u0e40\u0e01\u0e47\u0e1a\u0e40\u0e02\u0e49\u0e32\u0e04\u0e25\u0e31\u0e07"
+        }
+    ],
     "argument": {
         "comment": "",
         "pos": "noun",
@@ -154,11 +161,18 @@
         "pos": "noun",
         "translation": "\u0e40\u0e09\u0e14\u0e2a\u0e35"
     },
-    "comment": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "\u0e41\u0e2a\u0e14\u0e07\u0e04\u0e27\u0e32\u0e21\u0e40\u0e2b\u0e47\u0e19"
-    },
+    "comment": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u0e41\u0e2a\u0e14\u0e07\u0e04\u0e27\u0e32\u0e21\u0e40\u0e2b\u0e47\u0e19"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u0e04\u0e27\u0e32\u0e21\u0e40\u0e2b\u0e47\u0e19"
+        }
+    ],
     "computer": {
         "comment": "",
         "pos": "noun",
@@ -349,11 +363,18 @@
         "pos": "noun",
         "translation": ""
     },
-    "front end": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": ""
-    },
+    "front end": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": ""
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": ""
+        }
+    ],
     "gallery": {
         "comment": "",
         "pos": "noun",
@@ -399,11 +420,18 @@
         "pos": "noun",
         "translation": "\u0e42\u0e2e\u0e2a\u0e17\u0e4c"
     },
-    "invalid": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": ""
-    },
+    "invalid": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": ""
+        },
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07"
+        }
+    ],
     "IP address": {
         "comment": "",
         "pos": "noun",
@@ -579,11 +607,18 @@
         "pos": "noun",
         "translation": "Polldaddy"
     },
-    "post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
-    },
+    "post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u0e40\u0e23\u0e37\u0e48\u0e2d\u0e07"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u0e2a\u0e48\u0e07"
+        }
+    ],
     "post format": {
         "comment": "",
         "pos": "noun",
@@ -879,11 +914,18 @@
         "pos": "noun",
         "translation": "VideoPress"
     },
-    "view": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "\u0e14\u0e39"
-    },
+    "view": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u0e14\u0e39"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u0e01\u0e32\u0e23\u0e14\u0e39"
+        }
+    ],
     "web server": {
         "comment": "",
         "pos": "noun",

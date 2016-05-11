@@ -44,11 +44,18 @@
         "pos": "noun",
         "translation": "Design"
     },
-    "archive": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Archiv"
-    },
+    "archive": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Archiv"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "archivieren"
+        }
+    ],
     "argument": {
         "comment": "",
         "pos": "noun",
@@ -74,11 +81,18 @@
         "pos": "noun",
         "translation": "Audio"
     },
-    "author": {
-        "comment": "Author of contents such as posts and pages.",
-        "pos": "noun",
-        "translation": "Autor"
-    },
+    "author": [
+        {
+            "comment": "Author of contents such as posts and pages.",
+            "pos": "noun",
+            "translation": "Autor"
+        },
+        {
+            "comment": "Author of plugins and themes.",
+            "pos": "noun",
+            "translation": "Autor"
+        }
+    ],
     "autosave": {
         "comment": "",
         "pos": "noun",
@@ -154,11 +168,18 @@
         "pos": "noun",
         "translation": "Farbschema"
     },
-    "comment": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "kommentieren"
-    },
+    "comment": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "kommentieren"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Kommentar"
+        }
+    ],
     "computer": {
         "comment": "",
         "pos": "noun",
@@ -269,11 +290,18 @@
         "pos": "noun",
         "translation": "Drag & Drop"
     },
-    "editor": {
-        "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
-        "pos": "noun",
-        "translation": "Editor"
-    },
+    "editor": [
+        {
+            "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
+            "pos": "noun",
+            "translation": "Editor"
+        },
+        {
+            "comment": "User role group.",
+            "pos": "noun",
+            "translation": "Redakteur"
+        }
+    ],
     "email": {
         "comment": "",
         "pos": "noun",
@@ -349,11 +377,18 @@
         "pos": "noun",
         "translation": "Druckfrisch"
     },
-    "front end": {
-        "comment": "Die Bindestriche am Ende kommen daher, weil damit zusammengesetzte W\u00f6rter gemeint sind. \u201efront end output\u201c w\u00e4re dann also zum Beispiel \u201eFrontend-Ausgabe\u201c.",
-        "pos": "adjective",
-        "translation": "Frontend-"
-    },
+    "front end": [
+        {
+            "comment": "Die Bindestriche am Ende kommen daher, weil damit zusammengesetzte W\u00f6rter gemeint sind. \u201efront end output\u201c w\u00e4re dann also zum Beispiel \u201eFrontend-Ausgabe\u201c.",
+            "pos": "adjective",
+            "translation": "Frontend-"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Frontend"
+        }
+    ],
     "gallery": {
         "comment": "",
         "pos": "noun",
@@ -535,9 +570,9 @@
         "translation": "ausstehend"
     },
     "permalink": {
-        "comment": "",
+        "comment": "Kurzform f\u00fcr \"Permanent\" und \"Hyperlink\".",
         "pos": "noun",
-        "translation": "Permanentlink"
+        "translation": "Permalink"
     },
     "permission": {
         "comment": "",
@@ -569,11 +604,18 @@
         "pos": "noun",
         "translation": "Polldaddy"
     },
-    "post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Beitrag"
-    },
+    "post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Beitrag"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Beitrag ver\u00f6ffentlichen"
+        }
+    ],
     "post format": {
         "comment": "",
         "pos": "noun",
@@ -884,11 +926,18 @@
         "pos": "noun",
         "translation": "VideoPress"
     },
-    "view": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "anzeigen"
-    },
+    "view": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "anzeigen"
+        },
+        {
+            "comment": "If used in the stats screen",
+            "pos": "noun",
+            "translation": "Aufruf"
+        }
+    ],
     "web server": {
         "comment": "",
         "pos": "noun",

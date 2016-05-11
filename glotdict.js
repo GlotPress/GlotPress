@@ -79,7 +79,7 @@ jQuery(document).ready(function () {
         var loop_editor = this;
         jQuery.each(data, function (i, item) {
           if (i !== '&') {
-            gd_add_term(i, loop_editor, item.translation, item.pos, item.comment);
+            gd_add_term(i, loop_editor, item);
           }
         });
       });
@@ -104,10 +104,10 @@ jQuery(document).ready(function () {
     });
   }
 
-  function gd_add_term(word, element, translation, pos, comment) {
-    if (translation !== '') {
+  function gd_add_term(word, element, item) {
+    if (item !== '') {
       var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
-      var repl = '<span class="glossary-word-glotdict" data-translations=\'[{"translation":"' + translation + '","pos":"' + pos + '","comment":"' + comment + '"}]\'>$1</span>';
+      var repl = '<span class="glossary-word-glotdict" data-translations=\'' + JSON.stringify(item) + '\'>$1</span>';
       jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
     }
   }

@@ -24,11 +24,18 @@
         "pos": "noun",
         "translation": "\u0935\u093f\u0915\u093e\u0938 \u0938\u0902\u0938\u094d\u0915\u0930\u0923"
     },
-    "documentation": {
-        "comment": "when we talk about documentation as a process",
-        "pos": "verb",
-        "translation": "\u0926\u0938\u094d\u0924\u093e\u0935\u0947\u091c\u093c\u0940\u0915\u0930\u0923"
-    },
+    "documentation": [
+        {
+            "comment": "when we talk about documentation as a process",
+            "pos": "verb",
+            "translation": "\u0926\u0938\u094d\u0924\u093e\u0935\u0947\u091c\u093c\u0940\u0915\u0930\u0923"
+        },
+        {
+            "comment": "when we talk about documentation as the body of documents",
+            "pos": "noun",
+            "translation": "\u0926\u0938\u094d\u0924\u093e\u0935\u0947\u091c\u093c"
+        }
+    ],
     "editor": {
         "comment": "",
         "pos": "noun",

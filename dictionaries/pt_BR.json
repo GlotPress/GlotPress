@@ -34,21 +34,35 @@
         "pos": "expression",
         "translation": "na parte superior"
     },
-    "backup": {
-        "comment": " Masculino",
-        "pos": "noun",
-        "translation": "backup"
-    },
+    "backup": [
+        {
+            "comment": " Masculino",
+            "pos": "noun",
+            "translation": "backup"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "fazer backup"
+        }
+    ],
     "banner": {
         "comment": "",
         "pos": "noun",
         "translation": "banner"
     },
-    "batch": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "lote"
-    },
+    "batch": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "lote"
+        },
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "em lote"
+        }
+    ],
     "bitrate": {
         "comment": "",
         "pos": "noun",
@@ -104,11 +118,18 @@
         "pos": "expression",
         "translation": "consultar"
     },
-    "child theme": {
-        "comment": "",
-        "pos": "expression",
-        "translation": "tema filho"
-    },
+    "child theme": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "tema filho"
+        },
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "tema filho"
+        }
+    ],
     "clean": {
         "comment": "Ex: a clean theme, um tema simples.",
         "pos": "adjective",
@@ -184,11 +205,18 @@
         "pos": "verb",
         "translation": "depurar"
     },
-    "default": {
-        "comment": "usar Padr\u00f5es quando o plural for necess\u00e1rio",
-        "pos": "noun",
-        "translation": "padr\u00e3o"
-    },
+    "default": [
+        {
+            "comment": "usar Padr\u00f5es quando o plural for necess\u00e1rio",
+            "pos": "noun",
+            "translation": "padr\u00e3o"
+        },
+        {
+            "comment": "invari\u00e1vel -sem plural",
+            "pos": "adjective",
+            "translation": "padr\u00e3o"
+        }
+    ],
     "delete": {
         "comment": "",
         "pos": "verb",
@@ -214,11 +242,18 @@
         "pos": "verb",
         "translation": "dispensar"
     },
-    "display": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "exibir"
-    },
+    "display": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "exibir"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "exibi\u00e7\u00e3o"
+        }
+    ],
     "distraction free": {
         "comment": "",
         "pos": "expression",
@@ -239,11 +274,18 @@
         "pos": "verb",
         "translation": "conclu\u00eddo"
     },
-    "download": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "download"
-    },
+    "download": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "download"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "fazer download"
+        }
+    ],
     "draft": {
         "comment": "",
         "pos": "noun",
@@ -449,11 +491,18 @@
         "pos": "noun",
         "translation": "logo"
     },
-    "loop": {
-        "comment": " masculino",
-        "pos": "noun",
-        "translation": "loop"
-    },
+    "loop": [
+        {
+            "comment": " masculino",
+            "pos": "noun",
+            "translation": "loop"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "fazer loop"
+        }
+    ],
     "malware": {
         "comment": "masculino",
         "pos": "noun",
@@ -464,11 +513,18 @@
         "pos": "verb",
         "translation": "gerenciar"
     },
-    "mapping": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mapeamento"
-    },
+    "mapping": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mapeamento"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "mapeando"
+        }
+    ],
     "matching x": {
         "comment": "",
         "pos": "expression",
@@ -559,21 +615,35 @@
         "pos": "noun",
         "translation": "plugin"
     },
-    "post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "post"
-    },
+    "post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "post"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "publicar"
+        }
+    ],
     "prefetch": {
         "comment": "",
         "pos": "verb",
         "translation": "pr\u00e9-carregar"
     },
-    "preview": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "visualizar"
-    },
+    "preview": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "visualizar"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "visualiza\u00e7\u00e3o"
+        }
+    ],
     "query": {
         "comment": "",
         "pos": "noun",
@@ -639,21 +709,35 @@
         "pos": "verb",
         "translation": "salvo"
     },
-    "schedule": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "agenda"
-    },
+    "schedule": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "agenda"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "agendar"
+        }
+    ],
     "scheduled": {
         "comment": "",
         "pos": "adjective",
         "translation": "agendado"
     },
-    "search": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "pesquisa"
-    },
+    "search": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "pesquisa"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "pesquisar"
+        }
+    ],
     "search engine": {
         "comment": "",
         "pos": "noun",
@@ -834,11 +918,18 @@
         "pos": "verb",
         "translation": "deixar de seguir"
     },
-    "upload": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "upload"
-    },
+    "upload": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "upload"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "fazer upload"
+        }
+    ],
     "URL": {
         "comment": "masculino",
         "pos": "noun",
@@ -849,11 +940,18 @@
         "pos": "noun",
         "translation": "nome de usu\u00e1rio"
     },
-    "view": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "visualiza\u00e7\u00e3o"
-    },
+    "view": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "visualiza\u00e7\u00e3o"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "ver"
+        }
+    ],
     "warning": {
         "comment": "",
         "pos": "interjection",

@@ -44,11 +44,18 @@
         "pos": "noun",
         "translation": "Apparence"
     },
-    "archive": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "archive"
-    },
+    "archive": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "archive"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "archiver"
+        }
+    ],
     "Are you ...": {
         "comment": "",
         "pos": "noun",
@@ -74,11 +81,18 @@
         "pos": "noun",
         "translation": "son"
     },
-    "author": {
-        "comment": "Author of contents such as posts and pages.",
-        "pos": "noun",
-        "translation": "auteur"
-    },
+    "author": [
+        {
+            "comment": "Auteur de contenu (p.ex. articles et pages).",
+            "pos": "noun",
+            "translation": "auteur"
+        },
+        {
+            "comment": "Auteur d\u2019extensions et de th\u00e8mes.",
+            "pos": "noun",
+            "translation": "auteur"
+        }
+    ],
     "back-office": {
         "comment": "",
         "pos": "noun",
@@ -159,16 +173,30 @@
         "pos": "noun",
         "translation": "clic"
     },
-    "color scheme": {
-        "comment": "",
-        "pos": "expression",
-        "translation": "jeu de couleurs"
-    },
-    "comment": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "commenter"
-    },
+    "color scheme": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "jeu de couleurs"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "jeu de couleurs"
+        }
+    ],
+    "comment": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "commenter"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "commentaire"
+        }
+    ],
     "computer": {
         "comment": "",
         "pos": "noun",
@@ -224,11 +252,18 @@
         "pos": "verb",
         "translation": "d\u00e9sactiver"
     },
-    "debug": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "d\u00e9bogage"
-    },
+    "debug": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "d\u00e9bogage"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "d\u00e9boguer"
+        }
+    ],
     "default": {
         "comment": "",
         "pos": "noun",
@@ -269,11 +304,18 @@
         "pos": "verb",
         "translation": "modifier"
     },
-    "editor": {
-        "comment": "Outil d\u2019\u00e9dition (p.ex. \u00e9diteur visuel, \u00e9diteur de th\u00e8me, \u00e9diteur d\u2019extension)",
-        "pos": "noun",
-        "translation": "\u00e9diteur"
-    },
+    "editor": [
+        {
+            "comment": "Outil d\u2019\u00e9dition (p.ex. \u00e9diteur visuel, \u00e9diteur de th\u00e8me, \u00e9diteur d\u2019extension)",
+            "pos": "noun",
+            "translation": "\u00e9diteur"
+        },
+        {
+            "comment": "User role group.",
+            "pos": "noun",
+            "translation": "\u00e9diteur"
+        }
+    ],
     "email": {
         "comment": "",
         "pos": "noun",
@@ -364,11 +406,18 @@
         "pos": "noun",
         "translation": "Fra\u00eechement press\u00e9"
     },
-    "front end": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "public"
-    },
+    "front end": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "public"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "interface publique"
+        }
+    ],
     "gallery": {
         "comment": "",
         "pos": "noun",
@@ -394,11 +443,18 @@
         "pos": "verb",
         "translation": "masquer"
     },
-    "hook": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "crochet"
-    },
+    "hook": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "crochet"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "point d'accroche"
+        }
+    ],
     "hosting provider": {
         "comment": "",
         "pos": "noun",
@@ -444,16 +500,30 @@
         "pos": "noun",
         "translation": "Lien"
     },
-    "log in": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "se connecter"
-    },
-    "log out": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "se d\u00e9connecter"
-    },
+    "log in": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "se connecter"
+        },
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "connexion"
+        }
+    ],
+    "log out": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "se d\u00e9connecter"
+        },
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "d\u00e9connexion"
+        }
+    ],
     "logged in": {
         "comment": "",
         "pos": "adjective",
@@ -594,11 +664,18 @@
         "pos": "noun",
         "translation": "Polldaddy"
     },
-    "post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "article"
-    },
+    "post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "article"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "publier"
+        }
+    ],
     "post format": {
         "comment": "",
         "pos": "noun",
@@ -654,11 +731,25 @@
         "pos": "noun",
         "translation": "bouton radio"
     },
-    "rate": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "\u00e9valuer"
-    },
+    "rate": [
+        [
+            {
+                "comment": "",
+                "pos": "verb",
+                "translation": "\u00e9valuer"
+            },
+            {
+                "comment": "",
+                "pos": "noun",
+                "translation": "taux"
+            }
+        ],
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u00e9valuation"
+        }
+    ],
     "Reader": {
         "comment": "",
         "pos": "noun",
@@ -694,11 +785,18 @@
         "pos": "noun",
         "translation": "D\u00e9p\u00f4t"
     },
-    "required": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "obligatoire"
-    },
+    "required": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "obligatoire"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "obligatoire, n\u00e9cessaire"
+        }
+    ],
     "responsive": {
         "comment": "",
         "pos": "noun",
@@ -729,11 +827,18 @@
         "pos": "verb",
         "translation": "Redimensionner"
     },
-    "scroll": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "d\u00e9filement"
-    },
+    "scroll": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "d\u00e9filement"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "d\u00e9filer"
+        }
+    ],
     "search": {
         "comment": "",
         "pos": "verb",
@@ -925,7 +1030,7 @@
         "translation": "outil de mise en ligne"
     },
     "URL": {
-        "comment": "",
+        "comment": "URL au pluriel ou adresses web",
         "pos": "noun",
         "translation": "URL"
     },

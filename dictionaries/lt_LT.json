@@ -154,11 +154,18 @@
         "pos": "noun",
         "translation": "(Atgalin\u0117) citata"
     },
-    "Trash": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "\u0160iuk\u0161lin\u0117"
-    },
+    "Trash": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u0160iuk\u0161lin\u0117"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Perkelti \u012f \u0161iuk\u0161lin\u0119"
+        }
+    ],
     "Troubleshooting": {
         "comment": "Google'as taip naudoja, naudosim ir mes.",
         "pos": "noun",

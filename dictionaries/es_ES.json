@@ -114,11 +114,18 @@
         "pos": null,
         "translation": null
     },
-    "Comment": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Comentario"
-    },
+    "Comment": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Comentario"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Comentar"
+        }
+    ],
     "contact with your host": {
         "comment": "",
         "pos": "expression",
@@ -194,11 +201,25 @@
         "pos": null,
         "translation": null
     },
-    "": {
-        "comment": null,
-        "pos": null,
-        "translation": null
-    },
+    "": [
+        [
+            {
+                "comment": null,
+                "pos": null,
+                "translation": null
+            },
+            {
+                "comment": null,
+                "pos": null,
+                "translation": null
+            }
+        ],
+        {
+            "comment": null,
+            "pos": null,
+            "translation": null
+        }
+    ],
     "email adress = direcci\u00f3n de correo electr\u00f3nico (Correcto)\"": {
         "comment": null,
         "pos": null,
@@ -594,21 +615,35 @@
         "pos": "expression",
         "translation": "No ha sido posible"
     },
-    "Update": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Actualizaci\u00f3n"
-    },
+    "Update": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Actualizaci\u00f3n"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Actualizar"
+        }
+    ],
     "Updated": {
         "comment": "",
         "pos": "noun",
         "translation": "Actualizado"
     },
-    "Upload": {
-        "comment": "No utilizar: Carga (incorrecta)",
-        "pos": "noun",
-        "translation": "Subida"
-    },
+    "Upload": [
+        {
+            "comment": "No utilizar: Carga (incorrecta)",
+            "pos": "noun",
+            "translation": "Subida"
+        },
+        {
+            "comment": "No utilizar: Cargar (incorrecta)",
+            "pos": "verb",
+            "translation": "Subir"
+        }
+    ],
     "Uploaded": {
         "comment": "",
         "pos": "adverb",

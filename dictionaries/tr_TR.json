@@ -99,11 +99,18 @@
         "pos": "noun",
         "translation": "tahkim karar\u0131"
     },
-    "archive": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "ar\u015fiv"
-    },
+    "archive": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "ar\u015fiv"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "ar\u015fivle"
+        }
+    ],
     "archives": {
         "comment": "",
         "pos": "noun",
@@ -169,11 +176,18 @@
         "pos": "noun",
         "translation": "Kimlik Do\u011frulay\u0131c\u0131 uygulamas\u0131"
     },
-    "author": {
-        "comment": "Yaz\u0131 ve sayfa gibi i\u00e7eriklerin yazar\u0131.",
-        "pos": "noun",
-        "translation": "yazar"
-    },
+    "author": [
+        {
+            "comment": "Yaz\u0131 ve sayfa gibi i\u00e7eriklerin yazar\u0131.",
+            "pos": "noun",
+            "translation": "yazar"
+        },
+        {
+            "comment": "Eklenti veya Tema yap\u0131mc\u0131s\u0131",
+            "pos": "noun",
+            "translation": "geli\u015ftirici"
+        }
+    ],
     "auto renew": {
         "comment": "Bkz. \"otomatik yenileme\"",
         "pos": "noun",
@@ -359,11 +373,18 @@
         "pos": "noun",
         "translation": "renk d\u00fczeni"
     },
-    "comment": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "yorum"
-    },
+    "comment": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "yorum"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "yorum yap"
+        }
+    ],
     "compat": {
         "comment": "",
         "pos": "noun",
@@ -539,11 +560,18 @@
         "pos": "noun",
         "translation": "E-posta"
     },
-    "editor": {
-        "comment": "D\u00fczenleme arac\u0131 (\u00f6rne\u011fin; zengin metin d\u00fczenleyici, eklenti d\u00fczenleyici, tema d\u00fczenleyici)",
-        "pos": "noun",
-        "translation": "d\u00fczenleyici"
-    },
+    "editor": [
+        {
+            "comment": "D\u00fczenleme arac\u0131 (\u00f6rne\u011fin; zengin metin d\u00fczenleyici, eklenti d\u00fczenleyici, tema d\u00fczenleyici)",
+            "pos": "noun",
+            "translation": "d\u00fczenleyici"
+        },
+        {
+            "comment": "Kullan\u0131c\u0131 rol\u00fc",
+            "pos": "noun",
+            "translation": "edit\u00f6r"
+        }
+    ],
     "Email": {
         "comment": "",
         "pos": "noun",
@@ -554,11 +582,18 @@
         "pos": "noun",
         "translation": "e-posta adresi"
     },
-    "embed": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "g\u00f6m"
-    },
+    "embed": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "g\u00f6m"
+        },
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "g\u00f6m\u00fcl\u00fc"
+        }
+    ],
     "emoji": {
         "comment": "",
         "pos": "noun",
@@ -609,11 +644,18 @@
         "pos": "noun",
         "translation": "site simgesi"
     },
-    "favorite": {
-        "comment": "favorite topic -> konuyu be\u011fen",
-        "pos": "verb",
-        "translation": "be\u011fen"
-    },
+    "favorite": [
+        {
+            "comment": "favorite topic -> konuyu be\u011fen",
+            "pos": "verb",
+            "translation": "be\u011fen"
+        },
+        {
+            "comment": "my favorites, be\u011fenilerim",
+            "pos": "noun",
+            "translation": "be\u011feni"
+        }
+    ],
     "feature": {
         "comment": "forum features, forum \u00f6zellikleri",
         "pos": "noun",
@@ -634,11 +676,18 @@
         "pos": "noun",
         "translation": "besleme"
     },
-    "filter": {
-        "comment": "S\u00fczge\u00e7. G\u00f6r\u00fcnt\u00fclenmesi istenenlerin belirtildi\u011fi durum\/aral\u0131k.",
-        "pos": "noun",
-        "translation": "s\u00fczge\u00e7\/filtre"
-    },
+    "filter": [
+        {
+            "comment": "S\u00fczge\u00e7. G\u00f6r\u00fcnt\u00fclenmesi istenenlerin belirtildi\u011fi durum\/aral\u0131k.",
+            "pos": "noun",
+            "translation": "s\u00fczge\u00e7\/filtre"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "filtrele"
+        }
+    ],
     "filter hook": {
         "comment": "WordPress geli\u015ftirme terimi",
         "pos": "noun",
@@ -649,11 +698,18 @@
         "pos": "noun",
         "translation": "Firehose"
     },
-    "fix": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "d\u00fczeltme"
-    },
+    "fix": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "d\u00fczeltme"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "d\u00fczeltmek"
+        }
+    ],
     "folder": {
         "comment": "Klas\u00f6r, dosya.",
         "pos": "noun",
@@ -754,21 +810,35 @@
         "pos": "noun",
         "translation": "hiyerar\u015fi"
     },
-    "host": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "bar\u0131nd\u0131r"
-    },
+    "host": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "bar\u0131nd\u0131r"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "sunucu"
+        }
+    ],
     "hosting provider": {
         "comment": "",
         "pos": "noun",
         "translation": "bar\u0131nd\u0131rma sa\u011flay\u0131c\u0131s\u0131"
     },
-    "hover": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "\u00fcstte g\u00f6sterilen"
-    },
+    "hover": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "\u00fcstte g\u00f6sterilen"
+        },
+        {
+            "comment": "hover over the area, alan \u00fczerinde gezinmek",
+            "pos": "verb",
+            "translation": "gezinmek"
+        }
+    ],
     "hovercard": {
         "comment": "",
         "pos": "noun",
@@ -1209,11 +1279,18 @@
         "pos": "noun",
         "translation": "Bas bunu"
     },
-    "preview": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "\u00f6n izle"
-    },
+    "preview": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u00f6n izle"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u00f6n izleme"
+        }
+    ],
     "previous post": {
         "comment": "",
         "pos": "noun",
@@ -1284,11 +1361,18 @@
         "pos": "noun",
         "translation": "okuyucu"
     },
-    "Reblog": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "Reblogla"
-    },
+    "Reblog": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Reblogla"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Reblog"
+        }
+    ],
     "Redirect": {
         "comment": "",
         "pos": "noun",
@@ -1324,11 +1408,18 @@
         "pos": "noun",
         "translation": "benzer yaz\u0131lar"
     },
-    "reply": {
-        "comment": "reply to topic, konuyu yan\u0131tla",
-        "pos": "verb",
-        "translation": "yan\u0131tla"
-    },
+    "reply": [
+        {
+            "comment": "reply to topic, konuyu yan\u0131tla",
+            "pos": "verb",
+            "translation": "yan\u0131tla"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "yan\u0131t"
+        }
+    ],
     "required": {
         "comment": "",
         "pos": "noun",
@@ -1404,11 +1495,18 @@
         "pos": "noun",
         "translation": "ayar"
     },
-    "share": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "payla\u015f\u0131m"
-    },
+    "share": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "payla\u015f\u0131m"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "payla\u015f"
+        }
+    ],
     "sharing": {
         "comment": "",
         "pos": "verb",
@@ -1519,11 +1617,18 @@
         "pos": "noun",
         "translation": "durum"
     },
-    "stick": {
-        "comment": "stick forum, forumu yap\u0131\u015ft\u0131r",
-        "pos": "verb",
-        "translation": "yap\u0131\u015ft\u0131rmak"
-    },
+    "stick": [
+        {
+            "comment": "stick forum, forumu yap\u0131\u015ft\u0131r",
+            "pos": "verb",
+            "translation": "yap\u0131\u015ft\u0131rmak"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u00e7ubuk"
+        }
+    ],
     "sticky": {
         "comment": "",
         "pos": "adjective",
@@ -1784,11 +1889,18 @@
         "pos": "noun",
         "translation": "g\u00fcncelleme"
     },
-    "upgrade": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "y\u00fckseltme"
-    },
+    "upgrade": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "y\u00fckseltme"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "y\u00fckselt"
+        }
+    ],
     "Upgrades page": {
         "comment": "",
         "pos": "noun",

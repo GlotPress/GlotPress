@@ -114,11 +114,18 @@
         "pos": "verb",
         "translation": "Calcar"
     },
-    "Comment": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Comentariu"
-    },
+    "Comment": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Comentariu"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Comentar"
+        }
+    ],
     "contact with your host": {
         "comment": "",
         "pos": "expression",
@@ -494,21 +501,35 @@
         "pos": "adjective",
         "translation": "Nun foi posible."
     },
-    "Update": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Anovamientu"
-    },
+    "Update": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Anovamientu"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Anovar"
+        }
+    ],
     "Updated": {
         "comment": "",
         "pos": "adjective",
         "translation": "Anov\u00e1u"
     },
-    "Upload": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Xubida"
-    },
+    "Upload": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Xubida"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "Xubir"
+        }
+    ],
     "Uploaded": {
         "comment": "",
         "pos": "adjective",

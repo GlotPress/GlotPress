@@ -29,11 +29,18 @@
         "pos": "verb",
         "translation": "apologise"
     },
-    "authorization": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "authorisation"
-    },
+    "authorization": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "authorisation"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "authorisation"
+        }
+    ],
     "authorize": {
         "comment": "",
         "pos": "verb",
@@ -144,11 +151,18 @@
         "pos": "noun",
         "translation": "cheque"
     },
-    "color": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "colour"
-    },
+    "color": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "colour"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "colour"
+        }
+    ],
     "colorful": {
         "comment": "",
         "pos": "verb",
@@ -244,11 +258,18 @@
         "pos": "verb",
         "translation": "ecommerce"
     },
-    "e-mail": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "email"
-    },
+    "e-mail": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "email"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "email"
+        }
+    ],
     "endeavor": {
         "comment": "",
         "pos": "verb",
@@ -259,11 +280,18 @@
         "pos": "verb",
         "translation": "fallback"
     },
-    "favor": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "favour"
-    },
+    "favor": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "favour"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "favour"
+        }
+    ],
     "favorite": {
         "comment": "",
         "pos": "verb",
@@ -379,11 +407,18 @@
         "pos": "verb",
         "translation": "labelled"
     },
-    "license": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "license"
-    },
+    "license": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "license"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "licence"
+        }
+    ],
     "localization": {
         "comment": "",
         "pos": "verb",
@@ -399,11 +434,18 @@
         "pos": "verb",
         "translation": "localised"
     },
-    "login": {
-        "comment": "i.e. the login screen",
-        "pos": "noun",
-        "translation": "login"
-    },
+    "login": [
+        {
+            "comment": "i.e. the login screen",
+            "pos": "noun",
+            "translation": "login"
+        },
+        {
+            "comment": "i.e. log in here",
+            "pos": "verb",
+            "translation": "log in"
+        }
+    ],
     "maximize": {
         "comment": "",
         "pos": "verb",
@@ -784,11 +826,18 @@
         "pos": "verb",
         "translation": "uninitialising"
     },
-    "unorganized": {
-        "comment": "i.e. not part of an organisation",
-        "pos": "verb",
-        "translation": "unorganised"
-    },
+    "unorganized": [
+        {
+            "comment": "i.e. not part of an organisation",
+            "pos": "verb",
+            "translation": "unorganised"
+        },
+        {
+            "comment": "i.e. not ordered",
+            "pos": "verb",
+            "translation": "disorganised"
+        }
+    ],
     "unrecognizable": {
         "comment": "",
         "pos": "adjective",

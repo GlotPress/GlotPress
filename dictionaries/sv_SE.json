@@ -99,11 +99,18 @@
         "pos": "verb",
         "translation": "godk\u00e4nn"
     },
-    "archive": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "arkiv"
-    },
+    "archive": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "arkiv"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "arkivera"
+        }
+    ],
     "archives": {
         "comment": "Older (vs. Most recent) posts on a blog. Archives can be displayed by month, by category, by tag, etc.",
         "pos": "noun",
@@ -154,11 +161,18 @@
         "pos": "noun",
         "translation": "ljud"
     },
-    "author": {
-        "comment": "Author of contents such as posts and pages.",
-        "pos": "noun",
-        "translation": "f\u00f6rfattare"
-    },
+    "author": [
+        {
+            "comment": "Author of contents such as posts and pages.",
+            "pos": "noun",
+            "translation": "f\u00f6rfattare"
+        },
+        {
+            "comment": "Author of plugins and themes.",
+            "pos": "noun",
+            "translation": "f\u00f6rfattare"
+        }
+    ],
     "authorize": {
         "comment": "Ex \"Authorize Jetpack\" = \"Auktorisera Jetpack\"",
         "pos": "verb",
@@ -239,11 +253,18 @@
         "pos": "noun",
         "translation": "bin\u00e4r"
     },
-    "blog": {
-        "comment": "A type of website that is sometimes compared to online journaling. Blogs come in many varieties, but most incorporate an interactive element such as comments and are comprised of posts, rather than static pages.",
-        "pos": "noun",
-        "translation": "blogg"
-    },
+    "blog": [
+        {
+            "comment": "A type of website that is sometimes compared to online journaling. Blogs come in many varieties, but most incorporate an interactive element such as comments and are comprised of posts, rather than static pages.",
+            "pos": "noun",
+            "translation": "blogg"
+        },
+        {
+            "comment": "generellt pratar vi om att \"publicera\" ett inl\u00e4gg",
+            "pos": "verb",
+            "translation": "publicera"
+        }
+    ],
     "blog address": {
         "comment": "URL d\u00e4r det finns en blogg, kan t.ex. vara \"blog.minwebbplats.dom\u00e4n\"",
         "pos": "noun",
@@ -364,11 +385,18 @@
         "pos": "noun",
         "translation": "kolumn"
     },
-    "comment": {
-        "comment": "Att kommentera betyder att man l\u00e4mnar en kommentar f\u00f6r andra att se p\u00e5 en sida eller i ett inl\u00e4gg. Notera att engelskan anv\u00e4nder verbet och susbstantivet \"comment\" \u00e4ven om de betyder olika saker.",
-        "pos": "verb",
-        "translation": "kommentera"
-    },
+    "comment": [
+        {
+            "comment": "Att kommentera betyder att man l\u00e4mnar en kommentar f\u00f6r andra att se p\u00e5 en sida eller i ett inl\u00e4gg. Notera att engelskan anv\u00e4nder verbet och susbstantivet \"comment\" \u00e4ven om de betyder olika saker.",
+            "pos": "verb",
+            "translation": "kommentera"
+        },
+        {
+            "comment": "En kommentar \u00e4r oftast ett svar p\u00e5 en sida eller ett inl\u00e4gg. De \u00e4r ett s\u00e4tt f\u00f6r l\u00e4sare av inneh\u00e5ll p\u00e5 n\u00e4tet att komma i kontakt med dem som har publicerat det. Notera att engelskan anv\u00e4nder verbet och susbstantivet \"comment\" \u00e4ven om de betyder olika saker.",
+            "pos": "noun",
+            "translation": "kommentar"
+        }
+    ],
     "computer": {
         "comment": "",
         "pos": "noun",
@@ -544,11 +572,18 @@
         "pos": "noun",
         "translation": "dom\u00e4nnamn"
     },
-    "download": {
-        "comment": "En fil som kan laddas ner. Notera att detta inte \u00e4r verb-formen.",
-        "pos": "noun",
-        "translation": "nedladdning"
-    },
+    "download": [
+        {
+            "comment": "En fil som kan laddas ner. Notera att detta inte \u00e4r verb-formen.",
+            "pos": "noun",
+            "translation": "nedladdning"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "ladda ner"
+        }
+    ],
     "draft": {
         "comment": "",
         "pos": "noun",
@@ -579,11 +614,18 @@
         "pos": null,
         "translation": null
     },
-    "editor": {
-        "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
-        "pos": "noun",
-        "translation": "redigerare"
-    },
+    "editor": [
+        {
+            "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
+            "pos": "noun",
+            "translation": "redigerare"
+        },
+        {
+            "comment": "Anv\u00e4ndarroll i WordPress med stor beh\u00f6righet, dock inte lika extensiv tillg\u00e5ng till alla funktioner som en administrat\u00f6r.",
+            "pos": "noun",
+            "translation": "redakt\u00f6r"
+        }
+    ],
     "email": {
         "comment": "Om det handlar om e-post generellt, t.ex. i inst\u00e4llningar. Singular blir \"e-post\", t.ex. \"Your email\" = \"Din e-post\", \"Email delivery settings\" = \"Inst\u00e4llningar f\u00f6r e-post\"",
         "pos": "noun",
@@ -594,11 +636,18 @@
         "pos": "noun",
         "translation": "e-postadress"
     },
-    "Embed": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "B\u00e4dda in"
-    },
+    "Embed": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "B\u00e4dda in"
+        },
+        {
+            "comment": "Notera att detta \u00e4r substantiv-formen. Verbet \"embed\" ska \u00f6vers\u00e4ttas som \"b\u00e4dda in\".",
+            "pos": "noun",
+            "translation": "Inb\u00e4ddning"
+        }
+    ],
     "emoticon": {
         "comment": "",
         "pos": "noun",
@@ -719,11 +768,18 @@
         "pos": "noun",
         "translation": "feedback\/kommentar"
     },
-    "filter": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "filtrera"
-    },
+    "filter": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "filtrera"
+        },
+        {
+            "comment": "Notera att detta \u00e4r substantivet \"filter\". Verbet \"filter\" skall \u00f6vers\u00e4ttas \"filtrera\".",
+            "pos": "noun",
+            "translation": "filter"
+        }
+    ],
     "filter hook": {
         "comment": "WordPress development term",
         "pos": "noun",
@@ -769,11 +825,18 @@
         "pos": "verb",
         "translation": "vidarebefordran"
     },
-    "front end": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "fr\u00e4mre del"
-    },
+    "front end": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "fr\u00e4mre del"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "fr\u00e4mre del"
+        }
+    ],
     "front page": {
         "comment": "",
         "pos": "noun",
@@ -854,11 +917,18 @@
         "pos": "noun",
         "translation": "server\/webbhotell"
     },
-    "hover": {
-        "comment": "e.g. hover the mouse",
-        "pos": "verb",
-        "translation": "f\u00f6ra \u00f6ver"
-    },
+    "hover": [
+        {
+            "comment": "e.g. hover the mouse",
+            "pos": "verb",
+            "translation": "f\u00f6ra \u00f6ver"
+        },
+        {
+            "comment": "e.g. link hover - additional changes to the original string might be needed.",
+            "pos": "adjective",
+            "translation": "f\u00f6ra \u00f6ver"
+        }
+    ],
     "hovercard": {
         "comment": "",
         "pos": "noun",
@@ -939,11 +1009,18 @@
         "pos": "noun",
         "translation": "layout"
     },
-    "like": {
-        "comment": "Anv\u00e4nd \"gillar\" n\u00e4r det handlar om sj\u00e4lva saken (som bloggaren sj\u00e4lv ser). Verbet \"like\" ska vara \"gilla\".",
-        "pos": "noun",
-        "translation": "gillar"
-    },
+    "like": [
+        {
+            "comment": "Anv\u00e4nd \"gillar\" n\u00e4r det handlar om sj\u00e4lva saken (som bloggaren sj\u00e4lv ser). Verbet \"like\" ska vara \"gilla\".",
+            "pos": "noun",
+            "translation": "gillar"
+        },
+        {
+            "comment": "\"Like this\" = \"Gilla detta\"",
+            "pos": "verb",
+            "translation": "gilla"
+        }
+    ],
     "liked": {
         "comment": "\"Someone liked this comment\" = \"N\u00e5gon gillar denna kommentar\"",
         "pos": "verb",
@@ -979,16 +1056,30 @@
         "pos": "verb",
         "translation": "\"laddar in\" eller \"h\u00e4mtar\""
     },
-    "log in": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "logga in"
-    },
-    "log out": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "logga ut"
-    },
+    "log in": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "logga in"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inloggning"
+        }
+    ],
+    "log out": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "logga ut"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utloggning"
+        }
+    ],
     "logged in": {
         "comment": "",
         "pos": "adjective",
@@ -1244,11 +1335,18 @@
         "pos": "noun",
         "translation": "parameter"
     },
-    "parent": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "f\u00f6r\u00e4lder\/moder"
-    },
+    "parent": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "f\u00f6r\u00e4lder\/moder"
+        },
+        {
+            "comment": "",
+            "pos": "noun\/adjective",
+            "translation": "f\u00f6r\u00e4lder\/moder"
+        }
+    ],
     "parent theme": {
         "comment": "Ett tema som har minst ett barntema. Ett barntema \u00e4r ett tema som har modifierat ett annat tema (modertemat) till viss del, men beh\u00e5llit mycket av originalet.",
         "pos": "noun",
@@ -1299,11 +1397,18 @@
         "pos": "noun",
         "translation": "PIN-l\u00e5s"
     },
-    "ping": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "ping"
-    },
+    "ping": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "ping"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "pinga"
+        }
+    ],
     "pingback": {
         "comment": "",
         "pos": "noun",
@@ -1334,11 +1439,18 @@
         "pos": "noun",
         "translation": "till\u00e4gg"
     },
-    "poll": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "omr\u00f6stning"
-    },
+    "poll": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "omr\u00f6stning"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "fr\u00e5ga"
+        }
+    ],
     "Polldaddy": {
         "comment": "Online survey tool - https:\/\/polldaddy.com\/",
         "pos": "noun",
@@ -1354,11 +1466,32 @@
         "pos": "noun",
         "translation": "portf\u00f6ljtema"
     },
-    "post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "inl\u00e4gg"
-    },
+    "post": [
+        [
+            [
+                {
+                    "comment": "",
+                    "pos": "noun",
+                    "translation": "inl\u00e4gg"
+                },
+                {
+                    "comment": "",
+                    "pos": "verb",
+                    "translation": "publicera"
+                }
+            ],
+            {
+                "comment": "When referring to blog posts",
+                "pos": "noun",
+                "translation": "inl\u00e4gg"
+            }
+        ],
+        {
+            "comment": "In other contexts with a more generic meaning",
+            "pos": "noun",
+            "translation": "inl\u00e4gg"
+        }
+    ],
     "Post Carousel": {
         "comment": "A way to display posts from all or one specific category in a slideshow. Specific example from Antenna theme: https:\/\/theme.wordpress.com\/themes\/antenna\/",
         "pos": "noun",
@@ -1439,11 +1572,18 @@
         "pos": "noun",
         "translation": "Blogga detta"
     },
-    "preview": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "f\u00f6rhandsgranska"
-    },
+    "preview": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "f\u00f6rhandsgranska"
+        },
+        {
+            "comment": "If you'd like to emphasize changes aren't being saved, you can use preview",
+            "pos": "noun",
+            "translation": "f\u00f6rhandsgranskning"
+        }
+    ],
     "previous post": {
         "comment": "",
         "pos": "noun",
@@ -1549,26 +1689,47 @@
         "pos": "noun",
         "translation": "L\u00e4sa"
     },
-    "Reblog": {
-        "comment": "A way to share posts published by other WordPress.com users on your own blog. More info: http:\/\/en.support.wordpress.com\/reblogs\/",
-        "pos": "verb",
-        "translation": "Reblogga"
-    },
-    "recent": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "senaste"
-    },
+    "Reblog": [
+        {
+            "comment": "A way to share posts published by other WordPress.com users on your own blog. More info: http:\/\/en.support.wordpress.com\/reblogs\/",
+            "pos": "verb",
+            "translation": "Reblogga"
+        },
+        {
+            "comment": "A post reblogged on another user's blog. More info: http:\/\/en.support.wordpress.com\/reblogs\/",
+            "pos": "noun",
+            "translation": "Rebloggade \/ Reblogg"
+        }
+    ],
+    "recent": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "senaste"
+        },
+        {
+            "comment": "Sv\u00e5rt att \u00f6vers\u00e4tta, men handlar oftast om \"recent posts\" el likn. Ex: \"Recent posts\" = \"Senaste inl\u00e4ggen\"",
+            "pos": "adjective",
+            "translation": "senaste"
+        }
+    ],
     "recent post": {
         "comment": "",
         "pos": "noun",
         "translation": "senaste inl\u00e4gg \/ senaste inl\u00e4gget"
     },
-    "record": {
-        "comment": "if domain-related; like e.g. CNAME record",
-        "pos": "noun",
-        "translation": "protokoll"
-    },
+    "record": [
+        {
+            "comment": "if domain-related; like e.g. CNAME record",
+            "pos": "noun",
+            "translation": "protokoll"
+        },
+        {
+            "comment": "N\u00e4r det handlar om att spara data, ex: \"No clicks recorded yet\" = \" Inga klick registrerade \u00e4n\"",
+            "pos": "verb",
+            "translation": "registrerade \/ sparade"
+        }
+    ],
     "recover": {
         "comment": "Ex.vis \"The data can't be recovered in the future\" = \"Data kan inte \u00e5terskapas i framtiden\"",
         "pos": "verb",
@@ -1699,11 +1860,18 @@
         "pos": "noun",
         "translation": "inst\u00e4llningar"
     },
-    "share": {
-        "comment": "How many times a post has been shared, referred to in Stats, for example, as in \"Total Shares\". More info: http:\/\/en.support.wordpress.com\/sharing\/#share-stats",
-        "pos": "noun",
-        "translation": "delning"
-    },
+    "share": [
+        {
+            "comment": "How many times a post has been shared, referred to in Stats, for example, as in \"Total Shares\". More info: http:\/\/en.support.wordpress.com\/sharing\/#share-stats",
+            "pos": "noun",
+            "translation": "delning"
+        },
+        {
+            "comment": "The process of publishing links to blog posts in social networks. More info: http:\/\/en.support.wordpress.com\/sharing\/",
+            "pos": "verb",
+            "translation": "dela"
+        }
+    ],
     "shares": {
         "comment": "Delat inneh\u00e5ll, ex \"Two shares today\" = \"Tv\u00e5 delningar i dag\"",
         "pos": "noun",
@@ -2039,11 +2207,18 @@
         "pos": "noun",
         "translation": "Popul\u00e4raste sidorna"
     },
-    "top posts": {
-        "comment": "N\u00e4r det g\u00e4ller en manuell lista av handplockade inl\u00e4gg, ex vis F\u00e4rskpressat: \"F\u00e4rskpressat: de b\u00e4sta inl\u00e4ggen fr\u00e5n WordPress.com\"",
-        "pos": "noun",
-        "translation": "popul\u00e4raste inl\u00e4ggen \/ b\u00e4sta inl\u00e4ggen"
-    },
+    "top posts": [
+        {
+            "comment": "N\u00e4r det g\u00e4ller en manuell lista av handplockade inl\u00e4gg, ex vis F\u00e4rskpressat: \"F\u00e4rskpressat: de b\u00e4sta inl\u00e4ggen fr\u00e5n WordPress.com\"",
+            "pos": "noun",
+            "translation": "popul\u00e4raste inl\u00e4ggen \/ b\u00e4sta inl\u00e4ggen"
+        },
+        {
+            "comment": "N\u00e4r det g\u00e4ller listor i Statistik-delen, ex: \"Top Posts",
+            "pos": "noun",
+            "translation": "popul\u00e4raste inl\u00e4ggen"
+        }
+    ],
     "topic": {
         "comment": "",
         "pos": "noun",
@@ -2134,11 +2309,18 @@
         "pos": "verb",
         "translation": "avsluta prenumeration"
     },
-    "upload": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "uppladdning"
-    },
+    "upload": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "uppladdning"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "ladda upp"
+        }
+    ],
     "uploader": {
         "comment": "",
         "pos": "noun",
@@ -2199,11 +2381,18 @@
         "pos": "noun",
         "translation": "videoklipp"
     },
-    "view": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "visa"
-    },
+    "view": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "visa"
+        },
+        {
+            "comment": "If used in the stats screen",
+            "pos": "noun",
+            "translation": "vy"
+        }
+    ],
     "web server": {
         "comment": "",
         "pos": "noun",
@@ -2254,11 +2443,18 @@
         "pos": "noun",
         "translation": "Cirkeldiagram"
     },
-    "ZIP": {
-        "comment": "File format type",
-        "pos": "noun",
-        "translation": "ZIP"
-    },
+    "ZIP": [
+        {
+            "comment": "File format type",
+            "pos": "noun",
+            "translation": "ZIP"
+        },
+        {
+            "comment": "Postal code",
+            "pos": "noun",
+            "translation": "Postnummer"
+        }
+    ],
     "\\a\\t": {
         "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example \"at\" in \"M j, Y \\a\\t g:i a\" = \"j M, Y \\k\\l\\. H:i\" (\"Jan 1, 2015 at 1:06 pm\" = \"1 jan, 2015 kl. 13:06\"). NOTE: the backslashes are only escape characters, keep them and have one for each character that needs to be output (three in \"kl.\").",
         "pos": "noun",
