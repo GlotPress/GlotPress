@@ -214,7 +214,7 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 				<?php echo $can_approve? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 			</button>
 		<?php endif; ?>
-			or <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+			<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
 		</div>
 	</td>
 </tr>

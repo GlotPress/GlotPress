@@ -21,7 +21,7 @@ gp_tmpl_header();
 	</p>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Delete', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel">or <a href="<?php echo esc_url( gp_url_project_locale( $project, $locale->slug, $set->slug ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
+		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo esc_url( gp_url_project_locale( $project, $locale->slug, $set->slug ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
 	<?php gp_route_nonce_field( 'delete-translation-set_' . $set->id ); ?>
 </form>
