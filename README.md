@@ -12,6 +12,7 @@ The goal of this browser extension is add that dictionaries when the user is tra
 * Shortcut on Ctrl+Enter to click "Suggest new translation" or "Add translation"
 * Shortcut on Page Down to open the previous string to translate
 * Shortcut on Page Up to open the next string to translate
+* Shortcut on Ctrl+Shift+F to replace space near symbols
 
 # Download
 
