@@ -62,6 +62,31 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 5, $translation->errors );
 	}
 
+	/**
+	 * @ticket gh-341
+	 */
+	function test_translation_should_not_report_empty_translation_set_id_as_translation_value_error() {
+		$data = array(
+			'user_id'            => 1,
+			'original_id'        => 1,
+			'status'             => 'current',
+		);
+		$plurals = array(
+			'translation_0' => 'Zero',
+			'translation_1' => '',
+			'translation_2' => '',
+			'translation_3' => '',
+			'translation_4' => '',
+			'translation_5' => '',
+		);
+
+		$data = array_merge( $data, $plurals );
+
+		$translation = $this->factory->translation->create( $data );
+		$this->assertFalse( $translation->validate() );
+		$this->assertNotEquals( 'The textarea <strong>Translation 1</strong> is invalid and should be positive int!', $translation->errors[0] );
+	}
+
 	function test_for_translation_shouldnt_exclude_originals_with_rejected_translation_if_status_has_untranslated() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
