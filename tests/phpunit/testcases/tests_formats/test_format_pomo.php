@@ -16,16 +16,16 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 		$this->format = new GP_Format_PO;
 
 		$this->entries = array(
-								array( 'normal_string', 'Normal String', 'Just A Normal String', '' ),
-								array( 'with_a_quote', 'I\'m with a quote', 'I\'m with a quote', '' ),
-								array( 'with_newlines', "new\nlines", "I\nhave\nnew\nlines", '' ),
-								array( 'with_doublequotes', 'double "quotes"', 'I have double "quotes"', '' ),
-								array( 'with_utf8', 'питка', 'баба ми омеси питка', '' ),
-								array( 'with_lt', 'you < me', 'ти < аз', '' ),
-								array( 'with_gt', 'me > you', "аз > ти", '' ),
-								array( 'with_amps', 'me & you are not &amp;', 'аз & ти не сме &amp;', '' ),
-								array( 'with_comment', 'baba', 'баба', 'Me, myself & Irene' ),
-							);
+			array( 'normal_string', 'Normal String', 'Just A Normal String', '' ),
+			array( 'with_a_quote', 'I\'m with a quote', 'I\'m with a quote', '' ),
+			array( 'with_newlines', "new\nlines", "I\nhave\nnew\nlines", '' ),
+			array( 'with_doublequotes', 'double "quotes"', 'I have double "quotes"', '' ),
+			array( 'with_utf8', 'питка', 'баба ми омеси питка', '' ),
+			array( 'with_lt', 'you < me', 'ти < аз', '' ),
+			array( 'with_gt', 'me > you', "аз > ти", '' ),
+			array( 'with_amps', 'me & you are not &amp;', 'аз & ти не сме &amp;', '' ),
+			array( 'with_comment', 'baba', 'баба', 'Me, myself & Irene' ),
+		);
 	}
 
 	public function test_export() {
