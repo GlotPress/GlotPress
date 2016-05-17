@@ -153,7 +153,7 @@ jQuery(document).ready(function () {
 	  }
 	});
 	jQuery.multipress([17, 16, 70], function () {
-	  jQuery('textarea.foreign-text:visible:first').val(function (index, text) {
+	  jQuery('textarea.foreign-text').filter(':visible:first').val(function (index, text) {
 		var s;
 		// Replace space-colon or nbsp-colon with just colon, then replace colons with nbsp-colon
 		s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
