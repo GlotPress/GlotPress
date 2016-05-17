@@ -145,6 +145,11 @@ jQuery(document).ready(function () {
 		alert('No opened string to approve!');
 	  }
 	});
+	jQuery.multipress([17, 16, 66], function () {
+		jQuery('textarea.foreign-text').filter(':visible:first').val(function(index, text){
+			return jQuery('.editor:visible p.original').text()
+		});
+	});
 	jQuery.multipress([17, 16, 82], function () {
 	  if (jQuery('.editor:visible .meta button.reject').length > 0) {
 		jQuery('.editor:visible .meta button.reject').trigger('click');
