@@ -4,7 +4,7 @@
 * Fix: Support multiple definitions for the same term
 * Enhancement: Alert with hotkeys when the string is not visible
 * Enhancement: New glossaries: ast
-* Feature: Shortcut on Ctrl+Shift+F to replace space near symbols by casiopa
+* Feature: Shortcut on Ctrl+Shift+F to replace space near symbols by ePascalC
 
 #1.0.7
 * Glossaries generated with GLotDictJSON now contain also the `pos` value

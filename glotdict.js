@@ -108,9 +108,9 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
 	  var print = JSON.stringify(item);
-	  if( !item.length ){
+	  if (!item.length) {
 		print = '[' + print + ']';
-	  } 
+	  }
 	  var repl = '<span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span>';
 	  jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
 	}
@@ -154,9 +154,8 @@ jQuery(document).ready(function () {
 	});
 	jQuery.multipress([17, 16, 70], function () {
 	  jQuery('textarea.foreign-text').filter(':visible:first').val(function (index, text) {
-		var s;
 		// Replace space-colon or nbsp-colon with just colon, then replace colons with nbsp-colon
-		s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
+		var s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
 		// Replace space-question or nbsp-question with just question, then replace question with nbsp-question
 		s = s.replace(/( \?|&nbsp;\?)/g, '?').replace(/\?/g, '&nbsp;?');
 		// Replace space-exclamation or nbsp-exclamation with just exclamation, then replace exclamation with nbsp-exclamation
@@ -167,6 +166,8 @@ jQuery(document).ready(function () {
 		s = s.replace(/( \. | \.)/g, '. ').replace(/( , | ,)/g, ', ');
 		// Replace space-closebracket-space or space-closebracket with just closebracket-space, same for squarebracket
 		s = s.replace(/( \) | \))/g, ') ').replace(/( ] | ])/g, '] ');
+		// Replace space-openbracket-space or openbracket-space with just space-openbracket, same for squarebracket
+		s = s.replace(/( \( |\( )/g, ' (').replace(/( \[ |\[ )/g, ' [');
 		return s;
 	  });
 	});
