@@ -1,104 +1,144 @@
 {
-    "@": {
-        "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example @ in \"M j, Y @ g:i a\" = \"j M, Y kl. H:i\" (\"Jan 1, 2015 @ 1:06 pm\" = \"1 jan, 2015 kl. 13:06\").",
-        "pos": "noun",
-        "translation": "kl."
-    },
-    "accent color": {
-        "comment": "Refers to colors used in the Customizer for the blog palette, e.g. \u201cAccent Color One\u201d; \u201cAccent Color Two\u201d",
-        "pos": "noun",
-        "translation": "accentf\u00e4rg"
-    },
-    "achievement": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "trof\u00e9"
-    },
-    "action hook": {
-        "comment": "WordPress development term",
-        "pos": "noun",
-        "translation": "\u00e5tg\u00e4rds-hook"
-    },
-    "activate": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "aktivera"
-    },
-    "activated": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "aktiverad"
-    },
-    "activation e-mail": {
-        "comment": "Automated email sent when registering a new address with WordPress.com",
-        "pos": "noun",
-        "translation": "e-postaktivering"
-    },
-    "active": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "aktiv"
-    },
-    "add email": {
-        "comment": "",
-        "pos": "expression",
-        "translation": "l\u00e4gg till e-post"
-    },
-    "address": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "adress"
-    },
-    "admin bar": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "adminmeny"
-    },
-    "admin panel": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "adminpanel"
-    },
-    "admin toolbar": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "admin-verktygsf\u00e4lt"
-    },
-    "administrator": {
-        "comment": "Anv\u00e4ndartypen med mest beh\u00f6righet i en WordPress-installation (bortr\u00e4knat WordPress Multisite)",
-        "pos": "noun",
-        "translation": "administrat\u00f6r"
-    },
-    "Akismet": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Akismet"
-    },
-    "allow": {
-        "comment": "Ex.vis.: \"This file type is not allowed\" = \"Denna filtyp \u00e4r inte till\u00e5ten\"",
-        "pos": "verb",
-        "translation": "till\u00e5t"
-    },
-    "app": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "app"
-    },
-    "Appearance": {
-        "comment": "En gruppering f\u00f6r menyval i WordPress adminpanel.",
-        "pos": "noun",
-        "translation": "Utseende"
-    },
-    "apply": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "till\u00e4mpa"
-    },
-    "approve": {
-        "comment": "Ex: \"Approve this comment\" = \"Godk\u00e4nn denna kommentar\"",
-        "pos": "verb",
-        "translation": "godk\u00e4nn"
-    },
+    "@": [
+        {
+            "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example @ in \"M j, Y @ g:i a\" = \"j M, Y kl. H:i\" (\"Jan 1, 2015 @ 1:06 pm\" = \"1 jan, 2015 kl. 13:06\").",
+            "pos": "noun",
+            "translation": "kl."
+        }
+    ],
+    "accent color": [
+        {
+            "comment": "Refers to colors used in the Customizer for the blog palette, e.g. \u201cAccent Color One\u201d; \u201cAccent Color Two\u201d",
+            "pos": "noun",
+            "translation": "accentf\u00e4rg"
+        }
+    ],
+    "achievement": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "trof\u00e9"
+        }
+    ],
+    "action hook": [
+        {
+            "comment": "WordPress development term",
+            "pos": "noun",
+            "translation": "\u00e5tg\u00e4rds-hook"
+        }
+    ],
+    "activate": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "aktivera"
+        }
+    ],
+    "activated": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "aktiverad"
+        }
+    ],
+    "activation e-mail": [
+        {
+            "comment": "Automated email sent when registering a new address with WordPress.com",
+            "pos": "noun",
+            "translation": "e-postaktivering"
+        }
+    ],
+    "active": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "aktiv"
+        }
+    ],
+    "add email": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "l\u00e4gg till e-post"
+        }
+    ],
+    "address": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "adress"
+        }
+    ],
+    "admin bar": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "adminmeny"
+        }
+    ],
+    "admin panel": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "adminpanel"
+        }
+    ],
+    "admin toolbar": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "admin-verktygsf\u00e4lt"
+        }
+    ],
+    "administrator": [
+        {
+            "comment": "Anv\u00e4ndartypen med mest beh\u00f6righet i en WordPress-installation (bortr\u00e4knat WordPress Multisite)",
+            "pos": "noun",
+            "translation": "administrat\u00f6r"
+        }
+    ],
+    "Akismet": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Akismet"
+        }
+    ],
+    "allow": [
+        {
+            "comment": "Ex.vis.: \"This file type is not allowed\" = \"Denna filtyp \u00e4r inte till\u00e5ten\"",
+            "pos": "verb",
+            "translation": "till\u00e5t"
+        }
+    ],
+    "app": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "app"
+        }
+    ],
+    "Appearance": [
+        {
+            "comment": "En gruppering f\u00f6r menyval i WordPress adminpanel.",
+            "pos": "noun",
+            "translation": "Utseende"
+        }
+    ],
+    "apply": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "till\u00e4mpa"
+        }
+    ],
+    "approve": [
+        {
+            "comment": "Ex: \"Approve this comment\" = \"Godk\u00e4nn denna kommentar\"",
+            "pos": "verb",
+            "translation": "godk\u00e4nn"
+        }
+    ],
     "archive": [
         {
             "comment": "",
@@ -111,56 +151,76 @@
             "translation": "arkivera"
         }
     ],
-    "archives": {
-        "comment": "Older (vs. Most recent) posts on a blog. Archives can be displayed by month, by category, by tag, etc.",
-        "pos": "noun",
-        "translation": "arkiv"
-    },
-    "are you sure you want": {
-        "comment": "",
-        "pos": "expression",
-        "translation": "\u00e4r du s\u00e4ker p\u00e5 att du vill"
-    },
-    "article": {
-        "comment": "Could refer to either pages or posts, depending on the theme.",
-        "pos": "noun",
-        "translation": "artikel"
-    },
-    "aside": {
-        "comment": "Inl\u00e4ggsformatet Notering. Asides = Noteringar.",
-        "pos": "noun",
-        "translation": "notering"
-    },
-    "at": {
-        "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example \"at\" in \"M j, Y at g:i a\" = \"j M, Y kl. H:i\" (\"Jan 1, 2015 at 1:06 pm\" = \"1 jan, 2015 kl. 13:06\").",
-        "pos": "noun",
-        "translation": "kl."
-    },
-    "at the bottom": {
-        "comment": "",
-        "pos": "preposition",
-        "translation": "l\u00e4ngst ner"
-    },
-    "at the top": {
-        "comment": "",
-        "pos": "preposition",
-        "translation": "h\u00f6gst upp"
-    },
-    "attachment": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "bilaga"
-    },
-    "attachment page": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "bilagssidan"
-    },
-    "audio": {
-        "comment": "Audio files embedded on a blog. More info: http:\/\/en.support.wordpress.com\/audio\/",
-        "pos": "noun",
-        "translation": "ljud"
-    },
+    "archives": [
+        {
+            "comment": "Older (vs. Most recent) posts on a blog. Archives can be displayed by month, by category, by tag, etc.",
+            "pos": "noun",
+            "translation": "arkiv"
+        }
+    ],
+    "are you sure you want": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "\u00e4r du s\u00e4ker p\u00e5 att du vill"
+        }
+    ],
+    "article": [
+        {
+            "comment": "Could refer to either pages or posts, depending on the theme.",
+            "pos": "noun",
+            "translation": "artikel"
+        }
+    ],
+    "aside": [
+        {
+            "comment": "Inl\u00e4ggsformatet Notering. Asides = Noteringar.",
+            "pos": "noun",
+            "translation": "notering"
+        }
+    ],
+    "at": [
+        {
+            "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example \"at\" in \"M j, Y at g:i a\" = \"j M, Y kl. H:i\" (\"Jan 1, 2015 at 1:06 pm\" = \"1 jan, 2015 kl. 13:06\").",
+            "pos": "noun",
+            "translation": "kl."
+        }
+    ],
+    "at the bottom": [
+        {
+            "comment": "",
+            "pos": "preposition",
+            "translation": "l\u00e4ngst ner"
+        }
+    ],
+    "at the top": [
+        {
+            "comment": "",
+            "pos": "preposition",
+            "translation": "h\u00f6gst upp"
+        }
+    ],
+    "attachment": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "bilaga"
+        }
+    ],
+    "attachment page": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "bilagssidan"
+        }
+    ],
+    "audio": [
+        {
+            "comment": "Audio files embedded on a blog. More info: http:\/\/en.support.wordpress.com\/audio\/",
+            "pos": "noun",
+            "translation": "ljud"
+        }
+    ],
     "author": [
         {
             "comment": "Author of contents such as posts and pages.",
@@ -173,86 +233,118 @@
             "translation": "f\u00f6rfattare"
         }
     ],
-    "authorize": {
-        "comment": "Ex \"Authorize Jetpack\" = \"Auktorisera Jetpack\"",
-        "pos": "verb",
-        "translation": "auktorisera"
-    },
-    "authorized": {
-        "comment": "Ex \"You're not authorized to do that\" = \"Du har inte beh\u00f6righet att g\u00f6ra detta\"",
-        "pos": "noun",
-        "translation": "beh\u00f6righet\/befogenhet"
-    },
-    "Automattic": {
-        "comment": "F\u00f6retaget bakom WordPress.com och andra tj\u00e4nster. Mer info: http:\/\/automattic.com\/about\/",
-        "pos": "noun",
-        "translation": "Automattic"
-    },
-    "autosave": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "autospara"
-    },
-    "avatar": {
-        "comment": "An image or picture that represents a user.",
-        "pos": "noun",
-        "translation": "profilbild"
-    },
-    "average": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "i snitt\/genomsnitt\/genomsnittligt"
-    },
-    "back up": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "s\u00e4kerhetskopiera"
-    },
-    "background": {
-        "comment": "Back image or color of a blog. More info: http:\/\/en.support.wordpress.com\/themes\/custom-backgrounds\/",
-        "pos": "noun",
-        "translation": "bakgrund"
-    },
-    "background color": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "bakgrundsf\u00e4rg"
-    },
-    "background image": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "bakgrundsbild"
-    },
-    "background pattern": {
-        "comment": "Ett m\u00f6nster som anv\u00e4nds som bakgrund, eller som en del av en bakgrund f\u00f6r en sida eller ett objekt p\u00e5 en sida.",
-        "pos": "noun",
-        "translation": "bakgrundsm\u00f6nster"
-    },
-    "backup": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "s\u00e4kerhetskopia"
-    },
-    "backup code": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "reservkod"
-    },
-    "below": {
-        "comment": "F\u00f6rs\u00f6ker h\u00e5lla oss borta fr\u00e5n \"nedanf\u00f6r\"",
-        "pos": "preposition",
-        "translation": "nedan, under"
-    },
-    "billing": {
-        "comment": "Ex.vis: \"Billing History\" = \"Faktureringshistorik\"",
-        "pos": "noun",
-        "translation": "fakturering\/fakturerings-"
-    },
-    "binary": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "bin\u00e4r"
-    },
+    "authorize": [
+        {
+            "comment": "Ex \"Authorize Jetpack\" = \"Auktorisera Jetpack\"",
+            "pos": "verb",
+            "translation": "auktorisera"
+        }
+    ],
+    "authorized": [
+        {
+            "comment": "Ex \"You're not authorized to do that\" = \"Du har inte beh\u00f6righet att g\u00f6ra detta\"",
+            "pos": "noun",
+            "translation": "beh\u00f6righet\/befogenhet"
+        }
+    ],
+    "Automattic": [
+        {
+            "comment": "F\u00f6retaget bakom WordPress.com och andra tj\u00e4nster. Mer info: http:\/\/automattic.com\/about\/",
+            "pos": "noun",
+            "translation": "Automattic"
+        }
+    ],
+    "autosave": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "autospara"
+        }
+    ],
+    "avatar": [
+        {
+            "comment": "An image or picture that represents a user.",
+            "pos": "noun",
+            "translation": "profilbild"
+        }
+    ],
+    "average": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "i snitt\/genomsnitt\/genomsnittligt"
+        }
+    ],
+    "back up": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "s\u00e4kerhetskopiera"
+        }
+    ],
+    "background": [
+        {
+            "comment": "Back image or color of a blog. More info: http:\/\/en.support.wordpress.com\/themes\/custom-backgrounds\/",
+            "pos": "noun",
+            "translation": "bakgrund"
+        }
+    ],
+    "background color": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "bakgrundsf\u00e4rg"
+        }
+    ],
+    "background image": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "bakgrundsbild"
+        }
+    ],
+    "background pattern": [
+        {
+            "comment": "Ett m\u00f6nster som anv\u00e4nds som bakgrund, eller som en del av en bakgrund f\u00f6r en sida eller ett objekt p\u00e5 en sida.",
+            "pos": "noun",
+            "translation": "bakgrundsm\u00f6nster"
+        }
+    ],
+    "backup": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "s\u00e4kerhetskopia"
+        }
+    ],
+    "backup code": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "reservkod"
+        }
+    ],
+    "below": [
+        {
+            "comment": "F\u00f6rs\u00f6ker h\u00e5lla oss borta fr\u00e5n \"nedanf\u00f6r\"",
+            "pos": "preposition",
+            "translation": "nedan, under"
+        }
+    ],
+    "billing": [
+        {
+            "comment": "Ex.vis: \"Billing History\" = \"Faktureringshistorik\"",
+            "pos": "noun",
+            "translation": "fakturering\/fakturerings-"
+        }
+    ],
+    "binary": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "bin\u00e4r"
+        }
+    ],
     "blog": [
         {
             "comment": "A type of website that is sometimes compared to online journaling. Blogs come in many varieties, but most incorporate an interactive element such as comments and are comprised of posts, rather than static pages.",
@@ -265,126 +357,174 @@
             "translation": "publicera"
         }
     ],
-    "blog address": {
-        "comment": "URL d\u00e4r det finns en blogg, kan t.ex. vara \"blog.minwebbplats.dom\u00e4n\"",
-        "pos": "noun",
-        "translation": "bloggadress"
-    },
-    "blog post": {
-        "comment": "Ett mer direkt s\u00e4tt att tala om ett inl\u00e4gg i en WordPress-installation. Mer info: se \"inl\u00e4gg\".",
-        "pos": "noun",
-        "translation": "blogginl\u00e4gg"
-    },
-    "bookmarklet": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "skriptbokm\u00e4rke"
-    },
-    "breadcrumbs": {
-        "comment": "A \"breadcrumb\" path leading up to your current level of navigation, resembling a tasty albeit messy trail of breadcrumbs.",
-        "pos": "noun",
-        "translation": "s\u00f6kv\u00e4gsnavigering"
-    },
-    "browser": {
-        "comment": "A web browser is the software used to access the web. Common browsers include Google Chrome, Apple Safari, Mozilla Firefox, and Internet Explorer.",
-        "pos": "noun",
-        "translation": "webbl\u00e4sare"
-    },
-    "BuddyPress": {
-        "comment": "Ett WordPress-till\u00e4gg som l\u00e4gger till ett socialt n\u00e4tverk i en WordPress-installation - http:\/\/buddypress.org\/",
-        "pos": "noun",
-        "translation": "BuddyPress"
-    },
-    "bulk action": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mass\u00e5tg\u00e4rd"
-    },
-    "bulk actions": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mass\u00e5tg\u00e4rder"
-    },
-    "button": {
-        "comment": "H\u00e4nvisar till en knapp som anv\u00e4ndaren f\u00f6rv\u00e4ntas eller instrueras att anv\u00e4nda.",
-        "pos": "noun",
-        "translation": "knapp"
-    },
-    "cancel": {
-        "comment": "\"Cancel [action]\" = \"Avbryt [aktivitet]\", \"cancel upgrade\" = \"Avsluta uppgradering\"",
-        "pos": "verb",
-        "translation": "avbryt \/ avsluta"
-    },
-    "cancelled": {
-        "comment": "cancelled action = avbruten aktivitet, cancelled upgrade = avslutad uppgradering, cancelled subscription = avslutad prenumeration",
-        "pos": "adjective",
-        "translation": "avbruten \/ avslutad"
-    },
-    "cart": {
-        "comment": "En plats d\u00e4r produkter man valt att k\u00f6pa g\u00e5r att se och hantera.",
-        "pos": "noun",
-        "translation": "kundvagn"
-    },
-    "categories": {
-        "comment": "Ett s\u00e4tt att gruppera inneh\u00e5ll som sidor p\u00e5 en webbplats baserade p\u00e5 vad de handlar om i stora svep. Kategorier kan ocks\u00e5 ha under- och \u00f6verkategorier. Mer info: http:\/\/support.wordpress.com\/posts\/categories\/",
-        "pos": "noun",
-        "translation": "kategorier"
-    },
-    "category": {
-        "comment": "Ett s\u00e4tt att gruppera inneh\u00e5ll som sidor p\u00e5 en webbplats baserade p\u00e5 vad de handlar om i stora svep. Kategorier kan ocks\u00e5 ha under- och \u00f6verkategorier. Mer info: http:\/\/support.wordpress.com\/posts\/categories\/",
-        "pos": "noun",
-        "translation": "kategori"
-    },
-    "character code": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "teckenkod"
-    },
-    "character entity reference": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "teckenenhetsreferens"
-    },
-    "character set": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "teckenupps\u00e4ttning"
-    },
-    "check": {
-        "comment": "Att bocka i en l\u00e5da, motsats \"bocka av\". T.ex. \"Check the box to receive hugs\" = \"Bocka i l\u00e5dan f\u00f6r att f\u00e5 kramar\". Att kolla in en annan sida, t.ex. \"Check out the Forums\" = \"Kolla in forumen\"",
-        "pos": "verb",
-        "translation": "\"bocka\" el \"kolla in\""
-    },
-    "child": {
-        "comment": "Theme strings commonly talk about \u201cChild themes\u201d. In this case it\u2019s the norm to translate using \u201cbarn-\u201c, so \u201cchild theme\u201d = \u201cbarntema\u201d. For most other cases, though, it\u2019s best to use \u201cunder-\u201c. So \u201cchild page\u201d = \u201cundersida\u201d, \u201cchild category\u201d = \u201cunderkategori\u201d.",
-        "pos": "noun",
-        "translation": "barn- \/ under-"
-    },
-    "child theme": {
-        "comment": "Ett tema som har modifierat ett annat tema (modertemat) till viss del, men beh\u00e5llit mycket av originalet.",
-        "pos": "noun",
-        "translation": "barntema"
-    },
-    "click": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "klick"
-    },
-    "collapse": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "minimera"
-    },
-    "color scheme": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "f\u00e4rgschema"
-    },
-    "column": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "kolumn"
-    },
+    "blog address": [
+        {
+            "comment": "URL d\u00e4r det finns en blogg, kan t.ex. vara \"blog.minwebbplats.dom\u00e4n\"",
+            "pos": "noun",
+            "translation": "bloggadress"
+        }
+    ],
+    "blog post": [
+        {
+            "comment": "Ett mer direkt s\u00e4tt att tala om ett inl\u00e4gg i en WordPress-installation. Mer info: se \"inl\u00e4gg\".",
+            "pos": "noun",
+            "translation": "blogginl\u00e4gg"
+        }
+    ],
+    "bookmarklet": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "skriptbokm\u00e4rke"
+        }
+    ],
+    "breadcrumbs": [
+        {
+            "comment": "A \"breadcrumb\" path leading up to your current level of navigation, resembling a tasty albeit messy trail of breadcrumbs.",
+            "pos": "noun",
+            "translation": "s\u00f6kv\u00e4gsnavigering"
+        }
+    ],
+    "browser": [
+        {
+            "comment": "A web browser is the software used to access the web. Common browsers include Google Chrome, Apple Safari, Mozilla Firefox, and Internet Explorer.",
+            "pos": "noun",
+            "translation": "webbl\u00e4sare"
+        }
+    ],
+    "BuddyPress": [
+        {
+            "comment": "Ett WordPress-till\u00e4gg som l\u00e4gger till ett socialt n\u00e4tverk i en WordPress-installation - http:\/\/buddypress.org\/",
+            "pos": "noun",
+            "translation": "BuddyPress"
+        }
+    ],
+    "bulk action": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mass\u00e5tg\u00e4rd"
+        }
+    ],
+    "bulk actions": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mass\u00e5tg\u00e4rder"
+        }
+    ],
+    "button": [
+        {
+            "comment": "H\u00e4nvisar till en knapp som anv\u00e4ndaren f\u00f6rv\u00e4ntas eller instrueras att anv\u00e4nda.",
+            "pos": "noun",
+            "translation": "knapp"
+        }
+    ],
+    "cancel": [
+        {
+            "comment": "\"Cancel [action]\" = \"Avbryt [aktivitet]\", \"cancel upgrade\" = \"Avsluta uppgradering\"",
+            "pos": "verb",
+            "translation": "avbryt \/ avsluta"
+        }
+    ],
+    "cancelled": [
+        {
+            "comment": "cancelled action = avbruten aktivitet, cancelled upgrade = avslutad uppgradering, cancelled subscription = avslutad prenumeration",
+            "pos": "adjective",
+            "translation": "avbruten \/ avslutad"
+        }
+    ],
+    "cart": [
+        {
+            "comment": "En plats d\u00e4r produkter man valt att k\u00f6pa g\u00e5r att se och hantera.",
+            "pos": "noun",
+            "translation": "kundvagn"
+        }
+    ],
+    "categories": [
+        {
+            "comment": "Ett s\u00e4tt att gruppera inneh\u00e5ll som sidor p\u00e5 en webbplats baserade p\u00e5 vad de handlar om i stora svep. Kategorier kan ocks\u00e5 ha under- och \u00f6verkategorier. Mer info: http:\/\/support.wordpress.com\/posts\/categories\/",
+            "pos": "noun",
+            "translation": "kategorier"
+        }
+    ],
+    "category": [
+        {
+            "comment": "Ett s\u00e4tt att gruppera inneh\u00e5ll som sidor p\u00e5 en webbplats baserade p\u00e5 vad de handlar om i stora svep. Kategorier kan ocks\u00e5 ha under- och \u00f6verkategorier. Mer info: http:\/\/support.wordpress.com\/posts\/categories\/",
+            "pos": "noun",
+            "translation": "kategori"
+        }
+    ],
+    "character code": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "teckenkod"
+        }
+    ],
+    "character entity reference": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "teckenenhetsreferens"
+        }
+    ],
+    "character set": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "teckenupps\u00e4ttning"
+        }
+    ],
+    "check": [
+        {
+            "comment": "Att bocka i en l\u00e5da, motsats \"bocka av\". T.ex. \"Check the box to receive hugs\" = \"Bocka i l\u00e5dan f\u00f6r att f\u00e5 kramar\". Att kolla in en annan sida, t.ex. \"Check out the Forums\" = \"Kolla in forumen\"",
+            "pos": "verb",
+            "translation": "\"bocka\" el \"kolla in\""
+        }
+    ],
+    "child": [
+        {
+            "comment": "Theme strings commonly talk about \u201cChild themes\u201d. In this case it\u2019s the norm to translate using \u201cbarn-\u201c, so \u201cchild theme\u201d = \u201cbarntema\u201d. For most other cases, though, it\u2019s best to use \u201cunder-\u201c. So \u201cchild page\u201d = \u201cundersida\u201d, \u201cchild category\u201d = \u201cunderkategori\u201d.",
+            "pos": "noun",
+            "translation": "barn- \/ under-"
+        }
+    ],
+    "child theme": [
+        {
+            "comment": "Ett tema som har modifierat ett annat tema (modertemat) till viss del, men beh\u00e5llit mycket av originalet.",
+            "pos": "noun",
+            "translation": "barntema"
+        }
+    ],
+    "click": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "klick"
+        }
+    ],
+    "collapse": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "minimera"
+        }
+    ],
+    "color scheme": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "f\u00e4rgschema"
+        }
+    ],
+    "column": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "kolumn"
+        }
+    ],
     "comment": [
         {
             "comment": "Att kommentera betyder att man l\u00e4mnar en kommentar f\u00f6r andra att se p\u00e5 en sida eller i ett inl\u00e4gg. Notera att engelskan anv\u00e4nder verbet och susbstantivet \"comment\" \u00e4ven om de betyder olika saker.",
@@ -397,181 +537,251 @@
             "translation": "kommentar"
         }
     ],
-    "computer": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "dator"
-    },
-    "conditional tag": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "villkorsstyrd tagg"
-    },
-    "configure": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "konfigurera"
-    },
-    "connect": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "anslut"
-    },
-    "connected": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "ansluten\/anslutna"
-    },
-    "connection": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "anslutning"
-    },
-    "constant": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "konstant"
-    },
-    "contact form": {
-        "comment": "Ett formul\u00e4r som l\u00e5ter bes\u00f6kare kontakta webbplatsadministrat\u00f6ren utan att n\u00f6dv\u00e4ndigtvis k\u00e4nna till deras e-postadress.",
-        "pos": "noun",
-        "translation": "kontaktformul\u00e4r"
-    },
-    "Content": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "inneh\u00e5ll"
-    },
-    "Content Area": {
-        "comment": "D\u00e4r huvuddelen av en webbplats inneh\u00e5ll visas. For example: \u201cContent Area Background\u201d = \"Bakgrund f\u00f6r inneh\u00e5llsomr\u00e5de\"",
-        "pos": "noun",
-        "translation": "Inneh\u00e5llsomr\u00e5de"
-    },
-    "contribute": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "bidra"
-    },
-    "Cookie": {
-        "comment": "Browser cookie",
-        "pos": "noun",
-        "translation": "Cookie"
-    },
-    "crop": {
-        "comment": "Att ta bort delar av en bild f\u00f6r att skapa en ny bild. Mer info: https:\/\/en.support.wordpress.com\/images\/image-editing\/#cropping",
-        "pos": "verb",
-        "translation": "besk\u00e4r"
-    },
-    "CSS Editor": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "CSS-redigeraren"
-    },
-    "custom": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "anpassad \/ anpassade"
-    },
-    "Custom Header Image": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Anpassad sidhuvudsbild"
-    },
-    "Custom Post Type": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Anpassad inl\u00e4ggstyp"
-    },
-    "customize": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "anpassa"
-    },
-    "Customizer": {
-        "comment": "En funktion och menyval i WordPress adminpanel som l\u00e5ter anv\u00e4ndaren f\u00f6r\u00e4ndra utseendet p\u00e5 sin webbplats och samtidigt se resultatet i realtid bredvid. I anpassaren kan man ocks\u00e5 redigera webbplatsikonen, sidans titel, m.m. Mer info: http:\/\/en.support.wordpress.com\/customizer\/",
-        "pos": "noun",
-        "translation": "Anpassare"
-    },
-    "Dashboard": {
-        "comment": "Your Dashboard is the administrative center for your blog. Via your Dashboard, you can create new posts, change your theme, or update your blog settings.",
-        "pos": "noun",
-        "translation": "Adminpanel"
-    },
-    "deactivate": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "inaktivera"
-    },
-    "default": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "standard"
-    },
-    "default setting": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "standardinst\u00e4llning"
-    },
-    "default theme": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "standardtema"
-    },
-    "deprecated": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "upph\u00f6rt"
-    },
-    "developer": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "utvecklare"
-    },
-    "directory": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mapp\/katalog"
-    },
-    "disable": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "inaktivera"
-    },
-    "disabled": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "inaktiverad\/inaktiverat\/inaktiverade"
-    },
-    "disconnect": {
-        "comment": "Exempel: Disconnect from Jetpack = \"Koppla fr\u00e5n Jetpack\"",
-        "pos": "verb",
-        "translation": "koppla fr\u00e5n"
-    },
-    "disconnecting": {
-        "comment": "Exempel: Disconnecting Jetpack = \"Kopplar fr\u00e5n Jetpack\"",
-        "pos": "verb",
-        "translation": "kopplar ifr\u00e5n"
-    },
-    "discussion": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "diskussion"
-    },
-    "Distraction Free Writing": {
-        "comment": "Ett fullsk\u00e4rmsl\u00e4ge utan distraherande element f\u00f6r inl\u00e4ggsredigeraren.",
-        "pos": "noun",
-        "translation": "Fullsk\u00e4rmsl\u00e4ge"
-    },
-    "domain": {
-        "comment": "Ett dom\u00e4nnamn (f\u00f6rkortning \"dom\u00e4n\") \u00e4r addressen till en webbplats p\u00e5 n\u00e4tet. T.ex. \"https:\/\/sv.wordpress.org\/\"",
-        "pos": "noun",
-        "translation": "dom\u00e4n"
-    },
-    "domain name": {
-        "comment": "Ett dom\u00e4nnamn (f\u00f6rkortning \"dom\u00e4n\") \u00e4r addressen till en webbplats p\u00e5 n\u00e4tet. T.ex. \"https:\/\/sv.wordpress.org\/\"",
-        "pos": "noun",
-        "translation": "dom\u00e4nnamn"
-    },
+    "computer": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "dator"
+        }
+    ],
+    "conditional tag": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "villkorsstyrd tagg"
+        }
+    ],
+    "configure": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "konfigurera"
+        }
+    ],
+    "connect": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "anslut"
+        }
+    ],
+    "connected": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "ansluten\/anslutna"
+        }
+    ],
+    "connection": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "anslutning"
+        }
+    ],
+    "constant": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "konstant"
+        }
+    ],
+    "contact form": [
+        {
+            "comment": "Ett formul\u00e4r som l\u00e5ter bes\u00f6kare kontakta webbplatsadministrat\u00f6ren utan att n\u00f6dv\u00e4ndigtvis k\u00e4nna till deras e-postadress.",
+            "pos": "noun",
+            "translation": "kontaktformul\u00e4r"
+        }
+    ],
+    "Content": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inneh\u00e5ll"
+        }
+    ],
+    "Content Area": [
+        {
+            "comment": "D\u00e4r huvuddelen av en webbplats inneh\u00e5ll visas. For example: \u201cContent Area Background\u201d = \"Bakgrund f\u00f6r inneh\u00e5llsomr\u00e5de\"",
+            "pos": "noun",
+            "translation": "Inneh\u00e5llsomr\u00e5de"
+        }
+    ],
+    "contribute": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "bidra"
+        }
+    ],
+    "Cookie": [
+        {
+            "comment": "Browser cookie",
+            "pos": "noun",
+            "translation": "Cookie"
+        }
+    ],
+    "crop": [
+        {
+            "comment": "Att ta bort delar av en bild f\u00f6r att skapa en ny bild. Mer info: https:\/\/en.support.wordpress.com\/images\/image-editing\/#cropping",
+            "pos": "verb",
+            "translation": "besk\u00e4r"
+        }
+    ],
+    "CSS Editor": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "CSS-redigeraren"
+        }
+    ],
+    "custom": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "anpassad \/ anpassade"
+        }
+    ],
+    "Custom Header Image": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Anpassad sidhuvudsbild"
+        }
+    ],
+    "Custom Post Type": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Anpassad inl\u00e4ggstyp"
+        }
+    ],
+    "customize": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "anpassa"
+        }
+    ],
+    "Customizer": [
+        {
+            "comment": "En funktion och menyval i WordPress adminpanel som l\u00e5ter anv\u00e4ndaren f\u00f6r\u00e4ndra utseendet p\u00e5 sin webbplats och samtidigt se resultatet i realtid bredvid. I anpassaren kan man ocks\u00e5 redigera webbplatsikonen, sidans titel, m.m. Mer info: http:\/\/en.support.wordpress.com\/customizer\/",
+            "pos": "noun",
+            "translation": "Anpassare"
+        }
+    ],
+    "Dashboard": [
+        {
+            "comment": "Your Dashboard is the administrative center for your blog. Via your Dashboard, you can create new posts, change your theme, or update your blog settings.",
+            "pos": "noun",
+            "translation": "Adminpanel"
+        }
+    ],
+    "deactivate": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "inaktivera"
+        }
+    ],
+    "default": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "standard"
+        }
+    ],
+    "default setting": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "standardinst\u00e4llning"
+        }
+    ],
+    "default theme": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "standardtema"
+        }
+    ],
+    "deprecated": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "upph\u00f6rt"
+        }
+    ],
+    "developer": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utvecklare"
+        }
+    ],
+    "directory": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mapp\/katalog"
+        }
+    ],
+    "disable": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "inaktivera"
+        }
+    ],
+    "disabled": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "inaktiverad\/inaktiverat\/inaktiverade"
+        }
+    ],
+    "disconnect": [
+        {
+            "comment": "Exempel: Disconnect from Jetpack = \"Koppla fr\u00e5n Jetpack\"",
+            "pos": "verb",
+            "translation": "koppla fr\u00e5n"
+        }
+    ],
+    "disconnecting": [
+        {
+            "comment": "Exempel: Disconnecting Jetpack = \"Kopplar fr\u00e5n Jetpack\"",
+            "pos": "verb",
+            "translation": "kopplar ifr\u00e5n"
+        }
+    ],
+    "discussion": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "diskussion"
+        }
+    ],
+    "Distraction Free Writing": [
+        {
+            "comment": "Ett fullsk\u00e4rmsl\u00e4ge utan distraherande element f\u00f6r inl\u00e4ggsredigeraren.",
+            "pos": "noun",
+            "translation": "Fullsk\u00e4rmsl\u00e4ge"
+        }
+    ],
+    "domain": [
+        {
+            "comment": "Ett dom\u00e4nnamn (f\u00f6rkortning \"dom\u00e4n\") \u00e4r addressen till en webbplats p\u00e5 n\u00e4tet. T.ex. \"https:\/\/sv.wordpress.org\/\"",
+            "pos": "noun",
+            "translation": "dom\u00e4n"
+        }
+    ],
+    "domain name": [
+        {
+            "comment": "Ett dom\u00e4nnamn (f\u00f6rkortning \"dom\u00e4n\") \u00e4r addressen till en webbplats p\u00e5 n\u00e4tet. T.ex. \"https:\/\/sv.wordpress.org\/\"",
+            "pos": "noun",
+            "translation": "dom\u00e4nnamn"
+        }
+    ],
     "download": [
         {
             "comment": "En fil som kan laddas ner. Notera att detta inte \u00e4r verb-formen.",
@@ -584,36 +794,48 @@
             "translation": "ladda ner"
         }
     ],
-    "draft": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "utkast"
-    },
-    "drop down": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "rullgardinsmeny"
-    },
-    "drop-in": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "insticksprogram"
-    },
-    "easy-to-use": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "anv\u00e4ndarv\u00e4nlig\/anv\u00e4ndarv\u00e4nligt"
-    },
-    "edit": {
-        "comment": "\"\u00e4ndra\" = oftast n\u00e4r det handlar em ett enda element\/f\u00e4lt och utan att l\u00e4mna sidan. Det kan handla om att \u00e4ndra en rubrik eller en liten sak p\u00e5 en sida, generellt utan att ladda om sidan.",
-        "pos": "verb",
-        "translation": "\u00e4ndra ELLER redigera"
-    },
-    "redigera\"\" = oftast n\u00e4r det handlar om flera element eller en hel sida kollektivt. N\u00e4r det handlar om att radikalt f\u00f6r\u00e4ndra inneh\u00e5llet p\u00e5 en sida genom att g\u00e5 till en annan sida (t ex redigera \"\"bloggar jag f\u00f6ljer\"\") eller redigera ordningen p\u00e5 flera element.\"": {
-        "comment": null,
-        "pos": null,
-        "translation": null
-    },
+    "draft": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utkast"
+        }
+    ],
+    "drop down": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "rullgardinsmeny"
+        }
+    ],
+    "drop-in": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "insticksprogram"
+        }
+    ],
+    "easy-to-use": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "anv\u00e4ndarv\u00e4nlig\/anv\u00e4ndarv\u00e4nligt"
+        }
+    ],
+    "edit": [
+        {
+            "comment": "\"\u00e4ndra\" = oftast n\u00e4r det handlar em ett enda element\/f\u00e4lt och utan att l\u00e4mna sidan. Det kan handla om att \u00e4ndra en rubrik eller en liten sak p\u00e5 en sida, generellt utan att ladda om sidan.",
+            "pos": "verb",
+            "translation": "\u00e4ndra ELLER redigera"
+        }
+    ],
+    "redigera\"\" = oftast n\u00e4r det handlar om flera element eller en hel sida kollektivt. N\u00e4r det handlar om att radikalt f\u00f6r\u00e4ndra inneh\u00e5llet p\u00e5 en sida genom att g\u00e5 till en annan sida (t ex redigera \"\"bloggar jag f\u00f6ljer\"\") eller redigera ordningen p\u00e5 flera element.\"": [
+        {
+            "comment": null,
+            "pos": null,
+            "translation": null
+        }
+    ],
     "editor": [
         {
             "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
@@ -626,16 +848,20 @@
             "translation": "redakt\u00f6r"
         }
     ],
-    "email": {
-        "comment": "Om det handlar om e-post generellt, t.ex. i inst\u00e4llningar. Singular blir \"e-post\", t.ex. \"Your email\" = \"Din e-post\", \"Email delivery settings\" = \"Inst\u00e4llningar f\u00f6r e-post\"",
-        "pos": "noun",
-        "translation": "e-post"
-    },
-    "email address": {
-        "comment": "Describes the inbox that email messages are sent to. An example is myname@gmail.com.",
-        "pos": "noun",
-        "translation": "e-postadress"
-    },
+    "email": [
+        {
+            "comment": "Om det handlar om e-post generellt, t.ex. i inst\u00e4llningar. Singular blir \"e-post\", t.ex. \"Your email\" = \"Din e-post\", \"Email delivery settings\" = \"Inst\u00e4llningar f\u00f6r e-post\"",
+            "pos": "noun",
+            "translation": "e-post"
+        }
+    ],
+    "email address": [
+        {
+            "comment": "Describes the inbox that email messages are sent to. An example is myname@gmail.com.",
+            "pos": "noun",
+            "translation": "e-postadress"
+        }
+    ],
     "Embed": [
         {
             "comment": "",
@@ -648,126 +874,174 @@
             "translation": "Inb\u00e4ddning"
         }
     ],
-    "emoticon": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "emotikon"
-    },
-    "enable": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "aktivera"
-    },
-    "enabled": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "aktiverad\/aktiverat\/aktiverade"
-    },
-    "enter": {
-        "comment": "Vanligtvis anv\u00e4nds detta i formul\u00e4r f\u00f6r att s\u00e4ga till anv\u00e4ndaren att ange information. T.ex. \"Enter your email address\" = \"Ange din e-postadress\"",
-        "pos": "verb",
-        "translation": "ange"
-    },
-    "entry": {
-        "comment": "Ett annat ord f\u00f6r \"post\", b\u00e5da \u00f6vers\u00e4tts som \"inl\u00e4gg\".",
-        "pos": "noun",
-        "translation": "inl\u00e4gg"
-    },
-    "entry title": {
-        "comment": "En rubrik f\u00f6r ett inl\u00e4gg.",
-        "pos": "noun",
-        "translation": "inl\u00e4ggsrubrik"
-    },
-    "error": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "fel"
-    },
-    "excerpt": {
-        "comment": "A shortened description of your blog post. More info: http:\/\/support.wordpress.com\/splitting-content\/excerpts\/",
-        "pos": "noun",
-        "translation": "utdrag"
-    },
-    "existing": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "befintlig"
-    },
-    "expand": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "f\u00f6rstora \/ expandera \/maximera"
-    },
-    "expire": {
-        "comment": "Ex.vis.: \"The upgrade expires on %s\" = \"Uppgraderingen l\u00f6per ut %s\"",
-        "pos": "verb",
-        "translation": "l\u00f6per ut"
-    },
-    "explore": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "utforska"
-    },
-    "export": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "exportera"
-    },
-    "Export": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Exportering"
-    },
-    "extend": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "ut\u00f6ka"
-    },
-    "Facebook": {
-        "comment": "Ett bl\u00e5tt socialt n\u00e4tverk. Mer info: http:\/\/facebook.com\/",
-        "pos": "noun",
-        "translation": "Facebook"
-    },
-    "favicon": {
-        "comment": "Den lilla bilden som visas i webbl\u00e4sarens flik n\u00e4r en webbplats bes\u00f6ks. Se \u00e4ven \"Site Icon\".",
-        "pos": "noun",
-        "translation": "favicon"
-    },
-    "feature": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "funktion"
-    },
-    "featured": {
-        "comment": "Featured post = Utvalt inl\u00e4gg",
-        "pos": "adjective",
-        "translation": "utvalt \/ framh\u00e4vt"
-    },
-    "Featured content = Framh\u00e4vt inneh\u00e5ll\"": {
-        "comment": null,
-        "pos": null,
-        "translation": null
-    },
-    "featured image": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "utvald bild"
-    },
-    "featured post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "utvalt inl\u00e4gg"
-    },
-    "feed": {
-        "comment": "T. ex. \"RSS-fl\u00f6de\"",
-        "pos": "noun",
-        "translation": "webbfl\u00f6de"
-    },
-    "feedback": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "feedback\/kommentar"
-    },
+    "emoticon": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "emotikon"
+        }
+    ],
+    "enable": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "aktivera"
+        }
+    ],
+    "enabled": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "aktiverad\/aktiverat\/aktiverade"
+        }
+    ],
+    "enter": [
+        {
+            "comment": "Vanligtvis anv\u00e4nds detta i formul\u00e4r f\u00f6r att s\u00e4ga till anv\u00e4ndaren att ange information. T.ex. \"Enter your email address\" = \"Ange din e-postadress\"",
+            "pos": "verb",
+            "translation": "ange"
+        }
+    ],
+    "entry": [
+        {
+            "comment": "Ett annat ord f\u00f6r \"post\", b\u00e5da \u00f6vers\u00e4tts som \"inl\u00e4gg\".",
+            "pos": "noun",
+            "translation": "inl\u00e4gg"
+        }
+    ],
+    "entry title": [
+        {
+            "comment": "En rubrik f\u00f6r ett inl\u00e4gg.",
+            "pos": "noun",
+            "translation": "inl\u00e4ggsrubrik"
+        }
+    ],
+    "error": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "fel"
+        }
+    ],
+    "excerpt": [
+        {
+            "comment": "A shortened description of your blog post. More info: http:\/\/support.wordpress.com\/splitting-content\/excerpts\/",
+            "pos": "noun",
+            "translation": "utdrag"
+        }
+    ],
+    "existing": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "befintlig"
+        }
+    ],
+    "expand": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "f\u00f6rstora \/ expandera \/maximera"
+        }
+    ],
+    "expire": [
+        {
+            "comment": "Ex.vis.: \"The upgrade expires on %s\" = \"Uppgraderingen l\u00f6per ut %s\"",
+            "pos": "verb",
+            "translation": "l\u00f6per ut"
+        }
+    ],
+    "explore": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "utforska"
+        }
+    ],
+    "export": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "exportera"
+        }
+    ],
+    "Export": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Exportering"
+        }
+    ],
+    "extend": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "ut\u00f6ka"
+        }
+    ],
+    "Facebook": [
+        {
+            "comment": "Ett bl\u00e5tt socialt n\u00e4tverk. Mer info: http:\/\/facebook.com\/",
+            "pos": "noun",
+            "translation": "Facebook"
+        }
+    ],
+    "favicon": [
+        {
+            "comment": "Den lilla bilden som visas i webbl\u00e4sarens flik n\u00e4r en webbplats bes\u00f6ks. Se \u00e4ven \"Site Icon\".",
+            "pos": "noun",
+            "translation": "favicon"
+        }
+    ],
+    "feature": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "funktion"
+        }
+    ],
+    "featured": [
+        {
+            "comment": "Featured post = Utvalt inl\u00e4gg",
+            "pos": "adjective",
+            "translation": "utvalt \/ framh\u00e4vt"
+        }
+    ],
+    "Featured content = Framh\u00e4vt inneh\u00e5ll\"": [
+        {
+            "comment": null,
+            "pos": null,
+            "translation": null
+        }
+    ],
+    "featured image": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utvald bild"
+        }
+    ],
+    "featured post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utvalt inl\u00e4gg"
+        }
+    ],
+    "feed": [
+        {
+            "comment": "T. ex. \"RSS-fl\u00f6de\"",
+            "pos": "noun",
+            "translation": "webbfl\u00f6de"
+        }
+    ],
+    "feedback": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "feedback\/kommentar"
+        }
+    ],
     "filter": [
         {
             "comment": "",
@@ -780,51 +1054,69 @@
             "translation": "filter"
         }
     ],
-    "filter hook": {
-        "comment": "WordPress development term",
-        "pos": "noun",
-        "translation": "filter-hook"
-    },
-    "folder": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mapp"
-    },
-    "Follow": {
-        "comment": "Vanligtvis en knapp som l\u00e5ter dig f\u00e5 uppdateringar om vad en annan person eller tj\u00e4nst g\u00f6r i framtiden.",
-        "pos": "verb",
-        "translation": "F\u00f6lj"
-    },
-    "Follower": {
-        "comment": "En ben\u00e4mning p\u00e5 en person som har valt att f\u00e5 uppdateringar om vad en annan person eller tj\u00e4nst g\u00f6r.",
-        "pos": "noun",
-        "translation": "F\u00f6ljare"
-    },
-    "Following": {
-        "comment": "In indikation f\u00f6r att anv\u00e4ndaren redan har valt att f\u00f6lja en person eller tj\u00e4nst, detta kan t.ex. visas i en knapp d\u00e4r det tidigare stod \"F\u00f6lj\", nu \"F\u00f6ljer\". Det kan ocks\u00e5 vara en titel p\u00e5 en lista som visar personer som anv\u00e4ndaren f\u00f6ljer.",
-        "pos": "verb",
-        "translation": "F\u00f6ljer"
-    },
-    "font": {
-        "comment": "Font\/fonts = typsnitt",
-        "pos": "noun",
-        "translation": "typsnitt"
-    },
-    "footer": {
-        "comment": "Utrymmet l\u00e4ngst ner i en sidmall som vanligtvis inneh\u00e5ller n\u00e5gon eller flera av f\u00f6ljande: Widgets, menyer, reklam, copyright-notiser.",
-        "pos": "noun",
-        "translation": "sidfot"
-    },
-    "Forum": {
-        "comment": "En plats att diskutera saker och\/eller f\u00e5 hj\u00e4lp med n\u00e5got. Anv\u00e4ndare skapar inl\u00e4gg i tr\u00e5dar som kan svaras p\u00e5 i kronologisk ordning.",
-        "pos": "noun",
-        "translation": "Forum"
-    },
-    "forwarding": {
-        "comment": "Anv\u00e4nd \"vidarebefordring\" om det handlar om e-postinst\u00e4llingar eller j\u00e4mf\u00f6relsebara funktioner.",
-        "pos": "verb",
-        "translation": "vidarebefordran"
-    },
+    "filter hook": [
+        {
+            "comment": "WordPress development term",
+            "pos": "noun",
+            "translation": "filter-hook"
+        }
+    ],
+    "folder": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mapp"
+        }
+    ],
+    "Follow": [
+        {
+            "comment": "Vanligtvis en knapp som l\u00e5ter dig f\u00e5 uppdateringar om vad en annan person eller tj\u00e4nst g\u00f6r i framtiden.",
+            "pos": "verb",
+            "translation": "F\u00f6lj"
+        }
+    ],
+    "Follower": [
+        {
+            "comment": "En ben\u00e4mning p\u00e5 en person som har valt att f\u00e5 uppdateringar om vad en annan person eller tj\u00e4nst g\u00f6r.",
+            "pos": "noun",
+            "translation": "F\u00f6ljare"
+        }
+    ],
+    "Following": [
+        {
+            "comment": "In indikation f\u00f6r att anv\u00e4ndaren redan har valt att f\u00f6lja en person eller tj\u00e4nst, detta kan t.ex. visas i en knapp d\u00e4r det tidigare stod \"F\u00f6lj\", nu \"F\u00f6ljer\". Det kan ocks\u00e5 vara en titel p\u00e5 en lista som visar personer som anv\u00e4ndaren f\u00f6ljer.",
+            "pos": "verb",
+            "translation": "F\u00f6ljer"
+        }
+    ],
+    "font": [
+        {
+            "comment": "Font\/fonts = typsnitt",
+            "pos": "noun",
+            "translation": "typsnitt"
+        }
+    ],
+    "footer": [
+        {
+            "comment": "Utrymmet l\u00e4ngst ner i en sidmall som vanligtvis inneh\u00e5ller n\u00e5gon eller flera av f\u00f6ljande: Widgets, menyer, reklam, copyright-notiser.",
+            "pos": "noun",
+            "translation": "sidfot"
+        }
+    ],
+    "Forum": [
+        {
+            "comment": "En plats att diskutera saker och\/eller f\u00e5 hj\u00e4lp med n\u00e5got. Anv\u00e4ndare skapar inl\u00e4gg i tr\u00e5dar som kan svaras p\u00e5 i kronologisk ordning.",
+            "pos": "noun",
+            "translation": "Forum"
+        }
+    ],
+    "forwarding": [
+        {
+            "comment": "Anv\u00e4nd \"vidarebefordring\" om det handlar om e-postinst\u00e4llingar eller j\u00e4mf\u00f6relsebara funktioner.",
+            "pos": "verb",
+            "translation": "vidarebefordran"
+        }
+    ],
     "front end": [
         {
             "comment": "",
@@ -837,86 +1129,118 @@
             "translation": "fr\u00e4mre del"
         }
     ],
-    "front page": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "startsida"
-    },
-    "gallery": {
-        "comment": "En samling bilder som lagts till i ett inl\u00e4gg eller p\u00e5 en sida. Denna term beskriver ocks\u00e5 samlingen i sig i Mediebiblioteket. Oftast visas ett galleri som miniatyrer p\u00e5 rad i publicerat inneh\u00e5ll, men utformningen varierar.",
-        "pos": "noun",
-        "translation": "galleri"
-    },
-    "general": {
-        "comment": "Ex.vis.: \"General settings\" = \"Allm\u00e4nna inst\u00e4llningar\"",
-        "pos": "noun",
-        "translation": "allm\u00e4nt"
-    },
-    "Get Started": {
-        "comment": "",
-        "pos": "expression",
-        "translation": "Kom ig\u00e5ng"
-    },
-    "Gravatar": {
-        "comment": "En bild som representerar en anv\u00e4ndare, med den unika funktionen att den kan visas var som helst p\u00e5 n\u00e4tet d\u00e4r man uppger sin e-postadress. Fotnot: Avatar betyder \"profilbild\".",
-        "pos": "noun",
-        "translation": "Gravatar"
-    },
-    "Gravatar Profile": {
-        "comment": "En profilsida fr\u00e5n tj\u00e4nsten Gravatar. Se http:\/\/gravatar.com\/matt",
-        "pos": "noun",
-        "translation": "Gravatarprofil"
-    },
-    "Ham": {
-        "comment": "Humous term for \"not spam\". Suggest translating as \"not spam\" to avoid confusion.",
-        "pos": "noun",
-        "translation": "Ej skr\u00e4ppost"
-    },
-    "hassle-free": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "utan kr\u00e5ngel"
-    },
-    "Headers": {
-        "comment": "Om det handlar om den visuella sidstrukturen, ex.vis rubriken \"Arkiv\" p\u00e5 en webbplats arkivsida.",
-        "pos": "noun",
-        "translation": "Rubriker"
-    },
-    "hidden": {
-        "comment": "\"G\u00f6md\", \"g\u00f6m\" om det handlar om t ex en bloggs synlighet. \"Dold\", \"d\u00f6lj\" om det handlar om synlighet f\u00f6r s\u00f6kmotorer.",
-        "pos": "adjective",
-        "translation": "g\u00f6md\/dold"
-    },
-    "home page": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "startsida"
-    },
-    "homepage": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "startsida"
-    },
-    "host": {
-        "comment": "Den plats p\u00e5 n\u00e4tet d\u00e4r webbplatsen finns och skickas till bes\u00f6kare.",
-        "pos": "noun",
-        "translation": "server\/webbhotell"
-    },
-    "hosting": {
-        "comment": "Den plats p\u00e5 n\u00e4tet d\u00e4r webbplatsen finns och skickas till bes\u00f6kare.",
-        "pos": "noun",
-        "translation": "server\/webbhotell"
-    },
-    "hosting provider": {
-        "comment": "En tj\u00e4nst som tillhandah\u00e5ller serverutrymme f\u00f6r webbplatser, oftast mot en avgift.",
-        "pos": "noun",
-        "translation": "webbhotell"
-    },
-    "hosts": {
-        "comment": "Tj\u00e4nster som tillhandah\u00e5ller serverutrymme f\u00f6r webbplatser, oftast mot en avgift.",
-        "pos": "noun",
-        "translation": "server\/webbhotell"
-    },
+    "front page": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "startsida"
+        }
+    ],
+    "gallery": [
+        {
+            "comment": "En samling bilder som lagts till i ett inl\u00e4gg eller p\u00e5 en sida. Denna term beskriver ocks\u00e5 samlingen i sig i Mediebiblioteket. Oftast visas ett galleri som miniatyrer p\u00e5 rad i publicerat inneh\u00e5ll, men utformningen varierar.",
+            "pos": "noun",
+            "translation": "galleri"
+        }
+    ],
+    "general": [
+        {
+            "comment": "Ex.vis.: \"General settings\" = \"Allm\u00e4nna inst\u00e4llningar\"",
+            "pos": "noun",
+            "translation": "allm\u00e4nt"
+        }
+    ],
+    "Get Started": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "Kom ig\u00e5ng"
+        }
+    ],
+    "Gravatar": [
+        {
+            "comment": "En bild som representerar en anv\u00e4ndare, med den unika funktionen att den kan visas var som helst p\u00e5 n\u00e4tet d\u00e4r man uppger sin e-postadress. Fotnot: Avatar betyder \"profilbild\".",
+            "pos": "noun",
+            "translation": "Gravatar"
+        }
+    ],
+    "Gravatar Profile": [
+        {
+            "comment": "En profilsida fr\u00e5n tj\u00e4nsten Gravatar. Se http:\/\/gravatar.com\/matt",
+            "pos": "noun",
+            "translation": "Gravatarprofil"
+        }
+    ],
+    "Ham": [
+        {
+            "comment": "Humous term for \"not spam\". Suggest translating as \"not spam\" to avoid confusion.",
+            "pos": "noun",
+            "translation": "Ej skr\u00e4ppost"
+        }
+    ],
+    "hassle-free": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "utan kr\u00e5ngel"
+        }
+    ],
+    "Headers": [
+        {
+            "comment": "Om det handlar om den visuella sidstrukturen, ex.vis rubriken \"Arkiv\" p\u00e5 en webbplats arkivsida.",
+            "pos": "noun",
+            "translation": "Rubriker"
+        }
+    ],
+    "hidden": [
+        {
+            "comment": "\"G\u00f6md\", \"g\u00f6m\" om det handlar om t ex en bloggs synlighet. \"Dold\", \"d\u00f6lj\" om det handlar om synlighet f\u00f6r s\u00f6kmotorer.",
+            "pos": "adjective",
+            "translation": "g\u00f6md\/dold"
+        }
+    ],
+    "home page": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "startsida"
+        }
+    ],
+    "homepage": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "startsida"
+        }
+    ],
+    "host": [
+        {
+            "comment": "Den plats p\u00e5 n\u00e4tet d\u00e4r webbplatsen finns och skickas till bes\u00f6kare.",
+            "pos": "noun",
+            "translation": "server\/webbhotell"
+        }
+    ],
+    "hosting": [
+        {
+            "comment": "Den plats p\u00e5 n\u00e4tet d\u00e4r webbplatsen finns och skickas till bes\u00f6kare.",
+            "pos": "noun",
+            "translation": "server\/webbhotell"
+        }
+    ],
+    "hosting provider": [
+        {
+            "comment": "En tj\u00e4nst som tillhandah\u00e5ller serverutrymme f\u00f6r webbplatser, oftast mot en avgift.",
+            "pos": "noun",
+            "translation": "webbhotell"
+        }
+    ],
+    "hosts": [
+        {
+            "comment": "Tj\u00e4nster som tillhandah\u00e5ller serverutrymme f\u00f6r webbplatser, oftast mot en avgift.",
+            "pos": "noun",
+            "translation": "server\/webbhotell"
+        }
+    ],
     "hover": [
         {
             "comment": "e.g. hover the mouse",
@@ -929,86 +1253,118 @@
             "translation": "f\u00f6ra \u00f6ver"
         }
     ],
-    "hovercard": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "hovercard"
-    },
-    "howdy": {
-        "comment": "Anv\u00e4nds ibland i kommunikation ist\u00e4llet f\u00f6r andra mer traditionella h\u00e4lsningsfraser. \"Howdy\" h\u00e4rstammar fr\u00e5n amerikanska s\u00f6dern, s\u00e5 vi g\u00f6r samma sak och \u00f6vers\u00e4tter med \"Hej\", allts\u00e5 samma s\u00e4tt som man h\u00e4lsar p\u00e5 varandra i Sk\u00e5ne och i hela resten av landet f\u00f6r den delen.",
-        "pos": "expression",
-        "translation": "hej"
-    },
-    "import": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "importera"
-    },
-    "Import": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Import"
-    },
-    "imports": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "importeringar"
-    },
-    "in the Dashboard": {
-        "comment": "",
-        "pos": "expression",
-        "translation": "i adminpanelen"
-    },
-    "inactivate": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "inaktivera"
-    },
-    "inactive": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "inaktiv\/inaktiverat"
-    },
-    "individual": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "enskild\/enskilda"
-    },
-    "instant": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "realtid"
-    },
-    "invalid": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "ogiltig\/ogiltigt"
-    },
-    "IP address": {
-        "comment": "A unique numerical address (e.g., 12.34.56.789) assigned to a computer, website, or web server.",
-        "pos": "noun",
-        "translation": "IP-adress"
-    },
-    "item": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "post\/objekt"
-    },
-    "Jetpack": {
-        "comment": "Namn p\u00e5 till\u00e4gget Jetpack fr\u00e5n Automattic - http:\/\/jetpack.me\/",
-        "pos": "noun",
-        "translation": "Jetpack"
-    },
-    "keyword": {
-        "comment": "A word that describes the content of your website or blog.",
-        "pos": "noun",
-        "translation": "nyckelord"
-    },
-    "layout": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "layout"
-    },
+    "hovercard": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "hovercard"
+        }
+    ],
+    "howdy": [
+        {
+            "comment": "Anv\u00e4nds ibland i kommunikation ist\u00e4llet f\u00f6r andra mer traditionella h\u00e4lsningsfraser. \"Howdy\" h\u00e4rstammar fr\u00e5n amerikanska s\u00f6dern, s\u00e5 vi g\u00f6r samma sak och \u00f6vers\u00e4tter med \"Hej\", allts\u00e5 samma s\u00e4tt som man h\u00e4lsar p\u00e5 varandra i Sk\u00e5ne och i hela resten av landet f\u00f6r den delen.",
+            "pos": "expression",
+            "translation": "hej"
+        }
+    ],
+    "import": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "importera"
+        }
+    ],
+    "Import": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Import"
+        }
+    ],
+    "imports": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "importeringar"
+        }
+    ],
+    "in the Dashboard": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "i adminpanelen"
+        }
+    ],
+    "inactivate": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "inaktivera"
+        }
+    ],
+    "inactive": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "inaktiv\/inaktiverat"
+        }
+    ],
+    "individual": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "enskild\/enskilda"
+        }
+    ],
+    "instant": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "realtid"
+        }
+    ],
+    "invalid": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "ogiltig\/ogiltigt"
+        }
+    ],
+    "IP address": [
+        {
+            "comment": "A unique numerical address (e.g., 12.34.56.789) assigned to a computer, website, or web server.",
+            "pos": "noun",
+            "translation": "IP-adress"
+        }
+    ],
+    "item": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "post\/objekt"
+        }
+    ],
+    "Jetpack": [
+        {
+            "comment": "Namn p\u00e5 till\u00e4gget Jetpack fr\u00e5n Automattic - http:\/\/jetpack.me\/",
+            "pos": "noun",
+            "translation": "Jetpack"
+        }
+    ],
+    "keyword": [
+        {
+            "comment": "A word that describes the content of your website or blog.",
+            "pos": "noun",
+            "translation": "nyckelord"
+        }
+    ],
+    "layout": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "layout"
+        }
+    ],
     "like": [
         {
             "comment": "Anv\u00e4nd \"gillar\" n\u00e4r det handlar om sj\u00e4lva saken (som bloggaren sj\u00e4lv ser). Verbet \"like\" ska vara \"gilla\".",
@@ -1021,41 +1377,55 @@
             "translation": "gilla"
         }
     ],
-    "liked": {
-        "comment": "\"Someone liked this comment\" = \"N\u00e5gon gillar denna kommentar\"",
-        "pos": "verb",
-        "translation": "gillar"
-    },
-    "likes": {
-        "comment": "Plural av \"Like\", t.ex. \"2 like this\" = \"2 gillar detta\"",
-        "pos": "noun",
-        "translation": "gillar"
-    },
-    "limit": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "begr\u00e4nsa"
-    },
-    "Link Hover": {
-        "comment": "An event of hovering over a hypertext link on a webpage. On link hover, the link text color usually changes (and the user can change the settings to choose this color)",
-        "pos": "noun",
-        "translation": "L\u00e4nkhovring"
-    },
-    "list item": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "listobjekt"
-    },
-    "live chat": {
-        "comment": "Ett s\u00e4tt att f\u00e5 hj\u00e4lp med en produkt eller tj\u00e4nst via ett chattf\u00f6nster.",
-        "pos": "noun",
-        "translation": "chattsupport"
-    },
-    "loading": {
-        "comment": "Generellt \"laddar in\". Exempel: \"Loading options\" = \"Laddar in alternativ\"",
-        "pos": "verb",
-        "translation": "\"laddar in\" eller \"h\u00e4mtar\""
-    },
+    "liked": [
+        {
+            "comment": "\"Someone liked this comment\" = \"N\u00e5gon gillar denna kommentar\"",
+            "pos": "verb",
+            "translation": "gillar"
+        }
+    ],
+    "likes": [
+        {
+            "comment": "Plural av \"Like\", t.ex. \"2 like this\" = \"2 gillar detta\"",
+            "pos": "noun",
+            "translation": "gillar"
+        }
+    ],
+    "limit": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "begr\u00e4nsa"
+        }
+    ],
+    "Link Hover": [
+        {
+            "comment": "An event of hovering over a hypertext link on a webpage. On link hover, the link text color usually changes (and the user can change the settings to choose this color)",
+            "pos": "noun",
+            "translation": "L\u00e4nkhovring"
+        }
+    ],
+    "list item": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "listobjekt"
+        }
+    ],
+    "live chat": [
+        {
+            "comment": "Ett s\u00e4tt att f\u00e5 hj\u00e4lp med en produkt eller tj\u00e4nst via ett chattf\u00f6nster.",
+            "pos": "noun",
+            "translation": "chattsupport"
+        }
+    ],
+    "loading": [
+        {
+            "comment": "Generellt \"laddar in\". Exempel: \"Loading options\" = \"Laddar in alternativ\"",
+            "pos": "verb",
+            "translation": "\"laddar in\" eller \"h\u00e4mtar\""
+        }
+    ],
     "log in": [
         {
             "comment": "",
@@ -1080,261 +1450,363 @@
             "translation": "utloggning"
         }
     ],
-    "logged in": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "inloggad"
-    },
-    "logged out": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "utloggad"
-    },
-    "login": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "logga in"
-    },
-    "logo": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "logga"
-    },
-    "logout": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "logga ut "
-    },
-    "M d": {
-        "comment": "Datum och tid f\u00e5r man vara f\u00f6rsiktig med. Detta verkar vara en str\u00e4ng f\u00f6r ett datumformat. Generellt s\u00e5 antar de flesta str\u00e4ngar p\u00e5 WordPress.com amerikansk formatering, vilket inte passar i Sverige. Till exempel denna str\u00e4ng: \"M d, Y @ g:ia\" blir, formaterad: \"Jan 01, 2014 @ 1:37pm\". I svenska s\u00e5 \u00e4r det b\u00e4ttre att h\u00e5lla sig till Dag\/M\u00e5nad\/\u00c5r, i den ordningen. Tid ska givetvis visas i en 24-timmars klocka. Exempel p\u00e5 ett bra alternativ f\u00f6r ovenst\u00e5ende str\u00e4ng fast \u00f6versatt: \"j M Y kl H:i\" blir, formaterad: \"1 Jan 2014 kl 13:37\" --- Mer information om tid- och datumformatering:http:\/\/codex.wordpress.org\/Formatting_Date_and_Time",
-        "pos": "noun",
-        "translation": "datum! se upp f\u00f6r formatering!"
-    },
-    "magazine": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "magasin"
-    },
-    "manage": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "hantera"
-    },
-    "management": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "hantering"
-    },
-    "mandatory": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "obligatorisk\/obligatoriskt"
-    },
-    "mapping": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "ompekning"
-    },
-    "match": {
-        "comment": "when the string is a search or search terms",
-        "pos": "verb",
-        "translation": "matcha"
-    },
-    "matches": {
-        "comment": "when the string is a search or search terms",
-        "pos": "verb",
-        "translation": "matchar"
-    },
-    "media item": {
-        "comment": "Media file, for example, an image or an audio file",
-        "pos": "noun",
-        "translation": "medieobjekt"
-    },
-    "media library": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mediabibliotek"
-    },
-    "Media Uploader": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Mediauppladdare"
-    },
-    "menu item": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "menyval"
-    },
-    "meta": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "meta"
-    },
-    "minimal": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "minimalistisk"
-    },
-    "minimalist theme": {
-        "comment": "A theme with few design elements and minimalist aesthetic",
-        "pos": "noun",
-        "translation": "minimalistiskt tema"
-    },
-    "mobile device": {
-        "comment": "A device such as iPhone, iPad, Android, Windows Phone, Samsung tablet, or BlackBerry",
-        "pos": "noun",
-        "translation": "mobilenhet"
-    },
-    "moderate": {
-        "comment": "Manage comments, for example approve or mark as spam. More info: http:\/\/en.support.wordpress.com\/manage-comments\/",
-        "pos": "verb",
-        "translation": "granska"
-    },
-    "moderation": {
-        "comment": "N\u00e4r en kommentar eller trackback ska \"modereras\" \u00e4r \"granskning\"\/\"granska\" att f\u00f6redra. Ex \"Din kommentar inv\u00e4ntar granskning.\" Notera att sj\u00e4lva verbet (p\u00e5 knappar och i statusmeddelanden) ska fortfarande vara \"moderera\"\/\"moderering\"\/\"modererar\" etc.",
-        "pos": "noun",
-        "translation": "granskning"
-    },
-    "modern design": {
-        "comment": "Design with modern, contemporary aesthetic",
-        "pos": "noun",
-        "translation": "modern design"
-    },
-    "Movable Type": {
-        "comment": "Movable Type is a CMS from Six Apart, and had a significant portion of the blog market in the past. https:\/\/www.movabletype.com\/",
-        "pos": "noun",
-        "translation": "Movable Type"
-    },
-    "multisite": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "multisite"
-    },
-    "navigation": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "navigation\/navigering"
-    },
-    "newer post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "nyare inl\u00e4gg"
-    },
-    "next post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "n\u00e4sta inl\u00e4gg"
-    },
-    "nickname": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "smeknamn"
-    },
-    "No Ads": {
-        "comment": "Upgrade that removes ads from the user's WordPress.com blog. More info: http:\/\/en.support.wordpress.com\/no-ads\/",
-        "pos": "noun",
-        "translation": "Inga annonser"
-    },
-    "nonce": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tillf\u00e4lle"
-    },
-    "normal visitor": {
-        "comment": "As opposed to \u201csearch engines\u201d, human visitors who access the blog given the link. Context is privacy settings: http:\/\/en.support.wordpress.com\/settings\/privacy-settings\/",
-        "pos": "noun",
-        "translation": "normal bes\u00f6kare"
-    },
-    "not sticky": {
-        "comment": "For sticky post status.",
-        "pos": "adjective",
-        "translation": "ej klistrad\/ej klistrat"
-    },
-    "Notifications": {
-        "comment": "Pop-up or email messages displaying latest events on the site. More info: More info: http:\/\/en.support.wordpress.com\/followers\/",
-        "pos": "noun",
-        "translation": "Notiser"
-    },
-    "occurred": {
-        "comment": "Generally used in the context of an error message. \"An error occured\" = \"Ett fel uppstod\"",
-        "pos": "verb",
-        "translation": "uppstod"
-    },
-    "oh no": {
-        "comment": "",
-        "pos": "interjection",
-        "translation": "\u00e5h nej"
-    },
-    "older post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "\u00e4ldre inl\u00e4gg"
-    },
-    "Omnisearch": {
-        "comment": "Product name; blog search that searches across the blog's posts, pages, comments, and feedback. More info: http:\/\/en.support.wordpress.com\/omnisearch\/",
-        "pos": "noun",
-        "translation": "Omnisearch"
-    },
-    "on top": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "h\u00f6gst upp"
-    },
-    "oops": {
-        "comment": "",
-        "pos": "interjection",
-        "translation": "hoppsan"
-    },
-    "opt-out": {
-        "comment": "klumpigt men b\u00e4sta jag kan komma p\u00e5",
-        "pos": "noun",
-        "translation": "v\u00e4lj bort"
-    },
-    "option": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "alternativ eller val"
-    },
-    "optional": {
-        "comment": "i formul\u00e4r o likn, ex \"Tags (optional, comma separated)\" = \"Etiketter (valfritt, separera med komma)\"",
-        "pos": "noun",
-        "translation": "valfritt"
-    },
-    "options": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "alternativ"
-    },
-    "overlay": {
-        "comment": "..overlay ska inte vara s\u00e5 vanligt. F\u00f6rhoppningsvis.",
-        "pos": "noun",
-        "translation": "panel"
-    },
-    "override": {
-        "comment": "Ex \"This option overrides all other settings\" = \"Detta alternativ \u00e5sidos\u00e4tter alla andra inst\u00e4llningar\"",
-        "pos": "verb",
-        "translation": "\u00e5sidos\u00e4tta"
-    },
-    "page": {
-        "comment": "Used to present static information about yourself or your site, and which may make up the content of your navigation menu. A good example of a Page is your \u201cAbout me\u201d page. Pages do not usually have dates or authors attached to them.",
-        "pos": "noun",
-        "translation": "sida"
-    },
-    "Pages": {
-        "comment": "When capitalized, \"Pages\" references a page within the admin called \"Pages\": \"Go to Pages\" = \"G\u00e5 till Sidor\" (jfr. \"G\u00e5 till sidorna\")",
-        "pos": "noun",
-        "translation": "Sidor"
-    },
-    "pagination": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "sidonumrering\/paginering"
-    },
-    "parameter": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "parameter"
-    },
+    "logged in": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "inloggad"
+        }
+    ],
+    "logged out": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "utloggad"
+        }
+    ],
+    "login": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "logga in"
+        }
+    ],
+    "logo": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "logga"
+        }
+    ],
+    "logout": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "logga ut "
+        }
+    ],
+    "M d": [
+        {
+            "comment": "Datum och tid f\u00e5r man vara f\u00f6rsiktig med. Detta verkar vara en str\u00e4ng f\u00f6r ett datumformat. Generellt s\u00e5 antar de flesta str\u00e4ngar p\u00e5 WordPress.com amerikansk formatering, vilket inte passar i Sverige. Till exempel denna str\u00e4ng: \"M d, Y @ g:ia\" blir, formaterad: \"Jan 01, 2014 @ 1:37pm\". I svenska s\u00e5 \u00e4r det b\u00e4ttre att h\u00e5lla sig till Dag\/M\u00e5nad\/\u00c5r, i den ordningen. Tid ska givetvis visas i en 24-timmars klocka. Exempel p\u00e5 ett bra alternativ f\u00f6r ovenst\u00e5ende str\u00e4ng fast \u00f6versatt: \"j M Y kl H:i\" blir, formaterad: \"1 Jan 2014 kl 13:37\" --- Mer information om tid- och datumformatering:http:\/\/codex.wordpress.org\/Formatting_Date_and_Time",
+            "pos": "noun",
+            "translation": "datum! se upp f\u00f6r formatering!"
+        }
+    ],
+    "magazine": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "magasin"
+        }
+    ],
+    "manage": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "hantera"
+        }
+    ],
+    "management": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "hantering"
+        }
+    ],
+    "mandatory": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "obligatorisk\/obligatoriskt"
+        }
+    ],
+    "mapping": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "ompekning"
+        }
+    ],
+    "match": [
+        {
+            "comment": "when the string is a search or search terms",
+            "pos": "verb",
+            "translation": "matcha"
+        }
+    ],
+    "matches": [
+        {
+            "comment": "when the string is a search or search terms",
+            "pos": "verb",
+            "translation": "matchar"
+        }
+    ],
+    "media item": [
+        {
+            "comment": "Media file, for example, an image or an audio file",
+            "pos": "noun",
+            "translation": "medieobjekt"
+        }
+    ],
+    "media library": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mediabibliotek"
+        }
+    ],
+    "Media Uploader": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Mediauppladdare"
+        }
+    ],
+    "menu item": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "menyval"
+        }
+    ],
+    "meta": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "meta"
+        }
+    ],
+    "minimal": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "minimalistisk"
+        }
+    ],
+    "minimalist theme": [
+        {
+            "comment": "A theme with few design elements and minimalist aesthetic",
+            "pos": "noun",
+            "translation": "minimalistiskt tema"
+        }
+    ],
+    "mobile device": [
+        {
+            "comment": "A device such as iPhone, iPad, Android, Windows Phone, Samsung tablet, or BlackBerry",
+            "pos": "noun",
+            "translation": "mobilenhet"
+        }
+    ],
+    "moderate": [
+        {
+            "comment": "Manage comments, for example approve or mark as spam. More info: http:\/\/en.support.wordpress.com\/manage-comments\/",
+            "pos": "verb",
+            "translation": "granska"
+        }
+    ],
+    "moderation": [
+        {
+            "comment": "N\u00e4r en kommentar eller trackback ska \"modereras\" \u00e4r \"granskning\"\/\"granska\" att f\u00f6redra. Ex \"Din kommentar inv\u00e4ntar granskning.\" Notera att sj\u00e4lva verbet (p\u00e5 knappar och i statusmeddelanden) ska fortfarande vara \"moderera\"\/\"moderering\"\/\"modererar\" etc.",
+            "pos": "noun",
+            "translation": "granskning"
+        }
+    ],
+    "modern design": [
+        {
+            "comment": "Design with modern, contemporary aesthetic",
+            "pos": "noun",
+            "translation": "modern design"
+        }
+    ],
+    "Movable Type": [
+        {
+            "comment": "Movable Type is a CMS from Six Apart, and had a significant portion of the blog market in the past. https:\/\/www.movabletype.com\/",
+            "pos": "noun",
+            "translation": "Movable Type"
+        }
+    ],
+    "multisite": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "multisite"
+        }
+    ],
+    "navigation": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "navigation\/navigering"
+        }
+    ],
+    "newer post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "nyare inl\u00e4gg"
+        }
+    ],
+    "next post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "n\u00e4sta inl\u00e4gg"
+        }
+    ],
+    "nickname": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "smeknamn"
+        }
+    ],
+    "No Ads": [
+        {
+            "comment": "Upgrade that removes ads from the user's WordPress.com blog. More info: http:\/\/en.support.wordpress.com\/no-ads\/",
+            "pos": "noun",
+            "translation": "Inga annonser"
+        }
+    ],
+    "nonce": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tillf\u00e4lle"
+        }
+    ],
+    "normal visitor": [
+        {
+            "comment": "As opposed to \u201csearch engines\u201d, human visitors who access the blog given the link. Context is privacy settings: http:\/\/en.support.wordpress.com\/settings\/privacy-settings\/",
+            "pos": "noun",
+            "translation": "normal bes\u00f6kare"
+        }
+    ],
+    "not sticky": [
+        {
+            "comment": "For sticky post status.",
+            "pos": "adjective",
+            "translation": "ej klistrad\/ej klistrat"
+        }
+    ],
+    "Notifications": [
+        {
+            "comment": "Pop-up or email messages displaying latest events on the site. More info: More info: http:\/\/en.support.wordpress.com\/followers\/",
+            "pos": "noun",
+            "translation": "Notiser"
+        }
+    ],
+    "occurred": [
+        {
+            "comment": "Generally used in the context of an error message. \"An error occured\" = \"Ett fel uppstod\"",
+            "pos": "verb",
+            "translation": "uppstod"
+        }
+    ],
+    "oh no": [
+        {
+            "comment": "",
+            "pos": "interjection",
+            "translation": "\u00e5h nej"
+        }
+    ],
+    "older post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u00e4ldre inl\u00e4gg"
+        }
+    ],
+    "Omnisearch": [
+        {
+            "comment": "Product name; blog search that searches across the blog's posts, pages, comments, and feedback. More info: http:\/\/en.support.wordpress.com\/omnisearch\/",
+            "pos": "noun",
+            "translation": "Omnisearch"
+        }
+    ],
+    "on top": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "h\u00f6gst upp"
+        }
+    ],
+    "oops": [
+        {
+            "comment": "",
+            "pos": "interjection",
+            "translation": "hoppsan"
+        }
+    ],
+    "opt-out": [
+        {
+            "comment": "klumpigt men b\u00e4sta jag kan komma p\u00e5",
+            "pos": "noun",
+            "translation": "v\u00e4lj bort"
+        }
+    ],
+    "option": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "alternativ eller val"
+        }
+    ],
+    "optional": [
+        {
+            "comment": "i formul\u00e4r o likn, ex \"Tags (optional, comma separated)\" = \"Etiketter (valfritt, separera med komma)\"",
+            "pos": "noun",
+            "translation": "valfritt"
+        }
+    ],
+    "options": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "alternativ"
+        }
+    ],
+    "overlay": [
+        {
+            "comment": "..overlay ska inte vara s\u00e5 vanligt. F\u00f6rhoppningsvis.",
+            "pos": "noun",
+            "translation": "panel"
+        }
+    ],
+    "override": [
+        {
+            "comment": "Ex \"This option overrides all other settings\" = \"Detta alternativ \u00e5sidos\u00e4tter alla andra inst\u00e4llningar\"",
+            "pos": "verb",
+            "translation": "\u00e5sidos\u00e4tta"
+        }
+    ],
+    "page": [
+        {
+            "comment": "Used to present static information about yourself or your site, and which may make up the content of your navigation menu. A good example of a Page is your \u201cAbout me\u201d page. Pages do not usually have dates or authors attached to them.",
+            "pos": "noun",
+            "translation": "sida"
+        }
+    ],
+    "Pages": [
+        {
+            "comment": "When capitalized, \"Pages\" references a page within the admin called \"Pages\": \"Go to Pages\" = \"G\u00e5 till Sidor\" (jfr. \"G\u00e5 till sidorna\")",
+            "pos": "noun",
+            "translation": "Sidor"
+        }
+    ],
+    "pagination": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "sidonumrering\/paginering"
+        }
+    ],
+    "parameter": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "parameter"
+        }
+    ],
     "parent": [
         {
             "comment": "",
@@ -1347,56 +1819,76 @@
             "translation": "f\u00f6r\u00e4lder\/moder"
         }
     ],
-    "parent theme": {
-        "comment": "Ett tema som har minst ett barntema. Ett barntema \u00e4r ett tema som har modifierat ett annat tema (modertemat) till viss del, men beh\u00e5llit mycket av originalet.",
-        "pos": "noun",
-        "translation": "modertema"
-    },
-    "pending": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "inv\u00e4ntar granskning"
-    },
-    "pending comment": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "kommentar inv\u00e4ntar granskning"
-    },
-    "performed": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "utf\u00f6rd"
-    },
-    "permalink": {
-        "comment": "A unique URL, or site address, for a specific page or post on your site. For example, support.wordpress.com\/lexicon",
-        "pos": "noun",
-        "translation": "permal\u00e4nk\/unik webbadress"
-    },
-    "permission": {
-        "comment": "Beh\u00f6righet om det handlar om anv\u00e4ndarens befogenheter, t.ex. \"You don't have the permission to do that\" = \"Du har inte beh\u00f6righet att g\u00f6ra det\"",
-        "pos": "noun",
-        "translation": "beh\u00f6righet eller till\u00e5telse"
-    },
-    "Till\u00e5telse om det handlar om anv\u00e4ndarens f\u00f6rh\u00e5llande med tj\u00e4nsten": {
-        "comment": null,
-        "pos": null,
-        "translation": " t.ex. \"\"We won't do this before asking your permission\"\" = \"\"Vi kommer inte att g\u00f6ra detta utan din till\u00e5telse\"\" eller \"\"...fr\u00e5ga dig f\u00f6rst\"\".\""
-    },
-    "personal blog": {
-        "comment": "A blog written from a personal perspective, or by one person (but possibly still focused on a specific topic), as opposed to a blog that represents a business",
-        "pos": "noun",
-        "translation": "personlig blogg"
-    },
-    "personal blogger": {
-        "comment": "A blogger writing primarily about their personal life (as opposed to business or another specific topic) ",
-        "pos": "noun",
-        "translation": "personlig bloggare"
-    },
-    "PIN lock": {
-        "comment": "Four digit code used for protection, typically on mobile app",
-        "pos": "noun",
-        "translation": "PIN-l\u00e5s"
-    },
+    "parent theme": [
+        {
+            "comment": "Ett tema som har minst ett barntema. Ett barntema \u00e4r ett tema som har modifierat ett annat tema (modertemat) till viss del, men beh\u00e5llit mycket av originalet.",
+            "pos": "noun",
+            "translation": "modertema"
+        }
+    ],
+    "pending": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "inv\u00e4ntar granskning"
+        }
+    ],
+    "pending comment": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "kommentar inv\u00e4ntar granskning"
+        }
+    ],
+    "performed": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "utf\u00f6rd"
+        }
+    ],
+    "permalink": [
+        {
+            "comment": "A unique URL, or site address, for a specific page or post on your site. For example, support.wordpress.com\/lexicon",
+            "pos": "noun",
+            "translation": "permal\u00e4nk\/unik webbadress"
+        }
+    ],
+    "permission": [
+        {
+            "comment": "Beh\u00f6righet om det handlar om anv\u00e4ndarens befogenheter, t.ex. \"You don't have the permission to do that\" = \"Du har inte beh\u00f6righet att g\u00f6ra det\"",
+            "pos": "noun",
+            "translation": "beh\u00f6righet eller till\u00e5telse"
+        }
+    ],
+    "Till\u00e5telse om det handlar om anv\u00e4ndarens f\u00f6rh\u00e5llande med tj\u00e4nsten": [
+        {
+            "comment": null,
+            "pos": null,
+            "translation": " t.ex. \"\"We won't do this before asking your permission\"\" = \"\"Vi kommer inte att g\u00f6ra detta utan din till\u00e5telse\"\" eller \"\"...fr\u00e5ga dig f\u00f6rst\"\".\""
+        }
+    ],
+    "personal blog": [
+        {
+            "comment": "A blog written from a personal perspective, or by one person (but possibly still focused on a specific topic), as opposed to a blog that represents a business",
+            "pos": "noun",
+            "translation": "personlig blogg"
+        }
+    ],
+    "personal blogger": [
+        {
+            "comment": "A blogger writing primarily about their personal life (as opposed to business or another specific topic) ",
+            "pos": "noun",
+            "translation": "personlig bloggare"
+        }
+    ],
+    "PIN lock": [
+        {
+            "comment": "Four digit code used for protection, typically on mobile app",
+            "pos": "noun",
+            "translation": "PIN-l\u00e5s"
+        }
+    ],
     "ping": [
         {
             "comment": "",
@@ -1409,36 +1901,48 @@
             "translation": "pinga"
         }
     ],
-    "pingback": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "pingback"
-    },
-    "plain text": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "oformaterad text"
-    },
-    "plan": {
-        "comment": "As in Basic\/Premium\/Business Plan, type of WordPress.com blog. More info: http:\/\/store.wordpress.com\/bundles\/",
-        "pos": "noun",
-        "translation": "paket"
-    },
-    "please": {
-        "comment": "I k\u00e4nsliga situationer eller vid instruktioner (s\u00e4rskilt n\u00e4r det handlar om betalningar\/pengar) \u00e4r \"v\u00e4nligen\" att f\u00f6redra, t.ex. \"Please confirm your email address\" = \"V\u00e4nligen bekr\u00e4fta din e-postadress\", \u201cPlease update your payment information\u201d = \u201cV\u00e4nligen uppdatera din betalningsinformation\u201d",
-        "pos": "adverb",
-        "translation": "v\u00e4nligen"
-    },
-    "plugin": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "till\u00e4gg"
-    },
-    "plugins": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "till\u00e4gg"
-    },
+    "pingback": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "pingback"
+        }
+    ],
+    "plain text": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "oformaterad text"
+        }
+    ],
+    "plan": [
+        {
+            "comment": "As in Basic\/Premium\/Business Plan, type of WordPress.com blog. More info: http:\/\/store.wordpress.com\/bundles\/",
+            "pos": "noun",
+            "translation": "paket"
+        }
+    ],
+    "please": [
+        {
+            "comment": "I k\u00e4nsliga situationer eller vid instruktioner (s\u00e4rskilt n\u00e4r det handlar om betalningar\/pengar) \u00e4r \"v\u00e4nligen\" att f\u00f6redra, t.ex. \"Please confirm your email address\" = \"V\u00e4nligen bekr\u00e4fta din e-postadress\", \u201cPlease update your payment information\u201d = \u201cV\u00e4nligen uppdatera din betalningsinformation\u201d",
+            "pos": "adverb",
+            "translation": "v\u00e4nligen"
+        }
+    ],
+    "plugin": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "till\u00e4gg"
+        }
+    ],
+    "plugins": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "till\u00e4gg"
+        }
+    ],
     "poll": [
         {
             "comment": "",
@@ -1451,127 +1955,161 @@
             "translation": "fr\u00e5ga"
         }
     ],
-    "Polldaddy": {
-        "comment": "Online survey tool - https:\/\/polldaddy.com\/",
-        "pos": "noun",
-        "translation": "Polldaddy"
-    },
-    "Portfolio Page": {
-        "comment": "A website page that displays visual projects, such as artwork and photography. Specific use example in Illustratr theme: https:\/\/theme.wordpress.com\/themes\/illustratr\/",
-        "pos": "noun",
-        "translation": "Portf\u00f6ljsida"
-    },
-    "portfolio theme": {
-        "comment": "WordPress theme tailored to showcase artwork, photography, or anything visual. More info: https:\/\/theme.wordpress.com\/themes\/subjects\/portfolio\/ and https:\/\/en.wordpress.com\/portfolios\/",
-        "pos": "noun",
-        "translation": "portf\u00f6ljtema"
-    },
+    "Polldaddy": [
+        {
+            "comment": "Online survey tool - https:\/\/polldaddy.com\/",
+            "pos": "noun",
+            "translation": "Polldaddy"
+        }
+    ],
+    "Portfolio Page": [
+        {
+            "comment": "A website page that displays visual projects, such as artwork and photography. Specific use example in Illustratr theme: https:\/\/theme.wordpress.com\/themes\/illustratr\/",
+            "pos": "noun",
+            "translation": "Portf\u00f6ljsida"
+        }
+    ],
+    "portfolio theme": [
+        {
+            "comment": "WordPress theme tailored to showcase artwork, photography, or anything visual. More info: https:\/\/theme.wordpress.com\/themes\/subjects\/portfolio\/ and https:\/\/en.wordpress.com\/portfolios\/",
+            "pos": "noun",
+            "translation": "portf\u00f6ljtema"
+        }
+    ],
     "post": [
-        [
-            [
-                {
-                    "comment": "",
-                    "pos": "noun",
-                    "translation": "inl\u00e4gg"
-                },
-                {
-                    "comment": "",
-                    "pos": "verb",
-                    "translation": "publicera"
-                }
-            ],
-            {
-                "comment": "When referring to blog posts",
-                "pos": "noun",
-                "translation": "inl\u00e4gg"
-            }
-        ],
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inl\u00e4gg"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "publicera"
+        },
+        {
+            "comment": "When referring to blog posts",
+            "pos": "noun",
+            "translation": "inl\u00e4gg"
+        },
         {
             "comment": "In other contexts with a more generic meaning",
             "pos": "noun",
             "translation": "inl\u00e4gg"
         }
     ],
-    "Post Carousel": {
-        "comment": "A way to display posts from all or one specific category in a slideshow. Specific example from Antenna theme: https:\/\/theme.wordpress.com\/themes\/antenna\/",
-        "pos": "noun",
-        "translation": "Inl\u00e4ggskarusell"
-    },
-    "post format": {
-        "comment": "Ex: \"Select post format\" = \"V\u00e4lj inl\u00e4ggsformat\"",
-        "pos": "adjective",
-        "translation": "inl\u00e4ggsformat"
-    },
-    "Post List": {
-        "comment": "A list of posts, on a separate page or in a widget, displayed according to specific settings. Specific usage example from Antenna theme: https:\/\/theme.wordpress.com\/themes\/antenna\/ More info: https:\/\/en.support.wordpress.com\/display-posts-shortcode\/",
-        "pos": "noun",
-        "translation": "Inl\u00e4ggslista"
-    },
-    "Post Meta": {
-        "comment": "Used for themes. Post meta in themes usually includes the author's name, publish date, categories and tags",
-        "pos": "noun",
-        "translation": "Metadata f\u00f6r inl\u00e4gg"
-    },
-    "post status": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "inl\u00e4ggsstatus"
-    },
-    "post thumbnail": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "inl\u00e4ggsminiatyr"
-    },
-    "post type": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "inl\u00e4ggstyp"
-    },
-    "posted": {
-        "comment": "Ex: \"Posted by %s\" = \"Publicerat av %s\"",
-        "pos": "verb",
-        "translation": "publicerad\/publicerat"
-    },
-    "posting goal": {
-        "comment": "A goal of certain number of posts in a time period",
-        "pos": "noun",
-        "translation": "m\u00e5l f\u00f6r bloggande"
-    },
-    "preferences": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "alternativ"
-    },
-    "prefilled": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "f\u00f6rifyllda"
-    },
-    "premium": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "premium"
-    },
-    "Premium plan": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Premium-paket"
-    },
-    "premium theme": {
-        "comment": "WordPress.com product name (paid upgrade)",
-        "pos": "noun",
-        "translation": "premium-tema"
-    },
-    "premium upgrade": {
-        "comment": "A service you can purchase from WordPress.com to get premium features. More info: http:\/\/en.support.wordpress.com\/upgrades\/",
-        "pos": "noun",
-        "translation": "premium-uppgradering"
-    },
-    "Press This": {
-        "comment": "WordPress.com tool name",
-        "pos": "noun",
-        "translation": "Blogga detta"
-    },
+    "Post Carousel": [
+        {
+            "comment": "A way to display posts from all or one specific category in a slideshow. Specific example from Antenna theme: https:\/\/theme.wordpress.com\/themes\/antenna\/",
+            "pos": "noun",
+            "translation": "Inl\u00e4ggskarusell"
+        }
+    ],
+    "post format": [
+        {
+            "comment": "Ex: \"Select post format\" = \"V\u00e4lj inl\u00e4ggsformat\"",
+            "pos": "adjective",
+            "translation": "inl\u00e4ggsformat"
+        }
+    ],
+    "Post List": [
+        {
+            "comment": "A list of posts, on a separate page or in a widget, displayed according to specific settings. Specific usage example from Antenna theme: https:\/\/theme.wordpress.com\/themes\/antenna\/ More info: https:\/\/en.support.wordpress.com\/display-posts-shortcode\/",
+            "pos": "noun",
+            "translation": "Inl\u00e4ggslista"
+        }
+    ],
+    "Post Meta": [
+        {
+            "comment": "Used for themes. Post meta in themes usually includes the author's name, publish date, categories and tags",
+            "pos": "noun",
+            "translation": "Metadata f\u00f6r inl\u00e4gg"
+        }
+    ],
+    "post status": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inl\u00e4ggsstatus"
+        }
+    ],
+    "post thumbnail": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inl\u00e4ggsminiatyr"
+        }
+    ],
+    "post type": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inl\u00e4ggstyp"
+        }
+    ],
+    "posted": [
+        {
+            "comment": "Ex: \"Posted by %s\" = \"Publicerat av %s\"",
+            "pos": "verb",
+            "translation": "publicerad\/publicerat"
+        }
+    ],
+    "posting goal": [
+        {
+            "comment": "A goal of certain number of posts in a time period",
+            "pos": "noun",
+            "translation": "m\u00e5l f\u00f6r bloggande"
+        }
+    ],
+    "preferences": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "alternativ"
+        }
+    ],
+    "prefilled": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "f\u00f6rifyllda"
+        }
+    ],
+    "premium": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "premium"
+        }
+    ],
+    "Premium plan": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Premium-paket"
+        }
+    ],
+    "premium theme": [
+        {
+            "comment": "WordPress.com product name (paid upgrade)",
+            "pos": "noun",
+            "translation": "premium-tema"
+        }
+    ],
+    "premium upgrade": [
+        {
+            "comment": "A service you can purchase from WordPress.com to get premium features. More info: http:\/\/en.support.wordpress.com\/upgrades\/",
+            "pos": "noun",
+            "translation": "premium-uppgradering"
+        }
+    ],
+    "Press This": [
+        {
+            "comment": "WordPress.com tool name",
+            "pos": "noun",
+            "translation": "Blogga detta"
+        }
+    ],
     "preview": [
         {
             "comment": "",
@@ -1584,111 +2122,153 @@
             "translation": "f\u00f6rhandsgranskning"
         }
     ],
-    "previous post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "f\u00f6reg\u00e5ende inl\u00e4gg"
-    },
-    "privacy": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "integritet"
-    },
-    "Privacy Policy": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Sekretesspolicy"
-    },
-    "Privacy Protection": {
-        "comment": "WordPress.com product name (paid upgrade)",
-        "pos": "noun",
-        "translation": "Integritetsskydd"
-    },
-    "Private Whois upgrade": {
-        "comment": "Same as \u201cPrivacy Protection\u201d",
-        "pos": "noun",
-        "translation": "Dold Whois-uppgradering\/Integritetsskydd"
-    },
-    "Pro": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Pro"
-    },
-    "profile": {
-        "comment": "Information shown along with the user's name when the user comments on WordPress.com sites. More info: https:\/\/en.support.wordpress.com\/manage-my-profile\/",
-        "pos": "noun",
-        "translation": "profil"
-    },
-    "promote": {
-        "comment": "ex \"Promote Now\" = \"Framh\u00e4v nu\"",
-        "pos": "verb",
-        "translation": "framh\u00e4v"
-    },
-    "public": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "Offentlig"
-    },
-    "Publicize": {
-        "comment": "WordPress.com tool name. Publicize (\"Offentligg\u00f6r\") \u00e4r samlingsnamnet f\u00f6r funktioner som l\u00e5ter bloggare dela sina inl\u00e4gg automatiskt i sociala medier.",
-        "pos": "noun",
-        "translation": "Offentligg\u00f6r"
-    },
-    "Publicize Jetpack": {
-        "comment": "Feature name in Jetpack",
-        "pos": "noun",
-        "translation": "Offentligg\u00f6r Jetpack"
-    },
-    "Publish": {
-        "comment": "Inte \"Posta\" el likn",
-        "pos": "verb",
-        "translation": "Publicera"
-    },
-    "publisher blog": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "utgivarblogg"
-    },
-    "publishing platform": {
-        "comment": "A platform for publishing content and files, such as WordPress.com",
-        "pos": "noun",
-        "translation": "publiceringsplattform"
-    },
-    "query": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "s\u00f6kning\/query"
-    },
-    "queue": {
-        "comment": "Generally \"queue\" is only used in the context of comments and holding comments in a \"moderation queue\". Should be rewritten to detail that comments are awaiting investigation: \"Keep comments containing %s or more links in the queue\" = \"L\u00e5t kommentarer som inneh\u00e5ller %s eller fler l\u00e4nkar inv\u00e4nta granskning\", \"Turn on moderation\" = \"Sl\u00e5 p\u00e5 granskning\", \"spam queue\" is direct so should be translated with \"k\u00f6\", i.e. \"skr\u00e4ppost-k\u00f6\". ",
-        "pos": "noun",
-        "translation": "inv\u00e4nta [granskning] \/ k\u00f6"
-    },
-    "Quick Post": {
-        "comment": "Widget name.",
-        "pos": "noun",
-        "translation": "Quick Post"
-    },
-    "QuickPress": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "QuickPress"
-    },
-    "Reader": {
-        "comment": "The part of WordPress.com where the user reads updates from other blogs, specifically http:\/\/en.support.wordpress.com\/reader\/ (also available on mobile devices)",
-        "pos": "noun",
-        "translation": "L\u00e4sare"
-    },
-    "reader": {
-        "comment": "A person reading the blog.",
-        "pos": "noun",
-        "translation": "l\u00e4sare"
-    },
-    "Reading": {
-        "comment": "ENDAST n\u00e4r det handlar om \"Reading\"-panelen i wp-admin",
-        "pos": "noun",
-        "translation": "L\u00e4sa"
-    },
+    "previous post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "f\u00f6reg\u00e5ende inl\u00e4gg"
+        }
+    ],
+    "privacy": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "integritet"
+        }
+    ],
+    "Privacy Policy": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Sekretesspolicy"
+        }
+    ],
+    "Privacy Protection": [
+        {
+            "comment": "WordPress.com product name (paid upgrade)",
+            "pos": "noun",
+            "translation": "Integritetsskydd"
+        }
+    ],
+    "Private Whois upgrade": [
+        {
+            "comment": "Same as \u201cPrivacy Protection\u201d",
+            "pos": "noun",
+            "translation": "Dold Whois-uppgradering\/Integritetsskydd"
+        }
+    ],
+    "Pro": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Pro"
+        }
+    ],
+    "profile": [
+        {
+            "comment": "Information shown along with the user's name when the user comments on WordPress.com sites. More info: https:\/\/en.support.wordpress.com\/manage-my-profile\/",
+            "pos": "noun",
+            "translation": "profil"
+        }
+    ],
+    "promote": [
+        {
+            "comment": "ex \"Promote Now\" = \"Framh\u00e4v nu\"",
+            "pos": "verb",
+            "translation": "framh\u00e4v"
+        }
+    ],
+    "public": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "Offentlig"
+        }
+    ],
+    "Publicize": [
+        {
+            "comment": "WordPress.com tool name. Publicize (\"Offentligg\u00f6r\") \u00e4r samlingsnamnet f\u00f6r funktioner som l\u00e5ter bloggare dela sina inl\u00e4gg automatiskt i sociala medier.",
+            "pos": "noun",
+            "translation": "Offentligg\u00f6r"
+        }
+    ],
+    "Publicize Jetpack": [
+        {
+            "comment": "Feature name in Jetpack",
+            "pos": "noun",
+            "translation": "Offentligg\u00f6r Jetpack"
+        }
+    ],
+    "Publish": [
+        {
+            "comment": "Inte \"Posta\" el likn",
+            "pos": "verb",
+            "translation": "Publicera"
+        }
+    ],
+    "publisher blog": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utgivarblogg"
+        }
+    ],
+    "publishing platform": [
+        {
+            "comment": "A platform for publishing content and files, such as WordPress.com",
+            "pos": "noun",
+            "translation": "publiceringsplattform"
+        }
+    ],
+    "query": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "s\u00f6kning\/query"
+        }
+    ],
+    "queue": [
+        {
+            "comment": "Generally \"queue\" is only used in the context of comments and holding comments in a \"moderation queue\". Should be rewritten to detail that comments are awaiting investigation: \"Keep comments containing %s or more links in the queue\" = \"L\u00e5t kommentarer som inneh\u00e5ller %s eller fler l\u00e4nkar inv\u00e4nta granskning\", \"Turn on moderation\" = \"Sl\u00e5 p\u00e5 granskning\", \"spam queue\" is direct so should be translated with \"k\u00f6\", i.e. \"skr\u00e4ppost-k\u00f6\". ",
+            "pos": "noun",
+            "translation": "inv\u00e4nta [granskning] \/ k\u00f6"
+        }
+    ],
+    "Quick Post": [
+        {
+            "comment": "Widget name.",
+            "pos": "noun",
+            "translation": "Quick Post"
+        }
+    ],
+    "QuickPress": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "QuickPress"
+        }
+    ],
+    "Reader": [
+        {
+            "comment": "The part of WordPress.com where the user reads updates from other blogs, specifically http:\/\/en.support.wordpress.com\/reader\/ (also available on mobile devices)",
+            "pos": "noun",
+            "translation": "L\u00e4sare"
+        }
+    ],
+    "reader": [
+        {
+            "comment": "A person reading the blog.",
+            "pos": "noun",
+            "translation": "l\u00e4sare"
+        }
+    ],
+    "Reading": [
+        {
+            "comment": "ENDAST n\u00e4r det handlar om \"Reading\"-panelen i wp-admin",
+            "pos": "noun",
+            "translation": "L\u00e4sa"
+        }
+    ],
     "Reblog": [
         {
             "comment": "A way to share posts published by other WordPress.com users on your own blog. More info: http:\/\/en.support.wordpress.com\/reblogs\/",
@@ -1713,11 +2293,13 @@
             "translation": "senaste"
         }
     ],
-    "recent post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "senaste inl\u00e4gg \/ senaste inl\u00e4gget"
-    },
+    "recent post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "senaste inl\u00e4gg \/ senaste inl\u00e4gget"
+        }
+    ],
     "record": [
         {
             "comment": "if domain-related; like e.g. CNAME record",
@@ -1730,136 +2312,188 @@
             "translation": "registrerade \/ sparade"
         }
     ],
-    "recover": {
-        "comment": "Ex.vis \"The data can't be recovered in the future\" = \"Data kan inte \u00e5terskapas i framtiden\"",
-        "pos": "verb",
-        "translation": "\u00e5terskapa"
-    },
-    "Redirect": {
-        "comment": "Alternative naming option for Site Redirect. More info: http:\/\/en.support.wordpress.com\/site-redirect\/",
-        "pos": "noun",
-        "translation": "Omdirigering"
-    },
-    "redirect": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "omdirigera"
-    },
-    "referrer": {
-        "comment": "A blog, web site, or a search engine linking to the user's blog. More info: http:\/\/en.support.wordpress.com\/stats\/#referrers",
-        "pos": "noun",
-        "translation": "h\u00e4nvisning"
-    },
-    "Related Posts": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Relaterade inl\u00e4gg"
-    },
-    "report": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "rapport"
-    },
-    "required": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "obligatoriskt\/obligatorisk"
-    },
-    "required field": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "obligatoriskt f\u00e4lt"
-    },
-    "responsive": {
-        "comment": "Refers to responsive design, where sites have an optimal viewing experience - with easy reading and navigation with a minimum of resizing, panning, and scrolling - across a wide range of devices (from mobile phones to desktop computer monitors).",
-        "pos": "adjective",
-        "translation": "responsiv"
-    },
-    "restore": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "\u00e5terst\u00e4ll"
-    },
-    "return value": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "returv\u00e4rde"
-    },
-    "revision": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "version"
-    },
-    "ribbon": {
-        "comment": "Part of a theme design, for example in Ever After theme: http:\/\/theme.wordpress.com\/themes\/ever-after\/",
-        "pos": "noun",
-        "translation": "band"
-    },
-    "role": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "roll"
-    },
-    "RSS": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "RSS"
-    },
-    "RSS feed": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "RSS-fl\u00f6de"
-    },
-    "schedule": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "tidsinst\u00e4ll"
-    },
-    "scheduled": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "tidsinst\u00e4lld"
-    },
-    "search engine": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "s\u00f6kmotor"
-    },
-    "select": {
-        "comment": "Ex: \"select comments\" = \"markera kommentarer\". Ex 2: \"select this page\" = \"v\u00e4lj denna sida\"",
-        "pos": "verb",
-        "translation": "markera\/v\u00e4lj"
-    },
-    "selected": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "valda"
-    },
-    "self-hosted": {
-        "comment": "Typ helt om\u00f6jligt att \u00f6vers\u00e4tta. F\u00f6rs\u00f6k skriva om och f\u00f6rklara att det handlar om WordPress-installationer p\u00e5 en tredje-parts (\"egen\") server. Ex: \"Download for a self-hosted WordPress blog\" = \"Ladda ner till WordPress installerat p\u00e5 en egen server\"",
-        "pos": "adjective",
-        "translation": "...[WordPress] som drivs p\u00e5 en egen server"
-    },
-    "SEO": {
-        "comment": "SEO = \"Search Engine Optimization\". P\u00e5 svenska blir detta n\u00e4rmast \"S\u00f6kmotorsoptimering\", att optimera en webbplats s\u00e5 att den syns b\u00e4st f\u00f6r s\u00f6kmotorer som Google.",
-        "pos": "noun",
-        "translation": "s\u00f6kmotorsoptimering"
-    },
-    "server": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "server"
-    },
-    "service": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tj\u00e4nst"
-    },
-    "settings": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "inst\u00e4llningar"
-    },
+    "recover": [
+        {
+            "comment": "Ex.vis \"The data can't be recovered in the future\" = \"Data kan inte \u00e5terskapas i framtiden\"",
+            "pos": "verb",
+            "translation": "\u00e5terskapa"
+        }
+    ],
+    "Redirect": [
+        {
+            "comment": "Alternative naming option for Site Redirect. More info: http:\/\/en.support.wordpress.com\/site-redirect\/",
+            "pos": "noun",
+            "translation": "Omdirigering"
+        }
+    ],
+    "redirect": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "omdirigera"
+        }
+    ],
+    "referrer": [
+        {
+            "comment": "A blog, web site, or a search engine linking to the user's blog. More info: http:\/\/en.support.wordpress.com\/stats\/#referrers",
+            "pos": "noun",
+            "translation": "h\u00e4nvisning"
+        }
+    ],
+    "Related Posts": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Relaterade inl\u00e4gg"
+        }
+    ],
+    "report": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "rapport"
+        }
+    ],
+    "required": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "obligatoriskt\/obligatorisk"
+        }
+    ],
+    "required field": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "obligatoriskt f\u00e4lt"
+        }
+    ],
+    "responsive": [
+        {
+            "comment": "Refers to responsive design, where sites have an optimal viewing experience - with easy reading and navigation with a minimum of resizing, panning, and scrolling - across a wide range of devices (from mobile phones to desktop computer monitors).",
+            "pos": "adjective",
+            "translation": "responsiv"
+        }
+    ],
+    "restore": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "\u00e5terst\u00e4ll"
+        }
+    ],
+    "return value": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "returv\u00e4rde"
+        }
+    ],
+    "revision": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "version"
+        }
+    ],
+    "ribbon": [
+        {
+            "comment": "Part of a theme design, for example in Ever After theme: http:\/\/theme.wordpress.com\/themes\/ever-after\/",
+            "pos": "noun",
+            "translation": "band"
+        }
+    ],
+    "role": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "roll"
+        }
+    ],
+    "RSS": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "RSS"
+        }
+    ],
+    "RSS feed": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "RSS-fl\u00f6de"
+        }
+    ],
+    "schedule": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "tidsinst\u00e4ll"
+        }
+    ],
+    "scheduled": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "tidsinst\u00e4lld"
+        }
+    ],
+    "search engine": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "s\u00f6kmotor"
+        }
+    ],
+    "select": [
+        {
+            "comment": "Ex: \"select comments\" = \"markera kommentarer\". Ex 2: \"select this page\" = \"v\u00e4lj denna sida\"",
+            "pos": "verb",
+            "translation": "markera\/v\u00e4lj"
+        }
+    ],
+    "selected": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "valda"
+        }
+    ],
+    "self-hosted": [
+        {
+            "comment": "Typ helt om\u00f6jligt att \u00f6vers\u00e4tta. F\u00f6rs\u00f6k skriva om och f\u00f6rklara att det handlar om WordPress-installationer p\u00e5 en tredje-parts (\"egen\") server. Ex: \"Download for a self-hosted WordPress blog\" = \"Ladda ner till WordPress installerat p\u00e5 en egen server\"",
+            "pos": "adjective",
+            "translation": "...[WordPress] som drivs p\u00e5 en egen server"
+        }
+    ],
+    "SEO": [
+        {
+            "comment": "SEO = \"Search Engine Optimization\". P\u00e5 svenska blir detta n\u00e4rmast \"S\u00f6kmotorsoptimering\", att optimera en webbplats s\u00e5 att den syns b\u00e4st f\u00f6r s\u00f6kmotorer som Google.",
+            "pos": "noun",
+            "translation": "s\u00f6kmotorsoptimering"
+        }
+    ],
+    "server": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "server"
+        }
+    ],
+    "service": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tj\u00e4nst"
+        }
+    ],
+    "settings": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "inst\u00e4llningar"
+        }
+    ],
     "share": [
         {
             "comment": "How many times a post has been shared, referred to in Stats, for example, as in \"Total Shares\". More info: http:\/\/en.support.wordpress.com\/sharing\/#share-stats",
@@ -1872,341 +2506,475 @@
             "translation": "dela"
         }
     ],
-    "shares": {
-        "comment": "Delat inneh\u00e5ll, ex \"Two shares today\" = \"Tv\u00e5 delningar i dag\"",
-        "pos": "noun",
-        "translation": "delningar"
-    },
-    "sharing": {
-        "comment": "The process of publishing links to blog posts in social networks. More info: http:\/\/en.support.wordpress.com\/sharing\/#customizing-sharing-settings",
-        "pos": "verb",
-        "translation": "dela"
-    },
-    "sharing button": {
-        "comment": "Refers to a button that allows the reader to send a link to a social network. E.g. click on the Facebook icon to share an article on Facebook. More info: http:\/\/en.support.wordpress.com\/sharing\/#customizing-sharing-settings",
-        "pos": "noun",
-        "translation": "delningsknapp"
-    },
-    "sharing buttons": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "delningsknappar"
-    },
-    "sharing settings": {
-        "comment": "Top level menu items where sharing settings can be configured. More info: http:\/\/en.support.wordpress.com\/sharing\/",
-        "pos": "noun",
-        "translation": "delningsinst\u00e4llningar"
-    },
-    "shell": {
-        "comment": "feminine",
-        "pos": "noun",
-        "translation": "skal"
-    },
-    "shortcode": {
-        "comment": "ex \"Video shortcode\" = \"Kortkod f\u00f6r videoklipp\" A WordPress-specific code that enables users to perform actions like embedding files or creating objects that would otherwise have required a lot of coding.",
-        "pos": "noun",
-        "translation": "kortkod"
-    },
-    "Showcase": {
-        "comment": "As in Theme Showcase, could also be blog showcase. Example: http:\/\/theme.wordpress.com\/",
-        "pos": "noun",
-        "translation": "Galleri\/Presentation\/Showcase"
-    },
-    "sidebar": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "sidopanel"
-    },
-    "single post": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "enskilt inl\u00e4gg"
-    },
-    "Single Sign On": {
-        "comment": "Jetpack Single Sign On = Jetpacks Enkel Inloggning - Jetpack module; allows signing onto self-hosted WordPress sites with WordPress.com credentials. More info: http:\/\/jetpack.me\/support\/sso\/",
-        "pos": "noun",
-        "translation": "Enkel Inloggning"
-    },
-    "site": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "webbplats"
-    },
-    "site icon": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "webbplats-ikon"
-    },
-    "Site Redirect": {
-        "comment": "Paid upgrade, redirects web address to another web address. More info: http:\/\/en.support.wordpress.com\/site-redirect\/",
-        "pos": "noun",
-        "translation": "Omdirigera webbplats"
-    },
-    "sites": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "webbplatser"
-    },
-    "slider": {
-        "comment": "A way to display featured content on a website that changes the text\/images, like in a slideshow.",
-        "pos": "noun",
-        "translation": "bildspel\/slider"
-    },
-    "slideshow": {
-        "comment": "When explaining what is a slideshow, use apresenta\u00e7\u00e3o de slides",
-        "pos": "noun",
-        "translation": "bildspel"
-    },
-    "slug": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "permal\u00e4nk"
-    },
-    "Social Media": {
-        "comment": "Social network sites such as Twitter, Facebook, Pinterest, and others.",
-        "pos": "noun",
-        "translation": "Sociala medier, Sociala media"
-    },
-    "Sorry": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Ledsen"
-    },
-    "spam": {
-        "comment": "Mark as spam = Markera som skr\u00e4ppost",
-        "pos": "adjective",
-        "translation": "skr\u00e4ppost"
-    },
-    "spam queue": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "skr\u00e4ppost-k\u00f6"
-    },
-    "specify": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "ange\/specifiera"
-    },
-    "SRV record": {
-        "comment": "A type of a custom DNS record",
-        "pos": "noun",
-        "translation": "SRV-information"
-    },
-    "staff": {
-        "comment": "Ex: \"...being reviewed by a staff member\" = \"...granskas av en anst\u00e4lld\". Ex 2: \"Staff picks\" = \"Redaktionens favoriter\"",
-        "pos": "noun",
-        "translation": "anst\u00e4lld\/redakt\u00f6r"
-    },
-    "stat": {
-        "comment": "N\u00e4r det handlar om en bit information. Ex: \"Select a stat that interests you to learn more.\" = \"Tryck p\u00e5 statistik som intresserar dig f\u00f6r att l\u00e4ra dig mer.\"",
-        "pos": "noun",
-        "translation": "statistik"
-    },
-    "Status": {
-        "comment": "F\u00f6r post format-typen \"status\"",
-        "pos": "noun",
-        "translation": "Statusuppdatering"
-    },
-    "stick": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "klistra"
-    },
-    "sticky": {
-        "comment": "Sticky posts = Fastklistrade inl\u00e4gg",
-        "pos": "noun",
-        "translation": "klistrat"
-    },
-    "sticky post": {
-        "comment": "A post marked as \u201csticky\u201d will appear above all other posts. More info: http:\/\/en.support.wordpress.com\/posts\/post-visibility\/#sticky-posts",
-        "pos": "noun",
-        "translation": "(fast)klistrat inl\u00e4gg"
-    },
-    "Store": {
-        "comment": "WordPress.com Store where product upgrades can be purchased: http:\/\/store.wordpress.com\/",
-        "pos": "noun",
-        "translation": "Butik\/Aff\u00e4r"
-    },
-    "store": {
-        "comment": "Main menu item, see \u201cWordPress.com Store\u201d",
-        "pos": "noun",
-        "translation": "butik\/aff\u00e4r"
-    },
-    "string": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "str\u00e4ng"
-    },
-    "subpanel": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "underpanel"
-    },
-    "subscribe": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "prenumerera"
-    },
-    "subscriber": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "prenumerant"
-    },
-    "subscription": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "prenumeration"
-    },
-    "subscription dashboard": {
-        "comment": "Page where a user can see and modify their subscriptions.",
-        "pos": "noun",
-        "translation": "prenumerationspanel"
-    },
-    "Subversion": {
-        "comment": "WordPress development tool - https:\/\/subversion.apache.org\/ (SVN)",
-        "pos": "noun",
-        "translation": "Subversion"
-    },
-    "subversion": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "subversion"
-    },
-    "summary emails": {
-        "comment": "Emails sent to blog subscribers that include several posts over a period of time (as opposed to instant post emails)",
-        "pos": "noun",
-        "translation": "summeringar via e-post"
-    },
-    "supercharge, super-charge": {
-        "comment": "Skriv om till \"G\u00f6r din webbplats \u00e4nnu b\u00e4ttre\" el likn. Lame.",
-        "pos": "verb",
-        "translation": "g\u00f6r \u00e4nnu b\u00e4ttre"
-    },
-    "supercharged": {
-        "comment": "\"The Blog, supercharged\" = \"Bloggen, gjord \u00e4nnu b\u00e4ttre\"",
-        "pos": "adjective",
-        "translation": "\u00e4nnu b\u00e4ttre"
-    },
-    "support guide": {
-        "comment": "Support page\/article",
-        "pos": "noun",
-        "translation": "supportguide"
-    },
-    "support page": {
-        "comment": "A webpage with support information",
-        "pos": "noun",
-        "translation": "supportsida"
-    },
-    "support team": {
-        "comment": "WordPress.com team providing technical and billing support.",
-        "pos": "noun",
-        "translation": "supportteam"
-    },
-    "survey": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "unders\u00f6kning"
-    },
-    "Tag": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Tagg"
-    },
-    "tag cloud": {
-        "comment": "Vanligtvis en widget som visar vanliga etiketter p\u00e5 bloggen.",
-        "pos": "noun",
-        "translation": "taggmoln"
-    },
-    "tagged": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "taggat"
-    },
-    "tagline": {
-        "comment": "Ex \"The website's tagline:\" = \"Webbplatsens slogan:\"",
-        "pos": "noun",
-        "translation": "slogan"
-    },
-    "Tags": {
-        "comment": "(plural) Matchar core WP",
-        "pos": "noun",
-        "translation": "Etiketter"
-    },
-    "taxonomy": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "taxonomi"
-    },
-    "template": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mall"
-    },
-    "template hierarchy": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mall-hierarki"
-    },
-    "term": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "term"
-    },
-    "Terms of Service": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Anv\u00e4ndarvillkor"
-    },
-    "text editor": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "textredigerare"
-    },
-    "theme": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tema"
-    },
-    "Theme Showcase": {
-        "comment": "Theme Showcase finns p\u00e5 theme.wordpress.com och \u00e4r ett bibliotek av teman menat att inspirera och hj\u00e4lpa anv\u00e4ndare hitta teman de gillar.",
-        "pos": "noun",
-        "translation": "Tema-galleriet"
-    },
-    "thumbnail": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "miniatyr"
-    },
-    "time stamp": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tidsst\u00e4mpel"
-    },
-    "timestamp": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tidsst\u00e4mpel"
-    },
-    "Title": {
-        "comment": "Generellt \"Rubrik\" om det handlar om ett inl\u00e4gg",
-        "pos": "noun",
-        "translation": "Rubrik"
-    },
-    "toggle": {
-        "comment": "Eftersom \"toggle\" oftast anv\u00e4nds f\u00f6r att sl\u00e5 p\u00e5 och av funktioner eller objekt \u00e4r det b\u00e4ttre att formulera om som \"sl\u00e5 p\u00e5\/av\" och inte anv\u00e4nda \"v\u00e4xla\". Ex.: \"Toggle comments\" = \"Sl\u00e5 p\u00e5\/av kommentarer\"",
-        "pos": "verb",
-        "translation": "sl\u00e5 p\u00e5\/av"
-    },
-    "Toolbar": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Verktygsf\u00e4lt"
-    },
-    "Top Pages": {
-        "comment": "Used in the Stats module",
-        "pos": "noun",
-        "translation": "Popul\u00e4raste sidorna"
-    },
+    "shares": [
+        {
+            "comment": "Delat inneh\u00e5ll, ex \"Two shares today\" = \"Tv\u00e5 delningar i dag\"",
+            "pos": "noun",
+            "translation": "delningar"
+        }
+    ],
+    "sharing": [
+        {
+            "comment": "The process of publishing links to blog posts in social networks. More info: http:\/\/en.support.wordpress.com\/sharing\/#customizing-sharing-settings",
+            "pos": "verb",
+            "translation": "dela"
+        }
+    ],
+    "sharing button": [
+        {
+            "comment": "Refers to a button that allows the reader to send a link to a social network. E.g. click on the Facebook icon to share an article on Facebook. More info: http:\/\/en.support.wordpress.com\/sharing\/#customizing-sharing-settings",
+            "pos": "noun",
+            "translation": "delningsknapp"
+        }
+    ],
+    "sharing buttons": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "delningsknappar"
+        }
+    ],
+    "sharing settings": [
+        {
+            "comment": "Top level menu items where sharing settings can be configured. More info: http:\/\/en.support.wordpress.com\/sharing\/",
+            "pos": "noun",
+            "translation": "delningsinst\u00e4llningar"
+        }
+    ],
+    "shell": [
+        {
+            "comment": "feminine",
+            "pos": "noun",
+            "translation": "skal"
+        }
+    ],
+    "shortcode": [
+        {
+            "comment": "ex \"Video shortcode\" = \"Kortkod f\u00f6r videoklipp\" A WordPress-specific code that enables users to perform actions like embedding files or creating objects that would otherwise have required a lot of coding.",
+            "pos": "noun",
+            "translation": "kortkod"
+        }
+    ],
+    "Showcase": [
+        {
+            "comment": "As in Theme Showcase, could also be blog showcase. Example: http:\/\/theme.wordpress.com\/",
+            "pos": "noun",
+            "translation": "Galleri\/Presentation\/Showcase"
+        }
+    ],
+    "sidebar": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "sidopanel"
+        }
+    ],
+    "single post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "enskilt inl\u00e4gg"
+        }
+    ],
+    "Single Sign On": [
+        {
+            "comment": "Jetpack Single Sign On = Jetpacks Enkel Inloggning - Jetpack module; allows signing onto self-hosted WordPress sites with WordPress.com credentials. More info: http:\/\/jetpack.me\/support\/sso\/",
+            "pos": "noun",
+            "translation": "Enkel Inloggning"
+        }
+    ],
+    "site": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "webbplats"
+        }
+    ],
+    "site icon": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "webbplats-ikon"
+        }
+    ],
+    "Site Redirect": [
+        {
+            "comment": "Paid upgrade, redirects web address to another web address. More info: http:\/\/en.support.wordpress.com\/site-redirect\/",
+            "pos": "noun",
+            "translation": "Omdirigera webbplats"
+        }
+    ],
+    "sites": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "webbplatser"
+        }
+    ],
+    "slider": [
+        {
+            "comment": "A way to display featured content on a website that changes the text\/images, like in a slideshow.",
+            "pos": "noun",
+            "translation": "bildspel\/slider"
+        }
+    ],
+    "slideshow": [
+        {
+            "comment": "When explaining what is a slideshow, use apresenta\u00e7\u00e3o de slides",
+            "pos": "noun",
+            "translation": "bildspel"
+        }
+    ],
+    "slug": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "permal\u00e4nk"
+        }
+    ],
+    "Social Media": [
+        {
+            "comment": "Social network sites such as Twitter, Facebook, Pinterest, and others.",
+            "pos": "noun",
+            "translation": "Sociala medier, Sociala media"
+        }
+    ],
+    "Sorry": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Ledsen"
+        }
+    ],
+    "spam": [
+        {
+            "comment": "Mark as spam = Markera som skr\u00e4ppost",
+            "pos": "adjective",
+            "translation": "skr\u00e4ppost"
+        }
+    ],
+    "spam queue": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "skr\u00e4ppost-k\u00f6"
+        }
+    ],
+    "specify": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "ange\/specifiera"
+        }
+    ],
+    "SRV record": [
+        {
+            "comment": "A type of a custom DNS record",
+            "pos": "noun",
+            "translation": "SRV-information"
+        }
+    ],
+    "staff": [
+        {
+            "comment": "Ex: \"...being reviewed by a staff member\" = \"...granskas av en anst\u00e4lld\". Ex 2: \"Staff picks\" = \"Redaktionens favoriter\"",
+            "pos": "noun",
+            "translation": "anst\u00e4lld\/redakt\u00f6r"
+        }
+    ],
+    "stat": [
+        {
+            "comment": "N\u00e4r det handlar om en bit information. Ex: \"Select a stat that interests you to learn more.\" = \"Tryck p\u00e5 statistik som intresserar dig f\u00f6r att l\u00e4ra dig mer.\"",
+            "pos": "noun",
+            "translation": "statistik"
+        }
+    ],
+    "Status": [
+        {
+            "comment": "F\u00f6r post format-typen \"status\"",
+            "pos": "noun",
+            "translation": "Statusuppdatering"
+        }
+    ],
+    "stick": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "klistra"
+        }
+    ],
+    "sticky": [
+        {
+            "comment": "Sticky posts = Fastklistrade inl\u00e4gg",
+            "pos": "noun",
+            "translation": "klistrat"
+        }
+    ],
+    "sticky post": [
+        {
+            "comment": "A post marked as \u201csticky\u201d will appear above all other posts. More info: http:\/\/en.support.wordpress.com\/posts\/post-visibility\/#sticky-posts",
+            "pos": "noun",
+            "translation": "(fast)klistrat inl\u00e4gg"
+        }
+    ],
+    "Store": [
+        {
+            "comment": "WordPress.com Store where product upgrades can be purchased: http:\/\/store.wordpress.com\/",
+            "pos": "noun",
+            "translation": "Butik\/Aff\u00e4r"
+        }
+    ],
+    "store": [
+        {
+            "comment": "Main menu item, see \u201cWordPress.com Store\u201d",
+            "pos": "noun",
+            "translation": "butik\/aff\u00e4r"
+        }
+    ],
+    "string": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "str\u00e4ng"
+        }
+    ],
+    "subpanel": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "underpanel"
+        }
+    ],
+    "subscribe": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "prenumerera"
+        }
+    ],
+    "subscriber": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "prenumerant"
+        }
+    ],
+    "subscription": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "prenumeration"
+        }
+    ],
+    "subscription dashboard": [
+        {
+            "comment": "Page where a user can see and modify their subscriptions.",
+            "pos": "noun",
+            "translation": "prenumerationspanel"
+        }
+    ],
+    "Subversion": [
+        {
+            "comment": "WordPress development tool - https:\/\/subversion.apache.org\/ (SVN)",
+            "pos": "noun",
+            "translation": "Subversion"
+        }
+    ],
+    "subversion": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "subversion"
+        }
+    ],
+    "summary emails": [
+        {
+            "comment": "Emails sent to blog subscribers that include several posts over a period of time (as opposed to instant post emails)",
+            "pos": "noun",
+            "translation": "summeringar via e-post"
+        }
+    ],
+    "supercharge, super-charge": [
+        {
+            "comment": "Skriv om till \"G\u00f6r din webbplats \u00e4nnu b\u00e4ttre\" el likn. Lame.",
+            "pos": "verb",
+            "translation": "g\u00f6r \u00e4nnu b\u00e4ttre"
+        }
+    ],
+    "supercharged": [
+        {
+            "comment": "\"The Blog, supercharged\" = \"Bloggen, gjord \u00e4nnu b\u00e4ttre\"",
+            "pos": "adjective",
+            "translation": "\u00e4nnu b\u00e4ttre"
+        }
+    ],
+    "support guide": [
+        {
+            "comment": "Support page\/article",
+            "pos": "noun",
+            "translation": "supportguide"
+        }
+    ],
+    "support page": [
+        {
+            "comment": "A webpage with support information",
+            "pos": "noun",
+            "translation": "supportsida"
+        }
+    ],
+    "support team": [
+        {
+            "comment": "WordPress.com team providing technical and billing support.",
+            "pos": "noun",
+            "translation": "supportteam"
+        }
+    ],
+    "survey": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "unders\u00f6kning"
+        }
+    ],
+    "Tag": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Tagg"
+        }
+    ],
+    "tag cloud": [
+        {
+            "comment": "Vanligtvis en widget som visar vanliga etiketter p\u00e5 bloggen.",
+            "pos": "noun",
+            "translation": "taggmoln"
+        }
+    ],
+    "tagged": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "taggat"
+        }
+    ],
+    "tagline": [
+        {
+            "comment": "Ex \"The website's tagline:\" = \"Webbplatsens slogan:\"",
+            "pos": "noun",
+            "translation": "slogan"
+        }
+    ],
+    "Tags": [
+        {
+            "comment": "(plural) Matchar core WP",
+            "pos": "noun",
+            "translation": "Etiketter"
+        }
+    ],
+    "taxonomy": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "taxonomi"
+        }
+    ],
+    "template": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mall"
+        }
+    ],
+    "template hierarchy": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mall-hierarki"
+        }
+    ],
+    "term": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "term"
+        }
+    ],
+    "Terms of Service": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Anv\u00e4ndarvillkor"
+        }
+    ],
+    "text editor": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "textredigerare"
+        }
+    ],
+    "theme": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tema"
+        }
+    ],
+    "Theme Showcase": [
+        {
+            "comment": "Theme Showcase finns p\u00e5 theme.wordpress.com och \u00e4r ett bibliotek av teman menat att inspirera och hj\u00e4lpa anv\u00e4ndare hitta teman de gillar.",
+            "pos": "noun",
+            "translation": "Tema-galleriet"
+        }
+    ],
+    "thumbnail": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "miniatyr"
+        }
+    ],
+    "time stamp": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tidsst\u00e4mpel"
+        }
+    ],
+    "timestamp": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tidsst\u00e4mpel"
+        }
+    ],
+    "Title": [
+        {
+            "comment": "Generellt \"Rubrik\" om det handlar om ett inl\u00e4gg",
+            "pos": "noun",
+            "translation": "Rubrik"
+        }
+    ],
+    "toggle": [
+        {
+            "comment": "Eftersom \"toggle\" oftast anv\u00e4nds f\u00f6r att sl\u00e5 p\u00e5 och av funktioner eller objekt \u00e4r det b\u00e4ttre att formulera om som \"sl\u00e5 p\u00e5\/av\" och inte anv\u00e4nda \"v\u00e4xla\". Ex.: \"Toggle comments\" = \"Sl\u00e5 p\u00e5\/av kommentarer\"",
+            "pos": "verb",
+            "translation": "sl\u00e5 p\u00e5\/av"
+        }
+    ],
+    "Toolbar": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Verktygsf\u00e4lt"
+        }
+    ],
+    "Top Pages": [
+        {
+            "comment": "Used in the Stats module",
+            "pos": "noun",
+            "translation": "Popul\u00e4raste sidorna"
+        }
+    ],
     "top posts": [
         {
             "comment": "N\u00e4r det g\u00e4ller en manuell lista av handplockade inl\u00e4gg, ex vis F\u00e4rskpressat: \"F\u00e4rskpressat: de b\u00e4sta inl\u00e4ggen fr\u00e5n WordPress.com\"",
@@ -2219,96 +2987,132 @@
             "translation": "popul\u00e4raste inl\u00e4ggen"
         }
     ],
-    "topic": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "\u00e4mne"
-    },
-    "trackback": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "trackback"
-    },
-    "transcript": {
-        "comment": "N\u00e4r det handlar om chattsupport, ex \"Below is a transcript of your recent chat with WordPress.com support\" = \"Nedan f\u00f6ljer en kopia av din chatt med WordPress.com-supporten\"",
-        "pos": "noun",
-        "translation": "kopia"
-    },
-    "Transient": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Tillf\u00e4llig"
-    },
-    "trash": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "papperskorg"
-    },
-    "trend": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "trend"
-    },
-    "trending": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "trendande"
-    },
-    "trial period": {
-        "comment": "A period during which a user can try out a premium feature. Once the trial period is over, the user is expected to either pay to continue using the feature, otherwise the feature is no longer available.",
-        "pos": "noun",
-        "translation": "testperiod"
-    },
-    "troubleshooting": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "fels\u00f6kning"
-    },
-    "Twitter": {
-        "comment": "Social media service - http:\/\/twitter.com\/",
-        "pos": "noun",
-        "translation": "Twitter"
-    },
-    "two factor authentication": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tv\u00e5faktors-autentisiering"
-    },
-    "Two Step Authentication": {
-        "comment": "Ett s\u00e4tt att \u00f6ka s\u00e4kerheten f\u00f6r ett konto genom att kr\u00e4va en unik kod av anv\u00e4ndaren f\u00f6r varje inloggning.",
-        "pos": "noun",
-        "translation": "tv\u00e5stegs-autentisiering"
-    },
-    "uh oh": {
-        "comment": "",
-        "pos": "interjection",
-        "translation": "aj d\u00e5"
-    },
-    "unapprove": {
-        "comment": "Ex: \"Unapprove this comment\" = \"Godk\u00e4nn ej denna kommentar\". Ex 2: \"Unapproved\" = \"Ej godk\u00e4nd\". Undvik \"f\u00f6rkasta\" eftersom det \u00e4r ett sv\u00e5rare ord.",
-        "pos": "verb",
-        "translation": "godk\u00e4nn ej"
-    },
-    "uncheck": {
-        "comment": "Att bocka av eller avbocka en l\u00e5da, motsats \"bocka i\" eller \"bocka\". T.ex. \"Check the box to receive hugs\" = \"Bocka i l\u00e5dan f\u00f6r att f\u00e5 kramar\"",
-        "pos": "verb",
-        "translation": "bocka av"
-    },
-    "Unfollow": {
-        "comment": "The process of unsubscribing from updates from a blog. More info: http:\/\/en.support.wordpress.com\/following\/",
-        "pos": "verb",
-        "translation": "Sluta f\u00f6lj"
-    },
-    "Unlimited Storage": {
-        "comment": "Unlimited space for blog\/site content and files (premium feature)",
-        "pos": "noun",
-        "translation": "Obegr\u00e4nsat utrymme"
-    },
-    "unsubscribe": {
-        "comment": "Anv\u00e4nds oftast i e-postsammanhang. Subscribe = Prenumerera, Unsubscribe = \"Avsluta prenumeration\".",
-        "pos": "verb",
-        "translation": "avsluta prenumeration"
-    },
+    "topic": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "\u00e4mne"
+        }
+    ],
+    "trackback": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "trackback"
+        }
+    ],
+    "transcript": [
+        {
+            "comment": "N\u00e4r det handlar om chattsupport, ex \"Below is a transcript of your recent chat with WordPress.com support\" = \"Nedan f\u00f6ljer en kopia av din chatt med WordPress.com-supporten\"",
+            "pos": "noun",
+            "translation": "kopia"
+        }
+    ],
+    "Transient": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Tillf\u00e4llig"
+        }
+    ],
+    "trash": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "papperskorg"
+        }
+    ],
+    "trend": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "trend"
+        }
+    ],
+    "trending": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "trendande"
+        }
+    ],
+    "trial period": [
+        {
+            "comment": "A period during which a user can try out a premium feature. Once the trial period is over, the user is expected to either pay to continue using the feature, otherwise the feature is no longer available.",
+            "pos": "noun",
+            "translation": "testperiod"
+        }
+    ],
+    "troubleshooting": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "fels\u00f6kning"
+        }
+    ],
+    "Twitter": [
+        {
+            "comment": "Social media service - http:\/\/twitter.com\/",
+            "pos": "noun",
+            "translation": "Twitter"
+        }
+    ],
+    "two factor authentication": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tv\u00e5faktors-autentisiering"
+        }
+    ],
+    "Two Step Authentication": [
+        {
+            "comment": "Ett s\u00e4tt att \u00f6ka s\u00e4kerheten f\u00f6r ett konto genom att kr\u00e4va en unik kod av anv\u00e4ndaren f\u00f6r varje inloggning.",
+            "pos": "noun",
+            "translation": "tv\u00e5stegs-autentisiering"
+        }
+    ],
+    "uh oh": [
+        {
+            "comment": "",
+            "pos": "interjection",
+            "translation": "aj d\u00e5"
+        }
+    ],
+    "unapprove": [
+        {
+            "comment": "Ex: \"Unapprove this comment\" = \"Godk\u00e4nn ej denna kommentar\". Ex 2: \"Unapproved\" = \"Ej godk\u00e4nd\". Undvik \"f\u00f6rkasta\" eftersom det \u00e4r ett sv\u00e5rare ord.",
+            "pos": "verb",
+            "translation": "godk\u00e4nn ej"
+        }
+    ],
+    "uncheck": [
+        {
+            "comment": "Att bocka av eller avbocka en l\u00e5da, motsats \"bocka i\" eller \"bocka\". T.ex. \"Check the box to receive hugs\" = \"Bocka i l\u00e5dan f\u00f6r att f\u00e5 kramar\"",
+            "pos": "verb",
+            "translation": "bocka av"
+        }
+    ],
+    "Unfollow": [
+        {
+            "comment": "The process of unsubscribing from updates from a blog. More info: http:\/\/en.support.wordpress.com\/following\/",
+            "pos": "verb",
+            "translation": "Sluta f\u00f6lj"
+        }
+    ],
+    "Unlimited Storage": [
+        {
+            "comment": "Unlimited space for blog\/site content and files (premium feature)",
+            "pos": "noun",
+            "translation": "Obegr\u00e4nsat utrymme"
+        }
+    ],
+    "unsubscribe": [
+        {
+            "comment": "Anv\u00e4nds oftast i e-postsammanhang. Subscribe = Prenumerera, Unsubscribe = \"Avsluta prenumeration\".",
+            "pos": "verb",
+            "translation": "avsluta prenumeration"
+        }
+    ],
     "upload": [
         {
             "comment": "",
@@ -2321,66 +3125,90 @@
             "translation": "ladda upp"
         }
     ],
-    "uploader": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "uppladdare"
-    },
-    "URI": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "URI"
-    },
-    "URL": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "URL"
-    },
-    "user": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "anv\u00e4ndare"
-    },
-    "username": {
-        "comment": "WordPress.com account username (the name used to log in)",
-        "pos": "noun",
-        "translation": "anv\u00e4ndarnamn"
-    },
-    "valid": {
-        "comment": "",
-        "pos": "adjective",
-        "translation": "giltig"
-    },
-    "VaultPress": {
-        "comment": "Automattic security and backup plugin for self-hosted installations of WordPress - http:\/\/vaultpress.com\/",
-        "pos": "noun",
-        "translation": "VaultPress"
-    },
-    "verification code": {
-        "comment": "A numeric code used in two-step authentification, for added account security. More info: https:\/\/en.support.wordpress.com\/security\/two-step-authentication\/#logging-in",
-        "pos": "noun",
-        "translation": "verifieringskod"
-    },
-    "verify": {
-        "comment": "t.ex. \"Verify code\" = \"Kontrollera kod\"",
-        "pos": "verb",
-        "translation": "kontrollera"
-    },
-    "video": {
-        "comment": "F\u00f6r att undvika problem i plural (t ex \"videos\" = \"videoklipp\")",
-        "pos": "noun",
-        "translation": "videoklipp"
-    },
-    "VideoPress": {
-        "comment": "WordPress.com product name (paid upgrade)",
-        "pos": "noun",
-        "translation": "VideoPress"
-    },
-    "videos": {
-        "comment": "F\u00f6r att undvika problem i plural, f\u00f6rs\u00f6k alltid anv\u00e4nda \"videoklipp\" \u00f6ver bara \"video\"",
-        "pos": "noun",
-        "translation": "videoklipp"
-    },
+    "uploader": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "uppladdare"
+        }
+    ],
+    "URI": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "URI"
+        }
+    ],
+    "URL": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "URL"
+        }
+    ],
+    "user": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "anv\u00e4ndare"
+        }
+    ],
+    "username": [
+        {
+            "comment": "WordPress.com account username (the name used to log in)",
+            "pos": "noun",
+            "translation": "anv\u00e4ndarnamn"
+        }
+    ],
+    "valid": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "giltig"
+        }
+    ],
+    "VaultPress": [
+        {
+            "comment": "Automattic security and backup plugin for self-hosted installations of WordPress - http:\/\/vaultpress.com\/",
+            "pos": "noun",
+            "translation": "VaultPress"
+        }
+    ],
+    "verification code": [
+        {
+            "comment": "A numeric code used in two-step authentification, for added account security. More info: https:\/\/en.support.wordpress.com\/security\/two-step-authentication\/#logging-in",
+            "pos": "noun",
+            "translation": "verifieringskod"
+        }
+    ],
+    "verify": [
+        {
+            "comment": "t.ex. \"Verify code\" = \"Kontrollera kod\"",
+            "pos": "verb",
+            "translation": "kontrollera"
+        }
+    ],
+    "video": [
+        {
+            "comment": "F\u00f6r att undvika problem i plural (t ex \"videos\" = \"videoklipp\")",
+            "pos": "noun",
+            "translation": "videoklipp"
+        }
+    ],
+    "VideoPress": [
+        {
+            "comment": "WordPress.com product name (paid upgrade)",
+            "pos": "noun",
+            "translation": "VideoPress"
+        }
+    ],
+    "videos": [
+        {
+            "comment": "F\u00f6r att undvika problem i plural, f\u00f6rs\u00f6k alltid anv\u00e4nda \"videoklipp\" \u00f6ver bara \"video\"",
+            "pos": "noun",
+            "translation": "videoklipp"
+        }
+    ],
     "view": [
         {
             "comment": "",
@@ -2393,56 +3221,76 @@
             "translation": "vy"
         }
     ],
-    "web server": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "webbserver"
-    },
-    "website": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "webbplats"
-    },
-    "whitelist": {
-        "comment": "\"Whitelist IP Address\" = \"Vitlista IP-adress\"",
-        "pos": "verb",
-        "translation": "vitlista"
-    },
-    "Widget": {
-        "comment": "A self-contained area of a web page that performs a specific function. For example, you can use a widget to display your Twitter feed in your site\u2019s sidebar. More info: http:\/\/en.support.wordpress.com\/widgets\/",
-        "pos": "noun",
-        "translation": "Widget"
-    },
-    "WordCamp": {
-        "comment": "WordPress community event - http:\/\/wordcamp.org\/",
-        "pos": "noun",
-        "translation": "WordCamp"
-    },
-    "WordPress": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "WordPress"
-    },
-    "XML-RPC": {
-        "comment": "More info: http:\/\/codex.wordpress.org\/XML-RPC_Support",
-        "pos": "noun",
-        "translation": "XML-RPC"
-    },
-    "yay": {
-        "comment": "\"Yay! Your theme was activated.\" = \"Snyggt! Ditt tema har aktiverats.\"",
-        "pos": "interjection",
-        "translation": "snyggt"
-    },
-    "your": {
-        "comment": "If the program addresses the user directly, retain pronoun. \"Please update your payment information\" = \"V\u00e4nligen uppdatera din betalningsinformation\"",
-        "pos": "pronoun",
-        "translation": "din\/ditt"
-    },
-    "Yummy Pie": {
-        "comment": "Humorous reference to a pie chart. Suggest translating as \"pie chart\" to avoid confusion.",
-        "pos": "noun",
-        "translation": "Cirkeldiagram"
-    },
+    "web server": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "webbserver"
+        }
+    ],
+    "website": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "webbplats"
+        }
+    ],
+    "whitelist": [
+        {
+            "comment": "\"Whitelist IP Address\" = \"Vitlista IP-adress\"",
+            "pos": "verb",
+            "translation": "vitlista"
+        }
+    ],
+    "Widget": [
+        {
+            "comment": "A self-contained area of a web page that performs a specific function. For example, you can use a widget to display your Twitter feed in your site\u2019s sidebar. More info: http:\/\/en.support.wordpress.com\/widgets\/",
+            "pos": "noun",
+            "translation": "Widget"
+        }
+    ],
+    "WordCamp": [
+        {
+            "comment": "WordPress community event - http:\/\/wordcamp.org\/",
+            "pos": "noun",
+            "translation": "WordCamp"
+        }
+    ],
+    "WordPress": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "WordPress"
+        }
+    ],
+    "XML-RPC": [
+        {
+            "comment": "More info: http:\/\/codex.wordpress.org\/XML-RPC_Support",
+            "pos": "noun",
+            "translation": "XML-RPC"
+        }
+    ],
+    "yay": [
+        {
+            "comment": "\"Yay! Your theme was activated.\" = \"Snyggt! Ditt tema har aktiverats.\"",
+            "pos": "interjection",
+            "translation": "snyggt"
+        }
+    ],
+    "your": [
+        {
+            "comment": "If the program addresses the user directly, retain pronoun. \"Please update your payment information\" = \"V\u00e4nligen uppdatera din betalningsinformation\"",
+            "pos": "pronoun",
+            "translation": "din\/ditt"
+        }
+    ],
+    "Yummy Pie": [
+        {
+            "comment": "Humorous reference to a pie chart. Suggest translating as \"pie chart\" to avoid confusion.",
+            "pos": "noun",
+            "translation": "Cirkeldiagram"
+        }
+    ],
     "ZIP": [
         {
             "comment": "File format type",
@@ -2455,9 +3303,11 @@
             "translation": "Postnummer"
         }
     ],
-    "\\a\\t": {
-        "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example \"at\" in \"M j, Y \\a\\t g:i a\" = \"j M, Y \\k\\l\\. H:i\" (\"Jan 1, 2015 at 1:06 pm\" = \"1 jan, 2015 kl. 13:06\"). NOTE: the backslashes are only escape characters, keep them and have one for each character that needs to be output (three in \"kl.\").",
-        "pos": "noun",
-        "translation": "\\k\\l\\."
-    }
+    "\\a\\t": [
+        {
+            "comment": "Denote time with \"kl.\" if another placeholder for time has been used in English, for example \"at\" in \"M j, Y \\a\\t g:i a\" = \"j M, Y \\k\\l\\. H:i\" (\"Jan 1, 2015 at 1:06 pm\" = \"1 jan, 2015 kl. 13:06\"). NOTE: the backslashes are only escape characters, keep them and have one for each character that needs to be output (three in \"kl.\").",
+            "pos": "noun",
+            "translation": "\\k\\l\\."
+        }
+    ]
 }

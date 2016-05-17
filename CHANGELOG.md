@@ -1,9 +1,10 @@
 #1.0.8
 * Fix: Better regular expression to ignore nested terms
 * Fix: Ignore browser hotkey shortcut
-* Fix: No support multiple definitions for the same ter
+* Fix: No support multiple definitions for the same term
 * Enhancement: Alert with hotkeys when the string is not visible
 * Enhancement: New glossaries: ast
+* Feature: Shortcut on Ctrl+Shift+F to replace space near symbols by casiopa
 
 #1.0.7
 * Glossaries generated with GLotDictJSON now contain also the `pos` value

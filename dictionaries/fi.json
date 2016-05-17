@@ -1,454 +1,634 @@
 {
-    "about the user": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "tietoja k\u00e4ytt\u00e4j\u00e4st\u00e4"
-    },
-    "accordion": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "haitari"
-    },
-    "action": {
-        "comment": "More Actions => Lis\u00e4\u00e4 toimintoja",
-        "pos": "substantiivi",
-        "translation": "toiminto"
-    },
-    "activate": {
-        "comment": "Activation failed. => K\u00e4ytt\u00f6\u00f6notto ep\u00e4onnistui \/ K\u00e4ytt\u00f6\u00f6notto ei onnistunut; Activated plugins => K\u00e4yt\u00f6ss\u00e4 olevat lis\u00e4osat.",
-        "pos": "verbi",
-        "translation": "ota k\u00e4ytt\u00f6\u00f6n"
-    },
-    "active": {
-        "comment": "",
-        "pos": "adverbi",
-        "translation": "k\u00e4yt\u00f6ss\u00e4"
-    },
-    "activity": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tapahtumat, aktiviteetti"
-    },
-    "add-on": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "laajennus(osa)"
-    },
-    "admin": {
-        "comment": "Super Admin => J\u00e4rjestelm\u00e4nvalvoja",
-        "pos": "substantiivi",
-        "translation": "p\u00e4\u00e4k\u00e4ytt\u00e4j\u00e4"
-    },
-    "advanced": {
-        "comment": "Advanced Options => Edistyneet asetukset",
-        "pos": "adjektiivi",
-        "translation": "edistynyt"
-    },
-    "aligment": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tasaus"
-    },
-    "align": {
-        "comment": "Align Left => Tasaa vasemmalle",
-        "pos": "verbi",
-        "translation": "tasaa"
-    },
-    "anti-spam": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "roskapostin esto"
-    },
-    "API": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "rajapinta, rajapinta\/API, API"
-    },
-    "appearance": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ulkoasu"
-    },
-    "apply": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "k\u00e4yt\u00e4, hyv\u00e4ksy, sovella"
-    },
-    "archive": {
-        "comment": "Archive => Arkistoi; Product archive => Tuoteluettelo",
-        "pos": "substantiivi",
-        "translation": "arkisto, luettelo"
-    },
-    "archived": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "arkistoitu"
-    },
-    "are you sure": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "haluatko varmasti"
-    },
-    "ascending": {
-        "comment": "lyhennys: asc",
-        "pos": "adjektiivi",
-        "translation": "nouseva"
-    },
-    "aside": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sivuhuomautus"
-    },
-    "assign": {
-        "comment": "Assigned Menu => Valittu valikko",
-        "pos": "verbi",
-        "translation": "valita, nimet\u00e4"
-    },
-    "attach": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "liit\u00e4"
-    },
-    "attachment": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "liite, liitetiedosto"
-    },
-    "attribute": {
-        "comment": "Product attributes => Tuotteen ominaisuudet; Page Attributes => Sivun asetukset",
-        "pos": "substantiivi",
-        "translation": "ominaisuus, attribuutti"
-    },
-    "authenticate": {
-        "comment": "Authentication Keys => Autentikointiavaimet",
-        "pos": "verbi",
-        "translation": "varmenna"
-    },
-    "author": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kirjoittaja, tekij\u00e4"
-    },
-    "autosave": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "automaattisesti tallennettu versio"
-    },
-    "backend": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "hallintapuoli"
-    },
-    "background": {
-        "comment": "Choose a Background Image => Valitse taustakuva",
-        "pos": "substantiivi",
-        "translation": "tausta"
-    },
-    "batch": {
-        "comment": "Esim. batch operations => massatoiminnot",
-        "pos": "noun",
-        "translation": "kimppu, ryv\u00e4s, massa-"
-    },
-    "blogger": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "blogisti, bloggaaja"
-    },
-    "blurb": {
-        "comment": "Blurb Content => Mainosteksti+kuva, sis\u00e4lt\u00f6; To make your blurb a link, input your destination URL\u00a0=> Kirjoita linkin kohteen verkko-osoite\/URL, kun haluat tehd\u00e4 Mainosteksti+kuvasta linkin",
-        "pos": "substantiivi",
-        "translation": "mainosteksti & kuva"
-    },
-    "bookmark": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kirjanmerkki"
-    },
-    "bookmarklet": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sovelluskirjanmerkki"
-    },
-    "box": {
-        "comment": "Type of the box: => Laatikon laji: info; varoitus; lataus; \u2026",
-        "pos": "substantiivi",
-        "translation": "laatikko, valintaruutu"
-    },
-    "boxed": {
-        "comment": "sivun asettelussa, layout. Boxed Layout => Kehystetty sivusto (rajattu leveys)",
-        "pos": "ilmaisu",
-        "translation": "kehystetty sivusto (rajattu leveys)"
-    },
-    "breadcrumb path": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "murupolku"
-    },
-    "breadcrumbs": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "murut"
-    },
-    "browse": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "selaa"
-    },
-    "browser": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "selain"
-    },
-    "bug": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "bugi, virhe\/puute koodissa"
-    },
-    "bulk": {
-        "comment": "Bulk Actions => Massatoiminnot",
-        "pos": "substantiivi",
-        "translation": "massa"
-    },
-    "button": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "painike"
-    },
-    "cache": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "v\u00e4limuisti"
-    },
-    "call to action": {
-        "comment": "lyhennys: CTA. Call To Action Module Settings => Toimi heti -moduulin asetukset",
-        "pos": "ilmaisu",
-        "translation": "toimi heti -kehote"
-    },
-    "cancel": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "peru. peruuta, kumoa"
-    },
-    "canonical URL": {
-        "comment": "Enable canonical URL\u2019s => Ota k\u00e4ytt\u00f6\u00f6n alkuper\u00e4n ilmaisevat verkko-osoitteet (canonical URL)",
-        "pos": "substantiivi",
-        "translation": "alkuper\u00e4n ilmaiseva verkko-osoite"
-    },
-    "capabilities": {
-        "comment": "The current user\u2019s role must have user editing capabilities => K\u00e4ytt\u00e4m\u00e4ll\u00e4si tunnuksella on oltava k\u00e4ytt\u00e4jien muokkausoikeus; Capabilities => Roolien p\u00e4\u00e4syoikeudet",
-        "pos": "substantiivi",
-        "translation": "kyvyt, oikeudet"
-    },
-    "captcha": {
-        "comment": "Enter custom label for Captcha => Kirjoita mukautettu nimi Roskapostin esto -kent\u00e4lle; Captcha Font Size => Kuvavarmennuksen kirjainten koko",
-        "pos": "substantiivi",
-        "translation": "roskapostin esto, kuvavarmenne"
-    },
-    "caption": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kuvateksti"
-    },
-    "carousel": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "karuselli"
-    },
-    "catalog": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tuoteluettelo"
-    },
-    "Category": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "kategoria"
-    },
-    "category": {
-        "comment": "Default Post Category => Artikkeleiden oletuskategoria; Product Category => Osasto; Parent Product Category => Ylemm\u00e4n tason osasto",
-        "pos": "substantiivi",
-        "translation": "kategoria, osasto"
-    },
-    "checkbox": {
-        "comment": "Pre-check the checkbox? => Valintaruudun esivalinta?",
-        "pos": "substantiivi",
-        "translation": "valintaruutu"
-    },
-    "child": {
-        "comment": "hierarkiassa: This child theme inherits templates from a parent theme => T\u00e4m\u00e4 alateema perii malleja p\u00e4\u00e4teemasta;",
-        "pos": "substantiivi",
-        "translation": "alataso, alempi taso"
-    },
-    "child theme": {
-        "comment": "This is a child theme of X. => T\u00e4m\u00e4 on teeman X lapsiteema",
-        "pos": "substantiivi",
-        "translation": "lapsiteema"
-    },
-    "city": {
-        "comment": "verkkokaupassa: Town \/ City => Postitoimipaikka",
-        "pos": "substantiivi",
-        "translation": "kaupunki, postitoimipaikka"
-    },
-    "clear": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "pyyhi"
-    },
-    "clone": {
-        "comment": "kloonaa",
-        "pos": "verbi",
-        "translation": "monista"
-    },
-    "collapse": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "piilota"
-    },
-    "color scheme": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "v\u00e4riasetelma"
-    },
-    "common settings": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "tavalliset asetukset, yleiset asetukset"
-    },
-    "configuration": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "m\u00e4\u00e4ritykset, asetus"
-    },
-    "configure": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "m\u00e4\u00e4rit\u00e4"
-    },
-    "confirm": {
-        "comment": "Confirm Removal => Vahvista poistaminen",
-        "pos": "verbi",
-        "translation": "vahvista"
-    },
-    "contact form": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "yhteydenottolomake"
-    },
-    "contact info": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "yhteystiedot"
-    },
-    "content": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sis\u00e4lt\u00f6"
-    },
-    "contributor": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "avustaja"
-    },
-    "controls": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ohjaimet"
-    },
-    "conversion rate": {
-        "comment": "Can potentially increase conversion rates => Voi lis\u00e4t\u00e4 toteutuneita myyntej\u00e4; Currency conversion rate => Muunnoksen valuuttakurssi",
-        "pos": "substantiivi",
-        "translation": "menestysprosentti"
-    },
-    "core": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ydin"
-    },
-    "count": {
-        "comment": "Subscriber Count => Tilaajia kpl",
-        "pos": "substantiivi",
-        "translation": "lukum\u00e4\u00e4r\u00e4"
-    },
-    "countdown": {
-        "comment": "Countdown Timer => Alasp\u00e4in laskeva ajastin",
-        "pos": "adjektiivi",
-        "translation": "alasp\u00e4in laskeva"
-    },
-    "coupon": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kuponki, alennuskoodi"
-    },
-    "coupon code": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "alennuskoodi"
-    },
-    "create": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "luo"
-    },
-    "credits": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tunnustukset, tekij\u00e4t"
-    },
-    "crop": {
-        "comment": "Crop Header Image => Rajaa otsakekuvaa; Crop Selection\u00a0=> Rajaa valittu alue",
-        "pos": "verbi",
-        "translation": "rajaa"
-    },
-    "CSS": {
-        "comment": "(Cascading Style Sheet)",
-        "pos": "substantiivi",
-        "translation": "CSS-tyylitiedosto, CSS-muotoilu"
-    },
-    "CSV": {
-        "comment": "(Comma Separated Values)",
-        "pos": "substantiivi",
-        "translation": "pilkuilla erotettu tiedosto\/CSV"
-    },
-    "custom": {
-        "comment": "Custom field => Mukautettu kentt\u00e4",
-        "pos": "adjektiivi",
-        "translation": "mukautettu, muokattu"
-    },
-    "Customize": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "mukauta"
-    },
-    "customize": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "mukauta"
-    },
-    "Customizer": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "mukautin"
-    },
-    "customizer": {
-        "comment": "Menus in the Customizer => Valikot mukauttimessa",
-        "pos": "substantiivi",
-        "translation": "mukautin"
-    },
-    "dashboard": {
-        "comment": "Visit Dashboard => N\u00e4yt\u00e4 ohjauspaneeli; Return to the WordPress Dashboard =>\u00a0Palaa WordPress hallintapaneeliin; Welcome to your WordPress Dashboard => Tervetuloa WordPressin ohjausn\u00e4kym\u00e4\u00e4n",
-        "pos": "substantiivi",
-        "translation": "hallintapaneeli, ohjauspaneeli"
-    },
-    "date range": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ajanjakso"
-    },
-    "deactivate": {
-        "comment": "License has been deactivated. => Lisenssi on otettu pois k\u00e4yt\u00f6st\u00e4. \/ Lisenssi ei ole en\u00e4\u00e4 k\u00e4yt\u00f6ss\u00e4.; Deactivated plugins => K\u00e4yt\u00f6st\u00e4 poistetut lis\u00e4osat",
-        "pos": "verbi",
-        "translation": "poistaa k\u00e4yt\u00f6st\u00e4"
-    },
+    "about the user": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "tietoja k\u00e4ytt\u00e4j\u00e4st\u00e4"
+        }
+    ],
+    "accordion": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "haitari"
+        }
+    ],
+    "action": [
+        {
+            "comment": "More Actions => Lis\u00e4\u00e4 toimintoja",
+            "pos": "substantiivi",
+            "translation": "toiminto"
+        }
+    ],
+    "activate": [
+        {
+            "comment": "Activation failed. => K\u00e4ytt\u00f6\u00f6notto ep\u00e4onnistui \/ K\u00e4ytt\u00f6\u00f6notto ei onnistunut; Activated plugins => K\u00e4yt\u00f6ss\u00e4 olevat lis\u00e4osat.",
+            "pos": "verbi",
+            "translation": "ota k\u00e4ytt\u00f6\u00f6n"
+        }
+    ],
+    "active": [
+        {
+            "comment": "",
+            "pos": "adverbi",
+            "translation": "k\u00e4yt\u00f6ss\u00e4"
+        }
+    ],
+    "activity": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tapahtumat, aktiviteetti"
+        }
+    ],
+    "add-on": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "laajennus(osa)"
+        }
+    ],
+    "admin": [
+        {
+            "comment": "Super Admin => J\u00e4rjestelm\u00e4nvalvoja",
+            "pos": "substantiivi",
+            "translation": "p\u00e4\u00e4k\u00e4ytt\u00e4j\u00e4"
+        }
+    ],
+    "advanced": [
+        {
+            "comment": "Advanced Options => Edistyneet asetukset",
+            "pos": "adjektiivi",
+            "translation": "edistynyt"
+        }
+    ],
+    "aligment": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tasaus"
+        }
+    ],
+    "align": [
+        {
+            "comment": "Align Left => Tasaa vasemmalle",
+            "pos": "verbi",
+            "translation": "tasaa"
+        }
+    ],
+    "anti-spam": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "roskapostin esto"
+        }
+    ],
+    "API": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "rajapinta, rajapinta\/API, API"
+        }
+    ],
+    "appearance": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ulkoasu"
+        }
+    ],
+    "apply": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "k\u00e4yt\u00e4, hyv\u00e4ksy, sovella"
+        }
+    ],
+    "archive": [
+        {
+            "comment": "Archive => Arkistoi; Product archive => Tuoteluettelo",
+            "pos": "substantiivi",
+            "translation": "arkisto, luettelo"
+        }
+    ],
+    "archived": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "arkistoitu"
+        }
+    ],
+    "are you sure": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "haluatko varmasti"
+        }
+    ],
+    "ascending": [
+        {
+            "comment": "lyhennys: asc",
+            "pos": "adjektiivi",
+            "translation": "nouseva"
+        }
+    ],
+    "aside": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sivuhuomautus"
+        }
+    ],
+    "assign": [
+        {
+            "comment": "Assigned Menu => Valittu valikko",
+            "pos": "verbi",
+            "translation": "valita, nimet\u00e4"
+        }
+    ],
+    "attach": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "liit\u00e4"
+        }
+    ],
+    "attachment": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "liite, liitetiedosto"
+        }
+    ],
+    "attribute": [
+        {
+            "comment": "Product attributes => Tuotteen ominaisuudet; Page Attributes => Sivun asetukset",
+            "pos": "substantiivi",
+            "translation": "ominaisuus, attribuutti"
+        }
+    ],
+    "authenticate": [
+        {
+            "comment": "Authentication Keys => Autentikointiavaimet",
+            "pos": "verbi",
+            "translation": "varmenna"
+        }
+    ],
+    "author": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kirjoittaja, tekij\u00e4"
+        }
+    ],
+    "autosave": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "automaattisesti tallennettu versio"
+        }
+    ],
+    "backend": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "hallintapuoli"
+        }
+    ],
+    "background": [
+        {
+            "comment": "Choose a Background Image => Valitse taustakuva",
+            "pos": "substantiivi",
+            "translation": "tausta"
+        }
+    ],
+    "batch": [
+        {
+            "comment": "Esim. batch operations => massatoiminnot",
+            "pos": "noun",
+            "translation": "kimppu, ryv\u00e4s, massa-"
+        }
+    ],
+    "blogger": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "blogisti, bloggaaja"
+        }
+    ],
+    "blurb": [
+        {
+            "comment": "Blurb Content => Mainosteksti+kuva, sis\u00e4lt\u00f6; To make your blurb a link, input your destination URL\u00a0=> Kirjoita linkin kohteen verkko-osoite\/URL, kun haluat tehd\u00e4 Mainosteksti+kuvasta linkin",
+            "pos": "substantiivi",
+            "translation": "mainosteksti & kuva"
+        }
+    ],
+    "bookmark": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kirjanmerkki"
+        }
+    ],
+    "bookmarklet": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sovelluskirjanmerkki"
+        }
+    ],
+    "box": [
+        {
+            "comment": "Type of the box: => Laatikon laji: info; varoitus; lataus; \u2026",
+            "pos": "substantiivi",
+            "translation": "laatikko, valintaruutu"
+        }
+    ],
+    "boxed": [
+        {
+            "comment": "sivun asettelussa, layout. Boxed Layout => Kehystetty sivusto (rajattu leveys)",
+            "pos": "ilmaisu",
+            "translation": "kehystetty sivusto (rajattu leveys)"
+        }
+    ],
+    "breadcrumb path": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "murupolku"
+        }
+    ],
+    "breadcrumbs": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "murut"
+        }
+    ],
+    "browse": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "selaa"
+        }
+    ],
+    "browser": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "selain"
+        }
+    ],
+    "bug": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "bugi, virhe\/puute koodissa"
+        }
+    ],
+    "bulk": [
+        {
+            "comment": "Bulk Actions => Massatoiminnot",
+            "pos": "substantiivi",
+            "translation": "massa"
+        }
+    ],
+    "button": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "painike"
+        }
+    ],
+    "cache": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "v\u00e4limuisti"
+        }
+    ],
+    "call to action": [
+        {
+            "comment": "lyhennys: CTA. Call To Action Module Settings => Toimi heti -moduulin asetukset",
+            "pos": "ilmaisu",
+            "translation": "toimi heti -kehote"
+        }
+    ],
+    "cancel": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "peru. peruuta, kumoa"
+        }
+    ],
+    "canonical URL": [
+        {
+            "comment": "Enable canonical URL\u2019s => Ota k\u00e4ytt\u00f6\u00f6n alkuper\u00e4n ilmaisevat verkko-osoitteet (canonical URL)",
+            "pos": "substantiivi",
+            "translation": "alkuper\u00e4n ilmaiseva verkko-osoite"
+        }
+    ],
+    "capabilities": [
+        {
+            "comment": "The current user\u2019s role must have user editing capabilities => K\u00e4ytt\u00e4m\u00e4ll\u00e4si tunnuksella on oltava k\u00e4ytt\u00e4jien muokkausoikeus; Capabilities => Roolien p\u00e4\u00e4syoikeudet",
+            "pos": "substantiivi",
+            "translation": "kyvyt, oikeudet"
+        }
+    ],
+    "captcha": [
+        {
+            "comment": "Enter custom label for Captcha => Kirjoita mukautettu nimi Roskapostin esto -kent\u00e4lle; Captcha Font Size => Kuvavarmennuksen kirjainten koko",
+            "pos": "substantiivi",
+            "translation": "roskapostin esto, kuvavarmenne"
+        }
+    ],
+    "caption": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kuvateksti"
+        }
+    ],
+    "carousel": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "karuselli"
+        }
+    ],
+    "catalog": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tuoteluettelo"
+        }
+    ],
+    "Category": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "kategoria"
+        }
+    ],
+    "category": [
+        {
+            "comment": "Default Post Category => Artikkeleiden oletuskategoria; Product Category => Osasto; Parent Product Category => Ylemm\u00e4n tason osasto",
+            "pos": "substantiivi",
+            "translation": "kategoria, osasto"
+        }
+    ],
+    "checkbox": [
+        {
+            "comment": "Pre-check the checkbox? => Valintaruudun esivalinta?",
+            "pos": "substantiivi",
+            "translation": "valintaruutu"
+        }
+    ],
+    "child": [
+        {
+            "comment": "hierarkiassa: This child theme inherits templates from a parent theme => T\u00e4m\u00e4 alateema perii malleja p\u00e4\u00e4teemasta;",
+            "pos": "substantiivi",
+            "translation": "alataso, alempi taso"
+        }
+    ],
+    "child theme": [
+        {
+            "comment": "This is a child theme of X. => T\u00e4m\u00e4 on teeman X lapsiteema",
+            "pos": "substantiivi",
+            "translation": "lapsiteema"
+        }
+    ],
+    "city": [
+        {
+            "comment": "verkkokaupassa: Town \/ City => Postitoimipaikka",
+            "pos": "substantiivi",
+            "translation": "kaupunki, postitoimipaikka"
+        }
+    ],
+    "clear": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "pyyhi"
+        }
+    ],
+    "clone": [
+        {
+            "comment": "kloonaa",
+            "pos": "verbi",
+            "translation": "monista"
+        }
+    ],
+    "collapse": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "piilota"
+        }
+    ],
+    "color scheme": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "v\u00e4riasetelma"
+        }
+    ],
+    "common settings": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "tavalliset asetukset, yleiset asetukset"
+        }
+    ],
+    "configuration": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "m\u00e4\u00e4ritykset, asetus"
+        }
+    ],
+    "configure": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "m\u00e4\u00e4rit\u00e4"
+        }
+    ],
+    "confirm": [
+        {
+            "comment": "Confirm Removal => Vahvista poistaminen",
+            "pos": "verbi",
+            "translation": "vahvista"
+        }
+    ],
+    "contact form": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "yhteydenottolomake"
+        }
+    ],
+    "contact info": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "yhteystiedot"
+        }
+    ],
+    "content": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sis\u00e4lt\u00f6"
+        }
+    ],
+    "contributor": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "avustaja"
+        }
+    ],
+    "controls": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ohjaimet"
+        }
+    ],
+    "conversion rate": [
+        {
+            "comment": "Can potentially increase conversion rates => Voi lis\u00e4t\u00e4 toteutuneita myyntej\u00e4; Currency conversion rate => Muunnoksen valuuttakurssi",
+            "pos": "substantiivi",
+            "translation": "menestysprosentti"
+        }
+    ],
+    "core": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ydin"
+        }
+    ],
+    "count": [
+        {
+            "comment": "Subscriber Count => Tilaajia kpl",
+            "pos": "substantiivi",
+            "translation": "lukum\u00e4\u00e4r\u00e4"
+        }
+    ],
+    "countdown": [
+        {
+            "comment": "Countdown Timer => Alasp\u00e4in laskeva ajastin",
+            "pos": "adjektiivi",
+            "translation": "alasp\u00e4in laskeva"
+        }
+    ],
+    "coupon": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kuponki, alennuskoodi"
+        }
+    ],
+    "coupon code": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "alennuskoodi"
+        }
+    ],
+    "create": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "luo"
+        }
+    ],
+    "credits": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tunnustukset, tekij\u00e4t"
+        }
+    ],
+    "crop": [
+        {
+            "comment": "Crop Header Image => Rajaa otsakekuvaa; Crop Selection\u00a0=> Rajaa valittu alue",
+            "pos": "verbi",
+            "translation": "rajaa"
+        }
+    ],
+    "CSS": [
+        {
+            "comment": "(Cascading Style Sheet)",
+            "pos": "substantiivi",
+            "translation": "CSS-tyylitiedosto, CSS-muotoilu"
+        }
+    ],
+    "CSV": [
+        {
+            "comment": "(Comma Separated Values)",
+            "pos": "substantiivi",
+            "translation": "pilkuilla erotettu tiedosto\/CSV"
+        }
+    ],
+    "custom": [
+        {
+            "comment": "Custom field => Mukautettu kentt\u00e4",
+            "pos": "adjektiivi",
+            "translation": "mukautettu, muokattu"
+        }
+    ],
+    "Customize": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "mukauta"
+        }
+    ],
+    "customize": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "mukauta"
+        }
+    ],
+    "Customizer": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "mukautin"
+        }
+    ],
+    "customizer": [
+        {
+            "comment": "Menus in the Customizer => Valikot mukauttimessa",
+            "pos": "substantiivi",
+            "translation": "mukautin"
+        }
+    ],
+    "dashboard": [
+        {
+            "comment": "Visit Dashboard => N\u00e4yt\u00e4 ohjauspaneeli; Return to the WordPress Dashboard =>\u00a0Palaa WordPress hallintapaneeliin; Welcome to your WordPress Dashboard => Tervetuloa WordPressin ohjausn\u00e4kym\u00e4\u00e4n",
+            "pos": "substantiivi",
+            "translation": "hallintapaneeli, ohjauspaneeli"
+        }
+    ],
+    "date range": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ajanjakso"
+        }
+    ],
+    "deactivate": [
+        {
+            "comment": "License has been deactivated. => Lisenssi on otettu pois k\u00e4yt\u00f6st\u00e4. \/ Lisenssi ei ole en\u00e4\u00e4 k\u00e4yt\u00f6ss\u00e4.; Deactivated plugins => K\u00e4yt\u00f6st\u00e4 poistetut lis\u00e4osat",
+            "pos": "verbi",
+            "translation": "poistaa k\u00e4yt\u00f6st\u00e4"
+        }
+    ],
     "debug": [
         {
             "comment": "",
@@ -461,171 +641,237 @@
             "translation": "testaa"
         }
     ],
-    "default": {
-        "comment": "default sorting => lajittelu, oletustapa",
-        "pos": "substantiivi",
-        "translation": "oletus"
-    },
-    "delete": {
-        "comment": "Page permanently deleted => Sivu poistettiin pysyv\u00e4sti",
-        "pos": "verbi",
-        "translation": "poista"
-    },
-    "deprecated": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "vanhentunut"
-    },
-    "descending": {
-        "comment": "lyhennys: desc; laskeva j\u00e4rjestys",
-        "pos": "adjektiivi",
-        "translation": "laskeva"
-    },
-    "description": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kuvaus"
-    },
-    "details": {
-        "comment": "Hide Details => Piilota tiedot",
-        "pos": "substantiivi",
-        "translation": "tiedot, lis\u00e4tiedot"
-    },
-    "Developer reference": {
-        "comment": "Tai kehitt\u00e4j\u00e4n tekninen dokumentaatio",
-        "pos": "noun",
-        "translation": "Tekninen dokumentaatio"
-    },
-    "developer reference": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tekninen dokumentaatio"
-    },
-    "disable": {
-        "comment": "Disable activation e-mail => \u00c4l\u00e4 vaadi [tilauksen] vahvistusta",
-        "pos": "verbi",
-        "translation": "poista k\u00e4yt\u00f6st\u00e4"
-    },
-    "display": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "n\u00e4yt\u00e4"
-    },
-    "Distraction-free writing mode": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "H\u00e4iri\u00f6t\u00f6n kirjoitustila"
-    },
-    "distraction-free writing mode": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "h\u00e4iri\u00f6t\u00f6n kirjoitustila"
-    },
-    "documentation": {
-        "comment": "The Documentation menu => Dokumentaatio-valikko; Documentation | Hooks and Filters => Ohjeet | Koukut ja Suotimet; View Z Documentation\u00a0=> Tarkastele Z seloste asiakirjoja; \u2026official documentation => \u2026virallinen asiakirja",
-        "pos": "substantiivi",
-        "translation": "dokumentaatio, ohjeet"
-    },
-    "domain": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "verkko-osoite, domaini"
-    },
-    "done": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "valmis"
-    },
-    "download": {
-        "comment": "Download Export File => Lataa vientitiedosto",
-        "pos": "verbi",
-        "translation": "lataa"
-    },
-    "draft": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "luonnos"
-    },
-    "drag and drop": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "ved\u00e4 ja pudota (-menetelm\u00e4)"
-    },
-    "dropdown menu": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "pudotusvalikko"
-    },
-    "duplicate": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "monista"
-    },
-    "e-mail": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "s\u00e4hk\u00f6posti, s-posti"
-    },
-    "edit": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "muokkaa"
-    },
-    "editor": {
-        "comment": "Standard Editor => Oletusmuokkain; Editor Style => Tyylimuokkain",
-        "pos": "substantiivi",
-        "translation": "muokkain"
-    },
-    "embed": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "upottaa"
-    },
-    "enable": {
-        "comment": "Network Enable => Ota verkonlaajuiseen k\u00e4ytt\u00f6\u00f6n",
-        "pos": "verbi",
-        "translation": "ota k\u00e4ytt\u00f6\u00f6n"
-    },
-    "encoding": {
-        "comment": "Encoding for pages and feeds => Merkist\u00f6",
-        "pos": "substantiivi",
-        "translation": "merkist\u00f6"
-    },
-    "entry": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "vienti, merkint\u00e4"
-    },
-    "excerpt": {
-        "comment": "Excerpt View => Oten\u00e4kym\u00e4",
-        "pos": "substantiivi",
-        "translation": "ote"
-    },
-    "existing": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "olemassa oleva"
-    },
-    "export": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "vie"
-    },
-    "extension": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "laajennus, lisuke, lis\u00e4osa"
-    },
-    "F j, Y": {
-        "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
-        "pos": "\u00a0",
-        "translation": "j.n.Y"
-    },
-    "FAQ": {
-        "comment": "(Frequently Asked Questions) usein kysytyt kysymykset\u00a0",
-        "pos": "ilmaisu",
-        "translation": "UKK, FAQ"
-    },
+    "default": [
+        {
+            "comment": "default sorting => lajittelu, oletustapa",
+            "pos": "substantiivi",
+            "translation": "oletus"
+        }
+    ],
+    "delete": [
+        {
+            "comment": "Page permanently deleted => Sivu poistettiin pysyv\u00e4sti",
+            "pos": "verbi",
+            "translation": "poista"
+        }
+    ],
+    "deprecated": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "vanhentunut"
+        }
+    ],
+    "descending": [
+        {
+            "comment": "lyhennys: desc; laskeva j\u00e4rjestys",
+            "pos": "adjektiivi",
+            "translation": "laskeva"
+        }
+    ],
+    "description": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kuvaus"
+        }
+    ],
+    "details": [
+        {
+            "comment": "Hide Details => Piilota tiedot",
+            "pos": "substantiivi",
+            "translation": "tiedot, lis\u00e4tiedot"
+        }
+    ],
+    "Developer reference": [
+        {
+            "comment": "Tai kehitt\u00e4j\u00e4n tekninen dokumentaatio",
+            "pos": "noun",
+            "translation": "Tekninen dokumentaatio"
+        }
+    ],
+    "developer reference": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tekninen dokumentaatio"
+        }
+    ],
+    "disable": [
+        {
+            "comment": "Disable activation e-mail => \u00c4l\u00e4 vaadi [tilauksen] vahvistusta",
+            "pos": "verbi",
+            "translation": "poista k\u00e4yt\u00f6st\u00e4"
+        }
+    ],
+    "display": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "n\u00e4yt\u00e4"
+        }
+    ],
+    "Distraction-free writing mode": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "H\u00e4iri\u00f6t\u00f6n kirjoitustila"
+        }
+    ],
+    "distraction-free writing mode": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "h\u00e4iri\u00f6t\u00f6n kirjoitustila"
+        }
+    ],
+    "documentation": [
+        {
+            "comment": "The Documentation menu => Dokumentaatio-valikko; Documentation | Hooks and Filters => Ohjeet | Koukut ja Suotimet; View Z Documentation\u00a0=> Tarkastele Z seloste asiakirjoja; \u2026official documentation => \u2026virallinen asiakirja",
+            "pos": "substantiivi",
+            "translation": "dokumentaatio, ohjeet"
+        }
+    ],
+    "domain": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "verkko-osoite, domaini"
+        }
+    ],
+    "done": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "valmis"
+        }
+    ],
+    "download": [
+        {
+            "comment": "Download Export File => Lataa vientitiedosto",
+            "pos": "verbi",
+            "translation": "lataa"
+        }
+    ],
+    "draft": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "luonnos"
+        }
+    ],
+    "drag and drop": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "ved\u00e4 ja pudota (-menetelm\u00e4)"
+        }
+    ],
+    "dropdown menu": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "pudotusvalikko"
+        }
+    ],
+    "duplicate": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "monista"
+        }
+    ],
+    "e-mail": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "s\u00e4hk\u00f6posti, s-posti"
+        }
+    ],
+    "edit": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "muokkaa"
+        }
+    ],
+    "editor": [
+        {
+            "comment": "Standard Editor => Oletusmuokkain; Editor Style => Tyylimuokkain",
+            "pos": "substantiivi",
+            "translation": "muokkain"
+        }
+    ],
+    "embed": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "upottaa"
+        }
+    ],
+    "enable": [
+        {
+            "comment": "Network Enable => Ota verkonlaajuiseen k\u00e4ytt\u00f6\u00f6n",
+            "pos": "verbi",
+            "translation": "ota k\u00e4ytt\u00f6\u00f6n"
+        }
+    ],
+    "encoding": [
+        {
+            "comment": "Encoding for pages and feeds => Merkist\u00f6",
+            "pos": "substantiivi",
+            "translation": "merkist\u00f6"
+        }
+    ],
+    "entry": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "vienti, merkint\u00e4"
+        }
+    ],
+    "excerpt": [
+        {
+            "comment": "Excerpt View => Oten\u00e4kym\u00e4",
+            "pos": "substantiivi",
+            "translation": "ote"
+        }
+    ],
+    "existing": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "olemassa oleva"
+        }
+    ],
+    "export": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "vie"
+        }
+    ],
+    "extension": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "laajennus, lisuke, lis\u00e4osa"
+        }
+    ],
+    "F j, Y": [
+        {
+            "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
+            "pos": "\u00a0",
+            "translation": "j.n.Y"
+        }
+    ],
+    "FAQ": [
+        {
+            "comment": "(Frequently Asked Questions) usein kysytyt kysymykset\u00a0",
+            "pos": "ilmaisu",
+            "translation": "UKK, FAQ"
+        }
+    ],
     "feature": [
         {
             "comment": "A fully featured cart details flyout => T\u00e4ysin ominaisuuksin varustettu pudotusikkuna",
@@ -638,251 +884,349 @@
             "translation": "toiminto, ominaisuus"
         }
     ],
-    "feature filter": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ominaisuussuodatin"
-    },
-    "featured": {
-        "comment": "Featured Product => Tuote on esittelyss\u00e4; Don\u2019t Make This Table Featured => Ei korosteta t\u00e4t\u00e4 saraketta",
-        "pos": "adjektiivi",
-        "translation": "korostettu, esittelyss\u00e4 oleva, suositeltu"
-    },
-    "featured image": {
-        "comment": "Remove featured image => Poista artikkelikuva",
-        "pos": "ilmaisu",
-        "translation": "artikkelikuva"
-    },
-    "feed": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sy\u00f6te"
-    },
-    "feedback": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "palaute"
-    },
-    "field": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kentt\u00e4"
-    },
-    "filter": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "suodin, suodatin"
-    },
-    "filter by": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "suodata k\u00e4ytt\u00e4en, suodatus"
-    },
-    "fixed": {
-        "comment": "Fixed => Kuva pysyy paikallaan",
-        "pos": "adjektiivi",
-        "translation": "kiinnitetty, pysyy paikallaan"
-    },
-    "flexible": {
-        "comment": "Flexible Header => Joustava otsakekuva",
-        "pos": "adjektiivi",
-        "translation": "joustava"
-    },
-    "fluid": {
-        "comment": "Fluid Layout => Joustava leveys",
-        "pos": "adjektiivi",
-        "translation": "joustava"
-    },
-    "fly-out": {
-        "comment": "Display cart contents in menu fly-out => N\u00e4yt\u00e4 ostoskorin sis\u00e4lt\u00f6 pudotusikkunassa",
-        "pos": "substantiivi",
-        "translation": "pudotusikkuna"
-    },
-    "focus": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "kohdista, kohdenna, tarkenna, fokus"
-    },
-    "font": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kirjasin"
-    },
-    "font color": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kirjainten v\u00e4ri"
-    },
-    "font size": {
-        "comment": "Font Sizes => Tekstin koko",
-        "pos": "substantiivi",
-        "translation": "kirjainten koko"
-    },
-    "font style": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kirjainten tyyli"
-    },
-    "footer": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "alapalkki, alatunniste"
-    },
-    "format": {
-        "comment": "Post Formats => Artikkelimuodot",
-        "pos": "substantiivi",
-        "translation": "muoto"
-    },
-    "formatting": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "muotoilu"
-    },
-    "free": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "maksuton, ilmainen"
-    },
-    "front page": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "etusivu"
-    },
-    "frontend": {
-        "comment": "Given label will shown in the frontend form => N\u00e4ytet\u00e4\u00e4n julkisella puolella lomakkeessa; Pre-selected on the frontend => esivalittuna julkisella puolella",
-        "pos": "ilmaisu",
-        "translation": "julkinen puoli, julkinen n\u00e4kym\u00e4"
-    },
-    "full screen": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "kokon\u00e4yt\u00f6n tila"
-    },
-    "full width": {
-        "comment": "Make Full Width => Aseta koko sivun levyiseksi",
-        "pos": "ilmaisu",
-        "translation": "t\u00e4ysi leveys"
-    },
-    "gallery": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "galleria"
-    },
-    "global settings": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "yleiset asetukset"
-    },
-    "grid": {
-        "comment": "Grid View => Ruudukko",
-        "pos": "substantiivi",
-        "translation": "ruudukko"
-    },
-    "GTE": {
-        "comment": "(General Translation Editor) Jakaa projektik\u00e4\u00e4nt\u00e4j\u00e4 oikeuksia ja voi muokata mit\u00e4 tahansa k\u00e4\u00e4nn\u00f6st\u00e4.",
-        "pos": "substantiivi",
-        "translation": "p\u00e4\u00e4k\u00e4\u00e4nt\u00e4j\u00e4"
-    },
-    "guest": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "vieras"
-    },
-    "h:ia": {
-        "comment": "Suomessa k\u00e4ytet\u00e4\u00e4n p\u00e4\u00e4asiassa 24 h kelloaikoja.",
-        "pos": "\u00a0",
-        "translation": "H:i"
-    },
-    "hashtag": {
-        "comment": "aiemmin: risuaita",
-        "pos": "substantiivi",
-        "translation": "hashtagi, hasht\u00e4gi"
-    },
-    "header": {
-        "comment": "otsake, kun kyse sivun yl\u00e4alueesta. Teknisesti, headeri kun kyse ja v\u00e4liss\u00e4 olevasta. Header Text => Otsakkeen teksti; Featured Image Header => Artikkelikuva otsakekuvana; Header background image => Otsakkeen taustakuva",
-        "pos": "substantiivi",
-        "translation": "otsake"
-    },
-    "home": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "etusivu"
-    },
-    "home page": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "etusivu"
-    },
-    "hook": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "koukku"
-    },
-    "host": {
-        "comment": "Database host => Tietokantapalvelin",
-        "pos": "substantiivi",
-        "translation": "is\u00e4nt\u00e4"
-    },
-    "hover": {
-        "comment": "Items displayed on hover\u00a0=> Tulevat n\u00e4kyviin, kun viet hiiren linkkien p\u00e4\u00e4lle; Hover Overlay Color => Vaihtuva v\u00e4ri kohdistettaessa; Only Show Icon on Hover => N\u00e4yt\u00e4 kuvake vain osoitettaessa",
-        "pos": "adjektiivi",
-        "translation": "osoitettaessa, kun kohdistimen alla"
-    },
-    "HTML": {
-        "comment": "(Hyper Text Markup Language)",
-        "pos": "substantiivi",
-        "translation": "HTML-muotoiltu"
-    },
-    "https": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "https-salattu yhteys"
-    },
-    "i10n": {
-        "comment": "(localization)",
-        "pos": "substantiivi",
-        "translation": "paikallistaminen"
-    },
-    "i18n": {
-        "comment": "(internationalization)",
-        "pos": "substantiivi",
-        "translation": "kansainv\u00e4list\u00e4minen"
-    },
-    "icon": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kuvake"
-    },
-    "ID": {
-        "comment": "(Identification) No comment with this ID => Kommenttia ei l\u00f6ydy t\u00e4ll\u00e4 tunnuksella; Transaction ID => Tapahtuman tunnus\/ID;",
-        "pos": "substantiivi",
-        "translation": "tunniste, tunniste\/ID, ID"
-    },
-    "import": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "tuo"
-    },
-    "importer": {
-        "comment": "Activate importer => Ota tuontity\u00f6kalu k\u00e4ytt\u00f6\u00f6n",
-        "pos": "substantiivi",
-        "translation": "tuontity\u00f6kalu"
-    },
-    "inactive": {
-        "comment": "Inactive => Poissa k\u00e4yt\u00f6st\u00e4",
-        "pos": "adjektiivi",
-        "translation": "ei k\u00e4yt\u00f6ss\u00e4"
-    },
-    "inbox": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "saapuneet"
-    },
-    "indent": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "sisenn\u00e4"
-    },
+    "feature filter": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ominaisuussuodatin"
+        }
+    ],
+    "featured": [
+        {
+            "comment": "Featured Product => Tuote on esittelyss\u00e4; Don\u2019t Make This Table Featured => Ei korosteta t\u00e4t\u00e4 saraketta",
+            "pos": "adjektiivi",
+            "translation": "korostettu, esittelyss\u00e4 oleva, suositeltu"
+        }
+    ],
+    "featured image": [
+        {
+            "comment": "Remove featured image => Poista artikkelikuva",
+            "pos": "ilmaisu",
+            "translation": "artikkelikuva"
+        }
+    ],
+    "feed": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sy\u00f6te"
+        }
+    ],
+    "feedback": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "palaute"
+        }
+    ],
+    "field": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kentt\u00e4"
+        }
+    ],
+    "filter": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "suodin, suodatin"
+        }
+    ],
+    "filter by": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "suodata k\u00e4ytt\u00e4en, suodatus"
+        }
+    ],
+    "fixed": [
+        {
+            "comment": "Fixed => Kuva pysyy paikallaan",
+            "pos": "adjektiivi",
+            "translation": "kiinnitetty, pysyy paikallaan"
+        }
+    ],
+    "flexible": [
+        {
+            "comment": "Flexible Header => Joustava otsakekuva",
+            "pos": "adjektiivi",
+            "translation": "joustava"
+        }
+    ],
+    "fluid": [
+        {
+            "comment": "Fluid Layout => Joustava leveys",
+            "pos": "adjektiivi",
+            "translation": "joustava"
+        }
+    ],
+    "fly-out": [
+        {
+            "comment": "Display cart contents in menu fly-out => N\u00e4yt\u00e4 ostoskorin sis\u00e4lt\u00f6 pudotusikkunassa",
+            "pos": "substantiivi",
+            "translation": "pudotusikkuna"
+        }
+    ],
+    "focus": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "kohdista, kohdenna, tarkenna, fokus"
+        }
+    ],
+    "font": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kirjasin"
+        }
+    ],
+    "font color": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kirjainten v\u00e4ri"
+        }
+    ],
+    "font size": [
+        {
+            "comment": "Font Sizes => Tekstin koko",
+            "pos": "substantiivi",
+            "translation": "kirjainten koko"
+        }
+    ],
+    "font style": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kirjainten tyyli"
+        }
+    ],
+    "footer": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "alapalkki, alatunniste"
+        }
+    ],
+    "format": [
+        {
+            "comment": "Post Formats => Artikkelimuodot",
+            "pos": "substantiivi",
+            "translation": "muoto"
+        }
+    ],
+    "formatting": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "muotoilu"
+        }
+    ],
+    "free": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "maksuton, ilmainen"
+        }
+    ],
+    "front page": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "etusivu"
+        }
+    ],
+    "frontend": [
+        {
+            "comment": "Given label will shown in the frontend form => N\u00e4ytet\u00e4\u00e4n julkisella puolella lomakkeessa; Pre-selected on the frontend => esivalittuna julkisella puolella",
+            "pos": "ilmaisu",
+            "translation": "julkinen puoli, julkinen n\u00e4kym\u00e4"
+        }
+    ],
+    "full screen": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "kokon\u00e4yt\u00f6n tila"
+        }
+    ],
+    "full width": [
+        {
+            "comment": "Make Full Width => Aseta koko sivun levyiseksi",
+            "pos": "ilmaisu",
+            "translation": "t\u00e4ysi leveys"
+        }
+    ],
+    "gallery": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "galleria"
+        }
+    ],
+    "global settings": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "yleiset asetukset"
+        }
+    ],
+    "grid": [
+        {
+            "comment": "Grid View => Ruudukko",
+            "pos": "substantiivi",
+            "translation": "ruudukko"
+        }
+    ],
+    "GTE": [
+        {
+            "comment": "(General Translation Editor) Jakaa projektik\u00e4\u00e4nt\u00e4j\u00e4 oikeuksia ja voi muokata mit\u00e4 tahansa k\u00e4\u00e4nn\u00f6st\u00e4.",
+            "pos": "substantiivi",
+            "translation": "p\u00e4\u00e4k\u00e4\u00e4nt\u00e4j\u00e4"
+        }
+    ],
+    "guest": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "vieras"
+        }
+    ],
+    "h:ia": [
+        {
+            "comment": "Suomessa k\u00e4ytet\u00e4\u00e4n p\u00e4\u00e4asiassa 24 h kelloaikoja.",
+            "pos": "\u00a0",
+            "translation": "H:i"
+        }
+    ],
+    "hashtag": [
+        {
+            "comment": "aiemmin: risuaita",
+            "pos": "substantiivi",
+            "translation": "hashtagi, hasht\u00e4gi"
+        }
+    ],
+    "header": [
+        {
+            "comment": "otsake, kun kyse sivun yl\u00e4alueesta. Teknisesti, headeri kun kyse ja v\u00e4liss\u00e4 olevasta. Header Text => Otsakkeen teksti; Featured Image Header => Artikkelikuva otsakekuvana; Header background image => Otsakkeen taustakuva",
+            "pos": "substantiivi",
+            "translation": "otsake"
+        }
+    ],
+    "home": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "etusivu"
+        }
+    ],
+    "home page": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "etusivu"
+        }
+    ],
+    "hook": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "koukku"
+        }
+    ],
+    "host": [
+        {
+            "comment": "Database host => Tietokantapalvelin",
+            "pos": "substantiivi",
+            "translation": "is\u00e4nt\u00e4"
+        }
+    ],
+    "hover": [
+        {
+            "comment": "Items displayed on hover\u00a0=> Tulevat n\u00e4kyviin, kun viet hiiren linkkien p\u00e4\u00e4lle; Hover Overlay Color => Vaihtuva v\u00e4ri kohdistettaessa; Only Show Icon on Hover => N\u00e4yt\u00e4 kuvake vain osoitettaessa",
+            "pos": "adjektiivi",
+            "translation": "osoitettaessa, kun kohdistimen alla"
+        }
+    ],
+    "HTML": [
+        {
+            "comment": "(Hyper Text Markup Language)",
+            "pos": "substantiivi",
+            "translation": "HTML-muotoiltu"
+        }
+    ],
+    "https": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "https-salattu yhteys"
+        }
+    ],
+    "i10n": [
+        {
+            "comment": "(localization)",
+            "pos": "substantiivi",
+            "translation": "paikallistaminen"
+        }
+    ],
+    "i18n": [
+        {
+            "comment": "(internationalization)",
+            "pos": "substantiivi",
+            "translation": "kansainv\u00e4list\u00e4minen"
+        }
+    ],
+    "icon": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kuvake"
+        }
+    ],
+    "ID": [
+        {
+            "comment": "(Identification) No comment with this ID => Kommenttia ei l\u00f6ydy t\u00e4ll\u00e4 tunnuksella; Transaction ID => Tapahtuman tunnus\/ID;",
+            "pos": "substantiivi",
+            "translation": "tunniste, tunniste\/ID, ID"
+        }
+    ],
+    "import": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "tuo"
+        }
+    ],
+    "importer": [
+        {
+            "comment": "Activate importer => Ota tuontity\u00f6kalu k\u00e4ytt\u00f6\u00f6n",
+            "pos": "substantiivi",
+            "translation": "tuontity\u00f6kalu"
+        }
+    ],
+    "inactive": [
+        {
+            "comment": "Inactive => Poissa k\u00e4yt\u00f6st\u00e4",
+            "pos": "adjektiivi",
+            "translation": "ei k\u00e4yt\u00f6ss\u00e4"
+        }
+    ],
+    "inbox": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "saapuneet"
+        }
+    ],
+    "indent": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "sisenn\u00e4"
+        }
+    ],
     "index": [
         {
             "comment": "Main Index Template => P\u00e4\u00e4sivun sivupohja",
@@ -895,306 +1239,426 @@
             "translation": "indeksointi"
         }
     ],
-    "inline": {
-        "comment": "Edit this item inline => Muokkaa t\u00e4t\u00e4 kohdetta",
-        "pos": "ilmaisu",
-        "translation": "rivin sis\u00e4ll\u00e4, tekstielementit"
-    },
-    "integration": {
-        "comment": "Integration Settings => Palveluliitosten asetukset; It features a deep integration with our market leading\u00a0=> Sen ominaisuuksiin kuuluu mm. t\u00e4ydellinen yhteensopivuus markkinajohtaja",
-        "pos": "substantiivi",
-        "translation": "liitos, palveluliitos"
-    },
-    "invalid": {
-        "comment": "Invalid form submission => Lomake ei kelpaa",
-        "pos": "adjektiivi",
-        "translation": "ei kelpaa, ei ole kelvollinen"
-    },
-    "italics": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kursiivi"
-    },
-    "item": {
-        "comment": "Menu item => Valikon rivi",
-        "pos": "substantiivi",
-        "translation": "kohde, nimike, tuote, kohta, merkint\u00e4, jne"
-    },
-    "j M Y": {
-        "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
-        "pos": "\u00a0",
-        "translation": "j.n.Y"
-    },
-    "jS F Y": {
-        "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
-        "pos": "\u00a0",
-        "translation": "j.n.Y"
-    },
-    "keyword": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "avainsana"
-    },
-    "label": {
-        "comment": "Navigation Label => Valikkoteksti; Checkbox label text => Valintaruudun nimen teksti; Show \u201dverified owner\u201d label => N\u00e4yt\u00e4 Varmistettu kirjoittaja -tunnusmerkki;",
-        "pos": "substantiivi",
-        "translation": "tunnus, selite, nimi, tunnusmerkki, osoitelappu, teksti"
-    },
-    "language pack": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kielipaketti"
-    },
-    "latest": {
-        "comment": "Latest news from the official WordPress project => WordPress-projektiin liittyv\u00e4t uusimmat uutiset; Your latest changes => Tuoreimmat muutokset; Latest version of WordPress\u00a0=> uusin WordPressin versio; Shows your latest posts => N\u00e4ytt\u00e4\u00e4 viimeisimm\u00e4t artikkelisi",
-        "pos": "adjektiivi",
-        "translation": "uusimmat"
-    },
-    "layout": {
-        "comment": "my\u00f6s muita k\u00e4\u00e4nn\u00f6ksi\u00e4, k\u00e4ytt\u00f6ymp\u00e4rist\u00f6n mukaan, esim. sivutaitto, leiska",
-        "pos": "substantiivi",
-        "translation": "asettelu"
-    },
-    "legend": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "selite"
-    },
-    "letter spacing": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kirjainv\u00e4li"
-    },
-    "library": {
-        "comment": "All the files you\u2019ve uploaded are listed in the Media Library => Kaikki siirt\u00e4m\u00e4si tiedostot n\u00e4kyv\u00e4t listattuina mediakirjastossa; Save To Library => Tallenna kirjastoon",
-        "pos": "substantiivi",
-        "translation": "kirjasto, mediakirjasto"
-    },
-    "like": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "tyk\u00e4t\u00e4"
-    },
-    "link": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "linkki"
-    },
-    "list": {
-        "comment": "Please select a list to subscribe to => Valitse lista johon tilaukset liitet\u00e4\u00e4n; Close numbered list tag => Sulje numeroitu lista -tagi",
-        "pos": "substantiivi",
-        "translation": "lista, luettelo"
-    },
-    "localization": {
-        "comment": "lyhennys: i10n",
-        "pos": "substantiivi",
-        "translation": "paikallistaminen"
-    },
-    "location": {
-        "comment": "Manage Locations => Valikoiden sijainnit",
-        "pos": "substantiivi",
-        "translation": "sijainti, paikka"
-    },
-    "log": {
-        "comment": "Log file: => Lokitiedosto: ; Log X events inside log => Kirjaa X tapahtumat lokitiedostoon",
-        "pos": "substantiivi",
-        "translation": "loki"
-    },
-    "log out": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "kirjaudu ulos"
-    },
-    "logged in": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "kirjautunut"
-    },
-    "logged out": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "kirjatunut ulos, ei kirjautunut"
-    },
-    "login name": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "k\u00e4ytt\u00e4j\u00e4tunnus"
-    },
-    "login, log-in": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "kirjaudu"
-    },
-    "ltr": {
-        "comment": "kirjoitussuunta",
-        "pos": "ilmaisu",
-        "translation": "vasemmalta oikealle"
-    },
-    "M j, Y": {
-        "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
-        "pos": "\u00a0",
-        "translation": "j.n.Y"
-    },
-    "M jS": {
-        "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
-        "pos": "\u00a0",
-        "translation": "j.n.Y"
-    },
-    "main content": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "p\u00e4\u00e4sis\u00e4lt\u00f6"
-    },
-    "main menu": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "p\u00e4\u00e4valikko"
-    },
-    "maintenance": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "yll\u00e4pito, yll\u00e4pitotila"
-    },
-    "manage": {
-        "comment": "Manage widgets => Muokkaa vimpaimia; Manage in Customizer => Hallinnoi mukauttimessa; View and manage customers => Katso ja hallinnoi asiakkaita",
-        "pos": "verbi",
-        "translation": "hallinnoi, muokkaa"
-    },
-    "media": {
-        "comment": "media, element media",
-        "pos": "substantiivi",
-        "translation": "media"
-    },
-    "menu": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "valikko"
-    },
-    "merge": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "yhdist\u00e4"
-    },
-    "message": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "viesti"
-    },
-    "meta": {
-        "comment": "(kun ei viel\u00e4 ole parempaa napakkaa k\u00e4\u00e4nn\u00f6st\u00e4)",
-        "pos": "substantiivi",
-        "translation": "meta, metatieto"
-    },
-    "metadata": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "metatieto"
-    },
-    "method": {
-        "comment": "Parallax method => Parallax-menetelm\u00e4; Add a new payment method => Lis\u00e4\u00e4 uusi maksutapa; Insufficient arguments passed to this XML-RPC method => T\u00e4lle XML-RPC-metodille ei annettu tarpeeksi argumentteja",
-        "pos": "substantiivi",
-        "translation": "tapa, menettelytapa, menetelm\u00e4"
-    },
-    "migrate": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "siirr\u00e4 (joku kokonaisuus toisaalle)"
-    },
-    "mobile": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "mobiililaite"
-    },
-    "modal": {
-        "comment": "Close modal window => Sulje k\u00e4ytt\u00e4j\u00e4\u00e4 odottava ikkuna; Set the color of titles on the modal dialog => Aseta otsikoiden v\u00e4ri keskusteluikkunassa",
-        "pos": "substantiivi",
-        "translation": "keskusteluikkuna, k\u00e4ytt\u00e4j\u00e4\u00e4 odottava ikkuna"
-    },
-    "moderation": {
-        "comment": "No comments awaiting moderation => Ei arvioitavia kommentteja; Your comment is awaiting moderation => Kommentti odottaa tarkastusta",
-        "pos": "substantiivi",
-        "translation": "arviointi, tarkastus"
-    },
-    "moderator": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "valvoja, tarkastaja"
-    },
-    "module": {
-        "comment": "Image Module Settings => Kuva-moduulin asetukset",
-        "pos": "substantiivi",
-        "translation": "moduuli"
-    },
-    "multisite": {
-        "comment": "Executed before Multisite is loaded => Suoritetaan ennen kuin monen sivuston tuki ladataan",
-        "pos": "substantiivi",
-        "translation": "monta sivustoa, multisite"
-    },
-    "n\/a": {
-        "comment": "(Not Available, Not Applicable\u00a0\u2026); N\/A => Ei saatavilla\/-tietoa",
-        "pos": "adjektiivi",
-        "translation": "ei saatavilla, ei k\u00e4yt\u00f6ss\u00e4, ei sovelleta, jne."
-    },
-    "navigation": {
-        "comment": "Primary Navigation => Ensisijainen navigointi; Vertical Navigation => Navigointivalikko pystyss\u00e4; Comment navigation => Kommenttien selaus",
-        "pos": "substantiivi",
-        "translation": "navigointi, navigaatio"
-    },
-    "nested": {
-        "comment": "Enable threaded (nested) comments => Ota k\u00e4ytt\u00f6\u00f6n sis\u00e4kk\u00e4iset kommentit",
-        "pos": "adjektiivi",
-        "translation": "sis\u00e4kk\u00e4in"
-    },
-    "next": {
-        "comment": "Next Steps => Seuraavaksi",
-        "pos": "adjektiivi",
-        "translation": "seuraava"
-    },
-    "nonce": {
-        "comment": "The nonce security check didn\u2019t pass\u00a0=> Kertak\u00e4ytt\u00f6avaimen vahvistus ep\u00e4onnistui",
-        "pos": "substantiivi",
-        "translation": "kertak\u00e4ytt\u00f6avain"
-    },
-    "note": {
-        "comment": "Customer note => Asiakkaan kommentti",
-        "pos": "substantiivi",
-        "translation": "kommentti, huomautus"
-    },
-    "notes": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "muistiinpanoja"
-    },
-    "notice": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "huomautus, huomaa"
-    },
-    "notification": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ilmoitus"
-    },
-    "of": {
-        "comment": "",
-        "pos": "\u00a0",
-        "translation": "\/"
-    },
-    "off": {
-        "comment": "Turn comments on or off => Ota kommentointi k\u00e4ytt\u00f6\u00f6n tai pois k\u00e4yt\u00f6st\u00e4",
-        "pos": "adjektiivi",
-        "translation": "ei k\u00e4yt\u00f6ss\u00e4"
-    },
-    "on": {
-        "comment": "Turn comments on or off => Ota kommentointi k\u00e4ytt\u00f6\u00f6n tai pois k\u00e4yt\u00f6st\u00e4",
-        "pos": "adjektiivi",
-        "translation": "k\u00e4yt\u00f6ss\u00e4"
-    },
-    "opt-in": {
-        "comment": "Use double opt-in? => Varmennettu liittyminen?; Show the opt-in banner again => Liity-banneri n\u00e4ytet\u00e4\u00e4n uudelleen",
-        "pos": "substantiivi",
-        "translation": "liittyminen, tilaaminen"
-    },
+    "inline": [
+        {
+            "comment": "Edit this item inline => Muokkaa t\u00e4t\u00e4 kohdetta",
+            "pos": "ilmaisu",
+            "translation": "rivin sis\u00e4ll\u00e4, tekstielementit"
+        }
+    ],
+    "integration": [
+        {
+            "comment": "Integration Settings => Palveluliitosten asetukset; It features a deep integration with our market leading\u00a0=> Sen ominaisuuksiin kuuluu mm. t\u00e4ydellinen yhteensopivuus markkinajohtaja",
+            "pos": "substantiivi",
+            "translation": "liitos, palveluliitos"
+        }
+    ],
+    "invalid": [
+        {
+            "comment": "Invalid form submission => Lomake ei kelpaa",
+            "pos": "adjektiivi",
+            "translation": "ei kelpaa, ei ole kelvollinen"
+        }
+    ],
+    "italics": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kursiivi"
+        }
+    ],
+    "item": [
+        {
+            "comment": "Menu item => Valikon rivi",
+            "pos": "substantiivi",
+            "translation": "kohde, nimike, tuote, kohta, merkint\u00e4, jne"
+        }
+    ],
+    "j M Y": [
+        {
+            "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
+            "pos": "\u00a0",
+            "translation": "j.n.Y"
+        }
+    ],
+    "jS F Y": [
+        {
+            "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
+            "pos": "\u00a0",
+            "translation": "j.n.Y"
+        }
+    ],
+    "keyword": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "avainsana"
+        }
+    ],
+    "label": [
+        {
+            "comment": "Navigation Label => Valikkoteksti; Checkbox label text => Valintaruudun nimen teksti; Show \u201dverified owner\u201d label => N\u00e4yt\u00e4 Varmistettu kirjoittaja -tunnusmerkki;",
+            "pos": "substantiivi",
+            "translation": "tunnus, selite, nimi, tunnusmerkki, osoitelappu, teksti"
+        }
+    ],
+    "language pack": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kielipaketti"
+        }
+    ],
+    "latest": [
+        {
+            "comment": "Latest news from the official WordPress project => WordPress-projektiin liittyv\u00e4t uusimmat uutiset; Your latest changes => Tuoreimmat muutokset; Latest version of WordPress\u00a0=> uusin WordPressin versio; Shows your latest posts => N\u00e4ytt\u00e4\u00e4 viimeisimm\u00e4t artikkelisi",
+            "pos": "adjektiivi",
+            "translation": "uusimmat"
+        }
+    ],
+    "layout": [
+        {
+            "comment": "my\u00f6s muita k\u00e4\u00e4nn\u00f6ksi\u00e4, k\u00e4ytt\u00f6ymp\u00e4rist\u00f6n mukaan, esim. sivutaitto, leiska",
+            "pos": "substantiivi",
+            "translation": "asettelu"
+        }
+    ],
+    "legend": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "selite"
+        }
+    ],
+    "letter spacing": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kirjainv\u00e4li"
+        }
+    ],
+    "library": [
+        {
+            "comment": "All the files you\u2019ve uploaded are listed in the Media Library => Kaikki siirt\u00e4m\u00e4si tiedostot n\u00e4kyv\u00e4t listattuina mediakirjastossa; Save To Library => Tallenna kirjastoon",
+            "pos": "substantiivi",
+            "translation": "kirjasto, mediakirjasto"
+        }
+    ],
+    "like": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "tyk\u00e4t\u00e4"
+        }
+    ],
+    "link": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "linkki"
+        }
+    ],
+    "list": [
+        {
+            "comment": "Please select a list to subscribe to => Valitse lista johon tilaukset liitet\u00e4\u00e4n; Close numbered list tag => Sulje numeroitu lista -tagi",
+            "pos": "substantiivi",
+            "translation": "lista, luettelo"
+        }
+    ],
+    "localization": [
+        {
+            "comment": "lyhennys: i10n",
+            "pos": "substantiivi",
+            "translation": "paikallistaminen"
+        }
+    ],
+    "location": [
+        {
+            "comment": "Manage Locations => Valikoiden sijainnit",
+            "pos": "substantiivi",
+            "translation": "sijainti, paikka"
+        }
+    ],
+    "log": [
+        {
+            "comment": "Log file: => Lokitiedosto: ; Log X events inside log => Kirjaa X tapahtumat lokitiedostoon",
+            "pos": "substantiivi",
+            "translation": "loki"
+        }
+    ],
+    "log out": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "kirjaudu ulos"
+        }
+    ],
+    "logged in": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "kirjautunut"
+        }
+    ],
+    "logged out": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "kirjatunut ulos, ei kirjautunut"
+        }
+    ],
+    "login name": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "k\u00e4ytt\u00e4j\u00e4tunnus"
+        }
+    ],
+    "login, log-in": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "kirjaudu"
+        }
+    ],
+    "ltr": [
+        {
+            "comment": "kirjoitussuunta",
+            "pos": "ilmaisu",
+            "translation": "vasemmalta oikealle"
+        }
+    ],
+    "M j, Y": [
+        {
+            "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
+            "pos": "\u00a0",
+            "translation": "j.n.Y"
+        }
+    ],
+    "M jS": [
+        {
+            "comment": "Suomessa p\u00e4iv\u00e4yksen muoto on j.n.Y tai Y-m-d",
+            "pos": "\u00a0",
+            "translation": "j.n.Y"
+        }
+    ],
+    "main content": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "p\u00e4\u00e4sis\u00e4lt\u00f6"
+        }
+    ],
+    "main menu": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "p\u00e4\u00e4valikko"
+        }
+    ],
+    "maintenance": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "yll\u00e4pito, yll\u00e4pitotila"
+        }
+    ],
+    "manage": [
+        {
+            "comment": "Manage widgets => Muokkaa vimpaimia; Manage in Customizer => Hallinnoi mukauttimessa; View and manage customers => Katso ja hallinnoi asiakkaita",
+            "pos": "verbi",
+            "translation": "hallinnoi, muokkaa"
+        }
+    ],
+    "media": [
+        {
+            "comment": "media, element media",
+            "pos": "substantiivi",
+            "translation": "media"
+        }
+    ],
+    "menu": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "valikko"
+        }
+    ],
+    "merge": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "yhdist\u00e4"
+        }
+    ],
+    "message": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "viesti"
+        }
+    ],
+    "meta": [
+        {
+            "comment": "(kun ei viel\u00e4 ole parempaa napakkaa k\u00e4\u00e4nn\u00f6st\u00e4)",
+            "pos": "substantiivi",
+            "translation": "meta, metatieto"
+        }
+    ],
+    "metadata": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "metatieto"
+        }
+    ],
+    "method": [
+        {
+            "comment": "Parallax method => Parallax-menetelm\u00e4; Add a new payment method => Lis\u00e4\u00e4 uusi maksutapa; Insufficient arguments passed to this XML-RPC method => T\u00e4lle XML-RPC-metodille ei annettu tarpeeksi argumentteja",
+            "pos": "substantiivi",
+            "translation": "tapa, menettelytapa, menetelm\u00e4"
+        }
+    ],
+    "migrate": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "siirr\u00e4 (joku kokonaisuus toisaalle)"
+        }
+    ],
+    "mobile": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "mobiililaite"
+        }
+    ],
+    "modal": [
+        {
+            "comment": "Close modal window => Sulje k\u00e4ytt\u00e4j\u00e4\u00e4 odottava ikkuna; Set the color of titles on the modal dialog => Aseta otsikoiden v\u00e4ri keskusteluikkunassa",
+            "pos": "substantiivi",
+            "translation": "keskusteluikkuna, k\u00e4ytt\u00e4j\u00e4\u00e4 odottava ikkuna"
+        }
+    ],
+    "moderation": [
+        {
+            "comment": "No comments awaiting moderation => Ei arvioitavia kommentteja; Your comment is awaiting moderation => Kommentti odottaa tarkastusta",
+            "pos": "substantiivi",
+            "translation": "arviointi, tarkastus"
+        }
+    ],
+    "moderator": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "valvoja, tarkastaja"
+        }
+    ],
+    "module": [
+        {
+            "comment": "Image Module Settings => Kuva-moduulin asetukset",
+            "pos": "substantiivi",
+            "translation": "moduuli"
+        }
+    ],
+    "multisite": [
+        {
+            "comment": "Executed before Multisite is loaded => Suoritetaan ennen kuin monen sivuston tuki ladataan",
+            "pos": "substantiivi",
+            "translation": "monta sivustoa, multisite"
+        }
+    ],
+    "n\/a": [
+        {
+            "comment": "(Not Available, Not Applicable\u00a0\u2026); N\/A => Ei saatavilla\/-tietoa",
+            "pos": "adjektiivi",
+            "translation": "ei saatavilla, ei k\u00e4yt\u00f6ss\u00e4, ei sovelleta, jne."
+        }
+    ],
+    "navigation": [
+        {
+            "comment": "Primary Navigation => Ensisijainen navigointi; Vertical Navigation => Navigointivalikko pystyss\u00e4; Comment navigation => Kommenttien selaus",
+            "pos": "substantiivi",
+            "translation": "navigointi, navigaatio"
+        }
+    ],
+    "nested": [
+        {
+            "comment": "Enable threaded (nested) comments => Ota k\u00e4ytt\u00f6\u00f6n sis\u00e4kk\u00e4iset kommentit",
+            "pos": "adjektiivi",
+            "translation": "sis\u00e4kk\u00e4in"
+        }
+    ],
+    "next": [
+        {
+            "comment": "Next Steps => Seuraavaksi",
+            "pos": "adjektiivi",
+            "translation": "seuraava"
+        }
+    ],
+    "nonce": [
+        {
+            "comment": "The nonce security check didn\u2019t pass\u00a0=> Kertak\u00e4ytt\u00f6avaimen vahvistus ep\u00e4onnistui",
+            "pos": "substantiivi",
+            "translation": "kertak\u00e4ytt\u00f6avain"
+        }
+    ],
+    "note": [
+        {
+            "comment": "Customer note => Asiakkaan kommentti",
+            "pos": "substantiivi",
+            "translation": "kommentti, huomautus"
+        }
+    ],
+    "notes": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "muistiinpanoja"
+        }
+    ],
+    "notice": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "huomautus, huomaa"
+        }
+    ],
+    "notification": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ilmoitus"
+        }
+    ],
+    "of": [
+        {
+            "comment": "",
+            "pos": "\u00a0",
+            "translation": "\/"
+        }
+    ],
+    "off": [
+        {
+            "comment": "Turn comments on or off => Ota kommentointi k\u00e4ytt\u00f6\u00f6n tai pois k\u00e4yt\u00f6st\u00e4",
+            "pos": "adjektiivi",
+            "translation": "ei k\u00e4yt\u00f6ss\u00e4"
+        }
+    ],
+    "on": [
+        {
+            "comment": "Turn comments on or off => Ota kommentointi k\u00e4ytt\u00f6\u00f6n tai pois k\u00e4yt\u00f6st\u00e4",
+            "pos": "adjektiivi",
+            "translation": "k\u00e4yt\u00f6ss\u00e4"
+        }
+    ],
+    "opt-in": [
+        {
+            "comment": "Use double opt-in? => Varmennettu liittyminen?; Show the opt-in banner again => Liity-banneri n\u00e4ytet\u00e4\u00e4n uudelleen",
+            "pos": "substantiivi",
+            "translation": "liittyminen, tilaaminen"
+        }
+    ],
     "option": [
         {
             "comment": "Please select an option => Tee valinta",
@@ -1207,106 +1671,146 @@
             "translation": "valinta, asetus"
         }
     ],
-    "optional": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "valinnainen"
-    },
-    "options": {
-        "comment": "Plugin Options => Lis\u00e4osan valinnat; Options saved => Asetukset tallennettu; Show options => N\u00e4yt\u00e4 valinnat",
-        "pos": "substantiivi",
-        "translation": "valinnat, asetukset"
-    },
-    "order": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "j\u00e4rjestys, tilaus"
-    },
-    "override": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "ohita"
-    },
-    "padding": {
-        "comment": "Top & Bottom Padding => Reunat\u00e4ytteet yl\u00e4- ja alapuolella",
-        "pos": "substantiivi",
-        "translation": "t\u00e4yte, reunat\u00e4yte"
-    },
-    "page": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sivu"
-    },
-    "pagination": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sivutus"
-    },
-    "parent": {
-        "comment": "hierarkiassa; Same as parent => Sama kuin ylemm\u00e4ll\u00e4 tasolla; Main Page (no parent) => P\u00e4\u00e4sivu; Theme requires a parent theme => Teema tarvitsee is\u00e4nt\u00e4teeman",
-        "pos": "substantiivi",
-        "translation": "ylempi taso, yl\u00e4taso, vanhempi, yl\u00e4sivu, yl\u00e4-"
-    },
-    "path": {
-        "comment": "Server path to file => Palvelimen polku tiedostoon",
-        "pos": "substantiivi",
-        "translation": "polku"
-    },
-    "pending": {
-        "comment": "Pending payment => Odottaa maksua,",
-        "pos": "verbi",
-        "translation": "odottaa"
-    },
-    "permalink": {
-        "comment": "Permalink Settings => Osoiterakenteen asetukset",
-        "pos": "substantiivi",
-        "translation": "kestolinkki, osoiterakenne"
-    },
-    "permissions": {
-        "comment": "You don\u2019t have permissions to\u2026 => Tarvitset laajemmat oikeudet\u2026",
-        "pos": "substantiivi",
-        "translation": "oikeudet"
-    },
-    "pingback": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "linkki-ilmoitus, paluuviite"
-    },
-    "pings": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "p\u00e4ivitysilmoitukset"
-    },
-    "placeholder": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "paikanvaraus"
-    },
-    "please": {
-        "comment": "Please be patient => Ole k\u00e4rsiv\u00e4llinen; Shorten it, please => Lyhenn\u00e4, ole hyv\u00e4",
-        "pos": "ilmaisu",
-        "translation": "\u2026, ole hyv\u00e4."
-    },
-    "plugin": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "lis\u00e4osa"
-    },
-    "PM": {
-        "comment": "(Private Message)",
-        "pos": "substantiivi",
-        "translation": "yksityisviesti"
-    },
-    "popup": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ponnahdusikkuna"
-    },
-    "portfolio": {
-        "comment": "Fullwidth Portfolio => Portfolio, t\u00e4ysi leveys",
-        "pos": "substantiivi",
-        "translation": "ty\u00f6n\u00e4ytteet, portfolio"
-    },
+    "optional": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "valinnainen"
+        }
+    ],
+    "options": [
+        {
+            "comment": "Plugin Options => Lis\u00e4osan valinnat; Options saved => Asetukset tallennettu; Show options => N\u00e4yt\u00e4 valinnat",
+            "pos": "substantiivi",
+            "translation": "valinnat, asetukset"
+        }
+    ],
+    "order": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "j\u00e4rjestys, tilaus"
+        }
+    ],
+    "override": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "ohita"
+        }
+    ],
+    "padding": [
+        {
+            "comment": "Top & Bottom Padding => Reunat\u00e4ytteet yl\u00e4- ja alapuolella",
+            "pos": "substantiivi",
+            "translation": "t\u00e4yte, reunat\u00e4yte"
+        }
+    ],
+    "page": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sivu"
+        }
+    ],
+    "pagination": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sivutus"
+        }
+    ],
+    "parent": [
+        {
+            "comment": "hierarkiassa; Same as parent => Sama kuin ylemm\u00e4ll\u00e4 tasolla; Main Page (no parent) => P\u00e4\u00e4sivu; Theme requires a parent theme => Teema tarvitsee is\u00e4nt\u00e4teeman",
+            "pos": "substantiivi",
+            "translation": "ylempi taso, yl\u00e4taso, vanhempi, yl\u00e4sivu, yl\u00e4-"
+        }
+    ],
+    "path": [
+        {
+            "comment": "Server path to file => Palvelimen polku tiedostoon",
+            "pos": "substantiivi",
+            "translation": "polku"
+        }
+    ],
+    "pending": [
+        {
+            "comment": "Pending payment => Odottaa maksua,",
+            "pos": "verbi",
+            "translation": "odottaa"
+        }
+    ],
+    "permalink": [
+        {
+            "comment": "Permalink Settings => Osoiterakenteen asetukset",
+            "pos": "substantiivi",
+            "translation": "kestolinkki, osoiterakenne"
+        }
+    ],
+    "permissions": [
+        {
+            "comment": "You don\u2019t have permissions to\u2026 => Tarvitset laajemmat oikeudet\u2026",
+            "pos": "substantiivi",
+            "translation": "oikeudet"
+        }
+    ],
+    "pingback": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "linkki-ilmoitus, paluuviite"
+        }
+    ],
+    "pings": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "p\u00e4ivitysilmoitukset"
+        }
+    ],
+    "placeholder": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "paikanvaraus"
+        }
+    ],
+    "please": [
+        {
+            "comment": "Please be patient => Ole k\u00e4rsiv\u00e4llinen; Shorten it, please => Lyhenn\u00e4, ole hyv\u00e4",
+            "pos": "ilmaisu",
+            "translation": "\u2026, ole hyv\u00e4."
+        }
+    ],
+    "plugin": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "lis\u00e4osa"
+        }
+    ],
+    "PM": [
+        {
+            "comment": "(Private Message)",
+            "pos": "substantiivi",
+            "translation": "yksityisviesti"
+        }
+    ],
+    "popup": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ponnahdusikkuna"
+        }
+    ],
+    "portfolio": [
+        {
+            "comment": "Fullwidth Portfolio => Portfolio, t\u00e4ysi leveys",
+            "pos": "substantiivi",
+            "translation": "ty\u00f6n\u00e4ytteet, portfolio"
+        }
+    ],
     "Post": [
         {
             "comment": "",
@@ -1331,96 +1835,132 @@
             "translation": "julkaise, kirjoita viesti, \u201dpostaa\u201d"
         }
     ],
-    "post via e-mail": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "julkaise s\u00e4hk\u00f6postilla, kirjoita artikkeleita s\u00e4hk\u00f6postitse"
-    },
-    "prefix": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "etuliite"
-    },
-    "premium": {
-        "comment": "Premium Support => Korkealuokkainen tukipalvelu; Qualify for premium support => On tarjolla laajempi tuki; Even better premium version => Viel\u00e4 parempi, maksullinen versio",
-        "pos": "adjektiivi",
-        "translation": "korkealuokkainen;\u00a0erinomainen; maksullinen"
-    },
-    "Press This": {
-        "comment": "Kyseess\u00e4 on ns. tuotenimi, ei k\u00e4\u00e4nnet\u00e4.",
-        "pos": "noun",
-        "translation": "Press This"
-    },
-    "pricing table": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "hintataulu"
-    },
-    "priority": {
-        "comment": "Priority Support => Etuoikeutettu tuki; Choose a priority for this tax rate => Valitse veroprosentille t\u00e4rkeysj\u00e4rjestys (prioriteetti)",
-        "pos": "adj, subst",
-        "translation": "etuoikeutettu, t\u00e4rkeysj\u00e4rjestys"
-    },
-    "privacy": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "yksityisyys, tietosuoja"
-    },
-    "pro": {
-        "comment": "usein laajennetun ja maksullisen version tunniste",
-        "pos": "substantiivi",
-        "translation": "pro"
-    },
-    "profile": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "profiili"
-    },
-    "proofread": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "oikoluku"
-    },
-    "PTE": {
-        "comment": "(Project Translation Editor) Voi hyv\u00e4ksy\u00e4 k\u00e4\u00e4nt\u00e4jien ehdotuksia, mutta vain niiss\u00e4 projekteissa joihin saanut oikeudet.",
-        "pos": "substantiivi",
-        "translation": "projektik\u00e4\u00e4nt\u00e4j\u00e4"
-    },
-    "Publish": {
-        "comment": "",
-        "pos": "verb",
-        "translation": "julkaise"
-    },
-    "publish": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "julkaise"
-    },
-    "QR Code": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "QR-koodi"
-    },
-    "quantity": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "m\u00e4\u00e4r\u00e4"
-    },
-    "query": {
-        "comment": "tietokannasta kysely\/haku",
-        "pos": "substantiivi",
-        "translation": "kysely"
-    },
-    "quote": {
-        "comment": "Close blockquote tag => Sulje lainaus-tagi",
-        "pos": "substantiivi",
-        "translation": "lainaus, (hinta)tarjous"
-    },
-    "radio button": {
-        "comment": "Display shipping methods with \u201dradio\u201d buttons => Toimitustavat esitet\u00e4\u00e4n valintanappeina",
-        "pos": "substantiivi",
-        "translation": "valintanappi"
-    },
+    "post via e-mail": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "julkaise s\u00e4hk\u00f6postilla, kirjoita artikkeleita s\u00e4hk\u00f6postitse"
+        }
+    ],
+    "prefix": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "etuliite"
+        }
+    ],
+    "premium": [
+        {
+            "comment": "Premium Support => Korkealuokkainen tukipalvelu; Qualify for premium support => On tarjolla laajempi tuki; Even better premium version => Viel\u00e4 parempi, maksullinen versio",
+            "pos": "adjektiivi",
+            "translation": "korkealuokkainen;\u00a0erinomainen; maksullinen"
+        }
+    ],
+    "Press This": [
+        {
+            "comment": "Kyseess\u00e4 on ns. tuotenimi, ei k\u00e4\u00e4nnet\u00e4.",
+            "pos": "noun",
+            "translation": "Press This"
+        }
+    ],
+    "pricing table": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "hintataulu"
+        }
+    ],
+    "priority": [
+        {
+            "comment": "Priority Support => Etuoikeutettu tuki; Choose a priority for this tax rate => Valitse veroprosentille t\u00e4rkeysj\u00e4rjestys (prioriteetti)",
+            "pos": "adj, subst",
+            "translation": "etuoikeutettu, t\u00e4rkeysj\u00e4rjestys"
+        }
+    ],
+    "privacy": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "yksityisyys, tietosuoja"
+        }
+    ],
+    "pro": [
+        {
+            "comment": "usein laajennetun ja maksullisen version tunniste",
+            "pos": "substantiivi",
+            "translation": "pro"
+        }
+    ],
+    "profile": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "profiili"
+        }
+    ],
+    "proofread": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "oikoluku"
+        }
+    ],
+    "PTE": [
+        {
+            "comment": "(Project Translation Editor) Voi hyv\u00e4ksy\u00e4 k\u00e4\u00e4nt\u00e4jien ehdotuksia, mutta vain niiss\u00e4 projekteissa joihin saanut oikeudet.",
+            "pos": "substantiivi",
+            "translation": "projektik\u00e4\u00e4nt\u00e4j\u00e4"
+        }
+    ],
+    "Publish": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "julkaise"
+        }
+    ],
+    "publish": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "julkaise"
+        }
+    ],
+    "QR Code": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "QR-koodi"
+        }
+    ],
+    "quantity": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "m\u00e4\u00e4r\u00e4"
+        }
+    ],
+    "query": [
+        {
+            "comment": "tietokannasta kysely\/haku",
+            "pos": "substantiivi",
+            "translation": "kysely"
+        }
+    ],
+    "quote": [
+        {
+            "comment": "Close blockquote tag => Sulje lainaus-tagi",
+            "pos": "substantiivi",
+            "translation": "lainaus, (hinta)tarjous"
+        }
+    ],
+    "radio button": [
+        {
+            "comment": "Display shipping methods with \u201dradio\u201d buttons => Toimitustavat esitet\u00e4\u00e4n valintanappeina",
+            "pos": "substantiivi",
+            "translation": "valintanappi"
+        }
+    ],
     "rate": [
         {
             "comment": "Flat Rate => Kiinte\u00e4 hinta (tai -prosentti)",
@@ -1433,91 +1973,125 @@
             "translation": "arvostella, arvioida, asettaa luokka\/-taso"
         }
     ],
-    "rating": {
-        "comment": "Your Rating => Arvostelusi; Enable ratings on reviews => Ota k\u00e4ytt\u00f6\u00f6n tuotearvioiden arvostelut; Product Ratings => Tuotearvostelut; Link rating => Luokittelu",
-        "pos": "substantiivi",
-        "translation": "arvostelu, arviointi"
-    },
-    "reactivate": {
-        "comment": "Plugin Reactivation => Lis\u00e4osan uudelleen k\u00e4ytt\u00f6\u00f6notto",
-        "pos": "verbi",
-        "translation": "ota uudelleen k\u00e4ytt\u00f6\u00f6n"
-    },
-    "recurring": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "toistuva"
-    },
-    "redirect": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "edelleenohjaa, uudelleenohjaa"
-    },
-    "refresh": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "p\u00e4ivit\u00e4"
-    },
-    "reject": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "hylk\u00e4\u00e4"
-    },
-    "related": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "liittyv\u00e4"
-    },
-    "remove": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "poista"
-    },
-    "reorder": {
-        "comment": "Close reorder mode => Sulje j\u00e4rjestystila",
-        "pos": "verbi",
-        "translation": "vaihda j\u00e4rjestyst\u00e4"
-    },
-    "repository": {
-        "comment": "Plugins available on the WordPress.org plugin repository => Lis\u00e4osia on saatavilla WordPress.org sivuston Lis\u00e4osat (Plugins) sivulla",
-        "pos": "substantiivi",
-        "translation": "varasto, s\u00e4ilytyspaikka"
-    },
-    "require": {
-        "comment": "Required field missing => Tarpeellinen kentt\u00e4 puuttuu",
-        "pos": "verbi",
-        "translation": "tarvitaan, vaaditaan"
-    },
-    "reset": {
-        "comment": "Reset Image => Nollaa kuva",
-        "pos": "verbi",
-        "translation": "palauta perustilaan, nollaa"
-    },
-    "resolution": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tarkkuus, resoluutio"
-    },
-    "responsive": {
-        "comment": "Responsive Layout => Mukautuva ulkoasu",
-        "pos": "adjektiivi",
-        "translation": "mukautuva"
-    },
-    "restore": {
-        "comment": "Restore default settings => Palauta oletusasetukset; Post restored from the Trash => Artikkeli palautettiin roskakorista",
-        "pos": "verbi",
-        "translation": "palauta [ennalleen]"
-    },
-    "restriction": {
-        "comment": "Access Restriction => Rajoitettu p\u00e4\u00e4sy",
-        "pos": "subs, adj",
-        "translation": "rajoitus, rajoitettu"
-    },
-    "resume": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "jatka"
-    },
+    "rating": [
+        {
+            "comment": "Your Rating => Arvostelusi; Enable ratings on reviews => Ota k\u00e4ytt\u00f6\u00f6n tuotearvioiden arvostelut; Product Ratings => Tuotearvostelut; Link rating => Luokittelu",
+            "pos": "substantiivi",
+            "translation": "arvostelu, arviointi"
+        }
+    ],
+    "reactivate": [
+        {
+            "comment": "Plugin Reactivation => Lis\u00e4osan uudelleen k\u00e4ytt\u00f6\u00f6notto",
+            "pos": "verbi",
+            "translation": "ota uudelleen k\u00e4ytt\u00f6\u00f6n"
+        }
+    ],
+    "recurring": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "toistuva"
+        }
+    ],
+    "redirect": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "edelleenohjaa, uudelleenohjaa"
+        }
+    ],
+    "refresh": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "p\u00e4ivit\u00e4"
+        }
+    ],
+    "reject": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "hylk\u00e4\u00e4"
+        }
+    ],
+    "related": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "liittyv\u00e4"
+        }
+    ],
+    "remove": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "poista"
+        }
+    ],
+    "reorder": [
+        {
+            "comment": "Close reorder mode => Sulje j\u00e4rjestystila",
+            "pos": "verbi",
+            "translation": "vaihda j\u00e4rjestyst\u00e4"
+        }
+    ],
+    "repository": [
+        {
+            "comment": "Plugins available on the WordPress.org plugin repository => Lis\u00e4osia on saatavilla WordPress.org sivuston Lis\u00e4osat (Plugins) sivulla",
+            "pos": "substantiivi",
+            "translation": "varasto, s\u00e4ilytyspaikka"
+        }
+    ],
+    "require": [
+        {
+            "comment": "Required field missing => Tarpeellinen kentt\u00e4 puuttuu",
+            "pos": "verbi",
+            "translation": "tarvitaan, vaaditaan"
+        }
+    ],
+    "reset": [
+        {
+            "comment": "Reset Image => Nollaa kuva",
+            "pos": "verbi",
+            "translation": "palauta perustilaan, nollaa"
+        }
+    ],
+    "resolution": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tarkkuus, resoluutio"
+        }
+    ],
+    "responsive": [
+        {
+            "comment": "Responsive Layout => Mukautuva ulkoasu",
+            "pos": "adjektiivi",
+            "translation": "mukautuva"
+        }
+    ],
+    "restore": [
+        {
+            "comment": "Restore default settings => Palauta oletusasetukset; Post restored from the Trash => Artikkeli palautettiin roskakorista",
+            "pos": "verbi",
+            "translation": "palauta [ennalleen]"
+        }
+    ],
+    "restriction": [
+        {
+            "comment": "Access Restriction => Rajoitettu p\u00e4\u00e4sy",
+            "pos": "subs, adj",
+            "translation": "rajoitus, rajoitettu"
+        }
+    ],
+    "resume": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "jatka"
+        }
+    ],
     "review": [
         {
             "comment": "Enable ratings on reviews => Ota k\u00e4ytt\u00f6\u00f6n tuotearvioiden arvostelut",
@@ -1530,476 +2104,664 @@
             "translation": "tarkistaa, arvioida"
         }
     ],
-    "revision": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "versio"
-    },
-    "role": {
-        "comment": "Role Editor => Roolien muokkaus; Overview of the different user roles\u00a0=> Yleiskatsaus eri k\u00e4ytt\u00e4j\u00e4rooleihin",
-        "pos": "substantiivi",
-        "translation": "rooli"
-    },
-    "rosetta site": {
-        "comment": "kaikki paikalliset\/kielialueen omat sivut kutsutaan nimell\u00e4 Rosetta sivustot",
-        "pos": "ilmaisu",
-        "translation": "paikallinen sivusto"
-    },
-    "rtl": {
-        "comment": "kirjoitussuunta",
-        "pos": "ilmaisu",
-        "translation": "oikealta vasemmalle"
-    },
-    "screen": {
-        "comment": "Screen Layout => Sivun asettelu",
-        "pos": "substantiivi",
-        "translation": "n\u00e4ytt\u00f6"
-    },
-    "screenshot": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "n\u00e4ytt\u00f6kaappaus, ruutukaappaus"
-    },
-    "scroll": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "vierit\u00e4"
-    },
-    "search": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "hae, etsi"
-    },
-    "search engine visibility": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "hakukonen\u00e4kyvyys"
-    },
-    "section": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "jakso, alue, lokero, osa, lohko"
-    },
-    "security release": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tietoturvap\u00e4ivitys"
-    },
-    "select": {
-        "comment": "Select comment => Valitse kommentti",
-        "pos": "verbi",
-        "translation": "valitse"
-    },
-    "send to trash": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "siirr\u00e4 roskakoriin"
-    },
-    "SEO": {
-        "comment": "(Search Engine Optimization)",
-        "pos": "substantiivi",
-        "translation": "hakukoneoptimointi, HKO"
-    },
-    "session": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "istunto"
-    },
-    "setup": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "asetukset"
-    },
-    "share": {
-        "comment": "An easier way to share content => Helpompi tapa jakaa sis\u00e4lt\u00f6\u00e4; Share a little biographical information => Kerro muutamalla sanalla itsest\u00e4si",
-        "pos": "verbi",
-        "translation": "jaa"
-    },
-    "shipping": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "toimitus"
-    },
-    "shortcode": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "lyhytkoodi"
-    },
-    "shortcut": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "oikopolku"
-    },
-    "shortlink": {
-        "comment": "Get Shortlink => Hae pikalinkki",
-        "pos": "substantiivi",
-        "translation": "pikalinkki"
-    },
-    "show": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "n\u00e4yt\u00e4"
-    },
-    "sidebar": {
-        "comment": "Right Sidebar => Oikea sivupalkki",
-        "pos": "substantiivi",
-        "translation": "sivupalkki"
-    },
-    "sign-up": {
-        "comment": "To use the Y sign-up form\u00a0=> Kun haluat k\u00e4ytt\u00e4\u00e4 Y liittymislomaketta; Hide form after a successful sign-up? => Piilota lomake onnistuneen tilaamisen j\u00e4lkeen?",
-        "pos": "verbi",
-        "translation": "rekister\u00f6idy, tilaa, liity"
-    },
-    "site": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sivusto"
-    },
-    "site editor": {
-        "comment": "Lis\u00e4\u00e4 ja muokkaa paikallisen WordPress sivuston (\u201dRosetta-sivusto\u201d) sis\u00e4lt\u00f6\u00e4. Kaksoisrooli: samalla p\u00e4\u00e4k\u00e4\u00e4nt\u00e4j\u00e4 (GTE).\u00a0",
-        "pos": "substantiivi",
-        "translation": "paikallisen sivuston p\u00e4\u00e4toimittaja"
-    },
-    "sitemap": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sivustokartta, sivukartta"
-    },
-    "skip": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "ohita"
-    },
-    "slider": {
-        "comment": "Drag the slider handle left => Raahaamalla liukus\u00e4\u00e4dint\u00e4 vasemmalle; Fullwidth Slider => Kuvaesitys, t\u00e4ysi leveys; Automattic slider speed => Automaattinen siirtym\u00e4n nopeus",
-        "pos": "substantiivi",
-        "translation": "liukus\u00e4\u00e4din, kuvaesitys"
-    },
-    "slides": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kuvat, diat"
-    },
-    "slug": {
-        "comment": "Slug X is already in use => Polkutunnus X on k\u00e4yt\u00f6ss\u00e4",
-        "pos": "substantiivi",
-        "translation": "polkutunnus"
-    },
-    "social": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "some, sosiaalinen media"
-    },
-    "social icon": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "some-kuvake"
-    },
-    "sorry": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "pahoittelemme"
-    },
-    "sort": {
-        "comment": "Sort order => Lajitteluj\u00e4rjestys",
-        "pos": "substantiivi",
-        "translation": "lajittelu"
-    },
-    "source": {
-        "comment": "(\u201dsorsa\u201d) Source file => L\u00e4hdetiedosto",
-        "pos": "substantiivi",
-        "translation": "l\u00e4hde"
-    },
-    "stats": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tilastot"
-    },
-    "status": {
-        "comment": "Edit status => Muokkaa tilaa; Understanding the Status Report => J\u00e4rjestelm\u00e4n tila -raportin ymm\u00e4rt\u00e4minen\u00a0",
-        "pos": "substantiivi",
-        "translation": "tila"
-    },
-    "sticky": {
-        "comment": "Make this post sticky => Kiinnit\u00e4 t\u00e4m\u00e4 artikkeli",
-        "pos": "adjektiivi",
-        "translation": "kiinnitetty, paikallaan pysyv\u00e4"
-    },
-    "store manager": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kauppias"
-    },
-    "string": {
-        "comment": "Pass it a string => Anna sille argumenttina merkkijono",
-        "pos": "substantiivi",
-        "translation": "merkkijono"
-    },
-    "stylesheet": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tyylitiedosto"
-    },
-    "subject": {
-        "comment": "Email Subject => S\u00e4hk\u00f6postin aihe",
-        "pos": "substantiivi",
-        "translation": "aihe"
-    },
-    "submenu": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "alavalikko"
-    },
-    "submit": {
-        "comment": "Submitted on\u2026 => Kirjoitettu\u2026; Submitted on: => L\u00e4hetetty:",
-        "pos": "verbi",
-        "translation": "l\u00e4het\u00e4, toteuta"
-    },
-    "suffix": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "loppuliite"
-    },
-    "summary": {
-        "comment": "Add a quick summary for => Lis\u00e4\u00e4 nopea yhteenveto; Show full text or a summary => N\u00e4ytet\u00e4\u00e4nk\u00f6 koko teksti vai poiminta",
-        "pos": "substantiivi",
-        "translation": "yhteenveto, poiminta"
-    },
-    "swich": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "vaihda"
-    },
-    "tab": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "v\u00e4lilehti"
-    },
-    "table": {
-        "comment": "Table view => taulukkon\u00e4kym\u00e4; Table Prefix => Tietokantataulujen etuliite",
-        "pos": "substantiivi",
-        "translation": "taulu, taulukko"
-    },
-    "Tag": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "avainsana"
-    },
-    "tag": {
-        "comment": "Tags deleted => Avainsanat poistettiin; Popular Tags => Suositut avainsanat",
-        "pos": "substantiivi",
-        "translation": "avainsana, tagi, t\u00e4gi"
-    },
-    "tagline": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kuvaus"
-    },
-    "tap": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "kosketa, napsauta"
-    },
-    "target": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "kohde"
-    },
-    "Taxonomy": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "taksonomia"
-    },
-    "taxonomy": {
-        "comment": "A list of taxonomy terms\u2026 => Luettelo luokittelujen arvoista\u2026",
-        "pos": "substantiivi",
-        "translation": "luokittelu, taksonomia"
-    },
-    "TC": {
-        "comment": "(Translation Contributor) Voi k\u00e4\u00e4t\u00e4\u00e4 ja ehdottaa parannuksia k\u00e4\u00e4nn\u00f6ksiin tavallisilla WordPress.org-tunnuksilla.",
-        "pos": "substantiivi",
-        "translation": "k\u00e4\u00e4nt\u00e4j\u00e4, avustaja, k\u00e4\u00e4nn\u00f6savustaja"
-    },
-    "template": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "malline, pohja, sivupohja,\u00a0malli"
-    },
-    "Term": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "termi"
-    },
-    "term": {
-        "comment": "Shared term splitting => Jaettujen termien pilkkominen; Attribute terms can be assigned to => Ominaisuuden arvot voidaan kohdistaa",
-        "pos": "substantiivi",
-        "translation": "termi, nimitys, arvo"
-    },
-    "testimonial": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "k\u00e4ytt\u00e4j\u00e4kokemus"
-    },
-    "text color": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tekstin v\u00e4ri"
-    },
-    "Text editor": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "tekstimuokkain"
-    },
-    "theme": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "teema"
-    },
-    "thumbnail": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "pienoiskuva, pikkukuva"
-    },
-    "ticket": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tukipyynt\u00f6, (p\u00e4\u00e4sy)lippu"
-    },
-    "tile": {
-        "comment": "Tile Horizontally => Toista vaakasuunnassa; Tile Vertically => Toista pystysuunnassa",
-        "pos": "verbi",
-        "translation": "toista"
-    },
-    "tiled": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "vierekk\u00e4in"
-    },
-    "tips": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "vinkit"
-    },
-    "toggle": {
-        "comment": "Toggle Enabled => Vaihda Ota k\u00e4ytt\u00f6\u00f6n -tila; Toggle Module Settings => N\u00e4yt\u00e4\/piilota -moduulin asetukset; Click to toggle => Napsauta vaihtaaksesi; Mute Toggle => \u00c4\u00e4ni p\u00e4\u00e4lle\/pois; Toggle Editor Text Direction => Vaihda tekstin suunta",
-        "pos": "verbi",
-        "translation": "n\u00e4yt\u00e4\/piilota, vaihda tila"
-    },
-    "token": {
-        "comment": "Identity Token => ID merkki (Identity Token); Secured Token requests => Varmistetut valtuutuspyynn\u00f6t (Secured Token)",
-        "pos": "substantiivi",
-        "translation": "merkki"
-    },
-    "toolbar": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "ty\u00f6kalupalkki"
-    },
-    "trackback": {
-        "comment": "Send trackbacks to: => L\u00e4het\u00e4 paluuviitteet:",
-        "pos": "substantiivi",
-        "translation": "linkki-ilmoitus, paluuviite"
-    },
-    "troubleshooting": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "ongelmatilanteiden ratkaiseminen"
-    },
-    "tutorial": {
-        "comment": "Tutorials => Oppaat; Tutorial Videos => Opastusvideot",
-        "pos": "substantiivi",
-        "translation": "opas, opastus-"
-    },
-    "type": {
-        "comment": "Unknown post type => Tuntematon sis\u00e4lt\u00f6tyyppi; Discount type => Alennuksen tapa",
-        "pos": "substantiivi",
-        "translation": "laji, tyyppi"
-    },
-    "typography": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "tekstin muotoilu, typografia"
-    },
-    "uncategorized": {
-        "comment": "",
-        "pos": "adjektiivi",
-        "translation": "yleinen (kategoria), ei-luokiteltu"
-    },
-    "undo": {
-        "comment": "",
-        "pos": "verbi",
-        "translation": "peru, peruuta"
-    },
-    "unsubscribe": {
-        "comment": "Unsubscribed => Tilaus peruttu",
-        "pos": "verbi",
-        "translation": "peru tilaus"
-    },
-    "update": {
-        "comment": "Update Theme => P\u00e4ivit\u00e4 teema",
-        "pos": "substantiivi",
-        "translation": "p\u00e4ivit\u00e4"
-    },
-    "upgrade": {
-        "comment": "Read through our upgrade guide\u00a0=> Tutustu p\u00e4ivitys oppaaseen",
-        "pos": "substantiivi",
-        "translation": "p\u00e4ivit\u00e4 (parempaan)"
-    },
-    "upload": {
-        "comment": "Uploaded Images => Palvelimelle siirretyt kuvat",
-        "pos": "verbi",
-        "translation": "siirr\u00e4"
-    },
-    "URL": {
-        "comment": "(Uniform Resource Locator) File URL => Tiedoston verkko-osoite (URL)",
-        "pos": "substantiivi",
-        "translation": "verkko-osoite, verkko-osoite\/URL"
-    },
-    "usability": {
-        "comment": "",
-        "pos": "ilmaisu",
-        "translation": "k\u00e4ytett\u00e4vyys"
-    },
-    "username": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "k\u00e4ytt\u00e4j\u00e4tunnus"
-    },
-    "UTC": {
-        "comment": "(Coordinated Universal Time)",
-        "pos": "ilmaisu",
-        "translation": "koordinoitu yleisaika\/UTC"
-    },
-    "valid": {
-        "comment": "Enter a valid account username\u00a0=> Kirjoita kelvollinen tilin k\u00e4ytt\u00e4j\u00e4tunnus",
-        "pos": "adjektiivi",
-        "translation": "kelvollinen, validi"
-    },
-    "validator": {
-        "comment": "kun asiayhteys on WordPress k\u00e4\u00e4nt\u00e4jien roolit, silloin uudet nimitykset ovat p\u00e4\u00e4k\u00e4\u00e4nt\u00e4j\u00e4 ja projektik\u00e4\u00e4nt\u00e4j\u00e4 (GTE, PTE)",
-        "pos": "substantiivi",
-        "translation": "laaduntarkastaja"
-    },
-    "value": {
-        "comment": "Provide a custom field value\u00a0=> Anna lis\u00e4kent\u00e4lle arvo",
-        "pos": "substantiivi",
-        "translation": "arvo"
-    },
-    "variable": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "muuttuja"
-    },
-    "variable product": {
-        "comment": "If this is a variable product\u2026 => Jos t\u00e4h\u00e4n tuotteeseen on liitetty muunnelmia\u2026\u00a0",
-        "pos": "substantiivi",
-        "translation": "muunnelmatuote"
-    },
-    "verification": {
-        "comment": "Address verification result => Osoitteen varmennuksen tulos",
-        "pos": "substantiivi",
-        "translation": "varmistus, varmennus"
-    },
+    "revision": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "versio"
+        }
+    ],
+    "role": [
+        {
+            "comment": "Role Editor => Roolien muokkaus; Overview of the different user roles\u00a0=> Yleiskatsaus eri k\u00e4ytt\u00e4j\u00e4rooleihin",
+            "pos": "substantiivi",
+            "translation": "rooli"
+        }
+    ],
+    "rosetta site": [
+        {
+            "comment": "kaikki paikalliset\/kielialueen omat sivut kutsutaan nimell\u00e4 Rosetta sivustot",
+            "pos": "ilmaisu",
+            "translation": "paikallinen sivusto"
+        }
+    ],
+    "rtl": [
+        {
+            "comment": "kirjoitussuunta",
+            "pos": "ilmaisu",
+            "translation": "oikealta vasemmalle"
+        }
+    ],
+    "screen": [
+        {
+            "comment": "Screen Layout => Sivun asettelu",
+            "pos": "substantiivi",
+            "translation": "n\u00e4ytt\u00f6"
+        }
+    ],
+    "screenshot": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "n\u00e4ytt\u00f6kaappaus, ruutukaappaus"
+        }
+    ],
+    "scroll": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "vierit\u00e4"
+        }
+    ],
+    "search": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "hae, etsi"
+        }
+    ],
+    "search engine visibility": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "hakukonen\u00e4kyvyys"
+        }
+    ],
+    "section": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "jakso, alue, lokero, osa, lohko"
+        }
+    ],
+    "security release": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tietoturvap\u00e4ivitys"
+        }
+    ],
+    "select": [
+        {
+            "comment": "Select comment => Valitse kommentti",
+            "pos": "verbi",
+            "translation": "valitse"
+        }
+    ],
+    "send to trash": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "siirr\u00e4 roskakoriin"
+        }
+    ],
+    "SEO": [
+        {
+            "comment": "(Search Engine Optimization)",
+            "pos": "substantiivi",
+            "translation": "hakukoneoptimointi, HKO"
+        }
+    ],
+    "session": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "istunto"
+        }
+    ],
+    "setup": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "asetukset"
+        }
+    ],
+    "share": [
+        {
+            "comment": "An easier way to share content => Helpompi tapa jakaa sis\u00e4lt\u00f6\u00e4; Share a little biographical information => Kerro muutamalla sanalla itsest\u00e4si",
+            "pos": "verbi",
+            "translation": "jaa"
+        }
+    ],
+    "shipping": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "toimitus"
+        }
+    ],
+    "shortcode": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "lyhytkoodi"
+        }
+    ],
+    "shortcut": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "oikopolku"
+        }
+    ],
+    "shortlink": [
+        {
+            "comment": "Get Shortlink => Hae pikalinkki",
+            "pos": "substantiivi",
+            "translation": "pikalinkki"
+        }
+    ],
+    "show": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "n\u00e4yt\u00e4"
+        }
+    ],
+    "sidebar": [
+        {
+            "comment": "Right Sidebar => Oikea sivupalkki",
+            "pos": "substantiivi",
+            "translation": "sivupalkki"
+        }
+    ],
+    "sign-up": [
+        {
+            "comment": "To use the Y sign-up form\u00a0=> Kun haluat k\u00e4ytt\u00e4\u00e4 Y liittymislomaketta; Hide form after a successful sign-up? => Piilota lomake onnistuneen tilaamisen j\u00e4lkeen?",
+            "pos": "verbi",
+            "translation": "rekister\u00f6idy, tilaa, liity"
+        }
+    ],
+    "site": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sivusto"
+        }
+    ],
+    "site editor": [
+        {
+            "comment": "Lis\u00e4\u00e4 ja muokkaa paikallisen WordPress sivuston (\u201dRosetta-sivusto\u201d) sis\u00e4lt\u00f6\u00e4. Kaksoisrooli: samalla p\u00e4\u00e4k\u00e4\u00e4nt\u00e4j\u00e4 (GTE).\u00a0",
+            "pos": "substantiivi",
+            "translation": "paikallisen sivuston p\u00e4\u00e4toimittaja"
+        }
+    ],
+    "sitemap": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sivustokartta, sivukartta"
+        }
+    ],
+    "skip": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "ohita"
+        }
+    ],
+    "slider": [
+        {
+            "comment": "Drag the slider handle left => Raahaamalla liukus\u00e4\u00e4dint\u00e4 vasemmalle; Fullwidth Slider => Kuvaesitys, t\u00e4ysi leveys; Automattic slider speed => Automaattinen siirtym\u00e4n nopeus",
+            "pos": "substantiivi",
+            "translation": "liukus\u00e4\u00e4din, kuvaesitys"
+        }
+    ],
+    "slides": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kuvat, diat"
+        }
+    ],
+    "slug": [
+        {
+            "comment": "Slug X is already in use => Polkutunnus X on k\u00e4yt\u00f6ss\u00e4",
+            "pos": "substantiivi",
+            "translation": "polkutunnus"
+        }
+    ],
+    "social": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "some, sosiaalinen media"
+        }
+    ],
+    "social icon": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "some-kuvake"
+        }
+    ],
+    "sorry": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "pahoittelemme"
+        }
+    ],
+    "sort": [
+        {
+            "comment": "Sort order => Lajitteluj\u00e4rjestys",
+            "pos": "substantiivi",
+            "translation": "lajittelu"
+        }
+    ],
+    "source": [
+        {
+            "comment": "(\u201dsorsa\u201d) Source file => L\u00e4hdetiedosto",
+            "pos": "substantiivi",
+            "translation": "l\u00e4hde"
+        }
+    ],
+    "stats": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tilastot"
+        }
+    ],
+    "status": [
+        {
+            "comment": "Edit status => Muokkaa tilaa; Understanding the Status Report => J\u00e4rjestelm\u00e4n tila -raportin ymm\u00e4rt\u00e4minen\u00a0",
+            "pos": "substantiivi",
+            "translation": "tila"
+        }
+    ],
+    "sticky": [
+        {
+            "comment": "Make this post sticky => Kiinnit\u00e4 t\u00e4m\u00e4 artikkeli",
+            "pos": "adjektiivi",
+            "translation": "kiinnitetty, paikallaan pysyv\u00e4"
+        }
+    ],
+    "store manager": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kauppias"
+        }
+    ],
+    "string": [
+        {
+            "comment": "Pass it a string => Anna sille argumenttina merkkijono",
+            "pos": "substantiivi",
+            "translation": "merkkijono"
+        }
+    ],
+    "stylesheet": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tyylitiedosto"
+        }
+    ],
+    "subject": [
+        {
+            "comment": "Email Subject => S\u00e4hk\u00f6postin aihe",
+            "pos": "substantiivi",
+            "translation": "aihe"
+        }
+    ],
+    "submenu": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "alavalikko"
+        }
+    ],
+    "submit": [
+        {
+            "comment": "Submitted on\u2026 => Kirjoitettu\u2026; Submitted on: => L\u00e4hetetty:",
+            "pos": "verbi",
+            "translation": "l\u00e4het\u00e4, toteuta"
+        }
+    ],
+    "suffix": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "loppuliite"
+        }
+    ],
+    "summary": [
+        {
+            "comment": "Add a quick summary for => Lis\u00e4\u00e4 nopea yhteenveto; Show full text or a summary => N\u00e4ytet\u00e4\u00e4nk\u00f6 koko teksti vai poiminta",
+            "pos": "substantiivi",
+            "translation": "yhteenveto, poiminta"
+        }
+    ],
+    "swich": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "vaihda"
+        }
+    ],
+    "tab": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "v\u00e4lilehti"
+        }
+    ],
+    "table": [
+        {
+            "comment": "Table view => taulukkon\u00e4kym\u00e4; Table Prefix => Tietokantataulujen etuliite",
+            "pos": "substantiivi",
+            "translation": "taulu, taulukko"
+        }
+    ],
+    "Tag": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "avainsana"
+        }
+    ],
+    "tag": [
+        {
+            "comment": "Tags deleted => Avainsanat poistettiin; Popular Tags => Suositut avainsanat",
+            "pos": "substantiivi",
+            "translation": "avainsana, tagi, t\u00e4gi"
+        }
+    ],
+    "tagline": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kuvaus"
+        }
+    ],
+    "tap": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "kosketa, napsauta"
+        }
+    ],
+    "target": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "kohde"
+        }
+    ],
+    "Taxonomy": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "taksonomia"
+        }
+    ],
+    "taxonomy": [
+        {
+            "comment": "A list of taxonomy terms\u2026 => Luettelo luokittelujen arvoista\u2026",
+            "pos": "substantiivi",
+            "translation": "luokittelu, taksonomia"
+        }
+    ],
+    "TC": [
+        {
+            "comment": "(Translation Contributor) Voi k\u00e4\u00e4t\u00e4\u00e4 ja ehdottaa parannuksia k\u00e4\u00e4nn\u00f6ksiin tavallisilla WordPress.org-tunnuksilla.",
+            "pos": "substantiivi",
+            "translation": "k\u00e4\u00e4nt\u00e4j\u00e4, avustaja, k\u00e4\u00e4nn\u00f6savustaja"
+        }
+    ],
+    "template": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "malline, pohja, sivupohja,\u00a0malli"
+        }
+    ],
+    "Term": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "termi"
+        }
+    ],
+    "term": [
+        {
+            "comment": "Shared term splitting => Jaettujen termien pilkkominen; Attribute terms can be assigned to => Ominaisuuden arvot voidaan kohdistaa",
+            "pos": "substantiivi",
+            "translation": "termi, nimitys, arvo"
+        }
+    ],
+    "testimonial": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "k\u00e4ytt\u00e4j\u00e4kokemus"
+        }
+    ],
+    "text color": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tekstin v\u00e4ri"
+        }
+    ],
+    "Text editor": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tekstimuokkain"
+        }
+    ],
+    "theme": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "teema"
+        }
+    ],
+    "thumbnail": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "pienoiskuva, pikkukuva"
+        }
+    ],
+    "ticket": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tukipyynt\u00f6, (p\u00e4\u00e4sy)lippu"
+        }
+    ],
+    "tile": [
+        {
+            "comment": "Tile Horizontally => Toista vaakasuunnassa; Tile Vertically => Toista pystysuunnassa",
+            "pos": "verbi",
+            "translation": "toista"
+        }
+    ],
+    "tiled": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "vierekk\u00e4in"
+        }
+    ],
+    "tips": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "vinkit"
+        }
+    ],
+    "toggle": [
+        {
+            "comment": "Toggle Enabled => Vaihda Ota k\u00e4ytt\u00f6\u00f6n -tila; Toggle Module Settings => N\u00e4yt\u00e4\/piilota -moduulin asetukset; Click to toggle => Napsauta vaihtaaksesi; Mute Toggle => \u00c4\u00e4ni p\u00e4\u00e4lle\/pois; Toggle Editor Text Direction => Vaihda tekstin suunta",
+            "pos": "verbi",
+            "translation": "n\u00e4yt\u00e4\/piilota, vaihda tila"
+        }
+    ],
+    "token": [
+        {
+            "comment": "Identity Token => ID merkki (Identity Token); Secured Token requests => Varmistetut valtuutuspyynn\u00f6t (Secured Token)",
+            "pos": "substantiivi",
+            "translation": "merkki"
+        }
+    ],
+    "toolbar": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "ty\u00f6kalupalkki"
+        }
+    ],
+    "trackback": [
+        {
+            "comment": "Send trackbacks to: => L\u00e4het\u00e4 paluuviitteet:",
+            "pos": "substantiivi",
+            "translation": "linkki-ilmoitus, paluuviite"
+        }
+    ],
+    "troubleshooting": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "ongelmatilanteiden ratkaiseminen"
+        }
+    ],
+    "tutorial": [
+        {
+            "comment": "Tutorials => Oppaat; Tutorial Videos => Opastusvideot",
+            "pos": "substantiivi",
+            "translation": "opas, opastus-"
+        }
+    ],
+    "type": [
+        {
+            "comment": "Unknown post type => Tuntematon sis\u00e4lt\u00f6tyyppi; Discount type => Alennuksen tapa",
+            "pos": "substantiivi",
+            "translation": "laji, tyyppi"
+        }
+    ],
+    "typography": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "tekstin muotoilu, typografia"
+        }
+    ],
+    "uncategorized": [
+        {
+            "comment": "",
+            "pos": "adjektiivi",
+            "translation": "yleinen (kategoria), ei-luokiteltu"
+        }
+    ],
+    "undo": [
+        {
+            "comment": "",
+            "pos": "verbi",
+            "translation": "peru, peruuta"
+        }
+    ],
+    "unsubscribe": [
+        {
+            "comment": "Unsubscribed => Tilaus peruttu",
+            "pos": "verbi",
+            "translation": "peru tilaus"
+        }
+    ],
+    "update": [
+        {
+            "comment": "Update Theme => P\u00e4ivit\u00e4 teema",
+            "pos": "substantiivi",
+            "translation": "p\u00e4ivit\u00e4"
+        }
+    ],
+    "upgrade": [
+        {
+            "comment": "Read through our upgrade guide\u00a0=> Tutustu p\u00e4ivitys oppaaseen",
+            "pos": "substantiivi",
+            "translation": "p\u00e4ivit\u00e4 (parempaan)"
+        }
+    ],
+    "upload": [
+        {
+            "comment": "Uploaded Images => Palvelimelle siirretyt kuvat",
+            "pos": "verbi",
+            "translation": "siirr\u00e4"
+        }
+    ],
+    "URL": [
+        {
+            "comment": "(Uniform Resource Locator) File URL => Tiedoston verkko-osoite (URL)",
+            "pos": "substantiivi",
+            "translation": "verkko-osoite, verkko-osoite\/URL"
+        }
+    ],
+    "usability": [
+        {
+            "comment": "",
+            "pos": "ilmaisu",
+            "translation": "k\u00e4ytett\u00e4vyys"
+        }
+    ],
+    "username": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "k\u00e4ytt\u00e4j\u00e4tunnus"
+        }
+    ],
+    "UTC": [
+        {
+            "comment": "(Coordinated Universal Time)",
+            "pos": "ilmaisu",
+            "translation": "koordinoitu yleisaika\/UTC"
+        }
+    ],
+    "valid": [
+        {
+            "comment": "Enter a valid account username\u00a0=> Kirjoita kelvollinen tilin k\u00e4ytt\u00e4j\u00e4tunnus",
+            "pos": "adjektiivi",
+            "translation": "kelvollinen, validi"
+        }
+    ],
+    "validator": [
+        {
+            "comment": "kun asiayhteys on WordPress k\u00e4\u00e4nt\u00e4jien roolit, silloin uudet nimitykset ovat p\u00e4\u00e4k\u00e4\u00e4nt\u00e4j\u00e4 ja projektik\u00e4\u00e4nt\u00e4j\u00e4 (GTE, PTE)",
+            "pos": "substantiivi",
+            "translation": "laaduntarkastaja"
+        }
+    ],
+    "value": [
+        {
+            "comment": "Provide a custom field value\u00a0=> Anna lis\u00e4kent\u00e4lle arvo",
+            "pos": "substantiivi",
+            "translation": "arvo"
+        }
+    ],
+    "variable": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "muuttuja"
+        }
+    ],
+    "variable product": [
+        {
+            "comment": "If this is a variable product\u2026 => Jos t\u00e4h\u00e4n tuotteeseen on liitetty muunnelmia\u2026\u00a0",
+            "pos": "substantiivi",
+            "translation": "muunnelmatuote"
+        }
+    ],
+    "verification": [
+        {
+            "comment": "Address verification result => Osoitteen varmennuksen tulos",
+            "pos": "substantiivi",
+            "translation": "varmistus, varmennus"
+        }
+    ],
     "view": [
         {
             "comment": "",
@@ -2012,39 +2774,53 @@
             "translation": "n\u00e4yt\u00e4"
         }
     ],
-    "visual editor": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "graafinen muokkain"
-    },
-    "Visual editor": {
-        "comment": "",
-        "pos": "noun",
-        "translation": "Graafinen muokkain"
-    },
-    "webhook": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "webhook, verkkokoukku (?)"
-    },
-    "website": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "sivusto"
-    },
-    "widget": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "vimpain"
-    },
-    "widgetized area": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "vimpainalue"
-    },
-    "wildcard": {
-        "comment": "",
-        "pos": "substantiivi",
-        "translation": "jokerimerkki"
-    }
+    "visual editor": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "graafinen muokkain"
+        }
+    ],
+    "Visual editor": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Graafinen muokkain"
+        }
+    ],
+    "webhook": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "webhook, verkkokoukku (?)"
+        }
+    ],
+    "website": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "sivusto"
+        }
+    ],
+    "widget": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "vimpain"
+        }
+    ],
+    "widgetized area": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "vimpainalue"
+        }
+    ],
+    "wildcard": [
+        {
+            "comment": "",
+            "pos": "substantiivi",
+            "translation": "jokerimerkki"
+        }
+    ]
 }
