@@ -12,16 +12,16 @@ class GP_Format_PO extends GP_Format {
 		$po = new $this->class;
 
 		// TODO: add more meta data in the project: language team, report URL
-		$po->set_header( 'PO-Revision-Date', GP::$translation->last_modified( $translation_set ) . '+0000' );
-		$po->set_header( 'MIME-Version', '1.0' );
-		$po->set_header( 'Content-Type', 'text/plain; charset=UTF-8' );
-		$po->set_header( 'Content-Transfer-Encoding', '8bit' );
-		$po->set_header( 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
-		$po->set_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
+		$this->set_header( $po, 'PO-Revision-Date', GP::$translation->last_modified( $translation_set ) . '+0000' );
+		$this->set_header( $po, 'MIME-Version', '1.0' );
+		$this->set_header( $po, 'Content-Type', 'text/plain; charset=UTF-8' );
+		$this->set_header( $po, 'Content-Transfer-Encoding', '8bit' );
+		$this->set_header( $po, 'Plural-Forms', "nplurals=$locale->nplurals; plural=$locale->plural_expression;" );
+		$this->set_header( $po, 'X-Generator', 'GlotPress/' . GP_VERSION );
 
 		$language_code = $this->get_language_code( $locale );
 		if ( false !== $language_code ) {
-			$po->set_header( 'Language', $language_code );
+			$this->set_header( $po, 'Language', $language_code );
 		}
 
 		// Force export only current translations.
@@ -31,11 +31,11 @@ class GP_Format_PO extends GP_Format {
 		foreach( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}
-		$po->set_header( 'Project-Id-Version', $project->name );
+		$this->set_header( $po, 'Project-Id-Version', $project->name );
 
 		// TODO: include parent project's names in the comment
-		$po->comments_before_headers .= "Translation of {$project->name} in {$locale->english_name}\n";
-		$po->comments_before_headers .= "This file is distributed under the same license as the {$project->name} package.\n";
+		$this->add_comments_before_headers( $po, "Translation of {$project->name} in {$locale->english_name}\n" );
+		$this->add_comments_before_headers( $po, "This file is distributed under the same license as the {$project->name} package.\n" );
 
 		return $po->export();
 	}
@@ -60,7 +60,7 @@ class GP_Format_PO extends GP_Format {
 	 *
 	 * @return string|false Returns false if the locale object does not have any iso_639 language code, otherwise returns the shortest possible language code string.
 	 */
-	private function get_language_code( $locale ) {
+	protected function get_language_code( $locale ) {
 		$ret = '';
 
 		if ( $locale->lang_code_iso_639_1 ) {
@@ -75,11 +75,38 @@ class GP_Format_PO extends GP_Format {
 			return false;
 		}
 
+		$ret = strtolower( $ret );
+
 		if ( null !== $locale->country_code && 0 !== strcasecmp( $ret, $locale->country_code ) ) {
 			$ret .= '_' . strtoupper( $locale->country_code );
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Add a header to the selected format, overrideable by child classes.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param GP_Format $format The format object to set the header for.
+	 * @param string    $header The header name to set.
+	 * @param string    $text   The text to set the header to.
+	 */
+	protected function set_header( $format, $header, $text ) {
+		$format->set_header( $header, $text );
+	}
+
+	/**
+	 * Add a comment before the headers for the selected format, overrideable by child classes.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param GP_Format $format The format object to set the header for.
+	 * @param string    $text   The text to add to the comment.
+	 */
+	protected function add_comments_before_headers( $format, $text ) {
+		$format->comments_before_headers .= $text;
 	}
 }
 
@@ -89,6 +116,31 @@ class GP_Format_MO extends GP_Format_PO {
 	public $alt_extensions = array();
 
 	public $class = 'MO';
+
+	/**
+	 * Override the set header function as PO files do not use it.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param GP_Format $format The format object to set the header for.
+	 * @param string    $header The header name to set.
+	 * @param string    $text   The text to set the header to.
+	 */
+	protected function set_header( $format, $header, $text ) {
+		return;
+	}
+
+	/**
+	 * Override the comments function as PO files do not use it.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param GP_Format $format The format object to set the header for.
+	 * @param string    $text   The text to add to the comment.
+	 */
+	protected function add_comments_before_headers( $format, $text ) {
+		return;
+	}
 }
 
 GP::$formats['po'] = new GP_Format_PO;

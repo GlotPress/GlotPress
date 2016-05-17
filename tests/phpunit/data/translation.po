@@ -1,0 +1,54 @@
+# Translation of Project 1 in Locale 2
+# This file is distributed under the same license as the Project 1 package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: +0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.1.0-alpha\n"
+"Project-Id-Version: Project 1\n"
+
+msgctxt "normal_string"
+msgid "Normal String"
+msgstr "Just A Normal String"
+
+msgctxt "with_a_quote"
+msgid "I'm with a quote"
+msgstr "I'm with a quote"
+
+msgctxt "with_newlines"
+msgid ""
+"new\n"
+"lines"
+msgstr ""
+"I\n"
+"have\n"
+"new\n"
+"lines"
+
+msgctxt "with_doublequotes"
+msgid "double \"quotes\""
+msgstr "I have double \"quotes\""
+
+msgctxt "with_utf8"
+msgid "питка"
+msgstr "баба ми омеси питка"
+
+msgctxt "with_lt"
+msgid "you < me"
+msgstr "ти < аз"
+
+msgctxt "with_gt"
+msgid "me > you"
+msgstr "аз > ти"
+
+msgctxt "with_amps"
+msgid "me & you are not &amp;"
+msgstr "аз & ти не сме &amp;"
+
+#. Me, myself & Irene
+msgctxt "with_comment"
+msgid "baba"
+msgstr "баба"
