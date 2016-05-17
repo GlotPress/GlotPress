@@ -149,7 +149,7 @@ class GP_Validation_Rules {
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
 
-		if( strpos( $name_field, 'translation_' ) === 0 ) {
+		if( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
 			$type_field = 'textarea';
 			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
 		}
