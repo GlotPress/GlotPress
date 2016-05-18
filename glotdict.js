@@ -1,36 +1,4 @@
 'use strict';
-//http://stackoverflow.com/a/28570571/1902215
-jQuery.multipress = function (keys, handler) {
-  if (keys.length === 0) {
-	return;
-  }
-
-  var down = {};
-  jQuery(window).keydown(function (event) {
-	down[event.keyCode] = true;
-	if (jQuery.inArray(event.keyCode, keys) > 0) {
-	  if (event.keyCode !== 17) {
-		event.preventDefault();
-	  }
-	}
-  }).keyup(function (event) {
-	var remaining = keys.slice(0), pressed = Object.keys(down).map(function (num) {
-	  return parseInt(num, 10);
-	}), indexOfKey;
-	jQuery.each(pressed, function (i, key) {
-	  if (down[key] === true) {
-		down[key] = false;
-		indexOfKey = remaining.indexOf(key);
-		if (indexOfKey > -1) {
-		  remaining.splice(indexOfKey, 1);
-		}
-	  }
-	});
-	if (remaining.length === 0) {
-	  handler(event);
-	}
-  });
-};
 
 jQuery(document).ready(function () {
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
@@ -125,40 +93,49 @@ jQuery(document).ready(function () {
   }
 
   function gd_hotkeys() {
-	jQuery.multipress([17, 13], function () {
+	key.filter = function (event) {
+	  var tagName = (event.target || event.srcElement).tagName;
+	  key.setScope(/^(SELECT)$/.test(tagName) ? 'input' : 'other');
+	  return true;
+	}
+	key('ctrl+enter', function () {
 	  if (jQuery('.editor:visible').length > 0) {
 		jQuery('.editor:visible .actions button.ok').trigger('click');
 	  } else {
 		alert('No opened string to add!');
 	  }
+	  return false;
 	});
-	jQuery.multipress([17, 16, 90], function () {
+	key('ctrl+shift+z', function () {
 	  if (jQuery('.editor:visible').length > 0) {
 		jQuery('.editor:visible .actions a.close').trigger('click');
 	  }
+	  return false;
 	});
-	jQuery.multipress([17, 16, 65], function () {
+	key('ctrl+shift+a', function () {
 	  if (jQuery('.editor:visible .meta button.approve').length > 0) {
-		console.log(123)
 		jQuery('.editor:visible .meta button.approve').trigger('click');
 	  } else {
 		alert('No opened string to approve!');
 	  }
+	  return false;
 	});
-	jQuery.multipress([17, 16, 66], function () {
-		jQuery('textarea.foreign-text').filter(':visible:first').val(function(index, text){
-			return jQuery('.editor:visible p.original').text()
-		});
+	key('ctrl+shift+b', function () {
+	  if (jQuery('.editor:visible .copy').length > 0) {
+		jQuery('.editor:visible .copy').trigger('click');
+	  }
+	  return false;
 	});
-	jQuery.multipress([17, 16, 82], function () {
+	key('ctrl+shift+r', function () {
 	  if (jQuery('.editor:visible .meta button.reject').length > 0) {
 		jQuery('.editor:visible .meta button.reject').trigger('click');
 	  } else {
 		alert('No opened string to reject!');
 	  }
+	  return false;
 	});
-	jQuery.multipress([17, 16, 70], function () {
-	  jQuery('textarea.foreign-text').filter(':visible:first').val(function (index, text) {
+	key('ctrl+shift+r', function () {
+	  jQuery('textarea.foreign-text:visible:first').val(function (index, text) {
 		// Replace space-colon or nbsp-colon with just colon, then replace colons with nbsp-colon
 		var s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
 		// Replace space-question or nbsp-question with just question, then replace question with nbsp-question
@@ -175,20 +152,19 @@ jQuery(document).ready(function () {
 		s = s.replace(/( \( |\( )/g, ' (').replace(/( \[ |\[ )/g, ' [');
 		return s;
 	  });
+	  return false;
 	});
-	jQuery(window).keydown(function (e) {
-	  if (e.keycode === 34) {
-		if (jQuery('.editor:visible').length > 0) {
-		  jQuery('.editor').next().trigger('click');
-		}
+	key('pageup', function () {
+	  if (jQuery('.editor:visible').length > 0) {
+		jQuery('.editor').next().trigger('click');
 	  }
+	  return false;
 	});
-	jQuery(window).keydown(function (e) {
-	  if (e.keycode === 33) {
-		if (jQuery('.editor:visible').length > 0) {
-		  jQuery('.editor').prev().trigger('click');
-		}
+	key('pagedown', function () {
+	  if (jQuery('.editor:visible').length > 0) {
+		jQuery('.editor').prev().trigger('click');
 	  }
+	  return false;
 	});
   }
 });

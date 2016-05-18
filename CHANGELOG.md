@@ -1,3 +1,7 @@
+#1.0.9
+* Fix: New internal system to detect shortcut
+* Feature: Shortcut on Ctrl+Shift+B copy the original by ePascalC
+
 #1.0.8
 * Fix: Better regular expression to ignore nested terms
 * Fix: Ignore browser hotkey shortcut
