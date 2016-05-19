@@ -38,7 +38,7 @@ class GP_Format_PO extends GP_Format {
 		$project_tree[] = $current->name;
 
 		while ( $current->parent_project_id > 0 ) {
-			$current = GP::$project->get( $project->parent_project_id );
+			$current = GP::$project->get( $current->parent_project_id );
 			$project_tree[] = $current->name;
 		}
 
