@@ -1,13 +1,32 @@
 <?php
 
 class GP_Test_Format_PO extends GP_UnitTestCase {
+	/**
+	 * @var GP_Format_PO
+	 */
 	protected $format;
+
+	/**
+	 * @var array
+	 */
 	protected $entries;
+
+	/**
+	 * @var string
+	 */
 	protected $translation_file;
+
+	/**
+	 * @var string
+	 */
 	protected $originals_file;
+
+	/**
+	 * @var bool
+	 */
 	protected $has_comments = true;
 
-    public function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.po';
@@ -28,11 +47,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 		);
 	}
 
-	public function test_export() {
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$project = $set->project;
-		$locale = $this->factory->locale->create();
-
+	private function get_entries_for_export( $translation_set ) {
 		$entries_for_export = array();
 
 		foreach ( $this->entries as $sample ) {
@@ -43,17 +58,53 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 			$translation_entry->singular = $original;
 			$translation_entry->translations = array( $translation );
 			$translation_entry->status = 'current';
-			$translation_entry->translation_set_id = $set->id;
+			$translation_entry->translation_set_id = $translation_set->id;
 			if ( true === $this->has_comments ) {
 				$translation_entry->extracted_comments = $comment;
 			}
 
-			$entries_for_export[] = new Translation_Entry( (array)$translation_entry );
+			$entries_for_export[] = new Translation_Entry( (array) $translation_entry );
 		}
+
+		return $entries_for_export;
+	}
+
+	public function test_export() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$project = $set->project;
+		$locale = $this->factory->locale->create();
+
+		$entries_for_export = $this->get_entries_for_export( $set );
 
 		$this->assertEquals( file_get_contents( $this->translation_file ), $this->format->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
+	/**
+	 * @ticket GH-450
+	 */
+	public function test_po_export_includes_project_id_version_header() {
+		if ( 'GP_Format_PO' !== get_class( $this->format ) ) {
+			$this->markTestSkipped();
+		}
+
+		$parent_project_one = $this->factory->project->create();
+		$parent_project_two = $this->factory->project->create( array( 'parent_project_id' => $parent_project_one->id ) );
+		$set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'parent_project_id' => $parent_project_two->id ) );
+		$project = $set->project;
+		$locale = $this->factory->locale->create();
+
+		$entries_for_export = $this->get_entries_for_export( $set );
+
+		$file = $this->format->print_exported_file( $project, $locale, $set, $entries_for_export );
+		$expected = sprintf(
+			'"Project-Id-Version: %s - %s - %s\n"',
+			$parent_project_one->name,
+			$parent_project_two->name,
+			$project->name
+		);
+
+		$this->assertContains( $expected, $file );
+	}
 
 	public function test_read_originals() {
 		$translations = $this->format->read_originals_from_file( $this->originals_file );
@@ -127,6 +178,12 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 }
 
 class GP_Test_Format_MO extends GP_Test_Format_PO {
+
+	/**
+	 * @var GP_Format_MO
+	 */
+	protected $format;
+
    public function setUp() {
 		parent::setUp();
 
