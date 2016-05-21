@@ -26,16 +26,16 @@ gp_tmpl_header();
 			</tr>
 		</thead>
 		<tbody>
-	<?php foreach ( $permissions as $permission ) : ?>
-			<tr>
-				<td><?php printf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ); // WPCS: XSS ok. ?></td>
-				<td><?php echo esc_html( $permission->action ); ?></td>
-				<td><?php echo esc_html( $permission->locale_slug ); ?></td>
-				<td><?php echo esc_html( $permission->set_slug ); ?></td>
-				<td><a href="<?php echo gp_url_join( gp_url_current(), '-delete/'.$permission->id ); // WPCS: XSS ok. ?>" class="action delete"><?php _e( 'Delete', 'glotpress' ); ?></a></td>
-			</tr>
-	<?php endforeach; ?>
-	</table>	
+			<?php foreach ( $permissions as $permission ) : ?>
+				<tr>
+					<td><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
+					<td><?php echo esc_html( $permission->action ); ?></td>
+					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
+					<td><?php echo esc_html( $permission->set_slug ); ?></td>
+					<td><a href="<?php echo esc_url( gp_url_join( gp_url_current(), '-delete/' . $permission->id ) ); ?>" class="action delete"><?php _e( 'Delete', 'glotpress' ); ?></a></td>
+				</tr>
+			<?php endforeach; ?>
+	</table>
 	<?php endif; ?>
 	<?php  if ( $parent_permissions ) : ?>
 <h4 id="validators"><?php _e( 'Validators for parent projects', 'glotpress' ); ?></h4>
@@ -52,14 +52,14 @@ gp_tmpl_header();
 		<tbody>
 		<?php foreach ( $parent_permissions as $permission ) : ?>
 			<tr>
-				<td><?php printf( '<a href="%s">%s</a>', gp_url_profile( $permission->user->user_nicename ), esc_html( $permission->user->user_login ) ); // WPCS: XSS ok. ?></td>
+				<td><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); // WPCS: XSS ok. ?></td>
 				<td><?php echo esc_html( $permission->action ); ?></td>
 				<td><?php echo esc_html( $permission->locale_slug ); ?></td>
 				<td><?php echo esc_html( $permission->set_slug ); ?></td>
-				<td><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); // WPCS: XSS ok. ?></td>
+				<td><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></td>
 			</tr>
 		<?php endforeach; ?>
-	</table>	
+	</table>
 	<?php endif; ?>
 	<?php if ( ! $permissions && !$parent_permissions ): ?>
 		<strong><?php _e( 'No validators defined for this project.', 'glotpress' ); ?></strong>
