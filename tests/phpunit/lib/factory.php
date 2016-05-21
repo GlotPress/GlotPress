@@ -1,5 +1,36 @@
 <?php
 class GP_UnitTest_Factory extends WP_UnitTest_Factory {
+
+	/**
+	 * @var GP_UnitTest_Factory_For_Project
+	 */
+	public $project;
+
+	/**
+	 * @var GP_UnitTest_Factory_For_Original
+	 */
+	public $original;
+
+	/**
+	 * @var GP_UnitTest_Factory_For_Translation_Set
+	 */
+	public $translation_set;
+
+	/**
+	 * @var GP_UnitTest_Factory_For_Translation
+	 */
+	public $translation;
+
+	/**
+	 * @var GP_UnitTest_Factory_For_User
+	 */
+	public $user;
+
+	/**
+	 * @var GP_UnitTest_Factory_For_Locale
+	 */
+	public $locale;
+
 	function __construct() {
 		$this->project = new GP_UnitTest_Factory_For_Project( $this );
 		$this->original = new GP_UnitTest_Factory_For_Original( $this );
