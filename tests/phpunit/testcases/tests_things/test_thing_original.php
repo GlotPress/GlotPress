@@ -50,13 +50,12 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 	function test_import_for_project_should_update_cache() {
 		$project  = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
-		$count    = $original->count_by_project_id( $project->id );
 
 		$translations_array = array( array( 'singular' => $original->singular ), array( 'singular' => 'dyado' ) );
 		$translations       = $this->create_translations_with( $translations_array );
 		$original->import_for_project( $project, $translations );
 
-		$this->assertEquals( count( $translations_array ), $original->count_by_project_id( $project->id ) );
+		$this->assertEquals( count( $translations_array ), $original->count_by_project_id( $project->id )->total );
 	}
 
 	function test_is_different_from_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
@@ -123,7 +122,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+obsolete', 'singular' => 'baba baba' ) );
 
 		$count = $original->count_by_project_id( $set->project->id );
-		$this->assertEquals( 0, $count );
+		$this->assertEquals( 0, $count->total );
 
 		$translations_for_import = $this->create_translations_with( array( array( 'singular' => 'baba baba' ) ) );
 
@@ -136,7 +135,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 0, $originals_error );
 
 		$count = $original->count_by_project_id( $set->project->id );
-		$this->assertEquals( 1, $count );
+		$this->assertEquals( 1, $count->total );
 	}
 
 	function test_import_should_remove_from_active_missing_strings() {

@@ -81,12 +81,28 @@ class GP_Original extends GP_Thing {
 	}
 
 	public function count_by_project_id( $project_id ) {
-		if ( false !== ( $cached = wp_cache_get( $project_id, self::$count_cache_group ) ) ) {
+		$cached = wp_cache_get( $project_id, self::$count_cache_group );
+		if ( false !== $cached && is_object( $cached ) ) { // Since 2.1.0 stdClass.
 			return $cached;
 		}
-		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
-		wp_cache_set( $project_id, $count, self::$count_cache_group );
-		return $count;
+
+		global $wpdb;
+
+		$counts = $wpdb->get_row( $wpdb->prepare( "
+			SELECT
+				COUNT(*) AS total,
+				COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
+				COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
+			FROM {$wpdb->gp_originals}
+			WHERE
+				project_id = %d AND status = '+active'
+			",
+			$project_id
+		) );
+
+		wp_cache_set( $project_id, $counts, self::$count_cache_group );
+
+		return $counts;
 	}
 
 
