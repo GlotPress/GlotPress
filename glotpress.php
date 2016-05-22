@@ -30,7 +30,7 @@ define( 'GP_VERSION', '2.1.0-alpha' );
 define( 'GP_DB_VERSION', '960' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
-define( 'GP_PATH', dirname( __FILE__ ) . '/' );
+define( 'GP_PATH', __DIR__ . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.4' );
 define( 'GP_PHP_REQUIRED_VERSION', '5.3' );
