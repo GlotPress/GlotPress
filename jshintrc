@@ -1,6 +1,7 @@
 {
   "globals": {
     "$": false,
+    "chrome": false,
     "jQuery": false
   }
 }

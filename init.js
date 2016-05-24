@@ -4,7 +4,7 @@ s.textContent = 'var glotdict_path = "' + chrome.extension.getURL("dictionaries"
 (document.head||document.documentElement).appendChild(s);
 
 //Load jQuery Hotkeys
-var s = document.createElement('script');
+s = document.createElement('script');
 s.src = chrome.extension.getURL('keymaster.js');
 s.type = 'text/javascript';
 s.onload = function() {
