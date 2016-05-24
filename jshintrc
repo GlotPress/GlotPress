@@ -1,7 +1,5 @@
 {
-  "globals": {
-    "$": false,
     "chrome": false,
-    "jQuery": false
-  }
+    "jQuery": false,
+    "key": false
 }
