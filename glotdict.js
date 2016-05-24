@@ -1,16 +1,6 @@
 'use strict';
 
 jQuery(document).ready(function () {
-  if (jQuery('.filters-toolbar:last div:first').length > 0) {
-	//Fix for PTE align
-	if (jQuery('#bulk-actions-toolbar').length > 0) {
-	  jQuery('#upper-filters-toolbar').css('clear', 'both');
-	}
-	gd_select_language();
-	gd_add_terms();
-	gd_hotkeys();
-  }
-
   function gd_select_language() {
 	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
 	jQuery('.glossary-word').contents().unwrap();
@@ -134,7 +124,7 @@ jQuery(document).ready(function () {
 	  }
 	  return false;
 	});
-	key('ctrl+shift+r', function () {
+	key('ctrl+shift+f', function () {
 	  jQuery('textarea.foreign-text:visible:first').val(function (index, text) {
 		// Replace space-colon or nbsp-colon with just colon, then replace colons with nbsp-colon
 		var s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
@@ -166,6 +156,16 @@ jQuery(document).ready(function () {
 	  }
 	  return false;
 	});
+  }
+
+  if (jQuery('.filters-toolbar:last div:first').length > 0) {
+	//Fix for PTE align
+	if (jQuery('#bulk-actions-toolbar').length > 0) {
+	  jQuery('#upper-filters-toolbar').css('clear', 'both');
+	}
+	gd_select_language();
+	gd_add_terms();
+	gd_hotkeys();
   }
 });
 

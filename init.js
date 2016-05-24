@@ -12,7 +12,7 @@ s.onload = function() {
 };
 (document.head || document.documentElement).appendChild(s); 
 //Load GlotDict
-var s = document.createElement('script');
+s = document.createElement('script');
 s.src = chrome.extension.getURL('glotdict.js');
 s.type = 'text/javascript';
 s.onload = function() {
