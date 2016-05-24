@@ -4,7 +4,20 @@ require_once dirname( __FILE__ ) . '/factory.php';
 
 class GP_UnitTestCase extends WP_UnitTestCase {
 
-	var $url = 'http://example.org/';
+	/**
+	 * @var string
+	 */
+	public $url = 'http://example.org/';
+
+	/**
+	 * @var GP_UnitTest_Factory
+	 */
+	public $factory;
+
+	/**
+	 * @var callable
+	 */
+	public $url_filter;
 
 	function setUp() {
 		parent::setUp();
