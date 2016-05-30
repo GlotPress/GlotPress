@@ -181,4 +181,40 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
+
+	function test_for_translation_should_include_subprojects_when_filtered() {
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$sub_project = $this->factory->project->create( array('parent_project_id' => $set->project->id ) );
+		$sub_set = $this->factory->translation_set->create( array('locale' => $set->locale, 'project_id' => $sub_project->id) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $sub_set->project_id ) );
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation2 = $this->factory->translation->create( array( 'translation_set_id' => $sub_set->id, 'original_id' => $original2->id, 'status' => 'current' ) );
+
+		add_filter( 'gp_for_translation_include_subprojects', '__return_true' );
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array('status' => 'current') );
+		remove_filter( 'gp_for_translation_include_subprojects', '__return_true' );
+
+		$this->assertEquals( 2, count( $for_translation ) );
+	}
+
+	function test_for_translation_should_not_include_subprojects_when_not_filtered() {
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$sub_project = $this->factory->project->create( array('parent_project_id' => $set->project->id ) );
+		$sub_set = $this->factory->translation_set->create( array('locale' => $set->locale, 'project_id' => $sub_project->id) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id, 'status' => '+active', 'singular' => 'baba' ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $sub_set->project_id ) );
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation2 = $this->factory->translation->create( array( 'translation_set_id' => $sub_set->id, 'original_id' => $original2->id, 'status' => 'current' ) );
+
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array('status' => 'current') );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+	}
 }

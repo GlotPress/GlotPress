@@ -253,6 +253,23 @@ class GP_Translation extends GP_Thing {
 			$join_where = 'AND '.$join_where;
 		}
 
+		$projects = array( $project->id );
+		$translation_sets = array( $translation_set->id );
+
+		$include_subprojects = apply_filters( 'gp_for_translation_include_subprojects', false );
+		if ( $include_subprojects ) {
+			$sub_projects = $project->inclusive_sub_projects();
+			foreach ( $sub_projects as $sub ) {
+				$projects[] = $sub->id;
+				$sub_project_set = GP::$translation_set->by_project_id_slug_and_locale( $sub->id, $translation_set->slug, $translation_set->locale );
+				if (  $sub_project_set ) {
+					$translation_sets[] = $sub_project_set->id;
+				}
+			}
+		}
+		$projects = implode( ',', $projects );
+		$translation_sets = implode( ',', $translation_sets );
+
 		$sql_sort = sprintf( $sort_by, $sort_how );
 
 		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
@@ -260,8 +277,8 @@ class GP_Translation extends GP_Thing {
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 			FROM $wpdb->gp_originals as o
-			$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
-			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where ORDER BY $sql_sort $limit";
+			$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id IN( " . $wpdb->esc_like( $translation_sets ) . " ) $join_where
+			WHERE o.project_id IN( " . $wpdb->esc_like( $projects ).") AND o.status = '+active' $where ORDER BY $sql_sort $limit";
 		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();
 		$translations = array();
