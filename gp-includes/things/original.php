@@ -29,9 +29,16 @@ class GP_Original extends GP_Thing {
 	public $status;
 	public $priority;
 	public $date_added;
+	/**
+	 * Cache group used for caching counts
+	 *
+	 * @var string
+	 *
+	 * @since 2.1.0
+	 */
+	public $count_cache_group = 'active_originals_count_by_project_id';
 
 	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
-	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
 	 * Sets restriction rules for fields.
@@ -81,14 +88,22 @@ class GP_Original extends GP_Thing {
 	}
 
 	public function count_by_project_id( $project_id ) {
-		if ( false !== ( $cached = wp_cache_get( $project_id, self::$count_cache_group ) ) ) {
+		$cache_group = $this->count_cache_group();
+
+		if ( false !== ( $cached = wp_cache_get( $project_id, $cache_group ) ) ) {
 			return $cached;
 		}
-		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
-		wp_cache_set( $project_id, $count, self::$count_cache_group );
+
+		if ( gp_endswith( $cache_group, '_no_hidden' ) ) {
+			$maybe_exclude_hidden = "AND priority != '-2'";
+		} else {
+			$maybe_exclude_hidden = '';
+		}
+
+		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active' $maybe_exclude_hidden", $project_id );
+		wp_cache_set( $project_id, $count, $cache_group );
 		return $count;
 	}
-
 
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
@@ -256,7 +271,7 @@ class GP_Original extends GP_Thing {
 
 		// Clear cache when the amount of strings are changed.
 		if ( $originals_added > 0 || $originals_existing > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
-			wp_cache_delete( $project->id, self::$count_cache_group );
+			wp_cache_delete( $project->id, $this->count_cache_group() );
 			gp_clean_translation_sets_cache( $project->id );
 		}
 
@@ -439,6 +454,22 @@ class GP_Original extends GP_Thing {
 		do_action( 'gp_original_deleted', $this );
 
 		return true;
+	}
+
+	/**
+	 * Returns the appropriate cache group based on user caps
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return string
+	 */
+	private function count_cache_group() {
+		$cache_group = $this->count_cache_group;
+
+		if ( ! GP::$permission->current_user_can( 'write', 'project', $this->project_id ) ) {
+			$cache_group .= '_no_hidden';
+		}
+		return $cache_group;
 	}
 }
 GP::$original = new GP_Original();

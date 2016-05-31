@@ -235,4 +235,17 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$original = reset( $originals );
 		$this->assertSame( str_repeat( 'a', 255 ), $original->context );
 	}
+
+	function test_count_reflects_user_permission() {
+		$project  = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba', 'priority' => '-2' ) );
+		$this->assertEquals( 0, $original->count_by_project_id( $project->id ) );
+
+		$user = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $project->id ) );
+		wp_set_current_user( $user );
+
+		$this->assertEquals( 1, $original->count_by_project_id( $project->id ) );
+	}
+
 }
