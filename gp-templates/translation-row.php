@@ -9,7 +9,7 @@ $priority_char = array(
     '1' => array('&uarr;', 'transparent', 'green'),
 );
 $user = wp_get_current_user();
-$can_reject_self = ($user->user_login == $t->user_login && $t->translation_status == "waiting");
+$can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
 ?>
 
 <tr class="preview <?php echo $status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
@@ -145,26 +145,26 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 				<dd><?php echo $t->translation_added; ?> GMT</dd>
 			</dl>
 			<?php endif; ?>
-			<?php if ( $t->user_login ): ?>
+			<?php if ( $t->user ) : ?>
 			<dl>
 				<dt><?php _e( 'Translated by:', 'glotpress' ); ?></dt>
-				<dd><?php
-				if ( $t->user_display_name && $t->user_display_name != $t->user_login ) {
-					printf( '<a href="%s" tabindex="-1">%s (%s)</a>',
-						gp_url_profile( $t->user_nicename ),
-						$t->user_display_name,
-						$t->user_login
-					);
-				} else {
-					printf( '<a href="%s" tabindex="-1">%s</a>',
-						gp_url_profile( $t->user_nicename ),
-						$t->user_login
-					);
-				}
-				?></dd>
+				<dd><?php gp_link_user( $t->user ); ?></dd>
 			</dl>
 			<?php endif; ?>
-
+			<?php if ( $t->user_last_modified ) : ?>
+				<dl>
+					<dt><?php
+						if ( 'current' === $t->translation_status ) {
+							_e( 'Approved by:', 'glotpress' );
+						} else if ( 'rejected' === $t->translation_status ) {
+							_e( 'Rejected by:', 'glotpress' );
+						} else {
+							_e( 'Last updated by:', 'glotpress' );
+						}
+						?>
+					<dd><?php gp_link_user( $t->user_last_modified ); ?></dd>
+				</dl>
+			<?php endif; ?>
 			<?php references( $project, $t ); ?>
 
 			<dl>
