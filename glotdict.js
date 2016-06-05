@@ -1,6 +1,26 @@
 'use strict';
 
 jQuery(document).ready(function () {
+  function gd_add_term(word, element, item) {
+	if (item !== '') {
+	  var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
+	  var print = JSON.stringify(item);
+	  if (!item.length) {
+		print = '[' + print + ']';
+	  }
+	  var repl = '<span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span>';
+	  jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
+	}
+  }
+
+  function gd_get_lang() {
+	var lang = localStorage.getItem('gd_language');
+	if (lang === '' || lang === null) {
+	  return false;
+	}
+	return lang;
+  }
+  
   function gd_select_language() {
 	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
 	jQuery('.glossary-word').contents().unwrap();
@@ -60,26 +80,6 @@ jQuery(document).ready(function () {
 	  console.error(thrownError);
 	  console.log('GlotDict: error on loading ' + gd_get_lang() + '.json');
 	});
-  }
-
-  function gd_add_term(word, element, item) {
-	if (item !== '') {
-	  var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
-	  var print = JSON.stringify(item);
-	  if (!item.length) {
-		print = '[' + print + ']';
-	  }
-	  var repl = '<span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span>';
-	  jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
-	}
-  }
-
-  function gd_get_lang() {
-	var lang = localStorage.getItem('gd_language');
-	if (lang === '' || lang === null) {
-	  return false;
-	}
-	return lang;
   }
 
   function gd_hotkeys() {

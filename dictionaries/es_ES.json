@@ -6,20 +6,6 @@
             "translation": "Acerca de"
         }
     ],
-    "Acerca del tema Baskerville\"\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Sobre el autor\"\"\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "Account": [
         {
             "comment": "",
@@ -153,13 +139,6 @@
             "translation": "Hacer clic"
         }
     ],
-    "(http:\/\/www.fundeu.es\/consulta\/hacer-clic-1753\/)\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "Comment": [
         {
             "comment": "",
@@ -249,58 +228,6 @@
             "translation": "Correo electr\u00f3nico"
         }
     ],
-    "email (Incorrecto).": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "correo e (Incorrecto).": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "e-mail (Incorrecto).": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Correo Electr\u00f3nico (con E may\u00fascula) (Incorrecto)": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        },
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        },
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "email adress = direcci\u00f3n de correo electr\u00f3nico (Correcto)\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "Embed": [
         {
             "comment": "",
@@ -385,13 +312,6 @@
             "translation": "gancho"
         }
     ],
-    "Filter hook -> gancho de filtro\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "Howdy": [
         {
             "comment": "",
@@ -441,13 +361,6 @@
             "translation": "JetPack"
         }
     ],
-    "Se refiere al plugin JetPack. Puedes encontrar m\u00e1s informaci\u00f3n en jetpack.me\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "Large": [
         {
             "comment": "",
@@ -476,53 +389,11 @@
             "translation": "Acceder "
         }
     ],
-    "Usar \"\"Acceder\"\" cuando sea ": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "1) una etiqueta de un bot\u00f3n": [
         {
             "comment": null,
             "pos": null,
             "translation": " cuando se haga la acci\u00f3n de acceder  al pulsarlo."
-        }
-    ],
-    "2) se refiera en un texto a la acci\u00f3n de acceder.": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "No utilizar:": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Iniciar Sesi\u00f3n (Incorrecto).": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Entrar (Incorrecto).": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Identificarse (Incorrecto)\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
         }
     ],
     "Manage": [
@@ -558,20 +429,6 @@
             "comment": "No utilizar: ",
             "pos": "noun",
             "translation": "Alias"
-        }
-    ],
-    "Apodo (Incorrecto) ": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Nickname (Incorrecto)\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
         }
     ],
     "nonce": [
@@ -782,20 +639,6 @@
             "comment": "No utilizar:",
             "pos": "noun",
             "translation": "Lo siento"
-        }
-    ],
-    "Lo sentimos (Incorrecto)": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
-    "Perdona (Incorrecto)\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
         }
     ],
     "Sticky": [

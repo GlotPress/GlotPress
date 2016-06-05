@@ -829,13 +829,6 @@
             "translation": "\u00e4ndra ELLER redigera"
         }
     ],
-    "redigera\"\" = oftast n\u00e4r det handlar om flera element eller en hel sida kollektivt. N\u00e4r det handlar om att radikalt f\u00f6r\u00e4ndra inneh\u00e5llet p\u00e5 en sida genom att g\u00e5 till en annan sida (t ex redigera \"\"bloggar jag f\u00f6ljer\"\") eller redigera ordningen p\u00e5 flera element.\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
-        }
-    ],
     "editor": [
         {
             "comment": "Editing tool (e.g. visual editor, theme editor, plugin editor).",
@@ -1005,13 +998,6 @@
             "comment": "Featured post = Utvalt inl\u00e4gg",
             "pos": "adjective",
             "translation": "utvalt \/ framh\u00e4vt"
-        }
-    ],
-    "Featured content = Framh\u00e4vt inneh\u00e5ll\"": [
-        {
-            "comment": null,
-            "pos": null,
-            "translation": null
         }
     ],
     "featured image": [

@@ -480,11 +480,11 @@
             "translation": "Pixeles"
         }
     ],
-    "plugin\/s": [
+    "plugin": [
         {
-            "comment": "Nun cambia. Naide diz enchufables.",
+            "comment": "",
             "pos": "noun",
-            "translation": "Complementu\/os"
+            "translation": "Complementu"
         }
     ],
     "Post": [
@@ -499,6 +499,13 @@
             "comment": "",
             "pos": "noun",
             "translation": "Tipu d'art\u00edculu"
+        }
+    ],
+    "Posts": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Art\u00edculos"
         }
     ],
     "Powered by WordPress": [
@@ -652,7 +659,7 @@
         {
             "comment": "",
             "pos": "noun",
-            "translation": "Si\u00e9ntolu"
+            "translation": "Si\u00e9ntolo"
         }
     ],
     "Sticky": [
@@ -685,9 +692,9 @@
     ],
     "Theme": [
         {
-            "comment": "Nel casu the WordPress un theme = plant\u00eda (sin\u00f3nimu de Template) nun tien el signific\u00e1u asturianu de \"asuntu\"",
+            "comment": "Tocante a WordPress, un theme nun tien el signific\u00e1u asturianu de \"asuntu\". N'esti casu ye meyor falar d'Estilu que ye m\u00e1s afayadizu, y\u00e1 que se refier a la parte visual y forma de facer les coses del sitiu,",
             "pos": "noun",
-            "translation": "Plant\u00eda"
+            "translation": "Estilu"
         }
     ],
     "Tools": [

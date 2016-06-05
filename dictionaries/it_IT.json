@@ -1,9 +1,4 @@
 {
-    "&": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "AJAX": {
         "comment": "", 
         "pos": "", 
@@ -29,30 +24,10 @@
         "pos": "", 
         "translation": "Bacheca"
     }, 
-    "Display": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
-    "Enter": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
-    "Follower": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "Forum": {
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "Forum"
-    }, 
-    "Found": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
     }, 
     "Header": {
         "comment": "", 
@@ -94,11 +69,6 @@
         "pos": "", 
         "translation": "Proudly powered by WordPress"
     }, 
-    "Quando raggiungiamo un accordo confermiamo! Inserire le nuove righe con colore di sfondo GIALLO": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "RSS feed": {
         "comment": "", 
         "pos": "", 
@@ -123,11 +93,6 @@
         "comment": "", 
         "pos": "", 
         "translation": "miniatura"
-    }, 
-    "Toggle": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
     }, 
     "Toolbar": {
         "comment": "", 
@@ -319,11 +284,6 @@
         "pos": "", 
         "translation": "elimina"
     }, 
-    "deleted": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "deprecated": {
         "comment": "", 
         "pos": "", 
@@ -359,11 +319,6 @@
         "pos": "", 
         "translation": "indirizzo email"
     }, 
-    "embed": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "emoticon": {
         "comment": "Lasciare invariato", 
         "pos": "", 
@@ -373,6 +328,11 @@
         "comment": "", 
         "pos": "", 
         "translation": "errore"
+    }, 
+    "escape": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "escludere (?)"
     }, 
     "excerpt": {
         "comment": "", 
@@ -388,11 +348,6 @@
         "comment": "Lasciare invariato", 
         "pos": "", 
         "translation": "feed"
-    }, 
-    "file": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
     }, 
     "filter": {
         "comment": "", 
@@ -424,6 +379,16 @@
         "pos": "", 
         "translation": "galleria"
     }, 
+    "globals": {
+        "comment": "", 
+        "pos": "", 
+        "translation": "variabili globali"
+    }, 
+    "hook": {
+        "comment": "Invariato (?)", 
+        "pos": "", 
+        "translation": "hook"
+    }, 
     "host": {
         "comment": "", 
         "pos": "", 
@@ -443,16 +408,6 @@
         "comment": "", 
         "pos": "", 
         "translation": "ciao"
-    }, 
-    "hyperlink": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
-    "icon": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
     }, 
     "image": {
         "comment": "", 
@@ -524,11 +479,6 @@
         "pos": "", 
         "translation": "elemento multimediale"
     }, 
-    "media library": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "meta": {
         "comment": "", 
         "pos": "", 
@@ -574,20 +524,10 @@
         "pos": "", 
         "translation": "parametro"
     }, 
-    "password": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "path": {
         "comment": "", 
         "pos": "", 
         "translation": "path"
-    }, 
-    "pending": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
     }, 
     "permalink": {
         "comment": "", 
@@ -617,7 +557,7 @@
     "post thumbnail": {
         "comment": "", 
         "pos": "", 
-        "translation": "miniatura articolo"
+        "translation": "immagine in evidenza"
     }, 
     "post type": {
         "comment": "", 
@@ -659,10 +599,10 @@
         "pos": "", 
         "translation": "richiesto"
     }, 
-    "ribbon": {
+    "return": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "restituire"
     }, 
     "role": {
         "comment": "", 
@@ -704,11 +644,6 @@
         "pos": "", 
         "translation": "shortcode"
     }, 
-    "show": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "sidebar": {
         "comment": "", 
         "pos": "", 
@@ -718,11 +653,6 @@
         "comment": "", 
         "pos": "", 
         "translation": "sito"
-    }, 
-    "slideshow": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
     }, 
     "slug": {
         "comment": "", 
@@ -744,11 +674,6 @@
         "pos": "", 
         "translation": "mettere in evidenza"
     }, 
-    "sticky": {
-        "comment": "", 
-        "pos": "", 
-        "translation": ""
-    }, 
     "string": {
         "comment": "", 
         "pos": "", 
@@ -759,10 +684,10 @@
         "pos": "", 
         "translation": "invia"
     }, 
-    "switch-off": {
+    "sunscription": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "abbonamento"
     }, 
     "tab": {
         "comment": "", 
@@ -804,6 +729,11 @@
         "pos": "", 
         "translation": "tema"
     }, 
+    "topic": {
+        "comment": "bbPress frontend e backend", 
+        "pos": "", 
+        "translation": "topic"
+    }, 
     "trackback": {
         "comment": "", 
         "pos": "", 
@@ -837,7 +767,7 @@
     "uploader": {
         "comment": "", 
         "pos": "", 
-        "translation": ""
+        "translation": "uploader"
     }, 
     "user": {
         "comment": "", 

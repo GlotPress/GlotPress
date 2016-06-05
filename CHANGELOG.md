@@ -1,3 +1,7 @@
+#1.1.0
+* Improvement: Glossaries not have empty terms
+* Fixed hotkey s duplicated
+
 #1.0.9
 * Fix: New internal system to detect shortcut
 * Feature: Shortcut on Ctrl+Shift+B copy the original by ePascalC
