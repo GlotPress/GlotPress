@@ -1,0 +1,452 @@
+{
+    "account": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "account"
+        }
+    ],
+    "activate": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "attivare"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "attivare"
+        }
+    ],
+    "activated": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "attivato"
+        }
+    ],
+    "address": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "indirizzare"
+        }
+    ],
+    "administrator": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "amministratore"
+        }
+    ],
+    "Appearance": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Aspetto"
+        }
+    ],
+    "archive": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "archivio"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "archiviare"
+        }
+    ],
+    "archives": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "archivi"
+        }
+    ],
+    "are you sure you want": [
+        {
+            "comment": "",
+            "pos": "expression",
+            "translation": "desideri"
+        }
+    ],
+    "argument": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "argomento"
+        }
+    ],
+    "array": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "array"
+        }
+    ],
+    "article": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "articolo"
+        }
+    ],
+    "aside": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "nota"
+        }
+    ],
+    "attachment": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "allegato"
+        }
+    ],
+    "Bitrate": [
+        {
+            "comment": "Lasciare non tradotto non avendo un termine italiano adatto\/meglio comprensibile. Chi lo conosce lo capisce chi non lo conosce non conoscerebbe nemmeno l'equivalente italiano essendo un termine tecnico.",
+            "pos": "noun",
+            "translation": "Bitrate"
+        }
+    ],
+    "browser": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "browser"
+        }
+    ],
+    "category": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "categoria"
+        }
+    ],
+    "click": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "clic"
+        },
+        {
+            "comment": "MAI clikkare, o cliccare o similari",
+            "pos": "verb",
+            "translation": "fare clic"
+        }
+    ],
+    "clicking": [
+        {
+            "comment": "Mai mai mai cliccando!",
+            "pos": "verb",
+            "translation": "facendo clic"
+        }
+    ],
+    "custom": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "personale"
+        }
+    ],
+    "email": [
+        {
+            "comment": "femminile",
+            "pos": "noun",
+            "translation": "email"
+        }
+    ],
+    "featured image": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "immagine in evidenza"
+        }
+    ],
+    "footer": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "pi\u00e8 di pagina"
+        }
+    ],
+    "header": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "testata"
+        }
+    ],
+    "Header": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Testata"
+        }
+    ],
+    "Header image": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Immagine di testata"
+        }
+    ],
+    "ID": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "ID"
+        }
+    ],
+    "image": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "immagine"
+        }
+    ],
+    "import": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "importare"
+        }
+    ],
+    "link": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "link"
+        }
+    ],
+    "page": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "pagina"
+        }
+    ],
+    "pingback": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "pingback"
+        }
+    ],
+    "Please...": [
+        {
+            "comment": "Nelle frasi che inziano con Please come ad esempio \"Please try again later\" nella traduzione in italiano NON ha senso riportare il Perfavore non essendo di uso comune nei messaggi inviati da computer, Eliminarlo e tradurre la frase senza il Perfavore.",
+            "pos": "noun",
+            "translation": "N\/A"
+        }
+    ],
+    "plugin": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "plugin"
+        }
+    ],
+    "post": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "articolo"
+        }
+    ],
+    "refresh": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "rinfrescare"
+        }
+    ],
+    "RSS feed": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "feed RSS"
+        }
+    ],
+    "save": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "salvare"
+        }
+    ],
+    "screen ": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "schermo"
+        }
+    ],
+    "self hosted": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "esterno"
+        }
+    ],
+    "settings": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "impostazioni"
+        }
+    ],
+    "slug": [
+        {
+            "comment": "si usa al maschile",
+            "pos": "noun",
+            "translation": "slug"
+        }
+    ],
+    "tab": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tab"
+        }
+    ],
+    "taxonomy": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tassonomia"
+        }
+    ],
+    "text editor": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "editor di testo"
+        }
+    ],
+    "theme": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "tema"
+        }
+    ],
+    "Toolbar": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Barra degli strumenti"
+        }
+    ],
+    "trackback": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "trackback"
+        }
+    ],
+    "trash": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "Cestino"
+        },
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "cestinare"
+        }
+    ],
+    "untrash": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "ripristinare"
+        }
+    ],
+    "update": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "aggiornare"
+        },
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "aggiornamento"
+        }
+    ],
+    "uploader": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "uploader\/dispositivo di caricamento"
+        },
+        {
+            "comment": "Lasciare in originale",
+            "pos": "noun",
+            "translation": "uploader"
+        }
+    ],
+    "URL": [
+        {
+            "comment": "si usa la maschile",
+            "pos": "noun",
+            "translation": "URL"
+        }
+    ],
+    "user": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "utente"
+        }
+    ],
+    "username": [
+        {
+            "comment": "",
+            "pos": "noun",
+            "translation": "nome utente"
+        }
+    ],
+    "valid": [
+        {
+            "comment": "",
+            "pos": "adjective",
+            "translation": "valido"
+        }
+    ],
+    "view": [
+        {
+            "comment": "",
+            "pos": "verb",
+            "translation": "visualizzare"
+        }
+    ],
+    "website": [
+        {
+            "comment": "\"web\" should always be lower case per Accademia della Crusca",
+            "pos": "noun",
+            "translation": "sito web"
+        }
+    ],
+    "Widget": [
+        {
+            "comment": "A self-contained area of a web page that performs a specific function. For example, you can use a widget to display your Twitter feed in your site\u2019s sidebar. More info: http:\/\/en.support.wordpress.com\/widgets\/",
+            "pos": "noun",
+            "translation": "widget"
+        }
+    ],
+    "XML-RPC": [
+        {
+            "comment": "More info: http:\/\/codex.wordpress.org\/XML-RPC_Support",
+            "pos": "noun",
+            "translation": "XML-RPC"
+        }
+    ]
+}

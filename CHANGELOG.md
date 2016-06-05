@@ -1,6 +1,7 @@
 #1.1.0
-* Improvement: Glossaries not have empty terms
-* Fixed hotkey s duplicated
+* Improvement: Auto update glossary system!
+* Fixed hotkeys duplicated
+* Removed: sk_SK because the glotpress glossary it is not complete
 
 #1.0.9
 * Fix: New internal system to detect shortcut

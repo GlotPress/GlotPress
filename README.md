@@ -20,9 +20,6 @@ The goal of this browser extension is add that dictionaries when the user is tra
 * Firefox [Instruction](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-add-features-to-firefox): [Download](https://addons.mozilla.org/it/firefox/addon/glotdict/)
 * Chrome [Instructions](https://support.google.com/chrome_webstore/answer/2664769?hl=en): [Download](https://chrome.google.com/webstore/detail/glotdict/jfdkihdmokdigeobcmnjmgigcgckljgl)
 
-## New Glossaries
-With the script on [https://github.com/Mte90/GlotDictJSON](https://github.com/Mte90/GlotDictJSON) you can have an updated of all the glossaries.
-
 # Update times and release
 
 When the developer of the extension think that a new release is ready and tested they create a new release and publish on Firefox and Chrome addons store.  
@@ -30,18 +27,7 @@ After that step we have to wait 1 day for Chrome and 2 or 3 for Firefox and all 
 
 # Add a new glossary for a non-developer
 
-* Create/Sign in into github account if you don't have one
-* Create an issues with the information about the lang code  
-* Next someone add that file and the support in the extension
-* Choose a glossary from `dictionaries` folder - https://github.com/Mte90/GlotDict/tree/master/dictionaries
-* Tap the pencil icon - near the history button - at the top of ther file
-* Replace the content with your valid JSON (with identation!)
-* Now you need to create a new Pull Request, go to https://github.com/Mte90/GlotDict/pulls
-* Click on New Pull Request
-* Click on Compare across forks
-* On Head fork search your fork (YourNickOnGitHub/GlotDict/)
-* Click on create Pull Request
-* Done!
+Your glossary need to be published on GlotPress and a ticket created on https://github.com/Mte90/GlotDictJSON to update the internal system.
 
 # Contributors
 
