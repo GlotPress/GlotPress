@@ -1,6 +1,6 @@
 //Set the path of dictionaries
 var s = document.createElement('script');
-s.textContent = 'var glotdict_path = "' + chrome.extension.getURL("dictionaries") + '"';
+s.textContent += 'var glotdict_path = "' + chrome.extension.getURL("dictionaries/1.0.0") + '/"; var glotdict_version = "1.0.0";';
 (document.head||document.documentElement).appendChild(s);
 
 //Load jQuery Hotkeys

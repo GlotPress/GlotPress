@@ -1,3 +1,5 @@
+/* global key, glotdict_path */
+
 'use strict';
 
 jQuery(document).ready(function () {
@@ -20,13 +22,13 @@ jQuery(document).ready(function () {
 	}
 	return lang;
   }
-  
+
   function gd_select_language() {
+	var lang = localStorage.getItem('gd_language');
 	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
 	jQuery('.glossary-word').contents().unwrap();
-	var lang = localStorage.getItem('gd_language');
 	jQuery('.glotdict_language').append(jQuery('<option></option>'));
-	jQuery.each(['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'], function (key, value) {
+	jQuery.each(gd_locales(), function (key, value) {
 	  var new_option = jQuery('<option></option>').attr('value', value).text(value);
 	  if (lang === value) {
 		new_option.attr('selected', true);
@@ -42,6 +44,25 @@ jQuery(document).ready(function () {
 	});
   }
 
+  function gd_locales() {
+	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
+	var locales_cache = localStorage.getItem('gd_syntax_date');
+	if (locales_cache !== gd_today()) {
+	  jQuery.ajax({
+		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '.json',
+		dataType: 'text'
+	  }).done(function (data) {
+		localStorage.setItem('gd_syntax', JSON.parse(data));
+		locales = JSON.parse(data);
+		localStorage.setItem('gd_syntax_date', gd_today());
+	  }).fail(function (xhr, ajaxOptions, thrownError) {
+		console.error(thrownError);
+		console.log('GlotDict Syntax: error on loading the Glossary Syntax');
+	  });
+	}
+	return locales;
+  }
+
   function gd_add_terms() {
 	var lang = gd_get_lang();
 	if (lang === false) {
@@ -49,7 +70,7 @@ jQuery(document).ready(function () {
 	  return false;
 	}
 	jQuery.ajax({
-	  url: glotdict_path + '/' + lang + '.json',
+	  url: glotdict_path + lang + '.json',
 	  dataType: 'text'
 	}).done(function (data) {
 	  data = JSON.parse(data);
@@ -87,7 +108,7 @@ jQuery(document).ready(function () {
 	  var tagName = (event.target || event.srcElement).tagName;
 	  key.setScope(/^(SELECT)$/.test(tagName) ? 'input' : 'other');
 	  return true;
-	}
+	};
 	key('ctrl+enter', function () {
 	  if (jQuery('.editor:visible').length > 0) {
 		jQuery('.editor:visible .actions button.ok').trigger('click');
@@ -156,6 +177,14 @@ jQuery(document).ready(function () {
 	  }
 	  return false;
 	});
+  }
+
+  function gd_today() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1;
+	var yyyy = today.getFullYear();
+	return mm + '/' + dd + '/' + yyyy;
   }
 
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
