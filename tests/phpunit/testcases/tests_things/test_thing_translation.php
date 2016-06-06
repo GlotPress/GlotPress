@@ -181,4 +181,35 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
+
+	function test_validator_id_saved_on_status_change_to_current() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status('waiting');
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'whatever',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$translation->set_as_current();
+		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_validator_id_saved_on_status_change_to_rejected() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status('waiting');
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'whatever',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$translation->set_status('rejected');
+		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
 }
