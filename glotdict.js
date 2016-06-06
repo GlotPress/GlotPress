@@ -46,14 +46,18 @@ jQuery(document).ready(function () {
 
   function gd_locales() {
 	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
-	var locales_cache = localStorage.getItem('gd_syntax_date');
-	if (locales_cache !== gd_today()) {
+	var locales_date_cache = localStorage.getItem('gd_syntax_date');
+	var locales_cache = localStorage.getItem('gd_syntax');
+	if(locales_cache !== locales) {
+	  locales = locales_cache.split(',');
+	}
+	if (locales_date_cache !== gd_today()) {
 	  jQuery.ajax({
 		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '.json',
 		dataType: 'text'
 	  }).done(function (data) {
-		localStorage.setItem('gd_syntax', JSON.parse(data));
-		locales = JSON.parse(data);
+		locales = Object.keys(JSON.parse(data)).map(function (key) {return key});
+		localStorage.setItem('gd_syntax', locales);
 		localStorage.setItem('gd_syntax_date', gd_today());
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
