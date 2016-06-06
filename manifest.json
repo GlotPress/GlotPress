@@ -27,26 +27,7 @@
   "web_accessible_resources": [
       "glotdict.js",
       "keymaster.js",
-      "dictionaries/1.0.0.json",
-      "dictionaries/1.0.0/ast.json",
-      "dictionaries/1.0.0/bg_BG.json",
-      "dictionaries/1.0.0/de_DE.json",
-      "dictionaries/1.0.0/en_AU.json",
-      "dictionaries/1.0.0/en_CA.json",
-      "dictionaries/1.0.0/es_ES.json",
-      "dictionaries/1.0.0/fi.json",
-      "dictionaries/1.0.0/fr_FR.json",
-      "dictionaries/1.0.0/he_IL.json",
-      "dictionaries/1.0.0/hi_IN.json",
-      "dictionaries/1.0.0/it_IT.json",
-      "dictionaries/1.0.0/ja.json",
-      "dictionaries/1.0.0/lt_LT.json",
-      "dictionaries/1.0.0/nl_NL.json",
-      "dictionaries/1.0.0/pt_BR.json",
-      "dictionaries/1.0.0/ro_RO.json",
-      "dictionaries/1.0.0/sv_SE.json",
-      "dictionaries/1.0.0/th.json",
-      "dictionaries/1.0.0/tr_TR.json"
+      "dictionaries/1.0.0.json"
   ]
 
 }

@@ -106,8 +106,10 @@ jQuery(document).ready(function () {
 	}
 	var lang_date_cache = localStorage.getItem('gd_language_date');
 	if (lang_date_cache !== gd_today()) {
-//	  var locales_cache = gd_syntax_cache();
-//	  console.log(locales_cache)
+	  var locales_cache = gd_syntax_cache();
+	  if (locales_cache[lang].time === gd_today()) {
+		window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
+	  }
 	  jQuery.ajax({
 		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
 		dataType: 'text',
@@ -207,7 +209,7 @@ jQuery(document).ready(function () {
 	var dd = today.getDate();
 	var mm = today.getMonth() + 1;
 	var yyyy = today.getFullYear();
-	return mm + '/' + dd + '/' + yyyy;
+	return dd + '/' + mm + '/' + yyyy;
   }
 
   function gd_syntax_cache() {
