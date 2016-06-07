@@ -34,6 +34,34 @@ jQuery(document).ready(function () {
 	return JSON.parse(JSON.parse(localStorage.getItem('gd_syntax')));
   }
   
+  function gd_locales_cache(lang) {
+	if (typeof lang === 'undefined') {
+	  return;
+	}
+	var lang_date_cache = localStorage.getItem('gd_language_date');
+	if (lang_date_cache !== gd_today()) {
+	  var locales_cache = gd_syntax_cache();
+	  if (locales_cache[lang].time === gd_today()) {
+		window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
+	  }
+	  jQuery.ajax({
+		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
+		dataType: 'text',
+		async: false
+	  }).done(function (data) {
+		localStorage.setItem('gd_language_file', JSON.stringify(data));
+		localStorage.setItem('gd_language_date', gd_today());
+		window.gd_cache = JSON.parse(data);
+	  }).fail(function (xhr, ajaxOptions, thrownError) {
+		console.error(thrownError);
+		console.log('GlotDict: error on loading ' + gd_get_lang() + '.json');
+	  });
+	} else {
+	  window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
+	}
+	return window.gd_cache;
+  }
+  
   function gd_locales() {
 	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
 	var locales_date_cache = localStorage.getItem('gd_syntax_date');
@@ -110,34 +138,6 @@ jQuery(document).ready(function () {
 		return content;
 	  }
 	});
-  }
-
-  function gd_locales_cache(lang) {
-	if (typeof lang === 'undefined') {
-	  return;
-	}
-	var lang_date_cache = localStorage.getItem('gd_language_date');
-	if (lang_date_cache !== gd_today()) {
-	  var locales_cache = gd_syntax_cache();
-	  if (locales_cache[lang].time === gd_today()) {
-		window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
-	  }
-	  jQuery.ajax({
-		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
-		dataType: 'text',
-		async: false
-	  }).done(function (data) {
-		localStorage.setItem('gd_language_file', JSON.stringify(data));
-		localStorage.setItem('gd_language_date', gd_today());
-		window.gd_cache = JSON.parse(data);
-	  }).fail(function (xhr, ajaxOptions, thrownError) {
-		console.error(thrownError);
-		console.log('GlotDict: error on loading ' + gd_get_lang() + '.json');
-	  });
-	} else {
-	  window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
-	}
-	return window.gd_cache;
   }
 
   function gd_hotkeys() {
