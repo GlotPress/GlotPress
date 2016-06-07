@@ -174,6 +174,8 @@ jQuery(document).ready(function () {
 	  jQuery('textarea.foreign-text:visible:first').val(function (index, text) {
 		// Replace space-colon or nbsp-colon with just colon, then replace colons with nbsp-colon
 		var s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
+		// Fix http and https from the above replace
+		s = s.replace(/http&nbsp;:/g, 'http:').replace(/https&nbsp;:/g, 'https:')
 		// Replace space-question or nbsp-question with just question, then replace question with nbsp-question
 		s = s.replace(/( \?|&nbsp;\?)/g, '?').replace(/\?/g, '&nbsp;?');
 		// Replace space-exclamation or nbsp-exclamation with just exclamation, then replace exclamation with nbsp-exclamation
