@@ -151,7 +151,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 				<dd><?php gp_link_user( $t->user ); ?></dd>
 			</dl>
 			<?php endif; ?>
-			<?php if ( $t->user_last_modified ) : ?>
+			<?php if ( $t->user_last_modified && ( ! $t->user || $t->user->ID !== $t->user_last_modified->ID ) ) : ?>
 				<dl>
 					<dt><?php
 						if ( 'current' === $t->translation_status ) {
