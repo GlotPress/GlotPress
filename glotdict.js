@@ -79,12 +79,13 @@ jQuery(document).ready(function () {
 	var locales_cache = gd_list_locales_cached();
 	if (glossary_date_cache === null || glossary_date_cache !== locales_cache[lang].time) {
 	  jQuery.ajax({
-		url: 'https://codeat.it/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
+		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
 		dataType: 'text',
 		async: false
 	  }).done(function (data) {
 		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
-		localStorage.setItem('gd_glossary_date', glossary_date_cache[gd_get_lang()].time);
+		var glossary_date = gd_list_locales_cached();
+		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
 		console.error('GlotDict: error on loading ' + gd_get_lang() + '.json');
@@ -103,7 +104,7 @@ jQuery(document).ready(function () {
 	var locales_date_cache = localStorage.getItem('gd_locales_date');
 	if (locales_date_cache === null || locales_date_cache !== gd_today()) {
 	  jQuery.ajax({
-		url: 'https://codeat.it/glotdict/dictionaries/' + glotdict_version + '.json',
+		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '.json',
 		dataType: 'text'
 	  }).done(function (data) {
 		localStorage.setItem('gd_locales', JSON.stringify(data));
