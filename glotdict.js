@@ -85,7 +85,6 @@ jQuery(document).ready(function () {
 	  }).done(function (data) {
 		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
 		localStorage.setItem('gd_glossary_date', glossary_date_cache[gd_get_lang()].time);
-		window.gd_cache = JSON.parse(data);
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
 		console.log('GlotDict: error on loading ' + gd_get_lang() + '.json');

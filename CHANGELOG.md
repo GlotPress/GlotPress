@@ -1,6 +1,7 @@
 #1.1.0
 * Improvement: Auto update glossary system!
-* Fixed hotkeys duplicated
+* Improvement: Better code naming and organizations
+* Fixed: Hotkeys duplicated
 * Removed: sk_SK because the glotpress glossary it is not complete
 
 #1.0.9
