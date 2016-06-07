@@ -21,6 +21,45 @@ jQuery(document).ready(function () {
 	}
 	return lang;
   }
+  
+  function gd_today() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1;
+	var yyyy = today.getFullYear();
+	return dd + '/' + mm + '/' + yyyy;
+  }
+
+  function gd_syntax_cache() {
+	return JSON.parse(JSON.parse(localStorage.getItem('gd_syntax')));
+  }
+  
+  function gd_locales() {
+	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
+	var locales_date_cache = localStorage.getItem('gd_syntax_date');
+	var locales_cache = gd_locales_cache();
+	if (typeof locales_cache !== 'undefined') {
+	  locales = Object.keys(locales_cache).map(function (key) {
+		return key;
+	  });
+	}
+	if (locales_date_cache !== gd_today()) {
+	  jQuery.ajax({
+		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '.json',
+		dataType: 'text'
+	  }).done(function (data) {
+		locales = Object.keys(JSON.parse(data)).map(function (key) {
+		  return key;
+		});
+		localStorage.setItem('gd_syntax', JSON.stringify(data));
+		localStorage.setItem('gd_syntax_date', gd_today());
+	  }).fail(function (xhr, ajaxOptions, thrownError) {
+		console.error(thrownError);
+		console.log('GlotDict Syntax: error on loading the Glossary Syntax');
+	  });
+	}
+	return locales;
+  }
 
   function gd_select_language() {
 	var lang = localStorage.getItem('gd_language');
@@ -39,33 +78,6 @@ jQuery(document).ready(function () {
 	  return;
 	}
 	jQuery('.glossary-word').contents().unwrap();
-  }
-
-  function gd_locales() {
-	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
-	var locales_date_cache = localStorage.getItem('gd_syntax_date');
-	var locales_cache = gd_locales_cache();
-	if (typeof locales_cache !== 'undefined') {
-	  locales = Object.keys(locales_cache).map(function (key) {
-		return key
-	  });
-	}
-	if (locales_date_cache !== gd_today()) {
-	  jQuery.ajax({
-		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '.json',
-		dataType: 'text'
-	  }).done(function (data) {
-		locales = Object.keys(JSON.parse(data)).map(function (key) {
-		  return key
-		});
-		localStorage.setItem('gd_syntax', JSON.stringify(data));
-		localStorage.setItem('gd_syntax_date', gd_today());
-	  }).fail(function (xhr, ajaxOptions, thrownError) {
-		console.error(thrownError);
-		console.log('GlotDict Syntax: error on loading the Glossary Syntax');
-	  });
-	}
-	return locales;
   }
 
   function gd_add_terms() {
@@ -202,18 +214,6 @@ jQuery(document).ready(function () {
 	  }
 	  return false;
 	});
-  }
-
-  function gd_today() {
-	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth() + 1;
-	var yyyy = today.getFullYear();
-	return dd + '/' + mm + '/' + yyyy;
-  }
-
-  function gd_syntax_cache() {
-	return JSON.parse(JSON.parse(localStorage.getItem('gd_syntax')));
   }
 
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
