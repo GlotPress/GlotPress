@@ -467,15 +467,15 @@ class GP_Translation_Set extends GP_Thing {
 			if ( $warnings_counts ) {
 				$counts[] = (object) array(
 					'translation_status' => 'warnings',
-					'total'              => $warnings_counts->total,
-					'hidden'             => $warnings_counts->hidden,
-					'public'             => $warnings_counts->public,
+					'total'              => (int) $warnings_counts->total,
+					'hidden'             => (int) $warnings_counts->hidden,
+					'public'             => (int) $warnings_counts->public,
 				);
 			}
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
 
-		$all_count = GP::$original->count_by_project_id( $this->project_id );
+		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
 		$counts[] = (object) array(
 			'translation_status' => 'all',
 			'total'              => $all_count->total,
@@ -493,7 +493,7 @@ class GP_Translation_Set extends GP_Thing {
 		$user_can_view_hidden = GP::$permission->current_user_can( 'write', 'project', $this->project_id );
 		foreach ( $counts as $count ) {
 			if ( in_array( $count->translation_status, $statuses, true ) ) {
-				$this->{$count->translation_status . '_count'} = $user_can_view_hidden ? $count->total : $count->public;
+				$this->{$count->translation_status . '_count'} = $user_can_view_hidden ? (int) $count->total : (int) $count->public;
 			}
 		}
 
@@ -536,7 +536,7 @@ class GP_Translation_Set extends GP_Thing {
 
 
 	public function percent_translated() {
-		$original_counts = GP::$original->count_by_project_id( $this->project_id );
+		$original_counts = GP::$original->count_by_project_id( $this->project_id, 'all' );
 
 		if ( GP::$permission->current_user_can( 'write', 'project', $this->project_id ) ) {
 			$original_count = $original_counts->total;

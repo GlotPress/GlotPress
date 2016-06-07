@@ -55,7 +55,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$translations       = $this->create_translations_with( $translations_array );
 		$original->import_for_project( $project, $translations );
 
-		$this->assertEquals( count( $translations_array ), $original->count_by_project_id( $project->id )->total );
+		$this->assertEquals( count( $translations_array ), $original->count_by_project_id( $project->id ) );
 	}
 
 	function test_is_different_from_should_return_true_if_only_singular_is_for_update_and_it_is_the_same() {
@@ -122,7 +122,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+obsolete', 'singular' => 'baba baba' ) );
 
 		$count = $original->count_by_project_id( $set->project->id );
-		$this->assertEquals( 0, $count->total );
+		$this->assertEquals( 0, $count );
 
 		$translations_for_import = $this->create_translations_with( array( array( 'singular' => 'baba baba' ) ) );
 
@@ -135,7 +135,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 0, $originals_error );
 
 		$count = $original->count_by_project_id( $set->project->id );
-		$this->assertEquals( 1, $count->total );
+		$this->assertEquals( 1, $count );
 	}
 
 	function test_import_should_remove_from_active_missing_strings() {
@@ -233,5 +233,33 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		// Get the first item.
 		$original = reset( $originals );
 		$this->assertSame( str_repeat( 'a', 255 ), $original->context );
+	}
+
+	/**
+	 * @ticket gh-397
+	 */
+	function test_return_types_of_count_by_project_id() {
+		$project = $this->factory->project->create();
+
+		$this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Foo' ) );
+		$this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Bar', 'priority' => -2 ) );
+
+		$total = GP::$original->count_by_project_id( $project->id );
+		$this->assertSame( 2, $total );
+
+		$all = GP::$original->count_by_project_id( $project->id, 'all' );
+		$this->assertInternalType( 'object', $all );
+		$this->assertSame( 2, $all->total );
+		$this->assertSame( 1, $all->hidden );
+		$this->assertSame( 1, $all->public );
+
+		$hidden = GP::$original->count_by_project_id( $project->id, 'hidden' );
+		$this->assertSame( 1, $hidden );
+
+		$public = GP::$original->count_by_project_id( $project->id, 'public' );
+		$this->assertSame( 1, $public );
+
+		$non_existent = GP::$original->count_by_project_id( $project->id, 'non_existent' );
+		$this->assertSame( null, $non_existent );
 	}
 }

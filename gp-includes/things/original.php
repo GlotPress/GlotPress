@@ -80,13 +80,32 @@ class GP_Original extends GP_Thing {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
 
-	public function count_by_project_id( $project_id ) {
+	/**
+	 * Retrieves the number of originals for a project.
+	 *
+	 * @since 1.0.0
+	 * @since 2.1.0 Added the `$type` parameter.
+	 *
+	 * @param int    $project_id The ID of a project.
+	 * @param string $type       The return type. 'total' for public and hidden counts, 'hidden'
+	 *                           for hidden count, 'public' for public count, 'all' for all three
+	 *                           values. Default 'total'.
+	 * @return object|int|null Object when `$type` is 'all', integer when `$type` is 'total',
+	 *                         'public' or 'hidden'. Otherwise null.
+	 */
+	public function count_by_project_id( $project_id, $type = 'total' ) {
+		global $wpdb;
+
 		$cached = wp_cache_get( $project_id, self::$count_cache_group );
 		if ( false !== $cached && is_object( $cached ) ) { // Since 2.1.0 stdClass.
-			return $cached;
+			if ( 'all' === $type ) {
+				return $cached;
+			} elseif ( isset( $cached->$type ) ) {
+				return $cached->$type;
+			} else {
+				return null;
+			}
 		}
-
-		global $wpdb;
 
 		$counts = $wpdb->get_row( $wpdb->prepare( "
 			SELECT
@@ -98,11 +117,20 @@ class GP_Original extends GP_Thing {
 				project_id = %d AND status = '+active'
 			",
 			$project_id
-		) );
+		), ARRAY_A );
+
+		// Make sure counts are integers.
+		$counts = (object) array_map( 'intval', $counts );
 
 		wp_cache_set( $project_id, $counts, self::$count_cache_group );
 
-		return $counts;
+		if ( 'all' === $type ) {
+			return $counts;
+		} elseif ( isset( $counts->$type ) ) {
+			return $counts->$type;
+		} else {
+			return null;
+		}
 	}
 
 
