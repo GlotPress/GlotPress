@@ -1,8 +1,16 @@
-/* global key, glotdict_path */
+/* global key, glotdict_path, glotdict_version */
 'use strict';
 
 jQuery(document).ready(function () {
-  function gd_add_term(word, element, item) {
+  /**
+   * Add the term in the page with the HTML code compatible with GlotPress
+   * 
+   * @param String word
+   * @param String element
+   * @param String item
+   * @returns void
+   */
+  function gd_add_term_json(word, element, item) {
 	if (item !== '') {
 	  var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
 	  var print = JSON.stringify(item);
@@ -14,6 +22,11 @@ jQuery(document).ready(function () {
 	}
   }
 
+  /**
+   * Get the language saved in GlotDict
+   * 
+   * @returns string
+   */
   function gd_get_lang() {
 	var lang = localStorage.getItem('gd_language');
 	if (lang === '' || lang === null) {
@@ -21,76 +34,102 @@ jQuery(document).ready(function () {
 	}
 	return lang;
   }
-  
+
+  /**
+   * Get the today with the format dd/mm/yyyy used for the update daily check
+   * 
+   * @returns String
+   */
   function gd_today() {
 	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth() + 1;
-	var yyyy = today.getFullYear();
-	return dd + '/' + mm + '/' + yyyy;
+	return today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
   }
 
-  function gd_syntax_cache() {
-	return JSON.parse(JSON.parse(localStorage.getItem('gd_syntax')));
+  /**
+   * Get the the list of locales cached
+   * 
+   * @returns Array
+   */
+  function gd_list_locales_cached() {
+	return JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
   }
-  
-  function gd_locales_cache(lang) {
+
+  /**
+   * Get the the glossary cached
+   * 
+   * @returns Array
+   */
+  function gd_glossary_file_cached() {
+	return JSON.parse(JSON.parse(localStorage.getItem('gd_glossary_file')));
+  }
+
+
+  /**
+   * Get the glossary file saved 
+   * 
+   * @param String lang
+   * @returns Array
+   */
+  function gd_glossary_cached(lang) {
 	if (typeof lang === 'undefined') {
 	  return;
 	}
-	var lang_date_cache = localStorage.getItem('gd_language_date');
-	if (lang_date_cache !== gd_today()) {
-	  var locales_cache = gd_syntax_cache();
-	  if (locales_cache[lang].time === gd_today()) {
-		window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
-	  }
+	//TODO check code if locales date is different from the online available
+	var glossary_date_cache = localStorage.getItem('gd_glossary_date');
+	var locales_cache = gd_list_locales_cached();
+	if (glossary_date_cache !== locales_cache[lang].time) {
 	  jQuery.ajax({
 		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
 		dataType: 'text',
 		async: false
 	  }).done(function (data) {
-		localStorage.setItem('gd_language_file', JSON.stringify(data));
-		localStorage.setItem('gd_language_date', gd_today());
+		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
+		localStorage.setItem('gd_glossary_date', glossary_date_cache[gd_get_lang()].time);
 		window.gd_cache = JSON.parse(data);
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
 		console.log('GlotDict: error on loading ' + gd_get_lang() + '.json');
 	  });
-	} else {
-	  window.gd_cache = JSON.parse(JSON.parse(localStorage.getItem('gd_language_file')));
 	}
-	return window.gd_cache;
+	return gd_glossary_file_cached();
   }
-  
+
+  /**
+   * Get the list of locales avalaible
+   * 
+   * @returns Array
+   */
   function gd_locales() {
 	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
-	var locales_date_cache = localStorage.getItem('gd_syntax_date');
-	var locales_cache = gd_locales_cache();
-	if (typeof locales_cache !== 'undefined') {
-	  locales = Object.keys(locales_cache).map(function (key) {
-		return key;
-	  });
-	}
+	var locales_date_cache = localStorage.getItem('gd_locales_date');
 	if (locales_date_cache !== gd_today()) {
 	  jQuery.ajax({
 		url: 'http://www.mte90.net/glotdict/dictionaries/' + glotdict_version + '.json',
 		dataType: 'text'
 	  }).done(function (data) {
-		locales = Object.keys(JSON.parse(data)).map(function (key) {
-		  return key;
-		});
-		localStorage.setItem('gd_syntax', JSON.stringify(data));
-		localStorage.setItem('gd_syntax_date', gd_today());
+		localStorage.setItem('gd_locales', JSON.stringify(data));
+		localStorage.setItem('gd_locales_date', gd_today());
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
 		console.log('GlotDict Syntax: error on loading the Glossary Syntax');
 	  });
 	}
+	var locales_cache = gd_glossary_cached();
+	if (typeof locales_cache !== 'undefined') {
+	  locales = Object.keys(locales_cache).map(function (key) {
+		return key;
+	  });
+	}
 	return locales;
   }
 
-  function gd_select_language() {
-	var lang = localStorage.getItem('gd_language');
+  /**
+   * Print the locales selector
+   * 
+   * @returns void
+   */
+  function gd_locales_selector() {
+	var lang = gd_get_lang();
 	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
 	jQuery('.glotdict_language').append(jQuery('<option></option>'));
 	var gd_locales_array = gd_locales();
@@ -108,22 +147,29 @@ jQuery(document).ready(function () {
 	jQuery('.glossary-word').contents().unwrap();
   }
 
-  function gd_add_terms() {
+  /**
+   * Create the tooltip for every terms added
+   * 
+   * @returns void
+   */
+  function gd_terms_tooltip() {
 	var lang = gd_get_lang();
 	if (lang === false) {
 	  console.log('GlotDict: missing lang');
 	  return false;
 	}
-	var data = gd_locales_cache(lang);
+	var data = gd_glossary_cached(lang);
+	// Loop all the editor string views
 	jQuery('.editor .original').each(function () {
-	  var loop_editor = this;
+	  var editor_in_loop = this;
 	  jQuery.each(data, function (i, item) {
 		if (i !== '&') {
-		  gd_add_term(i, loop_editor, item);
+		  gd_add_term_json(i, editor_in_loop, item);
 		}
 	  });
 	});
 	jQuery('.editor .original .glossary-word-glotdict').css({'cursor': 'help', 'border-bottom': '1px dashed'});
+	// Generate the HTML code for the tooltips
 	jQuery('.editor').tooltip({
 	  items: '.editor .original .glossary-word-glotdict',
 	  content: function () {
@@ -140,6 +186,11 @@ jQuery(document).ready(function () {
 	});
   }
 
+  /**
+   * Add the hotkeys in GlotPress
+   * 
+   * @returns void
+   */
   function gd_hotkeys() {
 	key.filter = function (event) {
 	  var tagName = (event.target || event.srcElement).tagName;
@@ -187,7 +238,7 @@ jQuery(document).ready(function () {
 		// Replace space-colon or nbsp-colon with just colon, then replace colons with nbsp-colon
 		var s = text.replace(/( :|&nbsp;:)/g, ':').replace(/:/g, '&nbsp;:');
 		// Fix http and https from the above replace
-		s = s.replace(/http&nbsp;:/g, 'http:').replace(/https&nbsp;:/g, 'https:')
+		s = s.replace(/http&nbsp;:/g, 'http:').replace(/https&nbsp;:/g, 'https:');
 		// Replace space-question or nbsp-question with just question, then replace question with nbsp-question
 		s = s.replace(/( \?|&nbsp;\?)/g, '?').replace(/\?/g, '&nbsp;?');
 		// Replace space-exclamation or nbsp-exclamation with just exclamation, then replace exclamation with nbsp-exclamation
@@ -223,14 +274,14 @@ jQuery(document).ready(function () {
 	if (jQuery('#bulk-actions-toolbar').length > 0) {
 	  jQuery('#upper-filters-toolbar').css('clear', 'both');
 	}
-	gd_select_language();
-	gd_add_terms();
+	gd_locales_selector();
+	gd_terms_tooltip();
 	gd_hotkeys();
   }
 
   jQuery('.glotdict_language').change(function () {
 	localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());
-	localStorage.setItem('gd_language_date', '');
+	localStorage.setItem('gd_glossary_date', '');
 	location.reload();
   });
 });
