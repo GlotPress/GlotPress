@@ -87,7 +87,7 @@ jQuery(document).ready(function () {
 		localStorage.setItem('gd_glossary_date', glossary_date_cache[gd_get_lang()].time);
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
-		console.log('GlotDict: error on loading ' + gd_get_lang() + '.json');
+		console.error('GlotDict: error on loading ' + gd_get_lang() + '.json');
 	  });
 	}
 	return gd_glossary_file_cached();
@@ -110,7 +110,7 @@ jQuery(document).ready(function () {
 		localStorage.setItem('gd_locales_date', gd_today());
 	  }).fail(function (xhr, ajaxOptions, thrownError) {
 		console.error(thrownError);
-		console.log('GlotDict Syntax: error on loading the Glossary Syntax');
+		console.error('GlotDict Syntax: error on loading the Glossary Syntax');
 	  });
 	}
 	var locales_cache = gd_glossary_cached();
@@ -140,7 +140,7 @@ jQuery(document).ready(function () {
 	  jQuery('.glotdict_language').append(new_option);
 	});
 	if (lang === '') {
-	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display: inline;margin-left:4px;">&larr; Set the glossary!</span>');
+	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;">&larr; Set the glossary!</span>');
 	  return;
 	}
 	jQuery('.glossary-word').contents().unwrap();
@@ -154,7 +154,7 @@ jQuery(document).ready(function () {
   function gd_terms_tooltip() {
 	var lang = gd_get_lang();
 	if (lang === false) {
-	  console.log('GlotDict: missing lang');
+	  console.error('GlotDict: missing lang!');
 	  return false;
 	}
 	var data = gd_glossary_cached(lang);
@@ -268,6 +268,7 @@ jQuery(document).ready(function () {
 	});
   }
 
+  jQuery('#wporg-footer ul:last-child').remove();
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
 	//Fix for PTE align
 	if (jQuery('#bulk-actions-toolbar').length > 0) {

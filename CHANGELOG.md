@@ -1,6 +1,7 @@
 #1.1.0
 * Improvement: Auto update glossary system!
 * Improvement: Better code naming and organizations
+* Improvement: The FB, Twitter and Google+ button in the bottom of WP.org are removed to speed up the loading of the page
 * Fixed: Hotkeys duplicated
 * Removed: sk_SK because the glotpress glossary it is not complete
 
