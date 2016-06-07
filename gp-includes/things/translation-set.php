@@ -428,7 +428,7 @@ class GP_Translation_Set extends GP_Thing {
 	public function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 
-		if ( ! is_array( $counts ) ) { // @todo: Check if new or old format
+		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) ) { // The format was changed in 2.1.
 			global $wpdb;
 			$counts = array();
 

@@ -139,12 +139,32 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
 		$pre_delete = GP::$translation_set->find_one( array( 'id' => $set->id ) );
-		
+
 		$set->delete();
-		
+
 		$post_delete = GP::$translation_set->find_one( array( 'id' => $set->id ) );
-		
+
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
+
+	/**
+	 * @ticket gh-397
+	 */
+	function test_update_status_breakdown_updates_pre_2_1_cached_values() {
+		global $wpdb;
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$counts = array();
+		$statuses = GP::$translation->get_static( 'statuses' );
+		foreach ( $statuses as $status ) {
+			$counts[] = (object) array( 'translation_status' => $status, 'n' => 10 );
+		}
+		$counts[] = (object) array( 'translation_status' => 'warnings', 'n' => 1 );
+		wp_cache_set( $set->id, $counts, 'translation_set_status_breakdown' );
+
+		$num_queries = $wpdb->num_queries;
+		$set->update_status_breakdown();
+		$this->assertEquals( $num_queries + 7, $wpdb->num_queries );
 	}
 }
