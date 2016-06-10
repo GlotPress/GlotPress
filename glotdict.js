@@ -1,5 +1,7 @@
-/* global key, glotdict_path, glotdict_version */
+/* global key, glotdict_version */
 'use strict';
+
+var glotdict_version = "1.0.0";
 
 jQuery(document).ready(function () {
   /**
@@ -19,6 +21,35 @@ jQuery(document).ready(function () {
 	  }
 	  var repl = '<span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span>';
 	  jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
+	}
+  }
+
+  /**
+   * Add links for Translation global status and Language projects archive
+   * @returns void
+   */
+  function gd_add_project_links() {
+	if (jQuery('.gp-content .breadcrumb li:last-child a').length > 0) {
+	  var lang = jQuery('.gp-content .breadcrumb li:last-child a').attr('href');
+	  lang = lang.split('/');
+	  lang = lang[lang.length - 2];
+	  jQuery('.gp-content').prepend('<a style="float:right" href="https://translate.wordpress.org/locale/' + lang + '/default">' + jQuery('.gp-content .breadcrumb li:last-child a').html() + ' Projects to Translate</a>');
+	  jQuery('.gp-content h2').prepend('<a class="glossary-link" style="float:right;padding-left:5px;margin-left:5px;border-left: 1px solid black;" href="https://translate.wordpress.org/stats">Translation Global Status</a>');
+	}
+  }
+
+  /**
+   * Add the button to scroll to the row of the language choosen
+   * @returns void
+   */
+  function gd_add_button() {
+	if (jQuery('title').html().substring(0, 27) === 'Translation status overview') {
+	  jQuery('.gp-content').prepend('<button style="float:right" class="gd_scroll">Scroll to ' + gd_get_lang() + '</button>');
+	  jQuery('.gd_scroll').on('click', function () {
+		var row = jQuery("#stats-table tr th a:contains('" + gd_get_lang() + "')");
+		row.html('<b>&nbsp;&nbsp;&nbsp;' + row.html() + '</a>');
+		jQuery('html, body').animate({scrollTop: row.offset().top - 50});
+	  });
 	}
   }
 
@@ -62,7 +93,6 @@ jQuery(document).ready(function () {
   function gd_glossary_file_cached() {
 	return JSON.parse(JSON.parse(localStorage.getItem('gd_glossary_file')));
   }
-
 
   /**
    * Get the glossary file saved 
@@ -192,6 +222,9 @@ jQuery(document).ready(function () {
    * @returns void
    */
   function gd_hotkeys() {
+//	if (jQuery('.gp-content .breadcrumb li:last-child a').length !== 0) {
+//	  return false;
+//	}
 	key.filter = function (event) {
 	  var tagName = (event.target || event.srcElement).tagName;
 	  key.setScope(/^(SELECT)$/.test(tagName) ? 'input' : 'other');
@@ -268,8 +301,12 @@ jQuery(document).ready(function () {
 	  return false;
 	});
   }
-
+  
+  // Remvoe the social button in the bottom
   jQuery('#wporg-footer ul:last-child').remove();
+  gd_add_project_links();
+  gd_add_button();
+
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
 	//Fix for PTE align
 	if (jQuery('#bulk-actions-toolbar').length > 0) {
