@@ -1,7 +1,10 @@
 #1.1.0
 * Improvement: Auto update glossary system!
-* Improvement: Better code naming and organizations
 * Improvement: The FB, Twitter and Google+ button in the bottom of WP.org are removed to speed up the loading of the page
+* Improvement: Added link to Home page about project to translate of the language choosen
+* Improvement: Added link Translation Global Status
+* Improvement: Added button to scroll to the language configured in Translation Global Status page
+* Improvement: Better code naming, organizations, improvements
 * Fixed: Hotkeys duplicated
 * Removed: sk_SK because the glotpress glossary it is not complete
 
