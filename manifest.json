@@ -26,8 +26,7 @@
   ],
   "web_accessible_resources": [
       "glotdict.js",
-      "keymaster.js",
-      "dictionaries/1.0.0.json"
+      "keymaster.js"
   ]
 
 }
