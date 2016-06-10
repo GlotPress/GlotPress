@@ -5,6 +5,19 @@ var glotdict_version = "1.0.0";
 
 jQuery(document).ready(function () {
   /**
+   * Get the language saved in GlotDict
+   * 
+   * @returns string
+   */
+  function gd_get_lang() {
+	var lang = localStorage.getItem('gd_language');
+	if (lang === '' || lang === null) {
+	  return false;
+	}
+	return lang;
+  }
+  
+  /**
    * Add the term in the page with the HTML code compatible with GlotPress
    * 
    * @param String word
@@ -51,19 +64,6 @@ jQuery(document).ready(function () {
 		jQuery('html, body').animate({scrollTop: row.offset().top - 50});
 	  });
 	}
-  }
-
-  /**
-   * Get the language saved in GlotDict
-   * 
-   * @returns string
-   */
-  function gd_get_lang() {
-	var lang = localStorage.getItem('gd_language');
-	if (lang === '' || lang === null) {
-	  return false;
-	}
-	return lang;
   }
 
   /**
