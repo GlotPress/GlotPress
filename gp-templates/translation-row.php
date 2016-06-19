@@ -162,6 +162,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 							_e( 'Last updated by:', 'glotpress' );
 						}
 						?>
+					</dt>
 					<dd><?php gp_link_user( $t->user_last_modified ); ?></dd>
 				</dl>
 			<?php endif; ?>

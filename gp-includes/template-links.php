@@ -199,7 +199,7 @@ function gp_link_glossary_delete( $glossary, $set, $text = false, $attrs = array
  *
  * @since 2.1.0
  *
- * @param WP_USER $user user object.
+ * @param WP_User $user A WP_User user object.
  */
 function gp_link_user( $user ) {
 	if ( $user->display_name && $user->display_name !== $user->user_login ) {

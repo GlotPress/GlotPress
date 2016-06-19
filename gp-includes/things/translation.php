@@ -36,7 +36,7 @@ class GP_Translation extends GP_Thing {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @var $user_id_last_modified
+	 * @var int $user_id_last_modified
 	 */
 	public $user_id_last_modified;
 	public $status;
