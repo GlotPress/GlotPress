@@ -119,6 +119,11 @@ class GP_Original extends GP_Thing {
 			$project_id
 		), ARRAY_A );
 
+		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
+		if ( ! is_array( $counts ) ) {
+			$counts = array( 'total' => 0, 'hidden' => 0, 'public' => 0 );
+		}
+
 		// Make sure counts are integers.
 		$counts = (object) array_map( 'intval', $counts );
 
