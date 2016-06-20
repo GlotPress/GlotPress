@@ -96,6 +96,11 @@ class GP_Original extends GP_Thing {
 	public function count_by_project_id( $project_id, $type = 'total' ) {
 		global $wpdb;
 
+		// If an unknown type has been passed in, just return a null result immediately instead of running the SQL code.
+		if ( ! in_array( $type, array( 'total', 'hidden', 'public', 'all' ) ) ) {
+			return null;
+		}
+
 		$cached = wp_cache_get( $project_id, self::$count_cache_group );
 		if ( false !== $cached && is_object( $cached ) ) { // Since 2.1.0 stdClass.
 			if ( 'all' === $type ) {
