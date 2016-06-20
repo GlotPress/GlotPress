@@ -97,7 +97,7 @@ class GP_Original extends GP_Thing {
 		global $wpdb;
 
 		// If an unknown type has been passed in, just return a null result immediately instead of running the SQL code.
-		if ( ! in_array( $type, array( 'total', 'hidden', 'public', 'all' ) ) ) {
+		if ( ! in_array( $type, array( 'total', 'hidden', 'public', 'all' ), true ) ) {
 			return null;
 		}
 
