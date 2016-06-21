@@ -90,28 +90,30 @@ class GP_Original extends GP_Thing {
 	 * @param string $type       The return type. 'total' for public and hidden counts, 'hidden'
 	 *                           for hidden count, 'public' for public count, 'all' for all three
 	 *                           values. Default 'total'.
-	 * @return object|int|null Object when `$type` is 'all', integer when `$type` is 'total',
-	 *                         'public' or 'hidden'. Otherwise null.
+	 * @return object|int Object when `$type` is 'all', non-negative integer in all other cases.
 	 */
 	public function count_by_project_id( $project_id, $type = 'total' ) {
 		global $wpdb;
 
-		// If an unknown type has been passed in, just return a null result immediately instead of running the SQL code.
+		// If an unknown type has been passed in, just return a 0 result immediately instead of running the SQL code.
 		if ( ! in_array( $type, array( 'total', 'hidden', 'public', 'all' ), true ) ) {
-			return null;
+			return 0;
 		}
 
+		// Get the cache and use it if possible.
 		$cached = wp_cache_get( $project_id, self::$count_cache_group );
 		if ( false !== $cached && is_object( $cached ) ) { // Since 2.1.0 stdClass.
 			if ( 'all' === $type ) {
 				return $cached;
 			} elseif ( isset( $cached->$type ) ) {
 				return $cached->$type;
-			} else {
-				return null;
 			}
+
+			// If we've fallen through for some reason, make sure to return an integer 0.
+			return 0;
 		}
 
+		// No cache values found so let's query the database for the results.
 		$counts = $wpdb->get_row( $wpdb->prepare( "
 			SELECT
 				COUNT(*) AS total,
@@ -138,9 +140,10 @@ class GP_Original extends GP_Thing {
 			return $counts;
 		} elseif ( isset( $counts->$type ) ) {
 			return $counts->$type;
-		} else {
-			return null;
 		}
+
+		// If we've fallen through for some reason, make sure to return an integer 0.
+		return 0;
 	}
 
 

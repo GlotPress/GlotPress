@@ -260,6 +260,6 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertSame( 1, $public );
 
 		$non_existent = GP::$original->count_by_project_id( $project->id, 'non_existent' );
-		$this->assertSame( null, $non_existent );
+		$this->assertSame( 0, $non_existent );
 	}
 }
