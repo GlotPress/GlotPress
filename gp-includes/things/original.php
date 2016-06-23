@@ -80,13 +80,67 @@ class GP_Original extends GP_Thing {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
 
-	public function count_by_project_id( $project_id ) {
-		if ( false !== ( $cached = wp_cache_get( $project_id, self::$count_cache_group ) ) ) {
-			return $cached;
+	/**
+	 * Retrieves the number of originals for a project.
+	 *
+	 * @since 1.0.0
+	 * @since 2.1.0 Added the `$type` parameter.
+	 *
+	 * @param int    $project_id The ID of a project.
+	 * @param string $type       The return type. 'total' for public and hidden counts, 'hidden'
+	 *                           for hidden count, 'public' for public count, 'all' for all three
+	 *                           values. Default 'total'.
+	 * @return object|int|null Object when `$type` is 'all', integer when `$type` is 'total',
+	 *                         'public' or 'hidden'. Otherwise null.
+	 */
+	public function count_by_project_id( $project_id, $type = 'total' ) {
+		global $wpdb;
+
+		// If an unknown type has been passed in, just return a null result immediately instead of running the SQL code.
+		if ( ! in_array( $type, array( 'total', 'hidden', 'public', 'all' ), true ) ) {
+			return null;
 		}
-		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
-		wp_cache_set( $project_id, $count, self::$count_cache_group );
-		return $count;
+
+		$cached = wp_cache_get( $project_id, self::$count_cache_group );
+		if ( false !== $cached && is_object( $cached ) ) { // Since 2.1.0 stdClass.
+			if ( 'all' === $type ) {
+				return $cached;
+			} elseif ( isset( $cached->$type ) ) {
+				return $cached->$type;
+			} else {
+				return null;
+			}
+		}
+
+		$counts = $wpdb->get_row( $wpdb->prepare( "
+			SELECT
+				COUNT(*) AS total,
+				COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
+				COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
+			FROM {$wpdb->gp_originals}
+			WHERE
+				project_id = %d AND status = '+active'
+			",
+			$project_id
+		), ARRAY_A );
+
+		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
+		if ( ! is_array( $counts ) ) {
+			$counts = array( 'total' => 0, 'hidden' => 0, 'public' => 0 );
+		}
+
+		// Make sure counts are integers.
+		$counts = (object) array_map( 'intval', $counts );
+
+		wp_cache_set( $project_id, $counts, self::$count_cache_group );
+
+		if ( 'all' === $type ) {
+			return $counts;
+		} elseif ( isset( $counts->$type ) ) {
+			return $counts->$type;
+		} else {
+			return null;
+		}
 	}
 
 
