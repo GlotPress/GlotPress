@@ -37,8 +37,8 @@ function gp_schema_get() {
 	 */
 	$gp_schema['translations'] = "CREATE TABLE $wpdb->gp_translations (
 		id int(10) NOT NULL auto_increment,
-		original_id int(10) DEFAULT NULL,
-		translation_set_id int(10) DEFAULT NULL,
+		original_id int(10) NOT NULL,
+		translation_set_id int(10) NOT NULL,
 		translation_0 text NOT NULL,
 		translation_1 text DEFAULT NULL,
 		translation_2 text DEFAULT NULL,
@@ -87,7 +87,7 @@ function gp_schema_get() {
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL,
 		slug varchar(255) NOT NULL,
-		project_id int(10) DEFAULT NULL,
+		project_id int(10) NOT NULL,
 		locale varchar(10) DEFAULT NULL,
 		PRIMARY KEY  (id),
 		UNIQUE KEY project_id_slug_locale (project_id,slug({$max_pid_slug_locale_key_length}),locale),
@@ -117,7 +117,7 @@ function gp_schema_get() {
 
 	$gp_schema['originals'] = "CREATE TABLE $wpdb->gp_originals (
 		id int(10) NOT NULL auto_increment,
-		project_id int(10) DEFAULT NULL,
+		project_id int(10) NOT NULL,
 		context varchar(255) DEFAULT NULL,
 		singular text NOT NULL,
 		plural text DEFAULT NULL,
