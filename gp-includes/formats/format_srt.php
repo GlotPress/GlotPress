@@ -74,7 +74,7 @@ class GP_Format_SRT extends GP_Format {
 
 		// Loop through each line, translation "blocks" are separated by blank lines.
 		foreach ( $lines as $line ) {
-			switch( $this_entry ) {
+			switch ( $this_entry ) {
 				case 0:	// This is the first line of a new SRT block, just discard it.
 					$this_entry++;
 
@@ -86,7 +86,7 @@ class GP_Format_SRT extends GP_Format {
 					break;
 				default: // This is the text.
 					// A blank line means we're done with the block and we should save it.
-					if ( "" === $line ) {
+					if ( '' === $line ) {
 						$entry = new Translation_Entry();
 						$entry->context = $context;
 						$entry->singular = trim( $text, "\r\n" );
@@ -95,15 +95,15 @@ class GP_Format_SRT extends GP_Format {
 						$entries->add_entry( $entry );
 
 						$this_entry = 0;
-						$text = "";
-						$context = "";
+						$text = '';
+						$context = '';
 					} else {
 						$text .= trim( $line, " \r\n" ) . "\n";
 						$this_entry++;
 					}
 
 					break;
-				}
+			}
 		}
 
 		return $entries;
@@ -169,7 +169,7 @@ class GP_Format_SRT extends GP_Format {
 		$start = floatval( $parts[0] );
 
 		// If for some reason we didn't parse an end time, set the end to be the same as the start.
-		if ( sizeof( $parts ) > 1 ) {
+		if ( count( $parts ) > 1 ) {
 			$end = floatval( $parts[1] );
 		} else {
 			$end = $start;
@@ -205,7 +205,7 @@ class GP_Format_SRT extends GP_Format {
 		}
 
 		// Otherwise return if they're greater or less than each other.
-		return ( $start_a > $start_b ) ? +1 : -1;
+		return ( $start_a > $start_b ) ? 1 : -1;
 	}
 }
 

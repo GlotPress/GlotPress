@@ -71,7 +71,7 @@ class GP_Test_Format_SRT extends GP_UnitTestCase {
 
 		$translations = $this->srt->read_translations_from_file( GP_DIR_TESTDATA . '/translation.srt', (object)array( 'id' => 2 ) );
 
-		foreach( $this->entries as $sample ) {
+		foreach ( $this->entries as $sample ) {
 			list( $context, $original, $translation, $comment ) = $sample;
 			$this->assertEquals( $translation, $translations->translate( $original, $context ) );
 		}
