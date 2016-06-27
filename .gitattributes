@@ -3,3 +3,4 @@
 *.resx.xml text eol=lf
 *.properties text eol=lf
 *.po text eol=lf
+*.srt text eol=crlf
