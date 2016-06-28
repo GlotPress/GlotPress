@@ -91,10 +91,12 @@ function gp_print_scripts() {
  * @since 2.1.0
  */
 function gp_localize_script(){
-	wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
+	global $gp_editor_options;
 
-	// localizer adds var in front of the variable name, so we can't use $gp.editor.options
-	$editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
+	if(is_array($gp_editor_options)){
+		wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
 
-	wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
+		wp_localize_script( 'gp-editor', '$gp_editor_options', $gp_editor_options );
+	}
+
 }
