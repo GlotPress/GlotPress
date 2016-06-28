@@ -82,3 +82,19 @@ function gp_print_scripts() {
 	global $gp_enqueued_scripts;
 	wp_print_scripts( $gp_enqueued_scripts );
 }
+
+/**
+ * Calls the i18n JS variables via wp_localize_script()
+ *
+ * We wrap this in a function and call it via an action for the correct load priorities.
+ *
+ * @since 2.1.0
+ */
+function gp_localize_script(){
+	wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
+
+	// localizer adds var in front of the variable name, so we can't use $gp.editor.options
+	$editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
+
+	wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
+}
