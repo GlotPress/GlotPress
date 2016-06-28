@@ -1,11 +1,36 @@
 <?php
+/**
+ * GP Format SRT class
+ *
+ * @package GlotPress
+ * @since 2.1.0
+ */
+
+/**
+ * Format class used to support SRT file format.
+ *
+ * @since 2.1.0
+ */
 
 class GP_Format_SRT extends GP_Format {
 
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var string
+	 */
 	public $name = 'SubRip Text File (.srt)';
-	public $extension = 'srt';
 
-	public $exported = '';
+	/**
+	 * File Extension of file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var string
+	 */
+	public $extension = 'srt';
 
 	/**
 	 * Generates a string the contains the $entries to export in the Properties file format.
