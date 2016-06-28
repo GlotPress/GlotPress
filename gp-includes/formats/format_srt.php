@@ -11,7 +11,6 @@
  *
  * @since 2.1.0
  */
-
 class GP_Format_SRT extends GP_Format {
 
 	/**
