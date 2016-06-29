@@ -139,6 +139,7 @@ class GP_Translation extends GP_Thing {
 	 * List of valid statuses.
 	 *
 	 * @var array $statuses
+	 * @static
 	 */
 	public static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old' );
 
@@ -146,6 +147,7 @@ class GP_Translation extends GP_Thing {
 	 * Number of supported translations per original.
 	 *
 	 * @var int $number_of_plural_translations
+	 * @static
 	 */
 	public static $number_of_plural_translations = 6;
 
