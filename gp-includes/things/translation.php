@@ -14,31 +14,192 @@
  */
 class GP_Translation extends GP_Thing {
 
+	/**
+	 * Number of translations per page.
+	 *
+	 * @var int $per_page
+	 */
 	public $per_page = 15;
 
-	var $table_basename = 'gp_translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
-	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
-	var $non_updatable_attributes = array( 'id', );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	public $table_basename = 'gp_translations';
 
+	/**
+	 * List of field names for a translation.
+	 *
+	 * @var array $field_names
+	 */
+	public $field_names = array(
+		'id',
+		'original_id',
+		'translation_set_id',
+		'translation_0',
+		'translation_1',
+		'translation_2',
+		'translation_3',
+		'translation_4',
+		'translation_5',
+		'user_id',
+		'user_id_last_modified',
+		'status',
+		'date_added',
+		'date_modified',
+		'warnings',
+	);
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	public $int_fields = array(
+		'id',
+		'original_id',
+		'translation_set_id',
+		'user_id',
+		'user_id_last_modified',
+	);
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
+	public $non_updatable_attributes = array( 'id' );
+
+	/**
+	 * ID of the translation.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the original.
+	 *
+	 * @var int $original_id
+	 */
 	public $original_id;
+
+	/**
+	 * ID of the translation set.
+	 *
+	 * @var int $translation_set_id
+	 */
 	public $translation_set_id;
+
+	/**
+	 * Translation for a singular form.
+	 *
+	 * @var string $translation_1
+	 */
 	public $translation_0;
+
+	/**
+	 * Translation for a plural form.
+	 *
+	 * @var string $translation_1
+	 */
 	public $translation_1;
+
+	/**
+	 * Translation for a second plural form.
+	 *
+	 * @var string $translation_2
+	 */
 	public $translation_2;
+
+	/**
+	 * Translation for a third plural form.
+	 *
+	 * @var string $translation_3
+	 */
 	public $translation_3;
+
+	/**
+	 * Translation for a fourth plural form.
+	 *
+	 * @var string $translation_4
+	 */
 	public $translation_4;
+
+	/**
+	 * Translation for a fifth plural form.
+	 *
+	 * @var string $translation_5
+	 */
 	public $translation_5;
+
+	/**
+	 * ID of a user who submitted the translation.
+	 *
+	 * @var int $user_id
+	 */
 	public $user_id;
+
+	/**
+	 * ID of a user (validator) who last changed the status of the translation.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var int $user_id_last_modified
+	 */
+	public $user_id_last_modified;
+
+	/**
+	 * Status of the translation.
+	 *
+	 * @var string $status
+	 */
 	public $status;
+
+	/**
+	 * Date when the translation was added.
+	 *
+	 * @var string $date_added
+	 */
 	public $date_added;
+
+	/**
+	 * Date when the translation was modified.
+	 *
+	 * @var string $date_added
+	 */
 	public $date_modified;
+
+	/**
+	 * List of warnings when translation isn't correct.
+	 *
+	 * @var array $warnings
+	 */
 	public $warnings;
+
+	/**
+	 * Number of found results.
+	 *
+	 * @var int $found_rows
+	 */
 	public $found_rows;
 
-	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
-	static $number_of_plural_translations = 6;
+	/**
+	 * List of valid statuses.
+	 *
+	 * @var array $statuses
+	 * @static
+	 */
+	public static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old' );
+
+	/**
+	 * Number of supported translations per original.
+	 *
+	 * @var int $number_of_plural_translations
+	 * @static
+	 */
+	public static $number_of_plural_translations = 6;
 
 	public function create( $args ) {
 		$inserted = parent::create( $args );
@@ -114,6 +275,7 @@ class GP_Translation extends GP_Thing {
 		$rules->original_id_should_be( 'positive_int' );
 		$rules->translation_set_id_should_be( 'positive_int' );
 		$rules->user_id_should_be( 'positive_int' );
+		$rules->user_id_last_modified_should_not_be( 'empty_string' );
 	}
 
 
@@ -266,15 +428,14 @@ class GP_Translation extends GP_Thing {
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( (array)$rows as $row ) {
-			$row->user_login = $row->user_display_name = $row->user_nicename = '';
+			$row->user = $row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
-				$user = get_userdata( $row->user_id );
-				if ( $user ) {
-					$row->user_login = $user->user_login;
-					$row->user_display_name = $user->display_name;
-					$row->user_nicename = $user->user_nicename;
-				}
+				$row->user = get_userdata( $row->user_id );
+			}
+
+			if ( $row->user_id_last_modified && 'no-limit' !== $this->per_page ) {
+				$row->user_last_modified = get_userdata( $row->user_id_last_modified );
 			}
 
 			$row->translations = array();
@@ -297,13 +458,13 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function set_as_current() {
-		$result = $this->update( array('status' => 'old'),
-			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current') )
-		&& 	$this->update( array('status' => 'old'),
-				array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting') )
-		&& $this->update( array('status' => 'old'),
-			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
-		&& $this->save( array('status' => 'current') );
+		$result = $this->update( array( 'status' => 'old' ),
+		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current' ) )
+		&& 	$this->update( array( 'status' => 'old' ),
+		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting' ) )
+		&& $this->update( array( 'status' => 'old' ),
+		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy' ) )
+		&& $this->save( array( 'status' => 'current', 'user_id_last_modified' => get_current_user_id() ) );
 
 		return $result;
 	}
@@ -316,7 +477,7 @@ class GP_Translation extends GP_Thing {
 		if ( 'current' == $status ) {
 			$updated = $this->set_as_current();
 		} else {
-			$updated = $this->save( array( 'status' => $status ) );
+			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );
 		}
 
 		if ( $updated ) {

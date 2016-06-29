@@ -41,6 +41,7 @@
  *     @method bool original_id_should_be( string $name, array $args = null )
  *     @method bool translation_set_id_should_be( string $name, array $args = null )
  *     @method bool user_id_should_be( string $name, array $args = null )
+ *     @method bool user_id_last_modified_should_not_be( string $name, array $args = null )
  *
  * From gp_includes/things/glossary.php:
  *
