@@ -39,6 +39,7 @@ function gp_schema_get() {
 		translation_4 text DEFAULT NULL,
 		translation_5 text DEFAULT NULL,
 		user_id int(10) DEFAULT NULL,
+		user_id_last_modified int(10) DEFAULT NULL,
 		status varchar(20) NOT NULL default 'waiting',
 		date_added datetime DEFAULT NULL,
 		date_modified datetime DEFAULT NULL,

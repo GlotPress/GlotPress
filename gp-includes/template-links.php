@@ -193,3 +193,25 @@ function gp_link_glossary_delete_get( $glossary, $set, $text = false, $attrs = a
 function gp_link_glossary_delete( $glossary, $set, $text = false, $attrs = array() ) {
 	echo gp_link_glossary_delete_get( $glossary, $set, $text, $attrs );
 }
+
+/**
+ * Outputs a HTML link to a user profile page.
+ *
+ * @since 2.1.0
+ *
+ * @param WP_User $user A WP_User user object.
+ */
+function gp_link_user( $user ) {
+	if ( $user->display_name && $user->display_name !== $user->user_login ) {
+		printf( '<a href="%s" tabindex="-1">%s (%s)</a>',
+			esc_url( gp_url_profile( $user->user_nicename ) ),
+			esc_html( $user->display_name ),
+			esc_html( $user->user_login )
+		);
+	} else {
+		printf( '<a href="%s" tabindex="-1">%s</a>',
+			esc_url( gp_url_profile( $user->user_nicename ) ),
+			esc_attr( $user->user_login )
+		);
+	}
+}

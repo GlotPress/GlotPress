@@ -17,9 +17,9 @@ class GP_Translation extends GP_Thing {
 	public $per_page = 15;
 
 	var $table_basename = 'gp_translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'status', 'date_added', 'date_modified', 'warnings' );
-	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id' );
-	var $non_updatable_attributes = array( 'id', );
+	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'user_id_last_modified', 'status', 'date_added', 'date_modified', 'warnings' );
+	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id', 'user_id_last_modified' );
+	var $non_updatable_attributes = array( 'id' );
 
 	public $id;
 	public $original_id;
@@ -31,6 +31,14 @@ class GP_Translation extends GP_Thing {
 	public $translation_4;
 	public $translation_5;
 	public $user_id;
+	/**
+	 * User id of user (validator) who last changed the status of the translation.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var int $user_id_last_modified
+	 */
+	public $user_id_last_modified;
 	public $status;
 	public $date_added;
 	public $date_modified;
@@ -114,6 +122,7 @@ class GP_Translation extends GP_Thing {
 		$rules->original_id_should_be( 'positive_int' );
 		$rules->translation_set_id_should_be( 'positive_int' );
 		$rules->user_id_should_be( 'positive_int' );
+		$rules->user_id_last_modified_should_not_be( 'empty_string' );
 	}
 
 
@@ -266,15 +275,14 @@ class GP_Translation extends GP_Thing {
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( (array)$rows as $row ) {
-			$row->user_login = $row->user_display_name = $row->user_nicename = '';
+			$row->user = $row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
-				$user = get_userdata( $row->user_id );
-				if ( $user ) {
-					$row->user_login = $user->user_login;
-					$row->user_display_name = $user->display_name;
-					$row->user_nicename = $user->user_nicename;
-				}
+				$row->user = get_userdata( $row->user_id );
+			}
+
+			if ( $row->user_id_last_modified && 'no-limit' !== $this->per_page ) {
+				$row->user_last_modified = get_userdata( $row->user_id_last_modified );
 			}
 
 			$row->translations = array();
@@ -297,13 +305,13 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function set_as_current() {
-		$result = $this->update( array('status' => 'old'),
-			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current') )
-		&& 	$this->update( array('status' => 'old'),
-				array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting') )
-		&& $this->update( array('status' => 'old'),
-			array('original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy') )
-		&& $this->save( array('status' => 'current') );
+		$result = $this->update( array( 'status' => 'old' ),
+		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current' ) )
+		&& 	$this->update( array( 'status' => 'old' ),
+		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting' ) )
+		&& $this->update( array( 'status' => 'old' ),
+		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy' ) )
+		&& $this->save( array( 'status' => 'current', 'user_id_last_modified' => get_current_user_id() ) );
 
 		return $result;
 	}
@@ -316,7 +324,7 @@ class GP_Translation extends GP_Thing {
 		if ( 'current' == $status ) {
 			$updated = $this->set_as_current();
 		} else {
-			$updated = $this->save( array( 'status' => $status ) );
+			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );
 		}
 
 		if ( $updated ) {
