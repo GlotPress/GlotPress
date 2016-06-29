@@ -27,7 +27,7 @@
  */
 
 define( 'GP_VERSION', '2.1.0-alpha' );
-define( 'GP_DB_VERSION', '960' );
+define( 'GP_DB_VERSION', '970' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', __DIR__ . '/' );

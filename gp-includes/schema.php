@@ -5,8 +5,8 @@
 
 function gp_schema_get() {
 	global $wpdb;
-	$gp_schema = array();
 
+	$gp_schema = array();
 
 	$charset_collate = '';
 	if ( ! empty($wpdb->charset) )
@@ -15,18 +15,25 @@ function gp_schema_get() {
 		$charset_collate .= " COLLATE $wpdb->collate";
 
 	/*
-	 * Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
-	 * As of 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
-	 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+	 * Indexes have a maximum size of 767 bytes in the MyISAM database engine. Historically, we haven't needed to be overtly
+	 * concerned about that.
+	 *
+	 * As of WordPress 4.2, however, utf8mb4 is now the default collation which uses 4 bytes per character. This means that
+	 * an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+	 *
+	 * See https://dev.mysql.com/doc/refman/5.7/en/storage-requirements.html for details on the storage requirements
+	 * for each data type.
 	 */
-	$max_index_length = 191;
+	$max_index_charcters = 767;
+	$bytes_per_character = 4;
+	$max_index_length = floor( $max_index_charcters / $bytes_per_character );
 
 	/*
 	 * Translations
 	 *  - There are fields to take all the plural forms (no known locale has more than 4 plural forms)
 	 *  - Belongs to an original string
 	 *  - Belongs to a user
-	 *  - Status can be: new, approved, unaproved, current, spam or whatever you'd like
+	 *  - Status can be: new, approved, unapproved, current, spam or whatever you'd like
 	 */
 	$gp_schema['translations'] = "CREATE TABLE $wpdb->gp_translations (
 		id int(10) NOT NULL auto_increment,
@@ -38,7 +45,7 @@ function gp_schema_get() {
 		translation_3 text DEFAULT NULL,
 		translation_4 text DEFAULT NULL,
 		translation_5 text DEFAULT NULL,
-		user_id int(10) DEFAULT NULL,
+		user_id bigint(20) DEFAULT NULL,
 		status varchar(20) NOT NULL default 'waiting',
 		date_added datetime DEFAULT NULL,
 		date_modified datetime DEFAULT NULL,
@@ -58,6 +65,23 @@ function gp_schema_get() {
 	 * For example each WordPress Spanish translation (formal, informal and that of Diego) will be different sets.
 	 * Most projects will have only one translation set per locale.
 	 */
+
+	/*
+ 	 * The maximum length for the slug component of the project_id_slug_locale key is limited by the index size limit
+	 * minus the size of the project_id (4 bytes = 1 character) and locale (10 characters).
+	 *
+	 * Also make sure to never go over the length of the column.
+	 */
+	$max_pid_slug_locale_key_length = min( $max_index_length - 1 - 10, 255 );
+
+	/*
+ 	 * The maximum length for the slug component of the locale_slug key is limited by the index size limit
+	 * minus the size of the locale (10 characters).
+	 *
+	 * Also make sure to never go over the length of the column.
+	 */
+	$max_locale_slug_key_length = min( $max_index_length - 10, 255 );
+
 	$gp_schema['translation_sets'] = "CREATE TABLE $wpdb->gp_translation_sets (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL,
@@ -65,8 +89,8 @@ function gp_schema_get() {
 		project_id int(10) DEFAULT NULL,
 		locale varchar(10) DEFAULT NULL,
 		PRIMARY KEY  (id),
-		UNIQUE KEY project_id_slug_locale (project_id,slug(171),locale),
-		KEY locale_slug (locale,slug(181))
+		UNIQUE KEY project_id_slug_locale (project_id,slug({$max_pid_slug_locale_key_length}),locale),
+		KEY locale_slug (locale,slug({$max_locale_slug_key_length}))
 	) $charset_collate;";
 
 	/*
@@ -81,6 +105,15 @@ function gp_schema_get() {
 	 * See https://core.trac.wordpress.org/ticket/20263 for more information.
 	 *
 	 */
+
+	/*
+ 	 * The maximum length for the components of the singular_plural_context key is limited by the index size limit
+	 * divided by three.
+	 *
+	 * Also make sure to never go over the length of the column (or in the case of a text type, a max of 255).
+	 */
+	$max_singular_plural_context_key_length = min( floor( $max_index_length / 3 ), 255 );
+
 	$gp_schema['originals'] = "CREATE TABLE $wpdb->gp_originals (
 		id int(10) NOT NULL auto_increment,
 		project_id int(10) DEFAULT NULL,
@@ -89,12 +122,12 @@ function gp_schema_get() {
 		plural text DEFAULT NULL,
 		`references` text DEFAULT NULL,
 		comment text DEFAULT NULL,
-		status varchar(255) NOT NULL DEFAULT '+active',
+		status varchar(20) NOT NULL DEFAULT '+active',
 		priority tinyint(4) NOT NULL DEFAULT 0,
 		date_added datetime DEFAULT NULL,
 		PRIMARY KEY  (id),
 		KEY project_id_status (project_id,status),
-		KEY singular_plural_context (singular(63),plural(63),context(63)),
+		KEY singular_plural_context (singular({$max_singular_plural_context_key_length}),plural({$max_singular_plural_context_key_length}),context({$max_singular_plural_context_key_length})),
 		KEY project_id_status_priority_date_added (project_id,status,priority,date_added)
 	) $charset_collate;";
 
@@ -145,15 +178,32 @@ function gp_schema_get() {
 	/*
 	 * Meta
 	 */
+
+	/*
+ 	 * The maximum length for the meta_key component of the object_type__meta_key key is limited by the index size limit
+	 * minus the size of the object_type (32 characters).
+	 *
+	 * Also make sure to never go over the length of the column.
+	 */
+	$max_objtype_metakey_key_length = min( $max_index_length - 32, 255 );
+
+	/*
+ 	 * The maximum length for the meta_key component of the object_type__object_id__meta_key key is limited by the index size limit
+	 * minus the size of the object_type (32 characters) and the object_id (8 bytes = 2 characters).
+	 *
+	 * Also make sure to never go over the length of the column.
+	 */
+	$max_objtype_objid_metakey_key_length = min( $max_index_length - 32 - 2, 255 );
+
 	$gp_schema['meta'] = "CREATE TABLE $wpdb->gp_meta (
 		meta_id bigint(20) NOT NULL auto_increment,
 		object_type varchar(32) NOT NULL default 'gp_option',
 		object_id bigint(20) NOT NULL default 0,
-		meta_key varchar($max_index_length) DEFAULT NULL,
+		meta_key varchar(255) DEFAULT NULL,
 		meta_value longtext DEFAULT NULL,
 		PRIMARY KEY  (meta_id),
-		KEY object_type__meta_key (object_type,meta_key),
-		KEY object_type__object_id__meta_key (object_type,object_id,meta_key)
+		KEY object_type__meta_key (object_type,meta_key({$max_objtype_metakey_key_length})),
+		KEY object_type__object_id__meta_key (object_type,object_id,meta_key({$max_objtype_objid_metakey_key_length}))
 	) $charset_collate;";
 
 	/*
@@ -161,8 +211,8 @@ function gp_schema_get() {
 	 */
 	$gp_schema['permissions'] = "CREATE TABLE $wpdb->gp_permissions (
 		id int(10) NOT NULL AUTO_INCREMENT,
-		user_id int(10) DEFAULT NULL,
-		action varchar(255) DEFAULT NULL,
+		user_id bigint(20) DEFAULT NULL,
+		action varchar(20) DEFAULT NULL,
 		object_type varchar(255) DEFAULT NULL,
 		object_id varchar(255) DEFAULT NULL,
 		PRIMARY KEY  (id),
