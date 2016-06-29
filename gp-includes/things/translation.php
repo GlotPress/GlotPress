@@ -14,12 +14,62 @@
  */
 class GP_Translation extends GP_Thing {
 
+	/**
+	 * Number of translations per page.
+	 *
+	 * @var int $per_page
+	 */
 	public $per_page = 15;
 
-	var $table_basename = 'gp_translations';
-	var $field_names = array( 'id', 'original_id', 'translation_set_id', 'translation_0', 'translation_1', 'translation_2', 'translation_3', 'translation_4', 'translation_5','user_id', 'user_id_last_modified', 'status', 'date_added', 'date_modified', 'warnings' );
-	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id', 'user_id_last_modified' );
-	var $non_updatable_attributes = array( 'id' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	public $table_basename = 'gp_translations';
+
+	/**
+	 * List of field names for a translation.
+	 *
+	 * @var array $field_names
+	 */
+	public $field_names = array(
+		'id',
+		'original_id',
+		'translation_set_id',
+		'translation_0',
+		'translation_1',
+		'translation_2',
+		'translation_3',
+		'translation_4',
+		'translation_5',
+		'user_id',
+		'user_id_last_modified',
+		'status',
+		'date_added',
+		'date_modified',
+		'warnings',
+	);
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	public $int_fields = array(
+		'id',
+		'original_id',
+		'translation_set_id',
+		'user_id',
+		'user_id_last_modified',
+	);
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * ID of the translation.
