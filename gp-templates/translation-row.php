@@ -156,7 +156,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 					<dt><?php
 						if ( 'current' === $t->translation_status ) {
 							_e( 'Approved by:', 'glotpress' );
-						} else if ( 'rejected' === $t->translation_status ) {
+						} elseif ( 'rejected' === $t->translation_status ) {
 							_e( 'Rejected by:', 'glotpress' );
 						} else {
 							_e( 'Last updated by:', 'glotpress' );

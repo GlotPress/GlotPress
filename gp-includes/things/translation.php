@@ -21,32 +21,133 @@ class GP_Translation extends GP_Thing {
 	var $int_fields = array( 'id', 'original_id', 'translation_set_id', 'user_id', 'user_id_last_modified' );
 	var $non_updatable_attributes = array( 'id' );
 
-	public $id;
-	public $original_id;
-	public $translation_set_id;
-	public $translation_0;
-	public $translation_1;
-	public $translation_2;
-	public $translation_3;
-	public $translation_4;
-	public $translation_5;
-	public $user_id;
 	/**
-	 * User id of user (validator) who last changed the status of the translation.
+	 * ID of the translation.
+	 *
+	 * @var int $id
+	 */
+	public $id;
+
+	/**
+	 * ID of the original.
+	 *
+	 * @var int $original_id
+	 */
+	public $original_id;
+
+	/**
+	 * ID of the translation set.
+	 *
+	 * @var int $translation_set_id
+	 */
+	public $translation_set_id;
+
+	/**
+	 * Translation for a singular form.
+	 *
+	 * @var string $translation_1
+	 */
+	public $translation_0;
+
+	/**
+	 * Translation for a plural form.
+	 *
+	 * @var string $translation_1
+	 */
+	public $translation_1;
+
+	/**
+	 * Translation for a second plural form.
+	 *
+	 * @var string $translation_2
+	 */
+	public $translation_2;
+
+	/**
+	 * Translation for a third plural form.
+	 *
+	 * @var string $translation_3
+	 */
+	public $translation_3;
+
+	/**
+	 * Translation for a fourth plural form.
+	 *
+	 * @var string $translation_4
+	 */
+	public $translation_4;
+
+	/**
+	 * Translation for a fifth plural form.
+	 *
+	 * @var string $translation_5
+	 */
+	public $translation_5;
+
+	/**
+	 * ID of a user who submitted the translation.
+	 *
+	 * @var int $user_id
+	 */
+	public $user_id;
+
+	/**
+	 * ID of a user (validator) who last changed the status of the translation.
 	 *
 	 * @since 2.1.0
 	 *
 	 * @var int $user_id_last_modified
 	 */
 	public $user_id_last_modified;
+
+	/**
+	 * Status of the translation.
+	 *
+	 * @var string $status
+	 */
 	public $status;
+
+	/**
+	 * Date when the translation was added.
+	 *
+	 * @var string $date_added
+	 */
 	public $date_added;
+
+	/**
+	 * Date when the translation was modified.
+	 *
+	 * @var string $date_added
+	 */
 	public $date_modified;
+
+	/**
+	 * List of warnings when translation isn't correct.
+	 *
+	 * @var array $warnings
+	 */
 	public $warnings;
+
+	/**
+	 * Number of found results.
+	 *
+	 * @var int $found_rows
+	 */
 	public $found_rows;
 
-	static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', );
-	static $number_of_plural_translations = 6;
+	/**
+	 * List of valid statuses.
+	 *
+	 * @var array $statuses
+	 */
+	public static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old' );
+
+	/**
+	 * Number of supported translations per original.
+	 *
+	 * @var int $number_of_plural_translations
+	 */
+	public static $number_of_plural_translations = 6;
 
 	public function create( $args ) {
 		$inserted = parent::create( $args );
