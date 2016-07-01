@@ -154,6 +154,7 @@ $i = 0;
 				'translation' => __( 'Translation', 'glotpress' ),
 				'priority' => __( 'Priority', 'glotpress' ),
 				'references' => __( 'Filename in source', 'glotpress' ),
+				'context' => __( 'Context', 'glotpress' ),
 				'random' => __( 'Random', 'glotpress' ),
 			), gp_array_get( $sort, 'by', $default_sort['by'] ) );
 		?>

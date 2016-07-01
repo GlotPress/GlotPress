@@ -40,6 +40,7 @@ if ( ! is_array( $default_sort ) ) {
 						'translation'            => __( 'Translation', 'glotpress' ),
 						'priority'               => __( 'Priority', 'glotpress' ),
 						'references'             => __( 'Filename in source', 'glotpress' ),
+						'context'                => __( 'Context', 'glotpress' ),
 						'random'                 => __( 'Random', 'glotpress' ),
 					),
 					gp_array_get( $default_sort, 'by', 'priority' )
