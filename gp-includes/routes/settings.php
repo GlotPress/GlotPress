@@ -55,6 +55,8 @@ class GP_Route_Settings extends GP_Route_Main {
 
 			$user_sort = wp_parse_args( $_POST['default_sort'], $default_sort );
 			update_user_option( $user_id, 'gp_default_sort', $user_sort );
+
+			$this->notices[] = __( 'Settings saved!', 'glotpress' );
 		}
 
 		$this->redirect( gp_url( '/settings' ) );
