@@ -146,16 +146,9 @@ $i = 0;
 			);
 		}
 
-		echo gp_radio_buttons('sort[by]',
-			array(
-				'original_date_added' => __( 'Date added (original)', 'glotpress' ),
-				'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
-				'original' => __( 'Original string', 'glotpress' ),
-				'translation' => __( 'Translation', 'glotpress' ),
-				'priority' => __( 'Priority', 'glotpress' ),
-				'references' => __( 'Filename in source', 'glotpress' ),
-				'random' => __( 'Random', 'glotpress' ),
-			), gp_array_get( $sort, 'by', $default_sort['by'] ) );
+		$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
+
+		echo gp_radio_buttons( 'sort[by]', $sort_bys, gp_array_get( $sort, 'by', $default_sort['by'] ) );
 		?>
 		</dd>
 		<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
