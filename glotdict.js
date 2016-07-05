@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
 	}
 	return lang;
   }
-  
+
   /**
    * Add the term in the page with the HTML code compatible with GlotPress
    * 
@@ -81,7 +81,12 @@ jQuery(document).ready(function () {
    * @returns Array
    */
   function gd_list_locales_cached() {
-	return JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
+	var locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
+	if (typeof locales === 'undefined') {
+	  gd_locales();
+	  locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
+	}
+	return locales;
   }
 
   /**
@@ -299,7 +304,7 @@ jQuery(document).ready(function () {
 	  return false;
 	});
   }
-  
+
   // Remvoe the social button in the bottom
   jQuery('#wporg-footer ul:last-child').remove();
   gd_add_project_links();
@@ -311,8 +316,8 @@ jQuery(document).ready(function () {
 	  jQuery('#upper-filters-toolbar').css('clear', 'both');
 	}
 	if (jQuery('.preview').length === 1) {
-            jQuery('.preview .action').trigger('click');
-        }
+	  jQuery('.preview .action').trigger('click');
+	}
 	gd_locales_selector();
 	gd_terms_tooltip();
 	gd_hotkeys();
