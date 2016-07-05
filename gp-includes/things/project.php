@@ -162,7 +162,7 @@ class GP_Project extends GP_Thing {
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
-			$args['slug'] = sanitize_title( $args['slug'] );
+			$args['slug'] = gp_sanitize_project_name( $args['slug'] );
 		}
 
 		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] )) {

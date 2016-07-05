@@ -142,7 +142,7 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
-			$args['slug'] = sanitize_title( $args['slug'] );
+			$args['slug'] = gp_sanitize_project_name( $args['slug'] );
 		}
 
 		return $args;

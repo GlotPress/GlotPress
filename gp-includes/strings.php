@@ -217,3 +217,89 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
 	return $prevRow[$length2];
 }
+
+/**
+ * Sanitizes a project name, replacing whitespace and a few other characters with dashes.
+ *
+ * Limits the output to alphanumeric characters, underscore (_), periods (.) and dash (-).
+ * Whitespace becomes a dash.
+ *
+ * @since 2.1.0
+ *
+ * @param string $project_name The project name to be sanitized.
+ *
+ * @return string The sanitized title.
+ */
+function gp_sanitize_project_name( $project_name ) {
+	$project_name = strip_tags( $project_name );
+
+	// Preserve escaped octets.
+	$project_name = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '---$1---', $project_name );
+
+	// Remove percent signs that are not part of an octet.
+	$project_name = str_replace( '%', '', $project_name );
+
+	// Restore octets.
+	$project_name = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $project_name );
+
+	$project_name = gp_strtolower( $project_name, 'UTF-8' );
+
+	if ( seems_utf8( $project_name ) ) {
+		$project_name = utf8_uri_encode( $project_name, 200 );
+	}
+
+	// Convert nbsp, ndash and mdash to hyphens.
+	$project_name = str_replace( array( '%c2%a0', '%e2%80%93', '%e2%80%94' ), '-', $project_name );
+
+	// Convert nbsp, ndash and mdash HTML entities to hyphens.
+	$project_name = str_replace( array( '&nbsp;', '&#160;', '&ndash;', '&#8211;', '&mdash;', '&#8212;' ), '-', $project_name );
+
+	// Strip these characters entirely.
+	$project_name = str_replace( array(
+		// Iexcl and iquest.
+		'%c2%a1',
+		'%c2%bf',
+		// Angle quotes.
+		'%c2%ab',
+		'%c2%bb',
+		'%e2%80%b9',
+		'%e2%80%ba',
+		// Curly quotes.
+		'%e2%80%98',
+		'%e2%80%99',
+		'%e2%80%9c',
+		'%e2%80%9d',
+		'%e2%80%9a',
+		'%e2%80%9b',
+		'%e2%80%9e',
+		'%e2%80%9f',
+		// Copy, reg, deg, hellip and trade.
+		'%c2%a9',
+		'%c2%ae',
+		'%c2%b0',
+		'%e2%80%a6',
+		'%e2%84%a2',
+		// Acute accents.
+		'%c2%b4',
+		'%cb%8a',
+		'%cc%81',
+		'%cd%81',
+		// Grave accent, macron, caron.
+		'%cc%80',
+		'%cc%84',
+		'%cc%8c',
+	), '', $project_name );
+
+	// Convert times to x.
+	$project_name = str_replace( '%c3%97', 'x', $project_name );
+
+	// Kill entities.
+	$project_name = preg_replace( '/&.+?;/', '', $project_name );
+
+	$project_name = preg_replace( '/[^%a-z\.0-9 _-]/', '', $project_name );
+	$project_name = preg_replace( '/\s+/', '-', $project_name );
+	$project_name = preg_replace( '|-+|', '-', $project_name );
+	$project_name = trim( $project_name, '-' );
+
+	return $project_name;
+}
