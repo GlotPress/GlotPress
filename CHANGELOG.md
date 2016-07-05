@@ -1,6 +1,9 @@
-#1.1.1
+#1.1.2
 * Improvement: If there is only one string is opened automatically
-* Added: DA_dk language in the code
+* Added: da_DK language in the code
+
+#1.1.1
+* Little fix to force the glossary download in few cases
 
 #1.1.0
 * Improvement: Auto update glossary system!

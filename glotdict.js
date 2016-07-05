@@ -103,7 +103,6 @@ jQuery(document).ready(function () {
 	if (typeof lang === 'undefined') {
 	  return;
 	}
-	//TODO check code if locales date is different from the online available
 	var glossary_date_cache = localStorage.getItem('gd_glossary_date');
 	var locales_cache = gd_list_locales_cached();
 	if (glossary_date_cache === null || glossary_date_cache !== locales_cache[lang].time) {
@@ -129,7 +128,7 @@ jQuery(document).ready(function () {
    * @returns Array
    */
   function gd_locales() {
-	var locales = ['ast', 'bg_BG', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
+	var locales = ['ast', 'bg_BG', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
 	var locales_date_cache = localStorage.getItem('gd_locales_date');
 	if (locales_date_cache === null || locales_date_cache !== gd_today()) {
 	  jQuery.ajax({
