@@ -311,6 +311,9 @@ jQuery(document).ready(function () {
 	if (jQuery('#bulk-actions-toolbar').length > 0) {
 	  jQuery('#upper-filters-toolbar').css('clear', 'both');
 	}
+	if (jQuery('.preview').length === 1) {
+            jQuery('.preview .action').trigger('click');
+        }
 	gd_locales_selector();
 	gd_terms_tooltip();
 	gd_hotkeys();

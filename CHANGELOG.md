@@ -1,3 +1,7 @@
+#1.1.1
+* Improvement: If there is only one string is opened automatically
+* Added: DA_dk language in the code
+
 #1.1.0
 * Improvement: Auto update glossary system!
 * Improvement: The FB, Twitter and Google+ button in the bottom of WP.org are removed to speed up the loading of the page
