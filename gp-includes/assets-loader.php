@@ -22,15 +22,16 @@ add_action( 'wp_default_styles', 'gp_styles_default' );
  * @param WP_Scripts $scripts
  */
 function gp_scripts_default( &$scripts ) {
+	global $gp_registered_scripts;
+
 	$url = gp_plugin_url( 'assets/js' );
 
-	$scripts->add( 'tablesorter', $url . '/jquery.tablesorter.min.js', array( 'jquery' ), '1.10.4' );
-
-	$scripts->add( 'gp-common', $url . '/common.js', array( 'jquery' ), '20150430' );
-	$scripts->add( 'gp-editor', $url . '/editor.js', array( 'gp-common', 'jquery-ui-tooltip' ), '20160329' );
-	$scripts->add( 'gp-glossary', $url . '/glossary.js', array( 'gp-common' ), '20160329' );
-	$scripts->add( 'gp-translations-page', $url . '/translations-page.js', array( 'gp-common' ), '20150430' );
-	$scripts->add( 'mass-create-sets-page', $url . '/mass-create-sets-page.js', array( 'gp-common' ), '20150430' );
+	$gp_registered_scripts['tablesorter'] = array( $url . '/jquery.tablesorter.min.js', array( 'jquery' ), '1.10.4' );
+	$gp_registered_scripts['gp-common'] = array( $url . '/common.js', array( 'jquery' ), '20150430' );
+	$gp_registered_scripts['gp-editor'] = array( $url . '/editor.js', array( 'gp-common', 'jquery-ui-tooltip' ), '20160329' );
+	$gp_registered_scripts['gp-glossary'] = array( $url . '/glossary.js', array( 'gp-common' ), '20160329' );
+	$gp_registered_scripts['gp-translations-page'] = array( $url . '/translations-page.js', array( 'gp-common' ), '20150430' );
+	$gp_registered_scripts['mass-create-sets-page'] = array( $url . '/mass-create-sets-page.js', array( 'gp-common' ), '20150430' );
 }
 
 add_action( 'wp_default_scripts', 'gp_scripts_default' );
@@ -44,19 +45,6 @@ add_action( 'wp_default_scripts', 'gp_scripts_default' );
  */
 
 function gp_enqueue_scripts() {
-	global $gp_enqueued_styles, $gp_enqueued_scripts;
-
-	if ( ! empty( $gp_enqueued_scripts ) ) {
-		foreach ( $gp_enqueued_scripts as $handle ) {
-			wp_enqueue_script( $handle );
-		}
-	}
-
-	if ( ! empty( $gp_enqueued_styles ) ) {
-		foreach ( $gp_enqueued_styles as $handle ) {
-			wp_enqueue_style( $handle );
-		}
-	}
 }
 
 add_action( 'wp_enqueue_scripts', 'gp_enqueue_scripts' );
@@ -65,20 +53,29 @@ function gp_enqueue_style( $handle ) {
 	global $gp_enqueued_styles;
 
 	$gp_enqueued_styles[] = $handle;
+	wp_enqueue_style( $handle );
 }
 
 function gp_enqueue_script( $handle ) {
-	global $gp_enqueued_scripts;
-
+	global $gp_enqueued_scripts, $gp_registered_scripts;
+	
 	$gp_enqueued_scripts[] = $handle;
+
+	if ( array_key_exists( $handle, $gp_registered_scripts ) ) {
+		wp_register_script( $handle, $gp_registered_scripts[$handle][0], $gp_registered_scripts[$handle][1], $gp_registered_scripts[$handle][2] );
+	}
+	
+	wp_enqueue_script( $handle );
 }
 
 function gp_print_styles() {
 	global $gp_enqueued_styles;
+
 	wp_print_styles( $gp_enqueued_styles );
 }
 
 function gp_print_scripts() {
 	global $gp_enqueued_scripts;
+
 	wp_print_scripts( $gp_enqueued_scripts );
 }
