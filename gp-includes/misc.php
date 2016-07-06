@@ -508,3 +508,59 @@ function gp_wp_profile_options_update( $user_id ) {
 		$current_perm->delete();
 	}
 }
+
+/**
+ * Returns a multi-dimensional array with the sort by types, descriptions and SQL query for each.
+ *
+ * @since 2.1.0
+ *
+ * @return array An array of sort by field types.
+ */
+function gp_get_sort_by_fields() {
+	$sort_fields = array(
+		'original_date_added' => array(
+			'title'       => __( 'Date added (original)', 'glotpress' ),
+			'sql_sort_by' => 'o.date_added %s',
+		),
+		'translation_date_added' => array(
+			'title'       => __( 'Date added (translation)', 'glotpress' ),
+			'sql_sort_by' => 't.date_added %s',
+		),
+		'original' => array(
+			'title'       => __( 'Original string', 'glotpress' ),
+			'sql_sort_by' => 'o.singular %s',
+		),
+		'translation' => array(
+			'title'       => __( 'Translation', 'glotpress' ),
+			'sql_sort_by' => 't.translation_0 %s',
+		),
+		'priority' => array(
+			'title'       => __( 'Priority', 'glotpress' ),
+			'sql_sort_by' => 'o.priority %s, o.date_added DESC',
+		),
+		'references' => array(
+			'title'       => __( 'Filename in source', 'glotpress' ),
+			'sql_sort_by' => 'o.references',
+		),
+		'random' => array(
+			'title'       => __( 'Random', 'glotpress' ),
+			'sql_sort_by' => 'o.priority DESC, RAND()',
+		),
+	);
+
+	/**
+	 * Filter the sort by list to allow plugins to add or remove sort by types.
+	 *
+	 * Plugins can add, remove or resort the sort by types array which is used to create
+	 * the sort by drop down in the translations page.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param array $sort_fields {
+	 *     A list of sort by types.
+	 *
+	 *     @type array $sort_type An array with two keys, 'title' is a translated description of the key and 'sql_sort_by' which is a partial SQL SORT BY clause to use.
+	 * }
+	 */
+	return apply_filters( 'gp_sort_by_fields', $sort_fields );
+}

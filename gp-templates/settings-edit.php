@@ -31,19 +31,9 @@ if ( ! is_array( $default_sort ) ) {
 		<tr>
 			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ) ?></label></th>
 			<td><?php
-				echo gp_radio_buttons(
-					'default_sort[by]',
-					array(
-						'original_date_added'    => __( 'Date added (original)', 'glotpress' ),
-						'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
-						'original'               => __( 'Original string', 'glotpress' ),
-						'translation'            => __( 'Translation', 'glotpress' ),
-						'priority'               => __( 'Priority', 'glotpress' ),
-						'references'             => __( 'Filename in source', 'glotpress' ),
-						'random'                 => __( 'Random', 'glotpress' ),
-					),
-					gp_array_get( $default_sort, 'by', 'priority' )
-				);
+				$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
+
+				echo gp_radio_buttons( 'default_sort[by]', $sort_bys, gp_array_get( $default_sort, 'by', 'priority' ) );
 			?></td>
 		</tr>
 		<tr>
