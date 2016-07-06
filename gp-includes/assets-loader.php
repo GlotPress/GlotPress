@@ -58,13 +58,13 @@ function gp_enqueue_style( $handle ) {
 
 function gp_enqueue_script( $handle ) {
 	global $gp_enqueued_scripts, $gp_registered_scripts;
-	
+
 	$gp_enqueued_scripts[] = $handle;
 
 	if ( is_array( $handle ) && array_key_exists( $handle, $gp_registered_scripts ) ) {
 		wp_register_script( $handle, $gp_registered_scripts[$handle][0], $gp_registered_scripts[$handle][1], $gp_registered_scripts[$handle][2] );
 	}
-	
+
 	wp_enqueue_script( $handle );
 }
 
