@@ -29,6 +29,7 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
 	  var print = JSON.stringify(item);
+	  print = print.replace(/\'/g, "");
 	  if (!item.length) {
 		print = '[' + print + ']';
 	  }
@@ -72,7 +73,15 @@ jQuery(document).ready(function () {
    */
   function gd_today() {
 	var today = new Date();
-	return today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+	var todayn = today.getDate();
+	if (todayn.length === 1) {
+	  todayn = '0' + todayn;
+	}
+	var monthn = today.getMonth() + 1;
+	if (monthn.length === 1) {
+	  monthn = '0' + monthn;
+	}
+	return todayn + '/' + monthn + '/' + today.getFullYear();
   }
 
   /**

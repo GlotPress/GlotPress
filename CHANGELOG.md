@@ -1,5 +1,6 @@
 #1.1.2
 * Improvement: If there is only one string is opened automatically
+* Fix: Remove the ' on comments to avoid problems
 * Added: da_DK language in the code
 
 #1.1.1
