@@ -219,43 +219,45 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 }
 
 /**
- * Sanitizes a project name, replacing whitespace and a few other characters with dashes.
+ * Sanitizes a string for use as a slug, replacing whitespace and a few other characters with dashes.
  *
  * Limits the output to alphanumeric characters, underscore (_), periods (.) and dash (-).
  * Whitespace becomes a dash.
  *
  * @since 2.1.0
  *
- * @param string $project_name The project name to be sanitized.
+ * @param string $slug The string to be sanitized for use as a slug.
  *
  * @return string The sanitized title.
  */
-function gp_sanitize_project_name( $project_name ) {
-	$project_name = strip_tags( $project_name );
+function gp_sanitize_as_slug( $slug ) {
+	$slug = remove_accents( $title );
+	
+	$slug = strip_tags( $slug );
 
 	// Preserve escaped octets.
-	$project_name = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '---$1---', $project_name );
+	$slug = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '---$1---', $slug );
 
 	// Remove percent signs that are not part of an octet.
-	$project_name = str_replace( '%', '', $project_name );
+	$slug = str_replace( '%', '', $slug );
 
 	// Restore octets.
-	$project_name = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $project_name );
+	$slug = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $slug );
 
-	$project_name = gp_strtolower( $project_name, 'UTF-8' );
+	$slug = gp_strtolower( $slug, 'UTF-8' );
 
-	if ( seems_utf8( $project_name ) ) {
-		$project_name = utf8_uri_encode( $project_name, 200 );
+	if ( seems_utf8( $slug ) ) {
+		$slug = utf8_uri_encode( $slug, 200 );
 	}
 
 	// Convert nbsp, ndash and mdash to hyphens.
-	$project_name = str_replace( array( '%c2%a0', '%e2%80%93', '%e2%80%94' ), '-', $project_name );
+	$slug = str_replace( array( '%c2%a0', '%e2%80%93', '%e2%80%94' ), '-', $slug );
 
 	// Convert nbsp, ndash and mdash HTML entities to hyphens.
-	$project_name = str_replace( array( '&nbsp;', '&#160;', '&ndash;', '&#8211;', '&mdash;', '&#8212;' ), '-', $project_name );
+	$slug = str_replace( array( '&nbsp;', '&#160;', '&ndash;', '&#8211;', '&mdash;', '&#8212;' ), '-', $slug );
 
 	// Strip these characters entirely.
-	$project_name = str_replace( array(
+	$slug = str_replace( array(
 		// Iexcl and iquest.
 		'%c2%a1',
 		'%c2%bf',
@@ -288,18 +290,18 @@ function gp_sanitize_project_name( $project_name ) {
 		'%cc%80',
 		'%cc%84',
 		'%cc%8c',
-	), '', $project_name );
+	), '', $slug );
 
 	// Convert times to x.
-	$project_name = str_replace( '%c3%97', 'x', $project_name );
+	$slug = str_replace( '%c3%97', 'x', $slug );
 
 	// Kill entities.
-	$project_name = preg_replace( '/&.+?;/', '', $project_name );
+	$slug = preg_replace( '/&.+?;/', '', $slug );
 
-	$project_name = preg_replace( '/[^%a-z\.0-9 _-]/', '', $project_name );
-	$project_name = preg_replace( '/\s+/', '-', $project_name );
-	$project_name = preg_replace( '|-+|', '-', $project_name );
-	$project_name = trim( $project_name, '-' );
+	$slug = preg_replace( '/[^%a-z\.0-9 _-]/', '', $slug );
+	$slug = preg_replace( '/\s+/', '-', $slug );
+	$slug = preg_replace( '|-+|', '-', $slug );
+	$slug = trim( $slug, '-' );
 
-	return $project_name;
+	return $slug;
 }

@@ -47,8 +47,8 @@ class GP_Test_Strings extends GP_UnitTestCase {
 	}
 
 	function test_gp_sanitize_project_name() {
-		$this->assertEquals( gp_sanitize_project_name( 'plugin V1.2.1' ), 'plugin-v1.2.1' );
-		$this->assertEquals( gp_sanitize_project_name( 'plugin \/<1.2.1>' ), 'plugin' );
-		$this->assertEquals( gp_sanitize_project_name( 'GlotPress&Plugin@1.1.1' ), 'glotpressplugin1.1.1' );
+		$this->assertEquals( gp_sanitize_as_slug( 'plugin V1.2.1' ), 'plugin-v1.2.1' );
+		$this->assertEquals( gp_sanitize_as_slug( 'plugin \/<1.2.1>' ), 'plugin' );
+		$this->assertEquals( gp_sanitize_as_slug( 'GlotPress&Plugin@1.1.1' ), 'glotpressplugin1.1.1' );
 	}
 }
