@@ -142,7 +142,7 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
-			$args['slug'] = gp_sanitize_as_slug( $args['slug'] );
+			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
 		return $args;
