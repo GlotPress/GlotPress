@@ -232,7 +232,7 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
  */
 function gp_sanitize_as_slug( $slug ) {
 	$slug = remove_accents( $title );
-	
+
 	$slug = strip_tags( $slug );
 
 	// Preserve escaped octets.
