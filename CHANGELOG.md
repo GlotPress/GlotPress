@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.0-rc.1 (July 7, 2016)
+
+**Bugfixes**
+
+* Allow project slugs to contain periods. ([#492](https://github.com/GlotPress/GlotPress-WP/issues/492))
+
+**Features**
+
+* Add confirmation message when saving settings. ([#490](https://github.com/GlotPress/GlotPress-WP/issues/490))
+* Convert sort by fields from hard coded to a filterable function call. ([#488](https://github.com/GlotPress/GlotPress-WP/issues/488)
+
 ## 2.1.0-beta.1 (June 29, 2016)
 
 **Bugfixes**
@@ -15,7 +26,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Change field type for user IDs to `bigint(20)`. ([#464](https://github.com/GlotPress/GlotPress-WP/issues/464))
 * Don't call `gp_upgrade_data()` in `gp_upgrade_db()` on install. ([#361](https://github.com/GlotPress/GlotPress-WP/issues/361))
 * Define max index length for `user_id_action` column. ([#462](https://github.com/GlotPress/GlotPress-WP/issues/462))
-
 
 **Features**
 
