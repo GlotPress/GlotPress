@@ -231,7 +231,7 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
  * @return string The sanitized title.
  */
 function gp_sanitize_as_slug( $slug ) {
-	$slug = remove_accents( $title );
+	$slug = remove_accents( $slug );
 
 	$slug = strip_tags( $slug );
 
