@@ -217,3 +217,91 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
 	return $prevRow[$length2];
 }
+
+/**
+ * Sanitizes a string for use as a slug, replacing whitespace and a few other characters with dashes.
+ *
+ * Limits the output to alphanumeric characters, underscore (_), periods (.) and dash (-).
+ * Whitespace becomes a dash.
+ *
+ * @since 2.1.0
+ *
+ * @param string $slug The string to be sanitized for use as a slug.
+ *
+ * @return string The sanitized title.
+ */
+function gp_sanitize_slug( $slug ) {
+	$slug = remove_accents( $slug );
+
+	$slug = strip_tags( $slug );
+
+	// Preserve escaped octets.
+	$slug = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '---$1---', $slug );
+
+	// Remove percent signs that are not part of an octet.
+	$slug = str_replace( '%', '', $slug );
+
+	// Restore octets.
+	$slug = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $slug );
+
+	$slug = gp_strtolower( $slug, 'UTF-8' );
+
+	if ( seems_utf8( $slug ) ) {
+		$slug = utf8_uri_encode( $slug, 200 );
+	}
+
+	// Convert nbsp, ndash and mdash to hyphens.
+	$slug = str_replace( array( '%c2%a0', '%e2%80%93', '%e2%80%94' ), '-', $slug );
+
+	// Convert nbsp, ndash and mdash HTML entities to hyphens.
+	$slug = str_replace( array( '&nbsp;', '&#160;', '&ndash;', '&#8211;', '&mdash;', '&#8212;' ), '-', $slug );
+
+	// Strip these characters entirely.
+	$slug = str_replace( array(
+		// Iexcl and iquest.
+		'%c2%a1',
+		'%c2%bf',
+		// Angle quotes.
+		'%c2%ab',
+		'%c2%bb',
+		'%e2%80%b9',
+		'%e2%80%ba',
+		// Curly quotes.
+		'%e2%80%98',
+		'%e2%80%99',
+		'%e2%80%9c',
+		'%e2%80%9d',
+		'%e2%80%9a',
+		'%e2%80%9b',
+		'%e2%80%9e',
+		'%e2%80%9f',
+		// Copy, reg, deg, hellip and trade.
+		'%c2%a9',
+		'%c2%ae',
+		'%c2%b0',
+		'%e2%80%a6',
+		'%e2%84%a2',
+		// Acute accents.
+		'%c2%b4',
+		'%cb%8a',
+		'%cc%81',
+		'%cd%81',
+		// Grave accent, macron, caron.
+		'%cc%80',
+		'%cc%84',
+		'%cc%8c',
+	), '', $slug );
+
+	// Convert times to x.
+	$slug = str_replace( '%c3%97', 'x', $slug );
+
+	// Kill entities.
+	$slug = preg_replace( '/&.+?;/', '', $slug );
+
+	$slug = preg_replace( '/[^%a-z\.0-9 _-]/', '', $slug );
+	$slug = preg_replace( '/\s+/', '-', $slug );
+	$slug = preg_replace( '|-+|', '-', $slug );
+	$slug = trim( $slug, '-' );
+
+	return $slug;
+}
