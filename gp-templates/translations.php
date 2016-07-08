@@ -5,6 +5,7 @@ gp_breadcrumb( array(
 	gp_link_get( $url, $translation_set->name ),
 ) );
 gp_enqueue_script( 'jquery-ui-core' );
+gp_enqueue_script( 'gp-common' );
 gp_enqueue_script( 'gp-editor' );
 gp_enqueue_script( 'gp-translations-page' );
 wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
