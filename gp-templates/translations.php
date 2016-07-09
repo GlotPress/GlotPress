@@ -4,9 +4,7 @@ gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $translation_set->name ),
 ) );
-gp_enqueue_script( 'jquery-ui-core' );
-gp_enqueue_script( 'gp-editor' );
-gp_enqueue_script( 'gp-translations-page' );
+gp_enqueue_script( array( 'jquery-ui-core', 'gp-common', 'gp-editor', 'gp-translations-page' ) );
 wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options

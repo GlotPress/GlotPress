@@ -1,8 +1,8 @@
 <?php
 gp_title( sprintf( __( 'Mass-create Translation Sets &lt; %s &lt; GlotPress', 'glotpress' ),  $project->name ) );
 gp_breadcrumb_project( $project );
-gp_enqueue_script( 'mass-create-sets-page' );
-wp_localize_script( 'mass-create-sets-page', '$gp_mass_create_sets_options', array(
+gp_enqueue_script( 'gp-mass-create-sets-page' );
+wp_localize_script( 'gp-mass-create-sets-page', '$gp_mass_create_sets_options', array(
 	'url' => gp_url_join( gp_url_current(), 'preview'),
 	'loading' => __( 'Loading translation sets to create&hellip;', 'glotpress' ),
 ));
