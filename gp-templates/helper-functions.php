@@ -6,9 +6,6 @@
  * @since 1.0.0
  */
 
-gp_enqueue_style( 'base' );
-gp_enqueue_script( 'jquery' );
-
 /**
  * Prepare an original string to be printed out in a translation row by adding encoding special
  * characters, adding glossary entires and other markup.
