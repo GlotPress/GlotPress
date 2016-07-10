@@ -4,7 +4,11 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<title><?php echo gp_title(); ?></title>
 
-	<?php gp_head(); ?>
+	<?php
+	// Enqueue the base style so we don't have to load it manually on each page.
+	gp_enqueue_style( 'gp-base' );
+
+	gp_head(); ?>
 </head>
 
 <body <?php body_class( 'no-js' ); ?>>

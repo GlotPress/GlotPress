@@ -14,9 +14,6 @@ function gp_styles_default() {
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style.css', array(), '20150717' );
-
-	// Enqueue the base style so we don't have to load it manually on each page.
-	gp_enqueue_style( 'gp-base' );
 }
 
 add_action( 'init', 'gp_styles_default' );
