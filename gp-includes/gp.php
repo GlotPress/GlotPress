@@ -147,4 +147,22 @@ class GP {
 	 * @var GP_Format[]
 	 */
 	public static $formats;
+
+	/**
+	 * Array of enqueued style sheets.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @var array
+	 */
+	public static $styles;
+
+	/**
+	 * Array of enqueued scripts.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @var array
+	 */
+	public static $scripts;
 }

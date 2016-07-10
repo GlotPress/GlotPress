@@ -41,12 +41,6 @@ add_action( 'init', 'gp_register_scripts' );
  * @param string|array $handles A single style handle to enqueue or an array or style handles to enqueue.
  */
 function gp_enqueue_style( $handles ) {
-	/*
-	 * Use a global variable to store which styles we have enqueued so we can limit the
-	 * output of styles to only those that GlotPress has enqueued later in gp_print_styles().
-	 */
-	global $gp_enqueued_styles;
-
 	// Check to see if $handles is an array, if not, then we can make it one to simplify the next loop.
 	if ( ! is_array( $handles ) ) {
 		$handles = array( $handles );
@@ -55,7 +49,7 @@ function gp_enqueue_style( $handles ) {
 	// Loop through each handle we've been asked to enqueue.
 	foreach ( $handles as $handle ) {
 		// Store the handle name in the global array.
-		$gp_enqueued_styles[] = $handle;
+		GP::$styles[] = $handle;
 
 		// Actually enqueue the handle via WordPress.
 		wp_enqueue_style( $handle );
@@ -68,12 +62,6 @@ function gp_enqueue_style( $handles ) {
  * @param string|array $handles A single script handle to enqueue or an array or enqueue handles to enqueue.
  */
 function gp_enqueue_script( $handles ) {
-	/*
-	 * Use a global variable to store which scripts we have enqueued so we can limit the
-	 * output of scripts to only those that GlotPress has enqueued later in gp_print_scripts().
-	 */
-	global $gp_enqueued_scripts;
-
 	// Check to see if $handles is an array, if not, then we can make it one to simplify the next loop.
 	if ( ! is_array( $handles ) ) {
 		$handles = array( $handles );
@@ -82,7 +70,7 @@ function gp_enqueue_script( $handles ) {
 	// Loop through each handle we've been asked to enqueue.
 	foreach ( $handles as $handle ) {
 		// Store the handle name in the global array.
-		$gp_enqueued_scripts[] = $handle;
+		GP::$scripts[] = $handle;
 
 		// Actually enqueue the handle via WordPress.
 		wp_enqueue_script( $handle );
@@ -93,18 +81,14 @@ function gp_enqueue_script( $handles ) {
  * Print the styles that have been enqueued.
  */
 function gp_print_styles() {
-	global $gp_enqueued_styles;
-
 	// Only output the styles that GlotPress has registered, otherwise we'd be sending any style that the WordPress theme or plugins may have enqueued.
-	wp_print_styles( $gp_enqueued_styles );
+	wp_print_styles( GP::$styles );
 }
 
 /**
  * Print the scripts that have been enqueued.
  */
 function gp_print_scripts() {
-	global $gp_enqueued_scripts;
-
 	// Only output the scripts that GlotPress has registered, otherwise we'd be sending any scripts that the WordPress theme or plugins may have enqueued.
-	wp_print_scripts( $gp_enqueued_scripts );
+	wp_print_scripts( GP::$scripts );
 }
