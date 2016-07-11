@@ -251,10 +251,17 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function fix_translation( $translation ) {
-		// when selecting some browsers take the newlines and some don't
+		// When selecting some browsers take the newlines and some don't
 		// that's why we don't want to insert too many newlines for each ↵
 		$translation = str_replace( "↵\n", "↵", $translation );
-		return str_replace( '↵', "\n", $translation );
+		$translation = str_replace( '↵', "\n", $translation );
+		
+		// When selecting some browsers take the tab and some don't
+		// that's why we don't want to insert too many tabs for each ↵
+		$translation = str_replace( "→\t", "→", $translation );
+		$translation = str_replace( '→', "\t", $translation );
+
+		return $translation;
 	}
 
 	/**
