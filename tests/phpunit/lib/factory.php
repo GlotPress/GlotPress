@@ -106,6 +106,7 @@ class GP_UnitTest_Factory_For_Translation extends GP_UnitTest_Factory_For_Thing 
 		parent::__construct( $factory, $thing? $thing : new GP_Translation );
 		$this->default_generation_definitions = array(
 			'translation_0' => new GP_UnitTest_Generator_Sequence( 'Translation %s' ),
+			'original_id' => 0,
 		);
 	}
 
