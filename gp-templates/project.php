@@ -1,7 +1,7 @@
 <?php
 gp_title( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
-gp_enqueue_script( array( 'gp-common', 'gp-editor', 'tablesorter' ) );
+gp_enqueue_script( array( 'gp-editor', 'tablesorter' ) );
 $edit_link = gp_link_project_edit_get( $project, __( '(edit)', 'glotpress' ) );
 
 if ( $project->active ) {

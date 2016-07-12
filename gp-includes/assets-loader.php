@@ -28,9 +28,9 @@ function gp_register_scripts() {
 	wp_register_script( 'tablesorter', $url . '/jquery.tablesorter.min.js', array( 'jquery' ), '1.10.4' );
 	wp_register_script( 'gp-common', $url . '/common.js', array( 'jquery' ), '20150430' );
 	wp_register_script( 'gp-editor', $url . '/editor.js', array( 'gp-common', 'jquery-ui-tooltip' ), '20160329' );
-	wp_register_script( 'gp-glossary', $url . '/glossary.js', array( 'gp-common', 'gp-editor' ), '20160329' );
-	wp_register_script( 'gp-translations-page', $url . '/translations-page.js', array( 'gp-common', 'gp-editor' ), '20150430' );
-	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page.js', array( 'gp-common', 'gp-editor' ), '20150430' );
+	wp_register_script( 'gp-glossary', $url . '/glossary.js', array( 'gp-editor' ), '20160329' );
+	wp_register_script( 'gp-translations-page', $url . '/translations-page.js', array( 'gp-editor' ), '20150430' );
+	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page.js', array( 'gp-editor' ), '20150430' );
 }
 
 add_action( 'init', 'gp_register_scripts' );
