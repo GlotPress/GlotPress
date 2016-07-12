@@ -27,13 +27,15 @@ add_action( 'init', 'gp_register_default_styles' );
 function gp_register_default_scripts() {
 	$url = gp_plugin_url( 'assets/js' );
 
+	$suffix = SCRIPT_DEBUG ? '.js' : '.min.js';
+
 	// Register our standard scripts.
-	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter.min.js', array( 'jquery' ), '2.17.8' );
-	wp_register_script( 'gp-common', $url . '/common.js', array( 'jquery' ), '20150430' );
-	wp_register_script( 'gp-editor', $url . '/editor.js', array( 'gp-common', 'jquery-ui-tooltip' ), '20160329' );
-	wp_register_script( 'gp-glossary', $url . '/glossary.js', array( 'gp-editor' ), '20160329' );
-	wp_register_script( 'gp-translations-page', $url . '/translations-page.js', array( 'gp-editor' ), '20150430' );
-	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page.js', array( 'gp-editor' ), '20150430' );
+	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '2.17.8' );
+	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery' ), '20150430' );
+	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20160329' );
+	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20160329' );
+	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20150430' );
+	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20150430' );
 }
 
 add_action( 'init', 'gp_register_default_scripts' );
