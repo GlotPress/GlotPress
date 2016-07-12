@@ -14,10 +14,10 @@ function gp_register_default_styles() {
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style.css', array(), '20150717' );
-	
+
 	// Register the table sorter theme style.
 	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress.css', array(), '20150717' );
-	
+
 }
 
 add_action( 'init', 'gp_register_default_styles' );
