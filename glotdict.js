@@ -314,8 +314,6 @@ jQuery(document).ready(function () {
 	});
   }
 
-  // Remvoe the social button in the bottom
-  jQuery('#wporg-footer ul:last-child').remove();
   gd_add_project_links();
   gd_add_button();
 

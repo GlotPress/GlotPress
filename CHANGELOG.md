@@ -1,3 +1,7 @@
+#1.1.3
+* Improvement: The FB, Twitter and Google+ button are not loaded
+
+
 #1.1.2
 * Improvement: If there is only one string is opened automatically
 * Fix: Remove the ' on comments to avoid problems
