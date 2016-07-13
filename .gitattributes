@@ -2,3 +2,4 @@
 *.android.xml text eol=lf
 *.resx.xml text eol=lf
 *.properties text eol=lf
+*.po text eol=lf

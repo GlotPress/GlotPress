@@ -121,7 +121,16 @@ $i = 0;
 			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
 			<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
 		</dd>
+		<?php
 
+		/**
+		 * Fires after the translation set filters options.
+		 *
+		 * This action is inside a DL element.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( 'gp_translation_set_filters_form' ); ?>
 
 		<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
 	</dl>
@@ -137,16 +146,9 @@ $i = 0;
 			);
 		}
 
-		echo gp_radio_buttons('sort[by]',
-			array(
-				'original_date_added' => __( 'Date added (original)', 'glotpress' ),
-				'translation_date_added' => __( 'Date added (translation)', 'glotpress' ),
-				'original' => __( 'Original string', 'glotpress' ),
-				'translation' => __( 'Translation', 'glotpress' ),
-				'priority' => __( 'Priority', 'glotpress' ),
-				'references' => __( 'Filename in source', 'glotpress' ),
-				'random' => __( 'Random', 'glotpress' ),
-			), gp_array_get( $sort, 'by', $default_sort['by'] ) );
+		$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
+
+		echo gp_radio_buttons( 'sort[by]', $sort_bys, gp_array_get( $sort, 'by', $default_sort['by'] ) );
 		?>
 		</dd>
 		<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
@@ -165,9 +167,20 @@ $i = 0;
 		 *
 		 * This action is inside a DL element.
 		 *
+		 * @deprecated 2.1.0 Call gp_translation_set_sort_form instead
 		 * @since 1.0.0
 		 */
-		do_action( 'gp_translation_set_filters' ); ?>
+		do_action( 'gp_translation_set_filters' );
+
+		/**
+		 * Fires after the translation set sort options.
+		 *
+		 * This action is inside a DL element.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( 'gp_translation_set_sort_form' ); ?>
+
 		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 	</dl>
 </form>
@@ -234,7 +247,7 @@ $i = 0;
 <p class="clear actionlist secondary">
 	<?php
 		$footer_links = array();
-		if ( $can_approve ) {
+		if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import translations', 'glotpress' ) );
 		}
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );

@@ -20,17 +20,88 @@ class GP_Translation_Set extends GP_Thing {
 	var $int_fields = array( 'id', 'project_id' );
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * ID of the translation set.
+	 *
+	 * @var int
+	 */
 	public $id;
+
+	/**
+	 * Name of the translation set.
+	 *
+	 * @var string
+	 */
 	public $name;
+
+	/**
+	 * Slug of the translation set.
+	 *
+	 * @var string
+	 */
 	public $slug;
+
+	/**
+	 * Project ID of the translation set.
+	 *
+	 * @var int
+	 */
 	public $project_id;
+
+	/**
+	 * Locale of the translation set.
+	 *
+	 * @var string
+	 */
 	public $locale;
+
+	/**
+	 * GP project of the translation set.
+	 *
+	 * @var GP_Project
+	 */
 	public $project;
+
+	/**
+	 * Number of waiting translations.
+	 *
+	 * @var int
+	 */
 	public $waiting_count;
+
+	/**
+	 * Number of fuzzy translations.
+	 *
+	 * @var int
+	 */
 	public $fuzzy_count;
+
+	/**
+	 * Number of untranslated originals.
+	 *
+	 * @var int
+	 */
 	public $untranslated_count;
+
+	/**
+	 * Number of current translations.
+	 *
+	 * @var int
+	 */
 	public $current_count;
+
+	/**
+	 * Number of translations with warnings.
+	 *
+	 * @var int
+	 */
 	public $warnings_count;
+
+	/**
+	 * Number of all originals.
+	 *
+	 * @var int
+	 */
 	public $all_count;
 
 	/**
@@ -71,7 +142,7 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
-			$args['slug'] = sanitize_title( $args['slug'] );
+			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
 		return $args;
@@ -129,27 +200,43 @@ class GP_Translation_Set extends GP_Thing {
 		    WHERE project_id = %d ORDER BY name ASC", $project_id );
 	}
 
-	public function import( $translations ) {
-		$this->set_memory_limit('256M');
+	/**
+	 * Import translations from a Translations object.
+	 *
+	 * @param  Translations $translations   the translations to be imported to this translation-set.
+	 * @param  string       $desired_status 'current' or 'waiting'.
+	 * @return boolean or void
+	 */
+	public function import( $translations, $desired_status = 'current' ) {
+		$this->set_memory_limit( '256M' );
 
-		if ( !isset( $this->project ) || !$this->project ) $this->project = GP::$project->get( $this->project_id );
+		if ( ! isset( $this->project ) || ! $this->project ) {
+			$this->project = GP::$project->get( $this->project_id );
+		}
+
+		if ( ! in_array( $desired_status, array( 'current', 'waiting' ), true ) ) {
+			return false;
+		}
 
 		$locale = GP_Locales::by_slug( $this->locale );
 		$user = wp_get_current_user();
 
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array('status' => 'current', 'translated' => 'yes') );
-		$current_translations = new Translations();
-		foreach( $current_translations_list as $entry ) {
-			$current_translations->add_entry( $entry );
+		$existing_translations = array();
+
+		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => 'current', 'translated' => 'yes' ) );
+		$existing_translations['current'] = new Translations();
+		foreach ( $current_translations_list as $entry ) {
+			$existing_translations['current']->add_entry( $entry );
 		}
 		unset( $current_translations_list );
+
 		$translations_added = 0;
-		foreach( $translations->entries as $entry ) {
+		foreach ( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) {
 				continue;
 			}
 
-			$is_fuzzy = in_array( 'fuzzy', $entry->flags );
+			$is_fuzzy = in_array( 'fuzzy', $entry->flags, true );
 
 			/**
 			 * Filter whether to import fuzzy translations.
@@ -164,12 +251,36 @@ class GP_Translation_Set extends GP_Thing {
 				continue;
 			}
 
+			/**
+			 * Filter the the status of imported translations of a translation set.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $status The status of imported translations.
+			 */
+			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status );
+
+			// Lazy load other entries.
+			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
+				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => $entry->status, 'translated' => 'yes' ) );
+				$existing_translations[ $entry->status ] = new Translations();
+				foreach ( $existing_translations_list as $_entry ) {
+					$existing_translations[ $entry->status ]->add_entry( $_entry );
+				}
+				unset( $existing_translations_list );
+			}
+
 			$create = false;
-			if ( $translated = $current_translations->translate_entry( $entry ) ) {
-				// we have the same string translated
-				// create a new one if they don't match
+			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
+			if ( 'current' !== $entry->status && ! $translated ) {
+				// Don't create an entry if it already exists as current.
+				$translated = $existing_translations['current']->translate_entry( $entry );
+			}
+
+			if ( $translated ) {
+				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id = $translated->original_id;
-				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) != $translated->translations;
+				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
@@ -192,6 +303,12 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->user_id = $user->ID;
 				}
 
+				$entry->status = $is_fuzzy ? 'fuzzy' : $desired_status;
+
+				$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
+				if ( ! empty( $entry->warnings ) ) {
+					$entry->status = 'waiting';
+				}
 				$entry->translation_set_id = $this->id;
 
 				/**
@@ -199,10 +316,12 @@ class GP_Translation_Set extends GP_Thing {
 				 *
 				 * @since 1.0.0
 				 *
-				 * @param string $status The status of imported translations.
+				 * @param string            $status The status of imported translations.
+				 * @param Translation_Entry $entry  Translation entry object to import.
 				 */
-				$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : 'current' );
-				// check for errors
+				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry );
+
+				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
 					$translation->set_status( $entry->status );
@@ -225,72 +344,160 @@ class GP_Translation_Set extends GP_Thing {
 		return $translations_added;
 	}
 
+	/**
+	 * Retrieves the number of waiting translations.
+	 *
+	 * @return int Number of waiting translations.
+	 */
 	public function waiting_count() {
-		if ( !isset( $this->waiting_count ) ) $this->update_status_breakdown();
+		if ( ! isset( $this->waiting_count ) ) {
+			$this->update_status_breakdown();
+		}
+
 		return $this->waiting_count;
 	}
 
+	/**
+	 * Retrieves the number of untranslated originals.
+	 *
+	 * @return int Number of untranslated originals.
+	 */
 	public function untranslated_count() {
-		if ( !isset( $this->untranslated_count ) ) $this->update_status_breakdown();
+		if ( ! isset( $this->untranslated_count ) ) {
+			$this->update_status_breakdown();
+		}
+
 		return $this->untranslated_count;
 	}
 
+	/**
+	 * Retrieves the number of fuzzy translations.
+	 *
+	 * @return int Number of fuzzy translations.
+	 */
 	public function fuzzy_count() {
-		if ( !isset( $this->fuzzy_count ) ) $this->update_status_breakdown();
+		if ( ! isset( $this->fuzzy_count ) ) {
+			$this->update_status_breakdown();
+		}
+
 		return $this->fuzzy_count;
 	}
 
+	/**
+	 * Retrieves the number of current translations.
+	 *
+	 * @return int Number of current translations.
+	 */
 	public function current_count() {
-		if ( !isset( $this->current_count ) ) $this->update_status_breakdown();
+		if ( ! isset( $this->current_count ) ) {
+			$this->update_status_breakdown();
+		}
+
 		return $this->current_count;
 	}
 
+	/**
+	 * Retrieves the number of translations with warnings.
+	 *
+	 * @return int Number of translations with warnings.
+	 */
 	public function warnings_count() {
-		if ( !isset( $this->warnings_count ) ) $this->update_status_breakdown();
+		if ( ! isset( $this->warnings_count ) ) {
+			$this->update_status_breakdown();
+		}
+
 		return $this->warnings_count;
 	}
 
+	/**
+	 * Retrieves the number of all originals.
+	 *
+	 * @return int Number of all originals.
+	 */
 	public function all_count() {
-		$this->all_count = GP::$original->count_by_project_id( $this->project_id );
+		if ( ! isset( $this->all_count ) ) {
+			$this->update_status_breakdown();
+		}
+
 		return $this->all_count;
 	}
 
-
+	/**
+	 * Populates the count properties.
+	 */
 	public function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 
-		if ( ! is_array( $counts ) ) {
-			/*
-			 * TODO:
-			 *  - calculate weighted coefficient by priority to know how much of the strings are translated
-			 * 	- calculate untranslated
-			 */
-			$t = GP::$translation->table;
-			$o = GP::$original->table;
-			$counts = GP::$translation->many_no_map("
-				SELECT t.status as translation_status, COUNT(*) as n
-				FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id WHERE t.translation_set_id = %d AND o.status LIKE '+%%' GROUP BY t.status", $this->id);
-			$warnings_count = GP::$translation->value("
-				SELECT COUNT(*) FROM $t AS t INNER JOIN $o AS o ON t.original_id = o.id
-				WHERE t.translation_set_id = %d AND o.status LIKE '+%%' AND (t.status = 'current' OR t.status = 'waiting') AND warnings IS NOT NULL", $this->id);
-			$counts[] = (object)array( 'translation_status' => 'warnings', 'n' => $warnings_count );
+		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) ) { // The format was changed in 2.1.
+			global $wpdb;
+			$counts = array();
+
+			$status_counts = $wpdb->get_results( $wpdb->prepare( "
+				SELECT
+					t.status AS translation_status,
+					COUNT(*) AS total,
+					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+				FROM {$wpdb->gp_translations} AS t
+				INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+				WHERE
+					t.translation_set_id = %d
+					AND o.status = '+active'
+				GROUP BY t.status
+			", $this->id ) );
+
+			if ( $status_counts ) {
+				$counts = $status_counts;
+			}
+
+			$warnings_counts = $wpdb->get_row( $wpdb->prepare( "
+				SELECT
+					COUNT(*) AS total,
+					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+				FROM {$wpdb->gp_translations} AS t
+				INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+				WHERE
+					t.translation_set_id = %d AND
+					o.status = '+active' AND
+					( t.status = 'current' OR t.status = 'waiting' )
+					AND warnings IS NOT NULL
+			", $this->id ) );
+
+			if ( $warnings_counts ) {
+				$counts[] = (object) array(
+					'translation_status' => 'warnings',
+					'total'              => (int) $warnings_counts->total,
+					'hidden'             => (int) $warnings_counts->hidden,
+					'public'             => (int) $warnings_counts->public,
+				);
+			}
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
-		$counts[] = (object)array( 'translation_status' => 'all', 'n' => $this->all_count() );
+
+		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
+		$counts[] = (object) array(
+			'translation_status' => 'all',
+			'total'              => $all_count->total,
+			'hidden'             => $all_count->hidden,
+			'public'             => $all_count->public,
+		);
 
 		$statuses = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
 		$statuses[] = 'all';
-		foreach( $statuses as $status ) {
-			$this->{$status.'_count'} = 0;
+		foreach ( $statuses as $status ) {
+			$this->{$status . '_count'} = 0;
 		}
-		$this->untranslated_count = 0;
-		foreach( $counts as $count ) {
-			if ( in_array( $count->translation_status, $statuses ) ) {
-				$this->{$count->translation_status.'_count'} = $count->n;
+
+		$user_can_view_hidden = GP::$permission->current_user_can( 'write', 'project', $this->project_id );
+		foreach ( $counts as $count ) {
+			if ( in_array( $count->translation_status, $statuses, true ) ) {
+				$this->{$count->translation_status . '_count'} = $user_can_view_hidden ? (int) $count->total : (int) $count->public;
 			}
 		}
-		$this->untranslated_count = $this->all_count() - $this->current_count;
+
+		$this->untranslated_count = $this->all_count - $this->current_count; // @todo Improve this.
 	}
 
 	/**
@@ -329,7 +536,13 @@ class GP_Translation_Set extends GP_Thing {
 
 
 	public function percent_translated() {
-		$original_count = GP::$original->count_by_project_id( $this->project_id );
+		$original_counts = GP::$original->count_by_project_id( $this->project_id, 'all' );
+
+		if ( GP::$permission->current_user_can( 'write', 'project', $this->project_id ) ) {
+			$original_count = $original_counts->total;
+		} else {
+			$original_count = $original_counts->public;
+		}
 
 		return $original_count ? floor( $this->current_count() / $original_count * 100 ) : 0;
 	}

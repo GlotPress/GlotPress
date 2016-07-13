@@ -236,6 +236,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 
+		$can_write = $this->can( 'write', 'project', $project->id );
+
 		$this->tmpl( 'glossary-import', get_defined_vars() );
 	}
 
@@ -270,6 +272,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
 			return;
+		}
+
+		$replace = gp_post( 'import-flush' );
+		if ( 'on' === $replace && $this->can( 'write', 'project', $project->id ) ) {
+			GP::$glossary_entry->delete_many( array( 'glossary_id', $glossary->id ) );
 		}
 
 		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug );

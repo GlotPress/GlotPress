@@ -46,6 +46,18 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $translations[1]->status, 'current' );
 	}
 
+	function test_import_should_generate_warnings() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'A string with %s', 'translations' => array( 'No Placeholder' ) ) );
+		$set->import( $translations_for_import );
+
+		$translations = GP::$translation->all();
+		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
+	}
+
 	function test_import_should_not_import_existing_same_translation() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
@@ -127,12 +139,32 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
 		$pre_delete = GP::$translation_set->find_one( array( 'id' => $set->id ) );
-		
+
 		$set->delete();
-		
+
 		$post_delete = GP::$translation_set->find_one( array( 'id' => $set->id ) );
-		
+
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
+
+	/**
+	 * @ticket gh-397
+	 */
+	function test_update_status_breakdown_updates_pre_2_1_cached_values() {
+		global $wpdb;
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$counts = array();
+		$statuses = GP::$translation->get_static( 'statuses' );
+		foreach ( $statuses as $status ) {
+			$counts[] = (object) array( 'translation_status' => $status, 'n' => 10 );
+		}
+		$counts[] = (object) array( 'translation_status' => 'warnings', 'n' => 1 );
+		wp_cache_set( $set->id, $counts, 'translation_set_status_breakdown' );
+
+		$num_queries = $wpdb->num_queries;
+		$set->update_status_breakdown();
+		$this->assertEquals( $num_queries + 7, $wpdb->num_queries );
 	}
 }

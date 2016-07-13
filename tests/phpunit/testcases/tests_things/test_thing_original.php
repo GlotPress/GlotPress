@@ -50,7 +50,6 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 	function test_import_for_project_should_update_cache() {
 		$project  = $this->factory->project->create();
 		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
-		$count    = $original->count_by_project_id( $project->id );
 
 		$translations_array = array( array( 'singular' => $original->singular ), array( 'singular' => 'dyado' ) );
 		$translations       = $this->create_translations_with( $translations_array );
@@ -234,5 +233,33 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		// Get the first item.
 		$original = reset( $originals );
 		$this->assertSame( str_repeat( 'a', 255 ), $original->context );
+	}
+
+	/**
+	 * @ticket gh-397
+	 */
+	function test_return_types_of_count_by_project_id() {
+		$project = $this->factory->project->create();
+
+		$this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Foo' ) );
+		$this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Bar', 'priority' => -2 ) );
+
+		$total = GP::$original->count_by_project_id( $project->id );
+		$this->assertSame( 2, $total );
+
+		$all = GP::$original->count_by_project_id( $project->id, 'all' );
+		$this->assertInternalType( 'object', $all );
+		$this->assertSame( 2, $all->total );
+		$this->assertSame( 1, $all->hidden );
+		$this->assertSame( 1, $all->public );
+
+		$hidden = GP::$original->count_by_project_id( $project->id, 'hidden' );
+		$this->assertSame( 1, $hidden );
+
+		$public = GP::$original->count_by_project_id( $project->id, 'public' );
+		$this->assertSame( 1, $public );
+
+		$non_existent = GP::$original->count_by_project_id( $project->id, 'non_existent' );
+		$this->assertSame( 0, $non_existent );
 	}
 }

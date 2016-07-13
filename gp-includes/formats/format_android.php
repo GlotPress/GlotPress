@@ -136,9 +136,23 @@ class GP_Format_Android extends GP_Format {
 		return stripcslashes( $string );
 	}
 
-	private function escape( $string ) {
-		$string = addcslashes( $string, "'\n");
+	/**
+	 * Escapes a string with c style slashes and html entities as required.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $string The string to escape.
+	 *
+	 * @return string Returns the escaped string.
+	 */
+	protected function escape( $string ) {
+		$string = addcslashes( $string, "'\n" );
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
+
+		// Android strings that start with an '@' are references to other strings and need to be escaped.  See GH469.
+		if ( gp_startswith( $string, '@' ) ) {
+			$string = '\\' . $string;
+		}
 
 		return $string;
 	}

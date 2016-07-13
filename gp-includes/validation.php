@@ -41,6 +41,7 @@
  *     @method bool original_id_should_be( string $name, array $args = null )
  *     @method bool translation_set_id_should_be( string $name, array $args = null )
  *     @method bool user_id_should_be( string $name, array $args = null )
+ *     @method bool user_id_last_modified_should_not_be( string $name, array $args = null )
  *
  * From gp_includes/things/glossary.php:
  *
@@ -149,7 +150,7 @@ class GP_Validation_Rules {
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
 
-		if( strpos( $name_field, 'translation_' ) === 0 ) {
+		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
 			$type_field = 'textarea';
 			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
 		}

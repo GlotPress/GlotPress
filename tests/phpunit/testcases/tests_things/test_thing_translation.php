@@ -62,6 +62,31 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 5, $translation->errors );
 	}
 
+	/**
+	 * @ticket gh-341
+	 */
+	function test_translation_should_not_report_empty_translation_set_id_as_translation_value_error() {
+		$data = array(
+			'user_id'            => 1,
+			'original_id'        => 1,
+			'status'             => 'current',
+		);
+		$plurals = array(
+			'translation_0' => 'Zero',
+			'translation_1' => '',
+			'translation_2' => '',
+			'translation_3' => '',
+			'translation_4' => '',
+			'translation_5' => '',
+		);
+
+		$data = array_merge( $data, $plurals );
+
+		$translation = $this->factory->translation->create( $data );
+		$this->assertFalse( $translation->validate() );
+		$this->assertNotEquals( 'The textarea <strong>Translation 1</strong> is invalid and should be positive int!', $translation->errors[0] );
+	}
+
 	function test_for_translation_shouldnt_exclude_originals_with_rejected_translation_if_status_has_untranslated() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
@@ -117,6 +142,19 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( $translation1->id, $for_translation[0]->id );
 	}
 
+	function test_for_translation_should_respect_priorities() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id, 'priority' => 1 ) );
+
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'untranslated' ) );
+		$this->assertEquals( 2, count( $for_translation ) );
+
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'untranslated', 'priority' => array( 1 ) ) );
+		$this->assertEquals( 1, count( $for_translation ) );
+	}
+
 	function test_for_export_should_include_untranslated() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
@@ -127,7 +165,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_untranslated' ) );
 
 		$this->assertEquals( 2, count( $for_export ) );
-		$this->assertEquals( $translation1->id, $for_export[0]->id );
+		$this->assertEquals( $translation1->id, $for_export[1]->id );
 	}
 
 	function test_delete() {
@@ -143,4 +181,35 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
+
+	function test_validator_id_saved_on_status_change_to_current() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status('waiting');
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'whatever',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$translation->set_as_current();
+		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_validator_id_saved_on_status_change_to_rejected() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status('waiting');
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'whatever',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$translation->set_status('rejected');
+		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
 }

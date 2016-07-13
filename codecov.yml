@@ -1,0 +1,8 @@
+coverage:
+  status:
+    patch: false
+    changes: false
+    project:
+      default:
+        target: auto
+comment: off

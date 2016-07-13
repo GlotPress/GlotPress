@@ -697,7 +697,7 @@ class GP_Locales {
 		$es_gt->wp_locale = 'es_GT';
 		$es_gt->slug = 'es-gt';
 		$es_gt->google_code = 'es';
-		$es_cl->facebook_locale = 'es_LA';
+		$es_gt->facebook_locale = 'es_LA';
 
 		$es_mx = new GP_Locale();
 		$es_mx->english_name = 'Spanish (Mexico)';

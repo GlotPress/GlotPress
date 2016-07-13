@@ -50,6 +50,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--status=<status>]
 	 * : Translation string status; default is "current"
+	 *
+	 * [--priority=<priorities>]
+	 * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
 	 */
 	public function export( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -69,6 +72,23 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			$filters['term'] = $assoc_args['search'];
 		}
 		$filters['status'] = isset( $assoc_args['status'] ) ? $assoc_args['status'] : 'current';
+
+		if ( isset( $assoc_args['priority'] ) ) {
+
+			$filters['priority'] = array();
+
+			$priorities = explode( ',', $assoc_args['priority'] );
+			$valid_priorities = GP::$original->get_static( 'priorities' );
+
+			foreach ( $priorities as $priority ) {
+				$key = array_search( $priority, $valid_priorities );
+				if ( false === $key ) {
+					WP_CLI::warning( sprintf( 'Invalid priority %s', $priority ) );
+				} else {
+					$filters['priority'][] = $key;
+				}
+			}
+		}
 
 		$entries = GP::$translation->for_export( $this->project, $translation_set, $filters );
 		WP_CLI::line( $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries ) );

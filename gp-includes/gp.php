@@ -99,7 +99,7 @@ class GP {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var GP_Route
+	 * @var GP_Router
 	 */
 	public static $router;
 

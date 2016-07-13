@@ -68,4 +68,9 @@ Short answer, no.
 
 You will need to update the plugin to be a WordPress plugin. Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/1.2-Converting-Plugins).
 
+== Upgrade Notice ==
+
+= {{TAG}} =
+Important note, if you have a custom template directory don't forget to update it with the changes in this release.
+
 == Changelog ==

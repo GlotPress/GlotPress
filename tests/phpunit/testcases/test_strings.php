@@ -45,4 +45,10 @@ class GP_Test_Strings extends GP_UnitTestCase {
 			array( '"&amp;hellip;"', '"&hellip;"' ),
 		);
 	}
+
+	function test_gp_sanitize_project_name() {
+		$this->assertEquals( gp_sanitize_slug( 'plugin V1.2.1' ), 'plugin-v1.2.1' );
+		$this->assertEquals( gp_sanitize_slug( 'plugin \/<1.2.1>' ), 'plugin' );
+		$this->assertEquals( gp_sanitize_slug( 'GlotPress&Plugin@1.1.1' ), 'glotpressplugin1.1.1' );
+	}
 }

@@ -62,4 +62,29 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 		}
 	}
 
+	function test_escape() {
+		$test_class = new Testable_GP_Format_Strings_escape;
+
+		$this->assertEquals( "test \'string\'", $test_class->testable_escape( "test 'string'" ) );
+		$this->assertEquals( "test\\nstring", $test_class->testable_escape( "test\nstring" ) );
+		$this->assertEquals( '\@test string', $test_class->testable_escape( '@test string' ) );
+		$this->assertEquals( 'test @string', $test_class->testable_escape( 'test @string' ) );
+	}
+
+}
+
+/**
+ * Class that makes it possible to test protected functions.
+ */
+class Testable_GP_Format_Strings_escape extends GP_Format_Android {
+	/**
+	 * Wraps the protected escape function
+	 *
+	 * @param string $string The string to escape.
+	 *
+	 * @return string Returns escaped string.
+	 */
+	public function testable_escape( $string ) {
+		return $this->escape( $string );
+	}
 }

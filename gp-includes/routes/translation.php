@@ -28,7 +28,11 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		$can_import_current = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_import_waiting = $can_import_current || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
+
+		if ( ! $can_import_current && ! $can_import_waiting ) {
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
 			return;
 		}
 
@@ -54,7 +58,26 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		$can_import_current = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_import_waiting = $can_import_current || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
+
+		if ( ! $can_import_current && ! $can_import_waiting ) {
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
+			return;
+		}
+
+		$import_status = gp_post( 'status', 'waiting' );
+
+		$allowed_import_status = array();
+		if ( $can_import_current ) {
+			$allowed_import_status[] = 'current';
+		}
+		if ( $can_import_waiting ) {
+			$allowed_import_status[] = 'waiting';
+		}
+
+		if ( ! in_array( $import_status, $allowed_import_status, true ) ) {
+			$this->redirect_with_error( __( 'Invalid translation status.', 'glotpress' ) );
 			return;
 		}
 
@@ -63,7 +86,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES[ 'import-file' ][ 'name' ] );
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] );
 
 		if ( ! $format ) {
 			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
@@ -71,12 +94,12 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'], $project );
-		if ( !$translations ) {
+		if ( ! $translations ) {
 			$this->redirect_with_error( __( 'Couldn&#8217;t load translations from file!', 'glotpress' ) );
 			return;
 		}
 
-		$translations_added = $translation_set->import( $translations );
+		$translations_added = $translation_set->import( $translations, $import_status );
 		$this->notices[] = sprintf( __( '%s translations were added', 'glotpress' ), $translations_added );
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
@@ -192,6 +215,8 @@ class GP_Route_Translation extends GP_Route_Main {
 		$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_import_current = $can_approve;
+		$can_import_waiting = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
 		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
