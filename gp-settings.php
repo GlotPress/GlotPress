@@ -121,6 +121,8 @@ require_once GP_PATH . GP_INC . 'formats/format-properties.php';
 require_once GP_PATH . GP_INC . 'formats/format-json.php';
 require_once GP_PATH . GP_INC . 'formats/format-jed1x.php';
 
+require_once GP_PATH . GP_INC . 'wp-settings.php';
+
 // Let's do it again, there are more variables added since last time we called it.
 gp_set_globals( get_defined_vars() );
 
