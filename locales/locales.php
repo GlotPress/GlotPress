@@ -45,7 +45,7 @@ class GP_Locale {
 	/**
 	 * Make deprecated properties readable for backwards compatibility.
 	 *
-	 * @param string $name Property to get.h
+	 * @param string $name Property to get.
 	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
