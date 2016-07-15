@@ -45,7 +45,7 @@ class GP_Locale {
 	/**
 	 * Make deprecated properties readable for backwards compatibility.
 	 *
-	 * @param string $name Property to get.
+	 * @param string $name Property to get.h
 	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
@@ -961,15 +961,15 @@ class GP_Locales {
 		$gu->google_code = 'gu';
 		$gu->facebook_locale = 'gu_IN';
 
-		$ha = new GP_Locale();
-		$ha->english_name = 'Hausa';
-		$ha->native_name = 'هَوُسَ';
-		$ha->lang_code_iso_639_1 = 'ha';
-		$ha->lang_code_iso_639_2 = 'hau';
-		$ha->slug = 'ha';
-		$ha->text_direction = 'rtl';
-		$ha->google_code = 'ha';
-		$ha->facebook_locale = 'ha_NG';
+		$hau = new GP_Locale();
+		$hau->english_name = 'Hausa';
+		$hau->native_name = 'Harshen Hausa';
+		$hau->lang_code_iso_639_1 = 'ha';
+		$hau->lang_code_iso_639_2 = 'hau';
+		$hau->lang_code_iso_639_3 = 'hau';
+		$hau->slug = 'hau';
+		$hau->google_code = 'ha';
+		$hau->facebook_locale = 'ha_NG';
 
 		$hat = new GP_Locale();
 		$hat->english_name = 'Haitian Creole';
