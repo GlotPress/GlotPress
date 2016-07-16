@@ -968,6 +968,7 @@ class GP_Locales {
 		$hau->lang_code_iso_639_2 = 'hau';
 		$hau->lang_code_iso_639_3 = 'hau';
 		$hau->slug = 'hau';
+		$hau->wp_locale = 'hau';
 		$hau->google_code = 'ha';
 		$hau->facebook_locale = 'ha_NG';
 
