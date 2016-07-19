@@ -9,7 +9,7 @@ $priority_char = array(
     '1' => array('&uarr;', 'transparent', 'green'),
 );
 $user = wp_get_current_user();
-$can_reject_self = ($user->user_login == $t->user_login && $t->translation_status == "waiting");
+$can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
 ?>
 
 <tr class="preview <?php echo $status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
@@ -109,13 +109,13 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 					<?php if ( $t->translation_status ): ?>
 						<?php if ( $can_approve ): ?>
 							<?php if ( $t->translation_status != 'current' ): ?>
-							<button class="approve" tabindex="-1"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
+							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
 							<?php endif; ?>
 							<?php if ( $t->translation_status != 'rejected' ): ?>
-							<button class="reject" tabindex="-1"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
+							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
 							<?php endif; ?>
 						<?php elseif ( $can_reject_self ): ?>
-							<button class="reject" tabindex="-1"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
+							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
 						<?php endif; ?>
 					<?php endif; ?>
 				</dd>
@@ -145,34 +145,46 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 				<dd><?php echo $t->translation_added; ?> GMT</dd>
 			</dl>
 			<?php endif; ?>
-			<?php if ( $t->user_login ): ?>
+			<?php if ( $t->user ) : ?>
 			<dl>
 				<dt><?php _e( 'Translated by:', 'glotpress' ); ?></dt>
-				<dd><?php
-				if ( $t->user_display_name && $t->user_display_name != $t->user_login ) {
-					printf( '<a href="%s" tabindex="-1">%s (%s)</a>',
-						gp_url_profile( $t->user_nicename ),
-						$t->user_display_name,
-						$t->user_login
-					);
-				} else {
-					printf( '<a href="%s" tabindex="-1">%s</a>',
-						gp_url_profile( $t->user_nicename ),
-						$t->user_login
-					);
-				}
-				?></dd>
+				<dd><?php gp_link_user( $t->user ); ?></dd>
 			</dl>
 			<?php endif; ?>
-
+			<?php if ( $t->user_last_modified && ( ! $t->user || $t->user->ID !== $t->user_last_modified->ID ) ) : ?>
+				<dl>
+					<dt><?php
+						if ( 'current' === $t->translation_status ) {
+							_e( 'Approved by:', 'glotpress' );
+						} elseif ( 'rejected' === $t->translation_status ) {
+							_e( 'Rejected by:', 'glotpress' );
+						} else {
+							_e( 'Last updated by:', 'glotpress' );
+						}
+						?>
+					</dt>
+					<dd><?php gp_link_user( $t->user_last_modified ); ?></dd>
+				</dl>
+			<?php endif; ?>
 			<?php references( $project, $t ); ?>
 
 			<dl>
 			    <dt><?php _e( 'Priority of the original:', 'glotpress' ); ?></dt>
 			<?php if ( $can_write ): ?>
-			    <dd><?php echo gp_select( 'priority-'.$t->original_id, GP::$original->get_static( 'priorities' ), $t->priority, array('class' => 'priority', 'tabindex' => '-1') ); ?></dd>
-			<?php else: ?>
-			    <dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); ?></dd>
+				<dd><?php
+					echo gp_select(
+						'priority-' . $t->original_id,
+						GP::$original->get_static( 'priorities' ),
+						$t->priority,
+						array(
+							'class'      => 'priority',
+							'tabindex'   => '-1',
+							'data-nonce' => wp_create_nonce( 'set-priority_' . $t->original_id ),
+						)
+					);
+					?></dd>
+			<?php else : ?>
+				<dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority, 'unknown' ); // WPCS: XSS ok. ?></dd>
 			<?php endif; ?>
 			</dl>
 
@@ -199,11 +211,11 @@ $can_reject_self = ($user->user_login == $t->user_login && $t->translation_statu
 		</div>
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
-			<button class="ok">
+			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
 				<?php echo $can_approve? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 			</button>
 		<?php endif; ?>
-			or <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+			<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
 		</div>
 	</td>
 </tr>

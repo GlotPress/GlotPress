@@ -7,10 +7,22 @@ abstract class GP_Format {
 
 	public $name = '';
 	public $extension = '';
+	public $alt_extensions = array();
+	public $filename_pattern = '%s-%s';
 
 	public abstract function print_exported_file( $project, $locale, $translation_set, $entries );
 	public abstract function read_originals_from_file( $file_name );
 
+	/**
+	 * Gets the list of supported file extensions.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return array Supported file extensions.
+	 */
+	public function get_file_extensions() {
+		return array_merge( array( $this->extension ), $this->alt_extensions );
+	}
 
 	public function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) {

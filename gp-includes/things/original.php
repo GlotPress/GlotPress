@@ -1,6 +1,16 @@
 <?php
 /**
- * @method object|array many_no_map( string $sql, int $id )
+ * Things: GP_Original class
+ *
+ * @package GlotPress
+ * @subpackage Things
+ * @since 1.0.0
+ */
+
+/**
+ * Core class used to implement the originals.
+ *
+ * @since 1.0.0
  */
 class GP_Original extends GP_Thing {
 
@@ -23,19 +33,36 @@ class GP_Original extends GP_Thing {
 	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
-	public function restrict_fields( $original ) {
-		$original->singular_should_not_be('empty');
-		$original->status_should_not_be('empty');
-		$original->project_id_should_be('positive_int');
-		$original->priority_should_be('int');
-		$original->priority_should_be('between', -2, 1);
+	/**
+	 * Sets restriction rules for fields.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Validation_Rules $rules The validation rules instance.
+	 */
+	public function restrict_fields( $rules ) {
+		$rules->singular_should_not_be( 'empty_string' );
+		$rules->status_should_not_be( 'empty' );
+		$rules->project_id_should_be( 'positive_int' );
+		$rules->priority_should_be( 'int' );
+		$rules->priority_should_be( 'between', -2, 1 );
 	}
 
+	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Original object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for a GP_Original object.
+	 * @return array Normalized arguments for a GP_Original object.
+	 */
 	public function normalize_fields( $args ) {
-		$args = (array)$args;
-		foreach ( array('plural', 'context', 'references', 'comment') as $field ) {
+		$args = (array) $args;
+
+		foreach ( array( 'plural', 'context', 'references', 'comment' ) as $field ) {
 			if ( isset( $args['parent_project_id'] ) ) {
-				$args[$field] = $this->force_false_to_null( $args[$field] );
+				$args[ $field ] = $this->force_false_to_null( $args[ $field ] );
 			}
 		}
 
@@ -53,13 +80,70 @@ class GP_Original extends GP_Thing {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
 
-	public function count_by_project_id( $project_id ) {
-		if ( false !== ( $cached = wp_cache_get( $project_id, self::$count_cache_group ) ) ) {
-			return $cached;
+	/**
+	 * Retrieves the number of originals for a project.
+	 *
+	 * @since 1.0.0
+	 * @since 2.1.0 Added the `$type` parameter.
+	 *
+	 * @param int    $project_id The ID of a project.
+	 * @param string $type       The return type. 'total' for public and hidden counts, 'hidden'
+	 *                           for hidden count, 'public' for public count, 'all' for all three
+	 *                           values. Default 'total'.
+	 * @return object|int Object when `$type` is 'all', non-negative integer in all other cases.
+	 */
+	public function count_by_project_id( $project_id, $type = 'total' ) {
+		global $wpdb;
+
+		// If an unknown type has been passed in, just return a 0 result immediately instead of running the SQL code.
+		if ( ! in_array( $type, array( 'total', 'hidden', 'public', 'all' ), true ) ) {
+			return 0;
 		}
-		$count = $this->value( "SELECT COUNT(*) FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
-		wp_cache_set( $project_id, $count, self::$count_cache_group );
-		return $count;
+
+		// Get the cache and use it if possible.
+		$cached = wp_cache_get( $project_id, self::$count_cache_group );
+		if ( false !== $cached && is_object( $cached ) ) { // Since 2.1.0 stdClass.
+			if ( 'all' === $type ) {
+				return $cached;
+			} elseif ( isset( $cached->$type ) ) {
+				return $cached->$type;
+			}
+
+			// If we've fallen through for some reason, make sure to return an integer 0.
+			return 0;
+		}
+
+		// No cache values found so let's query the database for the results.
+		$counts = $wpdb->get_row( $wpdb->prepare( "
+			SELECT
+				COUNT(*) AS total,
+				COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
+				COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
+			FROM {$wpdb->gp_originals}
+			WHERE
+				project_id = %d AND status = '+active'
+			",
+			$project_id
+		), ARRAY_A );
+
+		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
+		if ( ! is_array( $counts ) ) {
+			$counts = array( 'total' => 0, 'hidden' => 0, 'public' => 0 );
+		}
+
+		// Make sure counts are integers.
+		$counts = (object) array_map( 'intval', $counts );
+
+		wp_cache_set( $project_id, $counts, self::$count_cache_group );
+
+		if ( 'all' === $type ) {
+			return $counts;
+		} elseif ( isset( $counts->$type ) ) {
+			return $counts->$type;
+		}
+
+		// If we've fallen through for some reason, make sure to return an integer 0.
+		return 0;
 	}
 
 
@@ -88,7 +172,7 @@ class GP_Original extends GP_Thing {
 	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
-		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = 0;
+		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = $originals_error = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key = array();
@@ -107,8 +191,15 @@ class GP_Original extends GP_Thing {
 
 		$possibly_added = $possibly_dropped = array();
 
-		foreach( $translations->entries as $entry ) {
+		foreach ( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();
+
+			// Context needs to match VARCHAR(255) in the database schema.
+			if ( gp_strlen( $entry->context ) > 255 ) {
+				$entry->context = gp_substr( $entry->context, 0, 255 );
+				$translations->entries[ $entry->key() ] = $entry;
+			}
+
 			$data = array(
 				'project_id' => $project->id,
 				'context'    => $entry->context,
@@ -166,6 +257,8 @@ class GP_Original extends GP_Thing {
 		}
 		$comparison_array = array_unique( array_merge( array_keys( $possibly_dropped ), array_keys( $obsolete_originals ) ) );
 
+		$prev_suspend_cache = wp_suspend_cache_invalidation( true );
+
 		foreach ( $possibly_added as $entry ) {
 			$data = array(
 				'project_id' => $project->id,
@@ -201,15 +294,9 @@ class GP_Original extends GP_Thing {
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
 
-				/**
-				 * Filter whether translations should be added from other projects for newly created originals.
-				 *
-				 * @since 1.0.0
-				 *
-				 * @param bool $add_translations Add translations from other projects. Default true.
-				 */
-				if ( apply_filters( 'gp_enable_add_translations_from_other_projects', true ) ) {
-					$created->add_translations_from_other_projects();
+				if ( ! $created ) {
+					$originals_error++;
+					continue;
 				}
 
 				$originals_added++;
@@ -222,9 +309,12 @@ class GP_Original extends GP_Thing {
 			$originals_obsoleted++;
 		}
 
+		wp_suspend_cache_invalidation( $prev_suspend_cache );
+
 		// Clear cache when the amount of strings are changed.
 		if ( $originals_added > 0 || $originals_existing > 0 || $originals_fuzzied > 0 || $originals_obsoleted > 0 ) {
 			wp_cache_delete( $project->id, self::$count_cache_group );
+			gp_clean_translation_sets_cache( $project->id );
 		}
 
 		/**
@@ -237,10 +327,11 @@ class GP_Original extends GP_Thing {
 		 * @param int    $originals_existing  Number of existing originals updated.
 		 * @param int    $originals_obsoleted Number of originals that were marked as obsolete.
 		 * @param int    $originals_fuzzied   Number of originals that were close matches of old ones and thus marked as fuzzy.
+		 * @param int    $originals_error     Number of originals that were not imported due to an error.
 		 */
-		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied );
+		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error );
 
-		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted );
+		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error );
 	}
 
 	public function set_translations_for_original_to_fuzzy( $original_id ) {
@@ -345,63 +436,15 @@ class GP_Original extends GP_Thing {
 		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
 	}
 
-	public function add_translations_from_other_projects() {
-		global $wpdb;
+	// Triggers
 
-		$project_translations_sets = GP::$translation_set->many_no_map( "SELECT * FROM $wpdb->gp_translation_sets WHERE project_id = %d", $this->project_id );
-		if ( empty( $project_translations_sets ) ) {
-			return;
-		}
-
-		$matched_sets = array();
-
-		$sql_project  = $wpdb->prepare( 'o.project_id != %d', $this->project_id );
-		$sql_singular = $wpdb->prepare( 'o.singular = BINARY %s', $this->singular );
-		$sql_plural = is_null( $this->plural ) ? 'o.plural IS NULL' : $wpdb->prepare( 'o.plural = BINARY %s', $this->plural );
-		$sql_context = is_null( $this->context ) ? 'o.context IS NULL' : $wpdb->prepare( 'o.context = BINARY %s', $this->context );
-
-		$sql = "SELECT t.*, s.locale, s.slug
-			FROM {$this->table} o
-				JOIN {$wpdb->gp_translations} t ON o.id = t.original_id
-				JOIN {$wpdb->gp_translation_sets} s ON t.translation_set_id = s.id
-			WHERE
-				$sql_context AND $sql_singular AND $sql_plural
-				AND o.status = '+active' AND $sql_project
-				AND t.status = 'current'
-			GROUP BY t.translation_0, t.translation_1, t.translation_2, t.translation_3, t.translation_4, t.translation_5, s.locale, s.slug
-			ORDER BY t.date_modified DESC, t.id DESC";
-
-		$other_project_translations = GP::$translation->many( $sql );
-
-		foreach ( $other_project_translations as $t ) {
-			$o_translation_set = array_filter( $project_translations_sets, function( $set ) use ( $t ) {
-				return $set->locale == $t->locale && $set->slug == $t->slug;
-			} );
-
-			if ( empty( $o_translation_set ) ) {
-				continue;
-			}
-
-			$o_translation_set = reset( $o_translation_set );
-			if ( in_array( $o_translation_set->id, $matched_sets ) ) {
-				// We already have a translation for this set.
-				continue;
-			}
-
-			$matched_sets[] = $o_translation_set->id;
-
-			/**
-			 * Filter the status of translations copied over from other projects.
-			 *
-			 * @since 1.0.0
-			 *
-			 * @param string $status The status of the copied translation. Default 'current'.
-			 */
-			$copy_status = apply_filters( 'gp_translations_from_other_projects_status', 'current' );
-			$t->copy_into_set( $o_translation_set->id, $this->id, $copy_status );
-		}
-	}
-
+	/**
+	 * Executes after creating an original.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
 	public function after_create() {
 		/**
 		 * Fires after a new original is created.
@@ -411,6 +454,47 @@ class GP_Original extends GP_Thing {
 		 * @param GP_original $original The original that was created.
 		 */
 		do_action( 'gp_original_created', $this );
+
+		return true;
+	}
+
+	/**
+	 * Executes after saving an original.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	public function after_save() {
+		/**
+		 * Fires after an original is saved.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param GP_original $original The original that was saved.
+		 */
+		do_action( 'gp_original_saved', $this );
+
+		return true;
+	}
+
+	/**
+	 * Executes after deleting an original.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
+		/**
+		 * Fires after an original is deleted.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param GP_original $original The original that was deleted.
+		 */
+		do_action( 'gp_original_deleted', $this );
+
 		return true;
 	}
 }

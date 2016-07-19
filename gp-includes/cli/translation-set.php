@@ -50,6 +50,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--status=<status>]
 	 * : Translation string status; default is "current"
+	 *
+	 * [--priority=<priorities>]
+	 * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
 	 */
 	public function export( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -68,7 +71,24 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		if ( isset( $assoc_args['search'] ) ) {
 			$filters['term'] = $assoc_args['search'];
 		}
-		$assoc_args['status'] = isset( $assoc_args['status'] ) ? $assoc_args['status'] : 'current';
+		$filters['status'] = isset( $assoc_args['status'] ) ? $assoc_args['status'] : 'current';
+
+		if ( isset( $assoc_args['priority'] ) ) {
+
+			$filters['priority'] = array();
+
+			$priorities = explode( ',', $assoc_args['priority'] );
+			$valid_priorities = GP::$original->get_static( 'priorities' );
+
+			foreach ( $priorities as $priority ) {
+				$key = array_search( $priority, $valid_priorities );
+				if ( false === $key ) {
+					WP_CLI::warning( sprintf( 'Invalid priority %s', $priority ) );
+				} else {
+					$filters['priority'][] = $key;
+				}
+			}
+		}
 
 		$entries = GP::$translation->for_export( $this->project, $translation_set, $filters );
 		WP_CLI::line( $format->print_exported_file( $this->project, $this->locale, $translation_set, $entries ) );
@@ -90,9 +110,6 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--set=<set>]
 	 * : Translation set slug; default is "default"
-	 *
-	 * [--disable-propagating]
-	 * : If set, propagation will be disabled.
 	 */
 	public function import( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -107,16 +124,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
 		}
 
-		$disable_propagating = isset( $assoc_args['disable-propagating'] );
-		if ( $disable_propagating ) {
-			add_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
-		}
-
 		$added = $translation_set->import( $po );
-
-		if ( $disable_propagating ) {
-			remove_filter( 'gp_enable_propagate_translations_across_projects', '__return_false' );
-		}
 
 		/* translators: %s: Number of imported translations */
 		WP_CLI::line( sprintf( _n( '%s translation was added', '%s translations were added', $added, 'glotpress' ), $added ) );

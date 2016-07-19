@@ -105,7 +105,9 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 	elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
-			$items[ gp_url( '/profile' ) ] = __( 'Profile', 'glotpress' );
+			$user = wp_get_current_user();
+			$items[ gp_url_profile( $user->user_nicename ) ] = __( 'Profile', 'glotpress' );
+			$items[ gp_url( '/settings' ) ] = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
 		}
 		else {
@@ -230,16 +232,16 @@ function gp_breadcrumb_project( $project ) {
 }
 
 function gp_js_focus_on( $html_id ) {
-	return '<script type="text/javascript">document.getElementById("'.$html_id.'").focus();</script>';
+	return '<script type="text/javascript">document.getElementById(\'' . esc_js( $html_id ) . '\').focus();</script>';
 }
 
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
-	$attributes = $attributes? " $attributes" : '';
+	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
 	foreach( $options as $value => $label ) {
-		$selected = $value == $selected_key? " selected='selected'" : '';
-		$res .= "\t<option value='".esc_attr( $value )."' $selected>" . esc_html( $label ) . "</option>\n";
+		$selected = selected( $value, $selected_key, false );
+		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 	}
 	$res .= "</select>\n";
 	return $res;
@@ -248,10 +250,10 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	$res = '';
 	foreach( $radio_buttons as $value => $label ) {
-		$checked = $value == $checked_key? " checked='checked'" : '';
+		$checked = checked( $value, $checked_key, false );
 		// TODO: something more flexible than <br />
-		$res .= "\t<input type='radio' name='$name' value='".esc_attr( $value )."' $checked id='{$name}[{$value}]'/>&nbsp;";
-		$res .= "<label for='{$name}[{$value}]'>".esc_html( $label )."</label><br />\n";
+		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked'/>&nbsp;";
+		$res .= "<label for='" . esc_attr( "{$name}[{$value}]" ) . "'>" . esc_html( $label ) . "</label><br />\n";
 	}
 	return $res;
 }
@@ -342,6 +344,7 @@ function gp_attrs_add_class( $attrs, $class_name ) {
  * @param string $name_and_id   Name and ID of the select element.
  * @param string $selected_slug Slug of the current selected locale.
  * @param array  $attrs         Extra attributes.
+ *
  * @return string HTML markup for a select element.
  */
 function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_slug = null, $attrs = array() ) {
@@ -377,13 +380,27 @@ function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_sl
  * @param string $name_and_id   Name and ID of the select element.
  * @param string $selected_slug Slug of the current selected locale.
  * @param array  $attrs         Extra attributes.
+ *
  * @return string HTML markup for a select element.
  */
 function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = array() ) {
 	return gp_locales_by_project_dropdown( null, $name_and_id, $selected_slug, $attrs );
 }
 
-function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array() ) {
+/**
+ * Returns HTML markup for a select element for projects.
+ *
+ * @since 1.0.0
+ *
+ * @param string $name_and_id         Name and ID of the select element.
+ * @param string $selected_project_id The project id to mark as the currently selected.
+ * @param array  $attrs               Extra attributes.
+ * @param array  $exclude             An array of locales to exclude from the list.
+ * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of locales.
+ *
+ * @return string HTML markup for a select element.
+ */
+function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array(), $exclude_no_parent = false ) {
 	if ( ! is_array( $exclude ) ) {
 		$exclude = array( $exclude );
 	}
@@ -401,7 +418,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 		}
 	}
 
-	$options = array( '' => __( '&mdash; No parent &mdash;', 'glotpress' ) );
+	if ( ! $exclude_no_parent ) {
+		$options = array( '' => __( '&mdash; No parent &mdash;', 'glotpress' ) );
+	} else {
+		$options = array();
+	}
 
 	foreach( $top as $top_id ) {
 		$stack = array( $top_id );
@@ -486,8 +507,8 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, '-branch'), __( 'Branch Project', 'glotpress' ) ),
-		gp_link_with_ays_get( gp_url_project( $project, '-delete'), __( 'Delete Project', 'glotpress' ), array( 'ays-text' => __( 'Do you really want to delete this project?', 'glotpress' ) ) )
+		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, '-delete' ), __( 'Delete Project', 'glotpress' ) ),
 	);
 
 	/**
@@ -535,6 +556,7 @@ function gp_project_options_form( $project ) {
 					<input type="submit" name="submit" value="' . esc_attr__( 'Save &rarr;', 'glotpress' ) . '" id="save" />
 					<a class="ternary" href="#" onclick="jQuery(\'#personal-options-toggle\').click();return false;">' . __( 'Cancel', 'glotpress' ) . '</a>
 				</p>
+				' . gp_route_nonce_field( 'set-personal-options_' . $project->id, false ) . '
 				</form>
 			</div>';
 }

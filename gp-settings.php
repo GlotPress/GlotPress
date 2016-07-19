@@ -54,7 +54,9 @@ require_once( GP_PATH . GP_INC . 'default-filters.php' );
 require_once( ABSPATH . WPINC . '/pomo/mo.php' );
 require_once( ABSPATH . WPINC . '/pomo/po.php' );
 
-require_once( GP_LOCALES_PATH . 'locales.php' );
+if ( ! class_exists( 'GP_Locale' ) || ! class_exists( 'GP_Locales' ) ) {
+	require_once( GP_LOCALES_PATH . 'locales.php' );
+}
 
 // We assume all variables set in this file will be global.
 // If the file is inovked inside a function, we will lose them all.
@@ -84,6 +86,7 @@ require_once GP_PATH . GP_INC . 'routes/_main.php';
 require_once GP_PATH . GP_INC . 'routes/index.php';
 require_once GP_PATH . GP_INC . 'routes/original.php';
 require_once GP_PATH . GP_INC . 'routes/profile.php';
+require_once GP_PATH . GP_INC . 'routes/settings.php';
 require_once GP_PATH . GP_INC . 'routes/project.php';
 require_once GP_PATH . GP_INC . 'routes/translation-set.php';
 require_once GP_PATH . GP_INC . 'routes/translation.php';
@@ -103,6 +106,7 @@ require_once GP_PATH . GP_INC . 'formats/format_android.php';
 require_once GP_PATH . GP_INC . 'formats/format_pomo.php';
 require_once GP_PATH . GP_INC . 'formats/format_resx.php';
 require_once GP_PATH . GP_INC . 'formats/format_strings.php';
+require_once GP_PATH . GP_INC . 'formats/format_properties.php';
 
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );

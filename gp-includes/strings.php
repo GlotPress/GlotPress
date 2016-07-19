@@ -15,56 +15,100 @@ function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
 
-if ( function_exists('mb_strtolower') ) {
-	function gp_strtolower( $str ) {
-		return mb_strtolower( $str );
+/**
+ * Compat function to mimic mb_strtolower().
+ *
+ * Falls back to `strtolower()` if `mb_strtolower()` doesn't exists.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $str      The string being lowercased.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return int String length of `$str`.
+ */
+function gp_strtolower( $str, $encoding = null ) {
+	if ( function_exists( 'mb_strtolower' ) ) {
+		if ( isset( $encoding ) ) {
+			return mb_strtolower( $str, $encoding );
+		} else {
+			return mb_strtolower( $str ); // Uses mb_internal_encoding().
+		}
 	}
-} else {
-	function gp_strtolower( $str ) {
-		return strtolower( $str );
+
+	return strtolower( $str );
+}
+
+/**
+ * Compat function to mimic mb_strlen().
+ *
+ * Without a `function_exists()` check because WordPress includes
+ * a compat function for `mb_strlen()`.
+ *
+ * @since 1.0.0
+ *
+ * @see _mb_strlen()
+ *
+ * @param string      $str      The string to retrieve the character length from.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return int String length of `$str`.
+ */
+function gp_strlen( $str, $encoding = null ) {
+	if ( isset( $encoding ) ) {
+		return mb_strlen( $str, $encoding );
+	} else {
+		return mb_strlen( $str ); // Uses mb_internal_encoding().
 	}
 }
 
-if ( function_exists('mb_strlen') ) {
-	function gp_strlen( $str ) {
-		return mb_strlen( $str );
+/**
+ * Compat function to mimic mb_stripos().
+ *
+ * Falls back to `stripos()` if `mb_stripos()` doesn't exists.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $haystack The string from which to get the position of the first occurrence of needle.
+ * @param string      $needle   The string to find in haystack.
+ * @param int         $offset   The position in haystack to start searching.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return int|false The numeric position of the first occurrence of needle in the haystack string,
+ *                   or false if needle is not found.
+ */
+function gp_stripos( $haystack, $needle, $offset = 0, $encoding = null ) {
+	if ( function_exists( 'mb_stripos' ) ) {
+		if ( isset( $encoding ) ) {
+			return mb_stripos( $haystack, $needle, $offset, $encoding );
+		} else {
+			return mb_stripos( $haystack, $needle, $offset ); // Uses mb_internal_encoding().
+		}
 	}
-} else {
-	function gp_strlen( $str ) {
-		return preg_match_all("/.{1}/us", $str, $dummy);
-	}
+
+	return stripos( $haystack, $needle, $offset );
 }
 
-if ( function_exists('mb_stripos') ) {
-	function gp_stripos( $haystack, $needle ) {
-		return mb_stripos( $haystack, $needle );
+/**
+ * Compat function to mimic mb_substr().
+ *
+ * Without a `function_exists()` check because WordPress includes
+ * a compat function for `mb_substr()`.
+ *
+ * @since 1.0.0
+ *
+ * @see _mb_substr()
+ *
+ * @param string      $str      The string to extract the substring from.
+ * @param int         $start    Position to being extraction from in `$str`.
+ * @param int|null    $length   Optional. Maximum number of characters to extract from `$str`.
+ *                              Default null.
+ * @param string|null $encoding Optional. Character encoding to use. Default null.
+ * @return string Extracted substring.
+ */
+function gp_substr( $str, $start, $length, $encoding = null ) {
+	if ( isset( $encoding ) ) {
+		return mb_substr( $str, $start, $length, $encoding );
+	} else {
+		return mb_substr( $str, $start, $length ); // Uses mb_internal_encoding().
 	}
-} else {
-	function gp_stripos( $haystack, $needle ) {
-		return stripos( $haystack, $needle );
-	}
-}
-
-if ( function_exists('mb_substr') ) {
-	function gp_substr( $str, $start, $length ) {
-		return mb_substr( $str, $start, $length );
-	}
-} else {
-	function gp_substr( $str, $start, $length ) {
-		return substr( $str, $start, $length );
-	}
-}
-
-function gp_sanitize_for_url( $name ) {
-	$name = trim( $name );
-	$name = gp_strtolower( $name );
-	$name = preg_replace( '/&.+?;/', '', $name ); // kill entities
-	$name = str_replace( '.', '-', $name );
-	$name = preg_replace('|[#$%&~/.\-;:=,?@\[\]+]|', '', $name);
-	$name = preg_replace( '/\s+/', '-', $name );
-	$name = preg_replace( '|-+|', '-', $name );
-	$name = trim($name, '-');
-	return $name;
 }
 
 /**
@@ -172,4 +216,92 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 	}
 
 	return $prevRow[$length2];
+}
+
+/**
+ * Sanitizes a string for use as a slug, replacing whitespace and a few other characters with dashes.
+ *
+ * Limits the output to alphanumeric characters, underscore (_), periods (.) and dash (-).
+ * Whitespace becomes a dash.
+ *
+ * @since 2.1.0
+ *
+ * @param string $slug The string to be sanitized for use as a slug.
+ *
+ * @return string The sanitized title.
+ */
+function gp_sanitize_slug( $slug ) {
+	$slug = remove_accents( $slug );
+
+	$slug = strip_tags( $slug );
+
+	// Preserve escaped octets.
+	$slug = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '---$1---', $slug );
+
+	// Remove percent signs that are not part of an octet.
+	$slug = str_replace( '%', '', $slug );
+
+	// Restore octets.
+	$slug = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $slug );
+
+	$slug = gp_strtolower( $slug, 'UTF-8' );
+
+	if ( seems_utf8( $slug ) ) {
+		$slug = utf8_uri_encode( $slug, 200 );
+	}
+
+	// Convert nbsp, ndash and mdash to hyphens.
+	$slug = str_replace( array( '%c2%a0', '%e2%80%93', '%e2%80%94' ), '-', $slug );
+
+	// Convert nbsp, ndash and mdash HTML entities to hyphens.
+	$slug = str_replace( array( '&nbsp;', '&#160;', '&ndash;', '&#8211;', '&mdash;', '&#8212;' ), '-', $slug );
+
+	// Strip these characters entirely.
+	$slug = str_replace( array(
+		// Iexcl and iquest.
+		'%c2%a1',
+		'%c2%bf',
+		// Angle quotes.
+		'%c2%ab',
+		'%c2%bb',
+		'%e2%80%b9',
+		'%e2%80%ba',
+		// Curly quotes.
+		'%e2%80%98',
+		'%e2%80%99',
+		'%e2%80%9c',
+		'%e2%80%9d',
+		'%e2%80%9a',
+		'%e2%80%9b',
+		'%e2%80%9e',
+		'%e2%80%9f',
+		// Copy, reg, deg, hellip and trade.
+		'%c2%a9',
+		'%c2%ae',
+		'%c2%b0',
+		'%e2%80%a6',
+		'%e2%84%a2',
+		// Acute accents.
+		'%c2%b4',
+		'%cb%8a',
+		'%cc%81',
+		'%cd%81',
+		// Grave accent, macron, caron.
+		'%cc%80',
+		'%cc%84',
+		'%cc%8c',
+	), '', $slug );
+
+	// Convert times to x.
+	$slug = str_replace( '%c3%97', 'x', $slug );
+
+	// Kill entities.
+	$slug = preg_replace( '/&.+?;/', '', $slug );
+
+	$slug = preg_replace( '/[^%a-z\.0-9 _-]/', '', $slug );
+	$slug = preg_replace( '/\s+/', '-', $slug );
+	$slug = preg_replace( '|-+|', '-', $slug );
+	$slug = trim( $slug, '-' );
+
+	return $slug;
 }

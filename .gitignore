@@ -1,1 +1,5 @@
 /tests/build
+
+# Composer
+composer.lock
+/vendor/
