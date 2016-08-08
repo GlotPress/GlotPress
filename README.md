@@ -14,6 +14,7 @@ The goal of this browser extension is add that dictionaries when the user is tra
 * Shortcut on Page Up to open the next string to translate
 * Shortcut on Ctrl+Shift+B to "Copy from original"
 * Shortcut on Ctrl+Shift+F to add non-breaking spaces near symbols
+* Shortcut on Ctrl+Alt+R to reset all the GlotDict settings
 
 # Download
 
