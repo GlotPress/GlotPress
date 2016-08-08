@@ -140,7 +140,6 @@ function references( $project, $entry ) {
 		<?php
 		foreach( $entry->references as $reference ):
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			// TODO: allow the user to override the project setting
 			if ( $source_url = $project->source_url( $file, $line ) ):
 				?>
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
