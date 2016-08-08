@@ -1,3 +1,9 @@
+#1.1.4 
+* Improvement: Show the date of the last update
+* Improvement: ctrl+alt+r reset all the GlotDict settings
+* Fix: Problems with terms with parenthesis (happen in ES)
+* Fix: For new user the alert system was not working
+
 #1.1.3
 * Improvement: The FB, Twitter and Google+ button are not loaded
 

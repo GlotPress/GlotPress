@@ -27,6 +27,8 @@ jQuery(document).ready(function () {
    */
   function gd_add_term_json(word, element, item) {
 	if (item !== '') {
+	  word = word.replace(/\)/g, "\\)");
+	  word = word.replace(/\(/g, "\\(");
 	  var rgxp = new RegExp('\\b(' + word + ')\\b(?![^<>()\"]*>|[^<]*<\/span>)', 'gi');
 	  var print = JSON.stringify(item);
 	  print = print.replace(/\'/g, "");
@@ -114,12 +116,12 @@ jQuery(document).ready(function () {
    * @returns Array
    */
   function gd_glossary_cached(lang) {
-	if (typeof lang === 'undefined') {
+	if (typeof lang === 'undefined' || lang === false) {
 	  return;
 	}
 	var glossary_date_cache = localStorage.getItem('gd_glossary_date');
 	var locales_cache = gd_list_locales_cached();
-	if (glossary_date_cache === null || glossary_date_cache !== locales_cache[lang].time) {
+	if (glossary_date_cache === null || glossary_date_cache.length === 0 || glossary_date_cache !== locales_cache[lang].time) {
 	  jQuery.ajax({
 		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
 		dataType: 'text',
@@ -172,7 +174,17 @@ jQuery(document).ready(function () {
    */
   function gd_locales_selector() {
 	var lang = gd_get_lang();
-	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick the glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
+	var lang_date = '';
+	if (localStorage.getItem('gd_glossary_date') !== null) {
+	  lang_date = localStorage.getItem('gd_glossary_date');
+	  if (lang_date === null || lang_date.length === 0 || lang_date === '') {
+		if (gd_glossary_cached(gd_get_lang())) {
+		  lang_date = localStorage.getItem('gd_glossary_date');
+		}
+	  }
+	  lang_date = ' Glossary Update: ' + lang_date;
+	}
+	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>' + lang_date);
 	jQuery('.glotdict_language').append(jQuery('<option></option>'));
 	var gd_locales_array = gd_locales();
 	jQuery.each(gd_locales_array, function (key, value) {
@@ -182,7 +194,7 @@ jQuery(document).ready(function () {
 	  }
 	  jQuery('.glotdict_language').append(new_option);
 	});
-	if (lang === '') {
+	if (lang === '' || lang === false) {
 	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;">&larr; Set the glossary!</span>');
 	  return;
 	}
@@ -234,9 +246,6 @@ jQuery(document).ready(function () {
    * @returns void
    */
   function gd_hotkeys() {
-//	if (jQuery('.gp-content .breadcrumb li:last-child a').length !== 0) {
-//	  return false;
-//	}
 	key.filter = function (event) {
 	  var tagName = (event.target || event.srcElement).tagName;
 	  key.setScope(/^(SELECT)$/.test(tagName) ? 'input' : 'other');
@@ -312,6 +321,15 @@ jQuery(document).ready(function () {
 	  }
 	  return false;
 	});
+	key('ctrl+alt+r', function () {
+	  localStorage.removeItem('gd_glossary_date');
+	  localStorage.removeItem('gd_glossary_file');
+	  localStorage.removeItem('gd_language');
+	  localStorage.removeItem('gd_locales');
+	  localStorage.removeItem('gd_locales_date');
+	  location.reload();
+	  return false;
+	});
   }
 
   gd_add_project_links();
@@ -333,6 +351,7 @@ jQuery(document).ready(function () {
   jQuery('.glotdict_language').change(function () {
 	localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());
 	localStorage.setItem('gd_glossary_date', '');
+	gd_locales();
 	location.reload();
   });
 });
