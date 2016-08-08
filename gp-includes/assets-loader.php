@@ -12,11 +12,13 @@
 function gp_register_default_styles() {
 	$url = gp_plugin_url( 'assets/css' );
 
+	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
+
 	// Register our base style.
-	wp_register_style( 'gp-base', $url . '/style.css', array(), '20150717' );
+	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20150717' );
 
 	// Register the table sorter theme style.
-	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress.css', array(), '20150717' );
+	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress' . $suffix, array(), '20150717' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
