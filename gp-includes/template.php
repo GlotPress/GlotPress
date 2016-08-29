@@ -584,6 +584,21 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 }
 
 /**
+ * Returns the warning class for the translation row.
+ *
+ * @param Translation_Entry $t translation entry for the row.
+ *
+ * @since 2.2.0
+ *
+ * @return string
+ */
+function gp_get_translation_row_warning_class( $t ) {
+	$warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
+	return $warning_class;
+}
+
+
+/**
  * Generate a list of classes to be added to the translation row, based on translation entry properties.
  *
  * @param Translation_Entry $t translation entry for the row.
@@ -594,8 +609,8 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  */
 function gp_get_translation_row_classes( $t ) {
 	$status_class = $t->translation_status? 'status-'.$t->translation_status : 'untranslated';
-	$warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
 	$priority_class = 'priority-'.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority );
+	$warning_class = gp_get_translation_row_warning_class( $t );
 
 	$classes = array( $status_class, $warning_class, $priority_class );
 	/**

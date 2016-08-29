@@ -66,7 +66,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 		<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a>
 	</td>
 </tr>
-<tr class="editor <?php echo $warning_class; ?>" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
+<tr class="editor <?php echo esc_attr( gp_get_translation_row_warning_class( $t ) ); ?>" id="editor-<?php echo esc_attr( $t->row_id ); ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
 	<td colspan="<?php echo $can_approve ? 5 : 4 ?>">
 		<div class="strings">
 		<?php
