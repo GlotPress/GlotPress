@@ -24,7 +24,7 @@ gp_tmpl_header();
 				}
 			?></dd>
 			<dt><?php _e( 'Member Since', 'glotpress' ); ?></dt>
-			<dd><?php echo date( 'M j, Y', strtotime( $user->user_registered ) ); ?></dd>
+			<dd><?php /* translators: public profile date format */ echo date_i18n( __( 'M j, Y', 'glotpress' ), strtotime( $user->user_registered ) ); ?></dd>
 		</dl>
 	</div>
 </div>
