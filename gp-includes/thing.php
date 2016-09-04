@@ -595,6 +595,23 @@ class GP_Thing {
 		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page-1)*$per_page );
 	}
 
+	/**
+	 * Generates the sql limit/offset statement when we query a fallback translation set
+	 *
+	 * @param  int $page The current page.
+	 * @param null $per_page How maky items per page.
+	 *
+	 * @return string The LIMIT / OFFSET statement.
+	 */
+	public function sql_limit_for_paging_with_fallback( $page, $per_page = null ) {
+		$per_page = is_null( $per_page )? $this->per_page : $per_page;
+		if ( 'no-limit' == $per_page || 'no-limit' == $page ) {
+			return '';
+		}
+		$page = intval( $page ) ? intval( $page ) : 1;
+		return sprintf( 'LIMIT %d OFFSET %d', $per_page * 2, ( $page -1 ) * $per_page );
+	}
+
 	public function found_rows() {
 		global $wpdb;
 		return $wpdb->get_var("SELECT FOUND_ROWS();");

@@ -155,6 +155,45 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $for_translation ) );
 	}
 
+	function test_for_translation_should_respect_fallback() {
+		$default_set = $this->factory->translation_set->create_with_project_and_locale();
+		$new_set = $this->factory->translation_set->create(   array( 'project_id' => $default_set->project_id, 'locale' => $default_set->locale, 'slug' => 'new' ) );
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $default_set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $default_set->project_id ) );
+
+
+		// One translation for each original on the default set
+		$translation1_default_set = $this->factory->translation->create( array( 'translation_set_id' => $default_set->id, 'original_id' => $original1->id, 'status' => 'current', 'translation_0' => 'original 1 default translation', ) );
+		$translation2_default_set = $this->factory->translation->create( array( 'translation_set_id' => $default_set->id, 'original_id' => $original2->id, 'status' => 'current', 'translation_0' => 'original 2 default translation', ) );
+
+		// One translation only on the first original on the new set
+		$translation1_new_set = $this->factory->translation->create( array( 'translation_set_id' => $new_set->id, 'original_id' => $original1->id, 'status' => 'current', 'translation_0' => 'original 1 new translation'  ) );
+
+		// Querying translations on the new set. No filters, should return one translations
+		$for_translation = GP::$translation->for_translation( $default_set->project, $new_set, 0, array( 'status' => 'current' ) );
+		$this->assertCount( 1, $for_translation );
+		$this->default_set_id = $default_set->id;
+
+		add_filter( 'gp_for_translation_fallback_translation_set', array( $this, '_gp_for_translation_fallback_translation_set' ), 10, 2 );
+
+		// Querying translations on the new set. With filter, should return two translations
+		$for_translation = GP::$translation->for_translation( $default_set->project, $new_set, 0, array( 'status' => 'current' ) );
+		$this->assertCount( 2, $for_translation );
+
+		$this->assertEquals( 1, $for_translation[0]->translation_set_id );
+		$this->assertEquals( 2, $for_translation[1]->translation_set_id );
+
+		//cleanup
+		remove_filter( 'gp_for_translation_fallback_translation_set', array( $this, '_gp_for_translation_fallback_translation_set' ) );
+		unset( $this->default_set_id );
+
+	}
+
+	function _gp_for_translation_fallback_translation_set( $id, $translation_set ) {
+		return $this->default_set_id;
+	}
+
 	function test_for_export_should_include_untranslated() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 

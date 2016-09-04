@@ -427,15 +427,54 @@ class GP_Translation extends GP_Thing {
 
 		$sql_sort = sprintf( $sort_by, $sort_how );
 
-		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
+		/**
+		 * Filter the translation sets to allow falling back to another translation set.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param null Default for no additional translation set.
+		 * @param GP_Translation_Set $translation_set Current translation set.
+		 */
+		$fallback_translation_set = apply_filters( 'gp_for_translation_fallback_translation_set', null, $translation_set );
+
+		$translation_sets = array( $translation_set->id );
+
+		if ( $fallback_translation_set ) {
+			$limit = $this->sql_limit_for_paging_with_fallback( $page, $this->per_page );
+			$translation_sets[] = (int) $fallback_translation_set;
+		} else {
+			$limit = $this->sql_limit_for_paging( $page, $this->per_page );
+		}
+
+		$translation_sets = implode( ',', $translation_sets );
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
 			FROM $wpdb->gp_originals as o
-			$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
+			$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id IN( " . $wpdb->esc_like( $translation_sets ) . " ) $join_where
 			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where ORDER BY $sql_sort $limit";
+
 		$rows = $this->many_no_map( $sql_for_translations );
 		$this->found_rows = $this->found_rows();
+
+		if ( $fallback_translation_set ) {
+			$oids = array();
+			foreach ( $rows as $key => $val ) {
+				if ( array_key_exists( $val->original_id, $oids ) ) {
+					if ( $val->translation_set_id == $translation_set->id ) {
+						unset( $rows[ $oids[ $val->original_id ] ] );
+						$this->found_rows--;
+					} else {
+						unset( $rows[ $key ] );
+						continue;
+					}
+				}
+				$oids[ $val->original_id ] = $key;
+			}
+
+			$rows = array_slice( $rows, 0, $this->per_page );
+		}
+
 		$translations = array();
 		foreach( (array)$rows as $row ) {
 			$row->user = $row->user_last_modified = null;
@@ -463,6 +502,7 @@ class GP_Translation extends GP_Thing {
 				unset($row->$member);
 			}
 			$row->row_id = $row->original_id . ( $row->id? "-$row->id" : '' );
+			$row->is_fallback = $row->translation_set_id !== $translation_set->id;
 			$translations[] = new Translation_Entry( (array)$row );
 		}
 		unset( $rows );
