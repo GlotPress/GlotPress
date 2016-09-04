@@ -7,7 +7,7 @@
  */
 
 /**
- * Register the GlotPress styles and load the base style sheet.
+ * Registers the GlotPress styles and loads the base style sheet.
  */
 function gp_styles_default() {
 	$url = gp_plugin_url( 'assets/css' );
@@ -38,34 +38,50 @@ add_action( 'init', 'gp_register_scripts' );
 /**
  * Enqueue one or more styles.
  *
+ * @since 2.2.0
+ *
  * @param string|array $handles A single style handle to enqueue or an array or style handles to enqueue.
  */
-function gp_enqueue_style( $handles ) {
-	// Check to see if $handles is an array, if not, then we can make it one to simplify the next loop.
-	if ( ! is_array( $handles ) ) {
-		$handles = array( $handles );
-	}
+function gp_enqueue_styles( $handles ) {
+	// Make sure $handles is an array to simplify the next loop.
+	$handles = (array) $handles;
 
 	// Loop through each handle we've been asked to enqueue.
 	foreach ( $handles as $handle ) {
-		// Store the handle name in the global array.
-		GP::$styles[] = $handle;
+		// If we've already enqueued the style, we don't need to do it again.
+		if( ! in_array( $handle, GP::$styles ) ) {
+			// Store the handle name in the global array.
+			GP::$styles[] = $handle;
 
-		// Actually enqueue the handle via WordPress.
-		wp_enqueue_style( $handle );
+			// Actually enqueue the handle via WordPress.
+			wp_enqueue_style( $handle );
+		}
 	}
 }
 
 /**
- * Enqueue one or more script.
+ * Enqueue one or more styles.
  *
- * @param string|array $handles A single script handle to enqueue or an array or enqueue handles to enqueue.
+ * This function is a wrapper for backwards compatibility.
+ *
+ * @since 1.0.0
+ *
+ * @param string|array $handles A single style handle to enqueue or an array or style handles to enqueue.
  */
-function gp_enqueue_script( $handles ) {
-	// Check to see if $handles is an array, if not, then we can make it one to simplify the next loop.
-	if ( ! is_array( $handles ) ) {
-		$handles = array( $handles );
-	}
+function gp_enqueue_style( $handles ) {
+	gp_enqueue_styles( $handles );
+}
+
+/**
+ * Enqueue one or more scripts.
+ *
+ * @since 2.2.0
+ *
+ * @param string|array $handles A single script handle to enqueue or an array of enqueue handles to enqueue.
+ */
+function gp_enqueue_scripts( $handles ) {
+	// Make sure $handles is an array to simplify the next loop.
+	$handles = (array) $handles;
 
 	// Loop through each handle we've been asked to enqueue.
 	foreach ( $handles as $handle ) {
@@ -78,17 +94,36 @@ function gp_enqueue_script( $handles ) {
 }
 
 /**
+ * Enqueue one or more scripts.
+ *
+ * This function is a wrapper for backwards compatibility.
+ *
+ * @since 1.0.0
+ *
+ * @param string|array $handles A single script handle to enqueue or an array of enqueue handles to enqueue.
+ */
+function gp_enqueue_script( $handles ) {
+	gp_enqueue_scripts( $handles );
+}
+
+/**
  * Print the styles that have been enqueued.
+ *
+ * Only output the styles that GlotPress has registered, otherwise we'd be sending any style that the WordPress theme or plugins may have enqueued.
+ *
+ * @since 2.2.0
  */
 function gp_print_styles() {
-	// Only output the styles that GlotPress has registered, otherwise we'd be sending any style that the WordPress theme or plugins may have enqueued.
 	wp_print_styles( GP::$styles );
 }
 
 /**
  * Print the scripts that have been enqueued.
+ *
+ * Only output the scripts that GlotPress has registered, otherwise we'd be sending any scripts that the WordPress theme or plugins may have enqueued.
+ *
+ * @since 2.2.0
  */
 function gp_print_scripts() {
-	// Only output the scripts that GlotPress has registered, otherwise we'd be sending any scripts that the WordPress theme or plugins may have enqueued.
 	wp_print_scripts( GP::$scripts );
 }
