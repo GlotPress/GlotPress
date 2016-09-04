@@ -567,7 +567,7 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	);
 
 	/**
-	 * Filter entry action links.
+	 * Filters entry action links.
 	 *
 	 * @since 1.0.0
 	 *
@@ -586,42 +586,46 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 /**
  * Returns the warning class for the translation row.
  *
- * @param Translation_Entry $t translation entry for the row.
- *
  * @since 2.2.0
+ *
+ * @param Translation_Entry $translation translation entry for the row.
  *
  * @return string
  */
-function gp_get_translation_row_warning_class( $t ) {
-	$warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
+function gp_get_translation_row_warning_class( $translation ) {
+	$warning_class = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	return $warning_class;
 }
 
 
 /**
- * Generate a list of classes to be added to the translation row, based on translation entry properties.
- *
- * @param Translation_Entry $t translation entry for the row.
+ * Generates a list of classes to be added to the translation row, based on translation entry properties.
  *
  * @since 2.2.0
  *
+ * @param Translation_Entry $translation translation entry for the row.
+ *
  * @return array
  */
-function gp_get_translation_row_classes( $t ) {
-	$status_class = $t->translation_status? 'status-'.$t->translation_status : 'untranslated';
-	$priority_class = 'priority-'.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority );
-	$warning_class = gp_get_translation_row_warning_class( $t );
+function gp_get_translation_row_classes( $translation ) {
+	$status_class = $translation->translation_status? 'status-' . $translation->translation_status : 'untranslated';
+	$priority_class = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
+	$warning_class = gp_get_translation_row_warning_class( $translation );
 
-	$classes = array( $status_class, $warning_class, $priority_class );
+	$classes = array();
+	$classes[] = $status_class;
+	$classes[] = $warning_class;
+	$classes[] = $priority_class;
+
 	/**
-	 * Filter translation row classes
+	 * Filters the list of CSS classes for a translation row
 	 *
 	 * @since 2.2.0
 	 *
-	 * @param array             $classes list of classes.
-	 * @param Translation_Entry $t       translation entry.
+	 * @param array             $classes     An array of translation row classes.
+	 * @param Translation_Entry $translation The translation entry object.
 	 */
-	$classes = apply_filters( 'gp_translation_row_classes', $classes, $t );
+	$classes = apply_filters( 'gp_translation_row_classes', $classes, $translation );
 
 	return $classes;
 }
