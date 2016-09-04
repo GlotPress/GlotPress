@@ -224,21 +224,26 @@ class GP_Translation extends GP_Thing {
 		$args = (array) $args;
 
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
-			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
+			// Reduce range by one since we're starting at 0, see GH#516.
+			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				if ( isset( $args['translations'][ $i ] ) ) {
 					$args["translation_$i"] = $args['translations'][ $i ];
 				}
 			}
 			unset( $args['translations'] );
 		}
-		foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
-			if ( isset( $args["translation_$i"] ) ) {
-				$args["translation_$i"] = $this->fix_translation( $args["translation_$i"] );
+
+		// Reduce range by one since we're starting at 0, see GH#516.
+		foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
+			if ( isset( $args[ "translation_$i" ] ) ) {
+				$args[ "translation_$i" ] = $this->fix_translation( $args[ "translation_$i" ] );
 			}
 		}
+
 		if ( gp_array_get( $args, 'warnings' ) == array() ) {
 			$args['warnings'] = null;
 		}
+
 		return $args;
 	}
 
@@ -444,7 +449,9 @@ class GP_Translation extends GP_Thing {
 			$row->extracted_comments = $row->comment;
 			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
-			foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
+
+			// Reduce range by one since we're starting at 0, see GH#516.
+			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
@@ -487,7 +494,9 @@ class GP_Translation extends GP_Thing {
 
 	public function translations() {
 		$translations = array();
-		foreach( range( 0, $this->get_static( 'number_of_plural_translations' ) ) as $i ) {
+
+		// Reduce range by one since we're starting at 0, see GH#516.
+		foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 			$translations[ $i ] = isset( $this->{"translation_$i"} ) ? $this->{"translation_$i"} : null;
 		}
 		return $translations;
