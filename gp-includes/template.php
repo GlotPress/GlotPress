@@ -588,19 +588,15 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  *
  * @since 2.2.0
  *
- * @param Translation_Entry $translation translation entry for the row.
+ * @param Translation_Entry $translation The translation entry object for the row.
  *
  * @return array
  */
 function gp_get_translation_row_classes( $translation ) {
-	$status_class = $translation->translation_status? 'status-' . $translation->translation_status : 'untranslated';
-	$priority_class = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
-	$warning_class = $translation->warnings ? 'has-warnings' : 'no-warnings';
-
 	$classes = array();
-	$classes[] = $status_class;
-	$classes[] = $warning_class;
-	$classes[] = $priority_class;
+	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
+	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 
 	/**
 	 * Filters the list of CSS classes for a translation row
@@ -620,11 +616,11 @@ function gp_get_translation_row_classes( $translation ) {
  *
  * @since 2.2.0
  *
- * @param Translation_Entry $t translation entry for the row.
+ * @param Translation_Entry $translation The translation entry object for the row.
  *
  * @return void
  */
-function gp_translation_row_classes( $t ) {
-	$classes = gp_get_translation_row_classes( $t );
+function gp_translation_row_classes( $translation ) {
+	$classes = gp_get_translation_row_classes( $translation );
 	echo esc_attr( implode( ' ', $classes ) );
 }
