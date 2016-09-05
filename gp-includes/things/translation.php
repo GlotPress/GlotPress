@@ -425,16 +425,48 @@ class GP_Translation extends GP_Thing {
 			$join_where = 'AND '.$join_where;
 		}
 
-		$sql_sort = sprintf( $sort_by, $sort_how );
-
+		$fields = 't.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added';
+		$join = "$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id = {$translation_set->id}";
+		$orderby = sprintf( $sort_by, $sort_how );
 		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
 
+		/**
+		 * Filters the 'for_translation' query SQL clauses.
+		 *
+		 * @since 2.3
+		 *
+		 * @param array              $pieces          Terms query SQL clauses.
+		 * @param GP_Translation_Set $translation_set The translation set object being queried.
+		 * @param array              $filters         An array of search filters.
+		 * @param array              $sort            An array of sort settings.
+		 */
+		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_where', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
+
+		$fields = isset( $clauses['fields'] ) ? $clauses['fields'] : '';
+		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
+		$join_where = isset( $clauses['join_where'] ) ? $clauses['join_where'] : '';
+		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
+		$orderby = isset( $clauses['orderby'] ) ? $clauses['orderby'] : '';
+		$limit = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
+
 		$sql_for_translations = "
-			SELECT SQL_CALC_FOUND_ROWS t.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added
+			SELECT SQL_CALC_FOUND_ROWS $fields
 			FROM $wpdb->gp_originals as o
-			$join_type JOIN $wpdb->gp_translations AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id . " $join_where
-			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where ORDER BY $sql_sort $limit";
+			$join $join_where
+			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where ORDER BY $orderby $limit";
+
 		$rows = $this->many_no_map( $sql_for_translations );
+
+		/**
+		 * Filters the rows returned from the for_translation query.
+		 *
+		 * @since 2.3
+		 *
+		 * @param array              $rows            Array of arrays returned by the query.
+		 * @param GP_Translation_Set $translation_set The translation set object being queried.
+		 */
+		$rows = apply_filters( 'gp_for_translation_rows', $rows, $translation_set );
+
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 		foreach( (array)$rows as $row ) {
