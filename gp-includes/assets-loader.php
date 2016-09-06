@@ -48,28 +48,25 @@ function gp_enqueue_styles( $handles ) {
 
 	// Loop through each handle we've been asked to enqueue.
 	foreach ( $handles as $handle ) {
-		// If we've already enqueued the style, we don't need to do it again.
-		if( ! in_array( $handle, GP::$styles ) ) {
-			// Store the handle name in the global array.
-			GP::$styles[] = $handle;
-
-			// Actually enqueue the handle via WordPress.
-			wp_enqueue_style( $handle );
-		}
+		gp_enqueue_style( $handle );
 	}
 }
 
 /**
  * Enqueue one or more styles.
  *
- * This function is a wrapper for backwards compatibility.
- *
  * @since 1.0.0
  *
- * @param string|array $handles A single style handle to enqueue or an array or style handles to enqueue.
+ * @param string $handle A single style handle to enqueue.
  */
-function gp_enqueue_style( $handles ) {
-	gp_enqueue_styles( $handles );
+function gp_enqueue_style( $handle ) {
+	if ( ! in_array( $handle, GP::$styles ) ) {
+		// Store the handle name in the global array.
+		GP::$styles[] = $handle;
+
+		// Actually enqueue the handle via WordPress.
+		wp_enqueue_style( $handle );
+	}
 }
 
 /**
@@ -85,25 +82,25 @@ function gp_enqueue_scripts( $handles ) {
 
 	// Loop through each handle we've been asked to enqueue.
 	foreach ( $handles as $handle ) {
-		// Store the handle name in the global array.
-		GP::$scripts[] = $handle;
-
-		// Actually enqueue the handle via WordPress.
-		wp_enqueue_script( $handle );
+		gp_enqueue_script( $handle );
 	}
 }
 
 /**
  * Enqueue one or more scripts.
  *
- * This function is a wrapper for backwards compatibility.
- *
  * @since 1.0.0
  *
- * @param string|array $handles A single script handle to enqueue or an array of enqueue handles to enqueue.
+ * @param string $handle A single script handle to enqueue.
  */
-function gp_enqueue_script( $handles ) {
-	gp_enqueue_scripts( $handles );
+function gp_enqueue_script( $handle ) {
+	if ( ! in_array( $handle, GP::$scripts ) ) {
+		// Store the handle name in the global array.
+		GP::$scripts[] = $handle;
+
+		// Actually enqueue the handle via WordPress.
+		wp_enqueue_script( $handle );
+	}
 }
 
 /**
