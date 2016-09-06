@@ -7,35 +7,49 @@
  */
 
 /**
- * Add the GlotPress admin page to the WordPress settings menu.
+ * Class to add a settings page to the WordPress admin settings menu.
  *
  * @since 2.2.0
  */
-add_action( 'admin_menu', 'gp_admin_menu', 10, 1 );
+class GP_WP_Settings {
 
-/**
- * Callback to add the GlotPress menu and register the settings.
- *
- * @since 2.2.0
- */
-function gp_admin_menu() {
-	add_options_page( __( 'GlotPress', 'glotpress' ), __( 'GlotPress', 'glotpress' ), 'manage_options', basename( __FILE__ ), 'gp_admin_page' );
-
-	register_setting( 'glotpress', 'gp_delete_on_uninstall' );
-}
-
-/**
- * Callback to ouput the GlotPress admin page.
- *
- * @since 2.2.0
- */
-function gp_admin_page() {
-	// If the current user can't manage options, display a message and return immediately.
-	if ( ! current_user_can( 'manage_options' ) ) {
-		_e( 'You do not have permissions to this page!', 'glotpress' );
-
-		return;
+	/**
+	 * Constructor function for the class.
+	 *
+	 * @since 2.2.0
+	 */
+	public function __construct() {
+		/**
+		 * Add the GlotPress admin page to the WordPress settings menu.
+		 *
+		 * @since 2.2.0
+		 */
+		add_action( 'admin_menu', array( $this, 'gp_admin_menu' ), 10, 1 );
 	}
+
+	/**
+	 * Callback to add the GlotPress menu and register the settings.
+	 *
+	 * @since 2.2.0
+	 */
+	public function gp_admin_menu() {
+		add_options_page( __( 'GlotPress', 'glotpress' ), __( 'GlotPress', 'glotpress' ), 'manage_options', basename( __FILE__ ), array( $this, 'gp_admin_page' ) );
+
+		register_setting( 'glotpress', 'gp_delete_on_uninstall' );
+	}
+
+	/**
+	 * Callback to ouput the GlotPress admin page.
+	 *
+	 * @since 2.2.0
+	 */
+	public function gp_admin_page() {
+		// If the current user can't manage options, display a message and return immediately.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			_e( 'You do not have permissions to this page!', 'glotpress' );
+
+			return;
+		}
 ?>
 <div class="wrap">
 <h1><?php _e( 'GlotPress Settings', 'glotpress' ); ?></h1>
@@ -58,4 +72,7 @@ function gp_admin_page() {
 
 </div>
 <?php
+	}
 }
+
+GP::$wp_settings = new GP_WP_Settings();
