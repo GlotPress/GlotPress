@@ -7,12 +7,12 @@ gp_breadcrumb( array(
 gp_enqueue_script( 'jquery-ui-core' );
 gp_enqueue_script( 'gp-editor' );
 gp_enqueue_script( 'gp-translations-page' );
-wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
-$editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
-
-wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
+global $gp_editor_options;
+$gp_editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
+// Call the i18n JS variables
+add_action( 'wp_enqueue_scripts', 'gp_localize_script' );
 
 gp_tmpl_header();
 $i = 0;

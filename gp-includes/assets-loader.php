@@ -82,3 +82,21 @@ function gp_print_scripts() {
 	global $gp_enqueued_scripts;
 	wp_print_scripts( $gp_enqueued_scripts );
 }
+
+/**
+ * Calls the i18n JS variables via wp_localize_script()
+ *
+ * We wrap this in a function and call it via an action for the correct load priorities.
+ *
+ * @since 2.1.0
+ */
+function gp_localize_script(){
+	global $gp_editor_options;
+
+	if(is_array($gp_editor_options)){
+		wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
+
+		wp_localize_script( 'gp-editor', '$gp_editor_options', $gp_editor_options );
+	}
+
+}
