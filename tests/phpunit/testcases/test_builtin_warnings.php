@@ -51,7 +51,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 	}
 
 	function test_add_all() {
-		$warnings = $this->getMock( 'GP_Translation_Warnings' );
+		$warnings = $this->getMockBuilder('GP_Translation_Warnings')->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
 		$warnings->expects( $this->exactly( 7 ) )->method( 'add' )->will( $this->returnValue( true ) );

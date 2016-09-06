@@ -59,7 +59,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 
 	function test_new_post_error_redirect_if_create_was_unsuccessful() {
 		$this->set_admin_user_as_current();
-		GP::$translation_set = $this->getMock( 'GP_Translation_Set', array( 'create_and_select' ) );
+		GP::$translation_set = $this->getMockBuilder('GP_Translation_Set')->setMethods(array('create_and_select'))->getMock();
 		GP::$translation_set->expects( $this->any() )->method( 'create_and_select' );
 		$_POST['set'] = $this->factory->translation_set->generate_args();
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
@@ -138,7 +138,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 
 	function test_edit_post_error_redirect_if_create_was_unsuccessful() {
 		$this->set_admin_user_as_current();
-		GP::$translation_set = $this->getMock( 'GP_Translation_Set', array( 'update' ) );
+		GP::$translation_set = $this->getMockBuilder( 'GP_Translation_Set' )->setMethods( array( 'update' ) )->getMock();
 		$_POST['set'] = $this->factory->translation_set->generate_args();
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );

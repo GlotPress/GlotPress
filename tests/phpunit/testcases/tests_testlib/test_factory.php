@@ -83,7 +83,7 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	}
 
 	function test_factory_for_thing_generate_args_should_use_generator() {
-		$generator_stub = $this->getMock( 'GP_UnitTest_Generator_Sequence' );
+		$generator_stub = $this->getMockBuilder( 'GP_UnitTest_Generator_Sequence' )->getMock();
 		$generator_stub->expects( $this->exactly( 2 ) )->method( 'next' )->will( $this->onConsecutiveCalls( 'name 1', 'name 2' ) );
 		$factory = $this->create_factory( array('name') );
 		$generation_defintions = array( 'name' =>  $generator_stub );
@@ -110,7 +110,7 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	}
 
 	private function create_thing_mock_with_name_field_and_with_create_which_should_be_called_once_with( $expected_create_args ) {
-		$thing = $this->getMock( 'GP_Thing_Test_Factory' );
+		$thing = $this->getMockBuilder( 'GP_Thing_Test_Factory' )->getMock();
 		$thing->field_names = array('name');
 		$thing->expects( $this->once() )->method( 'create' )->with( $this->equalTo( $expected_create_args ) );
 		return $thing;
@@ -129,9 +129,9 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	}
 
 	private function create_thing_stub_with_name_and_full_name_which_on_create_returns_mock_whose_save_should_be_called_with( $create_args, $expected_save_args ) {
-		$thing = $this->getMock( 'GP_Thing_Test_Factory' );
+		$thing = $this->getMockBuilder( 'GP_Thing_Test_Factory' )->getMock();
 		$thing->field_names = array('name', 'full_name');
-		$created_thing = $this->getMock( 'GP_Thing_Test_Factory' );
+		$created_thing = $this->getMockBuilder( 'GP_Thing_Test_Factory' )->getMock();
 		foreach( $create_args as $name => $value ) {
 			$created_thing->$name = $value;
 		}
