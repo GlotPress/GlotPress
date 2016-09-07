@@ -9,19 +9,19 @@
 /**
  * Registers the GlotPress styles and loads the base style sheet.
  */
-function gp_styles_default() {
+function gp_register_default_styles() {
 	$url = gp_plugin_url( 'assets/css' );
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style.css', array(), '20150717' );
 }
 
-add_action( 'init', 'gp_styles_default' );
+add_action( 'init', 'gp_register_default_styles' );
 
 /**
  * Register the GlotPress scripts.
  */
-function gp_register_scripts() {
+function gp_register_default_scripts() {
 	$url = gp_plugin_url( 'assets/js' );
 
 	// Register our standard scripts.
@@ -33,7 +33,7 @@ function gp_register_scripts() {
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page.js', array( 'gp-editor' ), '20150430' );
 }
 
-add_action( 'init', 'gp_register_scripts' );
+add_action( 'init', 'gp_register_default_scripts' );
 
 /**
  * Enqueue one or more styles.
