@@ -60,7 +60,7 @@ function gp_enqueue_styles( $handles ) {
  * @param string $handle A single style handle to enqueue.
  */
 function gp_enqueue_style( $handle ) {
-	if ( false === in_array( $handle, GP::$styles, true ) ) {
+	if ( ! in_array( $handle, GP::$styles, true ) ) {
 		// Store the handle name in the global array.
 		GP::$styles[] = $handle;
 
@@ -94,7 +94,7 @@ function gp_enqueue_scripts( $handles ) {
  * @param string $handle A single script handle to enqueue.
  */
 function gp_enqueue_script( $handle ) {
-	if ( false === in_array( $handle, GP::$scripts, true ) ) {
+	if ( ! in_array( $handle, GP::$scripts, true ) ) {
 		// Store the handle name in the global array.
 		GP::$scripts[] = $handle;
 

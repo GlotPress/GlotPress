@@ -155,7 +155,7 @@ class GP {
 	 *
 	 * @var array
 	 */
-	public static $styles;
+	public static $styles = array();
 
 	/**
 	 * Array of enqueued scripts.
@@ -164,5 +164,5 @@ class GP {
 	 *
 	 * @var array
 	 */
-	public static $scripts;
+	public static $scripts = array();
 }
