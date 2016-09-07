@@ -1,8 +1,7 @@
 <?php
 gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
 
-gp_enqueue_script( 'gp-common' );
-gp_enqueue_script( 'tablesorter' );
+gp_enqueue_scripts( array( 'gp-common', 'tablesorter' ) );
 gp_breadcrumb( array( __( 'Locales', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
