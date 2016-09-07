@@ -50,7 +50,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			list( $context, $original, $translation ) = $sample;
 			$stubbed_originals[] = new GP_Original( array( 'singular' => $original, 'context' => $context ) );
 		}
-		GP::$original = $this->getMock( 'GP_Original', array('by_project_id') );
+		GP::$original = $this->getMockBuilder( 'GP_Original' )->setMethods( array('by_project_id') )->getMock();
 		GP::$original->expects( $this->once() )
 					->method( 'by_project_id' )
 					->with( $this->equalTo(2) )
