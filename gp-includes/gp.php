@@ -165,4 +165,13 @@ class GP {
 	 * @var array
 	 */
 	public static $scripts = array();
+	
+	/**
+	 * Model for GP_WP_Settings.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @var GP_WP_Settings
+	 */
+	public static $wp_settings;
 }
