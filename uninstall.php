@@ -19,7 +19,7 @@ if ( defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * @since 2.2.0
  */
 function gp_uninstall() {
-	global $wpdb;
+	global $wpdb, $gp_table_prefix;
 
 	// Since we may have been called after GP has been disabled, make sure we have all the defines we need.
 	if ( ! defined( 'GP_PATH' ) ) {
@@ -28,6 +28,10 @@ function gp_uninstall() {
 
 	if ( ! defined( 'GP_INC' ) ) {
 		define( 'GP_INC', 'gp-includes/' );
+	}
+
+	if ( ! isset( $gp_table_prefix ) ) {
+		$gp_table_prefix = $GLOBALS['table_prefix'] . 'gp_';
 	}
 
 	// Include the schema so we can get the list of tables.
@@ -39,7 +43,7 @@ function gp_uninstall() {
 	$schema = gp_schema_get();
 
 	foreach ( $schema as $table => $sql ) {
-		$table_name = $wpdb->prefix . 'gp_' . $table;
+		$table_name = $gp_table_prefix . $table;
 
 		// We can't use $wpdb->prepare here as the table name is not one of the support data types.
 		$wpdb->query( "DROP TABLE {$table_name};" ); // WPCS: unprepared SQL ok.
