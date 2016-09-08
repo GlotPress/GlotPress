@@ -234,7 +234,6 @@ class GP_Project extends GP_Thing {
 
 	public function source_url( $file, $line ) {
 		$source_url = false;
-
 		if ( $source_url_template = $this->source_url_template() ) {
 			$source_url = str_replace( array( '%file%', '%line%' ), array( $file, $line ), $source_url_template );
 		}
@@ -244,12 +243,10 @@ class GP_Project extends GP_Thing {
 		 *
 		 * @since 2.2.0
 		 *
-		 * @param string        $source_url   The originally generated source URL.
-		 * @param GP_Project    $project      The current project.
-		 * @param string        $file         The referenced file name.
-		 * @param string        $line         The line number in the referenced file.
-		 *
-		 * @return string|false
+		 * @param string|false $source_url The originally generated source URL, or false if no URL is available.
+		 * @param GP_Project $project The current project.
+		 * @param string $file The referenced file name.
+		 * @param string $line The line number in the referenced file.
 		 */
 		return apply_filters( 'gp_reference_source_url', $source_url, $this, $file, $line );
 	}
