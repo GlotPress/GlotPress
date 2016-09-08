@@ -46,7 +46,7 @@ function gp_uninstall() {
 		$table_name = $gp_table_prefix . $table;
 
 		// We can't use $wpdb->prepare here as the table name is not one of the support data types.
-		$wpdb->query( "DROP TABLE {$table_name};" ); // WPCS: unprepared SQL ok.
+		$wpdb->query( "DROP TABLE IF EXISTS {$table_name};" ); // WPCS: unprepared SQL ok.
 	}
 
 	// Delete the WordPress options we use.
