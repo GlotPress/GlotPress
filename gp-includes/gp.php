@@ -165,7 +165,7 @@ class GP {
 	 * @var array
 	 */
 	public static $scripts = array();
-	
+
 	/**
 	 * Model for GP_WP_Settings.
 	 *
