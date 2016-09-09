@@ -559,7 +559,18 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function set_status( $status ) {
-		if ( 'current' == $status ) {
+		/**
+		 * Allows overriding whether the current user can set a translation to a status.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param string $status The status the translation is to be set to.
+		 * @param GP_Translation $translated The translation in question.
+		 */
+		if ( ! apply_filters( 'gp_current_user_can_set_translation_status', $status, $this ) ) {
+			return false;
+		}
+		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} else {
 			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );

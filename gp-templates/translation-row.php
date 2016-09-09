@@ -44,6 +44,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 
 <tr class="preview <?php gp_translation_row_classes( $t ); ?>" id="preview-<?php echo esc_attr( $t->row_id ) ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
 	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
+	<?php if ( isset( $can_approve_translation_set ) && ! $can_approve && $can_approve_translation_set ) : ?><th scope="row"></th><?php endif; ?>
 	<?php /*
 	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
 	*/ ?>

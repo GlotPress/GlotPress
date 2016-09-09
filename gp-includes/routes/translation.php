@@ -265,11 +265,13 @@ class GP_Route_Translation extends GP_Route_Main {
 					$data[ "translation_$i" ] = $translations[ $i ];
 				}
 			}
+			$set_status = $data['status'];
+			$data['status'] = 'waiting';
 
 			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )
-				$data['status'] = 'current';
+				$set_status = 'current';
 			else
-				$data['status'] = 'waiting';
+				$set_status = 'waiting';
 
 			$original = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
@@ -299,7 +301,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				return $this->die_with_error( $error_output, 200 );
 			}
 			else {
-				if ( 'current' == $data['status'] ) {
+				if ( 'current' === $set_status ) {
 					$translation->set_status( 'current' );
 				}
 
@@ -310,7 +312,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 					$can_write = $this->can( 'write', 'project', $project->id );
-					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id ) && apply_filters( 'gp_current_user_can_set_translation_status', 'current', $t );
 					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
 				}
 				else {
@@ -524,7 +526,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 			$can_write = $this->can( 'write', 'project', $project->id );
-			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id ) && apply_filters( 'gp_current_user_can_set_translation_status', 'current', $t );
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			return $this->die_with_error( 'Error in retrieving translation!' );
