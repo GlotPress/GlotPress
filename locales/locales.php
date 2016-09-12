@@ -1,31 +1,178 @@
 <?php
+/**
+ * Locales: Locale information for use in GlotPress.
+ *
+ * @package GlotPress
+ * @since 1.0.0
+ */
+
 if ( ! class_exists( 'GP_Locale' ) ) :
 
+	/**
+	 * Core locale class used to define the properties of a locale.
+	 *
+	 * @since 1.0.0
+	 */
 	class GP_Locale {
+		/**
+		 * The english name of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
 		public $english_name;
-		public $native_name;
-		public $text_direction = 'ltr';
-		public $lang_code_iso_639_1 = null;
-		public $lang_code_iso_639_2 = null;
-		public $lang_code_iso_639_3 = null;
-		public $country_code;
-		public $wp_locale;
-		public $slug;
-		public $nplurals = 2;
-		public $plural_expression = 'n != 1';
-		public $google_code = null;
-		public $preferred_sans_serif_font_family = null;
-		public $facebook_locale = null;
-		// TODO: days, months, decimals, quotes
 
+		/**
+		 * The native name of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $native_name;
+
+		/**
+		 * The text direction of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $text_direction = 'ltr';
+
+		/**
+		 * The ISO 639-1 code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $lang_code_iso_639_1 = null;
+
+		/**
+		 * The ISO 639-2 code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $lang_code_iso_639_2 = null;
+
+		/**
+		 * The ISO 639-3 code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $lang_code_iso_639_3 = null;
+
+		/**
+		 * The ISO country code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $country_code;
+
+		/**
+		 * The wordpress.org code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $wp_locale;
+
+		/**
+		 * The internal slug of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $slug;
+
+		/**
+		 * The number of plural forms of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var int
+		 */
+		public $nplurals = 2;
+
+		/**
+		 * The plural expressions of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $plural_expression = 'n != 1';
+
+		/**
+		 * The Google code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $google_code = null;
+
+		/**
+		 * The preferred font family of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $preferred_sans_serif_font_family = null;
+
+		/**
+		 * The Facebook code of the locale.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
+		public $facebook_locale = null;
+
+		/*
+		 * TODO: days, months, decimals, quotes.
+		 */
+
+		/**
+		 * Index of the pluralizing to use.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var string
+		 */
 		private $_index_for_number;
 
+		/**
+		 * The class constructor.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array $args A list of properties and values to set for the object.
+		 */
 		public function __construct( $args = array() ) {
-			foreach( $args as $key => $value ) {
+			foreach ( $args as $key => $value ) {
 				$this->$key = $value;
 			}
 		}
 
+		/**
+		 * Set the state of the object to a new set of properties.
+		 *
+		 * @param array $state A list of properties and values to set for the object.
+		 *
+		 * @return GP_Locale The new object with the desired state.
+		 */
 		public static function __set_state( $state ) {
 			return new GP_Locale( $state );
 		}
@@ -34,10 +181,11 @@ if ( ! class_exists( 'GP_Locale' ) ) :
 		 * Make deprecated properties checkable for backwards compatibility.
 		 *
 		 * @param string $name Property to check if set.
+		 *
 		 * @return bool Whether the property is set.
 		 */
 		public function __isset( $name ) {
-			if ( 'rtl' == $name ) {
+			if ( 'rtl' === $name ) {
 				return isset( $this->text_direction );
 			}
 		}
@@ -46,24 +194,39 @@ if ( ! class_exists( 'GP_Locale' ) ) :
 		 * Make deprecated properties readable for backwards compatibility.
 		 *
 		 * @param string $name Property to get.
+		 *
 		 * @return mixed Property.
 		 */
 		public function __get( $name ) {
-			if ( 'rtl' == $name ) {
+			if ( 'rtl' === $name ) {
 				return ( 'rtl' === $this->text_direction );
 			}
 		}
 
+		/**
+		 * Join the english and natives names with a '/' and pass it through the translation engine.
+		 *
+		 * @return string The combined and translated string.
+		 */
 		public function combined_name() {
 			/* translators: combined name for locales: 1: name in English, 2: native name */
 			return sprintf( _x( '%1$s/%2$s', 'locales' ), $this->english_name, $this->native_name );
 		}
 
+		/**
+		 * Returns an array of pluralized numbers.
+		 *
+		 * @param string $index      Property to get.
+		 * @param int    $how_many   Property to get.
+		 * @param int    $test_up_to Property to get.
+		 *
+		 * @return array Array of numbers.
+		 */
 		public function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000 ) {
 			$numbers = array();
 
-			for( $number = 0; $number < $test_up_to; ++$number ) {
-				if ( $this->index_for_number( $number ) == $index ) {
+			for ( $number = 0; $number < $test_up_to; ++$number ) {
+				if ( $this->index_for_number( $number ) === $index ) {
 					$numbers[] = $number;
 
 					if ( count( $numbers ) >= $how_many ) {
@@ -75,6 +238,13 @@ if ( ! class_exists( 'GP_Locale' ) ) :
 			return $numbers;
 		}
 
+		/**
+		 * Returns an pluralized format for a number.
+		 *
+		 * @param string $number Number to pluralize.
+		 *
+		 * @return string Pluralized number.
+		 */
 		public function index_for_number( $number ) {
 			if ( ! isset( $this->_index_for_number ) ) {
 				$gettext = new Gettext_Translations;
@@ -86,17 +256,33 @@ if ( ! class_exists( 'GP_Locale' ) ) :
 
 			return $f( $number );
 		}
-
 	}
 
 endif;
 
 if ( ! class_exists( 'GP_Locales' ) ) :
 
+	/**
+	 * Locales class used to define the locales collection.
+	 *
+	 * @since 1.0.0
+	 */
 	class GP_Locales {
 
+		/**
+		 * The array of current locales.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @var array
+		 */
 		public $locales = array();
 
+		/**
+		 * The class constructor.
+		 *
+		 * @since 1.0.0
+		 */
 		public function __construct() {
 			$this->locales['aa'] = new GP_Locale();
 			$this->locales['aa']->english_name = 'Afar';
@@ -545,7 +731,7 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 
 			$this->locales['el-po'] = new GP_Locale();
 			$this->locales['el-po']->english_name = 'Greek (Polytonic)';
-			$this->locales['el-po']->native_name = 'Greek (Polytonic)'; // TODO
+			$this->locales['el-po']->native_name = 'Greek (Polytonic)'; // TODO.
 			$this->locales['el-po']->country_code = 'gr';
 			$this->locales['el-po']->slug = 'el-po';
 
@@ -2174,41 +2360,77 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['zh-tw']->lang_code_iso_639_2 = 'zho';
 			$this->locales['zh-tw']->country_code = 'tw';
 			$this->locales['zh-tw']->slug = 'zh-tw';
-			$this->locales['zh-tw']->wp_locale= 'zh_TW';
+			$this->locales['zh-tw']->wp_locale = 'zh_TW';
 			$this->locales['zh-tw']->nplurals = 1;
 			$this->locales['zh-tw']->plural_expression = '0';
 			$this->locales['zh-tw']->google_code = 'zh-TW';
 			$this->locales['zh-tw']->facebook_locale = 'zh_TW';
 		}
 
+		/**
+		 * Returns a global instance of the class.
+		 *
+		 * @return GP_Locales The global instance of the GP_Locales class.
+		 */
 		public static function &instance() {
-			if ( ! isset( $GLOBALS['gp_locales'] ) )
+			if ( ! isset( $GLOBALS['gp_locales'] ) ) {
 				$GLOBALS['gp_locales'] = new GP_Locales;
+			}
 
 			return $GLOBALS['gp_locales'];
 		}
 
+		/**
+		 * Returns the list of locales.
+		 *
+		 * @return array The list of current locales.
+		 */
 		public static function locales() {
 			$instance = GP_Locales::instance();
+
 			return $instance->locales;
 		}
 
+		/**
+		 * Checks to see if a given locale exists.
+		 *
+		 * @param string $slug The slug to check.
+		 *
+		 * @return bool True if the locale exists, false otherwise.
+		 */
 		public static function exists( $slug ) {
 			$instance = GP_Locales::instance();
+
 			return isset( $instance->locales[ $slug ] );
 		}
 
+		/**
+		 * Gets a locale by the slug.
+		 *
+		 * @param string $slug The slug to search for.
+		 *
+		 * @return GP_Locale|null Returns the GP_Locale object if it exists, otherwise returns null.
+		 */
 		public static function by_slug( $slug ) {
 			$instance = GP_Locales::instance();
+
 			return isset( $instance->locales[ $slug ] )? $instance->locales[ $slug ] : null;
 		}
 
+		/**
+		 * Gets a locale by a GP_Locale field.
+		 *
+		 * @param string $field_name  The field to search.
+		 * @param string $field_value The value to search for.
+		 *
+		 * @return GP_Locale|false Returns the GP_Locale object if it exists, otherwise returns false.
+		 */
 		public static function by_field( $field_name, $field_value ) {
 			$instance = GP_Locales::instance();
 			$result   = false;
 
-			foreach( $instance->locales() as $locale ) {
-				if ( isset( $locale->$field_name ) && $locale->$field_name == $field_value ) {
+			foreach ( $instance->locales() as $locale ) {
+				if ( isset( $locale->$field_name ) && $locale->$field_name === $field_value ) {
 					$result = $locale;
 					break;
 				}
