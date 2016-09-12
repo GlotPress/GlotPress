@@ -145,11 +145,11 @@ if ( ! class_exists( 'GP_Locale' ) ) :
 		 */
 
 		/**
-		 * Index of the pluralizing to use.
+		 * Index function of the pluralizing to use.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @var string
+		 * @var function
 		 */
 		private $_index_for_number;
 
@@ -334,7 +334,7 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 		public static function by_slug( $slug ) {
 			$instance = GP_Locales::instance();
 
-			return isset( $instance->locales[ $slug ] )? $instance->locales[ $slug ] : null;
+			return isset( $instance->locales[ $slug ] ) ? $instance->locales[ $slug ] : null;
 		}
 
 		/**
