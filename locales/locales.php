@@ -284,6 +284,85 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 		 * @since 1.0.0
 		 */
 		public function __construct() {
+			$this->_populate_locales();
+		}
+
+		/**
+		 * Returns a global instance of the class.
+		 *
+		 * @return GP_Locales The global instance of the GP_Locales class.
+		 */
+		public static function &instance() {
+			if ( ! isset( $GLOBALS['gp_locales'] ) ) {
+				$GLOBALS['gp_locales'] = new GP_Locales;
+			}
+
+			return $GLOBALS['gp_locales'];
+		}
+
+		/**
+		 * Returns the list of locales.
+		 *
+		 * @return array The list of current locales.
+		 */
+		public static function locales() {
+			$instance = GP_Locales::instance();
+
+			return $instance->locales;
+		}
+
+		/**
+		 * Checks to see if a given locale exists.
+		 *
+		 * @param string $slug The slug to check.
+		 *
+		 * @return bool True if the locale exists, false otherwise.
+		 */
+		public static function exists( $slug ) {
+			$instance = GP_Locales::instance();
+
+			return isset( $instance->locales[ $slug ] );
+		}
+
+		/**
+		 * Gets a locale by the slug.
+		 *
+		 * @param string $slug The slug to search for.
+		 *
+		 * @return GP_Locale|null Returns the GP_Locale object if it exists, otherwise returns null.
+		 */
+		public static function by_slug( $slug ) {
+			$instance = GP_Locales::instance();
+
+			return isset( $instance->locales[ $slug ] )? $instance->locales[ $slug ] : null;
+		}
+
+		/**
+		 * Gets a locale by a GP_Locale field.
+		 *
+		 * @param string $field_name  The field to search.
+		 * @param string $field_value The value to search for.
+		 *
+		 * @return GP_Locale|false Returns the GP_Locale object if it exists, otherwise returns false.
+		 */
+		public static function by_field( $field_name, $field_value ) {
+			$instance = GP_Locales::instance();
+			$result   = false;
+
+			foreach ( $instance->locales() as $locale ) {
+				if ( isset( $locale->$field_name ) && $locale->$field_name === $field_value ) {
+					$result = $locale;
+					break;
+				}
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Populate the class locales array.
+		 */
+		private function _populate_locales() {
 			$this->locales['aa'] = new GP_Locale();
 			$this->locales['aa']->english_name = 'Afar';
 			$this->locales['aa']->native_name = 'Afaraf';
@@ -2365,78 +2444,6 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['zh-tw']->plural_expression = '0';
 			$this->locales['zh-tw']->google_code = 'zh-TW';
 			$this->locales['zh-tw']->facebook_locale = 'zh_TW';
-		}
-
-		/**
-		 * Returns a global instance of the class.
-		 *
-		 * @return GP_Locales The global instance of the GP_Locales class.
-		 */
-		public static function &instance() {
-			if ( ! isset( $GLOBALS['gp_locales'] ) ) {
-				$GLOBALS['gp_locales'] = new GP_Locales;
-			}
-
-			return $GLOBALS['gp_locales'];
-		}
-
-		/**
-		 * Returns the list of locales.
-		 *
-		 * @return array The list of current locales.
-		 */
-		public static function locales() {
-			$instance = GP_Locales::instance();
-
-			return $instance->locales;
-		}
-
-		/**
-		 * Checks to see if a given locale exists.
-		 *
-		 * @param string $slug The slug to check.
-		 *
-		 * @return bool True if the locale exists, false otherwise.
-		 */
-		public static function exists( $slug ) {
-			$instance = GP_Locales::instance();
-
-			return isset( $instance->locales[ $slug ] );
-		}
-
-		/**
-		 * Gets a locale by the slug.
-		 *
-		 * @param string $slug The slug to search for.
-		 *
-		 * @return GP_Locale|null Returns the GP_Locale object if it exists, otherwise returns null.
-		 */
-		public static function by_slug( $slug ) {
-			$instance = GP_Locales::instance();
-
-			return isset( $instance->locales[ $slug ] )? $instance->locales[ $slug ] : null;
-		}
-
-		/**
-		 * Gets a locale by a GP_Locale field.
-		 *
-		 * @param string $field_name  The field to search.
-		 * @param string $field_value The value to search for.
-		 *
-		 * @return GP_Locale|false Returns the GP_Locale object if it exists, otherwise returns false.
-		 */
-		public static function by_field( $field_name, $field_value ) {
-			$instance = GP_Locales::instance();
-			$result   = false;
-
-			foreach ( $instance->locales() as $locale ) {
-				if ( isset( $locale->$field_name ) && $locale->$field_name === $field_value ) {
-					$result = $locale;
-					break;
-				}
-			}
-
-			return $result;
 		}
 	}
 
