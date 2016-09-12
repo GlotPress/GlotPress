@@ -113,15 +113,6 @@ if ( ! class_exists( 'GP_Locale' ) ) :
 		 */
 		public $plural_expression = 'n != 1';
 
-		/**
-		 * The preferred font family of the locale.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @var string
-		 */
-		public $preferred_sans_serif_font_family = null;
-
 		/*
 		 * TODO: days, months, decimals, quotes.
 		 */
@@ -403,7 +394,6 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['ar']->nplurals = 6;
 			$this->locales['ar']->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 			$this->locales['ar']->text_direction = 'rtl';
-			$this->locales['ar']->preferred_sans_serif_font_family = 'Tahoma';
 
 			$this->locales['arq'] = new GP_Locale();
 			$this->locales['arq']->english_name = 'Algerian Arabic';
