@@ -340,7 +340,7 @@ class GP_Locales {
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
-		$bo->native_name = 'བོད་སྐད';
+		$bo->native_name = 'བོད་ཡིག';
 		$bo->lang_code_iso_639_1 = 'bo';
 		$bo->lang_code_iso_639_2 = 'tib';
 		$bo->wp_locale = 'bo';
