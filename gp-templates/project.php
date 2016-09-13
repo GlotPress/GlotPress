@@ -2,6 +2,7 @@
 gp_title( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
+gp_enqueue_style( 'tablesorter-theme' );
 $edit_link = gp_link_project_edit_get( $project, __( '(edit)', 'glotpress' ) );
 
 if ( $project->active ) {
@@ -149,6 +150,8 @@ gp_tmpl_header();
 	});
 	jQuery(document).ready(function($) {
 		$(".translation-sets").tablesorter({
+			theme: 'glotpress',
+			sortList: [[0,0]],
 			headers: {
 				0: {
 					sorter: 'text'

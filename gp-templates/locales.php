@@ -2,6 +2,7 @@
 gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
 
 gp_enqueue_scripts( array( 'gp-common', 'tablesorter' ) );
+gp_enqueue_style( 'tablesorter-theme' );
 gp_breadcrumb( array( __( 'Locales', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
@@ -34,6 +35,8 @@ gp_tmpl_header();
 	<script type="text/javascript" charset="utf-8">
 		jQuery(document).ready(function($) {
 			$('.locales').tablesorter({
+				theme: 'glotpress',
+				sortList: [[0,0]],
 				headers: {
 					0: {
 						sorter: 'text'
