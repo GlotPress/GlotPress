@@ -1,6 +1,10 @@
 <?php
 gp_title( __( 'Create New Translation Set &lt; GlotPress', 'glotpress'  ) );
 $project? gp_breadcrumb_project( $project ) : gp_breadcrumb( array( __( 'New Translation Set', 'glotpress' ) ) );
+
+// jQuery is required for the 'translation-set-form' template.
+gp_enqueue_scripts( array( 'jquery' ) );
+
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Create New Translation Set', 'glotpress'  ); ?></h2>
