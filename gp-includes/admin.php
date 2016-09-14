@@ -121,7 +121,7 @@ class GP_Admin {
 		</tr>
 
 		<tr valign="top">
-			<td scope="row" align="center"><p><?php printf( __( 'by %1$sThe GlotPress Team%2$s', 'glotpress' ), '<a href="https://glotpress.org">', '</a>' ); ?></p></td>
+			<td scope="row" align="center"><p><?php printf( __( 'by %1$sThe GlotPress Team%2$s', 'glotpress' ), '<a href="http://glotpress.org">', '</a>' ); ?></p></td>
 		</tr>
 
 		<tr valign="top">
