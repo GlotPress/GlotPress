@@ -167,11 +167,11 @@ class GP {
 	public static $scripts = array();
 
 	/**
-	 * Model for GP_WP_Settings.
+	 * Model for GP_Admin.
 	 *
 	 * @since 2.2.0
 	 *
-	 * @var GP_WP_Settings
+	 * @var GP_Admin
 	 */
-	public static $wp_settings;
+	public static $admin;
 }
