@@ -1,4 +1,5 @@
 # GlotDict
+[![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://img.shields.io/badge/License-GPL%20v2-blue.svg)   
 
 [https://translate.wordpress.org](https://translate.wordpress.org) enable to the users to translate plugin, themes and WordPress itself.  
 The problem is that every community have their dictionaries to maintain consistency of the terms.
