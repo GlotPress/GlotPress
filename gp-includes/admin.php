@@ -33,7 +33,7 @@ class GP_Admin {
 	 * @since 2.2.0
 	 */
 	public function gp_admin_menu() {
-		add_options_page( __( 'GlotPress', 'glotpress' ), __( 'GlotPress', 'glotpress' ), 'manage_options', basename( __FILE__ ), array( $this, 'gp_admin_page' ) );
+		add_options_page( __( 'GlotPress', 'glotpress' ), __( 'GlotPress', 'glotpress' ), 'manage_options', 'GP_ADMIN_MENU', array( $this, 'gp_admin_page' ) );
 
 		register_setting( 'glotpress', 'gp_delete_on_uninstall' );
 	}
@@ -72,68 +72,66 @@ class GP_Admin {
 	</form>
 
 	<hr>
-	
+
 	<h1><?php _e( 'Additional Information', 'glotpress' ); ?></h1>
 	<table class="form-table">
 		<tr>
 			<th scope="row"><?php _e( 'URL to access GlotPress', 'glotpress' ) ?></th>
-			<td><a href="<?php echo gp_url_public_root(); ?>"><?php echo gp_url_public_root(); ?></a></td>
+			<td><a href="<?php echo gp_url_public_root(); ?>"><?php echo gp_url_public_root(); // WPCS: XSS ok. ?></a></td>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php _e( 'GlotPress Version', 'glotpress' ) ?></th>
-			<td><?php echo GP_VERSION; ?></td>
+			<td><?php echo GP_VERSION; // WPCS: XSS ok. ?></td>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php _e( 'GlotPress Database Version', 'glotpress' ) ?></th>
-			<td><?php echo get_option( 'gp_db_version' ); ?></td>
+			<td><?php echo get_option( 'gp_db_version' ); // WPCS: XSS ok. ?></td>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php _e( 'WordPress Permalink structure', 'glotpress' ) ?></th>
-			<td><?php 
-$permalink = get_option('permalink_structure');
+			<td><?php
+			$permalink = get_option( 'permalink_structure' );
 
-if ( ! $permalink ) {
-	_e( '&#151; You are running an unsupported permalink structure.', 'glotpress' );
-	echo '<br>' . PHP_EOL;
-	printf( __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' ), admin_url( 'options-permalink.php' ) );
-
-
-} else {
-	echo $permalink;
-}
-?></td>
+			if ( ! $permalink ) {
+				_e( '&#151; You are running an unsupported permalink structure.', 'glotpress' );
+				echo '<br>' . PHP_EOL;
+				printf( __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' ), admin_url( 'options-permalink.php' ) );
+			} else {
+				echo $permalink; // WPCS: XSS ok.
+			}
+			?></td>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row"><?php _e( 'PHP Version', 'glotpress' ) ?></th>
-			<td><?php echo phpversion(); ?></td>
+			<td><?php echo phpversion(); // WPCS: XSS ok. ?></td>
 			</td>
 		</tr>
 	</table>
-	
+
 	<hr>
-	
+
 	<h1><?php _e( 'About GlotPress', 'glotpress' ); ?></h1>
 	<table class="form-table" style="max-width: 772px;">
 		<tr valign="top">
-			<td scope="row" align="center"><img src="<?php echo gp_url_img( 'banner-772x250.png' ); ?>"></td>
+			<td scope="row" align="center"><img src="<?php echo gp_url_img( 'banner-772x250.png' ); // WPCS: XSS ok. ?>"></td>
 		</tr>
 
 		<tr valign="top">
-			<td scope="row" align="center"><p><?php printf( __( 'by %1sThe GlotPress Team%2s', 'glotpress' ), '<a href="https://glotpress.org">', '</a>' ); ?></p></td>
+			<td scope="row" align="center"><p><?php printf( __( 'by %1$sThe GlotPress Team%2$s', 'glotpress' ), '<a href="https://glotpress.org">', '</a>' ); ?></p></td>
 		</tr>
 
 		<tr valign="top">
 			<td scope="row" colspan="2"><h2><?php _e( 'Rate and Review at WordPress.org', 'glotpress' ); ?></h2></td>
 		</tr>
-		
+
 		<tr valign="top">
-			<td scope="row" colspan="2"><?php printf( __( 'Thanks for installing GlotPress, please feel free to submit a %1srating and review%2s over at WordPress.org.  Your feedback is greatly appreciated!', 'glotpress' ), '<a href="http://wordpress.org/support/view/plugin-reviews/glotpress" target="_blank">', '</a>' ); ?></td>
+			<td scope="row" colspan="2"><?php printf( __( 'Thanks for installing GlotPress, please feel free to submit a %1$srating and review%2$s over at WordPress.org.  Your feedback is greatly appreciated!', 'glotpress' ), '<a href="http://wordpress.org/support/view/plugin-reviews/glotpress" target="_blank">', '</a>' ); ?></td>
 		</tr>
-		
+
 		<tr valign="top">
 			<td scope="row" colspan="2"><h2><?php _e( 'Support', 'glotpress' ); ?></h2></td>
 		</tr>
@@ -143,14 +141,14 @@ if ( ! $permalink ) {
 				<p><?php _e( 'Here are a few things to do submitting a support request:', 'glotpress' ); ?></p>
 
 				<ul style="list-style-type: disc; list-style-position: inside; padding-left: 25px;">
-					<li><?php printf( __( 'Have you read the %1sFAQs%2s?', 'glotpress' ), '<a title="FAQs" href="https://wordpress.org/plugins/glotpress/faq/" target="_blank">', '</a>' ); ?></li>
-					<li><?php printf( __( 'Have you search the %1ssupport forum%2s for a similar issue?', 'glotpress' ), '<a href="http://wordpress.org/support/plugin/glotpress" target="_blank">', '</a>' ); ?></li>
+					<li><?php printf( __( 'Have you read the %1$sFAQs%2$s?', 'glotpress' ), '<a title="FAQs" href="https://wordpress.org/plugins/glotpress/faq/" target="_blank">', '</a>' ); ?></li>
+					<li><?php printf( __( 'Have you search the %1$ssupport forum%2$s for a similar issue?', 'glotpress' ), '<a href="http://wordpress.org/support/plugin/glotpress" target="_blank">', '</a>' ); ?></li>
 					<li><?php _e( 'Have you search the Internet for any error messages you are receiving?', 'glotpress' ); ?></li>
 				</ul>
 
-				<p><?php printf( __( 'Still not having any luck? Then please open a new thread on the %1sWordPress.org support forum%2s.', 'glotpress' ), '<a href="http://wordpress.org/support/plugin/glotpress" target="_blank">', '</a>' ); ?></p>
-				
-				<p><?php printf( __( 'Or if you have a bug or feature request visit %1sthe issues list%2s', 'glotpress' ), '<a href="https://github.com/GlotPress/GlotPress-WP/issues">', '</a>' ); ?></p>
+				<p><?php printf( __( 'Still not having any luck? Then please open a new thread on the %1$sWordPress.org support forum%2$s.', 'glotpress' ), '<a href="http://wordpress.org/support/plugin/glotpress" target="_blank">', '</a>' ); ?></p>
+
+				<p><?php printf( __( 'Or if you have a bug or feature request visit %1$sthe issues list%2$s', 'glotpress' ), '<a href="https://github.com/GlotPress/GlotPress-WP/issues">', '</a>' ); ?></p>
 			</td>
 		</tr>
 	</table>
