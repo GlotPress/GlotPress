@@ -77,7 +77,7 @@ class GP_Admin {
 	<table class="form-table">
 		<tr>
 			<th scope="row"><?php _e( 'URL to access GlotPress', 'glotpress' ) ?></th>
-			<td><a href="<?php echo gp_url_public_root(); ?>"><?php echo gp_url_public_root(); // WPCS: XSS ok. ?></a></td>
+			<td><a href="<?php echo gp_url_public_root(); // WPCS: XSS ok. ?>"><?php echo gp_url_public_root(); // WPCS: XSS ok. ?></a></td>
 			</td>
 		</tr>
 		<tr>
@@ -97,8 +97,8 @@ class GP_Admin {
 
 			if ( ! $permalink ) {
 				_e( '&#151; You are running an unsupported permalink structure.', 'glotpress' );
-				echo '<br>' . PHP_EOL;
-				printf( __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' ), admin_url( 'options-permalink.php' ) );
+				echo '<br>' . PHP_EOL; // WPCS: XSS ok.
+				printf( __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' ), admin_url( 'options-permalink.php' ) ); // WPCS: XSS ok.
 			} else {
 				echo $permalink; // WPCS: XSS ok.
 			}
