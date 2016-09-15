@@ -18,10 +18,11 @@ GlotPress Theme
 	background-position: center right;
 	cursor: pointer;
 	text-align: center;
+	border: 1px solid #eee;
 }
 .tablesorter-glotpress tfoot th,
 .tablesorter-glotpress tfoot td {
-	border: 0;
+	border: 1px solid #eee;
 }
 .tablesorter-glotpress .header,
 .tablesorter-glotpress .tablesorter-header {
@@ -59,6 +60,7 @@ GlotPress Theme
 .tablesorter-glotpress td {
 	background-color: #fff;
 	vertical-align: top;
+	border: 1px solid #eee;
 }
 
 /* hovered row colors */
