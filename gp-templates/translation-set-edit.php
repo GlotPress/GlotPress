@@ -6,7 +6,7 @@ gp_breadcrumb( array(
 ) );
 
 // jQuery is required for the 'translation-set-form' template.
-gp_enqueue_scripts( array( 'jquery' ) );
+gp_enqueue_script( 'jquery' );
 
 gp_tmpl_header();
 ?>
