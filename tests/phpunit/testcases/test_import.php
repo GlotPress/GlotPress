@@ -6,7 +6,13 @@ class GP_Import extends GP_UnitTestCase {
 	 * @ticket gh-377
 	 */
 	private function _verify_multiple_imports( $originals, $runs ) {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
 		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
 
 		if ( isset( $originals['singular'] ) ) {
 			$originals = array( $originals );
