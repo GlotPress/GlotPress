@@ -17,7 +17,7 @@ class GP_Route_Locale extends GP_Route_Main {
 	public function locales_get() {
 		if ( NULL !== gp_get( 'all', NULL ) ) {
 			$locales = GP_Locales::locales();
-			usort( $locales, array( $this, 'sort_locales') );
+			usort( $locales, array( $this, 'sort_locales' ) );
 		}
 		else {
 			$existing_locales = GP::$translation_set->existing_locales();
