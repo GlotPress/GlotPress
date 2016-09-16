@@ -313,7 +313,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 					$can_write = $this->can( 'write', 'project', $project->id );
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-					$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, [ 'translation' => $translation ] );
+					$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
 					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
 				}
@@ -529,7 +529,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-			$can_approve_translation = $this->can( 'approve', 'translation', $t->id, [ 'translation' => $t ] );
+			$can_approve_translation = $this->can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
 
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
@@ -600,6 +600,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $can_reject_self ) {
 			return;
 		}
-		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, [ 'translation' => $translation ] );
+		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
 	}
 }

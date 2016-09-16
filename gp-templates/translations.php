@@ -200,7 +200,7 @@ $i = 0;
 ?>
 <?php foreach( $translations as $t ):
 		$t->translation_set_id = $translation_set->id;
-		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, [ 'translation' => $t ] );
+		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
 ?>
 <?php endforeach; ?>
