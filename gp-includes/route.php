@@ -168,7 +168,10 @@ class GP_Route {
 	 *                                 Default: 'You are not allowed to do that!'.
 	 * @return false
 	 */
-	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $extra = null, $message = 'You are not allowed to do that!' ) {
+	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = null, $extra = null ) {
+		if ( ! isset( $message ) ) {
+			$message = 'You are not allowed to do that!';
+		}
 		$can = $this->can( $action, $object_type, $object_id, $extra );
 		if ( !$can ) {
 			$this->die_with_error( $message, 403 );

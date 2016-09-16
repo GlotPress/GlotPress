@@ -600,6 +600,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $can_reject_self ) {
 			return;
 		}
-		$this->can_or_forbidden( 'approve', 'translation', $translation->id, [ 'translation' => $translation ] );
+		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, [ 'translation' => $translation ] );
 	}
 }
