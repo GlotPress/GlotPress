@@ -47,9 +47,9 @@ gp_tmpl_header();
 	<table class="translation-sets tablesorter tablesorter-glotpress">
 		<thead>
 			<tr class="tablesorter-headerRow">
-				<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Locale', 'glotpress' ); ?></th>
 				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
-				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Translated', 'glotpress' ); ?></th>
 				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
 				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
 				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Waiting', 'glotpress' ); ?></th>
