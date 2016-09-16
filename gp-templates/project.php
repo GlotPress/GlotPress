@@ -44,23 +44,35 @@ gp_tmpl_header();
 <?php if ( $translation_sets ): ?>
 <div id="translation-sets">
 	<h3><?php _e( 'Translations', 'glotpress' );?></h3>
-	<table class="translation-sets tablesorter">
+	<table class="translation-sets tablesorter tablesorter-glotpress">
 		<thead>
-			<tr>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
-				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
-				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
-				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>
-				<th><?php _e( 'Waiting', 'glotpress' ); ?></th>
+			<tr class="tablesorter-headerRow">
+				<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Waiting', 'glotpress' ); ?></th>
 				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-				<th class="extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach( $translation_sets as $set ): ?>
-			<tr>
+		<?php 
+		$i = 0;
+		
+		foreach( $translation_sets as $set ): 
+			if( $i % 2 ) {
+				$oe = 'even';
+			} else {
+				$oe = 'odd';
+			}
+			
+			$i++;
+
+		?>
+			<tr class="<?php echo $oe; ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):
@@ -151,7 +163,7 @@ gp_tmpl_header();
 	jQuery(document).ready(function($) {
 		$(".translation-sets").tablesorter({
 			theme: 'glotpress',
-			sortList: [[0,0]],
+			sortList: [[2,1]],
 			headers: {
 				0: {
 					sorter: 'text'
