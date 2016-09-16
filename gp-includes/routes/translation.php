@@ -315,10 +315,9 @@ class GP_Route_Translation extends GP_Route_Main {
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 					$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
-					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
-				}
-				else {
-					$output[$original_id] = false;
+					$output[ $original_id ] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
+				} else {
+					$output[ $original_id ] = false;
 				}
 			}
 		}

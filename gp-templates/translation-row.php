@@ -48,9 +48,6 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 	<?php elseif ( $can_approve ) : ?>
 		<th scope="row"></th>
 	<?php endif; ?>
-	<?php /*
-	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
-	*/ ?>
 	<td class="priority" title="<?php echo esc_attr( sprintf( __( 'Priority: %s', 'glotpress' ), gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority ) ) ); ?>">
 	   <?php echo $priority_char[$t->priority][0] ?>
 	</td>
@@ -141,7 +138,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 				<dd>
 					<?php echo display_status( $t->translation_status ); ?>
 					<?php if ( $t->translation_status ): ?>
-						<?php if ( $can_approve_translation ): ?>
+						<?php if ( $can_approve_translation ) : ?>
 							<?php if ( $t->translation_status != 'current' ): ?>
 							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
 							<?php endif; ?>

@@ -97,6 +97,15 @@ class GP_Route {
 		return false;
 	}
 
+	/**
+	 * Check whether a user is allowed to do an action.
+	 *
+	 * @param string      $action      The action.
+	 * @param string|null $object_type Optional. Type of an object. Default null.
+	 * @param int|null    $object_id   Optional. ID of an object. Default null.
+	 * @param array|null  $extra       Optional. Extra information for deciding the outcome.
+	 * @return bool       The verdict.
+	 */
 	public function can( $action, $object_type = null, $object_id = null, $extra = null ) {
 		return GP::$permission->current_user_can( $action, $object_type, $object_id, $extra );
 	}
@@ -163,18 +172,17 @@ class GP_Route {
 	 *
 	 * @param string      $action      The action.
 	 * @param string|null $object_type Optional. Type of an object. Default null.
-	 * @param int|null    $object_id   Otional. ID of an object Default null.
+	 * @param int|null    $object_id   Optional. ID of an object. Default null.
 	 * @param string|null $message     Error message in case of a failure.
 	 *                                 Default: 'You are not allowed to do that!'.
-	 * @param array|null  $extra       Pass-through parameter to can()
+	 * @param array|null  $extra       Pass-through parameter to can().
 	 * @return false
 	 */
 	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = null, $extra = null ) {
 		if ( ! isset( $message ) ) {
 			$message = 'You are not allowed to do that!';
 		}
-		$can = $this->can( $action, $object_type, $object_id, $extra );
-		if ( !$can ) {
+		if ( ! $this->can( $action, $object_type, $object_id, $extra ) ) {
 			$this->die_with_error( $message, 403 );
 		}
 		return false;

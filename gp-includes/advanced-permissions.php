@@ -49,6 +49,13 @@ function gp_allow_everyone_to_translate( $verdict, $args ) {
 	return $verdict;
 }
 
+/**
+ * Map the translation check to the translation-set
+ *
+ * @param  string|bool $verdict Previous decision whether the user can do this.
+ * @param  array       $args Permission details.
+ * @return string|bool New decision whether the user can do this.
+ */
 function gp_allow_approve_translation_with_validator_permissions( $verdict, $args ) {
 	if ( 'approve' === $args['action'] && 'translation' === $args['object_type'] ) {
 		$args['object_type'] = 'translation-set';
