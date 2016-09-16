@@ -22,19 +22,19 @@ gp_tmpl_header();
 		</tr>
 		</thead>
 		<tbody>
-		<?php 
+		<?php
 			$i = 0;
-			
-			foreach ( $locales as $locale ) : 
-				if( $i % 2 ) {
+
+			foreach ( $locales as $locale ) :
+				if ( $i % 2 ) {
 					$oe = 'even';
 				} else {
 					$oe = 'odd';
 				}
-				
+
 				$i++;
 ?>
-			<tr class="<?php echo $oe; ?>">
+			<tr class="<?php echo $oe; // WPCS: XSS ok. ?>">
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . "</td>" ?>
 				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . "</td>" ?>
@@ -55,7 +55,7 @@ gp_tmpl_header();
 				},
 				widgets: ['zebra']
 			});
-			
+
 			$rows = $('.locales tbody').find('tr');
 			$('#locales-filter').bind("change keyup input",function() {
 				var words = this.value.toLowerCase().split(' ');

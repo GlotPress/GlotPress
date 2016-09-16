@@ -59,20 +59,20 @@ gp_tmpl_header();
 			</tr>
 		</thead>
 		<tbody>
-		<?php 
+		<?php
 		$i = 0;
-		
-		foreach( $translation_sets as $set ): 
-			if( $i % 2 ) {
+
+		foreach ( $translation_sets as $set ) :
+			if ( $i % 2 ) {
 				$oe = 'even';
 			} else {
 				$oe = 'odd';
 			}
-			
+
 			$i++;
 
 		?>
-			<tr class="<?php echo $oe; ?>">
+			<tr class="<?php echo $oe; // WPCS: XSS ok. ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):
