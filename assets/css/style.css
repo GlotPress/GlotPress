@@ -194,7 +194,8 @@ table.translations,
 table.translation-sets,
 table.glossary,
 table.locale-sub-projects,
-table.permissions {
+table.permissions,
+table.projects {
 	font-size: 90%;
 	width: 100%;
 	border-spacing: 0.1em;
@@ -207,6 +208,7 @@ table.translations tfoot th,
 table.glossary thead th,
 table.locale-sub-projects thead th,
 table.permissions thead th,
+table.projects thead th,
 table.locales thead th {
 	font-weight: bold;
 	color: #eee;
@@ -214,13 +216,20 @@ table.locales thead th {
 	padding: 0.5em;
 }
 table.locales thead th {
-	width: 33%;
+	width: 16%;
 }
 
 table.permissions thead th {
 	width: 20%;
 }
 
+table.projects thead th {
+	width: 25%;
+}
+
+table.projects tr:nth-child(even) {  
+	background-color: #eeeeee;
+}
 table.permissions tr:nth-child(even) {
 	background-color: #eeeeee;
 }
@@ -229,7 +238,8 @@ table.translations tr,
 table.translation-sets tr,
 table.glossary tr,
 table.locale-sub-projects,
-table.permissions {
+table.permissions,
+table.projects {
 	border: 0;
 }
 table.translations td.translation ul {
@@ -258,6 +268,7 @@ table.translations td,table.translations th,
 table.translation-sets td, table.translation-sets th,
 table.locales td, table.locales th,
 table.permissions td, table.permissions th,
+table.projects td, table.projects th,
 table.glossary th, table.glossary td,
 table.locale-sub-projects th,
 table.locale-sub-projects td {

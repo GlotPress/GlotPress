@@ -6,11 +6,24 @@ gp_tmpl_header();
 
 	<h2><?php _e( 'Projects', 'glotpress' ); ?></h2>
 
-	<ul>
+	<table class="projects tablesorter">
+		<thead>
+			<tr>
+				<th><?php _e( 'Name', 'glotpress' ); ?></th>
+				<th><?php _e( 'Description', 'glotpress' ); ?></th>
+				<th><?php _e( 'Active', 'glotpress' ); ?></th>
+				<th>&mdash;</th>
+			</tr>
+		</thead>
+		<tbody>
 		<?php foreach ( $projects as $project ): ?>
-			<li><?php gp_link_project( $project, esc_html( $project->name ) ); ?> <?php gp_link_project_edit( $project, null, array( 'class' => 'bubble' ) ); ?></li>
+			<tr>
+				<td><?php gp_link_project( $project, esc_html( $project->name ) ); ?></td>
+				<td><?php echo $project->description; ?></td>
+				<td><?php if ( $project->active ) { _e( 'Yes', 'glotpress' ); }?></td>
+				<td><?php gp_link_project_edit( $project ); ?></td>
 		<?php endforeach; ?>
-	</ul>
+	</table>	
 
 	<p class="actionlist secondary">
 		<?php if ( GP::$permission->current_user_can( 'admin' ) ): ?>
