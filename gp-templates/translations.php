@@ -197,15 +197,14 @@ $i = 0;
 	if ( $glossary ) {
 		$translations = map_glossary_entries_to_translations_originals( $translations, $glossary );
 	}
-	$can_approve_translation_set = $can_approve;
 ?>
 <?php foreach( $translations as $t ):
-		$can_approve = $can_approve_translation_set && apply_filters( 'gp_current_user_can_set_translation_status', 'current', $t );
+		$t->translation_set_id = $translation_set->id;
+		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, [ 'translation' => $t ] );
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
 ?>
 <?php endforeach; ?>
 <?php
-	$can_approve = $can_approve_translation_set;
 	if ( !$translations ):
 ?>
 	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>

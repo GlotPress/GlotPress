@@ -43,8 +43,11 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 ?>
 
 <tr class="preview <?php gp_translation_row_classes( $t ); ?>" id="preview-<?php echo esc_attr( $t->row_id ) ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
-	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
-	<?php if ( isset( $can_approve_translation_set ) && ! $can_approve && $can_approve_translation_set ) : ?><th scope="row"></th><?php endif; ?>
+	<?php if ( $can_approve_translation ) : ?>
+		<th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th>
+	<?php elseif ( $can_approve ) : ?>
+		<th scope="row"></th>
+	<?php endif; ?>
 	<?php /*
 	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
 	*/ ?>
@@ -103,7 +106,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 
 		<?php if ( ! $t->plural ): ?>
 		<p class="original"><?php echo prepare_original( $singular ); ?></p>
-		<?php textareas( $t, array( $can_edit, $can_approve ) ); ?>
+		<?php textareas( $t, array( $can_edit, $can_approve_translation ) ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>
 				<p><?php printf(__( 'Singular: %s', 'glotpress' ), '<span class="original">'. $singular .'</span>'); ?></p>
@@ -138,7 +141,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 				<dd>
 					<?php echo display_status( $t->translation_status ); ?>
 					<?php if ( $t->translation_status ): ?>
-						<?php if ( $can_approve ): ?>
+						<?php if ( $can_approve_translation ): ?>
 							<?php if ( $t->translation_status != 'current' ): ?>
 							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
 							<?php endif; ?>
@@ -232,7 +235,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
 			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
-				<?php echo $can_approve? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
+				<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 			</button>
 		<?php endif; ?>
 			<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>

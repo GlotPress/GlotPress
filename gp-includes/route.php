@@ -97,8 +97,8 @@ class GP_Route {
 		return false;
 	}
 
-	public function can( $action, $object_type = null, $object_id = null ) {
-		return GP::$permission->current_user_can( $action, $object_type, $object_id );
+	public function can( $action, $object_type = null, $object_id = null, $extra = null ) {
+		return GP::$permission->current_user_can( $action, $object_type, $object_id, $extra );
 	}
 
 	/**
@@ -168,8 +168,8 @@ class GP_Route {
 	 *                                 Default: 'You are not allowed to do that!'.
 	 * @return false
 	 */
-	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
-		$can = $this->can( $action, $object_type, $object_id );
+	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $extra = null, $message = 'You are not allowed to do that!' ) {
+		$can = $this->can( $action, $object_type, $object_id, $extra );
 		if ( !$can ) {
 			$this->die_with_error( $message, 403 );
 		}

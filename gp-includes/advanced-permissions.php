@@ -49,7 +49,26 @@ function gp_allow_everyone_to_translate( $verdict, $args ) {
 	return $verdict;
 }
 
+function gp_allow_approve_translation_with_validator_permissions( $verdict, $args ) {
+	if ( 'approve' === $args['action'] && 'translation' === $args['object_type'] ) {
+		$args['object_type'] = 'translation-set';
+
+		if ( isset( $args['extra']['translation']->translation_set_id ) ) {
+			$args['object_id'] = $args['extra']['translation']->translation_set_id;
+		} elseif ( isset( $args['extra']['set']->id ) ) {
+			$args['object_id'] = $args['extra']['set']->id;
+		} else {
+			return $verdict;
+		}
+
+		return gp_route_translation_set_permissions_to_validator_permissions( $verdict, $args );
+	}
+
+	return $verdict;
+}
+
 add_filter( 'gp_can_user', 'gp_recurse_project_permissions', 10, 2 );
 add_filter( 'gp_can_user', 'gp_recurse_validator_permission', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );
+add_filter( 'gp_pre_can_user', 'gp_allow_approve_translation_with_validator_permissions', 9, 2 );

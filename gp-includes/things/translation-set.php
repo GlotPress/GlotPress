@@ -255,11 +255,11 @@ class GP_Translation_Set extends GP_Thing {
 			/**
 			 * Filter the the status of imported translations of a translation set.
 			 *
-			 * @since 2.2.0
+			 * @since 2.3.0
 			 *
 			 * @param string $status The status of imported translations.
-			 * @param Translation_Entry $entry  Translation entry object to import.
-			 * @param GP_Translation|false $translated The previous translation.
+			 * @param Translation_Entry $new_translation Translation entry object to import.
+			 * @param GP_Translation|false $old_translation The previous translation.
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, false );
 
@@ -316,11 +316,11 @@ class GP_Translation_Set extends GP_Thing {
 				/**
 				 * Filter the the status of imported translations of a translation set.
 				 *
-				 * @since 2.2.0
+				 * @since 2.3.0
 				 *
 				 * @param string $status The status of imported translations.
-				 * @param Translation_Entry $entry  Translation entry object to import.
-				 * @param GP_Translation|false $translated The previous translation.
+				 * @param Translation_Entry $new_translation Translation entry object to import.
+				 * @param GP_Translation|false $old_translation The previous translation.
 				 */
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 				// Check for errors.
