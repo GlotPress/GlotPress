@@ -164,8 +164,9 @@ class GP_Route {
 	 * @param string      $action      The action.
 	 * @param string|null $object_type Optional. Type of an object. Default null.
 	 * @param int|null    $object_id   Otional. ID of an object Default null.
-	 * @param string      $message     Error message in case of a failure.
+	 * @param string|null $message     Error message in case of a failure.
 	 *                                 Default: 'You are not allowed to do that!'.
+	 * @param array|null  $extra       Pass-through parameter to can()
 	 * @return false
 	 */
 	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = null, $extra = null ) {
