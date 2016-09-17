@@ -23,18 +23,12 @@ gp_tmpl_header();
 		</thead>
 		<tbody>
 		<?php
-			$i = 0;
+			$class = '';
 
 			foreach ( $locales as $locale ) :
-				if ( $i % 2 ) {
-					$oe = 'even';
-				} else {
-					$oe = 'odd';
-				}
-
-				$i++;
+				$class = ( 'odd' == $class ) ? 'even' : 'odd';
 ?>
-			<tr class="<?php echo $oe; // WPCS: XSS ok. ?>">
+			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>' ?>
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . '</td>' ?>
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . '</td>' ?>
