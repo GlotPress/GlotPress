@@ -56,7 +56,7 @@ function gp_allow_everyone_to_translate( $verdict, $args ) {
  * @param  array       $args Permission details.
  * @return string|bool New decision whether the user can do this.
  */
-function gp_allow_approve_translation_with_validator_permissions( $verdict, $args ) {
+function gp_allow_approving_translations_with_validator_permissions( $verdict, $args ) {
 	if ( 'approve' === $args['action'] && 'translation' === $args['object_type'] ) {
 		$args['object_type'] = 'translation-set';
 
@@ -76,4 +76,4 @@ add_filter( 'gp_can_user', 'gp_recurse_project_permissions', 10, 2 );
 add_filter( 'gp_can_user', 'gp_recurse_validator_permission', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );
-add_filter( 'gp_pre_can_user', 'gp_allow_approve_translation_with_validator_permissions', 9, 2 );
+add_filter( 'gp_pre_can_user', 'gp_allow_approving_translations_with_validator_permissions', 9, 2 );
