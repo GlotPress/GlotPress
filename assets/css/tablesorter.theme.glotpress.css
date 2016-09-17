@@ -36,13 +36,13 @@ GlotPress Theme
 .tablesorter-glotpress thead .tablesorter-headerSortUp,
 .tablesorter-glotpress thead .tablesorter-headerAsc {
 	background-image: url(data:image/gif;base64,R0lGODlhFQAEAPAAAP///wAAACH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
-	background-color: #3399FF;
+	background-color: #32373C;
 }
 .tablesorter-glotpress thead .headerSortDown,
 .tablesorter-glotpress thead .tablesorter-headerSortDown,
 .tablesorter-glotpress thead .tablesorter-headerDesc {
 	background-image: url(data:image/gif;base64,R0lGODlhFQAEAPAAAP///wAAACH5BAEAAAEALAAAAAAVAAQAAAINjG+gC+jP2ptn0ZtuAQA7);
-	background-color: #3399FF;
+	background-color: #32373C;
 }
 .tablesorter-glotpress thead .sorter-false {
 	background-image: none;
