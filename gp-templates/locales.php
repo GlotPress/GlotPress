@@ -26,7 +26,7 @@ gp_tmpl_header();
 			$class = '';
 
 			foreach ( $locales as $locale ) :
-				$class = ( 'odd' == $class ) ? 'even' : 'odd';
+				$class = ( 'odd' === $class ) ? 'even' : 'odd';
 ?>
 			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>' ?>

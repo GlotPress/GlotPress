@@ -63,7 +63,7 @@ gp_tmpl_header();
 		$class = '';
 
 		foreach ( $translation_sets as $set ) :
-			$class = ( 'odd' == $class ) ? 'even' : 'odd';
+			$class = ( 'odd' === $class ) ? 'even' : 'odd';
 
 		?>
 			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
