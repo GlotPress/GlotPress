@@ -62,8 +62,6 @@ function gp_allow_approve_translation_with_validator_permissions( $verdict, $arg
 
 		if ( isset( $args['extra']['translation']->translation_set_id ) ) {
 			$args['object_id'] = $args['extra']['translation']->translation_set_id;
-		} elseif ( isset( $args['extra']['set']->id ) ) {
-			$args['object_id'] = $args['extra']['set']->id;
 		} else {
 			return $verdict;
 		}

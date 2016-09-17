@@ -57,11 +57,6 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 0, $set->current_count() );
 		$this->assertEquals( 1, count( $waiting_translations ) );
 		$this->assertEquals( 1, $set->waiting_count() );
-
-		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'current' ) );
-
-		$this->assertEquals( 0, count( $for_translation ) );
-		$this->assertEquals( 0, $set->current_count() );
 	}
 
 	function test_translation_should_support_6_plurals() {
@@ -243,8 +238,11 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$user = $this->factory->user->create();
 		wp_set_current_user( $user );
 
-		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve',
-		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+		GP::$validator_permission->create( array(
+			'user_id' => $user, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
 
 		$translation->set_as_current();
 		$this->assertEquals( $user, $translation->user_id_last_modified );
@@ -253,16 +251,43 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	function test_validator_id_saved_on_status_change_to_rejected() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
-		$translation->set_status('waiting');
+		$translation->set_status( 'waiting' );
 
 		$user = $this->factory->user->create();
 		wp_set_current_user( $user );
 
-		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve',
-		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+		GP::$validator_permission->create( array(
+			'user_id' => $user, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
 
-		$translation->set_status('rejected');
+		$translation->set_status( 'rejected' );
 		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_cannot_reject_translation_without_approve_permission() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$this->assertFalse( $translation->set_status( 'rejected' ) );
+		$this->assertNotEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_cannot_approve_translation_without_approve_permission() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertNotEquals( $user, $translation->user_id_last_modified );
 	}
 
 }
