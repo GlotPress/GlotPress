@@ -26,7 +26,7 @@ GlotPress Theme
 }
 .tablesorter-glotpress .header,
 .tablesorter-glotpress .tablesorter-header {
-	background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+	background-image: url(data:image/gif;base64,R0lGODlhFQAJAPAAAP///wAAACH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
 	background-position: center right;
 	background-repeat: no-repeat;
 	cursor: pointer;
@@ -35,13 +35,13 @@ GlotPress Theme
 .tablesorter-glotpress thead .headerSortUp,
 .tablesorter-glotpress thead .tablesorter-headerSortUp,
 .tablesorter-glotpress thead .tablesorter-headerAsc {
-	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAPAAAP///wAAACH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
 	background-color: #3399FF;
 }
 .tablesorter-glotpress thead .headerSortDown,
 .tablesorter-glotpress thead .tablesorter-headerSortDown,
 .tablesorter-glotpress thead .tablesorter-headerDesc {
-	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAPAAAP///wAAACH5BAEAAAEALAAAAAAVAAQAAAINjG+gC+jP2ptn0ZtuAQA7);
 	background-color: #3399FF;
 }
 .tablesorter-glotpress thead .sorter-false {
