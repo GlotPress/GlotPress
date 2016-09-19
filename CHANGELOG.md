@@ -1,6 +1,32 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.0-beta.1 (September 19, 2016)
+
+**Breaking Changes**
+
+* Change the slug of the Kyrgyz locale from `ky` to `kir`. ([#550](https://github.com/GlotPress/GlotPress-WP/pull/550))
+
+**Bugfixes**
+
+* Fix broken cancel link on project create form. ([#547](https://github.com/GlotPress/GlotPress-WP/issues/547))
+* Fix native name of the Tibetan locale name from བོད་སྐད to བོད་ཡིག. ([#539](https://github.com/GlotPress/GlotPress-WP/pull/539))
+* Fix extra entry in `GP_Translation::translations()`. ([#516](https://github.com/GlotPress/GlotPress-WP/issues/516))
+* Merge similar strings to improve translation. ([#535](https://github.com/GlotPress/GlotPress-WP/issues/535))
+* Refactor script and style registration to make them more reliable. ([#476](https://github.com/GlotPress/GlotPress-WP/issues/476))
+* Update locale information for Kyrgyz to use correct data. ([#550](https://github.com/GlotPress/GlotPress-WP/pull/550))
+
+**Features**
+
+* Add locale information for the Latin version of Hausa. ([#549](https://github.com/GlotPress/GlotPress-WP/pull/549))
+* Fix translations which are using the placeholder for tab characters. ([#473](https://github.com/GlotPress/GlotPress-WP/pull/473))
+* Add `gp_reference_source_url` filter for the source URL of a project. ([#522](https://github.com/GlotPress/GlotPress-WP/pull/522))
+* Provide minified assets. ([#505](https://github.com/GlotPress/GlotPress-WP/issue/505))
+* Update JavaScript library for table sorting. ([#502](https://github.com/GlotPress/GlotPress-WP/issue/502))
+
+Thanks to all the contributors so far: Alexander Kirk, David Decker, Dominik Schilling, Greg Ross, Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
+
+
 ## 2.1.0 (July 13, 2016)
 
 (this space intentionally left blank)
@@ -62,7 +88,7 @@ Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi,
 * Add Haitian Creole locale definition. ([#411](https://github.com/GlotPress/GlotPress-WP/issues/411))
 * Update Asturian locale definition. ([#412](https://github.com/GlotPress/GlotPress-WP/issues/412))
 
-Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi
+Thanks to all the contributors so far: Dominik Schilling, Greg Ross, and Yoav Farhi.
 
 ## 2.0.0 (April 04, 2016)
 
@@ -135,7 +161,7 @@ Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi
 * Fix redirect when a translation set update failed. ([#349](https://github.com/GlotPress/GlotPress-WP/pull/349))
 * Prevent a PHP fatal error when importing originals. ([#302](https://github.com/GlotPress/GlotPress-WP/pull/302))
 
-Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Dominik Schilling, Gabor Javorszky, Greg Ross, Peter Dave Hello, Rami, Sergey Biryukov
+Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Dominik Schilling, Gabor Javorszky, Greg Ross, Peter Dave Hello, Rami, and Sergey Biryukov.
 
 ## 1.0.2 (March 09, 2016)
 
