@@ -1255,16 +1255,18 @@ class GP_Locales {
 		$ks->lang_code_iso_639_2 = 'kas';
 		$ks->slug = 'ks';
 
-		$ky = new GP_Locale();
-		$ky->english_name = 'Kirghiz';
-		$ky->native_name = 'кыргыз тили';
-		$ky->lang_code_iso_639_1 = 'ky';
-		$ky->lang_code_iso_639_2 = 'kir';
-		$ky->country_code = 'kg';
-		$ky->wp_locale = 'ky_KY';
-		$ky->slug = 'ky';
-		$ky->nplurals = 1;
-		$ky->plural_expression = '0';
+		$kir = new GP_Locale();
+		$kir->english_name = 'Kyrgyz';
+		$kir->native_name = 'Кыргызча';
+		$kir->lang_code_iso_639_1 = 'ky';
+		$kir->lang_code_iso_639_2 = 'kir';
+		$kir->lang_code_iso_639_3 = 'kir';
+		$kir->country_code = 'kg';
+		$kir->wp_locale = 'kir';
+		$kir->slug = 'kir';
+		$kir->nplurals = 1;
+		$kir->plural_expression = '0';
+		$kir->google_code = 'ky';
 
 		$la = new GP_Locale();
 		$la->english_name = 'Latin';
