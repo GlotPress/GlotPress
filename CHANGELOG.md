@@ -5,17 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 **Breaking Changes**
 
-* Change the slug of the Kyrgyz locale to `kir`. ([#550](https://github.com/GlotPress/GlotPress-WP/pull/550))
+* Change the slug of the Kyrgyz locale from `ky` to `kir`. ([#550](https://github.com/GlotPress/GlotPress-WP/pull/550))
 
 **Bugfixes**
 
 * Fix broken cancel link on project create form. ([#547](https://github.com/GlotPress/GlotPress-WP/issues/547))
 * Fix native name of the Tibetan locale name from བོད་སྐད to བོད་ཡིག. ([#539](https://github.com/GlotPress/GlotPress-WP/pull/539))
 * Fix extra entry in `GP_Translation::translations()`. ([#516](https://github.com/GlotPress/GlotPress-WP/issues/516))
-* Merge similar strings to improve translation. [#535](https://github.com/GlotPress/GlotPress-WP/issues/535))
-* Refactor script and style registration to make them more reliable. [#476](https://github.com/GlotPress/GlotPress-WP/issues/476))
+* Merge similar strings to improve translation. ([#535](https://github.com/GlotPress/GlotPress-WP/issues/535))
+* Refactor script and style registration to make them more reliable. ([#476](https://github.com/GlotPress/GlotPress-WP/issues/476))
 * Update locale information for Kyrgyz to use correct data. ([#550](https://github.com/GlotPress/GlotPress-WP/pull/550))
-
 
 **Features**
 
@@ -25,7 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Provide minified assets. ([#505](https://github.com/GlotPress/GlotPress-WP/issue/505))
 * Update JavaScript library for table sorting. ([#502](https://github.com/GlotPress/GlotPress-WP/issue/502))
 
-Thanks to all the contributors so far: Alexander Kirk, David Decker, Dominik Schilling, Greg Ross,  Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
+Thanks to all the contributors so far: Alexander Kirk, David Decker, Dominik Schilling, Greg Ross, Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
 
 
 ## 2.1.0 (July 13, 2016)
