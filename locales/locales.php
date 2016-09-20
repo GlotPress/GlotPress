@@ -1142,8 +1142,6 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['hau']->country_code = 'ng';
 			$this->locales['hau']->wp_locale = 'hau';
 			$this->locales['hau']->slug = 'hau';
-			$this->locales['hau']->google_code = 'ha';
-			$this->locales['hau']->facebook_locale = 'ha_NG';
 
 			$this->locales['haw'] = new GP_Locale();
 			$this->locales['haw']->english_name = 'Hawaiian';
@@ -1343,7 +1341,6 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['kir']->slug = 'kir';
 			$this->locales['kir']->nplurals = 1;
 			$this->locales['kir']->plural_expression = '0';
-			$this->locales['kir']->google_code = 'ky';
 
 			$this->locales['kk'] = new GP_Locale();
 			$this->locales['kk']->english_name = 'Kazakh';
