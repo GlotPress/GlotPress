@@ -1332,6 +1332,19 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['kin']->country_code = 'rw';
 			$this->locales['kin']->slug = 'kin';
 
+			$this->locales['kir'] = new GP_Locale();
+			$this->locales['kir']->english_name = 'Kyrgyz';
+			$this->locales['kir']->native_name = 'Кыргызча';
+			$this->locales['kir']->lang_code_iso_639_1 = 'ky';
+			$this->locales['kir']->lang_code_iso_639_2 = 'kir';
+			$this->locales['kir']->lang_code_iso_639_3 = 'kir';
+			$this->locales['kir']->country_code = 'kg';
+			$this->locales['kir']->wp_locale = 'kir';
+			$this->locales['kir']->slug = 'kir';
+			$this->locales['kir']->nplurals = 1;
+			$this->locales['kir']->plural_expression = '0';
+			$this->locales['kir']->google_code = 'ky';
+
 			$this->locales['kk'] = new GP_Locale();
 			$this->locales['kk']->english_name = 'Kazakh';
 			$this->locales['kk']->native_name = 'Қазақ тілі';
@@ -1386,19 +1399,6 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 			$this->locales['ks']->lang_code_iso_639_1 = 'ks';
 			$this->locales['ks']->lang_code_iso_639_2 = 'kas';
 			$this->locales['ks']->slug = 'ks';
-
-			$this->locales['kiy'] = new GP_Locale();
-			$this->locales['kiy']->english_name = 'Kyrgyz';
-			$this->locales['kiy']->native_name = 'Кыргызча';
-			$this->locales['kiy']->lang_code_iso_639_1 = 'ky';
-			$this->locales['kiy']->lang_code_iso_639_2 = 'kir';
-			$this->locales['kiy']->lang_code_iso_639_3 = 'kir';
-			$this->locales['kiy']->country_code = 'kg';
-			$this->locales['kiy']->wp_locale = 'kir';
-			$this->locales['kiy']->slug = 'kir';
-			$this->locales['kiy']->nplurals = 1;
-			$this->locales['kiy']->plural_expression = '0';
-			$this->locales['kir']->google_code = 'ky';
 
 			$this->locales['la'] = new GP_Locale();
 			$this->locales['la']->english_name = 'Latin';
