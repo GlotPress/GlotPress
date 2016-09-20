@@ -561,7 +561,7 @@ if ( ! class_exists( 'GP_Locales' ) ) :
 
 			$this->locales['bo'] = new GP_Locale();
 			$this->locales['bo']->english_name = 'Tibetan';
-		$bo->native_name = 'བོད་སྐད';
+			$this->locales['bo']->native_name = 'བོད་སྐད';
 			$this->locales['bo']->lang_code_iso_639_1 = 'bo';
 			$this->locales['bo']->lang_code_iso_639_2 = 'tib';
 			$this->locales['bo']->wp_locale = 'bo';
