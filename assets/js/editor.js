@@ -105,13 +105,13 @@ $gp.editor = (
 			keydown: function( e ) {
 				var target, container;
 
-				if ( 27 === e.keyCode ) {
+				if ( 27 === e.keyCode ) { // Escape = Next editor.
 					$gp.editor.hide();
-				} else if ( 33 === e.keyCode ) {
+				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Up Arrow = Previous editor.
 					$gp.editor.prev();
-				} else if ( 34 === e.keyCode ) {
+				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
-				} else if ( 13 === e.keyCode && e.shiftKey ) {
+				} else if ( 13 === e.keyCode && e.shiftKey ) { // Shift-Enter = Save.
 					target = $( e.target );
 
 					if ( 0 === e.altKey && target.val().length ) {
@@ -128,6 +128,28 @@ $gp.editor = (
 						target.nextAll( 'textarea' ).eq( 0 ).focus();
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
+					}
+				} else if ( 13 === e.keyCode && e.ctrlKey ) { // Ctrl-Enter = Copy original.
+					target = $( e.target );
+
+					original = $( '.editor:visible' ).find( '.original' );
+					
+					target.val( original.text() );
+				} else if ( 107 === e.keyCode && e.ctrlKey ) { // Ctrl-+ = Approve.
+					target = $( e.target );
+
+					reject = $( '.editor:visible' ).find( '.approve' );
+					
+					if( reject.length > 0 ) {
+						reject.trigger( 'click' );
+					}
+				} else if ( 109 === e.keyCode && e.ctrlKey ) { // Ctrl-- = Reject.
+					target = $( e.target );
+
+					reject = $( '.editor:visible' ).find( '.reject' );
+					
+					if( reject.length > 0 ) {
+						reject.trigger( 'click' );
 					}
 				} else {
 					return true;
