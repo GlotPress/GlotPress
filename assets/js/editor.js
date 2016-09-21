@@ -130,20 +130,26 @@ $gp.editor = (
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
 				} else if ( 13 === e.keyCode && e.ctrlKey ) { // Ctrl-Enter = Copy original.
+					var original;
+					
 					target = $( e.target );
-
+					
 					original = $( '.editor:visible' ).find( '.original' );
 					
 					target.val( original.text() );
 				} else if ( 107 === e.keyCode && e.ctrlKey ) { // Ctrl-+ = Approve.
+					var approve;
+					
 					target = $( e.target );
 
-					reject = $( '.editor:visible' ).find( '.approve' );
+					approve = $( '.editor:visible' ).find( '.approve' );
 					
-					if( reject.length > 0 ) {
-						reject.trigger( 'click' );
+					if( approve.length > 0 ) {
+						approve.trigger( 'click' );
 					}
 				} else if ( 109 === e.keyCode && e.ctrlKey ) { // Ctrl-- = Reject.
+					var reject;
+					
 					target = $( e.target );
 
 					reject = $( '.editor:visible' ).find( '.reject' );
