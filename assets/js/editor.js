@@ -103,7 +103,7 @@ $gp.editor = (
 				} );
 			},
 			keydown: function( e ) {
-				var target, container;
+				var target, container, original, approve, reject;
 
 				if ( 27 === e.keyCode ) { // Escape = Next editor.
 					$gp.editor.hide();
@@ -130,30 +130,24 @@ $gp.editor = (
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
 				} else if ( 13 === e.keyCode && e.ctrlKey ) { // Ctrl-Enter = Copy original.
-					var original;
-					
 					target = $( e.target );
-					
+
 					original = $( '.editor:visible' ).find( '.original' );
-					
+
 					target.val( original.text() );
 				} else if ( 107 === e.keyCode && e.ctrlKey ) { // Ctrl-+ = Approve.
-					var approve;
-					
 					target = $( e.target );
 
 					approve = $( '.editor:visible' ).find( '.approve' );
-					
+
 					if( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
 				} else if ( 109 === e.keyCode && e.ctrlKey ) { // Ctrl-- = Reject.
-					var reject;
-					
 					target = $( e.target );
 
 					reject = $( '.editor:visible' ).find( '.reject' );
-					
+
 					if( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
