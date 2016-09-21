@@ -26,7 +26,7 @@
  * @package GlotPress
  */
 
-define( 'GP_VERSION', '2.2.0-beta.1' );
+define( 'GP_VERSION', '2.3.0-alpha' );
 define( 'GP_DB_VERSION', '980' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
