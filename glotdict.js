@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
 	}
 	return lang;
   }
-  
+
   /**
    * Get the language for consistency
    * 
@@ -124,7 +124,7 @@ jQuery(document).ready(function () {
   /**
    * Get the glossary file saved 
    * 
-   * @param String lang
+   * @param String lang The language.
    * @returns Array
    */
   function gd_glossary_cached(lang) {
@@ -370,5 +370,12 @@ jQuery(document).ready(function () {
 	localStorage.setItem('gd_glossary_date', '');
 	gd_locales();
 	location.reload();
+  });
+  
+  jQuery('.glossary-word-glotdict').contextmenu(function (e) {
+	var info = jQuery(this).data('translations');
+	jQuery('.editor:visible textarea').val(jQuery('.editor:visible textarea').val() + info[0]['translation']);
+	e.preventDefault();
+	return false;
   });
 });
