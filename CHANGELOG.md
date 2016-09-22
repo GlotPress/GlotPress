@@ -1,3 +1,7 @@
+#1.1.5
+* Fix for the date on glossary update
+* Add link to Consistency tool on terms
+
 #1.1.4 
 * Improvement: Show the date of the last update
 * Improvement: ctrl+alt+r reset all the GlotDict settings

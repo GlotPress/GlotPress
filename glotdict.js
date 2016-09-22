@@ -16,13 +16,25 @@ jQuery(document).ready(function () {
 	}
 	return lang;
   }
+  
+  /**
+   * Get the language for consistency
+   * 
+   * @returns string
+   */
+  function gd_get_lang_consistency() {
+	var lang = localStorage.getItem('gd_language');
+	var reallang = lang.split('_');
+	reallang = reallang[1].toLowerCase();
+	return reallang;
+  }
 
   /**
    * Add the term in the page with the HTML code compatible with GlotPress
    * 
-   * @param String word
-   * @param String element
-   * @param String item
+   * @param String word The term.
+   * @param String element The div box.
+   * @param String item The glossary term.
    * @returns void
    */
   function gd_add_term_json(word, element, item) {
@@ -35,7 +47,7 @@ jQuery(document).ready(function () {
 	  if (!item.length) {
 		print = '[' + print + ']';
 	  }
-	  var repl = '<span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span>';
+	  var repl = '<a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span></a>';
 	  jQuery(element).html(jQuery(element).html().replace(rgxp, repl));
 	}
   }
