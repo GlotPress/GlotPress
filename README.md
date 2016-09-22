@@ -3,15 +3,15 @@
 
 [https://translate.wordpress.org](https://translate.wordpress.org) enable to the users to translate plugin, themes and WordPress itself.  
 The problem is that every community have their dictionaries to maintain consistency of the terms.  
-The goal of this browser extension is add that dictionaries when the user is translating on GlotPress.
+The goal of this browser extension is add that dictionaries when the user is translating on GlotPress and many other amazing features!
 
 # Features
 
 * Daily update of the glossary for the language in use
 * Remove the loading of social buttons on the website footer
 * Click on the terms with glossary open the consistency tool
-* Many hotkeys and shortcut
 * Add link to the Translation Status Overview with a button to scroll to the language in use
+* Many hotkeys and shortcut
 
 ## Hotkeys
 
