@@ -212,7 +212,8 @@ jQuery(document).ready(function () {
 	  jQuery('.glotdict_language').append(new_option);
 	});
 	if (lang === '' || lang === false) {
-	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;">&larr; Set the glossary!</span>');
+	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;">&larr; Set the glossary!</h3>');
+	  jQuery('.filters-toolbar:last div:first').append('<br><h2 style="background-color:#fff;padding:0;display:block;text-align:center;">Welcome to GlotDict! Discover the features and the hotkeys on the <a href="https://github.com/Mte90/GlotDict/blob/master/README.md#features" target="_blank">Readme</a> before to use it.</h2>');
 	  return;
 	}
 	jQuery('.glossary-word').contents().unwrap();

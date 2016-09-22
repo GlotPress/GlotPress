@@ -2,10 +2,18 @@
 [![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://img.shields.io/badge/License-GPL%20v2-blue.svg)   
 
 [https://translate.wordpress.org](https://translate.wordpress.org) enable to the users to translate plugin, themes and WordPress itself.  
-The problem is that every community have their dictionaries to maintain consistency of the terms.
-The goal of this browser extension is add that dictionaries when the user is translating.
+The problem is that every community have their dictionaries to maintain consistency of the terms.  
+The goal of this browser extension is add that dictionaries when the user is translating on GlotPress.
 
-# Hotkeys
+# Features
+
+* Daily update of the glossary for the language in use
+* Remove the loading of social buttons on the website footer
+* Click on the terms with glossary open the consistency tool
+* Many hotkeys and shortcut
+* Add link to the Translation Status Overview with a button to scroll to the language in use
+
+## Hotkeys
 
 * Shortcut on Ctrl+Shift+Z to click "Cancel"
 * Shortcut on Ctrl+Shift+A to click "Approve"
@@ -16,6 +24,7 @@ The goal of this browser extension is add that dictionaries when the user is tra
 * Shortcut on Ctrl+Shift+B to "Copy from original"
 * Shortcut on Ctrl+Shift+F to add non-breaking spaces near symbols
 * Shortcut on Ctrl+Alt+R to reset all the GlotDict settings
+* Right click of the mouse on the term with a dashed line and the translation will be added in the translation area
 
 # Download
 
@@ -25,7 +34,7 @@ The goal of this browser extension is add that dictionaries when the user is tra
 # Update times and release
 
 When the developer of the extension think that a new release is ready and tested they create a new release and publish on Firefox and Chrome addons store.  
-After that step we have to wait 1 day for Chrome and 2 or 3 for Firefox and all the installation will be updated automatically.
+After that step we have to wait few hours for Chrome and for Firefox and all the installations will be updated automatically.
 
 # Add a new glossary for a non-developer
 
@@ -35,4 +44,4 @@ Your glossary need to be published on GlotPress and a ticket created on https://
 
 * [Olegs Belousovs](https://github.com/sgelob) - The ideator
 * [Daniele Scasciafratte](https://github.com/Mte90) - The developer
-* Pascal Casier - For the help with the glossaries
+* Pascal Casier - For the help with the glossaries and hotkeys

@@ -2,6 +2,8 @@
 * Fix for the date on glossary update
 * Add link to Consistency tool on terms
 * On right click on the term with glossary is appended in the text in translation
+* Text for new insttallation to look on the readme
+* Improved Readme
 
 #1.1.4 
 * Improvement: Show the date of the last update
