@@ -140,7 +140,7 @@ $gp.editor = (
 
 					approve = $( '.editor:visible' ).find( '.approve' );
 
-					if( approve.length > 0 ) {
+					if ( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
 				} else if ( 109 === e.keyCode && e.ctrlKey ) { // Ctrl-- = Reject.
@@ -148,7 +148,7 @@ $gp.editor = (
 
 					reject = $( '.editor:visible' ).find( '.reject' );
 
-					if( reject.length > 0 ) {
+					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
 				} else {
