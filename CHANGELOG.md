@@ -1,3 +1,7 @@
+#1.1.6
+* Bug on Germany fixed
+* Bug for consistency link with language like japan
+
 #1.1.5
 * Fix for the date on glossary update
 * Add link to Consistency tool on terms
