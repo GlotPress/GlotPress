@@ -45,7 +45,7 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  word = word.replace(/\)/g, "\\)");
 	  word = word.replace(/\(/g, "\\(");
-	  var rgxp = new RegExp('\\b[^\.](' + word + ')\\b(?![^<>()\"]*>)', 'gi');
+	  var rgxp = new RegExp('\\b[^\.?](' + word + ')\\b(?![^<>()\"]*>)', 'gi');
 	  var print = JSON.stringify(item);
 	  print = print.replace(/\'/g, "");
 	  if (!item.length) {
