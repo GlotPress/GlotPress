@@ -1,9 +1,12 @@
+#1.1.7
+* Fix: Bug on multiple terms near each other
+
 #1.1.6
-* Bug on Germany fixed
-* Bug for consistency link with language like japan
+* Fix: Bug on Germany fixed
+* Fix: Bug for consistency link with language like Japan
 
 #1.1.5
-* Fix for the date on glossary update
+* Fix: The date on glossary update
 * Add link to Consistency tool on terms
 * On right click on the term with glossary is appended in the text in translation
 * Text for new insttallation to look on the readme
