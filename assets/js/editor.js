@@ -133,7 +133,7 @@ $gp.editor = (
 					target = $( e.target );
 
 					chunks = target.attr( 'id' ).split( '_' );
-					original_index = parseInt( chunks[chunks.length-1], 10 );
+					original_index = parseInt( chunks[ chunks.length - 1 ], 10 );
 
 					original = $( '.editor:visible' ).find( '.original' ).eq( original_index );
 
@@ -327,7 +327,7 @@ $gp.editor = (
 			},
 			copy: function( link ) {
 				var chunks = link.parents( '.textareas' ).find( 'textarea' ).attr( 'id' ).split( '_' );
-				var original_index = parseInt( chunks[chunks.length-1], 10 );
+				var original_index = parseInt( chunks[ chunks.length - 1 ], 10 );
 				var original_text = link.parents( '.textareas' ).prev().find( '.original' ).eq( original_index );
 
 				if ( ! original_text.hasClass( 'original' ) ) {
