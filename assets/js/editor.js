@@ -132,8 +132,8 @@ $gp.editor = (
 				} else if ( 13 === e.keyCode && e.ctrlKey ) { // Ctrl-Enter = Copy original.
 					target = $( e.target );
 
-					original = $( '.editor:visible' ).find( '.original' );
-
+					original = $( '.editor:visible' ).find( '.original' ).last();
+					
 					target.val( original.text() );
 				} else if ( 107 === e.keyCode && e.ctrlKey ) { // Ctrl-+ = Approve.
 					target = $( e.target );
