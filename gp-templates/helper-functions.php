@@ -106,7 +106,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			</div>
 		<?php endif; ?>
 		<blockquote><em><small><?php echo esc_translation( gp_array_get( $entry->translations, $index ) ); ?></small></em></blockquote>
-		<textarea class="foreign-text" name="translation[<?php echo $entry->original_id; ?>][]" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
+		<textarea class="foreign-text" name="translation[<?php echo $entry->original_id; ?>][]" id="translation_<?php echo $entry->original_id; ?>_<?php echo $index; ?>" <?php echo $disabled; ?>><?php echo esc_translation(gp_array_get($entry->translations, $index)); ?></textarea>
 
 		<p>
 			<?php
@@ -117,7 +117,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
 			}
 			else {
-				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url() ) );
 			}
 			?>
 		</p>

@@ -103,7 +103,7 @@ $gp.editor = (
 				} );
 			},
 			keydown: function( e ) {
-				var target, container, original, approve, reject;
+				var target, container, original, approve, reject, chunks;
 
 				if ( 27 === e.keyCode ) { // Escape = Next editor.
 					$gp.editor.hide();
@@ -132,8 +132,11 @@ $gp.editor = (
 				} else if ( 13 === e.keyCode && e.ctrlKey ) { // Ctrl-Enter = Copy original.
 					target = $( e.target );
 
-					original = $( '.editor:visible' ).find( '.original' ).last();
-					
+					chunks = target.attr( 'id' ).split( '_' );
+					original_index = parseInt( chunks[chunks.length-1] );
+
+					original = $( '.editor:visible' ).find( '.original' ).eq( original_index );
+
 					target.val( original.text() );
 				} else if ( 107 === e.keyCode && e.ctrlKey ) { // Ctrl-+ = Approve.
 					target = $( e.target );
@@ -323,10 +326,14 @@ $gp.editor = (
 				} );
 			},
 			copy: function( link ) {
-				var original_text = link.parents( '.textareas' ).prev().find( '.original' );
+				var chunks = link.parents( '.textareas' ).find( 'textarea' ).attr( 'id' ).split( '_' );
+				var original_index = parseInt( chunks[chunks.length-1] );
+				var original_text = link.parents( '.textareas' ).prev().find( '.original' ).eq( original_index );
+
 				if ( ! original_text.hasClass( 'original' ) ) {
-					original_text = link.parents( '.strings' ).find( '.original' ).last();
+					original_text = link.parents( '.strings' ).find( '.original' ).eq( original_index );
 				}
+
 				original_text = original_text.text();
 				original_text = original_text.replace( /<span class=.invisibles.*?<\/span>/g, '' );
 				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
