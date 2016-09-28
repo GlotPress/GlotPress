@@ -36,9 +36,9 @@ jQuery(document).ready(function () {
   /**
    * Add the term in the page with the HTML code compatible with GlotPress
    * 
-   * @param String word The term.
-   * @param String element The div box.
-   * @param String item The glossary term.
+   * @param {string} word The term.
+   * @param {string} element The div box.
+   * @param {string} item The glossary term.
    * @returns void
    */
   function gd_add_term_json(word, element, item) {
@@ -131,7 +131,7 @@ jQuery(document).ready(function () {
   /**
    * Get the glossary file saved 
    * 
-   * @param String lang The language.
+   * @param {string} lang The language.
    * @returns Array
    */
   function gd_glossary_cached(lang) {
