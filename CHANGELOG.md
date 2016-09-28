@@ -1,3 +1,6 @@
+#1.1.8
+* Fix: bugs on multiple cases on french and german
+
 #1.1.7
 * Fix: Bug on multiple terms near each other
 
