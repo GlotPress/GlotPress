@@ -10,6 +10,13 @@ class GP_Format_Android extends GP_Format {
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
+
+		$this->line( '<!--' );
+		$this->line( 'Translation-Revision-Date:' . GP::$translation->last_modified( $translation_set ) . '+0000' );
+		$this->line( "/* Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
+		$this->line( '/* X-Generator: GlotPress/' . GP_VERSION );
+		$this->line( '-->' );
+
 		$this->line( '<resources>' );
 		$string_array_items = array();
 
@@ -20,12 +27,13 @@ class GP_Format_Android extends GP_Format {
 				continue;
 			}
 
-			if ( ! preg_match( '/^[a-zA-Z0-9_]+$/', $entry->context ) ) {
-				error_log( 'Android XML Export: Bad Entry: '. $entry->context );
-				continue;
+			if ( empty( $entry->context ) ) {
+				$entry->context = $entry->singular;
 			}
-
-			$this->line( '<string name="' . $entry->context . '">' . $this->escape( $entry->translations[0] ) . '</string>', 1 );
+			
+			$id = preg_replace( '/[^a-zA-Z0-9_]/U', '_', $entry->context );
+			
+			$this->line( '<string name="' . $id . '">' . $this->escape( $entry->translations[0] ) . '</string>', 1 );
 		}
 
 		$this->string_arrays( $string_array_items );

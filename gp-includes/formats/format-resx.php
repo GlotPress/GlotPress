@@ -19,6 +19,10 @@ class GP_Format_ResX extends GP_Format {
 		$this->res_header( 'version', '2.0' );
 		$this->res_header( 'reader', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
 		$this->res_header( 'writer', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
+		$this->res_header( 'Translation-Revision-Date', GP::$translation->last_modified( $translation_set ) . '+0000' );
+		$this->res_header( 'Plural-Forms', 'nplurals={$locale->nplurals}; plural={$locale->plural_expression};' );
+		$this->res_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
+		
 		foreach( $entries as $entry ) {
 			if ( !preg_match( '/^[a-zA-Z0-9_]+$/', $entry->context ) ) {
 				error_log( 'ResX Export: Bad Entry: '. $entry->context );

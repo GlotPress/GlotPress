@@ -27,6 +27,11 @@ class GP_Format_Properties extends GP_Format {
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = '';
 
+		$result .= '# Translation-Revision-Date:' . GP::$translation->last_modified( $translation_set ) . "+0000\n";
+		$result .= "# Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};\n";
+		$result .= '# X-Generator: GlotPress/' . GP_VERSION . "\n";
+		$result .= "\n";
+
 		$sorted_entries = $entries;
 		usort( $sorted_entries, array( $this, 'sort_entries' ) );
 

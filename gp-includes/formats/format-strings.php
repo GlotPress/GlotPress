@@ -8,9 +8,15 @@ class GP_Format_Strings extends GP_Format {
 	public $exported = '';
 
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
-		$result = '';
 		$prefix = pack( 'CC', 0xff, 0xfe ); // Add BOM
 
+		$result = '';
+
+		$result .= '/* Translation-Revision-Date:' . GP::$translation->last_modified( $translation_set ) . "+0000 */\n";
+		$result .= "/* Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression}; */\n";
+		$result .= '/* X-Generator: GlotPress/' . GP_VERSION . " */\n";
+		$result .= "\n";
+		
 		$sorted_entries = $entries;
 		usort( $sorted_entries, array( 'GP_Format_Strings', 'sort_entries' ) );
 
