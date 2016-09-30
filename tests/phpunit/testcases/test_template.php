@@ -12,7 +12,7 @@ class GP_Test_Template_Functions extends GP_UnitTestCase {
 	}
 
 	function test_gp_breadcrumb_should_run_empty_string_through_filter_without_params() {
-		$filter = $this->getMock('Dummy', array('breadcrumb_filter'));
+		$filter = $this->getMockBuilder('stdClass')->setMethods(array('breadcrumb_filter'))->getMock();
 		$filter->expects( $this->once() )->method( 'breadcrumb_filter' )->with( $this->equalTo( array() ) );
 
 		add_filter( 'gp_breadcrumb_items', array( $filter, 'breadcrumb_filter') );

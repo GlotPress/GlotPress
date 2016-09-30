@@ -340,7 +340,7 @@ class GP_Locales {
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
-		$bo->native_name = 'བོད་སྐད';
+		$bo->native_name = 'བོད་ཡིག';
 		$bo->lang_code_iso_639_1 = 'bo';
 		$bo->lang_code_iso_639_2 = 'tib';
 		$bo->wp_locale = 'bo';
@@ -962,14 +962,13 @@ class GP_Locales {
 		$gu->facebook_locale = 'gu_IN';
 
 		$ha = new GP_Locale();
-		$ha->english_name = 'Hausa';
+		$ha->english_name = 'Hausa (Arabic)';
 		$ha->native_name = 'هَوُسَ';
 		$ha->lang_code_iso_639_1 = 'ha';
 		$ha->lang_code_iso_639_2 = 'hau';
 		$ha->slug = 'ha';
 		$ha->text_direction = 'rtl';
 		$ha->google_code = 'ha';
-		$ha->facebook_locale = 'ha_NG';
 
 		$hat = new GP_Locale();
 		$hat->english_name = 'Haitian Creole';
@@ -980,6 +979,18 @@ class GP_Locales {
 		$hat->country_code = 'ht';
 		$hat->wp_locale = 'hat';
 		$hat->slug = 'hat';
+
+		$hau = new GP_Locale();
+		$hau->english_name = 'Hausa';
+		$hau->native_name = 'Harshen Hausa';
+		$hau->lang_code_iso_639_1 = 'ha';
+		$hau->lang_code_iso_639_2 = 'hau';
+		$hau->lang_code_iso_639_3 = 'hau';
+		$hau->country_code = 'ng';
+		$hau->wp_locale = 'hau';
+		$hau->slug = 'hau';
+		$hau->google_code = 'ha';
+		$hau->facebook_locale = 'ha_NG';
 
 		$haw = new GP_Locale();
 		$haw->english_name = 'Hawaiian';
@@ -1255,16 +1266,18 @@ class GP_Locales {
 		$ks->lang_code_iso_639_2 = 'kas';
 		$ks->slug = 'ks';
 
-		$ky = new GP_Locale();
-		$ky->english_name = 'Kirghiz';
-		$ky->native_name = 'кыргыз тили';
-		$ky->lang_code_iso_639_1 = 'ky';
-		$ky->lang_code_iso_639_2 = 'kir';
-		$ky->country_code = 'kg';
-		$ky->wp_locale = 'ky_KY';
-		$ky->slug = 'ky';
-		$ky->nplurals = 1;
-		$ky->plural_expression = '0';
+		$kir = new GP_Locale();
+		$kir->english_name = 'Kyrgyz';
+		$kir->native_name = 'Кыргызча';
+		$kir->lang_code_iso_639_1 = 'ky';
+		$kir->lang_code_iso_639_2 = 'kir';
+		$kir->lang_code_iso_639_3 = 'kir';
+		$kir->country_code = 'kg';
+		$kir->wp_locale = 'kir';
+		$kir->slug = 'kir';
+		$kir->nplurals = 1;
+		$kir->plural_expression = '0';
+		$kir->google_code = 'ky';
 
 		$la = new GP_Locale();
 		$la->english_name = 'Latin';

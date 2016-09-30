@@ -10,7 +10,7 @@ $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpres
 $delete_url       = gp_url_join( $url, '-delete' );
 $glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
 
-gp_enqueue_script( 'gp-glossary' );
+gp_enqueue_scripts( 'gp-glossary' );
 wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();

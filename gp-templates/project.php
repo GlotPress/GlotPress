@@ -1,8 +1,8 @@
 <?php
 gp_title( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) );
 gp_breadcrumb_project( $project );
-gp_enqueue_script( 'gp-common' );
-gp_enqueue_script('tablesorter');
+gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
+gp_enqueue_style( 'tablesorter-theme' );
 $edit_link = gp_link_project_edit_get( $project, __( '(edit)', 'glotpress' ) );
 
 if ( $project->active ) {
@@ -44,23 +44,29 @@ gp_tmpl_header();
 <?php if ( $translation_sets ): ?>
 <div id="translation-sets">
 	<h3><?php _e( 'Translations', 'glotpress' );?></h3>
-	<table class="translation-sets tablesorter">
+	<table class="translation-sets tablesorter tablesorter-glotpress">
 		<thead>
-			<tr>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
-				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
-				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
-				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>
-				<th><?php _e( 'Waiting', 'glotpress' ); ?></th>
+			<tr class="tablesorter-headerRow">
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerDesc"><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Waiting', 'glotpress' ); ?></th>
 				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-				<th class="extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
+				<th class="header tablesorter-header tablesorter-headerUnSorted extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach( $translation_sets as $set ): ?>
-			<tr>
+		<?php
+		$class = '';
+
+		foreach ( $translation_sets as $set ) :
+			$class = ( 'odd' === $class ) ? 'even' : 'odd';
+
+		?>
+			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):
@@ -150,6 +156,8 @@ gp_tmpl_header();
 	});
 	jQuery(document).ready(function($) {
 		$(".translation-sets").tablesorter({
+			theme: 'glotpress',
+			sortList: [[2,1]],
 			headers: {
 				0: {
 					sorter: 'text'

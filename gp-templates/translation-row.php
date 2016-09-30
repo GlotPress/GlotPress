@@ -200,9 +200,9 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 			    <dt><?php _e( 'More links:', 'glotpress' ); ?>
 				<ul>
 				<?php if ( $t->translation_status ) : ?>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permanent link to this translation', 'glotpress' ); ?>"><?php _e( 'Permalink to this translation', 'glotpress' ); ?></a></li>
+					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permalink to this translation', 'glotpress' ); ?>"><?php _e( 'Permalink to this translation', 'glotpress' ); ?></a></li>
 				<?php else : ?>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permanent link to this original', 'glotpress' ); ?>"><?php _e( 'Permalink to this original', 'glotpress' ); ?></a></li>
+					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permalink to this original', 'glotpress' ); ?>"><?php _e( 'Permalink to this original', 'glotpress' ); ?></a></li>
 				<?php endif; ?>
 					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php esc_attr_e( 'Link to the history of translations of this original', 'glotpress' ); ?>"><?php _e( 'All translations of this original', 'glotpress' ); ?></a></li>
 				</ul>

@@ -24,7 +24,10 @@ gp_tmpl_header();
 				}
 			?></dd>
 			<dt><?php _e( 'Member Since', 'glotpress' ); ?></dt>
-			<dd><?php echo date( 'M j, Y', strtotime( $user->user_registered ) ); ?></dd>
+			<dd><?php
+				/* translators: public profile date format, see https://secure.php.net/date */
+				echo date_i18n( __( 'M j, Y', 'glotpress' ), strtotime( $user->user_registered ) ); // WPCS: XSS ok.
+			?></dd>
 		</dl>
 	</div>
 </div>
