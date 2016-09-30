@@ -100,7 +100,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations_added = $translation_set->import( $translations, $import_status );
-		$this->notices[] = sprintf( __( '%s translations were added', 'glotpress' ), $translations_added );
+		$this->notices[] = sprintf( _n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ), $translations_added );
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
@@ -259,8 +259,11 @@ class GP_Route_Translation extends GP_Route_Main {
 			$data['user_id'] = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
-			foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
-				if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
+			// Reduce range by one since we're starting at 0, see GH#516.
+			foreach ( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
+				if ( isset( $translations[ $i ] ) ) {
+					$data[ "translation_$i" ] = $translations[ $i ];
+				}
 			}
 
 			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )

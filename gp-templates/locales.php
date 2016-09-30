@@ -1,8 +1,8 @@
 <?php
 gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
 
-gp_enqueue_script( 'gp-common' );
-gp_enqueue_script( 'tablesorter' );
+gp_enqueue_scripts( array( 'gp-common', 'tablesorter' ) );
+gp_enqueue_style( 'tablesorter-theme' );
 gp_breadcrumb( array( __( 'Locales', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
@@ -12,21 +12,26 @@ gp_tmpl_header();
 		<?php _e( 'Filter:', 'glotpress' );?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e('search', 'glotpress'); ?>" />
 	</div>
 
-	<table class="tablesorter locales">
+	<table class="tablesorter locales tablesorter-glotpress">
 		<thead>
-		<tr>
-			<th class="header"><?php _e( 'Name (in English)', 'glotpress' );?></th>
-			<th class="header"><?php _e( 'Native name', 'glotpress' );?></th>
-			<th class="header"><?php _e( 'Language code', 'glotpress' );?></th>
+		<tr class="tablesorter-headerRow">
+			<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Name (in English)', 'glotpress' );?></th>
+			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Native name', 'glotpress' );?></th>
+			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Language code', 'glotpress' );?></th>
 
 		</tr>
 		</thead>
 		<tbody>
-		<?php foreach ( $locales as $locale ) : ?>
-			<tr>
-				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . "</td>" ?>
-				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . "</td>" ?>
-				<?php echo "<td>" . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . "</td>" ?>
+		<?php
+			$class = '';
+
+			foreach ( $locales as $locale ) :
+				$class = ( 'odd' === $class ) ? 'even' : 'odd';
+?>
+			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
+				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>' ?>
+				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . '</td>' ?>
+				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . '</td>' ?>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
@@ -35,6 +40,8 @@ gp_tmpl_header();
 	<script type="text/javascript" charset="utf-8">
 		jQuery(document).ready(function($) {
 			$('.locales').tablesorter({
+				theme: 'glotpress',
+				sortList: [[0,0]],
 				headers: {
 					0: {
 						sorter: 'text'
@@ -42,8 +49,6 @@ gp_tmpl_header();
 				},
 				widgets: ['zebra']
 			});
-
-			$('.locales').width($('.locales').width());
 
 			$rows = $('.locales tbody').find('tr');
 			$('#locales-filter').bind("change keyup input",function() {

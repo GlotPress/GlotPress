@@ -502,7 +502,7 @@ function gp_checked( $checked ) {
 
 function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
-		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import originals', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),

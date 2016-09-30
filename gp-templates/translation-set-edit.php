@@ -4,6 +4,10 @@ gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $locale->english_name . 'default' != $set->slug? ' '.$set->name : '' ),
 ) );
+
+// jQuery is required for the 'translation-set-form' template.
+gp_enqueue_script( 'jquery' );
+
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Edit Translation Set', 'glotpress' ); ?></h2>

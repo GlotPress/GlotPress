@@ -1,12 +1,20 @@
 <?php
-gp_enqueue_style( 'base' );
-gp_enqueue_script( 'jquery' );
+/**
+ * Defines helper functions used by GlotPress.
+ *
+ * @package GlotPress
+ * @since 1.0.0
+ */
 
-
+/**
+ * Prepare an original string to be printed out in a translation row by adding encoding special
+ * characters, adding glossary entires and other markup.
+ *
+ * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
+ *
+ * @return string The prepared string for output.
+ */
 function prepare_original( $text ) {
-	$text = str_replace( array("\r", "\n"), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text);
-	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text);
-
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
 	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
@@ -26,6 +34,9 @@ function prepare_original( $text ) {
 	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
 	}, $text );
+
+	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
+	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
 
 	return $text;
 }
@@ -140,7 +151,6 @@ function references( $project, $entry ) {
 		<?php
 		foreach( $entry->references as $reference ):
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			// TODO: allow the user to override the project setting
 			if ( $source_url = $project->source_url( $file, $line ) ):
 				?>
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
