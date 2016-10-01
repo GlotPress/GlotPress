@@ -45,7 +45,7 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  word = word.replace(/\)/g, "\\)");
 	  word = word.replace(/\(/g, "\\(");
-      //The magic
+          //The magic
 	  var rgxp = new RegExp('[^\/\.\-?\=]\\b(' + word + ')\\b[^\-\.\=](?![^<>()\"]*>)', 'gi');
 	  var print = JSON.stringify(item);
 	  print = print.replace(/\'/g, "");
@@ -54,8 +54,9 @@ jQuery(document).ready(function () {
 	  }
 	  var repl = ' <a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span></a> ';
           // Hack to check also the first word
-          var content = ' ' + jQuery(element).html();
-	  jQuery(element).html(content.replace(rgxp, repl).substring(1));
+          var content = ' ' + jQuery(element).html() + ' ';
+          content = content.replace(rgxp, repl).substring(1).substring(-1);
+	  jQuery(element).html(content);
 	}
   }
 
