@@ -45,22 +45,38 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  word = word.replace(/\)/g, "\\)");
 	  word = word.replace(/\(/g, "\\(");
-	  // The magic
+	  // The first part in [] check for term that don't have at the left that symbol
+	  // The secondo search for the term
+	  // The third like the first part
+	  // The last is to check that is not contained between that terms
 	  var rgxp = new RegExp('[^\/\.\-?\=\(]\\b(' + word + ')\\b[^\-\.\=\)](?![^<>()\"]*>)', 'gi');
 	  var print = JSON.stringify(item);
-	  print = print.replace(/\'/g, "");
+	  print = print.replace(/\'/g, "").replace(/\"/g, "&quot;");
 	  if (!item.length) {
 		print = '[' + print + ']';
 	  }
-	  var repl = ' <a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span></a> ';
+	  var repl = ' <a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&amp;set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations="' + print + '">$1</span></a> ';
 	  // Hack to check also the first and last word
 	  var content = ' ' + jQuery(element).html() + ' ';
 	  // Remove the double space and init and at the end of the string
 	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').replace(/ lt\;/g, '&lt;').substring(1).substring(-1);
 	  if (content !== jQuery(element).html()) {
-		jQuery(element).html(content);
+		if (checkHTML(content)) {
+		  jQuery(element).html(content);
+		}
 	  }
 	}
+  }
+
+  /**
+   * Easy way to validate the html to avoid horrible errors
+   * @param {String} html
+   * @returns {Boolean}
+   */
+  function checkHTML(html) {
+	var doc = document.createElement('div');
+	doc.innerHTML = html;
+	return (doc.innerHTML === html);
   }
 
   /**

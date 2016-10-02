@@ -1,3 +1,13 @@
+#1.1.10
+* Fix: bugs on words inside ()
+* Fix: other sanitizations
+* Improvement: Now check if the content is different to avoid many DOM operations
+* Improvement: Now validate the HTML to avoid broken strings
+* Improvement: Now there is a file for tests the extension
+
+#1.1.9
+* Fix: bugs on  single words
+
 #1.1.8
 * Fix: bugs on multiple cases on french and german
 
