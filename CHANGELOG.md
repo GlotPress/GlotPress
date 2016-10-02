@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.0 (September 30, 2016)
+
+(this space intentionally left blank)
+
+## 2.2.0-rc.1 (September 22, 2016)
+
+(this space intentionally left blank)
+
 ## 2.2.0-beta.1 (September 19, 2016)
 
 **Breaking Changes**
@@ -25,7 +33,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Update JavaScript library for table sorting. ([#502](https://github.com/GlotPress/GlotPress-WP/issue/502))
 
 Thanks to all the contributors so far: Alexander Kirk, David Decker, Dominik Schilling, Greg Ross, Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
-
 
 ## 2.1.0 (July 13, 2016)
 
