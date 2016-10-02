@@ -53,9 +53,10 @@ jQuery(document).ready(function () {
 		print = '[' + print + ']';
 	  }
 	  var repl = ' <a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span></a> ';
-	  // Hack to check also the first word
+	  // Hack to check also the first and last word
 	  var content = ' ' + jQuery(element).html() + ' ';
-	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').substring(1).substring(-1);
+	  // Remove the double space and init and at the end of the string
+	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').replace(/ lt\;/g, '&lt;').substring(1).substring(-1);
 	  jQuery(element).html(content);
 	}
   }
@@ -242,10 +243,11 @@ jQuery(document).ready(function () {
 	// Loop all the editor string views
 	jQuery('.editor .original').each(function () {
 	  var editor_in_loop = this;
+	  // Clean from other span
+	  var editor = jQuery(editor_in_loop).html().replace(/<\/?span[^>]*>/g, "");
+	  jQuery(editor_in_loop).html(editor);
 	  jQuery.each(data, function (i, item) {
 		if (i !== '&') {
-		  var editor = jQuery(editor_in_loop).html().replace(/<\/?span[^>]*>/g,"");
-		  jQuery(editor_in_loop).html(editor);
 		  gd_add_term_json(i, editor_in_loop, item);
 		}
 	  });
