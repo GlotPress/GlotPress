@@ -45,7 +45,7 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  word = word.replace(/\)/g, "\\)");
 	  word = word.replace(/\(/g, "\\(");
-	  //The magic
+	  // The magic
 	  var rgxp = new RegExp('[^\/\.\-?\=\(]\\b(' + word + ')\\b[^\-\.\=\)](?![^<>()\"]*>)', 'gi');
 	  var print = JSON.stringify(item);
 	  print = print.replace(/\'/g, "");
@@ -57,7 +57,9 @@ jQuery(document).ready(function () {
 	  var content = ' ' + jQuery(element).html() + ' ';
 	  // Remove the double space and init and at the end of the string
 	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').replace(/ lt\;/g, '&lt;').substring(1).substring(-1);
-	  jQuery(element).html(content);
+	  if (content !== jQuery(element).html()) {
+		jQuery(element).html(content);
+	  }
 	}
   }
 
