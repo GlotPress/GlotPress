@@ -25,11 +25,11 @@ jQuery(document).ready(function () {
   function gd_get_lang_consistency() {
 	var lang = localStorage.getItem('gd_language');
 	var reallang = lang.split('_');
-        if (typeof reallang[1] !== 'undefined') {
-            reallang = reallang[1].toLowerCase();
-        } else {
-            reallang = lang;
-        }
+	if (typeof reallang[1] !== 'undefined') {
+	  reallang = reallang[1].toLowerCase();
+	} else {
+	  reallang = lang;
+	}
 	return reallang;
   }
 
@@ -45,17 +45,17 @@ jQuery(document).ready(function () {
 	if (item !== '') {
 	  word = word.replace(/\)/g, "\\)");
 	  word = word.replace(/\(/g, "\\(");
-          //The magic
-	  var rgxp = new RegExp('[^\/\.\-?\=]\\b(' + word + ')\\b[^\-\.\=](?![^<>()\"]*>)', 'gi');
+	  //The magic
+	  var rgxp = new RegExp('[^\/\.\-?\=\(]\\b(' + word + ')\\b[^\-\.\=\)](?![^<>()\"]*>)', 'gi');
 	  var print = JSON.stringify(item);
 	  print = print.replace(/\'/g, "");
 	  if (!item.length) {
 		print = '[' + print + ']';
 	  }
 	  var repl = ' <a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations=\'' + print + '\'>$1</span></a> ';
-          // Hack to check also the first word
-          var content = ' ' + jQuery(element).html() + ' ';
-          content = content.replace(rgxp, repl).substring(1).substring(-1);
+	  // Hack to check also the first word
+	  var content = ' ' + jQuery(element).html() + ' ';
+	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').substring(1).substring(-1);
 	  jQuery(element).html(content);
 	}
   }
@@ -164,7 +164,7 @@ jQuery(document).ready(function () {
    * @returns Array
    */
   function gd_locales() {
-	var locales = ['ast', 'bg_BG', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'it_IT', 'ja', 'lt_LT', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR'];
+	var locales = ['ast', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
 	var locales_date_cache = localStorage.getItem('gd_locales_date');
 	if (locales_date_cache === null || locales_date_cache !== gd_today()) {
 	  jQuery.ajax({
@@ -220,7 +220,7 @@ jQuery(document).ready(function () {
 	  jQuery('.glotdict_language').append(new_option);
 	});
 	if (lang === '' || lang === false) {
-	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;">&larr; Set the glossary!</h3>');
+	  jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;color:red;">&larr; Set the glossary!</h3>');
 	  jQuery('.filters-toolbar:last div:first').append('<br><h2 style="background-color:#fff;padding:0;display:block;text-align:center;margin-top: 6px;">Welcome to GlotDict! Discover the features and the hotkeys on the <a href="https://github.com/Mte90/GlotDict/blob/master/README.md#features" target="_blank">Readme</a> before to use it.</h2>');
 	  return;
 	}
@@ -244,6 +244,8 @@ jQuery(document).ready(function () {
 	  var editor_in_loop = this;
 	  jQuery.each(data, function (i, item) {
 		if (i !== '&') {
+		  var editor = jQuery(editor_in_loop).html().replace(/<\/?span[^>]*>/g,"");
+		  jQuery(editor_in_loop).html(editor);
 		  gd_add_term_json(i, editor_in_loop, item);
 		}
 	  });
@@ -380,7 +382,7 @@ jQuery(document).ready(function () {
 	gd_locales();
 	location.reload();
   });
-  
+
   jQuery('.glossary-word-glotdict').contextmenu(function (e) {
 	var info = jQuery(this).data('translations');
 	jQuery('.editor:visible textarea').val(jQuery('.editor:visible textarea').val() + info[0]['translation']);

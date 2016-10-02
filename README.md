@@ -42,6 +42,6 @@ Your glossary need to be published on GlotPress and a ticket created on https://
 
 # Contributors
 
+* [Daniele Scasciafratte](https://github.com/Mte90) - The developer [Donate](https://www.paypal.me/mte90)
 * [Olegs Belousovs](https://github.com/sgelob) - The ideator
-* [Daniele Scasciafratte](https://github.com/Mte90) - The developer
 * Pascal Casier - For the help with the glossaries and hotkeys
