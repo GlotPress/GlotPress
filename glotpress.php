@@ -3,7 +3,7 @@
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 2.2.0
+ * Version: 2.3.0-alpha
  * Author: the GlotPress team
  * Author URI: http://glotpress.org
  * License: GPLv2 or later
@@ -26,7 +26,7 @@
  * @package GlotPress
  */
 
-define( 'GP_VERSION', '2.2.0' );
+define( 'GP_VERSION', '2.3.0-alpha' );
 define( 'GP_DB_VERSION', '980' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );

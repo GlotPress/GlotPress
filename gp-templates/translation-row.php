@@ -36,13 +36,13 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 			$edit_text = __( 'You are not allowed to add a translation.', 'glotpress' );
 		}
 		else {
-			$edit_text = sprintf( __( 'You <a href="%s">have to login</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url() ) );
+			$edit_text = sprintf( __( 'You <a href="%s">have to log in</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 		}
 
 		$missing_text = "<span class='missing'>$edit_text</span>";
-		if ( ! count( array_filter( $t->translations, 'gp_is_not_empty_string' ) ) ):
+		if ( ! count( array_filter( $t->translations, 'gp_is_not_null' ) ) ) :
 			echo $missing_text;
-		elseif ( !$t->plural ):
+		elseif ( ! $t->plural ) :
 			echo esc_translation( $t->translations[0] );
 		else: ?>
 		<ul>
