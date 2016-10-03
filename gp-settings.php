@@ -107,6 +107,8 @@ require_once GP_PATH . GP_INC . 'formats/format_pomo.php';
 require_once GP_PATH . GP_INC . 'formats/format_resx.php';
 require_once GP_PATH . GP_INC . 'formats/format_strings.php';
 require_once GP_PATH . GP_INC . 'formats/format_properties.php';
+require_once GP_PATH . GP_INC . 'formats/format_json.php';
+require_once GP_PATH . GP_INC . 'formats/format_jed1x.php';
 
 // Let's do it again, there are more variables added since last time we called it
 gp_set_globals( get_defined_vars() );

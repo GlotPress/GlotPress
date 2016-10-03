@@ -1,0 +1,13 @@
+{
+  "domain":      "foo",
+  "locale_data": {
+    "bar": {
+      "":    {
+        "domain":       "foo",
+        "plural-forms": "n != 1",
+        "lang":         "de-ch"
+      },
+      "Foo": []
+    }
+  }
+}
