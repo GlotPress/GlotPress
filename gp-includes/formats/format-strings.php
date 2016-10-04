@@ -16,7 +16,7 @@ class GP_Format_Strings extends GP_Format {
 		$result .= "/* Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression}; */\n";
 		$result .= '/* X-Generator: GlotPress/' . GP_VERSION . " */\n";
 		$result .= "\n";
-		
+
 		$sorted_entries = $entries;
 		usort( $sorted_entries, array( 'GP_Format_Strings', 'sort_entries' ) );
 

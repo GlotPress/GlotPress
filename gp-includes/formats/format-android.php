@@ -30,9 +30,9 @@ class GP_Format_Android extends GP_Format {
 			if ( empty( $entry->context ) ) {
 				$entry->context = $entry->singular;
 			}
-			
+
 			$id = preg_replace( '/[^a-zA-Z0-9_]/U', '_', $entry->context );
-			
+
 			$this->line( '<string name="' . $id . '">' . $this->escape( $entry->translations[0] ) . '</string>', 1 );
 		}
 
