@@ -24,13 +24,12 @@ class GP_Format_ResX extends GP_Format {
 		$this->res_header( 'X-Generator', 'GlotPress/' . GP_VERSION );
 
 		foreach ( $entries as $entry ) {
-			if ( !preg_match( '/^[a-zA-Z0-9_]+$/', $entry->context ) ) {
-				error_log( 'ResX Export: Bad Entry: '. $entry->context );
-				continue;
-			}
-
 			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )
 				continue;
+
+			if ( empty( $entry->context ) ) {
+				$entry->context = $entry->singular;
+			}
 
 			$this->line( '<data name="' . $entry->context . '" xml:space="preserve">', 1 );
 			$this->line( '<value>' . $this->escape( $entry->translations[0] ) . '</value>', 2 );
