@@ -105,7 +105,7 @@ $gp.editor = (
 			keydown: function( e ) {
 				var target, container, original, approve, reject, chunks, original_index;
 
-				if ( 27 === e.keyCode ) { // Escape = Next editor.
+				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
 					$gp.editor.hide();
 				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Up Arrow = Previous editor.
 					$gp.editor.prev();
@@ -129,7 +129,7 @@ $gp.editor = (
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
-				} else if ( 13 === e.keyCode && e.ctrlKey ) { // Ctrl-Enter = Copy original.
+				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
 					target = $( e.target );
 
 					chunks = target.attr( 'id' ).split( '_' );
@@ -138,7 +138,7 @@ $gp.editor = (
 					original = $( '.editor:visible' ).find( '.original' ).eq( original_index );
 
 					target.val( original.text() );
-				} else if ( 107 === e.keyCode && e.ctrlKey ) { // Ctrl-+ = Approve.
+				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
 					target = $( e.target );
 
 					approve = $( '.editor:visible' ).find( '.approve' );
@@ -146,7 +146,7 @@ $gp.editor = (
 					if ( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
-				} else if ( 109 === e.keyCode && e.ctrlKey ) { // Ctrl-- = Reject.
+				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-- or Ctrl-Shift-R = Reject.
 					target = $( e.target );
 
 					reject = $( '.editor:visible' ).find( '.reject' );
