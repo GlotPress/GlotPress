@@ -1,3 +1,7 @@
+#1.1.11
+* Fix final space on Copy from original
+* New RegExp to detect better the words
+
 #1.1.10
 * Fix: bugs on words inside ()
 * Fix: other sanitizations
