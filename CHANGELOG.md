@@ -1,6 +1,7 @@
 #1.1.11
-* Fix final space on Copy from original
-* New RegExp to detect better the words
+* Fix: final space on Copy from original
+* Improvement: New RegExp to detect better the words
+* Feature: Rows with GlotDict terms are now marked in the list
 
 #1.1.10
 * Fix: bugs on words inside ()

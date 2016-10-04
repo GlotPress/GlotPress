@@ -18,6 +18,17 @@ jQuery(document).ready(function () {
   }
 
   /**
+   * Easy way to validate the html to avoid horrible errors
+   * @param {String} html
+   * @returns {Boolean}
+   */
+  function checkHTML(html) {
+	var doc = document.createElement('div');
+	doc.innerHTML = html;
+	return (doc.innerHTML === html);
+  }
+
+  /**
    * Get the language for consistency
    * 
    * @returns string
@@ -55,24 +66,14 @@ jQuery(document).ready(function () {
 		print = '[' + print + ']';
 	  }
 	  var repl = '<a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&amp;set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations="' + print + '">$1</span></a>';
-	  var content = jQuery(element).html().replace(rgxp, repl).trim();
+	  var content = jQuery(element).html().replace(rgxp, repl);
 	  if (content !== jQuery(element).html()) {
+		jQuery('#preview-' + jQuery(element).parent().parent().parent().attr('row')).addClass('has-glotdict');
 		if (checkHTML(content)) {
 		  jQuery(element).html(content);
 		}
 	  }
 	}
-  }
-
-  /**
-   * Easy way to validate the html to avoid horrible errors
-   * @param {String} html
-   * @returns {Boolean}
-   */
-  function checkHTML(html) {
-	var doc = document.createElement('div');
-	doc.innerHTML = html;
-	return (doc.innerHTML === html);
   }
 
   /**
@@ -387,6 +388,8 @@ jQuery(document).ready(function () {
 	if (jQuery('.preview').length === 1) {
 	  jQuery('.preview .action').trigger('click');
 	}
+	jQuery("<style type='text/css'>.has-glotdict .checkbox, .has-glotdict.box{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
+	jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
 	gd_locales_selector();
 	gd_terms_tooltip();
 	gd_hotkeys();
