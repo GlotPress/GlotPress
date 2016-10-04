@@ -59,7 +59,7 @@ jQuery(document).ready(function () {
 	  // Hack to check also the first and last word
 	  var content = ' ' + jQuery(element).html() + ' ';
 	  // Remove the double space and init and at the end of the string
-	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').replace(/ lt\;/g, '&lt;').substring(1).substring(-1);
+	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').replace(/ lt\;/g, '&lt;').trim();
 	  if (content !== jQuery(element).html()) {
 		if (checkHTML(content)) {
 		  jQuery(element).html(content);
