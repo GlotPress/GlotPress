@@ -48,16 +48,14 @@ jQuery(document).ready(function () {
 	  // The first part in [] check for term that don't have at the left that symbol
 	  // The secondo search for the term
 	  // The third like the first part
-	  var rgxp = new RegExp('(?=^|$|[^\W\"\(\/])\\b(' + word + ')\\b(?=^|$|[^\w\"\)\/])', 'gi');
+	  var rgxp = new RegExp('(?=^|$|[^\W\"\(\/\-])\\b(' + word + ')\\b(?=^|$|[^\w\"\)\/\-])', 'gi');
 	  var print = JSON.stringify(item);
 	  print = print.replace(/\'/g, "").replace(/\"/g, "&quot;");
 	  if (!item.length) {
 		print = '[' + print + ']';
 	  }
 	  var repl = '<a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&amp;set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations="' + print + '">$1</span></a>';
-	  var content = jQuery(element).html();
-	  // Remove the double space and init and at the end of the string
-	  content = content.replace(rgxp, repl).replace(/  +/g, ' ').replace(/ lt\;/g, '&lt;').trim();
+	  var content = jQuery(element).html().replace(rgxp, repl).trim();
 	  if (content !== jQuery(element).html()) {
 		if (checkHTML(content)) {
 		  jQuery(element).html(content);
