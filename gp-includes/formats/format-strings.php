@@ -12,7 +12,7 @@ class GP_Format_Strings extends GP_Format {
 
 		$result = '';
 
-		$result .= '/* Translation-Revision-Date:' . GP::$translation->last_modified( $translation_set ) . "+0000 */\n";
+		$result .= '/* Translation-Revision-Date: ' . GP::$translation->last_modified( $translation_set ) . "+0000 */\n";
 		$result .= "/* Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression}; */\n";
 		$result .= '/* X-Generator: GlotPress/' . GP_VERSION . " */\n";
 		$result .= "\n";
