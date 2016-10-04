@@ -54,8 +54,7 @@ jQuery(document).ready(function () {
    */
   function gd_add_term_json(word, element, item) {
 	if (item !== '') {
-	  word = word.replace(/\)/g, "\\)");
-	  word = word.replace(/\(/g, "\\(");
+	  word = word.replace(/\)/g, "\\)").replace(/\(/g, "\\(");
 	  // The first part in [] check for term that don't have at the left that symbol
 	  // The secondo search for the term
 	  // The third like the first part
@@ -68,8 +67,8 @@ jQuery(document).ready(function () {
 	  var repl = '<a target="_blank" href="https://translate.wordpress.org/consistency?search=$1&amp;set=' + gd_get_lang_consistency() + '%2Fdefault"><span class="glossary-word-glotdict" data-translations="' + print + '">$1</span></a>';
 	  var content = jQuery(element).html().replace(rgxp, repl);
 	  if (content !== jQuery(element).html()) {
-		jQuery('#preview-' + jQuery(element).parent().parent().parent().attr('row')).addClass('has-glotdict');
 		if (checkHTML(content)) {
+		  jQuery('#preview-' + jQuery(element).parent().parent().parent().attr('row')).addClass('has-glotdict');
 		  jQuery(element).html(content);
 		}
 	  }
