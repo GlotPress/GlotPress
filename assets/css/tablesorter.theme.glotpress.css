@@ -19,6 +19,7 @@ GlotPress Theme
 	cursor: pointer;
 	text-align: center;
 	border: 1px solid #eee;
+	padding-right: 20px !important;
 }
 .tablesorter-glotpress tfoot th,
 .tablesorter-glotpress tfoot td {
