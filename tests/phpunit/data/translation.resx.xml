@@ -117,6 +117,15 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<resheader name="Translation-Revision-Date">
+		<value>+0000</value>
+	</resheader>
+	<resheader name="Plural-Forms">
+		<value>nplurals=2; plural=n != 1;</value>
+	</resheader>
+	<resheader name="X-Generator">
+		<value>GlotPress/2.3.0-alpha</value>
+	</resheader>
 	<data name="normal_string" xml:space="preserve">
 		<value>Just A Normal String</value>
 	</data>

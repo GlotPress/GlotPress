@@ -12,9 +12,9 @@ class GP_Format_Android extends GP_Format {
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
 
 		$this->line( '<!--' );
-		$this->line( 'Translation-Revision-Date:' . GP::$translation->last_modified( $translation_set ) . '+0000' );
-		$this->line( "/* Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
-		$this->line( '/* X-Generator: GlotPress/' . GP_VERSION );
+		$this->line( 'Translation-Revision-Date: ' . GP::$translation->last_modified( $translation_set ) . '+0000' );
+		$this->line( "Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
+		$this->line( 'X-Generator: GlotPress/' . GP_VERSION );
 		$this->line( '-->' );
 
 		$this->line( '<resources>' );
