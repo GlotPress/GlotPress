@@ -31,7 +31,7 @@ class GP_Format_ResX extends GP_Format {
 				$entry->context = $entry->singular;
 			}
 
-			$this->line( '<data name="' . $entry->context . '" xml:space="preserve">', 1 );
+			$this->line( '<data name="' . esc_attr( $entry->context ) . '" xml:space="preserve">', 1 );
 			$this->line( '<value>' . $this->escape( $entry->translations[0] ) . '</value>', 2 );
 			if ( isset( $entry->extracted_comments ) && $entry->extracted_comments ) {
 				$this->line( '<comment>' . $this->escape( $entry->extracted_comments ) . '</comment>', 2 );
