@@ -23,6 +23,15 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	public $name = 'Jed 1.x (.json)';
 
 	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var string
+	 */
+	public $extension = 'jed.json';
+
+	/**
 	 * Generates a string the contains the $entries to export in the JSON file format.
 	 *
 	 * @since 2.3.0

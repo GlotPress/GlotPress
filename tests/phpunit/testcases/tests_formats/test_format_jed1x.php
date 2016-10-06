@@ -33,7 +33,7 @@ class GP_Test_Format_Jed1x extends GP_UnitTestCase {
 	}
 
 	public function test_format_extension() {
-		$this->assertSame( 'json', GP::$formats[ $this->format ]->extension );
+		$this->assertSame( 'jed.json', GP::$formats[ $this->format ]->extension );
 	}
 
 	public function test_print_exported_file_can_be_decoded() {
