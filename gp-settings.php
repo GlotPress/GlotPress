@@ -102,11 +102,11 @@ GP::$router = new GP_Router();
 GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';
-require_once GP_PATH . GP_INC . 'formats/format_android.php';
-require_once GP_PATH . GP_INC . 'formats/format_pomo.php';
-require_once GP_PATH . GP_INC . 'formats/format_resx.php';
-require_once GP_PATH . GP_INC . 'formats/format_strings.php';
-require_once GP_PATH . GP_INC . 'formats/format_properties.php';
+require_once GP_PATH . GP_INC . 'formats/format-android.php';
+require_once GP_PATH . GP_INC . 'formats/format-pomo.php';
+require_once GP_PATH . GP_INC . 'formats/format-resx.php';
+require_once GP_PATH . GP_INC . 'formats/format-strings.php';
+require_once GP_PATH . GP_INC . 'formats/format-properties.php';
 require_once GP_PATH . GP_INC . 'formats/format_json.php';
 require_once GP_PATH . GP_INC . 'formats/format_jed1x.php';
 
