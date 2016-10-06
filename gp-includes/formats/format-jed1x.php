@@ -69,7 +69,7 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 			} );
 		}
 
-		/** This filter is documented in includes/class-gp-format-json.php */
+		/** This filter is documented in gp-includes/formats/format-json.php */
 		$pretty_print = apply_filters( 'gp_json_export_pretty_print', false );
 
 		$result = wp_json_encode( $result, ( true === $pretty_print ) ? JSON_PRETTY_PRINT : 0 );
