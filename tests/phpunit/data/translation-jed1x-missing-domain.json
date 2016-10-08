@@ -1,5 +1,7 @@
 {
-  "locale_data": {
+  "translation-revision-data": "+0000",
+  "generator":                 "GlotPress/2.3.0-alpha",
+  "locale_data":               {
     "messages": {
       "":    {
         "domain":       "messages",

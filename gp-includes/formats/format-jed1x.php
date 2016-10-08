@@ -48,8 +48,10 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = array(
-			'domain'      => 'messages',
-			'locale_data' => array(
+			'translation-revision-date' => GP::$translation->last_modified( $translation_set ) . '+0000',
+			'generator'                 => 'GlotPress/' . GP_VERSION,
+			'domain'                    => 'messages',
+			'locale_data'               => array(
 				'messages' => array(
 					'__GP_EMPTY__' => array(
 						'domain'       => 'messages',

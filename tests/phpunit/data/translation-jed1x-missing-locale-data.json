@@ -1,6 +1,8 @@
 {
-  "domain":      "foo",
-  "locale_data": {
+  "translation-revision-data": "+0000",
+  "generator":                 "GlotPress/2.3.0-alpha",
+  "domain":                    "foo",
+  "locale_data":               {
     "bar": {
       "":    {
         "domain":       "foo",

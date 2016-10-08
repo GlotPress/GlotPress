@@ -56,8 +56,10 @@ class GP_Test_Format_Jed1x extends GP_UnitTestCase {
 		$actual = json_decode( $json, true );
 
 		$this->assertEquals( array(
-			'domain'      => 'messages',
-			'locale_data' => array(
+			'translation-revision-date' => '+0000',
+			'generator'                 => 'GlotPress/' . GP_VERSION,
+			'domain'                    => 'messages',
+			'locale_data'               => array(
 				'messages' => array(
 					''    => array(
 						'domain'       => 'messages',

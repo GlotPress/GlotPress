@@ -33,7 +33,7 @@ class GP_Test_JSON_Pretty_Print extends GP_UnitTestCase {
 		remove_filter( 'gp_json_export_pretty_print', '__return_true' );
 
 		// The pretty-printed output has 15 lines in total.
-		$this->assertSame( 14, substr_count( $actual, "\n" ) );
+		$this->assertSame( 16, substr_count( $actual, "\n" ) );
 	}
 
 	public function test_print_exported_file_pretty_print() {
