@@ -44,7 +44,7 @@ class GP_Format_JSON extends GP_Format {
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
 	 * @param GP_Translation     $entries         The entries to export.
-	 * @return string
+	 * @return string The exported JSON string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = array();
@@ -76,10 +76,10 @@ class GP_Format_JSON extends GP_Format {
 	 * @since 2.3.0
 	 *
 	 * @param string $file_name The name of the uploaded JSON file.
-	 * @return Translations|bool
+	 * @return Translations|bool The extracted originals on success, false on failure.
 	 */
 	public function read_originals_from_file( $file_name ) {
-		$json = $this->json_decode( $file_name );
+		$json = $this->decode_json_file( $file_name );
 
 		if ( ! $json ) {
 			return false;
@@ -125,21 +125,21 @@ class GP_Format_JSON extends GP_Format {
 	 *
 	 * @param string     $file_name The name of the uploaded properties file.
 	 * @param GP_Project $project   Unused. The project object to read the translations into.
-	 * @return Translations
+	 * @return Translations|bool The extracted translations on success, false on failure.
 	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
 		return $this->read_originals_from_file( $file_name );
 	}
 
 	/**
-	 * Decodes a JSON string.
+	 * Loads a given JSON file and decodes its content.
 	 *
 	 * @since 2.3.0
 	 *
 	 * @param string $file_name The name of the JSON file to parse.
-	 * @return array|false The encoded value or fals on failure.
+	 * @return array|false The encoded value or false on failure.
 	 */
-	protected function json_decode( $file_name ) {
+	protected function decode_json_file( $file_name ) {
 		if ( ! file_exists( $file_name ) ) {
 			return false;
 		}

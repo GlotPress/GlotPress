@@ -32,19 +32,19 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	public $extension = 'jed.json';
 
 	/**
-	 * Generates a string the contains the $entries to export in the JSON file format.
+	 * Generates a string the contains the $entries to export in the Jed 1.x compatible JSON file format.
 	 *
 	 * @since 2.3.0
 	 *
 	 * @param GP_Project         $project         The project the strings are being exported for, not used
 	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+	 * @param GP_Locale          $locale          The locale object the strings are being exported for, not used
 	 *                                            in this format but part of the scaffold of the parent object.
 	 * @param GP_Translation_Set $translation_set The locale object the strings are being
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
 	 * @param GP_Translation     $entries         The entries to export.
-	 * @return string
+	 * @return string The exported Jed 1.x compatible JSON string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = array(
@@ -77,15 +77,14 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 		$result = wp_json_encode( $result, ( true === $pretty_print ) ? JSON_PRETTY_PRINT : 0 );
 
 		/*
-		 * Replace '__GP_EMPTY__' with an acttual empty string.
+		 * Replace '__GP_EMPTY__' with an actual empty string.
 		 *
 		 * Empty object property names are not supported in PHP, so they would get lost.
 		 *
 		 * Note: When decoding, PHP replaces empty strings with '_empty_'.
 		 *
-		 * @see https://bugs.php.net/bug.php?id=50867
+		 * @link https://bugs.php.net/bug.php?id=50867
 		 */
-
 		return str_replace( '__GP_EMPTY__', '', $result );
 	}
 
@@ -95,10 +94,10 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	 * @since 2.3.0
 	 *
 	 * @param string $file_name The name of the uploaded JSON file.
-	 * @return Translations|bool
+	 * @return Translations|bool The extracted originals on success, false on failure.
 	 */
 	public function read_originals_from_file( $file_name ) {
-		$json = $this->json_decode( $file_name );
+		$json = $this->decode_json_file( $file_name );
 
 		if ( ! $json ) {
 			return false;
@@ -143,10 +142,10 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	 * @since 2.3.0
 	 *
 	 * @param string $file_name The name of the JSON file to parse.
-	 * @return array|false The encoded value or fals on failure.
+	 * @return array|false The encoded value or false on failure.
 	 */
-	protected function json_decode( $file_name ) {
-		$json = parent::json_decode( $file_name );
+	protected function decode_json_file( $file_name ) {
+		$json = parent::decode_json_file( $file_name );
 
 		if ( ! $json ) {
 			return false;
