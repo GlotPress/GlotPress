@@ -19,7 +19,6 @@ class GP_Format_Strings extends GP_Format {
 		$language_code = $this->get_language_code( $locale );
 		if ( false !== $language_code ) {
 			$result .= '/* Language: ' . $language_code . " */\n";
-			$this->line( 'Language: ' . $language_code );
 		}
 
 		$result .= "\n";
