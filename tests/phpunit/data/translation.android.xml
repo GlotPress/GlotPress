@@ -2,7 +2,8 @@
 <!--
 Translation-Revision-Date: +0000
 Plural-Forms: nplurals=2; plural=n != 1;
-X-Generator: GlotPress/2.3.0-alpha
+Generator: GlotPress/[GP VERSION]
+Language: Locale 2
 -->
 <resources>
 	<string name="normal_string">Just A Normal String</string>

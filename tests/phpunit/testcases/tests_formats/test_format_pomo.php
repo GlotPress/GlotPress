@@ -76,7 +76,10 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 
 		$entries_for_export = $this->get_entries_for_export( $set );
 
-		$this->assertEquals( file_get_contents( $this->translation_file ), $this->format->print_exported_file( $project, $locale, $set, $entries_for_export ) );
+		$file_contents = file_get_contents( $this->translation_file );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+
+		$this->assertEquals( $file_contents, $this->format->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
 	/**

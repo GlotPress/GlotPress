@@ -34,13 +34,14 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 			);
 		}
 
-		$file     = file_get_contents( GP_DIR_TESTDATA . '/translation.strings' );
-		$exported = $this->strings->print_exported_file( $project, $locale, $set, $entries_for_export );
+		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.strings' );
+		$file_contents = mb_convert_encoding( $file_contents, 'UTF-8', 'UTF-16LE' );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
 
-		$file     = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
+		$exported = $this->strings->print_exported_file( $project, $locale, $set, $entries_for_export );
 		$exported = mb_convert_encoding( $exported, 'UTF-8', 'UTF-16' );
 
-		$this->assertEquals( $file, $exported );
+		$this->assertEquals( $file_contents, $exported );
 	}
 
 	function test_read_originals() {

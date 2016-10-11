@@ -31,7 +31,11 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 				'translations' => array($translation),
 			);
 		}
-		$this->assertEquals( file_get_contents( GP_DIR_TESTDATA . '/translation.android.xml' ), $this->android->print_exported_file( $project, $locale, $set, $entries_for_export ) );
+		
+		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.android.xml' );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+		
+		$this->assertEquals( $file_contents, $this->android->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
 

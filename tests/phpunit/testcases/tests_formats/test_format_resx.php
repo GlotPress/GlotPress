@@ -32,7 +32,11 @@ class GP_Test_Format_ResX extends GP_UnitTestCase {
 				'extracted_comments' => $comment,
 			);
 		}
-		$this->assertEquals( file_get_contents( GP_DIR_TESTDATA . '/translation.resx.xml' ), $this->resx->print_exported_file( $project, $locale, $set, $entries_for_export ) );
+
+		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.resx.xml' );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+
+		$this->assertEquals( $file_contents, $this->resx->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
 

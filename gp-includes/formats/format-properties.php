@@ -29,7 +29,8 @@ class GP_Format_Properties extends GP_Format {
 
 		$result .= '# Translation-Revision-Date: ' . GP::$translation->last_modified( $translation_set ) . "+0000\n";
 		$result .= "# Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};\n";
-		$result .= '# X-Generator: GlotPress/' . GP_VERSION . "\n";
+		$result .= '# Generator: GlotPress/' . GP_VERSION . "\n";
+		$result .= '# Language: ' . $locale->english_name . "\n";
 		$result .= "\n";
 
 		$sorted_entries = $entries;

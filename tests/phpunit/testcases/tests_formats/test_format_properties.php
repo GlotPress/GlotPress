@@ -36,10 +36,12 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 			);
 		}
 
-		$file     = file_get_contents( GP_DIR_TESTDATA . '/translation.properties' );
+		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.properties' );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+		
 		$exported = $this->properties->print_exported_file( $project, $locale, $set, $entries_for_export );
 
-		$this->assertEquals( $file, $exported );
+		$this->assertEquals( $file_contents, $exported );
 	}
 
 	function test_read_originals() {
