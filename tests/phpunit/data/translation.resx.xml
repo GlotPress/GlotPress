@@ -126,6 +126,9 @@
 	<resheader name="generator">
 		<value>GlotPress/[GP VERSION]</value>
 	</resheader>
+	<resheader name="language">
+		<value>en_US</value>
+	</resheader>
 	<data name="normal_string" xml:space="preserve">
 		<value>Just A Normal String</value>
 	</data>

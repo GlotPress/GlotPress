@@ -125,6 +125,8 @@ class GP_UnitTest_Factory_For_Locale extends GP_UnitTest_Factory_For_Thing {
 		$this->default_generation_definitions = array(
 			'slug' => new GP_UnitTest_Generator_Locale_Name,
 			'english_name' => new GP_UnitTest_Generator_Sequence( 'Locale %s' ),
+			'lang_code_iso_639_1' => 'en',
+			'country_code' => 'US',
 		);
 	}
 

@@ -8,6 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/[GP VERSION]\n"
+"Language: en_US\n"
 "Project-Id-Version: Project 1\n"
 
 msgctxt "normal_string"
