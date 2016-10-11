@@ -15,7 +15,12 @@ class GP_Format_Android extends GP_Format {
 		$this->line( 'Translation-Revision-Date: ' . GP::$translation->last_modified( $translation_set ) . '+0000' );
 		$this->line( "Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
 		$this->line( 'Generator: GlotPress/' . GP_VERSION );
-		$this->line( 'Language: ' . $locale->english_name );
+
+		$language_code = $this->get_language_code( $locale );
+		if ( false !== $language_code ) {
+			$this->line( 'Language: ' . $language_code );
+		}
+
 		$this->line( '-->' );
 
 		$this->line( '<resources>' );

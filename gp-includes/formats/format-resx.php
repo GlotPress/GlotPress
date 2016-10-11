@@ -19,10 +19,14 @@ class GP_Format_ResX extends GP_Format {
 		$this->res_header( 'version', '2.0' );
 		$this->res_header( 'reader', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
 		$this->res_header( 'writer', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
-		$this->res_header( 'translation-revision-date', GP::$translation->last_modified( $translation_set ) . '+0000' );
-		$this->res_header( 'plural-forms', "nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
+		$this->res_header( 'translation_revision_date', GP::$translation->last_modified( $translation_set ) . '+0000' );
+		$this->res_header( 'plural_forms', "nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
 		$this->res_header( 'generator', 'GlotPress/' . GP_VERSION );
-		$this->res_header( 'language', $locale->english_name );
+
+		$language_code = $this->get_language_code( $locale );
+		if ( false !== $language_code ) {
+			$this->res_header( 'language', $language_code );
+		}
 
 		foreach ( $entries as $entry ) {
 			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )

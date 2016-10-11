@@ -15,7 +15,13 @@ class GP_Format_Strings extends GP_Format {
 		$result .= '/* Translation-Revision-Date: ' . GP::$translation->last_modified( $translation_set ) . "+0000 */\n";
 		$result .= "/* Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression}; */\n";
 		$result .= '/* Generator: GlotPress/' . GP_VERSION . " */\n";
-		$result .= '/* Language: ' . $locale->english_name . " */\n";
+
+		$language_code = $this->get_language_code( $locale );
+		if ( false !== $language_code ) {
+			$result .= '/* Language: ' . $language_code . " */\n";
+			$this->line( 'Language: ' . $language_code );
+		}
+
 		$result .= "\n";
 
 		$sorted_entries = $entries;
