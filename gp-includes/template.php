@@ -567,7 +567,7 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	);
 
 	/**
-	 * Filter entry action links.
+	 * Filters entry action links.
 	 *
 	 * @since 1.0.0
 	 *
@@ -581,4 +581,46 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	<a href="#" class="copy" tabindex="-1"><?php _e( 'Copy from original', 'glotpress' ); ?></a> &bull;
 	<a href="#" class="gtranslate" tabindex="-1"><?php _e( 'Translation from Google', 'glotpress' ); ?></a>
 	*/
+}
+
+/**
+ * Generates a list of classes to be added to the translation row, based on translation entry properties.
+ *
+ * @since 2.2.0
+ *
+ * @param Translation_Entry $translation The translation entry object for the row.
+ *
+ * @return array
+ */
+function gp_get_translation_row_classes( $translation ) {
+	$classes = array();
+	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
+	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
+
+	/**
+	 * Filters the list of CSS classes for a translation row
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array             $classes     An array of translation row classes.
+	 * @param Translation_Entry $translation The translation entry object.
+	 */
+	$classes = apply_filters( 'gp_translation_row_classes', $classes, $translation );
+
+	return $classes;
+}
+
+/**
+ * Outputs space separated list of classes for the translation row, based on translation entry properties.
+ *
+ * @since 2.2.0
+ *
+ * @param Translation_Entry $translation The translation entry object for the row.
+ *
+ * @return void
+ */
+function gp_translation_row_classes( $translation ) {
+	$classes = gp_get_translation_row_classes( $translation );
+	echo esc_attr( implode( ' ', $classes ) );
 }

@@ -1,7 +1,11 @@
 <?php
-$status_class = $t->translation_status? 'status-'.$t->translation_status : 'untranslated';
-$warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
-$priority_class = 'priority-'.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority );
+/**
+ * Template for a single translation row in a translation set display
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 $priority_char = array(
     '-2' => array('&times;', 'transparent', '#ccc'),
     '-1' => array('&darr;', 'transparent', 'blue'),
@@ -12,7 +16,7 @@ $user = wp_get_current_user();
 $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
 ?>
 
-<tr class="preview <?php echo $status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
+<tr class="preview <?php gp_translation_row_classes( $t ); ?>" id="preview-<?php echo esc_attr( $t->row_id ) ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
 	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
 	<?php /*
 	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
@@ -62,7 +66,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 		<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a>
 	</td>
 </tr>
-<tr class="editor <?php echo $warning_class; ?>" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
+<tr class="editor <?php echo gp_translation_row_classes( $t ); ?>" id="editor-<?php echo esc_attr( $t->row_id ); ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
 	<td colspan="<?php echo $can_approve ? 5 : 4 ?>">
 		<div class="strings">
 		<?php

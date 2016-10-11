@@ -40,4 +40,9 @@ class GP_Test_Template_Functions extends GP_UnitTestCase {
 		$this->assertEquals( 'babadyadomuu', gp_breadcrumb( null, array( 'before' => '', 'after' => '', 'breadcrumb-template' => '{breadcrumb}' ) ) );
 
 	}
+
+	function test_gp_get_translation_row_classes() {
+		$entry = new Translation_Entry ( array( 'singular' => 'ganoush', 'warnings' => null, 'priority'=> '1', 'translation_status' =>'untranslated' ) );
+		$this->assertEquals( array( 'status-untranslated', 'no-warnings', 'priority-high' ), gp_get_translation_row_classes( $entry ), '', 0.0, 10, true );
+	}
 }
