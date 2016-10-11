@@ -43,8 +43,8 @@ gp_tmpl_header();
 	<dt><label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
 	<dd>
 		<?php if ( count( $status_options ) === 1 ) : ?>
-			<input type="hidden" name="status" value="<?php echo esc_attr( reset( array_keys( $status_options ) ) ); ?>" />
-			<?php echo esc_html( reset( array_values( $status_options ) ) ); ?>
+			<input type="hidden" name="status" value="<?php echo esc_attr( key( $status_options ) ); ?>" />
+			<?php echo esc_html( reset( $status_options ) ); ?>
 		<?php elseif ( count( $status_options ) > 1 ) : ?>
 			<?php echo gp_select( 'status', $status_options, 'current' ); ?>
 		<?php endif; ?>
