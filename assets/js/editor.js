@@ -103,7 +103,7 @@ $gp.editor = (
 				} );
 			},
 			keydown: function( e ) {
-				var target, container, original, approve, reject, chunks, original_index;
+				var target, container, approve, reject, copy;
 
 				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
 					$gp.editor.hide();
@@ -130,14 +130,11 @@ $gp.editor = (
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
 				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
-					target = $( e.target );
-
-					chunks = target.attr( 'id' ).split( '_' );
-					original_index = parseInt( chunks[ chunks.length - 1 ], 10 );
-
-					original = $( '.editor:visible' ).find( '.original' ).eq( original_index );
-
-					target.val( original.text() );
+					copy = $( '.editor:visible' ).find( '.copy' );
+					
+					if ( copy.length > 0 ) {
+						copy.trigger( 'click' );
+					}
 				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
 					target = $( e.target );
 
