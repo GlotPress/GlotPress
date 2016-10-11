@@ -136,16 +136,12 @@ $gp.editor = (
 						copy.trigger( 'click' );
 					}
 				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
-					target = $( e.target );
-
 					approve = $( '.editor:visible' ).find( '.approve' );
 
 					if ( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
 				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-- or Ctrl-Shift-R = Reject.
-					target = $( e.target );
-
 					reject = $( '.editor:visible' ).find( '.reject' );
 
 					if ( reject.length > 0 ) {
