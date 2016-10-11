@@ -3,7 +3,8 @@
 class GP_Format_ResX extends GP_Format {
 
 	public $name = '.NET Resource (.resx)';
-	public $extension = 'resx.xml';
+	public $extension = 'resx';
+	public $alt_extensions = array( 'resx.xml' );
 
 	public $exported = '';
 
