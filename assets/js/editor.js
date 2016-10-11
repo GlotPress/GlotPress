@@ -131,7 +131,7 @@ $gp.editor = (
 					}
 				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
-					
+
 					if ( copy.length > 0 ) {
 						copy.trigger( 'click' );
 					}
