@@ -213,6 +213,12 @@ table.locales thead th {
 	background-color: #555;
 	padding: 0.5em;
 }
+
+table.translation-sets.tablesorter-glotpress thead th,
+table.locales.tablesorter-glotpress thead th {
+    padding-right: 20px;
+}
+
 table.locales thead th {
 	width: 33%;
 }
