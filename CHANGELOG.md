@@ -1,5 +1,6 @@
 #1.1.12
 * Fix: On Chrome in few cases the library for hotkeys is not loaded in the right order
+* Fix: Improvement on the css selector for the blue legend
 * Improvement: The glossary update in few cases was updated only with a refresh
 
 #1.1.11
