@@ -4,6 +4,36 @@
 var glotdict_version = "1.0.0";
 
 jQuery(document).ready(function () {
+  
+  /**
+   * Get the list of locales avalaible
+   * 
+   * @returns Array
+   */
+  function gd_locales() {
+	var locales = ['ast', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
+	var locales_date_cache = localStorage.getItem('gd_locales_date');
+	if (locales_date_cache === null || locales_date_cache !== gd_today()) {
+	  jQuery.ajax({
+		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '.json',
+		dataType: 'text'
+	  }).done(function (data) {
+		localStorage.setItem('gd_locales', JSON.stringify(data));
+		localStorage.setItem('gd_locales_date', gd_today());
+	  }).fail(function (xhr, ajaxOptions, thrownError) {
+		console.error(thrownError);
+		console.error('GlotDict Syntax: error on loading the Glossary Syntax');
+	  });
+	}
+	var locales_cache = gd_glossary_cached();
+	if (typeof locales_cache !== 'undefined') {
+	  locales = Object.keys(locales_cache).map(function (key) {
+		return key;
+	  });
+	}
+	return locales;
+  }
+  
   /**
    * Get the language saved in GlotDict
    * 
@@ -171,35 +201,6 @@ jQuery(document).ready(function () {
 	  });
 	}
 	return gd_glossary_file_cached();
-  }
-
-  /**
-   * Get the list of locales avalaible
-   * 
-   * @returns Array
-   */
-  function gd_locales() {
-	var locales = ['ast', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
-	var locales_date_cache = localStorage.getItem('gd_locales_date');
-	if (locales_date_cache === null || locales_date_cache !== gd_today()) {
-	  jQuery.ajax({
-		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '.json',
-		dataType: 'text'
-	  }).done(function (data) {
-		localStorage.setItem('gd_locales', JSON.stringify(data));
-		localStorage.setItem('gd_locales_date', gd_today());
-	  }).fail(function (xhr, ajaxOptions, thrownError) {
-		console.error(thrownError);
-		console.error('GlotDict Syntax: error on loading the Glossary Syntax');
-	  });
-	}
-	var locales_cache = gd_glossary_cached();
-	if (typeof locales_cache !== 'undefined') {
-	  locales = Object.keys(locales_cache).map(function (key) {
-		return key;
-	  });
-	}
-	return locales;
   }
 
   /**
