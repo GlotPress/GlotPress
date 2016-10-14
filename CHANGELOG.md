@@ -1,3 +1,7 @@
+#1.1.12
+* Fix: On Chrome in few cases the library for hotkeys is not loaded in the right order
+* Improvement: The glossary update in few cases was updated only with a refresh
+
 #1.1.11
 * Fix: final space on Copy from original
 * Improvement: New RegExp to detect better the words
