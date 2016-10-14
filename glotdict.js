@@ -4,6 +4,75 @@
 var glotdict_version = "1.0.0";
 
 jQuery(document).ready(function () {
+  /**
+   * Get the today with the format dd/mm/yyyy used for the update daily check
+   * 
+   * @returns String
+   */
+  function gd_today() {
+	var today = new Date();
+	var todayn = today.getDate();
+	if (todayn.length === 1) {
+	  todayn = '0' + todayn;
+	}
+	var monthn = today.getMonth() + 1;
+	if (monthn.length === 1) {
+	  monthn = '0' + monthn;
+	}
+	return todayn + '/' + monthn + '/' + today.getFullYear();
+  }
+
+  /**
+   * Get the the list of locales cached
+   * 
+   * @returns Array
+   */
+  function gd_list_locales_cached() {
+	var locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
+	if (typeof locales === 'undefined') {
+	  gd_locales();
+	  locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
+	}
+	return locales;
+  }
+
+  /**
+   * Get the the glossary cached
+   * 
+   * @returns Array
+   */
+  function gd_glossary_file_cached() {
+	return JSON.parse(JSON.parse(localStorage.getItem('gd_glossary_file')));
+  }
+
+  /**
+   * Get the glossary file saved 
+   * 
+   * @param {string} lang The language.
+   * @returns Array
+   */
+  function gd_glossary_cached(lang) {
+	if (typeof lang === 'undefined' || lang === false) {
+	  return;
+	}
+	var glossary_date_cache = localStorage.getItem('gd_glossary_date');
+	var locales_cache = gd_list_locales_cached();
+	if (glossary_date_cache === null || glossary_date_cache.length === 0 || glossary_date_cache !== locales_cache[lang].time) {
+	  jQuery.ajax({
+		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
+		dataType: 'text',
+		async: false
+	  }).done(function (data) {
+		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
+		var glossary_date = gd_list_locales_cached();
+		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
+	  }).fail(function (xhr, ajaxOptions, thrownError) {
+		console.error(thrownError);
+		console.error('GlotDict: error on loading ' + gd_get_lang() + '.json');
+	  });
+	}
+	return gd_glossary_file_cached();
+  }
   
   /**
    * Get the list of locales avalaible
@@ -131,76 +200,6 @@ jQuery(document).ready(function () {
 		jQuery('html, body').animate({scrollTop: row.offset().top - 50});
 	  });
 	}
-  }
-
-  /**
-   * Get the today with the format dd/mm/yyyy used for the update daily check
-   * 
-   * @returns String
-   */
-  function gd_today() {
-	var today = new Date();
-	var todayn = today.getDate();
-	if (todayn.length === 1) {
-	  todayn = '0' + todayn;
-	}
-	var monthn = today.getMonth() + 1;
-	if (monthn.length === 1) {
-	  monthn = '0' + monthn;
-	}
-	return todayn + '/' + monthn + '/' + today.getFullYear();
-  }
-
-  /**
-   * Get the the list of locales cached
-   * 
-   * @returns Array
-   */
-  function gd_list_locales_cached() {
-	var locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
-	if (typeof locales === 'undefined') {
-	  gd_locales();
-	  locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
-	}
-	return locales;
-  }
-
-  /**
-   * Get the the glossary cached
-   * 
-   * @returns Array
-   */
-  function gd_glossary_file_cached() {
-	return JSON.parse(JSON.parse(localStorage.getItem('gd_glossary_file')));
-  }
-
-  /**
-   * Get the glossary file saved 
-   * 
-   * @param {string} lang The language.
-   * @returns Array
-   */
-  function gd_glossary_cached(lang) {
-	if (typeof lang === 'undefined' || lang === false) {
-	  return;
-	}
-	var glossary_date_cache = localStorage.getItem('gd_glossary_date');
-	var locales_cache = gd_list_locales_cached();
-	if (glossary_date_cache === null || glossary_date_cache.length === 0 || glossary_date_cache !== locales_cache[lang].time) {
-	  jQuery.ajax({
-		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
-		dataType: 'text',
-		async: false
-	  }).done(function (data) {
-		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
-		var glossary_date = gd_list_locales_cached();
-		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
-	  }).fail(function (xhr, ajaxOptions, thrownError) {
-		console.error(thrownError);
-		console.error('GlotDict: error on loading ' + gd_get_lang() + '.json');
-	  });
-	}
-	return gd_glossary_file_cached();
   }
 
   /**
