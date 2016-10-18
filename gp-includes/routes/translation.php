@@ -265,7 +265,8 @@ class GP_Route_Translation extends GP_Route_Main {
 					$data[ "translation_$i" ] = $translations[ $i ];
 				}
 			}
-			$set_status = $data['status'];
+
+			$set_status = isset( $data['status'] ) ? $data['status'] : 'waiting';
 			$data['status'] = 'waiting';
 
 			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )
