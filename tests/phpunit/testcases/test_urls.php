@@ -5,11 +5,30 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		$this->home_url = 'http://example.org';
 		$this->sub_dir = '/glotpress/';
-		$this->url = user_trailingslashit( 'http://example.org' . $this->sub_dir );
+		$this->url = user_trailingslashit( $this->home_url . $this->sub_dir );
 
 		$this->base_path_emtpy_string = '';
 		$this->base_path_single_slash = '/';
+
+		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_sub_dir' ) );
+		add_filter( 'option_home', array( $this, '_gp_url_home_url' ) );
+	}
+
+	function teardown() {
+		parent::tearDown();
+
+		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_sub_dir' ) );
+		remove_filter( 'option_home', array( $this, '_gp_url_home_url' ) );
+	}
+
+	function _gp_url_base_path_sub_dir() {
+		return user_trailingslashit( $this->sub_dir );
+	}
+
+	function _gp_url_home_url() {
+		return $this->home_url;
 	}
 
 	function test_gp_url_should_just_add_simple_path_string_if_query_is_missing() {
@@ -175,6 +194,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	 * @ticket gh-203
 	 */
 	function test_gp_url_base_path_filter() {
+		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_sub_dir' ) );
 		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_single_slash' ) );
 
 		$this->assertSame( $this->base_path_single_slash, gp_url_base_path() );
@@ -191,6 +211,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 	 * @ticket gh-203
 	 */
 	function test_gp_url_returns_leading_slash_when_permalinks_have_no_trailing_slash() {
+		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_sub_dir' ) );
 		add_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_filter_empty_string' ) );
 		$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE );
 
