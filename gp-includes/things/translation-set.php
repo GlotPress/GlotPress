@@ -260,6 +260,11 @@ class GP_Translation_Set extends GP_Thing {
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status );
 
+			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
+			if ( ! empty( $entry->warnings ) ) {
+				$entry->status = 'waiting';
+			}
+
 			// Lazy load other entries.
 			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
 				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => $entry->status, 'translated' => 'yes' ) );
@@ -304,11 +309,6 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->status = $is_fuzzy ? 'fuzzy' : $desired_status;
-
-				$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
-				if ( ! empty( $entry->warnings ) ) {
-					$entry->status = 'waiting';
-				}
 				$entry->translation_set_id = $this->id;
 
 				/**
