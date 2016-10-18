@@ -20,6 +20,9 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 	}
 
 	function test_export() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$project = $set->project;
+		$locale = $this->factory->locale->create();
 		$entries_for_export = array();
 
 		foreach( $this->entries as $sample ) {
@@ -33,10 +36,12 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 			);
 		}
 
-		$file     = file_get_contents( GP_DIR_TESTDATA . '/translation.properties' );
-		$exported = $this->properties->print_exported_file( 'p', 'l', 't', $entries_for_export );
+		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.properties' );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+		
+		$exported = $this->properties->print_exported_file( $project, $locale, $set, $entries_for_export );
 
-		$this->assertEquals( $file, $exported );
+		$this->assertEquals( $file_contents, $exported );
 	}
 
 	function test_read_originals() {

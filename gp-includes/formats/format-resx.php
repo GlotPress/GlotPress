@@ -20,16 +20,24 @@ class GP_Format_ResX extends GP_Format {
 		$this->res_header( 'version', '2.0' );
 		$this->res_header( 'reader', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
 		$this->res_header( 'writer', 'System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' );
-		foreach( $entries as $entry ) {
-			if ( !preg_match( '/^[a-zA-Z0-9_]+$/', $entry->context ) ) {
-				error_log( 'ResX Export: Bad Entry: '. $entry->context );
-				continue;
-			}
+		$this->res_header( 'translation_revision_date', GP::$translation->last_modified( $translation_set ) . '+0000' );
+		$this->res_header( 'plural_forms', "nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
+		$this->res_header( 'generator', 'GlotPress/' . GP_VERSION );
 
+		$language_code = $this->get_language_code( $locale );
+		if ( false !== $language_code ) {
+			$this->res_header( 'language', $language_code );
+		}
+
+		foreach ( $entries as $entry ) {
 			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )
 				continue;
 
-			$this->line( '<data name="' . $entry->context . '" xml:space="preserve">', 1 );
+			if ( empty( $entry->context ) ) {
+				$entry->context = $entry->singular;
+			}
+
+			$this->line( '<data name="' . esc_attr( $entry->context ) . '" xml:space="preserve">', 1 );
 			$this->line( '<value>' . $this->escape( $entry->translations[0] ) . '</value>', 2 );
 			if ( isset( $entry->extracted_comments ) && $entry->extracted_comments ) {
 				$this->line( '<comment>' . $this->escape( $entry->extracted_comments ) . '</comment>', 2 );
