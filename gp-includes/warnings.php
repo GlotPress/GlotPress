@@ -1,29 +1,39 @@
 <?php
 /**
- * Handles translation warnings
+ * Translation warnings API
+ *
+ * @package GlotPress
+ * @since 1.0.0
  */
 
+/**
+ * Class used to handle translation warnings.
+ *
+ * @since 1.0.0
+ */
 class GP_Translation_Warnings {
 	var $callbacks = array();
 
 	public function add( $id, $callback ) {
-		$this->callbacks[$id] = $callback;
+		$this->callbacks[ $id ] = $callback;
 	}
 
 	public function remove( $id ) {
-		unset( $this->callbacks[$id] );
+		unset( $this->callbacks[ $id ] );
 	}
 
 	public function has( $id ) {
-		return isset( $this->callbacks[$id] );
+		return isset( $this->callbacks[ $id ] );
 	}
 
 	public function check( $singular, $plural, $translations, $locale ) {
 		$problems = array();
-		foreach( $translations as $translation_index => $translation ) {
-			if ( !$translation ) continue;
+		foreach ( $translations as $translation_index => $translation ) {
+			if ( ! $translation ) {
+				continue;
+			}
 			$skip = array( 'singular' => false, 'plural' => false );
-			if ( !is_null( $plural ) ) {
+			if ( ! is_null( $plural ) ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
 				if ( $locale->nplurals == 1 ) {
 					$skip['singular'] = true;
@@ -33,22 +43,23 @@ class GP_Translation_Warnings {
 					$skip['singular'] = true;
 				}
 			}
-			foreach( $this->callbacks as $callback_id => $callback ) {
-				if ( !$skip['singular']) {
+			foreach ( $this->callbacks as $callback_id => $callback ) {
+				if ( ! $skip['singular'] ) {
 					$singular_test = call_user_func( $callback, $singular, $translation, $locale );
 					if ( true !== $singular_test ) {
-						$problems[$translation_index][$callback_id] = $singular_test;
+						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
-				if ( !is_null( $plural ) && !$skip['plural'] ) {
+				if ( ! is_null( $plural ) && ! $skip['plural'] ) {
 					$plural_test = call_user_func( $callback, $plural, $translation, $locale );
 					if ( true !== $plural_test ) {
-						$problems[$translation_index][$callback_id] = $plural_test;
+						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
 				}
 			}
 		}
-		return empty($problems)? null : $problems;
+
+		return empty( $problems ) ? null : $problems;
 	}
 }
 
@@ -70,24 +81,32 @@ class GP_Builtin_Translation_Warnings {
 		if ( gp_startswith( $original, 'number_format_' ) ) {
 			return true;
 		}
-		$len_src = gp_strlen( $original );
+		$len_src   = gp_strlen( $original );
 		$len_trans = gp_strlen( $translation );
-		if ( !( $this->length_lower_bound*$len_src < $len_trans && $len_trans < $this->length_upper_bound*$len_src ) &&
-				( !gp_in( '_abbreviation', $original ) && !gp_in( '_initial', $original ) ) ) {
+		if (
+			! (
+				$this->length_lower_bound * $len_src < $len_trans &&
+				$len_trans < $this->length_upper_bound * $len_src
+			) &&
+			(
+				! gp_in( '_abbreviation', $original ) &&
+				! gp_in( '_initial', $original ) )
+		) {
 			return __( 'Lengths of source and translation differ too much.', 'glotpress' );
 		}
+
 		return true;
 	}
 
 	public function warning_tags( $original, $translation, $locale ) {
-		$tag_pattern = "(<[^>]*>)";
-		$tag_re = "/$tag_pattern/Us";
-		$original_parts = preg_split($tag_re, $original, -1, PREG_SPLIT_DELIM_CAPTURE);
-		$translation_parts = preg_split($tag_re, $translation, -1, PREG_SPLIT_DELIM_CAPTURE);
-		if ( count( $original_parts) > count( $translation_parts ) ) {
+		$tag_pattern       = '(<[^>]*>)';
+		$tag_re            = "/$tag_pattern/Us";
+		$original_parts    = preg_split( $tag_re, $original, - 1, PREG_SPLIT_DELIM_CAPTURE );
+		$translation_parts = preg_split( $tag_re, $translation, - 1, PREG_SPLIT_DELIM_CAPTURE );
+		if ( count( $original_parts ) > count( $translation_parts ) ) {
 			return __( 'Missing tags from translation.', 'glotpress' );
 		}
-		if ( count( $original_parts) < count( $translation_parts ) ) {
+		if ( count( $original_parts ) < count( $translation_parts ) ) {
 			return __( 'Too many tags in translation.', 'glotpress' );
 		}
 
@@ -97,21 +116,21 @@ class GP_Builtin_Translation_Warnings {
 
 		foreach ( $translatable_attributes as $key => $attribute ) {
 			// Translations should never need a quote in a translatable attribute.
-			$attr_regex_single = '\s*' . $attribute . '=\'[^\']+\'\s*';
+			$attr_regex_single               = '\s*' . $attribute . '=\'[^\']+\'\s*';
 			$translatable_attr_regex[ $key ] = '%' . $attr_regex_single . '|' . str_replace( "'", '"', $attr_regex_single ) . '%';
 		}
 
 		$parts_tags = gp_array_zip( $original_parts, $translation_parts );
 
 		if ( ! empty( $parts_tags ) ) {
-			foreach( $parts_tags as $tags ) {
+			foreach ( $parts_tags as $tags ) {
 				list( $original_tag, $translation_tag ) = $tags;
 				$expected_error_msg = "Expected $original_tag, got $translation_tag.";
-				$original_is_tag = preg_match( "/^$tag_pattern$/", $original_tag );
+				$original_is_tag    = preg_match( "/^$tag_pattern$/", $original_tag );
 				$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
 
 				if ( $original_is_tag && $translation_is_tag && $original_tag != $translation_tag ) {
-					$original_tag = preg_replace( $translatable_attr_regex, '', $original_tag );
+					$original_tag    = preg_replace( $translatable_attr_regex, '', $original_tag );
 					$translation_tag = preg_replace( $translatable_attr_regex, '', $translation_tag );
 					if ( $original_tag != $translation_tag ) {
 						return $expected_error_msg;
@@ -119,6 +138,7 @@ class GP_Builtin_Translation_Warnings {
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -133,11 +153,11 @@ class GP_Builtin_Translation_Warnings {
 		 */
 		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX]' );
 
-		$original_counts = $this->_placeholders_counts( $original, $placeholders_re );
+		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
-		$all_placeholders = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
-		foreach( $all_placeholders as $placeholder ) {
-			$original_count = gp_array_get( $original_counts, $placeholder, 0 );
+		$all_placeholders   = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
+		foreach ( $all_placeholders as $placeholder ) {
+			$original_count    = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
 			if ( $original_count > $translation_count ) {
 				return sprintf( __( 'Missing %s placeholder in translation.', 'glotpress' ), $placeholder );
@@ -146,15 +166,17 @@ class GP_Builtin_Translation_Warnings {
 				return sprintf( __( 'Extra %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 		}
+
 		return true;
 	}
 
 	private function _placeholders_counts( $string, $re ) {
 		$counts = array();
 		preg_match_all( "/$re/", $string, $matches );
-		foreach( $matches[0] as $match ) {
-			$counts[$match] = gp_array_get( $counts, $match, 0) + 1;
+		foreach ( $matches[0] as $match ) {
+			$counts[ $match ] = gp_array_get( $counts, $match, 0 ) + 1;
 		}
+
 		return $counts;
 	}
 
@@ -162,6 +184,7 @@ class GP_Builtin_Translation_Warnings {
 		if ( gp_startswith( $original, "\n" ) && ! gp_startswith( $translation, "\n" ) ) {
 			return __( 'Original and translation should both begin on newline.', 'glotpress' );
 		}
+
 		return true;
 	}
 
@@ -169,6 +192,7 @@ class GP_Builtin_Translation_Warnings {
 		if ( ! gp_startswith( $original, "\n" ) && gp_startswith( $translation, "\n" ) ) {
 			return __( 'Translation should not begin on newline.', 'glotpress' );
 		}
+
 		return true;
 	}
 
@@ -176,6 +200,7 @@ class GP_Builtin_Translation_Warnings {
 		if ( gp_endswith( $original, "\n" ) && ! gp_endswith( $translation, "\n" ) ) {
 			return __( 'Original and translation should both end on newline.', 'glotpress' );
 		}
+
 		return true;
 	}
 
@@ -183,6 +208,7 @@ class GP_Builtin_Translation_Warnings {
 		if ( ! gp_endswith( $original, "\n" ) && gp_endswith( $translation, "\n" ) ) {
 			return __( 'Translation should not end on newline.', 'glotpress' );
 		}
+
 		return true;
 	}
 
@@ -190,11 +216,11 @@ class GP_Builtin_Translation_Warnings {
 	 * Adds all methods starting with warning_ to $translation_warnings
 	 */
 	public function add_all( &$translation_warnings ) {
-		$warnings = array_filter( get_class_methods( get_class( $this ) ), function( $key ) {
+		$warnings = array_filter( get_class_methods( get_class( $this ) ), function ( $key ) {
 			return gp_startswith( $key, 'warning_' );
 		} );
 
-		foreach( $warnings as $warning ) {
+		foreach ( $warnings as $warning ) {
 			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );
 		}
 	}
