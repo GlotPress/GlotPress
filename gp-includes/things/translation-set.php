@@ -308,7 +308,6 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->user_id = $user->ID;
 				}
 
-				$entry->status = $is_fuzzy ? 'fuzzy' : $desired_status;
 				$entry->translation_set_id = $this->id;
 
 				/**
