@@ -558,10 +558,25 @@ class GP_Translation extends GP_Thing {
 		$this->set_status( 'rejected' );
 	}
 
+	public function can_set_status( $status ) {
+		if ( 'rejected' === $status && get_current_user_id() == $this->user_id ) {
+			return true;
+		}
+
+		if ( 'current' === $status || 'rejected' === $status ) {
+			if ( ! GP::$permission->current_user_can( 'approve', 'translation', $this->id, array( 'translation' => $this ) ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public function set_status( $status ) {
-		if ( ( 'current' === $status || 'rejected' === $status ) && ! GP::$permission->current_user_can( 'approve', 'translation', $this->id, array( 'translation' => $this ) ) ) {
+		if ( ! $this->can_set_status( $status ) ) {
 			return false;
 		}
+
 		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} else {

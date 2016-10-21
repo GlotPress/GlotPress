@@ -151,6 +151,29 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $translations_added, 0 );
 	}
 
+	function test_user_can_reject_his_own_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'current' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+		$this->assertFalse( $translation->set_status( 'current' ) );
+
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba2' ), 'status' => 'rejected' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+		$this->assertFalse( $translation->set_status( 'current' ) );
+
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba3' ), 'status' => 'waiting' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+		$this->assertFalse( $translation->set_status( 'current' ) );
+	}
+
 	/**
 	 * @ticket 512
 	 */
