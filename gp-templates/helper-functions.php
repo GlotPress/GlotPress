@@ -52,7 +52,22 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 
 	//Create array of glossary terms, longest first
 	foreach ( $glossary_entries as $key => $value ) {
-		$glossary_entries_terms[ $key ] = $value->term;
+		$terms = array( $value->term );
+		$terms[] = preg_quote( $value->term, '/' ) . 's';
+		if ( 'y' === substr( $value->term, -1 ) ) {
+			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ies';
+		} elseif ( 'f' === substr( $value->term, -1 ) ) {
+			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ves';
+		} elseif ( 'fe' === substr( $value->term, -2 ) ) {
+			$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'ves';
+		} else{
+			if ( 'an' === substr( $value->term, -2 ) ) {
+				$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'en';
+			}
+			$terms[] = preg_quote( $value->term, '/' ) . 'es';
+		}
+
+		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
 	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
@@ -65,26 +80,10 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 		//Search for glossary terms in our strings
 		$matching_entries = array();
 
-		foreach( $glossary_entries_terms as $i => $term ) {
-			$terms = array( $term );
-			$terms[] = preg_quote( $term, '/' ) . 's';
-			if ( 'y' === substr( $term, -1 ) ) {
-				$terms[] = preg_quote( substr( $term, 0, -1 ), '/' ) . 'ies';
-			} elseif ( 'f' === substr( $term, -1 ) ) {
-				$terms[] = preg_quote( substr( $term, 0, -1 ), '/' ) . 'ves';
-			} elseif ( 'fe' === substr( $term, -2 ) ) {
-				$terms[] = preg_quote( substr( $term, 0, -2 ), '/' ) . 'ves';
-			} else{
-				if ( 'an' === substr( $term, -2 ) ) {
-					$terms[] = preg_quote( substr( $term, 0, -2 ), '/' ) . 'en';
-				}
-				$terms[] = preg_quote( $term, '/' ) . 'es';
-			}
-
+		foreach( $glossary_entries_terms as $i => $terms ) {
 			$glossary_entry = $glossary_entries[ $i ];
-			if ( preg_match( '/\b(' . implode( '|' , $terms ) . ')\b/', $t->singular . ' ' . $t->plural, $m ) ) {
-				$term = $m[1];
-				$matching_entries[$term][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment );
+			if ( preg_match( '/\b(' . $terms . ')\b/', $t->singular . ' ' . $t->plural, $m ) ) {
+				$matching_entries[ $m[1] ][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment );
 			}
 		}
 
