@@ -274,10 +274,11 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$data['status'] = 'waiting';
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )
+			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
 				$set_status = 'current';
-			else
+			} else {
 				$set_status = 'waiting';
+			}
 
 			$original = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
