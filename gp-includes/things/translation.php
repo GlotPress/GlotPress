@@ -442,18 +442,18 @@ class GP_Translation extends GP_Thing {
 		 */
 		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_where', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
 
-		$fields = isset( $clauses['fields'] ) ? $clauses['fields'] : '';
+		$fields = isset( $clauses['fields'] ) ? $clauses['fields'] : '*';
 		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
 		$join_where = isset( $clauses['join_where'] ) ? $clauses['join_where'] : '';
 		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
-		$orderby = isset( $clauses['orderby'] ) ? $clauses['orderby'] : '';
+		$orderby = isset( $clauses['orderby'] ) ? 'ORDER BY ' . $clauses['orderby'] : '';
 		$limit = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS $fields
 			FROM $wpdb->gp_originals as o
 			$join $join_where
-			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where ORDER BY $orderby $limit";
+			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where $orderby $limit";
 
 		$rows = $this->many_no_map( $sql_for_translations );
 
