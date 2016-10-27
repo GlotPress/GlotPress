@@ -565,17 +565,46 @@ class GP_Translation extends GP_Thing {
 	 * @return bool Whether the status can be set.
 	 */
 	public function can_set_status( $desired_status ) {
-		if ( 'rejected' === $desired_status && get_current_user_id() === intval( $this->user_id ) ) {
-			return true;
+		/**
+		 * Filter the decision whether a translation can be set to a status.
+		 *
+		 * @since 2.3
+		 *
+		 * @param string|bool    $can_set_status Whether the user can set the desired status.
+		 * @param GP_Translation $translation    The translation to decide this for.
+		 * @param string         $desired_status The desired status.
+		 */
+		$can_set_status = apply_filters( 'gp_pre_can_set_translation_status', 'no-verdict', $this, $desired_status );
+		if ( is_bool( $can_set_status ) ) {
+			return $can_set_status;
 		}
 
-		if ( 'current' === $desired_status || 'rejected' === $desired_status ) {
+		if ( ! is_bool( $can_set_status ) && 'rejected' === $desired_status && get_current_user_id() === intval( $this->user_id ) ) {
+			$can_set_status = true;
+		}
+
+		if ( ! is_bool( $can_set_status ) & ( 'current' === $desired_status || 'rejected' === $desired_status ) ) {
 			if ( ! GP::$permission->current_user_can( 'approve', 'translation', $this->id, array( 'translation' => $this ) ) ) {
-				return false;
+				$can_set_status = false;
 			}
 		}
 
-		return true;
+		if ( ! is_bool( $can_set_status ) ) {
+			$can_set_status = true;
+		}
+
+		/**
+		 * Filter the decision whether a translation can be set to a status.
+		 *
+		 * @since 2.3
+		 *
+		 * @param bool           $can_set_status Whether the user can set the desired status.
+		 * @param GP_Translation $translation    The translation to decide this for.
+		 * @param string         $desired_status The desired status.
+		 */
+		$can_set_status = apply_filters( 'gp_can_set_translation_status', $can_set_status, $this, $desired_status );
+
+		return $can_set_status;
 	}
 
 	/**
