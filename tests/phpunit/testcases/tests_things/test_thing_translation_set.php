@@ -46,6 +46,26 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $translations[1]->status, 'current' );
 	}
 
+	function test_import_should_save_forced_fuzzy() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Second string' ) );
+
+		$fuzzy_import = new Translations;
+		$fuzzy_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+
+		$current_import = new Translations;
+		$current_import->add_entry( array( 'singular' => 'Second string', 'translations' => array( 'second' ) ) );
+
+		$set->import( $fuzzy_import, 'fuzzy' );
+		$set->import( $current_import );
+
+		$translations = GP::$translation->all();
+
+		$this->assertEquals( $translations[0]->status, 'fuzzy' );
+		$this->assertEquals( $translations[1]->status, 'current' );
+	}
+
 	function test_import_should_generate_warnings() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
