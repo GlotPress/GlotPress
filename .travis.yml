@@ -10,6 +10,9 @@ cache:
     - $HOME/.composer/cache
 
 matrix:
+  allow_failures:
+    - php: hhvm
+    - php: nightly
   include:
   - php: 5.3
     env: WP_VERSION=latest WP_MULTISITE=0
@@ -26,6 +29,10 @@ matrix:
   - php: 7.0
     env: WP_VERSION=trunk WP_MULTISITE=0
   - php: 7.1
+    env: WP_VERSION=trunk WP_MULTISITE=0
+  - php: hhvm
+    env: WP_VERSION=trunk WP_MULTISITE=0
+  - php: nightly
     env: WP_VERSION=trunk WP_MULTISITE=0
 
 install:
