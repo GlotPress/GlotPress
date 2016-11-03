@@ -58,6 +58,23 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
 	}
 
+	function test_import_should_not_import_translations_with_warnings_twice() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'A string with %s', 'translations' => array( 'No Placeholder' ) ) );
+		$translations_added = $set->import( $translations_for_import );
+		$this->assertEquals( $translations_added, 1 );
+
+		$translations = GP::$translation->all();
+		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
+
+		// Do the import again, it should not go through.
+		$translations_added = $set->import( $translations_for_import );
+		$this->assertEquals( $translations_added, 0 );
+	}
+
 	function test_import_should_not_import_existing_same_translation() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
