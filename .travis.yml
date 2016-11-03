@@ -25,6 +25,8 @@ matrix:
     env: WP_VERSION=trunk WP_MULTISITE=0 WP_TRAVISCI=codecoverage
   - php: 7.0
     env: WP_VERSION=trunk WP_MULTISITE=0
+  - php: 7.1
+    env: WP_VERSION=trunk WP_MULTISITE=0
 
 install:
   - export DEV_LIB_PATH=dev-lib
