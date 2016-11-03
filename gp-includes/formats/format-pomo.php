@@ -111,19 +111,6 @@ class GP_Format_MO extends GP_Format_PO {
 	public $class = 'MO';
 
 	/**
-	 * Override the set header function as PO files do not use it.
-	 *
-	 * @since 2.1.0
-	 *
-	 * @param GP_Format $format The format object to set the header for.
-	 * @param string    $header The header name to set.
-	 * @param string    $text   The text to set the header to.
-	 */
-	protected function set_header( $format, $header, $text ) {
-		return;
-	}
-
-	/**
 	 * Override the comments function as PO files do not use it.
 	 *
 	 * @since 2.1.0
