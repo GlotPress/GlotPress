@@ -14,6 +14,32 @@ $priority_char = array(
 );
 $user = wp_get_current_user();
 $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
+
+$more_links = array();
+if ( $t->translation_status ) {
+	$translation_permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug, array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'filters[translation_id]' => $t->id ) );
+	$more_links['translation-permalink'] = '<a tabindex="-1" href="' . esc_url( $translation_permalink ) . '">' . __( 'Permalink to this translation', 'glotpress' ) . '</a>';
+} else {
+	$original_permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug, array( 'filters[original_id]' => $t->original_id ) );
+	$more_links['original-permalink'] = '<a tabindex="-1" href="' . esc_url( $original_permalink ) . '">' . __( 'Permalink to this original', 'glotpress' ) . '</a>';
+}
+
+$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug, array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) );
+$more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history ) . '">' . __( 'All translations of this original', 'glotpress' ) . '</a>';
+
+/**
+ * Allows to modify the more links in the translation editor.
+ *
+ * @since 2.3.0
+ *
+ * @param array              $more_links      The links to be output.
+ * @param GP_Project         $project         Project object.
+ * @param GP_Locale          $locale          Locale object.
+ * @param GP_Translation_Set $translation_set Translation Set object.
+ * @param GP_Translation     $t               Translation object.
+ */
+$more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $t );
+
 ?>
 
 <tr class="preview <?php gp_translation_row_classes( $t ); ?>" id="preview-<?php echo esc_attr( $t->row_id ) ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
@@ -192,23 +218,12 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 			<?php endif; ?>
 			</dl>
 
-			<?php $extra_args = $t->translation_status? array( 'filters[translation_id]' => $t->id ) : array(); ?>
 			<dl>
-			<?php
-					$permalink_filters = $t->translation_status ? array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id ) : array( 'filters[original_id]' => $t->original_id );
-					$permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-						array_merge( $permalink_filters, $extra_args ) );
-					$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-						array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) ) );
-			?>
 			    <dt><?php _e( 'More links:', 'glotpress' ); ?>
 				<ul>
-				<?php if ( $t->translation_status ) : ?>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permalink to this translation', 'glotpress' ); ?>"><?php _e( 'Permalink to this translation', 'glotpress' ); ?></a></li>
-				<?php else : ?>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permalink to this original', 'glotpress' ); ?>"><?php _e( 'Permalink to this original', 'glotpress' ); ?></a></li>
-				<?php endif; ?>
-					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php esc_attr_e( 'Link to the history of translations of this original', 'glotpress' ); ?>"><?php _e( 'All translations of this original', 'glotpress' ); ?></a></li>
+					<?php foreach ( $more_links as $link ) : ?>
+						<li><?php echo $link; // WPCS: XSS ok. ?></li>
+					<?php endforeach; ?>
 				</ul>
 				</dt>
 			</dl>
