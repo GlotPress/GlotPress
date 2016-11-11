@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.1 (November 11, 2016)
+
+**Bugfixes**
+
+* Fix missing header fields in .mo files. ([#594](https://github.com/GlotPress/GlotPress-WP/issues/594))
+* Add padding to table headers to avoid overlapping with sorting graphics. ([#565](https://github.com/GlotPress/GlotPress-WP/issues/565))
+* Fix for "Only variables should be passed by reference" warning when importing translations. ([#566](https://github.com/GlotPress/GlotPress-WP/issues/566))
+
+**Features**
+
+* Add locale information for Xhosa. ([#603](https://github.com/GlotPress/GlotPress-WP/issues/603))
+
+Thanks to all the contributors so far: Alexander Kirk, Dominik Schilling, and Greg Ross.
+
 ## 2.2.0 (September 30, 2016)
 
 (this space intentionally left blank)
