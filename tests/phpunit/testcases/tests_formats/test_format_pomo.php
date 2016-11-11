@@ -32,7 +32,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.po';
 		$this->originals_file = GP_DIR_TESTDATA . '/originals.po';
 
-		$this->format = new GP_Format_PO;
+		$this->format = new Testable_GP_Format_PO;
 
 		$this->entries = array(
 			array( 'normal_string', 'Normal String', 'Just A Normal String', '' ),
@@ -76,7 +76,9 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 
 		$entries_for_export = $this->get_entries_for_export( $set );
 
-		$this->assertEquals( file_get_contents( $this->translation_file ), $this->format->print_exported_file( $project, $locale, $set, $entries_for_export ) );
+		$file_contents = file_get_contents( $this->translation_file );
+
+		$this->assertEquals( $file_contents, $this->format->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
 	/**
@@ -134,46 +136,46 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 	}
 
 	public function test_get_language_code() {
-		$test_class = new Testable_GP_Format_PO_get_language_code;
+		$po_format = new Testable_GP_Format_PO();
 
 		// Create a locale that has only a 639_1 language code.
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
 		$as->lang_code_iso_639_1 = 'as';
 
-		$this->assertEquals( 'as', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'as', $po_format->get_language_code( $as ) );
 
 		// Add the 639_2 language code.
 		$as->lang_code_iso_639_2 = 'asn';
-		$this->assertEquals( 'as', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'as', $po_format->get_language_code( $as ) );
 
 		// Add the 639_3 language code.
 		$as->lang_code_iso_639_3 = 'asm';
-		$this->assertEquals( 'as', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'as',$po_format->get_language_code( $as ) );
 
 		// Add the country language code, which is the same as the language code.
 		$as->country_code = 'as';
-		$this->assertEquals( 'as', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'as', $po_format->get_language_code( $as ) );
 
 		// Change the country code to be different than the language code.
 		$as->country_code = 'in';
-		$this->assertEquals( 'as_IN', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'as_IN', $po_format->get_language_code( $as ) );
 
 		// Remove the country code for the next tests.
 		$as->country_code = null;
 
 		// Remove the 639_1 language code.
 		$as->lang_code_iso_639_1 = '';
-		$this->assertEquals( 'asn', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'asn', $po_format->get_language_code( $as ) );
 
 		// Remove the 639_2 language code.
 		$as->lang_code_iso_639_2 = '';
-		$this->assertEquals( 'asm', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'asm', $po_format->get_language_code( $as ) );
 
 		// Setup the locale to have the incorrect case in the locale information for country and language.
 		$as->lang_code_iso_639_1 = 'AS';
 		$as->country_code = 'IN';
-		$this->assertEquals( 'as_IN', $test_class->testable_get_language_code( $as ) );
+		$this->assertEquals( 'as_IN', $po_format->get_language_code( $as ) );
 	}
 }
 
@@ -191,22 +193,71 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 		$this->originals_file = GP_DIR_TESTDATA . '/originals.mo';
 		$this->has_comments = false;
 
-		$this->format = new GP_Format_MO;
+		$this->format = new Testable_GP_Format_MO;
 	}
 }
 
 /**
- * Class that makes it possible to test protected functions.
+ * Class used test private/protected and/or override methods.
+ *
+ * @method string get_language_code( GP_Locale $locale  )
  */
-class Testable_GP_Format_PO_get_language_code extends GP_Format_PO {
+class Testable_GP_Format_PO extends GP_Format_PO {
+
 	/**
-	 * Wraps the protected get_language_code function
+	 * List of private/protected methods.
 	 *
-	 * @param GP_Locale $locale The locale object.
-	 *
-	 * @return string|false Returns false if the locale object does not have any iso_639 language code, otherwise returns the shortest possible language code string.
+	 * @var array
 	 */
-	public function testable_get_language_code( $locale ) {
-		return $this->get_language_code( $locale );
+	private $non_accessible_methods = array(
+		'get_language_code',
+	);
+
+	/**
+	 * Make private/protected methods readable for tests.
+	 *
+	 * @param callable $name      Method to call.
+	 * @param array    $arguments Arguments to pass when calling.
+	 * @return mixed|bool Return value of the callback, false otherwise.
+	 */
+	public function __call( $name, $arguments ) {
+		if ( in_array( $name, $this->non_accessible_methods ) ) {
+			return call_user_func_array( array( $this, $name ), $arguments );
+		}
+		return false;
+	}
+
+	/**
+	 * Overrides the value of the 'X-Generator' header field.
+	 *
+	 * @param GP_Format $format The format.
+	 * @param string    $header The header field name.
+	 * @param string    $text   The header field value.
+	 */
+	public function set_header( $format, $header, $text ) {
+		if ( 'X-Generator' === $header ) {
+			$text = 'GlotPress/[GP VERSION]';
+		}
+		parent::set_header( $format, $header, $text );
+	}
+}
+
+/**
+ * Class used test private/protected and/or override methods.
+ */
+class Testable_GP_Format_MO extends GP_Format_MO {
+
+	/**
+	 * Overrides the value of the 'X-Generator' header field.
+	 *
+	 * @param GP_Format $format The format.
+	 * @param string    $header The header field name.
+	 * @param string    $text   The header field value.
+	 */
+	public function set_header( $format, $header, $text ) {
+		if ( 'X-Generator' === $header ) {
+			$text = 'GlotPress/[GP VERSION]';
+		}
+		parent::set_header( $format, $header, $text );
 	}
 }
