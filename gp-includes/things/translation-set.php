@@ -204,7 +204,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * Import translations from a Translations object.
 	 *
 	 * @param  Translations $translations   the translations to be imported to this translation-set.
-	 * @param  string       $desired_status 'current' or 'waiting'.
+	 * @param  string       $desired_status 'current', 'waiting' or 'fuzzy'.
 	 * @return boolean or void
 	 */
 	public function import( $translations, $desired_status = 'current' ) {
@@ -214,7 +214,8 @@ class GP_Translation_Set extends GP_Thing {
 			$this->project = GP::$project->get( $this->project_id );
 		}
 
-		if ( ! in_array( $desired_status, array( 'current', 'waiting' ), true ) ) {
+		// Fuzzy is also checked in the flags, but if all strings in an import are fuzzy, fuzzy status can be forced.
+		if ( ! in_array( $desired_status, array( 'current', 'waiting', 'fuzzy' ), true ) ) {
 			return false;
 		}
 
