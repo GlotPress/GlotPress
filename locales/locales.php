@@ -2097,8 +2097,8 @@ class GP_Locales {
 		$xho = new GP_Locale();
 		$xho->english_name = 'Xhosa';
 		$xho->native_name = 'isiXhosa';
-		$xho->lang_code_iso_639_3 = 'xh';
-		$xho->lang_code_iso_639_3 = 'xho';
+		$xho->lang_code_iso_639_1 = 'xh';
+		$xho->lang_code_iso_639_2 = 'xho';
 		$xho->lang_code_iso_639_3 = 'xho';
 		$xho->country_code = 'za';
 		$xho->wp_locale = 'xho';
