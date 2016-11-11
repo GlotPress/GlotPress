@@ -2094,6 +2094,18 @@ class GP_Locales {
 		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
 
+		$xho = new GP_Locale();
+		$xho->english_name = 'Xhosa';
+		$xho->native_name = 'isiXhosa';
+		$xho->lang_code_iso_639_3 = 'xh';
+		$xho->lang_code_iso_639_3 = 'xho';
+		$xho->lang_code_iso_639_3 = 'xho';
+		$xho->country_code = 'za';
+		$xho->wp_locale = 'xho';
+		$xho->slug = 'xho';
+		$xho->google_code = 'xh';
+		$xho->facebook_locale = 'xh_ZA';
+
 		$xmf = new GP_Locale();
 		$xmf->english_name = 'Mingrelian';
 		$xmf->native_name = 'მარგალური ნინა';
