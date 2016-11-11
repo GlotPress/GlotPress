@@ -69,7 +69,7 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$nouns = array( 'term', 'box', 'city', 'toy', 'wife', 'shelf', 'man', 'woman', 'post' );
+		$nouns = array( 'term', 'box', 'city', 'toy', 'wife', 'shelf', 'man', 'woman', 'post', 'install/installation' );
 		foreach ( $nouns as $noun ) {
 			GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => $noun, 'part_of_speech' => 'noun', 'translation' => $noun, 'comment' => 'my comment', 'last_edited_by' =>'1' ) );
 		}
