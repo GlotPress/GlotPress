@@ -1,7 +1,7 @@
 {
 	"name": "glotpress/glotpress-wp",
 	"description": "GlotPress, a WordPress Plugin",
-	"version": "2.2.0",
+	"version": "2.2.1-alpha",
 	"type": "wordpress-plugin",
 	"keywords": [ "translations" ],
 	"homepage": "https://github.com/GlotPress/GlotPress-WP/",
