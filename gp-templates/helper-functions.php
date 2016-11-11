@@ -50,10 +50,13 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 
 	$glossary_entries_terms = array();
 
-	//Create array of glossary terms, longest first
+	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $key => $value ) {
-		$terms = array( $value->term );
+		$terms = array();
+
+		$terms[] = preg_quote( $value->term, '/' );
 		$terms[] = preg_quote( $value->term, '/' ) . 's';
+
 		if ( 'y' === substr( $value->term, -1 ) ) {
 			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ies';
 		} elseif ( 'f' === substr( $value->term, -1 ) ) {
