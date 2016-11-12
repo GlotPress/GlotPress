@@ -1661,8 +1661,8 @@ class GP_Locales {
 		$ro->facebook_locale = 'ro_RO';
 
 		$roh = new GP_Locale();
-		$roh->english_name = 'Romansh Vallader';
-		$roh->native_name = 'Rumantsch Vallader';
+		$roh->english_name = 'Romansh';
+		$roh->native_name = 'Rumantsch';
 		$roh->lang_code_iso_639_2 = 'rm';
 		$roh->lang_code_iso_639_3 = 'roh';
 		$roh->country_code = 'ch';
