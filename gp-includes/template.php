@@ -252,7 +252,7 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	foreach( $radio_buttons as $value => $label ) {
 		$checked = checked( $value, $checked_key, false );
 		// TODO: something more flexible than <br />
-		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked'/>&nbsp;";
+		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked/>&nbsp;";
 		$res .= "<label for='" . esc_attr( "{$name}[{$value}]" ) . "'>" . esc_html( $label ) . "</label><br />\n";
 	}
 	return $res;
