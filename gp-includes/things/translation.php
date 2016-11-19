@@ -559,16 +559,18 @@ class GP_Translation extends GP_Thing {
 	}
 
 	/**
-	 * Decides whether the status of a translation can be changed to $desired_status.
+	 * Decides whether the status of a translation can be changed to a desired status.
 	 *
-	 * @param  string $desired_status The desired status.
+	 * @since 2.3.0
+	 *
+	 * @param string $desired_status The desired status.
 	 * @return bool Whether the status can be set.
 	 */
 	public function can_set_status( $desired_status ) {
 		/**
 		 * Filter the decision whether a translation can be set to a status.
 		 *
-		 * @since 2.3
+		 * @since 2.3.0
 		 *
 		 * @param string|bool    $can_set_status Whether the user can set the desired status.
 		 * @param GP_Translation $translation    The translation to decide this for.
@@ -579,11 +581,11 @@ class GP_Translation extends GP_Thing {
 			return $can_set_status;
 		}
 
-		if ( ! is_bool( $can_set_status ) && 'rejected' === $desired_status && get_current_user_id() === intval( $this->user_id ) ) {
+		if ( ! is_bool( $can_set_status ) && 'rejected' === $desired_status && get_current_user_id() === (int) $this->user_id ) {
 			$can_set_status = true;
 		}
 
-		if ( ! is_bool( $can_set_status ) & ( 'current' === $desired_status || 'rejected' === $desired_status ) ) {
+		if ( ! is_bool( $can_set_status ) && ( 'current' === $desired_status || 'rejected' === $desired_status ) ) {
 			if ( ! GP::$permission->current_user_can( 'approve', 'translation', $this->id, array( 'translation' => $this ) ) ) {
 				$can_set_status = false;
 			}
@@ -596,7 +598,7 @@ class GP_Translation extends GP_Thing {
 		/**
 		 * Filter the decision whether a translation can be set to a status.
 		 *
-		 * @since 2.3
+		 * @since 2.3.0
 		 *
 		 * @param bool           $can_set_status Whether the user can set the desired status.
 		 * @param GP_Translation $translation    The translation to decide this for.
@@ -610,7 +612,10 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Changes the status of a translation if possible.
 	 *
+	 * @since 2.3.0
+	 *
 	 * @param string $status The status to be set.
+	 * @return bool Whether the setting of status was successful.
 	 */
 	public function set_status( $status ) {
 		if ( ! $this->can_set_status( $status ) ) {

@@ -50,10 +50,12 @@ function gp_allow_everyone_to_translate( $verdict, $args ) {
 }
 
 /**
- * Map the translation check to the translation-set
+ * Maps the translation check to the translation-set.
  *
- * @param  string|bool $verdict Previous decision whether the user can do this.
- * @param  array       $args Permission details.
+ * @since 2.3.0
+ *
+ * @param string|bool $verdict Previous decision whether the user can do this.
+ * @param array       $args    Permission details.
  * @return string|bool New decision whether the user can do this.
  */
 function gp_allow_approving_translations_with_validator_permissions( $verdict, $args ) {

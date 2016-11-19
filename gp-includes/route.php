@@ -98,7 +98,9 @@ class GP_Route {
 	}
 
 	/**
-	 * Check whether a user is allowed to do an action.
+	 * Checks whether a user is allowed to do an action.
+	 *
+	 * @since 2.3.0 Parameter $extra added.
 	 *
 	 * @param string      $action      The action.
 	 * @param string|null $object_type Optional. Type of an object. Default null.
@@ -111,12 +113,13 @@ class GP_Route {
 	}
 
 	/**
-	 * If the current user isn't allowed to do an action, redirect and exit the current request
+	 * Redirects and exits if the current user isn't allowed to do an action.
 	 *
-	 * @param string $action
-	 * @param`string $object_type
-	 * @param string|array $object_id
-	 * @param string $url	The URL to redirect. Default value: referrer or index page, if referrer is missing
+	 * @param string      $action      The action.
+	 * @param string|null $object_type Optional. Type of an object. Default null.
+	 * @param int|null    $object_id   Optional. ID of an object. Default null.
+	 * @param string|null $url         Optional. URL to redirect to. Default: referrer or index page, if referrer is missing.
+	 * @return bool Whether a redirect happened.
 	 */
 	public function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
@@ -180,7 +183,7 @@ class GP_Route {
 	 */
 	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = null, $extra = null ) {
 		if ( ! isset( $message ) ) {
-			$message = 'You are not allowed to do that!';
+			$message = __( 'You are not allowed to do that!', 'glotpress' );
 		}
 		if ( ! $this->can( $action, $object_type, $object_id, $extra ) ) {
 			$this->die_with_error( $message, 403 );
