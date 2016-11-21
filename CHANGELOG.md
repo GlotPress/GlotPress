@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.1 (November 21, 2016)
+
+**Security**
+
+* Fix an information leak in the API, reported by Alex Kirk.
+
 ## 2.1.0 (July 13, 2016)
 
 (this space intentionally left blank)
