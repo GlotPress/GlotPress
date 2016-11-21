@@ -429,11 +429,27 @@ class GP_Translation extends GP_Thing {
 			$row->user = $row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
-				$row->user = get_userdata( $row->user_id );
+				$user = get_userdata( $row->user_id );
+				if ( $user ) {
+					$row->user = (object) array(
+						'ID'            => $user->ID,
+						'user_login'    => $user->user_login,
+						'display_name'  => $user->display_name,
+						'user_nicename' => $user->user_nicename,
+					);
+				}
 			}
 
 			if ( $row->user_id_last_modified && 'no-limit' !== $this->per_page ) {
-				$row->user_last_modified = get_userdata( $row->user_id_last_modified );
+				$user = get_userdata( $row->user_id_last_modified );
+				if ( $user ) {
+					$row->user_last_modified = (object) array(
+						'ID'            => $user->ID,
+						'user_login'    => $user->user_login,
+						'display_name'  => $user->display_name,
+						'user_nicename' => $user->user_nicename,
+					);
+				}
 			}
 
 			$row->translations = array();
