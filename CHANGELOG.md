@@ -1,3 +1,6 @@
+#1.1.14
+* Disable the GlotPress official hotkeys
+
 #1.1.13
 * Fix legend
 

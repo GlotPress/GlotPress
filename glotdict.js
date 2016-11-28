@@ -290,6 +290,7 @@ jQuery(document).ready(function () {
    * @returns void
    */
   function gd_hotkeys() {
+	jQuery($gp.editor.table).off( "keydown", 'tr.editor textarea', $gp.editor.hooks.keydown );
 	key.filter = function (event) {
 	  var tagName = (event.target || event.srcElement).tagName;
 	  key.setScope(/^(SELECT)$/.test(tagName) ? 'input' : 'other');
