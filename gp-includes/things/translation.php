@@ -417,8 +417,10 @@ class GP_Translation extends GP_Thing {
 
 		$where = implode( ' AND ', $where );
 		if ( $where ) {
-			$where = 'AND '.$where;
+			$where = 'AND ' . $where;
 		}
+
+		$where = 'o.project_id = ' . (int) $project->id . ' AND o.status = "+active" ' . $where;
 
 		$join_where = implode( ' AND ', $join_where );
 		if ( $join_where ) {
@@ -451,9 +453,9 @@ class GP_Translation extends GP_Thing {
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS $fields
-			FROM $wpdb->gp_originals as o
+			FROM {$wpdb->gp_originals} as o
 			$join $join_where
-			WHERE o.project_id = " . (int) $project->id . " AND o.status = '+active' $where $orderby $limit";
+			WHERE $where $orderby $limit";
 
 		$rows = $this->many_no_map( $sql_for_translations );
 
