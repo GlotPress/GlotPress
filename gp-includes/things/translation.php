@@ -433,7 +433,7 @@ class GP_Translation extends GP_Thing {
 		/**
 		 * Filters the 'for_translation' query SQL clauses.
 		 *
-		 * @since 2.3
+		 * @since 2.3.0
 		 *
 		 * @param array              $pieces          Terms query SQL clauses.
 		 * @param GP_Translation_Set $translation_set The translation set object being queried.
