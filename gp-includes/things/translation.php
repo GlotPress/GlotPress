@@ -427,9 +427,21 @@ class GP_Translation extends GP_Thing {
 			$join_where = 'AND ' . $join_where;
 		}
 
-		$fields = 't.*, o.*, t.id as id, o.id as original_id, t.status as translation_status, o.status as original_status, t.date_added as translation_added, o.date_added as original_added';
+		$fields = array(
+			't.*',
+			'o.*',
+			't.id as id',
+			'o.id as original_id',
+			't.status as translation_status',
+			'o.status as original_status',
+			't.date_added as translation_added',
+			'o.date_added as original_added',
+		);
+
 		$join = "$join_type JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id;
+
 		$orderby = sprintf( $sort_by, $sort_how );
+
 		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
 
 		/**
@@ -444,7 +456,7 @@ class GP_Translation extends GP_Thing {
 		 */
 		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_where', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
 
-		$fields = isset( $clauses['fields'] ) ? $clauses['fields'] : '*';
+		$fields = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
 		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
 		$join_where = isset( $clauses['join_where'] ) ? $clauses['join_where'] : '';
 		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
