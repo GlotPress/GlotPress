@@ -29,6 +29,10 @@ function gp_recurse_validator_permission( $verdict, $args ) {
 
 
 function gp_route_translation_set_permissions_to_validator_permissions( $verdict, $args ) {
+	if ( is_bool( $verdict ) ) {
+		return $verdict;
+	}
+
 	if ( !( $verdict == 'no-verdict' && $args['action'] == 'approve' && $args['object_type'] == 'translation-set'
 			&& $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
@@ -42,6 +46,10 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 }
 
 function gp_allow_everyone_to_translate( $verdict, $args ) {
+	if ( is_bool( $verdict ) ) {
+		return $verdict;
+	}
+
 	if ( 'edit' == $args['action'] && 'translation-set' == $args['object_type'] ) {
 		return is_user_logged_in();
 	}
@@ -59,6 +67,10 @@ function gp_allow_everyone_to_translate( $verdict, $args ) {
  * @return string|bool New decision whether the user can do this.
  */
 function gp_allow_approving_translations_with_validator_permissions( $verdict, $args ) {
+	if ( is_bool( $verdict ) ) {
+		return $verdict;
+	}
+
 	if ( 'approve' === $args['action'] && 'translation' === $args['object_type'] ) {
 		$args['object_type'] = 'translation-set';
 
