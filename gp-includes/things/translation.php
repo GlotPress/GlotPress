@@ -483,7 +483,7 @@ class GP_Translation extends GP_Thing {
 		/**
 		 * Filters the rows returned from the for_translation query.
 		 *
-		 * @since 2.3
+		 * @since 2.3.0
 		 *
 		 * @param array              $rows            Array of arrays returned by the query.
 		 * @param GP_Translation_Set $translation_set The translation set object being queried.
