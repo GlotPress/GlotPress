@@ -449,7 +449,16 @@ class GP_Translation extends GP_Thing {
 		 *
 		 * @since 2.3.0
 		 *
-		 * @param array              $pieces          Terms query SQL clauses.
+		 * @param array              $pieces          {
+		 *     Translation query SQL clauses.
+		 *
+		 *     @type array  $fields     Fields to select in the query.
+		 *     @type string $join       JOIN clause of the query.
+		 *     @type string $join_where Conditions for the JOIN clause.
+		 *     @type string $where      WHERE clause of the query.
+		 *     @type string $orderby    Fields for ORDER BY clause.
+		 *     @type string $limit      LIMIT clause of the query.
+		 * }
 		 * @param GP_Translation_Set $translation_set The translation set object being queried.
 		 * @param array              $filters         An array of search filters.
 		 * @param array              $sort            An array of sort settings.
