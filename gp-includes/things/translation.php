@@ -568,7 +568,7 @@ class GP_Translation extends GP_Thing {
 	 */
 	public function can_set_status( $desired_status ) {
 		/**
-		 * Filter the decision whether a translation can be set to a status.
+		 * Filters the decision whether a translation can be set to a status.
 		 *
 		 * @since 2.3.0
 		 *
@@ -596,7 +596,7 @@ class GP_Translation extends GP_Thing {
 		}
 
 		/**
-		 * Filter the decision whether a translation can be set to a status.
+		 * Filters the decision whether a translation can be set to a status.
 		 *
 		 * @since 2.3.0
 		 *

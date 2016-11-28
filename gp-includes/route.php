@@ -100,7 +100,7 @@ class GP_Route {
 	/**
 	 * Checks whether a user is allowed to do an action.
 	 *
-	 * @since 2.3.0 Parameter $extra added.
+	 * @since 2.3.0 Added the `$extra` parameter.
 	 *
 	 * @param string      $action      The action.
 	 * @param string|null $object_type Optional. Type of an object. Default null.
@@ -115,6 +115,8 @@ class GP_Route {
 	/**
 	 * Redirects and exits if the current user isn't allowed to do an action.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param string      $action      The action.
 	 * @param string|null $object_type Optional. Type of an object. Default null.
 	 * @param int|null    $object_id   Optional. ID of an object. Default null.
@@ -123,7 +125,7 @@ class GP_Route {
 	 */
 	public function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
-		if ( !$can ) {
+		if ( ! $can ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ), $url );
 			return true;
 		}
