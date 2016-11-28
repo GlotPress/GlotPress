@@ -378,7 +378,7 @@ class GP_Translation extends GP_Thing {
 			}
 		};
 
-		$join_where = array();
+		$join_on = array();
 		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses ) ) {
@@ -386,9 +386,11 @@ class GP_Translation extends GP_Thing {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';
-			$join_where[] = 't.status != "rejected"';
-			$join_where[] = 't.status != "old"';
-			$statuses = array_filter( $statuses, function( $x ) { return $x != 'untranslated'; } );
+			$join_on[] = 't.status != "rejected"';
+			$join_on[] = 't.status != "old"';
+			$statuses = array_filter( $statuses, function( $x ) {
+				return 'untranslated' !== $x ;
+			} );
 		}
 
 		$all_statuses = $this->get_static( 'statuses' );
@@ -402,7 +404,7 @@ class GP_Translation extends GP_Thing {
 				$statuses_where[] = $wpdb->prepare( 't.status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
-			$join_where[] = $statuses_where;
+			$join_on[] = $statuses_where;
 		}
 
 		/**
@@ -422,9 +424,9 @@ class GP_Translation extends GP_Thing {
 
 		$where = 'o.project_id = ' . (int) $project->id . ' AND o.status = "+active" ' . $where;
 
-		$join_where = implode( ' AND ', $join_where );
-		if ( $join_where ) {
-			$join_where = 'AND ' . $join_where;
+		$join_on = implode( ' AND ', $join_on );
+		if ( $join_on ) {
+			$join_on = 'AND ' . $join_on;
 		}
 
 		$fields = array(
@@ -452,22 +454,22 @@ class GP_Translation extends GP_Thing {
 		 * @param array              $pieces          {
 		 *     Translation query SQL clauses.
 		 *
-		 *     @type array  $fields     Fields to select in the query.
-		 *     @type string $join       JOIN clause of the query.
-		 *     @type string $join_where Conditions for the JOIN clause.
-		 *     @type string $where      WHERE clause of the query.
-		 *     @type string $orderby    Fields for ORDER BY clause.
-		 *     @type string $limit      LIMIT clause of the query.
+		 *     @type array  $fields  Fields to select in the query.
+		 *     @type string $join    JOIN clause of the query.
+		 *     @type string $join_on Conditions for the JOIN clause.
+		 *     @type string $where   WHERE clause of the query.
+		 *     @type string $orderby Fields for ORDER BY clause.
+		 *     @type string $limit   LIMIT clause of the query.
 		 * }
 		 * @param GP_Translation_Set $translation_set The translation set object being queried.
 		 * @param array              $filters         An array of search filters.
 		 * @param array              $sort            An array of sort settings.
 		 */
-		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_where', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
+		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_on', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
 
 		$fields = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
 		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
-		$join_where = isset( $clauses['join_where'] ) ? $clauses['join_where'] : '';
+		$join_on = isset( $clauses['join_on'] ) ? $clauses['join_on'] : '';
 		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
 		$orderby = isset( $clauses['orderby'] ) ? 'ORDER BY ' . $clauses['orderby'] : '';
 		$limit = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
@@ -475,7 +477,7 @@ class GP_Translation extends GP_Thing {
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS $fields
 			FROM {$wpdb->gp_originals} as o
-			$join $join_where
+			$join $join_on
 			WHERE $where $orderby $limit";
 
 		$rows = $this->many_no_map( $sql_for_translations );
