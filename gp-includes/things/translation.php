@@ -558,8 +558,71 @@ class GP_Translation extends GP_Thing {
 		$this->set_status( 'rejected' );
 	}
 
+	/**
+	 * Decides whether the status of a translation can be changed to a desired status.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $desired_status The desired status.
+	 * @return bool Whether the status can be set.
+	 */
+	public function can_set_status( $desired_status ) {
+		/**
+		 * Filters the decision whether a translation can be set to a status.
+		 *
+		 * @since 2.3.0
+		 *
+		 * @param string|bool    $can_set_status Whether the user can set the desired status.
+		 * @param GP_Translation $translation    The translation to decide this for.
+		 * @param string         $desired_status The desired status.
+		 */
+		$can_set_status = apply_filters( 'gp_pre_can_set_translation_status', 'no-verdict', $this, $desired_status );
+		if ( is_bool( $can_set_status ) ) {
+			return $can_set_status;
+		}
+
+		if ( ! is_bool( $can_set_status ) && 'rejected' === $desired_status && get_current_user_id() === (int) $this->user_id ) {
+			$can_set_status = true;
+		}
+
+		if ( ! is_bool( $can_set_status ) && ( 'current' === $desired_status || 'rejected' === $desired_status ) ) {
+			if ( ! GP::$permission->current_user_can( 'approve', 'translation', $this->id, array( 'translation' => $this ) ) ) {
+				$can_set_status = false;
+			}
+		}
+
+		if ( ! is_bool( $can_set_status ) ) {
+			$can_set_status = true;
+		}
+
+		/**
+		 * Filters the decision whether a translation can be set to a status.
+		 *
+		 * @since 2.3.0
+		 *
+		 * @param bool           $can_set_status Whether the user can set the desired status.
+		 * @param GP_Translation $translation    The translation to decide this for.
+		 * @param string         $desired_status The desired status.
+		 */
+		$can_set_status = apply_filters( 'gp_can_set_translation_status', $can_set_status, $this, $desired_status );
+
+		return $can_set_status;
+	}
+
+	/**
+	 * Changes the status of a translation if possible.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $status The status to be set.
+	 * @return bool Whether the setting of status was successful.
+	 */
 	public function set_status( $status ) {
-		if ( 'current' == $status ) {
+		if ( ! $this->can_set_status( $status ) ) {
+			return false;
+		}
+
+		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} else {
 			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );

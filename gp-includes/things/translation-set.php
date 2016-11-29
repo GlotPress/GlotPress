@@ -253,13 +253,16 @@ class GP_Translation_Set extends GP_Thing {
 			}
 
 			/**
-			 * Filter the the status of imported translations of a translation set.
+			 * Filters the the status of imported translations of a translation set.
 			 *
 			 * @since 1.0.0
+			 * @since 2.3.0 Added `$new_translation` and `$old_translation` parameters.
 			 *
-			 * @param string $status The status of imported translations.
+			 * @param string              $status          The status of imported translations.
+			 * @param Translation_Entry   $new_translation Translation entry object to import.
+			 * @param GP_Translation|null $old_translation The previous translation.
 			 */
-			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status );
+			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
 
 			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
 			if ( ! empty( $entry->warnings ) ) {
@@ -311,16 +314,7 @@ class GP_Translation_Set extends GP_Thing {
 
 				$entry->translation_set_id = $this->id;
 
-				/**
-				 * Filter the the status of imported translations of a translation set.
-				 *
-				 * @since 1.0.0
-				 *
-				 * @param string            $status The status of imported translations.
-				 * @param Translation_Entry $entry  Translation entry object to import.
-				 */
-				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry );
-
+				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
