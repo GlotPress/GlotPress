@@ -47,6 +47,11 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	 * @return string The exported Jed 1.x compatible JSON string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
+		$language_code = $this->get_language_code( $locale );
+		if ( false !== $language_code ) {
+			$language_code = $locale->slug;
+		}
+		
 		$result = array(
 			'translation-revision-date' => GP::$translation->last_modified( $translation_set ) . '+0000',
 			'generator'                 => 'GlotPress/' . GP_VERSION,
@@ -56,7 +61,7 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 					'__GP_EMPTY__' => array(
 						'domain'       => 'messages',
 						'plural-forms' => sprintf( 'nplurals=%1$s; plural=%2$s;', $locale->nplurals, $locale->plural_expression ),
-						'lang'         => $locale->slug,
+						'lang'         => $language_code,
 					),
 				),
 			),
