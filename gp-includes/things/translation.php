@@ -661,6 +661,23 @@ class GP_Translation extends GP_Thing {
 		return $last_modified;
 	}
 
+	/**
+	 * Get IDs of translations by ID of their original and translation set.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param int $original_id        ID of original.
+	 * @param int $translation_set_id ID of translation set.
+	 * @return array $ids An array of IDs of matching translations.
+	 */
+	public function ids_by_original_and_set( $original_id, $translation_set_id  ) {
+		global $wpdb;
+
+		$ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$this->table} WHERE original_id = %d AND translation_set_id = %d",  $original_id, $translation_set_id ) );
+
+		return $ids;
+	}
+
 	// Triggers
 
 	/**
