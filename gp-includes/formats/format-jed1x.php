@@ -48,7 +48,7 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$language_code = $this->get_language_code( $locale );
-		if ( false !== $language_code ) {
+		if ( false === $language_code ) {
 			$language_code = $locale->slug;
 		}
 
