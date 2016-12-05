@@ -51,7 +51,7 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 		if ( false !== $language_code ) {
 			$language_code = $locale->slug;
 		}
-		
+
 		$result = array(
 			'translation-revision-date' => GP::$translation->last_modified( $translation_set ) . '+0000',
 			'generator'                 => 'GlotPress/' . GP_VERSION,
