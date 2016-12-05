@@ -22,9 +22,10 @@ class GP_Test_Format_Jed1x extends GP_UnitTestCase {
 		$this->translation_set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'foo_project' ) );
 
 		$this->locale = new GP_Locale( array(
-			'slug'              => $this->translation_set->locale,
-			'nplurals'          => 2,
-			'plural_expression' => 'n != 1',
+			'slug'                => $this->translation_set->locale,
+			'nplurals'            => 2,
+			'plural_expression'   => 'n != 1',
+			'lang_code_iso_639_1' => $this->translation_set->locale,
 		) );
 	}
 
