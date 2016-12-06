@@ -32,6 +32,7 @@ $i = 0;
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
 		<option value="approve"><?php _e( 'Approve', 'glotpress' ); ?></option>
 		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></option>
 	<?php if( $can_write ) : ?>
 		<option value="set-priority"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>

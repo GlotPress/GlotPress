@@ -361,6 +361,9 @@ class GP_Route_Translation extends GP_Route_Main {
 				case 'reject' :
 					$this->_bulk_approve( $bulk );
 					break;
+				case 'fuzzy':
+					$this->_bulk_fuzzy( $bulk );
+					break;
 				case 'set-priority':
 					$this->_bulk_set_priority( $project, $bulk );
 			}
@@ -435,6 +438,47 @@ class GP_Route_Translation extends GP_Route_Main {
 						sprintf( _n(
 								'Error with rejecting %s translation.',
 								'Error with rejecting all %s translation.', $error, 'glotpress' ), $error );
+			}
+		}
+	}
+
+	/**
+	 * Process the bulk action to set translations to fuzzy.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $bulk The bulk data to process.
+	 */
+	private function _bulk_fuzzy( $bulk ) {
+
+		$ok = $error = 0;
+
+		foreach ( $bulk['row-ids'] as $row_id ) {
+			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
+			$translation = GP::$translation->get( $translation_id );
+			
+			if ( ! $translation ) {
+				continue;
+			}
+			
+			if ( $translation->set_status( 'fuzzy' ) ) {
+				$ok++;
+			} else {
+				$error++;
+			}
+		}
+
+		if ( 0 === $error ) {
+			$this->notices[] = sprintf( _n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ), $ok );
+		} else {
+			if ( $ok > 0 ) {
+				$message = sprintf( _n( 'Error with marking %s translation as fuzzy.', 'Error with marking %s translations as fuzzy.', $error, 'glotpress' ), $error );
+				$message .= ' ';
+				$message .= sprintf( _n( 'The remaining %s translation was marked as fuzzy successfully.', 'The remaining %s translations were marked as fuzzy successfully.', $ok, 'glotpress' ), $ok );
+
+				$this->errors[] = $message;
+			} else {
+				$this->errors[] = sprintf( _n( 'Error with marking %s translation as fuzzy.', 'Error with marking all %s translation as fuzzy.', $error, 'glotpress' ), $error );
 			}
 		}
 	}
