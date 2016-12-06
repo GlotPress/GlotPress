@@ -148,6 +148,12 @@ $gp.editor = (
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
+				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-~ or Ctrl-Shift-~ = Fuzzy.
+					reject = $( '.editor:visible' ).find( '.fuzzy' );
+
+					if ( reject.length > 0 ) {
+						reject.trigger( 'click' );
+					}
 				} else {
 					return true;
 				}
