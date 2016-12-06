@@ -141,10 +141,11 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 						<?php if ( $can_approve_translation ) : ?>
 							<?php if ( $t->translation_status != 'current' ): ?>
 							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
-							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
 							<?php endif; ?>
 							<?php if ( $t->translation_status != 'rejected' ): ?>
 							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
+							<?php endif; ?>
+							<?php if ( $t->translation_status != 'fuzzy' ): ?>
 							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
 							<?php endif; ?>
 						<?php elseif ( $can_reject_self ): ?>
