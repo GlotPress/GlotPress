@@ -456,11 +456,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
 			$translation = GP::$translation->get( $translation_id );
-			
+
 			if ( ! $translation ) {
 				continue;
 			}
-			
+
 			if ( $translation->set_status( 'fuzzy' ) ) {
 				$ok++;
 			} else {
