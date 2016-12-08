@@ -6,8 +6,8 @@ var glotdict_version = "1.0.0";
 jQuery(document).ready(function () {
   /**
    * Saniitize the value striping html
-   * @param Value value
-   * @returns Value sanitized
+   * @param {string} value
+   * @returns {string} sanitized
    */
   function sanitize_value(value) {
     var tmp = document.createElement("DIV");
@@ -79,7 +79,7 @@ jQuery(document).ready(function () {
         localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
       }).fail(function (xhr, ajaxOptions, thrownError) {
         console.error(thrownError);
-        console.error('GlotDict: error on loading ' + gd_get_lang() + '.json');
+        alert('GlotDict: error on loading ' + gd_get_lang() + '.json');
       });
     }
     return gd_glossary_file_cached();
@@ -102,7 +102,7 @@ jQuery(document).ready(function () {
         localStorage.setItem('gd_locales_date', gd_today());
       }).fail(function (xhr, ajaxOptions, thrownError) {
         console.error(thrownError);
-        console.error('GlotDict Syntax: error on loading the Glossary Syntax');
+        alert('GlotDict Syntax: error on loading the Glossary Syntax');
       });
     }
     var locales_cache = gd_glossary_cached();
