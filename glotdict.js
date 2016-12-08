@@ -1,4 +1,4 @@
-/* global key, glotdict_version */
+/* global key, glotdict_version, $gp */
 'use strict';
 
 var glotdict_version = "1.0.0";
@@ -228,7 +228,7 @@ jQuery(document).ready(function () {
       lang_date = localStorage.getItem('gd_glossary_date');
       if (lang_date === null || lang_date.length === 0 || lang_date === '' || lang_date === 'null') {
         if (gd_glossary_cached(gd_get_lang())) {
-          lang_date = localStorage.getItem('gd_glossary_date');
+          lang_date = sanitize_value(localStorage.getItem('gd_glossary_date'));
         }
       }
       if (lang_date === 'null') {
@@ -264,7 +264,7 @@ jQuery(document).ready(function () {
   function gd_terms_tooltip() {
     var lang = gd_get_lang();
     if (lang === false) {
-      console.error('GlotDict: missing lang!');
+      alert('GlotDict: missing lang!');
       return false;
     }
     var data = gd_glossary_cached(lang);
