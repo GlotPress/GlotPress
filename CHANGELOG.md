@@ -1,3 +1,7 @@
+#1.1.15
+* Sanitize the values inside
+* Support for plurals out-the-box
+
 #1.1.14
 * Disable the GlotPress official hotkeys
 

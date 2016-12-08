@@ -1,4 +1,4 @@
-/* global key, glotdict_version, $gp */
+/* global key, glotdict_version, $gp, pluralize */
 'use strict';
 
 var glotdict_version = "1.0.0";
@@ -181,7 +181,7 @@ jQuery(document).ready(function () {
       var content = content_html.replace(rgxp, repl);
       if (content !== content_html) {
         if (checkHTML(content)) {
-          jQuery('#preview-' + jQuery(element).parent().eq(2).attr('row')).addClass('has-glotdict');
+          jQuery('#preview-' + jQuery(element).parents().eq(2).attr('row')).addClass('has-glotdict');
           jQuery(element).html(content);
         }
       }
@@ -263,6 +263,7 @@ jQuery(document).ready(function () {
    */
   function gd_terms_tooltip() {
     var lang = gd_get_lang();
+    var plural = '';
     if (lang === false) {
       alert('GlotDict: missing lang!');
       return false;
@@ -277,6 +278,10 @@ jQuery(document).ready(function () {
       jQuery.each(data, function (i, item) {
         if (i !== '&') {
           gd_add_term_json(i, editor_in_loop, item);
+          plural = pluralize.plural(i);
+          if (plural !== i) {
+            gd_add_term_json(plural, editor_in_loop, item);
+          }
         }
       });
     });

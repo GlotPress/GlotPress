@@ -18,7 +18,8 @@
   ],
   "web_accessible_resources": [
       "glotdict.js",
-      "keymaster.js"
+      "keymaster.js",
+      "pluralize.js"
   ],
   "permissions": [
     "webRequest", "webRequestBlocking"
