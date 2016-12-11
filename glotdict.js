@@ -249,8 +249,8 @@ jQuery(document).ready(function () {
       jQuery('.glotdict_language').append(new_option);
     });
     if (lang === '' || lang === false) {
-      jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;color:red;">&larr; Set the glossary!</h3>');
-      jQuery('.filters-toolbar:last div:first').append('<br><h2 style="background-color:#fff;padding:0;display:block;text-align:center;margin-top: 6px;">Welcome to GlotDict! Discover the features and the hotkeys on the <a href="https://github.com/Mte90/GlotDict/blob/master/README.md#features" target="_blank">Readme</a> before to use it.</h2>');
+      jQuery('.filters-toolbar:last div:first').append('<h3 style="background-color:#ddd;padding:4px;width:130px;display:inline;margin-left:4px;color:red;">&larr; Set the glossary!</h3>')
+        .append('<br><h2 style="background-color:#fff;padding:0;display:block;text-align:center;margin-top: 6px;">Welcome to GlotDict! Discover the features and the hotkeys on the <a href="https://github.com/Mte90/GlotDict/blob/master/README.md#features" target="_blank">Readme</a> before to use it.</h2>');
       return;
     }
     jQuery('.glossary-word').contents().unwrap();
@@ -265,7 +265,7 @@ jQuery(document).ready(function () {
     var lang = gd_get_lang();
     var plural = '';
     if (lang === false) {
-      alert('GlotDict: missing lang!');
+      console.error('GlotDict: missing lang!');
       return false;
     }
     var data = gd_glossary_cached(lang);
@@ -280,7 +280,6 @@ jQuery(document).ready(function () {
           gd_add_term_json(i, editor_in_loop, item);
           plural = pluralize.plural(i);
           if (plural !== i && Array.isArray(data[plural])) {
-              console.log(plural)
             gd_add_term_json(plural, editor_in_loop, item);
           }
         }
@@ -294,9 +293,9 @@ jQuery(document).ready(function () {
         var content = jQuery('<ul>');
         jQuery.each(jQuery(this).data('translations'), function (i, e) {
           var def = jQuery('<li>');
-          def.append(jQuery('<span>', {text: sanitize_value(e.pos)}).addClass('pos'));
-          def.append(jQuery('<span>', {text: sanitize_value(e.translation)}).addClass('translation'));
-          def.append(jQuery('<span>', {text: sanitize_value(e.comment)}).addClass('comment'));
+          def.append(jQuery('<span>', {text: sanitize_value(e.pos)}).addClass('pos'))
+             .append(jQuery('<span>', {text: sanitize_value(e.translation)}).addClass('translation'))
+             .append(jQuery('<span>', {text: sanitize_value(e.comment)}).addClass('comment'));
           content.append(def);
         });
         return content;
