@@ -279,7 +279,8 @@ jQuery(document).ready(function () {
         if (i !== '&') {
           gd_add_term_json(i, editor_in_loop, item);
           plural = pluralize.plural(i);
-          if (plural !== i) {
+          if (plural !== i && Array.isArray(data[plural])) {
+              console.log(plural)
             gd_add_term_json(plural, editor_in_loop, item);
           }
         }
