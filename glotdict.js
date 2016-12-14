@@ -10,9 +10,7 @@ jQuery(document).ready(function () {
    * @returns {string} sanitized
    */
   function sanitize_value(value) {
-    var tmp = document.createElement("DIV");
-    tmp.innerHTML = value;
-    return tmp.textContent || tmp.innerText;
+    return value.replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');;
   }
 
   /**
