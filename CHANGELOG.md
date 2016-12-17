@@ -1,3 +1,7 @@
+#1.1.16
+* Improved sanitization
+* Fix for plurals
+
 #1.1.15
 * Sanitize the values inside
 * Support for plurals out-the-box
