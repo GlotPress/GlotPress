@@ -38,7 +38,7 @@ After that step we have to wait few hours for Chrome and for Firefox and all the
 
 # Add a new glossary for a non-developer
 
-Your glossary need to be published on GlotPress and a ticket created on https://github.com/Mte90/GlotDictJSON to update the internal system.
+Your glossary need to be published on GlotPress (and also on https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/list-of-glossaries-per-locale/) and a ticket created on https://github.com/Mte90/GlotDictJSON to update the internal system.
 
 # Contributors
 
