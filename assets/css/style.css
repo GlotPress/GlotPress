@@ -7,9 +7,11 @@ body, html,
 	line-height: 1.5em;
 	font-size: 14px;
 }
+
 body, html {
 	margin: 0;
 }
+
 .gp-content input,
 .gp-content textarea {
 	font-size: 1em;
@@ -19,30 +21,37 @@ body, html {
 a, a:link, a:visited {
 	color: #2F34B8;
 }
+
 a:active {
 	color: red;
 }
+
 a img {
 	border: 0;
 }
+
 a.disabled {
 	color: #aaa;
 	text-decoration: none;
 }
+
 .gp-content h2 {
 	background-color: #ddd;
 	padding: 0.5em;
 }
+
 .gp-content h2 a.edit {
 	font-size: 0.75em;
 	text-decoration: none;
 }
+
 .gp-content h2 a.glossary-link {
 	font-size: 0.75em;
 	text-decoration: none;
 	display:inline-block;
 	float:right;
 }
+
 h3 {
 	font-size: 1.1em;
 	font-weight: bold;
@@ -50,6 +59,7 @@ h3 {
 	padding: 0.25em 0.5em;
 	color: #444;
 }
+
 select {
 	font-size: 12px;
 	line-height: 14px;
@@ -61,9 +71,9 @@ select {
 	height: 2em;
 }
 
-
-
-/* GP BAR */
+/*
+ * GP BAR
+ */
 .gp-bar {
 	background: #464646;
 	padding: 0 1em;
@@ -98,9 +108,9 @@ select {
 	float: right;
 }
 
-
-
-/* BREADCRUMBS */
+/*
+ * Breadcrumbs
+ */
 .breadcrumb {
 	background-color: #eee;
 	border: 1px solid #ddd;
@@ -141,14 +151,16 @@ select {
 }
 
 
-/* GP CONTENT */
+/*
+ * GP Content
+ */
 .gp-content {
 	margin: 0 1em;
 }
 
-
-
-/* FOOTER */
+/*
+ * Footer
+ */
 #gp-footer {
 	text-align: center;
 	font-size: 85%;
@@ -157,9 +169,9 @@ select {
 	padding: 0.5em;
 }
 
-
-/* REST */
-
+/*
+ * Rest
+ */
 .gp-content input.button {
 	text-decoration: none;
 	font-size: 12px;
@@ -237,23 +249,28 @@ table.locale-sub-projects,
 table.permissions {
 	border: 0;
 }
+
 table.translations td.translation ul {
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 }
+
 table.translations td.translation li {
 	padding-bottom: 0.25em;
 	border-bottom: 1px dotted #ccc;
 }
+
 table.translations td.translation li:last-child {
 	padding-bottom: 0;
 	border-bottom: none;
 }
+
 table.translations td.translation span.missing {
 	color: #ddd;
 	font-style: italic;
 }
+
 table.translations td.translation span.missing a {
 	color: #ccc;
 	font-style: italic;
@@ -276,13 +293,17 @@ table.translations td.checkbox {
 	vertical-align: middle;
 	text-align: center;
 }
+
 table.translations td.priority {
 	text-align: center;
 	font-size: 1.3em;
+
 }
+
 table.translations td.actions {
 	text-align: center;
 }
+
 table.translations.translation-sets-rtl .foreign-text {
 	direction: rtl;
 }
@@ -293,28 +314,35 @@ table.translations td.original, table.translations td.translation {
 	word-wrap: break-word;
 }
 
-table.translations tr:nth-child(4n+3) {  
+table.translations tr:nth-child(4n+3) {
 	background-color: #fcfcfc;
 }
+
 table.translations tr.editor {
 	background-color: #F8FFEC;
 	display: none;
 }
+
 table.translations tr.preview.status-fuzzy, #legend .status-fuzzy {
 	background-color: #FC6;
 }
+
 table.translations tr.preview.status-current, #legend .status-current  {
 	background-color: #E9FFD8;
 }
+
 table.translations tr.preview.status-old, #legend .status-old {
 	background-color: #FEE4F8;
 }
+
 table.translations tr.preview.status-waiting, #legend .status-waiting {
 	background-color: #FFFFC2;
 }
+
 table.translations tr.preview.status-rejected, #legend .status-rejected {
 	background-color: #FF8E8E;
 }
+
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
 	border-left: 2px solid red;
 }
@@ -324,75 +352,102 @@ table.translations a.action {
 	font-style: normal;
 }
 
-
+/*
+ * Misc.
+ */
 .separator {
 	font-size: 80%;
 	margin: 0.25em;
 }
+
 .clear {
 	clear: both;
 }
+
 .half {
 	float: left;
 	width: 50%;
 }
+
 span.context {
 	background-color: #aaa;
 	color: white;
 	font-size: 100%;
 	padding: 0.3em;
 }
+
 span.morethan90 {
 	background-color: green;
 	color: white;
 }
 
+/*
+ * Translation Row Editor
+ */
 .editor .original {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
 }
+
+.editor .translation {
+	white-space: pre-wrap;
+}
+
 .editor .strings {
 	float: left;
 	width: 60%;
 }
+
 .editor .strings p.plural-numbers {
 	margin-bottom: 0;
 	color: #555;
 	font-size: 0.75em;
 }
+
 .editor .strings p.plural-numbers span.numbers {
 	font-weight: bold;
 }
+
 .editor .textareas, .editor .actions {
 	clear: both;
 }
+
 .editor .textareas textarea {
 	width: 45em;
 	min-height: 8em;
 }
+
 .editor .meta {
 	float: left;
 	margin-left: 2em;
 }
+
 .editor .meta dl {
 	margin: 0.1em 1em;
 }
+
 .editor .meta dt, .editor .meta dd {
 	display: inline;
 	margin: 0;
 }
+
 .editor .meta dt {
 	margin-right: 0.5em;
 }
+
 .editor .meta dt {
 	margin-right: 0.5em;
 }
+
 .editor .meta dd {
 	color: #444;
 	font-weight: bold;
 }
 
+/*
+ * JavaScript, errors and notices.
+ */
 #gp-js-message {
 	position: fixed;
 	top: 0;
@@ -401,18 +456,22 @@ span.morethan90 {
 	font-size: 85%;
 	z-index: 1001;
 }
+
 .gp-js-error, .error {
 	color: white;
 	background-color: red;
 }
+
 .gp-js-notice, .notice {
 	color: #222;
 	background-color: #FDDF9D;
 }
+
 .gp-js-success {
 	color: white;
 	background-color: #00DA12;
 }
+
 .notice, .error {
 	clear: both;
 	padding: 0.5em;
@@ -427,20 +486,28 @@ a.bubble, .bubble {
 	-moz-border-radius: 0.2em;
 	text-align: center;
 }
+
 span.active {
 	background-color: yellow;
 	color: #555;
 	font-weight: bold;
 }
+
 ul a.edit, dt a.edit {
 	background-color: #777;
 }
+
 ul a.delete {
 	background-color: #FF4F50;
 }
+
+/*
+ * Page UI
+ */
 .paging {
 	float: right;
 }
+
 .paging a, .paging span {
 	font-size: 0.9em;
 	display: block;
@@ -453,52 +520,73 @@ ul a.delete {
 	margin: 0.3em;
 	text-decoration: none;
 }
+
 .paging .current, .paging .dots {
 	border-color: transparent;
 	color: black;
 	width: 1.3em;
 }
+
 .paging .current {
 	font-weight: bold;
 }
+
 .paging .next {
 	margin-right: 1px;
 }
+
 .paging .disabled {
 	color: #999;
 	border-color: #eee;
 }
+
+/*
+ * Bulk Actions
+ */
 .bulk-actions {
 	float: left;
 }
+
 .bulk-actions input {
 	margin-right: 8px;
 }
+
 .bulk-actions select {
 	width: 130px;
 }
+
+/*
+ * Translation page filters
+ */
 form.filters-toolbar > div {
 	line-height: 2em;
 }
+
 form.filters-toolbar ul {
 	list-style-type: none;
 }
+
 form.filters-toolbar a.revealing {
 	text-decoration: none;
 }
+
 form.filters-toolbar a.revealing, form.filters-toolbar .separator {
 	margin-bottom: 0;
 }
+
 form.filters-toolbar a.revealing.open {
 	font-weight: bold;
 }
+
 form.filters-toolbar a.revealing:first-child {
 	margin-left: 0.5em;
 }
+
 form.filters-toolbar strong.separator {
 	font-size: 1.8em;
 	vertical-align: bottom;
 }
+
 dl.filters-expanded {
 	float: left;
 	font-size: 80%;
@@ -509,15 +597,18 @@ dl.filters-expanded {
 	-webkit-border-radius: 0.3em;
 	-moz-border-radius: 0.3em;
 }
+
 dl.filters-expanded dt, dl.filters-expanded dd {
 	float: left;
 	margin: 0;
 	padding: 0;
 }
+
 dl.filters-expanded dt {
 	margin-right: 0.5em;
 	font-weight: bold;
 }
+
 dl.filters-expanded dd {
 	margin-right: 2em;
 }
@@ -533,11 +624,13 @@ dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
 	margin-top: 0;
 	padding-top: 0;
 }
+
 .hidden,
 .js .hide-if-js,
 .no-js .hide-if-no-js {
 	display: none;
 }
+
 .clearfix:after {
 	content: ".";
 	display: block;
@@ -545,6 +638,7 @@ dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
 	clear: both;
 	visibility: hidden;
 }
+
 table.translation-sets .stats a, table.locale-sub-projects .stats a {
 	color: black;
 	text-decoration: none;
@@ -559,15 +653,18 @@ table.translation-sets .stats a, table.locale-sub-projects .stats a {
 .personal-options #source-url-template {
 	width: 20em;
 }
+
 .invisibles {
 	color: #888;
 	font-size: 85%;
 	padding: 0;
 	margin-left: 2px;
 }
+
 .secondary {
 	font-size: 0.95em;
 }
+
 .ternary {
 	font-size: 0.8em;
 }
@@ -579,16 +676,20 @@ table.translation-sets .stats a, table.locale-sub-projects .stats a {
 .actionlist a, .actionlist a:link, .actionlist a:visited {
 	color: #4D56DC;
 }
+
 .actionlist a:active {
 	color: red;
 }
+
 .permissions .user {
 	font-weight: bold;
 }
+
 .permissions .permission-action {
 	font-style: italic;
 	color: #999;
 }
+
 .warning {
 	background-color: white;
 	color: #E44B3E;
@@ -596,11 +697,13 @@ table.translation-sets .stats a, table.locale-sub-projects .stats a {
 	margin: 1em 0;
 	padding: 0.5em;
 }
+
 .warning:after {
 	clear:both;
 	content: "";
 	display: block;
 }
+
 .warning a.discard-warning {
 	float: right;
 }
@@ -612,26 +715,32 @@ p.description {
 	border-left: 3px solid #aaa;
 	margin-top: -0.75em;
 }
+
 span.added {
 	color: green;
 }
+
 span.removed {
 	color: red;
 }
+
 #legend {
 	margin-top: 1em;
 }
+
 #legend div {
 	margin-right: .5em;
 	float: left;
 	line-height: 1.5em;
 }
+
 #legend .box {
 	border: 1px solid #ccc;
 	width: 1.5em;
 	height: 1.5em;
 	padding: 0;
 }
+
 .gp-content .text {
 	width: 45em;
 	margin-left: 6em;
@@ -641,6 +750,7 @@ a.project-actions {
 	font-weight: bold;
 	text-decoration: none;
 }
+
 .project-actions ul {
 	margin-top: 0em;
 }
@@ -662,6 +772,7 @@ a.project-actions {
 	color: #555;
 	margin: 0;
 }
+
 #sub-projects dl {
 	margin-left: 0.5em;
 }
@@ -669,10 +780,12 @@ a.project-actions {
 #sub-projects dt {
 	margin-top: 0.5em;
 }
+
 #sub-projects a {
 	font-weight: bold;
 	text-decoration: none;
 }
+
 #sub-projects a.action {
 	font-weight: normal;
 }
@@ -685,9 +798,11 @@ a.project-actions {
 .translation-sets .percent, .locale-sub-projects .percent {
 	font-weight: bold;
 }
+
 .translation-sets .stats {
 	text-align: center;
 }
+
 .translation-sets td, .locales td {
 	padding: 0.5em 0.75em;
 }
@@ -695,26 +810,33 @@ a.project-actions {
 .translation-sets tr, .locales tr {
 	background-color: #eee;
 }
+
 .translation-sets tr:nth-child(odd), .locales tr:nth-child(odd) {
 	background-color: #fff;
 }
+
 .translation-sets tr:hover, .locales tr:hover {
 	background-color: #dee;
 }
+
 .translation-sets tr:nth-child(odd):hover, .locales tr:nth-child(odd):hover {
 	background-color: #eff;
 }
+
 #submit {
 	font-size: 1.5em;
 	margin: 0 0.1em 0 0;
 }
+
 span.or-cancel {
 	font-size: 0.85em;
 }
+
 table.form-table th {
 	text-align: left;
 	vertical-align: text-top;
 }
+
 table.form-table th, table.form-table td {
 	padding: 10px 0 0 0;
 }
@@ -730,9 +852,11 @@ table.form-table th, table.form-table td {
 .glossary tr {
 	background-color: #fcfcfc;
 }
+
 .glossary tr:nth-child(4n+1) {
 	background-color: #fff;
 }
+
 .glossary tr.active {
 	background-color: #F8FFEC;
 }
@@ -779,6 +903,7 @@ table.form-table th, table.form-table td {
 	margin: 2px;
 	padding-left: 10px;
 }
+
 .ui-tooltip ul li {
 	padding: 0;
 	margin: 0;
@@ -789,9 +914,11 @@ table.form-table th, table.form-table td {
 	font-style: italic;
 	padding-right: 10px;
 }
+
 .ui-tooltip .translation{
 	font-weight: bold;
 }
+
 .ui-tooltip .comment {
 	display: block;
 	font-size: small;
@@ -809,7 +936,9 @@ table.form-table th, table.form-table td {
 	left: 1em;
 }
 
-
+/*
+ * User Profile
+ */
 #profile {
 	overflow: hidden;
 }
@@ -818,12 +947,14 @@ table.form-table th, table.form-table td {
 	margin-bottom: 5px;
 	overflow: hidden;
 }
+
 .user-card .user-avatar {
 	float: left;
 	margin: 0 12px 0 0;
 	width: 100px;
 	height: 100px;
 }
+
 .user-card dl.user-info dt {
 	font-size: 12px;
 	color: #888;
@@ -884,6 +1015,7 @@ table.locale-sub-projects thead th {
 	border-spacing: 20px 5px;
 	border: 2px solid #0ff;
 }
+
 .locale-sub-projects .project-name th {
 	font-size: 1.1em;
 	font-weight: bold;
@@ -901,6 +1033,7 @@ table.locale-sub-projects thead th {
 	border:none;
 	border-bottom: 1px solid #eee;
 }
+
 .locale-sub-projects tr:hover td {
 	background-color:#eff;
 }
@@ -924,7 +1057,9 @@ table.locale-sub-projects thead th {
 	width: 15%;
 }
 
-
+/*
+ *Media specific settings
+ */
 @media (max-width: 800px) {
 	#sub-projects {
 		float: none;
