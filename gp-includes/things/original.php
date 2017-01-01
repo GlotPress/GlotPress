@@ -280,16 +280,33 @@ class GP_Original extends GP_Thing {
 			if ( $close_original ) {
 				$original = $originals_by_key[ $close_original ];
 
+				/**
+				 * Filters whether to set existing translations to fuzzy.
+				 *
+				 * This filter is called when a new  string closely match an existing possibly dropped string.
+				 *
+				 * @since 2.3.0
+				 *
+				 * @param bool   $do_fuzzy Whether to set existing translations to fuzzy. Default true.
+				 * @param object $data     The new original data.
+				 * @param object $original The previous original being replaced.
+				 */
+				$do_fuzzy = apply_filters( 'gp_close_original_fuzzy_translations', true, (object) $data, $original );
+
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
 
 				// and set existing translations to fuzzy.
-				$this->set_translations_for_original_to_fuzzy( $original->id );
+				if ( $do_fuzzy ) {
+					$this->set_translations_for_original_to_fuzzy( $original->id );
+					$originals_fuzzied++;
+				} else {
+					$originals_existing++;
+				}
 
 				// No need to obsolete it now.
 				unset( $possibly_dropped[ $close_original ] );
 
-				$originals_fuzzied++;
 				continue;
 			} else { // Completely new string
 				$created = GP::$original->create( $data );
