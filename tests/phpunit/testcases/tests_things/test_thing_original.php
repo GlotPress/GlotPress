@@ -120,11 +120,11 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
 		$translations_for_import = $this->create_translations_with( array( array( 'singular' => 'baba baba.' ) ) );
 
-		add_filter( 'gp_close_original_fuzzy_translations', '__return_false' );
+		add_filter( 'gp_set_translations_for_original_to_fuzzy', '__return_false' );
 
 		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $original->import_for_project( $set->project, $translations_for_import );
 
-		remove_filter( 'gp_close_original_fuzzy_translations', '__return_false' );
+		remove_filter( 'gp_set_translations_for_original_to_fuzzy', '__return_false' );
 
 		$this->assertEquals( 0, $originals_added );
 		$this->assertEquals( 1, $originals_existing );

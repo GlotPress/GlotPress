@@ -291,7 +291,7 @@ class GP_Original extends GP_Thing {
 				 * @param object $data     The new original data.
 				 * @param object $original The previous original being replaced.
 				 */
-				$do_fuzzy = apply_filters( 'gp_close_original_fuzzy_translations', true, (object) $data, $original );
+				$do_fuzzy = apply_filters( 'gp_set_translations_for_original_to_fuzzy', true, (object) $data, $original );
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
