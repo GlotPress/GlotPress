@@ -385,6 +385,7 @@ jQuery(document).ready(function () {
   gd_add_button();
 
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
+	gd_hotkeys();
 	//Fix for PTE align
 	if (jQuery('#bulk-actions-toolbar').length > 0) {
 	  jQuery('#upper-filters-toolbar').css('clear', 'both');
@@ -396,7 +397,6 @@ jQuery(document).ready(function () {
 	jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
 	gd_terms_tooltip();
 	gd_locales_selector();
-	gd_hotkeys();
   }
 
   jQuery('.glotdict_language').change(function () {
