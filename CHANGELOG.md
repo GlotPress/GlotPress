@@ -1,3 +1,6 @@
+#1.1.17
+* null text on first installation removed
+
 #1.1.16
 * Improved sanitization
 * Fix for plurals

@@ -75,9 +75,6 @@ jQuery(document).ready(function () {
 		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
 		var glossary_date = gd_list_locales_cached();
 		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
-	  }).fail(function (xhr, ajaxOptions, thrownError) {
-		console.error(thrownError);
-		alert('GlotDict: error on loading ' + gd_get_lang() + '.json');
 	  });
 	}
 	return gd_glossary_file_cached();
@@ -98,9 +95,6 @@ jQuery(document).ready(function () {
 	  }).done(function (data) {
 		localStorage.setItem('gd_locales', JSON.stringify(data));
 		localStorage.setItem('gd_locales_date', gd_today());
-	  }).fail(function (xhr, ajaxOptions, thrownError) {
-		console.error(thrownError);
-		alert('GlotDict Syntax: error on loading the Glossary Syntax');
 	  });
 	}
 	var locales_cache = gd_glossary_cached();
