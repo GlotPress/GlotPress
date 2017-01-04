@@ -220,18 +220,15 @@ jQuery(document).ready(function () {
   function gd_locales_selector() {
 	var lang = gd_get_lang();
 	var lang_date = localStorage.getItem('gd_glossary_date');
-	if (lang_date !== null) {
 	  if (lang_date === null || lang_date.length === 0 || lang_date === '' || lang_date === 'null') {
 		if (gd_glossary_cached(gd_get_lang())) {
 		  lang_date = sanitize_value(localStorage.getItem('gd_glossary_date'));
 		}
 	  }
-	  if (lang_date === 'null') {
-		lang_date = gd_today();
-	  }
-	  if (lang_date !== '') {
-		lang_date = ' Glossary Update: ' + lang_date;
-	  }
+	if (lang_date !== null) {
+	  lang_date = ' Glossary Update: ' + lang_date;
+	} else {
+	  lang_date = ''
 	}
 	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>' + lang_date);
 	jQuery('.glotdict_language').append(jQuery('<option></option>'));
