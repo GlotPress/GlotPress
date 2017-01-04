@@ -38,7 +38,7 @@ jQuery(document).ready(function () {
    */
   function gd_list_locales_cached() {
 	var locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
-	if (typeof locales === 'undefined') {
+	if (typeof locales === 'undefined' || locales[gd_get_lang()].time === null) {
 	  gd_locales();
 	  locales = gd_list_locales_cached();
 	}
@@ -228,7 +228,7 @@ jQuery(document).ready(function () {
 	if (lang_date !== null) {
 	  lang_date = ' Glossary Update: ' + lang_date;
 	} else {
-	  lang_date = ''
+	  lang_date = '';
 	}
 	jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>' + lang_date);
 	jQuery('.glotdict_language').append(jQuery('<option></option>'));
