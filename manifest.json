@@ -13,20 +13,20 @@
   "content_scripts": [
     {
       "matches": ["*://translate.wordpress.org/*"],
-      "js": ["init.js"]
+      "js": ["js/init.js"]
     }
   ],
   "web_accessible_resources": [
-      "glotdict.js",
-      "keymaster.js",
-      "pluralize.js",
-      "jquery.bind-first.js"
+      "js/glotdict.js",
+      "js/keymaster.js",
+      "js/pluralize.js",
+      "js/jquery.bind-first.js"
   ],
   "permissions": [
     "webRequest", "webRequestBlocking"
   ],
   "background": {
-    "scripts": ["block-social-footer.js"]
+    "scripts": ["js/block-social-footer.js"]
   }
 
 }
