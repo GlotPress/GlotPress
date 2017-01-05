@@ -1,5 +1,6 @@
 #1.1.17
 * null text on first installation removed
+* Check if the new string finish with a .?! if the original finish with that
 
 #1.1.16
 * Improved sanitization

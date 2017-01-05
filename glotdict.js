@@ -214,11 +214,11 @@ jQuery(document).ready(function () {
   function gd_locales_selector() {
 	var lang = gd_get_lang();
 	var lang_date = localStorage.getItem('gd_glossary_date');
-	  if (lang_date === null || lang_date.length === 0 || lang_date === '' || lang_date === 'null') {
-		if (gd_glossary_cached(gd_get_lang())) {
-		  lang_date = sanitize_value(localStorage.getItem('gd_glossary_date'));
-		}
+	if (lang_date === null || lang_date.length === 0 || lang_date === '' || lang_date === 'null') {
+	  if (gd_glossary_cached(gd_get_lang())) {
+		lang_date = sanitize_value(localStorage.getItem('gd_glossary_date'));
 	  }
+	}
 	if (lang_date !== null) {
 	  lang_date = ' Glossary Update: ' + lang_date;
 	} else {
@@ -289,12 +289,29 @@ jQuery(document).ready(function () {
   }
 
   /**
+   * Validation is good to save time!
+   * 
+   * @param {object} e The event.
+   * @returns void
+   */
+  function gd_validate(e) {
+	var text = jQuery('.editor:visible .original').html().slice(-1);
+	var newstring = jQuery('.editor:visible textarea').val().slice(-1);
+	if (text === '.' || text === '?' || text === '!') {
+	  if (newstring !== text) {
+		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation it\'s missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
+		e.stopImmediatePropagation();
+	  }
+	}
+  }
+
+  /**
    * Add the hotkeys in GlotPress
    * 
    * @returns void
    */
   function gd_hotkeys() {
-	jQuery($gp.editor.table).off("keydown", 'tr.editor textarea', $gp.editor.hooks.keydown);
+	jQuery($gp.editor.table).off('keydown', 'tr.editor textarea', $gp.editor.hooks.keydown);
 	key.filter = function (event) {
 	  var tagName = (event.target || event.srcElement).tagName;
 	  key.setScope(/^(SELECT)$/.test(tagName) ? 'input' : 'other');
@@ -381,9 +398,6 @@ jQuery(document).ready(function () {
 	});
   }
 
-  gd_add_project_links();
-  gd_add_button();
-
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
 	gd_hotkeys();
 	//Fix for PTE align
@@ -397,7 +411,12 @@ jQuery(document).ready(function () {
 	jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
 	gd_terms_tooltip();
 	gd_locales_selector();
+
+	jQuery($gp.editor.table).onFirst('click', 'button.ok', gd_validate);
   }
+
+  gd_add_project_links();
+  gd_add_button();
 
   jQuery('.glotdict_language').change(function () {
 	localStorage.setItem('gd_language', jQuery('.glotdict_language option:selected').text());

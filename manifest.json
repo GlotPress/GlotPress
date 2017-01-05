@@ -19,7 +19,8 @@
   "web_accessible_resources": [
       "glotdict.js",
       "keymaster.js",
-      "pluralize.js"
+      "pluralize.js",
+      "jquery.bind-first.js"
   ],
   "permissions": [
     "webRequest", "webRequestBlocking"
