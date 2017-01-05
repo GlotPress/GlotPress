@@ -1,20 +1,21 @@
 #1.1.17
-* null text on first installation removed
-* Check if the new string finish with a .?! if the original finish with that
+* Fix: null text on first installation removed
+* Improvement: Check if the new string finish with a .?! if the original finish with that
+* Improvement: loading js system
 
 #1.1.16
-* Improved sanitization
-* Fix for plurals
+* Improvement: anitization
+* Fix: plurals
 
 #1.1.15
-* Sanitize the values inside
-* Support for plurals out-the-box
+* Improvement: Sanitize the values inside
+* Improvement: Support for plurals out-the-box
 
 #1.1.14
-* Disable the GlotPress official hotkeys
+* Improvement: Disable the GlotPress official hotkeys
 
 #1.1.13
-* Fix legend
+* Fix: legend
 
 #1.1.12
 * Fix: On Chrome in few cases the library for hotkeys is not loaded in the right order
