@@ -114,6 +114,31 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $fuzzy_translations ) );
 	}
 
+	function test_import_should_not_mark_translation_of_changed_strings_as_fuzzy_with_filter() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'baba baba' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => 'baba baba.' ) ) );
+
+		add_filter( 'gp_set_translations_for_original_to_fuzzy', '__return_false' );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		remove_filter( 'gp_set_translations_for_original_to_fuzzy', '__return_false' );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 1, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
+
+		$current_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'current'" );
+		$fuzzy_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'fuzzy'" );
+
+		$this->assertEquals( 1, count( $current_translations ) );
+		$this->assertEquals( 0, count( $fuzzy_translations ) );
+	}
+
 	/**
 	 * @ticket 508
 	 */
