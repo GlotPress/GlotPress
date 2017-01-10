@@ -276,17 +276,18 @@ class GP_Route {
 	 * @param string $last_modified Optional. Date when the file was last modified. Default: ''.
 	 */
 	public function headers_for_download( $filename, $last_modified = '' ) {
-		$this->header('Content-Description: File Transfer');
-		$this->header('Pragma: public');
-		$this->header('Expires: 0');
+		$this->header( 'Content-Description: File Transfer' );
+		$this->header( 'Pragma: public' );
+		$this->header( 'Expires: 0' );
 
-		if ( $last_modified )
+		if ( $last_modified ) {
 			$this->header( sprintf( 'Last-Modified: %s', $last_modified ) );
+		}
 
-		$this->header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		$this->header("Content-Disposition: attachment; filename=\"$filename\"");
-		$this->header("Content-Type: application/octet-stream");
-		$this->header('Connection: close');
+		$this->header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+		$this->header( "Content-Disposition: attachment; filename=\"$filename\"" );
+		$this->header( "Content-Type: application/octet-stream" );
+		$this->header( 'Connection: close' );
 	}
 
 	public function set_notices_and_errors() {
