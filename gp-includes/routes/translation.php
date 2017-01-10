@@ -443,14 +443,13 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	/**
-	 * Process the bulk action to set translations to fuzzy.
+	 * Processes the bulk action to set translations to fuzzy.
 	 *
-	 * @since 3.0.0
+	 * @since 2.3.0
 	 *
 	 * @param array $bulk The bulk data to process.
 	 */
 	private function _bulk_fuzzy( $bulk ) {
-
 		$ok = $error = 0;
 
 		foreach ( $bulk['row-ids'] as $row_id ) {
