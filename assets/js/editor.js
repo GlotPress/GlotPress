@@ -83,6 +83,7 @@ $gp.editor = (
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
+					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
 				$( '#translations' ).tooltip( {
@@ -143,6 +144,12 @@ $gp.editor = (
 					}
 				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-- or Ctrl-Shift-R = Reject.
 					reject = $( '.editor:visible' ).find( '.reject' );
+
+					if ( reject.length > 0 ) {
+						reject.trigger( 'click' );
+					}
+				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-~ or Ctrl-Shift-~ = Fuzzy.
+					reject = $( '.editor:visible' ).find( '.fuzzy' );
 
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
@@ -361,6 +368,10 @@ $gp.editor = (
 				},
 				set_status_rejected: function() {
 					$gp.editor.set_status( $( this ), 'rejected' );
+					return false;
+				},
+				set_status_fuzzy: function() {
+					$gp.editor.set_status( $( this ), 'fuzzy' );
 					return false;
 				},
 				set_priority: function() {
