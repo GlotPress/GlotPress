@@ -1,6 +1,44 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.0-beta.1 (January 17, 2017)
+
+**Bugfixes**
+
+* Fix incorrect URL's in some cases in locale page. ([#632](https://github.com/GlotPress/GlotPress-WP/issues/632))
+* Fix truncation of download names if they contain a space. ([#634](https://github.com/GlotPress/GlotPress-WP/pull/634))
+
+**Features**
+
+* Add locale glossaries. ([#435](https://github.com/GlotPress/GlotPress-WP/pull/435))
+* Add ability to mark a translation as fuzzy. ([#620](https://github.com/GlotPress/GlotPress-WP/pull/620))
+* Add filters for_translation sql clauses and returned rows. ([#530](https://github.com/GlotPress/GlotPress-WP/pull/530))
+* Add filters that allow the implementation of Cross-Locale PTEs. ([#538](https://github.com/GlotPress/GlotPress-WP/pull/538))
+* Add JED file format language to use proper language code instead of the locale's slug. ([#622](https://github.com/GlotPress/GlotPress-WP/pull/622))
+* Fix display of previous translation string with special characters in them. ([#626](https://github.com/GlotPress/GlotPress-WP/pull/626))
+
+Thanks to all the contributors so far: Yoav Farh, Alexander Kirk, Dominik Schilling and Greg Ross.
+
+## 2.2.2 (November 21, 2016)
+
+**Security**
+
+* Fix an information leak in the API, reported by Alex Kirk.
+
+## 2.2.1 (November 11, 2016)
+
+**Bugfixes**
+
+* Fix missing header fields in .mo files. ([#594](https://github.com/GlotPress/GlotPress-WP/issues/594))
+* Add padding to table headers to avoid overlapping with sorting graphics. ([#565](https://github.com/GlotPress/GlotPress-WP/issues/565))
+* Fix for "Only variables should be passed by reference" warning when importing translations. ([#566](https://github.com/GlotPress/GlotPress-WP/issues/566))
+
+**Features**
+
+* Add locale information for Xhosa. ([#603](https://github.com/GlotPress/GlotPress-WP/issues/603))
+
+Thanks to all the contributors so far: Alexander Kirk, Dominik Schilling, and Greg Ross.
+
 ## 2.2.0 (September 30, 2016)
 
 (this space intentionally left blank)
