@@ -51,7 +51,20 @@ class GP_Format_Android extends GP_Format {
 
 	public function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( true );
-		$data = simplexml_load_string( file_get_contents( $file_name ) );
+		$contents = file_get_contents( $file_name );
+		
+		/*
+		 * Android strings can use <xliff> tags to indicate a part of the string should NOT be translated.
+		 *
+		 * See the "Mark message parts that should not be translated" section of https://developer.android.com/distribute/tools/localization-checklist.html
+		 *
+		 * Unfortunatly simplexml will parse these are valid XML tags, which we don't want so encapsalate them in a CDATA structure 
+		 * that we can tell simplexml to ignore.
+		*/
+		$contents = str_replace( '<xliff:g', '<![CDATA[<xliff:g', $contents );
+		$contents = str_replace( '</xliff:g>', '</xliff:g>]]>', $contents );
+		
+		$data = simplexml_load_string( $contents, NULL, LIBXML_NOCDATA );
 		libxml_use_internal_errors( $errors );
 
 		if ( ! is_object( $data ) )
