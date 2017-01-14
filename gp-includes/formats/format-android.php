@@ -64,7 +64,7 @@ class GP_Format_Android extends GP_Format {
 		$contents = str_replace( '<xliff:g', '<![CDATA[<xliff:g', $contents );
 		$contents = str_replace( '</xliff:g>', '</xliff:g>]]>', $contents );
 
-		$data = simplexml_load_string( $contents, NULL, LIBXML_NOCDATA );
+		$data = simplexml_load_string( $contents, null, LIBXML_NOCDATA );
 		libxml_use_internal_errors( $errors );
 
 		if ( ! is_object( $data ) )
