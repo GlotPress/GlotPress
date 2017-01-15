@@ -54,7 +54,7 @@ class GP_Format_Android extends GP_Format {
 		$contents = file_get_contents( $file_name );
 
 		/*
-		 * Android strings can use <xliff:d> tags to indicate a part of the string should NOT be translated.
+		 * Android strings can use <xliff:g> tags to indicate a part of the string should NOT be translated.
 		 *
 		 * See the "Mark message parts that should not be translated" section of https://developer.android.com/distribute/tools/localization-checklist.html
 		 *
