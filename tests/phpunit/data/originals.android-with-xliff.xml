@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="with_xliff">Please don't translate <xliff:g id="excluded" example="this">this</xliff:g> text</string>
+</resources>
