@@ -24,7 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Developers: Add Fine-grained permissions per translations. ([#537](https://github.com/GlotPress/GlotPress-WP/issues/537))
 * Developers: Add filter for adding links to the translation editor. ([#597](https://github.com/GlotPress/GlotPress-WP/issues/597))
 
-Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schilling, Greg Ross, Nikhil, Pascal Birchler, Yoav Farhi.
+Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schilling, Greg Ross, Nikhil, Pascal Birchler, and Yoav Farhi.
 
 ## 2.2.2 (November 21, 2016)
 
