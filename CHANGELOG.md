@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Restore edit text for non translated entries. ([#519](https://github.com/GlotPress/GlotPress-WP/issues/519))
 * Don't create duplicate translations during imports. ([#579](https://github.com/GlotPress/GlotPress-WP/issues/579))
 * Redirect users back to previous page when they have to log in. ([#558](https://github.com/GlotPress/GlotPress-WP/issues/558))
+* Fix default file extension for .NET Resources files. ([#573](https://github.com/GlotPress/GlotPress-WP/issues/573))
+* Fix radio button code to remove spurious single quote. ([#610](https://github.com/GlotPress/GlotPress-WP/issues/610))
 
 **Features**
 
@@ -23,6 +25,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Developers: Add filters for translations queries. ([#524](https://github.com/GlotPress/GlotPress-WP/issues/524))
 * Developers: Add Fine-grained permissions per translations. ([#537](https://github.com/GlotPress/GlotPress-WP/issues/537))
 * Developers: Add filter for adding links to the translation editor. ([#597](https://github.com/GlotPress/GlotPress-WP/issues/597))
+* Add meta data to all file formats that can support it. ([#575](https://github.com/GlotPress/GlotPress-WP/issues/575))
+* Update ROH locale information. ([#605](https://github.com/GlotPress/GlotPress-WP/issues/605))
+
 
 Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schilling, Greg Ross, Nikhil, Pascal Birchler, and Yoav Farhi.
 
