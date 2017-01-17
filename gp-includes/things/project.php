@@ -44,9 +44,33 @@ class GP_Project extends GP_Thing {
 	// Additional queries
 
 	public function by_path( $path ) {
+		if ( '/languages' === $path ) {
+			return GP::$glossary->get_locale_glossary_project();
+		}
 		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
 	}
 
+	/**
+	 * Fetches the project by id or object.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param int|object $thing_or_id A project or the id.
+	 * @return GP_Project The project
+	 */
+	public function get( $thing_or_id ) {
+		if ( is_numeric( $thing_or_id ) && 0 === (int) $thing_or_id ) {
+			return GP::$glossary->get_locale_glossary_project();
+		}
+
+		return parent::get( $thing_or_id );
+	}
+
+	/**
+	 * Retrieves the sub projects
+	 *
+	 * @return array Array of GP_Project
+	 */
 	public function sub_projects() {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
 

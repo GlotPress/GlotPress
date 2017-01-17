@@ -493,6 +493,13 @@ span.active {
 	font-weight: bold;
 }
 
+span.locale-entry.bubble {
+	background-color: #555;
+	color: #ddd;
+	font-weight: bold;
+	margin-right: 0.5em;
+}
+
 ul a.edit, dt a.edit {
 	background-color: #777;
 }

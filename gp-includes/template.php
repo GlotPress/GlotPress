@@ -218,6 +218,9 @@ function gp_project_names_from_root( $leaf_project ) {
 }
 
 function gp_project_links_from_root( $leaf_project ) {
+	if ( 0 === $leaf_project->id ) {
+		return array();
+	}
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
 	$links[] = empty( $path_from_root)? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );

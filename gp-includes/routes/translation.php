@@ -184,7 +184,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$page = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
@@ -650,5 +650,35 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
+	}
+
+	/**
+	 * Get the glossary for the translation set.
+	 *
+	 * This also fetches contents from a potential locale glossary, as well as from a parent project.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  GP_Translation_Set $translation_set Translation set for which to retrieve the glossary.
+	 * @param  GP_Project         $project         Project for finding potential parent projects.
+	 * @return GP_Glossary Extended glossary.
+	 */
+	protected function get_extended_glossary( $translation_set, $project ) {
+		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+
+		$locale_glossary_project_id = 0;
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $locale_glossary_project_id, $translation_set->slug, $translation_set->locale );
+
+		if ( ! $locale_glossary_translation_set ) {
+			return $glossary;
+		}
+
+		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+
+		if ( $glossary instanceof GP_Glossary && $locale_glossary instanceof GP_Glossary && $locale_glossary->id !== $glossary->id ) {
+			$glossary->merge_with_glossary( $locale_glossary );
+		}
+
+		return $glossary;
 	}
 }

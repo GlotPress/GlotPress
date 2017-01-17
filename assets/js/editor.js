@@ -92,6 +92,9 @@ $gp.editor = (
 						var content = $( '<ul>' );
 						$.each( $( this ).data( 'translations' ), function( i, e ) {
 							var def = $( '<li>' );
+							if ( e.locale_entry ) {
+								def.append( $( '<span>', { text: e.locale_entry } ).addClass( 'locale-entry bubble' ) );
+							}
 							def.append( $( '<span>', { text: e.pos } ).addClass( 'pos' ) );
 							def.append( $( '<span>', { text: e.translation } ).addClass( 'translation' ) );
 							def.append( $( '<span>', { text: e.comment } ).addClass( 'comment' ) );

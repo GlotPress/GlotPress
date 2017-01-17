@@ -70,7 +70,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 			$this->notices[] = __( 'The glossary was created!', 'glotpress' );
 			$set_project     = GP::$project->get( $translation_set->project_id );
 
-			$this->redirect( gp_url_join( gp_url_project( $set_project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') ) );
+			$this->redirect( $created_glossary->path() );
 		}
 		else {
 			$this->errors[] = __( 'Error in creating glossary!', 'glotpress' );
@@ -114,7 +114,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
 		$set_project     = GP::$project->get( $translation_set->project_id );
 
-		$this->redirect( gp_url_join( gp_url_project( $set_project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') ) );
+		$this->redirect( $glossary->path() );
 	}
 
 	/**
@@ -199,4 +199,5 @@ class GP_Route_Glossary extends GP_Route_Main {
 	private function cannot_delete_glossary_and_redirect( $glossary ) {
 		return $this->cannot_and_redirect( 'delete', 'translation-set', $glossary->translation_set_id );
 	}
+
 }
