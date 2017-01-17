@@ -1,6 +1,56 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.0-beta.1 (January 17, 2017)
+
+**Bugfixes**
+
+* Fix incorrect URL's in some cases on locale page. ([#632](https://github.com/GlotPress/GlotPress-WP/issues/632))
+* Fix truncation of download names if they contain a space. ([#633](https://github.com/GlotPress/GlotPress-WP/issues/633))
+* Improve glossary plural handling. ([#595](https://github.com/GlotPress/GlotPress-WP/issues/595))
+* Restore edit text for non translated entries. ([#519](https://github.com/GlotPress/GlotPress-WP/issues/519))
+* Don't create duplicate translations during imports. ([#579](https://github.com/GlotPress/GlotPress-WP/issues/579))
+* Redirect users back to previous page when they have to log in. ([#558](https://github.com/GlotPress/GlotPress-WP/issues/558))
+* Fix default file extension for .NET Resources files. ([#573](https://github.com/GlotPress/GlotPress-WP/issues/573))
+* Fix radio button code to remove spurious single quote. ([#610](https://github.com/GlotPress/GlotPress-WP/issues/610))
+
+**Features**
+
+* Add JSON format for [JED](http://messageformat.github.io/Jed/) and plain JSON. ([#523](https://github.com/GlotPress/GlotPress-WP/issues/523))
+* Add support for locale glossaries. ([#227](https://github.com/GlotPress/GlotPress-WP/issues/227))
+* Add ability to mark translations as fuzzy. ([#620](https://github.com/GlotPress/GlotPress-WP/issues/620))
+* Enhance display of previous translations with special characters in them. ([#625](https://github.com/GlotPress/GlotPress-WP/issues/625))
+* Add support for importing fuzzy translations. ([#596](https://github.com/GlotPress/GlotPress-WP/issues/596))
+* Add keyboard shortcut for copying original strings. ([#554](https://github.com/GlotPress/GlotPress-WP/issues/554))
+* Developers: Add filters for translations queries. ([#524](https://github.com/GlotPress/GlotPress-WP/issues/524))
+* Developers: Add Fine-grained permissions per translations. ([#537](https://github.com/GlotPress/GlotPress-WP/issues/537))
+* Developers: Add filter for adding links to the translation editor. ([#597](https://github.com/GlotPress/GlotPress-WP/issues/597))
+* Add meta data to all file formats that can support it. ([#575](https://github.com/GlotPress/GlotPress-WP/issues/575))
+* Update ROH locale information. ([#605](https://github.com/GlotPress/GlotPress-WP/issues/605))
+
+
+Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schilling, Greg Ross, Nikhil, Pascal Birchler, and Yoav Farhi.
+
+## 2.2.2 (November 21, 2016)
+
+**Security**
+
+* Fix an information leak in the API, reported by Alex Kirk.
+
+## 2.2.1 (November 11, 2016)
+
+**Bugfixes**
+
+* Fix missing header fields in .mo files. ([#594](https://github.com/GlotPress/GlotPress-WP/issues/594))
+* Add padding to table headers to avoid overlapping with sorting graphics. ([#565](https://github.com/GlotPress/GlotPress-WP/issues/565))
+* Fix for "Only variables should be passed by reference" warning when importing translations. ([#566](https://github.com/GlotPress/GlotPress-WP/issues/566))
+
+**Features**
+
+* Add locale information for Xhosa. ([#603](https://github.com/GlotPress/GlotPress-WP/issues/603))
+
+Thanks to all the contributors so far: Alex Kirk, Dominik Schilling, and Greg Ross.
+
 ## 2.2.0 (September 30, 2016)
 
 (this space intentionally left blank)
@@ -32,7 +82,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Provide minified assets. ([#505](https://github.com/GlotPress/GlotPress-WP/issue/505))
 * Update JavaScript library for table sorting. ([#502](https://github.com/GlotPress/GlotPress-WP/issue/502))
 
-Thanks to all the contributors so far: Alexander Kirk, David Decker, Dominik Schilling, Greg Ross, Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
+Thanks to all the contributors so far: Alex Kirk, David Decker, Dominik Schilling, Greg Ross, Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
 
 ## 2.1.0 (July 13, 2016)
 
@@ -77,7 +127,7 @@ Thanks to all the contributors so far: Alexander Kirk, David Decker, Dominik Sch
 * Split translation status counts by hidden and public. ([#397](https://github.com/GlotPress/GlotPress-WP/issues/397))
 * Store user ID of validator/approver on translation status changes. ([#293](https://github.com/GlotPress/GlotPress-WP/issues/293))
 
-Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi, Alexander Kirk, Anton Timmermans, Mattias Tengblad
+Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi, Alex Kirk, Anton Timmermans, Mattias Tengblad
 
 ## 2.0.1 (April 25, 2016)
 
