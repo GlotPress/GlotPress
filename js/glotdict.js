@@ -128,7 +128,6 @@ jQuery(document).ready(function () {
    */
   function checkHTML(html) {
 	var doc = document.createElement('div');
-	doc.innerHTML = html;
 	return (doc.innerHTML === html);
   }
 
@@ -297,7 +296,7 @@ jQuery(document).ready(function () {
   function gd_validate(e) {
 	var text = jQuery('.editor:visible .original').html().slice(-1);
 	var newstring = jQuery('.editor:visible textarea').val().slice(-1);
-	if (text === '.' || text === '?' || text === '!') {
+	if (text === '.' || text === '?' || text === '!' || text === ':') {
 	  if (newstring !== text) {
 		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation it\'s missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
 		e.stopImmediatePropagation();

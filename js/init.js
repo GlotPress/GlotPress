@@ -15,7 +15,6 @@ function script(url) {
 			s = document.createElement("script");
 	s.type = "text/javascript";
 	s.src = chrome.extension.getURL('js/' + url + '.js');
-	;
 	s.async = true;
 	s.onload = s.onreadystatechange = function () {
 	  if (!r && (!this.readyState || this.readyState === "complete")) {

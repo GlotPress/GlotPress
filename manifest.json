@@ -20,7 +20,8 @@
       "js/glotdict.js",
       "js/keymaster.js",
       "js/pluralize.js",
-      "js/jquery.bind-first.js"
+      "js/jquery.bind-first.js",
+      "js/init.js"
   ],
   "permissions": [
     "webRequest", "webRequestBlocking"
