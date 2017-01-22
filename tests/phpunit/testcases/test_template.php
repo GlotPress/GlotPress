@@ -12,7 +12,7 @@ class GP_Test_Template_Functions extends GP_UnitTestCase {
 	}
 
 	function test_gp_breadcrumb_should_run_empty_string_through_filter_without_params() {
-		$filter = $this->getMock('Dummy', array('breadcrumb_filter'));
+		$filter = $this->getMockBuilder('stdClass')->setMethods(array('breadcrumb_filter'))->getMock();
 		$filter->expects( $this->once() )->method( 'breadcrumb_filter' )->with( $this->equalTo( array() ) );
 
 		add_filter( 'gp_breadcrumb_items', array( $filter, 'breadcrumb_filter') );
@@ -39,5 +39,10 @@ class GP_Test_Template_Functions extends GP_UnitTestCase {
 		gp_breadcrumb( array( 'baba', array( 'dyado' ), 'muu' ) );
 		$this->assertEquals( 'babadyadomuu', gp_breadcrumb( null, array( 'before' => '', 'after' => '', 'breadcrumb-template' => '{breadcrumb}' ) ) );
 
+	}
+
+	function test_gp_get_translation_row_classes() {
+		$entry = new Translation_Entry ( array( 'singular' => 'ganoush', 'warnings' => null, 'priority'=> '1', 'translation_status' =>'untranslated' ) );
+		$this->assertEquals( array( 'status-untranslated', 'no-warnings', 'priority-high' ), gp_get_translation_row_classes( $entry ), '', 0.0, 10, true );
 	}
 }

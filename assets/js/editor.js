@@ -83,6 +83,7 @@ $gp.editor = (
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
+					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
 				$( '#translations' ).tooltip( {
@@ -91,6 +92,9 @@ $gp.editor = (
 						var content = $( '<ul>' );
 						$.each( $( this ).data( 'translations' ), function( i, e ) {
 							var def = $( '<li>' );
+							if ( e.locale_entry ) {
+								def.append( $( '<span>', { text: e.locale_entry } ).addClass( 'locale-entry bubble' ) );
+							}
 							def.append( $( '<span>', { text: e.pos } ).addClass( 'pos' ) );
 							def.append( $( '<span>', { text: e.translation } ).addClass( 'translation' ) );
 							def.append( $( '<span>', { text: e.comment } ).addClass( 'comment' ) );
@@ -103,15 +107,15 @@ $gp.editor = (
 				} );
 			},
 			keydown: function( e ) {
-				var target, container;
+				var target, container, approve, reject, copy;
 
-				if ( 27 === e.keyCode ) {
+				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
 					$gp.editor.hide();
-				} else if ( 33 === e.keyCode ) {
+				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Up Arrow = Previous editor.
 					$gp.editor.prev();
-				} else if ( 34 === e.keyCode ) {
+				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
-				} else if ( 13 === e.keyCode && e.shiftKey ) {
+				} else if ( 13 === e.keyCode && e.shiftKey ) { // Shift-Enter = Save.
 					target = $( e.target );
 
 					if ( 0 === e.altKey && target.val().length ) {
@@ -128,6 +132,30 @@ $gp.editor = (
 						target.nextAll( 'textarea' ).eq( 0 ).focus();
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
+					}
+				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
+					copy = $( '.editor:visible' ).find( '.copy' );
+
+					if ( copy.length > 0 ) {
+						copy.trigger( 'click' );
+					}
+				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
+					approve = $( '.editor:visible' ).find( '.approve' );
+
+					if ( approve.length > 0 ) {
+						approve.trigger( 'click' );
+					}
+				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-- or Ctrl-Shift-R = Reject.
+					reject = $( '.editor:visible' ).find( '.reject' );
+
+					if ( reject.length > 0 ) {
+						reject.trigger( 'click' );
+					}
+				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-~ or Ctrl-Shift-~ = Fuzzy.
+					reject = $( '.editor:visible' ).find( '.fuzzy' );
+
+					if ( reject.length > 0 ) {
+						reject.trigger( 'click' );
 					}
 				} else {
 					return true;
@@ -301,10 +329,14 @@ $gp.editor = (
 				} );
 			},
 			copy: function( link ) {
-				var original_text = link.parents( '.textareas' ).prev().find( '.original' );
+				var chunks = link.parents( '.textareas' ).find( 'textarea' ).attr( 'id' ).split( '_' );
+				var original_index = parseInt( chunks[ chunks.length - 1 ], 10 );
+				var original_text = link.parents( '.textareas' ).prev().find( '.original' ).eq( original_index );
+
 				if ( ! original_text.hasClass( 'original' ) ) {
-					original_text = link.parents( '.strings' ).find( '.original' ).last();
+					original_text = link.parents( '.strings' ).find( '.original' ).eq( original_index );
 				}
+
 				original_text = original_text.text();
 				original_text = original_text.replace( /<span class=.invisibles.*?<\/span>/g, '' );
 				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
@@ -339,6 +371,10 @@ $gp.editor = (
 				},
 				set_status_rejected: function() {
 					$gp.editor.set_status( $( this ), 'rejected' );
+					return false;
+				},
+				set_status_fuzzy: function() {
+					$gp.editor.set_status( $( this ), 'fuzzy' );
 					return false;
 				},
 				set_priority: function() {

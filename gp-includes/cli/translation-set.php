@@ -110,6 +110,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--set=<set>]
 	 * : Translation set slug; default is "default"
+	 *
+	 * [--status=<status>]
+	 * : Translation string status; default is "current"
 	 */
 	public function import( $args, $assoc_args ) {
 		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -124,7 +127,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
 		}
 
-		$added = $translation_set->import( $po );
+		$desired_status = isset( $assoc_args['status'] ) ? $assoc_args['status'] : 'current';
+
+		$added = $translation_set->import( $po, $desired_status );
 
 		/* translators: %s: Number of imported translations */
 		WP_CLI::line( sprintf( _n( '%s translation was added', '%s translations were added', $added, 'glotpress' ), $added ) );

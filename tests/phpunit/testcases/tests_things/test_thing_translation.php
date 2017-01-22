@@ -3,7 +3,15 @@
 class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 	function test_translation_approve_change_status() {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
 		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$permission = array( 'user_id' => $user, 'action' => 'approve',
+                             'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug );
+		GP::$validator_permission->create( $permission );
+
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
 
 		// Put the current count already in the cache
@@ -16,6 +24,39 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$this->assertEquals( 1, count( $for_translation ) );
 		$this->assertEquals( 1, $set->current_count() );
+	}
+
+	function test_translation_denied_approve_change_status() {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$permission = array( 'user_id' => $user, 'action' => 'approve',
+                             'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug );
+		GP::$validator_permission->create( $permission );
+
+		$cannot_approve_translation = function( $verdict, $args ) {
+			return 'approve' !== $args['action'] || 'translation' !== $args['object_type'];
+		};
+
+		add_filter( 'gp_pre_can_user', $cannot_approve_translation, 2, 2 );
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		// Put the current count already in the cache
+		$set->current_count();
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
+		remove_filter( 'gp_pre_can_user', $cannot_approve_translation );
+
+		$current_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'current' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 0, count( $current_translations ) );
+		$this->assertEquals( 0, $set->current_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
 	}
 
 	function test_translation_should_support_6_plurals() {
@@ -88,7 +129,14 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	}
 
 	function test_for_translation_shouldnt_exclude_originals_with_rejected_translation_if_status_has_untranslated() {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
 		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$permission = array( 'user_id' => $user, 'action' => 'approve',
+                             'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug );
+		GP::$validator_permission->create( $permission );
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
 		$translation->reject();
 		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'untranslated' ) );
@@ -190,8 +238,11 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$user = $this->factory->user->create();
 		wp_set_current_user( $user );
 
-		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'whatever',
-		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+		GP::$validator_permission->create( array(
+			'user_id' => $user, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
 
 		$translation->set_as_current();
 		$this->assertEquals( $user, $translation->user_id_last_modified );
@@ -200,16 +251,43 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	function test_validator_id_saved_on_status_change_to_rejected() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
-		$translation->set_status('waiting');
+		$translation->set_status( 'waiting' );
 
 		$user = $this->factory->user->create();
 		wp_set_current_user( $user );
 
-		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'whatever',
-		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+		GP::$validator_permission->create( array(
+			'user_id' => $user, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
 
-		$translation->set_status('rejected');
+		$translation->set_status( 'rejected' );
 		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_cannot_reject_translation_without_approve_permission() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$this->assertFalse( $translation->set_status( 'rejected' ) );
+		$this->assertNotEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_cannot_approve_translation_without_approve_permission() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertNotEquals( $user, $translation->user_id_last_modified );
 	}
 
 }

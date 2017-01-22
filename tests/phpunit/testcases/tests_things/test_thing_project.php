@@ -100,7 +100,7 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$sub->regenerate_paths();
 		$sub->reload();
 		$this->assertEquals( 'root/sub', $sub->path );
-		
+
 		// Run the same test a second time with a permalink structure that includes a trailing slash.
 		$this->set_permalink_structure( GP_TESTS_PERMALINK_STRUCTURE_WITH_TRAILING_SLASH );
 		$wpdb->update( $wpdb->gp_projects, array( 'path' => 'wrong-path' ), array( 'id' => $sub->id ) );
@@ -277,13 +277,13 @@ class GP_Test_Project extends GP_UnitTestCase {
 
 	function test_delete() {
 		$project = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root' ) );
-		
+
 		$pre_delete = GP::$project->find_one( array( 'id' => $project->id ) );
 
 		$project->delete();
-		
+
 		$post_delete = GP::$project->find_one( array( 'id' => $project->id ) );
-		
+
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}

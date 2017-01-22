@@ -78,39 +78,6 @@ class GP_Format_PO extends GP_Format {
 	}
 
 	/**
-	 * Create a string that represents the value for the "Language:" header for a po file.
-	 *
-	 * @since 2.1.0
-	 *
-	 * @param GP_Locale $locale The locale object.
-	 *
-	 * @return string|false Returns false if the locale object does not have any iso_639 language code, otherwise returns the shortest possible language code string.
-	 */
-	protected function get_language_code( $locale ) {
-		$ret = '';
-
-		if ( $locale->lang_code_iso_639_1 ) {
-			$ret = $locale->lang_code_iso_639_1;
-		} elseif ( $locale->lang_code_iso_639_2 ) {
-			$ret = $locale->lang_code_iso_639_2;
-		} elseif ( $locale->lang_code_iso_639_3 ) {
-			$ret = $locale->lang_code_iso_639_3;
-		}
-
-		if ( '' === $ret ) {
-			return false;
-		}
-
-		$ret = strtolower( $ret );
-
-		if ( null !== $locale->country_code && 0 !== strcasecmp( $ret, $locale->country_code ) ) {
-			$ret .= '_' . strtoupper( $locale->country_code );
-		}
-
-		return $ret;
-	}
-
-	/**
 	 * Add a header to the selected format, overrideable by child classes.
 	 *
 	 * @since 2.1.0
@@ -142,19 +109,6 @@ class GP_Format_MO extends GP_Format_PO {
 	public $alt_extensions = array();
 
 	public $class = 'MO';
-
-	/**
-	 * Override the set header function as PO files do not use it.
-	 *
-	 * @since 2.1.0
-	 *
-	 * @param GP_Format $format The format object to set the header for.
-	 * @param string    $header The header name to set.
-	 * @param string    $text   The text to set the header to.
-	 */
-	protected function set_header( $format, $header, $text ) {
-		return;
-	}
 
 	/**
 	 * Override the comments function as PO files do not use it.

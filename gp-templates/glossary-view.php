@@ -10,13 +10,18 @@ $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpres
 $delete_url       = gp_url_join( $url, '-delete' );
 $glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
 
-gp_enqueue_script( 'gp-glossary' );
+gp_enqueue_scripts( 'gp-glossary' );
 wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();
+
+$title = __( 'Glossary for %1$s translation of %2$s', 'glotpress' );
+if ( 0 === $project->id ) {
+	$title = __( 'Glossary for %1$s', 'glotpress' );
+}
 ?>
 
-<h2><?php printf( _x( 'Glossary for %1$s translation of %2$s', '{language} / { project name}', 'glotpress' ), esc_html( $translation_set->name ), esc_html( $project->name ) ); ?>
+<h2><?php printf( esc_html( $title ), esc_html( $translation_set->name ), esc_html( $project->name ) ); ?>
 	<?php gp_link_glossary_edit( $glossary, $translation_set, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_glossary_delete( $glossary, $translation_set, __( '(delete)', 'glotpress' ) ); ?>
 </h2>

@@ -97,21 +97,35 @@ class GP_Route {
 		return false;
 	}
 
-	public function can( $action, $object_type = null, $object_id = null ) {
-		return GP::$permission->current_user_can( $action, $object_type, $object_id );
+	/**
+	 * Checks whether a user is allowed to do an action.
+	 *
+	 * @since 2.3.0 Added the `$extra` parameter.
+	 *
+	 * @param string      $action      The action.
+	 * @param string|null $object_type Optional. Type of an object. Default null.
+	 * @param int|null    $object_id   Optional. ID of an object. Default null.
+	 * @param array|null  $extra       Optional. Extra information for deciding the outcome.
+	 * @return bool       The verdict.
+	 */
+	public function can( $action, $object_type = null, $object_id = null, $extra = null ) {
+		return GP::$permission->current_user_can( $action, $object_type, $object_id, $extra );
 	}
 
 	/**
-	 * If the current user isn't allowed to do an action, redirect and exit the current request
+	 * Redirects and exits if the current user isn't allowed to do an action.
 	 *
-	 * @param string $action
-	 * @param`string $object_type
-	 * @param string|array $object_id
-	 * @param string $url	The URL to redirect. Default value: referrer or index page, if referrer is missing
+	 * @since 1.0.0
+	 *
+	 * @param string      $action      The action.
+	 * @param string|null $object_type Optional. Type of an object. Default null.
+	 * @param int|null    $object_id   Optional. ID of an object. Default null.
+	 * @param string|null $url         Optional. URL to redirect to. Default: referrer or index page, if referrer is missing.
+	 * @return bool Whether a redirect happened.
 	 */
 	public function cannot_and_redirect( $action, $object_type = null, $object_id = null, $url = null ) {
 		$can = $this->can( $action, $object_type, $object_id );
-		if ( !$can ) {
+		if ( ! $can ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ), $url );
 			return true;
 		}
@@ -163,14 +177,17 @@ class GP_Route {
 	 *
 	 * @param string      $action      The action.
 	 * @param string|null $object_type Optional. Type of an object. Default null.
-	 * @param int|null    $object_id   Otional. ID of an object Default null.
-	 * @param string      $message     Error message in case of a failure.
+	 * @param int|null    $object_id   Optional. ID of an object. Default null.
+	 * @param string|null $message     Error message in case of a failure.
 	 *                                 Default: 'You are not allowed to do that!'.
+	 * @param array|null  $extra       Pass-through parameter to can().
 	 * @return false
 	 */
-	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = 'You are not allowed to do that!' ) {
-		$can = $this->can( $action, $object_type, $object_id );
-		if ( !$can ) {
+	public function can_or_forbidden( $action, $object_type = null, $object_id = null, $message = null, $extra = null ) {
+		if ( ! isset( $message ) ) {
+			$message = __( 'You are not allowed to do that!', 'glotpress' );
+		}
+		if ( ! $this->can( $action, $object_type, $object_id, $extra ) ) {
 			$this->die_with_error( $message, 403 );
 		}
 		return false;
@@ -259,17 +276,18 @@ class GP_Route {
 	 * @param string $last_modified Optional. Date when the file was last modified. Default: ''.
 	 */
 	public function headers_for_download( $filename, $last_modified = '' ) {
-		$this->header('Content-Description: File Transfer');
-		$this->header('Pragma: public');
-		$this->header('Expires: 0');
+		$this->header( 'Content-Description: File Transfer' );
+		$this->header( 'Pragma: public' );
+		$this->header( 'Expires: 0' );
 
-		if ( $last_modified )
+		if ( $last_modified ) {
 			$this->header( sprintf( 'Last-Modified: %s', $last_modified ) );
+		}
 
-		$this->header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		$this->header("Content-Disposition: attachment; filename=$filename");
-		$this->header("Content-Type: application/octet-stream");
-		$this->header('Connection: close');
+		$this->header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+		$this->header( "Content-Disposition: attachment; filename=\"$filename\"" );
+		$this->header( 'Content-Type: application/octet-stream' );
+		$this->header( 'Connection: close' );
 	}
 
 	public function set_notices_and_errors() {

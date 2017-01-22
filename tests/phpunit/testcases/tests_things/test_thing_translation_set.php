@@ -46,6 +46,41 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $translations[1]->status, 'current' );
 	}
 
+	function test_import_should_save_forced_fuzzy() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Second string' ) );
+
+		$fuzzy_import = new Translations;
+		$fuzzy_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+
+		$current_import = new Translations;
+		$current_import->add_entry( array( 'singular' => 'Second string', 'translations' => array( 'second' ) ) );
+
+		$set->import( $fuzzy_import, 'fuzzy' );
+		$set->import( $current_import );
+
+		$translations = GP::$translation->all();
+
+		$this->assertEquals( $translations[0]->status, 'fuzzy' );
+		$this->assertEquals( $translations[1]->status, 'current' );
+	}
+
+	function test_import_should_skip_existing_when_importing_fuzzy() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+
+		$fuzzy_import = new Translations;
+		$fuzzy_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+
+		$translations_added = $set->import( $fuzzy_import, 'fuzzy' );
+		$this->assertEquals( $translations_added, 1 );
+
+		// Do the import again, it should not go through.
+		$translations_added = $set->import( $fuzzy_import, 'fuzzy' );
+		$this->assertEquals( $translations_added, 0 );
+	}
+
 	function test_import_should_generate_warnings() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
@@ -56,6 +91,23 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 		$translations = GP::$translation->all();
 		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
+	}
+
+	function test_import_should_not_import_translations_with_warnings_twice() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'A string with %s', 'translations' => array( 'No Placeholder' ) ) );
+		$translations_added = $set->import( $translations_for_import );
+		$this->assertEquals( $translations_added, 1 );
+
+		$translations = GP::$translation->all();
+		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
+
+		// Do the import again, it should not go through.
+		$translations_added = $set->import( $translations_for_import );
+		$this->assertEquals( $translations_added, 0 );
 	}
 
 	function test_import_should_not_import_existing_same_translation() {
@@ -97,6 +149,29 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		remove_filter( 'gp_translation_set_import_over_existing', '__return_false' );
 
 		$this->assertEquals( $translations_added, 0 );
+	}
+
+	function test_user_can_reject_his_own_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'current' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+		$this->assertFalse( $translation->set_status( 'current' ) );
+
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba2' ), 'status' => 'rejected' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+		$this->assertFalse( $translation->set_status( 'current' ) );
+
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba3' ), 'status' => 'waiting' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+		$this->assertFalse( $translation->set_status( 'current' ) );
 	}
 
 	/**

@@ -218,6 +218,9 @@ function gp_project_names_from_root( $leaf_project ) {
 }
 
 function gp_project_links_from_root( $leaf_project ) {
+	if ( 0 === $leaf_project->id ) {
+		return array();
+	}
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
 	$links[] = empty( $path_from_root)? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
@@ -252,7 +255,7 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	foreach( $radio_buttons as $value => $label ) {
 		$checked = checked( $value, $checked_key, false );
 		// TODO: something more flexible than <br />
-		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked'/>&nbsp;";
+		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked/>&nbsp;";
 		$res .= "<label for='" . esc_attr( "{$name}[{$value}]" ) . "'>" . esc_html( $label ) . "</label><br />\n";
 	}
 	return $res;
@@ -502,7 +505,7 @@ function gp_checked( $checked ) {
 
 function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
-		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import originals', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
@@ -567,7 +570,7 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	);
 
 	/**
-	 * Filter entry action links.
+	 * Filters entry action links.
 	 *
 	 * @since 1.0.0
 	 *
@@ -581,4 +584,46 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	<a href="#" class="copy" tabindex="-1"><?php _e( 'Copy from original', 'glotpress' ); ?></a> &bull;
 	<a href="#" class="gtranslate" tabindex="-1"><?php _e( 'Translation from Google', 'glotpress' ); ?></a>
 	*/
+}
+
+/**
+ * Generates a list of classes to be added to the translation row, based on translation entry properties.
+ *
+ * @since 2.2.0
+ *
+ * @param Translation_Entry $translation The translation entry object for the row.
+ *
+ * @return array
+ */
+function gp_get_translation_row_classes( $translation ) {
+	$classes = array();
+	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
+	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
+
+	/**
+	 * Filters the list of CSS classes for a translation row
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array             $classes     An array of translation row classes.
+	 * @param Translation_Entry $translation The translation entry object.
+	 */
+	$classes = apply_filters( 'gp_translation_row_classes', $classes, $translation );
+
+	return $classes;
+}
+
+/**
+ * Outputs space separated list of classes for the translation row, based on translation entry properties.
+ *
+ * @since 2.2.0
+ *
+ * @param Translation_Entry $translation The translation entry object for the row.
+ *
+ * @return void
+ */
+function gp_translation_row_classes( $translation ) {
+	$classes = gp_get_translation_row_classes( $translation );
+	echo esc_attr( implode( ' ', $classes ) );
 }

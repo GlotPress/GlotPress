@@ -67,4 +67,37 @@ abstract class GP_Format {
 		return $new_translations;
 	}
 
+	/**
+	 * Create a string that represents the value for the "Language:" header for an export file.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param GP_Locale $locale The locale object.
+	 *
+	 * @return string|false Returns false if the locale object does not have any iso_639 language code, otherwise returns the shortest possible language code string.
+	 */
+	protected function get_language_code( $locale ) {
+		$ret = '';
+
+		if ( $locale->lang_code_iso_639_1 ) {
+			$ret = $locale->lang_code_iso_639_1;
+		} elseif ( $locale->lang_code_iso_639_2 ) {
+			$ret = $locale->lang_code_iso_639_2;
+		} elseif ( $locale->lang_code_iso_639_3 ) {
+			$ret = $locale->lang_code_iso_639_3;
+		}
+
+		if ( '' === $ret ) {
+			return false;
+		}
+
+		$ret = strtolower( $ret );
+
+		if ( null !== $locale->country_code && 0 !== strcasecmp( $ret, $locale->country_code ) ) {
+			$ret .= '_' . strtoupper( $locale->country_code );
+		}
+
+		return $ret;
+	}
+
 }

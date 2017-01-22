@@ -1,7 +1,11 @@
 <?php
-$status_class = $t->translation_status? 'status-'.$t->translation_status : 'untranslated';
-$warning_class = $t->warnings? 'has-warnings' : 'no-warnings';
-$priority_class = 'priority-'.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority );
+/**
+ * Template for a single translation row in a translation set display
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 $priority_char = array(
     '-2' => array('&times;', 'transparent', '#ccc'),
     '-1' => array('&darr;', 'transparent', 'blue'),
@@ -10,13 +14,40 @@ $priority_char = array(
 );
 $user = wp_get_current_user();
 $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
+
+$more_links = array();
+if ( $t->translation_status ) {
+	$translation_permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug, array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'filters[translation_id]' => $t->id ) );
+	$more_links['translation-permalink'] = '<a tabindex="-1" href="' . esc_url( $translation_permalink ) . '">' . __( 'Permalink to this translation', 'glotpress' ) . '</a>';
+} else {
+	$original_permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug, array( 'filters[original_id]' => $t->original_id ) );
+	$more_links['original-permalink'] = '<a tabindex="-1" href="' . esc_url( $original_permalink ) . '">' . __( 'Permalink to this original', 'glotpress' ) . '</a>';
+}
+
+$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug, array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) );
+$more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history ) . '">' . __( 'All translations of this original', 'glotpress' ) . '</a>';
+
+/**
+ * Allows to modify the more links in the translation editor.
+ *
+ * @since 2.3.0
+ *
+ * @param array              $more_links      The links to be output.
+ * @param GP_Project         $project         Project object.
+ * @param GP_Locale          $locale          Locale object.
+ * @param GP_Translation_Set $translation_set Translation Set object.
+ * @param GP_Translation     $t               Translation object.
+ */
+$more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $t );
+
 ?>
 
-<tr class="preview <?php echo $status_class.' '.$warning_class.' '.$priority_class ?>" id="preview-<?php echo $t->row_id ?>" row="<?php echo $t->row_id; ?>">
-	<?php if ( $can_approve ) : ?><th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th><?php endif; ?>
-	<?php /*
-	<td class="priority" style="background-color: <?php echo $priority_char[$t->priority][1] ?>; color: <?php echo $priority_char[$t->priority][2] ?>; text-align: center; font-size: 1.2em;" title="<?php echo esc_attr('Priority: '.gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority )); ?>">
-	*/ ?>
+<tr class="preview <?php gp_translation_row_classes( $t ); ?>" id="preview-<?php echo esc_attr( $t->row_id ) ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
+	<?php if ( $can_approve_translation ) : ?>
+		<th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]" /></th>
+	<?php elseif ( $can_approve ) : ?>
+		<th scope="row"></th>
+	<?php endif; ?>
 	<td class="priority" title="<?php echo esc_attr( sprintf( __( 'Priority: %s', 'glotpress' ), gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority ) ) ); ?>">
 	   <?php echo $priority_char[$t->priority][0] ?>
 	</td>
@@ -36,13 +67,13 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 			$edit_text = __( 'You are not allowed to add a translation.', 'glotpress' );
 		}
 		else {
-			$edit_text = sprintf( __( 'You <a href="%s">have to login</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url() ) );
+			$edit_text = sprintf( __( 'You <a href="%s">have to log in</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 		}
 
 		$missing_text = "<span class='missing'>$edit_text</span>";
-		if ( ! count( array_filter( $t->translations, 'gp_is_not_empty_string' ) ) ):
+		if ( ! count( array_filter( $t->translations, 'gp_is_not_null' ) ) ) :
 			echo $missing_text;
-		elseif ( !$t->plural ):
+		elseif ( ! $t->plural ) :
 			echo esc_translation( $t->translations[0] );
 		else: ?>
 		<ul>
@@ -62,7 +93,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 		<a href="#" row="<?php echo $t->row_id; ?>" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a>
 	</td>
 </tr>
-<tr class="editor <?php echo $warning_class; ?>" id="editor-<?php echo $t->row_id; ?>" row="<?php echo $t->row_id; ?>">
+<tr class="editor <?php echo gp_translation_row_classes( $t ); ?>" id="editor-<?php echo esc_attr( $t->row_id ); ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
 	<td colspan="<?php echo $can_approve ? 5 : 4 ?>">
 		<div class="strings">
 		<?php
@@ -72,7 +103,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 
 		<?php if ( ! $t->plural ): ?>
 		<p class="original"><?php echo prepare_original( $singular ); ?></p>
-		<?php textareas( $t, array( $can_edit, $can_approve ) ); ?>
+		<?php textareas( $t, array( $can_edit, $can_approve_translation ) ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>
 				<p><?php printf(__( 'Singular: %s', 'glotpress' ), '<span class="original">'. $singular .'</span>'); ?></p>
@@ -107,15 +138,19 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 				<dd>
 					<?php echo display_status( $t->translation_status ); ?>
 					<?php if ( $t->translation_status ): ?>
-						<?php if ( $can_approve ): ?>
-							<?php if ( $t->translation_status != 'current' ): ?>
+						<?php if ( $can_approve_translation ) : ?>
+							<?php if ( 'current' !== $t->translation_status ) : ?>
 							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
 							<?php endif; ?>
-							<?php if ( $t->translation_status != 'rejected' ): ?>
+							<?php if ( 'rejected' !== $t->translation_status ) : ?>
 							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
+							<?php endif; ?>
+							<?php if ( 'fuzzy' !== $t->translation_status ) : ?>
+							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
 							<?php endif; ?>
 						<?php elseif ( $can_reject_self ): ?>
 							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
+							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
 						<?php endif; ?>
 					<?php endif; ?>
 				</dd>
@@ -188,23 +223,12 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 			<?php endif; ?>
 			</dl>
 
-			<?php $extra_args = $t->translation_status? array( 'filters[translation_id]' => $t->id ) : array(); ?>
 			<dl>
-			<?php
-					$permalink_filters = $t->translation_status ? array( 'filters[status]' => 'either', 'filters[original_id]' => $t->original_id ) : array( 'filters[original_id]' => $t->original_id );
-					$permalink = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-						array_merge( $permalink_filters, $extra_args ) );
-					$original_history = gp_url_project_locale( $project, $locale->slug, $translation_set->slug,
-						array_merge( array('filters[status]' => 'either', 'filters[original_id]' => $t->original_id, 'sort[by]' => 'translation_date_added', 'sort[how]' => 'asc' ) ) );
-			?>
 			    <dt><?php _e( 'More links:', 'glotpress' ); ?>
 				<ul>
-				<?php if ( $t->translation_status ) : ?>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permanent link to this translation', 'glotpress' ); ?>"><?php _e( 'Permalink to this translation', 'glotpress' ); ?></a></li>
-				<?php else : ?>
-					<li><a tabindex="-1" href="<?php echo $permalink; ?>" title="<?php esc_attr_e( 'Permanent link to this original', 'glotpress' ); ?>"><?php _e( 'Permalink to this original', 'glotpress' ); ?></a></li>
-				<?php endif; ?>
-					<li><a tabindex="-1" href="<?php echo $original_history; ?>" title="<?php esc_attr_e( 'Link to the history of translations of this original', 'glotpress' ); ?>"><?php _e( 'All translations of this original', 'glotpress' ); ?></a></li>
+					<?php foreach ( $more_links as $link ) : ?>
+						<li><?php echo $link; // WPCS: XSS ok. ?></li>
+					<?php endforeach; ?>
 				</ul>
 				</dt>
 			</dl>
@@ -212,7 +236,7 @@ $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->
 		<div class="actions">
 		<?php if ( $can_edit ): ?>
 			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
-				<?php echo $can_approve? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
+				<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 			</button>
 		<?php endif; ?>
 			<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>

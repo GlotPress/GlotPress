@@ -343,7 +343,17 @@ function gp_is_int( $value ) {
  * @return bool
  */
 function gp_is_null( $value ) {
-	return is_null( $value );
+	return null === $value;
+}
+
+/**
+ * Checks if the passed value is not null.
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_not_null( $value ) {
+	return null !== $value;
 }
 
 /**

@@ -3,9 +3,9 @@
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 2.2.0-alpha
+ * Version: 2.3.0-beta.1
  * Author: the GlotPress team
- * Author URI: http://glotpress.org
+ * Author URI: https://glotpress.blog
  * License: GPLv2 or later
  * Text Domain: glotpress
  *
@@ -26,7 +26,7 @@
  * @package GlotPress
  */
 
-define( 'GP_VERSION', '2.2.0-alpha' );
+define( 'GP_VERSION', '2.3.0-beta.1' );
 define( 'GP_DB_VERSION', '980' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
@@ -79,7 +79,7 @@ function gp_unsupported_php_version_notice() {
  * any more code as the user will not be able to access GlotPress
  * any errors and show an admin notice.
  */
-if ( version_compare(  phpversion(), GP_PHP_REQUIRED_VERSION, '<' ) ) {
+if ( version_compare( phpversion(), GP_PHP_REQUIRED_VERSION, '<' ) ) {
 	add_action( 'admin_notices', 'gp_unsupported_php_version_notice', 10, 2 );
 
 	// Bail out now so no additional code is run.
@@ -139,7 +139,7 @@ function gp_unsupported_permalink_structure_admin_notice() {
  * return without running any more code as the user will not be able to access GlotPress
  * any errors and show an admin notice.
  */
-if ( ! get_option('permalink_structure') ) {
+if ( ! get_option( 'permalink_structure' ) ) {
 	add_action( 'admin_notices', 'gp_unsupported_permalink_structure_admin_notice', 10, 2 );
 
 	// Bail out now so no additional code is run.
@@ -170,7 +170,6 @@ register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
  *                           or just the current site.
  */
 function gp_deactivate_plugin( $network_wide ) {
-
 	/*
 	 * Flush the rewrite rule option so it will be re-generated next time the plugin is activated.
 	 * If network deactivating, ensure we flush the option on every site.

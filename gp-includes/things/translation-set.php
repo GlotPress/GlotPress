@@ -171,9 +171,15 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
-		return $this->one( "
+		$result = $this->one( "
 		    SELECT * FROM $this->table
 		    WHERE slug = %s AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
+
+		if ( ! $result && 0 === $project_id ) {
+			$result = $this->create( array( 'project_id' => $project_id, 'name' => GP_Locales::by_slug( $locale_slug )->english_name, 'slug' => $slug, 'locale' => $locale_slug ) );
+		}
+
+		return $result;
 	}
 
 	public function by_locale( $locale_slug ) {
@@ -204,7 +210,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * Import translations from a Translations object.
 	 *
 	 * @param  Translations $translations   the translations to be imported to this translation-set.
-	 * @param  string       $desired_status 'current' or 'waiting'.
+	 * @param  string       $desired_status 'current', 'waiting' or 'fuzzy'.
 	 * @return boolean or void
 	 */
 	public function import( $translations, $desired_status = 'current' ) {
@@ -214,7 +220,8 @@ class GP_Translation_Set extends GP_Thing {
 			$this->project = GP::$project->get( $this->project_id );
 		}
 
-		if ( ! in_array( $desired_status, array( 'current', 'waiting' ), true ) ) {
+		// Fuzzy is also checked in the flags, but if all strings in an import are fuzzy, fuzzy status can be forced.
+		if ( ! in_array( $desired_status, array( 'current', 'waiting', 'fuzzy' ), true ) ) {
 			return false;
 		}
 
@@ -252,13 +259,21 @@ class GP_Translation_Set extends GP_Thing {
 			}
 
 			/**
-			 * Filter the the status of imported translations of a translation set.
+			 * Filters the the status of imported translations of a translation set.
 			 *
 			 * @since 1.0.0
+			 * @since 2.3.0 Added `$new_translation` and `$old_translation` parameters.
 			 *
-			 * @param string $status The status of imported translations.
+			 * @param string              $status          The status of imported translations.
+			 * @param Translation_Entry   $new_translation Translation entry object to import.
+			 * @param GP_Translation|null $old_translation The previous translation.
 			 */
-			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status );
+			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
+
+			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
+			if ( ! empty( $entry->warnings ) ) {
+				$entry->status = 'waiting';
+			}
 
 			// Lazy load other entries.
 			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
@@ -303,24 +318,9 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->user_id = $user->ID;
 				}
 
-				$entry->status = $is_fuzzy ? 'fuzzy' : $desired_status;
-
-				$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
-				if ( ! empty( $entry->warnings ) ) {
-					$entry->status = 'waiting';
-				}
 				$entry->translation_set_id = $this->id;
 
-				/**
-				 * Filter the the status of imported translations of a translation set.
-				 *
-				 * @since 1.0.0
-				 *
-				 * @param string            $status The status of imported translations.
-				 * @param Translation_Entry $entry  Translation entry object to import.
-				 */
-				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry );
-
+				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {

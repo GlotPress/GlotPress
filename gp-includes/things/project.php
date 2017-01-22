@@ -44,9 +44,33 @@ class GP_Project extends GP_Thing {
 	// Additional queries
 
 	public function by_path( $path ) {
+		if ( '/languages' === $path ) {
+			return GP::$glossary->get_locale_glossary_project();
+		}
 		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
 	}
 
+	/**
+	 * Fetches the project by id or object.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param int|object $thing_or_id A project or the id.
+	 * @return GP_Project The project
+	 */
+	public function get( $thing_or_id ) {
+		if ( is_numeric( $thing_or_id ) && 0 === (int) $thing_or_id ) {
+			return GP::$glossary->get_locale_glossary_project();
+		}
+
+		return parent::get( $thing_or_id );
+	}
+
+	/**
+	 * Retrieves the sub projects
+	 *
+	 * @return array Array of GP_Project
+	 */
 	public function sub_projects() {
 		$sub_projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id = %d ORDER BY active DESC, id ASC", $this->id );
 
@@ -233,10 +257,22 @@ class GP_Project extends GP_Thing {
 	}
 
 	public function source_url( $file, $line ) {
-		if ( $this->source_url_template() ) {
-			return str_replace( array('%file%', '%line%'), array($file, $line), $this->source_url_template() );
+		$source_url = false;
+		if ( $source_url_template = $this->source_url_template() ) {
+			$source_url = str_replace( array( '%file%', '%line%' ), array( $file, $line ), $source_url_template );
 		}
-		return false;
+
+		/**
+		 * Allows per-reference overriding of the source URL defined as project setting.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param string|false $source_url The originally generated source URL, or false if no URL is available.
+		 * @param GP_Project $project The current project.
+		 * @param string $file The referenced file name.
+		 * @param string $line The line number in the referenced file.
+		 */
+		return apply_filters( 'gp_reference_source_url', $source_url, $this, $file, $line );
 	}
 
 	public function source_url_template() {

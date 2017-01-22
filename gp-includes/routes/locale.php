@@ -17,6 +17,7 @@ class GP_Route_Locale extends GP_Route_Main {
 	public function locales_get() {
 		if ( NULL !== gp_get( 'all', NULL ) ) {
 			$locales = GP_Locales::locales();
+			usort( $locales, array( $this, 'sort_locales' ) );
 		}
 		else {
 			$existing_locales = GP::$translation_set->existing_locales();
@@ -119,19 +120,23 @@ class GP_Route_Locale extends GP_Route_Main {
 			foreach ( $set_slugs as $set ) {
 				if ( 'default' == $set->slug ) {
 					if ( 'default' != $current_set_slug ) {
-						$set_list[ $set->slug ] = gp_link_get( gp_url_join( '/languages', $locale->slug ), __( 'Default', 'glotpress' ) );
+						$set_list[ $set->slug ] = gp_link_get( gp_url( gp_url_join( '/languages', $locale->slug ) ), __( 'Default', 'glotpress' ) );
 					} else {
 						$set_list[ $set->slug ] = __( 'Default', 'glotpress' );
 					}
 				} else {
 					if ( $set->slug != $current_set_slug ) {
-						$set_list[ $set->slug ] = gp_link_get( gp_url_join('/languages', $locale->slug, $set->slug ), esc_html( $set->name ) );
+						$set_list[ $set->slug ] = gp_link_get( gp_url( gp_url_join( '/languages', $locale->slug, $set->slug ) ), esc_html( $set->name ) );
 					} else {
 						$set_list[ $set->slug ] = esc_html( $set->name );
 					}
 				}
 			}
 		}
+
+		$can_create_locale_glossary = GP::$permission->current_user_can( 'admin' );
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $current_set_slug, $locale_slug );
+		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
 
 		$this->tmpl( 'locale', get_defined_vars() );
 	}

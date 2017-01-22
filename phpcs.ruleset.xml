@@ -13,16 +13,17 @@
 
 	<rule ref="WordPress.XSS.EscapeOutput">
 		<properties>
-			<property name="customAutoEscapedFunctions" value="gp_radio_buttons=>gp_radio_buttons,gp_select=>gp_select,gp_projects_dropdown=>gp_projects_dropdown,gp_link_glossary_delete_get=>gp_link_glossary_delete_get,gp_link_set_delete_get=>gp_link_set_delete_get,gp_link_get=>gp_link_get,gp_link=>gp_link,__=>__,gp_js_focus_on=>gp_js_focus_on" type="array" />
+			<property name="customAutoEscapedFunctions" value="gp_radio_buttons=>gp_radio_buttons,gp_select=>gp_select,gp_projects_dropdown=>gp_projects_dropdown,gp_link_glossary_delete_get=>gp_link_glossary_delete_get,gp_link_set_delete_get=>gp_link_set_delete_get,gp_link_get=>gp_link_get,gp_link=>gp_link,__=>__,gp_js_focus_on=>gp_js_focus_on,gp_translation_row_classes=>gp_translation_row_classes" type="array" />
 		</properties>
 	</rule>
 
-	<exclude-pattern>*/tests/*</exclude-pattern>
-	<exclude-pattern>*/dev-lib/*</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/dev-lib/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/locales/*</exclude-pattern>
 
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
-		<exclude-pattern>*/gp-templates/*</exclude-pattern>
+		<exclude-pattern>/gp-templates/*</exclude-pattern>
 	</rule>
 </ruleset>

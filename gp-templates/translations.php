@@ -4,9 +4,7 @@ gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $translation_set->name ),
 ) );
-gp_enqueue_script( 'jquery-ui-core' );
-gp_enqueue_script( 'gp-editor' );
-gp_enqueue_script( 'gp-translations-page' );
+gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
 wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
@@ -21,10 +19,10 @@ $i = 0;
 	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
-	<?php if ( $glossary ): ?>
+	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
 	<?php echo gp_link( $glossary->path(), __( 'glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php elseif ( $can_approve ): ?>
-		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
+		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php endif; ?>
 </h2>
 <?php if ( $can_approve ): ?>
@@ -34,6 +32,7 @@ $i = 0;
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
 		<option value="approve"><?php _e( 'Approve', 'glotpress' ); ?></option>
 		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></option>
 	<?php if( $can_write ) : ?>
 		<option value="set-priority"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
@@ -201,6 +200,8 @@ $i = 0;
 	}
 ?>
 <?php foreach( $translations as $t ):
+		$t->translation_set_id = $translation_set->id;
+		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
 ?>
 <?php endforeach; ?>
@@ -248,7 +249,7 @@ $i = 0;
 	<?php
 		$footer_links = array();
 		if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {
-			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import translations', 'glotpress' ) );
+			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import Translations', 'glotpress' ) );
 		}
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
 		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );

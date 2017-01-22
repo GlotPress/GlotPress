@@ -100,7 +100,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations_added = $translation_set->import( $translations, $import_status );
-		$this->notices[] = sprintf( __( '%s translations were added', 'glotpress' ), $translations_added );
+		$this->notices[] = sprintf( _n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ), $translations_added );
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
@@ -184,7 +184,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$page = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
@@ -259,14 +259,26 @@ class GP_Route_Translation extends GP_Route_Main {
 			$data['user_id'] = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
-			foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
-				if ( isset( $translations[$i] ) ) $data["translation_$i"] = $translations[$i];
+			// Reduce range by one since we're starting at 0, see GH#516.
+			foreach ( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
+				if ( isset( $translations[ $i ] ) ) {
+					$data[ "translation_$i" ] = $translations[ $i ];
+				}
 			}
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) )
-				$data['status'] = 'current';
-			else
-				$data['status'] = 'waiting';
+			if ( isset( $data['status'] ) ) {
+				$set_status = $data['status'];
+			} else {
+				$set_status = 'waiting';
+			}
+
+			$data['status'] = 'waiting';
+
+			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
+				$set_status = 'current';
+			} else {
+				$set_status = 'waiting';
+			}
 
 			$original = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
@@ -296,7 +308,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				return $this->die_with_error( $error_output, 200 );
 			}
 			else {
-				if ( 'current' == $data['status'] ) {
+				if ( 'current' === $set_status ) {
 					$translation->set_status( 'current' );
 				}
 
@@ -308,10 +320,11 @@ class GP_Route_Translation extends GP_Route_Main {
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 					$can_write = $this->can( 'write', 'project', $project->id );
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-					$output[$original_id] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
-				}
-				else {
-					$output[$original_id] = false;
+					$can_approve_translation = $this->can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
+
+					$output[ $original_id ] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
+				} else {
+					$output[ $original_id ] = false;
 				}
 			}
 		}
@@ -347,6 +360,9 @@ class GP_Route_Translation extends GP_Route_Main {
 				case 'approve':
 				case 'reject' :
 					$this->_bulk_approve( $bulk );
+					break;
+				case 'fuzzy':
+					$this->_bulk_fuzzy( $bulk );
 					break;
 				case 'set-priority':
 					$this->_bulk_set_priority( $project, $bulk );
@@ -422,6 +438,46 @@ class GP_Route_Translation extends GP_Route_Main {
 						sprintf( _n(
 								'Error with rejecting %s translation.',
 								'Error with rejecting all %s translation.', $error, 'glotpress' ), $error );
+			}
+		}
+	}
+
+	/**
+	 * Processes the bulk action to set translations to fuzzy.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $bulk The bulk data to process.
+	 */
+	private function _bulk_fuzzy( $bulk ) {
+		$ok = $error = 0;
+
+		foreach ( $bulk['row-ids'] as $row_id ) {
+			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
+			$translation = GP::$translation->get( $translation_id );
+
+			if ( ! $translation ) {
+				continue;
+			}
+
+			if ( $translation->set_status( 'fuzzy' ) ) {
+				$ok++;
+			} else {
+				$error++;
+			}
+		}
+
+		if ( 0 === $error ) {
+			$this->notices[] = sprintf( _n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ), $ok );
+		} else {
+			if ( $ok > 0 ) {
+				$message = sprintf( _n( 'Error with marking %s translation as fuzzy.', 'Error with marking %s translations as fuzzy.', $error, 'glotpress' ), $error );
+				$message .= ' ';
+				$message .= sprintf( _n( 'The remaining %s translation was marked as fuzzy successfully.', 'The remaining %s translations were marked as fuzzy successfully.', $ok, 'glotpress' ), $ok );
+
+				$this->errors[] = $message;
+			} else {
+				$this->errors[] = sprintf( _n( 'Error with marking %s translation as fuzzy.', 'Error with marking all %s translation as fuzzy.', $error, 'glotpress' ), $error );
 			}
 		}
 	}
@@ -522,6 +578,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+			$can_approve_translation = $this->can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
+
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			return $this->die_with_error( 'Error in retrieving translation!' );
@@ -591,6 +649,36 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( $can_reject_self ) {
 			return;
 		}
-		$this->can_or_forbidden( 'approve', 'translation-set', $translation->translation_set_id );
+		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
+	}
+
+	/**
+	 * Get the glossary for the translation set.
+	 *
+	 * This also fetches contents from a potential locale glossary, as well as from a parent project.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  GP_Translation_Set $translation_set Translation set for which to retrieve the glossary.
+	 * @param  GP_Project         $project         Project for finding potential parent projects.
+	 * @return GP_Glossary Extended glossary.
+	 */
+	protected function get_extended_glossary( $translation_set, $project ) {
+		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+
+		$locale_glossary_project_id = 0;
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $locale_glossary_project_id, $translation_set->slug, $translation_set->locale );
+
+		if ( ! $locale_glossary_translation_set ) {
+			return $glossary;
+		}
+
+		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+
+		if ( $glossary instanceof GP_Glossary && $locale_glossary instanceof GP_Glossary && $locale_glossary->id !== $glossary->id ) {
+			$glossary->merge_with_glossary( $locale_glossary );
+		}
+
+		return $glossary;
 	}
 }

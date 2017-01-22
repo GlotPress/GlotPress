@@ -18,7 +18,11 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 	}
 
 	function test_export() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$project = $set->project;
+		$locale = $this->factory->locale->create();
 		$entries_for_export = array();
+
 		foreach( $this->entries as $sample ) {
 			list( $context, $original, $translation ) = $sample;
 			$entries_for_export[] = (object)array(
@@ -27,7 +31,11 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 				'translations' => array($translation),
 			);
 		}
-		$this->assertEquals( file_get_contents( GP_DIR_TESTDATA . '/translation.android.xml' ), $this->android->print_exported_file( 'p', 'l', 't', $entries_for_export ) );
+		
+		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.android.xml' );
+		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+		
+		$this->assertEquals( $file_contents, $this->android->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
 
@@ -50,7 +58,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			list( $context, $original, $translation ) = $sample;
 			$stubbed_originals[] = new GP_Original( array( 'singular' => $original, 'context' => $context ) );
 		}
-		GP::$original = $this->getMock( 'GP_Original', array('by_project_id') );
+		GP::$original = $this->getMockBuilder( 'GP_Original' )->setMethods( array('by_project_id') )->getMock();
 		GP::$original->expects( $this->once() )
 					->method( 'by_project_id' )
 					->with( $this->equalTo(2) )

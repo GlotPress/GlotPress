@@ -145,7 +145,14 @@ function gp_url_current() {
  */
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
 	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
-	return gp_url( array( 'projects', $project_path, $path ), $query );
+
+	if ( '//' === substr( $project_path, 0, 2 ) ) {
+		$project_path = ltrim( $project_path, '/' );
+	} else {
+		$project_path = array( 'projects', $project_path );
+	}
+
+	return gp_url( array( $project_path, $path ), $query );
 }
 
 function gp_url_profile( $user_nicename = '' ) {
