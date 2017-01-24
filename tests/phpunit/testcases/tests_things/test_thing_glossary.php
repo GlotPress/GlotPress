@@ -140,9 +140,9 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		$extended_glossary = $route->testable_get_extended_glossary( $set, $set->project );
 		$entries = $extended_glossary->get_entries();
 
-		// Count is now 1 as the term is overwritten by the locale glossary.
+		// Count is now 1 as the term is overwritten by the project glossary.
 		$this->assertCount( 1, $entries );
-		$this->assertEquals( $test_entries[1]['translation'], $entries[0]->translation );
+		$this->assertEquals( $test_entries[0]['translation'], $entries[0]->translation );
 	}
 }
 

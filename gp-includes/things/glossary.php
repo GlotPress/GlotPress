@@ -110,11 +110,7 @@ class GP_Glossary extends GP_Thing {
 		}
 
 		foreach ( $merge->get_entries() as $entry ) {
-			if ( isset( $entry_map[ $entry->key() ] ) ) {
-				// Overwrite entry.
-				$i = $entry_map[ $entry->key() ];
-				$this->entries[ $i ] = $entry;
-			} else {
+			if ( ! isset( $entry_map[ $entry->key() ] ) ) {
 				$this->entries[] = $entry;
 			}
 		}
