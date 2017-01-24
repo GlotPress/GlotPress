@@ -99,10 +99,10 @@ if ( $glossary->description ) {
 
 <p class="clear actionlist secondary">
 	<?php if( $can_edit ): ?>
-		<?php echo gp_link( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array( 'glossary', '-import' ) ), __( 'Import', 'glotpress' ) ); ?>  &bull;&nbsp;
+		<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-import' ) ), __( 'Import', 'glotpress' ) ); ?>  &bull;&nbsp;
 	<?php endif; ?>
 
-	<?php echo gp_link( gp_url_join( gp_url_project_locale( $project_path, $locale_slug, $translation_set_slug ), array( 'glossary', '-export' ) ), __( 'Export as CSV', 'glotpress' ) ); ?>
+	<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-export' ) ), __( 'Export as CSV', 'glotpress' ) ); ?>
 </p>
 
 <?php gp_tmpl_footer();
