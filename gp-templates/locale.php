@@ -15,9 +15,9 @@ gp_tmpl_header();
 
 	<h2><?php printf( __( 'Active Projects translated to %s', 'glotpress' ), esc_html( $locale->english_name ) ); ?>
 		<?php if ( $locale_glossary ) : ?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link">Locale Glossary</a>
+			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
 		<?php elseif ( $can_create_locale_glossary ) : ?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link">Create Locale Glossary</a>
+			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
 		<?php endif; ?>
 	</h2>
 
