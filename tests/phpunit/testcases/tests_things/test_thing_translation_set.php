@@ -110,6 +110,22 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $translations_added, 0 );
 	}
 
+	/**
+	 * @ticket gh-646
+	 */
+	function test_import_should_not_change_fuzzy_status_if_warnings() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'A string with %s', 'translations' => array( 'No Placeholder' ) ) );
+		$set->import( $translations_for_import, 'fuzzy' );
+
+		$translations = GP::$translation->all();
+		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
+		$this->assertSame( 'fuzzy', $translations[0]->status );
+	}
+
 	function test_import_should_not_import_existing_same_translation() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
