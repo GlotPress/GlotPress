@@ -271,7 +271,7 @@ class GP_Translation_Set extends GP_Thing {
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
 
 			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
-			if ( ! empty( $entry->warnings ) ) {
+			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
 				$entry->status = 'waiting';
 			}
 
