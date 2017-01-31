@@ -91,7 +91,3 @@ add_filter( 'gp_can_user', 'gp_recurse_validator_permission', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_route_translation_set_permissions_to_validator_permissions', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_allow_approving_translations_with_validator_permissions', 10, 2 );
 add_filter( 'gp_pre_can_user', 'gp_allow_everyone_to_translate', 10, 2 );
-
-if ( defined( 'WP_CLI' ) && WP_CLI ) {
-	add_filter( 'gp_pre_can_set_translation_status', '__return_true' );
-}
