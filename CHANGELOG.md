@@ -1,6 +1,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## 2.3.0-rc.1 (January 31, 2017)
+
+**Bugfixes**
+
+* Allow project glossaries to override terms of a locale glossary. ([#640](https://github.com/GlotPress/GlotPress-WP/issues/640))
+* Remove hardcoded 'default' slug which prevented locale gloassiers for locale variants. ([#641](https://github.com/GlotPress/GlotPress-WP/issues/641))
+* During imports, don't change status `fuzzy` to `waiting` if a translation has warnings. ([#646](https://github.com/GlotPress/GlotPress-WP/issues/646))
+* Allow CLI imports to set the status of translations  to `current`. ([#644](https://github.com/GlotPress/GlotPress-WP/issues/644))
+
 ## 2.3.0-beta.1 (January 17, 2017)
 
 **Bugfixes**
