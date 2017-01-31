@@ -1,3 +1,6 @@
+#1.1.18
+* Improvement: Detect if string ends with ... and suggest &hellip;
+
 #1.1.17
 * Fix: null text on first installation removed
 * Improvement: Check if the new string finish with a .?! if the original finish with that
