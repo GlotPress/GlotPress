@@ -1,8 +1,10 @@
+![GlotPress](.github/banner.png)
+
+[![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=develop)](https://travis-ci.org/GlotPress/GlotPress-WP) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
+
 # GlotPress
 
 GlotPress is a WordPress plugin to let you set up your own collaborative, web-based software translation tool.
-
-[![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=develop)](https://travis-ci.org/GlotPress/GlotPress-WP) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
 
 ## Contributing
 
@@ -24,7 +26,7 @@ Search for "GlotPress" in the WordPress.org plugin directory and install it.
 
 After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
 
-# Manual Installation
+## Manual Installation
 ```bash
 $ cd /your/wordpress/folder/wp-content/plugins/
 $ git clone git@github.com:GlotPress/GlotPress-WP.git glotpress
@@ -32,18 +34,13 @@ $ git clone git@github.com:GlotPress/GlotPress-WP.git glotpress
 
 After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
 
-# More Info
-
-More information can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/6.-The-Manual).
 
 ## Communication
 
 * [GitHub Home](https://github.com/GlotPress/GlotPress-WP)
-* [Blog](http://blog.glotpress.org/)
+* [Blog](https://glotpress.blog)
 * [WordPress Slack](https://chat.wordpress.org/): #glotpress (for development only)
 
-## Running Tests
+## More Info
 
-```bash
-$ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassword ] [ -h dbhost ] [ -x dbprefix ] [ -w wpversion ] [ -D (drop-db) ] [ -c coverage_file ] [ -f phpunit_filter ]
-```
+More information can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/) or [the manual](https://glotpress.blog/the-manual/).

@@ -56,7 +56,7 @@ You can run PHPUnit on Unix or Windows, however at this time instructions and sc
 To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
 
 ```
-./tests/bin/run-unittests.sh
+$ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassword ] [ -h dbhost ] [ -x dbprefix ] [ -w wpversion ] [ -D (drop-db) ] [ -c coverage_file ] [ -f phpunit_filter ]
 ```
 
 To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/manual/4.5/en/index.html) and existing files for how to write new tests.
