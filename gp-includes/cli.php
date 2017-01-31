@@ -14,7 +14,7 @@ function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/upgrade-set-permissions.php';
 	require_once GP_PATH . GP_INC . 'cli/wipe-permissions.php';
 
-	// Legacy commands
+	// Legacy commands.
 	WP_CLI::add_command( 'glotpress add-admin', 'GP_CLI_Add_Admin' );
 	WP_CLI::add_command( 'glotpress branch-project', 'GP_CLI_Branch_Project' );
 	WP_CLI::add_command( 'glotpress import-originals', 'GP_CLI_Import_Originals' );
@@ -23,8 +23,11 @@ function gp_cli_register() {
 	WP_CLI::add_command( 'glotpress upgrade-set-permissions', 'GP_CLI_Upgrade_Set_Permissions' );
 	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
 
-	// New style commands
+	// New style commands.
 	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
+
+	// CLI related filters.
+	add_filter( 'gp_pre_can_set_translation_status', '__return_true' );
 }
 
 class GP_CLI {
