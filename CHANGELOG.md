@@ -1,3 +1,6 @@
+#1.1.19
+* Improvement: Fix from the last release
+
 #1.1.18
 * Improvement: Detect if string ends with ... and suggest &hellip;
 
