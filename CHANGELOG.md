@@ -10,9 +10,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Bugfixes**
 
 * Allow project glossaries to override terms of a locale glossary. ([#640](https://github.com/GlotPress/GlotPress-WP/issues/640))
-* Remove hardcoded 'default' slug which prevented locale gloassiers for locale variants. ([#641](https://github.com/GlotPress/GlotPress-WP/issues/641))
+* Remove hard coded 'default' slug which prevented locale glossaries for locale variants. ([#641](https://github.com/GlotPress/GlotPress-WP/issues/641))
 * During imports, don't change status `fuzzy` to `waiting` if a translation has warnings. ([#646](https://github.com/GlotPress/GlotPress-WP/issues/646))
-* Allow CLI imports to set the status of translations  to `current`. ([#644](https://github.com/GlotPress/GlotPress-WP/issues/644))
+* Allow CLI imports to set the status of translations to `current`. ([#644](https://github.com/GlotPress/GlotPress-WP/issues/644))
+
+Thanks to all the contributors so far: Dominik Schilling, Greg Ross and Sergey Biryukov.
 
 ## 2.3.0-beta.1 (January 17, 2017)
 
@@ -40,7 +42,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Developers: Add filter for adding links to the translation editor. ([#597](https://github.com/GlotPress/GlotPress-WP/issues/597))
 * Add meta data to all file formats that can support it. ([#575](https://github.com/GlotPress/GlotPress-WP/issues/575))
 * Update ROH locale information. ([#605](https://github.com/GlotPress/GlotPress-WP/issues/605))
-
 
 Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schilling, Greg Ross, Nikhil, Pascal Birchler, and Yoav Farhi.
 
