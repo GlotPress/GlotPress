@@ -1,3 +1,6 @@
+#1.1.20
+* Fix: for missing loading of extension
+
 #1.1.19
 * Improvement: Fix from the last release
 

@@ -10,7 +10,10 @@ jQuery(document).ready(function () {
    * @returns {string} sanitized
    */
   function sanitize_value(value) {
-	return value.replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+	if(typeof value.replace === 'function') {
+	  return value.replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
+	}
+	return value;
   }
 
   /**
