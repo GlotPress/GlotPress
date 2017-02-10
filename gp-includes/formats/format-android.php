@@ -244,9 +244,9 @@ class GP_Format_Android extends GP_Format {
 		$result['description'] = '';
 
 		// As we can skip the first part, loop through only the remaining parts.
-		for ( $i = 1; $i < sizeof( $parts ); $i++ ) {
+		for ( $i = 1; $i < count( $parts ); $i++ ) {
 			// Add back the part we stripped out during the explode() above.
-			$current =  '<xliff:g' . $parts[$i];
+			$current = '<xliff:g' . $parts[ $i ];
 
 			$matches = array();
 
@@ -285,11 +285,14 @@ class GP_Format_Android extends GP_Format {
 
 				// Time to make some human readable results based on what combination of id and example attributes that were found.
 				if ( false !== $id && false !== $example ) {
-					$text = sprintf( __( 'This string has content that should not be translated, the "%s" component of the original, which is identified as the "%s" attribute by the developer may be replaced at run time with text like this: %s', 'glotpress' ), $component, $id, $example );
-				} else if ( false !== $id ) {
-					$text = sprintf( __( 'This string has content that should not be translated, the "%s" component of the original, which is identified as "%s" by the developer and is not intendent to be translated.', 'glotpress' ), $component, $id );
-				} else if ( false !== $example ) {
-					$text = sprintf( __( 'This string has content that should not be translated, the "%s" component of the original may be replaced at run time with text like this: %s', 'glotpress' ), $component, $example );
+					/* translators: 1: Component text 2: Component ID 3: Example output */
+					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original, which is identified as the "%2$s" attribute by the developer may be replaced at run time with text like this: %3$s', 'glotpress' ), $component, $id, $example );
+				} elseif ( false !== $id ) {
+					/* translators: 1: Component text 2: Example output */
+					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original, which is identified as "%2$s" by the developer and is not intendent to be translated.', 'glotpress' ), $component, $id );
+				} elseif ( false !== $example ) {
+					/* translators: 1: Component ID 2: Example output */
+					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original may be replaced at run time with text like this: %2$s', 'glotpress' ), $component, $example );
 				}
 
 				// Add the description as set above to the return results array.
