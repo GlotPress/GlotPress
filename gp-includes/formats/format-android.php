@@ -244,7 +244,8 @@ class GP_Format_Android extends GP_Format {
 		$result['description'] = '';
 
 		// As we can skip the first part, loop through only the remaining parts.
-		for ( $i = 1; $i < count( $parts ); $i++ ) {
+		$total = count( $parts );
+		for ( $i = 1; $i < $total; $i++ ) {
 			// Add back the part we stripped out during the explode() above.
 			$current = '<xliff:g' . $parts[ $i ];
 
