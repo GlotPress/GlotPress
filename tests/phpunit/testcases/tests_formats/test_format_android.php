@@ -56,12 +56,14 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 		$translations = $this->android->read_originals_from_file( GP_DIR_TESTDATA . '/originals.android-with-xliff.xml' );
 		
 		$context = 'with_xliff';
-		$original = 'Please don\'t translate <xliff:g id="excluded" example="this">this</xliff:g> text';
+		$original = 'Please don\'t translate this text';
+		$comment = 'This string has content that should not be translated, the "this" component of the original, which is identified as the "excluded" attribute by the developer may be replaced at run time with text like this: this';
 		
 		$translatable_entry = new Translation_Entry( array( 'singular' => $original, 'context' => $context ) );
 		$entry = $translations->translate_entry( $translatable_entry );
 		$this->assertEquals( $original, $entry->singular );
 		$this->assertEquals( $context, $entry->context );
+		$this->assertEquals( $comment, $entry->extracted_comments );
 	}
 
 	function test_read_translations() {
