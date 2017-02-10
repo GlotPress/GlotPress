@@ -90,7 +90,7 @@ class GP_Format_Android extends GP_Format {
 			$entry->translations = array();
 
 			if ( isset( $string['comment'] ) && $string['comment'] ) {
-				$entry->extracted_comments = $string['comment'];
+				$entry->extracted_comments = (string)$string['comment'];
 			}
 
 			$entries->add_entry( $entry );
