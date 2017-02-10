@@ -12,7 +12,6 @@
  *
  * @since 1.0.0
  */
-
 class GP_Format_Android extends GP_Format {
 	/**
 	 * Name of file format, used in file format dropdowns.
@@ -78,7 +77,7 @@ class GP_Format_Android extends GP_Format {
 
 		foreach( $entries as $entry ) {
 			if ( preg_match('/.+\[\d+\]$/', $entry->context ) ) {
-				// Array item found
+				// Array item found.
 				$string_array_items[] = $entry;
 				continue;
 			}
@@ -146,7 +145,7 @@ class GP_Format_Android extends GP_Format {
 			}
 
 			// Generate the entry to add.
-			$entry = $this->generate_entry( $string, (string)$string['name'] );
+			$entry = $this->generate_entry( $string, (string) $string['name'] );
 
 			// Add the entry to the results.
 			$entries->add_entry( $entry );
@@ -189,7 +188,7 @@ class GP_Format_Android extends GP_Format {
 	 */
 	private function generate_entry( $string, $context ) {
 		// Check to see if there is an xliff tag in the string.
-		$xliff_info = $this->extract_xliff_info( (string)$string[0] );
+		$xliff_info = $this->extract_xliff_info( (string) $string[0] );
 
 		// If an xliff tag was found, replace the translation and add a comment for later.
 		if ( false !== $xliff_info ) {
@@ -205,7 +204,7 @@ class GP_Format_Android extends GP_Format {
 
 		// If we have a comment, add it to the entry.
 		if ( isset( $string['comment'] ) && $string['comment'] ) {
-			$entry->extracted_comments = (string)$string['comment'];
+			$entry->extracted_comments = (string) $string['comment'];
 		}
 
 		return $entry;
@@ -335,7 +334,7 @@ class GP_Format_Android extends GP_Format {
 		uasort( $entries, array( $this, 'cmp_context' ) );
 
 		// Loop through all of the single entries add them to a mapping array.
-		foreach( $entries as $entry ) {
+		foreach ( $entries as $entry ) {
 			// Make sure the array name is sanatized.
 			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
 
