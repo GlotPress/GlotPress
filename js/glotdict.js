@@ -10,7 +10,7 @@ jQuery(document).ready(function () {
    * @returns {string} sanitized
    */
   function sanitize_value(value) {
-	if(typeof value.replace === 'function') {
+	if (typeof value.replace === 'function') {
 	  return value.replace(/<![\s\S]*?--[ \t\n\r]*>/gi, '');
 	}
 	return value;
@@ -301,6 +301,8 @@ jQuery(document).ready(function () {
 	var text = jQuery('.editor:visible .original').html().slice(-1);
 	var lastchar = jQuery('.editor:visible textarea').val().slice(-1);
 	var hellipse = jQuery('.editor:visible .original').html().slice(-3) === '...';
+	var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
+	console.log(last_dot.indexOf(text))
 	if (hellipse) {
 	  if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
 		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contain a final <b>...</b> that need to be translated as <b><code>&amp;hellip;</code></b></div>');
@@ -308,7 +310,7 @@ jQuery(document).ready(function () {
 		return;
 	  }
 	} else {
-	  if (text === '.' || text === '?' || text === '!' || text === ':') {
+	  if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
 		if (lastchar !== text) {
 		  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation it\'s missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
 		  e.stopImmediatePropagation();

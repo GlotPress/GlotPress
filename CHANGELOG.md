@@ -1,3 +1,6 @@
+#1.1.21
+* Fix: for missing dots in words for no-european languages
+
 #1.1.20
 * Fix: for missing loading of extension
 
