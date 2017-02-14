@@ -266,22 +266,35 @@ class GP_Format_Android extends GP_Format {
 				$result['string'] .= $matches[1] . $matches[3] . $matches[5];
 				$result['comment'] .= ' ' . $matches[2] . $matches[3] . $matches[4];
 
+				// Keep a copy of the current xliff tag that we're working with to parse for id/example attributes later.
+				$current_comment = $matches[2] . $matches[3] . $matches[4];
+
 				// Keep a copy of the component string to use later.
 				$component = $matches[3];
 				$text = '';
 
-				// Parse the xliff tag for the id attribute.
-				$id = preg_match( '/.*id="(.*)".*/iU', $result['comment'], $matches );
-				if ( false !== $id ) {
+				// Parse the xliff tag for the id attribute, check for both single and double quotes.
+				$id = preg_match( '/.*id="(.*)".*/iU', $current_comment, $matches ) || preg_match( '/.*id=\'(.*)\'.*/iU', $current_comment, $matches );
+
+				// preg_match() returns int(1) when a match is found but since we're or'ing them, check to see if the result is a bool(true).
+				if ( true === $id ) {
 					// If an id attribute was found, record the contents of it.
 					$id = $matches[1];
+				} else {
+					// preg_match() can return either int(0) for not found or bool(false) on error, in either case let's make it a bool(false) for consistency later.
+					$id = false;
 				}
 
-				// Parse the xliff tag for the example attribute.
-				$example = preg_match( '/.*example="(.*)".*/iU', $result['comment'], $matches );
-				if ( false !== $example ) {
+				// Parse the xliff tag for the example attribute, check for both single and double quotes.
+				$example = preg_match( '/.*example="(.*)".*/iU', $current_comment, $matches ) || preg_match( '/.*example=\'(.*)\'.*/iU', $current_comment, $matches );
+
+				// preg_match() returns int(1) when a match is found but since we're or'ing them, check to see if the result is a bool(true).
+				if ( true === $example ) {
 					// If an example attribute was found, record the contents of it.
 					$example = $matches[1];
+				} else {
+					// preg_match() can return either int(0) for not found or bool(false) on error, in either case let's make it a bool(false) for consistency later.
+					$example = false;
 				}
 
 				// Time to make some human readable results based on what combination of id and example attributes that were found.
@@ -290,10 +303,13 @@ class GP_Format_Android extends GP_Format {
 					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original, which is identified as the "%2$s" attribute by the developer may be replaced at run time with text like this: %3$s', 'glotpress' ), $component, $id, $example );
 				} elseif ( false !== $id ) {
 					/* translators: 1: Component text 2: Example output */
-					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original, which is identified as "%2$s" by the developer and is not intendent to be translated.', 'glotpress' ), $component, $id );
+					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original, which is identified as the "%2$s" attribute by the developer and is not intended to be translated.', 'glotpress' ), $component, $id );
 				} elseif ( false !== $example ) {
 					/* translators: 1: Component ID 2: Example output */
 					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original may be replaced at run time with text like this: %2$s', 'glotpress' ), $component, $example );
+				} else {
+					/* translators: 1: Component ID */
+					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component is not intended to be translated.', 'glotpress' ), $component, $example );
 				}
 
 				// Add the description as set above to the return results array.
