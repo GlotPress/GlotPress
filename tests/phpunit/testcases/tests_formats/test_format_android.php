@@ -29,6 +29,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 				'context' => $context,
 				'singular' => $original,
 				'translations' => array($translation),
+				'is_plural' => false,
 			);
 		}
 
