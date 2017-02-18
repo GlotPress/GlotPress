@@ -94,7 +94,7 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 	 */
 	function test_locale_glossary() {
 		$locale = $this->factory->locale->create();
-		$locale_set = $this->factory->translation_set->create( array( 'project_id' => 0, 'locale' => $locale->slug ));
+		$locale_set = $this->factory->translation_set->create( array( 'project_id' => 0, 'locale' => $locale->slug ) );
 		$locale_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $locale_set->id ) );
 
 		$args = array(
@@ -143,6 +143,32 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		// Count is now 1 as the term is overwritten by the project glossary.
 		$this->assertCount( 1, $entries );
 		$this->assertEquals( $test_entries[0]['translation'], $entries[0]->translation );
+	}
+
+	/**
+	 * @ticket gh-435
+	 */
+	function test_locale_glossary_without_project_glossary() {
+		$locale = $this->factory->locale->create();
+		$locale_set = $this->factory->translation_set->create( array( 'project_id' => 0, 'locale' => $locale->slug ) );
+		$locale_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $locale_set->id ) );
+
+		$set = $this->factory->translation_set->create_with_project( array(
+			'locale' => $locale_set->locale,
+			'slug' => $locale_set->slug,
+		) );
+
+		GP::$glossary_entry->create( array(
+			'term' => 'Term 2',
+			'part_of_speech' => 'noun',
+			'translation' => 'Translation 2',
+			'glossary_id' => $locale_glossary->id,
+		) );
+
+		$route = new Testable_GP_Route_Translation;
+		$extended_glossary = $route->testable_get_extended_glossary( $set, $set->project );
+		$this->assertInstanceOf( 'GP_Glossary', $extended_glossary );
+		$this->assertCount( 1, $extended_glossary->get_entries() );
 	}
 }
 
