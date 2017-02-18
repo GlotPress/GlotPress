@@ -675,6 +675,11 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
 
+		// Return locale glossary if a project has no glossary.
+		if ( false === $glossary && $locale_glossary instanceof GP_Glossary ) {
+			return $locale_glossary;
+		}
+
 		if ( $glossary instanceof GP_Glossary && $locale_glossary instanceof GP_Glossary && $locale_glossary->id !== $glossary->id ) {
 			$glossary->merge_with_glossary( $locale_glossary );
 		}
