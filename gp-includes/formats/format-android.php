@@ -196,7 +196,7 @@ class GP_Format_Android extends GP_Format {
 
 			// Generate the entry to add.
 			$entry = $this->generate_plural_entry( $strings, $array_name );
-		
+
 			// Add the entry to the results.
 			$entries->add_entry( $entry );
 		}
@@ -254,11 +254,11 @@ class GP_Format_Android extends GP_Format {
 		$entry->context      = $context;
 		$entry->is_plural    = true;
 		$entry->translations = array();
-		
+
 		$comments = '';
 		$index = 0;
-		
-		foreach( $strings as $string ) {
+
+		foreach ( $strings as $string ) {
 			// Check to see if there is an xliff tag in the string.
 			$xliff_info = $this->extract_xliff_info( (string) $string[0] );
 
@@ -271,16 +271,16 @@ class GP_Format_Android extends GP_Format {
 			// Create the new translation entry with the parsed data.
 			$entry->translations[ $index ] = $this->unescape( $string[0] );
 			$index++;
-			
+
 			// If we have a comment, add it to the entry.
 			if ( isset( $string['comment'] ) && $string['comment'] ) {
 				$entry->extracted_comments .= (string) $string['comment'];
 			}
 		}
-		
+
 		$entry->singular = $entry->translations[0];
 		$entry->plural = $entry->translations[1];
-		
+
 		return $entry;
 	}
 
@@ -524,27 +524,27 @@ class GP_Format_Android extends GP_Format {
 
 		for ( $i = 0; $i < $nplurals; $i++ ) {
 			$numbers = implode( ',', $locale->numbers_for_index( $i ) );
-			
+
 			switch ( $numbers ) {
 				case '0':
 					$order[ $i ] = 'zero';
-					
+
 					break;
 				case '1':
 					$order[ $i ] = 'one';
-				
+
 					break;
 				case '2':
 					$order[ $i ] = 'two';
-				
+
 					break;
 				case '3,4,5':
 					$order[ $i ] = 'few';
-			
+
 					break;
 				case '11, 12, 13':
 					$order[ $i ] = 'many';
-			
+
 					break;
 				default:
 					$order[ $i ] = 'other';
@@ -552,10 +552,10 @@ class GP_Format_Android extends GP_Format {
 					break;
 			}
 		}
-		
+
 		return $order;
 	}
-	
+
 	/**
 	 * Compare two context strings for a uasort callback.
 	 *
