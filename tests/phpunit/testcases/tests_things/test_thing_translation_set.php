@@ -258,4 +258,47 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$set->update_status_breakdown();
 		$this->assertEquals( $num_queries + 7, $wpdb->num_queries );
 	}
+
+	public function test_created_action_is_called() {
+		$action = new MockAction();
+
+		add_action( 'gp_translation_set_created', array( $action, 'action' ) );
+
+		$this->factory->translation_set->create_with_project_and_locale();
+
+		remove_action( 'gp_translation_set_created', array( $action, 'action' ) );
+
+		$this->assertSame( 1, $action->get_call_count() );
+	}
+
+	public function test_saved_action_is_called() {
+		$action = new MockAction();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$locale = $this->factory->locale->create();
+
+		add_action( 'gp_translation_set_saved', array( $action, 'action' ) );
+
+		$set->save( array(
+			'locale' => $locale->slug,
+		) );
+
+		remove_action( 'gp_translation_set_saved', array( $action, 'action' ) );
+
+		$this->assertSame( 1, $action->get_call_count() );
+	}
+
+	public function test_deleted_action_is_called() {
+		$action = new MockAction();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		add_action( 'gp_translation_set_deleted', array( $action, 'action' ) );
+
+		$set->delete();
+
+		remove_action( 'gp_translation_set_deleted', array( $action, 'action' ) );
+
+		$this->assertSame( 1, $action->get_call_count() );
+	}
 }
