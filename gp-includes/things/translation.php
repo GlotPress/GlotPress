@@ -687,18 +687,22 @@ class GP_Translation extends GP_Thing {
 	 * Executes after saving a translation.
 	 *
 	 * @since 1.0.0
+	 * @since 2.4.0 Added the `$original_before` parameter.
 	 *
+	 * @param GP_Translation $translation_before Translation before the update.
 	 * @return bool
 	 */
-	public function after_save() {
+	public function after_save( $translation_before ) {
 		/**
 		 * Fires after a translation was saved.
 		 *
 		 * @since 1.0.0
+		 * @since 2.4.0 Added the `$original_before` parameter.
 		 *
-		 * @param GP_Translation $translation Translation that was saved.
+		 * @param GP_Translation $translation        Translation following the update.
+		 * @param GP_Translation $translation_before Translation before the update.
 		 */
-		do_action( 'gp_translation_saved', $this );
+		do_action( 'gp_translation_saved', $this, $translation_before );
 
 		return true;
 	}

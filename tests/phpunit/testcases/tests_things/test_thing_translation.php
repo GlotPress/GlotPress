@@ -290,4 +290,24 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertNotEquals( $user, $translation->user_id_last_modified );
 	}
 
+	public function test_previous_state_is_passed_to_saved_action() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => 'Before' ) );
+		$initial_translation = clone $translation;
+
+		$previous_translation = null;
+		$closure = function( $translation_after, $translation_before ) use ( &$previous_translation ) {
+			$previous_translation = $translation_before;
+		};
+
+		add_action( 'gp_translation_saved', $closure, 10, 2 );
+
+		$translation->save( array( 'translation_0' => 'After' ) );
+
+		remove_action( 'gp_translation_saved', $closure );
+
+		$this->assertEquals( $initial_translation, $previous_translation );
+		$this->assertEquals( $previous_translation->translation_0, 'Before' );
+		$this->assertEquals( $translation->translation_0, 'After' );
+	}
 }
