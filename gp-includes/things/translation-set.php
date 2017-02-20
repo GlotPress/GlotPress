@@ -565,5 +565,65 @@ class GP_Translation_Set extends GP_Thing {
 
 		return parent::delete();
 	}
+
+	/**
+	 * Executes after creating a translation set.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return bool
+	 */
+	public function after_create() {
+		/**
+		 * Fires after creating a translation set.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param GP_Translation_Set $translation_set The translation set that was created.
+		 */
+		do_action( 'gp_translation_set_created', $this );
+
+		return true;
+	}
+
+	/**
+	 * Executes after saving a translation set.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return bool
+	 */
+	public function after_save() {
+		/**
+		 * Fires after saving a translation set..
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param GP_Translation_Set $translation_set The translation set that was saved.
+		 */
+		do_action( 'gp_translation_set_saved', $this );
+
+		return true;
+	}
+
+	/**
+	 * Executes after deleting a translation set.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
+		/**
+		 * Fires after deleting a translation set.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param GP_Translation_Set $translation_set The translation set that was deleted.
+		 */
+		do_action( 'gp_translation_set_deleted', $this );
+
+		return true;
+	}
 }
 GP::$translation_set = new GP_Translation_Set();
