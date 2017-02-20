@@ -158,17 +158,22 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 			'slug' => $locale_set->slug,
 		) );
 
-		GP::$glossary_entry->create( array(
-			'term' => 'Term 2',
+		$entry = array(
+			'term'           => 'Term 2',
 			'part_of_speech' => 'noun',
-			'translation' => 'Translation 2',
-			'glossary_id' => $locale_glossary->id,
-		) );
+			'translation'    => 'Translation 2',
+			'glossary_id'    => $locale_glossary->id,
+		);
+
+		GP::$glossary_entry->create( $entry );
 
 		$route = new Testable_GP_Route_Translation;
 		$extended_glossary = $route->testable_get_extended_glossary( $set, $set->project );
 		$this->assertInstanceOf( 'GP_Glossary', $extended_glossary );
-		$this->assertCount( 1, $extended_glossary->get_entries() );
+
+		$entries = $extended_glossary->get_entries();
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $entry['translation'], $entries[0]->translation );
 	}
 }
 
