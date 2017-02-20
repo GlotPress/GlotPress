@@ -287,4 +287,25 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$non_existent = GP::$original->count_by_project_id( $project->id, 'non_existent' );
 		$this->assertSame( 0, $non_existent );
 	}
+
+	public function test_previous_state_is_passed_to_saved_action() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Before' ) );
+		$initial_original = clone $original;
+
+		$previous_original = null;
+		$closure = function( $original_after, $original_before ) use ( &$previous_original ) {
+			$previous_original = $original_before;
+		};
+
+		add_action( 'gp_original_saved', $closure, 10, 2 );
+
+		$original->save( array( 'singular' => 'After' ) );
+
+		remove_action( 'gp_original_saved', $closure );
+
+		$this->assertEquals( $initial_original, $previous_original );
+		$this->assertEquals( $previous_original->singular, 'Before' );
+		$this->assertEquals( $original->singular, 'After' );
+	}
 }
