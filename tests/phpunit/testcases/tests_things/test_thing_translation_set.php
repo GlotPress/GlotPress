@@ -301,4 +301,24 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 		$this->assertSame( 1, $action->get_call_count() );
 	}
+
+	public function test_previous_state_is_passed_to_saved_action() {
+		$translation_set = $this->factory->translation_set->create_with_project_and_locale( array( 'name' => 'Before' ) );
+		$initial_set = clone $translation_set;
+
+		$previous_set = null;
+		$closure = function( $set_after, $set_before ) use ( &$previous_set ) {
+			$previous_set = $set_before;
+		};
+
+		add_action( 'gp_translation_set_saved', $closure, 10, 2 );
+
+		$translation_set->save( array( 'name' => 'After' ) );
+
+		remove_action( 'gp_translation_set_saved', $closure );
+
+		$this->assertEquals( $initial_set, $previous_set );
+		$this->assertEquals( $previous_set->name, 'Before' );
+		$this->assertEquals( $translation_set->name, 'After' );
+	}
 }

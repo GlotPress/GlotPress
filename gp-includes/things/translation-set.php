@@ -591,17 +591,19 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * @since 2.4.0
 	 *
+	 * @param GP_Translation_Set $translation_set_before Translation set before the update.
 	 * @return bool
 	 */
-	public function after_save() {
+	public function after_save( $translation_set_before ) {
 		/**
-		 * Fires after saving a translation set..
+		 * Fires after saving a translation set.
 		 *
 		 * @since 2.4.0
 		 *
-		 * @param GP_Translation_Set $translation_set The translation set that was saved.
+		 * @param GP_Translation_Set $translation_set        Translation set following the update.
+		 * @param GP_Translation_Set $translation_set_before Translation set before the update.
 		 */
-		do_action( 'gp_translation_set_saved', $this );
+		do_action( 'gp_translation_set_saved', $this, $translation_set_before );
 
 		return true;
 	}
