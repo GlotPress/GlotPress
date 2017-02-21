@@ -288,4 +288,20 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
 
+	public function test_gp_locale_glossary_path_prefix_filter() {
+		$custom_prefix = '/locale';
+
+		$closure = function() use ( $custom_prefix ) {
+			return $custom_prefix;
+		};
+
+		add_filter( 'gp_locale_glossary_path_prefix', $closure );
+
+		$glossary = GP::$project->by_path( $custom_prefix );
+
+		remove_filter( 'gp_locale_glossary_path_prefix', $closure );
+
+		$this->assertInstanceOf( 'GP_Project', $glossary );
+		$this->assertSame( 'Locale Glossary', $glossary->name );
+	}
 }
