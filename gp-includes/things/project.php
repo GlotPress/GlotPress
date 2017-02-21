@@ -44,7 +44,9 @@ class GP_Project extends GP_Thing {
 	// Additional queries
 
 	public function by_path( $path ) {
-		if ( '/languages' === $path ) {
+		$locale_glossary_prefix = apply_filters( 'gp_locale_glossary_path_prefix', '/languages' );
+
+		if ( $locale_glossary_prefix === $path ) {
 			return GP::$glossary->get_locale_glossary_project();
 		}
 		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
