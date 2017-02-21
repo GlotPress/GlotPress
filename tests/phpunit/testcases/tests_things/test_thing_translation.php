@@ -290,4 +290,40 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertNotEquals( $user, $translation->user_id_last_modified );
 	}
 
+	/**
+	 * @ticket gh-664
+	 */
+	function test_filter_by_permission() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		// A new original has the priority 0.
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0 ) ) );
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '0' )  ) ) ) );
+
+		// Invalid priority is the same as specifying no priority.
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '10' )  ) ) ) );
+
+		// String and numeric values should work.
+		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '1' ) ) ) ) );
+		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( 1 ) ) ) ) );
+
+		// Now let's modify the priority.
+		$translation->original->priority = '1';
+		$translation->original->status = '+active';
+		$translation->original->save();
+
+		// The modified original should now be found.
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0 ) ) );
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '1' ) ) ) ) );
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '10' ) ) ) ) );
+		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '0' ) ) ) ) );
+
+		// Should also work with the hidden priority.
+		$translation->original->priority = '-1';
+		$translation->original->save();
+
+		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '1' ) ) ) ) );
+		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '-1' ) ) ) ) );
+	}
 }
