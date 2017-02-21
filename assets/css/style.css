@@ -401,7 +401,7 @@ span.morethan90 {
 
 .editor .strings .textareas textarea {
 	width: 95%;
-	resize: none;
+	resize: vertical;
 }
 
 .editor .strings p.plural-numbers {
