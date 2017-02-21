@@ -364,7 +364,7 @@ class GP_Translation extends GP_Thing {
 		if ( $priorities ) {
 			$valid_priorities = array_keys( GP::$original->get_static( 'priorities' ) );
 			$priorities = array_filter( gp_array_get( $filters, 'priority' ), function( $p ) use ( $valid_priorities ) {
-				return in_array( $p, $valid_priorities, true );
+				return in_array( intval( $p ), $valid_priorities, true );
 			} );
 
 			$priorities_where = array();
