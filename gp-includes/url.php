@@ -137,6 +137,8 @@ function gp_url_current() {
 /**
  * Get the URL for a project
  *
+ * A leading double-slash will avoid prepending /projects/ to the path.
+ *
  * @param bool|string|object $project_or_path Project path or object
  * @param string|array $path Addition path to append to the base path
  * @param array $query associative array of query arguments (optional)
@@ -144,8 +146,10 @@ function gp_url_current() {
  * @return string
  */
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
-	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
+	$project_path = is_object( $project_or_path ) ? $project_or_path->path : $project_or_path;
 
+	// A leading double-slash will avoid prepending /projects/ to the path.
+	// This was introduced to enable linking to the locale glossary.
 	if ( '//' === substr( $project_path, 0, 2 ) ) {
 		$project_path = ltrim( $project_path, '/' );
 	} else {

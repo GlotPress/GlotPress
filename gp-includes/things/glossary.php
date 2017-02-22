@@ -187,14 +187,18 @@ class GP_Glossary extends GP_Thing {
 		 *
 		 * @since 2.3.1
 		 *
-		 * @param string $$locale_glossary_path_prefix Prefix for the locale glossary path.
+		 * @param string $locale_glossary_path_prefix Prefix for the locale glossary path.
 		 */
 		$locale_glossary_path_prefix = apply_filters( 'gp_locale_glossary_path_prefix', '/languages' );
+
+		// A leading double-slash prevents gp_url_project() from prepending /projects/ to the URL.
+		$locale_glossary_path_prefix = '//' . ltrim( $locale_glossary_path_prefix, '/' );
+
 		return new GP::$project( array(
 			'id'   => 0,
 			'name' => 'Locale Glossary',
 			'slug' => 0,
-			'path' => "/$locale_glossary_path_prefix",
+			'path' => $locale_glossary_path_prefix,
 		) );
 	}
 }
