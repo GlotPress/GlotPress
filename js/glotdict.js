@@ -40,21 +40,17 @@ jQuery(document).ready(function () {
    * @returns Array
    */
   function gd_list_locales_cached() {
-	var locales = JSON.parse(JSON.parse(localStorage.getItem('gd_locales')));
-	if (typeof locales === 'undefined' || locales[gd_get_lang()].time === null) {
+	if (typeof window.glotdict_locales === 'undefined' || window.glotdict_locales[gd_get_lang()].time === null) {
 	  gd_locales();
-	  locales = gd_list_locales_cached();
 	}
-	return locales;
-  }
-
-  /**
-   * Get the the glossary cached
-   * 
-   * @returns Array
-   */
-  function gd_glossary_file_cached() {
-	return JSON.parse(JSON.parse(localStorage.getItem('gd_glossary_file')));
+	var value = localStorage.getItem('gd_locales');
+	if(value === '') {
+	  value = gd_locales();
+	} else {
+	  value = JSON.parse(value);
+	}
+	window.glotdict_locales = value;
+	return window.glotdict_locales;
   }
 
   /**
@@ -69,18 +65,20 @@ jQuery(document).ready(function () {
 	}
 	var glossary_date_cache = localStorage.getItem('gd_glossary_date');
 	var locales_cache = gd_list_locales_cached();
+	var file = '';
 	if (glossary_date_cache === null || glossary_date_cache.length === 0 || glossary_date_cache !== locales_cache[lang].time) {
 	  jQuery.ajax({
 		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
 		dataType: 'text',
 		async: false
 	  }).done(function (data) {
-		localStorage.setItem('gd_glossary_file', JSON.stringify(data));
+		localStorage.setItem('gd_glossary_file', data);
+		file = JSON.parse(data);
 		var glossary_date = gd_list_locales_cached();
 		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
 	  });
 	}
-	return gd_glossary_file_cached();
+	return file;
   }
 
   /**
@@ -96,7 +94,8 @@ jQuery(document).ready(function () {
 		url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '.json',
 		dataType: 'text'
 	  }).done(function (data) {
-		localStorage.setItem('gd_locales', JSON.stringify(data));
+		localStorage.setItem('gd_locales', data);
+		window.glotdict_locales = JSON.parse(data);
 		localStorage.setItem('gd_locales_date', gd_today());
 	  });
 	}
@@ -115,11 +114,14 @@ jQuery(document).ready(function () {
    * @returns string
    */
   function gd_get_lang() {
-	var lang = localStorage.getItem('gd_language');
-	if (lang === '' || lang === null) {
-	  return false;
+	if (typeof window.glotdict_lang === 'undefined') {
+	  var lang = localStorage.getItem('gd_language');
+	  if (lang === '' || lang === null) {
+		return false;
+	  }
+	  window.glotdict_lang = sanitize_value(lang);
 	}
-	return sanitize_value(lang);
+	return window.glotdict_lang;
   }
 
   /**
@@ -141,12 +143,12 @@ jQuery(document).ready(function () {
    * @returns string
    */
   function gd_get_lang_consistency() {
-	var lang = localStorage.getItem('gd_language');
+	var lang = gd_get_lang();
 	var reallang = lang.split('_');
 	if (typeof reallang[1] !== 'undefined') {
 	  reallang = reallang[1].toLowerCase();
 	}
-	return sanitize_value(reallang);
+	return reallang;
   }
 
   /**
@@ -413,6 +415,15 @@ jQuery(document).ready(function () {
 	  location.reload();
 	  return false;
 	});
+  }
+
+  // Procedure for upgrade
+  if (typeof JSON.parse(localStorage.getItem('gd_locales')) === 'string') {
+	localStorage.setItem('gd_locales', '');
+	localStorage.setItem('gd_locales_date', '');
+	localStorage.setItem('gd_glossary_file', '');
+	localStorage.setItem('gd_glossary_date', '');
+	location.reload();
   }
 
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
