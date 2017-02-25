@@ -356,6 +356,12 @@ jQuery(document).ready(function () {
 	  }
 	  return false;
 	});
+	key('ctrl+shift+f', function () {
+	  if (jQuery('.editor:visible .fuzzy').length > 0) {
+		jQuery('.editor:visible .fuzzy').trigger('click');
+	  }
+	  return false;
+	});
 	key('ctrl+shift+r', function () {
 	  if (jQuery('.editor:visible .meta button.reject').length > 0) {
 		jQuery('.editor:visible .meta button.reject').trigger('click');

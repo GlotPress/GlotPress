@@ -20,6 +20,7 @@ PS: If you are using NoScript enable the domain wordpress.org and codeat.co else
 * Shortcut on Ctrl+Shift+Z to click "Cancel"
 * Shortcut on Ctrl+Shift+A to click "Approve"
 * Shortcut on Ctrl+Shift+R to click "Reject"
+* Shortcut on Ctrl+Shift+F to click "Fuzzy"
 * Shortcut on Ctrl+Enter to click "Suggest new translation" or "Add translation"
 * Shortcut on Page Down to open the previous string to translate
 * Shortcut on Page Up to open the next string to translate
