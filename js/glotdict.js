@@ -266,7 +266,7 @@ jQuery(document).ready(function () {
 	  var editor = jQuery(editor_in_loop).html().replace(/<\/?span[^>]*>/g, "");
 	  jQuery(editor_in_loop).html(editor);
 	  jQuery.each(data, function (i, item) {
-		if (i !== '&') {
+		if (i !== '&' && i !== '') {
 		  gd_add_term_json(i, editor_in_loop, item);
 		  plural = pluralize.plural(i);
 		  if (plural !== i && !Array.isArray(data[plural])) {
@@ -437,7 +437,7 @@ jQuery(document).ready(function () {
 	}
 	jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
 	jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
-	
+
 	gd_locales_selector();
 	gd_terms_tooltip();
 
