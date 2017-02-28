@@ -276,7 +276,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$replace = gp_post( 'import-flush' );
 		if ( 'on' === $replace && $this->can( 'write', 'project', $project->id ) ) {
-			GP::$glossary_entry->delete_many( array( 'glossary_id', $glossary->id ) );
+			GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossary->id ) );
 		}
 
 		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug );
