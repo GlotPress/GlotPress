@@ -437,8 +437,9 @@ jQuery(document).ready(function () {
 	}
 	jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
 	jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
-	gd_terms_tooltip();
+	
 	gd_locales_selector();
+	gd_terms_tooltip();
 
 	jQuery($gp.editor.table).onFirst('click', 'button.ok', gd_validate);
   }
