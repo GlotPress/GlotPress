@@ -1,6 +1,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.1 (February 28, 2017)
+
+**Bugfixes**
+
+* Don't require a project glossary to show terms of a locale glossary. ([#656](https://github.com/GlotPress/GlotPress-WP/issues/656))
+* Allow querying translations by priority. ([#664](https://github.com/GlotPress/GlotPress-WP/issues/664))
+* Fix incorrect nonce check for locale glossary imports. ([#673](https://github.com/GlotPress/GlotPress-WP/issues/673))
+* Fix flushing existing glossary on import. ([#675](https://github.com/GlotPress/GlotPress-WP/issues/675))
+
+**Features**
+
+* Add `gp_locale_glossary_path_prefix` filter for the locale glossary path prefix. ([#655](https://github.com/GlotPress/GlotPress-WP/issues/655))
+
+Thanks to all the contributors so far: Alex Kirk, Dominik Schilling, Greg Ross, and Yoav Farhi.
+
 ## 2.3.0 (February 6, 2017)
 
 (this space intentionally left blank)
