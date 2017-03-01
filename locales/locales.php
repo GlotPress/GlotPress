@@ -692,8 +692,8 @@ class GP_Locales {
 		$es_CR->english_name = 'Spanish (Costa Rica)';
 		$es_CR->native_name = 'Español';
 		$es_CR->lang_code_iso_639_1 = 'es';
-		$es_CR->lang_code_iso_639_3 = 'spa';
-		$es_CR->country_code = 'CR';
+		$es_CR->lang_code_iso_639_2 = 'spa';
+		$es_CR->country_code = 'cr';
 		$es_CR->wp_locale = 'es_CR';
 		$es_CR->slug = 'es-cr';
 
@@ -1819,7 +1819,6 @@ class GP_Locales {
 		$sq_XK = new GP_Locale();
 		$sq_XK->english_name = 'Shqip (Kosovo)';
 		$sq_XK->native_name = 'Për Kosovën Shqip';
-		$sq_XK->lang_code_iso_639_3 = '';
 		$sq_XK->country_code = 'XK';
 		$sq_XK->wp_locale = 'sq-xk';
 		$sq_XK->slug = 'sq-xk';
