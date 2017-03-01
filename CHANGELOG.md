@@ -1,3 +1,11 @@
+#1.2.0
+* Generator of glossary: Improvement for terms with multiple words
+* Generator of glossary: Support to the new glotpress
+* Feature: New amazing settings panel
+* Feature: Hotkey for fuzzy button
+* Improvement: Code organized better!
+* Improvement: Code quality improved!
+
 #1.1.21
 * Fix: for missing dots in words for no-european languages
 
