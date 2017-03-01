@@ -136,18 +136,22 @@ class GP_Project extends GP_Thing {
 	 * Executes after saving a project.
 	 *
 	 * @since 1.0.0
+	 * @since 2.4.0 Added the `$project_before` parameter.
 	 *
+	 * @param GP_Project $project_before Project before the update.
 	 * @return bool
 	 */
-	public function after_save() {
+	public function after_save( $project_before ) {
 		/**
 		 * Fires after saving a project.
 		 *
 		 * @since 1.0.0
+		 * @since 2.4.0 Added the `$project_before` parameter.
 		 *
-		 * @param GP_Project $project The project that was saved.
+		 * @param GP_Project $project        Project following the update.
+		 * @param GP_Project $project_before Project before the update.
 		 */
-		do_action( 'gp_project_saved', $this );
+		do_action( 'gp_project_saved', $this, $project_before );
 
 		// TODO: pass the update args to after/pre_save?
 		// TODO: only call it if the slug or parent project were changed

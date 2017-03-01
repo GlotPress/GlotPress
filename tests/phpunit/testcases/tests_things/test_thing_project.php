@@ -288,6 +288,26 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
 
+	public function test_previous_state_is_passed_to_saved_action() {
+		$project = $this->factory->project->create( array( 'name' => 'Before' ) );
+		$initial_project = clone $project;
+
+		$previous_project = null;
+		$closure = function( $project_after, $project_before ) use ( &$previous_project ) {
+			$previous_project = $project_before;
+		};
+
+		add_action( 'gp_project_saved', $closure, 10, 2 );
+
+		$project->save( array( 'name' => 'After' ) );
+
+		remove_action( 'gp_project_saved', $closure );
+
+		$this->assertEquals( $initial_project, $previous_project );
+		$this->assertEquals( $previous_project->name, 'Before' );
+		$this->assertEquals( $project->name, 'After' );
+	}
+
 	public function test_gp_locale_glossary_path_prefix_filter() {
 		$custom_prefix = '/locale';
 

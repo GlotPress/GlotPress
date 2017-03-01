@@ -340,14 +340,37 @@ class GP_Thing {
 		return $this->find_one( array( 'id' => $id ) );
 	}
 
+	/**
+	 * Saves an existing thing.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $args Values to update.
+	 * @return bool|null Null and false on failure, true on success.
+	 */
 	public function save( $args = null ) {
-		if ( is_null( $args ) ) $args = get_object_vars( $this );
-		if ( !is_array( $args ) ) $args = (array)$args;
+		$thing_before = clone $this;
+
+		if ( is_null( $args ) ) {
+			$args = get_object_vars( $this );
+		}
+
+		if ( ! is_array( $args ) ) {
+			$args = (array) $args;
+		}
+
 		$args = $this->prepare_fields_for_save( $args );
-		$update_res  = $this->update( $args );
+
+		$update_res = $this->update( $args );
+
 		$this->set_fields( $args );
-		if ( !$update_res ) return null;
-		$update_res = $this->after_save();
+
+		if ( ! $update_res ) {
+			return null;
+		}
+
+		$update_res = $this->after_save( $thing_before );
+
 		return $update_res;
 	}
 
@@ -482,9 +505,10 @@ class GP_Thing {
 	 *
 	 * This is a placeholder function which should be implemented in the child classes.
 	 *
+	 * @param GP_Thing $thing_before Object before the update.
 	 * @return bool
 	 */
-	public function after_save() {
+	public function after_save( $thing_before ) {
 		return true;
 	}
 
