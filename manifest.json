@@ -23,6 +23,7 @@
       "js/keymaster.js",
       "js/pluralize.js",
       "js/jquery.bind-first.js",
+      "icons/icon-16.png",
       "js/init.js"
   ],
   "permissions": [
