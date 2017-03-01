@@ -182,11 +182,19 @@ class GP_Glossary extends GP_Thing {
 	 * @return GP_Project The project
 	 */
 	public function get_locale_glossary_project() {
+		/**
+		 * Filters the prefix for the locale glossary path.
+		 *
+		 * @since 2.3.1
+		 *
+		 * @param string $$locale_glossary_path_prefix Prefix for the locale glossary path.
+		 */
+		$locale_glossary_path_prefix = apply_filters( 'gp_locale_glossary_path_prefix', '/languages' );
 		return new GP::$project( array(
 			'id'   => 0,
 			'name' => 'Locale Glossary',
 			'slug' => 0,
-			'path' => '//languages',
+			'path' => "/$locale_glossary_path_prefix",
 		) );
 	}
 }
