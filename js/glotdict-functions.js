@@ -301,15 +301,19 @@ function gd_validate(e) {
   var hellipse = jQuery('.editor:visible .original').html().slice(-3) === '...';
   var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
   if (hellipse) {
-	if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
-	  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contain a final <b>...</b> that need to be translated as <b><code>&amp;hellip;</code></b></div>');
-	  e.stopImmediatePropagation();
-	  return;
+	if (!gd_get_setting('no_final_dot')) {
+	  if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
+		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contain a final <b>...</b> that need to be translated as <b><code>&amp;hellip;</code></b></div>');
+		e.stopImmediatePropagation();
+		return;
+	  }
 	}
   } else {
-	if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
-	  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation it\'s missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
-	  e.stopImmediatePropagation();
+	if (!gd_get_setting('no_final_other_dot')) {
+	  if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
+		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation it\'s missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
+		e.stopImmediatePropagation();
+	  }
 	}
   }
 }

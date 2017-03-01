@@ -43,3 +43,11 @@ function gd_generate_settings_panel() {
 	jQuery('.gd_settings_panel').append('<input class="gd_setting_check" type="checkbox" id="gd_' + key + '" ' + checked + '> ' + value + '<br>');
   });
 }
+
+function gd_get_setting(key) {
+  key = 'gd_' + key;
+  if (localStorage.getItem(key) === null || localStorage.getItem(key) === 'false') {
+	return false;
+  }
+  return true;
+}
