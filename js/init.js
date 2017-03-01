@@ -1,4 +1,5 @@
-jsScripts = ['jquery.bind-first', 'keymaster', 'pluralize', 'glotdict'];
+jsScripts = ['jquery.bind-first', 'keymaster', 'pluralize', 'glotdict-functions', 'glotdict-settings', 'glotdict'];
+
 script(jsScripts);
 
 function script(url) {

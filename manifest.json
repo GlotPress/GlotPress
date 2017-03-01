@@ -18,6 +18,8 @@
   ],
   "web_accessible_resources": [
       "js/glotdict.js",
+      "js/glotdict-functions.js",
+      "js/glotdict-settings.js",
       "js/keymaster.js",
       "js/pluralize.js",
       "js/jquery.bind-first.js",
