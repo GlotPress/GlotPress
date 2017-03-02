@@ -236,7 +236,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 
-		$can_write = $this->can( 'write', 'project', $project->id );
+		$can_edit = $this->can( 'approve', 'translation-set', $translation_set->id );
 
 		$this->tmpl( 'glossary-import', get_defined_vars() );
 	}
