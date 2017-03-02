@@ -19,7 +19,7 @@ gp_tmpl_header();
 		<label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label>
 		<input type="file" name="import-file" id="import-file" />
 	</p>
-	<?php if ( $can_write ) : ?>
+	<?php if ( $can_edit ) : ?>
 		<p>
 			<label for="import-flush">
 				<input type="checkbox" id="import-flush" name="import-flush" />
