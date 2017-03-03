@@ -275,7 +275,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$replace = gp_post( 'import-flush' );
-		if ( 'on' === $replace && $this->can( 'write', 'project', $project->id ) ) {
+		if ( 'on' === $replace && $this->can( 'approve', 'translation-set', $translation_set->id ) ) {
 			GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossary->id ) );
 		}
 
