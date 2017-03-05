@@ -85,7 +85,9 @@ $gp.editor = (
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
-					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
+					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
+					.on( 'input', 'tr.editor textarea', $gp.editor.hooks.textarea_edit );
+
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -339,7 +341,17 @@ $gp.editor = (
 
 				original_text = original_text.text();
 				original_text = original_text.replace( /<span class=.invisibles.*?<\/span>/g, '' );
-				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
+				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).trigger( 'input' ).focus();
+
+			},
+			textarea_edit: function( textarea ) {
+				var isEmpty = ! $.trim( textarea.val() );
+				var $copylink = textarea.next( 'p' ).find( '.copy' );
+				if ( ! isEmpty ) {
+					$copylink.hide();
+				} else {
+					$copylink.show();
+				}
 			},
 			hooks: {
 				show: function() {
@@ -379,6 +391,10 @@ $gp.editor = (
 				},
 				set_priority: function() {
 					$gp.editor.set_priority( $( this ) );
+					return false;
+				},
+				textarea_edit: function() {
+					$gp.editor.textarea_edit( $( this ) );
 					return false;
 				}
 			}

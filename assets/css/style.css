@@ -445,6 +445,28 @@ span.morethan90 {
 	font-weight: bold;
 }
 
+.editor .copy {
+	position: relative;
+	top: -50px;
+	left: 6px;
+	border: 1px solid #ccc;
+	display: inline-block;
+	padding: 2px 4px;
+	color: #333;
+	background: #fbfbfb;
+	float: left;
+	text-decoration: none;
+}
+
+.editor .copy:hover {
+	background: #fff;
+}
+
+.editor .copy:active {
+	border-style: inset;
+	padding: 2px 4px 2px 3px;
+}
+
 /*
  * JavaScript, errors and notices.
  */
