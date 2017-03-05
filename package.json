@@ -1,0 +1,10 @@
+{
+  "name": "glotpress",
+  "version": "2.3.1",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.0.0",
+    "grunt-contrib-uglify": "^2.2.0",
+    "load-grunt-tasks": "^3.5.2"
+  }
+}
