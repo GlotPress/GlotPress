@@ -202,7 +202,26 @@ $i = 0;
 <?php foreach( $translations as $t ):
 		$t->translation_set_id = $translation_set->id;
 		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
-		gp_tmpl_load( 'translation-row', get_defined_vars() );
+		$user = wp_get_current_user();
+		$can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
+		gp_tmpl_load( 'translation-row-preview', array(
+			't' => $t,
+			'can_edit' => $can_edit,
+			'can_approve' => $can_approve,
+			'can_approve_translation' => $can_approve_translation,
+
+		) );
+		gp_tmpl_load( 'translation-row-editor', array(
+			't' => $t,
+			'can_write' => $can_write,
+			'can_edit' => $can_edit,
+			'can_approve' => $can_approve,
+			'can_approve_translation' => $can_approve_translation,
+			'can_edit' => $can_edit,
+			'locale' => $locale,
+			'project' => $project,
+			'translation_set' => $translation_set,
+		) );
 ?>
 <?php endforeach; ?>
 <?php
