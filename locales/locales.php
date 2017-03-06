@@ -1819,7 +1819,7 @@ class GP_Locales {
 		$sq_XK = new GP_Locale();
 		$sq_XK->english_name = 'Shqip (Kosovo)';
 		$sq_XK->native_name = 'Për Kosovën Shqip';
-		$sq_XK->country_code = 'XK';
+		$sq_XK->country_code = 'xk';
 		$sq_XK->wp_locale = 'sq-xk';
 		$sq_XK->slug = 'sq-xk';
 
@@ -1883,7 +1883,7 @@ class GP_Locales {
 		$syr->english_name = 'Syriac';
 		$syr->native_name = 'Syriac';
 		$syr->lang_code_iso_639_3 = 'syr';
-		$syr->country_code = 'IQ';
+		$syr->country_code = 'iq';
 		$syr->wp_locale = 'syr';
 		$syr->slug = 'syr';
 
