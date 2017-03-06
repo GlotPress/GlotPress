@@ -1733,7 +1733,7 @@ class GP_Locales {
 		$scn->english_name = 'Sicilian';
 		$scn->native_name = 'Sicilianu';
 		$scn->lang_code_iso_639_3 = 'scn';
-		$scn->country_code = 'IT';
+		$scn->country_code = 'it';
 		$scn->wp_locale = 'scn';
 		$scn->slug = 'scn';
 
