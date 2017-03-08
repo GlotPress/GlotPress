@@ -107,7 +107,7 @@ $i = 0;
 				array(
 					'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
 					'current' => __( 'Current only', 'glotpress' ),
-					'old' => __( 'Approved, but obsoleted by another string', 'glotpress' ),
+					'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
 					'waiting' => __( 'Waiting approval', 'glotpress' ),
 					'rejected' => __( 'Rejected', 'glotpress' ),
 					'untranslated' => __( 'Without current translation', 'glotpress' ),
