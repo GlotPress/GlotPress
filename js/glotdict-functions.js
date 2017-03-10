@@ -61,7 +61,10 @@ function gd_glossary_cached(lang) {
   }
   var glossary_date_cache = localStorage.getItem('gd_glossary_date');
   var locales_cache = gd_list_locales_cached();
-  window.glotdict_glossary = JSON.parse(localStorage.getItem('gd_glossary_file'));
+  window.glotdict_glossary = localStorage.getItem('gd_glossary_file');
+  if (isJSON(window.glotdict_glossary)) {
+	window.glotdict_glossary = JSON.parse(window.glotdict_glossary);
+  }
   if (glossary_date_cache === null || glossary_date_cache === 'null' || glossary_date_cache.length === 0 || glossary_date_cache !== locales_cache[lang].time) {
 	jQuery.ajax({
 	  url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
@@ -415,4 +418,19 @@ function gd_hotkeys() {
 	location.reload();
 	return false;
   });
+}
+
+/**
+ * Check if string is JSON
+ * 
+ * @param {string} str
+ * @returns {Boolean}
+ */
+function isJSON(str) {
+  try {
+	JSON.parse(str);
+  } catch (e) {
+	return false;
+  }
+  return true;
 }

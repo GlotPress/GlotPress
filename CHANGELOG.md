@@ -1,3 +1,6 @@
+#1.2.1
+* Fix: Error on mgiration to 1.2.0
+
 #1.2.0
 * Generator of glossary: Improvement for terms with multiple words
 * Generator of glossary: Support to the new glotpress

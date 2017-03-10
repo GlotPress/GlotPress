@@ -31,6 +31,6 @@ function script(url) {
 t = document.getElementsByTagName("header")[0],
 s = document.createElement("img");
 s.src = chrome.extension.getURL('icons/icon-16.png');
-s.style.display = 'none'
+s.style.display = 'none';
 s.classList.add('gd_icon');
 t.parentNode.insertBefore(s, t);

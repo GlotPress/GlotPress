@@ -4,7 +4,7 @@
 var glotdict_version = "1.0.1";
 
 // Procedure for upgrade
-if (typeof JSON.parse(localStorage.getItem('gd_locales')) === 'string') {
+if (!isJSON(localStorage.getItem('gd_glossary_file')) || typeof JSON.parse(localStorage.getItem('gd_locales')) === 'string') {
   localStorage.setItem('gd_locales', '');
   localStorage.setItem('gd_locales_date', '');
   localStorage.setItem('gd_glossary_file', '');
