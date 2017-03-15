@@ -49,6 +49,14 @@ install:
   - if [ ! -e "$DEV_LIB_PATH" ]; then git clone https://github.com/xwp/wp-dev-lib.git $DEV_LIB_PATH; fi
   - source $DEV_LIB_PATH/travis.install.sh
 
+before_script:
+  - |
+    # Remove Xdebug for a huge performance increase, but not from nightly or hhvm:
+    stable='^[0-9\.]+$'
+    if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]]; then
+      phpenv config-rm xdebug.ini
+    fi
+
 script:
   - source $DEV_LIB_PATH/travis.script.sh
 
