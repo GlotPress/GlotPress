@@ -1777,7 +1777,7 @@ class GP_Locales {
 		$sna = new GP_Locale();
 		$sna->english_name = 'Shona';
 		$sna->native_name = 'ChiShona';
-		$sna->lang_code_iso_639_1 = 'sna';
+		$sna->lang_code_iso_639_1 = 'sn';
 		$sna->lang_code_iso_639_3 = 'sna';
 		$sna->country_code = 'zw';
 		$sna->wp_locale = 'sna';
