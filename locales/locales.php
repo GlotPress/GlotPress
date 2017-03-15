@@ -1820,6 +1820,7 @@ class GP_Locales {
 		$sq_XK = new GP_Locale();
 		$sq_XK->english_name = 'Shqip (Kosovo)';
 		$sq_XK->native_name = 'Për Kosovën Shqip';
+		$sq_XK->lang_code_iso_639_1 = 'sq';
 		$sq_XK->country_code = 'xk';
 		$sq_XK->wp_locale = 'sq-xk';
 		$sq_XK->slug = 'sq-xk';
