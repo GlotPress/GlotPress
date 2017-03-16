@@ -3,15 +3,6 @@
 
 var glotdict_version = "1.0.1";
 
-// Procedure for upgrade
-if (!isJSON(localStorage.getItem('gd_glossary_file')) || typeof JSON.parse(localStorage.getItem('gd_locales')) === 'string') {
-  localStorage.setItem('gd_locales', '');
-  localStorage.setItem('gd_locales_date', '');
-  localStorage.setItem('gd_glossary_file', '');
-  localStorage.setItem('gd_glossary_date', '');
-  location.reload();
-}
-
 if (jQuery('.filters-toolbar:last div:first').length > 0) {
   gd_hotkeys();
   //Fix for PTE align
