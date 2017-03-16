@@ -1,5 +1,8 @@
+#1.2.2
+* Fix: Removed code for migration
+
 #1.2.1
-* Fix: Error on mgiration to 1.2.0
+* Fix: Error on migration to 1.2.0
 
 #1.2.0
 * Generator of glossary: Improvement for terms with multiple words
