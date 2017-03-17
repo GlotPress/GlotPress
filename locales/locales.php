@@ -687,7 +687,7 @@ class GP_Locales {
 		$es_co->slug = 'es-co';
 		$es_co->google_code = 'es';
 		$es_co->facebook_locale = 'es_CO';
-		
+
 		$es_CR = new GP_Locale();
 		$es_CR->english_name = 'Spanish (Costa Rica)';
 		$es_CR->native_name = 'Español';
@@ -1728,7 +1728,7 @@ class GP_Locales {
 		$sa_in->wp_locale = 'sa_IN';
 		$sa_in->slug = 'sa-in';
 		$sa_in->facebook_locale = 'sa_IN';
-		
+
 		$scn = new GP_Locale();
 		$scn->english_name = 'Sicilian';
 		$scn->native_name = 'Sicilianu';
@@ -1782,7 +1782,7 @@ class GP_Locales {
 		$sna->country_code = 'zw';
 		$sna->wp_locale = 'sna';
 		$sna->slug = 'sna';
-		
+
 		$snd = new GP_Locale();
 		$snd->english_name = 'Sindhi';
 		$snd->native_name = 'سنڌي';
@@ -1816,13 +1816,13 @@ class GP_Locales {
 		$sq->slug = 'sq';
 		$sq->google_code = 'sq';
 		$sq->facebook_locale = 'sq_AL';
-		
+
 		$sq_XK = new GP_Locale();
 		$sq_XK->english_name = 'Shqip (Kosovo)';
 		$sq_XK->native_name = 'Për Kosovën Shqip';
 		$sq_XK->lang_code_iso_639_1 = 'sq';
-		$sq_XK->country_code = 'xk';
-		$sq_XK->wp_locale = 'sq-xk';
+		$sq_XK->country_code = 'xk'; // Temporary country code until Kosovo is assigned an ISO code.
+		$sq_XK->wp_locale = 'sq_XK';
 		$sq_XK->slug = 'sq-xk';
 
 		$sr = new GP_Locale();
@@ -1880,7 +1880,7 @@ class GP_Locales {
 		$sw->slug = 'sw';
 		$sw->google_code = 'sw';
 		$sw->facebook_locale = 'sw_KE';
-		
+
 		$syr = new GP_Locale();
 		$syr->english_name = 'Syriac';
 		$syr->native_name = 'Syriac';
