@@ -396,7 +396,12 @@ span.morethan90 {
 
 .editor .strings {
 	float: left;
-	width: 60%;
+	min-width: 60%;
+}
+
+.editor .strings .textareas textarea {
+	width: 95%;
+	resize: vertical;
 }
 
 .editor .strings p.plural-numbers {
@@ -420,6 +425,7 @@ span.morethan90 {
 
 .editor .meta {
 	float: left;
+	width: 35%;
 	margin-left: 2em;
 }
 

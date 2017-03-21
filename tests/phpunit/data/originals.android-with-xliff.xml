@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="with_xliff">Please don't translate <xliff:g id="excluded">this</xliff:g> text</string>
+	<string name="with_two_xliff">Please don't translate <xliff:g id="first">this</xliff:g> text or even this <xliff:g id="second">other</xliff:g> text</string>
+	<string name="with_xliff_with_example">Please don't translate <xliff:g id="excluded" example="this">%s</xliff:g> text</string>
+	<string name="with_xliff_with_example_and_no_id">Please don't translate <xliff:g example="this">%s</xliff:g> text</string>
+	<string name="with_xliff_with_no_example_and_no_id">Please don't translate <xliff:g>%s</xliff:g> text</string>
+	<string name="with_xliff_with_single_quote_attributes">Please don't translate <xliff:g id='excluded' example='this'>%s</xliff:g> text</string>
+	<string name="with_xliff_with_single_and_double_quote_attributes">Please don't translate <xliff:g id="excluded" example='this'>%s</xliff:g> text</string>
+	<string name="with_xliff_with_quotes_inside_attributes">Please don't translate <xliff:g id="exclud'd" example='"this"'>%s</xliff:g> text</string>
+</resources>
