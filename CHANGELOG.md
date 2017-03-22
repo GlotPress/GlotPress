@@ -1,3 +1,6 @@
+#1.2.3
+* Fix: The locales list was not auto updating
+
 #1.2.2
 * Fix: Removed code for migration
 

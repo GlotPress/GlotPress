@@ -36,17 +36,13 @@ function gd_today() {
  * @returns Array
  */
 function gd_list_locales_cached() {
-  if (typeof window.glotdict_locales === 'undefined' || window.glotdict_locales[gd_get_lang()].time === null) {
-	gd_locales();
-  }
   var value = localStorage.getItem('gd_locales');
   if (value === '') {
 	value = gd_locales();
   } else {
 	value = JSON.parse(value);
   }
-  window.glotdict_locales = value;
-  return window.glotdict_locales;
+  return value;
 }
 
 /**
@@ -86,7 +82,7 @@ function gd_glossary_cached(lang) {
  * @returns Array
  */
 function gd_locales() {
-  var locales = ['ast', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
+  window.glotdict_locales = ['ast', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
   var locales_date_cache = localStorage.getItem('gd_locales_date');
   if (locales_date_cache === null || locales_date_cache !== gd_today()) {
 	jQuery.ajax({
@@ -98,13 +94,10 @@ function gd_locales() {
 	  localStorage.setItem('gd_locales_date', gd_today());
 	});
   }
-  var locales_cache = gd_glossary_cached();
-  if (typeof locales_cache !== 'undefined') {
-	locales = Object.keys(locales_cache).map(function (key) {
-	  return key;
-	});
+  if (locales_date_cache !== null) {
+	window.glotdict_locales = Object.keys(JSON.parse(localStorage.getItem('gd_locales')));
   }
-  return locales;
+  return window.glotdict_locales;
 }
 
 /**
