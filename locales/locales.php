@@ -438,7 +438,7 @@ class GP_Locales {
 
 		$cs = new GP_Locale();
 		$cs->english_name = 'Czech';
-		$cs->native_name = 'Čeština‎';
+		$cs->native_name = 'Čeština';
 		$cs->lang_code_iso_639_1 = 'cs';
 		$cs->lang_code_iso_639_2 = 'ces';
 		$cs->country_code = 'cz';
