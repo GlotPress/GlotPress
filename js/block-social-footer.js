@@ -1,4 +1,4 @@
-chrome.webRequest.onBeforeRequest.addListener(
+browser.webRequest.onBeforeRequest.addListener(
 		function (requestDetails) {
 		  if (requestDetails.originUrl.indexOf("translate.wordpress.org") !== -1) {
 			return {
