@@ -82,7 +82,7 @@ function gd_glossary_cached(lang) {
  * @returns Array
  */
 function gd_locales() {
-  window.glotdict_locales = ['ast', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
+  window.glotdict_locales = ['ast', 'bel', 'bg_BG', 'cy', 'da_DK', 'de_DE', 'en_AU', 'en_CA', 'en_GB', 'es_ES', 'fi', 'fr_FR', 'he_IL', 'hi_IN', 'hr_HR', 'it_IT', 'ja', 'lt_LT', 'lv_LV', 'nl_BE', 'nl_NL', 'pt_BR', 'ro_RO', 'sv_SE', 'th', 'tr_TR', 'uk'];
   var locales_date_cache = localStorage.getItem('gd_locales_date');
   if (locales_date_cache === null || locales_date_cache !== gd_today()) {
 	jQuery.ajax({
@@ -136,9 +136,13 @@ function checkHTML(html) {
  */
 function gd_get_lang_consistency() {
   var lang = gd_get_lang();
-  var reallang = lang.split('_');
-  if (typeof reallang[1] !== 'undefined') {
-	reallang = reallang[1].toLowerCase();
+  if (lang === 'pt_BR') {
+	reallang = 'pt-br';
+  } else {
+	var reallang = lang.split('_');
+	if (typeof reallang[1] !== 'undefined') {
+	  reallang = reallang[1].toLowerCase();
+	}
   }
   return reallang;
 }
