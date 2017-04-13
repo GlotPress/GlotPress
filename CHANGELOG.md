@@ -1,3 +1,7 @@
+#1.2.4
+* Fix: Link to consistency for brazilian
+* Fix: For wrong encode
+
 #1.2.3
 * Fix: The locales list was not auto updating
 

@@ -67,10 +67,12 @@ function gd_glossary_cached(lang) {
 	  dataType: 'text',
 	  async: false
 	}).done(function (data) {
-	  localStorage.setItem('gd_glossary_file', data);
-	  window.glotdict_glossary = JSON.parse(data);
-	  var glossary_date = gd_list_locales_cached();
-	  localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
+	  if (data.length > 2) {
+		localStorage.setItem('gd_glossary_file', data);
+		window.glotdict_glossary = JSON.parse(data);
+		var glossary_date = gd_list_locales_cached();
+		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
+	  }
 	});
   }
   return window.glotdict_glossary;
