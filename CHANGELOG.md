@@ -1,3 +1,6 @@
+#1.2.5
+* Fix: Remove duplicate translate message on first run
+
 #1.2.4
 * Fix: Link to consistency for brazilian
 * Fix: For wrong encode
