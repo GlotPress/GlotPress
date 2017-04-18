@@ -71,7 +71,7 @@ $i = 0;
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<div>
 	<a href="#" class="revealing filter"><?php _e( 'Filter &darr;', 'glotpress' ); ?></a> <span class="separator">&bull;</span>
-	<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
+	<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <span class="separator">&bull;</span>
 	<?php
 	$filter_links = array();
 	$filter_links[] = gp_link_get( $url, __( 'All', 'glotpress' ) );
