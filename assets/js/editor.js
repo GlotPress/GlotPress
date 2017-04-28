@@ -271,7 +271,20 @@ $gp.editor = (
 					return;
 				}
 
-				editor = $gp.editor.current;
+				var editor = $gp.editor.current;
+				var translation_changed = false;
+				
+				$( '[id*=translation_' + editor.original_id + '_]' ).each( function() {
+					if ( this.value != this.defaultValue ) {
+						translation_changed = true;
+					}
+				} );
+				
+				if ( true == translation_changed ) {
+					$gp.notices.error( "Translation has changed!  Please add the new translation before changing it's status." );
+					return;
+				}
+
 				button.prop( 'disabled', true );
 				$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
 
