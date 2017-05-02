@@ -253,7 +253,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
