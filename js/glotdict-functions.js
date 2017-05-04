@@ -305,7 +305,7 @@ function gd_validate(e) {
   if (hellipse) {
 	if (!gd_get_setting('no_final_dot')) {
 	  if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
-		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contain a final <b>...</b> that need to be translated as <b><code>&amp;hellip;</code></b></div>');
+		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contains a final <b>...</b> that needs to be translated as <b><code>&amp;hellip;</code></b></div>');
 		e.stopImmediatePropagation();
 		return;
 	  }
