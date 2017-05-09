@@ -100,6 +100,9 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			'Someone writes about something.' => array( 'write' ),
 			'I post about something.' => array( 'post' ),
 			'Someone posts something.' => array( 'post' ),
+			'The Post menu should be displayed.' => array( 'post' ), // Make sure glossary entries are matched case insensitivly.
+			'City water and power were out of service all day.' => array( 'city' ), // Make sure glossary entries are matched case insensitivly.
+			'Write what you know and you\'ll never go wrong.' => array( 'write' ), // Make sure glossary entries are matched case insensitivly.
 		);
 
 		foreach ( $originals as $original => $terms ) {

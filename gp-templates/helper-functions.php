@@ -84,7 +84,7 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 
 		foreach ( $glossary_entries_terms as $i => $terms ) {
 			$glossary_entry = $glossary_entries[ $i ];
-			if ( preg_match( '/\b(' . $terms . ')\b/', $t->singular . ' ' . $t->plural, $m ) ) {
+			if ( preg_match( '/\b(' . $terms . ')\b/i', $t->singular . ' ' . $t->plural, $m ) ) {
 				$locale_entry = '';
 				if ( $glossary_entry->glossary_id !== $glossary->id ) {
 					/* translators: Denotes an entry from the locale glossary in the tooltip */
