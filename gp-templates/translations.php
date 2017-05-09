@@ -196,7 +196,8 @@ $i = 0;
 	</thead>
 <?php
 	if ( $glossary ) {
-		$translations = map_glossary_entries_to_translations_originals( $translations, $glossary );
+		$glossary_entries = $glossary->get_entries();
+		$glossary_entries_terms = sort_glossary_entries_terms( $glossary_entries );
 	}
 ?>
 <?php foreach( $translations as $t ):

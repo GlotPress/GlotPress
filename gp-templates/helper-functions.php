@@ -60,10 +60,16 @@ function gp_prepare_translation_textarea( $text ) {
 	return $text;
 }
 
-function map_glossary_entries_to_translations_originals( $translations, $glossary ) {
-	$glossary_entries = $glossary->get_entries();
+/*
+ * Sort a set of glossary entries by length for use in map_glossary_entries_to_translation_originals().
+ *
+ * @param array $glossary_entries An array of glossary entries to sort.
+ *
+ * @return array The sorted entries.
+ */
+function sort_glossary_entries_terms( $glossary_entries ) {
 	if ( empty ( $glossary_entries ) ) {
-		return $translations;
+		return;
 	}
 
 	$glossary_entries_terms = array();
@@ -92,42 +98,60 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 	}
 
 	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
+	
+	return $glossary_entries_terms;
+}
 
-	foreach ( $translations as $key => $t ) {
-		// Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.
-		$translations[ $key ]->singular_glossary_markup = esc_translation( $t->singular );
-		$translations[ $key ]->plural_glossary_markup   = esc_translation( $t->plural );
+/**
+ * Add markup to a translation original to identify the glossary terms.
+ *
+ * @param obj $glossary_entry An array of glossary entries to sort.
+ *
+ * @return obj The marked up translation entry.
+ */
+function map_glossary_entries_to_translation_originals( $translation, $glossary, $glossary_entries_terms = null ) {
+	$glossary_entries = $glossary->get_entries();
+	if ( empty ( $glossary_entries ) ) {
+		return $translation;
+	}
 
-		// Search for glossary terms in our strings.
-		$matching_entries = array();
+	if( null === $glossary_entries_terms || ! is_array( $glossary_entries_terms ) ) {
+		$glossary_entries_terms = sort_glossary_entries_terms( $glossary_entries );
+	}
+	
+	// Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.
+	$translation->singular_glossary_markup = esc_translation( $translation->singular );
+	$translation->plural_glossary_markup   = esc_translation( $translation->plural );
 
-		foreach ( $glossary_entries_terms as $i => $terms ) {
-			$glossary_entry = $glossary_entries[ $i ];
-			if ( preg_match( '/\b(' . $terms . ')\b/i', $t->singular . ' ' . $t->plural, $m ) ) {
-				$locale_entry = '';
-				if ( $glossary_entry->glossary_id !== $glossary->id ) {
-					/* translators: Denotes an entry from the locale glossary in the tooltip */
-					$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
-				}
+	// Search for glossary terms in our strings.
+	$matching_entries = array();
 
-				$matching_entries[ $m[1] ][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment, 'locale_entry' => $locale_entry );
+	foreach ( $glossary_entries_terms as $i => $terms ) {
+		$glossary_entry = $glossary_entries[ $i ];
+		if ( preg_match( '/\b(' . $terms . ')\b/i', $translation->singular . ' ' . $translation->plural, $m ) ) {
+			$locale_entry = '';
+			if ( $glossary_entry->glossary_id !== $glossary->id ) {
+				/* translators: Denotes an entry from the locale glossary in the tooltip */
+				$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
 			}
-		}
 
-		// Replace terms in strings with markup.
-		foreach ( $matching_entries as $term => $glossary_data ) {
-			$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8' ) . '">$1</span>';
-
-			$regex = '/\b(' . preg_quote( $term, '/' ) . ')(?![^<]*<\/span>)\b/iu';
-			$translations[ $key ]->singular_glossary_markup = preg_replace( $regex, $replacement, $translations[ $key ]->singular_glossary_markup );
-
-			if ( $t->plural ) {
-				$translations[ $key ]->plural_glossary_markup = preg_replace( $regex, $replacement, $translations[ $key ]->plural_glossary_markup );
-			}
+			$matching_entries[ $m[1] ][] = array( 'translation' => $glossary_entry->translation, 'pos' => $glossary_entry->part_of_speech, 'comment' => $glossary_entry->comment, 'locale_entry' => $locale_entry );
 		}
 	}
 
-	return $translations;
+	// Replace terms in strings with markup.
+	foreach ( $matching_entries as $term => $glossary_data ) {
+		$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8' ) . '">$1</span>';
+
+		$regex = '/\b(' . preg_quote( $term, '/' ) . ')(?![^<]*<\/span>)\b/iu';
+		$translation->singular_glossary_markup = preg_replace( $regex, $replacement, $translation->singular_glossary_markup );
+
+		if ( $translation->plural ) {
+			$translation->plural_glossary_markup = preg_replace( $regex, $replacement, $translation->plural_glossary_markup );
+		}
+	}
+
+	return $translation;
 }
 
 function textareas( $entry, $permissions, $index = 0 ) {

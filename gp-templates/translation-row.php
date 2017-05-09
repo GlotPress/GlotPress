@@ -40,6 +40,13 @@ $more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history 
  */
 $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $t );
 
+if( ! isset( $glossary_entries_terms ) ) {
+	$glossary_entries = $glossary->get_entries();
+	$glossary_entries_terms = sort_glossary_entries_terms( $glossary_entries );
+}
+
+$t = map_glossary_entries_to_translation_originals( $t, $glossary, $glossary_entries_terms );
+
 ?>
 
 <tr class="preview <?php gp_translation_row_classes( $t ); ?>" id="preview-<?php echo esc_attr( $t->row_id ) ?>" row="<?php echo esc_attr( $t->row_id ); ?>">
