@@ -41,6 +41,26 @@ function prepare_original( $text ) {
 	return $text;
 }
 
+/**
+ * Prepare a translation string to be printed out in a translation row by adding an 'extra' return/newline if
+ * it starts with one.  See GH701.
+ *
+ * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
+ *
+ * @return string The prepared string for output.
+ */
+function prepare_translation_textarea( $text ) {
+	if( gp_startswith( $text, "\r\n" ) ) {
+		$text = "\r\n" . $text;
+	} else {
+		if( gp_startswith( $text, "\n" ) ) {
+			$text = "\r" . $text;
+		}
+	}
+
+	return $text;
+}
+
 function map_glossary_entries_to_translations_originals( $translations, $glossary ) {
 	$glossary_entries = $glossary->get_entries();
 	if ( empty ( $glossary_entries ) ) {
@@ -130,7 +150,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			</div>
 		<?php endif; ?>
 		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
-		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo esc_translation( gp_array_get( $entry->translations, $index ) ); // WPCS: XSS ok. ?></textarea>
+		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
 		<p>
 			<?php
