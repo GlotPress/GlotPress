@@ -172,6 +172,7 @@ $gp.editor = (
 				$gp.editor.current.after( html );
 				old_current = $gp.editor.current;
 				old_current.attr( 'id', old_current.attr( 'id' ) + '-old' );
+				old_current.preview.attr( 'id', old_current.preview.attr( 'id' ) + '-old' );
 				$gp.editor.next();
 				old_current.preview.remove();
 				old_current.remove();
@@ -333,6 +334,7 @@ $gp.editor = (
 					success: function( data ) {
 						$gp.notices.success( 'Saved!' );
 						$gp.editor.replace_current( data );
+						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
