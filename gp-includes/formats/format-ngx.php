@@ -1,0 +1,186 @@
+<?php
+/**
+ * GlotPress Format NGX Translate class
+ *
+ * @since 2.3.0
+ *
+ * @package GlotPress
+ */
+
+/**
+ * Format class used to support NGX Translate JSON file format.
+ *
+ * @since 2.3.0
+ */
+class GP_Format_NGX extends GP_Format {
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var string
+	 */
+	public $name = 'NGX-Translate (.json)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var string
+	 */
+	public $extension = 'json';
+
+	/**
+	 * Generates a string the contains the $entries to export in the JSON file format.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param GP_Project         $project         The project the strings are being exported for, not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set $translation_set The locale object the strings are being
+	 *                                            exported for. not used in this format but part
+	 *                                            of the scaffold of the parent object.
+	 * @param GP_Translation     $entries         The entries to export.
+	 * @return string The exported JSON string.
+	 */
+	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
+		$result = array();
+
+		/* @var Translation_Entry $entry */
+		foreach ( $entries as $entry ) {
+			
+			$key = $entry->singular;
+			$arrayKeyIndex = strpos( $key, "[" );
+			if ( false !== $arrayKeyIndex ) {
+				$entryKey = substr( $key, 0, $arrayKeyIndex);
+ 				$keyPair = substr( $key, $arrayKeyIndex + 1, strlen($key) - $arrayKeyIndex - 2 );
+				$valuePair = array( 'key' => $keyPair, 'translation' => $entry->translations[0] );
+				if ( is_array( $result[ $entryKey ] ) ) {
+					array_push( $result[ $entryKey ], $valuePair);
+				} else {
+					$result[ $entryKey ] = array();
+					array_push( $result[ $entryKey ], $valuePair);
+				}
+			} else {
+				$result[ $key ] = $entry->translations[0];
+			}
+
+		} 
+
+		/**
+		 * Filter whether the exported JSON should be pretty printed.
+		 *
+		 * @since 2.3.0
+		 *
+		 * @param bool $pretty_print Whether pretty print should be enabled or not. Default false.
+		 */
+		$pretty_print = apply_filters( 'gp_json_export_pretty_print', false );
+
+		return wp_json_encode( $result, ( true === $pretty_print ) ? JSON_PRETTY_PRINT : 0 );
+	}
+
+	/**
+	 * Reads a set of original strings from a JSON file.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $file_name The name of the uploaded JSON file.
+	 * @return Translations|bool The extracted originals on success, false on failure.
+	 */
+	public function read_originals_from_file( $file_name ) {
+		$json = $this->decode_json_file( $file_name );
+
+		if ( ! $json ) {
+			return false;
+		}
+
+		$entries = new Translations();
+
+		foreach ( $json as $key => $value ) {
+			
+			if ( '' === $key ) {
+				continue;
+			}
+
+			if ( is_array( $value ) ) {
+			 	foreach ( $value as $keyElem => $valueElem) { 
+					if ( isset( $valueElem['key'] )
+					  && isset( $valueElem['translation'] )) {   					
+						$args = array(
+							'singular' => $key . "[" . $valueElem['key'] . "]",
+						);
+/*						if ( false !== strpos( $key, chr( 4 ) ) ) {
+							$key              = explode( chr( 4 ), $key );
+							$args['context']  = $key[0];
+							$args['singular'] = $key[1] . "[" . $valueElem['key'] . "]";
+						}*/
+						if ( isset( $valueElem ) ) {
+							$args['translations'][0] = $valueElem['translation'];
+						}
+						$entries->add_entry( new Translation_Entry( $args ) );
+					}		
+				};
+			} else {			
+				$args = array(
+					'singular' => $key,
+				);
+
+				if ( false !== strpos( $key, chr( 4 ) ) ) {
+					$key              = explode( chr( 4 ), $key );
+					$args['context']  = $key[0];
+					$args['singular'] = $key[1];
+				}
+				$args['translations'][0] = $value;
+				$entries->add_entry( new Translation_Entry( $args ) );
+			}
+
+		}
+		return $entries;
+	}
+
+	/**
+	 * Reads a set of translations from a JSON file.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string     $file_name The name of the uploaded properties file.
+	 * @param GP_Project $project   Unused. The project object to read the translations into.
+	 * @return Translations|bool The extracted translations on success, false on failure.
+	 */
+	public function read_translations_from_file( $file_name, $project = null ) {
+		return $this->read_originals_from_file( $file_name );
+	}
+
+	/**
+	 * Loads a given JSON file and decodes its content.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $file_name The name of the JSON file to parse.
+	 * @return array|false The encoded value or false on failure.
+	 */
+	protected function decode_json_file( $file_name ) {
+		if ( ! file_exists( $file_name ) ) {
+			return false;
+		}
+
+		$file = file_get_contents( $file_name );
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		$json = json_decode( $file, true );
+
+		if ( null === $json ) {
+			return false;
+		}
+
+		return $json;
+	}
+}
+
+GP::$formats['ngx'] = new GP_Format_NGX();
