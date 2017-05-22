@@ -52,7 +52,7 @@ class GP_Format_NGX extends GP_Format {
 		/* @var Translation_Entry $entry */
 		foreach ( $entries as $entry ) {
 			
-			$key = $entry->singular;
+			$key = $entry->context;
 			$arrayKeyIndex = strpos( $key, "[" );
 			if ( false !== $arrayKeyIndex ) {
 				$entryKey = substr( $key, 0, $arrayKeyIndex);
@@ -110,30 +110,17 @@ class GP_Format_NGX extends GP_Format {
 					if ( isset( $valueElem['key'] )
 					  && isset( $valueElem['translation'] )) {   					
 						$args = array(
-							'singular' => $key . "[" . $valueElem['key'] . "]",
+							'singular' => $valueElem['translation'],
+							'context' => $key . "[" . $valueElem['key'] . "]",
 						);
-/*						if ( false !== strpos( $key, chr( 4 ) ) ) {
-							$key              = explode( chr( 4 ), $key );
-							$args['context']  = $key[0];
-							$args['singular'] = $key[1] . "[" . $valueElem['key'] . "]";
-						}*/
-						if ( isset( $valueElem ) ) {
-							$args['translations'][0] = $valueElem['translation'];
-						}
 						$entries->add_entry( new Translation_Entry( $args ) );
 					}		
 				};
 			} else {			
 				$args = array(
-					'singular' => $key,
+					'singular' => $value,
+					'context' => $key,
 				);
-
-				if ( false !== strpos( $key, chr( 4 ) ) ) {
-					$key              = explode( chr( 4 ), $key );
-					$args['context']  = $key[0];
-					$args['singular'] = $key[1];
-				}
-				$args['translations'][0] = $value;
 				$entries->add_entry( new Translation_Entry( $args ) );
 			}
 
@@ -141,27 +128,6 @@ class GP_Format_NGX extends GP_Format {
 		return $entries;
 	}
 
-	/**
-	 * Reads a set of translations from a JSON file.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param string     $file_name The name of the uploaded properties file.
-	 * @param GP_Project $project   Unused. The project object to read the translations into.
-	 * @return Translations|bool The extracted translations on success, false on failure.
-	 */
-	public function read_translations_from_file( $file_name, $project = null ) {
-		return $this->read_originals_from_file( $file_name );
-	}
-
-	/**
-	 * Loads a given JSON file and decodes its content.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param string $file_name The name of the JSON file to parse.
-	 * @return array|false The encoded value or false on failure.
-	 */
 	protected function decode_json_file( $file_name ) {
 		if ( ! file_exists( $file_name ) ) {
 			return false;
