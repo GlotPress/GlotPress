@@ -564,7 +564,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
-		
+
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
 
 		if ( ! $translation ) {

@@ -197,7 +197,7 @@ $i = 0;
 <?php
 	if ( $glossary ) {
 		$glossary_entries = $glossary->get_entries();
-		$glossary_entries_terms = sort_glossary_entries_terms( $glossary_entries );
+		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
 	}
 ?>
 <?php foreach( $translations as $t ):
