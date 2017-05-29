@@ -37,9 +37,12 @@ function gd_today() {
  */
 function gd_list_locales_cached() {
   var value = localStorage.getItem('gd_locales');
-  if (value === '') {
+  if (value === '' || value === undefined) {
 	value = gd_locales();
   } else {
+	value = JSON.parse(value);
+  }
+  if(typeof value === 'string') {
 	value = JSON.parse(value);
   }
   return value;
@@ -74,6 +77,9 @@ function gd_glossary_cached(lang) {
 		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
 	  }
 	});
+  }
+  if(typeof window.glotdict_glossary === 'string') {
+	window.glotdict_glossary = JSON.parse(window.glotdict_glossary);
   }
   return window.glotdict_glossary;
 }
