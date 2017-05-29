@@ -97,7 +97,11 @@ function gd_locales() {
 	});
   }
   if (locales_date_cache !== null) {
-	window.glotdict_locales = Object.keys(JSON.parse(localStorage.getItem('gd_locales')));
+    var temp_value = JSON.parse(localStorage.getItem('gd_locales'));
+    if(typeof temp_value === 'string') {
+      temp_value = JSON.parse(temp_value);
+    }
+    window.glotdict_locales = Object.keys(temp_value);
   }
   return window.glotdict_locales;
 }
