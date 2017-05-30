@@ -49,7 +49,7 @@ function prepare_original( $text ) {
  *
  * @return string The prepared string for output.
  */
-function prepare_translation_textarea( $text ) {
+function gp_prepare_translation_textarea( $text ) {
 	if( gp_startswith( $text, "\r\n" ) ) {
 		$text = "\r\n" . $text;
 	} else {
@@ -150,7 +150,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			</div>
 		<?php endif; ?>
 		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
-		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
+		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
 		<p>
 			<?php
