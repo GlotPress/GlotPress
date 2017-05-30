@@ -265,23 +265,22 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data;
+				var editor, data, translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
 					return;
 				}
 
-				var editor = $gp.editor.current;
-				var translation_changed = false;
-				
-				$( '[id*=translation_' + editor.original_id + '_]' ).each( function() {
-					if ( this.value != this.defaultValue ) {
-						translation_changed = true;
+				editor = $gp.editor.current;
+
+				$( '[id*="translation_' + editor.original_id + '_"]' ).each( function() {
+					if ( this.value !== this.defaultValue ) {
+						translationChanged = true;
 					}
 				} );
-				
-				if ( true == translation_changed ) {
-					$gp.notices.error( "Translation has changed!  Please add the new translation before changing it's status." );
+
+				if ( translationChanged ) {
+					$gp.notices.error( 'Translation has changed! Please add the new translation before changing it\'s status.' );
 					return;
 				}
 
