@@ -16,7 +16,6 @@ language: php
 
 matrix:
   allow_failures:
-    - php: hhvm
     - php: nightly
   include:
   - php: 5.3
@@ -35,8 +34,6 @@ matrix:
     env: WP_VERSION=trunk WP_MULTISITE=0
   - php: 7.1
     env: WP_VERSION=trunk WP_MULTISITE=0
-  - php: hhvm
-    env: WP_VERSION=trunk WP_MULTISITE=0
   - php: nightly
     env: WP_VERSION=trunk WP_MULTISITE=0
 
@@ -49,7 +46,7 @@ install:
 
 before_script:
   - |
-    # Remove Xdebug for a huge performance increase, but not from nightly or hhvm:
+    # Remove Xdebug for a huge performance increase, but not from nightly:
     stable='^[0-9\.]+$'
     if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]]; then
       phpenv config-rm xdebug.ini
