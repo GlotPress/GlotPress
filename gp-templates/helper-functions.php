@@ -50,10 +50,10 @@ function prepare_original( $text ) {
  * @return string The prepared string for output.
  */
 function gp_prepare_translation_textarea( $text ) {
-	if( gp_startswith( $text, "\r\n" ) ) {
+	if ( gp_startswith( $text, "\r\n" ) ) {
 		$text = "\r\n" . $text;
 	} else {
-		if( gp_startswith( $text, "\n" ) ) {
+		if ( gp_startswith( $text, "\n" ) ) {
 			$text = "\r" . $text;
 		}
 	}
