@@ -265,13 +265,25 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data;
+				var editor, data, translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
 					return;
 				}
 
 				editor = $gp.editor.current;
+
+				$( '[id*="translation_' + editor.original_id + '_"]' ).each( function() {
+					if ( this.value !== this.defaultValue ) {
+						translationChanged = true;
+					}
+				} );
+
+				if ( translationChanged ) {
+					$gp.notices.error( 'Translation has changed! Please add the new translation before changing it\'s status.' );
+					return;
+				}
+
 				button.prop( 'disabled', true );
 				$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
 
