@@ -12,9 +12,7 @@ cache:
     - $HOME/phpunit-bin
     - $HOME/.composer/cache
 
-language:
-  - php
-  - node_js
+language: php
 
 matrix:
   allow_failures:
