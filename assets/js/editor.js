@@ -176,7 +176,6 @@ $gp.editor = (
 				$gp.editor.next();
 				old_current.preview.remove();
 				old_current.remove();
-				$gp.editor.current.preview.fadeIn( 800 );
 			},
 			save: function( button ) {
 				var editor, textareaName, data = [], translations;
@@ -218,8 +217,6 @@ $gp.editor = (
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
-						} else {
-							$gp.editor.current.preview.hide();
 						}
 					},
 					error: function( xhr, msg ) {
@@ -334,7 +331,6 @@ $gp.editor = (
 					success: function( data ) {
 						$gp.notices.success( 'Saved!' );
 						$gp.editor.replace_current( data );
-						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
