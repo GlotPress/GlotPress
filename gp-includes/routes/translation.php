@@ -253,6 +253,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
+		$glossary = $this->get_extended_glossary( $translation_set, $project );
+
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations) {
 			$data = compact('original_id');
@@ -315,6 +317,12 @@ class GP_Route_Translation extends GP_Route_Main {
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 
 				if ( ! empty( $translations ) ) {
+					if ( $glossary ) {
+						require_once GP_TMPL_PATH . 'helper-functions.php';
+
+						$translations = map_glossary_entries_to_translations_originals( $translations, $glossary );
+					}
+
 					$t = $translations[0];
 
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
