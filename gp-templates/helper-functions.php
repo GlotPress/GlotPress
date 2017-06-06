@@ -42,11 +42,12 @@ function prepare_original( $text ) {
 }
 
 /**
- * Prepare a translation string to be printed out in a translation row by adding an 'extra' return/newline if
- * it starts with one.  See GH701.
+ * Prepares a translation string to be printed out in a translation row by adding an 'extra' return/newline if
+ * it starts with one.
+ *
+ * @since 2.4.0
  *
  * @param string $text A single style handle to enqueue or an array or style handles to enqueue.
- *
  * @return string The prepared string for output.
  */
 function gp_prepare_translation_textarea( $text ) {
