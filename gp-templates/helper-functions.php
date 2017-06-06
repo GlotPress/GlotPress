@@ -53,10 +53,8 @@ function prepare_original( $text ) {
 function gp_prepare_translation_textarea( $text ) {
 	if ( gp_startswith( $text, "\r\n" ) ) {
 		$text = "\r\n" . $text;
-	} else {
-		if ( gp_startswith( $text, "\n" ) ) {
-			$text = "\r" . $text;
-		}
+	} elseif ( gp_startswith( $text, "\n" ) ) {
+		$text = "\r" . $text;
 	}
 
 	return $text;
