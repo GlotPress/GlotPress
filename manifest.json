@@ -12,25 +12,32 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://translate.wordpress.org/*"],
-      "js": ["js/init.js"]
+      "matches": [
+        "*://translate.wordpress.org/*"
+      ],
+      "js": [
+        "js/init.js"
+      ]
     }
   ],
   "web_accessible_resources": [
-      "js/glotdict.js",
-      "js/glotdict-functions.js",
-      "js/glotdict-settings.js",
-      "js/keymaster.js",
-      "js/pluralize.js",
-      "js/jquery.bind-first.js",
-      "icons/icon-16.png",
-      "js/init.js"
+    "js/glotdict.js",
+    "js/glotdict-functions.js",
+    "js/glotdict-settings.js",
+    "js/keymaster.js",
+    "js/pluralize.js",
+    "js/jquery.bind-first.js",
+    "icons/icon-16.png",
+    "js/init.js"
   ],
   "permissions": [
-    "webRequest", "webRequestBlocking"
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking"
   ],
   "background": {
-    "scripts": ["js/block-social-footer.js"]
+    "scripts": [
+      "js/block-social-footer.js"
+    ]
   }
-
 }

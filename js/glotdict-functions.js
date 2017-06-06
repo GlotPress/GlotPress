@@ -76,6 +76,10 @@ function gd_glossary_cached(lang) {
 		var glossary_date = gd_list_locales_cached();
 		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
 	  }
+	}).error(function (jqXHR, textStatus) {
+	  console.log('https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json')
+	  console.log(textStatus);
+	  console.log(jqXHR);
 	});
   }
   if(typeof window.glotdict_glossary === 'string') {
