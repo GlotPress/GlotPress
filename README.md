@@ -5,7 +5,7 @@
 The problem is that every community have their dictionaries to maintain consistency of the terms.  
 The goal of this browser extension is add that dictionaries when the user is translating on GlotPress and many other amazing features!
 
-PS: If you are using NoScript enable the domain wordpress.org and codeat.co else the extension will not work!.
+PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org and codeat.co else the extension will not work!.
 
 # Features
 

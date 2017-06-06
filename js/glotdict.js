@@ -3,8 +3,6 @@
 
 var glotdict_version = "1.0.1";
 
-jQuery('.g-plusone').remove();
-
 if (jQuery('.filters-toolbar:last div:first').length > 0) {
   gd_hotkeys();
   //Fix for PTE align

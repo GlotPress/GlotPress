@@ -325,7 +325,7 @@ function gd_validate(e) {
   } else {
 	if (!gd_get_setting('no_final_other_dot')) {
 	  if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
-		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation it\'s missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
+		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing of a final <b>.</b> or <b>?</b> or <b>!</b></div>');
 		e.stopImmediatePropagation();
 	  }
 	}
