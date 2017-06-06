@@ -1,3 +1,7 @@
+#1.2.6
+* Fix: Better social block for Firefox
+* Improvement: Few fix
+
 #1.2.5
 * Fix: Remove duplicate translate message on first run
 
