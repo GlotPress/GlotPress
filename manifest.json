@@ -1,42 +1,42 @@
 {
-  "description": "Add custom dictonaries on translate.wordpress.org",
-  "manifest_version": 2,
-  "name": "GlotDict",
-  "version": "1.2.6",
-  "homepage_url": "https://github.com/Mte90/GlotDict",
-  "icons": {
-    "16": "icons/icon-16.png",
-    "48": "icons/icon-48.png",
-    "128": "icons/icon-128.png"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://translate.wordpress.org/*"
-      ],
-      "js": [
+    "content_scripts": [
+        {
+            "js": [
+                "js/init.js"
+            ],
+            "matches": [
+                "*://translate.wordpress.org/*"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "js/glotdict.js",
+        "js/glotdict-functions.js",
+        "js/glotdict-settings.js",
+        "js/keymaster.js",
+        "js/pluralize.js",
+        "js/jquery.bind-first.js",
+        "icons/icon-16.png",
         "js/init.js"
-      ]
-    }
-  ],
-  "web_accessible_resources": [
-    "js/glotdict.js",
-    "js/glotdict-functions.js",
-    "js/glotdict-settings.js",
-    "js/keymaster.js",
-    "js/pluralize.js",
-    "js/jquery.bind-first.js",
-    "icons/icon-16.png",
-    "js/init.js"
-  ],
-  "permissions": [
-    "<all_urls>",
-    "webRequest",
-    "webRequestBlocking"
-  ],
-  "background": {
-    "scripts": [
-      "js/block-social-footer.js"
+    ],
+    "version": "1.2.7",
+    "description": "Add custom dictonaries on translate.wordpress.org",
+    "homepage_url": "https://github.com/Mte90/GlotDict",
+    "manifest_version": 2,
+    "icons": {
+        "48": "icons/icon-48.png",
+        "128": "icons/icon-128.png",
+        "16": "icons/icon-16.png"
+    },
+    "name": "GlotDict",
+    "background": {
+        "scripts": [
+            "js/block-social-footer.js"
+        ]
+    },
+    "permissions": [
+        "<all_urls>",
+        "webRequest",
+        "webRequestBlocking"
     ]
-  }
 }

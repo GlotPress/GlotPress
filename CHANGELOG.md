@@ -1,3 +1,6 @@
+#1.2.7
+* Fix: Remove support of Firefox in Chrome
+
 #1.2.6
 * Fix: Better social block for Firefox
 * Improvement: Few fix
