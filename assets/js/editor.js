@@ -172,10 +172,10 @@ $gp.editor = (
 				$gp.editor.current.after( html );
 				old_current = $gp.editor.current;
 				old_current.attr( 'id', old_current.attr( 'id' ) + '-old' );
+				old_current.preview.attr( 'id', old_current.preview.attr( 'id' ) + '-old' );
 				$gp.editor.next();
 				old_current.preview.remove();
 				old_current.remove();
-				$gp.editor.current.preview.fadeIn( 800 );
 			},
 			save: function( button ) {
 				var editor, textareaName, data = [], translations;
@@ -217,8 +217,6 @@ $gp.editor = (
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
-						} else {
-							$gp.editor.current.preview.hide();
 						}
 					},
 					error: function( xhr, msg ) {
