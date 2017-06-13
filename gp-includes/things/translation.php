@@ -302,7 +302,23 @@ class GP_Translation extends GP_Thing {
 
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
+
 		$locale = GP_Locales::by_slug( $translation_set->locale );
+		$root_locale = null;
+		$root_translation_set = null;
+		$has_root = false;
+
+		if ( null !== $locale->variant_root ) {
+			$root_for_translation = array();
+
+			$root_locale = GP_Locales::by_slug( $locale->variant_root );
+			$root_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set->slug, $locale->variant_root );
+
+			// Only set the root tranlsation flag if we have a valid root translation set, otherwise there's no point in querying it later.
+			if ( null !== $root_translation_set ) {
+				$has_root = true;
+			}
+		}
 
 		$join_type = 'INNER';
 
@@ -415,8 +431,8 @@ class GP_Translation extends GP_Thing {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';
-			$join_on[] = 't.status != "rejected"';
-			$join_on[] = 't.status != "old"';
+			$join_on[] = 'status != "rejected"';
+			$join_on[] = 'status != "old"';
 			$statuses = array_filter( $statuses, function( $x ) {
 				return 'untranslated' !== $x ;
 			} );
@@ -430,7 +446,7 @@ class GP_Translation extends GP_Thing {
 		if ( ! empty( $statuses ) ) {
 			$statuses_where = array();
 			foreach( $statuses as $single_status ) {
-				$statuses_where[] = $wpdb->prepare( 't.status = %s', $single_status );
+				$statuses_where[] = $wpdb->prepare( 'status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
 			$join_on[] = $statuses_where;
@@ -469,7 +485,30 @@ class GP_Translation extends GP_Thing {
 			'o.date_added as original_added',
 		);
 
-		$join = "$join_type JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id;
+		if ( $has_root ) {
+			$fields[] = 'r.id as root_id';
+			$fields[] = 'r.original_id as root_original_id';
+			$fields[] = 'r.translation_set_id as root_translation_set_id';
+			$fields[] = 'r.translation_0 as root_translation_0';
+			$fields[] = 'r.translation_1 as root_translation_1';
+			$fields[] = 'r.translation_2 as root_translation_2';
+			$fields[] = 'r.translation_3 as root_translation_3';
+			$fields[] = 'r.translation_4 as root_translation_4';
+			$fields[] = 'r.translation_5 as root_translation_5';
+			$fields[] = 'r.user_id as root_user_id';
+			$fields[] = 'r.status as root_status';
+			$fields[] = 'r.date_added as root_date_added';
+			$fields[] = 'r.date_modified as root_date_modified';
+			$fields[] = 'r.warnings as root_warnings';
+			$fields[] = 'r.user_id_last_modified as root_user_id_last_modified';
+		}
+
+		$join = "$join_type JOIN ( SELECT * FROM {$wpdb->gp_translations} WHERE translation_set_id = " . (int) $translation_set->id . " $join_on ) AS t ON o.id = t.original_id";
+		$root_join = '';
+
+		if ( $has_root ) {
+			$root_join = "$join_type JOIN ( SELECT * FROM {$wpdb->gp_translations} WHERE translation_set_id = " . (int) $root_translation_set->id . " $join_on ) AS r ON o.id = r.original_id";
+		}
 
 		$orderby = sprintf( $sort_by, $sort_how );
 
@@ -506,7 +545,8 @@ class GP_Translation extends GP_Thing {
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS $fields
 			FROM {$wpdb->gp_originals} as o
-			$join $join_on
+			$join
+			$root_join
 			WHERE $where $orderby $limit";
 
 		$rows = $this->many_no_map( $sql_for_translations );
@@ -523,7 +563,28 @@ class GP_Translation extends GP_Thing {
 
 		$this->found_rows = $this->found_rows();
 		$translations = array();
+
 		foreach( (array)$rows as $row ) {
+			if ( null === $row->id && $has_root ) {
+				$row->id = $row->root_id;
+				$row->original_id = $row->root_original_id;
+				$row->translation_set_id = $row->root_translation_set_id;
+				$row->translation_0 = $row->root_translation_0;
+				$row->translation_1 = $row->root_translation_1;
+				$row->translation_2 = $row->root_translation_2;
+				$row->translation_3 = $row->root_translation_3;
+				$row->translation_4 = $row->root_translation_4;
+				$row->translation_5 = $row->root_translation_5;
+				$row->user_id = $row->root_user_id;
+				$row->status = $row->root_status;
+				$row->date_added = $row->root_date_added;
+				$row->date_modified = $row->root_date_modified;
+				$row->warnings = $row->root_warnings;
+				$row->user_id_last_modified = $row->root_user_id_last_modified;
+				$row->translation_status = $row->root_status;
+				$row->translation_added = $row->root_date_added;
+			}
+
 			$row->user = $row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {

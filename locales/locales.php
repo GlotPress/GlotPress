@@ -16,6 +16,9 @@ class GP_Locale {
 	public $google_code = null;
 	public $preferred_sans_serif_font_family = null;
 	public $facebook_locale = null;
+	public $variant_root = null;
+	public $variants = null;
+	
 	// TODO: days, months, decimals, quotes
 
 	private $_index_for_number;
@@ -592,6 +595,8 @@ class GP_Locales {
 		$en_au->wp_locale = 'en_AU';
 		$en_au->slug = 'en-au';
 		$en_au->google_code = 'en';
+		$en_au->variant_root = $en->slug;
+		$en->variants[ $en_au->slug ] = $en_au->english_name;
 
 		$en_ca = new GP_Locale();
 		$en_ca->english_name = 'English (Canada)';
@@ -603,6 +608,8 @@ class GP_Locales {
 		$en_ca->wp_locale = 'en_CA';
 		$en_ca->slug = 'en-ca';
 		$en_ca->google_code = 'en';
+		$en_ca->variant_root = $en->slug;
+		$en->variants[ $en_ca->slug ] = $en_ca->english_name;
 
 		$en_gb = new GP_Locale();
 		$en_gb->english_name = 'English (UK)';
@@ -615,6 +622,8 @@ class GP_Locales {
 		$en_gb->slug = 'en-gb';
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
+		$en_gb->variant_root = $en->slug;
+		$en->variants[ $en_gb->slug ] = $en_gb->english_name;
 
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
@@ -626,6 +635,8 @@ class GP_Locales {
 		$en_nz->wp_locale = 'en_NZ';
 		$en_nz->slug = 'en-nz';
 		$en_nz->google_code = 'en';
+		$en_nz->variant_root = $en->slug;
+		$en->variants[ $en_nz->slug ] = $en_nz->english_name;
 
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
@@ -637,6 +648,8 @@ class GP_Locales {
 		$en_za->wp_locale = 'en_ZA';
 		$en_za->slug = 'en-za';
 		$en_za->google_code = 'en';
+		$en_za->variant_root = $en->slug;
+		$en->variants[ $en_za->slug ] = $en_za->english_name;
 
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
