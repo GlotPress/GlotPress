@@ -536,12 +536,14 @@ class GP_Locales {
 		$dzo->nplurals = 1;
 		$dzo->plural_expression = '0';
 
-		$ee = new GP_Locale();
-		$ee->english_name = 'Ewe';
-		$ee->native_name = 'Eʋegbe';
-		$ee->lang_code_iso_639_1 = 'ee';
-		$ee->lang_code_iso_639_2 = 'ewe';
-		$ee->slug = 'ee';
+		$ewe = new GP_Locale();
+		$ewe->english_name = 'Ewe';
+		$ewe->native_name = 'Eʋegbe';
+		$ewe->lang_code_iso_639_1 = 'ee';
+		$ewe->lang_code_iso_639_2 = 'ewe';
+		$ewe->country_code = 'gh';
+		$ewe->wp_locale = 'ee';
+		$ewe->slug = 'ewe';
 
 		$el_po = new GP_Locale();
 		$el_po->english_name = 'Greek (Polytonic)';
