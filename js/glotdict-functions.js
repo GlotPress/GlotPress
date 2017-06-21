@@ -152,7 +152,7 @@ function gd_add_project_links() {
 	var lang = jQuery('.gp-content .breadcrumb li:last-child a').attr('href').split('/');
 	lang = sanitize_value(lang[lang.length - 2]);
 	jQuery('.gp-content').prepend('<a style="float:right" href="https://translate.wordpress.org/locale/' + lang + '/default">' + jQuery('.gp-content .breadcrumb li:last-child a').text() + ' Projects to Translate</a>');
-	jQuery('.gp-content h2:first-child').prepend('<a class="glossary-link" style="float:right;padding-left:5px;margin-left:5px;border-left: 1px solid black;" href="https://translate.wordpress.org/stats">Translation Global Status</a>');
+	jQuery(jQuery('.gp-content h2')[0]).prepend('<a class="glossary-link" style="float:right;padding-left:5px;margin-left:5px;border-left: 1px solid black;" href="https://translate.wordpress.org/stats">Translation Global Status</a>');
   }
 }
 
