@@ -2,6 +2,7 @@
 * Fix: Link for Translation Global Status link
 * Fix: For Page Up/Down
 * Feature: Discard link on GlotDict alert
+* Feature: Warning on empty translation
 * Remove: Tooltip custom support
 
 #1.2.7

@@ -141,7 +141,7 @@ function gd_add_button() {
  */
 function gd_locales_selector() {
   var lang = gd_get_lang();
-  jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
+  jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick locale: </label><select id="gd-language-picker" class="glotdict_language"></select>');
   jQuery('.glotdict_language').append(jQuery('<option></option>'));
   var gd_locales_array = gd_locales();
   jQuery.each(gd_locales_array, function (key, value) {
@@ -166,11 +166,17 @@ function gd_locales_selector() {
  */
 function gd_validate(e) {
   if (jQuery('.editor:visible').data('discard') !== 'true') {
-	var text = jQuery('.editor:visible .original').html().slice(-1);
-	var lastchar = jQuery('.editor:visible textarea').val().slice(-1);
+	var text = jQuery('.editor:visible textarea').val();
+	var discard = ' <a href="#" class="discard-glotdict" data-row="' + jQuery('.editor:visible').attr('row') + '">Discard</a>';
+	if (text === '') {
+	  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation seems empty!' + discard + '</div>');
+	  e.stopImmediatePropagation();
+	  return;
+	}
+	var original_text = jQuery('.editor:visible .original').html().slice(-1);
+	var lastchar = text.slice(-1);
 	var hellipse = jQuery('.editor:visible .original').html().slice(-3) === '...';
 	var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
-	var discard = ' <a href="#" class="discard-glotdict" data-row="' + jQuery('.editor:visible').attr('row') + '">Discard</a>';
 	if (hellipse) {
 	  if (!gd_get_setting('no_final_dot')) {
 		if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
@@ -181,7 +187,7 @@ function gd_validate(e) {
 	  }
 	} else {
 	  if (!gd_get_setting('no_final_other_dots')) {
-		if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
+		if (jQuery.inArray(original_text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
 		  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>' + discard + '</div>');
 		  e.stopImmediatePropagation();
 		}
@@ -290,7 +296,7 @@ function gd_hotkeys() {
  */
 function gd_get_lang_consistency() {
   var lang = gd_get_lang();
-  var reallang = ''
+  var reallang = '';
   if (lang === 'pt_BR') {
 	reallang = 'pt-br';
   } else {

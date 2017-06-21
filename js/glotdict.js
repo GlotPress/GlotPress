@@ -38,7 +38,7 @@ jQuery('.glotdict_language').change(function () {
   location.reload();
 });
 
-jQuery('.glossary-word-glotdict').contextmenu(function (e) {
+jQuery('.glossary-word').contextmenu(function (e) {
   var info = jQuery(this).data('translations');
   jQuery('.editor:visible textarea').val(jQuery('.editor:visible textarea').val() + info[0].translation);
   e.preventDefault();

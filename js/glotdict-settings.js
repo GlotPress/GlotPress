@@ -1,6 +1,6 @@
 /* global key, glotdict_version, $gp, pluralize */
 
-jQuery('#menu-headline-nav').append('<li class="current-menu-item gd_setting" style="cursor:pointer;"><a> GlotDict</a></li>');
+jQuery('#menu-headline-nav').append('<li class="current-menu-item gd_setting" style="cursor:pointer;"><a style="font-weight:bold;"> GlotDict</a></li>');
 jQuery('.gd_icon').prependTo('.gd_setting').show();
 
 jQuery('.gd_setting').click(function () {
