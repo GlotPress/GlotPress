@@ -204,7 +204,6 @@ function gd_locales_selector() {
 			.append('<br><h2 style="background-color:#fff;padding:0;display:block;text-align:center;margin-top: 6px;">Welcome to GlotDict! Discover the features and the hotkeys on the <a href="https://github.com/Mte90/GlotDict/blob/master/README.md#features" target="_blank">Readme</a>.</h2>');
 	return;
   }
-  jQuery('.glossary-word').contents().unwrap();
 }
 
 /**

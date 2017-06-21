@@ -94,11 +94,19 @@ function gd_add_term_json(word, element, item) {
   }
 }
 
+
+jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
+jQuery("<div class='box has-glotdict'></div><div>Contain a Glossary term</div>").appendTo("#legend");
+
 if (!gd_get_setting('use_gp_tooltip')) {
   if (jQuery('.filters-toolbar:last div:first').length > 0) {
-	jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
-	jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
-	
+	jQuery('.glossary-word').contents().unwrap();
+
 	gd_terms_tooltip();
   }
+} else {
+  jQuery('.glossary-word').each(function () {
+	var line = jQuery(this).parent().parent().parent().parent().attr('row');
+	jQuery('#preview-' + line).addClass('has-glotdict');
+  });
 }
