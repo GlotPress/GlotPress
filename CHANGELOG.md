@@ -2,6 +2,7 @@
 * Fix: Link for Translation Global Status link
 * Fix: For Page Up/Down
 * Feature: Disable GlotDict Tooltips as setting
+* Remove: Tooltip custom support
 
 #1.2.7
 * Fix: Remove support of Firefox in Chrome

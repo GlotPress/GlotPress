@@ -49,43 +49,6 @@ function gd_list_locales_cached() {
 }
 
 /**
- * Get the glossary file saved 
- * 
- * @param {string} lang The language.
- * @returns Array
- */
-function gd_glossary_cached(lang) {
-  if (typeof lang === 'undefined' || lang === false) {
-	return;
-  }
-  var glossary_date_cache = localStorage.getItem('gd_glossary_date');
-  var locales_cache = gd_list_locales_cached();
-  window.glotdict_glossary = localStorage.getItem('gd_glossary_file');
-  if (isJSON(window.glotdict_glossary)) {
-	window.glotdict_glossary = JSON.parse(window.glotdict_glossary);
-  }
-  if (glossary_date_cache === null || glossary_date_cache === 'null' || glossary_date_cache.length === 0 || glossary_date_cache !== locales_cache[lang].time) {
-	jQuery.ajax({
-	  url: 'https://codeat.co/glotdict/dictionaries/' + glotdict_version + '/' + lang + '.json',
-	  dataType: 'text',
-	  async: false,
-	  cache: false
-	}).done(function (data) {
-	  if (data.length > 2) {
-		localStorage.setItem('gd_glossary_file', data);
-		window.glotdict_glossary = JSON.parse(data);
-		var glossary_date = gd_list_locales_cached();
-		localStorage.setItem('gd_glossary_date', glossary_date[gd_get_lang()].time);
-	  }
-	});
-  }
-  if(typeof window.glotdict_glossary === 'string') {
-	window.glotdict_glossary = JSON.parse(window.glotdict_glossary);
-  }
-  return window.glotdict_glossary;
-}
-
-/**
  * Get the list of locales avalaible
  * 
  * @returns Array
@@ -178,18 +141,7 @@ function gd_add_button() {
  */
 function gd_locales_selector() {
   var lang = gd_get_lang();
-  var lang_date = localStorage.getItem('gd_glossary_date');
-  if (lang_date === null || lang_date.length === 0 || lang_date === '' || lang_date === 'null') {
-	if (gd_glossary_cached(gd_get_lang())) {
-	  lang_date = sanitize_value(localStorage.getItem('gd_glossary_date'));
-	}
-  }
-  if (lang_date !== null) {
-	lang_date = ' Glossary Update: ' + lang_date;
-  } else {
-	lang_date = '';
-  }
-  jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>' + lang_date);
+  jQuery('.filters-toolbar:last div:first').append('<span class="separator">•</span><label for="gd-language-picker">Pick glossary: </label><select id="gd-language-picker" class="glotdict_language"></select>');
   jQuery('.glotdict_language').append(jQuery('<option></option>'));
   var gd_locales_array = gd_locales();
   jQuery.each(gd_locales_array, function (key, value) {
@@ -320,8 +272,6 @@ function gd_hotkeys() {
 	return false;
   });
   key('ctrl+alt+r', function () {
-	localStorage.removeItem('gd_glossary_date');
-	localStorage.removeItem('gd_glossary_file');
 	localStorage.removeItem('gd_language');
 	localStorage.removeItem('gd_locales');
 	localStorage.removeItem('gd_locales_date');
