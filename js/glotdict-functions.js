@@ -42,7 +42,7 @@ function gd_list_locales_cached() {
   } else {
 	value = JSON.parse(value);
   }
-  if(typeof value === 'string') {
+  if (typeof value === 'string') {
 	value = JSON.parse(value);
   }
   return value;
@@ -68,11 +68,11 @@ function gd_locales() {
 	});
   }
   if (locales_date_cache !== null) {
-    var temp_value = JSON.parse(localStorage.getItem('gd_locales'));
-    if(typeof temp_value === 'string') {
-      temp_value = JSON.parse(temp_value);
-    }
-    window.glotdict_locales = Object.keys(temp_value);
+	var temp_value = JSON.parse(localStorage.getItem('gd_locales'));
+	if (typeof temp_value === 'string') {
+	  temp_value = JSON.parse(temp_value);
+	}
+	window.glotdict_locales = Object.keys(temp_value);
   }
   return window.glotdict_locales;
 }
@@ -165,23 +165,26 @@ function gd_locales_selector() {
  * @returns void
  */
 function gd_validate(e) {
-  var text = jQuery('.editor:visible .original').html().slice(-1);
-  var lastchar = jQuery('.editor:visible textarea').val().slice(-1);
-  var hellipse = jQuery('.editor:visible .original').html().slice(-3) === '...';
-  var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
-  if (hellipse) {
-	if (!gd_get_setting('no_final_dot')) {
-	  if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
-		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contains a final <b>...</b> that should be translated as <b><code>&amp;hellip;</code></b></div>');
-		e.stopImmediatePropagation();
-		return;
+  if (jQuery('.editor:visible').data('discard') !== 'true') {
+	var text = jQuery('.editor:visible .original').html().slice(-1);
+	var lastchar = jQuery('.editor:visible textarea').val().slice(-1);
+	var hellipse = jQuery('.editor:visible .original').html().slice(-3) === '...';
+	var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
+	var discard = ' <a href="#" class="discard-glotdict" data-row="' + jQuery('.editor:visible').attr('row') + '">Discard</a>';
+	if (hellipse) {
+	  if (!gd_get_setting('no_final_dot')) {
+		if (jQuery('.editor:visible textarea').val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
+		  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contains a final <b>...</b> that should be translated as <b><code>&amp;hellip;</code></b>' + discard + '</div>');
+		  e.stopImmediatePropagation();
+		  return;
+		}
 	  }
-	}
-  } else {
-	if (!gd_get_setting('no_final_other_dots')) {
-	  if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
-		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b></div>');
-		e.stopImmediatePropagation();
+	} else {
+	  if (!gd_get_setting('no_final_other_dots')) {
+		if (jQuery.inArray(text, last_dot) === 1 && jQuery.inArray(lastchar, last_dot) === -1) {
+		  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>' + discard + '</div>');
+		  e.stopImmediatePropagation();
+		}
 	  }
 	}
   }

@@ -13,7 +13,7 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
 	jQuery('.preview .action').trigger('click');
   }
 
-  jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
+  jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}.discard-glotdict{float:right;}</style>").appendTo("head");
   jQuery("<div class='box has-glotdict'></div><div>Contain a Glossary term</div>").appendTo("#legend");
 
   jQuery('.glossary-word').each(function () {
@@ -41,6 +41,15 @@ jQuery('.glotdict_language').change(function () {
 jQuery('.glossary-word-glotdict').contextmenu(function (e) {
   var info = jQuery(this).data('translations');
   jQuery('.editor:visible textarea').val(jQuery('.editor:visible textarea').val() + info[0].translation);
+  e.preventDefault();
+  return false;
+});
+
+jQuery('.gp-content').on('click', '.discard-glotdict', function (e) {
+  var $this = jQuery(this);
+  var row = $this.data('row');
+  jQuery('#editor-' + row).data('discard', 'true');
+  $this.parent().remove();
   e.preventDefault();
   return false;
 });

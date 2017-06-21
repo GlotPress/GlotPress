@@ -1,7 +1,7 @@
-#1.2.8
+#1.3.0
 * Fix: Link for Translation Global Status link
 * Fix: For Page Up/Down
-* Feature: Disable GlotDict Tooltips as setting
+* Feature: Discard link on GlotDict alert
 * Remove: Tooltip custom support
 
 #1.2.7

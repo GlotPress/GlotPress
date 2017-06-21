@@ -2,19 +2,17 @@
 [![License](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://img.shields.io/badge/License-GPL%20v2-blue.svg) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e9107b200511490a961560efcf7c5d1c)](https://www.codacy.com/app/mte90net/GlotDict?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Mte90/GlotDict&amp;utm_campaign=Badge_Grade)  
 
 [https://translate.wordpress.org](https://translate.wordpress.org) enable to the users to translate plugin, themes and WordPress itself.  
-The problem is that every community have their dictionaries to maintain consistency of the terms.  
-The goal of this browser extension is add that dictionaries when the user is translating on GlotPress and many other amazing features!
+This extension implements many new feature to improve the quality of translation and speed up that process!
 
 PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org and codeat.co else the extension will not work!.
 
 # Features
 
-* Daily update of the glossary for the language in use
+* Daily update of the list of locales
 * Remove the loading of social buttons on the website footer (only for Firefox)
 * Click on the terms with glossary open the consistency tool
 * Add link to the Translation Status Overview with a button to scroll to the language in use
-* Add consistency links on terms
-* Use custom tooltips system
+* More warning on translations
 * Many hotkeys and shortcut
 
 ## Hotkeys
@@ -40,10 +38,6 @@ PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org 
 
 When the developer of the extension think that a new release is ready and tested they create a new release and publish on Firefox and Chrome addons store.  
 After that step we have to wait few hours for Chrome and for Firefox and all the installations will be updated automatically.
-
-# Add a new glossary for a non-developer
-
-Your glossary need to be published on GlotPress (and also on https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/list-of-glossaries-per-locale/) and a ticket created on https://github.com/Mte90/GlotDictJSON to update the internal system.
 
 # Contributors
 
