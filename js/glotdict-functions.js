@@ -37,7 +37,7 @@ function gd_today() {
  */
 function gd_list_locales_cached() {
   var value = localStorage.getItem('gd_locales');
-  if (value === '' || value === undefined) {
+  if (value === '' || value === "undefined") {
 	value = gd_locales();
   } else {
 	value = JSON.parse(value);
@@ -312,11 +312,11 @@ function gd_hotkeys() {
 	return false;
   });
   key('pageup', function () {
-	$gp.editor.prev()
+	$gp.editor.prev();
 	return false;
   });
   key('pagedown', function () {
-	$gp.editor.next()
+	$gp.editor.next();
 	return false;
   });
   key('ctrl+alt+r', function () {

@@ -10,9 +10,11 @@ PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org 
 # Features
 
 * Daily update of the glossary for the language in use
-* Remove the loading of social buttons on the website footer
+* Remove the loading of social buttons on the website footer (only for Firefox)
 * Click on the terms with glossary open the consistency tool
 * Add link to the Translation Status Overview with a button to scroll to the language in use
+* Add consistency links on terms
+* Use custom tooltips system
 * Many hotkeys and shortcut
 
 ## Hotkeys

@@ -51,6 +51,7 @@ function gd_terms_tooltip() {
  */
 function gd_get_lang_consistency() {
   var lang = gd_get_lang();
+  var reallang = ''
   if (lang === 'pt_BR') {
 	reallang = 'pt-br';
   } else {
@@ -106,7 +107,9 @@ if (!gd_get_setting('use_gp_tooltip')) {
   }
 } else {
   jQuery('.glossary-word').each(function () {
-	var line = jQuery(this).parent().parent().parent().parent().attr('row');
+	var $this = jQuery(this);
+	var line = $this.parent().parent().parent().parent().attr('row');
 	jQuery('#preview-' + line).addClass('has-glotdict');
+	$this.wrap('<a target="_blank" href="https://translate.wordpress.org/consistency?search=' + $this.text() + '&amp;set=' + gd_get_lang_consistency() + '%2Fdefault"></a>');
   });
 }
