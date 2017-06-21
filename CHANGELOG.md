@@ -1,4 +1,4 @@
-#1.3.0
+#1.3.1
 * Fix: Link for Translation Global Status link
 * Fix: For Page Up/Down
 * Feature: Discard link on GlotDict alert
