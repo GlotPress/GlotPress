@@ -281,16 +281,20 @@ function gd_hotkeys() {
 }
 
 /**
- * Check if string is JSON
+ * Get the language for consistency
  * 
- * @param {string} str
- * @returns {Boolean}
+ * @returns string
  */
-function isJSON(str) {
-  try {
-	JSON.parse(str);
-  } catch (e) {
-	return false;
+function gd_get_lang_consistency() {
+  var lang = gd_get_lang();
+  var reallang = ''
+  if (lang === 'pt_BR') {
+	reallang = 'pt-br';
+  } else {
+	var reallang = lang.split('_');
+	if (typeof reallang[1] !== 'undefined') {
+	  reallang = reallang[1].toLowerCase();
+	}
   }
-  return true;
+  return reallang;
 }
