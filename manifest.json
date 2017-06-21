@@ -20,7 +20,7 @@
         "icons/icon-16.png",
         "js/init.js"
     ],
-    "version": "1.2.7",
+    "version": "1.2.8",
     "description": "Add custom dictonaries on translate.wordpress.org",
     "homepage_url": "https://github.com/Mte90/GlotDict",
     "manifest_version": 2,

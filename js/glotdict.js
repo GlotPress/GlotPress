@@ -12,8 +12,6 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
   if (jQuery('.preview').length === 1) {
 	jQuery('.preview .action').trigger('click');
   }
-  jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}</style>").appendTo("head");
-  jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
 
   gd_locales_selector();
 

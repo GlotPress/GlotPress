@@ -313,15 +313,11 @@ function gd_hotkeys() {
 	return false;
   });
   key('pageup', function () {
-	if (jQuery('.editor:visible').length > 0) {
-	  jQuery('.editor').next().trigger('click');
-	}
+	$gp.editor.prev()
 	return false;
   });
   key('pagedown', function () {
-	if (jQuery('.editor:visible').length > 0) {
-	  jQuery('.editor').prev().trigger('click');
-	}
+	$gp.editor.next()
 	return false;
   });
   key('ctrl+alt+r', function () {
