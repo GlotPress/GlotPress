@@ -16,7 +16,6 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
   jQuery("<div class='box has-glotdict'></div><div>Contain a GlotDict term</div>").appendTo("#legend");
 
   gd_locales_selector();
-  gd_terms_tooltip();
 
   jQuery($gp.editor.table).onFirst('click', 'button.ok', gd_validate);
 }
