@@ -1,5 +1,6 @@
 #1.2.8
 * Fix: Link for Translation Global Status link
+* Fix: For Page Up/Down
 * Feature: Disable GlotDict Tooltips as setting
 
 #1.2.7
