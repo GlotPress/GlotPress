@@ -251,16 +251,16 @@ $i = 0;
 		if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {
 			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import Translations', 'glotpress' ) );
 		}
-		
+
 		/**
-		 * The 'default' filter is 'Current/waiting/fuzzy + untranslated (All)', however that is not 
-		 * the default action when exporting so make sure to set it on the export link if no filter 
+		 * The 'default' filter is 'Current/waiting/fuzzy + untranslated (All)', however that is not
+		 * the default action when exporting so make sure to set it on the export link if no filter
 		 * has been activated by the user.
 		 */
 		if ( ! array_key_exists( 'status', $filters ) ) {
 			$filters['status'] = 'current_or_waiting_or_fuzzy_or_untranslated';
 		}
-		
+
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
 		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );
 		$format_options = array();
