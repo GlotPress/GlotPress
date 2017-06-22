@@ -364,6 +364,10 @@ table.translations tr.preview.has-warnings td.original, div#legend div.has-warni
 	border-left: 2px solid red;
 }
 
+table.translations tr.preview.root-translation, #legend .root-translation  {
+	background-color: #DAFFBF;
+}
+
 table.translations a.action {
 	font-size: 100%;
 	font-style: normal;

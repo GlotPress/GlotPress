@@ -56,6 +56,32 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 
 	<?php gp_tmpl_load( 'translation-row-editor-meta-status', get_defined_vars() ); ?>
 
+	<?php if ( property_exists( $translation, 'root_translation_set_id' ) ) : ?>
+	<dl>
+		<dt><?php _e( 'Root Translation:', 'glotpress' ); ?></dt>
+	<?php if ( $translation->translation_set_id === $translation->root_translation_set_id ) : ?>
+		<dd>
+<?php
+			gp_link(
+			gp_url_project_locale(
+				$project,
+				$root_locale->slug,
+				$root_translation_set->slug,
+				array(
+					'filters[status]'         => 'either',
+					'filters[original_id]'    => $translation->original_id,
+					'filters[translation_id]' => $translation->id,
+				)
+			),
+			$root_translation_set->name_with_locale()
+		);
+?>
+		</dd>
+	<?php else : ?>
+		<dd><?php _e( 'False', 'glotpress' ); ?></dd>
+	<?php endif; ?>
+	</dl>
+	<?php endif; ?>
 	<?php if ( $translation->context ) : ?>
 		<dl>
 			<dt><?php _e( 'Context:', 'glotpress' ); ?></dt>
