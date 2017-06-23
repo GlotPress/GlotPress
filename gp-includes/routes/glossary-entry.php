@@ -83,13 +83,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		else {
 			$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
 			$duplicate = false;
-			
+
 			foreach ( $glossary_entries as $key => $entry ) {
 				if ( $new_glossary_entry->term === $entry->term ) {
 					$duplicate = true;
 				}
 			}
-			
+
 			if ( $duplicate ) {
 				// Translators: %s is the glossary term that was attempted to be added.
 				$this->errors[] = sprintf( __( 'Error "%s" is a duplicate glossary entry!', 'glotpress' ), esc_html( $new_glossary_entry->term ) );
