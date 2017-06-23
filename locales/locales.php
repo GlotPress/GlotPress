@@ -13,14 +13,29 @@ class GP_Locale {
 	public $slug;
 	public $nplurals = 2;
 	public $plural_expression = 'n != 1';
+	public $cldr_code;
+	public $cldr_nplurals = null;
+	public $cldr_plural_expressions;
 	public $google_code = null;
 	public $preferred_sans_serif_font_family = null;
 	public $facebook_locale = null;
+	public $variant_root = null;
+	public $variants = null;
+
 	// TODO: days, months, decimals, quotes
 
 	private $_index_for_number;
 
 	public function __construct( $args = array() ) {
+		$this->cldr_plural_expressions = array(
+			'zero' => '',
+			'one' => '',
+			'two' => '',
+			'many' => '',
+			'few' => '',
+			'other' => '',
+		);
+
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
 		}
@@ -122,6 +137,10 @@ class GP_Locales {
 		$af->slug = 'af';
 		$af->google_code = 'af';
 		$af->facebook_locale = 'af_ZA';
+		$af->cldr_code = 'af';
+		$af->cldr_nplurals = '2';
+		$af->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$af->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ak = new GP_Locale();
 		$ak->english_name = 'Akan';
@@ -131,6 +150,10 @@ class GP_Locales {
 		$ak->wp_locale = 'ak';
 		$ak->slug = 'ak';
 		$ak->facebook_locale = 'ak_GH';
+		$ak->cldr_code = 'ak';
+		$ak->cldr_nplurals = '2';
+		$ak->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$ak->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$am = new GP_Locale();
 		$am->english_name = 'Amharic';
@@ -141,6 +164,10 @@ class GP_Locales {
 		$am->wp_locale = 'am';
 		$am->slug = 'am';
 		$am->facebook_locale = 'am_ET';
+		$am->cldr_code = 'am';
+		$am->cldr_nplurals = '2';
+		$am->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$am->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$an = new GP_Locale();
 		$an->english_name = 'Aragonese';
@@ -163,6 +190,14 @@ class GP_Locales {
 		$ar->preferred_sans_serif_font_family = 'Tahoma';
 		$ar->google_code = 'ar';
 		$ar->facebook_locale = 'ar_AR';
+		$ar->cldr_code = 'ar';
+		$ar->cldr_nplurals = '6';
+		$ar->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
+		$ar->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ar->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
+		$ar->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
+		$ar->cldr_plural_expressions['few'] = 'n % 100 = 3..10 @integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …';
+		$ar->cldr_plural_expressions['other'] = ' @integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$arq = new GP_Locale();
 		$arq->english_name = 'Algerian Arabic';
@@ -175,6 +210,16 @@ class GP_Locales {
 		$arq->nplurals = 6;
 		$arq->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$arq->text_direction = 'rtl';
+		$arq->cldr_code = 'ar';
+		$arq->cldr_nplurals = '6';
+		$arq->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
+		$arq->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$arq->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
+		$arq->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
+		$arq->cldr_plural_expressions['few'] = 'n % 100 = 3..10 @integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …';
+		$arq->cldr_plural_expressions['other'] = ' @integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$arq->variant_root = $ar->slug;
+		$arq->variants[ $arq->slug ] = $arq->english_name;
 
 		$ary = new GP_Locale();
 		$ary->english_name = 'Moroccan Arabic';
@@ -187,6 +232,16 @@ class GP_Locales {
 		$ary->nplurals = 6;
 		$ary->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$ary->text_direction = 'rtl';
+		$ary->cldr_code = 'ar';
+		$ary->cldr_nplurals = '6';
+		$ary->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
+		$ary->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ary->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
+		$ary->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
+		$ary->cldr_plural_expressions['few'] = 'n % 100 = 3..10 @integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …';
+		$ary->cldr_plural_expressions['other'] = ' @integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$ary->variant_root = $ar->slug;
+		$ary->variants[ $ary->slug ] = $ary->english_name;
 
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
@@ -198,6 +253,10 @@ class GP_Locales {
 		$as->wp_locale = 'as';
 		$as->slug = 'as';
 		$as->facebook_locale = 'as_IN';
+		$as->cldr_code = 'as';
+		$as->cldr_nplurals = '2';
+		$as->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$as->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ast = new GP_Locale();
 		$ast->english_name = 'Asturian';
@@ -207,6 +266,10 @@ class GP_Locales {
 		$ast->country_code = 'es';
 		$ast->wp_locale = 'ast';
 		$ast->slug = 'ast';
+		$ast->cldr_code = 'ast';
+		$ast->cldr_nplurals = '2';
+		$ast->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$ast->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$av = new GP_Locale();
 		$av->english_name = 'Avaric';
@@ -235,6 +298,10 @@ class GP_Locales {
 		$az->slug = 'az';
 		$az->google_code = 'az';
 		$az->facebook_locale = 'az_AZ';
+		$az->cldr_code = 'az';
+		$az->cldr_nplurals = '2';
+		$az->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$az->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$azb = new GP_Locale();
 		$azb->english_name = 'South Azerbaijani';
@@ -245,6 +312,12 @@ class GP_Locales {
 		$azb->wp_locale = 'azb';
 		$azb->slug = 'azb';
 		$azb->text_direction = 'rtl';
+		$azb->cldr_code = 'az';
+		$azb->cldr_nplurals = '2';
+		$azb->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$azb->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$azb->variant_root = $az->slug;
+		$az->variants[ $azb->slug ] = $azb->english_name;
 
 		$az_tr = new GP_Locale();
 		$az_tr->english_name = 'Azerbaijani (Turkey)';
@@ -254,6 +327,12 @@ class GP_Locales {
 		$az_tr->country_code = 'tr';
 		$az_tr->wp_locale = 'az_TR';
 		$az_tr->slug = 'az-tr';
+		$az_tr->cldr_code = 'az';
+		$az_tr->cldr_nplurals = '2';
+		$az_tr->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$az_tr->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$az_tr->variant_root = $az->slug;
+		$az->variants[ $az_tr->slug ] = $az_tr->english_name;
 
 		$ba = new GP_Locale();
 		$ba->english_name = 'Bashkir';
@@ -294,6 +373,12 @@ class GP_Locales {
 		$be->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$be->google_code = 'be';
 		$be->facebook_locale = 'be_BY';
+		$be->cldr_code = 'be';
+		$be->cldr_nplurals = '4';
+		$be->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 1.0, 21.0, 31.0, 41.0, 51.0, 61.0, 71.0, 81.0, 101.0, 1001.0, …';
+		$be->cldr_plural_expressions['many'] = 'n % 10 = 0 or n % 10 = 5..9 or n % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$be->cldr_plural_expressions['few'] = 'n % 10 = 2..4 and n % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, … @decimal 2.0, 3.0, 4.0, 22.0, 23.0, 24.0, 32.0, 33.0, 102.0, 1002.0, …';
+		$be->cldr_plural_expressions['other'] = '   @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.1, 1000.1, …';
 
 		$bg = new GP_Locale();
 		$bg->english_name = 'Bulgarian';
@@ -305,6 +390,10 @@ class GP_Locales {
 		$bg->slug = 'bg';
 		$bg->google_code = 'bg';
 		$bg->facebook_locale = 'bg_BG';
+		$bg->cldr_code = 'bg';
+		$bg->cldr_nplurals = '2';
+		$bg->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$bg->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$bh = new GP_Locale();
 		$bh->english_name = 'Bihari';
@@ -312,6 +401,10 @@ class GP_Locales {
 		$bh->lang_code_iso_639_1 = 'bh';
 		$bh->lang_code_iso_639_2 = 'bih';
 		$bh->slug = 'bh';
+		$bh->cldr_code = 'bh';
+		$bh->cldr_nplurals = '2';
+		$bh->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$bh->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$bi = new GP_Locale();
 		$bi->english_name = 'Bislama';
@@ -327,6 +420,9 @@ class GP_Locales {
 		$bm->lang_code_iso_639_1 = 'bm';
 		$bm->lang_code_iso_639_2 = 'bam';
 		$bm->slug = 'bm';
+		$bm->cldr_code = 'bm';
+		$bm->cldr_nplurals = '1';
+		$bm->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$bn_bd = new GP_Locale();
 		$bn_bd->english_name = 'Bengali';
@@ -337,6 +433,10 @@ class GP_Locales {
 		$bn_bd->slug = 'bn';
 		$bn_bd->google_code = 'bn';
 		$bn_bd->facebook_locale = 'bn_IN';
+		$bn_bd->cldr_code = 'bn';
+		$bn_bd->cldr_nplurals = '2';
+		$bn_bd->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$bn_bd->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
@@ -347,6 +447,9 @@ class GP_Locales {
 		$bo->slug = 'bo';
 		$bo->nplurals = 1;
 		$bo->plural_expression = '0';
+		$bo->cldr_code = 'bo';
+		$bo->cldr_nplurals = '1';
+		$bo->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$br = new GP_Locale();
 		$br->english_name = 'Breton';
@@ -360,6 +463,13 @@ class GP_Locales {
 		$br->nplurals = 2;
 		$br->plural_expression = '(n > 1)';
 		$br->facebook_locale = 'br_FR';
+		$br->cldr_code = 'br';
+		$br->cldr_nplurals = '5';
+		$br->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11,71,91 @integer 1, 21, 31, 41, 51, 61, 81, 101, 1001, … @decimal 1.0, 21.0, 31.0, 41.0, 51.0, 61.0, 81.0, 101.0, 1001.0, …';
+		$br->cldr_plural_expressions['two'] = 'n % 10 = 2 and n % 100 != 12,72,92 @integer 2, 22, 32, 42, 52, 62, 82, 102, 1002, … @decimal 2.0, 22.0, 32.0, 42.0, 52.0, 62.0, 82.0, 102.0, 1002.0, …';
+		$br->cldr_plural_expressions['many'] = 'n != 0 and n % 1000000 = 0 @integer 1000000, … @decimal 1000000.0, 1000000.00, 1000000.000, …';
+		$br->cldr_plural_expressions['few'] = 'n % 10 = 3..4,9 and n % 100 != 10..19,70..79,90..99 @integer 3, 4, 9, 23, 24, 29, 33, 34, 39, 43, 44, 49, 103, 1003, … @decimal 3.0, 4.0, 9.0, 23.0, 24.0, 29.0, 33.0, 34.0, 103.0, 1003.0, …';
+		$br->cldr_plural_expressions['other'] = ' @integer 0, 5~8, 10~20, 100, 1000, 10000, 100000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, …';
 
 		$bs = new GP_Locale();
 		$bs->english_name = 'Bosnian';
@@ -373,6 +483,11 @@ class GP_Locales {
 		$bs->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$bs->google_code = 'bs';
 		$bs->facebook_locale = 'bs_BA';
+		$bs->cldr_code = 'bs';
+		$bs->cldr_nplurals = '3';
+		$bs->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 0.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 10.1, 100.1, 1000.1, …';
+		$bs->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, … @decimal 0.2~0.4, 1.2~1.4, 2.2~2.4, 3.2~3.4, 4.2~4.4, 5.2, 10.2, 100.2, 1000.2, …';
+		$bs->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 0.5~1.0, 1.5~2.0, 2.5~2.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ca = new GP_Locale();
 		$ca->english_name = 'Catalan';
@@ -383,6 +498,10 @@ class GP_Locales {
 		$ca->slug = 'ca';
 		$ca->google_code = 'ca';
 		$ca->facebook_locale = 'ca_ES';
+		$ca->cldr_code = 'ca';
+		$ca->cldr_nplurals = '2';
+		$ca->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$ca->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ce = new GP_Locale();
 		$ce->english_name = 'Chechen';
@@ -390,6 +509,10 @@ class GP_Locales {
 		$ce->lang_code_iso_639_1 = 'ce';
 		$ce->lang_code_iso_639_2 = 'che';
 		$ce->slug = 'ce';
+		$ce->cldr_code = 'ce';
+		$ce->cldr_nplurals = '2';
+		$ce->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ce->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ceb = new GP_Locale();
 		$ceb->english_name = 'Cebuano';
@@ -418,6 +541,10 @@ class GP_Locales {
 		$ckb->slug = 'ckb';
 		$ckb->text_direction = 'rtl';
 		$ckb->facebook_locale = 'cb_IQ';
+		$ckb->cldr_code = 'ku';
+		$ckb->cldr_nplurals = '2';
+		$ckb->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ckb->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$co = new GP_Locale();
 		$co->english_name = 'Corsican';
@@ -448,6 +575,12 @@ class GP_Locales {
 		$cs->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
 		$cs->google_code = 'cs';
 		$cs->facebook_locale = 'cs_CZ';
+		$cs->cldr_code = 'cs';
+		$cs->cldr_nplurals = '4';
+		$cs->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$cs->cldr_plural_expressions['many'] = 'v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$cs->cldr_plural_expressions['few'] = 'i = 2..4 and v = 0 @integer 2~4';
+		$cs->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 
 		$csb = new GP_Locale();
 		$csb->english_name = 'Kashubian';
@@ -484,6 +617,14 @@ class GP_Locales {
 		$cy->plural_expression = '(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3';
 		$cy->google_code = 'cy';
 		$cy->facebook_locale = 'cy_GB';
+		$cy->cldr_code = 'cy';
+		$cy->cldr_nplurals = '6';
+		$cy->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
+		$cy->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$cy->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
+		$cy->cldr_plural_expressions['many'] = 'n = 6 @integer 6 @decimal 6.0, 6.00, 6.000, 6.0000';
+		$cy->cldr_plural_expressions['few'] = 'n = 3 @integer 3 @decimal 3.0, 3.00, 3.000, 3.0000';
+		$cy->cldr_plural_expressions['other'] = ' @integer 4, 5, 7~20, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$da = new GP_Locale();
 		$da->english_name = 'Danish';
@@ -495,6 +636,10 @@ class GP_Locales {
 		$da->slug = 'da';
 		$da->google_code = 'da';
 		$da->facebook_locale = 'da_DK';
+		$da->cldr_code = 'da';
+		$da->cldr_nplurals = '2';
+		$da->cldr_plural_expressions['one'] = 'n = 1 or t != 0 and i = 0,1 @integer 1 @decimal 0.1~1.6';
+		$da->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 2.0~3.4, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$de = new GP_Locale();
 		$de->english_name = 'German';
@@ -505,6 +650,10 @@ class GP_Locales {
 		$de->slug = 'de';
 		$de->google_code = 'de';
 		$de->facebook_locale = 'de_DE';
+		$de->cldr_code = 'de';
+		$de->cldr_nplurals = '2';
+		$de->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$de->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$de_ch = new GP_Locale();
 		$de_ch->english_name = 'German (Switzerland)';
@@ -514,6 +663,12 @@ class GP_Locales {
 		$de_ch->wp_locale = 'de_CH';
 		$de_ch->slug = 'de-ch';
 		$de_ch->google_code = 'de';
+		$de_ch->cldr_code = 'de';
+		$de_ch->cldr_nplurals = '2';
+		$de_ch->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$de_ch->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$de_ch->variant_root = $de->slug;
+		$de->variants[ $de_ch->slug ] = $de_ch->english_name;
 
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
@@ -524,6 +679,10 @@ class GP_Locales {
 		$dv->wp_locale = 'dv';
 		$dv->slug = 'dv';
 		$dv->text_direction = 'rtl';
+		$dv->cldr_code = 'dv';
+		$dv->cldr_nplurals = '2';
+		$dv->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$dv->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$dzo = new GP_Locale();
 		$dzo->english_name = 'Dzongkha';
@@ -535,6 +694,9 @@ class GP_Locales {
 		$dzo->slug = 'dzo';
 		$dzo->nplurals = 1;
 		$dzo->plural_expression = '0';
+		$dzo->cldr_code = 'dz';
+		$dzo->cldr_nplurals = '1';
+		$dzo->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ewe = new GP_Locale();
 		$ewe->english_name = 'Ewe';
@@ -545,12 +707,10 @@ class GP_Locales {
 		$ewe->country_code = 'gh';
 		$ewe->wp_locale = 'ewe';
 		$ewe->slug = 'ee';
-
-		$el_po = new GP_Locale();
-		$el_po->english_name = 'Greek (Polytonic)';
-		$el_po->native_name = 'Greek (Polytonic)'; // TODO
-		$el_po->country_code = 'gr';
-		$el_po->slug = 'el-po';
+		$ewe->cldr_code = 'ee';
+		$ewe->cldr_nplurals = '2';
+		$ewe->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ewe->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$el = new GP_Locale();
 		$el->english_name = 'Greek';
@@ -562,6 +722,18 @@ class GP_Locales {
 		$el->slug = 'el';
 		$el->google_code = 'el';
 		$el->facebook_locale = 'el_GR';
+		$el->cldr_code = 'el';
+		$el->cldr_nplurals = '2';
+		$el->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$el->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+
+		$el_po = new GP_Locale();
+		$el_po->english_name = 'Greek (Polytonic)';
+		$el_po->native_name = 'Greek (Polytonic)'; // TODO
+		$el_po->country_code = 'gr';
+		$el_po->slug = 'el-po';
+		$el_po->variant_root = $el->slug;
+		$el->variants[ $el->slug ] = $el->english_name;
 
 		$emoji = new GP_Locale();
 		$emoji->english_name = 'Emoji';
@@ -573,14 +745,18 @@ class GP_Locales {
 		$emoji->plural_expression = '0';
 
 		$en = new GP_Locale();
-		$en->english_name = 'English';
-		$en->native_name = 'English';
+		$en->english_name = 'English (Unites States)';
+		$en->native_name = 'English (United States)';
 		$en->lang_code_iso_639_1 = 'en';
 		$en->country_code = 'us';
 		$en->wp_locale = 'en_US';
 		$en->slug = 'en';
 		$en->google_code = 'en';
 		$en->facebook_locale = 'en_US';
+		$en->cldr_code = 'en';
+		$en->cldr_nplurals = '2';
+		$en->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$en->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$en_au = new GP_Locale();
 		$en_au->english_name = 'English (Australia)';
@@ -592,6 +768,12 @@ class GP_Locales {
 		$en_au->wp_locale = 'en_AU';
 		$en_au->slug = 'en-au';
 		$en_au->google_code = 'en';
+		$en_au->cldr_code = 'en';
+		$en_au->cldr_nplurals = '2';
+		$en_au->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$en_au->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$en_au->variant_root = $en->slug;
+		$en->variants[ $en_au->slug ] = $en_au->english_name;
 
 		$en_ca = new GP_Locale();
 		$en_ca->english_name = 'English (Canada)';
@@ -603,6 +785,12 @@ class GP_Locales {
 		$en_ca->wp_locale = 'en_CA';
 		$en_ca->slug = 'en-ca';
 		$en_ca->google_code = 'en';
+		$en_ca->cldr_code = 'en';
+		$en_ca->cldr_nplurals = '2';
+		$en_ca->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$en_ca->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$en_ca->variant_root = $en->slug;
+		$en->variants[ $en_ca->slug ] = $en_ca->english_name;
 
 		$en_gb = new GP_Locale();
 		$en_gb->english_name = 'English (UK)';
@@ -615,6 +803,12 @@ class GP_Locales {
 		$en_gb->slug = 'en-gb';
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
+		$en_gb->cldr_code = 'en';
+		$en_gb->cldr_nplurals = '2';
+		$en_gb->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$en_gb->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$en_gb->variant_root = $en->slug;
+		$en->variants[ $en_gb->slug ] = $en_gb->english_name;
 
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
@@ -626,6 +820,12 @@ class GP_Locales {
 		$en_nz->wp_locale = 'en_NZ';
 		$en_nz->slug = 'en-nz';
 		$en_nz->google_code = 'en';
+		$en_nz->cldr_code = 'en';
+		$en_nz->cldr_nplurals = '2';
+		$en_nz->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$en_nz->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$en_nz->variant_root = $en->slug;
+		$en->variants[ $en_nz->slug ] = $en_nz->english_name;
 
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
@@ -637,6 +837,12 @@ class GP_Locales {
 		$en_za->wp_locale = 'en_ZA';
 		$en_za->slug = 'en-za';
 		$en_za->google_code = 'en';
+		$en_za->cldr_code = 'en';
+		$en_za->cldr_nplurals = '2';
+		$en_za->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$en_za->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$en_za->variant_root = $en->slug;
+		$en->variants[ $en_za->slug ] = $en_za->english_name;
 
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
@@ -647,6 +853,10 @@ class GP_Locales {
 		$eo->slug = 'eo';
 		$eo->google_code = 'eo';
 		$eo->facebook_locale = 'eo_EO';
+		$eo->cldr_code = 'eo';
+		$eo->cldr_nplurals = '2';
+		$eo->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$eo->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish (Spain)';
@@ -659,6 +869,10 @@ class GP_Locales {
 		$es->slug = 'es';
 		$es->google_code = 'es';
 		$es->facebook_locale = 'es_ES';
+		$es->cldr_code = 'es';
+		$es->cldr_nplurals = '2';
+		$es->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$es_ar = new GP_Locale();
 		$es_ar->english_name = 'Spanish (Argentina)';
@@ -671,6 +885,12 @@ class GP_Locales {
 		$es_ar->slug = 'es-ar';
 		$es_ar->google_code = 'es';
 		$es_ar->facebook_locale = 'es_LA';
+		$es_ar->cldr_code = 'es';
+		$es_ar->cldr_nplurals = '2';
+		$es_ar->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_ar->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_ar->variant_root = $es->slug;
+		$es->variants[ $es_ar->slug ] = $es_ar->english_name;
 
 		$es_cl = new GP_Locale();
 		$es_cl->english_name = 'Spanish (Chile)';
@@ -683,6 +903,12 @@ class GP_Locales {
 		$es_cl->slug = 'es-cl';
 		$es_cl->google_code = 'es';
 		$es_cl->facebook_locale = 'es_CL';
+		$es_cl->cldr_code = 'es';
+		$es_cl->cldr_nplurals = '2';
+		$es_cl->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_cl->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_cl->variant_root = $es->slug;
+		$es->variants[ $es_cl->slug ] = $es_cl->english_name;
 
 		$es_co = new GP_Locale();
 		$es_co->english_name = 'Spanish (Colombia)';
@@ -695,6 +921,12 @@ class GP_Locales {
 		$es_co->slug = 'es-co';
 		$es_co->google_code = 'es';
 		$es_co->facebook_locale = 'es_CO';
+		$es_co->cldr_code = 'es';
+		$es_co->cldr_nplurals = '2';
+		$es_co->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_co->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_co->variant_root = $es->slug;
+		$es->variants[ $es_co->slug ] = $es_co->english_name;
 
 		$es_cr = new GP_Locale();
 		$es_cr->english_name = 'Spanish (Costa Rica)';
@@ -705,6 +937,12 @@ class GP_Locales {
 		$es_cr->country_code = 'cr';
 		$es_cr->wp_locale = 'es_CR';
 		$es_cr->slug = 'es-cr';
+		$es_cr->cldr_code = 'es';
+		$es_cr->cldr_nplurals = '2';
+		$es_cr->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_cr->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_cr->variant_root = $es->slug;
+		$es->variants[ $es_cr->slug ] = $es_cr->english_name;
 
 		$es_gt = new GP_Locale();
 		$es_gt->english_name = 'Spanish (Guatemala)';
@@ -717,6 +955,12 @@ class GP_Locales {
 		$es_gt->slug = 'es-gt';
 		$es_gt->google_code = 'es';
 		$es_gt->facebook_locale = 'es_LA';
+		$es_gt->cldr_code = 'es';
+		$es_gt->cldr_nplurals = '2';
+		$es_gt->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_gt->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_gt->variant_root = $es->slug;
+		$es->variants[ $es_gt->slug ] = $es_gt->english_name;
 
 		$es_mx = new GP_Locale();
 		$es_mx->english_name = 'Spanish (Mexico)';
@@ -729,6 +973,12 @@ class GP_Locales {
 		$es_mx->slug = 'es-mx';
 		$es_mx->google_code = 'es';
 		$es_mx->facebook_locale = 'es_MX';
+		$es_mx->cldr_code = 'es';
+		$es_mx->cldr_nplurals = '2';
+		$es_mx->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_mx->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_mx->variant_root = $es->slug;
+		$es->variants[ $es_mx->slug ] = $es_mx->english_name;
 
 		$es_pe = new GP_Locale();
 		$es_pe->english_name = 'Spanish (Peru)';
@@ -741,6 +991,12 @@ class GP_Locales {
 		$es_pe->slug = 'es-pe';
 		$es_pe->google_code = 'es';
 		$es_pe->facebook_locale = 'es_LA';
+		$es_pe->cldr_code = 'es';
+		$es_pe->cldr_nplurals = '2';
+		$es_pe->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_pe->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_pe->variant_root = $es->slug;
+		$es->variants[ $es_pe->slug ] = $es_pe->english_name;
 
 		$es_pr = new GP_Locale();
 		$es_pr->english_name = 'Spanish (Puerto Rico)';
@@ -753,6 +1009,12 @@ class GP_Locales {
 		$es_pr->slug = 'es-pr';
 		$es_pr->google_code = 'es';
 		$es_pr->facebook_locale = 'es_LA';
+		$es_pr->cldr_code = 'es';
+		$es_pr->cldr_nplurals = '2';
+		$es_pr->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_pr->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_pr->variant_root = $es->slug;
+		$es->variants[ $es_pr->slug ] = $es_pr->english_name;
 
 		$es_us = new GP_Locale();
 		$es_us->english_name = 'Spanish (US)';
@@ -774,6 +1036,12 @@ class GP_Locales {
 		$es_ve->slug = 'es-ve';
 		$es_ve->google_code = 'es';
 		$es_ve->facebook_locale = 'es_VE';
+		$es_ve->cldr_code = 'es';
+		$es_ve->cldr_nplurals = '2';
+		$es_ve->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$es_ve->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$es_ve->variant_root = $es->slug;
+		$es->variants[ $es_ve->slug ] = $es_ve->english_name;
 
 		$et = new GP_Locale();
 		$et->english_name = 'Estonian';
@@ -785,6 +1053,10 @@ class GP_Locales {
 		$et->slug = 'et';
 		$et->google_code = 'et';
 		$et->facebook_locale = 'et_EE';
+		$et->cldr_code = 'et';
+		$et->cldr_nplurals = '2';
+		$et->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$et->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$eu = new GP_Locale();
 		$eu->english_name = 'Basque';
@@ -796,6 +1068,10 @@ class GP_Locales {
 		$eu->slug = 'eu';
 		$eu->google_code = 'eu';
 		$eu->facebook_locale = 'eu_ES';
+		$eu->cldr_code = 'eu';
+		$eu->cldr_nplurals = '2';
+		$eu->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$eu->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fa = new GP_Locale();
 		$fa->english_name = 'Persian';
@@ -809,6 +1085,10 @@ class GP_Locales {
 		$fa->text_direction = 'rtl';
 		$fa->google_code = 'fa';
 		$fa->facebook_locale = 'fa_IR';
+		$fa->cldr_code = 'fa';
+		$fa->cldr_nplurals = '2';
+		$fa->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$fa->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fa_af = new GP_Locale();
 		$fa_af->english_name = 'Persian (Afghanistan)';
@@ -821,6 +1101,12 @@ class GP_Locales {
 		$fa_af->plural_expression = '0';
 		$fa_af->text_direction = 'rtl';
 		$fa_af->google_code = 'fa';
+		$fa_af->cldr_code = 'fa';
+		$fa_af->cldr_nplurals = '2';
+		$fa_af->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$fa_af->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$fa_af->variant_root = $fa->slug;
+		$fa->variants[ $fa_af->slug ] = $fa_af->english_name;
 
 		$ff_sn = new GP_Locale();
 		$ff_sn->english_name = 'Fulah';
@@ -831,6 +1117,10 @@ class GP_Locales {
 		$ff_sn->wp_locale = 'fuc';
 		$ff_sn->slug = 'fuc';
 		$ff_sn->plural_expression = 'n!=1';
+		$ff_sn->cldr_code = 'ff';
+		$ff_sn->cldr_nplurals = '2';
+		$ff_sn->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$ff_sn->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fi = new GP_Locale();
 		$fi->english_name = 'Finnish';
@@ -842,6 +1132,10 @@ class GP_Locales {
 		$fi->slug = 'fi';
 		$fi->google_code = 'fi';
 		$fi->facebook_locale = 'fi_FI';
+		$fi->cldr_code = 'fi';
+		$fi->cldr_nplurals = '2';
+		$fi->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$fi->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fj = new GP_Locale();
 		$fj->english_name = 'Fijian';
@@ -860,6 +1154,10 @@ class GP_Locales {
 		$fo->wp_locale = 'fo';
 		$fo->slug = 'fo';
 		$fo->facebook_locale = 'fo_FO';
+		$fo->cldr_code = 'fo';
+		$fo->cldr_nplurals = '2';
+		$fo->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$fo->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fr = new GP_Locale();
 		$fr->english_name = 'French (France)';
@@ -872,6 +1170,10 @@ class GP_Locales {
 		$fr->plural_expression = 'n > 1';
 		$fr->google_code = 'fr';
 		$fr->facebook_locale = 'fr_FR';
+		$fr->cldr_code = 'fr';
+		$fr->cldr_nplurals = '2';
+		$fr->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$fr->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fr_be = new GP_Locale();
 		$fr_be->english_name = 'French (Belgium)';
@@ -881,6 +1183,12 @@ class GP_Locales {
 		$fr_be->country_code = 'be';
 		$fr_be->wp_locale = 'fr_BE';
 		$fr_be->slug = 'fr-be';
+		$fr_be->cldr_code = 'fr';
+		$fr_be->cldr_nplurals = '2';
+		$fr_be->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$fr_be->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$fr_be->variant_root = $fr->slug;
+		$fr->variants[ $fr_be->slug ] = $fr_be->english_name;
 
 		$fr_ca = new GP_Locale();
 		$fr_ca->english_name = 'French (Canada)';
@@ -891,6 +1199,12 @@ class GP_Locales {
 		$fr_ca->wp_locale = 'fr_CA';
 		$fr_ca->slug = 'fr-ca';
 		$fr_ca->facebook_locale = 'fr_CA';
+		$fr_ca->cldr_code = 'fr';
+		$fr_ca->cldr_nplurals = '2';
+		$fr_ca->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$fr_ca->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$fr_ca->variant_root = $fr->slug;
+		$fr->variants[ $fr_ca->slug ] = $fr_ca->english_name;
 
 		$fr_ch = new GP_Locale();
 		$fr_ch->english_name = 'French (Switzerland)';
@@ -899,6 +1213,12 @@ class GP_Locales {
 		$fr_ch->lang_code_iso_639_2 = 'fra';
 		$fr_ch->country_code = 'ch';
 		$fr_ch->slug = 'fr-ch';
+		$fr_ch->cldr_code = 'fr';
+		$fr_ch->cldr_nplurals = '2';
+		$fr_ch->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$fr_ch->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$fr_ch->variant_root = $fr->slug;
+		$fr->variants[ $fr_ch->slug ] = $fr_ch->english_name;
 
 		$frp = new GP_Locale();
 		$frp->english_name = 'Arpitan';
@@ -918,6 +1238,10 @@ class GP_Locales {
 		$fur->country_code = 'it';
 		$fur->wp_locale = 'fur';
 		$fur->slug = 'fur';
+		$fur->cldr_code = 'fur';
+		$fur->cldr_nplurals = '2';
+		$fur->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$fur->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$fy = new GP_Locale();
 		$fy->english_name = 'Frisian';
@@ -928,6 +1252,10 @@ class GP_Locales {
 		$fy->wp_locale = 'fy';
 		$fy->slug = 'fy';
 		$fy->facebook_locale = 'fy_NL';
+		$fy->cldr_code = 'fy';
+		$fy->cldr_nplurals = '2';
+		$fy->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$fy->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ga = new GP_Locale();
 		$ga->english_name = 'Irish';
@@ -941,6 +1269,13 @@ class GP_Locales {
 		$ga->plural_expression = 'n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4';
 		$ga->google_code = 'ga';
 		$ga->facebook_locale = 'ga_IE';
+		$ga->cldr_code = 'ga';
+		$ga->cldr_nplurals = '5';
+		$ga->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ga->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
+		$ga->cldr_plural_expressions['many'] = 'n = 7..10 @integer 7~10 @decimal 7.0, 8.0, 9.0, 10.0, 7.00, 8.00, 9.00, 10.00, 7.000, 8.000, 9.000, 10.000, 7.0000, 8.0000, 9.0000, 10.0000';
+		$ga->cldr_plural_expressions['few'] = 'n = 3..6 @integer 3~6 @decimal 3.0, 4.0, 5.0, 6.0, 3.00, 4.00, 5.00, 6.00, 3.000, 4.000, 5.000, 6.000, 3.0000, 4.0000, 5.0000, 6.0000';
+		$ga->cldr_plural_expressions['other'] = ' @integer 0, 11~25, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$gd = new GP_Locale();
 		$gd->english_name = 'Scottish Gaelic';
@@ -954,6 +1289,12 @@ class GP_Locales {
 		$gd->nplurals = 4;
 		$gd->plural_expression = '(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3';
 		$gd->google_code = 'gd';
+		$gd->cldr_code = 'gd';
+		$gd->cldr_nplurals = '4';
+		$gd->cldr_plural_expressions['one'] = 'n = 1,11 @integer 1, 11 @decimal 1.0, 11.0, 1.00, 11.00, 1.000, 11.000, 1.0000';
+		$gd->cldr_plural_expressions['two'] = 'n = 2,12 @integer 2, 12 @decimal 2.0, 12.0, 2.00, 12.00, 2.000, 12.000, 2.0000';
+		$gd->cldr_plural_expressions['few'] = 'n = 3..10,13..19 @integer 3~10, 13~19 @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 3.00';
+		$gd->cldr_plural_expressions['other'] = ' @integer 0, 20~34, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$gl = new GP_Locale();
 		$gl->english_name = 'Galician';
@@ -965,6 +1306,10 @@ class GP_Locales {
 		$gl->slug = 'gl';
 		$gl->google_code = 'gl';
 		$gl->facebook_locale = 'gl_ES';
+		$gl->cldr_code = 'gl';
+		$gl->cldr_nplurals = '2';
+		$gl->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$gl->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$gn = new GP_Locale();
 		$gn->english_name = 'Guaraní';
@@ -982,6 +1327,12 @@ class GP_Locales {
 		$gsw->country_code = 'ch';
 		$gsw->wp_locale = 'gsw';
 		$gsw->slug = 'gsw';
+		$gsw->cldr_code = 'gsw';
+		$gsw->cldr_nplurals = '2';
+		$gsw->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$gsw->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$gsw->variant_root = $de->slug;
+		$de->variants[ $gsw->slug ] = $gsw->english_name;
 
 		$gu = new GP_Locale();
 		$gu->english_name = 'Gujarati';
@@ -992,6 +1343,10 @@ class GP_Locales {
 		$gu->slug = 'gu';
 		$gu->google_code = 'gu';
 		$gu->facebook_locale = 'gu_IN';
+		$gu->cldr_code = 'gu';
+		$gu->cldr_nplurals = '2';
+		$gu->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$gu->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ha = new GP_Locale();
 		$ha->english_name = 'Hausa (Arabic)';
@@ -1001,6 +1356,10 @@ class GP_Locales {
 		$ha->slug = 'ha';
 		$ha->text_direction = 'rtl';
 		$ha->google_code = 'ha';
+		$ha->cldr_code = 'ha';
+		$ha->cldr_nplurals = '2';
+		$ha->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ha->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$hat = new GP_Locale();
 		$hat->english_name = 'Haitian Creole';
@@ -1023,6 +1382,10 @@ class GP_Locales {
 		$hau->slug = 'hau';
 		$hau->google_code = 'ha';
 		$hau->facebook_locale = 'ha_NG';
+		$hau->cldr_code = 'ha';
+		$hau->cldr_nplurals = '2';
+		$hau->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$hau->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$haw = new GP_Locale();
 		$haw->english_name = 'Hawaiian';
@@ -1031,6 +1394,10 @@ class GP_Locales {
 		$haw->country_code = 'us';
 		$haw->wp_locale = 'haw_US';
 		$haw->slug = 'haw';
+		$haw->cldr_code = 'haw';
+		$haw->cldr_nplurals = '2';
+		$haw->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$haw->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$haz = new GP_Locale();
 		$haz->english_name = 'Hazaragi';
@@ -1051,6 +1418,12 @@ class GP_Locales {
 		$he->text_direction = 'rtl';
 		$he->google_code = 'iw';
 		$he->facebook_locale = 'he_IL';
+		$he->cldr_code = 'he';
+		$he->cldr_nplurals = '4';
+		$he->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$he->cldr_plural_expressions['two'] = 'i = 2 and v = 0 @integer 2';
+		$he->cldr_plural_expressions['many'] = 'v = 0 and n != 0..10 and n % 10 = 0 @integer 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000, 10000, 100000, 1000000, …';
+		$he->cldr_plural_expressions['other'] = ' @integer 0, 3~17, 101, 1001, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$hi = new GP_Locale();
 		$hi->english_name = 'Hindi';
@@ -1062,6 +1435,10 @@ class GP_Locales {
 		$hi->slug = 'hi';
 		$hi->google_code = 'hi';
 		$hi->facebook_locale = 'hi_IN';
+		$hi->cldr_code = 'hi';
+		$hi->cldr_nplurals = '2';
+		$hi->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$hi->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$hr = new GP_Locale();
 		$hr->english_name = 'Croatian';
@@ -1075,6 +1452,11 @@ class GP_Locales {
 		$hr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$hr->google_code = 'hr';
 		$hr->facebook_locale = 'hr_HR';
+		$hr->cldr_code = 'hr';
+		$hr->cldr_nplurals = '3';
+		$hr->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 0.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 10.1, 100.1, 1000.1, …';
+		$hr->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, … @decimal 0.2~0.4, 1.2~1.4, 2.2~2.4, 3.2~3.4, 4.2~4.4, 5.2, 10.2, 100.2, 1000.2, …';
+		$hr->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 0.5~1.0, 1.5~2.0, 2.5~2.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$hu = new GP_Locale();
 		$hu->english_name = 'Hungarian';
@@ -1086,6 +1468,10 @@ class GP_Locales {
 		$hu->slug = 'hu';
 		$hu->google_code = 'hu';
 		$hu->facebook_locale = 'hu_HU';
+		$hu->cldr_code = 'hu';
+		$hu->cldr_nplurals = '2';
+		$hu->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$hu->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$hy = new GP_Locale();
 		$hy->english_name = 'Armenian';
@@ -1097,6 +1483,10 @@ class GP_Locales {
 		$hy->slug = 'hy';
 		$hy->google_code = 'hy';
 		$hy->facebook_locale = 'hy_AM';
+		$hy->cldr_code = 'hy';
+		$hy->cldr_nplurals = '2';
+		$hy->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$hy->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ia = new GP_Locale();
 		$ia->english_name = 'Interlingua';
@@ -1117,6 +1507,9 @@ class GP_Locales {
 		$id->plural_expression = 'n > 1';
 		$id->google_code = 'id';
 		$id->facebook_locale = 'id_ID';
+		$id->cldr_code = 'id';
+		$id->cldr_nplurals = '1';
+		$id->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ido = new GP_Locale();
 		$ido->english_name = 'Ido';
@@ -1134,6 +1527,11 @@ class GP_Locales {
 		$ike->lang_code_iso_639_2 = 'iku';
 		$ike->country_code = 'ca';
 		$ike->slug = 'ike';
+		$ike->cldr_code = 'iu';
+		$ike->cldr_nplurals = '3';
+		$ike->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ike->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
+		$ike->cldr_plural_expressions['other'] = ' @integer 0, 3~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ilo = new GP_Locale();
 		$ilo->english_name = 'Iloko';
@@ -1154,6 +1552,10 @@ class GP_Locales {
 		$is->plural_expression = '(n % 100 != 1 && n % 100 != 21 && n % 100 != 31 && n % 100 != 41 && n % 100 != 51 && n % 100 != 61 && n % 100 != 71 && n % 100 != 81 && n % 100 != 91)';
 		$is->google_code = 'is';
 		$is->facebook_locale = 'is_IS';
+		$is->cldr_code = 'is';
+		$is->cldr_nplurals = '2';
+		$is->cldr_plural_expressions['one'] = 't = 0 and i % 10 = 1 and i % 100 != 11 or t != 0 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 0.1~1.6, 10.1, 100.1, 1000.1, …';
+		$is->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$it = new GP_Locale();
 		$it->english_name = 'Italian';
@@ -1165,6 +1567,10 @@ class GP_Locales {
 		$it->slug = 'it';
 		$it->google_code = 'it';
 		$it->facebook_locale = 'it_IT';
+		$it->cldr_code = 'it';
+		$it->cldr_nplurals = '2';
+		$it->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$it->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ja = new GP_Locale();
 		$ja->english_name = 'Japanese';
@@ -1177,6 +1583,9 @@ class GP_Locales {
 		$ja->facebook_locale = 'ja_JP';
 		$ja->nplurals = 1;
 		$ja->plural_expression = '0';
+		$ja->cldr_code = 'ja';
+		$ja->cldr_nplurals = '1';
+		$ja->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$jv = new GP_Locale();
 		$jv->english_name = 'Javanese';
@@ -1188,6 +1597,9 @@ class GP_Locales {
 		$jv->slug = 'jv';
 		$jv->google_code = 'jw';
 		$jv->facebook_locale = 'jv_ID';
+		$jv->cldr_code = 'jv';
+		$jv->cldr_nplurals = '1';
+		$jv->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ka = new GP_Locale();
 		$ka->english_name = 'Georgian';
@@ -1201,6 +1613,10 @@ class GP_Locales {
 		$ka->plural_expression = '0';
 		$ka->google_code = 'ka';
 		$ka->facebook_locale = 'ka_GE';
+		$ka->cldr_code = 'ka';
+		$ka->cldr_nplurals = '2';
+		$ka->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ka->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$kab = new GP_Locale();
 		$kab->english_name = 'Kabyle';
@@ -1212,6 +1628,10 @@ class GP_Locales {
 		$kab->slug = 'kab';
 		$kab->nplurals = 2;
 		$kab->plural_expression = '(n > 1)';
+		$kab->cldr_code = 'kab';
+		$kab->cldr_nplurals = '2';
+		$kab->cldr_plural_expressions['one'] = 'i = 0,1 @integer 0, 1 @decimal 0.0~1.5';
+		$kab->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$kal = new GP_Locale();
 		$kal->english_name = 'Greenlandic';
@@ -1222,6 +1642,10 @@ class GP_Locales {
 		$kal->country_code = 'gl';
 		$kal->wp_locale = 'kal';
 		$kal->slug = 'kal';
+		$kal->cldr_code = 'kl';
+		$kal->cldr_nplurals = '2';
+		$kal->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$kal->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$kin = new GP_Locale();
 		$kin->english_name = 'Kinyarwanda';
@@ -1244,6 +1668,10 @@ class GP_Locales {
 		$kk->slug = 'kk';
 		$kk->google_code = 'kk';
 		$kk->facebook_locale = 'kk_KZ';
+		$kk->cldr_code = 'kk';
+		$kk->cldr_nplurals = '2';
+		$kk->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$kk->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$km = new GP_Locale();
 		$km->english_name = 'Khmer';
@@ -1257,6 +1685,9 @@ class GP_Locales {
 		$km->plural_expression = '0';
 		$km->google_code = 'km';
 		$km->facebook_locale = 'km_KH';
+		$km->cldr_code = 'km';
+		$km->cldr_nplurals = '1';
+		$km->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$kmr = new GP_Locale();
 		$kmr->english_name = 'Kurdish (Kurmanji)';
@@ -1266,6 +1697,10 @@ class GP_Locales {
 		$kmr->country_code = 'tr';
 		$kmr->slug = 'kmr';
 		$kmr->facebook_locale = 'ku_TR';
+		$kmr->cldr_code = 'ku';
+		$kmr->cldr_nplurals = '2';
+		$kmr->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$kmr->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$kn = new GP_Locale();
 		$kn->english_name = 'Kannada';
@@ -1277,6 +1712,10 @@ class GP_Locales {
 		$kn->slug = 'kn';
 		$kn->google_code = 'kn';
 		$kn->facebook_locale = 'kn_IN';
+		$kn->cldr_code = 'kn';
+		$kn->cldr_nplurals = '2';
+		$kn->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$kn->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ko = new GP_Locale();
 		$ko->english_name = 'Korean';
@@ -1290,6 +1729,9 @@ class GP_Locales {
 		$ko->plural_expression = '0';
 		$ko->google_code = 'ko';
 		$ko->facebook_locale = 'ko_KR';
+		$ko->cldr_code = 'ko';
+		$ko->cldr_nplurals = '1';
+		$ko->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ks = new GP_Locale();
 		$ks->english_name = 'Kashmiri';
@@ -1297,6 +1739,10 @@ class GP_Locales {
 		$ks->lang_code_iso_639_1 = 'ks';
 		$ks->lang_code_iso_639_2 = 'kas';
 		$ks->slug = 'ks';
+		$ks->cldr_code = 'ks';
+		$ks->cldr_nplurals = '2';
+		$ks->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ks->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$kir = new GP_Locale();
 		$kir->english_name = 'Kyrgyz';
@@ -1310,6 +1756,10 @@ class GP_Locales {
 		$kir->nplurals = 1;
 		$kir->plural_expression = '0';
 		$kir->google_code = 'ky';
+		$kir->cldr_code = 'ky';
+		$kir->cldr_nplurals = '2';
+		$kir->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$kir->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$la = new GP_Locale();
 		$la->english_name = 'Latin';
@@ -1327,6 +1777,10 @@ class GP_Locales {
 		$lb->country_code = 'lu';
 		$lb->wp_locale = 'lb_LU';
 		$lb->slug = 'lb';
+		$lb->cldr_code = 'lb';
+		$lb->cldr_nplurals = '2';
+		$lb->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$lb->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$li = new GP_Locale();
 		$li->english_name = 'Limburgish';
@@ -1350,6 +1804,10 @@ class GP_Locales {
 		$lin->nplurals = 2;
 		$lin->plural_expression = 'n>1';
 		$lin->facebook_locale = 'ln_CD';
+		$lin->cldr_code = 'ln';
+		$lin->cldr_nplurals = '2';
+		$lin->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$lin->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$lmo = new GP_Locale();
 		$lmo->english_name = 'Lombard';
@@ -1371,6 +1829,9 @@ class GP_Locales {
 		$lo->plural_expression = '0';
 		$lo->google_code = 'lo';
 		$lo->facebook_locale = 'lo_LA';
+		$lo->cldr_code = 'lo';
+		$lo->cldr_nplurals = '1';
+		$lo->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$lt = new GP_Locale();
 		$lt->english_name = 'Lithuanian';
@@ -1384,6 +1845,12 @@ class GP_Locales {
 		$lt->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$lt->google_code = 'lt';
 		$lt->facebook_locale = 'lt_LT';
+		$lt->cldr_code = 'lt';
+		$lt->cldr_nplurals = '4';
+		$lt->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11..19 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 1.0, 21.0, 31.0, 41.0, 51.0, 61.0, 71.0, 81.0, 101.0, 1001.0, …';
+		$lt->cldr_plural_expressions['many'] = 'f != 0   @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.1, 1000.1, …';
+		$lt->cldr_plural_expressions['few'] = 'n % 10 = 2..9 and n % 100 != 11..19 @integer 2~9, 22~29, 102, 1002, … @decimal 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 22.0, 102.0, 1002.0, …';
+		$lt->cldr_plural_expressions['other'] = ' @integer 0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$lug = new GP_Locale();
 		$lug->english_name = 'Luganda';
@@ -1407,6 +1874,11 @@ class GP_Locales {
 		$lv->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)';
 		$lv->google_code = 'lv';
 		$lv->facebook_locale = 'lv_LV';
+		$lv->cldr_code = 'lv';
+		$lv->cldr_nplurals = '3';
+		$lv->cldr_plural_expressions['zero'] = 'n % 10 = 0 or n % 100 = 11..19 or v = 2 and f % 100 = 11..19 @integer 0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$lv->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11 or v = 2 and f % 10 = 1 and f % 100 != 11 or v != 2 and f % 10 = 1 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 0.1, 1.0, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 10.1, 100.1, 1000.1, …';
+		$lv->cldr_plural_expressions['other'] = ' @integer 2~9, 22~29, 102, 1002, … @decimal 0.2~0.9, 1.2~1.9, 10.2, 100.2, 1000.2, …';
 
 		$me = new GP_Locale();
 		$me->english_name = 'Montenegrin';
@@ -1437,6 +1909,10 @@ class GP_Locales {
 		$mg->slug = 'mg';
 		$mg->google_code = 'mg';
 		$mg->facebook_locale = 'mg_MG';
+		$mg->cldr_code = 'mg';
+		$mg->cldr_nplurals = '2';
+		$mg->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$mg->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$mhr = new GP_Locale();
 		$mhr->english_name = 'Mari (Meadow)';
@@ -1457,6 +1933,10 @@ class GP_Locales {
 		$mk->plural_expression = 'n==1 || n%10==1 ? 0 : 1';
 		$mk->google_code = 'mk';
 		$mk->facebook_locale = 'mk_MK';
+		$mk->cldr_code = 'mk';
+		$mk->cldr_nplurals = '2';
+		$mk->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 or f % 10 = 1 @integer 1, 11, 21, 31, 41, 51, 61, 71, 101, 1001, … @decimal 0.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 10.1, 100.1, 1000.1, …';
+		$mk->cldr_plural_expressions['other'] = ' @integer 0, 2~10, 12~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 0.2~1.0, 1.2~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ml = new GP_Locale();
 		$ml->english_name = 'Malayalam';
@@ -1468,6 +1948,10 @@ class GP_Locales {
 		$ml->slug = 'ml';
 		$ml->google_code = 'ml';
 		$ml->facebook_locale = 'ml_IN';
+		$ml->cldr_code = 'ml';
+		$ml->cldr_nplurals = '2';
+		$ml->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ml->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$mlt = new GP_Locale();
 		$mlt->english_name = 'Maltese';
@@ -1493,6 +1977,10 @@ class GP_Locales {
 		$mn->slug = 'mn';
 		$mn->google_code = 'mn';
 		$mn->facebook_locale = 'mn_MN';
+		$mn->cldr_code = 'mn';
+		$mn->cldr_nplurals = '2';
+		$mn->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$mn->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$mr = new GP_Locale();
 		$mr->english_name = 'Marathi';
@@ -1503,6 +1991,10 @@ class GP_Locales {
 		$mr->slug = 'mr';
 		$mr->google_code = 'mr';
 		$mr->facebook_locale = 'mr_IN';
+		$mr->cldr_code = 'mr';
+		$mr->cldr_nplurals = '2';
+		$mr->cldr_plural_expressions['one'] = 'i = 0 or n = 1 @integer 0, 1 @decimal 0.0~1.0, 0.00~0.04';
+		$mr->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$mri = new GP_Locale();
 		$mri->english_name = 'Maori';
@@ -1534,6 +2026,9 @@ class GP_Locales {
 		$ms->plural_expression = '0';
 		$ms->google_code = 'ms';
 		$ms->facebook_locale = 'ms_MY';
+		$ms->cldr_code = 'ms';
+		$ms->cldr_nplurals = '1';
+		$ms->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$mwl = new GP_Locale();
 		$mwl->english_name = 'Mirandese';
@@ -1550,6 +2045,9 @@ class GP_Locales {
 		$my->wp_locale = 'my_MM';
 		$my->slug = 'mya';
 		$my->google_code = 'my';
+		$my->cldr_code = 'my';
+		$my->cldr_nplurals = '1';
+		$my->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ne = new GP_Locale();
 		$ne->english_name = 'Nepali';
@@ -1561,6 +2059,10 @@ class GP_Locales {
 		$ne->slug = 'ne';
 		$ne->google_code = 'ne';
 		$ne->facebook_locale = 'ne_NP';
+		$ne->cldr_code = 'ne';
+		$ne->cldr_nplurals = '2';
+		$ne->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ne->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$nb = new GP_Locale();
 		$nb->english_name = 'Norwegian (Bokmål)';
@@ -1572,6 +2074,10 @@ class GP_Locales {
 		$nb->slug = 'nb';
 		$nb->google_code = 'no';
 		$nb->facebook_locale = 'nb_NO';
+		$nb->cldr_code = 'nb';
+		$nb->cldr_nplurals = '2';
+		$nb->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$nb->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$nl = new GP_Locale();
 		$nl->english_name = 'Dutch';
@@ -1583,6 +2089,10 @@ class GP_Locales {
 		$nl->slug = 'nl';
 		$nl->google_code = 'nl';
 		$nl->facebook_locale = 'nl_NL';
+		$nl->cldr_code = 'nl';
+		$nl->cldr_nplurals = '2';
+		$nl->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$nl->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$nl_be = new GP_Locale();
 		$nl_be->english_name = 'Dutch (Belgium)';
@@ -1593,6 +2103,25 @@ class GP_Locales {
 		$nl_be->wp_locale = 'nl_BE';
 		$nl_be->slug = 'nl-be';
 		$nl_be->google_code = 'nl';
+		$nl_be->cldr_code = 'nl';
+		$nl_be->cldr_nplurals = '2';
+		$nl_be->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$nl_be->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$nl_be->variant_root = $nl->slug;
+		$nl->variants[ $nl_be->slug ] = $nl_be->english_name;
+
+		$no = new GP_Locale();
+		$no->english_name = 'Norwegian';
+		$no->native_name = 'Norsk';
+		$no->lang_code_iso_639_1 = 'no';
+		$no->lang_code_iso_639_2 = 'nor';
+		$no->country_code = 'no';
+		$no->slug = 'no';
+		$no->google_code = 'no';
+		$no->cldr_code = 'no';
+		$no->cldr_nplurals = '2';
+		$no->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$no->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$nn = new GP_Locale();
 		$nn->english_name = 'Norwegian (Nynorsk)';
@@ -1604,15 +2133,12 @@ class GP_Locales {
 		$nn->slug = 'nn';
 		$nn->google_code = 'no';
 		$nn->facebook_locale = 'nn_NO';
-
-		$no = new GP_Locale();
-		$no->english_name = 'Norwegian';
-		$no->native_name = 'Norsk';
-		$no->lang_code_iso_639_1 = 'no';
-		$no->lang_code_iso_639_2 = 'nor';
-		$no->country_code = 'no';
-		$no->slug = 'no';
-		$no->google_code = 'no';
+		$nn->cldr_code = 'nn';
+		$nn->cldr_nplurals = '2';
+		$nn->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$nn->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$nn->variant_root = $no->slug;
+		$no->variants[ $nn->slug ] = $nn->english_name;
 
 		$oci = new GP_Locale();
 		$oci->english_name = 'Occitan';
@@ -1633,6 +2159,10 @@ class GP_Locales {
 		$orm->lang_code_iso_639_3 = 'orm';
 		$orm->slug = 'orm';
 		$orm->plural_expression = '(n > 1)';
+		$orm->cldr_code = 'om';
+		$orm->cldr_nplurals = '2';
+		$orm->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$orm->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ory = new GP_Locale();
 		$ory->english_name = 'Oriya';
@@ -1643,6 +2173,10 @@ class GP_Locales {
 		$ory->wp_locale = 'ory';
 		$ory->slug = 'ory';
 		$ory->facebook_locale = 'or_IN';
+		$ory->cldr_code = 'or';
+		$ory->cldr_nplurals = '2';
+		$ory->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ory->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$os = new GP_Locale();
 		$os->english_name = 'Ossetic';
@@ -1651,6 +2185,10 @@ class GP_Locales {
 		$os->lang_code_iso_639_2 = 'oss';
 		$os->wp_locale = 'os';
 		$os->slug = 'os';
+		$os->cldr_code = 'os';
+		$os->cldr_nplurals = '2';
+		$os->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$os->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$pa = new GP_Locale();
 		$pa->english_name = 'Punjabi';
@@ -1662,6 +2200,10 @@ class GP_Locales {
 		$pa->slug = 'pa';
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
+		$pa->cldr_code = 'pa';
+		$pa->cldr_nplurals = '2';
+		$pa->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$pa->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$pap = new GP_Locale();
 		$pap->english_name = 'Papiamento';
@@ -1693,6 +2235,26 @@ class GP_Locales {
 		$pl->plural_expression = '(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$pl->google_code = 'pl';
 		$pl->facebook_locale = 'pl_PL';
+		$pl->cldr_code = 'pl';
+		$pl->cldr_nplurals = '4';
+		$pl->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$pl->cldr_plural_expressions['many'] = 'v = 0 and i != 1 and i % 10 = 0..1 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 12..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
+		$pl->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …';
+		$pl->cldr_plural_expressions['other'] = '   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+
+		$pt = new GP_Locale();
+		$pt->english_name = 'Portuguese (Portugal)';
+		$pt->native_name = 'Português';
+		$pt->lang_code_iso_639_1 = 'pt';
+		$pt->country_code = 'pt';
+		$pt->wp_locale = 'pt_PT';
+		$pt->slug = 'pt';
+		$pt->google_code = 'pt-PT';
+		$pt->facebook_locale = 'pt_PT';
+		$pt->cldr_code = 'pt';
+		$pt->cldr_nplurals = '2';
+		$pt->cldr_plural_expressions['one'] = 'i = 0..1 @integer 0, 1 @decimal 0.0~1.5';
+		$pt->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$pt_br = new GP_Locale();
 		$pt_br->english_name = 'Portuguese (Brazil)';
@@ -1706,16 +2268,12 @@ class GP_Locales {
 		$pt_br->plural_expression = '(n > 1)';
 		$pt_br->google_code = 'pt-BR';
 		$pt_br->facebook_locale = 'pt_BR';
-
-		$pt = new GP_Locale();
-		$pt->english_name = 'Portuguese (Portugal)';
-		$pt->native_name = 'Português';
-		$pt->lang_code_iso_639_1 = 'pt';
-		$pt->country_code = 'pt';
-		$pt->wp_locale = 'pt_PT';
-		$pt->slug = 'pt';
-		$pt->google_code = 'pt-PT';
-		$pt->facebook_locale = 'pt_PT';
+		$pt_br->cldr_code = 'pt';
+		$pt_br->cldr_nplurals = '2';
+		$pt_br->cldr_plural_expressions['one'] = 'i = 0..1 @integer 0, 1 @decimal 0.0~1.5';
+		$pt_br->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 2.0~3.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$pt_br->variant_root = $pt->slug;
+		$pt->variants[ $pt_br->slug ] = $pt_br->english_name;
 
 		$ps = new GP_Locale();
 		$ps->english_name = 'Pashto';
@@ -1727,6 +2285,10 @@ class GP_Locales {
 		$ps->slug = 'ps';
 		$ps->text_direction = 'rtl';
 		$ps->facebook_locale = 'ps_AF';
+		$ps->cldr_code = 'ps';
+		$ps->cldr_nplurals = '2';
+		$ps->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ps->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$rhg = new GP_Locale();
 		$rhg->english_name = 'Rohingya';
@@ -1750,6 +2312,11 @@ class GP_Locales {
 		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2)';
 		$ro->google_code = 'ro';
 		$ro->facebook_locale = 'ro_RO';
+		$ro->cldr_code = 'ro';
+		$ro->cldr_nplurals = '3';
+		$ro->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$ro->cldr_plural_expressions['few'] = 'v != 0 or n = 0 or n != 1 and n % 100 = 1..19 @integer 0, 2~16, 101, 1001, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$ro->cldr_plural_expressions['other'] = ' @integer 20~35, 100, 1000, 10000, 100000, 1000000, …';
 
 		$roh = new GP_Locale();
 		$roh->english_name = 'Romansh';
@@ -1759,6 +2326,10 @@ class GP_Locales {
 		$roh->country_code = 'ch';
 		$roh->wp_locale = 'roh';
 		$roh->slug = 'roh';
+		$roh->cldr_code = 'rm';
+		$roh->cldr_nplurals = '2';
+		$roh->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$roh->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
@@ -1772,6 +2343,12 @@ class GP_Locales {
 		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$ru->google_code = 'ru';
 		$ru->facebook_locale = 'ru_RU';
+		$ru->cldr_code = 'ru';
+		$ru->cldr_nplurals = '4';
+		$ru->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …';
+		$ru->cldr_plural_expressions['many'] = 'v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
+		$ru->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …';
+		$ru->cldr_plural_expressions['other'] = '   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$rue = new GP_Locale();
 		$rue->english_name = 'Rusyn';
@@ -1799,6 +2376,9 @@ class GP_Locales {
 		$sah->country_code = 'ru';
 		$sah->wp_locale = 'sah';
 		$sah->slug = 'sah';
+		$sah->cldr_code = 'sah';
+		$sah->cldr_nplurals = '1';
+		$sah->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$sa_in = new GP_Locale();
 		$sa_in->english_name = 'Sanskrit';
@@ -1829,6 +2409,10 @@ class GP_Locales {
 		$si->slug = 'si';
 		$si->google_code = 'si';
 		$si->facebook_locale = 'si_LK';
+		$si->cldr_code = 'si';
+		$si->cldr_nplurals = '2';
+		$si->cldr_plural_expressions['one'] = 'n = 0,1 or i = 0 and f = 1 @integer 0, 1 @decimal 0.0, 0.1, 1.0, 0.00, 0.01, 1.00, 0.000, 0.001, 1.000, 0.0000, 0.0001, 1.0000';
+		$si->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.2~0.9, 1.1~1.8, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$sk = new GP_Locale();
 		$sk->english_name = 'Slovak';
@@ -1842,6 +2426,12 @@ class GP_Locales {
 		$sk->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
 		$sk->google_code = 'sk';
 		$sk->facebook_locale = 'sk_SK';
+		$sk->cldr_code = 'sk';
+		$sk->cldr_nplurals = '4';
+		$sk->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$sk->cldr_plural_expressions['many'] = 'v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$sk->cldr_plural_expressions['few'] = 'i = 2..4 and v = 0 @integer 2~4';
+		$sk->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 
 		$skr = new GP_Locale();
 		$skr->english_name = 'Saraiki';
@@ -1866,6 +2456,12 @@ class GP_Locales {
 		$sl->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
 		$sl->google_code = 'sl';
 		$sl->facebook_locale = 'sl_SI';
+		$sl->cldr_code = 'sl';
+		$sl->cldr_nplurals = '4';
+		$sl->cldr_plural_expressions['one'] = 'v = 0 and i % 100 = 1 @integer 1, 101, 201, 301, 401, 501, 601, 701, 1001, …';
+		$sl->cldr_plural_expressions['two'] = 'v = 0 and i % 100 = 2 @integer 2, 102, 202, 302, 402, 502, 602, 702, 1002, …';
+		$sl->cldr_plural_expressions['few'] = 'v = 0 and i % 100 = 3..4 or v != 0 @integer 3, 4, 103, 104, 203, 204, 303, 304, 403, 404, 503, 504, 603, 604, 703, 704, 1003, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$sl->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 
 		$sna = new GP_Locale();
 		$sna->english_name = 'Shona';
@@ -1875,6 +2471,10 @@ class GP_Locales {
 		$sna->country_code = 'zw';
 		$sna->wp_locale = 'sna';
 		$sna->slug = 'sna';
+		$sna->cldr_code = 'sn';
+		$sna->cldr_nplurals = '2';
+		$sna->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$sna->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$snd = new GP_Locale();
 		$snd->english_name = 'Sindhi';
@@ -1898,6 +2498,10 @@ class GP_Locales {
 		$so->slug = 'so';
 		$so->google_code = 'so';
 		$so->facebook_locale = 'so_SO';
+		$so->cldr_code = 'so';
+		$so->cldr_nplurals = '2';
+		$so->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$so->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$sq = new GP_Locale();
 		$sq->english_name = 'Albanian';
@@ -1909,6 +2513,10 @@ class GP_Locales {
 		$sq->slug = 'sq';
 		$sq->google_code = 'sq';
 		$sq->facebook_locale = 'sq_AL';
+		$sq->cldr_code = 'sq';
+		$sq->cldr_nplurals = '2';
+		$sq->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$sq->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$sq_xk = new GP_Locale();
 		$sq_xk->english_name = 'Shqip (Kosovo)';
@@ -1917,6 +2525,10 @@ class GP_Locales {
 		$sq_xk->country_code = 'xk'; // Temporary country code until Kosovo is assigned an ISO code.
 		$sq_xk->wp_locale = 'sq_XK';
 		$sq_xk->slug = 'sq-xk';
+		$sq_xk->cldr_code = 'sq';
+		$sq_xk->cldr_nplurals = '2';
+		$sq_xk->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$sq_xk->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$sr = new GP_Locale();
 		$sr->english_name = 'Serbian';
@@ -1930,6 +2542,11 @@ class GP_Locales {
 		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$sr->google_code = 'sr';
 		$sr->facebook_locale = 'sr_RS';
+		$sr->cldr_code = 'sr';
+		$sr->cldr_nplurals = '3';
+		$sr->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 0.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 10.1, 100.1, 1000.1, …';
+		$sr->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, … @decimal 0.2~0.4, 1.2~1.4, 2.2~2.4, 3.2~3.4, 4.2~4.4, 5.2, 10.2, 100.2, 1000.2, …';
+		$sr->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 0.5~1.0, 1.5~2.0, 2.5~2.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$srd = new GP_Locale();
 		$srd->english_name = 'Sardinian';
@@ -1973,6 +2590,10 @@ class GP_Locales {
 		$sv->slug = 'sv';
 		$sv->google_code = 'sv';
 		$sv->facebook_locale = 'sv_SE';
+		$sv->cldr_code = 'sv';
+		$sv->cldr_nplurals = '2';
+		$sv->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$sv->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$sw = new GP_Locale();
 		$sw->english_name = 'Swahili';
@@ -1983,6 +2604,10 @@ class GP_Locales {
 		$sw->slug = 'sw';
 		$sw->google_code = 'sw';
 		$sw->facebook_locale = 'sw_KE';
+		$sw->cldr_code = 'sw';
+		$sw->cldr_nplurals = '2';
+		$sw->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$sw->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$syr = new GP_Locale();
 		$syr->english_name = 'Syriac';
@@ -1991,6 +2616,10 @@ class GP_Locales {
 		$syr->country_code = 'iq';
 		$syr->wp_locale = 'syr';
 		$syr->slug = 'syr';
+		$syr->cldr_code = 'syr';
+		$syr->cldr_nplurals = '2';
+		$syr->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$syr->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$szl = new GP_Locale();
 		$szl->english_name = 'Silesian';
@@ -2013,6 +2642,10 @@ class GP_Locales {
 		$ta->slug = 'ta';
 		$ta->google_code = 'ta';
 		$ta->facebook_locale = 'ta_IN';
+		$ta->cldr_code = 'ta';
+		$ta->cldr_nplurals = '2';
+		$ta->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ta->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ta_lk = new GP_Locale();
 		$ta_lk->english_name = 'Tamil (Sri Lanka)';
@@ -2023,6 +2656,12 @@ class GP_Locales {
 		$ta_lk->wp_locale = 'ta_LK';
 		$ta_lk->slug = 'ta-lk';
 		$ta_lk->google_code = 'ta';
+		$ta_lk->cldr_code = 'ta';
+		$ta_lk->cldr_nplurals = '2';
+		$ta_lk->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ta_lk->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$ta_lk->variant_root = $ta->slug;
+		$ta->variants[ $ta_lk->slug ] = $ta_lk->english_name;
 
 		$tah = new GP_Locale();
 		$tah->english_name = 'Tahitian';
@@ -2045,6 +2684,10 @@ class GP_Locales {
 		$te->slug = 'te';
 		$te->google_code = 'te';
 		$te->facebook_locale = 'te_IN';
+		$te->cldr_code = 'te';
+		$te->cldr_nplurals = '2';
+		$te->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$te->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$tg = new GP_Locale();
 		$tg->english_name = 'Tajik';
@@ -2068,6 +2711,9 @@ class GP_Locales {
 		$th->plural_expression = '0';
 		$th->google_code = 'th';
 		$th->facebook_locale = 'th_TH';
+		$th->cldr_code = 'th';
+		$th->cldr_nplurals = '1';
+		$th->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$tir = new GP_Locale();
 		$tir->english_name = 'Tigrinya';
@@ -2079,6 +2725,10 @@ class GP_Locales {
 		$tir->slug = 'tir';
 		$tir->nplurals = 1;
 		$tir->plural_expression = '0';
+		$tir->cldr_code = 'ti';
+		$tir->cldr_nplurals = '2';
+		$tir->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$tir->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$tlh = new GP_Locale();
 		$tlh->english_name = 'Klingon';
@@ -2099,6 +2749,10 @@ class GP_Locales {
 		$tl->slug = 'tl';
 		$tl->google_code = 'tl';
 		$tl->facebook_locale = 'tl_PH';
+		$tl->cldr_code = 'tl';
+		$tl->cldr_nplurals = '2';
+		$tl->cldr_plural_expressions['one'] = 'v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9 @integer 0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.3, 0.5, 0.7, 0.8, 1.0~1.3, 1.5, 1.7, 1.8, 2.0, 2.1, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$tl->cldr_plural_expressions['other'] = ' @integer 4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, … @decimal 0.4, 0.6, 0.9, 1.4, 1.6, 1.9, 2.4, 2.6, 10.4, 100.4, 1000.4, …';
 
 		$tr = new GP_Locale();
 		$tr->english_name = 'Turkish';
@@ -2112,6 +2766,10 @@ class GP_Locales {
 		$tr->plural_expression = '(n > 1)';
 		$tr->google_code = 'tr';
 		$tr->facebook_locale = 'tr_TR';
+		$tr->cldr_code = 'tr';
+		$tr->cldr_nplurals = '2';
+		$tr->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$tr->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$tt_ru = new GP_Locale();
 		$tt_ru->english_name = 'Tatar';
@@ -2136,6 +2794,10 @@ class GP_Locales {
 		$tuk->nplurals = 2;
 		$tuk->plural_expression = '(n > 1)';
 		$tuk->facebook_locale = 'tk_TM';
+		$tuk->cldr_code = 'tk';
+		$tuk->cldr_nplurals = '2';
+		$tuk->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$tuk->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$twd = new GP_Locale();
 		$twd->english_name = 'Tweants';
@@ -2154,6 +2816,10 @@ class GP_Locales {
 		$tzm->slug = 'tzm';
 		$tzm->nplurals = 2;
 		$tzm->plural_expression = '(n > 1)';
+		$tzm->cldr_code = 'tzm';
+		$tzm->cldr_nplurals = '2';
+		$tzm->cldr_plural_expressions['one'] = 'n = 0..1 or n = 11..99 @integer 0, 1, 11~24 @decimal 0.0, 1.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0';
+		$tzm->cldr_plural_expressions['other'] = ' @integer 2~10, 100~106, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
@@ -2170,6 +2836,10 @@ class GP_Locales {
 		$ug->wp_locale = 'ug_CN';
 		$ug->slug = 'ug';
 		$ug->text_direction = 'rtl';
+		$ug->cldr_code = 'ug';
+		$ug->cldr_nplurals = '2';
+		$ug->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$ug->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$uk = new GP_Locale();
 		$uk->english_name = 'Ukrainian';
@@ -2183,6 +2853,12 @@ class GP_Locales {
 		$uk->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$uk->google_code = 'uk';
 		$uk->facebook_locale = 'uk_UA';
+		$uk->cldr_code = 'uk';
+		$uk->cldr_nplurals = '4';
+		$uk->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …';
+		$uk->cldr_plural_expressions['many'] = 'v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
+		$uk->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …';
+		$uk->cldr_plural_expressions['other'] = '   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ur = new GP_Locale();
 		$ur->english_name = 'Urdu';
@@ -2195,6 +2871,10 @@ class GP_Locales {
 		$ur->text_direction = 'rtl';
 		$ur->google_code = 'ur';
 		$ur->facebook_locale = 'ur_PK';
+		$ur->cldr_code = 'ur';
+		$ur->cldr_nplurals = '2';
+		$ur->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$ur->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$uz = new GP_Locale();
 		$uz->english_name = 'Uzbek';
@@ -2208,6 +2888,10 @@ class GP_Locales {
 		$uz->plural_expression = '0';
 		$uz->google_code = 'uz';
 		$uz->facebook_locale = 'uz_UZ';
+		$uz->cldr_code = 'uz';
+		$uz->cldr_nplurals = '2';
+		$uz->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$uz->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$vec = new GP_Locale();
 		$vec->english_name = 'Venetian';
@@ -2229,6 +2913,9 @@ class GP_Locales {
 		$vi->plural_expression = '0';
 		$vi->google_code = 'vi';
 		$vi->facebook_locale = 'vi_VN';
+		$vi->cldr_code = 'vi';
+		$vi->cldr_nplurals = '1';
+		$vi->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$wa = new GP_Locale();
 		$wa->english_name = 'Walloon';
@@ -2238,6 +2925,10 @@ class GP_Locales {
 		$wa->country_code = 'be';
 		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
+		$wa->cldr_code = 'wa';
+		$wa->cldr_nplurals = '2';
+		$wa->cldr_plural_expressions['one'] = 'n = 0..1 @integer 0, 1 @decimal 0.0, 1.0, 0.00, 1.00, 0.000, 1.000, 0.0000, 1.0000';
+		$wa->cldr_plural_expressions['other'] = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$xho = new GP_Locale();
 		$xho->english_name = 'Xhosa';
@@ -2250,6 +2941,10 @@ class GP_Locales {
 		$xho->slug = 'xho';
 		$xho->google_code = 'xh';
 		$xho->facebook_locale = 'xh_ZA';
+		$xho->cldr_code = 'xh';
+		$xho->cldr_nplurals = '2';
+		$xho->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
+		$xho->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$xmf = new GP_Locale();
 		$xmf->english_name = 'Mingrelian';
@@ -2267,6 +2962,10 @@ class GP_Locales {
 		$yi->slug = 'yi';
 		$yi->text_direction = 'rtl';
 		$yi->google_code = 'yi';
+		$yi->cldr_code = 'yi';
+		$yi->cldr_nplurals = '2';
+		$yi->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
+		$yi->cldr_plural_expressions['other'] = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$yor = new GP_Locale();
 		$yor->english_name = 'Yoruba';
@@ -2279,6 +2978,21 @@ class GP_Locales {
 		$yor->slug = 'yor';
 		$yor->google_code = 'yo';
 		$yor->facebook_locale = 'yo_NG';
+		$yor->cldr_code = 'yo';
+		$yor->cldr_nplurals = '1';
+		$yor->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+
+		$zh = new GP_Locale();
+		$zh->english_name = 'Chinese';
+		$zh->native_name = '中文';
+		$zh->lang_code_iso_639_1 = 'zh';
+		$zh->lang_code_iso_639_2 = 'zho';
+		$zh->slug = 'zh';
+		$zh->nplurals = 1;
+		$zh->plural_expression = '0';
+		$zh->cldr_code = 'zh';
+		$zh->cldr_nplurals = '1';
+		$zh->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$zh_cn = new GP_Locale();
 		$zh_cn->english_name = 'Chinese (China)';
@@ -2292,6 +3006,11 @@ class GP_Locales {
 		$zh_cn->plural_expression = '0';
 		$zh_cn->google_code = 'zh-CN';
 		$zh_cn->facebook_locale = 'zh_CN';
+		$zh_cn->cldr_code = 'zh';
+		$zh_cn->cldr_nplurals = '1';
+		$zh_cn->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$zh_cn->variant_root = $zh->slug;
+		$zh->variants[ $zh_cn->slug ] = $zh_cn->english_name;
 
 		$zh_hk = new GP_Locale();
 		$zh_hk->english_name = 'Chinese (Hong Kong)';
@@ -2304,6 +3023,11 @@ class GP_Locales {
 		$zh_hk->nplurals = 1;
 		$zh_hk->plural_expression = '0';
 		$zh_hk->facebook_locale = 'zh_HK';
+		$zh_hk->cldr_code = 'zh';
+		$zh_hk->cldr_nplurals = '1';
+		$zh_hk->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$zh_hk->variant_root = $zh->slug;
+		$zh->variants[ $zh_hk->slug ] = $zh_hk->english_name;
 
 		$zh_sg = new GP_Locale();
 		$zh_sg->english_name = 'Chinese (Singapore)';
@@ -2315,6 +3039,11 @@ class GP_Locales {
 		$zh_sg->slug = 'zh-sg';
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
+		$zh_sg->cldr_code = 'zh';
+		$zh_sg->cldr_nplurals = '1';
+		$zh_sg->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$zh_sg->variant_root = $zh->slug;
+		$zh->variants[ $zh_sg->slug ] = $zh_sg->english_name;
 
 		$zh_tw = new GP_Locale();
 		$zh_tw->english_name = 'Chinese (Taiwan)';
@@ -2328,15 +3057,11 @@ class GP_Locales {
 		$zh_tw->plural_expression = '0';
 		$zh_tw->google_code = 'zh-TW';
 		$zh_tw->facebook_locale = 'zh_TW';
-
-		$zh = new GP_Locale();
-		$zh->english_name = 'Chinese';
-		$zh->native_name = '中文';
-		$zh->lang_code_iso_639_1 = 'zh';
-		$zh->lang_code_iso_639_2 = 'zho';
-		$zh->slug = 'zh';
-		$zh->nplurals = 1;
-		$zh->plural_expression = '0';
+		$zh_tw->cldr_code = 'zh';
+		$zh_tw->cldr_nplurals = '1';
+		$zh_tw->cldr_plural_expressions['other'] = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
+		$zh_tw->variant_root = $zh->slug;
+		$zh->variants[ $zh_tw->slug ] = $zh_tw->english_name;
 
 		$zul = new GP_Locale();
 		$zul->english_name = 'Zulu';

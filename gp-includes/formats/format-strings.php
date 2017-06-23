@@ -1,6 +1,6 @@
 <?php
 /**
- * GlotPress Format Mac OSX / iOS Strings Translate class
+ * GlotPress Format Mac OS X/iOS Strings class
  *
  * @since 1.0.0
  *
@@ -8,7 +8,7 @@
  */
 
 /**
- * Format class used to support Mac OS X / iOS Translate strings file format.
+ * Format class used to support Mac OS X/iOS Strings file format.
  *
  * @since 1.0.0
  */
@@ -32,19 +32,38 @@ class GP_Format_Strings extends GP_Format {
 	public $extension = 'strings';
 
 	/**
-	 * Generates a string the contains the $entries to export in the strings file format.
+	 * Which plural rules to use for this format.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @var string
+	 */
+	public $plurals_format = 'cldr';
+
+	/**
+	 * Storage for the export file contents while it is being generated.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
+	public $exported = '';
+
+	/**
+	 * Generates a string the contains the $entries to export in the .strings file format.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param GP_Project         $project         The project the strings are being exported for, not used
 	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+	 * @param GP_Locale          $locale          The locale object the strings are being exported for, not used
 	 *                                            in this format but part of the scaffold of the parent object.
 	 * @param GP_Translation_Set $translation_set The locale object the strings are being
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
 	 * @param GP_Translation     $entries         The entries to export.
-	 * @return string The exported strings string.
+	 *
+	 * @return string The exported .strings string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = '';
@@ -81,11 +100,12 @@ class GP_Format_Strings extends GP_Format {
 	}
 
 	/**
-	 * Reads a set of original strings from a strings file.
+	 * Reads a set of original strings from an .strings file.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $file_name The name of the uploaded strings file.
+	 * @param string $file_name The name of the uploaded file.
+	 *
 	 * @return Translations|bool The extracted originals on success, false on failure.
 	 */
 	public function read_originals_from_file( $file_name ) {
@@ -140,13 +160,14 @@ class GP_Format_Strings extends GP_Format {
 	}
 
 	/**
-	 * Sorts the translation entries based on the context attribute.
+	 * Compare two context objects for a usort callback.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $a First string to compare.
-	 * @param string $b Second string to compare.
-	 * @return int +1 or -1 based on the order to sort.
+	 * @param string $a The first object to compare.
+	 * @param string $b The second object to compare.
+	 *
+	 * @return int Returns the result of the comparison.
 	 */
 	private function sort_entries( $a, $b ) {
 		if ( $a->context == $b->context ) {
@@ -157,24 +178,26 @@ class GP_Format_Strings extends GP_Format {
 	}
 
 	/**
-	 * Strips any escaping from a string.
+	 * Unescapes a string with c style slashes.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to strip escapes from.
-	 * @return string The unescaped string.
+	 * @param string $string The string to unescape.
+	 *
+	 * @return string Returns the unescaped string.
 	 */
 	private function unescape( $string ) {
 		return stripcslashes( $string );
 	}
 
 	/**
-	 * Adds escaping to a string.
+	 * Escapes a string with c style slashes and html entities as required.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to add escapes to.
-	 * @return string The escaped string.
+	 * @param string $string The string to escape.
+	 *
+	 * @return string Returns the escaped string.
 	 */
 	private function escape( $string ) {
 		return addcslashes( $string, '"\\/' );

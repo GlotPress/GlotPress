@@ -1,13 +1,79 @@
 <?php
+/**
+ * GlotPress Format GetText PO/MO class
+ *
+ * @since 1.0.0
+ *
+ * @package GlotPress
+ */
 
+/**
+ * Format class used to support GetText PO file format.
+ *
+ * @since 1.0.0
+ */
 class GP_Format_PO extends GP_Format {
-
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $name = 'Portable Object Message Catalog (.po/.pot)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $extension = 'po';
+
+	/**
+	 * Alternate file extensions of the file format, used to autodetect formats and when importing them.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $alt_extensions = array( 'pot' );
 
+	/**
+	 * Which plural rules to use for this format.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @var string
+	 */
+	public $plurals_format = 'gettext';
+
+	/**
+	 * An internal variable used to support the MO class extending this class.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $class = 'PO';
 
+	/**
+	 * Generates a string the contains the $entries to export in the PO file format.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Project         $project         The project the strings are being exported for, not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale          $locale          The locale object the strings are being exported for, not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set $translation_set The locale object the strings are being
+	 *                                            exported for. not used in this format but part
+	 *                                            of the scaffold of the parent object.
+	 * @param GP_Translation     $entries         The entries to export.
+	 *
+	 * @return string The exported PO string.
+	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$po = new $this->class;
 
@@ -73,6 +139,15 @@ class GP_Format_PO extends GP_Format {
 		return $result ? $po : $result;
 	}
 
+	/**
+	 * Reads a set of original strings from an MO file.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $file_name The name of the uploaded Android XML file.
+	 *
+	 * @return Translations|bool The extracted originals on success, false on failure.
+	 */
 	public function read_originals_from_file( $file_name ) {
 		return $this->read_translations_from_file( $file_name );
 	}
@@ -103,11 +178,46 @@ class GP_Format_PO extends GP_Format {
 	}
 }
 
+/**
+ * Format class used to support GetText MO file format.
+ *
+ * @since 1.0.0
+ */
 class GP_Format_MO extends GP_Format_PO {
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $name = 'Machine Object Message Catalog (.mo)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $extension = 'mo';
+
+	/**
+	 * Alternate file extensions of the file format, used to autodetect formats and when importing them.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $alt_extensions = array();
 
+	/**
+	 * An internal variable used to support the MO class extending this class.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $class = 'MO';
 
 	/**

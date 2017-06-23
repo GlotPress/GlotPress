@@ -1,11 +1,61 @@
 <?php
+/**
+ * GlotPress Format Java Properties class
+ *
+ * @since 2.0.0
+ *
+ * @package GlotPress
+ */
 
+/**
+ * Format class used to support Java Properties file format.
+ *
+ * @since 2.0.0
+ */
 class GP_Format_Properties extends GP_Format {
-
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string
+	 */
 	public $name = 'Java Properties File (.properties)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string
+	 */
 	public $extension = 'properties';
+
+	/**
+	 * Which plural rules to use for this format.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @var string
+	 */
+	public $plurals_format = 'gettext';
+
+	/**
+	 * The filename pattern to use when exporting.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string
+	 */
 	public $filename_pattern = '%s_%s';
 
+	/**
+	 * Storage for the export file contents while it is being generated.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var string
+	 */
 	public $exported = '';
 
 	/**

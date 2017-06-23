@@ -32,6 +32,15 @@ class GP_Format_Android extends GP_Format {
 	public $extension = 'xml';
 
 	/**
+	 * Which plural rules to use for this format.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @var string
+	 */
+	public $plurals_format = 'cldr';
+
+	/**
 	 * Storage for the export file contents while it is being generated.
 	 *
 	 * @since 1.0.0

@@ -44,4 +44,8 @@ function gp_upgrade_data( $db_version ) {
 	if ( $db_version < 950 ) {
 		$wpdb->query( "UPDATE {$wpdb->gp_projects} SET `path` = SUBSTRING(`path`, 1, CHAR_LENGTH(`path`) - 1) WHERE `path` LIKE '%/';" );
 	}
+
+	if ( $db_version < 990 ) {
+		$wpdb->query( "UPDATE {$wpdb->gp_projects} SET `plurals_type` = 'gettext';" );
+	}
 }

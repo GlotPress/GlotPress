@@ -458,6 +458,26 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	return gp_select( $name_and_id, $options, $selected_project_id, $attrs );
 }
 
+/**
+ * Returns HTML markup for a select element for plural types.
+ *
+ * @since 2.4.0
+ *
+ * @param string $name_and_id          Name and ID of the select element.
+ * @param string $selected_plural_type The plural type to mark as the currently selected.
+ * @param array  $attrs                Extra attributes.
+ *
+ * @return string HTML markup for a select element.
+ */
+function gp_plurals_dropdown( $name_and_id, $selected_plural_type = null, $attrs = array() ) {
+	$options = array(
+		'gettext' => __( 'GetText', 'glotpress' ),
+		'cldr' => __( 'CLDR', 'glotpress' ),
+	);
+	
+	return gp_select( $name_and_id, $options, $selected_plural_type, $attrs );
+}
+
 function gp_array_of_things_to_json( $array ) {
 	return wp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
 }

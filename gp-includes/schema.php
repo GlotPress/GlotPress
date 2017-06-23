@@ -188,6 +188,7 @@ function gp_schema_get() {
 		parent_project_id int(10) DEFAULT NULL,
 		source_url_template varchar(255) DEFAULT '',
 		active tinyint(4) DEFAULT 0,
+		plurals_type varchar(16),
 		PRIMARY KEY  (id),
 		KEY path (path),
 		KEY parent_project_id (parent_project_id)
