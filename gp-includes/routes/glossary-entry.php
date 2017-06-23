@@ -81,15 +81,30 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 		}
 		else {
-			$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
-
-			if ( ! $created_glossary_entry ) {
-				$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
-				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
+			$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
+			$duplicate = false;
+			
+			foreach ( $glossary_entries as $key => $entry ) {
+				if ( $new_glossary_entry->term === $entry->term ) {
+					$duplicate = true;
+				}
 			}
-			else {
-				$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
+			
+			if ( $duplicate ) {
+				// Translators: %s is the glossary term that was attempted to be added.
+				$this->errors[] = sprintf( __( 'Error "%s" is a duplicate glossary entry!', 'glotpress' ), esc_html( $new_glossary_entry->term ) );
 				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
+			} else {
+				$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
+
+				if ( ! $created_glossary_entry ) {
+					$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
+					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
+				}
+				else {
+					$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
+					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
+				}
 			}
 		}
 	}
