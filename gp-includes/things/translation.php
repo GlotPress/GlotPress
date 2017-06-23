@@ -518,26 +518,28 @@ class GP_Translation extends GP_Thing {
 		 * Filters the 'for_translation' query SQL clauses.
 		 *
 		 * @since 2.3.0
+		 * @since 2.4.0 Removed $join_on and added $root_join clause.  Also added $root_translation_set.
 		 *
 		 * @param array              $pieces          {
 		 *     Translation query SQL clauses.
 		 *
-		 *     @type array  $fields  Fields to select in the query.
-		 *     @type string $join    JOIN clause of the query.
-		 *     @type string $join_on Conditions for the JOIN clause.
-		 *     @type string $where   WHERE clause of the query.
-		 *     @type string $orderby Fields for ORDER BY clause.
-		 *     @type string $limit   LIMIT clause of the query.
+		 *     @type array  $fields    Fields to select in the query.
+		 *     @type string $join      JOIN clause of the query.
+		 *     @type string $root_join JOIN clause for the root translation set if it exists, otherwise an empty string.
+		 *     @type string $where     WHERE clause of the query.
+		 *     @type string $orderby   Fields for ORDER BY clause.
+		 *     @type string $limit     LIMIT clause of the query.
 		 * }
-		 * @param GP_Translation_Set $translation_set The translation set object being queried.
-		 * @param array              $filters         An array of search filters.
-		 * @param array              $sort            An array of sort settings.
+		 * @param GP_Translation_Set      $translation_set      The translation set object being queried.
+		 * @param array                   $filters              An array of search filters.
+		 * @param array                   $sort                 An array of sort settings.
+		 * @param GP_Translation_Set|null $root_translation_set The root translation set object if one exists, otherwise null.
 		 */
-		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_on', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
+		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'root_join', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort, $root_translation_set );
 
 		$fields = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
 		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
-		$join_on = isset( $clauses['join_on'] ) ? $clauses['join_on'] : '';
+		$root_join = isset( $clauses['root_join'] ) ? $clauses['root_join'] : '';
 		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
 		$orderby = isset( $clauses['orderby'] ) ? 'ORDER BY ' . $clauses['orderby'] : '';
 		$limit = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
