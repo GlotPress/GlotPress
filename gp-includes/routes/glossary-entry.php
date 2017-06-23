@@ -81,7 +81,12 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 		}
 		else {
-			if ( GP::$glossary_entry->find_one( array( 'glossary_id' => $glossary->id, 'term' => $new_glossary_entry->term ) ) ) {
+			$find_parms = array( 
+				'glossary_id' => $glossary->id, 
+				'term' => $new_glossary_entry->term,
+			);
+			
+			if ( GP::$glossary_entry->find_one( $find_parms ) ) {
 				// Translators: %s is the glossary term that was attempted to be added.
 				$this->errors[] = sprintf( __( 'Error "%s" is a duplicate glossary entry!', 'glotpress' ), esc_html( $new_glossary_entry->term ) );
 				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
