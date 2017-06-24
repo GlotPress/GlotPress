@@ -96,8 +96,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				if ( ! $created_glossary_entry ) {
 					$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
 					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
-				}
-				else {
+				} else {
 					$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
 					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 				}
