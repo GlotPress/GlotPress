@@ -71,7 +71,6 @@ class GP_Format_Android extends GP_Format {
 
 		$this->line( '<!--' );
 		$this->line( 'Translation-Revision-Date: ' . GP::$translation->last_modified( $translation_set ) . '+0000' );
-		$this->line( "Plural-Forms: nplurals={$locale->nplurals}; plural={$locale->plural_expression};" );
 		$this->line( 'Generator: GlotPress/' . GP_VERSION );
 
 		$language_code = $this->get_language_code( $locale );
@@ -83,11 +82,18 @@ class GP_Format_Android extends GP_Format {
 
 		$this->line( '<resources>' );
 		$string_array_items = array();
+		$plural_items = array();
 
-		foreach( $entries as $entry ) {
-			if ( preg_match('/.+\[\d+\]$/', $entry->context ) ) {
+		foreach ( $entries as $entry ) {
+			if ( preg_match( '/.+\[\d+\]$/', $entry->context ) ) {
 				// Array item found.
 				$string_array_items[] = $entry;
+				continue;
+			}
+
+			if ( $entry->is_plural ) {
+				// Plural item found.
+				$plural_items[] = $entry;
 				continue;
 			}
 
@@ -101,6 +107,8 @@ class GP_Format_Android extends GP_Format {
 		}
 
 		$this->string_arrays( $string_array_items );
+
+		$this->plurals( $plural_items, $locale );
 
 		$this->line( '</resources>' );
 
@@ -161,8 +169,7 @@ class GP_Format_Android extends GP_Format {
 		}
 
 		// Loop through all of the multiple strings we found in the XML file.
-		foreach ( $data->{'string-array'} as $string_array )
-		{
+		foreach ( $data->{'string-array'} as $string_array ) {
 			if ( isset( $string_array['translatable'] ) && 'false' == $string_array['translatable'] ) {
 				continue;
 			}
@@ -182,6 +189,26 @@ class GP_Format_Android extends GP_Format {
 			}
 		}
 
+		// Loop through all of the plural entries we found in the XML file.
+		foreach ( $data->plurals as $plural ) {
+			if ( isset( $plural['translatable'] ) && 'false' == $plural['translatable'] ) {
+				continue;
+			}
+
+			$array_name = (string) $plural['name'];
+			$item_index = 0;
+
+			foreach ( $plural->item as $string ) {
+				$strings[] = $string;
+			}
+
+			// Generate the entry to add.
+			$entry = $this->generate_plural_entry( $strings, $array_name );
+
+			// Add the entry to the results.
+			$entries->add_entry( $entry );
+		}
+
 		return $entries;
 	}
 
@@ -190,7 +217,7 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param obj    $string  The string entry objectto use.
+	 * @param obj    $string  The string entry object to use.
 	 * @param string $context The context string to use.
 	 *
 	 * @return obj A translation entry object.
@@ -220,9 +247,55 @@ class GP_Format_Android extends GP_Format {
 	}
 
 	/**
+	 * Generates a plural translation entry object to be added to the results for the "read_originals_from_file()" function.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param array  $strings An array of string entry objects to use.
+	 * @param string $context The context string to use.
+	 *
+	 * @return obj A translation entry object.
+	 */
+	private function generate_plural_entry( $strings, $context ) {
+		// Create the new translation entry with the parsed data.
+		$entry               = new Translation_Entry();
+		$entry->context      = $context;
+		$entry->is_plural    = true;
+		$entry->translations = array();
+
+		$comments = '';
+		$index = 0;
+
+		foreach ( $strings as $string ) {
+			// Check to see if there is an xliff tag in the string.
+			$xliff_info = $this->extract_xliff_info( (string) $string[0] );
+
+			// If an xliff tag was found, replace the translation and add a comment for later.
+			if ( false !== $xliff_info ) {
+				$string[0] = $xliff_info['string'];
+				$string['comment'] .= $xliff_info['description'];
+			}
+
+			// Create the new translation entry with the parsed data.
+			$entry->translations[ $index ] = $this->unescape( $string[0] );
+			$index++;
+
+			// If we have a comment, add it to the entry.
+			if ( isset( $string['comment'] ) && $string['comment'] ) {
+				$entry->extracted_comments .= (string) $string['comment'];
+			}
+		}
+
+		$entry->singular = $entry->translations[0];
+		$entry->plural = $entry->translations[1];
+
+		return $entry;
+	}
+
+	/**
 	 * Extracts the xliff information from a string.
 	 *
-	 * @since 1.0.0
+	 * @since 2.4.0
 	 *
 	 * @param string $string The string to process.
 	 *
@@ -362,9 +435,9 @@ class GP_Format_Android extends GP_Format {
 		// Sort the entries before processing them.
 		uasort( $entries, array( $this, 'cmp_context' ) );
 
-		// Loop through all of the single entries add them to a mapping array.
+		// Loop through all of the plural entries add them to a mapping array.
 		foreach ( $entries as $entry ) {
-			// Make sure the array name is sanatized.
+			// Make sure the array name is sanitized.
 			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
 
 			// Initialize the mapping array entry if this is the first time.
@@ -372,7 +445,7 @@ class GP_Format_Android extends GP_Format {
 				$mapping[ $array_name ] = array();
 			}
 
-			// Because Android doesn't fallback on the original locale
+			// Because Android doesn't fall back on the original locale
 			// in string-arrays, we fill the non-translated ones with original locale string.
 			$value = $entry->translations[0];
 
@@ -392,12 +465,77 @@ class GP_Format_Android extends GP_Format {
 
 			// Output each item in the array.
 			foreach ( $mapping[ $array_name ] as $item ) {
-				$this->line('<item>' . $item . '</item>', 2);
+				$this->line( '<item>' . $item . '</item>', 2 );
+			}
+
+			// Close the string array tag.
+			$this->line( '</string-array>', 1 );
+		}
+	}
+
+	/**
+	 * Output the plural entries to the exported class variable.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param obj $entries The entries to store.
+	 * @param obj $locale  The locale object to use for exporting.
+	 */
+	private function plurals( $entries, $locale ) {
+		$nplurals = $locale->nplurals;
+		$mapping = array();
+		$order = $this->get_plural_order( $locale );
+
+		// Sort the entries before processing them.
+		uasort( $entries, array( $this, 'cmp_context' ) );
+
+		// Loop through all of the single entries add them to a mapping array.
+		foreach ( $entries as $entry ) {
+			// Make sure the array name is sanitized.
+			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
+
+			// Initialize the mapping array entry if this is the first time.
+			if ( ! isset( $mapping[ $array_name ] ) ) {
+				$mapping[ $array_name ] = array();
+			}
+
+			// Add the entry to the mapping array after escaping it.
+			$mapping[ $array_name ] = $entry;
+		}
+
+		// Now do the actual output to the class variable.
+		foreach ( $mapping as $array_name => $item ) {
+			// Open the string array tag.
+			$this->line( '<plurals name="' . $array_name . '">', 1 );
+
+			// Output each item in the array.
+			for ( $i = 0; $i < $nplurals; $i++ ) {
+				$this->line( '<item quantity="'. $order[ $i ] . '">' . $item->translations[ $i ] . '</item>', 2 );
 			}
 
 			// Close the string arrary tag.
-			$this->line( '</string-array>', 1 );
+			$this->line( '</plurals>', 1 );
 		}
+	}
+
+	/**
+	 * Determine the order of plurals with relation to the Android standard.
+	 * See https://developer.android.com/guide/topics/resources/string-resource.html#Plurals for details.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param obj $locale  The locale object to use for exporting.
+	 */
+	private function get_plural_order( $locale ) {
+		$order = array();
+
+		foreach ( $locale->cldr_plural_expressions as $key => $value ) {
+			if ( '' === $value ) {
+				$order[] = $key;
+			}
+		}
+		
+		return $order;
 	}
 
 	/**
