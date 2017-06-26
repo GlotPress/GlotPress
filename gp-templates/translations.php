@@ -369,7 +369,9 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );
 		$format_options = array();
 		foreach ( GP::$formats as $slug => $format ) {
-			$format_options[$slug] = $format->name;
+			if ( $project->plurals_type === $format->plurals_format ) {
+				$format_options[$slug] = $format->name;
+			}
 		}
 		$what_dropdown = gp_select( 'what-to-export', array('all' => _x( 'all current', 'export choice', 'glotpress' ), 'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ) ), 'all' );
 		$format_dropdown = gp_select( 'export-format', $format_options, 'po' );
