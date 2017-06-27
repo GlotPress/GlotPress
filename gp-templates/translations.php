@@ -74,7 +74,9 @@ $i = 0;
 	<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
-	$filter_links[] = gp_link_get( $url, sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) )  );
+
+	// Translators: %s is the total strings count for the current translation set.
+	$filter_links[] = gp_link_get( $url, sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ) );
 
 	$untranslated_filters = array(
 		'filters[status]' => 'untranslated',
@@ -84,7 +86,7 @@ $i = 0;
 
 	$filter_links[] = gp_link_get(
 		add_query_arg( $untranslated_filters, $url ),
-		// Translators: %d is the untranslated strings count for the current translation set.
+		// Translators: %s is the untranslated strings count for the current translation set.
 		sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) )
 	);
 
@@ -96,7 +98,7 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $waiting_filters, $url ),
-			// Translators: %d is the waiting strings count for the current translation set.
+			// Translators: %s is the waiting strings count for the current translation set.
 			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) )
 		);
 
@@ -107,7 +109,7 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $fuzzy_filters, $url ),
-			// Translators: %d is the fuzzy strings count for the current translation set.
+			// Translators: %s is the fuzzy strings count for the current translation set.
 			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) )
 		);
 
@@ -119,7 +121,7 @@ $i = 0;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $warning_filters, $url ),
-			// Translators: %d is the strings with warnings count for the current translation set.
+			// Translators: %s is the strings with warnings count for the current translation set.
 			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) )
 		);
 	}
