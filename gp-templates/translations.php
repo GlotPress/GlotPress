@@ -74,7 +74,7 @@ $i = 0;
 	<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
-	$filter_links[] = gp_link_get( $url, __( 'All', 'glotpress' ) );
+	$filter_links[] = gp_link_get( $url, sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) )  );
 
 	$untranslated_filters = array(
 		'filters[status]' => 'untranslated',
@@ -85,7 +85,7 @@ $i = 0;
 	$filter_links[] = gp_link_get(
 		add_query_arg( $untranslated_filters, $url ),
 		// Translators: %d is the untranslated strings count for the current translation set.
-		sprintf( __( 'Untranslated&nbsp;[%d]&nbsp;(random)', 'glotpress' ), $translation_set->untranslated_count() )
+		sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) )
 	);
 
 	if ( $can_approve ) {
@@ -97,7 +97,7 @@ $i = 0;
 		$filter_links[] = gp_link_get(
 			add_query_arg( $waiting_filters, $url ),
 			// Translators: %d is the waiting strings count for the current translation set.
-			sprintf( __( 'Waiting&nbsp;[%d]', 'glotpress' ), $translation_set->waiting_count() )
+			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) )
 		);
 
 		$fuzzy_filters = array(
@@ -108,7 +108,7 @@ $i = 0;
 		$filter_links[] = gp_link_get(
 			add_query_arg( $fuzzy_filters, $url ),
 			// Translators: %d is the fuzzy strings count for the current translation set.
-			sprintf( __( 'Fuzzy&nbsp;[%d]', 'glotpress' ), $translation_set->fuzzy_count() )
+			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) )
 		);
 
 		$warning_filters = array(
@@ -120,7 +120,7 @@ $i = 0;
 		$filter_links[] = gp_link_get(
 			add_query_arg( $warning_filters, $url ),
 			// Translators: %d is the strings with warnings count for the current translation set.
-			sprintf( __( 'Warnings&nbsp;[%d]', 'glotpress' ), $translation_set->warnings_count() )
+			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) )
 		);
 	}
 
