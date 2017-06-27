@@ -513,7 +513,7 @@ class GP_Locales {
 		$de_ch->country_code = 'ch';
 		$de_ch->wp_locale = 'de_CH';
 		$de_ch->slug = 'de-ch';
-		$de->google_code = 'de';
+		$de_ch->google_code = 'de';
 
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
