@@ -72,8 +72,10 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 	foreach ( $glossary_entries as $key => $value ) {
 		$terms = array();
 
-		$terms[] = preg_quote( $value->term, '/' );
-		$terms[] = preg_quote( $value->term, '/' ) . 's';
+		$quoted_term = preg_quote( $value->term, '/' );
+
+		$terms[] = $quoted_term;
+		$terms[] = $quoted_term . 's';
 
 		if ( 'y' === substr( $value->term, -1 ) ) {
 			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ies';
@@ -85,7 +87,9 @@ function map_glossary_entries_to_translations_originals( $translations, $glossar
 			if ( 'an' === substr( $value->term, -2 ) ) {
 				$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'en';
 			}
-			$terms[] = preg_quote( $value->term, '/' ) . 'es';
+			$terms[] = $quoted_term . 'es';
+			$terms[] = $quoted_term . 'ed';
+			$terms[] = $quoted_term . 'ing';
 		}
 
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
