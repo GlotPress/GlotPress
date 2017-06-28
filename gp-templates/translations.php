@@ -74,19 +74,58 @@ $i = 0;
 	<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
 	<?php
 	$filter_links = array();
-	$filter_links[] = gp_link_get( $url, __( 'All', 'glotpress' ) );
-	$untranslated = gp_link_get( add_query_arg( array('filters[status]' => 'untranslated', 'sort[by]' => 'priority', 'sort[how]' => 'desc'), $url ), __( 'Untranslated', 'glotpress' ) );
-	$untranslated .= '&nbsp;('.gp_link_get( add_query_arg( array('filters[status]' => 'untranslated', 'sort[by]' => 'random'), $url ), __( 'random', 'glotpress' ) ).')';
-	$filter_links[] = $untranslated;
-	if ( $can_approve ) {
-		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'waiting'), $url ),
-				__( 'Waiting', 'glotpress' ) );
-		$filter_links[] = gp_link_get( add_query_arg( array('filters[translated]' => 'yes', 'filters[status]' => 'fuzzy'), $url ),
-				__( 'Fuzzy', 'glotpress' ) );
-		$filter_links[] = gp_link_get( add_query_arg( array('filters[warnings]' => 'yes', 'filters[status]' => 'current_or_waiting', 'sort[by]' => 'translation_date_added'), $url ),
-				__( 'Warnings', 'glotpress' ) );
 
+	// Translators: %s is the total strings count for the current translation set.
+	$filter_links[] = gp_link_get( $url, sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ) );
+
+	$untranslated_filters = array(
+		'filters[status]' => 'untranslated',
+		'sort[by]'        => 'priority',
+		'sort[how]'       => 'desc',
+	);
+
+	$filter_links[] = gp_link_get(
+		add_query_arg( $untranslated_filters, $url ),
+		// Translators: %s is the untranslated strings count for the current translation set.
+		sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) )
+	);
+
+	if ( $can_approve ) {
+		$waiting_filters = array(
+			'filters[translated]' => 'yes',
+			'filters[status]'     => 'waiting',
+		);
+
+		$filter_links[] = gp_link_get(
+			add_query_arg( $waiting_filters, $url ),
+			// Translators: %s is the waiting strings count for the current translation set.
+			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) )
+		);
+
+		$fuzzy_filters = array(
+			'filters[translated]' => 'yes',
+			'filters[status]'     => 'fuzzy',
+		);
+
+		$filter_links[] = gp_link_get(
+			add_query_arg( $fuzzy_filters, $url ),
+			// Translators: %s is the fuzzy strings count for the current translation set.
+			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) )
+		);
+
+		$warning_filters = array(
+			'filters[warnings]' => 'yes',
+			'filters[status]'   => 'current_or_waiting',
+			'sort[by]'          => 'translation_date_added',
+		);
+
+		$filter_links[] = gp_link_get(
+			add_query_arg( $warning_filters, $url ),
+			// Translators: %s is the strings with warnings count for the current translation set.
+			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) )
+		);
 	}
+
 	// TODO: with warnings
 	// TODO: saved searches
 	echo implode( '&nbsp;<span class="separator">&bull;</span>&nbsp;', $filter_links );
