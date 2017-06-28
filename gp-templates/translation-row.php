@@ -40,12 +40,14 @@ $more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history 
  */
 $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $t );
 
-if ( ! isset( $glossary_entries_terms ) ) {
-	$glossary_entries = $glossary->get_entries();
-	$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
-}
+if ( is_object( $glossary ) ) {
+	if ( ! isset( $glossary_entries_terms ) ) {
+		$glossary_entries = $glossary->get_entries();
+		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
+	}
 
-$t = map_glossary_entries_to_translation_originals( $t, $glossary, $glossary_entries_terms );
+	$t = map_glossary_entries_to_translation_originals( $t, $glossary, $glossary_entries_terms );
+}
 
 ?>
 
