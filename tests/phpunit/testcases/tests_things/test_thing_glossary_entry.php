@@ -109,8 +109,11 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => $original, 'plural' => $original, ) );
 		}
 
-		$translations = GP::$translation->for_translation( $set->project, $set, 'no-limit' );
-		$translations = map_glossary_entries_to_translations_originals( $translations, $glossary );
+		$translations = array();
+		$temp_translations = GP::$translation->for_translation( $set->project, $set, 'no-limit' );
+		foreach ( $temp_translations as $t ) {
+			$translations[] = map_glossary_entries_to_translation_originals( $t, $glossary );
+		}
 
 		foreach ( $translations as $translation ) {
 			foreach ( $originals[ $translation->singular ] as $term ) {
