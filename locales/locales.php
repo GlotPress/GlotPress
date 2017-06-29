@@ -1388,6 +1388,18 @@ class GP_Locales {
 		$mg->google_code = 'mg';
 		$mg->facebook_locale = 'mg_MG';
 
+		$mt = new GP_Locale(); 
+		$mt->english_name = 'Maltese';
+		$mt->native_name = 'Malti';
+		$mt->lang_code_iso_639_1 = 'mt';
+		$mt->lang_code_iso_639_2 = 'mlt';
+		$mt->lang_code_iso_639_3 = 'mlt';
+		$mt->country_code = 'mt';
+		$mt->wp_locale = 'mlt';
+		$mt->slug = 'mt';
+		$mt->nplurals = 4;
+		$mt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100&gt;1 &amp;&amp; n%10010 &amp;&amp; n%100&lt;20 ) ? 2 : 3);';
+		
 		$mhr = new GP_Locale();
 		$mhr->english_name = 'Mari (Meadow)';
 		$mhr->native_name = 'Олык марий';
