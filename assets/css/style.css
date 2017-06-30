@@ -1091,3 +1091,10 @@ table.locale-sub-projects thead th {
 		margin-left: 0;
 	}
 }
+
+/*
+ * jQuery UI ToolTip div.
+ */
+.ui-helper-hidden-accessible {
+	display: none;
+}
