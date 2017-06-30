@@ -4,6 +4,7 @@ $gp.editor = (
 	function( $ ) {
 		return {
 			current: null,
+			orginal_translations: null,
 			init: function( table ) {
 				$gp.init();
 				$gp.editor.table = table;
@@ -28,7 +29,13 @@ $gp.editor = (
 				editor.row_id = row_id;
 				editor.original_id = $gp.editor.original_id_from_row_id( row_id );
 				editor.translation_id = $gp.editor.translation_id_from_row_id( row_id );
+
+				editor.orginal_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
+					return this.value;
+				} ).get();
+
 				$gp.editor.current = editor;
+
 				editor.show();
 				editor.preview.hide();
 				$( 'tr:first', $gp.editor.table ).hide();
@@ -78,7 +85,7 @@ $gp.editor = (
 					.on( 'click', 'a.edit', $gp.editor.hooks.show )
 					.on( 'dblclick', 'tr.preview td', $gp.editor.hooks.show )
 					.on( 'change', 'select.priority', $gp.editor.hooks.set_priority )
-					.on( 'click', 'a.close', $gp.editor.hooks.hide )
+					.on( 'click', 'a.close', $gp.editor.hooks.cancel )
 					.on( 'click', 'a.copy', $gp.editor.hooks.copy )
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
@@ -368,6 +375,15 @@ $gp.editor = (
 				},
 				ok: function() {
 					$gp.editor.save( $( this ) );
+					return false;
+				},
+				cancel: function() {
+					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
+						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[i] );
+					}
+
+					$gp.editor.hide();
+
 					return false;
 				},
 				keydown: function( e ) {
