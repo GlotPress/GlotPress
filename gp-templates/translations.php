@@ -75,8 +75,20 @@ $i = 0;
 	<?php
 	$filter_links = array();
 
+	$filters_and_sort = array_merge( array_filter( $filters ), array_filter( $sort ) );
+
+	$all_filters = array(
+		'status' => 'current_or_waiting_or_fuzzy_or_untranslated',
+	);
+
+	array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort ? $extra_classes = array( 'class' => 'filter-current' ) : $extra_classes = array();
+
 	// Translators: %s is the total strings count for the current translation set.
-	$filter_links[] = gp_link_get( $url, sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ) );
+	$filter_links[] = gp_link_get(
+		$url,
+		sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ),
+		$extra_classes
+	);
 
 	$untranslated_filters = array(
 		'filters[status]' => 'untranslated',
@@ -84,10 +96,13 @@ $i = 0;
 		'sort[how]'       => 'desc',
 	);
 
+	array() === array_diff( $untranslated_filters, $filters_and_sort ) ? $extra_classes = array( 'class' => 'filter-current' ) : $extra_classes = array();
+
 	$filter_links[] = gp_link_get(
 		add_query_arg( $untranslated_filters, $url ),
 		// Translators: %s is the untranslated strings count for the current translation set.
-		sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) )
+		sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) ),
+		$extra_classes
 	);
 
 	if ( $can_approve ) {
@@ -96,10 +111,13 @@ $i = 0;
 			'filters[status]'     => 'waiting',
 		);
 
+		array() === array_diff( $waiting_filters, $filters_and_sort ) ? $extra_classes = array( 'class' => 'filter-current' ) : $extra_classes = array();
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $waiting_filters, $url ),
 			// Translators: %s is the waiting strings count for the current translation set.
-			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) )
+			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) ),
+			$extra_classes
 		);
 
 		$fuzzy_filters = array(
@@ -107,10 +125,13 @@ $i = 0;
 			'filters[status]'     => 'fuzzy',
 		);
 
+		array() === array_diff( $fuzzy_filters, $filters_and_sort ) ? $extra_classes = array( 'class' => 'filter-current' ) : $extra_classes = array();
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $fuzzy_filters, $url ),
 			// Translators: %s is the fuzzy strings count for the current translation set.
-			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) )
+			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) ),
+			$extra_classes
 		);
 
 		$warning_filters = array(
@@ -119,10 +140,13 @@ $i = 0;
 			'sort[by]'          => 'translation_date_added',
 		);
 
+		array() === array_diff( $warning_filters, $filters_and_sort ) ? $extra_classes = array( 'class' => 'filter-current') : $extra_classes = array();
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $warning_filters, $url ),
 			// Translators: %s is the strings with warnings count for the current translation set.
-			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) )
+			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) ),
+			$extra_classes
 		);
 	}
 
