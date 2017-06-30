@@ -86,6 +86,7 @@ $gp.editor = (
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
+
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -104,6 +105,36 @@ $gp.editor = (
 					},
 					hide: false,
 					show: false
+				} );
+
+				$( '.glossary-word' ).contextmenu( function( e ) {
+					var info = $( this ).data( 'translations' );
+					var myField = $( '.editor:visible textarea' )[0];
+					var myValue = info[0].translation;
+					var sel = null;
+					var startPos = 0;
+					var endPos = 0;
+
+					// Code from https://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
+					if ( document.selection ) {
+
+						// IE support
+						myField.focus();
+						sel = document.selection.createRange();
+						sel.text = myValue;
+					} else if ( myField.selectionStart || '0' === myField.selectionStart ) {
+
+						// MOZILLA and others
+						startPos = myField.selectionStart;
+						endPos = myField.selectionEnd;
+						myField.value = myField.value.substring( 0, startPos ) + myValue + myField.value.substring( endPos, myField.value.length );
+					} else {
+						myField.value += myValue;
+					}
+
+					e.preventDefault();
+
+					return false;
 				} );
 
 				$.valHooks.textarea = {
