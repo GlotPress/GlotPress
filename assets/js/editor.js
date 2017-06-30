@@ -378,6 +378,8 @@ $gp.editor = (
 					return false;
 				},
 				cancel: function() {
+					var i = 0;
+					
 					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
 						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[i] );
 					}
