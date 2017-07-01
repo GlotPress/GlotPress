@@ -34,7 +34,7 @@ function gp_register_default_scripts() {
 	// Register our standard scripts.
 	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '2.17.8' );
 	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery' ), '20150430' );
-	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20170606' );
+	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20170701' );
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20160329' );
 	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20150430' );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20150430' );
