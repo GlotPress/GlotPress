@@ -242,7 +242,7 @@ $i = 0;
 ?>
 	</div><?php endforeach; ?>
 	<div class="box has-warnings"></div>
-	<div><?php _e( 'Warnings', 'glotpress' ); ?></div>
+	<div><?php _e( 'With Warnings', 'glotpress' ); ?></div>
 
 </div>
 <p class="clear actionlist secondary">
