@@ -1388,17 +1388,19 @@ class GP_Locales {
 		$mg->google_code = 'mg';
 		$mg->facebook_locale = 'mg_MG';
 
-		$mt = new GP_Locale(); 
-		$mt->english_name = 'Maltese';
-		$mt->native_name = 'Malti';
-		$mt->lang_code_iso_639_1 = 'mt';
-		$mt->lang_code_iso_639_2 = 'mlt';
-		$mt->lang_code_iso_639_3 = 'mlt';
-		$mt->country_code = 'mt';
-		$mt->wp_locale = 'mlt';
-		$mt->slug = 'mt';
-		$mt->nplurals = 4;
-		$mt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100&gt;1 &amp;&amp; n%10010 &amp;&amp; n%100&lt;20 ) ? 2 : 3);';
+		$mlt = new GP_Locale(); 
+		$mlt->english_name = 'Maltese';
+		$mlt->native_name = 'Malti';
+		$mlt->lang_code_iso_639_1 = 'mt';
+		$mlt->lang_code_iso_639_2 = 'mlt';
+		$mlt->lang_code_iso_639_3 = 'mlt';
+		$mlt->country_code = 'mt';
+		$mlt->facebook_locale = 'mt_MT';
+		$mlt->google_code = 'mt';
+		$mlt->wp_locale = 'mlt';
+		$mlt->slug = 'mlt';
+		$mlt->nplurals = 4;
+		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100&gt;1 && n%10010 && n%100&lt;20 ) ? 2 : 3);';
 		
 		$mhr = new GP_Locale();
 		$mhr->english_name = 'Mari (Meadow)';
