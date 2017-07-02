@@ -34,7 +34,7 @@ $i = 0;
 		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
 		<option value="fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></option>
 	<?php if( $can_write ) : ?>
-		<option value="set-priority"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
+		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
 		<?php
 
@@ -51,7 +51,7 @@ $i = 0;
 		do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
 	</select>
 	<?php if( $can_write ) : ?>
-	<select name="bulk[priority]" id="bulk-priority">
+	<select name="bulk[priority]" id="bulk-priority" class="hidden">
 	<?php
 	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
 		$selected = $value == 'normal' ? " selected='selected'" : '';

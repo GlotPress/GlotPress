@@ -1,4 +1,7 @@
 jQuery(function($) {
+	var $bulkActions = $( '#bulk-action' ),
+		$bulkPriority = $( '#bulk-priority' );
+
 	$gp.showhide('#upper-filters-toolbar a.sort', '#upper-filters-toolbar dl.sort', {
 		show_text: $gp_translations_options.sort + ' &darr;',
 		hide_text: $gp_translations_options.sort + ' &uarr;',
@@ -10,17 +13,15 @@ jQuery(function($) {
 		focus: '#filters\\[term\\]'
 	});
 
-	var rows_checked = 0;
+	$bulkActions.on( 'change', function() {
+		var $optionSelected = $( 'option:selected', this );
+		if ( 'set-priority' === $optionSelected.val() ) {
+			$bulkPriority.removeClass( 'hidden' );
+		} else {
+			$bulkPriority.addClass( 'hidden' );
+		}
+	} );
 
-    $('#bulk-priority').hide();
-    $('#bulk-action').on( 'change', function (e) {
-        var optionSelected = $("option:selected", this);
-         if ( 'set-priority' == optionSelected.val() ) {
-             $('#bulk-priority').show();
-         } else {
-             $('#bulk-priority').hide();
-         }
-    });
 	$('form.filters-toolbar.bulk-actions').submit(function(e) {
 		var	row_ids = $('input:checked', $('table#translations th.checkbox')).map(function() {
 			return $(this).parents('tr.preview').attr('row');
