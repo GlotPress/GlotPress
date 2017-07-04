@@ -87,9 +87,9 @@ $i = 0;
 
 	$is_current_filter = array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort;
 
-	// Translators: %s is the total strings count for the current translation set.
 	$filter_links[] = gp_link_get(
 		$url,
+		// Translators: %s is the total strings count for the current translation set.
 		sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ),
 		$is_current_filter ? $current_filter_class : array()
 	);
