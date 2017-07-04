@@ -900,6 +900,18 @@ table.form-table th, table.form-table td {
 	cursor: help;
 }
 
+/* jQuery UI */
+.ui-helper-hidden-accessible {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
 .ui-tooltip {
 	background-color: #eee;
 	margin: 2px;
@@ -928,7 +940,7 @@ table.form-table th, table.form-table td {
 	padding-right: 10px;
 }
 
-.ui-tooltip .translation{
+.ui-tooltip .translation {
 	font-weight: bold;
 }
 
