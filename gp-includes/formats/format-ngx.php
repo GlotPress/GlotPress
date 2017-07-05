@@ -122,6 +122,15 @@ class GP_Format_NGX extends GP_Format {
 		}
 		return $entries;
 	}
+	
+	/**
+	 * Decode a JSON file.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param string $file_name The name of the JSON file to decode.
+	 * @return decode JSON file as an array.
+	 */
 	protected function decode_json_file( $file_name ) {
 		if ( ! file_exists( $file_name ) ) {
 			return false;
