@@ -51,24 +51,24 @@ class GP_Format_NGX extends GP_Format {
 
 		/* @var Translation_Entry $entry */
 		foreach ( $entries as $entry ) {
-			
 			$key = $entry->context;
-			$arrayKeyIndex = strpos( $key, "[" );
-			if ( false !== $arrayKeyIndex ) {
-				$entryKey = substr( $key, 0, $arrayKeyIndex);
- 				$keyPair = substr( $key, $arrayKeyIndex + 1, strlen($key) - $arrayKeyIndex - 2 );
-				$valuePair = array( 'key' => $keyPair, 'translation' => $entry->translations[0] );
-				if ( is_array( $result[ $entryKey ] ) ) {
-					array_push( $result[ $entryKey ], $valuePair);
+			$arraykeyindex = strpos( $key, '[' );
+			if ( false !== $arraykeyindex ) {
+				$entrykey = substr( $key, 0, $arraykeyindex );
+				$keypair = substr( $key, $arraykeyindex + 1, strlen( $key ) - $arraykeyindex - 2 );
+				$valuepair = array( 
+					'key' => $keypair,
+					'translation' => $entry->translations[ 0 ] );
+				if ( is_array( $result[ $entrykey ] ) ) {
+					array_push( $result[ $entrykey ], $valuepair );
 				} else {
-					$result[ $entryKey ] = array();
-					array_push( $result[ $entryKey ], $valuePair);
+					$result[ $entrykey ] = array();
+					array_push( $result[ $entrykey ], $valuepair );
 				}
 			} else {
-				$result[ $key ] = $entry->translations[0];
+				$result[ $key ] = $entry->translations[ 0 ];
 			}
-
-		} 
+		}
 
 		/**
 		 * Filter whether the exported JSON should be pretty printed.
@@ -92,31 +92,26 @@ class GP_Format_NGX extends GP_Format {
 	 */
 	public function read_originals_from_file( $file_name ) {
 		$json = $this->decode_json_file( $file_name );
-
 		if ( ! $json ) {
 			return false;
 		}
-
 		$entries = new Translations();
-
 		foreach ( $json as $key => $value ) {
-			
 			if ( '' === $key ) {
 				continue;
 			}
-
 			if ( is_array( $value ) ) {
-			 	foreach ( $value as $keyElem => $valueElem) { 
-					if ( isset( $valueElem['key'] )
-					  && isset( $valueElem['translation'] )) {   					
+			 	foreach ( $value as $keyelem => $valueelem) {
+					if ( isset( $valueelem[ 'key' ] )
+					  && isset( $valueelem[ 'translation' ] ) ) {
 						$args = array(
-							'singular' => $valueElem['translation'],
-							'context' => $key . "[" . $valueElem['key'] . "]",
+							'singular' => $valueelem[ 'translation' ],
+							'context' => $key . '[' . $valueelem[ 'key' ] . ']',
 						);
 						$entries->add_entry( new Translation_Entry( $args ) );
-					}		
+					}
 				};
-			} else {			
+			} else {
 				$args = array(
 					'singular' => $value,
 					'context' => $key,
@@ -127,24 +122,20 @@ class GP_Format_NGX extends GP_Format {
 		}
 		return $entries;
 	}
-
 	protected function decode_json_file( $file_name ) {
 		if ( ! file_exists( $file_name ) ) {
 			return false;
 		}
-
 		$file = file_get_contents( $file_name );
 
 		if ( ! $file ) {
 			return false;
 		}
-
 		$json = json_decode( $file, true );
 
 		if ( null === $json ) {
 			return false;
 		}
-
 		return $json;
 	}
 }
