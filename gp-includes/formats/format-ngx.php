@@ -33,7 +33,7 @@ class GP_Format_NGX extends GP_Format {
 
 	/**
 	 * Generates a string the contains the $entries to export in the JSON file format.
-	 * 
+	 *
 	 * @since 2.4.0
 	 *
 	 * @param GP_Project         $project         The project the strings are being exported for, not used
