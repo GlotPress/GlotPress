@@ -122,7 +122,6 @@ class GP_Format_NGX extends GP_Format {
 		}
 		return $entries;
 	}
-	
 	/**
 	 * Decode a JSON file.
 	 *
