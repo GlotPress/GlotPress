@@ -56,9 +56,9 @@ class GP_Format_NGX extends GP_Format {
 			if ( false !== $arraykeyindex ) {
 				$entrykey = substr( $key, 0, $arraykeyindex );
 				$keypair = substr( $key, $arraykeyindex + 1, strlen( $key ) - $arraykeyindex - 2 );
-				$valuepair = array( 
+				$valuepair = array(
 					'key' => $keypair,
-					'translation' => $entry->translations[ 0 ] );
+					'translation' => $entry->translations[0], );
 				if ( is_array( $result[ $entrykey ] ) ) {
 					array_push( $result[ $entrykey ], $valuepair );
 				} else {
@@ -66,7 +66,7 @@ class GP_Format_NGX extends GP_Format {
 					array_push( $result[ $entrykey ], $valuepair );
 				}
 			} else {
-				$result[ $key ] = $entry->translations[ 0 ];
+				$result[ $key ] = $entry->translations[0];
 			}
 		}
 
@@ -102,8 +102,8 @@ class GP_Format_NGX extends GP_Format {
 			}
 			if ( is_array( $value ) ) {
 			 	foreach ( $value as $keyelem => $valueelem) {
-					if ( isset( $valueelem[ 'key' ] )
-					  && isset( $valueelem[ 'translation' ] ) ) {
+					if ( isset( $valueelem['key'] )
+					  && isset( $valueelem['translation'] ) ) {
 						$args = array(
 							'singular' => $valueelem[ 'translation' ],
 							'context' => $key . '[' . $valueelem[ 'key' ] . ']',
