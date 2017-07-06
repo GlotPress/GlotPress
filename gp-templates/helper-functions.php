@@ -134,19 +134,21 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 	foreach ( $glossary_entries_terms as $i => $terms ) {
 		$glossary_entry = $glossary_entries[ $i ];
-		if ( preg_match( '/\b(' . $terms . ')\b/i', $translation->singular . ' ' . $translation->plural, $m ) ) {
+			if ( preg_match_all( '/\b(' . $terms . ')\b/i', $translation->singular . ' ' . $translation->plural, $m ) ) {
 			$locale_entry = '';
 			if ( $glossary_entry->glossary_id !== $glossary->id ) {
 				/* translators: Denotes an entry from the locale glossary in the tooltip */
 				$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
 			}
 
-			$matching_entries[ $m[1] ][] = array(
-				'translation' => $glossary_entry->translation,
-				'pos'         => $glossary_entry->part_of_speech,
-				'comment'     => $glossary_entry->comment,
-				'locale_entry' => $locale_entry,
-				);
+			foreach ( $m[1] as $value ) {
+				$matching_entries[ $value ][] = array(
+					'translation'  => $glossary_entry->translation,
+					'pos'          => $glossary_entry->part_of_speech,
+					'comment'      => $glossary_entry->comment,
+					'locale_entry' => $locale_entry,
+					);
+			}
 		}
 	}
 
