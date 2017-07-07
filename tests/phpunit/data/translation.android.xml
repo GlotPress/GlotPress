@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 Translation-Revision-Date: +0000
-Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/[GP VERSION]
 Language: en_US
 -->
@@ -16,4 +15,8 @@ Language: en_US
 	<string name="with_amps">аз &amp; ти не сме &amp;amp;</string>
 	<string name="with_comment">баба</string>
 	<string name="with_escaped_unicode">Keine Beiträge gespeichert \u2014 noch!</string>
+	<plurals name="with_plurals">
+		<item quantity="zero">Updated %s value</item>
+		<item quantity="one">Updated %s values</item>
+	</plurals>
 </resources>

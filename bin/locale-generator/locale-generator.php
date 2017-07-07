@@ -126,6 +126,7 @@ function generate_output( $locales ) {
 			}
 		}
 		
+		// Add some space between locales for easier reading.
 		echo "\n";
 	}
 }
