@@ -1,31 +1,210 @@
 <?php
+/**
+ * GlotPress Locale class
+ *
+ * @since 1.0.0
+ *
+ * @package GlotPress
+ */
+
+/**
+ * Locale class used to define a single locale.
+ *
+ * @since 1.0.0
+ */
 if ( ! class_exists( 'GP_Locale' ) ) :
 
 class GP_Locale {
+	/**
+	 * The English name of the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $english_name;
+
+	/**
+	 * The native name of the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $native_name;
+
+	/**
+	 * The text direction of the locale (either 'rtl' or 'ltr').
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $text_direction = 'ltr';
+
+	/**
+	 * The ISO 639-1 language code for the locale if it has one.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $lang_code_iso_639_1 = null;
+
+	/**
+	 * The ISO 639-2 language code for the locale if it has one.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $lang_code_iso_639_2 = null;
+
+	/**
+	 * The ISO 639-3 language code for the locale if it has one.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $lang_code_iso_639_3 = null;
+
+	/**
+	 * The country code for the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $country_code;
+
+	/**
+	 * The WordPress code for the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $wp_locale;
+
+	/**
+	 * The internal slug for the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $slug;
+
+	/**
+	 * The number of gettext plurals the locale has.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var int
+	 */
 	public $nplurals = 2;
+
+	/**
+	 * The gettext plurals expressons for the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $plural_expression = 'n != 1';
+
+	/**
+	 * The CLDR code for the locale if it has one.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
 	public $cldr_code;
+
+	/**
+	 * The number of CLDR plurals the locale has.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
 	public $cldr_nplurals = null;
+
+	/**
+	 * An array of CLDR plural expressions for the locale.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var array
+	 */
 	public $cldr_plural_expressions;
+
+	/**
+	 * The google locale code for the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $google_code = null;
+
+	/**
+	 * The preferred font for the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $preferred_sans_serif_font_family = null;
+
+	/**
+	 * The facebook locale or the locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	public $facebook_locale = null;
+
+	/**
+	 * The root locale for this locale if it has one.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
 	public $variant_root = null;
+
+	/**
+	 * An array of variants that this locale is the root of.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var array
+	 */
 	public $variants = null;
 
 	// TODO: days, months, decimals, quotes
 
+
+	/**
+	 * Internal cache of the number indexes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string
+	 */
 	private $_index_for_number;
 
+	/**
+	 * Constructor function for the class.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args An array of key/value pairs to assign to the newly created class.
+	 */
 	public function __construct( $args = array() ) {
 		$this->cldr_plural_expressions = array(
 			'zero' => '',
@@ -41,6 +220,13 @@ class GP_Locale {
 		}
 	}
 
+	/**
+	 * __set_state function for backwards compatibility.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $state An array of key/value pairs to assign to the current object.
+	 */
 	public static function __set_state( $state ) {
 		return new GP_Locale( $state );
 	}
@@ -49,6 +235,7 @@ class GP_Locale {
 	 * Make deprecated properties checkable for backwards compatibility.
 	 *
 	 * @param string $name Property to check if set.
+	 *
 	 * @return bool Whether the property is set.
 	 */
 	public function __isset( $name ) {
@@ -61,6 +248,7 @@ class GP_Locale {
 	 * Make deprecated properties readable for backwards compatibility.
 	 *
 	 * @param string $name Property to get.
+	 *
 	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
@@ -69,26 +257,48 @@ class GP_Locale {
 		}
 	}
 
+	/**
+	 * Create a string that is a combination of the english and native names.
+	 *
+	 * @return string The english and native names sperated by a single '/'.
+	 */
 	public function combined_name() {
 		/* translators: combined name for locales: 1: name in English, 2: native name */
 		return sprintf( _x( '%1$s/%2$s', 'locales' ), $this->english_name, $this->native_name );
 	}
 
+	/**
+	 * Create an array of numbers that adhear to the plural rule for the locale.
+	 *
+	 * @param int $index      Which plural rule to use.
+	 * @param int $how_many   How many numbers to return in the array.
+	 * @param int $test_up_to How many iterations to go through to find the numbers.
+	 * @param int $type       The plural type to use, either 'gettext' or 'cldr'.
+	 *
+	 * @return array The array of numbers that match the parameters.
+	 */
 	public function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000, $type = 'gettext' ) {
 		$numbers = array();
 
 		if ( 'cldr' === $type ) {
 			$i = 0;
 
+			// Loop thorugh the CLDR plurals.
 			foreach ( $this->cldr_plural_expressions as $key => $value ) {
+				// Skip empty rules.
 				if ( '' !== $value ) {
+					// See if we match the one we're looking for.
 					if ( $i === $index ) {
+						// The CLDR plural rule includes examples in it's text, starting at the first @, so trim off the actual rule before the @.
 						$example = substr( $value, strpos( $value, '@' ) );
 
+						// CLDR plurals can include both integer and decimal examples, find out whihc ones we have.
 						$integer_start = strpos( $example, '@integer' );
 						$decimal_start = strpos( $example, '@decimal' );
-						
+
+						// If we found an integer example, use it, otherwise we can use a decimal example or worst case, return a default array.
 						if( false !== $integer_start ) {
+							// Strip off the decimal example if it exists.
 							if ( false !== $decimal_start ) {
 								if ( $decimal_start > $integer_start ) {
 									$example = substr( $example, 0, $decimal_start );
@@ -96,21 +306,29 @@ class GP_Locale {
 									$exmaple = substr( $example, $integer_start );
 								}
 							}
+
+							// Now that we're down to a single example, strip off the @integer/decimal as we no longer need it.
 							$example = str_replace( '@integer', '', $example );
 							$example = str_replace( '@decimal', '', $example );
-							
+
+							// The examples usually have a unicde ellipse at the end, get rid of it too.
 							$example = str_replace( ', …', '', $example );
-						
+
+							// Now break up the examples.
 							$temp_numbers = explode( ',', $example );
-							
+
+							// Loop through all the examples we have.
 							foreach ( $temp_numbers as $num ) {
+								// CLDR plurals can use the ~ to indicate a range, so let's decode that.
 								$range = $this->expand_range( $num );
-								
+
+								// Add all the numbers we found to the numbers array.
 								foreach ( $range as $value ) {
 									$numbers[] = (int)$value;
 								}
 							}
 						} elseif ( false !== $decimal_start ) {
+							// Strip off the decimal example if it exists.
 							if ( false !== $integer_start ) {
 								if ( $decimal_start > $integer_start ) {
 									$example = substr( $example, 0, $integer_start );
@@ -118,17 +336,23 @@ class GP_Locale {
 									$exmaple = substr( $example, $decimal_start );
 								}
 							}
-							
+
+							// Now that we're down to a single example, strip off the @integer/decimal as we no longer need it.
 							$example = str_replace( '@integer', '', $example );
 							$example = str_replace( '@decimal', '', $example );
-							
+
+							// The examples usually have a unicde ellipse at the end, get rid of it too.
 							$example = str_replace( ', …', '', $example );
-						
+
+							// Now break up the examples.
 							$temp_numbers = explode( ',', $example );
-							
+
+							// Loop through all the examples we have.
 							foreach ( $temp_numbers as $num ) {
+								// CLDR plurals can use the ~ to indicate a range, so let's decode that.
 								$range = $this->expand_range( $num );
-								
+
+								// Add all the numbers we found to the numbers array.
 								foreach ( $range as $value ) {
 									$numbers[] = (int)$value;
 								}
@@ -141,11 +365,13 @@ class GP_Locale {
 					$i++;
 				}
 			}
-			
+
+			// We probably have more examples than was requested, if so, trip the array.
 			if ( count( $numbers ) > $how_many ) {
 				$numbers = array_slice( $numbers, 0, $how_many );
 			}
 		} else {
+			// For gettext, we just brute force the examples.
 			for( $number = 0; $number < $test_up_to; ++$number ) {
 				if ( $this->index_for_number( $number ) == $index ) {
 					$numbers[] = $number;
@@ -156,28 +382,45 @@ class GP_Locale {
 				}
 			}
 		}
-		
+
 		return $numbers;
 	}
 
+	/**
+	 * Expand a CLDR number range out to its compoents.
+	 *
+	 * For example the range "5~10" would return array( 5, 6, 7, 8, 9, 10).
+	 * Where as the range "5" would return array( 5 ).
+	 *
+	 * @param string $range The CLDR range string to convert to an array.
+	 *
+	 * @return array The array of numbers that match the range.
+	 */
 	private function expand_range( $range ) {
+		// If there is no range character, we don't need to do anything but return the array.
 		if ( false !== strpos( $range, '~' ) ) {
-			$range = str_replace( '~', ',', $range );
-
-			list( $start, $end ) = explode( ',', $range );
+			// Expode the range in to the start and end values.
+			list( $start, $end ) = explode( '~', $range );
 
 			$new_range = array();
-			
+
 			for ( $i = $start; $i <= $end; $i++ ) {
 				$new_range[] = $i;
 			}
-			
+
 			return $new_range;
 		}
-		
+
 		return array( $range );
 	}
-	
+
+	/**
+	 * Find the gettext plural rule index for a given number.
+	 *
+	 * @param int $number The number to find the index for.
+	 *
+	 * @return int The index of the pural rule to use for the number.
+	 */
 	public function index_for_number( $number ) {
 		if ( ! isset( $this->_index_for_number ) ) {
 			$gettext = new Gettext_Translations;
@@ -190,6 +433,13 @@ class GP_Locale {
 		return $f( $number );
 	}
 
+	/**
+	 * Get the number of plurals for the locale based on the plurals type.
+	 *
+	 * @param int $type The plural type to use, either 'gettext' or 'cldr'.
+	 *
+	 * @return int The number of purals.
+	 */
 	public function get_nplurals( $type = 'gettext' ) {
 		if ( 'cldr' === $type ) {
 			return $this->cldr_nplurals;
@@ -197,7 +447,15 @@ class GP_Locale {
 			return $this->nplurals;
 		}
 	}
-	
+
+	/**
+	 * Get a string that represents examples for a given plural rule.
+	 *
+	 * @param int $type The plural type to use, either 'gettext' or 'cldr'.
+	 * @param int $type The index of the rule to use.
+	 *
+	 * @return string The example string.
+	 */
 	public function get_plural_example( $type, $index ) {
 		if ( 'cldr' === $type ) {
 			$i = 0;
@@ -205,17 +463,22 @@ class GP_Locale {
 			foreach ( $this->cldr_plural_expressions as $key => $value ) {
 				if ( '' !== $value ) {
 					if ( $i === $index ) {
+						// The CLDR plural rule includes examples in it's text, starting at the first @, so trim off the actual rule before the @.
 						$example = substr( $value, strpos( $value, '@' ) );
+						// The Integers examples always come before the decimal examples so simply delete the @integer string and replace @decimal with an 'or'.
 						$example = str_replace( '@integer', '', $example );
 						$example = str_replace( '@decimal', ' or ', $example );
+						// Make sure we don't have any extra cruft at the start/end of the string
 						$example = trim( $example );
-						
+
+						// Check to see if the example strats with an 'or ', which would mean we didn't have an @integer examples and we can remove the or.
 						if( gp_startswith( $example, 'or ' ) ) {
 							$example = substr( $example, 3 );
 						}
-						
+
+						// Get rid of the ellipses if they exist.
 						$example = str_replace( ', …', '', $example );
-						
+
 						return $example;
 					}
 
@@ -232,10 +495,27 @@ endif;
 
 if ( ! class_exists( 'GP_Locales' ) ) :
 
+/**
+ * Locales class used to define the collection of GP_Locale objects.
+ *
+ * @since 1.0.0
+ */
 class GP_Locales {
 
+	/**
+	 * The array of locales.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array
+	 */
 	public $locales = array();
 
+	/**
+	 * Constructor function for the class.
+	 *
+	 * @since 1.0.0
+	 */
 	public function __construct() {
 		$aa = new GP_Locale();
 		$aa->english_name                         = 'Afar';
@@ -3641,6 +3921,11 @@ class GP_Locales {
 		}
 	}
 
+	/**
+	 * Get an instance of the class.
+	 *
+	 * @return GP_Locales An instance of the class.
+	 */
 	public static function &instance() {
 		if ( ! isset( $GLOBALS['gp_locales'] ) )
 			$GLOBALS['gp_locales'] = new GP_Locales;
@@ -3648,21 +3933,46 @@ class GP_Locales {
 		return $GLOBALS['gp_locales'];
 	}
 
+	/**
+	 * Get the locales array.
+	 *
+	 * @return array An array of all the GP_Locale objects.
+	 */
 	public static function locales() {
 		$instance = GP_Locales::instance();
 		return $instance->locales;
 	}
 
+	/**
+	 * Check to see if a locale exists.
+	 *
+	 * @return bool Returns true if the locale exists, otherwise false.
+	 */
 	public static function exists( $slug ) {
 		$instance = GP_Locales::instance();
 		return isset( $instance->locales[ $slug ] );
 	}
 
+	/**
+	 * Check to see if a locale exists.
+	 *
+	 * @param string $slug The locale slug to return.
+	 *
+	 * @return GP_Locale|null Returns the locale if it exists, otherwise null.
+	 */
 	public static function by_slug( $slug ) {
 		$instance = GP_Locales::instance();
 		return isset( $instance->locales[ $slug ] )? $instance->locales[ $slug ] : null;
 	}
 
+	/**
+	 * Get the first locale that matches a field name/value pair.
+	 *
+	 * @param string       $field_name The name of the field to check against.
+	 * @param string|array $field_name The value to check for.
+	 *
+	 * @return GP_Locale|false Returns the locale if found, otherwise false.
+	 */
 	public static function by_field( $field_name, $field_value ) {
 		$instance = GP_Locales::instance();
 		$result   = false;
