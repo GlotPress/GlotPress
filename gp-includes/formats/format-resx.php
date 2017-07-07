@@ -161,8 +161,6 @@ class GP_Format_ResX extends GP_Format {
 	 *
 	 * @param string $string       The string to indent.
 	 * @param int    $prepend_tabs The number of tabs to add to the string.
-	 *
-	 * @return string The updated string.
 	 */
 	private function line( $string, $prepend_tabs = 0 ) {
 		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
@@ -175,8 +173,6 @@ class GP_Format_ResX extends GP_Format {
 	 *
 	 * @param string $name  The name of the resource.
 	 * @param string $value The value of the resource.
-	 *
-	 * @return string The formatted resource block.
 	 */
 	private function res_header( $name, $value ) {
 		$this->line( '<resheader name="'.$name.'">', 1 );
@@ -215,8 +211,6 @@ class GP_Format_ResX extends GP_Format {
 	 * Cteate the .resx schema info.  .resx file have a standard scheam block.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return string Returns the schema block.
 	 */
 	private function add_schema_info() {
 		$this->line('<!--', 1 );
@@ -284,8 +278,6 @@ class GP_Format_ResX extends GP_Format {
 	 * Cteate the .resx schema declaration.  .resx file have a standard scheam declaration.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return string Returns the schema declaration.
 	 */
 	private function add_schema_declaration() {
 		$this->line( '<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">', 1 );

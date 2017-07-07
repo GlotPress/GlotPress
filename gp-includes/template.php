@@ -474,7 +474,7 @@ function gp_plurals_dropdown( $name_and_id, $selected_plural_type = null, $attrs
 		'gettext' => __( 'GetText', 'glotpress' ),
 		'cldr' => __( 'CLDR', 'glotpress' ),
 	);
-	
+
 	return gp_select( $name_and_id, $options, $selected_plural_type, $attrs );
 }
 

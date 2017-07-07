@@ -370,7 +370,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		$format_options = array();
 		foreach ( GP::$formats as $slug => $format ) {
 			if ( $project->plurals_type === $format->plurals_format ) {
-				$format_options[$slug] = $format->name;
+				$format_options[ $slug ] = $format->name;
 			}
 		}
 		$what_dropdown = gp_select( 'what-to-export', array('all' => _x( 'all current', 'export choice', 'glotpress' ), 'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ) ), 'all' );
