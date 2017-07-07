@@ -74,7 +74,7 @@ class GP_Translation_Warnings {
 	 * @return array|null Null if no issues have been found, otherwise an array
 	 *                    with warnings.
 	 */
-	public function check( $singular, $plural, $translations, $locale ) {
+	public function check( $singular, $plural, $translations, $locale, $plurals_type = 'gettext' ) {
 		$problems = array();
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
@@ -84,7 +84,7 @@ class GP_Translation_Warnings {
 			$skip = array( 'singular' => false, 'plural' => false );
 			if ( null !== $plural ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
-				if ( 1 === $locale->nplurals ) {
+				if ( 1 === $locale->get_nplurals() ) {
 					$skip['singular'] = true;
 				} elseif ( in_array( 1, $numbers_for_index, true ) ) {
 					$skip['plural'] = true;

@@ -31,18 +31,36 @@ $plural = sprintf(
 <tr class="editor <?php gp_translation_row_classes( $translation ); ?>" id="editor-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>">
 	<td colspan="<?php echo esc_attr( $colspan ); ?>">
 		<div class="strings">
+		<?php
+			$singular = isset( $translation->singular_glossary_markup ) ? $translation->singular_glossary_markup : esc_translation( $translation->singular );
+			$plural   = isset( $translation->plural_glossary_markup ) ? $translation->plural_glossary_markup : esc_translation( $translation->plural );
+			$nplurals = $locale->get_nplurals( $project->plurals_type );
+		?>
+
 			<?php if ( ! $translation->plural ) : ?>
 				<p class="original"><?php echo prepare_original( $translation_singular );  // WPCS: XSS OK. ?></p>
 				<p class="original_raw"><?php echo esc_translation( $translation->singular ); // WPCS: XSS ok. ?></p>
 				<?php textareas( $translation, array( $can_edit, $can_approve_translation ) ); ?>
 			<?php else : ?>
-				<?php if ( absint( $locale->nplurals ) === 2 && 'n != 1' === $locale->plural_expression ) : ?>
+				<?php if ( 'gettext' === $project->plurals_type && 2 === $nplurals && 'n != 1' === $locale->plural_expression ) : ?>
 					<p>
-						<?php echo $singular;  // WPCS: XSS OK. ?>
+					<?php
+						// Translators: %s is the original (singlular) string.
+						printf( __( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
+							'<span class="original">' . $singular . '</span>'
+						);
+					?>
 					</p>
-					<?php textareas( $translation, array( $can_edit, $can_approve ), 0 ); ?>
+					<?php
+						textareas( $translation, array( $can_edit, $can_approve ), 0 );
+					?>
 					<p class="clear">
 						<?php echo $plural;  // WPCS: XSS OK. ?>
+						// Translators: %s is the original plural string.
+						printf( __( 'Plural: %s', 'glotpress' ), // WPCS: XSS ok.
+							'<span class="original">' . $plural . '</span>'
+						);
+					?>
 					</p>
 					<?php textareas( $translation, array( $can_edit, $can_approve ), 1 ); ?>
 				<?php else : ?>
@@ -50,21 +68,30 @@ $plural = sprintf(
 					TODO: labels for each plural textarea and a sample number
 					-->
 					<p>
-						<?php echo $singular;  // WPCS: XSS OK. ?>
+					<?php
+						// Translators: %s is the original (singlular) string.
+						printf( __( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
+							'<span class="original">' . $singular . '</span>'
+						);
+					?>
 					</p>
 					<p class="clear">
-						<?php echo $plural;  // WPCS: XSS OK. ?>
+					<?php
+						// Translators: %s is the original plural string.
+						printf( __( 'Plural: %s', 'glotpress' ),  // WPCS: XSS ok.
+							'<span class="original">' . $plural . '</span>'
+						);
+					?>
 					</p>
-					<?php foreach ( range( 0, $locale->nplurals - 1 ) as $plural_index ) : ?>
-						<?php if ( $locale->nplurals > 1 ) : ?>
+					<?php foreach ( range( 0, $nplurals - 1 ) as $plural_index ) : ?>
+						<?php if ( $nplurals > 1 ) : ?>
 							<p class="plural-numbers">
-								<?php
-								printf(
-									/* translators: %s: Numbers */
-									__( 'This plural form is used for numbers like: %s', 'glotpress' ),
-									'<span class="numbers">' . implode( ', ', $locale->numbers_for_index( $plural_index ) ) . '</span>'
-								); // WPCS: XSS OK.
-								?>
+							<?php
+								// Translators: %s is the list of examples.
+								printf( __( 'This plural form is used for numbers like: %s', 'glotpress' ), // WPCS: XSS ok.
+									'<span class="numbers">' . $locale->get_plural_example( $project->plurals_type, $plural_index ) . '</span>'
+								);
+							?>
 							</p>
 						<?php endif; ?>
 						<?php textareas( $translation, array( $can_edit, $can_approve ), $plural_index ); ?>

@@ -31,8 +31,8 @@ class GP_Locale {
 			'zero' => '',
 			'one' => '',
 			'two' => '',
-			'many' => '',
 			'few' => '',
+			'many' => '',
 			'other' => '',
 		);
 
@@ -74,22 +74,106 @@ class GP_Locale {
 		return sprintf( _x( '%1$s/%2$s', 'locales' ), $this->english_name, $this->native_name );
 	}
 
-	public function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000 ) {
+	public function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000, $type = 'gettext' ) {
 		$numbers = array();
 
-		for( $number = 0; $number < $test_up_to; ++$number ) {
-			if ( $this->index_for_number( $number ) == $index ) {
-				$numbers[] = $number;
+		if ( 'cldr' === $type ) {
+			$i = 0;
 
-				if ( count( $numbers ) >= $how_many ) {
-					break;
+			foreach ( $this->cldr_plural_expressions as $key => $value ) {
+				if ( '' !== $value ) {
+					if ( $i === $index ) {
+						$example = substr( $value, strpos( $value, '@' ) );
+
+						$integer_start = strpos( $example, '@integer' );
+						$decimal_start = strpos( $example, '@decimal' );
+						
+						if( false !== $integer_start ) {
+							if ( false !== $decimal_start ) {
+								if ( $decimal_start > $integer_start ) {
+									$example = substr( $example, 0, $decimal_start );
+								} else {
+									$exmaple = substr( $example, $integer_start );
+								}
+							}
+							$example = str_replace( '@integer', '', $example );
+							$example = str_replace( '@decimal', '', $example );
+							
+							$example = str_replace( ', …', '', $example );
+						
+							$temp_numbers = explode( ',', $example );
+							
+							foreach ( $temp_numbers as $num ) {
+								$range = $this->expand_range( $num );
+								
+								foreach ( $range as $value ) {
+									$numbers[] = (int)$value;
+								}
+							}
+						} elseif ( false !== $decimal_start ) {
+							if ( false !== $integer_start ) {
+								if ( $decimal_start > $integer_start ) {
+									$example = substr( $example, 0, $integer_start );
+								} else {
+									$exmaple = substr( $example, $decimal_start );
+								}
+							}
+							
+							$example = str_replace( '@integer', '', $example );
+							$example = str_replace( '@decimal', '', $example );
+							
+							$example = str_replace( ', …', '', $example );
+						
+							$temp_numbers = explode( ',', $example );
+							
+							foreach ( $temp_numbers as $num ) {
+								$range = $this->expand_range( $num );
+								
+								foreach ( $range as $value ) {
+									$numbers[] = (int)$value;
+								}
+							}
+						} else {
+							$numbers[] = 0;
+						}
+					}
+
+					$i++;
+				}
+			}
+		} else {
+			for( $number = 0; $number < $test_up_to; ++$number ) {
+				if ( $this->index_for_number( $number ) == $index ) {
+					$numbers[] = $number;
+
+					if ( count( $numbers ) >= $how_many ) {
+						break;
+					}
 				}
 			}
 		}
-
+		
 		return $numbers;
 	}
 
+	private function expand_range( $range ) {
+		if ( false !== strpos( $range, '~' ) ) {
+			$range = str_replace( '~', ',', $range );
+
+			list( $start, $end ) = explode( ',', $range );
+
+			$new_range = array();
+			
+			for ( $i = $start; $i <= $end; $i++ ) {
+				$new_range[] = $i;
+			}
+			
+			return $new_range;
+		}
+		
+		return array( $range );
+	}
+	
 	public function index_for_number( $number ) {
 		if ( ! isset( $this->_index_for_number ) ) {
 			$gettext = new Gettext_Translations;
@@ -102,6 +186,42 @@ class GP_Locale {
 		return $f( $number );
 	}
 
+	public function get_nplurals( $type = 'gettext' ) {
+		if ( 'cldr' === $type ) {
+			return $this->cldr_nplurals;
+		} else {
+			return $this->nplurals;
+		}
+	}
+	
+	public function get_plural_example( $type, $index ) {
+		if ( 'cldr' === $type ) {
+			$i = 0;
+
+			foreach ( $this->cldr_plural_expressions as $key => $value ) {
+				if ( '' !== $value ) {
+					if ( $i === $index ) {
+						$example = substr( $value, strpos( $value, '@' ) );
+						$example = str_replace( '@integer', '', $example );
+						$example = str_replace( '@decimal', ' or ', $example );
+						$example = trim( $example );
+						
+						if( gp_startswith( $example, 'or ' ) ) {
+							$example = substr( $example, 3 );
+						}
+						
+						$example = str_replace( ', …', '', $example );
+						
+						return $example;
+					}
+
+					$i++;
+				}
+			}
+		} else {
+			return implode( ', ', $this->numbers_for_index( $index ) );
+		}
+	}
 }
 
 endif;
@@ -195,8 +315,8 @@ class GP_Locales {
 		$ar->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
 		$ar->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
 		$ar->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
-		$ar->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
 		$ar->cldr_plural_expressions['few'] = 'n % 100 = 3..10 @integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …';
+		$ar->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
 		$ar->cldr_plural_expressions['other'] = ' @integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$arq = new GP_Locale();
@@ -215,8 +335,8 @@ class GP_Locales {
 		$arq->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
 		$arq->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
 		$arq->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
-		$arq->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
 		$arq->cldr_plural_expressions['few'] = 'n % 100 = 3..10 @integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …';
+		$arq->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
 		$arq->cldr_plural_expressions['other'] = ' @integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$arq->variant_root = $ar->slug;
 		$arq->variants[ $arq->slug ] = $arq->english_name;
@@ -237,8 +357,8 @@ class GP_Locales {
 		$ary->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
 		$ary->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
 		$ary->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
-		$ary->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
 		$ary->cldr_plural_expressions['few'] = 'n % 100 = 3..10 @integer 3~10, 103~110, 1003, … @decimal 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 103.0, 1003.0, …';
+		$ary->cldr_plural_expressions['many'] = 'n % 100 = 11..99 @integer 11~26, 111, 1011, … @decimal 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 111.0, 1011.0, …';
 		$ary->cldr_plural_expressions['other'] = ' @integer 100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$ary->variant_root = $ar->slug;
 		$ary->variants[ $ary->slug ] = $ary->english_name;
@@ -376,8 +496,8 @@ class GP_Locales {
 		$be->cldr_code = 'be';
 		$be->cldr_nplurals = '4';
 		$be->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 1.0, 21.0, 31.0, 41.0, 51.0, 61.0, 71.0, 81.0, 101.0, 1001.0, …';
-		$be->cldr_plural_expressions['many'] = 'n % 10 = 0 or n % 10 = 5..9 or n % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$be->cldr_plural_expressions['few'] = 'n % 10 = 2..4 and n % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, … @decimal 2.0, 3.0, 4.0, 22.0, 23.0, 24.0, 32.0, 33.0, 102.0, 1002.0, …';
+		$be->cldr_plural_expressions['many'] = 'n % 10 = 0 or n % 10 = 5..9 or n % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$be->cldr_plural_expressions['other'] = '   @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.1, 1000.1, …';
 
 		$bg = new GP_Locale();
@@ -467,8 +587,8 @@ class GP_Locales {
 		$br->cldr_nplurals = '5';
 		$br->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11,71,91 @integer 1, 21, 31, 41, 51, 61, 81, 101, 1001, … @decimal 1.0, 21.0, 31.0, 41.0, 51.0, 61.0, 81.0, 101.0, 1001.0, …';
 		$br->cldr_plural_expressions['two'] = 'n % 10 = 2 and n % 100 != 12,72,92 @integer 2, 22, 32, 42, 52, 62, 82, 102, 1002, … @decimal 2.0, 22.0, 32.0, 42.0, 52.0, 62.0, 82.0, 102.0, 1002.0, …';
-		$br->cldr_plural_expressions['many'] = 'n != 0 and n % 1000000 = 0 @integer 1000000, … @decimal 1000000.0, 1000000.00, 1000000.000, …';
 		$br->cldr_plural_expressions['few'] = 'n % 10 = 3..4,9 and n % 100 != 10..19,70..79,90..99 @integer 3, 4, 9, 23, 24, 29, 33, 34, 39, 43, 44, 49, 103, 1003, … @decimal 3.0, 4.0, 9.0, 23.0, 24.0, 29.0, 33.0, 34.0, 103.0, 1003.0, …';
+		$br->cldr_plural_expressions['many'] = 'n != 0 and n % 1000000 = 0 @integer 1000000, … @decimal 1000000.0, 1000000.00, 1000000.000, …';
 		$br->cldr_plural_expressions['other'] = ' @integer 0, 5~8, 10~20, 100, 1000, 10000, 100000, … @decimal 0.0~0.9, 1.1~1.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, …';
 
 		$bs = new GP_Locale();
@@ -578,8 +698,8 @@ class GP_Locales {
 		$cs->cldr_code = 'cs';
 		$cs->cldr_nplurals = '4';
 		$cs->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
-		$cs->cldr_plural_expressions['many'] = 'v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$cs->cldr_plural_expressions['few'] = 'i = 2..4 and v = 0 @integer 2~4';
+		$cs->cldr_plural_expressions['many'] = 'v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$cs->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 
 		$csb = new GP_Locale();
@@ -622,8 +742,8 @@ class GP_Locales {
 		$cy->cldr_plural_expressions['zero'] = 'n = 0 @integer 0 @decimal 0.0, 0.00, 0.000, 0.0000';
 		$cy->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
 		$cy->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
-		$cy->cldr_plural_expressions['many'] = 'n = 6 @integer 6 @decimal 6.0, 6.00, 6.000, 6.0000';
 		$cy->cldr_plural_expressions['few'] = 'n = 3 @integer 3 @decimal 3.0, 3.00, 3.000, 3.0000';
+		$cy->cldr_plural_expressions['many'] = 'n = 6 @integer 6 @decimal 6.0, 6.00, 6.000, 6.0000';
 		$cy->cldr_plural_expressions['other'] = ' @integer 4, 5, 7~20, 100, 1000, 10000, 100000, 1000000, … @decimal 0.1~0.9, 1.1~1.7, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$da = new GP_Locale();
@@ -1273,8 +1393,8 @@ class GP_Locales {
 		$ga->cldr_nplurals = '5';
 		$ga->cldr_plural_expressions['one'] = 'n = 1 @integer 1 @decimal 1.0, 1.00, 1.000, 1.0000';
 		$ga->cldr_plural_expressions['two'] = 'n = 2 @integer 2 @decimal 2.0, 2.00, 2.000, 2.0000';
-		$ga->cldr_plural_expressions['many'] = 'n = 7..10 @integer 7~10 @decimal 7.0, 8.0, 9.0, 10.0, 7.00, 8.00, 9.00, 10.00, 7.000, 8.000, 9.000, 10.000, 7.0000, 8.0000, 9.0000, 10.0000';
 		$ga->cldr_plural_expressions['few'] = 'n = 3..6 @integer 3~6 @decimal 3.0, 4.0, 5.0, 6.0, 3.00, 4.00, 5.00, 6.00, 3.000, 4.000, 5.000, 6.000, 3.0000, 4.0000, 5.0000, 6.0000';
+		$ga->cldr_plural_expressions['many'] = 'n = 7..10 @integer 7~10 @decimal 7.0, 8.0, 9.0, 10.0, 7.00, 8.00, 9.00, 10.00, 7.000, 8.000, 9.000, 10.000, 7.0000, 8.0000, 9.0000, 10.0000';
 		$ga->cldr_plural_expressions['other'] = ' @integer 0, 11~25, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~0.9, 1.1~1.6, 10.1, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$gd = new GP_Locale();
@@ -1848,8 +1968,8 @@ class GP_Locales {
 		$lt->cldr_code = 'lt';
 		$lt->cldr_nplurals = '4';
 		$lt->cldr_plural_expressions['one'] = 'n % 10 = 1 and n % 100 != 11..19 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, … @decimal 1.0, 21.0, 31.0, 41.0, 51.0, 61.0, 71.0, 81.0, 101.0, 1001.0, …';
-		$lt->cldr_plural_expressions['many'] = 'f != 0   @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.1, 1000.1, …';
 		$lt->cldr_plural_expressions['few'] = 'n % 10 = 2..9 and n % 100 != 11..19 @integer 2~9, 22~29, 102, 1002, … @decimal 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 22.0, 102.0, 1002.0, …';
+		$lt->cldr_plural_expressions['many'] = 'f != 0   @decimal 0.1~0.9, 1.1~1.7, 10.1, 100.1, 1000.1, …';
 		$lt->cldr_plural_expressions['other'] = ' @integer 0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$lug = new GP_Locale();
@@ -2238,8 +2358,8 @@ class GP_Locales {
 		$pl->cldr_code = 'pl';
 		$pl->cldr_nplurals = '4';
 		$pl->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
-		$pl->cldr_plural_expressions['many'] = 'v = 0 and i != 1 and i % 10 = 0..1 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 12..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 		$pl->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …';
+		$pl->cldr_plural_expressions['many'] = 'v = 0 and i != 1 and i % 10 = 0..1 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 12..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 		$pl->cldr_plural_expressions['other'] = '   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$pt = new GP_Locale();
@@ -2346,8 +2466,8 @@ class GP_Locales {
 		$ru->cldr_code = 'ru';
 		$ru->cldr_nplurals = '4';
 		$ru->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …';
-		$ru->cldr_plural_expressions['many'] = 'v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 		$ru->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …';
+		$ru->cldr_plural_expressions['many'] = 'v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 		$ru->cldr_plural_expressions['other'] = '   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$rue = new GP_Locale();
@@ -2429,8 +2549,8 @@ class GP_Locales {
 		$sk->cldr_code = 'sk';
 		$sk->cldr_nplurals = '4';
 		$sk->cldr_plural_expressions['one'] = 'i = 1 and v = 0 @integer 1';
-		$sk->cldr_plural_expressions['many'] = 'v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$sk->cldr_plural_expressions['few'] = 'i = 2..4 and v = 0 @integer 2~4';
+		$sk->cldr_plural_expressions['many'] = 'v != 0   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$sk->cldr_plural_expressions['other'] = ' @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 
 		$skr = new GP_Locale();
@@ -2856,8 +2976,8 @@ class GP_Locales {
 		$uk->cldr_code = 'uk';
 		$uk->cldr_nplurals = '4';
 		$uk->cldr_plural_expressions['one'] = 'v = 0 and i % 10 = 1 and i % 100 != 11 @integer 1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …';
-		$uk->cldr_plural_expressions['many'] = 'v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 		$uk->cldr_plural_expressions['few'] = 'v = 0 and i % 10 = 2..4 and i % 100 != 12..14 @integer 2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …';
+		$uk->cldr_plural_expressions['many'] = 'v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14 @integer 0, 5~19, 100, 1000, 10000, 100000, 1000000, …';
 		$uk->cldr_plural_expressions['other'] = '   @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$ur = new GP_Locale();
