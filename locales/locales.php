@@ -141,6 +141,10 @@ class GP_Locale {
 					$i++;
 				}
 			}
+			
+			if ( count( $numbers ) > $how_many ) {
+				$numbers = array_slice( $numbers, 0, $how_many );
+			}
 		} else {
 			for( $number = 0; $number < $test_up_to; ++$number ) {
 				if ( $this->index_for_number( $number ) == $index ) {
