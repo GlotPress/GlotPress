@@ -1,3 +1,6 @@
+#1.3.2
+* Feature: Alert for first letter uppercase missing on translation
+
 #1.3.1
 * Fix: Link for Translation Global Status link
 * Fix: For Page Up/Down

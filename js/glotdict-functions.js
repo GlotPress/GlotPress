@@ -162,6 +162,8 @@ function gd_validate(e) {
 	}
 	var original_text = jQuery('.editor:visible .original').html().slice(-1);
 	var lastchar = text.slice(-1);
+	var firstcharnewtext = text.charAt(0);
+	var firstchar = jQuery('.editor:visible .original').html().charAt(0);
 	var hellipse = jQuery('.editor:visible .original').html().slice(-3) === '...';
 	var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
 	if (hellipse) {
@@ -178,6 +180,12 @@ function gd_validate(e) {
 		  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>' + discard + '</div>');
 		  e.stopImmediatePropagation();
 		}
+	  }
+	}
+	if (!gd_get_setting('no_initial_uppercase')) {
+	  if (gd_is_uppercase(firstchar) && !gd_is_uppercase(firstcharnewtext)) {
+		jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an initial uppercase letter like "<i>' + firstchar + '</i>"' + discard + '</div>');
+		e.stopImmediatePropagation();
 	  }
 	}
   }
@@ -293,4 +301,8 @@ function gd_get_lang_consistency() {
 	}
   }
   return reallang;
+}
+
+function gd_is_uppercase(myString) {
+  return (myString === myString.toUpperCase());
 }

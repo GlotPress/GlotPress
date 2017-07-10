@@ -13,6 +13,9 @@ PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org 
 * Click on the terms with glossary open the consistency tool
 * Add link to the Translation Status Overview with a button to scroll to the language in use
 * More warning on translations
+  * Validation for final "...", ".", ":"
+  * Validation for final ;.!:、。؟？！
+  * First character is not uppercase on translation
 * Many hotkeys and shortcut
 
 ## Hotkeys
