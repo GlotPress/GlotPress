@@ -1426,12 +1426,12 @@ class GP_Locales {
 		$mlt->lang_code_iso_639_2 = 'mlt';
 		$mlt->lang_code_iso_639_3 = 'mlt';
 		$mlt->country_code = 'mt';
-		$mlt->facebook_locale = 'mt_MT';
-		$mlt->google_code = 'mt';
 		$mlt->wp_locale = 'mlt';
 		$mlt->slug = 'mlt';
 		$mlt->nplurals = 4;
 		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100>1 && n%100<11) ? 1 : (n%100>10 && n%100<20 ) ? 2 : 3)';
+		$mlt->facebook_locale = 'mt_MT';
+		$mlt->google_code = 'mt';
 		
 		$mn = new GP_Locale();
 		$mn->english_name = 'Mongolian';
