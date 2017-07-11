@@ -168,8 +168,8 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 
 					$this->assertRegExp( $regex, $translation->singular_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->singular . '".' );
 					$this->assertRegExp( $regex, $translation->plural_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->plural . '".' );
-					$this->assertEquals( preg_match_all( $regex, $translation->singular_glossary_markup ), $match_count[ $i ] );
-					$this->assertEquals( preg_match_all( $regex, $translation->plural_glossary_markup ), $match_count[ $i ] );
+					$this->assertEquals( preg_match_all( $regex, $translation->singular_glossary_markup, $matches ), $match_count[ $i ] );
+					$this->assertEquals( preg_match_all( $regex, $translation->plural_glossary_markup, $matches ), $match_count[ $i ] );
 				}
 			}
 			
