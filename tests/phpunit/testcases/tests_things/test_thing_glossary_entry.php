@@ -69,7 +69,7 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$nouns = array( 'term', 'box', 'city', 'toy', 'wife', 'shelf', 'man', 'woman', 'post', 'install/installation' );
+		$nouns = array( 'term', 'box', 'city', 'toy', 'wife', 'shelf', 'man', 'woman', 'post', 'install/installation', 'color' );
 		foreach ( $nouns as $noun ) {
 			GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => $noun, 'part_of_speech' => 'noun', 'translation' => $noun, 'comment' => 'my comment', 'last_edited_by' =>'1' ) );
 		}
@@ -105,8 +105,40 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			'Write what you know and you\'ll never go wrong.' => array( 'write' ), // Make sure glossary entries are matched case insensitivly.
 			'Posting glossary entries can be fun!' => array( 'post' ), // Make sure glossary entries detect the 'ing' suffix.
 			'Posted glossary entries are a drag!' => array( 'post' ), // Make sure glossary entries detect the 'ed' suffix.
+			'The green color of that leaf is quite nice.  But I like it when the fall colors are out in orange and reds!' => array( 'color' ), // Make sure the glossary term is matched in all instances within the translation.
 		);
 
+		// The number of times the glossary term for each of the originals should match.
+		$match_count = array(
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			1,
+			2,
+		);
+		
 		foreach ( $originals as $original => $terms ) {
 			$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => $original, 'plural' => $original, ) );
 		}
@@ -117,6 +149,8 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			$translations[] = map_glossary_entries_to_translation_originals( $t, $glossary );
 		}
 
+		$i = 0;
+		
 		foreach ( $translations as $translation ) {
 			foreach ( $originals[ $translation->singular ] as $term ) {
 				foreach ( array( 'noun', 'verb' ) as $pos ) {
@@ -134,8 +168,12 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 
 					$this->assertRegExp( $regex, $translation->singular_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->singular . '".' );
 					$this->assertRegExp( $regex, $translation->plural_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->plural . '".' );
+					$this->assertEquals( preg_match_all( $regex, $translation->singular_glossary_markup ), $match_count[ $i ] );
+					$this->assertEquals( preg_match_all( $regex, $translation->plural_glossary_markup ), $match_count[ $i ] );
 				}
 			}
+			
+			$i++;
 		}
 	}
 }
