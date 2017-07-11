@@ -1419,6 +1419,20 @@ class GP_Locales {
 		$ml->google_code = 'ml';
 		$ml->facebook_locale = 'ml_IN';
 
+		$mlt = new GP_Locale(); 
+		$mlt->english_name = 'Maltese';
+		$mlt->native_name = 'Malti';
+		$mlt->lang_code_iso_639_1 = 'mt';
+		$mlt->lang_code_iso_639_2 = 'mlt';
+		$mlt->lang_code_iso_639_3 = 'mlt';
+		$mlt->country_code = 'mt';
+		$mlt->wp_locale = 'mlt';
+		$mlt->slug = 'mlt';
+		$mlt->nplurals = 4;
+		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100>1 && n%100<11) ? 1 : (n%100>10 && n%100<20 ) ? 2 : 3)';
+		$mlt->google_code = 'mt';
+		$mlt->facebook_locale = 'mt_MT';
+		
 		$mn = new GP_Locale();
 		$mn->english_name = 'Mongolian';
 		$mn->native_name = 'Монгол';
