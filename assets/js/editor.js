@@ -6,9 +6,17 @@ $gp.editor = (
 			current: null,
 			orginal_translations: null,
 			init: function( table ) {
+				var $previewRows;
+
 				$gp.init();
 				$gp.editor.table = table;
 				$gp.editor.install_hooks();
+
+				// Open the first editor if the current table has only one.
+				$previewRows = $gp.editor.table.find( 'tr.preview' );
+				if ( 1 === $previewRows.length  ) {
+					$gp.editor.show( $previewRows.eq( 0 ) );
+				}
 			},
 			original_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 0 ];
