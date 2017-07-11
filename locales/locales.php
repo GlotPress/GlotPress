@@ -1431,7 +1431,7 @@ class GP_Locales {
 		$mlt->wp_locale = 'mlt';
 		$mlt->slug = 'mlt';
 		$mlt->nplurals = 4;
-		$mlt->plural_expression = '(n==1 ? 0 : n==0 || (n%100>=2 && n%100<=10) ? 1 : (n%100>=11 && n%100<=19) ? 2 : 3)';
+		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100>1 && n%100<11) ? 1 : (n%100>10 && n%100<20 ) ? 2 : 3)';
 		
 		$mn = new GP_Locale();
 		$mn->english_name = 'Mongolian';
