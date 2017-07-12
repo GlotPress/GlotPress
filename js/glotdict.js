@@ -53,6 +53,9 @@ jQuery('.gp-content').on('click', '.discard-glotdict', function (e) {
   var row = $this.data('row');
   jQuery('#editor-' + row).data('discard', 'true');
   $this.parent().remove();
+  if (jQuery('#editor-' + row + ' .gd-warning').length === 0) {
+	jQuery.removeData('#editor-' + row, 'discard');
+  }
   e.preventDefault();
   return false;
 });

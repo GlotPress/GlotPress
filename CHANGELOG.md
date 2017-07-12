@@ -3,7 +3,7 @@
 * Feature: Alert for missing glossary term translation
 * Feature: Review mode for errors (new button)
 * Fix: Missing marked string that have terms inside
-* Fix: Improvmenet on final dots detection
+* Fix: Improvement on final dots detection
 
 #1.3.1
 * Fix: Link for Translation Global Status link

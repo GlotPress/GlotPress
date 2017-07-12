@@ -206,8 +206,9 @@ function gd_search_glossary_on_translation(e, selector) {
  */
 function gd_validate(e, selector) {
   var howmany = 0;
-  if (jQuery(selector).data('discard') !== 'true') {
-	howmany += jQuery('.warning:not(.gd-warning)', '.editor').length;
+  if (typeof jQuery(selector).data('discard') === 'undefined') {
+	jQuery('.gd-warning', selector).remove();
+	howmany += jQuery('.warning:not(.gd-warning)', selector).length;
 	howmany += gd_search_glossary_on_translation(e, selector);
 	var newtext = jQuery('textarea', selector).val();
 	var discard = gd_get_discard_link(selector);
