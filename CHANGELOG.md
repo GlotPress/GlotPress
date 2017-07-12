@@ -1,5 +1,8 @@
 #1.3.2
 * Feature: Alert for first letter uppercase missing on translation
+* Feature: Alert for missing glossary term translation
+* Fix: Missing marked string that have terms inside
+* Fix: Improvmenet on final dots detection
 
 #1.3.1
 * Fix: Link for Translation Global Status link
