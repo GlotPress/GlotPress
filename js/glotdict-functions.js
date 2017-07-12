@@ -176,6 +176,9 @@ function gd_run_review() {
  */
 function gd_search_glossary_on_translation(e, selector) {
   var howmany = 0;
+  if (!gd_get_setting('no_glossary_term_check')) {
+	return;
+  }
   var discard = gd_get_discard_link(selector);
   jQuery(selector).each(function () {
 	var $editor = jQuery(this);
@@ -209,38 +212,38 @@ function gd_validate(e, selector) {
   var howmany = 0;
   gd_search_glossary_on_translation(e, selector);
   if (jQuery(selector).data('discard') !== 'true') {
-	var text = jQuery('textarea', selector).val();
+	var newtext = jQuery('textarea', selector).val();
 	var discard = gd_get_discard_link(selector);
-	if (text === '') {
+	if (newtext === '') {
 	  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation seems empty!' + discard + '</div>');
 	  howmany++;
 	  return;
 	}
-	var original_text = jQuery('.original', selector).html().slice(-1);
-	var lastchar = text.slice(-1);
-	var firstcharnewtext = text.charAt(0);
-	var firstchar = jQuery('.original', selector).html().charAt(0);
-	var hellipse = jQuery('.original', selector).html().slice(-3) === '...';
+	var originaltext = jQuery('.original', selector).text();
+	var lastcharoriginaltext = originaltext.slice(-1);
+	var firstcharoriginaltext = originaltext.charAt(0);
+	var hellipseoriginaltext = originaltext.slice(-3) === '...';
+	var lastcharnewtext = newtext.slice(-1);
+	var firstcharnewtext = newtext.charAt(0);
 	var last_dot = [';', '.', '!', ':', '、', '。', '؟', '？', '！'];
-	if (hellipse) {
+	if (hellipseoriginaltext) {
 	  if (!gd_get_setting('no_final_dot')) {
-		if (jQuery('textarea', selector).val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
+		if (jQuery('textarea', selector).val().slice(-3) === '...' || lastcharnewtext !== ';' && lastcharnewtext !== '.') {
 		  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contains a final <b>...</b> that should be translated as <b><code>&amp;hellip;</code></b>' + discard + '</div>');
 		  howmany++;
-		  return;
 		}
 	  }
 	} else {
 	  if (!gd_get_setting('no_final_other_dots')) {
-		if (jQuery.inArray(original_text, last_dot) > 0 && jQuery.inArray(lastchar, last_dot) === -1) {
+		if (jQuery.inArray(lastcharoriginaltext, last_dot) > 0 && jQuery.inArray(lastcharnewtext, last_dot) === -1) {
 		  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>' + discard + '</div>');
 		  howmany++;
 		}
 	  }
 	}
 	if (!gd_get_setting('no_initial_uppercase')) {
-	  if (gd_is_uppercase(firstchar) && !gd_is_uppercase(firstcharnewtext)) {
-		jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an initial uppercase letter like "<i>' + firstchar + '</i>"' + discard + '</div>');
+	  if (gd_is_uppercase(firstcharoriginaltext) && !gd_is_uppercase(firstcharnewtext)) {
+		jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an initial uppercase letter for "<i>' + firstcharnewtext + '</i>"' + discard + '</div>');
 		howmany++;
 	  }
 	}
