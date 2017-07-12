@@ -155,8 +155,7 @@ function gd_run_review() {
   jQuery('tr.preview').each(function () {
 	var $preview = jQuery(this);
 	var editor = '#editor-' + $preview.attr('row');
-	var howmany = gd_search_glossary_on_translation('', editor);
-	howmany += gd_validate('', editor);
+	var howmany = gd_validate('', editor);
 	if (howmany > 0) {
 	  $preview.find('.checkbox').css({'background': 'red'});
 	}
@@ -207,8 +206,9 @@ function gd_search_glossary_on_translation(e, selector) {
  */
 function gd_validate(e, selector) {
   var howmany = 0;
-  gd_search_glossary_on_translation(e, selector);
   if (jQuery(selector).data('discard') !== 'true') {
+	howmany += jQuery('.warning:not(.gd-warning)', '.editor').length;
+	howmany += gd_search_glossary_on_translation(e, selector);
 	var newtext = jQuery('textarea', selector).val();
 	var discard = gd_get_discard_link(selector);
 	if (newtext === '') {
