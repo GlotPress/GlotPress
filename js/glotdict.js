@@ -10,7 +10,7 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
 	jQuery('#upper-filters-toolbar').css('clear', 'both');
   }
   if (jQuery('.preview').length === 1) {
-	jQuery('.preview .action').trigger('click');
+	//jQuery('.preview .action').trigger('click');
   }
 
   jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}.discard-glotdict{float:right;}</style>").appendTo("head");
@@ -18,7 +18,10 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
 
   jQuery('.glossary-word').each(function () {
 	var $this = jQuery(this);
-	var line = $this.parent().parent().parent().parent().attr('row');
+	var line = $this.parents().eq(3).attr('row');
+	if(line === undefined) {
+	  line = $this.parents().eq(4).attr('row');
+	}
 	jQuery('#preview-' + line).addClass('has-glotdict');
 	$this.wrap('<a target="_blank" href="https://translate.wordpress.org/consistency?search=' + $this.text() + '&amp;set=' + gd_get_lang_consistency() + '%2Fdefault"></a>');
   });
