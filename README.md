@@ -16,6 +16,8 @@ PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org 
   * Validation for final "...", ".", ":"
   * Validation for final ;.!:、。؟？！
   * First character is not uppercase on translation
+  * Missing term translated using the locale glossary
+* Review mode with a button
 * Many hotkeys and shortcut
 
 ## Hotkeys
