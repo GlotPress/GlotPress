@@ -119,7 +119,9 @@ function gd_add_button() {
 	  jQuery('html, body').animate({scrollTop: row.offset().top - 50});
 	});
   }
-  jQuery('.filters-toolbar:first div:last').append('<input class="button gd-review" value="Review" type="button">');
+  if (jQuery('body.logged-in').length !== 0) {
+	jQuery('.filters-toolbar:first div:last').append('<input class="button gd-review" value="Review" type="button">');
+  }
 }
 
 /**
