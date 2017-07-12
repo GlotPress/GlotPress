@@ -146,15 +146,43 @@ function gd_locales_selector() {
 }
 
 /**
+ * Check if in the translations there aren't the translation suggested
+ * 
+ * @param {object} e The event.
+ * 
+ * @returns void
+ */
+function gd_search_glossary_on_translation(e) {
+  var howmany = 0;
+  var discard = gd_get_discard_link('.editor:visible');
+  jQuery('.editor:visible').each(function () {
+	var $editor = jQuery(this);
+	var translation = jQuery('textarea', $editor).val();
+	jQuery('.glossary-word', $editor).each(function () {
+	  var translations = jQuery(this).data('translations');
+	  if (translation.search(translations[0].translation) === -1) {
+		howmany++;
+		jQuery('.textareas', $editor).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing of the translation term "<b>' + translations[0].translation + '</b>" for "<i>' + jQuery(this).html() + '</i>"' + discard + '</div>');
+	  }
+	});
+  });
+  if (howmany !== 0) {
+	e.stopImmediatePropagation();
+	return;
+  }
+}
+
+/**
  * Validation is good to save time!
  * 
  * @param {object} e The event.
  * @returns void
  */
 function gd_validate(e) {
+  gd_search_glossary_on_translation(e);
   if (jQuery('.editor:visible').data('discard') !== 'true') {
 	var text = jQuery('.editor:visible textarea').val();
-	var discard = ' <a href="#" class="discard-glotdict" data-row="' + jQuery('.editor:visible').attr('row') + '">Discard</a>';
+	var discard = gd_get_discard_link('.editor:visible');
 	if (text === '') {
 	  jQuery('.editor:visible .textareas').prepend('<div class="warning secondary"><strong>Warning:</strong> The translation seems empty!' + discard + '</div>');
 	  e.stopImmediatePropagation();
@@ -307,4 +335,15 @@ function gd_get_lang_consistency() {
 
 function gd_is_uppercase(myString) {
   return (myString === myString.toUpperCase());
+}
+
+/**
+ * Get the discard link
+ * 
+ * @param {String} selector
+ * @returns {String}
+ */
+function gd_get_discard_link(selector) {
+  return ' <a href="#" class="discard-glotdict" data-row="' + jQuery(selector).attr('row') + '">Discard</a>';
+  ;
 }
