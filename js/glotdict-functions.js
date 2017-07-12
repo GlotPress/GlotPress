@@ -120,9 +120,6 @@ function gd_add_button() {
 	});
   }
   jQuery('.filters-toolbar:first div:last').append('<input class="button gd-review" value="Review" type="button">');
-  jQuery('.gd-review').click(function () {
-	gd_run_review();
-  });
 }
 
 /**
@@ -176,7 +173,7 @@ function gd_run_review() {
  */
 function gd_search_glossary_on_translation(e, selector) {
   var howmany = 0;
-  if (!gd_get_setting('no_glossary_term_check')) {
+  if (gd_get_setting('no_glossary_term_check')) {
 	return;
   }
   var discard = gd_get_discard_link(selector);
@@ -190,7 +187,7 @@ function gd_search_glossary_on_translation(e, selector) {
 	  }
 	  if (translation.search(translations[0].translation) === -1) {
 		howmany++;
-		jQuery('.textareas', $editor).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing of the translation term "<b>' + translations[0].translation + '</b>" for "<i>' + jQuery(this).html() + '</i>"' + discard + '</div>');
+		jQuery('.textareas', $editor).prepend(gd_get_warning('The translation is missing of the translation term "<b>' + translations[0].translation + '</b>" for "<i>' + jQuery(this).html() + '</i>"', discard));
 	  }
 	});
   });
@@ -215,7 +212,7 @@ function gd_validate(e, selector) {
 	var newtext = jQuery('textarea', selector).val();
 	var discard = gd_get_discard_link(selector);
 	if (newtext === '') {
-	  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation seems empty!' + discard + '</div>');
+	  jQuery('.textareas', selector).prepend(gd_get_warning('The translation seems empty!', discard));
 	  howmany++;
 	  return;
 	}
@@ -229,24 +226,27 @@ function gd_validate(e, selector) {
 	if (hellipseoriginaltext) {
 	  if (!gd_get_setting('no_final_dot')) {
 		if (jQuery('textarea', selector).val().slice(-3) === '...' || lastcharnewtext !== ';' && lastcharnewtext !== '.') {
-		  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contains a final <b>...</b> that should be translated as <b><code>&amp;hellip;</code></b>' + discard + '</div>');
+		  jQuery('.textareas', selector).prepend(gd_get_warning('The translation contains a final <b>...</b> that should be translated as <b><code>&amp;hellip;</code></b>', discard));
 		  howmany++;
 		}
 	  }
 	} else {
 	  if (!gd_get_setting('no_final_other_dots')) {
 		if (jQuery.inArray(lastcharoriginaltext, last_dot) > 0 && jQuery.inArray(lastcharnewtext, last_dot) === -1) {
-		  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>' + discard + '</div>');
+		  jQuery('.textareas', selector).prepend(gd_get_warning('The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>', discard));
 		  howmany++;
 		}
 	  }
 	}
 	if (!gd_get_setting('no_initial_uppercase')) {
 	  if (gd_is_uppercase(firstcharoriginaltext) && !gd_is_uppercase(firstcharnewtext)) {
-		jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an initial uppercase letter for "<i>' + firstcharnewtext + '</i>"' + discard + '</div>');
+		jQuery('.textareas', selector).prepend(gd_get_warning('The translation is missing an initial uppercase letter for "<i>' + firstcharnewtext + '</i>"', discard));
 		howmany++;
 	  }
 	}
+  }
+  if (e === '') {
+
   }
   if (howmany !== 0) {
 	gd_stoppropagation(e);
@@ -385,6 +385,17 @@ function gd_is_uppercase(myString) {
  */
 function gd_get_discard_link(selector) {
   return ' <a href="#" class="discard-glotdict" data-row="' + jQuery(selector).attr('row') + '">Discard</a>';
+}
+
+/**
+ * Get the warning link
+ * 
+ * @param {String} text
+ * @param {String} discard
+ * @returns {String}
+ */
+function gd_get_warning(text, discard) {
+  return '<div class="warning secondary gd-warning"><strong>Warning:</strong> ' + text + '</strong>' + discard + '</div>';
 }
 
 function gd_stoppropagation(e) {

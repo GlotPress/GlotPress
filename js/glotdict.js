@@ -56,3 +56,7 @@ jQuery('.gp-content').on('click', '.discard-glotdict', function (e) {
   e.preventDefault();
   return false;
 });
+
+jQuery('.gp-content').on('click', '.gd-review', function (e) {console.log(e)
+  gd_run_review();
+});
