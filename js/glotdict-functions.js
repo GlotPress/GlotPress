@@ -159,6 +159,7 @@ function gd_run_review() {
 	var $preview = jQuery(this);
 	var editor = '#editor-' + $preview.attr('row');
 	var howmany = gd_search_glossary_on_translation('', editor);
+	howmany += gd_validate('', editor);
 	if (howmany > 0) {
 	  $preview.find('.checkbox').css({'background': 'red'});
 	}
@@ -205,14 +206,14 @@ function gd_search_glossary_on_translation(e, selector) {
  * @returns void
  */
 function gd_validate(e, selector) {
-  console.log(selector)
+  var howmany = 0;
   gd_search_glossary_on_translation(e, selector);
   if (jQuery(selector).data('discard') !== 'true') {
 	var text = jQuery('textarea', selector).val();
 	var discard = gd_get_discard_link(selector);
 	if (text === '') {
 	  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation seems empty!' + discard + '</div>');
-	  gd_stoppropagation(e);
+	  howmany++;
 	  return;
 	}
 	var original_text = jQuery('.original', selector).html().slice(-1);
@@ -225,7 +226,7 @@ function gd_validate(e, selector) {
 	  if (!gd_get_setting('no_final_dot')) {
 		if (jQuery('textarea', selector).val().slice(-3) === '...' || lastchar !== ';' && lastchar !== '.') {
 		  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation contains a final <b>...</b> that should be translated as <b><code>&amp;hellip;</code></b>' + discard + '</div>');
-		  gd_stoppropagation(e);
+		  howmany++;
 		  return;
 		}
 	  }
@@ -233,17 +234,21 @@ function gd_validate(e, selector) {
 	  if (!gd_get_setting('no_final_other_dots')) {
 		if (jQuery.inArray(original_text, last_dot) > 0 && jQuery.inArray(lastchar, last_dot) === -1) {
 		  jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an ending <b>.</b> or <b>?</b> or <b>!</b>' + discard + '</div>');
-		  gd_stoppropagation(e);
+		  howmany++;
 		}
 	  }
 	}
 	if (!gd_get_setting('no_initial_uppercase')) {
 	  if (gd_is_uppercase(firstchar) && !gd_is_uppercase(firstcharnewtext)) {
 		jQuery('.textareas', selector).prepend('<div class="warning secondary"><strong>Warning:</strong> The translation is missing an initial uppercase letter like "<i>' + firstchar + '</i>"' + discard + '</div>');
-		gd_stoppropagation(e);
+		howmany++;
 	  }
 	}
   }
+  if (howmany !== 0) {
+	gd_stoppropagation(e);
+  }
+  return howmany;
 }
 
 function gd_validate_visible(e) {

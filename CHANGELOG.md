@@ -1,6 +1,7 @@
 #1.3.2
 * Feature: Alert for first letter uppercase missing on translation
 * Feature: Alert for missing glossary term translation
+* Feature: Review mode for errors (new button)
 * Fix: Missing marked string that have terms inside
 * Fix: Improvmenet on final dots detection
 
