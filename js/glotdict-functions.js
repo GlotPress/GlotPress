@@ -294,6 +294,8 @@ function gd_get_lang_consistency() {
   var reallang = '';
   if (lang === 'pt_BR') {
 	reallang = 'pt-br';
+  } else if (lang === 'en_CA') {
+	reallang = 'en-ca';
   } else {
 	var reallang = lang.split('_');
 	if (typeof reallang[1] !== 'undefined') {
