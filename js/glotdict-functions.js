@@ -183,13 +183,18 @@ function gd_search_glossary_on_translation(e, selector) {
 	var translation = jQuery('textarea', $editor).val();
 	jQuery('.glossary-word', $editor).each(function () {
 	  var translations = jQuery(this).data('translations');
-	  if (translations[0].translation === 'N/A') {
-		return true;
-	  }
-	  if (translation.search(translations[0].translation) === -1) {
-		howmany++;
-		jQuery('.textareas', $editor).prepend(gd_get_warning('The translation is missing of the translation term "<b>' + translations[0].translation + '</b>" for "<i>' + jQuery(this).html() + '</i>"', discard));
-	  }
+	  var reset = '';
+	  var term = jQuery(this).html();
+	  jQuery(translations).each(function (index) {
+		if (translations[index].translation === 'N/A') {
+		  return true;
+		}
+		if (translation.search('/' + translations[index].translation + '/g') === -1) {
+		  howmany++;
+		  reset = reset + '"<b>' + translations[index].translation + '</b>", ';
+		} 
+	  });
+	  jQuery('.textareas', $editor).prepend(gd_get_warning('The translation is missing of the translation term ' + reset + 'for "<i>' + term + '</i>"', discard));
 	});
   });
   if (howmany !== 0) {
