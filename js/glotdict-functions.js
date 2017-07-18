@@ -156,7 +156,7 @@ function gd_locales_selector() {
 function gd_run_review() {
   jQuery('tr.preview').each(function () {
 	var $preview = jQuery(this);
-	var editor = '#editor-' + $preview.attr('row');
+	var editor = '#editor-' + $preview.attr('row') + ':not(.untranslated)';
 	var howmany = gd_validate('', editor);
 	if (howmany > 0) {
 	  $preview.find('.checkbox').css({'background': 'red'});
@@ -219,7 +219,7 @@ function gd_validate(e, selector) {
 	howmany += gd_search_glossary_on_translation(e, selector);
 	var newtext = jQuery('textarea', selector).val();
 	var discard = gd_get_discard_link(selector);
-	if (newtext === '') {
+	if (typeof newtext === 'undefined' || newtext === '') {
 	  jQuery('.textareas', selector).prepend(gd_get_warning('The translation seems empty!', discard));
 	  howmany++;
 	  return;
@@ -263,7 +263,7 @@ function gd_validate(e, selector) {
 }
 
 function gd_validate_visible(e) {
-  var selector = '.editor:visible';
+  var selector = '.editor:visible:not(.untranslated)';
   gd_validate(e, selector);
 }
 
