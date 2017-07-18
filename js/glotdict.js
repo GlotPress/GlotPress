@@ -61,5 +61,6 @@ jQuery('.gp-content').on('click', '.discard-glotdict', function (e) {
 });
 
 jQuery('.gp-content').on('click', '.gd-review', function (e) {
+  jQuery(this).val('Review in progress');
   gd_run_review();
 });

@@ -120,7 +120,7 @@ function gd_add_button() {
 	});
   }
   if (jQuery('body.logged-in').length !== 0) {
-	jQuery('.filters-toolbar:first div:last').append('<input class="button gd-review" value="Review" type="button">');
+	jQuery('.filters-toolbar:first div:last').append(' <input class="button gd-review" value="Review" type="button">');
   }
 }
 
