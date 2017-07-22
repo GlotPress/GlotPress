@@ -189,12 +189,14 @@ function gd_search_glossary_on_translation(e, selector) {
 		if (translations[index].translation === 'N/A') {
 		  return true;
 		}
-		if (translation.search('/' + translations[index].translation + '/g') === -1) {
+		if (translation.search(new RegExp(translations[index].translation, 'gi')) === -1) {
 		  howmany++;
 		  reset = reset + '"<b>' + translations[index].translation + '</b>", ';
-		} 
+		}
 	  });
-	  jQuery('.textareas', $editor).prepend(gd_get_warning('The translation is missing of the translation term ' + reset + 'for "<i>' + term + '</i>"', discard));
+	  if (reset !== '') {
+		jQuery('.textareas', $editor).prepend(gd_get_warning('The translation is missing of the translation term ' + reset + 'for "<i>' + term + '</i>"', discard));
+	  }
 	});
   });
   if (howmany !== 0) {
