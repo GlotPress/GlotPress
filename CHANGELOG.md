@@ -1,3 +1,8 @@
+#1.3.3
+* Fix: Support for case insensitive on terms
+* Fix: Search for all the translations
+* Improvement: Change the text on the button to Review in progress
+
 #1.3.2
 * Feature: Alert for first letter uppercase missing on translation
 * Feature: Alert for missing glossary term translation
