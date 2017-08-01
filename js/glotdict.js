@@ -63,4 +63,9 @@ jQuery('.gp-content').on('click', '.discard-glotdict', function (e) {
 jQuery('.gp-content').on('click', '.gd-review', function (e) {
   jQuery(this).val('Review in progress');
   gd_run_review();
+  jQuery(this).removeClass('gd-review').addClass('gd-review-done');
+});
+
+jQuery('.gp-content').on('click', '.gd-review-done', function (e) {
+  alert('For a new Review or stop the review you need a refresh of the page!');
 });

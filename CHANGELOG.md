@@ -1,3 +1,6 @@
+#1.3.4
+* Fix: Alert on click again for review
+
 #1.3.3
 * Fix: Support for case insensitive on terms
 * Fix: Search for all the translations
