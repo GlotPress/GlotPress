@@ -86,7 +86,7 @@ function gd_get_lang() {
   if (typeof window.glotdict_lang === 'undefined') {
 	var lang = localStorage.getItem('gd_language');
 	if (lang === '' || lang === null) {
-	  return false;
+	  return '';
 	}
 	window.glotdict_lang = sanitize_value(lang);
   }

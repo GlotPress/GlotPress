@@ -1,3 +1,6 @@
+#1.3.5
+* Fix: Not loading extension on new install
+
 #1.3.4
 * Fix: Alert on click again for review
 
