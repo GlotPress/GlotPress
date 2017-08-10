@@ -412,4 +412,62 @@ function gd_stoppropagation(e) {
   if (typeof e === 'object') {
 	e.stopImmediatePropagation();
   }
-} 
+}
+
+function gd_add_column() {
+  jQuery('#translations thead tr').append("<th></th>");
+  jQuery('#translations tr.preview').each(function ( ) {
+	gd_add_column_buttons(this);
+  });
+  jQuery('#translations tr.editor td').attr('colspan', 6);
+  jQuery('.gd-approve').click(function () {
+	var id = jQuery(this).parent().parent().attr('row');
+	var nonce = jQuery('#editor-' + id + ' .meta button.approve').attr('data-nonce');
+	gd_set_status(id, 'current', nonce);
+  });
+  jQuery('.gd-reject').click(function () {
+	var id = jQuery(this).parent().parent().attr('row');
+	var nonce = jQuery('#editor-' + id + ' .meta button.reject').attr('data-nonce');
+	gd_set_status(id, 'rejected', nonce);
+  });
+  jQuery('.gd-fuzzy').click(function () {
+	var id = jQuery(this).parent().parent().attr('row');
+	var nonce = jQuery('#editor-' + id + ' .meta button.fuzzy').attr('data-nonce');
+	gd_set_status(id, 'fuzzy', nonce);
+  });
+}
+
+function gd_add_column_buttons(element) {
+  var buttons = '<button class="approve gd-approve"><strong>+</strong> Approve</button><button class="reject gd-reject"><strong>−</strong> Reject</button><button class="fuzzy gd-fuzzy"><strong>~</strong> Fuzzy</button>';
+  jQuery(element).append("<td>" + buttons + "</td>");
+}
+
+function gd_set_status(id, status, nonce) {
+  jQuery('#translations tr#preview-' + id + ' th.checkbox input').attr('checked', false);
+  var string_id = id.split('-');
+  $gp.notices.notice('Setting status to &#8220;' + status + '&#8221;&hellip;');
+  data = {
+	translation_id: string_id[1],
+	status: status,
+	_gp_route_nonce: nonce
+  };
+
+  jQuery.ajax({
+	type: 'POST',
+	url: $gp_editor_options.set_status_url,
+	data: data,
+	success: function (data) {
+	  $gp.notices.success('Status set!');
+	  jQuery('#editor-' + id).after(data);
+	  var old_current = jQuery('#editor-' + id);
+	  old_current.attr('id', old_current.attr('id') + '-old').remove();
+	  var old_current_preview = jQuery('#preview-' + id);
+	  old_current_preview.attr('id', old_current_preview.attr('id') + '-old').remove();
+	  gd_add_column_buttons(jQuery('#preview-' + id));
+	},
+	error: function (xhr, msg) {
+	  msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the status!';
+	  $gp.notices.error(msg);
+	}
+  });
+}

@@ -8,6 +8,7 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
   //Fix for PTE align
   if (jQuery('#bulk-actions-toolbar').length > 0) {
 	jQuery('#upper-filters-toolbar').css('clear', 'both');
+	gd_add_column();
   }
   if (jQuery('.preview').length === 1) {
 	jQuery('.preview .action').trigger('click');

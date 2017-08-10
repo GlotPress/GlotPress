@@ -1,3 +1,6 @@
+#1.3.6
+* Feature: New column with Approve, Reject and Fuzzy button
+
 #1.3.5
 * Fix: Not loading extension on new install
 
