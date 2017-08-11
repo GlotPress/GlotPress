@@ -161,7 +161,7 @@ function gd_get_lang_consistency() {
   } else if (lang === 'en_CA') {
 	reallang = 'en-ca';
   } else {
-	var reallang = lang.split('_');
+	reallang = lang.split('_');
 	if (typeof reallang[1] !== 'undefined') {
 	  reallang = reallang[1].toLowerCase();
 	}
