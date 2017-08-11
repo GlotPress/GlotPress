@@ -1,5 +1,9 @@
+#1.3.7
+* Feature: Hide new buttons on untranslated strings
+* Feature: Hide buttons where not permitted
+
 #1.3.6
-* Feature: New column with Approve, Reject and Fuzzy button
+* Feature: New column with Approve, Reject and Fuzzy buttons
 
 #1.3.5
 * Fix: Not loading extension on new install

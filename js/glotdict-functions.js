@@ -438,7 +438,24 @@ function gd_add_column() {
 }
 
 function gd_add_column_buttons(element) {
-  var buttons = '<button class="approve gd-approve"><strong>+</strong> Approve</button><button class="reject gd-reject"><strong>−</strong> Reject</button><button class="fuzzy gd-fuzzy"><strong>~</strong> Fuzzy</button>';
+  var approve = '';
+  var reject = '';
+  var fuzzy = '<button class="fuzzy gd-fuzzy"><strong>~</strong> Fuzzy</button>';
+  var id = jQuery(element).attr('row');
+  if (jQuery('#editor-' + id + ' .meta button.approve').length !== 0) {
+	approve = '<button class="approve gd-approve"><strong>+</strong> Approve</button>';
+  }
+  if (jQuery('#editor-' + id + ' .meta button.reject').length !== 0) {
+	reject = '<button class="reject gd-reject"><strong>−</strong> Reject</button>';
+  }
+  if (jQuery('#editor-' + id + ' .meta button.fuzzy').length !== 0) {
+	fuzzy = '<button class="fuzzy gd-fuzzy"><strong>~</strong> Fuzzy</button>';
+  }
+  var buttons = approve + reject + fuzzy;
+
+  if (jQuery(element).hasClass('untranslated')) {
+	buttons = '';
+  }
   jQuery(element).append("<td>" + buttons + "</td>");
 }
 
