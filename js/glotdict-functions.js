@@ -1,4 +1,4 @@
-/* global key, glotdict_version, $gp, pluralize */
+/* global key, glotdict_version, $gp, $gp_editor_options */
 
 /**
  * Saniitize the value striping html
@@ -415,32 +415,36 @@ function gd_stoppropagation(e) {
 }
 
 function gd_add_column() {
-  jQuery('#translations thead tr').append("<th></th>");
+  if (jQuery('#translations thead tr th').length < 6) {
+	jQuery('#translations thead tr').append("<th></th>");
+  }
   jQuery('#translations tr.preview').each(function ( ) {
-	gd_add_column_buttons(this);
+	if (jQuery(this).find('td').length < 5) {
+	  gd_add_column_buttons(this);
+	}
   });
   jQuery('#translations tr.editor td').attr('colspan', 6);
-  jQuery('.gd-approve').click(function () {
-	var id = jQuery(this).parent().parent().attr('row');
-	var nonce = jQuery('#editor-' + id + ' .meta button.approve').attr('data-nonce');
-	gd_set_status(id, 'current', nonce);
-  });
-  jQuery('.gd-reject').click(function () {
-	var id = jQuery(this).parent().parent().attr('row');
-	var nonce = jQuery('#editor-' + id + ' .meta button.reject').attr('data-nonce');
-	gd_set_status(id, 'rejected', nonce);
-  });
-  jQuery('.gd-fuzzy').click(function () {
-	var id = jQuery(this).parent().parent().attr('row');
-	var nonce = jQuery('#editor-' + id + ' .meta button.fuzzy').attr('data-nonce');
-	gd_set_status(id, 'fuzzy', nonce);
-  });
 }
+jQuery('#translations').on('click', '.gd-approve', function () {
+  var id = jQuery(this).parent().parent().attr('row');
+  var nonce = jQuery('#editor-' + id + ' .meta button.approve').attr('data-nonce');
+  gd_set_status(id, 'current', nonce);
+});
+jQuery('#translations').on('click', '.gd-reject', function () {
+  var id = jQuery(this).parent().parent().attr('row');
+  var nonce = jQuery('#editor-' + id + ' .meta button.reject').attr('data-nonce');
+  gd_set_status(id, 'rejected', nonce);
+});
+jQuery('#translations').on('click', '.gd-fuzzy', function () {
+  var id = jQuery(this).parent().parent().attr('row');
+  var nonce = jQuery('#editor-' + id + ' .meta button.fuzzy').attr('data-nonce');
+  gd_set_status(id, 'fuzzy', nonce);
+});
 
 function gd_add_column_buttons(element) {
   var approve = '';
   var reject = '';
-  var fuzzy = '<button class="fuzzy gd-fuzzy"><strong>~</strong> Fuzzy</button>';
+  var fuzzy = '';
   var id = jQuery(element).attr('row');
   if (jQuery('#editor-' + id + ' .meta button.approve').length !== 0) {
 	approve = '<button class="approve gd-approve"><strong>+</strong> Approve</button>';
@@ -487,4 +491,16 @@ function gd_set_status(id, status, nonce) {
 	  $gp.notices.error(msg);
 	}
   });
+}
+
+function gd_wait_table_alter() {
+  var target = document.querySelector('#translations tbody');
+
+  var observer = new MutationObserver(function (mutations) {
+	mutations.forEach(function () {
+	  gd_add_column();
+	});
+  });
+
+  observer.observe(target, {attributes: true, childList: true, characterData: true});
 }

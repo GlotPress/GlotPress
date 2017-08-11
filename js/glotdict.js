@@ -70,3 +70,5 @@ jQuery('.gp-content').on('click', '.gd-review', function (e) {
 jQuery('.gp-content').on('click', '.gd-review-done', function (e) {
   alert('For a new Review or stop the review you need a refresh of the page!');
 });
+
+gd_wait_table_alter();

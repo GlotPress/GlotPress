@@ -1,6 +1,7 @@
 #1.3.7
 * Feature: Hide new buttons on untranslated strings
 * Feature: Hide buttons where not permitted
+* Fix: Show everytime the column with buttons
 
 #1.3.6
 * Feature: New column with Approve, Reject and Fuzzy buttons
