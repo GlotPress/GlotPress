@@ -1,4 +1,4 @@
-/* global glotdict_version, $gp, $gp_editor_options */
+/* global glotdict_version, $gp, $gp_editor_options, DOMPurify */
 
 function gd_add_column() {
   if (jQuery('#translations thead tr th').length < 6) {
@@ -65,7 +65,12 @@ function gd_set_status(id, status, nonce) {
 	data: data,
 	success: function (data) {
 	  $gp.notices.success('Status set!');
+	  // Sanitiziation for Firefox
+	  data = DOMPurify.sanitize('<table>' + data + '</table>', {ADD_ATTR: ['row']});
+	  data = data.replace("<table>\n<tbody>", '').replace("</tbody>\n</table>", '');
 	  jQuery('#editor-' + id).after(data);
+	  jQuery('.editor[row=' + id + ']').attr('id', 'editor-' + id);
+	  jQuery('.preview[row=' + id + ']').attr('id', 'preview-' + id);
 	  var old_current = jQuery('#editor-' + id);
 	  old_current.attr('id', old_current.attr('id') + '-old').remove();
 	  var old_current_preview = jQuery('#preview-' + id);

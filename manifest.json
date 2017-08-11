@@ -18,10 +18,11 @@
         "js/glotdict-settings.js",
         "js/keymaster.js",
         "js/jquery.bind-first.js",
+        "js/dompurify.js",
         "icons/icon-16.png",
         "js/init.js"
     ],
-    "version": "1.3.6",
+    "version": "1.3.7",
     "description": "Improve the workflow on translate.wordpress.org",
     "homepage_url": "https://github.com/Mte90/GlotDict",
     "manifest_version": 2,
