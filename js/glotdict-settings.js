@@ -1,6 +1,11 @@
 /* global key, glotdict_version, $gp, pluralize */
 
 jQuery('#menu-headline-nav').append('<li class="current-menu-item gd_setting" style="cursor:pointer;"><a style="font-weight:bold;"> GlotDict</a></li>');
+
+if (jQuery(window).width() > 1390) {
+  jQuery('body').append('<div style="position: absolute;top: 320px;right: 10px;width:200px;background-color: #ddd;padding: .5em;">Don\'t forget to click the <img class="gd_icon2">GlotDict icon in the blu menu!</div>');
+  jQuery('.gd_icon2').attr('src', jQuery('.gd_icon').attr('src'));
+}
 jQuery('.gd_icon').prependTo('.gd_setting').show();
 
 jQuery('.gd_setting').click(function () {
