@@ -12,6 +12,9 @@
     "web_accessible_resources": [
         "js/glotdict.js",
         "js/glotdict-functions.js",
+        "js/glotdict-hotkey.js",
+        "js/glotdict-validation.js",
+        "js/glotdict-column.js",
         "js/glotdict-settings.js",
         "js/keymaster.js",
         "js/jquery.bind-first.js",

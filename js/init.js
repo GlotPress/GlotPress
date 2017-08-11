@@ -1,4 +1,4 @@
-jsScripts = ['jquery.bind-first', 'keymaster', 'glotdict-functions', 'glotdict-settings', 'glotdict'];
+jsScripts = ['jquery.bind-first', 'keymaster', 'glotdict-functions', 'glotdict-settings', 'glotdict-hotkey', 'glotdict-validation','glotdict-column', 'glotdict'];
 
 script(jsScripts);
 
@@ -29,7 +29,7 @@ function script(url) {
 }
 // Add the icon
 t = document.getElementsByTagName("header")[0],
-s = document.createElement("img");
+		s = document.createElement("img");
 s.src = chrome.extension.getURL('icons/icon-16.png');
 s.style.display = 'none';
 s.classList.add('gd_icon');
