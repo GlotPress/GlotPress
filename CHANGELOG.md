@@ -2,6 +2,7 @@
 * Feature: Hide new buttons on untranslated strings
 * Feature: Hide buttons where not permitted
 * Feature: Add Bulk Action on the footer 
+* Improvement: Add message remainder on bigger screen to open the settings
 * Fix: Show everytime the column with buttons
 
 #1.3.6
