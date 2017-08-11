@@ -4,7 +4,7 @@
 [https://translate.wordpress.org](https://translate.wordpress.org) enable to the users to translate plugin, themes and WordPress itself.  
 This extension implements many new feature to improve the quality of translation and speed up that process!
 
-PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org and codeat.co else the extension will not work!.
+PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org else the extension will not work!.
 
 # Features
 
@@ -18,6 +18,8 @@ PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org 
   * First character is not uppercase on translation
   * Missing term translated using the locale glossary
 * Review mode with a button
+* New column with fast Approve/Reject/Fuzzy for strings
+* Bulk Actions also on footer
 * Many hotkeys and shortcut
 
 ## Hotkeys

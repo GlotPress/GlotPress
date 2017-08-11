@@ -9,6 +9,7 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
   if (jQuery('#bulk-actions-toolbar').length > 0) {
 	jQuery('#upper-filters-toolbar').css('clear', 'both');
 	gd_add_column();
+	jQuery( '#bulk-actions-toolbar' ).clone().css('float', 'none').insertBefore( '#legend' );
   }
   if (jQuery('.preview').length === 1) {
 	jQuery('.preview .action').trigger('click');

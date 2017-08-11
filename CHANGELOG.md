@@ -1,6 +1,7 @@
 #1.3.7
 * Feature: Hide new buttons on untranslated strings
 * Feature: Hide buttons where not permitted
+* Feature: Add Bulk Action on the footer 
 * Fix: Show everytime the column with buttons
 
 #1.3.6
