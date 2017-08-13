@@ -175,10 +175,10 @@ function gp_deactivate_plugin( $network_wide ) {
 	 * If network deactivating, ensure we flush the option on every site.
 	 */
 	if ( $network_wide ) {
-		$sites = wp_get_sites();
+		$sites = get_sites();
 
 		foreach ( $sites as $site ) {
-			switch_to_blog( $site['blog_id'] );
+			switch_to_blog( $site->blog_id );
 			update_option( 'gp_rewrite_rule', '' );
 			restore_current_blog();
 		}
