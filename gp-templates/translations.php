@@ -163,9 +163,9 @@ $i = 0;
 			);
 		}
 
-		// TODO: with warnings
-		// TODO: saved searches
-		echo implode( ' <span class="separator">&bull;</span> ', $filter_links );
+		// TODO: with warnings.
+		// TODO: saved searches.
+		echo implode( ' <span class="separator">&bull;</span> ', $filter_links ); // WPCS: XSS ok.
 		?>
 		</div>
 		<dl class="filters-expanded filters hidden clearfix">
@@ -174,27 +174,31 @@ $i = 0;
 				<p><label for="filters[user_login]"><?php _e( 'User:', 'glotpress' ); ?></label></p>
 			</dt>
 			<dd>
-				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
-				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
+				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); // WPCS: XSS ok. ?>" name="filters[term]" id="filters[term]" /></p>
+				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); // WPCS: XSS ok. ?>" name="filters[user_login]" id="filters[user_login]" /></p>
 			</dd>
 			<dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
 			<dd>
-				<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
-					array(
-						'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-						'current' => __( 'Current only', 'glotpress' ),
-						'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
-						'waiting' => __( 'Waiting approval', 'glotpress' ),
-						'rejected' => __( 'Rejected', 'glotpress' ),
-						'untranslated' => __( 'Without current translation', 'glotpress' ),
-						'either' => __( 'Any', 'glotpress' ),
-					), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
+				<?php
+					echo gp_radio_buttons(
+							'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
+							array(
+								'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
+								'current' => __( 'Current only', 'glotpress' ),
+								'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
+								'waiting' => __( 'Waiting approval', 'glotpress' ),
+								'rejected' => __( 'Rejected', 'glotpress' ),
+								'untranslated' => __( 'Without current translation', 'glotpress' ),
+								'either' => __( 'Any', 'glotpress' ),
+							),
+							gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
+						);
 				?>
 			</dd>
 			<dd>
-				<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
+				<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
+				<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
+				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
 			</dd>
 			<?php
 
@@ -205,7 +209,8 @@ $i = 0;
 			 *
 			 * @since 2.1.0
 			 */
-			do_action( 'gp_translation_set_filters_form' ); ?>
+			do_action( 'gp_translation_set_filters_form' );
+			?>
 
 			<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
 		</dl>
@@ -217,7 +222,7 @@ $i = 0;
 			if ( ! is_array( $default_sort ) ) {
 				$default_sort = array(
 					'by'  => 'priority',
-					'how' => 'desc'
+					'how' => 'desc',
 				);
 			}
 
@@ -228,11 +233,14 @@ $i = 0;
 			</dd>
 			<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
 			<dd>
-			<?php echo gp_radio_buttons('sort[how]',
-				array(
-					'asc' => __( 'Ascending', 'glotpress' ),
-					'desc' => __( 'Descending', 'glotpress' ),
-				), gp_array_get( $sort, 'how', $default_sort['how'] ) );
+			<?php echo gp_radio_buttons(
+					'sort[how]',
+					array(
+						'asc' => __( 'Ascending', 'glotpress' ),
+						'desc' => __( 'Descending', 'glotpress' ),
+					),
+					gp_array_get( $sort, 'how', $default_sort['how'] )
+				);
 			?>
 			</dd>
 			<?php
@@ -261,7 +269,9 @@ $i = 0;
 	</form>
 </div>
 
-<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
+<?php
+echo gp_pagination( $page, $per_page, $total_translations_count ); // WPCS: XSS ok.
+?>
 
 <table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
 	<thead>
