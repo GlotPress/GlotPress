@@ -589,6 +589,13 @@ ul a.delete {
 }
 
 /*
+ * Filter menu
+ */
+.filter-toolbar {
+	float: left;
+}
+
+/*
  * Translation page filters
  */
 .filter-current {

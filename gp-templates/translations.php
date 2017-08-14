@@ -76,189 +76,192 @@ $i = 0;
 	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
 </form>
 <?php endif; ?>
-<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
-<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
-	<div>
-	<a href="#" class="revealing filter"><?php _e( 'Filter &darr;', 'glotpress' ); ?></a> <span class="separator">&bull;</span>
-	<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
-	<?php
-	$filter_links = array();
-
-	$filters_and_sort = array_merge( array_filter( $filters ), array_filter( $sort ) );
-
-	$all_filters = array(
-		'status' => 'current_or_waiting_or_fuzzy_or_untranslated',
-	);
-
-	$current_filter_class = array(
-		'class' => 'filter-current',
-	);
-
-	$is_current_filter = array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort;
-
-	$filter_links[] = gp_link_get(
-		$url,
-		// Translators: %s is the total strings count for the current translation set.
-		sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ),
-		$is_current_filter ? $current_filter_class : array()
-	);
-
-	$untranslated_filters = array(
-		'filters[status]' => 'untranslated',
-		'sort[by]'        => 'priority',
-		'sort[how]'       => 'desc',
-	);
-
-	$is_current_filter = array() === array_diff( $untranslated_filters, $filters_and_sort );
-
-	$filter_links[] = gp_link_get(
-		add_query_arg( $untranslated_filters, $url ),
-		// Translators: %s is the untranslated strings count for the current translation set.
-		sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) ),
-		$is_current_filter ? $current_filter_class : array()
-	);
-
-	if ( $can_approve ) {
-		$waiting_filters = array(
-			'filters[translated]' => 'yes',
-			'filters[status]'     => 'waiting',
-		);
-
-		$is_current_filter = array() === array_diff( $waiting_filters, $filters_and_sort );
-
-		$filter_links[] = gp_link_get(
-			add_query_arg( $waiting_filters, $url ),
-			// Translators: %s is the waiting strings count for the current translation set.
-			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
-		);
-
-		$fuzzy_filters = array(
-			'filters[translated]' => 'yes',
-			'filters[status]'     => 'fuzzy',
-		);
-
-		$is_current_filter = array() === array_diff( $fuzzy_filters, $filters_and_sort );
-
-		$filter_links[] = gp_link_get(
-			add_query_arg( $fuzzy_filters, $url ),
-			// Translators: %s is the fuzzy strings count for the current translation set.
-			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
-		);
-
-		$warning_filters = array(
-			'filters[warnings]' => 'yes',
-			'filters[status]'   => 'current_or_waiting',
-			'sort[by]'          => 'translation_date_added',
-		);
-
-		$is_current_filter = array() === array_diff( $warning_filters, $filters_and_sort );
-
-		$filter_links[] = gp_link_get(
-			add_query_arg( $warning_filters, $url ),
-			// Translators: %s is the strings with warnings count for the current translation set.
-			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
-		);
-	}
-
-	// TODO: with warnings
-	// TODO: saved searches
-	echo implode( '&nbsp;<span class="separator">&bull;</span>&nbsp;', $filter_links );
-	?>
-	</div>
-	<dl class="filters-expanded filters hidden clearfix">
- 		<dt>
-			<p><label for="filters[term]"><?php _e( 'Term:', 'glotpress' ); ?></label></p>
-			<p><label for="filters[user_login]"><?php _e( 'User:', 'glotpress' ); ?></label></p>
-		</dt>
-		<dd>
-			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
-			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
-		</dd>
- 		<dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
-		<dd>
-			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
-				array(
-					'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-					'current' => __( 'Current only', 'glotpress' ),
-					'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
-					'waiting' => __( 'Waiting approval', 'glotpress' ),
-					'rejected' => __( 'Rejected', 'glotpress' ),
-					'untranslated' => __( 'Without current translation', 'glotpress' ),
-					'either' => __( 'Any', 'glotpress' ),
-				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
-			?>
-		</dd>
-		<dd>
-			<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
-			<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
-			<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
-		</dd>
+<div class="filter-toolbar">
+	<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
+		<div>
+		<a href="#" class="revealing filter"><?php _e( 'Filter &darr;', 'glotpress' ); ?></a> <span class="separator">&bull;</span>
+		<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
 		<?php
+		$filter_links = array();
 
-		/**
-		 * Fires after the translation set filters options.
-		 *
-		 * This action is inside a DL element.
-		 *
-		 * @since 2.1.0
-		 */
-		do_action( 'gp_translation_set_filters_form' ); ?>
+		$filters_and_sort = array_merge( array_filter( $filters ), array_filter( $sort ) );
 
-		<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
-	</dl>
-	<dl class="filters-expanded sort hidden clearfix">
-		<dt><?php _x( 'By:', 'sort by', 'glotpress' ); ?></dt>
-		<dd>
-		<?php
-		$default_sort = get_user_option( 'gp_default_sort' );
-		if ( ! is_array( $default_sort ) ) {
-			$default_sort = array(
-				'by'  => 'priority',
-				'how' => 'desc'
+		$all_filters = array(
+			'status' => 'current_or_waiting_or_fuzzy_or_untranslated',
+		);
+
+		$current_filter_class = array(
+			'class' => 'filter-current',
+		);
+
+		$is_current_filter = array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort;
+
+		$filter_links[] = gp_link_get(
+			$url,
+			// Translators: %s is the total strings count for the current translation set.
+			sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ),
+			$is_current_filter ? $current_filter_class : array()
+		);
+
+		$untranslated_filters = array(
+			'filters[status]' => 'untranslated',
+			'sort[by]'        => 'priority',
+			'sort[how]'       => 'desc',
+		);
+
+		$is_current_filter = array() === array_diff( $untranslated_filters, $filters_and_sort );
+
+		$filter_links[] = gp_link_get(
+			add_query_arg( $untranslated_filters, $url ),
+			// Translators: %s is the untranslated strings count for the current translation set.
+			sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) ),
+			$is_current_filter ? $current_filter_class : array()
+		);
+
+		if ( $can_approve ) {
+			$waiting_filters = array(
+				'filters[translated]' => 'yes',
+				'filters[status]'     => 'waiting',
+			);
+
+			$is_current_filter = array() === array_diff( $waiting_filters, $filters_and_sort );
+
+			$filter_links[] = gp_link_get(
+				add_query_arg( $waiting_filters, $url ),
+				// Translators: %s is the waiting strings count for the current translation set.
+				sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) ),
+				$is_current_filter ? $current_filter_class : array()
+			);
+
+			$fuzzy_filters = array(
+				'filters[translated]' => 'yes',
+				'filters[status]'     => 'fuzzy',
+			);
+
+			$is_current_filter = array() === array_diff( $fuzzy_filters, $filters_and_sort );
+
+			$filter_links[] = gp_link_get(
+				add_query_arg( $fuzzy_filters, $url ),
+				// Translators: %s is the fuzzy strings count for the current translation set.
+				sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) ),
+				$is_current_filter ? $current_filter_class : array()
+			);
+
+			$warning_filters = array(
+				'filters[warnings]' => 'yes',
+				'filters[status]'   => 'current_or_waiting',
+				'sort[by]'          => 'translation_date_added',
+			);
+
+			$is_current_filter = array() === array_diff( $warning_filters, $filters_and_sort );
+
+			$filter_links[] = gp_link_get(
+				add_query_arg( $warning_filters, $url ),
+				// Translators: %s is the strings with warnings count for the current translation set.
+				sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) ),
+				$is_current_filter ? $current_filter_class : array()
 			);
 		}
 
-		$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
-
-		echo gp_radio_buttons( 'sort[by]', $sort_bys, gp_array_get( $sort, 'by', $default_sort['by'] ) );
+		// TODO: with warnings
+		// TODO: saved searches
+		echo implode( ' <span class="separator">&bull;</span> ', $filter_links );
 		?>
-		</dd>
-		<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
-		<dd>
-		<?php echo gp_radio_buttons('sort[how]',
-			array(
-				'asc' => __( 'Ascending', 'glotpress' ),
-				'desc' => __( 'Descending', 'glotpress' ),
-			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
-		?>
-		</dd>
-		<?php
+		</div>
+		<dl class="filters-expanded filters hidden clearfix">
+			<dt>
+				<p><label for="filters[term]"><?php _e( 'Term:', 'glotpress' ); ?></label></p>
+				<p><label for="filters[user_login]"><?php _e( 'User:', 'glotpress' ); ?></label></p>
+			</dt>
+			<dd>
+				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
+				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
+			</dd>
+			<dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
+			<dd>
+				<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
+					array(
+						'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
+						'current' => __( 'Current only', 'glotpress' ),
+						'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
+						'waiting' => __( 'Waiting approval', 'glotpress' ),
+						'rejected' => __( 'Rejected', 'glotpress' ),
+						'untranslated' => __( 'Without current translation', 'glotpress' ),
+						'either' => __( 'Any', 'glotpress' ),
+					), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
+				?>
+			</dd>
+			<dd>
+				<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
+				<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
+				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' == gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
+			</dd>
+			<?php
 
-		/**
-		 * Fires after the translation set sort options.
-		 *
-		 * This action is inside a DL element.
-		 *
-		 * @deprecated 2.1.0 Call gp_translation_set_sort_form instead
-		 * @since 1.0.0
-		 */
-		do_action( 'gp_translation_set_filters' );
+			/**
+			 * Fires after the translation set filters options.
+			 *
+			 * This action is inside a DL element.
+			 *
+			 * @since 2.1.0
+			 */
+			do_action( 'gp_translation_set_filters_form' ); ?>
 
-		/**
-		 * Fires after the translation set sort options.
-		 *
-		 * This action is inside a DL element.
-		 *
-		 * @since 2.1.0
-		 */
-		do_action( 'gp_translation_set_sort_form' ); ?>
+			<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
+		</dl>
+		<dl class="filters-expanded sort hidden clearfix">
+			<dt><?php _x( 'By:', 'sort by', 'glotpress' ); ?></dt>
+			<dd>
+			<?php
+			$default_sort = get_user_option( 'gp_default_sort' );
+			if ( ! is_array( $default_sort ) ) {
+				$default_sort = array(
+					'by'  => 'priority',
+					'how' => 'desc'
+				);
+			}
 
-		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
-	</dl>
-</form>
+			$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
+
+			echo gp_radio_buttons( 'sort[by]', $sort_bys, gp_array_get( $sort, 'by', $default_sort['by'] ) );
+			?>
+			</dd>
+			<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
+			<dd>
+			<?php echo gp_radio_buttons('sort[how]',
+				array(
+					'asc' => __( 'Ascending', 'glotpress' ),
+					'desc' => __( 'Descending', 'glotpress' ),
+				), gp_array_get( $sort, 'how', $default_sort['how'] ) );
+			?>
+			</dd>
+			<?php
+
+			/**
+			 * Fires after the translation set sort options.
+			 *
+			 * This action is inside a DL element.
+			 *
+			 * @deprecated 2.1.0 Call gp_translation_set_sort_form instead
+			 * @since 1.0.0
+			 */
+			do_action( 'gp_translation_set_filters' );
+
+			/**
+			 * Fires after the translation set sort options.
+			 *
+			 * This action is inside a DL element.
+			 *
+			 * @since 2.1.0
+			 */
+			do_action( 'gp_translation_set_sort_form' ); ?>
+
+			<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
+		</dl>
+	</form>
+</div>
+
+<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
 
 <table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
 	<thead>
