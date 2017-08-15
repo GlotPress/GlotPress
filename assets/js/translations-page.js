@@ -1,6 +1,6 @@
 jQuery(function($) {
-	var $bulkActions = $( '#bulk-action' ),
-		$bulkPriority = $( '#bulk-priority' );
+	var $bulkActions = $( '.bulk-action' ),
+		$bulkPriority = $( '.bulk-priority' );
 
 	$gp.showhide('#upper-filters-toolbar a.sort', '#upper-filters-toolbar dl.sort', {
 		show_text: $gp_translations_options.sort + ' &darr;',
@@ -15,6 +15,7 @@ jQuery(function($) {
 
 	$bulkActions.on( 'change', function() {
 		var $optionSelected = $( 'option:selected', this );
+		$bulkActions.val( $optionSelected.val() );
 		if ( 'set-priority' === $optionSelected.val() ) {
 			$bulkPriority.removeClass( 'hidden' );
 		} else {
