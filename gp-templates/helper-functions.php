@@ -248,3 +248,56 @@ function references( $project, $entry ) {
 	</ul></dt></dl>
 <?php
 }
+
+/**
+ * Output the bulk actions toolbar in the translations page.
+ *
+ * @param string $bulk_action  The URL to submit the form to.
+ * @param string $can_write    Can the current user write translations to the database.
+ * @param string $location     The location of this toolbar, used to make id's unique for each instance on a page.
+ */
+function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $location = 'top' ) {
+?>
+<form id="bulk-actions-toolbar-<?php echo $location; // WPCS: XSS Ok. ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+	<div>
+	<select name="bulk[action]" id="bulk-action-<?php echo $location; ?>" class="bulk-action">
+		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
+		<option value="approve"><?php _e( 'Approve', 'glotpress' ); ?></option>
+		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></option>
+	<?php if ( $can_write ) : ?>
+		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
+	<?php endif; ?>
+		<?php
+
+		/**
+		 * Fires inside the bulk action menu for translation sets.
+		 *
+		 * Printing out option elements here will add those to the translation
+		 * bulk options drop down menu.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Set $set The translation set.
+		 */
+		do_action( 'gp_translation_set_bulk_action', $translation_set );
+		?>
+	</select>
+	<?php if ( $can_write ) : ?>
+	<select name="bulk[priority]" id="bulk-priority-<?php echo $location; // WPCS: XSS Ok. ?>" class="bulk-priority hidden">
+	<?php
+	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		$selected = 'normal' === $value ? " selected='selected'" : '';
+		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+	}
+	?>
+	</select>
+	<?php endif; ?>
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk[redirect_to]" />
+	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
+	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
+	</div>
+	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
+</form>
+<?php
+}
