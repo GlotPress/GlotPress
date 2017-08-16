@@ -3,6 +3,7 @@ var $gp = function($) { return {
 		element: null,
 		init: function() {
 			$gp.notices.element = $('#gp-js-message');
+			$gp.notices.element.on( 'click', $gp.notices.clear );
 		},
 		error: function(message) {
 			$gp.notices.generic_message('gp-js-error', message);
@@ -19,7 +20,7 @@ var $gp = function($) { return {
 		},
 		generic_message: function(css_class, message) {
 			// TODO: add close button, at least to errors
-			$gp.notices.element.removeClass().addClass(css_class).html(message);
+			$gp.notices.element.removeClass().addClass('gp-js-message').addClass(css_class).html(message);
 			$gp.notices.center();
 			$gp.notices.element.show();
 		},

@@ -454,23 +454,31 @@ span.morethan90 {
 /*
  * JavaScript, errors and notices.
  */
-#gp-js-message {
+.gp-js-message {
 	position: fixed;
 	top: 0;
-	padding: 0.5em;
+	padding: 1em;
 	display: none;
-	font-size: 85%;
 	z-index: 1001;
 }
 
 .gp-js-error, .error {
 	color: white;
 	background-color: red;
+	padding-right: 50px;
+	background-image: url( '../images/close.png' );
+	background-position: right center;
+	background-repeat: no-repeat;
+	background-size: 24px 24px;
 }
 
 .gp-js-notice, .notice {
 	color: #222;
 	background-color: #FDDF9D;
+	background-image: url( '../images/close.png' );
+	background-position: right center;
+	background-repeat: no-repeat;
+	background-size: 24px 24px;
 }
 
 .gp-js-success {
