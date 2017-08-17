@@ -2422,8 +2422,10 @@ class GP_Locales {
 		 * @since 3.0.0
 		 *
 		 * @param array $def_vars The array of locale objects.
+		 *
+		 * @return array The updated array of locale objects.
 		 */
-		$def_vars = do_filter( 'gp_locale_definitions_arrary', $def_vars );
+		$def_vars = apply_filters( 'gp_locale_definitions_arrary', $def_vars );
 		
 		foreach( $def_vars as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
