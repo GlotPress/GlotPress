@@ -365,7 +365,7 @@ table.translations tr.preview.has-warnings td.original, div#legend div.has-warni
 }
 
 table.translations tr.preview.root-translation, #legend .root-translation  {
-	background-color: #DAFFBF;
+	background-color: #EEEEEE;
 }
 
 table.translations a.action {
