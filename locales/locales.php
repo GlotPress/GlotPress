@@ -2416,16 +2416,18 @@ class GP_Locales {
 
 		$def_vars = get_defined_vars();
 		
-		/**
-		 * Fires after the locales have been defined but before they have been assigned to the object property.
-		 *
-		 * @since 3.0.0
-		 *
-		 * @param array $def_vars The array of locale objects.
-		 *
-		 * @return array The updated array of locale objects.
-		 */
-		$def_vars = apply_filters( 'gp_locale_definitions_arrary', $def_vars );
+		if ( function_exists( apply_filters ) ) {
+			/**
+			 * Fires after the locales have been defined but before they have been assigned to the object property.
+			 *
+			 * @since 3.0.0
+			 *
+			 * @param array $def_vars The array of locale objects.
+			 *
+			 * @return array The updated array of locale objects.
+			 */
+			$def_vars = apply_filters( 'gp_locale_definitions_arrary', $def_vars );
+		}
 		
 		foreach( $def_vars as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
