@@ -472,6 +472,26 @@ class GP_Translation_Set extends GP_Thing {
 					'public'             => (int) $warnings_counts->public,
 				);
 			}
+
+			$untranslated_counts = $wpdb->get_row( $wpdb->prepare( "
+				SELECT
+					COUNT(*) AS total
+				FROM {$wpdb->gp_originals} AS o
+				LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != \"rejected\" AND t.status != \"old\"
+				WHERE
+					o.project_id = %d AND
+					o.status = \"+active\" AND
+					t.translation_0 IS NULL
+			", $this->id, $this->project_id ) );
+
+			if ( $untranslated_counts ) {
+				$counts[] = (object) array(
+					'translation_status' => 'untranslated',
+					'total'              => (int) $untranslated_counts->total,
+					'public'              => (int) $untranslated_counts->total,
+				);
+			}
+
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
 
@@ -485,6 +505,7 @@ class GP_Translation_Set extends GP_Thing {
 
 		$statuses = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
+		$statuses[] = 'untranslated';
 		$statuses[] = 'all';
 		foreach ( $statuses as $status ) {
 			$this->{$status . '_count'} = 0;
@@ -496,8 +517,6 @@ class GP_Translation_Set extends GP_Thing {
 				$this->{$count->translation_status . '_count'} = $user_can_view_hidden ? (int) $count->total : (int) $count->public;
 			}
 		}
-
-		$this->untranslated_count = $this->all_count - $this->current_count; // @todo Improve this.
 	}
 
 	/**
