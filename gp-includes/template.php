@@ -611,7 +611,7 @@ function gp_get_translation_row_classes( $translation ) {
 	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
 	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
-	
+
 	if ( property_exists( $translation, 'root_translation_set_id' ) ) {
 		$classes[] = $translation->translation_set_id === $translation->root_translation_set_id ? 'root-translation' : '';
 	}

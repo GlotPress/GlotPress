@@ -2415,8 +2415,8 @@ class GP_Locales {
 		$zul->google_code = 'zu';
 
 		$def_vars = get_defined_vars();
-		
-		if ( function_exists( apply_filters ) ) {
+
+		if ( function_exists( 'apply_filters' ) ) {
 			/**
 			 * Fires after the locales have been defined but before they have been assigned to the object property.
 			 *
@@ -2428,8 +2428,8 @@ class GP_Locales {
 			 */
 			$def_vars = apply_filters( 'gp_locale_definitions_arrary', $def_vars );
 		}
-		
-		foreach( $def_vars as $locale ) {
+
+		foreach ( $def_vars as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
 		}
 	}
