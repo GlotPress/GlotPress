@@ -488,7 +488,8 @@ class GP_Translation_Set extends GP_Thing {
 				$counts[] = (object) array(
 					'translation_status' => 'untranslated',
 					'total'              => (int) $untranslated_counts->total,
-					'public'              => (int) $untranslated_counts->total,
+					'public'             => (int) $untranslated_counts->total,
+					'hidden'             => 0,
 				);
 			}
 
