@@ -167,22 +167,27 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 function textareas( $entry, $permissions, $index = 0 ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$disabled = $can_edit? '' : 'disabled="disabled"';
+	$disabled = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
 		<?php
-		if( isset( $entry->warnings[$index] ) ):
-			$referenceable = $entry->warnings[$index];
-			$warning = each( $referenceable );
-			?>
-			<div class="warning secondary">
-				<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $warning['value'] ); ?>
+		if ( isset( $entry->warnings[ $index ] ) ) :
+			$referenceable = $entry->warnings[ $index ];
 
-				<?php if( $can_approve ): ?>
-					<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $warning['key'] ) ); ?>" data-key="<?php echo esc_attr( $warning['key'] ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
+			foreach ( $referenceable as $key => $value ) :
+			?>
+				<div class="warning secondary">
+					<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $value ); ?>
+
+					<?php if ( $can_approve ) : ?>
+						<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $key ) ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
+					<?php endif; ?>
+				</div>
+		<?php
+			endforeach;
+
+		endif;
+		?>
 		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
