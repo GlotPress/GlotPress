@@ -475,12 +475,14 @@ class GP_Translation_Set extends GP_Thing {
 
 			$untranslated_counts = $wpdb->get_row( $wpdb->prepare( "
 				SELECT
-					COUNT(*) AS total
+					COUNT(*) AS total,
+					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
 				FROM {$wpdb->gp_originals} AS o
-				LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != \"rejected\" AND t.status != \"old\"
+				LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != 'rejected' AND t.status != 'old'
 				WHERE
 					o.project_id = %d AND
-					o.status = \"+active\" AND
+					o.status = '+active' AND
 					t.translation_0 IS NULL
 			", $this->id, $this->project_id ) );
 
@@ -488,8 +490,8 @@ class GP_Translation_Set extends GP_Thing {
 				$counts[] = (object) array(
 					'translation_status' => 'untranslated',
 					'total'              => (int) $untranslated_counts->total,
-					'public'             => (int) $untranslated_counts->total,
-					'hidden'             => 0,
+					'public'             => (int) $untranslated_counts->public,
+					'hidden'             => (int) $untranslated_counts->hidden,
 				);
 			}
 
