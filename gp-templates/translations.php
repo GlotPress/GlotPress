@@ -30,7 +30,7 @@ if ( $can_approve ) {
 	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, 'top' );
 }
 
-echo gp_pagination( $page, $per_page, $total_translations_count ); // WPCS: XSS Ok.
+echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 <form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 	<div>
