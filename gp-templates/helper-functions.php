@@ -258,9 +258,9 @@ function references( $project, $entry ) {
  */
 function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $location = 'top' ) {
 ?>
-<form id="bulk-actions-toolbar-<?php echo $location; // WPCS: XSS Ok. ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+<form id="bulk-actions-toolbar-<?php echo esc_attr( $location );?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
 	<div>
-	<select name="bulk[action]" id="bulk-action-<?php echo $location; ?>" class="bulk-action">
+	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
 		<option value="approve"><?php _e( 'Approve', 'glotpress' ); ?></option>
 		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
@@ -284,7 +284,7 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 		?>
 	</select>
 	<?php if ( $can_write ) : ?>
-	<select name="bulk[priority]" id="bulk-priority-<?php echo $location; // WPCS: XSS Ok. ?>" class="bulk-priority hidden">
+	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
 	<?php
 	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
 		$selected = 'normal' === $value ? " selected='selected'" : '';
@@ -293,8 +293,8 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	?>
 	</select>
 	<?php endif; ?>
-	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk[redirect_to]" />
-	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk-redirect_to-<?php echo esc_attr( $location ); ?>" />
+	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
 	</div>
 	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
