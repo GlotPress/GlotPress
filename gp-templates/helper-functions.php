@@ -287,8 +287,7 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
 	<?php
 	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
-		$selected = 'normal' === $value ? " selected='selected'" : '';
-		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false )  . ">" . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
 	}
 	?>
 	</select>
