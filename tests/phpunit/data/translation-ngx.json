@@ -1,0 +1,9 @@
+{
+  "ORIGINAL1": "Ce fichier est trop grang. Les fichiers doivent avoir une taille plus petite que %d KB.",
+  "ORIGINAL2": "%d Mise \u00e0 jour de th\u00e8me",
+  "ORIGINAL3": "Force du mot de passe",
+  "ORIGINAL4": "Nom de la taxonomie au singulier",
+  "ORIGINAL5": "Nom g\u00e9n\u00e9rique pour les posts",
+  "ORIGINAL6": [{ "key": "1", "translation": "actif" },
+                { "key": "2", "translation": "inactif" }]
+}

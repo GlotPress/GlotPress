@@ -1,0 +1,9 @@
+{
+  "ORIGINAL1": "This file is too big. Files must be less than %d KB in size.",
+  "ORIGINAL2": "%d Theme Update",
+  "ORIGINAL3": "password strength",
+  "ORIGINAL4": "taxonomy singular name",
+  "ORIGINAL5": "post type general name",
+  "ORIGINAL6": [{ "key": "1", "translation": "on" },
+                { "key": "2", "translation": "off" }]
+}
