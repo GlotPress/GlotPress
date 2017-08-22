@@ -428,7 +428,38 @@ class GP_Translation_Set extends GP_Thing {
 	public function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 
-		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) ) { // The format was changed in 2.1.
+		/*
+		 * The format was changed in 2.1 and 3.0.
+		 *
+		 * In 2.1 the format was changed to an array of objects in the following sequence,
+		 * however not all may exist in the array, so for example, the array may only be 3
+		 * entries long and skip any of the values:
+		 *
+		 *     [0] = Current tranlsations
+		 *     [1] = Fuzzy tranlsations
+		 *     [2] = Rejected tranlsations
+		 *     [3] = Old tranlsations
+		 *     [4] = Translations with warnings
+		 *     [5] = All tranlsations
+		 *
+		 * In 3.0 the untranslated object was added:
+		 *
+		 *     [0] = Current tranlsations
+		 *     [1] = Fuzzy tranlsations
+		 *     [2] = Rejected tranlsations
+		 *     [3] = Old tranlsations
+		 *     [4] = Translations with warnings
+		 *     [5] = Untranslated originals
+		 *     [6] = All tranlsations
+		 *
+		 * Version 3.0 also introduced the cache 'version' array entry to allow for easy
+		 * detection of when the cache should be expired due to changes in the cache.
+		 *
+		 * Note: The version key is unset after the cache is loaded so that it does not
+		 * get used in the for loops when setting the object properties.
+		 *
+		 */
+		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) || ! array_key_exists( 'version', $counts ) || GP_CACHE_VERSION === $counts['vesion'] ) {
 			global $wpdb;
 			$counts = array();
 
@@ -495,9 +526,15 @@ class GP_Translation_Set extends GP_Thing {
 				);
 			}
 
+			$counts['version'] = GP_CACHE_VERSION;
+
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
 
+		if ( array_key_exists( 'version', $counts ) ) {
+			unset( $counts['version'] );
+		}
+		
 		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
 		$counts[] = (object) array(
 			'translation_status' => 'all',
