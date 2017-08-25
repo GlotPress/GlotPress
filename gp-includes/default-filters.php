@@ -36,3 +36,5 @@ add_action( 'show_user_profile', 'gp_wp_profile_options' );
 add_action( 'edit_user_profile', 'gp_wp_profile_options' );
 add_action( 'personal_options_update', 'gp_wp_profile_options_update' );
 add_action( 'edit_user_profile_update', 'gp_wp_profile_options_update' );
+// Add the admin page to the WordPress settings menu
+add_action( 'admin_menu', 'gp_wp_dashboard_menu_link', 10, 1 );

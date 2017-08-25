@@ -109,6 +109,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 			$items[ gp_url_profile( $user->user_nicename ) ] = __( 'Profile', 'glotpress' );
 			$items[ gp_url( '/settings' ) ] = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ]  = __( 'Log out', 'glotpress' );
+			$items[ admin_url() ] = __( 'Dashboard' );
 		}
 		else {
 			$items[ esc_url( wp_login_url( gp_url_current() ) ) ] = __( 'Log in', 'glotpress' );

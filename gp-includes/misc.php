@@ -574,3 +574,21 @@ function gp_get_sort_by_fields() {
 	 */
 	return apply_filters( 'gp_sort_by_fields', $sort_fields );
 }
+
+function gp_wp_dashboard_menu_link() {
+	global $menu;
+
+	// Add the menu to the admin menu.
+	add_menu_page(__('GlotPress'), __('GlotPress'), 'read', __FILE__, 'gp_placeholder_redirect_to_glotpress', 'dashicons-translation', 1 );
+
+	// We're going to hack the menu info to use a link to the front end instead of calling the 'redirect_to_glotpress' function so we save a page load.
+	foreach( $menu as $tag => $mi ) {
+		if( $mi[0] == __( 'GlotPress' ) ) {
+			$menu[$tag][2] = gp_url_public_root();
+		}
+	}
+}
+
+function gp_placeholder_redirect_to_glotpress() {
+	// Just a placeholder, we're going to replace the function call with a real link in the menu_order hook.
+}
