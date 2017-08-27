@@ -81,6 +81,8 @@ jQuery('.gp-content').on('click', '.gd-review-done', function (e) {
   alert('For a new Review or stop the review you need a refresh of the page!');
 });
 
+gd_non_breaking_space_highlight();
+
 gd_wait_table_alter();
 
 gd_remove_layover();

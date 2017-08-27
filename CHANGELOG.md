@@ -1,6 +1,7 @@
 #1.3.8
 * Feature: Black border on old strings (6 months)
 * Feature: Added layover for waiting on loading of the extension
+* Feature: Highlight non-braking-space as settings GlotPress/801
 
 #1.3.7
 * Feature: Hide new buttons on untranslated strings

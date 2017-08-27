@@ -25,7 +25,8 @@ function gd_generate_settings_panel() {
 	'no_final_dot': 'No validation for final "...", ".", ":"',
 	'no_final_other_dots': 'No validation for final ;.!:、。؟？！',
 	'no_initial_uppercase': 'No first character uppercase warning on translation',
-	'no_glossary_term_check': 'No glossary term missing warning on translation'
+	'no_glossary_term_check': 'No glossary term missing warning on translation',
+	'no_non_breaking_space': 'No non-breaking-space in preview'
   };
   var container = '<div class="notice gd_settings_panel"><h2>GlotDict Settings</h2></div>';
   jQuery('.gp-content').prepend(container);

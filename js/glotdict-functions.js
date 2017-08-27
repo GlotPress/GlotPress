@@ -160,10 +160,35 @@ function gd_mark_old_strings() {
 	date_timestamp = new Date(date_timestamp);
 	var today = new Date();
 	var months = today.getMonth() - date_timestamp.getMonth() + (12 * (today.getFullYear() - date_timestamp.getFullYear()));
-	if(months > 6) {
+	if (months > 6) {
 	  jQuery(this).addClass('has-old-string');
 	}
   });
+}
+
+/**
+ * Highlight in preview the non-breaking-space
+ * https://github.com/GlotPress/GlotPress-WP/issues/801
+ * 
+ * @returns {void}
+ */
+function gd_non_breaking_space_highlight() {
+  if (!gd_get_setting('no_initial_uppercase')) {
+	jQuery('tr.preview > td.translation.foreign-text').each(function () {
+	  var translation_item = jQuery(this).text();
+	  if (translation_item.indexOf(' ') > -1) {
+		var translation_highlighted = '';
+		for (var i = 0; i < translation_item.length; i++) {
+		  if (translation_item[i] === ' ') {
+			translation_highlighted += '<span style="background-color:yellow"> </span>';
+		  } else {
+			translation_highlighted += translation_item[i];
+		  }
+		}
+		jQuery(this).html(translation_highlighted);
+	  }
+	});
+  }
 }
 
 /**
