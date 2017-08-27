@@ -3,6 +3,8 @@
 
 var glotdict_version = "1.0.1";
 
+gd_add_layover();
+
 if (jQuery('.filters-toolbar:last div:first').length > 0) {
   gd_hotkeys();
   //Fix for PTE align
@@ -21,7 +23,6 @@ if (jQuery('.filters-toolbar:last div:first').length > 0) {
 	jQuery('.preview .action').trigger('click');
   }
 
-  jQuery("<style type='text/css'>.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{border-left-width: 2px !important;border-left-color: blue !important;}.has-old-string td:last-child,.has-old-string th:last-child,.box.has-old-string{border-right-width: 2px !important;border-right-color: black !important;}.discard-glotdict{float:right;}</style>").appendTo("head");
   jQuery("<div class='box has-glotdict'></div><div>Contain a Glossary term</div><div class='box has-old-string'></div><div>The string is at least 6 months old</div>").appendTo("#legend");
 
   jQuery('.glossary-word').each(function () {
@@ -81,3 +82,5 @@ jQuery('.gp-content').on('click', '.gd-review-done', function (e) {
 });
 
 gd_wait_table_alter();
+
+gd_remove_layover();

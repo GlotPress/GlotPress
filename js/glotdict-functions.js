@@ -187,12 +187,33 @@ function gd_get_lang_consistency() {
   return reallang;
 }
 
+/**
+ * Check if the string is the same
+ * 
+ * @param {String} myString
+ * @returns {Boolean}
+ */
 function gd_is_uppercase(myString) {
   return (myString === myString.toUpperCase());
 }
 
+/**
+ * Stop event propagation
+ * 
+ * @param {Object} e
+ * @returns {void}
+ */
 function gd_stoppropagation(e) {
   if (typeof e === 'object') {
 	e.stopImmediatePropagation();
   }
+}
+
+function gd_add_layover() {
+  jQuery('body').append('<div class="gd-layover"></div>');
+  jQuery('.gd-layover').append('<div class="gd-loader"></div>');
+}
+
+function gd_remove_layover() {
+  jQuery('.gd-layover').remove();
 }
