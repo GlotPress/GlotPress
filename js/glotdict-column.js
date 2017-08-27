@@ -85,11 +85,13 @@ function gd_set_status(id, status, nonce) {
 }
 
 function gd_wait_table_alter() {
-  var observer = new MutationObserver(function (mutations) {
-	mutations.forEach(function () {
-	  gd_add_column();
+  if (document.querySelector('#translations tbody') !== null) {
+	var observer = new MutationObserver(function (mutations) {
+	  mutations.forEach(function () {
+		gd_add_column();
+	  });
 	});
-  });
 
-  observer.observe(document.querySelector('#translations tbody'), {attributes: true, childList: true, characterData: true});
+	observer.observe(document.querySelector('#translations tbody'), {attributes: true, childList: true, characterData: true});
+  }
 }
