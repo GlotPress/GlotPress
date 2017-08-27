@@ -107,9 +107,6 @@ function gd_validate(e, selector) {
 	  }
 	}
   }
-  if (e === '') {
-
-  }
   if (howmany !== 0) {
 	gd_stoppropagation(e);
   }

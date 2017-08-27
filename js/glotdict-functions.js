@@ -149,6 +149,24 @@ function gd_locales_selector() {
 }
 
 /**
+ * Add a border and a legend for old strings (at least 6 months)
+ * 
+ * @returns void
+ */
+function gd_mark_old_strings() {
+  jQuery('tr.preview').each(function () {
+	var id = jQuery(this).attr('row');
+	var date_timestamp = Date.parse(jQuery('#editor-' + id + ' .meta dd:eq(1)').html().slice(0, -3).trim());
+	date_timestamp = new Date(date_timestamp);
+	var today = new Date();
+	var months = today.getMonth() - date_timestamp.getMonth() + (12 * (today.getFullYear() - date_timestamp.getFullYear()));
+	if(months > 6) {
+	  jQuery(this).addClass('has-old-string');
+	}
+  });
+}
+
+/**
  * Get the language for consistency
  * 
  * @returns string

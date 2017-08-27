@@ -1,3 +1,6 @@
+#1.3.8
+* Feature: Black border on old strings (6 months)
+
 #1.3.7
 * Feature: Hide new buttons on untranslated strings
 * Feature: Hide buttons where not permitted

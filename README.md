@@ -20,6 +20,7 @@ PS: If you are using NoScript or Privacy Badger enable the domain wordpress.org 
 * Review mode with a button
 * New column with fast Approve/Reject/Fuzzy for strings
 * Bulk Actions also on footer
+* Mark old string (6 months) with a black border
 * Many hotkeys and shortcut
 
 ## Hotkeys
