@@ -173,7 +173,7 @@ function gd_mark_old_strings() {
  * @returns {void}
  */
 function gd_non_breaking_space_highlight() {
-  if (!gd_get_setting('no_initial_uppercase')) {
+  if (!gd_get_setting('no_non_breaking_space')) {
 	jQuery('tr.preview > td.translation.foreign-text').each(function () {
 	  var translation_item = jQuery(this).text();
 	  if (translation_item.indexOf(' ') > -1) {
@@ -234,11 +234,23 @@ function gd_stoppropagation(e) {
   }
 }
 
+/**
+ * Add a layover
+ * 
+ * @returns {void}
+ */
 function gd_add_layover() {
-  jQuery('body').append('<div class="gd-layover"></div>');
-  jQuery('.gd-layover').append('<div class="gd-loader"></div>');
+  if (jQuery('table#translations').length > 0) {
+	jQuery('body').append('<div class="gd-layover"></div>');
+	jQuery('.gd-layover').append('<div class="gd-loader"></div>');
+  }
 }
 
+/**
+ * Remove the layover
+ * 
+ * @returns {void}
+ */
 function gd_remove_layover() {
   jQuery('.gd-layover').remove();
 }
