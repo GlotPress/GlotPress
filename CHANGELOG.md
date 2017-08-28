@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
@@ -487,4 +486,3 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 #1.0.0
 * First Release
->>>>>>> 6dd8789dd8beec71ed492afec00aed9077ecfb0a

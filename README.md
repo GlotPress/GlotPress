@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ![GlotPress](.github/banner.png)
 
 [![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=develop)](https://travis-ci.org/GlotPress/GlotPress-WP) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
@@ -102,4 +101,3 @@ After that step we have to wait few hours for Chrome and for Firefox and all the
 * [Olegs Belousovs](https://github.com/sgelob) - The ideator
 * Pascal Casier - For the help with the glossaries and hotkeys
 * Garrett Hyder - For all the tickets
->>>>>>> 6dd8789dd8beec71ed492afec00aed9077ecfb0a
