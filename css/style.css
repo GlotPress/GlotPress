@@ -1,0 +1,57 @@
+.has-glotdict td:first-child,.has-glotdict th:first-child,.box.has-glotdict{
+	border-left-width: 2px !important;
+	border-left-color: blue !important;
+}
+.has-old-string td:last-child,.has-old-string th:last-child,.box.has-old-string{
+	border-right-width: 2px !important;
+	border-right-color: black !important;
+}
+.discard-glotdict{
+	float:right;
+}
+.gd-layover{
+	height: 100%;
+	width: 100%;
+	background: #0009;
+	z-index: 99999;
+	position: absolute;
+	top: 0;
+}
+.gd-loader,
+.gd-loader:after {
+	border-radius: 50%;
+	width: 10em;
+	height: 10em;
+}
+.gd-loader {
+	margin: 60px auto;
+	font-size: 10px;
+	position: relative;
+	width: 240px;
+	height: 240px;
+	text-indent: -9999em;
+	border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+	border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+	border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+	border-left: 1.1em solid #ffffff;
+	transform: translateZ(0);
+	animation: load8 1.1s infinite linear;
+}
+@-webkit-keyframes load8 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+@keyframes load8 {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
