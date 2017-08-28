@@ -378,6 +378,36 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Checks whether a translation contains "hard" spaces.
+	 *
+	 * Note: The below "space" in the gp_in() functions is actually character 255.
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 *
+	 * @param string    $original    The source string.
+	 * @param string    $translation The translation.
+	 * @param GP_Locale $locale      The locale of the translation.
+	 * @return string|true True if check is OK, otherwise warning message.
+	 */
+	public function warning_test_check_for_hard_spaces( $original, $translation, $locale ) {
+		$original_count = substr_count( $original, chr( 255 ) );
+		$translation_count = substr_count( $translation, chr( 255 ) );
+
+		// Check to see if there are hard spaces in the translation but not the original.
+		if ( 0 === $original_count && $translation_count > 0 ) {
+			return __( 'Translation should not contain a "hard" non-breaking space.', 'glotpress' );
+		}
+
+		// Check if there are hard spaces in both, but the counts do not match.
+		if ( $original_count > 0 && $translation_count > 0 && $original_count !== $translation_count ) {
+			return __( 'Translation contains a mismatched number of "hard" non-breaking space.', 'glotpress' );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Registers all methods starting with `warning_` as built-in warnings.
 	 *
 	 * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
