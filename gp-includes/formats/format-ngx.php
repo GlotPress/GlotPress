@@ -29,7 +29,7 @@ class GP_Format_NGX extends GP_Format {
 	 *
 	 * @var string
 	 */
-	public $extension = 'json';
+	public $extension = 'ngx.json';
 
 	/**
 	 * Generates a string the contains the $entries to export in the JSON file format.
@@ -67,6 +67,10 @@ class GP_Format_NGX extends GP_Format {
 					array_push( $result[ $entrykey ], $valuepair );
 				}
 			} else {
+				if ( null === $key ) {
+					$key = $entry->singular;
+				}
+
 				$result[ $key ] = $entry->translations[0];
 			}
 		}
@@ -120,8 +124,10 @@ class GP_Format_NGX extends GP_Format {
 				$entries->add_entry( new Translation_Entry( $args ) );
 			}
 		}
+
 		return $entries;
 	}
+
 	/**
 	 * Decode a JSON file.
 	 *
