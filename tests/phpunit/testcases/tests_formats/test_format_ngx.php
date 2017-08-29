@@ -1,6 +1,6 @@
 <?php
 
-class GP_Test_Format_JSON extends GP_UnitTestCase {
+class GP_Test_Format_NGX extends GP_UnitTestCase {
 	/**
 	 * @var GP_Translation_Set
 	 */
@@ -33,7 +33,7 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 	}
 
 	public function test_format_extension() {
-		$this->assertSame( 'json', GP::$formats[ $this->format ]->extension );
+		$this->assertSame( 'ngx.json', GP::$formats[ $this->format ]->extension );
 	}
 
 	public function test_print_exported_file_can_be_decoded() {
@@ -57,8 +57,8 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 		$actual = json_decode( $json, true );
 
 		$this->assertEquals( array(
-			'foo' => array( 'bar' ),
-			'bar' => array( 'baz' ),
+			'foo' => 'bar',
+			'bar' => 'baz',
 		), $actual );
 	}
 
@@ -75,7 +75,7 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 
 		/* @var Translations $actual */
 		$actual = GP::$formats[ $this->format ]->read_originals_from_file( GP_DIR_TESTDATA . '/originals-ngx.json' );
-		$this->assertSame( 5, count( $actual->entries ) );
+		$this->assertSame( 7, count( $actual->entries ) );
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -88,13 +88,43 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 	}
 
 	public function test_read_translations_from_file() {
+		$originals = $this->data_example_originals();
 		$expected = $this->data_example_translations();
+		$stubbed_originals = array();
+		$results = array();
+		$i = 0;
 
-		/* @var Translations $actual */
-		$actual = GP::$formats[ $this->format ]->read_translations_from_file( GP_DIR_TESTDATA . '/translation-ngx.json' );
+		// We need a combined set of originals/translations to use when we validate the file read,
+		// so loop through our entries and create on here.
+		foreach ( $originals->entries as $orig ) {
+			$results[ $i ]['original'] = $orig->singular;
+			$results[ $i ]['context'] = $orig->context;
+		}
 
-		$this->assertSame( 5, count( $actual->entries ) );
-		$this->assertEquals( $expected, $actual );
+		foreach ( $expected->entries as $exp ) {
+			$results[ $i ]['translation'] = $exp->singular;
+		}
+
+		// We need to convert the example originals to an array of GP_Originals before using them.
+		foreach ( $originals->entries as $entry ) {
+			$stubbed_originals[] = new GP_Original( array( 'singular' => $entry->singular, 'context' => $entry->context ) );
+		}
+
+		// Create a mock project to use during the file read.
+		GP::$original = $this->getMockBuilder( 'GP_Original' )->setMethods( array('by_project_id') )->getMock();
+		GP::$original->expects( $this->once() )
+					->method( 'by_project_id' )
+					->with( $this->equalTo( 2 ) )
+					->will( $this->returnValue( $stubbed_originals ) );
+
+		// @var Translations $actual.
+		$actual = GP::$formats[ $this->format ]->read_translations_from_file( GP_DIR_TESTDATA . '/translation-ngx.json', (object)array( 'id' => 2 ) );
+
+		$this->assertSame( 7, count( $actual->entries ) );
+
+		foreach ( $results as $result ) {
+			$this->assertEquals( $result['translation'], $actual->translate( $result['original'], $result['context'] ) );
+		}
 	}
 
 	/**
