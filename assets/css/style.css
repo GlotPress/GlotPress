@@ -460,25 +460,30 @@ span.morethan90 {
 	padding: 1em;
 	display: none;
 	z-index: 1001;
+	cursor: default;
+}
+
+.gp-js-message-content {
+	float: left;
+	cursor: default;
+}
+
+.gp-js-message-dismiss {
+	float: right;
+	padding-left: 50px;
+	color: #2F34B8;
+	text-decoration: underline;
+	cursor: default;
 }
 
 .gp-js-error, .error {
 	color: white;
 	background-color: red;
-	padding-right: 50px;
-	background-image: url( '../images/close.png' );
-	background-position: right center;
-	background-repeat: no-repeat;
-	background-size: 24px 24px;
 }
 
 .gp-js-notice, .notice {
 	color: #222;
 	background-color: #FDDF9D;
-	background-image: url( '../images/close.png' );
-	background-position: right center;
-	background-repeat: no-repeat;
-	background-size: 24px 24px;
 }
 
 .gp-js-success {

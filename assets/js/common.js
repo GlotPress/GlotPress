@@ -6,21 +6,26 @@ var $gp = function($) { return {
 			$gp.notices.element.on( 'click', $gp.notices.clear );
 		},
 		error: function(message) {
-			$gp.notices.generic_message('gp-js-error', message);
+			$gp.notices.generic_message('gp-js-error', message, true);
 		},
 		notice: function(message) {
-			$gp.notices.generic_message('gp-js-notice', message);
+			$gp.notices.generic_message('gp-js-notice', message, true);
 		},
 		success: function(message) {
-			$gp.notices.generic_message('gp-js-success', message);
+			$gp.notices.generic_message('gp-js-success', message, false);
 			$gp.notices.element.fadeOut(10000);
 		},
 		clear: function(message) {
 			$gp.notices.element.html('').hide();
 		},
-		generic_message: function(css_class, message) {
-			// TODO: add close button, at least to errors
-			$gp.notices.element.removeClass().addClass('gp-js-message').addClass(css_class).html(message);
+		generic_message: function(css_class, message, dismiss) {
+			if ( true == dismiss ) {
+				dismiss_message = '<div id="gp-js-message-dismiss" class="gp-js-message-dismiss">Discard</div>';
+			} else {
+				dismiss_message = '';
+			}
+			
+			$gp.notices.element.removeClass().addClass('gp-js-message').addClass(css_class).html( '<div id="gp-js-message-content" class="gp-js-message-content">' + message + dismiss_message + '</div>');
 			$gp.notices.center();
 			$gp.notices.element.show();
 		},
