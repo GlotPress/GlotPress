@@ -296,7 +296,13 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
 	</div>
-	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
+	<?php 
+		$nonce = gp_route_nonce_field( 'bulk-actions', false ); 
+		
+		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
+		
+		echo $nonce;
+	?>
 </form>
 <?php
 }
