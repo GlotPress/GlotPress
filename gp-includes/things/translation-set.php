@@ -455,11 +455,11 @@ class GP_Translation_Set extends GP_Thing {
 		 * Version 3.0 also introduced the cache 'version' array entry to allow for easy
 		 * detection of when the cache should be expired due to changes in the cache.
 		 *
-		 * Note: The version key is unset after the cache is loaded so that it does not
+		 * Note: The _version key is unset after the cache is loaded so that it does not
 		 * get used in the for loops when setting the object properties.
 		 *
 		 */
-		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) || ! array_key_exists( 'version', $counts ) || GP_CACHE_VERSION === $counts['vesion'] ) {
+		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) || ! array_key_exists( '_version', $counts ) || GP_CACHE_VERSION !== $counts['_vesion'] ) {
 			global $wpdb;
 			$counts = array();
 
@@ -526,13 +526,13 @@ class GP_Translation_Set extends GP_Thing {
 				);
 			}
 
-			$counts['version'] = GP_CACHE_VERSION;
+			$counts['_version'] = GP_CACHE_VERSION;
 
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
 
-		if ( array_key_exists( 'version', $counts ) ) {
-			unset( $counts['version'] );
+		if ( array_key_exists( '_version', $counts ) ) {
+			unset( $counts['_version'] );
 		}
 		
 		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
