@@ -182,7 +182,7 @@ class GP_Format_Android extends GP_Format {
 
 		// Loop through all of the plural entries we found in the XML file.
 		foreach ( $data->plurals as $plural ) {
-			if ( isset( $plural['translatable'] ) && 'false' == $plural['translatable'] ) {
+			if ( isset( $plural['translatable'] ) && 'false' === $plural['translatable'] ) {
 				continue;
 			}
 
@@ -492,7 +492,7 @@ class GP_Format_Android extends GP_Format {
 
 			// Output each entry in the array.
 			for ( $i = 0; $i < $nplurals; $i++ ) {
-				$this->line( '<entry quantity="'. $order[ $i ] . '">' . $entry->translations[ $i ] . '</item>', 2 );
+				$this->line( '<entry quantity="' . $order[ $i ] . '">' . $entry->translations[ $i ] . '</item>', 2 );
 			}
 
 			// Close the string arrary tag.

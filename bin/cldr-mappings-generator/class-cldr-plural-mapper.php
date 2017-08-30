@@ -12,7 +12,7 @@ class CLDR_Plural_Mapper {
 	/**
 	 * Stores the CLDR Plurals JSON.
 	 *
-	 * @var object
+	 * @var array
 	 */
 	private $cldr_plurals;
 
