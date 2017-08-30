@@ -52,8 +52,8 @@ class CLDR_Plural_Mapper {
 		// Load the POMO Translation object.
 		require __DIR__ . '/../../../../../wp-includes/pomo/translations.php';
 
-		$cldr_plurals = json_decode( file_get_contents( __DIR__ . '/plurals.json' ) );
-		$this->cldr_plurals = $cldr_plurals->supplemental->{'plurals-type-cardinal'};
+		$cldr_plurals = json_decode( file_get_contents( __DIR__ . '/plurals.json' ), true );
+		$this->cldr_plurals = $cldr_plurals['supplemental']['plurals-type-cardinal'];
 	}
 
 	/**
@@ -70,8 +70,8 @@ class CLDR_Plural_Mapper {
 		$plurals = false;
 
 		foreach ( array( 'lang_code_iso_639_1', 'lang_code_iso_639_2', 'lang_code_iso_639_3' ) as $slug ) {
-			if ( isset( $this->cldr_plurals->{$locale->$slug} ) ) {
-				$plurals = $this->cldr_plurals->{$locale->$slug};
+			if ( isset( $this->cldr_plurals[ $locale->$slug ] ) ) {
+				$plurals = $this->cldr_plurals[ $locale->$slug ];
 				break;
 			}
 		}
@@ -91,7 +91,7 @@ class CLDR_Plural_Mapper {
 		$func_body .= '$f = intval( substr( $number, $ni + 1, $v ) );' . PHP_EOL;
 		$func_body .= '$t = intval( substr( $number, $ni + 1, $w ) );' . PHP_EOL;
 
-		foreach ( (array) $plurals as $type => $expression ) {
+		foreach ( $plurals as $type => $expression ) {
 			$type = substr( $type, 17 );
 			$expression = substr( $expression, 0, strpos( $expression, '@' ) );
 			$expression = preg_replace( '#\b[nivwft]\b#', '$\0', $expression );
@@ -143,7 +143,9 @@ class CLDR_Plural_Mapper {
 			return false;
 		}
 		$f = $this->get_cldr_plural_function( $locale );
-
+		if ( false === $f ) {
+			return false;
+		}
 		return $f( $number );
 	}
 
@@ -238,7 +240,7 @@ class CLDR_Plural_Mapper {
 	 * @param  string $locales_file The location of the locales.php file.
 	 */
 	public function update_locales( $locales_file ) {
-		$locales = file_get_contents( $locales_file ); // WPCS: AlternativeFunctions ok.
+		$locales = file_get_contents( $locales_file ); // WPCS: file ok.
 		// Remove previous mappings.
 		$locales = preg_replace( '/\t\t\$[^-]+->cldr_plurals_mapping.*\n/', '', $locales );
 
@@ -250,7 +252,7 @@ class CLDR_Plural_Mapper {
 			$p = strpos( $locales, "\n", $p ) + 1;
 			$locales = substr( $locales, 0, $p ) . "\t\t\${$var}->cldr_plurals_mapping = array( '" . implode( "', '", array_keys( $map ) ) . "' );\n" . substr( $locales, $p );
 		}
-		file_put_contents( $locales_file, $locales ); // WPCS: AlternativeFunctions ok.
+		file_put_contents( $locales_file, $locales ); // WPCS: file ok.
 
 		if ( ! empty( $this->unknown ) ) {
 			echo count( $this->unknown ), ' locales could not be found in CLDR (', $this->output_locales( $this->unknown ), ').', PHP_EOL, PHP_EOL; // WPCS: XSS ok.
