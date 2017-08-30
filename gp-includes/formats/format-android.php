@@ -473,60 +473,31 @@ class GP_Format_Android extends GP_Format {
 	 * @param obj $locale  The locale object to use for exporting.
 	 */
 	private function plurals( $entries, $locale ) {
-		$nplurals = $locale->nplurals;
-		$mapping = array();
-		$order = $this->get_plural_order( $locale );
-
-		// Sort the entries before processing them.
-		uasort( $entries, array( $this, 'cmp_context' ) );
-
-		// Loop through all of the single entries add them to a mapping array.
-		foreach ( $entries as $entry ) {
-			// Make sure the array name is sanitized.
-			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
-
-			// Initialize the mapping array entry if this is the first time.
-			if ( ! isset( $mapping[ $array_name ] ) ) {
-				$mapping[ $array_name ] = array();
-			}
-
-			// Add the entry to the mapping array after escaping it.
-			$mapping[ $array_name ] = $entry;
+		if ( ! isset( $locale->cldr_plurals_mapping ) ) {
+			return false;
 		}
+		$nplurals = $locale->nplurals;
+		$order = $locale->cldr_plurals_mapping;
 
 		// Now do the actual output to the class variable.
-		foreach ( $mapping as $array_name => $item ) {
-			// Open the string array tag.
-			$this->line( '<plurals name="' . $array_name . '">', 1 );
+		foreach ( $entries as $entry ) {
+			if ( empty( $entry->context ) ) {
+				$entry->context = $entry->singular;
+			}
 
-			// Output each item in the array.
+			$id = preg_replace( '/[^a-zA-Z0-9_]/U', '_', $entry->context );
+
+			// Open the string array tag.
+			$this->line( '<plurals name="' . $id . '">', 1 );
+
+			// Output each entry in the array.
 			for ( $i = 0; $i < $nplurals; $i++ ) {
-				$this->line( '<item quantity="'. $order[ $i ] . '">' . $item->translations[ $i ] . '</item>', 2 );
+				$this->line( '<entry quantity="'. $order[ $i ] . '">' . $entry->translations[ $i ] . '</item>', 2 );
 			}
 
 			// Close the string arrary tag.
 			$this->line( '</plurals>', 1 );
 		}
-	}
-
-	/**
-	 * Determine the order of plurals with relation to the Android standard.
-	 * See https://developer.android.com/guide/topics/resources/string-resource.html#Plurals for details.
-	 *
-	 * @since 2.4.0
-	 *
-	 * @param obj $locale  The locale object to use for exporting.
-	 */
-	private function get_plural_order( $locale ) {
-		$order = array();
-
-		foreach ( $locale->cldr_plural_expressions as $key => $value ) {
-			if ( '' === $value ) {
-				$order[] = $key;
-			}
-		}
-		
-		return $order;
 	}
 
 	/**
