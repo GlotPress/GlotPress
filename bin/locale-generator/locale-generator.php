@@ -16,8 +16,15 @@ include( '../../locales/locales.php' );
  *
  *     https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/plurals.json
  *
+ * or the script will do it automatically if the local file does not exist.
+ *
  */
-$cldr_data    = json_decode( file_get_contents( 'plurals.json' ), true );
+if( ! file_exists( 'plurals.json' ) ) {
+	file_put_contents( 'plurals.json', file_get_contents( 'https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/plurals.json' ) );
+}
+
+$cldr_data = json_decode( file_get_contents( 'plurals.json' ), true );
+
 $cldr_locales = $cldr_data['supplemental']['plurals-type-cardinal'];
 
 // Create a working locales object.
