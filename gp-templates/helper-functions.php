@@ -258,7 +258,7 @@ function references( $project, $entry ) {
  */
 function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $location = 'top' ) {
 ?>
-<form id="bulk-actions-toolbar-<?php echo esc_attr( $location );?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
 	<div>
 	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
@@ -287,7 +287,7 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
 	<?php
 	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
-		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false )  . ">" . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
 	}
 	?>
 	</select>
@@ -296,12 +296,12 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
 	</div>
-	<?php 
-		$nonce = gp_route_nonce_field( 'bulk-actions', false ); 
-		
+	<?php
+		$nonce = gp_route_nonce_field( 'bulk-actions', false );
+
 		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
-		
-		echo $nonce;
+
+		echo $nonce; // WPCS: XSS Ok.
 	?>
 </form>
 <?php
