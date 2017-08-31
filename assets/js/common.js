@@ -19,10 +19,10 @@ var $gp = function($) { return {
 			$gp.notices.element.html('').hide();
 		},
 		generic_message: function(css_class, message, dismiss) {
-			if ( true == dismiss ) {
+			var dismiss_message = '';
+			
+			if ( true === dismiss ) {
 				dismiss_message = '<div id="gp-js-message-dismiss" class="gp-js-message-dismiss">Discard</div>';
-			} else {
-				dismiss_message = '';
 			}
 			
 			$gp.notices.element.removeClass().addClass('gp-js-message').addClass(css_class).html( '<div id="gp-js-message-content" class="gp-js-message-content">' + message + dismiss_message + '</div>');
@@ -52,7 +52,7 @@ $gp.showhide = function($) { return function(link, container, options) {
 	var $link = $(link);
 	var $container = $(container);
 	if ( !$gp.showhide.registry[options.group] ) $gp.showhide.registry[options.group] = [];
-	var registry = $gp.showhide.registry[options.group]; 
+	var registry = $gp.showhide.registry[options.group];
 	var show = function() {
 		for(var i = 0; i < registry.length; ++i) {
 			registry[i].hide();
