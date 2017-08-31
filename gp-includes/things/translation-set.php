@@ -459,7 +459,7 @@ class GP_Translation_Set extends GP_Thing {
 		 * get used in the for loops when setting the object properties.
 		 *
 		 */
-		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) || ! array_key_exists( '_version', $counts ) || GP_CACHE_VERSION !== $counts['_vesion'] ) {
+		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) || ! array_key_exists( '_version', $counts ) || GP_CACHE_VERSION !== $counts['_version'] ) {
 			global $wpdb;
 			$counts = array();
 
