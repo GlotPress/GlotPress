@@ -32,6 +32,15 @@ class GP_Format_NGX extends GP_Format {
 	public $extension = 'ngx.json';
 
 	/**
+	 * Which plural rules to use for this format.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @var string
+	 */
+	public $plurals_format = 'gettext';
+
+	/**
 	 * Generates a string the contains the $entries to export in the JSON file format.
 	 *
 	 * @since 2.4.0
