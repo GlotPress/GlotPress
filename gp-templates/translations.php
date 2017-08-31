@@ -233,14 +233,15 @@ $i = 0;
 			</dd>
 			<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
 			<dd>
-			<?php echo gp_radio_buttons(
-					'sort[how]',
-					array(
-						'asc' => __( 'Ascending', 'glotpress' ),
-						'desc' => __( 'Descending', 'glotpress' ),
-					),
-					gp_array_get( $sort, 'how', $default_sort['how'] )
-				);
+			<?php
+			echo gp_radio_buttons(
+				'sort[how]',
+				array(
+					'asc' => __( 'Ascending', 'glotpress' ),
+					'desc' => __( 'Descending', 'glotpress' ),
+				),
+				gp_array_get( $sort, 'how', $default_sort['how'] )
+			);
 			?>
 			</dd>
 			<?php
@@ -262,7 +263,8 @@ $i = 0;
 			 *
 			 * @since 2.1.0
 			 */
-			do_action( 'gp_translation_set_sort_form' ); ?>
+			do_action( 'gp_translation_set_sort_form' );
+			?>
 
 			<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 		</dl>
