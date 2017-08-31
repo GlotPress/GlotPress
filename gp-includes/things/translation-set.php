@@ -534,7 +534,7 @@ class GP_Translation_Set extends GP_Thing {
 		if ( array_key_exists( '_version', $counts ) ) {
 			unset( $counts['_version'] );
 		}
-		
+
 		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
 		$counts[] = (object) array(
 			'translation_status' => 'all',
