@@ -20,11 +20,11 @@ var $gp = function($) { return {
 		},
 		generic_message: function(css_class, message, dismiss) {
 			var dismiss_message = '';
-			
+
 			if ( true === dismiss ) {
 				dismiss_message = '<div id="gp-js-message-dismiss" class="gp-js-message-dismiss">Discard</div>';
 			}
-			
+
 			$gp.notices.element.removeClass().addClass('gp-js-message').addClass(css_class).html( '<div id="gp-js-message-content" class="gp-js-message-content">' + message + dismiss_message + '</div>');
 			$gp.notices.center();
 			$gp.notices.element.show();
