@@ -7,10 +7,10 @@
  */
 
 $priority_char = array(
-    '-2' => array('&times;', 'transparent', '#ccc'),
-    '-1' => array('&darr;', 'transparent', 'blue'),
-    '0' => array('', 'transparent', 'white'),
-    '1' => array('&uarr;', 'transparent', 'green'),
+	'-2' => array( '&times;', 'transparent', '#ccc' ),
+	'-1' => array( '&darr;', 'transparent', 'blue' ),
+	'0' => array( '', 'transparent', 'white' ),
+	'1' => array( '&uarr;', 'transparent', 'green' ),
 );
 $user = wp_get_current_user();
 $can_reject_self = ( isset( $t->user->user_login ) && $user->user_login === $t->user->user_login && 'waiting' === $t->translation_status );
@@ -58,7 +58,7 @@ if ( is_object( $glossary ) ) {
 		<th scope="row"></th>
 	<?php endif; ?>
 	<td class="priority" title="<?php echo esc_attr( sprintf( __( 'Priority: %s', 'glotpress' ), gp_array_get( GP::$original->get_static( 'priorities' ), $t->priority ) ) ); ?>">
-	   <?php echo $priority_char[$t->priority][0] ?>
+		<?php echo $priority_char[ $t->priority ][ 0 ]; ?>
 	</td>
 	<td class="original">
 		<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
@@ -210,10 +210,11 @@ if ( is_object( $glossary ) ) {
 					<dd><?php gp_link_user( $t->user_last_modified ); ?></dd>
 				</dl>
 			<?php endif; ?>
+						<?php notes( $t, array( $can_edit, $can_approve_translation ) ); ?>
 			<?php references( $project, $t ); ?>
 
 			<dl>
-			    <dt><?php _e( 'Priority of the original:', 'glotpress' ); ?></dt>
+				<dt><?php _e( 'Priority of the original:', 'glotpress' ); ?></dt>
 			<?php if ( $can_write ): ?>
 				<dd><?php
 					echo gp_select(
@@ -233,7 +234,7 @@ if ( is_object( $glossary ) ) {
 			</dl>
 
 			<dl>
-			    <dt><?php _e( 'More links:', 'glotpress' ); ?>
+				<dt><?php _e( 'More links:', 'glotpress' ); ?>
 				<ul>
 					<?php foreach ( $more_links as $link ) : ?>
 						<li><?php echo $link; // WPCS: XSS ok. ?></li>
