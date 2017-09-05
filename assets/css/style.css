@@ -248,9 +248,12 @@ table.locales.tablesorter-glotpress thead th {
 }
 
 table.locales thead th {
-	width: 33%;
+	width: 20%;
 }
 
+.locales-center {
+	text-align: center;
+}
 table.permissions thead th {
 	width: 20%;
 }

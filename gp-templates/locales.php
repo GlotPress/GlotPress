@@ -18,7 +18,8 @@ gp_tmpl_header();
 			<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Name (in English)', 'glotpress' );?></th>
 			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Native name', 'glotpress' );?></th>
 			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Language code', 'glotpress' );?></th>
-
+			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'GetText Plurals', 'glotpress' );?></th>
+			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'CLDR Plurals', 'glotpress' );?></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -29,9 +30,11 @@ gp_tmpl_header();
 				$class = ( 'odd' === $class ) ? 'even' : 'odd';
 ?>
 			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
-				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>' ?>
-				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . '</td>' ?>
-				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . '</td>' ?>
+				<td><?php echo gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ); ?></td>
+				<td><?php echo gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ); ?>
+				<td><?php echo gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ); ?></td>
+				<td class="locales-center"><?php ( $locale->nplurals > 0 ) ? _e( 'Yes', 'glotpress' ) : print '';  ?></td>
+				<td class="locales-center"><?php ( $locale->cldr_nplurals > 0 ) ? _e( 'Yes', 'glotpress' ) : print '';  ?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
