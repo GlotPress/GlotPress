@@ -211,6 +211,36 @@ function textareas( $entry, $permissions, $index = 0 ) {
 }
 
 function display_status( $status ) {
+	$status_translated = [
+    'current' => _x( 'current', 'Single Status', 'glotpress' ),
+	];
+	$status_waiting = [
+		'waiting' => _x( 'waiting', 'Single Status', 'glotpress' ),
+	];
+	$status_fuzzy = [
+		'fuzzy' => _x( 'fuzzy', 'Single Status', 'glotpress' ),
+	];
+	$status_old = [
+		'old' => _x( 'old', 'Single Status', 'glotpress' ),
+	];
+	$status_rejected = [
+		'rejected' => _x( 'rejected', 'Single Status', 'glotpress' ),
+	];
+	if ( isset( $status_translated[ $status ] ) ) {
+    $status = $status_translated[ $status ];
+	}
+	if ( isset( $status_waiting[ $status ] ) ) {
+		$status = $status_waiting[ $status ];
+	}
+	if ( isset( $status_fuzzy[ $status ] ) ) {
+		$status = $status_fuzzy[ $status ];
+	}
+	if ( isset( $status_old[ $status ] ) ) {
+		$status = $status_old[ $status ];
+	}
+	if ( isset( $status_rejected[ $status ] ) ) {
+		$status = $status_rejected[ $status ];
+	}
 	$status = preg_replace( '/^[+-]/', '', $status);
 	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
