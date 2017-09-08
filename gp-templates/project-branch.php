@@ -7,7 +7,7 @@ gp_tmpl_header();
 <p><?php _e( 'Here you can branch out this project: everything will be duplicated into a new project for you.', 'glotpress' ); ?></p>
 <form action="<?php echo esc_url( gp_url_current() ); ?>" method="post">
 	<dt><label for="project[name]"><?php _e( 'New branch name', 'glotpress' ); ?></label></dt>
-	<dd><input type="text" name="project[name]" value="" placeholder="type tag project name here" id="project[name]"></dd>
+	<dd><input type="text" name="project[name]" value="" placeholder="<?php esc_attr_e( 'Type tag project name here', 'glotpress' ); ?>" id="project[name]"></dd>
 
 	<!-- TODO: make slug edit WordPress style -->
 	<dt><label for="project[slug]"><?php _e( 'New Slug', 'glotpress' ); ?></label></dt>
