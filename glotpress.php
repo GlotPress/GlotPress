@@ -69,7 +69,7 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
  */
 function gp_unsupported_php_version_notice() {
 	$short_notice = __( '&#151; You are running an unsupported version of PHP.', 'glotpress' );
-	$long_notice = sprintf( __( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress. ', 'glotpress' ), GP_PHP_REQUIRED_VERSION );
+	$long_notice = sprintf( __( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress.', 'glotpress' ), GP_PHP_REQUIRED_VERSION );
 
 	gp_display_disabled_admin_notice( $short_notice, $long_notice );
 }
@@ -128,7 +128,7 @@ if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 function gp_unsupported_permalink_structure_admin_notice() {
 	$short_notice = __( '&#151; You are running an unsupported permalink structure.', 'glotpress' );
 	/* translators: %s: URL to permalink settings */
-	$long_notice = __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' );
+	$long_notice = __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain.', 'glotpress' );
 	$long_notice = sprintf( $long_notice, admin_url( 'options-permalink.php' ) );
 
 	gp_display_disabled_admin_notice( $short_notice, $long_notice );
