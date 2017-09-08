@@ -212,7 +212,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 function display_status( $status ) {
 	$status = preg_replace( '/^[+-]/', '', $status);
-	return $status ? $status : _x( 'Untranslated', 'Single Status', 'glotpress' );
+	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
 
 function references( $project, $entry ) {
