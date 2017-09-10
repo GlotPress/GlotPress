@@ -220,7 +220,7 @@ if ( is_object( $glossary ) ) {
 			<?php references( $project, $t ); ?>
 
 			<dl>
-			    <dt><?php _e( 'Priority of the original:', 'glotpress' ); ?></dt>
+			    <dt><?php _e( 'Priority:', 'glotpress' ); ?></dt>
 			<?php if ( $can_write ): ?>
 				<dd><?php
 					echo gp_select(
