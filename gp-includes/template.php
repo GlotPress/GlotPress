@@ -563,7 +563,7 @@ function gp_project_actions( $project, $translation_sets ) {
 
 function gp_project_options_form( $project ) {
 	return '
-			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __( 'Personal project options &darr;', 'glotpress' ) . '</a>
+			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __( 'Personal project options', 'glotpress' ) . ' &darr;</a>
 			<div class="personal-options">
 				<form action="' . gp_url_project( $project, '-personal' ) . '" method="post">
 				<dl>
