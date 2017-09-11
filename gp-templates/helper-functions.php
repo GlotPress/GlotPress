@@ -17,11 +17,13 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+	$text = preg_replace_callback(
+		'!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
 		$item_number = count( $glossary_entries );
 		$glossary_entries[ $item_number ] = $m[0];
 		return "<span GLOSSARY={$item_number}>";
-	}, $text );
+		}, $text
+	);
 
 	// Wrap full HTML tags with a notranslate class
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
@@ -31,9 +33,11 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
-	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
+	$text = preg_replace_callback(
+		'!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
-	}, $text );
+		}, $text
+	);
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
@@ -68,7 +72,7 @@ function gp_prepare_translation_textarea( $text ) {
  * @return array The sorted entries.
  */
 function gp_sort_glossary_entries_terms( $glossary_entries ) {
-	if ( empty ( $glossary_entries ) ) {
+	if ( empty( $glossary_entries ) ) {
 		return;
 	}
 
@@ -101,7 +105,11 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
+	uasort(
+		$glossary_entries_terms, function( $a, $b ) {
+		return gp_strlen( $a ) < gp_strlen( $b );
+		}
+	);
 
 	return $glossary_entries_terms;
 }
@@ -215,13 +223,13 @@ function notes( $entry, $permissions ) {
 	<dl>
 	<?php
 		$disabled = '';
-		if ( ! empty( $note ) && $note[ 'user_id' ] !== get_current_user_id() ) {
+		if ( ! empty( $note ) && $note['user_id'] !== get_current_user_id() ) {
 			$disabled = $can_edit ? '' : 'disabled="disabled"';
 		}
 		echo '<dt>' . __( 'Reviewers note:', 'glotpress' ) . '</dt>';
 
 		if ( ! empty( $note ) ) {
-			$note = $note[ 'note' ];
+			$note = $note['note'];
 		}
 
 	?>
@@ -234,16 +242,20 @@ function notes( $entry, $permissions ) {
 	<?php
 		} else {
 			if ( ! empty( $note ) ) {
-				$user_info = get_userdata( $note[ 'user_id' ] );
+				$user_info = get_userdata( $note['user_id'] );
 				echo '<dd><b>' . $user_info->display_name . '</b>';
-				echo ' ' . $note[ 'date_added' ] . '</dd>';
-				$note = $note[ 'note' ];
+				echo ' ' . $note['date_added'] . '</dd>';
+				$note = $note['note'];
 			}
 			?>
 			<dt><br><?php echo nl2br( esc_html( $note ) ); ?></dt>
 	<?php
 		}
-		if ( GP::$permission->current_user_can( 'approve', 'translation', $entry->id, array( 'translation' => $entry ) ) ) {
+		if ( GP::$permission->current_user_can(
+			'approve', 'translation', $entry->id, array(
+				'translation' => $entry,
+			)
+		) ) {
 		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt>';
 	?>
 			<dt><textarea <?php echo $disabled; ?> autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
@@ -256,7 +268,7 @@ function notes( $entry, $permissions ) {
 }
 
 function display_status( $status ) {
-	$status = preg_replace( '/^[+-]/', '', $status);
+	$status = preg_replace( '/^[+-]/', '', $status );
 	return $status ? $status : __( 'untranslated', 'glotpress' );
 }
 
@@ -273,17 +285,19 @@ function references( $project, $entry ) {
 	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
-	if ( ! $show_references ) return;
+	if ( ! $show_references ) {
+return;
+	}
 	?>
 	<dl><dt>
 	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 	<?php
-		foreach( $entry->references as $reference ):
+		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-		if ( $source_url = $project->source_url( $file, $line ) ):
+		if ( $source_url = $project->source_url( $file, $line ) ) :
 	?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file . ':' . $line; ?></a></li>
 	<?php
 			else :
 				echo "<li>$file:$line</li>";

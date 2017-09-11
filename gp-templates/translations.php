@@ -1,14 +1,21 @@
 <?php
-gp_title( sprintf( __( 'Translations &lt; %s &lt; %s &lt; GlotPress', 'glotpress' ), $translation_set->name, $project->name ) );
-gp_breadcrumb( array(
-	gp_project_links_from_root( $project ),
-	gp_link_get( $url, $translation_set->name ),
-) );
+gp_title( sprintf( __( 'Translations &lt; %1$s &lt; %2$s &lt; GlotPress', 'glotpress' ), $translation_set->name, $project->name ) );
+gp_breadcrumb(
+	array(
+		gp_project_links_from_root( $project ),
+		gp_link_get( $url, $translation_set->name ),
+	)
+);
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
-wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
+wp_localize_script(
+	'gp-translations-page', '$gp_translations_options', array(
+		'sort' => __( 'Sort', 'glotpress' ),
+		'filter' => __( 'Filter', 'glotpress' ),
+	)
+);
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
-$editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'set_note_url');
+$editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'set_note_url' );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 
@@ -16,16 +23,32 @@ gp_tmpl_header();
 $i = 0;
 ?>
 <h2>
-	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
+	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name ) ); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
-	<?php echo gp_link( $glossary->path(), __( 'glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
-	<?php elseif ( $can_approve ): ?>
-		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
+	<?php
+	echo gp_link(
+		$glossary->path(), __( 'glossary', 'glotpress' ), array(
+			'class' => 'glossary-link',
+		)
+	);
+?>
+	<?php elseif ( $can_approve ) : ?>
+		<?php
+		echo gp_link_get(
+			gp_url(
+				'/glossaries/-new', array(
+					'translation_set_id' => $translation_set->id,
+				)
+			), __( 'Create Glossary', 'glotpress' ), array(
+				'class' => 'glossary-link',
+			)
+		);
+?>
 	<?php endif; ?>
 </h2>
-<?php if ( $can_approve ): ?>
+<?php if ( $can_approve ) : ?>
 <form id="bulk-actions-toolbar" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; ?>" method="post">
 	<div>
 	<select name="bulk[action]" id="bulk-action">
@@ -33,7 +56,7 @@ $i = 0;
 		<option value="approve"><?php _e( 'Approve', 'glotpress' ); ?></option>
 		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
 		<option value="fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></option>
-	<?php if( $can_write ) : ?>
+	<?php if ( $can_write ) : ?>
 		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
 		<?php
@@ -48,19 +71,20 @@ $i = 0;
 		 *
 		 * @param GP_Translation_Set $set The translation set.
 		 */
-		do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
+		do_action( 'gp_translation_set_bulk_action', $translation_set );
+		?>
 	</select>
-	<?php if( $can_write ) : ?>
+	<?php if ( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority" class="hidden">
 	<?php
-	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
 		$selected = $value == 'normal' ? " selected='selected'" : '';
 		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n";
 	}
 	?>
 	</select>
 	<?php endif; ?>
-	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk[redirect_to]" />
 	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
 	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
 	</div>
@@ -160,7 +184,7 @@ $i = 0;
 	?>
 	</div>
 	<dl class="filters-expanded filters hidden clearfix">
- 		<dt>
+		 <dt>
 			<p><label for="filters[term]"><?php _e( 'Term:', 'glotpress' ); ?></label></p>
 			<p><label for="filters[user_login]"><?php _e( 'User:', 'glotpress' ); ?></label></p>
 		</dt>
@@ -168,9 +192,11 @@ $i = 0;
 			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /></p>
 			<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /></p>
 		</dd>
- 		<dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
+		 <dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
 		<dd>
-			<?php echo gp_radio_buttons('filters[status]', //TODO: show only these, which user is allowed to see afterwards
+			<?php
+			echo gp_radio_buttons(
+				'filters[status]', // TODO: show only these, which user is allowed to see afterwards
 				array(
 					'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
 					'current' => __( 'Current only', 'glotpress' ),
@@ -179,7 +205,8 @@ $i = 0;
 					'rejected' => __( 'Rejected', 'glotpress' ),
 					'untranslated' => __( 'Without current translation', 'glotpress' ),
 					'either' => __( 'Any', 'glotpress' ),
-				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' ) );
+				), gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
+			);
 			?>
 		</dd>
 		<dd>
@@ -196,7 +223,8 @@ $i = 0;
 		 *
 		 * @since 2.1.0
 		 */
-		do_action( 'gp_translation_set_filters_form' ); ?>
+		do_action( 'gp_translation_set_filters_form' );
+		?>
 
 		<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
 	</dl>
@@ -208,7 +236,7 @@ $i = 0;
 		if ( ! is_array( $default_sort ) ) {
 			$default_sort = array(
 				'by'  => 'priority',
-				'how' => 'desc'
+				'how' => 'desc',
 			);
 		}
 
@@ -219,11 +247,14 @@ $i = 0;
 		</dd>
 		<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
 		<dd>
-		<?php echo gp_radio_buttons('sort[how]',
+		<?php
+		echo gp_radio_buttons(
+			'sort[how]',
 			array(
 				'asc' => __( 'Ascending', 'glotpress' ),
 				'desc' => __( 'Descending', 'glotpress' ),
-			), gp_array_get( $sort, 'how', $default_sort['how'] ) );
+			), gp_array_get( $sort, 'how', $default_sort['how'] )
+		);
 		?>
 		</dd>
 		<?php
@@ -245,16 +276,25 @@ $i = 0;
 		 *
 		 * @since 2.1.0
 		 */
-		do_action( 'gp_translation_set_sort_form' ); ?>
+		do_action( 'gp_translation_set_sort_form' );
+		?>
 
 		<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
 	</dl>
 </form>
 
-<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
+<table id="translations" class="translations clear
+<?php
+if ( 'rtl' == $locale->text_direction ) {
+echo ' translation-sets-rtl'; }
+?>
+">
 	<thead>
 	<tr>
-		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
+		<?php
+		if ( $can_approve ) :
+?>
+<th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
 		<th><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
 		<th class="original"><?php _e( 'Original string', 'glotpress' ); ?></th>
 		<th class="translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
@@ -267,14 +307,19 @@ $i = 0;
 		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
 	}
 ?>
-<?php foreach( $translations as $t ):
+<?php
+foreach ( $translations as $t ) :
 		$t->translation_set_id = $translation_set->id;
-		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
+		$can_approve_translation = GP::$permission->current_user_can(
+			'approve', 'translation', $t->id, array(
+				'translation' => $t,
+			)
+		);
 		gp_tmpl_load( 'translation-row', get_defined_vars() );
 ?>
 <?php endforeach; ?>
 <?php
-	if ( !$translations ):
+	if ( ! $translations ) :
 ?>
 	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
 <?php
@@ -285,13 +330,15 @@ $i = 0;
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 <?php
-	foreach( GP::$translation->get_static( 'statuses' ) as $status ):
-		if ( 'rejected' == $status ) continue;
+	foreach ( GP::$translation->get_static( 'statuses' ) as $status ) :
+		if ( 'rejected' == $status ) {
+continue;
+		}
 ?>
 	<div class="box status-<?php echo $status; ?>"></div>
 	<div>
 <?php
-		switch( $status ) {
+		switch ( $status ) {
 			case 'current':
 				_e( 'Current', 'glotpress' );
 				break;
@@ -330,12 +377,26 @@ $i = 0;
 		}
 
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
-		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );
+		$export_link = gp_link_get(
+			$export_url , __( 'Export', 'glotpress' ), array(
+				'id' => 'export',
+				'filters' => add_query_arg(
+					array(
+						'filters' => $filters,
+					), $export_url
+				),
+			)
+		);
 		$format_options = array();
 		foreach ( GP::$formats as $slug => $format ) {
-			$format_options[$slug] = $format->name;
+			$format_options[ $slug ] = $format->name;
 		}
-		$what_dropdown = gp_select( 'what-to-export', array('all' => _x( 'all current', 'export choice', 'glotpress' ), 'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ) ), 'all' );
+		$what_dropdown = gp_select(
+			'what-to-export', array(
+				'all' => _x( 'all current', 'export choice', 'glotpress' ),
+				'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
+			), 'all'
+		);
 		$format_dropdown = gp_select( 'export-format', $format_options, 'po' );
 		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
 		$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );
@@ -353,4 +414,5 @@ $i = 0;
 		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();
