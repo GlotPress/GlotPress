@@ -435,22 +435,22 @@ class GP_Translation_Set extends GP_Thing {
 		 * however not all may exist in the array, so for example, the array may only be 3
 		 * entries long and skip any of the values:
 		 *
-		 *     [0] = Current tranlsations
-		 *     [1] = Fuzzy tranlsations
-		 *     [2] = Rejected tranlsations
-		 *     [3] = Old tranlsations
+		 *     [0] = Current translations
+		 *     [1] = Fuzzy translations
+		 *     [2] = Rejected translations
+		 *     [3] = Old translations
 		 *     [4] = Translations with warnings
-		 *     [5] = All tranlsations
+		 *     [5] = All translations
 		 *
 		 * In 3.0 the untranslated object was added:
 		 *
-		 *     [0] = Current tranlsations
-		 *     [1] = Fuzzy tranlsations
-		 *     [2] = Rejected tranlsations
-		 *     [3] = Old tranlsations
+		 *     [0] = Current translations
+		 *     [1] = Fuzzy translations
+		 *     [2] = Rejected translations
+		 *     [3] = Old translations
 		 *     [4] = Translations with warnings
 		 *     [5] = Untranslated originals
-		 *     [6] = All tranlsations
+		 *     [6] = All translations
 		 *
 		 * Version 3.0 also introduced the cache 'version' array entry to allow for easy
 		 * detection of when the cache should be expired due to changes in the cache.
