@@ -14,7 +14,7 @@ For more information about GlotPress, feel free to visit the channels listed bel
 
 So who should use GlotPress?
 
-Any developer of software that uses [gettext](http://www.gnu.org/software/gettext/), like WordPress theme or plugin authors.  But that's just the start, anyone who uses a gettext-based system can use GlotPress to help their translators collaborate.
+Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors.  But that's just the start, anyone who uses a gettext-based system can use GlotPress to help their translators collaborate.
 
 This plugin wouldn't be possible without all the hard work of the contributors to GlotPress and we'd like to thank all those who help make GlotPress.
 
