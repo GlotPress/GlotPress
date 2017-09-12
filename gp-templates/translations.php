@@ -54,14 +54,14 @@ $i = 0;
 	<select name="bulk[priority]" id="bulk-priority" class="hidden">
 	<?php
 	$labels = [
-    'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
-    'low'    => _x( 'low', 'Priority', 'glotpress' ),
-    'normal' => _x( 'normal', 'Priority', 'glotpress' ),
-    'high'   => _x( 'high', 'Priority', 'glotpress' ),
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
 	];
 	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
 		if ( isset( $labels[ $label ] ) ) {
-	    $label = $labels[ $label ];
+			$label = $labels[ $label ];
 		}
 		$selected = $value == 'normal' ? " selected='selected'" : '';
 		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n";
