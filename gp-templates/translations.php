@@ -53,30 +53,15 @@ $i = 0;
 	<?php if( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority" class="hidden">
 	<?php
+	$labels = [
+    'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+    'low'    => _x( 'low', 'Priority', 'glotpress' ),
+    'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+    'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
 	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
-		$label_hidden = [
-			'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
-		];
-		$label_low = [
-			'low' => _x( 'low', 'Priority', 'glotpress' ),
-		];
-		$label_normal = [
-			'normal' => _x( 'normal', 'Priority', 'glotpress' ),
-		];
-		$label_high = [
-			'high' => _x( 'high', 'Priority', 'glotpress' ),
-		];
-		if ( isset( $label_hidden[ $label ] ) ) {
-			$label = $label_hidden[ $label ];
-		}
-		if ( isset( $label_low[ $label ] ) ) {
-			$label = $label_low[ $label ];
-		}
-		if ( isset( $label_normal[ $label ] ) ) {
-			$label = $label_normal[ $label ];
-		}
-		if ( isset( $label_high[ $label ] ) ) {
-			$label = $label_high[ $label ];
+		if ( isset( $labels[ $label ] ) ) {
+	    $label = $labels[ $label ];
 		}
 		$selected = $value == 'normal' ? " selected='selected'" : '';
 		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n";

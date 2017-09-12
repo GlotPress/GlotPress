@@ -242,30 +242,15 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
 	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
+	$labels = [
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
 	foreach( $options as $value => $label ) {
-		$label_hidden = [
-			'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
-		];
-		$label_low = [
-			'low' => _x( 'low', 'Priority', 'glotpress' ),
-		];
-		$label_normal = [
-			'normal' => _x( 'normal', 'Priority', 'glotpress' ),
-		];
-		$label_high = [
-			'high' => _x( 'high', 'Priority', 'glotpress' ),
-		];
-		if ( isset( $label_hidden[ $label ] ) ) {
-			$label = $label_hidden[ $label ];
-		}
-		if ( isset( $label_low[ $label ] ) ) {
-			$label = $label_low[ $label ];
-		}
-		if ( isset( $label_normal[ $label ] ) ) {
-			$label = $label_normal[ $label ];
-		}
-		if ( isset( $label_high[ $label ] ) ) {
-			$label = $label_high[ $label ];
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
 		}
 		$selected = selected( $value, $selected_key, false );
 		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
