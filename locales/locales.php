@@ -547,6 +547,7 @@ class GP_Locales {
 		$el_po->english_name = 'Greek (Polytonic)';
 		$el_po->native_name = 'Greek (Polytonic)'; // TODO
 		$el_po->country_code = 'gr';
+		$el_po->wp_locale = 'el_PO';
 		$el_po->slug = 'el-po';
 
 		$el = new GP_Locale();
@@ -875,6 +876,7 @@ class GP_Locales {
 		$fr_ch->lang_code_iso_639_1 = 'fr';
 		$fr_ch->lang_code_iso_639_2 = 'fra';
 		$fr_ch->country_code = 'ch';
+		$fr_ch->wp_locale = 'fr_CH';
 		$fr_ch->slug = 'fr-ch';
 
 		$frp = new GP_Locale();
@@ -2222,6 +2224,7 @@ class GP_Locales {
 		$zh_sg->lang_code_iso_639_1 = 'zh';
 		$zh_sg->lang_code_iso_639_2 = 'zho';
 		$zh_sg->country_code = 'sg';
+		$zh_sg->wp_locale = 'zh_SG';
 		$zh_sg->slug = 'zh-sg';
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
