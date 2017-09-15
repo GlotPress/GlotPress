@@ -218,7 +218,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 function notes( $entry, $permissions ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$note = GP::$notes->get_note( $entry );
+	$note = GP::$notes->get( $entry );
 ?>
 	<dl>
 	<?php

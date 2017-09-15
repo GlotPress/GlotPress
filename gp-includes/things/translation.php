@@ -638,7 +638,7 @@ class GP_Translation extends GP_Thing {
 	public function save_note() {
 		$note = esc_html( gp_post( 'note' ) );
 
-		GP::$notes->save_note( $note, $this );
+		GP::$notes->save( $note, $this );
 
 		return $note;
 	}
