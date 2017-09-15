@@ -571,7 +571,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
-		GP::$notes->save_note( $note, $translation );
+		GP::$notes->save( $note, $translation );
 
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, '' );
 	}

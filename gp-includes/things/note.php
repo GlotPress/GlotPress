@@ -15,6 +15,47 @@
 class GP_Note extends GP_Thing {
 
 	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+        public $table_basename = 'gp_notes';
+
+	/**
+	 * List of field names for a translation.
+	 *
+	 * @var array $field_names
+	 */
+	public $field_names = array(
+		'id',
+		'original_id',
+		'translation_set_id',
+		'note',
+		'user_id',
+		'date_added',
+	);
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	public $int_fields = array(
+		'id',
+		'original_id',
+		'translation_set_id',
+		'user_id',
+	);
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
+	public $non_updatable_attributes = array( 'id', 'original_id', 'translation_set_id' );
+
+
+	/**
 	 * Save the note
 	 *
 	 * @since 3.0.0
@@ -24,7 +65,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return object The output of the query.
 	 */
-	function save_note( $note, $translation ) {
+	function save( $note, $translation ) {
 		global $wpdb;
 		if ( ! GP::$permission->current_user_can(
 			'approve', 'translation', $translation->id, array(
@@ -37,7 +78,7 @@ class GP_Note extends GP_Thing {
 			$saved_note = esc_html( gp_post( 'update_note' ) );
 		}
 		if ( empty( $saved_note ) ) {
-			$saved_note = $this->get_note( $translation );
+			$saved_note = $this->get( $translation );
 			$saved_note = $saved_note['note'];
 		}
 		error_log( $saved_note );
@@ -79,7 +120,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return string The note.
 	 */
-	function get_note( $entry ) {
+	function get( $entry ) {
 		global $wpdb;
 
 		$result = $wpdb->get_results( sprintf( "SELECT * FROM $wpdb->gp_notes WHERE (original_id = '%s' AND translation_set_id = '%s') LIMIT 1", $entry->original_id, $entry->translation_set_id ), ARRAY_A );
