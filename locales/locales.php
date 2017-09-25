@@ -2222,6 +2222,7 @@ class GP_Locales {
 		$zh_sg->lang_code_iso_639_1 = 'zh';
 		$zh_sg->lang_code_iso_639_2 = 'zho';
 		$zh_sg->country_code = 'sg';
+		$zh_sg->wp_locale = 'zh_SG';
 		$zh_sg->slug = 'zh-sg';
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
