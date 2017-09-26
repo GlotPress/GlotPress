@@ -84,7 +84,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			preg_match( '/\b' . preg_quote( $new_glossary_entry->term, '/' ) . '\b/i', $new_glossary_entry->term, $m );
 
 			if ( $m[0] !== $new_glossary_entry->term ) {
-				$this->errors[] = __( 'Glossary terms cannot contain word break characters!', 'glotpress' );
+				$this->errors[] = __( 'Glossary terms cannot contain word break or multi-byte characters!', 'glotpress' );
 				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 			} else {
 				$find_parms = array(
