@@ -423,7 +423,7 @@ class GP_Original extends GP_Thing {
 		$close_enough = ( $closest_similarity > $min_score );
 
 		/**
-		 * Fires before determining string similarity.
+		 * Fires after determining string similarity.
 		 *
 		 * @since 1.0.0
 		 *
@@ -432,7 +432,7 @@ class GP_Original extends GP_Thing {
 		 * @param float  $closest_similarity The similarity between strings that was calculated.
 		 * @param bool   $close_enough       Whether the closest was be determined as close enough match.
 		 */
-		do_action( 'gp_post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
+		do_action( 'gp_post_string_similarity_test', $input, $closest, $closest_similarity, $close_enough );
 
 		if ( $close_enough ) {
 			return $closest;
