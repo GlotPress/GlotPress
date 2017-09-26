@@ -138,8 +138,15 @@ if ( is_object( $glossary ) ) {
 				<?php endforeach; ?>
 			<?php endif; ?>
 		<?php endif; ?>
+			<div class="actions">
+				<?php if ( $can_edit ) : ?>
+					<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
+						<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
+					</button>
+				<?php endif; ?>
+				<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+			</div>
 		</div>
-
 		<div class="meta">
 			<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
 			<dl>
@@ -241,14 +248,6 @@ if ( is_object( $glossary ) ) {
 				</ul>
 				</dt>
 			</dl>
-		</div>
-		<div class="actions">
-		<?php if ( $can_edit ): ?>
-			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
-				<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
-			</button>
-		<?php endif; ?>
-			<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
 		</div>
 	</td>
 </tr>
