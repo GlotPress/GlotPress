@@ -273,8 +273,8 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
 		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
-		<option value="reject"><?php _ex( 'Reject', 'Action',  'glotpress' ); ?></option>
-		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action',  'glotpress' ); ?></option>
+		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
 	<?php if ( $can_write ) : ?>
 		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
