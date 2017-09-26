@@ -624,6 +624,20 @@ class GP_Locales {
 		$en_nz->slug = 'en-nz';
 		$en_nz->google_code = 'en';
 
+		$en_pi = new GP_Locale();
+		$en_pi->english_name = 'Pirate English';
+		$en_pi->native_name = 'Pirate English';
+		$en_pi->lang_code_iso_639_1 = 'en';
+		$en_pi->lang_code_iso_639_2 = 'eng';
+		$en_pi->lang_code_iso_639_3 = 'eng';
+		$en_pi->country_code = 'PI';
+		$en_pi->wp_locale = 'en_PI';
+		$en_pi->slug = 'en-pi';
+		$en_pi->nplurals = 2;
+		$en_pi->plural_expression = '(n != 1)';
+		$en_pi->google_code = 'x-pirate';
+		$en_pi->facebook_locale = 'en_PI';
+
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
 		$en_za->native_name = 'English (South Africa)';
@@ -741,6 +755,18 @@ class GP_Locales {
 		$es_pr->google_code = 'es';
 		$es_pr->facebook_locale = 'es_LA';
 
+		$es_us = new GP_Locale();
+		$es_us->english_name = 'Spanish (US)';
+		$es_us->native_name = 'Español';
+		$es_us->lang_code_iso_639_1 = 'es';
+		$es_us->lang_code_iso_639_2 = 'spa';
+		$es_us->lang_code_iso_639_3 = 'spa';
+		$es_us->country_code = 'us';
+		$es_us->wp_locale = 'es_US';
+		$es_us->slug = 'es-us';
+		$es_us->nplurals = 2;
+		$es_us->plural_expression = '(n != 1)';
+		
 		$es_ve = new GP_Locale();
 		$es_ve->english_name = 'Spanish (Venezuela)';
 		$es_ve->native_name = 'Español de Venezuela';
@@ -1354,6 +1380,18 @@ class GP_Locales {
 		$lt->google_code = 'lt';
 		$lt->facebook_locale = 'lt_LT';
 
+		$lug = new GP_Locale();
+		$lug->english_name = 'Luganda';
+		$lug->native_name = 'Oluganda';
+		$lug->lang_code_iso_639_1 = 'lg';
+		$lug->lang_code_iso_639_2 = 'lug';
+		$lug->lang_code_iso_639_3 = 'lug';
+		$lug->country_code = 'UG';
+		$lug->wp_locale = 'lug';
+		$lug->slug = 'lug';
+		$lug->nplurals = 2;
+		$lug->plural_expression = '(n != 1)';
+		
 		$lv = new GP_Locale();
 		$lv->english_name = 'Latvian';
 		$lv->native_name = 'Latviešu valoda';
@@ -1612,6 +1650,17 @@ class GP_Locales {
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
 
+		$pap = new GP_Locale();
+		$pap->english_name = 'Papiamento';
+		$pap->native_name = 'Papiamentu';
+		$pap->lang_code_iso_639_2 = 'pap';
+		$pap->lang_code_iso_639_3 = 'pap';
+		$pap->country_code = 'CW';
+		$pap->wp_locale = 'pap';
+		$pap->slug = 'pap';
+		$pap->nplurals = 2;
+		$pap->plural_expression = '(n != 1)';
+		
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
 		$pl->native_name = 'Polski';
@@ -1774,6 +1823,17 @@ class GP_Locales {
 		$sk->google_code = 'sk';
 		$sk->facebook_locale = 'sk_SK';
 
+		$skr = new GP_Locale();
+		$skr->english_name = 'Saraiki';
+		$skr->native_name = 'سرائیکی';
+		$skr->lang_code_iso_639_3 = 'skr';
+		$skr->country_code = 'PK';
+		$skr->wp_locale = 'skr';
+		$skr->slug = 'skr';
+		$skr->nplurals = 2;
+		$skr->plural_expression = '(n>1)';
+		$skr->text_direction = 'rtl';
+		
 		$sl = new GP_Locale();
 		$sl->english_name = 'Slovenian';
 		$sl->native_name = 'Slovenščina';
@@ -1861,6 +1921,18 @@ class GP_Locales {
 		$srd->slug = 'srd';
 		$srd->facebook_locale = 'sc_IT';
 
+		$ssw = new GP_Locale();
+		$ssw->english_name = 'Swati';
+		$ssw->native_name = 'SiSwati';
+		$ssw->lang_code_iso_639_1 = 'ss';
+		$ssw->lang_code_iso_639_2 = 'ssw';
+		$ssw->lang_code_iso_639_3 = 'ssw';
+		$ssw->country_code = 'SZ';
+		$ssw->wp_locale = 'ssw';
+		$ssw->slug = 'ssw';
+		$ssw->nplurals = 2;
+		$ssw->plural_expression = '(n != 1)';
+		
 		$su = new GP_Locale();
 		$su->english_name = 'Sundanese';
 		$su->native_name = 'Basa Sunda';
@@ -2178,6 +2250,19 @@ class GP_Locales {
 		$yi->text_direction = 'rtl';
 		$yi->google_code = 'yi';
 
+		$zul = new GP_Locale();
+		$zul->english_name = 'Zulu';
+		$zul->native_name = 'isiZulu';
+		$zul->lang_code_iso_639_1 = 'zu';
+		$zul->lang_code_iso_639_2 = 'zul';
+		$zul->lang_code_iso_639_3 = 'zul';
+		$zul->country_code = 'ZA';
+		$zul->wp_locale = 'zul';
+		$zul->slug = 'zul';
+		$zul->nplurals = 2;
+		$zul->plural_expression = '(n>1)';
+		$zul->google_code = 'zu';
+
 		$yor = new GP_Locale();
 		$yor->english_name = 'Yoruba';
 		$yor->native_name = 'Yorùbá';
@@ -2221,6 +2306,7 @@ class GP_Locales {
 		$zh_sg->lang_code_iso_639_1 = 'zh';
 		$zh_sg->lang_code_iso_639_2 = 'zho';
 		$zh_sg->country_code = 'sg';
+		$zh_sg->wp_locale = 'zh_SG';
 		$zh_sg->slug = 'zh-sg';
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
