@@ -285,6 +285,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	} elseif ( is_user_logged_in() ) {
 		_e( 'You are not allowed to edit this translation.', 'glotpress' );
 	} else {
+		// translators: The placeholder is the login link
 		printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 	}
 	?>
@@ -314,13 +315,13 @@ function notes( $entry, $permissions ) {
 		if ( GP::$permission->current_user_can( 'admin', 'notes', $entry->id ) ) {
 			$button_label = __( 'Update notes', 'glotpress' );
 	?>
-			<dt><textarea <?php echo $disabled; ?> autocomplete="off" class="foreign-text" name="all_notes[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"><?php echo esc_html( $note ); ?></textarea></dt>
+			<dt><textarea <?php echo esc_attr( $disabled ); ?> autocomplete="off" class="foreign-text" name="all_notes[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"><?php echo esc_html( $note ); ?></textarea></dt>
 			<dt><button class="update-notes" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-notes_' . $entry->id ) ); ?>"><?php _e( 'Update notes', 'glotpress' ); ?></button></dt>
 	<?php
 		} else {
 			if ( ! empty( $note ) ) {
 				$user_info = get_userdata( $note['user_id'] );
-				echo '<dd><b>' . $user_info->display_name . '</b>';
+				echo '<dd><b>' . esc_html( $user_info->display_name ) . '</b>';
 				echo ' ' . $note['date_added'] . '</dd>';
 				$note = $note['note'];
 			}
@@ -335,7 +336,7 @@ function notes( $entry, $permissions ) {
 		) ) {
 		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt>';
 	?>
-			<dt><textarea <?php echo $disabled; ?> autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
+			<dt><textarea <?php echo esc_attr( $disabled ); ?> autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
 			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-note_' . $entry->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
 	<?php
 		}
@@ -381,12 +382,12 @@ return;
 	<?php
 		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-		if ( $source_url = $project->source_url( $file, $line ) ) :
+			if ( $source_url = $project->source_url( $file, $line ) ) :
 	?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file . ':' . $line; ?></a></li>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo esc_html( $file ) . ':' . esc_html( $line ); ?></a></li>
 	<?php
 			else :
-				echo "<li>$file:$line</li>";
+				echo '<li>' . esc_html( $file ) . ':' . esc_html( $line ) . '</li>';
 			endif;
 		endforeach;
 	?>

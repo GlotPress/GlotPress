@@ -19,7 +19,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-        public $table_basename = 'gp_notes';
+	public $table_basename = 'gp_notes';
 
 	/**
 	 * List of field names for a translation.
@@ -81,7 +81,6 @@ class GP_Note extends GP_Thing {
 			$saved_note = $this->get( $translation );
 			$saved_note = $saved_note['note'];
 		}
-		error_log( $saved_note );
 
 		$current_date = $translation->now_in_mysql_format();
 		$current_user = wp_get_current_user();
