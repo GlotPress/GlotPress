@@ -130,7 +130,7 @@ if ( is_object( $glossary ) ) {
 		<p class="original"><?php echo prepare_original( $singular ); ?></p>
 		<?php textareas( $t, array( $can_edit, $can_approve_translation ) ); ?>
 		<?php else : ?>
-			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1' ) : ?>
+			<?php if ( $locale->nplurals === 2 && $locale->plural_expression === 'n != 1' ) : ?>
 				<p><?php printf( __( 'Singular: %s', 'glotpress' ), '<span class="original">' . $singular . '</span>' ); ?></p>
 				<?php textareas( $t, array( $can_edit, $can_approve ), 0 ); ?>
 				<p class="clear">
@@ -212,7 +212,7 @@ if ( is_object( $glossary ) ) {
 				<dd><?php echo make_clickable( esc_translation( $t->extracted_comments ) ); ?></dd>
 			</dl>
 			<?php endif; ?>
-			<?php if ( $t->translation_added && $t->translation_added != '0000-00-00 00:00:00' ) : ?>
+			<?php if ( $t->translation_added && $t->translation_added !== '0000-00-00 00:00:00' ) : ?>
 			<dl>
 				<dt><?php _e( 'Date added:', 'glotpress' ); ?></dt>
 				<dd><?php echo $t->translation_added; ?> GMT</dd>
