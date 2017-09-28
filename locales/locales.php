@@ -1370,7 +1370,6 @@ class GP_Locales {
 		$me = new GP_Locale();
 		$me->english_name = 'Montenegrin';
 		$me->native_name = 'Crnogorski jezik';
-		$me->lang_code_iso_639_1 = 'me';
 		$me->country_code = 'me';
 		$me->wp_locale = 'me_ME';
 		$me->slug = 'me';

@@ -160,8 +160,15 @@ if ( is_object( $glossary ) ) {
 				<?php endforeach; ?>
 			<?php endif; ?>
 		<?php endif; ?>
+			<div class="actions">
+				<?php if ( $can_edit ) : ?>
+					<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
+						<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
+					</button>
+				<?php endif; ?>
+				<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+			</div>
 		</div>
-
 		<div class="meta">
 			<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
 			<dl>
@@ -171,17 +178,17 @@ if ( is_object( $glossary ) ) {
 					<?php if ( $t->translation_status ) : ?>
 						<?php if ( $can_approve_translation ) : ?>
 							<?php if ( 'current' !== $t->translation_status ) : ?>
-							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
+							<button class="approve" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-current_' . $t->id ) ); ?>" title="<?php echo esc_attr_e( 'Approve this translation. Any existing translation will be kept as part of the translation history.', 'glotpress' ); ?>"><strong>+</strong> <?php _e( 'Approve', 'glotpress' ); ?></button>
 							<?php endif; ?>
 							<?php if ( 'rejected' !== $t->translation_status ) : ?>
-							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
+							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>" title="<?php echo esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>"><strong>&minus;</strong> <?php _e( 'Reject', 'glotpress' ); ?></button>
 							<?php endif; ?>
 							<?php if ( 'fuzzy' !== $t->translation_status ) : ?>
-							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
+							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>" title="<?php echo esc_attr_e( 'Mark this translation as fuzzy for further review.', 'glotpress' ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
 							<?php endif; ?>
-						<?php elseif ( $can_reject_self ) : ?>
-							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
-							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
+						<?php elseif ( $can_reject_self ): ?>
+							<button class="reject" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $t->id ) ); ?>" title="<?php echo esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>"><strong>&minus;</strong> <?php _e( 'Reject Suggestion', 'glotpress' ); ?></button>
+							<button class="fuzzy" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-fuzzy_' . $t->id ) ); ?>" title="<?php echo esc_attr_e( 'Mark this translation as fuzzy for further review.', 'glotpress' ); ?>"><strong>~</strong> <?php _e( 'Fuzzy', 'glotpress' ); ?></button>
 						<?php endif; ?>
 					<?php endif; ?>
 				</dd>
@@ -267,14 +274,6 @@ if ( is_object( $glossary ) ) {
 				</ul>
 				</dt>
 			</dl>
-		</div>
-		<div class="actions">
-		<?php if ( $can_edit ) : ?>
-			<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
-				<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
-			</button>
-		<?php endif; ?>
-			<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
 		</div>
 	</td>
 </tr>
