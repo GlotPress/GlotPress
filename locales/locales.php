@@ -626,7 +626,7 @@ class GP_Locales {
 		
 		$en_p8 = new GP_Locale();
 		$en_p8->english_name = 'English (Pirate)';
-		$en_p8->native_name = 'Pirate English';
+		$en_p8->native_name = 'English (Pirate)';
 		$en_p8->lang_code_iso_639_1 = 'en';
 		$en_p8->lang_code_iso_639_2 = 'eng';
 		$en_p8->lang_code_iso_639_3 = 'eng';
