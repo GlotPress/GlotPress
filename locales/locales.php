@@ -630,7 +630,6 @@ class GP_Locales {
 		$en_p8->lang_code_iso_639_1 = 'en';
 		$en_p8->lang_code_iso_639_2 = 'eng';
 		$en_p8->lang_code_iso_639_3 = 'eng';
-		$en_p8->country_code = 'P8';
 		$en_p8->wp_locale = 'en_P8';
 		$en_p8->slug = 'en-p8';
 		$en_p8->google_code = 'x-pirate';
