@@ -1353,7 +1353,7 @@ class GP_Locales {
 		$lmo->english_name = 'Lombard';
 		$lmo->native_name = 'Lombardo';
 		$lmo->lang_code_iso_639_3 = 'lmo';
-		$lmo->country_code = 'IT';
+		$lmo->country_code = 'it';
 		$lmo->wp_locale = 'lmo';
 		$lmo->slug = 'lmo';
 		$lmo->nplurals = 2;
@@ -1391,7 +1391,7 @@ class GP_Locales {
 		$lug->lang_code_iso_639_1 = 'lg';
 		$lug->lang_code_iso_639_2 = 'lug';
 		$lug->lang_code_iso_639_3 = 'lug';
-		$lug->country_code = 'UG';
+		$lug->country_code = 'ug';
 		$lug->wp_locale = 'lug';
 		$lug->slug = 'lug';
 
@@ -1658,7 +1658,7 @@ class GP_Locales {
 		$pap->native_name = 'Papiamentu';
 		$pap->lang_code_iso_639_2 = 'pap';
 		$pap->lang_code_iso_639_3 = 'pap';
-		$pap->country_code = 'CW';
+		$pap->country_code = 'cw';
 		$pap->wp_locale = 'pap';
 		$pap->slug = 'pap';
 
@@ -1828,7 +1828,7 @@ class GP_Locales {
 		$skr->english_name = 'Saraiki';
 		$skr->native_name = 'سرائیکی';
 		$skr->lang_code_iso_639_3 = 'skr';
-		$skr->country_code = 'PK';
+		$skr->country_code = 'pk';
 		$skr->wp_locale = 'skr';
 		$skr->slug = 'skr';
 		$skr->nplurals = 2;
@@ -2324,7 +2324,7 @@ class GP_Locales {
 		$zul->lang_code_iso_639_1 = 'zu';
 		$zul->lang_code_iso_639_2 = 'zul';
 		$zul->lang_code_iso_639_3 = 'zul';
-		$zul->country_code = 'ZA';
+		$zul->country_code = 'za';
 		$zul->wp_locale = 'zul';
 		$zul->slug = 'zul';
 		$zul->nplurals = 2;
