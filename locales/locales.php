@@ -1832,7 +1832,7 @@ class GP_Locales {
 		$skr->wp_locale = 'skr';
 		$skr->slug = 'skr';
 		$skr->nplurals = 2;
-		$skr->plural_expression = '(n>1)';
+		$skr->plural_expression = '(n > 1)';
 		$skr->text_direction = 'rtl';
 
 		$sl = new GP_Locale();
@@ -2328,7 +2328,7 @@ class GP_Locales {
 		$zul->wp_locale = 'zul';
 		$zul->slug = 'zul';
 		$zul->nplurals = 2;
-		$zul->plural_expression = '(n>1)';
+		$zul->plural_expression = '(n > 1)';
 		$zul->google_code = 'zu';
 
 		foreach( get_defined_vars() as $locale ) {
