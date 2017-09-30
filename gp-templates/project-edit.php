@@ -1,5 +1,5 @@
 <?php
-gp_title( sprintf( __( 'Edit Project %s &lt; GlotPress', 'glotpress' ),  $project->name ) );
+gp_title( sprintf( __( 'Edit project "%s" &lt; GlotPress', 'glotpress' ),  $project->name ) );
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>

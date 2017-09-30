@@ -7,17 +7,17 @@
  * @since 2.0.0
  */
 
-gp_title( __( 'Delete Glossary &lt; GlotPress', 'glotpress' ) );
+gp_title( __( 'Delete glossary &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
 	gp_link_get( gp_url_join( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), '/glossary' ), __( 'Glossary', 'glotpress' ) ),
-	__( 'delete', 'glotpress' ),
+	__( 'Delete', 'glotpress' ),
 ) );
 gp_tmpl_header();
 ?>
 
-<h2><?php _e( 'Delete Glossary', 'glotpress' ); ?></h2>
+<h2><?php _e( 'Delete glossary', 'glotpress' ); ?></h2>
 
 <form action="" method="post">
 	<p>
