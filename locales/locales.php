@@ -1928,7 +1928,7 @@ class GP_Locales {
 		$ssw->lang_code_iso_639_1 = 'ss';
 		$ssw->lang_code_iso_639_2 = 'ssw';
 		$ssw->lang_code_iso_639_3 = 'ssw';
-		$ssw->country_code = 'SZ';
+		$ssw->country_code = 'sz';
 		$ssw->wp_locale = 'ssw';
 		$ssw->slug = 'ssw';
 
