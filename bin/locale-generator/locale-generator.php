@@ -19,7 +19,7 @@ include( '../../locales/locales.php' );
  * or the script will do it automatically if the local file does not exist.
  *
  */
-if( ! file_exists( 'plurals.json' ) ) {
+if ( ! file_exists( 'plurals.json' ) ) {
 	file_put_contents( 'plurals.json', file_get_contents( 'https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/plurals.json' ) );
 }
 
@@ -28,7 +28,7 @@ $cldr_data = json_decode( file_get_contents( 'plurals.json' ), true );
 $cldr_locales = $cldr_data['supplemental']['plurals-type-cardinal'];
 
 // Create a working locales object.
-$locales = new GP_Locales;
+$locales = new GP_Locales();
 
 // Run through the locales and see if we can find a matching CLDR locale.
 foreach ( $locales->locales as $key => $value ) {
