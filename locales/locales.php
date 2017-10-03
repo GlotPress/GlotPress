@@ -1830,13 +1830,15 @@ class GP_Locales {
 		$sq->google_code = 'sq';
 		$sq->facebook_locale = 'sq_AL';
 
-		$sq_XK = new GP_Locale();
-		$sq_XK->english_name = 'Shqip (Kosovo)';
-		$sq_XK->native_name = 'Për Kosovën Shqip';
-		$sq_XK->lang_code_iso_639_1 = 'sq';
-		$sq_XK->country_code = 'xk'; // Temporary country code until Kosovo is assigned an ISO code.
-		$sq_XK->wp_locale = 'sq_XK';
-		$sq_XK->slug = 'sq-xk';
+		$sq_xk = new GP_Locale();
+		$sq_xk->english_name = 'Shqip (Kosovo)';
+		$sq_xk->native_name = 'Për Kosovën Shqip';
+		$sq_xk->lang_code_iso_639_1 = 'sq';
+		$sq_xk->lang_code_iso_639_2 = 'sqi';
+		$sq_xk->lang_code_iso_639_3 = 'sqi';
+		$sq_xk->country_code = 'xk'; // Temporary country code until Kosovo is assigned an ISO code.
+		$sq_xk->wp_locale = 'sq_XK';
+		$sq_xk->slug = 'sq-xk';
 
 		$sr = new GP_Locale();
 		$sr->english_name = 'Serbian';
