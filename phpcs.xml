@@ -35,6 +35,7 @@
 	<arg value="s"/>
 
 	<!-- Allow invoking just `phpcs` on command line without assuming STDIN for file input. -->
+	<arg name="extensions" value="php"/>
 	<file>.</file>
 
 	<exclude-pattern>/tests/*</exclude-pattern>
