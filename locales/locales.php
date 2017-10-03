@@ -647,8 +647,10 @@ class GP_Locales {
 
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish (Spain)';
-		$es->native_name = 'Español';
+		$es->native_name = 'Español de España';
 		$es->lang_code_iso_639_1 = 'es';
+		$es->lang_code_iso_639_2 = 'spa';
+		$es->lang_code_iso_639_3 = 'spa';
 		$es->country_code = 'es';
 		$es->wp_locale = 'es_ES';
 		$es->slug = 'es';
@@ -660,6 +662,7 @@ class GP_Locales {
 		$es_ar->native_name = 'Español de Argentina';
 		$es_ar->lang_code_iso_639_1 = 'es';
 		$es_ar->lang_code_iso_639_2 = 'spa';
+		$es_ar->lang_code_iso_639_3 = 'spa';
 		$es_ar->country_code = 'ar';
 		$es_ar->wp_locale = 'es_AR';
 		$es_ar->slug = 'es-ar';
@@ -671,6 +674,7 @@ class GP_Locales {
 		$es_cl->native_name = 'Español de Chile';
 		$es_cl->lang_code_iso_639_1 = 'es';
 		$es_cl->lang_code_iso_639_2 = 'spa';
+		$es_cl->lang_code_iso_639_3 = 'spa';
 		$es_cl->country_code = 'cl';
 		$es_cl->wp_locale = 'es_CL';
 		$es_cl->slug = 'es-cl';
@@ -682,6 +686,7 @@ class GP_Locales {
 		$es_co->native_name = 'Español de Colombia';
 		$es_co->lang_code_iso_639_1 = 'es';
 		$es_co->lang_code_iso_639_2 = 'spa';
+		$es_co->lang_code_iso_639_3 = 'spa';
 		$es_co->country_code = 'co';
 		$es_co->wp_locale = 'es_CO';
 		$es_co->slug = 'es-co';
@@ -690,9 +695,10 @@ class GP_Locales {
 
 		$es_CR = new GP_Locale();
 		$es_CR->english_name = 'Spanish (Costa Rica)';
-		$es_CR->native_name = 'Español';
+		$es_CR->native_name = 'Español de Costa Rica';
 		$es_CR->lang_code_iso_639_1 = 'es';
 		$es_CR->lang_code_iso_639_2 = 'spa';
+		$es_CR->lang_code_iso_639_3 = 'spa';
 		$es_CR->country_code = 'cr';
 		$es_CR->wp_locale = 'es_CR';
 		$es_CR->slug = 'es-cr';
@@ -702,6 +708,7 @@ class GP_Locales {
 		$es_gt->native_name = 'Español de Guatemala';
 		$es_gt->lang_code_iso_639_1 = 'es';
 		$es_gt->lang_code_iso_639_2 = 'spa';
+		$es_gt->lang_code_iso_639_3 = 'spa';
 		$es_gt->country_code = 'gt';
 		$es_gt->wp_locale = 'es_GT';
 		$es_gt->slug = 'es-gt';
@@ -713,6 +720,7 @@ class GP_Locales {
 		$es_mx->native_name = 'Español de México';
 		$es_mx->lang_code_iso_639_1 = 'es';
 		$es_mx->lang_code_iso_639_2 = 'spa';
+		$es_mx->lang_code_iso_639_3 = 'spa';
 		$es_mx->country_code = 'mx';
 		$es_mx->wp_locale = 'es_MX';
 		$es_mx->slug = 'es-mx';
@@ -724,6 +732,7 @@ class GP_Locales {
 		$es_pe->native_name = 'Español de Perú';
 		$es_pe->lang_code_iso_639_1 = 'es';
 		$es_pe->lang_code_iso_639_2 = 'spa';
+		$es_pe->lang_code_iso_639_3 = 'spa';
 		$es_pe->country_code = 'pe';
 		$es_pe->wp_locale = 'es_PE';
 		$es_pe->slug = 'es-pe';
@@ -735,6 +744,7 @@ class GP_Locales {
 		$es_pr->native_name = 'Español de Puerto Rico';
 		$es_pr->lang_code_iso_639_1 = 'es';
 		$es_pr->lang_code_iso_639_2 = 'spa';
+		$es_pr->lang_code_iso_639_3 = 'spa';
 		$es_pr->country_code = 'pr';
 		$es_pr->wp_locale = 'es_PR';
 		$es_pr->slug = 'es-pr';
@@ -746,6 +756,7 @@ class GP_Locales {
 		$es_ve->native_name = 'Español de Venezuela';
 		$es_ve->lang_code_iso_639_1 = 'es';
 		$es_ve->lang_code_iso_639_2 = 'spa';
+		$es_ve->lang_code_iso_639_3 = 'spa';
 		$es_ve->country_code = 've';
 		$es_ve->wp_locale = 'es_VE';
 		$es_ve->slug = 'es-ve';
