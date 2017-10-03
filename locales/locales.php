@@ -647,7 +647,7 @@ class GP_Locales {
 
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish (Spain)';
-		$es->native_name = 'Español de España';
+		$es->native_name = 'Español';
 		$es->lang_code_iso_639_1 = 'es';
 		$es->lang_code_iso_639_2 = 'spa';
 		$es->lang_code_iso_639_3 = 'spa';
@@ -693,15 +693,15 @@ class GP_Locales {
 		$es_co->google_code = 'es';
 		$es_co->facebook_locale = 'es_CO';
 
-		$es_CR = new GP_Locale();
-		$es_CR->english_name = 'Spanish (Costa Rica)';
-		$es_CR->native_name = 'Español de Costa Rica';
-		$es_CR->lang_code_iso_639_1 = 'es';
-		$es_CR->lang_code_iso_639_2 = 'spa';
-		$es_CR->lang_code_iso_639_3 = 'spa';
-		$es_CR->country_code = 'cr';
-		$es_CR->wp_locale = 'es_CR';
-		$es_CR->slug = 'es-cr';
+		$es_cr = new GP_Locale();
+		$es_cr->english_name = 'Spanish (Costa Rica)';
+		$es_cr->native_name = 'Español de Costa Rica';
+		$es_cr->lang_code_iso_639_1 = 'es';
+		$es_cr->lang_code_iso_639_2 = 'spa';
+		$es_cr->lang_code_iso_639_3 = 'spa';
+		$es_cr->country_code = 'cr';
+		$es_cr->wp_locale = 'es_CR';
+		$es_cr->slug = 'es-cr';
 
 		$es_gt = new GP_Locale();
 		$es_gt->english_name = 'Spanish (Guatemala)';
