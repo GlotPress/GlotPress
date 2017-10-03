@@ -219,7 +219,7 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @return array|bool An array containing the extracted information from the xliff tags (there may be multiple) on success, false on failure.
 	 */
-	function extract_xliff_info( $string ) {
+	private function extract_xliff_info( $string ) {
 		// Define the initial xliff tag to look for.
 		$search = '--xlifftag--';
 
