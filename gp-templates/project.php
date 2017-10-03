@@ -32,7 +32,7 @@ gp_tmpl_header();
 <?php if ( $can_write ): ?>
 
 <div class="actionlist">
-	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e( 'Project actions &darr;', 'glotpress' ); ?></a>
+	<a href="#" class="project-actions" id="project-actions-toggle"><?php echo __( 'Project actions', 'glotpress' ) . ' &darr;'; ?></a>
 	<div class="project-actions hide-if-js">
 		<?php gp_project_actions( $project, $translation_sets ); ?>
 	</div>
@@ -142,15 +142,15 @@ gp_tmpl_header();
 
 <script type="text/javascript" charset="utf-8">
 	$gp.showhide('a.personal-options', 'div.personal-options', {
-		show_text: '<?php _e( 'Personal project options &darr;', 'glotpress' ); ?>',
-		hide_text: '<?php _e( 'Personal project options &uarr;', 'glotpress' ); ?>',
+		show_text: '<?php echo __( 'Personal project options', 'glotpress' ) . ' &darr;'; ?>',
+		hide_text: '<?php echo __( 'Personal project options', 'glotpress' ) . ' &uarr;'; ?>',
 		focus: '#source-url-template',
 		group: 'personal'
 	});
 	jQuery('div.personal-options').hide();
 	$gp.showhide('a.project-actions', 'div.project-actions', {
-		show_text: '<?php _e( 'Project actions &darr;', 'glotpress' ); ?>',
-		hide_text: '<?php _e( 'Project actions &uarr;', 'glotpress' ); ?>',
+		show_text: '<?php echo __( 'Project actions', 'glotpress' ) . ' &darr;'; ?>',
+		hide_text: '<?php echo __( 'Project actions', 'glotpress' ) . ' &uarr;'; ?>',
 		focus: '#source-url-template',
 		group: 'project'
 	});

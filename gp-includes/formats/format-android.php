@@ -219,7 +219,7 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @return array|bool An array containing the extracted information from the xliff tags (there may be multiple) on success, false on failure.
 	 */
-	function extract_xliff_info( $string ) {
+	private function extract_xliff_info( $string ) {
 		// Define the initial xliff tag to look for.
 		$search = '--xlifftag--';
 
@@ -309,7 +309,7 @@ class GP_Format_Android extends GP_Format {
 					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component of the original may be replaced at run time with text like this: %2$s', 'glotpress' ), $component, $example );
 				} else {
 					/* translators: 1: Component ID */
-					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component is not intended to be translated.', 'glotpress' ), $component, $example );
+					$text = sprintf( __( 'This string has content that should not be translated, the "%1$s" component is not intended to be translated.', 'glotpress' ), $component );
 				}
 
 				// Add the description as set above to the return results array.

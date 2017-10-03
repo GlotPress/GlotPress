@@ -20,7 +20,7 @@ $i = 0;
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
-	<?php echo gp_link( $glossary->path(), __( 'glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
+	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php elseif ( $can_approve ): ?>
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php endif; ?>
@@ -30,9 +30,9 @@ $i = 0;
 	<div>
 	<select name="bulk[action]" id="bulk-action">
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
-		<option value="approve"><?php _e( 'Approve', 'glotpress' ); ?></option>
-		<option value="reject"><?php _e( 'Reject', 'glotpress' ); ?></option>
-		<option value="fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></option>
+		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
+		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
 	<?php if( $can_write ) : ?>
 		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>
@@ -53,7 +53,16 @@ $i = 0;
 	<?php if( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority" class="hidden">
 	<?php
+	$labels = [
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
 	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
+		}
 		$selected = $value == 'normal' ? " selected='selected'" : '';
 		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n";
 	}
