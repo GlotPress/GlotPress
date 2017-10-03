@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <ruleset name="WordPress Coding Standards for GlotPress">
 
-	<rule ref="WordPress-Core" />
+	<rule ref="WordPress-Core">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents" />
+		<exclude name="WordPress.WP.AlternativeFunctions.file_system_read_file_get_contents" />
+	</rule>
 	<rule ref="WordPress-Docs" />
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.XSS.EscapeOutput.UnsafePrintingFunction" />
@@ -26,7 +30,6 @@
 			<property name="text_domain" value="glotpress" />
 		</properties>
 	</rule>
-
 
 	<!-- Show sniff codes in all reports -->
 	<arg value="s"/>
