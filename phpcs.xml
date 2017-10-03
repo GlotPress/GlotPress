@@ -31,7 +31,6 @@
 		</properties>
 	</rule>
 
-
 	<!-- Show sniff codes in all reports -->
 	<arg value="s"/>
 
