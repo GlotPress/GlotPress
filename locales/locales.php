@@ -297,7 +297,7 @@ class GP_Locale {
 						$decimal_start = strpos( $example, '@decimal' );
 
 						// If we found an integer example, use it, otherwise we can use a decimal example or worst case, return a default array.
-						if( false !== $integer_start ) {
+						if ( false !== $integer_start ) {
 							// Strip off the decimal example if it exists.
 							if ( false !== $decimal_start ) {
 								if ( $decimal_start > $integer_start ) {
@@ -324,7 +324,7 @@ class GP_Locale {
 
 								// Add all the numbers we found to the numbers array.
 								foreach ( $range as $value ) {
-									$numbers[] = (int)$value;
+									$numbers[] = (int) $value;
 								}
 							}
 						} elseif ( false !== $decimal_start ) {
@@ -354,7 +354,7 @@ class GP_Locale {
 
 								// Add all the numbers we found to the numbers array.
 								foreach ( $range as $value ) {
-									$numbers[] = (int)$value;
+									$numbers[] = (int) $value;
 								}
 							}
 						} else {
@@ -372,8 +372,8 @@ class GP_Locale {
 			}
 		} else {
 			// For gettext, we just brute force the examples.
-			for( $number = 0; $number < $test_up_to; ++$number ) {
-				if ( $this->index_for_number( $number ) == $index ) {
+			for ( $number = 0; $number < $test_up_to; ++$number ) {
+				if ( $this->index_for_number( $number ) === $index ) {
 					$numbers[] = $number;
 
 					if ( count( $numbers ) >= $how_many ) {
@@ -451,8 +451,8 @@ class GP_Locale {
 	/**
 	 * Get a string that represents examples for a given plural rule.
 	 *
-	 * @param int $type The plural type to use, either 'gettext' or 'cldr'.
-	 * @param int $type The index of the rule to use.
+	 * @param string $type  The plural type to use, either 'gettext' or 'cldr'.
+	 * @param int    $index The index of the rule to use.
 	 *
 	 * @return string The example string.
 	 */
@@ -468,11 +468,11 @@ class GP_Locale {
 						// The Integers examples always come before the decimal examples so simply delete the @integer string and replace @decimal with an 'or'.
 						$example = str_replace( '@integer', '', $example );
 						$example = str_replace( '@decimal', ' or ', $example );
-						// Make sure we don't have any extra cruft at the start/end of the string
+						// Make sure we don't have any extra cruft at the start/end of the string.
 						$example = trim( $example );
 
 						// Check to see if the example strats with an 'or ', which would mean we didn't have an @integer examples and we can remove the or.
-						if( gp_startswith( $example, 'or ' ) ) {
+						if ( gp_startswith( $example, 'or ' ) ) {
 							$example = substr( $example, 3 );
 						}
 
@@ -3946,6 +3946,8 @@ class GP_Locales {
 	/**
 	 * Check to see if a locale exists.
 	 *
+	 * @param string $slug The locale slug to return.
+	 *
 	 * @return bool Returns true if the locale exists, otherwise false.
 	 */
 	public static function exists( $slug ) {
@@ -3968,8 +3970,8 @@ class GP_Locales {
 	/**
 	 * Get the first locale that matches a field name/value pair.
 	 *
-	 * @param string       $field_name The name of the field to check against.
-	 * @param string|array $field_name The value to check for.
+	 * @param string       $field_name  The name of the field to check against.
+	 * @param string|array $field_value The value to check for.
 	 *
 	 * @return GP_Locale|false Returns the locale if found, otherwise false.
 	 */

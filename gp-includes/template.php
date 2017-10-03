@@ -469,7 +469,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
  *
  * @return string HTML markup for a select element.
  */
-function gp_plurals_dropdown( $name_and_id, $selected_plural_type = null, $attrs = array() ) {
+function gp_plural_types_dropdown( $name_and_id, $selected_plural_type = null, $attrs = array() ) {
 	$options = array(
 		'gettext' => __( 'GetText', 'glotpress' ),
 		'cldr' => __( 'CLDR', 'glotpress' ),

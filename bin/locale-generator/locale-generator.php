@@ -108,7 +108,7 @@ function generate_output( $locales ) {
 		$root_var_name = str_replace( '-', '_', $locale->variant_root );
 
 		// Output the first line to 'create' the GP_Locale object for this locale.
-		echo "\t\t\${$var_name} = new GP_Locale();\n"; // WPCS: XSS ok.
+		echo "\t\t\${$var_name} = new GP_Locale();\n";
 
 		// Now loop through all the variables that may be set for this locale.
 		foreach ( $vars as $var => $value ) {
@@ -120,7 +120,7 @@ function generate_output( $locales ) {
 					if ( ! empty( $locale->$var[ $key ] ) && 'variants' !== $var ) {
 						// Create some space to make the output pretty and they output the line.
 						$padding = str_repeat( ' ', 36 - strlen( $var ) - ( strlen( $var_name ) - 2 ) - strlen( $key ) - 4 );
-						echo "\t\t\${$var_name}->{$var}['{$key}']{$padding} = '" . str_replace( "'", "\'", $locale->$var[ $key ] ) . "';\n"; // WPCS: XSS ok.
+						echo "\t\t\${$var_name}->{$var}['{$key}']{$padding} = '" . str_replace( "'", "\'", $locale->$var[ $key ] ) . "';\n";
 					}
 				}
 			} else {
@@ -128,19 +128,19 @@ function generate_output( $locales ) {
 				if ( ! empty( $locale->$var ) ) {
 					// Create some space to make the output pretty and they output the line.
 					$padding = str_repeat( ' ', 36 - strlen( $var ) - ( strlen( $var_name ) - 2 ) );
-					echo "\t\t\${$var_name}->{$var}{$padding} = '" . str_replace( "'", "\'", $locale->$var ) . "';\n"; // WPCS: XSS ok.
+					echo "\t\t\${$var_name}->{$var}{$padding} = '" . str_replace( "'", "\'", $locale->$var ) . "';\n";
 
 					// Handle the special case of locales with variants, output the line to create the root's variant list here.
 					if ( 'variant_root' === $var ) {
 						// Create some space to make the output pretty and they output the line.
 						$padding = str_repeat( ' ', 36 - strlen( $root_var_name ) - ( strlen( $root_var_name ) - 2 ) - 15 );
-						echo "\t\t\${$root_var_name}->variants['{$var_name}']{$padding} = \${$root_var_name}->english_name;\n"; // WPCS: XSS ok.
+						echo "\t\t\${$root_var_name}->variants['{$var_name}']{$padding} = \${$root_var_name}->english_name;\n";
 					}
 				}
 			}
-		} // End foreach().
+		}
 
 		// Add some space between locales for easier reading.
-		echo "\n"; // WPCS: XSS ok.
+		echo "\n";
 	}
 }

@@ -17,7 +17,7 @@
 
 	<rule ref="WordPress.Security.EscapeOutput">
 		<properties>
-			<property name="customAutoEscapedFunctions" value="gp_radio_buttons=>gp_radio_buttons,gp_select=>gp_select,gp_projects_dropdown=>gp_projects_dropdown,gp_link_glossary_delete_get=>gp_link_glossary_delete_get,gp_link_set_delete_get=>gp_link_set_delete_get,gp_link_get=>gp_link_get,gp_link=>gp_link,__=>__,gp_js_focus_on=>gp_js_focus_on,gp_translation_row_classes=>gp_translation_row_classes,gp_pagination=>gp_pagination" type="array" />
+			<property name="customAutoEscapedFunctions" value="gp_radio_buttons=>gp_radio_buttons,gp_select=>gp_select,gp_projects_dropdown=>gp_projects_dropdown,gp_link_glossary_delete_get=>gp_link_glossary_delete_get,gp_link_set_delete_get=>gp_link_set_delete_get,gp_link_get=>gp_link_get,gp_link=>gp_link,__=>__,gp_js_focus_on=>gp_js_focus_on,gp_translation_row_classes=>gp_translation_row_classes,gp_pagination=>gp_pagination,gp_plural_types_dropdown=>gp_plural_types_dropdown" type="array" />
 		</properties>
 	</rule>
 
@@ -44,4 +44,9 @@
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
+	<exclude-pattern>*/bin/locale-generator/locale-generator.php</exclude-pattern>
+
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<exclude-pattern>/gp-templates/*</exclude-pattern>
+	</rule>
 </ruleset>

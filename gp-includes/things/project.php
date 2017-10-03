@@ -14,19 +14,95 @@
  */
 class GP_Project extends GP_Thing {
 
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
 	var $table_basename = 'gp_projects';
+
+	/**
+	 * List of field names for a translation.
+	 *
+	 * @var array $field_names
+	 */
 	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active', 'plurals_type' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
 	var $int_fields = array( 'id', 'parent_project_id', 'active' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * ID of the project.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * Name of the project.
+	 *
+	 * @var string $name
+	 */
 	public $name;
+
+	/**
+	 * Slug of the project.
+	 *
+	 * @var string $slug
+	 */
 	public $slug;
+
+	/**
+	 * Path of the project.
+	 *
+	 * @var string $path
+	 */
 	public $path;
+
+	/**
+	 * Description of the project.
+	 *
+	 * @var string $description
+	 */
 	public $description;
+
+	/**
+	 * Parent id of the project.
+	 *
+	 * @var string $parent_project_id
+	 */
 	public $parent_project_id;
+
+	/**
+	 * URL of the source template of the project.
+	 *
+	 * @var string $source_url_template
+	 */
 	public $source_url_template;
+
+	/**
+	 * Active state of the project.
+	 *
+	 * @var int $active
+	 */
 	public $active;
+
+	/**
+	 * URL of the user source template of the project.
+	 *
+	 * @var string $user_source_url_template
+	 */
 	public $user_source_url_template;
 
 	/**
