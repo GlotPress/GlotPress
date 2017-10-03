@@ -1,5 +1,12 @@
+language: php
 sudo: false
-dist: precise
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      # For xmllint
+      - libxml2-utils
 
 notifications:
   email:
@@ -18,8 +25,6 @@ cache:
     - vendor
     - $HOME/phpunit-bin
     - $HOME/.composer/cache
-
-language: php
 
 matrix:
   allow_failures:
@@ -44,6 +49,7 @@ install:
   - source $DEV_LIB_PATH/travis.install.sh
 
 before_script:
+  - xmllint --version
   - |
     # Remove Xdebug for a huge performance increase, but not from nightly:
     stable='^[0-9\.]+$'
