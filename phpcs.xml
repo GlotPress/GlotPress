@@ -17,13 +17,26 @@
 		</properties>
 	</rule>
 
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<exclude-pattern>/gp-templates/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" value="glotpress" />
+		</properties>
+	</rule>
+
+
+	<!-- Show sniff codes in all reports -->
+	<arg value="s"/>
+
+	<!-- Allow invoking just `phpcs` on command line without assuming STDIN for file input. -->
+	<file>.</file>
+
 	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/dev-lib/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
-
-	<rule ref="Generic.WhiteSpace.ScopeIndent">
-		<exclude-pattern>/gp-templates/*</exclude-pattern>
-	</rule>
 </ruleset>
