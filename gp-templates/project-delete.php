@@ -7,11 +7,23 @@
  * @since 2.0.0
  */
 
-gp_title( sprintf( __( 'Delete project "%s" &lt; GlotPress', 'glotpress' ),  $project->name ) );
+gp_title( sprintf(
+	/* translators: %s: project name */
+	__( 'Delete project "%s" &lt; GlotPress', 'glotpress' ),
+	$project->name
+) );
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
-<h2><?php printf( __( 'Delete project "%s"', 'glotpress' ), esc_html( $project->name ) ); ?></h2>
+<h2>
+	<?php
+	printf(
+		/* translators: %s: project name */
+		__( 'Delete project "%s"', 'glotpress' ),
+		esc_html( $project->name )
+	);
+	?>
+</h2>
 <form action="" method="post">
 	<p>
 		<?php _e( 'Note this will delete all translations, translation sets and child projects!', 'glotpress' ); ?>

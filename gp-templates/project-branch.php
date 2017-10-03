@@ -1,9 +1,21 @@
 <?php
-gp_title( sprintf( __( 'Branch project "%s" &lt; GlotPress', 'glotpress' ),  $project->name ) );
+gp_title( sprintf(
+	/* translators: %s: project name */
+	__( 'Branch project "%s" &lt; GlotPress', 'glotpress' ),
+	$project->name
+) );
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
-<h2><?php echo wptexturize( sprintf( __( 'Branch project "%s"', 'glotpress' ), esc_html( $project->name ) ) ); ?></h2>
+<h2>
+	<?php
+	printf(
+		/* translators: %s: project name */
+		__( 'Branch project "%s"', 'glotpress' ),
+		esc_html( $project->name )
+	);
+	?>
+</h2>
 <p><?php _e( 'Here you can branch out this project: everything will be duplicated into a new project for you.', 'glotpress' ); ?></p>
 <form action="<?php echo esc_url( gp_url_current() ); ?>" method="post">
 	<dt><label for="project[name]"><?php _e( 'New branch name', 'glotpress' ); ?></label></dt>
