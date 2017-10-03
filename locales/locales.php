@@ -19,7 +19,7 @@ class GP_Locale {
 	// TODO: days, months, decimals, quotes
 
 	private $_index_for_number;
-
+	
 	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
