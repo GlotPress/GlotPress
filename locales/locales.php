@@ -87,6 +87,93 @@ class GP_Locale {
 		return $f( $number );
 	}
 
+	public function cldr_name_for_number( $number ) {
+		static $json;
+		if ( ! isset( $json ) ) {
+			$json = json_decode( file_get_contents( __DIR__ . '/plurals.json' ) );
+		}
+
+		if ( ! isset( $this->_cldr_name_for_number ) ) {
+			$plurals = false;
+
+			if ( isset( $json->supplemental->{'plurals-type-cardinal'}->{$this->lang_code_iso_639_1} ) ) {
+				$plurals = $json->supplemental->{'plurals-type-cardinal'}->{$this->lang_code_iso_639_1};
+			} elseif ( isset( $json->supplemental->{'plurals-type-cardinal'}->{$this->lang_code_iso_639_2} ) ) {
+				$plurals = $json->supplemental->{'plurals-type-cardinal'}->{$this->lang_code_iso_639_2};
+			} elseif ( isset( $json->supplemental->{'plurals-type-cardinal'}->{$this->lang_code_iso_639_2} ) ) {
+				$plurals = $json->supplemental->{'plurals-type-cardinal'}->{$this->lang_code_iso_639_3};
+			}
+
+			if ( ! $plurals ) {
+				return false;
+			}
+
+			$func_body = '$n = ltrim( $number, "-" );' . PHP_EOL;
+			$func_body .= '$i = floor( $n );' . PHP_EOL;
+			$func_body .= '$ni = strlen( $i );' . PHP_EOL;
+			$func_body .= '$v = max( 0, strlen( $number ) - $ni - 1 );' . PHP_EOL;
+			$func_body .= '$w = max( 0, strlen( rtrim( $number, "0" ) ) - $ni - 1 );' . PHP_EOL;
+			$func_body .= '$f = intval( substr( $number, $ni + 1, $v ) );' . PHP_EOL;
+			$func_body .= '$t = intval( substr( $number, $ni + 1, $w ) );' . PHP_EOL;
+
+			foreach ( (array) $plurals as $type => $expression ) {
+				// See http://unicode.org/reports/tr35/tr35-numbers.html#Operands
+				$type = substr( $type, 17 );
+				$expression = substr( $expression, 0, strpos( $expression, '@' ) );
+				$expression = preg_replace( '#\b[nivwft]\b#', '$\0', $expression );
+				$expression = preg_replace( '#\s=\s#', '==', $expression );
+				$expression = preg_split( '#(and|or)#', $expression, 0, PREG_SPLIT_DELIM_CAPTURE );
+				foreach ( $expression as $k => $exp ) {
+					if ( preg_match( '#^(.*?)(\d+)\.\.(\d+)#', $exp, $m ) ) {
+						$new_expression = array();
+						array_shift( $m );
+						$body = array_shift( $m );
+
+						for ( $i = $m[0]; $i <= $m[1]; $i++ ) {
+							$new_expression[] = $body . $i;
+						}
+						$expression[$k] = '(' . implode( ' or ', $new_expression ) . ')';
+					} elseif ( preg_match( '#^(.*?)(\d+)(?:,(\d+))#', $exp, $m ) ) {
+						array_shift( $m );
+						$body = array_shift( $m );
+						$new_expression = array();
+						foreach ( $m as $i ) {
+							$new_expression[] = $body . $i;
+						}
+						$expression[$k] = '(' . implode( ' or ', $new_expression ) . ')';
+					}
+				}
+				$expression = trim( implode( $expression ) );
+				if ( empty( $expression ) ) {
+					continue;
+				}
+				$func_body .= 'if (' . $expression . ') return "' . $type . '";' . PHP_EOL;
+			}
+			$func_body .= 'return "other";';
+			$this->_cldr_name_for_number = create_function( '$number', $func_body );
+		}
+
+		$f = $this->_cldr_name_for_number;
+
+		return $f( $number );
+	}
+
+	public function cldr_name_for_index( $index ) {
+		$results = array();
+		foreach ( $this->numbers_for_index( $index, 10 ) as $number ) {
+			$n = $this->cldr_name_for_number( $number );
+			if ( false === $n ) return false;
+			if ( ! isset( $results[$n] ) ) $results[$n] = 0;
+			$results[$n] += 1;
+		}
+
+		if ( ! empty( $results ) ) {
+			arsort( $results );
+			return key( $results );
+		}
+
+		return false;
+	}
 }
 
 endif;
@@ -122,6 +209,7 @@ class GP_Locales {
 		$af->slug = 'af';
 		$af->google_code = 'af';
 		$af->facebook_locale = 'af_ZA';
+		$af->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ak = new GP_Locale();
 		$ak->english_name = 'Akan';
@@ -131,6 +219,7 @@ class GP_Locales {
 		$ak->wp_locale = 'ak';
 		$ak->slug = 'ak';
 		$ak->facebook_locale = 'ak_GH';
+		$ak->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$am = new GP_Locale();
 		$am->english_name = 'Amharic';
@@ -141,6 +230,7 @@ class GP_Locales {
 		$am->wp_locale = 'am';
 		$am->slug = 'am';
 		$am->facebook_locale = 'am_ET';
+		$am->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$an = new GP_Locale();
 		$an->english_name = 'Aragonese';
@@ -163,6 +253,7 @@ class GP_Locales {
 		$ar->preferred_sans_serif_font_family = 'Tahoma';
 		$ar->google_code = 'ar';
 		$ar->facebook_locale = 'ar_AR';
+		$ar->cldr_plurals_mapping = array( 'zero', 'one', 'two', 'few', 'many', 'other' );
 
 		$arq = new GP_Locale();
 		$arq->english_name = 'Algerian Arabic';
@@ -175,6 +266,7 @@ class GP_Locales {
 		$arq->nplurals = 6;
 		$arq->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$arq->text_direction = 'rtl';
+		$arq->cldr_plurals_mapping = array( 'zero', 'one', 'two', 'few', 'many', 'other' );
 
 		$ary = new GP_Locale();
 		$ary->english_name = 'Moroccan Arabic';
@@ -187,6 +279,7 @@ class GP_Locales {
 		$ary->nplurals = 6;
 		$ary->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
 		$ary->text_direction = 'rtl';
+		$ary->cldr_plurals_mapping = array( 'zero', 'one', 'two', 'few', 'many', 'other' );
 
 		$as = new GP_Locale();
 		$as->english_name = 'Assamese';
@@ -198,6 +291,7 @@ class GP_Locales {
 		$as->wp_locale = 'as';
 		$as->slug = 'as';
 		$as->facebook_locale = 'as_IN';
+		$as->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ast = new GP_Locale();
 		$ast->english_name = 'Asturian';
@@ -207,6 +301,7 @@ class GP_Locales {
 		$ast->country_code = 'es';
 		$ast->wp_locale = 'ast';
 		$ast->slug = 'ast';
+		$ast->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$av = new GP_Locale();
 		$av->english_name = 'Avaric';
@@ -235,6 +330,7 @@ class GP_Locales {
 		$az->slug = 'az';
 		$az->google_code = 'az';
 		$az->facebook_locale = 'az_AZ';
+		$az->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$azb = new GP_Locale();
 		$azb->english_name = 'South Azerbaijani';
@@ -245,6 +341,7 @@ class GP_Locales {
 		$azb->wp_locale = 'azb';
 		$azb->slug = 'azb';
 		$azb->text_direction = 'rtl';
+		$azb->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$az_tr = new GP_Locale();
 		$az_tr->english_name = 'Azerbaijani (Turkey)';
@@ -254,6 +351,7 @@ class GP_Locales {
 		$az_tr->country_code = 'tr';
 		$az_tr->wp_locale = 'az_TR';
 		$az_tr->slug = 'az-tr';
+		$az_tr->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ba = new GP_Locale();
 		$ba->english_name = 'Bashkir';
@@ -294,6 +392,7 @@ class GP_Locales {
 		$be->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$be->google_code = 'be';
 		$be->facebook_locale = 'be_BY';
+		$be->cldr_plurals_mapping = array( 'one', 'few', 'many' );
 
 		$bg = new GP_Locale();
 		$bg->english_name = 'Bulgarian';
@@ -305,6 +404,7 @@ class GP_Locales {
 		$bg->slug = 'bg';
 		$bg->google_code = 'bg';
 		$bg->facebook_locale = 'bg_BG';
+		$bg->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$bh = new GP_Locale();
 		$bh->english_name = 'Bihari';
@@ -312,6 +412,7 @@ class GP_Locales {
 		$bh->lang_code_iso_639_1 = 'bh';
 		$bh->lang_code_iso_639_2 = 'bih';
 		$bh->slug = 'bh';
+		$bh->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$bi = new GP_Locale();
 		$bi->english_name = 'Bislama';
@@ -337,6 +438,7 @@ class GP_Locales {
 		$bn_bd->slug = 'bn';
 		$bn_bd->google_code = 'bn';
 		$bn_bd->facebook_locale = 'bn_IN';
+		$bn_bd->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
@@ -347,6 +449,7 @@ class GP_Locales {
 		$bo->slug = 'bo';
 		$bo->nplurals = 1;
 		$bo->plural_expression = '0';
+		$bo->cldr_plurals_mapping = array( 'other' );
 
 		$br = new GP_Locale();
 		$br->english_name = 'Breton';
@@ -373,6 +476,7 @@ class GP_Locales {
 		$bs->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$bs->google_code = 'bs';
 		$bs->facebook_locale = 'bs_BA';
+		$bs->cldr_plurals_mapping = array( 'one', 'few', 'other' );
 
 		$ca = new GP_Locale();
 		$ca->english_name = 'Catalan';
@@ -383,6 +487,7 @@ class GP_Locales {
 		$ca->slug = 'ca';
 		$ca->google_code = 'ca';
 		$ca->facebook_locale = 'ca_ES';
+		$ca->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ce = new GP_Locale();
 		$ce->english_name = 'Chechen';
@@ -390,6 +495,7 @@ class GP_Locales {
 		$ce->lang_code_iso_639_1 = 'ce';
 		$ce->lang_code_iso_639_2 = 'che';
 		$ce->slug = 'ce';
+		$ce->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ceb = new GP_Locale();
 		$ceb->english_name = 'Cebuano';
@@ -418,6 +524,7 @@ class GP_Locales {
 		$ckb->slug = 'ckb';
 		$ckb->text_direction = 'rtl';
 		$ckb->facebook_locale = 'cb_IQ';
+		$ckb->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$co = new GP_Locale();
 		$co->english_name = 'Corsican';
@@ -448,6 +555,7 @@ class GP_Locales {
 		$cs->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
 		$cs->google_code = 'cs';
 		$cs->facebook_locale = 'cs_CZ';
+		$cs->cldr_plurals_mapping = array( 'one', 'few', 'other' );
 
 		$csb = new GP_Locale();
 		$csb->english_name = 'Kashubian';
@@ -495,6 +603,7 @@ class GP_Locales {
 		$da->slug = 'da';
 		$da->google_code = 'da';
 		$da->facebook_locale = 'da_DK';
+		$da->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$de = new GP_Locale();
 		$de->english_name = 'German';
@@ -505,6 +614,7 @@ class GP_Locales {
 		$de->slug = 'de';
 		$de->google_code = 'de';
 		$de->facebook_locale = 'de_DE';
+		$de->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$de_ch = new GP_Locale();
 		$de_ch->english_name = 'German (Switzerland)';
@@ -513,7 +623,7 @@ class GP_Locales {
 		$de_ch->country_code = 'ch';
 		$de_ch->wp_locale = 'de_CH';
 		$de_ch->slug = 'de-ch';
-		$de_ch->google_code = 'de';
+		$de_ch->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
@@ -524,6 +634,7 @@ class GP_Locales {
 		$dv->wp_locale = 'dv';
 		$dv->slug = 'dv';
 		$dv->text_direction = 'rtl';
+		$dv->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$dzo = new GP_Locale();
 		$dzo->english_name = 'Dzongkha';
@@ -535,6 +646,7 @@ class GP_Locales {
 		$dzo->slug = 'dzo';
 		$dzo->nplurals = 1;
 		$dzo->plural_expression = '0';
+		$dzo->cldr_plurals_mapping = array( 'other' );
 
 		$ee = new GP_Locale();
 		$ee->english_name = 'Ewe';
@@ -542,6 +654,7 @@ class GP_Locales {
 		$ee->lang_code_iso_639_1 = 'ee';
 		$ee->lang_code_iso_639_2 = 'ewe';
 		$ee->slug = 'ee';
+		$ee->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$el_po = new GP_Locale();
 		$el_po->english_name = 'Greek (Polytonic)';
@@ -559,6 +672,7 @@ class GP_Locales {
 		$el->slug = 'el';
 		$el->google_code = 'el';
 		$el->facebook_locale = 'el_GR';
+		$el->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$emoji = new GP_Locale();
 		$emoji->english_name = 'Emoji';
@@ -578,6 +692,7 @@ class GP_Locales {
 		$en->slug = 'en';
 		$en->google_code = 'en';
 		$en->facebook_locale = 'en_US';
+		$en->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$en_au = new GP_Locale();
 		$en_au->english_name = 'English (Australia)';
@@ -589,6 +704,7 @@ class GP_Locales {
 		$en_au->wp_locale = 'en_AU';
 		$en_au->slug = 'en-au';
 		$en_au->google_code = 'en';
+		$en_au->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$en_ca = new GP_Locale();
 		$en_ca->english_name = 'English (Canada)';
@@ -600,6 +716,7 @@ class GP_Locales {
 		$en_ca->wp_locale = 'en_CA';
 		$en_ca->slug = 'en-ca';
 		$en_ca->google_code = 'en';
+		$en_ca->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$en_gb = new GP_Locale();
 		$en_gb->english_name = 'English (UK)';
@@ -612,6 +729,7 @@ class GP_Locales {
 		$en_gb->slug = 'en-gb';
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
+		$en_gb->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
@@ -623,6 +741,7 @@ class GP_Locales {
 		$en_nz->wp_locale = 'en_NZ';
 		$en_nz->slug = 'en-nz';
 		$en_nz->google_code = 'en';
+		$en_nz->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
@@ -634,6 +753,7 @@ class GP_Locales {
 		$en_za->wp_locale = 'en_ZA';
 		$en_za->slug = 'en-za';
 		$en_za->google_code = 'en';
+		$en_za->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
@@ -644,6 +764,7 @@ class GP_Locales {
 		$eo->slug = 'eo';
 		$eo->google_code = 'eo';
 		$eo->facebook_locale = 'eo_EO';
+		$eo->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es = new GP_Locale();
 		$es->english_name = 'Spanish (Spain)';
@@ -654,6 +775,7 @@ class GP_Locales {
 		$es->slug = 'es';
 		$es->google_code = 'es';
 		$es->facebook_locale = 'es_ES';
+		$es->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_ar = new GP_Locale();
 		$es_ar->english_name = 'Spanish (Argentina)';
@@ -665,6 +787,7 @@ class GP_Locales {
 		$es_ar->slug = 'es-ar';
 		$es_ar->google_code = 'es';
 		$es_ar->facebook_locale = 'es_LA';
+		$es_ar->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_cl = new GP_Locale();
 		$es_cl->english_name = 'Spanish (Chile)';
@@ -676,6 +799,7 @@ class GP_Locales {
 		$es_cl->slug = 'es-cl';
 		$es_cl->google_code = 'es';
 		$es_cl->facebook_locale = 'es_CL';
+		$es_cl->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_co = new GP_Locale();
 		$es_co->english_name = 'Spanish (Colombia)';
@@ -687,6 +811,7 @@ class GP_Locales {
 		$es_co->slug = 'es-co';
 		$es_co->google_code = 'es';
 		$es_co->facebook_locale = 'es_CO';
+		$es_co->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_CR = new GP_Locale();
 		$es_CR->english_name = 'Spanish (Costa Rica)';
@@ -696,6 +821,7 @@ class GP_Locales {
 		$es_CR->country_code = 'cr';
 		$es_CR->wp_locale = 'es_CR';
 		$es_CR->slug = 'es-cr';
+		$es_CR->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_gt = new GP_Locale();
 		$es_gt->english_name = 'Spanish (Guatemala)';
@@ -707,6 +833,7 @@ class GP_Locales {
 		$es_gt->slug = 'es-gt';
 		$es_gt->google_code = 'es';
 		$es_gt->facebook_locale = 'es_LA';
+		$es_gt->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_mx = new GP_Locale();
 		$es_mx->english_name = 'Spanish (Mexico)';
@@ -718,6 +845,7 @@ class GP_Locales {
 		$es_mx->slug = 'es-mx';
 		$es_mx->google_code = 'es';
 		$es_mx->facebook_locale = 'es_MX';
+		$es_mx->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_pe = new GP_Locale();
 		$es_pe->english_name = 'Spanish (Peru)';
@@ -729,6 +857,7 @@ class GP_Locales {
 		$es_pe->slug = 'es-pe';
 		$es_pe->google_code = 'es';
 		$es_pe->facebook_locale = 'es_LA';
+		$es_pe->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_pr = new GP_Locale();
 		$es_pr->english_name = 'Spanish (Puerto Rico)';
@@ -740,6 +869,7 @@ class GP_Locales {
 		$es_pr->slug = 'es-pr';
 		$es_pr->google_code = 'es';
 		$es_pr->facebook_locale = 'es_LA';
+		$es_pr->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$es_ve = new GP_Locale();
 		$es_ve->english_name = 'Spanish (Venezuela)';
@@ -751,6 +881,7 @@ class GP_Locales {
 		$es_ve->slug = 'es-ve';
 		$es_ve->google_code = 'es';
 		$es_ve->facebook_locale = 'es_VE';
+		$es_ve->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$et = new GP_Locale();
 		$et->english_name = 'Estonian';
@@ -762,6 +893,7 @@ class GP_Locales {
 		$et->slug = 'et';
 		$et->google_code = 'et';
 		$et->facebook_locale = 'et_EE';
+		$et->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$eu = new GP_Locale();
 		$eu->english_name = 'Basque';
@@ -773,6 +905,7 @@ class GP_Locales {
 		$eu->slug = 'eu';
 		$eu->google_code = 'eu';
 		$eu->facebook_locale = 'eu_ES';
+		$eu->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fa = new GP_Locale();
 		$fa->english_name = 'Persian';
@@ -786,6 +919,7 @@ class GP_Locales {
 		$fa->text_direction = 'rtl';
 		$fa->google_code = 'fa';
 		$fa->facebook_locale = 'fa_IR';
+		$fa->cldr_plurals_mapping = array( 'other' );
 
 		$fa_af = new GP_Locale();
 		$fa_af->english_name = 'Persian (Afghanistan)';
@@ -798,6 +932,7 @@ class GP_Locales {
 		$fa_af->plural_expression = '0';
 		$fa_af->text_direction = 'rtl';
 		$fa_af->google_code = 'fa';
+		$fa_af->cldr_plurals_mapping = array( 'other' );
 
 		$ff_sn = new GP_Locale();
 		$ff_sn->english_name = 'Fulah';
@@ -808,6 +943,7 @@ class GP_Locales {
 		$ff_sn->wp_locale = 'fuc';
 		$ff_sn->slug = 'fuc';
 		$ff_sn->plural_expression = 'n!=1';
+		$ff_sn->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fi = new GP_Locale();
 		$fi->english_name = 'Finnish';
@@ -819,6 +955,7 @@ class GP_Locales {
 		$fi->slug = 'fi';
 		$fi->google_code = 'fi';
 		$fi->facebook_locale = 'fi_FI';
+		$fi->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fj = new GP_Locale();
 		$fj->english_name = 'Fijian';
@@ -837,6 +974,7 @@ class GP_Locales {
 		$fo->wp_locale = 'fo';
 		$fo->slug = 'fo';
 		$fo->facebook_locale = 'fo_FO';
+		$fo->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fr = new GP_Locale();
 		$fr->english_name = 'French (France)';
@@ -849,6 +987,7 @@ class GP_Locales {
 		$fr->plural_expression = 'n > 1';
 		$fr->google_code = 'fr';
 		$fr->facebook_locale = 'fr_FR';
+		$fr->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fr_be = new GP_Locale();
 		$fr_be->english_name = 'French (Belgium)';
@@ -858,6 +997,7 @@ class GP_Locales {
 		$fr_be->country_code = 'be';
 		$fr_be->wp_locale = 'fr_BE';
 		$fr_be->slug = 'fr-be';
+		$fr_be->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fr_ca = new GP_Locale();
 		$fr_ca->english_name = 'French (Canada)';
@@ -868,6 +1008,7 @@ class GP_Locales {
 		$fr_ca->wp_locale = 'fr_CA';
 		$fr_ca->slug = 'fr-ca';
 		$fr_ca->facebook_locale = 'fr_CA';
+		$fr_ca->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fr_ch = new GP_Locale();
 		$fr_ch->english_name = 'French (Switzerland)';
@@ -876,6 +1017,7 @@ class GP_Locales {
 		$fr_ch->lang_code_iso_639_2 = 'fra';
 		$fr_ch->country_code = 'ch';
 		$fr_ch->slug = 'fr-ch';
+		$fr_ch->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$frp = new GP_Locale();
 		$frp->english_name = 'Arpitan';
@@ -895,6 +1037,7 @@ class GP_Locales {
 		$fur->country_code = 'it';
 		$fur->wp_locale = 'fur';
 		$fur->slug = 'fur';
+		$fur->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$fy = new GP_Locale();
 		$fy->english_name = 'Frisian';
@@ -905,6 +1048,7 @@ class GP_Locales {
 		$fy->wp_locale = 'fy';
 		$fy->slug = 'fy';
 		$fy->facebook_locale = 'fy_NL';
+		$fy->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ga = new GP_Locale();
 		$ga->english_name = 'Irish';
@@ -918,6 +1062,7 @@ class GP_Locales {
 		$ga->plural_expression = 'n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4';
 		$ga->google_code = 'ga';
 		$ga->facebook_locale = 'ga_IE';
+		$ga->cldr_plurals_mapping = array( 'one', 'two', 'few', 'many', 'other' );
 
 		$gd = new GP_Locale();
 		$gd->english_name = 'Scottish Gaelic';
@@ -931,6 +1076,7 @@ class GP_Locales {
 		$gd->nplurals = 4;
 		$gd->plural_expression = '(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3';
 		$gd->google_code = 'gd';
+		$gd->cldr_plurals_mapping = array( 'one', 'two', 'few', 'other' );
 
 		$gl = new GP_Locale();
 		$gl->english_name = 'Galician';
@@ -942,6 +1088,7 @@ class GP_Locales {
 		$gl->slug = 'gl';
 		$gl->google_code = 'gl';
 		$gl->facebook_locale = 'gl_ES';
+		$gl->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$gn = new GP_Locale();
 		$gn->english_name = 'Guaraní';
@@ -959,6 +1106,7 @@ class GP_Locales {
 		$gsw->country_code = 'ch';
 		$gsw->wp_locale = 'gsw';
 		$gsw->slug = 'gsw';
+		$gsw->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$gu = new GP_Locale();
 		$gu->english_name = 'Gujarati';
@@ -969,6 +1117,7 @@ class GP_Locales {
 		$gu->slug = 'gu';
 		$gu->google_code = 'gu';
 		$gu->facebook_locale = 'gu_IN';
+		$gu->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ha = new GP_Locale();
 		$ha->english_name = 'Hausa (Arabic)';
@@ -978,6 +1127,7 @@ class GP_Locales {
 		$ha->slug = 'ha';
 		$ha->text_direction = 'rtl';
 		$ha->google_code = 'ha';
+		$ha->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$hat = new GP_Locale();
 		$hat->english_name = 'Haitian Creole';
@@ -1000,6 +1150,7 @@ class GP_Locales {
 		$hau->slug = 'hau';
 		$hau->google_code = 'ha';
 		$hau->facebook_locale = 'ha_NG';
+		$hau->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$haw = new GP_Locale();
 		$haw->english_name = 'Hawaiian';
@@ -1008,6 +1159,7 @@ class GP_Locales {
 		$haw->country_code = 'us';
 		$haw->wp_locale = 'haw_US';
 		$haw->slug = 'haw';
+		$haw->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$haz = new GP_Locale();
 		$haz->english_name = 'Hazaragi';
@@ -1028,6 +1180,7 @@ class GP_Locales {
 		$he->text_direction = 'rtl';
 		$he->google_code = 'iw';
 		$he->facebook_locale = 'he_IL';
+		$he->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$hi = new GP_Locale();
 		$hi->english_name = 'Hindi';
@@ -1039,6 +1192,7 @@ class GP_Locales {
 		$hi->slug = 'hi';
 		$hi->google_code = 'hi';
 		$hi->facebook_locale = 'hi_IN';
+		$hi->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$hr = new GP_Locale();
 		$hr->english_name = 'Croatian';
@@ -1052,6 +1206,7 @@ class GP_Locales {
 		$hr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$hr->google_code = 'hr';
 		$hr->facebook_locale = 'hr_HR';
+		$hr->cldr_plurals_mapping = array( 'one', 'few', 'other' );
 
 		$hu = new GP_Locale();
 		$hu->english_name = 'Hungarian';
@@ -1063,6 +1218,7 @@ class GP_Locales {
 		$hu->slug = 'hu';
 		$hu->google_code = 'hu';
 		$hu->facebook_locale = 'hu_HU';
+		$hu->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$hy = new GP_Locale();
 		$hy->english_name = 'Armenian';
@@ -1074,6 +1230,7 @@ class GP_Locales {
 		$hy->slug = 'hy';
 		$hy->google_code = 'hy';
 		$hy->facebook_locale = 'hy_AM';
+		$hy->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ia = new GP_Locale();
 		$ia->english_name = 'Interlingua';
@@ -1111,6 +1268,7 @@ class GP_Locales {
 		$ike->lang_code_iso_639_2 = 'iku';
 		$ike->country_code = 'ca';
 		$ike->slug = 'ike';
+		$ike->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ilo = new GP_Locale();
 		$ilo->english_name = 'Iloko';
@@ -1131,6 +1289,7 @@ class GP_Locales {
 		$is->plural_expression = '(n % 100 != 1 && n % 100 != 21 && n % 100 != 31 && n % 100 != 41 && n % 100 != 51 && n % 100 != 61 && n % 100 != 71 && n % 100 != 81 && n % 100 != 91)';
 		$is->google_code = 'is';
 		$is->facebook_locale = 'is_IS';
+		$is->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$it = new GP_Locale();
 		$it->english_name = 'Italian';
@@ -1142,6 +1301,7 @@ class GP_Locales {
 		$it->slug = 'it';
 		$it->google_code = 'it';
 		$it->facebook_locale = 'it_IT';
+		$it->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ja = new GP_Locale();
 		$ja->english_name = 'Japanese';
@@ -1154,6 +1314,7 @@ class GP_Locales {
 		$ja->facebook_locale = 'ja_JP';
 		$ja->nplurals = 1;
 		$ja->plural_expression = '0';
+		$ja->cldr_plurals_mapping = array( 'other' );
 
 		$jv = new GP_Locale();
 		$jv->english_name = 'Javanese';
@@ -1178,6 +1339,7 @@ class GP_Locales {
 		$ka->plural_expression = '0';
 		$ka->google_code = 'ka';
 		$ka->facebook_locale = 'ka_GE';
+		$ka->cldr_plurals_mapping = array( 'other' );
 
 		$kab = new GP_Locale();
 		$kab->english_name = 'Kabyle';
@@ -1189,6 +1351,7 @@ class GP_Locales {
 		$kab->slug = 'kab';
 		$kab->nplurals = 2;
 		$kab->plural_expression = '(n > 1)';
+		$kab->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$kal = new GP_Locale();
 		$kal->english_name = 'Greenlandic';
@@ -1199,6 +1362,7 @@ class GP_Locales {
 		$kal->country_code = 'gl';
 		$kal->wp_locale = 'kal';
 		$kal->slug = 'kal';
+		$kal->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$kin = new GP_Locale();
 		$kin->english_name = 'Kinyarwanda';
@@ -1221,6 +1385,7 @@ class GP_Locales {
 		$kk->slug = 'kk';
 		$kk->google_code = 'kk';
 		$kk->facebook_locale = 'kk_KZ';
+		$kk->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$km = new GP_Locale();
 		$km->english_name = 'Khmer';
@@ -1234,6 +1399,7 @@ class GP_Locales {
 		$km->plural_expression = '0';
 		$km->google_code = 'km';
 		$km->facebook_locale = 'km_KH';
+		$km->cldr_plurals_mapping = array( 'other' );
 
 		$kmr = new GP_Locale();
 		$kmr->english_name = 'Kurdish (Kurmanji)';
@@ -1243,6 +1409,7 @@ class GP_Locales {
 		$kmr->country_code = 'tr';
 		$kmr->slug = 'kmr';
 		$kmr->facebook_locale = 'ku_TR';
+		$kmr->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$kn = new GP_Locale();
 		$kn->english_name = 'Kannada';
@@ -1254,6 +1421,7 @@ class GP_Locales {
 		$kn->slug = 'kn';
 		$kn->google_code = 'kn';
 		$kn->facebook_locale = 'kn_IN';
+		$kn->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ko = new GP_Locale();
 		$ko->english_name = 'Korean';
@@ -1267,6 +1435,7 @@ class GP_Locales {
 		$ko->plural_expression = '0';
 		$ko->google_code = 'ko';
 		$ko->facebook_locale = 'ko_KR';
+		$ko->cldr_plurals_mapping = array( 'other' );
 
 		$ks = new GP_Locale();
 		$ks->english_name = 'Kashmiri';
@@ -1274,6 +1443,7 @@ class GP_Locales {
 		$ks->lang_code_iso_639_1 = 'ks';
 		$ks->lang_code_iso_639_2 = 'kas';
 		$ks->slug = 'ks';
+		$ks->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$kir = new GP_Locale();
 		$kir->english_name = 'Kyrgyz';
@@ -1287,6 +1457,7 @@ class GP_Locales {
 		$kir->nplurals = 1;
 		$kir->plural_expression = '0';
 		$kir->google_code = 'ky';
+		$kir->cldr_plurals_mapping = array( 'other' );
 
 		$la = new GP_Locale();
 		$la->english_name = 'Latin';
@@ -1304,6 +1475,7 @@ class GP_Locales {
 		$lb->country_code = 'lu';
 		$lb->wp_locale = 'lb_LU';
 		$lb->slug = 'lb';
+		$lb->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$li = new GP_Locale();
 		$li->english_name = 'Limburgish';
@@ -1327,6 +1499,7 @@ class GP_Locales {
 		$lin->nplurals = 2;
 		$lin->plural_expression = 'n>1';
 		$lin->facebook_locale = 'ln_CD';
+		$lin->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$lo = new GP_Locale();
 		$lo->english_name = 'Lao';
@@ -1340,6 +1513,7 @@ class GP_Locales {
 		$lo->plural_expression = '0';
 		$lo->google_code = 'lo';
 		$lo->facebook_locale = 'lo_LA';
+		$lo->cldr_plurals_mapping = array( 'other' );
 
 		$lt = new GP_Locale();
 		$lt->english_name = 'Lithuanian';
@@ -1366,6 +1540,7 @@ class GP_Locales {
 		$lv->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)';
 		$lv->google_code = 'lv';
 		$lv->facebook_locale = 'lv_LV';
+		$lv->cldr_plurals_mapping = array( 'one', 'other', 'zero' );
 
 		$me = new GP_Locale();
 		$me->english_name = 'Montenegrin';
@@ -1386,6 +1561,7 @@ class GP_Locales {
 		$mg->slug = 'mg';
 		$mg->google_code = 'mg';
 		$mg->facebook_locale = 'mg_MG';
+		$mg->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$mhr = new GP_Locale();
 		$mhr->english_name = 'Mari (Meadow)';
@@ -1406,6 +1582,7 @@ class GP_Locales {
 		$mk->plural_expression = 'n==1 || n%10==1 ? 0 : 1';
 		$mk->google_code = 'mk';
 		$mk->facebook_locale = 'mk_MK';
+		$mk->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ml = new GP_Locale();
 		$ml->english_name = 'Malayalam';
@@ -1417,8 +1594,9 @@ class GP_Locales {
 		$ml->slug = 'ml';
 		$ml->google_code = 'ml';
 		$ml->facebook_locale = 'ml_IN';
+		$ml->cldr_plurals_mapping = array( 'one', 'other' );
 
-		$mlt = new GP_Locale(); 
+		$mlt = new GP_Locale();
 		$mlt->english_name = 'Maltese';
 		$mlt->native_name = 'Malti';
 		$mlt->lang_code_iso_639_1 = 'mt';
@@ -1431,7 +1609,8 @@ class GP_Locales {
 		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100>1 && n%100<11) ? 1 : (n%100>10 && n%100<20 ) ? 2 : 3)';
 		$mlt->google_code = 'mt';
 		$mlt->facebook_locale = 'mt_MT';
-		
+		$mlt->cldr_plurals_mapping = array( 'one', 'few', 'many', 'other' );
+
 		$mn = new GP_Locale();
 		$mn->english_name = 'Mongolian';
 		$mn->native_name = 'Монгол';
@@ -1442,6 +1621,7 @@ class GP_Locales {
 		$mn->slug = 'mn';
 		$mn->google_code = 'mn';
 		$mn->facebook_locale = 'mn_MN';
+		$mn->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$mr = new GP_Locale();
 		$mr->english_name = 'Marathi';
@@ -1452,6 +1632,7 @@ class GP_Locales {
 		$mr->slug = 'mr';
 		$mr->google_code = 'mr';
 		$mr->facebook_locale = 'mr_IN';
+		$mr->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$mri = new GP_Locale();
 		$mri->english_name = 'Maori';
@@ -1483,6 +1664,7 @@ class GP_Locales {
 		$ms->plural_expression = '0';
 		$ms->google_code = 'ms';
 		$ms->facebook_locale = 'ms_MY';
+		$ms->cldr_plurals_mapping = array( 'other' );
 
 		$mwl = new GP_Locale();
 		$mwl->english_name = 'Mirandese';
@@ -1510,6 +1692,7 @@ class GP_Locales {
 		$ne->slug = 'ne';
 		$ne->google_code = 'ne';
 		$ne->facebook_locale = 'ne_NP';
+		$ne->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$nb = new GP_Locale();
 		$nb->english_name = 'Norwegian (Bokmål)';
@@ -1521,6 +1704,7 @@ class GP_Locales {
 		$nb->slug = 'nb';
 		$nb->google_code = 'no';
 		$nb->facebook_locale = 'nb_NO';
+		$nb->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$nl = new GP_Locale();
 		$nl->english_name = 'Dutch';
@@ -1532,6 +1716,7 @@ class GP_Locales {
 		$nl->slug = 'nl';
 		$nl->google_code = 'nl';
 		$nl->facebook_locale = 'nl_NL';
+		$nl->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$nl_be = new GP_Locale();
 		$nl_be->english_name = 'Dutch (Belgium)';
@@ -1542,6 +1727,7 @@ class GP_Locales {
 		$nl_be->wp_locale = 'nl_BE';
 		$nl_be->slug = 'nl-be';
 		$nl_be->google_code = 'nl';
+		$nl_be->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$nn = new GP_Locale();
 		$nn->english_name = 'Norwegian (Nynorsk)';
@@ -1553,6 +1739,7 @@ class GP_Locales {
 		$nn->slug = 'nn';
 		$nn->google_code = 'no';
 		$nn->facebook_locale = 'nn_NO';
+		$nn->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$no = new GP_Locale();
 		$no->english_name = 'Norwegian';
@@ -1562,6 +1749,7 @@ class GP_Locales {
 		$no->country_code = 'no';
 		$no->slug = 'no';
 		$no->google_code = 'no';
+		$no->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$oci = new GP_Locale();
 		$oci->english_name = 'Occitan';
@@ -1592,6 +1780,7 @@ class GP_Locales {
 		$ory->wp_locale = 'ory';
 		$ory->slug = 'ory';
 		$ory->facebook_locale = 'or_IN';
+		$ory->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$os = new GP_Locale();
 		$os->english_name = 'Ossetic';
@@ -1600,6 +1789,7 @@ class GP_Locales {
 		$os->lang_code_iso_639_2 = 'oss';
 		$os->wp_locale = 'os';
 		$os->slug = 'os';
+		$os->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$pa = new GP_Locale();
 		$pa->english_name = 'Punjabi';
@@ -1611,6 +1801,7 @@ class GP_Locales {
 		$pa->slug = 'pa';
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
+		$pa->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
@@ -1624,6 +1815,7 @@ class GP_Locales {
 		$pl->plural_expression = '(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$pl->google_code = 'pl';
 		$pl->facebook_locale = 'pl_PL';
+		$pl->cldr_plurals_mapping = array( 'one', 'few', 'many' );
 
 		$pt_br = new GP_Locale();
 		$pt_br->english_name = 'Portuguese (Brazil)';
@@ -1637,6 +1829,7 @@ class GP_Locales {
 		$pt_br->plural_expression = '(n > 1)';
 		$pt_br->google_code = 'pt-BR';
 		$pt_br->facebook_locale = 'pt_BR';
+		$pt_br->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$pt = new GP_Locale();
 		$pt->english_name = 'Portuguese (Portugal)';
@@ -1647,6 +1840,7 @@ class GP_Locales {
 		$pt->slug = 'pt';
 		$pt->google_code = 'pt-PT';
 		$pt->facebook_locale = 'pt_PT';
+		$pt->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ps = new GP_Locale();
 		$ps->english_name = 'Pashto';
@@ -1658,6 +1852,7 @@ class GP_Locales {
 		$ps->slug = 'ps';
 		$ps->text_direction = 'rtl';
 		$ps->facebook_locale = 'ps_AF';
+		$ps->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$rhg = new GP_Locale();
 		$rhg->english_name = 'Rohingya';
@@ -1681,6 +1876,7 @@ class GP_Locales {
 		$ro->plural_expression = '(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2)';
 		$ro->google_code = 'ro';
 		$ro->facebook_locale = 'ro_RO';
+		$ro->cldr_plurals_mapping = array( 'one', 'few', 'other' );
 
 		$roh = new GP_Locale();
 		$roh->english_name = 'Romansh';
@@ -1690,6 +1886,7 @@ class GP_Locales {
 		$roh->country_code = 'ch';
 		$roh->wp_locale = 'roh';
 		$roh->slug = 'roh';
+		$roh->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ru = new GP_Locale();
 		$ru->english_name = 'Russian';
@@ -1703,6 +1900,7 @@ class GP_Locales {
 		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$ru->google_code = 'ru';
 		$ru->facebook_locale = 'ru_RU';
+		$ru->cldr_plurals_mapping = array( 'one', 'few', 'many' );
 
 		$rue = new GP_Locale();
 		$rue->english_name = 'Rusyn';
@@ -1760,6 +1958,7 @@ class GP_Locales {
 		$si->slug = 'si';
 		$si->google_code = 'si';
 		$si->facebook_locale = 'si_LK';
+		$si->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$sk = new GP_Locale();
 		$sk->english_name = 'Slovak';
@@ -1773,6 +1972,7 @@ class GP_Locales {
 		$sk->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
 		$sk->google_code = 'sk';
 		$sk->facebook_locale = 'sk_SK';
+		$sk->cldr_plurals_mapping = array( 'one', 'few', 'other' );
 
 		$sl = new GP_Locale();
 		$sl->english_name = 'Slovenian';
@@ -1786,6 +1986,7 @@ class GP_Locales {
 		$sl->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
 		$sl->google_code = 'sl';
 		$sl->facebook_locale = 'sl_SI';
+		$sl->cldr_plurals_mapping = array( 'one', 'two', 'few', 'other' );
 
 		$sna = new GP_Locale();
 		$sna->english_name = 'Shona';
@@ -1795,6 +1996,7 @@ class GP_Locales {
 		$sna->country_code = 'zw';
 		$sna->wp_locale = 'sna';
 		$sna->slug = 'sna';
+		$sna->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$snd = new GP_Locale();
 		$snd->english_name = 'Sindhi';
@@ -1818,6 +2020,7 @@ class GP_Locales {
 		$so->slug = 'so';
 		$so->google_code = 'so';
 		$so->facebook_locale = 'so_SO';
+		$so->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$sq = new GP_Locale();
 		$sq->english_name = 'Albanian';
@@ -1829,6 +2032,7 @@ class GP_Locales {
 		$sq->slug = 'sq';
 		$sq->google_code = 'sq';
 		$sq->facebook_locale = 'sq_AL';
+		$sq->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$sq_XK = new GP_Locale();
 		$sq_XK->english_name = 'Shqip (Kosovo)';
@@ -1837,6 +2041,7 @@ class GP_Locales {
 		$sq_XK->country_code = 'xk'; // Temporary country code until Kosovo is assigned an ISO code.
 		$sq_XK->wp_locale = 'sq_XK';
 		$sq_XK->slug = 'sq-xk';
+		$sq_XK->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$sr = new GP_Locale();
 		$sr->english_name = 'Serbian';
@@ -1850,6 +2055,7 @@ class GP_Locales {
 		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$sr->google_code = 'sr';
 		$sr->facebook_locale = 'sr_RS';
+		$sr->cldr_plurals_mapping = array( 'one', 'few', 'other' );
 
 		$srd = new GP_Locale();
 		$srd->english_name = 'Sardinian';
@@ -1883,6 +2089,7 @@ class GP_Locales {
 		$sv->slug = 'sv';
 		$sv->google_code = 'sv';
 		$sv->facebook_locale = 'sv_SE';
+		$sv->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$sw = new GP_Locale();
 		$sw->english_name = 'Swahili';
@@ -1893,6 +2100,7 @@ class GP_Locales {
 		$sw->slug = 'sw';
 		$sw->google_code = 'sw';
 		$sw->facebook_locale = 'sw_KE';
+		$sw->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$syr = new GP_Locale();
 		$syr->english_name = 'Syriac';
@@ -1901,6 +2109,7 @@ class GP_Locales {
 		$syr->country_code = 'iq';
 		$syr->wp_locale = 'syr';
 		$syr->slug = 'syr';
+		$syr->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$szl = new GP_Locale();
 		$szl->english_name = 'Silesian';
@@ -1923,6 +2132,7 @@ class GP_Locales {
 		$ta->slug = 'ta';
 		$ta->google_code = 'ta';
 		$ta->facebook_locale = 'ta_IN';
+		$ta->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$ta_lk = new GP_Locale();
 		$ta_lk->english_name = 'Tamil (Sri Lanka)';
@@ -1933,6 +2143,7 @@ class GP_Locales {
 		$ta_lk->wp_locale = 'ta_LK';
 		$ta_lk->slug = 'ta-lk';
 		$ta_lk->google_code = 'ta';
+		$ta_lk->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$tah = new GP_Locale();
 		$tah->english_name = 'Tahitian';
@@ -1955,6 +2166,7 @@ class GP_Locales {
 		$te->slug = 'te';
 		$te->google_code = 'te';
 		$te->facebook_locale = 'te_IN';
+		$te->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$tg = new GP_Locale();
 		$tg->english_name = 'Tajik';
@@ -1978,6 +2190,7 @@ class GP_Locales {
 		$th->plural_expression = '0';
 		$th->google_code = 'th';
 		$th->facebook_locale = 'th_TH';
+		$th->cldr_plurals_mapping = array( 'other' );
 
 		$tir = new GP_Locale();
 		$tir->english_name = 'Tigrinya';
@@ -1989,6 +2202,7 @@ class GP_Locales {
 		$tir->slug = 'tir';
 		$tir->nplurals = 1;
 		$tir->plural_expression = '0';
+		$tir->cldr_plurals_mapping = array( 'other' );
 
 		$tlh = new GP_Locale();
 		$tlh->english_name = 'Klingon';
@@ -2064,6 +2278,7 @@ class GP_Locales {
 		$tzm->slug = 'tzm';
 		$tzm->nplurals = 2;
 		$tzm->plural_expression = '(n > 1)';
+		$tzm->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
@@ -2080,6 +2295,7 @@ class GP_Locales {
 		$ug->wp_locale = 'ug_CN';
 		$ug->slug = 'ug';
 		$ug->text_direction = 'rtl';
+		$ug->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$uk = new GP_Locale();
 		$uk->english_name = 'Ukrainian';
@@ -2093,6 +2309,7 @@ class GP_Locales {
 		$uk->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$uk->google_code = 'uk';
 		$uk->facebook_locale = 'uk_UA';
+		$uk->cldr_plurals_mapping = array( 'one', 'few', 'many' );
 
 		$ur = new GP_Locale();
 		$ur->english_name = 'Urdu';
@@ -2105,6 +2322,7 @@ class GP_Locales {
 		$ur->text_direction = 'rtl';
 		$ur->google_code = 'ur';
 		$ur->facebook_locale = 'ur_PK';
+		$ur->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$uz = new GP_Locale();
 		$uz->english_name = 'Uzbek';
@@ -2118,6 +2336,7 @@ class GP_Locales {
 		$uz->plural_expression = '0';
 		$uz->google_code = 'uz';
 		$uz->facebook_locale = 'uz_UZ';
+		$uz->cldr_plurals_mapping = array( 'other' );
 
 		$vec = new GP_Locale();
 		$vec->english_name = 'Venetian';
@@ -2139,6 +2358,7 @@ class GP_Locales {
 		$vi->plural_expression = '0';
 		$vi->google_code = 'vi';
 		$vi->facebook_locale = 'vi_VN';
+		$vi->cldr_plurals_mapping = array( 'other' );
 
 		$wa = new GP_Locale();
 		$wa->english_name = 'Walloon';
@@ -2148,6 +2368,7 @@ class GP_Locales {
 		$wa->country_code = 'be';
 		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
+		$wa->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$xho = new GP_Locale();
 		$xho->english_name = 'Xhosa';
@@ -2160,6 +2381,7 @@ class GP_Locales {
 		$xho->slug = 'xho';
 		$xho->google_code = 'xh';
 		$xho->facebook_locale = 'xh_ZA';
+		$xho->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$xmf = new GP_Locale();
 		$xmf->english_name = 'Mingrelian';
@@ -2177,6 +2399,7 @@ class GP_Locales {
 		$yi->slug = 'yi';
 		$yi->text_direction = 'rtl';
 		$yi->google_code = 'yi';
+		$yi->cldr_plurals_mapping = array( 'one', 'other' );
 
 		$yor = new GP_Locale();
 		$yor->english_name = 'Yoruba';
@@ -2202,6 +2425,7 @@ class GP_Locales {
 		$zh_cn->plural_expression = '0';
 		$zh_cn->google_code = 'zh-CN';
 		$zh_cn->facebook_locale = 'zh_CN';
+		$zh_cn->cldr_plurals_mapping = array( 'other' );
 
 		$zh_hk = new GP_Locale();
 		$zh_hk->english_name = 'Chinese (Hong Kong)';
@@ -2214,6 +2438,7 @@ class GP_Locales {
 		$zh_hk->nplurals = 1;
 		$zh_hk->plural_expression = '0';
 		$zh_hk->facebook_locale = 'zh_HK';
+		$zh_hk->cldr_plurals_mapping = array( 'other' );
 
 		$zh_sg = new GP_Locale();
 		$zh_sg->english_name = 'Chinese (Singapore)';
@@ -2225,6 +2450,7 @@ class GP_Locales {
 		$zh_sg->slug = 'zh-sg';
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
+		$zh_sg->cldr_plurals_mapping = array( 'other' );
 
 		$zh_tw = new GP_Locale();
 		$zh_tw->english_name = 'Chinese (Taiwan)';
@@ -2238,6 +2464,7 @@ class GP_Locales {
 		$zh_tw->plural_expression = '0';
 		$zh_tw->google_code = 'zh-TW';
 		$zh_tw->facebook_locale = 'zh_TW';
+		$zh_tw->cldr_plurals_mapping = array( 'other' );
 
 		$zh = new GP_Locale();
 		$zh->english_name = 'Chinese';
@@ -2247,6 +2474,7 @@ class GP_Locales {
 		$zh->slug = 'zh';
 		$zh->nplurals = 1;
 		$zh->plural_expression = '0';
+		$zh->cldr_plurals_mapping = array( 'other' );
 
 		foreach( get_defined_vars() as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
