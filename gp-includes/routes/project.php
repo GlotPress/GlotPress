@@ -61,7 +61,11 @@ class GP_Route_Project extends GP_Route_Main {
 		 */
 		$translation_sets = apply_filters( 'gp_translation_sets_sort', $translation_sets );
 
-		$title = sprintf( __( '%s project', 'glotpress' ), esc_html( $project->name ) );
+		$title = sprintf(
+			/* translators: %s: project name */
+			__( '%s project', 'glotpress' ),
+			esc_html( $project->name )
+		);
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$this->tmpl( 'project', get_defined_vars() );
 	}

@@ -70,7 +70,11 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
  */
 function gp_unsupported_php_version_notice() {
 	$short_notice = __( '&#151; You are running an unsupported version of PHP.', 'glotpress' );
-	$long_notice = sprintf( __( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress.', 'glotpress' ), GP_PHP_REQUIRED_VERSION );
+	$long_notice = sprintf(
+		/* translators: %s: required PHP version */
+		__( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress.', 'glotpress' ),
+		GP_PHP_REQUIRED_VERSION
+	);
 
 	gp_display_disabled_admin_notice( $short_notice, $long_notice );
 }
