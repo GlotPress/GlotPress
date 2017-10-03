@@ -541,9 +541,10 @@ class GP_Locales {
 		$ewe->native_name = 'Eʋegbe';
 		$ewe->lang_code_iso_639_1 = 'ee';
 		$ewe->lang_code_iso_639_2 = 'ewe';
+		$ewe->lang_code_iso_639_3 = 'ewe';
 		$ewe->country_code = 'gh';
-		$ewe->wp_locale = 'ee';
-		$ewe->slug = 'ewe';
+		$ewe->wp_locale = 'ewe';
+		$ewe->slug = 'ee';
 
 		$el_po = new GP_Locale();
 		$el_po->english_name = 'Greek (Polytonic)';
