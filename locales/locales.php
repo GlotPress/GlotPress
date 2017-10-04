@@ -1834,8 +1834,6 @@ class GP_Locales {
 		$sq_xk->english_name = 'Shqip (Kosovo)';
 		$sq_xk->native_name = 'Për Kosovën Shqip';
 		$sq_xk->lang_code_iso_639_1 = 'sq';
-		$sq_xk->lang_code_iso_639_2 = 'sqi';
-		$sq_xk->lang_code_iso_639_3 = 'sqi';
 		$sq_xk->country_code = 'xk'; // Temporary country code until Kosovo is assigned an ISO code.
 		$sq_xk->wp_locale = 'sq_XK';
 		$sq_xk->slug = 'sq-xk';
