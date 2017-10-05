@@ -158,16 +158,16 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'test_check_for_hard_spaces', 'Test string', 'Test string' );
 
 		// Soft space in original, hard space in translation.
-		$this->assertHasWarnings( 'test_check_for_hard_spaces', 'Test string', 'Test' . chr(255) . 'string' );
+		$this->assertHasWarnings( 'test_check_for_hard_spaces', 'Test string', 'Test' . chr( 255 ) . 'string' );
 
 		// Hard space in original, hard space in translation.
-		$this->assertNoWarnings( 'test_check_for_hard_spaces', 'Test' . chr(255) . 'string', 'Test' . chr(255) . 'string' );
+		$this->assertNoWarnings( 'test_check_for_hard_spaces', 'Test' . chr( 255 ) . 'string', 'Test' . chr( 255 ) . 'string' );
 
 		// Multiple hard space in original, equal number of hard space in translation.
-		$this->assertNoWarnings( 'test_check_for_hard_spaces', 'Test' . chr(255) . 'string' . chr(255) . 'two', 'Test' . chr(255) . 'string' . chr(255) . 'two' );
+		$this->assertNoWarnings( 'test_check_for_hard_spaces', 'Test' . chr( 255 ) . 'string' . chr( 255 ) . 'two', 'Test' . chr( 255 ) . 'string' . chr( 255 ) . 'two' );
 
 		// Multiple hard space in original, different number of hard space in translation.
-		$this->assertHasWarnings( 'test_check_for_hard_spaces', 'Test' . chr(255) . 'string' . chr(255) . 'two', 'Test' . chr(255) . 'string two' );
+		$this->assertHasWarnings( 'test_check_for_hard_spaces', 'Test' . chr( 255 ) . 'string' . chr( 255 ) . 'two', 'Test' . chr( 255 ) . 'string two' );
 	}
 
 }
