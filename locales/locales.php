@@ -16,7 +16,23 @@ class GP_Locale {
 	public $google_code = null;
 	public $preferred_sans_serif_font_family = null;
 	public $facebook_locale = null;
+
+	/**
+	 * The variant root for this locale.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
 	public $variant_root = null;
+
+	/**
+	 * The variants of this locale.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var array
+	 */
 	public $variants = null;
 
 	// TODO: days, months, decimals, quotes
@@ -572,7 +588,7 @@ class GP_Locales {
 
 		$el_po = new GP_Locale();
 		$el_po->english_name = 'Greek (Polytonic)';
-		$el_po->native_name = 'Greek (Polytonic)'; // TODO
+		$el_po->native_name = 'Greek (Polytonic)'; // TODO.
 		$el_po->country_code = 'gr';
 		$el_po->slug = 'el-po';
 		$el_po->variant_root = $el->slug;
@@ -2372,8 +2388,6 @@ class GP_Locales {
 		$zh_hk->nplurals = 1;
 		$zh_hk->plural_expression = '0';
 		$zh_hk->facebook_locale = 'zh_HK';
-		$zh_hk->variant_root = $zh->slug;
-		$zh->variants[ $zh_hk->slug ] = $zh_hk->english_name;
 
 		$zh_sg = new GP_Locale();
 		$zh_sg->english_name = 'Chinese (Singapore)';
@@ -2385,8 +2399,8 @@ class GP_Locales {
 		$zh_sg->slug = 'zh-sg';
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
-		$zh_sg->variant_root = $zh->slug;
-		$zh->variants[ $zh_sg->slug ] = $zh_sg->english_name;
+		$zh_sg->variant_root = $zh_cn->slug;
+		$zh->variants[ $zh_sg->slug ] = $zh_cn->english_name;
 
 		$zh_tw = new GP_Locale();
 		$zh_tw->english_name = 'Chinese (Taiwan)';
@@ -2400,8 +2414,6 @@ class GP_Locales {
 		$zh_tw->plural_expression = '0';
 		$zh_tw->google_code = 'zh-TW';
 		$zh_tw->facebook_locale = 'zh_TW';
-		$zh_tw->variant_root = $zh->slug;
-		$zh->variants[ $zh_tw->slug ] = $zh_tw->english_name;
 
 		$zul = new GP_Locale();
 		$zul->english_name = 'Zulu';
