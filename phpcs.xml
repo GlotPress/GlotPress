@@ -23,6 +23,7 @@
 
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
 		<exclude-pattern>/gp-templates/*</exclude-pattern>
+		<exclude-pattern>/locales/*</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.WP.I18n">
