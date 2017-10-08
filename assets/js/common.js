@@ -3,29 +3,35 @@ var $gp = function($) { return {
 		element: null,
 		init: function() {
 			$gp.notices.element = $('#gp-js-message');
-			$gp.notices.element.on( 'click', $gp.notices.clear );
+			$gp.notices.element.on( 'click', '.gp-js-message-dismiss', $gp.notices.clear );
 		},
-		error: function(message) {
-			$gp.notices.generic_message('gp-js-error', message, true);
+		error: function( message ) {
+			$gp.notices.genericMessage( 'gp-js-error', message, true );
 		},
-		notice: function(message) {
-			$gp.notices.generic_message('gp-js-notice', message, true);
+		notice: function( message ) {
+			$gp.notices.genericMessage( 'gp-js-notice', message, true );
 		},
-		success: function(message) {
-			$gp.notices.generic_message('gp-js-success', message, false);
-			$gp.notices.element.fadeOut(10000);
+		success: function( message ) {
+			$gp.notices.genericMessage( 'gp-js-success', message, false );
+			$gp.notices.element.fadeOut( 10000 );
 		},
-		clear: function(message) {
-			$gp.notices.element.html('').hide();
+		clear: function() {
+			$gp.notices.element.html( '' ).hide();
 		},
-		generic_message: function(css_class, message, dismiss) {
-			var dismiss_message = '';
+		genericMessage: function( cssClass, message, dismissable ) {
+			var dismissButton = '';
 
-			if ( true === dismiss ) {
-				dismiss_message = '<div id="gp-js-message-dismiss" class="gp-js-message-dismiss">Discard</div>';
+			// Stop and complete any running animations.
+			$gp.notices.element.stop( true, true );
+
+			if ( true === dismissable ) {
+				dismissButton = ' <button type="button" class="button-link gp-js-message-dismiss">' + $gp.l10n.dismiss + '</button>';
 			}
 
-			$gp.notices.element.removeClass().addClass('gp-js-message').addClass(css_class).html( '<div id="gp-js-message-content" class="gp-js-message-content">' + message + dismiss_message + '</div>');
+			$gp.notices.element.removeClass()
+				.addClass( 'gp-js-message' )
+				.addClass( cssClass )
+				.html( '<div id="gp-js-message-content" class="gp-js-message-content">' + message + dismissButton + '</div>' );
 			$gp.notices.center();
 			$gp.notices.element.show();
 		},
@@ -51,8 +57,9 @@ $gp.showhide = function($) { return function(link, container, options) {
 	var options = $.extend({}, defaults, options);
 	var $link = $(link);
 	var $container = $(container);
+	var registry;
 	if ( !$gp.showhide.registry[options.group] ) $gp.showhide.registry[options.group] = [];
-	var registry = $gp.showhide.registry[options.group];
+	registry = $gp.showhide.registry[options.group];
 	var show = function() {
 		for(var i = 0; i < registry.length; ++i) {
 			registry[i].hide();
