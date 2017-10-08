@@ -181,18 +181,18 @@ $i = 0;
 			<dd>
 				<?php
 					echo gp_radio_buttons(
-							'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
-							array(
-								'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-								'current' => __( 'Current only', 'glotpress' ),
-								'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
-								'waiting' => __( 'Waiting approval', 'glotpress' ),
-								'rejected' => __( 'Rejected', 'glotpress' ),
-								'untranslated' => __( 'Without current translation', 'glotpress' ),
-								'either' => __( 'Any', 'glotpress' ),
-							),
-							gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
-						);
+						'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
+						array(
+							'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
+							'current' => __( 'Current only', 'glotpress' ),
+							'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
+							'waiting' => __( 'Waiting approval', 'glotpress' ),
+							'rejected' => __( 'Rejected', 'glotpress' ),
+							'untranslated' => __( 'Without current translation', 'glotpress' ),
+							'either' => __( 'Any', 'glotpress' ),
+						),
+						gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
+					);
 				?>
 			</dd>
 			<dd>
