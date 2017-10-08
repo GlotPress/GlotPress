@@ -202,6 +202,23 @@ textarea {
 	width: 40em;
 }
 
+.button-link {
+	font-family: "Helvetica", "Arial", sans-serif;
+	color: #2F34B8;
+	line-height: 1.5em;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	box-shadow: none;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	outline: none;
+	cursor: pointer;
+	text-align: left;
+	text-decoration: underline;
+}
+
 table.translations,
 table.translation-sets,
 table.glossary,
@@ -454,13 +471,16 @@ span.morethan90 {
 /*
  * JavaScript, errors and notices.
  */
-#gp-js-message {
+.gp-js-message {
 	position: fixed;
 	top: 0;
-	padding: 0.5em;
+	padding: 1em;
 	display: none;
-	font-size: 85%;
 	z-index: 1001;
+}
+
+.gp-js-message-dismiss {
+	color: #fff;
 }
 
 .gp-js-error, .error {
