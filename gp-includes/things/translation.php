@@ -249,9 +249,21 @@ class GP_Translation extends GP_Thing {
 
 	public function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
+
+		/**
+		 * Filters the translation fields before they are saved.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array          $args Translation arguments.
+		 * @param GP_Translation $this Translation class.
+		 */
+		$args = apply_filters( 'gp_translation_prepare_for_save', $args, $this );
+
 		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
 			$args['warnings'] = serialize( $args['warnings'] );
 		}
+
 		return $args;
 	}
 
