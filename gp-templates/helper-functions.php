@@ -305,6 +305,10 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 	];
 
 	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
+		}
+
 		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
 	}
 	?>

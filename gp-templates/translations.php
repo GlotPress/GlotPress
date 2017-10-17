@@ -258,7 +258,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 </table>
 <?php
-gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set'bottom' );
+gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
 
 echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
