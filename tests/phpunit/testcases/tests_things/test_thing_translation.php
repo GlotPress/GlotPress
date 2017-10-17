@@ -213,7 +213,13 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_untranslated' ) );
 
 		$this->assertEquals( 2, count( $for_export ) );
-		$this->assertEquals( $translation1->id, $for_export[1]->id );
+
+		// We can't be sure which order the for_export call returned the strings, so make sure to compare the right one.
+		if ( (int) $for_export[0]->original_id === (int) $translation1->original_id ) {
+			$this->assertEquals( $translation1->id, $for_export[0]->id );
+		} else {
+			$this->assertEquals( $translation1->id, $for_export[1]->id );
+		}
 	}
 
 	function test_delete() {
