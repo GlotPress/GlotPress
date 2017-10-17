@@ -258,9 +258,9 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 </table>
 <?php
-gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, 'bottom' );
+gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set'bottom' );
 
-echo gp_pagination( $page, $per_page, $total_translations_count ); // WPCS: XSS Ok.
+echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>

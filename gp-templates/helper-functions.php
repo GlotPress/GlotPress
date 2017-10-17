@@ -262,11 +262,12 @@ function references( $project, $entry ) {
 /**
  * Output the bulk actions toolbar in the translations page.
  *
- * @param string $bulk_action  The URL to submit the form to.
- * @param string $can_write    Can the current user write translations to the database.
- * @param string $location     The location of this toolbar, used to make id's unique for each instance on a page.
+ * @param string $bulk_action     The URL to submit the form to.
+ * @param string $can_write       Can the current user write translations to the database.
+ * @param string $translation_set The current translation set.
+ * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
  */
-function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $location = 'top' ) {
+function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
 ?>
 <form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
 	<div>
@@ -315,9 +316,7 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $locati
 	</div>
 	<?php
 		$nonce = gp_route_nonce_field( 'bulk-actions', false );
-
 		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
-
 		echo $nonce; // WPCS: XSS Ok.
 	?>
 </form>
