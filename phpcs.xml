@@ -44,7 +44,7 @@
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
-	<exclude-pattern>*/bin/locale-generator/locale-generator.php</exclude-pattern>
+	<exclude-pattern>/bin</exclude-pattern>
 
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
 		<exclude-pattern>/gp-templates/*</exclude-pattern>
