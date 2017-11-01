@@ -4,8 +4,7 @@
  * of the GlotPress hooks.
  *
  * If you need to remove a default hook, this file will
- * give you the priority for which to use to remove the
- * hook.
+ * give you the priority to use for removing the hook.
  *
  * @package GlotPress
  */
