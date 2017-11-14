@@ -25,57 +25,13 @@ $i = 0;
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php endif; ?>
 </h2>
-<?php if ( $can_approve ): ?>
-<form id="bulk-actions-toolbar" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; ?>" method="post">
-	<div>
-	<select name="bulk[action]" id="bulk-action">
-		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
-		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
-		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
-		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
-	<?php if( $can_write ) : ?>
-		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
-	<?php endif; ?>
-		<?php
+<?php
+if ( $can_approve ) {
+	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, 'top' );
+}
 
-		/**
-		 * Fires inside the bulk action menu for translation sets.
-		 *
-		 * Printing out option elements here will add those to the translation
-		 * bulk options drop down menu.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param GP_Translation_Set $set The translation set.
-		 */
-		do_action( 'gp_translation_set_bulk_action', $translation_set ); ?>
-	</select>
-	<?php if( $can_write ) : ?>
-	<select name="bulk[priority]" id="bulk-priority" class="hidden">
-	<?php
-	$labels = [
-		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
-		'low'    => _x( 'low', 'Priority', 'glotpress' ),
-		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
-		'high'   => _x( 'high', 'Priority', 'glotpress' ),
-	];
-	foreach( GP::$original->get_static( 'priorities' ) as $value => $label ) {
-		if ( isset( $labels[ $label ] ) ) {
-			$label = $labels[ $label ];
-		}
-		$selected = $value == 'normal' ? " selected='selected'" : '';
-		echo "\t<option value='" . esc_attr( $value ) . "' $selected>" . esc_html( $label ) . "</option>\n";
-	}
-	?>
-	</select>
-	<?php endif; ?>
-	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr(gp_url_current()); ?>" id="bulk[redirect_to]" />
-	<input type="hidden" name="bulk[row-ids]" value="" id="bulk[row-ids]" />
-	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
-	</div>
-	<?php gp_route_nonce_field( 'bulk-actions' ); ?>
-</form>
-<?php endif; ?>
+echo gp_pagination( $page, $per_page, $total_translations_count );
+?>
 <div class="filter-toolbar">
 	<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 		<div>
@@ -271,10 +227,6 @@ $i = 0;
 	</form>
 </div>
 
-<?php
-echo gp_pagination( $page, $per_page, $total_translations_count ); // WPCS: XSS ok.
-?>
-
 <table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
 	<thead>
 	<tr>
@@ -305,7 +257,11 @@ echo gp_pagination( $page, $per_page, $total_translations_count ); // WPCS: XSS 
 	endif;
 ?>
 </table>
-<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
+<?php
+gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
+
+echo gp_pagination( $page, $per_page, $total_translations_count );
+?>
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 <?php

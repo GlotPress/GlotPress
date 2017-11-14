@@ -769,7 +769,9 @@ span.removed {
 }
 
 #legend {
-	margin-top: 1em;
+	float: left;
+	margin-top: .3em;
+	padding-left: 1.5em;	
 }
 
 #legend div {
