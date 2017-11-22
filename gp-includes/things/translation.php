@@ -506,8 +506,12 @@ class GP_Translation extends GP_Thing {
 
 		$this->found_rows = $this->found_rows();
 		$translations = array();
+
 		foreach( (array)$rows as $row ) {
 			$row->user = $row->user_last_modified = null;
+
+			// Enable plugins to make use of the additional translation fields, regardless of a locale plural numbers.
+			$number_of_translations = apply_filters( 'gp_number_of_translations', $locale->nplurals, $row );
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
 				$user = get_userdata( $row->user_id );
@@ -534,7 +538,7 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$row->translations = array();
-			for( $i = 0; $i < $locale->nplurals; $i++ ) {
+			for ( $i = 0; $i < $number_of_translations; $i++ ) {
 				$row->translations[] = $row->{"translation_".$i};
 			}
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
