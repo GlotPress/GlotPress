@@ -530,7 +530,7 @@ class GP_Format_Android extends GP_Format {
 		$order = array();
 
 		foreach ( $locale->cldr_plural_expressions as $key => $value ) {
-			if ( '' === $value ) {
+			if ( '' !== $value ) {
 				$order[] = $key;
 			}
 		}
