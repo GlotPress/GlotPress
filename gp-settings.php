@@ -116,6 +116,7 @@ require_once GP_PATH . GP_INC . 'formats/format-android.php';
 require_once GP_PATH . GP_INC . 'formats/format-pomo.php';
 require_once GP_PATH . GP_INC . 'formats/format-resx.php';
 require_once GP_PATH . GP_INC . 'formats/format-strings.php';
+require_once GP_PATH . GP_INC . 'formats/format-stringsdict.php';
 require_once GP_PATH . GP_INC . 'formats/format-properties.php';
 require_once GP_PATH . GP_INC . 'formats/format-json.php';
 require_once GP_PATH . GP_INC . 'formats/format-jed1x.php';
