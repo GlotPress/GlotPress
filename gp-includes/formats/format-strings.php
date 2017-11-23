@@ -10,6 +10,8 @@
 /**
  * Format class used to support Mac OS X/iOS Strings file format.
  *
+ * .string file format defined at: https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPInternational/MaintaingYourOwnStringsFiles/MaintaingYourOwnStringsFiles.html#//apple_ref/doc/uid/10000171i-CH19-SW22
+ *
  * @since 1.0.0
  */
 class GP_Format_Strings extends GP_Format {
