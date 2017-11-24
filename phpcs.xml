@@ -39,9 +39,28 @@
 	<arg name="extensions" value="php"/>
 	<file>.</file>
 
+	<!--
+		Normally the exclude patterns for directories should end in /* however there is a bug
+		in the current version of phpcs (see https://github.com/squizlabs/PHP_CodeSniffer/issues/1731)
+		which breaks this when a single file name is passed to be checked (for example with TravisCI).
+
+		A fix has been committed and will be included in phpcs version 3.2, however this is no release
+		date at this time.
+
+		As a temporary fix, removing the trailing /* resolves the issue on TravisCI, so both are being
+		included here until phpcs 3.2 is released.
+	-->
+	<exclude-pattern>/tests</exclude-pattern>
+	<exclude-pattern>/dev-lib</exclude-pattern>
+	<exclude-pattern>/node_modules</exclude-pattern>
+	<exclude-pattern>/vendor</exclude-pattern>
+	<exclude-pattern>/locales</exclude-pattern>
+	<exclude-pattern>/bin</exclude-pattern>
+
 	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/dev-lib/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
+	<exclude-pattern>/bin/*</exclude-pattern>
 </ruleset>
