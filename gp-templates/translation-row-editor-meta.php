@@ -58,27 +58,27 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 
 	<?php if ( property_exists( $translation, 'root_translation_set_id' ) ) : ?>
 	<dl>
-		<dt><?php _e( 'Root Translation:', 'glotpress' ); ?></dt>
+		<dt><?php _e( 'Root Translation:', 'glotpress' ); // WPCS: XSS OK. ?></dt>
 	<?php if ( $translation->translation_set_id === $translation->root_translation_set_id ) : ?>
 		<dd>
 <?php
 			gp_link(
-			gp_url_project_locale(
-				$project,
-				$root_locale->slug,
-				$root_translation_set->slug,
-				array(
-					'filters[status]'         => 'either',
-					'filters[original_id]'    => $translation->original_id,
-					'filters[translation_id]' => $translation->id,
-				)
-			),
-			$root_translation_set->name_with_locale()
-		);
+				gp_url_project_locale(
+					$project,
+					$root_locale->slug,
+					$root_translation_set->slug,
+					array(
+						'filters[status]'         => 'either',
+						'filters[original_id]'    => $translation->original_id,
+						'filters[translation_id]' => $translation->id,
+					)
+				),
+				$root_translation_set->name_with_locale()
+			);
 ?>
 		</dd>
 	<?php else : ?>
-		<dd><?php _e( 'False', 'glotpress' ); ?></dd>
+		<dd><?php _e( 'False', 'glotpress' ); // WPCS: XSS OK. ?></dd>
 	<?php endif; ?>
 	</dl>
 	<?php endif; ?>

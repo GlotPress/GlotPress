@@ -303,19 +303,19 @@ class GP_Translation extends GP_Thing {
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
 
-		$locale = GP_Locales::by_slug( $translation_set->locale );
-		$root_locale = null;
+		$locale               = GP_Locales::by_slug( $translation_set->locale );
+		$root_locale          = null;
 		$root_translation_set = null;
-		$has_root = false;
+		$has_root             = false;
 
 		if ( null !== $locale->variant_root ) {
 			$root_for_translation = array();
 
-			$root_locale = GP_Locales::by_slug( $locale->variant_root );
+			$root_locale          = GP_Locales::by_slug( $locale->variant_root );
 			$root_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set->slug, $locale->variant_root );
 
-			// Only set the root tranlsation flag if we have a valid root translation set, otherwise there's no point in querying it later.
-			if ( null !== $root_translation_set ) {
+			// Only set the root translation flag if we have a valid root translation set, otherwise there's no point in querying it later.
+			if ( null !== $root_translation_set && false !== $root_translation_set ) {
 				$has_root = true;
 			}
 		}
@@ -503,7 +503,7 @@ class GP_Translation extends GP_Thing {
 			$fields[] = 'r.user_id_last_modified as root_user_id_last_modified';
 		}
 
-		$join = "$join_type JOIN ( SELECT * FROM {$wpdb->gp_translations} WHERE translation_set_id = " . (int) $translation_set->id . " $join_on ) AS t ON o.id = t.original_id";
+		$join      = "$join_type JOIN ( SELECT * FROM {$wpdb->gp_translations} WHERE translation_set_id = " . (int) $translation_set->id . " $join_on ) AS t ON o.id = t.original_id";
 		$root_join = '';
 
 		if ( $has_root ) {
@@ -568,23 +568,23 @@ class GP_Translation extends GP_Thing {
 
 		foreach( (array)$rows as $row ) {
 			if ( null === $row->id && $has_root ) {
-				$row->id = $row->root_id;
-				$row->original_id = $row->root_original_id;
-				$row->translation_set_id = $row->root_translation_set_id;
-				$row->translation_0 = $row->root_translation_0;
-				$row->translation_1 = $row->root_translation_1;
-				$row->translation_2 = $row->root_translation_2;
-				$row->translation_3 = $row->root_translation_3;
-				$row->translation_4 = $row->root_translation_4;
-				$row->translation_5 = $row->root_translation_5;
-				$row->user_id = $row->root_user_id;
-				$row->status = $row->root_status;
-				$row->date_added = $row->root_date_added;
-				$row->date_modified = $row->root_date_modified;
-				$row->warnings = $row->root_warnings;
+				$row->id                    = $row->root_id;
+				$row->original_id           = $row->root_original_id;
+				$row->translation_set_id    = $row->root_translation_set_id;
+				$row->translation_0         = $row->root_translation_0;
+				$row->translation_1         = $row->root_translation_1;
+				$row->translation_2         = $row->root_translation_2;
+				$row->translation_3         = $row->root_translation_3;
+				$row->translation_4         = $row->root_translation_4;
+				$row->translation_5         = $row->root_translation_5;
+				$row->user_id               = $row->root_user_id;
+				$row->status                = $row->root_status;
+				$row->date_added            = $row->root_date_added;
+				$row->date_modified         = $row->root_date_modified;
+				$row->warnings              = $row->root_warnings;
 				$row->user_id_last_modified = $row->root_user_id_last_modified;
-				$row->translation_status = $row->root_status;
-				$row->translation_added = $row->root_date_added;
+				$row->translation_status    = $row->root_status;
+				$row->translation_added     = $row->root_date_added;
 			}
 
 			$row->user = $row->user_last_modified = null;
