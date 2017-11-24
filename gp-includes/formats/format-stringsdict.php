@@ -123,8 +123,8 @@ class GP_Format_StringsDict extends GP_Format {
 	 * @param obj $locale The locale object to use for exporting.
 	 */
 	private function plural( $entry, $locale ) {
-		$nplurals = $locale->nplurals;
-		$order = $this->get_plural_order( $locale );
+		$nplurals    = $locale->nplurals;
+		$order       = $this->get_plural_order( $locale );
 		$plural_type = $this->get_plural_type( $entry->singular, $entry->plural );
 
 		$this->line( '<key>' . $entry->singular . '</key>', 1 );
@@ -135,11 +135,11 @@ class GP_Format_StringsDict extends GP_Format {
 		$this->line( '<key>NSStringFormatSpecTypeKey</key>', 3 );
 		$this->line( '<string>NSStringPluralRuleType</string>', 3 );
 		$this->line( '<key>NSStringFormatValueTypeKey</key>', 3 );
-		$this->line( '<string>' . $plural_type .'</string>', 3 );
+		$this->line( '<string>' . $plural_type . '</string>', 3 );
 
 		for ( $i = 0; $i < $nplurals; $i++ ) {
-			$this->line( '<key>' . $order[$i] . '</key>', 3 );
-            $this->line( '<string>' . $entry->translations[ $i ] . '</string>', 3 );
+			$this->line( '<key>' . $order[ $i ] . '</key>', 3 );
+			$this->line( '<string>' . $entry->translations[ $i ] . '</string>', 3 );
 		}
 
 		$this->line( '</dict>', 2 );
@@ -156,7 +156,7 @@ class GP_Format_StringsDict extends GP_Format {
 	 */
 	private function get_plural_type( $singular, $plural ) {
 		foreach ( array( $singular, $plural ) as $string ) {
-			// match the allowable variable types (https://developer.apple.com/library/content/documentation/CoreFoundation/Conceptual/CFStrings/formatSpecifiers.html#//apple_ref/doc/uid/TP40004265)
+			// Match the allowable variable types (https://developer.apple.com/library/content/documentation/CoreFoundation/Conceptual/CFStrings/formatSpecifiers.html#//apple_ref/doc/uid/TP40004265).
 			if ( 1 === preg_match( '/%[h|hh|l|ll|q|L|z|t|j]?[@|d|D|u|U|x|X|o|O|f|e|E|g|G|c|C|s|S|p|a|A|F]/', $string, $matches ) ) {
 				return substr( $matches[0], 1 );
 			}
@@ -192,8 +192,8 @@ class GP_Format_StringsDict extends GP_Format {
 	 * @return Translations|bool The extracted originals on success, false on failure.
 	 */
 	public function read_originals_from_file( $file_name ) {
-		$entries = new Translations;
-		$file = file_get_contents( $file_name );
+		$entries = new Translations();
+		$file    = file_get_contents( $file_name );
 
 		if ( false === $file ) {
 			return false;
@@ -201,27 +201,28 @@ class GP_Format_StringsDict extends GP_Format {
 
 		$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
 
-		$context = $comment = null;
-		$lines = explode( "\n", $file );
+		$context = null;
+		$comment = null;
+		$lines   = explode( "\n", $file );
 
 		foreach ( $lines as $line ) {
 			if ( is_null( $context ) ) {
 				if ( preg_match( '/^\/\*\s*(.*)\s*\*\/$/', $line, $matches ) ) {
 					$matches[1] = trim( $matches[1] );
 
-					if ( $matches[1] !== "No comment provided by engineer." ) {
+					if ( 'No comment provided by engineer.' !== $matches[1] ) {
 						$comment = $matches[1];
 					} else {
 						$comment = null;
 					}
-				} else if ( preg_match( '/^"(.*)" = "(.*)";$/', $line, $matches ) ) {
-					$entry = new Translation_Entry();
-					$entry->context = $this->unescape( $matches[1] );
+				} elseif ( preg_match( '/^"(.*)" = "(.*)";$/', $line, $matches ) ) {
+					$entry           = new Translation_Entry();
+					$entry->context  = $this->unescape( $matches[1] );
 					$entry->singular = $this->unescape( $matches[2] );
 
-					if ( ! is_null( $comment )) {
+					if ( ! is_null( $comment ) ) {
 						$entry->extracted_comments = $comment;
-						$comment = null;
+						$comment                   = null;
 					}
 
 					$entry->translations = array();
@@ -244,7 +245,7 @@ class GP_Format_StringsDict extends GP_Format {
 	 * @return int Returns the result of the comparison.
 	 */
 	private function sort_entries( $a, $b ) {
-		if ( $a->context == $b->context ) {
+		if ( $a->context === $b->context ) {
 			return 0;
 		}
 
@@ -279,4 +280,4 @@ class GP_Format_StringsDict extends GP_Format {
 
 }
 
-GP::$formats['stringsdict'] = new GP_Format_StringsDict;
+GP::$formats['stringsdict'] = new GP_Format_StringsDict();

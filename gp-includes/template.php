@@ -472,7 +472,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 function gp_plural_types_dropdown( $name_and_id, $selected_plural_type = null, $attrs = array() ) {
 	$options = array(
 		'gettext' => __( 'GetText', 'glotpress' ),
-		'cldr' => __( 'CLDR', 'glotpress' ),
+		'cldr'    => __( 'CLDR', 'glotpress' ),
 	);
 
 	return gp_select( $name_and_id, $options, $selected_plural_type, $attrs );

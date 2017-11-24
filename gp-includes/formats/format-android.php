@@ -81,8 +81,9 @@ class GP_Format_Android extends GP_Format {
 		$this->line( '-->' );
 
 		$this->line( '<resources>' );
+
 		$string_array_items = array();
-		$plural_items = array();
+		$plural_items       = array();
 
 		foreach ( $entries as $entry ) {
 			if ( preg_match( '/.+\[\d+\]$/', $entry->context ) ) {
@@ -264,7 +265,7 @@ class GP_Format_Android extends GP_Format {
 		$entry->translations = array();
 
 		$comments = '';
-		$index = 0;
+		$index    = 0;
 
 		foreach ( $strings as $string ) {
 			// Check to see if there is an xliff tag in the string.
@@ -272,7 +273,7 @@ class GP_Format_Android extends GP_Format {
 
 			// If an xliff tag was found, replace the translation and add a comment for later.
 			if ( false !== $xliff_info ) {
-				$string[0] = $xliff_info['string'];
+				$string[0]          = $xliff_info['string'];
 				$string['comment'] .= $xliff_info['description'];
 			}
 
@@ -287,7 +288,7 @@ class GP_Format_Android extends GP_Format {
 		}
 
 		$entry->singular = $entry->translations[0];
-		$entry->plural = $entry->translations[1];
+		$entry->plural   = $entry->translations[1];
 
 		return $entry;
 	}
@@ -483,8 +484,8 @@ class GP_Format_Android extends GP_Format {
 	 */
 	private function plurals( $entries, $locale ) {
 		$nplurals = $locale->nplurals;
-		$mapping = array();
-		$order = $this->get_plural_order( $locale );
+		$mapping  = array();
+		$order    = $this->get_plural_order( $locale );
 
 		// Sort the entries before processing them.
 		uasort( $entries, array( $this, 'cmp_context' ) );

@@ -19,28 +19,28 @@ class GP_Project extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_projects';
+	public $table_basename = 'gp_projects';
 
 	/**
 	 * List of field names for a translation.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active', 'plurals_type' );
+	public $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active', 'plurals_type' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'parent_project_id', 'active' );
+	public $int_fields = array( 'id', 'parent_project_id', 'active' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * ID of the project.
