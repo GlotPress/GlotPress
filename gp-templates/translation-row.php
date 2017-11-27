@@ -61,7 +61,7 @@ if ( is_object( $glossary ) ) {
 	   <?php echo $priority_char[$t->priority][0] ?>
 	</td>
 	<td class="original">
-		<?php echo prepare_original( esc_translation( $t->singular ) ); ?>
+		<?php echo prepare_original( esc_translation( $t->singular ) ); // WPCS: XSS ok. ?>
 		<?php if ( $t->context ): ?>
 		<span class="context bubble" title="<?php printf( __( 'Context: %s', 'glotpress' ), esc_html($t->context) ); ?>"><?php echo esc_html($t->context); ?></span>
 		<?php endif; ?>
@@ -110,8 +110,10 @@ if ( is_object( $glossary ) ) {
 			$plural   = isset( $t->plural_glossary_markup ) ? $t->plural_glossary_markup : esc_translation( $t->plural );
 		?>
 
-		<?php if ( ! $t->plural ): ?>
-		<p class="original"><?php echo prepare_original( $singular ); ?></p>
+		<?php if ( apply_filters( 'gp_translation_row_override_textareas', false, $t ) ) : ?>
+			<?php do_action( 'gp_translation_row_textareas', $t, $singular, $plural, $can_edit, $can_approve_translation, $can_approve ); ?>
+		<?php elseif ( ! $t->plural ) : ?>
+			<p class="original"><?php echo prepare_original( $singular ); // WPCS: XSS ok. ?></p>
 		<?php textareas( $t, array( $can_edit, $can_approve_translation ) ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>
