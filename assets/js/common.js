@@ -103,9 +103,9 @@ $gp.modal = (
         this.modalWindow.style.bottom = 0;
         this.modalWindow.style.left = 0;
         this.modalWindow.style.width = '80%';
-        this.modalWindow.style.height = '30%';
+        this.modalWindow.style.height = '50%';
         this.modalWindow.style.margin = 'auto';
-        this.modalWindow.style.background = '#EEE';
+        this.modalWindow.style.background = '#ddd';
         this.modalWindow.style.zIndex = '99999';
         this.modalWindow.setAttribute('role', 'dialog');
         this.modalWindow.setAttribute('tabindex', 0);
@@ -122,8 +122,7 @@ $gp.modal = (
 
         this.closeButton = document.createElement('button');
         this.closeButton.className = 'modal__close';
-        this.closeButton.style.left = '10px';
-        this.closeButton.style.top = '-45px';
+        this.closeButton.style.float = 'right';
         this.closeButton.style.position = 'relative';
         this.closeButton.innerHTML = 'Close';
         this.closeButton.setAttribute('type', 'button');
@@ -133,8 +132,8 @@ $gp.modal = (
         });
 
         this.modalWindow.appendChild(this.modalWrapper);
+        this.modalWrapper.appendChild(this.closeButton);
         this.modalWrapper.appendChild(this.modalContent);
-        this.modalWindow.appendChild(this.closeButton);
 
         this.isOpen = false;
         this.target = document.body;

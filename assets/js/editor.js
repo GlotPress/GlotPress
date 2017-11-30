@@ -188,7 +188,18 @@ $gp.editor = (
 			},
       keyup : function ( e ) {
         if ( e.shiftKey && e.keyCode == 191 ) {
-          $gp.modal.open('Keyboard Shortcuts');
+          var content = '<h3>Keyboard Shortcuts</h3>';
+          content += '<ul>';
+          content += '<li>Escape or Ctrl-Shift-Z = Cancel</li>';
+          content += '<li>Page Down or Ctrl-Up Arrow = Previous editor</li>';
+          content += '<li>Page Up or Ctrl-Down Arrow = Next editor</li>';
+          content += '<li>Shift-Enter = Save</li>';
+          content += '<li>Ctrl-Enter or Ctrl-Shift-B = Copy original</li>';
+          content += '<li>Ctrl-+ or Ctrl-Shift-A = Approve</li>';
+          content += '<li>Ctrl-- or Ctrl-Shift-R = Reject</li>';
+          content += '<li>Ctrl-~ or Ctrl-Shift-~ = Fuzzy</li>';
+          content += '</ul>';
+          $gp.modal.open( content );
         } else {
 					return true;
 				}
