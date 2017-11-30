@@ -128,15 +128,16 @@ $gp.modal = (
         this.closeButton.innerHTML = 'Close';
         this.closeButton.setAttribute('type', 'button');
 
-        this.closeButton.onclick = function() {
-          self.close();
-        };
+        this.closeButton.addEventListener("click", function() {
+          $gp.modal.close();
+        });
 
         this.modalWindow.appendChild(this.modalWrapper);
         this.modalWrapper.appendChild(this.modalContent);
         this.modalWindow.appendChild(this.closeButton);
 
         this.isOpen = false;
+        this.target = document.body;
       },
       open: function(text_modal, callback) {
         if (this.isOpen) {
@@ -170,5 +171,4 @@ $gp.modal = (
 
 jQuery( function( $ ) {
 	$gp.modal.init();
-  $gp.modal.open('Keyboard Shortcuts');
 } );

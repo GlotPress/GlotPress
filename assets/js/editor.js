@@ -100,7 +100,8 @@ $gp.editor = (
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
-					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
+					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
+					.on( 'keyup', 'body', $gp.editor.hooks.keyup );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -184,6 +185,16 @@ $gp.editor = (
 
 				return false;
 			},
+      keyup : function ( e ) {
+        console.log(e)
+        if ( e.shiftKey && e.keyCode == 191 ) {
+          $gp.modal.open('Keyboard Shortcuts');
+        } else {
+					return true;
+				}
+        
+				return false;
+      },
 			replace_current: function( html ) {
 				var old_current;
 
@@ -399,6 +410,9 @@ $gp.editor = (
 				keydown: function( e ) {
 					return $gp.editor.keydown( e );
 				},
+        keyup: function( e ) {
+          return $gp.editor.keyup( e );
+        },
 				copy: function() {
 					$gp.editor.copy( $( this ) );
 					return false;
