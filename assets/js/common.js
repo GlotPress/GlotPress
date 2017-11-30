@@ -79,3 +79,96 @@ $gp.showhide = function($) { return function(link, container, options) {
 	})
 }}(jQuery);
 $gp.showhide.registry = {};
+
+$gp.modal = (
+	function( $ ) {
+		return {
+      init: function( ) {
+        this.overlay = document.createElement('div');
+        this.overlay.className = 'overlay_';
+        this.overlay.style.position = 'fixed';
+        this.overlay.style.top = 0;
+        this.overlay.style.right = 0;
+        this.overlay.style.bottom = 0;
+        this.overlay.style.left = 0;
+        this.overlay.style.zIndex = '99999';
+        this.overlay.style.background = 'rgba(0, 0, 0, .5)';
+        this.overlay.setAttribute('tabindex', -1);
+
+        this.modalWindow = document.createElement('div');
+        this.modalWindow.className = 'modal';
+        this.modalWindow.style.position = 'fixed';
+        this.modalWindow.style.top = 0;
+        this.modalWindow.style.right = 0;
+        this.modalWindow.style.bottom = 0;
+        this.modalWindow.style.left = 0;
+        this.modalWindow.style.width = '80%';
+        this.modalWindow.style.height = '30%';
+        this.modalWindow.style.margin = 'auto';
+        this.modalWindow.style.background = '#EEE';
+        this.modalWindow.style.zIndex = '99999';
+        this.modalWindow.setAttribute('role', 'dialog');
+        this.modalWindow.setAttribute('tabindex', 0);
+
+        this.modalWrapper = document.createElement('div');
+        this.modalWrapper.className = 'modal__wrapper';
+        this.modalWrapper.style.overflow = 'auto';
+        this.modalWrapper.style.height = '100%';
+
+        this.modalContent = document.createElement('div');
+        this.modalContent.className = 'modal__content';
+        this.modalContent.style.padding = '1em';
+        this.modalContent.style.textAlign = 'center';
+
+        this.closeButton = document.createElement('button');
+        this.closeButton.className = 'modal__close';
+        this.closeButton.style.left = '10px';
+        this.closeButton.style.top = '-45px';
+        this.closeButton.style.position = 'relative';
+        this.closeButton.innerHTML = 'Close';
+        this.closeButton.setAttribute('type', 'button');
+
+        this.closeButton.onclick = function() {
+          self.close();
+        };
+
+        this.modalWindow.appendChild(this.modalWrapper);
+        this.modalWrapper.appendChild(this.modalContent);
+        this.modalWindow.appendChild(this.closeButton);
+
+        this.isOpen = false;
+      },
+      open: function(text_modal, callback) {
+        if (this.isOpen) {
+          return;
+        }
+
+        this.modalContent.innerHTML = text_modal;
+
+        this.target.appendChild(this.overlay);
+        this.target.appendChild(this.modalWindow);
+        this.modalWindow.focus();
+
+        this.isOpen = true;
+
+        if (callback) {
+          callback.call(this);
+        }
+      },
+      close: function(callback) {
+        this.target.removeChild(this.modalWindow);
+        this.target.removeChild(this.overlay);
+        this.isOpen = false;
+
+        if (callback) {
+          callback.call(this);
+        }
+      }
+    }
+  }
+)(jQuery);
+
+jQuery( function( $ ) {
+	$gp.modal.init();
+  $gp.modal.open('Keyboard Shortcuts');
+} );
