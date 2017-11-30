@@ -100,8 +100,9 @@ $gp.editor = (
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
-					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
-					.on( 'keyup', 'body', $gp.editor.hooks.keyup );
+					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
+        $( document.body )
+					.keyup( $gp.editor.hooks.keyup );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -186,7 +187,6 @@ $gp.editor = (
 				return false;
 			},
       keyup : function ( e ) {
-        console.log(e)
         if ( e.shiftKey && e.keyCode == 191 ) {
           $gp.modal.open('Keyboard Shortcuts');
         } else {
