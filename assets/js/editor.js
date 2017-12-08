@@ -187,7 +187,7 @@ $gp.editor = (
 				return false;
 			},
       keyup : function ( e ) {
-        if ( e.shiftKey && e.keyCode == 191 ) {
+        if ( e.shiftKey && e.keyCode === 191 ) {
           var content = '<h3>Keyboard Shortcuts</h3>';
           content += '<ul>';
           content += '<li>Escape or Ctrl-Shift-Z = Cancel</li>';
@@ -203,7 +203,7 @@ $gp.editor = (
         } else {
 					return true;
 				}
-        
+
 				return false;
       },
 			replace_current: function( html ) {

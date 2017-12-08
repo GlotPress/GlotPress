@@ -81,7 +81,7 @@ $gp.showhide = function($) { return function(link, container, options) {
 $gp.showhide.registry = {};
 
 $gp.modal = (
-	function( $ ) {
+	function() {
 		return {
       init: function( ) {
         this.overlay = document.createElement('div');
@@ -127,7 +127,7 @@ $gp.modal = (
         this.closeButton.innerHTML = 'Close';
         this.closeButton.setAttribute('type', 'button');
 
-        this.closeButton.addEventListener("click", function() {
+        this.closeButton.addEventListener('click', function() {
           $gp.modal.close();
         });
 
@@ -164,10 +164,10 @@ $gp.modal = (
           callback.call(this);
         }
       }
-    }
+    };
   }
 )(jQuery);
 
-jQuery( function( $ ) {
+jQuery( function() {
 	$gp.modal.init();
-} );
+});
