@@ -624,17 +624,6 @@ class GP_Locales {
 		$en_nz->slug = 'en-nz';
 		$en_nz->google_code = 'en';
 		
-		$en_p8 = new GP_Locale();
-		$en_p8->english_name = 'English (Pirate)';
-		$en_p8->native_name = 'English (Pirate)';
-		$en_p8->lang_code_iso_639_1 = 'en';
-		$en_p8->lang_code_iso_639_2 = 'eng';
-		$en_p8->lang_code_iso_639_3 = 'eng';
-		$en_p8->wp_locale = 'en_P8';
-		$en_p8->slug = 'en-p8';
-		$en_p8->google_code = 'x-pirate';
-		$en_p8->facebook_locale = 'en_PI';
-
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
 		$en_za->native_name = 'English (South Africa)';
