@@ -635,17 +635,6 @@ class GP_Locales {
 		$en_za->slug = 'en-za';
 		$en_za->google_code = 'en';
 
-		$en_sg = new GP_Locale();
-		$en_sg->english_name = 'English (Singapore)';
-		$en_sg->native_name = 'English (Singapore)';
-		$en_sg->lang_code_iso_639_1 = 'en';
-		$en_sg->lang_code_iso_639_2 = 'eng';
-		$en_sg->lang_code_iso_639_3 = 'eng';
-		$en_sg->country_code = 'sg';
-		$en_sg->wp_locale = 'en_SG';
-		$en_sg->slug = 'en-sg';
-		$en_sg->google_code = 'en';
-
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
 		$eo->native_name = 'Esperanto';
