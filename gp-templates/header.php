@@ -42,7 +42,7 @@
 	<div class="gp-content">
 		<?php echo gp_breadcrumb(); ?>
 
-		<div id="gp-js-message"></div>
+		<div id="gp-js-message" class="gp-js-message"></div>
 
 		<?php if (gp_notice('error')): ?>
 			<div class="error">

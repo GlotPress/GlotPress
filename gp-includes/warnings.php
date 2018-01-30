@@ -148,7 +148,7 @@ class GP_Builtin_Translation_Warnings {
 	 *
 	 * @var array
 	 */
-	public $length_exclude_languages = array( 'art-xemoji', 'ja', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw' );
+	public $length_exclude_languages = array( 'art-xemoji', 'ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw' );
 
 	/**
 	 * Checks whether lengths of source and translation differ too much.
