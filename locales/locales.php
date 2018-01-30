@@ -635,6 +635,18 @@ class GP_Locales {
 		$en_za->slug = 'en-za';
 		$en_za->google_code = 'en';
 
+		$en_sg = new GP_Locale();
+		$en_sg->english_name = 'English (Pirate)';
+		$en_sg->native_name = 'English (Pirate)';
+		$en_sg->lang_code_iso_639_1 = 'en';
+		$en_sg->lang_code_iso_639_2 = 'eng';
+		$en_sg->lang_code_iso_639_3 = 'eng';
+		$en_sg->country_code = 'pi';
+		$en_sg->wp_locale = 'en_PI';
+		$en_sg->slug = 'en-pi';
+		$en_sg->google_code = 'en';
+		$en_gb->facebook_locale = 'en_PI';
+
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
 		$eo->native_name = 'Esperanto';
