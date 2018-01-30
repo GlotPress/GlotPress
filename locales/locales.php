@@ -644,7 +644,7 @@ class GP_Locales {
 		$en_sg->country_code = 'pi';
 		$en_sg->wp_locale = 'en_PI';
 		$en_sg->slug = 'en-pi';
-		$en_sg->google_code = 'en';
+		$en_sg->google_code = 'xx-pirate';
 		$en_gb->facebook_locale = 'en_PI';
 
 		$eo = new GP_Locale();
