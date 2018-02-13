@@ -392,6 +392,7 @@ span.morethan90 {
 
 .editor .translation {
 	white-space: pre-wrap;
+	word-break: break-word;
 }
 
 .editor .strings {
