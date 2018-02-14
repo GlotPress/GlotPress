@@ -2087,7 +2087,7 @@ class GP_Locales {
 
 		$ug = new GP_Locale();
 		$ug->english_name = 'Uighur';
-		$ug->native_name = 'Uyƣurqə';
+		$ug->native_name = 'ئۇيغۇرچە';
 		$ug->lang_code_iso_639_1 = 'ug';
 		$ug->lang_code_iso_639_2 = 'uig';
 		$ug->country_code = 'cn';
