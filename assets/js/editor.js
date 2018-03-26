@@ -116,18 +116,15 @@ $gp.editor = (
 					var endPos = 0;
 
 					// Code from https://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
-					if ( document.selection ) {
-
-						// IE support
-						myField.focus();
-						sel = document.selection.createRange();
-						sel.text = myValue;
-					} else if ( myField.selectionStart || '0' === myField.selectionStart ) {
-
-						// MOZILLA and others
+					if ( myField.selectionStart || '0' === myField.selectionStart ) {
 						startPos = myField.selectionStart;
 						endPos = myField.selectionEnd;
-						myField.value = myField.value.substring( 0, startPos ) + myValue + myField.value.substring( endPos, myField.value.length );
+						lastChar = myField.value.substring( endPos, myField.value.length );
+
+						if ( lastChar.length === 0 ) {
+							myField.value += ' ';
+						}
+						myField.value += myValue + lastChar;
 					} else {
 						myField.value += myValue;
 					}
