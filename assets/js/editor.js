@@ -114,13 +114,12 @@ $gp.editor = (
 					var sel = null;
 					var startPos = 0;
 					var endPos = 0;
-					var lastchar = '';
 
 					// Code from https://stackoverflow.com/questions/11076975/insert-text-into-textarea-at-cursor-position-javascript
 					if ( myField.selectionStart || '0' === myField.selectionStart ) {
 						startPos = myField.selectionStart;
 						endPos = myField.selectionEnd;
-						lastChar = myField.value.substring( endPos, myField.value.length );
+						var lastChar = myField.value.substring( endPos, myField.value.length );
 
 						if ( lastChar.length === 0 ) {
 							myField.value += ' ';
