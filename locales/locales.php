@@ -19,7 +19,7 @@ class GP_Locale {
 	// TODO: days, months, decimals, quotes
 
 	private $_index_for_number;
-	
+
 	public function __construct( $args = array() ) {
 		foreach( $args as $key => $value ) {
 			$this->$key = $value;
@@ -623,7 +623,7 @@ class GP_Locales {
 		$en_nz->wp_locale = 'en_NZ';
 		$en_nz->slug = 'en-nz';
 		$en_nz->google_code = 'en';
-		
+
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
 		$en_za->native_name = 'English (South Africa)';
@@ -740,7 +740,7 @@ class GP_Locales {
 		$es_pr->slug = 'es-pr';
 		$es_pr->google_code = 'es';
 		$es_pr->facebook_locale = 'es_LA';
-		
+
 		$es_us = new GP_Locale();
 		$es_us->english_name = 'Spanish (US)';
 		$es_us->native_name = 'Español de los Estados Unidos';
@@ -1373,7 +1373,7 @@ class GP_Locales {
 		$lt->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$lt->google_code = 'lt';
 		$lt->facebook_locale = 'lt_LT';
-		
+
 		$lug = new GP_Locale();
 		$lug->english_name = 'Luganda';
 		$lug->native_name = 'Oluganda';
@@ -1448,7 +1448,7 @@ class GP_Locales {
 		$ml->google_code = 'ml';
 		$ml->facebook_locale = 'ml_IN';
 
-		$mlt = new GP_Locale(); 
+		$mlt = new GP_Locale();
 		$mlt->english_name = 'Maltese';
 		$mlt->native_name = 'Malti';
 		$mlt->lang_code_iso_639_1 = 'mt';
@@ -1461,7 +1461,7 @@ class GP_Locales {
 		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100>1 && n%100<11) ? 1 : (n%100>10 && n%100<20 ) ? 2 : 3)';
 		$mlt->google_code = 'mt';
 		$mlt->facebook_locale = 'mt_MT';
-		
+
 		$mn = new GP_Locale();
 		$mn->english_name = 'Mongolian';
 		$mn->native_name = 'Монгол';
@@ -1812,7 +1812,7 @@ class GP_Locales {
 		$sk->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
 		$sk->google_code = 'sk';
 		$sk->facebook_locale = 'sk_SK';
-		
+
 		$skr = new GP_Locale();
 		$skr->english_name = 'Saraiki';
 		$skr->native_name = 'سرائیکی';
@@ -1910,7 +1910,7 @@ class GP_Locales {
 		$srd->wp_locale = 'srd';
 		$srd->slug = 'srd';
 		$srd->facebook_locale = 'sc_IT';
-		
+
 		$ssw = new GP_Locale();
 		$ssw->english_name = 'Swati';
 		$ssw->native_name = 'SiSwati';
@@ -2306,7 +2306,7 @@ class GP_Locales {
 		$zh->slug = 'zh';
 		$zh->nplurals = 1;
 		$zh->plural_expression = '0';
-		
+
 		$zul = new GP_Locale();
 		$zul->english_name = 'Zulu';
 		$zul->native_name = 'isiZulu';
