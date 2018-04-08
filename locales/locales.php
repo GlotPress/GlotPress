@@ -754,6 +754,15 @@ class GP_Locales {
 		$es_pr->google_code = 'es';
 		$es_pr->facebook_locale = 'es_LA';
 
+		$es_us = new GP_Locale();
+		$es_us->english_name = 'Spanish (US)';
+		$es_us->native_name = 'Español de los Estados Unidos';
+		$es_us->lang_code_iso_639_1 = 'es';
+		$es_us->lang_code_iso_639_2 = 'spa';
+		$es_us->lang_code_iso_639_3 = 'spa';
+		$es_us->country_code = 'us';
+		$es_us->slug = 'es-us';
+
 		$es_ve = new GP_Locale();
 		$es_ve->english_name = 'Spanish (Venezuela)';
 		$es_ve->native_name = 'Español de Venezuela';
@@ -1342,6 +1351,14 @@ class GP_Locales {
 		$lin->plural_expression = 'n>1';
 		$lin->facebook_locale = 'ln_CD';
 
+		$lmo = new GP_Locale();
+		$lmo->english_name = 'Lombard';
+		$lmo->native_name = 'Lombardo';
+		$lmo->lang_code_iso_639_3 = 'lmo';
+		$lmo->country_code = 'it';
+		$lmo->wp_locale = 'lmo';
+		$lmo->slug = 'lmo';
+
 		$lo = new GP_Locale();
 		$lo->english_name = 'Lao';
 		$lo->native_name = 'ພາສາລາວ';
@@ -1367,6 +1384,16 @@ class GP_Locales {
 		$lt->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)';
 		$lt->google_code = 'lt';
 		$lt->facebook_locale = 'lt_LT';
+
+		$lug = new GP_Locale();
+		$lug->english_name = 'Luganda';
+		$lug->native_name = 'Oluganda';
+		$lug->lang_code_iso_639_1 = 'lg';
+		$lug->lang_code_iso_639_2 = 'lug';
+		$lug->lang_code_iso_639_3 = 'lug';
+		$lug->country_code = 'ug';
+		$lug->wp_locale = 'lug';
+		$lug->slug = 'lug';
 
 		$lv = new GP_Locale();
 		$lv->english_name = 'Latvian';
@@ -1432,7 +1459,7 @@ class GP_Locales {
 		$ml->google_code = 'ml';
 		$ml->facebook_locale = 'ml_IN';
 
-		$mlt = new GP_Locale(); 
+		$mlt = new GP_Locale();
 		$mlt->english_name = 'Maltese';
 		$mlt->native_name = 'Malti';
 		$mlt->lang_code_iso_639_1 = 'mt';
@@ -1445,7 +1472,7 @@ class GP_Locales {
 		$mlt->plural_expression = '(n==1 ? 0 : n==0 || ( n%100>1 && n%100<11) ? 1 : (n%100>10 && n%100<20 ) ? 2 : 3)';
 		$mlt->google_code = 'mt';
 		$mlt->facebook_locale = 'mt_MT';
-		
+
 		$mn = new GP_Locale();
 		$mn->english_name = 'Mongolian';
 		$mn->native_name = 'Монгол';
@@ -1626,6 +1653,15 @@ class GP_Locales {
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
 
+		$pap = new GP_Locale();
+		$pap->english_name = 'Papiamento';
+		$pap->native_name = 'Papiamentu';
+		$pap->lang_code_iso_639_2 = 'pap';
+		$pap->lang_code_iso_639_3 = 'pap';
+		$pap->country_code = 'cw';
+		$pap->wp_locale = 'pap';
+		$pap->slug = 'pap';
+
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
 		$pl->native_name = 'Polski';
@@ -1788,6 +1824,17 @@ class GP_Locales {
 		$sk->google_code = 'sk';
 		$sk->facebook_locale = 'sk_SK';
 
+		$skr = new GP_Locale();
+		$skr->english_name = 'Saraiki';
+		$skr->native_name = 'سرائیکی';
+		$skr->lang_code_iso_639_3 = 'skr';
+		$skr->country_code = 'pk';
+		$skr->wp_locale = 'skr';
+		$skr->slug = 'skr';
+		$skr->nplurals = 2;
+		$skr->plural_expression = '(n > 1)';
+		$skr->text_direction = 'rtl';
+
 		$sl = new GP_Locale();
 		$sl->english_name = 'Slovenian';
 		$sl->native_name = 'Slovenščina';
@@ -1874,6 +1921,16 @@ class GP_Locales {
 		$srd->wp_locale = 'srd';
 		$srd->slug = 'srd';
 		$srd->facebook_locale = 'sc_IT';
+
+		$ssw = new GP_Locale();
+		$ssw->english_name = 'Swati';
+		$ssw->native_name = 'SiSwati';
+		$ssw->lang_code_iso_639_1 = 'ss';
+		$ssw->lang_code_iso_639_2 = 'ssw';
+		$ssw->lang_code_iso_639_3 = 'ssw';
+		$ssw->country_code = 'sz';
+		$ssw->wp_locale = 'ssw';
+		$ssw->slug = 'ssw';
 
 		$su = new GP_Locale();
 		$su->english_name = 'Sundanese';
@@ -2261,6 +2318,17 @@ class GP_Locales {
 		$zh->slug = 'zh';
 		$zh->nplurals = 1;
 		$zh->plural_expression = '0';
+
+		$zul = new GP_Locale();
+		$zul->english_name = 'Zulu';
+		$zul->native_name = 'isiZulu';
+		$zul->lang_code_iso_639_1 = 'zu';
+		$zul->lang_code_iso_639_2 = 'zul';
+		$zul->lang_code_iso_639_3 = 'zul';
+		$zul->country_code = 'za';
+		$zul->wp_locale = 'zul';
+		$zul->slug = 'zul';
+		$zul->google_code = 'zu';
 
 		foreach( get_defined_vars() as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
