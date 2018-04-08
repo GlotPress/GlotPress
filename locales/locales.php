@@ -748,7 +748,6 @@ class GP_Locales {
 		$es_us->lang_code_iso_639_2 = 'spa';
 		$es_us->lang_code_iso_639_3 = 'spa';
 		$es_us->country_code = 'us';
-		$es_us->wp_locale = 'es_US';
 		$es_us->slug = 'es-us';
 
 		$es_ve = new GP_Locale();
