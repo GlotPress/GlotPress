@@ -1344,8 +1344,6 @@ class GP_Locales {
 		$lmo->country_code = 'it';
 		$lmo->wp_locale = 'lmo';
 		$lmo->slug = 'lmo';
-		$lmo->nplurals = 2;
-		$lmo->plural_expression = '(n != 1)';
 
 		$lo = new GP_Locale();
 		$lo->english_name = 'Lao';
