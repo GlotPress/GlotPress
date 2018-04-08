@@ -2313,8 +2313,6 @@ class GP_Locales {
 		$zul->country_code = 'za';
 		$zul->wp_locale = 'zul';
 		$zul->slug = 'zul';
-		$zul->nplurals = 2;
-		$zul->plural_expression = '(n > 1)';
 		$zul->google_code = 'zu';
 
 		foreach( get_defined_vars() as $locale ) {
