@@ -910,6 +910,16 @@ class GP_Locales {
 		$frp->nplurals = 2;
 		$frp->plural_expression = 'n > 1';
 
+		$ful = new GP_Locale();
+		$ful->english_name = 'Fula';
+		$ful->native_name = 'Fulfulde';
+		$ful->lang_code_iso_639_1 = 'ff';
+		$ful->lang_code_iso_639_2 = 'ful';
+		$ful->country_code = 'ff';
+		$ful->slug = 'ful';
+		$ful->google_code = 'ff';
+		$ful->facebook_locale = 'ff';
+
 		$fur = new GP_Locale();
 		$fur->english_name = 'Friulian';
 		$fur->native_name = 'Friulian';
@@ -1603,6 +1613,14 @@ class GP_Locales {
 		$no->country_code = 'no';
 		$no->slug = 'no';
 		$no->google_code = 'no';
+		
+		$nso = new GP_Locale();
+		$nso->english_name = 'Northern Sotho';
+		$nso->native_name = 'Sesotho sa Leboa';
+		$nso->lang_code_iso_639_1 = 'nso';
+		$nso->lang_code_iso_639_2 = 'nso';
+		$nso->country_code = 'za';
+		$nso->slug = 'nso';
 
 		$oci = new GP_Locale();
 		$oci->english_name = 'Occitan';
@@ -1662,6 +1680,20 @@ class GP_Locales {
 		$pap->wp_locale = 'pap';
 		$pap->slug = 'pap';
 
+		$pap_aw = new GP_Locale();
+		$pap_aw->english_name = 'Papiamento (Aruba)';
+		$pap_aw->native_name = 'Papiamento';
+		$pap_aw->lang_code_iso_639_1 = 'pap';
+		$pap_aw->lang_code_iso_639_2 = 'pap';
+		$pap_aw->slug = 'pap-aw';
+
+		$pap_cw = new GP_Locale();
+		$pap_cw->english_name = 'Papiamento (Curaçao and Bonaire)';
+		$pap_cw->native_name = 'Papiamentu';
+		$pap_cw->lang_code_iso_639_1 = 'pap';
+		$pap_cw->lang_code_iso_639_2 = 'pap';
+		$pap_cw->slug = 'pap-cw';
+		
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
 		$pl->native_name = 'Polski';
