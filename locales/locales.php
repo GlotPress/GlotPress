@@ -1662,6 +1662,15 @@ class GP_Locales {
 		$pap->wp_locale = 'pap';
 		$pap->slug = 'pap';
 
+		$pirate = new GP_Locale();
+		$pirate->english_name = 'English (Pirate)';
+		$pirate->native_name = 'English (Pirate)';
+		$pirate->lang_code_iso_639_2 = 'art';
+		$pirate->wp_locale = 'art_xpirate';
+		$pirate->slug = 'art-xpirate';
+		$pirate->google_code = 'xx-pirate';
+		$pirate->facebook_locale = 'en_PI';
+
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
 		$pl->native_name = 'Polski';
