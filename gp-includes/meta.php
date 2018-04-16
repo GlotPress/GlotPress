@@ -141,8 +141,6 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
  *
  * @since 1.0.0
  *
- * @internal
- *
  * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
