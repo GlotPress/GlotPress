@@ -638,15 +638,6 @@ class GP_Locales {
 		$en_za->slug = 'en-za';
 		$en_za->google_code = 'en';
 
-		$pirate = new GP_Locale();
-		$pirate->english_name = 'English (Pirate)';
-		$pirate->native_name = 'English (Pirate)';
-		$pirate->lang_code_iso_639_2 = 'art';
-		$pirate->wp_locale = 'art_xpirate';
-		$pirate->slug = 'en-pi';
-		$pirate->google_code = 'xx-pirate';
-		$pirate->facebook_locale = 'en_PI';
-
 		$eo = new GP_Locale();
 		$eo->english_name = 'Esperanto';
 		$eo->native_name = 'Esperanto';
@@ -1634,6 +1625,15 @@ class GP_Locales {
 		$pa->slug = 'pa';
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
+
+		$pirate = new GP_Locale();
+		$pirate->english_name = 'English (Pirate)';
+		$pirate->native_name = 'English (Pirate)';
+		$pirate->lang_code_iso_639_2 = 'art';
+		$pirate->wp_locale = 'art_xpirate';
+		$pirate->slug = 'art-xpirate';
+		$pirate->google_code = 'xx-pirate';
+		$pirate->facebook_locale = 'en_PI';
 
 		$pl = new GP_Locale();
 		$pl->english_name = 'Polish';
