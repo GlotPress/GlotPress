@@ -327,7 +327,7 @@ table.translations.translation-sets-rtl .foreign-text {
 
 table.translations td.original, table.translations td.translation {
 	width: 45%;
-	word-break: break-all;
+	word-break: break-word;
 	word-wrap: break-word;
 }
 
@@ -391,7 +391,7 @@ span.context {
 	color: white;
 	font-size: 100%;
 	padding: 0.3em;
-	word-break: break-all;
+	word-break: break-word;
 	word-wrap: break-word;
 }
 
@@ -407,12 +407,12 @@ span.morethan90 {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
-	word-break: break-all;
+	word-break: break-word;
 }
 
 .editor .translation {
 	white-space: pre-wrap;
-	word-break: break-all;
+	word-break: break-word;
 }
 
 .editor .strings {
