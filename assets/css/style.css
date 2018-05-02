@@ -1140,3 +1140,33 @@ table.locale-sub-projects thead th {
 		margin-left: 0;
 	}
 }
+
+/*
+ * Browser specific settings
+ */
+@-moz-document url-prefix() {
+	/* Firefox */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
+@media \0screen\,screen\9 {
+	/* IE 6,7,8 */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
+
+@media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+	/* IE 9+ */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
+
+@supports (-ms-ime-align: auto) {
+	/* MS Edge */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
