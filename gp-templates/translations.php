@@ -229,10 +229,10 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	<thead>
 	<tr>
 		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
-		<th><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
+		<th class="priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
 		<th class="original"><?php _e( 'Original string', 'glotpress' ); ?></th>
 		<th class="translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
-		<th>&mdash;</th>
+		<th class="actions">&mdash;</th>
 	</tr>
 	</thead>
 <?php
