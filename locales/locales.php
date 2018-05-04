@@ -1667,7 +1667,7 @@ class GP_Locales {
 		$pirate->native_name = 'English (Pirate)';
 		$pirate->lang_code_iso_639_2 = 'art';
 		$pirate->wp_locale = 'art_xpirate';
-		$pirate->slug = 'art-xpirate';
+		$pirate->slug = 'pirate';
 		$pirate->google_code = 'xx-pirate';
 		$pirate->facebook_locale = 'en_PI';
 
