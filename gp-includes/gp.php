@@ -95,7 +95,7 @@ class GP {
 	public static $glossary_entry;
 
 	/**
-	 * Model for glossary entry.
+	 * Model for notes.
 	 *
 	 * @since 3.0.0
 	 *

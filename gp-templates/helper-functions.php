@@ -217,41 +217,24 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	<?php
 }
 
-function notes( $entry, $permissions ) {
+function render_notes( $entry, $permissions ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$note = GP::$notes->get( $entry );
+	$notes = GP::$notes->get_by_entry( $entry );
 ?>
 	<dl>
-	<?php
-		$disabled = '';
-		if ( ! empty( $note ) && $note['user_id'] !== get_current_user_id() ) {
-			$disabled = $can_edit ? '' : 'disabled="disabled"';
-		}
-		echo '<dt>' . __( 'Reviewers note:', 'glotpress' ) . '</dt>';
-
-		if ( ! empty( $note ) ) {
-			$note = $note['note'];
-		}
-
-	?>
-	<?php
-		if ( GP::$permission->current_user_can( 'admin', 'notes', $entry->id ) ) {
-			$button_label = __( 'Update notes', 'glotpress' );
-	?>
-			<dt><textarea <?php echo esc_attr( $disabled ); ?> autocomplete="off" class="foreign-text" name="all_notes[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"><?php echo esc_html( $note ); ?></textarea></dt>
-			<dt><button class="update-notes" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-notes_' . $entry->id ) ); ?>"><?php _e( 'Update notes', 'glotpress' ); ?></button></dt>
-	<?php
-		} else {
-			if ( ! empty( $note ) ) {
-				$user_info = get_userdata( $note['user_id'] );
-				echo '<dd><b>' . esc_html( $user_info->display_name ) . '</b>';
-				echo ' ' . $note['date_added'] . '</dd>';
-				$note = $note['note'];
+		<dt>
+			<?php echo __( 'Action Log:', 'glotpress' ) ?>
+		</dt>
+		<dd class="notes">
+			<?php foreach($notes as $note) {
+				render_note($note, $can_edit);
 			}
 			?>
-			<dt><br><?php echo nl2br( esc_html( $note ) ); ?></dt>
+		</dd>
+	</dl>
+	<dl>
 	<?php
-		}
+		
 		if ( GP::$permission->current_user_can(
 			'approve', 'translation', $entry->id, array(
 				'translation' => $entry,
@@ -259,12 +242,41 @@ function notes( $entry, $permissions ) {
 		) ) {
 		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt>';
 	?>
-			<dt><textarea <?php echo esc_attr( $disabled ); ?> autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
-			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-note_' . $entry->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
+			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
+			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $entry->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
 	<?php
 		}
 	?>
 	</dl>
+<?php
+}
+
+function render_note( $note, $can_edit ) {
+?>
+	<div class="note">
+		<?php gp_link_user(  get_userdata( $note->user_id )); ?>
+		<?php _e('Commented', 'glotpress'); ?>
+		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime($note->date_added), time() ) ) );  ?></span>
+		<a href="#" class="note-actions" >edit</a>
+		<div class="note-body">
+			<?php echo nl2br( esc_html( $note->note ) ); ?>	
+		</div>
+		<?php if ( $can_edit || $note->user_id === get_current_user_id() ): ?>
+		<div class="note-body edit-note-body" style="display: none;">
+			<textarea autocomplete="off" class="foreign-text" name="edit-note[<?php echo esc_attr( $note->id ); ?>]" id="edit-note-<?php echo esc_attr( $note->id ); ?>"><?php echo esc_html( $note->note ); ?></textarea>
+			<button class="update-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-note-' . $note->id ) ); ?>">
+				<?php _e( 'Update Note', 'glotpress' ); ?>
+			</button>
+			<button class="update-cancel" tabindex="-1">
+				<?php _e( 'Cancel', 'glotpress' ); ?>
+			</button>
+			<button class="delete-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-note-' . $note->id ) ); ?>">
+				<?php _e( 'Delete', 'glotpress' ); ?>
+			</button>
+		</div>
+		<?php endif; ?>
+
+	</div>
 <?php
 }
 
