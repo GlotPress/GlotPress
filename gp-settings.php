@@ -102,6 +102,7 @@ require_once GP_PATH . GP_INC . 'routes/translation.php';
 require_once GP_PATH . GP_INC . 'routes/glossary.php';
 require_once GP_PATH . GP_INC . 'routes/glossary-entry.php';
 require_once GP_PATH . GP_INC . 'routes/locale.php';
+require_once GP_PATH . GP_INC . 'routes/note.php';
 
 
 GP::$translation_warnings = new GP_Translation_Warnings();

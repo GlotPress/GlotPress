@@ -244,7 +244,9 @@ gp_tmpl_load('translation-row-editor', get_defined_vars());
 					<dd><?php gp_link_user( $t->user_last_modified ); ?></dd>
 				</dl>
 			<?php endif; ?>
-						<?php notes( $t, array( $can_edit, $can_approve_translation ) ); ?>
+			<?php 
+			render_notes( $t, array( $can_edit, $can_approve_translation ) ); 
+			?>
 			<?php references( $project, $t ); ?>
 
 			<dl>
