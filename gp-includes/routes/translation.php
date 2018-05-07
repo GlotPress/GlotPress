@@ -221,6 +221,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
+		$reject_feedback_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-reject-feedback' ) );
 		$bulk_action = gp_url_join( $url, '-bulk' );
 
 		// Add action to use different font for translations
@@ -547,6 +548,43 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
+	}
+
+	/**
+	 * Action to save reject reasons, feedback and set status.
+	 *
+	 * @param string $project_path Project path from route.
+	 * @param string $locale_slug Locale slug from route.
+	 * @param string $translation_set_slug Translation set slug from route.
+	 * @return null
+	 */
+	public function reject_feedback( $project_path, $locale_slug, $translation_set_slug ) {
+		$status         = 'rejected';
+		$translation_id = gp_post( 'translation_id' );
+
+		if ( ! $this->verify_nonce( 'update-translation-status-' . $status . '_' . $translation_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
+		$edit_callback = function ( $project, $locale, $translation_set, $translation ) {
+			$res = $translation->set_status( 'rejected' );
+
+			if ( ! $res ) {
+				return $this->die_with_error( 'Error in saving the translation status!' );
+			}
+
+			$reasons  = gp_post( 'reasons' );
+			$feedback = trim( gp_post( 'feedback' ) );
+			if ( $reasons ) {
+				gp_update_meta( $translation->id, 'reject_reasons', $reasons, 'translation' );
+			}
+
+			if ( $feedback ) {
+				gp_update_meta( $translation->id, 'reject_feedback', $feedback, 'translation' );
+			}
+		};
+
+		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_callback );
 	}
 
 	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {

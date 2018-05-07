@@ -15,7 +15,7 @@ function gp_register_default_styles() {
 	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
-	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20170704' );
+	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20180407' );
 
 	// Register the table sorter theme style.
 	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress' . $suffix, array(), '20161011' );
@@ -41,7 +41,7 @@ function gp_register_default_scripts() {
 		) )
 	) );
 
-	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20170701' );
+	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20180407' );
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20160329' );
 	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20150430' );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20150430' );

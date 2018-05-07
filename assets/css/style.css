@@ -472,6 +472,48 @@ span.morethan90 {
 	font-weight: bold;
 }
 
+.editor .meta .reject.opened::after {
+	border: 7px solid transparent;
+	border-bottom-color: #ddd;
+	content: "";
+	position: relative;
+	bottom: -9px;
+	left: -35%;
+}
+
+.editor .meta .reject-reasons {
+	border-top: 3px solid #ddd;
+	margin: 1em;
+	padding: 1em 0;
+}
+
+.editor .meta .reject-reasons dt {
+	display: block;
+	float: left;
+}
+
+.editor .meta .reject-reasons label {
+	display: inline-block;
+	line-height: 17px;
+}
+
+.editor .meta .reject-reasons input[type=checkbox] {
+	margin: 3px 0px 3px 10px;
+	vertical-align: bottom;
+}
+
+.editor .meta .reject-reasons dd {
+	font-weight: normal;
+}
+
+.editor .meta .reject-reasons .feedback {
+	display: block;
+}
+
+.editor .meta .reject-reasons textarea {
+	width: 100%;
+}
+
 /*
  * JavaScript, errors and notices.
  */

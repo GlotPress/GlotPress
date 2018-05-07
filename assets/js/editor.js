@@ -128,7 +128,7 @@ $gp.editor = (
 				};
 			},
 			keydown: function( e ) {
-				var target, container, approve, reject, copy;
+				var target, container, approve, reject, copy, pos;
 
 				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
 					$gp.editor.hide();
@@ -136,6 +136,10 @@ $gp.editor = (
 					$gp.editor.prev();
 				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
+				} else if ( 13 === e.keyCode && 'feedback' === $( e.target ).attr( 'name' ) ) { // Enter = reject with feedback.
+					// We are on rejection feedback input.
+					$( '.editor:visible' ).find( '.reject-submit' ).trigger( 'click' );
+
 				} else if ( 13 === e.keyCode && e.shiftKey ) { // Shift-Enter = Save.
 					target = $( e.target );
 
@@ -170,13 +174,36 @@ $gp.editor = (
 					reject = $( '.editor:visible' ).find( '.reject' );
 
 					if ( reject.length > 0 ) {
-						reject.trigger( 'click' );
+						if ( reject.hasClass( 'opened' ) ) {
+							$( '.editor:visible' ).find( '.reject-submit' ).trigger( 'click' );
+						} else {
+							reject.trigger( 'click' );
+						}
 					}
 				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-~ or Ctrl-Shift-~ = Fuzzy.
 					reject = $( '.editor:visible' ).find( '.fuzzy' );
 
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
+					}
+				} else if ( e.ctrlKey && ( ( 49 <= e.keyCode && e.keyCode <= 57 ) || ( 97 <= e.keyCode && e.keyCode <= 105 ) ) ) { // Ctrl-1 - Ctrl-9 on numpad or top row.
+					reject = $( '.editor:visible' ).find( '.reject' );
+
+					if ( 49 <= e.keyCode && e.keyCode <= 57 ) {
+						pos = e.keyCode - 49; // Top row.
+					} else {
+						pos = e.keyCode - 97; // Numpad.
+					}
+
+					if ( reject.length > 0 ) {
+						if ( ! reject.hasClass( 'opened' ) ) {
+							reject.trigger( 'click' );
+						}
+
+						$( '.editor:visible' )
+							.find( 'input[name=\'reject_reason[]\']' )
+							.eq( pos )
+							.trigger( 'click' );
 					}
 				} else {
 					return true;
@@ -329,6 +356,61 @@ $gp.editor = (
 					}
 				} );
 			},
+			open_reject_reasons: function( button ) {
+				var data, selected_reasons = [];
+				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
+					return;
+				}
+
+				if ( button.hasClass( 'opened' ) ) {
+					button.html( button.data( 'open' ) );
+					button.closest( 'dl' ).next( 'dl' ).remove();
+					button.removeClass( 'opened' );
+					return;
+				}
+
+				button.addClass( 'opened' );
+
+				button.data( 'open', button.html() );
+				button.html( button.data( 'close' ) );
+
+				button.closest( 'dl' ).after( $( '#reject-reasons-template' ).html() );
+
+				$( '.editor:visible [name=feedback]' ).focus();
+
+				$( '.editor:visible' ).find( '.reject-submit' ).on( 'click', function() {
+					$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
+
+					$( '.editor:visible input[name=\'reject_reason[]\']:checked' ).each( function() {
+						selected_reasons.push( this.getAttribute( 'value' ) );
+					});
+
+					data = {
+						translation_id: $gp.editor.current.translation_id,
+						status: 'rejected',
+						reasons: selected_reasons,
+						feedback: $( '.editor:visible [name=feedback]' ).val(),
+						_gp_route_nonce: button.data( 'nonce' )
+					};
+
+					$.ajax( {
+						type: 'POST',
+						url: $gp_editor_options.reject_feedback_url,
+						data: data,
+						success: function( data ) {
+							button.prop( 'disabled', false );
+							$gp.notices.success( 'Translation Rejected!' );
+							$gp.editor.replace_current( data );
+							$gp.editor.next();
+						},
+						error: function( xhr, msg ) {
+							button.prop( 'disabled', false );
+							msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the status!';
+							$gp.notices.error( msg );
+						}
+					} );
+				});
+			},
 			discard_warning: function( link ) {
 				var data;
 				if ( ! $gp.editor.current ) {
@@ -412,7 +494,7 @@ $gp.editor = (
 					return false;
 				},
 				set_status_rejected: function() {
-					$gp.editor.set_status( $( this ), 'rejected' );
+					$gp.editor.open_reject_reasons( $( this ) );
 					return false;
 				},
 				set_status_fuzzy: function() {

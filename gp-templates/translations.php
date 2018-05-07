@@ -8,7 +8,9 @@ gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
 wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
-$editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
+$editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'reject_feedback_url' );
+
+$reject_reasons = get_reject_reasons( $project );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 
@@ -333,4 +335,25 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>
+
+<script type="text/template" id="reject-reasons-template">
+	<dl class="reject-reasons">
+		<dt>
+			<?php _e( 'Reason:', 'glotpress' ); ?>
+		</dt>
+		<dd>
+			<?php foreach ( $reject_reasons as $reason_code => $reason_text ) : ?>
+				<label>
+					<input type="checkbox" name="reject_reason[]" value="<?php echo esc_attr( $reason_code ); ?>" />
+					<?php echo esc_html( $reason_text ); ?>
+				</label>
+			<?php endforeach; ?>
+			<label class="feedback">
+				<?php _e( 'Feedback:', 'glotpress' ); ?>
+				<textarea name="feedback"></textarea>
+			</label>
+			<button class="reject-submit" title="<?php echo esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>"><strong>&minus;</strong> <?php _ex( 'Reject', 'Action', 'glotpress' ); ?></button>
+		</dd>
+	</dl>
+</script>
 <?php gp_tmpl_footer();
