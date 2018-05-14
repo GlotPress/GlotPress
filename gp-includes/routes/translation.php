@@ -279,6 +279,12 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
 				$set_status = 'current';
+				$user_id    = gp_post( 'user_id' );
+				if ( $user_id ) {
+					// We are fixing a translation and preserving the author.
+					$data['user_id_last_modified'] = $data['user_id'];
+					$data['user_id']               = $user_id;
+				}
 			} else {
 				$set_status = 'waiting';
 			}

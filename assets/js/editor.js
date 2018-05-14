@@ -238,6 +238,7 @@ $gp.editor = (
 
 				data = {
 					original_id: editor.original_id,
+					user_id: button.data( 'user-id' ),
 					_gp_route_nonce: button.data( 'nonce' )
 				};
 

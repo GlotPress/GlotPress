@@ -143,6 +143,12 @@ if ( is_object( $glossary ) ) {
 					<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>">
 						<?php echo $can_approve_translation ? __( 'Add translation &rarr;', 'glotpress' ) : __( 'Suggest new translation &rarr;', 'glotpress' ); ?>
 					</button>
+					<?php if ( $can_approve_translation ) : ?>
+						<?php _e( 'or', 'glotpress' ); ?>
+						<button class="ok" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-translation_' . $t->original_id ) ); ?>" data-user-id="<?php echo esc_attr( $t->user_id ); ?>" title="<?php echo esc_attr_e( 'Fixing a translation will keep credit for the original author.', 'glotpress' ); ?>">
+							<?php _e( 'Fix translation &rarr;', 'glotpress' ); ?>
+						</button>
+					<?php endif; ?>
 				<?php endif; ?>
 				<?php _e( 'or', 'glotpress' ); ?> <a href="#" class="close"><?php _e( 'Cancel', 'glotpress' ); ?></a>
 			</div>
