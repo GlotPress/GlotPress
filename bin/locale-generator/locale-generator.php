@@ -108,7 +108,8 @@ function generate_output( $locales ) {
 		$root_var_name = str_replace( '-', '_', $locale->variant_root );
 
 		// Output the first line to 'create' the GP_Locale object for this locale.
-		echo "\t\t\${$var_name} = new GP_Locale();\n";
+		$padding = str_repeat( ' ', 40 - strlen( $var_name ) );
+		echo "\t\t\${$var_name}{$padding} = new GP_Locale();\n";
 
 		// Now loop through all the variables that may be set for this locale.
 		foreach ( $vars as $var => $value ) {
