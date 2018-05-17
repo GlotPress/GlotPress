@@ -35,11 +35,9 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 		}
 
 		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.strings' );
-		$file_contents = mb_convert_encoding( $file_contents, 'UTF-8', 'UTF-16LE' );
 		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
 
 		$exported = $this->strings->print_exported_file( $project, $locale, $set, $entries_for_export );
-		$exported = mb_convert_encoding( $exported, 'UTF-8', 'UTF-16' );
 
 		$this->assertEquals( $file_contents, $exported );
 	}
