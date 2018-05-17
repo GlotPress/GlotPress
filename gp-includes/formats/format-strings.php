@@ -12,7 +12,6 @@
  *
  * @since 1.0.0
  */
-
 class GP_Format_Strings extends GP_Format {
 	/**
 	 * Name of file format, used in file format dropdowns.
