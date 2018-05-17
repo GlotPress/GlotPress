@@ -327,7 +327,7 @@ table.translations.translation-sets-rtl .foreign-text {
 
 table.translations td.original, table.translations td.translation {
 	width: 45%;
-	word-break: break-all;
+	word-break: break-word;
 	word-wrap: break-word;
 }
 
@@ -391,7 +391,7 @@ span.context {
 	color: white;
 	font-size: 100%;
 	padding: 0.3em;
-	word-break: break-all;
+	word-break: break-word;
 	word-wrap: break-word;
 }
 
@@ -407,12 +407,12 @@ span.morethan90 {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
-	word-break: break-all;
+	word-break: break-word;
 }
 
 .editor .translation {
 	white-space: pre-wrap;
-	word-break: break-all;
+	word-break: break-word;
 }
 
 .editor .strings {
@@ -1138,5 +1138,35 @@ table.locale-sub-projects thead th {
 	.locale-project .project-description {
 		float: none;
 		margin-left: 0;
+	}
+}
+
+/*
+ * Browser specific settings
+ */
+@-moz-document url-prefix() {
+	/* Firefox */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
+@media \0screen\,screen\9 {
+	/* IE 6,7,8 */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
+
+@media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+	/* IE 9+ */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
+	}
+}
+
+@supports (-ms-ime-align: auto) {
+	/* MS Edge */
+	table.translations td.original, table.translations td.translation, span.context, .editor .original, .editor .translation {
+		word-break: break-all;
 	}
 }
