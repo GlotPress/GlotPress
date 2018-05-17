@@ -100,7 +100,10 @@ $gp.editor = (
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.add-note', $gp.editor.hooks.add_note )
-					.on( 'click', 'button.update-notes', $gp.editor.hooks.update_notes )
+					.on( 'click', 'button.update-note', $gp.editor.hooks.update_note )
+					.on( 'click', 'button.delete-note', $gp.editor.hooks.delete_note )
+					.on( 'click', 'button.update-cancel', $gp.editor.hooks.toggle_note_editor )
+					.on( 'click', 'a.note-actions', $gp.editor.hooks.toggle_note_editor )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
 				$( '#translations' ).tooltip( {
@@ -122,7 +125,7 @@ $gp.editor = (
 					hide: false,
 					show: false
 				} );
-
+				
 				$.valHooks.textarea = {
 					get: function( elem ) {
 					return elem.value.replace( /\r?\n/g, '\r\n' );
@@ -353,12 +356,12 @@ $gp.editor = (
 
 				$.ajax( {
 					type: 'POST',
-					url: $gp_editor_options.set_note_url,
+					url: $gp_editor_options.new_note_url,
 					data: data,
 					success: function( data ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Note added!' );
-						$gp.editor.replace_current( data );
+						button.closest('.meta').find('.notes').prepend( data );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -368,8 +371,13 @@ $gp.editor = (
 					}
 				} );
 			},
-			update_notes: function( button ) {
-				var editor, data = false;
+			toggle_note_editor: function ( button ) {
+				button.closest('.note')
+					  .find('.note-body')
+					  .toggle();
+			},
+			update_note: function( button ) {
+				var editor, data;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
 					return;
@@ -382,23 +390,59 @@ $gp.editor = (
 				data = {
 					translation_id: editor.translation_id,
 					original_id: editor.original_id,
-					update_note: jQuery( 'textarea[name="all_notes[' + $gp.editor.current.row_id + ']"]' ).val(),
+					note_id: button.data( 'note-id' ),
+					note: jQuery( '#edit-note-' + button.data( 'note-id' ) ).val(),
 					_gp_route_nonce: button.data( 'nonce' )
 				};
 
 				$.ajax( {
 					type: 'POST',
-					url: $gp_editor_options.set_note_url,
+					url: $gp_editor_options.edit_note_url,
 					data: data,
 					success: function( data ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Notes updated!' );
-						$gp.editor.replace_current( data );
+						$gp.notices.success( 'Note updated!' );
+						button.closest('.note').replaceWith( data );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error updating the notes!';
+						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error updating the note!';
+						$gp.notices.error( msg );
+					}
+				} );
+			},
+			delete_note: function( button ) {
+				var editor, data;
+
+				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
+					return;
+				}
+
+				editor = $gp.editor.current;
+
+				$gp.notices.notice( 'Updating note to &#8220;' );
+
+				data = {
+					translation_id: editor.translation_id,
+					original_id: editor.original_id,
+					note_id: button.data( 'note-id' ),
+					_gp_route_nonce: button.data( 'nonce' )
+				};
+
+				$.ajax( {
+					type: 'POST',
+					url: $gp_editor_options.delete_note_url,
+					data: data,
+					success: function( data ) {
+						button.prop( 'disabled', false );
+						$gp.notices.success( 'Note deleted!' );
+						button.closest('.note').remove();
+						$gp.editor.next();
+					},
+					error: function( xhr, msg ) {
+						button.prop( 'disabled', false );
+						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the note!';
 						$gp.notices.error( msg );
 					}
 				} );
@@ -501,8 +545,16 @@ $gp.editor = (
 					$gp.editor.add_note( $( this ) );
 					return false;
 				},
-				update_notes: function( ) {
-					$gp.editor.update_notes( $( this ) );
+				update_note: function( ) {
+					$gp.editor.update_note( $( this ) );
+					return false;
+				},
+				toggle_note_editor: function( ) {
+					$gp.editor.toggle_note_editor( $( this ) );
+					return false;
+				},
+				delete_note: function( ) {
+					$gp.editor.delete_note( $( this ) );
 					return false;
 				}
 			}

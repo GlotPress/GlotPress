@@ -451,6 +451,37 @@ span.morethan90 {
 	font-weight: bold;
 }
 
+.editor .meta .notes {
+	display: block;
+	font-weight: normal;
+}
+
+.editor .meta .note {
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 0.2em 0;
+}
+
+.editor .meta .note .date {
+	font-size: 80%;
+	color: #555;
+}
+
+.editor .meta .note-body {
+	font-weight: bold;
+	padding: 0.5em;
+	line-height: 1.2em;
+}
+
+.editor .meta .note-body textarea {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.editor .meta .note-actions,
+.editor .meta .delete-note {
+	float: right;
+}
+
 /*
  * JavaScript, errors and notices.
  */

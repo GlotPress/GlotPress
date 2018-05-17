@@ -104,6 +104,7 @@ function gp_schema_get() {
 		note text NOT NULL,
 		user_id bigint(20) DEFAULT NULL,
 		date_added datetime DEFAULT NULL,
+		date_modified datetime DEFAULT NULL,
 		PRIMARY KEY  (id),
 		KEY original_id (original_id),
 		KEY user_id (user_id),
