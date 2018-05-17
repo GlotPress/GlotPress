@@ -27,7 +27,7 @@ $i = 0;
 </h2>
 <?php
 if ( $can_approve ) {
-	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, 'top' );
+	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
 }
 
 echo gp_pagination( $page, $per_page, $total_translations_count );
@@ -256,7 +256,9 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 </table>
 <?php
-gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
+if ( $can_approve ) {
+	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
+}
 
 echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
