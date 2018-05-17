@@ -208,7 +208,7 @@ class GP_Format_ResX extends GP_Format {
 	}
 
 	/**
-	 * Cteate the .resx schema info.  .resx file have a standard scheam block.
+	 * Create the .resx schema info.  .resx file have a standard schema block.
 	 *
 	 * @since 1.0.0
 	 */
@@ -275,7 +275,7 @@ class GP_Format_ResX extends GP_Format {
 	}
 
 	/**
-	 * Cteate the .resx schema declaration.  .resx file have a standard scheam declaration.
+	 * Create the .resx schema declaration.  .resx file have a standard schema declaration.
 	 *
 	 * @since 1.0.0
 	 */
