@@ -56,6 +56,20 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 		}
 	}
 
+	function test_read_originals_from_UTF16LE() {
+		$translations = $this->strings->read_originals_from_file( GP_DIR_TESTDATA . '/originals.16le.strings' );
+		$this->assertEquals( count( $this->entries ), count( $translations->entries ), 'number of read originals is different from the expected' );
+
+		foreach( $this->entries as $sample ) {
+			list( $context, $original, $translation, $comment ) = $sample;
+			$translatable_entry = new Translation_Entry( array('singular' => $original, 'context' => $context, 'extracted_comments' => $comment ) );
+			$entry = $translations->translate_entry( $translatable_entry );
+			$this->assertEquals( $original, $entry->singular );
+			$this->assertEquals( $context, $entry->context );
+			$this->assertEquals( $comment, $entry->extracted_comments );
+		}
+	}
+
 	function test_read_translations() {
 		$stubbed_originals = array();
 

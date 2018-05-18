@@ -97,6 +97,17 @@ class GP_Format_Strings extends GP_Format {
 			return false;
 		}
 
+		/**
+		 * Check to see if the input file is UTF-16LE encoded, if so convert it to UTF-8.
+		 *
+		 * Note, Apple recommends UTF-8 but some of their tools (like genstrings) export
+		 * UTF-16LE (or BE, but GP has never supported that) so to remain backwards
+		 * compatible we support both for importing, but we only export UTF-8.
+		 */
+		if( mb_check_encoding( $file, 'UTF-16LE' ) ) {
+			$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
+		}
+
 		$context = $comment = null;
 		$lines = explode( "\n", $file );
 
