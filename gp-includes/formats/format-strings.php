@@ -104,7 +104,7 @@ class GP_Format_Strings extends GP_Format {
 		 * UTF-16LE (or BE, but GP has never supported that) so to remain backwards
 		 * compatible we support both for importing, but we only export UTF-8.
 		 */
-		if( mb_check_encoding( $file, 'UTF-16LE' ) ) {
+		if ( mb_check_encoding( $file, 'UTF-16LE' ) ) {
 			$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
 		}
 
