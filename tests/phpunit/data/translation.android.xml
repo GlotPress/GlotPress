@@ -15,4 +15,5 @@ Language: en_US
 	<string name="with_gt">аз > ти</string>
 	<string name="with_amps">аз &amp; ти не сме &amp;amp;</string>
 	<string name="with_comment">баба</string>
+	<string name="with_escaped_unicode">Keine Beiträge gespeichert — noch!</string>
 </resources>
