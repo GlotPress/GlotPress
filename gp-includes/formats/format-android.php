@@ -406,6 +406,21 @@ class GP_Format_Android extends GP_Format {
 	}
 
 	/**
+	 * Convert a string potentially containing escaped Unicode into UTF-8.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $string The string to unescape UTF-8.
+	 *
+	 * @return string Returns the unescaped string.
+	 */
+	private function unescape_unicode( $string ) {
+		return preg_replace_callback( '#\\\\u([0-9a-fA-F]{4})#', function ( $match ) {
+		    return mb_convert_encoding( pack( 'H*', $match[1] ), 'UTF-8', 'UTF-16BE' );
+		}, $string );
+	}
+
+	/**
 	 * Unescapes a string with c style slashes.
 	 *
 	 * @since 1.0.0
@@ -415,6 +430,7 @@ class GP_Format_Android extends GP_Format {
 	 * @return string Returns the unescaped string.
 	 */
 	private function unescape( $string ) {
+		$string = $this->unescape_unicode( $string );
 		return stripcslashes( $string );
 	}
 
