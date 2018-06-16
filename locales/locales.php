@@ -1417,6 +1417,16 @@ class GP_Locales {
 		$me->nplurals = 3;
 		$me->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
 
+		$mfe = new GP_Locale();
+		$mfe->english_name = 'Mauritian Creole';
+		$mfe->native_name = 'Kreol Morisien';
+		$mfe->lang_code_iso_639_3 = 'mfe';
+		$mfe->country_code = 'mu';
+		$mfe->wp_locale = 'mfe';
+		$mfe->slug = 'mfe';
+		$mfe->nplurals = 1;
+		$mfe->plural_expression = '0';
+
 		$mg = new GP_Locale();
 		$mg->english_name = 'Malagasy';
 		$mg->native_name = 'Malagasy';
