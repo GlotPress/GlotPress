@@ -236,24 +236,21 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	</tr>
 	</thead>
 <?php
-	if ( $glossary ) {
-		$glossary_entries = $glossary->get_entries();
-		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
-	}
+if ( $glossary ) {
+	$glossary_entries       = $glossary->get_entries();
+	$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
+}
+
+foreach ( $translations as $translation ) {
+	$translation->translation_set_id = $translation_set->id;
+
+	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
+	gp_tmpl_load( 'translation-row', get_defined_vars() );
+}
 ?>
-<?php foreach( $translations as $t ):
-		$t->translation_set_id = $translation_set->id;
-		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
-		gp_tmpl_load( 'translation-row', get_defined_vars() );
-?>
-<?php endforeach; ?>
-<?php
-	if ( !$translations ):
-?>
+<?php if ( ! $translations ) : ?>
 	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
-<?php
-	endif;
-?>
+<?php endif; ?>
 </table>
 <?php
 if ( $can_approve ) {
