@@ -141,7 +141,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 				$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
 			}
 
-			foreach ( $m[1] as $value ) {
+			foreach ( array_unique( $m[1] ) as $value ) {
 				$matching_entries[ $value ][] = array(
 					'translation'  => $glossary_entry->translation,
 					'pos'          => $glossary_entry->part_of_speech,
