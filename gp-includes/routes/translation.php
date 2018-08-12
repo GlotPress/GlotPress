@@ -157,6 +157,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$filename = apply_filters( 'gp_export_translations_filename', $filename, $format, $locale, $project, $translation_set );
 
 		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
+		$entries = apply_filters( 'gp_export_translations_entries', $entries );
 
 		if ( gp_has_translation_been_updated( $translation_set ) ) {
 			$last_modified = gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) ) . ' GMT';
