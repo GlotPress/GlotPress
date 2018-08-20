@@ -16,10 +16,12 @@
  */
 $colspan = apply_filters( 'gp_translation_row_editor_colspan', $can_approve ? 5 : 4 );
 
+$translation_singular = isset( $translation->singular_glossary_markup ) ? $translation->singular_glossary_markup : esc_translation( $translation->singular );
+
 $singular = sprintf(
 	/* translators: %s: Original singular form of the text */
 	__( 'Singular: %s', 'glotpress' ),
-	'<span class="original">' . ( isset( $translation->singular_glossary_markup ) ? $translation->singular_glossary_markup : esc_translation( $translation->singular ) ) . '</span>'
+	'<span class="original">' . $translation_singular . '</span>'
 );
 $plural = sprintf(
 	/* translators: %s: Original plural form of the text */
@@ -32,7 +34,7 @@ $plural = sprintf(
 	<td colspan="<?php echo esc_attr( $colspan ); ?>">
 		<div class="strings">
 			<?php if ( ! $translation->plural ) : ?>
-				<p class="original"><?php echo prepare_original( $singular );  // WPCS: XSS OK. ?></p>
+				<p class="original"><?php echo prepare_original( $translation_singular );  // WPCS: XSS OK. ?></p>
 				<?php textareas( $translation, array( $can_edit, $can_approve_translation ) ); ?>
 			<?php else : ?>
 				<?php if ( absint( $locale->nplurals ) === 2 && 'n != 1' === $locale->plural_expression ) : ?>
