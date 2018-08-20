@@ -18,24 +18,5 @@ if ( is_object( $glossary ) ) {
 	$translation = map_glossary_entries_to_translation_originals( $translation, $glossary, $glossary_entries_terms );
 }
 
-gp_tmpl_load(
-	'translation-row-preview', array(
-		'translation'             => $translation,
-		'can_edit'                => $can_edit,
-		'can_approve'             => $can_approve,
-		'can_approve_translation' => $can_approve_translation,
-	)
-);
-gp_tmpl_load(
-	'translation-row-editor', array(
-		'translation'             => $translation,
-		'can_write'               => $can_write,
-		'can_edit'                => $can_edit,
-		'can_approve'             => $can_approve,
-		'can_approve_translation' => $can_approve_translation,
-		'can_edit'                => $can_edit,
-		'locale'                  => $locale,
-		'project'                 => $project,
-		'translation_set'         => $translation_set,
-	)
-);
+gp_tmpl_load('translation-row-preview', get_defined_vars());
+gp_tmpl_load('translation-row-editor', get_defined_vars());
