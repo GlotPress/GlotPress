@@ -68,7 +68,7 @@ if ( $glossary->description ) {
 
 				<form action="<?php echo esc_url( gp_url_join( $url, '-new' ) ); ?>" method="post">
 					<dl>
-						<dt><label for="new_glossary_entry_term"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label><dt>
+						<dt><label for="new_glossary_entry_term"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label></dt>
 						<dd><input type="text" name="new_glossary_entry[term]" id="new_glossary_entry_term" value=""></dd>
 						<dt><label for="new_glossary_entry_post"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
 						<dd>
