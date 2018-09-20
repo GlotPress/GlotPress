@@ -38,9 +38,30 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		<a href="#" class="revealing filter"><?php _e( 'Filter &darr;', 'glotpress' ); ?></a> <span class="separator">&bull;</span>
 		<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
 		<?php
+		$current_filter = '';
 		$filter_links = array();
 
-		$filters_and_sort = array_merge( array_filter( $filters ), array_filter( $sort ) );
+		// Use array_filter() to remove empty values, store them for use later if a custom filter has been applied.
+		$filters_values_only = array_filter( $filters );
+		$sort_values_only    = array_filter( $sort );
+		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
+
+		/**
+		 * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
+		 * we don't want to match the standard filter links.
+		 *
+		 * Note: Don't check for the warnings filter here otherwise we won't be able to use this value during the check
+		 * to see if the warnings filter link entry is the currently selected filter.
+		 */
+		$additional_filters = array_key_exists( 'term', $filters_and_sort ) ||
+								array_key_exists( 'user_login', $filters_and_sort ) ||
+								array_key_exists( 'with_comment', $filters_and_sort ) ||
+								array_key_exists( 'case_sensitive', $filters_and_sort ) ||
+								array_key_exists( 'with_context', $filters_and_sort );
+
+		// Because 'warnings' is not a translation status we need to know if we're filtering on it before we check
+		// for what filter links to add.
+		$warnings_filter = array_key_exists( 'warnings', $filters_and_sort );
 
 		$all_filters = array(
 			'status' => 'current_or_waiting_or_fuzzy_or_untranslated',
@@ -50,7 +71,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			'class' => 'filter-current',
 		);
 
-		$is_current_filter = array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort;
+		$is_current_filter = ( array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
+		$current_filter    = $is_current_filter ? 'all' : $current_filter;
 
 		$filter_links[] = gp_link_get(
 			$url,
@@ -65,7 +87,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			'sort[how]'       => 'desc',
 		);
 
-		$is_current_filter = array() === array_diff( $untranslated_filters, $filters_and_sort );
+		$is_current_filter = array() === array_diff( $untranslated_filters, $filters_and_sort ) && false === $additional_filters && ! $warnings_filter;
+		$current_filter    = $is_current_filter ? 'untranslated' : $current_filter;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $untranslated_filters, $url ),
@@ -79,7 +102,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			'filters[status]'     => 'waiting',
 		);
 
-		$is_current_filter = array() === array_diff( $waiting_filters, $filters_and_sort );
+		$is_current_filter = array() === array_diff( $waiting_filters, $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
+		$current_filter    = $is_current_filter ? 'waiting' : $current_filter;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $waiting_filters, $url ),
@@ -93,7 +117,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			'filters[status]'     => 'fuzzy',
 		);
 
-		$is_current_filter = array() === array_diff( $fuzzy_filters, $filters_and_sort );
+		$is_current_filter = array() === array_diff( $fuzzy_filters, $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
+		$current_filter    = $is_current_filter ? 'fuzzy' : $current_filter;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $fuzzy_filters, $url ),
@@ -104,11 +129,10 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 
 		$warning_filters = array(
 			'filters[warnings]' => 'yes',
-			'filters[status]'   => 'current_or_waiting',
-			'sort[by]'          => 'translation_date_added',
 		);
 
-		$is_current_filter = array() === array_diff( $warning_filters, $filters_and_sort );
+		$is_current_filter = array() === array_diff( $warning_filters, $filters_and_sort ) && ! $additional_filters && ! array_key_exists( 'status', $filters_and_sort );
+		$current_filter    = $is_current_filter ? 'warning' : $current_filter;
 
 		$filter_links[] = gp_link_get(
 			add_query_arg( $warning_filters, $url ),
@@ -117,7 +141,27 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			$is_current_filter ? $current_filter_class : array()
 		);
 
-		// TODO: with warnings.
+		// If no filter has been selected yet, then add the current filter count to the end of the filter links array.
+		if ( '' === $current_filter ) {
+			// Build an array or query args to add to the link using the current sort/filter options.
+			$custom_filter = array();
+
+			foreach ( $filters_values_only as $key => $value ) {
+				$custom_filter[ 'filters[' . $key . ']' ] = $value;
+			}
+
+			foreach ( $sort_values_only as $key => $value ) {
+				$custom_filter[ 'sort[' . $key . ']' ] = $value;
+			}
+
+			$filter_links[] = gp_link_get(
+				add_query_arg( $custom_filter, $url ),
+				// Translators: %s is the strings with the current filter count for the current translation set.
+				sprintf( __( 'Current&nbsp;Filter&nbsp;(%s)', 'glotpress' ), number_format_i18n( $total_translations_count ) ),
+				$current_filter_class
+			);
+		}
+
 		// TODO: saved searches.
 		echo implode( ' <span class="separator">&bull;</span> ', $filter_links ); // WPCS: XSS ok.
 		?>
@@ -152,7 +196,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			<dd>
 				<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
 				<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
+				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
+				<input type="checkbox" name="filters[warnings]" value="yes" id="filters[warnings][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'warnings' ) ); ?>><label for='filters[warnings][yes]'><?php _e( 'With warnings', 'glotpress' ); // WPCS: XSS ok. ?></label>
 			</dd>
 			<?php
 
