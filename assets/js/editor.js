@@ -376,20 +376,20 @@ $gp.editor = (
 			tab: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
-			    var v = text_area.val();
-			    var textBefore = v.substring( 0,  cursorPos );
-			    var textAfter  = v.substring( cursorPos, v.length );
+				var v = text_area.val();
+				var textBefore = v.substring( 0,  cursorPos );
+				var textAfter  = v.substring( cursorPos, v.length );
 
-			    text_area.val( textBefore + '\t' + textAfter );
+				text_area.val( textBefore + '\t' + textAfter );
 			},
 			newline: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
-			    var v = text_area.val();
-			    var textBefore = v.substring( 0,  cursorPos );
-			    var textAfter  = v.substring( cursorPos, v.length );
+				var v = text_area.val();
+				var textBefore = v.substring( 0,  cursorPos );
+				var textAfter  = v.substring( cursorPos, v.length );
 
-			    text_area.val( textBefore + '\n' + textAfter );
+				text_area.val( textBefore + '\n' + textAfter );
 			},
 			hooks: {
 				show: function() {
