@@ -112,6 +112,7 @@ if ( is_object( $glossary ) ) {
 
 		<?php if ( ! $t->plural ): ?>
 		<p class="original"><?php echo prepare_original( $singular ); ?></p>
+		<p class="original_raw"><?php echo $singular; // WPCS: XSS ok. ?></p>
 		<?php textareas( $t, array( $can_edit, $can_approve_translation ) ); ?>
 		<?php else: ?>
 			<?php if ( $locale->nplurals == 2 && $locale->plural_expression == 'n != 1'): ?>

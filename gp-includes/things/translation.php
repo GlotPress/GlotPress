@@ -236,7 +236,7 @@ class GP_Translation extends GP_Thing {
 		// Reduce range by one since we're starting at 0, see GH#516.
 		foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 			if ( isset( $args[ "translation_$i" ] ) ) {
-				$args[ "translation_$i" ] = $this->fix_translation( $args[ "translation_$i" ] );
+				$args[ "translation_$i" ] = $args[ "translation_$i" ];
 			}
 		}
 
@@ -265,20 +265,6 @@ class GP_Translation extends GP_Thing {
 		}
 
 		return $args;
-	}
-
-	public function fix_translation( $translation ) {
-		// When selecting some browsers take the newlines and some don't
-		// that's why we don't want to insert too many newlines for each ↵.
-		$translation = str_replace( "↵\n", '↵', $translation );
-		$translation = str_replace( '↵', "\n", $translation );
-
-		// When selecting some browsers take the tab and some don't
-		// that's why we don't want to insert too many tabs for each ↵.
-		$translation = str_replace( "→\t", '→', $translation );
-		$translation = str_replace( '→', "\t", $translation );
-
-		return $translation;
 	}
 
 	/**
