@@ -94,8 +94,10 @@ $gp.editor = (
 					.on( 'dblclick', 'tr.preview td', $gp.editor.hooks.show )
 					.on( 'change', 'select.priority', $gp.editor.hooks.set_priority )
 					.on( 'click', 'a.close', $gp.editor.hooks.cancel )
-					.on( 'click', 'a.copy', $gp.editor.hooks.copy )
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
+					.on( 'click', 'button.copy', $gp.editor.hooks.copy )
+					.on( 'click', 'button.inserttab', $gp.editor.hooks.tab )
+					.on( 'click', 'button.insertnl', $gp.editor.hooks.newline )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
@@ -362,15 +364,32 @@ $gp.editor = (
 			copy: function( link ) {
 				var chunks = link.parents( '.textareas' ).find( 'textarea' ).attr( 'id' ).split( '_' );
 				var original_index = parseInt( chunks[ chunks.length - 1 ], 10 );
-				var original_text = link.parents( '.textareas' ).prev().find( '.original' ).eq( original_index );
+				var original_text = link.parents( '.textareas' ).prev().find( '.original_raw' ).eq( original_index );
 
-				if ( ! original_text.hasClass( 'original' ) ) {
-					original_text = link.parents( '.strings' ).find( '.original' ).eq( original_index );
+				if ( ! original_text.hasClass( 'original_raw' ) ) {
+					original_text = link.parents( '.strings' ).find( '.original_raw' ).eq( original_index );
 				}
 
 				original_text = original_text.text();
-				original_text = original_text.replace( /<span class=.invisibles.*?<\/span>/g, '' );
 				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
+			},
+			tab: function( link ) {
+				var text_area = link.parents( '.textareas' ).find( 'textarea' );
+				var cursorPos = text_area.prop( 'selectionStart' );
+			    var v = text_area.val();
+			    var textBefore = v.substring( 0,  cursorPos );
+			    var textAfter  = v.substring( cursorPos, v.length );
+
+			    text_area.val( textBefore + '\t' + textAfter );
+			},
+			newline: function( link ) {
+				var text_area = link.parents( '.textareas' ).find( 'textarea' );
+				var cursorPos = text_area.prop( 'selectionStart' );
+			    var v = text_area.val();
+			    var textBefore = v.substring( 0,  cursorPos );
+			    var textAfter  = v.substring( cursorPos, v.length );
+
+			    text_area.val( textBefore + '\n' + textAfter );
 			},
 			hooks: {
 				show: function() {
@@ -401,6 +420,14 @@ $gp.editor = (
 				},
 				copy: function() {
 					$gp.editor.copy( $( this ) );
+					return false;
+				},
+				tab: function() {
+					$gp.editor.tab( $( this ) );
+					return false;
+				},
+				newline: function() {
+					$gp.editor.newline( $( this ) );
 					return false;
 				},
 				discard_warning: function() {
