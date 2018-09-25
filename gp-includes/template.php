@@ -575,7 +575,9 @@ function gp_project_options_form( $project ) {
 
 function gp_entry_actions( $seperator = ' &bull; ' ) {
 	$actions = array(
-		'<a href="#" class="copy" tabindex="-1">' . __( 'Copy from original', 'glotpress' ) . '</a>'
+		'<button class="copy" tabindex="-1" title="' . __( 'Copy the original string to the translation area (overwrites existing text).', 'glotpress' ) . '">' . __( 'Copy from original', 'glotpress' ) . '</button> ' .
+		'<button class="inserttab" tabindex="-1" title="' . __( 'Insert tab (\t) at the current cursor position.', 'glotpress' ) . '">' . __( 'Insert tab', 'glotpress' ) . '</button> ' .
+		'<button class="insertnl" tabindex="-1" title="' . __( 'Insert newline (\n) at the current cursor position.', 'glotpress' ) . '">' . __( 'Insert newline', 'glotpress' ) . '</button>',
 	);
 
 	/**

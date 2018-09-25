@@ -403,11 +403,16 @@ span.morethan90 {
 /*
  * Translation Row Editor
  */
-.editor .original {
+.editor .original, .editor .original_raw {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
 	word-break: break-all;
+}
+
+.editor .original_raw {
+	visibility: hidden;
+	height: 0px;
 }
 
 .editor .translation {
@@ -433,6 +438,10 @@ span.morethan90 {
 
 .editor .strings p.plural-numbers span.numbers {
 	font-weight: bold;
+}
+
+.editor .actions {
+	padding-top: 15px;
 }
 
 .editor .textareas, .editor .actions {
