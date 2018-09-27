@@ -12,6 +12,7 @@ $priority_char = array(
 	'0'  => array( '', 'transparent', 'white' ),
 	'1'  => array( '&uarr;', 'transparent', 'green' ),
 );
+
 ?>
 
 <tr class="preview <?php gp_translation_row_classes( $translation ); ?>" id="preview-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>">
@@ -25,7 +26,7 @@ $priority_char = array(
 		<?php echo $priority_char[ $translation->priority ][0]; // WPCS: XSS OK. ?>
 	</td>
 	<td class="original">
-		<?php echo prepare_original( esc_translation( $translation->singular ) ); // WPCS: XSS OK. ?>
+		<?php echo prepare_original( $translation_singular ); // WPCS: XSS OK. ?>
 		<?php if ( $translation->context ) : ?>
 			<?php /* translators: %s: Context of original */ ?>
 			<span class="context bubble" title="<?php echo esc_attr( sprintf( __( 'Context: %s', 'glotpress' ), $translation->context ) ); ?>"><?php echo esc_html( $translation->context ); ?></span>
