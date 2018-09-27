@@ -65,7 +65,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 	<?php if ( $translation->extracted_comments ) : ?>
 		<dl>
 			<dt><?php _e( 'Comment:', 'glotpress' ); ?></dt>
-			<dd><?php echo make_clickable( esc_translation( $translation->extracted_comments ) ); // WPCS: XSS OK. ?></dd>
+			<dd><?php echo make_clickable( nl2br( esc_translation( $translation->extracted_comments ) ) ); // WPCS: XSS OK. ?></dd>
 		</dl>
 	<?php endif; ?>
 	<?php if ( $translation->translation_added && '0000-00-00 00:00:00' !== $translation->translation_added ) : ?>
