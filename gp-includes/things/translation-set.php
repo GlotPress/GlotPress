@@ -493,6 +493,7 @@ class GP_Translation_Set extends GP_Thing {
 					o.status = '+active' AND
 					( t.status = 'current' OR t.status = 'waiting' )
 					AND warnings IS NOT NULL
+					AND warnings != ''
 			", $this->id ) );
 
 			if ( $warnings_counts ) {
