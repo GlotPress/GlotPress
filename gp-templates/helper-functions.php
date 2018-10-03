@@ -176,7 +176,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 					'pos'          => $glossary_entry->part_of_speech,
 					'comment'      => $glossary_entry->comment,
 					'locale_entry' => $locale_entry,
-					);
+				);
 			}
 
 			// Add the span and chunk to our output.
@@ -226,7 +226,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 						'pos'          => $glossary_entry->part_of_speech,
 						'comment'      => $glossary_entry->comment,
 						'locale_entry' => $locale_entry,
-						);
+					);
 				}
 
 				// Add the span and chunk to our output.
