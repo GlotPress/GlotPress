@@ -33,7 +33,7 @@ $plural = sprintf(
 		<div class="strings">
 			<?php if ( ! $translation->plural ) : ?>
 				<p class="original"><?php echo prepare_original( $translation_singular );  // WPCS: XSS OK. ?></p>
-				<p class="original_raw"><?php echo $translation_singular; // WPCS: XSS ok. ?></p>
+				<p class="original_raw"><?php echo esc_translation( $translation->singular ); // WPCS: XSS ok. ?></p>
 				<?php textareas( $translation, array( $can_edit, $can_approve_translation ) ); ?>
 			<?php else : ?>
 				<?php if ( absint( $locale->nplurals ) === 2 && 'n != 1' === $locale->plural_expression ) : ?>
