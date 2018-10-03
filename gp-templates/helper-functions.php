@@ -151,11 +151,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		// Create an escaped version for use later on.
 		$escaped_chunk = esc_translation( $chunk );
 
-		// created a lower case version to compare with the glossary terms.
+		// Create a lower case version to compare with the glossary terms.
 		$lower_chunk = strtolower( $chunk );
 
-		// Search the glossary terms for a matching entry
-		if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array ) ) {
+		// Search the glossary terms for a matching entry.
+		if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
 			$glossary_data = array();
 
 			// Add glossary data for each matching entry.
@@ -172,11 +172,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 				// Create the data to be added to the span.
 				$glossary_data[] = array(
-						'translation'  => $glossary_entry->translation,
-						'pos'          => $glossary_entry->part_of_speech,
-						'comment'      => $glossary_entry->comment,
-						'locale_entry' => $locale_entry,
-						);
+					'translation'  => $glossary_entry->translation,
+					'pos'          => $glossary_entry->part_of_speech,
+					'comment'      => $glossary_entry->comment,
+					'locale_entry' => $locale_entry,
+					);
 			}
 
 			// Add the span and chunk to our output.
@@ -201,10 +201,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			// Create an escaped version for use later on.
 			$escaped_chunk = esc_translation( $chunk );
 
-			// created a lower case version to compare with the glossary terms.
+			// Create a lower case version to compare with the glossary terms.
 			$lower_chunk = strtolower( $chunk );
 
-			if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array ) ) {
+			// Search the glossary terms for a matching entry.
+			if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
@@ -221,11 +222,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 					// Create the data to be added to the span.
 					$glossary_data[] = array(
-							'translation'  => $glossary_entry->translation,
-							'pos'          => $glossary_entry->part_of_speech,
-							'comment'      => $glossary_entry->comment,
-							'locale_entry' => $locale_entry,
-							);
+						'translation'  => $glossary_entry->translation,
+						'pos'          => $glossary_entry->part_of_speech,
+						'comment'      => $glossary_entry->comment,
+						'locale_entry' => $locale_entry,
+						);
 				}
 
 				// Add the span and chunk to our output.
