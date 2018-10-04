@@ -362,9 +362,11 @@ class GP_Translation extends GP_Thing {
 					break;
 			}
 
-			$mapped_scope_array = array_map( function( $x ) use ( $like ) {
-				return "($x $like)";
-				}, $scope_array
+			$mapped_scope_array = array_map(
+				function( $x ) use ( $like ) {
+					return "($x $like)";
+				},
+				$scope_array
 			);
 
 			$where[] = '(' . implode( ' OR ', $mapped_scope_array ) . ')';

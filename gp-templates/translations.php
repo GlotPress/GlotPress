@@ -137,8 +137,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 						array(
 							'scope_originals'    => __( 'Originals only', 'glotpress' ),
 							'scope_translations' => __( 'Translations only', 'glotpress' ),
-							'scope_context'      => __( 'Context only', 'glotpress'),
-							'scope_references'   => __( 'References only', 'glotpress'),
+							'scope_context'      => __( 'Context only', 'glotpress' ),
+							'scope_references'   => __( 'References only', 'glotpress' ),
 							'scope_both'         => __( 'Both Originals and Translations', 'glotpress' ),
 							'scope_any'          => __( 'Any', 'glotpress' ),
 						),
