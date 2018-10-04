@@ -85,10 +85,6 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 	 * @ticket GH-450
 	 */
 	public function test_po_export_includes_project_id_version_header() {
-		if ( 'GP_Format_PO' !== get_class( $this->format ) ) {
-			$this->markTestSkipped();
-		}
-
 		$parent_project_one = $this->factory->project->create();
 		$parent_project_two = $this->factory->project->create( array( 'parent_project_id' => $parent_project_one->id ) );
 		$set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'parent_project_id' => $parent_project_two->id ) );
@@ -186,7 +182,7 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 	 */
 	protected $format;
 
-   public function setUp() {
+   	public function setUp() {
 		parent::setUp();
 
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.mo';
@@ -194,6 +190,10 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 		$this->has_comments = false;
 
 		$this->format = new Testable_GP_Format_MO;
+	}
+
+	public function test_po_export_includes_project_id_version_header() {
+		$this->assertEquals( 'Testable_GP_Format_MO', get_class( $this->format ) );
 	}
 }
 
