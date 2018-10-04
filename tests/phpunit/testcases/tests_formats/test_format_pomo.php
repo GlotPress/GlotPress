@@ -84,7 +84,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 	/**
 	 * @ticket GH-450
 	 */
-	public function test_po_export_includes_project_id_version_header() {
+	public function test_export_includes_project_id_version_header() {
 		$parent_project_one = $this->factory->project->create();
 		$parent_project_two = $this->factory->project->create( array( 'parent_project_id' => $parent_project_one->id ) );
 		$set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'parent_project_id' => $parent_project_two->id ) );
@@ -192,7 +192,8 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 		$this->format = new Testable_GP_Format_MO;
 	}
 
-	public function test_po_export_includes_project_id_version_header() {
+	public function test_export_includes_project_id_version_header() {
+		// MO files do no have header info, so "skip" this test without reporting that it has been skipped by phpunit.
 		$this->assertEquals( 'Testable_GP_Format_MO', get_class( $this->format ) );
 	}
 }
