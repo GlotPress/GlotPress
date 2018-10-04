@@ -163,35 +163,40 @@ function gp_populate_notices() {
  */
 function gp_array_zip() {
 	$args = func_get_args();
+
 	if ( !is_array( $args ) ) {
 		return false;
 	}
+
 	if ( empty( $args ) ) {
 		return array();
 	}
+
+	$depth = 0;
 	$res = array();
 	foreach ( $args as &$array ) {
 		if ( !is_array( $array) ) {
 			return false;
 		}
+
 		reset( $array );
+		$array_size = sizeof( $array );
+
+		if ( 0 === $depth || $depth > $array_size ) {
+			$depth = $array_size;
+		}
 	}
-	$all_have_more = true;
-	while (true) {
-		$this_round = array();
+
+	for ( $i = 0; $i < $depth; $i++) {
+		$array_count = 0;
+
 		foreach ( $args as &$array ) {
-			$all_have_more = ( list( , $value ) = each( $array ) );
-			if ( !$all_have_more ) {
-				break;
-			}
-			$this_round[] = $value;
-		}
-		if ( $all_have_more ) {
-			$res[] = $this_round;
-		} else {
-			break;
+			$res[ $i ][ $array_count ] = $array[ $i ];
+
+			$array_count++;
 		}
 	}
+
 	return $res;
 }
 
