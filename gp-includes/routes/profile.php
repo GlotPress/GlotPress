@@ -40,7 +40,7 @@ class GP_Route_Profile extends GP_Route_Main {
 			$user = get_user_by( 'slug', $user );
 		}
 
-		if ( ! $user ) {
+		if ( ! $user || ( is_object( $user ) && ! $user->exists() ) ) {
 			return $this->die_with_404();
 		}
 
