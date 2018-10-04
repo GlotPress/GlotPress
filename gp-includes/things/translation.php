@@ -338,7 +338,31 @@ class GP_Translation extends GP_Thing {
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
 			$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
-			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
+
+			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
+
+			switch ( $term_scope ) {
+				case 'scope_originals':
+					$scope_array = array( 'o.singular', 'o.plural' );
+					break;
+				case 'scope_translations':
+					$scope_array = array( 't.translation_0', 't.translation_1' );
+					break;
+				case 'scope_context':
+					$scope_array = array( 'o.context' );
+					break;
+				case 'scope_references':
+					$scope_array = array( 'o.references' );
+					break;
+				case 'scope_both':
+					$scope_array = array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1' );
+					break;
+				default:
+					$scope_array = array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' );
+					break;
+			}
+
+			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, $scope_array ) ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $wpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
