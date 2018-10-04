@@ -3,8 +3,12 @@
 class GP_Test_Translation_Warnings extends GP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
-		$this->is_baba = create_function('$o, $t, $l', 'return $t == "баба"? true : "error";');
-		$this->is_equal = create_function('$o, $t, $l', 'return $t == $o? true : "error";');
+		$this->is_baba = function( $o, $t, $l ) {
+			return $t == "баба"? true : "error";
+			};
+		$this->is_equal = function( $o, $t, $l ) {
+			return $t == $o? true : "error";
+			};
 		$this->w = new GP_Translation_Warnings;
 		$this->with_equal = new GP_Translation_Warnings;
 		$this->with_equal->add( 'is_equal', $this->is_equal );

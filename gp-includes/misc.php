@@ -161,7 +161,7 @@ function gp_populate_notices() {
  *
  * Previously this function was documented as:
  *
- * 		The function works only with numerical arrays.
+ *      The function works only with numerical arrays.
  *
  * However this was incorrect, this function would only return an array of arrays with
  * numeric basic indexes, but would process any array whether it was numeric or reference
@@ -169,31 +169,31 @@ function gp_populate_notices() {
  *
  * For example:
  *
- *		$first_array[] = "First"
- *		$first_array[] = "Second"
- *		$first_array[] = "Third"
+ *      $first_array[] = "First"
+ *      $first_array[] = "Second"
+ *      $first_array[] = "Third"
  *
- *		$second_array[0]    = "Fourth"
- *		$second_array[test] = "Fifth"
- *		$second_array[1]    = "Sixth"
+ *      $second_array[0]    = "Fourth"
+ *      $second_array[test] = "Fifth"
+ *      $second_array[1]    = "Sixth"
  *
- *		$result = gp_array_zip( $first_array, $second_array );
+ *      $result = gp_array_zip( $first_array, $second_array );
  *
  * Would produce:
  *
- *		$result[0][0] = "First"
- *		$result[0][1] = "Fourth"
- *		$result[1][0] = "Second"
- *		$result[1][1] = "Fifth"
- *		$result[2][0] = "Third"
- *		$result[2][1] = "Sixth"
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Fifth"
+ *      $result[2][0] = "Third"
+ *      $result[2][1] = "Sixth"
  *
  * Instead of either failing (which is probably what should have happened) or something like:
  *
- *		$result[0][0] = "First"
- *		$result[0][1] = "Fourth"
- *		$result[1][0] = "Second"
- *		$result[1][1] = "Sixth"
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Sixth"
  *
  * Or some other random result.
  *
@@ -216,7 +216,7 @@ function gp_array_zip() {
 			return false;
 		}
 
-		$array_size = sizeof( $array );
+		$array_size = count( $array );
 		reset( $array );
 
 		if ( 0 === $depth || $depth > $array_size ) {
@@ -229,7 +229,7 @@ function gp_array_zip() {
 	$array_count = 0;
 
 	foreach ( $args as &$array ) {
-		for ( $i = 0; $i < $depth; $i++) {
+		for ( $i = 0; $i < $depth; $i++ ) {
 			$res[ $i ][ $array_count ] = current( $array );
 
 			next( $array );
