@@ -92,7 +92,7 @@ function gp_run_route() {
 function is_glotpress() {
 	global $wp;
 
-	if ( ! is_admin() && GP_ROUTING && null != $wp->query_vars && array_key_exists( 'gp_route', $wp->query_vars ) ) {
+	if ( ! is_admin() && GP_ROUTING && $wp INSTANCEOF WP && null != $wp->query_vars && array_key_exists( 'gp_route', $wp->query_vars ) ) {
 		return true;
 	}
 	return false;
