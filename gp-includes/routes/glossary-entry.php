@@ -90,7 +90,6 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				$find_parms = array(
 					'glossary_id'    => $glossary->id,
 					'term'           => $new_glossary_entry->term,
-					'part_of_speech' => $new_glossary_entry->part_of_speech,
 				);
 
 				if ( GP::$glossary_entry->find_one( $find_parms ) ) {
