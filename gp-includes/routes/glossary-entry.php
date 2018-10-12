@@ -88,8 +88,9 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 			} else {
 				$find_parms = array(
-					'glossary_id' => $glossary->id,
-					'term'        => $new_glossary_entry->term,
+					'glossary_id'    => $glossary->id,
+					'term'           => $new_glossary_entry->term,
+					'part_of_speech' => $new_glossary_entry->part_of_speech,
 				);
 
 				if ( GP::$glossary_entry->find_one( $find_parms ) ) {
