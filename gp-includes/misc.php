@@ -159,39 +159,85 @@ function gp_populate_notices() {
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
  *
- * The function works only with numerical arrays.
+ * Previously this function was documented as:
+ *
+ *      The function works only with numerical arrays.
+ *
+ * However this was incorrect, this function would only return an array of arrays with
+ * numeric basic indexes, but would process any array whether it was numeric or reference
+ * based, using the order in which the array was created as the index value to return.
+ *
+ * For example:
+ *
+ *      $first_array[] = "First"
+ *      $first_array[] = "Second"
+ *      $first_array[] = "Third"
+ *
+ *      $second_array[0]    = "Fourth"
+ *      $second_array[test] = "Fifth"
+ *      $second_array[1]    = "Sixth"
+ *
+ *      $result = gp_array_zip( $first_array, $second_array );
+ *
+ * Would produce:
+ *
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Fifth"
+ *      $result[2][0] = "Third"
+ *      $result[2][1] = "Sixth"
+ *
+ * Instead of either failing (which is probably what should have happened) or something like:
+ *
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Sixth"
+ *
+ * Or some other random result.
+ *
  */
 function gp_array_zip() {
 	$args = func_get_args();
+
 	if ( !is_array( $args ) ) {
 		return false;
 	}
+
 	if ( empty( $args ) ) {
 		return array();
 	}
-	$res = array();
+
+	$depth = 0;
+
 	foreach ( $args as &$array ) {
 		if ( !is_array( $array) ) {
 			return false;
 		}
+
+		$array_size = count( $array );
 		reset( $array );
-	}
-	$all_have_more = true;
-	while (true) {
-		$this_round = array();
-		foreach ( $args as &$array ) {
-			$all_have_more = ( list( , $value ) = each( $array ) );
-			if ( !$all_have_more ) {
-				break;
-			}
-			$this_round[] = $value;
-		}
-		if ( $all_have_more ) {
-			$res[] = $this_round;
-		} else {
-			break;
+
+		if ( 0 === $depth || $depth > $array_size ) {
+			$depth = $array_size;
 		}
 	}
+
+	$res = array();
+
+	$array_count = 0;
+
+	foreach ( $args as &$array ) {
+		for ( $i = 0; $i < $depth; $i++ ) {
+			$res[ $i ][ $array_count ] = current( $array );
+
+			next( $array );
+		}
+
+		$array_count++;
+	}
+
 	return $res;
 }
 
