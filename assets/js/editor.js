@@ -127,7 +127,7 @@ $gp.editor = (
 					hide: false,
 					show: false
 				} );
-				
+
 				$.valHooks.textarea = {
 					get: function( elem ) {
 					return elem.value.replace( /\r?\n/g, '\r\n' );
@@ -363,7 +363,7 @@ $gp.editor = (
 					success: function( data ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Note added!' );
-						button.closest('.meta').find('.notes').prepend( data );
+						button.closest( '.meta' ).find( '.notes' ).prepend( data );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -373,9 +373,9 @@ $gp.editor = (
 					}
 				} );
 			},
-			toggle_note_editor: function ( button ) {
-				button.closest('.note')
-					  .find('.note-body')
+			toggle_note_editor: function( button ) {
+				button.closest( '.note' )
+					  .find( '.note-body' )
 					  .toggle();
 			},
 			update_note: function( button ) {
@@ -404,7 +404,7 @@ $gp.editor = (
 					success: function( data ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Note updated!' );
-						button.closest('.note').replaceWith( data );
+						button.closest( '.note' ).replaceWith( data );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -436,10 +436,10 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.delete_note_url,
 					data: data,
-					success: function( data ) {
+					success: function() {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Note deleted!' );
-						button.closest('.note').remove();
+						button.closest( '.note' ).remove();
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {

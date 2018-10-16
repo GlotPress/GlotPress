@@ -67,7 +67,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return object The output of the query.
 	 */
-	function save( $note, $translation ) {
+	public function save( $args = null ) {
 		global $wpdb;
 		if ( ! GP::$permission->current_user_can(
 			'approve', 'translation', $translation->id, array(
@@ -109,7 +109,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return array notes
 	 */
-	function get_by_entry( $entry, $order = null ) {
+	public function get_by_entry( $entry, $order = null ) {
 		return $this->many( 
 			$this->select_all_from_conditions_and_order( 
 				array(
