@@ -332,7 +332,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
 	</div><?php endforeach; ?>
 	<div class="box has-warnings"></div>
-	<div><?php _e( 'With Warnings', 'glotpress' ); ?></div>
+	<div><?php _e( 'With warnings', 'glotpress' ); ?></div>
 
 </div>
 <p class="clear actionlist secondary">
