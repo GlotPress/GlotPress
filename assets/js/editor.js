@@ -381,6 +381,9 @@ $gp.editor = (
 				var textAfter  = v.substring( cursorPos, v.length );
 
 				text_area.val( textBefore + '\t' + textAfter );
+
+				text_area.focus();
+				text_area[0].selectionEnd = cursorPos + 1;
 			},
 			newline: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
@@ -390,6 +393,9 @@ $gp.editor = (
 				var textAfter  = v.substring( cursorPos, v.length );
 
 				text_area.val( textBefore + '\n' + textAfter );
+
+				text_area.focus();
+				text_area[0].selectionEnd = cursorPos + 1;
 			},
 			hooks: {
 				show: function() {
