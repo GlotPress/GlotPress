@@ -32,7 +32,7 @@ gp_tmpl_header();
 <?php if ( $can_write ): ?>
 
 <div class="actionlist">
-	<a href="#" class="project-actions" id="project-actions-toggle"><?php _e( 'Project actions &darr;', 'glotpress' ); ?></a>
+	<a href="#" class="project-actions" id="project-actions-toggle"><?php echo __( 'Project actions', 'glotpress' ) . ' &darr;'; ?></a>
 	<div class="project-actions hide-if-js">
 		<?php gp_project_actions( $project, $translation_sets ); ?>
 	</div>
@@ -76,27 +76,79 @@ gp_tmpl_header();
 					<?php endif; ?>
 				</td>
 				<td class="stats percent"><?php echo $set->percent_translated; ?>%</td>
-				<td class="stats translated" title="translated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-							array('filters[translated]' => 'yes', 'filters[status]' => 'current') ), $set->current_count ); ?></td>
-				<td class="stats fuzzy" title="fuzzy"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-						array('filters[status]' => 'fuzzy') ), $set->fuzzy_count ); ?></td>
-				<td class="stats untranslated" title="untranslated"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-							array('filters[status]' => 'untranslated' ) ), $set->untranslated_count ); ?></td>
-				<td class="stats waiting"><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ),
-							array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), $set->waiting_count ); ?></td>
-				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-				<td class="extra">
+				<td class="stats translated" title="translated">
 					<?php
-					/**
-					 * Fires in an extra information column of a translation set.
-					 *
-					 * @since 1.0.0
-					 *
-					 * @param GP_Translation_Set $set     The translation set.
-					 * @param GP_Project         $project The current project.
-					 */
-					do_action( 'gp_project_template_translation_set_extra', $set, $project ); ?>
+					gp_link(
+						gp_url_project(
+							$project,
+							gp_url_join( $set->locale, $set->slug ),
+							array(
+								'filters[translated]' => 'yes',
+								'filters[status]'     => 'current',
+							)
+						),
+						$set->current_count
+					);
+					?>
 				</td>
+				<td class="stats fuzzy" title="fuzzy">
+					<?php
+					gp_link(
+						gp_url_project(
+							$project,
+							gp_url_join( $set->locale, $set->slug ),
+							array(
+								'filters[translated]' => 'yes',
+								'filters[status]'     => 'fuzzy',
+							)
+						),
+						$set->fuzzy_count
+					);
+					?>
+				</td>
+				<td class="stats untranslated" title="untranslated">
+					<?php
+					gp_link(
+						gp_url_project(
+							$project,
+							gp_url_join( $set->locale, $set->slug ),
+							array(
+								'filters[status]' => 'untranslated',
+							)
+						),
+						$set->untranslated_count
+					);
+					?>
+				</td>
+				<td class="stats waiting">
+					<?php
+					gp_link(
+						gp_url_project(
+							$project,
+							gp_url_join( $set->locale, $set->slug ),
+							array(
+								'filters[translated]' => 'yes',
+								'filters[status]'     => 'waiting',
+							)
+						),
+						$set->waiting_count
+					);
+					?>
+				</td>
+				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
+					<td class="extra">
+						<?php
+						/**
+						 * Fires in an extra information column of a translation set.
+						 *
+						 * @since 1.0.0
+						 *
+						 * @param GP_Translation_Set $set     The translation set.
+						 * @param GP_Project         $project The current project.
+						 */
+						do_action( 'gp_project_template_translation_set_extra', $set, $project );
+						?>
+					</td>
 				<?php endif; ?>
 			</tr>
 		<?php endforeach; ?>
@@ -142,15 +194,15 @@ gp_tmpl_header();
 
 <script type="text/javascript" charset="utf-8">
 	$gp.showhide('a.personal-options', 'div.personal-options', {
-		show_text: '<?php _e( 'Personal project options &darr;', 'glotpress' ); ?>',
-		hide_text: '<?php _e( 'Personal project options &uarr;', 'glotpress' ); ?>',
+		show_text: '<?php echo __( 'Personal project options', 'glotpress' ) . ' &darr;'; ?>',
+		hide_text: '<?php echo __( 'Personal project options', 'glotpress' ) . ' &uarr;'; ?>',
 		focus: '#source-url-template',
 		group: 'personal'
 	});
 	jQuery('div.personal-options').hide();
 	$gp.showhide('a.project-actions', 'div.project-actions', {
-		show_text: '<?php _e( 'Project actions &darr;', 'glotpress' ); ?>',
-		hide_text: '<?php _e( 'Project actions &uarr;', 'glotpress' ); ?>',
+		show_text: '<?php echo __( 'Project actions', 'glotpress' ) . ' &darr;'; ?>',
+		hide_text: '<?php echo __( 'Project actions', 'glotpress' ) . ' &uarr;'; ?>',
 		focus: '#source-url-template',
 		group: 'project'
 	});

@@ -236,7 +236,7 @@ class GP_Translation extends GP_Thing {
 		// Reduce range by one since we're starting at 0, see GH#516.
 		foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 			if ( isset( $args[ "translation_$i" ] ) ) {
-				$args[ "translation_$i" ] = $this->fix_translation( $args[ "translation_$i" ] );
+				$args[ "translation_$i" ] = $args[ "translation_$i" ];
 			}
 		}
 
@@ -249,24 +249,22 @@ class GP_Translation extends GP_Thing {
 
 	public function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
+
+		/**
+		 * Filters the translation fields before they are saved.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array          $args Translation arguments.
+		 * @param GP_Translation $this Translation class.
+		 */
+		$args = apply_filters( 'gp_translation_prepare_for_save', $args, $this );
+
 		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
 			$args['warnings'] = serialize( $args['warnings'] );
 		}
+
 		return $args;
-	}
-
-	public function fix_translation( $translation ) {
-		// When selecting some browsers take the newlines and some don't
-		// that's why we don't want to insert too many newlines for each ↵.
-		$translation = str_replace( "↵\n", '↵', $translation );
-		$translation = str_replace( '↵', "\n", $translation );
-
-		// When selecting some browsers take the tab and some don't
-		// that's why we don't want to insert too many tabs for each ↵.
-		$translation = str_replace( "→\t", '→', $translation );
-		$translation = str_replace( '→', "\t", $translation );
-
-		return $translation;
 	}
 
 	/**
@@ -326,7 +324,38 @@ class GP_Translation extends GP_Thing {
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
 			$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
-			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
+
+			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
+
+			switch ( $term_scope ) {
+				case 'scope_originals':
+					$scope_array = array( 'o.singular', 'o.plural' );
+					break;
+				case 'scope_translations':
+					$scope_array = array( 't.translation_0', 't.translation_1' );
+					break;
+				case 'scope_context':
+					$scope_array = array( 'o.context' );
+					break;
+				case 'scope_references':
+					$scope_array = array( 'o.references' );
+					break;
+				case 'scope_both':
+					$scope_array = array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1' );
+					break;
+				default:
+					$scope_array = array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' );
+					break;
+			}
+
+			$mapped_scope_array = array_map(
+				function( $x ) use ( $like ) {
+					return "($x $like)";
+				},
+				$scope_array
+			);
+
+			$where[] = '(' . implode( ' OR ', $mapped_scope_array ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $wpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );

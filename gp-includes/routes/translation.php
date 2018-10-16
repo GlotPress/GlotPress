@@ -320,12 +320,12 @@ class GP_Route_Translation extends GP_Route_Main {
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
 
 				if ( ! empty( $translations ) ) {
-					$t = $translations[0];
+					$translation = $translations[0];
 
 					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 					$can_write = $this->can( 'write', 'project', $project->id );
 					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-					$can_approve_translation = $this->can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
+					$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
 					$output[ $original_id ] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
 				} else {
@@ -582,12 +582,12 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
 		if ( ! empty( $translations ) ) {
-			$t = $translations[0];
+			$translation = $translations[0];
 
 			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
 			$can_write = $this->can( 'write', 'project', $project->id );
 			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-			$can_approve_translation = $this->can( 'approve', 'translation', $t->id, array( 'translation' => $t ) );
+			$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {

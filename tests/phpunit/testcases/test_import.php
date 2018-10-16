@@ -107,7 +107,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 1,
 					'current_count' => 0,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -130,7 +130,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 1,
 					'current_count' => 0,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -140,7 +140,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 1,
 					'current_count' => 0,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -213,7 +213,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 1,
 					'current_count' => 0,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -236,7 +236,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 1,
 					'current_count' => 0,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -246,7 +246,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 1,
 					'current_count' => 0,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -316,7 +316,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 2,
 					'current_count' => 1,
-					'untranslated_count' => 1,
+					'untranslated_count' => 0,
 					'waiting_count' => 1,
 				),
 			),
@@ -329,7 +329,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 2,
 					'current_count' => 0,
-					'untranslated_count' => 2,
+					'untranslated_count' => 1,
 					'waiting_count' => 1,
 				),
 			),
@@ -339,7 +339,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 2,
 					'current_count' => 0,
-					'untranslated_count' => 2,
+					'untranslated_count' => 0,
 					'waiting_count' => 2,
 				),
 			),
@@ -352,7 +352,7 @@ class GP_Import extends GP_UnitTestCase {
 				'counts' => array(
 					'all_count' => 2,
 					'current_count' => 0,
-					'untranslated_count' => 2,
+					'untranslated_count' => 1,
 					'waiting_count' => 1,
 				),
 			),

@@ -202,6 +202,23 @@ textarea {
 	width: 40em;
 }
 
+.button-link {
+	font-family: "Helvetica", "Arial", sans-serif;
+	color: #2F34B8;
+	line-height: 1.5em;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	box-shadow: none;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	outline: none;
+	cursor: pointer;
+	text-align: left;
+	text-decoration: underline;
+}
+
 table.translations,
 table.translation-sets,
 table.glossary,
@@ -310,7 +327,7 @@ table.translations.translation-sets-rtl .foreign-text {
 
 table.translations td.original, table.translations td.translation {
 	width: 45%;
-	word-break: break-word;
+	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -374,6 +391,8 @@ span.context {
 	color: white;
 	font-size: 100%;
 	padding: 0.3em;
+	word-break: break-all;
+	word-wrap: break-word;
 }
 
 span.morethan90 {
@@ -384,14 +403,21 @@ span.morethan90 {
 /*
  * Translation Row Editor
  */
-.editor .original {
+.editor .original, .editor .original_raw {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
+	word-break: break-all;
+}
+
+.editor .original_raw {
+	visibility: hidden;
+	height: 0px;
 }
 
 .editor .translation {
 	white-space: pre-wrap;
+	word-break: break-all;
 }
 
 .editor .strings {
@@ -412,6 +438,10 @@ span.morethan90 {
 
 .editor .strings p.plural-numbers span.numbers {
 	font-weight: bold;
+}
+
+.editor .actions {
+	padding-top: 15px;
 }
 
 .editor .textareas, .editor .actions {
@@ -485,13 +515,16 @@ span.morethan90 {
 /*
  * JavaScript, errors and notices.
  */
-#gp-js-message {
+.gp-js-message {
 	position: fixed;
 	top: 0;
-	padding: 0.5em;
+	padding: 1em;
 	display: none;
-	font-size: 85%;
 	z-index: 1001;
+}
+
+.gp-js-message-dismiss {
+	color: #fff;
 }
 
 .gp-js-error, .error {
@@ -600,9 +633,17 @@ ul a.delete {
 }
 
 /*
+ * Filter menu
+ */
+.filter-toolbar {
+	float: left;
+}
+
+/*
  * Translation page filters
  */
-.filter-current {
+.filter-current,
+.filter-title {
 	font-weight: bold;
 }
 
@@ -773,7 +814,9 @@ span.removed {
 }
 
 #legend {
-	margin-top: 1em;
+	float: left;
+	margin-top: .3em;
+	padding-left: 1.5em;
 }
 
 #legend div {

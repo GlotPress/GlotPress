@@ -242,7 +242,16 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
 	$attributes = $attributes ? " $attributes" : '';
 	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
+	$labels = [
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
 	foreach( $options as $value => $label ) {
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
+		}
 		$selected = selected( $value, $selected_key, false );
 		$res .= "\t<option value='" . esc_attr( $value ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 	}
@@ -510,8 +519,8 @@ function gp_project_actions( $project, $translation_sets ) {
 		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch Project', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, '-delete' ), __( 'Delete Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( $project, '-delete' ), __( 'Delete project', 'glotpress' ) ),
 	);
 
 	/**
@@ -539,7 +548,7 @@ function gp_project_actions( $project, $translation_sets ) {
 
 function gp_project_options_form( $project ) {
 	return '
-			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __( 'Personal project options &darr;', 'glotpress' ) . '</a>
+			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __( 'Personal project options', 'glotpress' ) . ' &darr;</a>
 			<div class="personal-options">
 				<form action="' . gp_url_project( $project, '-personal' ) . '" method="post">
 				<dl>
@@ -566,7 +575,9 @@ function gp_project_options_form( $project ) {
 
 function gp_entry_actions( $seperator = ' &bull; ' ) {
 	$actions = array(
-		'<a href="#" class="copy" tabindex="-1">' . __( 'Copy from original', 'glotpress' ) . '</a>'
+		'<button class="copy" tabindex="-1" title="' . __( 'Copy the original string to the translation area (overwrites existing text).', 'glotpress' ) . '">' . __( 'Copy from original', 'glotpress' ) . '</button> ' .
+		'<button class="inserttab" tabindex="-1" title="' . __( 'Insert tab (\t) at the current cursor position.', 'glotpress' ) . '">' . __( 'Insert tab', 'glotpress' ) . '</button> ' .
+		'<button class="insertnl" tabindex="-1" title="' . __( 'Insert newline (\n) at the current cursor position.', 'glotpress' ) . '">' . __( 'Insert newline', 'glotpress' ) . '</button>',
 	);
 
 	/**

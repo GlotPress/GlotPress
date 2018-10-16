@@ -428,7 +428,38 @@ class GP_Translation_Set extends GP_Thing {
 	public function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 
-		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) ) { // The format was changed in 2.1.
+		/*
+		 * The format was changed in 2.1 and 3.0.
+		 *
+		 * In 2.1 the format was changed to an array of objects in the following sequence,
+		 * however not all may exist in the array, so for example, the array may only be 3
+		 * entries long and skip any of the values:
+		 *
+		 *     [0] = Current translations
+		 *     [1] = Fuzzy translations
+		 *     [2] = Rejected translations
+		 *     [3] = Old translations
+		 *     [4] = Translations with warnings
+		 *     [5] = All translations
+		 *
+		 * In 3.0 the untranslated object was added:
+		 *
+		 *     [0] = Current translations
+		 *     [1] = Fuzzy translations
+		 *     [2] = Rejected translations
+		 *     [3] = Old translations
+		 *     [4] = Translations with warnings
+		 *     [5] = Untranslated originals
+		 *     [6] = All translations
+		 *
+		 * Version 3.0 also introduced the cache 'version' array entry to allow for easy
+		 * detection of when the cache should be expired due to changes in the cache.
+		 *
+		 * Note: The _version key is unset after the cache is loaded so that it does not
+		 * get used in the for loops when setting the object properties.
+		 *
+		 */
+		if ( ! is_array( $counts ) || ! array_key_exists( '_version', $counts ) || GP_CACHE_VERSION !== $counts['_version'] ) {
 			global $wpdb;
 			$counts = array();
 
@@ -462,6 +493,7 @@ class GP_Translation_Set extends GP_Thing {
 					o.status = '+active' AND
 					( t.status = 'current' OR t.status = 'waiting' )
 					AND warnings IS NOT NULL
+					AND warnings != ''
 			", $this->id ) );
 
 			if ( $warnings_counts ) {
@@ -472,7 +504,36 @@ class GP_Translation_Set extends GP_Thing {
 					'public'             => (int) $warnings_counts->public,
 				);
 			}
+
+			$untranslated_counts = $wpdb->get_row( $wpdb->prepare( "
+				SELECT
+					COUNT(*) AS total,
+					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+				FROM {$wpdb->gp_originals} AS o
+				LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != 'rejected' AND t.status != 'old'
+				WHERE
+					o.project_id = %d AND
+					o.status = '+active' AND
+					t.translation_0 IS NULL
+			", $this->id, $this->project_id ) );
+
+			if ( $untranslated_counts ) {
+				$counts[] = (object) array(
+					'translation_status' => 'untranslated',
+					'total'              => (int) $untranslated_counts->total,
+					'public'             => (int) $untranslated_counts->public,
+					'hidden'             => (int) $untranslated_counts->hidden,
+				);
+			}
+
+			$counts['_version'] = GP_CACHE_VERSION;
+
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
+		}
+
+		if ( array_key_exists( '_version', $counts ) ) {
+			unset( $counts['_version'] );
 		}
 
 		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
@@ -485,6 +546,7 @@ class GP_Translation_Set extends GP_Thing {
 
 		$statuses = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
+		$statuses[] = 'untranslated';
 		$statuses[] = 'all';
 		foreach ( $statuses as $status ) {
 			$this->{$status . '_count'} = 0;
@@ -496,8 +558,6 @@ class GP_Translation_Set extends GP_Thing {
 				$this->{$count->translation_status . '_count'} = $user_can_view_hidden ? (int) $count->total : (int) $count->public;
 			}
 		}
-
-		$this->untranslated_count = $this->all_count - $this->current_count; // @todo Improve this.
 	}
 
 	/**

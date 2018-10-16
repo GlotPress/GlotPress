@@ -133,43 +133,120 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
 	}
 
-	// Save our current singular/plural strings before attempting any markup change. Also escape now, since we're going to add some html.
-	$translation->singular_glossary_markup = esc_translation( $translation->singular );
-	$translation->plural_glossary_markup   = esc_translation( $translation->plural );
+	$glossary_entries_terms_array = array();
+	$glossary_term_reference      = array();
 
-	// Search for glossary terms in our strings.
-	$matching_entries = array();
-
+	// Since glossary entries terms have been returned as an array of strings, we need to break it up and create back references.
 	foreach ( $glossary_entries_terms as $i => $terms ) {
-		$glossary_entry = $glossary_entries[ $i ];
-		if ( preg_match_all( '/\b(' . $terms . ')\b/i', $translation->singular . ' ' . $translation->plural, $m ) ) {
-			$locale_entry = '';
-			if ( $glossary_entry->glossary_id !== $glossary->id ) {
-				/* translators: Denotes an entry from the locale glossary in the tooltip */
-				$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
-			}
+		// Split the terms in to an array and make sure they are all lower case for later use.
+		$term_list = explode( '|', $terms );
+		$term_list = array_map( 'strtolower', $term_list );
 
-			foreach ( $m[1] as $value ) {
-				$matching_entries[ $value ][] = array(
+		foreach ( $term_list as $term ) {
+			// Add the term to the terms array.
+			$glossary_entries_terms_array[] = $term;
+			// Make a back reference to the term's glossary entry.
+			$glossary_term_reference[ $term ][] = $i;
+		}
+	}
+
+	// Split the singular string on word boundaries.
+	$singular_split    = preg_split( '/\b/', $translation->singular );
+	$singular_combined = '';
+
+	// Loop through each chunk of the split to find glossary terms.
+	foreach ( $singular_split as $chunk ) {
+		// Create an escaped version for use later on.
+		$escaped_chunk = esc_translation( $chunk );
+
+		// Create a lower case version to compare with the glossary terms.
+		$lower_chunk = strtolower( $chunk );
+
+		// Search the glossary terms for a matching entry.
+		if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+			$glossary_data = array();
+
+			// Add glossary data for each matching entry.
+			foreach ( $glossary_term_reference[ $lower_chunk ] as $glossary_entry_id ) {
+				// Get the glossary entry based on the back reference we created earlier.
+				$glossary_entry = $glossary_entries[ $glossary_entry_id ];
+
+				// If this is a locale glossary, make a note for the user.
+				$locale_entry = '';
+				if ( $glossary_entry->glossary_id !== $glossary->id ) {
+					/* translators: Denotes an entry from the locale glossary in the tooltip */
+					$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
+				}
+
+				// Create the data to be added to the span.
+				$glossary_data[] = array(
 					'translation'  => $glossary_entry->translation,
 					'pos'          => $glossary_entry->part_of_speech,
 					'comment'      => $glossary_entry->comment,
 					'locale_entry' => $locale_entry,
 				);
 			}
+
+			// Add the span and chunk to our output.
+			$singular_combined .= '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8' ) . '">' . $escaped_chunk . '</span>';
+		} else {
+			// No term was found so just add the escaped chunk to the output.
+			$singular_combined .= $escaped_chunk;
 		}
 	}
 
-	// Replace terms in strings with markup.
-	foreach ( $matching_entries as $term => $glossary_data ) {
-		$replacement = '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8' ) . '">$1</span>';
+	// Assign the output to the translation.
+	$translation->singular_glossary_markup = $singular_combined;
 
-		$regex = '/\b(' . preg_quote( $term, '/' ) . ')(?![^<]*<\/span>)\b/iu';
-		$translation->singular_glossary_markup = preg_replace( $regex, $replacement, $translation->singular_glossary_markup );
+	// Add glossary terms to the plural if we have one.
+	if ( $translation->plural ) {
+		// Split the plural string on word boundaries.
+		$plural_split    = preg_split( '/\b/', $translation->plural );
+		$plural_combined = '';
 
-		if ( $translation->plural ) {
-			$translation->plural_glossary_markup = preg_replace( $regex, $replacement, $translation->plural_glossary_markup );
+		// Loop through each chunk of the split to find glossary terms.
+		foreach ( $plural_split as $chunk ) {
+			// Create an escaped version for use later on.
+			$escaped_chunk = esc_translation( $chunk );
+
+			// Create a lower case version to compare with the glossary terms.
+			$lower_chunk = strtolower( $chunk );
+
+			// Search the glossary terms for a matching entry.
+			if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+				$glossary_data = array();
+
+				// Add glossary data for each matching entry.
+				foreach ( $glossary_term_reference[ $lower_chunk ] as $glossary_entry_id ) {
+					// Get the glossary entry based on the back reference we created earlier.
+					$glossary_entry = $glossary_entries[ $glossary_entry_id ];
+
+					// If this is a locale glossary, make a note for the user.
+					$locale_entry = '';
+					if ( $glossary_entry->glossary_id !== $glossary->id ) {
+						/* translators: Denotes an entry from the locale glossary in the tooltip */
+						$locale_entry = _x( 'Locale Glossary', 'Bubble', 'glotpress' );
+					}
+
+					// Create the data to be added to the span.
+					$glossary_data[] = array(
+						'translation'  => $glossary_entry->translation,
+						'pos'          => $glossary_entry->part_of_speech,
+						'comment'      => $glossary_entry->comment,
+						'locale_entry' => $locale_entry,
+					);
+				}
+
+				// Add the span and chunk to our output.
+				$plural_combined .= '<span class="glossary-word" data-translations="' . htmlspecialchars( wp_json_encode( $glossary_data ), ENT_QUOTES, 'UTF-8' ) . '">' . $escaped_chunk . '</span>';
+			} else {
+				// No term was found so just add the escaped chunk to the output.
+				$plural_combined .= $escaped_chunk;
+			}
 		}
+
+		// Assign the output to the translation.
+		$translation->plural_glossary_markup = $plural_combined;
 	}
 
 	return $translation;
@@ -281,8 +358,18 @@ function render_note( $note, $can_edit ) {
 }
 
 function display_status( $status ) {
-	$status = preg_replace( '/^[+-]/', '', $status );
-	return $status ? $status : __( 'untranslated', 'glotpress' );
+	$status_labels = [
+		'current'  => _x( 'current', 'Single Status', 'glotpress' ),
+		'waiting'  => _x( 'waiting', 'Single Status', 'glotpress' ),
+		'fuzzy'    => _x( 'fuzzy', 'Single Status', 'glotpress' ),
+		'old'      => _x( 'old', 'Single Status', 'glotpress' ),
+		'rejected' => _x( 'rejected', 'Single Status', 'glotpress' ),
+	];
+	if ( isset( $status_labels[ $status ] ) ) {
+		$status = $status_labels[ $status ];
+	}
+	$status = preg_replace( '/^[+-]/', '', $status);
+	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
 
 function references( $project, $entry ) {
@@ -319,4 +406,140 @@ return;
 	?>
 	</ul></dt></dl>
 	<?php
+}
+
+/**
+ * Output the bulk actions toolbar in the translations page.
+ *
+ * @param string $bulk_action     The URL to submit the form to.
+ * @param string $can_write       Can the current user write translations to the database.
+ * @param string $translation_set The current translation set.
+ * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
+ */
+function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
+?>
+<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+	<div>
+	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
+		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
+		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
+		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
+	<?php if ( $can_write ) : ?>
+		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
+	<?php endif; ?>
+		<?php
+
+		/**
+		 * Fires inside the bulk action menu for translation sets.
+		 *
+		 * Printing out option elements here will add those to the translation
+		 * bulk options drop down menu.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Set $set The translation set.
+		 */
+		do_action( 'gp_translation_set_bulk_action', $translation_set );
+		?>
+	</select>
+	<?php if ( $can_write ) : ?>
+	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
+	<?php
+	$labels = [
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
+
+	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
+		}
+
+		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+	}
+	?>
+	</select>
+	<?php endif; ?>
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk-redirect_to-<?php echo esc_attr( $location ); ?>" />
+	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
+	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
+	</div>
+	<?php
+		$nonce = gp_route_nonce_field( 'bulk-actions', false );
+		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
+		echo $nonce; // WPCS: XSS Ok.
+	?>
+</form>
+<?php
+}
+
+/**
+ * Output the bulk actions toolbar in the translations page.
+ *
+ * @param string $bulk_action     The URL to submit the form to.
+ * @param string $can_write       Can the current user write translations to the database.
+ * @param string $translation_set The current translation set.
+ * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
+ */
+function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
+?>
+<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+	<div>
+	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
+		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
+		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
+		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
+	<?php if ( $can_write ) : ?>
+		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
+	<?php endif; ?>
+		<?php
+
+		/**
+		 * Fires inside the bulk action menu for translation sets.
+		 *
+		 * Printing out option elements here will add those to the translation
+		 * bulk options drop down menu.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Set $set The translation set.
+		 */
+		do_action( 'gp_translation_set_bulk_action', $translation_set );
+		?>
+	</select>
+	<?php if ( $can_write ) : ?>
+	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
+	<?php
+	$labels = [
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
+
+	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
+		}
+
+		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+	}
+	?>
+	</select>
+	<?php endif; ?>
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk-redirect_to-<?php echo esc_attr( $location ); ?>" />
+	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
+	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
+	</div>
+	<?php
+		$nonce = gp_route_nonce_field( 'bulk-actions', false );
+		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
+		echo $nonce; // WPCS: XSS Ok.
+	?>
+</form>
+<?php
 }

@@ -22,7 +22,11 @@ class GP_UnitTestCase_Request extends GP_UnitTestCase {
             'uri' => $uri,
             'gp_config_path' => dirname( __FILE__ ) . '/../unittests-config.php',
         );
-        extract( array_map( create_function( '$value', 'return var_export( $value, true );' ), $config_vars ) );
+        extract( array_map( function( $value ) {
+            return var_export( $value, true );
+            },
+            $config_vars )
+        );
         $config_php_code = <<<CONFIG
 <?php
 \$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';

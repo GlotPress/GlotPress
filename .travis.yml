@@ -1,9 +1,23 @@
+language: php
 sudo: false
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      # For xmllint
+      - libxml2-utils
 
 notifications:
   email:
     on_success: never
     on_failure: change
+  slack:
+    rooms:
+      secure: gHZhX95Wb8G0ZuWTM8Utn32x/QtLgCN0q81wvQlMB25sxhYryJzjoXOBngw6+cviTcbgGqCC6W2tNuIWk0qWTMHJupE+nqwxDRFY3N+cMf9CVE80dFDK/P47/NACwiRTr0S3oH+h6FZ1uRxc3pkdo+TTKKU/B8wcvDK8hZSEb6E0LqTg8yNPbHBxqkQl1L+c3w/n/m/7zCYa2fgPq7Bv6siC6FpomZQOfonQMj1Y0g7vP8XuZ3V+baKSNThn0fZxLjqWzTYKmdxU9A8UXcQ7aI1myKXT49tAnA0dsArt20CfgrpBQPVFm16xo1cAnT8KKSpdjB+8hzDtEz4yRtqIyr975zgiaxcvw7SLi7jmNpKf/OByMwKh0jBJ2Fq+vACw4QXLLX6CpXmqCxOt0p2t4n/br3GjfJygZ/3VzcD1TIKLCNE4Nv1dtpFlEtIZv8P85tpkYY/JWN986eZfCPmhg76BycvfjGNiN4BBEgIqxnle1YrAjeH1Uis7h50s/E0317mvLdeuF696L5/9txJMIeIipqMvclrY8dsI3n6I/FioCBg215dBuQ5+yj9df3K0b4CbJ6h0pKc6iF+bpwKeajEMt5C+3NSKhCmatDV0spwuo8+Ho8LgnCBAytsN2UYniKfPQDiZRclkzehf0/VjgTXubjB0doLfWh5LEHri0Ok=
+    on_start: never
+    on_failure: always
+    on_success: change
 
 cache:
   directories:
@@ -12,22 +26,22 @@ cache:
     - $HOME/phpunit-bin
     - $HOME/.composer/cache
 
-language: php
-
 matrix:
   allow_failures:
     - php: nightly
   include:
   - php: 5.6
-    env: WP_VERSION=trunk WP_MULTISITE=1
+    env: WP_VERSION=trunk WP_MULTISITE=1 DEFAULT_BASE_BRANCH=develop
   - php: 5.6
-    env: WP_VERSION=trunk WP_MULTISITE=0 WP_TRAVISCI=codecoverage
+    env: WP_VERSION=trunk WP_MULTISITE=0 WP_TRAVISCI=codecoverage DEFAULT_BASE_BRANCH=develop
   - php: 7.0
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   - php: 7.1
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
+  - php: 7.2
+    env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   - php: nightly
-    env: WP_VERSION=trunk WP_MULTISITE=0
+    env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
 
 install:
   - nvm install 6 && nvm use 6
@@ -37,6 +51,7 @@ install:
   - source $DEV_LIB_PATH/travis.install.sh
 
 before_script:
+  - xmllint --version
   - |
     # Remove Xdebug for a huge performance increase, but not from nightly:
     stable='^[0-9\.]+$'
