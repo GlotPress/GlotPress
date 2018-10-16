@@ -168,12 +168,27 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		</div>
 		<dl class="filters-expanded filters hidden clearfix">
 			<dt>
-				<p><label for="filters[term]"><?php _e( 'Term:', 'glotpress' ); ?></label></p>
-				<p><label for="filters[user_login]"><?php _e( 'User:', 'glotpress' ); ?></label></p>
+				<p><label for="filters[user_login]"><?php _e( 'User:', 'glotpress' ); // WPCS: XSS ok. ?></label></p>
+				<p><label for="filters[term]"><?php _e( 'Term:', 'glotpress' ); // WPCS: XSS ok. ?></label></p>
+				<p><label for="filters[term_scope]"><?php _e( 'Term Scope:', 'glotpress' ); // WPCS: XSS ok. ?></label></p>
 			</dt>
 			<dd>
-				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); // WPCS: XSS ok. ?>" name="filters[term]" id="filters[term]" /></p>
 				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); // WPCS: XSS ok. ?>" name="filters[user_login]" id="filters[user_login]" /></p>
+				<p><input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); // WPCS: XSS ok. ?>" name="filters[term]" id="filters[term]" /></p>
+				<?php
+					echo gp_radio_buttons( // WPCS: XSS ok.
+						'filters[term_scope]',
+						array(
+							'scope_originals'    => __( 'Originals only', 'glotpress' ),
+							'scope_translations' => __( 'Translations only', 'glotpress' ),
+							'scope_context'      => __( 'Context only', 'glotpress' ),
+							'scope_references'   => __( 'References only', 'glotpress' ),
+							'scope_both'         => __( 'Both Originals and Translations', 'glotpress' ),
+							'scope_any'          => __( 'Any', 'glotpress' ),
+						),
+						gp_array_get( $filters, 'term_scope', 'scope_any' )
+					);
+				?>
 			</dd>
 			<dt><label><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
 			<dd>
