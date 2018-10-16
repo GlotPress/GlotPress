@@ -611,7 +611,8 @@ ul a.delete {
 /*
  * Translation page filters
  */
-.filter-current {
+.filter-current,
+.filter-title {
 	font-weight: bold;
 }
 
