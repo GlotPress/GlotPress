@@ -64,12 +64,11 @@ class GP_Format_Strings extends GP_Format {
 		usort( $sorted_entries, array( 'GP_Format_Strings', 'sort_entries' ) );
 
 		foreach ( $sorted_entries as $entry ) {
-			$entry->context = $this->escape( $entry->context );
-			$translation = empty( $entry->translations ) ? $entry->context : $this->escape( $entry->translations[0] );
+			$translation = $this->escape( empty( $entry->translations ) ? $entry->singular : $entry->translations[0] );
 
-			$original = str_replace( "\n", "\\n", $entry->context );
+			$original    = str_replace( "\n", "\\n", $this->escape( $entry->singular ) );
 			$translation = str_replace( "\n", "\\n", $translation );
-			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
+			$comment     = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
 			if ( $comment == "" ) {
 				$comment = "No comment provided by engineer.";
