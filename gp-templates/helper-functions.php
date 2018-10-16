@@ -171,6 +171,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 				// Get the glossary entry based on the back reference we created earlier.
 				$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 
+
 				// If this is a locale glossary, make a note for the user.
 				$locale_entry = '';
 				if ( $glossary_entry->glossary_id !== $glossary->id ) {
@@ -406,6 +407,74 @@ return;
 	?>
 	</ul></dt></dl>
 	<?php
+}
+
+/**
+ * Output the bulk actions toolbar in the translations page.
+ *
+ * @param string $bulk_action     The URL to submit the form to.
+ * @param string $can_write       Can the current user write translations to the database.
+ * @param string $translation_set The current translation set.
+ * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
+ */
+function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
+?>
+<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+	<div>
+	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
+		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
+		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
+		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
+		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
+	<?php if ( $can_write ) : ?>
+		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
+	<?php endif; ?>
+		<?php
+
+		/**
+		 * Fires inside the bulk action menu for translation sets.
+		 *
+		 * Printing out option elements here will add those to the translation
+		 * bulk options drop down menu.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param GP_Translation_Set $set The translation set.
+		 */
+		do_action( 'gp_translation_set_bulk_action', $translation_set );
+		?>
+	</select>
+	<?php if ( $can_write ) : ?>
+	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
+	<?php
+	$labels = [
+		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
+		'low'    => _x( 'low', 'Priority', 'glotpress' ),
+		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
+		'high'   => _x( 'high', 'Priority', 'glotpress' ),
+	];
+
+	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
+		if ( isset( $labels[ $label ] ) ) {
+			$label = $labels[ $label ];
+		}
+
+		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+	}
+	?>
+	</select>
+	<?php endif; ?>
+	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk-redirect_to-<?php echo esc_attr( $location ); ?>" />
+	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
+	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
+	</div>
+	<?php
+		$nonce = gp_route_nonce_field( 'bulk-actions', false );
+		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
+		echo $nonce; // WPCS: XSS Ok.
+	?>
+</form>
+<?php
 }
 
 /**
