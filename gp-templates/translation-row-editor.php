@@ -16,8 +16,6 @@
  */
 $colspan = apply_filters( 'gp_translation_row_editor_colspan', $can_approve ? 5 : 4 );
 
-$translation_singular = isset( $translation->singular_glossary_markup ) ? $translation->singular_glossary_markup : esc_translation( $translation->singular );
-
 $singular = sprintf(
 	/* translators: %s: Original singular form of the text */
 	__( 'Singular: %s', 'glotpress' ),
