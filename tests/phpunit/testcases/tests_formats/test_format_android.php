@@ -14,7 +14,7 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 			array( 'with_gt', 'me > you', "аз > ти", '' ),
 			array( 'with_amps', 'me & you are not &amp;', 'аз & ти не сме &amp;', '' ),
 			array( 'with_comment', 'baba', 'баба', 'Me, myself & Irene' ),
-			array( 'with_escaped_unicode', 'No posts saved — yet!', 'Keine Beiträge gespeichert — noch!', '' ),
+			array( 'with_escaped_unicode', 'No posts saved \u2014 yet!', 'Keine Beiträge gespeichert \u2014 noch!', '' ),
 		);
 	}
 
