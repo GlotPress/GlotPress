@@ -406,13 +406,13 @@ class GP_Format_Android extends GP_Format {
 	}
 
 	/**
-	 * Convert a string potentially containing escaped Unicode into UTF-8.
+	 * Preserve a Unicode sequence (like \u1234) by adding another backslash.
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $string The string to unescape UTF-8.
+	 * @param string $string The string to process.
 	 *
-	 * @return string Returns the unescaped string.
+	 * @return string Returns the string with double-escaped Unicode sequences.
 	 */
 	private function preserve_escaped_unicode( $string ) {
 		return preg_replace( '#\\\\u([0-9a-fA-F]{4})#', '\\\\$0', $string );
