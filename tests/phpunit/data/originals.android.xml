@@ -9,4 +9,5 @@
 	<string name="with_gt">me > you</string>
 	<string name="with_amps">me &amp; you are not &amp;amp;</string>
 	<string name="with_comment" comment="Me, myself &amp; Irene">baba</string>
+	<string name="with_escaped_unicode">No posts saved \u2014 yet!</string>
 </resources>

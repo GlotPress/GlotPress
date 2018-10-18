@@ -406,6 +406,19 @@ class GP_Format_Android extends GP_Format {
 	}
 
 	/**
+	 * Preserve a Unicode sequence (like \u1234) by adding another backslash.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $string The string to process.
+	 *
+	 * @return string Returns the string with double-escaped Unicode sequences.
+	 */
+	private function preserve_escaped_unicode( $string ) {
+		return preg_replace( '#\\\\u([0-9a-fA-F]{4})#', '\\\\$0', $string );
+	}
+
+	/**
 	 * Unescapes a string with c style slashes.
 	 *
 	 * @since 1.0.0
@@ -415,6 +428,7 @@ class GP_Format_Android extends GP_Format {
 	 * @return string Returns the unescaped string.
 	 */
 	private function unescape( $string ) {
+		$string = $this->preserve_escaped_unicode( $string );
 		return stripcslashes( $string );
 	}
 
