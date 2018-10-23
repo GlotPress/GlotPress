@@ -67,7 +67,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return object The output of the query.
 	 */
-	function save( $note, $translation ) {
+	public function save( $args = null ) {
 		global $wpdb;
 		if ( ! GP::$permission->current_user_can(
 			'approve', 'translation', $translation->id, array(
