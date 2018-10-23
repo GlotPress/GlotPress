@@ -109,7 +109,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return array notes
 	 */
-	function get_by_entry( $entry, $order = null ) {
+	public function get_by_entry( $entry, $order = null ) {
 		return $this->many( 
 			$this->select_all_from_conditions_and_order( 
 				array(
