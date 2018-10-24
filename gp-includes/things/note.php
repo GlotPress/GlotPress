@@ -74,7 +74,10 @@ class GP_Note extends GP_Thing {
 	public function save( $args = null ) {
 		global $wpdb;
 		if ( ! GP::$permission->current_user_can(
-			'approve', 'translation', $translation->id, array(
+			'approve',
+			'translation',
+			$translation->id,
+			array(
 				'translation' => $translation,
 			)
 		) ) {
@@ -93,12 +96,23 @@ class GP_Note extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Edit the note
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $note_id     Note ID.
+	 * @param string $note        Note object.
+	 * @param string $translation Translation object.
+	 *
+	 * @return object The output of the query.
+	 */
 	public function edit($note_id, $note, $translation) {
 		if ( false === GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
 			return false;
 		}
 
-		$this->update( array('note' => $note), array( 'id' => $note_id ) );
+		$this->update( array( 'note' => $note ), array( 'id' => $note_id ) );
 
 		return $this->get( $note_id );
 	}
