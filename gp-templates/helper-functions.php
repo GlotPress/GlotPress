@@ -317,7 +317,8 @@ function render_notes( $entry, $permissions ) {
 		if ( GP::$permission->current_user_can(
 			'approve',
 			'translation',
-			$entry->id, array(
+			$entry->id,
+			array(
 				'translation' => $entry,
 			)
 		) ) {
@@ -343,7 +344,7 @@ function render_notes( $entry, $permissions ) {
 function render_note( $note, $can_edit ) {
 ?>
 	<div class="note">
-		<?php gp_link_user(  get_userdata( $note->user_id ) ); ?>
+		<?php gp_link_user( get_userdata( $note->user_id ) ); ?>
 		<?php esc_attr_e( 'Commented', 'glotpress' ); ?>
 		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime($note->date_added), time() ) ) );  ?></span>
 		<a href="#" class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></a>

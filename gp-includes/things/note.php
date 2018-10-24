@@ -107,7 +107,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return object The output of the query.
 	 */
-	public function edit($note_id, $note, $translation) {
+	public function edit( $note_id, $note, $translation ) {
 		if ( false === GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
 			return false;
 		}
