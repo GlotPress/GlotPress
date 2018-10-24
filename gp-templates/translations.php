@@ -1,5 +1,5 @@
 <?php
-gp_title( sprintf( __( 'Translations &lt; %1$s &lt; %2$s &lt; GlotPress', 'glotpress' ), $translation_set->name, $project->name ) );
+gp_title( sprintf( esc_attr__( 'Translations &lt; %1$s &lt; %2$s &lt; GlotPress', 'glotpress' ), $translation_set->name, $project->name ) );
 gp_breadcrumb(
 	array(
 		gp_project_links_from_root( $project ),
@@ -9,8 +9,8 @@ gp_breadcrumb(
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
 wp_localize_script(
 	'gp-translations-page', '$gp_translations_options', array(
-		'sort' => __( 'Sort', 'glotpress' ),
-		'filter' => __( 'Filter', 'glotpress' ),
+		'sort'   => esc_attr__( 'Sort', 'glotpress' ),
+		'filter' => esc_attr__( 'Filter', 'glotpress' ),
 	)
 );
 
@@ -23,7 +23,7 @@ gp_tmpl_header();
 $i = 0;
 ?>
 <h2>
-	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name ) ); ?>: <?php echo esc_html( $translation_set->name ); ?>
+	<?php printf( esc_attr__( 'Translation of %s', 'glotpress' ), esc_html( $project->name ) ); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
@@ -384,21 +384,21 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		$export_link = gp_link_get(
 			$export_url , __( 'Export', 'glotpress' ),
 				array(
-				'id' => 'export',
-				'filters' => add_query_arg(
-					array(
-						'filters' => $filters,
+					'id'      => 'export',
+					'filters' => add_query_arg(
+						array(
+							'filters' => $filters,
+						),
+						$export_url
 					),
-					$export_url
-				),
-			)
+				)
 		);
 		$format_options = array();
 		foreach ( GP::$formats as $slug => $format ) {
 			$format_options[ $slug ] = $format->name;
 		}
 
-		$what_dropdown = gp_select(
+		$what_dropdown   = gp_select(
 			'what-to-export',
 			array(
 				'all'      => _x( 'all current', 'export choice', 'glotpress' ),

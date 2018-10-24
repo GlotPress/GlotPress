@@ -107,7 +107,7 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 
 	uasort(
 		$glossary_entries_terms, function( $a, $b ) {
-		return gp_strlen( $a ) < gp_strlen( $b );
+			return gp_strlen( $a ) < gp_strlen( $b );
 		}
 	);
 
@@ -284,10 +284,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	if ( $can_edit ) {
 		gp_entry_actions();
 	} elseif ( is_user_logged_in() ) {
-		_e( 'You are not allowed to edit this translation.', 'glotpress' );
+		esc_attr_e( 'You are not allowed to edit this translation.', 'glotpress' );
 	} else {
 		// translators: The placeholder is the login link
-		printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+		printf( esc_attr__( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 	}
 	?>
 		</p>
@@ -309,7 +309,7 @@ function render_notes( $entry, $permissions ) {
 ?>
 	<dl>
 		<dt>
-			<?php echo __( 'Action Log:', 'glotpress' ) ?>
+			<?php echo esc_attr__( 'Action Log:', 'glotpress' ) ?>
 		</dt>
 		<dd class="notes">
 			<?php foreach( $notes as $note ) {
@@ -326,10 +326,10 @@ function render_notes( $entry, $permissions ) {
 				'translation' => $entry,
 			)
 		) ) {
-		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt>';
+		echo '<dt><br>' . esc_attr__( 'New Reviewer note:', 'glotpress' ) . '</dt>';
 	?>
 			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
-			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $entry->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
+			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $entry->id ) ); ?>"><?php esc_attr_e( 'Add note', 'glotpress' ); ?></button></dt>
 	<?php
 		}
 	?>
@@ -348,8 +348,8 @@ function render_notes( $entry, $permissions ) {
 function render_note( $note, $can_edit ) {
 ?>
 	<div class="note">
-		<?php gp_link_user(  get_userdata( $note->user_id )); ?>
-		<?php _e('Commented', 'glotpress'); ?>
+		<?php gp_link_user(  get_userdata( $note->user_id ) ); ?>
+		<?php esc_attr_e( 'Commented', 'glotpress' ); ?>
 		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime($note->date_added), time() ) ) );  ?></span>
 		<a href="#" class="note-actions" >edit</a>
 		<div class="note-body">
@@ -359,13 +359,13 @@ function render_note( $note, $can_edit ) {
 		<div class="note-body edit-note-body" style="display: none;">
 			<textarea autocomplete="off" class="foreign-text" name="edit-note[<?php echo esc_attr( $note->id ); ?>]" id="edit-note-<?php echo esc_attr( $note->id ); ?>"><?php echo esc_html( $note->note ); ?></textarea>
 			<button class="update-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-note-' . $note->id ) ); ?>">
-				<?php _e( 'Update Note', 'glotpress' ); ?>
+				<?php esc_attr_e( 'Update Note', 'glotpress' ); ?>
 			</button>
 			<button class="update-cancel" tabindex="-1">
-				<?php _e( 'Cancel', 'glotpress' ); ?>
+				<?php esc_attr_e( 'Cancel', 'glotpress' ); ?>
 			</button>
 			<button class="delete-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-note-' . $note->id ) ); ?>">
-				<?php _e( 'Delete', 'glotpress' ); ?>
+				<?php esc_attr_e( 'Delete', 'glotpress' ); ?>
 			</button>
 		</div>
 		<?php endif; ?>
@@ -407,14 +407,14 @@ return;
 	}
 	?>
 	<dl><dt>
-	<?php _e( 'References:', 'glotpress' ); ?>
+	<?php esc_attr_e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 	<?php
 		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
 			if ( $source_url = $project->source_url( $file, $line ) ) :
 	?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo esc_html( $file ) . ':' . esc_html( $line ); ?></a></li>
+				<li><a target="_blank" tabindex="-1" href="<?php echo esc_html( $source_url ) ; ?>"><?php echo esc_html( $file ) . ':' . esc_html( $line ); ?></a></li>
 	<?php
 			else :
 				echo '<li>' . esc_html( $file ) . ':' . esc_html( $line ) . '</li>';

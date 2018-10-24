@@ -67,8 +67,7 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $note    The new note.
-	 * @param object $translation The translation object.
+	 * @param string $args    Parameters that are not used.
 	 *
 	 * @return object The output of the query.
 	 */
@@ -82,20 +81,19 @@ class GP_Note extends GP_Thing {
 			return false;
 		}
 
-		$note = trim($note);
+		$note = trim( $note );
 
 		return $this->create(
 			array(
 				'original_id'        => $translation->original_id,
 				'translation_set_id' => $translation->translation_set_id,
-				'note'    => $note,
-				'user_id' => get_current_user_id(),
+				'note'               => $note,
+				'user_id'            => get_current_user_id(),
 			)
 		);
 	}
 
-	public function edit($note_id, $note, $translation)
-	{
+	public function edit($note_id, $note, $translation) {
 		if ( false === GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
 			return false;
 		}
@@ -111,6 +109,7 @@ class GP_Note extends GP_Thing {
 	 * @since 3.0.0
 	 *
 	 * @param object $entry The translation entry.
+	 * @param object $order Order but not used.
 	 *
 	 * @return array notes
 	 */

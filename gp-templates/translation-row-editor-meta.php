@@ -74,8 +74,8 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 			<dd><?php echo esc_html( $translation->translation_added ); ?> GMT</dd>
 		</dl>
 	<?php endif; ?>
-	<?php 
-		render_notes( $t, array( $can_edit, $can_approve_translation ) ); 
+	<?php
+		render_notes( $t, array( $can_edit, $can_approve_translation ) );
 	?>
 	<?php if ( $translation->user ) : ?>
 		<dl>
