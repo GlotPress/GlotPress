@@ -30,7 +30,7 @@ class GP_Route_Note extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
-		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
+		$translation = GP::$translation->get( $translation_id );
 		$noteObject = GP::$notes->save( $note, $translation );
 
 		$this->render_note($noteObject, $translation);
