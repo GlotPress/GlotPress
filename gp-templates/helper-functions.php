@@ -295,6 +295,14 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	<?php
 }
 
+/**
+ * Render multiple notes
+ *
+ * @param GP_Translation $entry            The translation entry.
+ * @param GP_Glossary    $permissions      Permissions of the user.
+ *
+ * @return void
+ */
 function render_notes( $entry, $permissions ) {
 	list( $can_edit, $can_approve ) = $permissions;
 	$notes = GP::$notes->get_by_entry( $entry );
@@ -304,8 +312,8 @@ function render_notes( $entry, $permissions ) {
 			<?php echo __( 'Action Log:', 'glotpress' ) ?>
 		</dt>
 		<dd class="notes">
-			<?php foreach($notes as $note) {
-				render_note($note, $can_edit);
+			<?php foreach( $notes as $note ) {
+				render_note( $note, $can_edit );
 			}
 			?>
 		</dd>
@@ -329,6 +337,14 @@ function render_notes( $entry, $permissions ) {
 <?php
 }
 
+/**
+ * Render the single note interface
+ *
+ * @param GP_Translation $note          The note object.
+ * @param GP_Glossary    $can_edit      Permission of the user.
+ *
+ * @return void
+ */
 function render_note( $note, $can_edit ) {
 ?>
 	<div class="note">

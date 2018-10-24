@@ -293,8 +293,9 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 
 <table id="translations" class="translations clear
 <?php
-if ( 'rtl' == $locale->text_direction ) {
-echo ' translation-sets-rtl'; }
+if ( 'rtl' === $locale->text_direction ) {
+	echo ' translation-sets-rtl';
+}
 ?>
 ">
 	<thead>
@@ -335,7 +336,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 <?php
 	foreach ( GP::$translation->get_static( 'statuses' ) as $status ) :
 		if ( 'rejected' == $status ) {
-continue;
+			continue;
 		}
 ?>
 	<div class="box status-<?php echo $status; ?>"></div>
@@ -381,12 +382,14 @@ continue;
 
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
 		$export_link = gp_link_get(
-			$export_url , __( 'Export', 'glotpress' ), array(
+			$export_url , __( 'Export', 'glotpress' ),
+				array(
 				'id' => 'export',
 				'filters' => add_query_arg(
 					array(
 						'filters' => $filters,
-					), $export_url
+					),
+					$export_url
 				),
 			)
 		);
@@ -395,10 +398,12 @@ continue;
 			$format_options[ $slug ] = $format->name;
 		}
 		$what_dropdown = gp_select(
-			'what-to-export', array(
+			'what-to-export',
+			array(
 				'all' => _x( 'all current', 'export choice', 'glotpress' ),
 				'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
-			), 'all'
+			),
+			'all'
 		);
 		$format_dropdown = gp_select( 'export-format', $format_options, 'po' );
 		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
