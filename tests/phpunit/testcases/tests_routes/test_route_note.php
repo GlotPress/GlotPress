@@ -16,5 +16,11 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		) );
 		$translation->set_as_current();
 
+		$_REQUEST['original_id'] = $set->id;
+		$_REQUEST['translation_id'] = $original->id;
+		$_REQUEST['note'] = 'Hey I am a note!';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $set->id );
+		$this->route->new_post();
+		$this->assertThereIsANoticeContaining( 'Note added!' );
 	}
 }
