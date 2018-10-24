@@ -127,7 +127,7 @@ $gp.editor = (
 					hide: false,
 					show: false
 				} );
-				
+
 				$.valHooks.textarea = {
 					get: function( elem ) {
 					return elem.value.replace( /\r?\n/g, '\r\n' );
@@ -436,7 +436,7 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.delete_note_url,
 					data: data,
-					success: function( data ) {
+					success: function() {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Note deleted!' );
 						button.closest('.note').remove();
