@@ -31,7 +31,7 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
-		$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
+	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
 	}, $text );
 
@@ -101,11 +101,7 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort(
-		$glossary_entries_terms, function( $a, $b ) {
-			return gp_strlen( $a ) < gp_strlen( $b );
-		}
-	);
+	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
 
 	return $glossary_entries_terms;
 }
@@ -276,16 +272,16 @@ function textareas( $entry, $permissions, $index = 0 ) {
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
 		<p>
-		<?php
-		if ( $can_edit ) {
-			gp_entry_actions();
-		} elseif ( is_user_logged_in() ) {
-			_e( 'You are not allowed to edit this translation.', 'glotpress' );
-		} else {
-			// translators: The placeholder is the login link
-			printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
-		}
-		?>
+			<?php
+			if ( $can_edit ) {
+				gp_entry_actions();
+			} elseif ( is_user_logged_in() ) {
+				_e( 'You are not allowed to edit this translation.', 'glotpress' );
+			} else {
+				// translators: The placeholder is the login link
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+			}
+			?>
 		</p>
 	</div>
 	<?php
@@ -399,26 +395,26 @@ function references( $project, $entry ) {
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
 	if ( ! $show_references ) {
-return;
+		return;
 	}
 	?>
 	<dl><dt>
-	<?php esc_attr_e( 'References:', 'glotpress' ); ?>
+	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
-	<?php
+		<?php
 		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
 			if ( $source_url = $project->source_url( $file, $line ) ) :
-	?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo esc_html( $source_url ) ; ?>"><?php echo esc_html( $file ) . ':' . esc_html( $line ); ?></a></li>
-	<?php
+			?>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url ; ?>"><?php echo $file . ':' . $line; ?></a></li>
+			<?php
 			else :
-				echo '<li>' . esc_html( $file ) . ':' . esc_html( $line ) . '</li>';
+				echo "<li>" . $file . ":" . $line . "</li>";
 			endif;
 		endforeach;
 	?>
 	</ul></dt></dl>
-	<?php
+<?php
 }
 
 /**

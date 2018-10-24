@@ -17,7 +17,7 @@ gp_tmpl_header();
 $i = 0;
 ?>
 <h2>
-	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name ) ); ?>: <?php echo esc_html( $translation_set->name ); ?>
+	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
@@ -285,13 +285,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	</form>
 </div>
 
-<table id="translations" class="translations clear
-<?php
-if ( 'rtl' === $locale->text_direction ) {
-	echo ' translation-sets-rtl';
-}
-?>
-">
+<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
 	<thead>
 	<tr>
 		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
@@ -329,14 +323,12 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 <?php
 	foreach ( GP::$translation->get_static( 'statuses' ) as $status ) :
-		if ( 'rejected' == $status ) {
-			continue;
-		}
+		if ( 'rejected' == $status ) continue;
 ?>
 	<div class="box status-<?php echo $status; ?>"></div>
 	<div>
 <?php
-		switch ( $status ) {
+		switch( $status ) {
 			case 'current':
 				_e( 'Current', 'glotpress' );
 				break;
@@ -378,7 +370,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );
 		$format_options = array();
 		foreach ( GP::$formats as $slug => $format ) {
-			$format_options[ $slug ] = $format->name;
+			$format_options[$slug] = $format->name;
 		}
 
 		$what_dropdown = gp_select( 'what-to-export', array('all' => _x( 'all current', 'export choice', 'glotpress' ), 'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ) ), 'all' );
