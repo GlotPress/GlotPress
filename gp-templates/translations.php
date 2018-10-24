@@ -322,7 +322,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 <?php
-	foreach ( GP::$translation->get_static( 'statuses' ) as $status ) :
+	foreach( GP::$translation->get_static( 'statuses' ) as $status ):
 		if ( 'rejected' == $status ) continue;
 ?>
 	<div class="box status-<?php echo $status; ?>"></div>

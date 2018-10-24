@@ -163,7 +163,6 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 				// Get the glossary entry based on the back reference we created earlier.
 				$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 
-
 				// If this is a locale glossary, make a note for the user.
 				$locale_entry = '';
 				if ( $glossary_entry->glossary_id !== $glossary->id ) {
@@ -275,9 +274,11 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			<?php
 			if ( $can_edit ) {
 				gp_entry_actions();
-			} elseif ( is_user_logged_in() ) {
+			}
+			elseif ( is_user_logged_in() ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
-			} else {
+			}
+			else {
 				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 			}
 			?>
@@ -403,12 +404,12 @@ function references( $project, $entry ) {
 		<?php
 		foreach( $entry->references as $reference ):
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			if ( $source_url = $project->source_url( $file, $line ) ) :
+			if ( $source_url = $project->source_url( $file, $line ) ):
 				?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url ; ?>"><?php echo $file.':'.$line; ?></a></li>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url ; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
 			else :
-				echo "<li>".$file.":".$line."</li>";
+				echo "<li>$file:$line</li>";
 			endif;
 		endforeach;
 		?>
