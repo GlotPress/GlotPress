@@ -278,7 +278,6 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			} elseif ( is_user_logged_in() ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
 			} else {
-				// translators: The placeholder is the login link
 				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 			}
 			?>
@@ -402,17 +401,17 @@ function references( $project, $entry ) {
 	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 		<?php
-		foreach ( $entry->references as $reference ) :
+		foreach( $entry->references as $reference ):
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
 			if ( $source_url = $project->source_url( $file, $line ) ) :
-			?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url ; ?>"><?php echo $file . ':' . $line; ?></a></li>
-			<?php
+				?>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url ; ?>"><?php echo $file.':'.$line; ?></a></li>
+				<?php
 			else :
-				echo "<li>" . $file . ":" . $line . "</li>";
+				echo "<li>".$file.":".$line."</li>";
 			endif;
 		endforeach;
-	?>
+		?>
 	</ul></dt></dl>
 <?php
 }

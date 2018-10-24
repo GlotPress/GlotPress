@@ -391,5 +391,4 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>
-<?php
-gp_tmpl_footer();
+<?php gp_tmpl_footer();
