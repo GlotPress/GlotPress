@@ -75,7 +75,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 		</dl>
 	<?php endif; ?>
 	<?php
-		render_notes( $t, array( $can_edit, $can_approve_translation ) );
+		render_notes( $translation, array( $can_edit, $can_approve_translation ) );
 	?>
 	<?php if ( $translation->user ) : ?>
 		<dl>
