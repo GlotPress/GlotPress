@@ -346,12 +346,12 @@ function render_note( $note, $can_edit ) {
 	<div class="note">
 		<?php gp_link_user( get_userdata( $note->user_id ) ); ?>
 		<?php esc_attr_e( 'Commented', 'glotpress' ); ?>
-		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime($note->date_added), time() ) ) );  ?></span>
+		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );  ?></span>
 		<a href="#" class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></a>
 		<div class="note-body">
 			<?php echo nl2br( esc_html( $note->note ) ); ?>
 		</div>
-		<?php if ( $can_edit || $note->user_id === get_current_user_id() ): ?>
+		<?php if ( $can_edit || $note->user_id === get_current_user_id() ) : ?>
 		<div class="note-body edit-note-body" style="display: none;">
 			<textarea autocomplete="off" class="foreign-text" name="edit-note[<?php echo esc_attr( $note->id ); ?>]" id="edit-note-<?php echo esc_attr( $note->id ); ?>"><?php echo esc_html( $note->note ); ?></textarea>
 			<button class="update-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-note-' . $note->id ) ); ?>">

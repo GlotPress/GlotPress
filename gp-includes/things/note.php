@@ -67,11 +67,13 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $args    Parameters that are not used.
+	 * @param string $note_id     Note ID.
+	 * @param string $note        Note object.
+	 * @param string $translation Translation object.
 	 *
 	 * @return object The output of the query.
 	 */
-	public function save( $args = null ) {
+	public function save( $note_id, $note, $translation ) {
 		global $wpdb;
 		if ( ! GP::$permission->current_user_can(
 			'approve',
