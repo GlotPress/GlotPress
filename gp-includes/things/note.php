@@ -54,7 +54,12 @@ class GP_Note extends GP_Thing {
 	 * @var array $non_updatable_attributes
 	 */
 	public $non_updatable_attributes = array( 'id' );
-	
+
+	/**
+	 * SQL string for order by date
+	 *
+	 * @var array $default_order
+	 */
 	public $default_order = 'ORDER BY date_added DESC';
 
 	/**
@@ -62,42 +67,53 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $note    The new note.
-	 * @param object $translation The translation object.
+	 * @param string $args    Parameters that are not used.
 	 *
 	 * @return object The output of the query.
 	 */
 	public function save( $args = null ) {
 		global $wpdb;
-		if ( ! GP::$permission->current_user_can(
-			'approve', 'translation', $translation->id, array(
+		$original_id    = gp_post( 'original_id' );
+		$translation_id = gp_post( 'translation_id' );
+		$note           = trim( gp_post( 'note' ) );
+		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id,
+			array(
 				'translation' => $translation,
 			)
 		) ) {
 			return false;
 		}
-		
-		$note = trim($note);
-		
+
 		return $this->create(
 			array(
-				'original_id' => $translation->original_id,
-				'translation_set_id' => $translation->translation_set_id,
-				'note' => $note,
-				'user_id' => get_current_user_id(), 
+				'original_id'        => $original_id,
+				'translation_set_id' => $translation_id,
+				'note'               => $note,
+				'user_id'            => get_current_user_id(),
 			)
 		);
 	}
-	
-	public function edit($note_id, $note, $translation)
-	{
+
+	/**
+	 * Edit the note
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $note_id     Note ID.
+	 * @param string $note        Note object.
+	 * @param string $translation Translation object.
+	 *
+	 * @return object The output of the query.
+	 */
+	public function edit( $note_id, $note, $translation ) {
 		if ( false === GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
 			return false;
 		}
-		
-		$this->update(array('note' => $note), array('id' => $note_id));
-		
-		return $this->get($note_id);
+
+		$this->update( array( 'note' => $note ), array( 'id' => $note_id ) );
+
+		return $this->get( $note_id );
 	}
 
 	/**
@@ -106,18 +122,19 @@ class GP_Note extends GP_Thing {
 	 * @since 3.0.0
 	 *
 	 * @param object $entry The translation entry.
+	 * @param object $order Order but not used.
 	 *
 	 * @return array notes
 	 */
 	public function get_by_entry( $entry, $order = null ) {
-		return $this->many( 
-			$this->select_all_from_conditions_and_order( 
+		return $this->many(
+			$this->select_all_from_conditions_and_order(
 				array(
-					'original_id' => $entry->original_id,
+					'original_id'        => $entry->original_id,
 					'translation_set_id' => $entry->translation_set_id,
-				), 
-				$order 
-			) 
+				),
+				$order
+			)
 		);
 	}
 }

@@ -125,10 +125,10 @@ class GP_Router {
 			"post:/$set/import-translations" => array( 'GP_Route_Translation', 'import_translations_post' ),
 			"post:/$set/-discard-warning" => array( 'GP_Route_Translation', 'discard_warning' ),
 			"post:/$set/-set-status" => array( 'GP_Route_Translation', 'set_status' ),
-			
-			"post:/notes/-new" => array( 'GP_Route_Note', 'new_post' ),
-			"post:/notes/-edit" => array( 'GP_Route_Note', 'edit_post' ),
-			"post:/notes/-delete" => array( 'GP_Route_Note', 'delete_post' ),
+
+			'post:/notes/-new'                             => array( 'GP_Route_Note', 'new_post' ),
+			'post:/notes/-edit'                            => array( 'GP_Route_Note', 'edit_post' ),
+			'post:/notes/-delete'                          => array( 'GP_Route_Note', 'delete_post' ),
 			"/$set/export-translations" => array( 'GP_Route_Translation', 'export_translations_get' ),
 			// Keep this below all URLs ending with a literal string, because it may catch one of them.
 			"get:/$set" => array( 'GP_Route_Translation', 'translations_get' ),

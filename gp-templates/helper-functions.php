@@ -17,13 +17,11 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text = preg_replace_callback(
-		'!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
 		$item_number = count( $glossary_entries );
 		$glossary_entries[ $item_number ] = $m[0];
 		return "<span GLOSSARY={$item_number}>";
-		}, $text
-	);
+	}, $text );
 
 	// Wrap full HTML tags with a notranslate class
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
@@ -33,11 +31,9 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
-	$text = preg_replace_callback(
-		'!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
+	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
-		}, $text
-	);
+	}, $text );
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
@@ -72,7 +68,7 @@ function gp_prepare_translation_textarea( $text ) {
  * @return array The sorted entries.
  */
 function gp_sort_glossary_entries_terms( $glossary_entries ) {
-	if ( empty( $glossary_entries ) ) {
+	if ( empty ( $glossary_entries ) ) {
 		return;
 	}
 
@@ -105,11 +101,7 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort(
-		$glossary_entries_terms, function( $a, $b ) {
-		return gp_strlen( $a ) < gp_strlen( $b );
-		}
-	);
+	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
 
 	return $glossary_entries_terms;
 }
@@ -158,7 +150,6 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 	foreach ( $singular_split as $chunk ) {
 		// Create an escaped version for use later on.
 		$escaped_chunk = esc_translation( $chunk );
-<<<<<<< HEAD
 
 		// Create a lower case version to compare with the glossary terms.
 		$lower_chunk = strtolower( $chunk );
@@ -172,21 +163,6 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 				// Get the glossary entry based on the back reference we created earlier.
 				$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 
-=======
-
-		// Create a lower case version to compare with the glossary terms.
-		$lower_chunk = strtolower( $chunk );
-
-		// Search the glossary terms for a matching entry.
-		if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
-			$glossary_data = array();
-
-			// Add glossary data for each matching entry.
-			foreach ( $glossary_term_reference[ $lower_chunk ] as $glossary_entry_id ) {
-				// Get the glossary entry based on the back reference we created earlier.
-				$glossary_entry = $glossary_entries[ $glossary_entry_id ];
-
->>>>>>> 6ca8e8e... resolve conflicts
 				// If this is a locale glossary, make a note for the user.
 				$locale_entry = '';
 				if ( $glossary_entry->glossary_id !== $glossary->id ) {
@@ -273,12 +249,12 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	$disabled = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
-	<?php
+		<?php
 		if ( isset( $entry->warnings[ $index ] ) ) :
 			$referenceable = $entry->warnings[ $index ];
 
 			foreach ( $referenceable as $key => $value ) :
-	?>
+			?>
 				<div class="warning secondary">
 					<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $value ); ?>
 
@@ -286,41 +262,51 @@ function textareas( $entry, $permissions, $index = 0 ) {
 						<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $key ) ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 					<?php endif; ?>
 				</div>
-	<?php
+		<?php
 			endforeach;
 
 		endif;
-	?>
+		?>
 		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
 		<p>
-	<?php
-	if ( $can_edit ) {
-		gp_entry_actions();
-	} elseif ( is_user_logged_in() ) {
-		_e( 'You are not allowed to edit this translation.', 'glotpress' );
-	} else {
-		// translators: The placeholder is the login link
-		printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
-	}
-	?>
+			<?php
+			if ( $can_edit ) {
+				gp_entry_actions();
+			}
+			elseif ( is_user_logged_in() ) {
+				_e( 'You are not allowed to edit this translation.', 'glotpress' );
+			}
+			else {
+				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+			}
+			?>
 		</p>
 	</div>
 	<?php
 }
 
+/**
+ * Render multiple notes
+ *
+ * @param GP_Translation $entry            The translation entry.
+ * @param GP_Glossary    $permissions      Permissions of the user.
+ *
+ * @return void
+ */
 function render_notes( $entry, $permissions ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$notes = GP::$notes->get_by_entry( $entry );
+	$notes                          = GP::$notes->get_by_entry( $entry );
 ?>
 	<dl>
 		<dt>
-			<?php echo __( 'Action Log:', 'glotpress' ) ?>
+			<?php echo esc_attr__( 'Action Log:', 'glotpress' ); ?>
 		</dt>
 		<dd class="notes">
-			<?php foreach($notes as $note) {
-				render_note($note, $can_edit);
+			<?php
+			foreach ( $notes as $note ) {
+				render_note( $note, $can_edit );
 			}
 			?>
 		</dd>
@@ -329,14 +315,17 @@ function render_notes( $entry, $permissions ) {
 	<?php
 
 		if ( GP::$permission->current_user_can(
-			'approve', 'translation', $entry->id, array(
+			'approve',
+			'translation',
+			$entry->id,
+			array(
 				'translation' => $entry,
 			)
 		) ) {
-		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt>';
+		echo '<dt><br>' . esc_attr__( 'New Reviewer note:', 'glotpress' ) . '</dt>';
 	?>
 			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
-			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $entry->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
+			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $entry->id ) ); ?>"><?php esc_attr_e( 'Add note', 'glotpress' ); ?></button></dt>
 	<?php
 		}
 	?>
@@ -344,27 +333,40 @@ function render_notes( $entry, $permissions ) {
 <?php
 }
 
+/**
+ * Render the single note interface
+ *
+ * @param GP_Translation $note          The note object.
+ * @param GP_Glossary    $can_edit      Permission of the user.
+ *
+ * @return void
+ */
 function render_note( $note, $can_edit ) {
 ?>
 	<div class="note">
-		<?php gp_link_user(  get_userdata( $note->user_id )); ?>
-		<?php _e('Commented', 'glotpress'); ?>
-		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime($note->date_added), time() ) ) );  ?></span>
-		<a href="#" class="note-actions" >edit</a>
+		<?php gp_link_user( get_userdata( $note->user_id ) ); ?>
+		<?php esc_attr_e( 'Commented', 'glotpress' ); ?>
+		<span class="date">
+			<?php
+				/* translators: How much time before was sent the note */
+				echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );
+			?>
+		</span>
+		<a href="#" class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></a>
 		<div class="note-body">
 			<?php echo nl2br( esc_html( $note->note ) ); ?>
 		</div>
-		<?php if ( $can_edit || $note->user_id === get_current_user_id() ): ?>
+		<?php if ( $can_edit || $note->user_id === get_current_user_id() ) : ?>
 		<div class="note-body edit-note-body" style="display: none;">
 			<textarea autocomplete="off" class="foreign-text" name="edit-note[<?php echo esc_attr( $note->id ); ?>]" id="edit-note-<?php echo esc_attr( $note->id ); ?>"><?php echo esc_html( $note->note ); ?></textarea>
 			<button class="update-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-note-' . $note->id ) ); ?>">
-				<?php _e( 'Update Note', 'glotpress' ); ?>
+				<?php esc_attr_e( 'Update Note', 'glotpress' ); ?>
 			</button>
 			<button class="update-cancel" tabindex="-1">
-				<?php _e( 'Cancel', 'glotpress' ); ?>
+				<?php esc_attr_e( 'Cancel', 'glotpress' ); ?>
 			</button>
 			<button class="delete-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-note-' . $note->id ) ); ?>">
-				<?php _e( 'Delete', 'glotpress' ); ?>
+				<?php esc_attr_e( 'Delete', 'glotpress' ); ?>
 			</button>
 		</div>
 		<?php endif; ?>
@@ -401,94 +403,24 @@ function references( $project, $entry ) {
 	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
-	if ( ! $show_references ) {
-return;
-	}
+	if ( ! $show_references ) return;
 	?>
 	<dl><dt>
 	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
-	<?php
-		foreach ( $entry->references as $reference ) :
+		<?php
+		foreach( $entry->references as $reference ):
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			if ( $source_url = $project->source_url( $file, $line ) ) :
-	?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo esc_html( $file ) . ':' . esc_html( $line ); ?></a></li>
-	<?php
+			if ( $source_url = $project->source_url( $file, $line ) ):
+				?>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
+				<?php
 			else :
-				echo '<li>' . esc_html( $file ) . ':' . esc_html( $line ) . '</li>';
+				echo "<li>$file:$line</li>";
 			endif;
 		endforeach;
-	?>
-	</ul></dt></dl>
-	<?php
-}
-
-/**
- * Output the bulk actions toolbar in the translations page.
- *
- * @param string $bulk_action     The URL to submit the form to.
- * @param string $can_write       Can the current user write translations to the database.
- * @param string $translation_set The current translation set.
- * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
- */
-function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
-?>
-<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
-	<div>
-	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
-		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
-		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
-		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
-		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
-	<?php if ( $can_write ) : ?>
-		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
-	<?php endif; ?>
-		<?php
-
-		/**
-		 * Fires inside the bulk action menu for translation sets.
-		 *
-		 * Printing out option elements here will add those to the translation
-		 * bulk options drop down menu.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param GP_Translation_Set $set The translation set.
-		 */
-		do_action( 'gp_translation_set_bulk_action', $translation_set );
 		?>
-	</select>
-	<?php if ( $can_write ) : ?>
-	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
-	<?php
-	$labels = [
-		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
-		'low'    => _x( 'low', 'Priority', 'glotpress' ),
-		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
-		'high'   => _x( 'high', 'Priority', 'glotpress' ),
-	];
-
-	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
-		if ( isset( $labels[ $label ] ) ) {
-			$label = $labels[ $label ];
-		}
-
-		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
-	}
-	?>
-	</select>
-	<?php endif; ?>
-	<input type="hidden" name="bulk[redirect_to]" value="<?php echo esc_attr( gp_url_current() ); ?>" id="bulk-redirect_to-<?php echo esc_attr( $location ); ?>" />
-	<input type="hidden" name="bulk[row-ids]" value="" id="bulk-row-ids-<?php echo esc_attr( $location ); ?>" />
-	<input type="submit" class="button" value="<?php esc_attr_e( 'Apply', 'glotpress' ); ?>" />
-	</div>
-	<?php
-		$nonce = gp_route_nonce_field( 'bulk-actions', false );
-		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
-		echo $nonce; // WPCS: XSS Ok.
-	?>
-</form>
+	</ul></dt></dl>
 <?php
 }
 

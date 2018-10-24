@@ -24,16 +24,16 @@ class GP_Route_Note extends GP_Route_Main {
 	public function new_post() {
 		$status         = gp_post( 'original_id' );
 		$translation_id = gp_post( 'translation_id' );
-		$note = gp_post( 'note' );
+		$note           = gp_post( 'note' );
 
 		if ( ! $this->verify_nonce( 'new-note-' . $translation_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
-		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
-		$noteObject = GP::$notes->save( $note, $translation );
+		$translation = GP::$translation->get( $translation_id );
+		$note_object = GP::$notes->save( $note, $translation );
 
-		$this->render_note($noteObject, $translation);
+		$this->render_note( $note_object, $translation );
 		return true;
 	}
 
@@ -46,17 +46,17 @@ class GP_Route_Note extends GP_Route_Main {
 	 */
 	public function edit_post() {
 		$translation_id = gp_post( 'translation_id' );
-		$note = gp_post( 'note' );
-		$note_id = gp_post( 'note_id' );
+		$note           = gp_post( 'note' );
+		$note_id        = gp_post( 'note_id' );
 
 		if ( ! $this->verify_nonce( 'edit-note-' . $note_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
 		$translation = GP::$translation->get( $translation_id );
-		$noteObject = GP::$notes->edit( $note_id, $note, $translation );
+		$note_object = GP::$notes->edit( $note_id, $note, $translation );
 
-		$this->render_note( $noteObject, $translation );
+		$this->render_note( $note_object, $translation );
 		return true;
 	}
 
@@ -74,19 +74,20 @@ class GP_Route_Note extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
-		GP::$notes->delete_all( array('id' => $note_id) );
+		GP::$notes->delete_all( array( 'id' => $note_id ) );
 
 		return true;
 	}
 
 	/**
+	 * Render the note
 	 *
-	 * @param object $note
-	 * @param object $translation
+	 * @param object $note        Note object.
+	 * @param object $translation Translation object.
 	 */
-	private function render_note( $note, $translation )	{
+	private function render_note( $note, $translation ) {
 		require_once GP_TMPL_PATH . 'helper-functions.php';
 		$can_approve = $this->can( 'approve', 'translation-set', $translation->translation_set_id );
-		render_note($note, $can_approve);
+		render_note( $note, $can_approve );
 	}
 }
