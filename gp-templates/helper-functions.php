@@ -394,9 +394,7 @@ function references( $project, $entry ) {
 	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
-	if ( ! $show_references ) {
-		return;
-	}
+	if ( ! $show_references ) return;
 	?>
 	<dl><dt>
 	<?php _e( 'References:', 'glotpress' ); ?>
@@ -406,7 +404,7 @@ function references( $project, $entry ) {
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
 			if ( $source_url = $project->source_url( $file, $line ) ):
 				?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url ; ?>"><?php echo $file.':'.$line ?></a></li>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
 			else :
 				echo "<li>$file:$line</li>";
