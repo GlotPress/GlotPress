@@ -77,11 +77,7 @@ class GP_Note extends GP_Thing {
 		$translation_id = gp_post( 'translation_id' );
 		$note           = trim( gp_post( 'note' ) );
 		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
-		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id,
-			array(
-				'translation' => $translation,
-			)
-		) ) {
+		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation, ) ) ) {
 			return false;
 		}
 
@@ -107,7 +103,7 @@ class GP_Note extends GP_Thing {
 	 * @return object The output of the query.
 	 */
 	public function edit( $note_id, $note, $translation ) {
-		if ( false === GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
+		if ( ! GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
 			return false;
 		}
 
