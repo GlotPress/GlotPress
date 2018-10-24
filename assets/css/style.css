@@ -484,6 +484,8 @@ span.morethan90 {
 .editor .meta .notes {
 	display: block;
 	font-weight: normal;
+	overflow-y: scroll;
+	height: 120px;
 }
 
 .editor .meta .note {
