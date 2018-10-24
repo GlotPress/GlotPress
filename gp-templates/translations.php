@@ -397,10 +397,11 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		foreach ( GP::$formats as $slug => $format ) {
 			$format_options[ $slug ] = $format->name;
 		}
+
 		$what_dropdown = gp_select(
 			'what-to-export',
 			array(
-				'all' => _x( 'all current', 'export choice', 'glotpress' ),
+				'all'      => _x( 'all current', 'export choice', 'glotpress' ),
 				'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
 			),
 			'all'

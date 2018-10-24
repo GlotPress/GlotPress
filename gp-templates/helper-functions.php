@@ -17,11 +17,11 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text = preg_replace_callback(
+	$text             = preg_replace_callback(
 		'!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
-		$item_number = count( $glossary_entries );
-		$glossary_entries[ $item_number ] = $m[0];
-		return "<span GLOSSARY={$item_number}>";
+			$item_number = count( $glossary_entries );
+			$glossary_entries[ $item_number ] = $m[0];
+			return "<span GLOSSARY={$item_number}>";
 		}, $text
 	);
 
