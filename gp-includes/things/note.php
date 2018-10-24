@@ -67,18 +67,17 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param string $note_id     Note ID.
-	 * @param string $note        Note object.
-	 * @param string $translation Translation object.
+	 * @param string $args    Parameters that are not used.
 	 *
 	 * @return object The output of the query.
 	 */
-	public function save( $note_id, $note, $translation ) {
+	public function save( $args = null ) {
 		global $wpdb;
-		if ( ! GP::$permission->current_user_can(
-			'approve',
-			'translation',
-			$translation->id,
+		$original_id    = gp_post( 'original_id' );
+		$translation_id = gp_post( 'translation_id' );
+		$note           = trim( gp_post( 'note' ) );
+		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id,
 			array(
 				'translation' => $translation,
 			)
@@ -86,12 +85,10 @@ class GP_Note extends GP_Thing {
 			return false;
 		}
 
-		$note = trim( $note );
-
 		return $this->create(
 			array(
-				'original_id'        => $translation->original_id,
-				'translation_set_id' => $translation->translation_set_id,
+				'original_id'        => $original_id,
+				'translation_set_id' => $translation_id,
 				'note'               => $note,
 				'user_id'            => get_current_user_id(),
 			)

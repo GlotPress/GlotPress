@@ -346,7 +346,12 @@ function render_note( $note, $can_edit ) {
 	<div class="note">
 		<?php gp_link_user( get_userdata( $note->user_id ) ); ?>
 		<?php esc_attr_e( 'Commented', 'glotpress' ); ?>
-		<span class="date"><?php echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );  ?></span>
+		<span class="date">
+			<?php
+				/* translators: How much time before was sent the note */
+				echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );
+			?>
+		</span>
 		<a href="#" class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></a>
 		<div class="note-body">
 			<?php echo nl2br( esc_html( $note->note ) ); ?>
