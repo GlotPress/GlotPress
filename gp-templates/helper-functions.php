@@ -339,7 +339,7 @@ function render_notes( $entry, $permissions ) {
  * @param GP_Translation $note          The note object.
  * @param GP_Glossary    $can_edit      Permission of the user.
  *
- * @return void
+ * @return number
  */
 function render_note( $note, $can_edit ) {
 ?>
