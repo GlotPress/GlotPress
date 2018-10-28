@@ -5,6 +5,7 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 
 	function setUp() {
 		parent::setUp();
+		$this->translation = new $this->GP_Translation;
 	}
 
 	function test_add_note_function() {
@@ -39,7 +40,6 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 			'original_id'        => $original->id,
 			'status'             => 'current',
 		) );
-		$translation->set_as_current();
 
 		$_REQUEST['original_id'] = $set->id;
 		$_REQUEST['translation_id'] = $original->id;
