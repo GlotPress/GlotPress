@@ -21,12 +21,11 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		) );
 		$translation->set_as_current();
 
-		$_REQUEST['original_id'] = $set->id;
-		$_REQUEST['translation_id'] = $original->id;
-		$_REQUEST['note'] = 'Hey I am a note!';
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $set->id );
+		$_POST['translation_id'] = $translation->id;
+		$_POST['note'] = 'Hey I am a note!';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
 		$this->route->new_post();
-		$this->assertThereIsANoticeContaining( 'added' );
+		$this->assertThereIsANoticeContaining( 'created' );
 	}
 
 	function test_edit_note_function() {
@@ -41,14 +40,13 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 			'status'             => 'current',
 		) );
 
-		$_REQUEST['original_id'] = $set->id;
-		$_REQUEST['translation_id'] = $original->id;
-		$_REQUEST['note'] = 'Hey I am a note!';
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $set->id );
-		$_REQUEST['note_id'] = $this->route->new_post();
+		$_POST['translation_id'] = $translation->id;
+		$_POST['note'] = 'Hey I am a note!';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
+		$_POST['note_id'] = $this->route->new_post();
 
-		$_REQUEST['note'] = 'Hey I am a note edited!';
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-note-' . $_REQUEST['note_id'] );
+		$_POST['note'] = 'Hey I am a note edited!';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-note-' . $_POST['note_id'] );
 		$this->route->edit_post();
 		$this->assertThereIsANoticeContaining( 'updated' );
 	}
@@ -66,13 +64,12 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		) );
 		$translation->set_as_current();
 
-		$_REQUEST['original_id'] = $set->id;
-		$_REQUEST['translation_id'] = $original->id;
-		$_REQUEST['note'] = 'Hey I am a note!';
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $set->id );
-		$_REQUEST['note_id'] = $this->route->new_post();
+		$_POST['translation_id'] = $translation->id;
+		$_POST['note'] = 'Hey I am a note!';
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
+		$_POST['note_id'] = $this->route->new_post();
 
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'deleted-note-' . $_REQUEST['note_id'] );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'deleted-note-' . $_POST['note_id'] );
 		$this->route->delete_post();
 		$this->assertThereIsANoticeContaining( 'deleted' );
 	}
