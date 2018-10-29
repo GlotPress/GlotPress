@@ -22,7 +22,6 @@ class GP_Route_Note extends GP_Route_Main {
 	 * @return string $html The new row.
 	 */
 	public function new_post() {
-		$status         = gp_post( 'original_id' );
 		$translation_id = gp_post( 'translation_id' );
 		$note           = gp_post( 'note' );
 
@@ -30,10 +29,11 @@ class GP_Route_Note extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
+		$this->notices[] = __( 'The note was created!', 'glotpress' );
 		$translation = GP::$translation->get( $translation_id );
-		$note_object = GP::$notes->save( $note, $translation );
+		$note_object = GP::$notes->save();
 
-		return $this->render_note( $note_object, $translation );
+		$this->render_note( $note_object, $translation );
 	}
 
 	/**
@@ -52,10 +52,11 @@ class GP_Route_Note extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
+		$this->notices[] = __( 'The note was edited!', 'glotpress' );
 		$translation = GP::$translation->get( $translation_id );
 		$note_object = GP::$notes->edit( $note_id, $note, $translation );
 
-		return $this->render_note( $note_object, $translation );
+		$this->render_note( $note_object, $translation );
 	}
 
 	/**
@@ -72,6 +73,7 @@ class GP_Route_Note extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
+		$this->notices[] = __( 'The note was deleted!', 'glotpress' );
 		GP::$notes->delete_all( array( 'id' => $note_id ) );
 
 		return true;
@@ -86,6 +88,6 @@ class GP_Route_Note extends GP_Route_Main {
 	private function render_note( $note, $translation ) {
 		require_once GP_TMPL_PATH . 'helper-functions.php';
 		$can_approve = $this->can( 'approve', 'translation-set', $translation->translation_set_id );
-		return render_note( $note, $can_approve );
+		render_note( $note, $can_approve );
 	}
 }
