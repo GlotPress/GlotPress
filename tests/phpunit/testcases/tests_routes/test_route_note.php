@@ -5,7 +5,7 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 
 	function setUp() {
 		parent::setUp();
-		$this->translation = new $this->GP_Translation;
+		$this->translation = new GP_Translation;
 	}
 
 	function test_add_note_function() {
