@@ -4,8 +4,8 @@ class GP_Test_Note extends GP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->route = new $this->GP_Route_Note;
-		$this->notes = new $this->GP_Note;
+		$this->route = new GP_Route_Note;
+		$this->notes = new GP_Note;
 	}
 
 	function test_save() {
