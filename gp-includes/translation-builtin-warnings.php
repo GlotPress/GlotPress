@@ -7,113 +7,6 @@
  */
 
 /**
- * Class used to handle translation warnings.
- *
- * @since 1.0.0
- */
-class GP_Translation_Warnings {
-
-	/**
-	 * List of callbacks.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @var array
-	 */
-	public $callbacks = array();
-
-	/**
-	 * Adds a callback for a new warning.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @param string   $id       Unique ID of the callback.
-	 * @param callable $callback The callback.
-	 */
-	public function add( $id, $callback ) {
-		$this->callbacks[ $id ] = $callback;
-	}
-
-	/**
-	 * Removes an existing callback for a warning.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @param string $id Unique ID of the callback.
-	 */
-	public function remove( $id ) {
-		unset( $this->callbacks[ $id ] );
-	}
-
-	/**
-	 * Checks whether a callback exists for an ID.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @param string $id Unique ID of the callback.
-	 * @return bool True if exists, false if not.
-	 */
-	public function has( $id ) {
-		return isset( $this->callbacks[ $id ] );
-	}
-
-	/**
-	 * Checks translations for any issues/warnings.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 *
-	 * @param string    $singular     The singular form of an original string.
-	 * @param string    $plural       The plural form of an original string.
-	 * @param array     $translations An array of translations for an original.
-	 * @param GP_Locale $locale       The locale of the translations.
-	 * @return array|null Null if no issues have been found, otherwise an array
-	 *                    with warnings.
-	 */
-	public function check( $singular, $plural, $translations, $locale ) {
-		$problems = array();
-		foreach ( $translations as $translation_index => $translation ) {
-			if ( ! $translation ) {
-				continue;
-			}
-
-			$skip = array( 'singular' => false, 'plural' => false );
-			if ( null !== $plural ) {
-				$numbers_for_index = $locale->numbers_for_index( $translation_index );
-				if ( 1 === $locale->nplurals ) {
-					$skip['singular'] = true;
-				} elseif ( in_array( 1, $numbers_for_index, true ) ) {
-					$skip['plural'] = true;
-				} else {
-					$skip['singular'] = true;
-				}
-			}
-
-			foreach ( $this->callbacks as $callback_id => $callback ) {
-				if ( ! $skip['singular'] ) {
-					$singular_test = call_user_func( $callback, $singular, $translation, $locale );
-					if ( true !== $singular_test ) {
-						$problems[ $translation_index ][ $callback_id ] = $singular_test;
-					}
-				}
-				if ( ! is_null( $plural ) && ! $skip['plural'] ) {
-					$plural_test = call_user_func( $callback, $plural, $translation, $locale );
-					if ( true !== $plural_test ) {
-						$problems[ $translation_index ][ $callback_id ] = $plural_test;
-					}
-				}
-			}
-		}
-
-		return empty( $problems ) ? null : $problems;
-	}
-}
-
-/**
  * Class used to register built-in translation warnings.
  *
  * @since 1.0.0
@@ -226,9 +119,9 @@ class GP_Builtin_Translation_Warnings {
 		if ( ! empty( $parts_tags ) ) {
 			foreach ( $parts_tags as $tags ) {
 				list( $original_tag, $translation_tag ) = $tags;
-				$expected_error_msg = "Expected $original_tag, got $translation_tag.";
-				$original_is_tag    = preg_match( "/^$tag_pattern$/", $original_tag );
-				$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
+				$expected_error_msg                     = "Expected $original_tag, got $translation_tag.";
+				$original_is_tag                        = preg_match( "/^$tag_pattern$/", $original_tag );
+				$translation_is_tag                     = preg_match( "/^$tag_pattern$/", $translation_tag );
 
 				if ( $original_is_tag && $translation_is_tag && $original_tag !== $translation_tag ) {
 					$original_tag    = preg_replace( $translatable_attr_regex, '', $original_tag );
@@ -271,9 +164,11 @@ class GP_Builtin_Translation_Warnings {
 			$original_count    = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
 			if ( $original_count > $translation_count ) {
+				/* translators: the placeholder text*/
 				return sprintf( __( 'Missing %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 			if ( $original_count < $translation_count ) {
+				/* translators: the placeholder text*/
 				return sprintf( __( 'Extra %s placeholder in translation.', 'glotpress' ), $placeholder );
 			}
 		}
@@ -383,9 +278,12 @@ class GP_Builtin_Translation_Warnings {
 	 * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
 	 */
 	public function add_all( $translation_warnings ) {
-		$warnings = array_filter( get_class_methods( get_class( $this ) ), function ( $key ) {
-			return gp_startswith( $key, 'warning_' );
-		} );
+		$warnings = array_filter(
+			get_class_methods( get_class( $this ) ),
+			function ( $key ) {
+				return gp_startswith( $key, 'warning_' );
+			}
+		);
 
 		foreach ( $warnings as $warning ) {
 			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );

@@ -77,7 +77,8 @@ if ( ! class_exists( 'GP_Locale' ) || ! class_exists( 'GP_Locales' ) ) {
  */
 gp_set_globals( get_defined_vars() );
 
-require_once GP_PATH . GP_INC . 'warnings.php';
+require_once GP_PATH . GP_INC . 'translation-warnings.php';
+require_once GP_PATH . GP_INC . 'translation-builtin-warnings.php';
 require_once GP_PATH . GP_INC . 'validation.php';
 require_once GP_PATH . GP_INC . 'advanced-permissions.php';
 
