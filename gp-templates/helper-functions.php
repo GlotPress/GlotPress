@@ -375,7 +375,7 @@ function render_note( $note, $can_edit ) {
 <?php
 	return array(
 		'id'   => $note->id,
-		'note' => $note->note
+		'note' => $note->note,
 	);
 }
 
