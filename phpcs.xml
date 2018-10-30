@@ -8,7 +8,7 @@
 	</rule>
 	<rule ref="WordPress-Docs" />
 	<rule ref="WordPress-Extra">
-		<exclude name="WordPress.XSS.EscapeOutput.UnsafePrintingFunction" />
+		<exclude name="WordPress.Security.EscapeOutput.UnsafePrintingFunction" />
 	</rule>
 
 	<rule ref="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing">
