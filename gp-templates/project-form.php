@@ -12,7 +12,7 @@
 	<dt><label for="project[description]"><?php _e( 'Description', 'glotpress' ); ?></label> <span class="ternary"><?php _e( 'can include HTML', 'glotpress' ); ?></span></dt>
 	<dd><textarea name="project[description]" rows="4" cols="40" id="project[description]"><?php echo esc_html( $project->description ); ?></textarea></dd>
 
-	<dt><label for="project[plurals_type]"><?php _e( 'Plurals Type', 'glotpress' ); ?></label></dt>
+	<dt><label for="project[plurals_type]"><?php _e( 'Plurals Type', 'glotpress' ); // WPCS: XSS Ok. ?></label></dt>
 	<dd><?php echo gp_plural_types_dropdown( 'project[plurals_type]', $project->plurals_type, array() ); // WPCS: XSS ok. ?></dd>
 
 	<dt><label for="project[source_url_template]"><?php _e( 'Source file URL', 'glotpress' ); ?></label></dt>

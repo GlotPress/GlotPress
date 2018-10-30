@@ -45,8 +45,9 @@ $plural = sprintf(
 				<?php if ( 'gettext' === $project->plurals_type && 2 === $nplurals && 'n != 1' === $locale->plural_expression ) : ?>
 					<p>
 					<?php
-						// Translators: %s is the original (singlular) string.
-						printf( __( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
+						printf(
+							// Translators: %s is the original (singlular) string.
+							__( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
 							'<span class="original">' . $singular . '</span>'
 						);
 					?>
@@ -69,16 +70,18 @@ $plural = sprintf(
 					-->
 					<p>
 					<?php
-						// Translators: %s is the original (singlular) string.
-						printf( __( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
+						printf(
+							// Translators: %s is the original (singlular) string.
+							__( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
 							'<span class="original">' . $singular . '</span>'
 						);
 					?>
 					</p>
 					<p class="clear">
 					<?php
-						// Translators: %s is the original plural string.
-						printf( __( 'Plural: %s', 'glotpress' ),  // WPCS: XSS ok.
+						printf(
+							// Translators: %s is the original plural string.
+							__( 'Plural: %s', 'glotpress' ),  // WPCS: XSS ok.
 							'<span class="original">' . $plural . '</span>'
 						);
 					?>
@@ -87,8 +90,9 @@ $plural = sprintf(
 						<?php if ( $nplurals > 1 ) : ?>
 							<p class="plural-numbers">
 							<?php
-								// Translators: %s is the list of examples.
-								printf( __( 'This plural form is used for numbers like: %s', 'glotpress' ), // WPCS: XSS ok.
+								printf(
+									// Translators: %s is the list of examples.
+									__( 'This plural form is used for numbers like: %s', 'glotpress' ), // WPCS: XSS ok.
 									'<span class="numbers">' . $locale->get_plural_example( $project->plurals_type, $plural_index ) . '</span>'
 								);
 							?>
