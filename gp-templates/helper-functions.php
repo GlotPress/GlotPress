@@ -373,7 +373,7 @@ function render_note( $note, $can_edit ) {
 
 	</div>
 <?php
-	return $note->id;
+	return array( 'id' => $note->id, 'note' => $note->note );
 }
 
 function display_status( $status ) {
