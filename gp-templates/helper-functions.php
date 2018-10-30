@@ -322,7 +322,7 @@ function render_notes( $entry, $permissions ) {
 				'translation' => $entry,
 			)
 		) ) {
-		echo '<dt><br>' . esc_attr__( 'New Reviewer note:', 'glotpress' ) . '</dt>';
+		echo '<dt><br>' . esc_attr__( 'New Reviewer note:', 'glotpress' ) . '</dt><br>';
 	?>
 			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
 			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $entry->id ) ); ?>"><?php esc_attr_e( 'Add note', 'glotpress' ); ?></button></dt>
@@ -352,7 +352,7 @@ function render_note( $note, $can_edit ) {
 				echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );
 			?>
 		</span>
-		<a href="#" class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></a>
+		<button class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></button>
 		<div class="note-body">
 			<?php echo nl2br( esc_html( $note->note ) ); ?>
 		</div>
@@ -374,7 +374,7 @@ function render_note( $note, $can_edit ) {
 	</div>
 <?php
 	return array(
-		'id' => $note->id,
+		'id'   => $note->id,
 		'note' => $note->note
 	);
 }

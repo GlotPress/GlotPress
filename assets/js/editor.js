@@ -105,7 +105,7 @@ $gp.editor = (
 					.on( 'click', 'button.update-note', $gp.editor.hooks.update_note )
 					.on( 'click', 'button.delete-note', $gp.editor.hooks.delete_note )
 					.on( 'click', 'button.update-cancel', $gp.editor.hooks.toggle_note_editor )
-					.on( 'click', 'a.note-actions', $gp.editor.hooks.toggle_note_editor )
+					.on( 'click', 'button.note-actions', $gp.editor.hooks.toggle_note_editor )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
 				$( '#translations' ).tooltip( {

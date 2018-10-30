@@ -485,7 +485,7 @@ span.morethan90 {
 	display: block;
 	font-weight: normal;
 	overflow-y: scroll;
-	height: 120px;
+	height: 140px;
 }
 
 .editor .meta .note {
@@ -512,6 +512,7 @@ span.morethan90 {
 .editor .meta .note-actions,
 .editor .meta .delete-note {
 	float: right;
+	margin-right: 6px;
 }
 
 /*
@@ -1181,5 +1182,15 @@ table.locale-sub-projects thead th {
 	.locale-project .project-description {
 		float: none;
 		margin-left: 0;
+	}
+
+	.editor .strings {
+		width:90%;
+	}
+	.editor .meta {
+		float:none;
+		clear:both;
+		width:90%;
+		padding-top: 10px;
 	}
 }
