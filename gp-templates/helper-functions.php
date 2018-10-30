@@ -301,7 +301,7 @@ function render_notes( $entry, $permissions ) {
 ?>
 	<dl>
 		<dt>
-			<?php echo esc_attr__( 'Action Log:', 'glotpress' ); ?>
+			<?php echo esc_attr__( 'Notes:', 'glotpress' ); ?>
 		</dt>
 		<dd class="notes">
 			<?php

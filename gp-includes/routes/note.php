@@ -30,8 +30,8 @@ class GP_Route_Note extends GP_Route_Main {
 		}
 
 		$this->notices[] = __( 'The note was created!', 'glotpress' );
-		$translation = GP::$translation->get( $translation_id );
-		$note_object = GP::$notes->save();
+		$translation     = GP::$translation->get( $translation_id );
+		$note_object     = GP::$notes->save();
 
 		$this->render_note( $note_object, $translation );
 	}
@@ -53,8 +53,8 @@ class GP_Route_Note extends GP_Route_Main {
 		}
 
 		$this->notices[] = __( 'The note was edited!', 'glotpress' );
-		$translation = GP::$translation->get( $translation_id );
-		$note_object = GP::$notes->edit( $note_id, $note, $translation );
+		$translation     = GP::$translation->get( $translation_id );
+		$note_object     = GP::$notes->edit( $note_id, $note, $translation );
 
 		$this->render_note( $note_object, $translation );
 	}
