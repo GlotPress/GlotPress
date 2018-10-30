@@ -2144,6 +2144,10 @@ class GP_Locales {
 		$ia->slug                                 = 'ia';
 		$ia->nplurals                             = '2';
 		$ia->plural_expression                    = 'n != 1';
+		$ia->cldr_code                            = 'ia';
+		$ia->cldr_nplurals                        = '2';
+		$ia->cldr_plural_expressions['one']       = 'i = 1 and v = 0 @integer 1';
+		$ia->cldr_plural_expressions['other']     = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 
 		$id                                       = new GP_Locale();
 		$id->english_name                         = 'Indonesian';
@@ -2608,12 +2612,12 @@ class GP_Locales {
 		$mfe                                      = new GP_Locale();
 		$mfe->english_name                        = 'Mauritian Creole';
 		$mfe->native_name                         = 'Kreol Morisien';
+		$mfe->text_direction                      = 'ltr';
 		$mfe->lang_code_iso_639_3                 = 'mfe';
 		$mfe->country_code                        = 'mu';
 		$mfe->wp_locale                           = 'mfe';
 		$mfe->slug                                = 'mfe';
-		$mfe->nplurals                            = 1;
-		$mfe->plural_expression                   = '0';
+		$mfe->nplurals                            = '1';
 
 		$mg                                       = new GP_Locale();
 		$mg->english_name                         = 'Malagasy';
@@ -3403,6 +3407,10 @@ class GP_Locales {
 		$srd->slug                                = 'srd';
 		$srd->nplurals                            = '2';
 		$srd->plural_expression                   = 'n != 1';
+		$srd->cldr_code                           = 'sc';
+		$srd->cldr_nplurals                       = '2';
+		$srd->cldr_plural_expressions['one']      = 'i = 1 and v = 0 @integer 1';
+		$srd->cldr_plural_expressions['other']    = ' @integer 0, 2~16, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$srd->facebook_locale                     = 'sc_IT';
 
 		$ssw                                      = new GP_Locale();
@@ -3959,6 +3967,7 @@ class GP_Locales {
 		$zh_sg->wp_locale                         = 'zh_SG';
 		$zh_sg->slug                              = 'zh-sg';
 		$zh_sg->nplurals                          = '1';
+		$zh_sg->plural_expression                 = 'n != 1';
 		$zh_sg->cldr_code                         = 'zh';
 		$zh_sg->cldr_nplurals                     = '1';
 		$zh_sg->cldr_plural_expressions['other']  = ' @integer 0~15, 100, 1000, 10000, 100000, 1000000, … @decimal 0.0~1.5, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
