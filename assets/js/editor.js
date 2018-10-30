@@ -105,7 +105,7 @@ $gp.editor = (
 					.on( 'click', 'button.update-note', $gp.editor.hooks.update_note )
 					.on( 'click', 'button.delete-note', $gp.editor.hooks.delete_note )
 					.on( 'click', 'button.update-cancel', $gp.editor.hooks.toggle_note_editor )
-					.on( 'click', 'a.note-actions', $gp.editor.hooks.toggle_note_editor )
+					.on( 'click', 'button.note-actions', $gp.editor.hooks.toggle_note_editor )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
 				$( '#translations' ).tooltip( {
@@ -390,7 +390,6 @@ $gp.editor = (
 
 				data = {
 					translation_id: editor.translation_id,
-					original_id: editor.original_id,
 					note_id: button.data( 'note-id' ),
 					note: jQuery( '#edit-note-' + button.data( 'note-id' ) ).val(),
 					_gp_route_nonce: button.data( 'nonce' )
@@ -426,7 +425,6 @@ $gp.editor = (
 
 				data = {
 					translation_id: editor.translation_id,
-					original_id: editor.original_id,
 					note_id: button.data( 'note-id' ),
 					_gp_route_nonce: button.data( 'nonce' )
 				};

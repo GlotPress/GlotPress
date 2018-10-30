@@ -25,9 +25,7 @@ class GP_Test_Note extends GP_UnitTestCase {
 		$_POST['original_id'] = $original->id;
 		$_POST['note'] = 'Hey I am a note!';
 
-		ob_start();
 		$note = $this->notes->save();
-		ob_get_clean();
 
 		$this->assertEquals( $note->note, $_POST['note'] );
 	}
@@ -49,14 +47,10 @@ class GP_Test_Note extends GP_UnitTestCase {
 		$_POST['original_id'] = $original->id;
 		$_POST['note'] = 'Hey I am a note!';
 
-		ob_start();
 		$note = $this->notes->save();
-		ob_get_clean();
 
 		$note_content = 'Hey I am a note edited!';
-		ob_start();
 		$note = $this->notes->edit( $note->id, $note_content, $translation );
-		ob_get_clean();
 
 		$this->assertEquals( $note->note, $note_content );
 	}

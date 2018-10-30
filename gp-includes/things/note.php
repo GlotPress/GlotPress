@@ -72,16 +72,11 @@ class GP_Note extends GP_Thing {
 	 * @return object The output of the query.
 	 */
 	public function save( $args = null ) {
-		global $wpdb;
 		$original_id    = gp_post( 'original_id' );
 		$translation_id = gp_post( 'translation_id' );
-		$note           = trim( gp_post( 'note' ) );
-		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
-		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
-			return false;
-		}
+		$note           = trim( esc_html( gp_post( 'note' ) ) );
 
-		return $this->create(
+		return $this->create_and_select(
 			array(
 				'original_id'        => $original_id,
 				'translation_set_id' => $translation_id,
@@ -113,21 +108,21 @@ class GP_Note extends GP_Thing {
 	}
 
 	/**
-	 * Retrieves the note for this entry.
+	 * Retrieves the note for this translation.
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param object $entry The translation entry.
+	 * @param object $translation The translation entry.
 	 * @param object $order Order but not used.
 	 *
 	 * @return array notes
 	 */
-	public function get_by_entry( $entry, $order = null ) {
+	public function get_by_translation( $translation, $order = null ) {
 		return $this->many(
 			$this->select_all_from_conditions_and_order(
 				array(
-					'original_id'        => $entry->original_id,
-					'translation_set_id' => $entry->translation_set_id,
+					'original_id'        => $translation->original_id,
+					'translation_set_id' => $translation->translation_set_id,
 				),
 				$order
 			)
