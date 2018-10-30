@@ -24,7 +24,12 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		$_POST['translation_id'] = $translation->id;
 		$_POST['note'] = 'Hey I am a note!';
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
-		$this->route->new_post();
+
+		ob_start();
+		$note = $this->route->new_post();
+		ob_get_clean();
+
+		$this->assertEquals( $note['note'], $_POST['note'] );
 		$this->assertThereIsANoticeContaining( 'created' );
 	}
 
@@ -41,13 +46,22 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		) );
 
 		$_POST['translation_id'] = $translation->id;
-		$_POST['note'] = 'Hey I am a note!';
+		$_POST['note'] = 'Hey I am a note to edit!';
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
-		$_POST['note_id'] = $this->route->new_post();
+
+		ob_start();
+		$note = $this->route->new_post();
+		ob_get_clean();
+		$_POST['note_id'] = $note['id'];
 
 		$_POST['note'] = 'Hey I am a note edited!';
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-note-' . $_POST['note_id'] );
-		$this->route->edit_post();
+
+		ob_start();
+		$note = $this->route->edit_post();
+		ob_get_clean();
+
+		$this->assertEquals( $note['note'], $_POST['note'] );
 		$this->assertThereIsANoticeContaining( 'updated' );
 	}
 
@@ -65,12 +79,21 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		$translation->set_as_current();
 
 		$_POST['translation_id'] = $translation->id;
-		$_POST['note'] = 'Hey I am a note!';
+		$_POST['note'] = 'Hey I am a note to delete!';
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
-		$_POST['note_id'] = $this->route->new_post();
 
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'deleted-note-' . $_POST['note_id'] );
-		$this->route->delete_post();
+		ob_start();
+		$note = $this->route->new_post();
+		ob_get_clean();
+		$_POST['note_id'] = $note['id'];
+
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-note-' . $_POST['note_id'] );
+
+		ob_start();
+		$note = $this->route->delete_post();
+		ob_get_clean();
+
+		$this->assertTrue( $note );
 		$this->assertThereIsANoticeContaining( 'deleted' );
 	}
 }
