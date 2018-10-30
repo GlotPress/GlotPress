@@ -517,6 +517,7 @@ class GP_Locales {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+		// START LOCALE DATA: The following entries can be edited manually, but once complete the locale-generator script should be run to update any CLDR data.
 		$aa                                       = new GP_Locale();
 		$aa->english_name                         = 'Afar';
 		$aa->native_name                          = 'Afaraf';
@@ -2618,6 +2619,7 @@ class GP_Locales {
 		$mfe->wp_locale                           = 'mfe';
 		$mfe->slug                                = 'mfe';
 		$mfe->nplurals                            = '1';
+		$mfe->plural_expression                   = 'n != 1';
 
 		$mg                                       = new GP_Locale();
 		$mg->english_name                         = 'Malagasy';
@@ -4011,6 +4013,7 @@ class GP_Locales {
 		$zul->cldr_plural_expressions['other']    = ' @integer 2~17, 100, 1000, 10000, 100000, 1000000, … @decimal 1.1~2.6, 10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, …';
 		$zul->google_code                         = 'zu';
 
+		// END LOCALE DATA: The previous entries can be edited manually, but once complete the locale-generator script should be run to update any CLDR data.
 
 		foreach( get_defined_vars() as $locale ) {
 			$this->locales[ $locale->slug ] = $locale;
@@ -4087,3 +4090,4 @@ class GP_Locales {
 }
 
 endif;
+

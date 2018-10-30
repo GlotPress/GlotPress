@@ -90,7 +90,7 @@ foreach ( $locales->locales as $key => $value ) {
 	}
 }
 
-// Use the new GP Locales object to create output that can be added in to the locales.php file.
+// Use the new GP Locales object to create output that can replace the locales.php file.
 generate_output( $locales );
 /**
  * Function to output the locales data in PHP source format.
@@ -98,6 +98,19 @@ generate_output( $locales );
  * @param GP_Locales $locales The GlotPress Locales object.
  */
 function generate_output( $locales ) {
+	// Read the old locales.php file in to memory.
+	$locale_file = file_get_contents( '../../locales/locales.php' );
+
+	$locale_file_lines = explode( PHP_EOL, $locale_file );
+
+	for( $current_line = 0; $current_line < sizeof( $locale_file_lines) ; $current_line++ ) {
+		echo $locale_file_lines[ $current_line ] . PHP_EOL;
+
+		if( "\t\t// START LOCALE DATA:" == substr( $locale_file_lines[ $current_line ], 0, 23 ) ) {
+			break;
+		}
+	}
+
 	// Get all the GP_Locale variables we're going to output.
 	$vars = get_object_vars( $locales->locales['en'] );
 
@@ -143,5 +156,16 @@ function generate_output( $locales ) {
 
 		// Add some space between locales for easier reading.
 		echo "\n";
+
+	}
+
+	for( ; $current_line < sizeof( $locale_file_lines) ; $current_line++ ) {
+		if( "\t\t// END LOCALE DATA:" == substr( $locale_file_lines[ $current_line ], 0, 21 ) ) {
+			break;
+		}
+	}
+
+	for( ; $current_line < sizeof( $locale_file_lines) ; $current_line++ ) {
+		echo $locale_file_lines[ $current_line ] . PHP_EOL;
 	}
 }
