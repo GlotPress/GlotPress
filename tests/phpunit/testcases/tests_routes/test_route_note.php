@@ -87,7 +87,7 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 		ob_get_clean();
 		$_POST['note_id'] = $note['id'];
 
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'deleted-note-' . $_POST['note_id'] );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-note-' . $_POST['note_id'] );
 
 		ob_start();
 		$note = $this->route->delete_post();

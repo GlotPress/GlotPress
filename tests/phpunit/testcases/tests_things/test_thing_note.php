@@ -21,10 +21,43 @@ class GP_Test_Note extends GP_UnitTestCase {
 		) );
 		$translation->set_as_current();
 
-		$_POST['translation_id'] = $original->id;
+		$_POST['translation_id'] = $translation->id;
+		$_POST['original_id'] = $original->id;
 		$_POST['note'] = 'Hey I am a note!';
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'new-note-' . $translation->id );
 
-		//$this->route->new_post();
+		ob_start();
+		$note = $this->notes->save();
+		ob_get_clean();
+
+		$this->assertEquals( $note->note, $_POST['note'] );
+	}
+
+	function test_edit() {
+		$this->set_admin_user_as_current();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'baba' ) );
+
+		$translation = $this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+		$translation->set_as_current();
+
+		$_POST['translation_id'] = $translation->id;
+		$_POST['original_id'] = $original->id;
+		$_POST['note'] = 'Hey I am a note!';
+
+		ob_start();
+		$note = $this->notes->save();
+		ob_get_clean();
+
+		$note_content = 'Hey I am a note edited!';
+		ob_start();
+		$note = $this->notes->edit( $note->id, $note_content, $translation );
+		ob_get_clean();
+
+		$this->assertEquals( $note->note, $note_content );
 	}
 }
