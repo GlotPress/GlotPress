@@ -365,9 +365,11 @@ function render_note( $note, $can_edit ) {
 			<button class="update-cancel" tabindex="-1">
 				<?php esc_attr_e( 'Cancel', 'glotpress' ); ?>
 			</button>
-			<button class="delete-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-note-' . $note->id ) ); ?>">
-				<?php esc_attr_e( 'Delete', 'glotpress' ); ?>
-			</button>
+			<?php if ( $can_edit ) : ?>
+				<button class="delete-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-note-' . $note->id ) ); ?>">
+					<?php esc_attr_e( 'Delete', 'glotpress' ); ?>
+				</button>
+			<?php endif; ?>
 		</div>
 		<?php endif; ?>
 
