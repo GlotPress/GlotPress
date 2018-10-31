@@ -339,7 +339,7 @@ function render_notes( $entry, $permissions ) {
  * @param GP_Translation $note          The note object.
  * @param GP_Glossary    $can_edit      Permission of the user.
  *
- * @return number
+ * @return int
  */
 function render_note( $note, $can_edit ) {
 ?>
@@ -354,7 +354,7 @@ function render_note( $note, $can_edit ) {
 		</span>
 		<button class="note-actions" ><?php esc_attr_e( 'edit', 'glotpress' ); ?></button>
 		<div class="note-body">
-			<?php echo nl2br( esc_html( $note->note ) ); ?>
+			<?php echo nl2br( make_clickable( esc_html( $note->note ) ) ); ?>
 		</div>
 		<?php if ( $can_edit || get_current_user_id() === $note->user_id ) : ?>
 		<div class="note-body edit-note-body" style="display: none;">
