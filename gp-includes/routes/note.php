@@ -24,6 +24,11 @@ class GP_Route_Note extends GP_Route_Main {
 	public function new_post() {
 		$translation_id = gp_post( 'translation_id' );
 		$note           = gp_post( 'note' );
+		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+
+		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
+			return false;
+		}
 
 		if ( ! $this->verify_nonce( 'new-note-' . $translation_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
@@ -47,6 +52,11 @@ class GP_Route_Note extends GP_Route_Main {
 		$translation_id = gp_post( 'translation_id' );
 		$note           = gp_post( 'note' );
 		$note_id        = gp_post( 'note_id' );
+		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+
+		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
+			return false;
+		}
 
 		if ( ! $this->verify_nonce( 'edit-note-' . $note_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
@@ -88,6 +98,6 @@ class GP_Route_Note extends GP_Route_Main {
 	private function render_note( $note, $translation ) {
 		require_once GP_TMPL_PATH . 'helper-functions.php';
 		$can_approve = $this->can( 'approve', 'translation-set', $translation->translation_set_id );
-		return render_note( $note, $can_approve );
+		return gp_render_note( $note, $can_approve );
 	}
 }
