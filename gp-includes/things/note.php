@@ -74,7 +74,7 @@ class GP_Note extends GP_Thing {
 	public function save( $args = null ) {
 		$original_id    = gp_post( 'original_id' );
 		$translation_id = gp_post( 'translation_id' );
-		$note           = trim( esc_html ( gp_post( 'note' ) ) );
+		$note           = trim( esc_html( gp_post( 'note' ) ) );
 
 		return $this->create(
 			array(
