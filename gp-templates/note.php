@@ -22,7 +22,7 @@ $note     = GP::$notes->get( $note->id );
 		<button class="note-actions" ><?php _e( 'edit', 'glotpress' ); ?></button>
 	<?php endif; ?>
 	<div class="note-body">
-		<?php echo nl2br( make_clickable( $note->note ) ); ?>
+		<?php echo make_clickable( nl2br( esc_html( $note->note ) ) ); ?>
 	</div>
 	<?php if ( $can_edit || get_current_user_id() === $translation->user_id ) : ?>
 	<div class="note-body edit-note-body" style="display: none;">
