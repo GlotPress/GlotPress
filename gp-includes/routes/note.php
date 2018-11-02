@@ -36,9 +36,9 @@ class GP_Route_Note extends GP_Route_Main {
 
 		$this->notices[] = __( 'The note was created!', 'glotpress' );
 		$translation     = GP::$translation->get( $translation_id );
-		$note_object     = GP::$notes->save();
+		$note            = GP::$notes->save();
 
-		return $this->render_note( $note_object, $translation );
+		$this->tmpl( 'note', get_defined_vars() );
 	}
 
 	/**
@@ -64,9 +64,9 @@ class GP_Route_Note extends GP_Route_Main {
 
 		$this->notices[] = __( 'The note was updated!', 'glotpress' );
 		$translation     = GP::$translation->get( $translation_id );
-		$note_object     = GP::$notes->edit( $note_id, $note, $translation );
+		$note            = GP::$notes->edit( $note_id, $note, $translation );
 
-		return $this->render_note( $note_object, $translation );
+		$this->tmpl( 'note', get_defined_vars() );
 	}
 
 	/**
@@ -87,17 +87,5 @@ class GP_Route_Note extends GP_Route_Main {
 		GP::$notes->delete_all( array( 'id' => $note_id ) );
 
 		return true;
-	}
-
-	/**
-	 * Render the note
-	 *
-	 * @param object $note        Note object.
-	 * @param object $translation Translation object.
-	 */
-	private function render_note( $note, $translation ) {
-		require_once GP_TMPL_PATH . 'helper-functions.php';
-		$can_approve = $this->can( 'approve', 'translation-set', $translation->translation_set_id );
-		return gp_render_note( $note, $can_approve );
 	}
 }
