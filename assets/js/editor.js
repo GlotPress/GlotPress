@@ -390,7 +390,6 @@ $gp.editor = (
 
 				data = {
 					translation_id: editor.translation_id,
-					original_id: editor.original_id,
 					note_id: button.data( 'note-id' ),
 					note: jQuery( '#edit-note-' + button.data( 'note-id' ) ).val(),
 					_gp_route_nonce: button.data( 'nonce' )
@@ -426,7 +425,6 @@ $gp.editor = (
 
 				data = {
 					translation_id: editor.translation_id,
-					original_id: editor.original_id,
 					note_id: button.data( 'note-id' ),
 					_gp_route_nonce: button.data( 'nonce' )
 				};
