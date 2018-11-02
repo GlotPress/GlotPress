@@ -39,6 +39,8 @@ class GP_Route_Note extends GP_Route_Main {
 		$note            = GP::$notes->save();
 
 		$this->tmpl( 'note', get_defined_vars() );
+
+		return $note;
 	}
 
 	/**
@@ -77,10 +79,16 @@ class GP_Route_Note extends GP_Route_Main {
 	 * @return bool
 	 */
 	public function delete_post() {
-		$note_id = gp_post( 'note_id' );
+		$translation_id = gp_post( 'translation_id' );
+		$note_id        = gp_post( 'note_id' );
+		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
 
 		if ( ! $this->verify_nonce( 'delete-note-' . $note_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
+		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
+			return false;
 		}
 
 		$this->notices[] = __( 'The note was deleted!', 'glotpress' );
