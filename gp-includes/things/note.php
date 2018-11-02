@@ -75,10 +75,6 @@ class GP_Note extends GP_Thing {
 		$original_id    = gp_post( 'original_id' );
 		$translation_id = gp_post( 'translation_id' );
 		$note           = trim( esc_html ( gp_post( 'note' ) ) );
-		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
-		if ( ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
-			return false;
-		}
 
 		return $this->create(
 			array(

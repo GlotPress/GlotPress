@@ -292,10 +292,8 @@ function textareas( $entry, $permissions, $index = 0 ) {
  *
  * @param GP_Translation $entry            The translation entry.
  * @param GP_Glossary    $permissions      Permissions of the user.
- *
- * @return void
  */
-function render_notes( $entry, $permissions ) {
+function gp_render_notes( $entry, $permissions ) {
 	list( $can_edit, $can_approve ) = $permissions;
 	$notes                          = GP::$notes->get_by_entry( $entry );
 ?>
@@ -306,7 +304,7 @@ function render_notes( $entry, $permissions ) {
 		<dd class="notes">
 			<?php
 			foreach ( $notes as $note ) {
-				render_note( $note, $can_edit );
+				gp_render_note( $note, $can_edit );
 			}
 			?>
 		</dd>
@@ -339,13 +337,13 @@ function render_notes( $entry, $permissions ) {
  * @param GP_Translation $note          The note object.
  * @param GP_Glossary    $can_edit      Permission of the user.
  *
- * @return int
+ * @return array
  */
-function render_note( $note, $can_edit ) {
+function gp_render_note( $note, $can_edit ) {
 ?>
 	<div class="note">
 		<?php gp_link_user( get_userdata( $note->user_id ) ); ?>
-		<?php esc_attr_e( 'Commented', 'glotpress' ); ?>
+		<?php _e( 'Commented', 'glotpress' ); ?>
 		<span class="date">
 			<?php
 				/* translators: How much time before was sent the note */
