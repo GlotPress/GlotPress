@@ -100,7 +100,7 @@ function gp_schema_get() {
 	$gp_schema['notes'] = "CREATE TABLE $wpdb->gp_notes (
 		id int(10) NOT NULL auto_increment,
 		original_id int(10) DEFAULT NULL,
-		translation_set_id int(10) DEFAULT NULL,
+		translation_id int(10) DEFAULT NULL,
 		note text NOT NULL,
 		user_id bigint(20) DEFAULT NULL,
 		date_added datetime DEFAULT NULL,
