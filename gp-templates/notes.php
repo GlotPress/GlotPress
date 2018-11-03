@@ -6,7 +6,7 @@
  * @subpackage Templates
  */
 
-$notes = GP::$notes->get_by_translation( GP::$translation->get( $translation->id ) );
+$notes = GP::$notes->get_by_translation_id( $translation->id );
 ?>
 	<dl>
 		<dt>

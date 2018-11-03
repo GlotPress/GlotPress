@@ -79,7 +79,7 @@ class GP_Note extends GP_Thing {
 		return $this->create_and_select(
 			array(
 				'original_id'        => $original_id,
-				'translation_set_id' => $translation_id,
+				'translation_id'     => $translation_id,
 				'note'               => $note,
 				'user_id'            => get_current_user_id(),
 			)
@@ -108,7 +108,7 @@ class GP_Note extends GP_Thing {
 	}
 
 	/**
-	 * Retrieves the note for this translation.
+	 * Retrieves the note for this translation id.
 	 *
 	 * @since 3.0.0
 	 *
@@ -117,12 +117,11 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @return array notes
 	 */
-	public function get_by_translation( $translation, $order = null ) {
+	public function get_by_translation_id( $translation_id, $order = null ) {
 		return $this->many(
 			$this->select_all_from_conditions_and_order(
 				array(
-					'original_id'        => $translation->original_id,
-					'translation_set_id' => $translation->translation_set_id,
+					'translation_id' => $translation_id,
 				),
 				$order
 			)
