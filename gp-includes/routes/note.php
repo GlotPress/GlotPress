@@ -26,7 +26,7 @@ class GP_Route_Note extends GP_Route_Main {
 		$note           = gp_post( 'note' );
 		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
 
-		if ( !get_current_user_id() === $translation->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
+		if ( ! get_current_user_id() === $translation->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
 			return false;
 		}
 
@@ -57,7 +57,7 @@ class GP_Route_Note extends GP_Route_Main {
 		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
 		$note_object    = GP::$notes->get( $note_id );
 
-		if ( !get_current_user_id() === $note_object->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
+		if ( ! get_current_user_id() === $note_object->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
 			return false;
 		}
 
@@ -88,7 +88,7 @@ class GP_Route_Note extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
-		if ( !get_current_user_id() === $note_object->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
+		if ( ! get_current_user_id() === $note_object->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
 			return false;
 		}
 

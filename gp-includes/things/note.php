@@ -78,10 +78,10 @@ class GP_Note extends GP_Thing {
 
 		return $this->create_and_select(
 			array(
-				'original_id'        => $original_id,
-				'translation_id'     => $translation_id,
-				'note'               => $note,
-				'user_id'            => get_current_user_id(),
+				'original_id'    => $original_id,
+				'translation_id' => $translation_id,
+				'note'           => $note,
+				'user_id'        => get_current_user_id(),
 			)
 		);
 	}
@@ -112,8 +112,8 @@ class GP_Note extends GP_Thing {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param object $translation The translation entry.
-	 * @param object $order Order but not used.
+	 * @param object $translation_id The translation id.
+	 * @param object $order The note order.
 	 *
 	 * @return array notes
 	 */
