@@ -351,6 +351,7 @@ $gp.editor = (
 
 				data = {
 					translation_id: editor.translation_id,
+					original_id: editor.original_id,
 					note: jQuery( 'textarea[name="note[' + $gp.editor.current.row_id + ']"]' ).val(),
 					_gp_route_nonce: button.data( 'nonce' )
 				};
