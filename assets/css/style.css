@@ -1198,4 +1198,9 @@ table.locale-sub-projects thead th {
 		width:90%;
 		padding-top: 10px;
 	}
+	.editor .notes {
+		float:none;
+		clear:both;
+		width:90%;
+	}
 }
