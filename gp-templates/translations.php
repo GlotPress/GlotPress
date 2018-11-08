@@ -341,13 +341,12 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 <div id="legend" class="secondary clearfix">
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 <?php
-	foreach( GP::$translation->get_static( 'statuses' ) as $status ):
-		if ( 'rejected' == $status ) continue;
+	foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
 ?>
-	<div class="box status-<?php echo $status; ?>"></div>
+	<div class="box status-<?php echo esc_attr( $legend_status ); ?>"></div>
 	<div>
 <?php
-		switch( $status ) {
+		switch ( $legend_status ) {
 			case 'current':
 				_e( 'Current', 'glotpress' );
 				break;
@@ -360,8 +359,11 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			case 'old':
 				_e( 'Old', 'glotpress' );
 				break;
+			case 'rejected':
+				_e( 'Rejected', 'glotpress' );
+				break;
 			default:
-				echo $status;
+				echo esc_html( $legend_status );
 		}
 ?>
 	</div><?php endforeach; ?>
