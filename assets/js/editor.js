@@ -363,7 +363,7 @@ $gp.editor = (
 					success: function( data ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Note added!' );
-						button.closest( '.meta' ).find( '.notes' ).prepend( data );
+						button.closest( '.notes' ).find( '.notes' ).prepend( data );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
