@@ -35,7 +35,6 @@ class GP_Route_Note extends GP_Route_Main {
 		}
 
 		$this->notices[] = __( 'The note was created!', 'glotpress' );
-		$translation     = GP::$translation->get( $translation_id );
 		$note            = GP::$notes->save();
 
 		$this->tmpl( 'note', get_defined_vars() );
