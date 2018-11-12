@@ -516,6 +516,9 @@ class GP_Original extends GP_Thing {
 		 */
 		do_action( 'gp_original_deleted', $this );
 
+		$note_id = GP::$notes->get_by_translation_id( $this->id );
+		GP::$notes->delete_all( array( 'id' => $note_id ) );
+
 		return true;
 	}
 }
