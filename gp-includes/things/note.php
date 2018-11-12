@@ -29,7 +29,7 @@ class GP_Note extends GP_Thing {
 	public $field_names = array(
 		'id',
 		'original_id',
-		'translation_set_id',
+		'translation_id',
 		'note',
 		'user_id',
 		'date_added',
@@ -44,7 +44,7 @@ class GP_Note extends GP_Thing {
 	public $int_fields = array(
 		'id',
 		'original_id',
-		'translation_set_id',
+		'translation_id',
 		'user_id',
 	);
 
