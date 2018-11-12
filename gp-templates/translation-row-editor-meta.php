@@ -74,9 +74,6 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 			<dd><?php echo esc_html( $translation->translation_added ); ?> GMT</dd>
 		</dl>
 	<?php endif; ?>
-	<?php
-		gp_tmpl_load( 'notes', get_defined_vars() );
-	?>
 	<?php if ( $translation->user ) : ?>
 		<dl>
 			<dt><?php _e( 'Translated by:', 'glotpress' ); ?></dt>

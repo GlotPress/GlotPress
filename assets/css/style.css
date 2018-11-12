@@ -422,7 +422,7 @@ span.morethan90 {
 
 .editor .strings {
 	float: left;
-	min-width: 60%;
+	min-width: 40%;
 }
 
 .editor .strings .textareas textarea {
@@ -453,9 +453,9 @@ span.morethan90 {
 	min-height: 8em;
 }
 
-.editor .meta {
+.editor .meta, .editor .notes {
 	float: left;
-	width: 35%;
+	width: 25%;
 	margin-left: 2em;
 }
 
@@ -481,36 +481,41 @@ span.morethan90 {
 	font-weight: bold;
 }
 
-.editor .meta .notes {
+.editor .notes .notes-list {
 	display: block;
 	font-weight: normal;
 	overflow-y: scroll;
 	height: 140px;
 }
 
-.editor .meta .note {
+.editor .notes .note-list {
 	border-top: 1px solid rgba(0, 0, 0, 0.2);
 	padding: 0.2em 0;
 }
 
-.editor .meta .note .date {
+.editor .notes .note-list .date {
 	font-size: 80%;
 	color: #555;
 }
 
-.editor .meta .note-body {
+.editor .notes .note-body {
 	font-weight: bold;
 	padding: 0.5em;
 	line-height: 1.2em;
 }
 
-.editor .meta .note-body textarea {
+.editor .notes .note-body textarea {
 	width: 100%;
 	box-sizing: border-box;
 }
 
-.editor .meta .note-actions,
-.editor .meta .delete-note {
+.editor .notes textarea {
+	width: 95%;
+	box-sizing: border-box;
+}
+
+.editor .notes .note-actions,
+.editor .notes .delete-note {
 	float: right;
 	margin-right: 6px;
 }
