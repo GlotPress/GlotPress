@@ -7,6 +7,7 @@
  */
 
 $notes = GP::$notes->get_by_translation_id( $translation->id );
+if ( $translation->translation_status ) {
 ?>
 	<dl>
 		<dt>
@@ -23,7 +24,7 @@ $notes = GP::$notes->get_by_translation_id( $translation->id );
 	<dl>
 	<?php
 
-		if ( $translation->translation_status && GP::$permission->current_user_can(
+		if ( GP::$permission->current_user_can(
 			'approve',
 			'translation',
 			$translation->id,
@@ -39,3 +40,6 @@ $notes = GP::$notes->get_by_translation_id( $translation->id );
 		}
 	?>
 	</dl>
+<?php
+}
+?>
