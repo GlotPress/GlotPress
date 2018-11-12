@@ -28,6 +28,8 @@ class GP_Test_Note extends GP_UnitTestCase {
 		$note = $this->notes->save();
 
 		$this->assertEquals( $note->note, $_POST['note'] );
+		$this->assertEquals( $note->translation_id, $_POST['translation_id'] );
+		$this->assertEquals( $note->original_id, $_POST['original_id'] );
 	}
 
 	function test_edit() {
@@ -53,5 +55,7 @@ class GP_Test_Note extends GP_UnitTestCase {
 		$note = $this->notes->edit( $note->id, $note_content, $translation );
 
 		$this->assertEquals( $note->note, $note_content );
+		$this->assertEquals( $note->translation_id, $_POST['translation_id'] );
+		$this->assertEquals( $note->original_id, $_POST['original_id'] );
 	}
 }

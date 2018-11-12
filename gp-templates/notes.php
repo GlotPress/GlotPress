@@ -37,7 +37,7 @@ if ( $translation->translation_status ) {
 		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt><br>';
 	?>
 			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $translation->row_id ); ?>]" id="note_<?php echo esc_attr( $translation->row_id ); ?>"></textarea></dt>
-			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $translation->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
+			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'new-note-' . $translation->id ) ); ?>"><?php _e( 'Add Note', 'glotpress' ); ?></button></dt>
 	<?php
 	}
 	?>
