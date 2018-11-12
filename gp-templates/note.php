@@ -18,7 +18,7 @@ $note     = GP::$notes->get( $note->id );
 			echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );
 		?>
 	</span>
-	<?php if ( $can_edit || get_current_user_id() === $note->user_id ) : ?>
+	<?php if ( $can_edit || get_current_user_id() === $translation->user_id  || get_current_user_id() === $note->user_id ) : ?>
 		<button class="note-actions" ><?php _e( 'edit', 'glotpress' ); ?></button>
 	<?php endif; ?>
 	<div class="note-body">
