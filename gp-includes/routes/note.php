@@ -82,6 +82,7 @@ class GP_Route_Note extends GP_Route_Main {
 		$translation_id = gp_post( 'translation_id' );
 		$note_id        = gp_post( 'note_id' );
 		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+		$note_object    = GP::$notes->get( $note_id );
 
 		if ( ! $this->verify_nonce( 'delete-note-' . $note_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
