@@ -98,7 +98,7 @@ class GP_Note extends GP_Thing {
 	 * @return object The output of the query.
 	 */
 	public function edit( $note_id, $note, $translation ) {
-		$note_object    = GP::$notes->get( $note_id );
+		$note_object = GP::$notes->get( $note_id );
 
 		$this->update( array( 'note' => $note ), array( 'id' => $note_id ) );
 

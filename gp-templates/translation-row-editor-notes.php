@@ -30,7 +30,7 @@ if ( $translation->translation_status ) {
 		array(
 			'translation' => $translation,
 		)
-	) || get_current_user_id() === (int)$translation->user_id ) {
+	) || get_current_user_id() === (int) $translation->user_id ) {
 	?>
 			<dt><?php _e( 'New note:', 'glotpress' ); ?></dt>
 			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $translation->row_id ); ?>]" id="note_<?php echo esc_attr( $translation->row_id ); ?>"></textarea></dt>

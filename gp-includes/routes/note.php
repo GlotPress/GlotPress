@@ -25,9 +25,9 @@ class GP_Route_Note extends GP_Route_Main {
 		$translation_id = gp_post( 'translation_id' );
 		$note           = gp_post( 'note' );
 		$translation    = GP::$translation->get( $translation_id );
-		$admin 			= GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
+		$admin          = GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( get_current_user_id() !== (int)$translation->user_id && ! $admin ) {
+		if ( get_current_user_id() !== (int) $translation->user_id && ! $admin ) {
 			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
 		}
 
@@ -56,9 +56,9 @@ class GP_Route_Note extends GP_Route_Main {
 		$note_id        = gp_post( 'note_id' );
 		$translation    = GP::$translation->get( $translation_id );
 		$note_object    = GP::$notes->get( $note_id );
-		$admin 			= GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
+		$admin          = GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( get_current_user_id() !== (int)$note_object->user_id && ! $admin ) {
+		if ( get_current_user_id() !== (int) $note_object->user_id && ! $admin ) {
 			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
 		}
 
@@ -85,9 +85,9 @@ class GP_Route_Note extends GP_Route_Main {
 		$note_id        = gp_post( 'note_id' );
 		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
 		$note_object    = GP::$notes->get( $note_id );
-		$admin 			= GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
+		$admin          = GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( get_current_user_id() !== (int)$note_object->user_id && ! $admin ) {
+		if ( get_current_user_id() !== (int) $note_object->user_id && ! $admin ) {
 			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
 		}
 
