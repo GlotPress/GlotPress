@@ -24,10 +24,11 @@ class GP_Route_Note extends GP_Route_Main {
 	public function new_post() {
 		$translation_id = gp_post( 'translation_id' );
 		$note           = gp_post( 'note' );
-		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+		$translation    = GP::$translation->get( $translation_id );
+		$admin 			= GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( ! get_current_user_id() === $translation->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
-			return false;
+		if ( get_current_user_id() !== (int)$translation->user_id && ! $admin ) {
+			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
 		}
 
 		if ( ! $this->verify_nonce( 'new-note-' . $translation_id ) ) {
@@ -53,11 +54,12 @@ class GP_Route_Note extends GP_Route_Main {
 		$translation_id = gp_post( 'translation_id' );
 		$note           = gp_post( 'note' );
 		$note_id        = gp_post( 'note_id' );
-		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
+		$translation    = GP::$translation->get( $translation_id );
 		$note_object    = GP::$notes->get( $note_id );
+		$admin 			= GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( ! get_current_user_id() === $note_object->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
-			return false;
+		if ( get_current_user_id() !== (int)$note_object->user_id && ! $admin ) {
+			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
 		}
 
 		if ( ! $this->verify_nonce( 'edit-note-' . $note_id ) ) {
@@ -83,13 +85,14 @@ class GP_Route_Note extends GP_Route_Main {
 		$note_id        = gp_post( 'note_id' );
 		$translation    = new GP_Translation( array( 'id' => $translation_id ) );
 		$note_object    = GP::$notes->get( $note_id );
+		$admin 			= GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
+
+		if ( get_current_user_id() !== (int)$note_object->user_id && ! $admin ) {
+			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
+		}
 
 		if ( ! $this->verify_nonce( 'delete-note-' . $note_id ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
-		}
-
-		if ( ! get_current_user_id() === $note_object->user_id || ! GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) ) ) {
-			return false;
 		}
 
 		$this->notices[] = __( 'The note was deleted!', 'glotpress' );
