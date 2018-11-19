@@ -14,9 +14,9 @@ if ( $translation->translation_status ) {
 	<h3><?php _e( 'Translation Notes', 'glotpress' ); ?></h3>
 	<dl class="notes-list">
 		<?php
-		foreach ( $notes as $note ) {
-			gp_tmpl_load( 'note', get_defined_vars() );
-		}
+			foreach ( $notes as $note ) {
+				gp_tmpl_load( 'note', get_defined_vars() );
+			}
 		?>
 	</dl>
 	<dl>
@@ -30,8 +30,7 @@ if ( $translation->translation_status ) {
 		array(
 			'translation' => $translation,
 		)
-	) || get_current_user_id() === $translation->user_id ) {
-		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt><br>';
+	) || get_current_user_id() === (int) $translation->user_id ) {
 	?>
 			<dt><?php _e( 'New note:', 'glotpress' ); ?></dt>
 			<dt><textarea autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $translation->row_id ); ?>]" id="note_<?php echo esc_attr( $translation->row_id ); ?>"></textarea></dt>

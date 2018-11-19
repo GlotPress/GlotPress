@@ -18,13 +18,13 @@ $note     = GP::$notes->get( $note->id );
 			echo esc_html( sprintf( __( '%s ago', 'glotpress' ), human_time_diff( strtotime( $note->date_added ), time() ) ) );
 		?>
 	</span>
-	<?php if ( $can_edit || get_current_user_id() === $translation->user_id || get_current_user_id() === $note->user_id ) : ?>
+	<?php if ( $can_edit || get_current_user_id() === (int) $note->user_id ) : ?>
 		<button class="note-actions" ><?php _e( 'edit', 'glotpress' ); ?></button>
 	<?php endif; ?>
 	<div class="note-body">
 		<?php echo make_clickable( nl2br( esc_html( $note->note ) ) ); // WPCS: XSS ok. ?>
 	</div>
-	<?php if ( $can_edit || get_current_user_id() === $translation->user_id ) : ?>
+	<?php if ( $can_edit || get_current_user_id() === (int) $note->user_id ) : ?>
 	<div class="note-body edit-note-body" style="display: none;">
 		<textarea autocomplete="off" class="foreign-text" name="edit-note[<?php echo esc_attr( $note->id ); ?>]" id="edit-note-<?php echo esc_attr( $note->id ); ?>"><?php echo esc_html( $note->note ); ?></textarea>
 		<button class="update-note" tabindex="-1" data-note-id="<?php echo esc_attr( $note->id ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-note-' . $note->id ) ); ?>">
