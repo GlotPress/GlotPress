@@ -54,7 +54,12 @@ class GP_Note extends GP_Thing {
 	 * @var array $non_updatable_attributes
 	 */
 	public $non_updatable_attributes = array( 'id' );
-	
+
+	/**
+	 * SQL string for order by date
+	 *
+	 * @var array $default_order
+	 */
 	public $default_order = 'ORDER BY date_added DESC';
 
 	/**
@@ -76,28 +81,28 @@ class GP_Note extends GP_Thing {
 		) ) {
 			return false;
 		}
-		
+
 		$note = trim($note);
-		
+
 		return $this->create(
 			array(
-				'original_id' => $translation->original_id,
+				'original_id'        => $translation->original_id,
 				'translation_set_id' => $translation->translation_set_id,
-				'note' => $note,
-				'user_id' => get_current_user_id(), 
+				'note'    => $note,
+				'user_id' => get_current_user_id(),
 			)
 		);
 	}
-	
+
 	public function edit($note_id, $note, $translation)
 	{
 		if ( false === GP::$permission->current_user_can( 'admin', 'notes', $translation->id ) ) {
 			return false;
 		}
-		
-		$this->update(array('note' => $note), array('id' => $note_id));
-		
-		return $this->get($note_id);
+
+		$this->update( array('note' => $note), array( 'id' => $note_id ) );
+
+		return $this->get( $note_id );
 	}
 
 	/**
@@ -110,14 +115,14 @@ class GP_Note extends GP_Thing {
 	 * @return array notes
 	 */
 	public function get_by_entry( $entry, $order = null ) {
-		return $this->many( 
-			$this->select_all_from_conditions_and_order( 
+		return $this->many(
+			$this->select_all_from_conditions_and_order(
 				array(
-					'original_id' => $entry->original_id,
+					'original_id'        => $entry->original_id,
 					'translation_set_id' => $entry->translation_set_id,
-				), 
-				$order 
-			) 
+				),
+				$order
+			)
 		);
 	}
 }
