@@ -17,11 +17,13 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+	$text = preg_replace_callback(
+		'!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
 		$item_number = count( $glossary_entries );
 		$glossary_entries[ $item_number ] = $m[0];
 		return "<span GLOSSARY={$item_number}>";
-	}, $text );
+		}, $text
+	);
 
 	// Wrap full HTML tags with a notranslate class
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
@@ -31,9 +33,11 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
-	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
+	$text = preg_replace_callback(
+		'!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
-	}, $text );
+		}, $text
+	);
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
@@ -68,7 +72,7 @@ function gp_prepare_translation_textarea( $text ) {
  * @return array The sorted entries.
  */
 function gp_sort_glossary_entries_terms( $glossary_entries ) {
-	if ( empty ( $glossary_entries ) ) {
+	if ( empty( $glossary_entries ) ) {
 		return;
 	}
 
@@ -101,7 +105,11 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
+	uasort(
+		$glossary_entries_terms, function( $a, $b ) {
+		return gp_strlen( $a ) < gp_strlen( $b );
+		}
+	);
 
 	return $glossary_entries_terms;
 }
@@ -249,12 +257,12 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	$disabled = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
-		<?php
+	<?php
 		if ( isset( $entry->warnings[ $index ] ) ) :
 			$referenceable = $entry->warnings[ $index ];
 
 			foreach ( $referenceable as $key => $value ) :
-			?>
+	?>
 				<div class="warning secondary">
 					<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $value ); ?>
 
@@ -262,29 +270,79 @@ function textareas( $entry, $permissions, $index = 0 ) {
 						<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $key ) ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 					<?php endif; ?>
 				</div>
-		<?php
+	<?php
 			endforeach;
 
 		endif;
-		?>
+	?>
 		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
 		<p>
-			<?php
-			if ( $can_edit ) {
-				gp_entry_actions();
-			}
-			elseif ( is_user_logged_in() ) {
-				_e( 'You are not allowed to edit this translation.', 'glotpress' );
-			}
-			else {
-				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
-			}
-			?>
+	<?php
+	if ( $can_edit ) {
+		gp_entry_actions();
+	} elseif ( is_user_logged_in() ) {
+		_e( 'You are not allowed to edit this translation.', 'glotpress' );
+	} else {
+		// translators: The placeholder is the login link
+		printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+	}
+	?>
 		</p>
 	</div>
 	<?php
+}
+
+function notes( $entry, $permissions ) {
+	list( $can_edit, $can_approve ) = $permissions;
+	$note = GP::$notes->get( $entry );
+?>
+	<dl>
+	<?php
+		$disabled = '';
+		if ( ! empty( $note ) && $note['user_id'] !== get_current_user_id() ) {
+			$disabled = $can_edit ? '' : 'disabled="disabled"';
+		}
+		echo '<dt>' . __( 'Reviewers note:', 'glotpress' ) . '</dt>';
+
+		if ( ! empty( $note ) ) {
+			$note = $note['note'];
+		}
+
+	?>
+	<?php
+		if ( GP::$permission->current_user_can( 'admin', 'notes', $entry->id ) ) {
+			$button_label = __( 'Update notes', 'glotpress' );
+	?>
+			<dt><textarea <?php echo esc_attr( $disabled ); ?> autocomplete="off" class="foreign-text" name="all_notes[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"><?php echo esc_html( $note ); ?></textarea></dt>
+			<dt><button class="update-notes" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-notes_' . $entry->id ) ); ?>"><?php _e( 'Update notes', 'glotpress' ); ?></button></dt>
+	<?php
+		} else {
+			if ( ! empty( $note ) ) {
+				$user_info = get_userdata( $note['user_id'] );
+				echo '<dd><b>' . esc_html( $user_info->display_name ) . '</b>';
+				echo ' ' . $note['date_added'] . '</dd>';
+				$note = $note['note'];
+			}
+			?>
+			<dt><br><?php echo nl2br( esc_html( $note ) ); ?></dt>
+	<?php
+		}
+		if ( GP::$permission->current_user_can(
+			'approve', 'translation', $entry->id, array(
+				'translation' => $entry,
+			)
+		) ) {
+		echo '<dt><br>' . __( 'New Reviewer note:', 'glotpress' ) . '</dt>';
+	?>
+			<dt><textarea <?php echo esc_attr( $disabled ); ?> autocomplete="off" class="foreign-text" name="note[<?php echo esc_attr( $entry->row_id ); ?>]" id="note_<?php echo esc_attr( $entry->row_id ); ?>"></textarea></dt>
+			<dt><button class="add-note" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'add-note_' . $entry->id ) ); ?>"><?php _e( 'Add note', 'glotpress' ); ?></button></dt>
+	<?php
+		}
+	?>
+	</dl>
+<?php
 }
 
 function display_status( $status ) {
@@ -300,7 +358,6 @@ function display_status( $status ) {
 	}
 	$status = preg_replace( '/^[+-]/', '', $status);
 	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
-}
 
 function references( $project, $entry ) {
 
@@ -315,25 +372,27 @@ function references( $project, $entry ) {
 	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
-	if ( ! $show_references ) return;
+	if ( ! $show_references ) {
+return;
+	}
 	?>
 	<dl><dt>
 	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
-		<?php
-		foreach( $entry->references as $reference ):
+	<?php
+		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			if ( $source_url = $project->source_url( $file, $line ) ):
-				?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
-				<?php
+			if ( $source_url = $project->source_url( $file, $line ) ) :
+	?>
+				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo esc_html( $file ) . ':' . esc_html( $line ); ?></a></li>
+	<?php
 			else :
-				echo "<li>$file:$line</li>";
+				echo '<li>' . esc_html( $file ) . ':' . esc_html( $line ) . '</li>';
 			endif;
 		endforeach;
-		?>
+	?>
 	</ul></dt></dl>
-<?php
+	<?php
 }
 
 /**

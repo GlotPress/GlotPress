@@ -221,6 +221,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
+		$set_note_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-note' ) );
 		$bulk_action = gp_url_join( $url, '-bulk' );
 
 		// Add action to use different font for translations
@@ -549,6 +550,32 @@ class GP_Route_Translation extends GP_Route_Main {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
 	}
 
+	/**
+	 * Processes the note set action to seton the translation.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $project_path          The project path.
+	 * @param string $locale_slug           The locale slug.
+	 * @param string $translation_set_slug  The translation set slug.
+	 *
+	 * @return string $html The new row.
+	 */
+	public function set_note( $project_path, $locale_slug, $translation_set_slug ) {
+		$status         = gp_post( 'original_id' );
+		$translation_id = gp_post( 'translation_id' );
+		$note = gp_post( 'note' );
+
+		if ( ! $this->verify_nonce( 'add-note_' . $translation_id ) && ! $this->verify_nonce( 'update-notes_' . $translation_id ) ) {
+			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
+		}
+
+		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
+		GP::$notes->save( $note, $translation );
+
+		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, '' );
+	}
+
 	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale = GP_Locales::by_slug( $locale_slug );
@@ -573,7 +600,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$this->can_approve_translation_or_forbidden( $translation );
 
-		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
+		if ( ! empty( $edit_function ) ) {
+			call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
+		}
 
 		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
 		if ( ! empty( $translations ) ) {
