@@ -17,13 +17,11 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text             = preg_replace_callback(
-		'!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
-			$item_number = count( $glossary_entries );
-			$glossary_entries[ $item_number ] = $m[0];
-			return "<span GLOSSARY={$item_number}>";
-		}, $text
-	);
+	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+		$item_number = count( $glossary_entries );
+		$glossary_entries[ $item_number ] = $m[0];
+		return "<span GLOSSARY={$item_number}>";
+	}, $text );
 
 	// Wrap full HTML tags with a notranslate class
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
@@ -33,11 +31,9 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
-	$text = preg_replace_callback(
-		'!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
+		$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
-		}, $text
-	);
+	}, $text );
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
@@ -72,7 +68,7 @@ function gp_prepare_translation_textarea( $text ) {
  * @return array The sorted entries.
  */
 function gp_sort_glossary_entries_terms( $glossary_entries ) {
-	if ( empty( $glossary_entries ) ) {
+	if ( empty ( $glossary_entries ) ) {
 		return;
 	}
 
@@ -257,12 +253,12 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	$disabled = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
-	<?php
+		<?php
 		if ( isset( $entry->warnings[ $index ] ) ) :
 			$referenceable = $entry->warnings[ $index ];
 
 			foreach ( $referenceable as $key => $value ) :
-	?>
+			?>
 				<div class="warning secondary">
 					<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $value ); ?>
 
@@ -270,25 +266,25 @@ function textareas( $entry, $permissions, $index = 0 ) {
 						<a href="#" class="discard-warning" data-nonce="<?php echo esc_attr( wp_create_nonce( 'discard-warning_' . $index . $key ) ); ?>" data-key="<?php echo esc_attr( $key ); ?>" data-index="<?php echo esc_attr( $index ); ?>"><?php _e( 'Discard', 'glotpress' ); ?></a>
 					<?php endif; ?>
 				</div>
-	<?php
+		<?php
 			endforeach;
 
 		endif;
-	?>
+		?>
 		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
 
 		<p>
-	<?php
-	if ( $can_edit ) {
-		gp_entry_actions();
-	} elseif ( is_user_logged_in() ) {
-		esc_attr_e( 'You are not allowed to edit this translation.', 'glotpress' );
-	} else {
-		// translators: The placeholder is the login link
-		printf( esc_attr__( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
-	}
-	?>
+		<?php
+		if ( $can_edit ) {
+			gp_entry_actions();
+		} elseif ( is_user_logged_in() ) {
+			_e( 'You are not allowed to edit this translation.', 'glotpress' );
+		} else {
+			// translators: The placeholder is the login link
+			printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+		}
+		?>
 		</p>
 	</div>
 	<?php
