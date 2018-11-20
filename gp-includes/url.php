@@ -146,7 +146,7 @@ function gp_url_current() {
  * @return string
  */
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
-	$project_path = urlencode( is_object( $project_or_path ) ? $project_or_path->path : $project_or_path );
+	$project_path = is_object( $project_or_path ) ? $project_or_path->path : $project_or_path;
 
 	// A leading double-slash will avoid prepending /projects/ to the path.
 	// This was introduced to enable linking to the locale glossary.
