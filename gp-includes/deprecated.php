@@ -9,7 +9,7 @@
  * @param mixed $value
  */
 function returner( $value ) {
-	return var_export( $value, true );
+	return create_function( '', 'return '.var_export( $value, true ).';');
 }
 
 /**
@@ -18,7 +18,7 @@ function returner( $value ) {
  * @param mixed $value
  */
 function echoer( $value ) {
-	return var_export( $value, true );
+	return create_function( '', 'echo '.var_export( $value, true ).';');
 }
 
 /**
