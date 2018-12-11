@@ -40,6 +40,8 @@ matrix:
     env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   - php: 7.2
     env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
+  - php: 7.3
+    env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   - php: nightly
     env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
 
@@ -53,10 +55,12 @@ install:
 before_script:
   - xmllint --version
   - |
-    # Remove Xdebug for a huge performance increase, but not from nightly:
-    stable='^[0-9\.]+$'
-    if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]]; then
-      phpenv config-rm xdebug.ini
+    # Remove Xdebug for a huge performance increase, but not from nightly or PHP 7.3 as it is not supported yet:
+    if [[ $TRAVIS_PHP_VERSION < 7.3 ]]; then
+      stable='^[0-9\.]+$'
+      if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]]; then
+        phpenv config-rm xdebug.ini
+      fi
     fi
 
 script:
