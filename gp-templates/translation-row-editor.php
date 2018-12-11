@@ -74,6 +74,7 @@ $plural = sprintf(
 			<?php gp_tmpl_load( 'translation-row-editor-actions', get_defined_vars() ); ?>
 		</div>
 		<?php gp_tmpl_load( 'translation-row-editor-meta', get_defined_vars() ); ?>
+		<?php gp_tmpl_load( 'translation-row-editor-notes', get_defined_vars() ); ?>
 	</td>
 	<?php
 	/**

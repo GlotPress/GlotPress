@@ -422,7 +422,7 @@ span.morethan90 {
 
 .editor .strings {
 	float: left;
-	min-width: 60%;
+	min-width: 40%;
 }
 
 .editor .strings .textareas textarea {
@@ -453,9 +453,9 @@ span.morethan90 {
 	min-height: 8em;
 }
 
-.editor .meta {
+.editor .meta, .editor .notes {
 	float: left;
-	width: 35%;
+	width: 25%;
 	margin-left: 2em;
 }
 
@@ -479,6 +479,45 @@ span.morethan90 {
 .editor .meta dd {
 	color: #444;
 	font-weight: bold;
+}
+
+.editor .notes .notes-list {
+	display: block;
+	font-weight: normal;
+	overflow-y: scroll;
+	height: 140px;
+}
+
+.editor .notes .note-list {
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 0.2em 0;
+}
+
+.editor .notes .note-list .date {
+	font-size: 80%;
+	color: #555;
+}
+
+.editor .notes .note-body {
+	font-weight: bold;
+	padding: 0.5em;
+	line-height: 1.2em;
+}
+
+.editor .notes .note-body textarea {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.editor .notes textarea {
+	width: 95%;
+	box-sizing: border-box;
+}
+
+.editor .notes .note-actions,
+.editor .notes .delete-note {
+	float: right;
+	margin-right: 6px;
 }
 
 /*
@@ -1148,5 +1187,20 @@ table.locale-sub-projects thead th {
 	.locale-project .project-description {
 		float: none;
 		margin-left: 0;
+	}
+
+	.editor .strings {
+		width:90%;
+	}
+	.editor .meta {
+		float:none;
+		clear:both;
+		width:90%;
+		padding-top: 10px;
+	}
+	.editor .notes {
+		float:none;
+		clear:both;
+		width:90%;
 	}
 }
