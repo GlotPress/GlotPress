@@ -47,7 +47,7 @@ jQuery(function($) {
 	var lastClicked = false;
 	// Check all checkboxes from WP common.js, synced with [25141]
 	$('tbody').children().children('.checkbox').find(':checkbox').click( function(e) {
-		var checks, first, last, sliced;
+		var checks, first, last, checked, sliced;
 
 		if ( 'undefined' == e.shiftKey ) { return true; }
 		if ( e.shiftKey ) {
