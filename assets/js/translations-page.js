@@ -45,8 +45,10 @@ jQuery(function($) {
 	});
 
 	var lastClicked = false;
-	// Check all checkboxes from WP common.js, synced with [20400]
+	// Check all checkboxes from WP common.js, synced with [25141]
 	$('tbody').children().children('.checkbox').find(':checkbox').click( function(e) {
+		var checks, first, last, checked, sliced;
+
 		if ( 'undefined' == e.shiftKey ) { return true; }
 		if ( e.shiftKey ) {
 			if ( !lastClicked ) { return true; }
@@ -55,7 +57,8 @@ jQuery(function($) {
 			last = checks.index( this );
 			checked = $(this).prop('checked');
 			if ( 0 < first && 0 < last && first != last ) {
-				checks.slice( first, last ).prop( 'checked', function(){
+				sliced = ( last > first ) ? checks.slice( first, last ) : checks.slice( last, first );
+				sliced.prop( 'checked', function() {
 					if ( $(this).closest('tr').is(':visible') )
 						return checked;
 
