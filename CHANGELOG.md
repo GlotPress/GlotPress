@@ -40,6 +40,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  * Avoid flashing in filters toolbar caused by select box for bulk priority. (#[775](https://github.com/GlotPress/GlotPress-WP/issues/775))
  * Translation header due to strange wrapping. (#[304](https://github.com/GlotPress/GlotPress-WP/issues/304))
  * Word wrapping makes translation strings difficult to read. (#[892](https://github.com/GlotPress/GlotPress-WP/issues/892))
+ * Multi-select in the translation list only worked from top to bottom, not the other way around (#[980(https://github.com/GlotPress/GlotPress-WP/issues/980)])
  * LOCALES: Remove invalid 'me' language code. (#[688](https://github.com/GlotPress/GlotPress-WP/issues/688))
  * LOCALES: extra control character after locale name for Czech. (#[696](https://github.com/GlotPress/GlotPress-WP/issues/696))
  * LOCALES: Google code for 'German (Switzerland)' has the wrong variable name. (#[743](https://github.com/GlotPress/GlotPress-WP/issues/743))
