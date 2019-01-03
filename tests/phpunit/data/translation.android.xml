@@ -16,7 +16,7 @@ Language: en_US
 	<string name="with_comment">баба</string>
 	<string name="with_escaped_unicode">Keine Beiträge gespeichert \u2014 noch!</string>
 	<plurals name="with_plurals">
-		<item quantity="zero">Updated %s value</item>
-		<item quantity="one">Updated %s values</item>
+		<item quantity="one">Updated %s value</item>
+		<item quantity="other">Updated %s values</item>
 	</plurals>
 </resources>

@@ -8,4 +8,8 @@
 	<string name="with_xliff_with_single_quote_attributes">Please don't translate <xliff:g id='excluded' example='this'>%s</xliff:g> text</string>
 	<string name="with_xliff_with_single_and_double_quote_attributes">Please don't translate <xliff:g id="excluded" example='this'>%s</xliff:g> text</string>
 	<string name="with_xliff_with_quotes_inside_attributes">Please don't translate <xliff:g id="exclud'd" example='"this"'>%s</xliff:g> text</string>
+	<plurals name="with_plurals">
+		<item quantity="one">Updated %s value <xliff:g id="exclud'd" example='"this"'>%s</xliff:g></item>
+		<item quantity="other">Updated %s values <xliff:g id="exclud'd" example='"this"'>%s</xliff:g></item>
+	</plurals>
 </resources>

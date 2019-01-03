@@ -10,4 +10,8 @@
 	<string name="with_amps">me &amp; you are not &amp;amp;</string>
 	<string name="with_comment" comment="Me, myself &amp; Irene">baba</string>
 	<string name="with_escaped_unicode">No posts saved \u2014 yet!</string>
+	<plurals name="with_plurals">
+		<item quantity="one">Updated %s value</item>
+		<item quantity="other">Updated %s values</item>
+	</plurals>
 </resources>
