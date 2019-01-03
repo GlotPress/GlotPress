@@ -48,7 +48,7 @@ $plural = sprintf(
 						printf(
 							// Translators: %s is the original (singlular) string.
 							__( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
-							'<span class="original">' . $singular . '</span>'
+							'<span class="original">' . $singular . '</span>' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped.
 						);
 					?>
 					</p>
@@ -73,7 +73,7 @@ $plural = sprintf(
 						printf(
 							// Translators: %s is the original (singlular) string.
 							__( 'Singular: %s', 'glotpress' ), // WPCS: XSS ok.
-							'<span class="original">' . $singular . '</span>'
+							'<span class="original">' . $singular . '</span>' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped.
 						);
 					?>
 					</p>
@@ -82,7 +82,7 @@ $plural = sprintf(
 						printf(
 							// Translators: %s is the original plural string.
 							__( 'Plural: %s', 'glotpress' ),  // WPCS: XSS ok.
-							'<span class="original">' . $plural . '</span>'
+							'<span class="original">' . $plural . '</span>' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped.
 						);
 					?>
 					</p>
@@ -93,7 +93,7 @@ $plural = sprintf(
 								printf(
 									// Translators: %s is the list of examples.
 									__( 'This plural form is used for numbers like: %s', 'glotpress' ), // WPCS: XSS ok.
-									'<span class="numbers">' . $locale->get_plural_example( $project->plurals_type, $plural_index ) . '</span>'
+									'<span class="numbers">' . $locale->get_plural_example( $project->plurals_type, $plural_index ) . '</span>' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped.
 								);
 							?>
 							</p>
