@@ -358,8 +358,8 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	 * Basic test to ensure root/variant data in GP_Locales exists.
 	 *
 	 * A more comprehensive test of the root/variant relationships would be nice, but due to the
-	 * high dependency on the database, test cases are extreamly hard to create that actually
-	 * test a real senerio.	 
+	 * high dependency on the database, test cases are extremely hard to create that actually
+	 * test a real scenario.
 	 */
 	function test_root_and_variant_locales() {
 		$gpl = new GP_Locales;
