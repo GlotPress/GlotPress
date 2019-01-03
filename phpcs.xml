@@ -44,4 +44,5 @@
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
+	<exclude-pattern>/bin/*</exclude-pattern>
 </ruleset>
