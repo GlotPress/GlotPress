@@ -373,7 +373,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	if ( $locale->variant_root ) :
 ?>
 	<div class="box root-translation"></div>
-	<div><?php _e( 'Root translation', 'glotpress' ); // WPCS: XSS ok. ?></div>
+	<div><?php _e( 'Root translation', 'glotpress' ); // phpcs:ignore WordPress.Security.EscapeOutput. ?></div>
 <?php
 	endif
 ?>
