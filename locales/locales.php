@@ -1331,6 +1331,7 @@ class GP_Locales {
 		$kmr->lang_code_iso_639_1 = 'ku';
 		$kmr->lang_code_iso_639_3 = 'kmr';
 		$kmr->country_code = 'tr';
+		$kmr->wp_locale = 'kmr';
 		$kmr->slug = 'kmr';
 		$kmr->facebook_locale = 'ku_TR';
 
