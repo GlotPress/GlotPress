@@ -14,6 +14,10 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 			array('me > you', 'me > you', "аз > ти", ''),
 			array('me & you are not &amp;', 'me & you are not &amp;', 'аз & ти не сме &amp;', ''),
 			array('baba', 'baba', 'баба', 'Me, myself & Irene'),
+			array('multiline', 'multiline', 'multiline', 'This is
+   a multiline
+   comment which is
+   also supposed to work.'),
 		);
 	}
 
@@ -36,6 +40,8 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 
 		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.strings' );
 		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
+		// Remove the UTF-8 Byte Order Mark which is necessary to ensure a UTF-8 detection of the file.
+		$file_contents = substr( $file_contents, 3 );
 
 		$exported = $this->strings->print_exported_file( $project, $locale, $set, $entries_for_export );
 

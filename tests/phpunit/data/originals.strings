@@ -21,3 +21,9 @@
 
 /* Me, myself & Irene */
 "baba" = "baba";
+
+/* This is
+   a multiline
+   comment which is
+   also supposed to work. */
+"multiline" = "multiline";
