@@ -1765,6 +1765,15 @@ class GP_Locales {
 		$pl->google_code = 'pl';
 		$pl->facebook_locale = 'pl_PL';
 
+		$pt_ao = new GP_Locale();
+		$pt_ao->english_name = 'Portuguese (Angola)';
+		$pt_ao->native_name = 'Português de Angola';
+		$pt_ao->lang_code_iso_639_1 = 'pt';
+		$pt_ao->lang_code_iso_639_2 = 'por';
+		$pt_ao->country_code = 'ao';
+		$pt_ao->wp_locale = 'pt_AO';
+		$pt_ao->slug = 'pt-ao';
+
 		$pt = new GP_Locale();
 		$pt->english_name = 'Portuguese (Portugal)';
 		$pt->native_name = 'Português';
