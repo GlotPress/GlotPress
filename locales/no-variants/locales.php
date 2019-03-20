@@ -419,12 +419,6 @@ class GP_Locales {
 		$ca->google_code = 'ca';
 		$ca->facebook_locale = 'ca_ES';
 
-		$ca_valencia = clone $ca;
-		$ca_valencia->english_name = 'Catalan (Valencian)';
-		$ca_valencia->native_name = 'Català (Valencià)';
-		$ca_valencia->wp_locale = 'ca_valencia';
-		$ca_valencia->slug = 'ca/valencia';
-
 		$ce = new GP_Locale();
 		$ce->english_name = 'Chechen';
 		$ce->native_name = 'Нохчийн мотт';
@@ -547,12 +541,6 @@ class GP_Locales {
 		$de->google_code = 'de';
 		$de->facebook_locale = 'de_DE';
 
-		$de_formal = clone $de;
-		$de_formal->english_name = 'German (Formal)';
-		$de_formal->native_name = 'Deutsch (Sie)';
-		$de_formal->slug = 'de/formal';
-		$de_formal->wp_locale = 'de_DE_formal';
-
 		$de_at = new GP_Locale();
 		$de_at->english_name = 'German (Austria)';
 		$de_at->native_name = 'Deutsch (Österreich';
@@ -570,12 +558,6 @@ class GP_Locales {
 		$de_ch->wp_locale = 'de_CH';
 		$de_ch->slug = 'de-ch';
 		$de_ch->google_code = 'de';
-
-		$de_ch_informal = clone $de_ch;
-		$de_ch_informal->english_name = 'German (Switzerland, Informal)';
-		$de_ch_informal->native_name = 'Deutsch (Schweiz, Du)';
-		$de_ch_informal->slug = 'de-ch/informal';
-		$de_ch_informal->wp_locale = 'de_CH_informal';
 
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
@@ -1702,12 +1684,6 @@ class GP_Locales {
 		$nl->google_code = 'nl';
 		$nl->facebook_locale = 'nl_NL';
 
-		$nl_formal = clone $nl;
-		$nl_formal->english_name = 'Dutch (Formal)';
-		$nl_formal->native_name = 'Nederlands (Formeel)';
-		$nl_formal->slug = 'nl/formal';
-		$nl_formal->wp_locale = 'nl_NL_formal';
-
 		$nl_be = new GP_Locale();
 		$nl_be->english_name = 'Dutch (Belgium)';
 		$nl_be->native_name = 'Nederlands (België)';
@@ -1837,12 +1813,6 @@ class GP_Locales {
 		$pt->slug = 'pt';
 		$pt->google_code = 'pt-PT';
 		$pt->facebook_locale = 'pt_PT';
-
-		$pt_ao90 = clone $pt;
-		$pt_ao90->english_name = 'Portuguese (Portugal, AO90)';
-		$pt_ao90->native_name = 'Português (AO90)';
-		$pt_ao90->slug = 'pt/ao90';
-		$pt_ao90->wp_locale = 'pt_PT_ao90';
 
 		$pt_ao = new GP_Locale();
 		$pt_ao->english_name = 'Portuguese (Angola)';
