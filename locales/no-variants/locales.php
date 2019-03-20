@@ -590,12 +590,6 @@ class GP_Locales {
 		$ewe->wp_locale = 'ewe';
 		$ewe->slug = 'ee';
 
-		$el_po = new GP_Locale();
-		$el_po->english_name = 'Greek (Polytonic)';
-		$el_po->native_name = 'Greek (Polytonic)'; // TODO
-		$el_po->country_code = 'gr';
-		$el_po->slug = 'el-po';
-
 		$el = new GP_Locale();
 		$el->english_name = 'Greek';
 		$el->native_name = 'Ελληνικά';
@@ -606,6 +600,12 @@ class GP_Locales {
 		$el->slug = 'el';
 		$el->google_code = 'el';
 		$el->facebook_locale = 'el_GR';
+
+		$el_po = new GP_Locale();
+		$el_po->english_name = 'Greek (Polytonic)';
+		$el_po->native_name = 'Greek (Polytonic)'; // TODO.
+		$el_po->country_code = 'gr';
+		$el_po->slug = 'el-po';
 
 		$emoji = new GP_Locale();
 		$emoji->english_name = 'Emoji';
@@ -1694,6 +1694,15 @@ class GP_Locales {
 		$nl_be->slug = 'nl-be';
 		$nl_be->google_code = 'nl';
 
+		$no = new GP_Locale();
+		$no->english_name = 'Norwegian';
+		$no->native_name = 'Norsk';
+		$no->lang_code_iso_639_1 = 'no';
+		$no->lang_code_iso_639_2 = 'nor';
+		$no->country_code = 'no';
+		$no->slug = 'no';
+		$no->google_code = 'no';
+
 		$nn = new GP_Locale();
 		$nn->english_name = 'Norwegian (Nynorsk)';
 		$nn->native_name = 'Norsk nynorsk';
@@ -1704,15 +1713,6 @@ class GP_Locales {
 		$nn->slug = 'nn';
 		$nn->google_code = 'no';
 		$nn->facebook_locale = 'nn_NO';
-
-		$no = new GP_Locale();
-		$no->english_name = 'Norwegian';
-		$no->native_name = 'Norsk';
-		$no->lang_code_iso_639_1 = 'no';
-		$no->lang_code_iso_639_2 = 'nor';
-		$no->country_code = 'no';
-		$no->slug = 'no';
-		$no->google_code = 'no';
 
 		$nqo = new GP_Locale();
 		$nqo->english_name = 'N’ko';
@@ -2398,6 +2398,15 @@ class GP_Locales {
 		$yor->google_code = 'yo';
 		$yor->facebook_locale = 'yo_NG';
 
+		$zh = new GP_Locale();
+		$zh->english_name = 'Chinese';
+		$zh->native_name = '中文';
+		$zh->lang_code_iso_639_1 = 'zh';
+		$zh->lang_code_iso_639_2 = 'zho';
+		$zh->slug = 'zh';
+		$zh->nplurals = 1;
+		$zh->plural_expression = '0';
+
 		$zh_cn = new GP_Locale();
 		$zh_cn->english_name = 'Chinese (China)';
 		$zh_cn->native_name = '简体中文';
@@ -2446,15 +2455,6 @@ class GP_Locales {
 		$zh_tw->plural_expression = '0';
 		$zh_tw->google_code = 'zh-TW';
 		$zh_tw->facebook_locale = 'zh_TW';
-
-		$zh = new GP_Locale();
-		$zh->english_name = 'Chinese';
-		$zh->native_name = '中文';
-		$zh->lang_code_iso_639_1 = 'zh';
-		$zh->lang_code_iso_639_2 = 'zho';
-		$zh->slug = 'zh';
-		$zh->nplurals = 1;
-		$zh->plural_expression = '0';
 
 		$zul = new GP_Locale();
 		$zul->english_name = 'Zulu';
