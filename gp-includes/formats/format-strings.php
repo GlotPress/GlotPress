@@ -107,13 +107,22 @@ class GP_Format_Strings extends GP_Format {
 			$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
 		}
 
+		// Convert multi-line comments into a single line.
+		$file = preg_replace_callback(
+			'/\/\*\s*(.*?)\s*\*\//s',
+			function( $m ) {
+				return str_replace( PHP_EOL, '\n', $m[0] );
+			},
+			$file
+		);
+
 		$context = $comment = null;
 		$lines = explode( "\n", $file );
 
 		foreach ( $lines as $line ) {
 			if ( is_null( $context ) ) {
 				if ( preg_match( '/^\/\*\s*(.*)\s*\*\/$/', $line, $matches ) ) {
-					$matches[1] = trim( $matches[1] );
+					$matches[1] = trim( str_replace( '\n', PHP_EOL, $matches[1] ) );
 
 					if ( $matches[1] !== "No comment provided by engineer." ) {
 						$comment = $matches[1];

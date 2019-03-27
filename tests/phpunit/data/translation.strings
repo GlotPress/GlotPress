@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: +0000 */
+﻿/* Translation-Revision-Date: +0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/[GP VERSION] */
 /* Language: en_US */
@@ -20,6 +20,12 @@
 
 /* No comment provided by engineer. */
 "me > you" = "аз > ти";
+
+/* This is
+   a multiline
+   comment which is
+   also supposed to work. */
+"multiline" = "multiline";
 
 /* No comment provided by engineer. */
 "you < me" = "ти < аз";
