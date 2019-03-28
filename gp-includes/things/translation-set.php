@@ -16,7 +16,7 @@ class GP_Translation_Set extends GP_Thing {
 
 	var $table_basename = 'gp_translation_sets';
 	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count', 'percent_translated', 'wp_locale', 'last_modified' );
+	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
 	var $int_fields = array( 'id', 'project_id' );
 	var $non_updatable_attributes = array( 'id' );
 
