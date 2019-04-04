@@ -52,7 +52,7 @@ class GP_Route_Note extends GP_Route_Main {
 	 */
 	public function edit_post() {
 		$translation_id = gp_post( 'translation_id' );
-		$note           = gp_post( 'note' );
+		$note_text      = gp_post( 'note' );
 		$note_id        = gp_post( 'note_id' );
 		$translation    = GP::$translation->get( $translation_id );
 		$note           = GP::$notes->get( $note_id );
@@ -68,7 +68,7 @@ class GP_Route_Note extends GP_Route_Main {
 
 		$this->notices[] = __( 'The note was updated!', 'glotpress' );
 		$translation     = GP::$translation->get( $translation_id );
-		$note            = GP::$notes->edit( $note_id, $note, $translation );
+		$note            = GP::$notes->edit( $note_id, $note_text, $translation );
 
 		$this->tmpl( 'note', get_defined_vars() );
 	}
