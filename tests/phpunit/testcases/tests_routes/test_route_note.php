@@ -81,7 +81,7 @@ class GP_Test_Route_Note extends GP_UnitTestCase_Route {
 
 		$note = $this->route->delete_post();
 
-		$this->assertTrue( $note );
+		$this->assertEquals( 1, $note );
 		$this->assertThereIsANoticeContaining( 'deleted' );
 	}
 }
