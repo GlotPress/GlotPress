@@ -28,7 +28,7 @@ class GP_Route_Note extends GP_Route_Main {
 		$admin          = GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
 		if ( get_current_user_id() !== (int) $translation->user_id && ! $admin ) {
-			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
+			return $this->die_with_error( __( 'Sorry, you are not allowed to create this note.', 'glotpress' ), 403 );
 		}
 
 		if ( ! $this->verify_nonce( 'new-note-' . $translation_id ) ) {
@@ -58,8 +58,8 @@ class GP_Route_Note extends GP_Route_Main {
 		$note           = GP::$notes->get( $note_id );
 		$admin          = GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( get_current_user_id() !== (int) $note->user_id && ! $admin ) {
-			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
+		if ( get_current_user_id() !== (int) $note_object->user_id && ! $admin ) {
+			return $this->die_with_error( __( 'Sorry, you are not allowed to edit this note.', 'glotpress' ), 403 );
 		}
 
 		if ( ! $this->verify_nonce( 'edit-note-' . $note_id ) ) {
@@ -87,8 +87,8 @@ class GP_Route_Note extends GP_Route_Main {
 		$note           = GP::$notes->get( $note_id );
 		$admin          = GP::$permission->current_user_can( 'approve', 'translation', $translation_id, array( 'translation' => $translation ) );
 
-		if ( get_current_user_id() !== (int) $note->user_id && ! $admin ) {
-			return $this->die_with_error( __( 'You don\'t have permissions. Please try again.', 'glotpress' ), 403 );
+		if ( get_current_user_id() !== (int) $note_object->user_id && ! $admin ) {
+			return $this->die_with_error( __( 'Sorry, you are not allowed to delete this note.', 'glotpress' ), 403 );
 		}
 
 		if ( ! $this->verify_nonce( 'delete-note-' . $note_id ) ) {
