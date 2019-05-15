@@ -74,7 +74,7 @@ class GP_Note extends GP_Thing {
 	public function save( $args = null ) {
 		$original_id    = gp_post( 'original_id' );
 		$translation_id = gp_post( 'translation_id' );
-		$note           = trim( wp_kses( gp_post( 'note' ), [] ) );
+		$note           = trim( wp_kses( gp_post( 'note' ), array() ) );
 
 		return $this->create_and_select(
 			array(
@@ -100,7 +100,7 @@ class GP_Note extends GP_Thing {
 	public function edit( $note_id, $note, $translation ) {
 		$note_object = GP::$notes->get( $note_id );
 
-		$this->update( array( 'note' => wp_kses( $note, [] ) ), array( 'id' => $note_id ) );
+		$this->update( array( 'note' => wp_kses( $note, array() ) ), array( 'id' => $note_id ) );
 
 		return $this->get( $note_id );
 	}
