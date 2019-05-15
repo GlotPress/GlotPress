@@ -68,7 +68,7 @@ class GP_Route_Note extends GP_Route_Main {
 
 		$this->notices[] = __( 'The note was updated!', 'glotpress' );
 		$translation     = GP::$translation->get( $translation_id );
-		$note            = GP::$notes->edit( $note_id, wp_kses( $note, [] ), $translation );
+		$note            = GP::$notes->edit( $note_id, wp_kses( $note, array() ), $translation );
 
 		$this->tmpl( 'note', get_defined_vars() );
 	}
