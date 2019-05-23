@@ -881,8 +881,8 @@ class GP_Locales {
 		$fa->lang_code_iso_639_2 = 'fas';
 		$fa->wp_locale = 'fa_IR';
 		$fa->slug = 'fa';
-		$fa->nplurals = 1;
-		$fa->plural_expression = '0';
+		$fa->nplurals = 2;
+		$fa->plural_expression = 'n > 1';
 		$fa->text_direction = 'rtl';
 		$fa->google_code = 'fa';
 		$fa->facebook_locale = 'fa_IR';
@@ -894,8 +894,8 @@ class GP_Locales {
 		$fa_af->lang_code_iso_639_2 = 'fas';
 		$fa_af->wp_locale = 'fa_AF';
 		$fa_af->slug = 'fa-af';
-		$fa_af->nplurals = 1;
-		$fa_af->plural_expression = '0';
+		$fa_af->nplurals = 2;
+		$fa_af->plural_expression = 'n > 1';
 		$fa_af->text_direction = 'rtl';
 		$fa_af->google_code = 'fa';
 
