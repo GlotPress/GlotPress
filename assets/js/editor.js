@@ -314,7 +314,7 @@ $gp.editor = (
 				} );
 
 				if ( translationChanged ) {
-					$gp.notices.error( 'Translation has changed! Please add the new translation before changing it\'s status.' );
+					$gp.notices.error( 'Translation has changed! Please add the new translation before changing its status.' );
 					return;
 				}
 
