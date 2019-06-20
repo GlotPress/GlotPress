@@ -8,7 +8,7 @@ function gp_startswith( $haystack, $needle ) {
 }
 
 function gp_endswith( $haystack, $needle ) {
-	return $needle === substr( $haystack, -strlen( $needle ));
+	return $needle === substr( $haystack, -strlen( $needle ) );
 }
 
 function gp_in( $needle, $haystack ) {
@@ -160,7 +160,7 @@ function gp_string_similarity( $str1, $str2 ) {
 	$length1 = gp_strlen( $str1 );
 	$length2 = gp_strlen( $str2 );
 
-	$len = min( $length1, $length2);
+	$len = min( $length1, $length2 );
 	if ( $len > 5000 ) {
 		//Arbitrary limit on character length for speed purpose.
 		$distance = $len;
