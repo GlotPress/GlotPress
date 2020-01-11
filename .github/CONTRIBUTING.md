@@ -1,6 +1,6 @@
 # Contribute
 
-Hi there! Thank you so much for your interest in contributing to GlotPress. We'll try to make things as easy as possible for you in this guide. There are a number of ways to help out, and every one of them is appreaciated:
+Hi there! Thank you so much for your interest in contributing to GlotPress. We'll try to make things as easy as possible for you in this guide. There are a number of ways to help out, and every one of them is appreciated:
 
 * Submitting patches: whether fixing a bug or adding new functionality
 * Testing patches / PRs

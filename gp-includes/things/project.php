@@ -222,7 +222,7 @@ class GP_Project extends GP_Thing {
 	// Helpers
 
 	/**
-	 * Updates this project's and its chidlren's paths, according to its current slug.
+	 * Updates this project's and its children's paths, according to its current slug.
 	 */
 	public function update_path() {
 		global $wpdb;
@@ -250,7 +250,7 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
-	 * Regenrate the paths of all projects from its parents slugs
+	 * Regenerate the paths of all projects from its parents slugs
 	 */
 	public function regenerate_paths( $parent_project_id = null ) {
 		// TODO: do it with one query. Use the tree generation code from GP_Route_Main::_options_from_projects()

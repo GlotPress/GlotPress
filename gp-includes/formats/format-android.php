@@ -181,7 +181,7 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param obj    $string  The string entry objectto use.
+	 * @param obj    $string  The string entry object to use.
 	 * @param string $context The context string to use.
 	 *
 	 * @return obj A translation entry object.
@@ -355,7 +355,7 @@ class GP_Format_Android extends GP_Format {
 
 		// Loop through all of the single entries add them to a mapping array.
 		foreach ( $entries as $entry ) {
-			// Make sure the array name is sanatized.
+			// Make sure the array name is sanitized.
 			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
 
 			// Initialize the mapping array entry if this is the first time.
