@@ -11,7 +11,7 @@ gp_tmpl_header();
 
 <h2><?php _e( 'Import Glossary Entries', 'glotpress' ); ?></h2>
 <p>
-	<?php printf( __( 'Use this form to bulk upload glossary entries. The entries should be stored in a CSV file, matching the custom glossary format from <a href="%s">Google Translator Toolkit</a>.', 'glotpress' ), 'https://support.google.com/translate/toolkit/answer/147854' ); ?><br/>
+	<?php printf( __( 'Use this form to bulk upload glossary entries. The entries should be stored in a CSV file with a custom glossary format. Read more on <a href="%s">Polyglots Handbook</a>.', 'glotpress' ), 'https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/glossary-style-guide/#creating-a-project-glossary' ); ?><br/>
 </p>
 
 <form action="" method="post" enctype="multipart/form-data">
