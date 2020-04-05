@@ -90,7 +90,7 @@
 			cssHeaderRow     : '',
 			cssProcessing    : '', // processing icon applied to header during sort/filter
 
-			cssChildRow      : 'tablesorter-childRow', // class name indiciating that a row is to be attached to its parent
+			cssChildRow      : 'tablesorter-childRow', // class name indicating that a row is to be attached to its parent
 			cssInfoBlock     : 'tablesorter-infoOnly', // don't sort tbody with this class name (only one class name allowed here!)
 			cssNoSort        : 'tablesorter-noSort',   // class name added to element inside header; clicking on it won't cause a sort
 			cssIgnoreRow     : 'tablesorter-ignoreRow',// header row to ignore; cells within this row will not be added to c.$headers
@@ -331,7 +331,7 @@
 				}
 			}
 
-			// show processesing icon
+			// show processing icon
 			if ( c.showProcessing ) {
 				$table
 				.unbind( 'sortBegin' + c.namespace + ' sortEnd' + c.namespace )
@@ -697,11 +697,11 @@
 							extractor = ts.getParserById( ts.getData( header, configHeaders, 'extractor' ) );
 							parser = ts.getParserById( ts.getData( header, configHeaders, 'sorter' ) );
 							noParser = ts.getData( header, configHeaders, 'parser' ) === 'false';
-							// empty cells behaviour - keeping emptyToBottom for backwards compatibility
+							// empty cells behavior - keeping emptyToBottom for backwards compatibility
 							c.empties[colIndex] = (
 								ts.getData( header, configHeaders, 'empty' ) ||
 								c.emptyTo || ( c.emptyToBottom ? 'bottom' : 'top' ) ).toLowerCase();
-							// text strings behaviour in numerical sorts
+							// text strings behavior in numerical sorts
 							c.strings[colIndex] = (
 								ts.getData( header, configHeaders, 'string' ) ||
 								c.stringTo ||
