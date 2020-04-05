@@ -42,6 +42,8 @@ matrix:
     env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   - php: 7.3
     env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
+  - php: 7.4
+    env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   - php: nightly
     env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
 
