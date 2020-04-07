@@ -1,5 +1,4 @@
-(function(factory){if (typeof define === 'function' && define.amd){define(['jquery'], factory);} else if (typeof module === 'object' && typeof module.exports === 'object'){module.exports = factory(require('jquery'));} else {factory(jQuery);}}(function(jQuery){
-/*! TableSorter (FORK) v2.31.1 *//*
+/*! TableSorter (FORK) v2.31.3 *//*
 * Client-side table sorting with ease!
 * @requires jQuery v1.2.6+
 *
@@ -23,7 +22,7 @@
 	'use strict';
 	var ts = $.tablesorter = {
 
-		version : '2.31.1',
+		version : '2.31.3',
 
 		parsers : [],
 		widgets : [],
@@ -90,7 +89,7 @@
 			cssHeaderRow     : '',
 			cssProcessing    : '', // processing icon applied to header during sort/filter
 
-			cssChildRow      : 'tablesorter-childRow', // class name indicating that a row is to be attached to its parent
+			cssChildRow      : 'tablesorter-childRow', // class name indiciating that a row is to be attached to its parent
 			cssInfoBlock     : 'tablesorter-infoOnly', // don't sort tbody with this class name (only one class name allowed here!)
 			cssNoSort        : 'tablesorter-noSort',   // class name added to element inside header; clicking on it won't cause a sort
 			cssIgnoreRow     : 'tablesorter-ignoreRow',// header row to ignore; cells within this row will not be added to c.$headers
@@ -331,7 +330,7 @@
 				}
 			}
 
-			// show processing icon
+			// show processesing icon
 			if ( c.showProcessing ) {
 				$table
 				.unbind( 'sortBegin' + c.namespace + ' sortEnd' + c.namespace )
@@ -697,11 +696,11 @@
 							extractor = ts.getParserById( ts.getData( header, configHeaders, 'extractor' ) );
 							parser = ts.getParserById( ts.getData( header, configHeaders, 'sorter' ) );
 							noParser = ts.getData( header, configHeaders, 'parser' ) === 'false';
-							// empty cells behavior - keeping emptyToBottom for backwards compatibility
+							// empty cells behaviour - keeping emptyToBottom for backwards compatibility
 							c.empties[colIndex] = (
 								ts.getData( header, configHeaders, 'empty' ) ||
 								c.emptyTo || ( c.emptyToBottom ? 'bottom' : 'top' ) ).toLowerCase();
-							// text strings behavior in numerical sorts
+							// text strings behaviour in numerical sorts
 							c.strings[colIndex] = (
 								ts.getData( header, configHeaders, 'string' ) ||
 								c.stringTo ||
@@ -983,7 +982,7 @@
 									// instead of setting duplicate span to empty string, use textExtraction to try to get a value
 									// see http://stackoverflow.com/q/36449711/145346
 									txt = c.duplicateSpan || index === 0 ?
-										val :
+										txt :
 										typeof c.textExtraction !== 'string' ?
 											ts.getElementText( c, cell, cacheIndex + index ) || '' :
 											'';
@@ -2913,4 +2912,3 @@
 	});
 
 })( jQuery );
-return jQuery.tablesorter;}));
