@@ -10,12 +10,15 @@
     "url": "https://github.com/GlotPress/GlotPress-WP/issues"
   },
   "devDependencies": {
+    "@wordpress/env": "^1.1.0",
     "grunt": "^1.1.0",
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-uglify": "^4.0.1",
     "load-grunt-tasks": "^5.1.0"
   },
   "scripts": {
-    "grunt": "grunt"
+    "grunt": "grunt",
+    "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
+    "env:stop": "wp-env stop"
   }
 }
