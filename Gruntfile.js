@@ -23,8 +23,8 @@ module.exports = function( grunt ) {
 				// Custom rename function to support files with multiple dots.
 				rename: function( dst, src ) {
 					return src.replace( '.js', '.min.js' );
-				}
-			}
+				},
+			},
 		},
 		cssmin: {
 			core: {
@@ -40,9 +40,9 @@ module.exports = function( grunt ) {
 				// Custom rename function to support files with multiple dots.
 				rename: function( dst, src ) {
 					return src.replace( '.css', '.min.css' );
-				}
-			}
-		}
+				},
+			},
+		},
 	} );
 
 	grunt.registerTask( 'default', [ 'uglify', 'cssmin' ] );
