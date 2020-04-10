@@ -1,5 +1,4 @@
 /* jshint node:true */
-/* jshint esversion: 6 */
 module.exports = function( grunt ) {
 	var WORKING_DIR = '.';
 
