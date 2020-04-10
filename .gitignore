@@ -3,3 +3,6 @@
 # Composer
 composer.lock
 /vendor/
+
+npm-debug.log
+node_modules

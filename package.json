@@ -1,0 +1,21 @@
+{
+  "name": "glotpress",
+  "version": "2.4.0-alpha",
+  "description": "GlotPress is a collaborative, web-based software translation tool.",
+  "author": "The GlotPress Contributors",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://glotpress.blog/",
+  "repository": "git+https://github.com/GlotPress/GlotPress-WP.git",
+  "bugs": {
+    "url": "https://github.com/GlotPress/GlotPress-WP/issues"
+  },
+  "devDependencies": {
+    "grunt": "^1.1.0",
+    "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "load-grunt-tasks": "^5.1.0"
+  },
+  "scripts": {
+    "grunt": "grunt"
+  }
+}
