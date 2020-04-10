@@ -1,24 +1,26 @@
 module.exports = function( grunt ) {
+	var WORKING_DIR = '.';
+
 	require( 'load-grunt-tasks' )( grunt );
 
 	grunt.initConfig( {
 		uglify: {
 			options: {
-				ASCIIOnly: true,
-				screwIE8: false
+				output: {
+					ascii_only: true
+				}
 			},
 			core: {
 				expand: true,
-				cwd: '.',
+				cwd: WORKING_DIR,
+				dest: WORKING_DIR,
 				src: [
-					'assets/js/*.js',
-					'!assets/js/*.min.js',
-					'assets/js/vendor/*.js',
-					'!assets/js/vendor/*.min.js'
+					'assets/js/**/*.js',
+
+					// Exceptions.
+					'!**/*.min.js',
 				],
-				dest: [
-					'assets/js/'
-				],
+				// Custom rename function to support files with multiple dots.
 				rename: function( dst, src ) {
 					return src.replace( '.js', '.min.js' );
 				}
@@ -27,14 +29,15 @@ module.exports = function( grunt ) {
 		cssmin: {
 			core: {
 				expand: true,
-				cwd: '.',
+				cwd: WORKING_DIR,
+				dest: WORKING_DIR,
 				src: [
 					'assets/css/*.css',
-					'!assets/css/*.min.css'
+
+					// Exceptions.
+					'!**/*.min.css',
 				],
-				dest: [
-					'assets/css/'
-				],
+				// Custom rename function to support files with multiple dots.
 				rename: function( dst, src ) {
 					return src.replace( '.css', '.min.css' );
 				}
