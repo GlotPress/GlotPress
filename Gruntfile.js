@@ -19,13 +19,14 @@ module.exports = function( grunt ) {
 					'assets/js/**/*.js',
 
 					// Exceptions.
-					'!**/*.min.js',
+					'!**/*.min.js'
 				],
+
 				// Custom rename function to support files with multiple dots.
 				rename: function( dst, src ) {
 					return src.replace( '.js', '.min.js' );
-				},
-			},
+				}
+			}
 		},
 		cssmin: {
 			core: {
@@ -36,14 +37,15 @@ module.exports = function( grunt ) {
 					'assets/css/*.css',
 
 					// Exceptions.
-					'!**/*.min.css',
+					'!**/*.min.css'
 				],
+
 				// Custom rename function to support files with multiple dots.
 				rename: function( dst, src ) {
 					return src.replace( '.css', '.min.css' );
-				},
-			},
-		},
+				}
+			}
+		}
 	} );
 
 	grunt.registerTask( 'default', [ 'uglify', 'cssmin' ] );
