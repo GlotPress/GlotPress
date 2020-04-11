@@ -518,7 +518,7 @@ class GP_Translation extends GP_Thing {
 		 * Filters the 'for_translation' query SQL clauses.
 		 *
 		 * @since 2.3.0
-		 * @since 2.4.0 Removed $join_on and added $root_join clause.  Also added $root_translation_set.
+		 * @since 3.0.0 Removed $join_on and added $root_join clause.  Also added $root_translation_set.
 		 *
 		 * @param array              $pieces          {
 		 *     Translation query SQL clauses.
@@ -779,7 +779,7 @@ class GP_Translation extends GP_Thing {
 	 * Executes after saving a translation.
 	 *
 	 * @since 1.0.0
-	 * @since 2.4.0 Added the `$original_before` parameter.
+	 * @since 3.0.0 Added the `$original_before` parameter.
 	 *
 	 * @param GP_Translation $translation_before Translation before the update.
 	 * @return bool
@@ -789,7 +789,7 @@ class GP_Translation extends GP_Thing {
 		 * Fires after a translation was saved.
 		 *
 		 * @since 1.0.0
-		 * @since 2.4.0 Added the `$original_before` parameter.
+		 * @since 3.0.0 Added the `$original_before` parameter.
 		 *
 		 * @param GP_Translation $translation        Translation following the update.
 		 * @param GP_Translation $translation_before Translation before the update.

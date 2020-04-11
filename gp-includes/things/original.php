@@ -479,7 +479,7 @@ class GP_Original extends GP_Thing {
 	 * Executes after saving an original.
 	 *
 	 * @since 2.0.0
-	 * @since 2.4.0 Added the `$original_before` parameter.
+	 * @since 3.0.0 Added the `$original_before` parameter.
 	 *
 	 * @param GP_Original $original_before Original before the update.
 	 * @return bool
@@ -489,7 +489,7 @@ class GP_Original extends GP_Thing {
 		 * Fires after an original is saved.
 		 *
 		 * @since 2.0.0
-		 * @since 2.4.0 Added the `$original_before` parameter.
+		 * @since 3.0.0 Added the `$original_before` parameter.
 		 *
 		 * @param GP_Original $original        Original following the update.
 		 * @param GP_Original $original_before Original before the update.

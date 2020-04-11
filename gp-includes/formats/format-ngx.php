@@ -2,7 +2,7 @@
 /**
  * GlotPress Format NGX Translate class
  *
- * @since 2.4.0
+ * @since 3.0.0
  *
  * @package GlotPress
  */
@@ -10,13 +10,13 @@
 /**
  * Format class used to support NGX Translate JSON file format.
  *
- * @since 2.4.0
+ * @since 3.0.0
  */
 class GP_Format_NGX extends GP_Format {
 	/**
 	 * Name of file format, used in file format dropdowns.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -25,7 +25,7 @@ class GP_Format_NGX extends GP_Format {
 	/**
 	 * File extension of the file format, used to autodetect formats and when creating the output file names.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -34,7 +34,7 @@ class GP_Format_NGX extends GP_Format {
 	/**
 	 * Generates a string the contains the $entries to export in the JSON file format.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @param GP_Project         $project         The project the strings are being exported for, not used
 	 *                                            in this format but part of the scaffold of the parent object.
@@ -78,7 +78,7 @@ class GP_Format_NGX extends GP_Format {
 		/**
 		 * Filter whether the exported JSON should be pretty printed.
 		 *
-		 * @since 2.4.0
+		 * @since 3.0.0
 		 *
 		 * @param bool $pretty_print Whether pretty print should be enabled or not. Default false.
 		 */
@@ -90,7 +90,7 @@ class GP_Format_NGX extends GP_Format {
 	/**
 	 * Reads a set of original strings from a JSON file.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @param string $file_name The name of the uploaded JSON file.
 	 * @return Translations|bool The extracted originals on success, false on failure.
@@ -131,7 +131,7 @@ class GP_Format_NGX extends GP_Format {
 	/**
 	 * Decode a JSON file.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @param string $file_name The name of the JSON file to decode.
 	 * @return decode JSON file as an array.
