@@ -13,6 +13,17 @@ Hi there! Thank you so much for your interest in contributing to GlotPress. We'l
 3. Activate the plugin.
 4. Visit `http://local.sitename/glotpress` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
 
+### Alternative: wp-env
+
+[`wp-env`](https://developer.wordpress.org/block-editor/packages/packages-env/) requires Docker to be installed. There are instructions available for installing Docker on [Windows 10 Pro](https://docs.docker.com/docker-for-windows/install/), [all other versions of Windows](https://docs.docker.com/toolbox/toolbox_install_windows/), [macOS](https://docs.docker.com/docker-for-mac/install/), and [Linux](https://docs.docker.com/v17.12/install/linux/docker-ce/ubuntu/#install-using-the-convenience-script).
+
+1. Clone this git repository.
+2. Run `npm install`.
+3. Run `npm run env:start`.
+4. Visit `http://localhost:8888/glotpress/` in your web browser.
+
+Please check [the official documentation](https://developer.wordpress.org/block-editor/packages/packages-env/) for customizing any settings like port numbers and other available commands.
+
 ## Submitting patches
 
 Whether you want to fix a bug or implement a new feature, the process is pretty much the same:
