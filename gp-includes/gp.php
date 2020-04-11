@@ -95,15 +95,6 @@ class GP {
 	public static $glossary_entry;
 
 	/**
-	 * Model for notes.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @var GP_Note
-	 */
-	public static $notes;
-
-	/**
 	 * Singleton for router.
 	 *
 	 * @since 1.0.0

@@ -221,9 +221,6 @@ class GP_Route_Translation extends GP_Route_Main {
 		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
-		$new_note_url        = gp_url( '/notes/-new' );
-		$edit_note_url       = gp_url( '/notes/-edit' );
-		$delete_note_url     = gp_url( '/notes/-delete' );
 		$bulk_action = gp_url_join( $url, '-bulk' );
 
 		// Add action to use different font for translations
