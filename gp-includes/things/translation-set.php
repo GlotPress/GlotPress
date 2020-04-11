@@ -629,7 +629,7 @@ class GP_Translation_Set extends GP_Thing {
 	/**
 	 * Executes after creating a translation set.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -637,7 +637,7 @@ class GP_Translation_Set extends GP_Thing {
 		/**
 		 * Fires after creating a translation set.
 		 *
-		 * @since 2.4.0
+		 * @since 3.0.0
 		 *
 		 * @param GP_Translation_Set $translation_set The translation set that was created.
 		 */
@@ -649,7 +649,7 @@ class GP_Translation_Set extends GP_Thing {
 	/**
 	 * Executes after saving a translation set.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @param GP_Translation_Set $translation_set_before Translation set before the update.
 	 * @return bool
@@ -658,7 +658,7 @@ class GP_Translation_Set extends GP_Thing {
 		/**
 		 * Fires after saving a translation set.
 		 *
-		 * @since 2.4.0
+		 * @since 3.0.0
 		 *
 		 * @param GP_Translation_Set $translation_set        Translation set following the update.
 		 * @param GP_Translation_Set $translation_set_before Translation set before the update.
@@ -671,7 +671,7 @@ class GP_Translation_Set extends GP_Thing {
 	/**
 	 * Executes after deleting a translation set.
 	 *
-	 * @since 2.4.0
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -679,7 +679,7 @@ class GP_Translation_Set extends GP_Thing {
 		/**
 		 * Fires after deleting a translation set.
 		 *
-		 * @since 2.4.0
+		 * @since 3.0.0
 		 *
 		 * @param GP_Translation_Set $translation_set The translation set that was deleted.
 		 */

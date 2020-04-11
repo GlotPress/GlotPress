@@ -136,7 +136,7 @@ class GP_Project extends GP_Thing {
 	 * Executes after saving a project.
 	 *
 	 * @since 1.0.0
-	 * @since 2.4.0 Added the `$project_before` parameter.
+	 * @since 3.0.0 Added the `$project_before` parameter.
 	 *
 	 * @param GP_Project $project_before Project before the update.
 	 * @return bool
@@ -146,7 +146,7 @@ class GP_Project extends GP_Thing {
 		 * Fires after saving a project.
 		 *
 		 * @since 1.0.0
-		 * @since 2.4.0 Added the `$project_before` parameter.
+		 * @since 3.0.0 Added the `$project_before` parameter.
 		 *
 		 * @param GP_Project $project        Project following the update.
 		 * @param GP_Project $project_before Project before the update.
