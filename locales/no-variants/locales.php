@@ -1724,6 +1724,14 @@ class GP_Locales {
 		$nqo->slug = 'nqo';
 		$nqo->text_direction = 'rtl';
 
+		$nso = new GP_Locale();
+		$nso->english_name = 'Northern Sotho';
+		$nso->native_name = 'Sesotho sa Leboa';
+		$nso->lang_code_iso_639_2 = 'nso';
+		$nso->lang_code_iso_639_3 = 'nso';
+		$nso->country_code = 'za';
+		$nso->slug = 'nso';
+
 		$oci = new GP_Locale();
 		$oci->english_name = 'Occitan';
 		$oci->native_name = 'Occitan';
