@@ -1773,14 +1773,23 @@ class GP_Locales {
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
 
-		$pap = new GP_Locale();
-		$pap->english_name = 'Papiamento';
-		$pap->native_name = 'Papiamentu';
-		$pap->lang_code_iso_639_2 = 'pap';
-		$pap->lang_code_iso_639_3 = 'pap';
-		$pap->country_code = 'cw';
-		$pap->wp_locale = 'pap';
-		$pap->slug = 'pap';
+		$pap_cw = new GP_Locale();
+		$pap_cw->english_name = 'Papiamento (Curaçao and Bonaire)';
+		$pap_cw->native_name = 'Papiamentu';
+		$pap_cw->lang_code_iso_639_2 = 'pap';
+		$pap_cw->lang_code_iso_639_3 = 'pap';
+		$pap_cw->country_code = 'cw';
+		$pap_cw->wp_locale = 'pap_CW';
+		$pap_cw->slug = 'pap-cw';
+
+		$pap_aw = new GP_Locale();
+		$pap_aw->english_name = 'Papiamento (Aruba)';
+		$pap_aw->native_name = 'Papiamento';
+		$pap_aw->lang_code_iso_639_2 = 'pap';
+		$pap_aw->lang_code_iso_639_3 = 'pap';
+		$pap_aw->country_code = 'aw';
+		$pap_aw->wp_locale = 'pap_AW';
+		$pap_aw->slug = 'pap-aw';
 
 		$pirate = new GP_Locale();
 		$pirate->english_name = 'English (Pirate)';
