@@ -1862,7 +1862,7 @@ class GP_Locales {
 		$pcd->wp_locale = 'pcd';
 		$pcd->slug = 'pcd';
 		$pcd->nplurals = 2;
-		$pcd->plural_expression = '(n > 1)';
+		$pcd->plural_expression = 'n > 1';
 
 		$pirate = new GP_Locale();
 		$pirate->english_name = 'English (Pirate)';
@@ -2452,7 +2452,6 @@ class GP_Locales {
 		$wol->slug = 'wol';
 		$wol->nplurals = 1;
 		$wol->plural_expression = '0';
-		$wol->google_code = 'wo';
 
 		$xho = new GP_Locale();
 		$xho->english_name = 'Xhosa';
