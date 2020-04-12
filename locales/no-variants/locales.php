@@ -559,6 +559,17 @@ class GP_Locales {
 		$de_ch->slug = 'de-ch';
 		$de_ch->google_code = 'de';
 
+		$dsb = new GP_Locale();
+		$dsb->english_name = 'Lower Sorbian';
+		$dsb->native_name = 'Dolnoserbšćina';
+		$dsb->lang_code_iso_639_2 = 'dsb';
+		$dsb->lang_code_iso_639_3 = 'dsb';
+		$dsb->country_code = 'de';
+		$dsb->wp_locale = 'dsb';
+		$dsb->slug = 'dsb';
+		$dsb->nplurals = 4;
+		$dsb->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
+
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
 		$dv->native_name = 'ދިވެހި';
@@ -1809,6 +1820,16 @@ class GP_Locales {
 		$pap_aw->wp_locale = 'pap_AW';
 		$pap_aw->slug = 'pap-aw';
 
+		$pcd = new GP_Locale();
+		$pcd->english_name = 'Picard';
+		$pcd->native_name = 'Ch’ti';
+		$pcd->lang_code_iso_639_3 = 'pcd';
+		$pcd->country_code = 'fr';
+		$pcd->wp_locale = 'pcd';
+		$pcd->slug = 'pcd';
+		$pcd->nplurals = 2;
+		$pcd->plural_expression = 'n > 1';
+
 		$pirate = new GP_Locale();
 		$pirate->english_name = 'English (Pirate)';
 		$pirate->native_name = 'English (Pirate)';
@@ -2383,6 +2404,18 @@ class GP_Locales {
 		$wa->country_code = 'be';
 		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
+
+		$wol = new GP_Locale();
+		$wol->english_name = 'Wolof';
+		$wol->native_name = 'Wolof';
+		$wol->lang_code_iso_639_1 = 'wo';
+		$wol->lang_code_iso_639_2 = 'wol';
+		$wol->lang_code_iso_639_3 = 'wol';
+		$wol->country_code = 'sn';
+		$wol->wp_locale = 'wol';
+		$wol->slug = 'wol';
+		$wol->nplurals = 1;
+		$wol->plural_expression = '0';
 
 		$xho = new GP_Locale();
 		$xho->english_name = 'Xhosa';
