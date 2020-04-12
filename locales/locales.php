@@ -1577,6 +1577,15 @@ class GP_Locales {
 		$lv->google_code = 'lv';
 		$lv->facebook_locale = 'lv_LV';
 
+		$mai = new GP_Locale();
+		$mai->english_name = 'Maithili';
+		$mai->native_name = 'मैथिली';
+		$mai->lang_code_iso_639_2 = 'mai';
+		$mai->lang_code_iso_639_3 = 'mai';
+		$mai->country_code = 'in';
+		$mai->wp_locale = 'mai';
+		$mai->slug = 'mai';
+
 		$me = new GP_Locale();
 		$me->english_name = 'Montenegrin';
 		$me->native_name = 'Crnogorski jezik';
