@@ -1024,6 +1024,16 @@ class GP_Locales {
 		$frp->nplurals = 2;
 		$frp->plural_expression = 'n > 1';
 
+		$ful = new GP_Locale();
+		$ful->english_name = 'Fula';
+		$ful->native_name = 'Fulfulde';
+		$ful->lang_code_iso_639_1 = 'ff';
+		$ful->lang_code_iso_639_2 = 'ful';
+		$ful->lang_code_iso_639_3 = 'ful';
+		$ful->country_code = 'ng';
+		$ful->slug = 'ful';
+		$ful->facebook_locale = 'ff_NG';
+
 		$fur = new GP_Locale();
 		$fur->english_name = 'Friulian';
 		$fur->native_name = 'Friulian';
