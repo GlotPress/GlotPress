@@ -35,7 +35,7 @@ class GP_Permission extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Permission object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		foreach ( $this->field_names as $field_name ) {
 			if ( isset( $args[ $field_name ] ) ) {

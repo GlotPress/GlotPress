@@ -58,20 +58,20 @@ class GP_Original extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Original object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
-
 		foreach ( array( 'plural', 'context', 'references', 'comment' ) as $field ) {
 			if ( isset( $args['parent_project_id'] ) ) {
 				$args[ $field ] = $this->force_false_to_null( $args[ $field ] );
 			}
 		}
 
-		if ( isset( $args['priority'] ) && !is_numeric( $args['priority'] ) ) {
+		if ( isset( $args['priority'] ) && ! is_numeric( $args['priority'] ) ) {
 			$args['priority'] = $this->priority_by_name( $args['priority'] );
 			if ( is_null( $args['priority'] ) ) {
 				unset( $args['priority'] );
 			}
 		}
+
+		$args = parent::normalize_fields( $args );
 
 		return $args;
 	}

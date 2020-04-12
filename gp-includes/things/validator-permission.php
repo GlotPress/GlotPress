@@ -39,8 +39,13 @@ class GP_Validator_Permission extends GP_Permission {
 		$rules->set_slug_should_not_be( 'empty' );
 	}
 
-	public function set_fields( $db_object ) {
-		parent::set_fields( $db_object );
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		parent::set_fields( $fields );
 		if ( $this->object_id ) {
 			list( $this->project_id, $this->locale_slug, $this->set_slug ) = $this->project_id_locale_slug_set_slug( $this->object_id );
 		}

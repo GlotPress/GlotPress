@@ -188,8 +188,6 @@ class GP_Project extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Project object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
-
 		if ( isset( $args['parent_project_id'] ) ) {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
@@ -215,6 +213,8 @@ class GP_Project extends GP_Thing {
 				$args['active'] = 0;
 			}
 		}
+
+		$args = parent::normalize_fields( $args );
 
 		return $args;
 	}
