@@ -1577,6 +1577,15 @@ class GP_Locales {
 		$lv->google_code = 'lv';
 		$lv->facebook_locale = 'lv_LV';
 
+		$mai = new GP_Locale();
+		$mai->english_name = 'Maithili';
+		$mai->native_name = 'मैथिली';
+		$mai->lang_code_iso_639_2 = 'mai';
+		$mai->lang_code_iso_639_3 = 'mai';
+		$mai->country_code = 'in';
+		$mai->wp_locale = 'mai';
+		$mai->slug = 'mai';
+
 		$me = new GP_Locale();
 		$me->english_name = 'Montenegrin';
 		$me->native_name = 'Crnogorski jezik';
@@ -1626,16 +1635,7 @@ class GP_Locales {
 		$mk->plural_expression = 'n==1 || n%10==1 ? 0 : 1';
 		$mk->google_code = 'mk';
 		$mk->facebook_locale = 'mk_MK';
-		
-		$ml = new GP_Locale();
-		$ml->english_name = 'Maithili';
-		$ml->native_name = 'मैथिली';
-		$ml->lang_code_iso_639_2 = 'mai';
-		$ml->lang_code_iso_639_3 = 'mai';
-		$ml->country_code = 'in';
-		$ml->wp_locale = 'mai_IN';
-		$ml->slug = 'mai-in';
-		
+
 		$ml = new GP_Locale();
 		$ml->english_name = 'Malayalam';
 		$ml->native_name = 'മലയാളം';
