@@ -9,9 +9,8 @@ Hi there! Thank you so much for your interest in contributing to GlotPress. We'l
 ## Setting up
 
 1. Clone this git repository on your development system. This is commonly inside your WordPress development site in the `wp-content/plugins/` directory.
-2. Install [PHPUnit](https://phpunit.de/). We recommend using version 4.5, as that's the most current version that is compatible with all PHP versions we check against, and thus Travis is using that version.
-3. Activate the plugin.
-4. Visit `http://local.sitename/glotpress` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
+2. Activate the plugin.
+3. Visit `http://local.sitename/glotpress` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
 
 ### Alternative: wp-env
 
@@ -62,15 +61,15 @@ There are two types of automated tests:
 
 ### Unit tests
 
-You can run PHPUnit on Unix or Windows, however at this time instructions and scripts are only provided for Unix. The unit test files are in the `tests/` directory.
+You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix.  GlotPress tests are based on the WordPress test suite which is currently only compatible with PHPUnit up to 7.x. Please use the latest PHPUnit version from the 7.x branch.
 
-To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
+The unit test files are in the `tests/` directory. To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
 
 ```
 $ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassword ] [ -h dbhost ] [ -x dbprefix ] [ -w wpversion ] [ -D (drop-db) ] [ -c coverage_file ] [ -f phpunit_filter ]
 ```
 
-To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/manual/4.5/en/index.html) and existing files for how to write new tests.
+To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/documentation.html) and existing files for how to write new tests.
 
 ### Scrutinizer
 
