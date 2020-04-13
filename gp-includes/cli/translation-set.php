@@ -81,7 +81,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			$valid_priorities = GP::$original->get_static( 'priorities' );
 
 			foreach ( $priorities as $priority ) {
-				$key = array_search( $priority, $valid_priorities );
+				$key = array_search( $priority, $valid_priorities, true );
 				if ( false === $key ) {
 					WP_CLI::warning( sprintf( 'Invalid priority %s', $priority ) );
 				} else {

@@ -284,7 +284,7 @@ function gp_error_log_dump( $value ) {
 }
 
 function gp_object_has_var( $object, $var_name ) {
-	return in_array( $var_name, array_keys( get_object_vars( $object ) ) );
+	return in_array( $var_name, array_keys( get_object_vars( $object ) ), true );
 }
 
 /**

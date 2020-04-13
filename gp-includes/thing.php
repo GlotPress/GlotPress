@@ -466,12 +466,12 @@ class GP_Thing {
 			unset( $args[ $attribute ] );
 		}
 		foreach ( $args as $key => $value ) {
-			if ( ! in_array( $key, $this->field_names ) ) {
+			if ( ! in_array( $key, $this->field_names, true ) ) {
 				unset( $args[ $key ] );
 			}
 		}
 
-		if ( in_array( 'date_modified', $this->field_names ) ) {
+		if ( in_array( 'date_modified', $this->field_names, true ) ) {
 			$args['date_modified'] = $this->now_in_mysql_format();
 		}
 
@@ -484,7 +484,7 @@ class GP_Thing {
 	}
 
 	public function prepare_fields_for_create( $args ) {
-		if ( in_array( 'date_added', $this->field_names ) ) {
+		if ( in_array( 'date_added', $this->field_names, true ) ) {
 			$args['date_added'] = $this->now_in_mysql_format();
 		}
 		return $args;
