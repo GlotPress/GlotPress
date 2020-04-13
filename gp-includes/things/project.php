@@ -192,7 +192,7 @@ class GP_Project extends GP_Thing {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
 
-		if ( isset( $args['slug'] ) && !$args['slug'] ) {
+		if ( isset( $args['slug'] ) && ! $args['slug'] ) {
 			$args['slug'] = $args['name'];
 		}
 
@@ -200,7 +200,7 @@ class GP_Project extends GP_Thing {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
-		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] ) ) {
+		if ( ( isset( $args['path']) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {
 			unset( $args['path'] );
 		}
 
@@ -209,7 +209,7 @@ class GP_Project extends GP_Thing {
 				$args['active'] = 1;
 			}
 
-			if ( !$args['active'] ) {
+			if ( ! $args['active'] ) {
 				$args['active'] = 0;
 			}
 		}
@@ -226,11 +226,11 @@ class GP_Project extends GP_Thing {
 	 */
 	public function update_path() {
 		global $wpdb;
-		$old_path = isset( $this->path )? $this->path : '';
+		$old_path = isset( $this->path ) ? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project )
 			$path = gp_url_join( $parent_project->path, $this->slug );
-		elseif ( !$wpdb->last_error )
+		elseif ( ! $wpdb->last_error )
 			$path = $this->slug;
 		else
 			return null;

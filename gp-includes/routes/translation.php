@@ -81,7 +81,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		if ( !is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
+		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
 			return;
 		}
@@ -410,11 +410,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		$action = $bulk['action'];
 
 		$ok = $error = 0;
-		$new_status = 'approve' == $action? 'current' : 'rejected';
+		$new_status = 'approve' == $action ? 'current' : 'rejected';
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
 			$translation = GP::$translation->get( $translation_id );
-			if ( !$translation ) continue;
+			if ( ! $translation ) continue;
 			if ( $translation->set_status( $new_status ) )
 				$ok++;
 			else
@@ -422,7 +422,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = 'approve' == $action?
+			$this->notices[] = 'approve' == $action ?
 					sprintf(
 						/* translators: %d: Translations count. */
 						_n( '%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ),
@@ -435,7 +435,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					);
 		} else {
 			if ( $ok > 0 ) {
-				$message = 'approve' == $action?
+				$message = 'approve' == $action ?
 						sprintf(
 							/* translators: %s: Translations count. */
 							_n( 'Error with approving %s translation.', 'Error with approving %s translations.', $error, 'glotpress' ),
@@ -447,7 +447,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$error
 						);
 				$message .= ' ';
-				$message .= 'approve' == $action?
+				$message .= 'approve' == $action ?
 						sprintf(
 							/* translators: %s: Translations count. */
 							_n( 'The remaining %s translation was approved successfully.', 'The remaining %s translations were approved successfully.', $ok, 'glotpress' ),
@@ -460,7 +460,7 @@ class GP_Route_Translation extends GP_Route_Main {
 						);
 				$this->errors[] = $message;
 			} else {
-				$this->errors[] = 'approve' == $action?
+				$this->errors[] = 'approve' == $action ?
 						sprintf(
 							/* translators: %s: Translations count. */
 							_n( 'Error with approving %s translation.', 'Error with approving all %s translations.', $error, 'glotpress' ),
@@ -670,7 +670,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$warning = array(
 			'project_id' => $project->id,
-			'translation_set' =>$translation_set->id,
+			'translation_set' => $translation_set->id,
 			'translation' => $translation->id,
 			'warning' => gp_post( 'key' ),
 			'user' => get_current_user_id()

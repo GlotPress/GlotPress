@@ -123,7 +123,7 @@ function gp_url_img( $file ) {
  * The URL of the current page
  */
 function gp_url_current() {
-	$protocol      = is_ssl()? 'https://' : 'http://';
+	$protocol      = is_ssl() ? 'https://' : 'http://';
 	$host          = wp_unslash( gp_array_get( $_SERVER, 'HTTP_HOST' ) );
 	$path_and_args = wp_unslash( gp_array_get( $_SERVER, 'REQUEST_URI' ) );
 

@@ -301,7 +301,7 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function for_export( $project, $translation_set, $filters =  null ) {
-		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current_or_untranslated' ) );
+		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
@@ -623,7 +623,7 @@ class GP_Translation extends GP_Thing {
 			}
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
 			$row->extracted_comments = $row->comment;
-			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
+			$row->warnings = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
 
 			// Reduce range by one since we're starting at 0, see GH#516.
@@ -631,7 +631,7 @@ class GP_Translation extends GP_Thing {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
-			$row->row_id = $row->original_id . ( $row->id? "-$row->id" : '' );
+			$row->row_id = $row->original_id . ( $row->id ? "-$row->id" : '' );
 			$translations[] = new Translation_Entry( (array)$row );
 		}
 		unset( $rows );
@@ -641,7 +641,7 @@ class GP_Translation extends GP_Thing {
 	public function set_as_current() {
 		$result = $this->update( array( 'status' => 'old' ),
 		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current' ) )
-		&& 	$this->update( array( 'status' => 'old' ),
+		&& $this->update( array( 'status' => 'old' ),
 		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting' ) )
 		&& $this->update( array( 'status' => 'old' ),
 		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy' ) )

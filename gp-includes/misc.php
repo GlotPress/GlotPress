@@ -63,11 +63,11 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[$key] )? $array[$key] : $default;
+	return isset( $array[$key] ) ? $array[$key] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
-	return defined( $name )? constant( $name ) : $default;
+	return defined( $name ) ? constant( $name ) : $default;
 }
 
 function gp_const_set( $name, $value ) {
@@ -80,7 +80,7 @@ function gp_const_set( $name, $value ) {
 
 
 function gp_member_get( $object, $key, $default = '' ) {
-	return isset( $object->$key )? $object->$key : $default;
+	return isset( $object->$key ) ? $object->$key : $default;
 }
 
 /**
@@ -92,7 +92,7 @@ function gp_member_get( $object, $key, $default = '' ) {
 function gp_array_flatten( $array ) {
 	$res = array();
 	foreach ( $array as $value ) {
-		$res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
+		$res = array_merge( $res, is_array( $value ) ? gp_array_flatten( $value ) : array( $value ) );
 	}
 	return $res;
 }
@@ -203,7 +203,7 @@ function gp_populate_notices() {
 function gp_array_zip() {
 	$args = func_get_args();
 
-	if ( !is_array( $args ) ) {
+	if ( ! is_array( $args ) ) {
 		return false;
 	}
 
@@ -214,7 +214,7 @@ function gp_array_zip() {
 	$depth = 0;
 
 	foreach ( $args as &$array ) {
-		if ( !is_array( $array) ) {
+		if ( ! is_array( $array) ) {
 			return false;
 		}
 
@@ -260,7 +260,7 @@ function gp_array_any( $callback, $array, $arg = null ) {
 
 function gp_array_all( $callback, $array ) {
 	foreach ( $array as $item ) {
-		if ( !$callback( $item ) ) {
+		if ( ! $callback( $item ) ) {
 			return false;
 		}
 	}
@@ -467,7 +467,7 @@ function gp_set_cookie() {
 function gp_gmt_strtotime( $string ) {
 	if ( is_numeric($string) )
 		return $string;
-	if ( !is_string($string) )
+	if ( ! is_string($string) )
 		return -1;
 
 	if ( stristr($string, 'utc') || stristr($string, 'gmt') || stristr($string, '+0000') )

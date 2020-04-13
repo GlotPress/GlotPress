@@ -13,7 +13,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	do_action_ref_array( 'gp_pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
 	$locations = array( GP_TMPL_PATH );
-	if ( !is_null( $template_path ) ) {
+	if ( ! is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
 
@@ -129,7 +129,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v )
-		if ( $k[0] != '_' && $k != 'GLOBALS' && !gp_startswith( $k, 'HTTP' ) && !gp_startswith( $k, 'PHP' ) )
+		if ( $k[0] != '_' && $k != 'GLOBALS' && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
 			$clean_args[$k] = $v;
 	return $clean_args;
 }
@@ -223,7 +223,7 @@ function gp_project_links_from_root( $leaf_project ) {
 	}
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
-	$links[] = empty( $path_from_root)? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
+	$links[] = empty( $path_from_root) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
 		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}
@@ -273,7 +273,7 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
 	$first = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
-	$page = intval( $page )? intval( $page ) : 1;
+	$page = intval( $page ) ? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
 	if ( $page > $pages ) return '';
 
@@ -343,7 +343,7 @@ function gp_html_attributes( $attrs ) {
 }
 
 function gp_attrs_add_class( $attrs, $class_name ) {
-	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
+	$attrs['class'] = isset( $attrs['class'] ) ? $attrs['class'] . ' ' . $class_name : $class_name;
 	return $attrs;
 }
 
@@ -439,7 +439,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	foreach ( $top as $top_id ) {
 		$stack = array( $top_id );
 
-		while ( !empty( $stack ) ) {
+		while ( ! empty( $stack ) ) {
 			$id = array_pop( $stack );
 
 			if ( in_array( $id, $exclude ) ) {

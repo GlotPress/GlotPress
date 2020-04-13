@@ -49,9 +49,9 @@ class GP_Route {
 	public function after_request() {
 		// we can't unregister a shutdown function
 		// this check prevents this method from being run twice
-		if ( !$this->request_running ) return;
+		if ( ! $this->request_running ) return;
 		// set errors and notices
-		if ( !headers_sent() ) {
+		if ( ! headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
 
@@ -90,7 +90,7 @@ class GP_Route {
 	 */
 	public function invalid_and_redirect( $thing, $url = null ) {
 		$valid = $this->validate( $thing );
-		if ( !$valid ) {
+		if ( ! $valid ) {
 			$this->redirect( $url );
 			return true;
 		}
