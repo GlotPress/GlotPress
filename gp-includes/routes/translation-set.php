@@ -168,7 +168,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			$this->die_with_404( array( 'title' => "Translation set wasn't found" ) );
 			return;
 		}
-		$project =  GP::$project->get( $set->project_id );
+		$project = GP::$project->get( $set->project_id );
 		if ( ! $project ) {
 			$this->die_with_404( array( 'title' => "The project associated with this translation set wasn't found" ) );
 			return;
