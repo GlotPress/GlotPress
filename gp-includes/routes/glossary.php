@@ -28,7 +28,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$project = GP::$project->get( $translation_set->project_id );
 
 		if ( GP::$glossary->by_set_id( $glossary->translation_set_id ) ) {
-			$glossary_url = gp_url_join( gp_url_project( $project, array( $translation_set->locale, $translation_set->slug ) ), array('glossary') );
+			$glossary_url = gp_url_join( gp_url_project( $project, array( $translation_set->locale, $translation_set->slug ) ), array( 'glossary') );
 			$this->redirect_with_error( __( 'The glossary for this translation set already exists.', 'glotpress' ), $glossary_url );
 			return;
 		}
