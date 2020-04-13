@@ -1,5 +1,11 @@
 <?php
-gp_title( sprintf( __( 'Projects translated to %s &lt; GlotPress', 'glotpress' ),  esc_html( $locale->english_name ) ) );
+gp_title(
+	sprintf(
+		/* translators: %s: Locale english name. */
+		__( 'Projects translated to %s &lt; GlotPress', 'glotpress' ),
+		esc_html( $locale->english_name )
+	)
+);
 
 $breadcrumb = array();
 $breadcrumb[] = gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) );
@@ -13,7 +19,14 @@ gp_breadcrumb( $breadcrumb );
 gp_tmpl_header();
 ?>
 
-	<h2><?php printf( __( 'Active Projects translated to %s', 'glotpress' ), esc_html( $locale->english_name ) ); ?>
+	<h2>
+		<?php
+		printf(
+			/* translators: %s: Locale english name. */
+			esc_html__( 'Active Projects translated to %s', 'glotpress' ),
+			esc_html( $locale->english_name )
+		);
+		?>
 		<?php if ( $locale_glossary ) : ?>
 			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
 		<?php elseif ( $can_create_locale_glossary ) : ?>
@@ -53,8 +66,24 @@ if ( empty( $projects_data ) ) {
 				<th class="sub-project" rowspan="<?php echo count( $data['sets'] );  ?>">
 					<?php if (count($sub_projects)>1  ) echo esc_html( $projects[$sub_project_id]->name ); ?>
 					<div class="stats">
-						<div class="total-strings"><?php printf( __( '%d strings', 'glotpress' ), $data['totals']->all_count ); ?></div>
-						<div class="percent-completed"><?php printf( __( '%d%% translated', 'glotpress' ), $data['totals']->current_count ? floor( absint($data['totals']->current_count ) / absint( $data['totals']->all_count ) * 100 ) : 0 ); ?></div>
+						<div class="total-strings">
+							<?php
+							printf(
+								/* translators: %d: Count number. */
+								__( '%d strings', 'glotpress' ),
+								esc_html( $data['totals']->all_count )
+							);
+							?>
+						</div>
+						<div class="percent-completed">
+							<?php
+							printf(
+								/* translators: %d: Locale english name. */
+								__( '%d%% translated', 'glotpress' ),
+								$data['totals']->current_count ? floor( absint( $data['totals']->current_count ) / absint( $data['totals']->all_count ) * 100 ) : 0
+							);
+							?>
+						</div>
 					</div>
 				</th>
 				<?php foreach ( $data['sets'] as $set_id => $set_data ) : ?>

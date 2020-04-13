@@ -1,5 +1,12 @@
 <?php
-gp_title( sprintf( __( 'Translations &lt; %s &lt; %s &lt; GlotPress', 'glotpress' ), $translation_set->name, $project->name ) );
+gp_title(
+	sprintf(
+		/* translators: 1: Translation set name. 2: Project name. */
+		__( 'Translations &lt; %1$s &lt; %2$s &lt; GlotPress', 'glotpress' ),
+		$translation_set->name,
+		$project->name
+	)
+);
 gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $translation_set->name ),

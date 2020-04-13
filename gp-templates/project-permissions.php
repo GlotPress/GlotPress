@@ -1,5 +1,11 @@
 <?php
-gp_title( sprintf( __( 'Permissions &lt; %s &lt; GlotPress', 'glotpress' ), $project->name ) );
+gp_title(
+	sprintf(
+		/* translators: %s: Project name. */
+		__( 'Permissions &lt; %s &lt; GlotPress', 'glotpress' ),
+		$project->name
+	)
+);
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
