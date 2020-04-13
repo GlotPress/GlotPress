@@ -30,7 +30,12 @@ class GP_Original extends GP_Thing {
 	public $priority;
 	public $date_added;
 
-	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
+	static $priorities = array(
+		'-2' => 'hidden',
+		'-1' => 'low',
+		'0'  => 'normal',
+		'1'  => 'high',
+	);
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
@@ -128,7 +133,11 @@ class GP_Original extends GP_Thing {
 
 		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
 		if ( ! is_array( $counts ) ) {
-			$counts = array( 'total' => 0, 'hidden' => 0, 'public' => 0 );
+			$counts = array(
+				'total'  => 0,
+				'hidden' => 0,
+				'public' => 0,
+			);
 		}
 
 		// Make sure counts are integers.

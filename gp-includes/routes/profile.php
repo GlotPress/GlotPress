@@ -153,7 +153,10 @@ class GP_Route_Profile extends GP_Route_Main {
 	 * @return array Array of permissions
 	 */
 	private function get_permissions( $user ) {
-		$permissions = GP::$permission->find_many_no_map( array( 'user_id' => $user->ID, 'action' => 'approve' ) );
+		$permissions = GP::$permission->find_many_no_map( array(
+			'user_id' => $user->ID,
+			'action'  => 'approve',
+		) );
 
 		foreach ( $permissions as $key => &$permission ) {
 			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );

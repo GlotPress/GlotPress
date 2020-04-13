@@ -459,7 +459,12 @@ class GP_Route_Project extends GP_Route_Main {
 		$changes = $project->set_difference_from( $other_project );
 
 		foreach ( $changes['added'] as $to_add ) {
-			if ( ! GP::$translation_set->create( array('project_id' => $project->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug) ) ) {
+			if ( ! GP::$translation_set->create( array(
+				'project_id' => $project->id,
+				'name'       => $to_add->name,
+				'locale'     => $to_add->locale,
+				'slug'       => $to_add->slug,
+			) ) ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set name. */
 					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),

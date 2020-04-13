@@ -94,7 +94,12 @@ class GP_Validation_Rules {
 			foreach ( self::$$suffices as $suffix ) {
 				foreach ( $this->field_names as $field_name ) {
 					if ( "{$field_name}_{$suffix}" == $name ) {
-						$this->rules[ $field_name ][] = array( 'field' => $field_name, 'rule' => $args[0], 'kind' => $kind, 'args' => array_slice( $args, 1 ) );
+						$this->rules[ $field_name ][] = array(
+							'field' => $field_name,
+							'rule'  => $args[0],
+							'kind'  => $kind,
+							'args'  => array_slice( $args, 1 ),
+						);
 						return true;
 					}
 				}
@@ -182,7 +187,10 @@ class GP_Validators {
 
 	static public function register( $key, $callback, $negative_callback = null ) {
 		// TODO: add data for easier generation of error messages
-		self::$callbacks[ $key ] = array( 'positive' => $callback, 'negative' => $negative_callback );
+		self::$callbacks[ $key ] = array(
+			'positive' => $callback,
+			'negative' => $negative_callback,
+		);
 	}
 
 	static public function unregister( $key ) {

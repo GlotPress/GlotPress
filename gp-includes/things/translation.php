@@ -337,7 +337,10 @@ class GP_Translation extends GP_Thing {
 		}
 
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
-		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC' );
+		$sort_hows = array(
+			'asc'  => 'ASC',
+			'desc' => 'DESC',
+		);
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
@@ -640,12 +643,27 @@ class GP_Translation extends GP_Thing {
 
 	public function set_as_current() {
 		$result = $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current' ) )
+		array(
+			'original_id'        => $this->original_id,
+			'translation_set_id' => $this->translation_set_id,
+			'status'             => 'current',
+		) )
 		&& $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting' ) )
+		array(
+			'original_id'        => $this->original_id,
+			'translation_set_id' => $this->translation_set_id,
+			'status'             => 'waiting',
+		) )
 		&& $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy' ) )
-		&& $this->save( array( 'status' => 'current', 'user_id_last_modified' => get_current_user_id() ) );
+		array(
+			'original_id'        => $this->original_id,
+			'translation_set_id' => $this->translation_set_id,
+			'status'             => 'fuzzy'M
+		) )
+		&& $this->save( array(
+			'status'                => 'current',
+			'user_id_last_modified' => get_current_user_id(),
+		) );
 
 		return $result;
 	}
@@ -721,7 +739,10 @@ class GP_Translation extends GP_Thing {
 		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} else {
-			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );
+			$updated = $this->save( array(
+				'user_id_last_modified' => get_current_user_id(),
+				'status'                => $status,
+			) );
 		}
 
 		if ( $updated ) {

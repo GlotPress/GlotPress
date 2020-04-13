@@ -112,7 +112,10 @@ class GP_Permission extends GP_Thing {
 		}
 
 		$verdict =
-			$this->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
+			$this->find_one( array(
+				'action'  => 'admin',
+				'user_id' => $user_id,
+			) ) ||
 			$this->find_one( $args ) ||
 			$this->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 

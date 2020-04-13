@@ -135,7 +135,10 @@ function gp_tmpl_filter_args( $args ) {
 }
 
 function gp_tmpl_404( $args = array() ) {
-	gp_tmpl_load( '404', $args + array('title' => __('Not Found', 'glotpress' ), 'http_status' => 404 ) );
+	gp_tmpl_load( '404', $args + array(
+		'title'       => __('Not Found', 'glotpress' ),
+		'http_status' => 404,
+	) );
 	exit();
 }
 

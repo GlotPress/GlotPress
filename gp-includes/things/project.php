@@ -355,7 +355,12 @@ class GP_Project extends GP_Thing {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
 		foreach ( $sets as $to_add ) {
-			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
+			$new_set = GP::$translation_set->create( array(
+				'project_id' => $this->id,
+				'name'       => $to_add->name,
+				'locale'     => $to_add->locale,
+				'slug'       => $to_add->slug,
+			) );
 			if ( ! $new_set  ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set. */
