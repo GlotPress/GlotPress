@@ -13,7 +13,7 @@ gp_breadcrumb( array(
 ) );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
 wp_localize_script( 'gp-translations-page', '$gp_translations_options', array(
-	'sort' => __( 'Sort', 'glotpress' ),
+	'sort'   => __( 'Sort', 'glotpress' ),
 	'filter' => __( 'Filter', 'glotpress' ),
 ) );
 
