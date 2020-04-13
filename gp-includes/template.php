@@ -59,11 +59,11 @@ function gp_tmpl_get_output() {
 	return $contents;
 }
 
-function gp_tmpl_header( $args = array( ) ) {
+function gp_tmpl_header( $args = array() ) {
 	gp_tmpl_load( 'header', $args );
 }
 
-function gp_tmpl_footer( $args = array( ) ) {
+function gp_tmpl_footer( $args = array() ) {
 	gp_tmpl_load( 'footer', $args );
 }
 
