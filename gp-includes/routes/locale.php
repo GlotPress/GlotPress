@@ -58,7 +58,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			}
 
 			// We only want to list active projects
-			if ( ! isset( $set_project->active ) || $set_project->active == false ) {
+			if ( ! isset( $set_project->active ) || false == $set_project->active ) {
 				continue;
 			}
 

@@ -452,7 +452,7 @@ function gp_set_cookie() {
 	 * }
 	 */
 	$args = apply_filters( 'gp_set_cookie', $args );
-	if ( $args === false ) return;
+	if ( false === $args ) return;
 	call_user_func_array( 'setcookie', $args );
 }
 

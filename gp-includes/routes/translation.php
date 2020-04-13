@@ -712,7 +712,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	private function can_approve_translation_or_forbidden( $translation ) {
-		$can_reject_self = (get_current_user_id() == $translation->user_id && $translation->status == "waiting");
+		$can_reject_self = ( get_current_user_id() == $translation->user_id && 'waiting' == $translation->status );
 		if ( $can_reject_self ) {
 			return;
 		}

@@ -298,7 +298,7 @@ class GP_Thing {
 		$args = $this->prepare_fields_for_create( $args );
 		$field_formats = $this->get_db_field_formats( $args );
 		$res = $wpdb->insert( $this->table, $args, $field_formats );
-		if ( $res === false ) return false;
+		if ( false === $res ) return false;
 		$class = $this->class;
 		$inserted = new $class( $args );
 		$inserted->id = $wpdb->insert_id;

@@ -251,7 +251,7 @@ class GP_Original extends GP_Thing {
 
 		// Mark missing strings as possible removals.
 		foreach ( $originals_by_key as $key => $value ) {
-			if ( $value->status != '-obsolete' && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
+			if ( '-obsolete' != $value->status && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
 				$possibly_dropped[ $key ] = $value;
 			}
 		}

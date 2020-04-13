@@ -318,7 +318,7 @@ class GP_Route {
 			$this->loaded_template = $template;
 		}
 		$this->set_notices_and_errors();
-		if ( $this->api && $honor_api !== false && 'no-api' !== $honor_api ) {
+		if ( $this->api && false !== $honor_api && 'no-api' !== $honor_api ) {
 			$template = $template.'.api';
 			$this->header('Content-Type: application/json');
 		} else {

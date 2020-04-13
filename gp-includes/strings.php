@@ -8,7 +8,7 @@ function gp_startswith( $haystack, $needle ) {
 }
 
 function gp_endswith( $haystack, $needle ) {
-	return $needle === substr( $haystack, -strlen( $needle ) );
+	return substr( $haystack, -strlen( $needle ) ) === $needle;
 }
 
 function gp_in( $needle, $haystack ) {
@@ -180,11 +180,11 @@ function gp_string_similarity( $str1, $str2 ) {
 */
 function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
-	if ( $length1 == 0 ) {
+	if ( 0 == $length1 ) {
 		return $length2;
 	}
 
-	if ( $length2 == 0 ) {
+	if ( 0 == $length2 ) {
 		return $length1;
 	}
 
