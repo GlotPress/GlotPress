@@ -91,6 +91,22 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( array( $root ), $root->path_to_root() );
 	}
 
+	function test_by_path() {
+		$root = $this->factory->project->create( array( 'name' => 'root' ) );
+		$sub = $this->factory->project->create( array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
+		$this->assertEquals( $root->id, GP::$project->by_path( '/root' )->id );
+		$this->assertEquals( $sub->id, GP::$project->by_path( '/root/sub/' )->id );
+	}
+
+	function test_by_path_with_emoji() {
+		$emoji_root = $this->factory->project->create( array( 'name' => '😀' ) );
+		$emoji_sub = $this->factory->project->create( array( 'name' => '🙂', 'parent_project_id' => $emoji_root->id ) );
+		$this->assertEquals( $emoji_root->id, GP::$project->by_path( '😀' )->id );
+		$this->assertEquals( $emoji_root->id, GP::$project->by_path( '/%f0%9f%98%80/' )->id );
+		$this->assertEquals( $emoji_sub->id, GP::$project->by_path( '😀/🙂' )->id );
+		$this->assertEquals( $emoji_sub->id, GP::$project->by_path( '/%f0%9f%98%80/%f0%9f%99%82/' )->id );
+	}
+
 	function test_regenerate_paths() {
 		global $wpdb;
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root' ) );
