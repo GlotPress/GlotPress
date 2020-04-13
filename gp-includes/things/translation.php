@@ -221,7 +221,7 @@ class GP_Translation extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Translation object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
 			// Reduce range by one since we're starting at 0, see GH#516.
@@ -288,9 +288,13 @@ class GP_Translation extends GP_Thing {
 		$rules->user_id_last_modified_should_not_be( 'empty_string' );
 	}
 
-
-	public function set_fields( $db_object ) {
-		parent::set_fields( $db_object );
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		parent::set_fields( $fields );
 		if ( $this->warnings ) {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}

@@ -128,7 +128,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Translation_Set object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		if ( isset( $args['name'] ) && empty( $args['name'] ) ) {
 			if ( isset( $args['locale'] ) && ! empty( $args['locale'] ) ) {

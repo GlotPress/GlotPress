@@ -83,7 +83,11 @@ class GP_Thing {
 	 * Reloads the object data from the database, based on its id
 	 */
 	public function reload() {
-		$this->set_fields( $this->get( $this->id ) );
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Verified table name.
+		$fields = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table WHERE id = %d", $this->id ) );
+		$this->set_fields( $fields );
 		return $this;
 	}
 
@@ -414,9 +418,15 @@ class GP_Thing {
 		return false;
 	}
 
-	public function set_fields( $db_object ) {
-		$db_object = $this->normalize_fields( $db_object );
-		foreach( $db_object as $key => $value ) {
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		$fields = (array) $fields;
+		$fields = $this->normalize_fields( $fields );
+		foreach ( $fields as $key => $value ) {
 			$this->$key = $value;
 		}
 	}
@@ -428,11 +438,18 @@ class GP_Thing {
 	 * @todo Include default type handling. For example dates 0000-00-00 should be set to null
 	 *
 	 * @since 1.0.0
+	 * @since 3.0.0 Normalizes int fields to be integers.
 	 *
 	 * @param array $args Arguments for a GP_Thing object.
 	 * @return array Normalized arguments for a GP_Thing object.
 	 */
 	public function normalize_fields( $args ) {
+		foreach ( $this->int_fields as $int_field ) {
+			if ( isset( $args[ $int_field ] ) ) {
+				$args[ $int_field ] = (int) $args[ $int_field ];
+			}
+		}
+
 		return $args;
 	}
 
