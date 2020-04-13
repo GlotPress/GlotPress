@@ -1,24 +1,26 @@
 <?php
 
 /**
- * Retrieves a value from $_POST
+ * Retrieves a value from $_POST.
  *
- * @param string $key name of post value
- * @param mixed $default value to return if $_POST[$key] doesn't exist. Default is ''
- * @return mixed $_POST[$key] if exists or $default
+ * @param string       $key     Name of post value.
+ * @param string|array $default Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_POST[ $key ]` if exists or `$default`.
  */
 function gp_post( $key, $default = '' ) {
+	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
 	return wp_unslash( gp_array_get( $_POST, $key, $default ) );
 }
 
 /**
- * Retrieves a value from $_GET
+ * Retrieves a value from $_GET.
  *
- * @param string $key name of get value
- * @param mixed $default value to return if $_GET[$key] doesn't exist. Default is ''
- * @return mixed $_GET[$key] if exists or $default
+ * @param string       $key     Name of get value.
+ * @param string|array $default Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_GET[ $key ]` if exists or `$default`.
  */
 function gp_get( $key, $default = '' ) {
+	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
 	return wp_unslash( gp_array_get( $_GET, $key, $default ) );
 }
 
