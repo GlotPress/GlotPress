@@ -23,7 +23,14 @@ gp_tmpl_header();
 $i = 0;
 ?>
 <h2>
-	<?php printf( __( 'Translation of %s', 'glotpress' ), esc_html( $project->name )); ?>: <?php echo esc_html( $translation_set->name ); ?>
+	<?php
+	printf(
+		/* translators: 1: Project name. 2: Translation set name. */
+		__( 'Translation of %1$s: %2$s', 'glotpress' ),
+		esc_html( $project->name ),
+		esc_html( $translation_set->name )
+	);
+	?>
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
