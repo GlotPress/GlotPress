@@ -9,7 +9,7 @@ gp_title(
 );
 gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
-	gp_link_get( $url, $locale->english_name . 'default' != $set->slug? ' '.$set->name : '' ),
+	gp_link_get( $url, $locale->english_name . 'default' != $set->slug ? ' '.$set->name : '' ),
 ) );
 
 // jQuery is required for the 'translation-set-form' template.

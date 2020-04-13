@@ -223,7 +223,7 @@ function gp_project_links_from_root( $leaf_project ) {
 	}
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
-	$links[] = empty( $path_from_root)? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
+	$links[] = empty( $path_from_root) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
 		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}
@@ -273,7 +273,7 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
 	$first = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
-	$page = intval( $page )? intval( $page ) : 1;
+	$page = intval( $page ) ? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
 	if ( $page > $pages ) return '';
 
@@ -343,7 +343,7 @@ function gp_html_attributes( $attrs ) {
 }
 
 function gp_attrs_add_class( $attrs, $class_name ) {
-	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
+	$attrs['class'] = isset( $attrs['class'] ) ? $attrs['class'] . ' ' . $class_name : $class_name;
 	return $attrs;
 }
 

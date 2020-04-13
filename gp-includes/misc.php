@@ -63,11 +63,11 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[$key] )? $array[$key] : $default;
+	return isset( $array[$key] ) ? $array[$key] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
-	return defined( $name )? constant( $name ) : $default;
+	return defined( $name ) ? constant( $name ) : $default;
 }
 
 function gp_const_set( $name, $value ) {
@@ -80,7 +80,7 @@ function gp_const_set( $name, $value ) {
 
 
 function gp_member_get( $object, $key, $default = '' ) {
-	return isset( $object->$key )? $object->$key : $default;
+	return isset( $object->$key ) ? $object->$key : $default;
 }
 
 /**
@@ -92,7 +92,7 @@ function gp_member_get( $object, $key, $default = '' ) {
 function gp_array_flatten( $array ) {
 	$res = array();
 	foreach ( $array as $value ) {
-		$res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
+		$res = array_merge( $res, is_array( $value ) ? gp_array_flatten( $value ) : array( $value ) );
 	}
 	return $res;
 }

@@ -10,7 +10,7 @@
 
 	<!-- TODO: make slug edit WordPress style -->
 	<dt><label for="set[slug]"><?php _e( 'Slug', 'glotpress' ); ?></label></dt>
-	<dd><input type="text" name="set[slug]" value="<?php echo esc_html( $set->slug? $set->slug : 'default' ); ?>" id="set[slug]"></dd>
+	<dd><input type="text" name="set[slug]" value="<?php echo esc_html( $set->slug ? $set->slug : 'default' ); ?>" id="set[slug]"></dd>
 
 	<dt><label for="set[project_id]"><?php _e( 'Project', 'glotpress' ); ?></label></dt>
 	<dd><?php echo gp_projects_dropdown( 'set[project_id]', $set->project_id, null, null, true ); ?></dd>

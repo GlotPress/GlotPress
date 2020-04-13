@@ -226,7 +226,7 @@ class GP_Project extends GP_Thing {
 	 */
 	public function update_path() {
 		global $wpdb;
-		$old_path = isset( $this->path )? $this->path : '';
+		$old_path = isset( $this->path ) ? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project )
 			$path = gp_url_join( $parent_project->path, $this->slug );

@@ -373,7 +373,7 @@ class GP_Original extends GP_Thing {
 
 	public function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
-		return isset( $by_name[ $name ] )? $by_name[ $name ] : null;
+		return isset( $by_name[ $name ] ) ? $by_name[ $name ] : null;
 	}
 
 	public function closest_original( $input, $other_strings ) {
