@@ -50,7 +50,7 @@ class GP_Thing {
 			$this->restrict_fields( $this->validation_rules );
 			self::$validation_rules_by_class[$this->class] = &$this->validation_rules;
 		}
-		if ( !$this->get_static( 'static-vars-are-set' ) ) {
+		if ( ! $this->get_static( 'static-vars-are-set' ) ) {
 			foreach ( get_class_vars( $this->class ) as $name => $value ) {
 				$this->set_static( $name, $value );
 			}
@@ -314,7 +314,7 @@ class GP_Thing {
 	 */
 	public function create_and_select( $args ) {
 		$created = $this->create( $args );
-		if ( !$created ) return false;
+		if ( ! $created ) return false;
 		$created->reload();
 		return $created;
 	}
@@ -326,7 +326,7 @@ class GP_Thing {
 	 */
 	public function update( $data, $where = null ) {
 		global $wpdb;
-		if ( !$data ) return false;
+		if ( ! $data ) return false;
 		$where = is_null( $where ) ? array( 'id' => $this->id ) : $where;
 		$fields_for_save = $this->prepare_fields_for_save( $data );
 		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
@@ -334,12 +334,12 @@ class GP_Thing {
 		$field_formats = $this->get_db_field_formats( $fields_for_save );
 		$where_formats = $this->get_db_field_formats( $where );
 
-		return !is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
+		return ! is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
 	}
 
 	public function get( $thing_or_id ) {
 		global $wpdb;
-		if ( !$thing_or_id ) return false;
+		if ( ! $thing_or_id ) return false;
 		$id = is_object( $thing_or_id ) ? $thing_or_id->id : $thing_or_id;
 		return $this->find_one( array( 'id' => $id ) );
 	}
@@ -466,7 +466,7 @@ class GP_Thing {
 			unset( $args[$attribute] );
 		}
 		foreach ( $args as $key => $value ) {
-			if ( !in_array( $key, $this->field_names ) ) {
+			if ( ! in_array( $key, $this->field_names ) ) {
 				unset( $args[$key] );
 			}
 		}
@@ -496,7 +496,7 @@ class GP_Thing {
 	}
 
 	public function coerce( $thing ) {
-		if ( !$thing || is_wp_error( $thing ) ) {
+		if ( ! $thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
 			$class = $this->class;
@@ -585,7 +585,7 @@ class GP_Thing {
 			$order_how = '';
 		}
 		$order_by = trim( $order_by );
-		if ( !$order_by ) return gp_member_get( $this, 'default_order' );
+		if ( ! $order_by ) return gp_member_get( $this, 'default_order' );
 		return 'ORDER BY ' . $order_by . ( $order_how ? " $order_how" : '' );
 	}
 
@@ -633,7 +633,7 @@ class GP_Thing {
 		$per_page = is_null( $per_page ) ? $this->per_page : $per_page;
 		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
 		$page = intval( $page ) ? intval( $page ) : 1;
-		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page -1) *$per_page );
+		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page - 1) * $per_page );
 	}
 
 	public function found_rows() {

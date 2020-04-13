@@ -161,7 +161,7 @@ gp_tmpl_header();
 		</tbody>
 	</table>
 </div>
-<?php elseif ( !$sub_projects ) : ?>
+<?php elseif ( ! $sub_projects ) : ?>
 	<p><?php _e( 'There are no translations of this project.', 'glotpress' ); ?></p>
 <?php endif; ?>
 

@@ -52,7 +52,7 @@ if ( empty( $projects_data ) ) {
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
-				<th class="header" <?php if (count($sub_projects) >1 ) echo 'rowspan="'. count($sub_projects) . '"';?>><?php if (count($sub_projects) >1 ) _e( 'Project', 'glotpress' ); ?></th>
+				<th class="header" <?php if (count($sub_projects) > 1 ) echo 'rowspan="'. count($sub_projects) . '"';?>><?php if (count($sub_projects) > 1 ) _e( 'Project', 'glotpress' ); ?></th>
 				<th class="header"><?php _e( 'Set / Sub Project', 'glotpress' ); ?></th>
 				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
 				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
@@ -64,7 +64,7 @@ if ( empty( $projects_data ) ) {
 			<?php foreach ( $sub_projects as $sub_project_id => $data ) : ?>
 				<tr>
 				<th class="sub-project" rowspan="<?php echo count( $data['sets'] );  ?>">
-					<?php if (count($sub_projects) >1  ) echo esc_html( $projects[$sub_project_id]->name ); ?>
+					<?php if (count($sub_projects) > 1  ) echo esc_html( $projects[$sub_project_id]->name ); ?>
 					<div class="stats">
 						<div class="total-strings">
 							<?php

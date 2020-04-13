@@ -203,7 +203,7 @@ function gp_populate_notices() {
 function gp_array_zip() {
 	$args = func_get_args();
 
-	if ( !is_array( $args ) ) {
+	if ( ! is_array( $args ) ) {
 		return false;
 	}
 
@@ -214,7 +214,7 @@ function gp_array_zip() {
 	$depth = 0;
 
 	foreach ( $args as &$array ) {
-		if ( !is_array( $array) ) {
+		if ( ! is_array( $array) ) {
 			return false;
 		}
 
@@ -260,7 +260,7 @@ function gp_array_any( $callback, $array, $arg = null ) {
 
 function gp_array_all( $callback, $array ) {
 	foreach ( $array as $item ) {
-		if ( !$callback( $item ) ) {
+		if ( ! $callback( $item ) ) {
 			return false;
 		}
 	}
@@ -467,7 +467,7 @@ function gp_set_cookie() {
 function gp_gmt_strtotime( $string ) {
 	if ( is_numeric($string) )
 		return $string;
-	if ( !is_string($string) )
+	if ( ! is_string($string) )
 		return -1;
 
 	if ( stristr($string, 'utc') || stristr($string, 'gmt') || stristr($string, '+0000') )

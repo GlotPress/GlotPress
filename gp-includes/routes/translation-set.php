@@ -30,7 +30,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) return;
 		if ( $this->invalid_and_redirect( $new_set ) ) return;
 		$created_set = GP::$translation_set->create_and_select( $new_set );
-		if ( !$created_set ) {
+		if ( ! $created_set ) {
 			$this->errors[] = __( 'Error in creating translation set!', 'glotpress' );
 			$this->redirect( gp_url( '/sets/-new', array( 'project_id' => $new_set->project_id ) ) );
 		} else {
@@ -42,14 +42,14 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 
 	public function single( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
-		if ( !$items) return;
+		if ( ! $items) return;
 		list( $set, $project, ) = $items;
 		$this->redirect( gp_url_project( $project, array( $set->locale, $set->slug ) ) );
 	}
 
 	public function edit_get( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
-		if ( !$items ) return;
+		if ( ! $items ) return;
 		list( $set, $project, $locale ) = $items;
 		if ( $this->cannot_and_redirect( 'write', 'project', $set->project_id, gp_url_project( $project ) ) ) return;
 		$url = gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) );
@@ -164,17 +164,17 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 
 	private function get_set_project_and_locale_from_set_id_or_404( $set_id ) {
 		$set = GP::$translation_set->get( $set_id );
-		if ( !$set ) {
+		if ( ! $set ) {
 			$this->die_with_404( array( 'title' => "Translation set wasn't found" ) );
 			return;
 		}
 		$project =  GP::$project->get( $set->project_id );
-		if ( !$project ) {
+		if ( ! $project ) {
 			$this->die_with_404( array( 'title' => "The project associated with this translation set wasn't found" ) );
 			return;
 		}
 		$locale = $locale = GP_Locales::by_slug( $set->locale );
-		if ( !$locale ) {
+		if ( ! $locale ) {
 			$this->die_with_404( array( 'title' => "The locale associated with this translation set wasn't found" ) );
 			return;
 		}

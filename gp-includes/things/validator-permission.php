@@ -57,7 +57,7 @@ class GP_Validator_Permission extends GP_Permission {
 		$args = (array)$args;
 		$args['object_type'] = $this->object_type;
 		if ( gp_array_get( $args, 'project_id' ) && gp_array_get( $args, 'locale_slug' )
-		 		&& gp_array_get( $args, 'set_slug' ) && !gp_array_get( $args, 'object_id' ) ) {
+		 		&& gp_array_get( $args, 'set_slug' ) && ! gp_array_get( $args, 'object_id' ) ) {
 			$args['object_id'] = $this->object_id( $args['project_id'], $args['locale_slug'], $args['set_slug'] );
 		}
 		$args = parent::prepare_fields_for_save( $args );

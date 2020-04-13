@@ -5,7 +5,7 @@
  * has permissions on project parents
  */
 function gp_recurse_project_permissions( $verdict, $args ) {
-	if ( !( !$verdict && $args['object_type'] == 'project' && $args['object_id'] && $args['user'] ) ) {
+	if ( ! ( ! $verdict && $args['object_type'] == 'project' && $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
 	}
 	$project = GP::$project->get( $args['object_id'] );
@@ -16,7 +16,7 @@ function gp_recurse_project_permissions( $verdict, $args ) {
 }
 
 function gp_recurse_validator_permission( $verdict, $args ) {
-	if ( !( !$verdict && $args['object_type'] == GP::$validator_permission->object_type && $args['object_id'] && $args['user'] ) ) {
+	if ( ! ( ! $verdict && $args['object_type'] == GP::$validator_permission->object_type && $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
 	}
 	list( $project_id, $locale_slug, $set_slug ) = GP::$validator_permission->project_id_locale_slug_set_slug( $args['object_id'] );
@@ -33,7 +33,7 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 		return $verdict;
 	}
 
-	if ( !( $verdict == 'no-verdict' && $args['action'] == 'approve' && $args['object_type'] == 'translation-set'
+	if ( ! ( $verdict == 'no-verdict' && $args['action'] == 'approve' && $args['object_type'] == 'translation-set'
 			&& $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
 	}

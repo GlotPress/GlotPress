@@ -69,7 +69,7 @@ gp_tmpl_header();
 		</tbody>
 	</table>
 	<?php endif; ?>
-	<?php if ( ! $permissions && !$parent_permissions ) : ?>
+	<?php if ( ! $permissions && ! $parent_permissions ) : ?>
 		<strong><?php _e( 'No validators defined for this project.', 'glotpress' ); ?></strong>
 	<?php endif; ?>
 <form action="" method="post" class="secondary">

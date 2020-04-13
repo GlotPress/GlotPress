@@ -13,7 +13,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	do_action_ref_array( 'gp_pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
 	$locations = array( GP_TMPL_PATH );
-	if ( !is_null( $template_path ) ) {
+	if ( ! is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
 
@@ -129,7 +129,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v )
-		if ( $k[0] != '_' && $k != 'GLOBALS' && !gp_startswith( $k, 'HTTP' ) && !gp_startswith( $k, 'PHP' ) )
+		if ( $k[0] != '_' && $k != 'GLOBALS' && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
 			$clean_args[$k] = $v;
 	return $clean_args;
 }
@@ -439,7 +439,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	foreach ( $top as $top_id ) {
 		$stack = array( $top_id );
 
-		while ( !empty( $stack ) ) {
+		while ( ! empty( $stack ) ) {
 			$id = array_pop( $stack );
 
 			if ( in_array( $id, $exclude ) ) {

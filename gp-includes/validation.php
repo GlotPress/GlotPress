@@ -102,7 +102,7 @@ class GP_Validation_Rules {
 		$verdict = true;
 		foreach ( $this->field_names as $field_name ) {
 			// do not try to validate missing fields
-			if ( !gp_object_has_var( $thing, $field_name ) ) continue;
+			if ( ! gp_object_has_var( $thing, $field_name ) ) continue;
 			$value = $thing->$field_name;
 			$field_verdict = $this->run_on_single_field( $field_name, $value );
 			$verdict = $verdict && $field_verdict;
@@ -111,7 +111,7 @@ class GP_Validation_Rules {
 	}
 
 	public function run_on_single_field( $field, $value ) {
-		if ( !isset( $this->rules[$field] ) || !is_array( $this->rules[$field] ) ) {
+		if ( ! isset( $this->rules[$field] ) || ! is_array( $this->rules[$field] ) ) {
 			// no rules means always valid
 			return true;
 		}
@@ -132,7 +132,7 @@ class GP_Validation_Rules {
 			$args = $rule['args'];
 			array_unshift( $args, $value );
 			if ( 'positive' == $rule['kind'] ) {
-				if ( !call_user_func_array( $callback['positive'], $args ) ) {
+				if ( ! call_user_func_array( $callback['positive'], $args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict = false;
 				}
@@ -142,7 +142,7 @@ class GP_Validation_Rules {
 						$this->errors[] = $this->construct_error_message( $rule );
 						$verdict = false;
 					}
-				} else if ( !call_user_func_array( $callback['negative'], $args ) ) {
+				} else if ( ! call_user_func_array( $callback['negative'], $args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict = false;
 				}
