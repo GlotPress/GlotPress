@@ -673,7 +673,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			'translation_set' => $translation_set->id,
 			'translation' => $translation->id,
 			'warning' => gp_post( 'key' ),
-			'user' => get_current_user_id()
+			'user' => get_current_user_id(),
 		);
 
 		/**

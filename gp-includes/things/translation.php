@@ -332,7 +332,7 @@ class GP_Translation extends GP_Thing {
 		if ( ! is_array( $default_sort ) ) {
 			$default_sort = array(
 				'by'  => 'priority',
-				'how' => 'desc'
+				'how' => 'desc',
 			);
 		}
 

@@ -168,7 +168,7 @@ class GP_Route_Profile extends GP_Route_Main {
 				array(
 					'project_id' => $object_id[0],
 					'locale' => $object_id[1],
-					'slug' => $object_id[2]
+					'slug' => $object_id[2],
 				)
 			);
 
@@ -217,7 +217,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		return (object) array(
 			'project_id' => $project->id,
 			'project_url' => $project_url,
-			'set_name' => $set_name
+			'set_name' => $set_name,
 		);
 	}
 }

@@ -3,7 +3,7 @@ $meta = array(
 	'meta' => array(
 		'user_display_name' => $user->display_name,
 		'user_registered'   => $user->user_registered,
-	)
+	),
 );
 
 foreach ( $recent_projects as $project ) {

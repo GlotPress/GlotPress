@@ -349,7 +349,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				'translation' => $data[1],
 				'part_of_speech' => $data[2],
 				'comment' => $data[3],
-				'last_edited_by' => get_current_user_id()
+				'last_edited_by' => get_current_user_id(),
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );

@@ -180,7 +180,7 @@ class GP_Original extends GP_Thing {
 			$entry = new Translation_Entry( array(
 				'singular' => $original->singular,
 				'plural'   => $original->plural,
-				'context'  => $original->context
+				'context'  => $original->context,
 			) );
 			$originals_by_key[ $entry->key() ] = $original;
 		}
@@ -207,7 +207,7 @@ class GP_Original extends GP_Thing {
 				'plural'     => $entry->plural,
 				'comment'    => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active'
+				'status'     => '+active',
 			);
 
 			/**
@@ -267,7 +267,7 @@ class GP_Original extends GP_Thing {
 				'plural'     => $entry->plural,
 				'comment'    => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active'
+				'status'     => '+active',
 			);
 
 			/** This filter is documented in gp-includes/things/original.php */
