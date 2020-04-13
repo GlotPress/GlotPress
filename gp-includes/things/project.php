@@ -392,7 +392,7 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
-	public function duplicate_project_contents_from( $source_project ){
+	public function duplicate_project_contents_from( $source_project ) {
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
 		//Duplicate originals, translations sets and translations for the root project

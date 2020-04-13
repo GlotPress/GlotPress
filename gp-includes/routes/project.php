@@ -328,7 +328,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn = function( $x, $y ){
+		$cmp_fn = function( $x, $y ) {
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
 		usort( $permissions, $cmp_fn );
@@ -521,7 +521,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$new_project_data = new GP_Project( $post );
-		if ( $this->invalid_and_redirect( $new_project_data ) ){
+		if ( $this->invalid_and_redirect( $new_project_data ) ) {
 			return;
 		}
 

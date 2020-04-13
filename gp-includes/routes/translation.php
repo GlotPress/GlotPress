@@ -489,7 +489,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	private function _bulk_set_priority( $project, $bulk ) {
 
-		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ){
+		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
 
