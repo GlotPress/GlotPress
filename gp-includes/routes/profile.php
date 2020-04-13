@@ -167,8 +167,8 @@ class GP_Route_Profile extends GP_Route_Main {
 			$set = GP::$translation_set->find_one(
 				array(
 					'project_id' => $object_id[0],
-					'locale' => $object_id[1],
-					'slug' => $object_id[2],
+					'locale'     => $object_id[1],
+					'slug'       => $object_id[2],
 				)
 			);
 
@@ -215,9 +215,9 @@ class GP_Route_Profile extends GP_Route_Main {
 		$set_name = gp_project_names_from_root( $project ) . ' | ' . $set->name_with_locale();
 
 		return (object) array(
-			'project_id' => $project->id,
+			'project_id'  => $project->id,
 			'project_url' => $project_url,
-			'set_name' => $set_name,
+			'set_name'    => $set_name,
 		);
 	}
 }

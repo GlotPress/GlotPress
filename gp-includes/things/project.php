@@ -342,7 +342,7 @@ class GP_Project extends GP_Thing {
 		}
 
 		return array(
-			'added' => $added,
+			'added'   => $added,
 			'removed' => $removed,
 		);
 	}

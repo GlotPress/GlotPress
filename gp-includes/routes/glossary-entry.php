@@ -344,11 +344,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 
 			$entry_data = array(
-				'glossary_id' => $glossary_id,
-				'term' => $data[0],
-				'translation' => $data[1],
+				'glossary_id'    => $glossary_id,
+				'term'           => $data[0],
+				'translation'    => $data[1],
 				'part_of_speech' => $data[2],
-				'comment' => $data[3],
+				'comment'        => $data[3],
 				'last_edited_by' => get_current_user_id(),
 			);
 

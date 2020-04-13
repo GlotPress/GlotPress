@@ -380,11 +380,11 @@ class GP_Route_Project extends GP_Route_Main {
 				return;
 			}
 			$new_permission = new GP_Validator_Permission( array(
-				'user_id' => $user->ID,
-				'action' => 'approve',
-				'project_id' => $project->id,
+				'user_id'     => $user->ID,
+				'action'      => 'approve',
+				'project_id'  => $project->id,
 				'locale_slug' => gp_post( 'locale' ),
-				'set_slug' => gp_post( 'set-slug' ),
+				'set_slug'    => gp_post( 'set-slug' ),
 			) );
 			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) return;
 			$permission = GP::$validator_permission->create( $new_permission );

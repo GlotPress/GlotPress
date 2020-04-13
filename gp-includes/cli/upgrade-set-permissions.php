@@ -8,10 +8,10 @@ class GP_CLI_Upgrade_Set_Permissions extends WP_CLI_Command {
 			$set = GP::$translation_set->get( $permission->object_id );
 			$project = GP::$project->get( $set->project_id );
 			GP::$permission->create( array(
-				'user_id' => $permission->user_id,
-				'action' => 'approve',
+				'user_id'     => $permission->user_id,
+				'action'      => 'approve',
 				'object_type' => 'project|locale|set-slug',
-				'object_id' => $project->id.'|'.$set->locale.'|'.$set->slug,
+				'object_id'   => $project->id.'|'.$set->locale.'|'.$set->slug,
 			) );
 		}
 	}
