@@ -111,9 +111,9 @@ class GP_Route_Locale extends GP_Route_Main {
 
 		if ( ! empty( $set_slugs ) ) {
 			// Make default the first item.
-			if ( ! empty( $set_slugs[ 'default' ] ) ) {
-				$default = $set_slugs[ 'default' ];
-				unset( $set_slugs[ 'default' ] );
+			if ( ! empty( $set_slugs['default'] ) ) {
+				$default = $set_slugs['default'];
+				unset( $set_slugs['default'] );
 				array_unshift( $set_slugs, $default );
 			}
 

@@ -31,7 +31,7 @@ gp_tmpl_header();
 	<dd><input type="file" name="import-file" id="import-file" /></dd>
 <?php
 	$format_options = array();
-	$format_options[ 'auto' ] = __( 'Auto Detect', 'glotpress' );
+	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
 	foreach ( GP::$formats as $slug => $format ) {
 		$format_options[ $slug ] = $format->name;
 	}

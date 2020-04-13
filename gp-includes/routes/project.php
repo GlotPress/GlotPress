@@ -132,7 +132,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES[ 'import-file' ][ 'name' ] );
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] );
 
 		if ( ! $format ) {
 			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
