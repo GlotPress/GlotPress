@@ -658,7 +658,7 @@ class GP_Translation extends GP_Thing {
 		array(
 			'original_id'        => $this->original_id,
 			'translation_set_id' => $this->translation_set_id,
-			'status'             => 'fuzzy'M,
+			'status'             => 'fuzzy',
 		) )
 		&& $this->save( array(
 			'status'                => 'current',
