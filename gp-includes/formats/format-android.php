@@ -152,8 +152,7 @@ class GP_Format_Android extends GP_Format {
 		}
 
 		// Loop through all of the multiple strings we found in the XML file.
-		foreach ( $data->{'string-array'} as $string_array )
-		{
+		foreach ( $data->{'string-array'} as $string_array ) {
 			if ( isset( $string_array['translatable'] ) && 'false' == $string_array['translatable'] ) {
 				continue;
 			}
