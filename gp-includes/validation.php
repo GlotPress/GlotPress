@@ -72,10 +72,16 @@ class GP_Validation_Rules {
 	public $field_names;
 
 	static $positive_suffices = array(
-		'should_be', 'should', 'can', 'can_be',
+		'should_be',
+		'should',
+		'can',
+		'can_be',
 	);
 	static $negative_suffices = array(
-		'should_not_be', 'should_not', 'cant', 'cant_be',
+		'should_not_be',
+		'should_not',
+		'cant',
+		'cant_be',
 	);
 
 	public function __construct( $field_names ) {
@@ -195,4 +201,3 @@ GP_Validators::register( 'int', 'gp_is_int' );
 GP_Validators::register( 'null', 'gp_is_null' );
 GP_Validators::register( 'between', 'gp_is_between' );
 GP_Validators::register( 'between_exclusive', 'gp_is_between_exclusive' );
-
