@@ -56,7 +56,13 @@ class GP_Project extends GP_Thing {
 		if ( $locale_glossary_path_prefix === $path ) {
 			return GP::$glossary->get_locale_glossary_project();
 		}
-		return $this->one( "SELECT * FROM $this->table WHERE path = %s", trim( $path, '/' ) );
+
+		$path = rawurlencode( urldecode( $path ) );
+		$path = str_replace( '%2F', '/', $path );
+		$path = str_replace( '%20', ' ', $path );
+		$path = trim( $path, '/' );
+
+		return $this->one( "SELECT * FROM $this->table WHERE path = %s", $path );
 	}
 
 	/**
