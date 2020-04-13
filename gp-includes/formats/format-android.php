@@ -75,7 +75,7 @@ class GP_Format_Android extends GP_Format {
 		$this->line( '<resources>' );
 		$string_array_items = array();
 
-		foreach( $entries as $entry ) {
+		foreach ( $entries as $entry ) {
 			if ( preg_match('/.+\[\d+\]$/', $entry->context ) ) {
 				// Array item found.
 				$string_array_items[] = $entry;

@@ -176,7 +176,7 @@ class GP_Original extends GP_Thing {
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key = array();
-		foreach( $all_originals_for_project as $original ) {
+		foreach ( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry( array(
 				'singular' => $original->singular,
 				'plural'   => $original->plural,

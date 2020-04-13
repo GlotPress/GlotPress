@@ -83,10 +83,10 @@ class GP_Validation_Rules {
 	}
 
 	public function __call( $name, $args ) {
-		foreach( array( 'positive', 'negative' ) as $kind ) {
+		foreach ( array( 'positive', 'negative' ) as $kind ) {
 			$suffices = "{$kind}_suffices";
-			foreach( self::$$suffices as $suffix ) {
-				foreach( $this->field_names as $field_name ) {
+			foreach ( self::$$suffices as $suffix ) {
+				foreach ( $this->field_names as $field_name ) {
 					if ( $name == "{$field_name}_{$suffix}" ) {
 						$this->rules[$field_name][] = array( 'field' => $field_name, 'rule' => $args[0], 'kind' => $kind, 'args' => array_slice( $args, 1 ) );
 						return true;
@@ -100,7 +100,7 @@ class GP_Validation_Rules {
 	public function run( $thing ) {
 		$this->errors = array();
 		$verdict = true;
-		foreach( $this->field_names as $field_name ) {
+		foreach ( $this->field_names as $field_name ) {
 			// do not try to validate missing fields
 			if ( !gp_object_has_var( $thing, $field_name ) ) continue;
 			$value = $thing->$field_name;
@@ -117,7 +117,7 @@ class GP_Validation_Rules {
 		}
 		$verdict = true;
 
-		foreach( $this->rules[$field] as $rule ) {
+		foreach ( $this->rules[$field] as $rule ) {
 			$callback = GP_Validators::get( $rule['rule'] );
 			if ( is_null( $callback ) ) {
 				trigger_error( sprintf( __( 'Non-existent validator: %s', 'glotpress' ), $rule['rule'] ) );

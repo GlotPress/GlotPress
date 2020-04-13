@@ -10,7 +10,7 @@ class GP_CLI_Add_Admin extends WP_CLI_Command {
 	 * : Username(s) to make an admin
 	 */
 	public function __invoke( $args, $assoc_args) {
-		foreach( $args as $user_login ) {
+		foreach ( $args as $user_login ) {
 			$user_to_make_admin = get_user_by( 'login', $user_login );
 			if ( ! $user_to_make_admin ) {
 				/* translators: %s: Username */

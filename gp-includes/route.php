@@ -293,12 +293,12 @@ class GP_Route {
 	public function set_notices_and_errors() {
 		if ( $this->fake_request ) return;
 
-		foreach( $this->notices as $notice ) {
+		foreach ( $this->notices as $notice ) {
 			gp_notice_set( $notice );
 		}
 		$this->notices = array();
 
-		foreach( $this->errors as $error ) {
+		foreach ( $this->errors as $error ) {
 			gp_notice_set( $error, 'error' );
 		}
 		$this->errors = array();

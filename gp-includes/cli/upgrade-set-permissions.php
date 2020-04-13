@@ -4,7 +4,7 @@ class GP_CLI_Upgrade_Set_Permissions extends WP_CLI_Command {
 
 	public function __invoke() {
 		$permissions = GP::$permission->find_many( array( 'object_type' => 'translation-set', 'action' => 'approve' ) );
-		foreach( $permissions as $permission ) {
+		foreach ( $permissions as $permission ) {
 			$set = GP::$translation_set->get( $permission->object_id );
 			$project = GP::$project->get( $set->project_id );
 			GP::$permission->create( array(

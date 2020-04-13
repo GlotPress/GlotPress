@@ -449,7 +449,7 @@ class GP_Translation extends GP_Thing {
 
 		if ( ! empty( $statuses ) ) {
 			$statuses_where = array();
-			foreach( $statuses as $single_status ) {
+			foreach ( $statuses as $single_status ) {
 				$statuses_where[] = $wpdb->prepare( 'status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
@@ -570,7 +570,7 @@ class GP_Translation extends GP_Thing {
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 
-		foreach( (array)$rows as $row ) {
+		foreach ( (array)$rows as $row ) {
 			if ( null === $row->id && $has_root ) {
 				$row->id                    = $row->root_id;
 				$row->original_id           = $row->root_original_id;
@@ -618,7 +618,7 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$row->translations = array();
-			for( $i = 0; $i < $locale->nplurals; $i++ ) {
+			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 				$row->translations[] = $row->{"translation_".$i};
 			}
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);

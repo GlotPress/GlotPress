@@ -29,7 +29,7 @@ class GP_Format_PO extends GP_Format {
 		$filters = array();
 		$filters['status'] = 'current';
 
-		foreach( $entries as $entry ) {
+		foreach ( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}
 

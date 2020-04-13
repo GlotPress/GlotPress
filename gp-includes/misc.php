@@ -91,7 +91,7 @@ function gp_member_get( $object, $key, $default = '' ) {
  */
 function gp_array_flatten( $array ) {
 	$res = array();
-	foreach( $array as $value ) {
+	foreach ( $array as $value ) {
 		$res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
 	}
 	return $res;
@@ -244,8 +244,8 @@ function gp_array_zip() {
 }
 
 function gp_array_any( $callback, $array, $arg = null ) {
-	foreach( $array as $item ) {
-		if( is_array( $callback ) ) {
+	foreach ( $array as $item ) {
+		if ( is_array( $callback ) ) {
 			if (  $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
@@ -259,7 +259,7 @@ function gp_array_any( $callback, $array, $arg = null ) {
 }
 
 function gp_array_all( $callback, $array ) {
-	foreach( $array as $item ) {
+	foreach ( $array as $item ) {
 		if ( !$callback( $item ) ) {
 			return false;
 		}
@@ -494,10 +494,10 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 	if ( ! $format ) {
 		$matched_ext_len = 0;
 
-		foreach( GP::$formats as $format_entry ) {
+		foreach ( GP::$formats as $format_entry ) {
 			$format_extensions = $format_entry->get_file_extensions();
 
-			foreach( $format_extensions as $extension ) {
+			foreach ( $format_extensions as $extension ) {
 				$current_ext_len = strlen( $extension );
 
 				if ( gp_endswith( $filename, $extension ) && $current_ext_len > $matched_ext_len ) {
