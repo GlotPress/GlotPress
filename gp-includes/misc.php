@@ -148,7 +148,7 @@ function gp_populate_notices() {
 	GP::$redirect_notices = array();
 	$prefix = '_gp_notice_';
 	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
-	foreach ($_COOKIE as $key => $value ) {
+	foreach ( $_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) ) ) {
 			GP::$redirect_notices[$suffix] = wp_unslash( $value );
 			gp_set_cookie( $key, '', 0, $cookie_path );

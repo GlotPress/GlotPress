@@ -160,11 +160,11 @@ gp_tmpl_header();
 <?php endif; ?>
 
 
-<?php if ($sub_projects ) : ?>
+<?php if ( $sub_projects ) : ?>
 <div id="sub-projects">
 <h3><?php _e( 'Sub-projects', 'glotpress' ); ?></h3>
 <dl>
-<?php foreach ($sub_projects as $sub_project ) : ?>
+<?php foreach ( $sub_projects as $sub_project ) : ?>
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>

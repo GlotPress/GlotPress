@@ -44,13 +44,13 @@
 
 		<div id="gp-js-message" class="gp-js-message"></div>
 
-		<?php if (gp_notice('error') ) : ?>
+		<?php if ( gp_notice('error') ) : ?>
 			<div class="error">
 				<?php echo gp_notice( 'error' ); ?>
 			</div>
 		<?php endif; ?>
 
-		<?php if (gp_notice() ) : ?>
+		<?php if ( gp_notice() ) : ?>
 			<div class="notice">
 				<?php echo gp_notice(); ?>
 			</div>

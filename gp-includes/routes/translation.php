@@ -304,7 +304,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			if ( ! $translation->validate() ) {
 				$error_output = '<ul>';
-				foreach ($translation->errors as $error ) {
+				foreach ( $translation->errors as $error ) {
 					$error_output .= '<li>' . $error . '</li>';
 				}
 				$error_output .= '</ul>';
