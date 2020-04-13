@@ -17,7 +17,7 @@ class GP_Test_Translation_Warnings extends GP_UnitTestCase {
 
 	function test_add() {
 		$this->w->add( 'is_baba', $this->is_baba );
-		$this->assertEquals( false, $this->w->has( 'is_baba' ) );
+		$this->assertEquals( true, $this->w->has( 'is_baba' ) );
 		$this->assertEquals( false, $this->w->has( 'is_dyado' ) );
 	}
 
