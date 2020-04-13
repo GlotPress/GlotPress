@@ -129,7 +129,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v )
-		if ( $k[0] != '_' && $k != 'GLOBALS' && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
+		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
 			$clean_args[$k] = $v;
 	return $clean_args;
 }

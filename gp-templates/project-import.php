@@ -24,7 +24,7 @@ gp_title( $title );
 gp_tmpl_header();
 ?>
 
-<h2><?php echo $kind == 'originals' ? __( 'Import Originals', 'glotpress' ) : __( 'Import Translations', 'glotpress' ); ?></h2>
+<h2><?php echo 'originals' == $kind ? __( 'Import Originals', 'glotpress' ) : __( 'Import Translations', 'glotpress' ); ?></h2>
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>

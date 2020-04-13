@@ -431,7 +431,7 @@ class GP_Translation extends GP_Thing {
 		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses ) ) {
-			if ( $statuses == array( 'untranslated' ) ) {
+			if ( array( 'untranslated' ) == $statuses ) {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';

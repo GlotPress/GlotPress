@@ -62,7 +62,7 @@ class GP_Format_Properties extends GP_Format {
 
 			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
 
-			if ( $comment == "" ) {
+			if ( '' == $comment ) {
 				$comment = "No comment provided.";
 			}
 
@@ -389,7 +389,7 @@ class GP_Format_Properties extends GP_Format {
 
 				$matches[1] = trim( $matches[1] );
 
-				if ( $matches[1] !== "No comment provided." ) {
+				if ( 'No comment provided.' !== $matches[1] ) {
 					if ( null !== $comment ) {
 						$comment = $comment . "\n" . $matches[2];
 					} else {
