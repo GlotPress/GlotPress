@@ -263,7 +263,7 @@ class GP_Project extends GP_Thing {
 		}
 
 		$projects = $this->find( array( 'parent_project_id' => $parent_project_id ) );
-		foreach ( (array)$projects as $project ) {
+		foreach ( (array) $projects as $project ) {
 			$project->update( array( 'path' => trim( gp_url_join( $path, $project->slug ), '/' ) ) );
 			$this->regenerate_paths( $project->id );
 		}

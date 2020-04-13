@@ -573,7 +573,7 @@ class GP_Translation extends GP_Thing {
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 
-		foreach ( (array)$rows as $row ) {
+		foreach ( (array) $rows as $row ) {
 			if ( null === $row->id && $has_root ) {
 				$row->id                    = $row->root_id;
 				$row->original_id           = $row->root_original_id;
@@ -635,7 +635,7 @@ class GP_Translation extends GP_Thing {
 				unset($row->$member);
 			}
 			$row->row_id = $row->original_id . ( $row->id ? "-$row->id" : '' );
-			$translations[] = new Translation_Entry( (array)$row );
+			$translations[] = new Translation_Entry( (array) $row );
 		}
 		unset( $rows );
 		return $translations;
