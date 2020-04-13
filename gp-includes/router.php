@@ -186,8 +186,8 @@ class GP_Router {
 			return;
 		}
 
-		foreach( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
-			foreach( $this->urls as $re => $func ) {
+		foreach ( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
+			foreach ( $this->urls as $re => $func ) {
 				foreach ( $http_methods as $http_method ) {
 					if ( gp_startswith( $re, $http_method.':' ) ) {
 						if ( $http_method != $request_method ) continue;

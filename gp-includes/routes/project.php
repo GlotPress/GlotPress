@@ -30,7 +30,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$sub_projects = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 
-		foreach( $translation_sets as $set ) {
+		foreach ( $translation_sets as $set ) {
 			$locale = GP_Locales::by_slug( $set->locale );
 
 			$set->name_with_locale = $set->name_with_locale();
@@ -337,22 +337,22 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn = function( $x, $y ){
+		$cmp_fn = function( $x, $y ) {
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
 		usort( $permissions, $cmp_fn );
 		$parent_permissions = array();
 
-		foreach( $path_to_root as $parent_project ) {
+		foreach ( $path_to_root as $parent_project ) {
 			$this_parent_permissions = GP::$validator_permission->by_project_id( $parent_project->id );
 			usort( $this_parent_permissions, $cmp_fn );
-			foreach( $this_parent_permissions as $permission ) {
+			foreach ( $this_parent_permissions as $permission ) {
 				$permission->project = $parent_project;
 			}
 			$parent_permissions = array_merge( $parent_permissions, (array)$this_parent_permissions );
 		}
 		// we can't join on users table
-		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
+		foreach ( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
 			$permission->user = get_user_by( 'id', $permission->user_id );
 		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
@@ -458,7 +458,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$changes = $project->set_difference_from( $other_project );
 
-		foreach( $changes['added'] as $to_add ) {
+		foreach ( $changes['added'] as $to_add ) {
 			if ( !GP::$translation_set->create( array('project_id' => $project->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug) ) ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set name. */
@@ -467,7 +467,7 @@ class GP_Route_Project extends GP_Route_Main {
 				);
 			}
 		}
-		foreach( $changes['removed'] as $to_remove ) {
+		foreach ( $changes['removed'] as $to_remove ) {
 			if ( !$to_remove->delete() ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set name. */
@@ -538,7 +538,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$new_project_data = new GP_Project( $post );
-		if ( $this->invalid_and_redirect( $new_project_data ) ){
+		if ( $this->invalid_and_redirect( $new_project_data ) ) {
 			return;
 		}
 

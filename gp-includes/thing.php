@@ -37,7 +37,7 @@ class GP_Thing {
 		global $wpdb;
 		$this->class = get_class( $this );
 		$this->table = $wpdb->{$this->table_basename};
-		foreach( $this->field_names as $field_name ) {
+		foreach ( $this->field_names as $field_name ) {
 			$this->$field_name = null;
 		}
 		$this->set_fields( $fields );
@@ -51,7 +51,7 @@ class GP_Thing {
 			self::$validation_rules_by_class[$this->class] = &$this->validation_rules;
 		}
 		if ( !$this->get_static( 'static-vars-are-set' ) ) {
-			foreach( get_class_vars( $this->class ) as $name => $value ) {
+			foreach ( get_class_vars( $this->class ) as $name => $value ) {
 				$this->set_static( $name, $value );
 			}
 			$this->set_static( 'static-vars-are-set', true );
@@ -462,10 +462,10 @@ class GP_Thing {
 		$args = (array)$args;
 		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
-		foreach( $this->non_updatable_attributes as $attribute ) {
+		foreach ( $this->non_updatable_attributes as $attribute ) {
 			unset( $args[$attribute] );
 		}
-		foreach( $args as $key => $value ) {
+		foreach ( $args as $key => $value ) {
 			if ( !in_array( $key, $this->field_names ) ) {
 				unset( $args[$key] );
 			}
@@ -621,7 +621,7 @@ class GP_Thing {
 
 	public function fields() {
 		$result = array();
-		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
+		foreach ( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
 			if ( isset( $this->$field_name ) ) {
 				$result[$field_name] = $this->$field_name;
 			}

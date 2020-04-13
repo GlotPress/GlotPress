@@ -94,7 +94,7 @@ class GP_Format_Properties extends GP_Format {
 		while ( $offset >= 0 ) {
 			$val = $this->ordutf8( $string, $offset );
 
-			if( false === $val ) {
+			if ( false === $val ) {
 				break;
 			} else if ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
@@ -121,7 +121,7 @@ class GP_Format_Properties extends GP_Format {
 		for ( $i = 0; $i < strlen( $string ); $i++ ) {
 			$val = ord( $string[ $i ] );
 
-			if( $val > 127 ) {
+			if ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
 			} else {
 				$result .= $string[ $i ] ;
@@ -202,7 +202,7 @@ class GP_Format_Properties extends GP_Format {
 		$character = substr( $string, $offset, 1 );
 
 		// If substr returned false, we are past the end of line so no need to process it.
-		if( false === $character ) {
+		if ( false === $character ) {
 			// Set the offset back to -1 to indicate we're done.
 			$offset = -1;
 			return false;
@@ -216,7 +216,7 @@ class GP_Format_Properties extends GP_Format {
 
 			if ( $code < 224 ) {
 				$bytesnumber = 2;        //110xxxxx
-			} else if ($code < 240) {
+			} else if ( $code < 240 ) {
 				$bytesnumber = 3;        //1110xxxx
 				$codetemp -= 32;
 			} else if ( $code < 248 ) {
@@ -269,7 +269,7 @@ class GP_Format_Properties extends GP_Format {
 		// There's always one match (the entire line) so if we matched more than one, let's see if we can split the line.
 		if ( $num_matches > 1 ) {
 			// Loop through the matches, starting at the second one.
-			for( $i = 1; $i < $num_matches; $i ++ ) {
+			for ( $i = 1; $i < $num_matches; $i ++ ) {
 				// Get the location of the current match.
 				$location = $matches[ $i ][1];
 
@@ -420,7 +420,7 @@ class GP_Format_Properties extends GP_Format {
 				 */
 				$entry->singular = $this->uni_decode( $this->ascii_uni_encode( $value ) );
 
-				if ( ! is_null( $comment )) {
+				if ( ! is_null( $comment ) ) {
 					$entry->extracted_comments = $comment;
 					$comment = null;
 				}

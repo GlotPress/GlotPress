@@ -35,7 +35,7 @@ gp_tmpl_header();
 	echo apply_filters( 'gp_project_description', $project->description, $project );?>
 </p>
 
-<?php if ( $can_write ): ?>
+<?php if ( $can_write ) : ?>
 
 <div class="actionlist">
 	<a href="#" class="project-actions" id="project-actions-toggle"><?php echo __( 'Project actions', 'glotpress' ) . ' &darr;'; ?></a>
@@ -47,7 +47,7 @@ gp_tmpl_header();
 
 <div id="project" <?php if ( $sub_projects ) { echo ' class="with-sub-projects"'; } ?>>
 
-<?php if ( $translation_sets ): ?>
+<?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
 	<h3><?php _e( 'Translations', 'glotpress' );?></h3>
 	<table class="translation-sets tablesorter tablesorter-glotpress">
@@ -75,7 +75,7 @@ gp_tmpl_header();
 			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
-					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ):
+					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
 							$percent = floor( $set->current_count / $set->all_count * 100 );
 					?>
 						<span class="bubble morethan90"><?php echo $percent; ?>%</span>
@@ -161,16 +161,16 @@ gp_tmpl_header();
 		</tbody>
 	</table>
 </div>
-<?php elseif ( !$sub_projects ): ?>
+<?php elseif ( !$sub_projects ) : ?>
 	<p><?php _e( 'There are no translations of this project.', 'glotpress' ); ?></p>
 <?php endif; ?>
 
 
-<?php if ($sub_projects): ?>
+<?php if ( $sub_projects ) : ?>
 <div id="sub-projects">
 <h3><?php _e( 'Sub-projects', 'glotpress' ); ?></h3>
 <dl>
-<?php foreach($sub_projects as $sub_project): ?>
+<?php foreach ( $sub_projects as $sub_project ) : ?>
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>

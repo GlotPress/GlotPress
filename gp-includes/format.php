@@ -38,7 +38,7 @@ abstract class GP_Format {
 		$originals        = GP::$original->by_project_id( $project->id );
 		$new_translations = new Translations;
 
-		foreach( $translations->entries as $key => $entry ) {
+		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
 			// so we need to swap singular and translation
 			if ( $entry->context == $entry->singular ) {
@@ -49,7 +49,7 @@ abstract class GP_Format {
 
 			$entry->singular = null;
 
-			foreach( $originals as $original ) {
+			foreach ( $originals as $original ) {
 				if ( $original->context == $entry->context ) {
 					$entry->singular = $original->singular;
 					break;

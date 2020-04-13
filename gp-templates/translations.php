@@ -28,7 +28,7 @@ $i = 0;
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
 	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
-	<?php elseif ( $can_approve ): ?>
+	<?php elseif ( $can_approve ) : ?>
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class'=>'glossary-link') ); ?>
 	<?php endif; ?>
 </h2>

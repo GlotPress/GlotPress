@@ -58,7 +58,7 @@ class GP_Format_ResX extends GP_Format {
 		}
 
 		$entries = new Translations;
-		foreach( $data->data as $string ) {
+		foreach ( $data->data as $string ) {
 			$entry = new Translation_Entry();
 
 			if ( isset( $string['type'] ) && gp_in( 'System.Resources.ResXFileRef', (string)$string['type'] ) ) {

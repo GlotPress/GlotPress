@@ -75,7 +75,7 @@ class GP_Format_Android extends GP_Format {
 		$this->line( '<resources>' );
 		$string_array_items = array();
 
-		foreach( $entries as $entry ) {
+		foreach ( $entries as $entry ) {
 			if ( preg_match('/.+\[\d+\]$/', $entry->context ) ) {
 				// Array item found.
 				$string_array_items[] = $entry;
@@ -152,8 +152,7 @@ class GP_Format_Android extends GP_Format {
 		}
 
 		// Loop through all of the multiple strings we found in the XML file.
-		foreach ( $data->{'string-array'} as $string_array )
-		{
+		foreach ( $data->{'string-array'} as $string_array ) {
 			if ( isset( $string_array['translatable'] ) && 'false' == $string_array['translatable'] ) {
 				continue;
 			}

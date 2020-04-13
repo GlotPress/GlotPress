@@ -24,13 +24,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
-		if ( ! $translation_set ){
+		if ( ! $translation_set ) {
 			return $this->die_with_404();
 		}
 
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
-		if ( ! $glossary ){
+		if ( ! $glossary ) {
 			return $this->die_with_404();
 		}
 
@@ -60,7 +60,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ){
+		if ( ! $translation_set ) {
 			return $this->die_with_404();
 		}
 
@@ -117,7 +117,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$ge             = array_shift( $ge_post );
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
-		if ( ! $glossary_entry ){
+		if ( ! $glossary_entry ) {
 			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
 		}
 

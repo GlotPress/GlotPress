@@ -134,7 +134,7 @@ class GP_Format_Strings extends GP_Format {
 					$entry->context = $this->unescape( $matches[1] );
 					$entry->singular = $this->unescape( $matches[2] );
 
-					if ( ! is_null( $comment )) {
+					if ( ! is_null( $comment ) ) {
 						$entry->extracted_comments = $comment;
 						$comment = null;
 					}

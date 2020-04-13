@@ -200,7 +200,7 @@ class GP_Project extends GP_Thing {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
-		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] )) {
+		if ( ( isset( $args['path']) && !$args['path'] ) || !isset( $args['path'] ) || is_null( $args['path'] ) ) {
 			unset( $args['path'] );
 		}
 
@@ -263,7 +263,7 @@ class GP_Project extends GP_Thing {
 		}
 
 		$projects = $this->find( array( 'parent_project_id' => $parent_project_id ) );
-		foreach( (array)$projects as $project ) {
+		foreach ( (array)$projects as $project ) {
 			$project->update( array( 'path' => trim( gp_url_join( $path, $project->slug ), '/' ) ) );
 			$this->regenerate_paths( $project->id );
 		}
@@ -354,7 +354,7 @@ class GP_Project extends GP_Thing {
 	public function copy_sets_and_translations_from( $source_project_id ) {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
-		foreach( $sets as $to_add ) {
+		foreach ( $sets as $to_add ) {
 			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
 			if ( ! $new_set  ) {
 				$this->errors[] = sprintf(
@@ -396,7 +396,7 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
-	public function duplicate_project_contents_from( $source_project ){
+	public function duplicate_project_contents_from( $source_project ) {
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
 		//Duplicate originals, translations sets and translations for the root project
