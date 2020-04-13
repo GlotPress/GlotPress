@@ -17,5 +17,15 @@
     "forum": "https://wordpress.org/support/plugin/glotpress/",
     "source": "https://github.com/GlotPress/GlotPress-WP",
     "docs": "https://glotpress.blog/the-manual/"
+  },
+  "require-dev": {
+    "xwp/wp-dev-lib": "^1.5",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+    "wp-coding-standards/wpcs": "^2.2",
+    "phpcompatibility/phpcompatibility-wp": "^2.1"
+  },
+  "scripts": {
+    "format": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source",
+    "lint": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source"
   }
 }

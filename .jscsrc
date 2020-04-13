@@ -1,1 +1,9 @@
-dev-lib/.jscsrc
+{
+  "preset": "wordpress",
+  "excludeFiles": [
+    "**/*.min.js",
+    "**/*.jsx",
+    "**/node_modules/**",
+    "**/vendor/**"
+  ]
+}
