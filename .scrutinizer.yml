@@ -2,13 +2,13 @@
 build:
   nodes:
     analysis:
+      environment:
+        php:
+          version: 7.2
       dependencies:
         before:
           - composer require --dev johnpbloch/wordpress
       tests:
-        environment:
-          php:
-            version: 7.2
         override:
           - php-scrutinizer-run
 
