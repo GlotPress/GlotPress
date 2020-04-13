@@ -47,8 +47,16 @@
 		</properties>
 	</rule>
 
+	<!-- Set minimum supported WordPress version. -->
+	<config name="minimum_supported_wp_version" value="4.5"/>
+
+	<!-- Run against the PHPCompatibilityWP ruleset -->
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- GlotPress currently supports PHP 5.6+. -->
+	<config name="testVersion" value="5.6-"/>
+
 	<exclude-pattern>/tests/*</exclude-pattern>
-	<exclude-pattern>/dev-lib/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
