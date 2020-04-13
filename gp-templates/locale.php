@@ -87,7 +87,10 @@ if ( empty( $projects_data ) ) {
 					</div>
 				</th>
 				<?php foreach ( $data['sets'] as $set_id => $set_data ) : ?>
-					<?php reset( $data['sets'] ); if ( key( $data['sets'] ) !== $set_id ) echo '<tr>'; ?>
+					<?php
+					reset( $data['sets'] );
+					if ( key( $data['sets'] ) !== $set_id ) echo '<tr>';
+					?>
 					<td class="set-name">
 						<strong><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ) ), $set_data->name ); ?></strong>
 						<?php if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :

@@ -101,7 +101,9 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
+	uasort( $glossary_entries_terms, function( $a, $b ) {
+		return gp_strlen($a) < gp_strlen($b);
+	} );
 
 	return $glossary_entries_terms;
 }

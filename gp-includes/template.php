@@ -462,7 +462,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 }
 
 function gp_array_of_things_to_json( $array ) {
-	return wp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
+	return wp_json_encode(
+		array_map( function( $thing ) {
+				return $thing->fields();
+		}, $array )
+	);
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
