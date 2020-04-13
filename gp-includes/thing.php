@@ -42,13 +42,13 @@ class GP_Thing {
 		}
 		$this->set_fields( $fields );
 
-		if ( isset( self::$validation_rules_by_class[$this->class] ) ) {
-			$this->validation_rules = &self::$validation_rules_by_class[$this->class];
+		if ( isset( self::$validation_rules_by_class[ $this->class ] ) ) {
+			$this->validation_rules = &self::$validation_rules_by_class[ $this->class ];
 		} else {
 			$this->validation_rules = new GP_Validation_Rules( array_merge( $this->field_names, $this->non_db_field_names ) );
 			// we give the rules as a parameter here solely as a syntax sugar
 			$this->restrict_fields( $this->validation_rules );
-			self::$validation_rules_by_class[$this->class] = &$this->validation_rules;
+			self::$validation_rules_by_class[ $this->class ] = &$this->validation_rules;
 		}
 		if ( ! $this->get_static( 'static-vars-are-set' ) ) {
 			foreach ( get_class_vars( $this->class ) as $name => $value ) {
@@ -59,15 +59,15 @@ class GP_Thing {
 	}
 
 	public function get_static( $name, $default = null ) {
-		return isset( self::$static_by_class[$this->class][$name] ) ? self::$static_by_class[$this->class][$name] : $default;
+		return isset( self::$static_by_class[ $this->class ][ $name ] ) ? self::$static_by_class[ $this->class ][ $name ] : $default;
 	}
 
 	public function has_static( $name ) {
-		return isset( self::$static_by_class[$this->class][$name] );
+		return isset( self::$static_by_class[ $this->class ][ $name ] );
 	}
 
 	public function set_static( $name, $value ) {
-		self::$static_by_class[$this->class][$name] = $value;
+		self::$static_by_class[ $this->class ][ $name ] = $value;
 	}
 
 	// CRUD
@@ -463,11 +463,11 @@ class GP_Thing {
 		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
 		foreach ( $this->non_updatable_attributes as $attribute ) {
-			unset( $args[$attribute] );
+			unset( $args[ $attribute ] );
 		}
 		foreach ( $args as $key => $value ) {
 			if ( ! in_array( $key, $this->field_names ) ) {
-				unset( $args[$key] );
+				unset( $args[ $key ] );
 			}
 		}
 
@@ -623,7 +623,7 @@ class GP_Thing {
 		$result = array();
 		foreach ( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
 			if ( isset( $this->$field_name ) ) {
-				$result[$field_name] = $this->$field_name;
+				$result[ $field_name ] = $this->$field_name;
 			}
 		}
 		return $result;

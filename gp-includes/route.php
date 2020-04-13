@@ -350,7 +350,7 @@ class GP_Route {
 	public function header( $string ) {
 		if ( $this->fake_request ) {
 			list( $header, $value ) = explode( ':', $string, 2 );
-			$this->headers[$header] = $value;
+			$this->headers[ $header ] = $value;
 		} else {
 			header( $string );
 		}

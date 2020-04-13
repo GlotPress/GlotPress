@@ -40,8 +40,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$user = get_userdata( $entry->last_edited_by );
 
 			if ( $user ) {
-				$glossary_entries[$key]->user_login = $user->user_login;
-				$glossary_entries[$key]->user_display_name = $user->display_name;
+				$glossary_entries[ $key ]->user_login = $user->user_login;
+				$glossary_entries[ $key ]->user_display_name = $user->display_name;
 			}
 		}
 

@@ -160,7 +160,7 @@ class GP_Route_Profile extends GP_Route_Main {
 
 			// Skip admin permissions
 			if ( ! isset(  $object_id[1] ) ) {
-				unset( $permissions[$key] );
+				unset( $permissions[ $key ] );
 				continue;
 			}
 
@@ -174,7 +174,7 @@ class GP_Route_Profile extends GP_Route_Main {
 
 			// Skip permissions for non existing sets
 			if ( ! $set ) {
-				unset( $permissions[$key] );
+				unset( $permissions[ $key ] );
 				continue;
 			}
 
@@ -186,7 +186,7 @@ class GP_Route_Profile extends GP_Route_Main {
 				$permission = (object) array_merge( (array) $permission, (array) $translation_set );
 				$permission->set_id = $set->id;
 			} else {
-				unset( $permissions[$key] );
+				unset( $permissions[ $key ] );
 			}
 		}
 
@@ -205,7 +205,7 @@ class GP_Route_Profile extends GP_Route_Main {
 			 $this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
 		}
 
-		$project = $this->projects[$set->project_id];
+		$project = $this->projects[ $set->project_id ];
 
 		if ( ! $project ) {
 			return false;

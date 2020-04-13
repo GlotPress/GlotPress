@@ -48,7 +48,7 @@ if ( empty( $projects_data ) ) {
 
 <?php foreach ( $projects_data as $project_id => $sub_projects ) : ?>
 	<div class="locale-project">
-		<h3><?php echo ( $projects[$project_id]->name );?></h3>
+		<h3><?php echo ( $projects[ $project_id ]->name );?></h3>
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
@@ -64,7 +64,7 @@ if ( empty( $projects_data ) ) {
 			<?php foreach ( $sub_projects as $sub_project_id => $data ) : ?>
 				<tr>
 				<th class="sub-project" rowspan="<?php echo count( $data['sets'] );  ?>">
-					<?php if (count($sub_projects) > 1  ) echo esc_html( $projects[$sub_project_id]->name ); ?>
+					<?php if (count($sub_projects) > 1  ) echo esc_html( $projects[ $sub_project_id ]->name ); ?>
 					<div class="stats">
 						<div class="total-strings">
 							<?php

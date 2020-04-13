@@ -33,7 +33,7 @@ gp_tmpl_header();
 	$format_options = array();
 	$format_options[ 'auto' ] = __( 'Auto Detect', 'glotpress' );
 	foreach ( GP::$formats as $slug => $format ) {
-		$format_options[$slug] = $format->name;
+		$format_options[ $slug ] = $format->name;
 	}
 	$format_dropdown = gp_select( 'format', $format_options, 'auto' );
 

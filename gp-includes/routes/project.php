@@ -87,7 +87,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$source_url_templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
 		if ( ! is_array( $source_url_templates ) ) $source_url_templates = array();
-		$source_url_templates[$project->id] = gp_post( 'source-url-template' );
+		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
 			$this->notices[] = 'Source URL template was successfully updated.';
 		} else {

@@ -63,7 +63,7 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[$key] ) ? $array[$key] : $default;
+	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
@@ -150,7 +150,7 @@ function gp_populate_notices() {
 	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
 	foreach ( $_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) ) ) {
-			GP::$redirect_notices[$suffix] = wp_unslash( $value );
+			GP::$redirect_notices[ $suffix ] = wp_unslash( $value );
 			gp_set_cookie( $key, '', 0, $cookie_path );
 		}
 	}

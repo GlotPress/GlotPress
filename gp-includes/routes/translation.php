@@ -691,9 +691,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		 */
 		do_action_ref_array( 'gp_warning_discarded', $warning );
 
-		unset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] );
-		if ( empty( $translation->warnings[gp_post( 'index' )] ) ) {
-			unset( $translation->warnings[gp_post( 'index' )] );
+		unset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] );
+		if ( empty( $translation->warnings[ gp_post( 'index' ) ] ) ) {
+			unset( $translation->warnings[ gp_post( 'index' ) ] );
 		}
 
 		$res = $translation->save();

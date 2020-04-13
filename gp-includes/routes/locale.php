@@ -51,10 +51,10 @@ class GP_Route_Locale extends GP_Route_Main {
 
 			// Store project data for later use
 			if ( isset( $projects[ $set->project_id ] ) ) {
-				$set_project = $projects[$set->project_id];
+				$set_project = $projects[ $set->project_id ];
 			} else {
 				$set_project = GP::$project->get( $set->project_id );
-				$projects[$set->project_id] = $set_project;
+				$projects[ $set->project_id ] = $set_project;
 			}
 
 			// We only want to list active projects
@@ -65,43 +65,43 @@ class GP_Route_Locale extends GP_Route_Main {
 			$parent_id = is_null( $set_project->parent_project_id ) ? $set_project->id : $set_project->parent_project_id;
 
 			// Store parent project data for later use
-			if ( isset( $projects[$parent_id] ) ) {
-				$parent_project = $projects[$parent_id];
+			if ( isset( $projects[ $parent_id ] ) ) {
+				$parent_project = $projects[ $parent_id ];
 			} else {
 				$parent_project = GP::$project->get( $parent_id );
-				$projects[$parent_id] = $parent_project;
+				$projects[ $parent_id ] = $parent_project;
 			}
 
 			// Store parent id for
-			$parents[$set_project->id] = $parent_id;
+			$parents[ $set_project->id ] = $parent_id;
 
 			if ( ! in_array( $set_project->parent_project_id, $locale_projects ) ) {
-				$projects_data[$parent_id][$set_project->id]['project'] = $set_project;
-				$projects_data[$parent_id][$set_project->id]['sets'][$set->id] = $this->set_data( $set, $set_project );
-				$projects_data[$parent_id][$set_project->id]['totals'] = $this->set_data( $set, $set_project );
+				$projects_data[ $parent_id ][ $set_project->id ]['project'] = $set_project;
+				$projects_data[ $parent_id ][ $set_project->id ]['sets'][ $set->id ] = $this->set_data( $set, $set_project );
+				$projects_data[ $parent_id ][ $set_project->id ]['totals'] = $this->set_data( $set, $set_project );
 
-				if ( ! isset( $projects_data[$parent_id][$set_project->id]['project'] ) ) {
-					$projects_data[$parent_id][$set_project->id]['project'] = $set_project;
+				if ( ! isset( $projects_data[ $parent_id ][ $set_project->id ]['project'] ) ) {
+					$projects_data[ $parent_id ][ $set_project->id ]['project'] = $set_project;
 				}
 			} else {
-				while ( ! in_array( $parent_id, array_keys( $projects_data ) ) && isset( $parents[$parent_id] ) ) {
+				while ( ! in_array( $parent_id, array_keys( $projects_data ) ) && isset( $parents[ $parent_id ] ) ) {
 					$previous_parent = $parent_id;
-					$parent_id = $parents[$parent_id];
+					$parent_id = $parents[ $parent_id ];
 				}
 
 				//Orphan project - a sub project is set to active, while it's parent isn't
-				if ( ! isset( $projects_data[$parent_id] ) ) {
+				if ( ! isset( $projects_data[ $parent_id ] ) ) {
 					continue;
 				}
 
 				//For when root project has sets, and sub projects.
-				if ( ! isset( $previous_parent ) || ! isset( $projects_data[$parent_id][$previous_parent] ) ) {
+				if ( ! isset( $previous_parent ) || ! isset( $projects_data[ $parent_id ][ $previous_parent ] ) ) {
 					$previous_parent = $parent_id;
 				}
 
-				$set_data = $projects_data[$parent_id][$previous_parent]['totals'];
-				$projects_data[$parent_id][$previous_parent]['sets'][$set->id] = $this->set_data( $set, $set_project  );
-				$projects_data[$parent_id][$previous_parent]['totals'] = $this->set_data( $set, $set_project, $set_data );
+				$set_data = $projects_data[ $parent_id ][ $previous_parent ]['totals'];
+				$projects_data[ $parent_id ][ $previous_parent ]['sets'][ $set->id ] = $this->set_data( $set, $set_project  );
+				$projects_data[ $parent_id ][ $previous_parent ]['totals'] = $this->set_data( $set, $set_project, $set_data );
 			}
 		}
 

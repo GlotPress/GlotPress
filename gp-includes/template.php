@@ -130,7 +130,7 @@ function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v )
 		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
-			$clean_args[$k] = $v;
+			$clean_args[ $k ] = $v;
 	return $clean_args;
 }
 
@@ -422,9 +422,9 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	$tree = array();
 	$top = array();
 	foreach ( $projects as $p ) {
-		$tree[$p->id]['self'] = $p;
+		$tree[ $p->id ]['self'] = $p;
 		if ( $p->parent_project_id ) {
-			$tree[$p->parent_project_id]['children'][] = $p->id;
+			$tree[ $p->parent_project_id ]['children'][] = $p->id;
 		} else {
 			$top[] = $p->id;
 		}
@@ -446,11 +446,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 				continue;
 			}
 
-			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
-			$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
-			foreach ( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
+			$tree[ $id ]['level'] = gp_array_get( $tree[ $id ], 'level', 0 );
+			$options[ $id ] = str_repeat( '-', $tree[ $id ]['level'] ) . $tree[ $id ]['self']->name;
+			foreach ( gp_array_get( $tree[ $id ], 'children', array() ) as $child_id ) {
 				$stack[] = $child_id;
-				$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
+				$tree[ $child_id ]['level'] = $tree[ $id ]['level'] + 1;
 			}
 		}
 	}

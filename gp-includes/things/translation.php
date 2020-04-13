@@ -227,7 +227,7 @@ class GP_Translation extends GP_Thing {
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				if ( isset( $args['translations'][ $i ] ) ) {
-					$args["translation_$i"] = $args['translations'][ $i ];
+					$args[ "translation_$i" ] = $args['translations'][ $i ];
 				}
 			}
 			unset( $args['translations'] );

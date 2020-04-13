@@ -39,7 +39,7 @@ class GP_Router {
 	}
 
 	public function add( $re, $function, $method = 'get' ) {
-		$this->urls["$method:$re"] = $function;
+		$this->urls[ "$method:$re" ] = $function;
 	}
 
 	public function prepend( $re, $function, $method = 'get' ) {
@@ -47,8 +47,8 @@ class GP_Router {
 	}
 
 	public function remove( $re, $method = 'get' ) {
-		if ( isset( $this->urls["$method:$re"] ) ) {
-			unset( $this->urls["$method:$re"] );
+		if ( isset( $this->urls[ "$method:$re" ] ) ) {
+			unset( $this->urls[ "$method:$re" ] );
 			return true;
 		}
 
