@@ -65,7 +65,7 @@ before_script:
     fi
 
 script:
-  - source $DEV_LIB_PATH/travis.script.sh
+  - source "$DEV_LIB_PATH/travis.script.sh"
 
 after_script:
     # Push coverage off to Codecov
