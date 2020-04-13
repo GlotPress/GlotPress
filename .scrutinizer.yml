@@ -1,4 +1,11 @@
 #  Scrutinizer Configuration File
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run
+
 filter:
   excluded_paths: [tests/*]
 
