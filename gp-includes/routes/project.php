@@ -87,7 +87,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$source_url_templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
 		if ( ! is_array( $source_url_templates ) ) $source_url_templates = array();
-		$source_url_templates[$project->id] = gp_post( 'source-url-template' );
+		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
 			$this->notices[] = 'Source URL template was successfully updated.';
 		} else {
@@ -132,7 +132,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES[ 'import-file' ][ 'name' ] );
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] );
 
 		if ( ! $format ) {
 			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
@@ -380,11 +380,11 @@ class GP_Route_Project extends GP_Route_Main {
 				return;
 			}
 			$new_permission = new GP_Validator_Permission( array(
-				'user_id' => $user->ID,
-				'action' => 'approve',
-				'project_id' => $project->id,
+				'user_id'     => $user->ID,
+				'action'      => 'approve',
+				'project_id'  => $project->id,
 				'locale_slug' => gp_post( 'locale' ),
-				'set_slug' => gp_post( 'set-slug' ),
+				'set_slug'    => gp_post( 'set-slug' ),
 			) );
 			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) return;
 			$permission = GP::$validator_permission->create( $new_permission );
@@ -459,7 +459,12 @@ class GP_Route_Project extends GP_Route_Main {
 		$changes = $project->set_difference_from( $other_project );
 
 		foreach ( $changes['added'] as $to_add ) {
-			if ( ! GP::$translation_set->create( array('project_id' => $project->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug) ) ) {
+			if ( ! GP::$translation_set->create( array(
+				'project_id' => $project->id,
+				'name'       => $to_add->name,
+				'locale'     => $to_add->locale,
+				'slug'       => $to_add->slug,
+			) ) ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set name. */
 					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),

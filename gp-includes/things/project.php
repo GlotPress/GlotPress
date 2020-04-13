@@ -293,8 +293,8 @@ class GP_Project extends GP_Thing {
 			return $this->user_source_url_template;
 		else {
 			if ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
-					 && isset( $templates[$this->id] ) ) {
-				$this->user_source_url_template = $templates[$this->id];
+					 && isset( $templates[ $this->id ] ) ) {
+				$this->user_source_url_template = $templates[ $this->id ];
 				return $this->user_source_url_template;
 			} else {
 				return $this->source_url_template;
@@ -342,8 +342,8 @@ class GP_Project extends GP_Thing {
 		}
 
 		return array(
-			'added' => $added,
-			'removed' => $removed
+			'added'   => $added,
+			'removed' => $removed,
 		);
 	}
 
@@ -355,7 +355,12 @@ class GP_Project extends GP_Thing {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
 		foreach ( $sets as $to_add ) {
-			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
+			$new_set = GP::$translation_set->create( array(
+				'project_id' => $this->id,
+				'name'       => $to_add->name,
+				'locale'     => $to_add->locale,
+				'slug'       => $to_add->slug,
+			) );
 			if ( ! $new_set  ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set. */
@@ -405,17 +410,17 @@ class GP_Project extends GP_Thing {
 
 		//Keep a list of parents to preserve hierarchy
 		$parents = array();
-		$parents[$source_project->id] = $this->id;
+		$parents[ $source_project->id ] = $this->id;
 
 		//Duplicate originals, translations sets and translations for the child projects
 		foreach ( $source_sub_projects as $sub ) {
 			$copy_project = new GP_Project( $sub->fields() );
-			$copy_project->parent_project_id = $parents[$sub->parent_project_id];
+			$copy_project->parent_project_id = $parents[ $sub->parent_project_id ];
 			$parent_project = $copy_project->get( $copy_project->parent_project_id );
 
 			$copy_project->path = gp_url_join( $parent_project->path, $copy_project->slug );
 			$copy = GP::$project->create( $copy_project );
-			$parents[$sub->id] = $copy->id;
+			$parents[ $sub->id ] = $copy->id;
 
 			$copy->copy_originals_from( $sub->id );
 			$copy->copy_sets_and_translations_from( $sub->id );

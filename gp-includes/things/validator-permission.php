@@ -17,7 +17,7 @@ class GP_Validator_Permission extends GP_Permission {
 	var $table_basename = 'gp_permissions';
 	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
 	var $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
-	var $non_updatable_attributes = array( 'id', );
+	var $non_updatable_attributes = array( 'id' );
 
 	public $object_type;
 	public $project_id;

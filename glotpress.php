@@ -161,7 +161,12 @@ require_once GP_PATH . 'gp-settings.php';
 function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
-		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
+		GP::$permission->create(
+			array(
+				'user_id' => get_current_user_id(),
+				'action'  => 'admin',
+			)
+		);
 	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );

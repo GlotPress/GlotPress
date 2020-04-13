@@ -16,7 +16,10 @@ class GP_CLI_Add_Admin extends WP_CLI_Command {
 				/* translators: %s: Username */
 				WP_CLI::error( sprintf( __( "User '%s' doesn't exist.", 'glotpress' ), $user_login ) );
 			}
-			if ( ! GP::$permission->create( array( 'user_id' => $user_to_make_admin->ID, 'action' => 'admin' ) ) ) {
+			if ( ! GP::$permission->create( array(
+				'user_id' => $user_to_make_admin->ID,
+				'action'  => 'admin',
+			) ) ) {
 				/* translators: %s: Username */
 				WP_CLI::error( sprintf( __( "Error in making '%s' an admin.", 'glotpress' ), $user_login ) );
 			}

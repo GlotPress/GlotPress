@@ -176,7 +176,12 @@ class GP_Translation_Set extends GP_Thing {
 		    WHERE slug = %s AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
 
 		if ( ! $result && 0 === $project_id ) {
-			$result = $this->create( array( 'project_id' => $project_id, 'name' => GP_Locales::by_slug( $locale_slug )->english_name, 'slug' => $slug, 'locale' => $locale_slug ) );
+			$result = $this->create( array(
+				'project_id' => $project_id,
+				'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
+				'slug'       => $slug,
+				'locale'     => $locale_slug,
+			) );
 		}
 
 		return $result;
@@ -230,7 +235,10 @@ class GP_Translation_Set extends GP_Thing {
 
 		$existing_translations = array();
 
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => 'current', 'translated' => 'yes' ) );
+		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
+			'status'     => 'current',
+			'translated' => 'yes',
+		) );
 		$existing_translations['current'] = new Translations();
 		foreach ( $current_translations_list as $entry ) {
 			$existing_translations['current']->add_entry( $entry );
@@ -277,7 +285,10 @@ class GP_Translation_Set extends GP_Thing {
 
 			// Lazy load other entries.
 			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
-				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => $entry->status, 'translated' => 'yes' ) );
+				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
+					'status'     => $entry->status,
+					'translated' => 'yes',
+				) );
 				$existing_translations[ $entry->status ] = new Translations();
 				foreach ( $existing_translations_list as $_entry ) {
 					$existing_translations[ $entry->status ]->add_entry( $_entry );

@@ -40,8 +40,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$user = get_userdata( $entry->last_edited_by );
 
 			if ( $user ) {
-				$glossary_entries[$key]->user_login = $user->user_login;
-				$glossary_entries[$key]->user_display_name = $user->display_name;
+				$glossary_entries[ $key ]->user_login = $user->user_login;
+				$glossary_entries[ $key ]->user_display_name = $user->display_name;
 			}
 		}
 
@@ -344,12 +344,12 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 
 			$entry_data = array(
-				'glossary_id' => $glossary_id,
-				'term' => $data[0],
-				'translation' => $data[1],
+				'glossary_id'    => $glossary_id,
+				'term'           => $data[0],
+				'translation'    => $data[1],
 				'part_of_speech' => $data[2],
-				'comment' => $data[3],
-				'last_edited_by' => get_current_user_id()
+				'comment'        => $data[3],
+				'last_edited_by' => get_current_user_id(),
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );

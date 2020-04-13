@@ -81,7 +81,10 @@ class GP_Translation_Warnings {
 				continue;
 			}
 
-			$skip = array( 'singular' => false, 'plural' => false );
+			$skip = array(
+				'singular' => false,
+				'plural'   => false,
+			);
 			if ( null !== $plural ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
 				if ( 1 === $locale->nplurals ) {

@@ -72,10 +72,16 @@ class GP_Validation_Rules {
 	public $field_names;
 
 	static $positive_suffices = array(
-		'should_be', 'should', 'can', 'can_be',
+		'should_be',
+		'should',
+		'can',
+		'can_be',
 	);
 	static $negative_suffices = array(
-		'should_not_be', 'should_not', 'cant', 'cant_be',
+		'should_not_be',
+		'should_not',
+		'cant',
+		'cant_be',
 	);
 
 	public function __construct( $field_names ) {
@@ -88,7 +94,12 @@ class GP_Validation_Rules {
 			foreach ( self::$$suffices as $suffix ) {
 				foreach ( $this->field_names as $field_name ) {
 					if ( "{$field_name}_{$suffix}" == $name ) {
-						$this->rules[$field_name][] = array( 'field' => $field_name, 'rule' => $args[0], 'kind' => $kind, 'args' => array_slice( $args, 1 ) );
+						$this->rules[ $field_name ][] = array(
+							'field' => $field_name,
+							'rule'  => $args[0],
+							'kind'  => $kind,
+							'args'  => array_slice( $args, 1 ),
+						);
 						return true;
 					}
 				}
@@ -111,13 +122,13 @@ class GP_Validation_Rules {
 	}
 
 	public function run_on_single_field( $field, $value ) {
-		if ( ! isset( $this->rules[$field] ) || ! is_array( $this->rules[$field] ) ) {
+		if ( ! isset( $this->rules[ $field ] ) || ! is_array( $this->rules[ $field ] ) ) {
 			// no rules means always valid
 			return true;
 		}
 		$verdict = true;
 
-		foreach ( $this->rules[$field] as $rule ) {
+		foreach ( $this->rules[ $field ] as $rule ) {
 			$callback = GP_Validators::get( $rule['rule'] );
 			if ( is_null( $callback ) ) {
 				trigger_error(
@@ -176,11 +187,14 @@ class GP_Validators {
 
 	static public function register( $key, $callback, $negative_callback = null ) {
 		// TODO: add data for easier generation of error messages
-		self::$callbacks[$key] = array( 'positive' => $callback, 'negative' => $negative_callback );
+		self::$callbacks[ $key ] = array(
+			'positive' => $callback,
+			'negative' => $negative_callback,
+		);
 	}
 
 	static public function unregister( $key ) {
-		unset( self::$callbacks[$key] );
+		unset( self::$callbacks[ $key ] );
 	}
 
 	static public function get( $key ) {
@@ -195,4 +209,3 @@ GP_Validators::register( 'int', 'gp_is_int' );
 GP_Validators::register( 'null', 'gp_is_null' );
 GP_Validators::register( 'between', 'gp_is_between' );
 GP_Validators::register( 'between_exclusive', 'gp_is_between_exclusive' );
-

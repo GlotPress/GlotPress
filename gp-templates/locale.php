@@ -48,7 +48,7 @@ if ( empty( $projects_data ) ) {
 
 <?php foreach ( $projects_data as $project_id => $sub_projects ) : ?>
 	<div class="locale-project">
-		<h3><?php echo ( $projects[$project_id]->name );?></h3>
+		<h3><?php echo ( $projects[ $project_id ]->name );?></h3>
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
@@ -64,7 +64,7 @@ if ( empty( $projects_data ) ) {
 			<?php foreach ( $sub_projects as $sub_project_id => $data ) : ?>
 				<tr>
 				<th class="sub-project" rowspan="<?php echo count( $data['sets'] );  ?>">
-					<?php if (count($sub_projects) > 1  ) echo esc_html( $projects[$sub_project_id]->name ); ?>
+					<?php if (count($sub_projects) > 1  ) echo esc_html( $projects[ $sub_project_id ]->name ); ?>
 					<div class="stats">
 						<div class="total-strings">
 							<?php
@@ -96,10 +96,16 @@ if ( empty( $projects_data ) ) {
 							<span class="bubble morethan90"><?php echo $percent; ?>%</span>
 						<?php endif;?>
 					</td>
-					<td class="stats translated"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array('filters[translated]' => 'yes', 'filters[status]' => 'current') ), absint( $set_data->current_count ) ); ?></td>
-					<td class="stats fuzzy"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array('filters[status]' => 'fuzzy' ) ), absint( $set_data->fuzzy_count ) ); ?></td>
-					<td class="stats untranslated"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array('filters[status]' => 'untranslated' ) ), absint( $set_data->all_count ) - absint( $set_data->current_count ) ); ?></td>
-					<td class="stats waiting"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array('filters[translated]' => 'yes', 'filters[status]' => 'waiting') ), absint( $set_data->waiting_count ) ); ?></td>
+					<td class="stats translated"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array(
+						'filters[translated]' => 'yes',
+						'filters[status]'     => 'current',
+					) ), absint( $set_data->current_count ) ); ?></td>
+					<td class="stats fuzzy"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array( 'filters[status]' => 'fuzzy' ) ), absint( $set_data->fuzzy_count ) ); ?></td>
+					<td class="stats untranslated"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array( 'filters[status]' => 'untranslated' ) ), absint( $set_data->all_count ) - absint( $set_data->current_count ) ); ?></td>
+					<td class="stats waiting"><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ), array(
+						'filters[translated]' => 'yes',
+						'filters[status]'     => 'waiting',
+					) ), absint( $set_data->waiting_count ) ); ?></td>
 					</tr>
 				<?php endforeach; //sub project slugs ?>
 				</tr>

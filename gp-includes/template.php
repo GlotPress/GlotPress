@@ -59,11 +59,11 @@ function gp_tmpl_get_output() {
 	return $contents;
 }
 
-function gp_tmpl_header( $args = array( ) ) {
+function gp_tmpl_header( $args = array() ) {
 	gp_tmpl_load( 'header', $args );
 }
 
-function gp_tmpl_footer( $args = array( ) ) {
+function gp_tmpl_footer( $args = array() ) {
 	gp_tmpl_load( 'footer', $args );
 }
 
@@ -130,12 +130,15 @@ function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v )
 		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
-			$clean_args[$k] = $v;
+			$clean_args[ $k ] = $v;
 	return $clean_args;
 }
 
 function gp_tmpl_404( $args = array() ) {
-	gp_tmpl_load( '404', $args + array('title' => __('Not Found', 'glotpress' ), 'http_status' => 404 ) );
+	gp_tmpl_load( '404', $args + array(
+		'title'       => __( 'Not Found', 'glotpress' ),
+		'http_status' => 404,
+	) );
 	exit();
 }
 
@@ -278,12 +281,12 @@ function gp_pagination( $page, $per_page, $objects ) {
 	if ( $page > $pages ) return '';
 
 	if ( $page > 1 )
-		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array('class' => 'previous') );
+		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array( 'class' => 'previous' ) );
 	else
 		$prev = '<span class="previous disabled">&larr;</span>';
 
 	if ( $page < $pages )
-		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1)), '&rarr;', array('class' => 'next') );
+		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 )), '&rarr;', array( 'class' => 'next' ) );
 	else
 		$next = '<span class="next disabled">&rarr;</span>';
 
@@ -422,9 +425,9 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	$tree = array();
 	$top = array();
 	foreach ( $projects as $p ) {
-		$tree[$p->id]['self'] = $p;
+		$tree[ $p->id ]['self'] = $p;
 		if ( $p->parent_project_id ) {
-			$tree[$p->parent_project_id]['children'][] = $p->id;
+			$tree[ $p->parent_project_id ]['children'][] = $p->id;
 		} else {
 			$top[] = $p->id;
 		}
@@ -446,11 +449,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 				continue;
 			}
 
-			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
-			$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
-			foreach ( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
+			$tree[ $id ]['level'] = gp_array_get( $tree[ $id ], 'level', 0 );
+			$options[ $id ] = str_repeat( '-', $tree[ $id ]['level'] ) . $tree[ $id ]['self']->name;
+			foreach ( gp_array_get( $tree[ $id ], 'children', array() ) as $child_id ) {
 				$stack[] = $child_id;
-				$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
+				$tree[ $child_id ]['level'] = $tree[ $id ]['level'] + 1;
 			}
 		}
 	}
@@ -516,7 +519,7 @@ function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
 		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
-		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( '', '-new', array( 'parent_project_id' => $project->id ) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch project', 'glotpress' ) ),

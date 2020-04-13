@@ -63,7 +63,7 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[$key] ) ? $array[$key] : $default;
+	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
@@ -124,10 +124,19 @@ function gp_notice( $key = 'notice' ) {
 		'acronym' => array(),
 		'b'       => array(),
 		'br'      => array(),
-		'button'  => array( 'disabled' => true, 'name' => true, 'type' => true, 'value' => true ),
+		'button'  => array(
+			'disabled' => true,
+			'name'     => true,
+			'type'     => true,
+			'value'    => true,
+		),
 		'em'      => array(),
 		'i'       => array(),
-		'img'     => array( 'src' => true, 'width' => true, 'height' => true ),
+		'img'     => array(
+			'src'    => true,
+			'width'  => true,
+			'height' => true,
+		),
 		'p'       => array(),
 		'pre'     => array(),
 		's'       => array(),
@@ -150,7 +159,7 @@ function gp_populate_notices() {
 	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
 	foreach ( $_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) ) ) {
-			GP::$redirect_notices[$suffix] = wp_unslash( $value );
+			GP::$redirect_notices[ $suffix ] = wp_unslash( $value );
 			gp_set_cookie( $key, '', 0, $cookie_path );
 		}
 	}
@@ -558,11 +567,18 @@ function gp_wp_profile_options_update( $user_id ) {
 	$is_user_gp_admin = GP::$permission->user_can( $user_id, 'admin' );
 
 	if ( array_key_exists( 'gp_administrator', $_POST ) && ! $is_user_gp_admin ) {
-		GP::$administrator_permission->create( array( 'user_id' => $user_id, 'action' => 'admin', 'object_type' => null ) );
+		GP::$administrator_permission->create( array(
+			'user_id'     => $user_id,
+			'action'      => 'admin',
+			'object_type' => null,
+		) );
 	}
 
 	if ( ! array_key_exists( 'gp_administrator', $_POST ) && $is_user_gp_admin ) {
-		$current_perm = GP::$administrator_permission->find_one( array( 'user_id' => $user_id, 'action' => 'admin' ) );
+		$current_perm = GP::$administrator_permission->find_one( array(
+			'user_id' => $user_id,
+			'action'  => 'admin',
+		) );
 		$current_perm->delete();
 	}
 }
@@ -576,7 +592,7 @@ function gp_wp_profile_options_update( $user_id ) {
  */
 function gp_get_sort_by_fields() {
 	$sort_fields = array(
-		'original_date_added' => array(
+		'original_date_added'    => array(
 			'title'       => __( 'Date added (original)', 'glotpress' ),
 			'sql_sort_by' => 'o.date_added %s',
 		),
@@ -584,23 +600,23 @@ function gp_get_sort_by_fields() {
 			'title'       => __( 'Date added (translation)', 'glotpress' ),
 			'sql_sort_by' => 't.date_added %s',
 		),
-		'original' => array(
+		'original'               => array(
 			'title'       => __( 'Original string', 'glotpress' ),
 			'sql_sort_by' => 'o.singular %s',
 		),
-		'translation' => array(
+		'translation'            => array(
 			'title'       => __( 'Translation', 'glotpress' ),
 			'sql_sort_by' => 't.translation_0 %s',
 		),
-		'priority' => array(
+		'priority'               => array(
 			'title'       => __( 'Priority', 'glotpress' ),
 			'sql_sort_by' => 'o.priority %s, o.date_added DESC',
 		),
-		'references' => array(
+		'references'             => array(
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
 		),
-		'random' => array(
+		'random'                 => array(
 			'title'       => __( 'Random', 'glotpress' ),
 			'sql_sort_by' => 'o.priority DESC, RAND()',
 		),

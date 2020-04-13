@@ -293,7 +293,10 @@ class GP_Route_Translation extends GP_Route_Main {
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 
 
-			$existing_translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('original_id' => $original_id, 'status' => 'current_or_waiting' ), array() );
+			$existing_translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array(
+				'original_id' => $original_id,
+				'status'      => 'current_or_waiting',
+			), array() );
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
 					return $this->die_with_error( __( 'Identical current or waiting translation already exists.', 'glotpress' ), 200 );
@@ -321,7 +324,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					$translation->set_status( 'current' );
 				}
 
-				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id), array() );
+				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
 
 				if ( ! empty( $translations ) ) {
 					$translation = $translations[0];
@@ -638,7 +641,10 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
-		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array('translation_id' => $translation->id, 'status' => 'either'), array() );
+		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array(
+			'translation_id' => $translation->id,
+			'status'         => 'either',
+		), array() );
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 
@@ -669,11 +675,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$warning = array(
-			'project_id' => $project->id,
+			'project_id'      => $project->id,
 			'translation_set' => $translation_set->id,
-			'translation' => $translation->id,
-			'warning' => gp_post( 'key' ),
-			'user' => get_current_user_id()
+			'translation'     => $translation->id,
+			'warning'         => gp_post( 'key' ),
+			'user'            => get_current_user_id(),
 		);
 
 		/**
@@ -691,9 +697,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		 */
 		do_action_ref_array( 'gp_warning_discarded', $warning );
 
-		unset( $translation->warnings[gp_post( 'index' )][gp_post( 'key' )] );
-		if ( empty( $translation->warnings[gp_post( 'index' )] ) ) {
-			unset( $translation->warnings[gp_post( 'index' )] );
+		unset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] );
+		if ( empty( $translation->warnings[ gp_post( 'index' ) ] ) ) {
+			unset( $translation->warnings[ gp_post( 'index' ) ] );
 		}
 
 		$res = $translation->save();

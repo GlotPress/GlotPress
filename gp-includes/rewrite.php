@@ -27,8 +27,8 @@ function gp_generate_rewrite_rules( $gp_base = false ) {
 		$rules['$'] = 'index.php?gp_route';
 		$rules['^(.*)$'] = 'index.php?gp_route=$matches[1]';
 	} else {
-		$rules['^' . $gp_base . '$'] = 'index.php?gp_route';
-		$rules['^' . $gp_base . '\/+(.*)$'] = 'index.php?gp_route=$matches[1]';
+		$rules[ '^' . $gp_base . '$' ] = 'index.php?gp_route';
+		$rules[ '^' . $gp_base . '\/+(.*)$' ] = 'index.php?gp_route=$matches[1]';
 	}
 
 	return $rules;

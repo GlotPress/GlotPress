@@ -12,7 +12,10 @@ gp_breadcrumb( array(
 	gp_link_get( $url, $translation_set->name ),
 ) );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
-wp_localize_script( 'gp-translations-page', '$gp_translations_options', array( 'sort' => __( 'Sort', 'glotpress' ), 'filter' => __( 'Filter', 'glotpress' ) ) );
+wp_localize_script( 'gp-translations-page', '$gp_translations_options', array(
+	'sort'   => __( 'Sort', 'glotpress' ),
+	'filter' => __( 'Filter', 'glotpress' ),
+) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'new_note_url', 'edit_note_url', 'delete_note_url' );
@@ -34,9 +37,9 @@ $i = 0;
 	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
-	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array('class' => 'glossary-link') ); ?>
+	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
 	<?php elseif ( $can_approve ) : ?>
-		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array('class' => 'glossary-link') ); ?>
+		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
 	<?php endif; ?>
 </h2>
 <?php
@@ -207,12 +210,12 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 						'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
 						array(
 							'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-							'current' => __( 'Current only', 'glotpress' ),
-							'old' => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
-							'waiting' => __( 'Waiting approval', 'glotpress' ),
-							'rejected' => __( 'Rejected', 'glotpress' ),
-							'untranslated' => __( 'Without current translation', 'glotpress' ),
-							'either' => __( 'Any', 'glotpress' ),
+							'current'                                     => __( 'Current only', 'glotpress' ),
+							'old'                                         => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
+							'waiting'                                     => __( 'Waiting approval', 'glotpress' ),
+							'rejected'                                    => __( 'Rejected', 'glotpress' ),
+							'untranslated'                                => __( 'Without current translation', 'glotpress' ),
+							'either'                                      => __( 'Any', 'glotpress' ),
 						),
 						gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
 					);
@@ -264,7 +267,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			echo gp_radio_buttons(
 				'sort[how]',
 				array(
-					'asc' => __( 'Ascending', 'glotpress' ),
+					'asc'  => __( 'Ascending', 'glotpress' ),
 					'desc' => __( 'Descending', 'glotpress' ),
 				),
 				gp_array_get( $sort, 'how', $default_sort['how'] )
@@ -409,12 +412,18 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		}
 
 		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
-		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array('id' => 'export', 'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ) ) );
+		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array(
+			'id'      => 'export',
+			'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ),
+		) );
 		$format_options = array();
 		foreach ( GP::$formats as $slug => $format ) {
-			$format_options[$slug] = $format->name;
+			$format_options[ $slug ] = $format->name;
 		}
-		$what_dropdown = gp_select( 'what-to-export', array('all' => _x( 'all current', 'export choice', 'glotpress' ), 'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ) ), 'all' );
+		$what_dropdown = gp_select( 'what-to-export', array(
+			'all'      => _x( 'all current', 'export choice', 'glotpress' ),
+			'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
+		), 'all' );
 		$format_dropdown = gp_select( 'export-format', $format_options, 'po' );
 		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
 		$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );

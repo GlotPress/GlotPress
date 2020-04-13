@@ -334,7 +334,10 @@ class GP_Route {
 
 	public function die_with_404( $args = array() ) {
 		$this->status_header( 404 );
-		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
+		$this->tmpl( '404', $args + array(
+			'title'       => __( 'Not Found', 'glotpress' ),
+			'http_status' => 404,
+		) );
 		$this->exit_();
 	}
 
@@ -350,7 +353,7 @@ class GP_Route {
 	public function header( $string ) {
 		if ( $this->fake_request ) {
 			list( $header, $value ) = explode( ':', $string, 2 );
-			$this->headers[$header] = $value;
+			$this->headers[ $header ] = $value;
 		} else {
 			header( $string );
 		}
