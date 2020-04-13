@@ -75,7 +75,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			// Store parent id for
 			$parents[ $set_project->id ] = $parent_id;
 
-			if ( ! in_array( $set_project->parent_project_id, $locale_projects ) ) {
+			if ( ! in_array( $set_project->parent_project_id, $locale_projects, true ) ) {
 				$projects_data[ $parent_id ][ $set_project->id ]['project'] = $set_project;
 				$projects_data[ $parent_id ][ $set_project->id ]['sets'][ $set->id ] = $this->set_data( $set, $set_project );
 				$projects_data[ $parent_id ][ $set_project->id ]['totals'] = $this->set_data( $set, $set_project );
@@ -84,7 +84,7 @@ class GP_Route_Locale extends GP_Route_Main {
 					$projects_data[ $parent_id ][ $set_project->id ]['project'] = $set_project;
 				}
 			} else {
-				while ( ! in_array( $parent_id, array_keys( $projects_data ) ) && isset( $parents[ $parent_id ] ) ) {
+				while ( ! in_array( $parent_id, array_keys( $projects_data ), true ) && isset( $parents[ $parent_id ] ) ) {
 					$previous_parent = $parent_id;
 					$parent_id = $parents[ $parent_id ];
 				}

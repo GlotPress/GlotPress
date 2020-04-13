@@ -79,7 +79,7 @@ class GP_Route_Profile extends GP_Route_Main {
 
 		$i = 0;
 		foreach ( $translations as $translation ) {
-			if ( in_array( $translation->translation_set_id, $set_ids ) ) {
+			if ( in_array( $translation->translation_set_id, $set_ids, true ) ) {
 				continue;
 			}
 

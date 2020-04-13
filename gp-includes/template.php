@@ -410,8 +410,8 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
  * @param string $name_and_id         Name and ID of the select element.
  * @param string $selected_project_id The project id to mark as the currently selected.
  * @param array  $attrs               Extra attributes.
- * @param array  $exclude             An array of locales to exclude from the list.
- * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of locales.
+ * @param array  $exclude             An array of project IDs to exclude from the list.
+ * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of projects.
  *
  * @return string HTML markup for a select element.
  */
@@ -445,7 +445,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 		while ( ! empty( $stack ) ) {
 			$id = array_pop( $stack );
 
-			if ( in_array( $id, $exclude ) ) {
+			if ( in_array( $id, $exclude, true ) ) {
 				continue;
 			}
 
