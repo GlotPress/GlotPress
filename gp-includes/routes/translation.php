@@ -259,7 +259,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$output = array();
-		foreach ( gp_post( 'translation', array() ) as $original_id => $translations) {
+		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
 			$data = compact('original_id');
 			$data['user_id'] = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
@@ -304,7 +304,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			if ( ! $translation->validate() ) {
 				$error_output = '<ul>';
-				foreach ($translation->errors as $error) {
+				foreach ($translation->errors as $error ) {
 					$error_output .= '<li>' . $error . '</li>';
 				}
 				$error_output .= '</ul>';
@@ -417,7 +417,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				$error++;
 		}
 
-		if ( 0 === $error) {
+		if ( 0 === $error ) {
 			$this->notices[] = 'approve' == $action?
 					sprintf( _n('%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ), $ok ):
 					sprintf( _n('%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ), $ok );
@@ -515,7 +515,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 		}
 
-		if ( 0 === $error) {
+		if ( 0 === $error ) {
 			$this->notices[] = sprintf( _n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ), $ok );
 		} else {
 			if ( $ok > 0 ) {

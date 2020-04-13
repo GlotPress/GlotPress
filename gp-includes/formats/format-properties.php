@@ -216,7 +216,7 @@ class GP_Format_Properties extends GP_Format {
 
 			if ( $code < 224 ) {
 				$bytesnumber = 2;        //110xxxxx
-			} else if ($code < 240) {
+			} else if ($code < 240 ) {
 				$bytesnumber = 3;        //1110xxxx
 				$codetemp -= 32;
 			} else if ( $code < 248 ) {
@@ -413,7 +413,7 @@ class GP_Format_Properties extends GP_Format {
 				 */
 				$entry->singular = $this->uni_decode( $this->ascii_uni_encode( $value ) );
 
-				if ( ! is_null( $comment )) {
+				if ( ! is_null( $comment ) ) {
 					$entry->extracted_comments = $comment;
 					$comment = null;
 				}

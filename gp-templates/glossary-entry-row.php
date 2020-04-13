@@ -5,7 +5,7 @@
 	<td><?php echo esc_html( $entry->translation ); ?></td>
 	<td><?php echo make_clickable( nl2br( esc_html( $entry->comment ) ) ); ?></td>
 
-	<?php if ( $can_edit) : ?>
+	<?php if ( $can_edit ) : ?>
 	<td class="actions">
 		<ul>
 			<li><a href="#" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a></li>

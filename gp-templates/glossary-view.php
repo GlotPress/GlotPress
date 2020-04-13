@@ -39,7 +39,7 @@ if ( $glossary->description ) {
 			<th style="width:20%"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
 			<th style="width:20%"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
 			<th style="width:30%"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
-		<?php if ( $can_edit) : ?>
+		<?php if ( $can_edit ) : ?>
 			<th style="width:10%">&mdash;</th>
 		<?php endif; ?>
 		</tr>
