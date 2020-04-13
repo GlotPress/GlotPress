@@ -56,11 +56,10 @@ install:
   - source "$DEV_LIB_PATH/travis.install.sh"
 
 before_script:
-  - xmllint --version
   - |
-    # Remove Xdebug for a huge performance increase, but not from nightlies:
+    # Remove Xdebug for a huge performance increase, but not from nightlies or coverage job.
     stable='^[0-9\.]+$'
-    if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]]; then
+    if [[ "$TRAVIS_PHP_VERSION" =~ $stable ]] && [[ "$WP_TRAVISCI" != "codecoverage" ]]; then
       phpenv config-rm xdebug.ini
     fi
 
