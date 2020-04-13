@@ -17,8 +17,7 @@ gp_tmpl_header();
 <h2><?php _e( 'Mass-create Translation Sets', 'glotpress' ); ?></h2>
 <p>
 	<?php _e( 'Here you can mass-create translation sets in this project.', 'glotpress' ); ?><br>
-	<?php _e( 'The list of translation sets will be mirrored with the sets of a project you choose.', 'glotpress' ); ?><br>
-	<?php _e( 'Usually this is one of the parent projects.', 'glotpress' ); ?>
+	<?php _e( 'The list of translation sets will be mirrored with the sets of a project you choose. Usually this is one of the parent projects.', 'glotpress' ); ?>
 </p>
 <form action="<?php echo esc_url( gp_url_current() ); ?>" method="post">
 	<dl>
