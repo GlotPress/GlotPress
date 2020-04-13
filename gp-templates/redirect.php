@@ -1,1 +1,6 @@
-<?php printf( __( 'Redirecting to: %s...', 'glotpress' ), $url );
+<?php
+printf(
+	/* translators: %s: URL. */
+	__( 'Redirecting to: %s...', 'glotpress' ),
+	$url
+);

@@ -7,7 +7,14 @@
  * @since 2.0.0
  */
 
-gp_title( sprintf( __( 'Delete Translation Set &lt; %s &lt; %s &lt; GlotPress', 'glotpress' ), $set->name, $project->name ) );
+gp_title(
+	sprintf(
+		/* translators: 1: Translation set name. 2: Project name. */
+		__( 'Delete Translation Set &lt; %1$s &lt; %2$s &lt; GlotPress', 'glotpress' ),
+		$set->name,
+		$project->name
+	)
+);
 gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( $url, $locale->english_name . ( 'default' !== $set->slug ? ' ' . $set->name : '' ) ),
