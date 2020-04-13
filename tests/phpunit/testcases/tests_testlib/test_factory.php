@@ -74,7 +74,7 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	function test_factory_for_thing_generate_args_should_not_touch_args_if_different_generation_defintions() {
 		$factory = $this->create_factory( array('name') );
 		$args = array( 'name' => 'value' );
-		$this->assertEquals( $args, $factory->generate_args( $args ), array( 'other_name' => 5 ) );
+		$this->assertEquals( $args, $factory->generate_args( $args, array( 'other_name' => 5 ) ) );
 	}
 
 	function test_factory_for_thing_generate_args_should_set_undefined_scalar_values() {
