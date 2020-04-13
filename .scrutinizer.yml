@@ -1,6 +1,22 @@
 #  Scrutinizer Configuration File
+build:
+  nodes:
+    analysis:
+      environment:
+        php:
+          version: 7.2
+      dependencies:
+        before:
+          - composer require --dev johnpbloch/wordpress
+      tests:
+        override:
+          - php-scrutinizer-run
+
 filter:
-  excluded_paths: [tests/*]
+  dependency_paths:
+    - wordpress/
+  excluded_paths:
+    - tests/
 
 tools:
   external_code_coverage: false
