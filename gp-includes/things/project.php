@@ -356,7 +356,7 @@ class GP_Project extends GP_Thing {
 
 		foreach ( $sets as $to_add ) {
 			$new_set = GP::$translation_set->create( array( 'project_id' => $this->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug ) );
-			if ( ! $new_set  ) {
+			if ( ! $new_set ) {
 				$this->errors[] = sprintf( __( 'Couldn&#8217;t add translation set named %s', 'glotpress' ), esc_html( $to_add->name ) );
 			} else {
 				//Duplicate translations

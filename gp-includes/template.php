@@ -361,7 +361,7 @@ function gp_attrs_add_class( $attrs, $class_name ) {
  */
 function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_slug = null, $attrs = array() ) {
 	$locales = GP_Locales::locales();
-	if ( null != $project_id  ) {
+	if ( null != $project_id ) {
 		$sets = GP::$translation_set->by_project_id( $project_id );
 
 		$temp_locales = array();
