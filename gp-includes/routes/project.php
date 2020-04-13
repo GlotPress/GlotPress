@@ -149,6 +149,7 @@ class GP_Route_Project extends GP_Route_Main {
 		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = GP::$original->import_for_project( $project, $translations );
 
 		$notice = sprintf(
+			/* translators: 1: Added strings count. 2: Updated strings count. 3: Fuzzied strings count. 4: Obsoleted strings count. */
 			__( '%1$s new strings added, %2$s updated, %3$s fuzzied, and %4$s obsoleted.', 'glotpress' ),
 			$originals_added,
 			$originals_existing,
@@ -246,10 +247,18 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( $project->delete() ) {
-			$this->notices[] = sprintf( __( 'The project "%s" was deleted.', 'glotpress' ), $project->name );
+			$this->notices[] = sprintf(
+				/* translators: %s: Project name. */
+				__( 'The project "%s" was deleted.', 'glotpress' ),
+				$project->name
+			);
 		}
 		else {
-			$this->errors[] = sprintf( __( 'Error deleting project "%s"!', 'glotpress' ), $project->name );
+			$this->errors[] = sprintf(
+				/* translators: %s: Project name. */
+				__( 'Error deleting project "%s"!', 'glotpress' ),
+				$project->name
+			);
 		}
 
 		$this->redirect( gp_url_public_root() );
@@ -451,12 +460,20 @@ class GP_Route_Project extends GP_Route_Main {
 
 		foreach ( $changes['added'] as $to_add ) {
 			if ( !GP::$translation_set->create( array('project_id' => $project->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug) ) ) {
-				$this->errors[] = sprintf( __( 'Couldn&#8217;t add translation set named %s', 'glotpress' ), esc_html( $to_add->name ) );
+				$this->errors[] = sprintf(
+					/* translators: %s: Translation set name. */
+					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),
+					esc_html( $to_add->name )
+				);
 			}
 		}
 		foreach ( $changes['removed'] as $to_remove ) {
 			if ( !$to_remove->delete() ) {
-				$this->errors[] = sprintf( __( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ), esc_html( $to_remove->name ) );
+				$this->errors[] = sprintf(
+					/* translators: %s: Translation set name. */
+					__( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ),
+					esc_html( $to_remove->name )
+				);
 			}
 		}
 		if ( empty( $this->errors ) ) {

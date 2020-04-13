@@ -42,10 +42,21 @@ gp_tmpl_header();
 				<p><?php
 					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
 					echo gp_link_get( $project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
-						sprintf( _n( '%s contribution', '%s contributions',$project->count, 'glotpress' ), $project->count ) );
+						sprintf(
+							/* translators: %s: Count number. */
+							_n( '%s contribution', '%s contributions', $project->count, 'glotpress' ),
+							$project->count
+						)
+					);
 				?></p>
 				<p class="ago">
-					<?php printf( __( 'last translation about %s ago (UTC)', 'glotpress' ), human_time_diff( gp_gmt_strtotime( $project->last_updated ) ) ); ?>
+					<?php
+					printf(
+						/* translators: %s: Time since last update. */
+						__( 'last translation about %s ago (UTC)', 'glotpress' ),
+						human_time_diff( gp_gmt_strtotime( $project->last_updated ) )
+					);
+					?>
 				</p>
 			</li>
 		<?php endforeach; ?>
@@ -62,8 +73,16 @@ gp_tmpl_header();
 				</li>
 			<?php endforeach; ?>
 			</ul>
-		<?php else : ?>
-			<p><?php printf( __( '%s is not validating any projects!', 'glotpress' ), $user->display_name )?></p>
+		<?php else: ?>
+			<p>
+				<?php
+				printf(
+					/* translators: %s: User name. */
+					__( '%s is not validating any projects!', 'glotpress' ),
+					esc_html( $user->display_name )
+				);
+				?>
+			</p>
 		<?php endif ?>
 	</div>
 </div>

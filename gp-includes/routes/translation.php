@@ -100,7 +100,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations_added = $translation_set->import( $translations, $import_status );
-		$this->notices[] = sprintf( _n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ), $translations_added );
+		$this->notices[]    = sprintf(
+			/* translators: %s: Translations count. */
+			_n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ),
+			$translations_added
+		);
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
@@ -419,30 +423,54 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		if ( 0 === $error ) {
 			$this->notices[] = 'approve' == $action?
-					sprintf( _n('%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ), $ok ):
-					sprintf( _n('%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ), $ok );
+					sprintf(
+						/* translators: %d: Translations count. */
+						_n( '%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ),
+						$ok
+					) :
+					sprintf(
+						/* translators: %d: Translations count. */
+						_n( '%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ),
+						$ok
+					);
 		} else {
 			if ( $ok > 0 ) {
 				$message = 'approve' == $action?
-						sprintf( _n('Error with approving %s translation.', 'Error with approving %s translations.', $error, 'glotpress' ), $error ):
-						sprintf( _n('Error with rejecting %s translation.', 'Error with rejecting %s translations.', $error, 'glotpress' ), $error );
+						sprintf(
+							/* translators: %s: Translations count. */
+							_n( 'Error with approving %s translation.', 'Error with approving %s translations.', $error, 'glotpress' ),
+							$error
+						) :
+						sprintf(
+							/* translators: %s: Translations count. */
+							_n( 'Error with rejecting %s translation.', 'Error with rejecting %s translations.', $error, 'glotpress' ),
+							$error
+						);
 				$message .= ' ';
 				$message .= 'approve' == $action?
-						sprintf( _n(
-								'The remaining %s translation was approved successfully.',
-								'The remaining %s translations were approved successfully.', $ok, 'glotpress' ), $ok ):
-						sprintf( _n(
-								'The remaining %s translation was rejected successfully.',
-								'The remaining %s translations were rejected successfully.', $ok, 'glotpress' ), $ok );
+						sprintf(
+							/* translators: %s: Translations count. */
+							_n( 'The remaining %s translation was approved successfully.', 'The remaining %s translations were approved successfully.', $ok, 'glotpress' ),
+							$ok
+						) :
+						sprintf(
+							/* translators: %s: Translations count. */
+							_n( 'The remaining %s translation was rejected successfully.', 'The remaining %s translations were rejected successfully.', $ok, 'glotpress' ),
+							$ok
+						);
 				$this->errors[] = $message;
 			} else {
 				$this->errors[] = 'approve' == $action?
-						sprintf( _n(
-								'Error with approving %s translation.',
-								'Error with approving all %s translation.', $error, 'glotpress' ), $error ):
-						sprintf( _n(
-								'Error with rejecting %s translation.',
-								'Error with rejecting all %s translation.', $error, 'glotpress' ), $error );
+						sprintf(
+							/* translators: %s: Translations count. */
+							_n( 'Error with approving %s translation.', 'Error with approving all %s translations.', $error, 'glotpress' ),
+							$error
+						) :
+						sprintf(
+							/* translators: %s: Translations count. */
+							_n( 'Error with rejecting %s translation.', 'Error with rejecting all %s translations.', $error, 'glotpress' ),
+							$error
+						);
 			}
 		}
 	}
@@ -473,16 +501,32 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf( _n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ), $ok );
+			$this->notices[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ),
+				$ok
+			);
 		} else {
 			if ( $ok > 0 ) {
-				$message = sprintf( _n( 'Error with marking %s translation as fuzzy.', 'Error with marking %s translations as fuzzy.', $error, 'glotpress' ), $error );
+				$message  = sprintf(
+					/* translators: %d: Translations count. */
+					_n( 'Error with marking %d translation as fuzzy.', 'Error with marking %d translations as fuzzy.', $error, 'glotpress' ),
+					$error
+				);
 				$message .= ' ';
-				$message .= sprintf( _n( 'The remaining %s translation was marked as fuzzy successfully.', 'The remaining %s translations were marked as fuzzy successfully.', $ok, 'glotpress' ), $ok );
+				$message .= sprintf(
+					/* translators: %d: Translations count. */
+					_n( 'The remaining %d translation was marked as fuzzy successfully.', 'The remaining %d translations were marked as fuzzy successfully.', $ok, 'glotpress' ),
+					$ok
+				);
 
 				$this->errors[] = $message;
 			} else {
-				$this->errors[] = sprintf( _n( 'Error with marking %s translation as fuzzy.', 'Error with marking all %s translation as fuzzy.', $error, 'glotpress' ), $error );
+				$this->errors[] = sprintf(
+					/* translators: %d: Translations count. */
+					_n( 'Error with marking %d translation as fuzzy.', 'Error with marking all %d translation as fuzzy.', $error, 'glotpress' ),
+					$error
+				);
 			}
 		}
 	}
@@ -515,16 +559,32 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 		}
 
-		if ( 0 === $error ) {
-			$this->notices[] = sprintf( _n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ), $ok );
+		if ( 0 === $error) {
+			$this->notices[] = sprintf(
+				/* translators: %d: Originals count. */
+				_n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ),
+				$ok
+			);
 		} else {
 			if ( $ok > 0 ) {
-				$message = sprintf( _n( 'Error modifying priority of %d original.', 'Error modifying priority of %d originals.', $error, 'glotpress' ), $error );
-				$message.= sprintf( _n( 'The remaining %d original was modified successfully.', 'The remaining %d originals were modified successfully.', $ok, 'glotpress' ), $ok );
+				$message  = sprintf(
+					/* translators: %d: Originals count. */
+					_n( 'Error modifying priority of %d original.', 'Error modifying priority of %d originals.', $error, 'glotpress' ),
+					$error
+				);
+				$message .= sprintf(
+					/* translators: %d: Originals count. */
+					_n( 'The remaining %d original was modified successfully.', 'The remaining %d originals were modified successfully.', $ok, 'glotpress' ),
+					$ok
+				);
 
 				$this->errors[] = $message;
 			} else {
-				$this->errors[] = sprintf( _n( 'Error modifying priority of %d original.', 'Error modifying priority of all %d originals.', $error, 'glotpress' ), $error );
+				$this->errors[] = sprintf(
+					/* translators: %d: Originals count. */
+					_n( 'Error modifying priority of %d original.', 'Error modifying priority of all %d originals.', $error, 'glotpress' ),
+					$error
+				);
 			}
 		}
 

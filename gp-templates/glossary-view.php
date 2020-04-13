@@ -15,9 +15,11 @@ wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();
 
+/* translators: 1: Locale english name. 2: Project name. */
 $title = __( 'Glossary for %1$s translation of %2$s', 'glotpress' );
 if ( 0 === $project->id ) {
-	$title = __( 'Glossary for %1$s', 'glotpress' );
+	/* translators: %s: Locale english name. */
+	$title = __( 'Glossary for %s', 'glotpress' );
 }
 ?>
 

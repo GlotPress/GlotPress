@@ -1,5 +1,11 @@
 <?php
-gp_title( sprintf( __( 'Mass-create Translation Sets &lt; %s &lt; GlotPress', 'glotpress' ),  $project->name ) );
+gp_title(
+	sprintf(
+		/* translators: %s: Project name. */
+		__( 'Mass-create Translation Sets &lt; %s &lt; GlotPress', 'glotpress' ),
+		$project->name
+	)
+);
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( 'gp-mass-create-sets-page' );
 wp_localize_script( 'gp-mass-create-sets-page', '$gp_mass_create_sets_options', array(

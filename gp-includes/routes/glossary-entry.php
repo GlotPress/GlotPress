@@ -300,7 +300,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug );
 
 		if ( empty( $this->errors ) && is_int( $glossary_entries_added ) ) {
-			$this->notices[] = sprintf( __( '%s glossary entries were added', 'glotpress' ), $glossary_entries_added );
+			$this->notices[] = sprintf(
+				/* translators: %s: Count number. */
+				__( '%s glossary entries were added', 'glotpress' ),
+				$glossary_entries_added
+			);
 		}
 
 		$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );

@@ -1,5 +1,11 @@
 <?php
-gp_title( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), esc_html( $project->name ) ) );
+gp_title(
+	sprintf(
+		/* translators: %s: Project name. */
+		__( '%s &lt; GlotPress', 'glotpress' ),
+		esc_html( $project->name )
+	)
+);
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
 gp_enqueue_style( 'tablesorter-theme' );

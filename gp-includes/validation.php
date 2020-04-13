@@ -120,7 +120,13 @@ class GP_Validation_Rules {
 		foreach ( $this->rules[$field] as $rule ) {
 			$callback = GP_Validators::get( $rule['rule'] );
 			if ( is_null( $callback ) ) {
-				trigger_error( sprintf( __( 'Non-existent validator: %s', 'glotpress' ), $rule['rule'] ) );
+				trigger_error(
+					sprintf(
+						/* translators: %s: Rule. */
+						__( 'Non-existent validator: %s', 'glotpress' ),
+						$rule['rule']
+					)
+				);
 				continue;
 			}
 			$args = $rule['args'];
