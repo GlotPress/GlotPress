@@ -246,7 +246,7 @@ function gp_array_zip() {
 function gp_array_any( $callback, $array, $arg = null ) {
 	foreach ( $array as $item ) {
 		if ( is_array( $callback ) ) {
-			if (  $callback[0]->{$callback[1]}( $item, $arg ) ) {
+			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
 		} else {
