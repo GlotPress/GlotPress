@@ -46,7 +46,7 @@
 				<dt><?php _e( 'Last Modified:', 'glotpress' ); ?></dt>
 				<dd><?php echo $entry->date_modified; ?></dd>
 			</dl>
-			<?php if ( $entry->user_login ): ?>
+			<?php if ( $entry->user_login ) : ?>
 			<dl>
 				<dt><?php _ex( 'By:', 'by author', 'glotpress' ); ?></dt>
 				<dd><?php

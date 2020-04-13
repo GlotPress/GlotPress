@@ -98,7 +98,7 @@ if ( $glossary->description ) {
 </table>
 
 <p class="clear actionlist secondary">
-	<?php if ( $can_edit ): ?>
+	<?php if ( $can_edit ) : ?>
 		<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-import' ) ), __( 'Import', 'glotpress' ) ); ?>  &bull;&nbsp;
 	<?php endif; ?>
 

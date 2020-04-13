@@ -321,9 +321,9 @@ function references( $project, $entry ) {
 	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 		<?php
-		foreach ( $entry->references as $reference ):
+		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			if ( $source_url = $project->source_url( $file, $line ) ):
+			if ( $source_url = $project->source_url( $file, $line ) ) :
 				?>
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php
