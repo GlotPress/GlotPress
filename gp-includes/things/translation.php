@@ -337,7 +337,7 @@ class GP_Translation extends GP_Thing {
 		}
 
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
-		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
+		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC' );
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
