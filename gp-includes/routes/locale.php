@@ -27,7 +27,7 @@ class GP_Route_Locale extends GP_Route_Main {
 				$locales[] = GP_Locales::by_slug( $locale );
 			}
 
-			usort( $locales, array( $this, 'sort_locales') );
+			usort( $locales, array( $this, 'sort_locales' ) );
 		}
 
 		$this->tmpl( 'locales', get_defined_vars() );

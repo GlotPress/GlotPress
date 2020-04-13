@@ -216,7 +216,7 @@ class GP_Router {
 						$route->before_request();
 						$route->request_running = true;
 						// make sure after_request() is called even if we $this->exit_() in the request
-						register_shutdown_function( array( &$route, 'after_request') );
+						register_shutdown_function( array( &$route, 'after_request' ) );
 						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
 						$route->after_request();
 						$route->request_running = false;

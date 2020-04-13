@@ -278,12 +278,12 @@ function gp_pagination( $page, $per_page, $objects ) {
 	if ( $page > $pages ) return '';
 
 	if ( $page > 1 )
-		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array( 'class' => 'previous') );
+		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array( 'class' => 'previous' ) );
 	else
 		$prev = '<span class="previous disabled">&larr;</span>';
 
 	if ( $page < $pages )
-		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1)), '&rarr;', array( 'class' => 'next') );
+		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 )), '&rarr;', array( 'class' => 'next' ) );
 	else
 		$next = '<span class="next disabled">&rarr;</span>';
 
@@ -516,7 +516,7 @@ function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
 		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
-		gp_link_get( gp_url_project( '', '-new', array( 'parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( '', '-new', array( 'parent_project_id' => $project->id ) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch project', 'glotpress' ) ),

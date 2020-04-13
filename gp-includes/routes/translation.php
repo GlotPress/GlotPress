@@ -321,7 +321,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					$translation->set_status( 'current' );
 				}
 
-				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id), array() );
+				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
 
 				if ( ! empty( $translations ) ) {
 					$translation = $translations[0];

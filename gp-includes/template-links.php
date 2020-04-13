@@ -2,7 +2,7 @@
 
 function gp_link_get( $url, $text, $attrs = array() ) {
 	$before = $after = '';
-	foreach ( array( 'before', 'after') as $key ) {
+	foreach ( array( 'before', 'after' ) as $key ) {
 		if ( isset( $attrs[$key] ) ) {
 			$$key = $attrs[$key];
 			unset( $attrs[$key] );
