@@ -54,7 +54,7 @@ class GP_Validator_Permission extends GP_Permission {
 	}
 
 	public function prepare_fields_for_save( $args ) {
-		$args = (array)$args;
+		$args = (array) $args;
 		$args['object_type'] = $this->object_type;
 		if ( gp_array_get( $args, 'project_id' ) && gp_array_get( $args, 'locale_slug' )
 		 		&& gp_array_get( $args, 'set_slug' ) && ! gp_array_get( $args, 'object_id' ) ) {
@@ -73,7 +73,7 @@ class GP_Validator_Permission extends GP_Permission {
 	}
 
 	public function by_project_id( $project_id ) {
-		$project_id = (int)$project_id;
+		$project_id = (int) $project_id;
 		return $this->find_many( "object_id LIKE '$project_id|%'" );
 	}
 }

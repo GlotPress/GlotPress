@@ -349,10 +349,10 @@ class GP_Route_Project extends GP_Route_Main {
 			foreach ( $this_parent_permissions as $permission ) {
 				$permission->project = $parent_project;
 			}
-			$parent_permissions = array_merge( $parent_permissions, (array)$this_parent_permissions );
+			$parent_permissions = array_merge( $parent_permissions, (array) $this_parent_permissions );
 		}
 		// we can't join on users table
-		foreach ( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
+		foreach ( array_merge( (array) $permissions, (array) $parent_permissions ) as $permission ) {
 			$permission->user = get_user_by( 'id', $permission->user_id );
 		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
