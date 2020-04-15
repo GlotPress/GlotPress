@@ -1,8 +1,8 @@
 /tests/build
 
 # Composer
-composer.lock
-/vendor/
+/vendor
 
+# Node
 npm-debug.log
 node_modules

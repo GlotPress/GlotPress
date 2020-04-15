@@ -8,7 +8,7 @@ function gp_startswith( $haystack, $needle ) {
 }
 
 function gp_endswith( $haystack, $needle ) {
-	return $needle === substr( $haystack, -strlen( $needle ) );
+	return substr( $haystack, -strlen( $needle ) ) === $needle;
 }
 
 function gp_in( $needle, $haystack ) {
@@ -180,11 +180,11 @@ function gp_string_similarity( $str1, $str2 ) {
 */
 function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
-	if ( $length1 == 0 ) {
+	if ( 0 == $length1 ) {
 		return $length2;
 	}
 
-	if ( $length2 == 0 ) {
+	if ( 0 == $length2 ) {
 		return $length1;
 	}
 
@@ -207,15 +207,15 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 		$c1 = gp_substr( $str1, $i, 1 );
 		for ( $j = 0; $j < $length2; $j++ ) {
 			$c2 = gp_substr( $str2, $j, 1 );
-			$insertions = $prevRow[$j + 1] + 1;
-			$deletions = $currentRow[$j] + 1;
-			$substitutions = $prevRow[$j] + ( ( $c1 != $c2 ) ? 1 : 0 );
+			$insertions = $prevRow[ $j + 1 ] + 1;
+			$deletions = $currentRow[ $j ] + 1;
+			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
 			$currentRow[] = min( $insertions, $deletions, $substitutions );
 		}
 		$prevRow = $currentRow;
 	}
 
-	return $prevRow[$length2];
+	return $prevRow[ $length2 ];
 }
 
 /**

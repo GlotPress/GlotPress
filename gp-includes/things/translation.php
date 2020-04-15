@@ -221,13 +221,13 @@ class GP_Translation extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Translation object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				if ( isset( $args['translations'][ $i ] ) ) {
-					$args["translation_$i"] = $args['translations'][ $i ];
+					$args[ "translation_$i" ] = $args['translations'][ $i ];
 				}
 			}
 			unset( $args['translations'] );
@@ -288,16 +288,20 @@ class GP_Translation extends GP_Thing {
 		$rules->user_id_last_modified_should_not_be( 'empty_string' );
 	}
 
-
-	public function set_fields( $db_object ) {
-		parent::set_fields( $db_object );
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		parent::set_fields( $fields );
 		if ( $this->warnings ) {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
 
 	public function for_export( $project, $translation_set, $filters =  null ) {
-		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current_or_untranslated' ) );
+		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
@@ -328,12 +332,15 @@ class GP_Translation extends GP_Thing {
 		if ( ! is_array( $default_sort ) ) {
 			$default_sort = array(
 				'by'  => 'priority',
-				'how' => 'desc'
+				'how' => 'desc',
 			);
 		}
 
 		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
-		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
+		$sort_hows = array(
+			'asc'  => 'ASC',
+			'desc' => 'DESC',
+		);
 		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
@@ -426,8 +433,8 @@ class GP_Translation extends GP_Thing {
 		$join_on = array();
 		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
-		if ( in_array( 'untranslated', $statuses ) ) {
-			if ( $statuses == array( 'untranslated' ) ) {
+		if ( in_array( 'untranslated', $statuses, true ) ) {
+			if ( array( 'untranslated' ) == $statuses ) {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';
@@ -440,12 +447,12 @@ class GP_Translation extends GP_Thing {
 
 		$all_statuses = $this->get_static( 'statuses' );
 		$statuses = array_filter( $statuses, function( $s ) use ( $all_statuses ) {
-			return in_array( $s, $all_statuses );
+			return in_array( $s, $all_statuses, true );
 		} );
 
 		if ( ! empty( $statuses ) ) {
 			$statuses_where = array();
-			foreach( $statuses as $single_status ) {
+			foreach ( $statuses as $single_status ) {
 				$statuses_where[] = $wpdb->prepare( 'status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
@@ -566,7 +573,7 @@ class GP_Translation extends GP_Thing {
 		$this->found_rows = $this->found_rows();
 		$translations = array();
 
-		foreach( (array)$rows as $row ) {
+		foreach ( (array) $rows as $row ) {
 			if ( null === $row->id && $has_root ) {
 				$row->id                    = $row->root_id;
 				$row->original_id           = $row->root_original_id;
@@ -614,12 +621,12 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$row->translations = array();
-			for( $i = 0; $i < $locale->nplurals; $i++ ) {
+			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 				$row->translations[] = $row->{"translation_".$i};
 			}
 			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
 			$row->extracted_comments = $row->comment;
-			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
+			$row->warnings = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
 
 			// Reduce range by one since we're starting at 0, see GH#516.
@@ -627,8 +634,8 @@ class GP_Translation extends GP_Thing {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
-			$row->row_id = $row->original_id . ( $row->id? "-$row->id" : '' );
-			$translations[] = new Translation_Entry( (array)$row );
+			$row->row_id = $row->original_id . ( $row->id ? "-$row->id" : '' );
+			$translations[] = new Translation_Entry( (array) $row );
 		}
 		unset( $rows );
 		return $translations;
@@ -636,12 +643,27 @@ class GP_Translation extends GP_Thing {
 
 	public function set_as_current() {
 		$result = $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current' ) )
-		&& 	$this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting' ) )
+		array(
+			'original_id'        => $this->original_id,
+			'translation_set_id' => $this->translation_set_id,
+			'status'             => 'current',
+		) )
 		&& $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy' ) )
-		&& $this->save( array( 'status' => 'current', 'user_id_last_modified' => get_current_user_id() ) );
+		array(
+			'original_id'        => $this->original_id,
+			'translation_set_id' => $this->translation_set_id,
+			'status'             => 'waiting',
+		) )
+		&& $this->update( array( 'status' => 'old' ),
+		array(
+			'original_id'        => $this->original_id,
+			'translation_set_id' => $this->translation_set_id,
+			'status'             => 'fuzzy',
+		) )
+		&& $this->save( array(
+			'status'                => 'current',
+			'user_id_last_modified' => get_current_user_id(),
+		) );
 
 		return $result;
 	}
@@ -717,7 +739,10 @@ class GP_Translation extends GP_Thing {
 		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} else {
-			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );
+			$updated = $this->save( array(
+				'user_id_last_modified' => get_current_user_id(),
+				'status'                => $status,
+			) );
 		}
 
 		if ( $updated ) {

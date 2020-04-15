@@ -3,7 +3,7 @@ gp_title( __( 'View Glossary &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array(
 	gp_project_links_from_root( $project ),
 	gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-	__( 'Glossary', 'glotpress' )
+	__( 'Glossary', 'glotpress' ),
 ) );
 
 $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpress' );
@@ -15,9 +15,11 @@ wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();
 
+/* translators: 1: Locale english name. 2: Project name. */
 $title = __( 'Glossary for %1$s translation of %2$s', 'glotpress' );
 if ( 0 === $project->id ) {
-	$title = __( 'Glossary for %1$s', 'glotpress' );
+	/* translators: %s: Locale english name. */
+	$title = __( 'Glossary for %s', 'glotpress' );
 }
 ?>
 
@@ -39,7 +41,7 @@ if ( $glossary->description ) {
 			<th style="width:20%"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
 			<th style="width:20%"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
 			<th style="width:30%"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
-		<?php if ( $can_edit) : ?>
+		<?php if ( $can_edit ) : ?>
 			<th style="width:10%">&mdash;</th>
 		<?php endif; ?>
 		</tr>
@@ -47,7 +49,7 @@ if ( $glossary->description ) {
 	<tbody>
 <?php
 	if ( count( $glossary_entries ) > 0 ) {
-		foreach( $glossary_entries as $entry ) {
+		foreach ( $glossary_entries as $entry ) {
 			gp_tmpl_load( 'glossary-entry-row', get_defined_vars() );
 		}
 	}
@@ -98,7 +100,7 @@ if ( $glossary->description ) {
 </table>
 
 <p class="clear actionlist secondary">
-	<?php if( $can_edit ): ?>
+	<?php if ( $can_edit ) : ?>
 		<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-import' ) ), __( 'Import', 'glotpress' ) ); ?>  &bull;&nbsp;
 	<?php endif; ?>
 

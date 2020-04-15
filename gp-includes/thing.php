@@ -37,21 +37,21 @@ class GP_Thing {
 		global $wpdb;
 		$this->class = get_class( $this );
 		$this->table = $wpdb->{$this->table_basename};
-		foreach( $this->field_names as $field_name ) {
+		foreach ( $this->field_names as $field_name ) {
 			$this->$field_name = null;
 		}
 		$this->set_fields( $fields );
 
-		if ( isset( self::$validation_rules_by_class[$this->class] ) ) {
-			$this->validation_rules = &self::$validation_rules_by_class[$this->class];
+		if ( isset( self::$validation_rules_by_class[ $this->class ] ) ) {
+			$this->validation_rules = &self::$validation_rules_by_class[ $this->class ];
 		} else {
 			$this->validation_rules = new GP_Validation_Rules( array_merge( $this->field_names, $this->non_db_field_names ) );
 			// we give the rules as a parameter here solely as a syntax sugar
 			$this->restrict_fields( $this->validation_rules );
-			self::$validation_rules_by_class[$this->class] = &$this->validation_rules;
+			self::$validation_rules_by_class[ $this->class ] = &$this->validation_rules;
 		}
-		if ( !$this->get_static( 'static-vars-are-set' ) ) {
-			foreach( get_class_vars( $this->class ) as $name => $value ) {
+		if ( ! $this->get_static( 'static-vars-are-set' ) ) {
+			foreach ( get_class_vars( $this->class ) as $name => $value ) {
 				$this->set_static( $name, $value );
 			}
 			$this->set_static( 'static-vars-are-set', true );
@@ -59,15 +59,15 @@ class GP_Thing {
 	}
 
 	public function get_static( $name, $default = null ) {
-		return isset( self::$static_by_class[$this->class][$name] )? self::$static_by_class[$this->class][$name] : $default;
+		return isset( self::$static_by_class[ $this->class ][ $name ] ) ? self::$static_by_class[ $this->class ][ $name ] : $default;
 	}
 
 	public function has_static( $name ) {
-		return isset( self::$static_by_class[$this->class][$name] );
+		return isset( self::$static_by_class[ $this->class ][ $name ] );
 	}
 
 	public function set_static( $name, $value ) {
-		self::$static_by_class[$this->class][$name] = $value;
+		self::$static_by_class[ $this->class ][ $name ] = $value;
 	}
 
 	// CRUD
@@ -83,7 +83,11 @@ class GP_Thing {
 	 * Reloads the object data from the database, based on its id
 	 */
 	public function reload() {
-		$this->set_fields( $this->get( $this->id ) );
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Verified table name.
+		$fields = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table WHERE id = %d", $this->id ) );
+		$this->set_fields( $fields );
 		return $this;
 	}
 
@@ -109,7 +113,7 @@ class GP_Thing {
 		global $wpdb;
 		$args = func_get_args();
 		$res = $wpdb->get_var( $this->prepare( $args ) );
-		return is_null( $res )? false : $res;
+		return is_null( $res ) ? false : $res;
 	}
 
 	public function prepare( $args ) {
@@ -294,7 +298,7 @@ class GP_Thing {
 		$args = $this->prepare_fields_for_create( $args );
 		$field_formats = $this->get_db_field_formats( $args );
 		$res = $wpdb->insert( $this->table, $args, $field_formats );
-		if ( $res === false ) return false;
+		if ( false === $res ) return false;
 		$class = $this->class;
 		$inserted = new $class( $args );
 		$inserted->id = $wpdb->insert_id;
@@ -310,7 +314,7 @@ class GP_Thing {
 	 */
 	public function create_and_select( $args ) {
 		$created = $this->create( $args );
-		if ( !$created ) return false;
+		if ( ! $created ) return false;
 		$created->reload();
 		return $created;
 	}
@@ -322,21 +326,21 @@ class GP_Thing {
 	 */
 	public function update( $data, $where = null ) {
 		global $wpdb;
-		if ( !$data ) return false;
-		$where = is_null( $where )? array( 'id' => $this->id ) : $where;
+		if ( ! $data ) return false;
+		$where = is_null( $where ) ? array( 'id' => $this->id ) : $where;
 		$fields_for_save = $this->prepare_fields_for_save( $data );
 		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
 
 		$field_formats = $this->get_db_field_formats( $fields_for_save );
 		$where_formats = $this->get_db_field_formats( $where );
 
-		return !is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
+		return ! is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
 	}
 
 	public function get( $thing_or_id ) {
 		global $wpdb;
-		if ( !$thing_or_id ) return false;
-		$id = is_object( $thing_or_id )? $thing_or_id->id : $thing_or_id;
+		if ( ! $thing_or_id ) return false;
+		$id = is_object( $thing_or_id ) ? $thing_or_id->id : $thing_or_id;
 		return $this->find_one( array( 'id' => $id ) );
 	}
 
@@ -414,9 +418,15 @@ class GP_Thing {
 		return false;
 	}
 
-	public function set_fields( $db_object ) {
-		$db_object = $this->normalize_fields( $db_object );
-		foreach( $db_object as $key => $value ) {
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		$fields = (array) $fields;
+		$fields = $this->normalize_fields( $fields );
+		foreach ( $fields as $key => $value ) {
 			$this->$key = $value;
 		}
 	}
@@ -428,11 +438,18 @@ class GP_Thing {
 	 * @todo Include default type handling. For example dates 0000-00-00 should be set to null
 	 *
 	 * @since 1.0.0
+	 * @since 3.0.0 Normalizes int fields to be integers.
 	 *
 	 * @param array $args Arguments for a GP_Thing object.
 	 * @return array Normalized arguments for a GP_Thing object.
 	 */
 	public function normalize_fields( $args ) {
+		foreach ( $this->int_fields as $int_field ) {
+			if ( isset( $args[ $int_field ] ) ) {
+				$args[ $int_field ] = (int) $args[ $int_field ];
+			}
+		}
+
 		return $args;
 	}
 
@@ -442,19 +459,19 @@ class GP_Thing {
 	 *
 	 */
 	public function prepare_fields_for_save( $args ) {
-		$args = (array)$args;
+		$args = (array) $args;
 		$args = $this->normalize_fields( $args );
 		unset( $args['id'] );
-		foreach( $this->non_updatable_attributes as $attribute ) {
-			unset( $args[$attribute] );
+		foreach ( $this->non_updatable_attributes as $attribute ) {
+			unset( $args[ $attribute ] );
 		}
-		foreach( $args as $key => $value ) {
-			if ( !in_array( $key, $this->field_names ) ) {
-				unset( $args[$key] );
+		foreach ( $args as $key => $value ) {
+			if ( ! in_array( $key, $this->field_names, true ) ) {
+				unset( $args[ $key ] );
 			}
 		}
 
-		if ( in_array( 'date_modified', $this->field_names ) ) {
+		if ( in_array( 'date_modified', $this->field_names, true ) ) {
 			$args['date_modified'] = $this->now_in_mysql_format();
 		}
 
@@ -467,7 +484,7 @@ class GP_Thing {
 	}
 
 	public function prepare_fields_for_create( $args ) {
-		if ( in_array( 'date_added', $this->field_names ) ) {
+		if ( in_array( 'date_added', $this->field_names, true ) ) {
 			$args['date_added'] = $this->now_in_mysql_format();
 		}
 		return $args;
@@ -479,7 +496,7 @@ class GP_Thing {
 	}
 
 	public function coerce( $thing ) {
-		if ( !$thing || is_wp_error( $thing ) ) {
+		if ( ! $thing || is_wp_error( $thing ) ) {
 			return false;
 		} else {
 			$class = $this->class;
@@ -568,8 +585,8 @@ class GP_Thing {
 			$order_how = '';
 		}
 		$order_by = trim( $order_by );
-		if ( !$order_by ) return gp_member_get( $this, 'default_order' );
-		return 'ORDER BY ' . $order_by . ( $order_how? " $order_how" : '' );
+		if ( ! $order_by ) return gp_member_get( $this, 'default_order' );
+		return 'ORDER BY ' . $order_by . ( $order_how ? " $order_how" : '' );
 	}
 
 	public function select_all_from_conditions_and_order( $conditions, $order = null ) {
@@ -599,24 +616,24 @@ class GP_Thing {
 	}
 
 	public function force_false_to_null( $value ) {
-		return $value? $value : null;
+		return $value ? $value : null;
 	}
 
 	public function fields() {
 		$result = array();
-		foreach( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
+		foreach ( array_merge( $this->field_names, $this->non_db_field_names ) as $field_name ) {
 			if ( isset( $this->$field_name ) ) {
-				$result[$field_name] = $this->$field_name;
+				$result[ $field_name ] = $this->$field_name;
 			}
 		}
 		return $result;
 	}
 
 	public function sql_limit_for_paging( $page, $per_page = null ) {
-		$per_page = is_null( $per_page )? $this->per_page : $per_page;
+		$per_page = is_null( $per_page ) ? $this->per_page : $per_page;
 		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
-		$page = intval( $page )? intval( $page ) : 1;
-		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page-1)*$per_page );
+		$page = intval( $page ) ? intval( $page ) : 1;
+		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page - 1) * $per_page );
 	}
 
 	public function found_rows() {

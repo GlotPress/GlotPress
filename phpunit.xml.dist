@@ -9,8 +9,6 @@
 	<testsuites>
 		<testsuite name="glotpress">
 			<directory prefix="test_" suffix=".php">./tests/</directory>
-			<exclude>./tests/phpunit/testcases/tests_formats/test_format_json_pretty_print.php</exclude>
-			<file phpVersion="5.4.0">./tests/phpunit/testcases/tests_formats/test_format_json_pretty_print.php</file>
 		</testsuite>
 	</testsuites>
 

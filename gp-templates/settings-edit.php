@@ -42,7 +42,7 @@ if ( ! is_array( $default_sort ) ) {
 				echo gp_radio_buttons(
 					'default_sort[how]',
 					array(
-						'asc' => __( 'Ascending', 'glotpress' ),
+						'asc'  => __( 'Ascending', 'glotpress' ),
 						'desc' => __( 'Descending', 'glotpress' ),
 					),
 					gp_array_get( $default_sort, 'how', 'desc' )

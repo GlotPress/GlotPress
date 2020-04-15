@@ -15,9 +15,9 @@
 class GP_Permission extends GP_Thing {
 
 	var $table_basename = 'gp_permissions';
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id', );
+	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
 	var $int_fields = array( 'id', 'user_id' );
-	var $non_updatable_attributes = array( 'id', );
+	var $non_updatable_attributes = array( 'id' );
 
 	public $id;
 	public $user_id;
@@ -35,7 +35,7 @@ class GP_Permission extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Permission object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		foreach ( $this->field_names as $field_name ) {
 			if ( isset( $args[ $field_name ] ) ) {
@@ -112,7 +112,10 @@ class GP_Permission extends GP_Thing {
 		}
 
 		$verdict =
-			$this->find_one( array( 'action' => 'admin', 'user_id' => $user_id ) ) ||
+			$this->find_one( array(
+				'action'  => 'admin',
+				'user_id' => $user_id,
+			) ) ||
 			$this->find_one( $args ) ||
 			$this->find_one( array_merge( $args, array( 'object_id' => null ) ) );
 

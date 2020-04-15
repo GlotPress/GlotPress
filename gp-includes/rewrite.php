@@ -27,8 +27,8 @@ function gp_generate_rewrite_rules( $gp_base = false ) {
 		$rules['$'] = 'index.php?gp_route';
 		$rules['^(.*)$'] = 'index.php?gp_route=$matches[1]';
 	} else {
-		$rules['^' . $gp_base . '$'] = 'index.php?gp_route';
-		$rules['^' . $gp_base . '\/+(.*)$'] = 'index.php?gp_route=$matches[1]';
+		$rules[ '^' . $gp_base . '$' ] = 'index.php?gp_route';
+		$rules[ '^' . $gp_base . '\/+(.*)$' ] = 'index.php?gp_route=$matches[1]';
 	}
 
 	return $rules;
@@ -51,7 +51,7 @@ function gp_rewrite_rules() {
 	 * Save the rewrite rule to an option so we have something to compare against later.
 	 * We don't need to worry about the root rewrite rule above as it is always the same.
 	 */
-	if ( $rewrite_rules != get_option( 'gp_rewrite_rule' ) ) {
+	if ( get_option( 'gp_rewrite_rule' ) != $rewrite_rules ) {
 		update_option( 'gp_rewrite_rule', $rewrite_rules );
 		flush_rewrite_rules( false );
 	}

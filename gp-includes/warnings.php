@@ -81,7 +81,10 @@ class GP_Translation_Warnings {
 				continue;
 			}
 
-			$skip = array( 'singular' => false, 'plural' => false );
+			$skip = array(
+				'singular' => false,
+				'plural'   => false,
+			);
 			if ( null !== $plural ) {
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
 				if ( 1 === $locale->nplurals ) {
@@ -271,10 +274,18 @@ class GP_Builtin_Translation_Warnings {
 			$original_count    = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
 			if ( $original_count > $translation_count ) {
-				return sprintf( __( 'Missing %s placeholder in translation.', 'glotpress' ), $placeholder );
+				return sprintf(
+					/* translators: %s: Placeholder. */
+					__( 'Missing %s placeholder in translation.', 'glotpress' ),
+					$placeholder
+				);
 			}
 			if ( $original_count < $translation_count ) {
-				return sprintf( __( 'Extra %s placeholder in translation.', 'glotpress' ), $placeholder );
+				return sprintf(
+					/* translators: %s: Placeholder. */
+					__( 'Extra %s placeholder in translation.', 'glotpress' ),
+					$placeholder
+				);
 			}
 		}
 

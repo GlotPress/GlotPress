@@ -101,7 +101,9 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort( $glossary_entries_terms, function( $a, $b ) { return gp_strlen($a) < gp_strlen($b); } );
+	uasort( $glossary_entries_terms, function( $a, $b ) {
+		return gp_strlen($a) < gp_strlen($b);
+	} );
 
 	return $glossary_entries_terms;
 }
@@ -279,7 +281,11 @@ function textareas( $entry, $permissions, $index = 0 ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
 			}
 			else {
-				printf( __( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
+				printf(
+					/* translators: %s: URL. */
+					__( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ),
+					esc_url( wp_login_url( gp_url_current() ) )
+				);
 			}
 			?>
 		</p>
@@ -321,9 +327,9 @@ function references( $project, $entry ) {
 	<?php _e( 'References:', 'glotpress' ); ?>
 	<ul class="refs">
 		<?php
-		foreach( $entry->references as $reference ):
+		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			if ( $source_url = $project->source_url( $file, $line ) ):
+			if ( $source_url = $project->source_url( $file, $line ) ) :
 				?>
 				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file.':'.$line ?></a></li>
 				<?php

@@ -24,13 +24,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
-		if ( ! $translation_set ){
+		if ( ! $translation_set ) {
 			return $this->die_with_404();
 		}
 
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
-		if ( ! $glossary ){
+		if ( ! $glossary ) {
 			return $this->die_with_404();
 		}
 
@@ -40,8 +40,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$user = get_userdata( $entry->last_edited_by );
 
 			if ( $user ) {
-				$glossary_entries[$key]->user_login = $user->user_login;
-				$glossary_entries[$key]->user_display_name = $user->display_name;
+				$glossary_entries[ $key ]->user_login = $user->user_login;
+				$glossary_entries[ $key ]->user_display_name = $user->display_name;
 			}
 		}
 
@@ -60,7 +60,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-		if ( ! $translation_set ){
+		if ( ! $translation_set ) {
 			return $this->die_with_404();
 		}
 
@@ -117,7 +117,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$ge             = array_shift( $ge_post );
 		$glossary_entry  = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
-		if ( ! $glossary_entry ){
+		if ( ! $glossary_entry ) {
 			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
 		}
 
@@ -300,7 +300,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug );
 
 		if ( empty( $this->errors ) && is_int( $glossary_entries_added ) ) {
-			$this->notices[] = sprintf( __( '%s glossary entries were added', 'glotpress' ), $glossary_entries_added );
+			$this->notices[] = sprintf(
+				/* translators: %s: Count number. */
+				__( '%s glossary entries were added', 'glotpress' ),
+				$glossary_entries_added
+			);
 		}
 
 		$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
@@ -340,12 +344,12 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 
 			$entry_data = array(
-				'glossary_id' => $glossary_id,
-				'term' => $data[0],
-				'translation' => $data[1],
+				'glossary_id'    => $glossary_id,
+				'term'           => $data[0],
+				'translation'    => $data[1],
 				'part_of_speech' => $data[2],
-				'comment' => $data[3],
-				'last_edited_by' => get_current_user_id()
+				'comment'        => $data[3],
+				'last_edited_by' => get_current_user_id(),
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );

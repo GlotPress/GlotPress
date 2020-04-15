@@ -10,9 +10,9 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 	}
 
 	function test_by_set_id() {
-		$glossary_1 = GP::$glossary->create_and_select( array( 'translation_set_id' => '1' ) );
-		$glossary_2 = GP::$glossary->create_and_select( array( 'translation_set_id' => '2' ) );
-		$new = GP::$glossary->by_set_id( '1' );
+		$glossary_1 = GP::$glossary->create_and_select( array( 'translation_set_id' => 1 ) );
+		$glossary_2 = GP::$glossary->create_and_select( array( 'translation_set_id' => 2 ) );
+		$new = GP::$glossary->by_set_id( 1 );
 		$this->assertEquals( $glossary_1, $new );
 		$this->assertNotEquals( $glossary_2, $new );
 	}
@@ -41,9 +41,9 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 	}
 
 	function test_delete() {
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => '1' ) );
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => 1 ) );
 		$glossary->delete();
-		$new = GP::$glossary->by_set_id( '1' );
+		$new = GP::$glossary->by_set_id( 1 );
 		$this->assertNotEquals( $glossary, $new );
 
 	}

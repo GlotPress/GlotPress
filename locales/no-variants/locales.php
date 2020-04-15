@@ -559,6 +559,17 @@ class GP_Locales {
 		$de_ch->slug = 'de-ch';
 		$de_ch->google_code = 'de';
 
+		$dsb = new GP_Locale();
+		$dsb->english_name = 'Lower Sorbian';
+		$dsb->native_name = 'Dolnoserbšćina';
+		$dsb->lang_code_iso_639_2 = 'dsb';
+		$dsb->lang_code_iso_639_3 = 'dsb';
+		$dsb->country_code = 'de';
+		$dsb->wp_locale = 'dsb';
+		$dsb->slug = 'dsb';
+		$dsb->nplurals = 4;
+		$dsb->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
+
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
 		$dv->native_name = 'ދިވެހި';
@@ -975,6 +986,16 @@ class GP_Locales {
 		$frp->slug = 'frp';
 		$frp->nplurals = 2;
 		$frp->plural_expression = 'n > 1';
+
+		$ful = new GP_Locale();
+		$ful->english_name = 'Fula';
+		$ful->native_name = 'Fulfulde';
+		$ful->lang_code_iso_639_1 = 'ff';
+		$ful->lang_code_iso_639_2 = 'ful';
+		$ful->lang_code_iso_639_3 = 'ful';
+		$ful->country_code = 'ng';
+		$ful->slug = 'ful';
+		$ful->facebook_locale = 'ff_NG';
 
 		$fur = new GP_Locale();
 		$fur->english_name = 'Friulian';
@@ -1508,6 +1529,15 @@ class GP_Locales {
 		$lv->google_code = 'lv';
 		$lv->facebook_locale = 'lv_LV';
 
+		$mai = new GP_Locale();
+		$mai->english_name = 'Maithili';
+		$mai->native_name = 'मैथिली';
+		$mai->lang_code_iso_639_2 = 'mai';
+		$mai->lang_code_iso_639_3 = 'mai';
+		$mai->country_code = 'in';
+		$mai->wp_locale = 'mai';
+		$mai->slug = 'mai';
+
 		$me = new GP_Locale();
 		$me->english_name = 'Montenegrin';
 		$me->native_name = 'Crnogorski jezik';
@@ -1724,6 +1754,14 @@ class GP_Locales {
 		$nqo->slug = 'nqo';
 		$nqo->text_direction = 'rtl';
 
+		$nso = new GP_Locale();
+		$nso->english_name = 'Northern Sotho';
+		$nso->native_name = 'Sesotho sa Leboa';
+		$nso->lang_code_iso_639_2 = 'nso';
+		$nso->lang_code_iso_639_3 = 'nso';
+		$nso->country_code = 'za';
+		$nso->slug = 'nso';
+
 		$oci = new GP_Locale();
 		$oci->english_name = 'Occitan';
 		$oci->native_name = 'Occitan';
@@ -1773,14 +1811,33 @@ class GP_Locales {
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
 
-		$pap = new GP_Locale();
-		$pap->english_name = 'Papiamento';
-		$pap->native_name = 'Papiamentu';
-		$pap->lang_code_iso_639_2 = 'pap';
-		$pap->lang_code_iso_639_3 = 'pap';
-		$pap->country_code = 'cw';
-		$pap->wp_locale = 'pap';
-		$pap->slug = 'pap';
+		$pap_cw = new GP_Locale();
+		$pap_cw->english_name = 'Papiamento (Curaçao and Bonaire)';
+		$pap_cw->native_name = 'Papiamentu';
+		$pap_cw->lang_code_iso_639_2 = 'pap';
+		$pap_cw->lang_code_iso_639_3 = 'pap';
+		$pap_cw->country_code = 'cw';
+		$pap_cw->wp_locale = 'pap_CW';
+		$pap_cw->slug = 'pap-cw';
+
+		$pap_aw = new GP_Locale();
+		$pap_aw->english_name = 'Papiamento (Aruba)';
+		$pap_aw->native_name = 'Papiamento';
+		$pap_aw->lang_code_iso_639_2 = 'pap';
+		$pap_aw->lang_code_iso_639_3 = 'pap';
+		$pap_aw->country_code = 'aw';
+		$pap_aw->wp_locale = 'pap_AW';
+		$pap_aw->slug = 'pap-aw';
+
+		$pcd = new GP_Locale();
+		$pcd->english_name = 'Picard';
+		$pcd->native_name = 'Ch’ti';
+		$pcd->lang_code_iso_639_3 = 'pcd';
+		$pcd->country_code = 'fr';
+		$pcd->wp_locale = 'pcd';
+		$pcd->slug = 'pcd';
+		$pcd->nplurals = 2;
+		$pcd->plural_expression = 'n > 1';
 
 		$pirate = new GP_Locale();
 		$pirate->english_name = 'English (Pirate)';
@@ -2356,6 +2413,18 @@ class GP_Locales {
 		$wa->country_code = 'be';
 		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
+
+		$wol = new GP_Locale();
+		$wol->english_name = 'Wolof';
+		$wol->native_name = 'Wolof';
+		$wol->lang_code_iso_639_1 = 'wo';
+		$wol->lang_code_iso_639_2 = 'wol';
+		$wol->lang_code_iso_639_3 = 'wol';
+		$wol->country_code = 'sn';
+		$wol->wp_locale = 'wol';
+		$wol->slug = 'wol';
+		$wol->nplurals = 1;
+		$wol->plural_expression = '0';
 
 		$xho = new GP_Locale();
 		$xho->english_name = 'Xhosa';

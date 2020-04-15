@@ -49,9 +49,9 @@ class GP_Route {
 	public function after_request() {
 		// we can't unregister a shutdown function
 		// this check prevents this method from being run twice
-		if ( !$this->request_running ) return;
+		if ( ! $this->request_running ) return;
 		// set errors and notices
-		if ( !headers_sent() ) {
+		if ( ! headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
 
@@ -90,7 +90,7 @@ class GP_Route {
 	 */
 	public function invalid_and_redirect( $thing, $url = null ) {
 		$valid = $this->validate( $thing );
-		if ( !$valid ) {
+		if ( ! $valid ) {
 			$this->redirect( $url );
 			return true;
 		}
@@ -293,12 +293,12 @@ class GP_Route {
 	public function set_notices_and_errors() {
 		if ( $this->fake_request ) return;
 
-		foreach( $this->notices as $notice ) {
+		foreach ( $this->notices as $notice ) {
 			gp_notice_set( $notice );
 		}
 		$this->notices = array();
 
-		foreach( $this->errors as $error ) {
+		foreach ( $this->errors as $error ) {
 			gp_notice_set( $error, 'error' );
 		}
 		$this->errors = array();
@@ -318,7 +318,7 @@ class GP_Route {
 			$this->loaded_template = $template;
 		}
 		$this->set_notices_and_errors();
-		if ( $this->api && $honor_api !== false && 'no-api' !== $honor_api ) {
+		if ( $this->api && false !== $honor_api && 'no-api' !== $honor_api ) {
 			$template = $template.'.api';
 			$this->header('Content-Type: application/json');
 		} else {
@@ -334,7 +334,10 @@ class GP_Route {
 
 	public function die_with_404( $args = array() ) {
 		$this->status_header( 404 );
-		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
+		$this->tmpl( '404', $args + array(
+			'title'       => __( 'Not Found', 'glotpress' ),
+			'http_status' => 404,
+		) );
 		$this->exit_();
 	}
 
@@ -350,7 +353,7 @@ class GP_Route {
 	public function header( $string ) {
 		if ( $this->fake_request ) {
 			list( $header, $value ) = explode( ':', $string, 2 );
-			$this->headers[$header] = $value;
+			$this->headers[ $header ] = $value;
 		} else {
 			header( $string );
 		}

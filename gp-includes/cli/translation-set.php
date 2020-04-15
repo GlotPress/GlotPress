@@ -81,7 +81,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			$valid_priorities = GP::$original->get_static( 'priorities' );
 
 			foreach ( $priorities as $priority ) {
-				$key = array_search( $priority, $valid_priorities );
+				$key = array_search( $priority, $valid_priorities, true );
 				if ( false === $key ) {
 					WP_CLI::warning( sprintf( 'Invalid priority %s', $priority ) );
 				} else {
@@ -160,7 +160,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 
 		$project = GP::$project->get( $translation_set->project_id );
 		$locale = GP_Locales::by_slug( $translation_set->locale );
-		foreach( GP::$translation->for_translation( $project, $translation_set, 'no-limit' ) as $entry ) {
+		foreach ( GP::$translation->for_translation( $project, $translation_set, 'no-limit' ) as $entry ) {
 			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale );
 			if ( $warnings == $entry->warnings ) {
 				continue;

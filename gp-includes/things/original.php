@@ -30,7 +30,12 @@ class GP_Original extends GP_Thing {
 	public $priority;
 	public $date_added;
 
-	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
+	static $priorities = array(
+		'-2' => 'hidden',
+		'-1' => 'low',
+		'0'  => 'normal',
+		'1'  => 'high',
+	);
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
@@ -58,20 +63,20 @@ class GP_Original extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Original object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
-
 		foreach ( array( 'plural', 'context', 'references', 'comment' ) as $field ) {
 			if ( isset( $args['parent_project_id'] ) ) {
 				$args[ $field ] = $this->force_false_to_null( $args[ $field ] );
 			}
 		}
 
-		if ( isset( $args['priority'] ) && !is_numeric( $args['priority'] ) ) {
+		if ( isset( $args['priority'] ) && ! is_numeric( $args['priority'] ) ) {
 			$args['priority'] = $this->priority_by_name( $args['priority'] );
 			if ( is_null( $args['priority'] ) ) {
 				unset( $args['priority'] );
 			}
 		}
+
+		$args = parent::normalize_fields( $args );
 
 		return $args;
 	}
@@ -128,7 +133,11 @@ class GP_Original extends GP_Thing {
 
 		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
 		if ( ! is_array( $counts ) ) {
-			$counts = array( 'total' => 0, 'hidden' => 0, 'public' => 0 );
+			$counts = array(
+				'total'  => 0,
+				'hidden' => 0,
+				'public' => 0,
+			);
 		}
 
 		// Make sure counts are integers.
@@ -176,11 +185,11 @@ class GP_Original extends GP_Thing {
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key = array();
-		foreach( $all_originals_for_project as $original ) {
+		foreach ( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry( array(
 				'singular' => $original->singular,
 				'plural'   => $original->plural,
-				'context'  => $original->context
+				'context'  => $original->context,
 			) );
 			$originals_by_key[ $entry->key() ] = $original;
 		}
@@ -207,7 +216,7 @@ class GP_Original extends GP_Thing {
 				'plural'     => $entry->plural,
 				'comment'    => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active'
+				'status'     => '+active',
 			);
 
 			/**
@@ -250,8 +259,8 @@ class GP_Original extends GP_Thing {
 		}
 
 		// Mark missing strings as possible removals.
-		foreach ( $originals_by_key as $key => $value) {
-			if ( $value->status != '-obsolete' && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
+		foreach ( $originals_by_key as $key => $value ) {
+			if ( '-obsolete' != $value->status && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
 				$possibly_dropped[ $key ] = $value;
 			}
 		}
@@ -267,7 +276,7 @@ class GP_Original extends GP_Thing {
 				'plural'     => $entry->plural,
 				'comment'    => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active'
+				'status'     => '+active',
 			);
 
 			/** This filter is documented in gp-includes/things/original.php */
@@ -321,7 +330,7 @@ class GP_Original extends GP_Thing {
 		}
 
 		// Mark remaining possibly dropped strings as obsolete.
-		foreach ( $possibly_dropped as $key => $value) {
+		foreach ( $possibly_dropped as $key => $value ) {
 			$this->update( array( 'status' => '-obsolete' ), array( 'id' => $value->id ) );
 			$originals_obsoleted++;
 		}
@@ -373,7 +382,7 @@ class GP_Original extends GP_Thing {
 
 	public function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
-		return isset( $by_name[ $name ] )? $by_name[ $name ] : null;
+		return isset( $by_name[ $name ] ) ? $by_name[ $name ] : null;
 	}
 
 	public function closest_original( $input, $other_strings ) {

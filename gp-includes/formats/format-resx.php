@@ -58,18 +58,18 @@ class GP_Format_ResX extends GP_Format {
 		}
 
 		$entries = new Translations;
-		foreach( $data->data as $string ) {
+		foreach ( $data->data as $string ) {
 			$entry = new Translation_Entry();
 
-			if ( isset( $string['type'] ) && gp_in( 'System.Resources.ResXFileRef', (string)$string['type'] ) ) {
+			if ( isset( $string['type'] ) && gp_in( 'System.Resources.ResXFileRef', (string) $string['type'] ) ) {
 				continue;
 			}
 
-			$entry->context = (string)$string['name'];
-			$entry->singular = $this->unescape( (string)$string->value );
+			$entry->context = (string) $string['name'];
+			$entry->singular = $this->unescape( (string) $string->value );
 
 			if ( isset( $string->comment ) && $string->comment ) {
-				$entry->extracted_comments = (string)$string->comment;
+				$entry->extracted_comments = (string) $string->comment;
 			}
 
 			$entry->translations = array();

@@ -1,17 +1,23 @@
 <?php
-gp_title( sprintf( __( 'Permissions &lt; %s &lt; GlotPress', 'glotpress' ), $project->name ) );
+gp_title(
+	sprintf(
+		/* translators: %s: Project name. */
+		__( 'Permissions &lt; %s &lt; GlotPress', 'glotpress' ),
+		$project->name
+	)
+);
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Permissions', 'glotpress' ); ?></h2>
 <h3 id="validators">
 	<?php _e( 'Validators', 'glotpress' ); ?>
-	<?php if ( count( $permissions ) + count( $parent_permissions ) > 10 ): ?>
+	<?php if ( count( $permissions ) + count( $parent_permissions ) > 10 ) : ?>
 	<a href="#add" onclick="jQuery('#user_login').focus(); return false;" class="secondary"><?php _e( 'Add', 'glotpress' ); ?> &rarr;</a>
 	<?php endif; ?>
 </h3>
-	<?php if ( $permissions ): ?>
-	<?php if ( $parent_permissions ): ?>
+	<?php if ( $permissions ) : ?>
+	<?php if ( $parent_permissions ) : ?>
 <h4 id="validators"><?php _e( 'Validators for this project', 'glotpress' ); ?></h4>
 	<?php endif; ?>
 
@@ -63,7 +69,7 @@ gp_tmpl_header();
 		</tbody>
 	</table>
 	<?php endif; ?>
-	<?php if ( ! $permissions && !$parent_permissions ): ?>
+	<?php if ( ! $permissions && ! $parent_permissions ) : ?>
 		<strong><?php _e( 'No validators defined for this project.', 'glotpress' ); ?></strong>
 	<?php endif; ?>
 <form action="" method="post" class="secondary">

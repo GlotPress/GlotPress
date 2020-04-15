@@ -13,7 +13,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	do_action_ref_array( 'gp_pre_tmpl_load', array( $template, &$args ) );
 	require_once GP_TMPL_PATH . 'helper-functions.php';
 	$locations = array( GP_TMPL_PATH );
-	if ( !is_null( $template_path ) ) {
+	if ( ! is_null( $template_path ) ) {
 		array_unshift( $locations, untrailingslashit( $template_path ) . '/' );
 	}
 
@@ -30,7 +30,7 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$locations = apply_filters( 'gp_tmpl_load_locations', $locations, $template, $args, $template_path );
 	if ( isset( $args['http_status'] ) )
 		status_header( $args['http_status'] );
-	foreach( $locations as $location ) {
+	foreach ( $locations as $location ) {
 	 	$file = $location . "$template.php";
 		if ( is_readable( $file ) ) {
 			extract( $args, EXTR_SKIP );
@@ -59,11 +59,11 @@ function gp_tmpl_get_output() {
 	return $contents;
 }
 
-function gp_tmpl_header( $args = array( ) ) {
+function gp_tmpl_header( $args = array() ) {
 	gp_tmpl_load( 'header', $args );
 }
 
-function gp_tmpl_footer( $args = array( ) ) {
+function gp_tmpl_footer( $args = array() ) {
 	gp_tmpl_load( 'footer', $args );
 }
 
@@ -128,14 +128,17 @@ function gp_nav_menu_items( $location = 'main' ) {
 
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
-	foreach( $args as $k => $v )
-		if ( $k[0] != '_' && $k != 'GLOBALS' && !gp_startswith( $k, 'HTTP' ) && !gp_startswith( $k, 'PHP' ) )
-			$clean_args[$k] = $v;
+	foreach ( $args as $k => $v )
+		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
+			$clean_args[ $k ] = $v;
 	return $clean_args;
 }
 
-function gp_tmpl_404( $args = array()) {
-	gp_tmpl_load( '404', $args + array('title' => __('Not Found', 'glotpress' ), 'http_status' => 404 ) );
+function gp_tmpl_404( $args = array() ) {
+	gp_tmpl_load( '404', $args + array(
+		'title'       => __( 'Not Found', 'glotpress' ),
+		'http_status' => 404,
+	) );
 	exit();
 }
 
@@ -223,8 +226,8 @@ function gp_project_links_from_root( $leaf_project ) {
 	}
 	$links = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
-	$links[] = empty( $path_from_root)? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
-	foreach( $path_from_root as $project ) {
+	$links[] = empty( $path_from_root) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
+	foreach ( $path_from_root as $project ) {
 		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}
 	return $links;
@@ -248,7 +251,7 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
 		'high'   => _x( 'high', 'Priority', 'glotpress' ),
 	];
-	foreach( $options as $value => $label ) {
+	foreach ( $options as $value => $label ) {
 		if ( isset( $labels[ $label ] ) ) {
 			$label = $labels[ $label ];
 		}
@@ -261,7 +264,7 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 
 function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	$res = '';
-	foreach( $radio_buttons as $value => $label ) {
+	foreach ( $radio_buttons as $value => $label ) {
 		$checked = checked( $value, $checked_key, false );
 		// TODO: something more flexible than <br />
 		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked/>&nbsp;";
@@ -273,24 +276,24 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
 	$first = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
-	$page = intval( $page )? intval( $page ) : 1;
+	$page = intval( $page ) ? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
 	if ( $page > $pages ) return '';
 
 	if ( $page > 1 )
-		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array('class' => 'previous') );
+		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array( 'class' => 'previous' ) );
 	else
 		$prev = '<span class="previous disabled">&larr;</span>';
 
 	if ( $page < $pages )
-		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1)), '&rarr;', array('class' => 'next') );
+		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 )), '&rarr;', array( 'class' => 'next' ) );
 	else
 		$next = '<span class="next disabled">&rarr;</span>';
 
 	$current = '<span class="current">'.$page.'</span>';
 	if ( $page > 1 ) {
 		$prev_pages = array();
-		foreach( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {
+		foreach ( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {
 			$prev_pages[] = gp_link_get( add_query_arg( array( 'page' => $prev_page ) ), $prev_page );
 		}
 		$prev_pages = implode( ' ', $prev_pages );
@@ -298,7 +301,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 	}
 	if ( $page < $pages ) {
 		$next_pages = array();
-		foreach( range( $page + 1, min( $pages, $page + $surrounding ) ) as $next_page ) {
+		foreach ( range( $page + 1, min( $pages, $page + $surrounding ) ) as $next_page ) {
 			$next_pages[] = gp_link_get( add_query_arg( array( 'page' => $next_page ) ), $next_page );
 		}
 		$next_pages = implode( ' ', $next_pages );
@@ -336,14 +339,14 @@ HTML;
 function gp_html_attributes( $attrs ) {
 	$attrs = wp_parse_args( $attrs );
 	$strings = array();
-	foreach( $attrs as $key => $value ) {
+	foreach ( $attrs as $key => $value ) {
 		$strings[] = $key.'="'.esc_attr( $value ).'"';
 	}
 	return implode( ' ', $strings );
 }
 
 function gp_attrs_add_class( $attrs, $class_name ) {
-	$attrs['class'] = isset( $attrs['class'] )? $attrs['class'] . ' ' . $class_name : $class_name;
+	$attrs['class'] = isset( $attrs['class'] ) ? $attrs['class'] . ' ' . $class_name : $class_name;
 	return $attrs;
 }
 
@@ -361,12 +364,12 @@ function gp_attrs_add_class( $attrs, $class_name ) {
  */
 function gp_locales_by_project_dropdown( $project_id, $name_and_id, $selected_slug = null, $attrs = array() ) {
 	$locales = GP_Locales::locales();
-	if ( null != $project_id  ) {
+	if ( null != $project_id ) {
 		$sets = GP::$translation_set->by_project_id( $project_id );
 
 		$temp_locales = array();
 
-		foreach( $sets as $set ) {
+		foreach ( $sets as $set ) {
 			$temp_locales[ $set->locale ] = $locales[ $set->locale ];
 		}
 
@@ -407,8 +410,8 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
  * @param string $name_and_id         Name and ID of the select element.
  * @param string $selected_project_id The project id to mark as the currently selected.
  * @param array  $attrs               Extra attributes.
- * @param array  $exclude             An array of locales to exclude from the list.
- * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of locales.
+ * @param array  $exclude             An array of project IDs to exclude from the list.
+ * @param array  $exclude_no_parent   Exclude the "No Parent" option from the list of projects.
  *
  * @return string HTML markup for a select element.
  */
@@ -421,10 +424,10 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	// TODO: mark which nodes are editable by the current user
 	$tree = array();
 	$top = array();
-	foreach( $projects as $p ) {
-		$tree[$p->id]['self'] = $p;
+	foreach ( $projects as $p ) {
+		$tree[ $p->id ]['self'] = $p;
 		if ( $p->parent_project_id ) {
-			$tree[$p->parent_project_id]['children'][] = $p->id;
+			$tree[ $p->parent_project_id ]['children'][] = $p->id;
 		} else {
 			$top[] = $p->id;
 		}
@@ -436,21 +439,21 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 		$options = array();
 	}
 
-	foreach( $top as $top_id ) {
+	foreach ( $top as $top_id ) {
 		$stack = array( $top_id );
 
-		while ( !empty( $stack ) ) {
+		while ( ! empty( $stack ) ) {
 			$id = array_pop( $stack );
 
-			if ( in_array( $id, $exclude ) ) {
+			if ( in_array( $id, $exclude, true ) ) {
 				continue;
 			}
 
-			$tree[$id]['level'] = gp_array_get( $tree[$id], 'level', 0 );
-			$options[$id] = str_repeat( '-', $tree[$id]['level'] ) . $tree[$id]['self']->name;
-			foreach( gp_array_get( $tree[$id], 'children', array() ) as $child_id ) {
+			$tree[ $id ]['level'] = gp_array_get( $tree[ $id ], 'level', 0 );
+			$options[ $id ] = str_repeat( '-', $tree[ $id ]['level'] ) . $tree[ $id ]['self']->name;
+			foreach ( gp_array_get( $tree[ $id ], 'children', array() ) as $child_id ) {
 				$stack[] = $child_id;
-				$tree[$child_id]['level'] = $tree[$id]['level'] + 1;
+				$tree[ $child_id ]['level'] = $tree[ $id ]['level'] + 1;
 			}
 		}
 	}
@@ -459,7 +462,11 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 }
 
 function gp_array_of_things_to_json( $array ) {
-	return wp_json_encode( array_map( function( $thing ) { return $thing->fields(); }, $array ) );
+	return wp_json_encode(
+		array_map( function( $thing ) {
+				return $thing->fields();
+		}, $array )
+	);
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
@@ -473,8 +480,8 @@ function gp_array_of_array_of_things_to_json( $array ) {
 }
 
 function things_to_fields( $data ) {
-	if( is_array( $data ) ) {
-		foreach( $data as $item_id => $item ) {
+	if ( is_array( $data ) ) {
+		foreach ( $data as $item_id => $item ) {
 			$data[ $item_id ] = things_to_fields( $item );
 		}
 	}
@@ -498,7 +505,7 @@ HTML;
 	}
 }
 
-function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;') {
+function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;' ) {
 	$excerpt = trim( wp_html_excerpt( $str, $count ) );
 	if ( $str != $excerpt ) {
 		$excerpt .= $ellipsis;
@@ -516,7 +523,7 @@ function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
 		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
-		gp_link_get( gp_url_project( '', '-new', array('parent_project_id' => $project->id) ), __( 'New Sub-Project', 'glotpress' ) ),
+		gp_link_get( gp_url_project( '', '-new', array( 'parent_project_id' => $project->id ) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, '-branch' ), __( 'Branch project', 'glotpress' ) ),
@@ -535,7 +542,7 @@ function gp_project_actions( $project, $translation_sets ) {
 
 	echo '<ul>';
 
-	foreach( $actions as $action ) {
+	foreach ( $actions as $action ) {
 		echo '<li>' . $action . '</li>';
 	}
 

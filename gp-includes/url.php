@@ -90,16 +90,12 @@ function gp_url_add_path_and_query( $base, $path, $query ) {
 }
 
 /**
- * Converts an absolute URL to the corresponding SSL URL if the GlotPress
- * settings allow SSL
+ * Retrieves the URL for the GlotPress root page.
+ *
+ * @since 1.0.0
+ *
+ * @return string GlotPress root page URL.
  */
-function gp_url_ssl( $url ) {
-	if ( defined( 'GP_SSL' ) && GP_SSL ) {
-		$url = preg_replace( '/^http:/', 'https:', $url );
-	}
-	return $url;
-}
-
 function gp_url_public_root() {
 	return home_url( gp_url_base_path() );
 }
@@ -127,7 +123,7 @@ function gp_url_img( $file ) {
  * The URL of the current page
  */
 function gp_url_current() {
-	$protocol      = is_ssl()? 'https://' : 'http://';
+	$protocol      = is_ssl() ? 'https://' : 'http://';
 	$host          = wp_unslash( gp_array_get( $_SERVER, 'HTTP_HOST' ) );
 	$path_and_args = wp_unslash( gp_array_get( $_SERVER, 'REQUEST_URI' ) );
 

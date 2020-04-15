@@ -70,7 +70,7 @@ class GP_Format_Strings extends GP_Format {
 			$translation = str_replace( "\n", "\\n", $translation );
 			$comment     = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
-			if ( $comment == "" ) {
+			if ( '' == $comment ) {
 				$comment = "No comment provided by engineer.";
 			}
 
@@ -124,7 +124,7 @@ class GP_Format_Strings extends GP_Format {
 				if ( preg_match( '/^\/\*\s*(.*)\s*\*\/$/', $line, $matches ) ) {
 					$matches[1] = trim( str_replace( '\n', PHP_EOL, $matches[1] ) );
 
-					if ( $matches[1] !== "No comment provided by engineer." ) {
+					if ( 'No comment provided by engineer.' !== $matches[1] ) {
 						$comment = $matches[1];
 					} else {
 						$comment = null;
@@ -134,7 +134,7 @@ class GP_Format_Strings extends GP_Format {
 					$entry->context = $this->unescape( $matches[1] );
 					$entry->singular = $this->unescape( $matches[2] );
 
-					if ( ! is_null( $comment )) {
+					if ( ! is_null( $comment ) ) {
 						$entry->extracted_comments = $comment;
 						$comment = null;
 					}
