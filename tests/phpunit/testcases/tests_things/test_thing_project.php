@@ -91,6 +91,49 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( array( $root ), $root->path_to_root() );
 	}
 
+	function test_by_path() {
+		$root = $this->factory->project->create( array( 'name' => 'root' ) );
+		$sub = $this->factory->project->create( array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
+		$this->assertEquals( $root->id, GP::$project->by_path( '/root' )->id );
+		$this->assertEquals( $sub->id, GP::$project->by_path( '/root/sub/' )->id );
+	}
+
+	function test_by_path_with_dots() {
+		$root = $this->factory->project->create( array( 'name' => 'Root 1.0' ) );
+		$sub = $this->factory->project->create( array( 'name' => 'Sub 1.0', 'parent_project_id' => $root->id ) );
+		$this->assertEquals( $root->id, GP::$project->by_path( '/root-1.0' )->id );
+		$this->assertEquals( $sub->id, GP::$project->by_path( '/root-1.0/sub-1.0/' )->id );
+	}
+
+	function test_by_path_with_utf8mb4() {
+		global $wpdb;
+
+		if ( ! $wpdb->has_cap( 'utf8mb4' ) ) {
+			$this->markTestSkipped( 'This test requires utf8mb4 support.' );
+		}
+
+		$root_slug  = gp_sanitize_slug( '😀' );
+		$sub_1_slug = gp_sanitize_slug( "H€llo\xf0\x9f\x98\x88World¢" );
+		$sub_2_slug = gp_sanitize_slug( '𝟜' );
+
+		$root_slug_urldecoded       = urldecode( $root_slug );
+		$sub_1_slug_urldecoded      = urldecode( $sub_1_slug );
+		$sub_2_slug_slug_urldecoded = urldecode( $sub_2_slug );
+
+		$root  = $this->factory->project->create( array( 'name' => '😀' ) );
+		$sub_1 = $this->factory->project->create( array( 'name' => "H€llo\xf0\x9f\x98\x88World¢", 'parent_project_id' => $root->id ) );
+		$sub_2 = $this->factory->project->create( array( 'name' => '𝟜', 'parent_project_id' => $root->id ) );
+
+		$this->assertEquals( $root->id, GP::$project->by_path( '/' . $root_slug )->id );
+		$this->assertEquals( $root->id, GP::$project->by_path( '/' . $root_slug_urldecoded . '/' )->id );
+
+		$this->assertEquals( $sub_1->id, GP::$project->by_path( '/' . $root_slug . '/' . $sub_1_slug )->id );
+		$this->assertEquals( $sub_1->id, GP::$project->by_path( '/' . $root_slug_urldecoded . '/' . $sub_1_slug_urldecoded )->id );
+
+		$this->assertEquals( $sub_2->id, GP::$project->by_path( '/' . $root_slug . '/' . $sub_2_slug )->id );
+		$this->assertEquals( $sub_2->id, GP::$project->by_path( '/' . $root_slug_urldecoded . '/' . $sub_2_slug_slug_urldecoded )->id );
+	}
+
 	function test_regenerate_paths() {
 		global $wpdb;
 		$root = GP::$project->create( array( 'name' => 'Root', 'slug' => 'root' ) );

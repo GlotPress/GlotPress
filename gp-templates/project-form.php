@@ -5,7 +5,7 @@
 	<!-- TODO: make slug edit WordPress style -->
 	<dt><label for="project[slug]"><?php _e( 'Slug', 'glotpress' ); ?></label></dt>
 	<dd>
-		<input type="text" name="project[slug]" value="<?php echo esc_html( $project->slug ); ?>" id="project[slug]">
+		<input type="text" name="project[slug]" value="<?php echo esc_attr( urldecode( $project->slug ) ); ?>" id="project[slug]">
 		<small><?php _e( 'If you leave the slug empty, it will be derived from the name.', 'glotpress' ); ?></small>
 	</dd>
 
