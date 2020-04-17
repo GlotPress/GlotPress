@@ -18,7 +18,7 @@ wp_localize_script( 'gp-translations-page', '$gp_translations_options', array(
 ) );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
-$editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'new_note_url', 'edit_note_url', 'delete_note_url' );
+$editor_options = compact('can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url');
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 

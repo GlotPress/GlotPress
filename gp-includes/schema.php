@@ -95,23 +95,6 @@ function gp_schema_get() {
 	) $charset_collate;";
 
 	/*
-	 * Notes
-	 */
-	$gp_schema['notes'] = "CREATE TABLE $wpdb->gp_notes (
-		id int(10) NOT NULL auto_increment,
-		original_id int(10) DEFAULT NULL,
-		translation_id int(10) DEFAULT NULL,
-		note text NOT NULL,
-		user_id bigint(20) DEFAULT NULL,
-		date_added datetime DEFAULT NULL,
-		date_modified datetime DEFAULT NULL,
-		PRIMARY KEY  (id),
-		KEY original_id (original_id),
-		KEY user_id (user_id),
-		KEY date_added (date_added)
-	) $charset_collate;";
-
-	/*
 	 * Original strings
 	 *  - Has many translations
 	 *  - Belongs to a project
