@@ -103,10 +103,10 @@ require_once GP_PATH . GP_INC . 'routes/glossary-entry.php';
 require_once GP_PATH . GP_INC . 'routes/locale.php';
 
 
-GP::$translation_warnings = new GP_Translation_Warnings();
+GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
 GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
-GP::$router = new GP_Router();
+GP::$router  = new GP_Router();
 GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';

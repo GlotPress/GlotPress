@@ -14,9 +14,9 @@
  */
 class GP_Project extends GP_Thing {
 
-	var $table_basename = 'gp_projects';
-	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
-	var $int_fields = array( 'id', 'parent_project_id', 'active' );
+	var $table_basename           = 'gp_projects';
+	var $field_names              = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
+	var $int_fields               = array( 'id', 'parent_project_id', 'active' );
 	var $non_updatable_attributes = array( 'id' );
 
 	public $id;
@@ -232,12 +232,12 @@ class GP_Project extends GP_Thing {
 	 */
 	public function update_path() {
 		global $wpdb;
-		$old_path = isset( $this->path ) ? $this->path : '';
+		$old_path       = isset( $this->path ) ? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project ) {
-			$path = gp_url_join( $parent_project->path, $this->slug );
+			$path          = gp_url_join( $parent_project->path, $this->slug );
 		} elseif ( ! $wpdb->last_error ) {
-			$path = $this->slug;
+			$path          = $this->slug;
 		} else {
 			return null;
 		}
@@ -245,7 +245,7 @@ class GP_Project extends GP_Thing {
 		$path = trim( $path, '/' );
 
 		$this->path = $path;
-		$res_self = $this->update( array( 'path' => $path ) );
+		$res_self   = $this->update( array( 'path' => $path ) );
 		if ( is_null( $res_self ) ) { return $res_self;
 		}
 		// update children's paths, too
@@ -264,9 +264,9 @@ class GP_Project extends GP_Thing {
 		// TODO: do it with one query. Use the tree generation code from GP_Route_Main::_options_from_projects()
 		if ( $parent_project_id ) {
 			$parent_project = $this->get( $parent_project_id );
-			$path = $parent_project->path;
+			$path           = $parent_project->path;
 		} else {
-			$path = '';
+			$path              = '';
 			$parent_project_id = null;
 		}
 
@@ -417,17 +417,17 @@ class GP_Project extends GP_Thing {
 		$this->copy_sets_and_translations_from( $source_project->id );
 
 		//Keep a list of parents to preserve hierarchy
-		$parents = array();
+		$parents                        = array();
 		$parents[ $source_project->id ] = $this->id;
 
 		//Duplicate originals, translations sets and translations for the child projects
 		foreach ( $source_sub_projects as $sub ) {
-			$copy_project = new GP_Project( $sub->fields() );
+			$copy_project                    = new GP_Project( $sub->fields() );
 			$copy_project->parent_project_id = $parents[ $sub->parent_project_id ];
-			$parent_project = $copy_project->get( $copy_project->parent_project_id );
+			$parent_project                  = $copy_project->get( $copy_project->parent_project_id );
 
-			$copy_project->path = gp_url_join( $parent_project->path, $copy_project->slug );
-			$copy = GP::$project->create( $copy_project );
+			$copy_project->path  = gp_url_join( $parent_project->path, $copy_project->slug );
+			$copy                = GP::$project->create( $copy_project );
 			$parents[ $sub->id ] = $copy->id;
 
 			$copy->copy_originals_from( $sub->id );

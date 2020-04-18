@@ -3,7 +3,7 @@
 class GP_Router {
 
 	public $api_prefix = 'api';
-	private $urls = array();
+	private $urls      = array();
 
 	public function __construct( $urls = array() ) {
 		$this->urls = $urls;
@@ -56,13 +56,13 @@ class GP_Router {
 	}
 
 	private function default_routes() {
-		$dir = '([^_/][^/]*)';
-		$path = '(.+?)';
+		$dir      = '([^_/][^/]*)';
+		$path     = '(.+?)';
 		$projects = 'projects';
-		$project = $projects.'/'.$path;
-		$id = '(\d+)';
-		$locale = '(' . implode('|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
-		$set = "$project/$locale/$dir";
+		$project  = $projects.'/'.$path;
+		$id       = '(\d+)';
+		$locale   = '(' . implode('|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
+		$set      = "$project/$locale/$dir";
 
 		// overall structure
 		return array(
@@ -158,9 +158,9 @@ class GP_Router {
 		global $wp_query;
 
 		$real_request_uri = $this->request_uri();
-		$api_request_uri = $real_request_uri;
-		$request_method = strtolower( $this->request_method() );
-		$api = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
+		$api_request_uri  = $real_request_uri;
+		$request_method   = strtolower( $this->request_method() );
+		$api              = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
 
 		/**
 		 * Filter the list of HTTP methods allowed
@@ -205,12 +205,12 @@ class GP_Router {
 					$wp_query->is_404 = false;
 
 					if ( is_array( $func ) ) {
-						list( $class, $method ) = $func;
-						$route = new $class;
-						$route->api = $api;
+						list( $class, $method )    = $func;
+						$route                     = new $class;
+						$route->api                = $api;
 						$route->last_method_called = $method;
-						$route->class_name = $class;
-						GP::$current_route = &$route;
+						$route->class_name         = $class;
+						GP::$current_route         = &$route;
 						$route->before_request();
 						$route->request_running = true;
 						// make sure after_request() is called even if we $this->exit_() in the request

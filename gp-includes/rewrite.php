@@ -24,10 +24,10 @@ function gp_generate_rewrite_rules( $gp_base = false ) {
 
 	$rules = array();
 	if ( ! $gp_base ) {
-		$rules['$'] = 'index.php?gp_route';
+		$rules['$']      = 'index.php?gp_route';
 		$rules['^(.*)$'] = 'index.php?gp_route=$matches[1]';
 	} else {
-		$rules[ '^' . $gp_base . '$' ] = 'index.php?gp_route';
+		$rules[ '^' . $gp_base . '$' ]        = 'index.php?gp_route';
 		$rules[ '^' . $gp_base . '\/+(.*)$' ] = 'index.php?gp_route=$matches[1]';
 	}
 

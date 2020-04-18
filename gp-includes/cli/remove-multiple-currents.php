@@ -6,7 +6,7 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 		foreach ( $sets as $set ) {
 			/* translators: %d: Set ID */
 			WP_CLI::log( sprintf( __( 'Processing set #%d..', 'glotpress' ), $set->id ) );
-			$translations = GP::$translation->find( array(
+			$translations     = GP::$translation->find( array(
 				'translation_set_id' => $set->id,
 				'status'             => 'current',
 			), 'original_id ASC' );

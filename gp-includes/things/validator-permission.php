@@ -14,9 +14,9 @@
  */
 class GP_Validator_Permission extends GP_Permission {
 
-	var $table_basename = 'gp_permissions';
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
-	var $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
+	var $table_basename           = 'gp_permissions';
+	var $field_names              = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	var $non_db_field_names       = array( 'project_id', 'locale_slug', 'set_slug' );
 	var $non_updatable_attributes = array( 'id' );
 
 	public $object_type;
@@ -49,12 +49,12 @@ class GP_Validator_Permission extends GP_Permission {
 		if ( $this->object_id ) {
 			list( $this->project_id, $this->locale_slug, $this->set_slug ) = $this->project_id_locale_slug_set_slug( $this->object_id );
 		}
-		$this->object_type = 'project|locale|set-slug';
+		$this->object_type        = 'project|locale|set-slug';
 		$this->default_conditions = "object_type = '".$this->object_type."'";
 	}
 
 	public function prepare_fields_for_save( $args ) {
-		$args = (array) $args;
+		$args                = (array) $args;
 		$args['object_type'] = $this->object_type;
 		if ( gp_array_get( $args, 'project_id' ) && gp_array_get( $args, 'locale_slug' )
 		 		&& gp_array_get( $args, 'set_slug' ) && ! gp_array_get( $args, 'object_id' ) ) {

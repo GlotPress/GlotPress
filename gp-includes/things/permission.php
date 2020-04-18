@@ -14,9 +14,9 @@
  */
 class GP_Permission extends GP_Thing {
 
-	var $table_basename = 'gp_permissions';
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
-	var $int_fields = array( 'id', 'user_id' );
+	var $table_basename           = 'gp_permissions';
+	var $field_names              = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	var $int_fields               = array( 'id', 'user_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	public $id;
@@ -83,8 +83,8 @@ class GP_Permission extends GP_Thing {
 			$user_id = $user->ID;
 		}
 
-		$args = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
-		$filter_args['user'] = $user;
+		$args                 = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
+		$filter_args['user']  = $user;
 		$filter_args['extra'] = $extra;
 
 		/**

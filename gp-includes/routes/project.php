@@ -15,7 +15,7 @@
 class GP_Route_Project extends GP_Route_Main {
 
 	public function index() {
-		$title = __( 'Projects', 'glotpress' );
+		$title    = __( 'Projects', 'glotpress' );
 		$projects = GP::$project->top_level();
 		$this->tmpl( 'projects', get_defined_vars() );
 	}
@@ -27,20 +27,20 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$sub_projects = $project->sub_projects();
+		$sub_projects     = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 
 		foreach ( $translation_sets as $set ) {
 			$locale = GP_Locales::by_slug( $set->locale );
 
-			$set->name_with_locale = $set->name_with_locale();
-			$set->current_count = $set->current_count();
+			$set->name_with_locale   = $set->name_with_locale();
+			$set->current_count      = $set->current_count();
 			$set->untranslated_count = $set->untranslated_count();
-			$set->waiting_count = $set->waiting_count();
-			$set->fuzzy_count = $set->fuzzy_count();
+			$set->waiting_count      = $set->waiting_count();
+			$set->fuzzy_count        = $set->fuzzy_count();
 			$set->percent_translated = $set->percent_translated();
-			$set->all_count = $set->all_count();
-			$set->wp_locale = $locale->wp_locale;
+			$set->all_count          = $set->all_count();
+			$set->wp_locale          = $locale->wp_locale;
 			if ( $this->api ) {
 				$set->last_modified = $set->current_count ? $set->last_modified() : false;
 			}
@@ -86,9 +86,12 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$source_url_templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
-		if ( ! is_array( $source_url_templates ) ) { $source_url_templates = array();
+		if ( ! is_array( $source_url_templates ) ) {
+			$source_url_templates = array();
 		}
+
 		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
+
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
 			$this->notices[] = 'Source URL template was successfully updated.';
 		} else {
@@ -284,8 +287,8 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function new_get() {
-		$project = new GP_Project();
-		$project->active = 1;
+		$project                    = new GP_Project();
+		$project->active            = 1;
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->parent_project_id ) ) {
@@ -300,7 +303,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$post = gp_post( 'project' );
+		$post              = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
@@ -316,7 +319,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->create_and_select( $new_project );
 
 		if ( ! $project ) {
-			$project = new GP_Project();
+			$project        = new GP_Project();
 			$this->errors[] = __( 'Error in creating project!', 'glotpress' );
 			$this->tmpl( 'project-new', get_defined_vars() );
 		} else {
@@ -337,8 +340,8 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
-		$permissions = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn = function( $x, $y ) {
+		$permissions  = GP::$validator_permission->by_project_id( $project->id );
+		$cmp_fn       = function( $x, $y ) {
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
 		usort( $permissions, $cmp_fn );
@@ -389,7 +392,7 @@ class GP_Route_Project extends GP_Route_Main {
 			) );
 			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) { return;
 			}
-			$permission = GP::$validator_permission->create( $new_permission );
+			$permission       = GP::$validator_permission->create( $new_permission );
 			$permission ?
 				$this->notices[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );
 		}
@@ -527,7 +530,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function branch_project_post( $project_path ) {
-		$post = gp_post( 'project' );
+		$post    = gp_post( 'project' );
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -550,10 +553,10 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$new_project_data->active = $project->active;
-		$new_project = GP::$project->create_and_select( $new_project_data );
+		$new_project              = GP::$project->create_and_select( $new_project_data );
 
 		if ( ! $new_project ) {
-			$new_project = new GP_Project();
+			$new_project    = new GP_Project();
 			$this->errors[] = __( 'Error in creating project!', 'glotpress' );
 			$this->tmpl( 'project-branch', get_defined_vars() );
 		} else {

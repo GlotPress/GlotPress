@@ -7,7 +7,7 @@ gp_title(
 	)
 );
 
-$breadcrumb = array();
+$breadcrumb   = array();
 $breadcrumb[] = gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) );
 if ( 'default' == $current_set_slug ) {
 	$breadcrumb[] = esc_html( $locale->english_name );

@@ -336,12 +336,12 @@ class GP_Translation extends GP_Thing {
 			);
 		}
 
-		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
+		$sort_by   = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array(
 			'asc'  => 'ASC',
 			'desc' => 'DESC',
 		);
-		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
+		$sort_how  = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
 		$where = array();
@@ -415,7 +415,7 @@ class GP_Translation extends GP_Thing {
 		$priorities = gp_array_get( $filters, 'priority' );
 		if ( $priorities ) {
 			$valid_priorities = array_keys( GP::$original->get_static( 'priorities' ) );
-			$priorities = array_filter( gp_array_get( $filters, 'priority' ), function( $p ) use ( $valid_priorities ) {
+			$priorities       = array_filter( gp_array_get( $filters, 'priority' ), function( $p ) use ( $valid_priorities ) {
 				return in_array( intval( $p ), $valid_priorities, true );
 			} );
 
@@ -426,12 +426,12 @@ class GP_Translation extends GP_Thing {
 
 			if ( ! empty( $priorities_where ) ) {
 				$priorities_where = '(' . implode( ' OR ', $priorities_where ) . ')';
-				$where[] = $priorities_where;
+				$where[]          = $priorities_where;
 			}
 		};
 
-		$join_on = array();
-		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
+		$join_on  = array();
+		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses, true ) ) {
 			if ( array( 'untranslated' ) == $statuses ) {
@@ -440,13 +440,13 @@ class GP_Translation extends GP_Thing {
 			$join_type = 'LEFT';
 			$join_on[] = 'status != "rejected"';
 			$join_on[] = 'status != "old"';
-			$statuses = array_filter( $statuses, function( $x ) {
+			$statuses  = array_filter( $statuses, function( $x ) {
 				return 'untranslated' !== $x ;
 			} );
 		}
 
 		$all_statuses = $this->get_static( 'statuses' );
-		$statuses = array_filter( $statuses, function( $s ) use ( $all_statuses ) {
+		$statuses     = array_filter( $statuses, function( $s ) use ( $all_statuses ) {
 			return in_array( $s, $all_statuses, true );
 		} );
 
@@ -456,7 +456,7 @@ class GP_Translation extends GP_Thing {
 				$statuses_where[] = $wpdb->prepare( 'status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
-			$join_on[] = $statuses_where;
+			$join_on[]      = $statuses_where;
 		}
 
 		/**
@@ -544,12 +544,12 @@ class GP_Translation extends GP_Thing {
 		 */
 		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'root_join', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort, $root_translation_set );
 
-		$fields = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
-		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
+		$fields    = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
+		$join      = isset( $clauses['join'] ) ? $clauses['join'] : '';
 		$root_join = isset( $clauses['root_join'] ) ? $clauses['root_join'] : '';
-		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
-		$orderby = isset( $clauses['orderby'] ) ? 'ORDER BY ' . $clauses['orderby'] : '';
-		$limit = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
+		$where     = isset( $clauses['where'] ) ? $clauses['where'] : '';
+		$orderby   = isset( $clauses['orderby'] ) ? 'ORDER BY ' . $clauses['orderby'] : '';
+		$limit     = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS $fields
@@ -571,7 +571,7 @@ class GP_Translation extends GP_Thing {
 		$rows = apply_filters( 'gp_for_translation_rows', $rows, $translation_set );
 
 		$this->found_rows = $this->found_rows();
-		$translations = array();
+		$translations     = array();
 
 		foreach ( (array) $rows as $row ) {
 			if ( null === $row->id && $has_root ) {
@@ -624,9 +624,9 @@ class GP_Translation extends GP_Thing {
 			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 				$row->translations[] = $row->{"translation_".$i};
 			}
-			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
+			$row->references         = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
 			$row->extracted_comments = $row->comment;
-			$row->warnings = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
+			$row->warnings           = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
 			unset($row->comment);
 
 			// Reduce range by one since we're starting at 0, see GH#516.
@@ -634,7 +634,7 @@ class GP_Translation extends GP_Thing {
 				$member = "translation_$i";
 				unset($row->$member);
 			}
-			$row->row_id = $row->original_id . ( $row->id ? "-$row->id" : '' );
+			$row->row_id    = $row->original_id . ( $row->id ? "-$row->id" : '' );
 			$translations[] = new Translation_Entry( (array) $row );
 		}
 		unset( $rows );

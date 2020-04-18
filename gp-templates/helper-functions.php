@@ -17,8 +17,8 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
-		$item_number = count( $glossary_entries );
+	$text             = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+		$item_number                      = count( $glossary_entries );
 		$glossary_entries[ $item_number ] = $m[0];
 		return "<span GLOSSARY={$item_number}>";
 	}, $text );
@@ -248,7 +248,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 function textareas( $entry, $permissions, $index = 0 ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$disabled = $can_edit ? '' : 'disabled="disabled"';
+	$disabled                       = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
 		<?php

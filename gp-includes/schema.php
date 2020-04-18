@@ -8,9 +8,9 @@ function gp_schema_get() {
 
 	$gp_schema = array();
 
-	$charset_collate = '';
+	$charset_collate   = '';
 	if ( ! empty($wpdb->charset) ) {
-		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+		$charset_collate  = "DEFAULT CHARACTER SET $wpdb->charset";
 	}
 	if ( ! empty($wpdb->collate) ) {
 		$charset_collate .= " COLLATE $wpdb->collate";
@@ -27,8 +27,8 @@ function gp_schema_get() {
 	 * for each data type.
 	 */
 	$max_index_characters = 767;
-	$bytes_per_character = 4;
-	$max_index_length = floor( $max_index_characters / $bytes_per_character );
+	$bytes_per_character  = 4;
+	$max_index_length     = floor( $max_index_characters / $bytes_per_character );
 
 	/*
 	 * Translations

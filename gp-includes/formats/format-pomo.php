@@ -2,8 +2,8 @@
 
 class GP_Format_PO extends GP_Format {
 
-	public $name = 'Portable Object Message Catalog (.po/.pot)';
-	public $extension = 'po';
+	public $name           = 'Portable Object Message Catalog (.po/.pot)';
+	public $extension      = 'po';
 	public $alt_extensions = array( 'pot' );
 
 	public $class = 'PO';
@@ -26,19 +26,19 @@ class GP_Format_PO extends GP_Format {
 		}
 
 		// Force export only current translations.
-		$filters = array();
+		$filters           = array();
 		$filters['status'] = 'current';
 
 		foreach ( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}
 
-		$current = $project;
-		$project_tree = array();
+		$current        = $project;
+		$project_tree   = array();
 		$project_tree[] = $current->name;
 
 		while ( $current->parent_project_id > 0 ) {
-			$current = GP::$project->get( $current->parent_project_id );
+			$current        = GP::$project->get( $current->parent_project_id );
 			$project_tree[] = $current->name;
 		}
 
@@ -104,8 +104,8 @@ class GP_Format_PO extends GP_Format {
 }
 
 class GP_Format_MO extends GP_Format_PO {
-	public $name = 'Machine Object Message Catalog (.mo)';
-	public $extension = 'mo';
+	public $name           = 'Machine Object Message Catalog (.mo)';
+	public $extension      = 'mo';
 	public $alt_extensions = array();
 
 	public $class = 'MO';

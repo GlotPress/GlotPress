@@ -14,9 +14,9 @@
  */
 class GP_Original extends GP_Thing {
 
-	var $table_basename = 'gp_originals';
-	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
-	var $int_fields = array( 'id', 'project_id', 'priority' );
+	var $table_basename           = 'gp_originals';
+	var $field_names              = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
+	var $int_fields               = array( 'id', 'project_id', 'priority' );
 	var $non_updatable_attributes = array( 'id', 'path' );
 
 	public $id;
@@ -36,6 +36,7 @@ class GP_Original extends GP_Thing {
 		'0'  => 'normal',
 		'1'  => 'high',
 	);
+
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
@@ -184,13 +185,14 @@ class GP_Original extends GP_Thing {
 		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = $originals_error = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
-		$originals_by_key = array();
+		$originals_by_key          = array();
 		foreach ( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry( array(
 				'singular' => $original->singular,
 				'plural'   => $original->plural,
 				'context'  => $original->context,
 			) );
+
 			$originals_by_key[ $entry->key() ] = $original;
 		}
 
@@ -205,7 +207,7 @@ class GP_Original extends GP_Thing {
 
 			// Context needs to match VARCHAR(255) in the database schema.
 			if ( gp_strlen( $entry->context ) > 255 ) {
-				$entry->context = gp_substr( $entry->context, 0, 255 );
+				$entry->context                         = gp_substr( $entry->context, 0, 255 );
 				$translations->entries[ $entry->key() ] = $entry;
 			}
 
@@ -390,7 +392,7 @@ class GP_Original extends GP_Thing {
 			return null;
 		}
 
-		$input_length = gp_strlen( $input );
+		$input_length       = gp_strlen( $input );
 		$closest_similarity = 0;
 
 		foreach ( $other_strings as $compared_string ) {
@@ -412,7 +414,7 @@ class GP_Original extends GP_Thing {
 			$similarity = gp_string_similarity( $input, $compared_string );
 
 			if ( $similarity > $closest_similarity ) {
-				$closest = $compared_string;
+				$closest            = $compared_string;
 				$closest_similarity = $similarity;
 			}
 		}
@@ -428,7 +430,7 @@ class GP_Original extends GP_Thing {
 		 *
 		 * @param float $similarity Minimum allowed similarity.
 		 */
-		$min_score = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
+		$min_score    = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
 		$close_enough = ( $closest_similarity > $min_score );
 
 		/**
@@ -451,13 +453,13 @@ class GP_Original extends GP_Thing {
 	}
 
 	public function get_matching_originals_in_other_projects() {
-		$where = array();
+		$where   = array();
 		$where[] = 'singular = BINARY %s';
 		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
 		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
 		$where[] = 'project_id != %d';
 		$where[] = "status = '+active'";
-		$where = implode( ' AND ', $where );
+		$where   = implode( ' AND ', $where );
 
 		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
 	}

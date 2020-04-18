@@ -155,8 +155,8 @@ function gp_notice( $key = 'notice' ) {
 
 function gp_populate_notices() {
 	GP::$redirect_notices = array();
-	$prefix = '_gp_notice_';
-	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
+	$prefix               = '_gp_notice_';
+	$cookie_path          = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
 	foreach ( $_COOKIE as $key => $value ) {
 		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) ) ) {
 			GP::$redirect_notices[ $suffix ] = wp_unslash( $value );
@@ -518,7 +518,7 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 				$current_ext_len = strlen( $extension );
 
 				if ( gp_endswith( $filename, $extension ) && $current_ext_len > $matched_ext_len ) {
-					$format = $format_entry;
+					$format          = $format_entry;
 					$matched_ext_len = $current_ext_len;
 				}
 			}
