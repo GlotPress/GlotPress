@@ -57,7 +57,7 @@ class GP_Glossary_Entry extends GP_Thing {
 
 		$this->parts_of_speech = array(
 			'noun'         => _x( 'noun', 'part-of-speech', 'glotpress' ),
-			'verb'         => _x( 'verb','part-of-speech', 'glotpress' ),
+			'verb'         => _x( 'verb', 'part-of-speech', 'glotpress' ),
 			'adjective'    => _x( 'adjective', 'part-of-speech', 'glotpress' ),
 			'adverb'       => _x( 'adverb', 'part-of-speech', 'glotpress' ),
 			'interjection' => _x( 'interjection', 'part-of-speech', 'glotpress' ),
