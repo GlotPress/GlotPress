@@ -118,7 +118,9 @@ class GP_Format_Properties extends GP_Format {
 	private function ascii_uni_encode( $string ) {
 		$result = '';
 
-		for ( $i = 0; $i < strlen( $string ); $i++ ) {
+		$string_length = strlen( $string );
+
+		for ( $i = 0; $i < $string_length; $i++ ) {
 			$val = ord( $string[ $i ] );
 
 			if ( $val > 127 ) {
