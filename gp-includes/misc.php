@@ -540,7 +540,7 @@ function gp_wp_profile_options( $user ) {
 		return;
 	}
 
-?>
+	?>
 	<h2 id="glotpress"><?php _e( 'GlotPress', 'glotpress' ); ?></h2>
 
 	<table class="form-table">
@@ -557,7 +557,7 @@ function gp_wp_profile_options( $user ) {
 			</td>
 		</tr>
 	</table>
-<?php
+	<?php
 }
 
 /**

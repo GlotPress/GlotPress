@@ -168,7 +168,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
 
-		// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
+			// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
 		} else {
 			$this->status_header( 304 );
 		}
