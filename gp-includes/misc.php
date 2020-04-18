@@ -207,7 +207,6 @@ function gp_populate_notices() {
  *      $result[1][1] = "Sixth"
  *
  * Or some other random result.
- *
  */
 function gp_array_zip() {
 	$args = func_get_args();

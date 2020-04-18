@@ -456,7 +456,6 @@ class GP_Thing {
 	/**
 	 * Prepares for enetering the database an array with
 	 * key-value pairs, preresenting a GP_Thing object.
-	 *
 	 */
 	public function prepare_fields_for_save( $args ) {
 		$args = (array) $args;
