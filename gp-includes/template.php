@@ -244,13 +244,13 @@ function gp_js_focus_on( $html_id ) {
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
 	$attributes = $attributes ? " $attributes" : '';
-	$res = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
-	$labels = [
+	$res        = "<select name='" . esc_attr( $name_and_id ) . "' id='" . esc_attr( $name_and_id ) . "' $attributes>\n";
+	$labels     = array(
 		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
 		'low'    => _x( 'low', 'Priority', 'glotpress' ),
 		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
 		'high'   => _x( 'high', 'Priority', 'glotpress' ),
-	];
+	);
 	foreach ( $options as $value => $label ) {
 		if ( isset( $labels[ $label ] ) ) {
 			$label = $labels[ $label ];

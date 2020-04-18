@@ -294,13 +294,13 @@ function textareas( $entry, $permissions, $index = 0 ) {
 }
 
 function display_status( $status ) {
-	$status_labels = [
+	$status_labels = array(
 		'current'  => _x( 'current', 'Single Status', 'glotpress' ),
 		'waiting'  => _x( 'waiting', 'Single Status', 'glotpress' ),
 		'fuzzy'    => _x( 'fuzzy', 'Single Status', 'glotpress' ),
 		'old'      => _x( 'old', 'Single Status', 'glotpress' ),
 		'rejected' => _x( 'rejected', 'Single Status', 'glotpress' ),
-	];
+	);
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
 	}
@@ -380,12 +380,12 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 	<?php if ( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
 	<?php
-	$labels = [
+	$labels = array(
 		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
 		'low'    => _x( 'low', 'Priority', 'glotpress' ),
 		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
 		'high'   => _x( 'high', 'Priority', 'glotpress' ),
-	];
+	);
 
 	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
 		if ( isset( $labels[ $label ] ) ) {
