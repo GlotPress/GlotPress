@@ -9,10 +9,12 @@ function gp_schema_get() {
 	$gp_schema = array();
 
 	$charset_collate = '';
-	if ( ! empty($wpdb->charset) )
+	if ( ! empty($wpdb->charset) ) {
 		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-	if ( ! empty($wpdb->collate) )
+	}
+	if ( ! empty($wpdb->collate) ) {
 		$charset_collate .= " COLLATE $wpdb->collate";
+	}
 
 	/*
 	 * Indexes have a maximum size of 767 bytes in the MyISAM database engine. Historically, we haven't needed to be overtly

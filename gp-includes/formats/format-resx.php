@@ -30,8 +30,9 @@ class GP_Format_ResX extends GP_Format {
 		}
 
 		foreach ( $entries as $entry ) {
-			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )
+			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) ) {
 				continue;
+			}
 
 			if ( empty( $entry->context ) ) {
 				$entry->context = $entry->singular;

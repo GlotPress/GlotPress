@@ -37,10 +37,11 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 			&& $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
 	}
-	if ( isset( $args['extra']['set'] ) && $args['extra']['set'] && $args['extra']['set']->id == $args['object_id'] )
+	if ( isset( $args['extra']['set'] ) && $args['extra']['set'] && $args['extra']['set']->id == $args['object_id'] ) {
 		$set = $args['extra']['set'];
-	else
+	} else {
 		$set = GP::$translation_set->get( $args['object_id'] );
+	}
 	return GP::$permission->user_can( $args['user'], 'approve', GP::$validator_permission->object_type,
 		GP::$validator_permission->object_id( $set->project_id, $set->locale, $set->slug ) );
 }

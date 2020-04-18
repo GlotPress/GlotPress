@@ -321,7 +321,8 @@ function references( $project, $entry ) {
 	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
-	if ( ! $show_references ) return;
+	if ( ! $show_references ) { return;
+	}
 	?>
 	<dl><dt>
 	<?php _e( 'References:', 'glotpress' ); ?>

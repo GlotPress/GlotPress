@@ -28,8 +28,9 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	 * @param string|null $template_path Priority template location, if any.
 	 */
 	$locations = apply_filters( 'gp_tmpl_load_locations', $locations, $template, $args, $template_path );
-	if ( isset( $args['http_status'] ) )
+	if ( isset( $args['http_status'] ) ) {
 		status_header( $args['http_status'] );
+	}
 	foreach ( $locations as $location ) {
 	 	$file = $location . "$template.php";
 		if ( is_readable( $file ) ) {
@@ -128,9 +129,11 @@ function gp_nav_menu_items( $location = 'main' ) {
 
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
-	foreach ( $args as $k => $v )
-		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) )
+	foreach ( $args as $k => $v ) {
+		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) ) {
 			$clean_args[ $k ] = $v;
+		}
+	}
 	return $clean_args;
 }
 
@@ -278,17 +281,20 @@ function gp_pagination( $page, $per_page, $objects ) {
 	$first = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
 	$page = intval( $page ) ? intval( $page ) : 1;
 	$pages = ceil( $objects / $per_page );
-	if ( $page > $pages ) return '';
+	if ( $page > $pages ) { return '';
+	}
 
-	if ( $page > 1 )
+	if ( $page > 1 ) {
 		$prev = gp_link_get( add_query_arg( array( 'page' => $page - 1 ) ), '&larr;', array( 'class' => 'previous' ) );
-	else
+	} else {
 		$prev = '<span class="previous disabled">&larr;</span>';
+	}
 
-	if ( $page < $pages )
+	if ( $page < $pages ) {
 		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 )), '&rarr;', array( 'class' => 'next' ) );
-	else
+	} else {
 		$next = '<span class="next disabled">&rarr;</span>';
+	}
 
 	$current = '<span class="current">'.$page.'</span>';
 	if ( $page > 1 ) {
@@ -297,7 +303,8 @@ function gp_pagination( $page, $per_page, $objects ) {
 			$prev_pages[] = gp_link_get( add_query_arg( array( 'page' => $prev_page ) ), $prev_page );
 		}
 		$prev_pages = implode( ' ', $prev_pages );
-		if ( $page - $surrounding > 1 ) $prev_dots = '<span class="dots">&hellip;</span>';
+		if ( $page - $surrounding > 1 ) { $prev_dots = '<span class="dots">&hellip;</span>';
+		}
 	}
 	if ( $page < $pages ) {
 		$next_pages = array();
@@ -305,10 +312,13 @@ function gp_pagination( $page, $per_page, $objects ) {
 			$next_pages[] = gp_link_get( add_query_arg( array( 'page' => $next_page ) ), $next_page );
 		}
 		$next_pages = implode( ' ', $next_pages );
-		if ( $page + $surrounding < $pages ) $next_dots = '<span class="dots">&hellip;</span>';
+		if ( $page + $surrounding < $pages ) { $next_dots = '<span class="dots">&hellip;</span>';
+		}
 	}
-	if ( $prev_dots ) $first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
-	if ( $next_dots ) $last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );
+	if ( $prev_dots ) { $first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
+	}
+	if ( $next_dots ) { $last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );
+	}
  	$html = <<<HTML
 	<div class="paging">
 		$prev

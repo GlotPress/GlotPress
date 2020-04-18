@@ -86,7 +86,8 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$source_url_templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
-		if ( ! is_array( $source_url_templates ) ) $source_url_templates = array();
+		if ( ! is_array( $source_url_templates ) ) { $source_url_templates = array();
+		}
 		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
 			$this->notices[] = 'Source URL template was successfully updated.';
@@ -386,7 +387,8 @@ class GP_Route_Project extends GP_Route_Main {
 				'locale_slug' => gp_post( 'locale' ),
 				'set_slug'    => gp_post( 'set-slug' ),
 			) );
-			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) return;
+			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) { return;
+			}
 			$permission = GP::$validator_permission->create( $new_permission );
 			$permission ?
 				$this->notices[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );

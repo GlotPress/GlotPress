@@ -113,7 +113,8 @@ class GP_Validation_Rules {
 		$verdict = true;
 		foreach ( $this->field_names as $field_name ) {
 			// do not try to validate missing fields
-			if ( ! gp_object_has_var( $thing, $field_name ) ) continue;
+			if ( ! gp_object_has_var( $thing, $field_name ) ) { continue;
+			}
 			$value = $thing->$field_name;
 			$field_verdict = $this->run_on_single_field( $field_name, $value );
 			$verdict = $verdict && $field_verdict;

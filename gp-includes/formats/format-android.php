@@ -132,8 +132,9 @@ class GP_Format_Android extends GP_Format {
 		libxml_use_internal_errors( $errors );
 
 		// Check to see if the XML parsing was successful.
-		if ( ! is_object( $data ) )
+		if ( ! is_object( $data ) ) {
 			return false;
+		}
 
 		$entries = new Translations;
 

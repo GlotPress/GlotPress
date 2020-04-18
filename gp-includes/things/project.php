@@ -234,18 +234,20 @@ class GP_Project extends GP_Thing {
 		global $wpdb;
 		$old_path = isset( $this->path ) ? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
-		if ( $parent_project )
+		if ( $parent_project ) {
 			$path = gp_url_join( $parent_project->path, $this->slug );
-		elseif ( ! $wpdb->last_error )
+		} elseif ( ! $wpdb->last_error ) {
 			$path = $this->slug;
-		else
+		} else {
 			return null;
+		}
 
 		$path = trim( $path, '/' );
 
 		$this->path = $path;
 		$res_self = $this->update( array( 'path' => $path ) );
-		if ( is_null( $res_self ) ) return $res_self;
+		if ( is_null( $res_self ) ) { return $res_self;
+		}
 		// update children's paths, too
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
@@ -295,9 +297,9 @@ class GP_Project extends GP_Thing {
 	}
 
 	public function source_url_template() {
-		if ( isset( $this->user_source_url_template ) )
+		if ( isset( $this->user_source_url_template ) ) {
 			return $this->user_source_url_template;
-		else {
+		} else {
 			if ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
 					 && isset( $templates[ $this->id ] ) ) {
 				$this->user_source_url_template = $templates[ $this->id ];

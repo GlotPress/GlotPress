@@ -49,7 +49,9 @@ class GP_Route {
 	public function after_request() {
 		// we can't unregister a shutdown function
 		// this check prevents this method from being run twice
-		if ( ! $this->request_running ) return;
+		if ( ! $this->request_running ) {
+			return;
+		}
 		// set errors and notices
 		if ( ! headers_sent() ) {
 			$this->set_notices_and_errors();
@@ -291,7 +293,9 @@ class GP_Route {
 	}
 
 	public function set_notices_and_errors() {
-		if ( $this->fake_request ) return;
+		if ( $this->fake_request ) {
+			return;
+		}
 
 		foreach ( $this->notices as $notice ) {
 			gp_notice_set( $notice );

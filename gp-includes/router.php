@@ -186,7 +186,9 @@ class GP_Router {
 			foreach ( $this->urls as $re => $func ) {
 				foreach ( $http_methods as $http_method ) {
 					if ( gp_startswith( $re, $http_method.':' ) ) {
-						if ( $http_method != $request_method ) continue;
+						if ( $http_method != $request_method ) {
+							continue;
+						}
 						$re = substr( $re, strlen( $http_method . ':' ));
 						break;
 					}
