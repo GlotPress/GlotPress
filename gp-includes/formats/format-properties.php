@@ -266,7 +266,7 @@ class GP_Format_Properties extends GP_Format {
 		$matches = preg_split( '/[=|:]/', $line, null, PREG_SPLIT_OFFSET_CAPTURE );
 
 		// Check the number of matches.
-		$num_matches = sizeof( $matches );
+		$num_matches = count( $matches );
 
 		// There's always one match (the entire line) so if we matched more than one, let's see if we can split the line.
 		if ( $num_matches > 1 ) {
