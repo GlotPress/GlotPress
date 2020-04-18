@@ -70,7 +70,7 @@ function gp_schema_get() {
 	 */
 
 	/*
-	  * The maximum length for the slug component of the project_id_slug_locale key is limited by the index size limit
+	 * The maximum length for the slug component of the project_id_slug_locale key is limited by the index size limit
 	 * minus the size of the project_id (4 bytes = 1 character) and locale (10 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
@@ -78,7 +78,7 @@ function gp_schema_get() {
 	$max_pid_slug_locale_key_length = min( $max_index_length - 1 - 10, 255 );
 
 	/*
-	  * The maximum length for the slug component of the locale_slug key is limited by the index size limit
+	 * The maximum length for the slug component of the locale_slug key is limited by the index size limit
 	 * minus the size of the locale (10 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
@@ -110,7 +110,7 @@ function gp_schema_get() {
 	 */
 
 	/*
-	  * The maximum length for the components of the singular_plural_context key is limited by the index size limit
+	 * The maximum length for the components of the singular_plural_context key is limited by the index size limit
 	 * divided by three.
 	 *
 	 * Also make sure to never go over the length of the column (or in the case of a text type, a max of 255).
@@ -183,7 +183,7 @@ function gp_schema_get() {
 	 */
 
 	/*
-	  * The maximum length for the meta_key component of the object_type__meta_key key is limited by the index size limit
+	 * The maximum length for the meta_key component of the object_type__meta_key key is limited by the index size limit
 	 * minus the size of the object_type (32 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
@@ -191,7 +191,7 @@ function gp_schema_get() {
 	$max_objtype_metakey_key_length = min( $max_index_length - 32, 255 );
 
 	/*
-	  * The maximum length for the meta_key component of the object_type__object_id__meta_key key is limited by the index size limit
+	 * The maximum length for the meta_key component of the object_type__object_id__meta_key key is limited by the index size limit
 	 * minus the size of the object_type (32 characters) and the object_id (8 bytes = 2 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
