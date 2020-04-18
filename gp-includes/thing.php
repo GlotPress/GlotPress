@@ -95,6 +95,7 @@ class GP_Thing {
 	 * Retrieves a single row from this table
 	 *
 	 * For parameters description see BPDB::prepare()
+	 *
 	 * @return mixed an object, containing the selected row or false on error
 	 */
 	public function one() {
@@ -107,6 +108,7 @@ class GP_Thing {
 	 * Retrieves a single value from this table
 	 *
 	 * For parameters description see BPDB::prepare()
+	 *
 	 * @return scalar the result of the query or false on error
 	 */
 	public function value() {
