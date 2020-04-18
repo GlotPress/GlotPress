@@ -196,7 +196,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 				$whole_breadcrumb .= $args['before'] . $breadcrumb . $args['after'];
 			}
 
-			$whole_breadcrumb  = str_replace( '{breadcrumb}', $whole_breadcrumb, $args['breadcrumb-template'] );
+			$whole_breadcrumb = str_replace( '{breadcrumb}', $whole_breadcrumb, $args['breadcrumb-template'] );
 
 			/**
 			 * Filter the breadcrumb HTML output.

@@ -670,7 +670,7 @@ class GP_Thing {
 
 	// set memory limits.
 	public function set_memory_limit( $new_limit ) {
-		$current_limit     = ini_get( 'memory_limit' );
+		$current_limit = ini_get( 'memory_limit' );
 
 		if ( '-1' == $current_limit ) {
 			return false;

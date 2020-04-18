@@ -510,7 +510,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			);
 		} else {
 			if ( $ok > 0 ) {
-				$message  = sprintf(
+				$message = sprintf(
 					/* translators: %d: Translations count. */
 					_n( 'Error with marking %d translation as fuzzy.', 'Error with marking %d translations as fuzzy.', $error, 'glotpress' ),
 					$error
@@ -569,7 +569,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			);
 		} else {
 			if ( $ok > 0 ) {
-				$message  = sprintf(
+				$message = sprintf(
 					/* translators: %d: Originals count. */
 					_n( 'Error modifying priority of %d original.', 'Error modifying priority of %d originals.', $error, 'glotpress' ),
 					$error
