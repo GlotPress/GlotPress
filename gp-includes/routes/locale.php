@@ -99,7 +99,7 @@ class GP_Route_Locale extends GP_Route_Main {
 					$previous_parent = $parent_id;
 				}
 
-				$set_data                                                            = $projects_data[ $parent_id ][ $previous_parent ]['totals'];
+				$set_data = $projects_data[ $parent_id ][ $previous_parent ]['totals'];
 				$projects_data[ $parent_id ][ $previous_parent ]['sets'][ $set->id ] = $this->set_data( $set, $set_project  );
 				$projects_data[ $parent_id ][ $previous_parent ]['totals']           = $this->set_data( $set, $set_project, $set_data );
 			}

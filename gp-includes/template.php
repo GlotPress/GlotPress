@@ -106,7 +106,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 	}
 	elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
-			$user                                                  = wp_get_current_user();
+			$user = wp_get_current_user();
 			$items[ gp_url_profile( $user->user_nicename ) ]       = __( 'Profile', 'glotpress' );
 			$items[ gp_url( '/settings' ) ]                        = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ] = __( 'Log out', 'glotpress' );
