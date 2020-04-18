@@ -485,7 +485,7 @@ function gp_gmt_strtotime( $string ) {
 		return -1;
 	}
 
-	if ( stristr($string, 'utc') || stristr($string, 'gmt') || stristr($string, '+0000') ) {
+	if ( stristr( $string, 'utc' ) || stristr( $string, 'gmt' ) || stristr( $string, '+0000' ) ) {
 		return strtotime($string);
 	}
 
