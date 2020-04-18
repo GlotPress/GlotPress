@@ -112,8 +112,9 @@ class GP_Validation_Rules {
 		$this->errors = array();
 		$verdict      = true;
 		foreach ( $this->field_names as $field_name ) {
-			// do not try to validate missing fields
-			if ( ! gp_object_has_var( $thing, $field_name ) ) { continue;
+			// Do not try to validate missing fields.
+			if ( ! gp_object_has_var( $thing, $field_name ) ) {
+				continue;
 			}
 			$value         = $thing->$field_name;
 			$field_verdict = $this->run_on_single_field( $field_name, $value );
@@ -124,7 +125,7 @@ class GP_Validation_Rules {
 
 	public function run_on_single_field( $field, $value ) {
 		if ( ! isset( $this->rules[ $field ] ) || ! is_array( $this->rules[ $field ] ) ) {
-			// no rules means always valid
+			// No rules means always valid.
 			return true;
 		}
 		$verdict = true;

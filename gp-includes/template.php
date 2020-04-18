@@ -282,7 +282,8 @@ function gp_pagination( $page, $per_page, $objects ) {
 	$first       = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
 	$page        = intval( $page ) ? intval( $page ) : 1;
 	$pages       = ceil( $objects / $per_page );
-	if ( $page > $pages ) { return '';
+	if ( $page > $pages ) {
+		return '';
 	}
 
 	if ( $page > 1 ) {
@@ -318,9 +319,11 @@ function gp_pagination( $page, $per_page, $objects ) {
 			$next_dots = '<span class="dots">&hellip;</span>';
 		}
 	}
-	if ( $prev_dots ) { $first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
+	if ( $prev_dots ) {
+		$first = gp_link_get( add_query_arg( array( 'page' => 1 ) ), 1 );
 	}
-	if ( $next_dots ) { $last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );
+	if ( $next_dots ) {
+		$last = gp_link_get( add_query_arg( array( 'page' => $pages ) ), $pages );
 	}
 
 	$html = <<<HTML

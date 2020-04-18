@@ -301,10 +301,17 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	</form>
 </div>
 
-<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
+<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) {
+	echo ' translation-sets-rtl'; } ?>">
 	<thead>
 	<tr>
-		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
+		<?php
+		if ( $can_approve ) :
+			?>
+			<th class="checkbox"><input type="checkbox" /></th>
+			<?php
+		endif;
+		?>
 		<th class="priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
 		<th class="original"><?php _e( 'Original string', 'glotpress' ); ?></th>
 		<th class="translation"><?php _e( 'Translation', 'glotpress' ); ?></th>

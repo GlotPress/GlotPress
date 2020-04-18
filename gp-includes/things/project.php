@@ -235,9 +235,9 @@ class GP_Project extends GP_Thing {
 		$old_path       = isset( $this->path ) ? $this->path : '';
 		$parent_project = $this->get( $this->parent_project_id );
 		if ( $parent_project ) {
-			$path          = gp_url_join( $parent_project->path, $this->slug );
+			$path = gp_url_join( $parent_project->path, $this->slug );
 		} elseif ( ! $wpdb->last_error ) {
-			$path          = $this->slug;
+			$path = $this->slug;
 		} else {
 			return null;
 		}
@@ -246,9 +246,10 @@ class GP_Project extends GP_Thing {
 
 		$this->path = $path;
 		$res_self   = $this->update( array( 'path' => $path ) );
-		if ( is_null( $res_self ) ) { return $res_self;
+		if ( is_null( $res_self ) ) {
+			return $res_self;
 		}
-		// update children's paths, too
+		// Update children's paths, too.
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
 			return $this->query( $query, $path, strlen($old_path) + 1, $wpdb->esc_like( $old_path).'%' );
