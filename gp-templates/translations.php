@@ -412,7 +412,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		}
 
 		$export_url     = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
-		$export_link    = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array(
+		$export_link    = gp_link_get( $export_url, __( 'Export', 'glotpress' ), array(
 			'id'      => 'export',
 			'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ),
 		) );
