@@ -103,7 +103,7 @@ class GP_Route_Project extends GP_Route_Main {
 	public function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
- 		if ( ! $project ) {
+		if ( ! $project ) {
 			return $this->die_with_404();
 		}
 

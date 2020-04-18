@@ -196,7 +196,7 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 	$bytelength2 = strlen( $str2 );
 
 	if ( $bytelength1 === $length1 && $bytelength1 <= 255
-	     && $bytelength2 === $length2 && $bytelength2 <= 255 ) {
+		 && $bytelength2 === $length2 && $bytelength2 <= 255 ) {
 		return levenshtein( $str1, $str2 );
 	}
 

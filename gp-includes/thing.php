@@ -555,7 +555,7 @@ class GP_Thing {
 		}
 		$operator = '=';
 		if ( is_integer( $php_value ) || ctype_digit( $php_value) ) {
-		 	$sql_value = $php_value;
+			$sql_value = $php_value;
 		} else {
 			$sql_value  = "'" . esc_sql( $php_value )  ."'";
 		}
