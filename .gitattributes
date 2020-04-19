@@ -18,6 +18,7 @@
 .scrutinizer.yml export-ignore
 .travis.yml export-ignore
 composer.json export-ignore
+composer.lock export-ignore
 .wp-env.json export-ignore
 codecov.yml export-ignore
 Gruntfile.js export-ignore
