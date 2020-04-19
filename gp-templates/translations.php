@@ -80,6 +80,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 								array_key_exists( 'user_login', $filters_and_sort ) ||
 								array_key_exists( 'with_comment', $filters_and_sort ) ||
 								array_key_exists( 'case_sensitive', $filters_and_sort ) ||
+								array_key_exists( 'with_plural', $filters_and_sort ) ||
 								array_key_exists( 'with_context', $filters_and_sort );
 
 		// Because 'warnings' is not a translation status we need to know if we're filtering on it before we check
@@ -228,13 +229,14 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 				?>
 			</dd>
 			<dd>
-				<label class="filter-title"><?php _e( 'Options:', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
+				<label class="filter-title"><?php _e( 'Options:', 'glotpress' ); ?></label><br />
 				<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
 				<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
-				<input type="checkbox" name="filters[warnings]" value="yes" id="filters[warnings][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'warnings' ) ); ?>><label for='filters[warnings][yes]'><?php _e( 'With warnings', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
-				<label for="filters[user_login]" class="filter-title"><?php _e( 'User:', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
-				<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); // WPCS: XSS ok. ?>" name="filters[user_login]" id="filters[user_login]" /><br />
+				<input type="checkbox" name="filters[warnings]" value="yes" id="filters[warnings][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'warnings' ) ); ?>><label for='filters[warnings][yes]'><?php _e( 'With warnings', 'glotpress' ); ?></label><br />
+				<input type="checkbox" name="filters[with_plural]" value="yes" id="filters[with_plural][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_plural' ) ); ?>><label for='filters[with_plural][yes]'><?php _e( 'With plural', 'glotpress' ); ?></label><br />
+				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label><br />
+				<label for="filters[user_login]" class="filter-title"><?php _e( 'User:', 'glotpress' ); ?></label><br />
+				<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /><br />
 			</dd>
 			<?php
 

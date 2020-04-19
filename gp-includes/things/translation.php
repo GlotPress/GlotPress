@@ -402,6 +402,10 @@ class GP_Translation extends GP_Thing {
 			$where[] = 'o.comment IS NOT NULL AND o.comment <> ""';
 		}
 
+		if ( 'yes' === gp_array_get( $filters, 'with_plural' ) ) {
+			$where[] = 'o.plural IS NOT NULL';
+		}
+
 		if ( gp_array_get( $filters, 'user_login' ) ) {
 			$user = get_user_by( 'login', $filters['user_login'] );
 			// do not return any entries if the user doesn't exist
