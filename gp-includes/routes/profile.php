@@ -73,7 +73,9 @@ class GP_Route_Profile extends GP_Route_Main {
 				user_id = %s AND
 				status != 'rejected'
 			ORDER BY date_added DESC
-		", $user->ID );
+			",
+			$user->ID
+		);
 
 		$set_ids          = array();
 		$translation_sets = array();
@@ -131,7 +133,9 @@ class GP_Route_Profile extends GP_Route_Main {
 			WHERE user_id = %s
 			GROUP BY ts.locale
 			ORDER BY count DESC
-		", $user->ID );
+			",
+			$user->ID
+		);
 
 		$locales = array();
 

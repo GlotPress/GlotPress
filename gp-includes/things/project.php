@@ -394,7 +394,9 @@ class GP_Project extends GP_Thing {
 			)
 			SELECT
 				%s AS `project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
-			FROM $wpdb->gp_originals WHERE project_id = %s", $this->id, $source_project_id
+			FROM $wpdb->gp_originals WHERE project_id = %s",
+			$this->id,
+			$source_project_id
 		);
 	}
 

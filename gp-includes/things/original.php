@@ -123,16 +123,18 @@ class GP_Original extends GP_Thing {
 		$counts = $wpdb->get_row(
 			$wpdb->prepare(
 				"
-			SELECT
-				COUNT(*) AS total,
-				COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
-				COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
-			FROM {$wpdb->gp_originals}
-			WHERE
-				project_id = %d AND status = '+active'
-			",
-			$project_id
-		), ARRAY_A );
+				SELECT
+					COUNT(*) AS total,
+					COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
+					COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
+				FROM {$wpdb->gp_originals}
+				WHERE
+					project_id = %d AND status = '+active'
+				",
+				$project_id
+			),
+			ARRAY_A
+		);
 
 		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
 		if ( ! is_array( $counts ) ) {

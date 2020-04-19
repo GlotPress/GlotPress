@@ -27,7 +27,10 @@ if ( $translation->translation_status ) {
 }
 
 $original_history = gp_url_project_locale(
-	$project, $locale->slug, $translation_set->slug, array(
+	$project,
+	$locale->slug,
+	$translation_set->slug,
+	array(
 		'filters[status]'      => 'either',
 		'filters[original_id]' => $translation->original_id,
 		'sort[by]'             => 'translation_date_added',

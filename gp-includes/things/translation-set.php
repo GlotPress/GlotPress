@@ -500,18 +500,21 @@ class GP_Translation_Set extends GP_Thing {
 			$status_counts = $wpdb->get_results(
 				$wpdb->prepare(
 					"
-				SELECT
-					t.status AS translation_status,
-					COUNT(*) AS total,
-					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
-					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
-				FROM {$wpdb->gp_translations} AS t
-				INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
-				WHERE
-					t.translation_set_id = %d
-					AND o.status = '+active'
-				GROUP BY t.status
-			", $this->id ) );
+					SELECT
+						t.status AS translation_status,
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_translations} AS t
+					INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+					WHERE
+						t.translation_set_id = %d
+						AND o.status = '+active'
+					GROUP BY t.status
+					",
+					$this->id
+				)
+			);
 
 			if ( $status_counts ) {
 				$counts = $status_counts;
@@ -520,19 +523,22 @@ class GP_Translation_Set extends GP_Thing {
 			$warnings_counts = $wpdb->get_row(
 				$wpdb->prepare(
 					"
-				SELECT
-					COUNT(*) AS total,
-					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
-					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
-				FROM {$wpdb->gp_translations} AS t
-				INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
-				WHERE
-					t.translation_set_id = %d AND
-					o.status = '+active' AND
-					( t.status = 'current' OR t.status = 'waiting' )
-					AND warnings IS NOT NULL
-					AND warnings != ''
-			", $this->id ) );
+					SELECT
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_translations} AS t
+					INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+					WHERE
+						t.translation_set_id = %d AND
+						o.status = '+active' AND
+						( t.status = 'current' OR t.status = 'waiting' )
+						AND warnings IS NOT NULL
+						AND warnings != ''
+					",
+					$this->id
+				)
+			);
 
 			if ( $warnings_counts ) {
 				$counts[] = (object) array(
@@ -546,17 +552,21 @@ class GP_Translation_Set extends GP_Thing {
 			$untranslated_counts = $wpdb->get_row(
 				$wpdb->prepare(
 					"
-				SELECT
-					COUNT(*) AS total,
-					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
-					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
-				FROM {$wpdb->gp_originals} AS o
-				LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != 'rejected' AND t.status != 'old'
-				WHERE
-					o.project_id = %d AND
-					o.status = '+active' AND
-					t.translation_0 IS NULL
-			", $this->id, $this->project_id ) );
+					SELECT
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_originals} AS o
+					LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != 'rejected' AND t.status != 'old'
+					WHERE
+						o.project_id = %d AND
+						o.status = '+active' AND
+						t.translation_0 IS NULL
+					",
+					$this->id,
+					$this->project_id
+				)
+			);
 
 			if ( $untranslated_counts ) {
 				$counts[] = (object) array(
