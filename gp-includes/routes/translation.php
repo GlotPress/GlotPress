@@ -367,7 +367,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
 				case 'approve':
-				case 'reject' :
+				case 'reject':
 					$this->_bulk_approve( $bulk );
 					break;
 				case 'fuzzy':
