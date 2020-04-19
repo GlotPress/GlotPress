@@ -229,7 +229,7 @@ function gp_project_names_from_root( $leaf_project ) {
 		$names[] = esc_html( $project->name );
 	}
 
-	$project_path = implode( " | ", $names );
+	$project_path = implode( ' | ', $names );
 
 	return $project_path;
 }

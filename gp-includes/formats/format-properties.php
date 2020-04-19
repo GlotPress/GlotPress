@@ -60,10 +60,10 @@ class GP_Format_Properties extends GP_Format {
 
 			$original = str_replace( "\n", "\\n", $original );
 
-			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
+			$comment = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
 			if ( '' == $comment ) {
-				$comment = "No comment provided.";
+				$comment = 'No comment provided.';
 			}
 
 			$comment_lines = explode( "\n", $comment );
@@ -143,7 +143,7 @@ class GP_Format_Properties extends GP_Format {
 	 * @return string
 	 */
 	private function uni_decode( $string ) {
-		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, "uni_decode_callback" ), $string );
+		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, 'uni_decode_callback' ), $string );
 	}
 
 	/**

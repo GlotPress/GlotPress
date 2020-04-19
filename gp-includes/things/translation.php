@@ -635,7 +635,7 @@ class GP_Translation extends GP_Thing {
 
 			$row->translations = array();
 			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
-				$row->translations[] = $row->{"translation_".$i};
+				$row->translations[] = $row->{'translation_' . $i};
 			}
 			$row->references         = preg_split( '/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY );
 			$row->extracted_comments = $row->comment;
@@ -790,7 +790,7 @@ class GP_Translation extends GP_Thing {
 
 		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
 		// Cached as "" if no translations.
-		if ( "" === $last_modified ) {
+		if ( '' === $last_modified ) {
 			return false;
 		} elseif ( false !== $last_modified ) {
 			return $last_modified;

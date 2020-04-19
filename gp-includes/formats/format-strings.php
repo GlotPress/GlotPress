@@ -71,7 +71,7 @@ class GP_Format_Strings extends GP_Format {
 			$comment     = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
 			if ( '' == $comment ) {
-				$comment = "No comment provided by engineer.";
+				$comment = 'No comment provided by engineer.';
 			}
 
 			$result .= "/* $comment */\n\"$original\" = \"$translation\";\n\n";
