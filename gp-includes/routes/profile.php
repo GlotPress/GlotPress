@@ -166,7 +166,7 @@ class GP_Route_Profile extends GP_Route_Main {
 			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
 
 			// Skip admin permissions
-			if ( ! isset(  $object_id[1] ) ) {
+			if ( ! isset( $object_id[1] ) ) {
 				unset( $permissions[ $key ] );
 				continue;
 			}

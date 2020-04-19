@@ -105,7 +105,7 @@ class GP_Validation_Rules {
 				}
 			}
 		}
-		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
+		trigger_error( sprintf( 'Call to undefined function: %s::%s().', get_class( $this ), $name ), E_USER_ERROR );
 	}
 
 	public function run( $thing ) {

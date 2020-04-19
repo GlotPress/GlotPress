@@ -226,7 +226,7 @@ function gp_project_names_from_root( $leaf_project ) {
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
 
 	foreach ( $path_from_root as $project ) {
-		$names[] = esc_html($project->name);
+		$names[] = esc_html( $project->name );
 	}
 
 	$project_path = implode( " | ", $names );
@@ -240,7 +240,7 @@ function gp_project_links_from_root( $leaf_project ) {
 	}
 	$links          = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
-	$links[]        = empty( $path_from_root) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
+	$links[]        = empty( $path_from_root ) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
 		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}
@@ -303,7 +303,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 	}
 
 	if ( $page < $pages ) {
-		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 )), '&rarr;', array( 'class' => 'next' ) );
+		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 ) ), '&rarr;', array( 'class' => 'next' ) );
 	} else {
 		$next = '<span class="next disabled">&rarr;</span>';
 	}
@@ -554,7 +554,7 @@ function gp_checked( $checked ) {
 function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
 		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
+		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress' ) ),
 		gp_link_get( gp_url_project( '', '-new', array( 'parent_project_id' => $project->id ) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),

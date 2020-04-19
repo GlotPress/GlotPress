@@ -67,7 +67,7 @@ gp_tmpl_header();
 	<div class="validates-projects">
 		<h3><?php _e( 'Validator to', 'glotpress' ); ?></h3>
 
-		<?php if ( count($permissions) >= 1 ) : ?>
+		<?php if ( count( $permissions ) >= 1 ) : ?>
 			<ul>
 			<?php foreach ( $permissions as $permission ) : ?>
 				<li>

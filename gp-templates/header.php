@@ -35,7 +35,7 @@
 		</nav>
 
 		<nav id="side-navigation">
-			<?php echo gp_nav_menu('side'); ?>
+			<?php echo gp_nav_menu( 'side' ); ?>
 		</nav>
 	</header>
 
@@ -44,7 +44,7 @@
 
 		<div id="gp-js-message" class="gp-js-message"></div>
 
-		<?php if ( gp_notice('error') ) : ?>
+		<?php if ( gp_notice( 'error' ) ) : ?>
 			<div class="error">
 				<?php echo gp_notice( 'error' ); ?>
 			</div>

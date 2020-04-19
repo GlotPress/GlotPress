@@ -167,16 +167,16 @@ class GP_Format_Properties extends GP_Format {
 			$byte[0] = chr( bindec( '11110' . sprintf( '%03s', substr( $binary, 0, $bin_length - 18 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 3 ), 6 ) ) ) );
 			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 2 ), 6 ) ) ) );
-			$byte[3] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6) ) ) );
+			$byte[3] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
 		} elseif ( $bin_length > 11 ) {    // > 11 bits, need 3 unicode bytes to encode.
 			$byte[0] = chr( bindec( '1110' . sprintf( '%04s', substr( $binary, 0, $bin_length - 12 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 2 ), 6 ) ) ) );
-			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6) ) ) );
+			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
 		} elseif ( $bin_length > 7 ) {  // > 7 bites, need 2 unicode bytes to encode.
 			$byte[0] = chr( bindec( '110' . sprintf( '%05s', substr( $binary, 0, $bin_length - 6 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
 		} else {                        // < 8 bites, need 1 unicode bytes to encode.
-			$byte[0] = chr( bindec( '0' . sprintf(  '%07s', $binary ) ) );
+			$byte[0] = chr( bindec( '0' . sprintf( '%07s', $binary ) ) );
 		}
 
 		/* This is an alternate way to encode the character but it needs the iconv functions available:

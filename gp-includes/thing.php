@@ -559,7 +559,7 @@ class GP_Thing {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
 		$operator = '=';
-		if ( is_integer( $php_value ) || ctype_digit( $php_value) ) {
+		if ( is_integer( $php_value ) || ctype_digit( $php_value ) ) {
 			$sql_value = $php_value;
 		} else {
 			$sql_value = "'" . esc_sql( $php_value )  ."'";
@@ -661,12 +661,12 @@ class GP_Thing {
 			return '';
 		}
 		$page = intval( $page ) ? intval( $page ) : 1;
-		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page - 1) * $per_page );
+		return sprintf( 'LIMIT %d OFFSET %d', $per_page, ( $page - 1 ) * $per_page );
 	}
 
 	public function found_rows() {
 		global $wpdb;
-		return $wpdb->get_var("SELECT FOUND_ROWS();");
+		return $wpdb->get_var( 'SELECT FOUND_ROWS();' );
 	}
 
 	public function like_escape_printf( $s ) {

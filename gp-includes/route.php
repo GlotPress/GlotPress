@@ -323,10 +323,10 @@ class GP_Route {
 		}
 		$this->set_notices_and_errors();
 		if ( $this->api && false !== $honor_api && 'no-api' !== $honor_api ) {
-			$template = $template.'.api';
-			$this->header('Content-Type: application/json');
+			$template = $template . '.api';
+			$this->header( 'Content-Type: application/json' );
 		} else {
-			$this->header('Content-Type: text/html; charset=utf-8');
+			$this->header( 'Content-Type: text/html; charset=utf-8' );
 		}
 		if ( $this->fake_request ) {
 			$this->template_output = gp_tmpl_get_output( $template, $args, $this->template_path );

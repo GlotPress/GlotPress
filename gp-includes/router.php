@@ -189,7 +189,7 @@ class GP_Router {
 						if ( $http_method != $request_method ) {
 							continue;
 						}
-						$re = substr( $re, strlen( $http_method . ':' ));
+						$re = substr( $re, strlen( $http_method . ':' ) );
 						break;
 					}
 				}

@@ -311,7 +311,7 @@ function display_status( $status ) {
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
 	}
-	$status = preg_replace( '/^[+-]/', '', $status);
+	$status = preg_replace( '/^[+-]/', '', $status );
 	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
 

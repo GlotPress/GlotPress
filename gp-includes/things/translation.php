@@ -405,7 +405,7 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'user_login' ) ) {
 			$user = get_user_by( 'login', $filters['user_login'] );
 			// do not return any entries if the user doesn't exist
-			$where[] = $wpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
+			$where[] = $wpdb->prepare( 't.user_id = %d', ( $user && $user->ID ) ? $user->ID : -1 );
 		}
 
 		if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
@@ -633,15 +633,15 @@ class GP_Translation extends GP_Thing {
 			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 				$row->translations[] = $row->{"translation_".$i};
 			}
-			$row->references         = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
+			$row->references         = preg_split( '/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY );
 			$row->extracted_comments = $row->comment;
 			$row->warnings           = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
-			unset($row->comment);
+			unset( $row->comment );
 
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				$member = "translation_$i";
-				unset($row->$member);
+				unset( $row->$member );
 			}
 			$row->row_id    = $row->original_id . ( $row->id ? "-$row->id" : '' );
 			$translations[] = new Translation_Entry( (array) $row );

@@ -15,8 +15,8 @@ gp_tmpl_header();
 
 <form action="" method="post">
 	<p>
-		<label for="glossary-edit-description"><?php _e( 'Description', 'glotpress'  ); ?></label> <span class="ternary"><?php _e( 'can include HTML', 'glotpress' ); ?></span> <br/>
-		<textarea class="glossary-description" id="glossary-edit-description" name="glossary[description]"><?php echo esc_html($glossary->description); ?></textarea>
+		<label for="glossary-edit-description"><?php _e( 'Description', 'glotpress' ); ?></label> <span class="ternary"><?php _e( 'can include HTML', 'glotpress' ); ?></span> <br/>
+		<textarea class="glossary-description" id="glossary-edit-description" name="glossary[description]"><?php echo esc_html( $glossary->description ); ?></textarea>
 	</p>
 
 	<p>

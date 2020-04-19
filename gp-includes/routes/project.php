@@ -518,7 +518,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_error( __( 'Project wasn&#8217;found', 'glotpress' ) );
 		}
 
-		header('Content-Type: application/json');
+		header( 'Content-Type: application/json' );
 		echo wp_json_encode( $project->set_difference_from( $other_project ) );
 	}
 

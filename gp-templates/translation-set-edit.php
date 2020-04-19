@@ -21,7 +21,7 @@ gp_tmpl_header();
 ?>
 <h2><?php _e( 'Edit Translation Set', 'glotpress' ); ?></h2>
 <form action="" method="post">
-<?php gp_tmpl_load( 'translation-set-form', get_defined_vars()); ?>
+<?php gp_tmpl_load( 'translation-set-form', get_defined_vars() ); ?>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Save', 'glotpress' ); ?>" id="submit" />
 		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo gp_url_project_locale( $project, $locale->slug, $set->slug ); ?>"><?php esc_attr_e( 'Cancel', 'glotpress' ); ?></a></span>

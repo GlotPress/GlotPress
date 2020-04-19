@@ -20,5 +20,5 @@ if ( is_object( $glossary ) ) {
 
 $translation_singular = isset( $translation->singular_glossary_markup ) ? $translation->singular_glossary_markup : esc_translation( $translation->singular );
 
-gp_tmpl_load('translation-row-preview', get_defined_vars());
-gp_tmpl_load('translation-row-editor', get_defined_vars());
+gp_tmpl_load( 'translation-row-preview', get_defined_vars() );
+gp_tmpl_load( 'translation-row-editor', get_defined_vars() );

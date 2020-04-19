@@ -222,7 +222,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$can_import_current  = $can_approve;
 		$can_import_waiting  = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
 		$url                 = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
-		$set_priority_url    = gp_url( '/originals/%original-id%/set_priority');
+		$set_priority_url    = gp_url( '/originals/%original-id%/set_priority' );
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url      = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
 		$bulk_action         = gp_url_join( $url, '-bulk' );
@@ -264,7 +264,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
-			$data                       = compact('original_id');
+			$data                       = compact( 'original_id' );
 			$data['user_id']            = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
@@ -370,7 +370,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$bulk            = gp_post('bulk');
+		$bulk            = gp_post( 'bulk' );
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
@@ -570,7 +570,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 		}
 
-		if ( 0 === $error) {
+		if ( 0 === $error ) {
 			$this->notices[] = sprintf(
 				/* translators: %d: Originals count. */
 				_n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ),

@@ -206,7 +206,7 @@ class GP_Project extends GP_Thing {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
-		if ( ( isset( $args['path']) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {
+		if ( ( isset( $args['path'] ) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {
 			unset( $args['path'] );
 		}
 
@@ -252,7 +252,7 @@ class GP_Project extends GP_Thing {
 		// Update children's paths, too.
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen($old_path) + 1, $wpdb->esc_like( $old_path).'%' );
+			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '%' );
 		} else {
 			return $res_self;
 		}

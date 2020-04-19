@@ -11,12 +11,12 @@ function gp_link_get( $url, $text, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
 	$attributes = $attributes ? " $attributes" : '';
 
-	return sprintf('%1$s<a href="%2$s"%3$s>%4$s</a>%5$s', $before, esc_url( $url ), $attributes, $text, $after );
+	return sprintf( '%1$s<a href="%2$s"%3$s>%4$s</a>%5$s', $before, esc_url( $url ), $attributes, $text, $after );
 }
 
 function gp_link() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_get', $args);
+	echo call_user_func_array( 'gp_link_get', $args );
 }
 
 function gp_link_with_ays_get( $url, $text, $attrs = array() ) {
@@ -28,7 +28,7 @@ function gp_link_with_ays_get( $url, $text, $attrs = array() ) {
 
 function gp_link_with_ays() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_with_ays_get', $args);
+	echo call_user_func_array( 'gp_link_with_ays_get', $args );
 }
 
 function gp_link_project_get( $project_or_path, $text, $attrs = array() ) {
@@ -38,7 +38,7 @@ function gp_link_project_get( $project_or_path, $text, $attrs = array() ) {
 
 function gp_link_project() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_project_get', $args);
+	echo call_user_func_array( 'gp_link_project_get', $args );
 }
 
 function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
@@ -51,7 +51,7 @@ function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
 
 function gp_link_project_edit() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_project_edit_get', $args);
+	echo call_user_func_array( 'gp_link_project_edit_get', $args );
 }
 
 function gp_link_project_delete_get( $project, $text = false, $attrs = array() ) {
@@ -64,7 +64,7 @@ function gp_link_project_delete_get( $project, $text = false, $attrs = array() )
 
 function gp_link_project_delete() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_project_delete_get', $args);
+	echo call_user_func_array( 'gp_link_project_delete_get', $args );
 }
 
 function gp_link_home_get() {
@@ -73,7 +73,7 @@ function gp_link_home_get() {
 
 function gp_link_home() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_home_get', $args);
+	echo call_user_func_array( 'gp_link_home_get', $args );
 }
 
 function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() ) {
@@ -86,7 +86,7 @@ function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() )
 
 function gp_link_set_edit() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_set_edit_get', $args);
+	echo call_user_func_array( 'gp_link_set_edit_get', $args );
 }
 
 /**
@@ -155,7 +155,7 @@ function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = arr
 
 function gp_link_glossary_edit() {
 	$args = func_get_args();
-	echo call_user_func_array('gp_link_glossary_edit_get', $args);
+	echo call_user_func_array( 'gp_link_glossary_edit_get', $args );
 }
 
 /**
