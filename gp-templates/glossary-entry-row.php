@@ -69,4 +69,4 @@
 		</div>
 	</td>
 </tr>
-<?php //TODO: last modified, by who ?>
+<?php // TODO: last modified, by who ?>

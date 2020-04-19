@@ -47,7 +47,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		$recent_projects = $this->get_recent_translation_sets( $user, 5 );
 		$locales         = $this->locales_known( $user );
 
-		//validate to
+		// validate to.
 		$permissions = $this->get_permissions( $user );
 
 		$this->tmpl( 'profile-public', get_defined_vars() );

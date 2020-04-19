@@ -177,13 +177,13 @@ if ( empty( $projects_data ) ) {
 						?>
 					</td>
 					</tr>
-				<?php endforeach; //sub project slugs ?>
+				<?php endforeach; // Sub project slugs. ?>
 				</tr>
-			<?php endforeach;  //sub projects ?>
+			<?php endforeach;  // Sub projects. ?>
 			</tbody>
 		</table>
 	</div>
-<?php endforeach; //top projects ?>
+<?php endforeach; // Top projects. ?>
 
 	<p class="actionlist secondary">
 		<?php gp_link( gp_url( '/projects' ), __( 'All projects', 'glotpress' ) ); ?>

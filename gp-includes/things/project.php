@@ -313,7 +313,7 @@ class GP_Project extends GP_Thing {
 
 	/**
 	 * Gives an array of project objects starting from the current project
-	 * then its parent, its parent and up to the root
+	 * then its parent, its parent and up to the root.
 	 *
 	 * @todo Cache the results. Invalidation is tricky, because on each project update we need to invalidate the cache
 	 * for all of its children.
@@ -379,7 +379,7 @@ class GP_Project extends GP_Thing {
 					esc_html( $to_add->name )
 				);
 			} else {
-				//Duplicate translations
+				// Duplicate translations.
 				$new_set->copy_translations_from( $to_add->id );
 			}
 		}
@@ -401,7 +401,7 @@ class GP_Project extends GP_Thing {
 
 	/**
 	 * Gives an array of project objects starting from the current project children
-	 * then its grand children etc
+	 * then its grand children etc.
 	 *
 	 * @return array
 	 */
@@ -421,11 +421,11 @@ class GP_Project extends GP_Thing {
 		$this->copy_originals_from( $source_project->id );
 		$this->copy_sets_and_translations_from( $source_project->id );
 
-		//Keep a list of parents to preserve hierarchy
+		// Keep a list of parents to preserve hierarchy.
 		$parents                        = array();
 		$parents[ $source_project->id ] = $this->id;
 
-		//Duplicate originals, translations sets and translations for the child projects
+		// Duplicate originals, translations sets and translations for the child projects.
 		foreach ( $source_sub_projects as $sub ) {
 			$copy_project                    = new GP_Project( $sub->fields() );
 			$copy_project->parent_project_id = $parents[ $sub->parent_project_id ];

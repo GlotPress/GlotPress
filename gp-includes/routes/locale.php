@@ -49,7 +49,7 @@ class GP_Route_Locale extends GP_Route_Main {
 				continue;
 			}
 
-			// Store project data for later use
+			// Store project data for later use.
 			if ( isset( $projects[ $set->project_id ] ) ) {
 				$set_project = $projects[ $set->project_id ];
 			} else {
@@ -57,14 +57,14 @@ class GP_Route_Locale extends GP_Route_Main {
 				$projects[ $set->project_id ] = $set_project;
 			}
 
-			// We only want to list active projects
+			// We only want to list active projects.
 			if ( ! isset( $set_project->active ) || false == $set_project->active ) {
 				continue;
 			}
 
 			$parent_id = is_null( $set_project->parent_project_id ) ? $set_project->id : $set_project->parent_project_id;
 
-			// Store parent project data for later use
+			// Store parent project data for later use.
 			if ( isset( $projects[ $parent_id ] ) ) {
 				$parent_project = $projects[ $parent_id ];
 			} else {
@@ -72,7 +72,7 @@ class GP_Route_Locale extends GP_Route_Main {
 				$projects[ $parent_id ] = $parent_project;
 			}
 
-			// Store parent id for
+			// Store parent id for.
 			$parents[ $set_project->id ] = $parent_id;
 
 			if ( ! in_array( $set_project->parent_project_id, $locale_projects, true ) ) {
@@ -89,12 +89,12 @@ class GP_Route_Locale extends GP_Route_Main {
 					$parent_id       = $parents[ $parent_id ];
 				}
 
-				//Orphan project - a sub project is set to active, while it's parent isn't
+				// Orphan project - a sub project is set to active, while it's parent isn't.
 				if ( ! isset( $projects_data[ $parent_id ] ) ) {
 					continue;
 				}
 
-				//For when root project has sets, and sub projects.
+				// For when root project has sets, and sub projects.
 				if ( ! isset( $previous_parent ) || ! isset( $projects_data[ $parent_id ][ $previous_parent ] ) ) {
 					$previous_parent = $parent_id;
 				}
