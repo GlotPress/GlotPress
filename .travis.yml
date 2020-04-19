@@ -52,6 +52,7 @@ jobs:
       env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   allow_failures:
     - php: nightly
+    - stage: lint
   fast_finish: true
 
 stages:
