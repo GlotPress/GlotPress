@@ -57,9 +57,9 @@ function gp_route_nonce_url( $url, $action ) {
 /**
  * Retrieves a value from $array
  *
- * @param array $array
+ * @param array  $array
  * @param string $key name of array value
- * @param mixed $default value to return if $array[$key] doesn't exist. Default is ''
+ * @param mixed  $default value to return if $array[$key] doesn't exist. Default is ''
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
@@ -290,7 +290,7 @@ function gp_object_has_var( $object, $var_name ) {
  * Has this translation been updated since the passed timestamp?
  *
  * @param GP_Translation_Set $translation_set Translation to check
- * @param int $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
+ * @param int                $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
  * @return bool
  */
 function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {

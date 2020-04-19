@@ -58,7 +58,7 @@ class GP_Glossary extends GP_Thing {
 	 * Get the glossary by set/project.
 	 * If there's no glossary for this specific project, get the nearest parent glossary
 	 *
-	 * @param GP_Project $project
+	 * @param GP_Project         $project
 	 * @param GP_Translation_Set $translation_set
 	 *
 	 * @return GP_Glossary|bool
