@@ -103,8 +103,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 	if ( 'main' === $location ) {
 		$items[ gp_url( '/projects' ) ]  = __( 'Projects', 'glotpress' );
 		$items[ gp_url( '/languages' ) ] = __( 'Locales', 'glotpress' );
-	}
-	elseif ( 'side' === $location ) {
+	} elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
 			$items[ gp_url_profile( $user->user_nicename ) ]       = __( 'Profile', 'glotpress' );
@@ -501,8 +500,7 @@ function things_to_fields( $data ) {
 		foreach ( $data as $item_id => $item ) {
 			$data[ $item_id ] = things_to_fields( $item );
 		}
-	}
-	else if ( $data instanceof GP_Thing ) {
+	} elseif ( $data instanceof GP_Thing ) {
 		$data = $data->fields();
 	}
 

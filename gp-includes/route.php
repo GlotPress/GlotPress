@@ -264,7 +264,7 @@ class GP_Route {
 	private function get_raw_referer() {
 		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
 			return wp_unslash( gp_array_get( $_REQUEST, '_wp_http_referer' ) );
-		} else if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+		} elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
 			return wp_unslash( gp_array_get( $_SERVER, 'HTTP_REFERER' ) );
 		}
 

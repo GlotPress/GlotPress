@@ -331,8 +331,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		if ( ! is_array( $data ) ) {
 			return;
-		}
-		else if ( $data[1] !== $locale_slug ) {
+		} elseif ( $data[1] !== $locale_slug ) {
 			$this->redirect_with_error( __( 'Unexpected values in the CSV file header row.', 'glotpress' ) );
 			return;
 		}
