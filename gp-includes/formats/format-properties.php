@@ -325,7 +325,7 @@ class GP_Format_Properties extends GP_Format {
 		}
 
 		$originals        = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
+		$new_translations = new Translations();
 
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
@@ -369,7 +369,7 @@ class GP_Format_Properties extends GP_Format {
 	 * @return Translations|bool
 	 */
 	public function read_originals_from_file( $file_name ) {
-		$entries = new Translations;
+		$entries = new Translations();
 		$file    = file_get_contents( $file_name );
 
 		if ( false === $file ) {
@@ -529,4 +529,4 @@ class GP_Format_Properties extends GP_Format {
 
 }
 
-GP::$formats['properties'] = new GP_Format_Properties;
+GP::$formats['properties'] = new GP_Format_Properties();

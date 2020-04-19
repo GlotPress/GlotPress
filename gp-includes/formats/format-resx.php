@@ -58,7 +58,7 @@ class GP_Format_ResX extends GP_Format {
 			return false;
 		}
 
-		$entries = new Translations;
+		$entries = new Translations();
 		foreach ( $data->data as $string ) {
 			$entry = new Translation_Entry();
 
@@ -219,4 +219,4 @@ class GP_Format_ResX extends GP_Format {
 
 }
 
-GP::$formats['resx'] = new GP_Format_ResX;
+GP::$formats['resx'] = new GP_Format_ResX();

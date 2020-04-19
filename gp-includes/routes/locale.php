@@ -142,7 +142,7 @@ class GP_Route_Locale extends GP_Route_Main {
 
 	private function set_data( $set, $project, $set_data = null ) {
 		if ( ! $set_data ) {
-			$set_data = new stdClass;
+			$set_data = new stdClass();
 
 			$set_data->slug          = $set->slug;
 			$set_data->project_path  = $project->path;

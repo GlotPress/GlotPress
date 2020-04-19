@@ -36,7 +36,7 @@ abstract class GP_Format {
 		}
 
 		$originals        = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
+		$new_translations = new Translations();
 
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file

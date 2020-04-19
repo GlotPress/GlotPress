@@ -206,7 +206,7 @@ class GP_Router {
 
 					if ( is_array( $func ) ) {
 						list( $class, $method )    = $func;
-						$route                     = new $class;
+						$route                     = new $class();
 						$route->api                = $api;
 						$route->last_method_called = $method;
 						$route->class_name         = $class;

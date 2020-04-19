@@ -89,7 +89,7 @@ class GP_Format_Strings extends GP_Format {
 	 * @return Translations|bool The extracted originals on success, false on failure.
 	 */
 	public function read_originals_from_file( $file_name ) {
-		$entries = new Translations;
+		$entries = new Translations();
 		$file    = file_get_contents( $file_name );
 
 		if ( false === $file ) {
@@ -191,4 +191,4 @@ class GP_Format_Strings extends GP_Format {
 
 }
 
-GP::$formats['strings'] = new GP_Format_Strings;
+GP::$formats['strings'] = new GP_Format_Strings();

@@ -136,7 +136,7 @@ class GP_Format_Android extends GP_Format {
 			return false;
 		}
 
-		$entries = new Translations;
+		$entries = new Translations();
 
 		// Loop through all of the single strings we found in the XML file.
 		foreach ( $data->string as $string ) {
@@ -455,4 +455,4 @@ class GP_Format_Android extends GP_Format {
 
 }
 
-GP::$formats['android'] = new GP_Format_Android;
+GP::$formats['android'] = new GP_Format_Android();
