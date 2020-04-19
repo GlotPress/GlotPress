@@ -195,11 +195,11 @@ class GP_Validators {
 		);
 	}
 
-	static public function unregister( $key ) {
+	public static function unregister( $key ) {
 		unset( self::$callbacks[ $key ] );
 	}
 
-	static public function get( $key ) {
+	public static function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}
 }
