@@ -8,7 +8,7 @@ class GP_CLI_Upgrade_Set_Permissions extends WP_CLI_Command {
 			'action'      => 'approve',
 		) );
 		foreach ( $permissions as $permission ) {
-			$set = GP::$translation_set->get( $permission->object_id );
+			$set     = GP::$translation_set->get( $permission->object_id );
 			$project = GP::$project->get( $set->project_id );
 			GP::$permission->create( array(
 				'user_id'     => $permission->user_id,

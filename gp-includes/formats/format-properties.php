@@ -2,8 +2,8 @@
 
 class GP_Format_Properties extends GP_Format {
 
-	public $name = 'Java Properties File (.properties)';
-	public $extension = 'properties';
+	public $name             = 'Java Properties File (.properties)';
+	public $extension        = 'properties';
 	public $filename_pattern = '%s_%s';
 
 	public $exported = '';
@@ -118,7 +118,9 @@ class GP_Format_Properties extends GP_Format {
 	private function ascii_uni_encode( $string ) {
 		$result = '';
 
-		for ( $i = 0; $i < strlen( $string ); $i++ ) {
+		$string_length = strlen( $string );
+
+		for ( $i = 0; $i < $string_length; $i++ ) {
 			$val = ord( $string[ $i ] );
 
 			if ( $val > 127 ) {
@@ -155,7 +157,7 @@ class GP_Format_Properties extends GP_Format {
 	 * @return string
 	 */
 	private function uni_decode_callback( $matches ) {
-		$binary = decbin( hexdec( $matches[1] ) );
+		$binary     = decbin( hexdec( $matches[1] ) );
 		$bin_length = strlen( $binary );
 
 		$byte = array();
@@ -208,7 +210,7 @@ class GP_Format_Properties extends GP_Format {
 			return false;
 		}
 
-		$code = ord( $character );
+		$code        = ord( $character );
 		$bytesnumber = 1;
 
 		if ( $code >= 128 ) {             //otherwise 0xxxxxxx
@@ -218,15 +220,15 @@ class GP_Format_Properties extends GP_Format {
 				$bytesnumber = 2;        //110xxxxx
 			} else if ( $code < 240 ) {
 				$bytesnumber = 3;        //1110xxxx
-				$codetemp -= 32;
+				$codetemp   -= 32;
 			} else if ( $code < 248 ) {
 				$bytesnumber = 4;        //11110xxx
-				$codetemp -= ( 32 + 16 );
+				$codetemp   -= ( 32 + 16 );
 			}
 
 			for ( $i = 2; $i <= $bytesnumber; $i++ ) {
 				$offset ++;
-				$code2 = ord( substr( $string, $offset, 1 ) ) - 128;        //10xxxxxx
+				$code2    = ord( substr( $string, $offset, 1 ) ) - 128;        //10xxxxxx
 				$codetemp = ( $codetemp * 64 ) + $code2;
 			}
 
@@ -257,14 +259,14 @@ class GP_Format_Properties extends GP_Format {
 	 */
 	private function split_properties_line( $line, &$key, &$value ) {
 		// Make sure to reset the key/value before continuing.
-		$key = '';
+		$key   = '';
 		$value = '';
 
 		// Split the string on any = or :, get back where the string was split.
 		$matches = preg_split( '/[=|:]/', $line, null, PREG_SPLIT_OFFSET_CAPTURE );
 
 		// Check the number of matches.
-		$num_matches = sizeof( $matches );
+		$num_matches = count( $matches );
 
 		// There's always one match (the entire line) so if we matched more than one, let's see if we can split the line.
 		if ( $num_matches > 1 ) {
@@ -282,12 +284,12 @@ class GP_Format_Properties extends GP_Format {
 				// is an escape, we don't have a match yet.
 				if ( '\\' != $line[ $location - 2 ] ) {
 					// Set the return values for the key and value.
-					$key = substr( $line, 0, $location - 1 );
+					$key   = substr( $line, 0, $location - 1 );
 					$value = substr( $line, $location );
 
 					// Handle the special case where the separator is actually " = " or " : ".
 					if ( gp_endswith( $key, ' ' ) && gp_startswith( $value, ' ' ) ) {
-						$key = substr( $key, 0, -1 );
+						$key   = substr( $key, 0, -1 );
 						$value = substr( $value, 1 );
 					}
 
@@ -328,12 +330,12 @@ class GP_Format_Properties extends GP_Format {
 			// we have been using read_originals_from_file to parse the file
 			// so we need to swap singular and translation
 			$entry->translations = array( $entry->singular );
-			$entry->singular = null;
+			$entry->singular     = null;
 
 			foreach ( $originals as $original ) {
 				if ( $original->context == $entry->context ) {
 					$entry->singular = $original->singular;
-					$entry->context = $original->context;
+					$entry->context  = $original->context;
 					break;
 				}
 			}
@@ -367,17 +369,17 @@ class GP_Format_Properties extends GP_Format {
 	 */
 	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
-		$file = file_get_contents( $file_name );
+		$file    = file_get_contents( $file_name );
 
 		if ( false === $file ) {
 			return false;
 		}
 
-		$entry = $comment = null;
+		$entry  = $comment = null;
 		$inline = false;
-		$lines = explode( "\n", $file );
-		$key = '';
-		$value = '';
+		$lines  = explode( "\n", $file );
+		$key    = '';
+		$value  = '';
 
 		foreach ( $lines as $line ) {
 			if ( preg_match( '/^(#|!)\s*(.*)\s*$/', $line, $matches ) ) {
@@ -402,10 +404,10 @@ class GP_Format_Properties extends GP_Format {
 				// Check to see if this line continues on to the next
 				if ( gp_endswith( $line, '\\' ) ) {
 					$inline = true;
-					$value = trim( $value, '\\' );
+					$value  = trim( $value, '\\' );
 				}
 
-				$entry = new Translation_Entry();
+				$entry          = new Translation_Entry();
 				$entry->context = rtrim( $this->unescape( $key ) );
 
 				/* So the following line looks a little weird, why encode just to decode?
@@ -422,7 +424,7 @@ class GP_Format_Properties extends GP_Format {
 
 				if ( ! is_null( $comment ) ) {
 					$entry->extracted_comments = $comment;
-					$comment = null;
+					$comment                   = null;
 				}
 
 				$entry->translations = array();

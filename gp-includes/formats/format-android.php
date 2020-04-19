@@ -132,8 +132,9 @@ class GP_Format_Android extends GP_Format {
 		libxml_use_internal_errors( $errors );
 
 		// Check to see if the XML parsing was successful.
-		if ( ! is_object( $data ) )
+		if ( ! is_object( $data ) ) {
 			return false;
+		}
 
 		$entries = new Translations;
 
@@ -191,7 +192,7 @@ class GP_Format_Android extends GP_Format {
 
 		// If an xliff tag was found, replace the translation and add a comment for later.
 		if ( false !== $xliff_info ) {
-			$string[0] = $xliff_info['string'];
+			$string[0]          = $xliff_info['string'];
 			$string['comment'] .= $xliff_info['description'];
 		}
 
@@ -237,9 +238,9 @@ class GP_Format_Android extends GP_Format {
 		$parts = explode( '<xliff:g', $string );
 
 		// Setup the results array, part 0 will never need to be processed so automatically add it to the returned string.
-		$result = array();
-		$result['string'] = $parts[0];
-		$result['comment'] = '';
+		$result                = array();
+		$result['string']      = $parts[0];
+		$result['comment']     = '';
 		$result['description'] = '';
 
 		// As we can skip the first part, loop through only the remaining parts.
@@ -262,7 +263,7 @@ class GP_Format_Android extends GP_Format {
 			 */
 			if ( false !== preg_match( '/(.*)(<xliff:g.*>)(.*)(<\/xliff:g>)(.*)/i', $current, $matches ) ) {
 				// If we have a match add to the results parameters to return the correct parts of the match.
-				$result['string'] .= $matches[1] . $matches[3] . $matches[5];
+				$result['string']  .= $matches[1] . $matches[3] . $matches[5];
 				$result['comment'] .= ' ' . $matches[2] . $matches[3] . $matches[4];
 
 				// Keep a copy of the current xliff tag that we're working with to parse for id/example attributes later.
@@ -270,7 +271,7 @@ class GP_Format_Android extends GP_Format {
 
 				// Keep a copy of the component string to use later.
 				$component = $matches[3];
-				$text = '';
+				$text      = '';
 
 				// Parse the xliff tag for the id attribute, check for both single and double quotes.
 				$id = preg_match( '/.*id="(.*)".*/iU', $current_comment, $matches ) || preg_match( '/.*id=\'(.*)\'.*/iU', $current_comment, $matches );
@@ -320,7 +321,7 @@ class GP_Format_Android extends GP_Format {
 		}
 
 		// Make sure to trim the comment and description before returning them.
-		$result['comment'] = trim( $result['comment'] );
+		$result['comment']     = trim( $result['comment'] );
 		$result['description'] = trim( $result['description'] );
 
 		return $result;

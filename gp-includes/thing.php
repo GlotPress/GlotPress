@@ -14,23 +14,23 @@
  */
 class GP_Thing {
 
-	var $field_names = array();
+	var $field_names        = array();
 	var $non_db_field_names = array();
-	var $int_fields = array();
-	var $validation_rules = null;
-	var $per_page = 30;
-	var $map_results = true;
-	var $static = array();
+	var $int_fields         = array();
+	var $validation_rules   = null;
+	var $per_page           = 30;
+	var $map_results        = true;
+	var $static             = array();
 
 	public $class;
 	public $table_basename;
 	public $id;
 	public $non_updatable_attributes;
 	public $default_conditions;
-	public $table = null;
+	public $table  = null;
 	public $errors = array();
 
-	static $static_by_class = array();
+	static $static_by_class           = array();
 	static $validation_rules_by_class = array();
 
 	public function __construct( $fields = array() ) {
@@ -95,6 +95,7 @@ class GP_Thing {
 	 * Retrieves a single row from this table
 	 *
 	 * For parameters description see BPDB::prepare()
+	 *
 	 * @return mixed an object, containing the selected row or false on error
 	 */
 	public function one() {
@@ -107,12 +108,13 @@ class GP_Thing {
 	 * Retrieves a single value from this table
 	 *
 	 * For parameters description see BPDB::prepare()
+	 *
 	 * @return scalar the result of the query or false on error
 	 */
 	public function value() {
 		global $wpdb;
 		$args = func_get_args();
-		$res = $wpdb->get_var( $this->prepare( $args ) );
+		$res  = $wpdb->get_var( $this->prepare( $args ) );
 		return is_null( $res ) ? false : $res;
 	}
 
@@ -230,7 +232,7 @@ class GP_Thing {
 	 */
 	private function _no_map( $name, $args ) {
 		$this->map_results = false;
-		$result = call_user_func_array( array( $this, $name ), $args );
+		$result            = call_user_func_array( array( $this, $name ), $args );
 		$this->map_results = true;
 
 		return $result;
@@ -294,13 +296,15 @@ class GP_Thing {
 	 */
 	public function create( $args ) {
 		global $wpdb;
-		$args = $this->prepare_fields_for_save( $args );
-		$args = $this->prepare_fields_for_create( $args );
+		$args          = $this->prepare_fields_for_save( $args );
+		$args          = $this->prepare_fields_for_create( $args );
 		$field_formats = $this->get_db_field_formats( $args );
-		$res = $wpdb->insert( $this->table, $args, $field_formats );
-		if ( false === $res ) return false;
-		$class = $this->class;
-		$inserted = new $class( $args );
+		$res           = $wpdb->insert( $this->table, $args, $field_formats );
+		if ( false === $res ) {
+			return false;
+		}
+		$class        = $this->class;
+		$inserted     = new $class( $args );
 		$inserted->id = $wpdb->insert_id;
 		$inserted->after_create();
 		return $inserted;
@@ -314,7 +318,9 @@ class GP_Thing {
 	 */
 	public function create_and_select( $args ) {
 		$created = $this->create( $args );
-		if ( ! $created ) return false;
+		if ( ! $created ) {
+			return false;
+		}
 		$created->reload();
 		return $created;
 	}
@@ -326,10 +332,14 @@ class GP_Thing {
 	 */
 	public function update( $data, $where = null ) {
 		global $wpdb;
-		if ( ! $data ) return false;
-		$where = is_null( $where ) ? array( 'id' => $this->id ) : $where;
+		if ( ! $data ) {
+			return false;
+		}
+		$where           = is_null( $where ) ? array( 'id' => $this->id ) : $where;
 		$fields_for_save = $this->prepare_fields_for_save( $data );
-		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) return true;
+		if ( is_array( $fields_for_save ) && empty( $fields_for_save ) ) {
+			return true;
+		}
 
 		$field_formats = $this->get_db_field_formats( $fields_for_save );
 		$where_formats = $this->get_db_field_formats( $where );
@@ -339,7 +349,9 @@ class GP_Thing {
 
 	public function get( $thing_or_id ) {
 		global $wpdb;
-		if ( ! $thing_or_id ) return false;
+		if ( ! $thing_or_id ) {
+			return false;
+		}
 		$id = is_object( $thing_or_id ) ? $thing_or_id->id : $thing_or_id;
 		return $this->find_one( array( 'id' => $id ) );
 	}
@@ -395,9 +407,11 @@ class GP_Thing {
 	 * @param array $where An array of conditions to use to for a SQL "where" clause, if null, not used and all matching rows will be deleted.
 	 */
 	public function delete_all( $where = null ) {
-		$query = "DELETE FROM $this->table";
+		$query          = "DELETE FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $where );
-		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
+		if ( $conditions_sql ) {
+			$query .= " WHERE $conditions_sql";
+		}
 		$result = $this->query( $query );
 		$this->after_delete();
 		return $result;
@@ -456,7 +470,6 @@ class GP_Thing {
 	/**
 	 * Prepares for enetering the database an array with
 	 * key-value pairs, preresenting a GP_Thing object.
-	 *
 	 */
 	public function prepare_fields_for_save( $args ) {
 		$args = (array) $args;
@@ -546,12 +559,13 @@ class GP_Thing {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
 		$operator = '=';
-		if ( is_integer( $php_value ) || ctype_digit( $php_value) )
-		 	$sql_value = $php_value;
-		else
+		if ( is_integer( $php_value ) || ctype_digit( $php_value) ) {
+			$sql_value = $php_value;
+		} else {
 			$sql_value = "'" . esc_sql( $php_value )  ."'";
+		}
 		if ( is_null( $php_value ) ) {
-			$operator = 'IS';
+			$operator  = 'IS';
 			$sql_value = 'NULL';
 		}
 		return "$operator $sql_value";
@@ -561,7 +575,7 @@ class GP_Thing {
 		if ( is_string( $conditions ) ) {
 			$conditions;
 		} elseif ( is_array( $conditions ) ) {
-			$conditions = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
+			$conditions        = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
 			$string_conditions = array();
 
 			foreach ( $conditions as $field => $sql_condition ) {
@@ -581,20 +595,26 @@ class GP_Thing {
 
 	public function sql_from_order( $order_by, $order_how = '' ) {
 		if ( is_array( $order_by ) ) {
-			$order_by = implode( ' ', $order_by );
+			$order_by  = implode( ' ', $order_by );
 			$order_how = '';
 		}
 		$order_by = trim( $order_by );
-		if ( ! $order_by ) return gp_member_get( $this, 'default_order' );
+		if ( ! $order_by ) {
+			return gp_member_get( $this, 'default_order' );
+		}
 		return 'ORDER BY ' . $order_by . ( $order_how ? " $order_how" : '' );
 	}
 
 	public function select_all_from_conditions_and_order( $conditions, $order = null ) {
-		$query = "SELECT * FROM $this->table";
+		$query          = "SELECT * FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $conditions );
-		if ( $conditions_sql ) $query .= " WHERE $conditions_sql";
+		if ( $conditions_sql ) {
+			$query .= " WHERE $conditions_sql";
+		}
 		$order_sql = $this->sql_from_order( $order );
-		if ( $order_sql ) $query .= " $order_sql";
+		if ( $order_sql ) {
+			$query .= " $order_sql";
+		}
 		return $query;
 	}
 
@@ -610,7 +630,7 @@ class GP_Thing {
 	}
 
 	public function validate() {
-		$verdict = $this->validation_rules->run( $this );
+		$verdict      = $this->validation_rules->run( $this );
 		$this->errors = $this->validation_rules->errors;
 		return $verdict;
 	}
@@ -631,7 +651,9 @@ class GP_Thing {
 
 	public function sql_limit_for_paging( $page, $per_page = null ) {
 		$per_page = is_null( $per_page ) ? $this->per_page : $per_page;
-		if ( 'no-limit' == $per_page || 'no-limit' == $page ) return '';
+		if ( 'no-limit' == $per_page || 'no-limit' == $page ) {
+			return '';
+		}
 		$page = intval( $page ) ? intval( $page ) : 1;
 		return sprintf( "LIMIT %d OFFSET %d", $per_page, ($page - 1) * $per_page );
 	}
@@ -648,15 +670,19 @@ class GP_Thing {
 
 	public function apply_default_conditions( $conditions_str ) {
 		$conditions = array();
-		if ( isset( $this->default_conditions ) )  $conditions[] = $this->default_conditions;
-		if ( $conditions_str ) $conditions[] = $conditions_str;
+		if ( isset( $this->default_conditions ) ) {
+			$conditions[] = $this->default_conditions;
+		}
+		if ( $conditions_str ) {
+			$conditions[] = $conditions_str;
+		}
 		return implode( ' AND ', $conditions );
 	}
 
 
 	// set memory limits.
 	public function set_memory_limit( $new_limit ) {
-		$current_limit     = ini_get( 'memory_limit' );
+		$current_limit = ini_get( 'memory_limit' );
 
 		if ( '-1' == $current_limit ) {
 			return false;

@@ -87,8 +87,8 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	}
 
 	$cache_object_id = $object_id = (int) $object_id;
-	$object_type = $type;
-	$meta_key = gp_sanitize_meta_key( $meta_key );
+	$object_type     = $type;
+	$meta_key        = gp_sanitize_meta_key( $meta_key );
 
 	$meta_tuple = compact( 'object_type', 'object_id', 'meta_key', 'meta_value', 'type' );
 
@@ -166,8 +166,8 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	}
 
 	$cache_object_id = $object_id = (int) $object_id;
-	$object_type = $type;
-	$meta_key = gp_sanitize_meta_key( $meta_key );
+	$object_type     = $type;
+	$meta_key        = gp_sanitize_meta_key( $meta_key );
 
 	$meta_tuple = compact( 'object_type', 'object_id', 'meta_key', 'meta_value', 'type' );
 

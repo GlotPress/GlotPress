@@ -14,10 +14,10 @@
  */
 class GP_Translation_Set extends GP_Thing {
 
-	var $table_basename = 'gp_translation_sets';
-	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
-	var $int_fields = array( 'id', 'project_id' );
+	var $table_basename           = 'gp_translation_sets';
+	var $field_names              = array( 'id', 'name', 'slug', 'project_id', 'locale' );
+	var $non_db_field_names       = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
+	var $int_fields               = array( 'id', 'project_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	/**
@@ -132,7 +132,7 @@ class GP_Translation_Set extends GP_Thing {
 
 		if ( isset( $args['name'] ) && empty( $args['name'] ) ) {
 			if ( isset( $args['locale'] ) && ! empty( $args['locale'] ) ) {
-				$locale = GP_locales::by_slug( $args['locale'] );
+				$locale       = GP_locales::by_slug( $args['locale'] );
 				$args['name'] = $locale->english_name;
 			}
 		}
@@ -161,7 +161,7 @@ class GP_Translation_Set extends GP_Thing {
 	 */
 	public function name_with_locale( $separator = '&rarr;' ) {
 		$locale = GP_Locales::by_slug( $this->locale );
-		$parts = array( $locale->english_name );
+		$parts  = array( $locale->english_name );
 
 		if ( 'default' !== $this->slug ) {
 			$parts[] = $this->name;
@@ -231,11 +231,11 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		$locale = GP_Locales::by_slug( $this->locale );
-		$user = wp_get_current_user();
+		$user   = wp_get_current_user();
 
 		$existing_translations = array();
 
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
+		$current_translations_list        = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
 			'status'     => 'current',
 			'translated' => 'yes',
 		) );
@@ -285,7 +285,7 @@ class GP_Translation_Set extends GP_Thing {
 
 			// Lazy load other entries.
 			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
-				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
+				$existing_translations_list              = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
 					'status'     => $entry->status,
 					'translated' => 'yes',
 				) );
@@ -296,7 +296,7 @@ class GP_Translation_Set extends GP_Thing {
 				unset( $existing_translations_list );
 			}
 
-			$create = false;
+			$create     = false;
 			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
 			if ( 'current' !== $entry->status && ! $translated ) {
 				// Don't create an entry if it already exists as current.
@@ -305,7 +305,7 @@ class GP_Translation_Set extends GP_Thing {
 
 			if ( $translated ) {
 				// We have the same string translated, so create a new one if they don't match.
-				$entry->original_id = $translated->original_id;
+				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
 				/**
@@ -321,7 +321,7 @@ class GP_Translation_Set extends GP_Thing {
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
 					$entry->original_id = $original->id;
-					$create = true;
+					$create             = true;
 				}
 			}
 			if ( $create ) {
@@ -548,14 +548,14 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
-		$counts[] = (object) array(
+		$counts[]  = (object) array(
 			'translation_status' => 'all',
 			'total'              => $all_count->total,
 			'hidden'             => $all_count->hidden,
 			'public'             => $all_count->public,
 		);
 
-		$statuses = GP::$translation->get_static( 'statuses' );
+		$statuses   = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
 		$statuses[] = 'untranslated';
 		$statuses[] = 'all';
@@ -586,9 +586,9 @@ class GP_Translation_Set extends GP_Thing {
 			$translations = GP::$translation->find_many_no_map( "translation_set_id = '{$source_set->id}'" );
 			foreach ( $translations as $entry ) {
 				$source_original = GP::$original->get( $entry->original_id );
-				$original = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
+				$original        = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
 				if ( $original ) {
-					$entry->original_id = $original->id;
+					$entry->original_id        = $original->id;
 					$entry->translation_set_id = $this->id;
 					GP::$translation->create( $entry );
 				}

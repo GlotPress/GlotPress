@@ -2,8 +2,8 @@
 
 class GP_Format_ResX extends GP_Format {
 
-	public $name = '.NET Resource (.resx)';
-	public $extension = 'resx';
+	public $name           = '.NET Resource (.resx)';
+	public $extension      = 'resx';
 	public $alt_extensions = array( 'resx.xml' );
 
 	public $exported = '';
@@ -30,8 +30,9 @@ class GP_Format_ResX extends GP_Format {
 		}
 
 		foreach ( $entries as $entry ) {
-			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )
+			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) ) {
 				continue;
+			}
 
 			if ( empty( $entry->context ) ) {
 				$entry->context = $entry->singular;
@@ -50,7 +51,7 @@ class GP_Format_ResX extends GP_Format {
 
 	public function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( true );
-		$data = simplexml_load_string( file_get_contents( $file_name ) );
+		$data   = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
 
 		if ( ! is_object( $data ) ) {
@@ -65,7 +66,7 @@ class GP_Format_ResX extends GP_Format {
 				continue;
 			}
 
-			$entry->context = (string) $string['name'];
+			$entry->context  = (string) $string['name'];
 			$entry->singular = $this->unescape( (string) $string->value );
 
 			if ( isset( $string->comment ) && $string->comment ) {

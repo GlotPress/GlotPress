@@ -14,9 +14,9 @@
  */
 class GP_Administrator_Permission extends GP_Permission {
 
-	var $table_basename = 'gp_permissions';
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
-	var $non_db_field_names = array();
+	var $table_basename           = 'gp_permissions';
+	var $field_names              = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	var $non_db_field_names       = array();
 	var $non_updatable_attributes = array( 'id' );
 
 	/**

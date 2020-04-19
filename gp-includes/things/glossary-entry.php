@@ -14,9 +14,9 @@
  */
 class GP_Glossary_Entry extends GP_Thing {
 
-	var $table_basename = 'gp_glossary_entries';
-	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
-	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
+	var $table_basename           = 'gp_glossary_entries';
+	var $field_names              = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
+	var $int_fields               = array( 'id', 'glossary_id', 'last_edited_by' );
 	var $non_updatable_attributes = array( 'id' );
 
 	public $parts_of_speech = array();
@@ -57,7 +57,7 @@ class GP_Glossary_Entry extends GP_Thing {
 
 		$this->parts_of_speech = array(
 			'noun'         => _x( 'noun', 'part-of-speech', 'glotpress' ),
-			'verb'         => _x( 'verb','part-of-speech', 'glotpress' ),
+			'verb'         => _x( 'verb', 'part-of-speech', 'glotpress' ),
 			'adjective'    => _x( 'adjective', 'part-of-speech', 'glotpress' ),
 			'adverb'       => _x( 'adverb', 'part-of-speech', 'glotpress' ),
 			'interjection' => _x( 'interjection', 'part-of-speech', 'glotpress' ),

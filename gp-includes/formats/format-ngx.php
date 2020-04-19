@@ -51,11 +51,11 @@ class GP_Format_NGX extends GP_Format {
 
 		/* @var Translation_Entry $entry */
 		foreach ( $entries as $entry ) {
-			$key = $entry->context;
+			$key           = $entry->context;
 			$arraykeyindex = strpos( $key, '[' );
 			if ( false !== $arraykeyindex ) {
-				$entrykey = substr( $key, 0, $arraykeyindex );
-				$keypair = substr( $key, $arraykeyindex + 1, strlen( $key ) - $arraykeyindex - 2 );
+				$entrykey  = substr( $key, 0, $arraykeyindex );
+				$keypair   = substr( $key, $arraykeyindex + 1, strlen( $key ) - $arraykeyindex - 2 );
 				$valuepair = array(
 					'key'         => $keypair,
 					'translation' => $entry->translations[0],

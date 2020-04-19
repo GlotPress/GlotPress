@@ -1,6 +1,6 @@
 <?php
 if ( 'originals' == $kind ) {
-	$title       = sprintf(
+	$title = sprintf(
 		/* translators: %s: Project name. */
 		__( 'Import Originals &lt; %s &lt; GlotPress', 'glotpress' ),
 		esc_html( $project->name )
@@ -8,7 +8,7 @@ if ( 'originals' == $kind ) {
 	$return_link = gp_url_project( $project );
 	gp_breadcrumb_project( $project );
 } else {
-	$title       = sprintf(
+	$title = sprintf(
 		/* translators: %s: Project name. */
 		__( 'Import Translations &lt; %s &lt; GlotPress', 'glotpress' ),
 		esc_html( $project->name )
@@ -30,7 +30,7 @@ gp_tmpl_header();
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
 	<dd><input type="file" name="import-file" id="import-file" /></dd>
 <?php
-	$format_options = array();
+	$format_options         = array();
 	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
 	foreach ( GP::$formats as $slug => $format ) {
 		$format_options[ $slug ] = $format->name;

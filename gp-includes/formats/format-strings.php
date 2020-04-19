@@ -90,7 +90,7 @@ class GP_Format_Strings extends GP_Format {
 	 */
 	public function read_originals_from_file( $file_name ) {
 		$entries = new Translations;
-		$file = file_get_contents( $file_name );
+		$file    = file_get_contents( $file_name );
 
 		if ( false === $file ) {
 			return false;
@@ -117,7 +117,7 @@ class GP_Format_Strings extends GP_Format {
 		);
 
 		$context = $comment = null;
-		$lines = explode( "\n", $file );
+		$lines   = explode( "\n", $file );
 
 		foreach ( $lines as $line ) {
 			if ( is_null( $context ) ) {
@@ -130,13 +130,13 @@ class GP_Format_Strings extends GP_Format {
 						$comment = null;
 					}
 				} else if ( preg_match( '/^"(.*)" = "(.*)";$/', $line, $matches ) ) {
-					$entry = new Translation_Entry();
-					$entry->context = $this->unescape( $matches[1] );
+					$entry           = new Translation_Entry();
+					$entry->context  = $this->unescape( $matches[1] );
 					$entry->singular = $this->unescape( $matches[2] );
 
 					if ( ! is_null( $comment ) ) {
 						$entry->extracted_comments = $comment;
-						$comment = null;
+						$comment                   = null;
 					}
 
 					$entry->translations = array();

@@ -53,12 +53,12 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
 	if ( 'plugins' !== $screen->id ) {
 		return;
 	}
-?>
+	?>
 	<div class="notice notice-error">
 		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php echo $short_notice; // WPCS: xss ok. ?></p>
 		<p style="max-width:800px;"><?php echo $long_notice; // WPCS: xss ok. ?></p>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -70,7 +70,7 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
  */
 function gp_unsupported_php_version_notice() {
 	$short_notice = __( '&#151; You are running an unsupported version of PHP.', 'glotpress' );
-	$long_notice = sprintf(
+	$long_notice  = sprintf(
 		/* translators: %s: required PHP version */
 		__( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress.', 'glotpress' ),
 		GP_PHP_REQUIRED_VERSION
@@ -102,7 +102,7 @@ function gp_unsupported_version_admin_notice() {
 	global $wp_version;
 
 	$short_notice = __( '&#151; You are running an unsupported version of WordPress.', 'glotpress' );
-	$long_notice = sprintf(
+	$long_notice  = sprintf(
 		/* translators: 1: Required version of WordPress 2: Current version of WordPress */
 		__( 'GlotPress requires WordPress %1$s or later and has detected you are running %2$s. Upgrade your WordPress install or deactivate the GlotPress plugin to remove this message.', 'glotpress' ),
 		esc_html( GP_WP_REQUIRED_VERSION ),

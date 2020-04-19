@@ -16,7 +16,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -42,7 +42,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -111,7 +111,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -145,7 +145,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		 * @param GP_Locale $locale The current locale.
 		 */
 		$export_locale = apply_filters( 'gp_export_locale', $locale->slug, $locale );
-		$filename = sprintf( $format->filename_pattern . '.' . $format->extension, str_replace( '/', '-', $project->path ), $export_locale );
+		$filename      = sprintf( $format->filename_pattern . '.' . $format->extension, str_replace( '/', '-', $project->path ), $export_locale );
 
 		/**
 		 * Filter the filename of the translation set export.
@@ -168,7 +168,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
 
-		// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
+			// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
 		} else {
 			$this->status_header( 304 );
 		}
@@ -176,7 +176,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -190,9 +190,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
-		$page = gp_get( 'page', 1 );
+		$page    = gp_get( 'page', 1 );
 		$filters = gp_get( 'filters', array() );
-		$sort = gp_get( 'sort', array() );
+		$sort    = gp_get( 'sort', array() );
 
 		if ( is_array( $sort ) && 'random' === gp_array_get( $sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
@@ -213,19 +213,19 @@ class GP_Route_Translation extends GP_Route_Main {
 			$sort = array();
 		}
 
-		$translations = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
+		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
 
-		$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
-		$can_write = $this->can( 'write', 'project', $project->id );
-		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
-		$can_import_current = $can_approve;
-		$can_import_waiting = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
-		$url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
-		$set_priority_url = gp_url( '/originals/%original-id%/set_priority');
+		$can_edit            = $this->can( 'edit', 'translation-set', $translation_set->id );
+		$can_write           = $this->can( 'write', 'project', $project->id );
+		$can_approve         = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_import_current  = $can_approve;
+		$can_import_waiting  = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
+		$url                 = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
+		$set_priority_url    = gp_url( '/originals/%original-id%/set_priority');
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
-		$set_status_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
-		$bulk_action = gp_url_join( $url, '-bulk' );
+		$set_status_url      = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
+		$bulk_action         = gp_url_join( $url, '-bulk' );
 
 		// Add action to use different font for translations
 		add_action( 'gp_head', function() use ( $locale ) {
@@ -237,7 +237,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -261,8 +261,8 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
-			$data = compact('original_id');
-			$data['user_id'] = get_current_user_id();
+			$data                       = compact('original_id');
+			$data['user_id']            = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
 			// Reduce range by one since we're starting at 0, see GH#516.
@@ -286,7 +286,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				$set_status = 'waiting';
 			}
 
-			$original = GP::$original->get( $original_id );
+			$original         = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 
 
@@ -326,9 +326,9 @@ class GP_Route_Translation extends GP_Route_Main {
 				if ( ! empty( $translations ) ) {
 					$translation = $translations[0];
 
-					$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
-					$can_write = $this->can( 'write', 'project', $project->id );
-					$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+					$can_edit                = $this->can( 'edit', 'translation-set', $translation_set->id );
+					$can_write               = $this->can( 'write', 'project', $project->id );
+					$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
 					$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
 					$output[ $original_id ] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
@@ -342,7 +342,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -362,7 +362,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$bulk = gp_post('bulk');
+		$bulk            = gp_post('bulk');
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
@@ -409,16 +409,19 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$action = $bulk['action'];
 
-		$ok = $error = 0;
+		$ok         = $error = 0;
 		$new_status = 'approve' == $action ? 'current' : 'rejected';
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
-			$translation = GP::$translation->get( $translation_id );
-			if ( ! $translation ) continue;
-			if ( $translation->set_status( $new_status ) )
+			$translation    = GP::$translation->get( $translation_id );
+			if ( ! $translation ) {
+				continue;
+			}
+			if ( $translation->set_status( $new_status ) ) {
 				$ok++;
-			else
+			} else {
 				$error++;
+			}
 		}
 
 		if ( 0 === $error ) {
@@ -487,7 +490,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
-			$translation = GP::$translation->get( $translation_id );
+			$translation    = GP::$translation->get( $translation_id );
 
 			if ( ! $translation ) {
 				continue;
@@ -508,7 +511,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			);
 		} else {
 			if ( $ok > 0 ) {
-				$message  = sprintf(
+				$message = sprintf(
 					/* translators: %d: Translations count. */
 					_n( 'Error with marking %d translation as fuzzy.', 'Error with marking %d translations as fuzzy.', $error, 'glotpress' ),
 					$error
@@ -540,7 +543,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$ok = $error = 0;
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$original_id = gp_array_get( explode( '-', $row_id ), 0 );
-			$original = GP::$original->get( $original_id );
+			$original    = GP::$original->get( $original_id );
 
 			if ( ! $original ) {
 				continue;
@@ -567,7 +570,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			);
 		} else {
 			if ( $ok > 0 ) {
-				$message  = sprintf(
+				$message = sprintf(
 					/* translators: %d: Originals count. */
 					_n( 'Error modifying priority of %d original.', 'Error modifying priority of %d originals.', $error, 'glotpress' ),
 					$error
@@ -592,7 +595,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	public function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
 		$index = gp_post( 'index' );
-		$key = gp_post( 'key' );
+		$key   = gp_post( 'key' );
 
 		if ( ! $this->verify_nonce( 'discard-warning_' . $index . $key ) ) {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
@@ -614,7 +617,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {
 		$project = GP::$project->by_path( $project_path );
-		$locale = GP_Locales::by_slug( $locale_slug );
+		$locale  = GP_Locales::by_slug( $locale_slug );
 
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
@@ -645,9 +648,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 
-			$can_edit = $this->can( 'edit', 'translation-set', $translation_set->id );
-			$can_write = $this->can( 'write', 'project', $project->id );
-			$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
+			$can_edit                = $this->can( 'edit', 'translation-set', $translation_set->id );
+			$can_write               = $this->can( 'write', 'project', $project->id );
+			$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
 			$this->tmpl( 'translation-row', get_defined_vars() );
@@ -736,7 +739,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	protected function get_extended_glossary( $translation_set, $project ) {
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
-		$locale_glossary_project_id = 0;
+		$locale_glossary_project_id      = 0;
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $locale_glossary_project_id, $translation_set->slug, $translation_set->locale );
 
 		if ( ! $locale_glossary_translation_set ) {

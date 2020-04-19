@@ -229,9 +229,9 @@ class GP_Builtin_Translation_Warnings {
 		if ( ! empty( $parts_tags ) ) {
 			foreach ( $parts_tags as $tags ) {
 				list( $original_tag, $translation_tag ) = $tags;
-				$expected_error_msg = "Expected $original_tag, got $translation_tag.";
-				$original_is_tag    = preg_match( "/^$tag_pattern$/", $original_tag );
-				$translation_is_tag = preg_match( "/^$tag_pattern$/", $translation_tag );
+				$expected_error_msg                     = "Expected $original_tag, got $translation_tag.";
+				$original_is_tag                        = preg_match( "/^$tag_pattern$/", $original_tag );
+				$translation_is_tag                     = preg_match( "/^$tag_pattern$/", $translation_tag );
 
 				if ( $original_is_tag && $translation_is_tag && $original_tag !== $translation_tag ) {
 					$original_tag    = preg_replace( $translatable_attr_regex, '', $original_tag );

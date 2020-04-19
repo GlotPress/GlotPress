@@ -196,21 +196,21 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 	$bytelength2 = strlen( $str2 );
 
 	if ( $bytelength1 === $length1 && $bytelength1 <= 255
-	     && $bytelength2 === $length2 && $bytelength2 <= 255 ) {
+		 && $bytelength2 === $length2 && $bytelength2 <= 255 ) {
 		return levenshtein( $str1, $str2 );
 	}
 
 	$prevRow = range( 0, $length2 );
 	for ( $i = 0; $i < $length1; $i++ ) {
-		$currentRow = array();
+		$currentRow    = array();
 		$currentRow[0] = $i + 1;
-		$c1 = gp_substr( $str1, $i, 1 );
+		$c1            = gp_substr( $str1, $i, 1 );
 		for ( $j = 0; $j < $length2; $j++ ) {
-			$c2 = gp_substr( $str2, $j, 1 );
-			$insertions = $prevRow[ $j + 1 ] + 1;
-			$deletions = $currentRow[ $j ] + 1;
+			$c2            = gp_substr( $str2, $j, 1 );
+			$insertions    = $prevRow[ $j + 1 ] + 1;
+			$deletions     = $currentRow[ $j ] + 1;
 			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
-			$currentRow[] = min( $insertions, $deletions, $substitutions );
+			$currentRow[]  = min( $insertions, $deletions, $substitutions );
 		}
 		$prevRow = $currentRow;
 	}

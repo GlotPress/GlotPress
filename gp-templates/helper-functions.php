@@ -17,8 +17,8 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
-		$item_number = count( $glossary_entries );
+	$text             = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
+		$item_number                      = count( $glossary_entries );
 		$glossary_entries[ $item_number ] = $m[0];
 		return "<span GLOSSARY={$item_number}>";
 	}, $text );
@@ -248,7 +248,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 function textareas( $entry, $permissions, $index = 0 ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$disabled = $can_edit ? '' : 'disabled="disabled"';
+	$disabled                       = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
 		<?php
@@ -294,13 +294,13 @@ function textareas( $entry, $permissions, $index = 0 ) {
 }
 
 function display_status( $status ) {
-	$status_labels = [
+	$status_labels = array(
 		'current'  => _x( 'current', 'Single Status', 'glotpress' ),
 		'waiting'  => _x( 'waiting', 'Single Status', 'glotpress' ),
 		'fuzzy'    => _x( 'fuzzy', 'Single Status', 'glotpress' ),
 		'old'      => _x( 'old', 'Single Status', 'glotpress' ),
 		'rejected' => _x( 'rejected', 'Single Status', 'glotpress' ),
-	];
+	);
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
 	}
@@ -321,7 +321,9 @@ function references( $project, $entry ) {
 	 */
 	$show_references = apply_filters( 'gp_show_references', (bool) $entry->references, $project, $entry );
 
-	if ( ! $show_references ) return;
+	if ( ! $show_references ) {
+		return;
+	}
 	?>
 	<dl><dt>
 	<?php _e( 'References:', 'glotpress' ); ?>
@@ -380,12 +382,12 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 	<?php if ( $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
 	<?php
-	$labels = [
+	$labels = array(
 		'hidden' => _x( 'hidden', 'Priority', 'glotpress' ),
 		'low'    => _x( 'low', 'Priority', 'glotpress' ),
 		'normal' => _x( 'normal', 'Priority', 'glotpress' ),
 		'high'   => _x( 'high', 'Priority', 'glotpress' ),
-	];
+	);
 
 	foreach ( GP::$original->get_static( 'priorities' ) as $value => $label ) {
 		if ( isset( $labels[ $label ] ) ) {

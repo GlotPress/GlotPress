@@ -186,7 +186,7 @@ class GP_Route_Profile extends GP_Route_Main {
 			$translation_set = $this->get_translation_set( $set );
 
 			if ( $set && $translation_set ) {
-				$permission = (object) array_merge( (array) $permission, (array) $translation_set );
+				$permission         = (object) array_merge( (array) $permission, (array) $translation_set );
 				$permission->set_id = $set->id;
 			} else {
 				unset( $permissions[ $key ] );
@@ -215,7 +215,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		}
 
 		$project_url = gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) );
-		$set_name = gp_project_names_from_root( $project ) . ' | ' . $set->name_with_locale();
+		$set_name    = gp_project_names_from_root( $project ) . ' | ' . $set->name_with_locale();
 
 		return (object) array(
 			'project_id'  => $project->id,

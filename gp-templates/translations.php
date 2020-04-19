@@ -56,7 +56,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		<a href="#" class="revealing sort"><?php _e( 'Sort &darr;', 'glotpress' ); ?></a> <strong class="separator">&bull;</strong>
 		<?php
 		$current_filter = '';
-		$filter_links = array();
+		$filter_links   = array();
 
 		// Use array_filter() to remove empty values, store them for use later if a custom filter has been applied.
 		$filters_values_only = array_filter( $filters );
@@ -301,10 +301,17 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	</form>
 </div>
 
-<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) { echo ' translation-sets-rtl'; } ?>">
+<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) {
+	echo ' translation-sets-rtl'; } ?>">
 	<thead>
 	<tr>
-		<?php if ( $can_approve ) : ?><th class="checkbox"><input type="checkbox" /></th><?php endif; ?>
+		<?php
+		if ( $can_approve ) :
+			?>
+			<th class="checkbox"><input type="checkbox" /></th>
+			<?php
+		endif;
+		?>
 		<th class="priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
 		<th class="original"><?php _e( 'Original string', 'glotpress' ); ?></th>
 		<th class="translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
@@ -411,8 +418,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			$filters['status'] = 'current_or_waiting_or_fuzzy_or_untranslated';
 		}
 
-		$export_url = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
-		$export_link = gp_link_get( $export_url , __( 'Export', 'glotpress' ), array(
+		$export_url     = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
+		$export_link    = gp_link_get( $export_url, __( 'Export', 'glotpress' ), array(
 			'id'      => 'export',
 			'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ),
 		) );
@@ -420,7 +427,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		foreach ( GP::$formats as $slug => $format ) {
 			$format_options[ $slug ] = $format->name;
 		}
-		$what_dropdown = gp_select( 'what-to-export', array(
+		$what_dropdown   = gp_select( 'what-to-export', array(
 			'all'      => _x( 'all current', 'export choice', 'glotpress' ),
 			'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
 		), 'all' );

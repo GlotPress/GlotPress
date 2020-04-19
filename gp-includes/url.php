@@ -32,9 +32,9 @@ function gp_url_path( $url = null ) {
  * @return string URL, built of all the components, separated with /
  */
 function gp_url_join() {
-	$components = func_get_args();
+	$components               = func_get_args();
 	$components_in_flat_array = array_filter( gp_array_flatten( $components ) );
-	$components_with_slashes = implode( '/', $components_in_flat_array );
+	$components_with_slashes  = implode( '/', $components_in_flat_array );
 
 	// Make sure all instances of the final URL are returned with a proper permalink ending.
 	$components_with_slashes = user_trailingslashit( $components_with_slashes );

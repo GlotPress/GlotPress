@@ -157,8 +157,8 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 		}
 
 		if ( ! isset( $json['domain'] ) ||
-		     ! isset( $json['locale_data'] ) ||
-		     ! isset( $json['locale_data'][ $json['domain'] ] )
+			 ! isset( $json['locale_data'] ) ||
+			 ! isset( $json['locale_data'][ $json['domain'] ] )
 		) {
 			return false;
 		}

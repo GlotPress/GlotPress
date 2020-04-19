@@ -6,21 +6,21 @@ class GP_Route {
 
 	public $api = false;
 
-	public $errors = array();
+	public $errors  = array();
 	public $notices = array();
 
 	var $request_running = false;
-	var $template_path = null;
+	var $template_path   = null;
 
 	var $fake_request = false;
-	var $exited = false;
+	var $exited       = false;
 	var $exit_message;
-	var $redirected = false;
-	var $redirected_to = null;
+	var $redirected        = false;
+	var $redirected_to     = null;
 	var $rendered_template = false;
-	var $loaded_template = null;
-	var $template_output = null;
-	var $headers = array();
+	var $loaded_template   = null;
+	var $template_output   = null;
+	var $headers           = array();
 	var $class_name;
 	var $http_status;
 	var $last_method_called;
@@ -49,7 +49,9 @@ class GP_Route {
 	public function after_request() {
 		// we can't unregister a shutdown function
 		// this check prevents this method from being run twice
-		if ( ! $this->request_running ) return;
+		if ( ! $this->request_running ) {
+			return;
+		}
 		// set errors and notices
 		if ( ! headers_sent() ) {
 			$this->set_notices_and_errors();
@@ -73,7 +75,7 @@ class GP_Route {
 	 * @return bool whether the thing is valid
 	 */
 	public function validate( $thing ) {
-		$verdict = $thing->validate();
+		$verdict      = $thing->validate();
 		$this->errors = array_merge( $this->errors, $thing->errors );
 		return $verdict;
 	}
@@ -206,7 +208,7 @@ class GP_Route {
 
 	public function redirect( $url = null ) {
 		if ( $this->fake_request ) {
-			$this->redirected = true;
+			$this->redirected    = true;
 			$this->redirected_to = $url;
 			return;
 		}
@@ -291,7 +293,9 @@ class GP_Route {
 	}
 
 	public function set_notices_and_errors() {
-		if ( $this->fake_request ) return;
+		if ( $this->fake_request ) {
+			return;
+		}
 
 		foreach ( $this->notices as $notice ) {
 			gp_notice_set( $notice );
@@ -315,7 +319,7 @@ class GP_Route {
 	public function tmpl( $template, $args = array(), $honor_api = true ) {
 		if ( $this->fake_request ) {
 			$this->rendered_template = true;
-			$this->loaded_template = $template;
+			$this->loaded_template   = $template;
 		}
 		$this->set_notices_and_errors();
 		if ( $this->api && false !== $honor_api && 'no-api' !== $honor_api ) {
@@ -343,7 +347,7 @@ class GP_Route {
 
 	public function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {
-			$this->exited = true;
+			$this->exited       = true;
 			$this->exit_message = $message;
 			return;
 		}
@@ -352,7 +356,7 @@ class GP_Route {
 
 	public function header( $string ) {
 		if ( $this->fake_request ) {
-			list( $header, $value ) = explode( ':', $string, 2 );
+			list( $header, $value )   = explode( ':', $string, 2 );
 			$this->headers[ $header ] = $value;
 		} else {
 			header( $string );

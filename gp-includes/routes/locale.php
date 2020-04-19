@@ -15,13 +15,13 @@
 class GP_Route_Locale extends GP_Route_Main {
 
 	public function locales_get() {
-		if ( NULL !== gp_get( 'all', NULL ) ) {
+		if ( null !== gp_get( 'all', null ) ) {
 			$locales = GP_Locales::locales();
 			usort( $locales, array( $this, 'sort_locales' ) );
 		}
 		else {
 			$existing_locales = GP::$translation_set->existing_locales();
-			$locales = array();
+			$locales          = array();
 
 			foreach ( $existing_locales as $locale ) {
 				$locales[] = GP_Locales::by_slug( $locale );
@@ -35,11 +35,11 @@ class GP_Route_Locale extends GP_Route_Main {
 
 	public function single( $locale_slug, $current_set_slug = 'default' ) {
 		$locale = GP_Locales::by_slug( $locale_slug );
-		$sets = GP::$translation_set->by_locale( $locale_slug );
+		$sets   = GP::$translation_set->by_locale( $locale_slug );
 
 		usort( $sets, array( $this, 'sort_sets_by_project_id' ) );
 
-		$projects_data = $projects = $parents = $set_slugs = $set_list = array();
+		$projects_data   = $projects = $parents = $set_slugs = $set_list = array();
 		$locale_projects = wp_list_pluck( $sets, 'project_id' );
 
 		foreach ( $sets as $set ) {
@@ -53,7 +53,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			if ( isset( $projects[ $set->project_id ] ) ) {
 				$set_project = $projects[ $set->project_id ];
 			} else {
-				$set_project = GP::$project->get( $set->project_id );
+				$set_project                  = GP::$project->get( $set->project_id );
 				$projects[ $set->project_id ] = $set_project;
 			}
 
@@ -68,7 +68,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			if ( isset( $projects[ $parent_id ] ) ) {
 				$parent_project = $projects[ $parent_id ];
 			} else {
-				$parent_project = GP::$project->get( $parent_id );
+				$parent_project         = GP::$project->get( $parent_id );
 				$projects[ $parent_id ] = $parent_project;
 			}
 
@@ -76,9 +76,9 @@ class GP_Route_Locale extends GP_Route_Main {
 			$parents[ $set_project->id ] = $parent_id;
 
 			if ( ! in_array( $set_project->parent_project_id, $locale_projects, true ) ) {
-				$projects_data[ $parent_id ][ $set_project->id ]['project'] = $set_project;
+				$projects_data[ $parent_id ][ $set_project->id ]['project']          = $set_project;
 				$projects_data[ $parent_id ][ $set_project->id ]['sets'][ $set->id ] = $this->set_data( $set, $set_project );
-				$projects_data[ $parent_id ][ $set_project->id ]['totals'] = $this->set_data( $set, $set_project );
+				$projects_data[ $parent_id ][ $set_project->id ]['totals']           = $this->set_data( $set, $set_project );
 
 				if ( ! isset( $projects_data[ $parent_id ][ $set_project->id ]['project'] ) ) {
 					$projects_data[ $parent_id ][ $set_project->id ]['project'] = $set_project;
@@ -86,7 +86,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			} else {
 				while ( ! in_array( $parent_id, array_keys( $projects_data ), true ) && isset( $parents[ $parent_id ] ) ) {
 					$previous_parent = $parent_id;
-					$parent_id = $parents[ $parent_id ];
+					$parent_id       = $parents[ $parent_id ];
 				}
 
 				//Orphan project - a sub project is set to active, while it's parent isn't
@@ -101,7 +101,7 @@ class GP_Route_Locale extends GP_Route_Main {
 
 				$set_data = $projects_data[ $parent_id ][ $previous_parent ]['totals'];
 				$projects_data[ $parent_id ][ $previous_parent ]['sets'][ $set->id ] = $this->set_data( $set, $set_project  );
-				$projects_data[ $parent_id ][ $previous_parent ]['totals'] = $this->set_data( $set, $set_project, $set_data );
+				$projects_data[ $parent_id ][ $previous_parent ]['totals']           = $this->set_data( $set, $set_project, $set_data );
 			}
 		}
 
@@ -134,9 +134,9 @@ class GP_Route_Locale extends GP_Route_Main {
 			}
 		}
 
-		$can_create_locale_glossary = GP::$permission->current_user_can( 'admin' );
+		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $current_set_slug, $locale_slug );
-		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
 
 		$this->tmpl( 'locale', get_defined_vars() );
 	}
@@ -145,8 +145,8 @@ class GP_Route_Locale extends GP_Route_Main {
 		if ( ! $set_data ) {
 			$set_data = new stdClass;
 
-			$set_data->slug = $set->slug;
-			$set_data->project_path = $project->path;
+			$set_data->slug          = $set->slug;
+			$set_data->project_path  = $project->path;
 			$set_data->waiting_count = $set->waiting_count();
 			$set_data->current_count = $set->current_count();
 			$set_data->fuzzy_count   = $set->fuzzy_count();
