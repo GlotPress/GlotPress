@@ -557,6 +557,8 @@ class GP_Locales {
 		$de_at->wp_locale = 'de_AT';
 		$de_at->slug = 'de-at';
 		$de_at->google_code = 'de';
+		$de_at->variant_root = $de->slug;
+		$de->variants[ $de_at->slug ] = $de_at->english_name;
 
 		$de_ch = new GP_Locale();
 		$de_ch->english_name = 'German (Switzerland)';
