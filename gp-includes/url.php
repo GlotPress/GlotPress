@@ -176,7 +176,7 @@ function gp_url_base_path() {
 	 *
 	 * @param string $url The url.
 	 */
-	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' .  gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
+	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' . gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
 }
 
 function gp_plugin_url( $path = '' ) {

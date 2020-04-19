@@ -86,8 +86,8 @@ class GP_Format_ResX extends GP_Format {
 	}
 
 	private function res_header( $name, $value ) {
-		$this->line( '<resheader name="'.$name.'">', 1 );
-		$this->line( '<value>'.$value.'</value>', 2 );
+		$this->line( '<resheader name="' . $name . '">', 1 );
+		$this->line( '<value>' . $value . '</value>', 2 );
 		$this->line( '</resheader>', 1 );
 	}
 

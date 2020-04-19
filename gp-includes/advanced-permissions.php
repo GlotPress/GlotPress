@@ -23,7 +23,7 @@ function gp_recurse_validator_permission( $verdict, $args ) {
 
 	$project = GP::$project->get( $project_id );
 	if ( $project && $project->parent_project_id ) {
-		return GP::$permission->user_can( $args['user'], $args['action'], $args['object_type'], $project->parent_project_id.'|'.$locale_slug.'|'.$set_slug );
+		return GP::$permission->user_can( $args['user'], $args['action'], $args['object_type'], $project->parent_project_id . '|' . $locale_slug . '|' . $set_slug );
 	}
 	return false;
 }

@@ -307,7 +307,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 		$next = '<span class="next disabled">&rarr;</span>';
 	}
 
-	$current = '<span class="current">'.$page.'</span>';
+	$current = '<span class="current">' . $page . '</span>';
 	if ( $page > 1 ) {
 		$prev_pages = array();
 		foreach ( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {
@@ -366,7 +366,7 @@ function gp_html_attributes( $attrs ) {
 	$attrs   = wp_parse_args( $attrs );
 	$strings = array();
 	foreach ( $attrs as $key => $value ) {
-		$strings[] = $key.'="'.esc_attr( $value ).'"';
+		$strings[] = $key . '="' . esc_attr( $value ) . '"';
 	}
 	return implode( ' ', $strings );
 }
@@ -626,7 +626,6 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	 * @param array $actions Links as HTML strings.
 	 */
 	$actions = apply_filters( 'gp_entry_actions', $actions );
-
 
 	echo implode( $seperator, $actions );
 	/*

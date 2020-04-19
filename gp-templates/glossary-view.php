@@ -78,7 +78,7 @@ if ( $glossary->description ) {
 							<select name="new_glossary_entry[part_of_speech]" id="new_glossary_entry_post">
 							<?php
 								foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
-									echo "\t<option value='".esc_attr( $pos )."'>" . esc_html( $name ) . "</option>\n";
+									echo "\t<option value='" . esc_attr( $pos ) . "'>" . esc_html( $name ) . "</option>\n";
 								}
 							?>
 							</select>

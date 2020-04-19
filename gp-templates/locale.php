@@ -55,7 +55,7 @@ if ( empty( $projects_data ) ) {
 				<th class="header"
 					<?php
 					if ( count( $sub_projects ) > 1 ) {
-						echo 'rowspan="'. count( $sub_projects ) . '"';
+						echo 'rowspan="' . count( $sub_projects ) . '"';
 					}
 					?>
 					>

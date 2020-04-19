@@ -24,7 +24,7 @@
 				<?php
 					foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
 						$selected = $pos == $entry->part_of_speech ? " selected='selected'" : '';
-						echo "\t<option value='".esc_attr( $pos )."' $selected>" . esc_html( $name ) . "</option>\n";
+						echo "\t<option value='" . esc_attr( $pos ) . "' $selected>" . esc_html( $name ) . "</option>\n";
 					}
 				?>
 				</select></dd>
