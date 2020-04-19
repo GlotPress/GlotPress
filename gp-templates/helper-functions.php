@@ -68,7 +68,7 @@ function gp_prepare_translation_textarea( $text ) {
  * @return array The sorted entries.
  */
 function gp_sort_glossary_entries_terms( $glossary_entries ) {
-	if ( empty ( $glossary_entries ) ) {
+	if ( empty( $glossary_entries ) ) {
 		return;
 	}
 
