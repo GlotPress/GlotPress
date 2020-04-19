@@ -300,7 +300,7 @@ class GP_Translation extends GP_Thing {
 		}
 	}
 
-	public function for_export( $project, $translation_set, $filters =  null ) {
+	public function for_export( $project, $translation_set, $filters = null ) {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
