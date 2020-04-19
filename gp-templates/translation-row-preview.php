@@ -51,15 +51,18 @@ $priority_char = array(
 		else :
 		?>
 			<ul>
-				<?php foreach ( $translation->translations as $translation ) : ?>
+				<?php foreach ( $translation->translations as $current_translation ) : ?>
 					<li>
-					<?php echo gp_is_empty_string( $translation ) ? $missing_text : esc_translation( $translation ); // WPCS: XSS OK. ?>
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo gp_is_empty_string( $current_translation ) ? $missing_text : esc_translation( $current_translation );
+					?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
 	</td>
 	<td class="actions">
-		<a href="#" row="<?php echo $translation->row_id; // WPCS: XSS OK. ?>" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a>
+		<a href="#" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a>
 	</td>
 </tr>
