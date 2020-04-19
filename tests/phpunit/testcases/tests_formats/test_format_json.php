@@ -87,13 +87,18 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( GP_DIR_TESTDATA . '/invalid.json' ) );
 	}
 
+	/**
+	 * @group test
+	 *
+	 * @return void
+	 */
 	public function test_read_translations_from_file() {
 		$expected = $this->data_example_translations();
 
 		/* @var Translations $actual */
 		$actual = GP::$formats[ $this->format ]->read_translations_from_file( GP_DIR_TESTDATA . '/translation.json' );
 
-		$this->assertSame( 5, count( $actual->entries ) );
+		$this->assertCount( 5, $actual->entries );
 		$this->assertEquals( $expected, $actual );
 	}
 
@@ -131,27 +136,37 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 		$translations = new Translations();
 		$translations->add_entry( new Translation_Entry( array(
 			'singular'     => 'This file is too big. Files must be less than %d KB in size.',
-			'translations' => 'Diese Datei ist zu gross. Dateien müssen kleiner als %d KB sein.',
+			'translations' => array(
+				'Diese Datei ist zu gross. Dateien müssen kleiner als %d KB sein.',
+			),
 		) ) );
 		$translations->add_entry( new Translation_Entry( array(
 			'singular'     => '%d Theme Update',
-			'translations' => '%d Theme-Aktualisierung',
-			'plural'       => '%d Theme-Aktualisierungen',
+			'translations' => array(
+				'%d Theme-Aktualisierung',
+				'%d Theme-Aktualisierungen',
+			)
 		) ) );
 		$translations->add_entry( new Translation_Entry( array(
 			'singular'     => 'Medium',
 			'context'      => 'password strength',
-			'translations' => 'Medium',
+			'translations' => array(
+				'Medium',
+			)
 		) ) );
 		$translations->add_entry( new Translation_Entry( array(
 			'singular'     => 'Category',
 			'context'      => 'taxonomy singular name',
-			'translations' => 'Kategorie',
+			'translations' => array(
+				'Kategorie',
+			)
 		) ) );
 		$translations->add_entry( new Translation_Entry( array(
 			'singular'     => 'Pages',
 			'context'      => 'post type general name',
-			'translations' => 'Seiten',
+			'translations' => array(
+				'Seiten',
+			)
 		) ) );
 
 		return $translations;
