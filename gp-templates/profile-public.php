@@ -80,7 +80,7 @@ gp_tmpl_header();
 				</li>
 				<?php endforeach; ?>
 			</ul>
-		<?php else: ?>
+		<?php else : ?>
 			<p>
 				<?php
 				printf(
