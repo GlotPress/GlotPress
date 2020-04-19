@@ -30,25 +30,34 @@ cache:
 
 jobs:
   include:
-    - php: 5.6
-      env: WP_VERSION=trunk WP_MULTISITE=1 DEFAULT_BASE_BRANCH=develop
-    - php: 7.0
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
-    - php: 7.1
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
-    - php: 7.2
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
+    - stage: lint
+      php: 7.4
+      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_SKIP=phpunit
+    - stage: test
+      php: 7.4
+      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit WP_TRAVISCI=codecoverage
+    - php: 7.4
+      env: WP_VERSION=trunk WP_MULTISITE=1 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
     - php: 7.3
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
-    - php: 7.4
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
-    - php: 7.4
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop WP_TRAVISCI=codecoverage
+      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
+    - php: 7.2
+      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
+    - php: 7.1
+      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
+    - php: 7.0
+      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
+    - php: 5.6
+      env: WP_VERSION=trunk WP_MULTISITE=1 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
     - php: nightly
       env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop
   allow_failures:
     - php: nightly
+    - stage: lint
   fast_finish: true
+
+stages:
+  - lint
+  - test
 
 install:
   - composer install
