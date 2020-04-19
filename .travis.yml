@@ -33,7 +33,8 @@ jobs:
     - stage: lint
       php: 7.4
       env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_SKIP=phpunit
-    - php: 7.4
+    - stage: test
+      php: 7.4
       env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit WP_TRAVISCI=codecoverage
     - php: 7.4
       env: WP_VERSION=trunk WP_MULTISITE=1 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
