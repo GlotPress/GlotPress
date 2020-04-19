@@ -323,8 +323,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				$translation->delete();
 
 				return $this->die_with_error( $error_output, 200 );
-			}
-			else {
+			} else {
 				if ( 'current' === $set_status ) {
 					$translation->set_status( 'current' );
 				}
@@ -404,8 +403,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			 * }
 			 */
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
-		}
-		else {
+		} else {
 			$this->errors[] = 'No translations were supplied.';
 		}
 

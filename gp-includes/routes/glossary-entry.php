@@ -79,8 +79,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
 			$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
-		}
-		else {
+		} else {
 			preg_match( '/\b' . preg_quote( $new_glossary_entry->term, '/' ) . '\b/i', $new_glossary_entry->term, $m );
 
 			if ( $m[0] !== $new_glossary_entry->term ) {
@@ -141,8 +140,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
-		}
-		else {
+		} else {
 			if ( ! $glossary_entry->update( $new_glossary_entry ) ) {
 				$this->errors = $glossary_entry->errors;
 			}
@@ -156,8 +154,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$error_output .= '</ul>';
 
 			return $this->die_with_error( $error_output, 200 );
-		}
-		else {
+		} else {
 			$entry                    = $glossary_entry->reload();
 			$user                     = get_userdata( $entry->last_edited_by );
 			$entry->user_login        = $user ? $user->user_login : '';

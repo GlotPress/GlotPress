@@ -287,11 +287,9 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			<?php
 			if ( $can_edit ) {
 				gp_entry_actions();
-			}
-			elseif ( is_user_logged_in() ) {
+			} elseif ( is_user_logged_in() ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
-			}
-			else {
+			} else {
 				printf(
 					/* translators: %s: URL. */
 					__( 'You <a href="%s">have to log in</a> to edit this translation.', 'glotpress' ),

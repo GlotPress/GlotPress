@@ -54,8 +54,7 @@ if ( $glossary->description ) {
 		foreach ( $glossary_entries as $entry ) {
 			gp_tmpl_load( 'glossary-entry-row', get_defined_vars() );
 		}
-	}
-	else {
+	} else {
 		?>
 		<tr>
 			<td colspan="5">

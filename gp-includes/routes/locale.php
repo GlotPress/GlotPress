@@ -18,8 +18,7 @@ class GP_Route_Locale extends GP_Route_Main {
 		if ( null !== gp_get( 'all', null ) ) {
 			$locales = GP_Locales::locales();
 			usort( $locales, array( $this, 'sort_locales' ) );
-		}
-		else {
+		} else {
 			$existing_locales = GP::$translation_set->existing_locales();
 			$locales          = array();
 
@@ -151,8 +150,7 @@ class GP_Route_Locale extends GP_Route_Main {
 			$set_data->current_count = $set->current_count();
 			$set_data->fuzzy_count   = $set->fuzzy_count();
 			$set_data->all_count     = $set->all_count();
-		}
-		else {
+		} else {
 			$set_data->waiting_count += $set->waiting_count();
 			$set_data->current_count += $set->current_count();
 			$set_data->fuzzy_count   += $set->fuzzy_count();

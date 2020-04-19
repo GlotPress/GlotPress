@@ -214,11 +214,9 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: add id check as a validation rule
 		if ( $project->id == $updated_project->parent_project_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
-		}
-		elseif ( $project->save( $updated_project ) ) {
+		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );
-		}
-		else {
+		} else {
 			$this->errors[] = __( 'Error in saving project!', 'glotpress' );
 		}
 
@@ -259,8 +257,7 @@ class GP_Route_Project extends GP_Route_Main {
 				__( 'The project "%s" was deleted.', 'glotpress' ),
 				$project->name
 			);
-		}
-		else {
+		} else {
 			$this->errors[] = sprintf(
 				/* translators: %s: Project name. */
 				__( 'Error deleting project "%s"!', 'glotpress' ),
