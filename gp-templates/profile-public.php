@@ -39,7 +39,7 @@ gp_tmpl_header();
 		<ul>
 		<?php foreach ( $recent_projects as $project ) : ?>
 			<li>
-				<p><?php
+				<p>
 				<?php
 					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
 					echo gp_link_get(
