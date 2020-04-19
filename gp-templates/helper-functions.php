@@ -23,7 +23,9 @@ function prepare_original( $text ) {
 		$item_number                      = count( $glossary_entries );
 		$glossary_entries[ $item_number ] = $m[0];
 		return "<span GLOSSARY={$item_number}>";
-	}, $text );
+		},
+		$text
+	);
 
 	// Wrap full HTML tags with a notranslate class
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
@@ -37,7 +39,9 @@ function prepare_original( $text ) {
 		'!(<span GLOSSARY=(\d+)>)!',
 		function( $m ) use ( $glossary_entries ) {
 		return $glossary_entries[ $m[2] ];
-	}, $text );
+		},
+		$text
+	);
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
