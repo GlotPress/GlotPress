@@ -137,18 +137,25 @@ function gp_tmpl_filter_args( $args ) {
 }
 
 function gp_tmpl_404( $args = array() ) {
-	gp_tmpl_load( '404', $args + array(
-		'title'       => __( 'Not Found', 'glotpress' ),
-		'http_status' => 404,
-	) );
+	gp_tmpl_load(
+		'404',
+		$args + array(
+			'title'       => __( 'Not Found', 'glotpress' ),
+			'http_status' => 404,
+		)
+	);
 	exit();
 }
 
 function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
-		add_filter( 'gp_title', function() use ( $title ) {
-			return $title;
-		}, 5 );
+		add_filter(
+			'gp_title',
+			function() use ( $title ) {
+				return $title;
+			},
+			5
+		);
 	} else {
 
 		/**
@@ -166,9 +173,13 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	if ( $breadcrumb ) {
 		$breadcrumb = gp_array_flatten( $breadcrumb );
 
-		add_filter( 'gp_breadcrumb_items', function( $breadcrumbs ) use ( $breadcrumb ) {
-			return array_merge( $breadcrumbs, $breadcrumb );
-		}, 1 );
+		add_filter(
+			'gp_breadcrumb_items',
+			function( $breadcrumbs ) use ( $breadcrumb ) {
+				return array_merge( $breadcrumbs, $breadcrumb );
+			},
+			1
+		);
 	} else {
 
 		/**
@@ -479,17 +490,23 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 
 function gp_array_of_things_to_json( $array ) {
 	return wp_json_encode(
-		array_map( function( $thing ) {
+		array_map(
+			function( $thing ) {
 				return $thing->fields();
-		}, $array )
+			},
+			$array
+		)
 	);
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
 	$map_to_fields = function( $array ) {
-		return array_map( function( $thing ) {
-			return $thing->fields();
-		}, $array );
+		return array_map(
+			function( $thing ) {
+				return $thing->fields();
+			},
+			$array
+		);
 	};
 
 	return wp_json_encode( array_map( $map_to_fields, $array ) );

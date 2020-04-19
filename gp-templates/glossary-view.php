@@ -1,10 +1,12 @@
 <?php
 gp_title( __( 'View Glossary &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb( array(
-	gp_project_links_from_root( $project ),
-	gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-	__( 'Glossary', 'glotpress' ),
-) );
+gp_breadcrumb(
+	array(
+		gp_project_links_from_root( $project ),
+		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
+		__( 'Glossary', 'glotpress' ),
+	)
+);
 
 $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpress' );
 $delete_url       = gp_url_join( $url, '-delete' );

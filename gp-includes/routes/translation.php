@@ -228,9 +228,12 @@ class GP_Route_Translation extends GP_Route_Main {
 		$bulk_action         = gp_url_join( $url, '-bulk' );
 
 		// Add action to use different font for translations
-		add_action( 'gp_head', function() use ( $locale ) {
-			return gp_preferred_sans_serif_style_tag( $locale );
-		} );
+		add_action(
+			'gp_head',
+			function() use ( $locale ) {
+				return gp_preferred_sans_serif_style_tag( $locale );
+			}
+		);
 
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
@@ -289,11 +292,16 @@ class GP_Route_Translation extends GP_Route_Main {
 			$original         = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 
-
-			$existing_translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array(
-				'original_id' => $original_id,
-				'status'      => 'current_or_waiting',
-			), array() );
+			$existing_translations = GP::$translation->for_translation(
+				$project,
+				$translation_set,
+				'no-limit',
+				array(
+					'original_id' => $original_id,
+					'status'      => 'current_or_waiting',
+				),
+				array()
+			);
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
 					return $this->die_with_error( __( 'Identical current or waiting translation already exists.', 'glotpress' ), 200 );
@@ -641,10 +649,16 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
-		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array(
-			'translation_id' => $translation->id,
-			'status'         => 'either',
-		), array() );
+		$translations = GP::$translation->for_translation(
+			$project,
+			$translation_set,
+			'no-limit',
+			array(
+				'translation_id' => $translation->id,
+				'status'         => 'either',
+			),
+			array()
+		);
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 

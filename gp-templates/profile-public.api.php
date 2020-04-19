@@ -12,7 +12,8 @@ foreach ( $recent_projects as $project ) {
 	unset($project->set_id);
 }
 
-$arr = array_merge( $meta,
+$arr = array_merge(
+	$meta,
 	compact( 'locales', 'recent_projects' )
 );
 

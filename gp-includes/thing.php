@@ -580,9 +580,15 @@ class GP_Thing {
 
 			foreach ( $conditions as $field => $sql_condition ) {
 				if ( is_array( $sql_condition ) ) {
-					$string_conditions[] = '(' . implode( ' OR ', array_map( function( $cond ) use ( $field ) {
-							return "$field $cond";
-						}, $sql_condition ) ) . ')';
+					$string_conditions[] = '(' . implode(
+						' OR ',
+						array_map(
+							function( $cond ) use ( $field ) {
+								return "$field $cond";
+							},
+							$sql_condition
+						)
+					) . ')';
 				} else {
 					$string_conditions[] = "$field $sql_condition";
 				}

@@ -40,8 +40,10 @@ gp_tmpl_header();
 		<?php foreach ( $recent_projects as $project ) : ?>
 			<li>
 				<p><?php
+				<?php
 					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
-					echo gp_link_get( $project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
+					echo gp_link_get(
+						$project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
 						sprintf(
 							/* translators: %s: Count number. */
 							_n( '%s contribution', '%s contributions', $project->count, 'glotpress' ),

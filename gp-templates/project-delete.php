@@ -7,11 +7,13 @@
  * @since 2.0.0
  */
 
-gp_title( sprintf(
-	/* translators: %s: project name */
-	__( 'Delete project "%s" &lt; GlotPress', 'glotpress' ),
-	$project->name
-) );
+gp_title(
+	sprintf(
+		/* translators: %s: project name */
+		__( 'Delete project "%s" &lt; GlotPress', 'glotpress' ),
+		$project->name
+	)
+);
 gp_breadcrumb_project( $project );
 gp_tmpl_header();
 ?>

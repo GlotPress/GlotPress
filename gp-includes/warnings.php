@@ -394,9 +394,12 @@ class GP_Builtin_Translation_Warnings {
 	 * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
 	 */
 	public function add_all( $translation_warnings ) {
-		$warnings = array_filter( get_class_methods( get_class( $this ) ), function ( $key ) {
-			return gp_startswith( $key, 'warning_' );
-		} );
+		$warnings = array_filter(
+			get_class_methods( get_class( $this ) ),
+			function ( $key ) {
+				return gp_startswith( $key, 'warning_' );
+			}
+		);
 
 		foreach ( $warnings as $warning ) {
 			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );

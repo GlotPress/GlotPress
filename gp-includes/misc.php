@@ -575,18 +575,22 @@ function gp_wp_profile_options_update( $user_id ) {
 	$is_user_gp_admin = GP::$permission->user_can( $user_id, 'admin' );
 
 	if ( array_key_exists( 'gp_administrator', $_POST ) && ! $is_user_gp_admin ) {
-		GP::$administrator_permission->create( array(
-			'user_id'     => $user_id,
-			'action'      => 'admin',
-			'object_type' => null,
-		) );
+		GP::$administrator_permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'admin',
+				'object_type' => null,
+			)
+		);
 	}
 
 	if ( ! array_key_exists( 'gp_administrator', $_POST ) && $is_user_gp_admin ) {
-		$current_perm = GP::$administrator_permission->find_one( array(
-			'user_id' => $user_id,
-			'action'  => 'admin',
-		) );
+		$current_perm = GP::$administrator_permission->find_one(
+			array(
+				'user_id' => $user_id,
+				'action'  => 'admin',
+			)
+		);
 		$current_perm->delete();
 	}
 }

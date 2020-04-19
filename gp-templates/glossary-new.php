@@ -1,10 +1,12 @@
 <?php
 gp_title( __( 'Create New Glossary &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb( array(
-	gp_project_links_from_root( $project ),
-	gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-	__( 'Create Glossary', 'glotpress' ),
-) );
+gp_breadcrumb(
+	array(
+		gp_project_links_from_root( $project ),
+		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
+		__( 'Create Glossary', 'glotpress' ),
+	)
+);
 gp_tmpl_header();
 ?>
 

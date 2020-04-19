@@ -46,9 +46,12 @@ class GP_Route_Project extends GP_Route_Main {
 			}
 		}
 
-		usort( $translation_sets, function( $a, $b ) {
-			return( $a->current_count < $b->current_count );
-		});
+		usort(
+			$translation_sets,
+			function( $a, $b ) {
+				return( $a->current_count < $b->current_count );
+			}
+		);
 
 		/**
 		 * Filter the list of translation sets of a project.
@@ -383,13 +386,15 @@ class GP_Route_Project extends GP_Route_Main {
 				$this->redirect_with_error( __( 'User wasn&#8217;t found!', 'glotpress' ), gp_url_current() );
 				return;
 			}
-			$new_permission = new GP_Validator_Permission( array(
-				'user_id'     => $user->ID,
-				'action'      => 'approve',
-				'project_id'  => $project->id,
-				'locale_slug' => gp_post( 'locale' ),
-				'set_slug'    => gp_post( 'set-slug' ),
-			) );
+			$new_permission = new GP_Validator_Permission(
+				array(
+					'user_id'     => $user->ID,
+					'action'      => 'approve',
+					'project_id'  => $project->id,
+					'locale_slug' => gp_post( 'locale' ),
+					'set_slug'    => gp_post( 'set-slug' ),
+				)
+			);
 			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) {
 				return;
 			}
@@ -465,12 +470,14 @@ class GP_Route_Project extends GP_Route_Main {
 		$changes = $project->set_difference_from( $other_project );
 
 		foreach ( $changes['added'] as $to_add ) {
-			if ( ! GP::$translation_set->create( array(
-				'project_id' => $project->id,
-				'name'       => $to_add->name,
-				'locale'     => $to_add->locale,
-				'slug'       => $to_add->slug,
-			) ) ) {
+			if ( ! GP::$translation_set->create(
+				array(
+					'project_id' => $project->id,
+					'name'       => $to_add->name,
+					'locale'     => $to_add->locale,
+					'slug'       => $to_add->slug,
+				)
+			) ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set name. */
 					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),

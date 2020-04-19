@@ -171,26 +171,36 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
-		$result = $this->one( "
+		$result = $this->one(
+			"
 		    SELECT * FROM $this->table
-		    WHERE slug = %s AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
+		    WHERE slug = %s AND project_id= %d AND locale = %s",
+			$slug,
+			$project_id,
+			$locale_slug
+		);
 
 		if ( ! $result && 0 === $project_id ) {
-			$result = $this->create( array(
-				'project_id' => $project_id,
-				'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
-				'slug'       => $slug,
-				'locale'     => $locale_slug,
-			) );
+			$result = $this->create(
+				array(
+					'project_id' => $project_id,
+					'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
+					'slug'       => $slug,
+					'locale'     => $locale_slug,
+				)
+			);
 		}
 
 		return $result;
 	}
 
 	public function by_locale( $locale_slug ) {
-		return $this->many( "
+		return $this->many(
+			"
 		    SELECT * FROM $this->table
-		    WHERE locale = %s", $locale_slug );
+		    WHERE locale = %s",
+			$locale_slug
+		);
 	}
 
 	public function existing_locales() {
@@ -206,9 +216,12 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	public function by_project_id( $project_id ) {
-		return $this->many( "
+		return $this->many(
+			"
 		    SELECT * FROM $this->table
-		    WHERE project_id = %d ORDER BY name ASC", $project_id );
+		    WHERE project_id = %d ORDER BY name ASC",
+			$project_id
+		);
 	}
 
 	/**
@@ -235,10 +248,15 @@ class GP_Translation_Set extends GP_Thing {
 
 		$existing_translations = array();
 
-		$current_translations_list        = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
-			'status'     => 'current',
-			'translated' => 'yes',
-		) );
+		$current_translations_list        = GP::$translation->for_translation(
+			$this->project,
+			$this,
+			'no-limit',
+			array(
+				'status'     => 'current',
+				'translated' => 'yes',
+			)
+		);
 		$existing_translations['current'] = new Translations();
 		foreach ( $current_translations_list as $entry ) {
 			$existing_translations['current']->add_entry( $entry );
@@ -285,10 +303,15 @@ class GP_Translation_Set extends GP_Thing {
 
 			// Lazy load other entries.
 			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
-				$existing_translations_list              = GP::$translation->for_translation( $this->project, $this, 'no-limit', array(
-					'status'     => $entry->status,
-					'translated' => 'yes',
-				) );
+				$existing_translations_list              = GP::$translation->for_translation(
+					$this->project,
+					$this,
+					'no-limit',
+					array(
+						'status'     => $entry->status,
+						'translated' => 'yes',
+					)
+				);
 				$existing_translations[ $entry->status ] = new Translations();
 				foreach ( $existing_translations_list as $_entry ) {
 					$existing_translations[ $entry->status ]->add_entry( $_entry );
@@ -474,7 +497,9 @@ class GP_Translation_Set extends GP_Thing {
 			global $wpdb;
 			$counts = array();
 
-			$status_counts = $wpdb->get_results( $wpdb->prepare( "
+			$status_counts = $wpdb->get_results(
+				$wpdb->prepare(
+					"
 				SELECT
 					t.status AS translation_status,
 					COUNT(*) AS total,
@@ -492,7 +517,9 @@ class GP_Translation_Set extends GP_Thing {
 				$counts = $status_counts;
 			}
 
-			$warnings_counts = $wpdb->get_row( $wpdb->prepare( "
+			$warnings_counts = $wpdb->get_row(
+				$wpdb->prepare(
+					"
 				SELECT
 					COUNT(*) AS total,
 					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
@@ -516,7 +543,9 @@ class GP_Translation_Set extends GP_Thing {
 				);
 			}
 
-			$untranslated_counts = $wpdb->get_row( $wpdb->prepare( "
+			$untranslated_counts = $wpdb->get_row(
+				$wpdb->prepare(
+					"
 				SELECT
 					COUNT(*) AS total,
 					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
@@ -594,13 +623,17 @@ class GP_Translation_Set extends GP_Thing {
 				}
 			}
 		} else {
-			return $this->query( "
+			return $this->query(
+				"
 				INSERT INTO $wpdb->gp_translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
 					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-				FROM $wpdb->gp_translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+				FROM $wpdb->gp_translations WHERE translation_set_id = %s",
+				$this->id,
+				$current_date,
+				$source_translation_set_id
 			);
 		}
 	}

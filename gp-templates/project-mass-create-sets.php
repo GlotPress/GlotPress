@@ -8,10 +8,14 @@ gp_title(
 );
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( 'gp-mass-create-sets-page' );
-wp_localize_script( 'gp-mass-create-sets-page', '$gp_mass_create_sets_options', array(
-	'url'     => gp_url_join( gp_url_current(), 'preview' ),
-	'loading' => __( 'Loading translation sets to create&hellip;', 'glotpress' ),
-));
+wp_localize_script(
+	'gp-mass-create-sets-page',
+	'$gp_mass_create_sets_options',
+	array(
+		'url'     => gp_url_join( gp_url_current(), 'preview' ),
+		'loading' => __( 'Loading translation sets to create&hellip;', 'glotpress' ),
+	)
+);
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Mass-create Translation Sets', 'glotpress' ); ?></h2>

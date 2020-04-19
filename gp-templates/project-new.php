@@ -1,8 +1,10 @@
 <?php
 gp_title( __( 'Create New Project &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb( array(
-	__( 'Create New Project', 'glotpress' ),
-) );
+gp_breadcrumb(
+	array(
+		__( 'Create New Project', 'glotpress' ),
+	)
+);
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Create New Project', 'glotpress' ); ?></h2>

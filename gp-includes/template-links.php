@@ -203,13 +203,15 @@ function gp_link_glossary_delete( $glossary, $set, $text = false, $attrs = array
  */
 function gp_link_user( $user ) {
 	if ( $user->display_name && $user->display_name !== $user->user_login ) {
-		printf( '<a href="%s" tabindex="-1">%s (%s)</a>',
+		printf(
+			'<a href="%s" tabindex="-1">%s (%s)</a>',
 			esc_url( gp_url_profile( $user->user_nicename ) ),
 			esc_html( $user->display_name ),
 			esc_html( $user->user_login )
 		);
 	} else {
-		printf( '<a href="%s" tabindex="-1">%s</a>',
+		printf(
+			'<a href="%s" tabindex="-1">%s</a>',
 			esc_url( gp_url_profile( $user->user_nicename ) ),
 			esc_attr( $user->user_login )
 		);
