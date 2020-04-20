@@ -26,13 +26,25 @@
 		<exclude name="WordPress.Security.EscapeOutput.UnsafePrintingFunction" />
 	</rule>
 
-	<rule ref="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing">
-		<severity>0</severity>
-	</rule>
-
 	<rule ref="WordPress.Security.EscapeOutput">
 		<properties>
-			<property name="customAutoEscapedFunctions" value="gp_radio_buttons=>gp_radio_buttons,gp_select=>gp_select,gp_projects_dropdown=>gp_projects_dropdown,gp_link_glossary_delete_get=>gp_link_glossary_delete_get,gp_link_set_delete_get=>gp_link_set_delete_get,gp_link_get=>gp_link_get,gp_link=>gp_link,__=>__,gp_js_focus_on=>gp_js_focus_on,gp_translation_row_classes=>gp_translation_row_classes,gp_pagination=>gp_pagination,esc_translation=>esc_translation,gp_esc_attr_with_entities=>gp_esc_attr_with_entities" type="array" />
+			<property name="customEscapingFunctions" type="array">
+				<element value="esc_translation"/>
+				<element value="gp_esc_attr_with_entities"/>
+			</property>
+			<property name="customAutoEscapedFunctions" type="array">
+				<element value="gp_radio_buttons"/>
+				<element value="gp_select"/>
+				<element value="gp_projects_dropdown"/>
+				<element value="gp_locales_dropdown"/>
+				<element value="gp_link"/>
+				<element value="gp_link_get"/>
+				<element value="gp_link_glossary_delete_get"/>
+				<element value="gp_link_set_delete_get"/>
+				<element value="gp_js_focus_on"/>
+				<element value="gp_translation_row_classes"/>
+				<element value="gp_pagination"/>
+			</property>
 		</properties>
 	</rule>
 
