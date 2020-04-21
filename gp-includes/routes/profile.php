@@ -209,7 +209,7 @@ class GP_Route_Profile extends GP_Route_Main {
 	 */
 	private function get_translation_set( $set ) {
 		if ( ! isset( $this->projects[ $set->project_id ] ) ) {
-			 $this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
+			$this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
 		}
 
 		$project = $this->projects[ $set->project_id ];
