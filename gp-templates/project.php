@@ -49,8 +49,12 @@ gp_tmpl_header();
 </div>
 <?php endif; ?>
 
-<div id="project" <?php if ( $sub_projects ) {
-	echo ' class="with-sub-projects"'; } ?>>
+<div id="project" 
+<?php
+if ( $sub_projects ) {
+	echo ' class="with-sub-projects"'; }
+	?>
+	>
 
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
