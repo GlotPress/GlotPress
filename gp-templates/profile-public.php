@@ -12,7 +12,8 @@ gp_tmpl_header();
 		<div class="user-avatar"><?php echo get_avatar( $user->user_email, 100 ); ?></div>
 
 		<dl class="user-info">
-			<dd><?php
+			<dd>
+				<?php
 				$locale_keys = array_keys( $locales );
 
 				if ( 1 < count( $locales ) ) {
@@ -22,12 +23,15 @@ gp_tmpl_header();
 					/* translators: 1: display name of a user, 2: language */
 					printf( __( '%1$s is a polyglot who contributes to %2$s', 'glotpress' ), $user->display_name, $locale_keys[0] );
 				}
-			?></dd>
+				?>
+			</dd>
 			<dt><?php _e( 'Member Since', 'glotpress' ); ?></dt>
-			<dd><?php
-				/* translators: public profile date format, see https://secure.php.net/date */
-				echo date_i18n( __( 'M j, Y', 'glotpress' ), strtotime( $user->user_registered ) ); // WPCS: XSS ok.
-			?></dd>
+			<dd>
+				<?php
+					/* translators: public profile date format, see https://secure.php.net/date */
+					echo date_i18n( __( 'M j, Y', 'glotpress' ), strtotime( $user->user_registered ) ); // WPCS: XSS ok.
+				?>
+			</dd>
 		</dl>
 	</div>
 </div>
@@ -40,7 +44,7 @@ gp_tmpl_header();
 		<?php foreach ( $recent_projects as $project ) : ?>
 			<li>
 				<p>
-				<?php
+					<?php
 					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
 					echo gp_link_get(
 						$project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
@@ -50,7 +54,8 @@ gp_tmpl_header();
 							$project->count
 						)
 					);
-				?></p>
+					?>
+				</p>
 				<p class="ago">
 					<?php
 					printf(
@@ -69,11 +74,11 @@ gp_tmpl_header();
 
 		<?php if ( count( $permissions ) >= 1 ) : ?>
 			<ul>
-			<?php foreach ( $permissions as $permission ) : ?>
+				<?php foreach ( $permissions as $permission ) : ?>
 				<li>
 					<p> <?php echo gp_link_get( $permission->project_url, $permission->set_name ); ?> </p>
 				</li>
-			<?php endforeach; ?>
+				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
 			<p>

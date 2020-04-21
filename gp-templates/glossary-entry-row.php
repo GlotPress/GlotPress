@@ -49,13 +49,15 @@
 			<?php if ( $entry->user_login ) : ?>
 			<dl>
 				<dt><?php _ex( 'By:', 'by author', 'glotpress' ); ?></dt>
-				<dd><?php
-				if ( $entry->user_display_name && $entry->user_display_name != $entry->user_login ) {
-					printf( '%s (%s)', $entry->user_display_name, $entry->user_login );
-				} else {
-					echo $entry->user_login;
-				}
-				?></dd>
+				<dd>
+					<?php
+					if ( $entry->user_display_name && $entry->user_display_name != $entry->user_login ) {
+						printf( '%s (%s)', $entry->user_display_name, $entry->user_login );
+					} else {
+						echo $entry->user_login;
+					}
+					?>
+				</dd>
 			</dl>
 			<dl>
 				<dt><?php _e( 'Actions:', 'glotpress' ); ?></dt>
