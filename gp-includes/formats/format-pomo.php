@@ -9,7 +9,7 @@ class GP_Format_PO extends GP_Format {
 	public $class = 'PO';
 
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
-		$po = new $this->class;
+		$po = new $this->class();
 
 		// See https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html for header details.
 		// TODO: add more meta data in the project: language team, report URL.
@@ -67,7 +67,7 @@ class GP_Format_PO extends GP_Format {
 	}
 
 	public function read_translations_from_file( $file_name, $project = null ) {
-		$po     = new $this->class;
+		$po     = new $this->class();
 		$result = $po->import_from_file( $file_name );
 
 		return $result ? $po : $result;
@@ -123,5 +123,5 @@ class GP_Format_MO extends GP_Format_PO {
 	}
 }
 
-GP::$formats['po'] = new GP_Format_PO;
-GP::$formats['mo'] = new GP_Format_MO;
+GP::$formats['po'] = new GP_Format_PO();
+GP::$formats['mo'] = new GP_Format_MO();
