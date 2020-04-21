@@ -126,7 +126,7 @@ class GP_Format_Properties extends GP_Format {
 			if ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
 			} else {
-				$result .= $string[ $i ] ;
+				$result .= $string[ $i ];
 			}
 		}
 

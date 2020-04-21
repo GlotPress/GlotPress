@@ -417,8 +417,8 @@ class GP_Project extends GP_Thing {
 	public function duplicate_project_contents_from( $source_project ) {
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
-		//Duplicate originals, translations sets and translations for the root project
-		$this->copy_originals_from( $source_project->id ) ;
+		// Duplicate originals, translations sets and translations for the root project.
+		$this->copy_originals_from( $source_project->id );
 		$this->copy_sets_and_translations_from( $source_project->id );
 
 		//Keep a list of parents to preserve hierarchy
