@@ -111,7 +111,8 @@ GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';
 require_once GP_PATH . GP_INC . 'formats/format-android.php';
-require_once GP_PATH . GP_INC . 'formats/format-pomo.php';
+require_once GP_PATH . GP_INC . 'formats/format-po.php';
+require_once GP_PATH . GP_INC . 'formats/format-mo.php';
 require_once GP_PATH . GP_INC . 'formats/format-resx.php';
 require_once GP_PATH . GP_INC . 'formats/format-strings.php';
 require_once GP_PATH . GP_INC . 'formats/format-properties.php';
