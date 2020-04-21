@@ -44,7 +44,7 @@ gp_tmpl_header();
 		</tbody>
 	</table>
 	<?php endif; ?>
-	<?php  if ( $parent_permissions ) : ?>
+	<?php if ( $parent_permissions ) : ?>
 <h4 id="validators"><?php _e( 'Validators for parent projects', 'glotpress' ); ?></h4>
 	<table class="permissions">
 		<thead>
