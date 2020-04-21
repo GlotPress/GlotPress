@@ -172,9 +172,8 @@ class GP_Translation_Set extends GP_Thing {
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
 		$result = $this->one(
-			"
-		    SELECT * FROM $this->table
-		    WHERE slug = %s AND project_id= %d AND locale = %s",
+			"SELECT * FROM $this->table
+			WHERE slug = %s AND project_id= %d AND locale = %s",
 			$slug,
 			$project_id,
 			$locale_slug
@@ -196,9 +195,8 @@ class GP_Translation_Set extends GP_Thing {
 
 	public function by_locale( $locale_slug ) {
 		return $this->many(
-			"
-		    SELECT * FROM $this->table
-		    WHERE locale = %s",
+			"SELECT * FROM $this->table
+			WHERE locale = %s",
 			$locale_slug
 		);
 	}
@@ -217,9 +215,8 @@ class GP_Translation_Set extends GP_Thing {
 
 	public function by_project_id( $project_id ) {
 		return $this->many(
-			"
-		    SELECT * FROM $this->table
-		    WHERE project_id = %d ORDER BY name ASC",
+			"SELECT * FROM $this->table
+			WHERE project_id = %d ORDER BY name ASC",
 			$project_id
 		);
 	}
@@ -499,8 +496,7 @@ class GP_Translation_Set extends GP_Thing {
 
 			$status_counts = $wpdb->get_results(
 				$wpdb->prepare(
-					"
-					SELECT
+					"SELECT
 						t.status AS translation_status,
 						COUNT(*) AS total,
 						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
@@ -510,8 +506,7 @@ class GP_Translation_Set extends GP_Thing {
 					WHERE
 						t.translation_set_id = %d
 						AND o.status = '+active'
-					GROUP BY t.status
-					",
+					GROUP BY t.status",
 					$this->id
 				)
 			);
@@ -522,8 +517,7 @@ class GP_Translation_Set extends GP_Thing {
 
 			$warnings_counts = $wpdb->get_row(
 				$wpdb->prepare(
-					"
-					SELECT
+					"SELECT
 						COUNT(*) AS total,
 						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
 						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
@@ -534,8 +528,7 @@ class GP_Translation_Set extends GP_Thing {
 						o.status = '+active' AND
 						( t.status = 'current' OR t.status = 'waiting' )
 						AND warnings IS NOT NULL
-						AND warnings != ''
-					",
+						AND warnings != ''",
 					$this->id
 				)
 			);
@@ -551,8 +544,7 @@ class GP_Translation_Set extends GP_Thing {
 
 			$untranslated_counts = $wpdb->get_row(
 				$wpdb->prepare(
-					"
-					SELECT
+					"SELECT
 						COUNT(*) AS total,
 						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
 						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
@@ -561,8 +553,7 @@ class GP_Translation_Set extends GP_Thing {
 					WHERE
 						o.project_id = %d AND
 						o.status = '+active' AND
-						t.translation_0 IS NULL
-					",
+						t.translation_0 IS NULL",
 					$this->id,
 					$this->project_id
 				)
@@ -634,8 +625,7 @@ class GP_Translation_Set extends GP_Thing {
 			}
 		} else {
 			return $this->query(
-				"
-				INSERT INTO $wpdb->gp_translations (
+				"INSERT INTO $wpdb->gp_translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT

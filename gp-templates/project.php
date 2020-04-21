@@ -15,9 +15,9 @@ if ( $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
 		function( $items ) {
-		$items[ count( $items ) - 1 ] .= ' <span class="active bubble">' . __( 'Active', 'glotpress' ) . '</span>';
+			$items[ count( $items ) - 1 ] .= ' <span class="active bubble">' . __( 'Active', 'glotpress' ) . '</span>';
 
-		return $items;
+			return $items;
 		}
 	);
 }

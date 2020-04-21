@@ -122,15 +122,13 @@ class GP_Original extends GP_Thing {
 		// No cache values found so let's query the database for the results.
 		$counts = $wpdb->get_row(
 			$wpdb->prepare(
-				"
-				SELECT
+				"SELECT
 					COUNT(*) AS total,
 					COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
 					COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
 				FROM {$wpdb->gp_originals}
 				WHERE
-					project_id = %d AND status = '+active'
-				",
+					project_id = %d AND status = '+active'",
 				$project_id
 			),
 			ARRAY_A

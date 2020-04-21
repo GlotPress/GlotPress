@@ -18,7 +18,7 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 				if ( $translation->original_id == $prev_original_id ) {
 					WP_CLI::warning(
 						sprintf(
-						/* translators: 1: original ID, 2: new ID */
+							/* translators: 1: original ID, 2: new ID */
 							__( 'Duplicate with original_id #%1$d. Translation #%2$d', 'glotpress' ),
 							$prev_original_id,
 							$translation->id

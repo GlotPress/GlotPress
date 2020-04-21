@@ -20,9 +20,9 @@ function prepare_original( $text ) {
 	$text             = preg_replace_callback(
 		'!(<span class="glossary-word"[^>]+>)!i',
 		function( $m ) use ( &$glossary_entries ) {
-		$item_number                      = count( $glossary_entries );
-		$glossary_entries[ $item_number ] = $m[0];
-		return "<span GLOSSARY={$item_number}>";
+			$item_number                      = count( $glossary_entries );
+			$glossary_entries[ $item_number ] = $m[0];
+			return "<span GLOSSARY={$item_number}>";
 		},
 		$text
 	);
@@ -38,7 +38,7 @@ function prepare_original( $text ) {
 	$text = preg_replace_callback(
 		'!(<span GLOSSARY=(\d+)>)!',
 		function( $m ) use ( $glossary_entries ) {
-		return $glossary_entries[ $m[2] ];
+			return $glossary_entries[ $m[2] ];
 		},
 		$text
 	);
@@ -112,7 +112,7 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 	uasort(
 		$glossary_entries_terms,
 		function( $a, $b ) {
-		return gp_strlen( $a ) < gp_strlen( $b );
+			return gp_strlen( $a ) < gp_strlen( $b );
 		}
 	);
 

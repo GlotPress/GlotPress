@@ -65,15 +65,13 @@ class GP_Route_Profile extends GP_Route_Main {
 		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map(
-			"
-			SELECT translation_set_id, date_added
+			"SELECT translation_set_id, date_added
 			FROM $wpdb->gp_translations as t
 			WHERE
 				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
 				user_id = %s AND
 				status != 'rejected'
-			ORDER BY date_added DESC
-			",
+			ORDER BY date_added DESC",
 			$user->ID
 		);
 
@@ -126,14 +124,12 @@ class GP_Route_Profile extends GP_Route_Main {
 		global $wpdb;
 
 		$translations = GP::$translation_set->many_no_map(
-			"
-			SELECT ts.locale, count(*) AS count
+			"SELECT ts.locale, count(*) AS count
 			FROM $wpdb->gp_translations as t
 			INNER JOIN $wpdb->gp_translation_sets AS ts ON ts.id = t.translation_set_id
 			WHERE user_id = %s
 			GROUP BY ts.locale
-			ORDER BY count DESC
-			",
+			ORDER BY count DESC",
 			$user->ID
 		);
 
