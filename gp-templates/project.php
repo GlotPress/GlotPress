@@ -54,7 +54,7 @@ gp_tmpl_header();
 
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
-	<h3><?php _e( 'Translations', 'glotpress' );?></h3>
+	<h3><?php _e( 'Translations', 'glotpress' ); ?></h3>
 	<table class="translation-sets tablesorter tablesorter-glotpress">
 		<thead>
 			<tr class="tablesorter-headerRow">

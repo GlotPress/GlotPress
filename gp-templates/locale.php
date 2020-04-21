@@ -48,7 +48,7 @@ if ( empty( $projects_data ) ) {
 
 <?php foreach ( $projects_data as $project_id => $sub_projects ) : ?>
 	<div class="locale-project">
-		<h3><?php echo ( $projects[ $project_id ]->name );?></h3>
+		<h3><?php echo ( $projects[ $project_id ]->name ); ?></h3>
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
@@ -116,7 +116,7 @@ if ( empty( $projects_data ) ) {
 							$percent = floor( $set_data->current_count / $set_data->all_count * 100 );
 							?>
 							<span class="bubble morethan90"><?php echo $percent; ?>%</span>
-						<?php endif;?>
+						<?php endif; ?>
 					</td>
 					<td class="stats translated">
 						<?php

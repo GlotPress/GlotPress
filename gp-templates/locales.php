@@ -9,15 +9,15 @@ gp_tmpl_header();
 
 	<h2><?php _e( 'Locales and Languages', 'glotpress' ); ?></h2>
 	<div class="locales-filter">
-		<?php _e( 'Filter:', 'glotpress' );?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e('search', 'glotpress'); ?>" />
+		<?php _e( 'Filter:', 'glotpress' ); ?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e( 'search', 'glotpress' ); ?>" />
 	</div>
 
 	<table class="tablesorter locales tablesorter-glotpress">
 		<thead>
 		<tr class="tablesorter-headerRow">
-			<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Name (in English)', 'glotpress' );?></th>
-			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Native name', 'glotpress' );?></th>
-			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Language code', 'glotpress' );?></th>
+			<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Name (in English)', 'glotpress' ); ?></th>
+			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Native name', 'glotpress' ); ?></th>
+			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Language code', 'glotpress' ); ?></th>
 
 		</tr>
 		</thead>

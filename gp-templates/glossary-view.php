@@ -68,7 +68,7 @@ if ( $glossary->description ) {
 		<?php if ( $can_edit ) : ?>
 		<tr>
 			<td colspan="5">
-				<h4><?php _e( 'Create an entry', 'glotpress' );?></h4>
+				<h4><?php _e( 'Create an entry', 'glotpress' ); ?></h4>
 
 				<form action="<?php echo esc_url( gp_url_join( $url, '-new' ) ); ?>" method="post">
 					<dl>
