@@ -40,4 +40,5 @@ gp_tmpl_header();
 	<?php gp_route_nonce_field( 'import-glossary-entries_' . $project->path . $locale->slug . $translation_set->slug ); ?>
 </form>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

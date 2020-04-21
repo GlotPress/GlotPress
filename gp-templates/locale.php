@@ -111,7 +111,8 @@ if ( empty( $projects_data ) ) {
 					?>
 					<td class="set-name">
 						<strong><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ) ), $set_data->name ); ?></strong>
-						<?php if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
+						<?php
+						if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
 							$percent = floor( $set_data->current_count / $set_data->all_count * 100 );
 							?>
 							<span class="bubble morethan90"><?php echo $percent; ?>%</span>
@@ -188,4 +189,5 @@ if ( empty( $projects_data ) ) {
 		<?php gp_link( gp_url( '/projects' ), __( 'All projects', 'glotpress' ) ); ?>
 	</p>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

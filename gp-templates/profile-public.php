@@ -89,4 +89,5 @@ gp_tmpl_header();
 	</div>
 </div>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

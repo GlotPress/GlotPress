@@ -28,4 +28,5 @@ gp_tmpl_header();
 	</p>
 	<?php gp_route_nonce_field( 'edit-translation-set_' . $set->id ); ?>
 </form>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

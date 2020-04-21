@@ -70,4 +70,5 @@ gp_tmpl_header();
 	<?php gp_route_nonce_field( ( 'originals' === $kind ? 'import-originals_' : 'import-translations_' ) . $project->id ); ?>
 </form>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

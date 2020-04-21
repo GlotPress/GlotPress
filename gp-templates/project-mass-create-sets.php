@@ -32,4 +32,5 @@ gp_tmpl_header();
 	<p><input type="submit" name="submit" value="<?php esc_attr_e( 'Create Translation Sets', 'glotpress' ); ?>" id="submit" /></p>
 	<?php gp_route_nonce_field( 'mass-create-transation-sets_' . $project->id ); ?>
 </form>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

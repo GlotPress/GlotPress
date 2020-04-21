@@ -16,4 +16,5 @@ gp_tmpl_header();
 	</p>
 	<?php gp_route_nonce_field( 'add-translation-set' ); ?>
 </form>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

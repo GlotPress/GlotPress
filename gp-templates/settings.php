@@ -35,4 +35,5 @@ if ( ! is_array( $default_sort ) ) {
 	<input type="submit" name="submit" value="<?php esc_attr_e( 'Save Settings', 'glotpress' ); ?>">
 </form>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

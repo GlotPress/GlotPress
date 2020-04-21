@@ -72,4 +72,5 @@ gp_tmpl_header();
 		});
 	</script>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

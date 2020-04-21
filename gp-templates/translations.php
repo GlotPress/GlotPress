@@ -309,8 +309,12 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	</form>
 </div>
 
-<table id="translations" class="translations clear<?php if ( 'rtl' == $locale->text_direction ) {
-	echo ' translation-sets-rtl'; } ?>">
+<table id="translations" class="translations clear
+<?php
+if ( 'rtl' == $locale->text_direction ) {
+	echo ' translation-sets-rtl'; }
+	?>
+	">
 	<thead>
 	<tr>
 		<?php
@@ -464,4 +468,5 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
 	?>
 </p>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

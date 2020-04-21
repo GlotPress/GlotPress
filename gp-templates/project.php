@@ -79,7 +79,8 @@ gp_tmpl_header();
 			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
-					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
+					<?php
+					if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
 							$percent = floor( $set->current_count / $set->all_count * 100 );
 					?>
 						<span class="bubble morethan90"><?php echo $percent; ?>%</span>
@@ -230,4 +231,5 @@ gp_tmpl_header();
 		});
 	});
 </script>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();
