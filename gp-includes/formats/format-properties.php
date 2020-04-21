@@ -179,7 +179,8 @@ class GP_Format_Properties extends GP_Format {
 			$byte[0] = chr( bindec( '0' . sprintf( '%07s', $binary ) ) );
 		}
 
-		/* This is an alternate way to encode the character but it needs the iconv functions available:
+		/*
+		 * This is an alternate way to encode the character but it needs the iconv functions available:
 		 *
 		 *		iconv( 'UCS-4LE', 'UTF-8', pack( 'V', hexdec( $matches[ 1 ] ) ) );
 		 *
@@ -410,7 +411,8 @@ class GP_Format_Properties extends GP_Format {
 				$entry          = new Translation_Entry();
 				$entry->context = rtrim( $this->unescape( $key ) );
 
-				/* So the following line looks a little weird, why encode just to decode?
+				/*
+				 * So the following line looks a little weird, why encode just to decode?
 				 *
 				 * The reason is simple, properties files are in ISO-8859-1 aka Latin-1 format
 				 * and can have extended characters above 127 but below 256 represented by a
