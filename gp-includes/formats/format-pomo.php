@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Format class used to support PO file format.
+ *
+ * @since 2.3.1
+ */
 class GP_Format_PO extends GP_Format {
 
 	public $name           = 'Portable Object Message Catalog (.po/.pot)';
@@ -103,7 +108,14 @@ class GP_Format_PO extends GP_Format {
 	}
 }
 
+
+/**
+ * Format class used to support MO file format.
+ *
+ * @since 2.3.1
+ */
 class GP_Format_MO extends GP_Format_PO {
+
 	public $name           = 'Machine Object Message Catalog (.mo)';
 	public $extension      = 'mo';
 	public $alt_extensions = array();
