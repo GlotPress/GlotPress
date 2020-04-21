@@ -35,7 +35,8 @@ gp_tmpl_header();
 	 * @param string     $description Project description.
 	 * @param GP_Project $project     The current project.
 	 */
-	echo apply_filters( 'gp_project_description', $project->description, $project );?>
+	echo apply_filters( 'gp_project_description', $project->description, $project );
+	?>
 </p>
 
 <?php if ( $can_write ) : ?>
@@ -192,7 +193,8 @@ gp_tmpl_header();
 		 * @param string     $description Sub-project description.
 		 * @param GP_Project $project     The sub-project.
 		 */
-		echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) ); ?>
+		echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) );
+		?>
 	</dd>
 <?php endforeach; ?>
 </dl>
