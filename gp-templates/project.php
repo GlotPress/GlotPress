@@ -49,12 +49,10 @@ gp_tmpl_header();
 </div>
 <?php endif; ?>
 
-<div id="project" 
 <?php
-if ( $sub_projects ) {
-	echo ' class="with-sub-projects"'; }
-	?>
-	>
+$class = $sub_projects ? ' class="with-sub-projects"' : '';
+?>
+<div id="project"<?php echo $class; ?>>
 
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
@@ -186,8 +184,9 @@ if ( $sub_projects ) {
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
 		<?php
 		if ( $sub_project->active ) {
-			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>'; }
-			?>
+			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>';
+		}
+		?>
 	</dt>
 	<dd>
 		<?php
