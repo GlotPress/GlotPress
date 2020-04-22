@@ -103,8 +103,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 	if ( 'main' === $location ) {
 		$items[ gp_url( '/projects' ) ]  = __( 'Projects', 'glotpress' );
 		$items[ gp_url( '/languages' ) ] = __( 'Locales', 'glotpress' );
-	}
-	elseif ( 'side' === $location ) {
+	} elseif ( 'side' === $location ) {
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
 			$items[ gp_url_profile( $user->user_nicename ) ]       = __( 'Profile', 'glotpress' );
@@ -138,18 +137,25 @@ function gp_tmpl_filter_args( $args ) {
 }
 
 function gp_tmpl_404( $args = array() ) {
-	gp_tmpl_load( '404', $args + array(
-		'title'       => __( 'Not Found', 'glotpress' ),
-		'http_status' => 404,
-	) );
+	gp_tmpl_load(
+		'404',
+		$args + array(
+			'title'       => __( 'Not Found', 'glotpress' ),
+			'http_status' => 404,
+		)
+	);
 	exit();
 }
 
 function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
-		add_filter( 'gp_title', function() use ( $title ) {
-			return $title;
-		}, 5 );
+		add_filter(
+			'gp_title',
+			function() use ( $title ) {
+				return $title;
+			},
+			5
+		);
 	} else {
 
 		/**
@@ -167,9 +173,13 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	if ( $breadcrumb ) {
 		$breadcrumb = gp_array_flatten( $breadcrumb );
 
-		add_filter( 'gp_breadcrumb_items', function( $breadcrumbs ) use ( $breadcrumb ) {
-			return array_merge( $breadcrumbs, $breadcrumb );
-		}, 1 );
+		add_filter(
+			'gp_breadcrumb_items',
+			function( $breadcrumbs ) use ( $breadcrumb ) {
+				return array_merge( $breadcrumbs, $breadcrumb );
+			},
+			1
+		);
 	} else {
 
 		/**
@@ -216,7 +226,7 @@ function gp_project_names_from_root( $leaf_project ) {
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
 
 	foreach ( $path_from_root as $project ) {
-		$names[] = esc_html($project->name);
+		$names[] = esc_html( $project->name );
 	}
 
 	$project_path = implode( " | ", $names );
@@ -230,7 +240,7 @@ function gp_project_links_from_root( $leaf_project ) {
 	}
 	$links          = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
-	$links[]        = empty( $path_from_root) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
+	$links[]        = empty( $path_from_root ) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
 		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
 	}
@@ -293,7 +303,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 	}
 
 	if ( $page < $pages ) {
-		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 )), '&rarr;', array( 'class' => 'next' ) );
+		$next = gp_link_get( add_query_arg( array( 'page' => $page + 1 ) ), '&rarr;', array( 'class' => 'next' ) );
 	} else {
 		$next = '<span class="next disabled">&rarr;</span>';
 	}
@@ -480,17 +490,23 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 
 function gp_array_of_things_to_json( $array ) {
 	return wp_json_encode(
-		array_map( function( $thing ) {
+		array_map(
+			function( $thing ) {
 				return $thing->fields();
-		}, $array )
+			},
+			$array
+		)
 	);
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
 	$map_to_fields = function( $array ) {
-		return array_map( function( $thing ) {
-			return $thing->fields();
-		}, $array );
+		return array_map(
+			function( $thing ) {
+				return $thing->fields();
+			},
+			$array
+		);
 	};
 
 	return wp_json_encode( array_map( $map_to_fields, $array ) );
@@ -501,8 +517,7 @@ function things_to_fields( $data ) {
 		foreach ( $data as $item_id => $item ) {
 			$data[ $item_id ] = things_to_fields( $item );
 		}
-	}
-	else if ( $data instanceof GP_Thing ) {
+	} elseif ( $data instanceof GP_Thing ) {
 		$data = $data->fields();
 	}
 
@@ -539,7 +554,7 @@ function gp_checked( $checked ) {
 function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
 		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
-		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress') ),
+		gp_link_get( gp_url_project( $project, array( '-permissions' ) ), __( 'Permissions', 'glotpress' ) ),
 		gp_link_get( gp_url_project( '', '-new', array( 'parent_project_id' => $project->id ) ), __( 'New Sub-Project', 'glotpress' ) ),
 		gp_link_get( gp_url( '/sets/-new', array( 'project_id' => $project->id ) ), __( 'New Translation Set', 'glotpress' ) ),
 		gp_link_get( gp_url_project( $project, array( '-mass-create-sets' ) ), __( 'Mass-create Translation Sets', 'glotpress' ) ),

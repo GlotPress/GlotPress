@@ -264,7 +264,7 @@ class GP_Route {
 	private function get_raw_referer() {
 		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
 			return wp_unslash( gp_array_get( $_REQUEST, '_wp_http_referer' ) );
-		} else if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
+		} elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
 			return wp_unslash( gp_array_get( $_SERVER, 'HTTP_REFERER' ) );
 		}
 
@@ -323,10 +323,10 @@ class GP_Route {
 		}
 		$this->set_notices_and_errors();
 		if ( $this->api && false !== $honor_api && 'no-api' !== $honor_api ) {
-			$template = $template.'.api';
-			$this->header('Content-Type: application/json');
+			$template = $template . '.api';
+			$this->header( 'Content-Type: application/json' );
 		} else {
-			$this->header('Content-Type: text/html; charset=utf-8');
+			$this->header( 'Content-Type: text/html; charset=utf-8' );
 		}
 		if ( $this->fake_request ) {
 			$this->template_output = gp_tmpl_get_output( $template, $args, $this->template_path );
@@ -338,10 +338,13 @@ class GP_Route {
 
 	public function die_with_404( $args = array() ) {
 		$this->status_header( 404 );
-		$this->tmpl( '404', $args + array(
-			'title'       => __( 'Not Found', 'glotpress' ),
-			'http_status' => 404,
-		) );
+		$this->tmpl(
+			'404',
+			$args + array(
+				'title'       => __( 'Not Found', 'glotpress' ),
+				'http_status' => 404,
+			)
+		);
 		$this->exit_();
 	}
 

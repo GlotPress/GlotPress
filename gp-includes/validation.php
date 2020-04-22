@@ -105,7 +105,7 @@ class GP_Validation_Rules {
 				}
 			}
 		}
-		trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $name), E_USER_ERROR);
+		trigger_error( sprintf( 'Call to undefined function: %s::%s().', get_class( $this ), $name ), E_USER_ERROR );
 	}
 
 	public function run( $thing ) {
@@ -155,7 +155,7 @@ class GP_Validation_Rules {
 						$this->errors[] = $this->construct_error_message( $rule );
 						$verdict        = false;
 					}
-				} else if ( ! call_user_func_array( $callback['negative'], $args ) ) {
+				} elseif ( ! call_user_func_array( $callback['negative'], $args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict        = false;
 				}
@@ -187,7 +187,7 @@ class GP_Validation_Rules {
 class GP_Validators {
 	static $callbacks = array();
 
-	static public function register( $key, $callback, $negative_callback = null ) {
+	public static function register( $key, $callback, $negative_callback = null ) {
 		// TODO: add data for easier generation of error messages
 		self::$callbacks[ $key ] = array(
 			'positive' => $callback,
@@ -195,11 +195,11 @@ class GP_Validators {
 		);
 	}
 
-	static public function unregister( $key ) {
+	public static function unregister( $key ) {
 		unset( self::$callbacks[ $key ] );
 	}
 
-	static public function get( $key ) {
+	public static function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}
 }

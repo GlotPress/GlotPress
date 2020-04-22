@@ -76,7 +76,7 @@ class GP_Format_Android extends GP_Format {
 		$string_array_items = array();
 
 		foreach ( $entries as $entry ) {
-			if ( preg_match('/.+\[\d+\]$/', $entry->context ) ) {
+			if ( preg_match( '/.+\[\d+\]$/', $entry->context ) ) {
 				// Array item found.
 				$string_array_items[] = $entry;
 				continue;
@@ -383,7 +383,7 @@ class GP_Format_Android extends GP_Format {
 
 			// Output each item in the array.
 			foreach ( $mapping[ $array_name ] as $item ) {
-				$this->line('<item>' . $item . '</item>', 2);
+				$this->line( '<item>' . $item . '</item>', 2 );
 			}
 
 			// Close the string arrary tag.

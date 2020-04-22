@@ -14,10 +14,12 @@ if ( 'originals' == $kind ) {
 		esc_html( $project->name )
 	);
 	$return_link = gp_url_project_locale( $project, $locale->slug, $translation_set->slug );
-	gp_breadcrumb( array(
-		gp_project_links_from_root( $project ),
-		gp_link_get( $return_link, $translation_set->name ),
-	) );
+	gp_breadcrumb(
+		array(
+			gp_project_links_from_root( $project ),
+			gp_link_get( $return_link, $translation_set->name ),
+		)
+	);
 }
 
 gp_title( $title );

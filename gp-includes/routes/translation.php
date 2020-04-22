@@ -222,15 +222,18 @@ class GP_Route_Translation extends GP_Route_Main {
 		$can_import_current  = $can_approve;
 		$can_import_waiting  = $can_approve || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
 		$url                 = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) );
-		$set_priority_url    = gp_url( '/originals/%original-id%/set_priority');
+		$set_priority_url    = gp_url( '/originals/%original-id%/set_priority' );
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url      = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
 		$bulk_action         = gp_url_join( $url, '-bulk' );
 
 		// Add action to use different font for translations
-		add_action( 'gp_head', function() use ( $locale ) {
-			return gp_preferred_sans_serif_style_tag( $locale );
-		} );
+		add_action(
+			'gp_head',
+			function() use ( $locale ) {
+				return gp_preferred_sans_serif_style_tag( $locale );
+			}
+		);
 
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
@@ -261,7 +264,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
-			$data                       = compact('original_id');
+			$data                       = compact( 'original_id' );
 			$data['user_id']            = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
@@ -289,11 +292,16 @@ class GP_Route_Translation extends GP_Route_Main {
 			$original         = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 
-
-			$existing_translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array(
-				'original_id' => $original_id,
-				'status'      => 'current_or_waiting',
-			), array() );
+			$existing_translations = GP::$translation->for_translation(
+				$project,
+				$translation_set,
+				'no-limit',
+				array(
+					'original_id' => $original_id,
+					'status'      => 'current_or_waiting',
+				),
+				array()
+			);
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
 					return $this->die_with_error( __( 'Identical current or waiting translation already exists.', 'glotpress' ), 200 );
@@ -362,12 +370,12 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$bulk            = gp_post('bulk');
+		$bulk            = gp_post( 'bulk' );
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
 				case 'approve':
-				case 'reject' :
+				case 'reject':
 					$this->_bulk_approve( $bulk );
 					break;
 				case 'fuzzy':
@@ -562,7 +570,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 		}
 
-		if ( 0 === $error) {
+		if ( 0 === $error ) {
 			$this->notices[] = sprintf(
 				/* translators: %d: Originals count. */
 				_n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ),
@@ -641,10 +649,16 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
 
-		$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array(
-			'translation_id' => $translation->id,
-			'status'         => 'either',
-		), array() );
+		$translations = GP::$translation->for_translation(
+			$project,
+			$translation_set,
+			'no-limit',
+			array(
+				'translation_id' => $translation->id,
+				'status'         => 'either',
+			),
+			array()
+		);
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 

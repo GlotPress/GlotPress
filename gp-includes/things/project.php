@@ -206,7 +206,7 @@ class GP_Project extends GP_Thing {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
-		if ( ( isset( $args['path']) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {
+		if ( ( isset( $args['path'] ) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {
 			unset( $args['path'] );
 		}
 
@@ -252,7 +252,7 @@ class GP_Project extends GP_Thing {
 		// Update children's paths, too.
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen($old_path) + 1, $wpdb->esc_like( $old_path).'%' );
+			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '%' );
 		} else {
 			return $res_self;
 		}
@@ -364,13 +364,15 @@ class GP_Project extends GP_Thing {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
 		foreach ( $sets as $to_add ) {
-			$new_set = GP::$translation_set->create( array(
-				'project_id' => $this->id,
-				'name'       => $to_add->name,
-				'locale'     => $to_add->locale,
-				'slug'       => $to_add->slug,
-			) );
-			if ( ! $new_set  ) {
+			$new_set = GP::$translation_set->create(
+				array(
+					'project_id' => $this->id,
+					'name'       => $to_add->name,
+					'locale'     => $to_add->locale,
+					'slug'       => $to_add->slug,
+				)
+			);
+			if ( ! $new_set ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set. */
 					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),
@@ -385,13 +387,15 @@ class GP_Project extends GP_Thing {
 
 	public function copy_originals_from( $source_project_id ) {
 		global $wpdb;
-		return $this->query("
-			INSERT INTO $wpdb->gp_originals (
+		return $this->query(
+			"INSERT INTO $wpdb->gp_originals (
 				`project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
 			)
 			SELECT
 				%s AS `project_id`, `context`, `singular`, `plural`, `references`, `comment`, `status`, `priority`, `date_added`
-			FROM $wpdb->gp_originals WHERE project_id = %s", $this->id, $source_project_id
+			FROM $wpdb->gp_originals WHERE project_id = %s",
+			$this->id,
+			$source_project_id
 		);
 	}
 

@@ -71,7 +71,7 @@ function gp_const_get( $name, $default = '' ) {
 }
 
 function gp_const_set( $name, $value ) {
-	if ( defined( $name) ) {
+	if ( defined( $name ) ) {
 		return false;
 	}
 	define( $name, $value );
@@ -222,7 +222,7 @@ function gp_array_zip() {
 	$depth = 0;
 
 	foreach ( $args as &$array ) {
-		if ( ! is_array( $array) ) {
+		if ( ! is_array( $array ) ) {
 			return false;
 		}
 
@@ -478,19 +478,19 @@ function gp_set_cookie() {
  * @return int
  */
 function gp_gmt_strtotime( $string ) {
-	if ( is_numeric($string) ) {
+	if ( is_numeric( $string ) ) {
 		return $string;
 	}
-	if ( ! is_string($string) ) {
+	if ( ! is_string( $string ) ) {
 		return -1;
 	}
 
 	if ( stristr( $string, 'utc' ) || stristr( $string, 'gmt' ) || stristr( $string, '+0000' ) ) {
-		return strtotime($string);
+		return strtotime( $string );
 	}
 
-	if ( -1 == $time = strtotime($string . ' +0000') ) {
-		return strtotime($string);
+	if ( -1 == $time = strtotime( $string . ' +0000' ) ) {
+		return strtotime( $string );
 	}
 
 	return $time;
@@ -575,18 +575,22 @@ function gp_wp_profile_options_update( $user_id ) {
 	$is_user_gp_admin = GP::$permission->user_can( $user_id, 'admin' );
 
 	if ( array_key_exists( 'gp_administrator', $_POST ) && ! $is_user_gp_admin ) {
-		GP::$administrator_permission->create( array(
-			'user_id'     => $user_id,
-			'action'      => 'admin',
-			'object_type' => null,
-		) );
+		GP::$administrator_permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'admin',
+				'object_type' => null,
+			)
+		);
 	}
 
 	if ( ! array_key_exists( 'gp_administrator', $_POST ) && $is_user_gp_admin ) {
-		$current_perm = GP::$administrator_permission->find_one( array(
-			'user_id' => $user_id,
-			'action'  => 'admin',
-		) );
+		$current_perm = GP::$administrator_permission->find_one(
+			array(
+				'user_id' => $user_id,
+				'action'  => 'admin',
+			)
+		);
 		$current_perm->delete();
 	}
 }

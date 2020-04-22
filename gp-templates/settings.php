@@ -29,7 +29,7 @@ if ( ! is_array( $default_sort ) ) {
 ?>
 <h2><?php _e( 'Your Settings', 'glotpress' ); ?></h2>
 <form action="" method="post">
-	<?php include_once __DIR__ . '/settings-edit.php'; ?>
+	<?php require_once __DIR__ . '/settings-edit.php'; ?>
 	<br>
 	<?php gp_route_nonce_field( 'update-settings_' . get_current_user_id() ); ?>
 	<input type="submit" name="submit" value="<?php esc_attr_e( 'Save Settings', 'glotpress' ); ?>">

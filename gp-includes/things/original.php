@@ -120,17 +120,19 @@ class GP_Original extends GP_Thing {
 		}
 
 		// No cache values found so let's query the database for the results.
-		$counts = $wpdb->get_row( $wpdb->prepare( "
-			SELECT
-				COUNT(*) AS total,
-				COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
-				COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
-			FROM {$wpdb->gp_originals}
-			WHERE
-				project_id = %d AND status = '+active'
-			",
-			$project_id
-		), ARRAY_A );
+		$counts = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT
+					COUNT(*) AS total,
+					COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
+					COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
+				FROM {$wpdb->gp_originals}
+				WHERE
+					project_id = %d AND status = '+active'",
+				$project_id
+			),
+			ARRAY_A
+		);
 
 		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
 		if ( ! is_array( $counts ) ) {
@@ -187,18 +189,23 @@ class GP_Original extends GP_Thing {
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key          = array();
 		foreach ( $all_originals_for_project as $original ) {
-			$entry = new Translation_Entry( array(
-				'singular' => $original->singular,
-				'plural'   => $original->plural,
-				'context'  => $original->context,
-			) );
+			$entry = new Translation_Entry(
+				array(
+					'singular' => $original->singular,
+					'plural'   => $original->plural,
+					'context'  => $original->context,
+				)
+			);
 
 			$originals_by_key[ $entry->key() ] = $original;
 		}
 
-		$obsolete_originals = array_filter( $originals_by_key, function( $entry ) {
-			return ( '-obsolete' == $entry->status );
-		} );
+		$obsolete_originals = array_filter(
+			$originals_by_key,
+			function( $entry ) {
+				return ( '-obsolete' == $entry->status );
+			}
+		);
 
 		$possibly_added = $possibly_dropped = array();
 

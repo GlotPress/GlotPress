@@ -89,9 +89,12 @@ class GP_Glossary extends GP_Thing {
 	}
 
 	public function by_set_id( $set_id ) {
-		return $this->one( "
+		return $this->one(
+			"
 		    SELECT * FROM $this->table
-		    WHERE translation_set_id = %d LIMIT 1", $set_id );
+		    WHERE translation_set_id = %d LIMIT 1",
+			$set_id
+		);
 
 	}
 
@@ -151,13 +154,16 @@ class GP_Glossary extends GP_Thing {
 
 		$current_date = $this->now_in_mysql_format();
 
-		return $this->query("
-			INSERT INTO $wpdb->gp_glossary_items (
+		return $this->query(
+			"INSERT INTO $wpdb->gp_glossary_items (
 				id, term, type, examples, comment, suggested_translation, last_update
 			)
 			SELECT
 				%s AS id, term, type, examples, comment, suggested_translation, %s AS last_update
-			FROM $wpdb->gp_glossary_items WHERE id = %s", $this->id, $current_date, $source_glossary_id
+			FROM $wpdb->gp_glossary_items WHERE id = %s",
+			$this->id,
+			$current_date,
+			$source_glossary_id
 		);
 	}
 
@@ -194,12 +200,14 @@ class GP_Glossary extends GP_Thing {
 		// A leading double-slash prevents gp_url_project() from prepending /projects/ to the URL.
 		$locale_glossary_path_prefix = '//' . ltrim( $locale_glossary_path_prefix, '/' );
 
-		return new GP::$project( array(
-			'id'   => 0,
-			'name' => 'Locale Glossary',
-			'slug' => 0,
-			'path' => $locale_glossary_path_prefix,
-		) );
+		return new GP::$project(
+			array(
+				'id'   => 0,
+				'name' => 'Locale Glossary',
+				'slug' => 0,
+				'path' => $locale_glossary_path_prefix,
+			)
+		);
 	}
 }
 

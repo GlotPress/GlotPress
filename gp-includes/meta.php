@@ -114,12 +114,15 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 
 	// If no rows are returned we need to insert the meta data instead of updating it.
 	if ( null === $cur ) {
-		$result = $wpdb->insert( $wpdb->gp_meta, array(
-			'object_type' => $object_type,
-			'object_id'   => $object_id,
-			'meta_key'    => $meta_key,
-			'meta_value'  => $_meta_value,
-		) );
+		$result = $wpdb->insert(
+			$wpdb->gp_meta,
+			array(
+				'object_type' => $object_type,
+				'object_id'   => $object_id,
+				'meta_key'    => $meta_key,
+				'meta_value'  => $_meta_value,
+			)
+		);
 
 		// If the insert failed, return false, otherwise return the id of the inserted row.
 		if ( false === $result ) {
@@ -127,12 +130,16 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 		} else {
 			$ret = $wpdb->insert_id;
 		}
-	} else if ( $cur->meta_value !== $meta_value ) {
-		$result = $wpdb->update( $wpdb->gp_meta, array( 'meta_value' => $_meta_value ), array(
-			'object_type' => $object_type,
-			'object_id'   => $object_id,
-			'meta_key'    => $meta_key,
-		) );
+	} elseif ( $cur->meta_value !== $meta_value ) {
+		$result = $wpdb->update(
+			$wpdb->gp_meta,
+			array( 'meta_value' => $_meta_value ),
+			array(
+				'object_type' => $object_type,
+				'object_id'   => $object_id,
+				'meta_key'    => $meta_key,
+			)
+		);
 
 		// If the update failed, return false.
 		if ( false === $result ) {

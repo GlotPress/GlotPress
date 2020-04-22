@@ -10,8 +10,8 @@ abstract class GP_Format {
 	public $alt_extensions   = array();
 	public $filename_pattern = '%s-%s';
 
-	public abstract function print_exported_file( $project, $locale, $translation_set, $entries );
-	public abstract function read_originals_from_file( $file_name );
+	abstract public function print_exported_file( $project, $locale, $translation_set, $entries );
+	abstract public function read_originals_from_file( $file_name );
 
 	/**
 	 * Gets the list of supported file extensions.

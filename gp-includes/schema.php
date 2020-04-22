@@ -9,10 +9,10 @@ function gp_schema_get() {
 	$gp_schema = array();
 
 	$charset_collate = '';
-	if ( ! empty($wpdb->charset) ) {
+	if ( ! empty( $wpdb->charset ) ) {
 		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
 	}
-	if ( ! empty($wpdb->collate) ) {
+	if ( ! empty( $wpdb->collate ) ) {
 		$charset_collate .= " COLLATE $wpdb->collate";
 	}
 

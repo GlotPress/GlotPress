@@ -18,7 +18,7 @@ gp_tmpl_header();
 				if ( 1 < count( $locales ) ) {
 					/* translators: 1: display name of a user, 2: language, 3: language */
 					vprintf( __( '%1$s is a polyglot who knows %2$s but also knows %3$s.', 'glotpress' ), array_merge( array( $user->display_name ), $locale_keys ) );
-				} else if ( ! empty ( $locale_keys ) ) {
+				} elseif ( ! empty( $locale_keys ) ) {
 					/* translators: 1: display name of a user, 2: language */
 					printf( __( '%1$s is a polyglot who contributes to %2$s', 'glotpress' ), $user->display_name, $locale_keys[0] );
 				}
@@ -39,9 +39,11 @@ gp_tmpl_header();
 		<ul>
 		<?php foreach ( $recent_projects as $project ) : ?>
 			<li>
-				<p><?php
+				<p>
+				<?php
 					echo gp_link_get( $project->project_url, $project->set_name ) . ': ';
-					echo gp_link_get( $project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
+					echo gp_link_get(
+						$project->project_url . '?filters[status]=either&filters[user_login]=' . $user->user_login,
 						sprintf(
 							/* translators: %s: Count number. */
 							_n( '%s contribution', '%s contributions', $project->count, 'glotpress' ),
@@ -65,7 +67,7 @@ gp_tmpl_header();
 	<div class="validates-projects">
 		<h3><?php _e( 'Validator to', 'glotpress' ); ?></h3>
 
-		<?php if ( count($permissions) >= 1 ) : ?>
+		<?php if ( count( $permissions ) >= 1 ) : ?>
 			<ul>
 			<?php foreach ( $permissions as $permission ) : ?>
 				<li>

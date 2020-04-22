@@ -96,7 +96,7 @@ class GP_Format_Properties extends GP_Format {
 
 			if ( false === $val ) {
 				break;
-			} else if ( $val > 127 ) {
+			} elseif ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
 			} else {
 				$result .= chr( $val );
@@ -167,16 +167,16 @@ class GP_Format_Properties extends GP_Format {
 			$byte[0] = chr( bindec( '11110' . sprintf( '%03s', substr( $binary, 0, $bin_length - 18 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 3 ), 6 ) ) ) );
 			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 2 ), 6 ) ) ) );
-			$byte[3] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6) ) ) );
-		} else if ( $bin_length > 11 ) {	// > 11 bits, need 3 unicode bytes to encode.
+			$byte[3] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
+		} elseif ( $bin_length > 11 ) {    // > 11 bits, need 3 unicode bytes to encode.
 			$byte[0] = chr( bindec( '1110' . sprintf( '%04s', substr( $binary, 0, $bin_length - 12 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 2 ), 6 ) ) ) );
-			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6) ) ) );
-		} else if ( $bin_length > 7 ) {  // > 7 bites, need 2 unicode bytes to encode.
+			$byte[2] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
+		} elseif ( $bin_length > 7 ) {  // > 7 bites, need 2 unicode bytes to encode.
 			$byte[0] = chr( bindec( '110' . sprintf( '%05s', substr( $binary, 0, $bin_length - 6 ) ) ) );
 			$byte[1] = chr( bindec( '10' . sprintf( '%06s', substr( $binary, -( 6 * 1 ), 6 ) ) ) );
 		} else {                        // < 8 bites, need 1 unicode bytes to encode.
-			$byte[0] = chr( bindec( '0' . sprintf(  '%07s', $binary ) ) );
+			$byte[0] = chr( bindec( '0' . sprintf( '%07s', $binary ) ) );
 		}
 
 		/* This is an alternate way to encode the character but it needs the iconv functions available:
@@ -218,10 +218,10 @@ class GP_Format_Properties extends GP_Format {
 
 			if ( $code < 224 ) {
 				$bytesnumber = 2;        //110xxxxx
-			} else if ( $code < 240 ) {
+			} elseif ( $code < 240 ) {
 				$bytesnumber = 3;        //1110xxxx
 				$codetemp   -= 32;
-			} else if ( $code < 248 ) {
+			} elseif ( $code < 248 ) {
 				$bytesnumber = 4;        //11110xxx
 				$codetemp   -= ( 32 + 16 );
 			}
@@ -400,7 +400,7 @@ class GP_Format_Properties extends GP_Format {
 				} else {
 					$comment = null;
 				}
-			} else if ( false === $inline && $this->split_properties_line( $line, $key, $value ) ) {
+			} elseif ( false === $inline && $this->split_properties_line( $line, $key, $value ) ) {
 				// Check to see if this line continues on to the next
 				if ( gp_endswith( $line, '\\' ) ) {
 					$inline = true;

@@ -17,11 +17,15 @@
 function prepare_original( $text ) {
 	// Glossaries are injected into the translations prior to escaping and prepare_original() being run.
 	$glossary_entries = array();
-	$text             = preg_replace_callback( '!(<span class="glossary-word"[^>]+>)!i', function( $m ) use ( &$glossary_entries ) {
-		$item_number                      = count( $glossary_entries );
-		$glossary_entries[ $item_number ] = $m[0];
-		return "<span GLOSSARY={$item_number}>";
-	}, $text );
+	$text             = preg_replace_callback(
+		'!(<span class="glossary-word"[^>]+>)!i',
+		function( $m ) use ( &$glossary_entries ) {
+			$item_number                      = count( $glossary_entries );
+			$glossary_entries[ $item_number ] = $m[0];
+			return "<span GLOSSARY={$item_number}>";
+		},
+		$text
+	);
 
 	// Wrap full HTML tags with a notranslate class
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
@@ -31,9 +35,13 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
-	$text = preg_replace_callback( '!(<span GLOSSARY=(\d+)>)!', function( $m ) use ( $glossary_entries ) {
-		return $glossary_entries[ $m[2] ];
-	}, $text );
+	$text = preg_replace_callback(
+		'!(<span GLOSSARY=(\d+)>)!',
+		function( $m ) use ( $glossary_entries ) {
+			return $glossary_entries[ $m[2] ];
+		},
+		$text
+	);
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
@@ -68,7 +76,7 @@ function gp_prepare_translation_textarea( $text ) {
  * @return array The sorted entries.
  */
 function gp_sort_glossary_entries_terms( $glossary_entries ) {
-	if ( empty ( $glossary_entries ) ) {
+	if ( empty( $glossary_entries ) ) {
 		return;
 	}
 
@@ -101,9 +109,12 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
-	uasort( $glossary_entries_terms, function( $a, $b ) {
-		return gp_strlen($a) < gp_strlen($b);
-	} );
+	uasort(
+		$glossary_entries_terms,
+		function( $a, $b ) {
+			return gp_strlen( $a ) < gp_strlen( $b );
+		}
+	);
 
 	return $glossary_entries_terms;
 }
@@ -304,7 +315,7 @@ function display_status( $status ) {
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
 	}
-	$status = preg_replace( '/^[+-]/', '', $status);
+	$status = preg_replace( '/^[+-]/', '', $status );
 	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
 

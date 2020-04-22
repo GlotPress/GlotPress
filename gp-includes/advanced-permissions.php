@@ -43,8 +43,12 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 	} else {
 		$set = GP::$translation_set->get( $args['object_id'] );
 	}
-	return GP::$permission->user_can( $args['user'], 'approve', GP::$validator_permission->object_type,
-		GP::$validator_permission->object_id( $set->project_id, $set->locale, $set->slug ) );
+	return GP::$permission->user_can(
+		$args['user'],
+		'approve',
+		GP::$validator_permission->object_type,
+		GP::$validator_permission->object_id( $set->project_id, $set->locale, $set->slug )
+	);
 }
 
 function gp_allow_everyone_to_translate( $verdict, $args ) {

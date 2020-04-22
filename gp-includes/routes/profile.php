@@ -64,15 +64,16 @@ class GP_Route_Profile extends GP_Route_Main {
 	private function get_recent_translation_sets( $user, $amount = 5 ) {
 		global $wpdb;
 
-		$translations = GP::$translation_set->many_no_map("
-			SELECT translation_set_id, date_added
+		$translations = GP::$translation_set->many_no_map(
+			"SELECT translation_set_id, date_added
 			FROM $wpdb->gp_translations as t
 			WHERE
 				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
 				user_id = %s AND
 				status != 'rejected'
-			ORDER BY date_added DESC
-		", $user->ID );
+			ORDER BY date_added DESC",
+			$user->ID
+		);
 
 		$set_ids          = array();
 		$translation_sets = array();
@@ -122,14 +123,15 @@ class GP_Route_Profile extends GP_Route_Main {
 	private function locales_known( $user ) {
 		global $wpdb;
 
-		$translations = GP::$translation_set->many_no_map("
-			SELECT ts.locale, count(*) AS count
+		$translations = GP::$translation_set->many_no_map(
+			"SELECT ts.locale, count(*) AS count
 			FROM $wpdb->gp_translations as t
 			INNER JOIN $wpdb->gp_translation_sets AS ts ON ts.id = t.translation_set_id
 			WHERE user_id = %s
 			GROUP BY ts.locale
-			ORDER BY count DESC
-		", $user->ID );
+			ORDER BY count DESC",
+			$user->ID
+		);
 
 		$locales = array();
 
@@ -153,16 +155,18 @@ class GP_Route_Profile extends GP_Route_Main {
 	 * @return array Array of permissions
 	 */
 	private function get_permissions( $user ) {
-		$permissions = GP::$permission->find_many_no_map( array(
-			'user_id' => $user->ID,
-			'action'  => 'approve',
-		) );
+		$permissions = GP::$permission->find_many_no_map(
+			array(
+				'user_id' => $user->ID,
+				'action'  => 'approve',
+			)
+		);
 
 		foreach ( $permissions as $key => &$permission ) {
 			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
 
 			// Skip admin permissions
-			if ( ! isset(  $object_id[1] ) ) {
+			if ( ! isset( $object_id[1] ) ) {
 				unset( $permissions[ $key ] );
 				continue;
 			}

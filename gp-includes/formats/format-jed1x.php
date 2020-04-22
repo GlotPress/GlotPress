@@ -71,9 +71,12 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 		foreach ( $entries as $entry ) {
 			$key = $entry->context ? $entry->context . chr( 4 ) . $entry->singular : $entry->singular;
 
-			$result['locale_data']['messages'][ $key ] = array_filter( $entry->translations, function ( $translation ) {
-				return null !== $translation;
-			} );
+			$result['locale_data']['messages'][ $key ] = array_filter(
+				$entry->translations,
+				function ( $translation ) {
+					return null !== $translation;
+				}
+			);
 		}
 
 		/** This filter is documented in gp-includes/formats/format-json.php */

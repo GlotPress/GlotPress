@@ -61,7 +61,7 @@ class GP_Router {
 		$projects = 'projects';
 		$project  = $projects.'/'.$path;
 		$id       = '(\d+)';
-		$locale   = '(' . implode('|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
+		$locale   = '(' . implode( '|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
 		$set      = "$project/$locale/$dir";
 
 		// overall structure
@@ -189,12 +189,12 @@ class GP_Router {
 						if ( $http_method != $request_method ) {
 							continue;
 						}
-						$re = substr( $re, strlen( $http_method . ':' ));
+						$re = substr( $re, strlen( $http_method . ':' ) );
 						break;
 					}
 				}
 
-				if ( preg_match("@^$re$@", $request_uri, $matches ) ) {
+				if ( preg_match( "@^$re$@", $request_uri, $matches ) ) {
 					/*
 					 * WordPress will be returning a 404 status header by default for GlotPress pages
 					 * as nothing is found by WP_Query.

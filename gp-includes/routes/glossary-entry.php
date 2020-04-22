@@ -71,7 +71,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
 		}
-		$new_glossary_entry                 = new GP_Glossary_Entry( gp_post('new_glossary_entry') );
+		$new_glossary_entry                 = new GP_Glossary_Entry( gp_post( 'new_glossary_entry' ) );
 		$new_glossary_entry->last_edited_by = get_current_user_id();
 
 		$glossary = GP::$glossary->get( $new_glossary_entry->glossary_id );
@@ -113,7 +113,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	}
 
 	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
-		$ge_post        = gp_post('glossary_entry');
+		$ge_post        = gp_post( 'glossary_entry' );
 		$ge             = array_shift( $ge_post );
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
@@ -171,7 +171,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	}
 
 	public function glossary_entry_delete_post() {
-		$ge_post        = gp_post('glossary_entry');
+		$ge_post        = gp_post( 'glossary_entry' );
 		$ge             = array_shift( $ge_post );
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
@@ -311,7 +311,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	}
 
 	private function print_export_file( $locale_slug, $entries ) {
-		$outstream = fopen("php://output", 'w');
+		$outstream = fopen( 'php://output', 'w' );
 
 		fputcsv( $outstream, array( 'en', $locale_slug, 'pos', 'description' ) );
 
@@ -327,19 +327,18 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$f                = fopen( $file, 'r' );
 		$glossary_entries = 0;
 
-		$data = fgetcsv( $f, 0, ',');
+		$data = fgetcsv( $f, 0, ',' );
 
 		if ( ! is_array( $data ) ) {
 			return;
-		}
-		else if ( $data[1] !== $locale_slug ) {
+		} elseif ( $data[1] !== $locale_slug ) {
 			$this->redirect_with_error( __( 'Unexpected values in the CSV file header row.', 'glotpress' ) );
 			return;
 		}
 
-		while ( ( $data = fgetcsv( $f, 0, ',') ) !== false ) {
+		while ( ( $data = fgetcsv( $f, 0, ',' ) ) !== false ) {
 			// We're only parsing one locale per file right now
-			if ( count ($data) > 4 ) {
+			if ( count( $data ) > 4 ) {
 				$data = array_splice( $data, 2, -2 );
 			}
 
@@ -368,7 +367,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 		}
 
-		fclose($f);
+		fclose( $f );
 		return $glossary_entries;
 	}
 

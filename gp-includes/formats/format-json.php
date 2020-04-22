@@ -53,9 +53,12 @@ class GP_Format_JSON extends GP_Format {
 		foreach ( $entries as $entry ) {
 			$key = $entry->context ? $entry->context . chr( 4 ) . $entry->singular : $entry->singular;
 
-			$result[ $key ] = array_filter( $entry->translations, function ( $translation ) {
-				return null !== $translation;
-			} );
+			$result[ $key ] = array_filter(
+				$entry->translations,
+				function ( $translation ) {
+					return null !== $translation;
+				}
+			);
 		}
 
 		/**
