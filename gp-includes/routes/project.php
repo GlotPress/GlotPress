@@ -396,6 +396,7 @@ class GP_Route_Project extends GP_Route_Main {
 				return;
 			}
 			$permission = GP::$validator_permission->create( $new_permission );
+
 			$permission ?
 				$this->notices[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );
 		}
