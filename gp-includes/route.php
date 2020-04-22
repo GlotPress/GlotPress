@@ -311,8 +311,8 @@ class GP_Route {
 	/**
 	 * Loads a template.
 	 *
-	 * @param string      $template Template name to load.
-	 * @param array       $args     Associative array with arguements, which will be exported in the template PHP file.
+	 * @param string      $template  Template name to load.
+	 * @param array       $args      Associative array with arguements, which will be exported in the template PHP file.
 	 * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
 	 *                               the template name will be suffixed with .api. The actual file loaded will be template.api.php.
 	 */
