@@ -59,6 +59,12 @@
 		</properties>
 	</rule>
 
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
+		<properties>
+			<property name="maxColumn" value="80"/>
+		</properties>
+	</rule>
+
 	<!-- Set minimum supported WordPress version. -->
 	<config name="minimum_supported_wp_version" value="4.5"/>
 
