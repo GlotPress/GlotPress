@@ -87,11 +87,6 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 		$this->assertFalse( GP::$formats[ $this->format ]->read_translations_from_file( GP_DIR_TESTDATA . '/invalid.json' ) );
 	}
 
-	/**
-	 * @group test
-	 *
-	 * @return void
-	 */
 	public function test_read_translations_from_file() {
 		$expected = $this->data_example_translations();
 
