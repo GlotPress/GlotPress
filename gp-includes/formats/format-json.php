@@ -105,15 +105,7 @@ class GP_Format_JSON extends GP_Format {
 				$args['singular'] = $key[1];
 			}
 
-			$value = (array) $value;
-
-			if ( isset( $value[0] ) ) {
-				$args['translations'] = $value[0];
-			}
-
-			if ( isset( $value[1] ) ) {
-				$args['plural'] = $value[1];
-			}
+			$args['translations'] = (array) $value;
 
 			$entries->add_entry( new Translation_Entry( $args ) );
 		}
