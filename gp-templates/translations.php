@@ -309,12 +309,10 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	</form>
 </div>
 
-<table id="translations" class="translations clear
 <?php
-if ( 'rtl' == $locale->text_direction ) {
-	echo ' translation-sets-rtl'; }
-	?>
-	">
+$class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
+?>
+<table id="translations" class="translations clear<?php echo esc_attr( $class_rtl ); ?>">
 	<thead>
 	<tr>
 		<?php
