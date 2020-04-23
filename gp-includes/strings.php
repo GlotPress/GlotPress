@@ -162,7 +162,7 @@ function gp_string_similarity( $str1, $str2 ) {
 
 	$len = min( $length1, $length2 );
 	if ( $len > 5000 ) {
-		//Arbitrary limit on character length for speed purpose.
+		// Arbitrary limit on character length for speed purpose.
 		$distance = $len;
 	} else {
 		$distance = gp_levenshtein( $str1, $str2, $length1, $length2 );

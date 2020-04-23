@@ -50,7 +50,7 @@ class GP_Validator_Permission extends GP_Permission {
 			list( $this->project_id, $this->locale_slug, $this->set_slug ) = $this->project_id_locale_slug_set_slug( $this->object_id );
 		}
 		$this->object_type        = 'project|locale|set-slug';
-		$this->default_conditions = "object_type = '".$this->object_type."'";
+		$this->default_conditions = "object_type = '" . $this->object_type . "'";
 	}
 
 	public function prepare_fields_for_save( $args ) {

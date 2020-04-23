@@ -29,16 +29,19 @@ if ( ! is_array( $default_sort ) ) {
 			<td><input type="number" id="per_page" name="per_page" value="<?php echo $per_page; // WPCS: xss ok. ?>"/></td>
 		</tr>
 		<tr>
-			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ) ?></label></th>
-			<td><?php
+			<th><label for="default_sort[by]"><?php _e( 'Default Sort By:', 'glotpress' ); ?></label></th>
+			<td>
+				<?php
 				$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
 
 				echo gp_radio_buttons( 'default_sort[by]', $sort_bys, gp_array_get( $default_sort, 'by', 'priority' ) );
-			?></td>
+				?>
+			</td>
 		</tr>
 		<tr>
-			<th><label for="default_sort[how]"><?php _e( 'Default Sort Order:', 'glotpress' ) ?></label></th>
-			<td><?php
+			<th><label for="default_sort[how]"><?php _e( 'Default Sort Order:', 'glotpress' ); ?></label></th>
+			<td>
+				<?php
 				echo gp_radio_buttons(
 					'default_sort[how]',
 					array(
@@ -47,7 +50,7 @@ if ( ! is_array( $default_sort ) ) {
 					),
 					gp_array_get( $default_sort, 'how', 'desc' )
 				);
-			?></td>
+				?>
+			</td>
 		</tr>
 	</table>
-

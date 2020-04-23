@@ -35,7 +35,8 @@ gp_tmpl_header();
 	 * @param string     $description Project description.
 	 * @param GP_Project $project     The current project.
 	 */
-	echo apply_filters( 'gp_project_description', $project->description, $project );?>
+	echo apply_filters( 'gp_project_description', $project->description, $project );
+	?>
 </p>
 
 <?php if ( $can_write ) : ?>
@@ -48,12 +49,14 @@ gp_tmpl_header();
 </div>
 <?php endif; ?>
 
-<div id="project" <?php if ( $sub_projects ) {
-	echo ' class="with-sub-projects"'; } ?>>
+<?php
+$class = $sub_projects ? ' class="with-sub-projects"' : '';
+?>
+<div id="project"<?php echo $class; ?>>
 
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
-	<h3><?php _e( 'Translations', 'glotpress' );?></h3>
+	<h3><?php _e( 'Translations', 'glotpress' ); ?></h3>
 	<table class="translation-sets tablesorter tablesorter-glotpress">
 		<thead>
 			<tr class="tablesorter-headerRow">
@@ -79,7 +82,8 @@ gp_tmpl_header();
 			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
-					<?php if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
+					<?php
+					if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
 							$percent = floor( $set->current_count / $set->all_count * 100 );
 					?>
 						<span class="bubble morethan90"><?php echo $percent; ?>%</span>
@@ -178,8 +182,11 @@ gp_tmpl_header();
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
-		<?php if ( $sub_project->active ) {
-			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . "</span>"; } ?>
+		<?php
+		if ( $sub_project->active ) {
+			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>';
+		}
+		?>
 	</dt>
 	<dd>
 		<?php
@@ -191,7 +198,8 @@ gp_tmpl_header();
 		 * @param string     $description Sub-project description.
 		 * @param GP_Project $project     The sub-project.
 		 */
-		echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) ); ?>
+		echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) );
+		?>
 	</dd>
 <?php endforeach; ?>
 </dl>
@@ -230,4 +238,5 @@ gp_tmpl_header();
 		});
 	});
 </script>
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

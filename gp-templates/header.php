@@ -8,7 +8,8 @@
 	// Enqueue the base style so we don't have to load it manually on each page.
 	gp_enqueue_styles( 'gp-base' );
 
-	gp_head(); ?>
+	gp_head();
+	?>
 </head>
 
 <body <?php body_class( 'no-js' ); ?>>
@@ -26,7 +27,8 @@
 				 *
 				 * @param string $title The text linking to home page.
 				 */
-				echo apply_filters( 'gp_home_title', 'GlotPress' ); ?>
+				echo apply_filters( 'gp_home_title', 'GlotPress' );
+				?>
 			</a>
 		</h1>
 

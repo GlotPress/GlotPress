@@ -14,7 +14,7 @@
  */
 class GP_Route_Translation_Set extends GP_Route_Main {
 	public function new_get() {
-		$set             = new GP_Translation_Set;
+		$set             = new GP_Translation_Set();
 		$set->project_id = gp_get( 'project_id' );
 		$project         = $set->project_id ? GP::$project->get( $set->project_id ) : null;
 		if ( $this->cannot_edit_set_and_redirect( $set ) ) {

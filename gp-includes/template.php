@@ -109,8 +109,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 			$items[ gp_url_profile( $user->user_nicename ) ]       = __( 'Profile', 'glotpress' );
 			$items[ gp_url( '/settings' ) ]                        = __( 'Settings', 'glotpress' );
 			$items[ esc_url( wp_logout_url( gp_url_current() ) ) ] = __( 'Log out', 'glotpress' );
-		}
-		else {
+		} else {
 			$items[ esc_url( wp_login_url( gp_url_current() ) ) ] = __( 'Log in', 'glotpress' );
 		}
 	}
@@ -229,7 +228,7 @@ function gp_project_names_from_root( $leaf_project ) {
 		$names[] = esc_html( $project->name );
 	}
 
-	$project_path = implode( " | ", $names );
+	$project_path = implode( ' | ', $names );
 
 	return $project_path;
 }
@@ -308,7 +307,7 @@ function gp_pagination( $page, $per_page, $objects ) {
 		$next = '<span class="next disabled">&rarr;</span>';
 	}
 
-	$current = '<span class="current">'.$page.'</span>';
+	$current = '<span class="current">' . $page . '</span>';
 	if ( $page > 1 ) {
 		$prev_pages = array();
 		foreach ( range( max( 1, $page - $surrounding ), $page - 1 ) as $prev_page ) {
@@ -367,7 +366,7 @@ function gp_html_attributes( $attrs ) {
 	$attrs   = wp_parse_args( $attrs );
 	$strings = array();
 	foreach ( $attrs as $key => $value ) {
-		$strings[] = $key.'="'.esc_attr( $value ).'"';
+		$strings[] = $key . '="' . esc_attr( $value ) . '"';
 	}
 	return implode( ' ', $strings );
 }
@@ -627,7 +626,6 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	 * @param array $actions Links as HTML strings.
 	 */
 	$actions = apply_filters( 'gp_entry_actions', $actions );
-
 
 	echo implode( $seperator, $actions );
 	/*

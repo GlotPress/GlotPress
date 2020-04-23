@@ -48,14 +48,14 @@ if ( empty( $projects_data ) ) {
 
 <?php foreach ( $projects_data as $project_id => $sub_projects ) : ?>
 	<div class="locale-project">
-		<h3><?php echo ( $projects[ $project_id ]->name );?></h3>
+		<h3><?php echo ( $projects[ $project_id ]->name ); ?></h3>
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
 				<th class="header"
 					<?php
 					if ( count( $sub_projects ) > 1 ) {
-						echo 'rowspan="'. count( $sub_projects ) . '"';
+						echo 'rowspan="' . count( $sub_projects ) . '"';
 					}
 					?>
 					>
@@ -111,11 +111,12 @@ if ( empty( $projects_data ) ) {
 					?>
 					<td class="set-name">
 						<strong><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ) ), $set_data->name ); ?></strong>
-						<?php if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
+						<?php
+						if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
 							$percent = floor( $set_data->current_count / $set_data->all_count * 100 );
 							?>
 							<span class="bubble morethan90"><?php echo $percent; ?>%</span>
-						<?php endif;?>
+						<?php endif; ?>
 					</td>
 					<td class="stats translated">
 						<?php
@@ -176,16 +177,17 @@ if ( empty( $projects_data ) ) {
 						?>
 					</td>
 					</tr>
-				<?php endforeach; //sub project slugs ?>
+				<?php endforeach; // Sub project slugs. ?>
 				</tr>
-			<?php endforeach;  //sub projects ?>
+			<?php endforeach;  // Sub projects. ?>
 			</tbody>
 		</table>
 	</div>
-<?php endforeach; //top projects ?>
+<?php endforeach; // Top projects. ?>
 
 	<p class="actionlist secondary">
 		<?php gp_link( gp_url( '/projects' ), __( 'All projects', 'glotpress' ) ); ?>
 	</p>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

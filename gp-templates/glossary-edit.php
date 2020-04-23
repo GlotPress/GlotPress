@@ -28,4 +28,5 @@ gp_tmpl_header();
 	<?php gp_route_nonce_field( 'edit-glossary_' . $glossary->id ); ?>
 </form>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

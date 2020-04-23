@@ -177,7 +177,7 @@ class GP_Validation_Rules {
 		if ( 'positive' == $rule['kind'] ) {
 			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
 			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
-		} else { //if ( 'negative' == $rule['kind'] )
+		} else { // if ( 'negative' == $rule['kind'] )
 			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
 			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
 		}

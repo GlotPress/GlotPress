@@ -54,8 +54,7 @@ if ( $glossary->description ) {
 		foreach ( $glossary_entries as $entry ) {
 			gp_tmpl_load( 'glossary-entry-row', get_defined_vars() );
 		}
-	}
-	else {
+	} else {
 		?>
 		<tr>
 			<td colspan="5">
@@ -68,7 +67,7 @@ if ( $glossary->description ) {
 		<?php if ( $can_edit ) : ?>
 		<tr>
 			<td colspan="5">
-				<h4><?php _e( 'Create an entry', 'glotpress' );?></h4>
+				<h4><?php _e( 'Create an entry', 'glotpress' ); ?></h4>
 
 				<form action="<?php echo esc_url( gp_url_join( $url, '-new' ) ); ?>" method="post">
 					<dl>
@@ -79,7 +78,7 @@ if ( $glossary->description ) {
 							<select name="new_glossary_entry[part_of_speech]" id="new_glossary_entry_post">
 							<?php
 								foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
-									echo "\t<option value='".esc_attr( $pos )."'>" . esc_html( $name ) . "</option>\n";
+									echo "\t<option value='" . esc_attr( $pos ) . "'>" . esc_html( $name ) . "</option>\n";
 								}
 							?>
 							</select>
@@ -109,4 +108,5 @@ if ( $glossary->description ) {
 	<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-export' ) ), __( 'Export as CSV', 'glotpress' ) ); ?>
 </p>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

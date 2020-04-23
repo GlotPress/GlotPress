@@ -59,7 +59,7 @@ class GP_Router {
 		$dir      = '([^_/][^/]*)';
 		$path     = '(.+?)';
 		$projects = 'projects';
-		$project  = $projects.'/'.$path;
+		$project  = $projects . '/' . $path;
 		$id       = '(\d+)';
 		$locale   = '(' . implode( '|', wp_list_pluck( GP_Locales::locales(), 'slug' ) ) . ')';
 		$set      = "$project/$locale/$dir";
@@ -160,7 +160,7 @@ class GP_Router {
 		$real_request_uri = $this->request_uri();
 		$api_request_uri  = $real_request_uri;
 		$request_method   = strtolower( $this->request_method() );
-		$api              = gp_startswith( $real_request_uri, '/'.$this->api_prefix.'/' );
+		$api              = gp_startswith( $real_request_uri, '/' . $this->api_prefix . '/' );
 
 		/**
 		 * Filter the list of HTTP methods allowed
@@ -185,7 +185,7 @@ class GP_Router {
 		foreach ( array( $api_request_uri, $real_request_uri ) as $request_uri ) {
 			foreach ( $this->urls as $re => $func ) {
 				foreach ( $http_methods as $http_method ) {
-					if ( gp_startswith( $re, $http_method.':' ) ) {
+					if ( gp_startswith( $re, $http_method . ':' ) ) {
 						if ( $http_method != $request_method ) {
 							continue;
 						}
@@ -206,7 +206,7 @@ class GP_Router {
 
 					if ( is_array( $func ) ) {
 						list( $class, $method )    = $func;
-						$route                     = new $class;
+						$route                     = new $class();
 						$route->api                = $api;
 						$route->last_method_called = $method;
 						$route->class_name         = $class;

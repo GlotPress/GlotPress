@@ -60,10 +60,10 @@ class GP_Format_Properties extends GP_Format {
 
 			$original = str_replace( "\n", "\\n", $original );
 
-			$comment = preg_replace( "/(^\s+)|(\s+$)/us", "", $entry->extracted_comments );
+			$comment = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
 			if ( '' == $comment ) {
-				$comment = "No comment provided.";
+				$comment = 'No comment provided.';
 			}
 
 			$comment_lines = explode( "\n", $comment );
@@ -126,7 +126,7 @@ class GP_Format_Properties extends GP_Format {
 			if ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
 			} else {
-				$result .= $string[ $i ] ;
+				$result .= $string[ $i ];
 			}
 		}
 
@@ -143,7 +143,7 @@ class GP_Format_Properties extends GP_Format {
 	 * @return string
 	 */
 	private function uni_decode( $string ) {
-		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, "uni_decode_callback" ), $string );
+		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, 'uni_decode_callback' ), $string );
 	}
 
 	/**
@@ -179,7 +179,8 @@ class GP_Format_Properties extends GP_Format {
 			$byte[0] = chr( bindec( '0' . sprintf( '%07s', $binary ) ) );
 		}
 
-		/* This is an alternate way to encode the character but it needs the iconv functions available:
+		/*
+		 * This is an alternate way to encode the character but it needs the iconv functions available:
 		 *
 		 *		iconv( 'UCS-4LE', 'UTF-8', pack( 'V', hexdec( $matches[ 1 ] ) ) );
 		 *
@@ -213,22 +214,22 @@ class GP_Format_Properties extends GP_Format {
 		$code        = ord( $character );
 		$bytesnumber = 1;
 
-		if ( $code >= 128 ) {             //otherwise 0xxxxxxx
+		if ( $code >= 128 ) {  // Otherwise 0xxxxxxx
 			$codetemp = $code - 192;
 
 			if ( $code < 224 ) {
-				$bytesnumber = 2;        //110xxxxx
+				$bytesnumber = 2;  // 110xxxxx
 			} elseif ( $code < 240 ) {
-				$bytesnumber = 3;        //1110xxxx
+				$bytesnumber = 3;  // 1110xxxx
 				$codetemp   -= 32;
 			} elseif ( $code < 248 ) {
-				$bytesnumber = 4;        //11110xxx
+				$bytesnumber = 4;  // 11110xxx
 				$codetemp   -= ( 32 + 16 );
 			}
 
 			for ( $i = 2; $i <= $bytesnumber; $i++ ) {
 				$offset ++;
-				$code2    = ord( substr( $string, $offset, 1 ) ) - 128;        //10xxxxxx
+				$code2    = ord( substr( $string, $offset, 1 ) ) - 128;  // 10xxxxxx
 				$codetemp = ( $codetemp * 64 ) + $code2;
 			}
 
@@ -324,7 +325,7 @@ class GP_Format_Properties extends GP_Format {
 		}
 
 		$originals        = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
+		$new_translations = new Translations();
 
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
@@ -368,7 +369,7 @@ class GP_Format_Properties extends GP_Format {
 	 * @return Translations|bool
 	 */
 	public function read_originals_from_file( $file_name ) {
-		$entries = new Translations;
+		$entries = new Translations();
 		$file    = file_get_contents( $file_name );
 
 		if ( false === $file ) {
@@ -410,7 +411,8 @@ class GP_Format_Properties extends GP_Format {
 				$entry          = new Translation_Entry();
 				$entry->context = rtrim( $this->unescape( $key ) );
 
-				/* So the following line looks a little weird, why encode just to decode?
+				/*
+				 * So the following line looks a little weird, why encode just to decode?
 				 *
 				 * The reason is simple, properties files are in ISO-8859-1 aka Latin-1 format
 				 * and can have extended characters above 127 but below 256 represented by a
@@ -527,4 +529,4 @@ class GP_Format_Properties extends GP_Format {
 
 }
 
-GP::$formats['properties'] = new GP_Format_Properties;
+GP::$formats['properties'] = new GP_Format_Properties();

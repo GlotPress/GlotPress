@@ -20,4 +20,5 @@ gp_tmpl_header();
 		<?php gp_link( gp_url( '/languages' ), __( 'Projects by language', 'glotpress' ) ); ?>
 	</p>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();
