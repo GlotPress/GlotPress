@@ -48,13 +48,7 @@ $i = 0;
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
 	<?php endif; ?>
 </h2>
-<?php
-if ( $can_approve ) {
-	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
-}
 
-echo gp_pagination( $page, $per_page, $total_translations_count );
-?>
 <div class="filter-toolbar">
 	<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 		<div>
@@ -190,13 +184,15 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		echo implode( ' <span class="separator">&bull;</span> ', $filter_links ); // WPCS: XSS ok.
 		?>
 		</div>
-		<dl class="filters-expanded filters hidden clearfix">
-			<dd>
-				<label for="filters[term]" class="filter-title"><?php _e( 'Term:', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
-				<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); // WPCS: XSS ok. ?>" name="filters[term]" id="filters[term]" /><br />
-				<label for="filters[term_scope]" class="filter-title"><?php _e( 'Term Scope:', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
-				<?php
-					echo gp_radio_buttons( // WPCS: XSS ok.
+		<div class="filters-expanded filters hidden">
+			<div class="filters-expanded-section">
+				<label for="filters[term]" class="filter-title"><?php _e( 'Term:', 'glotpress' ); ?></label><br />
+				<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /><br />
+
+				<fieldset>
+					<legend class="filter-title"><?php _e( 'Term Scope:', 'glotpress' ); ?></legend>
+					<?php
+					echo gp_radio_buttons(
 						'filters[term_scope]',
 						array(
 							'scope_originals'    => __( 'Originals only', 'glotpress' ),
@@ -208,11 +204,14 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 						),
 						gp_array_get( $filters, 'term_scope', 'scope_any' )
 					);
-				?>
-			</dd>
-			<dd>
-				<label class="filter-title"><?php _e( 'Status:', 'glotpress' ); // WPCS: XSS ok. ?></label><br />
-				<?php
+					?>
+				</fieldset>
+			</div>
+
+			<div class="filters-expanded-section">
+				<fieldset>
+					<legend class="filter-title"><?php _e( 'Status:', 'glotpress' ); ?></legend>
+					<?php
 					echo gp_radio_buttons(
 						'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
 						array(
@@ -226,20 +225,27 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 						),
 						gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
 					);
-				?>
-			</dd>
-			<dd>
-				<label class="filter-title"><?php _e( 'Options:', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_comment' ) ); ?>><label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_context' ) ); ?>><label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[warnings]" value="yes" id="filters[warnings][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'warnings' ) ); ?>><label for='filters[warnings][yes]'><?php _e( 'With warnings', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[with_plural]" value="yes" id="filters[with_plural][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_plural' ) ); ?>><label for='filters[with_plural][yes]'><?php _e( 'With plural', 'glotpress' ); ?></label><br />
-				<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>><label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label><br />
+					?>
+				</fieldset>
+			</div>
+
+			<div class="filters-expanded-section">
+				<fieldset>
+					<legend class="filter-title"><?php _e( 'Options:', 'glotpress' ); ?></legend>
+					<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_comment' ) ); ?>>&nbsp;<label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
+					<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_context' ) ); ?>>&nbsp;<label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
+					<input type="checkbox" name="filters[warnings]" value="yes" id="filters[warnings][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'warnings' ) ); ?>>&nbsp;<label for='filters[warnings][yes]'><?php _e( 'With warnings', 'glotpress' ); ?></label><br />
+					<input type="checkbox" name="filters[with_plural]" value="yes" id="filters[with_plural][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_plural' ) ); ?>>&nbsp;<label for='filters[with_plural][yes]'><?php _e( 'With plural', 'glotpress' ); ?></label><br />
+					<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>>&nbsp;<label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
+				</fieldset>
+			</div>
+
+			<div class="filters-expanded-section">
 				<label for="filters[user_login]" class="filter-title"><?php _e( 'User:', 'glotpress' ); ?></label><br />
 				<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'user_login' ) ); ?>" name="filters[user_login]" id="filters[user_login]" /><br />
-			</dd>
-			<?php
+			</div>
 
+			<?php
 			/**
 			 * Fires after the translation set filters options.
 			 *
@@ -250,40 +256,46 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			do_action( 'gp_translation_set_filters_form' );
 			?>
 
-			<dd><input type="submit" value="<?php esc_attr_e( 'Filter', 'glotpress' ); ?>" name="filter" /></dd>
-		</dl>
-		<dl class="filters-expanded sort hidden clearfix">
-			<dt><?php _x( 'By:', 'sort by', 'glotpress' ); ?></dt>
-			<dd>
-			<?php
-			$default_sort = get_user_option( 'gp_default_sort' );
-			if ( ! is_array( $default_sort ) ) {
-				$default_sort = array(
-					'by'  => 'priority',
-					'how' => 'desc',
-				);
-			}
+			<div class="filters-expanded-actions">
+				<input type="submit" class="button" value="<?php esc_attr_e( 'Apply Filters', 'glotpress' ); ?>" name="filter" />
+			</div>
+		</div>
+		<div class="filters-expanded sort hidden">
+			<div class="filters-expanded-section">
+				<fieldset>
+					<legend class="filter-title"><?php _ex( 'By:', 'sort by', 'glotpress' ); ?></legend>
+					<?php
+					$default_sort = get_user_option( 'gp_default_sort' );
+					if ( ! is_array( $default_sort ) ) {
+						$default_sort = array(
+							'by'  => 'priority',
+							'how' => 'desc',
+						);
+					}
 
-			$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
+					$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'title' );
+					echo gp_radio_buttons( 'sort[by]', $sort_bys, gp_array_get( $sort, 'by', $default_sort['by'] ) );
+					?>
+				</fieldset>
+			</div>
 
-			echo gp_radio_buttons( 'sort[by]', $sort_bys, gp_array_get( $sort, 'by', $default_sort['by'] ) );
-			?>
-			</dd>
-			<dt><?php _e( 'Order:', 'glotpress' ); ?></dt>
-			<dd>
-			<?php
-			echo gp_radio_buttons(
-				'sort[how]',
-				array(
-					'asc'  => __( 'Ascending', 'glotpress' ),
-					'desc' => __( 'Descending', 'glotpress' ),
-				),
-				gp_array_get( $sort, 'how', $default_sort['how'] )
-			);
-			?>
-			</dd>
-			<?php
+			<div class="filters-expanded-section">
+				<fieldset>
+					<legend class="filter-title"><?php _e( 'Order:', 'glotpress' ); ?></legend>
+					<?php
+					echo gp_radio_buttons(
+						'sort[how]',
+						array(
+							'asc'  => __( 'Ascending', 'glotpress' ),
+							'desc' => __( 'Descending', 'glotpress' ),
+						),
+						gp_array_get( $sort, 'how', $default_sort['how'] )
+					);
+					?>
+				</fieldset>
+			</div>
 
+			<?php
 			/**
 			 * Fires after the translation set sort options.
 			 *
@@ -304,12 +316,20 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 			do_action( 'gp_translation_set_sort_form' );
 			?>
 
-			<dd><input type="submit" value="<?php esc_attr_e( 'Sort', 'glotpress' ); ?>" name="sorts" /></dd>
-		</dl>
+			<div class="filters-expanded-actions">
+				<input type="submit" class="button" value="<?php esc_attr_e( 'Apply Sorting', 'glotpress' ); ?>" name="sorts" />
+			</div>
+		</div>
 	</form>
 </div>
 
 <?php
+if ( $can_approve ) {
+	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
+}
+
+echo gp_pagination( $page, $per_page, $total_translations_count );
+
 $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
 ?>
 <table id="translations" class="translations clear<?php echo esc_attr( $class_rtl ); ?>">
