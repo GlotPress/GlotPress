@@ -75,8 +75,6 @@ function gp_query_vars( $query_vars ) {
 function gp_run_route() {
 	gp_populate_notices();
 
-	global $wp;
-
 	if ( is_glotpress() ) {
 		GP::$router->route();
 	}
