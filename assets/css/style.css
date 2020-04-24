@@ -620,6 +620,10 @@ ul a.delete {
 	font-weight: bold;
 }
 
+form.filters-toolbar > div {
+	line-height: 2em;
+}
+
 form.filters-toolbar ul {
 	list-style-type: none;
 }
