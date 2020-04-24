@@ -609,7 +609,7 @@ ul a.delete {
  * Filter menu
  */
 .filter-toolbar {
-	float: left;
+	margin-bottom: .8em;
 }
 
 /*
@@ -618,10 +618,6 @@ ul a.delete {
 .filter-current,
 .filter-title {
 	font-weight: bold;
-}
-
-form.filters-toolbar > div {
-	line-height: 2em;
 }
 
 form.filters-toolbar ul {
@@ -649,42 +645,29 @@ form.filters-toolbar strong.separator {
 	vertical-align: bottom;
 }
 
-dl.filters-expanded {
-	float: left;
-	font-size: 80%;
+.filters-expanded {
+	font-size: 90%;
 	padding: 0.8em;
 	margin: 0 0 0.5em 0.2em;
 	background-color: #eee;
-	border-radius: 0.3em;
 	-webkit-border-radius: 0.3em;
 	-moz-border-radius: 0.3em;
+	border-radius: 0.3em;
 }
 
-dl.filters-expanded dt, dl.filters-expanded dd {
+.filters-expanded-section {
 	float: left;
-	margin: 0;
+	margin: 0 2em 1em 0;
+}
+
+.filters-expanded-section fieldset {
 	padding: 0;
+	margin: 0;
+	border: 0;
 }
 
-dl.filters-expanded dt {
-	margin-right: 0.5em;
-	font-weight: bold;
-}
-
-dl.filters-expanded dd {
-	margin-right: 2em;
-}
-dl.filters-expanded dd.separator {
-	border-left: 1px dotted #777;
-	height: 4em;
-	width: 1em;
-}
-dl.filters-expanded.bulk-actions a {
-	display: block;
-}
-dl.filters-expanded dt p:first-child, dl.filters-expanded dd p:first-child {
-	margin-top: 0;
-	padding-top: 0;
+.filters-expanded-actions {
+	clear: both;
 }
 
 .hidden,
