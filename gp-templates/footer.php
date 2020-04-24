@@ -4,7 +4,7 @@
 		printf(
 			/* translators: %s: GlotPress. */
 			__( 'Proudly powered by %s.', 'glotpress' ),
-			'<a href="http://glotpress.org/">GlotPress</a>'
+			'<a href="https://glotpress.blog/">GlotPress</a>'
 		);
 		?>
 		<?php gp_footer(); ?>
