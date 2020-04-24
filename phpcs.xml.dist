@@ -23,6 +23,7 @@
 	</rule>
 	<rule ref="WordPress-Docs" />
 	<rule ref="WordPress-Extra">
+		<!-- _e() and _ex() are considered safe for translations. -->
 		<exclude name="WordPress.Security.EscapeOutput.UnsafePrintingFunction" />
 	</rule>
 
@@ -44,6 +45,14 @@
 				<element value="gp_js_focus_on"/>
 				<element value="gp_translation_row_classes"/>
 				<element value="gp_pagination"/>
+
+				<!-- i18n functions are considered safe for translations. -->
+				<element value="__"/>
+				<element value="_x"/>
+				<element value="_n"/>
+				<element value="_nx"/>
+				<element value="number_format_i18n"/>
+				<element value="date_i18n"/>
 			</property>
 		</properties>
 	</rule>
