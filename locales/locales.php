@@ -243,6 +243,7 @@ class GP_Locales {
 		$ay->native_name = 'aymar aru';
 		$ay->lang_code_iso_639_1 = 'ay';
 		$ay->lang_code_iso_639_2 = 'aym';
+		$ay->country_code = 'bo';
 		$ay->slug = 'ay';
 		$ay->nplurals = 1;
 		$ay->plural_expression = '0';
