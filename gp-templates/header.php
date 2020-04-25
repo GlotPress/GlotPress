@@ -17,9 +17,8 @@
 
 	<header class="gp-bar clearfix">
 		<h1>
-			<a href="<?php echo gp_url( '/' ); ?>" rel="home">
+			<a href="<?php echo esc_url( gp_url( '/' ) ); ?>" rel="home">
 				<?php
-
 				/**
 				 * Filter the main heading (H1) of a GlotPress page that links to the home page.
 				 *
@@ -27,6 +26,7 @@
 				 *
 				 * @param string $title The text linking to home page.
 				 */
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo apply_filters( 'gp_home_title', 'GlotPress' );
 				?>
 			</a>

@@ -37,7 +37,25 @@ gp_tmpl_header();
 	 */
 	echo apply_filters( 'gp_project_description', $project->description, $project );
 	?>
-</p>
+</h2>
+
+<?php
+/**
+ * Filter a project description.
+ *
+ * @since 1.0.0
+ *
+ * @param string     $description Project description.
+ * @param GP_Project $project     The current project.
+ */
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+$project_description = apply_filters( 'gp_project_description', $project->description, $project );
+
+if ( $project_description ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Sanitized via filters.
+	echo '<div class="project-description">' . $project_description . '</div>';
+}
+?>
 
 <?php if ( $can_write ) : ?>
 
