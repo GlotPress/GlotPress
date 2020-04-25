@@ -1,7 +1,7 @@
 
 <tr class='view' data-id="<?php echo esc_attr( $entry->id ); ?>">
 	<td><?php echo esc_html( $entry->term ); ?></td>
-	<td><?php echo esc_html( $entry->part_of_speech ); ?></td>
+	<td><?php echo esc_html( GP::$glossary_entry->parts_of_speech[ $entry->part_of_speech ] ); ?></td>
 	<td><?php echo esc_html( $entry->translation ); ?></td>
 	<td><?php echo make_clickable( nl2br( esc_html( $entry->comment ) ) ); ?></td>
 
