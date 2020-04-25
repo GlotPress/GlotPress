@@ -35,3 +35,29 @@ add_action( 'show_user_profile', 'gp_wp_profile_options' );
 add_action( 'edit_user_profile', 'gp_wp_profile_options' );
 add_action( 'personal_options_update', 'gp_wp_profile_options_update' );
 add_action( 'edit_user_profile_update', 'gp_wp_profile_options_update' );
+
+// Display filters.
+add_filter( 'gp_original_extracted_comments', 'wptexturize' );
+add_filter( 'gp_original_extracted_comments', 'convert_chars' );
+add_filter( 'gp_original_extracted_comments', 'make_clickable' );
+add_filter( 'gp_original_extracted_comments', 'convert_smilies' );
+
+add_filter( 'gp_project_description', 'wptexturize' );
+add_filter( 'gp_project_description', 'convert_chars' );
+add_filter( 'gp_project_description', 'make_clickable' );
+add_filter( 'gp_project_description', 'force_balance_tags' );
+add_filter( 'gp_project_description', 'convert_smilies' );
+add_filter( 'gp_project_description', 'wpautop' );
+add_filter( 'gp_project_description', 'wp_kses_post' );
+
+add_filter( 'gp_glossary_description', 'wptexturize' );
+add_filter( 'gp_glossary_description', 'convert_chars' );
+add_filter( 'gp_glossary_description', 'make_clickable' );
+add_filter( 'gp_glossary_description', 'force_balance_tags' );
+add_filter( 'gp_glossary_description', 'convert_smilies' );
+add_filter( 'gp_glossary_description', 'wpautop' );
+add_filter( 'gp_glossary_description', 'wp_kses_post' );
+
+add_filter( 'gp_title', 'wptexturize' );
+add_filter( 'gp_title', 'convert_chars' );
+add_filter( 'gp_title', 'esc_html' );

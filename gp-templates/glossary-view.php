@@ -31,8 +31,19 @@ if ( 0 === $project->id ) {
 </h2>
 
 <?php
-if ( $glossary->description ) {
-	echo '<p class="description">' . make_clickable( nl2br( wp_kses_post( $glossary->description ) ) ) . '</p>';
+/**
+ * Filter a glossary description.
+ *
+ * @since 3.0.0
+ *
+ * @param string      $description Glossary description.
+ * @param GP_Glossary $project     The current glossary.
+ */
+$glossary_description = apply_filters( 'gp_glossary_description', $glossary->description, $glossary );
+
+if ( $glossary_description ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Sanitized via filters.
+	echo '<div class="glossary-description">' . $glossary_description . '</div>';
 }
 ?>
 
