@@ -1872,7 +1872,7 @@ class GP_Locales {
 		$pt_ao90->lang_code_iso_639_1 = 'pt';
 		$pt_ao90->country_code = 'pt';
 		$pt_ao90->wp_locale = 'pt_PT_ao90';
-		$pt_ao90->slug = 'pt_ao90';
+		$pt_ao90->slug = 'pt-ao90';
 		$pt_ao90->google_code = 'pt-PT';
 		$pt_ao90->variant_root = $pt->slug;
 		$pt->variants[ $pt_ao90->slug ] = $pt_ao90->english_name;
