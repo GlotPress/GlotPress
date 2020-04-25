@@ -531,7 +531,7 @@ function gp_preferred_sans_serif_style_tag( $locale ) {
 	?>
 <style type="text/css">
 	.foreign-text {
-		font-family: "$locale->preferred_sans_serif_font_family", inherit;
+		font-family: "<?php echo esc_attr( $locale->preferred_sans_serif_font_family ); ?>", inherit;
 	}
 </style>
 	<?php
