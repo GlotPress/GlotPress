@@ -32,8 +32,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( $language ) {
-			$this->assertTrue( true );
-			//$this->assertSame( $locale->plural_expression, $expected, $locale->english_name );
+			$this->assertSame( $language->formula, $expected, $locale );
 			return;
 		}
 
@@ -53,8 +52,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( $language ) {
-			$this->assertTrue( true );
-			//$this->assertSame( $locale->plural_expression, $expected, $locale->english_name );
+			$this->assertSame( $language->formula, $expected, $locale );
 			return;
 		}
 
@@ -73,8 +71,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 			$this->markTestSkipped( "{$locale} with {$id} does not exist\n" );
 		}
 
-		$this->assertTrue( true );
-		//$this->assertSame( $locale->plural_expression, $expected, $locale->english_name );
+		$this->assertSame( $language->formula, $expected, $locale );
 	}
 
 	public function data_provider_locales_plural() {
