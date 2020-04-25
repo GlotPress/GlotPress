@@ -246,26 +246,9 @@ class GP_Route {
 			return false;
 		}
 
-		$ref = $this->get_raw_referer();
+		$ref = wp_get_raw_referer();
 		if ( $ref ) {
 			return wp_validate_redirect( $ref, false );
-		}
-
-		return false;
-	}
-
-	/**
-	 * Retrieves unvalidated referer from '_wp_http_referer' or HTTP referer.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return string|false Referer URL on success, false on failure.
-	 */
-	private function get_raw_referer() {
-		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
-			return wp_unslash( gp_array_get( $_REQUEST, '_wp_http_referer' ) );
-		} elseif ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
-			return wp_unslash( gp_array_get( $_SERVER, 'HTTP_REFERER' ) );
 		}
 
 		return false;
