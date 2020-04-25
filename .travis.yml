@@ -30,17 +30,8 @@ cache:
 
 jobs:
   include:
-    - stage: lint
-      php: 7.4
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_SKIP=phpunit
     - stage: test
       php: 7.4
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit WP_TRAVISCI=codecoverage
-    - php: 7.4
-      env: WP_VERSION=trunk WP_MULTISITE=1 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
-    - php: 7.3
-      env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
-    - php: 7.2
       env: WP_VERSION=trunk WP_MULTISITE=0 DEFAULT_BASE_BRANCH=develop DEV_LIB_ONLY=phpunit
   allow_failures:
     - php: nightly
