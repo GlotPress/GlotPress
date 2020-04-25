@@ -28,7 +28,7 @@ gp_tmpl_header();
 			foreach ( $locales as $locale ) :
 				$class = ( 'odd' === $class ) ? 'even' : 'odd';
 ?>
-			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
+			<tr class="<?php echo esc_attr( $class ); ?>">
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>'; ?>
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . '</td>'; ?>
 				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . '</td>'; ?>

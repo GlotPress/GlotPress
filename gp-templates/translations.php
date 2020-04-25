@@ -1,4 +1,11 @@
 <?php
+/**
+ * Template for the translations table.
+ *
+ * @package    GlotPress
+ * @subpackage Templates
+ */
+
 gp_title(
 	sprintf(
 		/* translators: 1: Translation set name. 2: Project name. */
@@ -180,8 +187,8 @@ $i = 0;
 			);
 		}
 
-		// TODO: saved searches.
-		echo implode( ' <span class="separator">&bull;</span> ', $filter_links ); // WPCS: XSS ok.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo implode( ' <span class="separator">&bull;</span> ', $filter_links );
 		?>
 		</div>
 		<div class="filters-expanded filters hidden">
@@ -483,7 +490,10 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		 * @param GP_Locale          $locale          The current locale.
 		 * @param GP_Translation_Set $translation_set The current translation set.
 		 */
-		echo implode( ' &bull; ', apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set ) );
+		$footer_links = apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo implode( ' &bull; ', $footer_links );
 	?>
 </p>
 <?php

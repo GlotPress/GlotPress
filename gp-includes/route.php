@@ -227,7 +227,7 @@ class GP_Route {
 			$url = gp_url( '/projects' );
 		}
 
-		wp_redirect( $url );
+		wp_safe_redirect( $url );
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 
@@ -354,7 +354,7 @@ class GP_Route {
 			$this->exit_message = $message;
 			return;
 		}
-		exit( $message );
+		exit( esc_html( $message ) );
 	}
 
 	public function header( $string ) {

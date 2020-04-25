@@ -23,10 +23,13 @@ $priority_char = array(
 	<?php endif; ?>
 	<?php /* translators: %s: Priority of original */ ?>
 	<td class="priority" title="<?php echo esc_attr( sprintf( __( 'Priority: %s', 'glotpress' ), gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority ) ) ); ?>">
-		<?php echo $priority_char[ $translation->priority ][0]; // WPCS: XSS OK. ?>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $priority_char[ $translation->priority ][0];
+		?>
 	</td>
 	<td class="original">
-		<?php echo prepare_original( $translation_singular ); // WPCS: XSS OK. ?>
+		<?php echo prepare_original( $translation_singular ); ?>
 		<?php if ( $translation->context ) : ?>
 			<?php /* translators: %s: Context of original */ ?>
 			<span class="context bubble" title="<?php echo esc_attr( sprintf( __( 'Context: %s', 'glotpress' ), $translation->context ) ); ?>"><?php echo esc_html( $translation->context ); ?></span>
@@ -40,14 +43,15 @@ $priority_char = array(
 			$edit_text = __( 'You are not allowed to add a translation.', 'glotpress' );
 		} else {
 			/* translators: %s: url */
-			$edit_text = sprintf( __( 'You <a href="%s">have to log in</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) ); // WPCS: XSS OK.
+			$edit_text = sprintf( __( 'You <a href="%s">have to log in</a> to add a translation.', 'glotpress' ), esc_url( wp_login_url( gp_url_current() ) ) );
 		}
 
-		$missing_text = "<span class='missing'>$edit_text</span>"; // WPCS: XSS OK.
+		$missing_text = "<span class='missing'>$edit_text</span>";
 		if ( ! count( array_filter( $translation->translations, 'gp_is_not_null' ) ) ) :
-			echo $missing_text; // WPCS: XSS OK.
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $missing_text;
 		elseif ( ! $translation->plural ) :
-			echo esc_translation( $translation->translations[0] ); // WPCS: XSS OK.
+			echo esc_translation( $translation->translations[0] );
 		else :
 		?>
 			<ul>

@@ -38,6 +38,7 @@
 				<element value="gp_select"/>
 				<element value="gp_projects_dropdown"/>
 				<element value="gp_locales_dropdown"/>
+				<element value="gp_locales_by_project_dropdown"/>
 				<element value="gp_link"/>
 				<element value="gp_link_get"/>
 				<element value="gp_link_glossary_delete_get"/>
@@ -45,6 +46,16 @@
 				<element value="gp_js_focus_on"/>
 				<element value="gp_translation_row_classes"/>
 				<element value="gp_pagination"/>
+				<element value="gp_array_of_things_to_json"/>
+				<element value="gp_array_of_array_of_things_to_json"/>
+				<element value="gp_project_options_form"/>
+				<element value="prepare_original"/>
+				<element value="gp_prepare_translation_textarea"/>
+				<element value="display_status"/>
+				<element value="gp_nav_menu"/>
+				<element value="gp_breadcrumb"/>
+				<element value="gp_notice"/>
+				<element value="gp_title"/>
 
 				<!-- i18n functions are considered safe for translations. -->
 				<element value="__"/>
@@ -53,6 +64,7 @@
 				<element value="_nx"/>
 				<element value="number_format_i18n"/>
 				<element value="date_i18n"/>
+				<element value="human_time_diff"/>
 			</property>
 		</properties>
 	</rule>
@@ -72,6 +84,11 @@
 		<properties>
 			<property name="maxColumn" value="80"/>
 		</properties>
+	</rule>
+
+	<rule ref="Generic.Commenting.DocComment.MissingShort">
+		<!-- Temporarily disabled until https://github.com/WordPress/WordPress-Coding-Standards/issues/403 is fixed. -->
+		<severity>0</severity>
 	</rule>
 
 	<!-- Set minimum supported WordPress version. -->

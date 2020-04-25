@@ -5,7 +5,7 @@ gp_breadcrumb( array( __( 'Profile', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
 
-<h2><?php echo $user->display_name; ?></h2>
+<h2><?php echo esc_html( $user->display_name ); ?></h2>
 
 <div>
 	<div class="user-card">
@@ -14,14 +14,31 @@ gp_tmpl_header();
 		<dl class="user-info">
 			<dd>
 				<?php
-				$locale_keys = array_keys( $locales );
+				$locale_keys       = array_keys( $locales );
+				$locale_keys_count = count( $locale_keys );
 
-				if ( 1 < count( $locales ) ) {
-					/* translators: 1: display name of a user, 2: language, 3: language */
-					vprintf( __( '%1$s is a polyglot who knows %2$s but also knows %3$s.', 'glotpress' ), array_merge( array( $user->display_name ), $locale_keys ) );
-				} elseif ( ! empty( $locale_keys ) ) {
-					/* translators: 1: display name of a user, 2: language */
-					printf( __( '%1$s is a polyglot who contributes to %2$s', 'glotpress' ), $user->display_name, $locale_keys[0] );
+				if ( 1 === $locale_keys_count ) {
+					printf(
+						/* translators: 1: display name of a user, 2: language */
+						__( '%1$s is a polyglot who contributes to %2$s.', 'glotpress' ),
+						esc_html( $user->display_name ),
+						esc_html( $locale_keys[0] )
+					);
+				} elseif ( 2 === $locale_keys_count ) {
+					printf(
+						/* translators: 1: display name of a user, 2: language, 3: language */
+						__( '%1$s is a polyglot who knows %2$s but also knows %3$s.', 'glotpress' ),
+						esc_html( $user->display_name ),
+						esc_html( $locale_keys[0] ),
+						esc_html( $locale_keys[1] )
+					);
+				} elseif ( $locale_keys_count > 2 ) {
+					printf(
+						/* translators: 1: display name of a user, 2: list of languages */
+						__( '%1$s is a polyglot who knows %2$s.', 'glotpress' ),
+						esc_html( $user->display_name ),
+						esc_html( wp_sprintf( '%l', $locale_keys ) )
+					);
 				}
 				?>
 			</dd>
@@ -29,7 +46,7 @@ gp_tmpl_header();
 			<dd>
 				<?php
 					/* translators: public profile date format, see https://secure.php.net/date */
-					echo date_i18n( __( 'M j, Y', 'glotpress' ), strtotime( $user->user_registered ) ); // WPCS: XSS ok.
+					echo date_i18n( __( 'M j, Y', 'glotpress' ), strtotime( $user->user_registered ) );
 				?>
 			</dd>
 		</dl>

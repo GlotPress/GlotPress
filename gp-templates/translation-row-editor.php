@@ -32,17 +32,23 @@ $plural = sprintf(
 	<td colspan="<?php echo esc_attr( $colspan ); ?>">
 		<div class="strings">
 			<?php if ( ! $translation->plural ) : ?>
-				<p class="original"><?php echo prepare_original( $translation_singular );  // WPCS: XSS OK. ?></p>
-				<p class="original_raw"><?php echo esc_translation( $translation->singular ); // WPCS: XSS ok. ?></p>
+				<p class="original"><?php echo prepare_original( $translation_singular ); ?></p>
+				<p class="original_raw"><?php echo esc_translation( $translation->singular ); ?></p>
 				<?php textareas( $translation, array( $can_edit, $can_approve_translation ) ); ?>
 			<?php else : ?>
 				<?php if ( absint( $locale->nplurals ) === 2 && 'n != 1' === $locale->plural_expression ) : ?>
 					<p>
-						<?php echo $singular;  // WPCS: XSS OK. ?>
+						<?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $singular;
+						?>
 					</p>
 					<?php textareas( $translation, array( $can_edit, $can_approve ), 0 ); ?>
 					<p class="clear">
-						<?php echo $plural;  // WPCS: XSS OK. ?>
+						<?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $plural;
+						?>
 					</p>
 					<?php textareas( $translation, array( $can_edit, $can_approve ), 1 ); ?>
 				<?php else : ?>
@@ -50,10 +56,16 @@ $plural = sprintf(
 					TODO: labels for each plural textarea and a sample number
 					-->
 					<p>
-						<?php echo $singular;  // WPCS: XSS OK. ?>
+						<?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $singular;
+						?>
 					</p>
 					<p class="clear">
-						<?php echo $plural;  // WPCS: XSS OK. ?>
+						<?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $plural;
+						?>
 					</p>
 					<?php foreach ( range( 0, $locale->nplurals - 1 ) as $plural_index ) : ?>
 						<?php if ( $locale->nplurals > 1 ) : ?>
@@ -62,8 +74,9 @@ $plural = sprintf(
 								printf(
 									/* translators: %s: Numbers */
 									__( 'This plural form is used for numbers like: %s', 'glotpress' ),
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									'<span class="numbers">' . implode( ', ', $locale->numbers_for_index( $plural_index ) ) . '</span>'
-								); // WPCS: XSS OK.
+								);
 								?>
 							</p>
 						<?php endif; ?>

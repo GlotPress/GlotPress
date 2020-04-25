@@ -105,7 +105,16 @@ class GP_Validation_Rules {
 				}
 			}
 		}
-		trigger_error( sprintf( 'Call to undefined function: %s::%s().', get_class( $this ), $name ), E_USER_ERROR );
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+		trigger_error(
+			sprintf(
+				/* translators: 1: Class name, 2: method name.  */
+				'Call to undefined method: %1$::%2$().',
+				esc_html( get_class( $this ) ),
+				esc_html( $name )
+			),
+			E_USER_ERROR
+		);
 	}
 
 	public function run( $thing ) {
@@ -133,12 +142,14 @@ class GP_Validation_Rules {
 		foreach ( $this->rules[ $field ] as $rule ) {
 			$callback = GP_Validators::get( $rule['rule'] );
 			if ( is_null( $callback ) ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 				trigger_error(
 					sprintf(
 						/* translators: %s: Rule. */
 						__( 'Non-existent validator: %s', 'glotpress' ),
-						$rule['rule']
-					)
+						esc_html( $rule['rule'] )
+					),
+					WP_DEBUG ? E_USER_WARNING : E_USER_NOTICE
 				);
 				continue;
 			}

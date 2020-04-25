@@ -36,7 +36,10 @@ gp_tmpl_header();
 
 <?php if ( count( $set_list ) > 1 ) : ?>
 	<p class="actionlist secondary">
-		<?php echo implode( ' &bull;&nbsp;', $set_list ); ?>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in GP_Route_Locale::single().
+		echo implode( ' &bull;&nbsp;', $set_list );
+		?>
 	</p>
 <?php endif; ?>
 
@@ -48,7 +51,7 @@ if ( empty( $projects_data ) ) {
 
 <?php foreach ( $projects_data as $project_id => $sub_projects ) : ?>
 	<div class="locale-project">
-		<h3><?php echo ( $projects[ $project_id ]->name ); ?></h3>
+		<h3><?php echo esc_html( $projects[ $project_id ]->name ); ?></h3>
 		<table class="locale-sub-projects">
 			<thead>
 			<tr>
@@ -85,18 +88,22 @@ if ( empty( $projects_data ) ) {
 						<div class="total-strings">
 							<?php
 							printf(
-								/* translators: %d: Count number. */
-								__( '%d strings', 'glotpress' ),
-								esc_html( $data['totals']->all_count )
+								/* translators: %s: Count number. */
+								__( '%s strings', 'glotpress' ),
+								number_format_i18n( $data['totals']->all_count )
 							);
 							?>
 						</div>
 						<div class="percent-completed">
 							<?php
+							$percent_completed = 0;
+							if ( $data['totals']->current_count ) {
+								$percent_completed = floor( $data['totals']->current_count / $data['totals']->all_count * 100 );
+							}
 							printf(
-								/* translators: %d: Locale english name. */
-								__( '%d%% translated', 'glotpress' ),
-								$data['totals']->current_count ? floor( absint( $data['totals']->current_count ) / absint( $data['totals']->all_count ) * 100 ) : 0
+								/* translators: %s: Percent completed. */
+								__( '%s%% translated', 'glotpress' ),
+								number_format_i18n( $percent_completed )
 							);
 							?>
 						</div>
@@ -115,7 +122,7 @@ if ( empty( $projects_data ) ) {
 						if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
 							$percent = floor( $set_data->current_count / $set_data->all_count * 100 );
 							?>
-							<span class="bubble morethan90"><?php echo $percent; ?>%</span>
+							<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
 						<?php endif; ?>
 					</td>
 					<td class="stats translated">
@@ -129,7 +136,7 @@ if ( empty( $projects_data ) ) {
 									'filters[status]'     => 'current',
 								)
 							),
-							absint( $set_data->current_count )
+							number_format_i18n( $set_data->current_count )
 						);
 						?>
 					</td>
@@ -143,7 +150,7 @@ if ( empty( $projects_data ) ) {
 									'filters[status]' => 'fuzzy',
 								)
 							),
-							absint( $set_data->fuzzy_count )
+							number_format_i18n( $set_data->fuzzy_count )
 						);
 						?>
 					</td>
@@ -157,7 +164,7 @@ if ( empty( $projects_data ) ) {
 									'filters[status]' => 'untranslated',
 								)
 							),
-							absint( $set_data->all_count ) - absint( $set_data->current_count )
+							number_format_i18n( $set_data->all_count - $set_data->current_count )
 						);
 						?>
 					</td>
@@ -172,7 +179,7 @@ if ( empty( $projects_data ) ) {
 									'filters[status]'     => 'waiting',
 								)
 							),
-							absint( $set_data->waiting_count )
+							number_format_i18n( $set_data->waiting_count )
 						);
 						?>
 					</td>

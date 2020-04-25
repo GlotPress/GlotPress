@@ -524,16 +524,17 @@ function things_to_fields( $data ) {
 }
 
 function gp_preferred_sans_serif_style_tag( $locale ) {
-	if ( $locale->preferred_sans_serif_font_family ) {
-		echo <<<HTML
-	<style type="text/css">
-		.foreign-text {
-			font-family: "$locale->preferred_sans_serif_font_family", inherit;
-		}
-	</style>
-
-HTML;
+	if ( ! $locale->preferred_sans_serif_font_family ) {
+		return;
 	}
+
+	?>
+<style type="text/css">
+	.foreign-text {
+		font-family: "<?php echo esc_attr( $locale->preferred_sans_serif_font_family ); ?>", inherit;
+	}
+</style>
+	<?php
 }
 
 function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;' ) {
@@ -574,6 +575,7 @@ function gp_project_actions( $project, $translation_sets ) {
 	echo '<ul>';
 
 	foreach ( $actions as $action ) {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo '<li>' . $action . '</li>';
 	}
 
@@ -627,11 +629,8 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
 	 */
 	$actions = apply_filters( 'gp_entry_actions', $actions );
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo implode( $seperator, $actions );
-	/*
-	<a href="#" class="copy" tabindex="-1"><?php _e( 'Copy from original', 'glotpress' ); ?></a> &bull;
-	<a href="#" class="gtranslate" tabindex="-1"><?php _e( 'Translation from Google', 'glotpress' ); ?></a>
-	*/
 }
 
 /**

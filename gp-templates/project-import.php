@@ -1,6 +1,6 @@
 <?php
-if ( 'originals' == $kind ) {
-	$title = sprintf(
+if ( 'originals' === $kind ) {
+	$gp_title = sprintf(
 		/* translators: %s: Project name. */
 		__( 'Import Originals &lt; %s &lt; GlotPress', 'glotpress' ),
 		esc_html( $project->name )
@@ -8,7 +8,7 @@ if ( 'originals' == $kind ) {
 	$return_link = gp_url_project( $project );
 	gp_breadcrumb_project( $project );
 } else {
-	$title = sprintf(
+	$gp_title = sprintf(
 		/* translators: %s: Project name. */
 		__( 'Import Translations &lt; %s &lt; GlotPress', 'glotpress' ),
 		esc_html( $project->name )
@@ -22,7 +22,7 @@ if ( 'originals' == $kind ) {
 	);
 }
 
-gp_title( $title );
+gp_title( $gp_title );
 gp_tmpl_header();
 ?>
 
@@ -37,7 +37,6 @@ gp_tmpl_header();
 	foreach ( GP::$formats as $slug => $format ) {
 		$format_options[ $slug ] = $format->name;
 	}
-	$format_dropdown = gp_select( 'format', $format_options, 'auto' );
 
 	$status_options = array();
 	if ( isset( $can_import_current ) && $can_import_current ) {
@@ -48,7 +47,9 @@ gp_tmpl_header();
 	}
 ?>
 	<dt><label for="format"><?php _e( 'Format:', 'glotpress' ); ?></label></dt>
-	<dd><?php echo $format_dropdown; ?></dd>
+	<dd>
+		<?php echo gp_select( 'format', $format_options, 'auto' ); ?>
+	</dd>
 <?php if ( ! empty( $status_options ) ) : ?>
 	<dt><label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
 	<dd>
@@ -63,7 +64,7 @@ gp_tmpl_header();
 	<dt>
 	<p>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo $return_link; ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
+		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo esc_url( $return_link ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
 	</dt>
 	</dl>

@@ -61,7 +61,7 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 
 	<?php if ( property_exists( $translation, 'root_translation_set_id' ) ) : ?>
 	<dl>
-		<dt><?php _e( 'Root Translation:', 'glotpress' ); // phpcs:ignore WordPress.Security.EscapeOutput. ?></dt>
+		<dt><?php _e( 'Root Translation:', 'glotpress' ); ?></dt>
 	<?php if ( $translation->translation_set_id === $translation->root_translation_set_id ) : ?>
 		<dd>
 <?php
@@ -81,14 +81,14 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 ?>
 		</dd>
 	<?php else : ?>
-		<dd><?php _e( 'False', 'glotpress' ); // phpcs:ignore WordPress.Security.EscapeOutput. ?></dd>
+		<dd><?php _e( 'False', 'glotpress' ); ?></dd>
 	<?php endif; ?>
 	</dl>
 	<?php endif; ?>
 	<?php if ( $translation->context ) : ?>
 		<dl>
 			<dt><?php _e( 'Context:', 'glotpress' ); ?></dt>
-			<dd><span class="context bubble"><?php echo esc_translation( $translation->context ); // WPCS: XSS OK. ?></span></dd>
+			<dd><span class="context bubble"><?php echo esc_translation( $translation->context ); ?></span></dd>
 		</dl>
 	<?php endif; ?>
 	<?php if ( $translation->extracted_comments ) : ?>
@@ -160,15 +160,30 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 				?>
 			</dd>
 		<?php else : ?>
-			<dd><?php echo gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority, 'unknown' ); // WPCS: XSS ok. ?></dd>
+			<dd>
+				<?php
+				echo esc_html(
+					gp_array_get(
+						GP::$original->get_static( 'priorities' ),
+						$translation->priority,
+						_x( 'Unknown', 'priority', 'glotpress' )
+					)
+				);
+				?>
+			</dd>
 		<?php endif; ?>
 	</dl>
 
 	<dl>
 		<dt><?php _e( 'More links:', 'glotpress' ); ?>
 			<ul>
-				<?php foreach ( $more_links as $link ) : ?>
-					<li><?php echo $link; // WPCS: XSS ok. ?></li>
+				<?php foreach ( $more_links as $more_link ) : ?>
+					<li>
+						<?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $more_link;
+						?>
+					</li>
 				<?php endforeach; ?>
 			</ul>
 		</dt>

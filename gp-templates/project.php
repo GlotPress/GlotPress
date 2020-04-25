@@ -24,18 +24,11 @@ if ( $project->active ) {
 
 gp_tmpl_header();
 ?>
-<h2><?php echo esc_html( $project->name ); ?> <?php echo $edit_link; ?></h2>
-<p class="description">
+<h2>
 	<?php
-	/**
-	 * Filter a project description.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string     $description Project description.
-	 * @param GP_Project $project     The current project.
-	 */
-	echo apply_filters( 'gp_project_description', $project->description, $project );
+	echo esc_html( $project->name );
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo $edit_link;
 	?>
 </h2>
 
@@ -68,9 +61,9 @@ if ( $project_description ) {
 <?php endif; ?>
 
 <?php
-$class = $sub_projects ? ' class="with-sub-projects"' : '';
+$project_class = $sub_projects ? 'with-sub-projects' : '';
 ?>
-<div id="project"<?php echo $class; ?>>
+<div id="project" class="<?php echo esc_attr( $project_class ); ?>>
 
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
@@ -97,17 +90,17 @@ $class = $sub_projects ? ' class="with-sub-projects"' : '';
 			$class = ( 'odd' === $class ) ? 'even' : 'odd';
 
 		?>
-			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
+			<tr class="<?php echo esc_attr( $class ); ?>">
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php
 					if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
 							$percent = floor( $set->current_count / $set->all_count * 100 );
 					?>
-						<span class="bubble morethan90"><?php echo $percent; ?>%</span>
+						<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
 					<?php endif; ?>
 				</td>
-				<td class="stats percent"><?php echo $set->percent_translated; ?>%</td>
+				<td class="stats percent"><?php echo number_format_i18n( $set->percent_translated ); ?>%</td>
 				<td class="stats translated" title="translated">
 					<?php
 					gp_link(
@@ -119,7 +112,7 @@ $class = $sub_projects ? ' class="with-sub-projects"' : '';
 								'filters[status]'     => 'current',
 							)
 						),
-						$set->current_count
+						number_format_i18n( $set->current_count )
 					);
 					?>
 				</td>
@@ -134,7 +127,7 @@ $class = $sub_projects ? ' class="with-sub-projects"' : '';
 								'filters[status]'     => 'fuzzy',
 							)
 						),
-						$set->fuzzy_count
+						number_format_i18n( $set->fuzzy_count )
 					);
 					?>
 				</td>
@@ -148,7 +141,7 @@ $class = $sub_projects ? ' class="with-sub-projects"' : '';
 								'filters[status]' => 'untranslated',
 							)
 						),
-						$set->untranslated_count
+						number_format_i18n( $set->untranslated_count )
 					);
 					?>
 				</td>
@@ -163,7 +156,7 @@ $class = $sub_projects ? ' class="with-sub-projects"' : '';
 								'filters[status]'     => 'waiting',
 							)
 						),
-						$set->waiting_count
+						number_format_i18n( $set->waiting_count )
 					);
 					?>
 				</td>

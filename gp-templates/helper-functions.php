@@ -259,7 +259,6 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 function textareas( $entry, $permissions, $index = 0 ) {
 	list( $can_edit, $can_approve ) = $permissions;
-	$disabled                       = $can_edit ? '' : 'disabled="disabled"';
 	?>
 	<div class="textareas">
 		<?php
@@ -280,8 +279,8 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 		endif;
 		?>
-		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></small></em></blockquote>
-		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo $disabled; // WPCS: XSS ok. ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); // WPCS: XSS ok. ?></textarea>
+		<blockquote class="translation"><em><small><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></small></em></blockquote>
+		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
 
 		<p>
 			<?php
@@ -340,12 +339,17 @@ function references( $project, $entry ) {
 		<?php
 		foreach ( $entry->references as $reference ) :
 			list( $file, $line ) = array_pad( explode( ':', $reference ), 2, 0 );
-			if ( $source_url = $project->source_url( $file, $line ) ) :
+			$source_url          = $project->source_url( $file, $line );
+			if ( $source_url ) :
 				?>
-				<li><a target="_blank" tabindex="-1" href="<?php echo $source_url; ?>"><?php echo $file . ':' . $line; ?></a></li>
+				<li>
+					<a target="_blank" tabindex="-1" href="<?php echo esc_url( $source_url ); ?>">
+						<?php echo esc_html( $file . ':' . $line ); ?>
+					</a>
+				</li>
 				<?php
 			else :
-				echo "<li>$file:$line</li>";
+				echo '<li>' . esc_html( "$file:$line" ) . '</li>';
 			endif;
 		endforeach;
 		?>
@@ -363,7 +367,7 @@ function references( $project, $entry ) {
  */
 function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
 ?>
-<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo $bulk_action; // WPCS: XSS Ok. ?>" method="post">
+<form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="filters-toolbar bulk-actions" action="<?php echo esc_attr( $bulk_action ); ?>" method="post">
 	<div>
 	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
@@ -403,7 +407,7 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 			$label = $labels[ $label ];
 		}
 
-		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n"; // WPCS: XSS Ok.
+		echo "\t<option value='" . esc_attr( $value ) . "' " . selected( 'normal', $value, false ) . '>' . esc_html( $label ) . "</option>\n";
 	}
 	?>
 	</select>
@@ -415,7 +419,8 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 	<?php
 		$nonce = gp_route_nonce_field( 'bulk-actions', false );
 		$nonce = str_replace( 'id="_gp_route_nonce"', 'id="_gp_route_nonce_' . esc_attr( $location ) . '"', $nonce );
-		echo $nonce; // WPCS: XSS Ok.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $nonce;
 	?>
 </form>
 <?php
