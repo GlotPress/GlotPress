@@ -3,7 +3,12 @@
 	<td><?php echo esc_html( $entry->term ); ?></td>
 	<td><?php echo esc_html( GP::$glossary_entry->parts_of_speech[ $entry->part_of_speech ] ); ?></td>
 	<td><?php echo esc_html( $entry->translation ); ?></td>
-	<td><?php echo make_clickable( nl2br( esc_html( $entry->comment ) ) ); ?></td>
+	<td>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo make_clickable( nl2br( esc_html( $entry->comment ) ) );
+		?>
+	</td>
 
 	<?php if ( $can_edit ) : ?>
 	<td class="actions">
@@ -23,8 +28,7 @@
 				<dd><select name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][part_of_speech]" id="glossary_entry_pos_<?php echo esc_attr( $entry->id ); ?>">
 				<?php
 					foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
-						$selected = $pos == $entry->part_of_speech ? " selected='selected'" : '';
-						echo "\t<option value='" . esc_attr( $pos ) . "' $selected>" . esc_html( $name ) . "</option>\n";
+						echo "\t<option value='" . esc_attr( $pos ) . "'" . selected( $entry->part_of_speech, $pos ) . '>' . esc_html( $name ) . "</option>\n";
 					}
 				?>
 				</select></dd>
@@ -44,17 +48,21 @@
 			<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
 			<dl>
 				<dt><?php _e( 'Last Modified:', 'glotpress' ); ?></dt>
-				<dd><?php echo $entry->date_modified; ?></dd>
+				<dd><?php echo esc_html( $entry->date_modified ); ?></dd>
 			</dl>
 			<?php if ( $entry->user_login ) : ?>
 			<dl>
 				<dt><?php _ex( 'By:', 'by author', 'glotpress' ); ?></dt>
 				<dd>
 					<?php
-					if ( $entry->user_display_name && $entry->user_display_name != $entry->user_login ) {
-						printf( '%s (%s)', $entry->user_display_name, $entry->user_login );
+					if ( $entry->user_display_name && $entry->user_display_name !== $entry->user_login ) {
+						printf(
+							'%s (%s)',
+							esc_html( $entry->user_display_name ),
+							esc_html( $entry->user_login )
+						);
 					} else {
-						echo $entry->user_login;
+						echo esc_html( $entry->user_login );
 					}
 					?>
 				</dd>
@@ -69,4 +77,3 @@
 		</div>
 	</td>
 </tr>
-<?php // TODO: last modified, by who ?>

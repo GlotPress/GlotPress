@@ -55,8 +55,19 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
 	}
 	?>
 	<div class="notice notice-error">
-		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' ); ?></b> <?php echo $short_notice; // WPCS: xss ok. ?></p>
-		<p style="max-width:800px;"><?php echo $long_notice; // WPCS: xss ok. ?></p>
+		<p style="max-width:800px;">
+			<b><?php _e( 'GlotPress Disabled', 'glotpress' ); ?></b>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $short_notice;
+			?>
+		</p>
+		<p style="max-width:800px;">
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $long_notice;
+			?>
+		</p>
 	</div>
 	<?php
 }

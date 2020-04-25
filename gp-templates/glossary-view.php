@@ -18,16 +18,33 @@ wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 gp_tmpl_header();
 
 /* translators: 1: Locale english name. 2: Project name. */
-$title = __( 'Glossary for %1$s translation of %2$s', 'glotpress' );
+$glossary_title = __( 'Glossary for %1$s translation of %2$s', 'glotpress' );
 if ( 0 === $project->id ) {
 	/* translators: %s: Locale english name. */
-	$title = __( 'Glossary for %s', 'glotpress' );
+	$glossary_title = __( 'Glossary for %s', 'glotpress' );
 }
 ?>
 
-<h2><?php printf( esc_html( $title ), esc_html( $translation_set->name ), esc_html( $project->name ) ); ?>
-	<?php gp_link_glossary_edit( $glossary, $translation_set, __( '(edit)', 'glotpress' ) ); ?>
-	<?php gp_link_glossary_delete( $glossary, $translation_set, __( '(delete)', 'glotpress' ) ); ?>
+<h2>
+	<?php
+	printf(
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$glossary_title,
+		esc_html( $translation_set->name ),
+		esc_html( $project->name )
+	);
+
+	gp_link_glossary_edit(
+		$glossary,
+		$translation_set,
+		__( '(edit)', 'glotpress' )
+	);
+	gp_link_glossary_delete(
+		$glossary,
+		$translation_set,
+		__( '(delete)', 'glotpress' )
+	);
+	?>
 </h2>
 
 <?php

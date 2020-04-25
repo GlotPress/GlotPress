@@ -130,6 +130,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$get_format = '.po';
 		}
 
+		/** @var GP_Format $format */
 		$format = gp_array_get( GP::$formats, $get_format, null );
 
 		if ( ! $format ) {
@@ -166,10 +167,10 @@ class GP_Route_Translation extends GP_Route_Main {
 			$last_modified = gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) ) . ' GMT';
 			$this->headers_for_download( $filename, $last_modified );
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --
 			echo $format->print_exported_file( $project, $locale, $translation_set, $entries );
-
-			// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
 		} else {
+			// As has_translation_been_updated() compared against HTTP_IF_MODIFIED_SINCE here, send an appropriate header.
 			$this->status_header( 304 );
 		}
 	}

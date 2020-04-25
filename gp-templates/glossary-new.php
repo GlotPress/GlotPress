@@ -14,12 +14,12 @@ gp_tmpl_header();
 <form action="" method="post">
 	<p>
 		<label for="glossary-new-description"><?php _e( 'Description (optional)', 'glotpress' ); ?></label> <span class="ternary"><?php _e( 'can include HTML', 'glotpress' ); ?></span><br/>
-		<textarea class="glossary-description" id="glossary-new-description" name="glossary[description]"></textarea>
+		<textarea id="glossary-new-description" name="glossary[description]" rows="4" cols="40"></textarea>
 	</p>
 	<p>
 		<input type="hidden" name="glossary[translation_set_id]" value="<?php echo esc_attr( $glossary->translation_set_id ); ?>"/>
 		<input type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo gp_url_project_locale( $project, $locale->slug, $translation_set->slug ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
+		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo esc_url( gp_url_project_locale( $project, $locale->slug, $translation_set->slug ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
 	</p>
 	<?php gp_route_nonce_field( 'add-glossary' ); ?>
 </form>

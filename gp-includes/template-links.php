@@ -1,7 +1,8 @@
 <?php
 
 function gp_link_get( $url, $text, $attrs = array() ) {
-	$before = $after = '';
+	$before = '';
+	$after  = '';
 	foreach ( array( 'before', 'after' ) as $key ) {
 		if ( isset( $attrs[ $key ] ) ) {
 			$$key = $attrs[ $key ];
@@ -16,6 +17,7 @@ function gp_link_get( $url, $text, $attrs = array() ) {
 
 function gp_link() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_get', $args );
 }
 
@@ -28,6 +30,7 @@ function gp_link_with_ays_get( $url, $text, $attrs = array() ) {
 
 function gp_link_with_ays() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_with_ays_get', $args );
 }
 
@@ -38,6 +41,7 @@ function gp_link_project_get( $project_or_path, $text, $attrs = array() ) {
 
 function gp_link_project() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_project_get', $args );
 }
 
@@ -51,6 +55,7 @@ function gp_link_project_edit_get( $project, $text = null, $attrs = array() ) {
 
 function gp_link_project_edit() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_project_edit_get', $args );
 }
 
@@ -64,6 +69,7 @@ function gp_link_project_delete_get( $project, $text = false, $attrs = array() )
 
 function gp_link_project_delete() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_project_delete_get', $args );
 }
 
@@ -73,6 +79,7 @@ function gp_link_home_get() {
 
 function gp_link_home() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_home_get', $args );
 }
 
@@ -86,6 +93,7 @@ function gp_link_set_edit_get( $set, $project, $text = false, $attrs = array() )
 
 function gp_link_set_edit() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_set_edit_get', $args );
 }
 
@@ -155,6 +163,7 @@ function gp_link_glossary_edit_get( $glossary, $set, $text = false, $attrs = arr
 
 function gp_link_glossary_edit() {
 	$args = func_get_args();
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo call_user_func_array( 'gp_link_glossary_edit_get', $args );
 }
 
