@@ -31,12 +31,46 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		}
 
 		$language = Gettext\Languages\Language::getById( $id );
-		if ( ! $language ) {
-			$this->markTestSkipped( "{$locale} with {$id} does not exist\n" );
+		if ( $language ) {
+			$this->assertTrue( true );
+			//$this->assertSame( $locale->plural_expression, $expected, $locale->english_name );
+			return;
 		}
 
+		// Try again with different ID.
+		$id = '';
+		if ( isset( $locale->lang_code_iso_639_1 ) ) {
+			$id = $locale->lang_code_iso_639_1;
+		}
+
+		if ( ! $id && isset( $locale->lang_code_iso_639_2 ) ) {
+			$id = $locale->lang_code_iso_639_2;
+		}
+
+		if ( ! $id && isset( $locale->lang_code_iso_639_3 ) ) {
+			$id = $locale->lang_code_iso_639_3;
+		}
+
+		$language = Gettext\Languages\Language::getById( $id );
+		if ( $language ) {
+			$this->assertTrue( true );
+			//$this->assertSame( $locale->plural_expression, $expected, $locale->english_name );
+			return;
+		}
+
+		// Try again with different ID.
+		$id = '';
+		if ( isset( $locale->lang_code_iso_639_2 ) ) {
+			$id = $locale->lang_code_iso_639_2;
+		}
+
+		if ( ! $id && isset( $locale->lang_code_iso_639_3 ) ) {
+			$id = $locale->lang_code_iso_639_3;
+		}
+
+		$language = Gettext\Languages\Language::getById( $id );
 		if ( ! $language ) {
-			$this->markTestSkipped( "{$locale->english_name} does not exist\n" );
+			$this->markTestSkipped( "{$locale} with {$id} does not exist\n" );
 		}
 
 		$this->assertTrue( true );
