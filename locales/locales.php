@@ -1998,7 +1998,7 @@ class GP_Locales {
 		$ru->wp_locale = 'ru_RU';
 		$ru->slug = 'ru';
 		$ru->nplurals = 3;
-		$ru->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+		$ru->plural_expression = '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)';
 		$ru->google_code = 'ru';
 		$ru->facebook_locale = 'ru_RU';
 
@@ -2009,7 +2009,7 @@ class GP_Locales {
 		$rue->wp_locale = 'rue';
 		$rue->slug = 'rue';
 		$rue->nplurals = 3;
-		$rue->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+		$rue->plural_expression = '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)';
 
 		$rup = new GP_Locale();
 		$rup->english_name = 'Aromanian';
