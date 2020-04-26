@@ -27,7 +27,8 @@
     "phpunit/phpunit": "^7"
   },
   "scripts": {
-    "format": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source",
-    "lint": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source"
+    "format": "@php ./vendor/bin/phpcbf --report=summary,source",
+    "lint": "@php ./vendor/bin/phpcs --report=summary,source",
+    "test": "@php ./vendor/bin/phpunit"
   }
 }
