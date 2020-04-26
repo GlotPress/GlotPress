@@ -2014,7 +2014,7 @@ class GP_Locales {
 		$sk->slug = 'sk';
 		$sk->wp_locale = 'sk_SK';
 		$sk->nplurals = 3;
-		$sk->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
+		$sk->plural_expression = '(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2)';
 		$sk->google_code = 'sk';
 		$sk->facebook_locale = 'sk_SK';
 
@@ -2038,7 +2038,7 @@ class GP_Locales {
 		$sl->wp_locale = 'sl_SI';
 		$sl->slug = 'sl';
 		$sl->nplurals = 4;
-		$sl->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
+		$sl->plural_expression = '(n % 100 == 1) ? 0 : ((n % 100 == 2) ? 1 : ((n % 100 == 3 || n % 100 == 4) ? 2 : 3))';
 		$sl->google_code = 'sl';
 		$sl->facebook_locale = 'sl_SI';
 
