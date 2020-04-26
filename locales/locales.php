@@ -580,7 +580,7 @@ class GP_Locales {
 		$dsb->wp_locale = 'dsb';
 		$dsb->slug = 'dsb';
 		$dsb->nplurals = 4;
-		$dsb->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
+		$dsb->plural_expression = '(n % 100 == 1) ? 0 : ((n % 100 == 2) ? 1 : ((n % 100 == 3 || n % 100 == 4) ? 2 : 3))';
 
 		$dv = new GP_Locale();
 		$dv->english_name = 'Dhivehi';
@@ -1222,7 +1222,7 @@ class GP_Locales {
 		$hsb->wp_locale = 'hsb';
 		$hsb->slug = 'hsb';
 		$hsb->nplurals = 4;
-		$hsb->plural_expression = '(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3)';
+		$hsb->plural_expression = '(n % 100 == 1) ? 0 : ((n % 100 == 2) ? 1 : ((n % 100 == 3 || n % 100 == 4) ? 2 : 3))';
 
 		$hu = new GP_Locale();
 		$hu->english_name = 'Hungarian';
