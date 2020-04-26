@@ -29,6 +29,7 @@
   "scripts": {
     "format": "@php ./vendor/bin/phpcbf --report=summary,source",
     "lint": "@php ./vendor/bin/phpcs --report=summary,source",
-    "test": "@php ./vendor/bin/phpunit"
+    "test": "@php ./vendor/bin/phpunit",
+    "test:locales": "@test --group locales"
   }
 }
