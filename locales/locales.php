@@ -1559,7 +1559,7 @@ class GP_Locales {
 		$lt->wp_locale = 'lt_LT';
 		$lt->slug = 'lt';
 		$lt->nplurals = 3;
-		$lt->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)';
+		$lt->plural_expression = '(n % 10 == 1 && (n % 100 < 11 || n % 100 > 19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? 1 : 2)';
 		$lt->google_code = 'lt';
 		$lt->facebook_locale = 'lt_LT';
 
