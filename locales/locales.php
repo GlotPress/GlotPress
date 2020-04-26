@@ -393,7 +393,7 @@ class GP_Locales {
 		$br->wp_locale = 'bre';
 		$br->slug = 'br';
 		$br->nplurals = 2;
-		$br->plural_expression = '(n > 1)';
+		$br->plural_expression = 'n > 1';
 		$br->facebook_locale = 'br_FR';
 
 		$brx = new GP_Locale();
@@ -1381,7 +1381,7 @@ class GP_Locales {
 		$kab->wp_locale = 'kab';
 		$kab->slug = 'kab';
 		$kab->nplurals = 2;
-		$kab->plural_expression = '(n > 1)';
+		$kab->plural_expression = 'n > 1';
 
 		$kal = new GP_Locale();
 		$kal->english_name = 'Greenlandic';
@@ -1693,7 +1693,7 @@ class GP_Locales {
 		$mri->slug = 'mri';
 		$mri->wp_locale = 'mri';
 		$mri->nplurals = 2;
-		$mri->plural_expression = '(n > 1)';
+		$mri->plural_expression = 'n > 1';
 		$mri->google_code = 'mi';
 
 		$mrj = new GP_Locale();
@@ -1825,7 +1825,7 @@ class GP_Locales {
 		$oci->wp_locale = 'oci';
 		$oci->slug = 'oci';
 		$oci->nplurals = 2;
-		$oci->plural_expression = '(n > 1)';
+		$oci->plural_expression = 'n > 1';
 
 		$orm = new GP_Locale();
 		$orm->english_name = 'Oromo';
@@ -1834,7 +1834,7 @@ class GP_Locales {
 		$orm->lang_code_iso_639_2 = 'orm';
 		$orm->lang_code_iso_639_3 = 'orm';
 		$orm->slug = 'orm';
-		$orm->plural_expression = '(n > 1)';
+		$orm->plural_expression = 'n > 1';
 
 		$ory = new GP_Locale();
 		$ory->english_name = 'Oriya';
@@ -1942,7 +1942,7 @@ class GP_Locales {
 		$pt_br->wp_locale = 'pt_BR';
 		$pt_br->slug = 'pt-br';
 		$pt_br->nplurals = 2;
-		$pt_br->plural_expression = '(n > 1)';
+		$pt_br->plural_expression = 'n > 1';
 		$pt_br->google_code = 'pt-BR';
 		$pt_br->facebook_locale = 'pt_BR';
 
@@ -2080,7 +2080,7 @@ class GP_Locales {
 		$skr->wp_locale = 'skr';
 		$skr->slug = 'skr';
 		$skr->nplurals = 2;
-		$skr->plural_expression = '(n > 1)';
+		$skr->plural_expression = 'n > 1';
 		$skr->text_direction = 'rtl';
 
 		$sl = new GP_Locale();
@@ -2265,7 +2265,7 @@ class GP_Locales {
 		$tah->wp_locale = 'tah';
 		$tah->slug = 'tah';
 		$tah->nplurals = 2;
-		$tah->plural_expression = '(n > 1)';
+		$tah->plural_expression = 'n > 1';
 
 		$te = new GP_Locale();
 		$te->english_name = 'Telugu';
@@ -2340,7 +2340,7 @@ class GP_Locales {
 		$tr->wp_locale = 'tr_TR';
 		$tr->slug = 'tr';
 		$tr->nplurals = 2;
-		$tr->plural_expression = '(n > 1)';
+		$tr->plural_expression = 'n > 1';
 		$tr->google_code = 'tr';
 		$tr->facebook_locale = 'tr_TR';
 
@@ -2365,7 +2365,7 @@ class GP_Locales {
 		$tuk->wp_locale = 'tuk';
 		$tuk->slug = 'tuk';
 		$tuk->nplurals = 2;
-		$tuk->plural_expression = '(n > 1)';
+		$tuk->plural_expression = 'n > 1';
 		$tuk->facebook_locale = 'tk_TM';
 
 		$twd = new GP_Locale();
@@ -2384,7 +2384,7 @@ class GP_Locales {
 		$tzm->wp_locale = 'tzm';
 		$tzm->slug = 'tzm';
 		$tzm->nplurals = 2;
-		$tzm->plural_expression = '(n > 1)';
+		$tzm->plural_expression = 'n > 1';
 
 		$udm = new GP_Locale();
 		$udm->english_name = 'Udmurt';
