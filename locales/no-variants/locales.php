@@ -177,7 +177,7 @@ class GP_Locales {
 		$ar->wp_locale = 'ar';
 		$ar->slug = 'ar';
 		$ar->nplurals = 6;
-		$ar->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
+		$ar->plural_expression = '(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))))';
 		$ar->text_direction = 'rtl';
 		$ar->preferred_sans_serif_font_family = 'Tahoma';
 		$ar->google_code = 'ar';
@@ -192,7 +192,7 @@ class GP_Locales {
 		$arq->wp_locale = 'arq';
 		$arq->slug = 'arq';
 		$arq->nplurals = 6;
-		$arq->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
+		$arq->plural_expression = '(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))))';
 		$arq->text_direction = 'rtl';
 
 		$ary = new GP_Locale();
@@ -204,7 +204,7 @@ class GP_Locales {
 		$ary->wp_locale = 'ary';
 		$ary->slug = 'ary';
 		$ary->nplurals = 6;
-		$ary->plural_expression = 'n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5';
+		$ary->plural_expression = '(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))))';
 		$ary->text_direction = 'rtl';
 
 		$as = new GP_Locale();
