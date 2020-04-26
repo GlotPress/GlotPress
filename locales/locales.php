@@ -489,7 +489,7 @@ class GP_Locales {
 		$cs->wp_locale = 'cs_CZ';
 		$cs->slug = 'cs';
 		$cs->nplurals = 3;
-		$cs->plural_expression = '(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2';
+		$cs->plural_expression = '(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2)';
 		$cs->google_code = 'cs';
 		$cs->facebook_locale = 'cs_CZ';
 
