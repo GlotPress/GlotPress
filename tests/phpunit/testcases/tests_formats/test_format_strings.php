@@ -6,18 +6,20 @@ class GP_Test_Format_Strings extends GP_UnitTestCase {
 		parent::setUp();
 		$this->strings = new GP_Format_Strings;
 		$this->entries = array(
-			array('Normal String', 'Normal String', 'Just A Normal String', ''),
-			array('I\'m with a quote', 'I\'m with a quote', 'I\'m with a quote', ''),
-			array('double "quotes"', 'double "quotes"', 'I have double "quotes"', ''),
-			array('питка', 'питка', 'баба ми омеси питка', ''),
-			array('you < me', 'you < me', 'ти < аз', ''),
-			array('me > you', 'me > you', "аз > ти", ''),
-			array('me & you are not &amp;', 'me & you are not &amp;', 'аз & ти не сме &amp;', ''),
-			array('baba', 'baba', 'баба', 'Me, myself & Irene'),
-			array('multiline', 'multiline', 'multiline', 'This is
+			array( 'Normal String', 'Normal String', 'Just A Normal String', '' ),
+			array( 'I\'m with a quote', 'I\'m with a quote', 'I\'m with a quote', '' ),
+			array( 'double "quotes"', 'double "quotes"', 'I have double "quotes"', '' ),
+			array( 'питка', 'питка', 'баба ми омеси питка', '' ),
+			array( 'you < me', 'you < me', 'ти < аз', '' ),
+			array( 'me > you', 'me > you', "аз > ти", '' ),
+			array( 'me & you are not &amp;', 'me & you are not &amp;', 'аз & ти не сме &amp;', '' ),
+			array( 'baba', 'baba', 'баба', 'Me, myself & Irene' ),
+			array( 'Trash-noun', 'Trash', 'Cestino', 'The place where deleted posts first go' ), // Italian
+			array( 'Trash-verb', 'Trash', 'Elimina', 'The act of deleting a post into trash' ), // Italian
+			array( 'multiline', 'multiline', 'multiline', 'This is
    a multiline
    comment which is
-   also supposed to work.'),
+   also supposed to work.' ),
 		);
 	}
 

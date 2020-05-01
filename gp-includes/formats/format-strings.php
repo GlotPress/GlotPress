@@ -66,7 +66,7 @@ class GP_Format_Strings extends GP_Format {
 		foreach ( $sorted_entries as $entry ) {
 			$translation = $this->escape( empty( $entry->translations ) ? $entry->singular : $entry->translations[0] );
 
-			$original    = str_replace( "\n", "\\n", $this->escape( $entry->singular ) );
+			$context     = str_replace( "\n", "\\n", $this->escape( $entry->context ) );
 			$translation = str_replace( "\n", "\\n", $translation );
 			$comment     = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
@@ -74,7 +74,7 @@ class GP_Format_Strings extends GP_Format {
 				$comment = 'No comment provided by engineer.';
 			}
 
-			$result .= "/* $comment */\n\"$original\" = \"$translation\";\n\n";
+			$result .= "/* $comment */\n\"$context\" = \"$translation\";\n\n";
 		}
 
 		return $result;
@@ -97,14 +97,28 @@ class GP_Format_Strings extends GP_Format {
 		}
 
 		/**
-		 * Check to see if the input file is UTF-16LE encoded, if so convert it to UTF-8.
+		 * Check to see if the input file is UTF-16/32 encoded, if so convert it to UTF-8.
 		 *
 		 * Note, Apple recommends UTF-8 but some of their tools (like genstrings) export
-		 * UTF-16LE (or BE, but GP has never supported that) so to remain backwards
-		 * compatible we support both for importing, but we only export UTF-8.
+		 * UTF-16LE or UTF-16BE. To remain backwards compatible we support both for importing,
+		 * but we only export UTF-8.
 		 */
-		if ( mb_check_encoding( $file, 'UTF-16LE' ) ) {
-			$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
+		foreach (
+			array(
+				// See https://www.php.net/manual/en/function.mb-detect-encoding.php#91051.
+				'UTF-8'    => chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ),
+				'UTF-32BE' => chr( 0x00 ) . chr( 0x00 ) . chr( 0xFE ) . chr( 0xFF ),
+				'UTF-32LE' => chr( 0xFF ) . chr( 0xFE ) . chr( 0x00 ) . chr( 0x00 ),
+				'UTF-16LE' => chr( 0xFF ) . chr( 0xFE ),
+				'UTF-16BE' => chr( 0xFE ) . chr( 0xFF ),
+			) as $encoding => $bom
+		) {
+			if ( 0 === strpos( $file, $bom ) ) {
+				if ( 'UTF-8' !== $encoding ) {
+					$file = mb_convert_encoding( $file, 'UTF-8', $encoding );
+				}
+				break;
+			}
 		}
 
 		// Convert multi-line comments into a single line.
