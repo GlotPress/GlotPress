@@ -108,8 +108,6 @@ $i = 0;
 
 		$untranslated_filters = array(
 			'filters[status]' => 'untranslated',
-			'sort[by]'        => 'priority',
-			'sort[how]'       => 'desc',
 		);
 
 		$is_current_filter = array() === array_diff( $untranslated_filters, $filters_and_sort ) && false === $additional_filters && ! $warnings_filter;
