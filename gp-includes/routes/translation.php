@@ -127,10 +127,10 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		// If for some reason we were passed in an array or object from the get parameters, don't use it.
 		if ( ! is_string( $get_format ) ) {
-			$get_format = '.po';
+			$get_format = 'po';
 		}
 
-		/** @var GP_Format $format */
+		/** @var GP_Format|null $format */
 		$format = gp_array_get( GP::$formats, $get_format, null );
 
 		if ( ! $format ) {
