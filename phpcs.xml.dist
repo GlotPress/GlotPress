@@ -41,8 +41,16 @@
 				<element value="gp_locales_by_project_dropdown"/>
 				<element value="gp_link"/>
 				<element value="gp_link_get"/>
+				<element value="gp_link_glossary_edit_get"/>
 				<element value="gp_link_glossary_delete_get"/>
+				<element value="gp_link_set_edit_get"/>
 				<element value="gp_link_set_delete_get"/>
+				<element value="gp_link_project_get"/>
+				<element value="gp_link_project_edit_get"/>
+				<element value="gp_link_project_delete_get"/>
+				<element value="gp_link_home_get"/>
+				<element value="gp_link_with_ays_get"/>
+				<element value="gp_link_user"/>
 				<element value="gp_js_focus_on"/>
 				<element value="gp_translation_row_classes"/>
 				<element value="gp_pagination"/>
