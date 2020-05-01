@@ -29,7 +29,7 @@ $priority_char = array(
 		?>
 	</td>
 	<td class="original">
-		<?php echo prepare_original( $translation_singular ); ?>
+		<span class="original-text"><?php echo prepare_original( $translation_singular ); ?></span>
 		<?php if ( $translation->context ) : ?>
 			<?php /* translators: %s: Context of original */ ?>
 			<span class="context bubble" title="<?php echo esc_attr( sprintf( __( 'Context: %s', 'glotpress' ), $translation->context ) ); ?>"><?php echo esc_html( $translation->context ); ?></span>
@@ -51,7 +51,7 @@ $priority_char = array(
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $missing_text;
 		elseif ( ! $translation->plural ) :
-			echo esc_translation( $translation->translations[0] );
+			echo '<span class="translation-text">' . esc_translation( $translation->translations[0] ) . '</span>';
 		else :
 		?>
 			<ul>
@@ -59,7 +59,7 @@ $priority_char = array(
 					<li>
 					<?php
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo gp_is_empty_string( $current_translation ) ? $missing_text : esc_translation( $current_translation );
+					echo gp_is_empty_string( $current_translation ) ? $missing_text : '<span class="translation-text">' . esc_translation( $current_translation ) . '</span>';
 					?>
 					</li>
 				<?php endforeach; ?>

@@ -284,12 +284,7 @@ table.translations td.translation li:last-child {
 }
 
 table.translations td.translation span.missing {
-	color: #ddd;
-	font-style: italic;
-}
-
-table.translations td.translation span.missing a {
-	color: #ccc;
+	color: #888;
 	font-style: italic;
 }
 
@@ -325,10 +320,20 @@ table.translations.translation-sets-rtl .foreign-text {
 	direction: rtl;
 }
 
-table.translations td.original, table.translations td.translation {
+table.translations td.original,
+table.translations td.translation {
 	width: 45%;
-	word-break: break-all;
-	word-wrap: break-word;
+	vertical-align: top;
+}
+
+table.translations .no-translations td.translation {
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.translations td.original .original-text,
+table.translations td.translation .translation-text {
+	white-space: pre-wrap;
 }
 
 table.translations tr:nth-child(4n+3) {
@@ -395,8 +400,6 @@ span.context {
 	color: white;
 	font-size: 100%;
 	padding: 0.3em;
-	word-break: break-all;
-	word-wrap: break-word;
 }
 
 span.morethan90 {
@@ -404,14 +407,25 @@ span.morethan90 {
 	color: white;
 }
 
+table.translations td.original,
+table.translations td.translation,
+.editor .original,
+.editor .original_raw,
+.editor .translation,
+span.context {
+	word-break: normal;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
 /*
  * Translation Row Editor
  */
-.editor .original, .editor .original_raw {
+.editor .original,
+.editor .original_raw {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
-	word-break: break-all;
 }
 
 .editor .original_raw {
@@ -421,7 +435,6 @@ span.morethan90 {
 
 .editor .translation {
 	white-space: pre-wrap;
-	word-break: break-all;
 }
 
 .editor .strings {
@@ -705,7 +718,6 @@ table.translation-sets .stats a, table.locale-sub-projects .stats a {
 
 .invisibles {
 	color: #888;
-	font-size: 85%;
 	padding: 0;
 	margin-left: 2px;
 }
