@@ -51,13 +51,20 @@ function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	do_action_ref_array( 'gp_post_tmpl_load', array( $template, &$args ) );
 }
 
-function gp_tmpl_get_output() {
-	$args = func_get_args();
+/**
+ * Retrieves content of a template via output buffering.
+ *
+ * @since 1.0.0
+ *
+ * @see gp_tmpl_load()
+ *
+ * @param mixed ...$args Arguments to be passed to gp_tmpl_load().
+ * @return string|false
+ */
+function gp_tmpl_get_output( ...$args ) {
 	ob_start();
-	call_user_func_array( 'gp_tmpl_load', $args );
-	$contents = ob_get_contents();
-	ob_end_clean();
-	return $contents;
+	gp_tmpl_load( ...$args );
+	return ob_get_clean();
 }
 
 function gp_tmpl_header( $args = array() ) {
