@@ -63,7 +63,7 @@ if ( $project_description ) {
 <?php
 $project_class = $sub_projects ? 'with-sub-projects' : '';
 ?>
-<div id="project" class="<?php echo esc_attr( $project_class ); ?>>
+<div id="project" class="<?php echo esc_attr( $project_class ); ?>">
 
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
