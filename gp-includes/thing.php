@@ -232,7 +232,7 @@ class GP_Thing {
 	 */
 	private function _no_map( $name, $args ) {
 		$this->map_results = false;
-		$result            = call_user_func_array( array( $this, $name ), $args );
+		$result            = $this->$name( ...$args );
 		$this->map_results = true;
 
 		return $result;
