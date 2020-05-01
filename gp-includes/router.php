@@ -213,13 +213,13 @@ class GP_Router {
 						GP::$current_route         = &$route;
 						$route->before_request();
 						$route->request_running = true;
-						// make sure after_request() is called even if we $this->exit_() in the request
+						// Make sure after_request() is called even if we $this->exit_() in the request.
 						register_shutdown_function( array( &$route, 'after_request' ) );
-						call_user_func_array( array( $route, $method ), array_slice( $matches, 1 ) );
+						$route->$method( ...array_slice( $matches, 1 ) );
 						$route->after_request();
 						$route->request_running = false;
 					} else {
-						call_user_func_array( $func, array_slice( $matches, 1 ) );
+						$func( ...array_slice( $matches, 1 ) );
 					}
 					exit;
 				}
