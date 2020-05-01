@@ -135,9 +135,9 @@ function gp_url_current() {
  *
  * A leading double-slash will avoid prepending /projects/ to the path.
  *
- * @param bool|string|object $project_or_path Project path or object
- * @param string|array       $path Addition path to append to the base path
- * @param array              $query associative array of query arguments (optional)
+ * @param GP_Project|string $project_or_path Project path or object.
+ * @param string|array      $path            Addition path to append to the base path.
+ * @param array             $query           Optional. Associative array of query arguments.
  *
  * @return string
  */
