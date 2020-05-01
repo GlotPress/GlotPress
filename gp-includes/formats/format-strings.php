@@ -103,8 +103,21 @@ class GP_Format_Strings extends GP_Format {
 		 * UTF-16LE (or BE, but GP has never supported that) so to remain backwards
 		 * compatible we support both for importing, but we only export UTF-8.
 		 */
-		if ( mb_check_encoding( $file, 'UTF-16LE' ) ) {
-			$file = mb_convert_encoding( $file, 'UTF-8', 'UTF-16LE' );
+		foreach (
+			array( // See https://php.net/manual/de/function.mb-detect-encoding.php#91051
+				'UTF-8' => chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ),
+				'UTF-32BE' => chr( 0x00 ) . chr( 0x00 ) . chr( 0xFE ) . chr( 0xFF ),
+				'UTF-32LE' => chr( 0xFF ) . chr( 0xFE ) . chr( 0x00 ) . chr( 0x00 ),
+				'UTF-16LE' => chr( 0xFF ) . chr( 0xFE ),
+				'UTF-16BE' => chr( 0xFE ) . chr( 0xFF ),
+			) as $encoding => $bom
+		) {
+			if ( 0 === strpos( $file, $bom ) ) {
+				if ( 'UTF-8' !== $encoding ) {
+					$file = mb_convert_encoding( $file, 'UTF-8', $encoding );
+				}
+				break;
+			}
 		}
 
 		// Convert multi-line comments into a single line.
