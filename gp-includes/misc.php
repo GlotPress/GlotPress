@@ -437,14 +437,16 @@ function gp_is_between_exclusive( $value, $start, $end ) {
 	return $value > $start && $value < $end;
 }
 
-
 /**
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
+ *
+ * @param string $name    The name of the cookie.
+ * @param mixed  ...$args Additional arguments to be passed to setcookie().
  */
-function gp_set_cookie() {
-	$args = func_get_args();
+function gp_set_cookie( $name, ...$args ) {
+	array_unshift( $args, $name );
 
 	/**
 	 * Filter whether GlotPress should set a cookie.
@@ -466,7 +468,8 @@ function gp_set_cookie() {
 	if ( false === $args ) {
 		return;
 	}
-	call_user_func_array( 'setcookie', $args );
+
+	setcookie( ...$args );
 }
 
 /**
