@@ -337,7 +337,8 @@ class GP_Route {
 			$this->exit_message = $message;
 			return;
 		}
-		exit( esc_html( $message ) );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- May contain HTML.
+		exit( $message );
 	}
 
 	public function header( $string ) {
