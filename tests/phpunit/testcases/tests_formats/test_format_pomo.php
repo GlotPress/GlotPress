@@ -217,13 +217,13 @@ class Testable_GP_Format_PO extends GP_Format_PO {
 	/**
 	 * Make private/protected methods readable for tests.
 	 *
-	 * @param callable $name      Method to call.
+	 * @param string   $name      Method to call.
 	 * @param array    $arguments Arguments to pass when calling.
 	 * @return mixed|bool Return value of the callback, false otherwise.
 	 */
 	public function __call( $name, $arguments ) {
-		if ( in_array( $name, $this->non_accessible_methods ) ) {
-			return call_user_func_array( array( $this, $name ), $arguments );
+		if ( in_array( $name, $this->non_accessible_methods, true ) ) {
+			return $this->$name( ...$arguments );
 		}
 		return false;
 	}
