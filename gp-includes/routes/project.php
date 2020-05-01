@@ -237,8 +237,8 @@ class GP_Route_Project extends GP_Route_Main {
 
 		if ( ! is_object( $project ) ) {
 
-			$this->redirect( gp_url_public_root() );
 			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
+			$this->redirect( gp_url_public_root() );
 
 			return;
 		}
