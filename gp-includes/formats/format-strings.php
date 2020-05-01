@@ -66,7 +66,7 @@ class GP_Format_Strings extends GP_Format {
 		foreach ( $sorted_entries as $entry ) {
 			$translation = $this->escape( empty( $entry->translations ) ? $entry->singular : $entry->translations[0] );
 
-			$context    = str_replace( "\n", "\\n", $this->escape( $entry->context ) );
+			$context     = str_replace( "\n", "\\n", $this->escape( $entry->context ) );
 			$translation = str_replace( "\n", "\\n", $translation );
 			$comment     = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 

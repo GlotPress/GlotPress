@@ -9,6 +9,12 @@
 /* No comment provided by engineer. */
 "Normal String" = "Just A Normal String";
 
+/* The place where deleted posts first go */
+"Trash-noun" = "Cestino";
+
+/* The act of deleting a post into trash */
+"Trash-verb" = "Elimina";
+
 /* Me, myself & Irene */
 "baba" = "баба";
 
