@@ -97,15 +97,16 @@ class GP_Format_Strings extends GP_Format {
 		}
 
 		/**
-		 * Check to see if the input file is UTF-16LE encoded, if so convert it to UTF-8.
+		 * Check to see if the input file is UTF-16/32 encoded, if so convert it to UTF-8.
 		 *
 		 * Note, Apple recommends UTF-8 but some of their tools (like genstrings) export
-		 * UTF-16LE (or BE, but GP has never supported that) so to remain backwards
-		 * compatible we support both for importing, but we only export UTF-8.
+		 * UTF-16LE or UTF-16BE. To remain backwards compatible we support both for importing,
+		 * but we only export UTF-8.
 		 */
 		foreach (
-			array( // See https://php.net/manual/de/function.mb-detect-encoding.php#91051
-				'UTF-8' => chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ),
+			array(
+				// See https://www.php.net/manual/en/function.mb-detect-encoding.php#91051.
+				'UTF-8'    => chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ),
 				'UTF-32BE' => chr( 0x00 ) . chr( 0x00 ) . chr( 0xFE ) . chr( 0xFF ),
 				'UTF-32LE' => chr( 0xFF ) . chr( 0xFE ) . chr( 0x00 ) . chr( 0x00 ),
 				'UTF-16LE' => chr( 0xFF ) . chr( 0xFE ),
