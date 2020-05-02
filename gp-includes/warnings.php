@@ -19,7 +19,7 @@ class GP_Translation_Warnings {
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @var array
+	 * @var callable[]
 	 */
 	public $callbacks = array();
 
@@ -69,7 +69,7 @@ class GP_Translation_Warnings {
 	 *
 	 * @param string    $singular     The singular form of an original string.
 	 * @param string    $plural       The plural form of an original string.
-	 * @param array     $translations An array of translations for an original.
+	 * @param string[]  $translations An array of translations for an original.
 	 * @param GP_Locale $locale       The locale of the translations.
 	 * @return array|null Null if no issues have been found, otherwise an array
 	 *                    with warnings.
@@ -98,13 +98,13 @@ class GP_Translation_Warnings {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = call_user_func( $callback, $singular, $translation, $locale );
+					$singular_test = $callback( $singular, $translation, $locale );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
-				if ( ! is_null( $plural ) && ! $skip['plural'] ) {
-					$plural_test = call_user_func( $callback, $plural, $translation, $locale );
+				if ( null !== $plural && ! $skip['plural'] ) {
+					$plural_test = $callback( $plural, $translation, $locale );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
