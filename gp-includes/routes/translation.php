@@ -622,6 +622,16 @@ class GP_Route_Translation extends GP_Route_Main {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'set_status_edit_function' ) );
 	}
 
+	/**
+	 * Edits a single translation.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string   $project_path         The path of the project.
+	 * @param string   $locale_slug          The locale slug.
+	 * @param string   $translation_set_slug The slug of the translation set.
+	 * @param callable $edit_function        The edit function to call on the translation.
+	 */
 	private function edit_single_translation( $project_path, $locale_slug, $translation_set_slug, $edit_function ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -646,7 +656,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$this->can_approve_translation_or_forbidden( $translation );
 
-		call_user_func( $edit_function, $project, $locale, $translation_set, $translation );
+		$edit_function( $project, $locale, $translation_set, $translation );
 
 		$translations = GP::$translation->for_translation(
 			$project,
