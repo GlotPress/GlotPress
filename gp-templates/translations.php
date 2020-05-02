@@ -6,6 +6,8 @@
  * @subpackage Templates
  */
 
+/** @var GP_Translation_Set $translation_set */
+
 gp_title(
 	sprintf(
 		/* translators: 1: Translation set name. 2: Project name. */
@@ -103,6 +105,21 @@ $i = 0;
 			$url,
 			// Translators: %s is the total strings count for the current translation set.
 			sprintf( __( 'All&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->all_count() ) ),
+			$is_current_filter ? $current_filter_class : array()
+		);
+
+		$translated_filters = array(
+			'filters[translated]' => 'yes',
+			'filters[status]'     => 'current',
+		);
+
+		$is_current_filter = array() === array_diff( $translated_filters, $filters_and_sort ) && false === $additional_filters && ! $warnings_filter;
+		$current_filter    = $is_current_filter ? 'translated' : $current_filter;
+
+		$filter_links[] = gp_link_get(
+			add_query_arg( $translated_filters, $url ),
+			// Translators: %s is the translated strings count for the current translation set.
+			sprintf( __( 'Translated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->current_count() ) ),
 			$is_current_filter ? $current_filter_class : array()
 		);
 
@@ -367,7 +384,7 @@ $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
 		$root_locale          = GP_Locales::by_slug( $locale->variant_root );
 		$root_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set->slug, $locale->variant_root );
 
-		// Only set the root tranlsation flag if we have a valid root translation set, otherwise there's no point in querying it later.
+		// Only set the root translation flag if we have a valid root translation set, otherwise there's no point in querying it later.
 		if ( null !== $root_translation_set ) {
 			$has_root = true;
 		}
