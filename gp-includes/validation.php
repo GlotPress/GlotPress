@@ -155,18 +155,18 @@ class GP_Validation_Rules {
 			}
 			$args = $rule['args'];
 			array_unshift( $args, $value );
-			if ( 'positive' == $rule['kind'] ) {
-				if ( ! call_user_func_array( $callback['positive'], $args ) ) {
+			if ( 'positive' === $rule['kind'] ) {
+				if ( ! $callback['positive']( ...$args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict        = false;
 				}
 			} else {
-				if ( is_null( $callback['negative'] ) ) {
-					if ( call_user_func_array( $callback['positive'], $args ) ) {
+				if ( null === $callback['negative'] ) {
+					if ( $callback['positive']( ...$args ) ) {
 						$this->errors[] = $this->construct_error_message( $rule );
 						$verdict        = false;
 					}
-				} elseif ( ! call_user_func_array( $callback['negative'], $args ) ) {
+				} elseif ( ! $callback['negativ']( ...$args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict        = false;
 				}
