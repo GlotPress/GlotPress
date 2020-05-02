@@ -213,8 +213,8 @@ class GP_Original extends GP_Thing {
 			$wpdb->queries = array();
 
 			// Context needs to match VARCHAR(255) in the database schema.
-			if ( gp_strlen( $entry->context ) > 255 ) {
-				$entry->context                         = gp_substr( $entry->context, 0, 255 );
+			if ( mb_strlen( $entry->context ) > 255 ) {
+				$entry->context                         = mb_substr( $entry->context, 0, 255 );
 				$translations->entries[ $entry->key() ] = $entry;
 			}
 
@@ -399,11 +399,11 @@ class GP_Original extends GP_Thing {
 			return null;
 		}
 
-		$input_length       = gp_strlen( $input );
+		$input_length       = mb_strlen( $input );
 		$closest_similarity = 0;
 
 		foreach ( $other_strings as $compared_string ) {
-			$compared_string_length = gp_strlen( $compared_string );
+			$compared_string_length = mb_strlen( $compared_string );
 
 			/**
 			 * Filter the maximum length difference allowed when comparing originals for a close match when importing.

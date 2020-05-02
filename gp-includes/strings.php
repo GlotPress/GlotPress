@@ -16,102 +16,6 @@ function gp_in( $needle, $haystack ) {
 }
 
 /**
- * Compat function to mimic mb_strtolower().
- *
- * Falls back to `strtolower()` if `mb_strtolower()` doesn't exists.
- *
- * @since 1.0.0
- *
- * @param string      $str      The string being lowercased.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return int String length of `$str`.
- */
-function gp_strtolower( $str, $encoding = null ) {
-	if ( function_exists( 'mb_strtolower' ) ) {
-		if ( isset( $encoding ) ) {
-			return mb_strtolower( $str, $encoding );
-		} else {
-			return mb_strtolower( $str ); // Uses mb_internal_encoding().
-		}
-	}
-
-	return strtolower( $str );
-}
-
-/**
- * Compat function to mimic mb_strlen().
- *
- * Without a `function_exists()` check because WordPress includes
- * a compat function for `mb_strlen()`.
- *
- * @since 1.0.0
- *
- * @see _mb_strlen()
- *
- * @param string      $str      The string to retrieve the character length from.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return int String length of `$str`.
- */
-function gp_strlen( $str, $encoding = null ) {
-	if ( isset( $encoding ) ) {
-		return mb_strlen( $str, $encoding );
-	} else {
-		return mb_strlen( $str ); // Uses mb_internal_encoding().
-	}
-}
-
-/**
- * Compat function to mimic mb_stripos().
- *
- * Falls back to `stripos()` if `mb_stripos()` doesn't exists.
- *
- * @since 1.0.0
- *
- * @param string      $haystack The string from which to get the position of the first occurrence of needle.
- * @param string      $needle   The string to find in haystack.
- * @param int         $offset   The position in haystack to start searching.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return int|false The numeric position of the first occurrence of needle in the haystack string,
- *                   or false if needle is not found.
- */
-function gp_stripos( $haystack, $needle, $offset = 0, $encoding = null ) {
-	if ( function_exists( 'mb_stripos' ) ) {
-		if ( isset( $encoding ) ) {
-			return mb_stripos( $haystack, $needle, $offset, $encoding );
-		} else {
-			return mb_stripos( $haystack, $needle, $offset ); // Uses mb_internal_encoding().
-		}
-	}
-
-	return stripos( $haystack, $needle, $offset );
-}
-
-/**
- * Compat function to mimic mb_substr().
- *
- * Without a `function_exists()` check because WordPress includes
- * a compat function for `mb_substr()`.
- *
- * @since 1.0.0
- *
- * @see _mb_substr()
- *
- * @param string      $str      The string to extract the substring from.
- * @param int         $start    Position to being extraction from in `$str`.
- * @param int|null    $length   Optional. Maximum number of characters to extract from `$str`.
- *                              Default null.
- * @param string|null $encoding Optional. Character encoding to use. Default null.
- * @return string Extracted substring.
- */
-function gp_substr( $str, $start, $length, $encoding = null ) {
-	if ( isset( $encoding ) ) {
-		return mb_substr( $str, $start, $length, $encoding );
-	} else {
-		return mb_substr( $str, $start, $length ); // Uses mb_internal_encoding().
-	}
-}
-
-/**
  * Escaping for HTML attributes.
  *
  * Similar to esc_attr(), but double encode entities.
@@ -157,8 +61,8 @@ function esc_translation( $text ) {
 
 function gp_string_similarity( $str1, $str2 ) {
 
-	$length1 = gp_strlen( $str1 );
-	$length2 = gp_strlen( $str2 );
+	$length1 = mb_strlen( $str1 );
+	$length2 = mb_strlen( $str2 );
 
 	$len = min( $length1, $length2 );
 	if ( $len > 5000 ) {
@@ -204,9 +108,9 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 	for ( $i = 0; $i < $length1; $i++ ) {
 		$currentRow    = array();
 		$currentRow[0] = $i + 1;
-		$c1            = gp_substr( $str1, $i, 1 );
+		$c1            = mb_substr( $str1, $i, 1 );
 		for ( $j = 0; $j < $length2; $j++ ) {
-			$c2            = gp_substr( $str2, $j, 1 );
+			$c2            = mb_substr( $str2, $j, 1 );
 			$insertions    = $prevRow[ $j + 1 ] + 1;
 			$deletions     = $currentRow[ $j ] + 1;
 			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
@@ -244,11 +148,14 @@ function gp_sanitize_slug( $slug ) {
 	// Restore octets.
 	$slug = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $slug );
 
-	$slug = gp_strtolower( $slug, 'UTF-8' );
-
 	if ( seems_utf8( $slug ) ) {
+		if ( function_exists( 'mb_strtolower' ) ) {
+			$slug = mb_strtolower( $slug, 'UTF-8' );
+		}
 		$slug = utf8_uri_encode( $slug, 200 );
 	}
+
+	$slug = strtolower( $slug );
 
 	// Convert nbsp, ndash and mdash to hyphens.
 	$slug = str_replace( array( '%c2%a0', '%e2%80%93', '%e2%80%94' ), '-', $slug );

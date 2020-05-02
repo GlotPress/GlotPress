@@ -112,7 +112,7 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 	uasort(
 		$glossary_entries_terms,
 		function( $a, $b ) {
-			return gp_strlen( $a ) < gp_strlen( $b );
+			return mb_strlen( $a ) < mb_strlen( $b );
 		}
 	);
 
