@@ -21,18 +21,17 @@ function gp_url_path( $url = null ) {
 }
 
 /**
- * Joins paths, and takes care of slashes between them
+ * Joins paths, and takes care of slashes between them.
  *
  * Example: gp_url_join( '/project', array( 'wp', 'dev) ) -> '/project/wp/dev'
  *
  * The function will keep leading and trailing slashes of the whole URL, but won't
  * allow more than consecutive slash inside.
  *
- * @param mixed components... arbitrary number of string or path components
- * @return string URL, built of all the components, separated with /
+ * @param mixed ...$components Arbitrary number of string or path components.
+ * @return string URL, built of all the components, separated with /.
  */
-function gp_url_join() {
-	$components               = func_get_args();
+function gp_url_join( ...$components ) {
 	$components_in_flat_array = array_filter( gp_array_flatten( $components ) );
 	$components_with_slashes  = implode( '/', $components_in_flat_array );
 
