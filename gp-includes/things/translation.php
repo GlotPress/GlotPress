@@ -785,9 +785,15 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
+	/**
+	 * Retrieves the last modified date of a translation in a translation set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set to retrieve the last modified date.
+	 * @return string|false The last modified date on success, false on failure.
+	 */
 	public function last_modified( $translation_set ) {
-		global $wpdb;
-
 		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
 		// Cached as "" if no translations.
 		if ( '' === $last_modified ) {
@@ -796,7 +802,7 @@ class GP_Translation extends GP_Thing {
 			return $last_modified;
 		}
 
-		$last_modified = $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
+		$last_modified = $this->value( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' );
 		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
 		return $last_modified;
 	}

@@ -81,6 +81,8 @@ class GP_Thing {
 
 	/**
 	 * Reloads the object data from the database, based on its id
+	 *
+	 * @return GP_Thing Thing object.
 	 */
 	public function reload() {
 		global $wpdb;
@@ -88,71 +90,111 @@ class GP_Thing {
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Verified table name.
 		$fields = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $this->table WHERE id = %d", $this->id ) );
 		$this->set_fields( $fields );
+
 		return $this;
 	}
 
 	/**
-	 * Retrieves a single row from this table
+	 * Retrieves one row from the database.
 	 *
-	 * For parameters description see BPDB::prepare()
+	 * @since 1.0.0
+	 * @since 3.0.0 Added spread operator and require `$query` argument to be set.
 	 *
-	 * @return mixed an object, containing the selected row or false on error
+	 * @see wpdb::get_row()
+	 * @see wpdb::prepare()
+	 *
+	 * @param string $query   Query statement with optional sprintf()-like placeholders.
+	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+	 * @return GP_Thing|false Thing object on success, false on failure.
 	 */
-	public function one() {
+	public function one( $query, ...$args ) {
 		global $wpdb;
-		$args = func_get_args();
-		return $this->coerce( $wpdb->get_row( $this->prepare( $args ) ) );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $this->coerce( $wpdb->get_row( $this->prepare( $query, ...$args ) ) );
 	}
 
 	/**
-	 * Retrieves a single value from this table
+	 * Retrieves one variable from the database.
 	 *
-	 * For parameters description see BPDB::prepare()
+	 * @since 1.0.0
+	 * @since 3.0.0 Added spread operator and require `$query` argument to be set.
 	 *
-	 * @return scalar the result of the query or false on error
+	 * @see wpdb::get_var()
+	 * @see wpdb::prepare()
+	 *
+	 * @param string $query   Query statement with optional sprintf()-like placeholders.
+	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+	 * @return string|null Database query result (as string), or false on failure.
 	 */
-	public function value() {
+	public function value( $query, ...$args ) {
 		global $wpdb;
-		$args = func_get_args();
-		$res  = $wpdb->get_var( $this->prepare( $args ) );
-		return is_null( $res ) ? false : $res;
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$res = $wpdb->get_var( $this->prepare( $query, ...$args ) );
+
+		return null === $res ? false : $res;
 	}
 
-	public function prepare( $args ) {
+	/**
+	 * Prepares a SQL query for safe execution. Uses sprintf()-like syntax.
+	 *
+	 * @since 1.0.0
+	 * @since 3.0.0 Added spread operator and require `$query` argument to be set.
+	 *
+	 * @see wpdb::prepare()
+	 *
+	 * @param string $query   Query statement with optional sprintf()-like placeholders.
+	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+	 * @return string Sanitized query string, if there is a query to prepare.
+	 */
+	public function prepare( $query, ...$args ) {
 		global $wpdb;
-		if ( 1 == count( $args ) ) {
-			return $args[0];
-		} else {
-			$query = array_shift( $args );
-			return $wpdb->prepare( $query, $args );
+
+		if ( ! $args ) {
+			return $query;
 		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->prepare( $query, ...$args );
 	}
 
 
 	/**
-	 * Retrieves multiple rows from this table
-	 *
-	 * For parameters description see `$wpdb->prepare()`.
+	 * Retrieves an entire result set from the database, mapped to GP_Thing.
 	 *
 	 * @since 1.0.0
+	 * @since 3.0.0 Added spread operator and require `$query` argument to be set.
 	 *
-	 * @return mixed An object, containing the selected row or false on error.
+	 * @see wpdb::get_results()
+	 * @see wpdb::prepare()
+	 *
+	 * @param string $query   Query statement with optional sprintf()-like placeholders.
+	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+	 * @return GP_Thing[] A list of GP_Thing objects.
 	 */
-	public function many() {
+	public function many( $query, ...$args ) {
 		global $wpdb;
-		$args = func_get_args();
-		return $this->map( $wpdb->get_results( $this->prepare( $args ) ) );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $this->map( $wpdb->get_results( $this->prepare( $query, ...$args ) ) );
 	}
 
 	/**
-	 * [many_no_map description]
+	 * Retrieves an entire result set from the database.
 	 *
 	 * @since 1.0.0
+	 * @since 3.0.0 Added spread operator and require `$query` argument to be set.
 	 *
-	 * @return mixed
+	 * @see wpdb::get_results()
+	 * @see wpdb::prepare()
+	 *
+	 * @param string $query   Query statement with optional sprintf()-like placeholders.
+	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
+	 * @return object[] Database query results.
 	 */
-	public function many_no_map() {
-		$args = func_get_args();
+	public function many_no_map( $query, ...$args ) {
+		array_unshift( $args, $query );
 		return $this->_no_map( 'many', $args );
 	}
 
@@ -251,12 +293,12 @@ class GP_Thing {
 	}
 
 	/**
-	 * [map description]
+	 * Maps database results to their GP_Thing presentations.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed $results The results, mapped.
-	 * @return mixed
+	 * @param mixed $results The results from the database.
+	 * @return GP_Thing[]|object[] If enabled, a list of objects mapped to GP_Thing.
 	 */
 	public function map( $results ) {
 		if ( isset( $this->map_results ) && ! $this->map_results ) {
@@ -279,13 +321,20 @@ class GP_Thing {
 	 * Performs a database query.
 	 *
 	 * @since 1.0.0
+	 * @since 3.0.0 Added spread operator and require `$query` argument to be set.
 	 *
-	 * @return mixed
+	 * @see wpdb::query()
+	 * @see wpdb::prepare()
+	 *
+	 * @param string $query   Database query.
+	 * @param mixed  ...$args Optional arguments to pass to the prepare method.
+	 * @return int|bool Number of rows affected/selected or false on error.
 	 */
-	public function query() {
+	public function query( $query, ...$args ) {
 		global $wpdb;
-		$args = func_get_args();
-		return $wpdb->query( $this->prepare( $args ) );
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Custom prepare function.
+		return $wpdb->query( $this->prepare( $query, ...$args ) );
 	}
 
 	/**
@@ -347,11 +396,19 @@ class GP_Thing {
 		return ! is_null( $wpdb->update( $this->table, $fields_for_save, $where, $field_formats, $where_formats ) );
 	}
 
+	/**
+	 * Retrieves an existing thing.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Thing|int $thing_or_id ID of a thing or GP_Thing object.
+	 * @return GP_Thing|false Thing object on success, false on failure.
+	 */
 	public function get( $thing_or_id ) {
-		global $wpdb;
 		if ( ! $thing_or_id ) {
 			return false;
 		}
+
 		$id = is_object( $thing_or_id ) ? $thing_or_id->id : $thing_or_id;
 		return $this->find_one( array( 'id' => $id ) );
 	}
@@ -424,12 +481,12 @@ class GP_Thing {
 	 *
 	 * @param array $where An array of conditions to use to for a SQL "where" clause, if not passed, no rows will be deleted.
 	 */
-	public function delete_many( $where = null ) {
-		if ( null !== $where ) {
-			return $this->delete_all( $where );
+	public function delete_many( array $where ) {
+		if ( empty( $where ) ) {
+			return false;
 		}
 
-		return false;
+		return $this->delete_all( $where );
 	}
 
 	/**
@@ -508,6 +565,14 @@ class GP_Thing {
 		return array_merge( $formats, array_fill_keys( $this->int_fields, '%d' ) );
 	}
 
+	/**
+	 * Coerces data to being a thing object.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array|object $thing Data about the thing retrieved from the database.
+	 * @return GP_Thing|false Thing object on success, false on failure.
+	 */
 	public function coerce( $thing ) {
 		if ( ! $thing || is_wp_error( $thing ) ) {
 			return false;
@@ -553,8 +618,25 @@ class GP_Thing {
 		return true;
 	}
 
+	/**
+	 * Builds SQL conditions from a PHP value.
+	 *
+	 * Examples:
+	 *   Input: `null`
+	 *   Output: `IS NULL`
+	 *
+	 *   Input: `'foo'`
+	 *   Output: `= 'foo'`
+	 *
+	 *   Input: `1` or `'1'`
+	 *   Output: `= 1`
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $php_value The PHP value to convert to conditions.
+	 * @return string SQL conditions.
+	 */
 	public function sql_condition_from_php_value( $php_value ) {
-		global $wpdb;
 		if ( is_array( $php_value ) ) {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
