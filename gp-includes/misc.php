@@ -207,14 +207,11 @@ function gp_populate_notices() {
  *      $result[1][1] = "Sixth"
  *
  * Or some other random result.
+ *
+ * @param array ...$args Array arguments.
+ * @return array|false Array on success, false on failure.
  */
-function gp_array_zip() {
-	$args = func_get_args();
-
-	if ( ! is_array( $args ) ) {
-		return false;
-	}
-
+function gp_array_zip( ...$args ) {
 	if ( empty( $args ) ) {
 		return array();
 	}
