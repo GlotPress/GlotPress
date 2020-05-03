@@ -1,6 +1,90 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+**Breaking Changes**
+
+* Developers: Remove all compatibility functions for multibyte string functions. ([#1123](https://github.com/GlotPress/GlotPress-WP/issues/1123))
+* Developers: Require the query argument to be set for all database query related `GP_Thing` methods.
+
+## 3.0.0-alpha.1 (May 2, 2020)
+
+**Breaking Changes**
+
+* GlotPress now requires PHP 7.2 or newer and WordPress 4.6 or newer. ([#572](https://github.com/GlotPress/GlotPress-WP/issues/572), [#1097](https://github.com/GlotPress/GlotPress-WP/issues/1097), [#1118](https://github.com/GlotPress/GlotPress-WP/issues/1118))
+* iOS .strings file import/exports now are UTF8 encoded instead of UTF16-LE. ([#903](https://github.com/GlotPress/GlotPress-WP/issues/903))
+* Glossary entries are now case insensitive. ([#703](https://github.com/GlotPress/GlotPress-WP/issues/703))
+* Developers: Various template changes. ([#914](https://github.com/GlotPress/GlotPress-WP/issues/914), [#1102](https://github.com/GlotPress/GlotPress-WP/issues/1102))
+* Developers: Remove `GP_CLI` and `GP_Translation_Set_Script`. ([#452](https://github.com/GlotPress/GlotPress-WP/issues/452))
+* Developers: Remove `gp_urldecode_deep()`. ([#1053](https://github.com/GlotPress/GlotPress-WP/issues/1053))
+* Developers: Remove `gp_url_ssl()`. ([#1055](https://github.com/GlotPress/GlotPress-WP/issues/1055))
+
+**Bugfixes**
+
+* Fix incorrect key in Apple strings file exports. ([#1105](https://github.com/GlotPress/GlotPress-WP/issues/1105))
+* Fix querying translations by priority. ([#664](https://github.com/GlotPress/GlotPress-WP/issues/664))
+* Fix glossary import nonce check. ([#673](https://github.com/GlotPress/GlotPress-WP/issues/673))
+* Fix flushing of existing glossary on import. ([#675](https://github.com/GlotPress/GlotPress-WP/issues/675))
+* Fix removing of starting newline from translations. ([#701](https://github.com/GlotPress/GlotPress-WP/issues/701))
+* Fix glossary tooltips after editing a row. ([#704](https://github.com/GlotPress/GlotPress-WP/issues/704))
+* Fix duplicate translation entry on dismissing warnings. ([#699](https://github.com/GlotPress/GlotPress-WP/issues/699))
+* Fix missing styles for jQuery UI. ([#758](https://github.com/GlotPress/GlotPress-WP/issues/758))
+* Improve calculation of translation status counts. ([#790](https://github.com/GlotPress/GlotPress-WP/issues/790))
+* Fix missing escaping for quotation marks in Android output. ([#809](https://github.com/GlotPress/GlotPress-WP/issues/809))
+* Fix translation preview with long words. ([#875](https://github.com/GlotPress/GlotPress-WP/issues/875), [#1102](https://github.com/GlotPress/GlotPress-WP/issues/1102))
+* Fix import of escaped unicodes in Android strings files. ([#910](https://github.com/GlotPress/GlotPress-WP/issues/910))
+* Fix duplicate glossary tooltips for the same term. ([#915](https://github.com/GlotPress/GlotPress-WP/issues/915))
+* Fix long strings for Apple strings file export. ([#921](https://github.com/GlotPress/GlotPress-WP/issues/921))
+* Fix submitting a translation containing the UTF-8 characters → and ↵. ([#648](https://github.com/GlotPress/GlotPress-WP/issues/648))
+* Fix warnings count and filter view for warnings differ. ([#919](https://github.com/GlotPress/GlotPress-WP/issues/919))
+* Fix project paths with utf8mb4 characters. ([#415](https://github.com/GlotPress/GlotPress-WP/issues/415))
+* Fix mangled HTML tags in originals with some glossary entries. ([#869](https://github.com/GlotPress/GlotPress-WP/issues/869))
+* Prevent adding duplicate glossary entries. ([#745](https://github.com/GlotPress/GlotPress-WP/issues/745))
+* Improve position of action buttons in the translations editor. ([#684](https://github.com/GlotPress/GlotPress-WP/issues/684))
+* Abort changing translation status when the translation has been altered. ([#707](https://github.com/GlotPress/GlotPress-WP/issues/707))
+* Fix multi-select for forward and backwards selections. ([#979](https://github.com/GlotPress/GlotPress-WP/issues/979))
+* Locales: Remove invalid 'me' language code for Montenegrin. ([#619](https://github.com/GlotPress/GlotPress-WP/issues/619))
+* Locales: Remove extra control character after locale name for Czech. ([#696](https://github.com/GlotPress/GlotPress-WP/issues/696))
+* Locales: Fix Google code for German (Switzerland). ([#743](https://github.com/GlotPress/GlotPress-WP/issues/743))
+* Locales: Fix native locale name for Uighur. ([#870](https://github.com/GlotPress/GlotPress-WP/issues/870))
+* Locales: Fix plural expression for Persian locales. ([#1012](https://github.com/GlotPress/GlotPress-WP/issues/1012))
+
+**Features**
+
+* Add locale variants support. ([#226](https://github.com/GlotPress/GlotPress-WP/issues/226))
+* Support XLIFF tags in Android imports. ([#628](https://github.com/GlotPress/GlotPress-WP/issues/628))
+* Mark new projects as active by default. ([#662](https://github.com/GlotPress/GlotPress-WP/issues/662))
+* Highlight current selected translation filters. ([#764](https://github.com/GlotPress/GlotPress-WP/issues/764))
+* Block adding glossary terms containing punctuation with error/warning. ([#768](https://github.com/GlotPress/GlotPress-WP/issues/768))
+* Show all translation warnings at once. ([#370](https://github.com/GlotPress/GlotPress-WP/issues/370))
+* Add tooltips to the accept/reject/fuzzy buttons. ([#460](https://github.com/GlotPress/GlotPress-WP/issues/460))
+* Add a second bulk action toolbar at the bottom of the translations list. ([#793](https://github.com/GlotPress/GlotPress-WP/issues/793))
+* Make notices dismissable. ([#658](https://github.com/GlotPress/GlotPress-WP/issues/658))
+* Add Korean locale to warnings length exclusions. ([#850](https://github.com/GlotPress/GlotPress-WP/pull/850))
+* Show fuzzy, waiting, and warnings filters to everyone. ([#881](https://github.com/GlotPress/GlotPress-WP/issues/881))
+* Provide translation count when filtering. ([#925](https://github.com/GlotPress/GlotPress-WP/issues/925))
+* Highlight glossary terms on translation previews. ([#899](https://github.com/GlotPress/GlotPress-WP/issues/899))
+* Add translation filter option to search in originals or translations only. ([#860](https://github.com/GlotPress/GlotPress-WP/issues/860))
+* Add translation filter 'with plural'. ([#959](https://github.com/GlotPress/GlotPress-WP/issues/959))
+* Add a 'translated' filter to match table column. ([#1121](https://github.com/GlotPress/GlotPress-WP/issues/1121))
+* Remove default sorting for untranslated view. ([#1106](https://github.com/GlotPress/GlotPress-WP/issues/1106))
+* Locales: Add Mauritian. ([#909](https://github.com/GlotPress/GlotPress-WP/issues/909))
+* Locales: Add WordPress locale for Chinese (Singapore). ([#823](https://github.com/GlotPress/GlotPress-WP/issues/823))
+* Locales: Add Northern Sotho. ([#1049](https://github.com/GlotPress/GlotPress-WP/issues/1049))
+* Locales: Add Fula. ([#1048](https://github.com/GlotPress/GlotPress-WP/issues/1048))
+* Locales: Add Papiamento (Curaçao and Bonaire) and Papiamento (Aruba). ([#1047](https://github.com/GlotPress/GlotPress-WP/issues/1047))
+* Locales: Add Maithili. ([#1029](https://github.com/GlotPress/GlotPress-WP/issues/1029))
+* Locales: Add Lower Sorbian, Ch’ti (France), Wolof. ([#1025](https://github.com/GlotPress/GlotPress-WP/issues/1025))
+* Locales: Add Bhojpuri, Bodo, German (Austria), Spanish (Dominican Republic), Spanish (Honduras), Upper Sorbian, Igbo, Karakalpak, N’ko, and Portuguese (Angola). ([#994](https://github.com/GlotPress/GlotPress-WP/issues/994))
+* Developers: Add filter to customize translations before saving. ([#517](https://github.com/GlotPress/GlotPress-WP/issues/517))
+* Developers: Add actions when a translation set is created/saved/deleted. ([#659](https://github.com/GlotPress/GlotPress-WP/issues/659))
+* Developers: Pass previous state to saved actions. ([#335](https://github.com/GlotPress/GlotPress-WP/issues/335))
+* Developers: Add filter to customize path prefix for locale glossaries. ([#655](https://github.com/GlotPress/GlotPress-WP/issues/655))
+
+
+Thanks to all the contributors: Alex Kirk, Alin Marcu, Chris Gårdenberg, Daniel James, Daniele Scasciafratte, David Stone, Dominik Schilling, Garrett Hyder, Greg Ross, Ignacio, Pedro Mendonça, Petya Raykovska, Ramon, Sergey Biryukov, SVANNER, Tor-Björn Fjellner and Yoav Farhi.
+
 ## 2.3.1 (March 1, 2017)
 
 **Bugfixes**
