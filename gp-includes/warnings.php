@@ -173,8 +173,8 @@ class GP_Builtin_Translation_Warnings {
 			return true;
 		}
 
-		$len_src   = gp_strlen( $original );
-		$len_trans = gp_strlen( $translation );
+		$len_src   = mb_strlen( $original );
+		$len_trans = mb_strlen( $translation );
 		if (
 			! (
 				$this->length_lower_bound * $len_src < $len_trans &&
