@@ -86,10 +86,16 @@ class GP_Glossary_Entry extends GP_Thing {
 		return $this->many( "SELECT * FROM $this->table WHERE glossary_id= %d ORDER by term ASC", $glossary_id );
 	}
 
+	/**
+	 * Retrieves the last modified date of a entry in a glossary.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Glossary $glossary The glossary to retrieve the last modified date.
+	 * @return string The last modified date on success, empty string on failure.
+	 */
 	public function last_modified( $glossary ) {
-		global $wpdb;
-
-		return $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
+		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' );
 	}
 }
 

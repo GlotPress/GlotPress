@@ -651,6 +651,13 @@ class GP_Translation_Set extends GP_Thing {
 		return $original_count ? floor( $this->current_count() / $original_count * 100 ) : 0;
 	}
 
+	/**
+	 * Retrieves the last modified date of a translation in this translation set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|false The last modified date on success, false on failure.
+	 */
 	public function last_modified() {
 		return GP::$translation->last_modified( $this );
 	}
