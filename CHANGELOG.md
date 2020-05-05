@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Developers: Remove `GP_CLI` and `GP_Translation_Set_Script`. ([#452](https://github.com/GlotPress/GlotPress-WP/issues/452))
 * Developers: Remove `gp_urldecode_deep()`. ([#1053](https://github.com/GlotPress/GlotPress-WP/issues/1053))
 * Developers: Remove `gp_url_ssl()`. ([#1055](https://github.com/GlotPress/GlotPress-WP/issues/1055))
+* Developers: Types of integer fields are now always normalized to integers. ([#1050](https://github.com/GlotPress/GlotPress-WP/issues/1050))
 
 **Bugfixes**
 
