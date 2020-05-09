@@ -147,7 +147,6 @@ class GP_Locales {
 		$ak->native_name = 'Akan';
 		$ak->lang_code_iso_639_1 = 'ak';
 		$ak->lang_code_iso_639_2 = 'aka';
-		$ak->wp_locale = 'ak';
 		$ak->slug = 'ak';
 		$ak->facebook_locale = 'ak_GH';
 
@@ -1114,7 +1113,6 @@ class GP_Locales {
 		$gn->native_name = 'Avañe\'ẽ';
 		$gn->lang_code_iso_639_1 = 'gn';
 		$gn->lang_code_iso_639_2 = 'grn';
-		$gn->wp_locale = 'gn';
 		$gn->slug = 'gn';
 
 		$gsw = new GP_Locale();
@@ -1123,7 +1121,6 @@ class GP_Locales {
 		$gsw->lang_code_iso_639_2 = 'gsw';
 		$gsw->lang_code_iso_639_3 = 'gsw';
 		$gsw->country_code = 'ch';
-		$gsw->wp_locale = 'gsw';
 		$gsw->slug = 'gsw';
 
 		$gu = new GP_Locale();
@@ -2014,7 +2011,6 @@ class GP_Locales {
 		$rue->english_name = 'Rusyn';
 		$rue->native_name = 'Русиньскый';
 		$rue->lang_code_iso_639_3 = 'rue';
-		$rue->wp_locale = 'rue';
 		$rue->slug = 'rue';
 		$rue->nplurals = 3;
 		$rue->plural_expression = '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)';
@@ -2025,7 +2021,6 @@ class GP_Locales {
 		$rup->lang_code_iso_639_2 = 'rup';
 		$rup->lang_code_iso_639_3 = 'rup';
 		$rup->country_code = 'mk';
-		$rup->wp_locale = 'rup_MK';
 		$rup->slug = 'rup';
 
 		$sah = new GP_Locale();
@@ -2475,7 +2470,6 @@ class GP_Locales {
 		$wa->lang_code_iso_639_1 = 'wa';
 		$wa->lang_code_iso_639_2 = 'wln';
 		$wa->country_code = 'be';
-		$wa->wp_locale = 'wa';
 		$wa->slug = 'wa';
 
 		$wol = new GP_Locale();
@@ -2507,7 +2501,6 @@ class GP_Locales {
 		$xmf->native_name = 'მარგალური ნინა';
 		$xmf->lang_code_iso_639_3 = 'xmf';
 		$xmf->country_code = 'ge';
-		$xmf->wp_locale = 'xmf';
 		$xmf->slug = 'xmf';
 
 		$yi = new GP_Locale();
