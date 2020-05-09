@@ -86,6 +86,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( $language ) {
 			$this->assertSame( $language->formula, $locale->plural_expression, $locale->slug );
+			$this->assertSame( count( $language->categories ), $locale->nplurals, $locale->slug );
 			return;
 		}
 
@@ -106,6 +107,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( $language ) {
 			$this->assertSame( $language->formula, $locale->plural_expression, $locale->slug );
+			$this->assertSame( count( $language->categories ), $locale->nplurals, $locale->slug );
 			return;
 		}
 
@@ -125,6 +127,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		}
 
 		$this->assertSame( $language->formula, $locale->plural_expression, $locale->slug );
+		$this->assertSame( count( $language->categories ), $locale->nplurals, $locale->slug );
 	}
 
 	public function data_provider_locales() {
