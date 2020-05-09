@@ -1082,7 +1082,7 @@ class GP_Locales {
 		$ga->slug = 'ga';
 		$ga->wp_locale = 'ga';
 		$ga->nplurals = 5;
-		$ga->plural_expression = 'n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : 4';
+		$ga->plural_expression = '(n == 1) ? 0 : ((n == 2) ? 1 : ((n >= 3 && n <= 6) ? 2 : ((n >= 7 && n <= 10) ? 3 : 4)))';
 		$ga->google_code = 'ga';
 		$ga->facebook_locale = 'ga_IE';
 
