@@ -465,6 +465,16 @@ class GP_Locales {
 		$co->wp_locale = 'co';
 		$co->slug = 'co';
 
+		$cor = new GP_Locale();
+		$cor->english_name = 'Cornish';
+		$cor->native_name = 'Kernewek';
+		$cor->lang_code_iso_639_1 = 'kw';
+		$cor->lang_code_iso_639_2 = 'cor';
+		$cor->lang_code_iso_639_2 = 'cor';
+		$cor->country_code = 'gb';
+		$cor->wp_locale = 'cor';
+		$cor->slug = 'cor';
+
 		$cr = new GP_Locale();
 		$cr->english_name = 'Cree';
 		$cr->native_name = 'ᓀᐦᐃᔭᐍᐏᐣ';
