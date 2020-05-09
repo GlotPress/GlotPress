@@ -1002,6 +1002,8 @@ class GP_Locales {
 		$fr_be->country_code = 'be';
 		$fr_be->wp_locale = 'fr_BE';
 		$fr_be->slug = 'fr-be';
+		$fr_be->nplurals = 2;
+		$fr_be->plural_expression = 'n > 1';
 		$fr_be->variant_root = $fr->slug;
 		$fr->variants[ $fr_be->slug ] = $fr_be->english_name;
 
@@ -1013,6 +1015,8 @@ class GP_Locales {
 		$fr_ca->country_code = 'ca';
 		$fr_ca->wp_locale = 'fr_CA';
 		$fr_ca->slug = 'fr-ca';
+		$fr_ca->nplurals = 2;
+		$fr_ca->plural_expression = 'n > 1';
 		$fr_ca->facebook_locale = 'fr_CA';
 		$fr_ca->variant_root = $fr->slug;
 		$fr->variants[ $fr_ca->slug ] = $fr_ca->english_name;
@@ -1024,6 +1028,8 @@ class GP_Locales {
 		$fr_ch->lang_code_iso_639_2 = 'fra';
 		$fr_ch->country_code = 'ch';
 		$fr_ch->slug = 'fr-ch';
+		$fr_ch->nplurals = 2;
+		$fr_ch->plural_expression = 'n > 1';
 		$fr_ch->variant_root = $fr->slug;
 		$fr->variants[ $fr_ch->slug ] = $fr_ch->english_name;
 
