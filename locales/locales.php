@@ -1119,6 +1119,16 @@ class GP_Locales {
 		$ga->google_code = 'ga';
 		$ga->facebook_locale = 'ga_IE';
 
+		$gax = new GP_Locale();
+		$gax->english_name = 'Borana-Arsi-Guji Oromo';
+		$gax->native_name = 'Afaan Oromoo';
+		$gax->lang_code_iso_639_3 = 'gax';
+		$gax->country_code = 'et';
+		$gax->slug = 'gax';
+		$gax->wp_locale = 'gax';
+		$gax->nplurals = 2;
+		$gax->plural_expression = 'n > 1';
+
 		$gd = new GP_Locale();
 		$gd->english_name = 'Scottish Gaelic';
 		$gd->native_name = 'Gàidhlig';
