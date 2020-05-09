@@ -1591,7 +1591,7 @@ class GP_Locales {
 		$mk->wp_locale = 'mk_MK';
 		$mk->slug = 'mk';
 		$mk->nplurals = 2;
-		$mk->plural_expression = 'n==1 || n%10==1 ? 0 : 1';
+		$mk->plural_expression = 'n % 10 != 1 || n % 100 == 11';
 		$mk->google_code = 'mk';
 		$mk->facebook_locale = 'mk_MK';
 
