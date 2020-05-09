@@ -2283,7 +2283,7 @@ class GP_Locales {
 		$tg->lang_code_iso_639_1 = 'tg';
 		$tg->lang_code_iso_639_2 = 'tgk';
 		$tg->country_code = 'tj';
-		$tah->wp_locale = 'tg';
+		$tg->wp_locale = 'tg';
 		$tg->slug = 'tg';
 		$tg->google_code = 'tg';
 		$tg->facebook_locale = 'tg_TJ';
