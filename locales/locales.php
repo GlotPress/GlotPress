@@ -1301,6 +1301,8 @@ class GP_Locales {
 		$ike->lang_code_iso_639_2 = 'iku';
 		$ike->country_code = 'ca';
 		$ike->slug = 'ike';
+		$ike->nplurals = 3;
+		$ike->plural_expression = '(n == 1) ? 0 : ((n == 2) ? 1 : 2)';
 
 		$ilo = new GP_Locale();
 		$ilo->english_name = 'Iloko';
