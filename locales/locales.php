@@ -1918,7 +1918,7 @@ class GP_Locales {
 		$pl->wp_locale = 'pl_PL';
 		$pl->slug = 'pl';
 		$pl->nplurals = 3;
-		$pl->plural_expression = '(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+		$pl->plural_expression = '(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)';
 		$pl->google_code = 'pl';
 		$pl->facebook_locale = 'pl_PL';
 
