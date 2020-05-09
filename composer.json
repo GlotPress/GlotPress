@@ -24,7 +24,7 @@
     "wp-coding-standards/wpcs": "^2.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
     "gettext/languages": "^2.6",
-    "phpunit/phpunit": "^7"
+    "phpunit/phpunit": "^8"
   },
   "scripts": {
     "format": "@php ./vendor/bin/phpcbf --report=summary,source",
