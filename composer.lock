@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c612db3f6e7616385b34db3a7bebeb8f",
+    "content-hash": "6eb96bfb3ca31175729d424373d300d9",
     "packages": [],
     "packages-dev": [
         {
@@ -1723,20 +1723,6 @@
                 "polyfill",
                 "portable"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-27T09:26:54+00:00"
         },
         {
@@ -1874,16 +1860,16 @@
         },
         {
             "name": "xwp/wp-dev-lib",
-            "version": "1.5.0",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xwp/wp-dev-lib.git",
-                "reference": "3e3ced3fdc5c47bbb59cde2f693ce115f2865f82"
+                "reference": "a0e93ff45b3ff1a5488195d935edaf31af49eaf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xwp/wp-dev-lib/zipball/3e3ced3fdc5c47bbb59cde2f693ce115f2865f82",
-                "reference": "3e3ced3fdc5c47bbb59cde2f693ce115f2865f82",
+                "url": "https://api.github.com/repos/xwp/wp-dev-lib/zipball/a0e93ff45b3ff1a5488195d935edaf31af49eaf5",
+                "reference": "a0e93ff45b3ff1a5488195d935edaf31af49eaf5",
                 "shasum": ""
             },
             "type": "library",
@@ -1893,22 +1879,21 @@
             ],
             "authors": [
                 {
-                    "name": "Weston Ruter",
-                    "email": "weston@xwp.co",
-                    "homepage": "https://weston.ruter.net"
-                },
-                {
                     "name": "XWP",
-                    "email": "engage@xwp.co",
+                    "email": "technology@xwp.co",
                     "homepage": "https://xwp.co"
                 }
             ],
             "description": "Common code used during development of WordPress plugins and themes",
             "homepage": "https://github.com/xwp/wp-dev-lib",
             "keywords": [
+                "development",
+                "plugins",
+                "themes",
+                "tools",
                 "wordpress"
             ],
-            "time": "2020-02-10T09:35:25+00:00"
+            "time": "2020-04-28T02:24:13+00:00"
         }
     ],
     "aliases": [],
@@ -1919,6 +1904,5 @@
     "platform": {
         "php": ">=7.2"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
