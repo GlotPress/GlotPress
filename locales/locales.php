@@ -952,7 +952,6 @@ class GP_Locales {
 		$ff_sn->country_code = 'sn';
 		$ff_sn->wp_locale = 'fuc';
 		$ff_sn->slug = 'fuc';
-		$ff_sn->plural_expression = 'n!=1';
 
 		$fi = new GP_Locale();
 		$fi->english_name = 'Finnish';
