@@ -2205,7 +2205,7 @@ class GP_Locales {
 		$tah->lang_code_iso_639_1 = 'ty';
 		$tah->lang_code_iso_639_2 = 'tah';
 		$tah->lang_code_iso_639_3 = 'tah';
-		$tah->country_code = 'fr';
+		$tah->country_code = 'pf';
 		$tah->wp_locale = 'tah';
 		$tah->slug = 'tah';
 		$tah->nplurals = 2;
