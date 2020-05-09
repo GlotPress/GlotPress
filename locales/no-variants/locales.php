@@ -842,6 +842,16 @@ class GP_Locales {
 		$es_us->country_code = 'us';
 		$es_us->slug = 'es-us';
 
+		$es_uy = new GP_Locale();
+		$es_uy->english_name = 'Spanish (Uruguay)';
+		$es_uy->native_name = 'Español de Uruguay';
+		$es_uy->lang_code_iso_639_1 = 'es';
+		$es_uy->lang_code_iso_639_2 = 'spa';
+		$es_uy->lang_code_iso_639_3 = 'spa';
+		$es_uy->country_code = 'uy';
+		$es_uy->wp_locale = 'es_UY';
+		$es_uy->slug = 'es-uy';
+
 		$es_ve = new GP_Locale();
 		$es_ve->english_name = 'Spanish (Venezuela)';
 		$es_ve->native_name = 'Español de Venezuela';
