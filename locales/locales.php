@@ -106,10 +106,6 @@ class GP_Locale {
 		return $f( $number );
 	}
 
-	public function __toString() {
-		return "[{$this->slug}] " . $this->combined_name();
-	}
-
 }
 
 endif;

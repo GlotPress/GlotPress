@@ -5,7 +5,6 @@
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
-	verbose="true"
 	>
 	<testsuites>
 		<testsuite name="glotpress">
@@ -25,14 +24,6 @@
 			</exclude>
 		</whitelist>
 	</filter>
-
-	<!--
-	<groups>
-		<exclude>
-			<group>locales</group>
-		</exclude>
-	</groups>
-	-->
 
 	<logging>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>

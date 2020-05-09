@@ -58,10 +58,12 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 	/**
 	 * @dataProvider data_provider_locales
+	 *
+	 * @param GP_locale $locale The locale to test.
 	 */
 	public function test_locale_plural( $locale ) {
 		if ( in_array( $locale->slug, self::SKIP_LOCALES, true ) ) {
-			$this->markTestSkipped( "{$locale} skipped, requires discussion\n" );
+			$this->markTestSkipped( "{$locale->slug} skipped, requires research" );
 		}
 
 		$id = '';
@@ -83,7 +85,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( $language ) {
-			$this->assertSame( $language->formula, $locale->plural_expression, $locale );
+			$this->assertSame( $language->formula, $locale->plural_expression, $locale->slug );
 			return;
 		}
 
@@ -103,7 +105,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( $language ) {
-			$this->assertSame( $language->formula, $locale->plural_expression, $locale );
+			$this->assertSame( $language->formula, $locale->plural_expression, $locale->slug );
 			return;
 		}
 
@@ -119,10 +121,10 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		$language = Gettext\Languages\Language::getById( $id );
 		if ( ! $language ) {
-			$this->markTestSkipped( "{$locale} with {$id} does not exist\n" );
+			$this->markTestSkipped( "{$locale->slug} not found in CLDR" );
 		}
 
-		$this->assertSame( $language->formula, $locale->plural_expression, $locale );
+		$this->assertSame( $language->formula, $locale->plural_expression, $locale->slug );
 	}
 
 	public function data_provider_locales() {
