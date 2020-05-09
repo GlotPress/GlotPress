@@ -1096,7 +1096,7 @@ class GP_Locales {
 		$gd->wp_locale = 'gd';
 		$gd->slug = 'gd';
 		$gd->nplurals = 4;
-		$gd->plural_expression = '(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3';
+		$gd->plural_expression = '(n == 1 || n == 11) ? 0 : ((n == 2 || n == 12) ? 1 : ((n >= 3 && n <= 10 || n >= 13 && n <= 19) ? 2 : 3))';
 		$gd->google_code = 'gd';
 
 		$gl = new GP_Locale();
