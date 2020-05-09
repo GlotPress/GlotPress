@@ -7,6 +7,7 @@
  */
 
 require __DIR__ . '/includes/constants.php';
+require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
 
 require_once WP_TESTS_DIR . '/includes/functions.php';
 

@@ -22,10 +22,14 @@
     "xwp/wp-dev-lib": "^1.5",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
     "wp-coding-standards/wpcs": "^2.2",
-    "phpcompatibility/phpcompatibility-wp": "^2.1"
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "gettext/languages": "^2.6",
+    "phpunit/phpunit": "^7"
   },
   "scripts": {
-    "format": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --report=summary,source",
-    "lint": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --report=summary,source"
+    "format": "@php ./vendor/bin/phpcbf --report=summary,source",
+    "lint": "@php ./vendor/bin/phpcs --report=summary,source",
+    "test": "@php ./vendor/bin/phpunit",
+    "test:locales": "@test --group locales"
   }
 }
