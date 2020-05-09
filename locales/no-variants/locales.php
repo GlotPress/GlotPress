@@ -166,7 +166,9 @@ class GP_Locales {
 		$an->native_name = 'Aragonés';
 		$an->lang_code_iso_639_1 = 'an';
 		$an->lang_code_iso_639_2 = 'arg';
+		$an->lang_code_iso_639_3 = 'arg';
 		$an->country_code = 'es';
+		$an->wp_locale = 'arg';
 		$an->slug = 'an';
 
 		$ar = new GP_Locale();
