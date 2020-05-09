@@ -1476,7 +1476,7 @@ class GP_Locales {
 		$lin->wp_locale = 'lin';
 		$lin->slug = 'lin';
 		$lin->nplurals = 2;
-		$lin->plural_expression = 'n>1';
+		$lin->plural_expression = 'n > 1';
 		$lin->facebook_locale = 'ln_CD';
 
 		$lmo = new GP_Locale();
