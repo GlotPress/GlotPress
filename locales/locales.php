@@ -366,14 +366,25 @@ class GP_Locales {
 		$bm->slug = 'bm';
 
 		$bn_bd = new GP_Locale();
-		$bn_bd->english_name = 'Bengali';
+		$bn_bd->english_name = 'Bengali (Bangladesh)';
 		$bn_bd->native_name = 'বাংলা';
 		$bn_bd->lang_code_iso_639_1 = 'bn';
-		$bn_bd->country_code = 'bn';
+		$bn_bd->country_code = 'bd';
 		$bn_bd->wp_locale = 'bn_BD';
 		$bn_bd->slug = 'bn';
 		$bn_bd->google_code = 'bn';
-		$bn_bd->facebook_locale = 'bn_IN';
+
+		$bn_in = new GP_Locale();
+		$bn_in->english_name = 'Bengali (India)';
+		$bn_in->native_name = 'বাংলা (ভারত)';
+		$bn_in->lang_code_iso_639_1 = 'bn';
+		$bn_in->country_code = 'in';
+		$bn_in->wp_locale = 'bn_IN';
+		$bn_in->slug = 'bn-in';
+		$bn_in->google_code = 'bn';
+		$bn_in->facebook_locale = 'bn_IN';
+		$bn_in->nplurals = 2;
+		$bn_in->plural_expression = 'n > 1';
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
