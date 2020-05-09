@@ -2226,7 +2226,7 @@ class GP_Locales {
 		$tg->native_name = 'Тоҷикӣ';
 		$tg->lang_code_iso_639_1 = 'tg';
 		$tg->lang_code_iso_639_2 = 'tgk';
-		$tah->country_code = 'tj';
+		$tg->country_code = 'tj';
 		$tg->wp_locale = 'tg';
 		$tg->slug = 'tg';
 		$tg->google_code = 'tg';
