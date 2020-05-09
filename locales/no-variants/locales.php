@@ -2109,7 +2109,7 @@ class GP_Locales {
 		$sr->wp_locale = 'sr_RS';
 		$sr->slug = 'sr';
 		$sr->nplurals = 3;
-		$sr->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)';
+		$sr->plural_expression = '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)';
 		$sr->google_code = 'sr';
 		$sr->facebook_locale = 'sr_RS';
 
