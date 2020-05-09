@@ -1582,7 +1582,7 @@ class GP_Locales {
 		$lv->wp_locale = 'lv';
 		$lv->slug = 'lv';
 		$lv->nplurals = 3;
-		$lv->plural_expression = '(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)';
+		$lv->plural_expression = '(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2)';
 		$lv->google_code = 'lv';
 		$lv->facebook_locale = 'lv_LV';
 
