@@ -1500,6 +1500,14 @@ class GP_Locales {
 		$li->slug = 'li';
 		$li->facebook_locale = 'li_NL';
 
+		$lij = new GP_Locale();
+		$lij->english_name = 'Ligurian';
+		$lij->native_name = 'Lìgure';
+		$lij->lang_code_iso_639_3 = 'lij';
+		$lij->country_code = 'it';
+		$lij->wp_locale = 'lij';
+		$lij->slug = 'lij';
+
 		$lin = new GP_Locale();
 		$lin->english_name = 'Lingala';
 		$lin->native_name = 'Ngala';
