@@ -37,6 +37,7 @@ add_action( 'personal_options_update', 'gp_wp_profile_options_update' );
 add_action( 'edit_user_profile_update', 'gp_wp_profile_options_update' );
 
 // Display filters.
+add_filter( 'gp_original_extracted_comments', 'esc_translation' );
 add_filter( 'gp_original_extracted_comments', 'wptexturize' );
 add_filter( 'gp_original_extracted_comments', 'convert_chars' );
 add_filter( 'gp_original_extracted_comments', 'make_clickable' );
