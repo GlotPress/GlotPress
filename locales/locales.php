@@ -1016,6 +1016,15 @@ class GP_Locales {
 		$fo->slug = 'fo';
 		$fo->facebook_locale = 'fo_FO';
 
+		$fon = new GP_Locale();
+		$fon->english_name = 'Fon';
+		$fon->native_name = 'fɔ̀ngbè';
+		$fon->lang_code_iso_639_2 = 'fon';
+		$fon->lang_code_iso_639_3 = 'fon';
+		$fon->country_code = 'BJ';
+		$fon->wp_locale = 'fon_bj';
+		$fon->slug = 'fon-bj';
+
 		$fr = new GP_Locale();
 		$fr->english_name = 'French (France)';
 		$fr->native_name = 'Français';
@@ -2595,6 +2604,17 @@ class GP_Locales {
 		$yor->slug = 'yor';
 		$yor->google_code = 'yo';
 		$yor->facebook_locale = 'yo_NG';
+
+		$zgh = new GP_Locale();
+		$zgh->english_name = 'Tamazight';
+		$zgh->native_name = 'ⵜⴰⵎⴰⵣⵉⵖⵜ';
+		$zgh->lang_code_iso_639_2 = 'zgh';
+		$zgh->lang_code_iso_639_3 = 'zgh';
+		$zgh->country_code = 'MA';
+		$zgh->wp_locale = 'zgh';
+		$zgh->slug = 'zgh';
+		$zgh->nplurals = 2;
+		$zgh->plural_expression = 'n==0 && n==1 && n>=11 || n<=99 ? 0 : 1';
 
 		$zh = new GP_Locale();
 		$zh->english_name = 'Chinese';
