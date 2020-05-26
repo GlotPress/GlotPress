@@ -835,16 +835,16 @@ class GP_Locales {
 		$es->variants[ $es_do->slug ] = $es_do->english_name;
 
 		$es_ec = new GP_Locale();
-		$es_ec->english_name = 'Spanish (Mexico)';
+		$es_ec->english_name = 'Spanish (Ecuador)';
 		$es_ec->native_name = 'Español de Ecuador';
 		$es_ec->lang_code_iso_639_1 = 'es';
 		$es_ec->lang_code_iso_639_2 = 'spa';
 		$es_ec->lang_code_iso_639_3 = 'spa';
-		$es_ec->country_code = 'EC';
-		$es_ec->wp_locale = 'es_ec';
+		$es_ec->country_code = 'ec';
+		$es_ec->wp_locale = 'es_EC';
 		$es_ec->slug = 'es-ec';
-		$es_gt->google_code = 'es';
-		$es_gt->facebook_locale = 'es_LA';
+		$es_ec->google_code = 'es';
+		$es_ec->facebook_locale = 'es_LA';
 		$es_ec->variant_root = $es->slug;
 		$es->variants[ $es_ec->slug ] = $es_ec->english_name;
 
