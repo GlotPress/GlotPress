@@ -1049,9 +1049,9 @@ class GP_Locales {
 		$fon->native_name = 'fɔ̀ngbè';
 		$fon->lang_code_iso_639_2 = 'fon';
 		$fon->lang_code_iso_639_3 = 'fon';
-		$fon->country_code = 'BJ';
-		$fon->wp_locale = 'fon_bj';
-		$fon->slug = 'fon-bj';
+		$fon->country_code = 'fon_bj';
+		$fon->wp_locale = 'fon'';
+		$fon->slug = 'fon';
 
 		$fr = new GP_Locale();
 		$fr->english_name = 'French (France)';
@@ -2638,11 +2638,11 @@ class GP_Locales {
 		$zgh->native_name = 'ⵜⴰⵎⴰⵣⵉⵖⵜ';
 		$zgh->lang_code_iso_639_2 = 'zgh';
 		$zgh->lang_code_iso_639_3 = 'zgh';
-		$zgh->country_code = 'MA';
+		$zgh->country_code = 'ma';
 		$zgh->wp_locale = 'zgh';
 		$zgh->slug = 'zgh';
 		$zgh->nplurals = 2;
-		$zgh->plural_expression = 'n==0 && n==1 && n>=11 || n<=99 ? 0 : 1';
+		$zgh->plural_expression = 'n >= 2 && (n < 11 || n > 99)';
 
 		$zh = new GP_Locale();
 		$zh->english_name = 'Chinese';
