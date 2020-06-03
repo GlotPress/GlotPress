@@ -386,7 +386,7 @@ class GP_Format_Android extends GP_Format {
 				$this->line( '<item>' . $item . '</item>', 2 );
 			}
 
-			// Close the string arrary tag.
+			// Close the string array tag.
 			$this->line( '</string-array>', 1 );
 		}
 	}
