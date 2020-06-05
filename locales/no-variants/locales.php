@@ -2610,7 +2610,7 @@ class GP_Locales {
 			 *
 			 * @return array The updated array of locale objects.
 			 */
-			$def_vars = apply_filters( 'gp_locale_definitions_arrary', $def_vars );
+			$def_vars = apply_filters( 'gp_locale_definitions_array', $def_vars );
 		}
 
 		foreach ( $def_vars as $locale ) {
