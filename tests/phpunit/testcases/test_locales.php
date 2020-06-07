@@ -57,6 +57,37 @@ class GP_Test_Locales extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Tests syntax of ISO codes for language and country for a locale.
+	 *
+	 * @dataProvider data_provider_locales
+	 *
+	 * @param GP_locale $locale The locale to test.
+	 */
+	public function test_locale_iso_codes( $locale ) {
+		if ( isset( $locale->lang_code_iso_639_1 ) ) {
+			$this->assertSame( 2, strlen( $locale->lang_code_iso_639_1 ), "ISO 639-1 length check for $locale" );
+			$this->assertSame( 0, preg_match( '/[^a-z]/', $locale->lang_code_iso_639_1 ), "ISO 639-1 format check for $locale" );
+		}
+
+		if ( isset( $locale->lang_code_iso_639_2 ) ) {
+			$this->assertSame( 3, strlen( $locale->lang_code_iso_639_2 ), "ISO 639-2 length check for $locale" );
+			$this->assertSame( 0, preg_match( '/[^a-z]/', $locale->lang_code_iso_639_2 ), "ISO 639-2 format check for $locale" );
+		}
+
+		if ( isset( $locale->lang_code_iso_639_3 ) ) {
+			$this->assertSame( 3, strlen( $locale->lang_code_iso_639_3 ), "ISO 639-3 length check for $locale" );
+			$this->assertSame( 0, preg_match( '/[^a-z]/', $locale->lang_code_iso_639_3 ), "ISO 639-3 format check for $locale" );
+		}
+
+		if ( isset( $locale->country_code ) ) {
+			$this->assertSame( 2, strlen( $locale->country_code ), "ISO 3166 length check for $locale" );
+			$this->assertSame( 0, preg_match( '/[^a-z]/', $locale->country_code ), "ISO 3166 format check for $locale" );
+		}
+	}
+
+	/**
+	 * Tests plural form of a locale.
+	 *
 	 * @dataProvider data_provider_locales
 	 *
 	 * @param GP_locale $locale The locale to test.
