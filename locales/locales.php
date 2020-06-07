@@ -2232,7 +2232,7 @@ class GP_Locales {
 		$snd->english_name = 'Sindhi';
 		$snd->native_name = 'سنڌي';
 		$snd->lang_code_iso_639_1 = 'sd';
-		$snd->lang_code_iso_639_2 = 'sd';
+		$snd->lang_code_iso_639_2 = 'snd';
 		$snd->lang_code_iso_639_3 = 'snd';
 		$snd->country_code = 'pk';
 		$snd->wp_locale = 'snd';
