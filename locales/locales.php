@@ -111,7 +111,7 @@ class GP_Locale {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @var string
+	 * @return string Combined name of locale.
 	 */
 	public function __toString() {
 		return $this->combined_name();
