@@ -2107,7 +2107,8 @@ class GP_Locales {
 		$roh = new GP_Locale();
 		$roh->english_name = 'Romansh';
 		$roh->native_name = 'Rumantsch';
-		$roh->lang_code_iso_639_2 = 'rm';
+		$roh->lang_code_iso_639_1 = 'rm';
+		$roh->lang_code_iso_639_2 = 'roh';
 		$roh->lang_code_iso_639_3 = 'roh';
 		$roh->country_code = 'ch';
 		$roh->wp_locale = 'roh';
