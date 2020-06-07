@@ -1640,7 +1640,7 @@ class GP_Locales {
 		$lo->native_name = 'ພາສາລາວ';
 		$lo->lang_code_iso_639_1 = 'lo';
 		$lo->lang_code_iso_639_2 = 'lao';
-		$lo->country_code = 'LA';
+		$lo->country_code = 'la';
 		$lo->wp_locale = 'lo';
 		$lo->slug = 'lo';
 		$lo->nplurals = 1;
