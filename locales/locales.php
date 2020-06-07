@@ -1050,7 +1050,7 @@ class GP_Locales {
 		$fon->lang_code_iso_639_2 = 'fon';
 		$fon->lang_code_iso_639_3 = 'fon';
 		$fon->country_code = 'fon_bj';
-		$fon->wp_locale = 'fon'';
+		$fon->wp_locale = 'fon';
 		$fon->slug = 'fon';
 
 		$fr = new GP_Locale();
