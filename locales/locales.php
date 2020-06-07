@@ -1049,7 +1049,7 @@ class GP_Locales {
 		$fon->native_name = 'fɔ̀ngbè';
 		$fon->lang_code_iso_639_2 = 'fon';
 		$fon->lang_code_iso_639_3 = 'fon';
-		$fon->country_code = 'fon_bj';
+		$fon->country_code = 'bj';
 		$fon->wp_locale = 'fon';
 		$fon->slug = 'fon';
 
