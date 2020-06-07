@@ -106,6 +106,16 @@ class GP_Locale {
 		return $f( $number );
 	}
 
+	/**
+	 * When converting the object to a string, the combined name is returned.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
+	public function __toString() {
+		return $this->combined_name();
+	}
 }
 
 endif;
