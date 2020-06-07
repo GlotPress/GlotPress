@@ -106,6 +106,16 @@ class GP_Locale {
 		return $f( $number );
 	}
 
+	/**
+	 * When converting the object to a string, the combined name is returned.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return string Combined name of locale.
+	 */
+	public function __toString() {
+		return $this->combined_name();
+	}
 }
 
 endif;
@@ -1630,7 +1640,7 @@ class GP_Locales {
 		$lo->native_name = 'ພາສາລາວ';
 		$lo->lang_code_iso_639_1 = 'lo';
 		$lo->lang_code_iso_639_2 = 'lao';
-		$lo->country_code = 'LA';
+		$lo->country_code = 'la';
 		$lo->wp_locale = 'lo';
 		$lo->slug = 'lo';
 		$lo->nplurals = 1;
@@ -2097,7 +2107,8 @@ class GP_Locales {
 		$roh = new GP_Locale();
 		$roh->english_name = 'Romansh';
 		$roh->native_name = 'Rumantsch';
-		$roh->lang_code_iso_639_2 = 'rm';
+		$roh->lang_code_iso_639_1 = 'rm';
+		$roh->lang_code_iso_639_2 = 'roh';
 		$roh->lang_code_iso_639_3 = 'roh';
 		$roh->country_code = 'ch';
 		$roh->wp_locale = 'roh';
@@ -2221,7 +2232,7 @@ class GP_Locales {
 		$snd->english_name = 'Sindhi';
 		$snd->native_name = 'سنڌي';
 		$snd->lang_code_iso_639_1 = 'sd';
-		$snd->lang_code_iso_639_2 = 'sd';
+		$snd->lang_code_iso_639_2 = 'snd';
 		$snd->lang_code_iso_639_3 = 'snd';
 		$snd->country_code = 'pk';
 		$snd->wp_locale = 'snd';
