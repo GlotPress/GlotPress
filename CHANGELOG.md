@@ -1,14 +1,38 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [Unreleased]
 
 **Breaking Changes**
 
 * Developers: Remove all compatibility functions for multibyte string functions. ([#1123](https://github.com/GlotPress/GlotPress-WP/issues/1123))
 * Developers: Require the query argument to be set for all database query related `GP_Thing` methods.
+* Developers: Rename `gp_locale_definitions_arrary` to `gp_locale_definitions_array`.
+* Locales: Remove the no-variants version of `locales.php`. ([#1173](https://github.com/GlotPress/GlotPress-WP/issues/1173))
 
-## 3.0.0-alpha.1 (May 2, 2020)
+**Bugfixes**
+
+* Locales: Fix country code for Tahitian. ([#1127](https://github.com/GlotPress/GlotPress-WP/pull/1127))
+* Locales: Fix country code for Tajik. ([#1128](https://github.com/GlotPress/GlotPress-WP/pull/1128))
+* Locales: Update plural expression for various locales. ([#1129](https://github.com/GlotPress/GlotPress-WP/pull/1129), [#1130](https://github.com/GlotPress/GlotPress-WP/pull/1130), [#1131](https://github.com/GlotPress/GlotPress-WP/pull/1131), [#1132](https://github.com/GlotPress/GlotPress-WP/pull/1132), [#1133](https://github.com/GlotPress/GlotPress-WP/pull/1133), [#1134](https://github.com/GlotPress/GlotPress-WP/pull/1134), [#1135](https://github.com/GlotPress/GlotPress-WP/pull/1135), [#1136](https://github.com/GlotPress/GlotPress-WP/pull/1136), [#1137](https://github.com/GlotPress/GlotPress-WP/pull/1137), [#1138](https://github.com/GlotPress/GlotPress-WP/pull/1138), [#1139](https://github.com/GlotPress/GlotPress-WP/pull/1139), [#1140](https://github.com/GlotPress/GlotPress-WP/pull/1140), [#1141](https://github.com/GlotPress/GlotPress-WP/pull/1141), [#1142](https://github.com/GlotPress/GlotPress-WP/pull/1142), [#1143](https://github.com/GlotPress/GlotPress-WP/pull/1143), [#1144](https://github.com/GlotPress/GlotPress-WP/pull/1144), [#1145](https://github.com/GlotPress/GlotPress-WP/pull/1145), [#1146](https://github.com/GlotPress/GlotPress-WP/pull/1146), [#1147](https://github.com/GlotPress/GlotPress-WP/pull/1147), [#1148](https://github.com/GlotPress/GlotPress-WP/pull/1148), [#1149](https://github.com/GlotPress/GlotPress-WP/pull/1149), [#1150](https://github.com/GlotPress/GlotPress-WP/pull/1150), [#1151](https://github.com/GlotPress/GlotPress-WP/pull/1151), [#1152](https://github.com/GlotPress/GlotPress-WP/pull/1152), [#1153](https://github.com/GlotPress/GlotPress-WP/pull/1153))
+* Locales: Add missing parenthesis in native name for German (Austria). ([#1156](https://github.com/GlotPress/GlotPress-WP/pull/1156))
+* Locales: Remove `wp_locale` from currently unsupported locales in WordPress. ([#1155](https://github.com/GlotPress/GlotPress-WP/pull/1155))
+
+**Features**
+
+* Locales: Add `wp_locale` for Aragonese. ([#1154](https://github.com/GlotPress/GlotPress-WP/pull/1154))
+* Locales: Add definition for Nigerian Pidgin. ([#1157](https://github.com/GlotPress/GlotPress-WP/pull/1157))
+* Locales: Add definition for Spanish (Uruguay). ([#1161](https://github.com/GlotPress/GlotPress-WP/pull/1161))
+* Locales: Add definition for Cornish. ([#1162](https://github.com/GlotPress/GlotPress-WP/pull/1162))
+* Locales: Add definition for Bengali (India) ([#1165](https://github.com/GlotPress/GlotPress-WP/pull/1165))
+* Locales: Add definition for Ligurian ([#1163](https://github.com/GlotPress/GlotPress-WP/pull/1163))
+* Locales: Add definition for Borana-Arsi-Guji Oromo ([#1164](https://github.com/GlotPress/GlotPress-WP/pull/1164))
+* Locales: Add "Portuguese (Portugal, AO90)" variant ([#1017](https://github.com/GlotPress/GlotPress-WP/pull/1017))
+* Locales: Add definitions for Fon, Tamazight and Ecuadorian Spanish ([#1171](https://github.com/GlotPress/GlotPress-WP/pull/1171))
+
+Thanks to all the contributors: Dominik Schilling, Pedro Mendonça and Naoko Takano.
+
+## [3.0.0-alpha.1] (May 2, 2020)
 
 **Breaking Changes**
 
@@ -83,10 +107,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Developers: Pass previous state to saved actions. ([#335](https://github.com/GlotPress/GlotPress-WP/issues/335))
 * Developers: Add filter to customize path prefix for locale glossaries. ([#655](https://github.com/GlotPress/GlotPress-WP/issues/655))
 
-
 Thanks to all the contributors: Alex Kirk, Alin Marcu, Chris Gårdenberg, Daniel James, Daniele Scasciafratte, David Stone, Dominik Schilling, Garrett Hyder, Greg Ross, Ignacio, Pedro Mendonça, Petya Raykovska, Ramon, Sergey Biryukov, SVANNER, Tor-Björn Fjellner and Yoav Farhi.
 
-## 2.3.1 (March 1, 2017)
+## [2.3.1] (March 1, 2017)
 
 **Bugfixes**
 
@@ -101,11 +124,11 @@ Thanks to all the contributors: Alex Kirk, Alin Marcu, Chris Gårdenberg, Daniel
 
 Thanks to all the contributors so far: Alex Kirk, Dominik Schilling, Greg Ross, and Yoav Farhi.
 
-## 2.3.0 (February 6, 2017)
+## [2.3.0] (February 6, 2017)
 
 (this space intentionally left blank)
 
-## 2.3.0-rc.1 (January 31, 2017)
+## [2.3.0-rc.1] (January 31, 2017)
 
 **Bugfixes**
 
@@ -116,7 +139,7 @@ Thanks to all the contributors so far: Alex Kirk, Dominik Schilling, Greg Ross, 
 
 Thanks to all the contributors so far: Dominik Schilling, Greg Ross and Sergey Biryukov.
 
-## 2.3.0-beta.1 (January 17, 2017)
+## [2.3.0-beta.1] (January 17, 2017)
 
 **Bugfixes**
 
@@ -145,13 +168,13 @@ Thanks to all the contributors so far: Dominik Schilling, Greg Ross and Sergey B
 
 Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schilling, Greg Ross, Nikhil, Pascal Birchler, and Yoav Farhi.
 
-## 2.2.2 (November 21, 2016)
+## [2.2.2] (November 21, 2016)
 
 **Security**
 
 * Fix an information leak in the API, reported by Alex Kirk.
 
-## 2.2.1 (November 11, 2016)
+## [2.2.1] (November 11, 2016)
 
 **Bugfixes**
 
@@ -165,15 +188,15 @@ Thanks to all the contributors so far: Alex Kirk, Anton Timmermans, Dominik Schi
 
 Thanks to all the contributors so far: Alex Kirk, Dominik Schilling, and Greg Ross.
 
-## 2.2.0 (September 30, 2016)
+## [2.2.0] (September 30, 2016)
 
 (this space intentionally left blank)
 
-## 2.2.0-rc.1 (September 22, 2016)
+## [2.2.0-rc.1] (September 22, 2016)
 
 (this space intentionally left blank)
 
-## 2.2.0-beta.1 (September 19, 2016)
+## [2.2.0-beta.1] (September 19, 2016)
 
 **Breaking Changes**
 
@@ -198,11 +221,11 @@ Thanks to all the contributors so far: Alex Kirk, Dominik Schilling, and Greg Ro
 
 Thanks to all the contributors so far: Alex Kirk, David Decker, Dominik Schilling, Greg Ross, Pedro Mendonça, Petya Raykovska, and Sergey Biryukov.
 
-## 2.1.0 (July 13, 2016)
+## [2.1.0] (July 13, 2016)
 
 (this space intentionally left blank)
 
-## 2.1.0-rc.1 (July 7, 2016)
+## [2.1.0-rc.1] (July 7, 2016)
 
 **Bugfixes**
 
@@ -213,7 +236,7 @@ Thanks to all the contributors so far: Alex Kirk, David Decker, Dominik Schillin
 * Add confirmation message when saving settings. ([#490](https://github.com/GlotPress/GlotPress-WP/issues/490))
 * Convert sort by fields from hard coded to a filterable function call. ([#488](https://github.com/GlotPress/GlotPress-WP/issues/488)
 
-## 2.1.0-beta.1 (June 29, 2016)
+## [2.1.0-beta.1] (June 29, 2016)
 
 **Bugfixes**
 
@@ -243,7 +266,7 @@ Thanks to all the contributors so far: Alex Kirk, David Decker, Dominik Schillin
 
 Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi, Alex Kirk, Anton Timmermans, Mattias Tengblad
 
-## 2.0.1 (April 25, 2016)
+## [2.0.1] (April 25, 2016)
 
 **Bugfixes**
 
@@ -261,18 +284,18 @@ Thanks to all the contributors so far: Dominik Schilling, Greg Ross, Yoav Farhi,
 
 Thanks to all the contributors so far: Dominik Schilling, Greg Ross, and Yoav Farhi.
 
-## 2.0.0 (April 04, 2016)
+## [2.0.0] (April 04, 2016)
 
 **Bugfixes**
 
 * Delete cookies for notices on installs without a base. ([#379](https://github.com/GlotPress/GlotPress-WP/issues/379))
 * Fix "Use as name" link on translation set creation page. ([#381](https://github.com/GlotPress/GlotPress-WP/issues/381))
 
-## 2.0.0-rc.1 (March 29, 2016)
+## [2.0.0-rc.1] (March 29, 2016)
 
 (this space intentionally left blank)
 
-## 2.0.0-beta.2 (March 27, 2016)
+## [2.0.0-beta.2] (March 27, 2016)
 
 **Security**
 
@@ -283,7 +306,7 @@ Thanks to all the contributors so far: Dominik Schilling, Greg Ross, and Yoav Fa
 * Avoid a PHP warning when updating a glossary entry. ([#366](https://github.com/GlotPress/GlotPress-WP/issues/366))
 * Improve mb_* compat functions to support all parameters and utilize WordPress' compat functions. ([#364](https://github.com/GlotPress/GlotPress-WP/issues/364))
 
-## 2.0.0-beta.1 (March 17, 2016)
+## [2.0.0-beta.1] (March 17, 2016)
 
 **Breaking Changes**
 
@@ -334,19 +357,46 @@ Thanks to all the contributors so far: Dominik Schilling, Greg Ross, and Yoav Fa
 
 Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Dominik Schilling, Gabor Javorszky, Greg Ross, Peter Dave Hello, Rami, and Sergey Biryukov.
 
-## 1.0.2 (March 09, 2016)
+## [1.0.2] (March 09, 2016)
 
 **Security**
 
 * Sanitize messages in `gp_notice()`.
 
-## 1.0.1 (January 21, 2016)
+## [1.0.1] (January 21, 2016)
 
 **Bugfixes**
 
 * Unslash PHP's superglobals to prevent extra slashes in translations. ([#220](https://github.com/GlotPress/GlotPress-WP/issues/220))
 * Adjust add/delete glossary entry links with trailing slashes. ([#224](https://github.com/GlotPress/GlotPress-WP/issues/224))
 
-## 1.0.0 (January 18, 2016)
+## [1.0.0] (January 18, 2016)
 
 * Initial release.
+
+[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.1...HEAD
+[3.0.0-alpha.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.1...3.0.0-alpha.1
+[2.3.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.0...2.3.1
+[2.3.0]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.0-rc.1...2.3.0
+[2.3.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.0-beta.1...2.3.0-rc.1
+[2.3.0-beta.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.2.2...2.3.0-beta.1
+[2.2.2]: https://github.com/GlotPress/GlotPress-WP/compare/2.2.1...2.2.2
+[2.2.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.2.0...2.2.1
+[2.2.0]: https://github.com/GlotPress/GlotPress-WP/compare/2.2.0-rc.1...2.2.0
+[2.2.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.2.0-beta.1...2.2.0-rc.1
+[2.2.0-beta.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.1.1...2.2.0-beta.1
+[2.1.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.1.0...2.1.1
+[2.1.0]: https://github.com/GlotPress/GlotPress-WP/compare/2.1.0-rc.1...2.1.0
+[2.1.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.1.0-beta.1...2.1.0-rc.1
+[2.1.0-beta.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.0.1...2.1.0-beta.1
+[2.0.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.0.0...2.0.1
+[2.0.0]: https://github.com/GlotPress/GlotPress-WP/compare/2.0.0-rc.1...2.0.0
+[2.0.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.0.0-beta.2...2.0.0-rc.1
+[2.0.0-beta.2]: https://github.com/GlotPress/GlotPress-WP/compare/2.0.0-beta.1...2.0.0-beta.2
+[2.0.0-beta.1]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.2...2.0.0-beta.1
+[1.0.2]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.0-rc.2...1.0.0
+[1.0.0-rc.2]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.0-rc.1...1.0.0-rc.2
+[1.0.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.0-beta.1...1.0-rc.1
+[1.0-beta1]: https://github.com/GlotPress/GlotPress-WP/releases/tag/1.0-beta1
