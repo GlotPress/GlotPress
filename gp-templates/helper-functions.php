@@ -303,7 +303,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 function display_status( $status ) {
 	$status_labels = array(
-		'current'  => _x( 'current', 'Single Status', 'glotpress' ),
+		'current'  => _x( 'translated', 'Single Status', 'glotpress' ),
 		'waiting'  => _x( 'waiting', 'Single Status', 'glotpress' ),
 		'fuzzy'    => _x( 'fuzzy', 'Single Status', 'glotpress' ),
 		'old'      => _x( 'old', 'Single Status', 'glotpress' ),

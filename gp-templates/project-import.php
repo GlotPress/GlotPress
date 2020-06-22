@@ -40,7 +40,7 @@ gp_tmpl_header();
 
 	$status_options = array();
 	if ( isset( $can_import_current ) && $can_import_current ) {
-		$status_options['current'] = __( 'Current', 'glotpress' );
+		$status_options['current'] = __( 'Translated', 'glotpress' );
 	}
 	if ( isset( $can_import_waiting ) && $can_import_waiting ) {
 		$status_options['waiting'] = __( 'Waiting', 'glotpress' );

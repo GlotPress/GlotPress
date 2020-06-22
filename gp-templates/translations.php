@@ -237,12 +237,12 @@ $i = 0;
 					echo gp_radio_buttons(
 						'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
 						array(
-							'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-							'current'                                     => __( 'Current only', 'glotpress' ),
+							'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Translated/waiting/fuzzy + untranslated (All)', 'glotpress' ),
+							'current'                                     => __( 'Translated only', 'glotpress' ),
 							'old'                                         => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
 							'waiting'                                     => __( 'Waiting approval', 'glotpress' ),
 							'rejected'                                    => __( 'Rejected', 'glotpress' ),
-							'untranslated'                                => __( 'Without current translation', 'glotpress' ),
+							'untranslated'                                => __( 'Without translation', 'glotpress' ),
 							'either'                                      => __( 'Any', 'glotpress' ),
 						),
 						gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
@@ -424,7 +424,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 <?php
 		switch ( $legend_status ) {
 			case 'current':
-				_e( 'Current', 'glotpress' );
+				_e( 'Translated', 'glotpress' );
 				break;
 			case 'waiting':
 				_e( 'Waiting', 'glotpress' );
@@ -462,7 +462,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		}
 
 		/**
-		 * The 'default' filter is 'Current/waiting/fuzzy + untranslated (All)', however that is not
+		 * The 'default' filter is 'Translated/waiting/fuzzy + untranslated (All)', however that is not
 		 * the default action when exporting so make sure to set it on the export link if no filter
 		 * has been activated by the user.
 		 */
@@ -486,8 +486,8 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 		$what_dropdown   = gp_select(
 			'what-to-export',
 			array(
-				'all'      => _x( 'all current', 'export choice', 'glotpress' ),
-				'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
+				'all'      => _x( 'All translated', 'export choice', 'glotpress' ),
+				'filtered' => _x( 'Only matching the filter', 'export choice', 'glotpress' ),
 			),
 			'all'
 		);
