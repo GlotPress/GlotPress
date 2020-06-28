@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.0.0-alpha.2]
 
 **Breaking Changes**
 
@@ -24,11 +24,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Locales: Add definition for Nigerian Pidgin. ([#1157](https://github.com/GlotPress/GlotPress-WP/pull/1157))
 * Locales: Add definition for Spanish (Uruguay). ([#1161](https://github.com/GlotPress/GlotPress-WP/pull/1161))
 * Locales: Add definition for Cornish. ([#1162](https://github.com/GlotPress/GlotPress-WP/pull/1162))
-* Locales: Add definition for Bengali (India) ([#1165](https://github.com/GlotPress/GlotPress-WP/pull/1165))
-* Locales: Add definition for Ligurian ([#1163](https://github.com/GlotPress/GlotPress-WP/pull/1163))
-* Locales: Add definition for Borana-Arsi-Guji Oromo ([#1164](https://github.com/GlotPress/GlotPress-WP/pull/1164))
-* Locales: Add "Portuguese (Portugal, AO90)" variant ([#1017](https://github.com/GlotPress/GlotPress-WP/pull/1017))
-* Locales: Add definitions for Fon, Tamazight and Ecuadorian Spanish ([#1171](https://github.com/GlotPress/GlotPress-WP/pull/1171))
+* Locales: Add definition for Bengali (India). ([#1165](https://github.com/GlotPress/GlotPress-WP/pull/1165))
+* Locales: Add definition for Ligurian. ([#1163](https://github.com/GlotPress/GlotPress-WP/pull/1163))
+* Locales: Add definition for Borana-Arsi-Guji Oromo. ([#1164](https://github.com/GlotPress/GlotPress-WP/pull/1164))
+* Locales: Add "Portuguese (Portugal, AO90)" variant. ([#1017](https://github.com/GlotPress/GlotPress-WP/pull/1017))
+* Locales: Add definitions for Fon, Tamazight and Ecuadorian Spanish. ([#1171](https://github.com/GlotPress/GlotPress-WP/pull/1171))
+* Locales: Locales: Update native name for Venetian, add WP locale. ([#1183](https://github.com/GlotPress/GlotPress-WP/pull/1183))
 
 Thanks to all the contributors: Dominik Schilling, Pedro Mendonça and Naoko Takano.
 
@@ -374,7 +375,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.1...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.2...HEAD
+[3.0.0-alpha.2]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.1...3.0.0-alpha.2
 [3.0.0-alpha.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.1...3.0.0-alpha.1
 [2.3.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.0-rc.1...2.3.0
