@@ -2565,11 +2565,12 @@ class GP_Locales {
 
 		$vec = new GP_Locale();
 		$vec->english_name = 'Venetian';
-		$vec->native_name = 'Vèneta';
+		$vec->native_name = 'Vèneto';
 		$vec->lang_code_iso_639_2 = 'roa';
 		$vec->lang_code_iso_639_3 = 'vec';
 		$vec->country_code = 'it';
 		$vec->slug = 'vec';
+		$vec->wp_locale = 'vec';
 
 		$vi = new GP_Locale();
 		$vi->english_name = 'Vietnamese';
