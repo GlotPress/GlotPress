@@ -1960,7 +1960,7 @@ class GP_Locales {
 		$os->slug = 'os';
 
 		$pa = new GP_Locale();
-		$pa->english_name = 'Punjabi';
+		$pa->english_name = 'Panjabi (India)';
 		$pa->native_name = 'ਪੰਜਾਬੀ';
 		$pa->lang_code_iso_639_1 = 'pa';
 		$pa->lang_code_iso_639_2 = 'pan';
@@ -1997,6 +1997,18 @@ class GP_Locales {
 		$pcd->slug = 'pcd';
 		$pcd->nplurals = 2;
 		$pcd->plural_expression = 'n > 1';
+
+		$pa_pk = new GP_Locale();
+		$pa_pk->english_name = 'Punjabi (Pakistan)';
+		$pa_pk->native_name = 'پنجابی';
+		$pa_pk->lang_code_iso_639_1 = 'pa';
+		$pa_pk->lang_code_iso_639_2 = 'pnb';
+		$pa_pk->country_code = 'pk';
+		$pa_pk->wp_locale = 'pa_PK';
+		$pa_pk->slug = 'pa-pk';
+		$pa_pk->nplurals = 2;
+		$pa_pk->plural_expression = 'n != 1';
+		$pa_pk->google_code = 'pa';
 
 		$pcm = new GP_Locale();
 		$pcm->english_name = 'Nigerian Pidgin';
