@@ -1970,6 +1970,18 @@ class GP_Locales {
 		$pa->google_code = 'pa';
 		$pa->facebook_locale = 'pa_IN';
 
+		$pa_pk = new GP_Locale();
+		$pa_pk->english_name = 'Punjabi (Pakistan)';
+		$pa_pk->native_name = 'پنجابی';
+		$pa_pk->lang_code_iso_639_1 = 'pa';
+		$pa_pk->lang_code_iso_639_2 = 'pan';
+		$pa_pk->country_code = 'pk';
+		$pa_pk->wp_locale = 'pa_PK';
+		$pa_pk->slug = 'pa-pk';
+		$pa_pk->nplurals = 2;
+		$pa_pk->plural_expression = 'n > 1';
+		$pa_pk->google_code = 'pa';
+
 		$pap_cw = new GP_Locale();
 		$pap_cw->english_name = 'Papiamento (Curaçao and Bonaire)';
 		$pap_cw->native_name = 'Papiamentu';
@@ -1997,18 +2009,6 @@ class GP_Locales {
 		$pcd->slug = 'pcd';
 		$pcd->nplurals = 2;
 		$pcd->plural_expression = 'n > 1';
-
-		$pa_pk = new GP_Locale();
-		$pa_pk->english_name = 'Punjabi (Pakistan)';
-		$pa_pk->native_name = 'پنجابی';
-		$pa_pk->lang_code_iso_639_1 = 'pa';
-		$pa_pk->lang_code_iso_639_2 = 'pnb';
-		$pa_pk->country_code = 'pk';
-		$pa_pk->wp_locale = 'pa_PK';
-		$pa_pk->slug = 'pa-pk';
-		$pa_pk->nplurals = 2;
-		$pa_pk->plural_expression = 'n != 1';
-		$pa_pk->google_code = 'pa';
 
 		$pcm = new GP_Locale();
 		$pcm->english_name = 'Nigerian Pidgin';
