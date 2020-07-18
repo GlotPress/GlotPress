@@ -1968,6 +1968,8 @@ class GP_Locales {
 		$pa->wp_locale = 'pa_IN';
 		$pa->slug = 'pa';
 		$pa->google_code = 'pa';
+		$pa->nplurals = 2;
+		$pa->plural_expression = 'n > 1';
 		$pa->facebook_locale = 'pa_IN';
 
 		$pa_pk = new GP_Locale();
