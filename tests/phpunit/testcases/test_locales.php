@@ -9,7 +9,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		// Actual: n != 1
 		// Expected: n > 1
 		'ak', 'am', 'as', 'bho', 'bn', 'fuc', 'ful', 'gu', 'hi', 'hy', 'kn', 'mg',
-		'nso', 'pa', 'pt-ao', 'si', 'wa', 'zul',
+		'nso', 'pt-ao', 'si', 'wa', 'zul',
 
 		// Actual: n > 1
 		// Expected: n != 1

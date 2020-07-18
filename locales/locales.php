@@ -1960,7 +1960,7 @@ class GP_Locales {
 		$os->slug = 'os';
 
 		$pa = new GP_Locale();
-		$pa->english_name = 'Punjabi';
+		$pa->english_name = 'Panjabi (India)';
 		$pa->native_name = 'ਪੰਜਾਬੀ';
 		$pa->lang_code_iso_639_1 = 'pa';
 		$pa->lang_code_iso_639_2 = 'pan';
@@ -1968,7 +1968,21 @@ class GP_Locales {
 		$pa->wp_locale = 'pa_IN';
 		$pa->slug = 'pa';
 		$pa->google_code = 'pa';
+		$pa->nplurals = 2;
+		$pa->plural_expression = 'n > 1';
 		$pa->facebook_locale = 'pa_IN';
+
+		$pa_pk = new GP_Locale();
+		$pa_pk->english_name = 'Punjabi (Pakistan)';
+		$pa_pk->native_name = 'پنجابی';
+		$pa_pk->lang_code_iso_639_1 = 'pa';
+		$pa_pk->lang_code_iso_639_2 = 'pan';
+		$pa_pk->country_code = 'pk';
+		$pa_pk->wp_locale = 'pa_PK';
+		$pa_pk->slug = 'pa-pk';
+		$pa_pk->nplurals = 2;
+		$pa_pk->plural_expression = 'n > 1';
+		$pa_pk->google_code = 'pa';
 
 		$pap_cw = new GP_Locale();
 		$pap_cw->english_name = 'Papiamento (Curaçao and Bonaire)';
