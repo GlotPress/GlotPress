@@ -10,7 +10,7 @@
     "url": "https://github.com/GlotPress/GlotPress-WP/issues"
   },
   "devDependencies": {
-    "@wordpress/env": "^1.6.0",
+    "@wordpress/env": "^2.0.0",
     "grunt": "^1.3.0",
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.0",
