@@ -66,12 +66,12 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
-	 * Fetches the project by id or object.
+	 * Fetches the project by ID or object.
 	 *
 	 * @since 2.3.0
 	 *
-	 * @param int|object $thing_or_id A project or the id.
-	 * @return GP_Project The project
+	 * @param int|object $thing_or_id A project or the ID.
+	 * @return GP_Project|false The project on success or false on failure.
 	 */
 	public function get( $thing_or_id ) {
 		if ( is_numeric( $thing_or_id ) && 0 === (int) $thing_or_id ) {
