@@ -65,7 +65,7 @@ class GP_Locale {
 	 * Make deprecated properties readable for backwards compatibility.
 	 *
 	 * @param string $name Property to get.
-	 * @return bool|null Property.
+	 * @return mixed Property.
 	 */
 	public function __get( $name ) {
 		if ( 'rtl' == $name ) {
