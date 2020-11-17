@@ -65,12 +65,14 @@ class GP_Locale {
 	 * Make deprecated properties readable for backwards compatibility.
 	 *
 	 * @param string $name Property to get.
-	 * @return mixed Property.
+	 * @return bool|null Property.
 	 */
 	public function __get( $name ) {
 		if ( 'rtl' == $name ) {
 			return ( 'rtl' === $this->text_direction );
 		}
+
+		return null;
 	}
 
 	public function combined_name() {
