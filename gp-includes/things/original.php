@@ -395,6 +395,11 @@ class GP_Original extends GP_Thing {
 	}
 
 	public function closest_original( $input, $other_strings ) {
+		$pre = apply_filters( 'gp_pre_closest_original', false, $input, $other_strings );
+		if ( false !== $pre ) {
+			return $pre;
+		}
+
 		if ( empty( $other_strings ) ) {
 			return null;
 		}
