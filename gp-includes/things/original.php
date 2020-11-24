@@ -395,6 +395,16 @@ class GP_Original extends GP_Thing {
 	}
 
 	public function closest_original( $input, $other_strings ) {
+		/**
+		 * Filters the preemptive return value of closest original check.
+		 *
+		 * @since x.y.z
+		 *
+		 * @param mixed  $pre           A preemptive return value of closest original
+		 *                              check. Default false.
+		 * @param string $input         Input string.
+		 * @param array  $other_strings List of string to check against input string.
+		 */
 		$pre = apply_filters( 'gp_pre_closest_original', false, $input, $other_strings );
 		if ( false !== $pre ) {
 			return $pre;
