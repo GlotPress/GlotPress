@@ -72,6 +72,8 @@ class GP_Locale {
 		if ( 'rtl' == $name ) {
 			return ( 'rtl' === $this->text_direction );
 		}
+
+		return null;
 	}
 
 	public function combined_name() {
