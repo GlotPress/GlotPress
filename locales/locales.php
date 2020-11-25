@@ -59,6 +59,7 @@ class GP_Locale {
 		if ( 'rtl' == $name ) {
 			return isset( $this->text_direction );
 		}
+		return false;
 	}
 
 	/**
