@@ -314,7 +314,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
 
 		$original = GP::$original->get( $translation->original_id );
-		$this->assertTrue( $original->delete() );
+		$this->assertSame( 1, $original->delete() );
 
 		// Check if translations are deleted too.
 		$translation = GP::$translation->find_one( array( 'id' => $translation->id ) );
