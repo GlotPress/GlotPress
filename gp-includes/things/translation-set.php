@@ -663,7 +663,7 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
-	 * Deletes a translation set and all of it's translations and glossaries.
+	 * Deletes a translation set and all of its translations and glossaries.
 	 *
 	 * @since 2.0.0
 	 *

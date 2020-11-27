@@ -308,4 +308,16 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( $previous_original->singular, 'Before' );
 		$this->assertEquals( $original->singular, 'After' );
 	}
+
+	public function test_delete() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$original = GP::$original->get( $translation->original_id );
+		$this->assertSame( 1, $original->delete() );
+
+		// Check if translations are deleted too.
+		$translation = GP::$translation->find_one( array( 'id' => $translation->id ) );
+		$this->assertFalse( $translation );
+	}
 }
