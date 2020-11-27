@@ -471,6 +471,19 @@ class GP_Original extends GP_Thing {
 		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
 	}
 
+	/**
+	 * Deletes an original and all of its translations.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		GP::$translation->delete_many( array( 'original_id' => $this->id ) );
+
+		return parent::delete();
+	}
+
 	// Triggers
 
 	/**
