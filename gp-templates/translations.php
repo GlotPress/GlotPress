@@ -49,8 +49,8 @@ $i = 0;
 		esc_html( $translation_set->name )
 	);
 	?>
-	<?php gp_link_set_edit( $translation_set, $project, __( '(edit)', 'glotpress' ) ); ?>
-	<?php gp_link_set_delete( $translation_set, $project, __( '(delete)', 'glotpress' ) ); ?>
+	<?php gp_link_set_edit( $translation_set, $project, _x( '(edit)', 'translation set', 'glotpress' ) ); ?>
+	<?php gp_link_set_delete( $translation_set, $project, _x( '(delete)', 'translation set', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
 	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
 	<?php elseif ( $can_approve ) : ?>

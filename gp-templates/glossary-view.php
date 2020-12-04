@@ -37,12 +37,12 @@ if ( 0 === $project->id ) {
 	gp_link_glossary_edit(
 		$glossary,
 		$translation_set,
-		__( '(edit)', 'glotpress' )
+		_x( '(edit)', 'glossary', 'glotpress' )
 	);
 	gp_link_glossary_delete(
 		$glossary,
 		$translation_set,
-		__( '(delete)', 'glotpress' )
+		_x( '(delete)', 'glossary', 'glotpress' )
 	);
 	?>
 </h2>

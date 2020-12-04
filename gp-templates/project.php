@@ -9,7 +9,7 @@ gp_title(
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
 gp_enqueue_style( 'tablesorter-theme' );
-$edit_link = gp_link_project_edit_get( $project, __( '(edit)', 'glotpress' ) );
+$edit_link = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
 
 if ( $project->active ) {
 	add_filter(
