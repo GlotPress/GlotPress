@@ -8,7 +8,11 @@ gp_tmpl_header();
 
 	<ul>
 		<?php foreach ( $projects as $project ) : ?>
-			<li><?php gp_link_project( $project, esc_html( $project->name ) ); ?> <?php gp_link_project_edit( $project, null, array( 'class' => 'bubble' ) ); ?></li>
+			<li>
+				<?php gp_link_project( $project, esc_html( $project->name ) ); ?>
+				<?php gp_link_project_edit( $project, null, array( 'class' => 'bubble' ) ); ?>
+				<?php gp_link_project_delete( $project, null, array( 'class' => 'bubble' ) ); ?>
+			</li>
 		<?php endforeach; ?>
 	</ul>
 
