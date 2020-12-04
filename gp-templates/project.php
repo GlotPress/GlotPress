@@ -9,7 +9,8 @@ gp_title(
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
 gp_enqueue_style( 'tablesorter-theme' );
-$edit_link = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
+$edit_link   = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
+$delete_link = gp_link_project_delete_get( $project, _x( '(delete)', 'project', 'glotpress' ) );
 
 if ( $project->active ) {
 	add_filter(
@@ -29,6 +30,8 @@ gp_tmpl_header();
 	echo esc_html( $project->name );
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $edit_link;
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo $delete_link;
 	?>
 </h2>
 
