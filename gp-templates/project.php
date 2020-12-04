@@ -196,6 +196,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
+		<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
 		<?php
 		if ( $sub_project->active ) {
 			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>';
