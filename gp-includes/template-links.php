@@ -34,7 +34,7 @@ function gp_link_get( $url, $text, $attrs = array() ) {
 		$before,
 		esc_url( $url ),
 		$attributes,
-		' ' . $text,
+		$text,
 		$after
 	);
 }
