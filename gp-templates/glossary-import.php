@@ -16,7 +16,7 @@ gp_tmpl_header();
 	<?php
 		printf(
 			// translators: 1: URL to the GlotPress manual entry for glossaries.
-			__( 'Use this form to bulk upload glossary entries. The entries should be stored in a CSV file with a custom glossary format. Read more in the <a href="%s">Glotpress manual</a>.', 'glotpress' ),
+			__( 'Use this form to bulk upload glossary entries. The entries should be stored in a CSV file with a custom glossary format. Read more in the <a href="%s">GlotPress manual</a>.', 'glotpress' ),
 			'https://glotpress.blog/the-manual/glossaries/'
 		);
 	?>

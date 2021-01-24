@@ -9,7 +9,8 @@ gp_title(
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
 gp_enqueue_style( 'tablesorter-theme' );
-$edit_link = gp_link_project_edit_get( $project, __( '(edit)', 'glotpress' ) );
+$edit_link   = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
+$delete_link = gp_link_project_delete_get( $project, _x( '(delete)', 'project', 'glotpress' ) );
 
 if ( $project->active ) {
 	add_filter(
@@ -29,6 +30,8 @@ gp_tmpl_header();
 	echo esc_html( $project->name );
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $edit_link;
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo $delete_link;
 	?>
 </h2>
 
@@ -193,6 +196,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 	<dt>
 		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
+		<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
 		<?php
 		if ( $sub_project->active ) {
 			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>';
