@@ -445,8 +445,8 @@ class GP_Translation extends GP_Thing {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';
-			$join_on[] = 'status != "rejected"';
-			$join_on[] = 'status != "old"';
+			$join_on[] = "status != 'rejected'";
+			$join_on[] = "status != 'old'";
 			$statuses  = array_filter(
 				$statuses,
 				function( $x ) {
@@ -487,7 +487,7 @@ class GP_Translation extends GP_Thing {
 			$where = 'AND ' . $where;
 		}
 
-		$where = 'o.project_id = ' . (int) $project->id . ' AND o.status = "+active" ' . $where;
+		$where = 'o.project_id = ' . (int) $project->id . " AND o.status = '+active' " . $where;
 
 		$join_on = implode( ' AND ', $join_on );
 		if ( $join_on ) {
