@@ -13,7 +13,7 @@
     "@wordpress/env": "^3.0.2",
     "grunt": "^1.3.0",
     "grunt-contrib-cssmin": "^4.0.0",
-    "grunt-contrib-uglify": "^5.0.0",
+    "grunt-contrib-uglify": "^5.0.1",
     "load-grunt-tasks": "^5.1.0"
   },
   "scripts": {
