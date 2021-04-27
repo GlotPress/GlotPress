@@ -142,9 +142,9 @@ $gp.editor = (
 
 				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
 					$gp.editor.hide();
-				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Up Arrow = Previous editor.
+				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Up Arrow = Previous editor.
 					$gp.editor.prev();
-				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Down Arrow = Next editor.
+				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
 				} else if ( 13 === e.keyCode && e.shiftKey ) { // Shift-Enter = Save.
 					target = $( e.target );
