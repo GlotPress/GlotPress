@@ -587,7 +587,7 @@ class GP_Translation extends GP_Thing {
 		$translations     = array();
 
 		foreach ( (array) $rows as $row ) {
-			if ( null === $row->id && $has_root ) {
+			if ( $has_root && null === $row->id && null !== $row->root_id ) {
 				$row->id                    = $row->root_id;
 				$row->original_id           = $row->root_original_id;
 				$row->translation_set_id    = $row->root_translation_set_id;
