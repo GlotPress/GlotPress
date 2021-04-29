@@ -1,34 +1,24 @@
 version: 2
+
 updates:
-- package-ecosystem: composer
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  reviewers:
-  - ocean90
-  labels:
-  - "[Type] Build Tooling"
-  - dependencies
-  - php
-  ignore:
-  - dependency-name: phpunit/phpunit
-    versions:
-    - "> 7.5.20"
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-  reviewers:
-  - ocean90
-  labels:
-  - "[Type] Build Tooling"
-  - dependencies
-  - javascript
-  ignore:
-  - dependency-name: "@wordpress/env"
-    versions:
-    - 3.0.3
-    - 4.0.0
-    - 4.0.1
+  - package-ecosystem: composer
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels:
+      - "[Type] Build Tooling"
+      - dependencies
+      - php
+    ignore:
+      - dependency-name: phpunit/phpunit
+        versions:
+          - "> 7.5.20"
+
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels:
+      - "[Type] Build Tooling"
+      - dependencies
+      - javascript
