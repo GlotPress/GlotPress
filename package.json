@@ -1,6 +1,7 @@
 {
   "name": "glotpress",
-  "version": "3.0.0-alpha",
+  "version": "0.0.0",
+  "private": true,
   "description": "GlotPress is a collaborative, web-based software translation tool.",
   "author": "The GlotPress Contributors",
   "license": "GPL-2.0-or-later",

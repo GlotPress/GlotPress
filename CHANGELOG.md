@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.0.0-alpha.3 (April 29, 2021)
 
 **Bugfixes**
 * Use single quotes around string literals in SQL queries. ([#1221](https://github.com/GlotPress/GlotPress-WP/pull/1221))
@@ -14,8 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Delete translations if an original gets deleted. ([#1002](https://github.com/GlotPress/GlotPress-WP/issues/1209))
 * Developers: Add short-circuit hook `gp_pre_closest_original` in `GP_Original::closest_original()`. ([#1204](https://github.com/GlotPress/GlotPress-WP/issues/1204))
 
-
-## [3.0.0-alpha.2]
+## [3.0.0-alpha.2] (June 28, 2020)
 
 **Breaking Changes**
 
@@ -389,7 +388,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.2...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.3...HEAD
+[3.0.0-alpha.3]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.2...3.0.0-alpha.3
 [3.0.0-alpha.2]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.1...3.0.0-alpha.2
 [3.0.0-alpha.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.1...3.0.0-alpha.1
 [2.3.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.0...2.3.1
