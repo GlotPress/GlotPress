@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+**Bugfixes**
+* Use single quotes around string literals in SQL queries. ([#1221](https://github.com/GlotPress/GlotPress-WP/pull/1221))
+* Fix 'original_id is invalid' error when submitting a translation. ([#1231](https://github.com/GlotPress/GlotPress-WP/pull/1231))
+* Fix some UI inconsistencies. ([#1209](https://github.com/GlotPress/GlotPress-WP/issues/1209))
+* Remove tabindex attribute on action buttons. ([#1215](https://github.com/GlotPress/GlotPress-WP/issues/1215))
+* Locales: Add/update definitions for Punjabi in Pakistan and India. ([#1184](https://github.com/GlotPress/GlotPress-WP/pull/1184))
+
+**Features**
+* Delete translations if an original gets deleted. ([#1002](https://github.com/GlotPress/GlotPress-WP/issues/1209))
+* Developers: Add short-circuit hook `gp_pre_closest_original` in `GP_Original::closest_original()`. ([#1204](https://github.com/GlotPress/GlotPress-WP/issues/1204))
+
+
 ## [3.0.0-alpha.2]
 
 **Breaking Changes**
