@@ -76,7 +76,6 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', '%s%% baba', '%s%% баба' );
 		$this->assertHasWarnings( 'placeholders', '%s baba', '%%s баба' );
 		$this->assertHasWarnings( 'placeholders', '%1$s baba', '%%1$s баба' );
-		$this->assertHasWarnings( 'placeholders', '%s 100 percent', '%s 100% баба' );
 	}
 
 	function test_should_begin_end_on_newline() {
