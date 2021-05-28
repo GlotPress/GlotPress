@@ -54,7 +54,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder('GP_Translation_Warnings')->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 7 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 8 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -148,5 +148,50 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertEquals( array( 1 => array( 'placeholder' => 'Missing %s placeholder in translation.' ),
 			2 => array( 'placeholder' => 'Missing %s placeholder in translation.' ) ),
 			$w->check( 'original', 'original %s', array( 'translation', 'translation 2', 'translation 3' ), $ru ) );
+	}
+
+	function test_mismatching_urls() {
+		$this->assertNoWarnings( 'mismatching_urls', 'https://www.example', 'https://www.example' );
+		$this->assertNoWarnings( 'mismatching_urls', 'http://www.example', 'http://www.example' );
+		$this->assertNoWarnings( 'mismatching_urls', '//www.example', '//www.example' );
+		$this->assertNoWarnings( 'mismatching_urls', '"//www.example"', '"//www.example.com"' );
+		$this->assertNoWarnings( 'mismatching_urls', "'//www.example'", "'//www.example.com'" );
+		$this->assertNoWarnings( 'mismatching_urls', '// www.example', '// www.example.comte	' );
+		$this->assertNoWarnings( 'mismatching_urls', 'http://127.0.0.1', 'https://127.0.0.1' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://127.0.0.1', 'http://127.0.0.1' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://www.example.com', 'https://www.example.com/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://www.example.com/', 'https://www.example.com' );
+		$this->assertNoWarnings( 'mismatching_urls', 'http://www.example.com', 'https://www.example.com/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'http://www.example.com/', 'https://www.example.com' );
+		$this->assertNoWarnings( 'mismatching_urls', 'http://wordpress.org/plugins/example-plugin/', 'https://wordpress.org/plugins/example-plugin' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://wordpress.org/plugins/example-plugin', 'http://wordpress.org/plugins/example-plugin/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'http://www.example.com/wp-content/uploads/2020/12/logo.png', 'https://www.example.com/wp-content/uploads/2020/12/logo.png' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://wordpress.org/plugins/example-plugin/', 'https://es.wordpress.org/plugins/example-plugin/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://wordpress.com/log-in/', 'https://es.wordpress.com/log-in/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://en.gravatar.com/matt', 'https://es.gravatar.com/matt' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://en.wikipedia.org/wiki/WordPress', 'https://es.wikipedia.org/wiki/WordPress' );
+		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', 'Texto1 https://www.example.com Texto2 https://www.example.org Texto3' );
+		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', ' Texto3 https://www.example.org Texto2 https://www.example.com Texto1  ' );
+		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', '  https://www.example.org Texto1   Texto3   https://www.example.com  Texto2  ' );
+		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', '  https://www.example.org https://www.example.com ' );
+
+		$this->assertHasWarnings( 'mismatching_urls', 'HTTPS://WWW.EXAMPLE', 'https://www.example' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.example', 'HTTPS://WWW.EXAMPLE' );
+		$this->assertHasWarnings( 'mismatching_urls', 'HtTpS://WwW.eXaMpLe', 'https://www.example' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.example.com', 'https://www.example.org' );
+		$this->assertHasWarnings( 'mismatching_urls', '//www.example.com', 'http://www.example.org' );
+		$this->assertHasWarnings( 'mismatching_urls', '//www.example.com', 'https://www.example.org' );
+		$this->assertHasWarnings( 'mismatching_urls', 'http://www.example.com', '//www.example.org' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.example.com', '//www.example.org' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.exañple.com', 'https://www.example.com' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.example.com', 'https://www.exañple.com' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.wordpress.org/plugins/example-plugin/', 'https://es.wordpress.org/plugins/example-plugin/' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://www.wordpress.com/log-in/', 'https://es.wordpress.com/log-in/' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://es.gravatar.com/matt', 'https://en.gravatar.com/matt' );
+		$this->assertHasWarnings( 'mismatching_urls', 'https://es.wikipedia.org/wiki/WordPress', 'https://en.wikipedia.org/wiki/WordPress' );
+		$this->assertHasWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2', 'Texto1 Texto2' );
+		$this->assertHasWarnings( 'mismatching_urls', 'Text1 Text2', 'Texto1 https://www.example.com Texto2' );
+		$this->assertHasWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org', 'Texto1 https://www.example.com Texto2' );
+		$this->assertHasWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2', 'Texto1 https://www.example.com Texto2 https://www.example.org' );
 	}
 }

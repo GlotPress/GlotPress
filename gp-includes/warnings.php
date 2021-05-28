@@ -154,6 +154,25 @@ class GP_Builtin_Translation_Warnings {
 	public $length_exclude_languages = array( 'art-xemoji', 'ja', 'ko', 'zh', 'zh-hk', 'zh-cn', 'zh-sg', 'zh-tw' );
 
 	/**
+	 * List of domains with allowed changes to their own subdomains
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 *
+	 * @var array
+	 */
+	public $allowed_domain_changes = array(
+		// Allow links to wordpress.org to be changed to a subdomain.
+		'wordpress.org'    => '[^.]+\.wordpress\.org',
+		// Allow links to wordpress.com to be changed to a subdomain.
+		'wordpress.com'    => '[^.]+\.wordpress\.com',
+		// Allow links to gravatar.org to be changed to a subdomain.
+		'en.gravatar.com'  => '[^.]+\.gravatar\.com',
+		// Allow links to wikipedia.org to be changed to a subdomain.
+		'en.wikipedia.org' => '[^.]+\.wikipedia\.org',
+	);
+
+	/**
 	 * Checks whether lengths of source and translation differ too much.
 	 *
 	 * @since 1.0.0
@@ -389,6 +408,92 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Adds a warning for changing plain-text URLs.
+	 * This allows for the scheme to change, and for some domains to change to a subdomain.
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 *
+	 * @param string $original    The original string.
+	 * @param string $translation The translated string.
+	 * @return string|true        True if check is OK, otherwise warning message.
+	 */
+	public function warning_mismatching_urls( $original, $translation ) {
+		// Any http/https/schemeless URLs which are not encased in quotation marks
+		// nor contain whitespace and end with a valid URL ending char.
+		$urls_regex = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
+
+		preg_match_all( $urls_regex, $original, $original_urls );
+		$original_urls = array_unique( $original_urls[0] );
+
+		preg_match_all( $urls_regex, $translation, $translation_urls );
+		$translation_urls = array_unique( $translation_urls[0] );
+
+		$missing_urls = array_diff( $original_urls, $translation_urls );
+		$added_urls   = array_diff( $translation_urls, $original_urls );
+		if ( ! $missing_urls && ! $added_urls ) {
+			return true;
+		}
+
+		// Check to see if only the scheme (https <=> http) or a trailing slash was changed, discard if so.
+		foreach ( $missing_urls as $key => $missing_url ) {
+			$scheme               = parse_url( $missing_url, PHP_URL_SCHEME );
+			$alternate_scheme     = ( 'http' == $scheme ? 'https' : 'http' );
+			$alternate_scheme_url = preg_replace( "@^$scheme(?=:)@", $alternate_scheme, $missing_url );
+
+			$alt_urls = array(
+				// Scheme changes
+				$alternate_scheme_url,
+
+				// Slashed/unslashed changes.
+				( '/' === substr( $missing_url, -1 ) ? rtrim( $missing_url, '/' ) : "$missing_url/" ),
+
+				// Scheme & Slash changes.
+				( '/' === substr( $alternate_scheme_url, -1 ) ? rtrim( $alternate_scheme_url, '/' ) : "$alternate_scheme_url/" ),
+			);
+
+			foreach ( $alt_urls as $alt_url ) {
+				if ( false !== ( $alternate_index = array_search( $alt_url, $added_urls ) ) ) {
+					unset( $missing_urls[ $key ], $added_urls[ $alternate_index ] );
+				}
+			}
+		}
+
+		// Check if just the domain was changed, and if so, if it's to a whitelisted domain
+		foreach ( $missing_urls as $key => $missing_url ) {
+			$host = parse_url( $missing_url, PHP_URL_HOST );
+			if ( ! isset( $this->allowed_domain_changes[ $host ] ) ) {
+				continue;
+			}
+			$allowed_host_regex = $this->allowed_domain_changes[ $host ];
+
+			list( , $missing_url_path ) = explode( $host, $missing_url, 2 );
+
+			$alternate_host_regex = '!^https?://' . $allowed_host_regex . preg_quote( $missing_url_path, '!' ) . '$!i';
+			foreach ( $added_urls as $added_index => $added_url ) {
+				if ( preg_match( $alternate_host_regex, $added_url, $match ) ) {
+					unset( $missing_urls[ $key ], $added_urls[ $added_index ] );
+				}
+			}
+		}
+
+		if ( ! $missing_urls && ! $added_urls ) {
+			return true;
+		}
+
+		// Error.
+		$error = '';
+		if ( $missing_urls ) {
+			$error .= __( 'The translation appears to be missing the following URLs: ', 'glotpress' ) . implode( ', ', $missing_urls ) . "\n";
+		}
+		if ( $added_urls ) {
+			$error .= __( 'The translation contains the following unexpected URLs: ', 'glotpress' ) . implode( ', ', $added_urls );
+		}
+
+		return trim( $error );
+	}
+
+	/**
 	 * Registers all methods starting with `warning_` as built-in warnings.
 	 *
 	 * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
@@ -405,4 +510,6 @@ class GP_Builtin_Translation_Warnings {
 			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );
 		}
 	}
+
+
 }
