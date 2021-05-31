@@ -137,23 +137,32 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 	}
 
 	function test_placeholders() {
-		$this->assertHasWarnings( 'placeholders', '%s baba', 'баба' );
-		$this->assertHasWarnings( 'placeholders', '%s baba', '% баба' );
 		$this->assertNoWarnings( 'placeholders', '%s baba', '%s баба' );
 		$this->assertNoWarnings( 'placeholders', '%s baba', 'баба %s' );
 		$this->assertNoWarnings( 'placeholders', '%s baba', 'баба %s' );
 		$this->assertNoWarnings( 'placeholders', '%1$s baba %2$s dyado', '%1$sбабадядо%2$s' );
 		$this->assertNoWarnings( 'placeholders', '% baba', 'баба' );
 		$this->assertNoWarnings( 'placeholders', '% baba', '% баба' );
-		$this->assertHasWarnings( 'placeholders', '%1$s baba', 'баба' );
 		$this->assertNoWarnings( 'placeholders', '%1$s baba', '%1$s баба' );
 		$this->assertNoWarnings( 'placeholders', '%sHome%s', '%sНачало%s' );
 		$this->assertNoWarnings( 'placeholders', 'This string has %stwo variables%s.', 'Deze string heeft %stwee variabelen%s.' );
 		$this->assertNoWarnings( 'placeholders', '%% baba', '%% баба' );
-		$this->assertHasWarnings( 'placeholders', '%% baba', '% баба' );
 		$this->assertNoWarnings( 'placeholders', '%s%% baba', '%s%% баба' );
+
+		$this->assertHasWarnings( 'placeholders', '%s baba', 'баба' );
+		$this->assertContainsOutput( 'placeholders', '%s baba', 'баба', 'Missing %s placeholder in translation.' );
+		$this->assertHasWarnings( 'placeholders', '%s baba', '% баба' );
+		$this->assertContainsOutput( 'placeholders', '%s baba', '% баба', 'Missing %s placeholder in translation.' );
+		$this->assertHasWarnings( 'placeholders', '%1$s baba', 'баба' );
+		$this->assertContainsOutput( 'placeholders', '%1$s baba', 'баба', 'Missing %1$s placeholder in translation.' );
+		$this->assertHasWarnings( 'placeholders', '%% baba', '% баба' );
+		$this->assertContainsOutput( 'placeholders', '%% baba', '% баба' , 'Missing %% placeholder in translation.');
 		$this->assertHasWarnings( 'placeholders', '%s baba', '%%s баба' );
+		$this->assertContainsOutput( 'placeholders', '%s baba', '%%s баба', 'Missing %s placeholder in translation.' );
 		$this->assertHasWarnings( 'placeholders', '%1$s baba', '%%1$s баба' );
+		$this->assertContainsOutput( 'placeholders', '%1$s baba', '%%1$s баба', 'Missing %1$s placeholder in translation.' );
+		$this->assertHasWarnings( 'placeholders', 'баба' , '%s baba' );
+		$this->assertContainsOutput( 'placeholders', 'баба' , '%s baba', 'Extra %s placeholder in translation.' );
 	}
 
 	function test_should_begin_end_on_newline() {
