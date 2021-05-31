@@ -24,7 +24,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->_assertWarning( 'assertSame', $warning, $original, $translation, $locale );
 	}
 
-	function AssertContainsOutput($warning, $original, $translation, $output_expected, $locale = null ) {
+	function assertContainsOutput($warning, $original, $translation, $output_expected, $locale = null ) {
 		if ( is_null( $locale ) ) $locale = $this->l;
 		$method = "warning_$warning";
 		$this->assertStringContainsString( $this->w->$method( $original, $translation, $locale ), $output_expected );
@@ -72,47 +72,47 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 					$this->l);
 
 		$this->assertHasWarnings('tags', '<p>Paragraph</p>', '<p>Párrafo');
-		$this->AssertContainsOutput('tags', '<p>Paragraph</p>', '<p>Párrafo', 'Missing tags from translation. Expected: </p>');
+		$this->assertContainsOutput('tags', '<p>Paragraph</p>', '<p>Párrafo', 'Missing tags from translation. Expected: </p>');
 		$this->assertHasWarnings('tags', 'Paragraph</p>', '<p>Párrafo</p>');
-		$this->AssertContainsOutput('tags', 'Paragraph</p>', '<p>Párrafo</p>', 'Too many tags in translation. Found: <p>');
+		$this->assertContainsOutput('tags', 'Paragraph</p>', '<p>Párrafo</p>', 'Too many tags in translation. Found: <p>');
 		$this->assertHasWarnings('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>');
-		$this->AssertContainsOutput('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>',
+		$this->assertContainsOutput('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>',
 			'Missing tags from translation. Expected: </p>');
 		$this->assertHasWarnings('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>');
-		$this->AssertContainsOutput('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>',
+		$this->assertContainsOutput('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>',
 			'Too many tags in translation. Found: <p>');
 		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>' );
-		$this->AssertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>',
+		$this->assertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>',
 			"The translation appears to be missing the following links: %s\nThe translation contains the following unexpected links: javascript:%s" );
 		$this->assertHasWarnings( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
 			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>' );
-		$this->AssertContainsOutput( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
+		$this->assertContainsOutput( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
 			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>',
 		"The translation appears to be missing the following URLs: https://www.example.org\nThe translation contains the following unexpected URLs: https://www.example.com");
 		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>' );
-		$this->AssertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>',
+		$this->assertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>',
 			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.' );
 		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
 			'<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>' );
-		$this->AssertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
+		$this->assertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
 			'<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>',
 			"The translation appears to be missing the following links: %s\nThe translation contains the following unexpected links: javascript:%s" );
 		$this->assertHasWarnings( 'tags', '<a>Baba</a>', '</a>Баба<a>' );
-		$this->AssertContainsOutput( 'tags', '<a>Baba</a>', '</a>Баба<a>', 'Tags in incorrect order: </a>, <a>' );
+		$this->assertContainsOutput( 'tags', '<a>Baba</a>', '</a>Баба<a>', 'Tags in incorrect order: </a>, <a>' );
 		$this->assertHasWarnings( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>');
-		$this->AssertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>',
+		$this->assertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>',
 			'Tags in incorrect order: </h2>, <h2>');
 		$this->assertHasWarnings( 'tags', '<h1>Hello</h1><h2>Peter</h2>', '<h2>Pedro</h2><h1>Hola</h1>');
 		$this->assertHasWarnings( 'tags', '<p>Hello<b><i>Peter</i></b></p>', '<p>Hola<i><b>Pedro</b></i></p>');
-		$this->AssertContainsOutput( 'tags', '<p>Hello<b><i>Peter</i></b></p><h2>Today</h2>',
+		$this->assertContainsOutput( 'tags', '<p>Hello<b><i>Peter</i></b></p><h2>Today</h2>',
 			'<p>Hola<i><b>Pedro</b></i></p><h2>Hoy</h2>',
 			'Tags in incorrect order: <i>, <b>, </b>, </i>');
-		$this->AssertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>', '<h2>Pedro</h2><h1>Hola</h1>',
+		$this->assertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>', '<h2>Pedro</h2><h1>Hola</h1>',
 			'Tags in incorrect order: <h2>, </h2>, <h1>, </h1>');
 		$this->assertHasWarnings('tags',
 			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">',
 			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">');
-		$this->AssertContainsOutput('tags',
+		$this->assertContainsOutput('tags',
 			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">',
 			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">',
 		"The translation appears to be missing the following URLs: https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg\nThe translation contains the following unexpected URLs: https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg");
@@ -121,7 +121,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
 			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 			$this->l);
-		$this->AssertContainsOutput( 'tags',
+		$this->assertContainsOutput( 'tags',
 			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
 			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 			'Tags in incorrect order: </b>, <b>',
@@ -285,32 +285,32 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###');
 
 		$this->assertHasWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '##NEW_EMAIL##');
-		$this->AssertContainsOutput( 'mismatching_placeholders', '###NEW_EMAIL###', '##NEW_EMAIL##',
+		$this->assertContainsOutput( 'mismatching_placeholders', '###NEW_EMAIL###', '##NEW_EMAIL##',
 		"The translation appears to be missing the following placeholders: ###NEW_EMAIL###");
 		$this->assertHasWarnings( 'mismatching_placeholders', '##NEW_EMAIL###', '###NEW_EMAIL###');
-		$this->AssertContainsOutput( 'mismatching_placeholders', '##NEW_EMAIL###', '###NEW_EMAIL###',
+		$this->assertContainsOutput( 'mismatching_placeholders', '##NEW_EMAIL###', '###NEW_EMAIL###',
 		'The translation contains the following unexpected placeholders: ###NEW_EMAIL###');
 		$this->assertHasWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '###NUEVO_CORREO###');
-		$this->AssertContainsOutput( 'mismatching_placeholders', '###NEW_EMAIL###', '###NUEVO_CORREO###',
+		$this->assertContainsOutput( 'mismatching_placeholders', '###NEW_EMAIL###', '###NUEVO_CORREO###',
 		"The translation appears to be missing the following placeholders: ###NEW_EMAIL###\nThe translation contains the following unexpected placeholders: ###NUEVO_CORREO###");
 		$this->assertHasWarnings( 'mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###');
-		$this->AssertContainsOutput( 'mismatching_placeholders',
+		$this->assertContainsOutput( 'mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
 			'The translation appears to be missing the following placeholders: ###USERNAME###');
 		$this->assertHasWarnings( 'mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###');
-		$this->AssertContainsOutput( 'mismatching_placeholders',
+		$this->assertContainsOutput( 'mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
 			'The translation appears to be missing the following placeholders: ###SITENAME###');
 		$this->assertHasWarnings( 'mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#');
-		$this->AssertContainsOutput( 'mismatching_placeholders',
+		$this->assertContainsOutput( 'mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
 			'The translation appears to be missing the following placeholders: ###EMAIL###');
@@ -329,17 +329,17 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'El %2$s contiene %1$d elementos. Es un bonito %2$s lleno de %1$d elementos.');
 
 		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%d">100 percent</a>', '<a href="%d">100%</a>');
-		$this->AssertContainsOutput('unexpected_sprintf_token', '<a href="%d">100 percent</a>', '<a href="%d">100%</a>',
+		$this->assertContainsOutput('unexpected_sprintf_token', '<a href="%d">100 percent</a>', '<a href="%d">100%</a>',
 			'The translation contains the following unexpected placeholders: ">100%<');
 		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%f">100 percent</a>', ' 95% of <a href="%f">100%%</a>');
-		$this->AssertContainsOutput('unexpected_sprintf_token', '<a href="%f">100 percent</a>',
+		$this->assertContainsOutput('unexpected_sprintf_token', '<a href="%f">100 percent</a>',
 			' 95% of <a href="%f">100%%</a>', 'The translation contains the following unexpected placeholders: 95% ');
 		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%f">100 percent</a>', '<a href="%f">100%%</a> of 95% ');
-		$this->AssertContainsOutput('unexpected_sprintf_token', '<a href="%f">100 percent</a>',
+		$this->assertContainsOutput('unexpected_sprintf_token', '<a href="%f">100 percent</a>',
 			'<a href="%f">100%%</a> of 95% ',
 			'The translation contains the following unexpected placeholders: 95% ');
 		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%f">100 percent</a>', '<a href="%f">100%</a> of 95% ');
-		$this->AssertContainsOutput('unexpected_sprintf_token',
+		$this->assertContainsOutput('unexpected_sprintf_token',
 			'<a href="%f">100 percent</a>', '<a href="%f">100%</a> of 95% ',
 			'The translation contains the following unexpected placeholders: ">100%<, 95% ');
 	}
