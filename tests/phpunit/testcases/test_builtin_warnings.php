@@ -132,7 +132,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder('GP_Translation_Warnings')->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 8 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 9 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -271,5 +271,43 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarnings( 'mismatching_urls', 'Text1 Text2', 'Texto1 https://www.example.com Texto2' );
 		$this->assertHasWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org', 'Texto1 https://www.example.com Texto2' );
 		$this->assertHasWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2', 'Texto1 https://www.example.com Texto2 https://www.example.org' );
+	}
+
+	function test_mismatching_placeholders() {
+		$this->assertNoWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '###NEW_EMAIL###');
+		$this->assertNoWarnings( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###');
+
+		$this->assertHasWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '##NEW_EMAIL##');
+		$this->AssertContainsOutput( 'mismatching_placeholders', '###NEW_EMAIL###', '##NEW_EMAIL##',
+		"The translation appears to be missing the following placeholders: ###NEW_EMAIL###");
+		$this->assertHasWarnings( 'mismatching_placeholders', '##NEW_EMAIL###', '###NEW_EMAIL###');
+		$this->AssertContainsOutput( 'mismatching_placeholders', '##NEW_EMAIL###', '###NEW_EMAIL###',
+		'The translation contains the following unexpected placeholders: ###NEW_EMAIL###');
+		$this->assertHasWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '###NUEVO_CORREO###');
+		$this->AssertContainsOutput( 'mismatching_placeholders', '###NEW_EMAIL###', '###NUEVO_CORREO###',
+		"The translation appears to be missing the following placeholders: ###NEW_EMAIL###\nThe translation contains the following unexpected placeholders: ###NUEVO_CORREO###");
+		$this->assertHasWarnings( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###');
+		$this->AssertContainsOutput( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
+			'The translation appears to be missing the following placeholders: ###USERNAME###');
+		$this->assertHasWarnings( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###');
+		$this->AssertContainsOutput( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
+			'The translation appears to be missing the following placeholders: ###SITENAME###');
+		$this->assertHasWarnings( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#');
+		$this->AssertContainsOutput( 'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
+			'The translation appears to be missing the following placeholders: ###EMAIL###');
 	}
 }

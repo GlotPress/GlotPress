@@ -566,6 +566,44 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Adds a warning for changing placeholders.
+	 *
+	 * This only supports placeholders in the format of '###[A-Z_]+###'.
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 *
+	 * @param string $original    The original string.
+	 * @param string $translation The translated string.
+	 * @return string|true
+	 */
+	public function warning_mismatching_placeholders( $original, $translation ) {
+		$placeholder_regex = '@(###[A-Z_]+###)@';
+
+		preg_match_all( $placeholder_regex, $original, $original_placeholders );
+		$original_placeholders = array_unique( $original_placeholders[0] );
+
+		preg_match_all( $placeholder_regex, $translation, $translation_placeholders );
+		$translation_placeholders = array_unique( $translation_placeholders[0] );
+
+		$missing_placeholders = array_diff( $original_placeholders, $translation_placeholders );
+		$added_placeholders   = array_diff( $translation_placeholders, $original_placeholders );
+		if ( ! $missing_placeholders && ! $added_placeholders ) {
+			return true;
+		}
+
+		$error = '';
+		if ( $missing_placeholders ) {
+			$error .= __( 'The translation appears to be missing the following placeholders: ', 'glotpress' ) . implode( ', ', $missing_placeholders ) . "\n";
+		}
+		if ( $added_placeholders ) {
+			$error .= __( 'The translation contains the following unexpected placeholders: ', 'glotpress' ) . implode( ', ', $added_placeholders );
+		}
+
+		return trim( $error );
+	}
+
+	/**
 	 * Registers all methods starting with `warning_` as built-in warnings.
 	 *
 	 * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
