@@ -167,9 +167,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 
 	function test_should_begin_end_on_newline() {
 		$this->assertHasWarnings( 'should_begin_on_newline', "\nbaba", "baba" );
+		$this->assertContainsOutput( 'should_begin_on_newline', "\nbaba", "baba", 'Original and translation should both begin on newline.' );
 		$this->assertHasWarnings( 'should_not_begin_on_newline', "baba", "\nbaba" );
+		$this->assertContainsOutput( 'should_not_begin_on_newline', "baba", "\nbaba", 'Translation should not begin on newline.' );
 		$this->assertHasWarnings( 'should_end_on_newline', "baba\n", "baba" );
+		$this->assertContainsOutput( 'should_end_on_newline', "baba\n", "baba", 'Original and translation should both end on newline.' );
 		$this->assertHasWarnings( 'should_not_end_on_newline', "baba", "baba\n" );
+		$this->assertContainsOutput( 'should_not_end_on_newline', "baba", "baba\n", 'Translation should not end on newline.' );
 
 		$this->assertNoWarnings( 'should_begin_on_newline', "baba", "baba" );
 		$this->assertNoWarnings( 'should_not_begin_on_newline', "baba", "baba" );
