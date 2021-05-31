@@ -24,6 +24,11 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->_assertWarning( 'assertSame', $warning, $original, $translation, $locale );
 	}
 
+	function AssertContainsOutput($warning, $original, $translation, $output_expected, $locale = null ) {
+		if ( is_null( $locale ) ) $locale = $this->l;
+		$method = "warning_$warning";
+		$this->assertStringContainsString( $this->w->$method( $original, $translation, $locale ), $output_expected );
+	}
 
 	function test_length() {
 		$this->assertNoWarnings( 'length', $this->longer_than_20, $this->longer_than_20 );
@@ -39,15 +44,88 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 
 	function test_tags() {
 		$this->assertNoWarnings( 'tags', 'Baba', 'Баба' );
+		$this->assertNoWarnings( 'tags',
+			'<p><abbr title="World Health Organization">WHO</abbr> was founded in 1948.</p>',
+			'<p>La<abbr title="Organización Mundial de la Salud">OMS</abbr> se fundó en 1948.</p>' );
+		$this->assertNoWarnings( 'tags',
+			'<button aria-label="Close">X</button><button aria-label="Open">O</button>',
+			'<button aria-label="Cerrar">X</button><button aria-label="Abrir">A</button>' );
 		$this->assertNoWarnings( 'tags', '<a href="%s">Baba</a>', '<a href="%s">Баба</a>' );
 		$this->assertNoWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" title="Блимп!">Баба</a>' );
 		$this->assertNoWarnings( 'tags', '<a href="%s" aria-label="Blimp!">Baba</a>', '<a href="%s" aria-label="Блимп!">Баба</a>' );
 		$this->assertNoWarnings( 'tags', '<a href="%s" title="Blimp!" aria-label="Blimp!">Baba</a>', '<a href="%s" title="Блимп!" aria-label="Блимп!">Баба</a>' );
+		$this->assertNoWarnings( 'tags', '<a href="https://www.example.org" title="Example!" lang="en">Example URL</a>',
+			'<a href="https://www.example.org" title="¡Ejemplo!" lang="es">URL de jemplo</a>' );
+		$this->assertNoWarnings( 'tags',
+			' Text 1 <a href="https://wordpress.org/plugins/example-plugin/">Example plugin</a> Text 2<a href="https://wordpress.com/log-in/">Log in</a> Text 3 <img src="example.jpg" alt="Example alt text">',
+			' Texto 1 <a href="https://es.wordpress.org/plugins/example-plugin/">Plugin de ejemplo</a> Texto 2<a href="https://es.wordpress.com/log-in/">Acceder</a> Texto 3 <img src="example.jpg" alt="Texto alternativo de ejemplo">');
+		$this->assertNoWarnings('tags',
+			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">',
+			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">');
+		$this->assertNoWarnings( 'tags',
+			' Text 1 <a href="https://wordpress.com/log-in">Log in</a> Text 2 <img src="https://en.gravatar.com/matt" alt="Matt\'s Gravatar"> ',
+			' Texto 1 <a href="https://es.wordpress.com/log-in">Acceder</a> Texto 2 <img src="https://es.gravatar.com/matt" alt="Gravatar de Matt"> ');
+		$this->l->slug = 'ja';
+		$this->assertNoWarnings( 'tags',
+			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
+			'<b>テキスト1</b>、イタリック体、テキスト2、エンファシス体、テキスト3',
+					$this->l);
 
+		$this->assertHasWarnings('tags', '<p>Paragraph</p>', '<p>Párrafo');
+		$this->AssertContainsOutput('tags', '<p>Paragraph</p>', '<p>Párrafo', 'Missing tags from translation. Expected: </p>');
+		$this->assertHasWarnings('tags', 'Paragraph</p>', '<p>Párrafo</p>');
+		$this->AssertContainsOutput('tags', 'Paragraph</p>', '<p>Párrafo</p>', 'Too many tags in translation. Found: <p>');
+		$this->assertHasWarnings('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>');
+		$this->AssertContainsOutput('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>',
+			'Missing tags from translation. Expected: </p>');
+		$this->assertHasWarnings('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>');
+		$this->AssertContainsOutput('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>',
+			'Too many tags in translation. Found: <p>');
 		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>' );
+		$this->AssertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>',
+			"The translation appears to be missing the following links: %s\nThe translation contains the following unexpected links: javascript:%s" );
+		$this->assertHasWarnings( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
+			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>' );
+		$this->AssertContainsOutput( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
+			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>',
+		"The translation appears to be missing the following URLs: https://www.example.org\nThe translation contains the following unexpected URLs: https://www.example.com");
 		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>' );
-		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>' );
+		$this->AssertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>',
+			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.' );
+		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
+			'<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>' );
+		$this->AssertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
+			'<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>',
+			"The translation appears to be missing the following links: %s\nThe translation contains the following unexpected links: javascript:%s" );
 		$this->assertHasWarnings( 'tags', '<a>Baba</a>', '</a>Баба<a>' );
+		$this->AssertContainsOutput( 'tags', '<a>Baba</a>', '</a>Баба<a>', 'Tags in incorrect order: </a>, <a>' );
+		$this->assertHasWarnings( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>');
+		$this->AssertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>',
+			'Tags in incorrect order: </h2>, <h2>');
+		$this->assertHasWarnings( 'tags', '<h1>Hello</h1><h2>Peter</h2>', '<h2>Pedro</h2><h1>Hola</h1>');
+		$this->assertHasWarnings( 'tags', '<p>Hello<b><i>Peter</i></b></p>', '<p>Hola<i><b>Pedro</b></i></p>');
+		$this->AssertContainsOutput( 'tags', '<p>Hello<b><i>Peter</i></b></p><h2>Today</h2>',
+			'<p>Hola<i><b>Pedro</b></i></p><h2>Hoy</h2>',
+			'Tags in incorrect order: <i>, <b>, </b>, </i>');
+		$this->AssertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>', '<h2>Pedro</h2><h1>Hola</h1>',
+			'Tags in incorrect order: <h2>, </h2>, <h1>, </h1>');
+		$this->assertHasWarnings('tags',
+			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">',
+			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">');
+		$this->AssertContainsOutput('tags',
+			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">',
+			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">',
+		"The translation appears to be missing the following URLs: https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg\nThe translation contains the following unexpected URLs: https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg");
+		$this->l->slug = 'ja';
+		$this->assertHasWarnings( 'tags',
+			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
+			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
+			$this->l);
+		$this->AssertContainsOutput( 'tags',
+			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
+			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
+			'Tags in incorrect order: </b>, <b>',
+			$this->l);
 	}
 
 	function test_add_all() {
