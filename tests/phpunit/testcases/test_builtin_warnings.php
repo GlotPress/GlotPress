@@ -132,7 +132,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder('GP_Translation_Warnings')->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 9 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 10 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -309,5 +309,33 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
 			'The translation appears to be missing the following placeholders: ###EMAIL###');
+	}
+
+	function test_unexpected_sprintf_token() {
+		$this->assertNoWarnings('unexpected_sprintf_token', '100 percent', '100%');
+		$this->assertNoWarnings('unexpected_sprintf_token', '<a href="%a">100 percent</a>', '<a href="%a">100%</a>');
+		$this->assertNoWarnings('unexpected_sprintf_token', '<a href="%s">100 percent</a>', '<a href="%s">100%%</a>');
+		$this->assertNoWarnings('unexpected_sprintf_token', '<a href="%1$s">100 percent</a>', '<a href="%1$s">100%%</a>');
+		$this->assertNoWarnings('unexpected_sprintf_token',
+			'The %s contains %d items',
+			'El %s contiene %d elementos');
+		$this->assertNoWarnings('unexpected_sprintf_token',
+			'The %2$s contains %1$d items. That\'s a nice %2$s full of %1$d items.',
+			'El %2$s contiene %1$d elementos. Es un bonito %2$s lleno de %1$d elementos.');
+
+		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%d">100 percent</a>', '<a href="%d">100%</a>');
+		$this->AssertContainsOutput('unexpected_sprintf_token', '<a href="%d">100 percent</a>', '<a href="%d">100%</a>',
+			'The translation contains the following unexpected placeholders: ">100%<');
+		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%f">100 percent</a>', ' 95% of <a href="%f">100%%</a>');
+		$this->AssertContainsOutput('unexpected_sprintf_token', '<a href="%f">100 percent</a>',
+			' 95% of <a href="%f">100%%</a>', 'The translation contains the following unexpected placeholders: 95% ');
+		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%f">100 percent</a>', '<a href="%f">100%%</a> of 95% ');
+		$this->AssertContainsOutput('unexpected_sprintf_token', '<a href="%f">100 percent</a>',
+			'<a href="%f">100%%</a> of 95% ',
+			'The translation contains the following unexpected placeholders: 95% ');
+		$this->assertHasWarnings('unexpected_sprintf_token', '<a href="%f">100 percent</a>', '<a href="%f">100%</a> of 95% ');
+		$this->AssertContainsOutput('unexpected_sprintf_token',
+			'<a href="%f">100 percent</a>', '<a href="%f">100%</a> of 95% ',
+			'The translation contains the following unexpected placeholders: ">100%<, 95% ');
 	}
 }

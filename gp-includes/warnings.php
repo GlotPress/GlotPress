@@ -604,6 +604,44 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Adds a warning for adding unexpected percent signs in a sprintf-like string.
+	 *
+	 * This is to catch translations for originals like this:
+	 *  - Original: `<a href="%s">100 percent</a>`
+	 *  - Submitted translation: `<a href="%s">100%</a>`
+	 *  - Proper translation: `<a href="%s">100%%</a>`
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 *
+	 * @param string $original    The original string.
+	 * @param string $translation The translated string.
+	 * @return bool|string
+	 */
+	public function warning_unexpected_sprintf_token( $original, $translation ) {
+		$unexpected_tokens = array();
+		$is_sprintf        = preg_match( '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i', $original );
+
+		// Find any percents that are not valid or escaped.
+		if ( $is_sprintf ) {
+			// Negative/Positive lookahead not used to allow the warning to include the context around the % sign.
+			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.))/i', $translation, $m );
+			foreach ( $m['char'] as $i => $char ) {
+				// % is included for escaped %%.
+				if ( false === strpos( 'bcdefgosux%', $char ) ) {
+					$unexpected_tokens[] = $m[0][ $i ];
+				}
+			}
+		}
+
+		if ( $unexpected_tokens ) {
+			return __( 'The translation contains the following unexpected placeholders: ', 'glotpress' ) . implode( ', ', $unexpected_tokens );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Registers all methods starting with `warning_` as built-in warnings.
 	 *
 	 * @param GP_Translation_Warnings $translation_warnings Instance of GP_Translation_Warnings.
