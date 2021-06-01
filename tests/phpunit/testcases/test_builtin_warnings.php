@@ -32,6 +32,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 
 	function test_length() {
 		$this->assertNoWarnings( 'length', $this->longer_than_20, $this->longer_than_20 );
+		$this->assertNoWarnings( 'length', 'number_format_', '' );
 		$this->assertHasWarnings( 'length', $this->longer_than_20, $this->shorter_than_5 );
 	}
 
