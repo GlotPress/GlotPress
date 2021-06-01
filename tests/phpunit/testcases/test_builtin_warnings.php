@@ -203,9 +203,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertEquals( null,
 			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation %2$s' ), $fr ) );
 		$this->assertEquals( null,
+			$w->check( 'original %1$s', 'original %2$s', array( null ), $fr ) );
+		$this->assertEquals( null,
 			$w->check( 'original', 'original %s', array( 'translation', 'translation %s' ), $fr ) );
 		$this->assertEquals( array( 1 => array( 'placeholder' => 'Missing %2$s placeholder in translation.' ) ),
 			$w->check( 'original %1$s', 'original %2$s', array( 'translation %1$s', 'translation' ), $fr ) );
+		$this->assertEquals( array( 0 => array( 'placeholder' => 'Missing %1$s placeholder in translation.' ) ),
+			$w->check( 'original %1$s', 'original %2$s', array( 'translation', 'translation  %2$s' ), $fr ) );
 
 		$de = new GP_Locale( array(
 			'nplurals' => 2,
