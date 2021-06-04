@@ -161,16 +161,7 @@ class GP_Builtin_Translation_Warnings {
 	 *
 	 * @var array
 	 */
-	public $allowed_domain_changes = array(
-		// Allow links to wordpress.org to be changed to a subdomain.
-		'wordpress.org'    => '[^.]+\.wordpress\.org',
-		// Allow links to wordpress.com to be changed to a subdomain.
-		'wordpress.com'    => '[^.]+\.wordpress\.com',
-		// Allow links to gravatar.org to be changed to a subdomain.
-		'en.gravatar.com'  => '[^.]+\.gravatar\.com',
-		// Allow links to wikipedia.org to be changed to a subdomain.
-		'en.wikipedia.org' => '[^.]+\.wikipedia\.org',
-	);
+	public $allowed_domain_changes = array();
 
 	/**
 	 * Checks whether lengths of source and translation differ too much.
@@ -531,6 +522,8 @@ class GP_Builtin_Translation_Warnings {
 			}
 		}
 
+		$this->allowed_domain_changes = apply_filters( 'gp_allowed_domain_changes', $this->allowed_domain_changes );
+
 		// Check if just the domain was changed, and if so, if it's to a whitelisted domain
 		foreach ( $missing_urls as $key => $missing_url ) {
 			$host = parse_url( $missing_url, PHP_URL_HOST );
@@ -560,44 +553,6 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( $added_urls ) {
 			$error .= __( 'The translation contains the following unexpected URLs: ', 'glotpress' ) . implode( ', ', $added_urls );
-		}
-
-		return trim( $error );
-	}
-
-	/**
-	 * Adds a warning for changing placeholders.
-	 *
-	 * This only supports placeholders in the format of '###[A-Z_]+###'.
-	 *
-	 * @since 3.0.0
-	 * @access public
-	 *
-	 * @param string $original    The original string.
-	 * @param string $translation The translated string.
-	 * @return string|true
-	 */
-	public function warning_mismatching_placeholders( $original, $translation ) {
-		$placeholder_regex = '@(###[A-Z_]+###)@';
-
-		preg_match_all( $placeholder_regex, $original, $original_placeholders );
-		$original_placeholders = array_unique( $original_placeholders[0] );
-
-		preg_match_all( $placeholder_regex, $translation, $translation_placeholders );
-		$translation_placeholders = array_unique( $translation_placeholders[0] );
-
-		$missing_placeholders = array_diff( $original_placeholders, $translation_placeholders );
-		$added_placeholders   = array_diff( $translation_placeholders, $original_placeholders );
-		if ( ! $missing_placeholders && ! $added_placeholders ) {
-			return true;
-		}
-
-		$error = '';
-		if ( $missing_placeholders ) {
-			$error .= __( 'The translation appears to be missing the following placeholders: ', 'glotpress' ) . implode( ', ', $missing_placeholders ) . "\n";
-		}
-		if ( $added_placeholders ) {
-			$error .= __( 'The translation contains the following unexpected placeholders: ', 'glotpress' ) . implode( ', ', $added_placeholders );
 		}
 
 		return trim( $error );
@@ -654,8 +609,12 @@ class GP_Builtin_Translation_Warnings {
 			}
 		);
 
-		foreach ( $warnings as $warning ) {
-			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $this, $warning ) );
+		$warnings = array_fill_keys( $warnings, $this );
+
+		$warnings = apply_filters( 'gp_add_all_warnings', $warnings );
+
+		foreach ( $warnings as $warning => $class ) {
+			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $class, $warning ) );
 		}
 	}
 

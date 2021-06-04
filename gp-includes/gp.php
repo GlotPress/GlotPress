@@ -122,6 +122,14 @@ class GP {
 	public static $builtin_translation_warnings;
 
 	/**
+	 * Singleton for wporg translation warnings.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var GP_Wporg_Translation_Warnings
+	 */
+	public static $wporg_translation_warnings;
+	/**
 	 * Array of notices.
 	 *
 	 * @since 1.0.0
