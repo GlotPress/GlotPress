@@ -203,6 +203,8 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks whether HTML tags are missing or have been added.
 	 *
+	 * @todo Validate if the HTML is in the same order in function of the language. Validate nesting of HTML is same.
+	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
@@ -224,7 +226,7 @@ class GP_Builtin_Translation_Warnings {
 			$translation_parts = $m[1];
 		}
 
-		// Allow certain languages to exclude certain tags.
+		// East asian languages can remove emphasis/italic tags
 		if ( count( $original_parts ) > count( $translation_parts ) ) {
 
 			$languages_without_italics = array(
@@ -244,26 +246,27 @@ class GP_Builtin_Translation_Warnings {
 		}
 
 		if ( count( $original_parts ) > count( $translation_parts ) ) {
-			return __( 'Missing tags from translation. Expected: ', 'glotpress' ) . implode( ' ', array_diff( $original_parts, $translation_parts ) );
+			return sprintf(
+				__( 'Missing tags from translation. Expected: %s', 'glotpress' ),
+				implode( ' ', array_diff( $original_parts, $translation_parts ) )
+			);
 		}
 		if ( count( $original_parts ) < count( $translation_parts ) ) {
-			return __( 'Too many tags in translation. Found: ', 'glotpress' ) . implode( ' ', array_diff( $translation_parts, $original_parts ) );
+			return sprintf(
+				__( 'Too many tags in translation. Found: %s', 'glotpress' ),
+				implode( ' ', array_diff( $translation_parts, $original_parts ) )
+			);
 		}
 
-		$original_parts_sorted    = $original_parts;
-		$translation_parts_sorted = $translation_parts;
-
-		rsort( $original_parts_sorted );
-		rsort( $translation_parts_sorted );
-
-		$warnings = array();
-
-		// Check if the original tags are in correct order
-		if ( empty( array_diff_assoc( $original_parts_sorted, $translation_parts_sorted ) )
-			&& empty( array_diff_assoc( $translation_parts_sorted, $original_parts_sorted ) )
-			&& ! ( empty( array_diff_assoc( $original_parts, $translation_parts ) ) ) ) {
-			$warnings[] = __( 'Tags in incorrect order: ', 'glotpress' ) . implode( ', ', array_diff_assoc( $translation_parts, $original_parts ) );
+		// Check if the translation tags are in correct order
+		$valid_html_warning = $this->check_valid_html( $original_parts, $translation_parts );
+		if ( true !== $valid_html_warning ) {
+			return trim( $valid_html_warning );
 		}
+
+		// Sort the tags, from this point out as long as all the tags are present is okay.
+		rsort( $original_parts );
+		rsort( $translation_parts );
 
 		$changeable_attributes = array(
 			// We allow certain attributes to be different in translations.
@@ -279,8 +282,9 @@ class GP_Builtin_Translation_Warnings {
 		$changeable_attr_regex = sprintf( $attribute_regex, implode( '|', $changeable_attributes ) );
 
 		// Items are sorted, so if all is well, will match up.
-		$parts_tags = array_combine( $original_parts_sorted, $translation_parts_sorted );
+		$parts_tags = array_combine( $original_parts, $translation_parts );
 
+		$warnings = array();
 		foreach ( $parts_tags as $original_tag => $translation_tag ) {
 			if ( $original_tag === $translation_tag ) {
 				continue;
@@ -304,16 +308,10 @@ class GP_Builtin_Translation_Warnings {
 		$original_links    = '';
 		$translation_links = '';
 
-		$original_links    = implode( "\n", $this->get_values_from_href_src( $original_parts_sorted ) );
-		$translation_links = implode( "\n", $this->get_values_from_href_src( $translation_parts_sorted ) );
+		$original_links    = implode( "\n", $this->get_values_from_href_src( $original_parts ) );
+		$translation_links = implode( "\n", $this->get_values_from_href_src( $translation_parts ) );
 		// Validate the URLs if present.
 		if ( $original_links || $translation_links ) {
-
-			$url_warnings = $this->links_without_url_are_equal( $original_links, $translation_links );
-			if ( true !== $url_warnings ) {
-				$warnings = array_merge( $warnings, $url_warnings );
-			}
-
 			$url_warnings = $this->warning_mismatching_urls( $original_links, $translation_links );
 
 			if ( true !== $url_warnings ) {
@@ -546,13 +544,18 @@ class GP_Builtin_Translation_Warnings {
 			return true;
 		}
 
-		// Error.
 		$error = '';
 		if ( $missing_urls ) {
-			$error .= __( 'The translation appears to be missing the following URLs: ', 'glotpress' ) . implode( ', ', $missing_urls ) . "\n";
+			$error .= sprintf(
+				__( 'The translation appears to be missing the following URLs: %s', 'glotpress' ),
+				implode( ', ', $missing_urls ) . "\n"
+			);
 		}
 		if ( $added_urls ) {
-			$error .= __( 'The translation contains the following unexpected URLs: ', 'glotpress' ) . implode( ', ', $added_urls );
+			$error .= sprintf(
+				__( 'The translation contains the following unexpected URLs: %s', 'glotpress' ),
+				implode( ', ', $added_urls ) . "\n"
+			);
 		}
 
 		return trim( $error );
@@ -590,7 +593,10 @@ class GP_Builtin_Translation_Warnings {
 		}
 
 		if ( $unexpected_tokens ) {
-			return __( 'The translation contains the following unexpected placeholders: ', 'glotpress' ) . implode( ', ', $unexpected_tokens );
+			return sprintf(
+				__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
+				implode( ', ', $unexpected_tokens )
+			);
 		}
 
 		return true;
@@ -634,6 +640,51 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Checks if the HTML tags are in correct order
+	 *
+	 * Warns about HTML tags translations in incorrect order. For example:
+	 * - Original: <a></a>
+	 * - Translation: </a><a>
+	 *
+	 * @param array $original_parts    	The original HTML tags
+	 * @param array $translation_parts 	The translation HTML tags
+	 * @return string|true        		True if check is OK, otherwise warning message.
+	 */
+	private function check_valid_html( array $original_parts, array $translation_parts ) {
+		if ( empty( $original_parts ) ) {
+			return true;
+		}
+		if ( $original_parts === $translation_parts ) {
+			return true;
+		}
+
+		libxml_clear_errors();
+		libxml_use_internal_errors( true );
+		$original = new DOMDocument();
+		$original->loadHTML( implode( '', $original_parts ) );
+		// If the original parts are not well-formed, don't continue the translation check
+		$errors = libxml_get_errors();
+		if ( ! empty( $errors ) ) {
+			return true;
+		}
+
+		$translation = new DOMDocument();
+		$translation->loadHTML( implode( '', $translation_parts ) );
+		$errors = libxml_get_errors();
+		if ( ! empty( $errors ) ) {
+			$message = array();
+			foreach ( $errors as $error ) {
+				$message[] = trim( $error->message );
+			}
+			return sprintf(
+				__( 'The translation tags are not correct: %s', 'glotpress' ),
+				implode( ', ', $message )
+			);
+		}
+		return true;
+	}
+
+	/**
 	 * Checks whether links that are not URL are equal or not
 	 *
 	 * @since 3.0.0
@@ -663,10 +714,16 @@ class GP_Builtin_Translation_Warnings {
 
 		$error = array();
 		if ( $missing_urls ) {
-			$error[] = __( 'The translation appears to be missing the following links: ', 'glotpress' ) . implode( ', ', $missing_urls );
+			$error[] = sprintf(
+				__( 'The translation appears to be missing the following links: %s', 'glotpress' ),
+				implode( ', ', $missing_urls )
+			);
 		}
 		if ( $added_urls ) {
-			$error[] = __( 'The translation contains the following unexpected links: ', 'glotpress' ) . implode( ', ', $added_urls );
+			$error[] = sprintf(
+				__( 'The translation contains the following unexpected links: %s', 'glotpress' ),
+				implode( ', ', $added_urls )
+			);
 		}
 
 		return $error;
