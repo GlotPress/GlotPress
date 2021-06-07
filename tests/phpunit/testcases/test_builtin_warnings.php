@@ -27,7 +27,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 	function assertContainsOutput($warning, $original, $translation, $output_expected, $locale = null ) {
 		if ( is_null( $locale ) ) $locale = $this->l;
 		$method = "warning_$warning";
-		$this->assertStringContainsString( $this->w->$method( $original, $translation, $locale ), $output_expected );
+		$this->assertStringContainsString( $output_expected, $this->w->$method( $original, $translation, $locale ) );
 	}
 
 	function test_length() {
@@ -62,55 +62,91 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
 			'<b>テキスト1</b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 					$this->l);
+		$this->assertNoWarnings('tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>');
 
-		$this->assertHasWarnings('tags', '<p>Paragraph</p>', '<p>Párrafo');
-		$this->assertContainsOutput('tags', '<p>Paragraph</p>', '<p>Párrafo', 'Missing tags from translation. Expected: </p>');
-		$this->assertHasWarnings('tags', 'Paragraph</p>', '<p>Párrafo</p>');
-		$this->assertContainsOutput('tags', 'Paragraph</p>', '<p>Párrafo</p>', 'Too many tags in translation. Found: <p>');
-		$this->assertHasWarnings('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>');
-		$this->assertContainsOutput('tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>',
-			'Missing tags from translation. Expected: </p>');
-		$this->assertHasWarnings('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>');
-		$this->assertContainsOutput('tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>',
-			'Too many tags in translation. Found: <p>');
-//		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>' );
-//		$this->assertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>',
-//			"The translation appears to be missing the following links: %s\nThe translation contains the following unexpected links: javascript:%s" );
-		$this->assertHasWarnings( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
-			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>' );
-		$this->assertContainsOutput( 'tags', '<a href="https://www.example.org" title="Example!">Example URL</a>',
+		$this->assertHasWarnings( 'tags', '<p>Paragraph</p>', '<p>Párrafo' );
+		$this->assertContainsOutput( 'tags', '<p>Paragraph</p>', '<p>Párrafo', 'Missing tags from translation. Expected: </p>' );
+		$this->assertHasWarnings( 'tags', 'Paragraph</p>', '<p>Párrafo</p>' );
+		$this->assertContainsOutput( 'tags', 'Paragraph</p>', '<p>Párrafo</p>', 'Too many tags in translation. Found: <p>' );
+		$this->assertHasWarnings( 'tags', '<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>' );
+		$this->assertContainsOutput(
+			'tags',
+			'<h1>Title</h1><p>Text 1</p><br><b>Text 2</b>',
+			'<h1>Título</h1><p>Texto 1<br><b>Texto 2</b>',
+			'Missing tags from translation. Expected: </p>'
+		);
+		$this->assertHasWarnings( 'tags', '<h1>Title</h1>Text 1</p><br><b>Text 2</b>', '<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>' );
+		$this->assertContainsOutput(
+			'tags',
+			'<h1>Title</h1>Text 1</p><br><b>Text 2</b>',
+			'<h1>Título</h1><p>Texto 1</p><br><b>Texto 2</b>',
+			'Too many tags in translation. Found: <p>'
+		);
+		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="javascript:%s" title="Блимп!">Баба</a>' );
+		$this->assertContainsOutput(
+			'tags',
+			'<a href="%s" title="Blimp!">Baba</a>',
+			'<a href="javascript:%s" title="Блимп!">Баба</a>',
+			'The translation contains the following unexpected links: javascript:%s'
+		);
+		$this->assertHasWarnings( 'tags', '<a href="javascript:%s" title="Blimp!">Baba</a>', '<a href="%s" title="Блимп!">Баба</a>' );
+		$this->assertContainsOutput(
+			'tags',
+			'<a href="javascript:%s" title="Blimp!">Baba</a>',
+			'<a href="%s" title="Блимп!">Баба</a>',
+			'The translation appears to be missing the following links: javascript:%s'
+		);
+		$this->assertHasWarnings(
+			'tags',
+			'<a href="https://www.example.org" title="Example!">Example URL</a>',
+			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>'
+		);
+		$this->assertContainsOutput(
+			'tags',
+			'<a href="https://www.example.org" title="Example!">Example URL</a>',
 			'<a href="https://www.example.com" title="¡Ejemplo!">Ejemplo</a>',
 		"The translation appears to be missing the following URLs: https://www.example.org\nThe translation contains the following unexpected URLs: https://www.example.com");
 		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>' );
-		$this->assertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>', '<a href="%s" x>Баба</a>',
-			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.' );
-/*		$this->assertHasWarnings( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
-			'<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>' );
-		$this->assertContainsOutput( 'tags', '<a href="%s" title="Blimp!">Baba</a>',
-			'<a href="javascript:%s" title="Блимп!" target="_blank">Баба</a>',
-			"The translation appears to be missing the following links: %s\nThe translation contains the following unexpected links: javascript:%s" );*/
+		$this->assertContainsOutput(
+			'tags',
+			'<a href="%s" title="Blimp!">Baba</a>',
+			'<a href="%s" x>Баба</a>',
+			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.'
+		);
 		$this->assertHasWarnings( 'tags', '<a>Baba</a>', '</a>Баба<a>' );
-		$this->assertContainsOutput( 'tags', '<p>Baba</p>', '</p>Баба<p>', 'The translation tags are not correct: Unexpected end tag : p ' );
-		$this->assertHasWarnings( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>');
-		$this->assertContainsOutput( 'tags', '<h1>Hello</h1><h2>Peter</h2>',  '<h1>Hola</h1></h2>Pedro<h2>',
-			'The translation tags are not correct: Unexpected end tag : h2');
-		$this->assertHasWarnings('tags',
+		$this->assertContainsOutput( 'tags', '<p>Baba</p>', '</p>Баба<p>', 'The translation tags are not correct: Unexpected end tag : p' );
+		$this->assertHasWarnings( 'tags', '<h1>Hello</h1><h2>Peter</h2>', '<h1>Hola</h1></h2>Pedro<h2>' );
+		$this->assertContainsOutput(
+			'tags',
+			'<h1>Hello</h1><h2>Peter</h2>',
+			'<h1>Hola</h1></h2>Pedro<h2>',
+			'The translation tags are not correct: Unexpected end tag : h2'
+		);
+		$this->assertHasWarnings(
+			'tags',
 			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">',
-			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">');
-		$this->assertContainsOutput('tags',
+			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">'
+		);
+		$this->assertContainsOutput(
+			'tags',
 			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">',
 			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">',
-		"The translation appears to be missing the following URLs: https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg\nThe translation contains the following unexpected URLs: https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg");
+			"The translation appears to be missing the following URLs: https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg\nThe translation contains the following unexpected URLs: https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg"
+		);
 		$this->l->slug = 'ja';
-		$this->assertHasWarnings( 'tags',
+		$this->assertHasWarnings(
+			'tags',
 			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
 			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
-			$this->l);
-		$this->assertContainsOutput( 'tags',
+			$this->l
+		);
+		$this->assertContainsOutput(
+			'tags',
 			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
 			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 			'The translation tags are not correct: Unexpected end tag : b',
-			$this->l);
+			$this->l
+		);
 	}
 
 	function test_add_all() {

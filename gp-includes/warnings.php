@@ -312,6 +312,11 @@ class GP_Builtin_Translation_Warnings {
 		$translation_links = implode( "\n", $this->get_values_from_href_src( $translation_parts ) );
 		// Validate the URLs if present.
 		if ( $original_links || $translation_links ) {
+			$url_warnings = $this->links_without_url_and_placeholders_are_equal( $original_links, $translation_links );
+			if ( true !== $url_warnings ) {
+				$warnings = array_merge( $warnings, $url_warnings );
+			}
+
 			$url_warnings = $this->warning_mismatching_urls( $original_links, $translation_links );
 
 			if ( true !== $url_warnings ) {
@@ -633,7 +638,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @param array $content
 	 * @return array
 	 */
-	private function get_values_from_href_src( $content ) {
+	private function get_values_from_href_src( array $content ): array {
 		preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', implode( ' ', $content ), $href_values );
 		preg_match_all( '/<[^>]+src=([\'"])(?<src>.+?)\1[^>]*>/i', implode( ' ', $content ), $src_values );
 		return array_merge( $href_values['href'], $src_values['src'] );
@@ -646,9 +651,9 @@ class GP_Builtin_Translation_Warnings {
 	 * - Original: <a></a>
 	 * - Translation: </a><a>
 	 *
-	 * @param array $original_parts    	The original HTML tags
-	 * @param array $translation_parts 	The translation HTML tags
-	 * @return string|true        		True if check is OK, otherwise warning message.
+	 * @param array $original_parts     The original HTML tags
+	 * @param array $translation_parts  The translation HTML tags
+	 * @return string|true              True if check is OK, otherwise warning message.
 	 */
 	private function check_valid_html( array $original_parts, array $translation_parts ) {
 		if ( empty( $original_parts ) ) {
@@ -685,7 +690,7 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
-	 * Checks whether links that are not URL are equal or not
+	 * Checks whether links that are not URL or placeholders are equal or not
 	 *
 	 * @since 3.0.0
 	 * @access public
@@ -694,19 +699,25 @@ class GP_Builtin_Translation_Warnings {
 	 * @param string $translation_links
 	 * @return  array|true True if check is OK, otherwise warning message.
 	 */
-	private function links_without_url_are_equal( $original_links, $translation_links ) {
-		$urls_regex = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
+	private function links_without_url_and_placeholders_are_equal( string $original_links, string $translation_links ) {
+		$urls_regex        = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
+		$placeholder_regex = '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i';
 
+		// Remove the URLs
 		preg_match_all( $urls_regex, $original_links, $original_urls );
 		$original_urls              = array_unique( $original_urls[0] );
 		$original_links_without_url = array_diff( explode( "\n", $original_links ), $original_urls );
-
 		preg_match_all( $urls_regex, $translation_links, $translation_urls );
 		$translation_urls              = array_unique( $translation_urls[0] );
 		$translation_links_without_url = array_diff( explode( "\n", $translation_links ), $translation_urls );
 
-		$missing_urls = array_diff( $original_links_without_url, $translation_links_without_url );
-		$added_urls   = array_diff( $translation_links_without_url, $original_links_without_url );
+		// Remove the placeholders
+		preg_match_all( $placeholder_regex, implode( ' ', $original_links_without_url ), $original_clean_links );
+		preg_match_all( $placeholder_regex, implode( ' ', $translation_links_without_url ), $translation_clean_links );
+		$original_clean_links    = array_filter( array_diff( $original_links_without_url, $original_clean_links[0] ) );
+		$translation_clean_links = array_filter( array_diff( $translation_links_without_url, $translation_clean_links[0] ) );
+		$missing_urls            = array_diff( $original_clean_links, $translation_clean_links );
+		$added_urls              = array_diff( $translation_clean_links, $original_clean_links );
 
 		if ( ! $missing_urls && ! $added_urls ) {
 			return true;
