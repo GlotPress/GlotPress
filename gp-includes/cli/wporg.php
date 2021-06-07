@@ -1,5 +1,18 @@
 <?php
+/**
+ * GlotPress CLI
+ *
+ * @package GlotPress
+ * @since 3.0.0
+ */
 
+/**
+ * Class used to set/unset a wporg variable in the options table
+ *
+ * @todo Remove the variable on uninstall (an the other GlotPress variables in the options table)
+ *
+ * @since 3.0.0
+ */
 class GP_CLI_Wporg extends WP_CLI_Command {
 	/**
 	 * Sets/unsets a wporg variable in the options table
