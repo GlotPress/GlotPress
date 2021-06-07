@@ -33,12 +33,13 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 		$this->_assertWarning( 'assertSame', $warning, $original, $translation, $locale, $gp_translation_warning );
 	}
 
-	function assertContainsOutput( $warning, $original, $translation, $output_expected, $locale = null, $gp_translation_warning = 'w' ) {
+	function assertHasWarningsAndContainsOutput( $warning, $original, $translation, $output_expected, $locale = null, $gp_translation_warning = 'w' ) {
+		$this->assertHasWarnings( $warning, $original, $translation, $locale, $gp_translation_warning );
 		if ( is_null( $locale ) ) {
 			$locale = $this->l;
 		}
 		$method = "warning_$warning";
-		$this->assertStringContainsString( $this->$gp_translation_warning->$method( $original, $translation, $locale ), $output_expected );
+		$this->assertStringContainsString( $output_expected, $this->$gp_translation_warning->$method( $original, $translation, $locale ) );
 	}
 
 	function test_add_all() {
@@ -84,8 +85,7 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 			'wporg'
 		);
 
-		$this->assertHasWarnings( 'wporg_mismatching_placeholders', '###NEW_EMAIL###', '##NEW_EMAIL##', null, 'wporg' );
-		$this->assertContainsOutput(
+		$this->assertHasWarningsAndContainsOutput(
 			'wporg_mismatching_placeholders',
 			'###NEW_EMAIL###',
 			'##NEW_EMAIL##',
@@ -93,8 +93,7 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 			null,
 			'wporg'
 		);
-		$this->assertHasWarnings( 'wporg_mismatching_placeholders', '##NEW_EMAIL###', '###NEW_EMAIL###', null, 'wporg' );
-		$this->assertContainsOutput(
+		$this->assertHasWarningsAndContainsOutput(
 			'wporg_mismatching_placeholders',
 			'##NEW_EMAIL###',
 			'###NEW_EMAIL###',
@@ -102,8 +101,7 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 			null,
 			'wporg'
 		);
-		$this->assertHasWarnings( 'wporg_mismatching_placeholders', '###NEW_EMAIL###', '###NUEVO_CORREO###', null, 'wporg' );
-		$this->assertContainsOutput(
+		$this->assertHasWarningsAndContainsOutput(
 			'wporg_mismatching_placeholders',
 			'###NEW_EMAIL###',
 			'###NUEVO_CORREO###',
@@ -111,14 +109,7 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 			null,
 			'wporg'
 		);
-		$this->assertHasWarnings(
-			'wporg_mismatching_placeholders',
-			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
-			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
-			null,
-			'wporg'
-		);
-		$this->assertContainsOutput(
+		$this->assertHasWarningsAndContainsOutput(
 			'wporg_mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
@@ -126,14 +117,7 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 			null,
 			'wporg'
 		);
-		$this->assertHasWarnings(
-			'wporg_mismatching_placeholders',
-			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
-			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
-			null,
-			'wporg'
-		);
-		$this->assertContainsOutput(
+		$this->assertHasWarningsAndContainsOutput(
 			'wporg_mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
@@ -141,14 +125,7 @@ class GP_Test_Wporg_Warnings extends GP_UnitTestCase {
 			null,
 			'wporg'
 		);
-		$this->assertHasWarnings(
-			'wporg_mismatching_placeholders',
-			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
-			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
-			null,
-			'wporg'
-		);
-		$this->assertContainsOutput(
+		$this->assertHasWarningsAndContainsOutput(
 			'wporg_mismatching_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
