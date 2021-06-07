@@ -99,6 +99,8 @@ class GP_Wporg_Translation_Warnings {
 	 *
 	 * This only supports placeholders in the format of '###[A-Z_]+###'.
 	 *
+	 * @todo Check that the number of each type of placeholders are the same in the original and in the translation
+	 *
 	 * @since 3.0.0
 	 * @access public
 	 *
