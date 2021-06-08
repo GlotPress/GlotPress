@@ -350,7 +350,7 @@ class GP_Builtin_Translation_Warnings {
 		 *
 		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
 		 */
-		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX%]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX%l]' );
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -583,7 +583,7 @@ class GP_Builtin_Translation_Warnings {
 	 */
 	public function warning_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
-		$is_sprintf        = preg_match( '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i', $original );
+		$is_sprintf        = preg_match( '!%((\d+\$(?:\d+)?)?[bcdefgosuxl])\b!i', $original );
 
 		// Find any percents that are not valid or escaped.
 		if ( $is_sprintf ) {
@@ -591,7 +591,7 @@ class GP_Builtin_Translation_Warnings {
 			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.))/i', $translation, $m );
 			foreach ( $m['char'] as $i => $char ) {
 				// % is included for escaped %%.
-				if ( false === strpos( 'bcdefgosux%', $char ) ) {
+				if ( false === strpos( 'bcdefgosux%l', $char ) ) {
 					$unexpected_tokens[] = $m[0][ $i ];
 				}
 			}

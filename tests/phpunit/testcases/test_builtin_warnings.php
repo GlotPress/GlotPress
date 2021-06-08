@@ -512,6 +512,9 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'The %2$s contains %1$d items. That\'s a nice %2$s full of %1$d items.',
 			'El %2$s contiene %1$d elementos. Es un bonito %2$s lleno de %1$d elementos.'
 		);
+		$this->assertNoWarnings( 'unexpected_sprintf_token',
+			'The application password %friendly_name%.',
+			'La contraseña de aplicación %friendly_name%.' );
 
 		$this->assertHasWarningsAndContainsOutput(
 			'unexpected_sprintf_token',
