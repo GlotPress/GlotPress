@@ -35,6 +35,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertStringContainsString( $output_expected, $this->w->$method( $original, $translation, $locale ) );
 	}
 
+	function assertContainsOutput( $singular, $plural, $translations, $output_expected, $locale = null ) {
+		if ( is_null( $locale ) ) {
+			$locale = $this->l;
+		}
+		$this->assertEquals( $output_expected, $this->tw->check( $singular, $plural, $translations, $locale ) );
+	}
+
 	function test_length() {
 		$this->assertNoWarnings( 'length', $this->longer_than_20, $this->longer_than_20 );
 		$this->assertNoWarnings( 'length', 'number_format_', '' );
@@ -512,9 +519,11 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'The %2$s contains %1$d items. That\'s a nice %2$s full of %1$d items.',
 			'El %2$s contiene %1$d elementos. Es un bonito %2$s lleno de %1$d elementos.'
 		);
-		$this->assertNoWarnings( 'unexpected_sprintf_token',
+		$this->assertNoWarnings(
+			'unexpected_sprintf_token',
 			'The application password %friendly_name%.',
-			'La contraseña de aplicación %friendly_name%.' );
+			'La contraseña de aplicación %friendly_name%.'
+		);
 
 		$this->assertHasWarningsAndContainsOutput(
 			'unexpected_sprintf_token',
@@ -539,6 +548,191 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<a href="%f">100 percent</a>',
 			'<a href="%f">100%</a> of 95% ',
 			'The translation contains the following unexpected placeholders: ">100%<, 95% '
+		);
+	}
+
+	public function test_chained_warnings() {
+		$this->tw = new GP_Translation_Warnings();
+		$this->w  = new GP_Builtin_Translation_Warnings();
+		$this->w->add_all( $this->tw );
+
+		$this->assertContainsOutput(
+			'original %1$s',
+			'original %2$s',
+			array( 'translation %1$s', 'translation %2$s' ),
+			null
+		);
+		$this->assertContainsOutput(
+			'original %1$s',
+			null,
+			array( '<a>translation %1$s' ),
+			array(
+				array( 'tags' => 'Too many tags in translation. Found: <a>' ),
+			)
+		);
+		$this->assertContainsOutput(
+			'original %1$s',
+			null,
+			array( '<a>translation s' ),
+			array(
+				array(
+					'tags'         => 'Too many tags in translation. Found: <a>',
+					'placeholders' => 'Missing %1$s placeholder in translation.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'original',
+			null,
+			array( '<a>translation  %1$s' ),
+			array(
+				array(
+					'tags'         => 'Too many tags in translation. Found: <a>',
+					'placeholders' => 'Extra %1$s placeholder in translation.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'original s',
+			null,
+			array( "\n<a>translation s" ),
+			array(
+				array(
+					'tags'                        => 'Too many tags in translation. Found: <a>',
+					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'original s',
+			null,
+			array( "<a>translation s\n" ),
+			array(
+				array(
+					'tags'                      => 'Too many tags in translation. Found: <a>',
+					'should_not_end_on_newline' => 'Translation should not end on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			"\noriginal s",
+			null,
+			array( '<a>translation s' ),
+			array(
+				array(
+					'tags'                    => 'Too many tags in translation. Found: <a>',
+					'should_begin_on_newline' => 'Original and translation should both begin on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			"original s\n",
+			null,
+			array( '<a>translation s' ),
+			array(
+				array(
+					'tags'                  => 'Too many tags in translation. Found: <a>',
+					'should_end_on_newline' => 'Original and translation should both end on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'original',
+			null,
+			array( "<a>translation very very very very long \n" ),
+			array(
+				array(
+					'tags'                      => 'Too many tags in translation. Found: <a>',
+					'length'                    => 'Lengths of source and translation differ too much.',
+					'should_not_end_on_newline' => 'Translation should not end on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<p>original</p>',
+			null,
+			array( "</a>translation \n" ),
+			array(
+				array(
+					'tags'                      => 'Missing tags from translation. Expected: <p> </p>',
+					'should_not_end_on_newline' => 'Translation should not end on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<p>original</p>',
+			null,
+			array( "</p>translation<p> \n" ),
+			array(
+				array(
+					'tags'                      => 'The translation tags are not correct: Unexpected end tag : p',
+					'should_not_end_on_newline' => 'Translation should not end on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<p>original</p>',
+			null,
+			array( "\n<a>translation</a> \n" ),
+			array(
+				array(
+					'tags'                        => "Expected <p>, got <a>.\nExpected </p>, got </a>.",
+					'should_not_end_on_newline'   => 'Translation should not end on newline.',
+					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<p>https://wordpress.org</p>',
+			null,
+			array( "\n<a>https://es.wordpress.org</a> \n" ),
+			array(
+				array(
+					'tags'                        => "Expected <p>, got <a>.\nExpected </p>, got </a>.",
+					'should_not_end_on_newline'   => 'Translation should not end on newline.',
+					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
+					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<a href="https://wordpress.org">https://wordpress.org</a>',
+			null,
+			array( "\n<a href=\"https://es.wordpress.org\">https://es.wordpress.org</a> \n" ),
+			array(
+				array(
+					'tags'                        => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+					'should_not_end_on_newline'   => 'Translation should not end on newline.',
+					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
+					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<a href="%s">https://wordpress.org</a>',
+			null,
+			array( "\n<a href=\"javascript%s\">https://es.wordpress.org</a> \n" ),
+			array(
+				array(
+					'tags'                        => 'The translation contains the following unexpected links: javascript%s',
+					'should_not_end_on_newline'   => 'Translation should not end on newline.',
+					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
+					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'<p><a href="%s">100 percent</a></p>',
+			null,
+			array( "\n<a href=\"%s\">100%%</a>\n" ),
+			array(
+				array(
+					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
+					'should_not_end_on_newline'   => 'Translation should not end on newline.',
+					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
+					'placeholders'                => 'Extra %% placeholder in translation.',
+				),
+			)
 		);
 	}
 }
