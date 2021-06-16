@@ -45,13 +45,8 @@ function _manually_load_plugin() {
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-/**
- * Sets a permalink structure so GlotPress doesn't skip loading.
- */
-function _set_permalink_structure() {
-	return GP_TESTS_PERMALINK_STRUCTURE;
-}
-tests_add_filter( 'pre_option_permalink_structure', '_set_permalink_structure' );
+global $wp_tests_options;
+$wp_tests_options['permalink_structure'] = GP_TESTS_PERMALINK_STRUCTURE;
 
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";
