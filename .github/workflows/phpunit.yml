@@ -17,6 +17,7 @@ jobs:
     name: PHPUnit (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }})
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
+
     services:
       mysql:
         image: mysql:5.7

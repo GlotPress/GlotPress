@@ -6,24 +6,28 @@
  * @subpackage Tests
  */
 
-require __DIR__ . '/includes/constants.php';
-require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
 
-require_once WP_TESTS_DIR . '/includes/functions.php';
+if ( ! $_tests_dir ) {
+	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+}
+
+if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
+	echo "Could not find {$_tests_dir}/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	exit( 1 );
+}
+
+// Give access to tests_add_filter() function.
+require_once "{$_tests_dir}/includes/functions.php";
 
 /**
- * Load GlotPress.
+ * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require GP_TESTS_DIR . '/includes/loader.php';
+	require dirname( dirname( __FILE__ ) ) . '/glotpress.php';
 }
+
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-global $wp_tests_options;
-$wp_tests_options['permalink_structure'] = GP_TESTS_PERMALINK_STRUCTURE;
-
-require WP_TESTS_DIR . '/includes/bootstrap.php';
-
-require_once GP_TESTS_DIR . '/lib/testcase.php';
-require_once GP_TESTS_DIR . '/lib/testcase-route.php';
-require_once GP_TESTS_DIR . '/lib/testcase-request.php';
+// Start up the WP testing environment.
+require "{$_tests_dir}/includes/bootstrap.php";
