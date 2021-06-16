@@ -32,6 +32,7 @@ class GP_Route_Settings extends GP_Route_Main {
 	 * @param int $user_id Optional. A user id, if not provided the id of the currently logged in user will be used.
 	 */
 	public function settings_post( $user_id = null ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified by invalid_nonce_and_redirect()
 		if ( isset( $_POST['submit'] ) ) {
 			// Sometimes we get null, sometimes we get 0, depending on where it comes from.
 			// Let's make sure we have a consistent value to test against and that it's an integer.
@@ -45,6 +46,7 @@ class GP_Route_Settings extends GP_Route_Main {
 				return;
 			}
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified by invalid_nonce_and_redirect()
 			$per_page = (int) $_POST['per_page'];
 			update_user_option( $user_id, 'gp_per_page', $per_page );
 
@@ -53,6 +55,7 @@ class GP_Route_Settings extends GP_Route_Main {
 				'how' => 'desc',
 			);
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified by invalid_nonce_and_redirect()
 			$user_sort = wp_parse_args( $_POST['default_sort'], $default_sort );
 			update_user_option( $user_id, 'gp_default_sort', $user_sort );
 

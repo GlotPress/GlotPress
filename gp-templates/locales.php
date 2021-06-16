@@ -24,7 +24,7 @@ gp_tmpl_header();
 		<tbody>
 		<?php
 			$class = '';
-
+			// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 			foreach ( $locales as $locale ) :
 				$class = ( 'odd' === $class ) ? 'even' : 'odd';
 ?>

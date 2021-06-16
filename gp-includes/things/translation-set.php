@@ -204,12 +204,14 @@ class GP_Translation_Set extends GP_Thing {
 	public function existing_locales() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
 	public function existing_slugs() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 

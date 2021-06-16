@@ -14,10 +14,12 @@ gp_title( __( 'Your Settings &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Your Settings', 'glotpress' ) ) );
 gp_tmpl_header();
 
+// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
 $per_page = (int) get_user_option( 'gp_per_page' );
 if ( 0 === $per_page ) {
 	$per_page = 15;
 }
+// phpcs:enable WordPress.WP.GlobalVariablesOverride.Prohibited
 
 $default_sort = get_user_option( 'gp_default_sort' );
 if ( ! is_array( $default_sort ) ) {
