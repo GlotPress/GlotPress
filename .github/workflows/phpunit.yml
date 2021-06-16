@@ -1,0 +1,88 @@
+name: PHPUnit
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  phpunit:
+    name: PHPUnit (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }})
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3306/tcp
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        # Set health checks to wait until mysql has started
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        php: [ '7.4', '7.3', '7.2' ]
+        wordpress: [ 'latest', 'nightly' ]
+        multisite: [ false, true ]
+        experimental: [ false ]
+        include:
+        # - php: '8.0'
+        #   os: ubuntu-latest
+        #   experimental: true
+          - os: ubuntu-latest
+            php: '7.4'
+            wordpress: 'latest'
+            multisite: false
+            experimental: false
+            coverage: true
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: ${{ env.PHP_COVERAGE && 'xdebug' || 'none' }}
+          tools: composer
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v1
+        with:
+          composer-options: "--no-progress --no-ansi --no-interaction"
+
+      - name: Make Composer packages available globally
+        run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
+
+      - name: Install WordPress test setup
+        env:
+          WP_VERSION: ${{ matrix.wordpress }}
+          GP_VERSION: ${{ matrix.glotpress }}
+          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
+        run: bash bin/install-wp-tests.sh wordpress_test root password "127.0.0.1:$MYSQL_PORT" "$WP_VERSION"
+
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run tests
+        if: ${{ ! matrix.coverage }}
+        run: phpunit
+
+      - name: Run tests with code coverage
+        if: ${{ matrix.coverage }}
+        run: phpunit
+
+      - name: Upload coverage to Codecov
+        if: ${{ matrix.coverage }}
+        uses: codecov/codecov-action@v1
+        with:
+          file: build/logs/clover.xml
