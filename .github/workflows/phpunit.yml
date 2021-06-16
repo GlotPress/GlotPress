@@ -38,6 +38,8 @@ jobs:
         os: [ ubuntu-latest ]
         php: [ '7.4', '7.3', '7.2' ]
         wordpress: [ 'latest', 'nightly' ]
+        multisite: [ false ]
+        coverage: [ false ]
         experimental: [ false ]
         include:
         # - php: '8.0'
@@ -46,12 +48,14 @@ jobs:
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
-            experimental: false
+            multisite: false
             coverage: true
+            experimental: false
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
             multisite: true
+            coverage: false
             experimental: false
 
     steps:
