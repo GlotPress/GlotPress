@@ -6,6 +6,22 @@
  * @subpackage Tests
  */
 
+if ( ! defined( 'GP_TESTS_DIR' ) ) {
+	define( 'GP_TESTS_DIR', dirname( __DIR__ ) );
+}
+
+if ( ! defined( 'GP_DIR_TESTDATA' ) ) {
+	define( 'GP_DIR_TESTDATA', GP_TESTS_DIR . '/data' );
+}
+
+if ( ! defined( 'GP_TESTS_PERMALINK_STRUCTURE' ) ) {
+	define( 'GP_TESTS_PERMALINK_STRUCTURE', '/%postname%' );
+}
+
+if ( ! defined( 'GP_TESTS_PERMALINK_STRUCTURE_WITH_TRAILING_SLASH' ) ) {
+	define( 'GP_TESTS_PERMALINK_STRUCTURE_WITH_TRAILING_SLASH', '/%postname%/' );
+}
+
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
 if ( ! $_tests_dir ) {
@@ -33,9 +49,13 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
  * Sets a permalink structure so GlotPress doesn't skip loading.
  */
 function _set_permalink_structure() {
-	return '/%postname%';
+	return GP_TESTS_PERMALINK_STRUCTURE;
 }
 tests_add_filter( 'pre_option_permalink_structure', '_set_permalink_structure' );
 
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";
+
+require_once GP_TESTS_DIR . '/lib/testcase.php';
+require_once GP_TESTS_DIR . '/lib/testcase-route.php';
+require_once GP_TESTS_DIR . '/lib/testcase-request.php';
