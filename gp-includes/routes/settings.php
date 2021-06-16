@@ -52,7 +52,7 @@ class GP_Route_Settings extends GP_Route_Main {
 
 			$default_sort = array(
 				'by'  => 'priority',
-				'how' => 'desc',
+				'how' => 'desc'
 			);
 
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified by invalid_nonce_and_redirect()
