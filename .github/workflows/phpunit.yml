@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   phpunit:
-    name: PHPUnit (PHP ${{ matrix.php }}, WordPress${{ matrix.multisite && ' multisite' || '' }} ${{ matrix.wordpress }})
+    name: PHPUnit (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }})
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     services:
@@ -36,7 +36,6 @@ jobs:
         os: [ ubuntu-latest ]
         php: [ '7.4', '7.3', '7.2' ]
         wordpress: [ 'latest', 'nightly' ]
-        multisite: [ false, true ]
         experimental: [ false ]
         include:
         # - php: '8.0'
@@ -45,7 +44,6 @@ jobs:
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
-            multisite: false
             experimental: false
             coverage: true
 
@@ -79,11 +77,11 @@ jobs:
 
       - name: Run tests
         if: ${{ ! matrix.coverage }}
-        run: WP_MULTISITE=${{ matrix.multisite }} phpunit
+        run: composer run-script test
 
       - name: Run tests with code coverage
         if: ${{ matrix.coverage }}
-        run: WP_MULTISITE=${{ matrix.multisite }} phpunit --coverage-clover coverage-clover-${{ github.sha }}.xml
+        run: composer run-script test -- --coverage-clover coverage-clover-${{ github.sha }}.xml
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.coverage }}
