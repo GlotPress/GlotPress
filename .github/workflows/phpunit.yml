@@ -6,7 +6,7 @@ on:
       - master
   pull_request:
 
-#permissions: read-all
+permissions: read-all
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
