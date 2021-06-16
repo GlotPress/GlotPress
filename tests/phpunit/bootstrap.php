@@ -24,10 +24,18 @@ require_once "{$_tests_dir}/includes/functions.php";
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/glotpress.php';
+	require dirname( __DIR__ ) . '/glotpress.php';
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+
+/**
+ * Sets a permalink structure so GlotPress doesn't skip loading.
+ */
+function _set_permalink_structure() {
+	return '/%postname%';
+}
+tests_add_filter( 'pre_option_permalink_structure', '_set_permalink_structure' );
 
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";
