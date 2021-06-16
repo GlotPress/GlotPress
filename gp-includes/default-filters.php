@@ -62,3 +62,6 @@ add_filter( 'gp_glossary_description', 'wp_kses_post' );
 add_filter( 'gp_title', 'wptexturize' );
 add_filter( 'gp_title', 'convert_chars' );
 add_filter( 'gp_title', 'esc_html' );
+
+// Memory limit
+add_filter( 'gp_translations_import_memory_limit', 'gp_set_translations_import_max_memory_limit' );

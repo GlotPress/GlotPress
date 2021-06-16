@@ -652,3 +652,14 @@ function gp_get_sort_by_fields() {
 	 */
 	return apply_filters( 'gp_sort_by_fields', $sort_fields );
 }
+
+/**
+ * Sets the maximum memory limit available for translations imports.
+ *
+ * @since 3.0.0
+ *
+ * @return string The maximum memory limit.
+ */
+function gp_set_translations_import_max_memory_limit() {
+	return '256M';
+}
