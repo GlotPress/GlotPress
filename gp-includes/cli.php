@@ -11,7 +11,6 @@ function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/regenerate-paths.php';
 	require_once GP_PATH . GP_INC . 'cli/remove-multiple-currents.php';
 	require_once GP_PATH . GP_INC . 'cli/translation-set.php';
-	require_once GP_PATH . GP_INC . 'cli/wporg.php';
 	require_once GP_PATH . GP_INC . 'cli/upgrade-set-permissions.php';
 	require_once GP_PATH . GP_INC . 'cli/wipe-permissions.php';
 
@@ -23,7 +22,6 @@ function gp_cli_register() {
 	WP_CLI::add_command( 'glotpress remove-multiple-currents', 'GP_CLI_Remove_Multiple_Currents' );
 	WP_CLI::add_command( 'glotpress upgrade-set-permissions', 'GP_CLI_Upgrade_Set_Permissions' );
 	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
-	WP_CLI::add_command( 'glotpress wporg', 'GP_CLI_Wporg' );
 
 	// New style commands.
 	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
