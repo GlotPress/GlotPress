@@ -113,4 +113,71 @@
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/locales/*</exclude-pattern>
 	<exclude-pattern>/bin/*</exclude-pattern>
+
+	<rule ref="Squiz.Commenting.InlineComment.InvalidEndChar">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.Missing">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.MissingParamTag">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.MissingParamComment">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.ParamNameNoMatch">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.ParamCommentFullStop">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.WrongStyle">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.MissingParamName">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FunctionComment.SpacingAfter">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.VariableComment.Missing">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.VariableComment.WrongStyle">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.ClassComment.Missing">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FileComment.Missing">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FileComment.SpacingAfterComment">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Commenting.FileComment.MissingPackageTag">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.Operators.IncrementDecrementUsage.Found">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.PHP.DisallowMultipleAssignments.Found">
+		<type>warning</type>
+	</rule>
+	<rule ref="Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure">
+		<type>warning</type>
+	</rule>
+	<rule ref="PSR2.Classes.PropertyDeclaration.VarUsed">
+		<type>warning</type>
+	</rule>
+	<rule ref="PSR2.Classes.PropertyDeclaration.ScopeMissing">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.PHP.DontExtract.extract_extract">
+		<type>warning</type>
+	</rule>
 </ruleset>
