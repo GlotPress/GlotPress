@@ -7,7 +7,7 @@
  */
 
 if ( ! defined( 'GP_TESTS_DIR' ) ) {
-	define( 'GP_TESTS_DIR', dirname( __DIR__ ) );
+	define( 'GP_TESTS_DIR', __DIR__ );
 }
 
 if ( ! defined( 'GP_DIR_TESTDATA' ) ) {
