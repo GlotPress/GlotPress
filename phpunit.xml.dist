@@ -12,7 +12,11 @@
 			<directory prefix="test_" suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
-
+	<groups>
+		<exclude>
+			<group>locales</group>
+		</exclude>
+	</groups>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">./</directory>
@@ -25,8 +29,4 @@
 			</exclude>
 		</whitelist>
 	</filter>
-
-	<logging>
-		<log type="coverage-clover" target="build/logs/clover.xml"/>
-	</logging>
 </phpunit>

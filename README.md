@@ -1,6 +1,6 @@
 ![GlotPress](.github/banner.png)
 
-[![Build Status](https://travis-ci.org/GlotPress/GlotPress-WP.svg?branch=develop)](https://travis-ci.org/GlotPress/GlotPress-WP) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
+[![PHPUnit Tests](https://github.com/GlotPress/GlotPress-WP/actions/workflows/phpunit.yml/badge.svg?branch=develop)](https://github.com/GlotPress/GlotPress-WP/actions/workflows/phpunit.yml) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
 
 # GlotPress
 
