@@ -33,6 +33,7 @@ jobs:
           --health-retries 3
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
         php: [ '7.4', '7.3', '7.2' ]
@@ -56,7 +57,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: ${{ env.PHP_COVERAGE && 'xdebug' || 'none' }}
+          coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
           tools: composer
 
       - name: Install Composer dependencies
