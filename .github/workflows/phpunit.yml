@@ -9,7 +9,7 @@ on:
 permissions: read-all
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
   cancel-in-progress: true
 
 jobs:
@@ -74,9 +74,6 @@ jobs:
         with:
           composer-options: "--no-progress --no-ansi --no-interaction"
 
-      - name: Make Composer packages available globally
-        run: echo "${PWD}/vendor/bin" >> $GITHUB_PATH
-
       - name: Install WordPress test setup
         run: bash bin/install-wp-tests.sh wordpress_test root password 127.0.0.1:${{ job.services.mysql.ports[3306] }} ${{ matrix.wordpress }}
 
@@ -85,11 +82,11 @@ jobs:
 
       - name: Run tests
         if: ${{ ! matrix.coverage }}
-        run: WP_MULTISITE=${{ matrix.multisite && '1' || '' }} composer run-script test
+        run: WP_MULTISITE=${{ matrix.multisite && '1' || '' }} vendor/bin/phpunit
 
       - name: Run tests with code coverage
         if: ${{ matrix.coverage }}
-        run: composer run-script test -- --coverage-clover coverage-clover-${{ github.sha }}.xml
+        run: vendor/bin/phpunit --coverage-clover coverage-clover-${{ github.sha }}.xml
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.coverage }}
