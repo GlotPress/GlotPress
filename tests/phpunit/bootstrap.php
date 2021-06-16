@@ -59,3 +59,14 @@ require "{$_tests_dir}/includes/bootstrap.php";
 require_once GP_TESTS_DIR . '/lib/testcase.php';
 require_once GP_TESTS_DIR . '/lib/testcase-route.php';
 require_once GP_TESTS_DIR . '/lib/testcase-request.php';
+
+/**
+ * Installs GlotPress tables.
+ */
+function _install_glotpress() {
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once dirname( __DIR__, 2 ) . '/gp-includes/schema.php';
+	require_once dirname( __DIR__, 2 ) . '/gp-includes/install-upgrade.php';
+	gp_upgrade_db();
+}
+_install_glotpress();
