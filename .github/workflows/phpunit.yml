@@ -1,4 +1,4 @@
-name: PHPUnit
+name: PHPUnit Tests
 
 on:
   push:
@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  phpunit:
-    name: PHPUnit (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }})
+  test:
+    name: PHP ${{ matrix.php }}, WordPress${{ matrix.multisite && ' multisite' || '' }} ${{ matrix.wordpress }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
 
@@ -48,6 +48,11 @@ jobs:
             wordpress: 'latest'
             experimental: false
             coverage: true
+          - os: ubuntu-latest
+            php: '7.4'
+            wordpress: 'latest'
+            multisite: true
+            experimental: false
 
     steps:
       - name: Check out Git repository
@@ -79,7 +84,7 @@ jobs:
 
       - name: Run tests
         if: ${{ ! matrix.coverage }}
-        run: composer run-script test
+        run: WP_TESTS_MULTISITE=${{ matrix.multisite }} composer run-script test
 
       - name: Run tests with code coverage
         if: ${{ matrix.coverage }}
