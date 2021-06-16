@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   test:
-    name: PHP ${{ matrix.php }}, WordPress${{ matrix.multisite && ' multisite' || '' }} ${{ matrix.wordpress }}${{ matrix.multisite && ' with coverage' || '' }}
+    name: PHP ${{ matrix.php }}, WordPress${{ matrix.multisite && ' multisite' || '' }} ${{ matrix.wordpress }}${{ matrix.coverage && ' with coverage' || '' }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
 
@@ -85,7 +85,7 @@ jobs:
 
       - name: Run tests
         if: ${{ ! matrix.coverage }}
-        run: WP_MULTISITE=${{ matrix.multisite }} composer run-script test
+        run: WP_MULTISITE=${{ matrix.multisite && '1' || '' }} composer run-script test
 
       - name: Run tests with code coverage
         if: ${{ matrix.coverage }}
