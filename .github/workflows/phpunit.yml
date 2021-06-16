@@ -6,9 +6,15 @@ on:
       - master
   pull_request:
 
+permissions: read-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   phpunit:
-    name: PHPUnit (PHP ${{ matrix.php }}, WordPress ${{ matrix.wordpress }})
+    name: PHPUnit (PHP ${{ matrix.php }}, WordPress${{ matrix.multisite && ' multisite' || '' }} ${{ matrix.wordpress }})
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     services:
@@ -65,24 +71,23 @@ jobs:
       - name: Install WordPress test setup
         env:
           WP_VERSION: ${{ matrix.wordpress }}
-          GP_VERSION: ${{ matrix.glotpress }}
           MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
         run: bash bin/install-wp-tests.sh wordpress_test root password "127.0.0.1:$MYSQL_PORT" "$WP_VERSION"
-
 
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Run tests
         if: ${{ ! matrix.coverage }}
-        run: phpunit
+        run: WP_MULTISITE=${{ matrix.multisite }} phpunit
 
       - name: Run tests with code coverage
         if: ${{ matrix.coverage }}
-        run: phpunit
+        run: WP_MULTISITE=${{ matrix.multisite }} phpunit --coverage-clover coverage-clover-${{ github.sha }}.xml
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v1
         with:
-          file: build/logs/clover.xml
+          file: coverage-clover-${{ github.sha }}.xml
+          fail_ci_if_error: true
