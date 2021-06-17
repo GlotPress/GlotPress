@@ -499,7 +499,7 @@ class GP_Builtin_Translation_Warnings {
 	 *
 	 * @param string $original    The original string.
 	 * @param string $translation The translated string.
-	 * @return string|true        True if check is OK, otherwise warning message.
+	 * @return string|true True if check is OK, otherwise warning message.
 	 */
 	public function warning_mismatching_urls( $original, $translation ) {
 		// Any http/https/schemeless URLs which are not encased in quotation marks
@@ -706,7 +706,7 @@ class GP_Builtin_Translation_Warnings {
 	 *
 	 * @param array $original_parts     The original HTML tags
 	 * @param array $translation_parts  The translation HTML tags
-	 * @return string|true              True if check is OK, otherwise warning message.
+	 * @return string|true True if check is OK, otherwise warning message.
 	 */
 	private function check_valid_html( array $original_parts, array $translation_parts ) {
 		if ( empty( $original_parts ) ) {
