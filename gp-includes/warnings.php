@@ -263,12 +263,14 @@ class GP_Builtin_Translation_Warnings {
 
 		if ( count( $original_parts ) > count( $translation_parts ) ) {
 			return sprintf(
+				/* translators: %s: HTML tags. */
 				__( 'Missing tags from translation. Expected: %s', 'glotpress' ),
 				implode( ' ', array_diff( $original_parts, $translation_parts ) )
 			);
 		}
 		if ( count( $original_parts ) < count( $translation_parts ) ) {
 			return sprintf(
+				/* translators: %s: HTML tags. */
 				__( 'Too many tags in translation. Found: %s', 'glotpress' ),
 				implode( ' ', array_diff( $translation_parts, $original_parts ) )
 			);
@@ -312,7 +314,7 @@ class GP_Builtin_Translation_Warnings {
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(
-				/* translators: 1: Original HTML tag. 2: Translated HTML tag. */
+					/* translators: 1: Original HTML tag. 2: Translated HTML tag. */
 					__( 'Expected %1$s, got %2$s.', 'glotpress' ),
 					$original_tag,
 					$translation_tag
@@ -567,12 +569,14 @@ class GP_Builtin_Translation_Warnings {
 		$error = '';
 		if ( $missing_urls ) {
 			$error .= sprintf(
+				/* translators: %s: URLs. */
 				__( 'The translation appears to be missing the following URLs: %s', 'glotpress' ),
 				implode( ', ', $missing_urls ) . "\n"
 			);
 		}
 		if ( $added_urls ) {
 			$error .= sprintf(
+				/* translators: %s: URLs. */
 				__( 'The translation contains the following unexpected URLs: %s', 'glotpress' ),
 				implode( ', ', $added_urls ) . "\n"
 			);
@@ -614,6 +618,7 @@ class GP_Builtin_Translation_Warnings {
 
 		if ( $unexpected_tokens ) {
 			return sprintf(
+				/* translators: %s: Placeholders. */
 				__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
 				implode( ', ', $unexpected_tokens )
 			);
@@ -673,10 +678,18 @@ class GP_Builtin_Translation_Warnings {
 
 		$error = '';
 		if ( $missing_placeholders ) {
-			$error .= __( 'The translation appears to be missing the following placeholders: ', 'glotpress' ) . implode( ', ', $missing_placeholders ) . "\n";
+			$error .= sprintf(
+				/* translators: %s: Placeholders. */
+				__( 'The translation appears to be missing the following placeholders: %s', 'glotpress' ),
+				implode( ', ', $missing_placeholders ) . "\n"
+			);
 		}
 		if ( $added_placeholders ) {
-			$error .= __( 'The translation contains the following unexpected placeholders: ', 'glotpress' ) . implode( ', ', $added_placeholders );
+			$error .= sprintf(
+				/* translators: %s: Placeholders. */
+				__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
+				implode( ', ', $added_placeholders )
+			);
 		}
 
 		return trim( $error );
@@ -735,6 +748,7 @@ class GP_Builtin_Translation_Warnings {
 				$message[] = trim( $error->message );
 			}
 			return sprintf(
+				/* translators: %s: HTML tags. */
 				__( 'The translation contains incorrect HTML tags: %s', 'glotpress' ),
 				implode( ', ', $message )
 			);
@@ -779,12 +793,14 @@ class GP_Builtin_Translation_Warnings {
 		$error = array();
 		if ( $missing_urls ) {
 			$error[] = sprintf(
+				/* translators: %s: URLs. */
 				__( 'The translation appears to be missing the following links: %s', 'glotpress' ),
 				implode( ', ', $missing_urls )
 			);
 		}
 		if ( $added_urls ) {
 			$error[] = sprintf(
+				/* translators: %s: URLs. */
 				__( 'The translation contains the following unexpected links: %s', 'glotpress' ),
 				implode( ', ', $added_urls )
 			);
