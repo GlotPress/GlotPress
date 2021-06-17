@@ -240,7 +240,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @param GP_Locale $locale      The locale of the translation.
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
-	function warning_tags( $original, $translation, $locale ) {
+	public function warning_tags( $original, $translation, $locale ) {
 		$tag_pattern       = '(<[^>]*>)';
 		$tag_re            = "/$tag_pattern/Us";
 		$original_parts    = array();
