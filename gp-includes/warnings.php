@@ -161,7 +161,34 @@ class GP_Builtin_Translation_Warnings {
 	 *
 	 * @var array
 	 */
-	public $allowed_domain_changes = array();
+	public $allowed_domain_changes = array(
+		// Allow links to wordpress.org to be changed to a subdomain.
+		'wordpress.org'    => '[^.]+\.wordpress\.org',
+		// Allow links to wordpress.com to be changed to a subdomain.
+		'wordpress.com'    => '[^.]+\.wordpress\.com',
+		// Allow links to gravatar.org to be changed to a subdomain.
+		'en.gravatar.com'  => '[^.]+\.gravatar\.com',
+		// Allow links to wikipedia.org to be changed to a subdomain.
+		'en.wikipedia.org' => '[^.]+\.wikipedia\.org',
+	);
+
+	/**
+	 * List of languages without italics
+	 *
+	 * @since 3.0.0
+	 * @access public
+	 *
+	 * @var array
+	 */
+	public $languages_without_italics = array(
+		'ja',
+		'ko',
+		'zh',
+		'zh-hk',
+		'zh-cn',
+		'zh-sg',
+		'zh-tw',
+	);
 
 	/**
 	 * Checks whether lengths of source and translation differ too much.
@@ -228,19 +255,8 @@ class GP_Builtin_Translation_Warnings {
 
 		// East asian languages can remove emphasis/italic tags
 		if ( count( $original_parts ) > count( $translation_parts ) ) {
-
-			$languages_without_italics = array(
-				'ja',
-				'ko',
-				'zh',
-				'zh-hk',
-				'zh-cn',
-				'zh-sg',
-				'zh-tw',
-			);
-
 			// Remove Italic requirements.
-			if ( in_array( $locale->slug, $languages_without_italics, true ) ) {
+			if ( in_array( $locale->slug, $this->languages_without_italics, true ) ) {
 				$original_parts = array_diff( $original_parts, array( '<em>', '</em>', '<i>', '</i>' ) );
 			}
 		}
@@ -475,6 +491,7 @@ class GP_Builtin_Translation_Warnings {
 
 	/**
 	 * Adds a warning for changing plain-text URLs.
+	 *
 	 * This allows for the scheme to change, and for some domains to change to a subdomain.
 	 *
 	 * @since 3.0.0
@@ -524,8 +541,6 @@ class GP_Builtin_Translation_Warnings {
 				}
 			}
 		}
-
-		$this->allowed_domain_changes = apply_filters( 'gp_allowed_domain_changes', $this->allowed_domain_changes );
 
 		// Check if just the domain was changed, and if so, if it's to a whitelisted domain
 		foreach ( $missing_urls as $key => $missing_url ) {
@@ -622,18 +637,56 @@ class GP_Builtin_Translation_Warnings {
 
 		$warnings = array_fill_keys( $warnings, $this );
 
-		$warnings = apply_filters( 'gp_add_all_warnings', $warnings );
-
 		foreach ( $warnings as $warning => $class ) {
 			$translation_warnings->add( str_replace( 'warning_', '', $warning ), array( $class, $warning ) );
 		}
 	}
 
 	/**
-	 * Returns the values from the href and the src
+	 * Adds a warning for changing placeholders.
+	 *
+	 * This only supports placeholders in the format of '###[A-Z_]+###'.
+	 *
+	 * @todo Check that the number of each type of placeholders are the same in the original and in the translation
 	 *
 	 * @since 3.0.0
 	 * @access public
+	 *
+	 * @param string $original    The original string.
+	 * @param string $translation The translated string.
+	 * @return string|true
+	 */
+	public function warning_mismatching_placeholders( string $original, string $translation ) {
+		$placeholder_regex = '@(###[A-Z_]+###)@';
+
+		preg_match_all( $placeholder_regex, $original, $original_placeholders );
+		$original_placeholders = array_unique( $original_placeholders[0] );
+
+		preg_match_all( $placeholder_regex, $translation, $translation_placeholders );
+		$translation_placeholders = array_unique( $translation_placeholders[0] );
+
+		$missing_placeholders = array_diff( $original_placeholders, $translation_placeholders );
+		$added_placeholders   = array_diff( $translation_placeholders, $original_placeholders );
+		if ( ! $missing_placeholders && ! $added_placeholders ) {
+			return true;
+		}
+
+		$error = '';
+		if ( $missing_placeholders ) {
+			$error .= __( 'The translation appears to be missing the following placeholders: ', 'glotpress' ) . implode( ', ', $missing_placeholders ) . "\n";
+		}
+		if ( $added_placeholders ) {
+			$error .= __( 'The translation contains the following unexpected placeholders: ', 'glotpress' ) . implode( ', ', $added_placeholders );
+		}
+
+		return trim( $error );
+	}
+
+	/**
+	 * Returns the values from the href and the src
+	 *
+	 * @since 3.0.0
+	 * @access private
 	 *
 	 * @param array $content
 	 * @return array
@@ -682,7 +735,7 @@ class GP_Builtin_Translation_Warnings {
 				$message[] = trim( $error->message );
 			}
 			return sprintf(
-				__( 'The translation tags are not correct: %s', 'glotpress' ),
+				__( 'The translation contains incorrect HTML tags: %s', 'glotpress' ),
 				implode( ', ', $message )
 			);
 		}
@@ -693,7 +746,7 @@ class GP_Builtin_Translation_Warnings {
 	 * Checks whether links that are not URL or placeholders are equal or not
 	 *
 	 * @since 3.0.0
-	 * @access public
+	 * @access private
 	 *
 	 * @param string $original_links
 	 * @param string $translation_links

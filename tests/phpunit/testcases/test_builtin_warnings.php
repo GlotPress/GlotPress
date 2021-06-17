@@ -89,7 +89,21 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			$this->l
 		);
 		$this->assertNoWarnings( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>' );
-
+		$this->assertNoWarnings(
+			'tags',
+			' Text 1 <a href="https://wordpress.org/plugins/example-plugin/">Example plugin</a> Text 2<a href="https://wordpress.com/log-in/">Log in</a> Text 3 <img src="example.jpg" alt="Example alt text">',
+			' Texto 1 <a href="https://es.wordpress.org/plugins/example-plugin/">Plugin de ejemplo</a> Texto 2<a href="https://es.wordpress.com/log-in/">Acceder</a> Texto 3 <img src="example.jpg" alt="Texto alternativo de ejemplo">'
+		);
+		$this->assertNoWarnings(
+			'tags',
+			'<img src="https://en.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress in the Wikipedia">',
+			'<img src="https://es.wikipedia.org/wiki/WordPress#/media/File:WordPress_logo.svg" alt="WordPress en la Wikipedia">'
+		);
+		$this->assertNoWarnings(
+			'tags',
+			' Text 1 <a href="https://wordpress.com/log-in">Log in</a> Text 2 <img src="https://en.gravatar.com/matt" alt="Matt\'s Gravatar"> ',
+			' Texto 1 <a href="https://es.wordpress.com/log-in">Acceder</a> Texto 2 <img src="https://es.gravatar.com/matt" alt="Gravatar de Matt"> '
+		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<p>Paragraph</p>',
@@ -142,13 +156,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'tags',
 			'<p>Baba</p>',
 			'</p>Баба<p>',
-			'The translation tags are not correct: Unexpected end tag : p'
+			'The translation contains incorrect HTML tags: Unexpected end tag : p'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<h1>Hello</h1><h2>Peter</h2>',
 			'<h1>Hola</h1></h2>Pedro<h2>',
-			'The translation tags are not correct: Unexpected end tag : h2'
+			'The translation contains incorrect HTML tags: Unexpected end tag : h2'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
@@ -161,7 +175,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'tags',
 			'<b>Text 1</b>, <i>Italic text</i>, Text 2, <em>Emphasized text</em>, Text 3',
 			'</b>テキスト1<b>、イタリック体、テキスト2、エンファシス体、テキスト3',
-			'The translation tags are not correct: Unexpected end tag : b',
+			'The translation contains incorrect HTML tags: Unexpected end tag : b',
 			$this->l
 		);
 	}
@@ -170,7 +184,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder( 'GP_Translation_Warnings' )->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 9 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 10 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -392,6 +406,10 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', ' Texto3 https://www.example.org Texto2 https://www.example.com Texto1  ' );
 		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', '  https://www.example.org Texto1   Texto3   https://www.example.com  Texto2  ' );
 		$this->assertNoWarnings( 'mismatching_urls', 'Text1 https://www.example.com Text2 https://www.example.org Text3', '  https://www.example.org https://www.example.com ' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://wordpress.org/plugins/example-plugin/', 'https://es.wordpress.org/plugins/example-plugin/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://wordpress.com/log-in/', 'https://es.wordpress.com/log-in/' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://en.gravatar.com/matt', 'https://es.gravatar.com/matt' );
+		$this->assertNoWarnings( 'mismatching_urls', 'https://en.wikipedia.org/wiki/WordPress', 'https://es.wikipedia.org/wiki/WordPress' );
 
 		$this->assertHasWarningsAndContainsOutput(
 			'mismatching_urls',
@@ -551,6 +569,52 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		);
 	}
 
+	function test_mismatching_placeholders() {
+		$this->assertNoWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '###NEW_EMAIL###' );
+		$this->assertNoWarnings(
+			'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###'
+		);
+
+		$this->assertHasWarningsAndContainsOutput(
+			'mismatching_placeholders',
+			'###NEW_EMAIL###',
+			'##NEW_EMAIL##',
+			'The translation appears to be missing the following placeholders: ###NEW_EMAIL###'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'mismatching_placeholders',
+			'##NEW_EMAIL###',
+			'###NEW_EMAIL###',
+			'The translation contains the following unexpected placeholders: ###NEW_EMAIL###'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'mismatching_placeholders',
+			'###NEW_EMAIL###',
+			'###NUEVO_CORREO###',
+			"The translation appears to be missing the following placeholders: ###NEW_EMAIL###\nThe translation contains the following unexpected placeholders: ###NUEVO_CORREO###"
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
+			'The translation appears to be missing the following placeholders: ###USERNAME###'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
+			'The translation appears to be missing the following placeholders: ###SITENAME###'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'mismatching_placeholders',
+			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
+			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
+			'The translation appears to be missing the following placeholders: ###EMAIL###'
+		);
+	}
+
 	public function test_chained_warnings() {
 		$this->tw = new GP_Translation_Warnings();
 		$this->w  = new GP_Builtin_Translation_Warnings();
@@ -665,7 +729,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			array( "</p>translation<p> \n" ),
 			array(
 				array(
-					'tags'                      => 'The translation tags are not correct: Unexpected end tag : p',
+					'tags'                      => 'The translation contains incorrect HTML tags: Unexpected end tag : p',
 					'should_not_end_on_newline' => 'Translation should not end on newline.',
 				),
 			)
@@ -683,41 +747,41 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			)
 		);
 		$this->assertContainsOutput(
-			'<p>https://wordpress.org</p>',
+			'<p>https://example.com</p>',
 			null,
-			array( "\n<a>https://es.wordpress.org</a> \n" ),
+			array( "\n<a>https://example.org</a> \n" ),
 			array(
 				array(
 					'tags'                        => "Expected <p>, got <a>.\nExpected </p>, got </a>.",
 					'should_not_end_on_newline'   => 'Translation should not end on newline.',
 					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
-					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://example.com\nThe translation contains the following unexpected URLs: https://example.org",
 				),
 			)
 		);
 		$this->assertContainsOutput(
-			'<a href="https://wordpress.org">https://wordpress.org</a>',
+			'<a href="https://example.com">https://example.com</a>',
 			null,
-			array( "\n<a href=\"https://es.wordpress.org\">https://es.wordpress.org</a> \n" ),
+			array( "\n<a href=\"https://example.org\">https://example.org</a> \n" ),
 			array(
 				array(
-					'tags'                        => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+					'tags'                        => "The translation appears to be missing the following URLs: https://example.com\nThe translation contains the following unexpected URLs: https://example.org",
 					'should_not_end_on_newline'   => 'Translation should not end on newline.',
 					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
-					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://example.com\nThe translation contains the following unexpected URLs: https://example.org",
 				),
 			)
 		);
 		$this->assertContainsOutput(
-			'<a href="%s">https://wordpress.org</a>',
+			'<a href="%s">https://example.com</a>',
 			null,
-			array( "\n<a href=\"javascript%s\">https://es.wordpress.org</a> \n" ),
+			array( "\n<a href=\"javascript%s\">https://example.org</a> \n" ),
 			array(
 				array(
 					'tags'                        => 'The translation contains the following unexpected links: javascript%s',
 					'should_not_end_on_newline'   => 'Translation should not end on newline.',
 					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
-					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://wordpress.org\nThe translation contains the following unexpected URLs: https://es.wordpress.org",
+					'mismatching_urls'            => "The translation appears to be missing the following URLs: https://example.com\nThe translation contains the following unexpected URLs: https://example.org",
 				),
 			)
 		);

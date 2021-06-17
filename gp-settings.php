@@ -76,8 +76,6 @@ require_once GP_PATH . GP_INC . 'warnings.php';
 require_once GP_PATH . GP_INC . 'validation.php';
 require_once GP_PATH . GP_INC . 'advanced-permissions.php';
 
-require_once GP_PATH . GP_INC . 'wporg/warnings.php';
-
 require_once GP_PATH . GP_INC . 'thing.php';
 require_once GP_PATH . GP_INC . 'things/original.php';
 require_once GP_PATH . GP_INC . 'things/permission.php';
@@ -107,7 +105,6 @@ require_once GP_PATH . GP_INC . 'routes/locale.php';
 
 GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
-GP::$wporg_translation_warnings   = new GP_Wporg_Translation_Warnings();
 GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
 GP::$router  = new GP_Router();
 GP::$formats = array();
