@@ -662,7 +662,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @param string $translation The translated string.
 	 * @return string|true
 	 */
-	public function warning_mismatching_placeholders( string $original, string $translation ) {
+	public function warning_translation_placeholders( string $original, string $translation ) {
 		$placeholder_regex = '@(###[A-Z_]+###)@';
 
 		preg_match_all( $placeholder_regex, $original, $original_placeholders );

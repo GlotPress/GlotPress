@@ -569,46 +569,46 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		);
 	}
 
-	function test_mismatching_placeholders() {
-		$this->assertNoWarnings( 'mismatching_placeholders', '###NEW_EMAIL###', '###NEW_EMAIL###' );
+	function test_translation_placeholders() {
+		$this->assertNoWarnings( 'translation_placeholders', '###NEW_EMAIL###', '###NEW_EMAIL###' );
 		$this->assertNoWarnings(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###'
 		);
 
 		$this->assertHasWarningsAndContainsOutput(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'###NEW_EMAIL###',
 			'##NEW_EMAIL##',
 			'The translation appears to be missing the following placeholders: ###NEW_EMAIL###'
 		);
 		$this->assertHasWarningsAndContainsOutput(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'##NEW_EMAIL###',
 			'###NEW_EMAIL###',
 			'The translation contains the following unexpected placeholders: ###NEW_EMAIL###'
 		);
 		$this->assertHasWarningsAndContainsOutput(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'###NEW_EMAIL###',
 			'###NUEVO_CORREO###',
 			"The translation appears to be missing the following placeholders: ###NEW_EMAIL###\nThe translation contains the following unexpected placeholders: ###NUEVO_CORREO###"
 		);
 		$this->assertHasWarningsAndContainsOutput(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ##USERNAME##, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
 			'The translation appears to be missing the following placeholders: ###USERNAME###'
 		);
 		$this->assertHasWarningsAndContainsOutput(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «SITENAME» (###SITEURL###) tu nueva contraseña a ###EMAIL###',
 			'The translation appears to be missing the following placeholders: ###SITENAME###'
 		);
 		$this->assertHasWarningsAndContainsOutput(
-			'mismatching_placeholders',
+			'translation_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
 			'The translation appears to be missing the following placeholders: ###EMAIL###'
