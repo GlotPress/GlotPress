@@ -253,7 +253,7 @@ class GP_Builtin_Translation_Warnings {
 			$translation_parts = $m[1];
 		}
 
-		// East asian languages can remove emphasis/italic tags
+		// East asian languages can remove emphasis/italic tags.
 		if ( count( $original_parts ) > count( $translation_parts ) ) {
 			// Remove Italic requirements.
 			if ( in_array( $locale->slug, $this->languages_without_italics, true ) ) {
@@ -276,7 +276,7 @@ class GP_Builtin_Translation_Warnings {
 			);
 		}
 
-		// Check if the translation tags are in correct order
+		// Check if the translation tags are in correct order.
 		$valid_html_warning = $this->check_valid_html( $original_parts, $translation_parts );
 		if ( true !== $valid_html_warning ) {
 			return trim( $valid_html_warning );
@@ -527,7 +527,7 @@ class GP_Builtin_Translation_Warnings {
 			$alternate_scheme_url = preg_replace( "@^$scheme(?=:)@", $alternate_scheme, $missing_url );
 
 			$alt_urls = array(
-				// Scheme changes
+				// Scheme changes.
 				$alternate_scheme_url,
 
 				// Slashed/unslashed changes.
@@ -538,13 +538,14 @@ class GP_Builtin_Translation_Warnings {
 			);
 
 			foreach ( $alt_urls as $alt_url ) {
-				if ( false !== ( $alternate_index = array_search( $alt_url, $added_urls ) ) ) {
+				$alternate_index = array_search( $alt_url, $added_urls );
+				if ( false !== $alternate_index ) {
 					unset( $missing_urls[ $key ], $added_urls[ $alternate_index ] );
 				}
 			}
 		}
 
-		// Check if just the domain was changed, and if so, if it's to a whitelisted domain
+		// Check if just the domain was changed, and if so, if it's to a whitelisted domain.
 		foreach ( $missing_urls as $key => $missing_url ) {
 			$host = parse_url( $missing_url, PHP_URL_HOST );
 			if ( ! isset( $this->allowed_domain_changes[ $host ] ) ) {
@@ -701,7 +702,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 3.0.0
 	 * @access private
 	 *
-	 * @param array $content
+	 * @param array $content The original array.
 	 * @return array
 	 */
 	private function get_values_from_href_src( array $content ): array {
@@ -717,8 +718,8 @@ class GP_Builtin_Translation_Warnings {
 	 * - Original: <a></a>
 	 * - Translation: </a><a>
 	 *
-	 * @param array $original_parts     The original HTML tags
-	 * @param array $translation_parts  The translation HTML tags
+	 * @param array $original_parts     The original HTML tags.
+	 * @param array $translation_parts  The translation HTML tags.
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
 	private function check_valid_html( array $original_parts, array $translation_parts ) {
@@ -733,7 +734,7 @@ class GP_Builtin_Translation_Warnings {
 		libxml_use_internal_errors( true );
 		$original = new DOMDocument();
 		$original->loadHTML( implode( '', $original_parts ) );
-		// If the original parts are not well-formed, don't continue the translation check
+		// If the original parts are not well-formed, don't continue the translation check.
 		$errors = libxml_get_errors();
 		if ( ! empty( $errors ) ) {
 			return true;
@@ -762,15 +763,15 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 3.0.0
 	 * @access private
 	 *
-	 * @param string $original_links
-	 * @param string $translation_links
+	 * @param string $original_links    The original links.
+	 * @param string $translation_links The translated links.
 	 * @return  array|true True if check is OK, otherwise warning message.
 	 */
 	private function links_without_url_and_placeholders_are_equal( string $original_links, string $translation_links ) {
 		$urls_regex        = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
 		$placeholder_regex = '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i';
 
-		// Remove the URLs
+		// Remove the URLs.
 		preg_match_all( $urls_regex, $original_links, $original_urls );
 		$original_urls              = array_unique( $original_urls[0] );
 		$original_links_without_url = array_diff( explode( "\n", $original_links ), $original_urls );
@@ -778,7 +779,7 @@ class GP_Builtin_Translation_Warnings {
 		$translation_urls              = array_unique( $translation_urls[0] );
 		$translation_links_without_url = array_diff( explode( "\n", $translation_links ), $translation_urls );
 
-		// Remove the placeholders
+		// Remove the placeholders.
 		preg_match_all( $placeholder_regex, implode( ' ', $original_links_without_url ), $original_clean_links );
 		preg_match_all( $placeholder_regex, implode( ' ', $translation_links_without_url ), $translation_clean_links );
 		$original_clean_links    = array_filter( array_diff( $original_links_without_url, $original_clean_links[0] ) );
