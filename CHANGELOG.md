@@ -1,7 +1,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.0.0-alpha.3 (April 29, 2021)
+## [Unreleased]
+
+**Breaking Changes**
+* Developers: Removed `GP_Thing::set_memory_limit()` in favor of `wp_raise_memory_limit()`. ([#1246](https://github.com/GlotPress/GlotPress-WP/pull/1246))
+
+## [3.0.0-alpha.3] (April 29, 2021)
 
 **Bugfixes**
 * Use single quotes around string literals in SQL queries. ([#1221](https://github.com/GlotPress/GlotPress-WP/pull/1221))

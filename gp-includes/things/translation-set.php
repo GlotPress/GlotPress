@@ -204,12 +204,14 @@ class GP_Translation_Set extends GP_Thing {
 	public function existing_locales() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
 	public function existing_slugs() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 
@@ -229,7 +231,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return boolean or void
 	 */
 	public function import( $translations, $desired_status = 'current' ) {
-		$this->set_memory_limit( '256M' );
+		wp_raise_memory_limit( 'gp_translations_import' );
 
 		if ( ! isset( $this->project ) || ! $this->project ) {
 			$this->project = GP::$project->get( $this->project_id );

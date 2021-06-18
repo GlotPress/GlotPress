@@ -574,6 +574,7 @@ function gp_wp_profile_options_update( $user_id ) {
 
 	$is_user_gp_admin = GP::$permission->user_can( $user_id, 'admin' );
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( array_key_exists( 'gp_administrator', $_POST ) && ! $is_user_gp_admin ) {
 		GP::$administrator_permission->create(
 			array(
@@ -584,6 +585,7 @@ function gp_wp_profile_options_update( $user_id ) {
 		);
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! array_key_exists( 'gp_administrator', $_POST ) && $is_user_gp_admin ) {
 		$current_perm = GP::$administrator_permission->find_one(
 			array(
@@ -649,4 +651,15 @@ function gp_get_sort_by_fields() {
 	 * }
 	 */
 	return apply_filters( 'gp_sort_by_fields', $sort_fields );
+}
+
+/**
+ * Sets the maximum memory limit available for translations imports.
+ *
+ * @since 3.0.0
+ *
+ * @return string The maximum memory limit.
+ */
+function gp_set_translations_import_max_memory_limit() {
+	return '256M';
 }

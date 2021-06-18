@@ -19,7 +19,6 @@
     "docs": "https://glotpress.blog/the-manual/"
   },
   "require-dev": {
-    "xwp/wp-dev-lib": "^1.5",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "wp-coding-standards/wpcs": "^2.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
