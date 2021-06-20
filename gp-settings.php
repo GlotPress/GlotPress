@@ -67,7 +67,7 @@ if ( ! class_exists( 'GP_Locale' ) || ! class_exists( 'GP_Locales' ) ) {
 
 /*
  * We assume all variables set in this file will be global.
- * If the file is inovked inside a function, we will lose them all.
+ * If the file is invoked inside a function, we will lose them all.
  * So, make all local variables, global.
  */
 gp_set_globals( get_defined_vars() );
