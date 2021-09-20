@@ -63,7 +63,7 @@ class GP_Admin {
 	 *
 	 * @since 3.0.0
 	 */
-	function glotpress_settings_init() {
+	public function glotpress_settings_init() {
 		$args = array(
 			'type'              => 'boolean',
 			'sanitize_callback' => array( $this, 'glotpress_validate_options' ),
@@ -114,7 +114,7 @@ class GP_Admin {
 	 *
 	 * @since 3.0.0
 	 */
-	function glotpress_delete_section_text() {
+	public function glotpress_delete_section_text() {
 		_e( 'Select this options to delete the GlotPress options and/or data on uninstall.' );
 	}
 
@@ -123,13 +123,13 @@ class GP_Admin {
 	 *
 	 * @since 3.0.0
 	 */
-	function checkbox( $args ) {
+	public function checkbox( $args ) {
 		$options = (array) get_option( 'gp_options' );
 		$value   = ( true === isset( $options[ $args['id'] ] ) ) ? $options[ $args['id'] ] : false;
 		$html    = '<input type="checkbox" id="' . $args['id'] . '" ';
 		$html   .= 'name="gp_options[' . $args['id'] . ']" value="1" ' . checked( 1, $value, false ) . ' />';
 		$html   .= '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
-		echo $html;
+		echo esc_attr( $html );
 	}
 
 	/**
@@ -137,7 +137,7 @@ class GP_Admin {
 	 *
 	 * @since 3.0.0
 	 */
-	function glotpress_validate_options( $input ) {
+	public function glotpress_validate_options( $input ) {
 		$valid                   = array();
 		$valid['delete_options'] = isset( $input['delete_options'] ) && true == $input['delete_options'];
 		$valid['delete_data']    = isset( $input['delete_data'] ) && true == $input['delete_data'];
