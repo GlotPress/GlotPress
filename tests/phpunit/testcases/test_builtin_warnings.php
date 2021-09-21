@@ -200,6 +200,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', 'This string has %stwo variables%s.', 'Deze string heeft %stwee variabelen%s.' );
 		$this->assertNoWarnings( 'placeholders', '%% baba', '%% баба' );
 		$this->assertNoWarnings( 'placeholders', '%s%% baba', '%s%% баба' );
+		$this->assertNoWarnings( 'placeholders', '%1$d baba %2$@', '%2$@ баба %1$d' );
 
 		$this->assertHasWarningsAndContainsOutput(
 			'placeholders',
@@ -242,6 +243,18 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'баба',
 			'%s baba',
 			'Extra %s placeholder in translation.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'placeholders',
+			'%1$d baba %2$@',
+			'%1$d baba',
+			'Missing %2$@ placeholder in translation.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'placeholders',
+			'%1$d baba',
+			'%1$d baba %2$@',
+			'Extra %2$@ placeholder in translation.'
 		);
 	}
 
