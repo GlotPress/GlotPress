@@ -200,6 +200,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', 'This string has %stwo variables%s.', 'Deze string heeft %stwee variabelen%s.' );
 		$this->assertNoWarnings( 'placeholders', '%% baba', '%% баба' );
 		$this->assertNoWarnings( 'placeholders', '%s%% baba', '%s%% баба' );
+		$this->assertNoWarnings( 'placeholders', '%1$d baba %2$@', '%2$@ баба %1$d' );
 
 		$this->assertHasWarningsAndContainsOutput(
 			'placeholders',
@@ -242,6 +243,18 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'баба',
 			'%s baba',
 			'Extra %s placeholder in translation.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'placeholders',
+			'%1$d baba %2$@',
+			'%1$d baba',
+			'Missing %2$@ placeholder in translation.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'placeholders',
+			'%1$d baba',
+			'%1$d baba %2$@',
+			'Extra %2$@ placeholder in translation.'
 		);
 	}
 
@@ -571,6 +584,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 
 	function test_named_placeholders() {
 		$this->assertNoWarnings( 'named_placeholders', '###NEW_EMAIL###', '###NEW_EMAIL###' );
+		$this->assertNoWarnings( 'named_placeholders', '###new-email###', '###new-email###' );
 		$this->assertNoWarnings(
 			'named_placeholders',
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
@@ -612,6 +626,18 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'Hi ###USERNAME###, we sent to ###EMAIL### your new password from "###SITENAME###" (###SITEURL###)',
 			'Hola ###USERNAME###, te enviamos desde «###SITENAME###» (###SITEURL###) tu nueva contraseña a EMAIL#',
 			'The translation appears to be missing the following placeholders: ###EMAIL###'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'named_placeholders',
+			'###NEW_EMAIL###',
+			'###new_email###',
+			"The translation appears to be missing the following placeholders: ###NEW_EMAIL###\nThe translation contains the following unexpected placeholders: ###new_email###"
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'named_placeholders',
+			'###new_email###',
+			'###NEW_EMAIL###',
+			"The translation appears to be missing the following placeholders: ###new_email###\nThe translation contains the following unexpected placeholders: ###NEW_EMAIL###"
 		);
 	}
 
