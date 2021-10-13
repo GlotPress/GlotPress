@@ -9,7 +9,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		// Actual: n != 1
 		// Expected: n > 1
 		'ak', 'am', 'as', 'bho', 'bn', 'fuc', 'ful', 'gu', 'hi', 'hy', 'kn', 'mg',
-		'nso', 'pt-ao', 'si', 'wa', 'zul',
+		'nso', 'pcm', 'pt-ao', 'si', 'wa', 'zul',
 
 		// Actual: n > 1
 		// Expected: n != 1
@@ -50,6 +50,10 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		// Actual: n > 1
 		// Expected: n >= 2 && (n < 11 || n > 99)
 		'tzm',
+
+		// Actual: n > 1
+		// Expected: (n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)
+		'fr', 'fr-be', 'fr-ca', 'fr-ch',
 	];
 
 	public function test_class_exists() {
