@@ -352,7 +352,6 @@ class GP_Locales {
 		$bgn->english_name = 'Western Balochi';
 		$bgn->native_name = 'بلوچی‎';
 		$bgn->lang_code_iso_639_3 = 'bgn';
-		$bgn->lang_code_iso_639_2 = 'bal';
 		$bgn->country_code = 'pk';
 		$bgn->wp_locale = 'bgn';
 		$bgn->slug = 'bgn';
