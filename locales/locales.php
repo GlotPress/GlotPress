@@ -348,6 +348,15 @@ class GP_Locales {
 		$bg->google_code = 'bg';
 		$bg->facebook_locale = 'bg_BG';
 
+		$bgn = new GP_Locale();
+		$bgn->english_name = 'Western Balochi';
+		$bgn->native_name = 'بلوچی‎';
+		$bgn->lang_code_iso_639_3 = 'bgn';
+		$bgn->country_code = 'pk';
+		$bgn->wp_locale = 'bgn';
+		$bgn->slug = 'bgn';
+		$bgn->text_direction = 'rtl';
+		
 		$bh = new GP_Locale();
 		$bh->english_name = 'Bihari';
 		$bh->native_name = 'भोजपुरी';
