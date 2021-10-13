@@ -85,6 +85,10 @@ jobs:
         if: ${{ ! matrix.coverage }}
         run: WP_MULTISITE=${{ matrix.multisite && '1' || '' }} vendor/bin/phpunit
 
+      - name: Run tests for locales
+        if: ${{ ! matrix.coverage && ! matrix.multisite }}
+        run: vendor/bin/phpunit --group locales
+
       - name: Run tests with code coverage
         if: ${{ matrix.coverage }}
         run: vendor/bin/phpunit --coverage-clover coverage-clover-${{ github.sha }}.xml

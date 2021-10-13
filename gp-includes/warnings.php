@@ -352,6 +352,12 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks whether PHP placeholders are missing or have been added.
 	 *
+	 * The default regular expression:
+	 * bcdefgosuxEFGX are standard printf placeholders.
+	 * % is included to allow/expect %%.
+	 * l is included for wp_sprintf_l()'s custom %l format.
+	 * @ is included for Swift (as used for iOS mobile app) %@ string format.
+	 *
 	 * @since 1.0.0
 	 * @access public
 	 *
@@ -368,7 +374,7 @@ class GP_Builtin_Translation_Warnings {
 		 *
 		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
 		 */
-		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX%l]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX%l@]' );
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -651,7 +657,7 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Adds a warning for changing placeholders.
 	 *
-	 * This only supports placeholders in the format of '###[A-Z_]+###'.
+	 * This only supports placeholders in the format of '###[A-Za-z_-]+###'.
 	 *
 	 * @todo Check that the number of each type of placeholders are the same in the original and in the translation
 	 *
@@ -663,7 +669,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @return string|true
 	 */
 	public function warning_named_placeholders( string $original, string $translation ) {
-		$placeholder_regex = '@(###[A-Z_]+###)@';
+		$placeholder_regex = '@(###[A-Za-z_-]+###)@';
 
 		preg_match_all( $placeholder_regex, $original, $original_placeholders );
 		$original_placeholders = array_unique( $original_placeholders[0] );
