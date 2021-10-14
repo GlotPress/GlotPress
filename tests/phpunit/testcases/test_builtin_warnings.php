@@ -209,12 +209,12 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'placeholders',
 			'%1$.2f baba',
 			'%1$.f баба',
-		'Missing %1$.2f placeholder in translation.');
+			'Missing %1$.2f placeholder in translation.');
 		$this->assertHasWarningsAndContainsOutput(
 			'placeholders',
 			'%1$.f baba',
 			'%1$.4f баба',
-		'Extra %1$.4f placeholder in translation.');
+			'Extra %1$.4f placeholder in translation.');
 		$this->assertHasWarningsAndContainsOutput(
 			'placeholders',
 			'%s baba',
