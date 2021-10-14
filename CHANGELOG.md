@@ -4,15 +4,23 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 **Breaking Changes**
+
 * Developers: Removed `GP_Thing::set_memory_limit()` in favor of `wp_raise_memory_limit()`. ([#1246](https://github.com/GlotPress/GlotPress-WP/pull/1246))
 
 **Features**
+
 * Integrate three new translation warnings for mismatched URLs, missing named placeholders, and unexpected sprintf tokens.
   Also improve the check for HTML tags. ([#1243](https://github.com/GlotPress/GlotPress-WP/pull/1243))
+* Locales: Add definition for Western Balochi. ([#1254](https://github.com/GlotPress/GlotPress-WP/issues/1254))
+
+**Bugfixes**
+
+* Allow to use the same glossary term and translation for a different part of speech. ([#1251](https://github.com/GlotPress/GlotPress-WP/pull/1251))
 
 ## [3.0.0-alpha.3] (April 29, 2021)
 
 **Bugfixes**
+
 * Use single quotes around string literals in SQL queries. ([#1221](https://github.com/GlotPress/GlotPress-WP/pull/1221))
 * Fix 'original_id is invalid' error when submitting a translation. ([#1231](https://github.com/GlotPress/GlotPress-WP/pull/1231))
 * Fix some UI inconsistencies. ([#1209](https://github.com/GlotPress/GlotPress-WP/issues/1209))
@@ -20,6 +28,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Locales: Add/update definitions for Punjabi in Pakistan and India. ([#1184](https://github.com/GlotPress/GlotPress-WP/pull/1184))
 
 **Features**
+
 * Delete translations if an original gets deleted. ([#1002](https://github.com/GlotPress/GlotPress-WP/issues/1209))
 * Developers: Add short-circuit hook `gp_pre_closest_original` in `GP_Original::closest_original()`. ([#1204](https://github.com/GlotPress/GlotPress-WP/issues/1204))
 
