@@ -374,7 +374,7 @@ class GP_Builtin_Translation_Warnings {
 		 *
 		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
 		 */
-		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX%l@]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?(\.\d+)?[bcdefgosuxEFGX%l@]' );
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -617,7 +617,7 @@ class GP_Builtin_Translation_Warnings {
 			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.))/i', $translation, $m );
 			foreach ( $m['char'] as $i => $char ) {
 				// % is included for escaped %%.
-				if ( false === strpos( 'bcdefgosux%l', $char ) ) {
+				if ( false === strpos( 'bcdefgosux%l.', $char ) ) {
 					$unexpected_tokens[] = $m[0][ $i ];
 				}
 			}
