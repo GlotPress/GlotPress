@@ -201,7 +201,22 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'placeholders', '%% baba', '%% баба' );
 		$this->assertNoWarnings( 'placeholders', '%s%% baba', '%s%% баба' );
 		$this->assertNoWarnings( 'placeholders', '%1$d baba %2$@', '%2$@ баба %1$d' );
+		$this->assertNoWarnings( 'placeholders', '%1$.4f baba', '%1$.4f баба' );
+		$this->assertNoWarnings( 'placeholders', '%2$.2fMB baba', '%2$.2fMB баба' );
+		$this->assertNoWarnings( 'placeholders', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s' );
 
+		$this->assertHasWarningsAndContainsOutput(
+			'placeholders',
+			'%1$.2f baba',
+			'%1$.f баба',
+			'Missing %1$.2f placeholder in translation.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'placeholders',
+			'%1$.f baba',
+			'%1$.4f баба',
+			'Extra %1$.4f placeholder in translation.'
+		);
 		$this->assertHasWarningsAndContainsOutput(
 			'placeholders',
 			'%s baba',
@@ -540,6 +555,12 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'unexpected_sprintf_token', '<a href="%a">100 percent</a>', '<a href="%a">100%</a>' );
 		$this->assertNoWarnings( 'unexpected_sprintf_token', '<a href="%s">100 percent</a>', '<a href="%s">100%%</a>' );
 		$this->assertNoWarnings( 'unexpected_sprintf_token', '<a href="%1$s">100 percent</a>', '<a href="%1$s">100%%</a>' );
+		$this->assertNoWarnings( 'unexpected_sprintf_token', '%1$.2f baba', '%1$.2f баба' );
+		$this->assertNoWarnings( 'unexpected_sprintf_token', '%1$.2f baba', '%1$.3f баба' );
+		$this->assertNoWarnings( 'unexpected_sprintf_token', '%2$.2fMB baba', '%2$.2fMB баба' );
+		$this->assertNoWarnings( 'unexpected_sprintf_token', '%2$.3fMB baba', '%2$.2fMB баба' );
+		$this->assertNoWarnings( 'unexpected_sprintf_token', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s' );
+
 		$this->assertNoWarnings(
 			'unexpected_sprintf_token',
 			'The %s contains %d items',
