@@ -65,6 +65,7 @@ class GP_Glossary_Entry extends GP_Thing {
 			'preposition'  => _x( 'preposition', 'part-of-speech', 'glotpress' ),
 			'pronoun'      => _x( 'pronoun', 'part-of-speech', 'glotpress' ),
 			'expression'   => _x( 'expression', 'part-of-speech', 'glotpress' ),
+			'abbreviation' => _x( 'abbreviation', 'part-of-speech', 'glotpress' ),
 		);
 	}
 
