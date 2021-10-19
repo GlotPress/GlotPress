@@ -1,0 +1,10 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "../style.css"; /* Import legacy styles */
+
+@layer base {
+	a:hover {
+		@apply underline;
+	}
+}

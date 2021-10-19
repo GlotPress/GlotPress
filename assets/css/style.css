@@ -1,4 +1,4 @@
-body, html,
+/*body, html,
 .gp-content,
 .gp-content textarea,
 .gp-content input {
@@ -15,10 +15,10 @@ body, html {
 .gp-content input,
 .gp-content textarea {
 	font-size: 1em;
-}
+}*/
 
 /* we take the liberty to make visited the same as link */
-a, a:link, a:visited {
+/*a, a:link, a:visited {
 	color: #2F34B8;
 }
 
@@ -28,7 +28,7 @@ a:active {
 
 a img {
 	border: 0;
-}
+}*/
 
 a.disabled {
 	color: #aaa;
@@ -111,10 +111,10 @@ select {
 /*
  * Breadcrumbs
  */
-.breadcrumb {
+/*.breadcrumb {
 	background-color: #eee;
 	border: 1px solid #ddd;
-	margin: 20px 0;
+	margin: 0 0 20px;
 	padding: 7px 14px;
 }
 
@@ -149,25 +149,25 @@ select {
 	-moz-border-radius: 0.4em;
 	margin-left: .3em;
 }
-
+*/
 
 /*
  * GP Content
  */
-.gp-content {
+/*.gp-content {
 	margin: 0 1em;
-}
+}*/
 
 /*
  * Footer
  */
-#gp-footer {
+/*#gp-footer {
 	text-align: center;
 	font-size: 85%;
 	background-color: #ddd;
 	margin: 1em;
 	padding: 0.5em;
-}
+}*/
 
 /*
  * Rest

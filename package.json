@@ -12,13 +12,22 @@
   },
   "devDependencies": {
     "@wordpress/env": "^4.1.1",
+    "autoprefixer": "^10.3.7",
+    "cross-env": "^7.0.3",
+    "cssnano": "^5.0.8",
     "grunt": "^1.4.1",
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-uglify": "^5.0.1",
-    "load-grunt-tasks": "^5.1.0"
+    "load-grunt-tasks": "^5.1.0",
+    "postcss": "^8.3.9",
+    "postcss-cli": "^9.0.1",
+    "postcss-import": "^14.0.2",
+    "tailwindcss": "^2.2.17"
   },
   "scripts": {
     "grunt": "grunt",
+    "dev": "postcss assets/css/src/*.css -d assets/css/dist",
+    "build": "cross-env NODE_ENV=production postcss assets/css/src/*.css -d assets/css/dist",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop"
   }

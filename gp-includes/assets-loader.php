@@ -16,6 +16,7 @@ function gp_register_default_styles() {
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20210429' );
+	wp_register_style( 'gp-app', $url . '/dist/app.css', array(), time() );
 
 	// Register the table sorter theme style.
 	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress' . $suffix, array(), '20210429' );
@@ -45,6 +46,8 @@ function gp_register_default_scripts() {
 			)
 		)
 	);
+
+	wp_register_script( 'gp-app', $url . '/app.js', array(), time(), true );
 
 	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20210429' );
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20210429' );

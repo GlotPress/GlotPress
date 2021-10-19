@@ -93,12 +93,36 @@ function gp_footer() {
 	do_action( 'gp_footer' );
 }
 
-function gp_nav_menu( $location = 'main' ) {
-	$html  = '';
-	$items = gp_nav_menu_items( $location );
+function gp_nav_menu( $location = 'main', $args = array() ) {
+	$html             = '';
+	$items            = gp_nav_menu_items( $location );
+	$relative_current = untrailingslashit( $_SERVER['REQUEST_URI'] );
+
+	$defaults = array(
+		'class'        => '',
+		'active_class' => '',
+		'role'         => 'link',
+	);
+	$args     = wp_parse_args( $args, $defaults );
 
 	foreach ( $items as $link => $title ) {
-		$html .= '<a href="' . $link . '">' . $title . '</a>';
+		if ( 0 === strpos( $link, $relative_current ) ) {
+			$html .= sprintf(
+				'<a href="%s" class="%s" role="%s" aria-current="page">%s</a>',
+				esc_url( $link ),
+				esc_attr( $args['active_class'] ),
+				esc_attr( $args['role'] ),
+				$title
+			);
+		} else {
+			$html .= sprintf(
+				'<a href="%s" class="%s" role="%s">%s</a>',
+				esc_url( $link ),
+				esc_attr( $args['class'] ),
+				esc_attr( $args['role'] ),
+				$title
+			);
+		}
 	}
 
 	return $html;
