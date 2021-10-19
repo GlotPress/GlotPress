@@ -222,3 +222,4 @@ GP_Validators::register( 'int', 'gp_is_int' );
 GP_Validators::register( 'null', 'gp_is_null' );
 GP_Validators::register( 'between', 'gp_is_between' );
 GP_Validators::register( 'between_exclusive', 'gp_is_between_exclusive' );
+GP_Validators::register( 'one_of', 'gp_is_one_of' );

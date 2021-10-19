@@ -55,4 +55,12 @@ class GP_Test_Validation extends GP_UnitTestCase {
 	   $this->assertEquals( true, $f( 0, -1, 2 ) );
 	}
 
+	function test_one_of() {
+		$callback = GP_Validators::get( 'one_of' );
+		$f = $callback['positive'];
+		$this->assertEquals( true, $f( 'a', array( 'a', 'b' ) ) );
+		$this->assertEquals( false, $f( 'c', array( 'a', 'b' ) ) );
+		$this->assertEquals( true, $f( 3, array( 1, 2, 3 ) ) );
+		$this->assertEquals( false, $f( '1', array( 1, 2, 3 ) ) );
+	}
 }
