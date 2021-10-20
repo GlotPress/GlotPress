@@ -45,7 +45,7 @@ var $gp = function( $ ) { return {
 	init: function() {
 		$gp.notices.init();
 	}
-}}( jQuery );
+};}( jQuery );
 
 $gp.showhide = function( $ ) { return function( link, container, options ) {
 	var defaults = {
@@ -53,7 +53,7 @@ $gp.showhide = function( $ ) { return function( link, container, options ) {
 		hide_text: 'Hide',
 		focus: false,
 		group: 'default'
-	}
+	};
 	var options = $.extend( {}, defaults, options );
 	var $link = $( link );
 	var $container = $( container );
@@ -71,15 +71,15 @@ $gp.showhide = function( $ ) { return function( link, container, options ) {
 			$( options.focus, $container ).focus();
 		}
 		$link.html( options.hide_text ).addClass( 'open' );
-	}
+	};
 	var hide = function() {
 		$container.hide();
 		$link.html( options.show_text ).removeClass( 'open' );
-	}
+	};
 	registry.push( { show: show, hide: hide } );
 	$link.click( function() {
 		$container.is( ':visible' ) ? hide() : show();
 		return false;
-	} )
-}}( jQuery );
+	} );
+};}( jQuery );
 $gp.showhide.registry = {};
