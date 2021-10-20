@@ -72,7 +72,7 @@ $gp.showhide = function( $ ) { return function( link, container, options ) {
 		$container.hide();
 		$link.html( options.show_text ).removeClass( 'open' );
 	}
-	registry.push( {show: show, hide: hide} );
+	registry.push( { show: show, hide: hide } );
 	$link.click( function() {
 		$container.is( ':visible' ) ? hide() : show();
 		return false;
