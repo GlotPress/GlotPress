@@ -77,28 +77,28 @@ jQuery( function( $ ) {
 			toggle = e.shiftKey || kbtoggle;
 
 		$( this ).closest( 'table' ).children( 'tbody' ).filter( ':visible' )
-		.children().children( '.checkbox' ).find( ':checkbox' )
-		.prop( 'checked', function() {
-			if ( $( this ).closest( 'tr' ).is( ':hidden' ) ) {
+			.children().children( '.checkbox' ).find( ':checkbox' )
+			.prop( 'checked', function() {
+				if ( $( this ).closest( 'tr' ).is( ':hidden' ) ) {
+					return false;
+				}
+				if ( toggle ) {
+					return $( this ).prop( 'checked' );
+				} else if ( c ) {
+					return true;
+				}
 				return false;
-			}
-			if ( toggle ) {
-				return $( this ).prop( 'checked' );
-			} else if ( c ) {
-				return true;
-			}
-			return false;
-		} );
+			} );
 
 		$( this ).closest( 'table' ).children( 'thead,  tfoot' ).filter( ':visible' )
-		.children().children( '.checkbox' ).find( ':checkbox' )
-		.prop( 'checked', function() {
-			if ( toggle ) {
+			.children().children( '.checkbox' ).find( ':checkbox' )
+			.prop( 'checked', function() {
+				if ( toggle ) {
+					return false;
+				} else if ( c ) {
+					return true;
+				}
 				return false;
-			} else if ( c ) {
-				return true;
-			}
-			return false;
-		} );
+			} );
 	} );
 } );

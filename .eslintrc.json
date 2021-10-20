@@ -16,7 +16,6 @@
     "no-alert": "off",
     "eqeqeq": "off",
     "comma-dangle": "off",
-    "indent": "off",
     "semi": "off",
     "one-var-declaration-per-line": "off",
     "no-else-return": "off",
