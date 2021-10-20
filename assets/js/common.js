@@ -84,7 +84,11 @@ $gp.showhide = (
 			};
 			registry.push( { show: show, hide: hide } );
 			$link.click( function() {
-				$container.is( ':visible' ) ? hide() : show();
+				if ( $container.is( ':visible' ) ) {
+					$container.hide();
+				} else {
+					$container.show();
+				}
 				return false;
 			} );
 		};
