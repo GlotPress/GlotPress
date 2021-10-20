@@ -8,7 +8,6 @@
     "camelcase": "off",
     "prefer-const": "off",
     "wrap-iife": "off",
-    "brace-style": "off",
     "no-redeclare": "off",
     "no-unused-expressions": "off",
     "@wordpress/no-unused-vars-before-return": "off",
