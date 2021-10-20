@@ -34,8 +34,8 @@ jQuery( function( $ ) {
 		var format = $( '#export-format' ).val();
 		var what_to_export = $( '#what-to-export' ).val();
 		var url = '';
-		if ( what_to_export == 'filtered' ) {
-			var separator = ( $( this ).attr( 'filters' ).indexOf( '?' ) == -1 ) ? '?' : '&';
+		if ( what_to_export === 'filtered' ) {
+			var separator = ( $( this ).attr( 'filters' ).indexOf( '?' ) === -1 ) ? '?' : '&';
 			url = $( this ).attr( 'filters' ) + separator + 'format=' + format;
 		} else {
 			url = $( this ).attr( 'href' ) + '?format=' + format;
@@ -49,14 +49,14 @@ jQuery( function( $ ) {
 	$( 'tbody' ).children().children( '.checkbox' ).find( ':checkbox' ).click( function( e ) {
 		var checks, first, last, checked, sliced;
 
-		if ( 'undefined' == e.shiftKey ) { return true; }
+		if ( 'undefined' === e.shiftKey ) { return true; }
 		if ( e.shiftKey ) {
 			if ( ! lastClicked ) { return true; }
 			checks = $( lastClicked ).closest( 'table' ).find( ':checkbox' );
 			first = checks.index( lastClicked );
 			last = checks.index( this );
 			checked = $( this ).prop( 'checked' );
-			if ( 0 < first && 0 < last && first != last ) {
+			if ( 0 < first && 0 < last && first !== last ) {
 				sliced = ( last > first ) ? checks.slice( first, last ) : checks.slice( last, first );
 				sliced.prop( 'checked', function() {
 					if ( $( this ).closest( 'tr' ).is( ':visible' ) ) {
@@ -73,7 +73,7 @@ jQuery( function( $ ) {
 
 	$( 'thead, tfoot' ).find( '.checkbox :checkbox' ).click( function( e ) {
 		var c = $( this ).prop( 'checked' ),
-			kbtoggle = 'undefined' == typeof toggleWithKeyboard ? false : toggleWithKeyboard,
+			kbtoggle = 'undefined' === typeof toggleWithKeyboard ? false : toggleWithKeyboard,
 			toggle = e.shiftKey || kbtoggle;
 
 		$( this ).closest( 'table' ).children( 'tbody' ).filter( ':visible' )
