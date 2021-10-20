@@ -15,7 +15,6 @@
     "no-unused-expressions": "off",
     "no-shadow": "off",
     "no-alert": "off",
-    "no-useless-return": "off",
     "vars-on-top": "off"
   }
 }
