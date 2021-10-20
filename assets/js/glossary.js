@@ -107,7 +107,7 @@ $gp.glossary = (
 				result = confirm( $gp_glossary_options.ge_delete_ays );
 				if ( ! result ) {
 					return;
-				} else {
+				}
 					editor = button.closest( 'tr' );
 					preview = editor.prev( 'tr' );
 
@@ -138,7 +138,6 @@ $gp.glossary = (
 							$gp.notices.error( msg );
 						},
 					} );
-				}
 			},
 
 			replace_current: function( html ) {
