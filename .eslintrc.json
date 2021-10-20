@@ -29,7 +29,6 @@
     "object-curly-spacing": "off",
     "space-unary-ops": "off",
     "semi": "off",
-    "keyword-spacing": "off",
     "no-multi-spaces": "off",
     "one-var-declaration-per-line": "off",
     "no-else-return": "off",
