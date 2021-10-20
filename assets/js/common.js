@@ -48,7 +48,7 @@ var $gp = (
 				$gp.notices.init();
 			},
 		};
-}( jQuery )
+	}( jQuery )
 );
 
 $gp.showhide = (
