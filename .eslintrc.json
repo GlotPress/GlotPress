@@ -13,7 +13,6 @@
     "@wordpress/no-unused-vars-before-return": "off",
     "no-shadow": "off",
     "no-alert": "off",
-    "comma-dangle": "off",
     "no-else-return": "off",
     "no-useless-return": "off",
     "no-mixed-operators": "off"

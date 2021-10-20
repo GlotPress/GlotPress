@@ -128,13 +128,13 @@ $gp.editor = (
 						return content;
 					},
 					hide: false,
-					show: false
+					show: false,
 				} );
 
 				$.valHooks.textarea = {
 					get: function( elem ) {
 						return elem.value.replace( /\r?\n/g, '\r\n' );
-					}
+					},
 				};
 			},
 			keydown: function( e ) {
@@ -223,7 +223,7 @@ $gp.editor = (
 
 				data = {
 					original_id: editor.original_id,
-					_gp_route_nonce: button.data( 'nonce' )
+					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
 				textareaName = 'translation[' + editor.original_id + '][]';
@@ -256,7 +256,7 @@ $gp.editor = (
 						button.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			set_priority: function( select ) {
@@ -272,7 +272,7 @@ $gp.editor = (
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
-					_gp_route_nonce: select.data( 'nonce' )
+					_gp_route_nonce: select.data( 'nonce' ),
 				};
 
 				$.ajax( {
@@ -292,7 +292,7 @@ $gp.editor = (
 						select.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the priority!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			set_status: function( button, status ) {
@@ -322,7 +322,7 @@ $gp.editor = (
 				data = {
 					translation_id: editor.translation_id,
 					status: status,
-					_gp_route_nonce: button.data( 'nonce' )
+					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
 				$.ajax( {
@@ -339,7 +339,7 @@ $gp.editor = (
 						button.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the status!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			discard_warning: function( link ) {
@@ -354,7 +354,7 @@ $gp.editor = (
 					translation_id: $gp.editor.current.translation_id,
 					key: link.data( 'key' ),
 					index: link.data( 'index' ),
-					_gp_route_nonce: link.data( 'nonce' )
+					_gp_route_nonce: link.data( 'nonce' ),
 
 				};
 
@@ -369,7 +369,7 @@ $gp.editor = (
 					error: function( xhr, msg ) {
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			copy: function( link ) {
@@ -466,8 +466,8 @@ $gp.editor = (
 				set_priority: function() {
 					$gp.editor.set_priority( $( this ) );
 					return false;
-				}
-			}
+				},
+			},
 		};
 	}( jQuery )
 );

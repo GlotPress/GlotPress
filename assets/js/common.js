@@ -38,14 +38,14 @@ var $gp = function( $ ) {
 			},
 			center: function() {
 				$gp.notices.element.css( 'left', ( $( document ).width() - $gp.notices.element.width() ) / 2 );
-			}
+			},
 		},
 		esc_html: function( s ) {
 			return $( '<div/>' ).text( s ).html();
 		},
 		init: function() {
 			$gp.notices.init();
-		}
+		},
 	};
 }( jQuery );
 
@@ -55,7 +55,7 @@ $gp.showhide = function( $ ) {
 			show_text: 'Show',
 			hide_text: 'Hide',
 			focus: false,
-			group: 'default'
+			group: 'default',
 		};
 		var options = $.extend( {}, defaults, options );
 		var $link = $( link );

@@ -5,12 +5,12 @@ jQuery( function( $ ) {
 	$gp.showhide( '#upper-filters-toolbar a.sort', '#upper-filters-toolbar .filters-expanded.sort', {
 		show_text: $gp_translations_options.sort + ' &darr;',
 		hide_text: $gp_translations_options.sort + ' &uarr;',
-		focus: '#sort\\[by\\]\\[original_date_added\\]'
+		focus: '#sort\\[by\\]\\[original_date_added\\]',
 	} );
 	$gp.showhide( '#upper-filters-toolbar a.filter', '#upper-filters-toolbar .filters-expanded.filters', {
 		show_text: $gp_translations_options.filter + ' &darr;',
 		hide_text: $gp_translations_options.filter + ' &uarr;',
-		focus: '#filters\\[term\\]'
+		focus: '#filters\\[term\\]',
 	} );
 
 	$bulkActions.on( 'change', function() {

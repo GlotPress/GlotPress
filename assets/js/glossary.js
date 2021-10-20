@@ -74,7 +74,7 @@ $gp.glossary = (
 				editor = $gp.glossary.current;
 
 				data = {
-					_gp_route_nonce: button.data( 'nonce' )
+					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
 				$( '#editor-' + editor.row_id ).find( 'input, select, textarea' ).each( function() {
@@ -95,7 +95,7 @@ $gp.glossary = (
 						button.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the glossary item!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 
@@ -112,7 +112,7 @@ $gp.glossary = (
 					preview = editor.prev( 'tr' );
 
 					data = {
-						_gp_route_nonce: button.data( 'nonce' )
+						_gp_route_nonce: button.data( 'nonce' ),
 					};
 
 					editor.find( 'input, select, textarea' ).each( function() {
@@ -136,7 +136,7 @@ $gp.glossary = (
 						error: function( xhr, msg ) {
 							msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
 							$gp.notices.error( msg );
-						}
+						},
 					} );
 				}
 			},
@@ -169,8 +169,8 @@ $gp.glossary = (
 				ok: function() {
 					$gp.glossary.save( $( this ) );
 					return false;
-				}
-			}
+				},
+			},
 
 		};
 	}( jQuery )

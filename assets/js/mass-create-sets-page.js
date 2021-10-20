@@ -45,7 +45,7 @@ jQuery( function( $ ) {
 				select.prop( 'disabled', false );
 				msg = xhr.responsehtml ? 'Error: ' + xhr.responsehtml : 'Error saving the translation!';
 				$gp.notices.error( msg );
-			}
+			},
 		} );
 	} );
 	$( '#submit' ).prop( 'disabled', true );
