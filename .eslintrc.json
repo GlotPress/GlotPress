@@ -15,7 +15,6 @@
     "no-shadow": "off",
     "no-alert": "off",
     "eqeqeq": "off",
-    "curly": "off",
     "comma-dangle": "off",
     "indent": "off",
     "quotes": "off",

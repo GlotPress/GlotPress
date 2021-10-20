@@ -59,8 +59,9 @@ jQuery( function( $ ) {
 			if ( 0 < first && 0 < last && first != last ) {
 				sliced = ( last > first ) ? checks.slice( first, last ) : checks.slice( last, first );
 				sliced.prop( 'checked', function() {
-					if ( $( this ).closest( 'tr' ).is( ':visible' ) )
+					if ( $( this ).closest( 'tr' ).is( ':visible' ) ) {
 						return checked;
+					}
 
 					return false;
 				} );
@@ -78,22 +79,25 @@ jQuery( function( $ ) {
 		$( this ).closest( 'table' ).children( 'tbody' ).filter( ':visible' )
 		.children().children( '.checkbox' ).find( ':checkbox' )
 		.prop( 'checked', function() {
-			if ( $( this ).closest( 'tr' ).is( ':hidden' ) )
+			if ( $( this ).closest( 'tr' ).is( ':hidden' ) ) {
 				return false;
-			if ( toggle )
+			}
+			if ( toggle ) {
 				return $( this ).prop( 'checked' );
-			else if ( c )
+			} else if ( c ) {
 				return true;
+			}
 			return false;
 		} );
 
 		$( this ).closest( 'table' ).children( 'thead,  tfoot' ).filter( ':visible' )
 		.children().children( '.checkbox' ).find( ':checkbox' )
 		.prop( 'checked', function() {
-			if ( toggle )
+			if ( toggle ) {
 				return false;
-			else if ( c )
+			} else if ( c ) {
 				return true;
+			}
 			return false;
 		} );
 	} );

@@ -14,7 +14,9 @@ jQuery( function( $ ) {
 			success: function( data ) {
 				select.prop( 'disabled', false );
 				$gp.notices.clear();
-				if ( data.added.length || data.removed.length ) $( '#submit' ).prop( 'disabled', false );
+				if ( data.added.length || data.removed.length ) {
+					$( '#submit' ).prop( 'disabled', false );
+				}
 				var preview = $( '#preview' );
 				preview.html( '<h3>Preview changes:</h3>' );
 				var preview_html = '';
