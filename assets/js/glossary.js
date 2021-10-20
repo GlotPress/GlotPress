@@ -108,36 +108,36 @@ $gp.glossary = (
 				if ( ! result ) {
 					return;
 				}
-					editor = button.closest( 'tr' );
-					preview = editor.prev( 'tr' );
+				editor = button.closest( 'tr' );
+				preview = editor.prev( 'tr' );
 
-					data = {
-						_gp_route_nonce: button.data( 'nonce' ),
-					};
+				data = {
+					_gp_route_nonce: button.data( 'nonce' ),
+				};
 
-					editor.find( 'input, select, textarea' ).each( function() {
-						data[ $( this ).attr( 'name' ) ] = this.value;
-					} );
+				editor.find( 'input, select, textarea' ).each( function() {
+					data[ $( this ).attr( 'name' ) ] = this.value;
+				} );
 
-					$.ajax( {
-						type: 'POST',
-						url: $gp_glossary_options.delete_url,
-						data: data,
-						success: function() {
-							$gp.notices.success( 'Deleted!' );
-							editor.fadeOut( 'fast', function() {
-								this.remove();
-							} );
-							preview.remove();
-							if ( 1 === $( 'tr', $gp.glossary.table ).length ) {
-								$gp.glossary.table.remove();
-							}
-						},
-						error: function( xhr, msg ) {
-							msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
-							$gp.notices.error( msg );
-						},
-					} );
+				$.ajax( {
+					type: 'POST',
+					url: $gp_glossary_options.delete_url,
+					data: data,
+					success: function() {
+						$gp.notices.success( 'Deleted!' );
+						editor.fadeOut( 'fast', function() {
+							this.remove();
+						} );
+						preview.remove();
+						if ( 1 === $( 'tr', $gp.glossary.table ).length ) {
+							$gp.glossary.table.remove();
+						}
+					},
+					error: function( xhr, msg ) {
+						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
+						$gp.notices.error( msg );
+					},
+				} );
 			},
 
 			replace_current: function( html ) {
