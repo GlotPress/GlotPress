@@ -1,8 +1,8 @@
-var $gp = function($) { return {
+var $gp = function( $ ) { return {
 	notices: {
 		element: null,
 		init: function() {
-			$gp.notices.element = $('#gp-js-message');
+			$gp.notices.element = $( '#gp-js-message' );
 			$gp.notices.element.on( 'click', '.gp-js-message-dismiss', $gp.notices.clear );
 		},
 		error: function( message ) {
@@ -36,46 +36,46 @@ var $gp = function($) { return {
 			$gp.notices.element.show();
 		},
 		center: function() {
-			$gp.notices.element.css('left', ($(document).width() - $gp.notices.element.width()) / 2);
+			$gp.notices.element.css( 'left', ( $( document ).width() - $gp.notices.element.width() ) / 2 );
 		}
 	},
-	esc_html: function(s) {
-		return $('<div/>').text(s).html();
+	esc_html: function( s ) {
+		return $( '<div/>' ).text( s ).html();
 	},
 	init: function() {
 		$gp.notices.init();
 	}
-}}(jQuery);
+}}( jQuery );
 
-$gp.showhide = function($) { return function(link, container, options) {
+$gp.showhide = function( $ ) { return function( link, container, options ) {
 	var defaults= {
 		show_text: 'Show',
 		hide_text: 'Hide',
 		focus: false,
 		group: 'default'
 	}
-	var options = $.extend({}, defaults, options);
-	var $link = $(link);
-	var $container = $(container);
+	var options = $.extend( {}, defaults, options );
+	var $link = $( link );
+	var $container = $( container );
 	var registry;
 	if ( !$gp.showhide.registry[options.group] ) $gp.showhide.registry[options.group] = [];
 	registry = $gp.showhide.registry[options.group];
 	var show = function() {
-		for (var i = 0; i < registry.length; ++i) {
+		for ( var i = 0; i < registry.length; ++i ) {
 			registry[i].hide();
 		}
 		$container.show();
-		if (options.focus) $(options.focus, $container).focus();
-		$link.html(options.hide_text).addClass('open');
+		if ( options.focus ) $( options.focus, $container ).focus();
+		$link.html( options.hide_text ).addClass( 'open' );
 	}
 	var hide = function() {
 		$container.hide();
-		$link.html(options.show_text).removeClass('open');
+		$link.html( options.show_text ).removeClass( 'open' );
 	}
-	registry.push({show: show, hide: hide});
-	$link.click(function() {
-		$container.is(':visible')? hide() : show();
+	registry.push( {show: show, hide: hide} );
+	$link.click( function() {
+		$container.is( ':visible' )? hide() : show();
 		return false;
-	})
-}}(jQuery);
+	} )
+}}( jQuery );
 $gp.showhide.registry = {};
