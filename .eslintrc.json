@@ -3,14 +3,14 @@
     "plugin:@wordpress/eslint-plugin/es5"
   ],
   "rules": {
-    "no-undef": "off",
     "camelcase": "off",
     "computed-property-spacing": [
       "error",
       "always"
     ],
+    "no-alert": "off",
     "no-redeclare": "off",
     "no-shadow": "off",
-    "no-alert": "off"
+    "no-undef": "off"
   }
 }
