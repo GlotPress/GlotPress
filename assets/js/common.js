@@ -61,7 +61,7 @@ $gp.showhide = function($) { return function(link, container, options) {
 	if ( !$gp.showhide.registry[options.group] ) $gp.showhide.registry[options.group] = [];
 	registry = $gp.showhide.registry[options.group];
 	var show = function() {
-		for(var i = 0; i < registry.length; ++i) {
+		for (var i = 0; i < registry.length; ++i) {
 			registry[i].hide();
 		}
 		$container.show();
