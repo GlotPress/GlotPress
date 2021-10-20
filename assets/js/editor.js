@@ -391,7 +391,7 @@ $gp.editor = (
 				text_area.val( textBefore + '\t' + textAfter );
 
 				text_area.focus();
-				text_area[0].selectionEnd = cursorPos + 1;
+				text_area[ 0 ].selectionEnd = cursorPos + 1;
 			},
 			newline: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
@@ -403,7 +403,7 @@ $gp.editor = (
 				text_area.val( textBefore + '\n' + textAfter );
 
 				text_area.focus();
-				text_area[0].selectionEnd = cursorPos + 1;
+				text_area[ 0 ].selectionEnd = cursorPos + 1;
 			},
 			hooks: {
 				show: function() {
@@ -422,7 +422,7 @@ $gp.editor = (
 					var i = 0;
 
 					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
-						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[i] );
+						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[ i ] );
 					}
 
 					$gp.editor.hide();

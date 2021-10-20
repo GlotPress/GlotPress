@@ -20,7 +20,7 @@ jQuery( function( $ ) {
 				var preview_html = '';
 				preview_html += '<ul>';
 				function preview_html_for( kind, text ) {
-					var sets = data[kind];
+					var sets = data[ kind ];
 					var html = '';
 					html += '<li><span class="' + kind + '">' + text.replace( '{count}', sets.length ) + '</span>';
 					if ( sets.length ) {

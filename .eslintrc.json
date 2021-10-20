@@ -20,7 +20,6 @@
     "indent": "off",
     "quotes": "off",
     "padded-blocks": "off",
-    "computed-property-spacing": "off",
     "semi": "off",
     "one-var-declaration-per-line": "off",
     "no-else-return": "off",
