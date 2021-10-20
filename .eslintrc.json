@@ -1,5 +1,7 @@
 {
-  "extends": [ "plugin:@wordpress/eslint-plugin/recommended-with-formatting" ],
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/es5"
+  ],
   "rules": {
     "no-undef": "off",
     "no-unused-vars": "off",
