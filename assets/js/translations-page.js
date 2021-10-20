@@ -51,7 +51,7 @@ jQuery( function( $ ) {
 
 		if ( 'undefined' == e.shiftKey ) { return true; }
 		if ( e.shiftKey ) {
-			if ( !lastClicked ) { return true; }
+			if ( ! lastClicked ) { return true; }
 			checks = $( lastClicked ).closest( 'table' ).find( ':checkbox' );
 			first = checks.index( lastClicked );
 			last = checks.index( this );

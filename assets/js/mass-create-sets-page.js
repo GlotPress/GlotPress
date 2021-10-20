@@ -3,7 +3,7 @@ jQuery( function( $ ) {
 	$( '#project_id' ).change( function() {
 		var select = $( this );
 		var project_id = $( 'option:selected', select ).attr( 'value' );
-		if ( !project_id ) {
+		if ( ! project_id ) {
 			$( '#submit' ).prop( 'disabled', true );
 			$( '#preview' ).hide();
 			return;

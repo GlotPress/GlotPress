@@ -22,7 +22,6 @@
     "padded-blocks": "off",
     "computed-property-spacing": "off",
     "object-curly-spacing": "off",
-    "space-unary-ops": "off",
     "semi": "off",
     "one-var-declaration-per-line": "off",
     "no-else-return": "off",
