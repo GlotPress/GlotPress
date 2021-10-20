@@ -68,7 +68,9 @@ $gp.showhide = (
 				$gp.showhide.registry[ options.group ] = [];
 			}
 			registry = $gp.showhide.registry[ options.group ];
+			// eslint-disable-next-line vars-on-top
 			var show = function() {
+				// eslint-disable-next-line vars-on-top
 				for ( var i = 0; i < registry.length; ++i ) {
 					registry[ i ].hide();
 				}
@@ -78,6 +80,7 @@ $gp.showhide = (
 				}
 				$link.html( options.hide_text ).addClass( 'open' );
 			};
+			// eslint-disable-next-line vars-on-top
 			var hide = function() {
 				$container.hide();
 				$link.html( options.show_text ).removeClass( 'open' );

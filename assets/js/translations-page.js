@@ -1,6 +1,7 @@
 jQuery( function( $ ) {
 	var $bulkActions = $( '.bulk-action' ),
-		$bulkPriority = $( '.bulk-priority' );
+		$bulkPriority = $( '.bulk-priority' ),
+		lastClicked = false;
 
 	$gp.showhide( '#upper-filters-toolbar a.sort', '#upper-filters-toolbar .filters-expanded.sort', {
 		show_text: $gp_translations_options.sort + ' &darr;',
@@ -35,6 +36,7 @@ jQuery( function( $ ) {
 		var what_to_export = $( '#what-to-export' ).val();
 		var url = '';
 		if ( what_to_export === 'filtered' ) {
+			// eslint-disable-next-line vars-on-top
 			var separator = ( $( this ).attr( 'filters' ).indexOf( '?' ) === -1 ) ? '?' : '&';
 			url = $( this ).attr( 'filters' ) + separator + 'format=' + format;
 		} else {
@@ -44,7 +46,6 @@ jQuery( function( $ ) {
 		return false;
 	} );
 
-	var lastClicked = false;
 	// Check all checkboxes from WP common.js, synced with [25141]
 	$( 'tbody' ).children().children( '.checkbox' ).find( ':checkbox' ).click( function( e ) {
 		var checks, first, last, checked, sliced;

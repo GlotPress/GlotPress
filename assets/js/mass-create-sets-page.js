@@ -12,15 +12,15 @@ jQuery( function( $ ) {
 		select.prop( 'disabled', true );
 		$.ajax( { type: 'POST', url: $gp_mass_create_sets_options.url, data: { project_id: project_id }, dataType: 'json',
 			success: function( data ) {
+				var preview = $( '#preview' );
+				var preview_html = '';
+				preview.html( '<h3>Preview changes:</h3>' );
+				preview_html += '<ul>';
 				select.prop( 'disabled', false );
 				$gp.notices.clear();
 				if ( data.added.length || data.removed.length ) {
 					$( '#submit' ).prop( 'disabled', false );
 				}
-				var preview = $( '#preview' );
-				preview.html( '<h3>Preview changes:</h3>' );
-				var preview_html = '';
-				preview_html += '<ul>';
 				function preview_html_for( kind, text ) {
 					var sets = data[ kind ];
 					var html = '';
