@@ -209,7 +209,9 @@ $gp.editor = (
 				old_current.remove();
 			},
 			save: function( button ) {
-				var editor, textareaName, data = [], translations;
+				var editor, textareaName,
+					data = [],
+					translations;
 
 				if ( ! $gp.editor.current ) {
 					return;
@@ -294,7 +296,8 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data, translationChanged = false;
+				var editor, data,
+					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
 					return;

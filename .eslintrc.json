@@ -17,7 +17,6 @@
     "eqeqeq": "off",
     "comma-dangle": "off",
     "semi": "off",
-    "one-var-declaration-per-line": "off",
     "no-else-return": "off",
     "no-useless-return": "off",
     "no-mixed-operators": "off"
