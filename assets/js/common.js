@@ -48,7 +48,7 @@ var $gp = function( $ ) { return {
 }}( jQuery );
 
 $gp.showhide = function( $ ) { return function( link, container, options ) {
-	var defaults= {
+	var defaults = {
 		show_text: 'Show',
 		hide_text: 'Hide',
 		focus: false,
@@ -74,7 +74,7 @@ $gp.showhide = function( $ ) { return function( link, container, options ) {
 	}
 	registry.push( {show: show, hide: hide} );
 	$link.click( function() {
-		$container.is( ':visible' )? hide() : show();
+		$container.is( ':visible' ) ? hide() : show();
 		return false;
 	} )
 }}( jQuery );

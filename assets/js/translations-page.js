@@ -35,10 +35,10 @@ jQuery( function( $ ) {
 		var what_to_export = $( '#what-to-export' ).val();
 		var url = '';
 		if ( what_to_export == 'filtered' ) {
-			var separator = ( $( this ).attr( 'filters' ).indexOf( '?' ) == -1 )? '?' : '&';
-			url = $( this ).attr( 'filters' ) + separator + 'format='+format;
+			var separator = ( $( this ).attr( 'filters' ).indexOf( '?' ) == -1 ) ? '?' : '&';
+			url = $( this ).attr( 'filters' ) + separator + 'format=' + format;
 		} else {
-			url = $( this ).attr( 'href' ) + '?format='+format;
+			url = $( this ).attr( 'href' ) + '?format=' + format;
 		}
 		window.location = url;
 		return false;

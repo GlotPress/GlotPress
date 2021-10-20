@@ -15,7 +15,6 @@
     "no-shadow": "off",
     "no-alert": "off",
     "eqeqeq": "off",
-    "space-infix-ops": "off",
     "curly": "off",
     "comma-dangle": "off",
     "indent": "off",

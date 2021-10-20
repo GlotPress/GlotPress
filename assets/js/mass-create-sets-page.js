@@ -22,11 +22,11 @@ jQuery( function( $ ) {
 				function preview_html_for( kind, text ) {
 					var sets = data[kind];
 					var html = '';
-					html += '<li><span class="'+kind+'">'+text.replace( '{count}', sets.length )+'</span>';
+					html += '<li><span class="' + kind + '">' + text.replace( '{count}', sets.length ) + '</span>';
 					if ( sets.length ) {
 						html += '<ul>';
 						$.each( sets, function() {
-							html += '<li>'+$gp.esc_html( this.name )+' ('+this.locale+'/'+this.slug+')</li>';
+							html += '<li>' + $gp.esc_html( this.name ) + ' (' + this.locale + '/' + this.slug + ')</li>';
 						} );
 						html += '</ul>';
 					}
@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 			},
 			error: function( xhr, msg, error ) {
 				select.prop( 'disabled', false );
-				msg = xhr.responsehtml? 'Error: '+ xhr.responsehtml : 'Error saving the translation!';
+				msg = xhr.responsehtml ? 'Error: ' + xhr.responsehtml : 'Error saving the translation!';
 				$gp.notices.error( msg );
 			}
 		} );
