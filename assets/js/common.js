@@ -1,4 +1,5 @@
-var $gp = function( $ ) {
+var $gp = (
+	function( $ ) {
 	return {
 		notices: {
 			element: null,
@@ -47,9 +48,11 @@ var $gp = function( $ ) {
 			$gp.notices.init();
 		},
 	};
-}( jQuery );
+}( jQuery )
+);
 
-$gp.showhide = function( $ ) {
+$gp.showhide = (
+	function( $ ) {
 	return function( link, container, options ) {
 		var defaults = {
 			show_text: 'Show',
@@ -85,5 +88,6 @@ $gp.showhide = function( $ ) {
 			return false;
 		} );
 	};
-}( jQuery );
+}( jQuery )
+);
 $gp.showhide.registry = {};

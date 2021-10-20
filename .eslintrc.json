@@ -10,7 +10,6 @@
       "error",
       "always"
     ],
-    "wrap-iife": "off",
     "no-redeclare": "off",
     "no-unused-expressions": "off",
     "no-shadow": "off",
