@@ -14,7 +14,7 @@ $gp.editor = (
 
 				// Open the first editor if the current table has only one.
 				$previewRows = $gp.editor.table.find( 'tr.preview' );
-				if ( 1 === $previewRows.length  ) {
+				if ( 1 === $previewRows.length ) {
 					$gp.editor.show( $previewRows.eq( 0 ) );
 				}
 			},
@@ -385,8 +385,8 @@ $gp.editor = (
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
 				var v = text_area.val();
-				var textBefore = v.substring( 0,  cursorPos );
-				var textAfter  = v.substring( cursorPos, v.length );
+				var textBefore = v.substring( 0, cursorPos );
+				var textAfter = v.substring( cursorPos, v.length );
 
 				text_area.val( textBefore + '\t' + textAfter );
 
@@ -397,8 +397,8 @@ $gp.editor = (
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
 				var v = text_area.val();
-				var textBefore = v.substring( 0,  cursorPos );
-				var textAfter  = v.substring( cursorPos, v.length );
+				var textBefore = v.substring( 0, cursorPos );
+				var textAfter = v.substring( cursorPos, v.length );
 
 				text_area.val( textBefore + '\n' + textAfter );
 
