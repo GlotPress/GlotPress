@@ -6,6 +6,10 @@
     "no-undef": "off",
     "no-unused-vars": "off",
     "camelcase": "off",
+    "computed-property-spacing": [
+      "error",
+      "always"
+    ],
     "wrap-iife": "off",
     "no-redeclare": "off",
     "no-unused-expressions": "off",
