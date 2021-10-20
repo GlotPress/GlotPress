@@ -23,7 +23,6 @@
     "comma-dangle": "off",
     "indent": "off",
     "quotes": "off",
-    "space-before-blocks": "off",
     "padded-blocks": "off",
     "computed-property-spacing": "off",
     "object-curly-spacing": "off",
