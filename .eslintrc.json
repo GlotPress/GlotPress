@@ -10,7 +10,6 @@
     "wrap-iife": "off",
     "brace-style": "off",
     "no-redeclare": "off",
-    "space-in-parens": "off",
     "no-unused-expressions": "off",
     "@wordpress/no-unused-vars-before-return": "off",
     "no-mixed-spaces-and-tabs": "off",
