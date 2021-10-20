@@ -166,7 +166,7 @@ class GP_Validation_Rules {
 						$this->errors[] = $this->construct_error_message( $rule );
 						$verdict        = false;
 					}
-				} elseif ( ! $callback['negativ']( ...$args ) ) {
+				} elseif ( ! $callback['negative']( ...$args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict        = false;
 				}
