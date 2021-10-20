@@ -17,7 +17,6 @@
     "no-shadow": "off",
     "no-alert": "off",
     "eqeqeq": "off",
-    "space-before-function-paren": "off",
     "space-infix-ops": "off",
     "curly": "off",
     "comma-dangle": "off",
