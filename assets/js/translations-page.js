@@ -101,5 +101,4 @@ jQuery( function( $ ) {
 			return false;
 		} );
 	} );
-
 } );
