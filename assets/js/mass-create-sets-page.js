@@ -11,7 +11,7 @@ jQuery(function($) {
 		$gp.notices.notice($gp_mass_create_sets_options.loading);
 		select.prop('disabled', true);
 		$.ajax({type: "POST", url: $gp_mass_create_sets_options.url, data: {project_id: project_id}, dataType: 'json',
-			success: function(data){
+			success: function(data) {
 				select.prop('disabled', false);
 				$gp.notices.clear();
 				if (data.added.length || data.removed.length) $('#submit').prop('disabled', false);
