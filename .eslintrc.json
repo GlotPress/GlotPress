@@ -16,6 +16,7 @@
     "no-shadow": "off",
     "no-alert": "off",
     "no-else-return": "off",
-    "no-useless-return": "off"
+    "no-useless-return": "off",
+    "vars-on-top": "off"
   }
 }
