@@ -12,7 +12,6 @@
     "no-redeclare": "off",
     "no-unused-expressions": "off",
     "@wordpress/no-unused-vars-before-return": "off",
-    "no-mixed-spaces-and-tabs": "off",
     "no-shadow": "off",
     "no-alert": "off",
     "eqeqeq": "off",
