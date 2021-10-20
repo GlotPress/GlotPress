@@ -133,8 +133,8 @@ $gp.editor = (
 
 				$.valHooks.textarea = {
 					get: function( elem ) {
-					return elem.value.replace( /\r?\n/g, '\r\n' );
-				  }
+						return elem.value.replace( /\r?\n/g, '\r\n' );
+					}
 				};
 			},
 			keydown: function( e ) {
