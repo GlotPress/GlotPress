@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 				preview.append( preview_html );
 				preview.fadeIn();
 			},
-			error: function( xhr, msg, error ) {
+			error: function( xhr, msg ) {
 				select.prop( 'disabled', false );
 				msg = xhr.responsehtml ? 'Error: ' + xhr.responsehtml : 'Error saving the translation!';
 				$gp.notices.error( msg );
