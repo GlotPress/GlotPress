@@ -1,4 +1,4 @@
-/* global $gp_translations_options, $gp, window, toggleWithKeyboard */
+/* global $gp_translations_options, window, toggleWithKeyboard */
 /* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	var $bulkActions = $( '.bulk-action' ),

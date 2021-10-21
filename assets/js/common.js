@@ -1,4 +1,4 @@
-/* global $gp, document */
+/* global document */
 var $gp = (
 	function( $ ) {
 		return {
