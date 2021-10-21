@@ -10,7 +10,7 @@
       "error",
       "always"
     ],
-    "no-redeclare": "off",
-    "no-shadow": "off"
+    "no-redeclare": "warn",
+    "no-shadow": "warn"
   }
 }
