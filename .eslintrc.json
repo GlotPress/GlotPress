@@ -3,7 +3,6 @@
     "plugin:@wordpress/eslint-plugin/es5"
   ],
   "rules": {
-    "camelcase": "off",
     "computed-property-spacing": [
       "error",
       "always"

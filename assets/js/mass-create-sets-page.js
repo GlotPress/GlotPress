@@ -1,3 +1,4 @@
+/* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	$gp.notices.init();
 	$( '#project_id' ).change( function() {

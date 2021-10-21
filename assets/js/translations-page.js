@@ -1,3 +1,4 @@
+/* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	var $bulkActions = $( '.bulk-action' ),
 		$bulkPriority = $( '.bulk-priority' ),
