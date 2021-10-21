@@ -1,5 +1,6 @@
 /* global $gp_glossary_options, $gp, confirm */
 /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
+/* eslint no-alert: "off" */
 $gp.glossary = (
 	function( $ ) {
 		return {
