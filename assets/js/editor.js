@@ -1,5 +1,4 @@
 /* global $gp_editor_options */
-/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
