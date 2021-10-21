@@ -2,13 +2,15 @@
   "extends": [
     "plugin:@wordpress/eslint-plugin/es5"
   ],
+  "globals": {
+    "jQuery": true
+  },
   "rules": {
     "computed-property-spacing": [
       "error",
       "always"
     ],
     "no-redeclare": "off",
-    "no-shadow": "off",
-    "no-undef": "off"
+    "no-shadow": "off"
   }
 }
