@@ -3,8 +3,7 @@
     "plugin:@wordpress/eslint-plugin/es5"
   ],
   "globals": {
-    "jQuery": true,
-    "$gp": true
+    "jQuery": true
   },
   "rules": {
     "computed-property-spacing": [

@@ -1,4 +1,4 @@
-/* global $gp_mass_create_sets_options */
+/* global $gp_mass_create_sets_options, $gp */
 /* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	$gp.notices.init();

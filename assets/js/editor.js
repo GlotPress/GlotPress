@@ -1,4 +1,4 @@
-/* global $gp_editor_options */
+/* global $gp_editor_options, $gp */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
