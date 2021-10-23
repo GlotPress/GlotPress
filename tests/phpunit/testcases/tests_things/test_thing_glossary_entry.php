@@ -46,7 +46,7 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 	}
 
 	function test_part_of_speech_array_set() {
-		$this->assertCount( 9, GP::$glossary_entry->parts_of_speech );
+		$this->assertCount( 10, GP::$glossary_entry->parts_of_speech );
 		$this->assertArrayHasKey( 'noun', GP::$glossary_entry->parts_of_speech );
 	}
 

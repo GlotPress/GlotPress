@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Integrate three new translation warnings for mismatched URLs, missing named placeholders, and unexpected sprintf tokens.
   Also improve the check for HTML tags. ([#1243](https://github.com/GlotPress/GlotPress-WP/pull/1243))
 * Locales: Add definition for Western Balochi. ([#1254](https://github.com/GlotPress/GlotPress-WP/issues/1254))
+* Add 'abbreviation' as new part of speech value for glossary entries. ([#1199](https://github.com/GlotPress/GlotPress-WP/issues/1199))
 
 **Bugfixes**
 
