@@ -9,7 +9,6 @@
     "computed-property-spacing": [
       "error",
       "always"
-    ],
-    "no-shadow": "warn"
+    ]
   }
 }

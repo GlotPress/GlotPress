@@ -238,14 +238,14 @@ $gp.editor = (
 					url: $gp_editor_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( data ) {
+					success: function( response ) {
 						var original_id;
 
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Saved!' );
 
-						for ( original_id in data ) {
-							$gp.editor.replace_current( data[ original_id ] );
+						for ( original_id in response ) {
+							$gp.editor.replace_current( response[ original_id ] );
 						}
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
@@ -329,10 +329,10 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
 					data: data,
-					success: function( data ) {
+					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Status set!' );
-						$gp.editor.replace_current( data );
+						$gp.editor.replace_current( response );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -362,9 +362,9 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
-					success: function( data ) {
+					success: function( response ) {
 						$gp.notices.success( 'Saved!' );
-						$gp.editor.replace_current( data );
+						$gp.editor.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';

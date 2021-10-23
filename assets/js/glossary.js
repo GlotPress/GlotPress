@@ -86,10 +86,10 @@ $gp.glossary = (
 					url: $gp_glossary_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( data ) {
+					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Saved!' );
-						$gp.glossary.replace_current( data );
+						$gp.glossary.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
