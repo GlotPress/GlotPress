@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Bugfixes**
 
 * Allow to use the same glossary term and translation for a different part of speech. ([#1251](https://github.com/GlotPress/GlotPress-WP/pull/1251))
+* Validate part of speech value for a glossary entry before inserting into database. ([#1200](https://github.com/GlotPress/GlotPress-WP/issues/1200))
 
 ## [3.0.0-alpha.3] (April 29, 2021)
 
