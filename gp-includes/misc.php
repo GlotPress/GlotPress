@@ -435,6 +435,19 @@ function gp_is_between_exclusive( $value, $start, $end ) {
 }
 
 /**
+ * Checks if the passed value is one of the values in the list.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @param array  $list  The list of values you want to check against.
+ * @return bool
+ */
+function gp_is_one_of( $value, $list ) {
+	return in_array( $value, $list, true );
+}
+
+/**
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
