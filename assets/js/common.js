@@ -54,14 +54,14 @@ var $gp = (
 
 $gp.showhide = (
 	function( $ ) {
-		return function( link, container, options ) {
-			var defaults = {
+		return function( link, container, userOptions ) {
+			var defaultOptions = {
 				show_text: 'Show',
 				hide_text: 'Hide',
 				focus: false,
 				group: 'default',
 			};
-			var options = $.extend( {}, defaults, options );
+			var options = $.extend( {}, defaultOptions, userOptions );
 			var $link = $( link );
 			var $container = $( container );
 			var registry;
