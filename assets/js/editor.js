@@ -1,5 +1,5 @@
 /* global $gp_editor_options, $gp */
-/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
+/* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
 		return {
@@ -14,7 +14,7 @@ $gp.editor = (
 
 				// Open the first editor if the current table has only one.
 				$previewRows = $gp.editor.table.find( 'tr.preview' );
-				if ( 1 === $previewRows.length  ) {
+				if ( 1 === $previewRows.length ) {
 					$gp.editor.show( $previewRows.eq( 0 ) );
 				}
 			},
@@ -128,13 +128,13 @@ $gp.editor = (
 						return content;
 					},
 					hide: false,
-					show: false
+					show: false,
 				} );
 
 				$.valHooks.textarea = {
 					get: function( elem ) {
-					return elem.value.replace( /\r?\n/g, '\r\n' );
-				  }
+						return elem.value.replace( /\r?\n/g, '\r\n' );
+					},
 				};
 			},
 			keydown: function( e ) {
@@ -209,7 +209,9 @@ $gp.editor = (
 				old_current.remove();
 			},
 			save: function( button ) {
-				var editor, textareaName, data = [], translations;
+				var editor, textareaName,
+					data = [],
+					translations;
 
 				if ( ! $gp.editor.current ) {
 					return;
@@ -221,7 +223,7 @@ $gp.editor = (
 
 				data = {
 					original_id: editor.original_id,
-					_gp_route_nonce: button.data( 'nonce' )
+					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
 				textareaName = 'translation[' + editor.original_id + '][]';
@@ -236,14 +238,14 @@ $gp.editor = (
 					url: $gp_editor_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( data ) {
+					success: function( response ) {
 						var original_id;
 
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Saved!' );
 
-						for ( original_id in data ) {
-							$gp.editor.replace_current( data[ original_id ] );
+						for ( original_id in response ) {
+							$gp.editor.replace_current( response[ original_id ] );
 						}
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
@@ -254,7 +256,7 @@ $gp.editor = (
 						button.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			set_priority: function( select ) {
@@ -270,7 +272,7 @@ $gp.editor = (
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
-					_gp_route_nonce: select.data( 'nonce' )
+					_gp_route_nonce: select.data( 'nonce' ),
 				};
 
 				$.ajax( {
@@ -290,11 +292,12 @@ $gp.editor = (
 						select.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the priority!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data, translationChanged = false;
+				var editor, data,
+					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
 					return;
@@ -319,24 +322,24 @@ $gp.editor = (
 				data = {
 					translation_id: editor.translation_id,
 					status: status,
-					_gp_route_nonce: button.data( 'nonce' )
+					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
 				$.ajax( {
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
 					data: data,
-					success: function( data ) {
+					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Status set!' );
-						$gp.editor.replace_current( data );
+						$gp.editor.replace_current( response );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the status!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			discard_warning: function( link ) {
@@ -351,7 +354,7 @@ $gp.editor = (
 					translation_id: $gp.editor.current.translation_id,
 					key: link.data( 'key' ),
 					index: link.data( 'index' ),
-					_gp_route_nonce: link.data( 'nonce' )
+					_gp_route_nonce: link.data( 'nonce' ),
 
 				};
 
@@ -359,14 +362,14 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
-					success: function( data ) {
+					success: function( response ) {
 						$gp.notices.success( 'Saved!' );
-						$gp.editor.replace_current( data );
+						$gp.editor.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 			copy: function( link ) {
@@ -385,25 +388,25 @@ $gp.editor = (
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
 				var v = text_area.val();
-				var textBefore = v.substring( 0,  cursorPos );
-				var textAfter  = v.substring( cursorPos, v.length );
+				var textBefore = v.substring( 0, cursorPos );
+				var textAfter = v.substring( cursorPos, v.length );
 
 				text_area.val( textBefore + '\t' + textAfter );
 
 				text_area.focus();
-				text_area[0].selectionEnd = cursorPos + 1;
+				text_area[ 0 ].selectionEnd = cursorPos + 1;
 			},
 			newline: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
 				var v = text_area.val();
-				var textBefore = v.substring( 0,  cursorPos );
-				var textAfter  = v.substring( cursorPos, v.length );
+				var textBefore = v.substring( 0, cursorPos );
+				var textAfter = v.substring( cursorPos, v.length );
 
 				text_area.val( textBefore + '\n' + textAfter );
 
 				text_area.focus();
-				text_area[0].selectionEnd = cursorPos + 1;
+				text_area[ 0 ].selectionEnd = cursorPos + 1;
 			},
 			hooks: {
 				show: function() {
@@ -422,7 +425,7 @@ $gp.editor = (
 					var i = 0;
 
 					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
-						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[i] );
+						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[ i ] );
 					}
 
 					$gp.editor.hide();
@@ -463,8 +466,8 @@ $gp.editor = (
 				set_priority: function() {
 					$gp.editor.set_priority( $( this ) );
 					return false;
-				}
-			}
+				},
+			},
 		};
 	}( jQuery )
 );

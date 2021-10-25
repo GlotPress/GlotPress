@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/es5"
+  ],
+  "globals": {
+    "jQuery": true
+  },
+  "rules": {
+    "computed-property-spacing": [
+      "error",
+      "always"
+    ]
+  }
+}
