@@ -619,11 +619,11 @@ function gp_wp_profile_options_update( $user_id ) {
  */
 function gp_get_sort_by_fields() {
 	$sort_fields = array(
-		'original_date_added'    => array(
+		'original_date_added'       => array(
 			'title'       => __( 'Date added (original)', 'glotpress' ),
 			'sql_sort_by' => 'o.date_added %s',
 		),
-		'translation_date_added' => array(
+		'translation_date_added'    => array(
 			'title'       => __( 'Date added (translation)', 'glotpress' ),
 			'sql_sort_by' => 't.date_added %s',
 		),
@@ -631,23 +631,23 @@ function gp_get_sort_by_fields() {
 			'title'       => __( 'Date modified (translation)', 'glotpress' ),
 			'sql_sort_by' => 't.date_modified %s',
 		),
-		'original'               => array(
+		'original'                  => array(
 			'title'       => __( 'Original string', 'glotpress' ),
 			'sql_sort_by' => 'o.singular %s',
 		),
-		'translation'            => array(
+		'translation'               => array(
 			'title'       => __( 'Translation', 'glotpress' ),
 			'sql_sort_by' => 't.translation_0 %s',
 		),
-		'priority'               => array(
+		'priority'                  => array(
 			'title'       => __( 'Priority', 'glotpress' ),
 			'sql_sort_by' => 'o.priority %s, o.date_added DESC',
 		),
-		'references'             => array(
+		'references'                => array(
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
 		),
-		'random'                 => array(
+		'random'                    => array(
 			'title'       => __( 'Random', 'glotpress' ),
 			'sql_sort_by' => 'o.priority DESC, RAND()',
 		),
