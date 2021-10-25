@@ -23,6 +23,13 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertFalse( $verdict );
 	}
 
+	function test_invalid_part_of_speech() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'term', 'part_of_speech' => 'invalid', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertFalse( $verdict );
+	}
+
 	function test_negative_last_edited_by() {
 		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'tern', 'part_of_speech' => 'verb', 'last_edited_by' =>'-1' ) );
 		$verdict = $glossary_entry->validate();

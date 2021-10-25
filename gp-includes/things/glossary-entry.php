@@ -32,8 +32,9 @@ class GP_Glossary_Entry extends GP_Thing {
 
 
 	public function __construct( $fields = array() ) {
-		parent::__construct( $fields );
 		$this->setup_pos();
+
+		parent::__construct( $fields );
 	}
 
 	/**
