@@ -627,6 +627,10 @@ function gp_get_sort_by_fields() {
 			'title'       => __( 'Date added (translation)', 'glotpress' ),
 			'sql_sort_by' => 't.date_added %s',
 		),
+		'translation_date_modified' => array(
+			'title'       => __( 'Date modified (translation)', 'glotpress' ),
+			'sql_sort_by' => 't.date_modified %s',
+		),
 		'original'               => array(
 			'title'       => __( 'Original string', 'glotpress' ),
 			'sql_sort_by' => 'o.singular %s',
