@@ -3,10 +3,10 @@
 class GP_Test_Permissions extends GP_UnitTestCase {
 
 	function test_create_find() {
-		$args = array( 'user_id' => 2, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => 5 );
+		$args = array( 'user_id' => 2, 'action' => 'write', 'object_type' => 'translation-set', 'object_id' => '5' );
 		GP::$permission->create( $args );
 		$from_db = GP::$permission->find_one( $args );
-		$this->assertEqualPermissions( $args,  $from_db );
+		$this->assertEqualPermissions( $args, $from_db );
 	}
 
 	function test_create_find_with_nulls() {
@@ -100,8 +100,9 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 	}
 
 	function assertEqualPermissions( $expected, $actual ) {
-		$fields = $actual->fields();
-		unset($fields['id']);
+		foreach(  $expected as $field => $value ) {
+			$this->assertSame( $value, $actual->$field, "Field: $field" );
+		}
 	}
 
 	/**
