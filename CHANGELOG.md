@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.0.0-alpha.4] (November 2, 2021)
 
 **Breaking Changes**
 
@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   Also improve the check for HTML tags. ([#1243](https://github.com/GlotPress/GlotPress-WP/pull/1243))
 * Locales: Add definition for Western Balochi. ([#1254](https://github.com/GlotPress/GlotPress-WP/issues/1254))
 * Add 'abbreviation' as new part of speech value for glossary entries. ([#1199](https://github.com/GlotPress/GlotPress-WP/issues/1199))
+* Add sort by option for modified date of translation. ([#1273](https://github.com/GlotPress/GlotPress-WP/issues/1273))
 
 **Bugfixes**
 
@@ -408,7 +409,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.3...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.4...HEAD
+[3.0.0-alpha.4]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.3...3.0.0-alpha.4
 [3.0.0-alpha.3]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.2...3.0.0-alpha.3
 [3.0.0-alpha.2]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.1...3.0.0-alpha.2
 [3.0.0-alpha.1]: https://github.com/GlotPress/GlotPress-WP/compare/2.3.1...3.0.0-alpha.1
