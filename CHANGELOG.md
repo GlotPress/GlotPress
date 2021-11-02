@@ -10,8 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 **Features**
 
 * Integrate three new translation warnings for mismatched URLs, missing named placeholders, and unexpected sprintf tokens.
-  Also improve the check for HTML tags. ([#1243](https://github.com/GlotPress/GlotPress-WP/pull/1243))
-* Locales: Add definition for Western Balochi. ([#1254](https://github.com/GlotPress/GlotPress-WP/issues/1254))
+  Also improve the check for HTML tags. Props @amieiro ([#1243](https://github.com/GlotPress/GlotPress-WP/pull/1243))
+* Locales: Add definition for Western Balochi. Props @varlese, @tobifjellner ([#1254](https://github.com/GlotPress/GlotPress-WP/issues/1254))
 * Add 'abbreviation' as new part of speech value for glossary entries. ([#1199](https://github.com/GlotPress/GlotPress-WP/issues/1199))
 * Add sort by option for modified date of translation. ([#1273](https://github.com/GlotPress/GlotPress-WP/issues/1273))
 
@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 * Allow to use the same glossary term and translation for a different part of speech. ([#1251](https://github.com/GlotPress/GlotPress-WP/pull/1251))
 * Validate part of speech value for a glossary entry before inserting into database. ([#1200](https://github.com/GlotPress/GlotPress-WP/issues/1200))
+* Fix typo in validation array key for negative validations. Props @pedro-mendonca ([#1279](https://github.com/GlotPress/GlotPress-WP/pull/1279))
 
 ## [3.0.0-alpha.3] (April 29, 2021)
 
