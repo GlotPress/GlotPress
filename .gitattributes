@@ -8,12 +8,11 @@
 /bin export-ignore
 /tests export-ignore
 .editorconfig export-ignore
+.eslintignore export-ignore
+.eslintrc.json export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
 .gitmodules export-ignore
-.jscsrc export-ignore
-.jshintignore export-ignore
-.jshintrc export-ignore
 .nvmrc export-ignore
 .scrutinizer.yml export-ignore
 composer.json export-ignore
