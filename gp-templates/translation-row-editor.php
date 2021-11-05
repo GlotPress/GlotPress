@@ -19,12 +19,12 @@ $colspan = apply_filters( 'gp_translation_row_editor_colspan', $can_approve ? 5 
 $singular = sprintf(
 	/* translators: %s: Original singular form of the text */
 	__( 'Singular: %s', 'glotpress' ),
-	'<span class="original">' . $translation_singular . '</span>'
+	'<span class="original">' . prepare_original( $translation_singular ) . '</span>'
 );
 $plural = sprintf(
 	/* translators: %s: Original plural form of the text */
 	__( 'Plural: %s', 'glotpress' ),
-	'<span class="original">' . ( isset( $translation->plural_glossary_markup ) ? $translation->plural_glossary_markup : esc_translation( $translation->plural ) ) . '</span>'
+	'<span class="original">' . ( isset( $translation->plural_glossary_markup ) ? prepare_original( $translation->plural_glossary_markup ) : prepare_original( esc_translation( $translation->plural ) ) ) . '</span>'
 );
 
 ?>
