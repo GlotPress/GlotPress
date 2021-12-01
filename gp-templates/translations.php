@@ -390,14 +390,49 @@ $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
 		}
 	}
 
+	$root_translations    = array();
+	$variant_translations = array();
+
+	// Separate translations between root and variants.
+	foreach ( $translations as $translation ) {
+		if ( isset( $translation->root_id ) ) {
+			$variant_translations[ $translation->id ][ $translation->root_id ] = $translation;
+		} else {
+			$root_translations[] = $translation;
+		}
+	}
+
+	// Reset translations array.
+	$translations = array();
+
+	// Add the root translations to the array.
+	foreach ( $root_translations as $translation ) {
+		$translations[] = $translation;
+	}
+
+	// Add the variant translations, only one per translation id, matching the root with 'current' status, or last 'root_id' if no 'current'.
+	foreach ( $variant_translations as $translations_by_id ) {
+		// Sort translations ascending the by root_id to keep the last in the end.
+		ksort( $translations_by_id );
+		$last_translation = $translations_by_id[ array_key_last( $translations_by_id ) ];
+		foreach( $translations_by_id as $translation_by_root_id ) {
+			if ( 'current' === $translation_by_root_id->root_status ) {
+				$current_translation = $translation_by_root_id;
+				break;
+			}
+		}
+		$translations[] = $current_translation ? $current_translation : $last_translation;
+	}
+
 	foreach ( $translations as $translation ) {
 		if ( ! $translation->translation_set_id ) {
 			$translation->translation_set_id = $translation_set->id;
 		}
 
-	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
-	gp_tmpl_load( 'translation-row', get_defined_vars() );
-}
+		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
+		gp_tmpl_load( 'translation-row', get_defined_vars() );
+
+	}
 ?>
 <?php
 	if ( ! $translations ) :
