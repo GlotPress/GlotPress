@@ -416,9 +416,8 @@ $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
 		ksort( $translations_by_id );
 		$last_translation = end( $translations_by_id );
 		foreach ( $translations_by_id as $translation_by_root_id ) {
-			if ( 'current' === $translation_by_root_id->root_status ) {
+			if ( 'current' === $translation_by_root_id->root_status || 'waiting' === $translation_by_root_id->root_status || 'fuzzy' === $translation_by_root_id->root_status ) {
 				$current_translation = $translation_by_root_id;
-				break;
 			}
 		}
 		$translations[] = $current_translation ? $current_translation : $last_translation;
