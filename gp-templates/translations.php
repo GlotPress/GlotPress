@@ -414,8 +414,8 @@ $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
 	foreach ( $variant_translations as $translations_by_id ) {
 		// Sort translations ascending the by root_id to keep the last in the end.
 		ksort( $translations_by_id );
-		$last_translation = $translations_by_id[ array_key_last( $translations_by_id ) ];
-		foreach( $translations_by_id as $translation_by_root_id ) {
+		$last_translation = end( $translations_by_id );
+		foreach ( $translations_by_id as $translation_by_root_id ) {
 			if ( 'current' === $translation_by_root_id->root_status ) {
 				$current_translation = $translation_by_root_id;
 				break;
