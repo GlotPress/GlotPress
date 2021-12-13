@@ -467,7 +467,7 @@ class GP_Locales {
 		$ca_valencia->native_name = 'Català (Valencià)';
 		$ca_valencia->lang_code_iso_639_1 = 'ca';
 		$ca_valencia->lang_code_iso_639_2 = 'cat';
-		$ca_valencia->wp_locale = 'ca-valencia';
+		$ca_valencia->wp_locale = 'ca_valencia';
 		$ca_valencia->slug = 'ca-valencia';
 		$ca_valencia->google_code = 'ca';
 		$ca_valencia->variant_root = $ca->slug;
