@@ -462,6 +462,18 @@ class GP_Locales {
 		$ca->google_code = 'ca';
 		$ca->facebook_locale = 'ca_ES';
 
+		$ca_valencia = new GP_Locale();
+		$ca_valencia->english_name = 'Catalan (Valencian)';
+		$ca_valencia->native_name = 'Català (Valencià)';
+		$ca_valencia->lang_code_iso_639_1 = 'ca';
+		$ca_valencia->lang_code_iso_639_2 = 'cat';
+		$ca_valencia->wp_locale = 'ca-valencia';
+		$ca_valencia->slug = 'ca-valencia';
+		$ca_valencia->google_code = 'ca';
+		$ca_valencia->variant_root = $ca->slug;
+		$ca_valencia->facebook_locale = 'ca_ES';
+		$ca->variants[ $ca_valencia->slug ] = $ca_valencia->english_name;
+
 		$ce = new GP_Locale();
 		$ce->english_name = 'Chechen';
 		$ce->native_name = 'Нохчийн мотт';
