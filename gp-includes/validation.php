@@ -108,10 +108,13 @@ class GP_Validation_Rules {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 		trigger_error(
 			sprintf(
-				/* translators: 1: Class name, 2: method name.  */
-				'Call to undefined method: %1$::%2$().',
-				esc_html( get_class( $this ) ),
-				esc_html( $name )
+				/* translators: %s: Method name. */
+				esc_html__( 'Call to undefined method: %s.', 'glotpress' ),
+				sprintf(
+					'%1$s::%2$s()',
+					esc_html( get_class( $this ) ),
+					esc_html( $name )
+				)
 			),
 			E_USER_ERROR
 		);
