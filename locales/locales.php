@@ -2720,7 +2720,7 @@ class GP_Locales {
 
 		$zh_hk = new GP_Locale();
 		$zh_hk->english_name = 'Chinese (Hong Kong)';
-		$zh_hk->native_name = '香港中文版	';
+		$zh_hk->native_name = '香港中文';
 		$zh_hk->lang_code_iso_639_1 = 'zh';
 		$zh_hk->lang_code_iso_639_2 = 'zho';
 		$zh_hk->country_code = 'hk';
