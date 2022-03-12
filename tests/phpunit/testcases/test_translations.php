@@ -84,10 +84,17 @@ class GP_Test_Translations extends GP_UnitTestCase {
 
 		$this->assertTrue( gp_has_translation_been_updated( $set ) );
 
-		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = 'Sat, 27 Apr 2012 15:49:29 GMT';
+		$timestamp_yesterday = strtotime( '-1 day' );
+		$timestamp_tomorrow  = strtotime( '+1 day' );
+
+		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = gmdate( 'D, d M Y H:i:s', $timestamp_yesterday ) . 'GMT';
 		$this->assertTrue( gp_has_translation_been_updated( $set ) );
 
-		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = 'Wed, 2 Feb 2022 22:22:22 GMT';
+		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = gmdate( 'D, d M Y H:i:s', $timestamp_tomorrow ) . 'GMT';
 		$this->assertFalse( gp_has_translation_been_updated( $set ) );
+
+		unset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] );
+		$this->assertTrue( gp_has_translation_been_updated( $set, $timestamp_yesterday ) );
+		$this->assertFalse( gp_has_translation_been_updated( $set, $timestamp_tomorrow ) );
 	}
 }
