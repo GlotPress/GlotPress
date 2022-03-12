@@ -109,10 +109,11 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
 	}
 
+	// Sort by length in descending order.
 	uasort(
 		$glossary_entries_terms,
 		function( $a, $b ) {
-			return mb_strlen( $a ) < mb_strlen( $b );
+			return mb_strlen( $b ) <=> mb_strlen( $a );
 		}
 	);
 
