@@ -33,7 +33,7 @@ $plural = sprintf(
 		<div class="strings">
 			<?php if ( ! $translation->plural ) : ?>
 				<p class="original"><?php echo prepare_original( $translation_singular ); ?></p>
-				<p class="original_raw"><?php echo esc_translation( $translation->singular ); ?></p>
+				<p aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->singular ); ?></p>
 				<?php textareas( $translation, array( $can_edit, $can_approve_translation ) ); ?>
 			<?php else : ?>
 				<?php if ( absint( $locale->nplurals ) === 2 && 'n != 1' === $locale->plural_expression ) : ?>
@@ -42,6 +42,7 @@ $plural = sprintf(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $singular;
 						?>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->singular ); ?></span>
 					</p>
 					<?php textareas( $translation, array( $can_edit, $can_approve ), 0 ); ?>
 					<p class="clear">
@@ -49,6 +50,7 @@ $plural = sprintf(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $plural;
 						?>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->plural ); ?></span>
 					</p>
 					<?php textareas( $translation, array( $can_edit, $can_approve ), 1 ); ?>
 				<?php else : ?>
@@ -60,12 +62,14 @@ $plural = sprintf(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $singular;
 						?>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->singular ); ?></span>
 					</p>
 					<p class="clear">
 						<?php
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $plural;
 						?>
+						<span aria-hidden="true" class="original_raw"><?php echo esc_translation( $translation->plural ); ?></span>
 					</p>
 					<?php foreach ( range( 0, $locale->nplurals - 1 ) as $plural_index ) : ?>
 						<?php if ( $locale->nplurals > 1 ) : ?>

@@ -374,14 +374,10 @@ $gp.editor = (
 			},
 			copy: function( link ) {
 				var chunks = link.parents( '.textareas' ).find( 'textarea' ).attr( 'id' ).split( '_' );
-				var original_index = parseInt( chunks[ chunks.length - 1 ], 10 );
-				var original_text = link.parents( '.textareas' ).prev().find( '.original_raw' ).eq( original_index );
+				var original_index = Math.min( parseInt( chunks[ chunks.length - 1 ], 10 ), 1 );
+				var original_texts = link.parents( '.strings' ).find( '.original_raw' );
+				var original_text = original_texts.eq( original_index ).text();
 
-				if ( ! original_text.hasClass( 'original_raw' ) ) {
-					original_text = link.parents( '.strings' ).find( '.original_raw' ).eq( original_index );
-				}
-
-				original_text = original_text.text();
 				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
 			},
 			tab: function( link ) {

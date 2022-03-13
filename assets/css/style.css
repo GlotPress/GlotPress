@@ -410,7 +410,6 @@ span.morethan90 {
 table.translations td.original,
 table.translations td.translation,
 .editor .original,
-.editor .original_raw,
 .editor .translation,
 span.context {
 	word-break: normal;
@@ -421,16 +420,14 @@ span.context {
 /*
  * Translation Row Editor
  */
-.editor .original,
-.editor .original_raw {
+.editor .original {
 	font-weight: bold;
 	white-space: pre-wrap;
 	max-width: 50em;
 }
 
 .editor .original_raw {
-	visibility: hidden;
-	height: 0px;
+	display: none;
 }
 
 .editor .translation {
