@@ -25,18 +25,20 @@ if ( 0 === $project->id ) {
 }
 ?>
 
-<h2>
-	<?php
-	printf(
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		$glossary_title,
-		esc_html( $translation_set->name ),
-		esc_html( $project->name )
-	);
-	?>
+<div class="gp-heading">
+	<h2>
+		<?php
+		printf(
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			$glossary_title,
+			esc_html( $translation_set->name ),
+			esc_html( $project->name )
+		);
+		?>
+	</h2>
 	<?php gp_link_glossary_edit( $glossary, $translation_set, _x( '(edit)', 'glossary', 'glotpress' ) ); ?>
 	<?php gp_link_glossary_delete( $glossary, $translation_set, _x( '(delete)', 'glossary', 'glotpress' ) ); ?>
-</h2>
+</div>
 
 <?php
 /**
@@ -119,9 +121,9 @@ if ( $glossary_description ) {
 	</tbody>
 </table>
 
-<p class="clear actionlist secondary">
+<p class="clear actionlist">
 	<?php if ( $can_edit ) : ?>
-		<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-import' ) ), __( 'Import', 'glotpress' ) ); ?>  &bull;&nbsp;
+		<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-import' ) ), __( 'Import', 'glotpress' ) ); ?>  &bull;
 	<?php endif; ?>
 
 	<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-export' ) ), __( 'Export as CSV', 'glotpress' ) ); ?>

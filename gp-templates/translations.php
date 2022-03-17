@@ -40,15 +40,18 @@ wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 gp_tmpl_header();
 $i = 0;
 ?>
-<h2>
-	<?php
-	printf(
-		/* translators: 1: Project name. 2: Translation set name. */
-		__( 'Translation of %1$s: %2$s', 'glotpress' ),
-		esc_html( $project->name ),
-		esc_html( $translation_set->name )
-	);
-	?>
+
+<div class="gp-heading">
+	<h2>
+		<?php
+		printf(
+			/* translators: 1: Project name. 2: Translation set name. */
+			__( 'Translation of %1$s: %2$s', 'glotpress' ),
+			esc_html( $project->name ),
+			esc_html( $translation_set->name )
+		);
+		?>
+	</h2>
 	<?php gp_link_set_edit( $translation_set, $project, _x( '(edit)', 'translation set', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, _x( '(delete)', 'translation set', 'glotpress' ) ); ?>
 	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
@@ -56,7 +59,7 @@ $i = 0;
 	<?php elseif ( $can_approve ) : ?>
 		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
 	<?php endif; ?>
-</h2>
+</div>
 
 <div class="filter-toolbar">
 	<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
@@ -279,7 +282,7 @@ $i = 0;
 			?>
 
 			<div class="filters-expanded-actions">
-				<input type="submit" class="button" value="<?php esc_attr_e( 'Apply Filters', 'glotpress' ); ?>" name="filter" />
+				<input type="submit" class="button is-primary" value="<?php esc_attr_e( 'Apply Filters', 'glotpress' ); ?>" name="filter" />
 			</div>
 		</div>
 		<div class="filters-expanded sort hidden">
@@ -339,7 +342,7 @@ $i = 0;
 			?>
 
 			<div class="filters-expanded-actions">
-				<input type="submit" class="button" value="<?php esc_attr_e( 'Apply Sorting', 'glotpress' ); ?>" name="sorts" />
+				<input type="submit" class="button is-primary" value="<?php esc_attr_e( 'Apply Sorting', 'glotpress' ); ?>" name="sorts" />
 			</div>
 		</div>
 	</form>
@@ -432,7 +435,7 @@ echo gp_pagination( $page, $per_page, $total_translations_count );
 	<div class="box has-warnings"></div>
 	<div><?php _e( 'With warnings', 'glotpress' ); ?></div>
 </div>
-<p class="clear actionlist secondary">
+<p class="clear actionlist">
 	<?php
 		$footer_links = array();
 		if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {

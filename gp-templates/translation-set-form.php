@@ -2,7 +2,7 @@
 	<dt><label for="set[locale]"><?php _e( 'Locale', 'glotpress' ); ?></label></dt>
 	<dd>
 		<?php echo gp_locales_dropdown( 'set[locale]', $set->locale ); ?>
-		<a href="#" id="copy"><?php _e( 'Use as name', 'glotpress' ); ?></a>
+		<button type="button" class="button" id="copy"><?php _e( 'Use as name', 'glotpress' ); ?></button>
 	</dd>
 
 	<dt><label for="set[name]"><?php _e( 'Name', 'glotpress' ); ?></label></dt>
@@ -19,7 +19,6 @@
 <script type="text/javascript">
 	jQuery('#copy').click(function() {
 		var text = jQuery('#set\\[locale\\] option:selected').html().replace(/^\S+\s+\S+\s+/, '').replace(/&mdash|—/, '');
-		jQuery('#set\\[name\\]').val(text);
-		return false;
+		jQuery('#set\\[name\\]').val(text).focus();
 	});
 </script>

@@ -34,7 +34,7 @@ if ( ! is_array( $default_sort ) ) {
 	<?php require_once __DIR__ . '/settings-edit.php'; ?>
 	<br>
 	<?php gp_route_nonce_field( 'update-settings_' . get_current_user_id() ); ?>
-	<input type="submit" name="submit" value="<?php esc_attr_e( 'Save Settings', 'glotpress' ); ?>">
+	<input  class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Save Settings', 'glotpress' ); ?>">
 </form>
 
 <?php

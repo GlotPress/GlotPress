@@ -81,12 +81,15 @@ gp_tmpl_header();
 		<dd><?php echo gp_locales_by_project_dropdown( $project->id, 'locale' ); ?></dd>
 		<dt><label for="set-slug"><?php _e( 'Translation set slug:', 'glotpress' ); ?></label></dt>
 		<dd><input type="text" name="set-slug" value="default" id="set-slug" /></dd>
+	</dl>
 
-		<dt>
-			<input type="submit" name="submit" value="<?php esc_attr_e( 'Add', 'glotpress' ); ?>" id="submit" />
-			<input type="hidden" name="action" value="add-validator" />
-		</dt>
-		<?php gp_route_nonce_field( 'add-project-permissions_' . $project->id ); ?>
+	<div class="button-group">
+		<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Add', 'glotpress' ); ?>" id="submit" />
+		<a class="button is-link" href="<?php echo esc_url( gp_url_project( $project ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+	</div>
+
+	<input type="hidden" name="action" value="add-validator" />
+	<?php gp_route_nonce_field( 'add-project-permissions_' . $project->id ); ?>
 </form>
 <?php
 gp_tmpl_footer();

@@ -19,6 +19,7 @@ gp_breadcrumb( $breadcrumb );
 gp_tmpl_header();
 ?>
 
+<div class="gp-heading">
 	<h2>
 		<?php
 		printf(
@@ -27,18 +28,19 @@ gp_tmpl_header();
 			esc_html( $locale->english_name )
 		);
 		?>
-		<?php if ( $locale_glossary ) : ?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
-		<?php elseif ( $can_create_locale_glossary ) : ?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
-		<?php endif; ?>
 	</h2>
+	<?php if ( $locale_glossary ) : ?>
+		<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
+	<?php elseif ( $can_create_locale_glossary ) : ?>
+		<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
+	<?php endif; ?>
+</div>
 
 <?php if ( count( $set_list ) > 1 ) : ?>
 	<p class="actionlist secondary">
 		<?php
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in GP_Route_Locale::single().
-		echo implode( ' &bull;&nbsp;', $set_list );
+		echo implode( ' &bull; ', $set_list );
 		?>
 	</p>
 <?php endif; ?>

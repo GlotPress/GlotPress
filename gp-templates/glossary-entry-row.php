@@ -37,11 +37,14 @@
 				<dt><label for="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><input type="text" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][translation]" id="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->translation ); ?>"></dd>
 			</dl>
-			<p>
-				<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][glossary_id]" value="<?php echo esc_attr( $entry->glossary_id ); ?>">
-				<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][glossary_entry_id]" value="<?php echo esc_attr( $entry->id ); ?>">
-				<button class="action save" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-glossary-entry_' . $entry->id ) ); ?>"><?php _e( 'Save', 'glotpress' ); ?></button><span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="#" class="action cancel"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
-			</p>
+
+			<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][glossary_id]" value="<?php echo esc_attr( $entry->glossary_id ); ?>">
+			<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][glossary_entry_id]" value="<?php echo esc_attr( $entry->id ); ?>">
+
+			<div class="button-group">
+				<button class="button is-primary action save" data-nonce="<?php echo esc_attr( wp_create_nonce( 'edit-glossary-entry_' . $entry->id ) ); ?>"><?php _e( 'Save', 'glotpress' ); ?></button>
+				<button type="button" class="button is-link action cancel"><?php _e( 'Cancel', 'glotpress' ); ?></button>
+			</div>
 		</div>
 
 		<div class="meta">
@@ -70,7 +73,7 @@
 			<dl>
 				<dt><?php _e( 'Actions:', 'glotpress' ); ?></dt>
 				<dd>
-					<button class="delete" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-glossary-entry_' . $entry->id ) ); ?>"><?php _ex( 'Delete', 'delete glossary entry', 'glotpress' ); ?></button>
+					<button class="button is-destructive delete" type="button" tabindex="-1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'delete-glossary-entry_' . $entry->id ) ); ?>"><?php _ex( 'Delete', 'delete glossary entry', 'glotpress' ); ?></button>
 				</dd>
 			</dl>
 			<?php endif; ?>

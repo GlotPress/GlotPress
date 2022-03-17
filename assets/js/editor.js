@@ -101,7 +101,7 @@ $gp.editor = (
 					.on( 'click', 'a.edit', $gp.editor.hooks.show )
 					.on( 'dblclick', 'tr.preview td', $gp.editor.hooks.show )
 					.on( 'change', 'select.priority', $gp.editor.hooks.set_priority )
-					.on( 'click', 'a.close', $gp.editor.hooks.cancel )
+					.on( 'click', 'button.close', $gp.editor.hooks.cancel )
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
 					.on( 'click', 'button.copy', $gp.editor.hooks.copy )
 					.on( 'click', 'button.inserttab', $gp.editor.hooks.tab )

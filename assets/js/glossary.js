@@ -19,7 +19,7 @@ $gp.glossary = (
 				$( $gp.glossary.table )
 					.on( 'click', 'a.edit', $gp.glossary.hooks.show )
 					.on( 'dblclick', 'tr td', $gp.glossary.hooks.show )
-					.on( 'click', 'a.cancel', $gp.glossary.hooks.hide )
+					.on( 'click', 'button.cancel', $gp.glossary.hooks.hide )
 					.on( 'click', 'button.delete', $gp.glossary.hooks.del )
 					.on( 'click', 'button.save', $gp.glossary.hooks.ok );
 			},
