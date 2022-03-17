@@ -656,10 +656,6 @@ function gp_get_translation_row_classes( $translation ) {
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	$classes[] = count( array_filter( $translation->translations, 'gp_is_not_null' ) ) > 0 ? 'has-translations' : 'no-translations';
 
-	if ( property_exists( $translation, 'root_translation_set_id' ) ) {
-		$classes[] = $translation->translation_set_id === $translation->root_translation_set_id ? 'root-translation' : '';
-	}
-
 	/**
 	 * Filters the list of CSS classes for a translation row
 	 *
