@@ -353,27 +353,4 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '1' ) ) ) ) );
 		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '-1' ) ) ) ) );
 	}
-
-	/*
-	 * Basic test to ensure root/variant data in GP_Locales exists.
-	 *
-	 * A more comprehensive test of the root/variant relationships would be nice, but due to the
-	 * high dependency on the database, test cases are extremely hard to create that actually
-	 * test a real scenario.
-	 */
-	function test_root_and_variant_locales() {
-		$gpl = new GP_Locales;
-
-		$us = $gpl->locales[ 'en' ];
-		$ca = $gpl->locales[ 'en-ca' ];
-
-		// Test to make sure en has no root variant.
-		$this->assertEquals( null, $us->variant_root );
-
-		// Test to make sure en_ca has en as it's root variant.
-		$this->assertEquals( 'en', $ca->variant_root );
-
-		// Test to make sure en has en_ca listed as a variant.
-		$this->assertEquals( $ca->english_name, $us->variants[ 'en-ca' ] );
-	}
 }
