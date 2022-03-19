@@ -1,4 +1,5 @@
 :root {
+	/* Color palette */
 	--gp-color-primary-50: #e9e5f2;
 	--gp-color-primary-100: #c8c0de;
 	--gp-color-primary-200: #a597c9;
@@ -23,12 +24,63 @@
 	--gp-color-white: #ffffff;
 	--gp-color-yellow: #ffd566;
 	--gp-color-red: #a62626;
+	--gp-color-green: #266430;
 
-	--gp-color-fg: var( --gp-color-black );
-	--gp-color-bg: var( --gp-color-white );
-	--gp-color-link: var( --gp-color-primary-500 );
-	--gp-color-link-hover: var( --gp-color-primary-700 );
-	--gp-color-danger: var( --gp-color-red );
+	/* Components */
+	--gp-color-fg-default: var( --gp-color-black );
+	--gp-color-fg-muted: var( --gp-color-secondary-500 );
+	--gp-color-fg-subtle: var( --gp-color-secondary-100 );
+
+	--gp-color-canvas-default: var( --gp-color-white );
+	--gp-color-canvas-inset: var( --gp-color-secondary-50 );
+	--gp-color-canvas-subtle: var( --gp-color-secondary-100 );
+
+	--gp-color-accent-fg: var( --gp-color-primary-500 );
+	--gp-color-accent-emphasis: var( --gp-color-primary-700 );
+	--gp-color-success-fg: var( --gp-color-green );
+	--gp-color-success-emphasis: var( --gp-color-green );
+	--gp-color-attention-fg: var( --gp-color-yellow );
+	--gp-color-attention-emphasis: var( --gp-color-yellow );
+	--gp-color-danger-fg: var( --gp-color-red );
+	--gp-color-danger-emphasis: var( --gp-color-red );
+	--gp-color-fg-on-emphasis: var( --gp-color-white );
+
+	--gp-color-border-default: var( --gp-color-secondary-700 );
+	--gp-color-border-muted: var( --gp-color-secondary-500 );
+	--gp-color-border-subtle: var( --gp-color-secondary-300 );
+
+	--gp-color-header-text: var( --gp-color-white );
+	--gp-color-header-bg: var( --gp-color-secondary );
+
+	--gp-color-btn-text: var( --gp-color-primary-500 );
+	--gp-color-btn-bg: var( --gp-color-secondary-100 );
+	--gp-color-btn-border: var( --gp-color-primary-500 );
+	--gp-color-btn-hover-text: var( --gp-color-primary-700 );
+	--gp-color-btn-hover-bg: var( --gp-color-secondary-200 );
+	--gp-color-btn-hover-border: var( --gp-color-primary-700 );
+	--gp-color-btn-active-text: var( --gp-color-black );
+	--gp-color-btn-active-bg: var( --gp-color-secondary-200 );
+	--gp-color-btn-active-border: var( --gp-color-black );
+	--gp-color-btn-disabled-text: var( --gp-color-secondary-500 );
+	--gp-color-btn-disabled-bg: var( --gp-color-secondary-100 );
+	--gp-color-btn-disabled-border: var( --gp-color-secondary-300 );
+
+	--gp-color-btn-primary-text: var( --gp-color-white );
+	--gp-color-btn-primary-bg: var( --gp-color-primary-400 );
+	--gp-color-btn-primary-border: var( --gp-color-primary-400 );
+	--gp-color-btn-primary-hover-text: var( --gp-color-white );
+	--gp-color-btn-primary-hover-bg: var( --gp-color-primary-700 );
+	--gp-color-btn-primary-hover-border: var( --gp-color-primary-700 );
+	--gp-color-btn-primary-active-text: var( --gp-color-white );
+	--gp-color-btn-primary-active-bg: var( --gp-color-black );
+	--gp-color-btn-primary-active-border: var( --gp-color-black );
+
+	--gp-color-btn-danger-text: var( --gp-color-red );
+	--gp-color-btn-danger-bg: var( --gp-color-secondary-100 );
+	--gp-color-btn-danger-border: var( --gp-color-red );
+	--gp-color-btn-danger-hover-text: var( --gp-color-white );
+	--gp-color-btn-danger-hover-bg: var( --gp-color-red );
+	--gp-color-btn-danger-hover-border: var( --gp-color-red );
 }
 
 *,
@@ -40,17 +92,16 @@
 body {
 	margin: 0;
 	font-family:
-		system-ui,
 		-apple-system,
-		'Segoe UI',
-		Roboto,
+		BlinkMacSystemFont,
+		"Segoe UI",
 		Helvetica,
 		Arial,
 		sans-serif,
-		'Apple Color Emoji',
-		'Segoe UI Emoji';
-	color: var( --gp-color-fg );
-	background-color: var( --gp-color-bg );
+		"Apple Color Emoji",
+		"Segoe UI Emoji";
+	color: var( --gp-color-fg-default );
+	background-color: var( --gp-color-canvas-default );
 	font-size: 1rem;
 	line-height: 1.5;
 }
@@ -70,12 +121,12 @@ a {
 
 a:link,
 a:visited {
-	color: var( --gp-color-link );
+	color: var( --gp-color-accent-fg );
 }
 
 a:hover,
 a:focus {
-	color: var( --gp-color-link-hover );
+	color: var( --gp-color-accent-fg );
 	text-decoration-thickness: max( 3px, 0.188rem );
 	text-decoration-skip-ink: none;
 }
@@ -85,16 +136,11 @@ a:focus {
 }
 
 a:active {
-	color: var( --gp-color-fg );
+	color: var( --gp-color-fg-default );
 }
 
 a img {
 	border: 0;
-}
-
-a.disabled {
-	color: #aaa;
-	text-decoration: none;
 }
 
 h2 {
@@ -113,12 +159,13 @@ h3 {
  * GP BAR
  */
 .gp-bar {
-	background: var( --gp-color-secondary );
+	background: var( --gp-color-header-bg );
+	color: var( --gp-color-header-text );
 	padding: 0 1em;
 }
 
 .gp-bar a {
-	color: var( --gp-color-white );
+	color: var( --gp-color-header-text );
 }
 
 .gp-bar a:not(:hover):not(:focus) {
@@ -149,8 +196,8 @@ h3 {
  * Breadcrumbs
  */
 .breadcrumb {
-	background-color: var( --gp-color-secondary-100 );
-	border: 1px solid  var( --gp-color-secondary-300 );
+	background-color: var( --gp-color-canvas-subtle );
+	border: 1px solid  var( --gp-color-border-subtle );
 	margin: 20px 0;
 	padding: 7px 14px;
 }
@@ -160,7 +207,7 @@ h3 {
 }
 
 .breadcrumb li:after {
-	color: var( --gp-color-secondary-500 );
+	color: var( --gp-color-fg-muted );
 	content: '/';
 	padding: 0 7px;
 }
@@ -213,14 +260,26 @@ h3 {
 /*
  * Footer
  */
-
 .gp-footer {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding-top: 1rem;
-	border-top: 2px solid var( --gp-color-secondary );
+	border-top: 1px solid var( --gp-color-border-muted );
 	margin: 2rem 1rem 1rem;
+	color: var( --gp-color-fg-muted );
+	font-size: 0.875rem;
+}
+
+.gp-footer-credits {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	column-gap: 1rem;
+}
+
+.gp-footer-copyright {
+	margin-right: auto;
 }
 
 /*
@@ -244,11 +303,11 @@ button,
 	font-size: 14px;
 	line-height: 20px;
 	font-weight: 500;
-	color: var( --gp-color-primary-500 );
-	border: 1px solid var( --gp-color-primary-500 );
+	color: var( --gp-color-btn-text );
+	border: 1px solid var( --gp-color-btn-border );
 	border-radius: 2px;
 	box-shadow: none;
-	background: var( --gp-color-secondary-100 );
+	background: var( --gp-color-btn-bg );
 	min-height: 32px;
 	margin: 0;
 	cursor: pointer;
@@ -259,16 +318,17 @@ button,
 
 .gp-content .button:hover,
 .gp-content .button:focus {
-	background-color: var( --gp-color-secondary-200 );
-	color: var( --gp-color-primary-700 );
-	border-color: var( --gp-color-primary-700 );
-	box-shadow: 0 0 0 1px var( --gp-color-primary-700 );
+	background-color: var( --gp-color-btn-hover-bg );
+	color: var( --gp-color-btn-hover-text );
+	border-color: var( --gp-color-btn-hover-border );
+	box-shadow: 0 0 0 1px var( --gp-color-btn-hover-border );
 }
 
 .gp-content .button:active {
-	border-color: var( --gp-color-fg );
-	color: var( --gp-color-fg );
-	box-shadow: 0 0 0 1px var( --gp-color-fg );
+	background-color: var( --gp-color-btn-active-bg );
+	border-color: var( --gp-color-btn-active-border );
+	color: var( --gp-color-btn-active-text );
+	box-shadow: 0 0 0 1px var( --gp-color-btn-active-border );
 }
 
 .gp-content .button.is-small {
@@ -278,35 +338,45 @@ button,
 }
 
 .gp-content .button.is-primary {
-	background: var( --gp-color-primary-400 );
-	border-color: var( --gp-color-primary-400 );
-	color: var( --gp-color-white );
+	background-color: var( --gp-color-btn-primary-bg );
+	border-color: var( --gp-color-btn-primary-border );
+	color: var( --gp-color-btn-primary-text );
 }
 
 .gp-content .button.is-primary:hover,
 .gp-content .button.is-primary:focus {
-	background-color: var( --gp-color-primary-700 );
-	border-color: var( --gp-color-primary-700 );
-	box-shadow: 0 0 0 1px var( --gp-color-white ), 0 0 0 2px var( --gp-color-primary-700 );
+	background-color: var( --gp-color-btn-primary-hover-bg );
+	border-color: var( --gp-color-btn-primary-hover-border );
+	color: var( --gp-color-btn-primary-hover-text );
+	box-shadow: 0 0 0 1px var( --gp-color-canvas-default ), 0 0 0 2px var( --gp-color-btn-primary-hover-border );
+}
+
+.gp-content .button.is-primary:active {
+	background-color: var( --gp-color-btn-primary-active-bg );
+	border-color: var( --gp-color-btn-primary-active-border );
+	color: var( --gp-color-btn-primary-active-text );
+	box-shadow: 0 0 0 1px var( --gp-color-canvas-default ), 0 0 0 2px var( --gp-color-btn-primary-active-border );
 }
 
 .gp-content .button.is-destructive {
-	border-color: var( --gp-color-danger );
-	color: var( --gp-color-danger );
+	background-color: var( --gp-color-btn-danger-bg );
+	border-color: var( --gp-color-btn-danger-border );
+	color: var( --gp-color-btn-danger-text );
 }
 
+.gp-content .button.is-destructive:active,
 .gp-content .button.is-destructive:hover,
 .gp-content .button.is-destructive:focus {
-	background-color: var( --gp-color-danger );
-	border-color: var( --gp-color-danger );
-	color: var( --gp-color-white );
-	box-shadow: 0 0 0 1px var( --gp-color-white ), 0 0 0 2px var( --gp-color-danger );
+	background-color: var( --gp-color-btn-danger-hover-bg );
+	border-color: var( --gp-color-btn-danger-hover-border );
+	color: var( --gp-color-btn-danger-hover-text );
+	box-shadow: 0 0 0 1px var( --gp-color-canvas-default ), 0 0 0 2px var( --gp-color-btn-danger-hover-border );
 }
 
 .gp-content .button:disabled {
-	color: var( --gp-color-secondary-500 ) !important;
-	border-color: var( --gp-color-secondary-300 ) !important;
-	background-color: var( --gp-color-secondary-100 ) !important;
+	background-color: var( --gp-color-btn-disabled-bg ) !important;
+	border-color: var( --gp-color-btn-disabled-border ) !important;
+	color: var( --gp-color-btn-disabled-text ) !important;
 	box-shadow: none !important;
 	cursor: default;
 }
@@ -318,6 +388,7 @@ button,
 	border: 0;
 	border-radius: 0;
 	background: none;
+	color: var( --gp-color-accent-fg );
 	font-weight: 400;
 	text-decoration: underline;
 	text-decoration-thickness: max( 1px, 0.063rem );
@@ -329,7 +400,7 @@ button,
 	box-shadow: none;
 	border: 0;
 	background: none;
-	color: var( --gp-color-link-hover );
+	color: var( --gp-color-accent-fg );
 	text-decoration-thickness: max( 3px, 0.188rem );
 	text-decoration-skip-ink: none;
 }
@@ -338,7 +409,7 @@ button,
 	box-shadow: none;
 	border: 0;
 	background: none;
-	color: var( --gp-color-fg );
+	color: var( --gp-color-fg-default );
 }
 
 .gp-content .button-group {
@@ -358,11 +429,11 @@ button,
 	font-size: 14px;
 	line-height: 20px;
 	font-weight: 400;
-	color: var( --gp-color-fg );
-	border: 1px solid var( --gp-color-secondary-700 );
+	color: var( --gp-color-fg-default );
+	border: 1px solid var( --gp-color-border-default );
 	border-radius: 2px;
 	box-shadow: none;
-	background-color: var( --gp-color-white );
+	background-color: var( --gp-color-canvas-default );
 	outline: 0;
 }
 
@@ -387,16 +458,16 @@ button,
 .gp-content input[type="text"]:focus,
 .gp-content input[type="number"]:focus,
 .gp-content textarea:focus {
-	border-color: var( --gp-color-primary-700 );
-	box-shadow: 0 0 0 1px var( --gp-color-primary-700 );
+	border-color: var( --gp-color-accent-emphasis );
+	box-shadow: 0 0 0 1px var( --gp-color-accent-emphasis );
 }
 
 .gp-content input[type="text"]:disabled,
 .gp-content input[type="number"]:disabled,
 .gp-content textarea:disabled {
-	color: var( --gp-color-secondary-500 ) !important;
-	border-color: var( --gp-color-secondary-300 ) !important;
-	background-color: var( --gp-color-secondary-100 ) !important;
+	color: var( --gp-color-fg-muted ) !important;
+	border-color: var( --gp-color-border-subtle ) !important;
+	background-color: var( --gp-color-canvas-subtle ) !important;
 	box-shadow: none !important;
 }
 
@@ -407,11 +478,11 @@ button,
 	font-size: 14px;
 	line-height: 20px;
 	font-weight: 400;
-	color: var( --gp-color-fg );
-	border: 1px solid var( --gp-color-secondary-700 );
+	color: var( --gp-color-fg-default );
+	border: 1px solid var( --gp-color-border-default );
 	border-radius: 2px;
 	box-shadow: none;
-	background: var( --gp-color-white ) url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath fill='%230b0c0c' d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'%3E%3C/path%3E%3C/svg%3E") no-repeat right 0 top 55%;
+	background: var( --gp-color-canvas-default ) url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath fill='%230b0c0c' d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'%3E%3C/path%3E%3C/svg%3E") no-repeat right 0 top 55%;
 	background-size: 24px 24px;
 	min-height: 32px;
 	max-width: 25rem;
@@ -422,25 +493,25 @@ button,
 }
 
 .gp-content select:hover {
-	color: var( --gp-color-primary-700 );
+	color: var( --gp-color-accent-fg );
 }
 
 .gp-content select:focus {
-	border-color: var( --gp-color-primary-700 );
-	color: var( --gp-color-primary-700 );
-	box-shadow: 0 0 0 1px var( --gp-color-primary-700 );
+	border-color: var( --gp-color-accent-fg );
+	color: var( --gp-color-accent-fg );
+	box-shadow: 0 0 0 1px var( --gp-color-accent-fg );
 }
 
 .gp-content select:active {
-	border-color: var( --gp-color-fg );
-	color: var( --gp-color-fg );
-	box-shadow: 0 0 0 1px var( --gp-color-fg );
+	border-color: var( --gp-color-fg-default );
+	color: var( --gp-color-fg-default );
+	box-shadow: 0 0 0 1px var( --gp-color-fg-default );
 }
 
 .gp-content select:disabled {
-	color: var( --gp-color-secondary-500 );
-	border-color: var( --gp-color-secondary-300 );
-	background-color: var( --gp-color-secondary-100 );
+	color: var( --gp-color-fg-muted );
+	border-color: var( --gp-color-border-subtle );
+	background-color: var( --gp-color-canvas-subtle );
 	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath fill='%23a3a3a3' d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'%3E%3C/path%3E%3C/svg%3E");
 	box-shadow: none;
 	cursor: default;
@@ -450,8 +521,8 @@ button,
 .gp-content input[type="radio"] {
 	-webkit-appearance: none;
 	appearance: none;
-	background: var( --gp-color-white );
-	border: 1px solid var( --gp-color-secondary-700 );
+	background: var( --gp-color-canvas-default );
+	border: 1px solid var( --gp-color-border-default );
 	height: 1.25rem;
 	width: 1.25rem;
 	box-shadow: none;
@@ -467,8 +538,8 @@ button,
 
 .gp-content input[type="checkbox"]:focus,
 .gp-content input[type="radio"]:focus {
-	border-color: var( --gp-color-primary-700 );
-	box-shadow: 0 0 0 1px var( --gp-color-primary-700 );
+	border-color: var( --gp-color-accent-fg );
+	box-shadow: 0 0 0 1px var( --gp-color-accent-fg );
 }
 
 .gp-content input[type="checkbox"]::before,
@@ -477,7 +548,7 @@ button,
 	width: 0.8rem;
 	height: 0.8rem;
 	transform: scale(0);
-	box-shadow: inset 1em 1em var( --gp-color-primary-700 );
+	box-shadow: inset 1em 1em var( --gp-color-accent-fg );
 }
 
 .gp-content input[type="checkbox"]::before {
@@ -501,13 +572,13 @@ button,
 
 .gp-content input[type="checkbox"]:disabled,
 .gp-content input[type="radio"]:disabled {
-	border-color: var( --gp-color-secondary-300 );
-	background-color: var( --gp-color-secondary-100 );
+	border-color: var( --gp-color-border-subtle );
+	background-color: var( --gp-color-canvas-subtle );
 }
 
 .gp-content input[type="checkbox"]:disabled::before,
 .gp-content input[type="radio"]:disabled::before {
-	box-shadow: inset 1em 1em var( --gp-color-secondary-500 );
+	box-shadow: inset 1em 1em var( --gp-color-fg-muted );
 }
 
 /*
@@ -640,7 +711,7 @@ table.translations tr:nth-child(4n+3) {
 
 table.translations tr.editor {
 	background-color: #F8FFEC;
-	background-color: var( --gp-color-secondary-50 );
+	background-color: var( --gp-color-canvas-inset );
 	display: none;
 }
 
@@ -806,27 +877,28 @@ span.context {
 .gp-js-error .gp-js-message-dismiss,
 .gp-js-error .gp-js-message-dismiss:hover,
 .gp-js-error .gp-js-message-dismiss:focus {
-	color: var( --gp-color-white ) !important;
+	color: inherit !important;
 }
 
 .gp-js-error, .error {
-	color: var( --gp-color-white );
-	background-color: var( --gp-color-danger );
+	color: var( --gp-color-fg-on-emphasis );
+	background-color: var( --gp-color-danger-emphasis );
 }
 
 .gp-js-notice, .notice {
-	color: #222;
-	background-color: #FDDF9D;
+	color: var( --gp-color-fg-default );
+	background-color: var( --gp-color-attention-emphasis );
 }
 
 .gp-js-success {
-	color: white;
-	background-color: #00DA12;
+	color: var( --gp-color-fg-on-emphasis );
+	background-color: var( --gp-color-success-emphasis );
 }
 
 .notice, .error {
 	clear: both;
-	padding: 0.5em;
+	padding: 0.5rem;
+	margin: 1rem 0;
 }
 
 a.bubble, .bubble {
@@ -839,7 +911,7 @@ a.bubble, .bubble {
 
 span.active {
 	background-color: var( --gp-color-yellow );
-	color: var( --gp-color-fg );
+	color: var( --gp-color-fg-default );
 	font-weight: 500;
 }
 
@@ -996,7 +1068,7 @@ form.filters-toolbar strong.separator {
 
 table.translation-sets .stats a,
 table.locale-sub-projects .stats a {
-	color: var( --gp-color-fg );
+	color: var( --gp-color-fg-default );
 	font-weight: 600;
 }
 
@@ -1033,8 +1105,8 @@ table.locale-sub-projects .stats a:not(:hover):not(:focus) {
 }
 
 .warning {
-	background-color: var( --gp-color-white );
-	color: var( --gp-color-danger );
+	background-color: var( --gp-color-canvas-default );
+	color: var( --gp-color-danger-fg );
 	border: 1px solid currentcolor;
 	margin: 1em 0;
 	padding: 0.5em;
