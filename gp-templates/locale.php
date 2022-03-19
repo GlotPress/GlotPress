@@ -37,7 +37,7 @@ gp_tmpl_header();
 </div>
 
 <?php if ( count( $set_list ) > 1 ) : ?>
-	<p class="actionlist secondary">
+	<p class="actionlist">
 		<?php
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in GP_Route_Locale::single().
 		echo implode( ' &bull; ', $set_list );
@@ -194,7 +194,7 @@ if ( empty( $projects_data ) ) {
 	</div>
 <?php endforeach; // Top projects. ?>
 
-	<p class="actionlist secondary">
+	<p class="actionlist">
 		<?php gp_link( gp_url( '/projects' ), __( 'All projects', 'glotpress' ) ); ?>
 	</p>
 

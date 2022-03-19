@@ -12,8 +12,8 @@ gp_tmpl_header();
 <h2><?php _e( 'Permissions', 'glotpress' ); ?></h2>
 <h3 id="validators">
 	<?php _e( 'Validators', 'glotpress' ); ?>
-	<?php if ( count( $permissions ) + count( $parent_permissions ) > 10 ) : ?>
-	<a href="#add" onclick="jQuery('#user_login').focus(); return false;" class="secondary"><?php _e( 'Add', 'glotpress' ); ?> &rarr;</a>
+	<?php if ( count( $permissions ) + count( $parent_permissions ) > 1 ) : ?>
+	<a href="#add" onclick="jQuery('#user_login').focus(); return false;"><?php _e( 'Add', 'glotpress' ); ?> &rarr;</a>
 	<?php endif; ?>
 </h3>
 	<?php if ( $permissions ) : ?>
@@ -72,7 +72,7 @@ gp_tmpl_header();
 	<?php if ( ! $permissions && ! $parent_permissions ) : ?>
 		<strong><?php _e( 'No validators defined for this project.', 'glotpress' ); ?></strong>
 	<?php endif; ?>
-<form action="" method="post" class="secondary">
+<form action="" method="post">
 	<h3 id="add"><?php _e( 'Add a validator for this project', 'glotpress' ); ?></h3>
 	<dl>
 		<dt><label for="user_login"><?php _e( 'Username:', 'glotpress' ); ?></label></dt>

@@ -268,7 +268,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 			foreach ( $referenceable as $key => $value ) :
 			?>
-				<div class="warning secondary">
+				<div class="warning">
 					<strong><?php _e( 'Warning:', 'glotpress' ); ?></strong> <?php echo esc_html( $value ); ?>
 
 					<?php if ( $can_approve ) : ?>

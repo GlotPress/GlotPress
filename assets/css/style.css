@@ -1088,10 +1088,6 @@ table.locale-sub-projects .stats a:not(:hover):not(:focus) {
 	margin-left: 2px;
 }
 
-.secondary {
-	font-size: 0.95em;
-}
-
 .ternary {
 	font-size: 0.8em;
 }

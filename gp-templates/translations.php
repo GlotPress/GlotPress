@@ -403,7 +403,7 @@ if ( $can_approve ) {
 
 echo gp_pagination( $page, $per_page, $total_translations_count );
 ?>
-<div id="legend" class="secondary clearfix">
+<div id="legend" class="clearfix">
 	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 <?php
 	foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
