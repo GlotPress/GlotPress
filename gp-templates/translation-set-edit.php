@@ -21,11 +21,11 @@ gp_tmpl_header();
 ?>
 <h2><?php _e( 'Edit Translation Set', 'glotpress' ); ?></h2>
 <form action="" method="post">
-<?php gp_tmpl_load( 'translation-set-form', get_defined_vars() ); ?>
-	<p>
-		<input type="submit" name="submit" value="<?php esc_attr_e( 'Save', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo esc_url( gp_url_project_locale( $project, $locale->slug, $set->slug ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
-	</p>
+	<?php gp_tmpl_load( 'translation-set-form', get_defined_vars() ); ?>
+	<div class="button-group">
+		<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Save', 'glotpress' ); ?>" id="submit" />
+		<a class="button is-link" href="<?php echo esc_url( gp_url_project_locale( $project, $locale->slug, $set->slug ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+	</div>
 	<?php gp_route_nonce_field( 'edit-translation-set_' . $set->id ); ?>
 </form>
 <?php

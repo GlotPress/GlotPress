@@ -30,10 +30,12 @@ gp_tmpl_header();
 	<p>
 		<?php _e( 'Note this will delete all translations, translation sets and child projects!', 'glotpress' ); ?>
 	</p>
-	<p>
-		<input type="submit" name="submit" value="<?php esc_attr_e( 'Delete', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo esc_url( gp_url_project( $project ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
-	</p>
+
+	<div class="button-group">
+		<input class="button is-destructive" type="submit" name="submit" value="<?php esc_attr_e( 'Delete', 'glotpress' ); ?>" id="submit" />
+		<a class="button is-link" href="<?php echo esc_url( gp_url_project( $project ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+	</div>
+
 	<?php gp_route_nonce_field( 'delete-project_' . $project->id ); ?>
 </form>
 <?php

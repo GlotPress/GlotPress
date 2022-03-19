@@ -12,8 +12,8 @@ gp_tmpl_header();
 <h2><?php _e( 'Permissions', 'glotpress' ); ?></h2>
 <h3 id="validators">
 	<?php _e( 'Validators', 'glotpress' ); ?>
-	<?php if ( count( $permissions ) + count( $parent_permissions ) > 10 ) : ?>
-	<a href="#add" onclick="jQuery('#user_login').focus(); return false;" class="secondary"><?php _e( 'Add', 'glotpress' ); ?> &rarr;</a>
+	<?php if ( count( $permissions ) + count( $parent_permissions ) > 1 ) : ?>
+	<a href="#add" onclick="jQuery('#user_login').focus(); return false;"><?php _e( 'Add', 'glotpress' ); ?> &rarr;</a>
 	<?php endif; ?>
 </h3>
 	<?php if ( $permissions ) : ?>
@@ -72,7 +72,7 @@ gp_tmpl_header();
 	<?php if ( ! $permissions && ! $parent_permissions ) : ?>
 		<strong><?php _e( 'No validators defined for this project.', 'glotpress' ); ?></strong>
 	<?php endif; ?>
-<form action="" method="post" class="secondary">
+<form action="" method="post">
 	<h3 id="add"><?php _e( 'Add a validator for this project', 'glotpress' ); ?></h3>
 	<dl>
 		<dt><label for="user_login"><?php _e( 'Username:', 'glotpress' ); ?></label></dt>
@@ -81,12 +81,15 @@ gp_tmpl_header();
 		<dd><?php echo gp_locales_by_project_dropdown( $project->id, 'locale' ); ?></dd>
 		<dt><label for="set-slug"><?php _e( 'Translation set slug:', 'glotpress' ); ?></label></dt>
 		<dd><input type="text" name="set-slug" value="default" id="set-slug" /></dd>
+	</dl>
 
-		<dt>
-			<input type="submit" name="submit" value="<?php esc_attr_e( 'Add', 'glotpress' ); ?>" id="submit" />
-			<input type="hidden" name="action" value="add-validator" />
-		</dt>
-		<?php gp_route_nonce_field( 'add-project-permissions_' . $project->id ); ?>
+	<div class="button-group">
+		<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Add', 'glotpress' ); ?>" id="submit" />
+		<a class="button is-link" href="<?php echo esc_url( gp_url_project( $project ) ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+	</div>
+
+	<input type="hidden" name="action" value="add-validator" />
+	<?php gp_route_nonce_field( 'add-project-permissions_' . $project->id ); ?>
 </form>
 <?php
 gp_tmpl_footer();

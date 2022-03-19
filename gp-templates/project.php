@@ -25,15 +25,16 @@ if ( $project->active ) {
 
 gp_tmpl_header();
 ?>
-<h2>
+
+<div class="gp-heading">
+	<h2><?php echo esc_html( $project->name ); ?></h2>
 	<?php
-	echo esc_html( $project->name );
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $edit_link;
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $delete_link;
 	?>
-</h2>
+</div>
 
 <?php
 /**
@@ -55,7 +56,7 @@ if ( $project_description ) {
 
 <?php if ( $can_write ) : ?>
 
-<div class="actionlist">
+<div>
 	<a href="#" class="project-actions" id="project-actions-toggle"><?php echo __( 'Project actions', 'glotpress' ) . ' &darr;'; ?></a>
 	<div class="project-actions hide-if-js">
 		<?php gp_project_actions( $project, $translation_sets ); ?>

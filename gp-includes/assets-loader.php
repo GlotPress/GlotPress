@@ -15,7 +15,7 @@ function gp_register_default_styles() {
 	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
-	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220313' );
+	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220319' );
 
 	// Register the table sorter theme style.
 	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress' . $suffix, array(), '20210429' );
@@ -33,7 +33,7 @@ function gp_register_default_scripts() {
 
 	// Register our standard scripts.
 	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '20210429' );
-	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery' ), '20210429' );
+	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery' ), '20220319' );
 	wp_add_inline_script(
 		'gp-common',
 		sprintf(
@@ -46,8 +46,8 @@ function gp_register_default_scripts() {
 		)
 	);
 
-	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20220313' );
-	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20210429' );
+	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20220319' );
+	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20220319' );
 	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20210429' );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20210429' );
 }

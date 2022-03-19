@@ -62,10 +62,10 @@ gp_tmpl_header();
 	</dd>
 <?php endif; ?>
 	<dt>
-	<p>
-		<input type="submit" name="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>" id="submit" />
-		<span class="or-cancel"><?php _e( 'or', 'glotpress' ); ?> <a href="<?php echo esc_url( $return_link ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a></span>
-	</p>
+		<div class="button-group">
+			<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>" id="submit" />
+			<a class="button is-link" href="<?php echo esc_url( $return_link ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a>
+		</div>
 	</dt>
 	</dl>
 	<?php gp_route_nonce_field( ( 'originals' === $kind ? 'import-originals_' : 'import-translations_' ) . $project->id ); ?>

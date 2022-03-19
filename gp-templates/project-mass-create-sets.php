@@ -29,7 +29,7 @@ gp_tmpl_header();
 		<dd><?php echo gp_projects_dropdown( 'project_id', null ); ?></dd>
 	</dl>
 	<div id="preview"></div>
-	<p><input type="submit" name="submit" value="<?php esc_attr_e( 'Create Translation Sets', 'glotpress' ); ?>" id="submit" /></p>
+	<p><input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Create Translation Sets', 'glotpress' ); ?>" id="submit" /></p>
 	<?php gp_route_nonce_field( 'mass-create-transation-sets_' . $project->id ); ?>
 </form>
 <?php
