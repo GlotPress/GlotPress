@@ -54,7 +54,6 @@ $gp.editor = (
 
 				editor.show();
 				editor.preview.hide();
-				$( 'tr:first', $gp.editor.table ).hide();
 				$( 'textarea:first', editor ).focus();
 			},
 			prev: function() {
@@ -93,7 +92,6 @@ $gp.editor = (
 				}
 				editor.hide();
 				editor.preview.show();
-				$( 'tr:first', $gp.editor.table ).show();
 				$gp.editor.current = null;
 			},
 			install_hooks: function() {
