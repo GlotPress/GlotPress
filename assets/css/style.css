@@ -452,6 +452,7 @@ button,
 	width: 100%;
 	max-width: 40em;
 	padding: 8px;
+	font-size: 15px;
 	resize: vertical;
 }
 
@@ -799,6 +800,8 @@ span.context {
 .editor .translation {
 	white-space: pre-wrap;
 	margin: 1rem 0;
+	font-size: 0.875rem;
+	font-style: italic;
 }
 
 .editor .strings {
@@ -808,7 +811,6 @@ span.context {
 
 .editor .strings .textareas textarea {
 	width: 95%;
-	resize: vertical;
 }
 
 .editor .strings p.plural-numbers {
@@ -1117,6 +1119,7 @@ table.locale-sub-projects .stats a:not(:hover):not(:focus) {
 
 .warning a.discard-warning {
 	float: right;
+	color: inherit;
 }
 
 .glossary-description,
