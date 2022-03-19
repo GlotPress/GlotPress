@@ -85,41 +85,38 @@ if ( $glossary_description ) {
 		<?php
 	}
 ?>
-		<?php if ( $can_edit ) : ?>
-		<tr>
-			<td colspan="5">
-				<h4><?php _e( 'Create an entry', 'glotpress' ); ?></h4>
-
-				<form action="<?php echo esc_url( gp_url_join( $url, '-new' ) ); ?>" method="post">
-					<dl>
-						<dt><label for="new_glossary_entry_term"><?php echo esc_html( _x( 'Original term:', 'glossary entry', 'glotpress' ) ); ?></label></dt>
-						<dd><input type="text" name="new_glossary_entry[term]" id="new_glossary_entry_term" value=""></dd>
-						<dt><label for="new_glossary_entry_post"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
-						<dd>
-							<select name="new_glossary_entry[part_of_speech]" id="new_glossary_entry_post">
-							<?php
-								foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
-									echo "\t<option value='" . esc_attr( $pos ) . "'>" . esc_html( $name ) . "</option>\n";
-								}
-							?>
-							</select>
-						</dd>
-						<dt><label for="new_glossary_entry_translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
-						<dd><input type="text" name="new_glossary_entry[translation]" id="new_glossary_entry_translation" value=""></dd>
-						<dt><label for="new_glossary_entry_comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
-						<dd><textarea type="text" name="new_glossary_entry[comment]" id="new_glossary_entry_comments"></textarea></dd>
-					</dl>
-					<p>
-						<input type="hidden" name="new_glossary_entry[glossary_id]" value="<?php echo esc_attr( $glossary->id ); ?>">
-						<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
-					</p>
-					<?php gp_route_nonce_field( 'add-glossary-entry_' . $project->path . $locale->slug . $translation_set->slug ); ?>
-				</form>
-			</td>
-		</tr>
-		<?php endif; ?>
 	</tbody>
 </table>
+
+<?php if ( $can_edit ) : ?>
+<h4><?php _e( 'Create an entry', 'glotpress' ); ?></h4>
+
+<form action="<?php echo esc_url( gp_url_join( $url, '-new' ) ); ?>" method="post">
+	<dl>
+		<dt><label for="new_glossary_entry_term"><?php echo esc_html( _x( 'Original term:', 'glossary entry', 'glotpress' ) ); ?></label></dt>
+		<dd><input type="text" name="new_glossary_entry[term]" id="new_glossary_entry_term" value=""></dd>
+		<dt><label for="new_glossary_entry_post"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
+		<dd>
+			<select name="new_glossary_entry[part_of_speech]" id="new_glossary_entry_post">
+			<?php
+				foreach ( GP::$glossary_entry->parts_of_speech as $pos => $name ) {
+					echo "\t<option value='" . esc_attr( $pos ) . "'>" . esc_html( $name ) . "</option>\n";
+				}
+			?>
+			</select>
+		</dd>
+		<dt><label for="new_glossary_entry_translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
+		<dd><input type="text" name="new_glossary_entry[translation]" id="new_glossary_entry_translation" value=""></dd>
+		<dt><label for="new_glossary_entry_comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
+		<dd><textarea type="text" name="new_glossary_entry[comment]" id="new_glossary_entry_comments"></textarea></dd>
+	</dl>
+	<p>
+		<input type="hidden" name="new_glossary_entry[glossary_id]" value="<?php echo esc_attr( $glossary->id ); ?>">
+		<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Create', 'glotpress' ); ?>" id="submit" />
+	</p>
+	<?php gp_route_nonce_field( 'add-glossary-entry_' . $project->path . $locale->slug . $translation_set->slug ); ?>
+</form>
+<?php endif; ?>
 
 <p class="clear actionlist">
 	<?php if ( $can_edit ) : ?>

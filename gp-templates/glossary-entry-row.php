@@ -11,11 +11,9 @@
 	</td>
 
 	<?php if ( $can_edit ) : ?>
-	<td class="actions">
-		<ul>
-			<li><a href="#" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a></li>
-		</ul>
-	</td>
+		<td class="actions">
+			<a href="#" class="action edit"><?php _e( 'Details', 'glotpress' ); ?></a>
+		</td>
 	<?php endif; ?>
 </tr>
 <tr id="editor-<?php echo esc_attr( $entry->id ); ?>" class="hide-if-js editor">

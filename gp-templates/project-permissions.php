@@ -34,7 +34,7 @@ gp_tmpl_header();
 		<tbody>
 			<?php foreach ( $permissions as $permission ) : ?>
 				<tr>
-					<td><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
+					<td class="user"><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
 					<td><?php echo esc_html( $permission->action ); ?></td>
 					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
 					<td><?php echo esc_html( $permission->set_slug ); ?></td>

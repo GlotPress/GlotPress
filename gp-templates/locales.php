@@ -9,7 +9,7 @@ gp_tmpl_header();
 
 	<h2><?php _e( 'Locales and Languages', 'glotpress' ); ?></h2>
 	<div class="locales-filter">
-		<?php _e( 'Filter:', 'glotpress' ); ?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e( 'search', 'glotpress' ); ?>" />
+		<label for="locales-filter"><?php _e( 'Filter:', 'glotpress' ); ?> <input id="locales-filter" type="text" placeholder="<?php esc_attr_e( 'search', 'glotpress' ); ?>" /> </label>
 	</div>
 
 	<table class="tablesorter locales tablesorter-glotpress">
@@ -18,7 +18,6 @@ gp_tmpl_header();
 			<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Name (in English)', 'glotpress' ); ?></th>
 			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Native name', 'glotpress' ); ?></th>
 			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Language code', 'glotpress' ); ?></th>
-
 		</tr>
 		</thead>
 		<tbody>
