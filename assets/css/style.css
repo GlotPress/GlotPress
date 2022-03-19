@@ -736,7 +736,7 @@ table.translations tr.preview.status-rejected, #legend .status-rejected {
 }
 
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
-	border-left: 2px solid red;
+	border-left: 2px solid var( --gp-color-danger-emphasis );
 }
 
 table.translations a.action {
@@ -787,7 +787,7 @@ span.context {
  * Translation Row Editor
  */
 .editor .original {
-	font-weight: bold;
+	font-weight: 500;
 	white-space: pre-wrap;
 	max-width: 50em;
 }
@@ -798,6 +798,7 @@ span.context {
 
 .editor .translation {
 	white-space: pre-wrap;
+	margin: 1rem 0;
 }
 
 .editor .strings {
