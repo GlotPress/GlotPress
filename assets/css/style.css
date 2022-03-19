@@ -1161,6 +1161,7 @@ span.removed {
 .actionlist {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	column-gap: 0.4em;
 }
 
@@ -1267,7 +1268,7 @@ table.form-table th, table.form-table td {
 }
 
 .glossary tr.active {
-	background-color: #F8FFEC;
+	background-color: var( --gp-color-canvas-inset );
 }
 
 .glossary td.actions {
