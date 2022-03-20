@@ -58,7 +58,7 @@ foreach ( $projects_data as $project_id => $sub_projects ) :
 	?>
 	<div class="locale-project">
 		<h3><?php echo esc_html( $projects[ $project_id ]->name ); ?></h3>
-		<table class="locale-sub-projects">
+		<table class="gp-table locale-sub-projects">
 			<thead>
 			<tr>
 				<th rowspan="<?php echo esc_attr( $count_sub_projects ); ?>"><?php _e( 'Project / Stats', 'glotpress' ); ?></th>

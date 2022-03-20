@@ -348,7 +348,7 @@ $i = 0;
 	</form>
 </div>
 
-<div class="table-actions top">
+<div class="gp-table-actions">
 	<?php
 	if ( $can_approve ) {
 		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
@@ -359,7 +359,7 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
-<table id="translations" class="translations <?php echo esc_attr( $class_rtl ); ?>">
+<table id="translations" class="gp-table translations <?php echo esc_attr( $class_rtl ); ?>">
 	<thead>
 	<tr>
 		<?php
@@ -399,7 +399,7 @@ $i = 0;
 ?>
 </table>
 
-<div class="table-actions bottom">
+<div class="gp-table-actions">
 	<?php
 	if ( $can_approve ) {
 		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );

@@ -57,16 +57,16 @@ if ( $glossary_description ) {
 }
 ?>
 
-<table class="glossary" id="glossary">
+<table class="gp-table glossary" id="glossary">
 	<thead>
 		<tr>
-			<th style="width:20%"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
-			<th style="width:20%"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
-			<th style="width:20%"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
-			<th style="width:30%"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
-		<?php if ( $can_edit ) : ?>
-			<th style="width:10%">&mdash;</th>
-		<?php endif; ?>
+			<th class="gp-column-item"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-part-of-speech"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<?php if ( $can_edit ) : ?>
+				<th class="gp-column-actions">&mdash;</th>
+			<?php endif; ?>
 		</tr>
 	</thead>
 	<tbody>

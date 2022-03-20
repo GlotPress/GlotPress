@@ -71,7 +71,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
 	<h3><?php _e( 'Translations', 'glotpress' ); ?></h3>
-	<table class="translation-sets">
+	<table class="gp-table translation-sets">
 		<thead>
 			<tr>
 				<th><?php _e( 'Locale', 'glotpress' ); ?></th>

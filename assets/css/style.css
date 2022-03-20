@@ -35,6 +35,8 @@
 	--gp-color-canvas-inset: var( --gp-color-secondary-50 );
 	--gp-color-canvas-subtle: var( --gp-color-secondary-100 );
 
+	--gp-color-neutral-emphasis: var( --gp-color-secondary-500 );
+	--gp-color-neutral-muted: rgba( 122, 122, 122, .2 ); /* --gp-color-secondary-600 with 20% opacity */
 	--gp-color-accent-fg: var( --gp-color-primary-500 );
 	--gp-color-accent-emphasis: var( --gp-color-primary-700 );
 	--gp-color-success-fg: var( --gp-color-green );
@@ -596,103 +598,66 @@ button,
 	border-color: inherit;
 	border-collapse: collapse;
 	border-spacing: 0;
-	margin: 1rem 0;
 }
 
-table.translations,
-table.translation-sets,
-table.glossary,
-table.locale-sub-projects,
-table.permissions {
+table.gp-table {
 	width: 100%;
-}
-
-table.translations,
-table.translation-sets,
-table.glossary,
-table.locale-sub-projects,
-table.permissions,
-table.locales{
+	margin: 1rem 0;
 	border: 1px solid var( --gp-color-border-default );
 }
 
-table.translations thead th,
-table.translations tfoot th,
-table.translation-sets thead th,
-table.glossary thead th,
-table.locale-sub-projects thead th,
-table.permissions thead th,
-table.locales thead th {
+table.gp-table thead th,
+table.gp-table tfoot th {
 	font-weight: 600;
 	background-color: var( --gp-color-canvas-subtle );
 	border: 1px solid var( --gp-color-border-default );
 	padding: 0.5em 0.75em;
 }
 
-table.translations td,
-table.translations th,
-table.translation-sets td,
-table.translation-sets th,
-table.locales td,
-table.locales th,
-table.permissions td,
-table.permissions th,
-table.glossary th,
-table.glossary td,
-table.locale-sub-projects th,
-table.locale-sub-projects td {
+table.gp-table td,
+table.gp-table th  {
 	padding: 0.5em 0.75em;
 	border: 1px solid var( --gp-color-border-muted );
 	border-bottom: none;
 }
 
-table.translations td:first-child,
-table.translations th:first-child,
-table.translation-sets td:first-child,
-table.translation-sets th:first-child,
-table.locales td:first-child,
-table.locales th:first-child,
-table.permissions td:first-child,
-table.permissions th:first-child,
-table.glossary th:first-child,
-table.glossary td:first-child,
-table.locale-sub-projects th:first-child,
-table.locale-sub-projects td:first-child {
+table.gp-table td:first-child,
+table.gp-table th:first-child {
 	border-left: none;
 }
 
-table.translations td:last-child,
-table.translations th:last-child,
-table.translation-sets td:last-child,
-table.translation-sets th:last-child,
-table.locales td:last-child,
-table.locales th:last-child,
-table.permissions td:last-child,
-table.permissions th:last-child,
-table.glossary th:last-child,
-table.glossary td:last-child,
-table.locale-sub-projects th:last-child,
-table.locale-sub-projects td:last-child {
+table.gp-table td:last-child,
+table.gp-table th:last-child {
 	border-right: none;
 }
 
-table.translations tbody tr:hover,
-table.translation-sets tbody tr:hover,
-table.glossary tbody tr:hover,
-table.locale-sub-projects tbody tr:hover,
-table.permissions tbody tr:hover,
-table.locales tbody tr:hover {
+table.gp-table tbody tr:hover {
 	border-left: 1px solid var( --gp-color-accent-emphasis );
 	box-shadow: inset 2px 0 0 var( --gp-color-accent-emphasis );
 	background-color: var( --gp-color-canvas-subtle );
+}
+
+table.locales {
+	width: auto;
 }
 
 table.locales thead th {
 	width: 33%;
 }
 
-table.permissions thead th {
+table.permissions thead th,
+table.glossary .gp-column-item,
+table.glossary .gp-column-part-of-speech,
+table.glossary .gp-column-translation {
 	width: 20%;
+}
+
+table.glossary .gp-column-comments {
+	width: 30%;
+}
+
+table.glossary .gp-column-actions {
+	width: 10%;
 }
 
 table.translations td.translation ul {
@@ -715,7 +680,6 @@ table.translations td.priority {
 	text-align: center;
 	font-size: 1.3em;
 }
-
 
 table.translation-sets td.percent,
 table.locale-sub-projects td.percent {
@@ -903,10 +867,11 @@ table.translation-sets thead th:not(.tablesorter-header) {
 }
 
 span.context {
-	background-color: #aaa;
-	color: white;
-	font-size: 0.875rem;
-	padding: 0.3em;
+	display: inline-block;
+	background-color: var( --gp-color-neutral-muted );
+	color: var( --gp-color-fg-default );
+	font-size: 0.813rem;
+	padding: 0 0.375rem;
 }
 
 span.morethan90 {
@@ -1121,22 +1086,22 @@ ul a.delete {
 /*
  * Table actions
  */
-.table-actions {
+.gp-table-actions {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	column-gap: 1rem;
 }
 
-.table-actions .paging {
+.gp-table-actions .paging {
 	margin-left: auto;
 }
 
-.table-actions + table {
+.gp-table-actions + .gp-table {
 	margin-top: 0.5rem;
 }
 
-table + .table-actions {
+.gp-table + .gp-table-actions {
 	margin-top: -0.5rem;
 }
 

@@ -11,7 +11,7 @@ gp_tmpl_header();
 		<label for="locales-filter"><?php _e( 'Filter:', 'glotpress' ); ?> <input id="locales-filter" type="text" placeholder="<?php esc_attr_e( 'search', 'glotpress' ); ?>" /> </label>
 	</div>
 
-	<table class="locales">
+	<table class="gp-table locales">
 		<thead>
 		<tr>
 			<th><?php _e( 'Name (in English)', 'glotpress' ); ?></th>
