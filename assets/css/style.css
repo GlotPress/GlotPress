@@ -218,6 +218,10 @@ h3 {
 	content: '';
 }
 
+.breadcrumb a:not(:hover):not(:focus) {
+	text-decoration: none;
+}
+
 .breadcrumb span.active {
 	padding: 0.2em 0.3em;
 	margin-left: .3em;
@@ -267,7 +271,7 @@ h3 {
 	align-items: center;
 	justify-content: center;
 	padding-top: 1rem;
-	border-top: 1px solid var( --gp-color-border-muted );
+	border-top: 1px solid var( --gp-color-border-default );
 	margin: 2rem 1rem 1rem;
 	color: var( --gp-color-fg-muted );
 	font-size: 0.875rem;
@@ -469,7 +473,7 @@ button,
 .gp-content input[type="number"]:disabled,
 .gp-content textarea:disabled {
 	color: var( --gp-color-fg-muted ) !important;
-	border-color: var( --gp-color-border-subtle ) !important;
+	border-color: var( --gp-color-border-muted ) !important;
 	background-color: var( --gp-color-canvas-subtle ) !important;
 	box-shadow: none !important;
 }
@@ -513,7 +517,7 @@ button,
 
 .gp-content select:disabled {
 	color: var( --gp-color-fg-muted );
-	border-color: var( --gp-color-border-subtle );
+	border-color: var( --gp-color-border-muted );
 	background-color: var( --gp-color-canvas-subtle );
 	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='18' height='18'%3E%3Cpath fill='%23a3a3a3' d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'%3E%3C/path%3E%3C/svg%3E");
 	box-shadow: none;
@@ -575,7 +579,7 @@ button,
 
 .gp-content input[type="checkbox"]:disabled,
 .gp-content input[type="radio"]:disabled {
-	border-color: var( --gp-color-border-subtle );
+	border-color: var( --gp-color-border-muted );
 	background-color: var( --gp-color-canvas-subtle );
 }
 
@@ -672,35 +676,15 @@ table.locale-sub-projects td:last-child {
 	border-right: none;
 }
 
-table.translations tr:last-child,
-table.translations th:last-child,
-table.translation-sets td:last-child,
-table.translation-sets th:last-child,
-table.locales td:last-child,
-table.locales th:last-child,
-table.permissions td:last-child,
-table.permissions th:last-child,
-table.glossary th:last-child,
-table.glossary td:last-child,
-table.locale-sub-projects th:last-child,
-table.locale-sub-projects td:last-child {
-	border-right: none;
-}
-
-table.translations tbody tr:hover,
 table.translations tbody tr:hover,
 table.translation-sets tbody tr:hover,
 table.glossary tbody tr:hover,
 table.locale-sub-projects tbody tr:hover,
 table.permissions tbody tr:hover,
 table.locales tbody tr:hover {
+	border-left: 1px solid var( --gp-color-accent-emphasis );
 	box-shadow: inset 2px 0 0 var( --gp-color-accent-emphasis );
 	background-color: var( --gp-color-canvas-subtle );
-}
-
-table.translation-sets.tablesorter-glotpress thead th,
-table.locales.tablesorter-glotpress thead th {
-	padding-right: 20px;
 }
 
 table.locales thead th {
@@ -770,6 +754,7 @@ table.translations td.translation .translation-text {
 
 table.glossary tr.editor,
 table.translations tr.editor {
+	border-left: 1px solid var( --gp-color-accent-emphasis );
 	box-shadow: inset 2px 0 0 var( --gp-color-accent-emphasis );
 	background-color: var( --gp-color-canvas-inset ) !important;
 	display: none;
@@ -801,10 +786,12 @@ table.translations tr.preview.has-warnings td.original, div#legend div.has-warni
 
 /* Locale projects table */
 table.locale-sub-projects tbody tr:hover {
+	border-left: none;
 	box-shadow: none;
 }
 
 table.locale-sub-projects tbody tr:hover .set-name {
+	border-left: 1px solid var( --gp-color-accent-emphasis );
 	box-shadow: inset 2px 0 0 var( --gp-color-accent-emphasis );
 }
 
@@ -817,6 +804,7 @@ table.translation-sets .stats a,
 table.locale-sub-projects .stats a {
 	color: var( --gp-color-fg-default );
 	font-weight: 600;
+	display: block;
 }
 
 table.translation-sets .stats a:not(:hover):not(:focus),
@@ -861,6 +849,47 @@ table.permissions .user {
 	font-weight: 600;
 }
 
+/* Tables with sorting options */
+table.locales thead th:not(.tablesorter-header),
+table.translation-sets thead th:not(.tablesorter-header) {
+	padding-right: 1.1em; /* Avoids layout shift during initalisation */
+}
+
+.tablesorter-glotpress .tablesorter-header {
+	cursor: pointer;
+	padding-right: 1.5em;
+}
+
+.tablesorter-glotpress .tablesorter-header .tablesorter-header-inner {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: -1.5em;
+	white-space: nowrap;
+}
+
+.tablesorter-glotpress .tablesorter-headerUnSorted:not(:hover):not(:focus) .tablesorter-header-inner:after {
+	visibility: hidden;
+}
+
+.tablesorter-glotpress .tablesorter-header .tablesorter-header-inner:after {
+	content: "";
+	width: 1em;
+	height: 1em;
+	margin-left: 0.1em;
+	background: transparent url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath fill='%237a7a7a' d='M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z'%3E%3C/path%3E%3C/svg%3E") center no-repeat;
+}
+
+.tablesorter-glotpress .tablesorter-headerAsc .tablesorter-header-inner:after {
+	transform: rotate( 180deg );
+	transform-origin: center 9px;
+}
+
+.tablesorter-glotpress .tablesorter-header:focus {
+	outline: none;
+	box-shadow: inset 0 0 0 2px var( --gp-color-accent-emphasis );
+}
+
 /*
  * Misc.
  */
@@ -876,7 +905,7 @@ table.permissions .user {
 span.context {
 	background-color: #aaa;
 	color: white;
-	font-size: 100%;
+	font-size: 0.875rem;
 	padding: 0.3em;
 }
 
@@ -1053,7 +1082,7 @@ ul a.delete {
  */
 .paging {
 	display: flex;
-	gap: 0.5rem;
+	gap: 0.25rem;
 }
 
 .paging a,
@@ -1063,7 +1092,7 @@ ul a.delete {
 	min-width: 2rem;
 	height: 2rem;
 	line-height: 2rem;
-	border: 1px solid var( --gp-color-border-muted );
+	border: 1px solid var( --gp-color-border-default );
 	text-align: center;
 	padding: 0 0.4rem;
 	text-decoration: none;
@@ -1086,7 +1115,7 @@ ul a.delete {
 
 .paging .disabled {
 	color: var( --gp-color-fg-muted );
-	border-color: var( --gp-color-border-subtle );
+	border-color: var( --gp-color-border-muted );
 }
 
 /*
@@ -1472,12 +1501,18 @@ table.form-table td {
 /*
  *Media specific settings
  */
-@media (max-width: 800px) {
+@media (max-width: 799px) {
 	#sub-projects {
 		float: none;
+		width: auto;
+		margin: 0;
 	}
 
-	#translation-sets.with-sub-projects {
+	.with-sub-projects {
 		margin: 0;
+	}
+
+	.with-sub-projects #translation-sets {
+		float: none;
 	}
 }

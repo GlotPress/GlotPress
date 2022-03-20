@@ -8,7 +8,6 @@ gp_title(
 );
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
-gp_enqueue_style( 'tablesorter-theme' );
 $edit_link   = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
 $delete_link = gp_link_project_delete_get( $project, _x( '(delete)', 'project', 'glotpress' ) );
 
@@ -72,29 +71,25 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
 	<h3><?php _e( 'Translations', 'glotpress' ); ?></h3>
-	<table class="translation-sets tablesorter tablesorter-glotpress">
+	<table class="translation-sets">
 		<thead>
-			<tr class="tablesorter-headerRow">
-				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
-				<th class="header tablesorter-header tablesorter-headerDesc"><?php _e( 'Translated', 'glotpress' ); ?></th>
-				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
-				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
-				<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Waiting', 'glotpress' ); ?></th>
+			<tr>
+				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+				<th><?php _e( 'Waiting', 'glotpress' ); ?></th>
 				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-				<th class="header tablesorter-header tablesorter-headerUnSorted extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
+					<th class="extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
 		<?php
-		$class = '';
-
 		foreach ( $translation_sets as $set ) :
-			$class = ( 'odd' === $class ) ? 'even' : 'odd';
-
 		?>
-			<tr class="<?php echo esc_attr( $class ); ?>">
+			<tr>
 				<td>
 					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 					<?php
@@ -249,8 +244,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				0: {
 					sorter: 'text'
 				}
-			},
-			widgets: ['zebra']
+			}
 		});
 	});
 </script>
