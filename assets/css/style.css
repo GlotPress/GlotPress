@@ -85,6 +85,12 @@
 	--gp-color-btn-danger-hover-text: var( --gp-color-white );
 	--gp-color-btn-danger-hover-bg: var( --gp-color-red );
 	--gp-color-btn-danger-hover-border: var( --gp-color-red );
+
+	--gp-color-status-fuzzy-subtle: #fc6;
+	--gp-color-status-current-subtle: #e9ffd8;
+	--gp-color-status-old-subtle: #fee4f8;
+	--gp-color-status-waiting-subtle: #ffffc2;
+	--gp-color-status-rejected-subtle: #ff8e8e;
 }
 
 *,
@@ -724,24 +730,29 @@ table.translations tr.editor {
 	display: none;
 }
 
-table.translations tr.preview.status-fuzzy, #legend .status-fuzzy {
-	background-color: #FC6;
+table.translations tr.preview.status-fuzzy,
+#legend .status-fuzzy {
+	background-color: var( --gp-color-status-fuzzy-subtle );
 }
 
-table.translations tr.preview.status-current, #legend .status-current  {
-	background-color: #E9FFD8;
+table.translations tr.preview.status-current,
+#legend .status-current  {
+	background-color: var( --gp-color-status-current-subtle );
 }
 
-table.translations tr.preview.status-old, #legend .status-old {
-	background-color: #FEE4F8;
+table.translations tr.preview.status-old,
+#legend .status-old {
+	background-color: var( --gp-color-status-old-subtle );
 }
 
-table.translations tr.preview.status-waiting, #legend .status-waiting {
-	background-color: #FFFFC2;
+table.translations tr.preview.status-waiting,
+#legend .status-waiting {
+	background-color: var( --gp-color-status-waiting-subtle );
 }
 
-table.translations tr.preview.status-rejected, #legend .status-rejected {
-	background-color: #FF8E8E;
+table.translations tr.preview.status-rejected,
+#legend .status-rejected {
+	background-color: var( --gp-color-status-rejected-subtle );
 }
 
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
@@ -870,8 +881,10 @@ span.context {
 	display: inline-block;
 	background-color: var( --gp-color-neutral-muted );
 	color: var( --gp-color-fg-default );
-	font-size: 0.813rem;
+	font-size: 0.75rem;
+	font-weight: 500;
 	padding: 0 0.375rem;
+	border-radius: 2px;
 }
 
 span.morethan90 {
