@@ -348,7 +348,7 @@ $i = 0;
 	</form>
 </div>
 
-<div class="gp-table-actions">
+<div class="gp-table-actions top">
 	<?php
 	if ( $can_approve ) {
 		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
@@ -399,7 +399,7 @@ $i = 0;
 ?>
 </table>
 
-<div class="gp-table-actions">
+<div class="gp-table-actions bottom">
 	<?php
 	if ( $can_approve ) {
 		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
