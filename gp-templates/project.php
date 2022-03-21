@@ -74,14 +74,14 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 	<table class="gp-table translation-sets">
 		<thead>
 			<tr>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
-				<th><?php _e( 'Translated', 'glotpress' ); ?></th>
-				<th><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
-				<th><?php _e( 'Untranslated', 'glotpress' ); ?></th>
-				<th><?php _e( 'Waiting', 'glotpress' ); ?></th>
+				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="gp-column-percent"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+				<th class="gp-column-translated"><?php _e( 'Translated', 'glotpress' ); ?></th>
+				<th class="gp-column-fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+				<th class="gp-column-untranslated"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+				<th class="gp-column-waiting"><?php _e( 'Waiting', 'glotpress' ); ?></th>
 				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-					<th class="extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
+					<th class="gp-column-extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
 				<?php endif; ?>
 			</tr>
 		</thead>

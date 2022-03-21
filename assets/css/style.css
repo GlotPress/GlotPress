@@ -620,8 +620,8 @@ table.gp-table tfoot th {
 	padding: 0.5em 0.75em;
 }
 
-table.gp-table td,
-table.gp-table th  {
+table.gp-table tbody td,
+table.gp-table tbody th {
 	padding: 0.5em 0.75em;
 	border: 1px solid var( --gp-color-border-muted );
 	border-bottom: none;
@@ -662,8 +662,18 @@ table.glossary .gp-column-comments {
 	width: 30%;
 }
 
-table.glossary .gp-column-actions {
+table.permissions .gp-column-actions,
+table.glossary .gp-column-actions,
+table.translations .gp-column-actions {
 	width: 10%;
+}
+
+table.translations .gp-column-checkbox {
+	width: 2.813rem;
+}
+
+table.translations .gp-column-priority {
+	width: 4%;
 }
 
 table.translations td.translation ul {
@@ -684,7 +694,6 @@ table.translations td.checkbox {
 
 table.translations td.priority {
 	text-align: center;
-	font-size: 1.3em;
 }
 
 table.translation-sets td.percent,

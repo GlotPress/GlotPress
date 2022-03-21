@@ -13,11 +13,11 @@ gp_tmpl_header();
 
 	<table class="gp-table locales">
 		<thead>
-		<tr>
-			<th><?php _e( 'Name (in English)', 'glotpress' ); ?></th>
-			<th><?php _e( 'Native name', 'glotpress' ); ?></th>
-			<th><?php _e( 'Language code', 'glotpress' ); ?></th>
-		</tr>
+			<tr>
+				<th class="gp-column-english-name"><?php _e( 'Name (in English)', 'glotpress' ); ?></th>
+				<th class="gp-column-native-name"><?php _e( 'Native name', 'glotpress' ); ?></th>
+				<th class="gp-column-language-code"><?php _e( 'Language code', 'glotpress' ); ?></th>
+			</tr>
 		</thead>
 		<tbody>
 			<?php

@@ -24,11 +24,11 @@ gp_tmpl_header();
 	<table class="gp-table permissions">
 		<thead>
 			<tr>
-				<th><?php _e( 'User', 'glotpress' ); ?></th>
-				<th><?php _e( 'Permission', 'glotpress' ); ?></th>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _e( 'Slug', 'glotpress' ); ?></th>
-				<th>&mdash;</th>
+				<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
+				<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
+				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
+				<th class="gp-column-actions">&mdash;</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,11 +49,11 @@ gp_tmpl_header();
 	<table class="gp-table permissions">
 		<thead>
 			<tr>
-				<th><?php _e( 'User', 'glotpress' ); ?></th>
-				<th><?php _e( 'Permission', 'glotpress' ); ?></th>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _e( 'Slug', 'glotpress' ); ?></th>
-				<th><?php _e( 'Parent', 'glotpress' ); ?></th>
+				<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
+				<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
+				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
+				<th class="gp-column-parent"><?php _e( 'Parent', 'glotpress' ); ?></th>
 			</tr>
 		</thead>
 		<tbody>

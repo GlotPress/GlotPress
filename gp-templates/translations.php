@@ -365,14 +365,14 @@ $i = 0;
 		<?php
 		if ( $can_approve ) :
 			?>
-			<th class="checkbox" scope="row"><input type="checkbox" /></th>
+			<th class="gp-column-checkbox checkbox" scope="row"><input type="checkbox" /></th>
 			<?php
 		endif;
 		?>
-		<th class="priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
-		<th class="original"><?php _e( 'Original string', 'glotpress' ); ?></th>
-		<th class="translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
-		<th class="actions">&mdash;</th>
+		<th class="gp-column-priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
+		<th class="gp-column-original"><?php _e( 'Original string', 'glotpress' ); ?></th>
+		<th class="gp-column-translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
+		<th class="gp-column-actions">&mdash;</th>
 	</tr>
 	</thead>
 <?php
