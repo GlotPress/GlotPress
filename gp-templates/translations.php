@@ -241,6 +241,7 @@ $i = 0;
 							'current'                                     => __( 'Current only', 'glotpress' ),
 							'old'                                         => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
 							'waiting'                                     => __( 'Waiting approval', 'glotpress' ),
+							'waiting_or_fuzzy'                            => __( 'Waiting approval, including fuzzy', 'glotpress' ),
 							'rejected'                                    => __( 'Rejected', 'glotpress' ),
 							'untranslated'                                => __( 'Without current translation', 'glotpress' ),
 							'either'                                      => __( 'Any', 'glotpress' ),
