@@ -586,12 +586,15 @@ class GP_Translation extends GP_Thing {
 				$member = "translation_$i";
 				unset( $row->$member );
 			}
-			$row->row_id    = $row->original_id . ( $row->id ? "-$row->id" : '' );
+
+			$row->row_id = $row->original_id . ( $row->id ? "-$row->id" : '' );
+
 			if ( isset( $row->priority ) ) {
-				$row->flags     = array(
+				$row->flags = array(
 					'priority=' . GP_Original::$priorities[ $row->priority ],
 				);
 			}
+
 			$translations[] = new Translation_Entry( (array) $row );
 		}
 		unset( $rows );
