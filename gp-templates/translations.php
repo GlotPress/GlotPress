@@ -243,6 +243,7 @@ $i = 0;
 							'waiting'                                     => __( 'Waiting approval', 'glotpress' ),
 							'waiting_or_fuzzy'                            => __( 'Waiting approval, including fuzzy', 'glotpress' ),
 							'rejected'                                    => __( 'Rejected', 'glotpress' ),
+							'fuzzy'                                       => __( 'Fuzzy', 'glotpress' ),
 							'untranslated'                                => __( 'Without current translation', 'glotpress' ),
 							'either'                                      => __( 'Any', 'glotpress' ),
 						),
