@@ -126,8 +126,7 @@ foreach ( $projects_data as $project_id => $sub_projects ) :
 								$set_data->project_path,
 								gp_url_join( $locale->slug, $set_data->slug ),
 								array(
-									'filters[translated]' => 'yes',
-									'filters[status]'     => 'current',
+									'filters[status]' => 'current',
 								)
 							),
 							number_format_i18n( $set_data->current_count )
@@ -169,8 +168,7 @@ foreach ( $projects_data as $project_id => $sub_projects ) :
 								$set_data->project_path,
 								gp_url_join( $locale->slug, $set_data->slug ),
 								array(
-									'filters[translated]' => 'yes',
-									'filters[status]'     => 'waiting',
+									'filters[status]' => 'waiting',
 								)
 							),
 							number_format_i18n( $set_data->waiting_count )
