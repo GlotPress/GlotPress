@@ -320,4 +320,29 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$translation = GP::$translation->find_one( array( 'id' => $translation->id ) );
 		$this->assertFalse( $translation );
 	}
+
+	/**
+	 * @ticket gh-1340
+	 */
+	function test_import_should_respect_priority_in_flags() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
+
+		$translations = $this->create_translations_with(
+			array(
+				array( 'singular' => 'baba', 'flags' => array( 'low-priority' ) ),
+				array( 'singular' => 'baba baba' ),
+				array( 'singular' => 'baba baba baba', 'flags' => array( 'high-priority' ) ),
+			)
+		);
+
+		$original->import_for_project( $project, $translations );
+
+		$originals_for_project = $original->by_project_id( $project->id );
+		$this->assertEquals( 3, count( $originals_for_project ) );
+		$this->assertEquals( -1, $originals_for_project[0]->priority );
+		$this->assertEquals( 0, $originals_for_project[1]->priority );
+		$this->assertEquals( 1, $originals_for_project[2]->priority );
+	}
+
 }
