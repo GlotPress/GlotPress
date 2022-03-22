@@ -158,7 +158,6 @@ class GP_Original extends GP_Thing {
 		return 0;
 	}
 
-
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
 
@@ -194,9 +193,6 @@ class GP_Original extends GP_Thing {
 					'singular' => $original->singular,
 					'plural'   => $original->plural,
 					'context'  => $original->context,
-					'flags'    => array(
-						'priority=' . self::$priorities[ $original->priority ],
-					)
 				)
 			);
 
@@ -232,8 +228,8 @@ class GP_Original extends GP_Thing {
 			);
 
 			// Set the Priority if specified as a flag.
-			$priority = parse_fields_flags_for_field( $entry->flag, 'priority' );
-			if ( $priority ) {
+			$priority = parse_fields_flags_for_field( $entry->flags, 'priority' );
+			if ( false !== $priority && in_array( $priority, self::$priorities ) ) {
 				$data['priority'] = $priority;
 			}
 
@@ -299,8 +295,8 @@ class GP_Original extends GP_Thing {
 			);
 
 			// Set the Priority if specified as a flag.
-			$priority = parse_fields_flags_for_field( $entry->flag, 'priority' );
-			if ( $priority ) {
+			$priority = parse_fields_flags_for_field( $entry->flags, 'priority' );
+			if ( false !== $priority && in_array( $priority, self::$priorities ) ) {
 				$data['priority'] = $priority;
 			}
 
