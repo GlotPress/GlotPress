@@ -194,6 +194,9 @@ class GP_Original extends GP_Thing {
 					'singular' => $original->singular,
 					'plural'   => $original->plural,
 					'context'  => $original->context,
+					'flags'    => array(
+						'priority=' . self::$priorities[ $original->priority ],
+					)
 				)
 			);
 
@@ -227,6 +230,12 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active',
 			);
+
+			// Set the Priority if specified as a flag.
+			$priority = parse_fields_flags_for_field( $entry->flag, 'priority' );
+			if ( $priority ) {
+				$data['priority'] = $priority;
+			}
 
 			/**
 			 * Filter the data of an original being imported or updated.
@@ -288,6 +297,12 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active',
 			);
+
+			// Set the Priority if specified as a flag.
+			$priority = parse_fields_flags_for_field( $entry->flag, 'priority' );
+			if ( $priority ) {
+				$data['priority'] = $priority;
+			}
 
 			/** This filter is documented in gp-includes/things/original.php */
 			$data = apply_filters( 'gp_import_original_array', $data, $entry );
