@@ -252,8 +252,7 @@ class GP_Translation_Set extends GP_Thing {
 			$this,
 			'no-limit',
 			array(
-				'status'     => 'current',
-				'translated' => 'yes',
+				'status' => 'current',
 			)
 		);
 		$existing_translations['current'] = new Translations();
@@ -307,8 +306,7 @@ class GP_Translation_Set extends GP_Thing {
 					$this,
 					'no-limit',
 					array(
-						'status'     => $entry->status,
-						'translated' => 'yes',
+						'status' => $entry->status,
 					)
 				);
 				$existing_translations[ $entry->status ] = new Translations();

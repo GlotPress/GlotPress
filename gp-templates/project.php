@@ -107,8 +107,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 							$project,
 							gp_url_join( $set->locale, $set->slug ),
 							array(
-								'filters[translated]' => 'yes',
-								'filters[status]'     => 'current',
+								'filters[status]' => 'current',
 							)
 						),
 						number_format_i18n( $set->current_count )
@@ -122,8 +121,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 							$project,
 							gp_url_join( $set->locale, $set->slug ),
 							array(
-								'filters[translated]' => 'yes',
-								'filters[status]'     => 'fuzzy',
+								'filters[status]' => 'fuzzy',
 							)
 						),
 						number_format_i18n( $set->fuzzy_count )
@@ -151,8 +149,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 							$project,
 							gp_url_join( $set->locale, $set->slug ),
 							array(
-								'filters[translated]' => 'yes',
-								'filters[status]'     => 'waiting',
+								'filters[status]' => 'waiting',
 							)
 						),
 						number_format_i18n( $set->waiting_count )

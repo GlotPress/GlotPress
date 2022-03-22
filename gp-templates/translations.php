@@ -112,8 +112,7 @@ $i = 0;
 		);
 
 		$translated_filters = array(
-			'filters[translated]' => 'yes',
-			'filters[status]'     => 'current',
+			'filters[status]' => 'current',
 		);
 
 		$is_current_filter = array() === array_diff( $translated_filters, $filters_and_sort ) && false === $additional_filters && ! $warnings_filter;
@@ -141,8 +140,7 @@ $i = 0;
 		);
 
 		$waiting_filters = array(
-			'filters[translated]' => 'yes',
-			'filters[status]'     => 'waiting',
+			'filters[status]' => 'waiting',
 		);
 
 		$is_current_filter = array() === array_diff( $waiting_filters, $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
@@ -156,8 +154,7 @@ $i = 0;
 		);
 
 		$fuzzy_filters = array(
-			'filters[translated]' => 'yes',
-			'filters[status]'     => 'fuzzy',
+			'filters[status]' => 'fuzzy',
 		);
 
 		$is_current_filter = array() === array_diff( $fuzzy_filters, $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
