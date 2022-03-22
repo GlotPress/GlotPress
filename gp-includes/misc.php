@@ -680,28 +680,3 @@ function gp_get_sort_by_fields() {
 function gp_set_translations_import_max_memory_limit() {
 	return '256M';
 }
-
-/**
- * Parse an array of flags looking for a flag/value.
- *
- * If the field is in the format of 'field=value', only the value will be returned.
- * If the field is in the format of 'field', only the field will be returned.
- *
- * @param Translation_Entry $entry The translation entry.
- * @return string|false The field value, or false on failure.
- */
-function parse_fields_flags_for_field( $flags, $field ) {
-	foreach ( array_reverse( $flags ) as $flag ) {
-		parse_str( $flag, $fields );
-
-		if ( isset( $fields[ $field ] ) ) {
-			if ( '' === $fields[ $field ] ) {
-				return $field;
-			}
-
-			return $fields[ $field ];
-		}
-	}
-
-	return false;
-}

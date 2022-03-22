@@ -228,9 +228,13 @@ class GP_Original extends GP_Thing {
 			);
 
 			// Set the Priority if specified as a flag.
-			$priority = parse_fields_flags_for_field( $entry->flags, 'priority' );
-			if ( false !== $priority && in_array( $priority, self::$priorities ) ) {
-				$data['priority'] = $priority;
+			if ( $entry->flags ) {
+				foreach ( self::$priorities as $priority => $text ) {
+					if ( in_array( "priority={$text}", $entry->flags ) ) {
+						$data['priority'] = $priority;
+						break;
+					}
+				}
 			}
 
 			/**
@@ -295,9 +299,13 @@ class GP_Original extends GP_Thing {
 			);
 
 			// Set the Priority if specified as a flag.
-			$priority = parse_fields_flags_for_field( $entry->flags, 'priority' );
-			if ( false !== $priority && in_array( $priority, self::$priorities ) ) {
-				$data['priority'] = $priority;
+			if ( $entry->flags ) {
+				foreach ( self::$priorities as $priority => $text ) {
+					if ( in_array( "priority={$text}", $entry->flags ) ) {
+						$data['priority'] = $priority;
+						break;
+					}
+				}
 			}
 
 			/** This filter is documented in gp-includes/things/original.php */
