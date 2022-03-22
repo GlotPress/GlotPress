@@ -250,7 +250,7 @@ class GP_Original extends GP_Thing {
 			 *                              are separated by spaces.
 			 *     @type string $status     Status of the imported original.
 			 * }
-			 * @param Translation_Entry $entry The Translation entry.
+			 * @param Translation_Entry $entry The translation entry.
 			 */
 			$data = apply_filters( 'gp_import_original_array', $data, $entry );
 
