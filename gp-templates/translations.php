@@ -208,8 +208,12 @@ $i = 0;
 		</div>
 		<div class="filters-expanded filters hidden">
 			<div class="filters-expanded-section">
-				<label for="filters[term]" class="filter-title"><?php _e( 'Term:', 'glotpress' ); ?></label><br />
-				<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /><br />
+				<fieldset>
+					<legend class="screen-reader-text"><?php _e( 'Search:', 'glotpress' ); ?></legend>
+					<label for="filters[term]" class="filter-title"><?php _e( 'Search Term:', 'glotpress' ); ?></label><br />
+					<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /><br />
+					<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>>&nbsp;<label for='filters[case_sensitive][yes]'><?php _e( 'Case-sensitive search', 'glotpress' ); ?></label>
+				</fieldset>
 
 				<fieldset>
 					<legend class="filter-title"><?php _e( 'Term Scope:', 'glotpress' ); ?></legend>
@@ -259,8 +263,7 @@ $i = 0;
 					<input type="checkbox" name="filters[with_comment]" value="yes" id="filters[with_comment][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_comment' ) ); ?>>&nbsp;<label for='filters[with_comment][yes]'><?php _e( 'With comment', 'glotpress' ); ?></label><br />
 					<input type="checkbox" name="filters[with_context]" value="yes" id="filters[with_context][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_context' ) ); ?>>&nbsp;<label for='filters[with_context][yes]'><?php _e( 'With context', 'glotpress' ); ?></label><br />
 					<input type="checkbox" name="filters[warnings]" value="yes" id="filters[warnings][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'warnings' ) ); ?>>&nbsp;<label for='filters[warnings][yes]'><?php _e( 'With warnings', 'glotpress' ); ?></label><br />
-					<input type="checkbox" name="filters[with_plural]" value="yes" id="filters[with_plural][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_plural' ) ); ?>>&nbsp;<label for='filters[with_plural][yes]'><?php _e( 'With plural', 'glotpress' ); ?></label><br />
-					<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>>&nbsp;<label for='filters[case_sensitive][yes]'><?php _e( 'Case sensitive', 'glotpress' ); ?></label>
+					<input type="checkbox" name="filters[with_plural]" value="yes" id="filters[with_plural][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'with_plural' ) ); ?>>&nbsp;<label for='filters[with_plural][yes]'><?php _e( 'With plural', 'glotpress' ); ?></label>
 				</fieldset>
 			</div>
 

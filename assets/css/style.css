@@ -563,7 +563,7 @@ button,
 	width: 0.8rem;
 	height: 0.8rem;
 	transform: scale(0);
-	box-shadow: inset 1em 1em var( --gp-color-accent-fg );
+	box-shadow: inset 1rem 1rem var( --gp-color-accent-fg );
 }
 
 .gp-content input[type="checkbox"]::before {
@@ -1187,8 +1187,8 @@ form.filters-toolbar a.revealing.open {
 }
 
 .filters-expanded {
-	font-size: 90%;
-	padding: 0.8em;
+	font-size: 0.938rem;
+	padding: 0.5rem 0.75rem;
 	margin-bottom: 0.5em;
 	background-color: var( --gp-color-canvas-subtle );
 	border: 1px solid var( --gp-color-border-default );
@@ -1204,6 +1204,14 @@ form.filters-toolbar a.revealing.open {
 	padding: 0;
 	margin: 0;
 	border: 0;
+}
+
+.filters-expanded-section fieldset legend {
+	padding: 0;
+}
+
+.filters-expanded-section fieldset + fieldset {
+	margin-top: 1rem;
 }
 
 .filters-expanded-actions {
@@ -1369,15 +1377,20 @@ table.form-table td {
 }
 
 /* jQuery UI */
+/* Hide visually but not from screen readers */
+.screen-reader-text,
 .ui-helper-hidden-accessible {
 	border: 0;
-	clip: rect(0 0 0 0);
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
 	height: 1px;
 	margin: -1px;
 	overflow: hidden;
 	padding: 0;
 	position: absolute;
 	width: 1px;
+	word-wrap: normal !important;
 }
 
 .ui-tooltip {
