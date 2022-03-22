@@ -591,7 +591,7 @@ class GP_Translation extends GP_Thing {
 
 			if ( isset( $row->priority ) ) {
 				$row->flags = array(
-					'priority=' . GP_Original::$priorities[ $row->priority ],
+					GP_Original::$priorities[ $row->priority ] . '-priority',
 				);
 			}
 
