@@ -1146,7 +1146,7 @@ ul a.delete {
  * Filter menu
  */
 .filter-toolbar {
-	margin-bottom: .8em;
+	margin-bottom: .8rem;
 }
 
 /*
@@ -1183,13 +1183,15 @@ form.filters-toolbar strong.separator {
 }
 
 form.filters-toolbar a.revealing.open {
-	font-weight: bold;
+	text-decoration: underline !important;
+	text-decoration-thickness: max( 3px, 0.188rem ) !important;
+	text-decoration-skip-ink: none !important;
 }
 
 .filters-expanded {
 	font-size: 0.938rem;
 	padding: 0.5rem 0.75rem;
-	margin-bottom: 0.5em;
+	margin-top: 0.8rem;
 	background-color: var( --gp-color-canvas-subtle );
 	border: 1px solid var( --gp-color-border-default );
 	border-radius: 2px;
