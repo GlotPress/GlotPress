@@ -348,29 +348,31 @@ $i = 0;
 	</form>
 </div>
 
-<?php
-if ( $can_approve ) {
-	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
-}
+<div class="gp-table-actions top">
+	<?php
+	if ( $can_approve ) {
+		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
+	}
 
-echo gp_pagination( $page, $per_page, $total_translations_count );
+	echo gp_pagination( $page, $per_page, $total_translations_count );
+	?>
+</div>
 
-$class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
-?>
-<table id="translations" class="translations clear<?php echo esc_attr( $class_rtl ); ?>">
+<?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
+<table id="translations" class="gp-table translations <?php echo esc_attr( $class_rtl ); ?>">
 	<thead>
 	<tr>
 		<?php
 		if ( $can_approve ) :
 			?>
-			<th class="checkbox"><input type="checkbox" /></th>
+			<th class="gp-column-checkbox checkbox" scope="row"><input type="checkbox" /></th>
 			<?php
 		endif;
 		?>
-		<th class="priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
-		<th class="original"><?php _e( 'Original string', 'glotpress' ); ?></th>
-		<th class="translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
-		<th class="actions">&mdash;</th>
+		<th class="gp-column-priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
+		<th class="gp-column-original"><?php _e( 'Original string', 'glotpress' ); ?></th>
+		<th class="gp-column-translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
+		<th class="gp-column-actions">&mdash;</th>
 	</tr>
 	</thead>
 <?php
@@ -396,100 +398,106 @@ $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : '';
 	endif;
 ?>
 </table>
-<?php
-if ( $can_approve ) {
-	gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
-}
 
-echo gp_pagination( $page, $per_page, $total_translations_count );
-?>
-<div id="legend" class="clearfix">
-	<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
-<?php
-	foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
-?>
-	<div class="box status-<?php echo esc_attr( $legend_status ); ?>"></div>
-	<div>
-<?php
-		switch ( $legend_status ) {
-			case 'current':
-				_e( 'Current', 'glotpress' );
-				break;
-			case 'waiting':
-				_e( 'Waiting', 'glotpress' );
-				break;
-			case 'fuzzy':
-				_e( 'Fuzzy', 'glotpress' );
-				break;
-			case 'old':
-				_e( 'Old', 'glotpress' );
-				break;
-			case 'rejected':
-				_e( 'Rejected', 'glotpress' );
-				break;
-			default:
-				echo esc_html( $legend_status );
-		}
-?>
-	</div><?php endforeach; ?>
-	<div class="box has-warnings"></div>
-	<div><?php _e( 'With warnings', 'glotpress' ); ?></div>
-</div>
-<p class="clear actionlist">
+<div class="gp-table-actions bottom">
 	<?php
-		$footer_links = array();
-		if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {
-			$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import Translations', 'glotpress' ) );
-		}
+	if ( $can_approve ) {
+		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
+	}
+	?>
+	<div id="legend">
+		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
+		<?php
+		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
+			?>
+			<div class="box status-<?php echo esc_attr( $legend_status ); ?>"></div>
+			<div>
+				<?php
+				switch ( $legend_status ) {
+					case 'current':
+						_e( 'Current', 'glotpress' );
+						break;
+					case 'waiting':
+						_e( 'Waiting', 'glotpress' );
+						break;
+					case 'fuzzy':
+						_e( 'Fuzzy', 'glotpress' );
+						break;
+					case 'old':
+						_e( 'Old', 'glotpress' );
+						break;
+					case 'rejected':
+						_e( 'Rejected', 'glotpress' );
+						break;
+					default:
+						echo esc_html( $legend_status );
+				}
+				?>
+			</div>
+			<?php
+		endforeach;
+		?>
+		<div class="box has-warnings"></div>
+		<div><?php _e( 'With warnings', 'glotpress' ); ?></div>
+	</div>
+	<?php echo gp_pagination( $page, $per_page, $total_translations_count ); ?>
+</div>
 
-		/**
-		 * The 'default' filter is 'Current/waiting/fuzzy + untranslated (All)', however that is not
-		 * the default action when exporting so make sure to set it on the export link if no filter
-		 * has been activated by the user.
-		 */
-		if ( ! array_key_exists( 'status', $filters ) ) {
-			$filters['status'] = 'current_or_waiting_or_fuzzy_or_untranslated';
-		}
+<p class="actionlist">
+	<?php
+	$footer_links = array();
+	if ( ( isset( $can_import_current ) && $can_import_current ) || ( isset( $can_import_waiting ) && $can_import_waiting ) ) {
+		$footer_links[] = gp_link_get( gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'import-translations' ) ), __( 'Import Translations', 'glotpress' ) );
+	}
 
-		$export_url     = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
-		$export_link    = gp_link_get(
-			$export_url,
-			__( 'Export', 'glotpress' ),
-			array(
-				'id'      => 'export',
-				'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ),
-			)
-		);
-		$format_options = array();
-		foreach ( GP::$formats as $slug => $format ) {
-			$format_options[ $slug ] = $format->name;
-		}
-		$what_dropdown   = gp_select(
-			'what-to-export',
-			array(
-				'all'      => _x( 'all current', 'export choice', 'glotpress' ),
-				'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
-			),
-			'all'
-		);
-		$format_dropdown = gp_select( 'export-format', $format_options, 'po' );
-		/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
-		$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );
+	/**
+	 * The 'default' filter is 'Current/waiting/fuzzy + untranslated (All)', however that is not
+	 * the default action when exporting so make sure to set it on the export link if no filter
+	 * has been activated by the user.
+	 */
+	if ( ! array_key_exists( 'status', $filters ) ) {
+		$filters['status'] = 'current_or_waiting_or_fuzzy_or_untranslated';
+	}
 
-		/**
-		 * Filter footer links in translations.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param array              $footer_links    Default links.
-		 * @param GP_Project         $project         The current project.
-		 * @param GP_Locale          $locale          The current locale.
-		 * @param GP_Translation_Set $translation_set The current translation set.
-		 */
-		$footer_links = apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set );
+	$export_url     = gp_url_project( $project, array( $locale->slug, $translation_set->slug, 'export-translations' ) );
+	$export_link    = gp_link_get(
+		$export_url,
+		__( 'Export', 'glotpress' ),
+		array(
+			'id'      => 'export',
+			'filters' => add_query_arg( array( 'filters' => $filters ), $export_url ),
+		)
+	);
+	$format_options = array();
+	foreach ( GP::$formats as $slug => $format ) {
+		$format_options[ $slug ] = $format->name;
+	}
+	$what_dropdown   = gp_select(
+		'what-to-export',
+		array(
+			'all'      => _x( 'all current', 'export choice', 'glotpress' ),
+			'filtered' => _x( 'only matching the filter', 'export choice', 'glotpress' ),
+		),
+		'all'
+	);
+	$format_dropdown = gp_select( 'export-format', $format_options, 'po' );
+	/* translators: 1: export 2: what to export dropdown (all/filtered) 3: export format */
+	$footer_links[] = sprintf( __( '%1$s %2$s as %3$s', 'glotpress' ), $export_link, $what_dropdown, $format_dropdown );
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo implode( ' &bull; ', $footer_links );
+	/**
+	 * Filter footer links in translations.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array              $footer_links    Default links.
+	 * @param GP_Project         $project         The current project.
+	 * @param GP_Locale          $locale          The current locale.
+	 * @param GP_Translation_Set $translation_set The current translation set.
+	 */
+	$footer_links = apply_filters( 'gp_translations_footer_links', $footer_links, $project, $locale, $translation_set );
+
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo implode( ' &bull; ', $footer_links );
 	?>
 </p>
 <?php

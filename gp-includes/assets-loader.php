@@ -15,10 +15,7 @@ function gp_register_default_styles() {
 	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
-	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220319' );
-
-	// Register the table sorter theme style.
-	wp_register_style( 'tablesorter-theme', $url . '/tablesorter.theme.glotpress' . $suffix, array(), '20210429' );
+	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220320' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );

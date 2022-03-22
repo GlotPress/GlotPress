@@ -26,7 +26,7 @@ jQuery( function( $ ) {
 		}
 	} );
 
-	$( 'form.filters-toolbar.bulk-actions' ).submit( function() {
+	$( 'form.bulk-actions' ).submit( function() {
 		var	row_ids = $( 'input:checked', $( 'table#translations th.checkbox' ) ).map( function() {
 			return $( this ).parents( 'tr.preview' ).attr( 'row' );
 		} ).get().join( ',' );

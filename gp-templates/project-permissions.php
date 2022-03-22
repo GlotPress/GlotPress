@@ -21,20 +21,20 @@ gp_tmpl_header();
 <h4 id="validators"><?php _e( 'Validators for this project', 'glotpress' ); ?></h4>
 	<?php endif; ?>
 
-	<table class="permissions">
+	<table class="gp-table permissions">
 		<thead>
 			<tr>
-				<th><?php _e( 'User', 'glotpress' ); ?></th>
-				<th><?php _e( 'Permission', 'glotpress' ); ?></th>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _e( 'Slug', 'glotpress' ); ?></th>
-				<th>&mdash;</th>
+				<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
+				<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
+				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
+				<th class="gp-column-actions">&mdash;</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ( $permissions as $permission ) : ?>
 				<tr>
-					<td><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
+					<td class="user"><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
 					<td><?php echo esc_html( $permission->action ); ?></td>
 					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
 					<td><?php echo esc_html( $permission->set_slug ); ?></td>
@@ -46,14 +46,14 @@ gp_tmpl_header();
 	<?php endif; ?>
 	<?php if ( $parent_permissions ) : ?>
 <h4 id="validators"><?php _e( 'Validators for parent projects', 'glotpress' ); ?></h4>
-	<table class="permissions">
+	<table class="gp-table permissions">
 		<thead>
 			<tr>
-				<th><?php _e( 'User', 'glotpress' ); ?></th>
-				<th><?php _e( 'Permission', 'glotpress' ); ?></th>
-				<th><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th><?php _e( 'Slug', 'glotpress' ); ?></th>
-				<th><?php _e( 'Parent', 'glotpress' ); ?></th>
+				<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
+				<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
+				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+				<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
+				<th class="gp-column-parent"><?php _e( 'Parent', 'glotpress' ); ?></th>
 			</tr>
 		</thead>
 		<tbody>
