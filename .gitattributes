@@ -5,6 +5,7 @@
 *.po text eol=lf
 
 /.github export-ignore
+/.wordpress-org export-ignore
 /bin export-ignore
 /tests export-ignore
 .editorconfig export-ignore
