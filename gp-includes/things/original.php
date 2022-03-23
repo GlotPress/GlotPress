@@ -158,7 +158,6 @@ class GP_Original extends GP_Thing {
 		return 0;
 	}
 
-
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
 
@@ -228,6 +227,16 @@ class GP_Original extends GP_Thing {
 				'status'     => '+active',
 			);
 
+			// Set the Priority if specified as a flag.
+			if ( $entry->flags ) {
+				foreach ( self::$priorities as $priority => $text ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
+						$data['priority'] = $priority;
+						break;
+					}
+				}
+			}
+
 			/**
 			 * Filter the data of an original being imported or updated.
 			 *
@@ -288,6 +297,16 @@ class GP_Original extends GP_Thing {
 				'references' => implode( ' ', $entry->references ),
 				'status'     => '+active',
 			);
+
+			// Set the Priority if specified as a flag.
+			if ( $entry->flags ) {
+				foreach ( self::$priorities as $priority => $text ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
+						$data['priority'] = $priority;
+						break;
+					}
+				}
+			}
 
 			/** This filter is documented in gp-includes/things/original.php */
 			$data = apply_filters( 'gp_import_original_array', $data, $entry );

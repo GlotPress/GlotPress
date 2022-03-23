@@ -320,4 +320,32 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$translation = GP::$translation->find_one( array( 'id' => $translation->id ) );
 		$this->assertFalse( $translation );
 	}
+
+	/**
+	 * @ticket gh-1340
+	 */
+	function test_import_should_respect_priority_in_flags() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
+
+		$translations = $this->create_translations_with(
+			array(
+				array( 'singular' => 'baba', 'flags' => array( 'gp-priority: low' ) ),
+				array( 'singular' => 'baba baba' ),
+				array( 'singular' => 'baba baba baba', 'flags' => array( 'gp-priority: high' ) ),
+				array( 'singular' => 'priority flag should be ignored.', 'flags' => array( 'gp-priority: unexpected' ) ),
+			)
+		);
+
+		$original->import_for_project( $project, $translations );
+
+		$originals_for_project = $original->by_project_id( $project->id );
+		$this->assertEquals( 4, count( $originals_for_project ) );
+
+		$this->assertEquals( -1, $originals_for_project[0]->priority, 'Existing string should have been updated to be low-priority.' );
+		$this->assertEquals( 0, $originals_for_project[1]->priority, 'New string should have imported as normal priority.' );
+		$this->assertEquals( 1, $originals_for_project[2]->priority, 'New string should have imported as high priority.' );
+		$this->assertEquals( 0, $originals_for_project[3]->priority, 'New string with invalid priority flag should have imported as normal priority.' );
+	}
+
 }
