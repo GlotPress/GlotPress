@@ -333,16 +333,19 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 				array( 'singular' => 'baba', 'flags' => array( 'gp-priority: low' ) ),
 				array( 'singular' => 'baba baba' ),
 				array( 'singular' => 'baba baba baba', 'flags' => array( 'gp-priority: high' ) ),
+				array( 'singular' => 'priority flag should be ignored.', 'flags' => array( 'gp-priority: unexpected' ) ),
 			)
 		);
 
 		$original->import_for_project( $project, $translations );
 
 		$originals_for_project = $original->by_project_id( $project->id );
-		$this->assertEquals( 3, count( $originals_for_project ) );
-		$this->assertEquals( -1, $originals_for_project[0]->priority );
-		$this->assertEquals( 0, $originals_for_project[1]->priority );
-		$this->assertEquals( 1, $originals_for_project[2]->priority );
+		$this->assertEquals( 4, count( $originals_for_project ) );
+
+		$this->assertEquals( -1, $originals_for_project[0]->priority, 'Existing string should have been updated to be low-priority.' );
+		$this->assertEquals( 0, $originals_for_project[1]->priority, 'New string should have imported as normal priority.' );
+		$this->assertEquals( 1, $originals_for_project[2]->priority, 'New string should have imported as high priority.' );
+		$this->assertEquals( 0, $originals_for_project[3]->priority, 'New string with invalid priority flag should have imported as normal priority.' );
 	}
 
 }
