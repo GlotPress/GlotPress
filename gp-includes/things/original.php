@@ -230,7 +230,7 @@ class GP_Original extends GP_Thing {
 			// Set the Priority if specified as a flag.
 			if ( $entry->flags ) {
 				foreach ( self::$priorities as $priority => $text ) {
-					if ( in_array( "{$text}-priority", $entry->flags ) ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
 						$data['priority'] = $priority;
 						break;
 					}
@@ -301,7 +301,7 @@ class GP_Original extends GP_Thing {
 			// Set the Priority if specified as a flag.
 			if ( $entry->flags ) {
 				foreach ( self::$priorities as $priority => $text ) {
-					if ( in_array( "{$text}-priority", $entry->flags ) ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
 						$data['priority'] = $priority;
 						break;
 					}

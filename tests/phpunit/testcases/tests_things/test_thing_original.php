@@ -330,9 +330,9 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 
 		$translations = $this->create_translations_with(
 			array(
-				array( 'singular' => 'baba', 'flags' => array( 'low-priority' ) ),
+				array( 'singular' => 'baba', 'flags' => array( 'gp-priority: low' ) ),
 				array( 'singular' => 'baba baba' ),
-				array( 'singular' => 'baba baba baba', 'flags' => array( 'high-priority' ) ),
+				array( 'singular' => 'baba baba baba', 'flags' => array( 'gp-priority: high' ) ),
 			)
 		);
 
