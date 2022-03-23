@@ -1,11 +1,34 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+**Breaking Changes**
+
+* Revert support for locale variants. ([#1327])
+* Design: Reduce reliance on default browser style by updating link and button styles. ([#1332])
+* Design: Unify and simplify styling for all tables. ([#1338])
+
+**Features**
+
+* Add a 'Waiting approval, including fuzzy' status filter option for translations. ([#1344])
+* Add a 'Fuzzy' status filter option for translations. ([#1345])
+* Allow specifying the priority for PO import/exports in the flags. Props @dd32 ([#1341])
+* Developers: Add the entry as context to the `gp_import_original_array` filter. Props @dd32 ([#1342])
+* Locales: Add definition for Catalan Valencian. Props @xavivars ([#1305])
+
+**Bugfixes***
+
+* Remove unused `translated=yes` filter for translations. ([#1343])
+* Fix copy original action for plurals. ([#1326])
+* Locales: Update native name for Chinese (Hong Kong). Props @ckykenken ([#1309])
+* Show new lines and tab characters and wrap non-translatable items for strings with plurals too. Props @vlad-timotei ([#1292])
+
 ## [3.0.0-alpha.4] (November 2, 2021)
 
 **Breaking Changes**
 
-* Developers: Removed `GP_Thing::set_memory_limit()` in favor of `wp_raise_memory_limit()`. ([#1246](https://github.com/GlotPress/GlotPress-WP/pull/1246))
+* Developers: Removed `GP_Thing::set_memory_limit()` in favor of `wp_raise_memory_limit()`. ([#1246])
 
 **Features**
 
@@ -439,3 +462,17 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [1.0.0-rc.2]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.0-rc.1...1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/1.0.0-beta.1...1.0-rc.1
 [1.0-beta1]: https://github.com/GlotPress/GlotPress-WP/releases/tag/1.0-beta1
+
+[#1327]: https://github.com/GlotPress/GlotPress-WP/pull/1327
+[#1332]: https://github.com/GlotPress/GlotPress-WP/pull/1332
+[#1338]: https://github.com/GlotPress/GlotPress-WP/pull/1338
+[#1344]: https://github.com/GlotPress/GlotPress-WP/pull/1344
+[#1345]: https://github.com/GlotPress/GlotPress-WP/pull/1345
+[#1342]: https://github.com/GlotPress/GlotPress-WP/pull/1342
+[#1341]: https://github.com/GlotPress/GlotPress-WP/pull/1341
+[#1305]: https://github.com/GlotPress/GlotPress-WP/pull/1305
+[#1343]: https://github.com/GlotPress/GlotPress-WP/pull/1343
+[#1326]: https://github.com/GlotPress/GlotPress-WP/pull/1326
+[#1309]: https://github.com/GlotPress/GlotPress-WP/pull/1309
+[#1292]: https://github.com/GlotPress/GlotPress-WP/pull/1292
+[#1246]: https://github.com/GlotPress/GlotPress-WP/pull/1246
