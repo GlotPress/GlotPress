@@ -1,7 +1,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [3.0.0-beta.1] (March 24, 2022)
 
 **Breaking Changes**
 
@@ -433,7 +433,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.4...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-beta.1...HEAD
+[3.0.0-beta.1]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.4...3.0.0-beta.1
 [3.0.0-alpha.4]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.3...3.0.0-alpha.4
 [3.0.0-alpha.3]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.2...3.0.0-alpha.3
 [3.0.0-alpha.2]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.1...3.0.0-alpha.2
