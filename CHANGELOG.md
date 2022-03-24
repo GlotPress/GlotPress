@@ -17,7 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Developers: Add the entry as context to the `gp_import_original_array` filter. Props @dd32 ([#1342])
 * Locales: Add definition for Catalan Valencian. Props @xavivars ([#1305])
 
-**Bugfixes***
+**Bugfixes**
 
 * Remove unused `translated=yes` filter for translations. ([#1343])
 * Fix copy original action for plurals. ([#1326])
