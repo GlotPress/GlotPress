@@ -3,7 +3,7 @@ name: PHPUnit Tests
 on:
   push:
     branches:
-      - master
+      - stable
       - develop
   pull_request:
 

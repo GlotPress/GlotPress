@@ -3,7 +3,7 @@ name: Coding Standards
 on:
   push:
     branches:
-      - master
+      - stable
       - develop
   pull_request:
 
