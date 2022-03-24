@@ -22,3 +22,11 @@ updates:
       - "[Type] Build Tooling"
       - dependencies
       - javascript
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels:
+      - "[Type] Build Tooling"
+      - github_actions
