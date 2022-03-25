@@ -105,10 +105,13 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ves';
 		} elseif ( 'fe' === substr( $value->term, -2 ) ) {
 			$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'ves';
+		} elseif ( 'e' === substr( $value->term, -1 ) ) {
+			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ed';
+			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ion';
+			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ing';
+		} elseif ( 'an' === substr( $value->term, -2 ) ) {
+			$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'en';
 		} else {
-			if ( 'an' === substr( $value->term, -2 ) ) {
-				$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'en';
-			}
 			$terms[] = $quoted_term . 'es';
 			$terms[] = $quoted_term . 'ed';
 			$terms[] = $quoted_term . 'ing';
