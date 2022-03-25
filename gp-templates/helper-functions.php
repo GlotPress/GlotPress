@@ -97,6 +97,8 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 		}
 
 		$terms[] = $quoted_term;
+
+		// Add common suffixes for single word terms.
 		$terms[] = $quoted_term . 's';
 
 		if ( 'y' === substr( $value->term, -1 ) ) {
@@ -167,11 +169,13 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		}
 	}
 
-	// Sort glossary entries with priority to multiple word terms and words with hyphens.
+	// Sort glossary entries by word count, to search first for multiple word terms, words with hyphens or both.
 	usort(
 		$glossary_entries_terms_array,
 		function( $a, $b ) {
-			return preg_match( '/[\s-]/', $b ) <=> preg_match( '/[\s-]/', $a );
+			$a_words = preg_split( '/[\s-]/', $a );
+			$b_words = preg_split( '/[\s-]/', $b );
+			return count( $b_words ) <=> count( $a_words );
 		}
 	);
 
