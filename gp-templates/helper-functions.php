@@ -27,11 +27,11 @@ function prepare_original( $text ) {
 		$text
 	);
 
-	// Wrap full HTML tags with a notranslate class
+	// Wrap full HTML tags with a notranslate class.
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
-	// Break out & back into notranslate for translatable attributes
+	// Break out & back into notranslate for translatable attributes.
 	$text = preg_replace( '/(title|aria-label)=([\'"])([^\\2]+?)\\2/', '\\1=\\2</span>\\3<span class="notranslate">\\2', $text );
-	// Wrap placeholders with notranslate
+	// Wrap placeholders with notranslate.
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
