@@ -167,6 +167,22 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		}
 	}
 
+	// Sort glossary entries with priority to multiple word terms.
+	usort(
+		$glossary_entries_terms_array,
+		function( $a, $b ) {
+			return preg_match( '/\s/', $b ) <=> preg_match( '/\s/', $a );
+		}
+	);
+
+	// Set terms search string.
+	$terms_search = array();
+	foreach ( $glossary_entries_terms_array as $term ) {
+		// Add word boundaries to search term.
+		$terms_search[] = '(\b' . $term . '\b)';
+	}
+	$terms_search = implode( '|', $terms_search );
+
 	// Split the singular string on word boundaries.
 	$singular_split    = preg_split( '/\b/', $translation->singular );
 	$singular_combined = '';
