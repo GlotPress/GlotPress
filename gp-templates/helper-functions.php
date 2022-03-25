@@ -233,7 +233,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 	// Add glossary terms to the plural if we have one.
 	if ( $translation->plural ) {
-		// Split the singular string on glossary terms boundaries.
+		// Split the plural string on glossary terms boundaries.
 		$plural_split    = preg_split( '/' . $terms_search . '/i', $translation->plural, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 		$plural_combined = '';
 
