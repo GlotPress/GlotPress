@@ -167,11 +167,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		}
 	}
 
-	// Sort glossary entries with priority to multiple word terms.
+	// Sort glossary entries with priority to multiple word terms and words with hyphens.
 	usort(
 		$glossary_entries_terms_array,
 		function( $a, $b ) {
-			return preg_match( '/\s/', $b ) <=> preg_match( '/\s/', $a );
+			return preg_match( '/[\s-]/', $b ) <=> preg_match( '/[\s-]/', $a );
 		}
 	);
 
@@ -193,7 +193,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		$escaped_chunk = esc_translation( $chunk );
 
 		// Create a lower case version to compare with the glossary terms.
-		$lower_chunk = strtolower( $chunk );
+		$lower_chunk = strtolower( preg_quote( $chunk, '/' ) );
 
 		// Search the glossary terms for a matching entry.
 		if ( in_array( $lower_chunk, $glossary_entries_terms_array ) ) {
@@ -243,7 +243,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			$escaped_chunk = esc_translation( $chunk );
 
 			// Create a lower case version to compare with the glossary terms.
-			$lower_chunk = strtolower( $chunk );
+			$lower_chunk = strtolower( preg_quote( $chunk, '/' ) );
 
 			// Search the glossary terms for a matching entry.
 			if ( in_array( $lower_chunk, $glossary_entries_terms_array ) ) {
