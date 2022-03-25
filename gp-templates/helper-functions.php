@@ -86,6 +86,14 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 	foreach ( $glossary_entries as $key => $value ) {
 		$terms = array();
 
+		// Check if is multiple word term.
+		if ( preg_match( '/\s/', $value->term ) ) {
+
+			// Don't add similar terms to multiple word term.
+			$glossary_entries_terms[ $key ] = $value->term;
+			continue;
+		}
+
 		$quoted_term = preg_quote( $value->term, '/' );
 
 		$terms[] = $quoted_term;
