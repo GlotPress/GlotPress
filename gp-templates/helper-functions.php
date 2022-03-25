@@ -183,8 +183,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 	}
 	$terms_search = implode( '|', $terms_search );
 
-	// Split the singular string on word boundaries.
-	$singular_split    = preg_split( '/\b/', $translation->singular );
+	// Split the singular string on glossary terms boundaries.
+	$singular_split    = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 	$singular_combined = '';
 
 	// Loop through each chunk of the split to find glossary terms.
@@ -196,7 +196,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		$lower_chunk = strtolower( $chunk );
 
 		// Search the glossary terms for a matching entry.
-		if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+		if ( in_array( $lower_chunk, $glossary_entries_terms_array ) ) {
 			$glossary_data = array();
 
 			// Add glossary data for each matching entry.
@@ -233,8 +233,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 	// Add glossary terms to the plural if we have one.
 	if ( $translation->plural ) {
-		// Split the plural string on word boundaries.
-		$plural_split    = preg_split( '/\b/', $translation->plural );
+		// Split the singular string on glossary terms boundaries.
+		$plural_split    = preg_split( '/' . $terms_search . '/i', $translation->plural, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 		$plural_combined = '';
 
 		// Loop through each chunk of the split to find glossary terms.
@@ -246,7 +246,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			$lower_chunk = strtolower( $chunk );
 
 			// Search the glossary terms for a matching entry.
-			if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+			if ( in_array( $lower_chunk, $glossary_entries_terms_array ) ) {
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
