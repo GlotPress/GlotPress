@@ -86,37 +86,38 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 	foreach ( $glossary_entries as $key => $value ) {
 		$terms = array();
 
-		$quoted_term = preg_quote( $value->term, '/' );
+		$term = $value->term;
 
 		// Check if is multiple word term.
-		if ( preg_match( '/\s/', $quoted_term ) ) {
+		if ( preg_match( '/\s/', $term ) ) {
 
 			// Don't add suffix to terms with multiple words.
-			$glossary_entries_terms[ $key ] = $quoted_term;
+			$glossary_entries_terms[ $key ] = $term;
 			continue;
 		}
 
-		$terms[] = $quoted_term;
+		// Add single word term.
+		$terms[] = $term;
 
 		// Add common suffixes for single word terms.
-		$terms[] = $quoted_term . 's';
+		$terms[] = $term . 's';
 
-		if ( 'y' === substr( $value->term, -1 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ies';
-		} elseif ( 'f' === substr( $value->term, -1 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ves';
-		} elseif ( 'fe' === substr( $value->term, -2 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'ves';
-		} elseif ( 'e' === substr( $value->term, -1 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ed';
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ion';
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ing';
-		} elseif ( 'an' === substr( $value->term, -2 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'en';
+		if ( 'y' === substr( $term, -1 ) ) {
+			$terms[] = substr( $term, 0, -1 ) . 'ies';
+		} elseif ( 'f' === substr( $term, -1 ) ) {
+			$terms[] = substr( $term, 0, -1 ) . 'ves';
+		} elseif ( 'fe' === substr( $term, -2 ) ) {
+			$terms[] = substr( $term, 0, -2 ) . 'ves';
+		} elseif ( 'e' === substr( $term, -1 ) ) {
+			$terms[] = substr( $term, 0, -1 ) . 'ed';
+			$terms[] = substr( $term, 0, -1 ) . 'ion';
+			$terms[] = substr( $term, 0, -1 ) . 'ing';
+		} elseif ( 'an' === substr( $term, -2 ) ) {
+			$terms[] = substr( $term, 0, -2 ) . 'en';
 		} else {
-			$terms[] = $quoted_term . 'es';
-			$terms[] = $quoted_term . 'ed';
-			$terms[] = $quoted_term . 'ing';
+			$terms[] = $term . 'es';
+			$terms[] = $term . 'ed';
+			$terms[] = $term . 'ing';
 		}
 
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
@@ -183,7 +184,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 	$terms_search = array();
 	foreach ( $glossary_entries_terms_array as $term ) {
 		// Add word boundaries to search term.
-		$terms_search[] = '(\b' . $term . '\b)';
+		$terms_search[] = '(\b' . preg_quote( $term, '/' ) . '\b)';
 	}
 	$terms_search = implode( '|', $terms_search );
 
@@ -197,7 +198,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		$escaped_chunk = esc_translation( $chunk );
 
 		// Create a lower case version to compare with the glossary terms.
-		$lower_chunk = strtolower( preg_quote( $chunk, '/' ) );
+		$lower_chunk = strtolower( $chunk );
 
 		// Search the glossary terms for a matching entry.
 		if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
@@ -247,7 +248,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			$escaped_chunk = esc_translation( $chunk );
 
 			// Create a lower case version to compare with the glossary terms.
-			$lower_chunk = strtolower( preg_quote( $chunk, '/' ) );
+			$lower_chunk = strtolower( $chunk );
 
 			// Search the glossary terms for a matching entry.
 			if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
