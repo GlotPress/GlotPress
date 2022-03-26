@@ -35,7 +35,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_spaces_in_glossary() {
 		$test_string = 'Please set your favorite color scheme.';
 		$orig = '';
-		$expected_result = 'Please set your favorite <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:&quot;&quot;,&quot;locale_entry&quot;:&quot;&quot;}]">color scheme</span>.';
+		$expected_result = 'Please set your favorite <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">color scheme</span>.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -47,7 +47,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'part_of_speech' => 'noun',
 			'translation' => 'paleta de cores',
 			'glossary_id' => $glossary->id,
-			'comment' => '',
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
@@ -63,7 +62,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_hyphens_in_glossary() {
 		$test_string = 'Please set your favorite color-scheme.';
 		$orig = '';
-		$expected_result = 'Please set your favorite <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:&quot;&quot;,&quot;locale_entry&quot;:&quot;&quot;}]">color-scheme</span>.';
+		$expected_result = 'Please set your favorite <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">color-scheme</span>.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -75,7 +74,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'part_of_speech' => 'noun',
 			'translation' => 'paleta de cores',
 			'glossary_id' => $glossary->id,
-			'comment' => '',
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
@@ -91,7 +89,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_spaces_and_hyphens_in_glossary() {
 		$test_string = 'Prowdly built by your GlotPress WP-Team.';
 		$orig = '';
-		$expected_result = 'Prowdly built by your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;Equipa-WP do GlotPress&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:&quot;&quot;,&quot;locale_entry&quot;:&quot;&quot;}]">GlotPress WP-Team</span>.';
+		$expected_result = 'Prowdly built by your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;Equipa-WP do GlotPress&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">GlotPress WP-Team</span>.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -103,7 +101,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'part_of_speech' => 'noun',
 			'translation' => 'Equipa-WP do GlotPress',
 			'glossary_id' => $glossary->id,
-			'comment' => '',
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
@@ -119,7 +116,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_word_count_priority_in_glossary() {
 		$test_string = 'Please set your admin color scheme.';
 		$orig = '';
-		$expected_result = 'Please set your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores do administrador&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:&quot;&quot;,&quot;locale_entry&quot;:&quot;&quot;}]">admin color scheme</span>.';
+		$expected_result = 'Please set your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores do administrador&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">admin color scheme</span>.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -132,21 +129,18 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'part_of_speech' => 'noun',
 				'translation' => 'administrador',
 				'glossary_id' => $glossary->id,
-				'comment' => '',
 			),
 			array(
 				'term' => 'color scheme',
 				'part_of_speech' => 'noun',
 				'translation' => 'paleta de cores',
 				'glossary_id' => $glossary->id,
-				'comment' => '',
 			),
 			array(
 				'term' => 'admin color scheme',
 				'part_of_speech' => 'noun',
 				'translation' => 'paleta de cores do administrador',
 				'glossary_id' => $glossary->id,
-				'comment' => '',
 			),
 		);
 
