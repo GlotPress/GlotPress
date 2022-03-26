@@ -116,7 +116,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_word_count_priority_in_glossary() {
 		$test_string = 'Please set your admin color scheme.';
 		$orig = '';
-		$expected_result = 'Please set your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores da administração&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:&quot;&quot;,&quot;locale_entry&quot;:&quot;&quot;}]">admin color scheme</span>.';
+		$expected_result = 'Please set your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores do administrador&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:&quot;&quot;,&quot;locale_entry&quot;:&quot;&quot;}]">admin color scheme</span>.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -127,7 +127,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			array(
 				'term' => 'admin',
 				'part_of_speech' => 'noun',
-				'translation' => 'administração',
+				'translation' => 'administrador',
 				'glossary_id' => $glossary->id,
 			),
 			array(
@@ -139,7 +139,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			array(
 				'term' => 'admin color scheme',
 				'part_of_speech' => 'noun',
-				'translation' => 'paleta de cores da administração',
+				'translation' => 'paleta de cores do administrador',
 				'glossary_id' => $glossary->id,
 			),
 		);
