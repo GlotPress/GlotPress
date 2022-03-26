@@ -108,10 +108,6 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 			$terms[] = substr( $term, 0, -1 ) . 'ves';
 		} elseif ( 'fe' === substr( $term, -2 ) ) {
 			$terms[] = substr( $term, 0, -2 ) . 'ves';
-		} elseif ( 'e' === substr( $term, -1 ) ) {
-			$terms[] = substr( $term, 0, -1 ) . 'ed';
-			$terms[] = substr( $term, 0, -1 ) . 'ion';
-			$terms[] = substr( $term, 0, -1 ) . 'ing';
 		} elseif ( 'an' === substr( $term, -2 ) ) {
 			$terms[] = substr( $term, 0, -2 ) . 'en';
 		} else {
