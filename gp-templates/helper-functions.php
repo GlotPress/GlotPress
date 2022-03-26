@@ -200,7 +200,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		$lower_chunk = strtolower( preg_quote( $chunk, '/' ) );
 
 		// Search the glossary terms for a matching entry.
-		if ( in_array( $lower_chunk, $glossary_entries_terms_array ) ) {
+		if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
 			$glossary_data = array();
 
 			// Add glossary data for each matching entry.
@@ -250,7 +250,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			$lower_chunk = strtolower( preg_quote( $chunk, '/' ) );
 
 			// Search the glossary terms for a matching entry.
-			if ( in_array( $lower_chunk, $glossary_entries_terms_array ) ) {
+			if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
