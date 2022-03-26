@@ -47,6 +47,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'part_of_speech' => 'noun',
 			'translation' => 'paleta de cores',
 			'glossary_id' => $glossary->id,
+			'comment' => '',
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
@@ -74,6 +75,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'part_of_speech' => 'noun',
 			'translation' => 'paleta de cores',
 			'glossary_id' => $glossary->id,
+			'comment' => '',
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
@@ -101,6 +103,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'part_of_speech' => 'noun',
 			'translation' => 'Equipa-WP do GlotPress',
 			'glossary_id' => $glossary->id,
+			'comment' => '',
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
@@ -129,18 +132,21 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'part_of_speech' => 'noun',
 				'translation' => 'administrador',
 				'glossary_id' => $glossary->id,
+				'comment' => '',
 			),
 			array(
 				'term' => 'color scheme',
 				'part_of_speech' => 'noun',
 				'translation' => 'paleta de cores',
 				'glossary_id' => $glossary->id,
+				'comment' => '',
 			),
 			array(
 				'term' => 'admin color scheme',
 				'part_of_speech' => 'noun',
 				'translation' => 'paleta de cores do administrador',
 				'glossary_id' => $glossary->id,
+				'comment' => '',
 			),
 		);
 
