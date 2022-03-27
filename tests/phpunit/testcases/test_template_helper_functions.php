@@ -113,7 +113,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	/**
 	 * Expects matching the 3 words term [admin color scheme] instead of the 2 words term [color scheme] or single word term [admin].
 	 */
-	function test_map_glossary_entries_to_translation_originals_with_word_count_priority_in_glossary() {
+	function test_map_glossary_entries_to_translation_originals_with_word_count_priority() {
 		$test_string = 'Please set your admin color scheme.';
 		$orig = '';
 		$expected_result = 'Please set your <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;paleta de cores do administrador&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">admin color scheme</span>.';
