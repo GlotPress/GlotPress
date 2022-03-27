@@ -33,6 +33,29 @@ jQuery( function( $ ) {
 		$( 'input[name="bulk[row-ids]"]', $( this ) ).val( row_ids );
 	} );
 
+	( function() {
+		var $statusFields = $( '#filter-status-fields' );
+		var $checkboxes = $statusFields.find( 'input:checkbox' );
+		var $selectedStatus = $( '#filter-status-selected' );
+
+		$( '#filter-status-select-all' ).on( 'click', function() {
+			$checkboxes.prop( 'checked', true ).trigger( 'change' );
+		} );
+
+		$checkboxes.on( 'change', function() {
+			var checkedStatus = $checkboxes.filter( ':checked' ).map( function() {
+				return $( this ).val();
+			} ).get();
+
+			if ( ! checkedStatus.length ) {
+				// Default value used by GP_Translation::for_translation().
+				$selectedStatus.val( 'current_or_waiting_or_fuzzy_or_untranslated' );
+			} else {
+				$selectedStatus.val( checkedStatus.join( '_or_' ) );
+			}
+		} );
+	}() );
+
 	$( 'a#export' ).click( function() {
 		var format = $( '#export-format' ).val();
 		var what_to_export = $( '#what-to-export' ).val();
