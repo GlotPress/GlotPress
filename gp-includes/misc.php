@@ -448,6 +448,30 @@ function gp_is_one_of( $value, $list ) {
 }
 
 /**
+ * Checks if the passed value has only ASCII characters.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_ascii_string( $value ) {
+	return preg_replace( "/[^\x20-\x7E\p{L}]/", '', $value ) === $value;
+}
+
+/**
+ * Checks if the passed value starts and end with a word character.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_starting_or_ending_with_a_word_character( $value ) {
+	return (bool) preg_match( '/\b' . preg_quote( $value, '/' ) . '\b/i', $value );
+}
+
+/**
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
