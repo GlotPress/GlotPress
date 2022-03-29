@@ -45,7 +45,7 @@ function gp_register_default_scripts() {
 
 	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20220319' );
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20220319' );
-	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20210429' );
+	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20220327' );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20210429' );
 }
 

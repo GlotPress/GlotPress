@@ -235,25 +235,38 @@ $i = 0;
 			</div>
 
 			<div class="filters-expanded-section">
-				<fieldset>
+				<fieldset id="filter-status-fields">
 					<legend class="filter-title"><?php _e( 'Status:', 'glotpress' ); ?></legend>
 					<?php
-					echo gp_radio_buttons(
-						'filters[status]', // TODO: show only these, which user is allowed to see afterwards.
-						array(
-							'current_or_waiting_or_fuzzy_or_untranslated' => __( 'Current/waiting/fuzzy + untranslated (All)', 'glotpress' ),
-							'current'                                     => __( 'Current only', 'glotpress' ),
-							'old'                                         => __( 'Approved, but obsoleted by another translation', 'glotpress' ),
-							'waiting'                                     => __( 'Waiting approval', 'glotpress' ),
-							'waiting_or_fuzzy'                            => __( 'Waiting approval, including fuzzy', 'glotpress' ),
-							'rejected'                                    => __( 'Rejected', 'glotpress' ),
-							'fuzzy'                                       => __( 'Fuzzy', 'glotpress' ),
-							'untranslated'                                => __( 'Without current translation', 'glotpress' ),
-							'either'                                      => __( 'Any', 'glotpress' ),
-						),
-						gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' )
-					);
+					$selected_status      = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
+					$selected_status_list = explode( '_or_', $selected_status );
 					?>
+					<label for="filters[status][current]">
+						<input type="checkbox" value="current" id="filters[status][current]" <?php gp_checked( 'either' === $selected_status || in_array( 'current', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Current', 'glotpress' ); ?>
+					</label><br />
+					<label for="filters[status][waiting]">
+						<input type="checkbox" value="waiting" id="filters[status][waiting]" <?php gp_checked( 'either' === $selected_status || in_array( 'waiting', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Waiting', 'glotpress' ); ?>
+					</label><br />
+					<label for="filters[status][fuzzy]">
+						<input type="checkbox" value="fuzzy" id="filters[status][fuzzy]" <?php gp_checked( 'either' === $selected_status || in_array( 'fuzzy', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Fuzzy', 'glotpress' ); ?>
+					</label><br />
+					<label for="filters[status][untranslated]">
+						<input type="checkbox" value="untranslated" id="filters[status][untranslated]" <?php gp_checked( in_array( 'untranslated', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Untranslated', 'glotpress' ); ?>
+					</label><br />
+					<label for="filters[status][rejected]">
+						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Rejected', 'glotpress' ); ?>
+					</label><br />
+					<label for="filters[status][old]">
+						<input type="checkbox" value="old" id="filters[status][old]" <?php gp_checked( 'either' === $selected_status || in_array( 'old', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Old', 'glotpress' ); ?>
+					</label><br />
+					<button type="button" id="filter-status-select-all" class="button is-link"><?php _e( 'Select all', 'glotpress' ); ?></button>
+					<input type="hidden" id="filter-status-selected" name="filters[status]" value="<?php echo esc_attr( $selected_status ); ?>" />
 				</fieldset>
 			</div>
 
