@@ -27,11 +27,11 @@ function prepare_original( $text ) {
 		$text
 	);
 
-	// Wrap full HTML tags with a notranslate class
+	// Wrap full HTML tags with a notranslate class.
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
-	// Break out & back into notranslate for translatable attributes
+	// Break out & back into notranslate for translatable attributes.
 	$text = preg_replace( '/(title|aria-label)=([\'"])([^\\2]+?)\\2/', '\\1=\\2</span>\\3<span class="notranslate">\\2', $text );
-	// Wrap placeholders with notranslate
+	// Wrap placeholders with notranslate.
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
 	// Put the glossaries back!
@@ -86,24 +86,34 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
 	foreach ( $glossary_entries as $key => $value ) {
 		$terms = array();
 
-		$quoted_term = preg_quote( $value->term, '/' );
+		$term = $value->term;
 
-		$terms[] = $quoted_term;
-		$terms[] = $quoted_term . 's';
+		// Check if is multiple word term.
+		if ( preg_match( '/\s/', $term ) ) {
 
-		if ( 'y' === substr( $value->term, -1 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ies';
-		} elseif ( 'f' === substr( $value->term, -1 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -1 ), '/' ) . 'ves';
-		} elseif ( 'fe' === substr( $value->term, -2 ) ) {
-			$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'ves';
+			// Don't add suffix to terms with multiple words.
+			$glossary_entries_terms[ $key ] = $term;
+			continue;
+		}
+
+		// Add single word term.
+		$terms[] = $term;
+
+		// Add common suffixes for single word terms.
+		$terms[] = $term . 's';
+
+		if ( 'y' === substr( $term, -1 ) ) {
+			$terms[] = substr( $term, 0, -1 ) . 'ies';
+		} elseif ( 'f' === substr( $term, -1 ) ) {
+			$terms[] = substr( $term, 0, -1 ) . 'ves';
+		} elseif ( 'fe' === substr( $term, -2 ) ) {
+			$terms[] = substr( $term, 0, -2 ) . 'ves';
+		} elseif ( 'an' === substr( $term, -2 ) ) {
+			$terms[] = substr( $term, 0, -2 ) . 'en';
 		} else {
-			if ( 'an' === substr( $value->term, -2 ) ) {
-				$terms[] = preg_quote( substr( $value->term, 0, -2 ), '/' ) . 'en';
-			}
-			$terms[] = $quoted_term . 'es';
-			$terms[] = $quoted_term . 'ed';
-			$terms[] = $quoted_term . 'ing';
+			$terms[] = $term . 'es';
+			$terms[] = $term . 'ed';
+			$terms[] = $term . 'ing';
 		}
 
 		$glossary_entries_terms[ $key ] = implode( '|', $terms );
@@ -156,8 +166,26 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		}
 	}
 
-	// Split the singular string on word boundaries.
-	$singular_split    = preg_split( '/\b/', $translation->singular );
+	// Sort glossary entries by word count, to search first for multiple word terms, words with hyphens or both.
+	usort(
+		$glossary_entries_terms_array,
+		function( $a, $b ) {
+			$a_words = preg_split( '/[\s-]/', $a );
+			$b_words = preg_split( '/[\s-]/', $b );
+			return count( $b_words ) <=> count( $a_words );
+		}
+	);
+
+	// Set terms search string.
+	$terms_search = array();
+	foreach ( $glossary_entries_terms_array as $term ) {
+		// Add word boundaries to search term.
+		$terms_search[] = '(\b' . preg_quote( $term, '/' ) . '\b)';
+	}
+	$terms_search = implode( '|', $terms_search );
+
+	// Split the singular string on glossary terms boundaries.
+	$singular_split    = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 	$singular_combined = '';
 
 	// Loop through each chunk of the split to find glossary terms.
@@ -169,7 +197,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 		$lower_chunk = strtolower( $chunk );
 
 		// Search the glossary terms for a matching entry.
-		if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+		if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
 			$glossary_data = array();
 
 			// Add glossary data for each matching entry.
@@ -206,8 +234,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 
 	// Add glossary terms to the plural if we have one.
 	if ( $translation->plural ) {
-		// Split the plural string on word boundaries.
-		$plural_split    = preg_split( '/\b/', $translation->plural );
+		// Split the plural string on glossary terms boundaries.
+		$plural_split    = preg_split( '/' . $terms_search . '/i', $translation->plural, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 		$plural_combined = '';
 
 		// Loop through each chunk of the split to find glossary terms.
@@ -219,7 +247,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			$lower_chunk = strtolower( $chunk );
 
 			// Search the glossary terms for a matching entry.
-			if ( false !== array_search( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+			if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
