@@ -217,7 +217,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				button.prop( 'disabled', true );
-				$gp.notices.notice( 'Saving&hellip;' );
+				$gp.notices.notice( $gp.l10n.saving );
 
 				data = {
 					original_id: editor.original_id,
@@ -240,7 +240,7 @@ $gp.editor = (
 						var original_id;
 
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Saved!' );
+						$gp.notices.success( $gp.l10n.saved );
 
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
@@ -252,7 +252,7 @@ $gp.editor = (
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
+						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_saving_translation;
 						$gp.notices.error( msg );
 					},
 				} );
@@ -266,7 +266,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				select.prop( 'disabled', true );
-				$gp.notices.notice( 'Setting priority&hellip;' );
+				$gp.notices.notice( $gp.l10n.saving_priority );
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
@@ -281,14 +281,14 @@ $gp.editor = (
 						var new_priority_class;
 
 						select.prop( 'disabled', false );
-						$gp.notices.success( 'Priority set!' );
+						$gp.notices.success( $gp.l10n.saved_priority );
 						new_priority_class = 'priority-' + $( 'option:selected', select ).text();
 						$gp.editor.current.addClass( new_priority_class );
 						$gp.editor.current.preview.addClass( new_priority_class );
 					},
 					error: function( xhr, msg ) {
 						select.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the priority!';
+						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_saving_priority;
 						$gp.notices.error( msg );
 					},
 				} );
@@ -310,12 +310,12 @@ $gp.editor = (
 				} );
 
 				if ( translationChanged ) {
-					$gp.notices.error( 'Translation has changed! Please add the new translation before changing its status.' );
+					$gp.notices.error( $gp.l10n.translation_changed );
 					return;
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
+				$gp.notices.notice( $gp.l10n.saving_status_to + '&#8220;' + status + '&#8221;&hellip;' );
 
 				data = {
 					translation_id: editor.translation_id,
@@ -329,13 +329,13 @@ $gp.editor = (
 					data: data,
 					success: function( response ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Status set!' );
+						$gp.notices.success( $gp.l10n.saved_status );
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the status!';
+						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_saving_status;
 						$gp.notices.error( msg );
 					},
 				} );
@@ -346,7 +346,7 @@ $gp.editor = (
 					return;
 				}
 
-				$gp.notices.notice( 'Discarding&hellip;' );
+				$gp.notices.notice( $gp.l10n.discarding );
 
 				data = {
 					translation_id: $gp.editor.current.translation_id,
@@ -361,11 +361,11 @@ $gp.editor = (
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
 					success: function( response ) {
-						$gp.notices.success( 'Saved!' );
+						$gp.notices.success( $gp.l10n.saved );
 						$gp.editor.replace_current( response );
 					},
 					error: function( xhr, msg ) {
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
+						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_saving_translation;
 						$gp.notices.error( msg );
 					},
 				} );

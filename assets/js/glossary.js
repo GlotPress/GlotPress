@@ -69,7 +69,7 @@ $gp.glossary = (
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( 'Saving&hellip;' );
+				$gp.notices.notice( $gp.l10n.saving );
 
 				editor = $gp.glossary.current;
 
@@ -88,12 +88,12 @@ $gp.glossary = (
 					dataType: 'json',
 					success: function( response ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Saved!' );
+						$gp.notices.success( $gp.l10n.saved );
 						$gp.glossary.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the glossary item!';
+						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_saving_glossary;
 						$gp.notices.error( msg );
 					},
 				} );
@@ -124,7 +124,7 @@ $gp.glossary = (
 					url: $gp_glossary_options.delete_url,
 					data: data,
 					success: function() {
-						$gp.notices.success( 'Deleted!' );
+						$gp.notices.success( $gp.l10n.deleted );
 						editor.fadeOut( 'fast', function() {
 							this.remove();
 						} );
@@ -134,7 +134,7 @@ $gp.glossary = (
 						}
 					},
 					error: function( xhr, msg ) {
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
+						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_deleting_glossary;
 						$gp.notices.error( msg );
 					},
 				} );

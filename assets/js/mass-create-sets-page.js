@@ -16,7 +16,7 @@ jQuery( function( $ ) {
 			success: function( data ) {
 				var preview = $( '#preview' );
 				var preview_html = '';
-				preview.html( '<h3>Preview changes:</h3>' );
+				preview.html( '<h3>' + $gp.l10n.preview_changes_colon + '</h3>' );
 				preview_html += '<ul>';
 				select.prop( 'disabled', false );
 				$gp.notices.clear();
@@ -37,15 +37,15 @@ jQuery( function( $ ) {
 					html += '</li>';
 					return html;
 				}
-				preview_html += preview_html_for( 'added', '{count} set(s) will be added' );
-				preview_html += preview_html_for( 'removed', '{count} set(s) will be removed' );
+				preview_html += preview_html_for( 'added', $gp.l10n.sets_will_be_added );
+				preview_html += preview_html_for( 'removed', $gp.l10n.sets_will_be_removed );
 				preview_html += '</ul>';
 				preview.append( preview_html );
 				preview.fadeIn();
 			},
 			error: function( xhr, msg ) {
 				select.prop( 'disabled', false );
-				msg = xhr.responsehtml ? 'Error: ' + xhr.responsehtml : 'Error saving the translation!';
+				msg = xhr.responsehtml ? $gp.l10n.error_colon + xhr.responsehtml : $gp.l10n.error_saving_translation;
 				$gp.notices.error( msg );
 			},
 		} );
