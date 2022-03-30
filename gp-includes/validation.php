@@ -227,4 +227,4 @@ GP_Validators::register( 'between', 'gp_is_between' );
 GP_Validators::register( 'between_exclusive', 'gp_is_between_exclusive' );
 GP_Validators::register( 'one_of', 'gp_is_one_of' );
 GP_Validators::register( 'consisting_only_of_ASCII_characters', 'gp_is_ascii_string' );
-GP_Validators::register( 'starting_or_ending_with_a_word_character', 'gp_is_starting_or_ending_with_a_word_character' );
+GP_Validators::register( 'starting_and_ending_with_a_word_character', 'gp_is_starting_and_ending_with_a_word_character' );

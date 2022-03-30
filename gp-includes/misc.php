@@ -460,14 +460,14 @@ function gp_is_ascii_string( $value ) {
 }
 
 /**
- * Checks if the passed value starts and end with a word character.
+ * Checks if the passed value starts and ends with a word character.
  *
  * @since 3.0.0
  *
  * @param string $value The value you want to check.
  * @return bool
  */
-function gp_is_starting_or_ending_with_a_word_character( $value ) {
+function gp_is_starting_and_ending_with_a_word_character( $value ) {
 	return (bool) preg_match( '/\b' . preg_quote( $value, '/' ) . '\b/i', $value );
 }
 

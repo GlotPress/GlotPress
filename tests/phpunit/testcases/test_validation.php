@@ -76,8 +76,8 @@ class GP_Test_Validation extends GP_UnitTestCase {
 		$this->assertEquals( false, $f( 'ãbc' ) );
 	}
 
-	function test_is_starting_or_ending_with_a_word_character() {
-		$callback = GP_Validators::get( 'starting_or_ending_with_a_word_character' );
+	function test_is_starting_and_ending_with_a_word_character() {
+		$callback = GP_Validators::get( 'starting_and_ending_with_a_word_character' );
 		$f = $callback['positive'];
 		$this->assertEquals( true, $f( 'a' ) );
 		$this->assertEquals( true, $f( 'foo bar' ) );

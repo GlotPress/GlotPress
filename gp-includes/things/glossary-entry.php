@@ -80,7 +80,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	public function restrict_fields( $rules ) {
 		$rules->term_should_not_be( 'empty' );
 		$rules->term_should_be( 'consisting_only_of_ASCII_characters' );
-		$rules->term_should_be( 'starting_or_ending_with_a_word_character' );
+		$rules->term_should_be( 'starting_and_ending_with_a_word_character' );
 		$rules->part_of_speech_should_not_be( 'empty' );
 		$rules->part_of_speech_should_be( 'one_of', $this->parts_of_speech );
 		$rules->glossary_id_should_be( 'positive_int' );
