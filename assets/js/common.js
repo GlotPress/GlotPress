@@ -43,7 +43,7 @@ var $gp = (
 				},
 			},
 			esc_html: function( s ) {
-				return $( '<div/>' ).text( s ).html();
+				return $( '</div>' ).text( s ).html();
 			},
 			init: function() {
 				$gp.notices.init();
