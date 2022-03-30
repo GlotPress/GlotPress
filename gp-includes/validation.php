@@ -179,21 +179,31 @@ class GP_Validation_Rules {
 	}
 
 	public function construct_error_message( $rule ) {
-		$type_field = 'field';
+		$type_field = __( 'field', 'glotpress' );
 		$name_field = $rule['field'];
-		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
+		$message    = GP_Validators::get_message( $rule['rule'] );
 
 		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
-			$type_field = 'textarea';
+			$type_field = __( 'textarea', 'glotpress' );
 			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
 		}
 
-		if ( 'positive' == $rule['kind'] ) {
+		if ( 'term' === $name_field ) {
+			$name_field = _x( 'Original term', 'glossary entry', 'glotpress' );
+		} elseif ( 'part_of_speech' === $name_field ) {
+			$name_field = _x( 'Part of speech', 'glossary entry', 'glotpress' );
+		} elseif ( 'translation' === $name_field ) {
+			$name_field = _x( 'Translation', 'glossary entry', 'glotpress' );
+		} elseif ( 'comment' === $name_field ) {
+			$name_field = _x( 'Comments', 'glossary entry', 'glotpress' );
+		}
+
+		if ( 'positive' === $rule['kind'] ) {
 			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
-			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $message );
 		} else { // if ( 'negative' == $rule['kind'] )
 			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
-			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $message );
 		}
 	}
 }
@@ -201,11 +211,11 @@ class GP_Validation_Rules {
 class GP_Validators {
 	static $callbacks = array();
 
-	public static function register( $key, $callback, $negative_callback = null ) {
-		// TODO: add data for easier generation of error messages
+	public static function register( $key, $message, $callback, $negative_callback = null ) {
 		self::$callbacks[ $key ] = array(
 			'positive' => $callback,
 			'negative' => $negative_callback,
+			'message'  => $message,
 		);
 	}
 
@@ -216,13 +226,19 @@ class GP_Validators {
 	public static function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}
+
+	public static function get_message( $key ) {
+		return gp_array_get( self::$callbacks[ $key ], 'message', null );
+	}
 }
 
-GP_Validators::register( 'empty', 'gp_is_empty' );
-GP_Validators::register( 'empty_string', 'gp_is_empty_string' );
-GP_Validators::register( 'positive_int', 'gp_is_positive_int' );
-GP_Validators::register( 'int', 'gp_is_int' );
-GP_Validators::register( 'null', 'gp_is_null' );
-GP_Validators::register( 'between', 'gp_is_between' );
-GP_Validators::register( 'between_exclusive', 'gp_is_between_exclusive' );
-GP_Validators::register( 'one_of', 'gp_is_one_of' );
+GP_Validators::register( 'empty', _x( 'empty', 'validator rule', 'glotpress' ), 'gp_is_empty' );
+GP_Validators::register( 'empty_string', _x( 'an empty string', 'validator rule', 'glotpress' ), 'gp_is_empty_string' );
+GP_Validators::register( 'positive_int', _x( 'a positive integer', 'validator rule', 'glotpress' ), 'gp_is_positive_int' );
+GP_Validators::register( 'int', _x( 'an integer', 'validator rule', 'glotpress' ), 'gp_is_int' );
+GP_Validators::register( 'null', _x( 'null', 'validator rule', 'glotpress' ), 'gp_is_null' );
+GP_Validators::register( 'between', _x( 'between the start and end value or is the same', 'validator rule', 'glotpress' ), 'gp_is_between' );
+GP_Validators::register( 'between_exclusive', _x( 'between the start and end value', 'validator rule', 'glotpress' ), 'gp_is_between_exclusive' );
+GP_Validators::register( 'one_of', _x( 'one of the values in the list', 'validator rule', 'glotpress' ), 'gp_is_one_of' );
+GP_Validators::register( 'consisting_only_of_ASCII_characters', _x( 'consisting only of ASCII characters', 'validator rule', 'glotpress' ), 'gp_is_ascii_string' );
+GP_Validators::register( 'starting_and_ending_with_a_word_character', _x( 'starting and ending with a word character', 'validator rule', 'glotpress' ), 'gp_is_starting_and_ending_with_a_word_character' );
