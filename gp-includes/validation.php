@@ -179,12 +179,28 @@ class GP_Validation_Rules {
 	}
 
 	public function construct_error_message( $rule ) {
-		$type_field = 'field';
+		$type_field = __( 'field', 'glotpress' );
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
 
+		// Translate field names.
+		switch ( $name_field ) {
+			case 'term':
+				$name_field = _x( 'Original term', 'glossary entry', 'glotpress' );
+				break;
+			case 'part_of_speech':
+				$name_field = _x( 'Part of speech', 'glossary entry', 'glotpress' );
+				break;
+			case 'translation':
+				$name_field = _x( 'Translation', 'glossary entry', 'glotpress' );
+				break;
+			case 'comment':
+				$name_field = _x( 'Comments', 'glossary entry', 'glotpress' );
+				break;
+		}
+
 		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
-			$type_field = 'textarea';
+			$type_field = __( 'textarea', 'glotpress' );
 			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
 		}
 
