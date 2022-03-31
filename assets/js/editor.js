@@ -1,6 +1,6 @@
 /* global $gp_editor_options, $gp, wp, __ */
 /* eslint camelcase: "off" */
-const { sprintf } = wp.i18n;
+const { _x, sprintf } = wp.i18n;
 $gp.editor = (
 	function( $ ) {
 		return {
@@ -297,7 +297,7 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data,
+				var editor, data, status_name,
 					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
@@ -318,8 +318,21 @@ $gp.editor = (
 				}
 
 				button.prop( 'disabled', true );
+
+				switch ( status ) {
+					case 'current':
+						status_name = _x( 'current', 'Single Status', 'glotpress' );
+						break;
+					case 'rejected':
+						status_name = _x( 'rejected', 'Single Status', 'glotpress' );
+						break;
+					case 'fuzzy':
+						status_name = _x( 'fuzzy', 'Single Status', 'glotpress' );
+						break;
+				}
+
 				/* translators: %s: Status name. */
-				$gp.notices.notice( sprintf( __( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status ) );
+				$gp.notices.notice( sprintf( __( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
 
 				data = {
 					translation_id: editor.translation_id,
