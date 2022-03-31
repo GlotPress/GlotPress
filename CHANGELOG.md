@@ -1,6 +1,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0-rc.1] (March 31, 2022)
+
+**Bugfixes**
+* Glossary: Restore matching for terms with multiple words and words with hyphens. ([#1359])
+* Glossary: Use key of part of speech values to fix validation for non-English locales. ([#1367])
+
+**Features**
+* Glossary: Improve validation feedback for glossary entries. ([#1364])
+* Translations: Convert status filter into list of checkboxes for each status. ([#1360])
+
 ## [3.0.0-beta.1] (March 24, 2022)
 
 **Breaking Changes**
@@ -433,7 +443,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-beta.1...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-rc.1...HEAD
+[3.0.0-rc.1]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-beta.1...3.0.0-rc.1
 [3.0.0-beta.1]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.4...3.0.0-beta.1
 [3.0.0-alpha.4]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.3...3.0.0-alpha.4
 [3.0.0-alpha.3]: https://github.com/GlotPress/GlotPress-WP/compare/3.0.0-alpha.2...3.0.0-alpha.3
@@ -477,3 +488,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1309]: https://github.com/GlotPress/GlotPress-WP/pull/1309
 [#1292]: https://github.com/GlotPress/GlotPress-WP/pull/1292
 [#1246]: https://github.com/GlotPress/GlotPress-WP/pull/1246
+[#1359]: https://github.com/GlotPress/GlotPress-WP/pull/1359
+[#1367]: https://github.com/GlotPress/GlotPress-WP/pull/1367
+[#1364]: https://github.com/GlotPress/GlotPress-WP/pull/1364
+[#1360]: https://github.com/GlotPress/GlotPress-WP/pull/1360
