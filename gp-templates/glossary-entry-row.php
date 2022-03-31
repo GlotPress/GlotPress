@@ -20,7 +20,7 @@
 	<td colspan="5">
 		<div class="strings">
 			<dl>
-				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><input type="text" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][term]" id="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->term ); ?>"></dd>
 				<dt><label for="glossary_entry_post_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><select name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][part_of_speech]" id="glossary_entry_pos_<?php echo esc_attr( $entry->id ); ?>">

@@ -203,7 +203,7 @@ class GP_Glossary extends GP_Thing {
 		return new GP::$project(
 			array(
 				'id'   => 0,
-				'name' => __( 'Locale Glossary', 'glotpress' ),
+				'name' => 'Locale Glossary',
 				'slug' => 0,
 				'path' => $locale_glossary_path_prefix,
 			)
