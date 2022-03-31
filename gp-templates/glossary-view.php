@@ -4,7 +4,7 @@ gp_breadcrumb(
 	array(
 		gp_project_links_from_root( $project ),
 		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-		__( 'Glossary', 'glotpress' ),
+		0 === $project->id ? __( 'Locale Glossary', 'glotpress' ) : __( 'Project Glossary', 'glotpress' ),
 	)
 );
 
@@ -18,10 +18,10 @@ wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 gp_tmpl_header();
 
 /* translators: 1: Locale english name. 2: Project name. */
-$glossary_title = __( 'Glossary for %1$s translation of %2$s', 'glotpress' );
+$glossary_title = __( 'Project Glossary for %1$s translation of %2$s', 'glotpress' );
 if ( 0 === $project->id ) {
 	/* translators: %s: Locale english name. */
-	$glossary_title = __( 'Glossary for %s', 'glotpress' );
+	$glossary_title = __( 'Locale Glossary for %s', 'glotpress' );
 }
 ?>
 
