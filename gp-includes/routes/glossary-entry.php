@@ -80,33 +80,26 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$this->errors = $new_glossary_entry->errors;
 			$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 		} else {
-			preg_match( '/\b' . preg_quote( $new_glossary_entry->term, '/' ) . '\b/i', $new_glossary_entry->term, $m );
+			$find_params = array(
+				'glossary_id'    => $glossary->id,
+				'term'           => $new_glossary_entry->term,
+				'translation'    => $new_glossary_entry->translation,
+				'part_of_speech' => $new_glossary_entry->part_of_speech,
+			);
 
-			if ( $m[0] !== $new_glossary_entry->term ) {
-				$this->errors[] = __( 'Glossary terms cannot contain word break or multi-byte characters!', 'glotpress' );
+			if ( GP::$glossary_entry->find_one( $find_params ) ) {
+				// Translators: 1: the glossary term that was attempted to be added, 2: the part of speech that was attempted to be added.
+				$this->errors[] = sprintf( __( 'Identical glossary entry already exists for "%1$s" as "%2$s"!', 'glotpress' ), esc_html( $new_glossary_entry->term ), esc_html( $new_glossary_entry->part_of_speech ) );
 				$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 			} else {
-				$find_parms = array(
-					'glossary_id'    => $glossary->id,
-					'term'           => $new_glossary_entry->term,
-					'translation'    => $new_glossary_entry->translation,
-					'part_of_speech' => $new_glossary_entry->part_of_speech,
-				);
+				$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 
-				if ( GP::$glossary_entry->find_one( $find_parms ) ) {
-					// Translators: 1: the glossary term that was attempted to be added, 2: the part of speech that was attempted to be added.
-					$this->errors[] = sprintf( __( 'Identical glossary entry already exists for "%1$s" as "%2$s"!', 'glotpress' ), esc_html( $new_glossary_entry->term ), esc_html( $new_glossary_entry->part_of_speech ) );
+				if ( ! $created_glossary_entry ) {
+					$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
 					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 				} else {
-					$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
-
-					if ( ! $created_glossary_entry ) {
-						$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
-						$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
-					} else {
-						$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
-						$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
-					}
+					$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
+					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 				}
 			}
 		}
