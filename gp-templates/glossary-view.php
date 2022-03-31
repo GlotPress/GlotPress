@@ -2,8 +2,8 @@
 gp_title( __( 'View Glossary &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb(
 	array(
-		gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) ),
-		gp_project_links_from_root( $project ),
+		// Show Projects if is projects path, show Locales if is locales path.
+		gp_project_links_from_root( $project ) ? gp_project_links_from_root( $project ) : gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) ),
 		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
 		0 === $project->id ? __( 'Locale Glossary', 'glotpress' ) : __( 'Project Glossary', 'glotpress' ),
 	)
