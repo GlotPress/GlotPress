@@ -30,39 +30,6 @@ function gp_register_default_scripts() {
 
 	// Register our standard scripts.
 	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '20210429' );
-	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery' ), '20220319' );
-	wp_add_inline_script(
-		'gp-common',
-		sprintf(
-			'$gp.l10n = %s',
-			wp_json_encode(
-				array(
-					'dismiss'                  => __( 'Dismiss', 'glotpress' ),
-					'discarding'               => __( 'Discarding&hellip;', 'glotpress' ),
-					'deleted'                  => __( 'Deleted!', 'glotpress' ),
-					'error_colon'              => __( 'Error: ', 'glotpress' ),
-					'preview_changes_colon'    => __( 'Preview changes:', 'glotpress' ),
-					/* translators: {count}: Number of sets, do not translate. */
-					'sets_will_be_added'       => __( '{count} set(s) will be added', 'glotpress' ),
-					/* translators: {count}: Number of sets, do not translate. */
-					'sets_will_be_removed'     => __( '{count} set(s) will be removed', 'glotpress' ),
-					'error_deleting_glossary'  => __( 'Error deleting the glossary item!', 'glotpress' ),
-					'error_saving_glossary'    => __( 'Error saving the glossary item!', 'glotpress' ),
-					'error_saving_priority'    => __( 'Error setting the priority!', 'glotpress' ),
-					'error_saving_status'      => __( 'Error setting the status!', 'glotpress' ),
-					'error_saving_translation' => __( 'Error saving the translation!', 'glotpress' ),
-					'saved'                    => __( 'Saved!', 'glotpress' ),
-					'saved_priority'           => __( 'Priority set!', 'glotpress' ),
-					'saved_status'             => __( 'Status set!', 'glotpress' ),
-					'saving'                   => __( 'Saving&hellip;', 'glotpress' ),
-					'saving_priority'          => __( 'Setting priority&hellip;', 'glotpress' ),
-					'saving_status_to'         => __( 'Setting status to ', 'glotpress' ), // TODO: Needs improvement with JS variable i18n.
-					'translation_changed'      => __( 'Translation has changed! Please add the new translation before changing its status.', 'glotpress' ),
-				)
-			)
-		)
-	);
-
 	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery', 'wp-i18n' ), '20220319' );
 	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip' ), '20220319' );
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20220319' );

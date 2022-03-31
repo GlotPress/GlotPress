@@ -1,4 +1,4 @@
-/* global $gp_mass_create_sets_options, $gp */
+/* global $gp_mass_create_sets_options, $gp, __, sprintf */
 /* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	$gp.notices.init();
@@ -16,7 +16,7 @@ jQuery( function( $ ) {
 			success: function( data ) {
 				var preview = $( '#preview' );
 				var preview_html = '';
-				preview.html( '<h3>' + $gp.l10n.preview_changes_colon + '</h3>' );
+				preview.html( '<h3>' + __( 'Preview changes:', 'glotpress' ) + '</h3>' );
 				preview_html += '<ul>';
 				select.prop( 'disabled', false );
 				$gp.notices.clear();
@@ -26,7 +26,7 @@ jQuery( function( $ ) {
 				function preview_html_for( kind, text ) {
 					var sets = data[ kind ];
 					var html = '';
-					html += '<li><span class="' + kind + '">' + text.replace( '{count}', sets.length ) + '</span>';
+					html += '<li><span class="' + kind + '">' + sprintf( text, sets.length ) + '</span>';
 					if ( sets.length ) {
 						html += '<ul>';
 						$.each( sets, function() {
@@ -37,15 +37,18 @@ jQuery( function( $ ) {
 					html += '</li>';
 					return html;
 				}
-				preview_html += preview_html_for( 'added', $gp.l10n.sets_will_be_added );
-				preview_html += preview_html_for( 'removed', $gp.l10n.sets_will_be_removed );
+				/* translators: {count}: Number of translation sets. */
+				preview_html += preview_html_for( 'added', __( '%s set(s) will be added', 'glotpress' ) );
+				/* translators: {count}: Number of translation sets. */
+				preview_html += preview_html_for( 'removed', __( '%s set(s) will be removed', 'glotpress' ) );
 				preview_html += '</ul>';
 				preview.append( preview_html );
 				preview.fadeIn();
 			},
 			error: function( xhr, msg ) {
 				select.prop( 'disabled', false );
-				msg = xhr.responsehtml ? $gp.l10n.error_colon + xhr.responsehtml : $gp.l10n.error_saving_translation;
+				/* translators: %s: Error message. */
+				msg = xhr.responsehtml ? sprintf( __( 'Error: %s', 'glotpress' ), xhr.responsehtml ) : __( 'Error saving the translation!', 'glotpress' );
 				$gp.notices.error( msg );
 			},
 		} );

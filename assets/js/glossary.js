@@ -1,4 +1,4 @@
-/* global $gp_glossary_options, $gp, confirm */
+/* global $gp_glossary_options, $gp, confirm, __, sprintf */
 /* eslint camelcase: "off", no-alert: "off" */
 $gp.glossary = (
 	function( $ ) {
@@ -69,7 +69,7 @@ $gp.glossary = (
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( $gp.l10n.saving );
+				$gp.notices.notice( __( 'Saving&hellip;', 'glotpress' ) );
 
 				editor = $gp.glossary.current;
 
@@ -88,12 +88,13 @@ $gp.glossary = (
 					dataType: 'json',
 					success: function( response ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( $gp.l10n.saved );
+						$gp.notices.success( __( 'Saved!', 'glotpress' ) );
 						$gp.glossary.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_saving_glossary;
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? sprintf( __( 'Error: %s', 'glotpress' ), xhr.responseText ) : __( 'Error saving the glossary item!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
@@ -124,7 +125,7 @@ $gp.glossary = (
 					url: $gp_glossary_options.delete_url,
 					data: data,
 					success: function() {
-						$gp.notices.success( $gp.l10n.deleted );
+						$gp.notices.success( __( 'Deleted!', 'glotpress' ) );
 						editor.fadeOut( 'fast', function() {
 							this.remove();
 						} );
@@ -134,7 +135,8 @@ $gp.glossary = (
 						}
 					},
 					error: function( xhr, msg ) {
-						msg = xhr.responseText ? $gp.l10n.error_colon + xhr.responseText : $gp.l10n.error_deleting_glossary;
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? sprintf( __( 'Error: %s', 'glotpress' ), xhr.responseText ) : __( 'Error deleting the glossary item!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
