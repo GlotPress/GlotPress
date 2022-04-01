@@ -98,7 +98,9 @@ function gp_nav_menu( $location = 'main' ) {
 	$items = gp_nav_menu_items( $location );
 
 	// Get the current URI.
-	$current_uri = gp_url( GP::$router->request_uri() );
+	global $wp;
+	$gp_route    = isset( $wp->query_vars['gp_route'] ) ? $wp->query_vars['gp_route'] : '';
+	$current_uri = gp_url( $gp_route );
 
 	foreach ( $items as $link => $title ) {
 		// Check if the link matches the current URI base, if true, add 'current' class.
