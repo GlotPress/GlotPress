@@ -1,4 +1,4 @@
-/* global $gp_glossary_options, $gp, confirm, __, sprintf */
+/* global $gp_glossary_options, $gp, confirm, wp */
 /* eslint camelcase: "off", no-alert: "off" */
 $gp.glossary = (
 	function( $ ) {
@@ -69,7 +69,7 @@ $gp.glossary = (
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( __( 'Saving&hellip;', 'glotpress' ) );
+				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				editor = $gp.glossary.current;
 
@@ -88,13 +88,13 @@ $gp.glossary = (
 					dataType: 'json',
 					success: function( response ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( __( 'Saved!', 'glotpress' ) );
+						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.glossary.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
 						/* translators: %s: Error message. */
-						msg = xhr.responseText ? sprintf( __( 'Error: %s', 'glotpress' ), xhr.responseText ) : __( 'Error saving the glossary item!', 'glotpress' );
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error saving the glossary item!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
@@ -125,7 +125,7 @@ $gp.glossary = (
 					url: $gp_glossary_options.delete_url,
 					data: data,
 					success: function() {
-						$gp.notices.success( __( 'Deleted!', 'glotpress' ) );
+						$gp.notices.success( wp.i18n.__( 'Deleted!', 'glotpress' ) );
 						editor.fadeOut( 'fast', function() {
 							this.remove();
 						} );
@@ -136,7 +136,7 @@ $gp.glossary = (
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */
-						msg = xhr.responseText ? sprintf( __( 'Error: %s', 'glotpress' ), xhr.responseText ) : __( 'Error deleting the glossary item!', 'glotpress' );
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error deleting the glossary item!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );

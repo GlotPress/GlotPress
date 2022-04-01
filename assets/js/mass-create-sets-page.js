@@ -1,4 +1,4 @@
-/* global $gp_mass_create_sets_options, $gp, __, sprintf */
+/* global $gp_mass_create_sets_options, $gp, wp */
 /* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	$gp.notices.init();
@@ -16,7 +16,7 @@ jQuery( function( $ ) {
 			success: function( data ) {
 				var preview = $( '#preview' );
 				var preview_html = '';
-				preview.html( '<h3>' + __( 'Preview changes:', 'glotpress' ) + '</h3>' );
+				preview.html( '<h3>' + wp.i18n.__( 'Preview changes:', 'glotpress' ) + '</h3>' );
 				preview_html += '<ul>';
 				select.prop( 'disabled', false );
 				$gp.notices.clear();
@@ -26,7 +26,7 @@ jQuery( function( $ ) {
 				function preview_html_for( kind, text ) {
 					var sets = data[ kind ];
 					var html = '';
-					html += '<li><span class="' + kind + '">' + sprintf( text, sets.length ) + '</span>';
+					html += '<li><span class="' + kind + '">' + text + '</span>';
 					if ( sets.length ) {
 						html += '<ul>';
 						$.each( sets, function() {
@@ -37,10 +37,10 @@ jQuery( function( $ ) {
 					html += '</li>';
 					return html;
 				}
-				/* translators: {count}: Number of translation sets. */
-				preview_html += preview_html_for( 'added', __( '%s set(s) will be added', 'glotpress' ) );
-				/* translators: {count}: Number of translation sets. */
-				preview_html += preview_html_for( 'removed', __( '%s set(s) will be removed', 'glotpress' ) );
+				/* translators: %s: Number of translation sets. */
+				preview_html += preview_html_for( 'added', wp.i18n.sprintf( wp.i18n._n( '%s set will be added', '%s sets will be added', data.added.length, 'glotpress' ), data.added.length ) );
+				/* translators: %s: Number of translation sets. */
+				preview_html += preview_html_for( 'removed', wp.i18n.sprintf( wp.i18n._n( '%s set will be removed', '%s sets will be removed', data.removed.length, 'glotpress' ), data.removed.length ) );
 				preview_html += '</ul>';
 				preview.append( preview_html );
 				preview.fadeIn();
@@ -48,7 +48,7 @@ jQuery( function( $ ) {
 			error: function( xhr, msg ) {
 				select.prop( 'disabled', false );
 				/* translators: %s: Error message. */
-				msg = xhr.responsehtml ? sprintf( __( 'Error: %s', 'glotpress' ), xhr.responsehtml ) : __( 'Error saving the translation!', 'glotpress' );
+				msg = xhr.responsehtml ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responsehtml ) : wp.i18n.__( 'Error saving the translation!', 'glotpress' );
 				$gp.notices.error( msg );
 			},
 		} );
