@@ -97,8 +97,13 @@ function gp_nav_menu( $location = 'main' ) {
 	$html  = '';
 	$items = gp_nav_menu_items( $location );
 
+	// Get the current URI.
+	$current_uri = gp_url( GP::$router->request_uri() );
+
 	foreach ( $items as $link => $title ) {
-		$html .= '<a href="' . $link . '">' . $title . '</a>';
+		// Check if the link matches the current URI base, if true, add 'current' class.
+		$class = str_starts_with( $current_uri, $link ) ? 'current' : '';
+		$html .= '<a class="' . $class . '" href="' . $link . '">' . $title . '</a>';
 	}
 
 	return $html;
