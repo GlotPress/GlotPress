@@ -203,7 +203,7 @@ h3 {
 }
 
 .gp-bar #main-navigation a.current,
-.gp-bar #side-navigation a.current{
+.gp-bar #side-navigation a.current {
 	background-color: var( --gp-color-primary );
 }
 
