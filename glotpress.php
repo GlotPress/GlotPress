@@ -159,6 +159,26 @@ if ( ! get_option( 'permalink_structure' ) ) {
 	return;
 }
 
+/**
+ * Set user locale on frontend if user is logged in.
+ *
+ * @since 3.0.0
+ *
+ * @return string|null
+ */
+function gp_user_locale() {
+	// Check if is_user_logged_in() function exists.
+	if ( ! function_exists( 'is_user_logged_in' ) ) {
+		require_once ABSPATH . 'wp-includes/pluggable.php';
+	}
+	// Only set user locale for frontend logged users.
+	if ( ! is_admin() && is_user_logged_in() ) {
+		return get_user_locale();
+	}
+	return null;
+}
+add_filter( 'pre_determine_locale', 'gp_user_locale' );
+
 require_once GP_PATH . 'gp-settings.php';
 
 /**
