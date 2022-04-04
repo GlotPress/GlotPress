@@ -23,7 +23,7 @@ class GP {
 	public static $project;
 
 	/**
-	 * Model for transalation set.
+	 * Model for translation set.
 	 *
 	 * @since 1.0.0
 	 *
@@ -165,4 +165,13 @@ class GP {
 	 * @var array
 	 */
 	public static $scripts = array();
+
+	/**
+	 * Model for GP_Admin.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var GP_Admin
+	 */
+	public static $admin;
 }
