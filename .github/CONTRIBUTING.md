@@ -54,11 +54,6 @@ If you need help with checking out the branch, or the PR was submitted from some
 
 GlotPress includes automated test code, but coverage is not complete at this time. Contributing new tests for GlotPress is a great way to better understand the codebase and contribute to the project at the same time.
 
-There are two types of automated tests:
-
-* unit tests, implemented using [PHPUnit](https://phpunit.de/)
-* general code metrics using [Scrutinizer](https://scrutinizer-ci.com/)
-
 ### Unit tests
 
 You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix.  GlotPress tests are based on the WordPress test suite which is currently only compatible with PHPUnit up to 7.x. Please use the latest PHPUnit version from the 7.x branch.
@@ -70,10 +65,6 @@ $ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassw
 ```
 
 To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/documentation.html) and existing files for how to write new tests.
-
-### Scrutinizer
-
-For the most part feedback from Scrutinizer will flag up potential issues with the submitted code. It will tell you whether anything has been introduced or fixed. It will also give you explanations of those.
 
 ## Helpful tips for writing issues
 
