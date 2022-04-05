@@ -10,18 +10,18 @@ Hi there! Thank you so much for your interest in contributing to GlotPress. We'l
 
 1. Clone this git repository on your development system. This is commonly inside your WordPress development site in the `wp-content/plugins/` directory.
 2. Activate the plugin.
-3. Visit `http://local.sitename/glotpress` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
+3. Visit `http://local.sitename/glotpress/` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
 
 ### Alternative: wp-env
 
-[`wp-env`](https://developer.wordpress.org/block-editor/packages/packages-env/) requires Docker to be installed. There are instructions available for installing Docker on [Windows 10 Pro](https://docs.docker.com/docker-for-windows/install/), [all other versions of Windows](https://docs.docker.com/toolbox/toolbox_install_windows/), [macOS](https://docs.docker.com/docker-for-mac/install/), and [Linux](https://docs.docker.com/v17.12/install/linux/docker-ce/ubuntu/#install-using-the-convenience-script).
+[`wp-env`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) requires Docker to be installed. There are instructions available for installing Docker on [Windows](https://docs.docker.com/desktop/windows/install/), [macOS](https://docs.docker.com/desktop/mac/install/), and [Linux](https://docs.docker.com/engine/install/ubuntu/).
 
 1. Clone this git repository.
 2. Run `npm install`.
 3. Run `npm run env:start`.
 4. Visit `http://localhost:8888/glotpress/` in your web browser.
 
-Please check [the official documentation](https://developer.wordpress.org/block-editor/packages/packages-env/) for customizing any settings like port numbers and other available commands.
+Please check [the official documentation](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) for customizing any settings like port numbers and other available commands.
 
 ## Submitting patches
 
@@ -31,13 +31,13 @@ Whether you want to fix a bug or implement a new feature, the process is pretty 
 1. [Fork](https://github.com/GlotPress/GlotPress-WP/fork) the repository.
 2. Create a branch for each issue you'd like to address. Base your new branch on top of `develop` branch. Branches are named as such: `ISSUEID-keywords` for branches where an issue exists, or `keywords` for a branch without an issue yet. For example issue 216 for adding contributing.md would be `216-add-contributing-md`. Commit your changes.
 3. Push the code changes from your local clone to your fork.
-4. Open a pull request from your fork's feature branch to GlotPress's `develop` branch. Pull request name should mirror the branch's name. Take a look at [one such pull request](https://github.com/GlotPress/GlotPress-WP/pull/241) to get an idea of it. Pull request should have `Fixes #issue` / `Closes #issue`, or, if it's a partial solution, `Part of #issue` in the message to [enable automatic issue closing when a PR is merged](https://help.github.com/articles/closing-issues-via-commit-messages/).
+4. Open a pull request from your fork's feature branch to GlotPress's `develop` branch. Pull request name should mirror the branch's name. Take a look at [one such pull request](https://github.com/GlotPress/GlotPress-WP/pull/241) to get an idea of it. Pull request should have `Fixes #issue` / `Closes #issue`, or, if it's a partial solution, `Part of #issue` in the message to [enable automatic issue closing when a PR is merged](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 
 We use the [Git workflow](https://github.com/GlotPress/GlotPress-WP/wiki/5.-Git-workflow). Please have a read through, as it will make everyone's life easier. Should you have questions about that, reach out to us on Slack (see below).
 
 It doesn't matter if the code isn't perfect. The idea is to get it reviewed early and iterate on it.
 
-Lastly, please follow the [WordPress Coding Standards](http://make.wordpress.org/core/handbook/coding-standards/).
+Lastly, please follow the [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/).
 
 ## Testing patches / PRs
 
@@ -56,7 +56,7 @@ GlotPress includes automated test code, but coverage is not complete at this tim
 
 There are two types of automated tests:
 
-* unit tests, implemented using [PHPUnit](http://phpunit.de/)
+* unit tests, implemented using [PHPUnit](https://phpunit.de/)
 * general code metrics using [Scrutinizer](https://scrutinizer-ci.com/)
 
 ### Unit tests
