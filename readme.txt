@@ -2,7 +2,7 @@
 Contributors: A5hleyRich, akibjorklund, akirk, atimmer, bradt, ChantalC, DaMsT, daveshine, extendwings, gilbitron, GregRoss, javorszky, nacin, Nikschavan, ocean90, pedromendonca, petya, polevaultweb, ramiy, rmccue, samuelsidler, SergeyBiryukov, swissspidy, yoavf
 Tags: translation
 Requires at least: 4.6
-Tested up to: 5.7
+Tested up to: 5.9
 Requires PHP: 7.2
 Stable tag: 2.3.1
 License: GPLv2 or later
