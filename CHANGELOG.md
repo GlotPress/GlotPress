@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0-rc.3] (April 5, 2022)
+
+**Bugfixes**
+* Update styles for links and glossary words to not cross any descenders. ([#1391])
+* Glossary: Add missing primary styles to import button. ([#1393])
+* Translations: Don't add flag for default priority to exports. ([#1392])
+
 ## [3.0.0-rc.2] (April 1, 2022)
 
 **Bugfixes**
@@ -448,7 +455,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.2...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...HEAD
+[3.0.0-rc.3]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.2...3.0.0-rc.3
 [3.0.0-rc.2]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.1...3.0.0-rc.2
 [3.0.0-rc.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0-beta.1...3.0.0-rc.1
 [3.0.0-beta.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0-alpha.4...3.0.0-beta.1
@@ -499,3 +507,6 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1364]: https://github.com/GlotPress/GlotPress/pull/1364
 [#1360]: https://github.com/GlotPress/GlotPress/pull/1360
 [#1360]: https://github.com/GlotPress/GlotPress/pull/1378
+[#1391]: https://github.com/GlotPress/GlotPress/pull/1391
+[#1392]: https://github.com/GlotPress/GlotPress/pull/1392
+[#1393]: https://github.com/GlotPress/GlotPress/pull/1393
