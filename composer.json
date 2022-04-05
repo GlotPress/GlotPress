@@ -13,9 +13,9 @@
     "php": ">=7.2"
   },
   "support": {
-    "issues": "https://github.com/GlotPress/GlotPress-WP/issues",
+    "issues": "https://github.com/GlotPress/GlotPress/issues",
     "forum": "https://wordpress.org/support/plugin/glotpress/",
-    "source": "https://github.com/GlotPress/GlotPress-WP",
+    "source": "https://github.com/GlotPress/GlotPress",
     "docs": "https://glotpress.blog/the-manual/"
   },
   "require-dev": {

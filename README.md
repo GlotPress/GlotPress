@@ -1,6 +1,6 @@
 ![GlotPress](.github/banner.png)
 
-[![PHPUnit Tests](https://github.com/GlotPress/GlotPress-WP/actions/workflows/phpunit.yml/badge.svg?branch=develop)](https://github.com/GlotPress/GlotPress-WP/actions/workflows/phpunit.yml) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
+[![PHPUnit Tests](https://github.com/GlotPress/GlotPress/actions/workflows/phpunit.yml/badge.svg?branch=develop)](https://github.com/GlotPress/GlotPress/actions/workflows/phpunit.yml) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress-WP?branch=develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/GlotPress/GlotPress-WP/?branch=develop)
 
 # GlotPress
 
@@ -35,10 +35,10 @@ After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress
 
 ## Communication
 
-* [GitHub Home](https://github.com/GlotPress/GlotPress-WP)
+* [GitHub Home](https://github.com/GlotPress/GlotPress)
 * [Blog](https://glotpress.blog)
 * [WordPress Slack](https://chat.wordpress.org/): #glotpress (for development only)
 
 ## More Info
 
-More information can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/) or [the manual](https://glotpress.blog/the-manual/).
+More information can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress/wiki/) or [the manual](https://glotpress.blog/the-manual/).

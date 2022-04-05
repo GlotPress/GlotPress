@@ -27,13 +27,13 @@ Please check [the official documentation](https://developer.wordpress.org/block-
 
 Whether you want to fix a bug or implement a new feature, the process is pretty much the same:
 
-0. [Search existing issues](https://github.com/GlotPress/GlotPress-WP/issues); if you can't find anything related to what you want to work on, [open a new issue](#helpful-tips-for-writing-issues).
-1. [Fork](https://github.com/GlotPress/GlotPress-WP/fork) the repository.
+0. [Search existing issues](https://github.com/GlotPress/GlotPress/issues); if you can't find anything related to what you want to work on, [open a new issue](#helpful-tips-for-writing-issues).
+1. [Fork](https://github.com/GlotPress/GlotPress/fork) the repository.
 2. Create a branch for each issue you'd like to address. Base your new branch on top of `develop` branch. Branches are named as such: `ISSUEID-keywords` for branches where an issue exists, or `keywords` for a branch without an issue yet. For example issue 216 for adding contributing.md would be `216-add-contributing-md`. Commit your changes.
 3. Push the code changes from your local clone to your fork.
-4. Open a pull request from your fork's feature branch to GlotPress's `develop` branch. Pull request name should mirror the branch's name. Take a look at [one such pull request](https://github.com/GlotPress/GlotPress-WP/pull/241) to get an idea of it. Pull request should have `Fixes #issue` / `Closes #issue`, or, if it's a partial solution, `Part of #issue` in the message to [enable automatic issue closing when a PR is merged](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
+4. Open a pull request from your fork's feature branch to GlotPress's `develop` branch. Pull request name should mirror the branch's name. Take a look at [one such pull request](https://github.com/GlotPress/GlotPress/pull/241) to get an idea of it. Pull request should have `Fixes #issue` / `Closes #issue`, or, if it's a partial solution, `Part of #issue` in the message to [enable automatic issue closing when a PR is merged](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 
-We use the [Git workflow](https://github.com/GlotPress/GlotPress-WP/wiki/5.-Git-workflow). Please have a read through, as it will make everyone's life easier. Should you have questions about that, reach out to us on Slack (see below).
+We use the [Git workflow](https://github.com/GlotPress/GlotPress/wiki/5.-Git-workflow). Please have a read through, as it will make everyone's life easier. Should you have questions about that, reach out to us on Slack (see below).
 
 It doesn't matter if the code isn't perfect. The idea is to get it reviewed early and iterate on it.
 

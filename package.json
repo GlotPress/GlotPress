@@ -6,9 +6,9 @@
   "author": "The GlotPress Contributors",
   "license": "GPL-2.0-or-later",
   "homepage": "https://glotpress.blog/",
-  "repository": "git+https://github.com/GlotPress/GlotPress-WP.git",
+  "repository": "git+https://github.com/GlotPress/GlotPress.git",
   "bugs": {
-    "url": "https://github.com/GlotPress/GlotPress-WP/issues"
+    "url": "https://github.com/GlotPress/GlotPress/issues"
   },
   "devDependencies": {
     "@wordpress/env": "^4.4.0",
