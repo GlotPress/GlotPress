@@ -127,6 +127,7 @@ a {
 	text-decoration: underline;
 	text-decoration-thickness: max( 1px, 0.063rem );
 	text-underline-offset: 0.1em;
+	text-underline-position: under;
 }
 
 a:link,
@@ -137,8 +138,7 @@ a:visited {
 a:hover,
 a:focus {
 	color: var( --gp-color-accent-fg );
-	text-decoration-thickness: max( 3px, 0.188rem );
-	text-decoration-skip-ink: none;
+	text-decoration-thickness: max( 2px, 0.125rem );
 }
 
 a:focus {
@@ -407,6 +407,7 @@ button,
 	text-decoration: underline;
 	text-decoration-thickness: max( 1px, 0.063rem );
 	text-underline-offset: 0.1em;
+	text-underline-position: under;
 }
 
 .gp-content .button.is-link:hover,
@@ -415,8 +416,7 @@ button,
 	border: 0;
 	background: none;
 	color: var( --gp-color-accent-fg );
-	text-decoration-thickness: max( 3px, 0.188rem );
-	text-decoration-skip-ink: none;
+	text-decoration-thickness: max( 2px, 0.125rem );
 }
 
 .gp-content .button.is-link:active {
@@ -1373,8 +1373,11 @@ table.form-table td {
 
 .glossary-word {
 	display: inline-block;
-	text-decoration: none;
-	border-bottom:1px dashed;
+	text-decoration: underline;
+	text-decoration-style: dashed;
+	text-decoration-thickness: max( 1px, 0.063rem );
+	text-underline-offset: 0.1em;
+	text-underline-position: under;
 	cursor: help;
 }
 
