@@ -15,7 +15,7 @@ function gp_register_default_styles() {
 	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
-	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220405' );
+	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220406' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
