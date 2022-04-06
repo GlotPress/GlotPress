@@ -6,3 +6,8 @@
 # Node
 npm-debug.log
 node_modules
+
+# Local overrides
+.wp-env.override.json
+phpcs.xml
+phpunit.xml
