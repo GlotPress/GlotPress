@@ -1,6 +1,6 @@
 ![GlotPress](.github/banner.png)
 
-[![PHPUnit Tests](https://github.com/GlotPress/GlotPress/actions/workflows/phpunit.yml/badge.svg?branch=develop)](https://github.com/GlotPress/GlotPress/actions/workflows/phpunit.yml) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress-WP/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress?branch=develop)
+[![PHPUnit Tests](https://github.com/GlotPress/GlotPress/actions/workflows/phpunit.yml/badge.svg?branch=develop)](https://github.com/GlotPress/GlotPress/actions/workflows/phpunit.yml) [![codecov.io](https://codecov.io/github/GlotPress/GlotPress/coverage.svg?branch=develop)](https://codecov.io/github/GlotPress/GlotPress?branch=develop)
 
 # GlotPress
 
