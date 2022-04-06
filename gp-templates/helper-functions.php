@@ -69,65 +69,69 @@ function gp_prepare_translation_textarea( $text ) {
 }
 
 /**
- * Sort a set of glossary entries by length for use in map_glossary_entries_to_translation_originals().
+ * Adds suffixes for use in map_glossary_entries_to_translation_originals().
  *
  * @param array $glossary_entries An array of glossary entries to sort.
  *
- * @return array The sorted entries.
+ * @return array The suffixed entries.
  */
-function gp_sort_glossary_entries_terms( $glossary_entries ) {
+function gp_glossary_add_suffixes( $glossary_entries ) {
 	if ( empty( $glossary_entries ) ) {
 		return;
 	}
 
-	$glossary_entries_terms = array();
+	$glossary_entries_suffixes = array();
 
 	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $key => $value ) {
-		$terms = array();
-
-		$term = $value->term;
+		$term = strtolower( $value->term );
 
 		// Check if is multiple word term.
 		if ( preg_match( '/\s/', $term ) ) {
 
 			// Don't add suffix to terms with multiple words.
-			$glossary_entries_terms[ $key ] = $term;
+			$glossary_entries_suffixes[ $term ] = array();
 			continue;
 		}
 
-		// Add single word term.
-		$terms[] = $term;
-
-		// Add common suffixes for single word terms.
-		$terms[] = $term . 's';
-
+		$suffixes = array();
 		if ( 'y' === substr( $term, -1 ) ) {
-			$terms[] = substr( $term, 0, -1 ) . 'ies';
+			$term = substr( $term, 0, -1 );
+			$suffixes[] = 'y';
+			$suffixes[] = 'ies';
+			$suffixes[] = 'ys';
 		} elseif ( 'f' === substr( $term, -1 ) ) {
+			$term = substr( $term, 0, -1 );
+			$suffixes[] = 'f';
+			$suffixes[] = 'ves';
 			$terms[] = substr( $term, 0, -1 ) . 'ves';
 		} elseif ( 'fe' === substr( $term, -2 ) ) {
-			$terms[] = substr( $term, 0, -2 ) . 'ves';
+			$term = substr( $term, 0, -2 );
+			$suffixes[] = 'fe';
+			$suffixes[] = 'ves';
 		} elseif ( 'an' === substr( $term, -2 ) ) {
-			$terms[] = substr( $term, 0, -2 ) . 'en';
+			$term = substr( $term, 0, -2 );
+			$suffixes[] = 'an';
+			$suffixes[] = 'en';
 		} else {
-			$terms[] = $term . 'es';
-			$terms[] = $term . 'ed';
-			$terms[] = $term . 'ing';
+			$suffixes[] = 's';
+			$suffixes[] = 'es';
+			$suffixes[] = 'ed';
+			$suffixes[] = 'ing';
 		}
 
-		$glossary_entries_terms[ $key ] = implode( '|', $terms );
+		$glossary_entries_suffixes[ $term ] = $suffixes;
 	}
 
 	// Sort by length in descending order.
-	uasort(
-		$glossary_entries_terms,
+	uksort(
+		$glossary_entries_suffixes,
 		function( $a, $b ) {
 			return mb_strlen( $b ) <=> mb_strlen( $a );
 		}
 	);
 
-	return $glossary_entries_terms;
+	return $glossary_entries_suffixes;
 }
 
 /**
@@ -135,57 +139,80 @@ function gp_sort_glossary_entries_terms( $glossary_entries ) {
  *
  * @param GP_Translation $translation            A GP Translation object.
  * @param GP_Glossary    $glossary               A GP Glossary object.
- * @param array          $glossary_entries_terms A list of terms to highligh.
  *
  * @return obj The marked up translation entry.
  */
-function map_glossary_entries_to_translation_originals( $translation, $glossary, $glossary_entries_terms = null ) {
-	$glossary_entries = $glossary->get_entries();
-	if ( empty( $glossary_entries ) ) {
-		return $translation;
-	}
-
-	if ( null === $glossary_entries_terms || ! is_array( $glossary_entries_terms ) ) {
-		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
-	}
-
-	$glossary_entries_terms_array = array();
-	$glossary_term_reference      = array();
-
-	// Since glossary entries terms have been returned as an array of strings, we need to break it up and create back references.
-	foreach ( $glossary_entries_terms as $i => $terms ) {
-		// Split the terms in to an array and make sure they are all lower case for later use.
-		$term_list = explode( '|', $terms );
-		$term_list = array_map( 'strtolower', $term_list );
-
-		foreach ( $term_list as $term ) {
-			// Add the term to the terms array.
-			$glossary_entries_terms_array[] = $term;
-			// Make a back reference to the term's glossary entry.
-			$glossary_term_reference[ $term ][] = $i;
+function map_glossary_entries_to_translation_originals( $translation, $glossary ) {
+	static $terms_search, $glossary_entries_reference, $glossary_entries, $cached_glossary;
+	if ( isset( $terms_search ) && isset( $cached_glossary ) && $cached_glossary === $glossary->id ) {
+		if ( ! $terms_search ) {
+			return $translation;
 		}
-	}
-
-	// Sort glossary entries by word count, to search first for multiple word terms, words with hyphens or both.
-	usort(
-		$glossary_entries_terms_array,
-		function( $a, $b ) {
-			$a_words = preg_split( '/[\s-]/', $a );
-			$b_words = preg_split( '/[\s-]/', $b );
-			return count( $b_words ) <=> count( $a_words );
+	} else {
+		// Build our glossary search.
+		$glossary_entries = $glossary->get_entries();
+		$cached_glossary = $glossary->id;
+		if ( empty( $glossary_entries ) ) {
+			$terms_search = false;
+			return $translation;
 		}
-	);
 
-	// Set terms search string.
-	$terms_search = array();
-	foreach ( $glossary_entries_terms_array as $term ) {
-		// Add word boundaries to search term.
-		$terms_search[] = '(\b' . preg_quote( $term, '/' ) . '\b)';
+		$glossary_entries_suffixes = gp_glossary_add_suffixes( $glossary_entries );
+
+		$glossary_entries_reference = array();
+		foreach ( $glossary_entries as $id => $value ) {
+			$term = strtolower( $value->term );
+			if ( ! isset( $glossary_entries_reference[ $term ] ) ) {
+				$glossary_entries_reference[ $term ] = $id;
+				continue;
+			}
+
+			if ( ! is_array( $glossary_entries_reference[ $term ] ) ) {
+				$glossary_entries_reference[ $term ] = array( $glossary_entries_reference[ $term ] );
+			}
+			$glossary_entries_reference[ $term ][] = $id;
+		}
+
+		$terms_search = '\b(';
+		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
+			$terms_search .= preg_quote( $term, '/' );
+
+			if ( ! empty( $suffixes ) ) {
+				$terms_search .= '(?:' . implode( '|', $suffixes ) . ')?';
+			}
+
+			$terms_search .= '|';
+
+			$referenced_term = $term;
+			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
+				foreach ( $suffixes as $suffix ) {
+					if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
+						$referenced_term = $term . $suffix;
+					}
+				}
+				if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
+					// This should not happen but we don't want to access a non existing item below.
+					continue;
+				}
+			}
+
+			$referenced_term = $glossary_entries_reference[ $referenced_term ];
+			// Add the suffixed terms to the lookup table.
+			foreach ( $suffixes as $suffix ) {
+				if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
+					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( (array) $referenced_term, (array) $glossary_entries_reference[ $term . $suffix ] ) ) );
+				} else {
+					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
+				}
+			}
+		}
+
+		// Remove the trailing |.
+		$terms_search = substr( $terms_search, 0, -1 );
+		$terms_search .= ')\b';
 	}
-	$terms_search = implode( '|', $terms_search );
-
 	// Split the singular string on glossary terms boundaries.
-	$singular_split = @preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 	// Loop through each chunk of the split to find glossary terms.
 	if ( is_array( $singular_split ) ) {
@@ -199,11 +226,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 			$lower_chunk = strtolower( $chunk );
 
 			// Search the glossary terms for a matching entry.
-			if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+			if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
-				foreach ( $glossary_term_reference[ $lower_chunk ] as $glossary_entry_id ) {
+				foreach ( (array) $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
 					// Get the glossary entry based on the back reference we created earlier.
 					$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 
@@ -254,11 +281,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary,
 				$lower_chunk = strtolower( $chunk );
 
 				// Search the glossary terms for a matching entry.
-				if ( in_array( $lower_chunk, $glossary_entries_terms_array, true ) ) {
+				if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
 					$glossary_data = array();
 
 					// Add glossary data for each matching entry.
-					foreach ( $glossary_term_reference[ $lower_chunk ] as $glossary_entry_id ) {
+					foreach ( (array) $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
 						// Get the glossary entry based on the back reference we created earlier.
 						$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 

@@ -391,11 +391,6 @@ $i = 0;
 	</tr>
 	</thead>
 <?php
-	if ( $glossary ) {
-		$glossary_entries       = $glossary->get_entries();
-		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
-	}
-
 	foreach ( $translations as $translation ) {
 		if ( ! $translation->translation_set_id ) {
 			$translation->translation_set_id = $translation_set->id;
