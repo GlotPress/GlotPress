@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0-rc.4] (April 7, 2022)
+
+**Breaking Changes**
+* Developers: Renamed `gp_sort_glossary_entries_terms()` to `gp_glossary_add_suffixes()` and removed third parameter of `map_glossary_entries_to_translation_originals()`. ([#1395])
+
+**Bugfixes**
+* Glossary: Improve performance of parsing translations for adding tooltips. Props @akirk ([#1395])
+
 ## [3.0.0-rc.3] (April 5, 2022)
 
 **Bugfixes**
@@ -11,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.0.0-rc.2] (April 1, 2022)
 
 **Bugfixes**
+
 * Glossary: Provide fallback if term splitting has failed. ([#1378])
 
 ## [3.0.0-rc.1] (March 31, 2022)
@@ -455,7 +464,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...HEAD
+[3.0.0-rc.4]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...3.0.0-rc.4
 [3.0.0-rc.3]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.2...3.0.0-rc.3
 [3.0.0-rc.2]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.1...3.0.0-rc.2
 [3.0.0-rc.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0-beta.1...3.0.0-rc.1
@@ -510,3 +520,4 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1391]: https://github.com/GlotPress/GlotPress/pull/1391
 [#1392]: https://github.com/GlotPress/GlotPress/pull/1392
 [#1393]: https://github.com/GlotPress/GlotPress/pull/1393
+[#1395]: https://github.com/GlotPress/GlotPress/pull/1395
