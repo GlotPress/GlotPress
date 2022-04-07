@@ -163,12 +163,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		foreach ( $glossary_entries as $id => $value ) {
 			$term = strtolower( $value->term );
 			if ( ! isset( $glossary_entries_reference[ $term ] ) ) {
-				$glossary_entries_reference[ $term ] = $id;
+				$glossary_entries_reference[ $term ] = array( $id );
 				continue;
-			}
-
-			if ( ! is_array( $glossary_entries_reference[ $term ] ) ) {
-				$glossary_entries_reference[ $term ] = array( $glossary_entries_reference[ $term ] );
 			}
 			$glossary_entries_reference[ $term ][] = $id;
 		}
@@ -200,7 +196,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			// Add the suffixed terms to the lookup table.
 			foreach ( $suffixes as $suffix ) {
 				if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
-					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( (array) $glossary_entries_reference[ $term . $suffix ] ), (array) $referenced_term ) );
+					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( $glossary_entries_reference[ $term . $suffix ], $referenced_term ) ) );
 				} else {
 					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
 				}
@@ -211,6 +207,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		$terms_search = substr( $terms_search, 0, -1 );
 		$terms_search .= ')\b';
 	}
+
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
@@ -230,7 +227,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
-				foreach ( (array) $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
+				foreach ( $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
 					// Get the glossary entry based on the back reference we created earlier.
 					$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 
@@ -285,7 +282,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 					$glossary_data = array();
 
 					// Add glossary data for each matching entry.
-					foreach ( (array) $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
+					foreach ( $glossary_entries_reference[ $lower_chunk ] as $glossary_entry_id ) {
 						// Get the glossary entry based on the back reference we created earlier.
 						$glossary_entry = $glossary_entries[ $glossary_entry_id ];
 
