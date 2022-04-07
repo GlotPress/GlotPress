@@ -200,7 +200,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			// Add the suffixed terms to the lookup table.
 			foreach ( $suffixes as $suffix ) {
 				if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
-					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( (array) $referenced_term, (array) $glossary_entries_reference[ $term . $suffix ] ) ) );
+					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( (array) $glossary_entries_reference[ $term . $suffix ] ), (array) $referenced_term ) );
 				} else {
 					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
 				}
