@@ -1,28 +1,35 @@
 {
-	"name": "glotpress/glotpress-wp",
-	"description": "GlotPress, a WordPress Plugin",
-	"version": "2.3.1",
-	"type": "wordpress-plugin",
-	"keywords": [ "translations" ],
-	"homepage": "https://github.com/GlotPress/GlotPress-WP/",
-	"license": [ "GPL-2.0+" ],
-	"repositories": [
-		{
-			"type": "git",
-			"url": "https://github.com/GlotPress/GlotPress-WP.git"
-		}
-	],
-	"dist": {
-		"url": "https://downloads.wordpress.org/plugin/glotpress.zip",
-		"type": "zip"
-	},
-	"require": {
-		"php": ">=5.3.0"
-	},
-	"authors": [
-		{
-			"name": "the GlotPress team",
-			"homepage": "http://glotpress.org/"
-		}
-	]
+  "name": "glotpress/glotpress-wp",
+  "type": "wordpress-plugin",
+  "description": "GlotPress is a collaborative, web-based software translation tool.",
+  "keywords": [
+    "translations",
+    "wordpress",
+    "i18n"
+  ],
+  "homepage": "https://glotpress.blog/",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.2"
+  },
+  "support": {
+    "issues": "https://github.com/GlotPress/GlotPress/issues",
+    "forum": "https://wordpress.org/support/plugin/glotpress/",
+    "source": "https://github.com/GlotPress/GlotPress",
+    "docs": "https://glotpress.blog/the-manual/"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "wp-coding-standards/wpcs": "^2.2",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "gettext/languages": "^2.6",
+    "phpunit/phpunit": "^7",
+    "yoast/phpunit-polyfills": "^1.0"
+  },
+  "scripts": {
+    "format": "@php ./vendor/bin/phpcbf --report=summary,source",
+    "lint": "@php ./vendor/bin/phpcs --report=summary,source",
+    "test": "@php ./vendor/bin/phpunit",
+    "test:locales": "@test --group locales"
+  }
 }

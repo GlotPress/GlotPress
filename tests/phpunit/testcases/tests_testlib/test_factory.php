@@ -74,7 +74,7 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 	function test_factory_for_thing_generate_args_should_not_touch_args_if_different_generation_defintions() {
 		$factory = $this->create_factory( array('name') );
 		$args = array( 'name' => 'value' );
-		$this->assertEquals( $args, $factory->generate_args( $args ), array( 'other_name' => 5 ) );
+		$this->assertEquals( $args, $factory->generate_args( $args, array( 'other_name' => 5 ) ) );
 	}
 
 	function test_factory_for_thing_generate_args_should_set_undefined_scalar_values() {
@@ -118,7 +118,9 @@ class GP_Test_Unittest_Factory extends GP_UnitTestCase {
 
 	function test_factory_for_thing_create_should_use_function_generator() {
 		$generation_defintions = array(
-			'full_name' => GP_UnitTest_Factory_For_Thing::callback( create_function( '$o', 'return $o->name . " baba";' ) ),
+			'full_name' => GP_UnitTest_Factory_For_Thing::callback( function( $o ) {
+				return $o->name . " baba";
+			} ),
 		);
 		$factory = $this->create_factory( null, $generation_defintions );
 		$create_args = array('name' => 'my name is');

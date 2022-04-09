@@ -21,20 +21,19 @@ function gp_url_path( $url = null ) {
 }
 
 /**
- * Joins paths, and takes care of slashes between them
+ * Joins paths, and takes care of slashes between them.
  *
  * Example: gp_url_join( '/project', array( 'wp', 'dev) ) -> '/project/wp/dev'
  *
  * The function will keep leading and trailing slashes of the whole URL, but won't
  * allow more than consecutive slash inside.
  *
- * @param mixed components... arbitrary number of string or path components
- * @return string URL, built of all the components, separated with /
+ * @param mixed ...$components Arbitrary number of string or path components.
+ * @return string URL, built of all the components, separated with /.
  */
-function gp_url_join() {
-	$components = func_get_args();
+function gp_url_join( ...$components ) {
 	$components_in_flat_array = array_filter( gp_array_flatten( $components ) );
-	$components_with_slashes = implode( '/', $components_in_flat_array );
+	$components_with_slashes  = implode( '/', $components_in_flat_array );
 
 	// Make sure all instances of the final URL are returned with a proper permalink ending.
 	$components_with_slashes = user_trailingslashit( $components_with_slashes );
@@ -90,16 +89,12 @@ function gp_url_add_path_and_query( $base, $path, $query ) {
 }
 
 /**
- * Converts an absolute URL to the corresponding SSL URL if the GlotPress
- * settings allow SSL
+ * Retrieves the URL for the GlotPress root page.
+ *
+ * @since 1.0.0
+ *
+ * @return string GlotPress root page URL.
  */
-function gp_url_ssl( $url ) {
-	if ( defined( 'GP_SSL' ) && GP_SSL ) {
-		$url = preg_replace( '/^http:/', 'https:', $url );
-	}
-	return $url;
-}
-
 function gp_url_public_root() {
 	return home_url( gp_url_base_path() );
 }
@@ -127,7 +122,7 @@ function gp_url_img( $file ) {
  * The URL of the current page
  */
 function gp_url_current() {
-	$protocol      = is_ssl()? 'https://' : 'http://';
+	$protocol      = is_ssl() ? 'https://' : 'http://';
 	$host          = wp_unslash( gp_array_get( $_SERVER, 'HTTP_HOST' ) );
 	$path_and_args = wp_unslash( gp_array_get( $_SERVER, 'REQUEST_URI' ) );
 
@@ -137,15 +132,19 @@ function gp_url_current() {
 /**
  * Get the URL for a project
  *
- * @param bool|string|object $project_or_path Project path or object
- * @param string|array $path Addition path to append to the base path
- * @param array $query associative array of query arguments (optional)
+ * A leading double-slash will avoid prepending /projects/ to the path.
+ *
+ * @param GP_Project|string $project_or_path Project path or object.
+ * @param string|array      $path            Addition path to append to the base path.
+ * @param array             $query           Optional. Associative array of query arguments.
  *
  * @return string
  */
 function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
-	$project_path = is_object( $project_or_path )? $project_or_path->path : $project_or_path;
+	$project_path = is_object( $project_or_path ) ? $project_or_path->path : $project_or_path;
 
+	// A leading double-slash will avoid prepending /projects/ to the path.
+	// This was introduced to enable linking to the locale glossary.
 	if ( '//' === substr( $project_path, 0, 2 ) ) {
 		$project_path = ltrim( $project_path, '/' );
 	} else {
@@ -176,7 +175,7 @@ function gp_url_base_path() {
 	 *
 	 * @param string $url The url.
 	 */
-	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' .  gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
+	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' . gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
 }
 
 function gp_plugin_url( $path = '' ) {

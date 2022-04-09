@@ -71,9 +71,12 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 		foreach ( $entries as $entry ) {
 			$key = $entry->context ? $entry->context . chr( 4 ) . $entry->singular : $entry->singular;
 
-			$result['locale_data']['messages'][ $key ] = array_filter( $entry->translations, function ( $translation ) {
-				return null !== $translation;
-			} );
+			$result['locale_data']['messages'][ $key ] = array_filter(
+				$entry->translations,
+				function ( $translation ) {
+					return null !== $translation;
+				}
+			);
 		}
 
 		/** This filter is documented in gp-includes/formats/format-json.php */
@@ -127,13 +130,7 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 
 			$value = (array) $value;
 
-			if ( isset( $value[0] ) ) {
-				$args['translations'] = $value[0];
-			}
-
-			if ( isset( $value[1] ) ) {
-				$args['plural'] = $value[1];
-			}
+			$args['translations'] = (array) $value;
 
 			$entries->add_entry( new Translation_Entry( $args ) );
 		}
@@ -157,8 +154,8 @@ class GP_Format_Jed1x extends GP_Format_JSON {
 		}
 
 		if ( ! isset( $json['domain'] ) ||
-		     ! isset( $json['locale_data'] ) ||
-		     ! isset( $json['locale_data'][ $json['domain'] ] )
+			 ! isset( $json['locale_data'] ) ||
+			 ! isset( $json['locale_data'][ $json['domain'] ] )
 		) {
 			return false;
 		}

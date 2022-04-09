@@ -14,9 +14,9 @@
  */
 class GP_Original extends GP_Thing {
 
-	var $table_basename = 'gp_originals';
-	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
-	var $int_fields = array( 'id', 'project_id', 'priority' );
+	var $table_basename           = 'gp_originals';
+	var $field_names              = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
+	var $int_fields               = array( 'id', 'project_id', 'priority' );
 	var $non_updatable_attributes = array( 'id', 'path' );
 
 	public $id;
@@ -30,7 +30,13 @@ class GP_Original extends GP_Thing {
 	public $priority;
 	public $date_added;
 
-	static $priorities = array( '-2' => 'hidden', '-1' => 'low', '0' => 'normal', '1' => 'high' );
+	static $priorities = array(
+		'-2' => 'hidden',
+		'-1' => 'low',
+		'0'  => 'normal',
+		'1'  => 'high',
+	);
+
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
@@ -58,20 +64,20 @@ class GP_Original extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Original object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
-
 		foreach ( array( 'plural', 'context', 'references', 'comment' ) as $field ) {
 			if ( isset( $args['parent_project_id'] ) ) {
 				$args[ $field ] = $this->force_false_to_null( $args[ $field ] );
 			}
 		}
 
-		if ( isset( $args['priority'] ) && !is_numeric( $args['priority'] ) ) {
+		if ( isset( $args['priority'] ) && ! is_numeric( $args['priority'] ) ) {
 			$args['priority'] = $this->priority_by_name( $args['priority'] );
 			if ( is_null( $args['priority'] ) ) {
 				unset( $args['priority'] );
 			}
 		}
+
+		$args = parent::normalize_fields( $args );
 
 		return $args;
 	}
@@ -114,21 +120,27 @@ class GP_Original extends GP_Thing {
 		}
 
 		// No cache values found so let's query the database for the results.
-		$counts = $wpdb->get_row( $wpdb->prepare( "
-			SELECT
-				COUNT(*) AS total,
-				COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
-				COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
-			FROM {$wpdb->gp_originals}
-			WHERE
-				project_id = %d AND status = '+active'
-			",
-			$project_id
-		), ARRAY_A );
+		$counts = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT
+					COUNT(*) AS total,
+					COUNT( CASE WHEN priority = '-2' THEN priority END ) AS `hidden`,
+					COUNT( CASE WHEN priority <> '-2' THEN priority END ) AS `public`
+				FROM {$wpdb->gp_originals}
+				WHERE
+					project_id = %d AND status = '+active'",
+				$project_id
+			),
+			ARRAY_A
+		);
 
 		// Make sure $wpdb->get_row() returned an array, if not set all results to 0.
 		if ( ! is_array( $counts ) ) {
-			$counts = array( 'total' => 0, 'hidden' => 0, 'public' => 0 );
+			$counts = array(
+				'total'  => 0,
+				'hidden' => 0,
+				'public' => 0,
+			);
 		}
 
 		// Make sure counts are integers.
@@ -145,7 +157,6 @@ class GP_Original extends GP_Thing {
 		// If we've fallen through for some reason, make sure to return an integer 0.
 		return 0;
 	}
-
 
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
@@ -175,19 +186,25 @@ class GP_Original extends GP_Thing {
 		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = $originals_error = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
-		$originals_by_key = array();
-		foreach( $all_originals_for_project as $original ) {
-			$entry = new Translation_Entry( array(
-				'singular' => $original->singular,
-				'plural'   => $original->plural,
-				'context'  => $original->context
-			) );
+		$originals_by_key          = array();
+		foreach ( $all_originals_for_project as $original ) {
+			$entry = new Translation_Entry(
+				array(
+					'singular' => $original->singular,
+					'plural'   => $original->plural,
+					'context'  => $original->context,
+				)
+			);
+
 			$originals_by_key[ $entry->key() ] = $original;
 		}
 
-		$obsolete_originals = array_filter( $originals_by_key, function( $entry ) {
-			return ( '-obsolete' == $entry->status );
-		} );
+		$obsolete_originals = array_filter(
+			$originals_by_key,
+			function( $entry ) {
+				return ( '-obsolete' == $entry->status );
+			}
+		);
 
 		$possibly_added = $possibly_dropped = array();
 
@@ -195,8 +212,8 @@ class GP_Original extends GP_Thing {
 			$wpdb->queries = array();
 
 			// Context needs to match VARCHAR(255) in the database schema.
-			if ( gp_strlen( $entry->context ) > 255 ) {
-				$entry->context = gp_substr( $entry->context, 0, 255 );
+			if ( mb_strlen( $entry->context ) > 255 ) {
+				$entry->context                         = mb_substr( $entry->context, 0, 255 );
 				$translations->entries[ $entry->key() ] = $entry;
 			}
 
@@ -207,8 +224,18 @@ class GP_Original extends GP_Thing {
 				'plural'     => $entry->plural,
 				'comment'    => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active'
+				'status'     => '+active',
 			);
+
+			// Set the Priority if specified as a flag.
+			if ( $entry->flags ) {
+				foreach ( self::$priorities as $priority => $text ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
+						$data['priority'] = $priority;
+						break;
+					}
+				}
+			}
 
 			/**
 			 * Filter the data of an original being imported or updated.
@@ -232,8 +259,9 @@ class GP_Original extends GP_Thing {
 			 *                              are separated by spaces.
 			 *     @type string $status     Status of the imported original.
 			 * }
+			 * @param Translation_Entry $entry The translation entry.
 			 */
-			$data = apply_filters( 'gp_import_original_array', $data );
+			$data = apply_filters( 'gp_import_original_array', $data, $entry );
 
 			// Original exists, let's update it.
 			if ( isset( $originals_by_key[ $entry->key() ] ) ) {
@@ -250,8 +278,8 @@ class GP_Original extends GP_Thing {
 		}
 
 		// Mark missing strings as possible removals.
-		foreach ( $originals_by_key as $key => $value) {
-			if ( $value->status != '-obsolete' && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
+		foreach ( $originals_by_key as $key => $value ) {
+			if ( '-obsolete' != $value->status && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
 				$possibly_dropped[ $key ] = $value;
 			}
 		}
@@ -267,11 +295,21 @@ class GP_Original extends GP_Thing {
 				'plural'     => $entry->plural,
 				'comment'    => $entry->extracted_comments,
 				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active'
+				'status'     => '+active',
 			);
 
+			// Set the Priority if specified as a flag.
+			if ( $entry->flags ) {
+				foreach ( self::$priorities as $priority => $text ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
+						$data['priority'] = $priority;
+						break;
+					}
+				}
+			}
+
 			/** This filter is documented in gp-includes/things/original.php */
-			$data = apply_filters( 'gp_import_original_array', $data );
+			$data = apply_filters( 'gp_import_original_array', $data, $entry );
 
 			// Search for match in the dropped strings and existing obsolete strings.
 			$close_original = $this->closest_original( $entry->key(), $comparison_array );
@@ -321,7 +359,7 @@ class GP_Original extends GP_Thing {
 		}
 
 		// Mark remaining possibly dropped strings as obsolete.
-		foreach ( $possibly_dropped as $key => $value) {
+		foreach ( $possibly_dropped as $key => $value ) {
 			$this->update( array( 'status' => '-obsolete' ), array( 'id' => $value->id ) );
 			$originals_obsoleted++;
 		}
@@ -373,19 +411,34 @@ class GP_Original extends GP_Thing {
 
 	public function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
-		return isset( $by_name[ $name ] )? $by_name[ $name ] : null;
+		return isset( $by_name[ $name ] ) ? $by_name[ $name ] : null;
 	}
 
 	public function closest_original( $input, $other_strings ) {
+		/**
+		 * Filters the preemptive return value of closest original check.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param string|false|null $pre           A preemptive return value of closest original
+		 *                                         check. Default false.
+		 * @param string            $input         Input string.
+		 * @param array             $other_strings List of strings to check against input string.
+		 */
+		$pre = apply_filters( 'gp_pre_closest_original', false, $input, $other_strings );
+		if ( false !== $pre ) {
+			return $pre;
+		}
+
 		if ( empty( $other_strings ) ) {
 			return null;
 		}
 
-		$input_length = gp_strlen( $input );
+		$input_length       = mb_strlen( $input );
 		$closest_similarity = 0;
 
 		foreach ( $other_strings as $compared_string ) {
-			$compared_string_length = gp_strlen( $compared_string );
+			$compared_string_length = mb_strlen( $compared_string );
 
 			/**
 			 * Filter the maximum length difference allowed when comparing originals for a close match when importing.
@@ -403,7 +456,7 @@ class GP_Original extends GP_Thing {
 			$similarity = gp_string_similarity( $input, $compared_string );
 
 			if ( $similarity > $closest_similarity ) {
-				$closest = $compared_string;
+				$closest            = $compared_string;
 				$closest_similarity = $similarity;
 			}
 		}
@@ -419,11 +472,11 @@ class GP_Original extends GP_Thing {
 		 *
 		 * @param float $similarity Minimum allowed similarity.
 		 */
-		$min_score = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
+		$min_score    = apply_filters( 'gp_original_import_min_similarity_diff', 0.8 );
 		$close_enough = ( $closest_similarity > $min_score );
 
 		/**
-		 * Fires before determining string similarity.
+		 * Fires after determining string similarity.
 		 *
 		 * @since 1.0.0
 		 *
@@ -432,7 +485,7 @@ class GP_Original extends GP_Thing {
 		 * @param float  $closest_similarity The similarity between strings that was calculated.
 		 * @param bool   $close_enough       Whether the closest was be determined as close enough match.
 		 */
-		do_action( 'gp_post_string_similiary_test', $input, $closest, $closest_similarity, $close_enough );
+		do_action( 'gp_post_string_similarity_test', $input, $closest, $closest_similarity, $close_enough );
 
 		if ( $close_enough ) {
 			return $closest;
@@ -442,15 +495,28 @@ class GP_Original extends GP_Thing {
 	}
 
 	public function get_matching_originals_in_other_projects() {
-		$where = array();
+		$where   = array();
 		$where[] = 'singular = BINARY %s';
 		$where[] = is_null( $this->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
 		$where[] = is_null( $this->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
 		$where[] = 'project_id != %d';
 		$where[] = "status = '+active'";
-		$where = implode( ' AND ', $where );
+		$where   = implode( ' AND ', $where );
 
 		return GP::$original->many( "SELECT * FROM $this->table WHERE $where", $this->singular, $this->plural, $this->context, $this->project_id );
+	}
+
+	/**
+	 * Deletes an original and all of its translations.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		GP::$translation->delete_many( array( 'original_id' => $this->id ) );
+
+		return parent::delete();
 	}
 
 	// Triggers
@@ -479,18 +545,22 @@ class GP_Original extends GP_Thing {
 	 * Executes after saving an original.
 	 *
 	 * @since 2.0.0
+	 * @since 3.0.0 Added the `$original_before` parameter.
 	 *
+	 * @param GP_Original $original_before Original before the update.
 	 * @return bool
 	 */
-	public function after_save() {
+	public function after_save( $original_before ) {
 		/**
 		 * Fires after an original is saved.
 		 *
 		 * @since 2.0.0
+		 * @since 3.0.0 Added the `$original_before` parameter.
 		 *
-		 * @param GP_original $original The original that was saved.
+		 * @param GP_Original $original        Original following the update.
+		 * @param GP_Original $original_before Original before the update.
 		 */
-		do_action( 'gp_original_saved', $this );
+		do_action( 'gp_original_saved', $this, $original_before );
 
 		return true;
 	}

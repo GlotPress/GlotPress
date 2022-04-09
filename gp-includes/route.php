@@ -6,21 +6,21 @@ class GP_Route {
 
 	public $api = false;
 
-	public $errors = array();
+	public $errors  = array();
 	public $notices = array();
 
 	var $request_running = false;
-	var $template_path = null;
+	var $template_path   = null;
 
 	var $fake_request = false;
-	var $exited = false;
+	var $exited       = false;
 	var $exit_message;
-	var $redirected = false;
-	var $redirected_to = null;
+	var $redirected        = false;
+	var $redirected_to     = null;
 	var $rendered_template = false;
-	var $loaded_template = null;
-	var $template_output = null;
-	var $headers = array();
+	var $loaded_template   = null;
+	var $template_output   = null;
+	var $headers           = array();
 	var $class_name;
 	var $http_status;
 	var $last_method_called;
@@ -49,9 +49,11 @@ class GP_Route {
 	public function after_request() {
 		// we can't unregister a shutdown function
 		// this check prevents this method from being run twice
-		if ( !$this->request_running ) return;
+		if ( ! $this->request_running ) {
+			return;
+		}
 		// set errors and notices
-		if ( !headers_sent() ) {
+		if ( ! headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
 
@@ -73,7 +75,7 @@ class GP_Route {
 	 * @return bool whether the thing is valid
 	 */
 	public function validate( $thing ) {
-		$verdict = $thing->validate();
+		$verdict      = $thing->validate();
 		$this->errors = array_merge( $this->errors, $thing->errors );
 		return $verdict;
 	}
@@ -90,7 +92,7 @@ class GP_Route {
 	 */
 	public function invalid_and_redirect( $thing, $url = null ) {
 		$valid = $this->validate( $thing );
-		if ( !$valid ) {
+		if ( ! $valid ) {
 			$this->redirect( $url );
 			return true;
 		}
@@ -206,7 +208,7 @@ class GP_Route {
 
 	public function redirect( $url = null ) {
 		if ( $this->fake_request ) {
-			$this->redirected = true;
+			$this->redirected    = true;
 			$this->redirected_to = $url;
 			return;
 		}
@@ -225,7 +227,7 @@ class GP_Route {
 			$url = gp_url( '/projects' );
 		}
 
-		wp_redirect( $url );
+		wp_safe_redirect( $url );
 		$this->tmpl( 'redirect', compact( 'url' ) );
 	}
 
@@ -244,26 +246,9 @@ class GP_Route {
 			return false;
 		}
 
-		$ref = $this->get_raw_referer();
+		$ref = wp_get_raw_referer();
 		if ( $ref ) {
 			return wp_validate_redirect( $ref, false );
-		}
-
-		return false;
-	}
-
-	/**
-	 * Retrieves unvalidated referer from '_wp_http_referer' or HTTP referer.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return string|false Referer URL on success, false on failure.
-	 */
-	private function get_raw_referer() {
-		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
-			return wp_unslash( gp_array_get( $_REQUEST, '_wp_http_referer' ) );
-		} else if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
-			return wp_unslash( gp_array_get( $_SERVER, 'HTTP_REFERER' ) );
 		}
 
 		return false;
@@ -291,14 +276,16 @@ class GP_Route {
 	}
 
 	public function set_notices_and_errors() {
-		if ( $this->fake_request ) return;
+		if ( $this->fake_request ) {
+			return;
+		}
 
-		foreach( $this->notices as $notice ) {
+		foreach ( $this->notices as $notice ) {
 			gp_notice_set( $notice );
 		}
 		$this->notices = array();
 
-		foreach( $this->errors as $error ) {
+		foreach ( $this->errors as $error ) {
 			gp_notice_set( $error, 'error' );
 		}
 		$this->errors = array();
@@ -307,22 +294,22 @@ class GP_Route {
 	/**
 	 * Loads a template.
 	 *
-	 * @param string $template template name to load
-	 * @param array $args Associative array with arguements, which will be exported in the template PHP file
+	 * @param string      $template  Template name to load.
+	 * @param array       $args      Associative array with arguements, which will be exported in the template PHP file.
 	 * @param bool|string $honor_api If this is true or 'api' and the route is processing an API request
-	 * 		the template name will be suffixed with .api. The actual file loaded will be template.api.php
+	 *                               the template name will be suffixed with .api. The actual file loaded will be template.api.php.
 	 */
 	public function tmpl( $template, $args = array(), $honor_api = true ) {
 		if ( $this->fake_request ) {
 			$this->rendered_template = true;
-			$this->loaded_template = $template;
+			$this->loaded_template   = $template;
 		}
 		$this->set_notices_and_errors();
-		if ( $this->api && $honor_api !== false && 'no-api' !== $honor_api ) {
-			$template = $template.'.api';
-			$this->header('Content-Type: application/json');
+		if ( $this->api && false !== $honor_api && 'no-api' !== $honor_api ) {
+			$template = $template . '.api';
+			$this->header( 'Content-Type: application/json' );
 		} else {
-			$this->header('Content-Type: text/html; charset=utf-8');
+			$this->header( 'Content-Type: text/html; charset=utf-8' );
 		}
 		if ( $this->fake_request ) {
 			$this->template_output = gp_tmpl_get_output( $template, $args, $this->template_path );
@@ -334,23 +321,30 @@ class GP_Route {
 
 	public function die_with_404( $args = array() ) {
 		$this->status_header( 404 );
-		$this->tmpl( '404', $args + array( 'title' => __( 'Not Found', 'glotpress' ), 'http_status' => 404 ) );
+		$this->tmpl(
+			'404',
+			$args + array(
+				'title'       => __( 'Not Found', 'glotpress' ),
+				'http_status' => 404,
+			)
+		);
 		$this->exit_();
 	}
 
 	public function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {
-			$this->exited = true;
+			$this->exited       = true;
 			$this->exit_message = $message;
 			return;
 		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- May contain HTML.
 		exit( $message );
 	}
 
 	public function header( $string ) {
 		if ( $this->fake_request ) {
-			list( $header, $value ) = explode( ':', $string, 2 );
-			$this->headers[$header] = $value;
+			list( $header, $value )   = explode( ':', $string, 2 );
+			$this->headers[ $header ] = $value;
 		} else {
 			header( $string );
 		}

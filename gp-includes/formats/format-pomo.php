@@ -2,14 +2,14 @@
 
 class GP_Format_PO extends GP_Format {
 
-	public $name = 'Portable Object Message Catalog (.po/.pot)';
-	public $extension = 'po';
+	public $name           = 'Portable Object Message Catalog (.po/.pot)';
+	public $extension      = 'po';
 	public $alt_extensions = array( 'pot' );
 
 	public $class = 'PO';
 
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
-		$po = new $this->class;
+		$po = new $this->class();
 
 		// See https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html for header details.
 		// TODO: add more meta data in the project: language team, report URL.
@@ -26,19 +26,19 @@ class GP_Format_PO extends GP_Format {
 		}
 
 		// Force export only current translations.
-		$filters = array();
+		$filters           = array();
 		$filters['status'] = 'current';
 
-		foreach( $entries as $entry ) {
+		foreach ( $entries as $entry ) {
 			$po->add_entry( $entry );
 		}
 
-		$current = $project;
-		$project_tree = array();
+		$current        = $project;
+		$project_tree   = array();
 		$project_tree[] = $current->name;
 
 		while ( $current->parent_project_id > 0 ) {
-			$current = GP::$project->get( $current->parent_project_id );
+			$current        = GP::$project->get( $current->parent_project_id );
 			$project_tree[] = $current->name;
 		}
 
@@ -67,7 +67,7 @@ class GP_Format_PO extends GP_Format {
 	}
 
 	public function read_translations_from_file( $file_name, $project = null ) {
-		$po     = new $this->class;
+		$po     = new $this->class();
 		$result = $po->import_from_file( $file_name );
 
 		return $result ? $po : $result;
@@ -104,8 +104,8 @@ class GP_Format_PO extends GP_Format {
 }
 
 class GP_Format_MO extends GP_Format_PO {
-	public $name = 'Machine Object Message Catalog (.mo)';
-	public $extension = 'mo';
+	public $name           = 'Machine Object Message Catalog (.mo)';
+	public $extension      = 'mo';
 	public $alt_extensions = array();
 
 	public $class = 'MO';
@@ -123,5 +123,5 @@ class GP_Format_MO extends GP_Format_PO {
 	}
 }
 
-GP::$formats['po'] = new GP_Format_PO;
-GP::$formats['mo'] = new GP_Format_MO;
+GP::$formats['po'] = new GP_Format_PO();
+GP::$formats['mo'] = new GP_Format_MO();

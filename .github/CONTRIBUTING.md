@@ -1,6 +1,6 @@
 # Contribute
 
-Hi there! Thank you so much for your interest in contributing to GlotPress. We'll try to make things as easy as possible for you in this guide. There are a number of ways to help out, and every one of them is appreaciated:
+Hi there! Thank you so much for your interest in contributing to GlotPress. We'll try to make things as easy as possible for you in this guide. There are a number of ways to help out, and every one of them is appreciated:
 
 * Submitting patches: whether fixing a bug or adding new functionality
 * Testing patches / PRs
@@ -9,25 +9,35 @@ Hi there! Thank you so much for your interest in contributing to GlotPress. We'l
 ## Setting up
 
 1. Clone this git repository on your development system. This is commonly inside your WordPress development site in the `wp-content/plugins/` directory.
-2. Install [PHPUnit](https://phpunit.de/). We recommend using version 4.5, as that's the most current version that is compatible with all PHP versions we check against, and thus Travis is using that version.
-3. Activate the plugin.
-4. Visit `http://local.sitename/glotpress` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
+2. Activate the plugin.
+3. Visit `http://local.sitename/glotpress/` to start using GlotPress. `local.sitename` is the domain where your development WordPress site runs, dependent on configuration.
+
+### Alternative: wp-env
+
+[`wp-env`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) requires Docker to be installed. There are instructions available for installing Docker on [Windows](https://docs.docker.com/desktop/windows/install/), [macOS](https://docs.docker.com/desktop/mac/install/), and [Linux](https://docs.docker.com/engine/install/ubuntu/).
+
+1. Clone this git repository.
+2. Run `npm install`.
+3. Run `npm run env:start`.
+4. Visit `http://localhost:8888/glotpress/` in your web browser.
+
+Please check [the official documentation](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) for customizing any settings like port numbers and other available commands.
 
 ## Submitting patches
 
 Whether you want to fix a bug or implement a new feature, the process is pretty much the same:
 
-0. [Search existing issues](https://github.com/GlotPress/GlotPress-WP/issues); if you can't find anything related to what you want to work on, [open a new issue](#helpful-tips-for-writing-issues).
-1. [Fork](https://github.com/GlotPress/GlotPress-WP/fork) the repository.
+0. [Search existing issues](https://github.com/GlotPress/GlotPress/issues); if you can't find anything related to what you want to work on, [open a new issue](#helpful-tips-for-writing-issues).
+1. [Fork](https://github.com/GlotPress/GlotPress/fork) the repository.
 2. Create a branch for each issue you'd like to address. Base your new branch on top of `develop` branch. Branches are named as such: `ISSUEID-keywords` for branches where an issue exists, or `keywords` for a branch without an issue yet. For example issue 216 for adding contributing.md would be `216-add-contributing-md`. Commit your changes.
 3. Push the code changes from your local clone to your fork.
-4. Open a pull request from your fork's feature branch to GlotPress's `develop` branch. Pull request name should mirror the branch's name. Take a look at [one such pull request](https://github.com/GlotPress/GlotPress-WP/pull/241) to get an idea of it. Pull request should have `Fixes #issue` / `Closes #issue`, or, if it's a partial solution, `Part of #issue` in the message to [enable automatic issue closing when a PR is merged](https://help.github.com/articles/closing-issues-via-commit-messages/).
+4. Open a pull request from your fork's feature branch to GlotPress's `develop` branch. Pull request name should mirror the branch's name. Take a look at [one such pull request](https://github.com/GlotPress/GlotPress/pull/241) to get an idea of it. Pull request should have `Fixes #issue` / `Closes #issue`, or, if it's a partial solution, `Part of #issue` in the message to [enable automatic issue closing when a PR is merged](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue).
 
-We use the [Git workflow](https://github.com/GlotPress/GlotPress-WP/wiki/5.-Git-workflow). Please have a read through, as it will make everyone's life easier. Should you have questions about that, reach out to us on Slack (see below).
+We use the [Git workflow](https://github.com/GlotPress/GlotPress/wiki/5.-Git-workflow). Please have a read through, as it will make everyone's life easier. Should you have questions about that, reach out to us on Slack (see below).
 
 It doesn't matter if the code isn't perfect. The idea is to get it reviewed early and iterate on it.
 
-Lastly, please follow the [WordPress Coding Standards](http://make.wordpress.org/core/handbook/coding-standards/).
+Lastly, please follow the [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/).
 
 ## Testing patches / PRs
 
@@ -44,26 +54,17 @@ If you need help with checking out the branch, or the PR was submitted from some
 
 GlotPress includes automated test code, but coverage is not complete at this time. Contributing new tests for GlotPress is a great way to better understand the codebase and contribute to the project at the same time.
 
-There are two types of automated tests:
-
-* unit tests, implemented using [PHPUnit](http://phpunit.de/)
-* general code metrics using [Scrutinizer](https://scrutinizer-ci.com/)
-
 ### Unit tests
 
-You can run PHPUnit on Unix or Windows, however at this time instructions and scripts are only provided for Unix. The unit test files are in the `tests/` directory.
+You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix.  GlotPress tests are based on the WordPress test suite which is currently only compatible with PHPUnit up to 7.x. Please use the latest PHPUnit version from the 7.x branch.
 
-To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
+The unit test files are in the `tests/` directory. To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
 
 ```
 $ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassword ] [ -h dbhost ] [ -x dbprefix ] [ -w wpversion ] [ -D (drop-db) ] [ -c coverage_file ] [ -f phpunit_filter ]
 ```
 
-To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/manual/4.5/en/index.html) and existing files for how to write new tests.
-
-### Scrutinizer
-
-For the most part feedback from Scrutinizer will flag up potential issues with the submitted code. It will tell you whether anything has been introduced or fixed. It will also give you explanations of those.
+To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/documentation.html) and existing files for how to write new tests.
 
 ## Helpful tips for writing issues
 

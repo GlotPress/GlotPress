@@ -87,8 +87,8 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	}
 
 	$cache_object_id = $object_id = (int) $object_id;
-	$object_type = $type;
-	$meta_key = gp_sanitize_meta_key( $meta_key );
+	$object_type     = $type;
+	$meta_key        = gp_sanitize_meta_key( $meta_key );
 
 	$meta_tuple = compact( 'object_type', 'object_id', 'meta_key', 'meta_value', 'type' );
 
@@ -114,7 +114,15 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 
 	// If no rows are returned we need to insert the meta data instead of updating it.
 	if ( null === $cur ) {
-		$result = $wpdb->insert( $wpdb->gp_meta, array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key, 'meta_value' => $_meta_value ) );
+		$result = $wpdb->insert(
+			$wpdb->gp_meta,
+			array(
+				'object_type' => $object_type,
+				'object_id'   => $object_id,
+				'meta_key'    => $meta_key,
+				'meta_value'  => $_meta_value,
+			)
+		);
 
 		// If the insert failed, return false, otherwise return the id of the inserted row.
 		if ( false === $result ) {
@@ -122,8 +130,16 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 		} else {
 			$ret = $wpdb->insert_id;
 		}
-	} else if ( $cur->meta_value !== $meta_value ) {
-		$result = $wpdb->update( $wpdb->gp_meta, array( 'meta_value' => $_meta_value ), array( 'object_type' => $object_type, 'object_id' => $object_id, 'meta_key' => $meta_key ) );
+	} elseif ( $cur->meta_value !== $meta_value ) {
+		$result = $wpdb->update(
+			$wpdb->gp_meta,
+			array( 'meta_value' => $_meta_value ),
+			array(
+				'object_type' => $object_type,
+				'object_id'   => $object_id,
+				'meta_key'    => $meta_key,
+			)
+		);
 
 		// If the update failed, return false.
 		if ( false === $result ) {
@@ -141,8 +157,6 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
  *
  * @since 1.0.0
  *
- * @internal
- *
  * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
@@ -159,8 +173,8 @@ function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
 	}
 
 	$cache_object_id = $object_id = (int) $object_id;
-	$object_type = $type;
-	$meta_key = gp_sanitize_meta_key( $meta_key );
+	$object_type     = $type;
+	$meta_key        = gp_sanitize_meta_key( $meta_key );
 
 	$meta_tuple = compact( 'object_type', 'object_id', 'meta_key', 'meta_value', 'type' );
 

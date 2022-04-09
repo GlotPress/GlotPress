@@ -260,13 +260,13 @@ class GP_UnitTest_Generator_Locale_Name extends GP_UnitTest_Generator_Sequence {
 }
 
 class GP_UnitTest_Factory_Callback_After_Create {
-	var $callback;
+	private $callback;
 
-	function __construct( $callback ) {
+	public function __construct( callable $callback ) {
 		$this->callback = $callback;
 	}
 
-	function call( $object ) {
-		return call_user_func( $this->callback, $object );
+	public function call( $object ) {
+		return ($this->callback)( $object );
 	}
 }

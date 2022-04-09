@@ -2,38 +2,36 @@
 gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
 
 gp_enqueue_scripts( array( 'gp-common', 'tablesorter' ) );
-gp_enqueue_style( 'tablesorter-theme' );
 gp_breadcrumb( array( __( 'Locales', 'glotpress' ) ) );
 gp_tmpl_header();
 ?>
 
 	<h2><?php _e( 'Locales and Languages', 'glotpress' ); ?></h2>
 	<div class="locales-filter">
-		<?php _e( 'Filter:', 'glotpress' );?><input id="locales-filter" type="text" placeholder="<?php esc_attr_e('search', 'glotpress'); ?>" />
+		<label for="locales-filter"><?php _e( 'Filter:', 'glotpress' ); ?> <input id="locales-filter" type="text" placeholder="<?php esc_attr_e( 'search', 'glotpress' ); ?>" /> </label>
 	</div>
 
-	<table class="tablesorter locales tablesorter-glotpress">
+	<table class="gp-table locales">
 		<thead>
-		<tr class="tablesorter-headerRow">
-			<th class="header tablesorter-header tablesorter-headerAsc"><?php _e( 'Name (in English)', 'glotpress' );?></th>
-			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Native name', 'glotpress' );?></th>
-			<th class="header tablesorter-header tablesorter-headerUnSorted"><?php _e( 'Language code', 'glotpress' );?></th>
-
-		</tr>
+			<tr>
+				<th class="gp-column-english-name"><?php _e( 'Name (in English)', 'glotpress' ); ?></th>
+				<th class="gp-column-native-name"><?php _e( 'Native name', 'glotpress' ); ?></th>
+				<th class="gp-column-language-code"><?php _e( 'Language code', 'glotpress' ); ?></th>
+			</tr>
 		</thead>
 		<tbody>
-		<?php
-			$class = '';
-
+			<?php
+			// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 			foreach ( $locales as $locale ) :
-				$class = ( 'odd' === $class ) ? 'even' : 'odd';
-?>
-			<tr class="<?php echo $class; // WPCS: XSS ok. ?>">
-				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>' ?>
-				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . '</td>' ?>
-				<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . '</td>' ?>
-			</tr>
-		<?php endforeach; ?>
+				?>
+				<tr>
+					<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->english_name ) . '</td>'; ?>
+					<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->native_name ) . '</td>'; ?>
+					<?php echo '<td>' . gp_link_get( gp_url_join( gp_url_current(), $locale->slug ), $locale->slug ) . '</td>'; ?>
+				</tr>
+				<?php
+			endforeach;
+			?>
 		</tbody>
 	</table>
 
@@ -46,8 +44,7 @@ gp_tmpl_header();
 					0: {
 						sorter: 'text'
 					}
-				},
-				widgets: ['zebra']
+				}
 			});
 
 			$rows = $('.locales tbody').find('tr');
@@ -72,4 +69,5 @@ gp_tmpl_header();
 		});
 	</script>
 
-<?php gp_tmpl_footer();
+<?php
+gp_tmpl_footer();

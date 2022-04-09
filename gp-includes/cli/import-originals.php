@@ -17,18 +17,18 @@ class GP_CLI_Import_Originals extends WP_CLI_Command {
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		// Double-check for compatibility
-		if ( $args[0] === '-p' || $args[1] === '-f' ) {
+		if ( '-p' === $args[0] || '-f' === $args[1] ) {
 			WP_CLI::error( __( '-p and -f are no longer required and should be removed.', 'glotpress' ) );
 		}
 
 		$project = GP::$project->by_path( $args[0] );
-		if ( !$project ) {
+		if ( ! $project ) {
 			WP_CLI::error( __( 'Project not found!', 'glotpress' ) );
 		}
 
 		$format = isset( $assoc_args['format'] ) ? $assoc_args['format'] : 'po';
 		$format = gp_array_get( GP::$formats, $format, null );
-		if ( !$format ) {
+		if ( ! $format ) {
 			WP_CLI::error( __( 'No such format.', 'glotpress' ) );
 		}
 

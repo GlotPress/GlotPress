@@ -213,7 +213,13 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_untranslated' ) );
 
 		$this->assertEquals( 2, count( $for_export ) );
-		$this->assertEquals( $translation1->id, $for_export[1]->id );
+
+		// We can't be sure which order the for_export call returned the strings, so make sure to compare the right one.
+		if ( (int) $for_export[0]->original_id === (int) $translation1->original_id ) {
+			$this->assertEquals( $translation1->id, $for_export[0]->id );
+		} else {
+			$this->assertEquals( $translation1->id, $for_export[1]->id );
+		}
 	}
 
 	function test_delete() {
@@ -288,6 +294,27 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$this->assertFalse( $translation->set_status( 'current' ) );
 		$this->assertNotEquals( $user, $translation->user_id_last_modified );
+	}
+
+	public function test_previous_state_is_passed_to_saved_action() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => 'Before' ) );
+		$initial_translation = clone $translation;
+
+		$previous_translation = null;
+		$closure = function( $translation_after, $translation_before ) use ( &$previous_translation ) {
+			$previous_translation = $translation_before;
+		};
+
+		add_action( 'gp_translation_saved', $closure, 10, 2 );
+
+		$translation->save( array( 'translation_0' => 'After' ) );
+
+		remove_action( 'gp_translation_saved', $closure );
+
+		$this->assertEquals( $initial_translation, $previous_translation );
+		$this->assertEquals( $previous_translation->translation_0, 'Before' );
+		$this->assertEquals( $translation->translation_0, 'After' );
 	}
 
 	/**

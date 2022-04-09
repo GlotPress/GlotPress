@@ -1,25 +1,27 @@
 <?php
 
 /**
- * Retrieves a value from $_POST
+ * Retrieves a value from $_POST.
  *
- * @param string $key name of post value
- * @param mixed $default value to return if $_POST[$key] doesn't exist. Default is ''
- * @return mixed $_POST[$key] if exists or $default
+ * @param string       $key     Name of post value.
+ * @param string|array $default Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_POST[ $key ]` if exists or `$default`.
  */
 function gp_post( $key, $default = '' ) {
+	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
 	return wp_unslash( gp_array_get( $_POST, $key, $default ) );
 }
 
 /**
- * Retrieves a value from $_GET
+ * Retrieves a value from $_GET.
  *
- * @param string $key name of get value
- * @param mixed $default value to return if $_GET[$key] doesn't exist. Default is ''
- * @return mixed $_GET[$key] if exists or $default
+ * @param string       $key     Name of get value.
+ * @param string|array $default Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_GET[ $key ]` if exists or `$default`.
  */
 function gp_get( $key, $default = '' ) {
-	return gp_urldecode_deep( wp_unslash( gp_array_get( $_GET, $key, $default ) ) );
+	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
+	return wp_unslash( gp_array_get( $_GET, $key, $default ) );
 }
 
 /**
@@ -55,21 +57,21 @@ function gp_route_nonce_url( $url, $action ) {
 /**
  * Retrieves a value from $array
  *
- * @param array $array
+ * @param array  $array
  * @param string $key name of array value
- * @param mixed $default value to return if $array[$key] doesn't exist. Default is ''
+ * @param mixed  $default value to return if $array[$key] doesn't exist. Default is ''
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[$key] )? $array[$key] : $default;
+	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
-	return defined( $name )? constant( $name ) : $default;
+	return defined( $name ) ? constant( $name ) : $default;
 }
 
 function gp_const_set( $name, $value ) {
-	if ( defined( $name) ) {
+	if ( defined( $name ) ) {
 		return false;
 	}
 	define( $name, $value );
@@ -78,7 +80,7 @@ function gp_const_set( $name, $value ) {
 
 
 function gp_member_get( $object, $key, $default = '' ) {
-	return isset( $object->$key )? $object->$key : $default;
+	return isset( $object->$key ) ? $object->$key : $default;
 }
 
 /**
@@ -89,8 +91,8 @@ function gp_member_get( $object, $key, $default = '' ) {
  */
 function gp_array_flatten( $array ) {
 	$res = array();
-	foreach( $array as $value ) {
-		$res = array_merge( $res, is_array( $value )? gp_array_flatten( $value ) : array( $value ) );
+	foreach ( $array as $value ) {
+		$res = array_merge( $res, is_array( $value ) ? gp_array_flatten( $value ) : array( $value ) );
 	}
 	return $res;
 }
@@ -122,10 +124,19 @@ function gp_notice( $key = 'notice' ) {
 		'acronym' => array(),
 		'b'       => array(),
 		'br'      => array(),
-		'button'  => array( 'disabled' => true, 'name' => true, 'type' => true, 'value' => true ),
+		'button'  => array(
+			'disabled' => true,
+			'name'     => true,
+			'type'     => true,
+			'value'    => true,
+		),
 		'em'      => array(),
 		'i'       => array(),
-		'img'     => array( 'src' => true, 'width' => true, 'height' => true ),
+		'img'     => array(
+			'src'    => true,
+			'width'  => true,
+			'height' => true,
+		),
 		'p'       => array(),
 		'pre'     => array(),
 		's'       => array(),
@@ -144,11 +155,11 @@ function gp_notice( $key = 'notice' ) {
 
 function gp_populate_notices() {
 	GP::$redirect_notices = array();
-	$prefix = '_gp_notice_';
-	$cookie_path = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
-	foreach ($_COOKIE as $key => $value ) {
-		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) )) {
-			GP::$redirect_notices[$suffix] = wp_unslash( $value );
+	$prefix               = '_gp_notice_';
+	$cookie_path          = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
+	foreach ( $_COOKIE as $key => $value ) {
+		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) ) ) {
+			GP::$redirect_notices[ $suffix ] = wp_unslash( $value );
 			gp_set_cookie( $key, '', 0, $cookie_path );
 		}
 	}
@@ -159,46 +170,88 @@ function gp_populate_notices() {
  * each of the argument arrays. The returned array is truncated in length to the length
  * of the shortest argument array.
  *
- * The function works only with numerical arrays.
+ * Previously this function was documented as:
+ *
+ *      The function works only with numerical arrays.
+ *
+ * However this was incorrect, this function would only return an array of arrays with
+ * numeric basic indexes, but would process any array whether it was numeric or reference
+ * based, using the order in which the array was created as the index value to return.
+ *
+ * For example:
+ *
+ *      $first_array[] = "First"
+ *      $first_array[] = "Second"
+ *      $first_array[] = "Third"
+ *
+ *      $second_array[0]    = "Fourth"
+ *      $second_array[test] = "Fifth"
+ *      $second_array[1]    = "Sixth"
+ *
+ *      $result = gp_array_zip( $first_array, $second_array );
+ *
+ * Would produce:
+ *
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Fifth"
+ *      $result[2][0] = "Third"
+ *      $result[2][1] = "Sixth"
+ *
+ * Instead of either failing (which is probably what should have happened) or something like:
+ *
+ *      $result[0][0] = "First"
+ *      $result[0][1] = "Fourth"
+ *      $result[1][0] = "Second"
+ *      $result[1][1] = "Sixth"
+ *
+ * Or some other random result.
+ *
+ * @param array ...$args Array arguments.
+ * @return array|false Array on success, false on failure.
  */
-function gp_array_zip() {
-	$args = func_get_args();
-	if ( !is_array( $args ) ) {
-		return false;
-	}
+function gp_array_zip( ...$args ) {
 	if ( empty( $args ) ) {
 		return array();
 	}
-	$res = array();
+
+	$depth = 0;
+
 	foreach ( $args as &$array ) {
-		if ( !is_array( $array) ) {
+		if ( ! is_array( $array ) ) {
 			return false;
 		}
+
+		$array_size = count( $array );
 		reset( $array );
-	}
-	$all_have_more = true;
-	while (true) {
-		$this_round = array();
-		foreach ( $args as &$array ) {
-			$all_have_more = ( list( , $value ) = each( $array ) );
-			if ( !$all_have_more ) {
-				break;
-			}
-			$this_round[] = $value;
-		}
-		if ( $all_have_more ) {
-			$res[] = $this_round;
-		} else {
-			break;
+
+		if ( 0 === $depth || $depth > $array_size ) {
+			$depth = $array_size;
 		}
 	}
+
+	$res = array();
+
+	$array_count = 0;
+
+	foreach ( $args as &$array ) {
+		for ( $i = 0; $i < $depth; $i++ ) {
+			$res[ $i ][ $array_count ] = current( $array );
+
+			next( $array );
+		}
+
+		$array_count++;
+	}
+
 	return $res;
 }
 
 function gp_array_any( $callback, $array, $arg = null ) {
-	foreach( $array as $item ) {
-		if( is_array( $callback ) ) {
-			if (  $callback[0]->{$callback[1]}( $item, $arg ) ) {
+	foreach ( $array as $item ) {
+		if ( is_array( $callback ) ) {
+			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
 		} else {
@@ -211,8 +264,8 @@ function gp_array_any( $callback, $array, $arg = null ) {
 }
 
 function gp_array_all( $callback, $array ) {
-	foreach( $array as $item ) {
-		if ( !$callback( $item ) ) {
+	foreach ( $array as $item ) {
+		if ( ! $callback( $item ) ) {
 			return false;
 		}
 	}
@@ -227,25 +280,27 @@ function gp_error_log_dump( $value ) {
 }
 
 function gp_object_has_var( $object, $var_name ) {
-	return in_array( $var_name, array_keys( get_object_vars( $object ) ) );
+	return in_array( $var_name, array_keys( get_object_vars( $object ) ), true );
 }
 
 /**
  * Has this translation been updated since the passed timestamp?
  *
  * @param GP_Translation_Set $translation_set Translation to check
- * @param int $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
+ * @param int                $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
  * @return bool
  */
 function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
 
 	// If $timestamp isn't set, try to default to the HTTP_IF_MODIFIED_SINCE header.
-	if ( ! $timestamp && isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) )
+	if ( ! $timestamp && isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) {
 		$timestamp = gp_gmt_strtotime( wp_unslash( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) );
+	}
 
 	// If nothing to compare against, then always assume there's an update available
-	if ( ! $timestamp )
+	if ( ! $timestamp ) {
 		return true;
+	}
 
 	return gp_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) > $timestamp;
 }
@@ -277,8 +332,9 @@ function gp_clean_translation_set_cache( $id ) {
 function gp_clean_translation_sets_cache( $project_id ) {
 	$translation_sets = GP::$translation_set->by_project_id( $project_id );
 
-	if ( ! $translation_sets )
+	if ( ! $translation_sets ) {
 		return;
+	}
 
 	foreach ( $translation_sets as $set ) {
 		gp_clean_translation_set_cache( $set->id );
@@ -378,14 +434,53 @@ function gp_is_between_exclusive( $value, $start, $end ) {
 	return $value > $start && $value < $end;
 }
 
+/**
+ * Checks if the passed value is one of the values in the list.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @param array  $list  The list of values you want to check against.
+ * @return bool
+ */
+function gp_is_one_of( $value, $list ) {
+	return in_array( $value, $list, true );
+}
+
+/**
+ * Checks if the passed value has only ASCII characters.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_ascii_string( $value ) {
+	return preg_replace( "/[^\x20-\x7E\p{L}]/", '', $value ) === $value;
+}
+
+/**
+ * Checks if the passed value starts and ends with a word character.
+ *
+ * @since 3.0.0
+ *
+ * @param string $value The value you want to check.
+ * @return bool
+ */
+function gp_is_starting_and_ending_with_a_word_character( $value ) {
+	return (bool) preg_match( '/\b' . preg_quote( $value, '/' ) . '\b/i', $value );
+}
 
 /**
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
+ *
+ * @param string $name    The name of the cookie.
+ * @param mixed  ...$args Additional arguments to be passed to setcookie().
  */
-function gp_set_cookie() {
-	$args = func_get_args();
+function gp_set_cookie( $name, ...$args ) {
+	array_unshift( $args, $name );
 
 	/**
 	 * Filter whether GlotPress should set a cookie.
@@ -404,8 +499,11 @@ function gp_set_cookie() {
 	 * }
 	 */
 	$args = apply_filters( 'gp_set_cookie', $args );
-	if ( $args === false ) return;
-	call_user_func_array( 'setcookie', $args );
+	if ( false === $args ) {
+		return;
+	}
+
+	setcookie( ...$args );
 }
 
 /**
@@ -417,16 +515,20 @@ function gp_set_cookie() {
  * @return int
  */
 function gp_gmt_strtotime( $string ) {
-	if ( is_numeric($string) )
+	if ( is_numeric( $string ) ) {
 		return $string;
-	if ( !is_string($string) )
+	}
+	if ( ! is_string( $string ) ) {
 		return -1;
+	}
 
-	if ( stristr($string, 'utc') || stristr($string, 'gmt') || stristr($string, '+0000') )
-		return strtotime($string);
+	if ( stristr( $string, 'utc' ) || stristr( $string, 'gmt' ) || stristr( $string, '+0000' ) ) {
+		return strtotime( $string );
+	}
 
-	if ( -1 == $time = strtotime($string . ' +0000') )
-		return strtotime($string);
+	if ( -1 == $time = strtotime( $string . ' +0000' ) ) {
+		return strtotime( $string );
+	}
 
 	return $time;
 }
@@ -446,14 +548,14 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 	if ( ! $format ) {
 		$matched_ext_len = 0;
 
-		foreach( GP::$formats as $format_entry ) {
+		foreach ( GP::$formats as $format_entry ) {
 			$format_extensions = $format_entry->get_file_extensions();
 
-			foreach( $format_extensions as $extension ) {
+			foreach ( $format_extensions as $extension ) {
 				$current_ext_len = strlen( $extension );
 
 				if ( gp_endswith( $filename, $extension ) && $current_ext_len > $matched_ext_len ) {
-					$format = $format_entry;
+					$format          = $format_entry;
 					$matched_ext_len = $current_ext_len;
 				}
 			}
@@ -475,7 +577,7 @@ function gp_wp_profile_options( $user ) {
 		return;
 	}
 
-?>
+	?>
 	<h2 id="glotpress"><?php _e( 'GlotPress', 'glotpress' ); ?></h2>
 
 	<table class="form-table">
@@ -492,7 +594,7 @@ function gp_wp_profile_options( $user ) {
 			</td>
 		</tr>
 	</table>
-<?php
+	<?php
 }
 
 /**
@@ -509,12 +611,25 @@ function gp_wp_profile_options_update( $user_id ) {
 
 	$is_user_gp_admin = GP::$permission->user_can( $user_id, 'admin' );
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( array_key_exists( 'gp_administrator', $_POST ) && ! $is_user_gp_admin ) {
-		GP::$administrator_permission->create( array( 'user_id' => $user_id, 'action' => 'admin', 'object_type' => null ) );
+		GP::$administrator_permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'admin',
+				'object_type' => null,
+			)
+		);
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ! array_key_exists( 'gp_administrator', $_POST ) && $is_user_gp_admin ) {
-		$current_perm = GP::$administrator_permission->find_one( array( 'user_id' => $user_id, 'action' => 'admin' ) );
+		$current_perm = GP::$administrator_permission->find_one(
+			array(
+				'user_id' => $user_id,
+				'action'  => 'admin',
+			)
+		);
 		$current_perm->delete();
 	}
 }
@@ -528,31 +643,35 @@ function gp_wp_profile_options_update( $user_id ) {
  */
 function gp_get_sort_by_fields() {
 	$sort_fields = array(
-		'original_date_added' => array(
+		'original_date_added'       => array(
 			'title'       => __( 'Date added (original)', 'glotpress' ),
 			'sql_sort_by' => 'o.date_added %s',
 		),
-		'translation_date_added' => array(
+		'translation_date_added'    => array(
 			'title'       => __( 'Date added (translation)', 'glotpress' ),
 			'sql_sort_by' => 't.date_added %s',
 		),
-		'original' => array(
+		'translation_date_modified' => array(
+			'title'       => __( 'Date modified (translation)', 'glotpress' ),
+			'sql_sort_by' => 't.date_modified %s',
+		),
+		'original'                  => array(
 			'title'       => __( 'Original string', 'glotpress' ),
 			'sql_sort_by' => 'o.singular %s',
 		),
-		'translation' => array(
+		'translation'               => array(
 			'title'       => __( 'Translation', 'glotpress' ),
 			'sql_sort_by' => 't.translation_0 %s',
 		),
-		'priority' => array(
+		'priority'                  => array(
 			'title'       => __( 'Priority', 'glotpress' ),
 			'sql_sort_by' => 'o.priority %s, o.date_added DESC',
 		),
-		'references' => array(
+		'references'                => array(
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
 		),
-		'random' => array(
+		'random'                    => array(
 			'title'       => __( 'Random', 'glotpress' ),
 			'sql_sort_by' => 'o.priority DESC, RAND()',
 		),
@@ -573,4 +692,15 @@ function gp_get_sort_by_fields() {
 	 * }
 	 */
 	return apply_filters( 'gp_sort_by_fields', $sort_fields );
+}
+
+/**
+ * Sets the maximum memory limit available for translations imports.
+ *
+ * @since 3.0.0
+ *
+ * @return string The maximum memory limit.
+ */
+function gp_set_translations_import_max_memory_limit() {
+	return '256M';
 }

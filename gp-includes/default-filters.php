@@ -4,8 +4,7 @@
  * of the GlotPress hooks.
  *
  * If you need to remove a default hook, this file will
- * give you the priority for which to use to remove the
- * hook.
+ * give you the priority to use for removing the hook.
  *
  * @package GlotPress
  */
@@ -36,3 +35,33 @@ add_action( 'show_user_profile', 'gp_wp_profile_options' );
 add_action( 'edit_user_profile', 'gp_wp_profile_options' );
 add_action( 'personal_options_update', 'gp_wp_profile_options_update' );
 add_action( 'edit_user_profile_update', 'gp_wp_profile_options_update' );
+
+// Display filters.
+add_filter( 'gp_original_extracted_comments', 'esc_translation' );
+add_filter( 'gp_original_extracted_comments', 'wptexturize' );
+add_filter( 'gp_original_extracted_comments', 'convert_chars' );
+add_filter( 'gp_original_extracted_comments', 'make_clickable' );
+add_filter( 'gp_original_extracted_comments', 'convert_smilies' );
+
+add_filter( 'gp_project_description', 'wptexturize' );
+add_filter( 'gp_project_description', 'convert_chars' );
+add_filter( 'gp_project_description', 'make_clickable' );
+add_filter( 'gp_project_description', 'force_balance_tags' );
+add_filter( 'gp_project_description', 'convert_smilies' );
+add_filter( 'gp_project_description', 'wpautop' );
+add_filter( 'gp_project_description', 'wp_kses_post' );
+
+add_filter( 'gp_glossary_description', 'wptexturize' );
+add_filter( 'gp_glossary_description', 'convert_chars' );
+add_filter( 'gp_glossary_description', 'make_clickable' );
+add_filter( 'gp_glossary_description', 'force_balance_tags' );
+add_filter( 'gp_glossary_description', 'convert_smilies' );
+add_filter( 'gp_glossary_description', 'wpautop' );
+add_filter( 'gp_glossary_description', 'wp_kses_post' );
+
+add_filter( 'gp_title', 'wptexturize' );
+add_filter( 'gp_title', 'convert_chars' );
+add_filter( 'gp_title', 'esc_html' );
+
+// Memory limit
+add_filter( 'gp_translations_import_memory_limit', 'gp_set_translations_import_max_memory_limit' );

@@ -5,7 +5,7 @@
 	<!-- TODO: make slug edit WordPress style -->
 	<dt><label for="project[slug]"><?php _e( 'Slug', 'glotpress' ); ?></label></dt>
 	<dd>
-		<input type="text" name="project[slug]" value="<?php echo esc_html( $project->slug ); ?>" id="project[slug]">
+		<input type="text" name="project[slug]" value="<?php echo esc_attr( urldecode( $project->slug ) ); ?>" id="project[slug]">
 		<small><?php _e( 'If you leave the slug empty, it will be derived from the name.', 'glotpress' ); ?></small>
 	</dd>
 
@@ -15,13 +15,17 @@
 	<dt><label for="project[source_url_template]"><?php _e( 'Source file URL', 'glotpress' ); ?></label></dt>
 	<dd>
 		<input type="text" value="<?php echo esc_html( $project->source_url_template ); ?>" name="project[source_url_template]" id="project[source_url_template]" style="width: 30em;" />
-		<span class="ternary"><?php printf(
-			/* translators: 1: %file%, 2: %line%, 3: https://trac.example.org/browser/%file%#L%line% */
-			__( 'Public URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
-			'<code>%file%</code>',
-			'<code>%line%</code>',
-			'<code>https://trac.example.org/browser/%file%#L%line%</code>'
-		); ?></span>
+		<span class="ternary">
+			<?php
+			printf(
+				/* translators: 1: %file%, 2: %line%, 3: https://trac.example.org/browser/%file%#L%line% */
+				__( 'Public URL to a source file in the project. You can use %1$s and %2$s. Ex. %3$s', 'glotpress' ),
+				'<code>%file%</code>',
+				'<code>%line%</code>',
+				'<code>https://trac.example.org/browser/%file%#L%line%</code>'
+			);
+			?>
+		</span>
 	</dd>
 
 	<dt><label for="project[parent_project_id]"><?php _e( 'Parent Project', 'glotpress' ); ?></label></dt>

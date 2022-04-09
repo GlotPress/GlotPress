@@ -1,9 +1,10 @@
 === GlotPress ===
-Contributors: A5hleyRich, akibjorklund, akirk, atimmer, bradt, ChantalC, DaMsT, daveshine, extendwings, gilbitron, GregRoss, javorszky, nacin, Nikschavan, ocean90, pedromendonca, petya, polevaultweb, ramiy, rmccue, samuelsidler, SergeyBiryukov, swissspidy, yoavf
+Contributors: A5hleyRich, akibjorklund, akirk, amieiro, atimmer, bradt, ChantalC, ckykenken, DaMsT, daveshine, dd32, evarlese, extendwings, gilbitron, GregRoss, javorszky, nacin, Nikschavan, ocean90, pedromendonca, petya, polevaultweb, ramiy, rmccue, samuelsidler, SergeyBiryukov, sunxiyuan, swissspidy, tobifjellner, vladytimy, xavivars, yoavf
 Tags: translation
-Requires at least: 4.4
-Tested up to: {{wp-version}}
-Stable tag: {{TAG}}
+Requires at least: 4.6
+Tested up to: 5.9
+Requires PHP: 7.2
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,16 +26,16 @@ This plugin wouldn't be possible without all the hard work that has gone in to t
 
 = Support =
 
-For basic support questions, please use the [WordPress.org support forums](https://wordpress.org/support/plugin/glotpress).
+For basic support questions, please use the [WordPress.org support forums](https://wordpress.org/support/plugin/glotpress/).
 
-If you have a bug or feature request please visit [the issues list](https://github.com/GlotPress/GlotPress-WP/issues) to help improve it in future.
+If you have a bug or feature request please visit [the issues list](https://github.com/GlotPress/GlotPress/issues) to help improve it in future.
 
 If you'd like to work on something and there's not currently an issue for it, open a new issue and describe your proposed change before jumping into coding.
 
 = Communication =
 
-* [GitHub Home](https://github.com/GlotPress/GlotPress-WP)
-* [Blog](http://blog.glotpress.org/)
+* [GitHub Home](https://github.com/GlotPress/GlotPress)
+* [Blog](https://glotpress.blog/)
 * [WordPress Slack](https://chat.wordpress.org/): #glotpress (for development only)
 
 == Installation ==
@@ -51,26 +52,23 @@ After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress
 
 = More Info =
 
-More information can be found in the [GlotPress Manual](http://blog.glotpress.org/the-manual/).
+More information can be found in the [GlotPress Manual](https://glotpress.blog/the-manual/).
 
 == Frequently Asked Questions ==
 = How can I contribute to GlotPress? =
-Drop by the [GlotPress GitHub](https://github.com/GlotPress/GlotPress-WP) repository and look through the open issues and pull requests.
+Drop by the [GlotPress GitHub](https://github.com/GlotPress/GlotPress) repository and look through the open issues and pull requests.
 
 = So who should use GlotPress? =
 Any developer of software that uses [gettext](http://www.gnu.org/software/gettext/), like WordPress theme or plugin authors.  But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
 
 = How do I migrate my standalone GlotPress install to the plugin? =
-There's a conversion document on the [GlotPress wiki](https://github.com/GlotPress/GlotPress-WP/wiki/1.3-Convert-a-standalone-install-to-the-WordPress-plugin) on how to convert your standalone install.
+There's a conversion document on the [GlotPress wiki](https://github.com/GlotPress/GlotPress/wiki/1.3-Convert-a-standalone-install-to-the-WordPress-plugin) on how to convert your standalone install.
 
 = I've written a custom plugin for the standalone version, will it work with the plugin? =
 Short answer, no.
 
-You will need to update the plugin to be a WordPress plugin. Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress-WP/wiki/1.2-Converting-Plugins).
-
-== Upgrade Notice ==
-
-= {{TAG}} =
-Important note, if you have a custom template directory don't forget to update it with the changes in this release.
+You will need to update the plugin to be a WordPress plugin. Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress/wiki/1.2-Converting-Plugins).
 
 == Changelog ==
+
+This project adheres to [Semantic Versioning](http://semver.org/). All notable changes to this project will be documented in the [CHANGELOG.md file on GitHub](https://github.com/GlotPress/GlotPress/blob/develop/CHANGELOG.md).

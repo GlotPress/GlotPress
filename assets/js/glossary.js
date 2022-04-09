@@ -1,5 +1,5 @@
 /* global $gp_glossary_options, $gp, confirm */
-/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
+/* eslint camelcase: "off", no-alert: "off" */
 $gp.glossary = (
 	function( $ ) {
 		return {
@@ -19,7 +19,7 @@ $gp.glossary = (
 				$( $gp.glossary.table )
 					.on( 'click', 'a.edit', $gp.glossary.hooks.show )
 					.on( 'dblclick', 'tr td', $gp.glossary.hooks.show )
-					.on( 'click', 'a.cancel', $gp.glossary.hooks.hide )
+					.on( 'click', 'button.cancel', $gp.glossary.hooks.hide )
 					.on( 'click', 'button.delete', $gp.glossary.hooks.del )
 					.on( 'click', 'button.save', $gp.glossary.hooks.ok );
 			},
@@ -74,7 +74,7 @@ $gp.glossary = (
 				editor = $gp.glossary.current;
 
 				data = {
-					_gp_route_nonce: button.data( 'nonce' )
+					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
 				$( '#editor-' + editor.row_id ).find( 'input, select, textarea' ).each( function() {
@@ -86,16 +86,16 @@ $gp.glossary = (
 					url: $gp_glossary_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( data ) {
+					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( 'Saved!' );
-						$gp.glossary.replace_current( data );
+						$gp.glossary.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
 						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the glossary item!';
 						$gp.notices.error( msg );
-					}
+					},
 				} );
 			},
 
@@ -107,38 +107,37 @@ $gp.glossary = (
 				result = confirm( $gp_glossary_options.ge_delete_ays );
 				if ( ! result ) {
 					return;
-				} else {
-					editor = button.closest( 'tr' );
-					preview = editor.prev( 'tr' );
-
-					data = {
-						_gp_route_nonce: button.data( 'nonce' )
-					};
-
-					editor.find( 'input, select, textarea' ).each( function() {
-						data[ $( this ).attr( 'name' ) ] = this.value;
-					} );
-
-					$.ajax( {
-						type: 'POST',
-						url: $gp_glossary_options.delete_url,
-						data: data,
-						success: function() {
-							$gp.notices.success( 'Deleted!' );
-							editor.fadeOut( 'fast', function() {
-								this.remove();
-							} );
-							preview.remove();
-							if ( 1 === $( 'tr', $gp.glossary.table ).length ) {
-								$gp.glossary.table.remove();
-							}
-						},
-						error: function( xhr, msg ) {
-							msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
-							$gp.notices.error( msg );
-						}
-					} );
 				}
+				editor = button.closest( 'tr' );
+				preview = editor.prev( 'tr' );
+
+				data = {
+					_gp_route_nonce: button.data( 'nonce' ),
+				};
+
+				editor.find( 'input, select, textarea' ).each( function() {
+					data[ $( this ).attr( 'name' ) ] = this.value;
+				} );
+
+				$.ajax( {
+					type: 'POST',
+					url: $gp_glossary_options.delete_url,
+					data: data,
+					success: function() {
+						$gp.notices.success( 'Deleted!' );
+						editor.fadeOut( 'fast', function() {
+							this.remove();
+						} );
+						preview.remove();
+						if ( 1 === $( 'tr', $gp.glossary.table ).length ) {
+							$gp.glossary.table.remove();
+						}
+					},
+					error: function( xhr, msg ) {
+						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
+						$gp.notices.error( msg );
+					},
+				} );
 			},
 
 			replace_current: function( html ) {
@@ -169,8 +168,8 @@ $gp.glossary = (
 				ok: function() {
 					$gp.glossary.save( $( this ) );
 					return false;
-				}
-			}
+				},
+			},
 
 		};
 	}( jQuery )

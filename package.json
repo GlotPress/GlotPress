@@ -1,0 +1,27 @@
+{
+  "name": "glotpress",
+  "version": "0.0.0",
+  "private": true,
+  "description": "GlotPress is a collaborative, web-based software translation tool.",
+  "author": "The GlotPress Contributors",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://glotpress.blog/",
+  "repository": "git+https://github.com/GlotPress/GlotPress.git",
+  "bugs": {
+    "url": "https://github.com/GlotPress/GlotPress/issues"
+  },
+  "devDependencies": {
+    "@wordpress/env": "^4.4.0",
+    "@wordpress/scripts": "^22.3.0",
+    "grunt": "^1.4.1",
+    "grunt-contrib-cssmin": "^4.0.0",
+    "grunt-contrib-uglify": "^5.1.0",
+    "load-grunt-tasks": "^5.1.0"
+  },
+  "scripts": {
+    "grunt": "grunt",
+    "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
+    "env:stop": "wp-env stop",
+    "lint:js": "wp-scripts lint-js"
+  }
+}

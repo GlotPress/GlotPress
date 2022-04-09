@@ -14,9 +14,9 @@
  */
 class GP_Glossary extends GP_Thing {
 
-	var $table_basename = 'gp_glossaries';
-	var $field_names = array( 'id', 'translation_set_id', 'description' );
-	var $int_fields = array( 'id', 'translation_set_id' );
+	var $table_basename           = 'gp_glossaries';
+	var $field_names              = array( 'id', 'translation_set_id', 'description' );
+	var $int_fields               = array( 'id', 'translation_set_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	public $id;
@@ -58,7 +58,7 @@ class GP_Glossary extends GP_Thing {
 	 * Get the glossary by set/project.
 	 * If there's no glossary for this specific project, get the nearest parent glossary
 	 *
-	 * @param GP_Project $project
+	 * @param GP_Project         $project
 	 * @param GP_Translation_Set $translation_set
 	 *
 	 * @return GP_Glossary|bool
@@ -74,7 +74,7 @@ class GP_Glossary extends GP_Thing {
 				$locale = $translation_set->locale;
 				$slug   = $translation_set->slug;
 
-				while ( ! $glossary && $project->parent_project_id  ) {
+				while ( ! $glossary && $project->parent_project_id ) {
 					$project         = GP::$project->get( $project->parent_project_id );
 					$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
 
@@ -89,9 +89,12 @@ class GP_Glossary extends GP_Thing {
 	}
 
 	public function by_set_id( $set_id ) {
-		return $this->one( "
+		return $this->one(
+			"
 		    SELECT * FROM $this->table
-		    WHERE translation_set_id = %d LIMIT 1", $set_id );
+		    WHERE translation_set_id = %d LIMIT 1",
+			$set_id
+		);
 
 	}
 
@@ -151,13 +154,16 @@ class GP_Glossary extends GP_Thing {
 
 		$current_date = $this->now_in_mysql_format();
 
-		return $this->query("
-			INSERT INTO $wpdb->gp_glossary_items (
+		return $this->query(
+			"INSERT INTO $wpdb->gp_glossary_items (
 				id, term, type, examples, comment, suggested_translation, last_update
 			)
 			SELECT
 				%s AS id, term, type, examples, comment, suggested_translation, %s AS last_update
-			FROM $wpdb->gp_glossary_items WHERE id = %s", $this->id, $current_date, $source_glossary_id
+			FROM $wpdb->gp_glossary_items WHERE id = %s",
+			$this->id,
+			$current_date,
+			$source_glossary_id
 		);
 	}
 
@@ -187,15 +193,21 @@ class GP_Glossary extends GP_Thing {
 		 *
 		 * @since 2.3.1
 		 *
-		 * @param string $$locale_glossary_path_prefix Prefix for the locale glossary path.
+		 * @param string $locale_glossary_path_prefix Prefix for the locale glossary path.
 		 */
 		$locale_glossary_path_prefix = apply_filters( 'gp_locale_glossary_path_prefix', '/languages' );
-		return new GP::$project( array(
-			'id'   => 0,
-			'name' => 'Locale Glossary',
-			'slug' => 0,
-			'path' => "/$locale_glossary_path_prefix",
-		) );
+
+		// A leading double-slash prevents gp_url_project() from prepending /projects/ to the URL.
+		$locale_glossary_path_prefix = '//' . ltrim( $locale_glossary_path_prefix, '/' );
+
+		return new GP::$project(
+			array(
+				'id'   => 0,
+				'name' => 'Locale Glossary',
+				'slug' => 0,
+				'path' => $locale_glossary_path_prefix,
+			)
+		);
 	}
 }
 

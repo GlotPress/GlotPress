@@ -1,15 +1,10 @@
 <?php
 
-function gp_urldecode_deep($value) {
-	$value = is_array( $value ) ? array_map( 'gp_urldecode_deep', $value ) : urldecode( $value );
-	return $value;
-}
-
 /**
  * Makes all key/value pairs in $vars global variables
  */
 function gp_set_globals( $vars ) {
-	foreach( $vars as $name => $value ) {
+	foreach ( $vars as $name => $value ) {
 		$GLOBALS[ $name ] = $value;
 	}
 }
@@ -80,7 +75,7 @@ function gp_abort_main_wp_query( $sql, WP_Query $wp_query ) {
 function gp_delete_user_permissions( $user_id ) {
 	$permissions = GP::$permission->find_many( array( 'user_id' => $user_id ) );
 
-	foreach( $permissions as $permission ) {
+	foreach ( $permissions as $permission ) {
 		$permission->delete();
 	}
 }

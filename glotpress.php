@@ -3,7 +3,10 @@
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 2.3.1
+ * Version: 3.0.0
+ * Requires at least: 4.6
+ * Tested up to: 5.9
+ * Requires PHP: 7.2
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
  * License: GPLv2 or later
@@ -26,17 +29,15 @@
  * @package GlotPress
  */
 
-define( 'GP_VERSION', '2.3.1' );
+define( 'GP_VERSION', '3.0.0' );
 define( 'GP_DB_VERSION', '980' );
+define( 'GP_CACHE_VERSION', '3.0' );
 define( 'GP_ROUTING', true );
 define( 'GP_PLUGIN_FILE', __FILE__ );
 define( 'GP_PATH', __DIR__ . '/' );
 define( 'GP_INC', 'gp-includes/' );
-define( 'GP_WP_REQUIRED_VERSION', '4.4' );
-define( 'GP_PHP_REQUIRED_VERSION', '5.3' );
-
-// Load the plugin's translated strings.
-load_plugin_textdomain( 'glotpress' );
+define( 'GP_WP_REQUIRED_VERSION', '4.6' );
+define( 'GP_PHP_REQUIRED_VERSION', '7.2' );
 
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
@@ -52,12 +53,23 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
 	if ( 'plugins' !== $screen->id ) {
 		return;
 	}
-?>
+	?>
 	<div class="notice notice-error">
-		<p style="max-width:800px;"><b><?php _e( 'GlotPress Disabled', 'glotpress' );?></b> <?php echo $short_notice; // WPCS: xss ok. ?></p>
-		<p style="max-width:800px;"><?php echo $long_notice; // WPCS: xss ok. ?></p>
+		<p style="max-width:800px;">
+			<b><?php _e( 'GlotPress Disabled', 'glotpress' ); ?></b>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $short_notice;
+			?>
+		</p>
+		<p style="max-width:800px;">
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $long_notice;
+			?>
+		</p>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -69,7 +81,11 @@ function gp_display_disabled_admin_notice( $short_notice, $long_notice ) {
  */
 function gp_unsupported_php_version_notice() {
 	$short_notice = __( '&#151; You are running an unsupported version of PHP.', 'glotpress' );
-	$long_notice = sprintf( __( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress. ', 'glotpress' ), GP_PHP_REQUIRED_VERSION );
+	$long_notice  = sprintf(
+		/* translators: %s: required PHP version */
+		__( 'GlotPress requires PHP Version %s, please upgrade to run GlotPress.', 'glotpress' ),
+		GP_PHP_REQUIRED_VERSION
+	);
 
 	gp_display_disabled_admin_notice( $short_notice, $long_notice );
 }
@@ -97,7 +113,7 @@ function gp_unsupported_version_admin_notice() {
 	global $wp_version;
 
 	$short_notice = __( '&#151; You are running an unsupported version of WordPress.', 'glotpress' );
-	$long_notice = sprintf(
+	$long_notice  = sprintf(
 		/* translators: 1: Required version of WordPress 2: Current version of WordPress */
 		__( 'GlotPress requires WordPress %1$s or later and has detected you are running %2$s. Upgrade your WordPress install or deactivate the GlotPress plugin to remove this message.', 'glotpress' ),
 		esc_html( GP_WP_REQUIRED_VERSION ),
@@ -128,7 +144,7 @@ if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 function gp_unsupported_permalink_structure_admin_notice() {
 	$short_notice = __( '&#151; You are running an unsupported permalink structure.', 'glotpress' );
 	/* translators: %s: URL to permalink settings */
-	$long_notice = __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain. ', 'glotpress' );
+	$long_notice = __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain.', 'glotpress' );
 	$long_notice = sprintf( $long_notice, admin_url( 'options-permalink.php' ) );
 
 	gp_display_disabled_admin_notice( $short_notice, $long_notice );
@@ -156,7 +172,12 @@ require_once GP_PATH . 'gp-settings.php';
 function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
-		GP::$permission->create( array( 'user_id' => get_current_user_id(), 'action' => 'admin' ) );
+		GP::$permission->create(
+			array(
+				'user_id' => get_current_user_id(),
+				'action'  => 'admin',
+			)
+		);
 	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
@@ -175,10 +196,10 @@ function gp_deactivate_plugin( $network_wide ) {
 	 * If network deactivating, ensure we flush the option on every site.
 	 */
 	if ( $network_wide ) {
-		$sites = wp_get_sites();
+		$sites = get_sites();
 
 		foreach ( $sites as $site ) {
-			switch_to_blog( $site['blog_id'] );
+			switch_to_blog( $site->blog_id );
 			update_option( 'gp_rewrite_rule', '' );
 			restore_current_blog();
 		}

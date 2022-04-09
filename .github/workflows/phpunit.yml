@@ -1,0 +1,101 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - stable
+      - develop
+  pull_request:
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php }}, WordPress${{ matrix.multisite && ' multisite' || '' }} ${{ matrix.wordpress }}${{ matrix.coverage && ' with coverage' || '' }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3306/tcp
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        # Set health checks to wait until mysql has started
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        php: [ '7.4', '7.3', '7.2' ]
+        wordpress: [ 'latest', 'nightly' ]
+        multisite: [ false ]
+        coverage: [ false ]
+        experimental: [ false ]
+        include:
+        # - php: '8.0'
+        #   os: ubuntu-latest
+        #   experimental: true
+          - os: ubuntu-latest
+            php: '7.4'
+            wordpress: 'latest'
+            multisite: false
+            coverage: true
+            experimental: false
+          - os: ubuntu-latest
+            php: '7.4'
+            wordpress: 'latest'
+            multisite: true
+            coverage: false
+            experimental: false
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: ${{ matrix.coverage && 'xdebug' || 'none' }}
+          tools: composer
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v1
+        with:
+          composer-options: "--no-progress --no-ansi --no-interaction"
+
+      - name: Install WordPress test setup
+        run: bash bin/install-wp-tests.sh wordpress_test root password 127.0.0.1:${{ job.services.mysql.ports[3306] }} ${{ matrix.wordpress }}
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run tests
+        if: ${{ ! matrix.coverage }}
+        run: WP_MULTISITE=${{ matrix.multisite && '1' || '' }} vendor/bin/phpunit
+
+      - name: Run tests for locales
+        if: ${{ ! matrix.coverage && ! matrix.multisite }}
+        run: vendor/bin/phpunit --group locales
+
+      - name: Run tests with code coverage
+        if: ${{ matrix.coverage }}
+        run: vendor/bin/phpunit --coverage-clover coverage-clover-${{ github.sha }}.xml
+
+      - name: Upload coverage to Codecov
+        if: ${{ matrix.coverage }}
+        uses: codecov/codecov-action@v2
+        with:
+          file: coverage-clover-${{ github.sha }}.xml
+          fail_ci_if_error: true

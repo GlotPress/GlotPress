@@ -8,7 +8,8 @@
 	// Enqueue the base style so we don't have to load it manually on each page.
 	gp_enqueue_styles( 'gp-base' );
 
-	gp_head(); ?>
+	gp_head();
+	?>
 </head>
 
 <body <?php body_class( 'no-js' ); ?>>
@@ -16,9 +17,8 @@
 
 	<header class="gp-bar clearfix">
 		<h1>
-			<a href="<?php echo gp_url( '/' ); ?>" rel="home">
+			<a href="<?php echo esc_url( gp_url( '/' ) ); ?>" rel="home">
 				<?php
-
 				/**
 				 * Filter the main heading (H1) of a GlotPress page that links to the home page.
 				 *
@@ -26,7 +26,9 @@
 				 *
 				 * @param string $title The text linking to home page.
 				 */
-				echo apply_filters( 'gp_home_title', 'GlotPress' ); ?>
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo apply_filters( 'gp_home_title', 'GlotPress' );
+				?>
 			</a>
 		</h1>
 
@@ -35,22 +37,22 @@
 		</nav>
 
 		<nav id="side-navigation">
-			<?php echo gp_nav_menu('side'); ?>
+			<?php echo gp_nav_menu( 'side' ); ?>
 		</nav>
 	</header>
 
 	<div class="gp-content">
 		<?php echo gp_breadcrumb(); ?>
 
-		<div id="gp-js-message"></div>
+		<div id="gp-js-message" class="gp-js-message"></div>
 
-		<?php if (gp_notice('error')): ?>
+		<?php if ( gp_notice( 'error' ) ) : ?>
 			<div class="error">
 				<?php echo gp_notice( 'error' ); ?>
 			</div>
 		<?php endif; ?>
 
-		<?php if (gp_notice()): ?>
+		<?php if ( gp_notice() ) : ?>
 			<div class="notice">
 				<?php echo gp_notice(); ?>
 			</div>

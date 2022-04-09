@@ -287,4 +287,65 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$non_existent = GP::$original->count_by_project_id( $project->id, 'non_existent' );
 		$this->assertSame( 0, $non_existent );
 	}
+
+	public function test_previous_state_is_passed_to_saved_action() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Before' ) );
+		$initial_original = clone $original;
+
+		$previous_original = null;
+		$closure = function( $original_after, $original_before ) use ( &$previous_original ) {
+			$previous_original = $original_before;
+		};
+
+		add_action( 'gp_original_saved', $closure, 10, 2 );
+
+		$original->save( array( 'singular' => 'After' ) );
+
+		remove_action( 'gp_original_saved', $closure );
+
+		$this->assertEquals( $initial_original, $previous_original );
+		$this->assertEquals( $previous_original->singular, 'Before' );
+		$this->assertEquals( $original->singular, 'After' );
+	}
+
+	public function test_delete() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$original = GP::$original->get( $translation->original_id );
+		$this->assertSame( 1, $original->delete() );
+
+		// Check if translations are deleted too.
+		$translation = GP::$translation->find_one( array( 'id' => $translation->id ) );
+		$this->assertFalse( $translation );
+	}
+
+	/**
+	 * @ticket gh-1340
+	 */
+	function test_import_should_respect_priority_in_flags() {
+		$project = $this->factory->project->create();
+		$original = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'baba' ) );
+
+		$translations = $this->create_translations_with(
+			array(
+				array( 'singular' => 'baba', 'flags' => array( 'gp-priority: low' ) ),
+				array( 'singular' => 'baba baba' ),
+				array( 'singular' => 'baba baba baba', 'flags' => array( 'gp-priority: high' ) ),
+				array( 'singular' => 'priority flag should be ignored.', 'flags' => array( 'gp-priority: unexpected' ) ),
+			)
+		);
+
+		$original->import_for_project( $project, $translations );
+
+		$originals_for_project = $original->by_project_id( $project->id );
+		$this->assertEquals( 4, count( $originals_for_project ) );
+
+		$this->assertEquals( -1, $originals_for_project[0]->priority, 'Existing string should have been updated to be low-priority.' );
+		$this->assertEquals( 0, $originals_for_project[1]->priority, 'New string should have imported as normal priority.' );
+		$this->assertEquals( 1, $originals_for_project[2]->priority, 'New string should have imported as high priority.' );
+		$this->assertEquals( 0, $originals_for_project[3]->priority, 'New string with invalid priority flag should have imported as normal priority.' );
+	}
+
 }

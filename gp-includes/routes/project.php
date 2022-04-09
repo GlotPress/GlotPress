@@ -15,7 +15,7 @@
 class GP_Route_Project extends GP_Route_Main {
 
 	public function index() {
-		$title = __( 'Projects', 'glotpress' );
+		$title    = __( 'Projects', 'glotpress' );
 		$projects = GP::$project->top_level();
 		$this->tmpl( 'projects', get_defined_vars() );
 	}
@@ -27,28 +27,31 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$sub_projects = $project->sub_projects();
+		$sub_projects     = $project->sub_projects();
 		$translation_sets = GP::$translation_set->by_project_id( $project->id );
 
-		foreach( $translation_sets as $set ) {
+		foreach ( $translation_sets as $set ) {
 			$locale = GP_Locales::by_slug( $set->locale );
 
-			$set->name_with_locale = $set->name_with_locale();
-			$set->current_count = $set->current_count();
+			$set->name_with_locale   = $set->name_with_locale();
+			$set->current_count      = $set->current_count();
 			$set->untranslated_count = $set->untranslated_count();
-			$set->waiting_count = $set->waiting_count();
-			$set->fuzzy_count = $set->fuzzy_count();
+			$set->waiting_count      = $set->waiting_count();
+			$set->fuzzy_count        = $set->fuzzy_count();
 			$set->percent_translated = $set->percent_translated();
-			$set->all_count = $set->all_count();
-			$set->wp_locale = $locale->wp_locale;
+			$set->all_count          = $set->all_count();
+			$set->wp_locale          = $locale->wp_locale;
 			if ( $this->api ) {
 				$set->last_modified = $set->current_count ? $set->last_modified() : false;
 			}
 		}
 
-		usort( $translation_sets, function( $a, $b ) {
-			return( $a->current_count < $b->current_count );
-		});
+		usort(
+			$translation_sets,
+			function( $a, $b ) {
+				return( $a->current_count < $b->current_count );
+			}
+		);
 
 		/**
 		 * Filter the list of translation sets of a project.
@@ -61,7 +64,11 @@ class GP_Route_Project extends GP_Route_Main {
 		 */
 		$translation_sets = apply_filters( 'gp_translation_sets_sort', $translation_sets );
 
-		$title = sprintf( __( '%s project ', 'glotpress' ), esc_html( $project->name ) );
+		$title = sprintf(
+			/* translators: %s: project name */
+			__( '%s project', 'glotpress' ),
+			esc_html( $project->name )
+		);
 		$can_write = $this->can( 'write', 'project', $project->id );
 		$this->tmpl( 'project', get_defined_vars() );
 	}
@@ -82,8 +89,12 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$source_url_templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
-		if ( !is_array( $source_url_templates ) ) $source_url_templates = array();
-		$source_url_templates[$project->id] = gp_post( 'source-url-template' );
+		if ( ! is_array( $source_url_templates ) ) {
+			$source_url_templates = array();
+		}
+
+		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
+
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
 			$this->notices[] = 'Source URL template was successfully updated.';
 		} else {
@@ -95,7 +106,7 @@ class GP_Route_Project extends GP_Route_Main {
 	public function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
- 		if ( ! $project ) {
+		if ( ! $project ) {
 			return $this->die_with_404();
 		}
 
@@ -128,7 +139,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES[ 'import-file' ][ 'name' ] );
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] );
 
 		if ( ! $format ) {
 			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
@@ -145,6 +156,7 @@ class GP_Route_Project extends GP_Route_Main {
 		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = GP::$original->import_for_project( $project, $translations );
 
 		$notice = sprintf(
+			/* translators: 1: Added strings count. 2: Updated strings count. 3: Fuzzied strings count. 4: Obsoleted strings count. */
 			__( '%1$s new strings added, %2$s updated, %3$s fuzzied, and %4$s obsoleted.', 'glotpress' ),
 			$originals_added,
 			$originals_existing,
@@ -182,7 +194,7 @@ class GP_Route_Project extends GP_Route_Main {
 	public function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
-		if ( !$project ) {
+		if ( ! $project ) {
 			$this->die_with_404();
 		}
 
@@ -202,11 +214,9 @@ class GP_Route_Project extends GP_Route_Main {
 		// TODO: add id check as a validation rule
 		if ( $project->id == $updated_project->parent_project_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
-		}
-		elseif ( $project->save( $updated_project ) ) {
+		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );
-		}
-		else {
+		} else {
 			$this->errors[] = __( 'Error in saving project!', 'glotpress' );
 		}
 
@@ -227,8 +237,8 @@ class GP_Route_Project extends GP_Route_Main {
 
 		if ( ! is_object( $project ) ) {
 
-			$this->redirect( gp_url_public_root() );
 			$this->errors[] = __( 'Error in deleting project!', 'glotpress' );
+			$this->redirect( gp_url_public_root() );
 
 			return;
 		}
@@ -242,10 +252,17 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( $project->delete() ) {
-			$this->notices[] = sprintf( __( 'The project "%s" was deleted.', 'glotpress' ), $project->name );
-		}
-		else {
-			$this->errors[] = sprintf( __( 'Error deleting project "%s"!', 'glotpress' ), $project->name );
+			$this->notices[] = sprintf(
+				/* translators: %s: Project name. */
+				__( 'The project "%s" was deleted.', 'glotpress' ),
+				$project->name
+			);
+		} else {
+			$this->errors[] = sprintf(
+				/* translators: %s: Project name. */
+				__( 'Error deleting project "%s"!', 'glotpress' ),
+				$project->name
+			);
 		}
 
 		$this->redirect( gp_url_public_root() );
@@ -270,7 +287,8 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function new_get() {
-		$project = new GP_Project();
+		$project                    = new GP_Project();
+		$project->active            = 1;
 		$project->parent_project_id = gp_get( 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->parent_project_id ) ) {
@@ -285,7 +303,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$post = gp_post( 'project' );
+		$post              = gp_post( 'project' );
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
@@ -301,7 +319,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$project = GP::$project->create_and_select( $new_project );
 
 		if ( ! $project ) {
-			$project = new GP_Project();
+			$project        = new GP_Project();
 			$this->errors[] = __( 'Error in creating project!', 'glotpress' );
 			$this->tmpl( 'project-new', get_defined_vars() );
 		} else {
@@ -322,23 +340,23 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
-		$permissions = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn = function( $x, $y ){
+		$permissions  = GP::$validator_permission->by_project_id( $project->id );
+		$cmp_fn       = function( $x, $y ) {
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
 		usort( $permissions, $cmp_fn );
 		$parent_permissions = array();
 
-		foreach( $path_to_root as $parent_project ) {
+		foreach ( $path_to_root as $parent_project ) {
 			$this_parent_permissions = GP::$validator_permission->by_project_id( $parent_project->id );
 			usort( $this_parent_permissions, $cmp_fn );
-			foreach( $this_parent_permissions as $permission ) {
+			foreach ( $this_parent_permissions as $permission ) {
 				$permission->project = $parent_project;
 			}
-			$parent_permissions = array_merge( $parent_permissions, (array)$this_parent_permissions );
+			$parent_permissions = array_merge( $parent_permissions, (array) $this_parent_permissions );
 		}
 		// we can't join on users table
-		foreach( array_merge( (array)$permissions, (array)$parent_permissions ) as $permission ) {
+		foreach ( array_merge( (array) $permissions, (array) $parent_permissions ) as $permission ) {
 			$permission->user = get_user_by( 'id', $permission->user_id );
 		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
@@ -361,20 +379,25 @@ class GP_Route_Project extends GP_Route_Main {
 
 		if ( 'add-validator' == gp_post( 'action' ) ) {
 			$user = get_user_by( 'login', gp_post( 'user_login' ) );
-			if ( !$user ) {
+			if ( ! $user ) {
 				$this->redirect_with_error( __( 'User wasn&#8217;t found!', 'glotpress' ), gp_url_current() );
 				return;
 			}
-			$new_permission = new GP_Validator_Permission( array(
-				'user_id' => $user->ID,
-				'action' => 'approve',
-				'project_id' => $project->id,
-				'locale_slug' => gp_post( 'locale' ),
-				'set_slug' => gp_post( 'set-slug' ),
-			) );
-			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) return;
+			$new_permission = new GP_Validator_Permission(
+				array(
+					'user_id'     => $user->ID,
+					'action'      => 'approve',
+					'project_id'  => $project->id,
+					'locale_slug' => gp_post( 'locale' ),
+					'set_slug'    => gp_post( 'set-slug' ),
+				)
+			);
+			if ( $this->invalid_and_redirect( $new_permission, gp_url_current() ) ) {
+				return;
+			}
 			$permission = GP::$validator_permission->create( $new_permission );
-			$permission?
+
+			$permission ?
 				$this->notices[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );
 		}
 		$this->redirect( gp_url_current() );
@@ -444,14 +467,29 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$changes = $project->set_difference_from( $other_project );
 
-		foreach( $changes['added'] as $to_add ) {
-			if ( !GP::$translation_set->create( array('project_id' => $project->id, 'name' => $to_add->name, 'locale' => $to_add->locale, 'slug' => $to_add->slug) ) ) {
-				$this->errors[] = sprintf( __( 'Couldn&#8217;t add translation set named %s', 'glotpress' ), esc_html( $to_add->name ) );
+		foreach ( $changes['added'] as $to_add ) {
+			if ( ! GP::$translation_set->create(
+				array(
+					'project_id' => $project->id,
+					'name'       => $to_add->name,
+					'locale'     => $to_add->locale,
+					'slug'       => $to_add->slug,
+				)
+			) ) {
+				$this->errors[] = sprintf(
+					/* translators: %s: Translation set name. */
+					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),
+					esc_html( $to_add->name )
+				);
 			}
 		}
-		foreach( $changes['removed'] as $to_remove ) {
-			if ( !$to_remove->delete() ) {
-				$this->errors[] = sprintf( __( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ), esc_html( $to_remove->name ) );
+		foreach ( $changes['removed'] as $to_remove ) {
+			if ( ! $to_remove->delete() ) {
+				$this->errors[] = sprintf(
+					/* translators: %s: Translation set name. */
+					__( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ),
+					esc_html( $to_remove->name )
+				);
 			}
 		}
 		if ( empty( $this->errors ) ) {
@@ -478,7 +516,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return $this->die_with_error( __( 'Project wasn&#8217;found', 'glotpress' ) );
 		}
 
-		header('Content-Type: application/json');
+		header( 'Content-Type: application/json' );
 		echo wp_json_encode( $project->set_difference_from( $other_project ) );
 	}
 
@@ -498,7 +536,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function branch_project_post( $project_path ) {
-		$post = gp_post( 'project' );
+		$post    = gp_post( 'project' );
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -516,15 +554,15 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$new_project_data = new GP_Project( $post );
-		if ( $this->invalid_and_redirect( $new_project_data ) ){
+		if ( $this->invalid_and_redirect( $new_project_data ) ) {
 			return;
 		}
 
 		$new_project_data->active = $project->active;
-		$new_project = GP::$project->create_and_select( $new_project_data );
+		$new_project              = GP::$project->create_and_select( $new_project_data );
 
-		if ( !$new_project ) {
-			$new_project = new GP_Project();
+		if ( ! $new_project ) {
+			$new_project    = new GP_Project();
 			$this->errors[] = __( 'Error in creating project!', 'glotpress' );
 			$this->tmpl( 'project-branch', get_defined_vars() );
 		} else {

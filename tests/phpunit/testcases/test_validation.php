@@ -55,4 +55,35 @@ class GP_Test_Validation extends GP_UnitTestCase {
 	   $this->assertEquals( true, $f( 0, -1, 2 ) );
 	}
 
+	function test_one_of() {
+		$callback = GP_Validators::get( 'one_of' );
+		$f = $callback['positive'];
+		$this->assertEquals( true, $f( 'a', array( 'a', 'b' ) ) );
+		$this->assertEquals( false, $f( 'c', array( 'a', 'b' ) ) );
+		$this->assertEquals( true, $f( 3, array( 1, 2, 3 ) ) );
+		$this->assertEquals( false, $f( '1', array( 1, 2, 3 ) ) );
+	}
+
+	function test_is_ascii_string() {
+		$callback = GP_Validators::get( 'consisting_only_of_ASCII_characters' );
+		$f = $callback['positive'];
+		$this->assertEquals( true, $f( 'a' ) );
+		$this->assertEquals( true, $f( 'AbC' ) );
+		$this->assertEquals( true, $f( 'foo bar' ) );
+		$this->assertEquals( true, $f( '&' ) );
+		$this->assertEquals( true, $f( '123abc' ) );
+		$this->assertEquals( false, $f( 'äbc' ) );
+		$this->assertEquals( false, $f( 'ãbc' ) );
+	}
+
+	function test_is_starting_and_ending_with_a_word_character() {
+		$callback = GP_Validators::get( 'starting_and_ending_with_a_word_character' );
+		$f = $callback['positive'];
+		$this->assertEquals( true, $f( 'a' ) );
+		$this->assertEquals( true, $f( 'foo bar' ) );
+		$this->assertEquals( true, $f( 'a & b' ) );
+		$this->assertEquals( false, $f( 'a ' ) );
+		$this->assertEquals( false, $f( '-foo' ) );
+		$this->assertEquals( false, $f( 'Hello world.' ) );
+	}
 }

@@ -14,10 +14,10 @@
  */
 class GP_Translation_Set extends GP_Thing {
 
-	var $table_basename = 'gp_translation_sets';
-	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count',  'fuzzy_count', 'percent_translated', 'wp_locale', 'last_modified' );
-	var $int_fields = array( 'id', 'project_id' );
+	var $table_basename           = 'gp_translation_sets';
+	var $field_names              = array( 'id', 'name', 'slug', 'project_id', 'locale' );
+	var $non_db_field_names       = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
+	var $int_fields               = array( 'id', 'project_id' );
 	var $non_updatable_attributes = array( 'id' );
 
 	/**
@@ -128,11 +128,11 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Translation_Set object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		if ( isset( $args['name'] ) && empty( $args['name'] ) ) {
 			if ( isset( $args['locale'] ) && ! empty( $args['locale'] ) ) {
-				$locale = GP_locales::by_slug( $args['locale'] );
+				$locale       = GP_locales::by_slug( $args['locale'] );
 				$args['name'] = $locale->english_name;
 			}
 		}
@@ -161,7 +161,7 @@ class GP_Translation_Set extends GP_Thing {
 	 */
 	public function name_with_locale( $separator = '&rarr;' ) {
 		$locale = GP_Locales::by_slug( $this->locale );
-		$parts = array( $locale->english_name );
+		$parts  = array( $locale->english_name );
 
 		if ( 'default' !== $this->slug ) {
 			$parts[] = $this->name;
@@ -171,39 +171,56 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
-		$result = $this->one( "
-		    SELECT * FROM $this->table
-		    WHERE slug = %s AND project_id= %d AND locale = %s", $slug, $project_id, $locale_slug );
+		$result = $this->one(
+			"SELECT * FROM $this->table
+			WHERE slug = %s AND project_id= %d AND locale = %s",
+			$slug,
+			$project_id,
+			$locale_slug
+		);
 
 		if ( ! $result && 0 === $project_id ) {
-			$result = $this->create( array( 'project_id' => $project_id, 'name' => GP_Locales::by_slug( $locale_slug )->english_name, 'slug' => $slug, 'locale' => $locale_slug ) );
+			$result = $this->create(
+				array(
+					'project_id' => $project_id,
+					'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
+					'slug'       => $slug,
+					'locale'     => $locale_slug,
+				)
+			);
 		}
 
 		return $result;
 	}
 
 	public function by_locale( $locale_slug ) {
-		return $this->many( "
-		    SELECT * FROM $this->table
-		    WHERE locale = %s", $locale_slug );
+		return $this->many(
+			"SELECT * FROM $this->table
+			WHERE locale = %s",
+			$locale_slug
+		);
 	}
 
 	public function existing_locales() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
 	public function existing_slugs() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 
 	public function by_project_id( $project_id ) {
-		return $this->many( "
-		    SELECT * FROM $this->table
-		    WHERE project_id = %d ORDER BY name ASC", $project_id );
+		return $this->many(
+			"SELECT * FROM $this->table
+			WHERE project_id = %d ORDER BY name ASC",
+			$project_id
+		);
 	}
 
 	/**
@@ -214,7 +231,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return boolean or void
 	 */
 	public function import( $translations, $desired_status = 'current' ) {
-		$this->set_memory_limit( '256M' );
+		wp_raise_memory_limit( 'gp_translations_import' );
 
 		if ( ! isset( $this->project ) || ! $this->project ) {
 			$this->project = GP::$project->get( $this->project_id );
@@ -226,11 +243,18 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		$locale = GP_Locales::by_slug( $this->locale );
-		$user = wp_get_current_user();
+		$user   = wp_get_current_user();
 
 		$existing_translations = array();
 
-		$current_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => 'current', 'translated' => 'yes' ) );
+		$current_translations_list        = GP::$translation->for_translation(
+			$this->project,
+			$this,
+			'no-limit',
+			array(
+				'status' => 'current',
+			)
+		);
 		$existing_translations['current'] = new Translations();
 		foreach ( $current_translations_list as $entry ) {
 			$existing_translations['current']->add_entry( $entry );
@@ -277,7 +301,14 @@ class GP_Translation_Set extends GP_Thing {
 
 			// Lazy load other entries.
 			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
-				$existing_translations_list = GP::$translation->for_translation( $this->project, $this, 'no-limit', array( 'status' => $entry->status, 'translated' => 'yes' ) );
+				$existing_translations_list              = GP::$translation->for_translation(
+					$this->project,
+					$this,
+					'no-limit',
+					array(
+						'status' => $entry->status,
+					)
+				);
 				$existing_translations[ $entry->status ] = new Translations();
 				foreach ( $existing_translations_list as $_entry ) {
 					$existing_translations[ $entry->status ]->add_entry( $_entry );
@@ -285,7 +316,7 @@ class GP_Translation_Set extends GP_Thing {
 				unset( $existing_translations_list );
 			}
 
-			$create = false;
+			$create     = false;
 			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
 			if ( 'current' !== $entry->status && ! $translated ) {
 				// Don't create an entry if it already exists as current.
@@ -294,7 +325,7 @@ class GP_Translation_Set extends GP_Thing {
 
 			if ( $translated ) {
 				// We have the same string translated, so create a new one if they don't match.
-				$entry->original_id = $translated->original_id;
+				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
 				/**
@@ -310,7 +341,7 @@ class GP_Translation_Set extends GP_Thing {
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
 					$entry->original_id = $original->id;
-					$create = true;
+					$create             = true;
 				}
 			}
 			if ( $create ) {
@@ -428,41 +459,79 @@ class GP_Translation_Set extends GP_Thing {
 	public function update_status_breakdown() {
 		$counts = wp_cache_get( $this->id, 'translation_set_status_breakdown' );
 
-		if ( ! is_array( $counts ) || ! isset( $counts[0]->total ) ) { // The format was changed in 2.1.
+		/*
+		 * The format was changed in 2.1 and 3.0.
+		 *
+		 * In 2.1 the format was changed to an array of objects in the following sequence,
+		 * however not all may exist in the array, so for example, the array may only be 3
+		 * entries long and skip any of the values:
+		 *
+		 *     [0] = Current translations
+		 *     [1] = Fuzzy translations
+		 *     [2] = Rejected translations
+		 *     [3] = Old translations
+		 *     [4] = Translations with warnings
+		 *     [5] = All translations
+		 *
+		 * In 3.0 the untranslated object was added:
+		 *
+		 *     [0] = Current translations
+		 *     [1] = Fuzzy translations
+		 *     [2] = Rejected translations
+		 *     [3] = Old translations
+		 *     [4] = Translations with warnings
+		 *     [5] = Untranslated originals
+		 *     [6] = All translations
+		 *
+		 * Version 3.0 also introduced the cache 'version' array entry to allow for easy
+		 * detection of when the cache should be expired due to changes in the cache.
+		 *
+		 * Note: The _version key is unset after the cache is loaded so that it does not
+		 * get used in the for loops when setting the object properties.
+		 *
+		 */
+		if ( ! is_array( $counts ) || ! array_key_exists( '_version', $counts ) || GP_CACHE_VERSION !== $counts['_version'] ) {
 			global $wpdb;
 			$counts = array();
 
-			$status_counts = $wpdb->get_results( $wpdb->prepare( "
-				SELECT
-					t.status AS translation_status,
-					COUNT(*) AS total,
-					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
-					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
-				FROM {$wpdb->gp_translations} AS t
-				INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
-				WHERE
-					t.translation_set_id = %d
-					AND o.status = '+active'
-				GROUP BY t.status
-			", $this->id ) );
+			$status_counts = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT
+						t.status AS translation_status,
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_translations} AS t
+					INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+					WHERE
+						t.translation_set_id = %d
+						AND o.status = '+active'
+					GROUP BY t.status",
+					$this->id
+				)
+			);
 
 			if ( $status_counts ) {
 				$counts = $status_counts;
 			}
 
-			$warnings_counts = $wpdb->get_row( $wpdb->prepare( "
-				SELECT
-					COUNT(*) AS total,
-					COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
-					COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
-				FROM {$wpdb->gp_translations} AS t
-				INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
-				WHERE
-					t.translation_set_id = %d AND
-					o.status = '+active' AND
-					( t.status = 'current' OR t.status = 'waiting' )
-					AND warnings IS NOT NULL
-			", $this->id ) );
+			$warnings_counts = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_translations} AS t
+					INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+					WHERE
+						t.translation_set_id = %d AND
+						o.status = '+active' AND
+						( t.status = 'current' OR t.status = 'waiting' )
+						AND warnings IS NOT NULL
+						AND warnings != ''",
+					$this->id
+				)
+			);
 
 			if ( $warnings_counts ) {
 				$counts[] = (object) array(
@@ -472,19 +541,53 @@ class GP_Translation_Set extends GP_Thing {
 					'public'             => (int) $warnings_counts->public,
 				);
 			}
+
+			$untranslated_counts = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_originals} AS o
+					LEFT JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = %d AND t.status != 'rejected' AND t.status != 'old'
+					WHERE
+						o.project_id = %d AND
+						o.status = '+active' AND
+						t.translation_0 IS NULL",
+					$this->id,
+					$this->project_id
+				)
+			);
+
+			if ( $untranslated_counts ) {
+				$counts[] = (object) array(
+					'translation_status' => 'untranslated',
+					'total'              => (int) $untranslated_counts->total,
+					'public'             => (int) $untranslated_counts->public,
+					'hidden'             => (int) $untranslated_counts->hidden,
+				);
+			}
+
+			$counts['_version'] = GP_CACHE_VERSION;
+
 			wp_cache_set( $this->id, $counts, 'translation_set_status_breakdown' );
 		}
 
+		if ( array_key_exists( '_version', $counts ) ) {
+			unset( $counts['_version'] );
+		}
+
 		$all_count = GP::$original->count_by_project_id( $this->project_id, 'all' );
-		$counts[] = (object) array(
+		$counts[]  = (object) array(
 			'translation_status' => 'all',
 			'total'              => $all_count->total,
 			'hidden'             => $all_count->hidden,
 			'public'             => $all_count->public,
 		);
 
-		$statuses = GP::$translation->get_static( 'statuses' );
+		$statuses   = GP::$translation->get_static( 'statuses' );
 		$statuses[] = 'warnings';
+		$statuses[] = 'untranslated';
 		$statuses[] = 'all';
 		foreach ( $statuses as $status ) {
 			$this->{$status . '_count'} = 0;
@@ -496,8 +599,6 @@ class GP_Translation_Set extends GP_Thing {
 				$this->{$count->translation_status . '_count'} = $user_can_view_hidden ? (int) $count->total : (int) $count->public;
 			}
 		}
-
-		$this->untranslated_count = $this->all_count - $this->current_count; // @todo Improve this.
 	}
 
 	/**
@@ -515,21 +616,24 @@ class GP_Translation_Set extends GP_Thing {
 			$translations = GP::$translation->find_many_no_map( "translation_set_id = '{$source_set->id}'" );
 			foreach ( $translations as $entry ) {
 				$source_original = GP::$original->get( $entry->original_id );
-				$original = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
+				$original        = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
 				if ( $original ) {
-					$entry->original_id = $original->id;
+					$entry->original_id        = $original->id;
 					$entry->translation_set_id = $this->id;
 					GP::$translation->create( $entry );
 				}
 			}
 		} else {
-			return $this->query( "
-				INSERT INTO $wpdb->gp_translations (
+			return $this->query(
+				"INSERT INTO $wpdb->gp_translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
 					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-				FROM $wpdb->gp_translations WHERE translation_set_id = %s", $this->id, $current_date, $source_translation_set_id
+				FROM $wpdb->gp_translations WHERE translation_set_id = %s",
+				$this->id,
+				$current_date,
+				$source_translation_set_id
 			);
 		}
 	}
@@ -547,12 +651,19 @@ class GP_Translation_Set extends GP_Thing {
 		return $original_count ? floor( $this->current_count() / $original_count * 100 ) : 0;
 	}
 
+	/**
+	 * Retrieves the last modified date of a translation in this translation set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string|false The last modified date on success, false on failure.
+	 */
 	public function last_modified() {
 		return GP::$translation->last_modified( $this );
 	}
 
 	/**
-	 * Deletes a translation set and all of it's translations and glossaries.
+	 * Deletes a translation set and all of its translations and glossaries.
 	 *
 	 * @since 2.0.0
 	 *
@@ -564,6 +675,68 @@ class GP_Translation_Set extends GP_Thing {
 		GP::$glossary->delete_many( array( 'translation_set_id', $this->id ) );
 
 		return parent::delete();
+	}
+
+	/**
+	 * Executes after creating a translation set.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool
+	 */
+	public function after_create() {
+		/**
+		 * Fires after creating a translation set.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param GP_Translation_Set $translation_set The translation set that was created.
+		 */
+		do_action( 'gp_translation_set_created', $this );
+
+		return true;
+	}
+
+	/**
+	 * Executes after saving a translation set.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param GP_Translation_Set $translation_set_before Translation set before the update.
+	 * @return bool
+	 */
+	public function after_save( $translation_set_before ) {
+		/**
+		 * Fires after saving a translation set.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param GP_Translation_Set $translation_set        Translation set following the update.
+		 * @param GP_Translation_Set $translation_set_before Translation set before the update.
+		 */
+		do_action( 'gp_translation_set_saved', $this, $translation_set_before );
+
+		return true;
+	}
+
+	/**
+	 * Executes after deleting a translation set.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool
+	 */
+	public function after_delete() {
+		/**
+		 * Fires after deleting a translation set.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param GP_Translation_Set $translation_set The translation set that was deleted.
+		 */
+		do_action( 'gp_translation_set_deleted', $this );
+
+		return true;
 	}
 }
 GP::$translation_set = new GP_Translation_Set();

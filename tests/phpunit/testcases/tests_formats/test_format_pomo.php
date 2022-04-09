@@ -84,11 +84,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 	/**
 	 * @ticket GH-450
 	 */
-	public function test_po_export_includes_project_id_version_header() {
-		if ( 'GP_Format_PO' !== get_class( $this->format ) ) {
-			$this->markTestSkipped();
-		}
-
+	public function test_export_includes_project_id_version_header() {
 		$parent_project_one = $this->factory->project->create();
 		$parent_project_two = $this->factory->project->create( array( 'parent_project_id' => $parent_project_one->id ) );
 		$set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'parent_project_id' => $parent_project_two->id ) );
@@ -186,7 +182,7 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 	 */
 	protected $format;
 
-   public function setUp() {
+   	public function setUp() {
 		parent::setUp();
 
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.mo';
@@ -194,6 +190,11 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 		$this->has_comments = false;
 
 		$this->format = new Testable_GP_Format_MO;
+	}
+
+	public function test_export_includes_project_id_version_header() {
+		// MO files do no have header info, so "skip" this test without reporting that it has been skipped by phpunit.
+		$this->assertEquals( 'Testable_GP_Format_MO', get_class( $this->format ) );
 	}
 }
 
@@ -216,13 +217,13 @@ class Testable_GP_Format_PO extends GP_Format_PO {
 	/**
 	 * Make private/protected methods readable for tests.
 	 *
-	 * @param callable $name      Method to call.
+	 * @param string   $name      Method to call.
 	 * @param array    $arguments Arguments to pass when calling.
 	 * @return mixed|bool Return value of the callback, false otherwise.
 	 */
 	public function __call( $name, $arguments ) {
-		if ( in_array( $name, $this->non_accessible_methods ) ) {
-			return call_user_func_array( array( $this, $name ), $arguments );
+		if ( in_array( $name, $this->non_accessible_methods, true ) ) {
+			return $this->$name( ...$arguments );
 		}
 		return false;
 	}

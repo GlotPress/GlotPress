@@ -221,13 +221,13 @@ class GP_Translation extends GP_Thing {
 	 * @return array Normalized arguments for a GP_Translation object.
 	 */
 	public function normalize_fields( $args ) {
-		$args = (array) $args;
+		$args = parent::normalize_fields( $args );
 
 		if ( isset( $args['translations'] ) && is_array( $args['translations'] ) ) {
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				if ( isset( $args['translations'][ $i ] ) ) {
-					$args["translation_$i"] = $args['translations'][ $i ];
+					$args[ "translation_$i" ] = $args['translations'][ $i ];
 				}
 			}
 			unset( $args['translations'] );
@@ -236,7 +236,7 @@ class GP_Translation extends GP_Thing {
 		// Reduce range by one since we're starting at 0, see GH#516.
 		foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 			if ( isset( $args[ "translation_$i" ] ) ) {
-				$args[ "translation_$i" ] = $this->fix_translation( $args[ "translation_$i" ] );
+				$args[ "translation_$i" ] = $args[ "translation_$i" ];
 			}
 		}
 
@@ -249,24 +249,22 @@ class GP_Translation extends GP_Thing {
 
 	public function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
+
+		/**
+		 * Filters the translation fields before they are saved.
+		 *
+		 * @since 3.0.0
+		 *
+		 * @param array          $args Translation arguments.
+		 * @param GP_Translation $this Translation class.
+		 */
+		$args = apply_filters( 'gp_translation_prepare_for_save', $args, $this );
+
 		if ( is_array( gp_array_get( $args, 'warnings' ) ) ) {
 			$args['warnings'] = serialize( $args['warnings'] );
 		}
+
 		return $args;
-	}
-
-	public function fix_translation( $translation ) {
-		// When selecting some browsers take the newlines and some don't
-		// that's why we don't want to insert too many newlines for each ↵.
-		$translation = str_replace( "↵\n", '↵', $translation );
-		$translation = str_replace( '↵', "\n", $translation );
-
-		// When selecting some browsers take the tab and some don't
-		// that's why we don't want to insert too many tabs for each ↵.
-		$translation = str_replace( "→\t", '→', $translation );
-		$translation = str_replace( '→', "\t", $translation );
-
-		return $translation;
 	}
 
 	/**
@@ -290,20 +288,25 @@ class GP_Translation extends GP_Thing {
 		$rules->user_id_last_modified_should_not_be( 'empty_string' );
 	}
 
-
-	public function set_fields( $db_object ) {
-		parent::set_fields( $db_object );
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		parent::set_fields( $fields );
 		if ( $this->warnings ) {
 			$this->warnings = maybe_unserialize( $this->warnings );
 		}
 	}
 
-	public function for_export( $project, $translation_set, $filters =  null ) {
-		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters? $filters : array( 'status' => 'current_or_untranslated' ) );
+	public function for_export( $project, $translation_set, $filters = null ) {
+		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
+
 		$locale = GP_Locales::by_slug( $translation_set->locale );
 
 		$join_type = 'INNER';
@@ -314,19 +317,53 @@ class GP_Translation extends GP_Thing {
 		if ( ! is_array( $default_sort ) ) {
 			$default_sort = array(
 				'by'  => 'priority',
-				'how' => 'desc'
+				'how' => 'desc',
 			);
 		}
 
-		$sort_by = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ),  gp_array_get( $sort_bys, $default_sort['by'] ) );
-		$sort_hows = array('asc' => 'ASC', 'desc' => 'DESC', );
-		$sort_how = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
+		$sort_by   = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), gp_array_get( $sort_bys, $default_sort['by'] ) );
+		$sort_hows = array(
+			'asc'  => 'ASC',
+			'desc' => 'DESC',
+		);
+		$sort_how  = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
 			$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
-			$where[] = '(' . implode( ' OR ', array_map( function( $x ) use ( $like ) { return "($x $like)"; }, array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' ) ) ) . ')';
+
+			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
+
+			switch ( $term_scope ) {
+				case 'scope_originals':
+					$scope_array = array( 'o.singular', 'o.plural' );
+					break;
+				case 'scope_translations':
+					$scope_array = array( 't.translation_0', 't.translation_1' );
+					break;
+				case 'scope_context':
+					$scope_array = array( 'o.context' );
+					break;
+				case 'scope_references':
+					$scope_array = array( 'o.references' );
+					break;
+				case 'scope_both':
+					$scope_array = array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1' );
+					break;
+				default:
+					$scope_array = array( 'o.singular', 't.translation_0', 'o.plural', 't.translation_1', 'o.context', 'o.references' );
+					break;
+			}
+
+			$mapped_scope_array = array_map(
+				function( $x ) use ( $like ) {
+					return "($x $like)";
+				},
+				$scope_array
+			);
+
+			$where[] = '(' . implode( ' OR ', $mapped_scope_array ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $wpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
@@ -350,10 +387,14 @@ class GP_Translation extends GP_Thing {
 			$where[] = 'o.comment IS NOT NULL AND o.comment <> ""';
 		}
 
+		if ( 'yes' === gp_array_get( $filters, 'with_plural' ) ) {
+			$where[] = 'o.plural IS NOT NULL';
+		}
+
 		if ( gp_array_get( $filters, 'user_login' ) ) {
 			$user = get_user_by( 'login', $filters['user_login'] );
 			// do not return any entries if the user doesn't exist
-			$where[] = $wpdb->prepare( 't.user_id = %d', ($user && $user->ID) ? $user->ID : -1 );
+			$where[] = $wpdb->prepare( 't.user_id = %d', ( $user && $user->ID ) ? $user->ID : -1 );
 		}
 
 		if ( ! GP::$permission->current_user_can( 'write', 'project', $project->id ) ) {
@@ -363,9 +404,12 @@ class GP_Translation extends GP_Thing {
 		$priorities = gp_array_get( $filters, 'priority' );
 		if ( $priorities ) {
 			$valid_priorities = array_keys( GP::$original->get_static( 'priorities' ) );
-			$priorities = array_filter( gp_array_get( $filters, 'priority' ), function( $p ) use ( $valid_priorities ) {
-				return in_array( intval( $p ), $valid_priorities, true );
-			} );
+			$priorities       = array_filter(
+				gp_array_get( $filters, 'priority' ),
+				function( $p ) use ( $valid_priorities ) {
+					return in_array( intval( $p ), $valid_priorities, true );
+				}
+			);
 
 			$priorities_where = array();
 			foreach ( $priorities as $single_priority ) {
@@ -374,37 +418,43 @@ class GP_Translation extends GP_Thing {
 
 			if ( ! empty( $priorities_where ) ) {
 				$priorities_where = '(' . implode( ' OR ', $priorities_where ) . ')';
-				$where[] = $priorities_where;
+				$where[]          = $priorities_where;
 			}
 		};
 
-		$join_on = array();
-		$status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
+		$join_on  = array();
+		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 		$statuses = explode( '_or_', $status );
-		if ( in_array( 'untranslated', $statuses ) ) {
-			if ( $statuses == array( 'untranslated' ) ) {
+		if ( in_array( 'untranslated', $statuses, true ) ) {
+			if ( array( 'untranslated' ) == $statuses ) {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';
-			$join_on[] = 't.status != "rejected"';
-			$join_on[] = 't.status != "old"';
-			$statuses = array_filter( $statuses, function( $x ) {
-				return 'untranslated' !== $x ;
-			} );
+			$join_on[] = "t.status != 'rejected'";
+			$join_on[] = "t.status != 'old'";
+			$statuses  = array_filter(
+				$statuses,
+				function( $x ) {
+					return 'untranslated' !== $x;
+				}
+			);
 		}
 
 		$all_statuses = $this->get_static( 'statuses' );
-		$statuses = array_filter( $statuses, function( $s ) use ( $all_statuses ) {
-			return in_array( $s, $all_statuses );
-		} );
+		$statuses     = array_filter(
+			$statuses,
+			function( $s ) use ( $all_statuses ) {
+				return in_array( $s, $all_statuses, true );
+			}
+		);
 
 		if ( ! empty( $statuses ) ) {
 			$statuses_where = array();
-			foreach( $statuses as $single_status ) {
+			foreach ( $statuses as $single_status ) {
 				$statuses_where[] = $wpdb->prepare( 't.status = %s', $single_status );
 			}
 			$statuses_where = '(' . implode( ' OR ', $statuses_where ) . ')';
-			$join_on[] = $statuses_where;
+			$join_on[]      = $statuses_where;
 		}
 
 		/**
@@ -422,7 +472,7 @@ class GP_Translation extends GP_Thing {
 			$where = 'AND ' . $where;
 		}
 
-		$where = 'o.project_id = ' . (int) $project->id . ' AND o.status = "+active" ' . $where;
+		$where = 'o.project_id = ' . (int) $project->id . " AND o.status = '+active' " . $where;
 
 		$join_on = implode( ' AND ', $join_on );
 		if ( $join_on ) {
@@ -461,18 +511,18 @@ class GP_Translation extends GP_Thing {
 		 *     @type string $orderby Fields for ORDER BY clause.
 		 *     @type string $limit   LIMIT clause of the query.
 		 * }
-		 * @param GP_Translation_Set $translation_set The translation set object being queried.
-		 * @param array              $filters         An array of search filters.
-		 * @param array              $sort            An array of sort settings.
+		 * @param GP_Translation_Set      $translation_set      The translation set object being queried.
+		 * @param array                   $filters              An array of search filters.
+		 * @param array                   $sort                 An array of sort settings.
 		 */
 		$clauses = apply_filters( 'gp_for_translation_clauses', compact( 'fields', 'join', 'join_on', 'where', 'orderby', 'limit' ), $translation_set, $filters, $sort );
 
-		$fields = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
-		$join = isset( $clauses['join'] ) ? $clauses['join'] : '';
+		$fields  = isset( $clauses['fields'] ) ? implode( ', ', $clauses['fields'] ) : '*';
+		$join    = isset( $clauses['join'] ) ? $clauses['join'] : '';
 		$join_on = isset( $clauses['join_on'] ) ? $clauses['join_on'] : '';
-		$where = isset( $clauses['where'] ) ? $clauses['where'] : '';
+		$where   = isset( $clauses['where'] ) ? $clauses['where'] : '';
 		$orderby = isset( $clauses['orderby'] ) ? 'ORDER BY ' . $clauses['orderby'] : '';
-		$limit = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
+		$limit   = isset( $clauses['limit'] ) ? $clauses['limit'] : '';
 
 		$sql_for_translations = "
 			SELECT SQL_CALC_FOUND_ROWS $fields
@@ -493,8 +543,9 @@ class GP_Translation extends GP_Thing {
 		$rows = apply_filters( 'gp_for_translation_rows', $rows, $translation_set );
 
 		$this->found_rows = $this->found_rows();
-		$translations = array();
-		foreach( (array)$rows as $row ) {
+		$translations     = array();
+
+		foreach ( (array) $rows as $row ) {
 			$row->user = $row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
@@ -522,34 +573,65 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$row->translations = array();
-			for( $i = 0; $i < $locale->nplurals; $i++ ) {
-				$row->translations[] = $row->{"translation_".$i};
+			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
+				$row->translations[] = $row->{'translation_' . $i};
 			}
-			$row->references = preg_split('/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY);
+			$row->references         = preg_split( '/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY );
 			$row->extracted_comments = $row->comment;
-			$row->warnings = $row->warnings? maybe_unserialize( $row->warnings ) : null;
-			unset($row->comment);
+			$row->warnings           = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
+			unset( $row->comment );
 
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, $this->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				$member = "translation_$i";
-				unset($row->$member);
+				unset( $row->$member );
 			}
-			$row->row_id = $row->original_id . ( $row->id? "-$row->id" : '' );
-			$translations[] = new Translation_Entry( (array)$row );
+
+			$row->row_id = $row->original_id . ( $row->id ? "-$row->id" : '' );
+
+			if ( '0' !== $row->priority ) {
+				$row->flags = array(
+					'gp-priority: ' . GP_Original::$priorities[ $row->priority ],
+				);
+			}
+
+			$translations[] = new Translation_Entry( (array) $row );
 		}
 		unset( $rows );
 		return $translations;
 	}
 
 	public function set_as_current() {
-		$result = $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'current' ) )
-		&& 	$this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'waiting' ) )
-		&& $this->update( array( 'status' => 'old' ),
-		array( 'original_id' => $this->original_id, 'translation_set_id' => $this->translation_set_id, 'status' => 'fuzzy' ) )
-		&& $this->save( array( 'status' => 'current', 'user_id_last_modified' => get_current_user_id() ) );
+		$result = $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'status'             => 'current',
+			)
+		)
+		&& $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'status'             => 'waiting',
+			)
+		)
+		&& $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'status'             => 'fuzzy',
+			)
+		)
+		&& $this->save(
+			array(
+				'status'                => 'current',
+				'user_id_last_modified' => get_current_user_id(),
+			)
+		);
 
 		return $result;
 	}
@@ -625,7 +707,12 @@ class GP_Translation extends GP_Thing {
 		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} else {
-			$updated = $this->save( array( 'user_id_last_modified' => get_current_user_id(), 'status' => $status ) );
+			$updated = $this->save(
+				array(
+					'user_id_last_modified' => get_current_user_id(),
+					'status'                => $status,
+				)
+			);
 		}
 
 		if ( $updated ) {
@@ -645,18 +732,24 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
+	/**
+	 * Retrieves the last modified date of a translation in a translation set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set to retrieve the last modified date.
+	 * @return string|false The last modified date on success, false on failure.
+	 */
 	public function last_modified( $translation_set ) {
-		global $wpdb;
-
 		$last_modified = wp_cache_get( $translation_set->id, 'translation_set_last_modified' );
 		// Cached as "" if no translations.
-		if ( "" === $last_modified ) {
+		if ( '' === $last_modified ) {
 			return false;
 		} elseif ( false !== $last_modified ) {
 			return $last_modified;
 		}
 
-		$last_modified = $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' ) );
+		$last_modified = $this->value( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' );
 		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
 		return $last_modified;
 	}
@@ -687,18 +780,22 @@ class GP_Translation extends GP_Thing {
 	 * Executes after saving a translation.
 	 *
 	 * @since 1.0.0
+	 * @since 3.0.0 Added the `$original_before` parameter.
 	 *
+	 * @param GP_Translation $translation_before Translation before the update.
 	 * @return bool
 	 */
-	public function after_save() {
+	public function after_save( $translation_before ) {
 		/**
 		 * Fires after a translation was saved.
 		 *
 		 * @since 1.0.0
+		 * @since 3.0.0 Added the `$original_before` parameter.
 		 *
-		 * @param GP_Translation $translation Translation that was saved.
+		 * @param GP_Translation $translation        Translation following the update.
+		 * @param GP_Translation $translation_before Translation before the update.
 		 */
-		do_action( 'gp_translation_saved', $this );
+		do_action( 'gp_translation_saved', $this, $translation_before );
 
 		return true;
 	}

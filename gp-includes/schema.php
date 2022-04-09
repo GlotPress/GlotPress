@@ -9,10 +9,12 @@ function gp_schema_get() {
 	$gp_schema = array();
 
 	$charset_collate = '';
-	if ( ! empty($wpdb->charset) )
+	if ( ! empty( $wpdb->charset ) ) {
 		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-	if ( ! empty($wpdb->collate) )
+	}
+	if ( ! empty( $wpdb->collate ) ) {
 		$charset_collate .= " COLLATE $wpdb->collate";
+	}
 
 	/*
 	 * Indexes have a maximum size of 767 bytes in the MyISAM database engine. Historically, we haven't needed to be overtly
@@ -25,8 +27,8 @@ function gp_schema_get() {
 	 * for each data type.
 	 */
 	$max_index_characters = 767;
-	$bytes_per_character = 4;
-	$max_index_length = floor( $max_index_characters / $bytes_per_character );
+	$bytes_per_character  = 4;
+	$max_index_length     = floor( $max_index_characters / $bytes_per_character );
 
 	/*
 	 * Translations
@@ -68,7 +70,7 @@ function gp_schema_get() {
 	 */
 
 	/*
- 	 * The maximum length for the slug component of the project_id_slug_locale key is limited by the index size limit
+	 * The maximum length for the slug component of the project_id_slug_locale key is limited by the index size limit
 	 * minus the size of the project_id (4 bytes = 1 character) and locale (10 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
@@ -76,7 +78,7 @@ function gp_schema_get() {
 	$max_pid_slug_locale_key_length = min( $max_index_length - 1 - 10, 255 );
 
 	/*
- 	 * The maximum length for the slug component of the locale_slug key is limited by the index size limit
+	 * The maximum length for the slug component of the locale_slug key is limited by the index size limit
 	 * minus the size of the locale (10 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
@@ -108,7 +110,7 @@ function gp_schema_get() {
 	 */
 
 	/*
- 	 * The maximum length for the components of the singular_plural_context key is limited by the index size limit
+	 * The maximum length for the components of the singular_plural_context key is limited by the index size limit
 	 * divided by three.
 	 *
 	 * Also make sure to never go over the length of the column (or in the case of a text type, a max of 255).
@@ -181,7 +183,7 @@ function gp_schema_get() {
 	 */
 
 	/*
- 	 * The maximum length for the meta_key component of the object_type__meta_key key is limited by the index size limit
+	 * The maximum length for the meta_key component of the object_type__meta_key key is limited by the index size limit
 	 * minus the size of the object_type (32 characters).
 	 *
 	 * Also make sure to never go over the length of the column.
@@ -189,7 +191,7 @@ function gp_schema_get() {
 	$max_objtype_metakey_key_length = min( $max_index_length - 32, 255 );
 
 	/*
- 	 * The maximum length for the meta_key component of the object_type__object_id__meta_key key is limited by the index size limit
+	 * The maximum length for the meta_key component of the object_type__object_id__meta_key key is limited by the index size limit
 	 * minus the size of the object_type (32 characters) and the object_id (8 bytes = 2 characters).
 	 *
 	 * Also make sure to never go over the length of the column.

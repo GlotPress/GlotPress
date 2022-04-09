@@ -55,7 +55,7 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
 	 */
 	public function export( $args, $assoc_args ) {
-		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
+		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
 		$translation_set = $this->get_translation_set( $args[0], $args[1], $set_slug );
 		if ( is_wp_error( $translation_set ) ) {
 			WP_CLI::error( $translation_set->get_error_message() );
@@ -77,11 +77,11 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 
 			$filters['priority'] = array();
 
-			$priorities = explode( ',', $assoc_args['priority'] );
+			$priorities       = explode( ',', $assoc_args['priority'] );
 			$valid_priorities = GP::$original->get_static( 'priorities' );
 
 			foreach ( $priorities as $priority ) {
-				$key = array_search( $priority, $valid_priorities );
+				$key = array_search( $priority, $valid_priorities, true );
 				if ( false === $key ) {
 					WP_CLI::warning( sprintf( 'Invalid priority %s', $priority ) );
 				} else {
@@ -115,13 +115,13 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 * : Translation string status; default is "current"
 	 */
 	public function import( $args, $assoc_args ) {
-		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
+		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
 		$translation_set = $this->get_translation_set( $args[0], $args[1], $set_slug );
 		if ( is_wp_error( $translation_set ) ) {
 			WP_CLI::error( $translation_set->get_error_message() );
 		}
 
-		$po = new PO();
+		$po       = new PO();
 		$imported = $po->import_from_file( $args[2] );
 		if ( ! $imported ) {
 			WP_CLI::error( __( "Couldn't load translations from file!", 'glotpress' ) );
@@ -152,15 +152,15 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 * @subcommand recheck-warnings
 	 */
 	public function recheck_warnings( $args, $assoc_args ) {
-		$set_slug = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
+		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
 		$translation_set = $this->get_translation_set( $args[0], $args[1], $set_slug );
 		if ( is_wp_error( $translation_set ) ) {
 			WP_CLI::error( $translation_set->get_error_message() );
 		}
 
 		$project = GP::$project->get( $translation_set->project_id );
-		$locale = GP_Locales::by_slug( $translation_set->locale );
-		foreach( GP::$translation->for_translation( $project, $translation_set, 'no-limit' ) as $entry ) {
+		$locale  = GP_Locales::by_slug( $translation_set->locale );
+		foreach ( GP::$translation->for_translation( $project, $translation_set, 'no-limit' ) as $entry ) {
 			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale );
 			if ( $warnings == $entry->warnings ) {
 				continue;

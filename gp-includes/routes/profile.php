@@ -40,14 +40,14 @@ class GP_Route_Profile extends GP_Route_Main {
 			$user = get_user_by( 'slug', $user );
 		}
 
-		if ( ! $user ) {
+		if ( ! $user || ( is_object( $user ) && $user instanceof WP_User && ! $user->exists() ) ) {
 			return $this->die_with_404();
 		}
 
 		$recent_projects = $this->get_recent_translation_sets( $user, 5 );
 		$locales         = $this->locales_known( $user );
 
-		//validate to
+		// validate to.
 		$permissions = $this->get_permissions( $user );
 
 		$this->tmpl( 'profile-public', get_defined_vars() );
@@ -64,22 +64,23 @@ class GP_Route_Profile extends GP_Route_Main {
 	private function get_recent_translation_sets( $user, $amount = 5 ) {
 		global $wpdb;
 
-		$translations = GP::$translation_set->many_no_map("
-			SELECT translation_set_id, date_added
+		$translations = GP::$translation_set->many_no_map(
+			"SELECT translation_set_id, date_added
 			FROM $wpdb->gp_translations as t
 			WHERE
 				date_added >= DATE_SUB(NOW(), INTERVAL 2 MONTH) AND
 				user_id = %s AND
 				status != 'rejected'
-			ORDER BY date_added DESC
-		", $user->ID );
+			ORDER BY date_added DESC",
+			$user->ID
+		);
 
 		$set_ids          = array();
 		$translation_sets = array();
 
 		$i = 0;
 		foreach ( $translations as $translation ) {
-			if ( in_array( $translation->translation_set_id, $set_ids ) ) {
+			if ( in_array( $translation->translation_set_id, $set_ids, true ) ) {
 				continue;
 			}
 
@@ -122,14 +123,15 @@ class GP_Route_Profile extends GP_Route_Main {
 	private function locales_known( $user ) {
 		global $wpdb;
 
-		$translations = GP::$translation_set->many_no_map("
-			SELECT ts.locale, count(*) AS count
+		$translations = GP::$translation_set->many_no_map(
+			"SELECT ts.locale, count(*) AS count
 			FROM $wpdb->gp_translations as t
 			INNER JOIN $wpdb->gp_translation_sets AS ts ON ts.id = t.translation_set_id
 			WHERE user_id = %s
 			GROUP BY ts.locale
-			ORDER BY count DESC
-		", $user->ID );
+			ORDER BY count DESC",
+			$user->ID
+		);
 
 		$locales = array();
 
@@ -153,28 +155,33 @@ class GP_Route_Profile extends GP_Route_Main {
 	 * @return array Array of permissions
 	 */
 	private function get_permissions( $user ) {
-		$permissions = GP::$permission->find_many_no_map( array( 'user_id' => $user->ID, 'action' => 'approve' ) );
+		$permissions = GP::$permission->find_many_no_map(
+			array(
+				'user_id' => $user->ID,
+				'action'  => 'approve',
+			)
+		);
 
 		foreach ( $permissions as $key => &$permission ) {
 			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
 
 			// Skip admin permissions
-			if ( ! isset(  $object_id[1] ) ) {
-				unset( $permissions[$key] );
+			if ( ! isset( $object_id[1] ) ) {
+				unset( $permissions[ $key ] );
 				continue;
 			}
 
 			$set = GP::$translation_set->find_one(
 				array(
 					'project_id' => $object_id[0],
-					'locale' => $object_id[1],
-					'slug' => $object_id[2]
+					'locale'     => $object_id[1],
+					'slug'       => $object_id[2],
 				)
 			);
 
 			// Skip permissions for non existing sets
 			if ( ! $set ) {
-				unset( $permissions[$key] );
+				unset( $permissions[ $key ] );
 				continue;
 			}
 
@@ -183,10 +190,10 @@ class GP_Route_Profile extends GP_Route_Main {
 			$translation_set = $this->get_translation_set( $set );
 
 			if ( $set && $translation_set ) {
-				$permission = (object) array_merge( (array) $permission, (array) $translation_set );
+				$permission         = (object) array_merge( (array) $permission, (array) $translation_set );
 				$permission->set_id = $set->id;
 			} else {
-				unset( $permissions[$key] );
+				unset( $permissions[ $key ] );
 			}
 		}
 
@@ -202,22 +209,22 @@ class GP_Route_Profile extends GP_Route_Main {
 	 */
 	private function get_translation_set( $set ) {
 		if ( ! isset( $this->projects[ $set->project_id ] ) ) {
-			 $this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
+			$this->projects[ $set->project_id ] = GP::$project->get( $set->project_id );
 		}
 
-		$project = $this->projects[$set->project_id];
+		$project = $this->projects[ $set->project_id ];
 
 		if ( ! $project ) {
 			return false;
 		}
 
 		$project_url = gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) );
-		$set_name = gp_project_names_from_root( $project ) . ' | ' . $set->name_with_locale();
+		$set_name    = gp_project_names_from_root( $project ) . ' | ' . $set->name_with_locale();
 
 		return (object) array(
-			'project_id' => $project->id,
+			'project_id'  => $project->id,
 			'project_url' => $project_url,
-			'set_name' => $set_name
+			'set_name'    => $set_name,
 		);
 	}
 }

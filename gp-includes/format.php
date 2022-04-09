@@ -5,13 +5,13 @@
  */
 abstract class GP_Format {
 
-	public $name = '';
-	public $extension = '';
-	public $alt_extensions = array();
+	public $name             = '';
+	public $extension        = '';
+	public $alt_extensions   = array();
 	public $filename_pattern = '%s-%s';
 
-	public abstract function print_exported_file( $project, $locale, $translation_set, $entries );
-	public abstract function read_originals_from_file( $file_name );
+	abstract public function print_exported_file( $project, $locale, $translation_set, $entries );
+	abstract public function read_originals_from_file( $file_name );
 
 	/**
 	 * Gets the list of supported file extensions.
@@ -36,9 +36,9 @@ abstract class GP_Format {
 		}
 
 		$originals        = GP::$original->by_project_id( $project->id );
-		$new_translations = new Translations;
+		$new_translations = new Translations();
 
-		foreach( $translations->entries as $key => $entry ) {
+		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
 			// so we need to swap singular and translation
 			if ( $entry->context == $entry->singular ) {
@@ -49,7 +49,7 @@ abstract class GP_Format {
 
 			$entry->singular = null;
 
-			foreach( $originals as $original ) {
+			foreach ( $originals as $original ) {
 				if ( $original->context == $entry->context ) {
 					$entry->singular = $original->singular;
 					break;
@@ -57,7 +57,14 @@ abstract class GP_Format {
 			}
 
 			if ( ! $entry->singular ) {
-				error_log( sprintf( __( 'Missing context %s in project #%d', 'glotpress' ), $entry->context, $project->id ) );
+				error_log(
+					sprintf(
+						/* translators: 1: Context. 2: Project ID. */
+						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
+						$entry->context,
+						$project->id
+					)
+				);
 				continue;
 			}
 

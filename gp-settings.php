@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 
-require_once( GP_PATH . GP_INC . '/system.php' );
+require_once GP_PATH . GP_INC . '/system.php';
 
 if ( ! defined( 'GP_LOCALES_PATH' ) ) {
 	define( 'GP_LOCALES_PATH', GP_PATH . 'locales/' );
@@ -21,7 +21,7 @@ if ( ! defined( 'GP_TESTS_PATH' ) ) {
 	define( 'GP_TESTS_PATH', GP_PATH . 't/' );
 }
 
-require_once( GP_PATH . GP_INC . 'gp.php' );
+require_once GP_PATH . GP_INC . 'gp.php';
 
 global $wpdb, $gp_table_prefix;
 
@@ -42,42 +42,39 @@ if ( ! defined( 'GP_TMPL_PATH' ) ) {
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 }
 
-// Functions that aren't used anymore.
-require_once( GP_PATH . GP_INC . 'deprecated.php' );
+require_once GP_PATH . GP_INC . 'meta.php';
+require_once GP_PATH . GP_INC . 'misc.php';
+require_once GP_PATH . GP_INC . 'url.php';
+require_once GP_PATH . GP_INC . 'strings.php';
 
-require_once( GP_PATH . GP_INC . 'meta.php' );
-require_once( GP_PATH . GP_INC . 'misc.php' );
-require_once( GP_PATH . GP_INC . 'url.php' );
-require_once( GP_PATH . GP_INC . 'strings.php' );
+require_once GP_PATH . GP_INC . 'template.php';
+require_once GP_PATH . GP_INC . 'template-links.php';
 
-require_once( GP_PATH . GP_INC . 'template.php' );
-require_once( GP_PATH . GP_INC . 'template-links.php' );
+require_once GP_PATH . GP_INC . 'cli.php';
 
-require_once( GP_PATH . GP_INC . 'cli.php' );
+require_once GP_PATH . GP_INC . 'assets-loader.php';
 
-require_once( GP_PATH . GP_INC . 'assets-loader.php' );
+require_once GP_PATH . GP_INC . 'rewrite.php';
 
-require_once( GP_PATH . GP_INC . 'rewrite.php' );
+require_once GP_PATH . GP_INC . 'default-filters.php';
 
-require_once( GP_PATH . GP_INC . 'default-filters.php' );
-
-require_once( ABSPATH . WPINC . '/pomo/mo.php' );
-require_once( ABSPATH . WPINC . '/pomo/po.php' );
+require_once ABSPATH . WPINC . '/pomo/mo.php';
+require_once ABSPATH . WPINC . '/pomo/po.php';
 
 if ( ! class_exists( 'GP_Locale' ) || ! class_exists( 'GP_Locales' ) ) {
-	require_once( GP_LOCALES_PATH . 'locales.php' );
+	require_once GP_LOCALES_PATH . 'locales.php';
 }
 
 /*
  * We assume all variables set in this file will be global.
- * If the file is inovked inside a function, we will lose them all.
+ * If the file is invoked inside a function, we will lose them all.
  * So, make all local variables, global.
  */
 gp_set_globals( get_defined_vars() );
 
-require_once( GP_PATH . GP_INC . 'warnings.php' );
-require_once( GP_PATH . GP_INC . 'validation.php' );
-require_once( GP_PATH . GP_INC . 'advanced-permissions.php' );
+require_once GP_PATH . GP_INC . 'warnings.php';
+require_once GP_PATH . GP_INC . 'validation.php';
+require_once GP_PATH . GP_INC . 'advanced-permissions.php';
 
 require_once GP_PATH . GP_INC . 'thing.php';
 require_once GP_PATH . GP_INC . 'things/original.php';
@@ -90,8 +87,8 @@ require_once GP_PATH . GP_INC . 'things/administrator-permission.php';
 require_once GP_PATH . GP_INC . 'things/glossary.php';
 require_once GP_PATH . GP_INC . 'things/glossary-entry.php';
 
-require_once( GP_PATH . GP_INC . 'route.php' );
-require_once( GP_PATH . GP_INC . 'router.php' );
+require_once GP_PATH . GP_INC . 'route.php';
+require_once GP_PATH . GP_INC . 'router.php';
 
 require_once GP_PATH . GP_INC . 'routes/_main.php';
 require_once GP_PATH . GP_INC . 'routes/index.php';
@@ -106,10 +103,10 @@ require_once GP_PATH . GP_INC . 'routes/glossary-entry.php';
 require_once GP_PATH . GP_INC . 'routes/locale.php';
 
 
-GP::$translation_warnings = new GP_Translation_Warnings();
+GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
 GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
-GP::$router = new GP_Router();
+GP::$router  = new GP_Router();
 GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';
@@ -120,6 +117,7 @@ require_once GP_PATH . GP_INC . 'formats/format-strings.php';
 require_once GP_PATH . GP_INC . 'formats/format-properties.php';
 require_once GP_PATH . GP_INC . 'formats/format-json.php';
 require_once GP_PATH . GP_INC . 'formats/format-jed1x.php';
+require_once GP_PATH . GP_INC . 'formats/format-ngx.php';
 
 // Let's do it again, there are more variables added since last time we called it.
 gp_set_globals( get_defined_vars() );

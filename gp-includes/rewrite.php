@@ -24,11 +24,11 @@ function gp_generate_rewrite_rules( $gp_base = false ) {
 
 	$rules = array();
 	if ( ! $gp_base ) {
-		$rules['$'] = 'index.php?gp_route';
+		$rules['$']      = 'index.php?gp_route';
 		$rules['^(.*)$'] = 'index.php?gp_route=$matches[1]';
 	} else {
-		$rules['^' . $gp_base . '$'] = 'index.php?gp_route';
-		$rules['^' . $gp_base . '\/+(.*)$'] = 'index.php?gp_route=$matches[1]';
+		$rules[ '^' . $gp_base . '$' ]        = 'index.php?gp_route';
+		$rules[ '^' . $gp_base . '\/+(.*)$' ] = 'index.php?gp_route=$matches[1]';
 	}
 
 	return $rules;
@@ -51,7 +51,7 @@ function gp_rewrite_rules() {
 	 * Save the rewrite rule to an option so we have something to compare against later.
 	 * We don't need to worry about the root rewrite rule above as it is always the same.
 	 */
-	if ( $rewrite_rules != get_option( 'gp_rewrite_rule' ) ) {
+	if ( get_option( 'gp_rewrite_rule' ) != $rewrite_rules ) {
 		update_option( 'gp_rewrite_rule', $rewrite_rules );
 		flush_rewrite_rules( false );
 	}
@@ -75,8 +75,6 @@ function gp_query_vars( $query_vars ) {
 function gp_run_route() {
 	gp_populate_notices();
 
-	global $wp;
-
 	if ( is_glotpress() ) {
 		GP::$router->route();
 	}
@@ -92,7 +90,7 @@ function gp_run_route() {
 function is_glotpress() {
 	global $wp;
 
-	if ( ! is_admin() && GP_ROUTING && null != $wp->query_vars && array_key_exists( 'gp_route', $wp->query_vars ) ) {
+	if ( ! is_admin() && GP_ROUTING && $wp instanceof WP && null !== $wp->query_vars && array_key_exists( 'gp_route', $wp->query_vars ) ) {
 		return true;
 	}
 	return false;

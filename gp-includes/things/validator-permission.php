@@ -14,10 +14,10 @@
  */
 class GP_Validator_Permission extends GP_Permission {
 
-	var $table_basename = 'gp_permissions';
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
-	var $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
-	var $non_updatable_attributes = array( 'id', );
+	var $table_basename           = 'gp_permissions';
+	var $field_names              = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	var $non_db_field_names       = array( 'project_id', 'locale_slug', 'set_slug' );
+	var $non_updatable_attributes = array( 'id' );
 
 	public $object_type;
 	public $project_id;
@@ -39,20 +39,25 @@ class GP_Validator_Permission extends GP_Permission {
 		$rules->set_slug_should_not_be( 'empty' );
 	}
 
-	public function set_fields( $db_object ) {
-		parent::set_fields( $db_object );
+	/**
+	 * Sets fields of the current GP_Thing object.
+	 *
+	 * @param array $fields Fields for a GP_Thing object.
+	 */
+	public function set_fields( $fields ) {
+		parent::set_fields( $fields );
 		if ( $this->object_id ) {
 			list( $this->project_id, $this->locale_slug, $this->set_slug ) = $this->project_id_locale_slug_set_slug( $this->object_id );
 		}
-		$this->object_type = 'project|locale|set-slug';
-		$this->default_conditions = "object_type = '".$this->object_type."'";
+		$this->object_type        = 'project|locale|set-slug';
+		$this->default_conditions = "object_type = '" . $this->object_type . "'";
 	}
 
 	public function prepare_fields_for_save( $args ) {
-		$args = (array)$args;
+		$args                = (array) $args;
 		$args['object_type'] = $this->object_type;
 		if ( gp_array_get( $args, 'project_id' ) && gp_array_get( $args, 'locale_slug' )
-		 		&& gp_array_get( $args, 'set_slug' ) && !gp_array_get( $args, 'object_id' ) ) {
+				&& gp_array_get( $args, 'set_slug' ) && ! gp_array_get( $args, 'object_id' ) ) {
 			$args['object_id'] = $this->object_id( $args['project_id'], $args['locale_slug'], $args['set_slug'] );
 		}
 		$args = parent::prepare_fields_for_save( $args );
@@ -68,7 +73,7 @@ class GP_Validator_Permission extends GP_Permission {
 	}
 
 	public function by_project_id( $project_id ) {
-		$project_id = (int)$project_id;
+		$project_id = (int) $project_id;
 		return $this->find_many( "object_id LIKE '$project_id|%'" );
 	}
 }

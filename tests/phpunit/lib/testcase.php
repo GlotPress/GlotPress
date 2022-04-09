@@ -14,16 +14,10 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 	 */
 	public $factory;
 
-	/**
-	 * @var callable
-	 */
-	public $url_filter;
-
 	function setUp() {
 		parent::setUp();
 
-		$this->factory = new GP_UnitTest_Factory;
-		$this->url_filter = returner( $this->url );
+		$this->factory = new GP_UnitTest_Factory();
 
 		global $wp_rewrite;
 		if ( GP_TESTS_PERMALINK_STRUCTURE != $wp_rewrite->permalink_structure ) {

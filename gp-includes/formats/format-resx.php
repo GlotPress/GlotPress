@@ -2,8 +2,8 @@
 
 class GP_Format_ResX extends GP_Format {
 
-	public $name = '.NET Resource (.resx)';
-	public $extension = 'resx';
+	public $name           = '.NET Resource (.resx)';
+	public $extension      = 'resx';
 	public $alt_extensions = array( 'resx.xml' );
 
 	public $exported = '';
@@ -30,8 +30,9 @@ class GP_Format_ResX extends GP_Format {
 		}
 
 		foreach ( $entries as $entry ) {
-			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) )
+			if ( empty( $entry->translations ) || ! array_filter( $entry->translations ) ) {
 				continue;
+			}
 
 			if ( empty( $entry->context ) ) {
 				$entry->context = $entry->singular;
@@ -50,26 +51,26 @@ class GP_Format_ResX extends GP_Format {
 
 	public function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( true );
-		$data = simplexml_load_string( file_get_contents( $file_name ) );
+		$data   = simplexml_load_string( file_get_contents( $file_name ) );
 		libxml_use_internal_errors( $errors );
 
 		if ( ! is_object( $data ) ) {
 			return false;
 		}
 
-		$entries = new Translations;
-		foreach( $data->data as $string ) {
+		$entries = new Translations();
+		foreach ( $data->data as $string ) {
 			$entry = new Translation_Entry();
 
-			if ( isset( $string['type'] ) && gp_in( 'System.Resources.ResXFileRef', (string)$string['type'] ) ) {
+			if ( isset( $string['type'] ) && gp_in( 'System.Resources.ResXFileRef', (string) $string['type'] ) ) {
 				continue;
 			}
 
-			$entry->context = (string)$string['name'];
-			$entry->singular = $this->unescape( (string)$string->value );
+			$entry->context  = (string) $string['name'];
+			$entry->singular = $this->unescape( (string) $string->value );
 
 			if ( isset( $string->comment ) && $string->comment ) {
-				$entry->extracted_comments = (string)$string->comment;
+				$entry->extracted_comments = (string) $string->comment;
 			}
 
 			$entry->translations = array();
@@ -85,8 +86,8 @@ class GP_Format_ResX extends GP_Format {
 	}
 
 	private function res_header( $name, $value ) {
-		$this->line( '<resheader name="'.$name.'">', 1 );
-		$this->line( '<value>'.$value.'</value>', 2 );
+		$this->line( '<resheader name="' . $name . '">', 1 );
+		$this->line( '<value>' . $value . '</value>', 2 );
 		$this->line( '</resheader>', 1 );
 	}
 
@@ -101,65 +102,65 @@ class GP_Format_ResX extends GP_Format {
 
 
 	private function add_schema_info() {
-		$this->line('<!--', 1 );
-		$this->line('Microsoft ResX Schema', 2 );
-		$this->line('', 0 );
-		$this->line('Version 2.0', 2 );
-		$this->line('', 0 );
-		$this->line('The primary goals of this format is to allow a simple XML format', 2 );
-		$this->line('that is mostly human readable. The generation and parsing of the', 2 );
-		$this->line('various data types are done through the TypeConverter classes', 2 );
-		$this->line('associated with the data types.', 2 );
-		$this->line('', 0 );
-		$this->line('Example:', 2 );
-		$this->line('', 0 );
-		$this->line('... ado.net/XML headers & schema ...', 2 );
-		$this->line('<resheader name="resmimetype">text/microsoft-resx</resheader>', 2 );
-		$this->line('<resheader name="version">2.0</resheader>', 2 );
-		$this->line('<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>', 2 );
-		$this->line('<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>', 2 );
-		$this->line('<data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>', 2 );
-		$this->line('<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>', 2 );
-		$this->line('<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">', 2 );
-		$this->line('<value>[base64 mime encoded serialized .NET Framework object]</value>', 3 );
-		$this->line('</data>', 2 );
-		$this->line('<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">', 2 );
-		$this->line('<value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>', 3 );
-		$this->line('<comment>This is a comment</comment>', 3 );
-		$this->line('</data>', 2 );
-		$this->line('', 0 );
-		$this->line('There are any number of "resheader" rows that contain simple', 2 );
-		$this->line('name/value pairs.', 2 );
-		$this->line('', 0 );
-		$this->line('Each data row contains a name, and value. The row also contains a', 2 );
-		$this->line('type or mimetype. Type corresponds to a .NET class that support', 2 );
-		$this->line('text/value conversion through the TypeConverter architecture.', 2 );
-		$this->line('Classes that don\'t support this are serialized and stored with the', 2 );
-		$this->line('mimetype set.', 2 );
-		$this->line('', 0 );
-		$this->line('The mimetype is used for serialized objects, and tells the', 2 );
-		$this->line('ResXResourceReader how to depersist the object. This is currently not', 2 );
-		$this->line('extensible. For a given mimetype the value must be set accordingly:', 2 );
-		$this->line('', 0 );
-		$this->line('Note - application/x-microsoft.net.object.binary.base64 is the format', 2 );
-		$this->line('that the ResXResourceWriter will generate, however the reader can', 2 );
-		$this->line('read any of the formats listed below.', 2 );
-		$this->line('', 0 );
-		$this->line('mimetype: application/x-microsoft.net.object.binary.base64', 2 );
-		$this->line('value   : The object must be serialized with', 2 );
-		$this->line(': System.Runtime.Serialization.Formatters.Binary.BinaryFormatter', 4 );
-		$this->line(': and then encoded with base64 encoding.', 4 );
-		$this->line('', 0 );
-		$this->line('mimetype: application/x-microsoft.net.object.soap.base64', 2 );
-		$this->line('value   : The object must be serialized with', 2 );
-		$this->line(': System.Runtime.Serialization.Formatters.Soap.SoapFormatter', 4 );
-		$this->line(': and then encoded with base64 encoding.', 4 );
-		$this->line('', 0 );
-		$this->line('mimetype: application/x-microsoft.net.object.bytearray.base64', 2 );
-		$this->line('value   : The object must be serialized into a byte array', 2 );
-		$this->line(': using a System.ComponentModel.TypeConverter', 4 );
-		$this->line(': and then encoded with base64 encoding.', 4 );
-		$this->line('-->', 1 );
+		$this->line( '<!--', 1 );
+		$this->line( 'Microsoft ResX Schema', 2 );
+		$this->line( '', 0 );
+		$this->line( 'Version 2.0', 2 );
+		$this->line( '', 0 );
+		$this->line( 'The primary goals of this format is to allow a simple XML format', 2 );
+		$this->line( 'that is mostly human readable. The generation and parsing of the', 2 );
+		$this->line( 'various data types are done through the TypeConverter classes', 2 );
+		$this->line( 'associated with the data types.', 2 );
+		$this->line( '', 0 );
+		$this->line( 'Example:', 2 );
+		$this->line( '', 0 );
+		$this->line( '... ado.net/XML headers & schema ...', 2 );
+		$this->line( '<resheader name="resmimetype">text/microsoft-resx</resheader>', 2 );
+		$this->line( '<resheader name="version">2.0</resheader>', 2 );
+		$this->line( '<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>', 2 );
+		$this->line( '<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>', 2 );
+		$this->line( '<data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>', 2 );
+		$this->line( '<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>', 2 );
+		$this->line( '<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">', 2 );
+		$this->line( '<value>[base64 mime encoded serialized .NET Framework object]</value>', 3 );
+		$this->line( '</data>', 2 );
+		$this->line( '<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">', 2 );
+		$this->line( '<value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>', 3 );
+		$this->line( '<comment>This is a comment</comment>', 3 );
+		$this->line( '</data>', 2 );
+		$this->line( '', 0 );
+		$this->line( 'There are any number of "resheader" rows that contain simple', 2 );
+		$this->line( 'name/value pairs.', 2 );
+		$this->line( '', 0 );
+		$this->line( 'Each data row contains a name, and value. The row also contains a', 2 );
+		$this->line( 'type or mimetype. Type corresponds to a .NET class that support', 2 );
+		$this->line( 'text/value conversion through the TypeConverter architecture.', 2 );
+		$this->line( 'Classes that don\'t support this are serialized and stored with the', 2 );
+		$this->line( 'mimetype set.', 2 );
+		$this->line( '', 0 );
+		$this->line( 'The mimetype is used for serialized objects, and tells the', 2 );
+		$this->line( 'ResXResourceReader how to depersist the object. This is currently not', 2 );
+		$this->line( 'extensible. For a given mimetype the value must be set accordingly:', 2 );
+		$this->line( '', 0 );
+		$this->line( 'Note - application/x-microsoft.net.object.binary.base64 is the format', 2 );
+		$this->line( 'that the ResXResourceWriter will generate, however the reader can', 2 );
+		$this->line( 'read any of the formats listed below.', 2 );
+		$this->line( '', 0 );
+		$this->line( 'mimetype: application/x-microsoft.net.object.binary.base64', 2 );
+		$this->line( 'value   : The object must be serialized with', 2 );
+		$this->line( ': System.Runtime.Serialization.Formatters.Binary.BinaryFormatter', 4 );
+		$this->line( ': and then encoded with base64 encoding.', 4 );
+		$this->line( '', 0 );
+		$this->line( 'mimetype: application/x-microsoft.net.object.soap.base64', 2 );
+		$this->line( 'value   : The object must be serialized with', 2 );
+		$this->line( ': System.Runtime.Serialization.Formatters.Soap.SoapFormatter', 4 );
+		$this->line( ': and then encoded with base64 encoding.', 4 );
+		$this->line( '', 0 );
+		$this->line( 'mimetype: application/x-microsoft.net.object.bytearray.base64', 2 );
+		$this->line( 'value   : The object must be serialized into a byte array', 2 );
+		$this->line( ': using a System.ComponentModel.TypeConverter', 4 );
+		$this->line( ': and then encoded with base64 encoding.', 4 );
+		$this->line( '-->', 1 );
 	}
 
 	private function add_schema_declaration() {
@@ -218,4 +219,4 @@ class GP_Format_ResX extends GP_Format {
 
 }
 
-GP::$formats['resx'] = new GP_Format_ResX;
+GP::$formats['resx'] = new GP_Format_ResX();

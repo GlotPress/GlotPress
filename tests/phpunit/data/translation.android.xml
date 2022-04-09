@@ -9,10 +9,11 @@ Language: en_US
 	<string name="normal_string">Just A Normal String</string>
 	<string name="with_a_quote">I\'m with a quote</string>
 	<string name="with_newlines">I\nhave\nnew\nlines</string>
-	<string name="with_doublequotes">I have double "quotes"</string>
+	<string name="with_doublequotes">I have double \"quotes\"</string>
 	<string name="with_utf8">баба ми омеси питка</string>
 	<string name="with_lt">ти &lt; аз</string>
 	<string name="with_gt">аз > ти</string>
 	<string name="with_amps">аз &amp; ти не сме &amp;amp;</string>
 	<string name="with_comment">баба</string>
+	<string name="with_escaped_unicode">Keine Beiträge gespeichert \u2014 noch!</string>
 </resources>

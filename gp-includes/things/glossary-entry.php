@@ -14,9 +14,9 @@
  */
 class GP_Glossary_Entry extends GP_Thing {
 
-	var $table_basename = 'gp_glossary_entries';
-	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
-	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
+	var $table_basename           = 'gp_glossary_entries';
+	var $field_names              = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
+	var $int_fields               = array( 'id', 'glossary_id', 'last_edited_by' );
 	var $non_updatable_attributes = array( 'id' );
 
 	public $parts_of_speech = array();
@@ -32,8 +32,9 @@ class GP_Glossary_Entry extends GP_Thing {
 
 
 	public function __construct( $fields = array() ) {
-		parent::__construct( $fields );
 		$this->setup_pos();
+
+		parent::__construct( $fields );
 	}
 
 	/**
@@ -57,14 +58,15 @@ class GP_Glossary_Entry extends GP_Thing {
 
 		$this->parts_of_speech = array(
 			'noun'         => _x( 'noun', 'part-of-speech', 'glotpress' ),
-			'verb'         => _x( 'verb','part-of-speech', 'glotpress' ),
+			'verb'         => _x( 'verb', 'part-of-speech', 'glotpress' ),
 			'adjective'    => _x( 'adjective', 'part-of-speech', 'glotpress' ),
 			'adverb'       => _x( 'adverb', 'part-of-speech', 'glotpress' ),
 			'interjection' => _x( 'interjection', 'part-of-speech', 'glotpress' ),
 			'conjunction'  => _x( 'conjunction', 'part-of-speech', 'glotpress' ),
 			'preposition'  => _x( 'preposition', 'part-of-speech', 'glotpress' ),
 			'pronoun'      => _x( 'pronoun', 'part-of-speech', 'glotpress' ),
-			'expression'   => _x( 'expression', 'part-of-speech', 'glotpress' )
+			'expression'   => _x( 'expression', 'part-of-speech', 'glotpress' ),
+			'abbreviation' => _x( 'abbreviation', 'part-of-speech', 'glotpress' ),
 		);
 	}
 
@@ -77,7 +79,10 @@ class GP_Glossary_Entry extends GP_Thing {
 	 */
 	public function restrict_fields( $rules ) {
 		$rules->term_should_not_be( 'empty' );
+		$rules->term_should_be( 'consisting_only_of_ASCII_characters' );
+		$rules->term_should_be( 'starting_and_ending_with_a_word_character' );
 		$rules->part_of_speech_should_not_be( 'empty' );
+		$rules->part_of_speech_should_be( 'one_of', array_keys( $this->parts_of_speech ) );
 		$rules->glossary_id_should_be( 'positive_int' );
 		$rules->last_edited_by_should_be( 'positive_int' );
 	}
@@ -86,10 +91,16 @@ class GP_Glossary_Entry extends GP_Thing {
 		return $this->many( "SELECT * FROM $this->table WHERE glossary_id= %d ORDER by term ASC", $glossary_id );
 	}
 
+	/**
+	 * Retrieves the last modified date of a entry in a glossary.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Glossary $glossary The glossary to retrieve the last modified date.
+	 * @return string The last modified date on success, empty string on failure.
+	 */
 	public function last_modified( $glossary ) {
-		global $wpdb;
-
-		return $wpdb->get_var( $wpdb->prepare( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' ) );
+		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' );
 	}
 }
 
