@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0] (April 9, 2022)
+
+(this space intentionally left blank)
+
 ## [3.0.0-rc.4] (April 7, 2022)
 
 **Breaking Changes**
@@ -464,7 +468,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...3.0.0
 [3.0.0-rc.4]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...3.0.0-rc.4
 [3.0.0-rc.3]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.2...3.0.0-rc.3
 [3.0.0-rc.2]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.1...3.0.0-rc.2

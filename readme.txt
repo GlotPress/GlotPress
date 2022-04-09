@@ -4,7 +4,7 @@ Tags: translation
 Requires at least: 4.6
 Tested up to: 5.9
 Requires PHP: 7.2
-Stable tag: 2.3.1
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,11 +68,6 @@ There's a conversion document on the [GlotPress wiki](https://github.com/GlotPre
 Short answer, no.
 
 You will need to update the plugin to be a WordPress plugin. Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress/wiki/1.2-Converting-Plugins).
-
-== Upgrade Notice ==
-
-= 2.3.1 =
-Important note, if you have a custom template directory don't forget to update it with the changes in this release.
 
 == Changelog ==
 
