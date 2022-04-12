@@ -6,7 +6,7 @@ Tested up to: 5.9
 Requires PHP: 7.2
 Stable tag: 3.0.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 GlotPress is a WordPress plugin to let you set up your own collaborative, web-based software translation tool.
 
@@ -20,7 +20,7 @@ For more information about GlotPress, feel free to visit the channels listed bel
 
 So who should use GlotPress?
 
-Any developer of software that uses [gettext](http://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
+Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
 
 This plugin wouldn't be possible without all the hard work that has gone in to the standalone version of GlotPress and we'd like to thank all those who contribute to it.
 
@@ -59,7 +59,7 @@ More information can be found in the [GlotPress Manual](https://glotpress.blog/t
 Drop by the [GlotPress GitHub](https://github.com/GlotPress/GlotPress) repository and look through the open issues and pull requests.
 
 = So who should use GlotPress? =
-Any developer of software that uses [gettext](http://www.gnu.org/software/gettext/), like WordPress theme or plugin authors.  But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
+Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
 
 = How do I migrate my standalone GlotPress install to the plugin? =
 There's a conversion document on the [GlotPress wiki](https://github.com/GlotPress/GlotPress/wiki/1.3-Convert-a-standalone-install-to-the-WordPress-plugin) on how to convert your standalone install.
@@ -71,4 +71,4 @@ You will need to update the plugin to be a WordPress plugin. Instructions on how
 
 == Changelog ==
 
-This project adheres to [Semantic Versioning](http://semver.org/). All notable changes to this project will be documented in the [CHANGELOG.md file on GitHub](https://github.com/GlotPress/GlotPress/blob/develop/CHANGELOG.md).
+This project adheres to [Semantic Versioning](https://semver.org/). All notable changes to this project will be documented in the [CHANGELOG.md file on GitHub](https://github.com/GlotPress/GlotPress/blob/develop/CHANGELOG.md).
