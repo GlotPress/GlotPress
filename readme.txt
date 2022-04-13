@@ -14,8 +14,6 @@ GlotPress is a WordPress plugin to let you set up your own collaborative, web-ba
 
 Many open source projects span regions, countries and dialects and need to support a variety of translations, GlotPress is here to help you collaborate online with your translators to ensure your users see your software in their native language.
 
-GlotPress has two versions, a standalone version and this WordPress plugin version. At this time these two versions are functionally similar, but the plugin version is likely to start moving away from the standalone version in future versions. For the rest of this document, any reference to "GlotPress" should be taken as the plugin.
-
 For more information about GlotPress, feel free to visit the channels listed below in the "Communication" section.
 
 So who should use GlotPress?
@@ -53,21 +51,6 @@ After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress
 = More Info =
 
 More information can be found in the [GlotPress Manual](https://glotpress.blog/the-manual/).
-
-== Frequently Asked Questions ==
-= How can I contribute to GlotPress? =
-Drop by the [GlotPress GitHub](https://github.com/GlotPress/GlotPress) repository and look through the open issues and pull requests.
-
-= So who should use GlotPress? =
-Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
-
-= How do I migrate my standalone GlotPress install to the plugin? =
-There's a conversion document on the [GlotPress wiki](https://github.com/GlotPress/GlotPress/wiki/1.3-Convert-a-standalone-install-to-the-WordPress-plugin) on how to convert your standalone install.
-
-= I've written a custom plugin for the standalone version, will it work with the plugin? =
-Short answer, no.
-
-You will need to update the plugin to be a WordPress plugin. Instructions on how to do so can be found on the [GlotPress Wiki](https://github.com/GlotPress/GlotPress/wiki/1.2-Converting-Plugins).
 
 == Changelog ==
 
