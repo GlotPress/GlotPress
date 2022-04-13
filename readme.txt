@@ -52,14 +52,6 @@ After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress
 
 More information can be found in the [GlotPress Manual](https://glotpress.blog/the-manual/).
 
-== Frequently Asked Questions ==
-
-= How can I contribute to GlotPress? =
-Drop by the [GlotPress GitHub](https://github.com/GlotPress/GlotPress) repository and look through the open issues and pull requests.
-
-= So who should use GlotPress? =
-Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
-
 == Changelog ==
 
 This project adheres to [Semantic Versioning](https://semver.org/). All notable changes to this project will be documented in the [CHANGELOG.md file on GitHub](https://github.com/GlotPress/GlotPress/blob/develop/CHANGELOG.md).
