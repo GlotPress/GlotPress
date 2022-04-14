@@ -96,12 +96,13 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 		return 0;
 	}
 
-	$bytelength1 = strlen( $str1 );
-	$bytelength2 = strlen( $str2 );
+	if ( $length1 <= 255 && $length2 <= 255 ) {
+		$bytelength1 = strlen( $str1 );
+		$bytelength2 = strlen( $str2 );
 
-	if ( $bytelength1 === $length1 && $bytelength1 <= 255
-		 && $bytelength2 === $length2 && $bytelength2 <= 255 ) {
-		return levenshtein( $str1, $str2 );
+		if ( $bytelength1 === $length1 && $bytelength2 === $length2 ) {
+			return levenshtein( $str1, $str2 );
+		}
 	}
 
 	$chars1 = preg_split( '//u', $str1, null, PREG_SPLIT_NO_EMPTY );
