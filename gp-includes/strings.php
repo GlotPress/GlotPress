@@ -109,12 +109,10 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 	$chars2 = preg_split( '//u', $str2, null, PREG_SPLIT_NO_EMPTY );
 
 	$prevRow = range( 0, $length2 );
-	for ( $i = 0; $i < $length1; $i++ ) {
+	foreach ( $chars1 as $i => $c1 ) {
 		$currentRow    = array();
 		$currentRow[0] = $i + 1;
-		$c1            = $chars1[ $i ];
-		for ( $j = 0; $j < $length2; $j++ ) {
-			$c2            = $chars2[ $j ];
+		foreach ( $chars2 as $j => $c2 ) {
 			$insertions    = $prevRow[ $j + 1 ] + 1;
 			$deletions     = $currentRow[ $j ] + 1;
 			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
