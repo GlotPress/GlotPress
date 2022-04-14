@@ -104,13 +104,16 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 		return levenshtein( $str1, $str2 );
 	}
 
+	$chars1 = preg_split( '//u', $str1, null, PREG_SPLIT_NO_EMPTY );
+	$chars2 = preg_split( '//u', $str2, null, PREG_SPLIT_NO_EMPTY );
+
 	$prevRow = range( 0, $length2 );
 	for ( $i = 0; $i < $length1; $i++ ) {
 		$currentRow    = array();
 		$currentRow[0] = $i + 1;
-		$c1            = mb_substr( $str1, $i, 1 );
+		$c1            = $chars1[ $i ];
 		for ( $j = 0; $j < $length2; $j++ ) {
-			$c2            = mb_substr( $str2, $j, 1 );
+			$c2            = $chars2[ $j ];
 			$insertions    = $prevRow[ $j + 1 ] + 1;
 			$deletions     = $currentRow[ $j ] + 1;
 			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
