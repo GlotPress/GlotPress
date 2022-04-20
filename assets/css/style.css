@@ -171,7 +171,6 @@ h3 {
 .gp-bar {
 	background: var( --gp-color-header-bg );
 	color: var( --gp-color-header-text );
-	padding: 0 1em;
 }
 
 .gp-bar a {
