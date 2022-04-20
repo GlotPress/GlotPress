@@ -36,7 +36,7 @@ gp_tmpl_header();
 			</label>
 		</p>
 	<?php endif; ?>
-	<p><input type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></p>
+	<p><input class="button is-primary" type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></p>
 	<?php gp_route_nonce_field( 'import-glossary-entries_' . $project->path . $locale->slug . $translation_set->slug ); ?>
 </form>
 

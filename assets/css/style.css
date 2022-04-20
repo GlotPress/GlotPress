@@ -127,6 +127,7 @@ a {
 	text-decoration: underline;
 	text-decoration-thickness: max( 1px, 0.063rem );
 	text-underline-offset: 0.1em;
+	text-underline-position: under;
 }
 
 a:link,
@@ -137,8 +138,7 @@ a:visited {
 a:hover,
 a:focus {
 	color: var( --gp-color-accent-fg );
-	text-decoration-thickness: max( 3px, 0.188rem );
-	text-decoration-skip-ink: none;
+	text-decoration-thickness: max( 2px, 0.125rem );
 }
 
 a:focus {
@@ -283,8 +283,7 @@ h3 {
  */
 .gp-footer {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	flex-direction: column;
 	padding-top: 1rem;
 	border-top: 1px solid var( --gp-color-border-default );
 	margin: 2rem 1rem 1rem;
@@ -296,10 +295,14 @@ h3 {
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
-	column-gap: 1rem;
+	gap: 0.5rem 1rem;
 }
 
-.gp-footer-copyright {
+.gp-footer-credits p {
+	margin: 0;
+}
+
+.gp-footer-credits .gp-footer-copyright {
 	margin-right: auto;
 }
 
@@ -414,6 +417,7 @@ button,
 	text-decoration: underline;
 	text-decoration-thickness: max( 1px, 0.063rem );
 	text-underline-offset: 0.1em;
+	text-underline-position: under;
 }
 
 .gp-content .button.is-link:hover,
@@ -422,8 +426,7 @@ button,
 	border: 0;
 	background: none;
 	color: var( --gp-color-accent-fg );
-	text-decoration-thickness: max( 3px, 0.188rem );
-	text-decoration-skip-ink: none;
+	text-decoration-thickness: max( 2px, 0.125rem );
 }
 
 .gp-content .button.is-link:active {
@@ -1380,8 +1383,11 @@ table.form-table td {
 
 .glossary-word {
 	display: inline-block;
-	text-decoration: none;
-	border-bottom:1px dashed;
+	text-decoration: underline;
+	text-decoration-style: dashed;
+	text-decoration-thickness: max( 1px, 0.063rem );
+	text-underline-offset: 0.1em;
+	text-underline-position: under;
 	cursor: help;
 }
 
@@ -1559,5 +1565,9 @@ table.form-table td {
 	.gp-table-actions.bottom {
 		flex-direction: column;
 		align-items: flex-start;
+	}
+
+	.gp-footer-credits {
+		flex-direction: column;
 	}
 }
