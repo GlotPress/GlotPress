@@ -178,15 +178,17 @@ h3 {
 	color: var( --gp-color-header-text );
 }
 
-.gp-bar a:not(:hover):not(:focus) {
+.gp-bar a {
 	text-decoration: none;
 }
 
-.gp-bar h1 {
-	float: left;
-	font-size: 1.2857em;
-	line-height: 1.4em;
-	margin-right: 10px;
+.gp-bar a:hover,
+.gp-bar a:focus {
+	background-color: var( --gp-color-primary-200 );
+}
+
+.gp-bar #home-navigation a {
+	font-weight: 700;
 }
 
 .gp-bar nav a {
@@ -194,6 +196,7 @@ h3 {
 	padding: 1em;
 }
 
+.gp-bar #home-navigation,
 .gp-bar #main-navigation {
 	float: left;
 }
