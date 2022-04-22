@@ -31,10 +31,5 @@
     "lint": "@php ./vendor/bin/phpcs --report=summary,source",
     "test": "@php ./vendor/bin/phpunit",
     "test:locales": "@test --group locales"
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
   }
 }
