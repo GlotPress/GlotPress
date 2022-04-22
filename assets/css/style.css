@@ -194,10 +194,6 @@ h3 {
 	box-shadow: inset 0 -5px 0 var( --gp-color-primary-200 );
 }
 
-.gp-bar #home-navigation a {
-	font-weight: 700;
-}
-
 .gp-bar nav a,
 .gp-bar h1 a {
 	display: inline-block;
