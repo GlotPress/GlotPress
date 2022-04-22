@@ -53,6 +53,8 @@
 
 	--gp-color-header-text: var( --gp-color-white );
 	--gp-color-header-bg: var( --gp-color-secondary );
+	--gp-color-header-item-hover-border: var( --gp-color-primary-200 );
+	--gp-color-header-item-current-border: var( --gp-color-primary );
 
 	--gp-color-input-border: var( --gp-color-secondary-600 );
 
@@ -187,12 +189,12 @@ h3 {
 }
 
 .gp-bar a.current {
-	box-shadow: inset 0 -5px 0 var( --gp-color-primary );
+	box-shadow: inset 0 -5px 0 var( --gp-color-header-item-current-border );
 }
 
 .gp-bar a:hover,
 .gp-bar a:focus {
-	box-shadow: inset 0 -5px 0 var( --gp-color-primary-200 );
+	box-shadow: inset 0 -5px 0 var( --gp-color-header-item-hover-border );
 }
 
 .gp-bar #main-navigation {
