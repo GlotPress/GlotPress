@@ -98,13 +98,11 @@ function gp_nav_menu( $location = 'main' ) {
 	$items = gp_nav_menu_items( $location );
 
 	// Get the current URI.
-	global $wp;
-	$gp_route    = isset( $wp->query_vars['gp_route'] ) ? $wp->query_vars['gp_route'] : '';
-	$current_uri = gp_url( $gp_route );
+	$current_uri = str_replace( home_url(), '', gp_url_current() );
 
 	foreach ( $items as $link => $title ) {
 		// Check if the link matches the current URI base, if true, add 'current' class.
-		$class = str_starts_with( $current_uri, $link ) ? 'current' : '';
+		$class = gp_startswith( $current_uri, $link ) ? 'current' : '';
 		$html .= '<a class="' . $class . '" href="' . $link . '">' . $title . '</a>';
 	}
 
