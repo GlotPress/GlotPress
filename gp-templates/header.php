@@ -16,7 +16,7 @@
 	<script type="text/javascript">document.body.className = document.body.className.replace('no-js','js');</script>
 
 	<header class="gp-bar clearfix">
-		<nav id="home-navigation">
+		<h1>
 			<a href="<?php echo esc_url( gp_url( '/' ) ); ?>" rel="home">
 				<?php
 				/**
@@ -30,7 +30,7 @@
 				echo apply_filters( 'gp_home_title', 'GlotPress' );
 				?>
 			</a>
-		</nav>
+		</h1>
 
 		<nav id="main-navigation" role="navigation">
 			<?php echo gp_nav_menu(); ?>

@@ -181,6 +181,12 @@ h3 {
 	text-decoration: none;
 }
 
+.gp-bar h1 {
+	float: left;
+	font-size: 1em;
+	margin: 0;
+}
+
 .gp-bar a:hover,
 .gp-bar a:focus,
 .gp-bar a.current:hover,
@@ -192,12 +198,12 @@ h3 {
 	font-weight: 700;
 }
 
-.gp-bar nav a {
+.gp-bar nav a,
+.gp-bar h1 a {
 	display: inline-block;
 	padding: 1em;
 }
 
-.gp-bar #home-navigation,
 .gp-bar #main-navigation {
 	float: left;
 }
