@@ -185,7 +185,7 @@ h3 {
 .gp-bar a:focus,
 .gp-bar a.current:hover,
 .gp-bar a.current:focus {
-	background-color: var( --gp-color-primary-200 );
+	box-shadow: inset 0 -5px 0 var( --gp-color-primary-200 );
 }
 
 .gp-bar #home-navigation a {
@@ -207,7 +207,7 @@ h3 {
 }
 
 .gp-bar a.current {
-	background-color: var( --gp-color-primary );
+	box-shadow: inset 0 -5px 0 var( --gp-color-primary );
 }
 
 /*
