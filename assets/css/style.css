@@ -175,9 +175,6 @@ h3 {
 
 .gp-bar a {
 	color: var( --gp-color-header-text );
-}
-
-.gp-bar a {
 	text-decoration: none;
 }
 
