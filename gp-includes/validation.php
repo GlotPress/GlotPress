@@ -11,7 +11,7 @@
  *
  * Uses magic methods in the format of [field]_[rule].
  *
- * The below is a list of all magic methods called to ensure Scrutinizer recognizes them.
+ * The below is a list of all magic methods called.
  * Note that once a method has been defined from one file it will not be redefine in subsequent file sections.
  *
  * From gp_includes/things/administrative-permissions.php:
