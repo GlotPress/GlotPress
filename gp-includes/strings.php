@@ -105,8 +105,8 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 		}
 	}
 
-	$chars1 = preg_split( '//u', $str1, -1, PREG_SPLIT_NO_EMPTY );
-	$chars2 = preg_split( '//u', $str2, -1, PREG_SPLIT_NO_EMPTY );
+	$chars1 = mb_str_split( $str1 );
+	$chars2 = mb_str_split( $str2 );
 
 	$prevRow = range( 0, $length2 );
 	foreach ( $chars1 as $i => $c1 ) {
