@@ -10,7 +10,7 @@
   "homepage": "https://glotpress.blog/",
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.4"
   },
   "support": {
     "issues": "https://github.com/GlotPress/GlotPress/issues",
@@ -31,5 +31,10 @@
     "lint": "@php ./vendor/bin/phpcs --report=summary,source",
     "test": "@php ./vendor/bin/phpunit",
     "test:locales": "@test --group locales"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
