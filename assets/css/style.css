@@ -176,6 +176,8 @@ h3 {
 .gp-bar a {
 	color: var( --gp-color-header-text );
 	text-decoration: none;
+	display: inline-block;
+	padding: 1em;
 }
 
 .gp-bar h1 {
@@ -189,12 +191,6 @@ h3 {
 .gp-bar a.current:hover,
 .gp-bar a.current:focus {
 	box-shadow: inset 0 -5px 0 var( --gp-color-primary-200 );
-}
-
-.gp-bar nav a,
-.gp-bar h1 a {
-	display: inline-block;
-	padding: 1em;
 }
 
 .gp-bar #main-navigation {
