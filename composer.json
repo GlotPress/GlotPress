@@ -22,7 +22,7 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "wp-coding-standards/wpcs": "^2.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "gettext/languages": "^2.6",
+    "gettext/languages": "2.8.1",
     "phpunit/phpunit": "^7",
     "yoast/phpunit-polyfills": "^1.0"
   },
