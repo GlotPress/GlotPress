@@ -172,7 +172,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		$data = [];
 
 		foreach ( $locales as $locale ) {
-			$data[] = [ $locale ];
+			$data[ $locale->slug ] = [ $locale ];
 		}
 
 		return $data;
