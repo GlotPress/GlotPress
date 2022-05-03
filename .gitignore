@@ -11,3 +11,4 @@ node_modules
 .wp-env.override.json
 phpcs.xml
 phpunit.xml
+php.ini
