@@ -1,7 +1,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [4.0.0-alpha.1] (Mai 3, 2022)
+
+**Breaking Changes**
+* GlotPress now requires PHP 7.4. ([#1417])
+
+**Bugfixes**
+* Enhance `gp_levenshtein()` for speed improvements. Props @dd32 ([#1408])
+* Highlight current navigation menu item. Props @pedro-mendonca ([#1379])
+
+**Features**
+* Improve links to glossaries. Props @pedro-mendonca ([#1375])
 
 ## [3.0.0] (April 9, 2022)
 
@@ -25,7 +35,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.0.0-rc.2] (April 1, 2022)
 
 **Bugfixes**
-
 * Glossary: Provide fallback if term splitting has failed. ([#1378])
 
 ## [3.0.0-rc.1] (March 31, 2022)
@@ -471,6 +480,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-alpha.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0...4.0.0-alpha.1
 [3.0.0]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...3.0.0
 [3.0.0-rc.4]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...3.0.0-rc.4
 [3.0.0-rc.3]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.2...3.0.0-rc.3
@@ -528,3 +538,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1392]: https://github.com/GlotPress/GlotPress/pull/1392
 [#1393]: https://github.com/GlotPress/GlotPress/pull/1393
 [#1395]: https://github.com/GlotPress/GlotPress/pull/1395
+[#1417]: https://github.com/GlotPress/GlotPress/pull/1417
+[#1408]: https://github.com/GlotPress/GlotPress/pull/1408
+[#1379]: https://github.com/GlotPress/GlotPress/pull/1379
+[#1375]: https://github.com/GlotPress/GlotPress/pull/1375
