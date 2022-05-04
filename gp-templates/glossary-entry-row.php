@@ -14,8 +14,8 @@
 		printf(
 			/* translators: 1: Modified date. 2: Modified time. */
 			esc_html__( '%1$s at %2$s', 'glotpress' ),
-			date_i18n( get_option( 'date_format' ), strtotime( $entry->date_modified ) ),
-			date_i18n( get_option( 'time_format' ), strtotime( $entry->date_modified ) )
+			date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) ),
+			date_i18n( get_option( 'time_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) )
 		);
 		?>
 	</td>
@@ -64,8 +64,8 @@
 					printf(
 						/* translators: 1: Modified date. 2: Modified time. */
 						esc_html__( '%1$s at %2$s', 'glotpress' ),
-						date_i18n( get_option( 'date_format' ), strtotime( $entry->date_modified ) ),
-						date_i18n( get_option( 'time_format' ), strtotime( $entry->date_modified ) )
+						date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) ),
+						date_i18n( get_option( 'time_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) )
 					);
 					?>
 				</dd>
