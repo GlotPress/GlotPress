@@ -126,5 +126,6 @@ if ( $glossary_description ) {
 
 	<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-export' ) ), __( 'Export as CSV', 'glotpress' ) ); ?>
 </p>
+
 <?php
 gp_tmpl_footer();
