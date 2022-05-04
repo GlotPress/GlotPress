@@ -424,6 +424,13 @@ $i = 0;
 		}
 
 	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
+
+	$gp_timezone_string = get_user_option( 'gp_timezone' );
+	if ( empty( $gp_timezone_string ) ) {
+		$gp_timezone_string = 'UTC';
+	}
+	$gp_timezone = new DateTimeZone( $gp_timezone_string );
+
 	gp_tmpl_load( 'translation-row', get_defined_vars() );
 }
 ?>
