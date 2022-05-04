@@ -59,6 +59,10 @@ class GP_Route_Settings extends GP_Route_Main {
 			$user_sort = wp_parse_args( $_POST['default_sort'], $default_sort );
 			update_user_option( $user_id, 'gp_default_sort', $user_sort );
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified by invalid_nonce_and_redirect()
+			$timezone = $_POST['timezone'];
+			update_user_option( $user_id, 'gp_timezone', $timezone );
+
 			$this->notices[] = __( 'Settings saved!', 'glotpress' );
 		}
 

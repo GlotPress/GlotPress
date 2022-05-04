@@ -22,6 +22,11 @@ if ( ! is_array( $gp_default_sort ) ) {
 		'how' => 'desc',
 	);
 }
+
+$gp_timezone = get_user_option( 'gp_timezone' );
+if ( empty( $gp_timezone ) ) {
+	$gp_timezone = 'site-default';
+}
 ?>
 
 <table class="form-table">
@@ -52,6 +57,15 @@ if ( ! is_array( $gp_default_sort ) ) {
 				gp_array_get( $gp_default_sort, 'how', 'desc' )
 			);
 			?>
+		</td>
+	</tr>
+	<tr>
+		<th><label for="timezone"><?php _e( 'User Timezone:', 'glotpress' ); ?></label></th>
+		<td>
+			<select id="timezone" name="timezone" aria-describedby="timezone-description">
+				<option <?php selected( $gp_timezone, 'site-default' ); ?> value="site-default"><?php _e( 'Default', 'glotpress' ); ?></option>
+				<?php echo wp_timezone_choice( $gp_timezone, get_user_locale() ); ?>
+			</select>
 		</td>
 	</tr>
 </table>
