@@ -86,13 +86,14 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 		<dl>
 			<dt><?php _e( 'Date added:', 'glotpress' ); ?></dt>
 			<?php
+			$datetimezone        = new DateTimeZone( $gp_timezone );
 			$date_added          = strtotime( $translation->translation_added );
 			$date_added_formated = sprintf(
 				/* translators: 1: Modified date. 2: Modified time. 3: Timezone. */
 				esc_html__( '%1$s at %2$s (%3$s)', 'glotpress' ),
-				wp_date( get_option( 'date_format' ), $date_added, $gp_timezone ),
-				wp_date( get_option( 'time_format' ), $date_added, $gp_timezone ),
-				$gp_timezone_string
+				wp_date( get_option( 'date_format' ), $date_added, $datetimezone ),
+				wp_date( get_option( 'time_format' ), $date_added, $datetimezone ),
+				$gp_timezone
 			);
 			?>
 			<dd id="local-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php echo esc_html( $date_added_formated ); ?></dd>

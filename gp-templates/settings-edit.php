@@ -63,7 +63,7 @@ if ( empty( $gp_timezone ) ) {
 		<th><label for="timezone"><?php _e( 'Timezone:', 'glotpress' ); ?></label></th>
 		<td>
 			<select id="timezone" name="timezone" aria-describedby="timezone-description">
-				<?php echo wp_timezone_choice( $gp_timezone, get_user_locale() ); ?>
+				<?php echo wp_timezone_choice( $gp_timezone, get_user_locale() ); //phpcs:ignore ?>
 			</select>
 		</td>
 	</tr>
