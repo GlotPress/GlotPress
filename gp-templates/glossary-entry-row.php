@@ -9,6 +9,16 @@
 		echo make_clickable( nl2br( esc_html( $entry->comment ) ) );
 		?>
 	</td>
+	<td class="date-modified" data-text="<?php echo esc_attr( $entry->date_modified ); ?>">
+		<?php
+		printf(
+			/* translators: 1: Modified date. 2: Modified time. */
+			esc_html__( '%1$s at %2$s', 'glotpress' ),
+			date_i18n( get_option( 'date_format' ), strtotime( $entry->date_modified ) ),
+			date_i18n( get_option( 'time_format' ), strtotime( $entry->date_modified ) )
+		);
+		?>
+	</td>
 
 	<?php if ( $can_edit ) : ?>
 		<td class="actions">
@@ -17,7 +27,7 @@
 	<?php endif; ?>
 </tr>
 <tr id="editor-<?php echo esc_attr( $entry->id ); ?>" class="hide-if-js editor">
-	<td colspan="5">
+	<td colspan="6">
 		<div class="strings">
 			<dl>
 				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label></dt>
