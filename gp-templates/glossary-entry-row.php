@@ -9,15 +9,17 @@
 		echo make_clickable( nl2br( esc_html( $entry->comment ) ) );
 		?>
 	</td>
-	<td class="date-modified" data-text="<?php echo esc_attr( $entry->date_modified ); ?>">
-		<?php
-		printf(
-			/* translators: 1: Modified date. 2: Modified time. */
-			esc_html__( '%1$s at %2$s', 'glotpress' ),
-			date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) ),
-			date_i18n( get_option( 'time_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) )
-		);
-		?>
+	<?php
+	$date_modified          = strtotime( get_date_from_gmt( $entry->date_modified ) );
+	$date_modified_formated = sprintf(
+		/* translators: 1: Modified date. 2: Modified time. */
+		esc_html__( '%1$s at %2$s', 'glotpress' ),
+		date_i18n( get_option( 'date_format' ), $date_modified ),
+		date_i18n( get_option( 'time_format' ), $date_modified )
+	);
+	?>
+	<td class="date-modified" data-text="<?php echo esc_attr( $date_modified ); ?>">
+		<?php echo esc_html( $date_modified_formated ); ?>
 	</td>
 
 	<?php if ( $can_edit ) : ?>
@@ -60,14 +62,7 @@
 			<dl>
 				<dt><?php _e( 'Last Modified:', 'glotpress' ); ?></dt>
 				<dd>
-					<?php
-					printf(
-						/* translators: 1: Modified date. 2: Modified time. */
-						esc_html__( '%1$s at %2$s', 'glotpress' ),
-						date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) ),
-						date_i18n( get_option( 'time_format' ), strtotime( get_date_from_gmt( $entry->date_modified ) ) )
-					);
-					?>
+					<?php echo esc_html( $date_modified_formated ); ?>
 				</dd>
 			</dl>
 			<?php if ( $entry->user_login ) : ?>
