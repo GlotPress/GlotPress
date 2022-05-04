@@ -126,32 +126,5 @@ if ( $glossary_description ) {
 
 	<?php echo gp_link( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary', '-export' ) ), __( 'Export as CSV', 'glotpress' ) ); ?>
 </p>
-
-<script type="text/javascript" charset="utf-8">
-	jQuery(document).ready(function($) {
-		$( '.glossary' ).tablesorter({
-			theme: 'glotpress',
-			sortList: [[0,0]],
-			headers: {
-				0: {
-					sorter: 'text'
-				},
-				1: {
-					sorter: false
-				},
-				2: {
-					sorter: 'text'
-				},
-				3: {
-					sorter: false
-				},
-				4: {
-					sorter: false
-				}
-			}
-		});
-	});
-</script>
-
 <?php
 gp_tmpl_footer();
