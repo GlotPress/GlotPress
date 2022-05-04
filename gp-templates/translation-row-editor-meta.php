@@ -84,8 +84,17 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 	<?php endif; ?>
 	<?php if ( $translation->translation_added && '0000-00-00 00:00:00' !== $translation->translation_added ) : ?>
 		<dl>
-			<dt><?php _e( 'Date added (local):', 'glotpress' ); ?></dt>
-			<dd id="local-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php _e( 'Calculating...', 'glotpress' ); ?></dd>
+			<dt><?php _e( 'Date added:', 'glotpress' ); ?></dt>
+			<?php
+			$date_added          = strtotime( get_date_from_gmt( $translation->translation_added ) );
+			$date_added_formated = sprintf(
+				/* translators: 1: Modified date. 2: Modified time. */
+				esc_html__( '%1$s at %2$s', 'glotpress' ),
+				date_i18n( get_option( 'date_format' ), $date_added ),
+				date_i18n( get_option( 'time_format' ), $date_added )
+			);
+			?>
+			<dd id="local-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php echo esc_html( $date_added_formated ); ?></dd>
 		</dl>
 	<?php endif; ?>
 	<?php if ( $translation->user ) : ?>

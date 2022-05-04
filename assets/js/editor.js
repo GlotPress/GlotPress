@@ -27,11 +27,6 @@ $gp.editor = (
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
 				var editor = $( '#editor-' + row_id );
-				var gmt_date_added = $( '#gmt-date-added-' + row_id );
-				var local_date_added = $( '#local-date-added-' + row_id );
-				var offset = new Date().getTimezoneOffset();
-				var gmt_date = new Date( gmt_date_added.text() );
-				var local_date = new Date( ( gmt_date - ( offset * 60 * 1000 ) ) );
 
 				if ( ! editor.length ) {
 					return;
@@ -49,8 +44,6 @@ $gp.editor = (
 				} ).get();
 
 				$gp.editor.current = editor;
-
-				local_date_added.text( local_date.toLocaleDateString() + ' ' + local_date.toLocaleTimeString() );
 
 				editor.show();
 				editor.preview.hide();
