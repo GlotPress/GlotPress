@@ -176,6 +176,7 @@ $gp.glossary = (
 				$( '#glossary' ).tablesorter( {
 					theme: 'glotpress',
 					sortList: [ [ 0, 0 ] ],
+					cssChildRow: 'editor',
 				} );
 			},
 
