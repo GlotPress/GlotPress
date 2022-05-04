@@ -176,23 +176,6 @@ $gp.glossary = (
 				$( '#glossary' ).tablesorter( {
 					theme: 'glotpress',
 					sortList: [ [ 0, 0 ] ],
-					headers: {
-						0: {
-							sorter: 'text',
-						},
-						1: {
-							sorter: false,
-						},
-						2: {
-							sorter: 'text',
-						},
-						3: {
-							sorter: false,
-						},
-						4: {
-							sorter: false,
-						},
-					},
 				} );
 			},
 
