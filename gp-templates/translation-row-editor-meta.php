@@ -86,6 +86,10 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 		<dl>
 			<dt><?php _e( 'Date added:', 'glotpress' ); ?></dt>
 			<?php
+			$gp_timezone = get_user_option( 'gp_timezone' );
+			if ( empty( $gp_timezone ) ) {
+				$gp_timezone = 'UTC';
+			}
 			$datetimezone        = new DateTimeZone( $gp_timezone );
 			$date_added          = strtotime( $translation->translation_added );
 			$date_added_formated = sprintf(
