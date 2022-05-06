@@ -45,7 +45,27 @@ module.exports = function( grunt ) {
 					return src.replace( '.css', '.min.css' );
 				}
 			}
-		}
+		},
+		watch: {
+			js: {
+				files: [
+					'assets/js/**/*.js',
+
+					// Exceptions.
+					'!**/*.min.js'
+				],
+				tasks: [ 'uglify' ],
+			},
+			css: {
+				files: [
+					'assets/css/*.css',
+
+					// Exceptions.
+					'!**/*.min.css'
+				],
+				tasks: [ 'cssmin' ],
+			},
+		},
 	} );
 
 	grunt.registerTask( 'default', [ 'uglify', 'cssmin' ] );
