@@ -834,7 +834,7 @@ class GP_Builtin_Translation_Warnings {
 		$translation_end_spaces   = strlen( $translation ) - strlen( rtrim( $translation, ' ' ) );
 
 		$warnings = array();
-		if ( ( $original_start_spaces ) && ( ! $translation_start_spaces ) ) {
+		if ( $original_start_spaces && ! $translation_start_spaces ) {
 			$warnings[] = __( 'The translation appears to be missing one or more spaces at the beginning.', 'glotpress' );
 		}
 		if ( ( ! $original_start_spaces ) && $translation_start_spaces ) {
