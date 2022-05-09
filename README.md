@@ -27,7 +27,7 @@ After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress
 ## Manual Installation
 ```bash
 $ cd /your/wordpress/folder/wp-content/plugins/
-$ git clone git@github.com:GlotPress/GlotPress-WP.git glotpress
+$ git clone git@github.com:GlotPress/GlotPress.git glotpress
 ```
 
 After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
