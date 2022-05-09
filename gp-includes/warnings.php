@@ -848,7 +848,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( $original_start_spaces && $translation_start_spaces && ( $original_start_spaces != $translation_start_spaces ) ) {
 			$warnings[] = sprintf(
-			/* translators: 1: Number of spaces at the beginning of the original string. 2: Number of spaces at the beginning of the translation string. */
+				/* translators: 1: Number of spaces at the beginning of the original string. 2: Number of spaces at the beginning of the translation string. */
 				__( 'Expected %1$s space(s) at the beginning, got %2$s.', 'glotpress' ),
 				$original_start_spaces,
 				$translation_start_spaces
