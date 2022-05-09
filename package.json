@@ -20,8 +20,8 @@
     "load-grunt-tasks": "^5.1.0"
   },
   "scripts": {
-    "grunt": "grunt",
-    "grunt:watch": "grunt watch",
+    "build": "grunt",
+    "watch": "grunt watch",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop",
     "lint:js": "wp-scripts lint-js"
