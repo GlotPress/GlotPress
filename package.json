@@ -13,7 +13,7 @@
   "devDependencies": {
     "@wordpress/env": "^4.6.0",
     "@wordpress/scripts": "^22.5.0",
-    "grunt": "^1.5.2",
+    "grunt": "^1.5.3",
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-uglify": "^5.2.1",
     "grunt-contrib-watch": "^1.1.0",
