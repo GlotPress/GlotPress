@@ -93,6 +93,7 @@
 	--gp-color-status-old-subtle: #fee4f8;
 	--gp-color-status-waiting-subtle: #ffffc2;
 	--gp-color-status-rejected-subtle: #ff8e8e;
+	--gp-color-status-changes_requested-subtle: #87ceeb;
 }
 
 *,
@@ -771,6 +772,11 @@ table.translations tr.preview.status-waiting,
 table.translations tr.preview.status-rejected,
 #legend .status-rejected {
 	background-color: var( --gp-color-status-rejected-subtle );
+}
+
+table.translations tr.preview.status-changes_requested,
+#legend .status-changes_requested {
+	background-color: var( --gp-color-status-changes_requested-subtle );
 }
 
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {

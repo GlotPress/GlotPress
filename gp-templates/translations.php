@@ -180,6 +180,20 @@ $i = 0;
 			$is_current_filter ? $current_filter_class : array()
 		);
 
+		$changes_requested_filters = array(
+			'filters[status]' => 'changes_requested',
+		);
+
+		$is_current_filter = array() === array_diff( $changes_requested_filters, $filters_and_sort ) && ! $additional_filters && ! $changes_requested_filters;
+		$current_filter    = $is_current_filter ? 'changes_requested' : $current_filter;
+
+		$filter_links[] = gp_link_get(
+			add_query_arg( $changes_requested_filters, $url ),
+			// Translators: %s is the changes requested strings count for the current translation set.
+			sprintf( __( 'Changes requested&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->changes_requested_count() ) ),
+			$is_current_filter ? $current_filter_class : array()
+		);
+
 		$fuzzy_filters = array(
 			'filters[status]' => 'fuzzy',
 		);
@@ -287,6 +301,10 @@ $i = 0;
 					<label for="filters[status][rejected]">
 						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Rejected', 'glotpress' ); ?>
+					</label><br />
+					<label for="filters[status][changes_requested]">
+						<input type="checkbox" value="rejected" id="filters[status][changes_requested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changes_requested', $selected_status_list, true ) ); ?>>
+						<?php _e( 'Changes requested', 'glotpress' ); ?>
 					</label><br />
 					<label for="filters[status][old]">
 						<input type="checkbox" value="old" id="filters[status][old]" <?php gp_checked( 'either' === $selected_status || in_array( 'old', $selected_status_list, true ) ); ?>>
@@ -465,6 +483,9 @@ $i = 0;
 						break;
 					case 'rejected':
 						_e( 'Rejected', 'glotpress' );
+						break;
+					case 'changes_requested':
+						_e( 'Changes requested', 'glotpress' );
 						break;
 					default:
 						echo esc_html( $legend_status );
