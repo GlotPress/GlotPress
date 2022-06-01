@@ -828,10 +828,17 @@ class GP_Builtin_Translation_Warnings {
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
 	public function warning_unexpected_start_end_space( string $original, string $translation ) {
-		$original_start_spaces    = mb_strlen( $original ) - mb_strlen( ltrim( $original, ' ' ) );
-		$original_end_spaces      = mb_strlen( $original ) - mb_strlen( rtrim( $original, ' ' ) );
-		$translation_start_spaces = mb_strlen( $translation ) - mb_strlen( ltrim( $translation, ' ' ) );
-		$translation_end_spaces   = mb_strlen( $translation ) - mb_strlen( rtrim( $translation, ' ' ) );
+		preg_match( '/^( *)/D', $original, $m );
+		$original_start_spaces = strlen( $m[0] );
+
+		preg_match( '/^( *)/D', $translation, $m );
+		$translation_start_spaces = strlen( $m[0] );
+
+		preg_match( '/( *)$/D', $original, $m );
+		$original_end_spaces = strlen( $m[0] );
+
+		preg_match( '/( *)$/D', $translation, $m );
+		$translation_end_spaces = strlen( $m[0] );
 
 		$warnings = array();
 		if ( $original_start_spaces && ! $translation_start_spaces ) {
