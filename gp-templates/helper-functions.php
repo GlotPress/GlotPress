@@ -80,11 +80,79 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		return;
 	}
 
+	// Plurals of singular nouns.
+	$noun_plural_suffixes = array(
+		// Suffix for nouns ending in a sibilant: Add '-es'.
+		'ss'  => 'sses',
+		'z'   => 'zes',
+		'x'   => 'xes',
+		'sh'  => 'shes',
+		'ch'  => 'ches',
+		'tch' => 'tches',
+		// Suffix '-y' preceeded by vowel: Add '-s'.
+		'ay'  => 'ays',
+		'ey'  => 'eys',
+		'oy'  => 'oys',
+		'uy'  => 'uys',
+		// Suffix '-y': Remove '-y' and add '-ies'.
+		'y'   => 'ies',
+		// Suffix '-an': Remove '-an' and add '-en'.
+		'an'  => 'en',
+	);
+
+	// Third-person singular for verbs ending in a sibilant. Suffix: '-es'. Ending with '-o' preceeded by consonant, not added (examples: 'go', 'do').
+	$verb_third_person_suffixes = array(
+		'ss'  => 'sses',
+		'z'   => 'zes',
+		'x'   => 'xes',
+		'sh'  => 'shes',
+		'ch'  => 'ches',
+		'tch' => 'tches',
+	);
+
+	// Past simple tense and past participle of most verbs. Suffix '-ed'.
+	$verb_past_suffixes = array(
+		'e' => 'ed',
+	);
+
+	// Present participle and gerund of verbs. Suffix '-ing'.
+	$verb_present_suffixes = array(
+		'ee' => 'eeing',
+		're' => 'ring',
+		'e'  => 'ing',
+	);
+
+	// Present participle and gerund of verbs. Suffix '-ing'.
+	$verb_to_noun_suffixes = array(
+		// Suffix '-ion' cases.
+		'ate'    => 'ation',
+		'ize'    => 'ization',
+		'ify'    => 'ification',
+		'efy'    => 'efaction',
+		'aim'    => 'amation',
+		'pt'     => 'ption',
+		'scribe' => 'scription',
+		'aim'    => 'amation',
+		'ceive'  => 'ception',
+		'sume'   => 'sumption',
+		'ct'     => 'ction',
+		'ete'    => 'etion',
+		'ute'    => 'ution',
+		'olve'   => 'olution',
+		'ite'    => 'ition',
+		'it'     => 'ition',
+		'ose'    => 'osition',
+		// Suffix '-ve' cases.
+		//'f'      => 'fs',
+		//'fe'     => 'ves',
+	);
+
 	$glossary_entries_suffixes = array();
 
 	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $key => $value ) {
 		$term = strtolower( $value->term );
+		$type = $value->part_of_speech;
 
 		// Check if is multiple word term.
 		if ( preg_match( '/\s/', $term ) ) {
@@ -95,32 +163,74 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		}
 
 		$suffixes = array();
-		if ( 'y' === substr( $term, -1 ) ) {
-			$term = substr( $term, 0, -1 );
-			$suffixes[] = 'y';
-			$suffixes[] = 'ies';
-			$suffixes[] = 'ys';
-		} elseif ( 'f' === substr( $term, -1 ) ) {
-			$term = substr( $term, 0, -1 );
-			$suffixes[] = 'f';
-			$suffixes[] = 'ves';
-			$terms[] = substr( $term, 0, -1 ) . 'ves';
-		} elseif ( 'fe' === substr( $term, -2 ) ) {
-			$term = substr( $term, 0, -2 );
-			$suffixes[] = 'fe';
-			$suffixes[] = 'ves';
-		} elseif ( 'an' === substr( $term, -2 ) ) {
-			$term = substr( $term, 0, -2 );
-			$suffixes[] = 'an';
-			$suffixes[] = 'en';
-		} else {
-			$suffixes[] = 's';
-			$suffixes[] = 'es';
-			$suffixes[] = 'ed';
-			$suffixes[] = 'ing';
-		}
 
-		$glossary_entries_suffixes[ $term ] = $suffixes;
+		if ( 'noun' === $type ) { // Add known suffixes for single word nouns.
+
+			$noun_known = false;
+
+			foreach ( $noun_plural_suffixes as $ending => $suffix ) {
+				// Form the plural for nouns ending with known ending.
+				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $ending )) ][] = $suffix;
+					$noun_known = true;
+					break;
+				}
+			}
+
+			// Check if term isn't plural or don't end with '-s'.
+			if ( ! $noun_known && 's' !== substr( $term, -1 ) ) {
+				$glossary_entries_suffixes[ $term ][] = 's';
+			}
+
+		} elseif ( 'verb' === $type ) { // Add known suffixes for verbs.
+
+			// Verb in third-person.
+			$verb_third_person = false;
+			foreach ( $verb_third_person_suffixes as $ending => $suffix ) {
+				// Check if noun ends with known suffix.
+				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $ending ) ) ][] = $suffix;
+					$verb_third_person = true;
+					break;
+				}
+			}
+			if ( ! $verb_third_person ) {
+				// Form the third-person singular for most verbs.
+				$glossary_entries_suffixes[ $term ][] = 's';
+			}
+
+			// Form the past simple tense and past participle of most verbs.
+			if ( 'e' === substr( $term, -1 ) ) {
+				$glossary_entries_suffixes[ substr( $term, 0, -1 ) ][] = 'ed';
+			} else {
+				$glossary_entries_suffixes[ $term ][] = 'd';
+			}
+
+			// Form the present participle and gerund of verbs.
+			$verb_present = false;
+			foreach ( $verb_present_suffixes as $ending => $suffix ) {
+				// Check if noun ends with known suffix.
+				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $ending ) ) ][] = $suffix;
+					$verb_present = true;
+					break;
+				}
+			}
+
+			if ( ! $verb_present ) {
+				// Form the third-person singular for most verbs.
+				$glossary_entries_suffixes[ $term ][] = 'ing';
+			}
+
+			// Form noun from verb by adding a suffix.
+			foreach ( $verb_to_noun_suffixes as $ending => $suffix ) {
+				// Check if noun ends with known suffix.
+				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
+					$glossary_entries_suffixes[ $term ][] = $suffix;
+					break;
+				}
+			}
+		}
 	}
 
 	// Sort by length in descending order.
