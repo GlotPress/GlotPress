@@ -80,49 +80,227 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		return;
 	}
 
-	// Plurals of singular nouns.
-	$noun_plural_suffixes = array(
-		// Suffix for nouns ending in a sibilant: Add '-es'.
-		'ss'  => 'sses',
-		'z'   => 'zes',
-		'x'   => 'xes',
-		'sh'  => 'shes',
-		'ch'  => 'ches',
-		'tch' => 'tches',
-		// Suffix '-y' preceeded by vowel: Add '-s'.
-		'ay'  => 'ays',
-		'ey'  => 'eys',
-		'oy'  => 'oys',
-		'uy'  => 'uys',
-		// Suffix '-y': Remove '-y' and add '-ies'.
-		'y'   => 'ies',
-		// Suffix '-an': Remove '-an' and add '-en'.
-		'an'  => 'en',
+	$plural_suffixes = array(
+
+		// Plurals of singular nouns.
+		// https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
+		'noun'         => array(
+
+			// Ending in a sibilant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'ss', // Kiss.
+					'z',  // Waltz.
+					'x',  // Box.
+					'sh', // Dish.
+					'ch', // Coach.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Ending with '-y' preceded by vowel. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'y', // Delay, key, toy, guy.
+				),
+				'preceded' => '[aeiou]', // Preceded by any vowel.
+				'change'   => null,
+				'add'      => 's',       // Add 's'.
+			),
+
+			// Ending with '-y' preceded by consonant. Suffix: '-ies'.
+			array(
+				'endings'  => array(
+					'y', // Lady.
+				),
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
+				'change'   => 'i',                  // Change to 'i'.
+				'add'      => 'es',                 // Add 'es'.
+			),
+
+			// Alternate ending with '-o' preceded by consonant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'o', // Hero, tomato.
+				),
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
+				'change'   => null,
+				'add'      => 'es',                 // Add 'es'.
+			),
+
+			// Ending with '-an'. Suffix: '-en'.
+			array(
+				'endings'  => array(
+					'an', // Woman.
+				),
+				'preceded' => null,
+				'change'   => 'en', // Change to 'en'.
+				'add'      => null,
+			),
+
+			// Ending with '-f' or '-fe'. Suffix: '-ves'.
+			array(
+				'endings'  => array(
+					'fe', // Wife.
+					'f',  // Leaf, wolf.
+				),
+				'preceded' => null,
+				'change'   => 'v',  // Change to 'v'.
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Fallback suffix for nouns ending with '-s'. Suffix '-es'.
+			array(
+				'endings'  => array(
+					's', // Bus or Lens.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'\w(?<!z|x|sh|ch|s|y|an|fe)', // All the above except 'f' because of words like 'Chief' which plural is '-s'.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 's',  // Add 's'.
+			),
+		),
+
+		// Plurals of verbs.
+		'verb'         => array(
+
+			// Third-person singular for verbs.
+			// Ending in a sibilant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'ss', // Pass.
+					'z',  // Quiz.
+					'x',  // Fix.
+					'sh', // Push.
+					'ch', // Watch.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 'es', // Add 'es'.
+			),
+
+			// Ending with '-y' preceded by vowel. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'y', // Play.
+				),
+				'preceded' => '[aeiou]', // Any vowel.
+				'change'   => null,
+				'add'      => 's',       // Add 's'.
+			),
+
+			// Ending with '-y' preceded by consonant. Suffix: '-ies'.
+			array(
+				'endings'  => array(
+					'y', // Try.
+				),
+				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
+				'change'   => 'i',                  // Change to 'i'.
+				'add'      => 'es',                 // Add 'es'.
+			),
+
+			// Ending with '-o' preceded by consonant. Suffix: '-es'.
+			array(
+				'endings'  => array(
+					'o', // Go, do.
+				),
+				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
+				'change'   => null,
+				'add'      => 'es',                 // Add 'es'.
+			),
+
+			// Fallback suffix for most verbs. Suffix: '-s'.
+			array(
+				'endings'  => array(
+					'\w(?<!z|x|sh|ch|s|y|o)', // All the above.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 's',  // Add 's'.
+			),
+
+			// Past simple tense and past participle of verbs ending with '-e'. Suffix '-ed'.
+			array(
+				'endings'  => array(
+					'e', // Contribute, delete.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 'd', // Add 'd'.
+			),
+
+			// Past simple tense and past participle of verbs not ending with '-e. Suffix '-ed'.
+			array(
+				'endings'  => array(
+					'\w(?<!e)', // Fix, push.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 'ed', // Add 'ed'.
+			),
+
+			// Present participle and gerund of verbs ending with 'e'. Suffix '-ing'.
+			array(
+				'endings'  => array(
+					'e', // Contribute, delete, care.
+				),
+				'preceded' => null,
+				'change'   => 'ing', // Change to 'ing'.
+				'add'      => null,
+			),
+
+			// Present participle and gerund of verbs not ending with 'e', 'ee', 'ye' or 'oe'. Suffix '-ing'.
+			array(
+				'endings'  => array(
+					'\w(?<!e)', // Fix, push.
+					'ee',       // Agree, see.
+					'ye',       // Dye.
+					'oe',       // Tiptoe.
+				),
+				'preceded' => null,
+				'change'   => null,
+				'add'      => 'ing', // Add 'ing'.
+			),
+		),
+
+		// Plurals of adverbs.
+		'adjective'    => array(),
+
+		// Plurals of adverbs.
+		'adverb'       => array(),
+
+		// Plurals of interjections.
+		'interjection' => array(),
+
+		// Plurals of conjunctions.
+		'conjunction'  => array(),
+
+		// Plurals of prepositions.
+		'preposition'  => array(),
+
+		// Plurals of pronouns.
+		'pronoun'      => array(),
+
+		// Plurals of expressions.
+		'expression'   => array(),
+
+		// Plurals of abbreviations.
+		'abbeviation'  => array(),
+
 	);
 
-	// Third-person singular for verbs ending in a sibilant. Suffix: '-es'. Ending with '-o' preceeded by consonant, not added (examples: 'go', 'do').
-	$verb_third_person_suffixes = array(
-		'ss'  => 'sses',
-		'z'   => 'zes',
-		'x'   => 'xes',
-		'sh'  => 'shes',
-		'ch'  => 'ches',
-		'tch' => 'tches',
-	);
-
-	// Past simple tense and past participle of most verbs. Suffix '-ed'.
-	$verb_past_suffixes = array(
-		'e' => 'ed',
-	);
-
-	// Present participle and gerund of verbs. Suffix '-ing'.
-	$verb_present_suffixes = array(
-		'ee' => 'eeing',
-		're' => 'ring',
-		'e'  => 'ing',
-	);
-
-	// Present participle and gerund of verbs. Suffix '-ing'.
+	// Suffixes that form nouns.
 	$verb_to_noun_suffixes = array(
 		// Suffix '-ion' cases.
 		'ate'    => 'ation',
@@ -135,22 +313,21 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		'aim'    => 'amation',
 		'ceive'  => 'ception',
 		'sume'   => 'sumption',
-		'ct'     => 'ction',
-		'ete'    => 'etion',
-		'ute'    => 'ution',
+		't'      => 'tion',
+		'te'     => 'tion',
 		'olve'   => 'olution',
-		'ite'    => 'ition',
-		'it'     => 'ition',
 		'ose'    => 'osition',
-		// Suffix '-ve' cases.
-		//'f'      => 'fs',
-		//'fe'     => 'ves',
+		'pel'    => 'pulsion',
+		'mit'    => 'mission',
+		'cede'   => 'cession',
+		'ss'     => 'ssion',
+		'end'    => 'ension',
 	);
 
 	$glossary_entries_suffixes = array();
 
 	// Create array of glossary terms, longest first.
-	foreach ( $glossary_entries as $key => $value ) {
+	foreach ( $glossary_entries as $value ) {
 		$term = strtolower( $value->term );
 		$type = $value->part_of_speech;
 
@@ -162,71 +339,55 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			continue;
 		}
 
-		$suffixes = array();
+		// Loop through rules.
+		foreach ( $plural_suffixes[ $type ] as $rule ) {
 
-		if ( 'noun' === $type ) { // Add known suffixes for single word nouns.
+			// Loop through rule endings.
+			foreach ( $rule['endings'] as $singular_ending ) {
 
-			$noun_known = false;
-
-			foreach ( $noun_plural_suffixes as $ending => $suffix ) {
-				// Form the plural for nouns ending with known ending.
-				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $ending )) ][] = $suffix;
-					$noun_known = true;
-					break;
-				}
-			}
-
-			// Check if term isn't plural or don't end with '-s'.
-			if ( ! $noun_known && 's' !== substr( $term, -1 ) ) {
-				$glossary_entries_suffixes[ $term ][] = 's';
-			}
-
-		} elseif ( 'verb' === $type ) { // Add known suffixes for verbs.
-
-			// Verb in third-person.
-			$verb_third_person = false;
-			foreach ( $verb_third_person_suffixes as $ending => $suffix ) {
 				// Check if noun ends with known suffix.
-				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $ending ) ) ][] = $suffix;
-					$verb_third_person = true;
+				if ( preg_match( '/' . $rule['preceded'] . $singular_ending . '\b/i', $term ) ) {
+
+					$change = $rule['change'] ? $rule['change'] : '';
+					$add    = $rule['add'] ? $rule['add'] : '';
+
+					$plural_ending = $change . $add;
+
+					$key = $rule['change'] ? substr( $term, 0, - strlen( $singular_ending ) ) : $term;
+
+					// If the ending changes, also add the singular ending.
+					if ( $rule['change'] ) {
+						// Add the singular ending to the suffixes.
+						$glossary_entries_suffixes[ $key ][] = $singular_ending;
+					}
+
+					// Check if key term is an array.
+					if ( ! is_array( $glossary_entries_suffixes[ $key ] ) ) {
+						$glossary_entries_suffixes[ $key ] = array();
+					}
+
+					// Add suffix.
+					if ( ! in_array( $plural_ending, $glossary_entries_suffixes[ $key ], true ) ) {
+						$glossary_entries_suffixes[ $key ][] = $plural_ending;
+					}
+
 					break;
 				}
 			}
-			if ( ! $verb_third_person ) {
-				// Form the third-person singular for most verbs.
-				$glossary_entries_suffixes[ $term ][] = 's';
-			}
+		}
 
-			// Form the past simple tense and past participle of most verbs.
-			if ( 'e' === substr( $term, -1 ) ) {
-				$glossary_entries_suffixes[ substr( $term, 0, -1 ) ][] = 'ed';
-			} else {
-				$glossary_entries_suffixes[ $term ][] = 'd';
-			}
-
-			// Form the present participle and gerund of verbs.
-			$verb_present = false;
-			foreach ( $verb_present_suffixes as $ending => $suffix ) {
-				// Check if noun ends with known suffix.
-				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $ending ) ) ][] = $suffix;
-					$verb_present = true;
-					break;
-				}
-			}
-
-			if ( ! $verb_present ) {
-				// Form the third-person singular for most verbs.
-				$glossary_entries_suffixes[ $term ][] = 'ing';
-			}
+		// Add known verb to noun suffixes.
+		if ( 'verb' === $type ) {
 
 			// Form noun from verb by adding a suffix.
-			foreach ( $verb_to_noun_suffixes as $ending => $suffix ) {
+			foreach ( $verb_to_noun_suffixes as $singular_ending => $plural_ending ) {
+
 				// Check if noun ends with known suffix.
-				if ( substr( $term, - strlen( $ending ) ) === $ending ) {
-					$glossary_entries_suffixes[ $term ][] = $suffix;
+				if ( substr( $term, - strlen( $singular_ending ) ) === $singular_ending ) {
+
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $singular_ending ) ) ][] = $singular_ending;
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $singular_ending ) ) ][] = $plural_ending;
+
 					break;
 				}
 			}
@@ -261,7 +422,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	} else {
 		// Build our glossary search.
 		$glossary_entries = $glossary->get_entries();
-		$cached_glossary = $glossary->id;
+		$cached_glossary  = $glossary->id;
 		if ( empty( $glossary_entries ) ) {
 			$terms_search = false;
 			return $translation;
