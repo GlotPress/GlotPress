@@ -671,6 +671,10 @@ function gp_get_sort_by_fields() {
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
 		),
+		'length'                => array(
+			'title'       => __( 'String length', 'glotpress' ),
+			'sql_sort_by' => 'LENGTH(o.singular) %s',
+		),
 		'random'                    => array(
 			'title'       => __( 'Random', 'glotpress' ),
 			'sql_sort_by' => 'o.priority DESC, RAND()',
