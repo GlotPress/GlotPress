@@ -392,6 +392,7 @@ class GP_Locales {
 		$bm->native_name = 'Bamanankan';
 		$bm->lang_code_iso_639_1 = 'bm';
 		$bm->lang_code_iso_639_2 = 'bam';
+		$bm->slug = 'bm';
 		$bm->alphabet = 'latin';
 
 		$bn_bd = new GP_Locale();
