@@ -184,7 +184,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder( 'GP_Translation_Warnings' )->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 11 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 12 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -708,6 +708,29 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'   Cadea traducida   ',
 			"Expected 1 space(s) at the beginning, got 3.\nExpected 1 space(s) at the end, got 3." );
 	}
+
+	public function test_missing_uppercase_beginning() {
+		$this->l->slug = 'ga';
+		$this->l->alphabet = 'latin';
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Original string', 'Cadea traducida', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', 'cadea traducida', $this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Original string',
+			'cadea traducida',
+			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'original string',
+			'Cadea traducida',
+			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			$this->l );
+
+		$this->l->slug = 'ja';
+		$this->l->alphabet = 'kanji';
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Original string', '翻訳されたチェーン', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', '翻訳されたチェーン', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', '翻訳済みチェーン', $this->l );
+}
 
 	public function test_chained_warnings() {
 		$this->tw = new GP_Translation_Warnings();

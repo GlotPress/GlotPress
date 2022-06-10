@@ -874,4 +874,35 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return implode( "\n", $warnings );
 	}
+
+	/**
+	 * Checks the missing uppercase in the beginning of the translations.
+	 *
+	 * Only works with languages using latin alphabet.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param string    $original    The source string.
+	 * @param string    $translation The translation.
+	 * @param GP_Locale $locale      The locale of the translation.
+	 *
+	 * @return string|true True if check is OK, otherwise warning message.
+	 */
+	public function warning_missing_uppercase_beginning( string $original, string $translation, GP_Locale $locale ) {
+		if ( 'latin' !== $locale->alphabet ) {
+			return true;
+		}
+
+		$is_first_letter_original_uppercase    = ctype_upper( mb_substr( $original, 0, 1 ) );
+		$is_first_letter_translation_uppercase = ctype_upper( mb_substr( $translation, 0, 1 ) );
+		if ( $is_first_letter_original_uppercase && ! $is_first_letter_translation_uppercase ) {
+			return __( 'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.', 'glotpress' );
+		}
+		if ( ! $is_first_letter_original_uppercase && $is_first_letter_translation_uppercase ) {
+			return __( 'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.', 'glotpress' );
+		}
+
+		return true;
+	}
 }

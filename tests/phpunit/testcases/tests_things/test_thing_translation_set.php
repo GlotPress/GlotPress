@@ -36,8 +36,8 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Second string' ) );
 
 		$translations_for_import = new Translations;
-		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ), 'flags' => array('fuzzy' ) ) );
-		$translations_for_import->add_entry( array( 'singular' => 'Second string', 'translations' => array( 'second' ) ) );
+		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'Baba' ), 'flags' => array('fuzzy' ) ) );
+		$translations_for_import->add_entry( array( 'singular' => 'Second string', 'translations' => array( 'Second' ) ) );
 		$set->import( $translations_for_import );
 
 		$translations = GP::$translation->all();
@@ -52,10 +52,10 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Second string' ) );
 
 		$fuzzy_import = new Translations;
-		$fuzzy_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+		$fuzzy_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'Baba' ) ) );
 
 		$current_import = new Translations;
-		$current_import->add_entry( array( 'singular' => 'Second string', 'translations' => array( 'second' ) ) );
+		$current_import->add_entry( array( 'singular' => 'Second string', 'translations' => array( 'Second' ) ) );
 
 		$set->import( $fuzzy_import, 'fuzzy' );
 		$set->import( $current_import );
