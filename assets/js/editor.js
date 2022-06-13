@@ -106,6 +106,7 @@ $gp.editor = (
 					.on( 'click', 'button.insertnl', $gp.editor.hooks.newline )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
+					.on( 'click', 'button.changes_requested', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
