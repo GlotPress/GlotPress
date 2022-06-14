@@ -376,6 +376,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			switch ( $bulk['action'] ) {
 				case 'approve':
 				case 'reject':
+				case 'changes_requested':
 					$this->_bulk_approve( $bulk );
 					break;
 				case 'fuzzy':
@@ -416,8 +417,18 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$action = $bulk['action'];
 
-		$ok         = $error = 0;
-		$new_status = 'approve' == $action ? 'current' : 'rejected';
+		$ok = $error = 0;
+		switch ( $action ) {
+			case 'approve':
+				$new_status = 'current';
+				break;
+			case 'rejected':
+				$new_status = 'rejected';
+				break;
+			case 'changes_requested':
+				$new_status = 'changes_requested';
+				break;
+		}
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
 			$translation    = GP::$translation->get( $translation_id );
@@ -432,55 +443,103 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = 'approve' == $action ?
-					sprintf(
-						/* translators: %d: Translations count. */
+			switch ( $action ) {
+				case 'approve':
+					$this->notices[] = sprintf(
+					/* translators: %d: Translations count. */
 						_n( '%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ),
 						$ok
-					) :
-					sprintf(
-						/* translators: %d: Translations count. */
+					);
+					break;
+				case 'rejected':
+					$this->notices[] = sprintf(
+					/* translators: %d: Translations count. */
 						_n( '%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ),
 						$ok
 					);
+					break;
+				case 'changes_requested':
+					$this->notices[] = sprintf(
+					/* translators: %d: Translations count. */
+						_n( '%d translation has changes requested.', '%d translations have changes requested.', $ok, 'glotpress' ),
+						$ok
+					);
+					break;
+			}
 		} else {
 			if ( $ok > 0 ) {
-				$message = 'approve' == $action ?
-						sprintf(
+				switch ( $action ) {
+					case 'approve':
+						$message = sprintf(
 							/* translators: %s: Translations count. */
 							_n( 'Error with approving %s translation.', 'Error with approving %s translations.', $error, 'glotpress' ),
 							$error
-						) :
-						sprintf(
-							/* translators: %s: Translations count. */
+						);
+						break;
+					case 'rejected':
+						$message = sprintf(
+						/* translators: %s: Translations count. */
 							_n( 'Error with rejecting %s translation.', 'Error with rejecting %s translations.', $error, 'glotpress' ),
 							$error
 						);
+						break;
+					case 'changes_requested':
+						$message = sprintf(
+						/* translators: %s: Translations count. */
+							_n( 'Error requesting changes in %s translation.', 'Error requesting changes in %s translations.', $error, 'glotpress' ),
+							$error
+						);
+						break;
+				}
 				$message .= ' ';
-				$message .= 'approve' == $action ?
-						sprintf(
-							/* translators: %s: Translations count. */
+				switch ( $action ) {
+					case 'approve':
+						$message .= sprintf(
+						/* translators: %s: Translations count. */
 							_n( 'The remaining %s translation was approved successfully.', 'The remaining %s translations were approved successfully.', $ok, 'glotpress' ),
 							$ok
-						) :
-						sprintf(
-							/* translators: %s: Translations count. */
+						);
+						break;
+					case 'rejected':
+						$message .= sprintf(
+						/* translators: %s: Translations count. */
 							_n( 'The remaining %s translation was rejected successfully.', 'The remaining %s translations were rejected successfully.', $ok, 'glotpress' ),
 							$ok
 						);
+						break;
+					case 'changes_requested':
+						$message .= sprintf(
+						/* translators: %s: Translations count. */
+							_n( 'The remaining %s translation was successfully requested for changes.', 'The remaining %s translations were successfully requested for changes.', $ok, 'glotpress' ),
+							$ok
+						);
+						break;
+				}
 				$this->errors[] = $message;
 			} else {
-				$this->errors[] = 'approve' == $action ?
-						sprintf(
-							/* translators: %s: Translations count. */
+				switch ( $action ) {
+					case 'approve':
+						$this->errors[] = sprintf(
+						/* translators: %s: Translations count. */
 							_n( 'Error with approving %s translation.', 'Error with approving all %s translations.', $error, 'glotpress' ),
 							$error
-						) :
-						sprintf(
-							/* translators: %s: Translations count. */
+						);
+						break;
+					case 'rejected':
+						$this->errors[] = sprintf(
+						/* translators: %s: Translations count. */
 							_n( 'Error with rejecting %s translation.', 'Error with rejecting all %s translations.', $error, 'glotpress' ),
 							$error
 						);
+						break;
+					case 'changes_requested':
+						$this->errors[] = sprintf(
+						/* translators: %s: Translations count. */
+							_n( 'Error with requesting changes in %s translation.', 'Error with requesting changes in %s translations.', $error, 'glotpress' ),
+							$error
+						);
+						break;
+				}
 			}
 		}
 	}
