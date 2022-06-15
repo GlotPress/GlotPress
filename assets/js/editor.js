@@ -138,9 +138,9 @@ $gp.editor = (
 			keydown: function( e ) {
 				var target, container, approve, reject, copy;
 
-				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape or Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
+				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape, Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
 					$gp.editor.hide();
-				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Up Arrow = Previous editor.
+				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) || ( 38 === e.keyCode && e.metaKey ) ) { // Page Up, Ctrl-Up Arrow or Cmd-Up Arrow = Previous editor.
 					$gp.editor.prev();
 				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
