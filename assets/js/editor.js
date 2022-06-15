@@ -174,7 +174,7 @@ $gp.editor = (
 					if ( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
-				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-- or Ctrl-Shift-R = Reject.
+				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl--, Ctrl-Shift-R or Cmd-Shift-R = Reject.
 					reject = $( '.editor:visible' ).find( '.reject' );
 
 					if ( reject.length > 0 ) {
