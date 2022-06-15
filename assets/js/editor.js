@@ -138,7 +138,7 @@ $gp.editor = (
 			keydown: function( e ) {
 				var target, container, approve, reject, copy;
 
-				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
+				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape or Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
 					$gp.editor.hide();
 				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Up Arrow = Previous editor.
 					$gp.editor.prev();
