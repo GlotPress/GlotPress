@@ -162,7 +162,7 @@ $gp.editor = (
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
-				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
+q				} else if ( ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 67 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.metaKey ) || ( 67 === e.keyCode && e.metaKey ) ) { // Ctrl-Shift-B, Ctrl-Shift-C, Cmd-Shift-B or Cmd-Shift-C = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
 
 					if ( copy.length > 0 ) {
