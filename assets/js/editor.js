@@ -191,6 +191,14 @@ $gp.editor = (
 					if ( discard.length > 0 ) {
 						discard.trigger( 'click' );
 					}
+				} else if ( ( 68 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 68 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-Shift-D or Cmd-Shift-D = Dismiss validation warnings for the current page.
+					$( 'table > tbody  > tr' ).each( function() {
+						discard = $( this ).find( '.discard-warning' );
+						if ( discard.length > 0 ) {
+							$gp.editor.show( $( this ) );
+							discard.trigger( 'click' );
+						}
+					} );
 				} else {
 					return true;
 				}
