@@ -168,7 +168,7 @@ $gp.editor = (
 					if ( copy.length > 0 ) {
 						copy.trigger( 'click' );
 					}
-				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
+				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-+, Ctrl-Shift-A or Cmd-Shift-A = Approve.
 					approve = $( '.editor:visible' ).find( '.approve' );
 
 					if ( approve.length > 0 ) {
