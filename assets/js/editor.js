@@ -144,7 +144,7 @@ $gp.editor = (
 					$gp.editor.prev();
 				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) || ( 40 === e.keyCode && e.metaKey ) ) { // Page Down, Ctrl-Down Arrow or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
-				} else if ( 13 === e.keyCode && e.shiftKey ) { // Shift-Enter = Save.
+				} else if ( ( 13 === e.keyCode && e.shiftKey ) || ( 13 === e.keyCode && e.ctrlKey ) || ( 13 === e.keyCode && e.metaKey ) ) { // Shift-Enter, Ctrl-Enter, Cmd-Enter = Save or Suggest.
 					target = $( e.target );
 
 					if ( 0 === e.altKey && target.val().length ) {
@@ -162,7 +162,7 @@ $gp.editor = (
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
-q				} else if ( ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 67 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.metaKey ) || ( 67 === e.keyCode && e.metaKey ) ) { // Ctrl-Shift-B, Ctrl-Shift-C, Cmd-Shift-B or Cmd-Shift-C = Copy original.
+				} else if ( ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 67 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.metaKey ) || ( 67 === e.keyCode && e.metaKey ) ) { // Ctrl-Shift-B, Ctrl-Shift-C, Cmd-Shift-B or Cmd-Shift-C = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
 
 					if ( copy.length > 0 ) {
