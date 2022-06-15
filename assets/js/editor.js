@@ -186,7 +186,7 @@ $gp.editor = (
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
-				} else if ( ( 68 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 68 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-Shift-D or Cmd-Shift-D = Dismiss validation warnings for the current visible editor.
+				} else if ( ( 68 === e.keyCode && ! e.shiftKey && e.ctrlKey ) || ( 68 === e.keyCode && ! e.shiftKey && e.metaKey ) ) { // Ctrl-D or Cmd-D = Dismiss validation warnings for the current visible editor.
 					discard = $( '.editor:visible' ).find( '.discard-warning' );
 					if ( discard.length > 0 ) {
 						discard.trigger( 'click' );
