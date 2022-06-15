@@ -180,7 +180,7 @@ $gp.editor = (
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
-				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-~ or Ctrl-Shift-~ = Fuzzy.
+				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 70 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 70 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-~, Ctrl-Shift-~, Ctrl-Shift-F or Cmd-Shift-F = Fuzzy.
 					reject = $( '.editor:visible' ).find( '.fuzzy' );
 
 					if ( reject.length > 0 ) {
