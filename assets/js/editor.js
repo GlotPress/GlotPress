@@ -136,7 +136,7 @@ $gp.editor = (
 				};
 			},
 			keydown: function( e ) {
-				var target, container, approve, reject, copy;
+				var target, container, approve, reject, copy, discard;
 
 				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape, Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
 					$gp.editor.hide();
@@ -162,7 +162,7 @@ $gp.editor = (
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
-				} else if ( ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 67 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.metaKey ) || ( 67 === e.keyCode && e.metaKey ) ) { // Ctrl-Shift-B, Ctrl-Shift-C, Cmd-Shift-B or Cmd-Shift-C = Copy original.
+				} else if ( ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 67 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.metaKey ) || ( 67 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-Shift-B, Ctrl-Shift-C, Cmd-Shift-B or Cmd-Shift-C = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
 
 					if ( copy.length > 0 ) {
@@ -185,6 +185,11 @@ $gp.editor = (
 
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
+					}
+				} else if ( ( 68 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 68 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-Shift-D or Cmd-Shift-D = Dismiss validation warnings for the current visible editor.
+					discard = $( '.editor:visible' ).find( '.discard-warning' );
+					if ( discard.length > 0 ) {
+						discard.trigger( 'click' );
 					}
 				} else {
 					return true;
