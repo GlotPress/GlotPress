@@ -136,7 +136,7 @@ $gp.editor = (
 				};
 			},
 			keydown: function( e ) {
-				var target, container, approve, reject, copy, discard, previousPage;
+				var target, container, approve, reject, copy, discard, previousPage, nextPage;
 
 				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape, Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
 					$gp.editor.hide();
@@ -203,6 +203,11 @@ $gp.editor = (
 					previousPage = $( '.gp-table-actions.top' ).find( '.previous' );
 					if ( previousPage.length > 0 ) {
 						window.location.href = previousPage.attr( 'href' );
+					}
+				} else if ( ( 39 === e.keyCode && e.ctrlKey ) || ( 39 === e.keyCode && e.metaKey ) ) { // Ctrl-Left Arrow or Cmd-Left Arrow = Move to the previous page.
+					nextPage = $( '.gp-table-actions.top' ).find( '.next' );
+					if ( nextPage.length > 0 ) {
+						window.location.href = nextPage.attr( 'href' );
 					}
 				} else {
 					return true;
@@ -434,7 +439,7 @@ $gp.editor = (
 					return false;
 				},
 				cancel: function() {
-					var i = 0;
+					var i;
 
 					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
 						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[ i ] );
