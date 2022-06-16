@@ -204,7 +204,7 @@ $gp.editor = (
 					if ( previousPage.length > 0 ) {
 						window.location.href = previousPage.attr( 'href' );
 					}
-				} else if ( ( 39 === e.keyCode && e.ctrlKey ) || ( 39 === e.keyCode && e.metaKey ) ) { // Ctrl-Left Arrow or Cmd-Left Arrow = Move to the previous page.
+				} else if ( ( 39 === e.keyCode && e.ctrlKey ) || ( 39 === e.keyCode && e.metaKey ) ) { // Ctrl-Right Arrow or Cmd-Right Arrow = Move to the next page.
 					nextPage = $( '.gp-table-actions.top' ).find( '.next' );
 					if ( nextPage.length > 0 ) {
 						window.location.href = nextPage.attr( 'href' );
