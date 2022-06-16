@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp */
+/* global $gp_editor_options, $gp, window */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -136,7 +136,7 @@ $gp.editor = (
 				};
 			},
 			keydown: function( e ) {
-				var target, container, approve, reject, copy, discard;
+				var target, container, approve, reject, copy, discard, previousPage;
 
 				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape, Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
 					$gp.editor.hide();
@@ -199,6 +199,11 @@ $gp.editor = (
 							discard.trigger( 'click' );
 						}
 					} );
+				} else if ( ( 37 === e.keyCode && e.ctrlKey ) || ( 37 === e.keyCode && e.metaKey ) ) { // Ctrl-Left Arrow or Cmd-Left Arrow = Move to the previous page.
+					previousPage = $( '.gp-table-actions.top' ).find( '.previous' );
+					if ( previousPage.length > 0 ) {
+						window.location.href = previousPage.attr( 'href' );
+					}
 				} else {
 					return true;
 				}
