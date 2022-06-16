@@ -187,12 +187,14 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $changes_requested_filters, $filters_and_sort ) && ! $additional_filters && ! $changes_requested_filters;
 		$current_filter    = $is_current_filter ? 'changes_requested' : $current_filter;
 
-		$filter_links[] = gp_link_get(
-			add_query_arg( $changes_requested_filters, $url ),
-			// Translators: %s is the changes requested strings count for the current translation set.
-			sprintf( __( 'Changes requested&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->changes_requested_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
-		);
+		if ( defined( 'WPORG_TRANSLATE_BLOGID' ) && ( get_current_blog_id() === WPORG_TRANSLATE_BLOGID ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
+			$filter_links[] = gp_link_get(
+				add_query_arg( $changes_requested_filters, $url ),
+				// Translators: %s is the changes requested strings count for the current translation set.
+				sprintf( __( 'Changes requested&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->changes_requested_count() ) ),
+				$is_current_filter ? $current_filter_class : array()
+			);
+		}
 
 		$fuzzy_filters = array(
 			'filters[status]' => 'fuzzy',
@@ -302,10 +304,12 @@ $i = 0;
 						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Rejected', 'glotpress' ); ?>
 					</label><br />
-					<label for="filters[status][changes_requested]">
-						<input type="checkbox" value="rejected" id="filters[status][changes_requested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changes_requested', $selected_status_list, true ) ); ?>>
-						<?php _e( 'Changes requested', 'glotpress' ); ?>
-					</label><br />
+					<?php if ( defined( 'WPORG_TRANSLATE_BLOGID' ) && ( get_current_blog_id() === WPORG_TRANSLATE_BLOGID ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
+						<label for="filters[status][changes_requested]">
+							<input type="checkbox" value="rejected" id="filters[status][changes_requested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changes_requested', $selected_status_list, true ) ); ?>>
+							<?php _e( 'Changes requested', 'glotpress' ); ?>
+						</label><br />
+					<?php endif; ?>
 					<label for="filters[status][old]">
 						<input type="checkbox" value="old" id="filters[status][old]" <?php gp_checked( 'either' === $selected_status || in_array( 'old', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Old', 'glotpress' ); ?>
@@ -464,6 +468,9 @@ $i = 0;
 		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 		<?php
 		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
+			if ( ( 'changes_requested' == $legend_status ) && ( ! defined( 'WPORG_TRANSLATE_BLOGID' ) || ( get_current_blog_id() !== WPORG_TRANSLATE_BLOGID ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+				continue;
+			}
 			?>
 			<div class="box status-<?php echo esc_attr( $legend_status ); ?>"></div>
 			<div>
