@@ -22,7 +22,7 @@ gp_breadcrumb(
 		gp_link_get( $url, $translation_set->name ),
 	)
 );
-gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
+gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page', 'gp-hotkeys' ) );
 wp_localize_script(
 	'gp-translations-page',
 	'$gp_translations_options',
