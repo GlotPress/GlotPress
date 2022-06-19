@@ -671,8 +671,8 @@ function gp_get_sort_by_fields() {
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
 		),
-		'length'                => array(
-			'title'       => __( 'String length', 'glotpress' ),
+		'length'                    => array(
+			'title'       => __( 'Original length', 'glotpress' ),
 			'sql_sort_by' => 'LENGTH(o.singular) %s',
 		),
 		'random'                    => array(
