@@ -1570,3 +1570,70 @@ table.form-table td {
 		flex-direction: column;
 	}
 }
+
+.keyboard-shortcuts-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	background: rgba(0, 0, 0, 0.7);
+	display: none;
+}
+
+.keyboard-shortcuts-popover {
+	background: rgba(255, 255, 255, 1);
+	opacity: 100%;
+	width: 720px;
+	height: 600px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.keyboard-shortcuts-popover kbd {
+	background-color:  var(--gp-color-secondary-400);
+	padding: 0.2rem;
+	margin: 0.1rem;
+}
+
+.keyboard-shortcuts-popover-title {
+	background-color: var(--gp-color-canvas-subtle);
+	padding: 0.5rem;
+	border-bottom: 1px solid var(--gp-color-border-default);
+}
+
+.keyboard-shortcuts-popover-close-button {
+	float:right;
+	font-size: 1.2rem;
+	border: 0;
+	background-color: var(--gp-color-canvas-subtle);
+	margin: 0.2rem;
+	padding: 0;
+}
+
+.keyboard-shortcuts-popover-close-button::before{
+	font-family: "dashicons";
+	content: "\f335";
+	display: inline;
+}
+
+.keyboard-shortcuts-table-global-hotkeys {
+	border: 1px solid var(--gp-color-border-default);
+	margin: 1rem;
+	width: 95%;
+}
+
+.keyboard-shortcuts-table-global-hotkeys th {
+	border-bottom: 1px solid var( --gp-color-border-muted );
+	padding: 0.5rem;
+}
+
+.keyboard-shortcuts-table-global-hotkeys td {
+	width: 45%;
+	vertical-align: top;
+	padding: 0.5rem;
+}
