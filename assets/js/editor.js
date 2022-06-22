@@ -168,19 +168,19 @@ $gp.editor = (
 					if ( copy.length > 0 ) {
 						copy.trigger( 'click' );
 					}
-				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-+, Ctrl-Shift-A or Cmd-Shift-A = Approve.
+				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 107 === e.keyCode && e.metaKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-+, Cmd-+, Ctrl-Shift-A or Cmd-Shift-A = Approve.
 					approve = $( '.editor:visible' ).find( '.approve' );
 
 					if ( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
-				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl--, Ctrl-Shift-R or Cmd-Shift-R = Reject.
+				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 109 === e.keyCode && e.metaKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl--, Cmd--, Ctrl-Shift-R or Cmd-Shift-R = Reject.
 					reject = $( '.editor:visible' ).find( '.reject' );
 
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
-				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 70 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 70 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-~, Ctrl-Shift-~, Ctrl-Shift-F or Cmd-Shift-F = Fuzzy.
+				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 192 === e.keyCode && e.metaKey ) || ( 192 === e.keyCode && e.shiftKey && e.metaKey ) || ( 70 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 70 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-~, Ctrl-Shift-~, Cmd-~, Cmd-Shift-~, Ctrl-Shift-F or Cmd-Shift-F = Fuzzy.
 					reject = $( '.editor:visible' ).find( '.fuzzy' );
 
 					if ( reject.length > 0 ) {
