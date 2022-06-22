@@ -6,16 +6,20 @@
 	The editor hotkeys are present in the assets/js/editor.js file
  */
 jQuery( document ).ready( function( $ ) {
-	var dialogForm;
+	var dialogForm, bodyScrollY;
 	$.noConflict();
 	$( 'html' ).keydown( function( e ) {
 		var previousPage, nextPage, firstEditorRow;
 		if ( 191 === e.keyCode ) { // Question mark (?) = Show the help with all the hotkeys.
+			bodyScrollY = window.scrollY;
+			document.body.style.height = '100vh';
+			document.body.style.overflowY = 'hidden';
 			$( '#keyboard-shortcuts-container' ).css( 'display', 'flex' );
+			$( '#keyboard-shortcuts-container' ).css( 'top', bodyScrollY );
 			return false;
 		}
 		if ( 27 === e.keyCode ) { // Escape = Hide the help with all the hotkeys.
-			$( '#keyboard-shortcuts-container' ).css( 'display', 'none' );
+			hideKeyboardShortcutsContainer();
 			return false;
 		}
 		if ( 37 === e.keyCode && e.altKey ) { // Alt-Left Arrow or Option-Left Arrow = Move to the previous page.
@@ -135,8 +139,19 @@ jQuery( document ).ready( function( $ ) {
 		'</div>';
 	$( 'body' ).append( dialogForm );
 
+	/**
+	 * Hides the main popover when the close button is clicked.
+	 */
 	$( '#keyboard-shortcuts-popover-close-button' ).click( function() {
-		$( '#keyboard-shortcuts-container' ).css( 'display', 'none' );
+		hideKeyboardShortcutsContainer();
 	} );
+
+	/**
+	 * Hides the shortcuts' popover, resetting the body overflow.
+	 */
+	function hideKeyboardShortcutsContainer() {
+		document.body.style.overflowY = 'auto';
+		$( '#keyboard-shortcuts-container' ).css( 'display', 'none' );
+	}
 } );
 
