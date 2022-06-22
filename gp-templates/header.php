@@ -8,6 +8,9 @@
 	// Enqueue the base style so we don't have to load it manually on each page.
 	gp_enqueue_styles( 'gp-base' );
 
+	// Enqueue the hotkey script, so it will be available on each page.
+	gp_enqueue_script( 'gp-hotkeys' );
+
 	gp_head();
 	?>
 </head>
