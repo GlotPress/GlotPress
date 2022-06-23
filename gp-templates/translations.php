@@ -187,7 +187,7 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $changes_requested_filters, $filters_and_sort ) && ! $additional_filters && ! $changes_requested_filters;
 		$current_filter    = $is_current_filter ? 'changes_requested' : $current_filter;
 
-		if ( defined( 'WPORG_TRANSLATE_BLOGID' ) && ( get_current_blog_id() === WPORG_TRANSLATE_BLOGID ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
+		if ( apply_filters( 'gp_translation_helper_installed', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
 			$filter_links[] = gp_link_get(
 				add_query_arg( $changes_requested_filters, $url ),
 				// Translators: %s is the changes requested strings count for the current translation set.
@@ -304,7 +304,7 @@ $i = 0;
 						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Rejected', 'glotpress' ); ?>
 					</label><br />
-					<?php if ( defined( 'WPORG_TRANSLATE_BLOGID' ) && ( get_current_blog_id() === WPORG_TRANSLATE_BLOGID ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
+					<?php if ( apply_filters( 'gp_translation_helper_installed', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
 						<label for="filters[status][changes_requested]">
 							<input type="checkbox" value="rejected" id="filters[status][changes_requested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changes_requested', $selected_status_list, true ) ); ?>>
 							<?php _e( 'Changes requested', 'glotpress' ); ?>
@@ -468,7 +468,7 @@ $i = 0;
 		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 		<?php
 		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
-			if ( ( 'changes_requested' == $legend_status ) && ( ! defined( 'WPORG_TRANSLATE_BLOGID' ) || ( get_current_blog_id() !== WPORG_TRANSLATE_BLOGID ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+			if ( ( 'changes_requested' == $legend_status ) && ( ! apply_filters( 'gp_translation_helper_installed', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
 				continue;
 			}
 			?>
@@ -492,7 +492,11 @@ $i = 0;
 						_e( 'Rejected', 'glotpress' );
 						break;
 					case 'changes_requested':
-						_e( 'Changes requested', 'glotpress' );
+						if ( apply_filters( 'gp_translation_helper_installed', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+							_e( 'Changes requested', 'glotpress' );
+						} else {
+							_e( 'Rejected', 'glotpress' );
+						}
 						break;
 					default:
 						echo esc_html( $legend_status );

@@ -18,7 +18,7 @@
 				<?php endif; ?>
 				<?php if ( 'rejected' !== $translation->translation_status ) : ?>
 					<button class="button is-small reject" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-rejected_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Reject this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>"><strong>&minus;</strong> <?php _ex( 'Reject', 'Action', 'glotpress' ); ?></button>
-					<?php if ( defined( 'WPORG_TRANSLATE_BLOGID' ) && ( get_current_blog_id() === WPORG_TRANSLATE_BLOGID ) ) : // todo: delete when we merge the gp-translation-helpers in GlotPress ?>
+					<?php if ( apply_filters( 'gp_translation_helper_installed', false ) ) : // todo: delete when we merge the gp-translation-helpers in GlotPress ?>
 						<button class="button is-small changes_requested" style="display: none;" data-nonce="<?php echo esc_attr( wp_create_nonce( 'update-translation-status-changes_requested_' . $translation->id ) ); ?>" title="<?php esc_attr_e( 'Request changes for this translation. The existing translation will be kept as part of the translation history.', 'glotpress' ); ?>"><strong>&minus;</strong> <?php _ex( 'Request changes', 'Action', 'glotpress' ); ?></button>
 					<?php endif; ?>
 				<?php endif; ?>
