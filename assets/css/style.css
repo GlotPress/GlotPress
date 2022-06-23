@@ -1633,6 +1633,7 @@ table.form-table td {
 	border-bottom: 1px solid var( --gp-color-border-muted );
 	padding: 0.5rem;
 }
+
 .keyboard-shortcuts-table-global-hotkeys tr:not(:last-child),
 .keyboard-shortcuts-table-editor-hotkeys tr:not(:last-child) {
 	border-bottom: 1px solid var( --gp-color-border-muted );
@@ -1643,4 +1644,8 @@ table.form-table td {
 	padding: 0.6rem;
 	font-size: 0.9rem;
 	line-height: 1.1rem;
+}
+
+.gp-show-keyboard-shortcuts-container > a > span {
+	text-decoration: none;
 }

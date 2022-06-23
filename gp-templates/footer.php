@@ -17,6 +17,10 @@
 			}
 			?>
 
+			<p id="gp-show-keyboard-shortcuts-container" class="gp-show-keyboard-shortcuts-container">
+				<a href="#" alt="Hotkeys"><span class="dashicons dashicons-editor-help"></span><?php _e( 'Hotkeys', 'glotpress' ); ?></a>
+			</p>
+
 			<p class="gp-powered-by">
 				<?php
 				printf(

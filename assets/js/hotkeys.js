@@ -11,11 +11,7 @@ jQuery( document ).ready( function( $ ) {
 	$( 'html' ).keydown( function( e ) {
 		var previousPage, nextPage, firstEditorRow;
 		if ( 191 === e.keyCode ) { // Question mark (?) = Show the help with all the hotkeys.
-			bodyScrollY = window.scrollY;
-			document.body.style.height = '100vh';
-			document.body.style.overflowY = 'hidden';
-			$( '#keyboard-shortcuts-container' ).css( 'display', 'flex' );
-			$( '#keyboard-shortcuts-container' ).css( 'top', bodyScrollY );
+			showKeyboardShortcutsContainer( e );
 			return false;
 		}
 		if ( 27 === e.keyCode ) { // Escape = Hide the help with all the hotkeys.
@@ -145,6 +141,29 @@ jQuery( document ).ready( function( $ ) {
 	$( '#keyboard-shortcuts-popover-close-button' ).click( function() {
 		hideKeyboardShortcutsContainer();
 	} );
+
+	/**
+	 * Shows the main popover when the footer link is clicked.
+	 *
+	 * @param {Event} e
+	 */
+	$( '#gp-show-keyboard-shortcuts-container' ).click( function( e ) {
+		showKeyboardShortcutsContainer( e );
+	} );
+
+	/**
+	 * Shows the shortcuts' popover, hiding the body overflow.
+	 *
+	 * @param {Event} e
+	 */
+	function showKeyboardShortcutsContainer( e ) {
+		e.preventDefault();
+		bodyScrollY = window.scrollY;
+		document.body.style.height = '100vh';
+		document.body.style.overflowY = 'hidden';
+		$( '#keyboard-shortcuts-container' ).css( 'display', 'flex' );
+		$( '#keyboard-shortcuts-container' ).css( 'top', bodyScrollY );
+	}
 
 	/**
 	 * Hides the shortcuts' popover, resetting the body overflow.
