@@ -883,23 +883,20 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 4.0.0
 	 * @access public
 	 *
-	 * @param string    $original    The source string.
-	 * @param string    $translation The translation.
-	 * @param GP_Locale $locale      The locale of the translation.
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
 	 *
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
-	public function warning_missing_uppercase_beginning( string $original, string $translation, GP_Locale $locale ) {
-		if ( 'latin' !== $locale->alphabet ) {
-			return true;
-		}
-
-		$is_first_letter_original_uppercase    = ctype_upper( mb_substr( $original, 0, 1 ) );
-		$is_first_letter_translation_uppercase = ctype_upper( mb_substr( $translation, 0, 1 ) );
-		if ( $is_first_letter_original_uppercase && ! $is_first_letter_translation_uppercase ) {
+	public function warning_missing_uppercase_beginning( string $original, string $translation ) {
+		$is_first_letter_uppercase_original    = preg_match( '/^\p{Lu}/u', $original );
+		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
+		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
+		$is_first_letter_lowercase_translation = preg_match( '/^\p{Ll}/u', $translation );
+		if ( $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation ) {
 			return __( 'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.', 'glotpress' );
 		}
-		if ( ! $is_first_letter_original_uppercase && $is_first_letter_translation_uppercase ) {
+		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
 			return __( 'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.', 'glotpress' );
 		}
 

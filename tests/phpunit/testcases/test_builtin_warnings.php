@@ -714,22 +714,53 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->l->alphabet = 'latin';
 		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Original string', 'Cadea traducida', $this->l );
 		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', 'cadea traducida', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'おはようございます', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', 'おはよう', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'सुबह बख़ैर', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'Доброе утро', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', 'доброе утро', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', '早上好', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', '早上好', $this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
-			'Original string',
-			'cadea traducida',
+			'Good morning',
+			'bos días',
 			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
-			'original string',
-			'Cadea traducida',
+			'Good morning',
+			'доброе утро',
+			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'καλημέρα',
+			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'բարի լույս',
+			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Bos días',
 			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
 			$this->l );
-
-		$this->l->slug = 'ja';
-		$this->l->alphabet = 'kanji';
-		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Original string', '翻訳されたチェーン', $this->l );
-		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', '翻訳されたチェーン', $this->l );
-		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', '翻訳済みチェーン', $this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Доброе утро',
+			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Καλημέρα',
+			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Բարի առավոտ',
+			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			$this->l );
 }
 
 	public function test_chained_warnings() {
