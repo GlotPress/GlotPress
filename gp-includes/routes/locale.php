@@ -169,6 +169,6 @@ class GP_Route_Locale extends GP_Route_Main {
 	}
 
 	private function sort_sets_by_project_id( $a, $b ) {
-		return $a->project_id > $b->project_id;
+		return $a->project_id <=> $b->project_id;
 	}
 }
