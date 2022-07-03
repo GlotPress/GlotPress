@@ -49,7 +49,7 @@ class GP_Route_Project extends GP_Route_Main {
 		usort(
 			$translation_sets,
 			function( $a, $b ) {
-				return( $a->current_count < $b->current_count );
+				return( $a->current_count <=> $b->current_count );
 			}
 		);
 
