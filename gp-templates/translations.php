@@ -54,11 +54,38 @@ $i = 0;
 	</h2>
 	<?php gp_link_set_edit( $translation_set, $project, _x( '(edit)', 'translation set', 'glotpress' ) ); ?>
 	<?php gp_link_set_delete( $translation_set, $project, _x( '(delete)', 'translation set', 'glotpress' ) ); ?>
-	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
-	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
-	<?php elseif ( $can_approve ) : ?>
-		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
-	<?php endif; ?>
+	<div class="glossary-links">
+		<?php
+		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set->slug, $translation_set->locale );
+		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+
+		// Locale Glossary link.
+		if ( $locale_glossary ) {
+			?>
+			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
+			<?php
+		} elseif ( $can_create_locale_glossary ) {
+			?>
+			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
+			<?php
+		}
+
+		// Show separator if both links are shown.
+		if ( ( $locale_glossary || $can_create_locale_glossary ) && ( ( $glossary && $glossary->translation_set_id === $translation_set->id ) || $can_approve ) ) {
+			?>
+			<strong class="separator">•</strong>
+			<?php
+		}
+
+		// Project Glossary link.
+		if ( $glossary && $glossary->translation_set_id === $translation_set->id ) {
+			echo gp_link( $glossary->path(), __( 'Project Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) );
+		} elseif ( $can_approve ) {
+			echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Project Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) );
+		}
+		?>
+	</div>
 </div>
 
 <div class="filter-toolbar">
@@ -391,11 +418,6 @@ $i = 0;
 	</tr>
 	</thead>
 <?php
-	if ( $glossary ) {
-		$glossary_entries       = $glossary->get_entries();
-		$glossary_entries_terms = gp_sort_glossary_entries_terms( $glossary_entries );
-	}
-
 	foreach ( $translations as $translation ) {
 		if ( ! $translation->translation_set_id ) {
 			$translation->translation_set_id = $translation_set->id;

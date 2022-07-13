@@ -30,7 +30,7 @@ gp_tmpl_header();
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
-	<dd><input type="file" name="import-file" id="import-file" /></dd>
+	<dd><input type="file" name="import-file" id="import-file" accept=".xml,.po,.pot,.mo,.resx,.strings,.properties,.json" /></dd>
 <?php
 	$format_options         = array();
 	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );

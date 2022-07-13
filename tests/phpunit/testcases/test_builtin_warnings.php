@@ -184,7 +184,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder( 'GP_Translation_Warnings' )->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 10 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 11 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -662,6 +662,53 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		);
 	}
 
+	public function test_unexpected_start_end_space() {
+		$this->assertNoWarnings( 'unexpected_start_end_space', 'Original string', 'Cadea traducida' );
+		$this->assertNoWarnings( 'unexpected_start_end_space', ' Original string', ' Cadea traducida' );
+		$this->assertNoWarnings( 'unexpected_start_end_space', 'Original string ', 'Cadea traducida ' );
+		$this->assertNoWarnings( 'unexpected_start_end_space', ' Original string ', ' Cadea traducida ' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			' Original string',
+			'Cadea traducida',
+			'The translation appears to be missing one or more spaces at the beginning.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string',
+			' Cadea traducida',
+			'The translation appears to be adding one or more spaces at the beginning.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string ',
+			'Cadea traducida',
+			'The translation appears to be missing one or more spaces at the end.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string',
+			'Cadea traducida ',
+			'The translation appears to be adding one or more spaces at the end.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			' Original string',
+			'   Cadea traducida',
+			'Expected 1 space(s) at the beginning, got 3.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'   Original string',
+			' Cadea traducida',
+			'Expected 3 space(s) at the beginning, got 1.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string ',
+			'Cadea traducida   ',
+			'Expected 1 space(s) at the end, got 3.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string   ',
+			'Cadea traducida ',
+			'Expected 3 space(s) at the end, got 1.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'   Original string   ',
+			' Cadea traducida ',
+			"Expected 3 space(s) at the beginning, got 1.\nExpected 3 space(s) at the end, got 1." );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			' Original string ',
+			'   Cadea traducida   ',
+			"Expected 1 space(s) at the beginning, got 3.\nExpected 1 space(s) at the end, got 3." );
+	}
+
 	public function test_chained_warnings() {
 		$this->tw = new GP_Translation_Warnings();
 		$this->w  = new GP_Builtin_Translation_Warnings();
@@ -842,6 +889,30 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 					'should_not_end_on_newline'   => 'Translation should not end on newline.',
 					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
 					'placeholders'                => 'Extra %% placeholder in translation.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			' <p><a href="%s">100 percent</a></p>',
+			null,
+			array( "<a href=\"%s\">100%%</a> " ),
+			array(
+				array(
+					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
+					'placeholders'                => 'Extra %% placeholder in translation.',
+					'unexpected_start_end_space'  => "The translation appears to be missing one or more spaces at the beginning.\nThe translation appears to be adding one or more spaces at the end."
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'    <p><a href="%s">100 percent</a></p> ',
+			null,
+			array( " <a href=\"%s\">100%%</a>     " ),
+			array(
+				array(
+					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
+					'placeholders'                => 'Extra %% placeholder in translation.',
+					'unexpected_start_end_space'  => "Expected 4 space(s) at the beginning, got 1.\nExpected 1 space(s) at the end, got 5."
 				),
 			)
 		);

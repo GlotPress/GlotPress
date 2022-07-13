@@ -26,7 +26,7 @@ gp_tmpl_header();
 <form action="" method="post" enctype="multipart/form-data">
 	<p>
 		<label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label>
-		<input type="file" name="import-file" id="import-file" />
+		<input type="file" name="import-file" id="import-file" accept=".csv" />
 	</p>
 	<?php if ( $can_edit ) : ?>
 		<p>
@@ -36,7 +36,7 @@ gp_tmpl_header();
 			</label>
 		</p>
 	<?php endif; ?>
-	<p><input type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></p>
+	<p><input class="button is-primary" type="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>"></p>
 	<?php gp_route_nonce_field( 'import-glossary-entries_' . $project->path . $locale->slug . $translation_set->slug ); ?>
 </form>
 
