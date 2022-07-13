@@ -62,11 +62,11 @@ if ( $glossary_description ) {
 	<thead>
 		<tr>
 			<th class="gp-column-item" data-sorter="text"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-part-of-speech" data-sorter=false><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-part-of-speech" data-sorter="false"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
 			<th class="gp-column-translation" data-sorter="text"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-comments" data-sorter=false><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-comments" data-sorter="false"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
 			<?php if ( $can_edit ) : ?>
-				<th class="gp-column-actions" data-sorter=false>&mdash;</th>
+				<th class="gp-column-actions" data-sorter="false">&mdash;</th>
 			<?php endif; ?>
 		</tr>
 	</thead>
