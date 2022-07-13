@@ -8,12 +8,12 @@ $gp.glossary = (
 
 			init: function( table ) {
 				$gp.init();
+				$gp.glossary.tablesorter();
 				if ( '' === $gp_glossary_options.can_edit ) {
 					return;
 				}
 				$gp.glossary.table = table;
 				$gp.glossary.install_hooks();
-				$gp.glossary.tablesorter();
 			},
 
 			install_hooks: function() {
