@@ -475,7 +475,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Remove the trailing |.
-		$terms_search = substr( $terms_search, 0, -1 );
+		$terms_search = rtrim( $terms_search, '|' );
 		$terms_search .= ')\b';
 	}
 
