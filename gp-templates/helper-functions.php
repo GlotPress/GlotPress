@@ -362,7 +362,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 
 					// Check if key term is an array.
-					if ( ! is_array( $glossary_entries_suffixes[ $key ] ) ) {
+					if ( ! isset( $glossary_entries_suffixes[ $key ] ) ) {
 						$glossary_entries_suffixes[ $key ] = array();
 					}
 
