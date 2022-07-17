@@ -223,7 +223,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Fallback suffix for most verbs. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|o)', // All the above.
+					'\w(?<!z|x|sh|ch|s|y|o)', // None of the above. Format, make, pull.
 				),
 				'preceded' => null,
 				'change'   => null,
@@ -260,7 +260,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => null,
 			),
 
-			// Present participle and gerund of verbs not ending with 'e', 'ee', 'ye' or 'oe'. Suffix '-ing'.
+			// Present participle and gerund of verbs not ending with 'e', or ending with 'ee', 'ye' or 'oe'. Suffix '-ing'.
 			array(
 				'endings'  => array(
 					'\w(?<!e)', // Fix, push.
