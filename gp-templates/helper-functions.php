@@ -89,85 +89,61 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'ss', // Kiss.
-					'z',  // Waltz.
-					'x',  // Box.
-					'sh', // Dish.
-					'ch', // Coach.
+					'ss' => null, // Kiss.
+					'z'  => null, // Waltz.
+					'x'  => null, // Box.
+					'sh' => null, // Dish.
+					'ch' => null, // Coach.
 				),
 				'preceded' => null,
-				'change'   => null,
 				'add'      => 'es', // Add 'es'.
 			),
 
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'y', // Delay, key, toy, guy.
+					'y' => null, // Delay, key, toy, guy.
 				),
 				'preceded' => '[aeiou]', // Preceded by any vowel.
-				'change'   => null,
 				'add'      => 's',       // Add 's'.
 			),
 
-			// Ending with '-y' preceded by consonant. Suffix: '-ies'.
+			// Ending with '-y' preceded by consonant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'y', // Lady.
+					'y' => 'i',  // Lady. Change to 'i'.
+					'o' => null, // Hero, tomato.
 				),
 				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
-				'change'   => 'i',                  // Change to 'i'.
-				'add'      => 'es',                 // Add 'es'.
-			),
-
-			// Alternate ending with '-o' preceded by consonant. Suffix: '-es'.
-			array(
-				'endings'  => array(
-					'o', // Hero, tomato.
-				),
-				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
-				'change'   => null,
 				'add'      => 'es',                 // Add 'es'.
 			),
 
 			// Ending with '-an'. Suffix: '-en'.
 			array(
 				'endings'  => array(
-					'an', // Woman.
+					'an' => 'en', // Woman. Change to 'en'.
 				),
 				'preceded' => null,
-				'change'   => 'en', // Change to 'en'.
 				'add'      => null,
 			),
 
-			// Ending with '-f' or '-fe'. Suffix: '-ves'.
+			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'fe', // Wife.
-					'f',  // Leaf, wolf.
+					'fe' => 'v', // Wife. Change to 'v'.
+					'f'  => 'v', // Leaf, wolf. Change to 'v'.
+					's' => null, // Bus or Lens.
 				),
 				'preceded' => null,
-				'change'   => 'v',  // Change to 'v'.
-				'add'      => 'es', // Add 'es'.
-			),
-
-			// Fallback suffix for nouns ending with '-s'. Suffix '-es'.
-			array(
-				'endings'  => array(
-					's', // Bus or Lens.
-				),
-				'preceded' => null,
-				'change'   => null,
 				'add'      => 'es', // Add 'es'.
 			),
 
 			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|an|fe)', // All the above except 'f' because of words like 'Chief' which plural is '-s'.
+					'\w(?<!z|x|sh|ch|s|y|an|fe)' => null, // None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'preceded' => null,
-				'change'   => null,
 				'add'      => 's',  // Add 's'.
 			),
 		),
@@ -179,99 +155,71 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'ss', // Pass.
-					'z',  // Quiz.
-					'x',  // Fix.
-					'sh', // Push.
-					'ch', // Watch.
+					'ss' => null, // Pass.
+					'z'  => null, // Quiz.
+					'x'  => null, // Fix.
+					'sh' => null, // Push.
+					'ch' => null, // Watch.
 				),
 				'preceded' => null,
-				'change'   => null,
 				'add'      => 'es', // Add 'es'.
 			),
 
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'y', // Play.
+					'y' => null, // Play.
 				),
 				'preceded' => '[aeiou]', // Any vowel.
-				'change'   => null,
 				'add'      => 's',       // Add 's'.
 			),
 
-			// Ending with '-y' preceded by consonant. Suffix: '-ies'.
+			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'y', // Try.
+					'y' => 'i',  // Try. Change to 'i'.
+					'o' => null, // Go, do.
 				),
 				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
-				'change'   => 'i',                  // Change to 'i'.
-				'add'      => 'es',                 // Add 'es'.
-			),
-
-			// Ending with '-o' preceded by consonant. Suffix: '-es'.
-			array(
-				'endings'  => array(
-					'o', // Go, do.
-				),
-				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
-				'change'   => null,
 				'add'      => 'es',                 // Add 'es'.
 			),
 
 			// Fallback suffix for most verbs. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|o)', // None of the above. Format, make, pull.
+					'\w(?<!z|x|sh|ch|s|y|o)' => null, // None of the above. Format, make, pull.
 				),
 				'preceded' => null,
-				'change'   => null,
 				'add'      => 's',  // Add 's'.
 			),
 
-			// Past simple tense and past participle of verbs ending with '-e'. Suffix '-ed'.
+			// Past simple tense and past participle of verbs. Suffix '-ed'.
 			array(
 				'endings'  => array(
-					'e', // Contribute, delete.
+					// Not ending with 'e'.
+					'\w(?<!e)' => null, // Fix, push.
+					// Ending with 'e'.
+					'e'        => '', // Contribute, delete. Change to ''.
 				),
 				'preceded' => null,
-				'change'   => null,
-				'add'      => 'd', // Add 'd'.
+				'add'      => 'ed', // Add 'd'.
 			),
 
-			// Past simple tense and past participle of verbs not ending with '-e. Suffix '-ed'.
+			// Present participle and gerund of verbs. Suffix '-ing'.
 			array(
 				'endings'  => array(
-					'\w(?<!e)', // Fix, push.
+					// Not ending with 'e', or ending with 'ee', 'ye' or 'oe'.
+					'\w(?<!e)' => null, // Fix, push.
+					'ee'       => null, // Agree, see.
+					'ye'       => null, // Dye.
+					'oe'       => null, // Tiptoe.
+					// Ending with 'e'.
+					'e'        => '', // Contribute, delete, care. Change to ''.
 				),
 				'preceded' => null,
-				'change'   => null,
-				'add'      => 'ed', // Add 'ed'.
-			),
-
-			// Present participle and gerund of verbs ending with 'e'. Suffix '-ing'.
-			array(
-				'endings'  => array(
-					'e', // Contribute, delete, care.
-				),
-				'preceded' => null,
-				'change'   => 'ing', // Change to 'ing'.
-				'add'      => null,
-			),
-
-			// Present participle and gerund of verbs not ending with 'e', or ending with 'ee', 'ye' or 'oe'. Suffix '-ing'.
-			array(
-				'endings'  => array(
-					'\w(?<!e)', // Fix, push.
-					'ee',       // Agree, see.
-					'ye',       // Dye.
-					'oe',       // Tiptoe.
-				),
-				'preceded' => null,
-				'change'   => null,
 				'add'      => 'ing', // Add 'ing'.
 			),
+
 		),
 
 		// Plurals of adverbs.
@@ -365,20 +313,19 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		foreach ( $suffixes[ $type ] as $rule ) {
 
 			// Loop through rule endings.
-			foreach ( $rule['endings'] as $ending ) {
+			foreach ( $rule['endings'] as $ending => $change ) {
 
 				// Check if noun ends with known suffix.
 				if ( preg_match( '/' . $rule['preceded'] . $ending . '\b/i', $term ) ) {
 
-					$change = $rule['change'] ? $rule['change'] : '';
-					$add    = $rule['add'] ? $rule['add'] : '';
+					// Build suffix with changes and additions.
+					$suffix = ( is_null( $change ) ? '' : $change ) . ( $rule['add'] ? $rule['add'] : '' );
 
-					$suffix = $change . $add;
-
-					$key = $rule['change'] ? substr( $term, 0, - strlen( $ending ) ) : $term;
+					// Set key.
+					$key = is_null( $change ) ? $term : substr( $term, 0, - strlen( $ending ) );
 
 					// If the ending changes, also add the ending.
-					if ( $rule['change'] ) {
+					if ( ! is_null( $change ) ) {
 						// Add the ending to the suffixes.
 						$glossary_entries_suffixes[ $key ][] = $ending;
 					}
