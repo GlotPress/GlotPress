@@ -80,7 +80,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		return;
 	}
 
-	$plural_suffixes = array(
+	$suffixes = array(
 
 		// Plurals of singular nouns.
 		// https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
@@ -340,25 +340,25 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		}
 
 		// Loop through rules.
-		foreach ( $plural_suffixes[ $type ] as $rule ) {
+		foreach ( $suffixes[ $type ] as $rule ) {
 
 			// Loop through rule endings.
-			foreach ( $rule['endings'] as $singular_ending ) {
+			foreach ( $rule['endings'] as $ending ) {
 
 				// Check if noun ends with known suffix.
-				if ( preg_match( '/' . $rule['preceded'] . $singular_ending . '\b/i', $term ) ) {
+				if ( preg_match( '/' . $rule['preceded'] . $ending . '\b/i', $term ) ) {
 
 					$change = $rule['change'] ? $rule['change'] : '';
 					$add    = $rule['add'] ? $rule['add'] : '';
 
-					$plural_ending = $change . $add;
+					$suffix = $change . $add;
 
-					$key = $rule['change'] ? substr( $term, 0, - strlen( $singular_ending ) ) : $term;
+					$key = $rule['change'] ? substr( $term, 0, - strlen( $ending ) ) : $term;
 
-					// If the ending changes, also add the singular ending.
+					// If the ending changes, also add the ending.
 					if ( $rule['change'] ) {
-						// Add the singular ending to the suffixes.
-						$glossary_entries_suffixes[ $key ][] = $singular_ending;
+						// Add the ending to the suffixes.
+						$glossary_entries_suffixes[ $key ][] = $ending;
 					}
 
 					// Check if key term is an array.
@@ -367,8 +367,8 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 
 					// Add suffix.
-					if ( ! in_array( $plural_ending, $glossary_entries_suffixes[ $key ], true ) ) {
-						$glossary_entries_suffixes[ $key ][] = $plural_ending;
+					if ( ! in_array( $suffix, $glossary_entries_suffixes[ $key ], true ) ) {
+						$glossary_entries_suffixes[ $key ][] = $suffix;
 					}
 
 					break;
@@ -380,13 +380,13 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		if ( 'verb' === $type ) {
 
 			// Form noun from verb by adding a suffix.
-			foreach ( $verb_to_noun_suffixes as $singular_ending => $plural_ending ) {
+			foreach ( $verb_to_noun_suffixes as $verb_ending => $noun_ending ) {
 
 				// Check if noun ends with known suffix.
-				if ( substr( $term, - strlen( $singular_ending ) ) === $singular_ending ) {
+				if ( substr( $term, - strlen( $verb_ending ) ) === $verb_ending ) {
 
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $singular_ending ) ) ][] = $singular_ending;
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $singular_ending ) ) ][] = $plural_ending;
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $verb_ending ) ) ][] = $verb_ending;
+					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $verb_ending ) ) ][] = $noun_ending;
 
 					break;
 				}
