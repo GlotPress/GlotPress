@@ -548,7 +548,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals Nouns fallback ending with '-s'. Suffix '-es'.
+	 * Expects matching the fallback plurals of Nouns ending with '-s'. Suffix '-es'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_fallback_ending_with_s_in_glossary() {
 		$test_string = 'Testing words bus, buses, lens, lenses.';
@@ -607,7 +607,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals Nouns fallback not ending with '-s'. Suffix '-s'.
+	 * Expects matching the fallback plurals of Nouns not ending with '-s'. Suffix '-s'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_fallback_not_ending_with_s_in_glossary() {
 		$test_string = 'Testing words chief, chiefs.';
@@ -656,7 +656,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals third-person Verbs ending in a sibilant. Suffix: '-es'.
+	 * Expects matching the third-person of Verbs ending in a sibilant. Suffix: '-es'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_sibilant_in_glossary() {
 		$test_string = 'Testing words pass, passes, quiz, quizes, fix, fixes, push, pushes, watch, watches.';
@@ -745,7 +745,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals third-person Verbs ending with '-y' preceded by vowel. Suffix: '-s'.
+	 * Expects matching the third-person of Verbs ending with '-y' preceded by vowel. Suffix: '-s'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_y_preceded_by_vowel_in_glossary() {
 		$test_string = 'Testing words play, plays.';
@@ -794,7 +794,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals third-person Verbs ending with '-y' preceded by consonant. Suffix: '-ies'.
+	 * Expects matching the third-person of Verbs ending with '-y' preceded by consonant. Suffix: '-ies'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_y_preceded_by_consonant_in_glossary() {
 		$test_string = 'Testing words try, tries.';
@@ -843,7 +843,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals third-person Verbs ending with '-o' preceded by consonant. Suffix: '-es'.
+	 * Expects matching the third-person of Verbs ending with '-o' preceded by consonant. Suffix: '-es'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_o_preceded_by_consonant_in_glossary() {
 		$test_string = 'Testing words go, goes.';
@@ -892,7 +892,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals third-person fallback suffix for most Verbs. Suffix: '-s'.
+	 * Expects matching the third-person fallback suffix for most Verbs. Suffix: '-s'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_most_verbs_3rdperson_fallback_in_glossary() {
 		$test_string = 'Testing words format, formats, make, makes, pull, pulls.';
@@ -961,7 +961,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals past Verbs ending with '-e'. Suffix '-ed'.
+	 * Expects matching the past of Verbs ending with '-e'. Suffix '-ed'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_past_ending_with_e_in_glossary() {
 		$test_string = 'Testing words contribute, contributed, delete, deleted.';
@@ -1020,7 +1020,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals past Verbs not ending with '-e'. Suffix '-ed'.
+	 * Expects matching the past of Verbs not ending with '-e'. Suffix '-ed'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_past_not_ending_with_e_in_glossary() {
 		$test_string = 'Testing words fix, fixed, push, pushed.';
@@ -1079,7 +1079,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals present Verbs ending with '-e'. Suffix '-ing'.
+	 * Expects matching the present of Verbs ending with '-e'. Suffix '-ing'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_present_ending_with_e_in_glossary() {
 		$test_string = 'Testing words contribute, contributing, delete, deleting, care, caring.';
@@ -1148,7 +1148,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals present Verbs not ending with 'e', or ending with 'ee', 'ye' or 'oe'. Suffix '-ing'.
+	 * Expects matching the present of Verbs not ending with 'e', or ending with 'ee', 'ye' or 'oe'. Suffix '-ing'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_present_not_ending_with_e_or_ending_with_ee_ye_oe_in_glossary() {
 		$test_string = 'Testing words fix, fixing, push, pushing, agree, agreeing, see, seeing, dye, dyeing, tiptoe, tiptoeing.';
