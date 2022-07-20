@@ -308,52 +308,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 	);
 
-	// Suffixes that form nouns.
-	// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm.
-	$verb_to_noun_suffixes = array(
-		// Suffix '-tion' cases.
-		'ate'    => 'ation',     // Abbreviate and abbreviation.
-		'ize'    => 'ization',   // Authorize and authorization.
-		'ify'    => 'ification', // Specify and specification.
-		'efy'    => 'efaction',  // Liquefy and liquefaction.
-		'aim'    => 'amation',   // Reclaim and reclamation.
-		'pt'     => 'ption',     // Encrypt and encryption.
-		'scribe' => 'scription', // Subscribe and subscription.
-		'ceive'  => 'ception',   // Receive and reception.
-		'sume'   => 'sumption',  // Resume and resumption.
-		'ct'     => 'ction',     // Correct and correction.
-		'ete'    => 'etion',     // Delete and deletion.
-		'it'     => 'ition',     // Edit and edition.
-		'ite'    => 'ition',     // Ignite and ignition.
-		'ute'    => 'ution',     // Contribute and contribution.
-		'olve'   => 'olution',   // Resolve and resolution.
-		'ose'    => 'osition',   // Compose and composition.
-		// Suffix '-sion' cases.
-		'ade'    => 'asion',     // Invade and invasion.
-		'cede'   => 'cession',   // Concede and concession.
-		'ide'    => 'ision',     // Decide and decision.
-		'ode'    => 'osion',     // Explode and explosion.
-		'ude'    => 'usion',     // Exclude and exclusion.
-		'ise'    => 'ision',     // Supervise and supervision.
-		'use'    => 'usion',     // Confuse and confusion.
-		'pel'    => 'pulsion',   // Expel and expulsion.
-		'mit'    => 'mission',   // Submit and submission.
-		'ss'     => 'ssion',     // Compress and compression.
-		// After 'n', suffix '-tion' cases.
-		'tain'   => 'tention',   // Retain and retention.
-		'vene'   => 'vention',   // Contravene and contravention.
-		'vent'   => 'vention',   // Prevent and prevention.
-		// After 'n', suffix '-sion' cases.
-		'end'    => 'ension',    // Extend and extension.
-		// After 'r' cases, suffix '-sion' cases.
-		'vert'   => 'version',   // Convert and conversion.
-		'erse'   => 'ersion',    // Disperse and dispersion.
-		'ur'     => 'ursion',    // Recur and recursion.
-		'erge'   => 'ersion',    // Submerge and submersion.
-		// After 'r' cases, suffix '-tion' cases.
-		'rt'     => 'rtion',     // Insert and insertion.
-	);
-
 	$glossary_entries_suffixes = array();
 
 	// Create array of glossary terms, longest first.
@@ -399,23 +353,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					if ( ! in_array( $suffix, $glossary_entries_suffixes[ $key ], true ) ) {
 						$glossary_entries_suffixes[ $key ][] = $suffix;
 					}
-
-					break;
-				}
-			}
-		}
-
-		// Add known verb to noun suffixes.
-		if ( 'verb' === $type ) {
-
-			// Form noun from verb by adding a suffix.
-			foreach ( $verb_to_noun_suffixes as $verb_ending => $noun_ending ) {
-
-				// Check if noun ends with known suffix.
-				if ( substr( $term, - strlen( $verb_ending ) ) === $verb_ending ) {
-
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $verb_ending ) ) ][] = $verb_ending;
-					$glossary_entries_suffixes[ substr( $term, 0, - strlen( $verb_ending ) ) ][] = $noun_ending;
 
 					break;
 				}
