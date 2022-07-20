@@ -1246,4 +1246,245 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
 	}
 
+	/**
+	 * Expects matching the Verbs that form Nouns ending with suffix '-tion'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_form_nouns_ending_with_tion_in_glossary() {
+		$test_string = 'Testing words abbreviate, abbreviation, authorize, authorization, specify, specification, liquefy, liquefaction, exclaim, exclamation, encrypt, encryption, subscribe, subscription, perceive, perception, resume, resumption, correct, correction, delete, deletion, edit, edition, ignite, ignition, contribute, contribution, resolve, resolution, compose, composition, abstain, abstention, contravene, contravention, prevent, prevention, insert, insertion.';
+
+		$part_of_speech = 'verb';
+
+		$matches = array(
+			'abreviar' => array( // Portuguese.
+				'abbreviate',      // Verb.
+				'abbreviation',    // Noun.
+			),
+			'autorizar' => array( // Portuguese.
+				'authorize',        // Verb.
+				'authorization',    // Noun.
+			),
+			'especificar' => array( // Portuguese.
+				'specify',            // Verb.
+				'specification',      // Noun.
+			),
+			'liquefazer' => array( // Portuguese.
+				'liquefy',           // Verb.
+				'liquefaction',      // Noun.
+			),
+			'exclamar' => array( // Portuguese.
+				'exclaim',         // Verb.
+				'exclamation',     // Noun.
+			),
+			'encriptar' => array( // Portuguese.
+				'encrypt',          // Verb.
+				'encryption',       // Noun.
+			),
+			'subscrever' => array( // Portuguese.
+				'subscribe',         // Verb.
+				'subscription',      // Noun.
+			),
+			'percepcionar' => array( // Portuguese.
+				'perceive',            // Verb.
+				'perception',          // Noun.
+			),
+			'resumir' => array( // Portuguese.
+				'resume',         // Verb.
+				'resumption',     // Noun.
+			),
+			'corrigir' => array( // Portuguese.
+				'correct',         // Verb.
+				'correction',      // Noun.
+			),
+			'eliminar' => array( // Portuguese.
+				'delete',          // Verb.
+				'deletion',        // Noun.
+			),
+			'editar' => array( // Portuguese.
+				'edit',          // Verb.
+				'edition',       // Noun.
+			),
+			'acender' => array( // Portuguese.
+				'ignite',         // Verb.
+				'ignition',       // Noun.
+			),
+			'contribuir' => array( // Portuguese.
+				'contribute',        // Verb.
+				'contribution',      // Noun.
+			),
+			'resolver' => array( // Portuguese.
+				'resolve',         // Verb.
+				'resolution',      // Noun.
+			),
+			'comp\u00f4r' => array( // Portuguese.
+				'compose',            // Verb.
+				'composition',        // Noun.
+			),
+			'abster' => array( // Portuguese.
+				'abstain',       // Verb.
+				'abstention',    // Noun.
+			),
+			'transgredir' => array( // Portuguese.
+				'contravene',         // Verb.
+				'contravention',      // Noun.
+			),
+			'prevenir' => array( // Portuguese.
+				'prevent',         // Verb.
+				'prevention',      // Noun.
+			),
+			'inserir' => array( // Portuguese.
+				'insert',         // Verb.
+				'insertion',      // Noun.
+			),
+
+		);
+
+		$expected_result = array();
+		foreach ( $matches as $glossary_entry => $originals ) {
+			foreach ( $originals as $original ) {
+				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+			}
+		}
+		$expected_result = sprintf(
+			'Testing words %s.',
+			implode( ', ', $expected_result )
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entries = array(
+			array(
+				'term' => 'abbreviate', // Abbreviate and abbreviation.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'abreviar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'authorize', // Authorize and authorization.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'autorizar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'specify', // Specify and specification.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'especificar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'liquefy', // Liquefy and liquefaction.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'liquefazer', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'exclaim', // Exclaim and exclamation.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'exclamar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'encrypt', // Encrypt and encryption.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'encriptar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'subscribe', // Subscribe and subscription.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'subscrever', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'perceive', // Perceive and perception.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'percepcionar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'resume', // Resume and resumption.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'resumir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'correct', // Correct and correction.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'corrigir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'delete', // Delete and deletion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'eliminar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'edit', // Edit and edition.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'editar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'ignite', // Ignite and ignition.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'acender', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'contribute', // Contribute and contribution.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'contribuir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'resolve', // Resolve and resolution.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'resolver', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'compose', // Compose and composition.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'compôr', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'abstain', // Abstain and abstention.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'abster', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'contravene', // Contravene and contravention.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'transgredir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'prevent', // Prevent and prevention.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'prevenir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'insert', // Insert and insertion
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'inserir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+
+		);
+
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
 }

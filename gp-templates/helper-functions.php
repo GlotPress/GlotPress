@@ -220,6 +220,40 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 'ing', // Add 'ing'.
 			),
 
+			// Nouns formed by Verbs.
+			// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm
+
+			// Verbs that form nouns ending with suffix '-tion'.
+			array(
+				'endings'  => array(
+					// General.
+					'ate'    => 'a',     // Abbreviate and abbrevia-tion. Change to 'a-tion'.
+					'ize'    => 'iza',   // Authorize and authoriza-tion. Change to 'iza-tion'.
+					'ify'    => 'ifica', // Specify and specifica-tion. Change to 'ifica-tion'.
+					'efy'    => 'efac',  // Liquefy and liquefac-tion. Change to 'efaca-tion'.
+					'aim'    => 'ama',   // Exclaim and exclama-tion. Change to 'ama-tion'.
+					'pt'     => 'p',     // Encrypt and encryp-tion. Change to 'p-tion'.
+					'scribe' => 'scrip', // Subscribe and subscrip-tion. Change to 'scrip-tion'.
+					'ceive'  => 'cep',   // Perceive and percep-tion. Change to 'cep-tion'.
+					'sume'   => 'sump',  // Resume and resump-tion. Change to 'sump-tion'.
+					'ct'     => 'c',     // Correct and correc-tion. Change to 'c-tion'.
+					'ete'    => 'e',     // Delete and dele-tion. Change to 'e-tion'.
+					'it'     => 'i',     // Edit and edi-tion. Change to 'i-tion'.
+					'ite'    => 'i',     // Ignite and igni-tion. Change to 'i-tion'.
+					'ute'    => 'u',     // Contribute and contribu-tion. Change to 'u-tion'.
+					'olve'   => 'olu',   // Resolve and resolu-tion. Change to 'olu-tion'.
+					'ose'    => 'osi',   // Compose and composi-tion. Change to 'osi-tion'.
+					// After 'n' cases.
+					'tain'   => 'ten',   // Abstain and absten-tion. Change to 'ten-tion'.
+					'vene'   => 'ven',   // Contravene and contraven-tion. Change to 'ven-tion'.
+					'vent'   => 'ven',   // Prevent and preven-tion. Change to 'ven-tion'.
+					// After 'r' cases.
+					'rt'     => 'r',     // Insert and inser-tion. Change to 'r-tion'.
+				),
+				'preceded' => null,
+				'add'      => 'tion', // Add 'tion'.
+			),
+
 		),
 
 		// Plurals of adverbs.
