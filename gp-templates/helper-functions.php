@@ -130,9 +130,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'fe' => 'v', // Wife and wiv-es. Change to 'v-es'.
-					'f'  => 'v', // Leaf and leav-es, wolf and wolv-es. Change to 'v-es'.
-					's' => null, // Bus and bus-es, lens and len-ses.
+					'fe' => 'v',  // Wife and wiv-es. Change to 'v-es'.
+					'f'  => 'v',  // Leaf and leav-es, wolf and wolv-es. Change to 'v-es'.
+					's'  => null, // Bus and bus-es, lens and len-ses.
 				),
 				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
@@ -144,7 +144,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					'\w(?<!z|x|sh|ch|s|y|an|fe)' => null, // None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'preceded' => null,
-				'add'      => 's',  // Add 's'.
+				'add'      => 's', // Add 's'.
 			),
 		),
 
@@ -441,7 +441,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Remove the trailing |.
-		$terms_search = rtrim( $terms_search, '|' );
+		$terms_search  = rtrim( $terms_search, '|' );
 		$terms_search .= ')\b';
 	}
 
