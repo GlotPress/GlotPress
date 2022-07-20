@@ -1470,9 +1470,200 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'glossary_id' => $glossary->id,
 			),
 			array(
-				'term' => 'insert', // Insert and insertion
+				'term' => 'insert', // Insert and insertion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'inserir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+
+		);
+
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects matching the Verbs that form Nouns ending with suffix '-sion'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_form_nouns_ending_with_sion_in_glossary() {
+		$test_string = 'Testing words invade, invasion, precede, precession, decide, decision, explode, explosion, exclude, exclusion, supervise, supervision, confuse, confusion, expel, expulsion, submit, submission, compress, compression, extend, extension, convert, conversion, disperse, dispersion, recur, recursion, emerge, emersion.';
+
+		$part_of_speech = 'verb';
+
+		$matches = array(
+			'invadir' => array( // Portuguese.
+				'invade',         // Verb.
+				'invasion',       // Noun.
+			),
+			'preceder' => array( // Portuguese.
+				'precede',         // Verb.
+				'precession',      // Noun.
+			),
+			'decidir' => array( // Portuguese.
+				'decide',         // Verb.
+				'decision',       // Noun.
+			),
+			'explodir' => array( // Portuguese.
+				'explode',         // Verb.
+				'explosion',       // Noun.
+			),
+			'excluir' => array( // Portuguese.
+				'exclude',        // Verb.
+				'exclusion',      // Noun.
+			),
+			'supervisionar' => array( // Portuguese.
+				'supervise',            // Verb.
+				'supervision',          // Noun.
+			),
+			'confundir' => array( // Portuguese.
+				'confuse',          // Verb.
+				'confusion',        // Noun.
+			),
+			'expulsar' => array( // Portuguese.
+				'expel',           // Verb.
+				'expulsion',       // Noun.
+			),
+			'submeter' => array( // Portuguese.
+				'submit',          // Verb.
+				'submission',      // Noun.
+			),
+			'comprimir' => array( // Portuguese.
+				'compress',         // Verb.
+				'compression',      // Noun.
+			),
+			'estender' => array( // Portuguese.
+				'extend',          // Verb.
+				'extension',       // Noun.
+			),
+			'converter' => array( // Portuguese.
+				'convert',          // Verb.
+				'conversion',       // Noun.
+			),
+			'dispersar' => array( // Portuguese.
+				'disperse',         // Verb.
+				'dispersion',       // Noun.
+			),
+			'repetir' => array( // Portuguese.
+				'recur',          // Verb.
+				'recursion',      // Noun.
+			),
+			'emergir' => array( // Portuguese.
+				'emerge',         // Verb.
+				'emersion',       // Noun.
+			),
+
+		);
+
+		$expected_result = array();
+		foreach ( $matches as $glossary_entry => $originals ) {
+			foreach ( $originals as $original ) {
+				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+			}
+		}
+		$expected_result = sprintf(
+			'Testing words %s.',
+			implode( ', ', $expected_result )
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entries = array(
+			array(
+				'term' => 'invade', // Invade and invasion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'invadir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'precede', // Precede and precession.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'preceder', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'decide', // Decide and decision.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'decidir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'explode', // Explode and explosion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'explodir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'exclude', // Exclude and exclusion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'excluir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'supervise', // Supervise and supervision.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'supervisionar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'confuse', // Confuse and confusion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'confundir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'expel', // Expel and expulsion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'expulsar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'submit', // Submit and submission.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'submeter', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'compress', // Compress and compression.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'comprimir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'extend', // Extend and extension.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'estender', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'convert', // Convert and conversion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'converter', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'disperse', // Disperse and dispersion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'dispersar', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'recur', // Recur and recursion.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'repetir', // Portuguese.
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'emerge', // Emerge and emersion
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'emergir', // Portuguese.
 				'glossary_id' => $glossary->id,
 			),
 

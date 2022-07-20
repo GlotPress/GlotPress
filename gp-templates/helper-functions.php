@@ -254,6 +254,32 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 'tion', // Add 'tion'.
 			),
 
+			// Verbs that form nouns ending with suffix '-sion'.
+			array(
+				'endings'  => array(
+					// General.
+					'ade'    => 'a',   // Invade and inva-sion. Change to 'a-sion'.
+					'cede'   => 'ces', // Precede and preces-sion. Change to 'ces-sion'.
+					'ide'    => 'i',   // Decide and deci-sion. Change to 'i-sion'.
+					'ode'    => 'o',   // Explode and explo-sion. Change to 'o-sion'.
+					'ude'    => 'u',   // Exclude and exclu-sion. Change to 'u-sion'.
+					'ise'    => 'i',   // Supervise and supervi-sion. Change to 'i-sion'.
+					'use'    => 'u',   // Confuse and confu-sion. Change to 'u-sion'.
+					'pel'    => 'pul', // Expel and expul-sion. Change to 'pul-sion'.
+					'mit'    => 'mis', // Submit and submis-sion. Change to 'mis-sion'.
+					'ss'     => 's',   // Compress and compres-sion. Change to 's-sion'.
+					// After 'n' cases.
+					'end'    => 'en',  // Extend and exten-sion. Change to 'en-sion'.
+					// After 'r' cases.
+					'vert'   => 'ver', // Convert and conver-sion. Change to 'ver-sion'.
+					'erse'   => 'er',  // Disperse and disper-sion. Change to 'er-sion'.
+					'ur'     => 'ur',  // Recur and recur-sion. Change to 'ur-sion'.
+					'erge'   => 'er',  // Emerge and emer-sion. Change to 'er-sion'.
+				),
+				'preceded' => null,
+				'add'      => 'sion', // Add 'sion'.
+			),
+
 		),
 
 		// Plurals of adverbs.
