@@ -108,7 +108,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 's',       // Add 's'.
 			),
 
-			// Ending with '-y' preceded by consonant. Suffix: '-es'.
+			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
 				'endings'  => array(
 					'y' => 'i',  // Lady and ladi-es. Change to 'i-es'.
@@ -148,7 +148,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			),
 		),
 
-		// Plurals of verbs.
+		// Verb tenses.
 		'verb'         => array(
 
 			// Third-person singular for verbs.
@@ -196,9 +196,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Past simple tense and past participle of verbs. Suffix '-ed'.
 			array(
 				'endings'  => array(
-					// Not ending with 'e'.
+					// Not ending with '-e'.
 					'\w(?<!e)' => null, // Fix and fix-ed, push and push-ed.
-					// Ending with 'e'.
+					// Ending with '-e'.
 					'e'        => '', // Contribute and contribut-ed, delete and delet-ed. Change to '-ed'.
 				),
 				'preceded' => null,
@@ -208,12 +208,12 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Present participle and gerund of verbs. Suffix '-ing'.
 			array(
 				'endings'  => array(
-					// Not ending with 'e', or ending with 'ee', 'ye' or 'oe'.
+					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
 					'\w(?<!e)' => null, // Fix and fix-ing, push and push-ing.
 					'ee'       => null, // Agree and agree-ing, see and see-ing.
 					'ye'       => null, // Dye and dye-ing.
 					'oe'       => null, // Tiptoe and tiptoe-ing.
-					// Ending with 'e'.
+					// Ending with single '-e'.
 					'e'        => '', // Contribute and contribut-ing, delete and delet-ing, care and car-ing. Change to '-ing'.
 				),
 				'preceded' => null,
@@ -221,7 +221,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			),
 
 			// Nouns formed by Verbs.
-			// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm
+			// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm.
 
 			// Verbs that form nouns ending with suffix '-tion'.
 			array(
@@ -258,23 +258,23 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'endings'  => array(
 					// General.
-					'ade'    => 'a',   // Invade and inva-sion. Change to 'a-sion'.
-					'cede'   => 'ces', // Precede and preces-sion. Change to 'ces-sion'.
-					'ide'    => 'i',   // Decide and deci-sion. Change to 'i-sion'.
-					'ode'    => 'o',   // Explode and explo-sion. Change to 'o-sion'.
-					'ude'    => 'u',   // Exclude and exclu-sion. Change to 'u-sion'.
-					'ise'    => 'i',   // Supervise and supervi-sion. Change to 'i-sion'.
-					'use'    => 'u',   // Confuse and confu-sion. Change to 'u-sion'.
-					'pel'    => 'pul', // Expel and expul-sion. Change to 'pul-sion'.
-					'mit'    => 'mis', // Submit and submis-sion. Change to 'mis-sion'.
-					'ss'     => 's',   // Compress and compres-sion. Change to 's-sion'.
+					'ade'  => 'a',   // Invade and inva-sion. Change to 'a-sion'.
+					'cede' => 'ces', // Precede and preces-sion. Change to 'ces-sion'.
+					'ide'  => 'i',   // Decide and deci-sion. Change to 'i-sion'.
+					'ode'  => 'o',   // Explode and explo-sion. Change to 'o-sion'.
+					'ude'  => 'u',   // Exclude and exclu-sion. Change to 'u-sion'.
+					'ise'  => 'i',   // Supervise and supervi-sion. Change to 'i-sion'.
+					'use'  => 'u',   // Confuse and confu-sion. Change to 'u-sion'.
+					'pel'  => 'pul', // Expel and expul-sion. Change to 'pul-sion'.
+					'mit'  => 'mis', // Submit and submis-sion. Change to 'mis-sion'.
+					'ss'   => 's',   // Compress and compres-sion. Change to 's-sion'.
 					// After 'n' cases.
-					'end'    => 'en',  // Extend and exten-sion. Change to 'en-sion'.
+					'end'  => 'en',  // Extend and exten-sion. Change to 'en-sion'.
 					// After 'r' cases.
-					'vert'   => 'ver', // Convert and conver-sion. Change to 'ver-sion'.
-					'erse'   => 'er',  // Disperse and disper-sion. Change to 'er-sion'.
-					'ur'     => 'ur',  // Recur and recur-sion. Change to 'ur-sion'.
-					'erge'   => 'er',  // Emerge and emer-sion. Change to 'er-sion'.
+					'vert' => 'ver', // Convert and conver-sion. Change to 'ver-sion'.
+					'erse' => 'er',  // Disperse and disper-sion. Change to 'er-sion'.
+					'ur'   => 'ur',  // Recur and recur-sion. Change to 'ur-sion'.
+					'erge' => 'er',  // Emerge and emer-sion. Change to 'er-sion'.
 				),
 				'preceded' => null,
 				'add'      => 'sion', // Add 'sion'.
