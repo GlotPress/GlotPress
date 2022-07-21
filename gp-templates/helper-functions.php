@@ -339,19 +339,25 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					// Set key.
 					$key = is_null( $change ) ? $term : substr( $term, 0, - strlen( $ending ) );
 
-					// If the ending changes, also add the ending.
-					if ( ! is_null( $change ) ) {
-						// Add the ending to the suffixes.
-						$glossary_entries_suffixes[ $key ][] = $ending;
-					}
-
-					// Check if key term is an array.
+					// Check if key term is set.
 					if ( ! isset( $glossary_entries_suffixes[ $key ] ) ) {
+						// Add the key term with empty array.
 						$glossary_entries_suffixes[ $key ] = array();
 					}
 
-					// Add suffix.
+					// If the ending changes, also add the ending.
+					if ( ! is_null( $change ) ) {
+
+						// Check if ending already exist in array of suffixes.
+						if ( ! in_array( $ending, $glossary_entries_suffixes[ $key ], true ) ) {
+							// Add the ending to the suffixes.
+							$glossary_entries_suffixes[ $key ][] = $ending;
+						}
+					}
+
+					// Check if suffix already exist in array of suffixes.
 					if ( ! in_array( $suffix, $glossary_entries_suffixes[ $key ], true ) ) {
+						// Add suffix.
 						$glossary_entries_suffixes[ $key ][] = $suffix;
 					}
 
