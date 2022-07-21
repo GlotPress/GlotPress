@@ -113,7 +113,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'endings'  => array(
 					'y' => 'i',  // Lady and ladi-es. Change to 'i-es'.
-					'o' => null, // Hero, tomato.
+					'o' => null, // Hero and hero-es, tomato and tomato-es.
 				),
 				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'add'      => 'es',                 // Add 'es'.
