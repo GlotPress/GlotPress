@@ -83,6 +83,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	$suffixes = array(
 
 		// Plurals of singular nouns.
+		// https://www.thefreedictionary.com/Forming-Plurals.htm.
 		// https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
 		'noun'         => array(
 
