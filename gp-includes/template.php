@@ -655,7 +655,10 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  * @return array
  */
 function gp_get_translation_row_classes( $translation ) {
-	$classes   = array();
+	$classes = array();
+	if ( ( 'changes_requested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+		$translation->translation_status = 'rejected';
+	}
 	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
 	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
