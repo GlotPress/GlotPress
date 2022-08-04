@@ -373,7 +373,8 @@ function display_status( $status ) {
 		'rejected'          => _x( 'rejected', 'Single Status', 'glotpress' ),
 		'changes_requested' => _x( 'Changes requested', 'Single Status', 'glotpress' ),
 	);
-	if ( ! apply_filters( 'gp_translation_helper_installed', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
+    //  If a changes_requested status exists in the database but they are no longer enabled, they will show as rejected.
+	if ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
 		$status_labels['changes_requested'] = _x( 'rejected', 'Single Status', 'glotpress' );
 	}
 	if ( isset( $status_labels[ $status ] ) ) {
