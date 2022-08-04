@@ -1280,6 +1280,7 @@ form.filters-toolbar a.revealing.open {
 .warning a.discard-warning {
 	float: right;
 	color: inherit;
+	margin-left: 0.5em;
 }
 
 .glossary-description,
