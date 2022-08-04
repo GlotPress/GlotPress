@@ -656,14 +656,14 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  */
 function gp_get_translation_row_classes( $translation ) {
 	$classes = array();
-	if ( ( 'changes_requested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
-		$translation->translation_status = 'rejected';
+	if ( ( 'changes_requested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code
+		$classes[] = 'untranslated';
+	} else {
+		$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
 	}
-	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
 	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	$classes[] = count( array_filter( $translation->translations, 'gp_is_not_null' ) ) > 0 ? 'has-translations' : 'no-translations';
-
 	/**
 	 * Filters the list of CSS classes for a translation row
 	 *

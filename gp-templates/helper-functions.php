@@ -341,6 +341,9 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			endforeach;
 
 		endif;
+		if ( ( 'changes_requested' == $entry->translation_status ) && ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+			$entry->translations = array();
+		}
 		?>
 		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
@@ -375,7 +378,7 @@ function display_status( $status ) {
 	);
 	// If a changes_requested status exists in the database but they are no longer enabled, they will show as rejected.
 	if ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
-		$status_labels['changes_requested'] = _x( 'rejected', 'Single Status', 'glotpress' );
+		$status_labels['changes_requested'] = _x( 'untranslated', 'Single Status', 'glotpress' );
 	}
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
