@@ -191,7 +191,7 @@ class GP_Translation extends GP_Thing {
 	 * @var array $statuses
 	 * @static
 	 */
-	public static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', 'changes_requested' );
+	public static $statuses = array( 'current', 'waiting', 'rejected', 'fuzzy', 'old', 'changesrequested' );
 
 	/**
 	 * Number of supported translations per original.
@@ -423,7 +423,7 @@ class GP_Translation extends GP_Thing {
 		};
 
 		$join_on  = array();
-		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated_or_changes_requested' );
+		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated_or_changesrequested' );
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses, true ) ) {
 			if ( array( 'untranslated' ) == $statuses ) {

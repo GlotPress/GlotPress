@@ -74,7 +74,7 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * @var int
 	 */
-	public $changes_requested_count;
+	public $changesrequested_count;
 
 	/**
 	 * Number of fuzzy translations.
@@ -400,12 +400,12 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * @return int Number of waiting translations.
 	 */
-	public function changes_requested_count() {
-		if ( ! isset( $this->changes_requested_count ) ) {
+	public function changesrequested_count() {
+		if ( ! isset( $this->changesrequested_count ) ) {
 			$this->update_status_breakdown();
 		}
 
-		return $this->changes_requested_count;
+		return $this->changesrequested_count;
 	}
 
 	/**
@@ -562,7 +562,7 @@ class GP_Translation_Set extends GP_Thing {
 				);
 			}
 
-			$changes_requested_counts = $wpdb->get_row(
+			$changesrequested_counts = $wpdb->get_row(
 				$wpdb->prepare(
 					"SELECT
 						COUNT(*) AS total,
@@ -573,17 +573,17 @@ class GP_Translation_Set extends GP_Thing {
 					WHERE
 						t.translation_set_id = %d AND
 						o.status = '+active' AND
-						( t.status = 'changes_requested' )",
+						( t.status = 'changesrequested' )",
 					$this->id
 				)
 			);
 
-			if ( $changes_requested_counts ) {
+			if ( $changesrequested_counts ) {
 				$counts[] = (object) array(
-					'translation_status' => 'changes_requested',
-					'total'              => (int) $changes_requested_counts->total,
-					'hidden'             => (int) $changes_requested_counts->hidden,
-					'public'             => (int) $changes_requested_counts->public,
+					'translation_status' => 'changesrequested',
+					'total'              => (int) $changesrequested_counts->total,
+					'hidden'             => (int) $changesrequested_counts->hidden,
+					'public'             => (int) $changesrequested_counts->public,
 				);
 			}
 

@@ -656,7 +656,7 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  */
 function gp_get_translation_row_classes( $translation ) {
 	$classes = array();
-	if ( ( 'changes_requested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code
+	if ( ( 'changesrequested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code
 		$classes[] = 'untranslated';
 	} else {
 		$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';

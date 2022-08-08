@@ -341,7 +341,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			endforeach;
 
 		endif;
-		if ( ( 'changes_requested' == $entry->translation_status ) && ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+		if ( ( 'changesrequested' == $entry->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
 			$entry->translations = array();
 		}
 		?>
@@ -374,11 +374,11 @@ function display_status( $status ) {
 		'fuzzy'             => _x( 'fuzzy', 'Single Status', 'glotpress' ),
 		'old'               => _x( 'old', 'Single Status', 'glotpress' ),
 		'rejected'          => _x( 'rejected', 'Single Status', 'glotpress' ),
-		'changes_requested' => _x( 'Changes requested', 'Single Status', 'glotpress' ),
+		'changesrequested' => _x( 'Changes requested', 'Single Status', 'glotpress' ),
 	);
-	// If a changes_requested status exists in the database but they are no longer enabled, they will show as rejected.
-	if ( ! apply_filters( 'gp_enable_changes_requested_status', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
-		$status_labels['changes_requested'] = _x( 'untranslated', 'Single Status', 'glotpress' );
+	// If a changesrequested status exists in the database but they are no longer enabled, they will show as rejected.
+	if ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
+		$status_labels['changesrequested'] = _x( 'untranslated', 'Single Status', 'glotpress' );
 	}
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];

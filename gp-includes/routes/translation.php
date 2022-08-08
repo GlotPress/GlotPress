@@ -376,7 +376,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			switch ( $bulk['action'] ) {
 				case 'approve':
 				case 'reject':
-				case 'changes_requested':
+				case 'changesrequested':
 					$this->_bulk_approve( $bulk );
 					break;
 				case 'fuzzy':
@@ -425,8 +425,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			case 'rejected':
 				$new_status = 'rejected';
 				break;
-			case 'changes_requested':
-				$new_status = 'changes_requested';
+			case 'changesrequested':
+				$new_status = 'changesrequested';
 				break;
 		}
 		foreach ( $bulk['row-ids'] as $row_id ) {
@@ -458,7 +458,7 @@ class GP_Route_Translation extends GP_Route_Main {
 						$ok
 					);
 					break;
-				case 'changes_requested':
+				case 'changesrequested':
 					$this->notices[] = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation has changes requested.', '%d translations have changes requested.', $ok, 'glotpress' ),
@@ -483,7 +483,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$error
 						);
 						break;
-					case 'changes_requested':
+					case 'changesrequested':
 						$message = sprintf(
 						/* translators: %s: Translations count. */
 							_n( 'Error requesting changes in %s translation.', 'Error requesting changes in %s translations.', $error, 'glotpress' ),
@@ -507,7 +507,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$ok
 						);
 						break;
-					case 'changes_requested':
+					case 'changesrequested':
 						$message .= sprintf(
 						/* translators: %s: Translations count. */
 							_n( 'The remaining %s translation was successfully requested for changes.', 'The remaining %s translations were successfully requested for changes.', $ok, 'glotpress' ),
@@ -532,7 +532,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$error
 						);
 						break;
-					case 'changes_requested':
+					case 'changesrequested':
 						$this->errors[] = sprintf(
 						/* translators: %s: Translations count. */
 							_n( 'Error with requesting changes in %s translation.', 'Error with requesting changes in %s translations.', $error, 'glotpress' ),
