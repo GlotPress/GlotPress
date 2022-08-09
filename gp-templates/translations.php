@@ -306,7 +306,7 @@ $i = 0;
 					</label><br />
 					<?php if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
 						<label for="filters[status][changesrequested]">
-							<input type="checkbox" value="rejected" id="filters[status][changesrequested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changesrequested', $selected_status_list, true ) ); ?>>
+							<input type="checkbox" value="changesrequested" id="filters[status][changesrequested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changesrequested', $selected_status_list, true ) ); ?>>
 							<?php _e( 'Changes requested', 'glotpress' ); ?>
 						</label><br />
 					<?php endif; ?>
