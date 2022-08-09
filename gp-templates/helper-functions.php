@@ -341,7 +341,9 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			endforeach;
 
 		endif;
-		if ( ( 'changesrequested' == $entry->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+		// Don't show the translation in the translation textarea if the translation status is changesrequested but the
+		// changesrequested is not enabled, because in this situation we consider the changesrequested as rejected translations.
+		if ( 'changesrequested' == $entry->translation_status && ! apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
 			$entry->translations = array();
 		}
 		?>
