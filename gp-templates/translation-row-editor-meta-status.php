@@ -11,7 +11,7 @@
 	<dt><?php _e( 'Status:', 'glotpress' ); ?></dt>
 	<dd>
 		<?php echo display_status( $translation->translation_status ); ?>
-		<?php if ( ! ( ( 'changesrequested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) ) : // todo: delete when we merge the gp-translation-helpers in GlotPress. ?>
+		<?php if ( ( 'changesrequested' != $translation->translation_status ) || ( apply_filters( 'gp_enable_changesrequested_status', false ) ) ) : // todo: delete when we merge the gp-translation-helpers in GlotPress. ?>
 			<?php if ( $translation->translation_status ) : ?>
 				<?php if ( $can_approve_translation ) : ?>
 					<?php if ( 'current' !== $translation->translation_status ) : ?>
