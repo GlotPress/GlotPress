@@ -2050,6 +2050,16 @@ class GP_Locales {
 		$rhg->slug = 'rhg';
 		$rhg->nplurals = 1;
 		$rhg->plural_expression = '0';
+		
+		$rif = new GP_Locale();
+		$rif->english_name = 'Tarifit';
+		$rif->native_name = 'Tarifiyt';
+		$rif->lang_code_iso_639_3 = 'rif';
+		$rif->country_code = 'ma';
+		$rif->wp_locale = 'rif';
+		$rif->slug = 'rif';
+		$rif->nplurals = 2;
+		$rif->plural_expression = 'n > 1';
 
 		$ro = new GP_Locale();
 		$ro->english_name = 'Romanian';
