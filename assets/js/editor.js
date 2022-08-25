@@ -4,7 +4,7 @@ $gp.editor = (
 	function( $ ) {
 		return {
 			current: null,
-			orginal_translations: null,
+			original_translations: null,
 			init: function( table ) {
 				var $previewRows;
 
@@ -23,6 +23,24 @@ $gp.editor = (
 			},
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
+			},
+			update_count: function( element ) {
+				var id = $( element.target ).attr( 'id' ).substring( 'translation_'.length );
+				var string = $( `textarea#translation_${id}` ).val();
+				var characters_count = string.length;
+				var words_count = 0;
+
+				if ( characters_count > 0 ) {
+					if ( string.indexOf( ' ' ) !== -1 ) {
+						var words = string.trim().split( ' ' );
+						words_count = words.length;
+					} else {
+						words_count = 1;
+					}
+				}
+
+				$( `.editor .textareas .counts#counts_${id} .characters` ).text( `${characters_count} Characters` );
+				$( `.editor .textareas .counts#counts_${id} .words` ).text( `${words_count} Words` );
 			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
@@ -44,7 +62,7 @@ $gp.editor = (
 				editor.original_id = $gp.editor.original_id_from_row_id( row_id );
 				editor.translation_id = $gp.editor.translation_id_from_row_id( row_id );
 
-				editor.orginal_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
+				editor.original_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
 					return this.value;
 				} ).get();
 
@@ -108,7 +126,8 @@ $gp.editor = (
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
-					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
+					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
+					.on( 'change keyup paste', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -418,8 +437,8 @@ $gp.editor = (
 				cancel: function() {
 					var i = 0;
 
-					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
-						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[ i ] );
+					for ( i = 0; i < $gp.editor.current.original_translations.length; i++ ) {
+						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.original_translations[ i ] );
 					}
 
 					$gp.editor.hide();
@@ -428,6 +447,9 @@ $gp.editor = (
 				},
 				keydown: function( e ) {
 					return $gp.editor.keydown( e );
+				},
+				update_count: function( e ) {
+					return $gp.editor.update_count( e );
 				},
 				copy: function() {
 					$gp.editor.copy( $( this ) );

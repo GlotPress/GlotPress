@@ -473,7 +473,6 @@ button,
 
 .gp-content textarea {
 	width: 100%;
-	max-width: 40em;
 	padding: 8px;
 	font-size: 15px;
 	resize: vertical;
@@ -949,8 +948,15 @@ span.context {
 	min-width: 60%;
 }
 
-.editor .strings .textareas textarea {
-	width: 95%;
+.editor .strings .textareas textarea,
+.editor .strings .textareas .counts {
+	width: 100%;
+}
+
+.editor .textareas .counts {
+	text-align: end;
+	font-size: .875rem;
+	color: var(--gp-color-fg-muted);
 }
 
 .editor .strings p.plural-numbers {
@@ -974,7 +980,6 @@ span.context {
 }
 
 .editor .textareas textarea {
-	width: 45em;
 	min-height: 8em;
 }
 

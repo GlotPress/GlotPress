@@ -344,6 +344,25 @@ function textareas( $entry, $permissions, $index = 0 ) {
 		?>
 		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
+		<div id="counts_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" class="counts">
+			<?php
+			// Characters count.
+			$characters_count = mb_strlen( gp_array_get( $entry->translations, $index ) );
+			$characters = sprintf(
+				/* translators: %d: Number of characters. */
+				_n( '%d Character', '%d Characters', $characters_count, 'glotpress' ),
+				esc_html( $characters_count )
+			);
+			// Words count.
+			$words_count = count( preg_split( '/[\s]+/i', gp_array_get( $entry->translations, $index ), 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE ) );
+			$words = sprintf(
+				/* translators: %d: Number of words. */
+				_n( '%d Word', '%d Words', $words_count, 'glotpress' ),
+				esc_html( $words_count )
+			);
+			?>
+			<span class="characters"><?php echo esc_html( $characters ); ?></span> • <span class="words"><?php echo esc_html( $words ); ?></span>
+		</div>
 
 		<div>
 			<?php
