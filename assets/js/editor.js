@@ -99,6 +99,7 @@ $gp.editor = (
 					.on( 'click', 'a.edit', $gp.editor.hooks.show )
 					.on( 'dblclick', 'tr.preview td', $gp.editor.hooks.show )
 					.on( 'change', 'select.priority', $gp.editor.hooks.set_priority )
+					.on( 'contextmenu', '.strings > .original > .glossary-word', $gp.editor.hooks.contextmenu_glossary )
 					.on( 'click', 'button.close', $gp.editor.hooks.cancel )
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
 					.on( 'click', 'button.copy', $gp.editor.hooks.copy )
@@ -436,6 +437,14 @@ $gp.editor = (
 				},
 				ok: function() {
 					$gp.editor.save( $( this ) );
+					return false;
+				},
+				contextmenu_glossary: function( e ) {
+					var info = jQuery( this ).data( 'translations' );
+					$( '.editor:visible textarea:visible' )
+						.val( $( '.editor:visible textarea:visible' ).val() + info[ 0 ].translation )
+						.focus();
+					e.preventDefault();
 					return false;
 				},
 				cancel: function() {

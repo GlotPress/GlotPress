@@ -121,6 +121,9 @@ jQuery( document ).ready( function( $ ) {
 		'<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd> (macOS)<br>' +
 		'<td>Dismiss validation warnings for the current page</td></tr>' +
 		'' +
+		'<tr><td>Right click on a Glossary term.</td><br>' +
+		'<td>Add the first item from the glossary to the translation.</td></tr>' +
+		'' +
 		'<tr><td><kbd>Ctrl</kbd>+<kbd>Left Arrow</kbd> (Windows/Linux)<br>' +
 		'<kbd>Cmd</kbd>+<kbd>Left Arrow</kbd> (macOS)<br>' +
 		'<td>Move to the previous page</td></tr>' +
