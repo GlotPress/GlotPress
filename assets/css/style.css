@@ -473,6 +473,7 @@ button,
 
 .gp-content textarea {
 	width: 100%;
+	max-width: 40em;
 	padding: 8px;
 	font-size: 15px;
 	resize: vertical;
@@ -950,7 +951,8 @@ span.context {
 
 .editor .strings .textareas textarea,
 .editor .strings .textareas .counts {
-	width: 100%;
+	width: 95%;
+	max-width: 40rem;
 }
 
 .editor .textareas .counts {
@@ -980,6 +982,7 @@ span.context {
 }
 
 .editor .textareas textarea {
+	width: 45em;
 	min-height: 8em;
 }
 
