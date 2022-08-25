@@ -26,21 +26,20 @@ $gp.editor = (
 			},
 			update_count: function( element ) {
 				var id = $( element.target ).attr( 'id' ).substring( 'translation_'.length );
-				var string = $( `textarea#translation_${id}` ).val();
+				var string = $( 'textarea#translation_' + id ).val();
 				var characters_count = string.length;
 				var words_count = 0;
 
 				if ( characters_count > 0 ) {
 					if ( string.indexOf( ' ' ) !== -1 ) {
-						var words = string.trim().split( ' ' );
-						words_count = words.length;
+						words_count = string.trim().split( ' ' ).length;
 					} else {
 						words_count = 1;
 					}
 				}
 
-				$( `.editor .textareas .counts#counts_${id} .characters` ).text( `${characters_count} Characters` );
-				$( `.editor .textareas .counts#counts_${id} .words` ).text( `${words_count} Words` );
+				$( '.editor .textareas .counts#counts_' + id + ' .characters' ).text( characters_count + ' Characters' );
+				$( '.editor .textareas .counts#counts_' + id + ' .words' ).text( words_count + ' Words' );
 			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
