@@ -358,7 +358,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$words = sprintf(
 				/* translators: %d: Number of words. */
 				_n( '%d Word', '%d Words', $words_count, 'glotpress' ),
-				esc_html( $words_count )
+				number_format_i18n( $words_count )
 			);
 			?>
 			<span class="characters"><?php echo esc_html( $characters ); ?></span> • <span class="words"><?php echo esc_html( $words ); ?></span>
