@@ -126,7 +126,7 @@ $gp.editor = (
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
-					.on( 'change keyup paste', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
+					.on( 'input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
