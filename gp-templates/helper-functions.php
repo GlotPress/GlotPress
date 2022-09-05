@@ -351,7 +351,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			$characters = sprintf(
 				/* translators: %d: Number of characters. */
 				_n( '%d Character', '%d Characters', $characters_count, 'glotpress' ),
-				esc_html( $characters_count )
+				number_format_i18n( $characters_count )
 			);
 			// Words count.
 			$words_count = count( preg_split( '/[\s]+/i', gp_array_get( $entry->translations, $index ), 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE ) );
