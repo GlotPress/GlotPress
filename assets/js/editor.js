@@ -25,15 +25,13 @@ $gp.editor = (
 				return row_id.split( '-' )[ 1 ];
 			},
 			update_count: function( element ) {
-				var id;
 				var string;
 				var count_characters;
 				var count_words;
 
 				// Update counts for all row textareas (singular and plurals).
 				$( element.target ).parents( 'div.strings' ).find( 'div.textareas' ).each( function() {
-					id = $( this ).find( 'textarea' ).attr( 'id' ).substring( 'translation_'.length );
-					string = $( 'textarea#translation_' + id ).val();
+					string = $( this ).find( 'textarea' ).val();
 					count_characters = wp.wordcount.count( string, 'characters_including_spaces' );
 					count_words = wp.wordcount.count( string, $gp_editor_options.words_type );
 
