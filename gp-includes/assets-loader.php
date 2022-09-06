@@ -30,7 +30,7 @@ function gp_register_default_scripts() {
 
 	// Register our standard scripts.
 	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '20210429' );
-	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery' ), '20220319' );
+	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery', 'wp-i18n' ), '20220319' );
 	wp_add_inline_script(
 		'gp-common',
 		sprintf(

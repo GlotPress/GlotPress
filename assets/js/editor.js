@@ -27,11 +27,24 @@ $gp.editor = (
 			update_count: function( element ) {
 				var id = $( element.target ).attr( 'id' ).substring( 'translation_'.length );
 				var string = $( 'textarea#translation_' + id ).val();
-				var characters_count = wp.wordcount.count( string, 'characters_including_spaces' );
-				var words_count = wp.wordcount.count( string );
 
-				$( '.editor .textareas .counts#counts_' + id + ' .characters' ).text( characters_count + ' Characters' );
-				$( '.editor .textareas .counts#counts_' + id + ' .words' ).text( words_count + ' Words' );
+				var count_characters = wp.wordcount.count( string, 'characters_including_spaces' );
+				var count_words = wp.wordcount.count( string, $gp_editor_options.words_type );
+
+				$( element.target ).siblings( 'div.counts' ).find( '.characters' ).text(
+					wp.i18n.sprintf(
+						/* translators: %d: Characters count. */
+						wp.i18n._n( '%d Character', '%d Characters', count_characters, 'glotpress' ),
+						count_characters
+					)
+				);
+				$( element.target ).siblings( 'div.counts' ).find( '.words' ).text(
+					wp.i18n.sprintf(
+						/* translators: %d: Words count. */
+						wp.i18n._n( '%d Word', '%d Words', count_words, 'glotpress' ),
+						count_words
+					)
+				);
 			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
@@ -118,7 +131,7 @@ $gp.editor = (
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
-					.on( 'input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
+					.on( 'focus input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
