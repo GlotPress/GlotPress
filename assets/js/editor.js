@@ -28,6 +28,7 @@ $gp.editor = (
 				var string;
 				var count_characters;
 				var count_words;
+				var html;
 
 				// Update counts for all row textareas (singular and plurals).
 				$( element.target ).parents( 'div.strings' ).find( 'div.textareas' ).each( function() {
@@ -35,22 +36,22 @@ $gp.editor = (
 					count_characters = wp.wordcount.count( string, 'characters_including_spaces' );
 					count_words = wp.wordcount.count( string, $gp_editor_options.words_type );
 
-					// Update Characters count.
-					$( this ).find( 'div.counts .characters' ).text(
+					html = wp.i18n.sprintf(
+						'<span class="characters">%1$s</span> • <span class="words">%2$s</span>',
 						wp.i18n.sprintf(
 							/* translators: %d: Characters count. */
 							wp.i18n._n( '%d Character', '%d Characters', count_characters, 'glotpress' ),
 							count_characters
-						)
-					);
-					// Update Words count.
-					$( this ).find( 'div.counts .words' ).text(
+						),
 						wp.i18n.sprintf(
 							/* translators: %d: Words count. */
 							wp.i18n._n( '%d Word', '%d Words', count_words, 'glotpress' ),
 							count_words
 						)
 					);
+
+					// Update counts HTML.
+					$( this ).find( 'div.counts' ).html( html );
 				} );
 			},
 			show: function( element ) {

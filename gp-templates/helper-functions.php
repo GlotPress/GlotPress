@@ -344,9 +344,7 @@ function textareas( $entry, $permissions, $index = 0 ) {
 		?>
 		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $entry->id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
-		<div class="counts">
-			<span class="characters"></span> • <span class="words"></span>
-		</div>
+		<div class="counts"></div>
 
 		<div>
 			<?php
