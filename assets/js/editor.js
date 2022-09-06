@@ -25,26 +25,35 @@ $gp.editor = (
 				return row_id.split( '-' )[ 1 ];
 			},
 			update_count: function( element ) {
-				var id = $( element.target ).attr( 'id' ).substring( 'translation_'.length );
-				var string = $( 'textarea#translation_' + id ).val();
+				var id;
+				var string;
+				var count_characters;
+				var count_words;
 
-				var count_characters = wp.wordcount.count( string, 'characters_including_spaces' );
-				var count_words = wp.wordcount.count( string, $gp_editor_options.words_type );
+				// Update counts for all row textareas (singular and plurals).
+				$( element.target ).parents( 'div.strings' ).find( 'div.textareas' ).each( function() {
+					id = $( this ).find( 'textarea' ).attr( 'id' ).substring( 'translation_'.length );
+					string = $( 'textarea#translation_' + id ).val();
+					count_characters = wp.wordcount.count( string, 'characters_including_spaces' );
+					count_words = wp.wordcount.count( string, $gp_editor_options.words_type );
 
-				$( element.target ).siblings( 'div.counts' ).find( '.characters' ).text(
-					wp.i18n.sprintf(
-						/* translators: %d: Characters count. */
-						wp.i18n._n( '%d Character', '%d Characters', count_characters, 'glotpress' ),
-						count_characters
-					)
-				);
-				$( element.target ).siblings( 'div.counts' ).find( '.words' ).text(
-					wp.i18n.sprintf(
-						/* translators: %d: Words count. */
-						wp.i18n._n( '%d Word', '%d Words', count_words, 'glotpress' ),
-						count_words
-					)
-				);
+					// Update Characters count.
+					$( this ).find( 'div.counts .characters' ).text(
+						wp.i18n.sprintf(
+							/* translators: %d: Characters count. */
+							wp.i18n._n( '%d Character', '%d Characters', count_characters, 'glotpress' ),
+							count_characters
+						)
+					);
+					// Update Words count.
+					$( this ).find( 'div.counts .words' ).text(
+						wp.i18n.sprintf(
+							/* translators: %d: Words count. */
+							wp.i18n._n( '%d Word', '%d Words', count_words, 'glotpress' ),
+							count_words
+						)
+					);
+				} );
 			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
