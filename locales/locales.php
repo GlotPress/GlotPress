@@ -17,6 +17,7 @@ class GP_Locale {
 	public $preferred_sans_serif_font_family = null;
 	public $facebook_locale = null;
 	public $alphabet = 'latin';
+	public $word_count_type = 'words';
 
 	/**
 	 *
@@ -418,6 +419,7 @@ class GP_Locales {
 		$bo->nplurals = 1;
 		$bo->plural_expression = '0';
 		$bo->alphabet = 'tibetan';
+		$bo->word_count_type = 'characters_excluding_spaces';
 
 		$br = new GP_Locale();
 		$br->english_name = 'Breton';
@@ -1428,6 +1430,7 @@ class GP_Locales {
 		$ja->nplurals = 1;
 		$ja->plural_expression = '0';
 		$ja->alphabet = 'kanji';
+		$ja->word_count_type = 'characters_including_spaces';
 
 		$jv = new GP_Locale();
 		$jv->english_name = 'Javanese';
@@ -1520,6 +1523,7 @@ class GP_Locales {
 		$km->google_code = 'km';
 		$km->facebook_locale = 'km_KH';
 		$km->alphabet = 'khmer';
+		$km->word_count_type = 'characters_excluding_spaces';
 
 		$kmr = new GP_Locale();
 		$kmr->english_name = 'Kurdish (Kurmanji)';
@@ -2458,6 +2462,7 @@ class GP_Locales {
 		$th->google_code = 'th';
 		$th->facebook_locale = 'th_TH';
 		$th->alphabet = 'thai';
+		$th->word_count_type = 'characters_excluding_spaces';
 
 		$tir = new GP_Locale();
 		$tir->english_name = 'Tigrinya';
@@ -2725,6 +2730,7 @@ class GP_Locales {
 		$zh_cn->google_code = 'zh-CN';
 		$zh_cn->facebook_locale = 'zh_CN';
 		$zh_cn->alphabet = 'simplified-chinese';
+		$zh_cn->word_count_type = 'characters_excluding_spaces';
 
 		$zh_hk = new GP_Locale();
 		$zh_hk->english_name = 'Chinese (Hong Kong)';
@@ -2738,6 +2744,7 @@ class GP_Locales {
 		$zh_hk->plural_expression = '0';
 		$zh_hk->facebook_locale = 'zh_HK';
 		$zh_hk->alphabet = 'simplified-chinese';
+		$zh_hk->word_count_type = 'characters_excluding_spaces';
 
 		$zh_sg = new GP_Locale();
 		$zh_sg->english_name = 'Chinese (Singapore)';
@@ -2750,6 +2757,7 @@ class GP_Locales {
 		$zh_sg->nplurals = 1;
 		$zh_sg->plural_expression = '0';
 		$zh_sg->alphabet = 'hanyu';
+		$zh_sg->word_count_type = 'characters_excluding_spaces';
 
 		$zh_tw = new GP_Locale();
 		$zh_tw->english_name = 'Chinese (Taiwan)';
@@ -2764,6 +2772,7 @@ class GP_Locales {
 		$zh_tw->google_code = 'zh-TW';
 		$zh_tw->facebook_locale = 'zh_TW';
 		$zh_tw->alphabet = 'hanyu';
+		$zh_tw->word_count_type = 'characters_excluding_spaces';
 
 		$zul = new GP_Locale();
 		$zul->english_name = 'Zulu';
