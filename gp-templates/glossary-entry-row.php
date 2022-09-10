@@ -61,7 +61,7 @@
 			<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
 			<dl>
 				<dt><?php _e( 'Last Modified:', 'glotpress' ); ?></dt>
-				<dd><?php echo esc_html( $date_modified_formated ); ?></dd>
+				<dd><?php echo esc_html( $date_modified_formatted ); ?></dd>
 			</dl>
 			<?php if ( $entry->user_login ) : ?>
 			<dl>
