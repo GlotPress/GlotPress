@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp */
+/* global $gp_editor_options, $gp, window */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -99,6 +99,7 @@ $gp.editor = (
 					.on( 'click', 'a.edit', $gp.editor.hooks.show )
 					.on( 'dblclick', 'tr.preview td', $gp.editor.hooks.show )
 					.on( 'change', 'select.priority', $gp.editor.hooks.set_priority )
+					.on( 'contextmenu', '.strings > .original > .glossary-word', $gp.editor.hooks.contextmenu_glossary )
 					.on( 'click', 'button.close', $gp.editor.hooks.cancel )
 					.on( 'click', 'a.discard-warning', $gp.editor.hooks.discard_warning )
 					.on( 'click', 'button.copy', $gp.editor.hooks.copy )
@@ -136,15 +137,15 @@ $gp.editor = (
 				};
 			},
 			keydown: function( e ) {
-				var target, container, approve, reject, copy;
+				var target, container, approve, reject, copy, discard, previousPage, nextPage;
 
-				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Escape or Ctrl-Shift-Z = Cancel.
+				if ( 27 === e.keyCode || ( 90 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 90 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Escape, Ctrl-Shift-Z or Cmd-Shift-Z = Cancel.
 					$gp.editor.hide();
-				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) ) { // Page Up or Ctrl-Up Arrow = Previous editor.
+				} else if ( 33 === e.keyCode || ( 38 === e.keyCode && e.ctrlKey ) || ( 38 === e.keyCode && e.metaKey ) ) { // Page Up, Ctrl-Up Arrow or Cmd-Up Arrow = Previous editor.
 					$gp.editor.prev();
-				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) ) { // Page Down or Ctrl-Down Arrow = Next editor.
+				} else if ( 34 === e.keyCode || ( 40 === e.keyCode && e.ctrlKey ) || ( 40 === e.keyCode && e.metaKey ) ) { // Page Down, Ctrl-Down Arrow or Ctrl-Down Arrow = Next editor.
 					$gp.editor.next();
-				} else if ( 13 === e.keyCode && e.shiftKey ) { // Shift-Enter = Save.
+				} else if ( ( 13 === e.keyCode && e.shiftKey ) || ( 13 === e.keyCode && e.ctrlKey ) || ( 13 === e.keyCode && e.metaKey ) ) { // Shift-Enter, Ctrl-Enter, Cmd-Enter = Save or Suggest.
 					target = $( e.target );
 
 					if ( 0 === e.altKey && target.val().length ) {
@@ -162,29 +163,52 @@ $gp.editor = (
 					} else {
 						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
 					}
-				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
+				} else if ( ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 67 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.metaKey ) || ( 67 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-Shift-B, Ctrl-Shift-C, Cmd-Shift-B or Cmd-Shift-C = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
 
 					if ( copy.length > 0 ) {
 						copy.trigger( 'click' );
 					}
-				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-+ or Ctrl-Shift-A = Approve.
+				} else if ( ( 107 === e.keyCode && e.ctrlKey ) || ( 107 === e.keyCode && e.metaKey ) || ( 65 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 65 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-+, Cmd-+, Ctrl-Shift-A or Cmd-Shift-A = Approve.
 					approve = $( '.editor:visible' ).find( '.approve' );
 
 					if ( approve.length > 0 ) {
 						approve.trigger( 'click' );
 					}
-				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-- or Ctrl-Shift-R = Reject.
+				} else if ( ( 109 === e.keyCode && e.ctrlKey ) || ( 109 === e.keyCode && e.metaKey ) || ( 82 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 82 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl--, Cmd--, Ctrl-Shift-R or Cmd-Shift-R = Reject.
 					reject = $( '.editor:visible' ).find( '.reject' );
 
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
 					}
-				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-~ or Ctrl-Shift-~ = Fuzzy.
+				} else if ( ( 192 === e.keyCode && e.ctrlKey ) || ( 192 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 192 === e.keyCode && e.metaKey ) || ( 192 === e.keyCode && e.shiftKey && e.metaKey ) || ( 70 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 70 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-~, Ctrl-Shift-~, Cmd-~, Cmd-Shift-~, Ctrl-Shift-F or Cmd-Shift-F = Fuzzy.
 					reject = $( '.editor:visible' ).find( '.fuzzy' );
 
 					if ( reject.length > 0 ) {
 						reject.trigger( 'click' );
+					}
+				} else if ( ( 68 === e.keyCode && ! e.shiftKey && e.ctrlKey ) || ( 68 === e.keyCode && ! e.shiftKey && e.metaKey ) ) { // Ctrl-D or Cmd-D = Dismiss validation warnings for the current visible editor.
+					discard = $( '.editor:visible' ).find( '.discard-warning' );
+					if ( discard.length > 0 ) {
+						discard.trigger( 'click' );
+					}
+				} else if ( ( 68 === e.keyCode && e.shiftKey && e.ctrlKey ) || ( 68 === e.keyCode && e.shiftKey && e.metaKey ) ) { // Ctrl-Shift-D or Cmd-Shift-D = Dismiss validation warnings for the current page.
+					$( 'table > tbody  > tr' ).each( function() {
+						discard = $( this ).find( '.discard-warning' );
+						if ( discard.length > 0 ) {
+							$gp.editor.show( $( this ) );
+							discard.trigger( 'click' );
+						}
+					} );
+				} else if ( ( 37 === e.keyCode && e.ctrlKey ) || ( 37 === e.keyCode && e.metaKey ) ) { // Ctrl-Left Arrow or Cmd-Left Arrow = Move to the previous page.
+					previousPage = $( '.gp-table-actions.top' ).find( '.previous' );
+					if ( previousPage.length > 0 ) {
+						window.location.href = previousPage.attr( 'href' );
+					}
+				} else if ( ( 39 === e.keyCode && e.ctrlKey ) || ( 39 === e.keyCode && e.metaKey ) ) { // Ctrl-Right Arrow or Cmd-Right Arrow = Move to the next page.
+					nextPage = $( '.gp-table-actions.top' ).find( '.next' );
+					if ( nextPage.length > 0 ) {
+						window.location.href = nextPage.attr( 'href' );
 					}
 				} else {
 					return true;
@@ -415,8 +439,16 @@ $gp.editor = (
 					$gp.editor.save( $( this ) );
 					return false;
 				},
+				contextmenu_glossary: function( e ) {
+					var info = jQuery( this ).data( 'translations' );
+					$( '.editor:visible textarea:visible' )
+						.val( $( '.editor:visible textarea:visible' ).val() + info[ 0 ].translation )
+						.focus();
+					e.preventDefault();
+					return false;
+				},
 				cancel: function() {
-					var i = 0;
+					var i;
 
 					for ( i = 0; i < $gp.editor.current.orginal_translations.length; i++ ) {
 						$( 'textarea[id="translation_' + $gp.editor.current.original_id + '_' + i + '"]' ).val( $gp.editor.current.orginal_translations[ i ] );
