@@ -10,8 +10,8 @@
 		?>
 	</td>
 	<?php
-	$date_modified          = strtotime( get_date_from_gmt( $entry->date_modified ) );
-	$date_modified_formated = sprintf(
+	$date_modified           = strtotime( $entry->date_modified );
+	$date_modified_formatted = sprintf(
 		/* translators: 1: Modified date. 2: Modified time. */
 		esc_html__( '%1$s at %2$s', 'glotpress' ),
 		date_i18n( get_option( 'date_format' ), $date_modified ),
