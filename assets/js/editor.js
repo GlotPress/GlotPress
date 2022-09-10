@@ -34,7 +34,7 @@ $gp.editor = (
 				$( element.target ).parents( 'div.strings' ).find( 'div.textareas' ).each( function() {
 					string = $( this ).find( 'textarea' ).val();
 					count_characters = wp.wordcount.count( string, 'characters_including_spaces' );
-					count_words = wp.wordcount.count( string, $gp_editor_options.words_type );
+					count_words = wp.wordcount.count( string, $gp_editor_options.word_count_type );
 
 					html = wp.i18n.sprintf(
 						'<span class="characters">%1$s</span> • <span class="words">%2$s</span>',
