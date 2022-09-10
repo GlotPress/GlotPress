@@ -14,8 +14,8 @@
 	$date_modified_formatted = sprintf(
 		/* translators: 1: Modified date. 2: Modified time. */
 		esc_html__( '%1$s at %2$s', 'glotpress' ),
-		date_i18n( get_option( 'date_format' ), $date_modified ),
-		date_i18n( get_option( 'time_format' ), $date_modified )
+		wp_date( get_option( 'date_format' ), $date_modified ),
+		wp_date( get_option( 'time_format' ), $date_modified )
 	);
 	?>
 	<td class="date-modified" data-text="<?php echo esc_attr( $date_modified ); ?>">
