@@ -24,6 +24,7 @@
     "watch": "grunt watch",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop",
-    "lint:js": "wp-scripts lint-js"
+    "lint:js": "wp-scripts lint-js",
+    "lint:js-fix": "wp-scripts lint-js --fix"
   }
 }
