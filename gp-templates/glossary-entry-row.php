@@ -19,7 +19,7 @@
 	);
 	?>
 	<td class="date-modified" data-text="<?php echo esc_attr( $date_modified ); ?>">
-		<?php echo esc_html( $date_modified_formated ); ?>
+		<?php echo esc_html( $date_modified_formatted ); ?>
 	</td>
 
 	<?php if ( $can_edit ) : ?>
