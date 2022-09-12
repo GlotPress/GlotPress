@@ -671,6 +671,14 @@ table.glossary .gp-column-comments {
 	width: 30%;
 }
 
+table.glossary .gp-column-modified {
+	width: 10%;
+}
+
+table.glossary td.date-modified {
+	white-space: nowrap;
+}
+
 table.permissions .gp-column-actions,
 table.glossary .gp-column-actions,
 table.translations .gp-column-actions {
@@ -1277,6 +1285,7 @@ form.filters-toolbar a.revealing.open {
 .warning a.discard-warning {
 	float: right;
 	color: inherit;
+	margin-left: 0.5em;
 }
 
 .glossary-description,
