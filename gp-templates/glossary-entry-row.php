@@ -13,7 +13,7 @@
 	$date_modified           = strtotime( $entry->date_modified );
 	$date_modified_formatted = sprintf(
 		/* translators: 1: Modified date. 2: Modified time. */
-		esc_html__( '%1$s at %2$s', 'glotpress' ),
+		__( '%1$s at %2$s', 'glotpress' ),
 		wp_date( get_option( 'date_format' ), $date_modified ),
 		wp_date( get_option( 'time_format' ), $date_modified )
 	);
