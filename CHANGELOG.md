@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.2] (Sep 15, 2022)
+
+**Features**
+* Add a new status: changes requested ([#1451]). Currently, only available using the gp-translation-helpers plugin. 
+* Add "Last Modified" column to Glossary ([#1428]) 
+* Add word_count_type for each locale ([#1482])
+* Add the alphabet for each locale ([#1479])
+* Add a template for the PR ([#1448]) 
+* Translations: Add sort by original string length ([#1449])
+
+**Bugfixes**
+* Fixes deprecation notice in PHP8 for usort returning bool ([#1464]) 
+* Fix warning discard link margin ([#1455])
+
 ## [4.0.0-alpha.1] (Mai 3, 2022)
 
 **Breaking Changes**
@@ -480,6 +494,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-alpha.2]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.1...4.0.0-alpha.2
 [4.0.0-alpha.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0...4.0.0-alpha.1
 [3.0.0]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...3.0.0
 [3.0.0-rc.4]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...3.0.0-rc.4
@@ -542,3 +557,12 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1408]: https://github.com/GlotPress/GlotPress/pull/1408
 [#1379]: https://github.com/GlotPress/GlotPress/pull/1379
 [#1375]: https://github.com/GlotPress/GlotPress/pull/1375
+[#1417]: https://github.com/GlotPress/GlotPress/pull/1417
+[#1451]: https://github.com/GlotPress/GlotPress/pull/1451
+[#1428]: https://github.com/GlotPress/GlotPress/pull/1428
+[#1482]: https://github.com/GlotPress/GlotPress/pull/1482
+[#1479]: https://github.com/GlotPress/GlotPress/pull/1479
+[#1448]: https://github.com/GlotPress/GlotPress/pull/1448
+[#1449]: https://github.com/GlotPress/GlotPress/pull/1449
+[#1464]: https://github.com/GlotPress/GlotPress/pull/1464
+[#1455]: https://github.com/GlotPress/GlotPress/pull/1455
