@@ -65,6 +65,7 @@ if ( $glossary_description ) {
 			<th class="gp-column-part-of-speech"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
 			<th class="gp-column-translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
 			<th class="gp-column-comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-modified" data-sorter="text"><?php _ex( 'Last Modified', 'glossary entry', 'glotpress' ); ?></th>
 			<?php if ( $can_edit ) : ?>
 				<th class="gp-column-actions">&mdash;</th>
 			<?php endif; ?>
@@ -79,7 +80,7 @@ if ( $glossary_description ) {
 	} else {
 		?>
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<?php _e( 'No glossary entries yet.', 'glotpress' ); ?>
 			</td>
 		</tr>
