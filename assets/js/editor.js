@@ -458,6 +458,9 @@ $gp.editor = (
 					$gp.editor.set_status( $( this ), 'fuzzy' );
 					return false;
 				},
+				set_status_changesrequested: function() {
+					return false;
+				},
 				set_priority: function() {
 					$gp.editor.set_priority( $( this ) );
 					return false;
