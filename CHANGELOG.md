@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.2] (Sep 15, 2022)
+
+**Features**
+* Add a new status: changes requested ([#1451]). Currently, only available using the gp-translation-helpers plugin. 
+* Add "Last Modified" column to Glossary ([#1428]) 
+* Add word_count_type for each locale ([#1482])
+* Add the alphabet for each locale ([#1479])
+* Add a template for the PR ([#1448]) 
+* Translations: Add sort by original string length ([#1449])
+
+**Bugfixes**
+* Fixes deprecation notice in PHP8 for usort returning bool ([#1464]) 
+* Fix warning discard link margin ([#1455])
+
 ## [4.0.0-alpha.1] (Mai 3, 2022)
 
 **Breaking Changes**
