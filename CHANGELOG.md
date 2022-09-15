@@ -494,6 +494,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-alpha.2]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.1...4.0.0-alpha.2
 [4.0.0-alpha.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0...4.0.0-alpha.1
 [3.0.0]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...3.0.0
 [3.0.0-rc.4]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.3...3.0.0-rc.4
@@ -556,3 +557,12 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1408]: https://github.com/GlotPress/GlotPress/pull/1408
 [#1379]: https://github.com/GlotPress/GlotPress/pull/1379
 [#1375]: https://github.com/GlotPress/GlotPress/pull/1375
+[#1417]: https://github.com/GlotPress/GlotPress/pull/1417
+[#1451]: https://github.com/GlotPress/GlotPress/pull/1451
+[#1428]: https://github.com/GlotPress/GlotPress/pull/1428
+[#1482]: https://github.com/GlotPress/GlotPress/pull/1482
+[#1479]: https://github.com/GlotPress/GlotPress/pull/1479
+[#1448]: https://github.com/GlotPress/GlotPress/pull/1448
+[#1449]: https://github.com/GlotPress/GlotPress/pull/1449
+[#1464]: https://github.com/GlotPress/GlotPress/pull/1464
+[#1455]: https://github.com/GlotPress/GlotPress/pull/1455
