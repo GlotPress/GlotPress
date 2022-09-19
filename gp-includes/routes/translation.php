@@ -422,7 +422,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			case 'approve':
 				$new_status = 'current';
 				break;
-			case 'rejected':
+			case 'reject':
 				$new_status = 'rejected';
 				break;
 			case 'changesrequested':
@@ -451,7 +451,7 @@ class GP_Route_Translation extends GP_Route_Main {
 						$ok
 					);
 					break;
-				case 'rejected':
+				case 'reject':
 					$this->notices[] = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ),
