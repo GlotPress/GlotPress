@@ -476,7 +476,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$error
 						);
 						break;
-					case 'rejected':
+					case 'reject':
 						$message = sprintf(
 						/* translators: %s: Translations count. */
 							_n( 'Error with rejecting %s translation.', 'Error with rejecting %s translations.', $error, 'glotpress' ),
@@ -500,7 +500,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$ok
 						);
 						break;
-					case 'rejected':
+					case 'reject':
 						$message .= sprintf(
 						/* translators: %s: Translations count. */
 							_n( 'The remaining %s translation was rejected successfully.', 'The remaining %s translations were rejected successfully.', $ok, 'glotpress' ),
@@ -525,7 +525,7 @@ class GP_Route_Translation extends GP_Route_Main {
 							$error
 						);
 						break;
-					case 'rejected':
+					case 'reject':
 						$this->errors[] = sprintf(
 						/* translators: %s: Translations count. */
 							_n( 'Error with rejecting %s translation.', 'Error with rejecting all %s translations.', $error, 'glotpress' ),
