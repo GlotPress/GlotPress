@@ -670,43 +670,43 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			' Original string',
 			'Cadea traducida',
-			'The translation appears to be missing one or more spaces at the beginning.' );
+			'The translation appears to be missing 1 space at the beginning.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'Original string',
 			' Cadea traducida',
-			'The translation appears to be adding one or more spaces at the beginning.' );
+			'The translation appears to be adding 1 space at the beginning.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'Original string ',
 			'Cadea traducida',
-			'The translation appears to be missing one or more spaces at the end.' );
+			'The translation appears to be missing 1 space at the end.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'Original string',
 			'Cadea traducida ',
-			'The translation appears to be adding one or more spaces at the end.' );
+			'The translation appears to be adding 1 space at the end.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			' Original string',
 			'   Cadea traducida',
-			'Expected 1 space(s) at the beginning, got 3.' );
+			'Expected 1 space at the beginning, got 3.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'   Original string',
 			' Cadea traducida',
-			'Expected 3 space(s) at the beginning, got 1.' );
+			'Expected 3 spaces at the beginning, got 1.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'Original string ',
 			'Cadea traducida   ',
-			'Expected 1 space(s) at the end, got 3.' );
+			'Expected 1 space at the end, got 3.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'Original string   ',
 			'Cadea traducida ',
-			'Expected 3 space(s) at the end, got 1.' );
+			'Expected 3 spaces at the end, got 1.' );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			'   Original string   ',
 			' Cadea traducida ',
-			"Expected 3 space(s) at the beginning, got 1.\nExpected 3 space(s) at the end, got 1." );
+			"Expected 3 spaces at the beginning, got 1.\nExpected 3 spaces at the end, got 1." );
 		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
 			' Original string ',
 			'   Cadea traducida   ',
-			"Expected 1 space(s) at the beginning, got 3.\nExpected 1 space(s) at the end, got 3." );
+			"Expected 1 space at the beginning, got 3.\nExpected 1 space at the end, got 3." );
 	}
 
 	public function test_chained_warnings() {
