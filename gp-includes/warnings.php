@@ -897,7 +897,7 @@ class GP_Builtin_Translation_Warnings {
 			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
 		}
 		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
-			return __( 'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.', 'glotpress' );
+			return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
 		}
 
 		return true;
