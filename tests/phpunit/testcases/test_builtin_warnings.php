@@ -724,42 +724,42 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'Good morning',
 			'bos días',
-			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial uppercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'Good morning',
 			'доброе утро',
-			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial uppercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'Good morning',
 			'καλημέρα',
-			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial uppercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'Good morning',
 			'բարի լույս',
-			'The translation is missing the initial uppercase. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial uppercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'good morning',
 			'Bos días',
-			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial lowercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'good morning',
 			'Доброе утро',
-			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial lowercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'good morning',
 			'Καλημέρα',
-			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial lowercase.',
 			$this->l );
 		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
 			'good morning',
 			'Բարի առավոտ',
-			'The translation starts with an uppercase, unlike the original. If it was intentional, you can discard this warning.',
+			'The translation appears to be missing the initial lowercase.',
 			$this->l );
 }
 
