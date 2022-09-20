@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.3] (Sep 20, 2022)
+
+**Bugfixes**
+* Fix bulk rejection ([#1486])
+
 ## [4.0.0-alpha.2] (Sep 15, 2022)
 
 **Features**
@@ -494,6 +499,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-alpha.3]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.2...4.0.0-alpha.3
 [4.0.0-alpha.2]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.1...4.0.0-alpha.2
 [4.0.0-alpha.1]: https://github.com/GlotPress/GlotPress/compare/3.0.0...4.0.0-alpha.1
 [3.0.0]: https://github.com/GlotPress/GlotPress/compare/3.0.0-rc.4...3.0.0
@@ -566,3 +572,4 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1449]: https://github.com/GlotPress/GlotPress/pull/1449
 [#1464]: https://github.com/GlotPress/GlotPress/pull/1464
 [#1455]: https://github.com/GlotPress/GlotPress/pull/1455
+[#1486]: https://github.com/GlotPress/GlotPress/pull/1486
