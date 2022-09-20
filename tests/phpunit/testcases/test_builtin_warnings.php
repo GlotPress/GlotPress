@@ -900,7 +900,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 				array(
 					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
 					'placeholders'                => 'Extra %% placeholder in translation.',
-					'unexpected_start_end_space'  => "The translation appears to be missing one or more spaces at the beginning.\nThe translation appears to be adding one or more spaces at the end."
+					'unexpected_start_end_space'  => "The translation appears to be missing 1 space at the beginning.\nThe translation appears to be adding 1 space at the end."
 				),
 			)
 		);
@@ -912,7 +912,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 				array(
 					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
 					'placeholders'                => 'Extra %% placeholder in translation.',
-					'unexpected_start_end_space'  => "Expected 4 space(s) at the beginning, got 1.\nExpected 1 space(s) at the end, got 5."
+					'unexpected_start_end_space'  => "Expected 4 spaces at the beginning, got 1.\nExpected 1 space at the end, got 5."
 				),
 			)
 		);
