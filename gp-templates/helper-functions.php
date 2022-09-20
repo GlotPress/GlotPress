@@ -585,6 +585,11 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			endforeach;
 
 		endif;
+		// Don't show the translation in the translation textarea if the translation status is changesrequested but the
+		// changesrequested is not enabled, because in this situation we consider the changesrequested as rejected translations.
+		if ( 'changesrequested' == $entry->translation_status && ! apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+			$entry->translations = array();
+		}
 		?>
 		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
@@ -610,12 +615,17 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 function display_status( $status ) {
 	$status_labels = array(
-		'current'  => _x( 'current', 'Single Status', 'glotpress' ),
-		'waiting'  => _x( 'waiting', 'Single Status', 'glotpress' ),
-		'fuzzy'    => _x( 'fuzzy', 'Single Status', 'glotpress' ),
-		'old'      => _x( 'old', 'Single Status', 'glotpress' ),
-		'rejected' => _x( 'rejected', 'Single Status', 'glotpress' ),
+		'current'          => _x( 'current', 'Single Status', 'glotpress' ),
+		'waiting'          => _x( 'waiting', 'Single Status', 'glotpress' ),
+		'fuzzy'            => _x( 'fuzzy', 'Single Status', 'glotpress' ),
+		'old'              => _x( 'old', 'Single Status', 'glotpress' ),
+		'rejected'         => _x( 'rejected', 'Single Status', 'glotpress' ),
+		'changesrequested' => _x( 'changes requested', 'Single Status', 'glotpress' ),
 	);
+	// If a changesrequested status exists in the database but they are no longer enabled, they will show as rejected.
+	if ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
+		$status_labels['changesrequested'] = _x( 'rejected', 'Single Status', 'glotpress' );
+	}
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
 	}
