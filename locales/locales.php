@@ -394,7 +394,7 @@ class GP_Locales {
 		$bn_bd->wp_locale = 'bn_BD';
 		$bn_bd->slug = 'bn';
 		$bn_bd->google_code = 'bn';
-		$bn_bd->alphabet  ='bengali';
+		$bn_bd->alphabet = 'bengali';
 
 		$bn_in = new GP_Locale();
 		$bn_in->english_name = 'Bengali (India)';
@@ -407,7 +407,7 @@ class GP_Locales {
 		$bn_in->facebook_locale = 'bn_IN';
 		$bn_in->nplurals = 2;
 		$bn_in->plural_expression = 'n > 1';
-		$bn_in->alphabet  ='bengali';
+		$bn_in->alphabet = 'bengali';
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
