@@ -602,7 +602,7 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function set_as_current() {
-		$result = $this->update(
+		return $this->update(
 			array( 'status' => 'old' ),
 			array(
 				'original_id'        => $this->original_id,
@@ -626,14 +626,68 @@ class GP_Translation extends GP_Thing {
 				'status'             => 'fuzzy',
 			)
 		)
+		&& $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'status'             => 'changesrequested',
+			)
+		)
 		&& $this->save(
 			array(
 				'status'                => 'current',
 				'user_id_last_modified' => get_current_user_id(),
 			)
 		);
+	}
 
-		return $result;
+	/**
+	 * Sets as old the other changesrequested translations for the same original and user,
+	 * setting the current one as changesrequested.
+	 *
+	 * @return bool|null
+	 */
+	public function set_as_changesrequested(): ?bool {
+		return $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'user_id'            => $this->user_id,
+				'status'             => 'changesrequested',
+			)
+		)
+		&& $this->save(
+			array(
+				'status'                => 'changesrequested',
+				'user_id_last_modified' => get_current_user_id(),
+			)
+		);
+	}
+
+	/**
+	 * Sets as old the other changesrequested and waiting translations for the same original and user,
+	 * setting the current one as waiting.
+	 *
+	 * @return bool|null
+	 */
+	public function set_as_waiting(): ?bool {
+		return $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'user_id'            => $this->user_id,
+				'status'             => 'changesrequested',
+			)
+		)
+		&& $this->save(
+			array(
+				'status'                => 'waiting',
+				'user_id_last_modified' => get_current_user_id(),
+			)
+		);
 	}
 
 	public function reject() {
@@ -706,6 +760,10 @@ class GP_Translation extends GP_Thing {
 
 		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
+		} elseif ( 'changesrequested' === $status ) {
+			$updated = $this->set_as_changesrequested();
+		} elseif ( 'waiting' === $status ) {
+			$updated = $this->set_as_waiting();
 		} else {
 			$updated = $this->save(
 				array(
