@@ -721,7 +721,7 @@ class GP_Translation extends GP_Thing {
 			$can_set_status = true;
 		}
 
-		if ( ! is_bool( $can_set_status ) && ( 'current' === $desired_status || 'rejected' === $desired_status ) ) {
+		if ( ! is_bool( $can_set_status ) && ( 'current' === $desired_status || 'rejected' === $desired_status || 'changesrequested' === $desired_status ) ) {
 			if ( ! GP::$permission->current_user_can( 'approve', 'translation', $this->id, array( 'translation' => $this ) ) ) {
 				$can_set_status = false;
 			}
