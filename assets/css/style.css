@@ -1267,6 +1267,10 @@ form.filters-toolbar a.revealing.open {
 	margin-left: 2px;
 }
 
+.invisible-spaces {
+	background-color: var( --gp-color-secondary-400 );
+}
+
 .ternary {
 	font-size: 0.8em;
 }

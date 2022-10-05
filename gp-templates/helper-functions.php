@@ -46,6 +46,9 @@ function prepare_original( $text ) {
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
 
+	// Highlight leading and trailing spaces.
+	$text = preg_replace( '/(^ +)|( +$)/', '<span class="invisible-spaces">$0</span>', $text );
+
 	return $text;
 }
 
