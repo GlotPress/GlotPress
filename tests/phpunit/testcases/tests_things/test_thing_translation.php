@@ -93,6 +93,39 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, $set->waiting_count() );
 	}
 
+	function test_translation_denied_changesrequested_change_status() {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$permission = array( 'user_id' => $user, 'action' => 'approve',
+                             'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug );
+		GP::$validator_permission->create( $permission );
+
+		$cannot_approve_translation = function( $verdict, $args ) {
+			return 'approve' !== $args['action'] || 'translation' !== $args['object_type'];
+		};
+
+		add_filter( 'gp_pre_can_user', $cannot_approve_translation, 2, 2 );
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		// Put the current count already in the cache
+		$set->current_count();
+
+		$this->assertFalse( $translation->set_status( 'changesrequested' ) );
+		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
+		remove_filter( 'gp_pre_can_user', $cannot_approve_translation );
+
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 0, count( $changesrequested_translations ) );
+		$this->assertEquals( 0, $set->changesrequested_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
+	}
+
 	function test_translation_should_support_6_plurals() {
 		$plurals = array( 'translation_0' => 'Zero', 'translation_1' => 'One', 'translation_2' => 'Two', 'translation_3' => 'Three', 'translation_4' => 'Four', 'translation_5' => 'Five' );
 		$translation = $this->factory->translation->create( $plurals );
