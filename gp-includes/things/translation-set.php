@@ -70,6 +70,13 @@ class GP_Translation_Set extends GP_Thing {
 	public $waiting_count;
 
 	/**
+	 * Number of changed requested translations.
+	 *
+	 * @var int
+	 */
+	public $changesrequested_count;
+
+	/**
 	 * Number of fuzzy translations.
 	 *
 	 * @var int
@@ -389,6 +396,19 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
+	 * Retrieves the number of waiting translations.
+	 *
+	 * @return int Number of waiting translations.
+	 */
+	public function changesrequested_count() {
+		if ( ! isset( $this->changesrequested_count ) ) {
+			$this->update_status_breakdown();
+		}
+
+		return $this->changesrequested_count;
+	}
+
+	/**
 	 * Retrieves the number of untranslated originals.
 	 *
 	 * @return int Number of untranslated originals.
@@ -539,6 +559,31 @@ class GP_Translation_Set extends GP_Thing {
 					'total'              => (int) $warnings_counts->total,
 					'hidden'             => (int) $warnings_counts->hidden,
 					'public'             => (int) $warnings_counts->public,
+				);
+			}
+
+			$changesrequested_counts = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT
+						COUNT(*) AS total,
+						COUNT( CASE WHEN o.priority = '-2' THEN o.priority END ) AS `hidden`,
+						COUNT( CASE WHEN o.priority <> '-2' THEN o.priority END ) AS `public`
+					FROM {$wpdb->gp_translations} AS t
+					INNER JOIN {$wpdb->gp_originals} AS o ON t.original_id = o.id
+					WHERE
+						t.translation_set_id = %d AND
+						o.status = '+active' AND
+						( t.status = 'changesrequested' )",
+					$this->id
+				)
+			);
+
+			if ( $changesrequested_counts ) {
+				$counts[] = (object) array(
+					'translation_status' => 'changesrequested',
+					'total'              => (int) $changesrequested_counts->total,
+					'hidden'             => (int) $changesrequested_counts->hidden,
+					'public'             => (int) $changesrequested_counts->public,
 				);
 			}
 

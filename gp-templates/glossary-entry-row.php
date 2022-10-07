@@ -9,6 +9,18 @@
 		echo make_clickable( nl2br( esc_html( $entry->comment ) ) );
 		?>
 	</td>
+	<?php
+	$date_modified           = strtotime( $entry->date_modified );
+	$date_modified_formatted = sprintf(
+		/* translators: 1: Modified date. 2: Modified time. */
+		__( '%1$s at %2$s', 'glotpress' ),
+		wp_date( get_option( 'date_format' ), $date_modified ),
+		wp_date( get_option( 'time_format' ), $date_modified )
+	);
+	?>
+	<td class="date-modified" data-text="<?php echo esc_attr( $date_modified ); ?>">
+		<?php echo esc_html( $date_modified_formatted ); ?>
+	</td>
 
 	<?php if ( $can_edit ) : ?>
 		<td class="actions">
@@ -17,7 +29,7 @@
 	<?php endif; ?>
 </tr>
 <tr id="editor-<?php echo esc_attr( $entry->id ); ?>" class="hide-if-js editor">
-	<td colspan="5">
+	<td colspan="6">
 		<div class="strings">
 			<dl>
 				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term', 'glossary entry', 'glotpress' ); ?></label></dt>
@@ -49,7 +61,7 @@
 			<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
 			<dl>
 				<dt><?php _e( 'Last Modified:', 'glotpress' ); ?></dt>
-				<dd><?php echo esc_html( $entry->date_modified ); ?></dd>
+				<dd><?php echo esc_html( $date_modified_formatted ); ?></dd>
 			</dl>
 			<?php if ( $entry->user_login ) : ?>
 			<dl>
