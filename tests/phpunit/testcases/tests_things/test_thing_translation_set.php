@@ -256,7 +256,7 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 		$num_queries = $wpdb->num_queries;
 		$set->update_status_breakdown();
-		$this->assertEquals( $num_queries + 8, $wpdb->num_queries );
+		$this->assertEquals( $num_queries + 9, $wpdb->num_queries );
 	}
 
 	public function test_created_action_is_called() {
