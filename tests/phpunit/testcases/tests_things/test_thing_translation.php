@@ -257,6 +257,19 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( $translation1->id, $for_translation[0]->id );
 	}
 
+	function test_for_changesrequested_should_not_include_untranslated_for_single_status() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) ); //This isn't going to be translated
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'changesrequested' ) );
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array('status' => 'changesrequested'), array('by' => 'translation', 'how' => 'asc') );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+		$this->assertEquals( $translation1->id, $for_translation[0]->id );
+	}
+
 	function test_for_translation_should_respect_priorities() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
@@ -278,6 +291,26 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_untranslated' ) );
+
+		$this->assertEquals( 2, count( $for_export ) );
+
+		// We can't be sure which order the for_export call returned the strings, so make sure to compare the right one.
+		if ( (int) $for_export[0]->original_id === (int) $translation1->original_id ) {
+			$this->assertEquals( $translation1->id, $for_export[0]->id );
+		} else {
+			$this->assertEquals( $translation1->id, $for_export[1]->id );
+		}
+	}
+
+	function test_for_export_should_include_changesrequested() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation2 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original2->id, 'status' => 'changesrequested' ) );
+		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_changesrequested' ) );
 
 		$this->assertEquals( 2, count( $for_export ) );
 
@@ -377,7 +410,6 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$user = $this->factory->user->create();
 		wp_set_current_user( $user );
 		$translation->set_status( 'changesrequested' );
-		print_r('A'.json_encode($translation->user_id_last_modified).'B');
 
 		$this->assertFalse( $translation->set_status( 'changesrequested' ) );
 		$this->assertNotEquals( $user, $translation->user_id_last_modified );
@@ -451,5 +483,46 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '1' ) ) ) ) );
 		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '-1' ) ) ) ) );
+	}
+
+	function test_when_update_a_changedrequested_translation_it_is_set_to_old_status() {
+		$user1 = $this->factory->user->create();
+		wp_set_current_user( $user1 );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => 'Translation 1', 'user_id' => $user1 ) );
+		$translation->set_status( 'waiting' );
+
+		$user2 = $this->factory->user->create();
+		wp_set_current_user( $user2 );
+
+		GP::$validator_permission->create( array(
+			'user_id' => $user2, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
+
+		$translation->set_as_changesrequested();
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( $user2, $translation->user_id_last_modified );
+		$this->assertEquals( 1, count( $changesrequested_translations ) );
+		$this->assertEquals( 1, $set->changesrequested_count() );
+		$this->assertEquals( 0, count( $waiting_translations ) );
+		$this->assertEquals( 0, $set->waiting_count() );
+
+		wp_set_current_user( $user1 );
+		$translation->save( array( 'translation_0' => 'Translation 2' ) );
+		$translation->set_as_waiting();
+
+		gp_clean_translation_set_cache( $set->id ); // Clean the cache.
+		$set->update_status_breakdown();            // Refresh the counts of the object.
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 0, count( $changesrequested_translations ) );
+		$this->assertEquals( 0, $set->changesrequested_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
 	}
 }
