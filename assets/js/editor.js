@@ -106,6 +106,7 @@ $gp.editor = (
 					.on( 'click', 'button.insertnl', $gp.editor.hooks.newline )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
+					.on( 'click', 'button.changesrequested', $gp.editor.hooks.set_status_changesrequested )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown );
@@ -455,6 +456,9 @@ $gp.editor = (
 				},
 				set_status_fuzzy: function() {
 					$gp.editor.set_status( $( this ), 'fuzzy' );
+					return false;
+				},
+				set_status_changesrequested: function() {
 					return false;
 				},
 				set_priority: function() {

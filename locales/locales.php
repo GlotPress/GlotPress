@@ -394,7 +394,7 @@ class GP_Locales {
 		$bn_bd->wp_locale = 'bn_BD';
 		$bn_bd->slug = 'bn';
 		$bn_bd->google_code = 'bn';
-		$bn_bd->alphabet  ='bengali';
+		$bn_bd->alphabet = 'bengali';
 
 		$bn_in = new GP_Locale();
 		$bn_in->english_name = 'Bengali (India)';
@@ -407,7 +407,7 @@ class GP_Locales {
 		$bn_in->facebook_locale = 'bn_IN';
 		$bn_in->nplurals = 2;
 		$bn_in->plural_expression = 'n > 1';
-		$bn_in->alphabet  ='bengali';
+		$bn_in->alphabet = 'bengali';
 
 		$bo = new GP_Locale();
 		$bo->english_name = 'Tibetan';
@@ -619,7 +619,7 @@ class GP_Locales {
 		$de_at->english_name = 'German (Austria)';
 		$de_at->native_name = 'Deutsch (Österreich)';
 		$de_at->lang_code_iso_639_1 = 'de';
-		$de_at->country_code = 'de';
+		$de_at->country_code = 'at';
 		$de_at->wp_locale = 'de_AT';
 		$de_at->slug = 'de-at';
 		$de_at->google_code = 'de';
@@ -1001,6 +1001,7 @@ class GP_Locales {
 		$fa_af->native_name = '(فارسی (افغانستان';
 		$fa_af->lang_code_iso_639_1 = 'fa';
 		$fa_af->lang_code_iso_639_2 = 'fas';
+		$fa_af->country_code = 'af';
 		$fa_af->wp_locale = 'fa_AF';
 		$fa_af->slug = 'fa-af';
 		$fa_af->nplurals = 2;
