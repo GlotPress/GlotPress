@@ -13,7 +13,7 @@ $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpres
 $delete_url       = gp_url_join( $url, '-delete' );
 $glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
 
-gp_enqueue_scripts( 'gp-glossary' );
+gp_enqueue_scripts( array( 'gp-glossary', 'tablesorter' ) );
 wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();
@@ -61,13 +61,13 @@ if ( $glossary_description ) {
 <table class="gp-table glossary" id="glossary">
 	<thead>
 		<tr>
-			<th class="gp-column-item"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-part-of-speech"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-item" data-sorter="text"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-part-of-speech" data-sorter="false"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-translation" data-sorter="text"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-comments" data-sorter="false"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
 			<th class="gp-column-modified" data-sorter="text"><?php _ex( 'Last Modified', 'glossary entry', 'glotpress' ); ?></th>
 			<?php if ( $can_edit ) : ?>
-				<th class="gp-column-actions">&mdash;</th>
+				<th class="gp-column-actions" data-sorter="false">&mdash;</th>
 			<?php endif; ?>
 		</tr>
 	</thead>
