@@ -62,8 +62,7 @@ $priority_char = array(
 
 		$missing_text = "<span class='missing'>$edit_text</span>";
 		if ( ! count( array_filter( $translation->translations, 'gp_is_not_null' ) ) ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $missing_text;
+			echo esc_html( $missing_text );
 		} elseif ( ! $translation->plural ) {
 			echo '<span class="translation-text">' . esc_translation( $translation->translations[0] ) . '</span>';
 		} elseif ( $translation->plural && 2 === $locale->nplurals && 'n != 1' === $locale->plural_expression ) {
@@ -73,7 +72,7 @@ $priority_char = array(
 					<small><?php esc_html_e( 'Singular:', 'glotpress' ); ?></small><br>
 					<?php
 					if ( ! isset( $translation->translations[0] ) || gp_is_empty_string( $translation->translations[0] ) ) {
-						echo $missing_text;
+						echo esc_html( $missing_text );
 					} else {
 						echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>';
 					}
@@ -83,7 +82,7 @@ $priority_char = array(
 					<small><?php esc_html_e( 'Plural:', 'glotpress' ); ?></small><br>
 					<?php
 					if ( ! isset( $translation->translations[1] ) || gp_is_empty_string( $translation->translations[1] ) ) {
-						echo $missing_text;
+						echo esc_html( $missing_text );
 					} else {
 						echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[1] ) ) . '</span>';
 					}
@@ -99,18 +98,18 @@ $priority_char = array(
 					$plural_string = implode( ', ', $locale->numbers_for_index( $plural_index ) );
 					?>
 					<li>
-						<small class="with-tooltip" aria-label="<?php /* translators: %s: Plural form. */ printf( esc_attr__( 'This plural form is used for numbers like: %s', 'glotpress' ), $plural_string ); ?>">
+						<small class="with-tooltip" aria-label="<?php /* translators: %s: Plural form. */ printf( esc_attr__( 'This plural form is used for numbers like: %s', 'glotpress' ), esc_attr( $plural_string ) ); ?>">
 							<?php
 							printf(
 								/* translators: %s: Plural form. */
 								esc_html__( '%s:', 'glotpress' ),
-								$plural_string
+								esc_html( $plural_string )
 							);
 							?>
 						</small><br>
 						<?php
 						if ( ! isset( $translation->translations[ $plural_index ] ) || gp_is_empty_string( $translation->translations[ $plural_index ] ) ) {
-							echo $missing_text;
+							echo esc_html( $missing_text );
 						} else {
 							echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[ $plural_index ] ) ) . '</span>';
 						}
