@@ -878,8 +878,6 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks the missing uppercase in the beginning of the translations.
 	 *
-	 * Only works with languages using latin alphabet.
-	 *
 	 * @since 4.0.0
 	 * @access public
 	 *
