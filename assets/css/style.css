@@ -966,8 +966,16 @@ span.context {
 	min-width: 60%;
 }
 
-.editor .strings .textareas textarea {
+.editor .strings .textareas textarea,
+.editor .strings .textareas .counts {
 	width: 95%;
+	max-width: 40rem;
+}
+
+.editor .textareas .counts {
+	text-align: end;
+	font-size: .875rem;
+	color: var(--gp-color-fg-muted);
 }
 
 .editor .strings p.plural-numbers {
