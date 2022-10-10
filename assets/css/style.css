@@ -694,12 +694,19 @@ table.translations .gp-column-priority {
 	width: 4%;
 }
 
+table.translations td.original ul,
 table.translations td.translation ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
+table.translations td.original small,
+table.translations td.translation small {
+	font-size: 0.75rem;
+}
+
+table.translations td.original li:not(:last-child),
 table.translations td.translation li:not(:last-child) {
 	padding-bottom: 0.25em;
 	border-bottom: 1px solid var( --gp-color-border-muted );
@@ -731,7 +738,7 @@ table.translations.translation-sets-rtl .foreign-text {
 table.translations td.original,
 table.translations td.translation {
 	width: 45%;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 table.translations .no-translations td.translation {
