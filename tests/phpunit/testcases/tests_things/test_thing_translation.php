@@ -523,7 +523,7 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, $set->waiting_count() );
 	}
 
-	function test_when_update_the_same_changedrequested_translation_two_timesit_is_set_to_old_status() {
+	function test_when_update_the_same_changedrequested_translation_two_times_it_is_set_to_old_status() {
 		$user1 = $this->factory->user->create();
 		$user2 = $this->factory->user->create();
 
