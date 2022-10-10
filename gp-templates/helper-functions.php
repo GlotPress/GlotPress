@@ -44,7 +44,7 @@ function prepare_original( $text ) {
 	);
 
 	// Highlight leading and trailing spaces in single lines.
-	$text = preg_replace( "/(^ +)|( +$)/", '<span class="invisible-spaces">$0</span>', $text );
+	$text = preg_replace( '/(^ +)|( +$)/', '<span class="invisible-spaces">$0</span>', $text );
 	// Highlight leading and trailing spaces in multi lines.
 	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
 	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
