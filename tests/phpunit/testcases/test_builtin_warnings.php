@@ -184,7 +184,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder( 'GP_Translation_Warnings' )->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 11 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 12 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -708,6 +708,60 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'   Cadea traducida   ',
 			"Expected 1 space at the beginning, got 3.\nExpected 1 space at the end, got 3." );
 	}
+
+	public function test_missing_uppercase_beginning() {
+		$this->l->slug = 'ga';
+		$this->l->alphabet = 'latin';
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Original string', 'Cadea traducida', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', 'cadea traducida', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'おはようございます', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', 'おはよう', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'सुबह बख़ैर', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'Доброе утро', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', 'доброе утро', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', '早上好', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', '早上好', $this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'bos días',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'доброе утро',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'καλημέρα',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'բարի լույս',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Bos días',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Доброе утро',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Καλημέρα',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Բարի առավոտ',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+}
 
 	public function test_chained_warnings() {
 		$this->tw = new GP_Translation_Warnings();
