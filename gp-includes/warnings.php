@@ -920,4 +920,30 @@ class GP_Builtin_Translation_Warnings {
 		}
 		return implode( "\n", $warnings );
 	}
+
+	/**
+	 * Checks the missing uppercase in the beginning of the translations.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
+	 *
+	 * @return string|true True if check is OK, otherwise warning message.
+	 */
+	public function warning_missing_uppercase_beginning( string $original, string $translation ) {
+		$is_first_letter_uppercase_original    = preg_match( '/^\p{Lu}/u', $original );
+		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
+		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
+		$is_first_letter_lowercase_translation = preg_match( '/^\p{Ll}/u', $translation );
+		if ( $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation ) {
+			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
+		}
+		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
+			return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+		}
+
+		return true;
+	}
 }

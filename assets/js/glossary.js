@@ -8,6 +8,7 @@ $gp.glossary = (
 
 			init: function( table ) {
 				$gp.init();
+				$gp.glossary.tablesorter();
 				if ( '' === $gp_glossary_options.can_edit ) {
 					return;
 				}
@@ -171,6 +172,14 @@ $gp.glossary = (
 					$gp.glossary.save( $( this ) );
 					return false;
 				},
+			},
+
+			tablesorter: function() {
+				$( '#glossary' ).tablesorter( {
+					theme: 'glotpress',
+					sortList: [ [ 0, 0 ] ],
+					cssChildRow: 'editor',
+				} );
 			},
 
 		};
