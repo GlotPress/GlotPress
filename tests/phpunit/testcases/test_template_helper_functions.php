@@ -177,4 +177,16 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig, $expected_result );
 	}
 
+	/**
+	 * Expects highlighting line breaks and tabs.
+	 */
+	function test_prepare_original_with_line_breaks_and_tabs() {
+		$test_string     = "This string has 2x tabs\t\tand a line\nbreak.";
+		$expected_result = "This string has 2x tabs<span class='invisibles' title='Tab character'>&rarr;</span>\t<span class='invisibles' title='Tab character'>&rarr;</span>\tand a line<span class='invisibles' title='New line'>&crarr;</span>\nbreak.";
+
+		$orig = prepare_original( $test_string );
+
+		$this->assertEquals( $orig, $expected_result );
+	}
+
 }
