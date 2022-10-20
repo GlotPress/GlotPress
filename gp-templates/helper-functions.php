@@ -43,10 +43,13 @@ function prepare_original( $text ) {
 		$text
 	);
 
-	// Highlight leading and trailing spaces in single lines, and multiple spaces in the middle.
-	$text = preg_replace( '/^ +| +$|(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
-	// Highlight leading and trailing spaces in multi lines.
+	// Highlight two or more spaces between words.
+	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading and trailing spaces in single lines.
+	$text = preg_replace( '/^ +| +$/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading spaces in multi lines.
 	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
+	// Highlight trailing spaces in multi lines.
 	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
