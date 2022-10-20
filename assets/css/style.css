@@ -862,7 +862,7 @@ table.translation-sets thead th:not(.tablesorter-header) {
 	padding-right: 1.1em; /* Avoids layout shift during initalisation */
 }
 
-.tablesorter-glotpress .tablesorter-header {
+.tablesorter-glotpress .tablesorter-header:not(.sorter-false) {
 	cursor: pointer;
 	padding-right: 1.5em;
 }
@@ -871,15 +871,18 @@ table.translation-sets thead th:not(.tablesorter-header) {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	margin-right: -1.5em;
 	white-space: nowrap;
+}
+
+.tablesorter-glotpress .tablesorter-header:not(.sorter-false) .tablesorter-header-inner {
+	margin-right: -1.5em;
 }
 
 .tablesorter-glotpress .tablesorter-headerUnSorted:not(:hover):not(:focus) .tablesorter-header-inner:after {
 	visibility: hidden;
 }
 
-.tablesorter-glotpress .tablesorter-header .tablesorter-header-inner:after {
+.tablesorter-glotpress .tablesorter-header:not(.sorter-false) .tablesorter-header-inner:after {
 	content: "";
 	width: 1em;
 	height: 1em;
@@ -963,8 +966,16 @@ span.context {
 	min-width: 60%;
 }
 
-.editor .strings .textareas textarea {
+.editor .strings .textareas textarea,
+.editor .strings .textareas .counts {
 	width: 95%;
+	max-width: 40rem;
+}
+
+.editor .textareas .counts {
+	text-align: end;
+	font-size: .875rem;
+	color: var(--gp-color-fg-muted);
 }
 
 .editor .strings p.plural-numbers {
