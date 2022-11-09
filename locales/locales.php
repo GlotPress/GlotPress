@@ -750,6 +750,17 @@ class GP_Locales {
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
 
+		$en_ie = new GP_Locale();
+		$en_ie->english_name = 'English (Ireland)';
+		$en_ie->native_name = 'English (Ireland)';
+		$en_ie->lang_code_iso_639_1 = 'en';
+		$en_ie->lang_code_iso_639_2 = 'eng';
+		$en_ie->lang_code_iso_639_3 = 'eng';
+		$en_ie->country_code = 'ie';
+		$en_ie->wp_locale = 'en_IE';
+		$en_ie->slug = 'en-ie';
+		$en_ie->google_code = 'en';
+
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
 		$en_nz->native_name = 'English (New Zealand)';
