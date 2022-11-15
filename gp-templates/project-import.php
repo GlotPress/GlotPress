@@ -24,19 +24,30 @@ if ( 'originals' === $kind ) {
 
 gp_title( $gp_title );
 gp_tmpl_header();
-?>
 
+$format_extensions      = array();
+$format_options         = array();
+$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
+foreach ( GP::$formats as $slug => $format ) {
+	$format_extensions[] = '.' . pathinfo( '.' . $format->extension )['extension'];
+	if ( ! empty( $format->alt_extensions ) ) {
+		foreach ( $format->alt_extensions as $alt_extension ) {
+			$format_extensions[] = '.' . pathinfo( '.' . $alt_extension )['extension'];
+		}
+	}
+	$format_options[ $slug ] = $format->name;
+}
+
+// Remove duplicates.
+$format_extensions = array_unique( $format_extensions );
+
+?>
 <h2><?php echo 'originals' == $kind ? __( 'Import Originals', 'glotpress' ) : __( 'Import Translations', 'glotpress' ); ?></h2>
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
-	<dd><input type="file" name="import-file" id="import-file" accept=".xml,.po,.pot,.mo,.resx,.strings,.properties,.json" /></dd>
+	<dd><input type="file" name="import-file" id="import-file" accept="<?php esc_attr_e( implode( ',', $format_extensions ) ); ?>" /></dd>
 <?php
-	$format_options         = array();
-	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
-	foreach ( GP::$formats as $slug => $format ) {
-		$format_options[ $slug ] = $format->name;
-	}
 
 	$status_options = array();
 	if ( isset( $can_import_current ) && $can_import_current ) {
