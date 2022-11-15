@@ -46,7 +46,7 @@ $format_extensions = array_unique( $format_extensions );
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
-	<dd><input type="file" name="import-file" id="import-file" accept="<?php esc_attr_e( implode( ',', $format_extensions ) ); ?>" /></dd>
+	<dd><input type="file" name="import-file" id="import-file" accept="<?php echo esc_attr( implode( ',', $format_extensions ) ); ?>" /></dd>
 <?php
 
 	$status_options = array();
