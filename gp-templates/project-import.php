@@ -25,21 +25,12 @@ if ( 'originals' === $kind ) {
 gp_title( $gp_title );
 gp_tmpl_header();
 
-$format_extensions      = array();
-$format_options         = array();
-$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
-foreach ( GP::$formats as $slug => $format ) {
-	$format_extensions[] = '.' . pathinfo( '.' . $format->extension )['extension'];
-	if ( ! empty( $format->alt_extensions ) ) {
-		foreach ( $format->alt_extensions as $alt_extension ) {
-			$format_extensions[] = '.' . pathinfo( '.' . $alt_extension )['extension'];
-		}
-	}
-	$format_options[ $slug ] = $format->name;
+$format_extensions = array();
+foreach ( GP::$formats as $format ) {
+	$format_extensions = array_merge( $format_extensions, $format->get_file_extensions() );
 }
-
-// Remove duplicates.
-$format_extensions = array_unique( $format_extensions );
+// Remove redundant alternate extensions that have the same ending and add leading '.'.
+$format_extensions = array_unique( preg_replace( '/^(\w*\.)*/', '.', $format_extensions ) );
 
 ?>
 <h2><?php echo 'originals' == $kind ? __( 'Import Originals', 'glotpress' ) : __( 'Import Translations', 'glotpress' ); ?></h2>
@@ -48,6 +39,12 @@ $format_extensions = array_unique( $format_extensions );
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
 	<dd><input type="file" name="import-file" id="import-file" accept="<?php echo esc_attr( implode( ',', $format_extensions ) ); ?>" /></dd>
 <?php
+
+	$format_options         = array();
+	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
+	foreach ( GP::$formats as $slug => $format ) {
+		$format_options[ $slug ] = $format->name;
+	}
 
 	$status_options = array();
 	if ( isset( $can_import_current ) && $can_import_current ) {
