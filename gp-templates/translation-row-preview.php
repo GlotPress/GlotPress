@@ -64,7 +64,7 @@ $priority_char = array(
 		if ( ! count( array_filter( $translation->translations, 'gp_is_not_null' ) ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $missing_text;
-		} elseif ( ! $translation->plural ) {
+		} elseif ( ! $translation->plural || 1 === $locale->nplurals ) {
 			echo '<span class="translation-text">' . esc_translation( $translation->translations[0] ) . '</span>';
 		} elseif ( $translation->plural && 2 === $locale->nplurals && 'n != 1' === $locale->plural_expression ) {
 			?>
