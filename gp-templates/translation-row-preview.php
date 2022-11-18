@@ -101,7 +101,7 @@ $priority_char = array(
 					$plural_string = implode( ', ', $locale->numbers_for_index( $plural_index ) );
 					?>
 					<li>
-						<small class="with-tooltip" aria-label="<?php /* translators: %s: Plural form. */ printf( esc_attr__( 'This plural form is used for numbers like: %s', 'glotpress' ), esc_attr( $plural_string ) ); ?>">
+						<small>
 							<?php
 							printf(
 								/* translators: %s: Plural form. */
