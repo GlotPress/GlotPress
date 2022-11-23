@@ -667,7 +667,7 @@ class GP_Translation extends GP_Thing {
 	}
 
 	/**
-	 * Sets as old the other changesrequested and waiting translations for the same original and user,
+	 * Sets as old the other changesrequested translations for the same original and user,
 	 * setting the current one as waiting.
 	 *
 	 * @return bool|null
