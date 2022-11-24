@@ -227,6 +227,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url      = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
 		$bulk_action         = gp_url_join( $url, '-bulk' );
+		$word_count_type     = $locale->word_count_type;
 
 		// Add action to use different font for translations
 		add_action(
