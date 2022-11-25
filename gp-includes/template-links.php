@@ -364,7 +364,7 @@ function gp_link_glossary_delete( $glossary, $set, $text = '', $attrs = array() 
  * @param WP_User $user A WP_User user object.
  */
 function gp_link_user( $user ) {
-	// This content is scaped in the gp_link_user_get() method.
+	// This content is escaped in the gp_link_user_get() method.
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	print( gp_link_user_get( $user ) );
 }
