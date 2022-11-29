@@ -584,4 +584,23 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $waiting_translations ) );
 		$this->assertEquals( 1, $set->waiting_count() );
 	}
+
+	function test_when_update_a_waiting_translation_it_is_set_to_old_status() {
+		$user = $this->factory->user->create();
+
+		wp_set_current_user( $user );
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$translation_old = $this->factory->translation->create( array( 'user_id' => $user, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation_old->set_as_waiting() );
+		$translation_waiting = $this->factory->translation->create( array( 'user_id' => $user, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation_waiting->set_as_waiting() ); //$translation_old is now old
+
+		$old_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'old' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 1, $set->waiting_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, count( $old_translations ) );
+	}
 }
