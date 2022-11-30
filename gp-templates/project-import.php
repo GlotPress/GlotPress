@@ -25,19 +25,12 @@ if ( 'originals' === $kind ) {
 gp_title( $gp_title );
 gp_tmpl_header();
 
-$format_extensions = array();
-foreach ( GP::$formats as $format ) {
-	$format_extensions = array_merge( $format_extensions, $format->get_file_extensions() );
-}
-// Remove redundant alternate extensions that have the same ending and add leading '.'.
-$format_extensions = array_unique( preg_replace( '/^(\w*\.)*/', '.', $format_extensions ) );
-
 ?>
 <h2><?php echo 'originals' == $kind ? __( 'Import Originals', 'glotpress' ) : __( 'Import Translations', 'glotpress' ); ?></h2>
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
-	<dd><input type="file" name="import-file" id="import-file" accept="<?php echo esc_attr( implode( ',', $format_extensions ) ); ?>" /></dd>
+	<dd><input type="file" name="import-file" id="import-file" accept="<?php echo esc_attr( implode( ',', gp_get_format_extensions() ) ); ?>" /></dd>
 <?php
 
 	$format_options         = array();
