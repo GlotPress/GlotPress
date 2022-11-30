@@ -53,7 +53,7 @@ $more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history 
  */
 $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation );
 
-$meta_sidebar  = '<div class="meta" id="sidebar-div-meta-' . $translation->original_id . '">';
+$meta_sidebar  = '<div class="meta" id="sidebar-div-meta-' . $translation->row_id . '">';
 $meta_sidebar .= '<h3>' . __( 'Meta', 'glotpress' ) . '</h3>';
 $meta_sidebar .= gp_tmpl_get_output( 'translation-row-editor-meta-status', get_defined_vars() );
 if ( $translation->context ) {
