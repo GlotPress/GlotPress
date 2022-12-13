@@ -2053,7 +2053,7 @@ class GP_Locales {
 		
 		$rif = new GP_Locale();
 		$rif->english_name = 'Tarifit';
-		$rif->native_name = 'Tarifiyt';
+		$rif->native_name = 'Tmaziɣt';
 		$rif->lang_code_iso_639_3 = 'rif';
 		$rif->country_code = 'ma';
 		$rif->slug = 'rif';
