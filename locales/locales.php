@@ -2056,7 +2056,6 @@ class GP_Locales {
 		$rif->native_name = 'Tarifiyt';
 		$rif->lang_code_iso_639_3 = 'rif';
 		$rif->country_code = 'ma';
-		$rif->wp_locale = 'rif';
 		$rif->slug = 'rif';
 		$rif->nplurals = 2;
 		$rif->plural_expression = 'n > 1';
