@@ -909,7 +909,6 @@ class GP_Locales {
 		$es_pa->lang_code_iso_639_2 = 'spa';
 		$es_pa->lang_code_iso_639_3 = 'spa';
 		$es_pa->country_code = 'pa';
-		$es_pa->wp_locale = 'es_PA';
 		$es_pa->slug = 'es-pa';
 		$es_pa->google_code = 'es';
 		$es_pa->facebook_locale = 'es_LA';
