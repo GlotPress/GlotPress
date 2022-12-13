@@ -757,7 +757,6 @@ class GP_Locales {
 		$en_ie->lang_code_iso_639_2 = 'eng';
 		$en_ie->lang_code_iso_639_3 = 'eng';
 		$en_ie->country_code = 'ie';
-		$en_ie->wp_locale = 'en_IE';
 		$en_ie->slug = 'en-ie';
 		$en_ie->google_code = 'en';
 
