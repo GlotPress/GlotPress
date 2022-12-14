@@ -37,7 +37,7 @@
 		/**
 		 * Fires after the default project form fields.
 		 */
-		do_action( 'gp_after_project_form_fields' );
+		do_action( 'gp_after_project_form_fields', $project );
 	?>
 </dl>
 
