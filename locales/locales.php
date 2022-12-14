@@ -910,7 +910,7 @@ class GP_Locales {
 		$es_mx->wp_locale = 'es_MX';
 		$es_mx->slug = 'es-mx';
 		$es_mx->google_code = 'es';
-		$es_mx->facebook_locale = 'es_MX';
+		$es_mx->facebook_locale = 'es_LA';
 
 		$es_pa = new GP_Locale();
 		$es_pa->english_name = 'Spanish (Panama)';
