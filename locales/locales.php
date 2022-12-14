@@ -9,7 +9,7 @@ class GP_Locale {
 	public $lang_code_iso_639_2 = null;
 	public $lang_code_iso_639_3 = null;
 	public $country_code;
-	public $wp_locale;
+	public $wp_locale; // This should only be set for locales that are offically supported on translate.wordpress.org.
 	public $slug;
 	public $nplurals = 2;
 	public $plural_expression = 'n != 1';
@@ -749,6 +749,16 @@ class GP_Locales {
 		$en_gb->slug = 'en-gb';
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
+
+		$en_ie = new GP_Locale();
+		$en_ie->english_name = 'English (Ireland)';
+		$en_ie->native_name = 'English (Ireland)';
+		$en_ie->lang_code_iso_639_1 = 'en';
+		$en_ie->lang_code_iso_639_2 = 'eng';
+		$en_ie->lang_code_iso_639_3 = 'eng';
+		$en_ie->country_code = 'ie';
+		$en_ie->slug = 'en-ie';
+		$en_ie->google_code = 'en';
 
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
