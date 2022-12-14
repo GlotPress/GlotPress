@@ -328,6 +328,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			} else {
 				if ( 'current' === $set_status ) {
 					$translation->set_status( 'current' );
+				} else {
+					$translation->set_status( 'waiting' );
 				}
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
