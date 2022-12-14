@@ -750,6 +750,16 @@ class GP_Locales {
 		$en_gb->google_code = 'en';
 		$en_gb->facebook_locale = 'en_GB';
 
+		$en_ie = new GP_Locale();
+		$en_ie->english_name = 'English (Ireland)';
+		$en_ie->native_name = 'English (Ireland)';
+		$en_ie->lang_code_iso_639_1 = 'en';
+		$en_ie->lang_code_iso_639_2 = 'eng';
+		$en_ie->lang_code_iso_639_3 = 'eng';
+		$en_ie->country_code = 'ie';
+		$en_ie->slug = 'en-ie';
+		$en_ie->google_code = 'en';
+
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
 		$en_nz->native_name = 'English (New Zealand)';
@@ -900,7 +910,18 @@ class GP_Locales {
 		$es_mx->wp_locale = 'es_MX';
 		$es_mx->slug = 'es-mx';
 		$es_mx->google_code = 'es';
-		$es_mx->facebook_locale = 'es_MX';
+		$es_mx->facebook_locale = 'es_LA';
+
+		$es_pa = new GP_Locale();
+		$es_pa->english_name = 'Spanish (Panama)';
+		$es_pa->native_name = 'Español de Panamá';
+		$es_pa->lang_code_iso_639_1 = 'es';
+		$es_pa->lang_code_iso_639_2 = 'spa';
+		$es_pa->lang_code_iso_639_3 = 'spa';
+		$es_pa->country_code = 'pa';
+		$es_pa->slug = 'es-pa';
+		$es_pa->google_code = 'es';
+		$es_pa->facebook_locale = 'es_LA';
 
 		$es_pe = new GP_Locale();
 		$es_pe->english_name = 'Spanish (Peru)';
