@@ -32,6 +32,17 @@
 	<dd><?php echo gp_projects_dropdown( 'project[parent_project_id]', $project->parent_project_id, array(), $project->id ); ?></dd>
 
 	<dt><label for="project[active]"><?php _e( 'Active', 'glotpress' ); ?></label> <input type="checkbox" id="project[active]" name="project[active]" <?php gp_checked( $project->active ); ?> /></dt>
+
+	<?php
+		/**
+		 * Fires after the default project form fields.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param GP_Project $project The project being reendered.
+		 */
+		do_action( 'gp_after_project_form_fields', $project );
+	?>
 </dl>
 
 <?php echo gp_js_focus_on( 'project[name]' ); ?>
