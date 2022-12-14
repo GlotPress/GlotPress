@@ -36,9 +36,9 @@
 	<?php
 		/**
 		 * Fires after the default project form fields.
-		 * 
+		 *
 		 * @since 4.0.0
-		 * 
+		 *
 		 * @param GP_Project $project The project being reendered.
 		 */
 		do_action( 'gp_after_project_form_fields', $project );
