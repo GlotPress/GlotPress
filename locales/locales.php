@@ -912,6 +912,17 @@ class GP_Locales {
 		$es_mx->google_code = 'es';
 		$es_mx->facebook_locale = 'es_MX';
 
+		$es_pa = new GP_Locale();
+		$es_pa->english_name = 'Spanish (Panama)';
+		$es_pa->native_name = 'Español de Panamá';
+		$es_pa->lang_code_iso_639_1 = 'es';
+		$es_pa->lang_code_iso_639_2 = 'spa';
+		$es_pa->lang_code_iso_639_3 = 'spa';
+		$es_pa->country_code = 'pa';
+		$es_pa->slug = 'es-pa';
+		$es_pa->google_code = 'es';
+		$es_pa->facebook_locale = 'es_LA';
+
 		$es_pe = new GP_Locale();
 		$es_pe->english_name = 'Spanish (Peru)';
 		$es_pe->native_name = 'Español de Perú';
