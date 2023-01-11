@@ -815,4 +815,135 @@ class GP_Builtin_Translation_Warnings {
 
 		return $error;
 	}
+
+	/**
+	 * Adds a warning for added or removed spaces at the beginning or at the end of the translation.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param string $original    The original string.
+	 * @param string $translation The translated string.
+	 *
+	 * @return string|true True if check is OK, otherwise warning message.
+	 */
+	public function warning_unexpected_start_end_space( string $original, string $translation ) {
+		preg_match( '/^( *)/D', $original, $m );
+		$original_start_spaces = strlen( $m[0] );
+
+		preg_match( '/^( *)/D', $translation, $m );
+		$translation_start_spaces = strlen( $m[0] );
+
+		preg_match( '/( *)$/D', $original, $m );
+		$original_end_spaces = strlen( $m[0] );
+
+		preg_match( '/( *)$/D', $translation, $m );
+		$translation_end_spaces = strlen( $m[0] );
+
+		$warnings = array();
+		if ( $original_start_spaces && ! $translation_start_spaces ) {
+			$warnings[] = sprintf(
+				/* translators: 1: Number of spaces at the beginning of the original string. */
+				_n(
+					'The translation appears to be missing %d space at the beginning.',
+					'The translation appears to be missing %d spaces at the beginning.',
+					$original_start_spaces,
+					'glotpress'
+				),
+				$original_start_spaces
+			);
+		}
+		if ( ( ! $original_start_spaces ) && $translation_start_spaces ) {
+			$warnings[] = sprintf(
+				/* translators: 1: Number of spaces at the beginning of the translation string. */
+				_n(
+					'The translation appears to be adding %d space at the beginning.',
+					'The translation appears to be adding %d spaces at the beginning.',
+					$translation_start_spaces,
+					'glotpress'
+				),
+				$translation_start_spaces
+			);
+		}
+		if ( ( $original_end_spaces ) && ( ! $translation_end_spaces ) ) {
+			$warnings[] = sprintf(
+				/* translators: 1: Number of spaces at the end of the original string. */
+				_n(
+					'The translation appears to be missing %d space at the end.',
+					'The translation appears to be missing %d spaces at the end.',
+					$original_end_spaces,
+					'glotpress'
+				),
+				$original_end_spaces
+			);
+		}
+		if ( ! $original_end_spaces && $translation_end_spaces ) {
+			$warnings[] = sprintf(
+				/* translators: 1: Number of spaces at the end of the translation string. */
+				_n(
+					'The translation appears to be adding %d space at the end.',
+					'The translation appears to be adding %d spaces at the end.',
+					$translation_end_spaces,
+					'glotpress'
+				),
+				$translation_end_spaces
+			);
+		}
+		if ( $original_start_spaces && $translation_start_spaces && ( $original_start_spaces !== $translation_start_spaces ) ) {
+			$warnings[] = sprintf(
+				/* translators: 1: Number of spaces at the beginning of the original string. 2: Number of spaces at the beginning of the translation string. */
+				_n(
+					'Expected %1$d space at the beginning, got %2$d.',
+					'Expected %1$d spaces at the beginning, got %2$d.',
+					$original_start_spaces,
+					'glotpress'
+				),
+				$original_start_spaces,
+				$translation_start_spaces
+			);
+		}
+		if ( $original_end_spaces && $translation_end_spaces && ( $original_end_spaces !== $translation_end_spaces ) ) {
+			$warnings[] = sprintf(
+				/* translators: 1: Number of spaces at the end of the original string. 2: Number of spaces at the end of the translation string. */
+				_n(
+					'Expected %1$d space at the end, got %2$d.',
+					'Expected %1$d spaces at the end, got %2$d.',
+					$original_end_spaces,
+					'glotpress'
+				),
+				$original_end_spaces,
+				$translation_end_spaces
+			);
+		}
+		if ( empty( $warnings ) ) {
+			return true;
+		}
+		return implode( "\n", $warnings );
+	}
+
+	/**
+	 * Checks the missing uppercase in the beginning of the translations.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
+	 *
+	 * @return string|true True if check is OK, otherwise warning message.
+	 */
+	public function warning_missing_uppercase_beginning( string $original, string $translation ) {
+		$is_first_letter_uppercase_original    = preg_match( '/^\p{Lu}/u', $original );
+		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
+		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
+		$is_first_letter_lowercase_translation = preg_match( '/^\p{Ll}/u', $translation );
+		if ( $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation ) {
+			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
+		}
+		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
+			return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+		}
+
+		return true;
+	}
 }

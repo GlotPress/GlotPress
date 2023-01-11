@@ -97,8 +97,13 @@ function gp_nav_menu( $location = 'main' ) {
 	$html  = '';
 	$items = gp_nav_menu_items( $location );
 
+	// Get the current URI.
+	$current_uri = str_replace( home_url(), '', gp_url_current() );
+
 	foreach ( $items as $link => $title ) {
-		$html .= '<a href="' . $link . '">' . $title . '</a>';
+		// Check if the link matches the current URI base, if true, add 'current' class.
+		$class = gp_startswith( $current_uri, $link ) ? 'current' : '';
+		$html .= '<a class="' . $class . '" href="' . $link . '">' . $title . '</a>';
 	}
 
 	return $html;
@@ -650,12 +655,15 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  * @return array
  */
 function gp_get_translation_row_classes( $translation ) {
-	$classes   = array();
-	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	$classes = array();
+	if ( ( 'changesrequested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code
+		$classes[] = 'untranslated';
+	} else {
+		$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	}
 	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	$classes[] = count( array_filter( $translation->translations, 'gp_is_not_null' ) ) > 0 ? 'has-translations' : 'no-translations';
-
 	/**
 	 * Filters the list of CSS classes for a translation row
 	 *
