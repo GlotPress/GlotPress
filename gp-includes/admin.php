@@ -129,7 +129,21 @@ class GP_Admin {
 		$html    = '<input type="checkbox" id="' . $args['id'] . '" ';
 		$html   .= 'name="gp_options[' . $args['id'] . ']" value="1" ' . checked( 1, $value, false ) . ' />';
 		$html   .= '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
-		echo esc_attr( $html );
+		echo wp_kses(
+			$html,
+			array(
+				'input' => array(
+					'type'    => array(),
+					'id'      => array(),
+					'name'    => array(),
+					'value'   => array(),
+					'checked' => array(),
+				),
+				'label' => array(
+					'for' => array(),
+				),
+			),
+		);
 	}
 
 	/**
