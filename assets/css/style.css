@@ -1596,3 +1596,106 @@ table.form-table td {
 		flex-direction: column;
 	}
 }
+
+/**
+ * Starts sidebar
+ */
+.editor .nav-sidebar .meta {
+	border: 1px solid #ccc;
+	margin-left: -1px !important;
+	width: 100% !important;
+	min-height: 300px;
+}
+
+.meta.discussion, .meta.history, .meta.other-locales {
+	padding: 1rem;
+}
+.meta.discussion h6 {
+	margin-block: auto;
+}
+
+.meta.history .translations {
+	width: 100%;
+}
+.meta.history #translation-history-table thead tr th {
+	font-size: 0.9rem;
+	font-weight: 500 !important;
+}
+
+.meta.history #legend > div {
+	margin-top: 0.5rem;
+}
+
+.meta.other-locales ul {
+	list-style: none;
+}
+
+.meta.other-locales span.locale.unique {
+	margin-right: 26px;
+}
+
+.meta.other-locales .other-locales .locale {
+	display: inline-block;
+	padding: 1px 6px 0 0;
+	margin: 1px 6px 1px 0;
+	background: #00DA12;
+	width: 5em;
+	text-align: right;
+	float: left;
+	color: #fff;
+}
+
+.meta.other-locales .sidebar-other-locales {
+	margin: 0.1rem .5rem;
+}
+
+.editor .nav-sidebar {
+	float: left;
+	width: 35%;
+	margin: 0;
+	padding: 0;
+}
+
+.warning {
+	margin-right: 1rem !important;
+}
+.sidebar-tabs {
+	margin: 0;
+	padding: 0;
+}
+
+ul.sidebar-tabs {
+	margin-bottom: 0;
+}
+
+.sidebar-tabs > li {
+	background: #eee;
+	color: #222;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+	margin: 0 1px 0 0;
+}
+.sidebar-tabs li.current {
+	background-color: transparent;
+	margin: 0 0 -1px -1px;
+	border: 1px solid #ccc;
+	border-bottom: 1px solid #fff;
+	font-weight: bold;
+}
+
+.meta h3 {
+	display: none !important;
+}
+
+.meta.discussion .comment-respond{
+	padding: 0 1rem;
+}
+
+.meta.discussion .optin-message-for-each-discussion {
+	padding: 0 1rem 1rem 1rem;
+}
+/**
+ * Ends sidebar
+ */
+
