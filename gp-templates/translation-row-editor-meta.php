@@ -53,23 +53,20 @@ $more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history 
  */
 $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation );
 
-?>
-<div class="meta">
-	<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
+$meta_sidebar  = '<div class="meta" id="sidebar-div-meta-' . $translation->row_id . '">';
+$meta_sidebar .= '<h3>' . __( 'Meta', 'glotpress' ) . '</h3>';
+$meta_sidebar .= gp_tmpl_get_output( 'translation-row-editor-meta-status', get_defined_vars() );
+if ( $translation->context ) {
+	$meta_sidebar .= '		<dl>';
+	$meta_sidebar .= '			<dt>' . __( 'Context:', 'glotpress' ) . '</dt>';
+	$meta_sidebar .= '			<dd>' . esc_translation( $translation->context ) . '</dd>';
+	$meta_sidebar .= '		</dl>';
+}
 
-	<?php gp_tmpl_load( 'translation-row-editor-meta-status', get_defined_vars() ); ?>
-
-	<?php if ( $translation->context ) : ?>
-		<dl>
-			<dt><?php _e( 'Context:', 'glotpress' ); ?></dt>
-			<dd><?php echo esc_translation( $translation->context ); ?></dd>
-		</dl>
-	<?php endif; ?>
-	<?php if ( $translation->extracted_comments ) : ?>
-		<dl>
-			<dt><?php _e( 'Comment:', 'glotpress' ); ?></dt>
-			<dd>
-				<?php
+if ( $translation->extracted_comments ) {
+	$meta_sidebar .= '		<dl>';
+	$meta_sidebar .= '			<dt>' . __( 'Comment:', 'glotpress' ) . '</dt>';
+	$meta_sidebar .= '			<dd>';
 				/**
 				 * Filters the extracted comments of an original.
 				 *
@@ -77,89 +74,97 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 				 * @param GP_Translation $translation        Translation object.
 				 */
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo apply_filters( 'gp_original_extracted_comments', $translation->extracted_comments, $translation );
-				?>
-			</dd>
-		</dl>
-	<?php endif; ?>
-	<?php if ( $translation->translation_added && '0000-00-00 00:00:00' !== $translation->translation_added ) : ?>
-		<dl>
-			<dt><?php _e( 'Date added (GMT):', 'glotpress' ); ?></dt>
-			<dd id="gmt-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php echo esc_html( $translation->translation_added ); ?></dd>
-		</dl>
-		<dl>
-			<dt><?php _e( 'Date added (local):', 'glotpress' ); ?></dt>
-			<dd id="local-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php _e( 'Calculating...', 'glotpress' ); ?></dd>
-		</dl>
-	<?php endif; ?>
-	<?php if ( $translation->user ) : ?>
-		<dl>
-			<dt><?php _e( 'Translated by:', 'glotpress' ); ?></dt>
-			<dd><?php gp_link_user( $translation->user ); ?></dd>
-		</dl>
-	<?php endif; ?>
-	<?php if ( $translation->user_last_modified && ( ! $translation->user || $translation->user->ID !== $translation->user_last_modified->ID ) ) : ?>
-		<dl>
-			<dt>
-			<?php
+	$meta_sidebar .= apply_filters( 'gp_original_extracted_comments', $translation->extracted_comments, $translation );
+	$meta_sidebar .= '			</dd>';
+	$meta_sidebar .= '		</dl>';
+}
+if ( $translation->translation_added && '0000-00-00 00:00:00' !== $translation->translation_added ) {
+	$meta_sidebar .= '		<dl>';
+	$meta_sidebar .= '			<dt>' . __( 'Date added (GMT):', 'glotpress' ) . '</dt>';
+	$meta_sidebar .= '			<dd id="gmt-date-added-' . esc_attr( $translation->row_id ) . '">' . esc_html( $translation->translation_added ) . '</dd>';
+	$meta_sidebar .= '		</dl>';
+	$meta_sidebar .= '		<dl>';
+	$meta_sidebar .= '			<dt>' . __( 'Date added (local):', 'glotpress' ) . '</dt>';
+	$meta_sidebar .= '			<dd id="local-date-added-' . esc_attr( $translation->row_id ) . '">' . __( 'Calculating...', 'glotpress' ) . '</dd>';
+	$meta_sidebar .= '		</dl>';
+}
+if ( $translation->user ) {
+	$meta_sidebar .= '		<dl>';
+	$meta_sidebar .= '			<dt>' . __( 'Translated by:', 'glotpress' ) . '</dt>';
+	$meta_sidebar .= '			<dd>' . gp_link_user_get( $translation->user ) . '</dd>';
+	$meta_sidebar .= '		</dl>';
+}
+
+if ( $translation->user_last_modified && ( ! $translation->user || $translation->user->ID !== $translation->user_last_modified->ID ) ) {
+	$meta_sidebar .= '		<dl>';
+	$meta_sidebar .= '			<dt>';
 			if ( 'current' === $translation->translation_status ) {
-				_e( 'Approved by:', 'glotpress' );
+				$meta_sidebar .= __( 'Approved by:', 'glotpress' );
 			} elseif ( 'rejected' === $translation->translation_status ) {
-				_e( 'Rejected by:', 'glotpress' );
+				$meta_sidebar .= __( 'Rejected by:', 'glotpress' );
 			} else {
-				_e( 'Last updated by:', 'glotpress' );
+				$meta_sidebar .= __( 'Last updated by:', 'glotpress' );
 			}
-			?>
-			</dt>
-			<dd><?php gp_link_user( $translation->user_last_modified ); ?></dd>
-		</dl>
-	<?php endif; ?>
-	<?php references( $project, $translation ); ?>
+	$meta_sidebar .= '			</dt>';
+	$meta_sidebar .= '			<dd>' . gp_link_user_get( $translation->user_last_modified ) . '</dd>';
+	$meta_sidebar .= '		</dl>';
+}
+ob_start();
+references( $project, $translation );
+$meta_sidebar .= ob_get_clean();
 
-	<dl>
-		<dt><?php _e( 'Priority:', 'glotpress' ); ?></dt>
-		<?php if ( $can_write ) : ?>
-			<dd>
-				<?php
-				echo gp_select(
-					'priority-' . $translation->original_id,
-					GP::$original->get_static( 'priorities' ),
-					$translation->priority,
-					array(
-						'class'      => 'priority',
-						'tabindex'   => '-1',
-						'data-nonce' => wp_create_nonce( 'set-priority_' . $translation->original_id ),
-					)
-				);
-				?>
-			</dd>
-		<?php else : ?>
-			<dd>
-				<?php
-				echo esc_html(
-					gp_array_get(
-						GP::$original->get_static( 'priorities' ),
-						$translation->priority,
-						_x( 'Unknown', 'priority', 'glotpress' )
-					)
-				);
-				?>
-			</dd>
-		<?php endif; ?>
-	</dl>
+$meta_sidebar .= '	<dl>';
+$meta_sidebar .= '		<dt>' . __( 'Priority:', 'glotpress' ) . '</dt>';
+if ( $can_write ) {
+	$meta_sidebar .= '			<dd>';
+	$meta_sidebar .= gp_select(
+		'priority-' . $translation->original_id,
+		GP::$original->get_static( 'priorities' ),
+		$translation->priority,
+		array(
+			'class'      => 'priority',
+			'tabindex'   => '-1',
+			'data-nonce' => wp_create_nonce( 'set-priority_' . $translation->original_id ),
+		)
+	);
+	$meta_sidebar .= '			</dd>';
+	} else {
+	$meta_sidebar .= '			<dd>';
+	$meta_sidebar .= esc_html(
+		gp_array_get(
+			GP::$original->get_static( 'priorities' ),
+			$translation->priority,
+			_x( 'Unknown', 'priority', 'glotpress' )
+		)
+	);
+	$meta_sidebar .= '			</dd>';
+}
+$meta_sidebar .= '	</dl>';
 
-	<dl>
-		<dt><?php _e( 'More links:', 'glotpress' ); ?>
-			<ul>
-				<?php foreach ( $more_links as $more_link ) : ?>
-					<li>
-						<?php
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						echo $more_link;
-						?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</dt>
-	</dl>
-</div>
+$meta_sidebar .= '	<dl>';
+$meta_sidebar .= '		<dt>' . __( 'More links:', 'glotpress' );
+$meta_sidebar .= '			<ul>';
+				foreach ( $more_links as $more_link ) {
+					$meta_sidebar .= '					<li>';
+					$meta_sidebar .= $more_link;
+					$meta_sidebar .= '					</li>';
+				}
+$meta_sidebar .= '			</ul>';
+$meta_sidebar .= '		</dt>';
+$meta_sidebar .= '	</dl>';
+$meta_sidebar .= '</div>';
+
+$defined_vars = get_defined_vars();
+
+/**
+ * Filter the content in the sidebar.
+ *
+ * @since 4.0.0
+ *
+ * @param string $meta_sidebar Default content for the sidebar.
+ * @param array  $defined_vars The defined vars.
+ */
+$meta_sidebar = apply_filters( 'gp_right_sidebar', $meta_sidebar, $defined_vars );
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo $meta_sidebar;
