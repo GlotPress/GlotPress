@@ -52,7 +52,7 @@ $more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history 
  * @param GP_Translation $translation Translation object.
  */
 $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_links, $project, $locale, $translation_set, $translation );
-
+ob_start();
 ?>
 <div class="meta">
 	<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
@@ -163,3 +163,17 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 		</dt>
 	</dl>
 </div>
+<?php
+$meta_sidebar = ob_get_clean();
+/**
+ * Filter the content in the sidebar.
+ *
+ * @since 4.0.0
+ *
+ * @param string $meta_sidebar Default content for the sidebar.
+ * @param array  $defined_vars The defined vars.
+ */
+$meta_sidebar = apply_filters( 'gp_right_sidebar', $meta_sidebar, get_defined_vars() );
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo $meta_sidebar;
