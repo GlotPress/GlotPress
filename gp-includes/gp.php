@@ -104,6 +104,14 @@ class GP {
 	public static $router;
 
 	/**
+	 * Singleton for translating local items.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @var GP_Local
+	 */
+	public static $local;
+	/**
 	 * Singleton for translation warnings.
 	 *
 	 * @since 1.0.0
