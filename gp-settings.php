@@ -42,6 +42,7 @@ if ( ! defined( 'GP_TMPL_PATH' ) ) {
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 }
 
+require_once GP_PATH . GP_INC . 'local.php';
 require_once GP_PATH . GP_INC . 'meta.php';
 require_once GP_PATH . GP_INC . 'misc.php';
 require_once GP_PATH . GP_INC . 'url.php';
@@ -111,6 +112,7 @@ GP::$translation_errors         = new GP_Translation_Errors();
 GP::$builtin_translation_errors = new GP_Builtin_Translation_Errors();
 GP::$builtin_translation_errors->add_all( GP::$translation_errors );
 GP::$router  = new GP_Router();
+GP::$local   = new GP_Local();
 GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';
