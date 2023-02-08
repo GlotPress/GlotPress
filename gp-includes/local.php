@@ -9,6 +9,7 @@ class GP_Local {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 	}
 
 	/**
@@ -20,7 +21,7 @@ class GP_Local {
 		add_menu_page(
 			esc_html__( 'Local GlotPress', 'glotpress' ),
 			'GlotPress',
-			'read',
+			'manage_options',
 			'glotpress',
 			array( $this, 'show_settings_page' ),
 			'dashicons-translation'
@@ -29,7 +30,7 @@ class GP_Local {
 			'glotpress',
 			esc_html__( 'Settings', 'glotpress' ),
 			esc_html__( 'Settings', 'glotpress' ),
-			'read',
+			'manage_options',
 			'glotpress',
 			array( $this, 'show_settings_page' )
 		);
@@ -37,10 +38,32 @@ class GP_Local {
 			'glotpress',
 			esc_html__( 'Local Projects', 'glotpress' ),
 			esc_html__( 'Local Projects', 'glotpress' ),
-			'read',
+			'manage_options',
 			'glotpress-local-projects',
 			array( $this, 'show_local_projects' ),
 		);
+	}
+
+	/**
+	 * Saves the settings.
+	 *
+	 * @return void
+	 */
+	public function save_glotpress_settings() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		if ( ! isset( $_POST['gp_save_settings_nonce'] ) ) {
+			return;
+		}
+		if ( ! wp_verify_nonce( $_POST['gp_save_settings_nonce'], 'gp_save_settings' ) ) {
+			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
+		}
+		if ( isset( $_POST['gp_enable_local_translation'] ) ) {
+			update_option( 'gp_enable_local_translation', 1 );
+		} else {
+			delete_option( 'gp_enable_local_translation' );
+		}
 	}
 
 	/**
@@ -54,33 +77,39 @@ class GP_Local {
 			<h1>
 				<?php esc_html_e( 'Settings', 'glotpress' ); ?>
 			</h1>
-			<table class="form-table">
-				<tbody>
-				<tr>
-					<th scope="row">
-						<?php esc_html_e( 'Main Path', 'glotpress' ); ?>
-					</th>
-					<td>
-						<p>
-							<?php echo gp_link_get( gp_url( '/' ), esc_html__( 'GlotPress Main Path', 'glotpress' ), array( 'target' => '_blank' ) ); ?>
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						<?php esc_html_e( 'Local Translations', 'glotpress' ); ?>
-					</th>
-					<td>
-						<p>
-							<label>
-								<input type="checkbox" name="gp_enable_local_translation" value="true">
-								<?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?>
-						   </label>
-						</p>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+			<form method="post">
+				<?php wp_nonce_field( 'gp_save_settings', 'gp_save_settings_nonce' ); ?>
+				<table class="form-table">
+					<tbody>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Main Path', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<?php echo gp_link_get( gp_url( '/' ), esc_html__( 'GlotPress Main Path', 'glotpress' ), array( 'target' => '_blank' ) ); ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Local Translations', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<?php $checked = get_option( 'gp_enable_local_translation' ) ? 'checked' : ''; ?>
+									<input type="checkbox" name="gp_enable_local_translation" <?php echo esc_html( $checked ); ?>>
+									<?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?>
+							   </label>
+							</p>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<?php submit_button( esc_attr__( 'Save Settings', 'glotpress' ), 'primary' ); ?>
+			</form>
+
 		</div>
 		<?php
 	}
