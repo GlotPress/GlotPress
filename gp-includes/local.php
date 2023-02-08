@@ -136,6 +136,27 @@ class GP_Local {
 			<h1>
 				<?php esc_html_e( 'Local GlotPress', 'glotpress' ); ?>
 			</h1>
+			<?php
+			if ( ! get_option( 'gp_enable_local_translation' ) ) {
+				?>
+					<div class="notice notice-error">
+						<p>
+						<?php
+							echo wp_kses(
+								sprintf(
+									/* Translators: %s is GlotPress settings URL. */
+									__( 'You have to enable the local translations. You can do it <a href="%s">here</a>.', 'glotpress' ),
+									admin_url( 'admin.php?page=glotpress' )
+								),
+								array( 'a' => array( 'href' => array() ) )
+							);
+						?>
+						</p>
+					</div>
+					<?php
+					return;
+			}
+			?>
 			<p>
 				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
 			</p>
