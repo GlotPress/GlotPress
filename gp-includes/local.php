@@ -190,12 +190,16 @@ class GP_Local {
 						<td>
 							<a href="#">
 								<?php
-								echo esc_html(
-									sprintf(
-									/* Translators: %s is the language into which we will translate . */
-										__( 'Translate to %s', 'glotpress' ),
-										$language
-									)
+								echo gp_link_get(
+									gp_url( '/local/core' ),
+									esc_html(
+										sprintf(
+											/* Translators: %s is the language into which we will translate . */
+											__( 'Translate to %s', 'glotpress' ),
+											$language
+										)
+									),
+									array( 'target' => '_blank' )
 								);
 								?>
 							</a>
