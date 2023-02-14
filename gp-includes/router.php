@@ -90,7 +90,7 @@ class GP_Router {
 			"get:/languages/$locale/$path"                    => array( 'GP_Route_Locale', 'single' ),
 			"get:/languages/$locale"                          => array( 'GP_Route_Locale', 'single' ),
 
-			"get:/local/$path"                                => array( 'GP_Route_Local', 'test' ),
+			"get:/local/$path"                                => array( 'GP_Route_Local', 'import' ),
 
 			"get:/$set/glossary"                              => array( 'GP_Route_Glossary_Entry', 'glossary_entries_get' ),
 			"post:/$set/glossary"                             => array( 'GP_Route_Glossary_Entry', 'glossary_entries_post' ),
