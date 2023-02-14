@@ -14,7 +14,7 @@
  */
 class GP_Route_Local extends GP_Route_Main {
 
-	public function test( $path ) {
+	public function import( $path ) {
 		switch ( strtok( $path, '/' ) ) {
 			case 'core':
 				$this->translate_core();
@@ -25,9 +25,8 @@ class GP_Route_Local extends GP_Route_Main {
 				$this->redirect( gp_url( '/projects/local-plugins/' ) );
 				break;
 			case 'theme':
-				$this->translate_theme();
-				break;
-			default:
+				$this->translate_theme( $path );
+				$this->redirect( gp_url( '/projects/local-themes/' ) );
 				break;
 		}
 	}
@@ -103,7 +102,6 @@ class GP_Route_Local extends GP_Route_Main {
 		// Create the main project for the plugins.
 		$main_project = $this->get_or_create_project( 'Plugins', 'local-plugins', 'local-plugins', 'Local Plugins' );
 
-		// Create the subprojects for the current plugin.
 		$this->create_project_and_import_strings(
 			$current_plugin['Name'],
 			$current_plugin['TextDomain'],
@@ -115,13 +113,40 @@ class GP_Route_Local extends GP_Route_Main {
 		);
 	}
 
-	private function translate_theme() {
+	/**
+	 * Creates the projects and import the originals and translations for a theme.
+	 *
+	 * @param string $path The path of the theme.
+	 */
+	private function translate_theme( string $path ) {
+		$locale        = GP_Locales::by_field( 'wp_locale', get_user_locale() );
+		$themes        = apply_filters( 'local_glotpress_local_themes', wp_get_themes() );
+		$textDomain    = substr( $path, 6 );
+		$current_theme = null;
+		foreach ( $themes as $theme ) {
+			if ( $theme->get( 'TextDomain' ) === $textDomain ) {
+				$current_theme = $theme;
+				break;
+			}
+		}
 
+		// Create the main project for the themes.
+		$main_project = $this->get_or_create_project( 'Themes', 'local-themes', 'local-themes', 'Local Themes' );
+
+		$this->create_project_and_import_strings(
+			$current_theme->get( 'Name' ),
+			$current_theme->get( 'TextDomain' ),
+			'local-themes/' . $current_theme->get( 'TextDomain' ),
+			$current_theme->get( 'Description' ),
+			$main_project,
+			$locale,
+			ABSPATH . '/wp-content/languages/themes/' . $current_theme->get( 'TextDomain' ) . '-' . $locale->wp_locale . '.po'
+		);
 	}
 
 
 	/**
-	 * Create a project and import the strings.
+	 * Creates a project and import the strings.
 	 *
 	 * @param string     $project_name The name of the project.
 	 * @param string     $project_slug The slug of the project.
@@ -132,23 +157,15 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @param string     $file_to_import The file to import.
 	 */
 	private function create_project_and_import_strings( string $project_name, string $project_slug, string $path, string $project_description, GP_Project $parent_project, GP_Locale $locale, string $file_to_import ) {
-		// Create a new project if it doesn't exist.
-		$project = $this->get_or_create_project( $project_name, $project_slug, $path, $project_description, $parent_project );
-
-		// Create a new translation set for the user's locale and project if it doesn't exist.
+		$project         = $this->get_or_create_project( $project_name, $project_slug, $path, $project_description, $parent_project );
 		$translation_set = $this->get_or_create_translation_set( $project, 'default', $locale );
-
-		// Import the originals if the project doesn't have any string in the originals table
 		// todo: check if the file exists.
-		$originals = $this->get_or_import_originals( $project, $file_to_import );
-
-		// Import the translations if the project doesn't have any string in
-		// the translations table for the translation set.
+		$originals    = $this->get_or_import_originals( $project, $file_to_import );
 		$translations = $this->get_or_import_translations( $project, $translation_set, $file_to_import );
 	}
 
 	/**
-	 * Get or create a project.
+	 * Gets or creates a project.
 	 *
 	 * @param string          $name The name of the project.
 	 * @param string          $slug The slug of the project.
@@ -176,7 +193,7 @@ class GP_Route_Local extends GP_Route_Main {
 	}
 
 	/**
-	 * Get or create a translation set.
+	 * Gets or creates a translation set.
 	 *
 	 * @param GP_Project $project The project.
 	 * @param string     $slug    The slug of the translation set.
@@ -205,7 +222,7 @@ class GP_Route_Local extends GP_Route_Main {
 	}
 
 	/**
-	 * Get or import the originals.
+	 * Gets or imports the originals.
 	 *
 	 * @param GP_Project $project The project.
 	 * @param string     $file    The file to import.
@@ -223,6 +240,15 @@ class GP_Route_Local extends GP_Route_Main {
 		return $originals;
 	}
 
+	/**
+	 * Gets or imports the translations.
+	 *
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param string             $file            The file to import.
+	 *
+	 * @return array
+	 */
 	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $file ):array {
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
