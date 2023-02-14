@@ -188,8 +188,7 @@ class GP_Local {
 						<td><?php esc_html_e( 'WordPress core', 'glotpress' ); ?></td>
 						<td><?php echo esc_html( $wp_version ); ?></td>
 						<td>
-							<a href="#">
-								<?php
+							<?php
 								echo gp_link_get(
 									gp_url( '/local/core' ),
 									esc_html(
@@ -201,8 +200,7 @@ class GP_Local {
 									),
 									array( 'target' => '_blank' )
 								);
-								?>
-							</a>
+							?>
 						</td>
 					</tr>
 				</tbody>
@@ -234,6 +232,7 @@ class GP_Local {
 				</thead>
 				<tbody id="plugins-list">
 					<?php foreach ( $plugins as $slug => $plugin ) : ?>
+						<?php // dd($plugin); ?>
 					<tr style="box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);">
 						<td>
 							<?php echo esc_html( $plugin['Name'] ); ?>
@@ -256,17 +255,21 @@ class GP_Local {
 							</p>
 						</td>
 						<td>
-							<a href="#">
-								<?php
-								echo esc_html(
-									sprintf(
-									/* Translators: %s is the language into which we will translate . */
-										__( 'Translate to %s', 'glotpress' ),
-										$language
-									)
+							<?php
+							if ( $plugin['TextDomain'] ) {
+								echo gp_link_get(
+									gp_url( '/local/plugin/' . $plugin['TextDomain'] ),
+									esc_html(
+										sprintf(
+										/* Translators: %s is the language into which we will translate . */
+											__( 'Translate to %s', 'glotpress' ),
+											$language
+										)
+									),
+									array( 'target' => '_blank' )
 								);
-								?>
-							</a>
+							}
+							?>
 						</td>
 					</tr>
 					<?php endforeach; ?>
