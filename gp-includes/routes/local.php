@@ -21,7 +21,8 @@ class GP_Route_Local extends GP_Route_Main {
 				$this->redirect( gp_url( '/projects/local-wordpress/' ) );
 				break;
 			case 'plugin':
-				$this->translate_plugin();
+				$this->translate_plugin( $path );
+				$this->redirect( gp_url( '/projects/local-plugins/' ) );
 				break;
 			case 'theme':
 				$this->translate_theme();
@@ -31,6 +32,9 @@ class GP_Route_Local extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Creates the projects and import the originals and translations for the WordPress core.
+	 */
 	private function translate_core() {
 		// todo: check if the user is logged in and has the right permissions.
 		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
@@ -76,8 +80,39 @@ class GP_Route_Local extends GP_Route_Main {
 		);
 	}
 
-	private function translate_plugin() {
+	/**
+	 * Creates the projects and import the originals and translations for a plugin.
+	 *
+	 * @param string $path The path of the plugin.
+	 */
+	private function translate_plugin( string $path ) {
+		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$plugins        = apply_filters( 'local_glotpress_local_plugins', get_plugins() );
+		$textDomain     = substr( $path, 7 );
+		$current_plugin = null;
+		foreach ( $plugins as $plugin ) {
+			if ( $plugin['TextDomain'] === $textDomain ) {
+				$current_plugin = $plugin;
+				break;
+			}
+		}
 
+		// Create the main project for the plugins.
+		$main_project = $this->get_or_create_project( 'Plugins', 'local-plugins', 'local-plugins', 'Local Plugins' );
+
+		// Create the subprojects for the current plugin.
+		$this->create_project_and_import_strings(
+			$current_plugin['Name'],
+			$current_plugin['TextDomain'],
+			'local-plugins/' . $current_plugin['TextDomain'],
+			$current_plugin['Description'],
+			$main_project,
+			$locale,
+			ABSPATH . '/wp-content/languages/plugins/' . $current_plugin['TextDomain'] . '-' . $locale->wp_locale . '.po'
+		);
 	}
 
 	private function translate_theme() {
