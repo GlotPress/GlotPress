@@ -18,7 +18,7 @@ class GP_Route_Local extends GP_Route_Main {
 		switch ( strtok( $path, '/' ) ) {
 			case 'core':
 				$this->translate_core();
-				$this->redirect( gp_url( '/projects/local-core/' . GP_Locales::by_field( 'wp_locale', get_user_locale() )->slug . '/default/' ) );
+				$this->redirect( gp_url( '/projects/local-wordpress/' ) );
 				break;
 			case 'plugin':
 				$this->translate_plugin();
@@ -33,20 +33,47 @@ class GP_Route_Local extends GP_Route_Main {
 
 	private function translate_core() {
 		// todo: check if the user is logged in and has the right permissions.
-		// Create a new project if it doesn't exist.
-		$project = $this->get_or_create_project( 'Local core', 'local-core', 'Local core translation' );
+		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
+		// Create the main project for the WordPress core.
+		$main_project = $this->get_or_create_project( 'WordPress', 'local-wordpress', 'local-wordpress', 'Local WordPress Core Translation' );
 
-		// Create a new translation set for the user's locale and project if it doesn't exist.
-		$locale          = GP_Locales::by_field( 'wp_locale', get_user_locale() );
-		$translation_set = $this->get_or_create_translation_set( $project, 'default', $locale );
-
-		// Import the originals if the project doesn't have any string in the originals table
-		$file_to_import = ABSPATH . 'wp-content/languages/admin-' . $locale->wp_locale . '.po';
-		$originals      = $this->get_or_import_originals( $project, $file_to_import );
-
-		// Import the translations if the project doesn't have any string in
-		// the translations table for the translation set.
-		$translations = $this->get_or_import_translations( $project, $translation_set, $file_to_import );
+		// Create the subprojects for the WordPress core.
+		$this->create_project_and_import_strings(
+			'Administration',
+			'local-wordpress-administration',
+			'local-wordpress/local-wordpress-administration',
+			'WordPress Administration',
+			$main_project,
+			$locale,
+			ABSPATH . '/wp-content/languages/admin-' . $locale->wp_locale . '.po'
+		);
+		$this->create_project_and_import_strings(
+			'Network Admin',
+			'local-wordpress-network-admin',
+			'local-wordpress/local-wordpress-network-admin',
+			'WordPress Network Administration',
+			$main_project,
+			$locale,
+			ABSPATH . '/wp-content/languages/admin-network-' . $locale->wp_locale . '.po'
+		);
+		$this->create_project_and_import_strings(
+			'Continents & Cities',
+			'local-wordpress-continents-cities',
+			'local-wordpress/local-wordpress-continents-cities',
+			'WordPress Continents & Cities',
+			$main_project,
+			$locale,
+			ABSPATH . '/wp-content/languages/continents-cities-' . $locale->wp_locale . '.po'
+		);
+		$this->create_project_and_import_strings(
+			'Development',
+			'local-wordpress-development',
+			'local-wordpress/local-wordpress-development',
+			'WordPress Development',
+			$main_project,
+			$locale,
+			ABSPATH . '/wp-content/languages/' . $locale->wp_locale . '.po'
+		);
 	}
 
 	private function translate_plugin() {
@@ -57,23 +84,55 @@ class GP_Route_Local extends GP_Route_Main {
 
 	}
 
+
+	/**
+	 * Create a project and import the strings.
+	 *
+	 * @param string     $project_name The name of the project.
+	 * @param string     $project_slug The slug of the project.
+	 * @param string     $path The path of the project.
+	 * @param string     $project_description The description of the project.
+	 * @param GP_Project $parent_project The parent project.
+	 * @param GP_Locale  $locale The locale of the project.
+	 * @param string     $file_to_import The file to import.
+	 */
+	private function create_project_and_import_strings( string $project_name, string $project_slug, string $path, string $project_description, GP_Project $parent_project, GP_Locale $locale, string $file_to_import ) {
+		// Create a new project if it doesn't exist.
+		$project = $this->get_or_create_project( $project_name, $project_slug, $path, $project_description, $parent_project );
+
+		// Create a new translation set for the user's locale and project if it doesn't exist.
+		$translation_set = $this->get_or_create_translation_set( $project, 'default', $locale );
+
+		// Import the originals if the project doesn't have any string in the originals table
+		// todo: check if the file exists.
+		$originals = $this->get_or_import_originals( $project, $file_to_import );
+
+		// Import the translations if the project doesn't have any string in
+		// the translations table for the translation set.
+		$translations = $this->get_or_import_translations( $project, $translation_set, $file_to_import );
+	}
+
 	/**
 	 * Get or create a project.
 	 *
-	 * @param string $name        The name of the project.
-	 * @param string $slug        The slug of the project.
-	 * @param string $description The description of the project.
+	 * @param string          $name The name of the project.
+	 * @param string          $slug The slug of the project.
+	 * @param string          $path The path of the project.
+	 * @param string          $description The description of the project.
+	 * @param GP_Project|null $parent_project The parent project.
 	 *
 	 * @return GP_Project
 	 */
-	private function get_or_create_project( string $name, string $slug, string $description ): GP_Project {
-		$project = GP::$project->by_path( $slug );
+	private function get_or_create_project( string $name, string $slug, string $path, string $description, GP_Project $parent_project = null ): GP_Project {
+		$project = GP::$project->by_path( $path );
 		if ( ! $project ) {
 			$new_project = new GP_Project(
 				array(
-					'name'        => $name,
-					'slug'        => $slug,
-					'description' => $description,
+					'name'              => $name,
+					'slug'              => $slug,
+					'description'       => $description,
+					'parent_project_id' => $parent_project ? $parent_project->id : null,
+					'active'            => true,
 				)
 			);
 			$project     = GP::$project->create_and_select( $new_project );
@@ -124,7 +183,7 @@ class GP_Route_Local extends GP_Route_Main {
 			$format    = 'po';
 			$format    = gp_array_get( GP::$formats, $format, null );
 			$originals = $format->read_originals_from_file( $file, $project );
-			GP::$original->import_for_project( $project, $originals );
+			$originals = GP::$original->import_for_project( $project, $originals );
 		}
 		return $originals;
 	}
