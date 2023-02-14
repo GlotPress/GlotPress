@@ -14,19 +14,24 @@
  */
 class GP_Route_Local extends GP_Route_Main {
 
-	public function import( $path ) {
-		switch ( strtok( $path, '/' ) ) {
+	/**
+	 * Imports the originals and translations for the WordPress core, a plugin or a theme.
+	 *
+	 * @param string $slug The slug of the plugin or theme.
+	 */
+	public function import( string $slug ) {
+		switch ( strtok( $slug, '/' ) ) {
 			case 'core':
 				$this->translate_core();
 				$this->redirect( gp_url( '/projects/local-wordpress/' ) );
 				break;
 			case 'plugin':
-				$this->translate_plugin( $path );
-				$this->redirect( gp_url( '/projects/local-plugins/' ) );
+				$this->translate_plugin( $slug );
+				$this->redirect( gp_url( '/projects/local-plugins/' . substr( $slug, 7 ) ) );
 				break;
 			case 'theme':
-				$this->translate_theme( $path );
-				$this->redirect( gp_url( '/projects/local-themes/' ) );
+				$this->translate_theme( $slug );
+				$this->redirect( gp_url( '/projects/local-themes/' . substr( $slug, 6 ) ) );
 				break;
 		}
 	}
