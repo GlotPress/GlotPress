@@ -20,9 +20,7 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @param string $slug The slug of the plugin or theme.
 	 */
 	public function import( string $slug ) {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'gp-local-' . basename( $slug ) ) ) {
-			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
-		}
+		$this->security_checks( $slug );
 		switch ( strtok( $slug, '/' ) ) {
 			case 'core':
 				$this->translate_core();
@@ -40,10 +38,23 @@ class GP_Route_Local extends GP_Route_Main {
 	}
 
 	/**
+	 * Checks the nonce and the permissions.
+	 *
+	 * @param string $slug The slug of the core, plugin or theme.
+	 */
+	private function security_checks( string $slug ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'gp-local-' . basename( $slug ) ) ) {
+			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
+		}
+		if ( ! $this->can( 'write', 'project', null ) ) {
+			wp_die( esc_html__( 'You are not allowed to do that!', 'glotpress' ) );
+		}
+	}
+
+	/**
 	 * Creates the projects and import the originals and translations for the WordPress core.
 	 */
 	private function translate_core() {
-		// todo: check if the user is logged in and has the right permissions.
 		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		// Create the main project for the WordPress core.
 		$main_project = $this->get_or_create_project( 'WordPress', 'local-wordpress', 'local-wordpress', 'Local WordPress Core Translation' );
@@ -167,9 +178,8 @@ class GP_Route_Local extends GP_Route_Main {
 	private function create_project_and_import_strings( string $project_name, string $project_slug, string $path, string $project_description, GP_Project $parent_project, GP_Locale $locale, string $file_to_import ) {
 		$project         = $this->get_or_create_project( $project_name, $project_slug, $path, $project_description, $parent_project );
 		$translation_set = $this->get_or_create_translation_set( $project, 'default', $locale );
-		// todo: check if the file exists.
-		$originals    = $this->get_or_import_originals( $project, $file_to_import );
-		$translations = $this->get_or_import_translations( $project, $translation_set, $file_to_import );
+		$this->get_or_import_originals( $project, $file_to_import );
+		$this->get_or_import_translations( $project, $translation_set, $file_to_import );
 	}
 
 	/**
@@ -238,6 +248,9 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @return array
 	 */
 	private function get_or_import_originals( GP_Project $project, string $file ): array {
+		if ( ! file_exists( $file ) ) {
+			return array();
+		}
 		$originals = GP::$original->by_project_id( $project->id );
 		if ( ! $originals ) {
 			$format    = 'po';
@@ -258,6 +271,9 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @return array
 	 */
 	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $file ):array {
+		if ( ! file_exists( $file ) ) {
+			return array();
+		}
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
 			$po       = new PO();
