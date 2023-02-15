@@ -190,7 +190,10 @@ class GP_Local {
 						<td>
 							<?php
 								echo gp_link_get(
-									gp_url( '/local/core' ),
+									wp_nonce_url(
+										gp_url( '/local/core' ),
+										'gp-local-core'
+									),
 									esc_html(
 										sprintf(
 											/* Translators: %s is the language into which we will translate . */
@@ -257,7 +260,10 @@ class GP_Local {
 							<?php
 							if ( $plugin['TextDomain'] ) {
 								echo gp_link_get(
-									gp_url( '/local/plugin/' . $plugin['TextDomain'] ),
+									wp_nonce_url(
+										gp_url( '/local/plugin/' . $plugin['TextDomain'] ),
+										'gp-local-' . $plugin['TextDomain']
+									),
 									esc_html(
 										sprintf(
 										/* Translators: %s is the language into which we will translate . */
@@ -327,7 +333,10 @@ class GP_Local {
 
 						if ( $theme->get( 'TextDomain' ) ) {
 							echo gp_link_get(
-								gp_url( '/local/theme/' . $theme->get( 'TextDomain' ) ),
+								wp_nonce_url(
+									gp_url( '/local/theme/' . $theme->get( 'TextDomain' ) ),
+									'gp-local-' . $theme->get( 'TextDomain' )
+								),
 								esc_html(
 									sprintf(
 									/* Translators: %s is the language into which we will translate . */

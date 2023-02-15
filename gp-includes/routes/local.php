@@ -20,6 +20,9 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @param string $slug The slug of the plugin or theme.
 	 */
 	public function import( string $slug ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'gp-local-' . basename( $slug ) ) ) {
+			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
+		}
 		switch ( strtok( $slug, '/' ) ) {
 			case 'core':
 				$this->translate_core();
