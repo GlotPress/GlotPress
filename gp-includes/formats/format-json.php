@@ -106,6 +106,9 @@ class GP_Format_JSON extends GP_Format {
 			}
 
 			$args['translations'] = (array) $value;
+			if ( ! is_string( $args['translations'][0] ) ) {
+				continue;
+			}
 
 			$entries->add_entry( new Translation_Entry( $args ) );
 		}
