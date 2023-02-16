@@ -28,6 +28,7 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	public function import( string $slug ) {
 		$this->security_checks( $slug );
+		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		switch ( strtok( $slug, '/' ) ) {
 			case 'core':
 				$this->translate_core();
@@ -35,11 +36,27 @@ class GP_Route_Local extends GP_Route_Main {
 				break;
 			case 'plugin':
 				$this->translate_plugin( $slug );
-				$this->redirect( gp_url( '/projects/local-plugins/' . substr( $slug, 7 ) ) );
+				$this->redirect(
+					gp_url(
+						sprintf(
+							'/projects/local-plugins/%s/%s/default',
+							substr( $slug, 7 ),
+							$locale->slug,
+						)
+					)
+				);
 				break;
 			case 'theme':
 				$this->translate_theme( $slug );
-				$this->redirect( gp_url( '/projects/local-themes/' . substr( $slug, 6 ) ) );
+				$this->redirect(
+					gp_url(
+						sprintf(
+							'/projects/local-themes/%s/%s/default',
+							substr( $slug, 6 ),
+							$locale->slug,
+						)
+					)
+				);
 				break;
 		}
 	}
