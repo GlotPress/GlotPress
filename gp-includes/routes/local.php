@@ -15,6 +15,13 @@
 class GP_Route_Local extends GP_Route_Main {
 
 	/**
+	 * If we are using a .po file from translate.w.org, so we remove it after using.
+	 *
+	 * @var string
+	 */
+	public $using_external_file = false;
+
+	/**
 	 * Imports the originals and translations for the WordPress core, a plugin or a theme.
 	 *
 	 * @param string $slug The slug of the plugin or theme.
@@ -249,7 +256,10 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	private function get_or_import_originals( GP_Project $project, string $file ): array {
 		if ( ! file_exists( $file ) ) {
-			return array();
+			$file = $this->download_dotorg_translation( $project );
+			if ( ! file_exists( $file ) ) {
+				return array();
+			}
 		}
 		$originals = GP::$original->by_project_id( $project->id );
 		if ( ! $originals ) {
@@ -272,7 +282,10 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $file ):array {
 		if ( ! file_exists( $file ) ) {
-			return array();
+			$file = $this->download_dotorg_translation( $project );
+			if ( ! file_exists( $file ) ) {
+				return array();
+			}
 		}
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
@@ -282,5 +295,77 @@ class GP_Route_Local extends GP_Route_Main {
 			$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		}
 		return $translations;
+	}
+
+	private function get_po_file_path() {
+
+	}
+
+	/**
+	 * Downloads the translations from translate.w.org.
+	 *
+	 * Downloads the .po and .mo files, stores them in the
+	 * - wp-content/languages/plugins/ or
+	 * - wp-content/languages/themes/
+	 *
+	 * @param GP_Project $project The project.
+	 *
+	 * @return string The path to the .po file.
+	 */
+	private function download_dotorg_translation( GP_Project $project ) {
+		$locale       = GP_Locales::by_field( 'wp_locale', get_user_locale() );
+		$project_type = '';
+		$po_file_url  = '';
+		$mo_file_url  = '';
+		switch ( strtok( $project->path, '/' ) ) {
+			case 'local-plugins':
+				// Stable branch.
+				$po_file_url  = sprintf(
+					'https://translate.wordpress.org/projects/wp-plugins/%s/stable/%s/default/export-translations/?filters%%status%%5D=current_or_waiting_or_fuzzy_or_untranslated',
+					$project->slug,
+					$locale->slug
+				);
+				$project_type = 'plugins';
+				break;
+			case 'local-themes':
+				$po_file_url  = sprintf(
+					'https://translate.wordpress.org/projects/wp-themes/%s/%s/default/export-translations/?filters%%5Bstatus%%5D=current_or_waiting_or_fuzzy_or_untranslated',
+					$project->slug,
+					$locale->slug
+				);
+				$project_type = 'themes';
+				break;
+			default:
+				return '';
+		}
+		if ( ! function_exists( 'download_url' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		$po_tmp_file = download_url( $po_file_url );
+		if ( ! $po_tmp_file ) {
+			return '';
+		}
+		$mo_tmp_file = download_url( $po_file_url . '&format=mo' );
+		if ( ! $mo_tmp_file ) {
+			return '';
+		}
+
+		$po_file_destination = sprintf(
+			'%swp-content/languages/%s/%s-%s.po',
+			ABSPATH,
+			$project_type,
+			$project->slug,
+			$locale->wp_locale
+		);
+		$mo_file_destination = sprintf(
+			'%swp-content/languages/%s/%s-%s.mo',
+			ABSPATH,
+			$project_type,
+			$project->slug,
+			$locale->wp_locale
+		);
+		rename( $po_tmp_file, $po_file_destination );
+		rename( $mo_tmp_file, $mo_file_destination );
+		return $po_file_destination;
 	}
 }
