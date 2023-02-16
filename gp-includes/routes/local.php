@@ -359,11 +359,11 @@ class GP_Route_Local extends GP_Route_Main {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 		$po_tmp_file = download_url( $po_file_url );
-		if ( ! $po_tmp_file ) {
+		if ( ! $po_tmp_file || is_wp_error( $po_tmp_file ) ) {
 			return '';
 		}
 		$mo_tmp_file = download_url( $po_file_url . '&format=mo' );
-		if ( ! $mo_tmp_file ) {
+		if ( ! $mo_tmp_file || is_wp_error( $po_tmp_file ) ) {
 			return '';
 		}
 
