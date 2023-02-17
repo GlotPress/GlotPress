@@ -50,6 +50,21 @@ class GP_Route_Local extends GP_Route_Main {
 					)
 				);
 				break;
+			default:
+				wp_die(
+					wp_kses(
+						sprintf(
+							/* translators: %s: URL to the local projects page. */
+							__( 'We can\'t find this project. <a href="%s">Continue</a>.', 'glotpress' ),
+							admin_url( 'admin.php?page=glotpress-local-projects' )
+						),
+						array(
+							'a' => array(
+								'href' => array(),
+							),
+						)
+					)
+				);
 		}
 	}
 
