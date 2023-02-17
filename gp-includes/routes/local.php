@@ -13,14 +13,6 @@
  * @since 4.0.0
  */
 class GP_Route_Local extends GP_Route_Main {
-
-	/**
-	 * If we are using a .po file from translate.w.org, so we remove it after using.
-	 *
-	 * @var string
-	 */
-	public $using_external_file = false;
-
 	/**
 	 * Imports the originals and translations for the WordPress core, a plugin or a theme.
 	 *
@@ -266,23 +258,19 @@ class GP_Route_Local extends GP_Route_Main {
 	/**
 	 * Gets or imports the originals.
 	 *
-	 * @param GP_Project $project The project.
-	 * @param string     $file    The file to import.
+	 * @param GP_Project $project   The project.
+	 * @param string     $file_path The file to import.
 	 *
 	 * @return array
 	 */
-	private function get_or_import_originals( GP_Project $project, string $file ): array {
-		if ( ! file_exists( $file ) ) {
-			$file = $this->download_dotorg_translation( $project );
-			if ( ! file_exists( $file ) ) {
-				return array();
-			}
-		}
+	private function get_or_import_originals( GP_Project $project, string $file_path ): array {
+		$file_path = $this->get_po_file_path( $project, $file_path );
+
 		$originals = GP::$original->by_project_id( $project->id );
 		if ( ! $originals ) {
 			$format    = 'po';
 			$format    = gp_array_get( GP::$formats, $format, null );
-			$originals = $format->read_originals_from_file( $file, $project );
+			$originals = $format->read_originals_from_file( $file_path, $project );
 			$originals = GP::$original->import_for_project( $project, $originals );
 		}
 		return $originals;
@@ -293,29 +281,46 @@ class GP_Route_Local extends GP_Route_Main {
 	 *
 	 * @param GP_Project         $project         The project.
 	 * @param GP_Translation_Set $translation_set The translation set.
-	 * @param string             $file            The file to import.
+	 * @param string             $file_path       The file path to import.
 	 *
 	 * @return array
 	 */
-	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $file ):array {
-		if ( ! file_exists( $file ) ) {
-			$file = $this->download_dotorg_translation( $project );
-			if ( ! file_exists( $file ) ) {
-				return array();
-			}
-		}
+	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $file_path ):array {
+		$file_path    = $this->get_po_file_path( $project, $file_path );
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
 			$po       = new PO();
-			$imported = $po->import_from_file( $file );
+			$imported = $po->import_from_file( $file_path );
 			$translation_set->import( $po, 'current' );
 			$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		}
 		return $translations;
 	}
 
-	private function get_po_file_path() {
-
+	/**
+	 * Gets the path to the .po file.
+	 *
+	 * Checks if the file exists in the WordPress "languages" folder.
+	 * If not, downloads it from translate.w.org.
+	 * If not, gets the translation from the project "languages" folder.
+	 * If not, returns an empty string.
+	 *
+	 * @param GP_Project $project   The project.
+	 * @param string     $file_path The file to import.
+	 *
+	 * @return string The path to the .po file.
+	 */
+	private function get_po_file_path( GP_Project $project, string $file_path ): string {
+		if ( ! file_exists( $file_path ) ) {
+			$file_path = $this->download_dotorg_translation( $project );
+			if ( ! file_exists( $file_path ) ) {
+				$file_path = $this->get_translation_file_path_from_project( $project );
+				if ( ! file_exists( $file_path ) ) {
+					wp_die( esc_html__( 'We can\'t get any translation file for this project.', 'glotpress' ) );
+				}
+			}
+		}
+		return $file_path;
 	}
 
 	/**
@@ -329,7 +334,7 @@ class GP_Route_Local extends GP_Route_Main {
 	 *
 	 * @return string The path to the .po file.
 	 */
-	private function download_dotorg_translation( GP_Project $project ) {
+	private function download_dotorg_translation( GP_Project $project ): string {
 		$locale       = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		$project_type = '';
 		$po_file_url  = '';
@@ -381,8 +386,42 @@ class GP_Route_Local extends GP_Route_Main {
 			$project->slug,
 			$locale->wp_locale
 		);
+		// Move the .po and .mo files to the WordPress "languages" folder.
 		rename( $po_tmp_file, $po_file_destination );
 		rename( $mo_tmp_file, $mo_file_destination );
 		return $po_file_destination;
+	}
+
+	/**
+	 * Gets the path to the .po file from the project.
+	 *
+	 * @param GP_Project $project The project.
+	 *
+	 * @return string The path to the .po file.
+	 */
+	private function get_translation_file_path_from_project( GP_Project $project ): string {
+		$project_type = '';
+		$locale       = GP_Locales::by_field( 'wp_locale', get_user_locale() );
+
+		switch ( strtok( $project->path, '/' ) ) {
+			case 'local-plugins':
+				$project_type = 'plugins';
+				break;
+			case 'local-themes':
+				$project_type = 'themes';
+				break;
+		}
+
+		if ( ! $project_type ) {
+			return '';
+		}
+		return sprintf(
+			'%swp-content/%s/%s/languages/%s-%s.po',
+			ABSPATH,
+			$project_type,
+			$project->slug,
+			$project->slug,
+			$locale->wp_locale
+		);
 	}
 }
