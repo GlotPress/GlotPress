@@ -15,7 +15,6 @@
  */
 var debug = require( 'debug' )( 'automattic:community-translator' );
 
-
 function handleBatchedResponse( response, originalToCallbacksMap ) {
 	var i, data, j, key;
 	if ( 'undefined' === typeof response ) {
@@ -38,7 +37,7 @@ function handleBatchedResponse( response, originalToCallbacksMap ) {
 		}
 
 		if ( 'undefined' === typeof originalToCallbacksMap[ key ] || !
-				originalToCallbacksMap[ key ] ) {
+		originalToCallbacksMap[ key ] ) {
 			continue;
 		}
 
@@ -67,6 +66,7 @@ module.exports = function( functionToWrap, options ) {
 		originalToCallbacksMap = {},
 		batchedOriginals = [],
 		batchTimeout,
+		translations,
 		hash;
 
 	if ( 'function' !== typeof ( functionToWrap ) ) {
@@ -119,11 +119,18 @@ module.exports = function( functionToWrap, options ) {
 		if ( options.hash ) {
 			hash = options.hash;
 		}
+		if ( options.translations ) {
+			translations = options.translations;
+		}
 	}
 
 	return function( original ) {
 		var deferred = new jQuery.Deferred(),
 			key = hash( original );
+		if ( key in translations ) {
+			deferred.resolve( translations[ key ] );
+			return deferred;
+		}
 
 		if ( key in originalToCallbacksMap ) {
 			originalToCallbacksMap[ key ].push( deferred );

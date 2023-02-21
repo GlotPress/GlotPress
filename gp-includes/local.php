@@ -184,10 +184,10 @@ class GP_Local {
 							<span><?php esc_html_e( 'WordPress Core', 'glotpress' ); ?></span>
 						</th>
 						<th scope="col" id="plugins-description" style="width: 70%;">
-							<span><?php esc_html_e( 'Description', 'glotpress' ); ?></span>
+							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
 						<th scope="col" id="plugins-actions" style="width: 15%;">
-							<span><?php esc_html_e( 'Actions', 'glotpress' ); ?></span>
+							<span><?php esc_html_e( 'Actions' ); ?></span>
 						</th>
 					</tr>
 				</thead>
@@ -234,10 +234,10 @@ class GP_Local {
 							<span><?php esc_html_e( 'Plugin', 'glotpress' ); ?></span>
 						</th>
 						<th scope="col" id="plugins-description" style="width: 70%;">
-							<span><?php esc_html_e( 'Description', 'glotpress' ); ?></span>
+							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
 						<th scope="col" id="plugins-actions" style="width: 15%;">
-							<span><?php esc_html_e( 'Actions', 'glotpress' ); ?></span>
+							<span><?php esc_html_e( 'Actions' ); ?></span>
 						</th>
 					</tr>
 				</thead>
@@ -306,10 +306,10 @@ class GP_Local {
 							<span><?php esc_html_e( 'Theme', 'glotpress' ); ?></span>
 						</th>
 						<th scope="col" id="plugins-description" style="width: 70%;">
-							<span><?php esc_html_e( 'Description', 'glotpress' ); ?></span>
+							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
 						<th scope="col" id="plugins-actions" style="width: 15%;">
-							<span><?php esc_html_e( 'Actions', 'glotpress' ); ?></span>
+							<span><?php esc_html_e( 'Actions' ); ?></span>
 						</th>
 					</tr>
 				</thead>

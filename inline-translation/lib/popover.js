@@ -23,29 +23,28 @@ function Popover( translationPair, _locale, glotPress ) {
 	};
 
 	var getPopoverTitle = function() {
-		return 'Translate to ' + locale.getLanguageName() + '<a title="Help & Instructions" target="_blank" href="https://en.support.wordpress.com/in-page-translator/"><span class="noticon noticon-help"></span></a><a title="View in GlotPress" href="' + glotPress.getPermalink( translationPair ) + '" target="_blank" class="gpPermalink"><span class="noticon noticon-external"></span></a>';
+		return 'Translate to ' + locale.getLanguageName() + '<a title="Help & Instructions" target="_blank" href="https://en.support.wordpress.com/in-page-translator/"><span class="dashicons dashicons-editor-help"></span></a><a title="View in GlotPress" href="' + glotPress.getPermalink( translationPair ) + '" target="_blank" class="gpPermalink"><span class="dashicons dashicons-external"></span></a>';
 	};
 
 	return {
 		attachTo: function( enclosingNode ) {
 			enclosingNode.addClass( nodeClass ).webuiPopover( {
 				title: getPopoverTitle(),
-				content: jQuery( "<div>" ).append( getPopoverHtml() ).html(),
+				content: jQuery( '<div>' ).append( getPopoverHtml() ).html(),
 				onload: popoverOnload,
-				translationPair: translationPair
+				translationPair: translationPair,
 			} );
 		},
 		getTranslationHtml: function() {
 			form = getInputForm( translationPair );
 			return getPopoverHtml();
-		}
+		},
 	};
 }
 
 function popoverOnload( el ) {
-	jQuery( el ).find( 'textarea' ).eq( 0 ).focus();
+	// jQuery( el ).find( 'textarea' ).get( 0 ).focus();
 }
-
 
 function getOriginalHtml( translationPair ) {
 	var originalHtml,
@@ -143,9 +142,9 @@ function getOverview( translationPair ) {
 
 function getHtmlTemplate( popoverType ) {
 	switch ( popoverType ) {
-	case 'existing-translation':
-		return jQuery(
-			'<form class="ct-existing-translation">' +
+		case 'existing-translation':
+			return jQuery(
+				'<form class="ct-existing-translation">' +
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
@@ -160,11 +159,11 @@ function getHtmlTemplate( popoverType ) {
 			'</div>' +
 			'<button class="button button-primary">New Translation</button>' +
 			'</form>'
-		);
+			);
 
-	case 'new-translation':
-		return jQuery(
-			'<form class="ct-new-translation">' +
+		case 'new-translation':
+			return jQuery(
+				'<form class="ct-new-translation">' +
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
@@ -178,7 +177,7 @@ function getHtmlTemplate( popoverType ) {
 			'</div>' +
 			'<button disabled class="button button-primary">Submit translation</button>' +
 			'</form>'
-		);
+			);
 	}
 }
 

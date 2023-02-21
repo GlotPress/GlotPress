@@ -56,7 +56,6 @@
 		}
 
 		function shouldAutoloadTranslator( enable ) {
-			return false;
 			return !! document.cookie.match( /autoinlinetranslation=1/ );
 		}
 	} );

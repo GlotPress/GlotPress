@@ -5,8 +5,7 @@
  *
  *  Made by Sandy Duan
  *  Under MIT License
- */ (function( $, window, document, undefined ) {
-
+ */ ( function( $, window, document, undefined ) {
 	// Create the defaults once
 	var pluginName = 'webuiPopover';
 	var pluginClass = 'webui-popover';
@@ -36,9 +35,8 @@
 		'<h3 class="webui-popover-title"></h3>' +
 		'<div class="webui-popover-content"><i class="icon-refresh"></i> <p>&nbsp;</p></div>' +
 		'</div>' +
-		'</div>'
+		'</div>',
 	};
-
 
 	// The actual plugin constructor
 	function WebuiPopover( element, options ) {
@@ -67,7 +65,9 @@
 			} else if ( this.options.trigger === 'rightclick' ) {
 				this.$eventDelegate.off( 'contextmenu' ).on( 'contextmenu', $.proxy( this.toggle, this ) );
 				this.$eventDelegate.off( 'click' ).on( 'click', function( e ) {
-					if ( e.ctrlKey ) return false; // ctrl-click in safari should only be handled by the contextmenu handler;
+					if ( e.ctrlKey ) {
+						return false;
+					} // ctrl-click in safari should only be handled by the contextmenu handler;
 				} );
 			} else {
 				this.$eventDelegate.off( 'mouseenter mouseleave' )
@@ -168,7 +168,7 @@
 			$target.remove().css( {
 				top: -1000,
 				left: -1000,
-				display: 'block'
+				display: 'block',
 			} ).appendTo( document.body );
 			targetWidth = $target[ 0 ].offsetWidth;
 			targetHeight = $target[ 0 ].offsetHeight;
@@ -192,7 +192,7 @@
 			}
 			if ( ! this.options.arrow ) {
 				this.$target.css( {
-					'margin': 0
+					margin: 0,
 				} );
 			}
 			if ( this.options.arrow ) {
@@ -202,17 +202,16 @@
 					$arrow.css( postionInfo.arrowOffset );
 				}
 			}
-			if ( this.options.onload && typeof this.options.onload == "function" ) {
+			if ( this.options.onload && typeof this.options.onload === 'function' ) {
 				this.options.onload( $targetContent, this.$target );
 			}
 
 			if ( this.options.translationPair ) {
-				$targetContent.find( "form" ).data( "translationPair", this.options.translationPair );
+				$targetContent.find( 'form' ).data( 'translationPair', this.options.translationPair );
 			}
 
 			this._poped = true;
 			this.$element.trigger( 'shown.' + pluginType );
-
 		},
 
 		isTargetLoaded: function() {
@@ -253,7 +252,7 @@
 				}
 			} else if ( ! this.content ) {
 				var content = '';
-				if ( $.isFunction( this.options.content ) ) {
+				if ( typeof this.options.content === 'function' ) {
 					content = this.options.content.apply( this.$element[ 0 ], arguments );
 				} else {
 					content = this.options.content;
@@ -277,7 +276,7 @@
 				type: 'GET',
 				cache: this.options.cache,
 				success: function( data ) {
-					if ( content && $.isFunction( content ) ) {
+					if ( content && typeof content === 'function' ) {
 						that.content = content.apply( that.$element[ 0 ], [ data ] );
 					} else {
 						that.content = data;
@@ -286,7 +285,7 @@
 					var $targetContent = that.getContentElement();
 					$targetContent.removeAttr( 'style' );
 					that.displayContent();
-				}
+				},
 			} );
 		},
 
@@ -393,7 +392,7 @@
 		getElementPosition: function() {
 			return $.extend( {}, this.$element.offset(), {
 				width: this.$element[ 0 ].offsetWidth,
-				height: this.$element[ 0 ].offsetHeight
+				height: this.$element[ 0 ].offsetHeight,
 			} );
 		},
 
@@ -407,109 +406,108 @@
 				fixedW = elementW < arrowSize + 10 ? arrowSize : 0,
 				fixedH = elementH < arrowSize + 10 ? arrowSize : 0;
 			switch ( placement ) {
-			case 'bottom':
-				position = {
-					top: pos.top + pos.height,
-					left: pos.left + pos.width / 2 - targetWidth / 2
-				};
-				break;
-			case 'top':
-				position = {
-					top: pos.top - targetHeight,
-					left: pos.left + pos.width / 2 - targetWidth / 2
-				};
-				break;
-			case 'left':
-				position = {
-					top: pos.top + pos.height / 2 - targetHeight / 2,
-					left: pos.left - targetWidth
-				};
-				break;
-			case 'right':
-				position = {
-					top: pos.top + pos.height / 2 - targetHeight / 2,
-					left: pos.left + pos.width
-				};
-				break;
-			case 'top-right':
-				position = {
-					top: pos.top - targetHeight,
-					left: pos.left - fixedW
-				};
-				arrowOffset = {
-					left: elementW / 2 + fixedW
-				};
-				break;
-			case 'top-left':
-				position = {
-					top: pos.top - targetHeight,
-					left: pos.left - targetWidth + pos.width + fixedW
-				};
-				arrowOffset = {
-					left: targetWidth - elementW / 2 - fixedW
-				};
-				break;
-			case 'bottom-right':
-				position = {
-					top: pos.top + pos.height,
-					left: pos.left - fixedW
-				};
-				arrowOffset = {
-					left: elementW / 2 + fixedW
-				};
-				break;
-			case 'bottom-left':
-				position = {
-					top: pos.top + pos.height,
-					left: pos.left - targetWidth + pos.width + fixedW
-				};
-				arrowOffset = {
-					left: targetWidth - elementW / 2 - fixedW
-				};
-				break;
-			case 'right-top':
-				position = {
-					top: pos.top - targetHeight + pos.height + fixedH,
-					left: pos.left + pos.width
-				};
-				arrowOffset = {
-					top: targetHeight - elementH / 2 - fixedH
-				};
-				break;
-			case 'right-bottom':
-				position = {
-					top: pos.top - fixedH,
-					left: pos.left + pos.width
-				};
-				arrowOffset = {
-					top: elementH / 2 + fixedH
-				};
-				break;
-			case 'left-top':
-				position = {
-					top: pos.top - targetHeight + pos.height + fixedH,
-					left: pos.left - targetWidth
-				};
-				arrowOffset = {
-					top: targetHeight - elementH / 2 - fixedH
-				};
-				break;
-			case 'left-bottom':
-				position = {
-					top: pos.top,
-					left: pos.left - targetWidth
-				};
-				arrowOffset = {
-					top: elementH / 2
-				};
-				break;
-
+				case 'bottom':
+					position = {
+						top: pos.top + pos.height,
+						left: pos.left + pos.width / 2 - targetWidth / 2,
+					};
+					break;
+				case 'top':
+					position = {
+						top: pos.top - targetHeight,
+						left: pos.left + pos.width / 2 - targetWidth / 2,
+					};
+					break;
+				case 'left':
+					position = {
+						top: pos.top + pos.height / 2 - targetHeight / 2,
+						left: pos.left - targetWidth,
+					};
+					break;
+				case 'right':
+					position = {
+						top: pos.top + pos.height / 2 - targetHeight / 2,
+						left: pos.left + pos.width,
+					};
+					break;
+				case 'top-right':
+					position = {
+						top: pos.top - targetHeight,
+						left: pos.left - fixedW,
+					};
+					arrowOffset = {
+						left: elementW / 2 + fixedW,
+					};
+					break;
+				case 'top-left':
+					position = {
+						top: pos.top - targetHeight,
+						left: pos.left - targetWidth + pos.width + fixedW,
+					};
+					arrowOffset = {
+						left: targetWidth - elementW / 2 - fixedW,
+					};
+					break;
+				case 'bottom-right':
+					position = {
+						top: pos.top + pos.height,
+						left: pos.left - fixedW,
+					};
+					arrowOffset = {
+						left: elementW / 2 + fixedW,
+					};
+					break;
+				case 'bottom-left':
+					position = {
+						top: pos.top + pos.height,
+						left: pos.left - targetWidth + pos.width + fixedW,
+					};
+					arrowOffset = {
+						left: targetWidth - elementW / 2 - fixedW,
+					};
+					break;
+				case 'right-top':
+					position = {
+						top: pos.top - targetHeight + pos.height + fixedH,
+						left: pos.left + pos.width,
+					};
+					arrowOffset = {
+						top: targetHeight - elementH / 2 - fixedH,
+					};
+					break;
+				case 'right-bottom':
+					position = {
+						top: pos.top - fixedH,
+						left: pos.left + pos.width,
+					};
+					arrowOffset = {
+						top: elementH / 2 + fixedH,
+					};
+					break;
+				case 'left-top':
+					position = {
+						top: pos.top - targetHeight + pos.height + fixedH,
+						left: pos.left - targetWidth,
+					};
+					arrowOffset = {
+						top: targetHeight - elementH / 2 - fixedH,
+					};
+					break;
+				case 'left-bottom':
+					position = {
+						top: pos.top,
+						left: pos.left - targetWidth,
+					};
+					arrowOffset = {
+						top: elementH / 2,
+					};
+					break;
 			}
 			return {
 				position: position,
-				arrowOffset: arrowOffset
+				arrowOffset: arrowOffset,
 			};
-		}
+		},
 	};
 	$.fn[ pluginName ] = function( options ) {
 		return this.each( function() {
@@ -526,16 +524,12 @@
 					webuiPopover = new WebuiPopover( this, options );
 				}
 				$.data( this, 'plugin_' + pluginName, webuiPopover );
-			} else {
-				if ( options === 'destroy' ) {
-					webuiPopover.destroy();
-				} else if ( typeof options === 'string' ) {
-					webuiPopover[ options ]();
-				}
+			} else if ( options === 'destroy' ) {
+				webuiPopover.destroy();
+			} else if ( typeof options === 'string' ) {
+				webuiPopover[ options ]();
 			}
 		} );
 	};
-
-})( jQuery, window, document );
-
+}( jQuery, window, document ) );
 

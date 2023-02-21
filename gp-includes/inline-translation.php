@@ -5,9 +5,9 @@ class GP_Inline_Translation {
 	const PLACEHOLDER_REGEX = '%([0-9]\\\\*\\$)?';
 	const PLACEHOLDER_MAXLENGTH = 200;
 
-	private $glotpress_project_slugs = array();
+	private $domains = array();
 
-	private $strings_used = array(), $placeholders_used = array();
+	private $strings_used = array(), $translations = array(), $placeholders_used = array();
 	private $blacklisted = array( 'Loading&#8230;' => true );
 	private static $instance = array();
 
@@ -139,12 +139,14 @@ class GP_Inline_Translation {
 	}
 
 	public function translate_with_context( $translation, $original = null, $context = null, $domain = null ) {
-		if ( ! isset( $this->glotpress_project_slugs[$domain] ) ) {
-			$this->glotpress_project_slugs[$domain] = $domain;
+		if ( ! isset( $this->domains[ $domain ] ) ) {
+			$this->domains[ $domain ] = $domain;
 		}
+
 		if ( ! $original ) {
 			$original = $translation;
 		}
+
 		$original_as_string = $original;
 		if ( is_array( $original_as_string ) ) {
 			$original_as_string = implode( ' ', $original_as_string );
@@ -158,21 +160,13 @@ class GP_Inline_Translation {
 			$this->blacklisted[ $original_as_string ] = true;
 			return $translation;
 		}
-		$key = $this->get_hash_key( $translation );
+		$key = $this->get_hash_key( $translation, $context );
 
 		if ( $this->already_checked( $key ) ) {
-
 			$this->add_context( $key, $context );
-
 		} else {
-
 			if ( $this->contains_placeholder( $translation ) ) {
 				$string_placeholder = null;
-
-				if ( $original_as_string === '%1$s on %2$s' && $context == 'Recent Comments Widget' ) {
-					// for this original both variables will be HTML Links
-					$string_placeholder = '(<a [^>]+>.{0,' . self::PLACEHOLDER_MAXLENGTH . '}?</a>)';
-				}
 
 				$this->placeholders_used[ $key ] = array(
 					$original,
@@ -184,12 +178,103 @@ class GP_Inline_Translation {
 					$original,
 				);
 			}
+			$this->translations[ $domain . "\u0004" . $key ] = array(
+				$original,
+			);
 
 			$this->add_context( $key, $context, true );
 		}
 
-
 		return $translation;
+	}
+
+	public function get_translations( GP_Locale $gp_locale ) {
+		$projects = array();
+		$full_project_paths = array();
+		foreach ( $this->domains as $domain ) {
+			$project_paths = array();
+			if ( $domain === 'default' ) {
+				$project_paths[] = 'local-wordpress/local-wordpress-development';
+				$project_paths[] = 'local-wordpress/local-wordpress-administration';
+
+			} else {
+				$project_paths[] = 'local-plugins/' . $domain;
+			}
+			foreach ( $project_paths as $project_path ) {
+				$project = GP::$project->by_path( $project_path );
+				if ( $project ) {
+					$full_project_paths[ $project->id ] = gp_url_project( $project );
+					$projects[ $domain ][] = $project;
+				}
+			}
+		}
+
+		$locale_slug = $gp_locale->slug;
+		$translation_set_slug  = 'default';
+
+		$translation_sets = array();
+		foreach ( $projects as $domain => $_projects ) {
+			foreach ( $_projects as $project ) {
+				$translation_sets[ $domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+			}
+		}
+
+		foreach ( $this->translations as $key => $original ) {
+			if ( is_array( $original ) ) {
+				$entry = (object) array(
+					'singular' => $original[0],
+					'plural' => $original[1],
+				);
+			} else {
+				$entry = (object) array(
+					'singular' => $original,
+				);
+			}
+			$keys = explode( "\u0004", $key );
+			if ( 3 === count( $keys ) ) {
+				list( $entry->domain, $entry->context, $translation ) = $keys;
+				$hash = $entry->context . "\u0004" . $entry->singular;
+			} else {
+				list( $entry->domain, $translation ) = $keys;
+				$hash = $entry->singular;
+			}
+			if ( ! isset( $projects[ $entry->domain ] ) ) {
+				continue;
+			}
+
+			$project = $projects[ $entry->domain ];
+			$original_record = false;
+			foreach ( $projects[ $entry->domain ] as $project ) {
+				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry );
+				if ( $original_record ) {
+					break;
+				}
+			}
+			if ( ! $original_record ) {
+				// $translations['originals_not_found'][] = $original;
+				continue;
+			}
+
+			$translation_set = $translation_sets[ $entry->domain ][ $project->id ];
+			$query_result = new stdClass();
+			$query_result->original_id = $original_record->id;
+			$query_result->original = $original;
+			$query_result->domain = $domain;
+			$query_result->project = $full_project_paths[ $project->id ];
+			$query_result->translation_set_id = $translation_set->id;
+			$query_result->original_comment  = $original_record->comment;
+
+			$query_result->translations  = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
+
+			foreach ( $query_result->translations as $key => $current_translation ) {
+				$query_result->translations[$key] = GP::$translation->prepare_fields_for_save( $current_translation );
+				$query_result->translations[$key]['translation_id'] = $current_translation->id;
+			}
+
+			$translations[ $hash ] = $query_result;
+		}
+
+		return $translations;
 	}
 
 	public function load_ajax_admin_translator() {
@@ -217,6 +302,10 @@ class GP_Inline_Translation {
 	}
 
 	public function load_translator( $locale_code = null ) {
+		if ( ! $locale_code ) {
+			$locale_code = get_locale();
+		}
+
 		if ( $locale_code === 'en' ) {
 			return false;
 		}
@@ -259,14 +348,15 @@ class GP_Inline_Translation {
 
 		return array(
 			'baseUrl' => gp_url( '/' ),
+			'translations' => $this->get_translations( $gp_locale ),
 			'stringsUsedOnPage' => $this->strings_used,
 			'placeholdersUsedOnPage' => $this->placeholders_used,
-			'localeCode' => $locale_code,
+			'localeCode' => $gp_locale->slug,
 			'languageName' => html_entity_decode( $gp_locale->english_name ),
 			'pluralForms' => $plural_forms,
 			'glotPress' => array(
 				'url' => gp_url( '/' ),
-				'project' => implode( ',', array_keys( $this->glotpress_project_slugs ) ),
+				'project' => implode( ',', array_keys( $this->domains ) ),
 			)
 		);
 	}

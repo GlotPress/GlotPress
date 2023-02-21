@@ -28,6 +28,7 @@ var debounceTimeout,
 	glotPress, currentUserId, walker,
 	translationData = {
 		baseUrl: '/',
+		cssUrl: '/',
 		currentUserId: false,
 		localeCode: 'en',
 		languageName: 'English',
@@ -79,11 +80,13 @@ function notifyTranslated( newTranslationPair ) {
 }
 
 loadCSS = function() {
-	var s = document.createElement( 'link' );
-	s.setAttribute( 'rel', 'stylesheet' );
-	s.setAttribute( 'type', 'text/css' );
-	s.setAttribute( 'href', translationData.baseUrl + 'community-translator.css' );
-	document.getElementsByTagName( 'head' )[ 0 ].appendChild( s );
+	if ( translationData.cssUrl ) {
+		var s = document.createElement( 'link' );
+		s.setAttribute( 'rel', 'stylesheet' );
+		s.setAttribute( 'type', 'text/css' );
+		s.setAttribute( 'href', translationData.cssUrl );
+		document.getElementsByTagName( 'head' )[ 0 ].appendChild( s );
+	}
 	jQuery( 'iframe' ).addClass( 'translator-untranslatable' );
 };
 
@@ -98,7 +101,7 @@ loadData = function( translationDataFromJumpstart ) {
 	translationData.locale = new Locale( translationData.localeCode, translationData.languageName, translationData.pluralForms );
 	currentUserId = translationData.currentUserId;
 
-	glotPress = new GlotPress( translationData.locale );
+	glotPress = new GlotPress( translationData.locale, translationData.translations );
 	if ( 'undefined' !== typeof translationData.glotPress ) {
 		glotPress.loadSettings( translationData.glotPress );
 	} else {

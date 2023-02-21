@@ -6,14 +6,18 @@
 var debug = require( 'debug' )( 'automattic:community-translator' );
 var batcher = require( './batcher.js' );
 
-function GlotPress( locale ) {
-
+function GlotPress( locale, translations ) {
 	var server = {
 			url: '',
 			project: '',
 			translation_set_slug: 'default',
 		},
-		projectIdMap = {};
+		projectIdMap = {},
+		batchOptions = {};
+
+	if ( translations ) {
+		batchOptions.translations = translations;
+	}
 
 	function ajax( options ) {
 		options = jQuery.extend( {
@@ -21,9 +25,9 @@ function GlotPress( locale ) {
 			data: {},
 			dataType: 'json',
 			xhrFields: {
-				withCredentials: true
+				withCredentials: true,
 			},
-			crossDomain: true
+			crossDomain: true,
 		}, options );
 		return jQuery.ajax( options );
 	}
@@ -39,8 +43,8 @@ function GlotPress( locale ) {
 				project: server.project,
 				translation_set_slug: server.translation_set_slug,
 				locale_slug: locale.getLocaleCode(),
-				original_strings: JSON.stringify( originals )
-			}
+				original_strings: JSON.stringify( originals ),
+			},
 		} ).done( function( response ) {
 			callback( response );
 		} );
@@ -49,15 +53,17 @@ function GlotPress( locale ) {
 	return {
 		getPermalink: function( translationPair ) {
 			var originalId = translationPair.getOriginal().getId(),
-				projectSlug = server.project,
+				projectUrl,
 				translateSetSlug = server.translation_set_slug,
 				translationId;
 
 			if ( translationPair.getGlotPressProject() ) {
-				projectSlug = translationPair.getGlotPressProject();
+				projectUrl = translationPair.getGlotPressProject();
+			} else {
+				projectUrl = server.url + '/projects/' + server.project;
 			}
 
-			var url = server.url + '/projects/' + projectSlug + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
+			var url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
 
 			if ( 'undefined' !== typeof translationId ) {
 				url += '&filters[translation_id]=' + translationId;
@@ -67,7 +73,6 @@ function GlotPress( locale ) {
 		},
 
 		loadSettings: function( gpInstance ) {
-
 			if ( 'undefined' !== typeof gpInstance.url ) {
 				server.url = gpInstance.url;
 			} else {
@@ -85,7 +90,7 @@ function GlotPress( locale ) {
 			}
 		},
 
-		queryByOriginal: batcher( fetchOriginals ),
+		queryByOriginal: batcher( fetchOriginals, batchOptions ),
 
 		submitTranslation: function( translation ) {
 			return ajax( {
@@ -94,10 +99,10 @@ function GlotPress( locale ) {
 					project: server.project,
 					translation_set_slug: server.translation_set_slug,
 					locale_slug: locale.getLocaleCode(),
-					translation: translation
-				}
+					translation: translation,
+				},
 			} );
-		}
+		},
 	};
 }
 

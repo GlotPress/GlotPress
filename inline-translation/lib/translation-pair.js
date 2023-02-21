@@ -7,7 +7,8 @@ var Original = require( './original' ),
 	translationData;
 
 function TranslationPair( locale, original, context, translation ) {
-	var translations = [], selectedTranslation, glotPressProject,
+	var translations = [],
+		selectedTranslation, glotPressProject,
 		screenText = false;
 
 	if ( 'object' !== typeof original || original.type !== 'Original' ) {
@@ -15,7 +16,6 @@ function TranslationPair( locale, original, context, translation ) {
 	}
 
 	if ( 'object' === typeof translation ) {
-
 		if ( translation.type !== 'Translation' ) {
 			translation = new Translation( locale, translation );
 		}
@@ -54,7 +54,6 @@ function TranslationPair( locale, original, context, translation ) {
 			translation = new Translation( locale, translation.slice(), newTranslations[ i ] );
 			addTranslation( translation );
 		}
-
 	}
 
 	function sortTranslationsByDate() {
@@ -68,7 +67,6 @@ function TranslationPair( locale, original, context, translation ) {
 	}
 
 	function setSelectedTranslation( currentUserId ) {
-
 		if ( 'number' === typeof currentUserId ) {
 			currentUserId = currentUserId.toString();
 		}
@@ -140,14 +138,13 @@ function TranslationPair( locale, original, context, translation ) {
 				plural: original.getPlural(),
 				context: context,
 				translations: selectedTranslation.serialize(),
-				key: original.generateJsonHash( context )
+				key: original.generateJsonHash( context ),
 			};
 		},
 		fetchOriginalAndTranslations: function( glotPress, currentUserId ) {
 			var promise, sendContext;
 			promise = original.fetchIdAndTranslations( glotPress, context )
 				.done( function( data ) {
-
 					if ( 'undefined' === typeof data.translations ) {
 						return;
 					}
@@ -158,17 +155,16 @@ function TranslationPair( locale, original, context, translation ) {
 					if ( typeof data.project !== 'undefined' ) {
 						setGlotPressProject( data.project );
 					}
-
 				} );
 			return promise;
-		}
+		},
 	};
 }
 
 function extractFromDataElement( dataElement ) {
 	var translationPair,
 		original = {
-			singular: dataElement.data( 'singular' )
+			singular: dataElement.data( 'singular' ),
 		};
 
 	if ( dataElement.data( 'plural' ) ) {
@@ -193,10 +189,9 @@ function trim( text ) {
 }
 
 function extractWithStringsUsedOnPage( enclosingNode ) {
-
 	var text, textWithoutSiblings, enclosingNodeWithoutSiblings, context;
 	if (
-			typeof translationData.stringsUsedOnPage !== 'object' ||
+		typeof translationData.stringsUsedOnPage !== 'object' ||
 			// not meant to be translatable:
 			enclosingNode.is( 'style,script' ) ||
 			enclosingNode.closest( '#querylist' ).length
@@ -283,7 +278,6 @@ function getTranslationPairForTextUsedOnPage( node, context ) {
 		entry = translationData.placeholdersUsedOnPage[ i ];
 
 		if ( entry.regex.test( nodeHtml ) ) {
-
 			// We want the innermost node that matches, so
 			if ( anyChildMatches( node, entry.regex ) ) {
 				continue;
@@ -300,7 +294,6 @@ function getTranslationPairForTextUsedOnPage( node, context ) {
 }
 
 TranslationPair.extractFrom = function( enclosingNode ) {
-
 	if ( typeof translationData !== 'object' ) {
 		return false;
 	}
@@ -331,7 +324,7 @@ TranslationPair.setTranslationData = function( newTranslationData ) {
 				entry = {
 					original: entry[ 0 ],
 					regex: new RegExp( '^\\s*' + entry[ 1 ] + '\\s*$' ),
-					context: entry[ 2 ]
+					context: entry[ 2 ],
 				};
 			}
 			placeholdersUsedOnPage.push( entry );
@@ -341,7 +334,7 @@ TranslationPair.setTranslationData = function( newTranslationData ) {
 };
 
 TranslationPair._test = {
-	anyChildMatches: anyChildMatches
+	anyChildMatches: anyChildMatches,
 };
 
 module.exports = TranslationPair;
