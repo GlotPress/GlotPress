@@ -1,3 +1,5 @@
+/* global require, module, window */
+
 /*
  * This is a utility function to help reduce the number of calls made to
  * the GlotPress database ( or generic backend ), especially as we're
@@ -67,7 +69,9 @@ module.exports = function( functionToWrap, options ) {
 		batchedOriginals = [],
 		batchTimeout,
 		translations,
-		hash;
+		hash,
+		delayMore,
+		resolveBatch;
 
 	if ( 'function' !== typeof ( functionToWrap ) ) {
 		debug(
@@ -87,9 +91,9 @@ module.exports = function( functionToWrap, options ) {
 
 	delayMore = function() {
 		if ( batchTimeout ) {
-			clearTimeout( batchTimeout );
+			window.clearTimeout( batchTimeout );
 		}
-		batchTimeout = setTimeout( resolveBatch, batchDelay );
+		batchTimeout = window.setTimeout( resolveBatch, batchDelay );
 	};
 
 	// Actually make the call through the original function

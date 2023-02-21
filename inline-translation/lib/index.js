@@ -1,3 +1,5 @@
+/* global require, module, window, document */
+
 /**
  * Community Translation core module
  */
@@ -15,8 +17,7 @@ var TranslationPair = require( './translation-pair' ),
 	Walker = require( './walker' ),
 	Locale = require( './locale' ),
 	Popover = require( './popover' ),
-	GlotPress = require( './glotpress' ),
-	WebUIPopover = require( './jquery.webui-popover.js' );
+	GlotPress = require( './glotpress' );
 
 /**
  * Local variables
@@ -40,11 +41,11 @@ var debounceTimeout,
 		},
 	},
 	translationUpdateCallbacks = [];
+require( './jquery.webui-popover.js' );
 
 module.exports = {
 
 	load: function() {
-		debugger;
 		if ( 'undefined' === typeof window.gpInlineTranslationData ) {
 			return false;
 		}
@@ -57,7 +58,7 @@ module.exports = {
 
 	unload: function() {
 		if ( debounceTimeout ) {
-			clearTimeout( debounceTimeout );
+			window.clearTimeout( debounceTimeout );
 		}
 		if ( 'object' === typeof window.gpInlineTranslationData ) {
 			window.gpInlineTranslationData.contentChangedCallback = function() {};
@@ -80,8 +81,9 @@ function notifyTranslated( newTranslationPair ) {
 }
 
 loadCSS = function() {
+	var s;
 	if ( translationData.cssUrl ) {
-		var s = document.createElement( 'link' );
+		s = document.createElement( 'link' );
 		s.setAttribute( 'rel', 'stylesheet' );
 		s.setAttribute( 'type', 'text/css' );
 		s.setAttribute( 'href', translationData.cssUrl );
@@ -117,9 +119,9 @@ registerContentChangedCallback = function() {
 		debug( 'Registering translator contentChangedCallback' );
 		window.gpInlineTranslationData.contentChangedCallback = function() {
 			if ( debounceTimeout ) {
-				clearTimeout( debounceTimeout );
+				window.clearTimeout( debounceTimeout );
 			}
-			debounceTimeout = setTimeout( findNewTranslatableTexts, 250 );
+			debounceTimeout = window.setTimeout( findNewTranslatableTexts, 250 );
 		};
 
 		if ( typeof window.gpInlineTranslationData.stringsUsedOnPage === 'object' ) {
@@ -145,14 +147,14 @@ registerDomChangedCallback = function() {
 				lastBodySize = bodySize;
 
 				if ( debounceTimeout ) {
-					clearTimeout( debounceTimeout );
+					window.clearTimeout( debounceTimeout );
 				}
-				debounceTimeout = setTimeout( findNewTranslatableTexts, 1700 );
+				debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1700 );
 			}
-			setTimeout( checkBodySize, 1500 );
+			window.setTimeout( checkBodySize, 1500 );
 		};
 
-	setTimeout( checkBodySize, 1500 );
+	window.setTimeout( checkBodySize, 1500 );
 };
 
 registerPopoverHandlers = function() {
@@ -173,7 +175,6 @@ registerPopoverHandlers = function() {
 	jQuery( document ).on( 'submit', 'form.ct-new-translation', function() {
 		var $form = jQuery( this ),
 			$node = jQuery( '.' + $form.data( 'nodes' ) ),
-			val = $form.find( 'textarea' ).val(),
 			translationPair = $form.data( 'translationPair' ),
 			newTranslationStringsFromForm = $form.find( 'textarea' ).map( function() {
 				return jQuery( this ).val();
@@ -277,9 +278,9 @@ function makeTranslatable( translationPair, node ) {
 findNewTranslatableTexts = function() {
 	if ( currentlyWalkingTheDom ) {
 		if ( debounceTimeout ) {
-			clearTimeout( debounceTimeout );
+			window.clearTimeout( debounceTimeout );
 		}
-		debounceTimeout = setTimeout( findNewTranslatableTexts, 1500 );
+		debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1500 );
 		return;
 	}
 

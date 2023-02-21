@@ -27,7 +27,7 @@ module.exports = function( TranslationPair, jQuery, document ) {
 					enclosingNode = jQuery( textNode.parentNode );
 
 				if (
-						enclosingNode.is( 'script' ) ||
+					enclosingNode.is( 'script' ) ||
 						enclosingNode.hasClass( 'translator-checked' )
 				) {
 					return false;
@@ -36,7 +36,7 @@ module.exports = function( TranslationPair, jQuery, document ) {
 				enclosingNode.addClass( 'translator-checked' );
 
 				if (
-						enclosingNode.closest( '.webui-popover' ).length
+					enclosingNode.closest( '.webui-popover' ).length
 				) {
 					return false;
 				}
@@ -54,6 +54,6 @@ module.exports = function( TranslationPair, jQuery, document ) {
 
 				return true;
 			}
-		}
+		},
 	};
 };

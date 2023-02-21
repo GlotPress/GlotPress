@@ -1,3 +1,5 @@
+/* global require, module */
+
 /**
  * Community Translation GlotPress module
  */
@@ -12,7 +14,6 @@ function GlotPress( locale, translations ) {
 			project: '',
 			translation_set_slug: 'default',
 		},
-		projectIdMap = {},
 		batchOptions = {};
 
 	if ( translations ) {
@@ -55,7 +56,8 @@ function GlotPress( locale, translations ) {
 			var originalId = translationPair.getOriginal().getId(),
 				projectUrl,
 				translateSetSlug = server.translation_set_slug,
-				translationId;
+				translationId,
+				url;
 
 			if ( translationPair.getGlotPressProject() ) {
 				projectUrl = translationPair.getGlotPressProject();
@@ -63,7 +65,7 @@ function GlotPress( locale, translations ) {
 				projectUrl = server.url + '/projects/' + server.project;
 			}
 
-			var url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
+			url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
 
 			if ( 'undefined' !== typeof translationId ) {
 				url += '&filters[translation_id]=' + translationId;

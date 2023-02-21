@@ -9,11 +9,10 @@ function Original( original ) {
 		comment = null,
 		originalId = null;
 
-
 	if ( 'string' === typeof original ) {
 		singular = original;
 	} else if (
-			'object' === typeof original &&
+		'object' === typeof original &&
 			'string' === typeof original.singular
 	) {
 		singular = original.singular;
@@ -37,7 +36,7 @@ function Original( original ) {
 
 	function objectify( context ) {
 		var result = {
-			singular: singular
+			singular: singular,
 		};
 
 		if ( plural ) {
@@ -60,7 +59,6 @@ function Original( original ) {
 			return plural;
 		},
 		generateJsonHash: function( context ) {
-
 			if ( 'string' === typeof context && '' !== context ) {
 				return context + '\u0004' + singular;
 			}
@@ -85,7 +83,6 @@ function Original( original ) {
 				if ( typeof data.original_comment === 'string' ) {
 					comment = data.original_comment.replace( /^translators: /, '' );
 				}
-
 			} );
 		},
 		getId: function() {
@@ -93,7 +90,7 @@ function Original( original ) {
 		},
 		getComment: function() {
 			return comment;
-		}
+		},
 	};
 }
 

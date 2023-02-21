@@ -1,3 +1,5 @@
+/* global gpInlineTranslation, document, window */
+
 ( function( $ ) {
 	$( function() {
 		if ( ! $( '#translator-launcher' ).length || typeof gpInlineTranslation !== 'object' ) {
@@ -39,7 +41,7 @@
 		// because of the nature of wp_enqueue_script and the fact that we can only insert the gpInlineTranslation at the bottom of the page, we have to wait until the object exists
 		function runWhenTranslatorIsLoaded( callback ) {
 			if ( 'undefined' === typeof window.gpInlineTranslation ) {
-				setTimeout( function() {
+				window.setTimeout( function() {
 					runWhenTranslatorIsLoaded( callback );
 				}, 100 );
 				return;
@@ -55,7 +57,7 @@
 			}
 		}
 
-		function shouldAutoloadTranslator( enable ) {
+		function shouldAutoloadTranslator() {
 			return !! document.cookie.match( /autoinlinetranslation=1/ );
 		}
 	} );

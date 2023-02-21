@@ -26,7 +26,7 @@ test:
 	@NODE_PATH=$(NODE_PATH) $(MOCHA) --reporter $(REPORTER) test/index.js
 
 install: all
-	cp inline-translation.js inline-translation.min.js ../assets/js
+	cp inline-translation.min.js ../assets/js
 	cp inline-translation.css ../assets/css
 
 .PHONY: test

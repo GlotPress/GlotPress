@@ -46,7 +46,7 @@ function Locale( localeCode, languageName, pluralForms ) {
 				}
 			}
 			return numbers;
-		}
+		},
 	};
 }
 
