@@ -1,0 +1,103 @@
+.webui-popover {
+	z-index: 100000;
+	direction: ltr;
+}
+
+.webui-popover p {
+	margin: 0;
+}
+
+.webui-popover p.context, .webui-popover p.comment {
+	margin: 0 0 .5em 0;
+	display: none;
+	font-color: #999;
+	font-style: italic;
+}
+
+.webui-popover p.info {
+	margin: .5em 0;
+	display: none;
+}
+
+.webui-popover tt {
+	padding: .3em;
+	background-color: #eee;
+}
+
+.webui-popover textarea {
+	height: 100px;
+	margin-bottom: 0.8em;
+	color: #000;
+	background: #fff
+}
+
+/* We override color & background-color with and without ::selection to
+ * ensure that input methods are rendered visibly.
+ */
+.webui-popover textarea::selection {
+	color: #2e4453;
+	background: rgba(120, 220, 250, 0.7);
+}
+
+.webui-popover textarea::-moz-selection {
+	color: #2e4453;
+	background: rgba(120, 220, 250, 0.7);
+}
+
+.webui-popover button {
+	float: right;
+	margin-top: 8px;
+}
+
+.webui-popover div.a8c-similar-translations {
+	display: none;
+	height: 30px;
+	overflow: auto;
+}
+
+.webui-popover-title span {
+	float: right;
+	margin-left:6px;
+}
+
+.webui-popover-title a {
+	text-decoration: none;
+}
+
+.webui-popover hr {
+	margin-bottom: 0;
+}
+
+.webui-popover .pairs {
+	margin-top: 1em
+}
+
+.translator-translated {
+	text-shadow: 0px 0px 10px #0f0, 0px 0px 2px #4cb420 !important;
+	cursor: pointer;
+}
+.translator-checking {
+	text-shadow: 0px 0px 1px #e83 !important;
+}
+.translator-user-translated {
+	text-shadow: 0px 0px 10px #ff0, 0px 0px 2px #ffba00 !important;
+	cursor: pointer;
+}
+.translator-untranslated {
+	text-shadow: 0px 0px 10px #f00, 0px 0px 2px #dd3d36 !important;
+	cursor: pointer;
+}
+
+.translator-highlight {
+	border: 5px solid #dd3d36 !important;
+	margin: -5px !important;
+}
+
+iframe.translator-untranslatable::after {
+	content: 'Cannot be translated:';
+	color: #00f;
+}
+
+iframe.translator-untranslatable {
+	border: 1px dotted #00f !important;
+}

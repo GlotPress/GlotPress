@@ -12,6 +12,14 @@ class GP_Local {
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 	}
 
+	public static function is_active() {
+		static $is_active;
+		if ( ! isset( $is_active ) ) {
+			$is_active = get_option( 'gp_enable_local_translation' );
+		}
+		return $is_active;
+	}
+
 	/**
 	 * Adds the GlotPress menu to the admin menu.
 	 *
@@ -98,7 +106,7 @@ class GP_Local {
 						<td>
 							<p>
 								<label>
-									<?php $checked = get_option( 'gp_enable_local_translation' ) ? 'checked' : ''; ?>
+									<?php $checked = self::is_active() ? 'checked' : ''; ?>
 									<input type="checkbox" name="gp_enable_local_translation" <?php echo esc_html( $checked ); ?>>
 									<?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?>
 							   </label>
@@ -137,7 +145,7 @@ class GP_Local {
 				<?php esc_html_e( 'Local GlotPress', 'glotpress' ); ?>
 			</h1>
 			<?php
-			if ( ! get_option( 'gp_enable_local_translation' ) ) {
+			if ( ! self::is_active() ) {
 				?>
 					<div class="notice notice-error">
 						<p>
