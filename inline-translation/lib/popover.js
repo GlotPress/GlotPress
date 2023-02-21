@@ -43,7 +43,10 @@ function Popover( translationPair, _locale, glotPress ) {
 }
 
 function popoverOnload( el ) {
-	// jQuery( el ).find( 'textarea' ).get( 0 ).focus();
+	var el = jQuery( el ).find( 'textarea' ).get( 0 );
+	if ( el ) {
+		el.focus();
+	}
 }
 
 function getOriginalHtml( translationPair ) {

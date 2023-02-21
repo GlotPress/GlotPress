@@ -92,11 +92,11 @@ function GlotPress( locale, translations ) {
 
 		queryByOriginal: batcher( fetchOriginals, batchOptions ),
 
-		submitTranslation: function( translation ) {
+		submitTranslation: function( translation, translationPair ) {
 			return ajax( {
 				url: getServerUrl( '/api/translations/-new' ),
 				data: {
-					project: server.project,
+					project: translationPair.getGlotPressProject(),
 					translation_set_slug: server.translation_set_slug,
 					locale_slug: locale.getLocaleCode(),
 					translation: translation,

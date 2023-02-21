@@ -202,7 +202,7 @@ registerPopoverHandlers = function() {
 					translation = {};
 
 				translation[ originalId ] = submittedTranslations;
-				glotPress.submitTranslation( translation ).done( function( data ) {
+				glotPress.submitTranslation( translation, translationPair ).done( function( data ) {
 					if ( typeof data[ originalId ] === 'undefined' ) {
 						return;
 					}
