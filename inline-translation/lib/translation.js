@@ -1,5 +1,9 @@
 /**
  * Translation module
+ *
+ * @param  locale
+ * @param  items
+ * @param  glotPressMetadata
  */
 function Translation( locale, items, glotPressMetadata ) {
 	var Item, i, status, translationId, userId, dateAdded,
@@ -47,7 +51,7 @@ function Translation( locale, items, glotPressMetadata ) {
 			timeParts[ 0 ],
 			timeParts[ 1 ],
 			timeParts[ 2 ]
-			);
+		);
 	}
 
 	Item = function( i, text ) {
@@ -59,49 +63,49 @@ function Translation( locale, items, glotPressMetadata ) {
 				var numbers;
 
 				if ( items.length === 1 ) {
-					return "";
+					return '';
 				}
 
 				if ( items.length === 2 ) {
 					if ( i === 0 ) {
-						return "Singular";
+						return 'Singular';
 					}
-					return "Plural";
+					return 'Plural';
 				}
 
 				numbers = locale.getNumbersForIndex( i );
 
 				if ( numbers.length ) {
-					return "For numbers like: " + numbers.join( ", " );
+					return 'For numbers like: ' + numbers.join( ', ' );
 				}
 
-				return "";
+				return '';
 			},
 			getInfoText: function() {
 				var numbers;
 
 				if ( items.length === 1 ) {
-					return "";
+					return '';
 				}
 
 				if ( items.length === 2 ) {
 					if ( i === 0 ) {
-						return "Singular";
+						return 'Singular';
 					}
-					return "Plural";
+					return 'Plural';
 				}
 
 				numbers = locale.getNumbersForIndex( i );
 
 				if ( numbers.length ) {
-					return numbers.join( ", " );
+					return numbers.join( ', ' );
 				}
 
-				return "";
+				return '';
 			},
 			getText: function() {
 				return text;
-			}
+			},
 		};
 	};
 
@@ -129,7 +133,7 @@ function Translation( locale, items, glotPressMetadata ) {
 			return 'current' === status;
 		},
 		isWaiting: function() {
-			return 'waiting' === status;
+			return 'waiting' === status || 'fuzzy' === status;
 		},
 		getStatus: function() {
 			return status;
@@ -154,7 +158,7 @@ function Translation( locale, items, glotPressMetadata ) {
 				serializedItems.push( items[ i ].getText() );
 			}
 			return serializedItems;
-		}
+		},
 	};
 }
 
