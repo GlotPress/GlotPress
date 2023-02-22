@@ -7,7 +7,6 @@ var Original = require( './original' ),
 	translationData;
 
 function TranslationPair( locale, original, context, domain, translation ) {
-	console.log( {locale, original, context, domain, translation} );
 	var translations = [],
 		selectedTranslation, glotPressProject,
 		screenText = false;

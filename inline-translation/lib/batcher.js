@@ -133,7 +133,6 @@ module.exports = function( functionToWrap, options ) {
 	return function( original ) {
 		var deferred = new jQuery.Deferred(),
 			key = hash( original );
-		console.log( key );
 		if ( key in translations ) {
 			deferred.resolve( translations[ key ] );
 			return deferred;
