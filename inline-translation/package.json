@@ -1,7 +1,7 @@
 {
-	"name": "community-translator",
+	"name": "inline-translation",
 	"version": "0.0.1",
-	"description": "An in-Page translation tool.",
+	"description": "An in-Page translation tool for GlotPress.",
 	"author": {
 		"name": "Alex Kirk",
 		"email": "alex.kirk@automattic.com"
@@ -23,12 +23,9 @@
 		"uglifyify": "*"
 	},
 	"license": "GPL-2.0+",
-	"scripts": {
-		"test": "make test"
-	},
 	"readme": "",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Automattic/community-translator.git"
+		"url": "https://github.com/GlotPress/GlotPress.git/inline-translation"
 	}
 }

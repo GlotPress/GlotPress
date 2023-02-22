@@ -6,7 +6,7 @@
 /**
  * External dependencies
  */
-var debug = require( 'debug' )( 'community-translator' );
+var debug = require( 'debug' )( 'inline-translator' );
 
 /**
  * Internal dependencies
@@ -149,10 +149,10 @@ registerDomChangedCallback = function() {
 				}
 				debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1700 );
 			}
-			window.setTimeout( checkBodySize, 1500 );
+			window.setTimeout( checkBodySize, 500 );
 		};
 
-	window.setTimeout( checkBodySize, 1500 );
+	window.setTimeout( checkBodySize, 500 );
 };
 
 registerPopoverHandlers = function() {
@@ -264,6 +264,9 @@ function makeTranslatable( translationPair, node ) {
 	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
 	if ( translationPair.isFullyTranslated() ) {
 		if ( translationPair.isTranslationWaiting() ) {
+			if ( 0 === node.children().length ) {
+				node.text( translationPair.getTranslation().getTextItems()[ 0 ].getText() );
+			}
 			node.removeClass( 'translator-translated' ).addClass( 'translator-user-translated' );
 		} else {
 			node.removeClass( 'translator-user-translated' ).addClass( 'translator-translated' );
@@ -278,13 +281,12 @@ findNewTranslatableTexts = function() {
 		if ( debounceTimeout ) {
 			window.clearTimeout( debounceTimeout );
 		}
-		debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1500 );
+		debounceTimeout = window.setTimeout( findNewTranslatableTexts, 500 );
 		return;
 	}
 
 	currentlyWalkingTheDom = true;
 
-	debug( 'Searching for translatable texts' );
 	walker.walkTextNodes( document.body, function( translationPair, enclosingNode ) {
 		enclosingNode.addClass( 'translator-checking' );
 

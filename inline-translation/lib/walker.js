@@ -1,18 +1,47 @@
+function acceptableNode( node ) {
+	if ( null === node.parentElement ) {
+		return NodeFilter.FILTER_REJECT;
+	}
+	if ( [ 'SCRIPT', 'STYLE', 'BODY', 'HTML' ].includes( node.parentElement.nodeName ) ) {
+		return NodeFilter.FILTER_REJECT;
+	}
+	if ( node.parentElement.classList.contains( 'translator-checked' ) ) {
+		return NodeFilter.FILTER_REJECT;
+	}
+	return NodeFilter.FILTER_ACCEPT;
+}
 
 module.exports = function( TranslationPair, jQuery, document ) {
 	return {
 		walkTextNodes: function( origin, callback, finishedCallback ) {
-			var node, walker;
+			var node, walker,
+				found = true,
+				i = 5;
 
 			if ( typeof document === 'object' ) {
-				walker = document.createTreeWalker( origin, NodeFilter.SHOW_TEXT, null, false );
+				while ( found ) {
+					walker = document.createTreeWalker( origin, NodeFilter.SHOW_TEXT, acceptableNode );
+					node = walker.currentNode;
+					found = false;
+					while ( node ) {
+						if ( acceptableNode( node ) === NodeFilter.FILTER_REJECT ) {
+							// break;
+						}
+						walk( node );
+						found = true;
+						node = walker.nextNode();
+					}
 
-				while ( ( node = walker.nextNode() ) ) {
-					walk( node );
+					if ( --i < 0 ) {
+						break;
+					}
 				}
 			} else {
 				jQuery( origin ).find( '*' ).contents().filter( function() {
-					return this.nodeType === 3; // Node.TEXT_NODE
+					if ( this.nodeType !== 3 ) {
+						return false; // Node.TEXT_NODE
+					}
+					return acceptableNode( this ) === NodeFilter.FILTER_ACCEPT;
 				} ).each( function() {
 					walk( this );
 				} );
@@ -24,14 +53,11 @@ module.exports = function( TranslationPair, jQuery, document ) {
 
 			function walk( textNode ) {
 				var translationPair,
-					enclosingNode = jQuery( textNode.parentNode );
-
-				if (
-					enclosingNode.is( 'script' ) ||
-						enclosingNode.hasClass( 'translator-checked' )
-				) {
+					enclosingNode;
+				if ( [ 'SCRIPT', 'STYLE', 'BODY', 'HTML' ].includes( textNode.parentElement.nodeName ) ) {
 					return false;
 				}
+				enclosingNode = jQuery( textNode.parentElement );
 
 				enclosingNode.addClass( 'translator-checked' );
 

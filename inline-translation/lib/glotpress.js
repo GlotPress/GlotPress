@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var debug = require( 'debug' )( 'automattic:community-translator' );
+var debug = require( 'debug' )( 'inline-translator' );
 var batcher = require( './batcher.js' );
 
 function GlotPress( locale, translations ) {
@@ -12,12 +12,7 @@ function GlotPress( locale, translations ) {
 			project: '',
 			translation_set_slug: 'default',
 		},
-		batchOptions = {};
-
-	if ( translations ) {
-		batchOptions.translations = translations;
-	}
-
+		batch = batcher( fetchOriginals );
 	function ajax( options ) {
 		options = jQuery.extend( {
 			type: 'POST',
@@ -47,6 +42,18 @@ function GlotPress( locale, translations ) {
 		} ).done( function( response ) {
 			callback( response );
 		} );
+	}
+
+	function hash( original ) {
+		var key = '|' + original.singular;
+		if ( 'undefined' !== typeof original.context ) {
+			key = original.context + key;
+		}
+		key = '|' + key;
+		if ( 'undefined' !== typeof original.domain ) {
+			key = original.domain + key;
+		}
+		return key;
 	}
 
 	return {
@@ -90,7 +97,17 @@ function GlotPress( locale, translations ) {
 			}
 		},
 
-		queryByOriginal: batcher( fetchOriginals, batchOptions ),
+		queryByOriginal: function( original ) {
+			var deferred;
+			original.hash = hash( original );
+			if ( original.hash in translations ) {
+				deferred = new jQuery.Deferred();
+				deferred.resolve( translations[ original.hash ] );
+				return deferred;
+			}
+
+			return batch( original );
+		},
 
 		submitTranslation: function( translation, translationPair ) {
 			return ajax( {

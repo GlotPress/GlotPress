@@ -44,7 +44,6 @@
 
 		// IE & Firefox wont deliver events to $element inside a button, so
 		// delgate in this case
-		// https://github.com/Automattic/community-translator/issues/37
 		this.$eventDelegate = this.$element;
 		if ( this.$element.closest( 'button' ).length ) {
 			this.$eventDelegate = this.$element.closest( 'button' );

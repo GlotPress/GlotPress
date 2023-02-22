@@ -13,7 +13,7 @@
  * calls and makes a single call to the original function ( presumably the
  * backend ) after a brief delay.
  */
-var debug = require( 'debug' )( 'automattic:community-translator' );
+var debug = require( 'debug' )( 'inline-translator' );
 
 function handleBatchedResponse( response, originalToCallbacksMap ) {
 	var i, data, j, key;
@@ -61,13 +61,11 @@ function handleBatchedResponse( response, originalToCallbacksMap ) {
 	}
 }
 
-module.exports = function( functionToWrap, options ) {
+module.exports = function( functionToWrap ) {
 	var batchDelay = 200,
 		originalToCallbacksMap = {},
 		batchedOriginals = [],
 		batchTimeout,
-		translations,
-		hash,
 		delayMore,
 		resolveBatch;
 
@@ -77,19 +75,6 @@ module.exports = function( functionToWrap, options ) {
 			functionToWrap );
 		return null;
 	}
-
-	// Functions that need to close over state
-	hash = function( original ) {
-		var key = '|' + original.singular;
-		if ( 'undefined' !== typeof original.context ) {
-			key = original.context + key;
-		}
-		key = '|' + key;
-		if ( 'undefined' !== typeof original.domain ) {
-			key = original.domain + key;
-		}
-		return key;
-	};
 
 	delayMore = function() {
 		if ( batchTimeout ) {
@@ -118,31 +103,13 @@ module.exports = function( functionToWrap, options ) {
 		} );
 	};
 
-	if ( options ) {
-		if ( options.batchDelay ) {
-			batchDelay = options.batchDelay;
-		}
-		if ( options.hash ) {
-			hash = options.hash;
-		}
-		if ( options.translations ) {
-			translations = options.translations;
-		}
-	}
-
 	return function( original ) {
-		var deferred = new jQuery.Deferred(),
-			key = hash( original );
-		if ( key in translations ) {
-			deferred.resolve( translations[ key ] );
-			return deferred;
-		}
-
-		if ( key in originalToCallbacksMap ) {
-			originalToCallbacksMap[ key ].push( deferred );
+		var deferred = new jQuery.Deferred();
+		if ( original.hash in originalToCallbacksMap ) {
+			originalToCallbacksMap[ original.hash ].push( deferred );
 		} else {
 			batchedOriginals.push( original );
-			originalToCallbacksMap[ key ] = [ deferred ];
+			originalToCallbacksMap[ original.hash ] = [ deferred ];
 		}
 
 		delayMore();
