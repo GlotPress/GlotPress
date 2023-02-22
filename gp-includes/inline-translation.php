@@ -184,7 +184,7 @@ class GP_Inline_Translation {
 	 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
 	 */
 	public function ntranslate_with_context( $translation, $single, $plural, $number, $context, $domain ) {
-		return $this->translate_with_context( $translation, $single, array( $single, $plural ), $domain );
+		return $this->translate_with_context( $translation, array( $single, $plural ), $context, $domain );
 	}
 
 	/**
