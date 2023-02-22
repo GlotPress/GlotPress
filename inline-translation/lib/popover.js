@@ -23,7 +23,14 @@ function Popover( translationPair, _locale, glotPress ) {
 	};
 
 	getPopoverTitle = function() {
-		return 'Translate to ' + locale.getLanguageName() + '<a title="Help & Instructions" target="_blank" href="https://en.support.wordpress.com/in-page-translator/"><span class="dashicons dashicons-editor-help"></span></a><a title="View in GlotPress" href="' + glotPress.getPermalink( translationPair ) + '" target="_blank" class="gpPermalink"><span class="dashicons dashicons-external"></span></a>';
+		return 'Translate to ' +
+			locale.getLanguageName() +
+			// '<a title="Help & Instructions" target="_blank" href="">' +
+			// 	'<span class="dashicons dashicons-editor-help"></span>' +
+			// '</a>' +
+			'<a title="View in GlotPress" href="' + glotPress.getPermalink( translationPair ) + '" target="_blank" class="gpPermalink">' +
+				'<span class="dashicons dashicons-external"></span>' +
+			'</a>';
 	};
 
 	return {
