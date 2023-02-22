@@ -1,4 +1,4 @@
-\<?php
+<?php
 /**
  * Inline Translation
  *
