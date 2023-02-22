@@ -260,16 +260,22 @@ function makeUntranslatable( $node ) {
 }
 
 function makeTranslatable( translationPair, node ) {
+	var translation;
 	translationPair.createPopover( node, glotPress );
 	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
 	if ( translationPair.isFullyTranslated() ) {
 		if ( translationPair.isTranslationWaiting() ) {
-			if ( 0 === node.children().length ) {
-				node.text( translationPair.getTranslation().getTextItems()[ 0 ].getText() );
-			}
 			node.removeClass( 'translator-translated' ).addClass( 'translator-user-translated' );
 		} else {
 			node.removeClass( 'translator-user-translated' ).addClass( 'translator-translated' );
+		}
+		if ( 0 === node.children().length ) {
+			translation = translationPair.getTranslation().getTextItems()[ 0 ].getText();
+			if ( node.text() !== translation ) {
+				setTimeout( function() {
+					node.text( translation );
+				}, 1 );
+			}
 		}
 	} else {
 		node.addClass( 'translator-untranslated' );
