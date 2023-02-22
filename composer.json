@@ -33,7 +33,7 @@
   },
   "scripts": {
     "format": "@php ./vendor/bin/phpcbf --report=summary,source",
-    "lint": "@php ./vendor/bin/phpcs --report=summary,source",
+    "lint": "@php ./vendor/bin/phpcs",
     "test": "@php ./vendor/bin/phpunit",
     "test:locales": "@test --group locales"
   }
