@@ -23,8 +23,16 @@ class GP_Route_Local extends GP_Route_Main {
 		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		switch ( strtok( $slug, '/' ) ) {
 			case 'core':
-				$this->translate_core();
-				$this->redirect( gp_url( '/projects/local-wordpress/' ) );
+				$this->translate_core( $slug );
+				$this->redirect(
+					gp_url(
+						sprintf(
+							'/projects/local-wordpress-core/local-wordpress-core-%s/%s/default',
+							basename( $slug ),
+							$locale->slug
+						)
+					)
+				);
 				break;
 			case 'plugin':
 				$this->translate_plugin( $slug );
@@ -74,7 +82,8 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @param string $slug The slug of the core, plugin or theme.
 	 */
 	private function security_checks( string $slug ) {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'gp-local-' . basename( $slug ) ) ) {
+		$element_to_check = 'gp-local-' . basename( dirname( $slug ) ) . '-' . basename( $slug );
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], $element_to_check ) ) {
 			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
 		}
 		if ( ! $this->can( 'write', 'project', null ) ) {
@@ -84,63 +93,78 @@ class GP_Route_Local extends GP_Route_Main {
 
 	/**
 	 * Creates the projects and import the originals and translations for the WordPress core.
+	 *
+	 *  The project name and project description are translatables, so when the project is created will
+	 *  be created in the current locale if these strings are translated.
+	 *
+	 * @param string $slug The slug of the core.
 	 */
-	private function translate_core() {
+	private function translate_core( string $slug ) {
 		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		// Create the main project for the WordPress core.
-		$main_project = $this->get_or_create_project( 'WordPress', 'local-wordpress', 'local-wordpress', 'Local WordPress Core Translation' );
+		$main_project = $this->get_or_create_project( 'WordPress', 'local-wordpress-core', 'local-wordpress-core', 'Local WordPress Core Translation' );
 
+		switch ( basename( $slug ) ) {
+			case 'development':
+				$this->create_project_and_import_strings(
+					esc_html__( 'Development', 'glotpress' ),
+					'local-wordpress-core-development',
+					'local-wordpress-core/local-wordpress-core-development',
+					esc_html__( 'WordPress Development. Strings from the main project.', 'glotpress' ),
+					$main_project,
+					$locale,
+					ABSPATH . '/wp-content/languages/' . $locale->wp_locale . '.po'
+				);
+				break;
+			case 'continents-cities':
+				$this->create_project_and_import_strings(
+					esc_html__( 'Continents & Cities', 'glotpress' ),
+					'local-wordpress-core-continents-cities',
+					'local-wordpress-core/local-wordpress-core-continents-cities',
+					esc_html__( 'WordPress Continents & Cities. List with the continents and main cities around the world.', 'glotpress' ),
+					$main_project,
+					$locale,
+					ABSPATH . '/wp-content/languages/continents-cities-' . $locale->wp_locale . '.po'
+				);
+				break;
+			case 'administration':
+				$this->create_project_and_import_strings(
+					esc_html__( 'Administration', 'glotpress' ),
+					'local-wordpress-core-administration',
+					'local-wordpress-core/local-wordpress-core-administration',
+					esc_html__( 'WordPress Administration. Strings from the WordPress administration.', 'glotpress' ),
+					$main_project,
+					$locale,
+					ABSPATH . '/wp-content/languages/admin-' . $locale->wp_locale . '.po'
+				);
+				break;
+			case 'network-admin':
+				$this->create_project_and_import_strings(
+					esc_html__( 'Network Admin', 'glotpress' ),
+					'local-wordpress-core-network-admin',
+					'local-wordpress-core/local-wordpress-core-network-admin',
+					esc_html__( 'WordPress Network Administration. Strings from the WordPress network administration.', 'glotpress' ),
+					$main_project,
+					$locale,
+					ABSPATH . '/wp-content/languages/admin-network-' . $locale->wp_locale . '.po'
+				);
+				break;
+		}
 		// Create the subprojects for the WordPress core.
-		$this->create_project_and_import_strings(
-			'Administration',
-			'local-wordpress-administration',
-			'local-wordpress/local-wordpress-administration',
-			'WordPress Administration',
-			$main_project,
-			$locale,
-			ABSPATH . '/wp-content/languages/admin-' . $locale->wp_locale . '.po'
-		);
-		$this->create_project_and_import_strings(
-			'Network Admin',
-			'local-wordpress-network-admin',
-			'local-wordpress/local-wordpress-network-admin',
-			'WordPress Network Administration',
-			$main_project,
-			$locale,
-			ABSPATH . '/wp-content/languages/admin-network-' . $locale->wp_locale . '.po'
-		);
-		$this->create_project_and_import_strings(
-			'Continents & Cities',
-			'local-wordpress-continents-cities',
-			'local-wordpress/local-wordpress-continents-cities',
-			'WordPress Continents & Cities',
-			$main_project,
-			$locale,
-			ABSPATH . '/wp-content/languages/continents-cities-' . $locale->wp_locale . '.po'
-		);
-		$this->create_project_and_import_strings(
-			'Development',
-			'local-wordpress-development',
-			'local-wordpress/local-wordpress-development',
-			'WordPress Development',
-			$main_project,
-			$locale,
-			ABSPATH . '/wp-content/languages/' . $locale->wp_locale . '.po'
-		);
 	}
 
 	/**
 	 * Creates the projects and import the originals and translations for a plugin.
 	 *
-	 * @param string $path The path of the plugin.
+	 * @param string $slug The slug of the plugin.
 	 */
-	private function translate_plugin( string $path ) {
+	private function translate_plugin( string $slug ) {
 		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$plugins        = apply_filters( 'local_glotpress_local_plugins', get_plugins() );
-		$textDomain     = substr( $path, 7 );
+		$textDomain     = substr( $slug, 7 );
 		$current_plugin = null;
 		foreach ( $plugins as $plugin ) {
 			if ( $plugin['TextDomain'] === $textDomain ) {
@@ -166,12 +190,12 @@ class GP_Route_Local extends GP_Route_Main {
 	/**
 	 * Creates the projects and import the originals and translations for a theme.
 	 *
-	 * @param string $path The path of the theme.
+	 * @param string $slug The slug of the theme.
 	 */
-	private function translate_theme( string $path ) {
+	private function translate_theme( string $slug ) {
 		$locale        = GP_Locales::by_field( 'wp_locale', get_user_locale() );
 		$themes        = apply_filters( 'local_glotpress_local_themes', wp_get_themes() );
-		$textDomain    = substr( $path, 6 );
+		$textDomain    = substr( $slug, 6 );
 		$current_theme = null;
 		foreach ( $themes as $theme ) {
 			if ( $theme->get( 'TextDomain' ) === $textDomain ) {
