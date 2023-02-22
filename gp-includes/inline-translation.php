@@ -1,4 +1,4 @@
-<?php
+\<?php
 /**
  * Inline Translation
  *
@@ -233,7 +233,7 @@ class GP_Inline_Translation {
 		$context_key = $text_domain . '|' . $context;
 
 		if ( $this->contains_placeholder( $translation ) ) {
-			$key = $this->convert_placeholders_to_regex( $translation, $string_placeholder );
+			$key = $this->convert_placeholders_to_regex( $translation );
 
 			if ( ! isset( $this->placeholders_used[ $key ] ) ) {
 				$this->placeholders_used[ $key ] = array();
