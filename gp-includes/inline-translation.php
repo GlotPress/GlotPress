@@ -95,10 +95,10 @@ class GP_Inline_Translation {
 	 * Enqueue the scripts and styles for the translator.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style( 'inline-translation-loader', gp_plugin_url( 'assets/css/inline-translation-loader.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion // TODO
-		wp_enqueue_style( 'inline-translation', gp_plugin_url( 'assets/css/inline-translation.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion // TODO
-		wp_enqueue_script( 'inline-translation', gp_plugin_url( 'assets/js/inline-translation.min.js' ), array( 'jquery' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion // TODO
-		wp_enqueue_script( 'inline-translation-loader', gp_plugin_url( 'assets/js/inline-translation-loader.js', __FILE__ ), array( 'inline-translation' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion // TODO
+		wp_enqueue_style( 'inline-translation-loader', gp_plugin_url( 'assets/css/inline-translation-loader.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_style( 'inline-translation', gp_plugin_url( 'assets/css/inline-translation.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_script( 'inline-translation', gp_plugin_url( 'assets/js/inline-translation.min.js' ), array( 'jquery' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
+		wp_enqueue_script( 'inline-translation-loader', gp_plugin_url( 'assets/js/inline-translation-loader.js', __FILE__ ), array( 'inline-translation' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 	}
 
 	/**
@@ -229,7 +229,7 @@ class GP_Inline_Translation {
 			return $translation;
 		}
 
-		$key = $translation;
+		$key         = $translation;
 		$context_key = $text_domain . '|' . $context;
 
 		if ( $this->contains_placeholder( $translation ) ) {
@@ -241,7 +241,6 @@ class GP_Inline_Translation {
 			if ( ! isset( $this->placeholders_used[ $key ][ $context_key ] ) ) {
 				$this->placeholders_used[ $key ][ $context_key ] = $original;
 			}
-
 		} else {
 			if ( ! isset( $this->strings_used[ $key ] ) ) {
 				$this->strings_used[ $key ] = array();
@@ -265,7 +264,7 @@ class GP_Inline_Translation {
 	 * @return     array     The translations.
 	 */
 	public function get_translations( GP_Locale $gp_locale ) {
-		$projects           = array();
+		$projects                 = array();
 		$this->full_project_paths = array();
 		foreach ( $this->text_domains as $text_domain ) {
 			$project_paths = array();
@@ -280,7 +279,7 @@ class GP_Inline_Translation {
 				$project = GP::$project->by_path( $project_path );
 				if ( $project ) {
 					$this->full_project_paths[ $project->id ] = gp_url_project( $project );
-					$projects[ $text_domain ][]              = $project;
+					$projects[ $text_domain ][]               = $project;
 				}
 			}
 		}
@@ -304,7 +303,13 @@ class GP_Inline_Translation {
 				$context = strtok( '|' );
 
 				$query_result = $this->get_translation(
-					$projects[ $text_domain ], $translation_sets[ $text_domain ], $original, $context, $text_domain, $translation );
+					$projects[ $text_domain ],
+					$translation_sets[ $text_domain ],
+					$original,
+					$context,
+					$text_domain,
+					$translation
+				);
 				if ( $query_result ) {
 					$hash = $query_result->hash;
 					unset( $query_result->hash );
@@ -319,55 +324,67 @@ class GP_Inline_Translation {
 		return $translations;
 	}
 
-	function get_translation( $projects, $translation_sets, $original, $context, $text_domain, $translation ) {
-			if ( is_array( $original ) ) {
-				$entry = (object) array(
-					'singular' => $original[0],
-					'plural'   => $original[1],
-				);
-			} else {
-				$entry = (object) array(
-					'singular' => $original,
-				);
-			}
+	/**
+	 * Gets the translation.
+	 *
+	 * @param      array        $projects          The potential projects.
+	 * @param      array        $translation_sets   The potential translation sets.
+	 * @param      string|array $original          The original.
+	 * @param      string       $context           The context.
+	 * @param      string       $text_domain       The text domain.
+	 * @param      string       $translation       The translation.
+	 *
+	 * @return     bool|stdClass  The translation.
+	 */
+	private function get_translation( $projects, $translation_sets, $original, $context, $text_domain, $translation ) {
+		if ( is_array( $original ) ) {
+			$entry = (object) array(
+				'singular' => $original[0],
+				'plural'   => $original[1],
+			);
+		} else {
+			$entry = (object) array(
+				'singular' => $original,
+			);
+		}
 			$entry->domain = $text_domain;
-			if ( $context ) {
-				$entry->context = $context;
-			}
+		if ( $context ) {
+			$entry->context = $context;
+		}
 			$original_record = false;
-			foreach ( $projects as $project ) {
-				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry );
-				if ( $original_record ) {
-					break;
-				}
+		foreach ( $projects as $project ) {
+			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry );
+			if ( $original_record ) {
+				break;
 			}
+		}
 
-			if ( ! $original_record ) {
-				if ( count( $projects ) === 1 ) {
-					// JIT Original Creation.
-					$original_record = GP::$original->create(
-						array(
-							'project_id' => $projects[0]->id,
-							'context'    => $entry->context,
-							'singular'   => $entry->singular,
-							'plural'     => $entry->plural,
-						)
-					);
+		if ( ! $original_record ) {
+			if ( count( $projects ) === 1 ) {
+				// JIT Original Creation.
+				$original_record = GP::$original->create(
+					array(
+						'project_id' => $projects[0]->id,
+						'context'    => $entry->context,
+						'singular'   => $entry->singular,
+						'plural'     => $entry->plural,
+					)
+				);
 
-					// TODO: add translation.
-				} else {
-					return false;
-				}
+				// TODO: add translation.
+			} else {
+				return false;
 			}
+		}
 
 		$query_result                     = new stdClass();
 		$query_result->original_id        = $original_record->id;
 		$query_result->original           = $original;
 		$query_result->domain             = $text_domain;
-		$query_result->project            = $this->full_project_paths[$project->id];
-		$query_result->translation_set_id = $translation_sets[ $project->id]->id;
+		$query_result->project            = $this->full_project_paths[ $project->id ];
+		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
-		$query_result->hash   = $text_domain . '|' . $context . '|' . $translation;
+		$query_result->hash               = $text_domain . '|' . $context . '|' . $translation;
 
 		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 
