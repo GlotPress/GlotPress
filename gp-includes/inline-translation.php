@@ -25,13 +25,6 @@ class GP_Inline_Translation {
 	private $strings_used = array();
 
 	/**
-	 * The translations that were actually displayed.
-	 *
-	 * @var        array
-	 */
-	private $translations = array();
-
-	/**
 	 * The translations that contained placeholders that were actually displayed.
 	 *
 	 * @var        array
@@ -44,6 +37,13 @@ class GP_Inline_Translation {
 	 * @var        array
 	 */
 	private $text_domains = array();
+
+	/**
+	 * The full project paths for projects.
+	 *
+	 * @var        array
+	 */
+	private $full_project_paths = array();
 
 	/**
 	 * Ignored translation translations.
@@ -95,10 +95,10 @@ class GP_Inline_Translation {
 	 * Enqueue the scripts and styles for the translator.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style( 'inline-translation-loader', gp_plugin_url( 'assets/css/inline-translation-loader.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_enqueue_style( 'inline-translation', gp_plugin_url( 'assets/css/inline-translation.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_enqueue_script( 'inline-translation', gp_plugin_url( 'assets/js/inline-translation.min.js' ), array( 'jquery' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
-		wp_enqueue_script( 'inline-translation-loader', gp_plugin_url( 'assets/js/inline-translation-loader.js', __FILE__ ), array( 'inline-translation' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
+		wp_enqueue_style( 'inline-translation-loader', gp_plugin_url( 'assets/css/inline-translation-loader.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion // TODO
+		wp_enqueue_style( 'inline-translation', gp_plugin_url( 'assets/css/inline-translation.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion // TODO
+		wp_enqueue_script( 'inline-translation', gp_plugin_url( 'assets/js/inline-translation.min.js' ), array( 'jquery' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion // TODO
+		wp_enqueue_script( 'inline-translation-loader', gp_plugin_url( 'assets/js/inline-translation-loader.js', __FILE__ ), array( 'inline-translation' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion // TODO
 	}
 
 	/**
@@ -158,67 +158,6 @@ class GP_Inline_Translation {
 		$text = preg_replace( '#' . self::PLACEHOLDER_REGEX . 'd#', $numeric_placeholder, $text );
 		$text = str_replace( '%%', '%', $text );
 		return $text;
-	}
-
-	/**
-	 * Gets the hash key.
-	 *
-	 * @param      string $original  The original.
-	 * @param      string $context   The context.
-	 *
-	 * @return     string  The hash key.
-	 */
-	private function get_hash_key( $original, $context = null ) {
-		if ( ! empty( $context ) && 'default' !== $context ) {
-			$context .= "\u0004";
-		} else {
-			$context = '';
-		}
-
-		return $context . html_entity_decode( $original );
-	}
-
-	/**
-	 * Adds a context.
-	 *
-	 * This is when a string was already used without context but a new string comes along with context.
-	 *
-	 * @param      string $key        The key.
-	 * @param      string $context    The context.
-	 * @param      bool   $new_entry  Whether it's a new entry.
-	 */
-	private function add_context( $key, $context = null, $new_entry = false ) {
-		if ( ! $context ) {
-			return;
-		}
-
-		if ( isset( $this->strings_used[ $key ] ) ) {
-			if ( ! isset( $this->strings_used[ $key ][1] ) ) {
-				$this->strings_used[ $key ][1] = array();
-
-				if ( ! $new_entry ) {
-					// The first entry had an empty context, so add it now.
-					$this->strings_used[ $key ][1][] = '';
-				}
-			}
-
-			if ( ! in_array( $context, $this->strings_used[ $key ][1], true ) ) {
-				$this->strings_used[ $key ][1][] = $context;
-			}
-		} elseif ( isset( $this->placeholders_used[ $key ] ) ) {
-			if ( ! isset( $this->placeholders_used[ $key ][2] ) ) {
-				$this->placeholders_used[ $key ][2] = array();
-
-				if ( ! $new_entry ) {
-					// The first entry had an empty context, so add it now.
-					$this->placeholders_used[ $key ][2][] = '';
-				}
-			}
-
-			if ( ! in_array( $context, $this->placeholders_used[ $key ][2], true ) ) {
-				$this->placeholders_used[ $key ][2][] = $context;
-			}
-		}
 	}
 
 	/**
@@ -289,31 +228,30 @@ class GP_Inline_Translation {
 			$this->ignore_translation[ $original_as_string ] = true;
 			return $translation;
 		}
-		$key = $this->get_hash_key( $translation, $context );
 
-		if ( $this->already_checked( $key ) ) {
-			$this->add_context( $key, $context );
-		} else {
-			if ( $this->contains_placeholder( $translation ) ) {
-				$string_placeholder = null;
+		$key = $translation;
+		$context_key = $text_domain . '|' . $context;
 
-				$this->placeholders_used[ $key ] = array(
-					$original,
-					$this->convert_placeholders_to_regex( $translation, $string_placeholder ),
-				);
+		if ( $this->contains_placeholder( $translation ) ) {
+			$key = $this->convert_placeholders_to_regex( $translation, $string_placeholder );
 
-			} else {
-				$this->strings_used[ $key ] = array(
-					$original,
-				);
+			if ( ! isset( $this->placeholders_used[ $key ] ) ) {
+				$this->placeholders_used[ $key ] = array();
 			}
-			$this->translations[ $text_domain . "\u0004" . $key ] = array(
-				$original,
-			);
+			if ( ! isset( $this->placeholders_used[ $key ][ $context_key ] ) ) {
+				$this->placeholders_used[ $key ][ $context_key ] = $original;
+			}
 
-			$this->add_context( $key, $context, true );
+		} else {
+			if ( ! isset( $this->strings_used[ $key ] ) ) {
+				$this->strings_used[ $key ] = array();
+			}
+			if ( ! isset( $this->strings_used[ $key ][ $context_key ] ) ) {
+				$this->strings_used[ $key ][ $context_key ] = $original;
+			}
 		}
 
+		// Pass back the unmodified translated text.
 		return $translation;
 	}
 
@@ -328,21 +266,21 @@ class GP_Inline_Translation {
 	 */
 	public function get_translations( GP_Locale $gp_locale ) {
 		$projects           = array();
-		$full_project_paths = array();
-		foreach ( $this->text_domains as $domain ) {
+		$this->full_project_paths = array();
+		foreach ( $this->text_domains as $text_domain ) {
 			$project_paths = array();
-			if ( 'default' === $domain ) {
+			if ( 'default' === $text_domain ) {
 				$project_paths[] = 'local-wordpress/local-wordpress-development';
 				$project_paths[] = 'local-wordpress/local-wordpress-administration';
 			} else {
-				$project_paths[] = 'local-plugins/' . $domain;
-				$project_paths[] = 'local-themes/' . $domain;
+				$project_paths[] = 'local-plugins/' . $text_domain;
+				$project_paths[] = 'local-themes/' . $text_domain;
 			}
 			foreach ( $project_paths as $project_path ) {
 				$project = GP::$project->by_path( $project_path );
 				if ( $project ) {
-					$full_project_paths[ $project->id ] = gp_url_project( $project );
-					$projects[ $domain ][]              = $project;
+					$this->full_project_paths[ $project->id ] = gp_url_project( $project );
+					$projects[ $text_domain ][]              = $project;
 				}
 			}
 		}
@@ -351,13 +289,37 @@ class GP_Inline_Translation {
 		$translation_set_slug = 'default';
 
 		$translation_sets = array();
-		foreach ( $projects as $domain => $_projects ) {
+		foreach ( $projects as $text_domain => $_projects ) {
 			foreach ( $_projects as $project ) {
-				$translation_sets[ $domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+				$translation_sets[ $text_domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 			}
 		}
 
-		foreach ( $this->translations as $key => $original ) {
+		foreach ( $this->strings_used as $translation => $originals ) {
+			foreach ( $originals as $context_key => $original ) {
+				$text_domain = strtok( $context_key, '|' );
+				if ( ! isset( $projects[ $text_domain ] ) ) {
+					continue;
+				}
+				$context = strtok( '|' );
+
+				$query_result = $this->get_translation(
+					$projects[ $text_domain ], $translation_sets[ $text_domain ], $original, $context, $text_domain, $translation );
+				if ( $query_result ) {
+					$hash = $query_result->hash;
+					unset( $query_result->hash );
+					$translations[ $hash ] = $query_result;
+				} else {
+					$translations['originals_not_found'][] = $original;
+					continue;
+				}
+			}
+		}
+
+		return $translations;
+	}
+
+	function get_translation( $projects, $translation_sets, $original, $context, $text_domain, $translation ) {
 			if ( is_array( $original ) ) {
 				$entry = (object) array(
 					'singular' => $original[0],
@@ -368,21 +330,12 @@ class GP_Inline_Translation {
 					'singular' => $original,
 				);
 			}
-			$keys = explode( "\u0004", $key );
-			if ( 3 === count( $keys ) ) {
-				list( $entry->domain, $entry->context, $translation ) = $keys;
-				$hash = $entry->context . "\u0004" . $entry->singular;
-			} else {
-				list( $entry->domain, $translation ) = $keys;
-				$hash                                = $entry->singular;
+			$entry->domain = $text_domain;
+			if ( $context ) {
+				$entry->context = $context;
 			}
-			if ( ! isset( $projects[ $entry->domain ] ) ) {
-				continue;
-			}
-
-			$project         = $projects[ $entry->domain ];
 			$original_record = false;
-			foreach ( $projects[ $entry->domain ] as $project ) {
+			foreach ( $projects as $project ) {
 				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry );
 				if ( $original_record ) {
 					break;
@@ -390,11 +343,11 @@ class GP_Inline_Translation {
 			}
 
 			if ( ! $original_record ) {
-				if ( count( $projects[ $entry->domain ] ) === 1 ) {
+				if ( count( $projects ) === 1 ) {
 					// JIT Original Creation.
 					$original_record = GP::$original->create(
 						array(
-							'project_id' => $projects[ $entry->domain ][0]->id,
+							'project_id' => $projects[0]->id,
 							'context'    => $entry->context,
 							'singular'   => $entry->singular,
 							'plural'     => $entry->plural,
@@ -403,32 +356,27 @@ class GP_Inline_Translation {
 
 					// TODO: add translation.
 				} else {
-					$translations['originals_not_found'][] = $original;
-					continue;
+					return false;
 				}
 			}
 
-			$translation_set                  = $translation_sets[ $entry->domain ][ $project->id ];
-			$query_result                     = new stdClass();
-			$query_result->original_id        = $original_record->id;
-			$query_result->original           = $original;
-			$query_result->domain             = $domain;
-			$query_result->project            = $full_project_paths[ $project->id ];
-			$query_result->translation_set_id = $translation_set->id;
-			$query_result->original_comment   = $original_record->comment;
+		$query_result                     = new stdClass();
+		$query_result->original_id        = $original_record->id;
+		$query_result->original           = $original;
+		$query_result->domain             = $text_domain;
+		$query_result->project            = $this->full_project_paths[$project->id];
+		$query_result->translation_set_id = $translation_sets[ $project->id]->id;
+		$query_result->original_comment   = $original_record->comment;
+		$query_result->hash   = $text_domain . '|' . $context . '|' . $translation;
 
-			$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
+		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 
-			foreach ( $query_result->translations as $key => $current_translation ) {
-				$query_result->translations[ $key ]                   = GP::$translation->prepare_fields_for_save( $current_translation );
-				$query_result->translations[ $key ]['translation_id'] = $current_translation->id;
-			}
-			if ( is_string( $hash ) ) {
-				$translations[ $hash ] = $query_result;
-			}
+		foreach ( $query_result->translations as $key => $current_translation ) {
+			$query_result->translations[ $key ]                   = GP::$translation->prepare_fields_for_save( $current_translation );
+			$query_result->translations[ $key ]['translation_id'] = $current_translation->id;
 		}
 
-		return $translations;
+		return $query_result;
 	}
 
 	/**

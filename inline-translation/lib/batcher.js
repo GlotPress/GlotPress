@@ -80,9 +80,13 @@ module.exports = function( functionToWrap, options ) {
 
 	// Functions that need to close over state
 	hash = function( original ) {
-		var key = original.singular;
+		var key = '|' + original.singular;
 		if ( 'undefined' !== typeof original.context ) {
-			key = original.context + '\u0004' + key;
+			key = original.context + key;
+		}
+		key = '|' + key;
+		if ( 'undefined' !== typeof original.domain ) {
+			key = original.domain + key;
 		}
 		return key;
 	};
@@ -129,6 +133,7 @@ module.exports = function( functionToWrap, options ) {
 	return function( original ) {
 		var deferred = new jQuery.Deferred(),
 			key = hash( original );
+		console.log( key );
 		if ( key in translations ) {
 			deferred.resolve( translations[ key ] );
 			return deferred;

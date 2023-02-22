@@ -34,7 +34,7 @@ function Original( original ) {
 		comment = original.comment;
 	}
 
-	function objectify( context ) {
+	function objectify( context, domain ) {
 		var result = {
 			singular: singular,
 		};
@@ -45,6 +45,10 @@ function Original( original ) {
 
 		if ( context ) {
 			result.context = context;
+		}
+
+		if ( domain ) {
+			result.domain = domain;
 		}
 
 		return result;
@@ -78,8 +82,8 @@ function Original( original ) {
 			return new Translation( locale, forms );
 		},
 		objectify: objectify,
-		fetchIdAndTranslations: function( glotPress, context ) {
-			return glotPress.queryByOriginal( objectify( context ) ).done( function( data ) {
+		fetchIdAndTranslations: function( glotPress, context, domain ) {
+			return glotPress.queryByOriginal( objectify( context, domain ) ).done( function( data ) {
 				originalId = data.original_id;
 				if ( typeof data.original_comment === 'string' ) {
 					comment = data.original_comment.replace( /^translators: /, '' );

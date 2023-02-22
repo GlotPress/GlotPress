@@ -6,7 +6,8 @@ var Original = require( './original' ),
 	Popover = require( './popover' ),
 	translationData;
 
-function TranslationPair( locale, original, context, translation ) {
+function TranslationPair( locale, original, context, domain, translation ) {
+	console.log( {locale, original, context, domain, translation} );
 	var translations = [],
 		selectedTranslation, glotPressProject,
 		screenText = false;
@@ -112,6 +113,9 @@ function TranslationPair( locale, original, context, translation ) {
 		getLocale: function() {
 			return locale;
 		},
+		getDomain: function() {
+			return domain;
+		},
 		getScreenText: function() {
 			return screenText;
 		},
@@ -139,13 +143,14 @@ function TranslationPair( locale, original, context, translation ) {
 				singular: original.getSingular(),
 				plural: original.getPlural(),
 				context: context,
+				domain: domain,
 				translations: selectedTranslation.serialize(),
 				key: original.generateJsonHash( context ),
 			};
 		},
 		fetchOriginalAndTranslations: function( glotPress, currentUserId ) {
 			var promise;
-			promise = original.fetchIdAndTranslations( glotPress, context )
+			promise = original.fetchIdAndTranslations( glotPress, context, domain )
 				.done( function( data ) {
 					if ( 'undefined' === typeof data.translations ) {
 						return;
@@ -177,7 +182,11 @@ function extractFromDataElement( dataElement ) {
 		original.context = dataElement.data( 'context' );
 	}
 
-	translationPair = new TranslationPair( translationData.locale, original, original.context );
+	if ( dataElement.data( 'domain' ) ) {
+		original.domain = dataElement.data( 'domain' );
+	}
+
+	translationPair = new TranslationPair( translationData.locale, original, original.context, original.domain );
 	translationPair.setScreenText( dataElement.text() );
 
 	return translationPair;
@@ -246,8 +255,8 @@ function anyChildMatches( node, regex ) {
 	return false;
 }
 
-function getTranslationPairForTextUsedOnPage( node, context ) {
-	var translationPair,
+function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
+	var translationPair, contextKey, contextKeySplit, domain, context, original,
 		entry = false,
 		nodeText, nodeHtml, i;
 
@@ -260,14 +269,22 @@ function getTranslationPairForTextUsedOnPage( node, context ) {
 	if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
 		entry = translationData.stringsUsedOnPage[ nodeText ];
 
-		context = entry[ 1 ];
-		if ( typeof context !== 'undefined' && context && context.length === 1 ) {
-			context = context[ 0 ];
-		}
-		translationPair = new TranslationPair( translationData.locale, entry[ 0 ], context );
-		translationPair.setScreenText( nodeText );
+		for ( contextKey in entry ) {
+			if ( ! entry.hasOwnProperty( contextKey ) ) {
+				continue;
+			}
+			contextKeySplit = contextKey.split( '|' );
+			domain = contextKeySplit.shift();
+			context = contextKeySplit.shift();
+			if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
+				original = entry[ contextKey ];
 
-		return translationPair;
+				translationPair = new TranslationPair( translationData.locale, original, context, domain, nodeText );
+				translationPair.setScreenText( nodeText );
+
+				return translationPair;
+			}
+		}
 	}
 
 	// html to support translate( '<a href="%$1s">Translatable Text</a>' )
@@ -282,7 +299,7 @@ function getTranslationPairForTextUsedOnPage( node, context ) {
 				continue;
 			}
 
-			translationPair = new TranslationPair( translationData.locale, entry.original, entry.context );
+			translationPair = new TranslationPair( translationData.locale, entry.original, entry.context, entry.domain );
 			translationPair.setScreenText( nodeText );
 
 			return translationPair;
@@ -324,6 +341,7 @@ TranslationPair.setTranslationData = function( newTranslationData ) {
 					original: entry[ 0 ],
 					regex: new RegExp( '^\\s*' + entry[ 1 ] + '\\s*$' ),
 					context: entry[ 2 ],
+					domain: entry[ 3 ],
 				};
 			}
 			placeholdersUsedOnPage.push( entry );
