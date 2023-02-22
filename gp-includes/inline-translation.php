@@ -384,7 +384,7 @@ class GP_Inline_Translation {
 		$query_result->project            = $this->full_project_paths[ $project->id ];
 		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
-		$query_result->hash               = $text_domain . '|' . $context . '|' . $translation;
+		$query_result->hash               = $text_domain . '|' . $context . '|' . $entry->singular;
 
 		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 

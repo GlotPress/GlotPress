@@ -277,8 +277,7 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 			context = contextKeySplit.shift();
 			if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
 				original = entry[ contextKey ];
-
-				translationPair = new TranslationPair( translationData.locale, original, context, domain, nodeText );
+				translationPair = new TranslationPair( translationData.locale, original, context, domain );
 				translationPair.setScreenText( nodeText );
 
 				return translationPair;
