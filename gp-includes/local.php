@@ -165,7 +165,7 @@ class GP_Local {
 			<div class="tablenav">
 				<span class="displaying-num alignright">
 					<?php
-						esc_html_e( '1 item', 'glotpress' );
+						esc_html_e( '4 items', 'glotpress' );
 					?>
 				</span>
 			</div>
@@ -185,14 +185,111 @@ class GP_Local {
 				</thead>
 				<tbody id="core-list">
 					<tr>
-						<td><?php esc_html_e( 'WordPress core', 'glotpress' ); ?></td>
-						<td><?php echo esc_html( $wp_version ); ?></td>
+						<td><?php esc_html_e( 'WordPress development', 'glotpress' ); ?></td>
+						<td>
+							<p>
+								<?php esc_html_e( 'Strings from the main project.', 'glotpress' ); ?>
+							</p>
+							<p>
+								<?php esc_html_e( 'Version', 'glotpress' ); ?>
+								<?php echo esc_html( $wp_version ); ?>
+							</p>
 						<td>
 							<?php
 								echo gp_link_get(
 									wp_nonce_url(
-										gp_url( '/local/core' ),
-										'gp-local-core'
+										gp_url( '/local/core/development' ),
+										'gp-local-core-development'
+									),
+									esc_html(
+										sprintf(
+											/* Translators: %s is the language into which we will translate . */
+											__( 'Translate to %s', 'glotpress' ),
+											$language
+										)
+									),
+									array( 'target' => '_blank' )
+								);
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td><?php esc_html_e( 'WordPress Continents & Cities', 'glotpress' ); ?></td>
+						<td>
+							<p>
+								<?php esc_html_e( 'List with the continents and main cities around the world.', 'glotpress' ); ?>
+							</p>
+							<p>
+								<?php esc_html_e( 'Version', 'glotpress' ); ?>
+								<?php echo esc_html( $wp_version ); ?>
+							</p>
+						</td>
+						<td>
+							<?php
+								echo gp_link_get(
+									wp_nonce_url(
+										gp_url( '/local/core/continents-cities' ),
+										'gp-local-core-continents-cities'
+									),
+									esc_html(
+										sprintf(
+											/* Translators: %s is the language into which we will translate . */
+											__( 'Translate to %s', 'glotpress' ),
+											$language
+										)
+									),
+									array( 'target' => '_blank' )
+								);
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td><?php esc_html_e( 'WordPress Administration', 'glotpress' ); ?></td>
+						<td>
+							<p>
+								<?php esc_html_e( 'Strings from the WordPress administration.', 'glotpress' ); ?>
+							</p>
+							<p>
+								<?php esc_html_e( 'Version', 'glotpress' ); ?>
+								<?php echo esc_html( $wp_version ); ?>
+							</p>
+						</td>
+						<td>
+							<?php
+								echo gp_link_get(
+									wp_nonce_url(
+										gp_url( '/local/core/administration' ),
+										'gp-local-core-administration'
+									),
+									esc_html(
+										sprintf(
+											/* Translators: %s is the language into which we will translate . */
+											__( 'Translate to %s', 'glotpress' ),
+											$language
+										)
+									),
+									array( 'target' => '_blank' )
+								);
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td><?php esc_html_e( 'WordPress Network Admin', 'glotpress' ); ?></td>
+						<td>
+							<p>
+								<?php esc_html_e( 'Strings from the WordPress network administration.', 'glotpress' ); ?>
+							</p>
+							<p>
+								<?php esc_html_e( 'Version', 'glotpress' ); ?>
+								<?php echo esc_html( $wp_version ); ?>
+							</p>
+						</td>
+						<td>
+							<?php
+								echo gp_link_get(
+									wp_nonce_url(
+										gp_url( '/local/core/network-admin' ),
+										'gp-local-core-network-admin'
 									),
 									esc_html(
 										sprintf(
@@ -262,7 +359,7 @@ class GP_Local {
 								echo gp_link_get(
 									wp_nonce_url(
 										gp_url( '/local/plugin/' . $plugin['TextDomain'] ),
-										'gp-local-' . $plugin['TextDomain']
+										'gp-local-plugin-' . $plugin['TextDomain']
 									),
 									esc_html(
 										sprintf(
@@ -335,7 +432,7 @@ class GP_Local {
 							echo gp_link_get(
 								wp_nonce_url(
 									gp_url( '/local/theme/' . $theme->get( 'TextDomain' ) ),
-									'gp-local-' . $theme->get( 'TextDomain' )
+									'gp-local-theme-' . $theme->get( 'TextDomain' )
 								),
 								esc_html(
 									sprintf(
