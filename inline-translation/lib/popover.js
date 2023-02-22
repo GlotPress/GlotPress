@@ -4,7 +4,7 @@
 
 var locale;
 function Popover( translationPair, _locale, glotPress ) {
-	var form, nodeClass;
+	var form, nodeClass, getPopoverHtml, getPopoverTitle;
 	locale = _locale;
 
 	if ( translationPair.isFullyTranslated() ) {
@@ -15,14 +15,14 @@ function Popover( translationPair, _locale, glotPress ) {
 
 	nodeClass = 'translator-original-' + translationPair.getOriginal().getId();
 
-	var getPopoverHtml = function() {
+	getPopoverHtml = function() {
 		form.attr( 'data-nodes', nodeClass );
 		form.data( 'translationPair', translationPair );
 
 		return form;
 	};
 
-	var getPopoverTitle = function() {
+	getPopoverTitle = function() {
 		return 'Translate to ' + locale.getLanguageName() + '<a title="Help & Instructions" target="_blank" href="https://en.support.wordpress.com/in-page-translator/"><span class="dashicons dashicons-editor-help"></span></a><a title="View in GlotPress" href="' + glotPress.getPermalink( translationPair ) + '" target="_blank" class="gpPermalink"><span class="dashicons dashicons-external"></span></a>';
 	};
 
@@ -43,7 +43,7 @@ function Popover( translationPair, _locale, glotPress ) {
 }
 
 function popoverOnload( el ) {
-	var el = jQuery( el ).find( 'textarea' ).get( 0 );
+	el = jQuery( el ).find( 'textarea' ).get( 0 );
 	if ( el ) {
 		el.focus();
 	}
@@ -76,7 +76,7 @@ function getInputForm( translationPair ) {
 		original = form.find( 'div.original' ),
 		pair = form.find( 'div.pair' ),
 		pairs = form.find( 'div.pairs' ),
-		item;
+		item, i;
 
 	original.html( getOriginalHtml( translationPair ) );
 
@@ -89,7 +89,7 @@ function getInputForm( translationPair ) {
 	}
 
 	item = translationPair.getTranslation().getTextItems();
-	for ( var i = 0; i < item.length; i++ ) {
+	for ( i = 0; i < item.length; i++ ) {
 		if ( i > 0 ) {
 			pair = pair.eq( 0 ).clone();
 		}
@@ -112,7 +112,7 @@ function getOverview( translationPair ) {
 		original = form.find( 'div.original' ),
 		pair = form.find( 'div.pair' ),
 		pairs = form.find( 'div.pairs' ),
-		item, description;
+		item, description, i;
 
 	original.html( getOriginalHtml( translationPair ) );
 
@@ -125,7 +125,7 @@ function getOverview( translationPair ) {
 	}
 
 	item = translationPair.getTranslation().getTextItems();
-	for ( var i = 0; i < item.length; i++ ) {
+	for ( i = 0; i < item.length; i++ ) {
 		if ( i > 0 ) {
 			pair = pair.eq( 0 ).clone();
 		}

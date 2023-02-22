@@ -1,5 +1,3 @@
-/* global require, module, window */
-
 /*
  * This is a utility function to help reduce the number of calls made to
  * the GlotPress database ( or generic backend ), especially as we're

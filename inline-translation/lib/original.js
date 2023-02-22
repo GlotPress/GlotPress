@@ -66,7 +66,8 @@ function Original( original ) {
 			return singular;
 		},
 		getEmptyTranslation: function( locale ) {
-			var forms = [ '' ];
+			var i,
+				forms = [ '' ];
 
 			if ( plural !== null ) {
 				for ( i = 1; i < locale.getPluralCount(); i++ ) {

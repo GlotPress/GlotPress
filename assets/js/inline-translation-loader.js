@@ -1,4 +1,4 @@
-/* global gpInlineTranslation, document, window */
+/* global gpInlineTranslation */
 
 ( function( $ ) {
 	$( function() {

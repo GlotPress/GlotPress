@@ -1,9 +1,9 @@
 /**
  * Translation module
  *
- * @param  locale
- * @param  items
- * @param  glotPressMetadata
+ * @param {string} locale
+ * @param {Array}  items
+ * @param {Object} glotPressMetadata
  */
 function Translation( locale, items, glotPressMetadata ) {
 	var Item, i, status, translationId, userId, dateAdded,
@@ -54,7 +54,7 @@ function Translation( locale, items, glotPressMetadata ) {
 		);
 	}
 
-	Item = function( i, text ) {
+	Item = function( j, text ) {
 		return {
 			isTranslated: function() {
 				return text.length > 0;
@@ -67,13 +67,13 @@ function Translation( locale, items, glotPressMetadata ) {
 				}
 
 				if ( items.length === 2 ) {
-					if ( i === 0 ) {
+					if ( j === 0 ) {
 						return 'Singular';
 					}
 					return 'Plural';
 				}
 
-				numbers = locale.getNumbersForIndex( i );
+				numbers = locale.getNumbersForIndex( j );
 
 				if ( numbers.length ) {
 					return 'For numbers like: ' + numbers.join( ', ' );
@@ -120,8 +120,6 @@ function Translation( locale, items, glotPressMetadata ) {
 	return {
 		type: 'Translation',
 		isFullyTranslated: function() {
-			var i;
-
 			for ( i = 0; i < items.length; i++ ) {
 				if ( false === items[ i ].isTranslated() ) {
 					return false;
@@ -151,8 +149,7 @@ function Translation( locale, items, glotPressMetadata ) {
 			return items;
 		},
 		serialize: function() {
-			var i,
-				serializedItems = [];
+			var serializedItems = [];
 
 			for ( i = 0; i < items.length; i++ ) {
 				serializedItems.push( items[ i ].getText() );

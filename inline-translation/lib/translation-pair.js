@@ -27,32 +27,32 @@ function TranslationPair( locale, original, context, translation ) {
 
 	selectedTranslation = translation;
 
-	function addTranslation( translation ) {
-		if ( 'object' !== typeof translation || translation.type !== 'Translation' ) {
-			translation = new Translation( locale, translation.slice() );
+	function addTranslation( _translation ) {
+		if ( 'object' !== typeof _translation || _translation.type !== 'Translation' ) {
+			_translation = new Translation( locale, _translation.slice() );
 		}
 
-		if ( selectedTranslation.getTextItems().length !== translation.getTextItems().length ) {
+		if ( selectedTranslation.getTextItems().length !== _translation.getTextItems().length ) {
 			// translations have to match the existing number of translation items ( singular = 1, plural = dependent on language )
 			return false;
 		}
 
-		translations.push( translation );
-		selectedTranslation = translation;
+		translations.push( _translation );
+		selectedTranslation = _translation;
 	}
 
 	function loadTranslations( newTranslations ) {
-		var i, j, t, translation;
+		var i, j, t, _translation;
 
 		translations = [];
 
 		for ( i = 0; i < newTranslations.length; i++ ) {
-			translation = [];
+			_translation = [];
 			for ( j = 0; ( t = newTranslations[ i ][ 'translation_' + j ] ); j++ ) {
-				translation.push( t );
+				_translation.push( t );
 			}
-			translation = new Translation( locale, translation.slice(), newTranslations[ i ] );
-			addTranslation( translation );
+			_translation = new Translation( locale, _translation.slice(), newTranslations[ i ] );
+			addTranslation( _translation );
 		}
 	}
 
@@ -67,13 +67,15 @@ function TranslationPair( locale, original, context, translation ) {
 	}
 
 	function setSelectedTranslation( currentUserId ) {
+		var i;
+
 		if ( 'number' === typeof currentUserId ) {
 			currentUserId = currentUserId.toString();
 		}
 
 		sortTranslationsByDate();
 
-		for ( var i = 0; i < translations.length; i++ ) {
+		for ( i = 0; i < translations.length; i++ ) {
 			if ( translations[ i ].getUserId() === currentUserId && translations[ i ].getStatus() ) {
 				selectedTranslation = translations[ i ];
 				return;
@@ -142,7 +144,7 @@ function TranslationPair( locale, original, context, translation ) {
 			};
 		},
 		fetchOriginalAndTranslations: function( glotPress, currentUserId ) {
-			var promise, sendContext;
+			var promise;
 			promise = original.fetchIdAndTranslations( glotPress, context )
 				.done( function( data ) {
 					if ( 'undefined' === typeof data.translations ) {
@@ -189,7 +191,7 @@ function trim( text ) {
 }
 
 function extractWithStringsUsedOnPage( enclosingNode ) {
-	var text, textWithoutSiblings, enclosingNodeWithoutSiblings, context;
+	var text, textWithoutSiblings, context, translationPair;
 	if (
 		typeof translationData.stringsUsedOnPage !== 'object' ||
 			// not meant to be translatable:
@@ -245,12 +247,9 @@ function anyChildMatches( node, regex ) {
 }
 
 function getTranslationPairForTextUsedOnPage( node, context ) {
-	var original, placeholderRegex,
-		contexts,
-		translationPairs,
-		translationPair, newPlaceholder,
+	var translationPair,
 		entry = false,
-		nodeText, nodeHtml;
+		nodeText, nodeHtml, i;
 
 	nodeText = trim( node.text() );
 
@@ -310,7 +309,7 @@ TranslationPair.extractFrom = function( enclosingNode ) {
 };
 
 TranslationPair.setTranslationData = function( newTranslationData ) {
-	var key, entry, context,
+	var key, entry,
 		placeholdersUsedOnPage = [];
 
 	translationData = newTranslationData;

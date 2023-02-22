@@ -9,13 +9,13 @@ var Jed = require( 'jed' );
 
 function Locale( localeCode, languageName, pluralForms ) {
 	var getPluralIndex = Jed.PF.compile( pluralForms ),
-		nplurals_re = /nplurals\=(\d+);/,
-		nplurals_matches = pluralForms.match( nplurals_re ),
+		npluralsRe = /nplurals\=(\d+);/,
+		npluralsMatches = pluralForms.match( npluralsRe ),
 		numberOfPlurals = 2;
 
 	// Find the nplurals number
-	if ( nplurals_matches.length > 1 ) {
-		numberOfPlurals = nplurals_matches[ 1 ];
+	if ( npluralsMatches.length > 1 ) {
+		numberOfPlurals = npluralsMatches[ 1 ];
 	}
 
 	return {
@@ -38,7 +38,7 @@ function Locale( localeCode, languageName, pluralForms ) {
 				testUpTo = 1000,
 				numbers = [];
 			for ( number = 0; number < testUpTo; ++number ) {
-				if ( getPluralIndex( number ) == index ) {
+				if ( getPluralIndex( number ) === index ) {
 					numbers.push( number );
 					if ( numbers.length >= howMany ) {
 						break;

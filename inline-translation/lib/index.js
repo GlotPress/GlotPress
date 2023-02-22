@@ -1,5 +1,3 @@
-/* global require, module, window, document */
-
 /**
  * Community Translation core module
  */

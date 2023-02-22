@@ -1,5 +1,3 @@
-/* global require, module */
-
 /**
  * Community Translation GlotPress module
  */
