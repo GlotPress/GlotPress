@@ -264,7 +264,6 @@ function makeUntranslatable( translationPair, $node ) {
 }
 
 function makeTranslatable( translationPair, node ) {
-	var translation;
 	translationPair.createPopover( node, glotPress );
 	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
 	if ( translationPair.isFullyTranslated() ) {
@@ -274,10 +273,9 @@ function makeTranslatable( translationPair, node ) {
 			node.removeClass( 'translator-user-translated' ).addClass( 'translator-translated' );
 		}
 		if ( 0 === node.children().length ) {
-			translation = translationPair.getTranslation().getTextItems()[ 0 ].getText();
-			if ( node.text() !== translation ) {
+			if ( ! translationPair.getRegex().test( node.text() ) ) {
 				setTimeout( function() {
-					node.text( translation );
+					node.text( translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 				}, 1 );
 			}
 		}

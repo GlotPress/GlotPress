@@ -15,7 +15,7 @@ var Original = require( './original' ),
  */
 var translationData;
 
-function TranslationPair( locale, original, context, domain, translation ) {
+function TranslationPair( locale, original, context, domain, translation, regex ) {
 	var translations = [],
 		selectedTranslation, glotPressProject,
 		screenText = false;
@@ -126,6 +126,14 @@ function TranslationPair( locale, original, context, domain, translation ) {
 		},
 		getScreenText: function() {
 			return screenText;
+		},
+		getRegex: function() {
+			if ( regex ) {
+				return regex;
+			}
+			regex = selectedTranslation.getTextItems()[ 0 ].getText();
+			regex = new RegExp( regex.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' ), 'g' );
+			return regex;
 		},
 		setScreenText: function( _screenText ) {
 			screenText = _screenText;
@@ -263,7 +271,7 @@ function anyChildMatches( node, regex ) {
 	return false;
 }
 
-function findMatchingTranslation( entry, contextSpecifier, translation ) {
+function findMatchingTranslation( entry, contextSpecifier, translation, regex ) {
 	var contextKey, contextKeySplit, domain, context, original, translationPair,
 		matchingTranslations = [];
 
@@ -294,7 +302,7 @@ function findMatchingTranslation( entry, contextSpecifier, translation ) {
 		context = contextKeySplit.shift();
 
 		if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
-			translationPair = new TranslationPair( translationData.locale, original, context, domain, translation );
+			translationPair = new TranslationPair( translationData.locale, original, context, domain, translation, regex );
 			translationPair.setScreenText( translation );
 
 			return translationPair;
@@ -332,7 +340,7 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 			if ( anyChildMatches( node, entry.regex ) ) {
 				continue;
 			}
-			translationPair = findMatchingTranslation( entry.originals, contextSpecifier, nodeHtml );
+			translationPair = findMatchingTranslation( entry.originals, contextSpecifier, nodeHtml, entry.regex );
 			if ( translationPair ) {
 				return translationPair;
 			}

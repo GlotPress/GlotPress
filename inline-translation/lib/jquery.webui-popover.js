@@ -63,11 +63,11 @@
 				this.$eventDelegate.off( 'click' ).on( 'click', $.proxy( this.toggle, this ) );
 			} else if ( this.options.trigger === 'rightclick' ) {
 				this.$eventDelegate.off( 'contextmenu' ).on( 'contextmenu', $.proxy( this.toggle, this ) );
-				this.$eventDelegate.off( 'click' ).on( 'click', function( e ) {
-					if ( e.ctrlKey ) {
-						return false;
-					} // ctrl-click in safari should only be handled by the contextmenu handler;
-				} );
+				// this.$eventDelegate.off( 'click' ).on( 'click', function( e ) {
+				// 	if ( e.ctrlKey ) {
+				// 		return false;
+				// 	} // ctrl-click in safari should only be handled by the contextmenu handler;
+				// } );
 			} else {
 				this.$eventDelegate.off( 'mouseenter mouseleave' )
 					.on( 'mouseenter', $.proxy( this.mouseenterHandler, this ) )
