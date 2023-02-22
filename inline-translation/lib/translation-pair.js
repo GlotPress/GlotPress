@@ -1,10 +1,6 @@
 /**
  * TranslationPair module
  */
-/**
- * External dependencies
- */
-var debug = require( 'debug' )( 'inline-translator' );
 
 /**
  * Internal dependencies
