@@ -256,10 +256,11 @@ function unRegisterPopoverHandlers() {
 	jQuery( '.translator-translatable' ).webuiPopover( 'destroy' );
 }
 
-function makeUntranslatable( $node ) {
+function makeUntranslatable( translationPair, $node ) {
 	debug( 'makeUntranslatable:', $node );
 	$node.removeClass( 'translator-untranslated translator-translated translator-translatable translator-checking' );
 	$node.addClass( 'translator-dont-translate' );
+	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
 }
 
 function makeTranslatable( translationPair, node ) {
@@ -302,7 +303,7 @@ findNewTranslatableTexts = function() {
 		translationPair.fetchOriginalAndTranslations( glotPress, currentUserId )
 			.fail(
 				// Failure indicates that the string is not in GlotPress yet
-				makeUntranslatable.bind( null, enclosingNode )
+				makeUntranslatable.bind( null, translationPair, enclosingNode )
 			)
 			.done(
 				makeTranslatable.bind( null, translationPair, enclosingNode )
