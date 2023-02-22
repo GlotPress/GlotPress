@@ -293,30 +293,31 @@ class GP_Inline_Translation {
 				$translation_sets[ $text_domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 			}
 		}
+		foreach ( array( 'strings_used', 'placeholders_used' ) as $strings ) {
+			foreach ( $this->$strings as $translation => $originals ) {
+				foreach ( $originals as $context_key => $original ) {
+					$text_domain = strtok( $context_key, '|' );
+					if ( ! isset( $projects[ $text_domain ] ) ) {
+						continue;
+					}
+					$context = strtok( '|' );
 
-		foreach ( $this->strings_used as $translation => $originals ) {
-			foreach ( $originals as $context_key => $original ) {
-				$text_domain = strtok( $context_key, '|' );
-				if ( ! isset( $projects[ $text_domain ] ) ) {
-					continue;
-				}
-				$context = strtok( '|' );
-
-				$query_result = $this->get_translation(
-					$projects[ $text_domain ],
-					$translation_sets[ $text_domain ],
-					$original,
-					$context,
-					$text_domain,
-					$translation
-				);
-				if ( $query_result ) {
-					$hash = $query_result->hash;
-					unset( $query_result->hash );
-					$translations[ $hash ] = $query_result;
-				} else {
-					$translations['originals_not_found'][] = $original;
-					continue;
+					$query_result = $this->get_translation(
+						$projects[ $text_domain ],
+						$translation_sets[ $text_domain ],
+						$original,
+						$context,
+						$text_domain,
+						$translation
+					);
+					if ( $query_result ) {
+						$hash = $query_result->hash;
+						unset( $query_result->hash );
+						$translations[ $hash ] = $query_result;
+					} else {
+						$translations['originals_not_found'][] = $original;
+						continue;
+					}
 				}
 			}
 		}

@@ -1,10 +1,23 @@
 /**
  * TranslationPair module
  */
+/**
+ * External dependencies
+ */
+var debug = require( 'debug' )( 'inline-translator' );
+
+/**
+ * Internal dependencies
+ */
+
 var Original = require( './original' ),
 	Translation = require( './translation' ),
-	Popover = require( './popover' ),
-	translationData;
+	Popover = require( './popover' );
+
+/**
+ * Local variables
+ */
+var translationData;
 
 function TranslationPair( locale, original, context, domain, translation ) {
 	var translations = [],
@@ -277,7 +290,7 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 			context = contextKeySplit.shift();
 			if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
 				original = entry[ contextKey ];
-				translationPair = new TranslationPair( translationData.locale, original, context, domain );
+				translationPair = new TranslationPair( translationData.locale, original, context, domain, nodeText );
 				translationPair.setScreenText( nodeText );
 
 				return translationPair;
@@ -297,10 +310,22 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 				continue;
 			}
 
-			translationPair = new TranslationPair( translationData.locale, entry.original, entry.context, entry.domain );
-			translationPair.setScreenText( nodeText );
+			for ( contextKey in entry.originals ) {
+				if ( ! entry.originals.hasOwnProperty( contextKey ) ) {
+					continue;
+				}
+				contextKeySplit = contextKey.split( '|' );
+				domain = contextKeySplit.shift();
+				context = contextKeySplit.shift();
+				if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
+					original = entry.originals[ contextKey ];
 
-			return translationPair;
+					translationPair = new TranslationPair( translationData.locale, original, context, domain, nodeText );
+					translationPair.setScreenText( nodeText );
+
+					return translationPair;
+				}
+			}
 		}
 	}
 
@@ -324,7 +349,7 @@ TranslationPair.extractFrom = function( enclosingNode ) {
 };
 
 TranslationPair.setTranslationData = function( newTranslationData ) {
-	var key, entry,
+	var key, originals,
 		placeholdersUsedOnPage = [];
 
 	translationData = newTranslationData;
@@ -332,17 +357,11 @@ TranslationPair.setTranslationData = function( newTranslationData ) {
 	// convert regular expressions to RegExp objects for later use
 	if ( typeof translationData.placeholdersUsedOnPage === 'object' ) {
 		for ( key in translationData.placeholdersUsedOnPage ) {
-			entry = translationData.placeholdersUsedOnPage[ key ];
-
-			if ( typeof entry.regex === 'undefined' ) {
-				entry = {
-					original: entry[ 0 ],
-					regex: new RegExp( '^\\s*' + entry[ 1 ] + '\\s*$' ),
-					context: entry[ 2 ],
-					domain: entry[ 3 ],
-				};
-			}
-			placeholdersUsedOnPage.push( entry );
+			originals = translationData.placeholdersUsedOnPage[ key ];
+			placeholdersUsedOnPage.push( {
+				originals: originals,
+				regex: new RegExp( '^\\s*' + key + '\\s*$' ),
+			} );
 		}
 	}
 	translationData.placeholdersUsedOnPage = placeholdersUsedOnPage;

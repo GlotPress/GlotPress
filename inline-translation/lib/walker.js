@@ -68,7 +68,6 @@ module.exports = function( TranslationPair, jQuery, document ) {
 				}
 
 				translationPair = TranslationPair.extractFrom( enclosingNode );
-
 				if ( false === translationPair ) {
 					enclosingNode.addClass( 'translator-dont-translate' );
 					return false;
