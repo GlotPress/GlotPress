@@ -1,4 +1,3 @@
-/* global document */
 var $gp = (
 	function( $ ) {
 		return {

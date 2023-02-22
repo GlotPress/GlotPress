@@ -1,0 +1,50 @@
+
+#translator-launcher {
+	position: fixed;
+	bottom: 76px;
+	right: 24px;
+	border-radius: 24px;
+	background: #0085be !important;
+	padding: 4px !important;
+	font-size: 16px;
+	z-index: 99;
+	display: none;
+}
+#translator-launcher a {
+	color: white;
+	text-decoration: none;
+	outline: 0;
+}
+#translator-launcher a .dashicons {
+	font-size: 24px;
+	width: 21px;
+	margin-bottom: 1px;
+}
+#translator-launcher a .text {
+	float: right;
+	display: inline;
+	width: 0;
+	overflow: hidden;
+	line-height: 22px;
+	white-space: nowrap;
+}
+#translator-launcher a:hover .text {
+	transition: all 0.25s ease-in-out;
+	width: auto;
+	margin-right: 6px;
+	padding: 0 2px;
+}
+#translator-launcher.active {
+	background: white;
+}
+#translator-launcher.active a {
+	color: #0085be;
+}
+
+#translator-launcher a .text .enable, #translator-launcher a .text .disable {
+    display: none;
+}
+
+#translator-launcher a:hover .text.disabled .enable, #translator-launcher a:hover .text.enabled .disable {
+	display: inline;
+}
