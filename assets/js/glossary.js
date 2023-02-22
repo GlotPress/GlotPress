@@ -1,4 +1,4 @@
-/* global $gp_glossary_options, $gp, confirm */
+/* global $gp_glossary_options, $gp */
 /* eslint camelcase: "off", no-alert: "off" */
 $gp.glossary = (
 	function( $ ) {
