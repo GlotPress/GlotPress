@@ -6,6 +6,10 @@
   "globals": {
     "jQuery": true
   },
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "rules": {
     "computed-property-spacing": [
       "error",

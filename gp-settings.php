@@ -127,6 +127,11 @@ require_once GP_PATH . GP_INC . 'formats/format-jed1x.php';
 require_once GP_PATH . GP_INC . 'formats/format-ngx.php';
 require_once GP_PATH . GP_INC . 'formats/format-php.php';
 
+if ( GP_Local::is_active() ) {
+	require_once GP_PATH . GP_INC . 'inline-translation.php';
+	GP_Inline_Translation::init();
+}
+
 // Let's do it again, there are more variables added since last time we called it.
 gp_set_globals( get_defined_vars() );
 
