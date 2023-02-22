@@ -108,7 +108,7 @@ class GP_Local {
 								<label>
 									<?php $checked = self::is_active() ? 'checked' : ''; ?>
 									<input type="checkbox" name="gp_enable_local_translation" <?php echo esc_html( $checked ); ?>>
-									<?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?>
+									<span><?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?></span>
 							   </label>
 							</p>
 						</td>

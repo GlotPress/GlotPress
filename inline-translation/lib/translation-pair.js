@@ -263,8 +263,48 @@ function anyChildMatches( node, regex ) {
 	return false;
 }
 
+function findMatchingTranslation( entry, contextSpecifier, translation ) {
+	var contextKey, contextKeySplit, domain, context, original, translationPair,
+		matchingTranslations = [];
+
+	for ( contextKey in entry ) {
+		if ( ! entry.hasOwnProperty( contextKey ) ) {
+			continue;
+		}
+		original = entry[ contextKey ];
+
+		if ( translationData.translations[ contextKey + '|' + original ] ) {
+			matchingTranslations[ contextKey ] = original;
+		}
+	}
+
+	// If we didn't find any matching translations, we'll use them anyway.
+	if ( Object.keys( matchingTranslations ).length === 0 ) {
+		matchingTranslations = entry;
+	}
+
+	for ( contextKey in matchingTranslations ) {
+		if ( ! matchingTranslations.hasOwnProperty( contextKey ) ) {
+			continue;
+		}
+		original = matchingTranslations[ contextKey ];
+
+		contextKeySplit = contextKey.split( '|' );
+		domain = contextKeySplit.shift();
+		context = contextKeySplit.shift();
+
+		if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
+			translationPair = new TranslationPair( translationData.locale, original, context, domain, translation );
+			translationPair.setScreenText( translation );
+
+			return translationPair;
+		}
+	}
+	return null;
+}
+
 function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
-	var translationPair, contextKey, contextKeySplit, domain, context, original,
+	var translationPair,
 		entry = false,
 		nodeText, nodeHtml, i;
 
@@ -275,22 +315,9 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 	}
 
 	if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
-		entry = translationData.stringsUsedOnPage[ nodeText ];
-
-		for ( contextKey in entry ) {
-			if ( ! entry.hasOwnProperty( contextKey ) ) {
-				continue;
-			}
-			contextKeySplit = contextKey.split( '|' );
-			domain = contextKeySplit.shift();
-			context = contextKeySplit.shift();
-			if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
-				original = entry[ contextKey ];
-				translationPair = new TranslationPair( translationData.locale, original, context, domain, nodeText );
-				translationPair.setScreenText( nodeText );
-
-				return translationPair;
-			}
+		translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText );
+		if ( translationPair ) {
+			return translationPair;
 		}
 	}
 
@@ -305,22 +332,9 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 			if ( anyChildMatches( node, entry.regex ) ) {
 				continue;
 			}
-
-			for ( contextKey in entry.originals ) {
-				if ( ! entry.originals.hasOwnProperty( contextKey ) ) {
-					continue;
-				}
-				contextKeySplit = contextKey.split( '|' );
-				domain = contextKeySplit.shift();
-				context = contextKeySplit.shift();
-				if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
-					original = entry.originals[ contextKey ];
-
-					translationPair = new TranslationPair( translationData.locale, original, context, domain, nodeText );
-					translationPair.setScreenText( nodeText );
-
-					return translationPair;
-				}
+			translationPair = findMatchingTranslation( entry.originals, contextSpecifier, nodeHtml );
+			if ( translationPair ) {
+				return translationPair;
 			}
 		}
 	}
