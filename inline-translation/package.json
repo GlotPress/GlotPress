@@ -1,0 +1,31 @@
+{
+	"name": "inline-translation",
+	"version": "0.0.1",
+	"description": "An in-Page translation tool for GlotPress.",
+	"author": {
+		"name": "Alex Kirk",
+		"email": "alex.kirk@automattic.com"
+	},
+	"keywords": [],
+	"dependencies": {
+		"JSON2": "*",
+		"debug": ">=2.6.9",
+		"jed": "*"
+	},
+	"devDependencies": {
+		"better-assert": "*",
+		"browserify": "*",
+		"chai": "^2.1.2",
+		"jquery": "^3.3.1",
+		"jsdom": "^11.6.2",
+		"mocha": "*",
+		"uglify-js": "*",
+		"uglifyify": "*"
+	},
+	"license": "GPL-2.0+",
+	"readme": "",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GlotPress/GlotPress.git/inline-translation"
+	}
+}
