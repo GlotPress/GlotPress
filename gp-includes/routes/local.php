@@ -304,6 +304,9 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	private function get_or_import_originals( GP_Project $project, string $file_path ): array {
 		$file_path = $this->get_po_file_path( $project, $file_path );
+		if ( ! $file_path ) {
+			return array();
+		}
 
 		$originals = GP::$original->by_project_id( $project->id );
 		if ( ! $originals ) {
@@ -325,7 +328,10 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @return array
 	 */
 	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $file_path ):array {
-		$file_path    = $this->get_po_file_path( $project, $file_path );
+		$file_path = $this->get_po_file_path( $project, $file_path );
+		if ( ! file_exists( $file_path ) ) {
+			return array();
+		}
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
 			$po       = new PO();
@@ -355,7 +361,7 @@ class GP_Route_Local extends GP_Route_Main {
 			if ( ! file_exists( $file_path ) ) {
 				$file_path = $this->get_translation_file_path_from_project( $project );
 				if ( ! file_exists( $file_path ) ) {
-					wp_die( esc_html__( 'We can\'t get any translation file for this project.', 'glotpress' ) );
+					return '';
 				}
 			}
 		}
