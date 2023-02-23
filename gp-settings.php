@@ -128,6 +128,8 @@ require_once GP_PATH . GP_INC . 'formats/format-ngx.php';
 require_once GP_PATH . GP_INC . 'formats/format-php.php';
 
 if ( GP_Local::is_active() ) {
+	require_once GP_PATH . GP_INC . 'rest-api.php';
+	GP::$rest = new GP_Rest_API();
 	require_once GP_PATH . GP_INC . 'inline-translation.php';
 	GP_Inline_Translation::init();
 }

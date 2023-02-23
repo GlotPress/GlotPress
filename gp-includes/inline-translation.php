@@ -255,18 +255,15 @@ class GP_Inline_Translation {
 	}
 
 	/**
-	 * Gets the translations from GlotPress.
+	 * Map the text domains to projects.
 	 *
-	 * This will also create originals with translations just in time where applicable.
+	 * @param      array $text_domains  The text domains.
 	 *
-	 * @param      GP_Locale $gp_locale  The gp locale.
-	 *
-	 * @return     array     The translations.
+	 * @return array List of potential projects keyed by text domain.
 	 */
-	public function get_translations( GP_Locale $gp_locale ) {
-		$projects                 = array();
-		$this->full_project_paths = array();
-		foreach ( $this->text_domains as $text_domain ) {
+	private function get_projects( $text_domains ) {
+		$projects = array();
+		foreach ( $text_domains as $text_domain ) {
 			$project_paths = array();
 			if ( 'default' === $text_domain ) {
 				$project_paths[] = 'local-wordpress/local-wordpress-development';
@@ -278,12 +275,25 @@ class GP_Inline_Translation {
 			foreach ( $project_paths as $project_path ) {
 				$project = GP::$project->by_path( $project_path );
 				if ( $project ) {
-					$this->full_project_paths[ $project->id ] = gp_url_project( $project );
-					$projects[ $text_domain ][]               = $project;
+					$projects[ $text_domain ][] = $project;
 				}
 			}
 		}
 
+		return $projects;
+	}
+
+	/**
+	 * Gets the translations from GlotPress.
+	 *
+	 * This will also create originals with translations just in time where applicable.
+	 *
+	 * @param      GP_Locale $gp_locale  The gp locale.
+	 *
+	 * @return     array     The translations.
+	 */
+	public function get_translations( GP_Locale $gp_locale ) {
+		$projects             = $this->get_projects( $this->text_domains );
 		$locale_slug          = $gp_locale->slug;
 		$translation_set_slug = 'default';
 
@@ -382,7 +392,7 @@ class GP_Inline_Translation {
 		$query_result->original_id        = $original_record->id;
 		$query_result->original           = $original;
 		$query_result->domain             = $text_domain;
-		$query_result->project            = $this->full_project_paths[ $project->id ];
+		$query_result->project            = $project->path;
 		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
 		$query_result->hash               = $text_domain . '|' . $context . '|' . $entry->singular;
@@ -501,9 +511,15 @@ class GP_Inline_Translation {
 		if ( property_exists( $gp_locale, 'nplurals' ) || property_exists( $gp_locale, 'plural_expression' ) ) {
 			$plural_forms = 'nplurals=' . $gp_locale->nplurals . '; plural=' . $gp_locale->plural_expression;
 		}
+		$project_paths = array();
+		foreach ( $this->get_projects( $this->text_domains ) as $text_domain => $projects ) {
+			$project_paths[ $text_domain ] = array();
+			foreach ( $projects as $project ) {
+				$project_paths[ $text_domain ][] = $project->path;
+			}
+		}
 
 		return array(
-			'baseUrl'                => gp_url( '/' ),
 			'translations'           => $this->get_translations( $gp_locale ),
 			'stringsUsedOnPage'      => $this->strings_used,
 			'placeholdersUsedOnPage' => $this->placeholders_used,
@@ -511,8 +527,11 @@ class GP_Inline_Translation {
 			'languageName'           => html_entity_decode( $gp_locale->english_name ),
 			'pluralForms'            => $plural_forms,
 			'glotPress'              => array(
-				'url'     => gp_url( '/' ),
-				'project' => implode( ',', array_keys( $this->text_domains ) ),
+				'url'                  => gp_url( '/' ),
+				'restUrl'              => esc_url_raw( rest_url( 'glotpress/v1' ) ),
+				'nonce'                => wp_create_nonce( 'wp_rest' ),
+				'projects'             => $project_paths,
+				'translation_set_slug' => 'default',
 			),
 		);
 	}

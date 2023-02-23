@@ -94,6 +94,9 @@ function TranslationPair( locale, original, context, domain, translation, regex 
 				selectedTranslation = translations[ i ];
 			}
 		}
+
+		// Reset the regex matcher.
+		regex = null;
 	}
 
 	function setGlotPressProject( project ) {

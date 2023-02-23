@@ -31,11 +31,7 @@ function handleBatchedResponse( response, originalToCallbacksMap ) {
 			break;
 		}
 
-		key = data.original.singular;
-		if ( 'undefined' !== typeof data.original.context && data.original.context ) {
-			key = data.original.context + '\u0004' + key;
-		}
-
+		key = data.original.hash;
 		if ( 'undefined' === typeof originalToCallbacksMap[ key ] || !
 		originalToCallbacksMap[ key ] ) {
 			continue;
