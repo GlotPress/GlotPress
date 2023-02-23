@@ -78,10 +78,6 @@ function TranslationPair( locale, original, context, domain, translation, regex 
 	function setSelectedTranslation( currentUserId ) {
 		var i;
 
-		if ( 'number' === typeof currentUserId ) {
-			currentUserId = currentUserId.toString();
-		}
-
 		sortTranslationsByDate();
 
 		for ( i = 0; i < translations.length; i++ ) {
@@ -154,7 +150,7 @@ function TranslationPair( locale, original, context, domain, translation, regex 
 				return false;
 			}
 
-			if ( 'undefined' === typeof currentUserId ) {
+			if ( 'undefined' !== typeof currentUserId ) {
 				setSelectedTranslation( currentUserId );
 			}
 		},
