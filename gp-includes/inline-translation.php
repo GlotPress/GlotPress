@@ -525,6 +525,7 @@ class GP_Inline_Translation {
 			'placeholdersUsedOnPage' => $this->placeholders_used,
 			'localeCode'             => $gp_locale->slug,
 			'languageName'           => html_entity_decode( $gp_locale->english_name ),
+			'currentUserId'          => get_current_user_id(),
 			'pluralForms'            => $plural_forms,
 			'glotPress'              => array(
 				'url'                  => gp_url( '/' ),
