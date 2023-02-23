@@ -131,11 +131,13 @@ function TranslationPair( locale, original, context, domain, translation, regex 
 			return screenText;
 		},
 		getRegex: function() {
-			if ( regex ) {
+			if ( typeof regex !== 'undefined' && regex ) {
 				return regex;
 			}
-			regex = selectedTranslation.getTextItems()[ 0 ].getText();
-			regex = new RegExp( regex.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' ), 'g' );
+			regex = selectedTranslation.getTextItems().map( function( item ) {
+				return item.getRegexString();
+			} ).join( '|' );
+			regex = new RegExp( '^' + regex + '$' );
 			return regex;
 		},
 		setScreenText: function( _screenText ) {
