@@ -461,10 +461,9 @@ class GP_Inline_Translation {
 	 */
 	public function load_translator( $locale_code = null ) {
 		global $wp_customize;
-		if ( isset( $wp_customize ) && !doing_action( 'customize_controls_print_footer_scripts' ) ) {
+		if ( isset( $wp_customize ) && ! doing_action( 'customize_controls_print_footer_scripts' ) ) {
 			return false;
 		}
-
 
 		if ( ! $locale_code ) {
 			$locale_code = get_locale();
