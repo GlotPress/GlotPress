@@ -26,7 +26,7 @@ var debounceTimeout,
 	registerPopoverHandlers, findNewTranslatableTexts,
 	glotPress, currentUserId, walker,
 	translationData = {
-		baseUrl: '/',
+		restUrl: '/wp-json/glotpress/v1/',
 		cssUrl: '/',
 		currentUserId: false,
 		localeCode: 'en',
@@ -233,7 +233,7 @@ registerPopoverHandlers = function() {
 		}
 
 		popover = new Popover( translationPair, translationData.locale, glotPress );
-		enclosingNode.parent().empty().append( popover.getTranslationHtml() );
+		enclosingNode.parent().empty().append( popover.getTranslationHtml() ).find( 'textarea' ).get( 0 ).focus();
 
 		return false;
 	} );
@@ -272,13 +272,18 @@ function makeTranslatable( translationPair, node ) {
 		} else {
 			node.removeClass( 'translator-user-translated' ).addClass( 'translator-translated' );
 		}
-		if ( 0 === node.children().length ) {
-			if ( ! translationPair.getRegex().test( node.text() ) ) {
+		node.each( function() {
+			var el = this;
+			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) { // text node
+				return;
+			}
+			if ( ! translationPair.getRegex().test( el.textContent ) ) {
+				debug( 'Updating translation', translationPair );
 				setTimeout( function() {
-					node.text( translationPair.getTranslation().getTextItems()[ 0 ].getText() );
+					el.textContent = translationPair.getTranslation().getTextItems()[ 0 ].getText();
 				}, 1 );
 			}
-		}
+		} );
 	} else {
 		node.addClass( 'translator-untranslated' );
 	}
