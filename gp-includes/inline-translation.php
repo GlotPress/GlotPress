@@ -379,10 +379,20 @@ class GP_Inline_Translation {
 						'context'    => $entry->context,
 						'singular'   => $entry->singular,
 						'plural'     => $entry->plural,
+						'status'     => '+active',
 					)
 				);
 
-				// TODO: add translation.
+				if ( $translation !== $entry->singular ) {
+					$translation_record = GP::$translation->create(
+						array(
+							'original_id'        => $original_record->id,
+							'translation_set_id' => $translation_sets[ $projects[0]->id ]->id,
+							'translation_0'      => $translation,
+							'status'             => 'current',
+						)
+					);
+				}
 			} else {
 				return false;
 			}
