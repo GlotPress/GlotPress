@@ -362,7 +362,11 @@
 					if ( pageY < clientHeight / 3 ) {
 						placement = 'bottom-right';
 					} else if ( pageY < clientHeight * 2 / 3 ) {
-						placement = 'right';
+						if ( this.$element[0].clientWidth * 2 > clientWidth ) {
+							placement = 'bottom';
+						} else {
+							placement = 'right';
+						}
 					} else {
 						placement = 'top-right';
 					}
