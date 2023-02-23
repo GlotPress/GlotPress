@@ -26,17 +26,12 @@ var debounceTimeout,
 	registerPopoverHandlers, findNewTranslatableTexts,
 	glotPress, currentUserId, walker,
 	translationData = {
-		restUrl: '/wp-json/glotpress/v1/',
 		cssUrl: '/',
 		currentUserId: false,
 		localeCode: 'en',
 		languageName: 'English',
 		pluralForms: 'nplurals=2; plural=(n != 1)',
 		contentChangedCallback: function() {},
-		glotPress: {
-			url: 'http://glotpress.dev',
-			project: 'test',
-		},
 	},
 	translationUpdateCallbacks = [];
 require( './jquery.webui-popover.js' );
