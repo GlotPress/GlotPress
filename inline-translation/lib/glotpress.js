@@ -3,7 +3,6 @@
  */
 'use strict';
 
-var debug = require( 'debug' )( 'inline-translator' );
 var batcher = require( './batcher.js' );
 
 function GlotPress( locale, translations ) {
@@ -15,26 +14,20 @@ function GlotPress( locale, translations ) {
 		batch = batcher( fetchOriginals );
 	function ajax( options ) {
 		options = jQuery.extend( {
-			type: 'POST',
+			method: 'POST',
 			data: {},
-			dataType: 'json',
-			xhrFields: {
-				withCredentials: true,
+			beforeSend: function( xhr ) {
+				xhr.setRequestHeader( 'X-WP-Nonce', server.nonce );
 			},
-			crossDomain: true,
 		}, options );
 		return jQuery.ajax( options );
 	}
 
-	function getServerUrl( path ) {
-		return server.url + path;
-	}
-
 	function fetchOriginals( originals, callback ) {
 		ajax( {
-			url: getServerUrl( '/api/translations/-query-by-originals' ),
+			url: server.restUrl + '/translations-by-originals',
 			data: {
-				project: server.project,
+				projects: server.projects,
 				translation_set_slug: server.translation_set_slug,
 				locale_slug: locale.getLocaleCode(),
 				original_strings: JSON.stringify( originals ),
@@ -64,12 +57,7 @@ function GlotPress( locale, translations ) {
 				translationId,
 				url;
 
-			if ( translationPair.getGlotPressProject() ) {
-				projectUrl = translationPair.getGlotPressProject();
-			} else {
-				projectUrl = server.url + '/projects/' + server.project;
-			}
-
+			projectUrl = server.url + 'projects/' + translationPair.getGlotPressProject();
 			url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
 
 			if ( 'undefined' !== typeof translationId ) {
@@ -80,21 +68,7 @@ function GlotPress( locale, translations ) {
 		},
 
 		loadSettings: function( gpInstance ) {
-			if ( 'undefined' !== typeof gpInstance.url ) {
-				server.url = gpInstance.url;
-			} else {
-				debug( 'Missing GP server url' );
-			}
-
-			if ( 'undefined' !== typeof gpInstance.url ) {
-				server.project = gpInstance.project;
-			} else {
-				debug( 'Missing GP project path' );
-			}
-
-			if ( 'undefined' !== typeof gpInstance.translation_set_slug ) {
-				server.translation_set_slug = gpInstance.translation_set_slug;
-			}
+			server = gpInstance;
 		},
 
 		queryByOriginal: function( original ) {
@@ -111,7 +85,8 @@ function GlotPress( locale, translations ) {
 
 		submitTranslation: function( translation, translationPair ) {
 			return ajax( {
-				url: getServerUrl( '/api/translations/-new' ),
+				url: server.restUrl + '/translation',
+
 				data: {
 					project: translationPair.getGlotPressProject(),
 					translation_set_slug: server.translation_set_slug,
