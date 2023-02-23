@@ -85,6 +85,7 @@ class GP_Inline_Translation {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_action( 'admin_footer', array( $this, 'load_admin_translator' ), 1000 );
+		add_action( 'customize_controls_print_footer_scripts', array( $this, 'load_admin_translator' ), 1000 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_action( 'wp_ajax_inform_translator', array( $this, 'load_ajax_translator' ), 1000 );
@@ -469,6 +470,11 @@ class GP_Inline_Translation {
 	 * @return     bool  Whethe the tranlator code was printed.
 	 */
 	public function load_translator( $locale_code = null ) {
+		global $wp_customize;
+		if ( isset( $wp_customize ) && ! doing_action( 'customize_controls_print_footer_scripts' ) ) {
+			return false;
+		}
+
 		if ( ! $locale_code ) {
 			$locale_code = get_locale();
 		}
@@ -480,6 +486,10 @@ class GP_Inline_Translation {
 		echo '<script type="text','/javascript">';
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
 		echo '</script>';
+
+		if ( $this->translator_launcher_displayed ) {
+			return true;
+		}
 
 		?><div id="translator-launcher" class="translator">
 			<a href="" title="<?php esc_attr_e( 'Inline Translation' ); ?>">

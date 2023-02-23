@@ -1,5 +1,5 @@
 .webui-popover {
-	z-index: 100000;
+	z-index: 999999999;
 	direction: ltr;
 }
 
@@ -100,4 +100,8 @@ iframe.translator-untranslatable::after {
 
 iframe.translator-untranslatable {
 	border: 1px dotted #00f !important;
+}
+
+.webui-popover > .arrow {
+	margin: 0;
 }
