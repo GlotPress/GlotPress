@@ -333,6 +333,10 @@ class GP_Rest_API {
 					$query_result->project          = $project_paths[ $project_id ];
 
 					$query_result->translations = GP::$translation->find_many_no_map( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
+					foreach ( $query_result->translations as $key => $current_translation ) {
+						$query_result->translations[ $key ]                   = GP::$translation->prepare_fields_for_save( $current_translation );
+						$query_result->translations[ $key ]['translation_id'] = $current_translation->id;
+					}
 
 					$translations[] = $query_result;
 					continue 2;
