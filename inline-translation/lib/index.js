@@ -258,6 +258,13 @@ function makeUntranslatable( translationPair, $node ) {
 	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
 }
 
+function trim( text ) {
+	if ( typeof text === 'undefined' ) {
+		return '';
+	}
+	return text.replace( /(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '' );
+}
+
 function makeTranslatable( translationPair, node ) {
 	translationPair.createPopover( node, glotPress );
 	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
@@ -272,8 +279,8 @@ function makeTranslatable( translationPair, node ) {
 			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) { // text node
 				return;
 			}
-			if ( ! translationPair.getRegex().test( el.textContent ) ) {
-				debug( 'Updating translation', translationPair );
+			if ( ! translationPair.getRegex().test( trim( el.textContent ) ) ) {
+				debug( 'Updating translation', el.textContent, translationPair.getRegex(), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 				setTimeout( function() {
 					el.textContent = translationPair.getTranslation().getTextItems()[ 0 ].getText();
 				}, 1 );
