@@ -15,7 +15,7 @@ var Original = require( './original' ),
  */
 var translationData;
 
-function TranslationPair( locale, original, context, domain, translation ) {
+function TranslationPair( locale, original, context, domain, translation, foundRegex ) {
 	var translations = [],
 		regex, originalRegex, selectedTranslation, glotPressProject,
 		screenText = false;
@@ -127,27 +127,41 @@ function TranslationPair( locale, original, context, domain, translation ) {
 			return screenText;
 		},
 		getReplacementText: function( oldText ) {
-			var matches = oldText.match( this.getOriginalRegex() );
-			var replacementTranslation = this.getTranslation().getTextItems()[ 0 ].getText();
-			var c = 0;
-			console.log( oldText, matches, replacementTranslation );
+			var replacementTranslation = this.getTranslation().getTextItems()[ 0 ].getText(),
+				c = 0,
+				matches = [],
+				simpleOriginalRegex = new RegExp( '^\\s*' + this.getOriginalRegexString() + '\\s*$' );
+
+			if ( simpleOriginalRegex.test( oldText ) ) {
+				matches = oldText.match( simpleOriginalRegex );
+			} else if ( foundRegex.test( oldText ) ) {
+				matches = oldText.match( foundRegex );
+			}
+
 			return replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
 				++c;
-				console.log( arguments );
 				return matches[ typeof arguments[ 1 ] === 'undefined' ? c : Number( arguments[ 1 ] ) ];
 			} );
 		},
 		getOriginalRegex: function() {
-			var regexString;
+			var i, regexString;
 			if ( typeof originalRegex !== 'undefined' && originalRegex ) {
 				return originalRegex;
 			}
+			regexString = this.getOriginalRegexString();
+			if ( foundRegex ) {
+				regexString += '|' + foundRegex.source.substr( 4, foundRegex.source.length - 8 );
+			}
+			originalRegex = new RegExp( '^\\s*' + regexString + '\\s*$' );
+			return originalRegex;
+		},
+		getOriginalRegexString: function() {
+			var regexString;
 			regexString = getRegexString( original.getSingular() );
 			if ( original.getPlural() ) {
 				regexString += '|' + getRegexString( original.getSingular() );
 			}
-			originalRegex = new RegExp( '^\\s*' + regexString + '\\s*$' );
-			return originalRegex;
+			return regexString;
 		},
 		getRegex: function() {
 			if ( typeof regex !== 'undefined' && regex ) {
