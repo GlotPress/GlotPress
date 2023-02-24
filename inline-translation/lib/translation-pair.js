@@ -15,9 +15,9 @@ var Original = require( './original' ),
  */
 var translationData;
 
-function TranslationPair( locale, original, context, domain, translation, regex ) {
+function TranslationPair( locale, original, context, domain, translation ) {
 	var translations = [],
-		selectedTranslation, glotPressProject,
+		regex, originalRegex, selectedTranslation, glotPressProject,
 		screenText = false;
 
 	if ( 'object' !== typeof original || original.type !== 'Original' ) {
@@ -126,14 +126,37 @@ function TranslationPair( locale, original, context, domain, translation, regex 
 		getScreenText: function() {
 			return screenText;
 		},
+		getReplacementText: function( oldText ) {
+			var matches = oldText.match( this.getOriginalRegex() );
+			var replacementTranslation = this.getTranslation().getTextItems()[ 0 ].getText();
+			var c = 0;
+			console.log( oldText, matches, replacementTranslation );
+			return replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
+				++c;
+				console.log( arguments );
+				return matches[ typeof arguments[ 1 ] === 'undefined' ? c : Number( arguments[ 1 ] ) ];
+			} );
+		},
+		getOriginalRegex: function() {
+			var regexString;
+			if ( typeof originalRegex !== 'undefined' && originalRegex ) {
+				return originalRegex;
+			}
+			regexString = getRegexString( original.getSingular() );
+			if ( original.getPlural() ) {
+				regexString += '|' + getRegexString( original.getSingular() );
+			}
+			originalRegex = new RegExp( '^\\s*' + regexString + '\\s*$' );
+			return originalRegex;
+		},
 		getRegex: function() {
 			if ( typeof regex !== 'undefined' && regex ) {
 				return regex;
 			}
 			regex = selectedTranslation.getTextItems().map( function( item ) {
-				return item.getRegexString();
+				return getRegexString( item.getText() );
 			} ).join( '|' );
-			regex = new RegExp( '^' + regex + '$' );
+			regex = new RegExp( '^\\s*' + regex + '\\s*$' );
 			return regex;
 		},
 		setScreenText: function( _screenText ) {
@@ -183,6 +206,15 @@ function TranslationPair( locale, original, context, domain, translation, regex 
 			return promise;
 		},
 	};
+}
+
+function getRegexString( text ) {
+	var regexString = text;
+	regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
+	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,200}?)' );
+	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
+	regexString = regexString.replace( /%%/g, '%' );
+	return regexString;
 }
 
 function extractFromDataElement( dataElement ) {
