@@ -143,7 +143,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 			} );
 		},
 		getOriginalRegex: function() {
-			var i, regexString;
+			var regexString;
 			if ( typeof originalRegex !== 'undefined' && originalRegex ) {
 				return originalRegex;
 			}
