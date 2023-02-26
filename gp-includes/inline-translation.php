@@ -268,7 +268,9 @@ class GP_Inline_Translation {
 			$project_paths = array();
 			if ( 'default' === $text_domain ) {
 				$project_paths[] = 'local-wordpress/local-wordpress-development';
+				$project_paths[] = 'local-wordpress/local-wordpress-core-development';
 				$project_paths[] = 'local-wordpress/local-wordpress-administration';
+				$project_paths[] = 'local-wordpress/local-wordpress-core-administration';
 			} else {
 				$project_paths[] = 'local-plugins/' . $text_domain;
 				$project_paths[] = 'local-themes/' . $text_domain;
