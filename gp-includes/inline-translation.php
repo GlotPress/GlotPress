@@ -304,6 +304,8 @@ class GP_Inline_Translation {
 				$translation_sets[ $text_domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 			}
 		}
+
+		$translations = array();
 		foreach ( array( 'strings_used', 'placeholders_used' ) as $strings ) {
 			foreach ( $this->$strings as $translation => $originals ) {
 				foreach ( $originals as $context_key => $original ) {
