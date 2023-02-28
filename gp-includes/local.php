@@ -275,7 +275,7 @@ class GP_Local {
 			'wp/dev/cc'            => 'Continents & Cities',
 			'wp/dev/admin'         => 'Administration',
 			'wp/dev/admin/network' => 'Network Administration',
-			'wp'                   => __( 'WordPress Core', 'glotpress' ),
+			'wp'                   => __( 'WordPress', 'glotpress' ),
 			'plugins'              => __( 'Plugins', 'glotpress' ),
 			'themes'               => __( 'Themes', 'glotpress' ),
 			'wp-plugins'           => __( 'Plugins', 'glotpress' ),
