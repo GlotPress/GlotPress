@@ -318,7 +318,7 @@ function anyChildMatches( node, regex ) {
 
 function findMatchingTranslation( entry, contextSpecifier, translation, regex ) {
 	var contextKey, contextKeySplit, domain, context, original, translationPair,
-		matchingTranslations = [];
+		matchingTranslations = {};
 
 	for ( contextKey in entry ) {
 		if ( ! entry.hasOwnProperty( contextKey ) ) {
@@ -361,16 +361,18 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 		entry = false,
 		nodeText, nodeHtml, i;
 
-	nodeText = node.get( 0 ).textContent;
+	if ( node.get().length === 1 && node.get( 0 ).childNodes.length === 1 ) {
+		nodeText = trim( node.get( 0 ).textContent );
 
-	if ( ! nodeText.length || nodeText.length > 3000 ) {
-		return false;
-	}
+		if ( ! nodeText.length || nodeText.length > 3000 ) {
+			return false;
+		}
 
-	if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
-		translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText, new RegExp( '^\\s*' + getRegexString( nodeText ) + '\\s*$' ) );
-		if ( translationPair ) {
-			return translationPair;
+		if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
+			translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText, new RegExp( '^\\s*' + getRegexString( nodeText ) + '\\s*$' ) );
+			if ( translationPair ) {
+				return translationPair;
+			}
 		}
 	}
 
