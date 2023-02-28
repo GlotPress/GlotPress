@@ -419,6 +419,7 @@ class GP_Local {
 			}
 
 			$can_create_projects = GP::$permission->current_user_can( 'write', 'project', null );
+			$show_actions_column = $can_create_projects;
 			?>
 			<p>
 				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
@@ -445,9 +446,11 @@ class GP_Local {
 						<th scope="col" id="<?php echo esc_html( $type ); ?>-description" style="width: 70%;">
 							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
-						<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 15%;">
-							<span><?php esc_html_e( 'Actions' ); ?></span>
-						</th>
+						<?php if ( $show_actions_column ) : ?>
+							<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 15%;">
+								<span><?php esc_html_e( 'Actions' ); ?></span>
+							</th>
+						<?php endif; ?>
 					</tr>
 				</thead>
 				<tbody id="<?php echo esc_html( $type ); ?>-list">
@@ -497,33 +500,35 @@ class GP_Local {
 								?>
 								</span>
 							</td>
-							<td>
-								<?php if ( $can_create_projects ) : ?>
-									<form action="<?php echo esc_url( gp_url( '/local/' . $path ) ); ?>" method="post" target="_blank">
-										<?php wp_nonce_field( 'gp-local-' . $path ); ?>
-										<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
-										<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
-										<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
-										<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
-										<button class="button">
-										<?php
-											$name = $item['Name'];
-										if ( 'wp' === $type ) {
-											$name = 'WordPress ' . $name;
-										}
-											echo esc_html(
-												sprintf(
-													/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
-													__( 'Translate %1$s to %2$s', 'glotpress' ),
-													$name,
-													$gp_locale->native_name
+						<?php if ( $show_actions_column ) : ?>
+								<td>
+									<?php if ( $can_create_projects ) : ?>
+										<form action="<?php echo esc_url( gp_url( '/local/' . $path ) ); ?>" method="post" target="_blank">
+											<?php wp_nonce_field( 'gp-local-' . $path ); ?>
+											<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
+											<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
+											<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
+											<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
+											<button class="button">
+											<?php
+												$name = $item['Name'];
+											if ( 'wp' === $type ) {
+												$name = 'WordPress ' . $name;
+											}
+												echo esc_html(
+													sprintf(
+														/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
+														__( 'Translate %1$s to %2$s', 'glotpress' ),
+														$name,
+														$gp_locale->native_name
+													)
 												)
-											)
-										?>
-										</button>
-									</form>
-								<?php endif; ?>
-							</td>
+											?>
+											</button>
+										</form>
+									<?php endif; ?>
+								</td>
+							<?php endif; ?>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
