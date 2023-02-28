@@ -194,7 +194,7 @@ class GP_Route_Local extends GP_Route_Main {
 		}
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
-			$po = new PO();
+			$po       = new PO();
 			$imported = $po->import_from_file( $file_path );
 
 			add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );

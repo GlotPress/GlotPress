@@ -128,16 +128,16 @@ class GP_Local {
 				<?php esc_html_e( 'Since version 5, GlotPress also has a local mode that allows you to translate your current WordPress install, including plugins and themes.', 'glotpress' ); ?>
 			</p>
 
-			<?php if ( ! GP_Local::is_active() ) : ?>
+			<?php if ( ! self::is_active() ) : ?>
 				<p>
 					<span><?php esc_html_e( 'Local GlotPress mode is not active.' ); ?></span>
-					<?php if ( current_user_can( 'manage_options' ) ): ?>
+					<?php if ( current_user_can( 'manage_options' ) ) : ?>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=glotpress-settings' ) ); ?>"><?php esc_html_e( 'Activate Local GlotPress mode here.' ); ?></a>
-						<?php else: ?>
+						<?php else : ?>
 							<span><?php esc_html_e( 'Please ask your administrator to activate Local GlotPress mode.' ); ?></span>
 						<?php endif; ?>
 				</p>
-			<?php else: ?>
+			<?php else : ?>
 				<h2><?php esc_html_e( 'Inline Translation', 'glotpress' ); ?></h2>
 				<p>
 					<span><?php esc_html_e( 'To make translating easier, Local GlotPress provides inline translation so that you can enter translations where you see them.', 'glotpress' ); ?></span>
@@ -148,9 +148,9 @@ class GP_Local {
 				<?php if ( ! GP_Inline_Translation::is_active() ) : ?>
 				<p>
 					<span><?php esc_html_e( 'Inline translation is not active.' ); ?></span>
-					<?php if ( current_user_can( 'manage_options' ) ): ?>
+					<?php if ( current_user_can( 'manage_options' ) ) : ?>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=glotpress-settings' ) ); ?>"><?php esc_html_e( 'Activate inline translations here.' ); ?></a>
-						<?php else: ?>
+						<?php else : ?>
 						<span><?php esc_html_e( 'Please ask your administrator to activate inline translations.' ); ?></span>
 						<?php endif; ?>
 				<?php endif; ?>
