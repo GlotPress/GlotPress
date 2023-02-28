@@ -84,7 +84,7 @@ class GP_Inline_Translation {
 				// Deactivate inline translation even before the option is saved.
 				$is_active = false;
 			} elseif ( '0' === gp_post( 'gp_inline_translation_enabled' ) && gp_post( 'gp_enable_inline_translation' ) ) {
-				// Deactivate inline translation even before the option is saved.
+				// Activate inline translation even before the option is saved.
 				$is_active = true;
 			} else {
 				$is_active = get_option( 'gp_enable_inline_translation' );
