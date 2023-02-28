@@ -1,6 +1,12 @@
 <?php
 
 class GP_Local {
+	const CORE_PROJECTS = array(
+		'wp/dev',
+		'wp/dev/cc',
+		'wp/dev/admin',
+		'wp/dev/admin/network',
+	);
 
 	/**
 	 * Constructor.
@@ -10,6 +16,7 @@ class GP_Local {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
+		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
 	}
 
 	public static function is_active() {
@@ -122,23 +129,98 @@ class GP_Local {
 		<?php
 	}
 
+	public function get_local_project_path( $project_path ) {
+		switch ( strtok( $project_path, '/' ) ) {
+			case 'wp':
+				return 'local-' . $project_path;
+			case 'wp-plugins':
+			case 'wp-themes':
+				return 'local-' . substr( $project_path, 3 );
+		}
+
+		return $project_path;
+	}
+	public function get_project_name( $project_path ) {
+		if ( 'local-' === substr( $project_path, 0, 6 ) ) {
+			$project_path = substr( $project_path, 6 );
+		}
+		$names = array(
+			'wp/dev' => 'Development',
+			'wp/dev/cc' => 'Continents & Cities',
+			'wp/dev/admin' => 'Administration',
+			'wp/dev/admin/network' => 'Network Administration',
+			'wp' => __( 'WordPress Core', 'glotpress' ),
+			'plugins' => __( 'Plugins', 'glotpress'),
+			'themes' => __( 'Themes', 'glotpress'),
+			'wp-plugins' => __( 'Plugins', 'glotpress'),
+			'wp-themes' => __( 'Themes', 'glotpress'),
+		);
+		if ( isset( $names[$project_path] ) ) {
+			return $names[$project_path];
+		}
+		return $project_path;
+	}
+	public function get_project_description( $project_path ) {
+		if ( 'local-' === substr( $project_path, 0, 6 ) ) {
+			$project_path = substr( $project_path, 6 );
+		}
+		$descriptions = array(
+			'wp/dev' => __( 'WordPress Development. Strings from the main project.' ),
+			'wp/dev/cc' => __( 'WordPress Continents & Cities. List with the continents and main cities around the ),
+					world.' ),
+			'wp/dev/admin' => __( 'WordPress Administration. Strings from the WordPress administration.' ),
+			'wp/dev/admin/network' => __( 'WordPress Network Administration. Strings from the WordPress network administration.' ),
+		);
+		if ( isset( $descriptions[$project_path] ) ) {
+			return $descriptions[$project_path];
+		}
+		return '';
+	}
+
+
 	/**
 	 * Shows a page with a list with the core, the plugins and themes installed locally.
 	 *
 	 * @return void
 	 */
 	public function show_local_projects() {
-		global $wp_version;
-		$plugins = apply_filters( 'local_glotpress_local_plugins', get_plugins() );
-		$themes  = apply_filters( 'local_glotpress_local_themes', wp_get_themes() );
 		require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 		$languages = wp_get_available_translations();
-		$language  = 'Unknown';
-		if ( 'en_US' === get_user_locale() ) {
+		$language  = get_user_locale();
+		if ( 'en_US' === $language ) {
 			$language = 'English (US)';
-		} elseif ( isset( $languages[ get_user_locale() ] ) ) {
-			$language = $languages[ get_user_locale() ]['native_name'];
+		} elseif ( isset( $languages[ $language ] ) ) {
+			$language = $languages[ $language ]['native_name'];
 		}
+
+		$projects = array(
+			'wp' => array_map(
+				function( $path ) {
+					global $wp_version;
+					return array(
+						'TextDomain' => $path,
+						'Name' => GP::$local->get_project_name( $path ),
+						'Description' => GP::$local->get_project_description( $path ),
+						'Version' => $wp_version,
+					);
+				},
+				GP_Local::CORE_PROJECTS
+			),
+			'wp-plugins' => apply_filters( 'local_glotpress_local_plugins', get_plugins() ),
+			'wp-themes' => array_map(
+				function( $theme ) {
+					$theme = array(
+						'TextDomain' => $theme->get( 'TextDomain' ),
+						'Name' => $theme['Name'],
+						'Description' => $theme['Description'],
+						'Version' => $theme['Version'],
+					);
+					return $theme;
+				},
+				apply_filters( 'local_glotpress_local_themes', wp_get_themes() )
+			),
+		);
+
 		?>
 		<div class="wrap">
 			<h1>
@@ -153,8 +235,28 @@ class GP_Local {
 							echo wp_kses(
 								sprintf(
 									/* Translators: %s is GlotPress settings URL. */
-									__( 'You have to enable the local translations. You can do it <a href="%s">here</a>.', 'glotpress' ),
+									__( 'Please <a href="%s">enable the local translations in the GlotPress settings</a>.', 'glotpress' ),
 									admin_url( 'admin.php?page=glotpress' )
+								),
+								array( 'a' => array( 'href' => array() ) )
+							);
+						?>
+						</p>
+					</div>
+					<?php
+					return;
+			}
+			if ( 'en_US' === get_user_locale() ) {
+				?>
+					<div class="notice notice-error">
+						<p>
+						<?php
+							echo wp_kses(
+								sprintf(
+									/* Translators: %1$s is the WordPress general settings URL, %2$s is the WordPress profile settings URL. */
+									__( 'You are running your WordPress in English (US) which is the default language. Please <a href="%1$s">change your WordPress site language</a> or <a href="%2$s">change your user language</a>.', 'glotpress' ),
+									admin_url( 'options-general.php' ),
+									admin_url( 'profile.php' )
 								),
 								array( 'a' => array( 'href' => array() ) )
 							);
@@ -169,296 +271,72 @@ class GP_Local {
 				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
 			</p>
 
-			<!-- Start core -->
-			<div class="tablenav">
-				<span class="displaying-num alignright">
-					<?php
-						esc_html_e( '4 items', 'glotpress' );
-					?>
-				</span>
-			</div>
-			<table id="core-table" class="wp-list-table widefat striped">
-				<thead>
-					<tr>
-						<th scope="col" id="plugins-name" style="width: 15%;">
-							<span><?php esc_html_e( 'WordPress Core', 'glotpress' ); ?></span>
-						</th>
-						<th scope="col" id="plugins-description" style="width: 70%;">
-							<span><?php esc_html_e( 'Description' ); ?></span>
-						</th>
-						<th scope="col" id="plugins-actions" style="width: 15%;">
-							<span><?php esc_html_e( 'Actions' ); ?></span>
-						</th>
-					</tr>
-				</thead>
-				<tbody id="core-list">
-					<tr>
-						<td><?php esc_html_e( 'WordPress development', 'glotpress' ); ?></td>
-						<td>
-							<p>
-								<?php esc_html_e( 'Strings from the main project.', 'glotpress' ); ?>
-							</p>
-							<p>
-								<?php esc_html_e( 'Version', 'glotpress' ); ?>
-								<?php echo esc_html( $wp_version ); ?>
-							</p>
-						<td>
-							<?php
-								echo gp_link_get(
-									wp_nonce_url(
-										gp_url( '/local/core/development' ),
-										'gp-local-core-development'
-									),
-									esc_html(
-										sprintf(
-											/* Translators: %s is the language into which we will translate . */
-											__( 'Translate to %s', 'glotpress' ),
-											$language
-										)
-									),
-									array( 'target' => '_blank' )
-								);
-							?>
-						</td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'WordPress Continents & Cities', 'glotpress' ); ?></td>
-						<td>
-							<p>
-								<?php esc_html_e( 'List with the continents and main cities around the world.', 'glotpress' ); ?>
-							</p>
-							<p>
-								<?php esc_html_e( 'Version', 'glotpress' ); ?>
-								<?php echo esc_html( $wp_version ); ?>
-							</p>
-						</td>
-						<td>
-							<?php
-								echo gp_link_get(
-									wp_nonce_url(
-										gp_url( '/local/core/continents-cities' ),
-										'gp-local-core-continents-cities'
-									),
-									esc_html(
-										sprintf(
-											/* Translators: %s is the language into which we will translate . */
-											__( 'Translate to %s', 'glotpress' ),
-											$language
-										)
-									),
-									array( 'target' => '_blank' )
-								);
-							?>
-						</td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'WordPress Administration', 'glotpress' ); ?></td>
-						<td>
-							<p>
-								<?php esc_html_e( 'Strings from the WordPress administration.', 'glotpress' ); ?>
-							</p>
-							<p>
-								<?php esc_html_e( 'Version', 'glotpress' ); ?>
-								<?php echo esc_html( $wp_version ); ?>
-							</p>
-						</td>
-						<td>
-							<?php
-								echo gp_link_get(
-									wp_nonce_url(
-										gp_url( '/local/core/administration' ),
-										'gp-local-core-administration'
-									),
-									esc_html(
-										sprintf(
-											/* Translators: %s is the language into which we will translate . */
-											__( 'Translate to %s', 'glotpress' ),
-											$language
-										)
-									),
-									array( 'target' => '_blank' )
-								);
-							?>
-						</td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'WordPress Network Admin', 'glotpress' ); ?></td>
-						<td>
-							<p>
-								<?php esc_html_e( 'Strings from the WordPress network administration.', 'glotpress' ); ?>
-							</p>
-							<p>
-								<?php esc_html_e( 'Version', 'glotpress' ); ?>
-								<?php echo esc_html( $wp_version ); ?>
-							</p>
-						</td>
-						<td>
-							<?php
-								echo gp_link_get(
-									wp_nonce_url(
-										gp_url( '/local/core/network-admin' ),
-										'gp-local-core-network-admin'
-									),
-									esc_html(
-										sprintf(
-											/* Translators: %s is the language into which we will translate . */
-											__( 'Translate to %s', 'glotpress' ),
-											$language
-										)
-									),
-									array( 'target' => '_blank' )
-								);
-							?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<!-- End core -->
-
-			<!-- Start plugins -->
+			<?php foreach ( $projects as $type => $items ): ?>
 			<div class="tablenav">
 				<span class="displaying-num alignright">
 					<?php
 						/* Translators: %s is the number of items to translate. */
-						printf( _nx( '%s item', '%s items', count( $plugins ), 'Number of plugins', 'glotpress' ), number_format_i18n( count( $plugins ) ) );
+						printf( _n( '%s item', '%s items', count( $items ), 'glotpress' ), number_format_i18n( count( $items ) ) );
 					?>
 				</span>
 			</div>
-			<table id="plugins-table" class="widefat fixed striped">
+			<table id="<?php echo esc_html( $type ); ?>-table" class="wp-list-table widefat striped">
 				<thead>
 					<tr>
-						<th scope="col" id="plugins-name" style="width: 15%;">
-							<span><?php esc_html_e( 'Plugin', 'glotpress' ); ?></span>
+						<th scope="col" id="<?php echo esc_html( $type ); ?>-name" style="width: 3%;">
+							<span><?php esc_html_e( 'Active', 'glotpress' ); ?></span>
 						</th>
-						<th scope="col" id="plugins-description" style="width: 70%;">
+						<th scope="col" id="<?php echo esc_html( $type ); ?>-name" style="width: 15%;">
+							<span><?php echo esc_html( $this->get_project_name( $type ) ); ?></span>
+						</th>
+						<th scope="col" id="<?php echo esc_html( $type ); ?>-description" style="width: 70%;">
 							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
-						<th scope="col" id="plugins-actions" style="width: 15%;">
+						<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 15%;">
 							<span><?php esc_html_e( 'Actions' ); ?></span>
 						</th>
 					</tr>
 				</thead>
-				<tbody id="plugins-list">
-					<?php foreach ( $plugins as $slug => $plugin ) : ?>
-					<tr style="box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);">
-						<td>
-							<?php echo esc_html( $plugin['Name'] ); ?>
-						</td>
-						<td>
+				<tbody id="<?php echo esc_html( $type ); ?>-list">
+					<?php foreach ( $items as $item ): ?>
+					<?php $path = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] ); ?>
+					<?php $project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) ); ?>
+						<tr>
+							<td>
+								<?php echo esc_html( $project ? '✅': '' ); ?>
+							</td>
+							<td>
+								<?php echo esc_html( $item['Name'] ); ?>
+							</td>
+							<td>
 							<p>
-								<?php echo esc_html( wp_trim_words( $plugin['Description'], 50 ) ); ?>
+								<?php echo esc_html( $item['Description'] ); ?>
 							</p>
 							<p>
-								<?php
-
-								echo esc_html(
-									sprintf(
-									/* Translators: %s is the plugin version. */
-										__( 'Version %s', 'glotpress' ),
-										$plugin['Version']
-									)
-								);
-								?>
-							</p>
-						</td>
-						<td>
-							<?php
-							if ( $plugin['TextDomain'] ) {
-								echo gp_link_get(
-									wp_nonce_url(
-										gp_url( '/local/plugin/' . $plugin['TextDomain'] ),
-										'gp-local-plugin-' . $plugin['TextDomain']
-									),
-									esc_html(
-										sprintf(
-										/* Translators: %s is the language into which we will translate . */
-											__( 'Translate to %s', 'glotpress' ),
-											$language
+								<?php esc_html_e( 'Version', 'glotpress' ); ?>
+								<?php echo esc_html( $item['Version'] ); ?>
+							</td>
+							<td>
+								<form action="<?php echo esc_url( gp_url( '/local/' . $path ) ); ?>" method="post" target="_blank">
+									<?php wp_nonce_field( 'gp-local-' . $path ); ?>
+									<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
+									<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
+									<button><?php
+										echo esc_html(
+											sprintf(
+												/* Translators: %s is the language into which we will translate . */
+												__( 'Enable translation to %s', 'glotpress' ),
+												$language
+											)
 										)
-									),
-									array( 'target' => '_blank' )
-								);
-							}
-							?>
-						</td>
-					</tr>
+									?></button>
+								</form>
+							</td>
+						</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-			<!-- End plugins -->
-
-			<!-- Start themes -->
-			<div class="tablenav">
-				<span class="displaying-num alignright">
-					<?php
-						/* Translators: %s is the number of items to translate. */
-						printf( _nx( '%s item', '%s items', count( $themes ), 'Number of plugins', 'glotpress' ), number_format_i18n( count( $themes ) ) );
-					?>
-				</span>
-			</div>
-			<table id="themes-table" class="wp-list-table widefat fixed striped table-view-list profiles">
-				<thead>
-					<tr>
-						<th scope="col" id="plugins-name" style="width: 15%;">
-							<span><?php esc_html_e( 'Theme', 'glotpress' ); ?></span>
-						</th>
-						<th scope="col" id="plugins-description" style="width: 70%;">
-							<span><?php esc_html_e( 'Description' ); ?></span>
-						</th>
-						<th scope="col" id="plugins-actions" style="width: 15%;">
-							<span><?php esc_html_e( 'Actions' ); ?></span>
-						</th>
-					</tr>
-				</thead>
-				<tbody id="themes-list">
-					<?php foreach ( $themes as $slug => $theme ) : ?>
-					<tr style="box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);">
-						<td>
-							<?php echo esc_html( $theme['Name'] ); ?>
-						</td>
-						<td>
-							<p>
-								<?php echo esc_html( wp_trim_words( $theme['Description'], 50 ) ); ?>
-							</p>
-							<p>
-								<?php
-
-									echo esc_html(
-										sprintf(
-											/* Translators: %s is the theme version. */
-											__( 'Version %s', 'glotpress' ),
-											$theme['Version']
-										)
-									);
-								?>
-							</p>
-						</td>
-						<td>
-						<?php
-
-						if ( $theme->get( 'TextDomain' ) ) {
-							echo gp_link_get(
-								wp_nonce_url(
-									gp_url( '/local/theme/' . $theme->get( 'TextDomain' ) ),
-									'gp-local-theme-' . $theme->get( 'TextDomain' )
-								),
-								esc_html(
-									sprintf(
-									/* Translators: %s is the language into which we will translate . */
-										__( 'Translate to %s', 'glotpress' ),
-										$language
-									)
-								),
-								array( 'target' => '_blank' )
-							);
-						}
-						?>
-						</td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-			<!-- Finish themes -->
+			<?php endforeach; ?>
 
 			<div style="padding-top: 40px;">
 				<button class="button-primary">
