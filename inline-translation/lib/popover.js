@@ -35,7 +35,7 @@ function Popover( translationPair, _locale, glotPress ) {
 
 	return {
 		attachTo: function( enclosingNode ) {
-			enclosingNode.addClass( nodeClass ).webuiPopover( {
+			enclosingNode.addClass( nodeClass ).webuiPopover( 'destroy' ).webuiPopover( {
 				title: getPopoverTitle(),
 				content: jQuery( '<div>' ).append( getPopoverHtml() ).html(),
 				onload: popoverOnload,

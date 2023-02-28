@@ -78,8 +78,10 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 	function setSelectedTranslation( currentUserId ) {
 		var i;
 
-		sortTranslationsByDate();
+		// Reset the regex matcher.
+		regex = null;
 
+		sortTranslationsByDate();
 		for ( i = 0; i < translations.length; i++ ) {
 			if ( translations[ i ].getUserId() === currentUserId && translations[ i ].getStatus() ) {
 				selectedTranslation = translations[ i ];
@@ -90,9 +92,6 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 				selectedTranslation = translations[ i ];
 			}
 		}
-
-		// Reset the regex matcher.
-		regex = null;
 	}
 
 	function setGlotPressProject( project ) {
@@ -149,6 +148,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 				return originalRegex;
 			}
 			regexString = this.getOriginalRegexString();
+
 			if ( foundRegex ) {
 				regexString += '|' + foundRegex.source.substr( 4, foundRegex.source.length - 8 );
 			}
@@ -183,9 +183,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 			return glotPressProject;
 		},
 		updateAllTranslations: function( newTranslations, currentUserId ) {
-			if ( ! loadTranslations( newTranslations ) ) {
-				return false;
-			}
+			loadTranslations( newTranslations );
 
 			if ( 'undefined' !== typeof currentUserId ) {
 				setSelectedTranslation( currentUserId );
@@ -370,7 +368,7 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 	}
 
 	if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
-		translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText );
+		translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText, new RegExp( '^\\s*' + getRegexString( nodeText ) + '\\s*$' ) );
 		if ( translationPair ) {
 			return translationPair;
 		}
