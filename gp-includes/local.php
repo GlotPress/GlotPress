@@ -37,7 +37,15 @@ class GP_Local {
 	public static function is_active() {
 		static $is_active;
 		if ( ! isset( $is_active ) ) {
-			$is_active = get_option( 'gp_enable_local_translation' );
+			if ( '1' === gp_post( 'gp_local_translation_enabled' ) && ! gp_post( 'gp_enable_local_translation' ) ) {
+				// Deactivate local translation even before the option is saved.
+				$is_active = false;
+			} elseif ( '0' === gp_post( 'gp_local_translation_enabled' ) && gp_post( 'gp_enable_local_translation' ) ) {
+				// Activate local translation even before the option is saved.
+				$is_active = true;
+			} else {
+				$is_active = get_option( 'gp_enable_local_translation' );
+			}
 		}
 		return $is_active;
 	}
@@ -72,14 +80,16 @@ class GP_Local {
 			'glotpress-settings',
 			array( $this, 'show_settings_page' )
 		);
-		add_submenu_page(
-			'glotpress',
-			esc_html__( 'Local Projects', 'glotpress' ),
-			esc_html__( 'Local Projects', 'glotpress' ),
-			'edit_posts',
-			'glotpress-local-projects',
-			array( $this, 'show_local_projects' ),
-		);
+		if ( GP_Local::is_active() ) {
+			add_submenu_page(
+				'glotpress',
+				esc_html__( 'Local GlotPress', 'glotpress' ),
+				esc_html__( 'Local GlotPress', 'glotpress' ),
+				'edit_posts',
+				'glotpress-local-glotpress',
+				array( $this, 'show_local_projects' ),
+			);
+		}
 	}
 
 	/**
@@ -186,6 +196,7 @@ class GP_Local {
 						<td>
 							<p>
 								<label>
+									<input type="hidden" name="gp_local_translation_enabled" value="<?php echo esc_attr( self::is_active() ? '1' : '0' ); ?>" />
 									<input type="checkbox" name="gp_enable_local_translation" <?php checked( self::is_active() ); ?> />
 									<span><?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?></span>
 								</label>
@@ -197,13 +208,19 @@ class GP_Local {
 							<?php esc_html_e( 'Inline Translation', 'glotpress' ); ?>
 						</th>
 						<td>
-							<p>
-								<label>
-									<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
-									<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
-									<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
-								</label>
-							</p>
+							<?php if ( class_exists( 'GP_Inline_Translation' ) ): ?>
+								<p>
+									<label>
+										<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
+										<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
+										<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
+									</label>
+								</p>
+							<?php else: ?>
+								<p>
+									<?php esc_html_e( 'Local GlotPress must be activated to activate local translation.', 'glotpress' ); ?>
+								</p>
+							<?php endif; ?>
 						</td>
 					</tr>
 					</tbody>
