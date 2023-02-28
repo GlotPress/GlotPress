@@ -51,24 +51,32 @@ class GP_Local {
 		add_menu_page(
 			esc_html__( 'Local GlotPress', 'glotpress' ),
 			'GlotPress',
-			'manage_options',
+			'edit_posts',
 			'glotpress',
-			array( $this, 'show_settings_page' ),
+			array( $this, 'show_welcome_page' ),
 			'dashicons-translation'
+		);
+		add_submenu_page(
+			'glotpress',
+			esc_html__( 'Welcome', 'glotpress' ),
+			esc_html__( 'Welcome', 'glotpress' ),
+			'edit_posts',
+			'glotpress',
+			array( $this, 'show_welcome_page' )
 		);
 		add_submenu_page(
 			'glotpress',
 			esc_html__( 'Settings', 'glotpress' ),
 			esc_html__( 'Settings', 'glotpress' ),
 			'manage_options',
-			'glotpress',
+			'glotpress-settings',
 			array( $this, 'show_settings_page' )
 		);
 		add_submenu_page(
 			'glotpress',
 			esc_html__( 'Local Projects', 'glotpress' ),
 			esc_html__( 'Local Projects', 'glotpress' ),
-			'manage_options',
+			'edit_posts',
 			'glotpress-local-projects',
 			array( $this, 'show_local_projects' ),
 		);
@@ -94,6 +102,66 @@ class GP_Local {
 		} else {
 			delete_option( 'gp_enable_local_translation' );
 		}
+		if ( isset( $_POST['gp_enable_inline_translation'] ) ) {
+			update_option( 'gp_enable_inline_translation', 1 );
+		} else {
+			delete_option( 'gp_enable_inline_translation' );
+		}
+	}
+
+	/**
+	 * Shows the welcome page.
+	 *
+	 * @return void
+	 */
+	public function show_welcome_page() {
+		?>
+		<div class="wrap">
+			<h1>
+				<?php esc_html_e( 'Welcome to GlotPress', 'glotpress' ); ?>
+			</h1>
+			<p>
+				<?php esc_html_e( 'With GlotPress you can translate WordPress.', 'glotpress' ); ?>
+			</p>
+			<h2><?php esc_html_e( 'Local GlotPress', 'glotpress' ); ?></h2>
+			<p>
+				<?php esc_html_e( 'Since version 5, GlotPress also has a local mode that allows you to translate your current WordPress install, including plugins and themes.', 'glotpress' ); ?>
+			</p>
+
+			<?php if ( ! GP_Local::is_active() ) : ?>
+				<p>
+					<span><?php esc_html_e( 'Local GlotPress mode is not active.' ); ?></span>
+					<?php if ( current_user_can( 'manage_options' ) ): ?>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=glotpress-settings' ) ); ?>"><?php esc_html_e( 'Activate Local GlotPress mode here.' ); ?></a>
+						<?php else: ?>
+							<span><?php esc_html_e( 'Please ask your administrator to activate Local GlotPress mode.' ); ?></span>
+						<?php endif; ?>
+				</p>
+			<?php else: ?>
+				<h2><?php esc_html_e( 'Inline Translation', 'glotpress' ); ?></h2>
+				<p>
+					<span><?php esc_html_e( 'To make translating easier, Local GlotPress provides inline translation so that you can enter translations where you see them.', 'glotpress' ); ?></span>
+					<span><?php esc_html_e( 'Clicking the globe icon will activate inline translation.', 'glotpress' ); ?></span>
+					<span><?php esc_html_e( 'Translatable text will glow in red if it is untranslated, yellow if it has a waiting translation, and green when it is already translated.', 'glotpress' ); ?></span>
+					<span><?php esc_html_e( 'Right-click glowing text to add or change its translation.', 'glotpress' ); ?></span>
+				</p>
+				<?php if ( ! GP_Inline_Translation::is_active() ) : ?>
+				<p>
+					<span><?php esc_html_e( 'Inline translation is not active.' ); ?></span>
+					<?php if ( current_user_can( 'manage_options' ) ): ?>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=glotpress-settings' ) ); ?>"><?php esc_html_e( 'Activate inline translations here.' ); ?></a>
+						<?php else: ?>
+						<span><?php esc_html_e( 'Please ask your administrator to activate inline translations.' ); ?></span>
+						<?php endif; ?>
+				<?php endif; ?>
+				</p>
+
+			<?php endif; ?>
+			<p>
+				<?php echo gp_link_get( gp_url( '/' ), esc_html__( 'Go to the GlotPress interface', 'glotpress' ), array( 'target' => '_blank' ) ); ?>
+			</p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -113,24 +181,27 @@ class GP_Local {
 					<tbody>
 					<tr>
 						<th scope="row">
-							<?php esc_html_e( 'Main Path', 'glotpress' ); ?>
-						</th>
-						<td>
-							<p>
-								<?php echo gp_link_get( gp_url( '/' ), esc_html__( 'GlotPress Main Path', 'glotpress' ), array( 'target' => '_blank' ) ); ?>
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
 							<?php esc_html_e( 'Local Translations', 'glotpress' ); ?>
 						</th>
 						<td>
 							<p>
 								<label>
-									<?php $checked = self::is_active() ? 'checked' : ''; ?>
-									<input type="checkbox" name="gp_enable_local_translation" <?php echo esc_html( $checked ); ?>>
+									<input type="checkbox" name="gp_enable_local_translation" <?php checked( self::is_active() ); ?> />
 									<span><?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?></span>
+								</label>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Inline Translation', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
+									<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
+									<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
 								</label>
 							</p>
 						</td>
@@ -332,6 +403,8 @@ class GP_Local {
 					<?php
 					return;
 			}
+
+			$can_create_projects = GP::$permission->current_user_can( 'write', 'project', null );
 			?>
 			<p>
 				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
@@ -392,29 +465,31 @@ class GP_Local {
 								<?php echo esc_html( $item['Version'] ); ?>
 							</td>
 							<td>
-								<form action="<?php echo esc_url( gp_url( '/local/' . $path ) ); ?>" method="post" target="_blank">
-									<?php wp_nonce_field( 'gp-local-' . $path ); ?>
-									<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
-									<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
-									<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
-									<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
-									<button class="button">
-									<?php
-										$name = $item['Name'];
-									if ( 'wp' === $type ) {
-										$name = 'WordPress ' . $name;
-									}
-										echo esc_html(
-											sprintf(
-												/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
-												__( 'Translate %1$s to %2$s', 'glotpress' ),
-												$name,
-												$gp_locale->native_name
+								<?php if ( $can_create_projects ) : ?>
+									<form action="<?php echo esc_url( gp_url( '/local/' . $path ) ); ?>" method="post" target="_blank">
+										<?php wp_nonce_field( 'gp-local-' . $path ); ?>
+										<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
+										<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
+										<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
+										<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
+										<button class="button">
+										<?php
+											$name = $item['Name'];
+										if ( 'wp' === $type ) {
+											$name = 'WordPress ' . $name;
+										}
+											echo esc_html(
+												sprintf(
+													/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
+													__( 'Translate %1$s to %2$s', 'glotpress' ),
+													$name,
+													$gp_locale->native_name
+												)
 											)
-										)
-									?>
-									</button>
-								</form>
+										?>
+										</button>
+									</form>
+								<?php endif; ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

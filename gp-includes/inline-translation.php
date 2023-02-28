@@ -73,9 +73,32 @@ class GP_Inline_Translation {
 	}
 
 	/**
+	 * Determines if local is active.
+	 *
+	 * @return     bool  True if active, False otherwise.
+	 */
+	public static function is_active() {
+		static $is_active;
+		if ( ! isset( $is_active ) ) {
+			if ( '1' === gp_post( 'gp_inline_translation_enabled' ) && ! gp_post( 'gp_enable_inline_translation' ) ) {
+				// Deactivate inline translation even before the option is saved.
+				$is_active = false;
+			} elseif ( '0' === gp_post( 'gp_inline_translation_enabled' ) && gp_post( 'gp_enable_inline_translation' ) ) {
+				// Deactivate inline translation even before the option is saved.
+				$is_active = true;
+			} else {
+				$is_active = get_option( 'gp_enable_inline_translation' );
+			}
+		}
+		return $is_active;
+	}
+	/**
 	 * Constructs a new instance.
 	 */
 	public function __construct() {
+		if ( ! self::is_active() ) {
+			return;
+		}
 		add_action( 'gettext', array( $this, 'translate' ), 10, 4 );
 		add_action( 'gettext_with_context', array( $this, 'translate_with_context' ), 10, 5 );
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );

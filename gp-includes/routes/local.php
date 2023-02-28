@@ -42,7 +42,7 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	private function security_checks( string $project_path ) {
 		$element_to_check = 'gp-local-' . $project_path;
-		if ( ! gp_post( '_wpnonce' ) || ! wp_verify_nonce( gp_post( '_wpnonce' ), $element_to_check ) ) {
+		if ( ! wp_verify_nonce( gp_post( '_wpnonce' ), $element_to_check ) ) {
 			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
 		}
 		if ( ! $this->can( 'write', 'project', null ) ) {
@@ -195,9 +195,11 @@ class GP_Route_Local extends GP_Route_Main {
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
 			$po = new PO();
-			add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
 			$imported = $po->import_from_file( $file_path );
+
+			add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
 			$translation_set->import( $po, 'current' );
+
 			$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		}
 		return $translations;
@@ -216,7 +218,10 @@ class GP_Route_Local extends GP_Route_Main {
 			unset( $fields['warnings'] );
 			$fields['status'] = 'current';
 		}
+
+		// Don't set the user id upon import so that we can later identify translations by users.
 		unset( $fields['user_id'] );
+
 		return $fields;
 	}
 
