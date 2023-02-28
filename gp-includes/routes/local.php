@@ -54,7 +54,7 @@ class GP_Route_Local extends GP_Route_Main {
 	 * Creates a project and import the strings.
 	 *
 	 * @param string    $project_name The name of the project.
-	 * @param string    $path The path of the project. The last element of the path is the slug
+	 * @param string    $path The path of the project. The last element of the path is the slug.
 	 * @param string    $project_description The description of the project.
 	 * @param GP_Locale $locale The locale.
 	 * @param string    $locale_slug The locale slug.
@@ -64,7 +64,7 @@ class GP_Route_Local extends GP_Route_Main {
 	private function create_project_and_import_strings( string $project_name, string $path, string $project_description, GP_Locale $locale, string $locale_slug ): GP_Project {
 		$project        = $this->get_or_create_project( $project_name, apply_filters( 'gp_local_project_path', $path ), $project_description );
 		$slug           = basename( $path );
-		$languages_dir = trailingslashit( ABSPATH ) . 'wp-content/languages/';
+		$languages_dir  = trailingslashit( ABSPATH ) . 'wp-content/languages/';
 		$file_to_import = apply_filters( 'gp_local_project_po', $languages_dir . $slug . '-' . $locale->wp_locale . '.po', $path, $slug, $locale, $languages_dir );
 
 		$translation_set = $this->get_or_create_translation_set( $project, $locale_slug, $locale );
@@ -194,7 +194,7 @@ class GP_Route_Local extends GP_Route_Main {
 		}
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
-			$po       = new PO();
+			$po = new PO();
 			add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
 			$imported = $po->import_from_file( $file_path );
 			$translation_set->import( $po, 'current' );
@@ -203,14 +203,21 @@ class GP_Route_Local extends GP_Route_Main {
 		return $translations;
 	}
 
-	public function translation_import_overrides( $args ) {
+	/**
+	 * Override the saved translation.
+	 *
+	 * @param      array $fields   The fields.
+	 *
+	 * @return     array  The updated fields.
+	 */
+	public function translation_import_overrides( $fields ) {
 		// Discard warnings of current strings upon import.
-		if ( ! empty( $args['warnings'] ) ) {
-			unset( $args['warnings'] );
-			$args['status'] = 'current';
+		if ( ! empty( $fields['warnings'] ) ) {
+			unset( $fields['warnings'] );
+			$fields['status'] = 'current';
 		}
-		unset( $args['user_id'] );
-		return $args;
+		unset( $fields['user_id'] );
+		return $fields;
 	}
 
 	/**

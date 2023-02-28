@@ -1,5 +1,14 @@
 <?php
+/**
+ * Functionality for the Local GlotPress.
+ *
+ * @package GlotPress
+ * @subpackage Local
+ */
 
+/**
+ * This class contains the functionality for the Local GlotPress.
+ */
 class GP_Local {
 	const CORE_PROJECTS = array(
 		'wp/dev',
@@ -20,6 +29,11 @@ class GP_Local {
 		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
 	}
 
+	/**
+	 * Determines if local is active.
+	 *
+	 * @return     bool  True if active, False otherwise.
+	 */
 	public static function is_active() {
 		static $is_active;
 		if ( ! isset( $is_active ) ) {
@@ -117,7 +131,7 @@ class GP_Local {
 									<?php $checked = self::is_active() ? 'checked' : ''; ?>
 									<input type="checkbox" name="gp_enable_local_translation" <?php echo esc_html( $checked ); ?>>
 									<span><?php esc_html_e( 'Enable Local Translations', 'glotpress' ); ?></span>
-							   </label>
+								</label>
 							</p>
 						</td>
 					</tr>
@@ -129,6 +143,17 @@ class GP_Local {
 		</div>
 		<?php
 	}
+	/**
+	 * Gets the local project po path.
+	 *
+	 * @param      string $file_path     The file path.
+	 * @param      string $project_path  The project path.
+	 * @param      string $slug          The slug.
+	 * @param      string $locale        The locale.
+	 * @param      string $directory     The directory.
+	 *
+	 * @return     string  The local project po.
+	 */
 	public function get_local_project_po( $file_path, $project_path, $slug, $locale, $directory ) {
 		switch ( $project_path ) {
 			case 'wp/dev':
@@ -144,6 +169,13 @@ class GP_Local {
 		return $file_path;
 	}
 
+	/**
+	 * Gets the local project path.
+	 *
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     string  The local project path.
+	 */
 	public function get_local_project_path( $project_path ) {
 		switch ( strtok( $project_path, '/' ) ) {
 			case 'wp':
@@ -156,6 +188,13 @@ class GP_Local {
 		return $project_path;
 	}
 
+	/**
+	 * Gets the project name.
+	 *
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     string   The project name.
+	 */
 	public function get_project_name( $project_path ) {
 		if ( 'local-' === substr( $project_path, 0, 6 ) ) {
 			$project_path = substr( $project_path, 6 );
@@ -174,8 +213,16 @@ class GP_Local {
 		if ( isset( $names[ $project_path ] ) ) {
 			return $names[ $project_path ];
 		}
-		return $project_path;
+		return ucwords( strtr( $project_path, '-', ' ' ) );
 	}
+
+	/**
+	 * Gets the project description.
+	 *
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     array|string  The project description.
+	 */
 	public function get_project_description( $project_path ) {
 		if ( 'local-' === substr( $project_path, 0, 6 ) ) {
 			$project_path = substr( $project_path, 6 );
@@ -206,10 +253,10 @@ class GP_Local {
 		$locale_slug = 'default';
 		$gp_locale   = GP_Locales::by_field( 'wp_locale', $locale_code );
 		if ( ! $gp_locale ) {
-			$gp_locale = new GP_Locale();
+			$gp_locale               = new GP_Locale();
 			$gp_locale->english_name = 'Unknown (' . $locale_code . ')';
-			$gp_locale->native_name = $gp_locale->english_name;
-			$gp_locale->wp_locale = $locale_code;
+			$gp_locale->native_name  = $gp_locale->english_name;
+			$gp_locale->wp_locale    = $locale_code;
 		}
 
 		$projects = array(
@@ -322,8 +369,8 @@ class GP_Local {
 						if ( empty( $item['TextDomain'] ) ) {
 							continue;
 						}
-						$path = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] );
-						$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
+						$path            = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] );
+						$project         = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
 						$translation_set = false;
 						if ( $project ) {
 							$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $locale_slug, $gp_locale->slug );
@@ -354,9 +401,9 @@ class GP_Local {
 									<button class="button">
 									<?php
 										$name = $item['Name'];
-										if ( 'wp' === $type ) {
-											$name = 'WordPress ' . $name;
-										}
+									if ( 'wp' === $type ) {
+										$name = 'WordPress ' . $name;
+									}
 										echo esc_html(
 											sprintf(
 												/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
