@@ -271,10 +271,10 @@ class GP_Local {
 			$project_path = substr( $project_path, 6 );
 		}
 		$names = array(
-			'wp/dev'               => 'Development',
-			'wp/dev/cc'            => 'Continents & Cities',
-			'wp/dev/admin'         => 'Administration',
-			'wp/dev/admin/network' => 'Network Administration',
+			'wp/dev'               => __( 'Development', 'glotpress' ),
+			'wp/dev/cc'            => __( 'Continents & Cities', 'glotpress' ),
+			'wp/dev/admin'         => __( 'Administration', 'glotpress' ),
+			'wp/dev/admin/network' => __( 'Network Administration', 'glotpress' ),
 			'wp'                   => __( 'WordPress', 'glotpress' ),
 			'plugins'              => __( 'Plugins', 'glotpress' ),
 			'themes'               => __( 'Themes', 'glotpress' ),
@@ -299,13 +299,10 @@ class GP_Local {
 			$project_path = substr( $project_path, 6 );
 		}
 		$descriptions = array(
-			'wp/dev'               => __( 'WordPress Development. Strings from the main project.' ),
-			'wp/dev/cc'            => __(
-				'WordPress Continents & Cities. List with the continents and main cities around the ),
-					world.'
-			),
-			'wp/dev/admin'         => __( 'WordPress Administration. Strings from the WordPress administration.' ),
-			'wp/dev/admin/network' => __( 'WordPress Network Administration. Strings from the WordPress network administration.' ),
+			'wp/dev'               => __( 'Covers the core WordPress project.', 'glotpress' ),
+			'wp/dev/cc'            => __( 'Contains the continents and main cities around the world.', 'glotpress' ),
+			'wp/dev/admin'         => __( 'Covers the WordPress administration.', 'glotpress' ),
+			'wp/dev/admin/network' => __( 'Covers the WordPress network administration.', 'glotpress' ),
 		);
 		if ( isset( $descriptions[ $project_path ] ) ) {
 			return $descriptions[ $project_path ];
@@ -461,8 +458,17 @@ class GP_Local {
 								<?php echo esc_html( $item['Description'] ); ?>
 							</p>
 							<p>
-								<?php esc_html_e( 'Version', 'glotpress' ); ?>
-								<?php echo esc_html( $item['Version'] ); ?>
+								<span>
+								<?php
+								echo esc_html(
+									sprintf(
+										// translators: %s is a version number.
+										__( 'Version %s' ),
+										$item['Version']
+									)
+								);
+								?>
+								</span>
 							</td>
 							<td>
 								<?php if ( $can_create_projects ) : ?>
