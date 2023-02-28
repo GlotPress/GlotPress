@@ -223,7 +223,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 function getRegexString( text ) {
 	var regexString = text;
 	regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
-	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,200}?)' );
+	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,500}?)' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
 	regexString = regexString.replace( /%%/g, '%' );
 	return regexString;
@@ -361,7 +361,7 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 		entry = false,
 		nodeText, nodeHtml, i;
 
-	nodeText = trim( node.text() );
+	nodeText = node.get( 0 ).textContent;
 
 	if ( ! nodeText.length || nodeText.length > 3000 ) {
 		return false;
@@ -375,7 +375,7 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 	}
 
 	// html to support translate( '<a href="%$1s">Translatable Text</a>' )
-	nodeHtml = trim( node.html() );
+	nodeHtml = node.html();
 
 	for ( i = 0; i < translationData.placeholdersUsedOnPage.length; i++ ) {
 		entry = translationData.placeholdersUsedOnPage[ i ];

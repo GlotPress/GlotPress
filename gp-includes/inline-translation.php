@@ -15,7 +15,7 @@
 class GP_Inline_Translation {
 	// This is a regex that we output, therefore the backslashes are doubled.
 	const PLACEHOLDER_REGEX     = '%([0-9]\\\\*\\$)?';
-	const PLACEHOLDER_MAXLENGTH = 200;
+	const PLACEHOLDER_MAXLENGTH = 500;
 
 	/**
 	 * The strings used on the page.

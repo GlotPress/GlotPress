@@ -269,7 +269,7 @@ function makeTranslatable( translationPair, node ) {
 		}
 		node.each( function() {
 			var el = this;
-			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) { // 3 = text node
+			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) {
 				if ( ! translationPair.getRegex().test( el.innerHTML ) ) {
 					debug( 'Updating HTML translation', el.innerHTML, translationPair.getRegex(), translationPair.getRegex().test( el.innerHTML ), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 					setTimeout( function() {
