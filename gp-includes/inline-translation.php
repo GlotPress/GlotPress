@@ -312,7 +312,9 @@ class GP_Inline_Translation {
 						continue;
 					}
 					$context = strtok( '|' );
-
+					if ( 'placeholders_used' === $strings ) {
+						$translation = null;
+					}
 					$query_result = $this->get_translation(
 						$projects[ $text_domain ],
 						$translation_sets[ $text_domain ],
