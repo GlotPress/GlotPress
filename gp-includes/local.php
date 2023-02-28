@@ -455,15 +455,17 @@ class GP_Local {
 							</td>
 							<td>
 							<p>
-								<?php echo wp_kses(
+								<?php
+								echo wp_kses(
 									$item['Description'],
 									array(
-										'a' => array(
+										'a'      => array(
 											'href' => array(),
 										),
 										'strong' => array(),
 									)
-								); ?>
+								);
+								?>
 							</p>
 							<p>
 								<span>
