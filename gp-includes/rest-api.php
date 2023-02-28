@@ -252,7 +252,7 @@ class GP_Rest_API {
 			);
 		}
 
-		$translations    = array();
+		$translations     = array();
 		$project_paths    = array();
 		$translation_sets = array();
 		foreach ( $projects as $text_domain => $paths ) {

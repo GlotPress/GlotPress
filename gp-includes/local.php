@@ -17,6 +17,7 @@ class GP_Local {
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
+		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
 	}
 
 	public static function is_active() {
@@ -128,6 +129,20 @@ class GP_Local {
 		</div>
 		<?php
 	}
+	public function get_local_project_po( $file_path, $project_path, $slug, $locale, $directory ) {
+		switch ( $project_path ) {
+			case 'wp/dev':
+				return trailingslashit( $directory ) . $locale->wp_locale . '.po';
+			case 'wp/dev/admin':
+				return trailingslashit( $directory ) . 'admin-' . $locale->wp_locale . '.po';
+			case 'wp/dev/admin/network':
+				return trailingslashit( $directory ) . 'admin-network-' . $locale->wp_locale . '.po';
+			case 'wp/dev/cc':
+				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale . '.po';
+		}
+
+		return $file_path;
+	}
 
 	public function get_local_project_path( $project_path ) {
 		switch ( strtok( $project_path, '/' ) ) {
@@ -140,23 +155,24 @@ class GP_Local {
 
 		return $project_path;
 	}
+
 	public function get_project_name( $project_path ) {
 		if ( 'local-' === substr( $project_path, 0, 6 ) ) {
 			$project_path = substr( $project_path, 6 );
 		}
 		$names = array(
-			'wp/dev' => 'Development',
-			'wp/dev/cc' => 'Continents & Cities',
-			'wp/dev/admin' => 'Administration',
+			'wp/dev'               => 'Development',
+			'wp/dev/cc'            => 'Continents & Cities',
+			'wp/dev/admin'         => 'Administration',
 			'wp/dev/admin/network' => 'Network Administration',
-			'wp' => __( 'WordPress Core', 'glotpress' ),
-			'plugins' => __( 'Plugins', 'glotpress'),
-			'themes' => __( 'Themes', 'glotpress'),
-			'wp-plugins' => __( 'Plugins', 'glotpress'),
-			'wp-themes' => __( 'Themes', 'glotpress'),
+			'wp'                   => __( 'WordPress Core', 'glotpress' ),
+			'plugins'              => __( 'Plugins', 'glotpress' ),
+			'themes'               => __( 'Themes', 'glotpress' ),
+			'wp-plugins'           => __( 'Plugins', 'glotpress' ),
+			'wp-themes'            => __( 'Themes', 'glotpress' ),
 		);
-		if ( isset( $names[$project_path] ) ) {
-			return $names[$project_path];
+		if ( isset( $names[ $project_path ] ) ) {
+			return $names[ $project_path ];
 		}
 		return $project_path;
 	}
@@ -165,14 +181,16 @@ class GP_Local {
 			$project_path = substr( $project_path, 6 );
 		}
 		$descriptions = array(
-			'wp/dev' => __( 'WordPress Development. Strings from the main project.' ),
-			'wp/dev/cc' => __( 'WordPress Continents & Cities. List with the continents and main cities around the ),
-					world.' ),
-			'wp/dev/admin' => __( 'WordPress Administration. Strings from the WordPress administration.' ),
+			'wp/dev'               => __( 'WordPress Development. Strings from the main project.' ),
+			'wp/dev/cc'            => __(
+				'WordPress Continents & Cities. List with the continents and main cities around the ),
+					world.'
+			),
+			'wp/dev/admin'         => __( 'WordPress Administration. Strings from the WordPress administration.' ),
 			'wp/dev/admin/network' => __( 'WordPress Network Administration. Strings from the WordPress network administration.' ),
 		);
-		if ( isset( $descriptions[$project_path] ) ) {
-			return $descriptions[$project_path];
+		if ( isset( $descriptions[ $project_path ] ) ) {
+			return $descriptions[ $project_path ];
 		}
 		return '';
 	}
@@ -184,36 +202,37 @@ class GP_Local {
 	 * @return void
 	 */
 	public function show_local_projects() {
-		require_once ABSPATH . 'wp-admin/includes/translation-install.php';
-		$languages = wp_get_available_translations();
-		$language  = get_user_locale();
-		if ( 'en_US' === $language ) {
-			$language = 'English (US)';
-		} elseif ( isset( $languages[ $language ] ) ) {
-			$language = $languages[ $language ]['native_name'];
+		$locale_code = get_user_locale();
+		$locale_slug = 'default';
+		$gp_locale   = GP_Locales::by_field( 'wp_locale', $locale_code );
+		if ( ! $gp_locale ) {
+			$gp_locale = new GP_Locale();
+			$gp_locale->english_name = 'Unknown (' . $locale_code . ')';
+			$gp_locale->native_name = $gp_locale->english_name;
+			$gp_locale->wp_locale = $locale_code;
 		}
 
 		$projects = array(
-			'wp' => array_map(
+			'wp'         => array_map(
 				function( $path ) {
 					global $wp_version;
 					return array(
-						'TextDomain' => $path,
-						'Name' => GP::$local->get_project_name( $path ),
+						'TextDomain'  => $path,
+						'Name'        => GP::$local->get_project_name( $path ),
 						'Description' => GP::$local->get_project_description( $path ),
-						'Version' => $wp_version,
+						'Version'     => $wp_version,
 					);
 				},
-				GP_Local::CORE_PROJECTS
+				self::CORE_PROJECTS
 			),
 			'wp-plugins' => apply_filters( 'local_glotpress_local_plugins', get_plugins() ),
-			'wp-themes' => array_map(
+			'wp-themes'  => array_map(
 				function( $theme ) {
 					$theme = array(
-						'TextDomain' => $theme->get( 'TextDomain' ),
-						'Name' => $theme['Name'],
+						'TextDomain'  => $theme->get( 'TextDomain' ),
+						'Name'        => $theme['Name'],
 						'Description' => $theme['Description'],
-						'Version' => $theme['Version'],
+						'Version'     => $theme['Version'],
 					);
 					return $theme;
 				},
@@ -246,7 +265,7 @@ class GP_Local {
 					<?php
 					return;
 			}
-			if ( 'en_US' === get_user_locale() ) {
+			if ( 'en_US' === $gp_locale->wp_locale ) {
 				?>
 					<div class="notice notice-error">
 						<p>
@@ -271,7 +290,7 @@ class GP_Local {
 				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
 			</p>
 
-			<?php foreach ( $projects as $type => $items ): ?>
+			<?php foreach ( $projects as $type => $items ) : ?>
 			<div class="tablenav">
 				<span class="displaying-num alignright">
 					<?php
@@ -298,12 +317,21 @@ class GP_Local {
 					</tr>
 				</thead>
 				<tbody id="<?php echo esc_html( $type ); ?>-list">
-					<?php foreach ( $items as $item ): ?>
-					<?php $path = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] ); ?>
-					<?php $project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) ); ?>
+					<?php foreach ( $items as $item ) : ?>
+						<?php
+						if ( empty( $item['TextDomain'] ) ) {
+							continue;
+						}
+						$path = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] );
+						$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
+						$translation_set = false;
+						if ( $project ) {
+							$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $locale_slug, $gp_locale->slug );
+						}
+						?>
 						<tr>
 							<td>
-								<?php echo esc_html( $project ? '✅': '' ); ?>
+								<?php echo esc_html( $translation_set ? '✅' : '' ); ?>
 							</td>
 							<td>
 								<?php echo esc_html( $item['Name'] ); ?>
@@ -321,15 +349,19 @@ class GP_Local {
 									<?php wp_nonce_field( 'gp-local-' . $path ); ?>
 									<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
 									<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
-									<button><?php
+									<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
+									<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
+									<button>
+									<?php
 										echo esc_html(
 											sprintf(
 												/* Translators: %s is the language into which we will translate . */
 												__( 'Enable translation to %s', 'glotpress' ),
-												$language
+												$gp_locale->native_name
 											)
 										)
-									?></button>
+									?>
+									</button>
 								</form>
 							</td>
 						</tr>

@@ -20,8 +20,8 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	public function import( string $project_path ) {
 		$this->security_checks( $project_path );
-		$locale = GP_Locales::by_field( 'wp_locale', get_user_locale() );
-		$project = $this->create_project_and_import_strings( gp_post( 'name' ), $project_path, gp_post( 'description' ), $locale );
+		$locale  = GP_Locales::by_field( 'wp_locale', gp_post( 'locale' ) );
+		$project = $this->create_project_and_import_strings( gp_post( 'name' ), $project_path, gp_post( 'description' ), $locale, gp_post( 'locale_slug', 'default' ) );
 		if ( $project ) {
 			$this->redirect(
 				gp_url(
@@ -42,7 +42,7 @@ class GP_Route_Local extends GP_Route_Main {
 	 */
 	private function security_checks( string $project_path ) {
 		$element_to_check = 'gp-local-' . $project_path;
-		if ( !  gp_post( '_wpnonce') || ! wp_verify_nonce( gp_post('_wpnonce'), $element_to_check ) ) {
+		if ( ! gp_post( '_wpnonce' ) || ! wp_verify_nonce( gp_post( '_wpnonce' ), $element_to_check ) ) {
 			wp_die( esc_html__( 'Your nonce could not be verified.', 'glotpress' ) );
 		}
 		if ( ! $this->can( 'write', 'project', null ) ) {
@@ -56,16 +56,18 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @param string    $project_name The name of the project.
 	 * @param string    $path The path of the project. The last element of the path is the slug
 	 * @param string    $project_description The description of the project.
-	 * @param GP_Locale $locale The locale of the project.
+	 * @param GP_Locale $locale The locale.
+	 * @param string    $locale_slug The locale slug.
 	 *
 	 * @return     GP_Project  The gp project.
 	 */
-	private function create_project_and_import_strings( string $project_name, string $path, string $project_description, GP_Locale $locale ): GP_Project {
+	private function create_project_and_import_strings( string $project_name, string $path, string $project_description, GP_Locale $locale, string $locale_slug ): GP_Project {
 		$project        = $this->get_or_create_project( $project_name, apply_filters( 'gp_local_project_path', $path ), $project_description );
 		$slug           = basename( $path );
-		$file_to_import = apply_filters( 'gp_local_project_po', ABSPATH . '/wp-content/languages/' . $slug . '-' . $locale->wp_locale . '.po', $path, $slug, ABSPATH . '/wp-content/languages/' );
+		$languages_dir = trailingslashit( ABSPATH ) . 'wp-content/languages/';
+		$file_to_import = apply_filters( 'gp_local_project_po', $languages_dir . $slug . '-' . $locale->wp_locale . '.po', $path, $slug, $locale, $languages_dir );
 
-		$translation_set = $this->get_or_create_translation_set( $project, 'default', $locale );
+		$translation_set = $this->get_or_create_translation_set( $project, $locale_slug, $locale );
 		$this->get_or_import_originals( $project, $file_to_import );
 		$this->get_or_import_translations( $project, $translation_set, $file_to_import );
 		return $project;
@@ -81,15 +83,14 @@ class GP_Route_Local extends GP_Route_Main {
 	 * @return GP_Project
 	 */
 	private function get_or_create_project( string $name, string $path, string $description ): GP_Project {
-		var_dump( $path );
 		$project = GP::$project->by_path( $path );
 
 		if ( ! $project ) {
 			$$path_separator = '';
-			$project_path = '';
-			$parent_project      = null;
-			$path_snippets = explode( '/', $path );
-			$project_slug = array_pop( $path_snippets);
+			$project_path    = '';
+			$parent_project  = null;
+			$path_snippets   = explode( '/', $path );
+			$project_slug    = array_pop( $path_snippets );
 			foreach ( $path_snippets as $slug ) {
 				$project_path  .= $path_separator . $slug;
 				$path_separator = '/';
@@ -194,11 +195,22 @@ class GP_Route_Local extends GP_Route_Main {
 		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		if ( ! $translations ) {
 			$po       = new PO();
+			add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
 			$imported = $po->import_from_file( $file_path );
 			$translation_set->import( $po, 'current' );
 			$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
 		}
 		return $translations;
+	}
+
+	public function translation_import_overrides( $args ) {
+		// Discard warnings of current strings upon import.
+		if ( ! empty( $args['warnings'] ) ) {
+			unset( $args['warnings'] );
+			$args['status'] = 'current';
+		}
+		unset( $args['user_id'] );
+		return $args;
 	}
 
 	/**

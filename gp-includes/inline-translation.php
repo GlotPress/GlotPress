@@ -265,24 +265,20 @@ class GP_Inline_Translation {
 	private function get_projects( $text_domains ) {
 		$projects = array();
 		foreach ( $text_domains as $text_domain ) {
-			$project_paths = array();
-			if ( 'default' === $text_domain ) {
-				$project_paths[] = 'local-wordpress/local-wordpress-development';
-				$project_paths[] = 'local-wordpress/local-wordpress-administration';
-				$project_paths[] = 'local-wordpress-core/local-wordpress-core-development';
-				$project_paths[] = 'local-wordpress-core/local-wordpress-core-administration';
-			} else {
-				$project_paths[] = 'local-plugins/' . $text_domain;
-				$project_paths[] = 'local-themes/' . $text_domain;
+			$project_paths = GP_Local::CORE_PROJECTS;
+			if ( 'default' !== $text_domain ) {
+				$project_paths = array(
+					'wp-plugins/' . $text_domain,
+					'wp-themes/' . $text_domain,
+				);
 			}
 			foreach ( $project_paths as $project_path ) {
-				$project = GP::$project->by_path( $project_path );
+				$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $project_path ) );
 				if ( $project ) {
 					$projects[ $text_domain ][] = $project;
 				}
 			}
 		}
-
 		return $projects;
 	}
 
