@@ -80,7 +80,7 @@ class GP_Local {
 			'glotpress-settings',
 			array( $this, 'show_settings_page' )
 		);
-		if ( GP_Local::is_active() ) {
+		if ( self::is_active() ) {
 			add_submenu_page(
 				'glotpress',
 				esc_html__( 'Local GlotPress', 'glotpress' ),
@@ -208,7 +208,7 @@ class GP_Local {
 							<?php esc_html_e( 'Inline Translation', 'glotpress' ); ?>
 						</th>
 						<td>
-							<?php if ( class_exists( 'GP_Inline_Translation' ) ): ?>
+							<?php if ( class_exists( 'GP_Inline_Translation' ) ) : ?>
 								<p>
 									<label>
 										<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
@@ -216,9 +216,9 @@ class GP_Local {
 										<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
 									</label>
 								</p>
-							<?php else: ?>
+							<?php else : ?>
 								<p>
-									<?php esc_html_e( 'Local GlotPress must be activated to activate local translation.', 'glotpress' ); ?>
+									<?php esc_html_e( 'Local GlotPress must be activae to enable local translation.', 'glotpress' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
