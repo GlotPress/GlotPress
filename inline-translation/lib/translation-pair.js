@@ -17,6 +17,7 @@ var translationData;
 
 function TranslationPair( locale, original, context, domain, translation, foundRegex ) {
 	var translations = [],
+		regex, originalRegex, selectedTranslation, glotPressProject,
 		screenText = false;
 
 	if ( 'object' !== typeof original || original.type !== 'Original' ) {
