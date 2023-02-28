@@ -351,12 +351,17 @@ class GP_Local {
 									<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
 									<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
 									<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
-									<button>
+									<button class="button">
 									<?php
+										$name = $item['Name'];
+										if ( 'wp' === $type ) {
+											$name = 'WordPress ' . $name;
+										}
 										echo esc_html(
 											sprintf(
-												/* Translators: %s is the language into which we will translate . */
-												__( 'Enable translation to %s', 'glotpress' ),
+												/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
+												__( 'Translate %1$s to %2$s', 'glotpress' ),
+												$name,
 												$gp_locale->native_name
 											)
 										)
