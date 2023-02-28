@@ -269,6 +269,8 @@ class GP_Inline_Translation {
 			if ( 'default' === $text_domain ) {
 				$project_paths[] = 'local-wordpress/local-wordpress-development';
 				$project_paths[] = 'local-wordpress/local-wordpress-administration';
+				$project_paths[] = 'local-wordpress-core/local-wordpress-core-development';
+				$project_paths[] = 'local-wordpress-core/local-wordpress-core-administration';
 			} else {
 				$project_paths[] = 'local-plugins/' . $text_domain;
 				$project_paths[] = 'local-themes/' . $text_domain;
@@ -304,6 +306,8 @@ class GP_Inline_Translation {
 				$translation_sets[ $text_domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 			}
 		}
+
+		$translations = array();
 		foreach ( array( 'strings_used', 'placeholders_used' ) as $strings ) {
 			foreach ( $this->$strings as $translation => $originals ) {
 				foreach ( $originals as $context_key => $original ) {

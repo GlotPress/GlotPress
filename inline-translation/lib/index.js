@@ -258,13 +258,6 @@ function makeUntranslatable( translationPair, $node ) {
 	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
 }
 
-function trim( text ) {
-	if ( typeof text === 'undefined' ) {
-		return '';
-	}
-	return text.replace( /(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '' );
-}
-
 function makeTranslatable( translationPair, node ) {
 	translationPair.createPopover( node, glotPress );
 	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
@@ -276,13 +269,19 @@ function makeTranslatable( translationPair, node ) {
 		}
 		node.each( function() {
 			var el = this;
-			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) { // text node
+			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) { // 3 = text node
+				if ( translationPair.getOriginalRegex().test( el.innerHTML ) && ! translationPair.getRegex().test( el.innerHTML ) ) {
+					debug( 'Updating HTML translation', el.innerHTML, translationPair.getRegex(), translationPair.getRegex().test( el.innerHTML ), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
+					setTimeout( function() {
+						el.innerHTML = translationPair.getReplacementText( el.innerHTML );
+					}, 1 );
+				}
 				return;
 			}
-			if ( ! translationPair.getRegex().test( trim( el.textContent ) ) ) {
-				debug( 'Updating translation', el.textContent, translationPair.getRegex(), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
+			if ( translationPair.getOriginalRegex().test( el.textContent ) && ! translationPair.getRegex().test( el.textContent ) ) {
+				debug( 'Updating text translation', el.textContent, translationPair.getRegex(), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 				setTimeout( function() {
-					el.textContent = translationPair.getTranslation().getTextItems()[ 0 ].getText();
+					el.textContent = translationPair.getReplacementText( el.textContent );
 				}, 1 );
 			}
 		} );

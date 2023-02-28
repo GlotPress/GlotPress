@@ -103,15 +103,6 @@ function Translation( locale, items, glotPressMetadata ) {
 
 				return '';
 			},
-			getRegexString: function() {
-				var regexString = text;
-				regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
-				regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,200}?)' );
-				regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
-				regexString = regexString.replace( /%%/g, '%' );
-
-				return regexString;
-			},
 			getText: function() {
 				return text;
 			},
