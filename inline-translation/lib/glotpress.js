@@ -24,6 +24,9 @@ function GlotPress( locale, translations ) {
 	}
 
 	function fetchOriginals( originals, callback ) {
+		if ( ! server.projects.length ) {
+			return callback( {} );
+		}
 		ajax( {
 			url: server.restUrl + '/translations-by-originals',
 			data: {

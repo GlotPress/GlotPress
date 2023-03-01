@@ -269,8 +269,8 @@ function makeTranslatable( translationPair, node ) {
 		}
 		node.each( function() {
 			var el = this;
-			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) { // 3 = text node
-				if ( translationPair.getOriginalRegex().test( el.innerHTML ) && ! translationPair.getRegex().test( el.innerHTML ) ) {
+			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) {
+				if ( ! translationPair.getRegex().test( el.innerHTML ) ) {
 					debug( 'Updating HTML translation', el.innerHTML, translationPair.getRegex(), translationPair.getRegex().test( el.innerHTML ), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 					setTimeout( function() {
 						el.innerHTML = translationPair.getReplacementText( el.innerHTML );
@@ -278,7 +278,7 @@ function makeTranslatable( translationPair, node ) {
 				}
 				return;
 			}
-			if ( translationPair.getOriginalRegex().test( el.textContent ) && ! translationPair.getRegex().test( el.textContent ) ) {
+			if ( ! translationPair.getRegex().test( el.textContent ) ) {
 				debug( 'Updating text translation', el.textContent, translationPair.getRegex(), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 				setTimeout( function() {
 					el.textContent = translationPair.getReplacementText( el.textContent );
