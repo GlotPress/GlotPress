@@ -252,7 +252,7 @@ class GP_Rest_API {
 			);
 		}
 
-		$translations    = array();
+		$translations     = array();
 		$project_paths    = array();
 		$translation_sets = array();
 		foreach ( $projects as $text_domain => $paths ) {
@@ -278,11 +278,7 @@ class GP_Rest_API {
 		}
 
 		if ( empty( $translation_sets ) ) {
-			return new WP_Error(
-				'rest_invalid_projects',
-				__( 'You specified invalid projects.', 'glotpress' ),
-				array( 'status' => rest_authorization_required_code() )
-			);
+			return array();
 		}
 
 		$checked_originals = array();

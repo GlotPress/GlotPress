@@ -35,6 +35,9 @@ function Popover( translationPair, _locale, glotPress ) {
 
 	return {
 		attachTo: function( enclosingNode ) {
+			if ( enclosingNode.hasClass( nodeClass ) ) {
+				enclosingNode.webuiPopover( 'destroy' );
+			}
 			enclosingNode.addClass( nodeClass ).webuiPopover( {
 				title: getPopoverTitle(),
 				content: jQuery( '<div>' ).append( getPopoverHtml() ).html(),
@@ -102,7 +105,7 @@ function getInputForm( translationPair ) {
 		}
 
 		pair.find( 'p' ).text( item[ i ].getCaption() );
-		pair.find( 'textarea' ).text( item[ i ].getText() ).attr( 'placeholder', 'Could you help us and translate this to ' + locale.getLanguageName() + '? Thanks!' );
+		pair.find( 'textarea' ).text( item[ i ].getText() ).attr( 'placeholder', 'Please enter a translation in ' + locale.getLanguageName() );
 
 		if ( i > 0 ) {
 			pairs.append( pair );
