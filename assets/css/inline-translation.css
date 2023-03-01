@@ -274,7 +274,8 @@
 	height: 100px;
 	margin-bottom: 0.8em;
 	color: #000;
-	background: #fff
+	background: #fff;
+	width: 100%;
 }
 
 /* We override color & background-color with and without ::selection to

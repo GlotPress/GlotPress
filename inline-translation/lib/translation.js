@@ -143,7 +143,7 @@ function Translation( locale, items, glotPressMetadata ) {
 			return dateAddedUnixTimestamp;
 		},
 		getUserId: function() {
-			return userId;
+			return Number( userId );
 		},
 		getTextItems: function() {
 			return items;

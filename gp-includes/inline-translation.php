@@ -15,7 +15,7 @@
 class GP_Inline_Translation {
 	// This is a regex that we output, therefore the backslashes are doubled.
 	const PLACEHOLDER_REGEX     = '%([0-9]\\\\*\\$)?';
-	const PLACEHOLDER_MAXLENGTH = 200;
+	const PLACEHOLDER_MAXLENGTH = 500;
 
 	/**
 	 * The strings used on the page.
@@ -73,9 +73,32 @@ class GP_Inline_Translation {
 	}
 
 	/**
+	 * Determines if local is active.
+	 *
+	 * @return     bool  True if active, False otherwise.
+	 */
+	public static function is_active() {
+		static $is_active;
+		if ( ! isset( $is_active ) ) {
+			if ( '1' === gp_post( 'gp_inline_translation_enabled' ) && ! gp_post( 'gp_enable_inline_translation' ) ) {
+				// Deactivate inline translation even before the option is saved.
+				$is_active = false;
+			} elseif ( '0' === gp_post( 'gp_inline_translation_enabled' ) && gp_post( 'gp_enable_inline_translation' ) ) {
+				// Activate inline translation even before the option is saved.
+				$is_active = true;
+			} else {
+				$is_active = get_option( 'gp_enable_inline_translation' );
+			}
+		}
+		return $is_active;
+	}
+	/**
 	 * Constructs a new instance.
 	 */
 	public function __construct() {
+		if ( ! self::is_active() ) {
+			return;
+		}
 		add_action( 'gettext', array( $this, 'translate' ), 10, 4 );
 		add_action( 'gettext_with_context', array( $this, 'translate_with_context' ), 10, 5 );
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
@@ -265,24 +288,20 @@ class GP_Inline_Translation {
 	private function get_projects( $text_domains ) {
 		$projects = array();
 		foreach ( $text_domains as $text_domain ) {
-			$project_paths = array();
-			if ( 'default' === $text_domain ) {
-				$project_paths[] = 'local-wordpress/local-wordpress-development';
-				$project_paths[] = 'local-wordpress/local-wordpress-administration';
-				$project_paths[] = 'local-wordpress-core/local-wordpress-core-development';
-				$project_paths[] = 'local-wordpress-core/local-wordpress-core-administration';
-			} else {
-				$project_paths[] = 'local-plugins/' . $text_domain;
-				$project_paths[] = 'local-themes/' . $text_domain;
+			$project_paths = GP_Local::CORE_PROJECTS;
+			if ( 'default' !== $text_domain ) {
+				$project_paths = array(
+					'wp-plugins/' . $text_domain,
+					'wp-themes/' . $text_domain,
+				);
 			}
 			foreach ( $project_paths as $project_path ) {
-				$project = GP::$project->by_path( $project_path );
+				$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $project_path ) );
 				if ( $project ) {
 					$projects[ $text_domain ][] = $project;
 				}
 			}
 		}
-
 		return $projects;
 	}
 
@@ -316,7 +335,9 @@ class GP_Inline_Translation {
 						continue;
 					}
 					$context = strtok( '|' );
-
+					if ( 'placeholders_used' === $strings ) {
+						$translation = null;
+					}
 					$query_result = $this->get_translation(
 						$projects[ $text_domain ],
 						$translation_sets[ $text_domain ],

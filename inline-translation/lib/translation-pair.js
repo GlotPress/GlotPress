@@ -78,8 +78,10 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 	function setSelectedTranslation( currentUserId ) {
 		var i;
 
-		sortTranslationsByDate();
+		// Reset the regex matcher.
+		regex = null;
 
+		sortTranslationsByDate();
 		for ( i = 0; i < translations.length; i++ ) {
 			if ( translations[ i ].getUserId() === currentUserId && translations[ i ].getStatus() ) {
 				selectedTranslation = translations[ i ];
@@ -90,9 +92,6 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 				selectedTranslation = translations[ i ];
 			}
 		}
-
-		// Reset the regex matcher.
-		regex = null;
 	}
 
 	function setGlotPressProject( project ) {
@@ -149,6 +148,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 				return originalRegex;
 			}
 			regexString = this.getOriginalRegexString();
+
 			if ( foundRegex ) {
 				regexString += '|' + foundRegex.source.substr( 4, foundRegex.source.length - 8 );
 			}
@@ -183,9 +183,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 			return glotPressProject;
 		},
 		updateAllTranslations: function( newTranslations, currentUserId ) {
-			if ( ! loadTranslations( newTranslations ) ) {
-				return false;
-			}
+			loadTranslations( newTranslations );
 
 			if ( 'undefined' !== typeof currentUserId ) {
 				setSelectedTranslation( currentUserId );
@@ -225,7 +223,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 function getRegexString( text ) {
 	var regexString = text;
 	regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
-	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,200}?)' );
+	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,500}?)' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
 	regexString = regexString.replace( /%%/g, '%' );
 	return regexString;
@@ -320,7 +318,7 @@ function anyChildMatches( node, regex ) {
 
 function findMatchingTranslation( entry, contextSpecifier, translation, regex ) {
 	var contextKey, contextKeySplit, domain, context, original, translationPair,
-		matchingTranslations = [];
+		matchingTranslations = {};
 
 	for ( contextKey in entry ) {
 		if ( ! entry.hasOwnProperty( contextKey ) ) {
@@ -363,21 +361,23 @@ function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
 		entry = false,
 		nodeText, nodeHtml, i;
 
-	nodeText = trim( node.text() );
+	if ( node.get().length === 1 && node.get( 0 ).childNodes.length === 1 ) {
+		nodeText = trim( node.get( 0 ).textContent );
 
-	if ( ! nodeText.length || nodeText.length > 3000 ) {
-		return false;
-	}
+		if ( ! nodeText.length || nodeText.length > 3000 ) {
+			return false;
+		}
 
-	if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
-		translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText );
-		if ( translationPair ) {
-			return translationPair;
+		if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
+			translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText, new RegExp( '^\\s*' + getRegexString( nodeText ) + '\\s*$' ) );
+			if ( translationPair ) {
+				return translationPair;
+			}
 		}
 	}
 
 	// html to support translate( '<a href="%$1s">Translatable Text</a>' )
-	nodeHtml = trim( node.html() );
+	nodeHtml = node.html();
 
 	for ( i = 0; i < translationData.placeholdersUsedOnPage.length; i++ ) {
 		entry = translationData.placeholdersUsedOnPage[ i ];
