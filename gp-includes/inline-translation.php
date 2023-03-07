@@ -512,10 +512,6 @@ class GP_Inline_Translation {
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
 		echo '</script>';
 
-		if ( $this->translator_launcher_displayed ) {
-			return true;
-		}
-
 		?><div id="translator-launcher" class="translator">
 			<a href="" title="<?php esc_attr_e( 'Inline Translation' ); ?>">
 				<span class="dashicons dashicons-admin-site-alt3">
