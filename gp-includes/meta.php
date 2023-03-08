@@ -71,15 +71,15 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
  *
  * @since 1.0.0
  *
+ * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
  * @param string $type       The object type.
- * @param int    $object_id  ID of the object metadata is for.
  * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
  *
  * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
  */
-function gp_update_meta( $meta_key, $meta_value, $type, $object_id = 0, $global = false ) {
+function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
 
 	if ( ! is_numeric( $object_id ) || empty( $object_id ) && ! $global ) {
@@ -157,15 +157,15 @@ function gp_update_meta( $meta_key, $meta_value, $type, $object_id = 0, $global 
  *
  * @since 1.0.0
  *
+ * @param int    $object_id  ID of the object metadata is for.
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
  * @param string $type       The object type.
- * @param int    $object_id  ID of the object metadata is for.
  * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
  *
  * @return bool
  */
-function gp_delete_meta( $meta_key, $meta_value, $type, $object_id = 0, $global = false ) {
+function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
 
 	if ( ! is_numeric( $object_id ) || empty( $object_id ) && ! $global ) {
