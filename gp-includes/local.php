@@ -74,6 +74,16 @@ class GP_Local {
 		);
 		add_submenu_page(
 			'glotpress',
+			esc_html__( 'Translation Interface', 'glotpress' ),
+			esc_html__( 'Translation Interface', 'glotpress' ),
+			'read',
+			'glotpress-ui',
+			array( $this, 'show_welcome_page' )
+		);
+		add_action( 'load-glotpress_page_glotpress-ui', array( $this, 'redirect_to_glotpress' ) );
+
+		add_submenu_page(
+			'glotpress',
 			esc_html__( 'Settings', 'glotpress' ),
 			esc_html__( 'Settings', 'glotpress' ),
 			'manage_options',
@@ -172,6 +182,14 @@ class GP_Local {
 			</p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Redirect to the GlotPress UI
+	 */
+	public function redirect_to_glotpress() {
+		wp_safe_redirect( gp_url( '/' ) );
+		exit;
 	}
 
 	/**
