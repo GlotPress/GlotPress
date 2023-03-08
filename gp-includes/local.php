@@ -26,6 +26,8 @@ class GP_Local {
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
+		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
+		// phpcs:ignore add_filter( 'gp_local_sync_url', array( $this, 'get_local_sync_url' ), 10, 2 );
 		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
 	}
 
@@ -98,6 +100,14 @@ class GP_Local {
 				'edit_posts',
 				'glotpress-local-glotpress',
 				array( $this, 'show_local_projects' ),
+			);
+			add_submenu_page(
+				'glotpress',
+				esc_html__( 'Contribute back', 'glotpress' ),
+				esc_html__( 'Contribute back', 'glotpress' ),
+				'read',
+				'glotpress-sync',
+				array( $this, 'sync_to_wordpress_org_overview' ),
 			);
 		}
 	}
@@ -292,6 +302,37 @@ class GP_Local {
 		}
 
 		return $project_path;
+	}
+
+	/**
+	 * Gets the remote project path.
+	 *
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     string  The remote project path.
+	 */
+	public function get_remote_project_path( $project_path ) {
+		switch ( strtok( $project_path, '/' ) ) {
+			case 'local-wp':
+				return substr( $project_path, 6 );
+			case 'local-plugins':
+			case 'local-themes':
+				return 'wp-' . substr( $project_path, 6 );
+		}
+
+		return $project_path;
+	}
+
+	/**
+	 * Gets the URL to which we should sync.
+	 *
+	 * @param      string $url           The url.
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     string  The local synchronize url.
+	 */
+	public function get_local_sync_url( $url, $project_path ) {
+		return home_url( gp_url( 'projects/' . $project_path ) );
 	}
 
 	/**
@@ -559,6 +600,278 @@ class GP_Local {
 				</button>
 			</div>
 
+		</div>
+		<?php
+	}
+
+	/**
+	 * Shows a page with a list of translations that could be synced.
+	 *
+	 * @return void
+	 */
+	public function sync_to_wordpress_org_overview() {
+		include __DIR__ . '/../gp-templates/helper-functions.php';
+		global $wpdb;
+
+		$locale_code = get_user_locale();
+		$locale_slug = 'default';
+		$gp_locale   = GP_Locales::by_field( 'wp_locale', $locale_code );
+		if ( ! $gp_locale ) {
+			$gp_locale               = new GP_Locale();
+			$gp_locale->english_name = 'Unknown (' . $locale_code . ')';
+			$gp_locale->native_name  = $gp_locale->english_name;
+			$gp_locale->wp_locale    = $locale_code;
+		}
+
+		$syncable_translations = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT
+					p.id AS project_id,
+					p.name as project_name,
+					ts.slug AS translation_set_slug,
+					o.id AS original_id,
+					o.singular,
+					o.plural,
+					o.status,
+					o.comment,
+					o.priority,
+					t.*
+				FROM
+					{$wpdb->gp_translations} t,
+					{$wpdb->gp_originals} o,
+					{$wpdb->gp_translation_sets} ts,
+					{$wpdb->gp_projects} p
+				WHERE
+					t.original_id = o.id AND
+					t.translation_set_id = ts.id AND
+					ts.project_id = p.id AND
+					p.id IS NOT NULL AND
+					ts.locale = %s AND
+					t.user_id != 0 AND
+					t.status NOT IN ('old','rejected') AND
+					o.status NOT IN ('-obsolete')
+				ORDER BY p.id, t.id",
+				$gp_locale->slug
+			)
+		);
+
+		if ( ! empty( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['translation'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'sync_translations' ) ) {
+			$translations_by_project_translation_set = array();
+			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
+				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
+			}
+			echo '<h2>We will send these PO files</h2>';
+
+			$syncable_translations = array_column( $syncable_translations, null, 'id' );
+
+			foreach ( $translations_by_project_translation_set as $project_id => $translation_sets ) {
+				$project            = GP::$project->get( $project_id );
+				$entries_for_export = array();
+				foreach ( $translation_sets as $translation_set_id => $translations ) {
+					$translation_set = GP::$translation_set->get( $translation_set_id );
+					foreach ( $translations as $translation_id ) {
+						$translation = $syncable_translations[ $translation_id ];
+
+						$entries_for_export[] = new Translation_Entry(
+							array(
+								'singular'           => $translation->singular,
+								'plural'             => $translation->plural,
+								'context'            => $translation->context,
+								'extracted_comments' => $translation->comment,
+								'translations'       => array_filter( array( $translation->translation_0, $translation->translation_1, $translation->translation_2, $translation->translation_3, $translation->translation_4 ) ),
+
+							)
+						);
+					}
+					$remote_path = apply_filters( 'gp_remote_project_path', $project->path );
+					$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
+					echo wp_kses_post( 'Path: <a href="' . $url . '">' . $url . '</a> File: ' . $project->slug . '-' . $translation_set->locale . '.po' );
+					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
+					echo esc_html( GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export ) );
+					echo '</textarea><br/>';
+				}
+			}
+			exit;
+		}
+
+		$current_project = false;
+		$table_end       = function() use ( $current_project ) {
+			if ( ! $current_project ) {
+				return;
+			}
+			?>
+			</tbody></table>
+			<?php
+		};
+
+		$table_start = function( $translation ) use ( &$current_project ) {
+			if ( $current_project && intval( $translation->project_id ) === $current_project->id ) {
+				return;
+			}
+			if ( $current_project ) {
+				?>
+				</tbody></table>
+				<?php
+			}
+			$current_project = GP::$project->get( $translation->project_id );
+			?>
+			<h2>
+			<?php
+			switch ( strtok( $current_project->path, '/' ) ) {
+				case 'local-wp':
+					echo esc_html(
+						sprintf(
+							// translators: %s is the name of the WordPress translation project, such as Administration.
+							__( 'WordPress %s' ),
+							$current_project->name
+						)
+					);
+					break;
+				case 'local-plugins':
+					echo esc_html(
+						sprintf(
+							// translators: %s is a plugin name.
+							__( 'Plugin: %s' ),
+							$current_project->name
+						)
+					);
+					break;
+				case 'local-themes':
+					echo esc_html(
+						sprintf(
+							// translators: %s is a theme name.
+							__( 'Theme: %s' ),
+							$current_project->name
+						)
+					);
+					break;
+				default:
+					echo esc_html( $current_project->name );
+			}
+
+			echo ' ';
+			echo gp_link_project_get( $current_project, '<span class="dashicons dashicons-external"></span>', array( 'target' => '_blank' ) );
+			?>
+			</h2>
+			<p>
+			<?php
+			echo esc_html( $current_project->description );
+			?>
+			</p>
+			<table class="translations widefat">
+				<thead>
+					<tr>
+						<th style="width: 5%">
+							<label>
+								<input type="checkbox" checked="checked" onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll( 'input[type=checkbox]').forEach((el)=>el.checked = this.checked); return true;"/>
+							Sync
+							</label>
+						</th>
+						<th style="width: 30%">Original</th>
+						<th style="width: 30%">Translation</th>
+						<th style="width: 15%">Created</th>
+						<th style="width: 5%">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+			<?php
+		};
+		?>
+		<style>
+			:root {
+			--gp-color-status-fuzzy-subtle: #fc6;
+			--gp-color-status-current-subtle: #e9ffd8;
+			--gp-color-status-old-subtle: #fee4f8;
+			--gp-color-status-waiting-subtle: #ffffc2;
+			--gp-color-status-rejected-subtle: #ff8e8e;
+			--gp-color-status-changesrequested-subtle: #87ceeb;
+			}
+			tr.status-fuzzy td {
+				background-color: var( --gp-color-status-fuzzy-subtle );
+			}
+			tr.status-current td {
+				background-color: var( --gp-color-status-current-subtle );
+			}
+			tr.status-old td {
+				background-color: var( --gp-color-status-old-subtle );
+			}
+			tr.status-waiting td {
+				background-color: var( --gp-color-status-waiting-subtle );
+			}
+			tr.status-rejected td {
+				background-color: var( --gp-color-status-rejected-subtle );
+			}
+			tr.status-changesrequested td {
+				background-color: var( --gp-color-status-changesrequested-subtle );
+			}
+		</style>
+		<div class="wrap">
+			<h1>
+				<?php esc_html_e( 'Contribute back', 'glotpress' ); ?>
+			</h1>
+			<p>
+				<span>
+					<?php esc_html_e( 'Thank you for contributing back to WordPress.org!', 'glotpress' ); ?>
+				</span>
+				<span>
+					<?php
+					echo esc_html(
+						sprintf(
+						// translators: %s is the user's language.
+							__( 'These are all %s translations that you have created in your Local GlotPress and are now ready to be sent back to WordPress.org.', 'glotpress' ),
+							$gp_locale->native_name
+						)
+					);
+					?>
+				</span>
+			</p>
+			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
+				<input type="hidden" name="page" value="glotpress-sync" />
+				<?php wp_nonce_field( 'sync_translations' ); ?>
+		<?php foreach ( $syncable_translations as $translation ) : ?>
+			<?php
+			$table_start( $translation );
+			$original_permalink = gp_url_project_locale( $current_project, $gp_locale->slug, $translation->translation_set_slug, array( 'filters[original_id]' => $translation->original_id ) );
+			$user               = get_userdata( $translation->user_id );
+			?>
+			<tr class="status-<?php echo esc_attr( $translation->status ); ?> priority-<?php echo esc_attr( $translation->priority ); ?> has-translations">
+				<td class="sync">
+					<input type="checkbox" name="translation[<?php echo esc_attr( $translation->id ); ?>]" value="1" checked="checked" />
+					<input type="hidden" name="project[<?php echo esc_attr( $translation->id ); ?>]" value="<?php echo esc_attr( $translation->project_id ); ?>" />
+					<input type="hidden" name="translation_set[<?php echo esc_attr( $translation->id ); ?>]" value="<?php echo esc_attr( $translation->translation_set_id ); ?>" />
+				</td>
+				<td class="original">
+					<span class="original-text"><?php echo prepare_original( esc_translation( $translation->singular ) ); ?></span>
+				</td>
+				<td class="translation foreign-text">
+					<span class="translation-text"><?php echo prepare_original( esc_translation( $translation->translation_0 ) ); ?></span>
+				</td>
+				<td class="meta">
+					<?php
+					echo esc_html(
+						sprintf(
+							// translators: %s is a relative human time.
+							__( '%s ago' ),
+							human_time_diff( strtotime( $translation->date_modified ) )
+						)
+					);
+					?>
+					by <?php echo esc_html( $user->display_name ); ?>
+				</td>
+				<td class="actions">
+					<a href="<?php echo esc_url( $original_permalink ); ?>" target="_blank"><span class="dashicons dashicons-external"></span></a>
+				</td>
+			</tr>
+			<?php
+		endforeach;
+		$table_end();
+
+		?>
+		</tbody></table>
+		<p>
+			<button class="button button-primary">Sync to WordPress.org</button>
+		</p>
+		</form>
 		</div>
 		<?php
 	}
