@@ -577,6 +577,22 @@ class GP_Local {
 	 * @return void
 	 */
 	public function sync_to_wordpress_org_overview() {
+		if ( ! empty( $_POST['_wpnonce'] ) && ! empty( $_POST['translation'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) ) {
+			$translations_by_project_translation_set = array();
+			foreach ( array_keys( $_POST['translation'] ) as $id ) {
+				$translations_by_project_translation_set[ $_POST['project'][ $id ] ][ $_POST['translation_set'][ $id ] ][] = $id;
+			}
+			?>
+			<p>
+			Would send these translations: <tt>[project][translation_set] =&gt; id</tt>
+			</p>
+			<pre>
+			<?php
+			var_dump( $translations_by_project_translation_set ); // phpcs:ignore
+			?>
+			</pre>
+			<?php
+		}
 		include __DIR__ . '/../gp-templates/helper-functions.php';
 		global $wpdb;
 
@@ -645,16 +661,36 @@ class GP_Local {
 			<?php
 			switch ( strtok( $current_project->path, '/' ) ) {
 				case 'local-wp':
-					echo 'WordPress ';
+					echo esc_html(
+						sprintf(
+							// translators: %s is the name of the WordPress translation project, such as Administration.
+							__( 'WordPress %s' ),
+							$current_project->name
+						)
+					);
 					break;
 				case 'local-plugins':
-					echo 'Plugin ';
+					echo esc_html(
+						sprintf(
+							// translators: %s is a plugin name.
+							__( 'Plugin: %s' ),
+							$current_project->name
+						)
+					);
 					break;
 				case 'local-themes':
-					echo 'Theme ';
+					echo esc_html(
+						sprintf(
+							// translators: %s is a theme name.
+							__( 'Theme: %s' ),
+							$current_project->name
+						)
+					);
 					break;
+				default:
+					echo esc_html( $current_project->name );
 			}
-			echo esc_html( $current_project->name );
+
 			echo ' ';
 			echo gp_link_project_get( $current_project, '<span class="dashicons dashicons-external"></span>', array( 'target' => '_blank' ) );
 			?>
@@ -732,6 +768,7 @@ class GP_Local {
 				</span>
 			</p>
 			<form action="" method="post">
+				<?php wp_nonce_field( 'sync_translations' ); ?>
 		<?php foreach ( $translations as $translation ) : ?>
 			<?php
 			$table_start( $translation );
@@ -741,8 +778,8 @@ class GP_Local {
 			<tr class="status-<?php echo esc_attr( $translation->status ); ?> priority-<?php echo esc_attr( $translation->priority ); ?> has-translations">
 				<td class="sync">
 					<input type="checkbox" name="translation[<?php echo esc_attr( $translation->id ); ?>]" value="1" checked="checked" />
-					<input type="hidden" name="project[<?php echo esc_attr( $translation->id ); ?>]" value="translation[<?php echo esc_attr( $translation->project_id ); ?>]" />
-					<input type="hidden" name="translation_set[<?php echo esc_attr( $translation->id ); ?>]" value="translation[<?php echo esc_attr( $translation->translation_set_id ); ?>]" />
+					<input type="hidden" name="project[<?php echo esc_attr( $translation->id ); ?>]" value="<?php echo esc_attr( $translation->project_id ); ?>" />
+					<input type="hidden" name="translation_set[<?php echo esc_attr( $translation->id ); ?>]" value="<?php echo esc_attr( $translation->translation_set_id ); ?>" />
 				</td>
 				<td class="original">
 					<span class="original-text"><?php echo prepare_original( esc_translation( $translation->singular ) ); ?></span>
