@@ -27,6 +27,7 @@ class GP_Local {
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
 		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
+		// phpcs:ignore add_filter( 'gp_local_sync_url', array( $this, 'get_local_sync_url' ), 10, 2 );
 		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
 	}
 
@@ -320,6 +321,18 @@ class GP_Local {
 		}
 
 		return $project_path;
+	}
+
+	/**
+	 * Gets the URL to which we should sync.
+	 *
+	 * @param      string $url           The url.
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     string  The local synchronize url.
+	 */
+	public function get_local_sync_url( $url, $project_path ) {
+		return home_url( gp_url( 'projects/' . $project_path ) );
 	}
 
 	/**
@@ -647,37 +660,39 @@ class GP_Local {
 			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
 				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
 			}
-			echo 'We will send these PO files: ';
+			echo '<h2>We will send these PO files</h2>';
 
 			$syncable_translations = array_column( $syncable_translations, null, 'id' );
 
 			foreach ( $translations_by_project_translation_set as $project_id => $translation_sets ) {
-				$project = GP::$project->get( $project_id );
+				$project            = GP::$project->get( $project_id );
 				$entries_for_export = array();
 				foreach ( $translation_sets as $translation_set_id => $translations ) {
 					$translation_set = GP::$translation_set->get( $translation_set_id );
 					foreach ( $translations as $translation_id ) {
-						$translation = $syncable_translations[$translation_id];
+						$translation = $syncable_translations[ $translation_id ];
 
-						$entries_for_export[] = new Translation_Entry( array(
-							'singular' => $translation->singular,
-							'plural' => $translation->plural,
-							'context' => $translation->context,
-							'extracted_comments' => $translation->comment,
-							'translations' => array_filter( array( $translation->translation_0, $translation->translation_1, $translation->translation_2, $translation->translation_3, $translation->translation_4 ) ),
+						$entries_for_export[] = new Translation_Entry(
+							array(
+								'singular'           => $translation->singular,
+								'plural'             => $translation->plural,
+								'context'            => $translation->context,
+								'extracted_comments' => $translation->comment,
+								'translations'       => array_filter( array( $translation->translation_0, $translation->translation_1, $translation->translation_2, $translation->translation_3, $translation->translation_4 ) ),
 
-						) );
+							)
+						);
 					}
-					echo apply_filters( 'gp_remote_project_path', $project->path . '/' . $project->slug . '-' . $translation_set->locale . '.po' );
+					$remote_path = apply_filters( 'gp_remote_project_path', $project->path );
+					$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
+					echo wp_kses_post( 'Path: <a href="' . $url . '">' . $url . '</a> File: ' . $project->slug . '-' . $translation_set->locale . '.po' );
 					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
-					echo GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
+					echo esc_html( GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export ) );
 					echo '</textarea><br/>';
 				}
 			}
 			exit;
 		}
-
-
 
 		$current_project = false;
 		$table_end       = function() use ( $current_project ) {
