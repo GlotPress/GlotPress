@@ -26,6 +26,7 @@ class GP_Local {
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
+		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
 		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
 	}
 
@@ -297,6 +298,25 @@ class GP_Local {
 			case 'wp-plugins':
 			case 'wp-themes':
 				return 'local-' . substr( $project_path, 3 );
+		}
+
+		return $project_path;
+	}
+
+	/**
+	 * Gets the remote project path.
+	 *
+	 * @param      string $project_path  The project path.
+	 *
+	 * @return     string  The remote project path.
+	 */
+	public function get_remote_project_path( $project_path ) {
+		switch ( strtok( $project_path, '/' ) ) {
+			case 'local-wp':
+				return substr( $project_path, 6 );
+			case 'local-plugins':
+			case 'local-themes':
+				return 'wp-' . substr( $project_path, 6 );
 		}
 
 		return $project_path;
@@ -577,22 +597,6 @@ class GP_Local {
 	 * @return void
 	 */
 	public function sync_to_wordpress_org_overview() {
-		if ( ! empty( $_POST['_wpnonce'] ) && ! empty( $_POST['translation'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) ) {
-			$translations_by_project_translation_set = array();
-			foreach ( array_keys( $_POST['translation'] ) as $id ) {
-				$translations_by_project_translation_set[ $_POST['project'][ $id ] ][ $_POST['translation_set'][ $id ] ][] = $id;
-			}
-			?>
-			<p>
-			Would send these translations: <tt>[project][translation_set] =&gt; id</tt>
-			</p>
-			<pre>
-			<?php
-			var_dump( $translations_by_project_translation_set ); // phpcs:ignore
-			?>
-			</pre>
-			<?php
-		}
 		include __DIR__ . '/../gp-templates/helper-functions.php';
 		global $wpdb;
 
@@ -606,7 +610,7 @@ class GP_Local {
 			$gp_locale->wp_locale    = $locale_code;
 		}
 
-		$translations    = $wpdb->get_results(
+		$syncable_translations = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT
 					p.id AS project_id,
@@ -616,6 +620,7 @@ class GP_Local {
 					o.singular,
 					o.plural,
 					o.status,
+					o.comment,
 					o.priority,
 					t.*
 				FROM
@@ -636,6 +641,44 @@ class GP_Local {
 				$gp_locale->slug
 			)
 		);
+
+		if ( ! empty( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['translation'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'sync_translations' ) ) {
+			$translations_by_project_translation_set = array();
+			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
+				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
+			}
+			echo 'We will send these PO files: ';
+
+			$syncable_translations = array_column( $syncable_translations, null, 'id' );
+
+			foreach ( $translations_by_project_translation_set as $project_id => $translation_sets ) {
+				$project = GP::$project->get( $project_id );
+				$entries_for_export = array();
+				foreach ( $translation_sets as $translation_set_id => $translations ) {
+					$translation_set = GP::$translation_set->get( $translation_set_id );
+					foreach ( $translations as $translation_id ) {
+						$translation = $syncable_translations[$translation_id];
+
+						$entries_for_export[] = new Translation_Entry( array(
+							'singular' => $translation->singular,
+							'plural' => $translation->plural,
+							'context' => $translation->context,
+							'extracted_comments' => $translation->comment,
+							'translations' => array_filter( array( $translation->translation_0, $translation->translation_1, $translation->translation_2, $translation->translation_3, $translation->translation_4 ) ),
+
+						) );
+					}
+					echo apply_filters( 'gp_remote_project_path', $project->path . '/' . $project->slug . '-' . $translation_set->locale . '.po' );
+					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
+					echo GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
+					echo '</textarea><br/>';
+				}
+			}
+			exit;
+		}
+
+
+
 		$current_project = false;
 		$table_end       = function() use ( $current_project ) {
 			if ( ! $current_project ) {
@@ -767,9 +810,10 @@ class GP_Local {
 					?>
 				</span>
 			</p>
-			<form action="" method="post">
+			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
+				<input type="hidden" name="page" value="glotpress-sync" />
 				<?php wp_nonce_field( 'sync_translations' ); ?>
-		<?php foreach ( $translations as $translation ) : ?>
+		<?php foreach ( $syncable_translations as $translation ) : ?>
 			<?php
 			$table_start( $translation );
 			$original_permalink = gp_url_project_locale( $current_project, $gp_locale->slug, $translation->translation_set_slug, array( 'filters[original_id]' => $translation->original_id ) );
