@@ -11,11 +11,11 @@
     "url": "https://github.com/GlotPress/GlotPress/issues"
   },
   "devDependencies": {
-    "@wordpress/env": "^4.8.0",
-    "@wordpress/scripts": "^23.2.0",
+    "@wordpress/env": "^5.4.0",
+    "@wordpress/scripts": "^24.6.0",
     "grunt": "^1.5.3",
     "grunt-contrib-cssmin": "^4.0.0",
-    "grunt-contrib-uglify": "^5.2.1",
+    "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "load-grunt-tasks": "^5.1.0"
   },
@@ -24,6 +24,7 @@
     "watch": "grunt watch",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop",
-    "lint:js": "wp-scripts lint-js"
+    "lint:js": "wp-scripts lint-js",
+    "lint:js-fix": "wp-scripts lint-js --fix"
   }
 }

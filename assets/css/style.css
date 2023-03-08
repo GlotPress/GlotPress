@@ -93,6 +93,7 @@
 	--gp-color-status-old-subtle: #fee4f8;
 	--gp-color-status-waiting-subtle: #ffffc2;
 	--gp-color-status-rejected-subtle: #ff8e8e;
+	--gp-color-status-changesrequested-subtle: #87ceeb;
 }
 
 *,
@@ -332,7 +333,7 @@ button,
 	box-shadow: none;
 	background: var( --gp-color-btn-bg );
 	min-height: 32px;
-	margin: 0;
+	margin: 0 0 8px 0;
 	cursor: pointer;
 	outline: 0;
 	white-space: nowrap;
@@ -671,6 +672,14 @@ table.glossary .gp-column-comments {
 	width: 30%;
 }
 
+table.glossary .gp-column-modified {
+	width: 10%;
+}
+
+table.glossary td.date-modified {
+	white-space: nowrap;
+}
+
 table.permissions .gp-column-actions,
 table.glossary .gp-column-actions,
 table.translations .gp-column-actions {
@@ -773,6 +782,11 @@ table.translations tr.preview.status-rejected,
 	background-color: var( --gp-color-status-rejected-subtle );
 }
 
+table.translations tr.preview.status-changesrequested,
+#legend .status-changesrequested {
+	background-color: var( --gp-color-status-changesrequested-subtle );
+}
+
 table.translations tr.preview.has-warnings td.original, div#legend div.has-warnings {
 	border-left: 2px solid var( --gp-color-danger-emphasis );
 }
@@ -848,7 +862,7 @@ table.translation-sets thead th:not(.tablesorter-header) {
 	padding-right: 1.1em; /* Avoids layout shift during initalisation */
 }
 
-.tablesorter-glotpress .tablesorter-header {
+.tablesorter-glotpress .tablesorter-header:not(.sorter-false) {
 	cursor: pointer;
 	padding-right: 1.5em;
 }
@@ -857,15 +871,18 @@ table.translation-sets thead th:not(.tablesorter-header) {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	margin-right: -1.5em;
 	white-space: nowrap;
+}
+
+.tablesorter-glotpress .tablesorter-header:not(.sorter-false) .tablesorter-header-inner {
+	margin-right: -1.5em;
 }
 
 .tablesorter-glotpress .tablesorter-headerUnSorted:not(:hover):not(:focus) .tablesorter-header-inner:after {
 	visibility: hidden;
 }
 
-.tablesorter-glotpress .tablesorter-header .tablesorter-header-inner:after {
+.tablesorter-glotpress .tablesorter-header:not(.sorter-false) .tablesorter-header-inner:after {
 	content: "";
 	width: 1em;
 	height: 1em;
@@ -949,8 +966,16 @@ span.context {
 	min-width: 60%;
 }
 
-.editor .strings .textareas textarea {
+.editor .strings .textareas textarea,
+.editor .strings .textareas .counts {
 	width: 95%;
+	max-width: 40rem;
+}
+
+.editor .textareas .counts {
+	text-align: end;
+	font-size: .875rem;
+	color: var(--gp-color-fg-muted);
 }
 
 .editor .strings p.plural-numbers {
@@ -1274,6 +1299,7 @@ form.filters-toolbar a.revealing.open {
 .warning a.discard-warning {
 	float: right;
 	color: inherit;
+	margin-left: 0.5em;
 }
 
 .glossary-description,
