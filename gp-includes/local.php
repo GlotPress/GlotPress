@@ -590,7 +590,7 @@ class GP_Local {
 			$gp_locale->wp_locale    = $locale_code;
 		}
 
-		$translations = $wpdb->get_results(
+		$translations    = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT
 					p.id AS project_id,
@@ -621,23 +621,28 @@ class GP_Local {
 			)
 		);
 		$current_project = false;
-		$table_end = function() use ( $current_project ) {
+		$table_end       = function() use ( $current_project ) {
 			if ( ! $current_project ) {
 				return;
 			}
-			?></tbody></table><?php
+			?>
+			</tbody></table>
+			<?php
 		};
 
 		$table_start = function( $translation ) use ( &$current_project ) {
-			if ( $current_project && $current_project->id == $translation->project_id ) {
+			if ( $current_project && intval( $translation->project_id ) === $current_project->id ) {
 				return;
 			}
 			if ( $current_project ) {
-				?></tbody></table><?php
+				?>
+				</tbody></table>
+				<?php
 			}
 			$current_project = GP::$project->get( $translation->project_id );
 			?>
-			<h2><?php
+			<h2>
+			<?php
 			switch ( strtok( $current_project->path, '/' ) ) {
 				case 'local-wp':
 					echo 'WordPress ';
@@ -654,9 +659,11 @@ class GP_Local {
 			echo gp_link_project_get( $current_project, '<span class="dashicons dashicons-external"></span>', array( 'target' => '_blank' ) );
 			?>
 			</h2>
-			<p><?php
+			<p>
+			<?php
 			echo esc_html( $current_project->description );
-			?></p>
+			?>
+			</p>
 			<table class="translations widefat">
 				<thead>
 					<tr>
@@ -713,13 +720,15 @@ class GP_Local {
 					<?php esc_html_e( 'Thank you for contributing back to WordPress.org!', 'glotpress' ); ?>
 				</span>
 				<span>
-					<?php echo esc_html(
-					sprintf(
+					<?php
+					echo esc_html(
+						sprintf(
 						// translators: %s is the user's language.
-						__( 'These are all %s translations that you have created in your Local GlotPress and are now ready to be sent back to WordPress.org.', 'glotpress' ),
-						$gp_locale->native_name
+							__( 'These are all %s translations that you have created in your Local GlotPress and are now ready to be sent back to WordPress.org.', 'glotpress' ),
+							$gp_locale->native_name
 						)
-					); ?>
+					);
+					?>
 				</span>
 			</p>
 			<form action="" method="post">
@@ -727,9 +736,9 @@ class GP_Local {
 			<?php
 			$table_start( $translation );
 			$original_permalink = gp_url_project_locale( $current_project, $gp_locale->slug, $translation->translation_set_slug, array( 'filters[original_id]' => $translation->original_id ) );
-			$user = get_userdata( $translation->user_id );
+			$user               = get_userdata( $translation->user_id );
 			?>
-			<tr class="status-<?php echo esc_attr( $translation->status); ?> priority-<?php echo esc_attr( $translation->priority); ?> has-translations">
+			<tr class="status-<?php echo esc_attr( $translation->status ); ?> priority-<?php echo esc_attr( $translation->priority ); ?> has-translations">
 				<td class="sync">
 					<input type="checkbox" name="translation[<?php echo esc_attr( $translation->id ); ?>]" value="1" checked="checked" />
 					<input type="hidden" name="project[<?php echo esc_attr( $translation->id ); ?>]" value="translation[<?php echo esc_attr( $translation->project_id ); ?>]" />
@@ -742,7 +751,16 @@ class GP_Local {
 					<span class="translation-text"><?php echo prepare_original( esc_translation( $translation->translation_0 ) ); ?></span>
 				</td>
 				<td class="meta">
-					<?php printf( __( '%s ago' ), esc_html( human_time_diff( strtotime( $translation->date_modified ) ) ) ); ?> by <?php echo esc_html( $user->display_name ); ?>
+					<?php
+					echo esc_html(
+						sprintf(
+							// translators: %s is a relative human time.
+							__( '%s ago' ),
+							human_time_diff( strtotime( $translation->date_modified ) )
+						)
+					);
+					?>
+					by <?php echo esc_html( $user->display_name ); ?>
 				</td>
 				<td class="actions">
 					<a href="<?php echo esc_url( $original_permalink ); ?>" target="_blank"><span class="dashicons dashicons-external"></span></a>
@@ -752,7 +770,8 @@ class GP_Local {
 		endforeach;
 		$table_end();
 
-		?></tbody></table>
+		?>
+		</tbody></table>
 		<p>
 			<button class="button button-primary">Sync to WordPress.org</button>
 		</p>
