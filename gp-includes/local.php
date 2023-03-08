@@ -101,8 +101,8 @@ class GP_Local {
 			);
 			add_submenu_page(
 				'glotpress',
-				esc_html__( 'Sync to w.org', 'glotpress' ),
-				esc_html__( 'Sync to w.org', 'glotpress' ),
+				esc_html__( 'Contribute back', 'glotpress' ),
+				esc_html__( 'Contribute back', 'glotpress' ),
 				'read',
 				'glotpress-sync',
 				array( $this, 'sync_to_wordpress_org_overview' ),
@@ -706,8 +706,22 @@ class GP_Local {
 		</style>
 		<div class="wrap">
 			<h1>
-				<?php esc_html_e( 'Sync to WordPress.org', 'glotpress' ); ?>
+				<?php esc_html_e( 'Contribute back', 'glotpress' ); ?>
 			</h1>
+			<p>
+				<span>
+					<?php esc_html_e( 'Thank you for contributing back to WordPress.org!', 'glotpress' ); ?>
+				</span>
+				<span>
+					<?php echo esc_html(
+					sprintf(
+						// translators: %s is the user's language.
+						__( 'These are all %s translations that you have created in your Local GlotPress and are now ready to be sent back to WordPress.org.', 'glotpress' ),
+						$gp_locale->native_name
+						)
+					); ?>
+				</span>
+			</p>
 			<form action="" method="post">
 		<?php foreach ( $translations as $translation ) : ?>
 			<?php
