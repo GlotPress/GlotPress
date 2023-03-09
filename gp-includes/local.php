@@ -246,7 +246,7 @@ class GP_Local {
 								</p>
 							<?php else : ?>
 								<p>
-									<?php esc_html_e( 'Local GlotPress must be activae to enable local translation.', 'glotpress' ); ?>
+									<?php esc_html_e( 'Local GlotPress must be active to enable local translation.', 'glotpress' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
