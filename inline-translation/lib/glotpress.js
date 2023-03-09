@@ -98,6 +98,20 @@ function GlotPress( locale, translations ) {
 				},
 			} );
 		},
+
+		getSuggestedTranslation: function( translationPair ) {
+			return ajax( {
+				url: server.restUrl + '/suggest-translation',
+
+				data: {
+					project: translationPair.getGlotPressProject(),
+					translation_set_slug: server.translation_set_slug,
+					locale: locale.getLocaleCode(),
+					localeName: locale.getLanguageName(),
+					text: translationPair.getOriginal().objectify(),
+				},
+			} );
+		},
 	};
 }
 

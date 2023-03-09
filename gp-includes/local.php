@@ -137,6 +137,8 @@ class GP_Local {
 		} else {
 			delete_option( 'gp_enable_inline_translation' );
 		}
+
+		update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
 	}
 
 	/**
@@ -231,26 +233,39 @@ class GP_Local {
 							</p>
 						</td>
 					</tr>
+					<?php if ( class_exists( 'GP_Inline_Translation' ) ) : ?>
 					<tr>
 						<th scope="row">
 							<?php esc_html_e( 'Inline Translation', 'glotpress' ); ?>
 						</th>
 						<td>
-							<?php if ( class_exists( 'GP_Inline_Translation' ) ) : ?>
-								<p>
-									<label>
-										<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
-										<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
-										<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
-									</label>
-								</p>
-							<?php else : ?>
-								<p>
-									<?php esc_html_e( 'Local GlotPress must be active to enable local translation.', 'glotpress' ); ?>
-								</p>
-							<?php endif; ?>
+							<p>
+								<label>
+									<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
+									<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
+									<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
+								</label>
+							</p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'OpenAI API Key', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option('gp_openai_key' ) ); ?>" class="regular-text" />
+									<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>
+								</label>
+							</p>
+						</td>
+					</tr>
+					<?php else : ?>
+						<tr>
+							<?php esc_html_e( 'Enable Local GlotPress for further settings.', 'glotpress' ); ?>
+						</tr>
+					<?php endif; ?>
 					</tbody>
 				</table>
 				<?php submit_button( esc_attr__( 'Save Settings', 'glotpress' ), 'primary' ); ?>

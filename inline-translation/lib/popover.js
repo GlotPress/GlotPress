@@ -41,7 +41,9 @@ function Popover( translationPair, _locale, glotPress ) {
 			enclosingNode.addClass( nodeClass ).webuiPopover( {
 				title: getPopoverTitle(),
 				content: jQuery( '<div>' ).append( getPopoverHtml() ).html(),
-				onload: popoverOnload,
+				onload: function( el ) {
+					popoverOnload( el, translationPair, glotPress );
+				},
 				translationPair: translationPair,
 			} );
 		},
@@ -52,10 +54,30 @@ function Popover( translationPair, _locale, glotPress ) {
 	};
 }
 
-function popoverOnload( el ) {
-	el = jQuery( el ).find( 'textarea' ).get( 0 );
+function popoverOnload( el, translationPair, glotPress ) {
+	var textareas = jQuery( el ).find( 'textarea' ),
+		additional = jQuery( el ).find( 'div.additional' );
+	el = textareas.get( 0 );
 	if ( el ) {
 		el.focus();
+		if ( textareas.eq( 0 ).val() !== '' ) {
+			return;
+		}
+
+		for ( i = 0; i < textareas.length; i++ ) {
+			textareas.eq( i ).prop( 'placeholder', 'Asking ChatGPT...' );
+		}
+
+		glotPress.getSuggestedTranslation( translationPair ).done( function( response ) {
+			var i;
+			if ( response.suggestion ) {
+				for ( i = 0; i < textareas.length; i++ ) {
+					textareas.eq( i ).val( response.suggestion[ i ] ).trigger( 'keyup' );
+				}
+
+				additional.text( 'Prompt used: ' + response.prompt );
+			}
+		} );
 	}
 }
 
@@ -187,6 +209,7 @@ function getHtmlTemplate( popoverType ) {
 			'<input type="hidden" class="original" name="original[]" />' +
 			'<textarea dir="auto" class="translation" name="translation[]"></textarea>' +
 			'</div>' +
+			'<div class="additional"></div>' +
 			'</div>' +
 			'<button disabled class="button button-primary">Submit translation</button>' +
 			'</form>'
