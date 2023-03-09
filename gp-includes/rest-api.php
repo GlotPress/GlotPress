@@ -354,6 +354,13 @@ class GP_Rest_API {
 		return $translations;
 	}
 
+	/**
+	 * Gets a suggested translation from ChatGPT.
+	 *
+	 * @param      WP_REST_Request $request  The request.
+	 *
+	 * @return     array  The suggested translation.
+	 */
 	public function get_suggested_translation( $request ) {
 		$openai_key = get_option( 'gp_openai_key' );
 		if ( ! $openai_key ) {
@@ -369,40 +376,42 @@ class GP_Rest_API {
 			$language .= '. Please use informal German';
 		}
 
-		$prompt = 'Please translate the following text to ' . $language . '. This is the text: "';
+		$prompt  = 'Please translate the following text to ' . $language . '. This is the text: "';
 		$prompt .= $text['singular'];
 		$prompt .= '"';
 
 		$messages = array(
 			array(
-				'role' => 'user',
+				'role'    => 'user',
 				'content' => $prompt,
 			),
 		);
 
 		$suggestion = array();
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, "https://api.openai.com/v1/chat/completions");
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		    "Content-Type: application/json",
-		    'Authorization: Bearer ' . $openai_key,
-		));
+		$response   = wp_remote_post(
+			'https://api.openai.com/v1/chat/completions',
+			array(
+				'headers' => array(
+					'Content-Type'  => 'application/json',
+					'Authorization' => 'Bearer ' . $openai_key,
+				),
+				'body'    => wp_json_encode(
+					array(
+						'model'      => 'gpt-3.5-turbo',
+						'messages'   => $messages,
+						'max_tokens' => 1000,
+					)
+				),
+			)
+		);
 
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(
-		    array(
-		        "model" => 'gpt-3.5-turbo',
-		        "messages" => $messages,
-		        "max_tokens" => str_word_count( $text['singular'] ) * 10,
-		    )
-		));
-		$output = json_decode(curl_exec($ch), true);
-		$message = $output["choices"][0]['message'];
+		$output       = json_decode( wp_remote_retrieve_body( $response ), true );
+		$message      = $output['choices'][0]['message'];
 		$suggestion[] = trim( trim( $message['content'] ), '"' );
 
 		return array(
 			'suggestion' => $suggestion,
-			'prompt' => $prompt,
+			'prompt'     => $prompt,
 		);
 	}
 }

@@ -255,7 +255,7 @@ class GP_Local {
 						<td>
 							<p>
 								<label>
-									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option('gp_openai_key' ) ); ?>" class="regular-text" />
+									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
 									<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>
 								</label>
 							</p>
@@ -401,6 +401,9 @@ class GP_Local {
 		return '';
 	}
 
+	/**
+	 * Shows a notice when English is the UI language.
+	 */
 	private function show_english_notice() {
 		?>
 		<div class="notice notice-info">
@@ -844,7 +847,8 @@ class GP_Local {
 			</p>
 			<?php
 			if ( 'en_US' === $gp_locale->wp_locale ) {
-				return $this->show_english_notice();
+				$this->show_english_notice();
+				return;
 			}
 
 			if ( empty( $syncable_translations ) ) {
