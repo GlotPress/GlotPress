@@ -386,6 +386,25 @@ class GP_Local {
 		return '';
 	}
 
+	private function show_english_notice() {
+		?>
+		<div class="notice notice-info">
+			<p>
+			<?php
+				echo wp_kses(
+					sprintf(
+						/* Translators: %1$s is the WordPress general settings URL, %2$s is the WordPress profile settings URL. */
+						__( 'You are running your WordPress in English (US) which is the default language. Please <a href="%1$s">change your WordPress site language</a> or <a href="%2$s">change your user language</a>.', 'glotpress' ),
+						admin_url( 'options-general.php' ),
+						admin_url( 'profile.php' )
+					),
+					array( 'a' => array( 'href' => array() ) )
+				);
+			?>
+			</p>
+		</div>
+		<?php
+	}
 
 	/**
 	 * Shows a page with a list with the core, the plugins and themes installed locally.
@@ -457,24 +476,7 @@ class GP_Local {
 					return;
 			}
 			if ( 'en_US' === $gp_locale->wp_locale ) {
-				?>
-					<div class="notice notice-error">
-						<p>
-						<?php
-							echo wp_kses(
-								sprintf(
-									/* Translators: %1$s is the WordPress general settings URL, %2$s is the WordPress profile settings URL. */
-									__( 'You are running your WordPress in English (US) which is the default language. Please <a href="%1$s">change your WordPress site language</a> or <a href="%2$s">change your user language</a>.', 'glotpress' ),
-									admin_url( 'options-general.php' ),
-									admin_url( 'profile.php' )
-								),
-								array( 'a' => array( 'href' => array() ) )
-							);
-						?>
-						</p>
-					</div>
-					<?php
-					return;
+				return $this->show_english_notice();
 			}
 
 			$can_create_projects = GP::$permission->current_user_can( 'write', 'project', null );
@@ -825,6 +827,20 @@ class GP_Local {
 					?>
 				</span>
 			</p>
+			<?php
+			if ( 'en_US' === $gp_locale->wp_locale ) {
+				return $this->show_english_notice();
+			}
+
+			if ( empty( $syncable_translations ) ) {
+				?>
+				<div class="notice notice-info notice-large">
+					<?php esc_html_e( 'There are no translations to sync yet. Please translate something :-)', 'glotpress' ); ?>
+				</div>
+				<?php
+				return;
+			}
+			?>
 			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<?php wp_nonce_field( 'sync_translations' ); ?>
