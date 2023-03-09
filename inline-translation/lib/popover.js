@@ -55,7 +55,8 @@ function Popover( translationPair, _locale, glotPress ) {
 }
 
 function popoverOnload( el, translationPair, glotPress ) {
-	var textareas = jQuery( el ).find( 'textarea' ),
+	var i,
+		textareas = jQuery( el ).find( 'textarea' ),
 		additional = jQuery( el ).find( 'div.additional' );
 	el = textareas.get( 0 );
 	if ( el ) {
@@ -69,7 +70,6 @@ function popoverOnload( el, translationPair, glotPress ) {
 		}
 
 		glotPress.getSuggestedTranslation( translationPair ).done( function( response ) {
-			var i;
 			if ( response.suggestion ) {
 				for ( i = 0; i < textareas.length; i++ ) {
 					textareas.eq( i ).val( response.suggestion[ i ] ).trigger( 'keyup' );
