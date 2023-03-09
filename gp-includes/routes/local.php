@@ -86,7 +86,7 @@ class GP_Route_Local extends GP_Route_Main {
 		$project = GP::$project->by_path( $path );
 
 		if ( ! $project ) {
-			$$path_separator = '';
+			$path_separator = '';
 			$project_path    = '';
 			$parent_project  = null;
 			$path_snippets   = explode( '/', $path );
