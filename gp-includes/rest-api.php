@@ -380,14 +380,17 @@ class GP_Rest_API {
 		if ( 'German' === $language ) {
 			$language = 'informal ' . $language;
 		}
-		$prompt = '';
+		$prompt        = '';
 		$custom_prompt = get_option( 'gp_chatgpt_custom_prompt' );
 		if ( $custom_prompt ) {
-			$prompt .= $custom_prompt . '. ';
+			$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
 		}
 		$custom_prompt = get_user_option( 'gp_chatgpt_custom_prompt' );
 		if ( $custom_prompt ) {
-			$prompt .= $custom_prompt . '. ';
+			$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
+		}
+		if ( $prompt ) {
+			$prompt .= 'Given these conditions, ';
 		}
 		$prompt .= 'Translate the following text to ' . $language . ': "';
 		$prompt .= $text['singular'];

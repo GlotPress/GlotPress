@@ -185,7 +185,7 @@ class GP_Local {
 				<td>
 					<p>
 						<label>
-							<input type="text" name="gp_chatgpt_custom_prompt" value="<?php echo esc_attr( get_user_option( 'gp_chatgpt_custom_prompt' ) ); ?>" class="regular-text" />
+							<textarea name="gp_chatgpt_custom_prompt" class="regular-text"><?php echo esc_html( get_user_option( 'gp_chatgpt_custom_prompt' ) ); ?></textarea>
 						</label>
 					</p>
 					<p class="description"><?php esc_html_e( 'This will be added in front of all prompts for ChatGPT (after a global custom prompt if specified).', 'glotpress' ); ?></p>
@@ -332,7 +332,7 @@ class GP_Local {
 						<td>
 							<p>
 								<label>
-									<input type="text" name="gp_chatgpt_custom_prompt" value="<?php echo esc_attr( get_option( 'gp_chatgpt_custom_prompt' ) ); ?>" class="regular-text" />
+									<textarea name="gp_chatgpt_custom_prompt" class="regular-text"><?php echo esc_html( get_option( 'gp_chatgpt_custom_prompt' ) ); ?></textarea>
 								</label>
 							</p>
 							<p class="description"><?php esc_html_e( 'This will be added in front of all prompts for ChatGPT.', 'glotpress' ); ?></p>
