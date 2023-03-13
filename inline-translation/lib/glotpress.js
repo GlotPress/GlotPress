@@ -99,17 +99,17 @@ function GlotPress( locale, translations ) {
 			} );
 		},
 
-		getSuggestedTranslation: function( translationPair ) {
+		getSuggestedTranslation: function( translationPair, data ) {
 			return ajax( {
 				url: server.restUrl + '/suggest-translation',
 
-				data: {
+				data: Object.assign( data || {}, {
 					project: translationPair.getGlotPressProject(),
 					translation_set_slug: server.translation_set_slug,
 					locale: locale.getLocaleCode(),
 					localeName: locale.getLanguageName(),
 					text: translationPair.getOriginal().objectify(),
-				},
+				} ),
 			} );
 		},
 	};

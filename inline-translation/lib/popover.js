@@ -16,8 +16,8 @@ function Popover( translationPair, _locale, glotPress ) {
 	nodeClass = 'translator-original-' + translationPair.getOriginal().getId();
 
 	getPopoverHtml = function() {
-		form.attr( 'data-nodes', nodeClass );
-		form.data( 'translationPair', translationPair );
+		form.find( 'form' ).attr( 'data-nodes', nodeClass );
+		form.find( 'form' ).data( 'translationPair', translationPair );
 
 		return form;
 	};
@@ -55,7 +55,7 @@ function Popover( translationPair, _locale, glotPress ) {
 }
 
 function popoverOnload( el, translationPair, glotPress ) {
-	var i,
+	var getSuggestionsResponse, i,
 		textareas = jQuery( el ).find( 'textarea' ),
 		additional = jQuery( el ).find( 'div.additional' );
 	el = textareas.get( 0 );
@@ -66,18 +66,32 @@ function popoverOnload( el, translationPair, glotPress ) {
 		}
 
 		for ( i = 0; i < textareas.length; i++ ) {
-			textareas.eq( i ).prop( 'placeholder', 'Asking ChatGPT...' );
+			textareas.eq( i ).prop( 'placeholder', 'Loading suggested translation...' );
 		}
 
-		glotPress.getSuggestedTranslation( translationPair ).done( function( response ) {
+		getSuggestionsResponse = function( response ) {
 			if ( response.suggestion ) {
 				for ( i = 0; i < textareas.length; i++ ) {
 					textareas.eq( i ).val( response.suggestion[ i ] ).trigger( 'keyup' );
 				}
 
-				additional.text( 'Prompt used: ' + response.prompt );
+				additional.html( '<br/><span>Prompt used:</span><br/><textarea name="prompt"></textarea><br/><span class="unmodifyable"></span> <button class="button">Requery</button>' );
+				additional.find( 'textarea' ).val( response.prompt );
+				additional.find( 'span.unmodifyable' ).val( response.unmodifyable );
+				additional.find( 'button' ).click( function() {
+					glotPress.getSuggestedTranslation( translationPair, {
+						prompt: additional.find( 'textarea' ).val(),
+					} ).done( getSuggestionsResponse );
+					return false;
+				} );
+			} else {
+				for ( i = 0; i < textareas.length; i++ ) {
+					textareas.eq( i ).prop( 'placeholder', 'Please enter your translation' );
+				}
 			}
-		} );
+		};
+
+		glotPress.getSuggestedTranslation( translationPair ).done( getSuggestionsResponse );
 	}
 }
 
@@ -198,7 +212,7 @@ function getHtmlTemplate( popoverType ) {
 
 		case 'new-translation':
 			return jQuery(
-				'<form class="ct-new-translation">' +
+				'<div><form class="ct-new-translation">' +
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
@@ -209,10 +223,10 @@ function getHtmlTemplate( popoverType ) {
 			'<input type="hidden" class="original" name="original[]" />' +
 			'<textarea dir="auto" class="translation" name="translation[]"></textarea>' +
 			'</div>' +
-			'<div class="additional"></div>' +
 			'</div>' +
-			'<button disabled class="button button-primary">Submit translation</button>' +
-			'</form>'
+			'<button disabled class="button button-primary">Save translation</button>' +
+			'</form>' +
+			'<div class="additional"></div></div>'
 			);
 	}
 }
