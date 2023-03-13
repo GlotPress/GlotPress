@@ -371,7 +371,7 @@ class GP_Rest_API {
 			}
 		}
 
-		$text = $request->get_param( 'text' );
+		$text   = $request->get_param( 'text' );
 		$prompt = $request->get_param( 'prompt' );
 
 		$language = $request->get_param( 'localeName' );
@@ -398,14 +398,14 @@ class GP_Rest_API {
 		$unmodifyable = 'Translate the following text to ' . $language . ': ';
 
 		foreach ( array( 'singular', 'plural' ) as $key ) {
-			if ( empty( $text[$key] ) ) {
+			if ( empty( $text[ $key ] ) ) {
 				continue;
 			}
 
 			$messages = array(
 				array(
 					'role'    => 'user',
-					'content' => $prompt . $intermediary . $unmodifyable . ' "' . $text[$key] . '"',
+					'content' => $prompt . $intermediary . $unmodifyable . ' "' . $text[ $key ] . '"',
 				),
 			);
 
