@@ -856,7 +856,7 @@ class GP_Local {
 			echo esc_html( $current_project->description );
 			?>
 			</p>
-			<table class="translations widefat translator-dont-translate">
+			<table class="translations widefat translator-exclude">
 				<thead>
 					<tr>
 						<th style="width: 5%">
