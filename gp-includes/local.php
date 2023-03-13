@@ -23,7 +23,7 @@ class GP_Local {
 	 * @return void
 	 */
 	public function __construct() {
-		// Global GlotPress settings
+		// Global GlotPress settings.
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
 
@@ -198,9 +198,11 @@ class GP_Local {
 	/**
 	 * Saves the user settings.
 	 *
-	 * @return void
+	 * @param      int $user_id  The user id.
 	 */
-	public function wp_profile_options_update() {
+	public function wp_profile_options_update( $user_id ) {
+		check_admin_referer( 'update-user_' . $user_id );
+
 		update_user_option( get_current_user_id(), 'gp_openai_key', $_POST['gp_openai_user_key'] );
 		update_user_option( get_current_user_id(), 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
 	}
