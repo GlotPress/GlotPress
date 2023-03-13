@@ -362,21 +362,34 @@ class GP_Rest_API {
 	 * @return     array  The suggested translation.
 	 */
 	public function get_suggested_translation( $request ) {
-		$openai_key = get_option( 'gp_openai_key' );
+		// Prefer the user key over the global key.
+		$openai_key = get_user_option( 'gp_openai_key' );
 		if ( ! $openai_key ) {
-			return array();
+			$openai_key = get_option( 'gp_openai_key' );
+			if ( ! $openai_key ) {
+				return array();
+			}
 		}
 
 		$text = $request->get_param( 'text' );
 		if ( ! $text['singular'] ) {
 			return array();
 		}
+
 		$language = $request->get_param( 'localeName' );
 		if ( 'German' === $language ) {
-			$language .= '. Please use informal German';
+			$language = 'informal ' . $language;
 		}
-
-		$prompt  = 'Please translate the following text to ' . $language . '. This is the text: "';
+		$prompt = '';
+		$custom_prompt = get_option( 'gp_chatgpt_custom_prompt' );
+		if ( $custom_prompt ) {
+			$prompt .= $custom_prompt . '. ';
+		}
+		$custom_prompt = get_user_option( 'gp_chatgpt_custom_prompt' );
+		if ( $custom_prompt ) {
+			$prompt .= $custom_prompt . '. ';
+		}
+		$prompt .= 'Translate the following text to ' . $language . ': "';
 		$prompt .= $text['singular'];
 		$prompt .= '"';
 

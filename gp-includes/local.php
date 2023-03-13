@@ -23,8 +23,16 @@ class GP_Local {
 	 * @return void
 	 */
 	public function __construct() {
+		// Global GlotPress settings
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
+
+		// Settings for your own user.
+		add_action( 'show_user_profile', array( $this, 'wp_profile_options' ) );
+		add_action( 'edit_user_profile', array( $this, 'wp_profile_options' ) );
+		add_action( 'personal_options_update', array( $this, 'wp_profile_options_update' ) );
+		add_action( 'edit_user_profile_update', array( $this, 'wp_profile_options_update' ) );
+
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
 		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
 		// phpcs:ignore add_filter( 'gp_local_sync_url', array( $this, 'get_local_sync_url' ), 10, 2 );
@@ -139,6 +147,62 @@ class GP_Local {
 		}
 
 		update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
+		update_option( 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
+	}
+
+	/**
+	 * Shows the user settings.
+	 *
+	 * @return void
+	 */
+	public function wp_profile_options() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			?>
+			<h2 id="glotpress"><?php _e( 'GlotPress', 'glotpress' ); ?></h2>
+			<?php
+		}
+
+		?>
+		<h4><?php esc_html_e( 'ChatGTP Settings', 'glotpress' ); ?></h4>
+		<table class="form-table">
+			<tr>
+				<th scope="row">
+					<?php esc_html_e( 'Your own OpenAI API Key', 'glotpress' ); ?>
+				</th>
+				<td>
+					<p>
+						<label>
+							<input type="text" name="gp_openai_user_key" value="<?php echo esc_attr( get_user_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+						</label>
+					</p>
+					<p class="description"><?php esc_html_e( 'This may override a global OpenAI API key that was set.', 'glotpress' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<?php esc_html_e( 'Your own Custom Prompt', 'glotpress' ); ?>
+				</th>
+				<td>
+					<p>
+						<label>
+							<input type="text" name="gp_chatgpt_custom_prompt" value="<?php echo esc_attr( get_user_option( 'gp_chatgpt_custom_prompt' ) ); ?>" class="regular-text" />
+						</label>
+					</p>
+					<p class="description"><?php esc_html_e( 'This will be added in front of all prompts for ChatGPT (after a global custom prompt if specified).', 'glotpress' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Saves the user settings.
+	 *
+	 * @return void
+	 */
+	public function wp_profile_options_update() {
+		update_user_option( get_current_user_id(), 'gp_openai_key', $_POST['gp_openai_user_key'] );
+		update_user_option( get_current_user_id(), 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
 	}
 
 	/**
@@ -256,11 +320,25 @@ class GP_Local {
 							<p>
 								<label>
 									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
-									<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>
 								</label>
 							</p>
+							<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Custom Prompt', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<input type="text" name="gp_chatgpt_custom_prompt" value="<?php echo esc_attr( get_option( 'gp_chatgpt_custom_prompt' ) ); ?>" class="regular-text" />
+								</label>
+							</p>
+							<p class="description"><?php esc_html_e( 'This will be added in front of all prompts for ChatGPT.', 'glotpress' ); ?></p>
+						</td>
+					</tr>
+
 					<?php else : ?>
 						<tr>
 							<?php esc_html_e( 'Enable Local GlotPress for further settings.', 'glotpress' ); ?>
@@ -778,7 +856,7 @@ class GP_Local {
 			echo esc_html( $current_project->description );
 			?>
 			</p>
-			<table class="translations widefat">
+			<table class="translations widefat translator-dont-translate">
 				<thead>
 					<tr>
 						<th style="width: 5%">
