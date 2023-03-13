@@ -223,7 +223,6 @@ function getHtmlTemplate( popoverType ) {
 			'<input type="hidden" class="original" name="original[]" />' +
 			'<textarea dir="auto" class="translation" name="translation[]"></textarea>' +
 			'</div>' +
-			'<div class="additional"></div>' +
 			'</div>' +
 			'<button disabled class="button button-primary">Save translation</button>' +
 			'</form>' +
