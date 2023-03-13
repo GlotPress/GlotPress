@@ -688,7 +688,7 @@ class GP_Local {
 					$remote_path = apply_filters( 'gp_remote_project_path', $project->path );
 					$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
 					echo wp_kses_post( 'Path: <a href="' . $url . '">' . $url . '</a> File: ' . $project->slug . '-' . $translation_set->locale . '.po' );
-					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
+					echo '<br/><textarea cols="80" rows="10" style="font-family: monospace" readonly>';
 					echo esc_html( GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export ) );
 					echo '</textarea><br/>';
 				}

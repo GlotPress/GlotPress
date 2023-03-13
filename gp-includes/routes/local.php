@@ -87,10 +87,10 @@ class GP_Route_Local extends GP_Route_Main {
 
 		if ( ! $project ) {
 			$path_separator = '';
-			$project_path    = '';
-			$parent_project  = null;
-			$path_snippets   = explode( '/', $path );
-			$project_slug    = array_pop( $path_snippets );
+			$project_path   = '';
+			$parent_project = null;
+			$path_snippets  = explode( '/', $path );
+			$project_slug   = array_pop( $path_snippets );
 			foreach ( $path_snippets as $slug ) {
 				$project_path  .= $path_separator . $slug;
 				$path_separator = '/';
