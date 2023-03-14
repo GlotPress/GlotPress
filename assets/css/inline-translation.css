@@ -358,3 +358,6 @@ iframe.translator-untranslatable {
     padding: 0.3em;
     border-radius: 3px;
 }
+.webui-popover #inline-copy-original{
+	margin-right: .6em;
+}
