@@ -212,7 +212,13 @@ function getHtmlTemplate( popoverType ) {
 
 		case 'new-translation':
 			return jQuery(
-				'<div><form class="ct-new-translation">' +
+				'<div>' +
+			'<form class="copy-translation">' +
+			'<button class="local-copy-btn" aria-label="Copy originals">' +
+			'<span class="screen-reader-text">Copy</span><span aria-hidden="true" class="dashicons dashicons-admin-page"></span>'+
+			'</button>' +
+			'</form>' +
+			'<form class="ct-new-translation">' +
 			'<div class="original"></div>' +
 			'<p class="warnings"></p>' +
 			'<p class="context"></p>' +

@@ -361,3 +361,7 @@ iframe.translator-untranslatable {
 .webui-popover #inline-copy-original{
 	margin-right: .6em;
 }
+.webui-popover .local-copy-btn {
+	margin-bottom: .2em;
+	cursor: pointer;
+}

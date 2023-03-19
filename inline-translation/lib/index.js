@@ -247,6 +247,13 @@ registerPopoverHandlers = function() {
 
 		return false;
 	} );
+
+	jQuery( document ).on( 'submit', 'form.copy-translation', function() {
+		var $original = jQuery( this ).next().children( 'div.original' ).text();
+		jQuery( this ).next().find( 'textarea' ).val( $original );
+		
+		return false;
+	} );
 };
 
 function removeCssClasses() {
