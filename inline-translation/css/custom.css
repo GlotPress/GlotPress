@@ -106,3 +106,9 @@ iframe.translator-untranslatable {
 .webui-popover > .arrow {
 	margin: 0;
 }
+.webui-popover p.local-inline-warning {
+	color: #a62626;
+	border: #a62626 thin solid;
+    padding: 0.3em;
+    border-radius: 3px;
+}
