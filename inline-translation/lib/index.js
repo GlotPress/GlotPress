@@ -189,8 +189,6 @@ registerPopoverHandlers = function() {
 			$node.text( newTranslationStringsFromForm[ 0 ] );
 		}
 
-		$form.closest( '.webui-popover' ).hide();
-
 		// Reporting to GlotPress
 		jQuery
 			.when( translationPair.getOriginal().getId() )
@@ -203,7 +201,22 @@ registerPopoverHandlers = function() {
 					if ( typeof data[ originalId ] === 'undefined' ) {
 						return;
 					}
+					var warnings = data[ originalId ].pop().warnings;
+					if ( warnings !== 'null' ) {
+						
+						var warningsObj = jQuery.parseJSON( warnings )[0];
+						var outputWarningMessage = '';
+						jQuery.each( warningsObj, function( key, value ) {
+							outputWarningMessage += value + '<br>';
+						});
+						
+						$form.find('.warnings').html( '<p class="local-inline-warning"><b>Warnings: </b>' + outputWarningMessage + '</p>' );
 
+						return;
+					}
+
+					$form.closest( '.webui-popover' ).hide();
+					
 					translationPair.updateAllTranslations( data[ originalId ], currentUserId );
 					makeTranslatable( translationPair, $node );
 					notifyTranslated( translationPair );

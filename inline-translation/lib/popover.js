@@ -214,6 +214,7 @@ function getHtmlTemplate( popoverType ) {
 			return jQuery(
 				'<div><form class="ct-new-translation">' +
 			'<div class="original"></div>' +
+			'<p class="warnings"></p>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
 			'<p class="info"></p>' +
