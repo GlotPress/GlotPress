@@ -137,7 +137,7 @@ class GP_Rest_API {
 				}
 			}
 
-			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
+			$data['warnings'] = wp_json_encode( GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale ) );
 
 			if ( empty( $data['warnings'] ) && ( GP::$permission->current_user_can( 'approve', 'translation-set', $translation_set->id ) || GP::$permission->current_user_can( 'write', 'project', $project->id ) ) ) {
 				$data['status'] = 'current';
