@@ -194,29 +194,31 @@ registerPopoverHandlers = function() {
 			.when( translationPair.getOriginal().getId() )
 			.done( function( originalId ) {
 				var submittedTranslations = jQuery.makeArray( newTranslationStringsFromForm ),
-					translation = {};
+					translation = {},
+					warnings = '',
+					warningsObj = {},
+					outputWarningMessage = '';
 
 				translation[ originalId ] = submittedTranslations;
 				glotPress.submitTranslation( translation, translationPair ).done( function( data ) {
 					if ( typeof data[ originalId ] === 'undefined' ) {
 						return;
 					}
-					var warnings = data[ originalId ].pop().warnings;
+					warnings = data[ originalId ].pop().warnings;
 					if ( warnings !== 'null' ) {
-						
-						var warningsObj = jQuery.parseJSON( warnings )[0];
-						var outputWarningMessage = '';
+						warningsObj = jQuery.parseJSON( warnings )[ 0 ];
+
 						jQuery.each( warningsObj, function( key, value ) {
 							outputWarningMessage += value + '<br>';
-						});
-						
-						$form.find('.warnings').html( '<p class="local-inline-warning"><b>Warnings: </b>' + outputWarningMessage + '</p>' );
+						} );
+
+						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Warnings: </b>' + outputWarningMessage + '</p>' );
 
 						return;
 					}
 
 					$form.closest( '.webui-popover' ).hide();
-					
+
 					translationPair.updateAllTranslations( data[ originalId ], currentUserId );
 					makeTranslatable( translationPair, $node );
 					notifyTranslated( translationPair );
