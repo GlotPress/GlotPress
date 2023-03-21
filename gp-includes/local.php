@@ -23,8 +23,16 @@ class GP_Local {
 	 * @return void
 	 */
 	public function __construct() {
+		// Global GlotPress settings.
 		add_action( 'admin_menu', array( $this, 'add_glotpress_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'save_glotpress_settings' ) );
+
+		// Settings for your own user.
+		add_action( 'show_user_profile', array( $this, 'wp_profile_options' ) );
+		add_action( 'edit_user_profile', array( $this, 'wp_profile_options' ) );
+		add_action( 'personal_options_update', array( $this, 'wp_profile_options_update' ) );
+		add_action( 'edit_user_profile_update', array( $this, 'wp_profile_options_update' ) );
+
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
 		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
 		// phpcs:ignore add_filter( 'gp_local_sync_url', array( $this, 'get_local_sync_url' ), 10, 2 );
@@ -137,6 +145,66 @@ class GP_Local {
 		} else {
 			delete_option( 'gp_enable_inline_translation' );
 		}
+
+		update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
+		update_option( 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
+	}
+
+	/**
+	 * Shows the user settings.
+	 *
+	 * @return void
+	 */
+	public function wp_profile_options() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			?>
+			<h2 id="glotpress"><?php _e( 'GlotPress', 'glotpress' ); ?></h2>
+			<?php
+		}
+
+		?>
+		<h4><?php esc_html_e( 'ChatGTP Settings', 'glotpress' ); ?></h4>
+		<table class="form-table">
+			<tr>
+				<th scope="row">
+					<?php esc_html_e( 'Your own OpenAI API Key', 'glotpress' ); ?>
+				</th>
+				<td>
+					<p>
+						<label>
+							<input type="text" name="gp_openai_user_key" value="<?php echo esc_attr( get_user_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+						</label>
+					</p>
+					<p class="description"><?php esc_html_e( 'This may override a global OpenAI API key that was set.', 'glotpress' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<?php esc_html_e( 'Your own Custom Prompt', 'glotpress' ); ?>
+				</th>
+				<td>
+					<p>
+						<label>
+							<textarea name="gp_chatgpt_custom_prompt" class="regular-text"><?php echo esc_html( get_user_option( 'gp_chatgpt_custom_prompt' ) ); ?></textarea>
+						</label>
+					</p>
+					<p class="description"><?php esc_html_e( 'This will be added in front of all prompts for ChatGPT (after a global custom prompt if specified).', 'glotpress' ); ?></p>
+				</td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Saves the user settings.
+	 *
+	 * @param      int $user_id  The user id.
+	 */
+	public function wp_profile_options_update( $user_id ) {
+		check_admin_referer( 'update-user_' . $user_id );
+
+		update_user_option( get_current_user_id(), 'gp_openai_key', $_POST['gp_openai_user_key'] );
+		update_user_option( get_current_user_id(), 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
 	}
 
 	/**
@@ -231,26 +299,53 @@ class GP_Local {
 							</p>
 						</td>
 					</tr>
+					<?php if ( class_exists( 'GP_Inline_Translation' ) ) : ?>
 					<tr>
 						<th scope="row">
 							<?php esc_html_e( 'Inline Translation', 'glotpress' ); ?>
 						</th>
 						<td>
-							<?php if ( class_exists( 'GP_Inline_Translation' ) ) : ?>
-								<p>
-									<label>
-										<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
-										<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
-										<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
-									</label>
-								</p>
-							<?php else : ?>
-								<p>
-									<?php esc_html_e( 'Local GlotPress must be active to enable local translation.', 'glotpress' ); ?>
-								</p>
-							<?php endif; ?>
+							<p>
+								<label>
+									<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
+									<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
+									<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
+								</label>
+							</p>
 						</td>
 					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'OpenAI API Key', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+								</label>
+							</p>
+							<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'Custom Prompt', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<textarea name="gp_chatgpt_custom_prompt" class="regular-text"><?php echo esc_html( get_option( 'gp_chatgpt_custom_prompt' ) ); ?></textarea>
+								</label>
+							</p>
+							<p class="description"><?php esc_html_e( 'This will be added in front of all prompts for ChatGPT.', 'glotpress' ); ?></p>
+						</td>
+					</tr>
+
+					<?php else : ?>
+						<tr>
+							<?php esc_html_e( 'Enable Local GlotPress for further settings.', 'glotpress' ); ?>
+						</tr>
+					<?php endif; ?>
 					</tbody>
 				</table>
 				<?php submit_button( esc_attr__( 'Save Settings', 'glotpress' ), 'primary' ); ?>
@@ -386,6 +481,9 @@ class GP_Local {
 		return '';
 	}
 
+	/**
+	 * Shows a notice when English is the UI language.
+	 */
 	private function show_english_notice() {
 		?>
 		<div class="notice notice-info">
@@ -760,7 +858,7 @@ class GP_Local {
 			echo esc_html( $current_project->description );
 			?>
 			</p>
-			<table class="translations widefat">
+			<table class="translations widefat translator-exclude">
 				<thead>
 					<tr>
 						<th style="width: 5%">
@@ -829,7 +927,8 @@ class GP_Local {
 			</p>
 			<?php
 			if ( 'en_US' === $gp_locale->wp_locale ) {
-				return $this->show_english_notice();
+				$this->show_english_notice();
+				return;
 			}
 
 			if ( empty( $syncable_translations ) ) {

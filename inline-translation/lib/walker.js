@@ -62,7 +62,9 @@ module.exports = function( TranslationPair, jQuery, document ) {
 				enclosingNode.addClass( 'translator-checked' );
 
 				if (
-					enclosingNode.closest( '.webui-popover' ).length
+					enclosingNode.closest( '.webui-popover' ).length ||
+					enclosingNode.hasClass( 'translator-exclude' ) ||
+					enclosingNode.closest( '.translator-exclude' ).length
 				) {
 					return false;
 				}
