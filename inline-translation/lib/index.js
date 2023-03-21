@@ -206,7 +206,7 @@ registerPopoverHandlers = function() {
 					}
 					warnings = data[ originalId ].pop().warnings;
 					if ( warnings !== 'null' ) {
-						warningsObj = jQuery.parseJSON( warnings )[ 0 ];
+						warningsObj = JSON.parse( warnings )[ 0 ];
 
 						jQuery.each( warningsObj, function( key, value ) {
 							outputWarningMessage += value + '<br>';
