@@ -185,7 +185,7 @@ registerPopoverHandlers = function() {
 		// TODO: reset on failure.
 		// TODO: use Jed to insert with properly replaced variables
 		$node.addClass( 'translator-user-translated' ).removeClass( 'translator-untranslated' );
-		if ( $node.children().letnh === 0 ) {
+		if ( $node.children().length === 0 ) {
 			$node.text( newTranslationStringsFromForm[ 0 ] );
 		}
 
