@@ -331,7 +331,7 @@ class GP_Inline_Translation {
 			foreach ( $this->$strings as $translation => $originals ) {
 				foreach ( $originals as $context_key => $original ) {
 					$text_domain = strtok( $context_key, '|' );
-					if ( ! isset( $projects[ $text_domain ] ) ) {
+					if ( ! isset( $projects[ $text_domain ] ) || ! isset( $translation_sets[ $text_domain ] ) ) {
 						continue;
 					}
 					$context = strtok( '|' );
@@ -388,7 +388,8 @@ class GP_Inline_Translation {
 		if ( $context ) {
 			$entry->context = $context;
 		}
-			$original_record = false;
+
+		$original_record = false;
 		foreach ( $projects as $project ) {
 			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry );
 			if ( $original_record ) {
@@ -424,6 +425,10 @@ class GP_Inline_Translation {
 			}
 		}
 
+
+		if ( ! isset( $translation_sets[ $project->id ] ) || ! $translation_sets[ $project->id ] ) {
+			return false;
+		}
 		$query_result                     = new stdClass();
 		$query_result->original_id        = $original_record->id;
 		$query_result->original           = $original;
