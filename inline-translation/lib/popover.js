@@ -215,7 +215,7 @@ function getHtmlTemplate( popoverType ) {
 				'<div>' +
 			'<form class="copy-translation">' +
 			'<button class="local-copy-btn" aria-label="Copy originals">' +
-			'<span class="screen-reader-text">Copy</span><span aria-hidden="true" class="dashicons dashicons-admin-page"></span>'+
+			'<span class="screen-reader-text">Copy</span><span aria-hidden="true" class="dashicons dashicons-admin-page"></span>' +
 			'</button>' +
 			'</form>' +
 			'<form class="ct-new-translation">' +
