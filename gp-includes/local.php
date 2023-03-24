@@ -783,11 +783,17 @@ class GP_Local {
 							)
 						);
 					}
-					$remote_path = apply_filters( 'gp_remote_project_path', $project->path );
+					$remote_path = apply_filters( 'gp_remote_project_path', $project->path . '/dev/' . $translation_set->locale . '/' . $translation_set->slug . '/' );
 					$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
-					echo wp_kses_post( 'Path: <a href="' . $url . '">' . $url . '</a> File: ' . $project->slug . '-' . $translation_set->locale . '.po' );
+					$file = $project->slug . '-' . $translation_set->locale . '.po';
+					$po_contents = GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
+					$download = 'data:text/plain;base64,' . base64_encode( $po_contents );
+					echo '<br/>';
+					echo 'Upload to: <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
+					echo ' File: ' . esc_html( $file ) . ' ';
+					echo '<a download="' . esc_attr( $file ) . '" href="' . esc_attr( $download ) . '">Download</a> → <a href="' . esc_attr( $url ) . 'import-translations/">Import manually</a>';
 					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
-					echo esc_html( GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export ) );
+					echo esc_html( $po_contents );
 					echo '</textarea><br/>';
 				}
 			}
