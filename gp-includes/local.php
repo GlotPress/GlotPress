@@ -985,6 +985,7 @@ class GP_Local {
 
 			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
 				<input type="hidden" name="page" value="glotpress-sync" />
+				<input type="hidden" name="modified_after" value="<?php echo esc_attr( $modified_after ); ?>" />
 				<?php wp_nonce_field( 'sync_translations' ); ?>
 		<?php foreach ( $syncable_translations as $translation ) : ?>
 			<?php
