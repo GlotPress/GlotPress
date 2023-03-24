@@ -231,7 +231,7 @@ function getHtmlTemplate( popoverType ) {
 			'<textarea dir="auto" class="translation" name="translation[]"></textarea>' +
 			'</div>' +
 			'</div>' +
-			'<button disabled class="button button-primary">Save translation</button>' +
+			'<button disabled class="button button-primary">Save Translation</button>' +
 			'</form>' +
 			'<div class="additional"></div></div>'
 			);
