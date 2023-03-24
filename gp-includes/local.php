@@ -723,6 +723,25 @@ class GP_Local {
 			$gp_locale->wp_locale    = $locale_code;
 		}
 
+		$modified_after = 'last week';
+		$modified_after_list = array(
+			'1970-01-01' => __( 'No Limit', 'glotpress' ),
+			'last month' => __( 'Last Month', 'glotpress' ),
+			'last week' => __( 'Last Week', 'glotpress' ),
+			'yesterday' => __( 'Yesterday', 'glotpress' ),
+		);
+
+		$last_submission = get_user_option( 'glotpress_last_sync_submission' );
+		if ( $last_submission ) {
+			$modified_after_list[ $last_submission ] = __( 'Last Submission', 'glotpress' );
+			if ( 'last week' === $modified_after ) {
+				$modified_after = $last_submission;
+			}
+		}
+		if ( isset( $_REQUEST['modified_after'] ) ) {
+			$modified_after = $_REQUEST['modified_after'];
+		}
+
 		$syncable_translations = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT
@@ -749,13 +768,16 @@ class GP_Local {
 					ts.locale = %s AND
 					t.user_id != 0 AND
 					t.status NOT IN ('old','rejected') AND
-					o.status NOT IN ('-obsolete')
+					o.status NOT IN ('-obsolete') AND
+					t.date_modified > %s
 				ORDER BY p.id, t.id",
-				$gp_locale->slug
+				$gp_locale->slug,
+				date( 'Y-m-d H:i:s', strtotime(  $modified_after ) )
 			)
 		);
 
 		if ( ! empty( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['translation'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'sync_translations' ) ) {
+			update_user_option( get_current_user_id(), 'glotpress_last_sync_submission', date( 'Y-m-d H:i:s' ) );
 			$translations_by_project_translation_set = array();
 			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
 				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
@@ -791,7 +813,7 @@ class GP_Local {
 					echo '<br/>';
 					echo 'Upload to: <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
 					echo ' File: ' . esc_html( $file ) . ' ';
-					echo '<a download="' . esc_attr( $file ) . '" href="' . esc_attr( $download ) . '">Download</a> → <a href="' . esc_attr( $url ) . 'import-translations/">Import manually</a>';
+					echo '<a download="' . esc_attr( $file ) . '" href="' . esc_attr( $download ) . '">Download</a> → <a href="' . esc_attr( $url ) . 'import-translations/" target="_blank">Import manually</a>';
 					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
 					echo esc_html( $po_contents );
 					echo '</textarea><br/>';
@@ -937,15 +959,30 @@ class GP_Local {
 				return;
 			}
 
-			if ( empty( $syncable_translations ) ) {
-				?>
-				<div class="notice notice-info notice-large">
+			?>
+
+			<form action="" method="get">
+				<input type="hidden" name="page" value="glotpress-sync" />
+				<label for="modified_after">
+					<?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?>
+					<select name="modified_after" id="modified_after">
+						<?php foreach ( $modified_after_list as $key => $value ): ?>
+							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $modified_after ); ?>><?php echo esc_html( $value ); ?></option>
+						<?php endforeach ?>
+					</select>
+				</label>
+				<button class="button button-secondary"><?php esc_html_e( 'Update list', 'glotpress' ); ?></button>
+			</form>
+
+			<?php if ( empty( $syncable_translations ) ) : ?>
+				<div class="notice notice-info notice-large inline">
 					<?php esc_html_e( 'There are no translations to sync yet. Please translate something :-)', 'glotpress' ); ?>
 				</div>
-				<?php
+			<?php
 				return;
-			}
+			endif;
 			?>
+
 			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<?php wp_nonce_field( 'sync_translations' ); ?>
