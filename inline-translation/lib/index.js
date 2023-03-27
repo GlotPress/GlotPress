@@ -222,10 +222,8 @@ registerPopoverHandlers = function() {
 					translationPair.updateAllTranslations( data[ originalId ], currentUserId );
 					makeTranslatable( translationPair, $node );
 					notifyTranslated( translationPair );
-					
-					var nextUntranslated = jQuery('.translator-translatable.translator-untranslated');
-					nextUntranslated.webuiPopover('show');
 
+					jQuery( '.translator-translatable.translator-untranslated' ).webuiPopover( 'show' );
 				} ).fail( function() {
 					debug( 'Submitting new translation failed', translation );
 				} );
