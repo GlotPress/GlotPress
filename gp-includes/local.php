@@ -753,6 +753,7 @@ class GP_Local {
 					o.plural,
 					o.status,
 					o.comment,
+					o.context,
 					o.priority,
 					t.*
 				FROM
