@@ -59,7 +59,7 @@ function Original( original ) {
 	return {
 		type: 'Original',
 		getSingular: function() {
-			return singular;
+			return singular.replace(/%s|%d/g, '<a class="inline-placeholder" href="#">$&</a>');
 		},
 		getPlural: function() {
 			return plural;
