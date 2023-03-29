@@ -621,19 +621,17 @@ class GP_Local {
 						}
 						$path            = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] );
 						$project         = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
-						$icon = '<span class="status"></span>';
-						$title = '';
+						$icon            = '<span class="status"></span>';
+						$title           = '';
 						$translation_set = false;
 						if ( $project ) {
 							$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $locale_slug, $gp_locale->slug );
 							if ( $translation_set ) {
-								$icon = '<a href="' . esc_attr( gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ) ) . '">✅</a>';
+								$icon  = '<a href="' . esc_attr( gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ) ) . '">✅</a>';
 								$title = __( 'Project and language are available.', 'glotpress' );
 							} else {
-								// warning icon
-								$icon = '⚠️';
+								$icon  = '⚠️';
 								$title = __( 'Language is not available.', 'glotpress' );
-
 							}
 						}
 						?>
@@ -684,23 +682,23 @@ class GP_Local {
 											<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
 											<button class="button">
 											<?php
-												$name = $item['Name'];
-												if ( 'wp' === $type ) {
-													$name = 'WordPress ' . $name;
-												}
+											$name = $item['Name'];
+											if ( 'wp' === $type ) {
+												$name = 'WordPress ' . $name;
+											}
 
-												if ( ! $translation_set ) {
-													echo esc_html(
-														sprintf(
-															/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
-															__( 'Translate %1$s to %2$s', 'glotpress' ),
-															$name,
-															$gp_locale->native_name
-														)
-													);
-												} else {
-													esc_html_e( 'Update strings and translations', 'glotpress' );
-												}
+											if ( ! $translation_set ) {
+												echo esc_html(
+													sprintf(
+														/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
+														__( 'Translate %1$s to %2$s', 'glotpress' ),
+														$name,
+														$gp_locale->native_name
+													)
+												);
+											} else {
+												esc_html_e( 'Update strings and translations', 'glotpress' );
+											}
 											?>
 											</button>
 											<span class="spinner" style="float: none; margin: 0 0 0 5px;"></span>
@@ -777,12 +775,12 @@ class GP_Local {
 			$gp_locale->wp_locale    = $locale_code;
 		}
 
-		$modified_after = 'last week';
+		$modified_after      = 'last week';
 		$modified_after_list = array(
 			'1970-01-01' => __( 'No Limit', 'glotpress' ),
 			'last month' => __( 'Last Month', 'glotpress' ),
-			'last week' => __( 'Last Week', 'glotpress' ),
-			'yesterday' => __( 'Yesterday', 'glotpress' ),
+			'last week'  => __( 'Last Week', 'glotpress' ),
+			'yesterday'  => __( 'Yesterday', 'glotpress' ),
 		);
 
 		$last_submission = get_user_option( 'glotpress_last_sync_submission' );
@@ -792,8 +790,10 @@ class GP_Local {
 				$modified_after = $last_submission;
 			}
 		}
-		if ( isset( $_REQUEST['modified_after'] ) ) {
-			$modified_after = $_REQUEST['modified_after'];
+		if ( wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) && isset( $_POST['modified_after'] ) ) {
+			$modified_after = $_POST['modified_after'];
+		} elseif ( isset( $_GET['modified_after'] ) ) {
+			$modified_after = $_GET['modified_after'];
 		}
 
 		$syncable_translations = $wpdb->get_results(
@@ -827,12 +827,12 @@ class GP_Local {
 					t.date_modified > %s
 				ORDER BY p.id, t.id",
 				$gp_locale->slug,
-				date( 'Y-m-d H:i:s', strtotime(  $modified_after ) )
+				gmdate( 'Y-m-d H:i:s', strtotime( $modified_after ) )
 			)
 		);
 
 		if ( ! empty( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['translation'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'sync_translations' ) ) {
-			update_user_option( get_current_user_id(), 'glotpress_last_sync_submission', date( 'Y-m-d H:i:s' ) );
+			update_user_option( get_current_user_id(), 'glotpress_last_sync_submission', gmdate( 'Y-m-d H:i:s' ) );
 			$translations_by_project_translation_set = array();
 			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
 				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
@@ -866,8 +866,10 @@ class GP_Local {
 					$file = $project->slug . '-' . $translation_set->locale . '.po';
 
 					$po_contents = GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
-					$download = 'data:text/plain;base64,' . base64_encode( $po_contents );
+
+					$download = 'data:text/plain;base64,' . base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 					echo '<br/>';
+
 					echo 'Upload to: <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
 					echo ' File: ' . esc_html( $file ) . ' ';
 					echo '<a download="' . esc_attr( $file ) . '" href="' . esc_attr( $download ) . '">Download</a> → <a href="' . esc_attr( $url ) . 'import-translations/" target="_blank">Import manually</a>';
@@ -1023,7 +1025,7 @@ class GP_Local {
 				<label for="modified_after">
 					<?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?>
 					<select name="modified_after" id="modified_after">
-						<?php foreach ( $modified_after_list as $key => $value ): ?>
+						<?php foreach ( $modified_after_list as $key => $value ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $modified_after ); ?>><?php echo esc_html( $value ); ?></option>
 						<?php endforeach ?>
 					</select>
@@ -1035,7 +1037,7 @@ class GP_Local {
 				<div class="notice notice-info notice-large inline">
 					<?php esc_html_e( 'There are no translations to sync yet. Please translate something :-)', 'glotpress' ); ?>
 				</div>
-			<?php
+				<?php
 				return;
 			endif;
 			?>
