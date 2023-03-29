@@ -501,19 +501,20 @@ class GP_Rest_API {
 		);
 
 		$languages_dir  = trailingslashit( ABSPATH ) . 'wp-content/languages/';
-		$local_path = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
-		if ( ! file_exists( $local_path ) || $translation_set ) {
-			if ( substr( $local_path, -2 ) === 'po' ) {
-				$local_mo = substr( $local_path, 0, -2 ) . 'mo';
-				$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_path, $local_mo );
+
+		$local_po = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
+		if ( ! file_exists( $local_po ) || $translation_set ) {
+			if ( substr( $local_po, -2 ) === 'po' ) {
+				$local_mo = substr( $local_po, 0, -2 ) . 'mo';
+				$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_po, $local_mo );
 				if ( is_wp_error( $downloaded ) ) {
 					$messages[] = $downloaded->get_error_message();
 				} else {
-					$messages[] = sprintf(
+					$messages[] = make_clickable( sprintf(
 						// translators: %s is a URL.
 						__( 'Downloaded PO file from %s', 'glotpress' ),
 						$downloaded
-					);
+					) );
 				}
 			} else {
 				$messages[] = __( 'Could not determine PO path.', 'glotpress' );
@@ -533,25 +534,30 @@ class GP_Rest_API {
 			$messages[] = __( 'Translation set was created.', 'glotpress' );
 		}
 
-		$originals = $this->get_or_import_originals( $project, $local_path );
-		$messages[] = sprintf(
-			// translators: %s is the number of originals.
-			_n( 'Imported %s original.', 'Imported %s originals.', $originals[ 0 ], 'glotpress' ),
-			$originals[ 0 ]
-		);
+		$originals_added = false;
+		$translations_added = false;
+		if ( file_exists( $local_po ) ) {
+			list( $originals_added ) = $this->get_or_import_originals( $project, $local_po );
+			$messages[] = sprintf(
+				// translators: %s is the number of originals.
+				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
+				$originals_added
+			);
 
-		$previous_translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
-		$translations = $this->get_or_import_translations( $project, $translation_set, $local_path );
-		$new_translations = count( $previous_translations ) - count( $translations );
-		$messages[] = sprintf(
-			// translators: %s is the number of translations.
-			_n( 'Imported new %s translation.', 'Imported new %s translations.', $new_translations, 'glotpress' ),
-			$new_translations
-		);
+			$translations_added = $this->get_or_import_translations( $project, $translation_set, $local_po );
+			$messages[] = sprintf(
+				// translators: %s is the number of translations.
+				_n( 'Imported new %s translation.', 'Imported new %s translations.', $translations_added, 'glotpress' ),
+				$translations_added
+			);
+		}
 
 		return array(
 			'project' => $project->id,
 			'translation_set' => $translation_set->id,
+			'url' => gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ),
+			'originals_added' => $originals_added,
+			'translations_added' => $translations_added,
 			'messages' => $messages,
 		);
 	}
@@ -611,14 +617,14 @@ class GP_Rest_API {
 	 * Gets or imports the originals.
 	 *
 	 * @param GP_Project $project   The project.
-	 * @param string     $local_path The file to import.
+	 * @param string     $local_po The file to import.
 	 *
 	 * @return array
 	 */
-	private function get_or_import_originals( GP_Project $project, string $local_path ): array {
+	private function get_or_import_originals( GP_Project $project, string $local_po ): array {
 		$format    = 'po';
 		$format    = gp_array_get( GP::$formats, $format, null );
-		$originals = $format->read_originals_from_file( $local_path, $project );
+		$originals = $format->read_originals_from_file( $local_po, $project );
 		$originals = GP::$original->import_for_project( $project, $originals );
 
 		return $originals;
@@ -629,20 +635,16 @@ class GP_Rest_API {
 	 *
 	 * @param GP_Project         $project         The project.
 	 * @param GP_Translation_Set $translation_set The translation set.
-	 * @param string             $local_path       The file path to import.
+	 * @param string             $local_po       The file path to import.
 	 *
 	 * @return array
 	 */
-	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $local_path ):array {
+	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $local_po ):int {
 		$po       = new PO();
-		$imported = $po->import_from_file( $local_path );
+		$po->import_from_file( $local_po );
 
 		add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
-		$translation_set->import( $po, 'current' );
-
-		$translations = GP::$translation->for_export( $project, $translation_set, array( 'status' => 'current' ) );
-
-		return $translations;
+		return $translation_set->import( $po, 'current' );
 	}
 
 	/**
@@ -692,10 +694,10 @@ class GP_Rest_API {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 		$po_file_url = apply_filters( 'gp_local_sync_url', $po_file_url );
-		$po_contents = file_get_contents( $po_file_url );
-		if ( is_wp_error( $po_contents ) ) {
-			return $po_contents;
-		} elseif ( ! $po_contents ) {
+		$po_file = download_url( $po_file_url );
+		if ( is_wp_error( $po_file ) ) {
+			return $po_file;
+		} elseif ( ! $po_file ) {
 			return new WP_Error(
 				'download_failed',
 				sprintf(
@@ -705,11 +707,12 @@ class GP_Rest_API {
 				)
 			);
 		}
-		file_put_contents( $local_po, $po_contents );
-		$mo_contents = file_get_contents( $mo_file_url );
-		if ( is_wp_error( $mo_contents ) ) {
-			return $mo_contents;
-		} elseif ( ! $mo_contents ) {
+		rename( $po_file, $local_po );
+
+		$mo_file = download_url( $mo_file_url );
+		if ( is_wp_error( $mo_file ) ) {
+			return $mo_file;
+		} elseif ( ! $mo_file ) {
 			return new WP_Error(
 				'download_failed',
 				sprintf(
@@ -719,7 +722,7 @@ class GP_Rest_API {
 				)
 			);
 		}
-		file_put_contents( $local_mo, $mo_contents );
+		rename( $mo_file, $local_mo );
 		return $po_file_url;
 	}
 }

@@ -627,18 +627,18 @@ class GP_Local {
 						if ( $project ) {
 							$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $locale_slug, $gp_locale->slug );
 							if ( $translation_set ) {
-								$icon = '<a href="' . esc_attr( gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ) ) . '" class="status">✅</a>';
+								$icon = '<a href="' . esc_attr( gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ) ) . '">✅</a>';
 								$title = __( 'Project and language are available.', 'glotpress' );
 							} else {
 								// warning icon
-								$icon = '<span class="status">⚠️</span>';
+								$icon = '⚠️';
 								$title = __( 'Language is not available.', 'glotpress' );
 
 							}
 						}
 						?>
 						<tr>
-							<td title="<?php echo esc_attr( $title ); ?>">
+							<td title="<?php echo esc_attr( $title ); ?>" class="status">
 								<?php echo wp_kses_post( $icon ); ?>
 							</td>
 							<td>
@@ -741,11 +741,11 @@ class GP_Local {
 						.then( function( response ) {
 							const tr = form.closest( 'tr' );
 							if ( response.error ) {
-								tr.querySelector( '.status' ).textContent = '⚠️';
-								tr.querySelector( 'td.description' ).textContent = response.error;
+								tr.querySelector( 'td.status' ).textContent = '⚠️';
+								tr.querySelector( 'td.description' ).textContent += response.error;
 							} else {
-								tr.querySelector( '.status' ).textContent = '✅';
-								tr.querySelector( 'td.description' ).textContent = response.messages.join( '\n' )
+								tr.querySelector( 'td.status' ).innerHTML = '<a href="' + response.url + '">✅</a><br/>Originals:&nbsp;' + response.originals_added + '<br/>Translations:&nbsp;' + response.translations_added;
+								tr.querySelector( 'td.description' ).innerHTML += '<ul><li>' + response.messages.join( '</li><li>' );
 
 							}
 						});
