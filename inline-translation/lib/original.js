@@ -114,6 +114,12 @@ function Original( original ) {
 			pluralGlossaryMarkup = markup;
 			return pluralGlossaryMarkup;
 		},
+		getPlaceholders: function(){
+			var regexPattern = /%(\d\$)?([sd])/g;
+			var matchedPlaceholders = [ ...singular.matchAll( regexPattern ) ];
+			placeholders = matchedPlaceholders.map(match => '<a class="inline-placeholder" href="#">' + match[0] + '</b>').join(', ');
+			return placeholders;
+		},
 	};
 }
 

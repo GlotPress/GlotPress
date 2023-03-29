@@ -7,10 +7,10 @@
 	margin: 0;
 }
 
-.webui-popover p.context, .webui-popover p.comment {
+.webui-popover p.context, .webui-popover p.comment, .webui-popover p.placeholders {
 	margin: 0 0 .5em 0;
 	display: none;
-	font-color: #999;
+	color: #999;
 	font-style: italic;
 }
 
