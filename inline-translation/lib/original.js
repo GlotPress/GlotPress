@@ -114,10 +114,13 @@ function Original( original ) {
 			pluralGlossaryMarkup = markup;
 			return pluralGlossaryMarkup;
 		},
-		getPlaceholders: function(){
+		getPlaceholders: function() {
 			var regexPattern = /%(\d\$)?([sd])/g;
-			var matchedPlaceholders = [ ...singular.matchAll( regexPattern ) ];
-			placeholders = matchedPlaceholders.map( match => '<a class="inline-placeholder" href="#">' + match[0] + '</b>' ) .join( '' );
+			var matchedPlaceholders = Array.from( singular.matchAll( regexPattern ) );
+			var placeholders = matchedPlaceholders.map( function( match ) {
+				return '<a class="inline-placeholder" href="#">' + match[ 0 ] + '</a>';
+			} ).join( '' );
+
 			return placeholders;
 		},
 	};
