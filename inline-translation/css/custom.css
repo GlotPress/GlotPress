@@ -244,3 +244,12 @@ iframe.translator-untranslatable {
 	top: -8px;
 	left: 1em;
 }
+
+.webui-popover a.inline-placeholder{
+	background: #0085be;
+	padding: 0.3em;
+	margin-right: 0.2em;
+	border-radius: 2px;
+	color: #fff;
+	text-decoration: none;
+}
