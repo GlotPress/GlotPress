@@ -420,7 +420,7 @@ class GP_Rest_API {
 		if ( $prompt ) {
 			$intermediary = 'Given these conditions, ';
 		}
-		$unmodifyable = 'Translate the following text to ' . $language . ': ';
+		$unmodifyable = 'Translate the following text to ' . $language . ' and respond as a JSON list in the format ["translation","alternate translation (if any)"]: ';
 
 		foreach ( array( 'singular', 'plural' ) as $key ) {
 			if ( empty( $text[ $key ] ) ) {
@@ -453,8 +453,13 @@ class GP_Rest_API {
 			);
 
 			$output       = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( ! empty( $output['error'] ) ) {
+				return new WP_Error( 'error', $output['error'], array( 'status' => 400 ) );
+			}
 			$message      = $output['choices'][0]['message'];
-			$suggestion[] = trim( trim( $message['content'] ), '"' );
+			foreach ( json_decode( $message['content'] ) as $answer ) {
+				$suggestion[] = $answer;
+			}
 		}
 
 		return array(

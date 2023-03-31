@@ -74,6 +74,10 @@ function GlotPress( locale, translations ) {
 			server = gpInstance;
 		},
 
+		shouldLoadSuggestions: function() {
+			return !! server.loadSuggestions;
+		},
+
 		queryByOriginal: function( original ) {
 			var deferred;
 			original.hash = hash( original );

@@ -172,7 +172,7 @@ class GP_Local {
 				<td>
 					<p>
 						<label>
-							<input type="text" name="gp_openai_user_key" value="<?php echo esc_attr( get_user_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+							<input type="password" name="gp_openai_user_key" value="<?php echo esc_attr( get_user_option( 'gp_openai_key' ) ); ?>" class="regular-text" onclick="this.type='text'" onblur="this.type='password'" autocomplete="off" style="width: 35em" />
 						</label>
 					</p>
 					<p class="description"><?php esc_html_e( 'This may override a global OpenAI API key that was set.', 'glotpress' ); ?></p>
@@ -322,7 +322,7 @@ class GP_Local {
 						<td>
 							<p>
 								<label>
-									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+									<input type="password" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" onclick="this.type='text'" onblur="this.type='password'" autocomplete="off" style="width: 35em" />
 								</label>
 							</p>
 							<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>

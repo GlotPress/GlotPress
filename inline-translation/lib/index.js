@@ -204,7 +204,7 @@ registerPopoverHandlers = function() {
 					if ( typeof data[ originalId ] === 'undefined' ) {
 						return;
 					}
-					warnings = data[ originalId ].pop().warnings;
+					warnings = data[ originalId ][ 0 ].warnings;
 					if ( warnings !== 'null' ) {
 						warningsObj = JSON.parse( warnings )[ 0 ];
 
