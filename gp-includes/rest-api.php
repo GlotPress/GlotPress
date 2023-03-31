@@ -452,7 +452,7 @@ class GP_Rest_API {
 					),
 				)
 			);
-			$body   = wp_remote_retrieve_body( $response );
+			$body       = wp_remote_retrieve_body( $response );
 			if ( is_wp_error( $response ) ) {
 				return $response;
 			}
@@ -463,7 +463,7 @@ class GP_Rest_API {
 			if ( ! empty( $output['error'] ) ) {
 				return new WP_Error( 'error', $output['error'], array( 'status' => 400 ) );
 			}
-			$message      = preg_replace('/"\s*,\s*\]/', '"]', $output['choices'][0]['message'] );
+			$message = preg_replace( '/"\s*,\s*\]/', '"]', $output['choices'][0]['message'] );
 			foreach ( json_decode( $message['content'] ) as $answer ) {
 				if ( trim( $answer ) ) {
 					$suggestion[] = $answer;
@@ -473,7 +473,7 @@ class GP_Rest_API {
 
 		return array(
 			'suggestion'   => $suggestion,
-			'output'   => $output,
+			'output'       => $output,
 			'prompt'       => $prompt,
 			'unmodifyable' => $unmodifyable,
 		);
