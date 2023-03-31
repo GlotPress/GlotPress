@@ -83,9 +83,10 @@ function popoverOnload( el, translationPair, glotPress ) {
 			return false;
 		};
 
-		getSugesstionsError = function( error ) {
+		getSugesstionsError = function( response ) {
+			var error = response.responseJSON;
 			additional.html( 'Error loading suggestions: ' + error.message + '. <button class="requery button button-small">Retry</button>' );
-			additional.find( 'button.requery' ).on( 'click', requery );
+			additional.find( 'button.requery' ).css( 'float', 'left' ).on( 'click', requery );
 		};
 
 		getSuggestionsResponse = function( response ) {

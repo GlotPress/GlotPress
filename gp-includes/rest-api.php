@@ -442,6 +442,7 @@ class GP_Rest_API {
 						'Content-Type'  => 'application/json',
 						'Authorization' => 'Bearer ' . $openai_key,
 					),
+					'timeout' => 20,
 					'body'    => wp_json_encode(
 						array(
 							'model'      => 'gpt-3.5-turbo',
@@ -452,6 +453,9 @@ class GP_Rest_API {
 				)
 			);
 			$body   = wp_remote_retrieve_body( $response );
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
 			$output = json_decode( $body, true );
 			if ( empty( $output ) ) {
 				return new WP_Error( 'error', $body, array( 'status' => 400 ) );
@@ -459,7 +463,7 @@ class GP_Rest_API {
 			if ( ! empty( $output['error'] ) ) {
 				return new WP_Error( 'error', $output['error'], array( 'status' => 400 ) );
 			}
-			$message      = $output['choices'][0]['message'];
+			$message      = preg_replace('/"\s*,\s*\]/', '"]', $output['choices'][0]['message'] );
 			foreach ( json_decode( $message['content'] ) as $answer ) {
 				if ( trim( $answer ) ) {
 					$suggestion[] = $answer;

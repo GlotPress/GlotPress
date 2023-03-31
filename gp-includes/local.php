@@ -94,7 +94,7 @@ class GP_Local {
 
 		add_submenu_page(
 			'glotpress',
-			esc_html__( 'Settings', 'glotpress' ),
+			esc_html__( 'GlotPress Settings', 'glotpress' ),
 			esc_html__( 'Settings', 'glotpress' ),
 			'manage_options',
 			'glotpress-settings',
@@ -948,9 +948,9 @@ class GP_Local {
 			<table class="translations widefat translator-exclude">
 				<thead>
 					<tr>
-						<th style="width: 5%">
+						<th style="width: 7%">
 							<label>
-								<input type="checkbox" checked="checked" onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll( 'input[type=checkbox]').forEach((el)=>el.checked = this.checked); return true;"/>
+								<input type="checkbox" checked="checked" onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll( 'input[type=checkbox]' ).forEach((el)=>el.checked = this.checked); this.parentNode.parentNode.parentNode.parentNode.nextElementSibling.style.display=this.checked?'contents':'none';return true;"/>
 							Sync
 							</label>
 						</th>
