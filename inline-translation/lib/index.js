@@ -204,7 +204,7 @@ registerPopoverHandlers = function() {
 					if ( typeof data[ originalId ] === 'undefined' ) {
 						return;
 					}
-					warnings = data[ originalId ].pop().warnings;
+					warnings = data[ originalId ][ 0 ].warnings;
 					if ( warnings !== 'null' ) {
 						warningsObj = JSON.parse( warnings )[ 0 ];
 
@@ -234,16 +234,17 @@ registerPopoverHandlers = function() {
 
 	jQuery( document ).on( 'submit', 'form.ct-existing-translation', function() {
 		var enclosingNode = jQuery( this ),
-			popover,
+			popover, webUiPopover,
 			translationPair = enclosingNode.data( 'translationPair' );
-
 		if ( 'object' !== typeof translationPair ) {
 			debug( 'could not find translation for node', enclosingNode );
 			return false;
 		}
 
 		popover = new Popover( translationPair, translationData.locale, glotPress );
+		webUiPopover = enclosingNode.closest( '.webui-popover' );
 		enclosingNode.parent().empty().append( popover.getTranslationHtml() ).find( 'textarea' ).get( 0 ).focus();
+		webUiPopover.data( 'triggerElement' ).trigger( 'shown.webui.popover', [ webUiPopover ] );
 
 		return false;
 	} );

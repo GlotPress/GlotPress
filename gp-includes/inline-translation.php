@@ -559,6 +559,7 @@ class GP_Inline_Translation {
 				$project_paths[ $text_domain ][] = $project->path;
 			}
 		}
+		$load_suggestions = (bool) ( get_user_option( 'gp_openai_key' ) || get_option( 'gp_openai_key' ) );
 
 		return array(
 			'translations'           => $this->get_translations( $gp_locale ),
@@ -574,6 +575,7 @@ class GP_Inline_Translation {
 				'nonce'                => wp_create_nonce( 'wp_rest' ),
 				'projects'             => $project_paths,
 				'translation_set_slug' => 'default',
+				'loadSuggestions'      => $load_suggestions,
 			),
 		);
 	}
