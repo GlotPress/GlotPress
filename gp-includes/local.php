@@ -223,7 +223,8 @@ class GP_Local {
 			</p>
 			<h2><?php esc_html_e( 'Local GlotPress', 'glotpress' ); ?></h2>
 			<p>
-				<?php esc_html_e( 'Since version 5, GlotPress also has a local mode that allows you to translate your current WordPress install, including plugins and themes.', 'glotpress' ); ?>
+				<span><?php esc_html_e( 'The local mode of GlotPress allows you to translate your current WordPress install, including plugins and themes.', 'glotpress' ); ?></span>
+				<span><?php esc_html_e( 'This means that you can see your modified translations right away which makes refining them easier.', 'glotpress' ); ?></span>
 			</p>
 
 			<?php if ( ! self::is_active() ) : ?>
@@ -238,7 +239,7 @@ class GP_Local {
 			<?php else : ?>
 				<h2><?php esc_html_e( 'Inline Translation', 'glotpress' ); ?></h2>
 				<p>
-					<span><?php esc_html_e( 'To make translating easier, Local GlotPress provides inline translation so that you can enter translations where you see them.', 'glotpress' ); ?></span>
+					<span><?php esc_html_e( 'To speed up translation, Local GlotPress provides inline translation so that you can enter translations right where they appear.', 'glotpress' ); ?></span>
 					<span><?php esc_html_e( 'Clicking the globe icon will activate inline translation.', 'glotpress' ); ?></span>
 					<span><?php esc_html_e( 'Translatable text will glow in red if it is untranslated, yellow if it has a waiting translation, and green when it is already translated.', 'glotpress' ); ?></span>
 					<span><?php esc_html_e( 'Right-click glowing text to add or change its translation.', 'glotpress' ); ?></span>
@@ -620,19 +621,28 @@ class GP_Local {
 						}
 						$path            = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] );
 						$project         = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
+						$icon            = '<span class="status"></span>';
+						$title           = '';
 						$translation_set = false;
 						if ( $project ) {
 							$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $locale_slug, $gp_locale->slug );
+							if ( $translation_set ) {
+								$icon  = '<a href="' . esc_attr( gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ) ) . '">✅</a>';
+								$title = __( 'Project and language are available.', 'glotpress' );
+							} else {
+								$icon  = '⚠️';
+								$title = __( 'Language is not available.', 'glotpress' );
+							}
 						}
 						?>
 						<tr>
-							<td>
-								<?php echo esc_html( $translation_set ? '✅' : '' ); ?>
+							<td title="<?php echo esc_attr( $title ); ?>" class="status">
+								<?php echo wp_kses_post( $icon ); ?>
 							</td>
 							<td>
 								<?php echo esc_html( $item['Name'] ); ?>
 							</td>
-							<td>
+							<td class="description">
 							<p>
 								<?php
 								echo wp_kses(
@@ -661,19 +671,23 @@ class GP_Local {
 							</td>
 						<?php if ( $show_actions_column ) : ?>
 								<td>
+
 									<?php if ( $can_create_projects ) : ?>
-										<form action="<?php echo esc_url( gp_url( '/local/' . $path ) ); ?>" method="post" target="_blank">
-											<?php wp_nonce_field( 'gp-local-' . $path ); ?>
+										<form action="<?php echo esc_url( rest_url( 'glotpress/v1/create-local-project' ) ); ?>" method="post" class="local-project">
+											<?php wp_nonce_field( 'wp_rest' ); ?>
+											<input type="hidden" name='path' value="<?php echo esc_attr( $path ); ?>" />
 											<input type="hidden" name='name' value="<?php echo esc_attr( $item['Name'] ); ?>" />
 											<input type="hidden" name='description' value="<?php echo esc_attr( $item['Description'] ); ?>" />
 											<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
 											<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
 											<button class="button">
 											<?php
-												$name = $item['Name'];
+											$name = $item['Name'];
 											if ( 'wp' === $type ) {
 												$name = 'WordPress ' . $name;
 											}
+
+											if ( ! $translation_set ) {
 												echo esc_html(
 													sprintf(
 														/* Translators: %1$s is a project like WordPress or plugin name, %2$s is the language into which we will translate. */
@@ -681,9 +695,13 @@ class GP_Local {
 														$name,
 														$gp_locale->native_name
 													)
-												)
+												);
+											} else {
+												esc_html_e( 'Update strings and translations', 'glotpress' );
+											}
 											?>
 											</button>
+											<span class="spinner" style="float: none; margin: 0 0 0 5px;"></span>
 										</form>
 									<?php endif; ?>
 								</td>
@@ -694,11 +712,45 @@ class GP_Local {
 			</table>
 			<?php endforeach; ?>
 
-			<div style="padding-top: 40px;">
-				<button class="button-primary">
-					<?php esc_html_e( 'Share your translations with WordPress.org', 'glotpress' ); ?>
-				</button>
-			</div>
+			<script type="text/javascript">
+				document.addEventListener( 'submit', function(event) {
+					if (event.target.matches( 'form.local-project' ) ) {
+						event.preventDefault();
+						const form = event.target;
+						const data = new URLSearchParams( new FormData( form ) );
+						const spinner = form.querySelector( 'span.spinner' );
+						const button = form.querySelector( 'button' );
+						const nonce = form.querySelector( 'input[name="_wpnonce"]' ).value;
+						const options = {
+							method: 'POST',
+							body: data,
+							headers: {
+								'X-WP-Nonce': nonce,
+							},
+						};
+						button.disabled = true;
+						spinner.classList.add( 'is-active' );
+						fetch( form.action, options )
+						.then( function( response ) {
+							spinner.classList.remove( 'is-active' );
+							button.disabled = false;
+							return response.json();
+						})
+						.then( function( response ) {
+							const tr = form.closest( 'tr' );
+							if ( response.error ) {
+								tr.querySelector( 'td.status' ).textContent = '⚠️';
+								tr.querySelector( 'td.description' ).textContent += response.error;
+							} else {
+								tr.querySelector( 'td.status' ).innerHTML = '<a href="' + response.url + '">✅</a><br/>Originals:&nbsp;' + response.originals_added + '<br/>Translations:&nbsp;' + response.translations_added;
+								tr.querySelector( 'td.description' ).innerHTML += '<ul><li>' + response.messages.join( '</li><li>' );
+
+							}
+						});
+					}
+				});
+
+		</script>
 
 		</div>
 		<?php
@@ -723,12 +775,12 @@ class GP_Local {
 			$gp_locale->wp_locale    = $locale_code;
 		}
 
-		$modified_after = 'last week';
+		$modified_after      = 'last week';
 		$modified_after_list = array(
 			'1970-01-01' => __( 'No Limit', 'glotpress' ),
 			'last month' => __( 'Last Month', 'glotpress' ),
-			'last week' => __( 'Last Week', 'glotpress' ),
-			'yesterday' => __( 'Yesterday', 'glotpress' ),
+			'last week'  => __( 'Last Week', 'glotpress' ),
+			'yesterday'  => __( 'Yesterday', 'glotpress' ),
 		);
 
 		$last_submission = get_user_option( 'glotpress_last_sync_submission' );
@@ -738,8 +790,10 @@ class GP_Local {
 				$modified_after = $last_submission;
 			}
 		}
-		if ( isset( $_REQUEST['modified_after'] ) ) {
-			$modified_after = $_REQUEST['modified_after'];
+		if ( wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) && isset( $_POST['modified_after'] ) ) {
+			$modified_after = $_POST['modified_after'];
+		} elseif ( isset( $_GET['modified_after'] ) ) {
+			$modified_after = $_GET['modified_after'];
 		}
 
 		$syncable_translations = $wpdb->get_results(
@@ -773,12 +827,12 @@ class GP_Local {
 					t.date_modified > %s
 				ORDER BY p.id, t.id",
 				$gp_locale->slug,
-				date( 'Y-m-d H:i:s', strtotime(  $modified_after ) )
+				gmdate( 'Y-m-d H:i:s', strtotime( $modified_after ) )
 			)
 		);
 
 		if ( ! empty( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['translation'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'sync_translations' ) ) {
-			update_user_option( get_current_user_id(), 'glotpress_last_sync_submission', date( 'Y-m-d H:i:s' ) );
+			update_user_option( get_current_user_id(), 'glotpress_last_sync_submission', gmdate( 'Y-m-d H:i:s' ) );
 			$translations_by_project_translation_set = array();
 			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
 				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
@@ -807,11 +861,15 @@ class GP_Local {
 						);
 					}
 					$remote_path = apply_filters( 'gp_remote_project_path', $project->path . '/dev/' . $translation_set->locale . '/' . $translation_set->slug . '/' );
-					$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
+
+					$url  = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
 					$file = $project->slug . '-' . $translation_set->locale . '.po';
+
 					$po_contents = GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
-					$download = 'data:text/plain;base64,' . base64_encode( $po_contents );
+
+					$download = 'data:text/plain;base64,' . base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 					echo '<br/>';
+
 					echo 'Upload to: <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
 					echo ' File: ' . esc_html( $file ) . ' ';
 					echo '<a download="' . esc_attr( $file ) . '" href="' . esc_attr( $download ) . '">Download</a> → <a href="' . esc_attr( $url ) . 'import-translations/" target="_blank">Import manually</a>';
@@ -896,10 +954,10 @@ class GP_Local {
 							Sync
 							</label>
 						</th>
-						<th style="width: 30%">Original</th>
-						<th style="width: 30%">Translation</th>
-						<th style="width: 15%">Created</th>
-						<th style="width: 5%">Actions</th>
+						<th style="width: 30%"><?php esc_html_e( 'Original', 'glotpress' ); ?></th>
+						<th style="width: 30%"><?php esc_html_e( 'Translation', 'glotpress' ); ?></th>
+						<th style="width: 15%"><?php esc_html_e( 'Created', 'glotpress' ); ?></th>
+						<th style="width: 5%"><?php esc_html_e( 'Actions', 'glotpress' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -967,7 +1025,7 @@ class GP_Local {
 				<label for="modified_after">
 					<?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?>
 					<select name="modified_after" id="modified_after">
-						<?php foreach ( $modified_after_list as $key => $value ): ?>
+						<?php foreach ( $modified_after_list as $key => $value ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $modified_after ); ?>><?php echo esc_html( $value ); ?></option>
 						<?php endforeach ?>
 					</select>
@@ -979,7 +1037,7 @@ class GP_Local {
 				<div class="notice notice-info notice-large inline">
 					<?php esc_html_e( 'There are no translations to sync yet. Please translate something :-)', 'glotpress' ); ?>
 				</div>
-			<?php
+				<?php
 				return;
 			endif;
 			?>

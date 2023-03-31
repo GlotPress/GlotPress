@@ -54,6 +54,15 @@ class GP_Rest_API {
 				'permission_callback' => array( $this, 'logged_in_permission_check' ),
 			)
 		);
+		register_rest_route(
+			self::PREFIX,
+			'create-local-project',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'create_local_project' ),
+				'permission_callback' => array( $this, 'write_projects_permission_check' ),
+			)
+		);
 	}
 
 	/**
@@ -66,6 +75,22 @@ class GP_Rest_API {
 			return new WP_Error(
 				'rest_forbidden',
 				__( 'You need to be logged in to access this API.', 'glotpress' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+		return true;
+	}
+
+	/**
+	 * Check whether the user can write projects.
+	 *
+	 * @return     bool  Whether the permission check was passed.
+	 */
+	public function write_projects_permission_check() {
+		if ( ! GP::$permission->current_user_can( 'write', 'project' ) ) {
+			return new WP_Error(
+				'rest_forbidden',
+				__( 'You don\t have enough permission to access this API.', 'glotpress' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -437,5 +462,276 @@ class GP_Rest_API {
 			'prompt'       => $prompt,
 			'unmodifyable' => $unmodifyable,
 		);
+	}
+
+	/**
+	 * Creates a Local Project.
+	 *
+	 * @param      WP_REST_Request $request  The request.
+	 *
+	 * @return     array  The result.
+	 */
+	public function create_local_project( $request ) {
+		$path = $request->get_param( 'path' );
+		if ( ! $path ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: path', array( 'status' => 400 ) );
+		}
+		$project_name = $request->get_param( 'name' );
+		if ( ! $project_name ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: name', array( 'status' => 400 ) );
+		}
+		$project_description = $request->get_param( 'description' );
+		if ( ! $project_description ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: description', array( 'status' => 400 ) );
+		}
+		$locale = $request->get_param( 'locale' );
+		if ( ! $locale ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: locale', array( 'status' => 400 ) );
+		}
+		$locale_slug = $request->get_param( 'locale_slug' );
+		if ( ! $locale_slug ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: locale_slug', array( 'status' => 400 ) );
+		}
+
+		$locale = GP_Locales::by_field( 'wp_locale', $locale );
+		if ( ! $locale ) {
+			return new WP_Error( 'invalid-locale', 'Invalid locale supplied', array( 'status' => 400 ) );
+		}
+		$messages = array();
+
+		$project = $this->get_or_create_project( $project_name, apply_filters( 'gp_local_project_path', $path ), $project_description );
+
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale(
+			$project->id,
+			$locale_slug,
+			$locale->slug
+		);
+
+		$languages_dir = trailingslashit( ABSPATH ) . 'wp-content/languages/';
+
+		$local_po = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
+		if ( ! file_exists( $local_po ) || $translation_set ) {
+			if ( substr( $local_po, -2 ) === 'po' ) {
+				$local_mo   = substr( $local_po, 0, -2 ) . 'mo';
+				$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_po, $local_mo );
+				if ( is_wp_error( $downloaded ) ) {
+					$messages[] = $downloaded->get_error_message();
+				} else {
+					$messages[] = make_clickable(
+						sprintf(
+						// translators: %s is a URL.
+							__( 'Downloaded PO file from %s', 'glotpress' ),
+							$downloaded
+						)
+					);
+				}
+			} else {
+				$messages[] = __( 'Could not determine PO path.', 'glotpress' );
+			}
+		}
+
+		if ( ! $translation_set ) {
+			$new_set         = new GP_Translation_Set(
+				array(
+					'name'       => $locale->english_name,
+					'slug'       => $locale_slug,
+					'project_id' => $project->id,
+					'locale'     => $locale->slug,
+				)
+			);
+			$translation_set = GP::$translation_set->create_and_select( $new_set );
+			$messages[]      = __( 'Translation set was created.', 'glotpress' );
+		}
+
+		$originals_added    = false;
+		$translations_added = false;
+		if ( file_exists( $local_po ) ) {
+			list( $originals_added ) = $this->get_or_import_originals( $project, $local_po );
+			$messages[]              = sprintf(
+				// translators: %s is the number of originals.
+				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
+				$originals_added
+			);
+
+			$translations_added = $this->get_or_import_translations( $project, $translation_set, $local_po );
+			$messages[]         = sprintf(
+				// translators: %s is the number of translations.
+				_n( 'Imported new %s translation.', 'Imported new %s translations.', $translations_added, 'glotpress' ),
+				$translations_added
+			);
+		}
+
+		return array(
+			'project'            => $project->id,
+			'translation_set'    => $translation_set->id,
+			'url'                => gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ),
+			'originals_added'    => $originals_added,
+			'translations_added' => $translations_added,
+			'messages'           => $messages,
+		);
+	}
+
+	/**
+	 * Gets or creates a project.
+	 *
+	 * @param string $name The name of the project.
+	 * @param string $path The path of the project. The last element of the path is the slug.
+	 * @param string $description The description of the project.
+	 *
+	 * @return GP_Project
+	 */
+	private function get_or_create_project( string $name, string $path, string $description ): GP_Project {
+		$project = GP::$project->by_path( $path );
+
+		if ( ! $project ) {
+			$path_separator = '';
+			$project_path   = '';
+			$parent_project = null;
+			$path_snippets  = explode( '/', $path );
+			$project_slug   = array_pop( $path_snippets );
+			foreach ( $path_snippets as $slug ) {
+				$project_path  .= $path_separator . $slug;
+				$path_separator = '/';
+				$project        = GP::$project->by_path( $project_path );
+				if ( ! $project ) {
+					$new_project = new GP_Project(
+						array(
+							'name'              => GP::$local->get_project_name( $project_path ),
+							'slug'              => $slug,
+							'description'       => GP::$local->get_project_description( $project_path ),
+							'parent_project_id' => $parent_project ? $parent_project->id : null,
+							'active'            => true,
+						)
+					);
+					$project     = GP::$project->create_and_select( $new_project );
+				}
+				$parent_project = $project;
+			}
+
+			$new_project = new GP_Project(
+				array(
+					'name'              => $name,
+					'slug'              => $project_slug,
+					'description'       => $description,
+					'parent_project_id' => $parent_project ? $parent_project->id : null,
+					'active'            => true,
+				)
+			);
+			$project     = GP::$project->create_and_select( $new_project );
+		}
+		return $project;
+	}
+
+	/**
+	 * Gets or imports the originals.
+	 *
+	 * @param GP_Project $project   The project.
+	 * @param string     $local_po The file to import.
+	 *
+	 * @return array
+	 */
+	private function get_or_import_originals( GP_Project $project, string $local_po ): array {
+		$format    = 'po';
+		$format    = gp_array_get( GP::$formats, $format, null );
+		$originals = $format->read_originals_from_file( $local_po, $project );
+		$originals = GP::$original->import_for_project( $project, $originals );
+
+		return $originals;
+	}
+
+	/**
+	 * Gets or imports the translations.
+	 *
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param string             $local_po       The file path to import.
+	 *
+	 * @return array
+	 */
+	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $local_po ):int {
+		$po = new PO();
+		$po->import_from_file( $local_po );
+
+		add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
+		return $translation_set->import( $po, 'current' );
+	}
+
+	/**
+	 * Override the saved translation.
+	 *
+	 * @param      array $fields   The fields.
+	 *
+	 * @return     array  The updated fields.
+	 */
+	public function translation_import_overrides( $fields ) {
+		// Discard warnings of current strings upon import.
+		if ( ! empty( $fields['warnings'] ) ) {
+			unset( $fields['warnings'] );
+			$fields['status'] = 'current';
+		}
+
+		// Don't set the user id upon import so that we can later identify translations by users.
+		unset( $fields['user_id'] );
+
+		return $fields;
+	}
+
+
+	/**
+	 * Downloads the translations from translate.w.org.
+	 *
+	 * Downloads the .po and .mo files, stores them in the
+	 * - wp-content/languages/plugins/ or
+	 * - wp-content/languages/themes/
+	 *
+	 * @param GP_Project $project The project.
+	 * @param GP_Locale  $locale  The locale.
+	 * @param string     $locale_slug The locale slug.
+	 * @param string     $local_po The .po file path.
+	 * @param string     $local_mo The .mo file path.
+	 *
+	 * @return bool|WP_Error The path to the .po file.
+	 */
+	private function download_dotorg_translation( GP_Project $project, GP_Locale $locale, string $locale_slug, string $local_po, string $local_mo ) {
+		$remote_path = apply_filters( 'gp_remote_project_path', $project->path . '/dev/' . $locale->slug . '/' . $locale_slug . '/' );
+
+		$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
+		$po_file_url = $url . 'export-translations?format=po';
+		$mo_file_url = $url . 'export-translations?format=mo';
+
+		if ( ! function_exists( 'download_url' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		$po_file_url = apply_filters( 'gp_local_sync_url', $po_file_url );
+		$po_file     = download_url( $po_file_url );
+		if ( is_wp_error( $po_file ) ) {
+			return $po_file;
+		} elseif ( ! $po_file ) {
+			return new WP_Error(
+				'download_failed',
+				sprintf(
+					// translators: %s is a URL.
+					__( 'Failed to download the translation file from %s', 'glotpress' ),
+					$po_file_url
+				)
+			);
+		}
+		rename( $po_file, $local_po );
+
+		$mo_file = download_url( $mo_file_url );
+		if ( is_wp_error( $mo_file ) ) {
+			return $mo_file;
+		} elseif ( ! $mo_file ) {
+			return new WP_Error(
+				'download_failed',
+				sprintf(
+					// translators: %s is a URL.
+					__( 'Failed to download the translation file from %s', 'glotpress' ),
+					$mo_file_url
+				)
+			);
+		}
+		rename( $mo_file, $local_mo );
+		return $po_file_url;
 	}
 }
