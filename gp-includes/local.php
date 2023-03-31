@@ -94,7 +94,7 @@ class GP_Local {
 
 		add_submenu_page(
 			'glotpress',
-			esc_html__( 'Settings', 'glotpress' ),
+			esc_html__( 'GlotPress Settings', 'glotpress' ),
 			esc_html__( 'Settings', 'glotpress' ),
 			'manage_options',
 			'glotpress-settings',
@@ -172,7 +172,7 @@ class GP_Local {
 				<td>
 					<p>
 						<label>
-							<input type="text" name="gp_openai_user_key" value="<?php echo esc_attr( get_user_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+							<input type="password" name="gp_openai_user_key" value="<?php echo esc_attr( get_user_option( 'gp_openai_key' ) ); ?>" class="regular-text" onclick="this.type='text'" onblur="this.type='password'" autocomplete="off" style="width: 35em" />
 						</label>
 					</p>
 					<p class="description"><?php esc_html_e( 'This may override a global OpenAI API key that was set.', 'glotpress' ); ?></p>
@@ -322,7 +322,7 @@ class GP_Local {
 						<td>
 							<p>
 								<label>
-									<input type="text" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" />
+									<input type="password" name="gp_openai_key" value="<?php echo esc_attr( get_option( 'gp_openai_key' ) ); ?>" class="regular-text" onclick="this.type='text'" onblur="this.type='password'" autocomplete="off" style="width: 35em" />
 								</label>
 							</p>
 							<p class="description"><?php esc_html_e( 'This will be used for automatic translations with ChatGPT.', 'glotpress' ); ?></p>
@@ -948,9 +948,9 @@ class GP_Local {
 			<table class="translations widefat translator-exclude">
 				<thead>
 					<tr>
-						<th style="width: 5%">
+						<th style="width: 7%">
 							<label>
-								<input type="checkbox" checked="checked" onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll( 'input[type=checkbox]').forEach((el)=>el.checked = this.checked); return true;"/>
+								<input type="checkbox" checked="checked" onclick="this.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll( 'input[type=checkbox]' ).forEach((el)=>el.checked = this.checked); this.parentNode.parentNode.parentNode.parentNode.nextElementSibling.style.display=this.checked?'contents':'none';return true;"/>
 							Sync
 							</label>
 						</th>
@@ -1023,7 +1023,7 @@ class GP_Local {
 			<form action="" method="get">
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<label for="modified_after">
-					<?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?>
+					<span><?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?></span>
 					<select name="modified_after" id="modified_after">
 						<?php foreach ( $modified_after_list as $key => $value ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $modified_after ); ?>><?php echo esc_html( $value ); ?></option>

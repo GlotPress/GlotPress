@@ -45,9 +45,13 @@
 	background: rgba(120, 220, 250, 0.7);
 }
 
-.webui-popover button {
+div.webui-popover button {
 	float: right;
-	margin-top: 8px;
+	margin-top: .5em;
+}
+
+div.webui-popover button.save {
+	margin-bottom: .5em;
 }
 
 .webui-popover div.a8c-similar-translations {
@@ -106,15 +110,47 @@ iframe.translator-untranslatable {
 .webui-popover > .arrow {
 	margin: 0;
 }
+
 .webui-popover p.local-inline-warning {
 	color: #a62626;
 	border: #a62626 thin solid;
     padding: 0.3em;
     border-radius: 3px;
 }
+
 .webui-popover #inline-copy-original{
 	margin-right: .6em;
 }
+
+.webui-popover .additional ul.suggestions  {
+	clear: both;
+	margin-top: 1em;
+	padding-top: 1em;
+	border-top: 1px solid #999;
+}
+
+.webui-popover .additional summary  {
+	cursor: pointer;
+}
+
+.webui-popover .additional textarea.prompt  {
+	height: 50px;
+}
+
+.webui-popover .additional li {
+	cursor: pointer;
+	clear: both;
+	margin-bottom: .7em;
+}
+
+.webui-popover .additional li button {
+	margin-top: 0;
+}
+
+.webui-popover .additional li span {
+	vertical-align: middle;
+}
+
 .webui-popover .local-copy-btn {
 	margin-bottom: .2em;
 	cursor: pointer;

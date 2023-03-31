@@ -58,6 +58,11 @@
 		}
 
 		function shouldAutoloadTranslator() {
+			// also enable if the gp_enable_inline_translation field from the HTTP POST is set
+			if ( $( 'input[name="gp_enable_inline_translation"]' ).prop( 'checked' ) ) {
+				return true;
+			}
+
 			return !! document.cookie.match( /autoinlinetranslation=1/ );
 		}
 	} );
