@@ -102,7 +102,6 @@ require_once GP_PATH . GP_INC . 'routes/translation-set.php';
 require_once GP_PATH . GP_INC . 'routes/translation.php';
 require_once GP_PATH . GP_INC . 'routes/glossary.php';
 require_once GP_PATH . GP_INC . 'routes/glossary-entry.php';
-require_once GP_PATH . GP_INC . 'routes/local.php';
 require_once GP_PATH . GP_INC . 'routes/locale.php';
 
 
