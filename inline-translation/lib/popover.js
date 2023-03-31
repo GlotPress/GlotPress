@@ -19,7 +19,7 @@ function Popover( translationPair, _locale, glotPress ) {
 		form.find( 'form' ).attr( 'data-nodes', nodeClass );
 		form.find( 'form' ).data( 'translationPair', translationPair );
 
-		return jQuery( '<div>' ).append( form );
+		return form;
 	};
 
 	getPopoverTitle = function() {
@@ -43,7 +43,9 @@ function Popover( translationPair, _locale, glotPress ) {
 				width: 400,
 				delay: 0,
 				placement: 'vertical',
-				content: getPopoverHtml,
+				content: function() {
+					return jQuery( '<div>' ).append( getPopoverHtml() );
+				},
 				trigger: 'rightclick',
 				translationPair: translationPair,
 			} ).on( 'shown.webui.popover', function( popover, el ) {
@@ -58,49 +60,58 @@ function Popover( translationPair, _locale, glotPress ) {
 }
 
 function popoverOnload( el, translationPair, glotPress ) {
-	var getSuggestionsResponse, i, li,
+	var getSuggestionsResponse, getSugesstionsError, requery, i, li,
 		textareas = jQuery( el ).find( 'textarea' ),
 		additional = jQuery( el ).find( 'div.additional' );
 	el = textareas.get( 0 );
 	if ( el ) {
 		el.focus();
+
 		if ( textareas.eq( 0 ).val() !== '' ) {
+			// return;
+		}
+		if ( ! glotPress.shouldLoadSuggestions() ) {
 			return;
 		}
+		additional.html( 'Loading suggested translation <span class="spinner is-active" style="float: none; margin: 0 0 0 5px;"></span>' );
 
-		if ( glotPress.shouldLoadSuggestions() ) {
+		requery = function() {
+			glotPress.getSuggestedTranslation( translationPair, {
+				prompt: additional.find( 'textarea.prompt' ).val(),
+			} ).done( getSuggestionsResponse ).error( getSugesstionsError );
 			additional.html( 'Loading suggested translation <span class="spinner is-active" style="float: none; margin: 0 0 0 5px;"></span>' );
+			return false;
+		};
 
-			getSuggestionsResponse = function( response ) {
-				if ( response.suggestion ) {
-					additional.html( '<details><summary>Requery</summary><textarea class="prompt" placeholder="Add a custom prompt..."></textarea><br/><span class="unmodifyable"></span> <button class="button requery">Requery</button></details><ul class="suggestions"></ul>' );
-					if ( response.suggestion.length && response.suggestion[ 0 ] ) {
-						li = jQuery( '<li><span></span><button class="button button-small copy">Copy</button>' );
-						additional.find( 'ul.suggestions' ).append( li );
-						li.find( 'span' ).text( response.suggestion[ 0 ] );
-						li.on( 'click', function() {
-							textareas.eq( 0 ).val( response.suggestion[ 0 ] ).trigger( 'keyup' );
-							return false;
-						} );
-					}
-					additional.find( 'span.unmodifyable' ).text( response.unmodifyable );
-					additional.find( 'textarea.prompt' ).val( response.prompt );
-					additional.find( 'button.requery' ).on( 'click', function() {
-						glotPress.getSuggestedTranslation( translationPair, {
-							prompt: additional.find( 'textarea.prompt' ).val(),
-						} ).done( getSuggestionsResponse );
+		getSugesstionsError = function( error ) {
+			additional.html( 'Error loading suggestions: ' + error.message + '. <button class="requery button button-small">Retry</button>' );
+			additional.find( 'button.requery' ).on( 'click', requery );
+		};
+
+		getSuggestionsResponse = function( response ) {
+			if ( response.suggestion ) {
+				additional.html( '<details><summary>Modify Query</summary><textarea class="prompt" placeholder="Add a custom prompt..."></textarea><br/><span class="unmodifyable"></span> <button class="button requery">Requery</button></details><ul class="suggestions"></ul>' );
+				for ( i = 0; i < response.suggestion.length; i++ ) {
+					li = jQuery( '<li><button class="button button-small copy">Copy</button><span></span>' );
+					additional.find( 'ul.suggestions' ).append( li );
+					li.find( 'span' ).text( response.suggestion[ i ] );
+					li.on( 'click', function() {
+						textareas.eq( 0 ).val( jQuery( this ).find( 'span' ).text() ).trigger( 'keyup' );
 						return false;
 					} );
-				} else {
-					for ( i = 0; i < textareas.length; i++ ) {
-						textareas.eq( i ).prop( 'placeholder', 'Please enter your translation' );
-					}
-					additional.text( '' );
 				}
-			};
+				additional.find( 'span.unmodifyable' ).text( response.unmodifyable );
+				additional.find( 'textarea.prompt' ).val( response.prompt );
+				additional.find( 'button.requery' ).on( 'click', requery );
+			} else {
+				for ( i = 0; i < textareas.length; i++ ) {
+					textareas.eq( i ).prop( 'placeholder', 'Please enter your translation' );
+				}
+				additional.text( '' );
+			}
+		};
 
-			glotPress.getSuggestedTranslation( translationPair ).done( getSuggestionsResponse );
-		}
+		glotPress.getSuggestedTranslation( translationPair ).done( getSuggestionsResponse ).error( getSugesstionsError );
 	}
 }
 
@@ -202,7 +213,7 @@ function getHtmlTemplate( popoverType ) {
 	switch ( popoverType ) {
 		case 'existing-translation':
 			return jQuery(
-				'<form class="ct-existing-translation">' +
+				'<div><form class="ct-existing-translation">' +
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
@@ -216,7 +227,7 @@ function getHtmlTemplate( popoverType ) {
 			'</div>' +
 			'</div>' +
 			'<button class="button button-primary">New Translation</button>' +
-			'</form>'
+			'</form></div>'
 			);
 
 		case 'new-translation':

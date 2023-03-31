@@ -1023,7 +1023,7 @@ class GP_Local {
 			<form action="" method="get">
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<label for="modified_after">
-					<?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?>
+					<span><?php esc_html_e( 'Only show translations modified since:', 'glotpress' ); ?></span>
 					<select name="modified_after" id="modified_after">
 						<?php foreach ( $modified_after_list as $key => $value ) : ?>
 							<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $key, $modified_after ); ?>><?php echo esc_html( $value ); ?></option>

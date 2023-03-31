@@ -451,19 +451,25 @@ class GP_Rest_API {
 					),
 				)
 			);
-
-			$output       = json_decode( wp_remote_retrieve_body( $response ), true );
+			$body   = wp_remote_retrieve_body( $response );
+			$output = json_decode( $body, true );
+			if ( empty( $output ) ) {
+				return new WP_Error( 'error', $body, array( 'status' => 400 ) );
+			}
 			if ( ! empty( $output['error'] ) ) {
 				return new WP_Error( 'error', $output['error'], array( 'status' => 400 ) );
 			}
 			$message      = $output['choices'][0]['message'];
 			foreach ( json_decode( $message['content'] ) as $answer ) {
-				$suggestion[] = $answer;
+				if ( trim( $answer ) ) {
+					$suggestion[] = $answer;
+				}
 			}
 		}
 
 		return array(
 			'suggestion'   => $suggestion,
+			'output'   => $output,
 			'prompt'       => $prompt,
 			'unmodifyable' => $unmodifyable,
 		);

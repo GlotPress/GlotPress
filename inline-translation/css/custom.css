@@ -139,6 +139,8 @@ iframe.translator-untranslatable {
 
 .webui-popover .additional li {
 	cursor: pointer;
+	clear: both;
+	margin-bottom: .7em;
 }
 
 .webui-popover .additional li button {
