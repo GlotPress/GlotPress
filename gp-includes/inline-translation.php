@@ -525,20 +525,41 @@ class GP_Inline_Translation {
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
 		echo '</script>';
 
-		?><div id="translator-launcher" class="translator">
-			<a href="" title="<?php esc_attr_e( 'Inline Translation' ); ?>">
+		?>
+	
+		<div>
+			<div id="pop-out">
+				<ul>
+					<li>
+						<label class="switch">
+							<input id="inline-translation-switch" type="checkbox">
+							<span class="gp-inline-slider"></span>
+						</label>
+						<span>Inline Translation Status</span>
+					</li>
+					<li>
+						<label class="switch">
+							<input id="auto-translate" type="checkbox">
+							<span class="gp-inline-slider"></span>
+						</label>
+						<span>OpenAI Auto-translate</span>
+					</li>
+					<li>
+						<a href="#">View untranslated strings</a>
+					</li>
+					<li>
+						<a>GlotPress Settings</a>
+					</li>
+				</ul>
+				
+
+			</div>
+			<div id="translator-launcher" class="translator">
 				<span class="dashicons dashicons-admin-site-alt3">
 				</span>
-				<div class="text disabled">
-					<div class="enable">
-						Enable Inline Translation
-					</div>
-					<div class="disable">
-						Disable Inline Translation
-					</div>
-				</div>
-			</a>
+			</div>
 		</div>
+		
 		<?php
 		return true;
 	}
