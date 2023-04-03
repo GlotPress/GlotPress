@@ -163,6 +163,7 @@ iframe.translator-untranslatable {
 	cursor: pointer;
 }
 #pop-out {
+	display: none;
 	width: 212px;
     height: 164px;
     background: white;
