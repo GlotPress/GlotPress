@@ -21,13 +21,12 @@
 			autoloadTranslator( false );
 		}
 
-		$( document.body ).on( 'click', '#translator-launcher', function() {
-			if ( $( '#translator-launcher .text' ).hasClass( 'disabled' ) ) {
+		$( document.body ).on( 'change', '#inline-translation-switch', function() {
+			if ( $( this ).prop( 'checked' ) ) {
 				loadTranslator();
 			} else {
 				unloadTranslator();
 			}
-			return false;
 		} );
 
 		// only show the button when the translator has been loaded
