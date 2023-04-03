@@ -35,6 +35,9 @@ span.stats-label {
     margin-left: 0.2em;
 }
 li.inline-stats{
-	border:none !important;
-	padding-bottom: 8px !important;
+	border: none !important;
+    padding-top: 0.3em !important;
+}
+li.inline-stats strong {
+	float: left;
 }

@@ -535,29 +535,30 @@ class GP_Inline_Translation {
 							<input id="inline-translation-switch" type="checkbox">
 							<span class="gp-inline-slider"></span>
 						</label>
-						<span>Inline Translation Status</span>
+						<span><?php _e( 'Inline Translation Status', 'glotpress' ); ?></span>
 					</li>
 					<li>
 						<label class="switch">
 							<input id="auto-translate" type="checkbox">
 							<span class="gp-inline-slider"></span>
 						</label>
-						<span>OpenAI Auto-translate</span>
+						<span><?php _e( 'OpenAI Auto-translate', 'glotpress' ); ?></span>
 					</li>
 					<li>
-						<a href="#">View untranslated strings</a>
+						<a href="#"><?php _e( 'View untranslated strings', 'glotpress' ); ?></a>
 					</li>
 					<li>
-						<a>GlotPress Settings</a>
+						<a><?php _e( 'GlotPress Settings', 'glotpress' ); ?></a>
 					</li>
 					<li class="inline-stats">
+						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
 						<div>
 							<div class="box stats-current"></div>
-							<span class="stats-label">Current(10)</span>
+							<span class="stats-label">(10)</span>
 							<div class="box stats-waiting"></div>
-							<span class="stats-label">Waiting(20)</span>
+							<span class="stats-label">(20)</span>
 							<div class="box stats-untranslated"></div>
-							<span class="stats-label">Untranslated(30)</span>
+							<span class="stats-label">(30)</span>
 						</div>
 					</li>
 				</ul>
