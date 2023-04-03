@@ -550,6 +550,16 @@ class GP_Inline_Translation {
 					<li>
 						<a>GlotPress Settings</a>
 					</li>
+					<li class="inline-stats">
+						<div>
+							<div class="box stats-current"></div>
+							<span class="stats-label">Current(10)</span>
+							<div class="box stats-waiting"></div>
+							<span class="stats-label">Waiting(20)</span>
+							<div class="box stats-untranslated"></div>
+							<span class="stats-label">Untranslated(30)</span>
+						</div>
+					</li>
 				</ul>
 				
 
