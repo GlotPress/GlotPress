@@ -21,6 +21,10 @@
 			autoloadTranslator( false );
 		}
 
+		$( document.body ).on( 'click', '#translator-launcher', function() {
+			$( '#pop-out' ).toggle();
+		} );
+
 		$( document.body ).on( 'change', '#inline-translation-switch', function() {
 			if ( $( this ).prop( 'checked' ) ) {
 				loadTranslator();
