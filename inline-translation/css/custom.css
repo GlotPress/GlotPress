@@ -171,6 +171,7 @@ iframe.translator-untranslatable {
     position: fixed;
     border-radius: 6px;
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	z-index: 999999999;
 }
 #pop-out ul{
 	margin-top: 0;
