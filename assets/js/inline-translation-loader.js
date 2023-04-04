@@ -12,7 +12,6 @@
 		}
 
 		function loadTranslator() {
-			$( '#translator-launcher .text' ).addClass( 'enabled' ).removeClass( 'disabled' );
 			if ( gpInlineTranslation.load() !== false ) {
 				// was loaded successfully
 				autoloadTranslator( true );
@@ -20,7 +19,6 @@
 		}
 
 		function unloadTranslator() {
-			$( '#translator-launcher .text' ).removeClass( 'enabled' ).addClass( 'disabled' );
 			gpInlineTranslation.unload();
 			autoloadTranslator( false );
 		}
