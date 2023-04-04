@@ -7,6 +7,10 @@
 			return false;
 		}
 
+		if ( shouldAutoloadTranslator() ) {
+			$( '#inline-translation-switch' ).prop( 'checked', true );
+		}
+
 		function loadTranslator() {
 			$( '#translator-launcher .text' ).addClass( 'enabled' ).removeClass( 'disabled' );
 			if ( gpInlineTranslation.load() !== false ) {
