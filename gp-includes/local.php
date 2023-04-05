@@ -410,7 +410,7 @@ class GP_Local {
 	public function get_remote_project_path( $project_path ) {
 		switch ( strtok( $project_path, '/' ) ) {
 			case 'local-wp':
-				return substr( $project_path, 6 );
+				return str_replace( '/dev/dev/', '/dev/', substr( $project_path, 6 ) );
 			case 'local-plugins':
 			case 'local-themes':
 				return 'wp-' . substr( $project_path, 6 );
