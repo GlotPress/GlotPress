@@ -430,7 +430,7 @@ class GP_Rest_API {
 			$messages = array(
 				array(
 					'role'    => 'user',
-					'content' => $prompt . $intermediary . $unmodifyable . ' "' . $text[ $key ] . '"',
+					'content' => $prompt . $intermediary . $unmodifyable . PHP_EOL . PHP_EOL . $text[ $key ],
 				),
 			);
 
@@ -442,7 +442,7 @@ class GP_Rest_API {
 						'Content-Type'  => 'application/json',
 						'Authorization' => 'Bearer ' . $openai_key,
 					),
-					'timeout' => 20,
+					'timeout' => 30,
 					'body'    => wp_json_encode(
 						array(
 							'model'      => 'gpt-3.5-turbo',
