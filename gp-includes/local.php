@@ -837,7 +837,7 @@ class GP_Local {
 			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
 				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
 			}
-			echo '<h2>We will send these PO files</h2>';
+			echo '<h2>' . esc_html__( 'We will send these PO files', 'glotpress' ) . '</h2>';
 
 			$syncable_translations = array_column( $syncable_translations, null, 'id' );
 
@@ -870,15 +870,15 @@ class GP_Local {
 					$download = 'data:text/plain;base64,' . base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 					echo '<br/>';
 
-					echo 'Upload to: <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
-					echo ' File: ' . esc_html( $file ) . ' ';
-					echo '<a download="' . esc_attr( $file ) . '" href="' . esc_attr( $download ) . '">Download</a> → <a href="' . esc_attr( $url ) . 'import-translations/" target="_blank">Import manually</a>';
+					echo '<span>', esc_html__( 'Upload to:', 'glotpress' ), '</span> <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
+					echo '<span>', esc_html__( 'File:', 'glotpress' ), '</span> ', esc_html( $file ), ' ';
+					echo '<a download="', esc_attr( $file ), '" href="', esc_attr( $download ), '">', esc_html__( 'Download' ), '</a> → <a href="', esc_attr( $url ), 'import-translations/" target="_blank">', esc_html__( 'Import manually', 'glotpress' ), '</a>';
 					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
 					echo esc_html( $po_contents );
 					echo '</textarea><br/>';
 				}
 			}
-			exit;
+			return;
 		}
 
 		$current_project = false;
