@@ -441,6 +441,9 @@ class GP_Inline_Translation {
 		$query_result->original_id        = $original_record->id;
 		$query_result->original           = $original;
 		$query_result->domain             = $text_domain;
+		$query_result->singular           = $original_record->singular;
+		$query_result->plural             = $original_record->plural;
+		$query_result->context            = $original_record->context;
 		$query_result->project            = $project->path;
 		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
@@ -526,7 +529,39 @@ class GP_Inline_Translation {
 		echo '</script>';
 
 		?>
-	
+	<div id="gp-inline-tranlsation-list">
+			<input onkeyup="el=jQuery(this.nextElementSibling).find('data:contains(' + this.value.replace(/'/g, '\\\'' ) + '):first');if(el.length){jQuery(this.nextElementSibling).scrollTop(jQuery(this.nextElementSibling).scrollTop() - jQuery(this.nextElementSibling).offset().top +el.offset().top - 100);el.css('border','1px solid red')}"/ >
+			<div style=" overflow: auto; padding: 2em; height: 20em;">
+				<ul>
+				<?php
+				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
+					if ( is_array( $translation ) ) {
+						continue;
+					}
+					echo '<li><data class="translatable" data-singular="' . esc_attr( $translation->singular ) . '" data-plural="' . esc_attr( $translation->plural ) . '" data-context="' . esc_attr( $translation->context ) . '"  data-domain="' . esc_attr( $translation->domain ) . '" data-original-id="' . esc_attr( $translation->original_id ) . '" data-project="' . esc_attr( $translation->project ) . '"';
+					if ( empty( $translation->translations ) ) {
+						 echo '>' . esc_html( $translation->singular );
+					} else {
+						$t = array_filter(
+							array(
+								$translation->translations[0]['translation_0'],
+								$translation->translations[0]['translation_1'],
+								$translation->translations[0]['translation_2'],
+								$translation->translations[0]['translation_3'],
+								$translation->translations[0]['translation_4'],
+							)
+						);
+						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '">' . esc_html( $translation->translations[0]['translation_0'] );
+					}
+					echo '</data>';
+					echo ' Id: ', $translation->original_id;
+					echo ' Domain: ', $translation->domain;
+					echo '</li>';
+				}
+				?>
+				</ul>
+			</div>
+		</div>
 		<div>
 			<div id="pop-out">
 				<ul>
@@ -545,7 +580,7 @@ class GP_Inline_Translation {
 						<span><?php _e( 'OpenAI Auto-translate', 'glotpress' ); ?></span>
 					</li>
 					<li>
-						<a href="#"><?php _e( 'View untranslated strings', 'glotpress' ); ?></a>
+						<a id="gp-show-translation-list" href="#"><?php _e( 'View list of strings', 'glotpress' ); ?></a>
 					</li>
 					<li>
 						<a><?php _e( 'GlotPress Settings', 'glotpress' ); ?></a>

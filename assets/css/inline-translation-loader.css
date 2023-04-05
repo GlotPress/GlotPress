@@ -41,3 +41,15 @@ li.inline-stats{
 li.inline-stats strong {
 	float: left;
 }
+#gp-inline-tranlsation-list{
+	display: none;
+	position: absolute; 
+	background: #fff; 
+	overflow: none; 
+	padding: 2em; 
+	left: 20em; 
+	top: 2em; 
+	width: 60em; 
+	height: 30em; 
+	z-index: 1000
+}

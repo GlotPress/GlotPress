@@ -35,6 +35,10 @@
 			}
 		} );
 
+		$( document.body ).on( 'click', '#gp-show-translation-list', function() {
+			$( '#gp-inline-tranlsation-list' ).toggle();
+		} );
+
 		// only show the button when the translator has been loaded
 		runWhenTranslatorIsLoaded( function() {
 			$( '#translator-launcher' ).show();
