@@ -388,11 +388,20 @@ class GP_Inline_Translation {
 		if ( $context ) {
 			$entry->context = $context;
 		}
-			$original_record = false;
+		$original_record = false;
 		foreach ( $projects as $project ) {
-			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry );
+			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '+active' );
 			if ( $original_record ) {
 				break;
+			}
+		}
+
+		if ( ! $original_record ) {
+			foreach ( $projects as $project ) {
+				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '-obsolete' );
+				if ( $original_record ) {
+					break;
+				}
 			}
 		}
 
