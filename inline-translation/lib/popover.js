@@ -103,8 +103,8 @@ function popoverOnload( el, translationPair, glotPress ) {
 						textarea.select();
 
 						// Replace all text with new text
-						document.execCommand( 'selectAll', false, null );
 						document.execCommand( 'insertText', false, newText );
+						jQuery( textarea ).trigger( 'keyup' );
 						return false;
 					} );
 				}

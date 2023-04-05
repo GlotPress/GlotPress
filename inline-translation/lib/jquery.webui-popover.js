@@ -227,7 +227,7 @@
 		/*core method ,show popover */
 		show: function() {
 			var
-				$target = this.getTarget().removeClass().addClass(pluginClass).addClass(this._customTargetClass);
+				$target = this.getTarget().removeClass().addClass(pluginClass).addClass('translator-exclude').addClass(this._customTargetClass);
 			if (!this.options.multi) {
 				this.hideAll();
 			}
