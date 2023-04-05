@@ -91,17 +91,24 @@ function popoverOnload( el, translationPair, glotPress ) {
 
 		getSuggestionsResponse = function( response ) {
 			if ( response.suggestion ) {
-				additional.html( '<details><summary>Modify Query</summary><textarea class="prompt" placeholder="Add a custom prompt..."></textarea><br/><span class="unmodifyable"></span> <button class="button requery">Requery</button></details><ul class="suggestions"></ul>' );
+				additional.html( '<details><summary>Modify Query</summary><textarea class="prompt" placeholder="Add a custom prompt..."></textarea><blockquote class="unmodifyable"></blockquote> <button class="button requery">Requery</button></details><ul class="suggestions"></ul>' );
 				for ( i = 0; i < response.suggestion.length; i++ ) {
 					li = jQuery( '<li><button class="button button-small copy">Copy</button><span></span>' );
 					additional.find( 'ul.suggestions' ).append( li );
 					li.find( 'span' ).text( response.suggestion[ i ] );
-					li.on( 'click', function() {
-						textareas.eq( 0 ).val( jQuery( this ).find( 'span' ).text() ).trigger( 'keyup' );
+					li.find( 'button' ).on( 'click', function() {
+						var textarea = textareas.get( 0 );
+						var newText = jQuery( this ).closest( 'li' ).find( 'span' ).text();
+						textarea.focus();
+						textarea.select();
+
+						// Replace all text with new text
+						document.execCommand( 'selectAll', false, null );
+						document.execCommand( 'insertText', false, newText );
 						return false;
 					} );
 				}
-				additional.find( 'span.unmodifyable' ).text( response.unmodifyable );
+				additional.find( 'blockquote.unmodifyable' ).text( response.unmodifyable );
 				additional.find( 'textarea.prompt' ).val( response.prompt );
 				additional.find( 'button.requery' ).on( 'click', requery );
 			} else {
@@ -235,7 +242,7 @@ function getHtmlTemplate( popoverType ) {
 			return jQuery(
 				'<div>' +
 			'<form class="copy-translation">' +
-			'<button class="local-copy-btn" aria-label="Copy originals">' +
+			'<button class="local-copy-btn" aria-label="Copy original text">' +
 			'<span class="screen-reader-text">Copy</span><span aria-hidden="true" class="dashicons dashicons-admin-page"></span>' +
 			'</button>' +
 			'</form>' +
