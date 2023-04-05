@@ -250,15 +250,18 @@ registerPopoverHandlers = function() {
 	} );
 
 	jQuery( document ).on( 'submit', 'form.copy-translation', function() {
-		var $original = jQuery( this ).next().children( 'div.original' ).text();
-		var textarea = jQuery( this ).next().find( 'textarea' ).get( 0 );
-		textarea.focus();
-		textarea.select();
+		var originals = jQuery( this ).next().find( 'div.original strong' );
+		jQuery( this ).next().find( 'textarea' ).each( function( i ) {
+			if ( ! originals[ i ] ) {
+				return;
+			}
+			this.focus();
+			this.select();
 
-		// Replace all text with new text
-		document.execCommand( 'insertText', false, $original );
-
-		jQuery( this ).next().find( 'button' ).prop( 'disabled', false );
+			// Replace all text with new text
+			document.execCommand( 'insertText', false, originals[ i ].textContent );
+		} );
+		jQuery( this ).next().find( 'textarea' ).first().focus().trigger( 'keyup' );
 
 		return false;
 	} );
