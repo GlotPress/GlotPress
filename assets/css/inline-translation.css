@@ -379,18 +379,25 @@ iframe.translator-untranslatable {
 	cursor: pointer;
 }
 
+.webui-popover .additional blockquote  {
+	border-left: 3px solid #ddd;
+	padding: .5em 1em;
+	margin-left: 0;
+}
+
 .webui-popover .additional textarea.prompt  {
 	height: 50px;
 }
 
 .webui-popover .additional li {
-	cursor: pointer;
 	clear: both;
 	margin-bottom: .7em;
 }
 
 .webui-popover .additional li button {
+	cursor: pointer;
 	margin-top: 0;
+	margin-left: .5em;
 }
 
 .webui-popover .additional li span {

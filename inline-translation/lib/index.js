@@ -251,7 +251,13 @@ registerPopoverHandlers = function() {
 
 	jQuery( document ).on( 'submit', 'form.copy-translation', function() {
 		var $original = jQuery( this ).next().children( 'div.original' ).text();
-		jQuery( this ).next().find( 'textarea' ).val( $original );
+		var textarea = jQuery( this ).next().find( 'textarea' ).get( 0 );
+		textarea.focus();
+		textarea.select();
+
+		// Replace all text with new text
+		document.execCommand( 'insertText', false, $original );
+
 		jQuery( this ).next().find( 'button' ).prop( 'disabled', false );
 
 		return false;

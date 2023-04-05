@@ -398,10 +398,11 @@ class GP_Inline_Translation {
 
 		if ( ! $original_record ) {
 			if ( count( $projects ) === 1 ) {
+				$project = $projects[0];
 				// JIT Original Creation.
 				$original_record = GP::$original->create(
 					array(
-						'project_id' => $projects[0]->id,
+						'project_id' => $project->id,
 						'context'    => $entry->context,
 						'singular'   => $entry->singular,
 						'plural'     => $entry->plural,
@@ -413,7 +414,7 @@ class GP_Inline_Translation {
 					$translation_record = GP::$translation->create(
 						array(
 							'original_id'        => $original_record->id,
-							'translation_set_id' => $translation_sets[ $projects[0]->id ]->id,
+							'translation_set_id' => $translation_sets[ $project->id ]->id,
 							'translation_0'      => $translation,
 							'status'             => 'current',
 						)
@@ -422,6 +423,9 @@ class GP_Inline_Translation {
 			} else {
 				return false;
 			}
+		}
+		if ( ! isset( $translation_sets[ $project->id ] ) || ! is_object( $translation_sets[ $project->id ] ) ) {
+			return false;
 		}
 
 		$query_result                     = new stdClass();
