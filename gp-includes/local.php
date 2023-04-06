@@ -378,6 +378,10 @@ class GP_Local {
 				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale . '.po';
 		}
 
+		if ( in_array( dirname($project_path), array( 'wp-plugins', 'wp-themes'), true ) ) {
+			return trailingslashit( $directory ) . substr( $project_path, 3 ) . '-' . $locale->wp_locale . '.po';
+		}
+
 		return $file_path;
 	}
 
