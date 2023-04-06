@@ -684,7 +684,7 @@ class GP_Local {
 			$show_actions_column = $can_create_projects;
 			?>
 			<p>
-				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
+				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change their translations.', 'glotpress' ); ?>
 			</p>
 
 			<?php foreach ( $projects as $type => $items ) : ?>
