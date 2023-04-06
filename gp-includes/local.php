@@ -497,15 +497,19 @@ class GP_Local {
 	 * Display a notice if there are no language projects for the current language.
 	 */
 	private function check_for_existing_language_projects() {
-		if ( ! $this->has_language_projects() ) {
+		$locale_code = get_user_locale();
+		$gp_locale   = $this->get_gp_locale( $locale_code );
+
+		if ( ! $this->has_language_projects( $locale_code ) ) {
 			?>
 			<div class="notice notice-info">
 				<p>
 				<?php
 					echo wp_kses(
 						sprintf(
-							/* Translators: %s is the Local GlotPress settings URL. */
-							__( 'There are no projects or active translation sets for your language. Please <a href="%s">go to the Local GlotPress settings</a> to activate translation sets for your language.', 'glotpress' ),
+							/* Translators: %1$s is a language. %2$s is the Local GlotPress settings URL. */
+							__( 'No projects for %1$s exist right now. Please <a href="%2$s">go to the Local GlotPress settings</a> to activate them for your language.', 'glotpress' ),
+							$gp_locale->native_name,
 							admin_url( 'admin.php?page=local-glotpress' ),
 						),
 						array( 'a' => array( 'href' => array() ) )
@@ -520,13 +524,13 @@ class GP_Local {
 	/**
 	 * Check whether there are language projects.
 	 *
+	 * @param      string $locale_code  The locale code.
+	 *
 	 * @return     bool  True if language projects, False otherwise.
 	 */
-	private function has_language_projects() {
-		$locale_code = get_user_locale();
+	private function has_language_projects( $locale_code ) {
 		$locale_slug = $this->get_locale_slug( $locale_code );
-
-		$gp_locale = $this->get_gp_locale( $locale_code );
+		$gp_locale   = $this->get_gp_locale( $locale_code );
 
 		foreach ( $this->get_potential_projects() as $type => $items ) {
 			foreach ( $items as $item ) {
