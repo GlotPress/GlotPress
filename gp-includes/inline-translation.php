@@ -530,8 +530,8 @@ class GP_Inline_Translation {
 
 		?>
 	<div id="gp-inline-tranlsation-list">
+			<div id="gp-tranlsation-list-wrapper">
 			<input onkeyup="el=jQuery(this.nextElementSibling).find('data:contains(' + this.value.replace(/'/g, '\\\'' ) + '):first');if(el.length){jQuery(this.nextElementSibling).scrollTop(jQuery(this.nextElementSibling).scrollTop() - jQuery(this.nextElementSibling).offset().top +el.offset().top - 100);el.css('border','1px solid red')}"/ >
-			<div style=" overflow: auto; padding: 2em; height: 20em;">
 				<ul>
 				<?php
 				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
