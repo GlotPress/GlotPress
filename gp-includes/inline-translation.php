@@ -529,8 +529,8 @@ class GP_Inline_Translation {
 		echo '</script>';
 
 		?>
-	<div id="gp-inline-tranlsation-list">
-			<div id="gp-tranlsation-list-wrapper">
+	<div id="gp-inline-translation-list">
+			<div id="gp-translation-list-wrapper">
 			<input onkeyup="el=jQuery(this.nextElementSibling).find('data:contains(' + this.value.replace(/'/g, '\\\'' ) + '):first');if(el.length){jQuery(this.nextElementSibling).scrollTop(jQuery(this.nextElementSibling).scrollTop() - jQuery(this.nextElementSibling).offset().top +el.offset().top - 100);el.css('border','1px solid red')}"/ >
 				<ul>
 				<?php

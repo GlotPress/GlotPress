@@ -41,7 +41,7 @@ li.inline-stats{
 li.inline-stats strong {
 	float: left;
 }
-#gp-inline-tranlsation-list{
+#gp-inline-translation-list{
 	display: none;
 	background-color: rgba(0,0,0,.65);
     width: 100%;
@@ -51,7 +51,7 @@ li.inline-stats strong {
     left: 0;
     z-index: 9998;
 }
-#gp-inline-tranlsation-list #gp-tranlsation-list-wrapper{
+#gp-inline-translation-list #gp-translation-list-wrapper{
 	overflow: auto;
     padding: 2em;
     height: 35em;

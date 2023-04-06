@@ -36,12 +36,12 @@
 		} );
 
 		$( document.body ).on( 'click', '#gp-show-translation-list', function() {
-			$( '#gp-inline-tranlsation-list' ).toggle();
+			$( '#gp-inline-translation-list' ).toggle();
 		} );
 
-		$( document.body ).on( 'click', '#gp-inline-tranlsation-list', function( event ) {
-			if ( ! $( event.target ).closest( '.gp-tranlsation-list-wrapper' ).length ) {
-				$( '#gp-inline-tranlsation-list' ).hide();
+		$( document.body ).on( 'click', '#gp-inline-translation-list', function( event ) {
+			if ( ! $( event.target ).closest( '.gp-translation-list-wrapper' ).length ) {
+				$( '#gp-inline-translation-list' ).hide();
 			}
 		} );
 
