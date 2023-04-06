@@ -40,7 +40,8 @@
 		} );
 
 		$( document.body ).on( 'click', '#gp-inline-translation-list', function( event ) {
-			if ( ! $( event.target ).closest( '.gp-translation-list-wrapper' ).length ) {
+			var targetId = $( event.target ).attr( 'id' );
+			if ( targetId && targetId === 'gp-inline-translation-list' ) {
 				$( '#gp-inline-translation-list' ).hide();
 			}
 		} );
