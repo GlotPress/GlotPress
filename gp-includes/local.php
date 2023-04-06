@@ -106,7 +106,7 @@ class GP_Local {
 				esc_html__( 'Local GlotPress', 'glotpress' ),
 				esc_html__( 'Local GlotPress', 'glotpress' ),
 				'edit_posts',
-				'glotpress-local-glotpress',
+				'local-glotpress',
 				array( $this, 'show_local_projects' ),
 			);
 			add_submenu_page(
@@ -282,6 +282,13 @@ class GP_Local {
 			<h1>
 				<?php esc_html_e( 'Settings', 'glotpress' ); ?>
 			</h1>
+			<?php
+			if ( 'en_US' === get_user_locale() ) {
+				$this->show_english_notice();
+			} elseif ( self::is_active() ) {
+				$this->check_for_existing_language_projects();
+			}
+			?>
 			<form method="post">
 				<?php wp_nonce_field( 'gp_save_settings', 'gp_save_settings_nonce' ); ?>
 				<table class="form-table">
@@ -378,7 +385,7 @@ class GP_Local {
 				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale . '.po';
 		}
 
-		if ( in_array( dirname($project_path), array( 'wp-plugins', 'wp-themes'), true ) ) {
+		if ( in_array( dirname( $project_path ), array( 'wp-plugins', 'wp-themes' ), true ) ) {
 			return trailingslashit( $directory ) . substr( $project_path, 3 ) . '-' . $locale->wp_locale . '.po';
 		}
 
@@ -487,6 +494,63 @@ class GP_Local {
 	}
 
 	/**
+	 * Display a notice if there are no language projects for the current language.
+	 */
+	private function check_for_existing_language_projects() {
+		$locale_code = get_user_locale();
+		$gp_locale   = $this->get_gp_locale( $locale_code );
+
+		if ( ! $this->has_language_projects( $locale_code ) ) {
+			?>
+			<div class="notice notice-info">
+				<p>
+				<?php
+					echo wp_kses(
+						sprintf(
+							/* Translators: %1$s is a language. %2$s is the Local GlotPress settings URL. */
+							__( 'No projects for %1$s exist right now. Please <a href="%2$s">go to the Local GlotPress settings</a> to activate them for your language.', 'glotpress' ),
+							$gp_locale->native_name,
+							admin_url( 'admin.php?page=local-glotpress' ),
+						),
+						array( 'a' => array( 'href' => array() ) )
+					);
+				?>
+				</p>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Check whether there are language projects.
+	 *
+	 * @param      string $locale_code  The locale code.
+	 *
+	 * @return     bool  True if language projects, False otherwise.
+	 */
+	private function has_language_projects( $locale_code ) {
+		$locale_slug = $this->get_locale_slug( $locale_code );
+		$gp_locale   = $this->get_gp_locale( $locale_code );
+
+		foreach ( $this->get_potential_projects() as $type => $items ) {
+			foreach ( $items as $item ) {
+				if ( empty( $item['TextDomain'] ) ) {
+					continue;
+				}
+				$path    = str_replace( 'wp/wp/', 'wp/', $type . '/' . $item['TextDomain'] );
+				$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
+				if ( $project ) {
+					$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $locale_slug, $gp_locale->slug );
+					if ( $translation_set ) {
+						return $translation_set;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Shows a notice when English is the UI language.
 	 */
 	private function show_english_notice() {
@@ -510,22 +574,12 @@ class GP_Local {
 	}
 
 	/**
-	 * Shows a page with a list with the core, the plugins and themes installed locally.
+	 * Gets the potential local projects.
 	 *
-	 * @return void
+	 * @return     array  The potential projects.
 	 */
-	public function show_local_projects() {
-		$locale_code = get_user_locale();
-		$locale_slug = 'default';
-		$gp_locale   = GP_Locales::by_field( 'wp_locale', $locale_code );
-		if ( ! $gp_locale ) {
-			$gp_locale               = new GP_Locale();
-			$gp_locale->english_name = 'Unknown (' . $locale_code . ')';
-			$gp_locale->native_name  = $gp_locale->english_name;
-			$gp_locale->wp_locale    = $locale_code;
-		}
-
-		$projects = array(
+	private function get_potential_projects() {
+		return array(
 			'wp'         => array_map(
 				function( $path ) {
 					global $wp_version;
@@ -552,6 +606,50 @@ class GP_Local {
 				apply_filters( 'local_glotpress_local_themes', wp_get_themes() )
 			),
 		);
+	}
+
+	/**
+	 * Gets the locale slug.
+	 *
+	 * @param      string $locale_code  The (user) locale code.
+	 *
+	 * @return     string  The locale slug.
+	 */
+	private function get_locale_slug( $locale_code ) {
+		// TODO: fix for locales that use a different slug on translate.wordpress.org.
+		return 'default';
+	}
+
+	/**
+	 * Gets the gp locale.
+	 *
+	 * @param      string $locale_code  The locale code.
+	 *
+	 * @return     GP_Locale  The gp locale.
+	 */
+	private function get_gp_locale( $locale_code ) {
+		$gp_locale = GP_Locales::by_field( 'wp_locale', $locale_code );
+		if ( ! $gp_locale ) {
+			$gp_locale               = new GP_Locale();
+			$gp_locale->english_name = 'Unknown (' . $locale_code . ')';
+			$gp_locale->native_name  = $gp_locale->english_name;
+			$gp_locale->wp_locale    = $locale_code;
+		}
+		return $gp_locale;
+	}
+
+	/**
+	 * Shows a page with a list with the core, the plugins and themes installed locally.
+	 *
+	 * @return void
+	 */
+	public function show_local_projects() {
+		$locale_code = get_user_locale();
+		$locale_slug = $this->get_locale_slug( $locale_code );
+
+		$gp_locale = $this->get_gp_locale( $locale_code );
+
+		$projects = $this->get_potential_projects();
 
 		?>
 		<div class="wrap">
@@ -586,7 +684,7 @@ class GP_Local {
 			$show_actions_column = $can_create_projects;
 			?>
 			<p>
-				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change the translations of these.', 'glotpress' ); ?>
+				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change their translations.', 'glotpress' ); ?>
 			</p>
 
 			<?php foreach ( $projects as $type => $items ) : ?>
@@ -635,7 +733,7 @@ class GP_Local {
 								$title = __( 'Project and language are available.', 'glotpress' );
 							} else {
 								$icon  = '⚠️';
-								$title = __( 'Language is not available.', 'glotpress' );
+								$title = __( 'Project exists but language is not available.', 'glotpress' );
 							}
 						}
 						?>
