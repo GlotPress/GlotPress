@@ -400,6 +400,8 @@ class GP_Inline_Translation {
 			foreach ( $projects as $project ) {
 				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '-obsolete' );
 				if ( $original_record ) {
+					$original_record->status = '+active';
+					$original_record->save();
 					break;
 				}
 			}
