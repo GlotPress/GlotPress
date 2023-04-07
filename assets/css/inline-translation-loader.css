@@ -65,4 +65,8 @@ input#gp-inline-search {
     width: 100%;
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
+#gp-show-translation-list {
+    text-decoration: none;
+    font-weight: bold;
+}
 
