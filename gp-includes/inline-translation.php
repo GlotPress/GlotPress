@@ -574,13 +574,6 @@ class GP_Inline_Translation {
 						<span><?php _e( 'Inline Translation Status', 'glotpress' ); ?></span>
 					</li>
 					<li>
-						<label class="switch">
-							<input id="auto-translate" type="checkbox">
-							<span class="gp-inline-slider"></span>
-						</label>
-						<span><?php _e( 'OpenAI Auto-translate', 'glotpress' ); ?></span>
-					</li>
-					<li>
 						<a id="gp-show-translation-list" href="#"><?php _e( 'View list of strings', 'glotpress' ); ?></a>
 					</li>
 					<li class="inline-stats">
