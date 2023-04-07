@@ -334,8 +334,7 @@ function anyChildMatches( node, regex ) {
 }
 
 function findMatchingTranslation( entry, contextSpecifier, translation, regex ) {
-	var contextKey, contextKeySplit, domain, context, original, translationPair, i,
-		allOriginals = [],
+	var contextKey, contextKeySplit, domain, context, original, translationPair,
 		matchingTranslations = {};
 
 	for ( contextKey in entry ) {
