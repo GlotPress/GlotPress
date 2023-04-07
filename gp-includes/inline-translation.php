@@ -530,18 +530,39 @@ class GP_Inline_Translation {
 		echo '</script>';
 
 		?>
-	<div id="gp-inline-translation-list">
+		<div id="gp-inline-translation-list">
 			<div id="gp-translation-list-wrapper">
-			<input id="gp-inline-search" type="text" placeholder="Search string"/>
+				<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
 				<ul>
 				<?php
 				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
 					if ( is_array( $translation ) ) {
 						continue;
 					}
-					echo '<li><data class="translatable" data-singular="' . esc_attr( $translation->singular ) . '" data-plural="' . esc_attr( $translation->plural ) . '" data-context="' . esc_attr( $translation->context ) . '"  data-domain="' . esc_attr( $translation->domain ) . '" data-original-id="' . esc_attr( $translation->original_id ) . '" data-project="' . esc_attr( $translation->project ) . '"';
+					echo '<li>';
+
+					echo '<data class="translatable"';
+					echo ' data-singular="' . esc_attr( $translation->singular ) . '"';
+					echo ' data-plural="' . esc_attr( $translation->plural ) . '"';
+					echo ' data-context="' . esc_attr( $translation->context ) . '"';
+					echo ' data-domain="' . esc_attr( $translation->domain ) . '"';
+					echo ' data-original-id="' . esc_attr( $translation->original_id ) . '"';
+					echo ' data-project="' . esc_attr( $translation->project ) . '"';
+					if ( ! empty( $translation->translations ) ) {
+						$t = array_filter(
+							array(
+								$translation->translations[0]['translation_0'],
+								$translation->translations[0]['translation_1'],
+								$translation->translations[0]['translation_2'],
+								$translation->translations[0]['translation_3'],
+								$translation->translations[0]['translation_4'],
+							)
+						);
+						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
+					}
+					echo '>';
 					if ( empty( $translation->translations ) ) {
-						echo '>' . esc_html( $translation->singular );
+						echo esc_html( $translation->singular );
 					} else {
 						$t = array_filter(
 							array(
@@ -552,11 +573,13 @@ class GP_Inline_Translation {
 								$translation->translations[0]['translation_4'],
 							)
 						);
-						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '">' . esc_html( $translation->translations[0]['translation_0'] );
+						echo esc_html( $translation->translations[0]['translation_0'] );
 					}
 					echo '</data>';
-					echo ' Id: ',esc_html( $translation->original_id );
-					echo ' Domain: ', esc_html( $translation->domain );
+					if ( $translation->context ) {
+						echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
+					}
+
 					echo '</li>';
 				}
 				?>
@@ -564,7 +587,7 @@ class GP_Inline_Translation {
 			</div>
 		</div>
 		<div>
-			<div id="pop-out">
+			<div id="translator-pop-out">
 				<ul>
 					<li>
 						<label class="switch">
@@ -579,12 +602,18 @@ class GP_Inline_Translation {
 					<li class="inline-stats">
 						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
 						<div>
-							<div class="box stats-current"></div>
-							<span class="stats-label">(<?php echo esc_html( $translation_stats['current'] ); ?>)</span>
-							<div class="box stats-waiting"></div>
-							<span class="stats-label">(<?php echo esc_html( $translation_stats['waiting'] ); ?>)</span>
-							<div class="box stats-untranslated"></div>
-							<span class="stats-label">(<?php echo esc_html( $translation_stats['untranslated'] ); ?>)</span>
+							<span class="stats-label" title="<?php esc_attr_e( 'Current', 'glotpress' ); ?>">
+								<div class="box stats-current"></div>
+								<?php echo esc_html( $translation_stats['current'] ); ?>
+							</span>
+							<span class="stats-label" title="<?php esc_attr_e( 'Waiting', 'glotpress' ); ?>">
+								<div class="box stats-waiting"></div>
+								<?php echo esc_html( $translation_stats['waiting'] ); ?>
+							</span>
+							<span class="stats-label" title="<?php esc_attr_e( 'Untranslated', 'glotpress' ); ?>">
+								<div class="box stats-untranslated"></div>
+								<?php echo esc_html( $translation_stats['untranslated'] ); ?>
+							</span>
 						</div>
 					</li>
 				</ul>
