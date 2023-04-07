@@ -36,6 +36,7 @@
 		} );
 
 		$( document.body ).on( 'click', '#gp-show-translation-list', function() {
+			$( '#pop-out' ).hide();
 			$( '#gp-inline-translation-list' ).toggle();
 		} );
 
