@@ -260,6 +260,11 @@
 	font-style: italic;
 }
 
+.webui-popover p.other-originals {
+	margin: 0 0 .5em 0;
+	display: none;
+}
+
 .webui-popover p.info {
 	margin: .5em 0;
 	display: none;
