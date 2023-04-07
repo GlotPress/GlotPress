@@ -182,8 +182,8 @@ function getInputForm( translationPair ) {
 
 function exposeOtherOriginals( form, translationPair ) {
 	var search, i;
-	form.find( 'p.other-originals' ).css( 'display', 'block' );
 	if ( translationPair.getOtherOriginals().length ) {
+		form.find( 'p.other-originals' ).css( 'display', 'block' );
 		search = translationPair.getOriginal().getSingular();
 		for ( i = 0; i < translationPair.getOtherOriginals().length; i++ ) {
 			search += ' || ' + translationPair.getOtherOriginals()[ i ];
