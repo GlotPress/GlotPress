@@ -46,6 +46,18 @@
 			}
 		} );
 
+		$( document.body ).on( 'keyup', '#gp-inline-search', function() {
+			var search = $( this ).val();
+			$( '#gp-inline-translation-list li' ).each( function() {
+				var $this = $( this );
+				if ( $this.text().toLowerCase().indexOf( search.toLowerCase() ) >= 0 ) {
+					$this.show();
+				} else {
+					$this.hide();
+				}
+			} );
+		} );
+
 		// only show the button when the translator has been loaded
 		runWhenTranslatorIsLoaded( function() {
 			$( '#translator-launcher' ).show();
