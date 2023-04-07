@@ -153,16 +153,10 @@ function getInputForm( translationPair ) {
 		item, i;
 
 	original.html( getOriginalHtml( translationPair ) );
+	exposeOtherOriginals( form, translationPair );
+
 	if ( translationPair.getContext() ) {
 		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
-	}
-
-	if ( translationPair.getOtherOriginals().length ) {
-		form.find( 'p.other-originals' ).css( 'display', 'block' );
-		form.on( 'click', 'p.other-originals a', function() {
-			jQuery( '#gp-show-translation-list' ).trigger( 'search', translationPair.getOriginal().getSingular() + ' or ' + translationPair.getOtherOriginals()[ 0 ] );
-			return false;
-		} );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
@@ -186,6 +180,24 @@ function getInputForm( translationPair ) {
 	return form;
 }
 
+function exposeOtherOriginals( form, translationPair ) {
+	var search, i;
+	form.find( 'p.other-originals' ).css( 'display', 'block' );
+	if ( translationPair.getOtherOriginals().length ) {
+		search = translationPair.getOriginal().getSingular();
+		for ( i = 0; i < translationPair.getOtherOriginals().length; i++ ) {
+			search += ' || ' + translationPair.getOtherOriginals()[ i ];
+		}
+		for ( i = 0; i < translationPair.getTranslation().getTextItems().length; i++ ) {
+			search += ' || ' + translationPair.getTranslation().getTextItems()[ i ].getText();
+		}
+		form.on( 'click', 'p.other-originals a', function() {
+			jQuery( '#gp-show-translation-list' ).trigger( 'search', search );
+			return false;
+		} );
+	}
+}
+
 function getOverview( translationPair ) {
 	// TODO: add input checking and bail for empty or unexpected values
 
@@ -196,14 +208,7 @@ function getOverview( translationPair ) {
 		item, description, i;
 
 	original.html( getOriginalHtml( translationPair ) );
-
-	if ( translationPair.getOtherOriginals().length ) {
-		form.find( 'p.other-originals' ).css( 'display', 'block' );
-		form.on( 'click', 'p.other-originals a', function() {
-			jQuery( '#gp-show-translation-list' ).trigger( 'search', translationPair.getOriginal().getSingular() + ' || ' + translationPair.getOtherOriginals()[ 0 ] );
-			return false;
-		} );
-	}
+	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
 		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
