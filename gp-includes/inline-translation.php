@@ -523,6 +523,7 @@ class GP_Inline_Translation {
 		if ( 'en' === $locale_code ) {
 			return false;
 		}
+		$translation_stats = $this->get_inline_translation_stats( $locale_code );
 
 		echo '<script type="text','/javascript">';
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
@@ -589,11 +590,11 @@ class GP_Inline_Translation {
 						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
 						<div>
 							<div class="box stats-current"></div>
-							<span class="stats-label">(10)</span>
+							<span class="stats-label">(<?php echo esc_html( $translation_stats['current'] ); ?>)</span>
 							<div class="box stats-waiting"></div>
-							<span class="stats-label">(20)</span>
+							<span class="stats-label">(<?php echo esc_html( $translation_stats['waiting'] ); ?>)</span>
 							<div class="box stats-untranslated"></div>
-							<span class="stats-label">(30)</span>
+							<span class="stats-label">(<?php echo esc_html( $translation_stats['untranslated'] ); ?>)</span>
 						</div>
 					</li>
 				</ul>
@@ -608,6 +609,34 @@ class GP_Inline_Translation {
 		
 		<?php
 		return true;
+	}
+
+	/**
+	 * Gets the status stats for the inline translation.
+	 *
+	 * @param      string $gp_locale  The locale.
+	 *
+	 * @return     array  The stats of the translation statuses.
+	 */
+	private function get_inline_translation_stats( $gp_locale ) {
+		$translations = $this->get_translations( GP_Locales::by_field( 'wp_locale', $gp_locale ) );
+		$stats        = array(
+			'current'      => 0,
+			'waiting'      => 0,
+			'untranslated' => 0,
+		);
+		foreach ( $translations as $translation ) {
+			if ( empty( $translation->translations ) ) {
+				$stats['untranslated']++;
+			} elseif ( $translation->translations[0]['status'] === 'current' ) {
+				$stats['current']++;
+			} elseif ( $translation->translations[0]['status'] === 'waiting' ) {
+				$stats['waiting']++;
+			} else {
+				$stats['untranslated']++;
+			}
+		}
+		return $stats;
 	}
 
 	/**
