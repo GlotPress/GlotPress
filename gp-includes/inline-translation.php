@@ -618,9 +618,9 @@ class GP_Inline_Translation {
 		foreach ( $translations as $translation ) {
 			if ( empty( $translation->translations ) ) {
 				$stats['untranslated']++;
-			} elseif ( $translation->translations[0]['status'] === 'current' ) {
+			} elseif ( 'current' === $translation->translations[0]['status'] ) {
 				$stats['current']++;
-			} elseif ( $translation->translations[0]['status'] === 'waiting' ) {
+			} elseif ( 'waiting' === $translation->translations[0]['status'] ) {
 				$stats['waiting']++;
 			} else {
 				$stats['untranslated']++;
