@@ -583,9 +583,6 @@ class GP_Inline_Translation {
 					<li>
 						<a id="gp-show-translation-list" href="#"><?php _e( 'View list of strings', 'glotpress' ); ?></a>
 					</li>
-					<li>
-						<a><?php _e( 'GlotPress Settings', 'glotpress' ); ?></a>
-					</li>
 					<li class="inline-stats">
 						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
 						<div>
