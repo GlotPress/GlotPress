@@ -153,13 +153,20 @@ function getInputForm( translationPair ) {
 		item, i;
 
 	original.html( getOriginalHtml( translationPair ) );
-
 	if ( translationPair.getContext() ) {
-		form.find( 'p.context' ).text( translationPair.getContext() ).show();
+		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
+	}
+
+	if ( translationPair.getOtherOriginals().length ) {
+		form.find( 'p.other-originals' ).css( 'display', 'block' );
+		form.on( 'click', 'p.other-originals a', function() {
+			jQuery( '#gp-show-translation-list' ).trigger( 'search', translationPair.getOriginal().getSingular() + ' or ' + translationPair.getOtherOriginals()[ 0 ] );
+			return false;
+		} );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
-		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).show();
+		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -190,12 +197,20 @@ function getOverview( translationPair ) {
 
 	original.html( getOriginalHtml( translationPair ) );
 
+	if ( translationPair.getOtherOriginals().length ) {
+		form.find( 'p.other-originals' ).css( 'display', 'block' );
+		form.on( 'click', 'p.other-originals a', function() {
+			jQuery( '#gp-show-translation-list' ).trigger( 'search', translationPair.getOriginal().getSingular() + ' || ' + translationPair.getOtherOriginals()[ 0 ] );
+			return false;
+		} );
+	}
+
 	if ( translationPair.getContext() ) {
-		form.find( 'p.context' ).text( translationPair.getContext() ).show();
+		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
-		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).show();
+		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -225,6 +240,7 @@ function getHtmlTemplate( popoverType ) {
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
+			'<p class="other-originals">Multiple originals match, <a href="">show them</a></p>' +
 			'<hr />' +
 			'<p class="info"></p>' +
 			'<div class="pairs">' +
@@ -251,6 +267,7 @@ function getHtmlTemplate( popoverType ) {
 			'<p class="warnings"></p>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
+			'<p class="other-originals">Multiple originals match, <a href="">show them</a></p>' +
 			'<p class="info"></p>' +
 			'<div class="pairs">' +
 			'<div class="pair">' +

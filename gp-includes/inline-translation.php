@@ -561,23 +561,17 @@ class GP_Inline_Translation {
 						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
 					}
 					echo '>';
+					$index = strtolower( $translation->singular );
 					if ( empty( $translation->translations ) ) {
 						echo esc_html( $translation->singular );
 					} else {
-						$t = array_filter(
-							array(
-								$translation->translations[0]['translation_0'],
-								$translation->translations[0]['translation_1'],
-								$translation->translations[0]['translation_2'],
-								$translation->translations[0]['translation_3'],
-								$translation->translations[0]['translation_4'],
-							)
-						);
 						echo esc_html( $translation->translations[0]['translation_0'] );
+						$index .= ' ' . strtolower( $translation->translations[0]['translation_0'] );
 					}
 					echo '</data>';
 					if ( $translation->context ) {
 						echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
+						echo ' <span class="index" style="display: none">' . esc_html( $index ) . '</span>';
 					}
 
 					echo '</li>';
@@ -617,15 +611,12 @@ class GP_Inline_Translation {
 						</div>
 					</li>
 				</ul>
-				
-
 			</div>
 			<div id="translator-launcher" class="translator">
 				<span class="dashicons dashicons-admin-site-alt3">
 				</span>
 			</div>
 		</div>
-		
 		<?php
 		return true;
 	}
