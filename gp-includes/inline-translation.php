@@ -540,7 +540,7 @@ class GP_Inline_Translation {
 					}
 					echo '<li><data class="translatable" data-singular="' . esc_attr( $translation->singular ) . '" data-plural="' . esc_attr( $translation->plural ) . '" data-context="' . esc_attr( $translation->context ) . '"  data-domain="' . esc_attr( $translation->domain ) . '" data-original-id="' . esc_attr( $translation->original_id ) . '" data-project="' . esc_attr( $translation->project ) . '"';
 					if ( empty( $translation->translations ) ) {
-						 echo '>' . esc_html( $translation->singular );
+						echo '>' . esc_html( $translation->singular );
 					} else {
 						$t = array_filter(
 							array(
@@ -554,8 +554,8 @@ class GP_Inline_Translation {
 						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '">' . esc_html( $translation->translations[0]['translation_0'] );
 					}
 					echo '</data>';
-					echo ' Id: ', $translation->original_id;
-					echo ' Domain: ', $translation->domain;
+					echo ' Id: ',esc_html( $translation->original_id );
+					echo ' Domain: ', esc_html( $translation->domain );
 					echo '</li>';
 				}
 				?>
