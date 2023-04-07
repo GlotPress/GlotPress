@@ -60,3 +60,9 @@ li.inline-stats strong {
     margin: 5em auto;
 	border-radius: 4px;
 }
+input#gp-inline-search {
+	padding: 0.4em;
+    width: 100%;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
