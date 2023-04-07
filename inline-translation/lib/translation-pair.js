@@ -133,7 +133,7 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 
 			if ( simpleOriginalRegex.test( oldText ) ) {
 				matches = oldText.match( simpleOriginalRegex );
-			} else if ( foundRegex.test( oldText ) ) {
+			} else if ( foundRegex && foundRegex.test( oldText ) ) {
 				matches = oldText.match( foundRegex );
 			}
 
@@ -178,6 +178,9 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 		},
 		getTranslation: function() {
 			return selectedTranslation;
+		},
+		setGlotPressProject: function( project ) {
+			return ( glotPressProject = project );
 		},
 		getGlotPressProject: function() {
 			return glotPressProject;
@@ -230,7 +233,7 @@ function getRegexString( text ) {
 }
 
 function extractFromDataElement( dataElement ) {
-	var translationPair,
+	var translationPair, translation,
 		original = {
 			singular: dataElement.data( 'singular' ),
 		};
@@ -247,9 +250,20 @@ function extractFromDataElement( dataElement ) {
 		original.domain = dataElement.data( 'domain' );
 	}
 
-	translationPair = new TranslationPair( translationData.locale, original, original.context, original.domain );
-	translationPair.setScreenText( dataElement.text() );
+	if ( dataElement.data( 'original-id' ) ) {
+		original.originalId = dataElement.data( 'original-id' );
+	}
 
+	if ( dataElement.data( 'translation' ) ) {
+		translation = dataElement.data( 'translation' );
+	}
+
+	translationPair = new TranslationPair( translationData.locale, original, original.context, original.domain, translation );
+
+	translationPair.setScreenText( dataElement.text() );
+	if ( dataElement.data( 'project' ) ) {
+		translationPair.setGlotPressProject( dataElement.data( 'project' ) );
+	}
 	return translationPair;
 }
 

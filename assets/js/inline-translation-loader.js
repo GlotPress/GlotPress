@@ -7,8 +7,11 @@
 			return false;
 		}
 
+		if ( shouldAutoloadTranslator() ) {
+			$( '#inline-translation-switch' ).prop( 'checked', true );
+		}
+
 		function loadTranslator() {
-			$( '#translator-launcher .text' ).addClass( 'enabled' ).removeClass( 'disabled' );
 			if ( gpInlineTranslation.load() !== false ) {
 				// was loaded successfully
 				autoloadTranslator( true );
@@ -16,18 +19,49 @@
 		}
 
 		function unloadTranslator() {
-			$( '#translator-launcher .text' ).removeClass( 'enabled' ).addClass( 'disabled' );
 			gpInlineTranslation.unload();
 			autoloadTranslator( false );
 		}
 
 		$( document.body ).on( 'click', '#translator-launcher', function() {
-			if ( $( '#translator-launcher .text' ).hasClass( 'disabled' ) ) {
+			$( '#translator-pop-out' ).toggle();
+		} );
+
+		$( document.body ).on( 'change', '#inline-translation-switch', function() {
+			if ( $( this ).prop( 'checked' ) ) {
 				loadTranslator();
 			} else {
 				unloadTranslator();
 			}
-			return false;
+		} );
+
+		$( document.body ).on( 'click', '#gp-show-translation-list', function() {
+			$( '#translator-pop-out' ).hide();
+			$( '#gp-inline-translation-list' ).toggle();
+			$( '#gp-inline-search' ).focus();
+		} );
+
+		$( document.body ).on( 'click', '#gp-inline-translation-list', function( event ) {
+			var targetId = $( event.target ).attr( 'id' );
+			if ( targetId && targetId === 'gp-inline-translation-list' ) {
+				$( '#gp-inline-translation-list' ).hide();
+			}
+		} );
+
+		$( document.body ).on( 'keyup', '#gp-inline-search', function() {
+			var search = $( this ).val();
+			$( '#gp-inline-translation-list li' ).each( function() {
+				var $this = $( this ).find( 'data' );
+				if (
+					$this.text().toLowerCase().indexOf( search.toLowerCase() ) >= 0 ||
+					( typeof $this.data( 'singular' ) === 'string' && $this.data( 'singular' ).toLowerCase().indexOf( search.toLowerCase() ) >= 0 ) ||
+					( typeof $this.data( 'plural' ) === 'string' && $this.data( 'plural' ).toLowerCase().indexOf( search.toLowerCase() ) >= 0 )
+				) {
+					$( this ).show();
+				} else {
+					$( this ).hide();
+				}
+			} );
 		} );
 
 		// only show the button when the translator has been loaded

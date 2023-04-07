@@ -441,6 +441,9 @@ class GP_Inline_Translation {
 		$query_result->original_id        = $original_record->id;
 		$query_result->original           = $original;
 		$query_result->domain             = $text_domain;
+		$query_result->singular           = $original_record->singular;
+		$query_result->plural             = $original_record->plural;
+		$query_result->context            = $original_record->context;
 		$query_result->project            = $project->path;
 		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
@@ -520,27 +523,139 @@ class GP_Inline_Translation {
 		if ( 'en' === $locale_code ) {
 			return false;
 		}
+		$translation_stats = $this->get_inline_translation_stats( $locale_code );
 
 		echo '<script type="text','/javascript">';
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
 		echo '</script>';
 
-		?><div id="translator-launcher" class="translator">
-			<a href="" title="<?php esc_attr_e( 'Inline Translation' ); ?>">
+		?>
+		<div id="gp-inline-translation-list">
+			<div id="gp-translation-list-wrapper">
+				<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
+				<ul>
+				<?php
+				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
+					if ( is_array( $translation ) ) {
+						continue;
+					}
+					echo '<li>';
+
+					echo '<data class="translatable"';
+					echo ' data-singular="' . esc_attr( $translation->singular ) . '"';
+					echo ' data-plural="' . esc_attr( $translation->plural ) . '"';
+					echo ' data-context="' . esc_attr( $translation->context ) . '"';
+					echo ' data-domain="' . esc_attr( $translation->domain ) . '"';
+					echo ' data-original-id="' . esc_attr( $translation->original_id ) . '"';
+					echo ' data-project="' . esc_attr( $translation->project ) . '"';
+					if ( ! empty( $translation->translations ) ) {
+						$t = array_filter(
+							array(
+								$translation->translations[0]['translation_0'],
+								$translation->translations[0]['translation_1'],
+								$translation->translations[0]['translation_2'],
+								$translation->translations[0]['translation_3'],
+								$translation->translations[0]['translation_4'],
+							)
+						);
+						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
+					}
+					echo '>';
+					if ( empty( $translation->translations ) ) {
+						echo esc_html( $translation->singular );
+					} else {
+						$t = array_filter(
+							array(
+								$translation->translations[0]['translation_0'],
+								$translation->translations[0]['translation_1'],
+								$translation->translations[0]['translation_2'],
+								$translation->translations[0]['translation_3'],
+								$translation->translations[0]['translation_4'],
+							)
+						);
+						echo esc_html( $translation->translations[0]['translation_0'] );
+					}
+					echo '</data>';
+					if ( $translation->context ) {
+						echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
+					}
+
+					echo '</li>';
+				}
+				?>
+				</ul>
+			</div>
+		</div>
+		<div>
+			<div id="translator-pop-out">
+				<ul>
+					<li>
+						<label class="switch">
+							<input id="inline-translation-switch" type="checkbox">
+							<span class="gp-inline-slider"></span>
+						</label>
+						<span><?php _e( 'Inline Translation Status', 'glotpress' ); ?></span>
+					</li>
+					<li>
+						<a id="gp-show-translation-list" href="#"><?php _e( 'View list of strings', 'glotpress' ); ?></a>
+					</li>
+					<li class="inline-stats">
+						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
+						<div>
+							<span class="stats-label" title="<?php esc_attr_e( 'Current', 'glotpress' ); ?>">
+								<div class="box stats-current"></div>
+								<?php echo esc_html( $translation_stats['current'] ); ?>
+							</span>
+							<span class="stats-label" title="<?php esc_attr_e( 'Waiting', 'glotpress' ); ?>">
+								<div class="box stats-waiting"></div>
+								<?php echo esc_html( $translation_stats['waiting'] ); ?>
+							</span>
+							<span class="stats-label" title="<?php esc_attr_e( 'Untranslated', 'glotpress' ); ?>">
+								<div class="box stats-untranslated"></div>
+								<?php echo esc_html( $translation_stats['untranslated'] ); ?>
+							</span>
+						</div>
+					</li>
+				</ul>
+				
+
+			</div>
+			<div id="translator-launcher" class="translator">
 				<span class="dashicons dashicons-admin-site-alt3">
 				</span>
-				<div class="text disabled">
-					<div class="enable">
-						Enable Inline Translation
-					</div>
-					<div class="disable">
-						Disable Inline Translation
-					</div>
-				</div>
-			</a>
+			</div>
 		</div>
+		
 		<?php
 		return true;
+	}
+
+	/**
+	 * Gets the status stats for the inline translation.
+	 *
+	 * @param      string $gp_locale  The locale.
+	 *
+	 * @return     array  The stats of the translation statuses.
+	 */
+	private function get_inline_translation_stats( $gp_locale ) {
+		$translations = $this->get_translations( GP_Locales::by_field( 'wp_locale', $gp_locale ) );
+		$stats        = array(
+			'current'      => 0,
+			'waiting'      => 0,
+			'untranslated' => 0,
+		);
+		foreach ( $translations as $translation ) {
+			if ( empty( $translation->translations ) ) {
+				$stats['untranslated']++;
+			} elseif ( 'current' === $translation->translations[0]['status'] ) {
+				$stats['current']++;
+			} elseif ( 'waiting' === $translation->translations[0]['status'] ) {
+				$stats['waiting']++;
+			} else {
+				$stats['untranslated']++;
+			}
+		}
+		return $stats;
 	}
 
 	/**
