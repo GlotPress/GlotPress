@@ -76,7 +76,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.0.0-rc.2] (April 1, 2022)
 
 **Bugfixes**
-* Glossary: Provide fallback if term splitting has failed. ([#1378])
+* Glossary: preg_split() can fail, causing no original to be displayed ([#1377])
 
 ## [3.0.0-rc.1] (March 31, 2022)
 
