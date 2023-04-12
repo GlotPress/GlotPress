@@ -104,7 +104,6 @@ class GP_Inline_Translation {
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
 		add_action( 'ngettext_with_context', array( $this, 'ntranslate_with_context' ), 10, 6 );
 		add_action( 'wp_footer', array( $this, 'load_translator' ), 1000 );
-		add_action( 'gp_footer', array( $this, 'load_translator' ), 1000 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_action( 'admin_footer', array( $this, 'load_admin_translator' ), 1000 );
@@ -421,7 +420,7 @@ class GP_Inline_Translation {
 					)
 				);
 
-				if ( $translation !== $entry->singular ) {
+				if ( $translation !== $entry->singular && isset( $translation_sets[ $project->id ] ) && is_object( $translation_sets[ $project->id ] ) ) {
 					$translation_record = GP::$translation->create(
 						array(
 							'original_id'        => $original_record->id,
@@ -537,8 +536,9 @@ class GP_Inline_Translation {
 				<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
 				<ul>
 				<?php
+
 				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
-					if ( is_array( $translation ) ) {
+					if ( 1 * 1 || is_array( $translation ) ) {
 						continue;
 					}
 					echo '<li>';

@@ -246,52 +246,6 @@ class GP_Rest_API {
 	}
 
 	/**
-	 * A slightly modified version og GP_Original->by_project_id_and_entry without the BINARY search keyword
-	 * to make sure the index on the gp_originals table is used
-	 *
-	 * @param      int    $project_id  The project id.
-	 * @param      object $entry       The entry.
-	 * @param      string $status      The status.
-	 *
-	 * @return     array|null  The original entry.
-	 */
-	private function by_project_id_and_entry( $project_id, $entry, $status = '+active' ) {
-		global $wpdb;
-
-		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null;
-		$entry->context = isset( $entry->context ) ? $entry->context : null;
-
-		$where = array();
-
-		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = %s';
-		$where[] = 'singular = %s';
-		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
-		$where[] = 'project_id = %d';
-		$where[] = $wpdb->prepare( 'status = %s', $status );
-
-		$where = implode( ' AND ', $where );
-
-		$query  = "SELECT * FROM $wpdb->gp_originals WHERE $where";
-		$result = GP::$original->one( $query, $entry->context, $entry->singular, $entry->plural, $project_id );
-		if ( ! $result ) {
-			return null;
-		}
-		// We want case sensitive matching but this can't be done with MySQL while continuing to use the index therefore we do an additional check here.
-		if ( $result->singular === $entry->singular ) {
-			return $result;
-		}
-
-		// We then get the whole result set here and check each entry manually.
-		$results = GP::$original->many( $query . ' AND id != %d', $entry->context, $entry->singular, $entry->plural, $project_id, $result->id );
-		foreach ( $results as $result ) {
-			if ( $result->singular === $entry->singular ) {
-				return $result;
-			}
-		}
-
-		return null;
-	}
-	/**
 	 * Gets translations by title.
 	 *
 	 * @param  \WP_REST_Request $request The incoming request.
@@ -379,7 +333,7 @@ class GP_Rest_API {
 				$checked_originals[ $key ] = true;
 
 				foreach ( $translation_sets[ $text_domain ] as $project_id => $translation_set ) {
-					$original_record = $this->by_project_id_and_entry( $project_id, $original );
+					$original_record = GP_Original::by_project_id_and_entry( $project_id, $original );
 					if ( ! $original_record ) {
 						continue;
 					}
