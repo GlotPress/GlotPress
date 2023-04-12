@@ -497,7 +497,7 @@ class GP_Rest_API {
 		}
 		$project_description = $request->get_param( 'description' );
 		if ( ! $project_description ) {
-			return new WP_Error( 'missing-parameter', 'Missing parameter: description', array( 'status' => 400 ) );
+			$project_description = '';
 		}
 		$locale = $request->get_param( 'locale' );
 		if ( ! $locale ) {
@@ -613,6 +613,7 @@ class GP_Rest_API {
 						array(
 							'name'              => GP::$local->get_project_name( $project_path ),
 							'slug'              => $slug,
+							'path'              => $project_path,
 							'description'       => GP::$local->get_project_description( $project_path ),
 							'parent_project_id' => $parent_project ? $parent_project->id : null,
 							'active'            => true,
@@ -627,6 +628,7 @@ class GP_Rest_API {
 				array(
 					'name'              => $name,
 					'slug'              => $project_slug,
+					'path'              => $project_path,
 					'description'       => $description,
 					'parent_project_id' => $parent_project ? $parent_project->id : null,
 					'active'            => true,
