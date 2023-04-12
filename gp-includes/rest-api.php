@@ -687,7 +687,7 @@ class GP_Rest_API {
 				array(
 					'name'              => $name,
 					'slug'              => $project_slug,
-					'path'              => $project_path,
+					'path'              => $path,
 					'description'       => $description,
 					'parent_project_id' => $parent_project ? $parent_project->id : null,
 					'active'            => true,
