@@ -682,6 +682,15 @@ class GP_Translation extends GP_Thing {
 				'status'             => 'changesrequested',
 			)
 		)
+		&& $this->update(
+			array( 'status' => 'old' ),
+			array(
+				'original_id'        => $this->original_id,
+				'translation_set_id' => $this->translation_set_id,
+				'user_id'            => $this->user_id,
+				'status'             => 'waiting',
+			)
+		)
 		&& $this->save(
 			array(
 				'status'                => 'waiting',
