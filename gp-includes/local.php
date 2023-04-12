@@ -938,7 +938,7 @@ class GP_Local {
 				$modified_after = $last_submission;
 			}
 		}
-		if ( wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) && isset( $_POST['modified_after'] ) ) {
+		if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) && isset( $_POST['modified_after'] ) ) {
 			$modified_after = $_POST['modified_after'];
 		} elseif ( isset( $_GET['modified_after'] ) ) {
 			$modified_after = $_GET['modified_after'];
