@@ -577,7 +577,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1367]: https://github.com/GlotPress/GlotPress/pull/1367
 [#1364]: https://github.com/GlotPress/GlotPress/pull/1364
 [#1360]: https://github.com/GlotPress/GlotPress/pull/1360
-[#1360]: https://github.com/GlotPress/GlotPress/pull/1378
+[#1378]: https://github.com/GlotPress/GlotPress/pull/1378
 [#1391]: https://github.com/GlotPress/GlotPress/pull/1391
 [#1392]: https://github.com/GlotPress/GlotPress/pull/1392
 [#1393]: https://github.com/GlotPress/GlotPress/pull/1393
