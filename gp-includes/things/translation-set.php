@@ -396,9 +396,9 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
-	 * Retrieves the number of waiting translations.
+	 * Retrieves the number of "changes requested" translations.
 	 *
-	 * @return int Number of waiting translations.
+	 * @return int Number of "changes requested" translations.
 	 */
 	public function changesrequested_count() {
 		if ( ! isset( $this->changesrequested_count ) ) {
