@@ -64,6 +64,14 @@
 			} );
 		} );
 
+		$( document.body ).on( 'change', '#inline-jump-next-switch', function() {
+			if ( $( this ).prop( 'checked' ) ) {
+				document.cookie = 'inlinejumptonext=1;path=/';
+			} else {
+				document.cookie = 'inlinejumptonext=;expires=Sat,%201%20Jan%202000%2000:00:00%20GMT;path=/';
+			}
+		} );
+
 		// only show the button when the translator has been loaded
 		runWhenTranslatorIsLoaded( function() {
 			$( '#translator-launcher' ).show();

@@ -223,7 +223,9 @@ registerPopoverHandlers = function() {
 					makeTranslatable( translationPair, $node );
 					notifyTranslated( translationPair );
 
-					jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
+					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
+						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
+					}
 				} ).fail( function() {
 					debug( 'Submitting new translation failed', translation );
 				} );
