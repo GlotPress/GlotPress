@@ -72,6 +72,10 @@
 			}
 		} );
 
+		if ( jumpToNextOnSave() ) {
+			$( '#inline-jump-next-switch' ).prop( 'checked', true );
+		}
+
 		// only show the button when the translator has been loaded
 		runWhenTranslatorIsLoaded( function() {
 			$( '#translator-launcher' ).show();
@@ -106,6 +110,9 @@
 			}
 
 			return !! document.cookie.match( /autoinlinetranslation=1/ );
+		}
+		function jumpToNextOnSave() {
+			return !! document.cookie.match( /inlinejumptonext=1/ );
 		}
 	} );
 }( jQuery ) );
