@@ -372,11 +372,13 @@ findNewTranslatableTexts = function() {
 function getPlaceholdersLink( translationPair, textAreaContent ) {
 	var placeholdersLink = '';
 	var placeholders = translationPair.getOriginal().getPlaceholders();
-	placeholders = placeholders.filter( function( item ) {
-		return textAreaContent.indexOf( item ) === -1;
-	} );
-	placeholdersLink = placeholders.map( function( match ) {
-		return '<a class="inline-placeholder" href="#">' + match + '</a>';
-	} ).join( '' );
+	if ( placeholders.length ) {
+		placeholdersLink = placeholders.map( function( match ) {
+			if ( ! ( textAreaContent.indexOf( match ) === -1 ) ) {
+				return '<a class="placeholder-exist inline-placeholder" href="#">' + match + '</a>';
+			}
+			return '<a class="inline-placeholder" href="#">' + match + '</a>';
+		} ).join( '' );
+	}
 	return placeholdersLink;
 }

@@ -246,10 +246,13 @@ iframe.translator-untranslatable {
 }
 
 .webui-popover a.inline-placeholder{
-	background: #0085be;
+	background: #fe663c;
 	padding: 0.3em;
 	margin-right: 0.2em;
 	border-radius: 2px;
 	color: #fff;
 	text-decoration: none;
+}
+.webui-popover a.placeholder-exist {
+	background: #5bc085;
 }
