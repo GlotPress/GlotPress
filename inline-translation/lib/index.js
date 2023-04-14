@@ -155,7 +155,10 @@ registerPopoverHandlers = function() {
 		var textareasWithInput,
 			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
 			$allTextareas = $form.find( 'textarea' ),
-			$button = $form.find( 'button' );
+			$button = $form.find( 'button' ),
+			translationPair = $form.data( 'translationPair' ),
+			newPlaceholders = getPlaceholdersLink( translationPair, $allTextareas.val() );
+		$form.find( 'p.placeholders' ).html( newPlaceholders ).css( 'display', 'inline' );
 
 		textareasWithInput = $allTextareas.filter( function() {
 			return this.value.length;
@@ -163,6 +166,18 @@ registerPopoverHandlers = function() {
 
 		// disable if no textarea has an input
 		$button.prop( 'disabled', 0 === textareasWithInput.length );
+	} );
+
+	jQuery( document.body ).on( 'focus', 'textarea', function() {
+		var currentText = jQuery( this ).val();
+		var $placeholder = jQuery( this ).parents( '.pairs' ).siblings( '.placeholders' );
+		var newPlaceholders = '';
+		var $form = jQuery( this ).parents( 'form.ct-new-translation' );
+
+		var translationPair = $form.data( 'translationPair' );
+
+		newPlaceholders = getPlaceholdersLink( translationPair, currentText );
+		$placeholder.html( newPlaceholders );
 	} );
 
 	jQuery( document ).on( 'submit', 'form.ct-new-translation', function() {
@@ -353,3 +368,15 @@ findNewTranslatableTexts = function() {
 		currentlyWalkingTheDom = false;
 	} );
 };
+
+function getPlaceholdersLink( translationPair, textAreaContent ) {
+	var placeholdersLink = '';
+	var placeholders = translationPair.getOriginal().getPlaceholders();
+	placeholders = placeholders.filter( function( item ) {
+		return textAreaContent.indexOf( item ) === -1;
+	} );
+	placeholdersLink = placeholders.map( function( match ) {
+		return '<a class="inline-placeholder" href="#">' + match + '</a>';
+	} ).join( '' );
+	return placeholdersLink;
+}

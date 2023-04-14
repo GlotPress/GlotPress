@@ -118,8 +118,8 @@ function Original( original ) {
 			var regexPattern = /%(\d\$)?([sd])/g;
 			var matchedPlaceholders = Array.from( singular.matchAll( regexPattern ) );
 			var placeholders = matchedPlaceholders.map( function( match ) {
-				return '<a class="inline-placeholder" href="#">' + match[ 0 ] + '</a>';
-			} ).join( '' );
+				return match[ 0 ];
+			} );
 
 			return placeholders;
 		},
