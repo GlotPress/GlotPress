@@ -360,6 +360,9 @@ $gp.editor = (
 					case 'fuzzy':
 						status_name = wp.i18n._x( 'fuzzy', 'Single Status', 'glotpress' );
 						break;
+					case 'changesrequested':
+						status_name = wp.i18n._x( 'changes requested', 'Single Status', 'glotpress' );
+						break;
 				}
 
 				/* translators: %s: Status name. */
