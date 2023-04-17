@@ -547,9 +547,7 @@ class GP_Rest_API {
 			return new WP_Error( 'inexistent-translation-set', 'Translation Set does not exist', array( 'status' => 400 ) );
 		}
 
-		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
-
-		$local_po = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
+		$local_po = apply_filters( 'gp_local_project_po', WP_LANG_DIR . '/' . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, WP_LANG_DIR );
 
 		$filters = array(
 			'status' => 'current',
@@ -627,9 +625,7 @@ class GP_Rest_API {
 			$locale->slug
 		);
 
-		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
-
-		$local_po = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
+		$local_po = apply_filters( 'gp_local_project_po', WP_LANG_DIR . '/' . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, WP_LANG_DIR );
 		if ( ! file_exists( $local_po ) || $translation_set ) {
 			if ( substr( $local_po, -2 ) === 'po' ) {
 				$local_mo   = substr( $local_po, 0, -2 ) . 'mo';
