@@ -1039,9 +1039,11 @@ class GP_Local {
 
 					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( $url ); ?></a><br/>
 					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <?php echo esc_html( $file ); ?>
-					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank">
+					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
 					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
 					<input type="hidden" name="format" value="po" />
+					<input type="hidden" name="format" value="po" />
+					<input type="file" name="import-file" id="import-file" />
 					<textarea cols=80 rows=10 style="font-family: monospace">
 					<?php echo esc_html( $po_contents ); ?>
 					</textarea><br/>
@@ -1060,6 +1062,9 @@ class GP_Local {
 
 					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import on WordPress.org', 'glotpress' ); ?></button>
 					</form>
+					<script>
+						document.querySelector('#import-file').files.add( new File( [ new Blob( [ atob( '<?php echo esc_html( base64_encode( $po_contents ) /* phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode */ ); ?>'], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } ) );
+					</script>
 					<?php
 				}
 			}
