@@ -503,7 +503,7 @@ class GP_Rest_API {
 
 		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
 
-		$local_po = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
+		$local_po = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.po';
 
 		$filters = array(
 			'status' => 'current',
@@ -583,23 +583,19 @@ class GP_Rest_API {
 
 		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
 
-		$local_mo = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.mo', $path, $locale_slug, $locale, $languages_dir );
+		$local_mo = apply_filters( 'get_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
 		if ( ! file_exists( $local_mo ) || $translation_set ) {
-			if ( substr( $local_mo, -2 ) === 'mo' ) {
-				$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_mo );
-				if ( is_wp_error( $downloaded ) ) {
-					$messages[] = $downloaded->get_error_message();
-				} else {
-					$messages[] = make_clickable(
-						sprintf(
-						// translators: %s is a URL.
-							__( 'Downloaded MO file from %s', 'glotpress' ),
-							$downloaded
-						)
-					);
-				}
+			$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_mo );
+			if ( is_wp_error( $downloaded ) ) {
+				$messages[] = $downloaded->get_error_message();
 			} else {
-				$messages[] = __( 'Could not determine MO path.', 'glotpress' );
+				$messages[] = make_clickable(
+					sprintf(
+					// translators: %s is a URL.
+						__( 'Downloaded MO file from %s', 'glotpress' ),
+						$downloaded
+					)
+				);
 			}
 		}
 

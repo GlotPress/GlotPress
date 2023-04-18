@@ -36,7 +36,7 @@ class GP_Local {
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
 		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
 		// phpcs:ignore add_filter( 'gp_local_sync_url', array( $this, 'get_local_sync_url' ), 10, 2 );
-		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
+		add_filter( 'gp_local_project_pomo_base', array( $this, 'get_local_project_pomo_base' ), 10, 5 );
 	}
 
 	/**
@@ -373,20 +373,20 @@ class GP_Local {
 	 *
 	 * @return     string  The local project po.
 	 */
-	public function get_local_project_po( $file_path, $project_path, $slug, $locale, $directory ) {
+	public function get_local_project_pomo_base( $file_path, $project_path, $slug, $locale, $directory ) {
 		switch ( $project_path ) {
 			case 'wp/dev':
-				return trailingslashit( $directory ) . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . $locale->wp_locale;
 			case 'wp/dev/admin':
-				return trailingslashit( $directory ) . 'admin-' . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . 'admin-' . $locale->wp_locale;
 			case 'wp/dev/admin/network':
-				return trailingslashit( $directory ) . 'admin-network-' . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . 'admin-network-' . $locale->wp_locale;
 			case 'wp/dev/cc':
-				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale;
 		}
 
 		if ( in_array( dirname( $project_path ), array( 'wp-plugins', 'wp-themes' ), true ) ) {
-			return trailingslashit( $directory ) . substr( $project_path, 3 ) . '-' . $locale->wp_locale . '.po';
+			return trailingslashit( $directory ) . substr( $project_path, 3 ) . '-' . $locale->wp_locale;
 		}
 
 		return $file_path;
