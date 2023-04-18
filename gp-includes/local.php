@@ -1016,14 +1016,51 @@ class GP_Local {
 					$po_contents = GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
 
 					$download = 'data:text/plain;base64,' . base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-					echo '<br/>';
 
-					echo '<span>', esc_html__( 'Upload to:', 'glotpress' ), '</span> <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
-					echo '<span>', esc_html__( 'File:', 'glotpress' ), '</span> ', esc_html( $file ), ' ';
-					echo '<a download="', esc_attr( $file ), '" href="', esc_attr( $download ), '">', esc_html__( 'Download' ), '</a> → <a href="', esc_attr( $url ), 'import-translations/" target="_blank">', esc_html__( 'Import manually', 'glotpress' ), '</a>';
-					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
-					echo esc_html( $po_contents );
-					echo '</textarea><br/>';
+					$can_import_current = false;
+					$can_import_waiting = false;
+					$permissions        = get_option( 'gp_wporg_permissions' );
+					if ( is_array( $permissions ) && isset( $permissions['can_import_current'] ) ) {
+						$can_import_current = $permissions['can_import_current'];
+					}
+					if ( is_array( $permissions ) && isset( $permissions['can_import_waiting'] ) ) {
+						$can_import_waiting = $permissions['can_import_waiting'];
+					}
+
+					$status_options = array();
+					if ( isset( $can_import_current ) && $can_import_current ) {
+						$status_options['current'] = __( 'Current', 'glotpress' );
+					}
+					if ( isset( $can_import_waiting ) && $can_import_waiting ) {
+						$status_options['waiting'] = __( 'Waiting', 'glotpress' );
+					}
+					?>
+					<br/>
+
+					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( $url ); ?></a><br/>
+					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <?php echo esc_html( $file ); ?>
+					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank">';
+					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
+					<input type="hidden" name="format" value="po" />
+					<textarea cols=80 rows=10 style="font-family: monospace">
+					<?php echo esc_html( $po_contents ); ?>
+					</textarea><br/>
+
+					<?php if ( ! empty( $status_options ) ) : ?>
+						<dt><label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
+						<dd>
+							<?php if ( count( $status_options ) === 1 ) : ?>
+								<input type="hidden" name="status" value="<?php echo esc_attr( key( $status_options ) ); ?>" />
+								<?php echo esc_html( reset( $status_options ) ); ?>
+							<?php elseif ( count( $status_options ) > 1 ) : ?>
+								<?php echo gp_select( 'status', $status_options, 'current' ); ?>
+							<?php endif; ?>
+						</dd>
+					<?php endif; ?>
+
+					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import on WordPress.org', 'glotpress' ); ?></button>
+					</form>
+					<?php
 				}
 			}
 			return;
