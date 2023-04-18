@@ -1044,7 +1044,7 @@ class GP_Local {
 					<textarea cols=80 rows=10 style="font-family: monospace">
 					<?php echo esc_html( $po_contents ); ?>
 					</textarea><br/>
-					<input type="file" name="import-file" id="import-file" />
+					<input type="file" name="import-file" id="import-file" /><br/>
 
 					<?php if ( ! empty( $status_options ) ) : ?>
 						<label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label>
@@ -1054,9 +1054,10 @@ class GP_Local {
 						<?php elseif ( count( $status_options ) > 1 ) : ?>
 							<?php echo gp_select( 'status', $status_options, 'current' ); ?>
 						<?php endif; ?>
+						<br/>
 					<?php endif; ?>
 
-					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import on WordPress.org', 'glotpress' ); ?></button>
+					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import at WordPress.org', 'glotpress' ); ?></button>
 					</form>
 					<script>
 						(function() {
