@@ -251,8 +251,12 @@ iframe.translator-untranslatable {
 	margin-right: 0.2em;
 	border-radius: 2px;
 	color: #fff;
-	text-decoration: none;
+	text-decoration: line-through;
 }
 .webui-popover a.placeholder-exist {
+	text-decoration: none;
 	background: #B5E1B9;
+}
+.webui-popover a.placeholder-exist::after {
+content: '✅';
 }
