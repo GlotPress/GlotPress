@@ -1028,10 +1028,10 @@ class GP_Local {
 					}
 
 					$status_options = array();
-					if ( isset( $can_import_current ) && $can_import_current ) {
+					if ( $can_import_current ) {
 						$status_options['current'] = __( 'Current', 'glotpress' );
 					}
-					if ( isset( $can_import_waiting ) && $can_import_waiting ) {
+					if ( $can_import_waiting ) {
 						$status_options['waiting'] = __( 'Waiting', 'glotpress' );
 					}
 					?>
@@ -1039,7 +1039,7 @@ class GP_Local {
 
 					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( $url ); ?></a><br/>
 					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <?php echo esc_html( $file ); ?>
-					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank">';
+					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank">
 					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
 					<input type="hidden" name="format" value="po" />
 					<textarea cols=80 rows=10 style="font-family: monospace">
