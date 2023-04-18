@@ -521,6 +521,26 @@ class GP_Rest_API {
 			);
 		}
 
+		$url = 'https://translate.wordpress.org/locale/' . $locale->slug . '/default/glossary/-export/';
+		$file_name = $locale->slug . '-glossary.csv';
+		$file_path = 	$languages_dir . '/glossary/' . $file_name;
+
+		if ( file_put_contents( $file_path, file_get_contents( $url ) ) ) {
+			$messages[]         = sprintf(
+				// translators: %s is the locale slug.
+				__( 'Imported %s locale glossary.', 'glotpress' ),
+				$locale->slug
+			);
+		} else {
+			$messages[]         = sprintf(
+				// translators: %s locale slug.
+				__( 'Failed to import %s locale glossary.', 'glotpress' ),
+				$locale->slug
+			);
+		}
+
+
+
 		return array(
 			'project'            => $project->id,
 			'translation_set'    => $translation_set->id,
