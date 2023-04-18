@@ -583,7 +583,7 @@ class GP_Rest_API {
 
 		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
 
-		$local_mo = apply_filters( 'get_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
+		$local_mo = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
 		if ( ! file_exists( $local_mo ) || $translation_set ) {
 			$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_mo );
 			if ( is_wp_error( $downloaded ) ) {
