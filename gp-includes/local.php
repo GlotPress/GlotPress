@@ -1063,7 +1063,7 @@ class GP_Local {
 					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import on WordPress.org', 'glotpress' ); ?></button>
 					</form>
 					<script>
-						document.querySelector('#import-file').files.add( new File( [ new Blob( [ atob( '<?php echo esc_html( base64_encode( $po_contents ) /* phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode */ ); ?>'], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } ) );
+						document.querySelector('#import-file').files.add( new File( [ new Blob( [ atob( '<?php echo esc_html( base64_encode( $po_contents ) /* phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode */ ); ?>' ) ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } ) );
 					</script>
 					<?php
 				}
