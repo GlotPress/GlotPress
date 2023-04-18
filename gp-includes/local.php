@@ -979,6 +979,16 @@ class GP_Local {
 			)
 		);
 
+		$can_import_current = false;
+		$can_import_waiting = false;
+		$permissions        = get_option( 'gp_wporg_permissions' );
+		if ( is_array( $permissions ) && isset( $permissions['can_import_current'] ) ) {
+			$can_import_current = $permissions['can_import_current'];
+		}
+		if ( is_array( $permissions ) && isset( $permissions['can_import_waiting'] ) ) {
+			$can_import_waiting = $permissions['can_import_waiting'];
+		}
+
 		if ( ! empty( $_REQUEST['_wpnonce'] ) && ! empty( $_REQUEST['translation'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'sync_translations' ) ) {
 			update_user_option( get_current_user_id(), 'glotpress_last_sync_submission', gmdate( 'Y-m-d H:i:s' ) );
 			$translations_by_project_translation_set = array();
@@ -1015,18 +1025,6 @@ class GP_Local {
 
 					$po_contents = GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
 
-					$download = 'data:text/plain;base64,' . base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-
-					$can_import_current = false;
-					$can_import_waiting = false;
-					$permissions        = get_option( 'gp_wporg_permissions' );
-					if ( is_array( $permissions ) && isset( $permissions['can_import_current'] ) ) {
-						$can_import_current = $permissions['can_import_current'];
-					}
-					if ( is_array( $permissions ) && isset( $permissions['can_import_waiting'] ) ) {
-						$can_import_waiting = $permissions['can_import_waiting'];
-					}
-
 					$status_options = array();
 					if ( $can_import_current ) {
 						$status_options['current'] = __( 'Current', 'glotpress' );
@@ -1043,21 +1041,19 @@ class GP_Local {
 					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
 					<input type="hidden" name="format" value="po" />
 					<input type="hidden" name="format" value="po" />
-					<input type="file" name="import-file" id="import-file" />
 					<textarea cols=80 rows=10 style="font-family: monospace">
 					<?php echo esc_html( $po_contents ); ?>
 					</textarea><br/>
+					<input type="file" name="import-file" id="import-file" />
 
 					<?php if ( ! empty( $status_options ) ) : ?>
-						<dt><label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label></dt>
-						<dd>
-							<?php if ( count( $status_options ) === 1 ) : ?>
-								<input type="hidden" name="status" value="<?php echo esc_attr( key( $status_options ) ); ?>" />
-								<?php echo esc_html( reset( $status_options ) ); ?>
-							<?php elseif ( count( $status_options ) > 1 ) : ?>
-								<?php echo gp_select( 'status', $status_options, 'current' ); ?>
-							<?php endif; ?>
-						</dd>
+						<label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label>
+						<?php if ( count( $status_options ) === 1 ) : ?>
+							<input type="hidden" name="status" value="<?php echo esc_attr( key( $status_options ) ); ?>" />
+							<?php echo esc_html( reset( $status_options ) ); ?>
+						<?php elseif ( count( $status_options ) > 1 ) : ?>
+							<?php echo gp_select( 'status', $status_options, 'current' ); ?>
+						<?php endif; ?>
 					<?php endif; ?>
 
 					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import on WordPress.org', 'glotpress' ); ?></button>
@@ -1235,12 +1231,14 @@ class GP_Local {
 				<?php
 				return;
 			endif;
-			?>
 
+			if ( $can_import_current || $can_import_waiting ) :
+				?>
 			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<input type="hidden" name="modified_after" value="<?php echo esc_attr( $modified_after ); ?>" />
 				<?php wp_nonce_field( 'sync_translations' ); ?>
+			<?php endif; ?>
 		<?php foreach ( $syncable_translations as $translation ) : ?>
 			<?php
 			$table_start( $translation );
@@ -1281,10 +1279,12 @@ class GP_Local {
 
 		?>
 		</tbody></table>
+		<?php if ( $can_import_current || $can_import_waiting ) : ?>
 		<p>
 			<button class="button button-primary">Sync to WordPress.org</button>
 		</p>
 		</form>
+		<?php endif; ?>
 		</div>
 		<?php
 	}
