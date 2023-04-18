@@ -250,7 +250,7 @@ iframe.translator-untranslatable {
 	padding: 0.3em;
 	margin-right: 0.2em;
 	border-radius: 2px;
-	color: #fff;
+	color: #000000;
 	text-decoration: line-through;
 }
 .webui-popover a.placeholder-exist {
