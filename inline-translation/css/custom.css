@@ -246,7 +246,7 @@ iframe.translator-untranslatable {
 }
 
 .webui-popover a.inline-placeholder{
-	background: #fe663c;
+	background: #F1ADAD;
 	padding: 0.3em;
 	margin-right: 0.2em;
 	border-radius: 2px;
@@ -254,5 +254,5 @@ iframe.translator-untranslatable {
 	text-decoration: none;
 }
 .webui-popover a.placeholder-exist {
-	background: #5bc085;
+	background: #B5E1B9;
 }
