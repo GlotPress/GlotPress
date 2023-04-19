@@ -51,7 +51,7 @@ $priority_char = array(
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $missing_text;
 		elseif ( ! $translation->plural ) :
-			echo '<span class="translation-text">' . esc_translation( $translation->translations[0] ) . '</span>';
+			echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>';
 		else :
 		?>
 			<ul>
@@ -59,7 +59,7 @@ $priority_char = array(
 					<li>
 					<?php
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo gp_is_empty_string( $current_translation ) ? $missing_text : '<span class="translation-text">' . esc_translation( $current_translation ) . '</span>';
+					echo gp_is_empty_string( $current_translation ) ? $missing_text : '<span class="translation-text">' . prepare_original( esc_translation( $current_translation ) ) . '</span>';
 					?>
 					</li>
 				<?php endforeach; ?>
