@@ -1,4 +1,4 @@
-/* global $gp_mass_create_sets_options, $gp */
+/* global $gp_mass_create_sets_options, $gp, wp */
 /* eslint camelcase: "off" */
 jQuery( function( $ ) {
 	$gp.notices.init();
@@ -16,7 +16,7 @@ jQuery( function( $ ) {
 			success: function( data ) {
 				var preview = $( '#preview' );
 				var preview_html = '';
-				preview.html( '<h3>Preview changes:</h3>' );
+				preview.html( '<h3>' + wp.i18n.__( 'Preview changes:', 'glotpress' ) + '</h3>' );
 				preview_html += '<ul>';
 				select.prop( 'disabled', false );
 				$gp.notices.clear();
@@ -26,7 +26,7 @@ jQuery( function( $ ) {
 				function preview_html_for( kind, text ) {
 					var sets = data[ kind ];
 					var html = '';
-					html += '<li><span class="' + kind + '">' + text.replace( '{count}', sets.length ) + '</span>';
+					html += '<li><span class="' + kind + '">' + text + '</span>';
 					if ( sets.length ) {
 						html += '<ul>';
 						$.each( sets, function() {
@@ -37,15 +37,18 @@ jQuery( function( $ ) {
 					html += '</li>';
 					return html;
 				}
-				preview_html += preview_html_for( 'added', '{count} set(s) will be added' );
-				preview_html += preview_html_for( 'removed', '{count} set(s) will be removed' );
+				/* translators: %s: Number of translation sets. */
+				preview_html += preview_html_for( 'added', wp.i18n.sprintf( wp.i18n._n( '%s set will be added', '%s sets will be added', data.added.length, 'glotpress' ), data.added.length ) );
+				/* translators: %s: Number of translation sets. */
+				preview_html += preview_html_for( 'removed', wp.i18n.sprintf( wp.i18n._n( '%s set will be removed', '%s sets will be removed', data.removed.length, 'glotpress' ), data.removed.length ) );
 				preview_html += '</ul>';
 				preview.append( preview_html );
 				preview.fadeIn();
 			},
 			error: function( xhr, msg ) {
 				select.prop( 'disabled', false );
-				msg = xhr.responsehtml ? 'Error: ' + xhr.responsehtml : 'Error saving the translation!';
+				/* translators: %s: Error message. */
+				msg = xhr.responsehtml ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responsehtml ) : wp.i18n.__( 'Error saving the translation!', 'glotpress' );
 				$gp.notices.error( msg );
 			},
 		} );
