@@ -222,6 +222,10 @@ registerPopoverHandlers = function() {
 					translationPair.updateAllTranslations( data[ originalId ], currentUserId );
 					makeTranslatable( translationPair, $node );
 					notifyTranslated( translationPair );
+
+					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
+						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
+					}
 				} ).fail( function() {
 					debug( 'Submitting new translation failed', translation );
 				} );
