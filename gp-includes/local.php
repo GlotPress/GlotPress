@@ -1039,11 +1039,11 @@ class GP_Local {
 					<br/>
 
 					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( $url ); ?></a><br/>
-					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <a download="<?php echo esc_attr( $file ); ?>" href=<?php echo esc_attr( $download ); ?>"><?php echo esc_html( $file ); ?></a>
-					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
+					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <a download="<?php echo esc_attr( $file ); ?>" href="<?php echo esc_attr( $download ); ?>"><?php echo esc_html( $file ); ?></a>
+					<form method="post" action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
 					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
 					<input type="hidden" name="format" value="po" />
-					<input type="file" name="import-file" id="import-file" style="display: hidden" />
+					<input type="file" name="import-file" id="import-file" style="display: none" />
 					<textarea cols=80 rows=10 style="font-family: monospace" readonly><?php echo esc_html( $po_contents ); ?></textarea><br/>
 
 					<?php if ( ! empty( $status_options ) ) : ?>
@@ -1070,7 +1070,7 @@ class GP_Local {
 								return String.fromCharCode( ...new Uint16Array( bytes.buffer ) );
 							}
 							let list = new DataTransfer();
-							let file = new File( [ new Blob( [ fromBinary( '<?php echo str_replace( array( "'", PHP_EOL ), array( "\\'", '\n' ), $po_contents ); /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>' ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
+							let file = new File( [ new Blob( [ fromBinary( '<?php echo esc_html( $po_base64 ); ?>' ) ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
 							list.items.add( file );
 							document.querySelector( '#import-file' ).files = list.files;
 						})();
