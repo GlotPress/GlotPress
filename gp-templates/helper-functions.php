@@ -43,6 +43,15 @@ function prepare_original( $text ) {
 		$text
 	);
 
+	// Highlight two or more spaces between words.
+	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading and trailing spaces in single lines.
+	$text = preg_replace( '/^ +| +$/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading spaces in multi lines.
+	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
+	// Highlight trailing spaces in multi lines.
+	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
+
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
 
