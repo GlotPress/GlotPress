@@ -151,10 +151,10 @@ registerDomChangedCallback = function() {
 };
 
 registerPopoverHandlers = function() {
-	jQuery( document ).on( 'keyup', 'textarea.translation', function() {
+	jQuery( document ).on( 'input', 'textarea.translation', function() {
 		var textareasWithInput,
 			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
-			$allTextareas = $form.find( 'textarea' ),
+			$allTextareas = jQuery( this ),
 			$button = $form.find( 'button' ),
 			translationPair = $form.data( 'translationPair' ),
 			newPlaceholders = getPlaceholdersLink( translationPair, $allTextareas.val() );
