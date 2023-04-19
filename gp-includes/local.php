@@ -1032,13 +1032,14 @@ class GP_Local {
 					if ( $can_import_waiting ) {
 						$status_options['waiting'] = __( 'Waiting', 'glotpress' );
 					}
+					$po_base64 = base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
-					$download = 'data:text/plain;charset=UTF-8;' . $po_contents;
+					$download = 'data:text/plain;base64,' . $po_base64;
 					?>
 					<br/>
 
 					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( $url ); ?></a><br/>
-					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <?php echo esc_html( $file ); ?>
+					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <a download="<?php echo esc_attr( $file ); ?>" href=<?php echo esc_attr( $download ); ?>"><?php echo esc_html( $file ); ?></a>
 					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
 					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
 					<input type="hidden" name="format" value="po" />
@@ -1060,10 +1061,18 @@ class GP_Local {
 					</form>
 					<script>
 						(function() {
+							function fromBinary( encoded ) {
+								const binary = atob( encoded );
+								const bytes = new Uint8Array( binary.length );
+								for ( let i = 0; i < bytes.length; i++ ) {
+									bytes[i] = binary.charCodeAt( i );
+								}
+								return String.fromCharCode( ...new Uint16Array( bytes.buffer ) );
+							}
 							let list = new DataTransfer();
-							let file = new File( [ new Blob( [ '<?php echo str_replace( array( "'", PHP_EOL ), array( "\\'", '\n' ), $po_contents ); /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>' ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
+							let file = new File( [ new Blob( [ fromBinary( '<?php echo str_replace( array( "'", PHP_EOL ), array( "\\'", '\n' ), $po_contents ); /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>' ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
 							list.items.add( file );
-							document.querySelector('#import-file').files = list.files;
+							document.querySelector( '#import-file' ).files = list.files;
 						})();
 					</script>
 					<?php
