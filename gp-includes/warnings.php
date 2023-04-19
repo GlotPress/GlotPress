@@ -843,7 +843,7 @@ class GP_Builtin_Translation_Warnings {
 		$warnings = array();
 		if ( $original_start_spaces && ! $translation_start_spaces ) {
 			$warnings[] = sprintf(
-				/* translators: 1: Number of spaces at the beginning of the original string. */
+				/* translators: %d: Number of spaces at the beginning of the original string. */
 				_n(
 					'The translation appears to be missing %d space at the beginning.',
 					'The translation appears to be missing %d spaces at the beginning.',
@@ -855,7 +855,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( ( ! $original_start_spaces ) && $translation_start_spaces ) {
 			$warnings[] = sprintf(
-				/* translators: 1: Number of spaces at the beginning of the translation string. */
+				/* translators: %d: Number of spaces at the beginning of the translation string. */
 				_n(
 					'The translation appears to be adding %d space at the beginning.',
 					'The translation appears to be adding %d spaces at the beginning.',
@@ -867,7 +867,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( ( $original_end_spaces ) && ( ! $translation_end_spaces ) ) {
 			$warnings[] = sprintf(
-				/* translators: 1: Number of spaces at the end of the original string. */
+				/* translators: %d: Number of spaces at the end of the original string. */
 				_n(
 					'The translation appears to be missing %d space at the end.',
 					'The translation appears to be missing %d spaces at the end.',
@@ -879,7 +879,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( ! $original_end_spaces && $translation_end_spaces ) {
 			$warnings[] = sprintf(
-				/* translators: 1: Number of spaces at the end of the translation string. */
+				/* translators: %d: Number of spaces at the end of the translation string. */
 				_n(
 					'The translation appears to be adding %d space at the end.',
 					'The translation appears to be adding %d spaces at the end.',
@@ -891,7 +891,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( $original_start_spaces && $translation_start_spaces && ( $original_start_spaces !== $translation_start_spaces ) ) {
 			$warnings[] = sprintf(
-				/* translators: 1: Number of spaces at the beginning of the original string. 2: Number of spaces at the beginning of the translation string. */
+				/* translators: 1: Number of spaces at the beginning of the original string (singular/plural). 2: Number of spaces at the beginning of the translation string. */
 				_n(
 					'Expected %1$d space at the beginning, got %2$d.',
 					'Expected %1$d spaces at the beginning, got %2$d.',
@@ -904,7 +904,7 @@ class GP_Builtin_Translation_Warnings {
 		}
 		if ( $original_end_spaces && $translation_end_spaces && ( $original_end_spaces !== $translation_end_spaces ) ) {
 			$warnings[] = sprintf(
-				/* translators: 1: Number of spaces at the end of the original string. 2: Number of spaces at the end of the translation string. */
+				/* translators: 1: Number of spaces at the end of the original string (singular/plural). 2: Number of spaces at the end of the translation string. */
 				_n(
 					'Expected %1$d space at the end, got %2$d.',
 					'Expected %1$d spaces at the end, got %2$d.',

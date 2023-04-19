@@ -31,7 +31,11 @@ class GP_Router {
 	 */
 	public function request_uri() {
 		global $wp;
-		return urldecode( '/' . rtrim( $wp->query_vars['gp_route'], '/' ) );
+		$gp_route = '';
+		if ( isset( $wp->query_vars['gp_route'] ) ) {
+			$gp_route = $wp->query_vars['gp_route'];
+		}
+		return urldecode( '/' . rtrim( $gp_route, '/' ) );
 	}
 
 	public function request_method() {
