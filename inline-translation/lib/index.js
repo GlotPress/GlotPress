@@ -168,7 +168,7 @@ registerPopoverHandlers = function() {
 		$button.prop( 'disabled', 0 === textareasWithInput.length );
 	} );
 
-	jQuery( document.body ).on( 'focus', 'textarea', function() {
+	jQuery( document.body ).on( 'focus', 'textarea.translation', function() {
 		var currentText = jQuery( this ).val();
 		var $placeholder = jQuery( this ).siblings( 'div.placeholders' );
 
