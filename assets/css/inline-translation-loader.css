@@ -20,7 +20,7 @@
 #translator-pop-out {
 	display: none;
 	width: 212px;
-    height: 97px;
+    height: auto;
     background: white;
     bottom: 108px;
     right: 24px;
