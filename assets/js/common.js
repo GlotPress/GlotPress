@@ -1,4 +1,4 @@
-/* global document */
+/* global document, wp */
 var $gp = (
 	function( $ ) {
 		return {
@@ -28,7 +28,7 @@ var $gp = (
 					$gp.notices.element.stop( true, true );
 
 					if ( true === dismissable ) {
-						dismissButton = ' <button type="button" class="button is-link gp-js-message-dismiss">' + $gp.l10n.dismiss + '</button>';
+						dismissButton = ' <button type="button" class="button is-link gp-js-message-dismiss">' + wp.i18n.__( 'Dismiss', 'glotpress' ) + '</button>';
 					}
 
 					$gp.notices.element.removeClass()
