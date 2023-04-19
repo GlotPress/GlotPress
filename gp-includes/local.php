@@ -1061,7 +1061,7 @@ class GP_Local {
 					<script>
 						(function() {
 							let list = new DataTransfer();
-							let file = new File( [ new Blob( [ '<?php echo esc_html( str_replace( array( "'", PHP_EOL ), array( "\\'", '\n' ), $po_contents ) ); ?>' ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
+							let file = new File( [ new Blob( [ '<?php echo str_replace( array( "'", PHP_EOL ), array( "\\'", '\n' ), $po_contents ); /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>' ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
 							list.items.add( file );
 							document.querySelector('#import-file').files = list.files;
 						})();
