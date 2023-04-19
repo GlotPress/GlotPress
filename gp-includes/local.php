@@ -995,7 +995,7 @@ class GP_Local {
 			foreach ( array_keys( $_REQUEST['translation'] ) as $id ) {
 				$translations_by_project_translation_set[ $_REQUEST['project'][ $id ] ][ $_REQUEST['translation_set'][ $id ] ][] = $id;
 			}
-			echo '<h2>' . esc_html__( 'We will send these PO files', 'glotpress' ) . '</h2>';
+			echo '<h2>' . esc_html__( 'Sync to WordPress.org', 'glotpress' ) . '</h2>';
 
 			$syncable_translations = array_column( $syncable_translations, null, 'id' );
 
@@ -1039,14 +1039,25 @@ class GP_Local {
 					<br/>
 
 					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>"><?php echo esc_html( $url ); ?></a><br/>
-					<span><?php esc_html_e( 'File:', 'glotpress' ); ?></span> <a download="<?php echo esc_attr( $file ); ?>" href="<?php echo esc_attr( $download ); ?>"><?php echo esc_html( $file ); ?></a>
-					<form method="post" action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
-					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
-					<input type="hidden" name="format" value="po" />
-					<input type="file" name="import-file" id="import-file" style="display: none" />
-					<textarea cols=80 rows=10 style="font-family: monospace" readonly><?php echo esc_html( $po_contents ); ?></textarea><br/>
+					<a download="<?php echo esc_attr( $file ); ?>" href="<?php echo esc_attr( $download ); ?>">
+					<?php
+						echo esc_html(
+							sprintf(
+							// translators: %s is a filename.
+								__( 'Download  %s', 'glotpress' ),
+								$file
+							)
+						);
+					?>
+					</a>
 
 					<?php if ( ! empty( $status_options ) ) : ?>
+						<form method="post" action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
+						<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
+						<input type="hidden" name="format" value="po" />
+						<input type="file" name="import-file" id="import-file" style="display: none" />
+						<textarea cols=80 rows=10 style="font-family: monospace" readonly><?php echo esc_html( $po_contents ); ?></textarea><br/>
+
 						<label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label>
 						<?php if ( count( $status_options ) === 1 ) : ?>
 							<input type="hidden" name="status" value="<?php echo esc_attr( key( $status_options ) ); ?>" />
@@ -1055,9 +1066,8 @@ class GP_Local {
 							<?php echo gp_select( 'status', $status_options, 'current' ); ?>
 						<?php endif; ?>
 						<br/>
-					<?php endif; ?>
 
-					<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import at WordPress.org', 'glotpress' ); ?></button>
+						<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import at WordPress.org', 'glotpress' ); ?></button>
 					</form>
 					<script>
 						(function() {
@@ -1073,7 +1083,8 @@ class GP_Local {
 							document.querySelector( '#import-file' ).files = list.files;
 						})();
 					</script>
-					<?php
+						<?php
+					endif;
 				}
 			}
 			return;
@@ -1239,13 +1250,11 @@ class GP_Local {
 				return;
 			endif;
 
-			if ( $can_import_current || $can_import_waiting ) :
-				?>
+			?>
 			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<input type="hidden" name="modified_after" value="<?php echo esc_attr( $modified_after ); ?>" />
 				<?php wp_nonce_field( 'sync_translations' ); ?>
-			<?php endif; ?>
 		<?php foreach ( $syncable_translations as $translation ) : ?>
 			<?php
 			$table_start( $translation );
@@ -1286,12 +1295,10 @@ class GP_Local {
 
 		?>
 		</tbody></table>
-		<?php if ( $can_import_current || $can_import_waiting ) : ?>
 		<p>
-			<button class="button button-primary">Sync to WordPress.org</button>
+			<button class="button button-primary"><?php esc_html_e( 'Sync to WordPress.org', 'glotpress' ); ?></button>
 		</p>
 		</form>
-		<?php endif; ?>
 		</div>
 		<?php
 	}
