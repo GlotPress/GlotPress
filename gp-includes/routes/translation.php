@@ -489,7 +489,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					case 'changesrequested':
 						$message = sprintf(
 						/* translators: %s: Translations count. */
-							_n( 'Error requesting changes in %s translation.', 'Error requesting changes in %s translations.', $error, 'glotpress' ),
+							_n( 'Error with requesting changes in %s translation.', 'Error with requesting changes in %s translations.', $error, 'glotpress' ),
 							$error
 						);
 						break;
