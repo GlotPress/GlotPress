@@ -1032,6 +1032,8 @@ class GP_Local {
 					if ( $can_import_waiting ) {
 						$status_options['waiting'] = __( 'Waiting', 'glotpress' );
 					}
+
+					$download = 'data:text/plain;charset=UTF-8;' . $po_contents;
 					?>
 					<br/>
 
@@ -1040,11 +1042,8 @@ class GP_Local {
 					<form method="post"action="<?php echo esc_attr( $url ); ?>import-translations/" target="_blank" enctype="multipart/form-data">
 					<input type="hidden" name="_gp_route_nonce" value="<?php echo esc_attr( get_option( 'gp_wporg_import_translations_nonce' ) ); ?>" />
 					<input type="hidden" name="format" value="po" />
-					<input type="hidden" name="format" value="po" />
-					<textarea cols=80 rows=10 style="font-family: monospace">
-					<?php echo esc_html( $po_contents ); ?>
-					</textarea><br/>
-					<input type="file" name="import-file" id="import-file" /><br/>
+					<input type="file" name="import-file" id="import-file" style="display: hidden" />
+					<textarea cols=80 rows=10 style="font-family: monospace" readonly><?php echo esc_html( $po_contents ); ?></textarea><br/>
 
 					<?php if ( ! empty( $status_options ) ) : ?>
 						<label for="status"><?php _e( 'Status:', 'glotpress' ); ?></label>
@@ -1062,7 +1061,7 @@ class GP_Local {
 					<script>
 						(function() {
 							let list = new DataTransfer();
-							let file = new File( [ new Blob( [ atob( '<?php echo esc_html( base64_encode( $po_contents ) /* phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode */ ); ?>' ) ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
+							let file = new File( [ new Blob( [ '<?php echo esc_js( $po_contents ); ?>' ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
 							list.items.add( file );
 							document.querySelector('#import-file').files = list.files;
 						})();
