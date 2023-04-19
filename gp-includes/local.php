@@ -1061,16 +1061,14 @@ class GP_Local {
 					</form>
 					<script>
 						(function() {
-							function fromBinary( encoded ) {
-								const binary = atob( encoded );
-								const bytes = new Uint8Array( binary.length );
-								for ( let i = 0; i < bytes.length; i++ ) {
-									bytes[i] = binary.charCodeAt( i );
-								}
-								return String.fromCharCode( ...new Uint16Array( bytes.buffer ) );
+							function b64DecodeUnicode(str) {
+								// https://stackoverflow.com/a/30106551
+								return decodeURIComponent( atob( str) .split( '') .map( function( c)  {
+									return '%' + ( '00' + c.charCodeAt( 0) .toString( 16) ) .slice( -2) ;
+								}) .join( '') ) ;
 							}
 							let list = new DataTransfer();
-							let file = new File( [ new Blob( [ fromBinary( '<?php echo esc_html( $po_base64 ); ?>' ) ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
+							let file = new File( [ new Blob( [ b64DecodeUnicode( '<?php echo esc_html( $po_base64 ); ?>' ) ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
 							list.items.add( file );
 							document.querySelector( '#import-file' ).files = list.files;
 						})();
