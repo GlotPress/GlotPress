@@ -179,10 +179,12 @@ class GP_Validation_Rules {
 	}
 
 	public function construct_error_message( $rule ) {
+
+		// Simple input field type.
 		$type_field = __( 'field', 'glotpress' );
 		$name_field = $rule['field'];
 
-		// Translate field names.
+		// Translate glossary field names.
 		switch ( $name_field ) {
 			case 'term':
 				$name_field = _x( 'Original term', 'glossary entry', 'glotpress' );
@@ -198,6 +200,7 @@ class GP_Validation_Rules {
 				break;
 		}
 
+		// Textarea input field type.
 		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
 			$type_field = __( 'textarea', 'glotpress' );
 			$name_field = sprintf(
