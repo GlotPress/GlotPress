@@ -198,6 +198,15 @@ class GP_Validation_Rules {
 				break;
 		}
 
+		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
+			$type_field = __( 'textarea', 'glotpress' );
+			$name_field = sprintf(
+				/* translators: %d: Plural index of the translation. */
+				__( 'Translation %d', 'glotpress' ),
+				intval( substr( $name_field, 12 ) ) + 1
+			);
+		}
+
 		// Validation messages.
 		$messages = array(
 			'empty'                                     => array(
@@ -341,11 +350,6 @@ class GP_Validation_Rules {
 				),
 			),
 		);
-
-		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
-			$type_field = __( 'textarea', 'glotpress' );
-			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
-		}
 
 		if ( 'positive' === $rule['kind'] ) {
 			return $messages[ $rule['rule'] ]['positive'];
