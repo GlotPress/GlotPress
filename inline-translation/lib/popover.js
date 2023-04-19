@@ -186,7 +186,7 @@ function getInputForm( translationPair ) {
 	}
 
 	if ( translationPair.getOriginal().getPlaceholders() ) {
-		form.find( 'p.placeholders' ).html( translationPair.getOriginal().getPlaceholders() ).css( 'display', 'inline' );
+		form.find( 'div.placeholders' ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -306,9 +306,9 @@ function getHtmlTemplate( popoverType ) {
 			'<p></p>' +
 			'<input type="hidden" class="original" name="original[]" />' +
 			'<textarea dir="auto" class="translation" name="translation[]"></textarea>' +
+			'<div class="placeholders"></div>' +
 			'</div>' +
 			'</div>' +
-			'<p class="placeholders"></p>' +
 			'<button disabled class="button button-primary save">Save Translation</button>' +
 			'</form>' +
 			'<div class="additional"></div></div>'

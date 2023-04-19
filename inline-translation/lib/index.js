@@ -158,7 +158,7 @@ registerPopoverHandlers = function() {
 			$button = $form.find( 'button' ),
 			translationPair = $form.data( 'translationPair' ),
 			newPlaceholders = getPlaceholdersLink( translationPair, $allTextareas.val() );
-		$form.find( 'p.placeholders' ).html( newPlaceholders ).css( 'display', 'inline' );
+		jQuery( this ).siblings( 'div.placeholders' ).html( newPlaceholders ).css( 'display', 'block' );
 
 		textareasWithInput = $allTextareas.filter( function() {
 			return this.value.length;
@@ -170,7 +170,8 @@ registerPopoverHandlers = function() {
 
 	jQuery( document.body ).on( 'focus', 'textarea', function() {
 		var currentText = jQuery( this ).val();
-		var $placeholder = jQuery( this ).parents( '.pairs' ).siblings( '.placeholders' );
+		var $placeholder = jQuery( this ).siblings( 'div.placeholders' );
+
 		var newPlaceholders = '';
 		var $form = jQuery( this ).parents( 'form.ct-new-translation' );
 
