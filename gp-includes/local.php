@@ -1038,7 +1038,7 @@ class GP_Local {
 					?>
 					<br/>
 
-					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>">import-translations/<?php echo esc_html( $url ); ?>import-translations/</a><br/>
+					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>import-translations/"><?php echo esc_html( $url ); ?>import-translations/</a><br/>
 					<a download="<?php echo esc_attr( $file ); ?>" href="<?php echo esc_attr( $download ); ?>">
 					<?php
 						echo esc_html(
@@ -1072,11 +1072,11 @@ class GP_Local {
 					</form>
 					<script>
 						(function() {
-							function b64DecodeUnicode(str) {
+							function b64DecodeUnicode( str ) {
 								// https://stackoverflow.com/a/30106551
-								return decodeURIComponent( atob( str) .split( '') .map( function( c)  {
-									return '%' + ( '00' + c.charCodeAt( 0) .toString( 16) ) .slice( -2) ;
-								}) .join( '') ) ;
+								return decodeURIComponent( atob( str ).split( '' ).map( function( c ) {
+									return '%' + ( '00' + c.charCodeAt( 0 ).toString( 16 ) ).slice( -2 );
+								}) .join( '' ) );
 							}
 							let list = new DataTransfer();
 							let file = new File( [ new Blob( [ b64DecodeUnicode( '<?php echo esc_html( $po_base64 ); ?>' ) ], { type: 'text/plain' } ) ], '<?php echo esc_attr( $file ); ?>', { type: 'text/plain' } );
