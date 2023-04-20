@@ -1069,6 +1069,9 @@ class GP_Local {
 						<br/>
 
 						<button class="button is-primary" name="submit"><?php echo esc_html__( 'Import at WordPress.org', 'glotpress' ); ?></button>
+						<?php if ( false !== strpos( $_SERVER['HTTP_USER_AGENT'], 'Chrome' ) ) : ?>
+							<p><strong><?php esc_html_e( 'Note for Chrome users: Unfortunately, because of cross-site restrictions, this won\'t work. Please download the PO file and on the next page, upload that file manually.', 'glotpress' ); ?></strong></p>
+						<?php endif; ?>
 					</form>
 					<script>
 						(function() {
