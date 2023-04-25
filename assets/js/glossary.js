@@ -1,4 +1,4 @@
-/* global $gp_glossary_options, $gp, confirm */
+/* global $gp_glossary_options, $gp, confirm, wp */
 /* eslint camelcase: "off", no-alert: "off" */
 $gp.glossary = (
 	function( $ ) {
@@ -70,7 +70,7 @@ $gp.glossary = (
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( 'Saving&hellip;' );
+				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				editor = $gp.glossary.current;
 
@@ -89,12 +89,13 @@ $gp.glossary = (
 					dataType: 'json',
 					success: function( response ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Saved!' );
+						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.glossary.replace_current( response );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the glossary item!';
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error saving the glossary item!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
@@ -125,7 +126,7 @@ $gp.glossary = (
 					url: $gp_glossary_options.delete_url,
 					data: data,
 					success: function() {
-						$gp.notices.success( 'Deleted!' );
+						$gp.notices.success( wp.i18n.__( 'Deleted!', 'glotpress' ) );
 						editor.fadeOut( 'fast', function() {
 							this.remove();
 						} );
@@ -135,7 +136,8 @@ $gp.glossary = (
 						}
 					},
 					error: function( xhr, msg ) {
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error deleting the glossary item!';
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error deleting the glossary item!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
