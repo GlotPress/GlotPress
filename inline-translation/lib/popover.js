@@ -181,18 +181,19 @@ function getInputForm( translationPair ) {
 }
 
 function exposeOtherOriginals( form, translationPair ) {
-	var search, i;
+	var i,
+		search = {};
 	if ( translationPair.getOtherOriginals().length ) {
 		form.find( 'p.other-originals' ).css( 'display', 'block' );
-		search = translationPair.getOriginal().getSingular();
+		search[ translationPair.getOriginal().getSingular() ] = true;
 		for ( i = 0; i < translationPair.getOtherOriginals().length; i++ ) {
-			search += ' || ' + translationPair.getOtherOriginals()[ i ];
+			search[ translationPair.getOtherOriginals()[ i ] ] = true;
 		}
 		for ( i = 0; i < translationPair.getTranslation().getTextItems().length; i++ ) {
-			search += ' || ' + translationPair.getTranslation().getTextItems()[ i ].getText();
+			search[ translationPair.getTranslation().getTextItems()[ i ].getText() ] = true;
 		}
 		form.on( 'click', 'p.other-originals a', function() {
-			jQuery( '#gp-show-translation-list' ).trigger( 'search', search );
+			jQuery( '#gp-show-translation-list' ).trigger( 'search', Object.keys( search ).join( ' || ' ) );
 			return false;
 		} );
 	}
