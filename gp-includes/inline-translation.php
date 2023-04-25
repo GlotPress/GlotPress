@@ -92,6 +92,16 @@ class GP_Inline_Translation {
 		}
 		return $is_active;
 	}
+
+	/**
+	 * Determines if fallback strings are active.
+	 *
+	 * @return     bool  True if active, False otherwise.
+	 */
+	public static function is_fallback_string_list_active() {
+		return get_option( 'gp_enable_fallback_string_list' );
+	}
+
 	/**
 	 * Constructs a new instance.
 	 */
@@ -530,58 +540,59 @@ class GP_Inline_Translation {
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
 		echo '</script>';
 
-		?>
-		<div id="gp-inline-translation-list">
-			<div id="gp-translation-list-wrapper">
-				<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
-				<ul>
-				<?php
+		if ( self::is_fallback_string_list_active() ) {
+			?>
+			<div id="gp-inline-translation-list">
+				<div id="gp-translation-list-wrapper">
+					<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
+					<ul>
+					<?php
 
-				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
-					if ( 1 * 1 || is_array( $translation ) ) {
-						continue;
-					}
-					echo '<li>';
+					foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
+						echo '<li>';
 
-					echo '<data class="translatable"';
-					echo ' data-singular="' . esc_attr( $translation->singular ) . '"';
-					echo ' data-plural="' . esc_attr( $translation->plural ) . '"';
-					echo ' data-context="' . esc_attr( $translation->context ) . '"';
-					echo ' data-domain="' . esc_attr( $translation->domain ) . '"';
-					echo ' data-original-id="' . esc_attr( $translation->original_id ) . '"';
-					echo ' data-project="' . esc_attr( $translation->project ) . '"';
-					if ( ! empty( $translation->translations ) ) {
-						$t = array_filter(
-							array(
-								$translation->translations[0]['translation_0'],
-								$translation->translations[0]['translation_1'],
-								$translation->translations[0]['translation_2'],
-								$translation->translations[0]['translation_3'],
-								$translation->translations[0]['translation_4'],
-							)
-						);
-						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
-					}
-					echo '>';
-					$index = strtolower( $translation->singular );
-					if ( empty( $translation->translations ) ) {
-						echo esc_html( $translation->singular );
-					} else {
-						echo esc_html( $translation->translations[0]['translation_0'] );
-						$index .= ' ' . strtolower( $translation->translations[0]['translation_0'] );
-					}
-					echo '</data>';
-					if ( $translation->context ) {
-						echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
-						echo ' <span class="index" style="display: none">' . esc_html( $index ) . '</span>';
-					}
+						echo '<data class="translatable"';
+						echo ' data-singular="' . esc_attr( $translation->singular ) . '"';
+						echo ' data-plural="' . esc_attr( $translation->plural ) . '"';
+						echo ' data-context="' . esc_attr( $translation->context ) . '"';
+						echo ' data-domain="' . esc_attr( $translation->domain ) . '"';
+						echo ' data-original-id="' . esc_attr( $translation->original_id ) . '"';
+						echo ' data-project="' . esc_attr( $translation->project ) . '"';
+						if ( ! empty( $translation->translations ) ) {
+							$t = array_filter(
+								array(
+									$translation->translations[0]['translation_0'],
+									$translation->translations[0]['translation_1'],
+									$translation->translations[0]['translation_2'],
+									$translation->translations[0]['translation_3'],
+									$translation->translations[0]['translation_4'],
+								)
+							);
+							echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
+						}
+						echo '>';
+						$index = strtolower( $translation->singular );
+						if ( empty( $translation->translations ) ) {
+							echo esc_html( $translation->singular );
+						} else {
+							echo esc_html( $translation->translations[0]['translation_0'] );
+							$index .= ' ' . strtolower( $translation->translations[0]['translation_0'] );
+						}
+						echo '</data>';
+						if ( $translation->context ) {
+							echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
+							echo ' <span class="index" style="display: none">' . esc_html( $index ) . '</span>';
+						}
 
-					echo '</li>';
-				}
-				?>
-				</ul>
+						echo '</li>';
+					}
+					?>
+					</ul>
+				</div>
 			</div>
-		</div>
+			<?php
+		}
+		?>
 		<div>
 			<div id="translator-pop-out">
 				<ul>
@@ -592,9 +603,11 @@ class GP_Inline_Translation {
 						</label>
 						<span><?php _e( 'Inline Translation Status', 'glotpress' ); ?></span>
 					</li>
+					<?php if ( self::is_fallback_string_list_active() ) : ?>
 					<li>
 						<a id="gp-show-translation-list" href="#"><?php _e( 'View list of strings', 'glotpress' ); ?></a>
 					</li>
+					<?php endif; ?>
 					<li class="inline-stats">
 						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
 						<div>

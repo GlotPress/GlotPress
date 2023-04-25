@@ -182,7 +182,7 @@ function getInputForm( translationPair ) {
 
 function exposeOtherOriginals( form, translationPair ) {
 	var search, i;
-	if ( translationPair.getOtherOriginals().length ) {
+	if ( jQuery( '#gp-inline-translation-list' ).length && translationPair.getOtherOriginals().length ) {
 		form.find( 'p.other-originals' ).css( 'display', 'block' );
 		search = translationPair.getOriginal().getSingular();
 		for ( i = 0; i < translationPair.getOtherOriginals().length; i++ ) {

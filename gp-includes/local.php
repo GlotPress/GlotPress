@@ -146,6 +146,12 @@ class GP_Local {
 			delete_option( 'gp_enable_inline_translation' );
 		}
 
+		if ( isset( $_POST['gp_enable_fallback_string_list'] ) ) {
+			update_option( 'gp_enable_fallback_string_list', 1 );
+		} else {
+			delete_option( 'gp_enable_fallback_string_list' );
+		}
+
 		update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
 		update_option( 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
 	}
@@ -318,6 +324,19 @@ class GP_Local {
 									<input type="hidden" name="gp_inline_translation_enabled" value="<?php echo esc_attr( GP_Inline_Translation::is_active() ? '1' : '0' ); ?>" />
 									<input type="checkbox" name="gp_enable_inline_translation" <?php checked( GP_Inline_Translation::is_active() ); ?> />
 									<span><?php esc_html_e( 'Enable Inline Translations', 'glotpress' ); ?></span>
+								</label>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<?php esc_html_e( 'String List', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<input type="checkbox" name="gp_enable_fallback_string_list" <?php checked( GP_Inline_Translation::is_fallback_string_list_active() ); ?> />
+									<span><?php esc_html_e( 'On every pageload, create a separate list of all used strings to enable translation of strings that could not be discovered inline.', 'glotpress' ); ?></span>
 								</label>
 							</p>
 						</td>
