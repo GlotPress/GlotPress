@@ -373,9 +373,13 @@ findNewTranslatableTexts = function() {
 function getPlaceholdersLink( translationPair, textAreaContent ) {
 	var placeholdersLink = '';
 	var placeholders = translationPair.getOriginal().getPlaceholders();
+	var index = 0;
+
 	if ( placeholders.length ) {
 		placeholdersLink = placeholders.map( function( match ) {
 			if ( ! ( textAreaContent.indexOf( match ) === -1 ) ) {
+				index = textAreaContent.indexOf( match );
+				textAreaContent = textAreaContent.slice( 0, index ) + textAreaContent.slice( index + match.length );
 				return '<a class="placeholder-exist inline-placeholder" href="#">' + match + '</a>';
 			}
 			return '<a class="inline-placeholder" href="#">' + match + '</a>';
