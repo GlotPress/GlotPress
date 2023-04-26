@@ -91,6 +91,7 @@ function GlotPress( locale, translations ) {
 		},
 
 		submitTranslation: function( translation, translationPair ) {
+			window.postMessage( 'new-translation', '*' );
 			return ajax( {
 				url: server.restUrl + '/translation',
 
