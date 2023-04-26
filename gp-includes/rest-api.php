@@ -63,6 +63,15 @@ class GP_Rest_API {
 				'permission_callback' => array( $this, 'write_projects_permission_check' ),
 			)
 		);
+		register_rest_route(
+			self::PREFIX,
+			'deploy-local-translations',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'deploy_local_translations' ),
+				'permission_callback' => array( $this, 'manage_options_permission_check' ),
+			)
+		);
 	}
 
 	/**
@@ -90,7 +99,23 @@ class GP_Rest_API {
 		if ( ! GP::$permission->current_user_can( 'write', 'project' ) ) {
 			return new WP_Error(
 				'rest_forbidden',
-				__( 'You don\t have enough permission to access this API.', 'glotpress' ),
+				__( 'You don\'t have enough permission to access this API.', 'glotpress' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+		return true;
+	}
+
+	/**
+	 * Check whether the user can manage options.
+	 *
+	 * @return     bool  Whether the permission check was passed.
+	 */
+	public function manage_options_permission_check() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return new WP_Error(
+				'rest_forbidden',
+				__( 'You don\'t have enough permission to access this API.', 'glotpress' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -162,7 +187,7 @@ class GP_Rest_API {
 				}
 			}
 
-			$data['warnings'] = wp_json_encode( GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale ) );
+			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 
 			if ( empty( $data['warnings'] ) && ( GP::$permission->current_user_can( 'approve', 'translation-set', $translation_set->id ) || GP::$permission->current_user_can( 'write', 'project', $project->id ) ) ) {
 				$data['status'] = 'current';
@@ -209,8 +234,11 @@ class GP_Rest_API {
 			$translations = GP::$translation->find_many_no_map( "original_id = '{$original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 			if ( ! $translations ) {
 				$output[ $original_id ] = false;
+				continue;
 			}
-
+			if ( ! empty( $translations['warnings'] ) ) {
+				$translations['warnings'] = wp_json_encode( $translations['warnings'] );
+			}
 			$output[ $original_id ] = $translations;
 		}
 
@@ -480,6 +508,81 @@ class GP_Rest_API {
 	}
 
 	/**
+	 * Deploy translations locally.
+	 *
+	 * @param      WP_REST_Request $request  The request.
+	 *
+	 * @return     array  The result.
+	 */
+	public function deploy_local_translations( $request ) {
+		$path = $request->get_param( 'path' );
+		if ( ! $path ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: path', array( 'status' => 400 ) );
+		}
+		$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $path ) );
+		if ( ! $project ) {
+			return new WP_Error( 'inexistent-project', 'Project does not exist', array( 'status' => 400 ) );
+		}
+
+		$locale = $request->get_param( 'locale' );
+		if ( ! $locale ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: locale', array( 'status' => 400 ) );
+		}
+		$locale_slug = $request->get_param( 'locale_slug' );
+		if ( ! $locale_slug ) {
+			return new WP_Error( 'missing-parameter', 'Missing parameter: locale_slug', array( 'status' => 400 ) );
+		}
+
+		$locale = GP_Locales::by_field( 'wp_locale', $locale );
+		if ( ! $locale ) {
+			return new WP_Error( 'invalid-locale', 'Invalid locale supplied', array( 'status' => 400 ) );
+		}
+
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale(
+			$project->id,
+			$locale_slug,
+			$locale->slug
+		);
+		if ( ! $translation_set ) {
+			return new WP_Error( 'inexistent-translation-set', 'Translation Set does not exist', array( 'status' => 400 ) );
+		}
+
+		$local_po = apply_filters( 'gp_local_project_po', WP_LANG_DIR . '/' . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, WP_LANG_DIR );
+
+		$filters = array(
+			'status' => 'current',
+		);
+		$entries = GP::$translation->for_export( $project, $translation_set, $filters );
+
+		global $wp_filesystem;
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		// Check if WP_Filesystem is initialized.
+		if ( ! WP_Filesystem( true ) ) {
+			return new WP_Error( 'error-writing', 'Could not write the file ' . $local_po, array( 'status' => 400 ) );
+		}
+
+		// Write the file using WP_Filesystem methods.
+		$wp_filesystem->put_contents( $local_po, GP::$formats['po']->print_exported_file( $project, $locale, $translation_set, $entries ) );
+
+		if ( substr( $local_po, -2 ) === 'po' ) {
+			$local_mo = substr( $local_po, 0, -2 ) . 'mo';
+			$wp_filesystem->put_contents( $local_mo, GP::$formats['mo']->print_exported_file( $project, $locale, $translation_set, $entries ) );
+		}
+
+		return array(
+			'message' => sprintf(
+				/* translators: %s: Number of entries deployed. */
+				_n( '%d translation was deployed.', '%d translations were deployed.', count( $entries ), 'glotpress' ),
+				count( $entries )
+			),
+		);
+
+	}
+	/**
 	 * Creates a Local Project.
 	 *
 	 * @param      WP_REST_Request $request  The request.
@@ -522,9 +625,7 @@ class GP_Rest_API {
 			$locale->slug
 		);
 
-		$languages_dir = trailingslashit( ABSPATH ) . 'wp-content/languages/';
-
-		$local_po = apply_filters( 'gp_local_project_po', $languages_dir . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, $languages_dir );
+		$local_po = apply_filters( 'gp_local_project_po', WP_LANG_DIR . '/' . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, WP_LANG_DIR );
 		if ( ! file_exists( $local_po ) || $translation_set ) {
 			if ( substr( $local_po, -2 ) === 'po' ) {
 				$local_mo   = substr( $local_po, 0, -2 ) . 'mo';

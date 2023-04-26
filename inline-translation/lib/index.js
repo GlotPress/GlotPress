@@ -205,7 +205,7 @@ registerPopoverHandlers = function() {
 						return;
 					}
 					warnings = data[ originalId ][ 0 ].warnings;
-					if ( warnings !== 'null' ) {
+					if ( data[ originalId ][ 0 ].warnings !== undefined && data[ originalId ][ 0 ].warnings ) {
 						warningsObj = JSON.parse( warnings )[ 0 ];
 
 						jQuery.each( warningsObj, function( key, value ) {

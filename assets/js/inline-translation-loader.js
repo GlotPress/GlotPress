@@ -41,6 +41,11 @@
 			$( '#gp-inline-search' ).focus();
 		} );
 
+		$( document.body ).on( 'search', '#gp-show-translation-list', function( event, keyword ) {
+			$( this ).trigger( 'click' );
+			$( '#gp-inline-search' ).val( keyword ).trigger( 'keyup' );
+		} );
+
 		$( document.body ).on( 'click', '#gp-inline-translation-list', function( event ) {
 			var targetId = $( event.target ).attr( 'id' );
 			if ( targetId && targetId === 'gp-inline-translation-list' ) {
@@ -48,19 +53,26 @@
 			}
 		} );
 
+		$( document.body ).on( 'keyup', function( e ) {
+			if ( e.keyCode === 27 ) {
+				$( '#gp-inline-translation-list' ).hide();
+			}
+		} );
 		$( document.body ).on( 'keyup', '#gp-inline-search', function() {
-			var search = $( this ).val();
+			var i,
+				search = $( this ).val().toLowerCase().split( ' || ' ).map( function( s ) {
+					return s.trim();
+				} ),
+				searchLength = search.length;
 			$( '#gp-inline-translation-list li' ).each( function() {
-				var $this = $( this ).find( 'data' );
-				if (
-					$this.text().toLowerCase().indexOf( search.toLowerCase() ) >= 0 ||
-					( typeof $this.data( 'singular' ) === 'string' && $this.data( 'singular' ).toLowerCase().indexOf( search.toLowerCase() ) >= 0 ) ||
-					( typeof $this.data( 'plural' ) === 'string' && $this.data( 'plural' ).toLowerCase().indexOf( search.toLowerCase() ) >= 0 )
-				) {
-					$( this ).show();
-				} else {
-					$( this ).hide();
+				var t = $( this ).text();
+				for ( i = 0; i < searchLength; i++ ) {
+					if ( t.toLowerCase().indexOf( search[ i ] ) >= 0 ) {
+						$( this ).show();
+						return;
+					}
 				}
+				$( this ).hide();
 			} );
 		} );
 
