@@ -246,52 +246,6 @@ class GP_Rest_API {
 	}
 
 	/**
-	 * A slightly modified version og GP_Original->by_project_id_and_entry without the BINARY search keyword
-	 * to make sure the index on the gp_originals table is used
-	 *
-	 * @param      int    $project_id  The project id.
-	 * @param      object $entry       The entry.
-	 * @param      string $status      The status.
-	 *
-	 * @return     array|null  The original entry.
-	 */
-	private function by_project_id_and_entry( $project_id, $entry, $status = '+active' ) {
-		global $wpdb;
-
-		$entry->plural  = isset( $entry->plural ) ? $entry->plural : null;
-		$entry->context = isset( $entry->context ) ? $entry->context : null;
-
-		$where = array();
-
-		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = %s';
-		$where[] = 'singular = %s';
-		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = %s';
-		$where[] = 'project_id = %d';
-		$where[] = $wpdb->prepare( 'status = %s', $status );
-
-		$where = implode( ' AND ', $where );
-
-		$query  = "SELECT * FROM $wpdb->gp_originals WHERE $where";
-		$result = GP::$original->one( $query, $entry->context, $entry->singular, $entry->plural, $project_id );
-		if ( ! $result ) {
-			return null;
-		}
-		// We want case sensitive matching but this can't be done with MySQL while continuing to use the index therefore we do an additional check here.
-		if ( $result->singular === $entry->singular ) {
-			return $result;
-		}
-
-		// We then get the whole result set here and check each entry manually.
-		$results = GP::$original->many( $query . ' AND id != %d', $entry->context, $entry->singular, $entry->plural, $project_id, $result->id );
-		foreach ( $results as $result ) {
-			if ( $result->singular === $entry->singular ) {
-				return $result;
-			}
-		}
-
-		return null;
-	}
-	/**
 	 * Gets translations by title.
 	 *
 	 * @param  \WP_REST_Request $request The incoming request.
@@ -379,7 +333,7 @@ class GP_Rest_API {
 				$checked_originals[ $key ] = true;
 
 				foreach ( $translation_sets[ $text_domain ] as $project_id => $translation_set ) {
-					$original_record = $this->by_project_id_and_entry( $project_id, $original );
+					$original_record = GP::$original->by_project_id_and_entry( $project_id, $original );
 					if ( ! $original_record ) {
 						continue;
 					}
@@ -547,7 +501,9 @@ class GP_Rest_API {
 			return new WP_Error( 'inexistent-translation-set', 'Translation Set does not exist', array( 'status' => 400 ) );
 		}
 
-		$local_po = apply_filters( 'gp_local_project_po', WP_LANG_DIR . '/' . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, WP_LANG_DIR );
+		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
+
+		$local_po = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.po';
 
 		$filters = array(
 			'status' => 'current',
@@ -625,24 +581,21 @@ class GP_Rest_API {
 			$locale->slug
 		);
 
-		$local_po = apply_filters( 'gp_local_project_po', WP_LANG_DIR . '/' . basename( $path ) . '-' . $locale->wp_locale . '.po', $path, $locale_slug, $locale, WP_LANG_DIR );
-		if ( ! file_exists( $local_po ) || $translation_set ) {
-			if ( substr( $local_po, -2 ) === 'po' ) {
-				$local_mo   = substr( $local_po, 0, -2 ) . 'mo';
-				$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_po, $local_mo );
-				if ( is_wp_error( $downloaded ) ) {
-					$messages[] = $downloaded->get_error_message();
-				} else {
-					$messages[] = make_clickable(
-						sprintf(
-						// translators: %s is a URL.
-							__( 'Downloaded PO file from %s', 'glotpress' ),
-							$downloaded
-						)
-					);
-				}
+		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
+
+		$local_mo = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
+		if ( ! file_exists( $local_mo ) || $translation_set ) {
+			$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_mo );
+			if ( is_wp_error( $downloaded ) ) {
+				$messages[] = $downloaded->get_error_message();
 			} else {
-				$messages[] = __( 'Could not determine PO path.', 'glotpress' );
+				$messages[] = make_clickable(
+					sprintf(
+					// translators: %s is a URL.
+						__( 'Downloaded MO file from %s', 'glotpress' ),
+						$downloaded
+					)
+				);
 			}
 		}
 
@@ -661,15 +614,15 @@ class GP_Rest_API {
 
 		$originals_added    = false;
 		$translations_added = false;
-		if ( file_exists( $local_po ) ) {
-			list( $originals_added ) = $this->get_or_import_originals( $project, $local_po );
+		if ( file_exists( $local_mo ) ) {
+			list( $originals_added ) = $this->get_or_import_originals( $project, $local_mo );
 			$messages[]              = sprintf(
 				// translators: %s is the number of originals.
 				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
 				$originals_added
 			);
 
-			$translations_added = $this->get_or_import_translations( $project, $translation_set, $local_po );
+			$translations_added = $this->get_or_import_translations( $project, $translation_set, $local_mo );
 			$messages[]         = sprintf(
 				// translators: %s is the number of translations.
 				_n( 'Imported new %s translation.', 'Imported new %s translations.', $translations_added, 'glotpress' ),
@@ -729,7 +682,7 @@ class GP_Rest_API {
 				array(
 					'name'              => $name,
 					'slug'              => $project_slug,
-					'path'              => $project_path,
+					'path'              => $path,
 					'description'       => $description,
 					'parent_project_id' => $parent_project ? $parent_project->id : null,
 					'active'            => true,
@@ -744,14 +697,14 @@ class GP_Rest_API {
 	 * Gets or imports the originals.
 	 *
 	 * @param GP_Project $project   The project.
-	 * @param string     $local_po The file to import.
+	 * @param string     $local_mo The file to import.
 	 *
 	 * @return array
 	 */
-	private function get_or_import_originals( GP_Project $project, string $local_po ): array {
-		$format    = 'po';
+	private function get_or_import_originals( GP_Project $project, string $local_mo ): array {
+		$format    = 'mo';
 		$format    = gp_array_get( GP::$formats, $format, null );
-		$originals = $format->read_originals_from_file( $local_po, $project );
+		$originals = $format->read_originals_from_file( $local_mo, $project );
 		$originals = GP::$original->import_for_project( $project, $originals );
 
 		return $originals;
@@ -762,16 +715,16 @@ class GP_Rest_API {
 	 *
 	 * @param GP_Project         $project         The project.
 	 * @param GP_Translation_Set $translation_set The translation set.
-	 * @param string             $local_po       The file path to import.
+	 * @param string             $local_mo       The file path to import.
 	 *
 	 * @return array
 	 */
-	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $local_po ):int {
-		$po = new PO();
-		$po->import_from_file( $local_po );
+	private function get_or_import_translations( GP_Project $project, GP_Translation_Set $translation_set, string $local_mo ):int {
+		$mo = new MO();
+		$mo->import_from_file( $local_mo );
 
 		add_filter( 'gp_translation_prepare_for_save', array( $this, 'translation_import_overrides' ) );
-		return $translation_set->import( $po, 'current' );
+		return $translation_set->import( $mo, 'current' );
 	}
 
 	/**
@@ -805,36 +758,19 @@ class GP_Rest_API {
 	 * @param GP_Project $project The project.
 	 * @param GP_Locale  $locale  The locale.
 	 * @param string     $locale_slug The locale slug.
-	 * @param string     $local_po The .po file path.
 	 * @param string     $local_mo The .mo file path.
 	 *
 	 * @return bool|WP_Error The path to the .po file.
 	 */
-	private function download_dotorg_translation( GP_Project $project, GP_Locale $locale, string $locale_slug, string $local_po, string $local_mo ) {
+	private function download_dotorg_translation( GP_Project $project, GP_Locale $locale, string $locale_slug, string $local_mo ) {
 		$remote_path = apply_filters( 'gp_remote_project_path', $project->path . '/dev/' . $locale->slug . '/' . $locale_slug . '/' );
 
 		$url         = apply_filters( 'gp_local_sync_url', 'https://translate.wordpress.org/projects/' . $remote_path, $remote_path );
-		$po_file_url = $url . 'export-translations?format=po';
 		$mo_file_url = $url . 'export-translations?format=mo';
 
 		if ( ! function_exists( 'download_url' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
-		$po_file_url = apply_filters( 'gp_local_sync_url', $po_file_url );
-		$po_file     = download_url( $po_file_url );
-		if ( is_wp_error( $po_file ) ) {
-			return $po_file;
-		} elseif ( ! $po_file ) {
-			return new WP_Error(
-				'download_failed',
-				sprintf(
-					// translators: %s is a URL.
-					__( 'Failed to download the translation file from %s', 'glotpress' ),
-					$po_file_url
-				)
-			);
-		}
-		rename( $po_file, $local_po );
 
 		$mo_file = download_url( $mo_file_url );
 		if ( is_wp_error( $mo_file ) ) {
@@ -850,6 +786,6 @@ class GP_Rest_API {
 			);
 		}
 		rename( $mo_file, $local_mo );
-		return $po_file_url;
+		return $mo_file_url;
 	}
 }
