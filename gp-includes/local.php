@@ -705,11 +705,11 @@ class GP_Local {
 						<th scope="col" id="<?php echo esc_html( $type ); ?>-name" style="width: 15%;">
 							<span><?php echo esc_html( $this->get_project_name( $type ) ); ?></span>
 						</th>
-						<th scope="col" id="<?php echo esc_html( $type ); ?>-description" style="width: 70%;">
+						<th scope="col" id="<?php echo esc_html( $type ); ?>-description" style="width: 50%;">
 							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
 						<?php if ( $show_actions_column ) : ?>
-							<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 15%;">
+							<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 25%;">
 								<span><?php esc_html_e( 'Actions' ); ?></span>
 							</th>
 						<?php endif; ?>
@@ -799,12 +799,28 @@ class GP_Local {
 													)
 												);
 											} else {
-												esc_html_e( 'Update strings and translations', 'glotpress' );
+												esc_html_e( 'Update strings and translations from WordPress.org', 'glotpress' );
 											}
 											?>
 											</button>
+
 											<span class="spinner" style="float: none; margin: 0 0 0 5px;"></span>
 										</form>
+										<?php if ( $translation_set ) : ?>
+										<form action="<?php echo esc_url( rest_url( 'glotpress/v1/deploy-local-translations' ) ); ?>" method="post" class="local-deploy" style="margin-top: .5em">
+											<?php wp_nonce_field( 'wp_rest' ); ?>
+											<input type="hidden" name='path' value="<?php echo esc_attr( $path ); ?>" />
+											<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
+											<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
+											<button class="button">
+											<?php
+											esc_html_e( 'Locally deploy translations', 'glotpress' );
+											?>
+											</button>
+
+											<span class="spinner" style="float: none; margin: 0 0 0 5px;"></span>
+										</form>
+									<?php endif; ?>
 									<?php endif; ?>
 								</td>
 							<?php endif; ?>
@@ -847,6 +863,36 @@ class GP_Local {
 								tr.querySelector( 'td.status' ).innerHTML = '<a href="' + response.url + '">✅</a><br/>Originals:&nbsp;' + response.originals_added + '<br/>Translations:&nbsp;' + response.translations_added;
 								tr.querySelector( 'td.description' ).innerHTML += '<ul><li>' + response.messages.join( '</li><li>' );
 
+							}
+						});
+					}
+					if (event.target.matches( 'form.local-deploy' ) ) {
+						event.preventDefault();
+						const form = event.target;
+						const data = new URLSearchParams( new FormData( form ) );
+						const spinner = form.querySelector( 'span.spinner' );
+						const button = form.querySelector( 'button' );
+						const nonce = form.querySelector( 'input[name="_wpnonce"]' ).value;
+						const options = {
+							method: 'POST',
+							body: data,
+							headers: {
+								'X-WP-Nonce': nonce,
+							},
+						};
+						button.disabled = true;
+						spinner.classList.add( 'is-active' );
+						fetch( form.action, options )
+						.then( function( response ) {
+							spinner.classList.remove( 'is-active' );
+							button.disabled = false;
+							return response.json();
+						})
+						.then( function( response ) {
+							if ( response.error ) {
+								form.textContent = response.error;
+							} else {
+								form.textContent = response.message;
 							}
 						});
 					}
