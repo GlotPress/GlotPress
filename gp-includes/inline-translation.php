@@ -699,9 +699,8 @@ class GP_Inline_Translation {
 				$project_paths[ $text_domain ][] = $project->path;
 			}
 		}
-		$load_suggestions = (bool) ( get_user_option( 'gp_openai_key' ) || get_option( 'gp_openai_key' ) );
 
-		return array(
+		$data = array(
 			'translations'           => $this->get_translations( $gp_locale ),
 			'stringsUsedOnPage'      => $this->strings_used,
 			'placeholdersUsedOnPage' => $this->placeholders_used,
@@ -715,8 +714,27 @@ class GP_Inline_Translation {
 				'nonce'                => wp_create_nonce( 'wp_rest' ),
 				'projects'             => $project_paths,
 				'translation_set_slug' => 'default',
-				'loadSuggestions'      => $load_suggestions,
 			),
 		);
+
+		if ( get_user_option( 'gp_openai_key' ) || get_option( 'gp_openai_key' ) ) {
+			if ( get_user_option( 'gp_openai_key' ) ) {
+				$data['glotPress']['openai_key'] = get_user_option( 'gp_openai_key' );
+			} else {
+				$data['glotPress']['openai_key'] = get_option( 'gp_openai_key' );
+			}
+
+			$prompt        = '';
+			$custom_prompt = get_option( 'gp_chatgpt_custom_prompt' );
+			if ( $custom_prompt ) {
+				$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
+			}
+			$custom_prompt = get_user_option( 'gp_chatgpt_custom_prompt' );
+			if ( $custom_prompt ) {
+				$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
+			}
+			$data['glotPress']['openai_prompt'] = $prompt;
+		}
+		return $data;
 	}
 }
