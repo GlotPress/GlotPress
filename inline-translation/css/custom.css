@@ -21,6 +21,8 @@
 
 .webui-popover div.placeholders {
 	display: none;
+	margin-bottom: 13px;
+    margin-top: -9px
 }
 .webui-popover p.info {
 	margin: .5em 0;
