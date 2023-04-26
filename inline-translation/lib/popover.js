@@ -110,7 +110,7 @@ function popoverOnload( el, translationPair, glotPress ) {
 							}
 							return false;
 						};
-					}( suggestions[ i ] ) ) );
+					}( Array.isArray( suggestions[ i ] ) ? suggestions[ i ] : [ suggestions[ i ] ] ) ) );
 				}
 				additional.find( 'blockquote.unmodifyable' ).text( 'Given this, translate the following text to ' + locale.getLanguageName() + ':' );
 				additional.find( 'textarea.prompt' ).val( glotPress.getLastPrompt() );
