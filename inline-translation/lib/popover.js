@@ -153,13 +153,14 @@ function getInputForm( translationPair ) {
 		item, i;
 
 	original.html( getOriginalHtml( translationPair ) );
+	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
-		form.find( 'p.context' ).text( translationPair.getContext() ).show();
+		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
-		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).show();
+		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -179,6 +180,25 @@ function getInputForm( translationPair ) {
 	return form;
 }
 
+function exposeOtherOriginals( form, translationPair ) {
+	var i,
+		search = {};
+	if ( translationPair.getOtherOriginals().length ) {
+		form.find( 'p.other-originals' ).css( 'display', 'block' );
+		search[ translationPair.getOriginal().getSingular() ] = true;
+		for ( i = 0; i < translationPair.getOtherOriginals().length; i++ ) {
+			search[ translationPair.getOtherOriginals()[ i ] ] = true;
+		}
+		for ( i = 0; i < translationPair.getTranslation().getTextItems().length; i++ ) {
+			search[ translationPair.getTranslation().getTextItems()[ i ].getText() ] = true;
+		}
+		form.on( 'click', 'p.other-originals a', function() {
+			jQuery( '#gp-show-translation-list' ).trigger( 'search', Object.keys( search ).join( ' || ' ) );
+			return false;
+		} );
+	}
+}
+
 function getOverview( translationPair ) {
 	// TODO: add input checking and bail for empty or unexpected values
 
@@ -189,13 +209,14 @@ function getOverview( translationPair ) {
 		item, description, i;
 
 	original.html( getOriginalHtml( translationPair ) );
+	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
-		form.find( 'p.context' ).text( translationPair.getContext() ).show();
+		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
-		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).show();
+		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -225,6 +246,7 @@ function getHtmlTemplate( popoverType ) {
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
+			'<p class="other-originals">Multiple originals match, <a href="">show them</a></p>' +
 			'<hr />' +
 			'<p class="info"></p>' +
 			'<div class="pairs">' +
@@ -251,6 +273,7 @@ function getHtmlTemplate( popoverType ) {
 			'<p class="warnings"></p>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
+			'<p class="other-originals">Multiple originals match, <a href="">show them</a></p>' +
 			'<p class="info"></p>' +
 			'<div class="pairs">' +
 			'<div class="pair">' +
