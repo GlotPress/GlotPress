@@ -47,15 +47,6 @@ class GP_Rest_API {
 		);
 		register_rest_route(
 			self::PREFIX,
-			'suggest-translation',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'get_suggested_translation' ),
-				'permission_callback' => array( $this, 'logged_in_permission_check' ),
-			)
-		);
-		register_rest_route(
-			self::PREFIX,
 			'create-local-project',
 			array(
 				'methods'             => 'POST',
@@ -359,106 +350,6 @@ class GP_Rest_API {
 		}
 
 		return $translations;
-	}
-
-	/**
-	 * Gets a suggested translation from ChatGPT.
-	 *
-	 * @param      WP_REST_Request $request  The request.
-	 *
-	 * @return     array  The suggested translation.
-	 */
-	public function get_suggested_translation( $request ) {
-		// Prefer the user key over the global key.
-		$openai_key = get_user_option( 'gp_openai_key' );
-		if ( ! $openai_key ) {
-			$openai_key = get_option( 'gp_openai_key' );
-			if ( ! $openai_key ) {
-				return array();
-			}
-		}
-
-		$text   = $request->get_param( 'text' );
-		$prompt = $request->get_param( 'prompt' );
-
-		$language = $request->get_param( 'localeName' );
-		if ( 'German' === $language ) {
-			$language = 'informal ' . $language;
-		}
-
-		if ( ! $prompt ) {
-			$custom_prompt = get_option( 'gp_chatgpt_custom_prompt' );
-			if ( $custom_prompt ) {
-				$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
-			}
-			$custom_prompt = get_user_option( 'gp_chatgpt_custom_prompt' );
-			if ( $custom_prompt ) {
-				$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
-			}
-		} else {
-			$prompt = rtrim( $prompt, '. ' ) . '. ';
-		}
-		$intermediary = '';
-		if ( $prompt ) {
-			$intermediary = 'Given these conditions, ';
-		}
-		$unmodifyable = 'Translate the following text to ' . $language . ' and respond as a JSON list in the format ["translation","alternate translation (if any)"]: ';
-
-		foreach ( array( 'singular', 'plural' ) as $key ) {
-			if ( empty( $text[ $key ] ) ) {
-				continue;
-			}
-
-			$messages = array(
-				array(
-					'role'    => 'user',
-					'content' => $prompt . $intermediary . $unmodifyable . PHP_EOL . PHP_EOL . $text[ $key ],
-				),
-			);
-
-			$suggestion = array();
-			$response   = wp_remote_post(
-				'https://api.openai.com/v1/chat/completions',
-				array(
-					'headers' => array(
-						'Content-Type'  => 'application/json',
-						'Authorization' => 'Bearer ' . $openai_key,
-					),
-					'timeout' => 30,
-					'body'    => wp_json_encode(
-						array(
-							'model'      => 'gpt-3.5-turbo',
-							'messages'   => $messages,
-							'max_tokens' => 1000,
-						)
-					),
-				)
-			);
-			$body       = wp_remote_retrieve_body( $response );
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
-			$output = json_decode( $body, true );
-			if ( empty( $output ) ) {
-				return new WP_Error( 'error', $body, array( 'status' => 400 ) );
-			}
-			if ( ! empty( $output['error'] ) ) {
-				return new WP_Error( 'error', $output['error'], array( 'status' => 400 ) );
-			}
-			$message = preg_replace( '/"\s*,\s*\]/', '"]', $output['choices'][0]['message'] );
-			foreach ( json_decode( $message['content'] ) as $answer ) {
-				if ( trim( $answer ) ) {
-					$suggestion[] = $answer;
-				}
-			}
-		}
-
-		return array(
-			'suggestion'   => $suggestion,
-			'output'       => $output,
-			'prompt'       => $prompt,
-			'unmodifyable' => $unmodifyable,
-		);
 	}
 
 	/**

@@ -8,10 +8,11 @@ var batcher = require( './batcher.js' );
 function GlotPress( locale, translations ) {
 	var server = {
 			url: '',
-			project: '',
+			projects: [],
 			translation_set_slug: 'default',
 		},
-		batch = batcher( fetchOriginals );
+		batch = batcher( fetchOriginals ),
+		lastPrompt = '';
 	function ajax( options ) {
 		options = jQuery.extend( {
 			method: 'POST',
@@ -75,7 +76,11 @@ function GlotPress( locale, translations ) {
 		},
 
 		shouldLoadSuggestions: function() {
-			return !! server.loadSuggestions;
+			return !! server.openai_key;
+		},
+
+		getLastPrompt: function() {
+			return lastPrompt;
 		},
 
 		queryByOriginal: function( original ) {
@@ -91,7 +96,7 @@ function GlotPress( locale, translations ) {
 		},
 
 		submitTranslation: function( translation, translationPair ) {
-			const data = {
+			var data = {
 				project: translationPair.getGlotPressProject(),
 				translation_set_slug: server.translation_set_slug,
 				locale_slug: locale.getLocaleCode(),
@@ -106,16 +111,54 @@ function GlotPress( locale, translations ) {
 		},
 
 		getSuggestedTranslation: function( translationPair, data ) {
-			return ajax( {
-				url: server.restUrl + '/suggest-translation',
+			var messages,
+				original = [ translationPair.getOriginal().getSingular() ],
+				prompt = ( data && data.prompt ) || '',
+				language = locale.getLanguageName();
 
-				data: Object.assign( data || {}, {
-					project: translationPair.getGlotPressProject(),
-					translation_set_slug: server.translation_set_slug,
-					locale: locale.getLocaleCode(),
-					localeName: locale.getLanguageName(),
-					text: translationPair.getOriginal().objectify(),
+			if ( language in [ 'German' ] ) {
+				language = 'informal ' + language;
+			}
+
+			if ( prompt && server.openai_prompt ) {
+				prompt += '. ' + server.openai_prompt;
+			}
+
+			lastPrompt = prompt;
+
+			if ( prompt ) {
+				prompt += '. Given these conditions, ';
+			}
+
+			prompt += 'Translate the text in this JSON to ' + language + ' and always respond as pure JSON list (no outside comments!) in the format (append to the list if you have multiple suggestions): ';
+
+			if ( translationPair.getOriginal().getPlural() ) {
+				original.push( translationPair.getOriginal().getPlural() );
+				prompt += '[["singular translation","plural translation"]]';
+			} else {
+				prompt += '["translation"]';
+			}
+
+			messages = [
+				{
+					role: 'user',
+					content: prompt + '\n\n' + JSON.stringify( original ),
+				},
+			];
+
+			return jQuery.ajax( {
+				url: 'https://api.openai.com/v1/chat/completions',
+				type: 'POST',
+				headers: {
+					Authorization: 'Bearer ' + server.openai_key,
+				},
+				data: JSON.stringify( {
+					model: 'gpt-3.5-turbo',
+					messages: messages,
+					max_tokens: 1000,
 				} ),
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
 			} );
 		},
 	};

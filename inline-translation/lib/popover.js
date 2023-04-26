@@ -68,7 +68,7 @@ function popoverOnload( el, translationPair, glotPress ) {
 		el.focus();
 
 		if ( textareas.eq( 0 ).val() !== '' ) {
-			// return;
+			return;
 		}
 		if ( ! glotPress.shouldLoadSuggestions() ) {
 			return;
@@ -90,26 +90,30 @@ function popoverOnload( el, translationPair, glotPress ) {
 		};
 
 		getSuggestionsResponse = function( response ) {
-			if ( response.suggestion ) {
+			var suggestions = [];
+			if ( response.choices && response.choices[ 0 ] && response.choices[ 0 ].message && response.choices[ 0 ].message.content ) {
+				suggestions = JSON.parse( response.choices[ 0 ].message.content );
 				additional.html( '<details><summary>Modify Query</summary><textarea class="prompt" placeholder="Add a custom prompt..."></textarea><blockquote class="unmodifyable"></blockquote> <button class="button requery">Requery</button></details><ul class="suggestions"></ul>' );
-				for ( i = 0; i < response.suggestion.length; i++ ) {
+				for ( i = 0; i < suggestions.length; i++ ) {
 					li = jQuery( '<li><button class="button button-small copy">Copy</button><span></span>' );
 					additional.find( 'ul.suggestions' ).append( li );
-					li.find( 'span' ).text( response.suggestion[ i ] );
-					li.find( 'button' ).on( 'click', function() {
-						var textarea = textareas.get( 0 );
-						var newText = jQuery( this ).closest( 'li' ).find( 'span' ).text();
-						textarea.focus();
-						textarea.select();
-
-						// Replace all text with new text
-						document.execCommand( 'insertText', false, newText );
-						jQuery( textarea ).trigger( 'keyup' );
-						return false;
-					} );
+					li.find( 'span' ).text( suggestions[ i ] );
+					li.find( 'button' ).on( 'click', ( function( suggestion ) {
+						return function() {
+							var j;
+							for ( j = 0; j < textareas.length; j++ ) {
+								textareas.eq( j ).focus();
+								textareas.eq( j ).select();
+								// Replace all text with new text
+								document.execCommand( 'insertText', false, suggestion[ j ] );
+								textareas.eq( j ).trigger( 'keyup' );
+							}
+							return false;
+						};
+					}( suggestions[ i ] ) ) );
 				}
-				additional.find( 'blockquote.unmodifyable' ).text( response.unmodifyable );
-				additional.find( 'textarea.prompt' ).val( response.prompt );
+				additional.find( 'blockquote.unmodifyable' ).text( 'Given this, translate the following text to ' + locale.getLanguageName() + ':' );
+				additional.find( 'textarea.prompt' ).val( glotPress.getLastPrompt() );
 				additional.find( 'button.requery' ).on( 'click', requery );
 			} else {
 				for ( i = 0; i < textareas.length; i++ ) {
