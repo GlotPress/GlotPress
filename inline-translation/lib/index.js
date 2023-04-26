@@ -169,16 +169,18 @@ registerPopoverHandlers = function() {
 	} );
 
 	jQuery( document.body ).on( 'focus', 'textarea.translation', function() {
-		var currentText = jQuery( this ).val();
-		var $placeholder = jQuery( this ).siblings( 'div.placeholders' );
+		var currentText = '',
+			newPlaceholders = '',
+			textareas = jQuery( 'textarea[name="translation[]"]' ),
+			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
+			translationPair = $form.data( 'translationPair' );
 
-		var newPlaceholders = '';
-		var $form = jQuery( this ).parents( 'form.ct-new-translation' );
-
-		var translationPair = $form.data( 'translationPair' );
-
-		newPlaceholders = getPlaceholdersLink( translationPair, currentText );
-		$placeholder.html( newPlaceholders );
+		textareas.map( function() {
+			currentText = jQuery( this ).val();
+			newPlaceholders = getPlaceholdersLink( translationPair, currentText );
+			jQuery( this ).siblings( '.placeholders' ).html( newPlaceholders );
+			return true;
+		} );
 	} );
 
 	jQuery( document ).on( 'submit', 'form.ct-new-translation', function() {
