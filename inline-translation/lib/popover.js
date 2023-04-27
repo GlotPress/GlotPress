@@ -156,7 +156,7 @@ function getInputForm( translationPair ) {
 		pairs = form.find( 'div.pairs' ),
 		item, i;
 
-	original.html( getOriginalHtml( translationPair ) );
+	original.html( translationPair.getOriginal().getGlossaryMarkup() );
 	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
