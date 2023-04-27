@@ -413,3 +413,61 @@ iframe.translator-untranslatable {
 	margin-bottom: .2em;
 	cursor: pointer;
 }
+
+.webui-popover .glossary-word {
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-decoration-thickness: max(1px,0.063rem);
+    text-underline-offset: 0.1em;
+    text-underline-position: under;
+    cursor: help;
+}
+
+.ui-tooltip {
+	background-color: #eee;
+	margin: 2px;
+	padding: 6px;
+	text-align: left;
+	max-width: 250px;
+	z-index: 999999999 !important;
+	border-radius: 10px;
+}
+
+.ui-tooltip ul {
+	list-style-type: none;
+	margin: 2px;
+	padding-left: 10px;
+}
+
+.ui-tooltip ul li {
+	padding: 0;
+	margin: 0;
+}
+
+.ui-tooltip .pos {
+	display:inline-block;
+	font-style: italic;
+	padding-right: 10px;
+}
+
+.ui-tooltip .translation {
+	font-weight: bold;
+}
+
+.ui-tooltip .comment {
+	display: block;
+	font-size: small;
+}
+
+.ui-tooltip:after {
+	display: block;
+	content: "";
+	border-color: #eee transparent;
+	border-style: solid;
+	border-width: 0 10px 10px;
+	width: 0;
+	position: absolute;
+	top: -8px;
+	left: 1em;
+}
