@@ -167,3 +167,13 @@ iframe.translator-untranslatable {
 	margin-bottom: .2em;
 	cursor: pointer;
 }
+
+.webui-popover .glossary-word {
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-decoration-thickness: max(1px,0.063rem);
+    text-underline-offset: 0.1em;
+    text-underline-position: under;
+    cursor: help;
+}
