@@ -7,7 +7,8 @@ function Original( original ) {
 	var singular,
 		plural = null,
 		comment = null,
-		originalId = null;
+		originalId = null,
+		glossaryMarkup = null;
 
 	if ( 'string' === typeof original ) {
 		singular = original;
@@ -88,6 +89,7 @@ function Original( original ) {
 				if ( typeof data.original_comment === 'string' ) {
 					comment = data.original_comment.replace( /^translators: /, '' );
 				}
+				glossaryMarkup = data.singular_glossary_markup;
 			} );
 		},
 		getId: function() {
@@ -95,6 +97,9 @@ function Original( original ) {
 		},
 		getComment: function() {
 			return comment;
+		},
+		getGlossaryMarkup: function() {
+			return glossaryMarkup;
 		},
 	};
 }
