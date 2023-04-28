@@ -68,6 +68,7 @@ class GP_Inline_Translation {
 		if ( ! self::$instance ) {
 			self::$instance = new self();
 		}
+		require_once GP_PATH . 'gp-templates/helper-functions.php';
 
 		return self::$instance;
 	}
@@ -130,7 +131,7 @@ class GP_Inline_Translation {
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'inline-translation-loader', gp_plugin_url( 'assets/css/inline-translation-loader.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'inline-translation', gp_plugin_url( 'assets/css/inline-translation.css', __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		wp_enqueue_script( 'inline-translation', gp_plugin_url( 'assets/js/inline-translation.min.js' ), array( 'jquery' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
+		wp_enqueue_script( 'inline-translation', gp_plugin_url( 'assets/js/inline-translation.min.js' ), array( 'jquery', 'jquery-ui-tooltip' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 		wp_enqueue_script( 'inline-translation-loader', gp_plugin_url( 'assets/js/inline-translation-loader.js', __FILE__ ), array( 'inline-translation' ), false, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NoExplicitVersion
 	}
 
@@ -448,17 +449,22 @@ class GP_Inline_Translation {
 			return false;
 		}
 
-		$query_result                     = new stdClass();
-		$query_result->original_id        = $original_record->id;
-		$query_result->original           = $original;
-		$query_result->domain             = $text_domain;
-		$query_result->singular           = $original_record->singular;
-		$query_result->plural             = $original_record->plural;
-		$query_result->context            = $original_record->context;
-		$query_result->project            = $project->path;
-		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
-		$query_result->original_comment   = $original_record->comment;
-		$query_result->hash               = $text_domain . '|' . $context . '|' . $entry->singular;
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_sets[ $project->id ]->slug, $translation_sets[ $project->id ]->locale );
+		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$singular_glossary_markup        = map_glossary_entries_to_translation_originals( $entry, $locale_glossary )->singular_glossary_markup;
+
+		$query_result                           = new stdClass();
+		$query_result->original_id              = $original_record->id;
+		$query_result->original                 = $original;
+		$query_result->singular_glossary_markup = $singular_glossary_markup;
+		$query_result->domain                   = $text_domain;
+		$query_result->singular                 = $original_record->singular;
+		$query_result->plural                   = $original_record->plural;
+		$query_result->context                  = $original_record->context;
+		$query_result->project                  = $project->path;
+		$query_result->translation_set_id       = $translation_sets[ $project->id ]->id;
+		$query_result->original_comment         = $original_record->comment;
+		$query_result->hash                     = $text_domain . '|' . $context . '|' . $entry->singular;
 
 		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 
