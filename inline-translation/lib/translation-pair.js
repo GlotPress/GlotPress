@@ -15,7 +15,7 @@ var Original = require( './original' ),
  */
 var translationData;
 
-function TranslationPair( locale, original, context, domain, translation, foundRegex ) {
+function TranslationPair( locale, original, context, domain, translation, foundRegex, otherOriginals ) {
 	var translations = [],
 		regex, originalRegex, selectedTranslation, glotPressProject,
 		screenText = false;
@@ -112,6 +112,9 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 		},
 		getOriginal: function() {
 			return original;
+		},
+		getOtherOriginals: function() {
+			return typeof otherOriginals === 'undefined' ? [] : otherOriginals;
 		},
 		getContext: function() {
 			return context;
@@ -361,7 +364,8 @@ function findMatchingTranslation( entry, contextSpecifier, translation, regex ) 
 		context = contextKeySplit.shift();
 
 		if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
-			translationPair = new TranslationPair( translationData.locale, original, context, domain, translation, regex );
+			delete matchingTranslations[ contextKey ];
+			translationPair = new TranslationPair( translationData.locale, original, context, domain, translation, regex, Object.values( matchingTranslations ) );
 			translationPair.setScreenText( translation );
 
 			return translationPair;

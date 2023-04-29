@@ -36,7 +36,7 @@ class GP_Local {
 		add_filter( 'gp_local_project_path', array( $this, 'get_local_project_path' ) );
 		add_filter( 'gp_remote_project_path', array( $this, 'get_remote_project_path' ) );
 		// phpcs:ignore add_filter( 'gp_local_sync_url', array( $this, 'get_local_sync_url' ), 10, 2 );
-		add_filter( 'gp_local_project_po', array( $this, 'get_local_project_po' ), 10, 5 );
+		add_filter( 'gp_local_project_pomo_base', array( $this, 'get_local_project_pomo_base' ), 10, 5 );
 	}
 
 	/**
@@ -144,6 +144,12 @@ class GP_Local {
 			update_option( 'gp_enable_inline_translation', 1 );
 		} else {
 			delete_option( 'gp_enable_inline_translation' );
+		}
+
+		if ( isset( $_POST['gp_enable_fallback_string_list'] ) ) {
+			update_option( 'gp_enable_fallback_string_list', 1 );
+		} else {
+			delete_option( 'gp_enable_fallback_string_list' );
 		}
 
 		update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
@@ -324,6 +330,19 @@ class GP_Local {
 					</tr>
 					<tr>
 						<th scope="row">
+							<?php esc_html_e( 'String List', 'glotpress' ); ?>
+						</th>
+						<td>
+							<p>
+								<label>
+									<input type="checkbox" name="gp_enable_fallback_string_list" <?php checked( GP_Inline_Translation::is_fallback_string_list_active() ); ?> />
+									<span><?php esc_html_e( 'On every pageload, create a separate list of all used strings to enable translation of strings that could not be discovered inline.', 'glotpress' ); ?></span>
+								</label>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
 							<?php esc_html_e( 'OpenAI API Key', 'glotpress' ); ?>
 						</th>
 						<td>
@@ -373,20 +392,20 @@ class GP_Local {
 	 *
 	 * @return     string  The local project po.
 	 */
-	public function get_local_project_po( $file_path, $project_path, $slug, $locale, $directory ) {
+	public function get_local_project_pomo_base( $file_path, $project_path, $slug, $locale, $directory ) {
 		switch ( $project_path ) {
 			case 'wp/dev':
-				return trailingslashit( $directory ) . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . $locale->wp_locale;
 			case 'wp/dev/admin':
-				return trailingslashit( $directory ) . 'admin-' . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . 'admin-' . $locale->wp_locale;
 			case 'wp/dev/admin/network':
-				return trailingslashit( $directory ) . 'admin-network-' . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . 'admin-network-' . $locale->wp_locale;
 			case 'wp/dev/cc':
-				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale . '.po';
+				return trailingslashit( $directory ) . 'continents-cities-' . $locale->wp_locale;
 		}
 
 		if ( in_array( dirname( $project_path ), array( 'wp-plugins', 'wp-themes' ), true ) ) {
-			return trailingslashit( $directory ) . substr( $project_path, 3 ) . '-' . $locale->wp_locale . '.po';
+			return trailingslashit( $directory ) . substr( $project_path, 3 ) . '-' . $locale->wp_locale;
 		}
 
 		return $file_path;
@@ -705,11 +724,11 @@ class GP_Local {
 						<th scope="col" id="<?php echo esc_html( $type ); ?>-name" style="width: 15%;">
 							<span><?php echo esc_html( $this->get_project_name( $type ) ); ?></span>
 						</th>
-						<th scope="col" id="<?php echo esc_html( $type ); ?>-description" style="width: 70%;">
+						<th scope="col" id="<?php echo esc_html( $type ); ?>-description" style="width: 50%;">
 							<span><?php esc_html_e( 'Description' ); ?></span>
 						</th>
 						<?php if ( $show_actions_column ) : ?>
-							<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 15%;">
+							<th scope="col" id="<?php echo esc_html( $type ); ?>-actions" style="width: 25%;">
 								<span><?php esc_html_e( 'Actions' ); ?></span>
 							</th>
 						<?php endif; ?>
@@ -799,12 +818,28 @@ class GP_Local {
 													)
 												);
 											} else {
-												esc_html_e( 'Update strings and translations', 'glotpress' );
+												esc_html_e( 'Update strings and translations from WordPress.org', 'glotpress' );
 											}
 											?>
 											</button>
+
 											<span class="spinner" style="float: none; margin: 0 0 0 5px;"></span>
 										</form>
+										<?php if ( $translation_set ) : ?>
+										<form action="<?php echo esc_url( rest_url( 'glotpress/v1/deploy-local-translations' ) ); ?>" method="post" class="local-deploy" style="margin-top: .5em">
+											<?php wp_nonce_field( 'wp_rest' ); ?>
+											<input type="hidden" name='path' value="<?php echo esc_attr( $path ); ?>" />
+											<input type="hidden" name='locale' value="<?php echo esc_attr( $locale_code ); ?>" />
+											<input type="hidden" name='locale_slug' value="<?php echo esc_attr( $locale_slug ); ?>" />
+											<button class="button">
+											<?php
+											esc_html_e( 'Locally deploy translations', 'glotpress' );
+											?>
+											</button>
+
+											<span class="spinner" style="float: none; margin: 0 0 0 5px;"></span>
+										</form>
+									<?php endif; ?>
 									<?php endif; ?>
 								</td>
 							<?php endif; ?>
@@ -850,6 +885,36 @@ class GP_Local {
 							}
 						});
 					}
+					if (event.target.matches( 'form.local-deploy' ) ) {
+						event.preventDefault();
+						const form = event.target;
+						const data = new URLSearchParams( new FormData( form ) );
+						const spinner = form.querySelector( 'span.spinner' );
+						const button = form.querySelector( 'button' );
+						const nonce = form.querySelector( 'input[name="_wpnonce"]' ).value;
+						const options = {
+							method: 'POST',
+							body: data,
+							headers: {
+								'X-WP-Nonce': nonce,
+							},
+						};
+						button.disabled = true;
+						spinner.classList.add( 'is-active' );
+						fetch( form.action, options )
+						.then( function( response ) {
+							spinner.classList.remove( 'is-active' );
+							button.disabled = false;
+							return response.json();
+						})
+						.then( function( response ) {
+							if ( response.error ) {
+								form.textContent = response.error;
+							} else {
+								form.textContent = response.message;
+							}
+						});
+					}
 				});
 
 		</script>
@@ -892,7 +957,7 @@ class GP_Local {
 				$modified_after = $last_submission;
 			}
 		}
-		if ( wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) && isset( $_POST['modified_after'] ) ) {
+		if ( isset( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'sync_translations' ) && isset( $_POST['modified_after'] ) ) {
 			$modified_after = $_POST['modified_after'];
 		} elseif ( isset( $_GET['modified_after'] ) ) {
 			$modified_after = $_GET['modified_after'];
@@ -969,15 +1034,27 @@ class GP_Local {
 
 					$po_contents = GP::$formats['po']->print_exported_file( $project, $gp_locale, $translation_set, $entries_for_export );
 
-					$download = 'data:text/plain;base64,' . base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-					echo '<br/>';
+					$po_base64 = base64_encode( $po_contents ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
-					echo '<span>', esc_html__( 'Upload to:', 'glotpress' ), '</span> <a target="_blank" href="' . esc_attr( $url ) . '">' . esc_html( $url ) . '</a><br/>';
-					echo '<span>', esc_html__( 'File:', 'glotpress' ), '</span> ', esc_html( $file ), ' ';
-					echo '<a download="', esc_attr( $file ), '" href="', esc_attr( $download ), '">', esc_html__( 'Download' ), '</a> → <a href="', esc_attr( $url ), 'import-translations/" target="_blank">', esc_html__( 'Import manually', 'glotpress' ), '</a>';
-					echo '<br/><textarea cols=80 rows=10 style="font-family: monospace">';
-					echo esc_html( $po_contents );
-					echo '</textarea><br/>';
+					$download = 'data:text/plain;base64,' . $po_base64;
+					?>
+					<br/>
+
+					<span><?php echo esc_html__( 'Upload to:', 'glotpress' ); ?></span> <a target="_blank" href="<?php echo esc_attr( $url ); ?>import-translations/"><?php echo esc_html( $url ); ?>import-translations/</a><br/>
+					<a download="<?php echo esc_attr( $file ); ?>" href="<?php echo esc_attr( $download ); ?>">
+					<?php
+						echo esc_html(
+							sprintf(
+							// translators: %s is a filename.
+								__( 'Download  %s', 'glotpress' ),
+								$file
+							)
+						);
+					?>
+					</a><br/>
+
+					<textarea cols=80 rows=10 style="font-family: monospace" readonly><?php echo esc_html( $po_contents ); ?></textarea><br/>
+					<?php
 				}
 			}
 			return;
@@ -1142,8 +1219,8 @@ class GP_Local {
 				<?php
 				return;
 			endif;
-			?>
 
+			?>
 			<form action="" method="get"><!-- TODO: change to POST. GET is easier during debugging. -->
 				<input type="hidden" name="page" value="glotpress-sync" />
 				<input type="hidden" name="modified_after" value="<?php echo esc_attr( $modified_after ); ?>" />
@@ -1189,7 +1266,7 @@ class GP_Local {
 		?>
 		</tbody></table>
 		<p>
-			<button class="button button-primary">Sync to WordPress.org</button>
+			<button class="button button-primary"><?php esc_html_e( 'Sync to WordPress.org', 'glotpress' ); ?></button>
 		</p>
 		</form>
 		</div>
