@@ -61,15 +61,22 @@ function Popover( translationPair, _locale, glotPress ) {
 
 function popoverOnload( el, translationPair, glotPress ) {
 	var getSuggestionsResponse, getSugesstionsError, requery, i, li,
+		popover = jQuery( el ),
 		textareas = jQuery( el ).find( 'textarea' ),
 		additional = jQuery( el ).find( 'div.additional' );
+
+	glotPress.glossaryMarkup( translationPair ).then( function() {
+		popover.find( 'div.original' ).html( getOriginalHtml( translationPair ) );
+	} );
+
 	el = textareas.get( 0 );
 	if ( el ) {
 		el.focus();
-
 		if ( textareas.eq( 0 ).val() !== '' ) {
+			// Only load suggestions when there is no translation yet.
 			return;
 		}
+
 		if ( ! glotPress.shouldLoadSuggestions() ) {
 			return;
 		}
@@ -138,10 +145,18 @@ function getOriginalHtml( translationPair ) {
 	}
 
 	originalHtml = jQuery( '<div>' + originalHtml );
-	originalHtml.find( 'strong.singular' ).text( translationPair.getOriginal().getSingular() );
+	if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+		originalHtml.find( 'strong.singular' ).html( translationPair.getOriginal().getSingularGlossaryMarkup() );
+	} else {
+		originalHtml.find( 'strong.singular' ).text( translationPair.getOriginal().getSingular() );
+	}
 
 	if ( plural ) {
-		originalHtml.find( 'strong.plural' ).text( plural );
+		if ( translationPair.getOriginal().getPluralGlossaryMarkup() ) {
+			originalHtml.find( 'strong.plural' ).html( translationPair.getOriginal().getPluralGlossaryMarkup() );
+		} else {
+			originalHtml.find( 'strong.plural' ).text( translationPair.getOriginal().getPlural() );
+		}
 	}
 
 	return originalHtml;
@@ -156,7 +171,7 @@ function getInputForm( translationPair ) {
 		pairs = form.find( 'div.pairs' ),
 		item, i;
 
-	original.html( translationPair.getOriginal().getGlossaryMarkup() );
+	original.html( getOriginalHtml( translationPair ) );
 	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
