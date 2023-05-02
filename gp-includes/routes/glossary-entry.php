@@ -321,7 +321,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		fclose( $outstream );
 	}
 
-	private function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
+	public function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
 		$f                = fopen( $file, 'r' );
 		$glossary_entries = 0;
 
