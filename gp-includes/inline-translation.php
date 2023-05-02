@@ -107,7 +107,7 @@ class GP_Inline_Translation {
 	 * Constructs a new instance.
 	 */
 	public function __construct() {
-		if ( ! self::is_active() ) {
+		if ( ! self::is_active() || wp_doing_ajax() || wp_doing_cron() ) {
 			return;
 		}
 		add_action( 'gettext', array( $this, 'translate' ), 10, 4 );
