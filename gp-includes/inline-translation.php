@@ -68,6 +68,7 @@ class GP_Inline_Translation {
 		if ( ! self::$instance ) {
 			self::$instance = new self();
 		}
+		require_once GP_PATH . 'gp-templates/helper-functions.php';
 
 		return self::$instance;
 	}
@@ -92,6 +93,16 @@ class GP_Inline_Translation {
 		}
 		return $is_active;
 	}
+
+	/**
+	 * Determines if fallback strings are active.
+	 *
+	 * @return     bool  True if active, False otherwise.
+	 */
+	public static function is_fallback_string_list_active() {
+		return get_option( 'gp_enable_fallback_string_list' );
+	}
+
 	/**
 	 * Constructs a new instance.
 	 */
@@ -104,7 +115,6 @@ class GP_Inline_Translation {
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
 		add_action( 'ngettext_with_context', array( $this, 'ntranslate_with_context' ), 10, 6 );
 		add_action( 'wp_footer', array( $this, 'load_translator' ), 1000 );
-		add_action( 'gp_footer', array( $this, 'load_translator' ), 1000 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_action( 'admin_footer', array( $this, 'load_admin_translator' ), 1000 );
@@ -402,6 +412,8 @@ class GP_Inline_Translation {
 			foreach ( $projects as $project ) {
 				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '-obsolete' );
 				if ( $original_record ) {
+					$original_record->status = '+active';
+					$original_record->save();
 					break;
 				}
 			}
@@ -421,7 +433,7 @@ class GP_Inline_Translation {
 					)
 				);
 
-				if ( $translation !== $entry->singular ) {
+				if ( $translation !== $entry->singular && isset( $translation_sets[ $project->id ] ) && is_object( $translation_sets[ $project->id ] ) ) {
 					$translation_record = GP::$translation->create(
 						array(
 							'original_id'        => $original_record->id,
@@ -439,17 +451,22 @@ class GP_Inline_Translation {
 			return false;
 		}
 
-		$query_result                     = new stdClass();
-		$query_result->original_id        = $original_record->id;
-		$query_result->original           = $original;
-		$query_result->domain             = $text_domain;
-		$query_result->singular           = $original_record->singular;
-		$query_result->plural             = $original_record->plural;
-		$query_result->context            = $original_record->context;
-		$query_result->project            = $project->path;
-		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
-		$query_result->original_comment   = $original_record->comment;
-		$query_result->hash               = $text_domain . '|' . $context . '|' . $entry->singular;
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_sets[ $project->id ]->slug, $translation_sets[ $project->id ]->locale );
+		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$singular_glossary_markup        = map_glossary_entries_to_translation_originals( $entry, $locale_glossary )->singular_glossary_markup;
+
+		$query_result                           = new stdClass();
+		$query_result->original_id              = $original_record->id;
+		$query_result->original                 = $original;
+		$query_result->singular_glossary_markup = $singular_glossary_markup;
+		$query_result->domain                   = $text_domain;
+		$query_result->singular                 = $original_record->singular;
+		$query_result->plural                   = $original_record->plural;
+		$query_result->context                  = $original_record->context;
+		$query_result->project                  = $project->path;
+		$query_result->translation_set_id       = $translation_sets[ $project->id ]->id;
+		$query_result->original_comment         = $original_record->comment;
+		$query_result->hash                     = $text_domain . '|' . $context . '|' . $entry->singular;
 
 		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 
@@ -531,63 +548,59 @@ class GP_Inline_Translation {
 		echo 'gpInlineTranslationData = ', wp_json_encode( $this->get_inline_translation_object( $locale_code ), JSON_PRETTY_PRINT ), ';';
 		echo '</script>';
 
-		?>
-		<div id="gp-inline-translation-list">
-			<div id="gp-translation-list-wrapper">
-				<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
-				<ul>
-				<?php
-				foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
-					if ( is_array( $translation ) ) {
-						continue;
-					}
-					echo '<li>';
+		if ( self::is_fallback_string_list_active() ) {
+			?>
+			<div id="gp-inline-translation-list">
+				<div id="gp-translation-list-wrapper">
+					<input id="gp-inline-search" type="text" placeholder="<?php esc_attr_e( 'Search string', 'GlotPress' ); ?>"/>
+					<ul>
+					<?php
 
-					echo '<data class="translatable"';
-					echo ' data-singular="' . esc_attr( $translation->singular ) . '"';
-					echo ' data-plural="' . esc_attr( $translation->plural ) . '"';
-					echo ' data-context="' . esc_attr( $translation->context ) . '"';
-					echo ' data-domain="' . esc_attr( $translation->domain ) . '"';
-					echo ' data-original-id="' . esc_attr( $translation->original_id ) . '"';
-					echo ' data-project="' . esc_attr( $translation->project ) . '"';
-					if ( ! empty( $translation->translations ) ) {
-						$t = array_filter(
-							array(
-								$translation->translations[0]['translation_0'],
-								$translation->translations[0]['translation_1'],
-								$translation->translations[0]['translation_2'],
-								$translation->translations[0]['translation_3'],
-								$translation->translations[0]['translation_4'],
-							)
-						);
-						echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
-					}
-					echo '>';
-					if ( empty( $translation->translations ) ) {
-						echo esc_html( $translation->singular );
-					} else {
-						$t = array_filter(
-							array(
-								$translation->translations[0]['translation_0'],
-								$translation->translations[0]['translation_1'],
-								$translation->translations[0]['translation_2'],
-								$translation->translations[0]['translation_3'],
-								$translation->translations[0]['translation_4'],
-							)
-						);
-						echo esc_html( $translation->translations[0]['translation_0'] );
-					}
-					echo '</data>';
-					if ( $translation->context ) {
-						echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
-					}
+					foreach ( $this->get_translations( GP_Locales::by_field( 'wp_locale', $locale_code ) ) as $translation ) {
+						echo '<li>';
 
-					echo '</li>';
-				}
-				?>
-				</ul>
+						echo '<data class="translatable"';
+						echo ' data-singular="' . esc_attr( $translation->singular ) . '"';
+						echo ' data-plural="' . esc_attr( $translation->plural ) . '"';
+						echo ' data-context="' . esc_attr( $translation->context ) . '"';
+						echo ' data-domain="' . esc_attr( $translation->domain ) . '"';
+						echo ' data-original-id="' . esc_attr( $translation->original_id ) . '"';
+						echo ' data-project="' . esc_attr( $translation->project ) . '"';
+						if ( ! empty( $translation->translations ) ) {
+							$t = array_filter(
+								array(
+									$translation->translations[0]['translation_0'],
+									$translation->translations[0]['translation_1'],
+									$translation->translations[0]['translation_2'],
+									$translation->translations[0]['translation_3'],
+									$translation->translations[0]['translation_4'],
+								)
+							);
+							echo ' data-translation="' . esc_attr( wp_json_encode( $t ) ) . '"';
+						}
+						echo '>';
+						$index = strtolower( $translation->singular );
+						if ( empty( $translation->translations ) ) {
+							echo esc_html( $translation->singular );
+						} else {
+							echo esc_html( $translation->translations[0]['translation_0'] );
+							$index .= ' ' . strtolower( $translation->translations[0]['translation_0'] );
+						}
+						echo '</data>';
+						if ( $translation->context ) {
+							echo ' <span class="context">' . esc_html( $translation->context ) . '</span>';
+							echo ' <span class="index" style="display: none">' . esc_html( $index ) . '</span>';
+						}
+
+						echo '</li>';
+					}
+					?>
+					</ul>
+				</div>
 			</div>
-		</div>
+			<?php
+		}
+		?>
 		<div>
 			<div id="translator-pop-out">
 				<ul>
@@ -598,6 +611,7 @@ class GP_Inline_Translation {
 						</label>
 						<span><?php _e( 'Inline Translation Status', 'glotpress' ); ?></span>
 					</li>
+					<?php if ( self::is_fallback_string_list_active() ) : ?>
 					<li>
 						<label>
 							<input id="inline-jump-next-switch" type="checkbox">
@@ -607,6 +621,7 @@ class GP_Inline_Translation {
 					<li>
 						<a id="gp-show-translation-list" href="#"><?php _e( 'View list of strings', 'glotpress' ); ?></a>
 					</li>
+					<?php endif; ?>
 					<li class="inline-stats">
 						<strong><?php _e( 'Stats:', 'glotpress' ); ?></strong>
 						<div>
@@ -625,15 +640,12 @@ class GP_Inline_Translation {
 						</div>
 					</li>
 				</ul>
-				
-
 			</div>
 			<div id="translator-launcher" class="translator">
 				<span class="dashicons dashicons-admin-site-alt3">
 				</span>
 			</div>
 		</div>
-		
 		<?php
 		return true;
 	}
@@ -695,9 +707,8 @@ class GP_Inline_Translation {
 				$project_paths[ $text_domain ][] = $project->path;
 			}
 		}
-		$load_suggestions = (bool) ( get_user_option( 'gp_openai_key' ) || get_option( 'gp_openai_key' ) );
 
-		return array(
+		$data = array(
 			'translations'           => $this->get_translations( $gp_locale ),
 			'stringsUsedOnPage'      => $this->strings_used,
 			'placeholdersUsedOnPage' => $this->placeholders_used,
@@ -711,8 +722,27 @@ class GP_Inline_Translation {
 				'nonce'                => wp_create_nonce( 'wp_rest' ),
 				'projects'             => $project_paths,
 				'translation_set_slug' => 'default',
-				'loadSuggestions'      => $load_suggestions,
 			),
 		);
+
+		if ( get_user_option( 'gp_openai_key' ) || get_option( 'gp_openai_key' ) ) {
+			if ( get_user_option( 'gp_openai_key' ) ) {
+				$data['glotPress']['openai_key'] = get_user_option( 'gp_openai_key' );
+			} else {
+				$data['glotPress']['openai_key'] = get_option( 'gp_openai_key' );
+			}
+
+			$prompt        = '';
+			$custom_prompt = get_option( 'gp_chatgpt_custom_prompt' );
+			if ( $custom_prompt ) {
+				$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
+			}
+			$custom_prompt = get_user_option( 'gp_chatgpt_custom_prompt' );
+			if ( $custom_prompt ) {
+				$prompt .= rtrim( $custom_prompt, '. ' ) . '. ';
+			}
+			$data['glotPress']['openai_prompt'] = $prompt;
+		}
+		return $data;
 	}
 }

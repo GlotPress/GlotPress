@@ -68,7 +68,7 @@ function popoverOnload( el, translationPair, glotPress ) {
 		el.focus();
 
 		if ( textareas.eq( 0 ).val() !== '' ) {
-			// return;
+			return;
 		}
 		if ( ! glotPress.shouldLoadSuggestions() ) {
 			return;
@@ -90,26 +90,30 @@ function popoverOnload( el, translationPair, glotPress ) {
 		};
 
 		getSuggestionsResponse = function( response ) {
-			if ( response.suggestion ) {
+			var suggestions = [];
+			if ( response.choices && response.choices[ 0 ] && response.choices[ 0 ].message && response.choices[ 0 ].message.content ) {
+				suggestions = JSON.parse( response.choices[ 0 ].message.content );
 				additional.html( '<details><summary>Modify Query</summary><textarea class="prompt" placeholder="Add a custom prompt..."></textarea><blockquote class="unmodifyable"></blockquote> <button class="button requery">Requery</button></details><ul class="suggestions"></ul>' );
-				for ( i = 0; i < response.suggestion.length; i++ ) {
+				for ( i = 0; i < suggestions.length; i++ ) {
 					li = jQuery( '<li><button class="button button-small copy">Copy</button><span></span>' );
 					additional.find( 'ul.suggestions' ).append( li );
-					li.find( 'span' ).text( response.suggestion[ i ] );
-					li.find( 'button' ).on( 'click', function() {
-						var textarea = textareas.get( 0 );
-						var newText = jQuery( this ).closest( 'li' ).find( 'span' ).text();
-						textarea.focus();
-						textarea.select();
-
-						// Replace all text with new text
-						document.execCommand( 'insertText', false, newText );
-						jQuery( textarea ).trigger( 'keyup' );
-						return false;
-					} );
+					li.find( 'span' ).text( suggestions[ i ] );
+					li.find( 'button' ).on( 'click', ( function( suggestion ) {
+						return function() {
+							var j;
+							for ( j = 0; j < textareas.length; j++ ) {
+								textareas.eq( j ).focus();
+								textareas.eq( j ).select();
+								// Replace all text with new text
+								document.execCommand( 'insertText', false, suggestion[ j ] );
+								textareas.eq( j ).trigger( 'keyup' );
+							}
+							return false;
+						};
+					}( Array.isArray( suggestions[ i ] ) ? suggestions[ i ] : [ suggestions[ i ] ] ) ) );
 				}
-				additional.find( 'blockquote.unmodifyable' ).text( response.unmodifyable );
-				additional.find( 'textarea.prompt' ).val( response.prompt );
+				additional.find( 'blockquote.unmodifyable' ).text( 'Given this, translate the following text to ' + locale.getLanguageName() + ':' );
+				additional.find( 'textarea.prompt' ).val( glotPress.getLastPrompt() );
 				additional.find( 'button.requery' ).on( 'click', requery );
 			} else {
 				for ( i = 0; i < textareas.length; i++ ) {
@@ -152,14 +156,15 @@ function getInputForm( translationPair ) {
 		pairs = form.find( 'div.pairs' ),
 		item, i;
 
-	original.html( getOriginalHtml( translationPair ) );
+	original.html( translationPair.getOriginal().getGlossaryMarkup() );
+	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
-		form.find( 'p.context' ).text( translationPair.getContext() ).show();
+		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
-		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).show();
+		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -179,6 +184,25 @@ function getInputForm( translationPair ) {
 	return form;
 }
 
+function exposeOtherOriginals( form, translationPair ) {
+	var i,
+		search = {};
+	if ( translationPair.getOtherOriginals().length ) {
+		form.find( 'p.other-originals' ).css( 'display', 'block' );
+		search[ translationPair.getOriginal().getSingular() ] = true;
+		for ( i = 0; i < translationPair.getOtherOriginals().length; i++ ) {
+			search[ translationPair.getOtherOriginals()[ i ] ] = true;
+		}
+		for ( i = 0; i < translationPair.getTranslation().getTextItems().length; i++ ) {
+			search[ translationPair.getTranslation().getTextItems()[ i ].getText() ] = true;
+		}
+		form.on( 'click', 'p.other-originals a', function() {
+			jQuery( '#gp-show-translation-list' ).trigger( 'search', Object.keys( search ).join( ' || ' ) );
+			return false;
+		} );
+	}
+}
+
 function getOverview( translationPair ) {
 	// TODO: add input checking and bail for empty or unexpected values
 
@@ -189,13 +213,14 @@ function getOverview( translationPair ) {
 		item, description, i;
 
 	original.html( getOriginalHtml( translationPair ) );
+	exposeOtherOriginals( form, translationPair );
 
 	if ( translationPair.getContext() ) {
-		form.find( 'p.context' ).text( translationPair.getContext() ).show();
+		form.find( 'p.context' ).text( translationPair.getContext() ).css( 'display', 'block' );
 	}
 
 	if ( translationPair.getOriginal().getComment() ) {
-		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).show();
+		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -225,6 +250,7 @@ function getHtmlTemplate( popoverType ) {
 			'<div class="original"></div>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
+			'<p class="other-originals">Multiple originals match, <a href="">show them</a></p>' +
 			'<hr />' +
 			'<p class="info"></p>' +
 			'<div class="pairs">' +
@@ -251,6 +277,7 @@ function getHtmlTemplate( popoverType ) {
 			'<p class="warnings"></p>' +
 			'<p class="context"></p>' +
 			'<p class="comment"></p>' +
+			'<p class="other-originals">Multiple originals match, <a href="">show them</a></p>' +
 			'<p class="info"></p>' +
 			'<div class="pairs">' +
 			'<div class="pair">' +
