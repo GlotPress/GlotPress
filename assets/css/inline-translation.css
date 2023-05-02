@@ -424,6 +424,21 @@ iframe.translator-untranslatable {
     cursor: help;
 }
 
+/* Hide visually but not from screen readers */
+.ui-helper-hidden-accessible {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
 .ui-tooltip {
 	background-color: #eee;
 	margin: 2px;
@@ -432,6 +447,9 @@ iframe.translator-untranslatable {
 	max-width: 250px;
 	z-index: 999999999 !important;
 	border-radius: 10px;
+	position: absolute;
+	top: 100px;
+	left: 100px;
 }
 
 .ui-tooltip ul {
