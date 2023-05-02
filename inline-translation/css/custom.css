@@ -194,7 +194,7 @@ iframe.translator-untranslatable {
 }
 
 .ui-tooltip {
-	background-color: #eee;
+	background-color: #ddd;
 	margin: 2px;
 	padding: 6px;
 	text-align: left;
@@ -215,6 +215,7 @@ iframe.translator-untranslatable {
 .ui-tooltip ul li {
 	padding: 0;
 	margin: 0;
+	margin-bottom: .5em;
 }
 
 .ui-tooltip .pos {
@@ -229,13 +230,13 @@ iframe.translator-untranslatable {
 
 .ui-tooltip .comment {
 	display: block;
-	font-size: small;
+	font-size: 90%;
 }
 
 .ui-tooltip:after {
 	display: block;
 	content: "";
-	border-color: #eee transparent;
+	border-color: #ddd transparent;
 	border-style: solid;
 	border-width: 0 10px 10px;
 	width: 0;
