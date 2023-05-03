@@ -132,7 +132,6 @@ function popoverOnload( el, translationPair, glotPress ) {
 		};
 		getSuggestions = function() {
 			additional.html( 'Loading suggested translation <span class="spinner is-active" style="float: none; margin: 0 0 0 5px;"></span>' );
-			console.log( 'loading suggestions' );
 			glotPress.getSuggestedTranslation( translationPair ).done( getSuggestionsResponse ).error( getSugesstionsError );
 		};
 	}
