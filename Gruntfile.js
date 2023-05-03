@@ -70,6 +70,19 @@ module.exports = function( grunt ) {
 				],
 			},
 		},
+		browserify: {
+			core: {
+				src: [
+					"./inline-translation/lib/index.js",
+				],
+				dest: './inline-translation/inline-translation.js',
+				options: {
+					browserifyOptions: {
+						standalone: 'gpInlineTranslation'
+					}
+				},
+			}
+		},
 		watch: {
 			js: {
 				files: [
@@ -92,5 +105,5 @@ module.exports = function( grunt ) {
 		},
 	} );
 
-	grunt.registerTask( 'default', [ 'uglify', 'cssmin', 'copy' ] );
+	grunt.registerTask( 'default', [ 'browserify', 'uglify', 'cssmin', 'copy' ] );
 };
