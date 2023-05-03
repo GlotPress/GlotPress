@@ -63,10 +63,12 @@ function popoverOnload( el, translationPair, glotPress ) {
 	var getSuggestionsResponse, getSugesstionsError, requery, i, li,
 		popover = jQuery( el ),
 		textareas = jQuery( el ).find( 'textarea' ),
-		additional = jQuery( el ).find( 'div.additional' );
+		additional = jQuery( el ).find( 'div.additional' ),
+		getSuggestions = function() {};
 
 	glotPress.glossaryMarkup( translationPair ).then( function() {
 		popover.find( 'div.original' ).html( getOriginalHtml( translationPair ) );
+		getSuggestions();
 	} );
 
 	el = textareas.get( 0 );
@@ -80,7 +82,6 @@ function popoverOnload( el, translationPair, glotPress ) {
 		if ( ! glotPress.shouldLoadSuggestions() ) {
 			return;
 		}
-		additional.html( 'Loading suggested translation <span class="spinner is-active" style="float: none; margin: 0 0 0 5px;"></span>' );
 
 		requery = function() {
 			glotPress.getSuggestedTranslation( translationPair, {
@@ -129,8 +130,11 @@ function popoverOnload( el, translationPair, glotPress ) {
 				additional.text( '' );
 			}
 		};
-
-		glotPress.getSuggestedTranslation( translationPair ).done( getSuggestionsResponse ).error( getSugesstionsError );
+		getSuggestions = function() {
+			additional.html( 'Loading suggested translation <span class="spinner is-active" style="float: none; margin: 0 0 0 5px;"></span>' );
+			console.log( 'loading suggestions' );
+			glotPress.getSuggestedTranslation( translationPair ).done( getSuggestionsResponse ).error( getSugesstionsError );
+		};
 	}
 }
 

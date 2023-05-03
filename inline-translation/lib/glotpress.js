@@ -149,12 +149,24 @@ function GlotPress( locale, translations ) {
 				prompt = ( data && data.prompt ) || '',
 				language = locale.getLanguageName();
 
-			if ( language in [ 'German' ] ) {
+			if ( [ 'German' ].includes( language ) ) {
 				language = 'informal ' + language;
 			}
 
 			if ( prompt && server.openai_prompt ) {
 				prompt += '. ' + server.openai_prompt;
+			}
+
+			if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
+					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
+						prompt += 'Translate "' + word.textContent + '" as "' + e.translation + '" when it is a ' + e.pos;
+						if ( e.comment ) {
+							prompt += ' (' + e.comment + ')';
+						}
+						prompt += '. ';
+					} );
+				} );
 			}
 
 			lastPrompt = prompt;
