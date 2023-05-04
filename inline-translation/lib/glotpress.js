@@ -12,7 +12,8 @@ function GlotPress( locale, translations ) {
 			translation_set_slug: 'default',
 		},
 		batch = batcher( fetchOriginals ),
-		lastPrompt = '';
+		lastPrompt = '',
+		glossaryMarkups = {};
 	function ajax( options ) {
 		options = jQuery.extend( {
 			method: 'POST',
@@ -95,6 +96,39 @@ function GlotPress( locale, translations ) {
 			return batch( original );
 		},
 
+		glossaryMarkup: function( translationPair ) {
+			var data;
+			if ( ! translationPair.getOriginal().getSingularGlossaryMarkup() && glossaryMarkups[ translationPair.getOriginal().getSingular() ] ) {
+				translationPair.getOriginal().setSingularGlossaryMarkup( glossaryMarkups[ translationPair.getOriginal().getSingular() ] );
+			}
+			if ( ! translationPair.getOriginal().getPluralGlossaryMarkup() && glossaryMarkups[ translationPair.getOriginal().getPlural() ] ) {
+				translationPair.getOriginal().setPluralGlossaryMarkup( glossaryMarkups[ translationPair.getOriginal().getPlural() ] );
+			}
+			if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+				return new jQuery.Deferred().resolve( translationPair.getOriginal().objectify() );
+			}
+			data = {
+				project: translationPair.getGlotPressProject(),
+				translation_set_slug: server.translation_set_slug,
+				locale_slug: locale.getLocaleCode(),
+				original: translationPair.getOriginal().objectify(),
+			};
+
+			return ajax( {
+				url: server.restUrl + '/glossary-markup',
+				data: data,
+			} ).then( function( response ) {
+				if ( response.singular_glossary_markup ) {
+					glossaryMarkups[ translationPair.getOriginal().getSingular() ] = response.singular_glossary_markup;
+					translationPair.getOriginal().setSingularGlossaryMarkup( response.singular_glossary_markup );
+				}
+				if ( response.plural_glossary_markup ) {
+					glossaryMarkups[ translationPair.getOriginal().getPlural() ] = response.plural_glossary_markup;
+					translationPair.getOriginal().setPluralGlossaryMarkup( response.plural_glossary_markup );
+				}
+			} );
+		},
+
 		submitTranslation: function( translation, translationPair ) {
 			var data = {
 				project: translationPair.getGlotPressProject(),
@@ -105,7 +139,6 @@ function GlotPress( locale, translations ) {
 			window.parent.postMessage( { type: 'relay', message: 'new-translation', data: data }, 'https://playground.wordpress.net/' );
 			return ajax( {
 				url: server.restUrl + '/translation',
-
 				data: data,
 			} );
 		},
@@ -116,12 +149,24 @@ function GlotPress( locale, translations ) {
 				prompt = ( data && data.prompt ) || '',
 				language = locale.getLanguageName();
 
-			if ( language in [ 'German' ] ) {
+			if ( [ 'German' ].includes( language ) ) {
 				language = 'informal ' + language;
 			}
 
 			if ( prompt && server.openai_prompt ) {
 				prompt += '. ' + server.openai_prompt;
+			}
+
+			if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
+					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
+						prompt += 'Translate "' + word.textContent + '" as "' + e.translation + '" when it is a ' + e.pos;
+						if ( e.comment ) {
+							prompt += ' (' + e.comment + ')';
+						}
+						prompt += '. ';
+					} );
+				} );
 			}
 
 			lastPrompt = prompt;
