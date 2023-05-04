@@ -32,7 +32,7 @@ function prepare_original( $text ) {
 	// Break out & back into notranslate for translatable attributes.
 	$text = preg_replace( '/(title|aria-label)=([\'"])([^\\2]+?)\\2/', '\\1=\\2</span>\\3<span class="notranslate">\\2', $text );
 	// Wrap placeholders with notranslate.
-	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefglosuxEFGX])/', '<span class="notranslate placeholder">\\1</span>', $text );
+	$text = preg_replace( '/(%(?:(\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX])/', '<span class="notranslate placeholder">\\1</span>', $text );
 
 	// Highlight two or more spaces between words.
 	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
