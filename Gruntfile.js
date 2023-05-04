@@ -30,7 +30,7 @@ module.exports = function( grunt ) {
 		},
 		concat: {
 			inline_translation: {
-				src: [ 'inline-translation/css/jquery.webui-popover.css','inline-translation/css/custom.css'],
+				src: [ 'inline-translation/css/jquery.webui-popover.css','inline-translation/css/custom.css' ],
 				dest: 'assets/css/inline-translation.css'
 			},
 		},
