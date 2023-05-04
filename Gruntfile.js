@@ -17,6 +17,7 @@ module.exports = function( grunt ) {
 				dest: WORKING_DIR,
 				src: [
 					'assets/js/**/*.js',
+
 					// Exceptions.
 					'!**/*.min.js'
 				],
@@ -82,7 +83,7 @@ module.exports = function( grunt ) {
 					// Exceptions.
 					'!**/*.min.css'
 				],
-				tasks: [ 'concat' ],
+				tasks: [ 'cssmin' ],
 			},
 			inline_translation_css: {
 				files: [
