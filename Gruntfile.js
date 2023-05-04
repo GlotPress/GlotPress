@@ -17,7 +17,6 @@ module.exports = function( grunt ) {
 				dest: WORKING_DIR,
 				src: [
 					'assets/js/**/*.js',
-					'inline-translation/*.js',
 					// Exceptions.
 					'!**/*.min.js'
 				],
@@ -27,6 +26,12 @@ module.exports = function( grunt ) {
 					return src.replace( '.js', '.min.js' );
 				}
 			}
+		},
+		concat: {
+			inline_translation: {
+				src: [ 'inline-translation/css/jquery.webui-popover.css','inline-translation/css/custom.css'],
+				dest: 'assets/css/inline-translation.css'
+			},
 		},
 		cssmin: {
 			core: {
@@ -46,39 +51,6 @@ module.exports = function( grunt ) {
 					return src.replace( '.css', '.min.css' );
 				}
 			}
-		},
-		concat: {
-			options: {
-				separator: '',
-			},
-			inline_translation: {
-				src: 'inline-translation/css/*.css',
-				dest: 'inline-translation/inline-translation.css',
-			},
-		},
-		copy: {
-			js: {
-				files: [
-					{
-						expand: true,
-						flatten: true,
-						src: ['inline-translation/*.min.js'],
-						dest: 'assets/js/',
-						filter: 'isFile'
-					},
-				],
-			},
-			css: {
-				files: [
-					{
-						expand: true,
-						flatten: true,
-						src: ['inline-translation/*.css'],
-						dest: 'assets/css/',
-						filter: 'isFile'
-					},
-				],
-			},
 		},
 		browserify: {
 			core: {
@@ -110,9 +82,19 @@ module.exports = function( grunt ) {
 					// Exceptions.
 					'!**/*.min.css'
 				],
-				tasks: [ 'cssmin' ],
+				tasks: [ 'concat' ],
 			},
-			inline_translation: {
+			inline_translation_css: {
+				files: [
+					'assets/css/*.css',
+					'inline-translation/css/*.css',
+
+					// Exceptions.
+					'!**/*.min.css'
+				],
+				tasks: [ 'concat' ],
+			},
+			inline_translation_js: {
 				files: [
 					'inline-translation/lib/*.js',
 				],
@@ -121,5 +103,5 @@ module.exports = function( grunt ) {
 		},
 	} );
 
-	grunt.registerTask( 'default', [ 'browserify', 'concat', 'uglify', 'cssmin', 'copy' ] );
+	grunt.registerTask( 'default', [ 'browserify', 'concat', 'cssmin', 'uglify' ] );
 };

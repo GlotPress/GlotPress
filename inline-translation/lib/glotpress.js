@@ -102,6 +102,7 @@ function GlotPress( locale, translations ) {
 				locale_slug: locale.getLocaleCode(),
 				translation: translation,
 			};
+
 			window.parent.postMessage( { type: 'relay', message: 'new-translation', data: data }, 'https://playground.wordpress.net/' );
 			return ajax( {
 				url: server.restUrl + '/translation',
