@@ -57,7 +57,7 @@ module.exports = function( grunt ) {
 				src: [
 					'inline-translation/lib/index.js',
 				],
-				dest: 'inline-translation/inline-translation.js',
+				dest: 'assets/js/inline-translation.js',
 				options: {
 					browserifyOptions: {
 						standalone: 'gpInlineTranslation'
