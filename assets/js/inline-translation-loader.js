@@ -91,7 +91,7 @@
 		jQuery( document.body ).tooltip( {
 			items: '.glossary-word',
 			content: function() {
-				var content = $( '<ul>' );
+				var content = $( '<ul class="translator-exclude">' );
 				$.each( $( this ).data( 'translations' ), function( i, e ) {
 					var def = $( '<li>' );
 					if ( e.locale_entry ) {

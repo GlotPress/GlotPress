@@ -47,6 +47,15 @@ class GP_Rest_API {
 		);
 		register_rest_route(
 			self::PREFIX,
+			'glossary-markup',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'get_glossary_markup' ),
+				'permission_callback' => array( $this, 'logged_in_permission_check' ),
+			)
+		);
+		register_rest_route(
+			self::PREFIX,
 			'create-local-project',
 			array(
 				'methods'             => 'POST',
@@ -111,6 +120,43 @@ class GP_Rest_API {
 			);
 		}
 		return true;
+	}
+
+	/**
+	 * Get a glossary marked-up original.
+	 *
+	 * @param  \WP_REST_Request $request The incoming request.
+	 * @return array The array to be returned via the REST API.
+	 */
+	public function get_glossary_markup( \WP_REST_Request $request ) {
+		$project_path         = $request->get_param( 'project' );
+		$locale_slug          = $request->get_param( 'locale_slug' );
+		$translation_set_slug = $request->get_param( 'translation_set_slug' );
+		$original             = $request->get_param( 'original' );
+		if ( ! isset( $original['singular'] ) ) {
+			return new WP_Error(
+				'rest_invalid_original',
+				__( 'You specified an invalid original.', 'glotpress' ),
+				array( 'status' => rest_authorization_required_code() )
+			);
+		}
+
+		if ( ! isset( $original['plural'] ) ) {
+			$original['plural'] = '';
+		}
+
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set_slug, $locale_slug );
+		if ( ! $locale_glossary_translation_set ) {
+			return $original;
+		}
+
+		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		if ( ! $locale_glossary ) {
+			return $original;
+		}
+
+		$original = map_glossary_entries_to_translation_originals( (object) $original, $locale_glossary );
+		return $original;
 	}
 
 	/**
