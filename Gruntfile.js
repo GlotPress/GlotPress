@@ -86,7 +86,6 @@ module.exports = function( grunt ) {
 			},
 			inline_translation_css: {
 				files: [
-					'assets/css/*.css',
 					'inline-translation/css/*.css',
 
 					// Exceptions.
