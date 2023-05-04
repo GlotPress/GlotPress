@@ -35,6 +35,7 @@ module.exports = function( grunt ) {
 				dest: WORKING_DIR,
 				src: [
 					'assets/css/*.css',
+					'inline-translation/inline-translation.css',
 
 					// Exceptions.
 					'!**/*.min.css'
@@ -45,6 +46,15 @@ module.exports = function( grunt ) {
 					return src.replace( '.css', '.min.css' );
 				}
 			}
+		},
+		concat: {
+			options: {
+				separator: '',
+			},
+			inline_translation: {
+				src: 'inline-translation/css/*.css',
+				dest: 'inline-translation/inline-translation.css',
+			},
 		},
 		copy: {
 			js: {
@@ -105,5 +115,5 @@ module.exports = function( grunt ) {
 		},
 	} );
 
-	grunt.registerTask( 'default', [ 'browserify', 'uglify', 'cssmin', 'copy' ] );
+	grunt.registerTask( 'default', [ 'browserify', 'concat', 'uglify', 'cssmin', 'copy' ] );
 };
