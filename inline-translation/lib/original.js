@@ -8,7 +8,8 @@ function Original( original ) {
 		plural = null,
 		comment = null,
 		originalId = null,
-		glossaryMarkup = null;
+		singularGlossaryMarkup = null,
+		pluralGlossaryMarkup = null;
 
 	if ( 'string' === typeof original ) {
 		singular = original;
@@ -89,7 +90,8 @@ function Original( original ) {
 				if ( typeof data.original_comment === 'string' ) {
 					comment = data.original_comment.replace( /^translators: /, '' );
 				}
-				glossaryMarkup = data.singular_glossary_markup;
+				singularGlossaryMarkup = data.singular_glossary_markup;
+				pluralGlossaryMarkup = data.plural_glossary_markup;
 			} );
 		},
 		getId: function() {
@@ -98,8 +100,19 @@ function Original( original ) {
 		getComment: function() {
 			return comment;
 		},
-		getGlossaryMarkup: function() {
-			return glossaryMarkup;
+		getSingularGlossaryMarkup: function() {
+			return singularGlossaryMarkup;
+		},
+		getPluralGlossaryMarkup: function() {
+			return pluralGlossaryMarkup;
+		},
+		setSingularGlossaryMarkup: function( markup ) {
+			singularGlossaryMarkup = markup;
+			return singularGlossaryMarkup;
+		},
+		setPluralGlossaryMarkup: function( markup ) {
+			pluralGlossaryMarkup = markup;
+			return pluralGlossaryMarkup;
 		},
 	};
 }

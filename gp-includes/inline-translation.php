@@ -107,7 +107,7 @@ class GP_Inline_Translation {
 	 * Constructs a new instance.
 	 */
 	public function __construct() {
-		if ( ! self::is_active() ) {
+		if ( ! self::is_active() || wp_doing_ajax() || wp_doing_cron() ) {
 			return;
 		}
 		add_action( 'gettext', array( $this, 'translate' ), 10, 4 );
@@ -449,17 +449,9 @@ class GP_Inline_Translation {
 			return false;
 		}
 
-		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_sets[ $project->id ]->slug, $translation_sets[ $project->id ]->locale );
-
-		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
-		$marked_up_orig  = map_glossary_entries_to_translation_originals( $entry, $locale_glossary );
-
-		$query_result              = new stdClass();
-		$query_result->original_id = $original_record->id;
-		$query_result->original    = $original;
-		if ( $marked_up_orig && isset( $marked_up_orig->singular_glossary_markup ) ) {
-			$query_result->singular_glossary_markup = $marked_up_orig->singular_glossary_markup;
-		}
+		$query_result                     = new stdClass();
+		$query_result->original_id        = $original_record->id;
+		$query_result->original           = $original;
 		$query_result->domain             = $text_domain;
 		$query_result->singular           = $original_record->singular;
 		$query_result->plural             = $original_record->plural;
