@@ -41,7 +41,6 @@ module.exports = function( grunt ) {
 				dest: WORKING_DIR,
 				src: [
 					'assets/css/*.css',
-					'inline-translation/inline-translation.css',
 
 					// Exceptions.
 					'!**/*.min.css'
