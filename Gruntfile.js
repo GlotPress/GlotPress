@@ -112,6 +112,12 @@ module.exports = function( grunt ) {
 				],
 				tasks: [ 'cssmin' ],
 			},
+			inline_translation: {
+				files: [
+					'inline-translation/lib/*.js',
+				],
+				tasks: [ 'browserify' ],
+			},
 		},
 	} );
 
