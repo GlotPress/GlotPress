@@ -1,5 +1,6 @@
 **/*.min.js
 **/node_modules/**
 inline-translation/lib/jquery.webui-popover.js
+assets/js/inline-translation.js
 **/vendor/**
 /*.js
