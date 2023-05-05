@@ -4,11 +4,6 @@
 'use strict';
 
 /**
- * External dependencies
- */
-var debug = require( 'debug' )( 'inline-translator' );
-
-/**
  * Internal dependencies
  */
 var TranslationPair = require( './translation-pair' ),
@@ -67,7 +62,6 @@ module.exports = {
 };
 
 function notifyTranslated( newTranslationPair ) {
-	debug( 'Notifying string translated', newTranslationPair.serialize() );
 	translationUpdateCallbacks.forEach( function( hook ) {
 		hook( newTranslationPair.serialize() );
 	} );
@@ -99,8 +93,6 @@ loadData = function( translationDataFromJumpstart ) {
 	glotPress = new GlotPress( translationData.locale, translationData.translations );
 	if ( 'undefined' !== typeof translationData.glotPress ) {
 		glotPress.loadSettings( translationData.glotPress );
-	} else {
-		debug( 'Missing GlotPress settings' );
 	}
 
 	TranslationPair.setTranslationData( translationData );
@@ -109,7 +101,6 @@ loadData = function( translationDataFromJumpstart ) {
 
 registerContentChangedCallback = function() {
 	if ( 'object' === typeof window.gpInlineTranslationData ) {
-		debug( 'Registering translator contentChangedCallback' );
 		window.gpInlineTranslationData.contentChangedCallback = function() {
 			if ( debounceTimeout ) {
 				window.clearTimeout( debounceTimeout );
@@ -244,11 +235,7 @@ registerPopoverHandlers = function() {
 					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
 						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
 					}
-				} ).fail( function() {
-					debug( 'Submitting new translation failed', translation );
 				} );
-			} ).fail( function() {
-				debug( 'Original cannot be found in GlotPress' );
 			} );
 
 		return false;
@@ -259,7 +246,6 @@ registerPopoverHandlers = function() {
 			popover, webUiPopover,
 			translationPair = enclosingNode.data( 'translationPair' );
 		if ( 'object' !== typeof translationPair ) {
-			debug( 'could not find translation for node', enclosingNode );
 			return false;
 		}
 
@@ -307,7 +293,6 @@ function unRegisterPopoverHandlers() {
 }
 
 function makeUntranslatable( translationPair, $node ) {
-	debug( 'makeUntranslatable:', $node );
 	$node.removeClass( 'translator-untranslated translator-translated translator-translatable translator-checking' );
 	$node.addClass( 'translator-dont-translate' );
 	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
@@ -326,7 +311,6 @@ function makeTranslatable( translationPair, node ) {
 			var el = this;
 			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) {
 				if ( ! translationPair.getRegex().test( el.innerHTML ) ) {
-					debug( 'Updating HTML translation', el.innerHTML, translationPair.getRegex(), translationPair.getRegex().test( el.innerHTML ), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 					setTimeout( function() {
 						el.innerHTML = translationPair.getReplacementText( el.innerHTML );
 					}, 1 );
@@ -334,7 +318,6 @@ function makeTranslatable( translationPair, node ) {
 				return;
 			}
 			if ( ! translationPair.getRegex().test( el.textContent ) ) {
-				debug( 'Updating text translation', el.textContent, translationPair.getRegex(), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 				setTimeout( function() {
 					el.textContent = translationPair.getReplacementText( el.textContent );
 				}, 1 );

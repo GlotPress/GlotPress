@@ -512,3 +512,8 @@ iframe.translator-untranslatable {
 .webui-popover a.placeholder-exist::after {
 content: '✅';
 }
+@-moz-document url-prefix() {
+	.webui-popover div.placeholders {
+		margin-top: -5px;
+	}
+}
