@@ -153,11 +153,11 @@ function GlotPress( locale, translations ) {
 				language = 'informal ' + language;
 			}
 
-			if ( prompt && server.openai_prompt ) {
-				prompt += '. ' + server.openai_prompt;
+			if ( server.openai_prompt ) {
+				prompt += server.openai_prompt;
 			}
 
-			if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+			if ( ! ( data && data.prompt ) && translationPair.getOriginal().getSingularGlossaryMarkup() ) {
 				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
 					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
 						prompt += 'Translate "' + word.textContent + '" as "' + e.translation + '" when it is a ' + e.pos;
