@@ -161,7 +161,6 @@ function getOriginalHtml( translationPair ) {
 			originalHtml.find( 'strong.plural' ).text( translationPair.getOriginal().getPlural() );
 		}
 	}
-
 	return originalHtml;
 }
 
@@ -183,6 +182,10 @@ function getInputForm( translationPair ) {
 
 	if ( translationPair.getOriginal().getComment() ) {
 		form.find( 'p.comment' ).text( translationPair.getOriginal().getComment() ).css( 'display', 'block' );
+	}
+
+	if ( translationPair.getOriginal().getPlaceholders() ) {
+		form.find( 'div.placeholders' ).css( 'display', 'block' );
 	}
 
 	item = translationPair.getTranslation().getTextItems();
@@ -302,6 +305,7 @@ function getHtmlTemplate( popoverType ) {
 			'<p></p>' +
 			'<input type="hidden" class="original" name="original[]" />' +
 			'<textarea dir="auto" class="translation" name="translation[]"></textarea>' +
+			'<div class="placeholders"></div>' +
 			'</div>' +
 			'</div>' +
 			'<button disabled class="button button-primary save">Save Translation</button>' +

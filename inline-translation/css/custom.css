@@ -10,7 +10,7 @@
 .webui-popover p.context, .webui-popover p.comment {
 	margin: 0 0 .5em 0;
 	display: none;
-	font-color: #999;
+	color: #999;
 	font-style: italic;
 }
 
@@ -19,6 +19,11 @@
 	display: none;
 }
 
+.webui-popover div.placeholders {
+	display: none;
+	margin-bottom: 13px;
+    margin-top: -9px
+}
 .webui-popover p.info {
 	margin: .5em 0;
 	display: none;
@@ -243,4 +248,25 @@ iframe.translator-untranslatable {
 	position: absolute;
 	top: -8px;
 	left: 1em;
+}
+
+.webui-popover a.inline-placeholder{
+	background: #F1ADAD;
+	padding: 0.3em;
+	margin-right: 0.2em;
+	border-radius: 2px;
+	color: #000000;
+	text-decoration: line-through;
+}
+.webui-popover a.placeholder-exist {
+	text-decoration: none;
+	background: #B5E1B9;
+}
+.webui-popover a.placeholder-exist::after {
+content: ' ✅';
+}
+@-moz-document url-prefix() {
+	.webui-popover div.placeholders {
+		margin-top: -5px;
+	}
 }

@@ -108,6 +108,13 @@
 			show: false,
 		} );
 
+		$( document.body ).on( 'click', 'a.inline-placeholder', function() {
+			var placeholder = $( this ).text();
+			$( this ).parent().prev( 'textarea' ).focus();
+			document.execCommand( 'insertText', null, placeholder );
+			return false;
+		} );
+
 		// only show the button when the translator has been loaded
 		runWhenTranslatorIsLoaded( function() {
 			$( '#translator-launcher' ).show();

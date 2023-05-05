@@ -2,5 +2,6 @@
 **/node_modules/**
 assets/js/jquery.webui-popover.js
 assets/js/driver-js.js
+assets/js/inline-translation.js
 **/vendor/**
 /*.js
