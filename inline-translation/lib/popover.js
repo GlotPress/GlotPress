@@ -139,7 +139,6 @@ function popoverOnload( el, translationPair, glotPress ) {
 
 function getOriginalHtml( translationPair ) {
 	var originalHtml,
-		singular = translationPair.getOriginal().getSingular(),
 		plural = translationPair.getOriginal().getPlural();
 	if ( plural ) {
 		originalHtml = 'Singular: <strong class="singular"></strong>' +
