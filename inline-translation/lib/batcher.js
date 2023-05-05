@@ -13,7 +13,6 @@
  * calls and makes a single call to the original function ( presumably the
  * backend ) after a brief delay.
  */
-var debug = require( 'debug' )( 'inline-translator' );
 
 function handleBatchedResponse( response, originalToCallbacksMap ) {
 	var i, data, j, key;
@@ -66,9 +65,6 @@ module.exports = function( functionToWrap ) {
 		resolveBatch;
 
 	if ( 'function' !== typeof ( functionToWrap ) ) {
-		debug(
-			'batcher expects the first argument to be a function that takes an array and a callback, got ',
-			functionToWrap );
 		return null;
 	}
 

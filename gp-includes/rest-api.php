@@ -268,13 +268,19 @@ class GP_Rest_API {
 			}
 
 			gp_clean_translation_set_cache( $translation_set->id );
-			$translations = GP::$translation->find_many_no_map( "original_id = '{$original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
+			$translations = GP::$translation->find_many_no_map( "original_id = '{$original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )", 'date_modified DESC' );
 			if ( ! $translations ) {
 				$output[ $original_id ] = false;
 				continue;
 			}
-			if ( ! empty( $translations['warnings'] ) ) {
-				$translations['warnings'] = wp_json_encode( $translations['warnings'] );
+			foreach ( array_keys( $translations ) as $translation_id ) {
+				if ( ! empty( $translations[ $translation_id ]->warnings ) ) {
+					$translations[ $translation_id ]->warnings = wp_json_encode(
+						unserialize( // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+							$translations[ $translation_id ]->warnings
+						)
+					);
+				}
 			}
 			$output[ $original_id ] = $translations;
 		}
@@ -381,7 +387,7 @@ class GP_Rest_API {
 					$query_result->original_comment = $original_record->comment;
 					$query_result->project          = $project_paths[ $project_id ];
 
-					$query_result->translations = GP::$translation->find_many_no_map( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
+					$query_result->translations = GP::$translation->find_many_no_map( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )", 'date_modified DESC' );
 					foreach ( $query_result->translations as $key => $current_translation ) {
 						$query_result->translations[ $key ]                   = GP::$translation->prepare_fields_for_save( $current_translation );
 						$query_result->translations[ $key ]['translation_id'] = $current_translation->id;
