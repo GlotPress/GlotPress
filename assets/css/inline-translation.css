@@ -244,6 +244,7 @@
     transform: rotate(360deg);
   }
 }
+
 .webui-popover {
 	z-index: 999999999;
 	direction: ltr;
