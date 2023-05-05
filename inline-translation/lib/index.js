@@ -4,11 +4,6 @@
 'use strict';
 
 /**
- * External dependencies
- */
-var debug = require( 'debug' )( 'inline-translator' );
-
-/**
  * Internal dependencies
  */
 var TranslationPair = require( './translation-pair' ),
@@ -67,7 +62,6 @@ module.exports = {
 };
 
 function notifyTranslated( newTranslationPair ) {
-	debug( 'Notifying string translated', newTranslationPair.serialize() );
 	translationUpdateCallbacks.forEach( function( hook ) {
 		hook( newTranslationPair.serialize() );
 	} );
@@ -99,8 +93,6 @@ loadData = function( translationDataFromJumpstart ) {
 	glotPress = new GlotPress( translationData.locale, translationData.translations );
 	if ( 'undefined' !== typeof translationData.glotPress ) {
 		glotPress.loadSettings( translationData.glotPress );
-	} else {
-		debug( 'Missing GlotPress settings' );
 	}
 
 	TranslationPair.setTranslationData( translationData );
@@ -109,7 +101,6 @@ loadData = function( translationDataFromJumpstart ) {
 
 registerContentChangedCallback = function() {
 	if ( 'object' === typeof window.gpInlineTranslationData ) {
-		debug( 'Registering translator contentChangedCallback' );
 		window.gpInlineTranslationData.contentChangedCallback = function() {
 			if ( debounceTimeout ) {
 				window.clearTimeout( debounceTimeout );
@@ -151,11 +142,14 @@ registerDomChangedCallback = function() {
 };
 
 registerPopoverHandlers = function() {
-	jQuery( document ).on( 'keyup', 'textarea.translation', function() {
+	jQuery( document ).on( 'input', 'textarea.translation', function() {
 		var textareasWithInput,
 			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
-			$allTextareas = $form.find( 'textarea' ),
-			$button = $form.find( 'button' );
+			$allTextareas = jQuery( this ),
+			$button = $form.find( 'button' ),
+			translationPair = $form.data( 'translationPair' ),
+			newPlaceholders = getPlaceholdersLink( translationPair, $allTextareas.val() );
+		jQuery( this ).siblings( 'div.placeholders' ).html( newPlaceholders ).css( 'display', 'block' );
 
 		textareasWithInput = $allTextareas.filter( function() {
 			return this.value.length;
@@ -163,6 +157,21 @@ registerPopoverHandlers = function() {
 
 		// disable if no textarea has an input
 		$button.prop( 'disabled', 0 === textareasWithInput.length );
+	} );
+
+	jQuery( document.body ).on( 'focus', 'textarea.translation', function() {
+		var currentText = '',
+			newPlaceholders = '',
+			textareas = jQuery( 'textarea[name="translation[]"]' ),
+			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
+			translationPair = $form.data( 'translationPair' );
+
+		textareas.map( function() {
+			currentText = jQuery( this ).val();
+			newPlaceholders = getPlaceholdersLink( translationPair, currentText );
+			jQuery( this ).siblings( '.placeholders' ).html( newPlaceholders );
+			return true;
+		} );
 	} );
 
 	jQuery( document ).on( 'submit', 'form.ct-new-translation', function() {
@@ -226,11 +235,7 @@ registerPopoverHandlers = function() {
 					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
 						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
 					}
-				} ).fail( function() {
-					debug( 'Submitting new translation failed', translation );
 				} );
-			} ).fail( function() {
-				debug( 'Original cannot be found in GlotPress' );
 			} );
 
 		return false;
@@ -241,7 +246,6 @@ registerPopoverHandlers = function() {
 			popover, webUiPopover,
 			translationPair = enclosingNode.data( 'translationPair' );
 		if ( 'object' !== typeof translationPair ) {
-			debug( 'could not find translation for node', enclosingNode );
 			return false;
 		}
 
@@ -289,7 +293,6 @@ function unRegisterPopoverHandlers() {
 }
 
 function makeUntranslatable( translationPair, $node ) {
-	debug( 'makeUntranslatable:', $node );
 	$node.removeClass( 'translator-untranslated translator-translated translator-translatable translator-checking' );
 	$node.addClass( 'translator-dont-translate' );
 	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
@@ -308,7 +311,6 @@ function makeTranslatable( translationPair, node ) {
 			var el = this;
 			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) {
 				if ( ! translationPair.getRegex().test( el.innerHTML ) ) {
-					debug( 'Updating HTML translation', el.innerHTML, translationPair.getRegex(), translationPair.getRegex().test( el.innerHTML ), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 					setTimeout( function() {
 						el.innerHTML = translationPair.getReplacementText( el.innerHTML );
 					}, 1 );
@@ -316,7 +318,6 @@ function makeTranslatable( translationPair, node ) {
 				return;
 			}
 			if ( ! translationPair.getRegex().test( el.textContent ) ) {
-				debug( 'Updating text translation', el.textContent, translationPair.getRegex(), translationPair.getTranslation().getTextItems()[ 0 ].getText() );
 				setTimeout( function() {
 					el.textContent = translationPair.getReplacementText( el.textContent );
 				}, 1 );
@@ -353,3 +354,21 @@ findNewTranslatableTexts = function() {
 		currentlyWalkingTheDom = false;
 	} );
 };
+
+function getPlaceholdersLink( translationPair, textAreaContent ) {
+	var placeholdersLink = '';
+	var placeholders = translationPair.getOriginal().getPlaceholders();
+	var index = 0;
+
+	if ( placeholders.length ) {
+		placeholdersLink = placeholders.map( function( match ) {
+			if ( ! ( textAreaContent.indexOf( match ) === -1 ) ) {
+				index = textAreaContent.indexOf( match );
+				textAreaContent = textAreaContent.slice( 0, index ) + textAreaContent.slice( index + match.length );
+				return '<a class="placeholder-exist inline-placeholder" href="#">' + match + '</a>';
+			}
+			return '<a class="inline-placeholder" href="#">' + match + '</a>';
+		} ).join( '' );
+	}
+	return placeholdersLink;
+}

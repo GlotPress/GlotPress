@@ -114,6 +114,15 @@ function Original( original ) {
 			pluralGlossaryMarkup = markup;
 			return pluralGlossaryMarkup;
 		},
+		getPlaceholders: function() {
+			var regexPattern = /%(\d\$)?([sd])/g;
+			var matchedPlaceholders = Array.from( singular.matchAll( regexPattern ) );
+			var placeholders = matchedPlaceholders.map( function( match ) {
+				return match[ 0 ];
+			} );
+
+			return placeholders;
+		},
 	};
 }
 
