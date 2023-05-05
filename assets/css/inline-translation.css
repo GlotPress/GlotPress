@@ -510,7 +510,7 @@ iframe.translator-untranslatable {
 	background: #B5E1B9;
 }
 .webui-popover a.placeholder-exist::after {
-content: '✅';
+content: ' ✅';
 }
 @-moz-document url-prefix() {
 	.webui-popover div.placeholders {
