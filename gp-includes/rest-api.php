@@ -129,10 +129,8 @@ class GP_Rest_API {
 	 * @return array The array to be returned via the REST API.
 	 */
 	public function get_glossary_markup( \WP_REST_Request $request ) {
-		$project_path         = $request->get_param( 'project' );
-		$locale_slug          = $request->get_param( 'locale_slug' );
-		$translation_set_slug = $request->get_param( 'translation_set_slug' );
-		$original             = $request->get_param( 'original' );
+		$glossary = false;
+		$original = $request->get_param( 'original' );
 		if ( ! isset( $original['singular'] ) ) {
 			return new WP_Error(
 				'rest_invalid_original',
@@ -145,17 +143,38 @@ class GP_Rest_API {
 			$original['plural'] = '';
 		}
 
+		$locale_slug          = $request->get_param( 'locale_slug' );
+		$translation_set_slug = $request->get_param( 'translation_set_slug' );
+
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set_slug, $locale_slug );
 		if ( ! $locale_glossary_translation_set ) {
 			return $original;
 		}
 
 		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
-		if ( ! $locale_glossary ) {
+
+		$project = GP::$project->by_path( $request->get_param( 'project' ) );
+		if ( $project ) {
+			$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+			if ( $translation_set ) {
+				$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+			}
+		}
+
+		// Return locale glossary if a project has no glossary.
+		if ( false === $glossary && $locale_glossary instanceof GP_Glossary ) {
+			$glossary = $locale_glossary;
+		}
+
+		if ( $glossary instanceof GP_Glossary && $locale_glossary instanceof GP_Glossary && $locale_glossary->id !== $glossary->id ) {
+			$glossary->merge_with_glossary( $locale_glossary );
+		}
+
+		if ( ! $glossary ) {
 			return $original;
 		}
 
-		$original = map_glossary_entries_to_translation_originals( (object) $original, $locale_glossary );
+		$original = map_glossary_entries_to_translation_originals( (object) $original, $glossary );
 		return $original;
 	}
 
