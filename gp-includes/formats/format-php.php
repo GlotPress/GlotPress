@@ -122,6 +122,7 @@ class GP_Format_PHP extends GP_Format {
 			return $code;
 		}
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $code;
 	}
 }
