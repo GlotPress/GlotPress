@@ -206,8 +206,7 @@ registerPopoverHandlers = function() {
 					translation = {},
 					warnings = '',
 					warningsObj = {},
-					outputWarningMessage = '',
-					errorMessage = '';
+					outputWarningMessage = '';
 
 				translation[ originalId ] = submittedTranslations;
 				glotPress.submitTranslation( translation, translationPair ).done( function( data ) {
@@ -238,8 +237,7 @@ registerPopoverHandlers = function() {
 					}
 				} ).fail( function( xhr ) {
 					if ( xhr.responseJSON ) {
-						errorMessage = xhr.responseJSON.message;
-						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b>' + errorMessage + '</p>' );
+						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b>' + xhr.responseJSON.message + '</p>' );
 					}
 				} );
 			} );
