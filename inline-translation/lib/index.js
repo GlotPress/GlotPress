@@ -206,7 +206,8 @@ registerPopoverHandlers = function() {
 					translation = {},
 					warnings = '',
 					warningsObj = {},
-					outputWarningMessage = '';
+					outputWarningMessage = '',
+					errorMessage = '';
 
 				translation[ originalId ] = submittedTranslations;
 				glotPress.submitTranslation( translation, translationPair ).done( function( data ) {
@@ -234,6 +235,11 @@ registerPopoverHandlers = function() {
 
 					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
 						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
+					}
+				} ).fail( function( xhr ) {
+					if ( xhr.responseJSON ) {
+						errorMessage = xhr.responseJSON.message;
+						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b>' + errorMessage + '</p>' );
 					}
 				} );
 			} );
