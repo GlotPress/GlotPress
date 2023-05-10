@@ -237,7 +237,8 @@ registerPopoverHandlers = function() {
 					}
 				} ).fail( function( xhr ) {
 					if ( xhr.responseJSON ) {
-						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b>' + xhr.responseJSON.message + '</p>' );
+						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b><span class="message">' );
+						$form.find( '.warnings .message' ).text( xhr.responseJSON.message );
 					}
 				} );
 			} );
