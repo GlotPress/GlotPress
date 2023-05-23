@@ -929,7 +929,7 @@ class GP_Local {
 	 * @return void
 	 */
 	public function sync_to_wordpress_org_overview() {
-		include __DIR__ . '/../gp-templates/helper-functions.php';
+		require_once GP_PATH . 'gp-templates/helper-functions.php';
 		global $wpdb;
 
 		$locale_code = get_user_locale();
