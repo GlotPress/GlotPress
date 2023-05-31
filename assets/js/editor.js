@@ -528,3 +528,29 @@ $gp.editor = (
 jQuery( function( $ ) {
 	$gp.editor.init( $( '#translations' ) );
 } );
+
+jQuery( document ).ready(
+	function() {
+		jQuery( document ).on( 'click', '.pulse', function() {
+			if ( typeof jQuery( this ).data( 'next-pulse' ) === 'function' ) {
+				jQuery( this ).data( 'next-pulse' )();
+			}
+			jQuery( this ).remove();
+		} );
+
+		function addPulse( field, text, next ) {
+			var div = jQuery( '<div class="pulse-wrapper"><div class="pulse">' );
+			div.find( '.pulse' ).prop( 'title', text ).data( 'next-pulse', next );
+			field.after( div );
+		}
+		addPulse( jQuery( '.source-string .glossary-word:first' ), 'Please follow this translation recommendation', function() {
+			addPulse( jQuery( '.translation-actions__save' ), 'Don\'t forget to submit your translation', function() {
+			} );
+		} );
+		addPulse( jQuery( '.revealing.filter' ), 'Click here to reveal the search field', function() {
+			addPulse( jQuery( '.filters-expanded input.is-primary' ), 'Click here to search', function() {
+				addPulse( jQuery( '.glossary-word' ), 'Please follow this translation recommendation' );
+			} );
+		} );
+	}
+);
