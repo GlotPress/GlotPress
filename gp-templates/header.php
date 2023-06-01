@@ -7,6 +7,7 @@
 	<?php
 	// Enqueue the base style so we don't have to load it manually on each page.
 	gp_enqueue_styles( 'gp-base' );
+	gp_enqueue_styles( 'gp-jquery-webui-popover' );
 
 	gp_head();
 	?>

@@ -22,7 +22,7 @@ gp_breadcrumb(
 		gp_link_get( $url, $translation_set->name ),
 	)
 );
-gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
+gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page', 'gp-jquery-webui-popover' ) );
 wp_localize_script(
 	'gp-translations-page',
 	'$gp_translations_options',
@@ -440,20 +440,20 @@ $i = 0;
 	</tr>
 	</thead>
 <?php
-	foreach ( $translations as $translation ) {
-		if ( ! $translation->translation_set_id ) {
-			$translation->translation_set_id = $translation_set->id;
-		}
+foreach ( $translations as $translation ) {
+	if ( ! $translation->translation_set_id ) {
+		$translation->translation_set_id = $translation_set->id;
+	}
 
 	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 	gp_tmpl_load( 'translation-row', get_defined_vars() );
 }
 ?>
 <?php
-	if ( ! $translations ) :
-?>
+if ( ! $translations ) :
+	?>
 	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
-<?php
+	<?php
 	endif;
 ?>
 </table>

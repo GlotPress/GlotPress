@@ -16,6 +16,7 @@ function gp_register_default_styles() {
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20230725' );
+	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery-webui-popover' . $suffix, array(), '20230503' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
@@ -40,6 +41,7 @@ function gp_register_default_scripts() {
 	wp_set_script_translations( 'gp-editor', 'glotpress' );
 	wp_set_script_translations( 'gp-glossary', 'glotpress' );
 	wp_set_script_translations( 'gp-mass-create-sets-page', 'glotpress' );
+	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery-webui-popover' . $suffix, array( 'gp-editor' ), '20210429' );
 }
 
 add_action( 'init', 'gp_register_default_scripts' );
