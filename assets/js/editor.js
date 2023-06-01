@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp */
+/* global $gp_editor_options, $gp, wp, WebuiPopovers */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -532,15 +532,17 @@ jQuery( function( $ ) {
 jQuery( document ).ready(
 	function() {
 		jQuery( document ).on( 'click', '.pulse', function() {
+			var popover_content = jQuery( this ).data( 'popover-content' );
+			WebuiPopovers.show( this, { title: '', content: popover_content, width: 300 } );
 			if ( typeof jQuery( this ).data( 'next-pulse' ) === 'function' ) {
 				jQuery( this ).data( 'next-pulse' )();
 			}
+
 			jQuery( this ).remove();
 		} );
-
 		function addPulse( field, text, next ) {
 			var div = jQuery( '<div class="pulse-wrapper"><div class="pulse">' );
-			div.find( '.pulse' ).prop( 'title', text ).data( 'next-pulse', next );
+			div.find( '.pulse' ).data( 'next-pulse', next ).data( 'popover-content', text );
 			field.after( div );
 		}
 		addPulse( jQuery( '.source-string .glossary-word:first' ), 'Please follow this translation recommendation', function() {
