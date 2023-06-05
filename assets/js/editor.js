@@ -532,27 +532,91 @@ jQuery( function( $ ) {
 jQuery( document ).ready(
 	function() {
 		jQuery( document ).on( 'click', '.pulse', function() {
-			var popover_content = jQuery( this ).data( 'popover-content' );
+			const popover_content = jQuery( this ).parent().data( 'popover-content' );
 			WebuiPopovers.show( this, { title: '', content: popover_content, width: 300 } );
-			if ( typeof jQuery( this ).data( 'next-pulse' ) === 'function' ) {
-				jQuery( this ).data( 'next-pulse' )();
-			}
-
+			const nextItem = 1 + jQuery( this ).parent().data( 'tourindex' );
+			const tourname = jQuery( this ).parent().data( 'tourname' );
 			jQuery( this ).remove();
+			if ( typeof window.tour[tourname][nextItem] === 'undefined' ) {
+				return;
+			}
+			const item = window.tour[tourname][nextItem];
+			addPulse( jQuery(item.selector), item.html, tourname, nextItem );
+
 		} );
-		function addPulse( field, text, next ) {
-			var div = jQuery( '<div class="pulse-wrapper"><div class="pulse">' );
-			div.find( '.pulse' ).data( 'next-pulse', next ).data( 'popover-content', text );
-			field.after( div );
+		function addPulse( field, html, tourName, index ) {
+			var div = jQuery( '<div class="pulse-wrapper">' );
+			field.wrap( div );
+			var pulse = jQuery( '<div class="pulse tour-' + tourName + '">' );
+			field.parent().append( pulse );
+			pulse.parent().data( 'tourname', tourName ).data( 'tourindex', index ).data( 'popover-content', html )
 		}
-		addPulse( jQuery( '.source-string .glossary-word:first' ), 'Please follow this translation recommendation', function() {
-			addPulse( jQuery( '.translation-actions__save' ), 'Don\'t forget to submit your translation', function() {
-			} );
-		} );
-		addPulse( jQuery( '.revealing.filter' ), 'Click here to reveal the search field', function() {
-			addPulse( jQuery( '.filters-expanded input.is-primary' ), 'Click here to search', function() {
-				addPulse( jQuery( '.glossary-word' ), 'Please follow this translation recommendation' );
-			} );
-		} );
+		window.tour = { // window.tour['ui-intro'][1]= { selector: '.something', html": 'something' }; window.tour.loadTour()
+			'ui-intro' : [
+				{
+					color : '#3939c7',
+				},
+				{
+					selector: '.revealing.filter',
+					html: 'Click here to reveal the search field'
+				},
+				{
+					selector: '.filters-expanded input.is-primary',
+					html: 'Click here to search', 
+				}
+		],			'sort-intro' : [
+			{
+				color : '#f939c7',
+			},
+			{
+				selector: '.revealing.sort',
+				html: 'Click here to reveal the search field'
+			},
+			{
+				selector: '.filters-expanded input.is-primary',
+				html: 'Click here to search', 
+			}
+	],
+		};
+
+		window.loadTour = function(){
+			for ( const n in window.tour ) {
+				const color1 = window.tour[n][0].color + '00';
+				const color2 = window.tour[n][0].color + 'a0';
+				var sheet = document.styleSheets[0];
+				sheet.insertRule(`@keyframes animation-${n} {
+					0% {
+					  box-shadow: 0 0 0 0 ${color2};
+					}
+					70% {
+					  box-shadow: 0 0 0 10px ${color1};
+					}
+					100% {
+					  box-shadow: 0 0 0 0 ${color1};
+					}`, sheet.cssRules.length);
+				
+				sheet.insertRule(`.tour-${n} {
+					box-shadow: 0 0 0 ${color2};
+					background: ${color1};
+					-webkit-animation: animation-${n} 2s infinite;
+					animation: animation-${n} 2s infinite;
+					}`, sheet.cssRules.length);
+
+				addPulse( jQuery( window.tour[n][1].selector ), window.tour[n][1].html, n, 1 );
+			
+
+				
+			}
+		}
+		window.loadTour();
+		// addPulse( jQuery( '.source-string .glossary-word:first' ), 'Please follow this translation recommendation', function() {
+		// 	addPulse( jQuery( '.translation-actions__save' ), 'Don\'t forget to submit your translation', function() {
+		// 	} );
+		// } );
+		// addPulse( jQuery( '.revealing.filter' ), 'Click here to reveal the search field', function() {
+		// 	addPulse( jQuery( '.filters-expanded input.is-primary' ), 'Click here to search', function() {
+		// 		addPulse( jQuery( '.glossary-word' ), 'Please follow this translation recommendation' );
+		// 	} );
+		// } );
 	}
 );
