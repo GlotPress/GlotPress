@@ -82,16 +82,17 @@ class GP_Local {
 			'glotpress',
 			array( $this, 'show_welcome_page' )
 		);
-		add_submenu_page(
-			'glotpress',
-			esc_html__( 'Translation Interface', 'glotpress' ),
-			esc_html__( 'Translation Interface', 'glotpress' ),
-			'read',
-			'glotpress-ui',
-			array( $this, 'show_welcome_page' )
-		);
-		add_action( 'load-glotpress_page_glotpress-ui', array( $this, 'redirect_to_glotpress' ) );
-
+		if ( get_option( 'permalink_structure' ) ) {
+			add_submenu_page(
+				'glotpress',
+				esc_html__( 'Translation Interface', 'glotpress' ),
+				esc_html__( 'Translation Interface', 'glotpress' ),
+				'read',
+				'glotpress-ui',
+				array( $this, 'show_welcome_page' )
+			);
+			add_action( 'load-glotpress_page_glotpress-ui', array( $this, 'redirect_to_glotpress' ) );
+		}
 		add_submenu_page(
 			'glotpress',
 			esc_html__( 'GlotPress Settings', 'glotpress' ),
@@ -151,9 +152,16 @@ class GP_Local {
 		} else {
 			delete_option( 'gp_enable_fallback_string_list' );
 		}
-
-		update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
-		update_option( 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
+		if ( isset( $_POST['gp_openai_key'] ) ) {
+			update_option( 'gp_openai_key', $_POST['gp_openai_key'] );
+		} else {
+			delete_option( 'gp_openai_key' );
+		}
+		if ( isset( $_POST['gp_chatgpt_custom_prompt'] ) ) {
+			update_option( 'gp_chatgpt_custom_prompt', $_POST['gp_chatgpt_custom_prompt'] );
+		} else {
+			delete_option( 'gp_chatgpt_custom_prompt' );
+		}
 	}
 
 	/**
@@ -227,6 +235,23 @@ class GP_Local {
 			<p>
 				<?php esc_html_e( 'With GlotPress you can translate WordPress.', 'glotpress' ); ?>
 			</p>
+			<?php if ( ! get_option( 'permalink_structure' ) ) : ?>
+				<div class="notice notice-info">
+					<p>
+					<?php
+						echo wp_kses(
+							sprintf(
+								// translators: %s: URL to permalink settings
+								__( 'You are running an unsupported permalink structure, thus the Translation Interface is not available. <a href="%s">Please change your permalink settings</a> if you want to use it.', 'glotpress' ),
+								admin_url( 'options-permalink.php' ),
+							),
+							array( 'a' => array( 'href' => array() ) )
+						);
+					?>
+					</p>
+				</div>
+			<?php endif; ?>
+
 			<h2><?php esc_html_e( 'Local GlotPress', 'glotpress' ); ?></h2>
 			<p>
 				<span><?php esc_html_e( 'The local mode of GlotPress allows you to translate your current WordPress install, including plugins and themes.', 'glotpress' ); ?></span>
@@ -293,6 +318,25 @@ class GP_Local {
 				$this->show_english_notice();
 			} elseif ( self::is_active() ) {
 				$this->check_for_existing_language_projects();
+			}
+
+			if ( ! get_option( 'permalink_structure' ) ) {
+				?>
+				<div class="notice notice-info">
+					<p>
+					<?php
+						echo wp_kses(
+							sprintf(
+								// translators: %s: URL to permalink settings
+								__( 'You are running an unsupported permalink structure, thus the Translation Interface is not available. <a href="%s">Please change your permalink settings</a> if you want to use it.', 'glotpress' ),
+								admin_url( 'options-permalink.php' ),
+							),
+							array( 'a' => array( 'href' => array() ) )
+						);
+					?>
+					</p>
+				</div>
+				<?php
 			}
 			?>
 			<form method="post">
