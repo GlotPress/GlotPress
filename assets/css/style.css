@@ -1609,27 +1609,11 @@ table.form-table td {
 	}
 }
 .pulse-wrapper {
-    position: absolute;
-}
-
-@keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(252, 110, 22,.65);
-    }
-    70% {
-      box-shadow: 0 0 0 10px rgba(252, 110, 22,0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(252, 110, 22,0);
-    }
+	display: inline-block;
 }
 
 .pulse {
     border-radius: 50%;
-    background: rgba(252, 110, 22,.65);
-    box-shadow: 0 0 0 rgba(252, 110, 22,.65);
-    -webkit-animation: pulse 2s infinite;
-    animation: pulse 2s infinite;
     position: relative;
     cursor: pointer;
     top: -2em;
