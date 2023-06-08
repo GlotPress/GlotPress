@@ -39,10 +39,6 @@ class GP_Test_Locales extends GP_UnitTestCase {
 		// Expected: 0
 		'id',
 
-		// Actual: 0
-		// Expected: n != 1
-		'kir', 'uz',
-
 		// Actual: n != 1
 		// Expected: 0
 		'tir',
