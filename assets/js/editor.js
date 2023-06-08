@@ -531,29 +531,64 @@ jQuery( function( $ ) {
 
 jQuery( document ).ready(
 	function() {
+		jQuery( document ).on( 'click', '.close-tour', function() {
+			jQuery( this ).closest( '.webui-popover' ).hide();
+			return false;
+		} );
+		jQuery( document ).on( 'click', '.next-tour-item', function() {
+			jQuery( this ).closest( '.webui-popover' ).hide();
+			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().click();
+			return false;
+		} );
+		jQuery( document ).on( 'click', '.reveal-next-tour-item', function() {
+			jQuery( this ).closest( '.webui-popover' ).hide();
+			jQuery( jQuery( this ).data( 'reveal' ) ).first().click();
+			return false;
+		} );
+		jQuery( document ).on( 'click', '.dismiss-tour', function() {
+			jQuery( this ).closest( '.webui-popover' ).hide();
+			return false;
+		} );
 		jQuery( document ).on( 'click', '.pulse', function() {
-			const popover_content = jQuery( this ).parent().data( 'popover-content' );
-			WebuiPopovers.show( this, { title: '', content: popover_content, width: 300 } );
-			const nextItem = 1 + jQuery( this ).parent().data( 'tourindex' );
-			const tourname = jQuery( this ).parent().data( 'tourname' );
-			jQuery( this ).remove();
-			if ( typeof window.tour[tourname][nextItem] === 'undefined' ) {
+			const wrapper = jQuery( this ).closest( '.pulse-wrapper' );
+			console.log( wrapper.data() );
+			const tourName = wrapper.data( 'tourname' );
+			const nextItem = 1 + wrapper.data( 'tourindex' );
+			const tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
+
+			let popover_content = wrapper.data( 'popover-content' );
+			if ( tourEndsHere ) {
+				popover_content += '<br/><br/><a href="" class="close-tour">Close</a>'
+			} else if ( jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).length ) {
+				popover_content += '<br/><br/><a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
+			} else if ( typeof window.tour[tourName][nextItem].reveal !== 'undefined' ) {
+				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">Reveal Next Step</a>'
+			}
+			if ( ! tourEndsHere ) {
+				popover_content += '<br/><br/><small><a href="" class="dismiss-tour">Dismiss this tour';
+			}
+			WebuiPopovers.show( this, { title: window.tour[tourName][0].title, content: popover_content, width: 300, dismissible: true } );
+			jQuery( '.tour-' + tourName ).remove();
+
+			jQuery( '.tour-' + tourName ).remove();
+			if ( tourEndsHere ) {
 				return;
 			}
-			const item = window.tour[tourname][nextItem];
-			addPulse( jQuery(item.selector), item.html, tourname, nextItem );
+			const item = window.tour[tourName][nextItem];
+			addPulse( jQuery(item.selector), item.html, tourName, nextItem );
 
 		} );
 		function addPulse( field, html, tourName, index ) {
 			var div = jQuery( '<div class="pulse-wrapper">' );
+			div.data( 'tourname', tourName ).data( 'tourindex', index ).data( 'popover-content', html );
 			field.wrap( div );
 			var pulse = jQuery( '<div class="pulse tour-' + tourName + '">' );
 			field.parent().append( pulse );
-			pulse.parent().data( 'tourname', tourName ).data( 'tourindex', index ).data( 'popover-content', html )
 		}
 		window.tour = { // window.tour['ui-intro'][1]= { selector: '.something', html": 'something' }; window.tour.loadTour()
 			'ui-intro' : [
 				{
+					title: 'UI Introduction Tour',
 					color : '#3939c7',
 				},
 				{
@@ -561,20 +596,23 @@ jQuery( document ).ready(
 					html: 'Click here to reveal the search field'
 				},
 				{
+					reveal: '.revealing.filter',
 					selector: '.filters-expanded input.is-primary',
 					html: 'Click here to search', 
 				}
-		],			'sort-intro' : [
+			],
+			'translation-guide' : [
 			{
+				title: 'How to translate',
 				color : '#f939c7',
 			},
 			{
-				selector: '.revealing.sort',
-				html: 'Click here to reveal the search field'
+				selector: '.source-string',
+				html: 'This is the English text'
 			},
 			{
-				selector: '.filters-expanded input.is-primary',
-				html: 'Click here to search', 
+				selector: '.translation-actions .is-primary',
+				html: 'Submit your translation',
 			}
 	],
 		};
