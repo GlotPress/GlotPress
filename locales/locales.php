@@ -472,7 +472,7 @@ class GP_Locales {
 		$ca_valencia->lang_code_iso_639_1 = 'ca';
 		$ca_valencia->lang_code_iso_639_2 = 'cat';
 		$ca_valencia->wp_locale = 'ca_valencia';
-		$ca_valencia->slug = 'ca-valencia';
+		$ca_valencia->slug = 'ca-val';
 		$ca_valencia->google_code = 'ca';
 		$ca_valencia->facebook_locale = 'ca_ES';
 
