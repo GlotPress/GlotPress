@@ -9,7 +9,7 @@ class GP_Locale {
 	public $lang_code_iso_639_2 = null;
 	public $lang_code_iso_639_3 = null;
 	public $country_code;
-	public $wp_locale; // This should only be set for locales that are offically supported on translate.wordpress.org.
+	public $wp_locale; // This should only be set for locales that are officially supported on translate.wordpress.org.
 	public $slug;
 	public $nplurals = 2;
 	public $plural_expression = 'n != 1';
