@@ -301,18 +301,26 @@ class GP_Translation_Set extends GP_Thing {
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
 
+			$meta = array(
+				'project_id' => $this->project_id,
+			);
+			if ( isset ( $entry->context ) ) {
+				$meta['context'] = $entry->context;
+			}
+			if ( isset ( $entry->comment ) ) {
+				$meta['comment'] = $entry->comment;
+			}
+			if ( isset ( $entry->references ) ) {
+				$meta['references'] = $entry->references;
+			}
+
 			$entry->warnings = maybe_unserialize(
 				GP::$translation_warnings->check(
 					$entry->singular,
 					$entry->plural,
 					$entry->translations,
 					$locale,
-					array(
-						'project_id' => $this->project_id,
-						'context' => $entry->context,
-						'comment' => $entry->comment,
-						'references' => $entry->references,
-					)
+					$meta
 				)
 			);
 			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
