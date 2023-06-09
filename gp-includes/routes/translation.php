@@ -292,7 +292,18 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 
 			$original         = GP::$original->get( $original_id );
-			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale, $original );
+			$data['warnings'] = GP::$translation_warnings->check(
+				$original->singular,
+				$original->plural,
+				$translations,
+				$locale,
+				array(
+					'project_id' => $project->id,
+					'context' => $original->context,
+					'comment' => $original->comment,
+					'references' => $original->references,
+				)
+			);
 
 			$existing_translations = GP::$translation->for_translation(
 				$project,
