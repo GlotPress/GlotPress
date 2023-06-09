@@ -299,8 +299,8 @@ class GP_Route_Translation extends GP_Route_Main {
 				$locale,
 				array(
 					'project_id' => $project->id,
-					'context' => $original->context,
-					'comment' => $original->comment,
+					'context'    => $original->context,
+					'comment'    => $original->comment,
 					'references' => $original->references,
 				)
 			);

@@ -168,8 +168,8 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 				$locale,
 				array(
 					'project_id' => $translation_set->project_id,
-					'context' => $entry->context,
-					'comment' => $entry->comment,
+					'context'    => $entry->context,
+					'comment'    => $entry->comment,
 					'references' => $entry->references,
 				)
 			);
