@@ -1600,8 +1600,6 @@ class GP_Locales {
 		$kir->country_code = 'kg';
 		$kir->wp_locale = 'kir';
 		$kir->slug = 'kir';
-		$kir->nplurals = 1;
-		$kir->plural_expression = '0';
 		$kir->google_code = 'ky';
 		$kir->alphabet = 'cyrillic';
 
