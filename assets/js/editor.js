@@ -559,7 +559,7 @@ jQuery( document ).ready(
 			let popover_content = wrapper.data( 'popover-content' );
 			if ( tourEndsHere ) {
 				popover_content += '<br/><br/><a href="" class="close-tour">Close</a>'
-			} else if ( jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).length ) {
+			} else if ( typeof window.tour[tourName][nextItem] !== 'undefined' &&  typeof window.tour[tourName][nextItem].reveal === 'undefined') {
 				popover_content += '<br/><br/><a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
 			} else if ( typeof window.tour[tourName][nextItem].reveal !== 'undefined' ) {
 				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">Reveal Next Step</a>'
