@@ -304,13 +304,13 @@ class GP_Translation_Set extends GP_Thing {
 			$meta = array(
 				'project_id' => $this->project_id,
 			);
-			if ( isset ( $entry->context ) ) {
+			if ( isset( $entry->context ) ) {
 				$meta['context'] = $entry->context;
 			}
-			if ( isset ( $entry->comment ) ) {
+			if ( isset( $entry->comment ) ) {
 				$meta['comment'] = $entry->comment;
 			}
-			if ( isset ( $entry->references ) ) {
+			if ( isset( $entry->references ) ) {
 				$meta['references'] = $entry->references;
 			}
 
