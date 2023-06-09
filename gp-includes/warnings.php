@@ -67,14 +67,15 @@ class GP_Translation_Warnings {
 	 * @since 1.0.0
 	 * @access public
 	 *
-	 * @param string    $singular     The singular form of an original string.
-	 * @param string    $plural       The plural form of an original string.
-	 * @param string[]  $translations An array of translations for an original.
-	 * @param GP_Locale $locale       The locale of the translations.
+	 * @param string           $singular       The singular form of an original string.
+	 * @param string           $plural         The plural form of an original string.
+	 * @param string[]         $translations   An array of translations for an original.
+	 * @param GP_Locale        $locale         The locale of the translations.
+	 * @param GP_Original|null $original       The whole original object, or null in unit tests or where it's not necessary.
 	 * @return array|null Null if no issues have been found, otherwise an array
 	 *                    with warnings.
 	 */
-	public function check( $singular, $plural, $translations, $locale ) {
+	public function check( $singular, $plural, $translations, $locale, $original = null ) {
 		$problems = array();
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
@@ -98,13 +99,13 @@ class GP_Translation_Warnings {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $locale );
+					$singular_test = $callback( $singular, $translation, $locale, $original );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $locale );
+					$plural_test = $callback( $plural, $translation, $locale, $original );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
