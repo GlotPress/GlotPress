@@ -25,11 +25,11 @@ class GP_Inline_Translation {
 	private $strings_used = array();
 
 	/**
-	 * The translations that contained placeholders that were actually displayed.
+	 * Assigns an id to each string.
 	 *
 	 * @var        array
 	 */
-	private $placeholders_used = array();
+	private $string_index = array();
 
 	/**
 	 * The text domains used on the page.
@@ -139,65 +139,6 @@ class GP_Inline_Translation {
 	}
 
 	/**
-	 * This returns true for text that consists just of placeholders or placeholders + one letter,
-	 * for example '%sy': time in years abbreviation
-	 * as it leads to lots of translatable text which just matches the regex
-	 *
-	 * @param  string $text The string to check.
-	 * @return boolean      True if it contains just placeholders.
-	 */
-	private function contains_just_placeholders( $text ) {
-		$placeholderless_text = trim( preg_replace( '#' . self::PLACEHOLDER_REGEX . '[sd]#', '', $text ) );
-		return strlen( $text ) !== strlen( $placeholderless_text ) && strlen( $placeholderless_text ) <= 1;
-	}
-
-	/**
-	 * This returns true for text that contains placeholders
-	 *
-	 * @param  string $text The string to check.
-	 * @return boolean      True if it contains placeholders.
-	 */
-	private function contains_placeholder( $text ) {
-		return (bool) preg_match( '#' . self::PLACEHOLDER_REGEX . '[sd]#', $text );
-	}
-	/**
-	 * Whether the string was already checked.
-	 *
-	 * @param      string $key    The key to check.
-	 *
-	 * @return     bool  True when it was already checked.
-	 */
-	private function already_checked( $key ) {
-		return isset( $this->placeholders_used[ $key ] ) ||
-			isset( $this->strings_used[ $key ] );
-	}
-
-	/**
-	 * Convert placeholders to regex.
-	 *
-	 * @param      string $text                 The text to convert.
-	 * @param      string $string_placeholder   The string placeholder regex.
-	 * @param      string $numeric_placeholder  The numeric placeholder regex.
-	 *
-	 * @return     string  A regex that will match the placeholders.
-	 */
-	private function convert_placeholders_to_regex( $text, $string_placeholder = null, $numeric_placeholder = null ) {
-		if ( is_null( $string_placeholder ) ) {
-			$string_placeholder = '(.{0,' . self::PLACEHOLDER_MAXLENGTH . '}?)';
-		}
-		if ( is_null( $numeric_placeholder ) ) {
-			$numeric_placeholder = '([0-9]{0,15}?)';
-		}
-
-		$text = html_entity_decode( $text );
-		$text = preg_quote( $text, '/' );
-		$text = preg_replace( '#' . self::PLACEHOLDER_REGEX . 's#', $string_placeholder, $text );
-		$text = preg_replace( '#' . self::PLACEHOLDER_REGEX . 'd#', $numeric_placeholder, $text );
-		$text = str_replace( '%%', '%', $text );
-		return $text;
-	}
-
-	/**
 	 * Filter for the singular or plural form of a string.
 	 *
 	 * @param string $translation Translated text.
@@ -261,34 +202,41 @@ class GP_Inline_Translation {
 			return $translation;
 		}
 
-		if ( $this->contains_just_placeholders( $original_as_string ) ) {
-			$this->ignore_translation[ $original_as_string ] = true;
-			return $translation;
-		}
-
-		$key         = $translation;
-		$context_key = $text_domain . '|' . $context;
-
-		if ( $this->contains_placeholder( $translation ) ) {
-			$key = $this->convert_placeholders_to_regex( $translation );
-
-			if ( ! isset( $this->placeholders_used[ $key ] ) ) {
-				$this->placeholders_used[ $key ] = array();
-			}
-			if ( ! isset( $this->placeholders_used[ $key ][ $context_key ] ) ) {
-				$this->placeholders_used[ $key ][ $context_key ] = $original;
-			}
+		$key = $text_domain . '|' . $context . '|' . $original_as_string;
+		if ( ! isset( $this->string_index[ $key ] ) ) {
+			$id = count( $this->strings_used );
+			$this->string_index[ $key ] = $id;
+			$this->strings_used[] = array(
+				'original' => $original,
+				'context' => $context,
+				'text_domain' => $text_domain,
+				'translation' => $translation,
+			);
 		} else {
-			if ( ! isset( $this->strings_used[ $key ] ) ) {
-				$this->strings_used[ $key ] = array();
-			}
-			if ( ! isset( $this->strings_used[ $key ][ $context_key ] ) ) {
-				$this->strings_used[ $key ][ $context_key ] = $original;
-			}
+			$id = $this->string_index[ $key ];
 		}
+
+		$invisible_separator = "\xE2\x80\x8B";
+		$utf8_tag_id = '';
+		foreach ( str_split( strval( $id ) ) as $digit ) {
+			switch ( $digit ) {
+				case 0: $utf8_tag_id .= "\u{e0030}"; break; // UTF-8 Tag 0.
+				case 1: $utf8_tag_id .= "\u{e0031}"; break; // UTF-8 Tag 0.
+				case 2: $utf8_tag_id .= "\u{e0032}"; break; // UTF-8 Tag 0.
+				case 3: $utf8_tag_id .= "\u{e0033}"; break; // UTF-8 Tag 0.
+				case 4: $utf8_tag_id .= "\u{e0034}"; break; // UTF-8 Tag 0.
+				case 5: $utf8_tag_id .= "\u{e0035}"; break; // UTF-8 Tag 0.
+				case 6: $utf8_tag_id .= "\u{e0036}"; break; // UTF-8 Tag 0.
+				case 7: $utf8_tag_id .= "\u{e0037}"; break; // UTF-8 Tag 0.
+				case 8: $utf8_tag_id .= "\u{e0038}"; break; // UTF-8 Tag 0.
+				case 9: $utf8_tag_id .= "\u{e0039}"; break; // UTF-8 Tag 0.
+			}
+
+		}
+		$utf8_tag_id .=  "\u{e007f}"; // UTF-8 Tag End.
 
 		// Pass back the unmodified translated text.
-		return $translation;
+		return $invisible_separator . $utf8_tag_id . $translation . $invisible_separator;
 	}
 
 	/**
@@ -340,35 +288,25 @@ class GP_Inline_Translation {
 		}
 
 		$translations = array();
-		foreach ( array( 'strings_used', 'placeholders_used' ) as $strings ) {
-			foreach ( $this->$strings as $translation => $originals ) {
-				foreach ( $originals as $context_key => $original ) {
-					$text_domain = strtok( $context_key, '|' );
-					if ( ! isset( $projects[ $text_domain ] ) ) {
-						continue;
-					}
-					$context = strtok( '|' );
-					if ( 'placeholders_used' === $strings ) {
-						$translation = null;
-					}
-					$query_result = $this->get_translation(
-						$projects[ $text_domain ],
-						$translation_sets[ $text_domain ],
-						$original,
-						$context,
-						$text_domain,
-						$translation
-					);
-					if ( $query_result ) {
-						$hash = $query_result->hash;
-						unset( $query_result->hash );
-						$translations[ $hash ] = $query_result;
-					} else {
-						$translations['originals_not_found'][] = $original;
-						continue;
-					}
-				}
+		foreach ( $this->strings_used as $entry ) {
+			$_projects = array();
+			if ( isset( $projects[ $entry['text_domain'] ] )) {
+				$_projects = $projects[ $entry['text_domain'] ];
 			}
+			$translation_set = null;
+			if ( isset( $translation_sets[ $entry['text_domain'] ] )) {
+				$translation_set = $translation_sets[ $entry['text_domain'] ];
+			}
+			$query_result = $this->get_translation(
+				$_projects,
+				$translation_set,
+				$entry['original'],
+				$entry['context'],
+				$entry['text_domain'],
+				$entry['translation']
+			);
+
+			$translations[] = $query_result;
 		}
 
 		return $translations;
@@ -400,6 +338,10 @@ class GP_Inline_Translation {
 			$entry->domain = $text_domain;
 		if ( $context ) {
 			$entry->context = $context;
+		}
+		$entry->translation = $translation;
+		if ( empty( $projects ) ) {
+			return $entry;
 		}
 		$original_record = false;
 		foreach ( $projects as $project ) {
@@ -460,9 +402,9 @@ class GP_Inline_Translation {
 		$query_result->plural             = $original_record->plural;
 		$query_result->context            = $original_record->context;
 		$query_result->project            = $project->path;
+		$query_result->translation        = $translation;
 		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
-		$query_result->hash               = $text_domain . '|' . $context . '|' . $entry->singular;
 
 		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 
@@ -499,8 +441,7 @@ class GP_Inline_Translation {
 		echo 'var newGpInlineTranslationData = ';
 		echo wp_json_encode(
 			array(
-				'stringsUsedOnPage'      => $this->strings_used,
-				'placeholdersUsedOnPage' => $this->placeholders_used,
+				'translations'      => $this->strings_used,
 			),
 			JSON_PRETTY_PRINT
 		);
@@ -706,8 +647,6 @@ class GP_Inline_Translation {
 
 		$data = array(
 			'translations'           => $this->get_translations( $gp_locale ),
-			'stringsUsedOnPage'      => $this->strings_used,
-			'placeholdersUsedOnPage' => $this->placeholders_used,
 			'localeCode'             => $gp_locale->slug,
 			'languageName'           => html_entity_decode( $gp_locale->english_name ),
 			'currentUserId'          => get_current_user_id(),

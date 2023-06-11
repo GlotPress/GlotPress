@@ -5,7 +5,7 @@
 
 var batcher = require( './batcher.js' );
 
-function GlotPress( locale, translations ) {
+function GlotPress( locale ) {
 	var server = {
 			url: '',
 			projects: [],
@@ -42,18 +42,6 @@ function GlotPress( locale, translations ) {
 		} );
 	}
 
-	function hash( original ) {
-		var key = '|' + original.singular;
-		if ( 'undefined' !== typeof original.context ) {
-			key = original.context + key;
-		}
-		key = '|' + key;
-		if ( 'undefined' !== typeof original.domain ) {
-			key = original.domain + key;
-		}
-		return key;
-	}
-
 	return {
 		getPermalink: function( translationPair ) {
 			var originalId = translationPair.getOriginal().getId(),
@@ -85,14 +73,6 @@ function GlotPress( locale, translations ) {
 		},
 
 		queryByOriginal: function( original ) {
-			var deferred;
-			original.hash = hash( original );
-			if ( original.hash in translations ) {
-				deferred = new jQuery.Deferred();
-				deferred.resolve( translations[ original.hash ] );
-				return deferred;
-			}
-
 			return batch( original );
 		},
 
