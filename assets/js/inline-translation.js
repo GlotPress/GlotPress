@@ -2247,8 +2247,10 @@ function TranslationPair( locale, original, context, domain, translation ) {
 		getReplacementText: function( oldText ) {
 			var replacementTranslation = this.getTranslation().getTextItems()[ 0 ].getText(),
 				c = 0,
-				matches = getRegexString( screenText ),
+				matches,
 				nodeText = oldText.split( /\u200b/ );
+
+			matches = nodeText[ 1 ].match( getRegexString( screenText ) );
 
 			nodeText[ 1 ] = replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
 				++c;
@@ -2391,13 +2393,14 @@ function extractWithUtf8Tags( enclosingNode ) {
 			case '\udc39': id += '9'; break;
 		}
 	}
+	nodeText = nodeText.substr( id.length + 1 );
 	if ( ! id.length ) {
 		return false;
 	}
 	id = parseInt( id, 10 );
 	if ( typeof translationData.translations[ id ] !== 'undefined' ) {
 		translationPair = new TranslationPair( translationData.locale, translationData.translations[ id ] );
-		translationPair.setScreenText( translationData.translations[ id ].translation );
+		translationPair.setScreenText(  );
 		return translationPair;
 	}
 
@@ -2572,7 +2575,7 @@ function Translation( locale, items, glotPressMetadata ) {
 				return '';
 			},
 			getText: function() {
-				return text;
+				return text.replace( /&amp;/g, '&' );
 			},
 		};
 	};
