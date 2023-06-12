@@ -26,9 +26,6 @@ function GlotPress( locale ) {
 	}
 
 	function fetchOriginals( originals, callback ) {
-		if ( ! server.projects.length ) {
-			return callback( {} );
-		}
 		ajax( {
 			url: server.restUrl + '/translations-by-originals',
 			data: {
@@ -39,6 +36,8 @@ function GlotPress( locale ) {
 			},
 		} ).done( function( response ) {
 			callback( response );
+		} ).fail( function() {
+			callback( {} );
 		} );
 	}
 

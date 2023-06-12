@@ -37,9 +37,12 @@ function Original( original ) {
 	}
 
 	function objectify( context, domain ) {
-		var result = {
-			singular: singular,
-		};
+		var result = {};
+		if ( originalId ) {
+			return { originalId: originalId };
+		}
+
+		result.singular = singular;
 
 		if ( plural ) {
 			result.plural = plural;

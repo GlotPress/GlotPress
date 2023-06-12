@@ -361,6 +361,34 @@ class GP_Rest_API {
 
 		$checked_originals = array();
 		foreach ( $original_strings as $original ) {
+			if ( isset(  $original->originalId ) ) {
+				$original_record = GP::$original->get( $original->originalId );
+				if ( ! $original_record) {
+					continue;
+				}
+				$original = GP::$original->prepare_fields_for_save( $original_record );
+
+				$query_result                   = new stdClass();
+				$query_result->original_id      = $original_record->id;
+				$query_result->original         = $original;
+				$query_result->original_comment = $original_record->comment;
+				$query_result->project          = $project_paths[ $original_record->project_id ];
+
+				foreach ( $translation_sets as $text_domain => $_translation_sets ) {
+					if ( isset( $_translation_sets[ $original_record->project_id ] ) ) {
+						$translation_set = $_translation_sets[ $original_record->project_id ];
+
+						$query_result->translations = GP::$translation->find_many_no_map( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$translation_set->id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )", 'date_modified DESC' );
+						foreach ( $query_result->translations as $key => $current_translation ) {
+							$query_result->translations[ $key ]                   = GP::$translation->prepare_fields_for_save( $current_translation );
+							$query_result->translations[ $key ]['translation_id'] = $current_translation->id;
+						}
+
+						$translations[] = $query_result;
+					}
+				}
+				continue;
+			}
 			if ( empty( $original ) || ! property_exists( $original, 'singular' ) ) {
 				continue;
 			}

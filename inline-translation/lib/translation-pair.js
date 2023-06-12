@@ -26,14 +26,13 @@ function TranslationPair( locale, original, context, domain, usedTranslationText
 		entry = original;
 
 		setGlotPressProject( entry.project );
-
 		original = new Original( {
-			singular: original.singular,
-			plural: original.plural,
-			domain: original.domain,
-			context: original.context,
-			originalId: original.original_id,
-			comment: original.original_comment,
+			singular: entry.singular,
+			plural: entry.plural,
+			domain: entry.domain,
+			context: entry.context,
+			originalId: entry.original_id,
+			comment: entry.original_comment,
 		} );
 	}
 
@@ -231,6 +230,9 @@ function TranslationPair( locale, original, context, domain, usedTranslationText
 
 function getRegexString( text ) {
 	var regexString = text;
+	if ( 'undefined' === typeof text ) {
+		return text;
+	}
 	regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,500}?)' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
@@ -298,11 +300,21 @@ function extractWithUtf8Tags( enclosingNode ) {
 			case '\udc37': id += '7'; break;
 			case '\udc38': id += '8'; break;
 			case '\udc39': id += '9'; break;
+			case '\udc6F': id += 'o'; break;
 		}
 	}
 	nodeText = nodeText.substr( id.length + 1 );
 	if ( ! id.length ) {
 		return false;
+	}
+	if ( 'o' === id.charAt( 0 ) ) {
+		original = new Original( {
+			originalId: parseInt( id.substr( 1 ), 10 ),
+		} );
+
+		translationPair = new TranslationPair( translationData.locale, original );
+		translationPair.setScreenText( nodeText );
+		return translationPair;
 	}
 	id = parseInt( id, 10 );
 	if ( typeof translationData.translations[ id ] !== 'undefined' ) {

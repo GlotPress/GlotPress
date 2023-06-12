@@ -15,6 +15,22 @@
  * backend ) after a brief delay.
  */
 
+function hash( original ) {
+	var key;
+	if ( 'undefined' !== typeof original.originalId ) {
+		return original.originalId;
+	}
+	key = '|' + original.singular;
+	if ( 'undefined' !== typeof original.context ) {
+		key = original.context + key;
+	}
+	key = '|' + key;
+	if ( 'undefined' !== typeof original.domain ) {
+		key = original.domain + key;
+	}
+	return key;
+}
+
 function handleBatchedResponse( response, originalToCallbacksMap ) {
 	var i, data, j, key;
 	if ( 'undefined' === typeof response ) {
@@ -24,19 +40,21 @@ function handleBatchedResponse( response, originalToCallbacksMap ) {
 	if ( 'undefined' === typeof response[ 0 ] ) {
 		response = [ response ];
 	}
-
 	for ( i = 0; ( data = response[ i ] ); i++ ) {
 		if ( 'undefined' === typeof data || 'undefined' === typeof data.original ) {
 			// if there is not a single valid original
 			break;
 		}
 
-		key = data.original.hash;
+		key = hash( data.original );
 		if ( 'undefined' === typeof originalToCallbacksMap[ key ] || !
 		originalToCallbacksMap[ key ] ) {
-			continue;
+			key = hash( { originalId: data.original_id } );
+			if ( 'undefined' === typeof originalToCallbacksMap[ key ] || !
+			originalToCallbacksMap[ key ] ) {
+				continue;
+			}
 		}
-
 		for ( j = 0; j < originalToCallbacksMap[ key ].length; j++ ) {
 			originalToCallbacksMap[ key ][ j ].resolve( data );
 		}
@@ -98,11 +116,12 @@ module.exports = function( functionToWrap ) {
 
 	return function( original ) {
 		var deferred = new jQuery.Deferred();
-		if ( original.hash in originalToCallbacksMap ) {
-			originalToCallbacksMap[ original.hash ].push( deferred );
+		var key = hash( original );
+		if ( key in originalToCallbacksMap ) {
+			originalToCallbacksMap[ key ].push( deferred );
 		} else {
 			batchedOriginals.push( original );
-			originalToCallbacksMap[ original.hash ] = [ deferred ];
+			originalToCallbacksMap[ key ] = [ deferred ];
 		}
 
 		delayMore();
@@ -140,9 +159,6 @@ function GlotPress( locale ) {
 	}
 
 	function fetchOriginals( originals, callback ) {
-		if ( ! server.projects.length ) {
-			return callback( {} );
-		}
 		ajax( {
 			url: server.restUrl + '/translations-by-originals',
 			data: {
@@ -153,6 +169,8 @@ function GlotPress( locale ) {
 			},
 		} ).done( function( response ) {
 			callback( response );
+		} ).fail( function() {
+			callback( {} );
 		} );
 	}
 
@@ -1701,9 +1719,12 @@ function Original( original ) {
 	}
 
 	function objectify( context, domain ) {
-		var result = {
-			singular: singular,
-		};
+		var result = {};
+		if ( originalId ) {
+			return { originalId: originalId };
+		}
+
+		result.singular = singular;
 
 		if ( plural ) {
 			result.plural = plural;
@@ -2120,14 +2141,13 @@ function TranslationPair( locale, original, context, domain, usedTranslationText
 		entry = original;
 
 		setGlotPressProject( entry.project );
-
 		original = new Original( {
-			singular: original.singular,
-			plural: original.plural,
-			domain: original.domain,
-			context: original.context,
-			originalId: original.original_id,
-			comment: original.original_comment,
+			singular: entry.singular,
+			plural: entry.plural,
+			domain: entry.domain,
+			context: entry.context,
+			originalId: entry.original_id,
+			comment: entry.original_comment,
 		} );
 	}
 
@@ -2325,6 +2345,9 @@ function TranslationPair( locale, original, context, domain, usedTranslationText
 
 function getRegexString( text ) {
 	var regexString = text;
+	if ( 'undefined' === typeof text ) {
+		return text;
+	}
 	regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,500}?)' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
@@ -2392,11 +2415,21 @@ function extractWithUtf8Tags( enclosingNode ) {
 			case '\udc37': id += '7'; break;
 			case '\udc38': id += '8'; break;
 			case '\udc39': id += '9'; break;
+			case '\udc6F': id += 'o'; break;
 		}
 	}
 	nodeText = nodeText.substr( id.length + 1 );
 	if ( ! id.length ) {
 		return false;
+	}
+	if ( 'o' === id.charAt( 0 ) ) {
+		original = new Original( {
+			originalId: parseInt( id.substr( 1 ), 10 ),
+		} );
+
+		translationPair = new TranslationPair( translationData.locale, original );
+		translationPair.setScreenText( nodeText );
+		return translationPair;
 	}
 	id = parseInt( id, 10 );
 	if ( typeof translationData.translations[ id ] !== 'undefined' ) {
