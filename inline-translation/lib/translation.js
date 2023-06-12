@@ -104,7 +104,7 @@ function Translation( locale, items, glotPressMetadata ) {
 				return '';
 			},
 			getText: function() {
-				return text;
+				return text.replace( /&amp;/g, '&' );
 			},
 		};
 	};

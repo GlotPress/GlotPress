@@ -53,19 +53,30 @@ module.exports = function( TranslationPair, jQuery, document ) {
 
 			function walk( textNode ) {
 				var translationPair,
-					enclosingNode;
+					enclosingNode, utf8Tags;
 				if ( [ 'SCRIPT', 'STYLE', 'BODY', 'HTML' ].includes( textNode.parentElement.nodeName ) ) {
 					return false;
 				}
 				enclosingNode = jQuery( textNode.parentElement );
 
 				enclosingNode.addClass( 'translator-checked' );
-
 				if (
 					enclosingNode.closest( '.webui-popover' ).length ||
 					enclosingNode.hasClass( 'translator-exclude' ) ||
 					enclosingNode.closest( '.translator-exclude' ).length
 				) {
+					return false;
+				}
+				utf8Tags = enclosingNode.html().split( /\u200b/ );
+				if ( 0 === utf8Tags.length ) {
+					enclosingNode.addClass( 'translator-dont-translate' );
+					return false;
+				}
+
+				if ( utf8Tags.length > 3 ) {
+					enclosingNode.addClass( 'translator-too-many-childnodes' );
+					// Multiple strings inside a single HTML tag. Wrap them and try again.
+					// enclosingNode.html( '<span>' + utf8Tags.join( "</span>\u200b<span>" ) );
 					return false;
 				}
 

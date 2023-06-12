@@ -15,10 +15,26 @@ var Original = require( './original' ),
  */
 var translationData;
 
-function TranslationPair( locale, original, context, domain, translation, foundRegex, otherOriginals ) {
+function TranslationPair( locale, original, context, domain, usedTranslationText ) {
 	var translations = [],
-		regex, originalRegex, selectedTranslation, glotPressProject,
+		translation = usedTranslationText,
+		entry, selectedTranslation, glotPressProject,
+		regex = null,
 		screenText = false;
+
+	if ( 'object' === typeof original && 'number' === typeof original.original_id ) {
+		entry = original;
+
+		setGlotPressProject( entry.project );
+		original = new Original( {
+			singular: entry.singular,
+			plural: entry.plural,
+			domain: entry.domain,
+			context: entry.context,
+			originalId: entry.original_id,
+			comment: entry.original_comment,
+		} );
+	}
 
 	if ( 'object' !== typeof original || original.type !== 'Original' ) {
 		original = new Original( original );
@@ -78,9 +94,6 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 	function setSelectedTranslation( currentUserId ) {
 		var i;
 
-		// Reset the regex matcher.
-		regex = null;
-
 		sortTranslationsByDate();
 		for ( i = 0; i < translations.length; i++ ) {
 			if ( translations[ i ].getUserId() === currentUserId && translations[ i ].getStatus() ) {
@@ -113,9 +126,6 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 		getOriginal: function() {
 			return original;
 		},
-		getOtherOriginals: function() {
-			return typeof otherOriginals === 'undefined' ? [] : otherOriginals;
-		},
 		getContext: function() {
 			return context;
 		},
@@ -128,44 +138,6 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 		getScreenText: function() {
 			return screenText;
 		},
-		getReplacementText: function( oldText ) {
-			var replacementTranslation = this.getTranslation().getTextItems()[ 0 ].getText(),
-				c = 0,
-				matches = [],
-				simpleOriginalRegex = new RegExp( '^\\s*' + this.getOriginalRegexString() + '\\s*$' );
-
-			if ( simpleOriginalRegex.test( oldText ) ) {
-				matches = oldText.match( simpleOriginalRegex );
-			} else if ( foundRegex && foundRegex.test( oldText ) ) {
-				matches = oldText.match( foundRegex );
-			}
-
-			return replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
-				++c;
-				return matches[ typeof arguments[ 1 ] === 'undefined' ? c : Number( arguments[ 1 ] ) ];
-			} );
-		},
-		getOriginalRegex: function() {
-			var regexString;
-			if ( typeof originalRegex !== 'undefined' && originalRegex ) {
-				return originalRegex;
-			}
-			regexString = this.getOriginalRegexString();
-
-			if ( foundRegex ) {
-				regexString += '|' + foundRegex.source.substr( 4, foundRegex.source.length - 8 );
-			}
-			originalRegex = new RegExp( '^\\s*' + regexString + '\\s*$' );
-			return originalRegex;
-		},
-		getOriginalRegexString: function() {
-			var regexString;
-			regexString = getRegexString( original.getSingular() );
-			if ( original.getPlural() ) {
-				regexString += '|' + getRegexString( original.getSingular() );
-			}
-			return regexString;
-		},
 		getRegex: function() {
 			if ( typeof regex !== 'undefined' && regex ) {
 				return regex;
@@ -176,8 +148,31 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 			regex = new RegExp( '^\\s*' + regex + '\\s*$' );
 			return regex;
 		},
+		getReplacementText: function( oldText ) {
+			var replacementTranslation = this.getTranslation().getTextItems()[ 0 ].getText(),
+				c = 0,
+				matches,
+				nodeText = oldText.split( /\u200b/ );
+			matches = nodeText[ 1 ].match( getRegexString( usedTranslationText ) );
+			if ( null !== matches ) {
+				nodeText[ 1 ] = replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
+					++c;
+					return matches[ typeof arguments[ 1 ] === 'undefined' ? c : Number( arguments[ 1 ] ) ];
+				} );
+			}
+
+			return nodeText.join( '\u200b' );
+		},
+		getOriginalRegexString: function() {
+			var regexString;
+			regexString = getRegexString( original.getSingular() );
+			if ( original.getPlural() ) {
+				regexString += '|' + getRegexString( original.getSingular() );
+			}
+			return regexString;
+		},
 		setScreenText: function( _screenText ) {
-			screenText = _screenText;
+			screenText = _screenText.replace( /&amp;/g, '&' );
 		},
 		getTranslation: function() {
 			return selectedTranslation;
@@ -208,6 +203,13 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 		},
 		fetchOriginalAndTranslations: function( glotPress, currentUserId ) {
 			var promise;
+			if ( entry ) {
+				loadTranslations( entry.translations );
+				setSelectedTranslation( currentUserId );
+				promise = new jQuery.Deferred();
+				promise.resolve();
+				return promise;
+			}
 			promise = original.fetchIdAndTranslations( glotPress, context, domain )
 				.done( function( data ) {
 					if ( 'undefined' === typeof data.translations ) {
@@ -228,10 +230,15 @@ function TranslationPair( locale, original, context, domain, translation, foundR
 
 function getRegexString( text ) {
 	var regexString = text;
+	if ( 'undefined' === typeof text ) {
+		return text;
+	}
 	regexString = regexString.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,500}?)' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
 	regexString = regexString.replace( /%%/g, '%' );
+	regexString = regexString.replace( /&/g, '&(?:amp;)?' );
+	regexString = regexString.replace( /&\(\?:amp;\)\?amp;/g, '&(?:amp;)?' );
 	return regexString;
 }
 
@@ -270,47 +277,54 @@ function extractFromDataElement( dataElement ) {
 	return translationPair;
 }
 
-function trim( text ) {
-	if ( typeof text === 'undefined' ) {
-		return '';
-	}
-	return text.replace( /(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '' );
-}
+function extractWithUtf8Tags( enclosingNode ) {
+	var translationPair, id, nodeText, j, original;
 
-function extractWithStringsUsedOnPage( enclosingNode ) {
-	var text, textWithoutSiblings, context, translationPair;
-	if (
-		typeof translationData.stringsUsedOnPage !== 'object' ||
-			// not meant to be translatable:
-			enclosingNode.is( 'style,script' ) ||
-			enclosingNode.closest( '#querylist' ).length
-	) {
+	nodeText = enclosingNode.html().split( /\u200b/ )[ 1 ];
+	if ( undefined === nodeText ) {
 		return false;
 	}
-
-	if ( enclosingNode.is( '[data-i18n-context]' ) ) {
-		context = enclosingNode.data( 'i18n-context' );
-	} else {
-		context = enclosingNode.closest( '[data-i18n-context]' );
-		if ( context.length ) {
-			context = context.data( 'i18n-context' );
-		} else {
-			context = false;
+	id = '';
+	for ( j = 0; j < nodeText.length; j++ ) {
+		if ( '\udc7f' === nodeText.charAt( j ) ) {
+			break;
+		}
+		switch ( nodeText.charAt( j ) ) {
+			case '\udc30': id += '0'; break;
+			case '\udc31': id += '1'; break;
+			case '\udc32': id += '2'; break;
+			case '\udc33': id += '3'; break;
+			case '\udc34': id += '4'; break;
+			case '\udc35': id += '5'; break;
+			case '\udc36': id += '6'; break;
+			case '\udc37': id += '7'; break;
+			case '\udc38': id += '8'; break;
+			case '\udc39': id += '9'; break;
+			case '\udc6F': id += 'o'; break;
 		}
 	}
+	nodeText = nodeText.substr( id.length + 1 );
+	if ( ! id.length ) {
+		return false;
+	}
+	if ( 'o' === id.charAt( 0 ) ) {
+		original = new Original( {
+			originalId: parseInt( id.substr( 1 ), 10 ),
+		} );
 
-	translationPair = getTranslationPairForTextUsedOnPage( enclosingNode, context );
-
-	if ( false === translationPair ) {
-		// remove adjescent nodes for text that is used without immidiately surrounding tag
-		enclosingNode = enclosingNode.clone( true );
-		textWithoutSiblings = trim( enclosingNode.find( '*' ).remove().end().text() );
-		if ( text !== textWithoutSiblings ) {
-			translationPair = getTranslationPairForTextUsedOnPage( enclosingNode, context );
-		}
+		translationPair = new TranslationPair( translationData.locale, original );
+		translationPair.setScreenText( nodeText );
+		return translationPair;
+	}
+	id = parseInt( id, 10 );
+	if ( typeof translationData.translations[ id ] !== 'undefined' ) {
+		original = translationData.translations[ id ];
+		translationPair = new TranslationPair( translationData.locale, original, original.context, original.domain, original.translation );
+		translationPair.setScreenText( nodeText );
+		return translationPair;
 	}
 
-	return translationPair;
+	return false;
 }
 
 function anyChildMatches( node, regex ) {
@@ -333,88 +347,6 @@ function anyChildMatches( node, regex ) {
 	return false;
 }
 
-function findMatchingTranslation( entry, contextSpecifier, translation, regex ) {
-	var contextKey, contextKeySplit, domain, context, original, translationPair,
-		matchingTranslations = {};
-
-	for ( contextKey in entry ) {
-		if ( ! entry.hasOwnProperty( contextKey ) ) {
-			continue;
-		}
-		original = entry[ contextKey ];
-
-		if ( translationData.translations[ contextKey + '|' + original ] ) {
-			matchingTranslations[ contextKey ] = original;
-		}
-	}
-
-	// If we didn't find any matching translations, we'll use them anyway.
-	if ( Object.keys( matchingTranslations ).length === 0 ) {
-		matchingTranslations = entry;
-	}
-
-	for ( contextKey in matchingTranslations ) {
-		if ( ! matchingTranslations.hasOwnProperty( contextKey ) ) {
-			continue;
-		}
-		original = matchingTranslations[ contextKey ];
-
-		contextKeySplit = contextKey.split( '|' );
-		domain = contextKeySplit.shift();
-		context = contextKeySplit.shift();
-
-		if ( ! contextSpecifier || ( contextSpecifier && context === contextSpecifier ) ) {
-			delete matchingTranslations[ contextKey ];
-			translationPair = new TranslationPair( translationData.locale, original, context, domain, translation, regex, Object.values( matchingTranslations ) );
-			translationPair.setScreenText( translation );
-
-			return translationPair;
-		}
-	}
-	return null;
-}
-
-function getTranslationPairForTextUsedOnPage( node, contextSpecifier ) {
-	var translationPair,
-		entry = false,
-		nodeText, nodeHtml, i;
-
-	if ( node.get().length === 1 && node.get( 0 ).childNodes.length === 1 ) {
-		nodeText = trim( node.get( 0 ).textContent );
-
-		if ( ! nodeText.length || nodeText.length > 3000 ) {
-			return false;
-		}
-
-		if ( typeof translationData.stringsUsedOnPage[ nodeText ] !== 'undefined' ) {
-			translationPair = findMatchingTranslation( translationData.stringsUsedOnPage[ nodeText ], contextSpecifier, nodeText, new RegExp( '^\\s*' + getRegexString( nodeText ) + '\\s*$' ) );
-			if ( translationPair ) {
-				return translationPair;
-			}
-		}
-	}
-
-	// html to support translate( '<a href="%$1s">Translatable Text</a>' )
-	nodeHtml = node.html();
-
-	for ( i = 0; i < translationData.placeholdersUsedOnPage.length; i++ ) {
-		entry = translationData.placeholdersUsedOnPage[ i ];
-
-		if ( entry.regex.test( nodeHtml ) ) {
-			// We want the innermost node that matches, so
-			if ( anyChildMatches( node, entry.regex ) ) {
-				continue;
-			}
-			translationPair = findMatchingTranslation( entry.originals, contextSpecifier, nodeHtml, entry.regex );
-			if ( translationPair ) {
-				return translationPair;
-			}
-		}
-	}
-
-	return false;
-}
-
 TranslationPair.extractFrom = function( enclosingNode ) {
 	if ( typeof translationData !== 'object' ) {
 		return false;
@@ -428,7 +360,7 @@ TranslationPair.extractFrom = function( enclosingNode ) {
 		return extractFromDataElement( enclosingNode.closest( 'data.translatable' ) );
 	}
 
-	return extractWithStringsUsedOnPage( enclosingNode );
+	return extractWithUtf8Tags( enclosingNode );
 };
 
 TranslationPair.setTranslationData = function( newTranslationData ) {
