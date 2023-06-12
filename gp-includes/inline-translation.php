@@ -114,6 +114,7 @@ class GP_Inline_Translation {
 		add_action( 'gettext_with_context', array( $this, 'translate_with_context' ), 10, 5 );
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
 		add_action( 'ngettext_with_context', array( $this, 'ntranslate_with_context' ), 10, 6 );
+		add_action( 'load_script_translations', array( $this, 'load_script_translations' ), 10, 4 );
 		add_action( 'wp_footer', array( $this, 'load_translator' ), 1000 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
@@ -202,7 +203,7 @@ class GP_Inline_Translation {
 			return $translation;
 		}
 
-		$key = $text_domain . '|' . $context . '|' . $original_as_string;
+		$key = $text_domain . '|' . $context . '|' . $original;
 		if ( ! isset( $this->string_index[ $key ] ) ) {
 			$id = count( $this->strings_used );
 			$this->string_index[ $key ] = $id;
@@ -216,6 +217,10 @@ class GP_Inline_Translation {
 			$id = $this->string_index[ $key ];
 		}
 
+		return $this->add_utf8_markers( $translation, $id );
+	}
+
+	function add_utf8_markers( $translation, $id ) {
 		$invisible_separator = "\xE2\x80\x8B";
 		$utf8_tag_id = '';
 		foreach ( str_split( strval( $id ) ) as $digit ) {
@@ -235,8 +240,45 @@ class GP_Inline_Translation {
 		}
 		$utf8_tag_id .=  "\u{e007f}"; // UTF-8 Tag End.
 
-		// Pass back the unmodified translated text.
 		return $invisible_separator . $utf8_tag_id . $translation . $invisible_separator;
+	}
+
+	/**
+	 * Loads script translations.
+	 * @param string $translations JSON-encoded translation data.
+	 * @param string $file         Path to the translation file that was loaded.
+	 * @param string $handle       Name of the script to register a translation domain to.
+	 * @param string $domain       The text domain.
+	 */
+	function load_script_translations( $translations, $file, $handle, $domain ) {
+		$jed = json_decode( $translations, true );
+		foreach ( $jed['locale_data']['messages'] as $original => $translations ) {
+			if ( '' === $original ) {
+				continue;
+			}
+			if ( false !== strpos( $original, '\u0004') ) {
+				$with_context = explode( '\u0004', $original );
+				$key = $domain . '|' . $with_context[0] . '|' . $with_context[1];
+			} else {
+				$key = $domain . '||' . $original;
+			}
+			if ( ! isset( $this->string_index[ $key ] ) ) {
+				$id = count( $this->strings_used );
+				$this->string_index[ $key ] = $id;
+				$this->strings_used[] = array(
+					'original' => $original,
+					'context' => $context,
+					'text_domain' => $domain,
+					'translation' => $translation,
+				);
+			} else {
+				$id = $this->string_index[ $key ];
+			}
+			foreach( $translations as $k => $translation ) {
+				$jed['locale_data']['messages'][$original][$k] = $this->add_utf8_markers( $translation, $id );
+			}
+		}
+		return json_encode( $jed );
 	}
 
 	/**
