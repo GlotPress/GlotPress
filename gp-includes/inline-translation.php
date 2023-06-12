@@ -51,8 +51,8 @@ class GP_Inline_Translation {
 	 * @var        array
 	 */
 	private $ignore_translation = array(
-		'number_format_thousands_sep' => true,
-		'number_format_decimal_point' => true,
+		'number_format_thousands_sep' => true, // exact comparison in WP_Locale::init().
+		'number_format_decimal_point' => true, // exact comparison in WP_Locale::init().
 	);
 
 	/**
@@ -113,6 +113,9 @@ class GP_Inline_Translation {
 		if ( ! self::is_active() || wp_doing_ajax() || wp_doing_cron() ) {
 			return;
 		}
+
+		global $wp;
+
 		add_action( 'gettext', array( $this, 'translate' ), 10, 4 );
 		add_action( 'gettext_with_context', array( $this, 'translate_with_context' ), 10, 5 );
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
@@ -205,19 +208,28 @@ class GP_Inline_Translation {
 		if ( isset( $this->ignore_translation[ $original_as_string ] ) ) {
 			return $translation;
 		}
-
-		$key = $text_domain . '|' . $context . '|' . $original;
-		if ( ! isset( $this->string_index[ $key ] ) ) {
-			$id = count( $this->strings_used );
-			$this->string_index[ $key ] = $id;
-			$this->strings_used[] = array(
-				'original' => $original,
+		if ( defined('REST_REQUEST') ) {
+			$projects             = $this->get_projects( array( $text_domain ) );
+			$entry = (object) array(
+				'singular' => $original,
 				'context' => $context,
-				'text_domain' => $text_domain,
-				'translation' => $translation,
 			);
+			$original_record = $this->get_original_by_entry( $projects, $entry );
+			$id = 'o' . $original_record->id;
 		} else {
-			$id = $this->string_index[ $key ];
+			$key = $text_domain . '|' . $context . '|' . $original;
+			if ( ! isset( $this->string_index[ $key ] ) ) {
+				$id = count( $this->strings_used );
+				$this->string_index[ $key ] = $id;
+				$this->strings_used[] = array(
+					'original' => $original,
+					'context' => $context,
+					'text_domain' => $text_domain,
+					'translation' => $translation,
+				);
+			} else {
+				$id = $this->string_index[ $key ];
+			}
 		}
 
 		return $this->add_utf8_markers( $translation, $id );
@@ -226,22 +238,18 @@ class GP_Inline_Translation {
 	function add_utf8_markers( $translation, $id ) {
 		$invisible_separator = "\xE2\x80\x8B";
 		$utf8_tag_id = '';
-		foreach ( str_split( strval( $id ) ) as $digit ) {
-			switch ( $digit ) {
-				case 0: $utf8_tag_id .= "\u{e0030}"; break; // UTF-8 Tag 0.
-				case 1: $utf8_tag_id .= "\u{e0031}"; break; // UTF-8 Tag 0.
-				case 2: $utf8_tag_id .= "\u{e0032}"; break; // UTF-8 Tag 0.
-				case 3: $utf8_tag_id .= "\u{e0033}"; break; // UTF-8 Tag 0.
-				case 4: $utf8_tag_id .= "\u{e0034}"; break; // UTF-8 Tag 0.
-				case 5: $utf8_tag_id .= "\u{e0035}"; break; // UTF-8 Tag 0.
-				case 6: $utf8_tag_id .= "\u{e0036}"; break; // UTF-8 Tag 0.
-				case 7: $utf8_tag_id .= "\u{e0037}"; break; // UTF-8 Tag 0.
-				case 8: $utf8_tag_id .= "\u{e0038}"; break; // UTF-8 Tag 0.
-				case 9: $utf8_tag_id .= "\u{e0039}"; break; // UTF-8 Tag 0.
+		foreach ( str_split( strval( $id ) ) as $char ) {
+			$hex = ord( $char ) + 128;
+			$utf8_tag_id .= "\xF3\xA0";
+			if ( $hex > 191 ) {
+				$utf8_tag_id .= "\x81" . chr( $hex - 64 );
+			} else {
+				$utf8_tag_id .= "\x80" . chr( $hex );
 			}
-
 		}
-		$utf8_tag_id .=  "\u{e007f}"; // UTF-8 Tag End.
+		if ( $utf8_tag_id ) {
+			$utf8_tag_id .=  "\u{e007f}"; // UTF-8 Tag End.
+		}
 
 		return $invisible_separator . $utf8_tag_id . $translation . $invisible_separator;
 	}
@@ -294,8 +302,13 @@ class GP_Inline_Translation {
 	 * @return array List of potential projects keyed by text domain.
 	 */
 	private function get_projects( $text_domains ) {
-		$projects = array();
+		static $projects = array();
 		foreach ( $text_domains as $text_domain ) {
+			if ( isset( $projects[$text_domain] ) ) {
+				continue;
+			}
+			$projects[ $text_domain ] = array();
+
 			$project_paths = GP_Local::CORE_PROJECTS;
 			if ( 'default' !== $text_domain ) {
 				$project_paths = array(
@@ -310,7 +323,28 @@ class GP_Inline_Translation {
 				}
 			}
 		}
-		return $projects;
+		return array_intersect_key( $projects, array_flip( $text_domains ) );
+	}
+
+	/**
+	 * Map the text domains to projects.
+	 *
+	 * @param      array $text_domains  The text domains.
+	 * @param      string  $locale_slug           The locale slug.
+	 * @param      string  $translation_set_slug  The translation set slug.
+	 *
+	 * @return array List of translation sets keyed by text domain.
+	 */
+	private function get_translation_sets( $projects, $locale_slug, $translation_set_slug ) {
+		static $translation_sets = array();
+		foreach ( $projects as $text_domain => $_projects ) {
+			if ( isset( $translation_sets[$text_domain] ) ) {
+				continue;
+			}
+			$translation_sets[$text_domain] = array();
+			$translation_sets[ $text_domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		}
+		return array_intersect_key( $translation_sets, $projects );
 	}
 
 	/**
@@ -326,13 +360,7 @@ class GP_Inline_Translation {
 		$projects             = $this->get_projects( $this->text_domains );
 		$locale_slug          = $gp_locale->slug;
 		$translation_set_slug = 'default';
-
-		$translation_sets = array();
-		foreach ( $projects as $text_domain => $_projects ) {
-			foreach ( $_projects as $project ) {
-				$translation_sets[ $text_domain ][ $project->id ] = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
-			}
-		}
+		$translation_sets     = $this->get_translation_sets( $projects, $locale_slug, $translation_set_slug );
 
 		$translations = array();
 		foreach ( $this->strings_used as $entry ) {
@@ -360,10 +388,52 @@ class GP_Inline_Translation {
 	}
 
 	/**
+	 * Gets the original.
+	 *
+	 * @param      array        $projects          The potential projects.
+	 * @param      string       $entry       The original entry.
+	 *
+	 * @return     object  The original record.
+	 */
+	public function get_original_by_entry( $projects, $entry ) {
+		foreach ( $projects as $project ) {
+			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '+active' );
+			if ( $original_record ) {
+				return $original_record;
+			}
+		}
+
+		foreach ( $projects as $project ) {
+			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '-obsolete' );
+			if ( $original_record ) {
+				$original_record->status = '+active';
+				$original_record->save();
+				return $original_record;
+			}
+		}
+
+		if ( count( $projects ) === 1 ) {
+			$project = $projects[0];
+			// JIT Original Creation. Can only do this when there is no ambiguity about the project.
+			return GP::$original->create(
+				array(
+					'project_id' => $project->id,
+					'context'    => $entry->context,
+					'singular'   => $entry->singular,
+					'plural'     => $entry->plural,
+					'status'     => '+active',
+				)
+			);
+		}
+
+		return $entry;
+	}
+
+	/**
 	 * Gets the translation.
 	 *
 	 * @param      array        $projects          The potential projects.
-	 * @param      array        $translation_sets   The potential translation sets.
+	 * @param      array        $translation_sets  The potential translation sets.
 	 * @param      string|array $original          The original.
 	 * @param      string       $context           The context.
 	 * @param      string       $text_domain       The text domain.
@@ -371,7 +441,7 @@ class GP_Inline_Translation {
 	 *
 	 * @return     bool|stdClass  The translation.
 	 */
-	private function get_translation( $projects, $translation_sets, $original, $context, $text_domain, $translation ) {
+	private function get_translation( $text_domains, $original, $context, $text_domain, $translation ) {
 		if ( is_array( $original ) ) {
 			$entry = (object) array(
 				'singular' => $original[0],
@@ -390,42 +460,7 @@ class GP_Inline_Translation {
 		if ( empty( $projects ) ) {
 			return $entry;
 		}
-		$original_record = false;
-		foreach ( $projects as $project ) {
-			$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '+active' );
-			if ( $original_record ) {
-				break;
-			}
-		}
-
-		if ( ! $original_record ) {
-			foreach ( $projects as $project ) {
-				$original_record = GP::$original->by_project_id_and_entry( $project->id, $entry, '-obsolete' );
-				if ( $original_record ) {
-					$original_record->status = '+active';
-					$original_record->save();
-					break;
-				}
-			}
-		}
-
-		if ( ! $original_record ) {
-			if ( count( $projects ) === 1 ) {
-				$project = $projects[0];
-				// JIT Original Creation.
-				$original_record = GP::$original->create(
-					array(
-						'project_id' => $project->id,
-						'context'    => $entry->context,
-						'singular'   => $entry->singular,
-						'plural'     => $entry->plural,
-						'status'     => '+active',
-					)
-				);
-			} else {
-				return $entry;
-			}
-		}
+		$original_record = $this->get_original_by_entry( $projects, $original, $context );
 		if ( ! isset( $translation_sets[ $project->id ] ) || ! is_object( $translation_sets[ $project->id ] ) ) {
 			return $entry;
 		}
@@ -467,6 +502,21 @@ class GP_Inline_Translation {
 		}
 
 		return $query_result;
+	}
+
+	public function get_current_gp_locale() {
+		static $cache = array();
+		$locale_code = get_locale();
+
+		if ( 'en' === $locale_code ) {
+			return false;
+		}
+
+		if ( ! isset( $cache[$locale_code ] ) ) {
+			$cache[$locale_code ] = GP_Locales::by_field( 'wp_locale', $locale_code );
+		}
+
+		return $cache[$locale_code ];
 	}
 
 	/**
