@@ -665,6 +665,7 @@ findNewTranslatableTexts = function() {
 			);
 	}, function() {
 		currentlyWalkingTheDom = false;
+		debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1500 );
 	} );
 };
 

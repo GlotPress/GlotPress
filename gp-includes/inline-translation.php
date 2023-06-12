@@ -50,7 +50,10 @@ class GP_Inline_Translation {
 	 *
 	 * @var        array
 	 */
-	private $ignore_translation = array( 'Loading&#8230;' => true );
+	private $ignore_translation = array(
+		'number_format_thousands_sep' => true,
+		'number_format_decimal_point' => true,
+	);
 
 	/**
 	 * Holds the singleton.
@@ -115,10 +118,10 @@ class GP_Inline_Translation {
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
 		add_action( 'ngettext_with_context', array( $this, 'ntranslate_with_context' ), 10, 6 );
 		add_action( 'load_script_translations', array( $this, 'load_script_translations' ), 10, 4 );
-		add_action( 'wp_footer', array( $this, 'load_translator' ), 1000 );
+		add_action( 'wp_footer	', array( $this, 'load_translator' ), 1000 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		add_action( 'admin_footer', array( $this, 'load_admin_translator' ), 1000 );
+		add_action( 'admin_print_footer_scripts', array( $this, 'load_admin_translator' ), 1000 );
 		add_action( 'customize_controls_print_footer_scripts', array( $this, 'load_admin_translator' ), 1000 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
@@ -256,9 +259,11 @@ class GP_Inline_Translation {
 			if ( '' === $original ) {
 				continue;
 			}
+			$context = '';
 			if ( false !== strpos( $original, '\u0004') ) {
 				$with_context = explode( '\u0004', $original );
 				$key = $domain . '|' . $with_context[0] . '|' . $with_context[1];
+				$context = $with_context[0];
 			} else {
 				$key = $domain . '||' . $original;
 			}
@@ -269,7 +274,7 @@ class GP_Inline_Translation {
 					'original' => $original,
 					'context' => $context,
 					'text_domain' => $domain,
-					'translation' => $translation,
+					'translation' => $translations[0], // TODO: add plural
 				);
 			} else {
 				$id = $this->string_index[ $key ];
@@ -417,28 +422,16 @@ class GP_Inline_Translation {
 						'status'     => '+active',
 					)
 				);
-
-				if ( $translation !== $entry->singular && isset( $translation_sets[ $project->id ] ) && is_object( $translation_sets[ $project->id ] ) ) {
-					$translation_record = GP::$translation->create(
-						array(
-							'original_id'        => $original_record->id,
-							'translation_set_id' => $translation_sets[ $project->id ]->id,
-							'translation_0'      => $translation,
-							'status'             => 'current',
-						)
-					);
-				}
 			} else {
-				return false;
+				return $entry;
 			}
 		}
 		if ( ! isset( $translation_sets[ $project->id ] ) || ! is_object( $translation_sets[ $project->id ] ) ) {
-			return false;
+			return $entry;
 		}
 
 		$query_result                     = new stdClass();
 		$query_result->original_id        = $original_record->id;
-		$query_result->original           = $original;
 		$query_result->domain             = $text_domain;
 		$query_result->singular           = $original_record->singular;
 		$query_result->plural             = $original_record->plural;
@@ -451,8 +444,26 @@ class GP_Inline_Translation {
 		$query_result->translations = GP::$translation->find_many( "original_id = '{$query_result->original_id}' AND translation_set_id = '{$query_result->translation_set_id}' AND ( status = 'waiting' OR status = 'fuzzy' OR status = 'current' )" );
 
 		foreach ( $query_result->translations as $key => $current_translation ) {
-			$query_result->translations[ $key ]                   = GP::$translation->prepare_fields_for_save( $current_translation );
+			$query_result->translations[ $key ] = GP::$translation->prepare_fields_for_save( $current_translation );
+
 			$query_result->translations[ $key ]['translation_id'] = $current_translation->id;
+		}
+
+		if ( empty( $query_result->translations ) && $translation !== $entry->singular && isset( $translation_sets[ $project->id ] ) && is_object( $translation_sets[ $project->id ] ) ) {
+			$key = 0;
+
+			$translation_record = GP::$translation->create(
+				array(
+					'original_id'        => $original_record->id,
+					'translation_set_id' => $translation_sets[ $project->id ]->id,
+					'translation_0'      => $translation,
+					'status'             => 'current',
+				)
+			);
+
+			$query_result->translations[ $key ] = GP::$translation->prepare_fields_for_save( $translation_record );
+
+			$query_result->translations[ $key ]['translation_id'] = $translation_record->id;
 		}
 
 		return $query_result;
