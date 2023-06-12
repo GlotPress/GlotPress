@@ -15,16 +15,14 @@ var Original = require( './original' ),
  */
 var translationData;
 
-function TranslationPair( locale, original, context, domain, translation ) {
+function TranslationPair( locale, original, context, domain, usedTranslationText ) {
 	var translations = [],
+		translation = usedTranslationText,
 		entry, selectedTranslation, glotPressProject,
 		regex = null,
 		screenText = false;
 
 	if ( 'object' === typeof original && 'number' === typeof original.original_id ) {
-		context = original.context;
-		domain = original.domain;
-		translation = original.translation;
 		entry = original;
 
 		setGlotPressProject( entry.project );
@@ -156,13 +154,13 @@ function TranslationPair( locale, original, context, domain, translation ) {
 				c = 0,
 				matches,
 				nodeText = oldText.split( /\u200b/ );
-
-			matches = nodeText[ 1 ].match( getRegexString( screenText ) );
-
-			nodeText[ 1 ] = replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
-				++c;
-				return matches[ typeof arguments[ 1 ] === 'undefined' ? c : Number( arguments[ 1 ] ) ];
-			} );
+			matches = nodeText[ 1 ].match( getRegexString( usedTranslationText ) );
+			if ( null !== matches ) {
+				nodeText[ 1 ] = replacementTranslation.replace( /%(?:(\d)\$)?[sd]/g, function() {
+					++c;
+					return matches[ typeof arguments[ 1 ] === 'undefined' ? c : Number( arguments[ 1 ] ) ];
+				} );
+			}
 
 			return nodeText.join( '\u200b' );
 		},
@@ -175,7 +173,7 @@ function TranslationPair( locale, original, context, domain, translation ) {
 			return regexString;
 		},
 		setScreenText: function( _screenText ) {
-			screenText = _screenText;
+			screenText = _screenText.replace( /&amp;/g, '&' );
 		},
 		getTranslation: function() {
 			return selectedTranslation;
@@ -237,6 +235,8 @@ function getRegexString( text ) {
 	regexString = regexString.replace( /%([0-9]\\*\$)?s/g, '(.{0,500}?)' );
 	regexString = regexString.replace( /%([0-9]\\*\$)?d/g, '([0-9]{0,15}?)' );
 	regexString = regexString.replace( /%%/g, '%' );
+	regexString = regexString.replace( /&/g, '&(?:amp;)?' );
+	regexString = regexString.replace( /&\(\?:amp;\)\?amp;/g, '&(?:amp;)?' );
 	return regexString;
 }
 
@@ -276,7 +276,7 @@ function extractFromDataElement( dataElement ) {
 }
 
 function extractWithUtf8Tags( enclosingNode ) {
-	var translationPair, id, nodeText, j;
+	var translationPair, id, nodeText, j, original;
 
 	nodeText = enclosingNode.html().split( /\u200b/ )[ 1 ];
 	if ( undefined === nodeText ) {
@@ -306,7 +306,8 @@ function extractWithUtf8Tags( enclosingNode ) {
 	}
 	id = parseInt( id, 10 );
 	if ( typeof translationData.translations[ id ] !== 'undefined' ) {
-		translationPair = new TranslationPair( translationData.locale, translationData.translations[ id ] );
+		original = translationData.translations[ id ];
+		translationPair = new TranslationPair( translationData.locale, original, original.context, original.domain, original.translation );
 		translationPair.setScreenText( nodeText );
 		return translationPair;
 	}
