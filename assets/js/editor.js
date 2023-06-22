@@ -263,6 +263,10 @@ $gp.editor = (
 
 				data[ textareaName ] = translations;
 
+				if ( typeof $gp.editor.saveDataFilter === 'function' ) {
+					data = $gp.editor.saveDataFilter( data, editor );
+				}
+
 				$.ajax( {
 					type: 'POST',
 					url: $gp_editor_options.url,
