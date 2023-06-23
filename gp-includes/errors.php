@@ -30,6 +30,8 @@ class GP_Translation_Errors {
 	 */
 	public function __construct() {
 		$this->callbacks[] = array( $this, 'error_unexpected_sprintf_token' );
+		$this->callbacks[] = array( $this, 'error_unexpected_timezone' );
+		$this->callbacks[] = array( $this, 'error_unexpected_start_of_week_number' );
 	}
 
 	/*
@@ -47,6 +49,7 @@ class GP_Translation_Errors {
 	public function check( $original, $translations, $locale ) {
 		$singular = $original->singular;
 		$plural   = $original->plural;
+		$comment  = $original->comment;
 		$problems = array();
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
@@ -70,19 +73,20 @@ class GP_Translation_Errors {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $locale );
+					$singular_test = $callback( $singular, $translation, $comment, $locale );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $locale );
+					$plural_test = $callback( $plural, $translation, $comment, $locale );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
 				}
 			}
 		}
+
 		return empty( $problems ) ? null : $problems;
 	}
 
@@ -94,13 +98,13 @@ class GP_Translation_Errors {
 	 *  - Submitted translation: `<a href="%s">100%</a>`
 	 *  - Proper translation: `<a href="%s">100%%</a>`
 	 *
-	 * @since 4.0.0
-	 * @access public
-	 *
-	 * @param string $original    The original string.
+	 * @param string $original The original string.
 	 * @param string $translation The translated string.
 	 *
 	 * @return bool|string
+	 * @since 4.0.0
+	 * @access public
+	 *
 	 */
 	public function error_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
@@ -127,5 +131,52 @@ class GP_Translation_Errors {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Adds an error for unexpected timezone strings.
+	 *
+	 * @param string $original The original string.
+	 * @param string $translation The translated string.
+	 * @param string $comment The translation comment.
+	 * @param GP_Locale $locale The locale.
+	 *
+	 * @return string|true
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 */
+	public function error_unexpected_timezone( $original, $translation, $comment, $locale ) {
+		if ( is_null( $comment ) ) {
+			return true;
+		}
+		if ( ! str_contains( $comment, 'default_GMT_offset_or_timezone_string' ) ) {
+			return true;
+		}
+		// Must be either a valid offset (-12 to 14).
+		if ( is_numeric( $translation ) && round( $translation ) == intval( $translation ) && $translation >= - 12 && $translation <= 14 ) {
+			// Countries with half-hour offsets or similar need to use a timezone string.
+			return true;
+		}
+		// Or a valid timezone string (America/New_York).
+		if ( in_array( $translation, timezone_identifiers_list() ) ) {
+			return true;
+		}
+
+		return esc_html( 'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).', 'glotpress' );
+	}
+
+	public function error_unexpected_start_of_week_number( $original, $translation, $comment, $locale ) {
+		if ( is_null( $comment ) ) {
+			return true;
+		}
+		if ( ! str_contains( $comment, 'start_of_week_number' ) ) {
+			return true;
+		}
+		if ( is_int( $translation ) && $translation >= 0 && $translation <= 1 ) {
+			return true;
+		}
+
+		return esc_html( 'Must be an integer number between 0 and 1.', 'glotpress' );
 	}
 }
