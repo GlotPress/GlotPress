@@ -23,17 +23,105 @@ class GP_Translation_Errors {
 	public $callbacks = array();
 
 	/**
-	 * Constructor.
+	 * Adds a callback for a new error.
 	 *
 	 * @since 4.0.0
 	 * @access public
+	 *
+	 * @param string   $id       Unique ID of the callback.
+	 * @param callable $callback The callback.
 	 */
-	public function __construct() {
-		$this->callbacks[] = array( $this, 'error_unexpected_sprintf_token' );
-		$this->callbacks[] = array( $this, 'error_unexpected_timezone' );
-		$this->callbacks[] = array( $this, 'error_unexpected_start_of_week_number' );
+	public function add( $id, $callback ) {
+		$this->callbacks[ $id ] = $callback;
 	}
 
+	/**
+	 * Removes an existing callback for an error.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param string $id Unique ID of the callback.
+	 */
+	public function remove( $id ) {
+		unset( $this->callbacks[ $id ] );
+	}
+
+	/**
+	 * Checks whether a callback exists for an ID.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param string $id Unique ID of the callback.
+	 * @return bool True if exists, false if not.
+	 */
+	public function has( $id ) {
+		return isset( $this->callbacks[ $id ] );
+	}
+
+	/**
+	 * Checks translations for any error.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param GP_Original $gp_original     The original object.
+	 * @param string[]    $translations The translations.
+	 * @param GP_Locale   $locale       The locale.
+	 * @return array|null Null if no issues have been found, otherwise an array
+	 *                    with warnings.
+	 */
+	public function check( $gp_original, $translations, $locale ) {
+		$singular = $gp_original->singular;
+		$plural   = $gp_original->plural;
+		$comment  = $gp_original->comment;
+		$problems = array();
+		foreach ( $translations as $translation_index => $translation ) {
+			if ( ! $translation ) {
+				continue;
+			}
+
+			$skip = array(
+				'singular' => false,
+				'plural'   => false,
+			);
+			if ( null !== $plural ) {
+				$numbers_for_index = $locale->numbers_for_index( $translation_index );
+				if ( 1 === $locale->nplurals ) {
+					$skip['singular'] = true;
+				} elseif ( in_array( 1, $numbers_for_index, true ) ) {
+					$skip['plural'] = true;
+				} else {
+					$skip['singular'] = true;
+				}
+			}
+
+			foreach ( $this->callbacks as $callback_id => $callback ) {
+				if ( ! $skip['singular'] ) {
+					$singular_test = $callback( $singular, $translation, $gp_original, $locale );
+					if ( true !== $singular_test ) {
+						$problems[ $translation_index ][ $callback_id ] = $singular_test;
+					}
+				}
+				if ( null !== $plural && ! $skip['plural'] ) {
+					$plural_test = $callback( $plural, $translation, $gp_original, $locale );
+					if ( true !== $plural_test ) {
+						$problems[ $translation_index ][ $callback_id ] = $plural_test;
+					}
+				}
+			}
+		}
+		return empty( $problems ) ? null : $problems;
+	}
+}
+
+/**
+ * Class used to handle translation errors.
+ *
+ * @since 4.0.0
+ */
+class GP_Builtin_Translation_Errors {
 	/*
 	 * Executes all the callbacks and returns an array of problems.
 	 *
@@ -73,13 +161,13 @@ class GP_Translation_Errors {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $comment, $locale );
+					$singular_test = $callback( $singular, $translation, $original, $locale );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $comment, $locale );
+					$plural_test = $callback( $plural, $translation, $original, $locale );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
@@ -104,7 +192,6 @@ class GP_Translation_Errors {
 	 * @return bool|string
 	 * @since 4.0.0
 	 * @access public
-	 *
 	 */
 	public function error_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
@@ -121,7 +208,6 @@ class GP_Translation_Errors {
 				}
 			}
 		}
-
 		if ( $unexpected_tokens ) {
 			return sprintf(
 			/* translators: %s: Placeholders. */
@@ -136,21 +222,20 @@ class GP_Translation_Errors {
 	/**
 	 * Adds an error for unexpected timezone strings.
 	 *
-	 * @param string $original The original string.
-	 * @param string $translation The translated string.
-	 * @param string $comment The translation comment.
-	 * @param GP_Locale $locale The locale.
+	 * @param string      $original    The original string.
+	 * @param string      $translation The translated string.
+	 * @param GP_Original $gp_original The GP_original object.
+	 * @param GP_Locale   $locale      The locale.
 	 *
 	 * @return string|true
 	 * @since 4.0.0
 	 * @access public
-	 *
 	 */
-	public function error_unexpected_timezone( $original, $translation, $comment, $locale ) {
-		if ( is_null( $comment ) ) {
+	public function error_unexpected_timezone( $original, $translation, $gp_original, $locale ) {
+		if ( is_null( $gp_original->comment ) ) {
 			return true;
 		}
-		if ( ! str_contains( $comment, 'default_GMT_offset_or_timezone_string' ) ) {
+		if ( ! str_contains( $gp_original->comment, 'default_GMT_offset_or_timezone_string' ) ) {
 			return true;
 		}
 		// Must be either a valid offset (-12 to 14).
@@ -166,11 +251,11 @@ class GP_Translation_Errors {
 		return esc_html( 'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).', 'glotpress' );
 	}
 
-	public function error_unexpected_start_of_week_number( $original, $translation, $comment, $locale ) {
-		if ( is_null( $comment ) ) {
+	public function error_unexpected_start_of_week_number( $original, $translation, $gp_original, $locale ) {
+		if ( is_null( $gp_original->comment ) ) {
 			return true;
 		}
-		if ( ! str_contains( $comment, 'start_of_week_number' ) ) {
+		if ( ! str_contains( $gp_original->comment, 'start_of_week_number' ) ) {
 			return true;
 		}
 		if ( is_int( $translation ) && $translation >= 0 && $translation <= 1 ) {
@@ -178,5 +263,25 @@ class GP_Translation_Errors {
 		}
 
 		return esc_html( 'Must be an integer number between 0 and 1.', 'glotpress' );
+	}
+
+	/**
+	 * Registers all methods starting with `error_` as built-in warnings.
+	 *
+	 * @param GP_Translation_Errors $translation_errors Instance of GP_Translation_Errors.
+	 */
+	public function add_all( $translation_errors ) {
+		$errors = array_filter(
+			get_class_methods( get_class( $this ) ),
+			function ( $key ) {
+				return gp_startswith( $key, 'error_' );
+			}
+		);
+
+		$errors = array_fill_keys( $errors, $this );
+
+		foreach ( $errors as $error => $class ) {
+			$translation_errors->add( str_replace( 'error_', '', $error ), array( $class, $error ) );
+		}
 	}
 }

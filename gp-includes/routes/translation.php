@@ -297,9 +297,11 @@ class GP_Route_Translation extends GP_Route_Main {
 			if ( $errors ) {
 				$output = '<ul>';
 				foreach ( $errors as $error ) {
-					$output .= '<li>';
-					$output .= htmlentities( $error[0] );
-					$output .= '</li>';
+					foreach ( $error as $key => $value ) {
+						$output .= '<li>';
+						$output .= htmlentities( $value );
+						$output .= '</li>';
+					}
 				}
 				$output .= '</ul>';
 

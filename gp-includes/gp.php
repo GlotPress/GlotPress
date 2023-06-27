@@ -131,6 +131,15 @@ class GP {
 	public static $translation_errors;
 
 	/**
+	 * Singleton for built-in translation errors.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @var GP_Builtin_Translation_Errors
+	 */
+	public static $builtin_translation_errors;
+
+	/**
 	 * Array of notices.
 	 *
 	 * @since 1.0.0

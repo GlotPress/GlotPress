@@ -107,9 +107,11 @@ require_once GP_PATH . GP_INC . 'routes/locale.php';
 GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
 GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
-GP::$translation_errors = new GP_Translation_Errors();
-GP::$router             = new GP_Router();
-GP::$formats            = array();
+GP::$translation_errors         = new GP_Translation_Errors();
+GP::$builtin_translation_errors = new GP_Builtin_Translation_Errors();
+GP::$builtin_translation_errors->add_all( GP::$translation_errors );
+GP::$router  = new GP_Router();
+GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';
 require_once GP_PATH . GP_INC . 'formats/format-android.php';

@@ -4,35 +4,36 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->w              = new GP_Translation_Errors();
+		$this->w              = new GP_Builtin_Translation_Errors();
 		$this->l              = $this->factory->locale->create();
-		$this->longer_than_20 = 'The little boy hid behind the counter and then came the wizard of all green wizards!';
-		$this->shorter_than_5 = 'Boom';
+		$project = $this->factory->project->create();
+		$this->original	      = $this->factory->original->create( array( 'project_id' => $project->id ) );
+		$this->original->comment = "Test comment";
 	}
 
-	function _assertError( $assert, $error, $original, $translation, $comment = null, $locale = null ) {
+	function _assertError( $assert, $error, $original, $translation, $gp_original = null, $locale = null ) {
 		if ( is_null( $locale ) ) {
 			$locale = $this->l;
 		}
 		$method = "error_$error";
-		$this->$assert( true, $this->w->$method( $original, $translation, $comment, $locale ) );
+		$this->$assert( true, $this->w->$method( $original, $translation, $gp_original, $locale ) );
 	}
 
-	function assertHasErrors( $error, $original, $translation, $comment = null, $locale = null ) {
-		$this->_assertError( 'assertNotSame', $error, $original, $translation, $comment, $locale );
+	function assertHasErrors( $error, $original, $translation, $gp_original, $locale = null ) {
+		$this->_assertError( 'assertNotSame', $error, $original, $translation, $gp_original, $locale );
 	}
 
-	function assertNoErrors( $error, $original, $translation, $comment = null, $locale = null ) {
-		$this->_assertError( 'assertSame', $error, $original, $translation, $comment, $locale );
+	function assertNoErrors( $error, $original, $translation, $gp_original = null, $locale = null ) {
+		$this->_assertError( 'assertSame', $error, $original, $translation, $gp_original, $locale );
 	}
 
-	function assertHasErrorsAndContainsOutput( $error, $original, $translation, $comment, $output_expected, $locale = null ) {
-		$this->assertHasErrors( $error, $original, $translation, $comment, $locale );
+	function assertHasErrorsAndContainsOutput( $error, $original, $translation, $gp_original, $output_expected, $locale = null ) {
+		$this->assertHasErrors( $error, $original, $translation, $gp_original, $locale );
 		if ( is_null( $locale ) ) {
 			$locale = $this->l;
 		}
 		$method = "error_$error";
-		$this->assertStringContainsString( $output_expected, $this->w->$method( $original, $translation, $comment, $locale ) );
+		$this->assertStringContainsString( $output_expected, $this->w->$method( $original, $translation, $gp_original, $locale ) );
 	}
 
 	function assertContainsOutput( $singular, $plural, $translations, $comment, $output_expected, $locale = null ) {
@@ -105,59 +106,61 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 	}
 
 	function test_error_unexpected_timezone() {
-		$this->assertNoErrors( 'unexpected_timezone', '0', 'Europe/Madrid', 'default_GMT_offset_or_timezone_string' );
-		$this->assertNoErrors( 'unexpected_timezone', '0', '-12', 'default_GMT_offset_or_timezone_string' );
-		$this->assertNoErrors( 'unexpected_timezone', '0', '-1', 'default_GMT_offset_or_timezone_string' );
-		$this->assertNoErrors( 'unexpected_timezone', '0', '0', 'default_GMT_offset_or_timezone_string' );
-		$this->assertNoErrors( 'unexpected_timezone', '0', '+1', 'default_GMT_offset_or_timezone_string' );
-		$this->assertNoErrors( 'unexpected_timezone', '0', '+14', 'default_GMT_offset_or_timezone_string' );
+		$this->original->comment = "default_GMT_offset_or_timezone_string";
+		$this->assertNoErrors( 'unexpected_timezone', '0', 'Europe/Madrid', $this->original );
+		$this->assertNoErrors( 'unexpected_timezone', '0', '-12', $this->original );
+		$this->assertNoErrors( 'unexpected_timezone', '0', '-1', $this->original );
+		$this->assertNoErrors( 'unexpected_timezone', '0', '0', $this->original );
+		$this->assertNoErrors( 'unexpected_timezone', '0', '+1', $this->original );
+		$this->assertNoErrors( 'unexpected_timezone', '0', '+14', $this->original );
 
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_timezone',
 			'0',
 			'+15',
-			'default_GMT_offset_or_timezone_string',
+			$this->original,
 			'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).'
 		);
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_timezone',
 			'0',
 			'',
-			'default_GMT_offset_or_timezone_string',
+			$this->original,
 			'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).'
 		);
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_timezone',
 			'0',
 			'abc',
-			'default_GMT_offset_or_timezone_string',
+			$this->original,
 			'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).'
 		);
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_timezone',
 			'0',
 			'Europe',
-			'default_GMT_offset_or_timezone_string',
+			$this->original,
 			'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).'
 		);
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_timezone',
 			'0',
 			'Europa/Madrid',
-			'default_GMT_offset_or_timezone_string',
+			$this->original,
 			'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).'
 		);
 	}
 
 	function test_unexpected_start_of_week_number() {
-		$this->assertNoErrors( 'unexpected_start_of_week_number', '1', 0, 'start_of_week_number' );
-		$this->assertNoErrors( 'unexpected_start_of_week_number', '1', 1, 'start_of_week_number' );
+		$this->original->comment = 'start_of_week_number';
+		$this->assertNoErrors( 'unexpected_start_of_week_number', '1', 0, $this->original );
+		$this->assertNoErrors( 'unexpected_start_of_week_number', '1', 1, $this->original );
 
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_start_of_week_number',
 			'1',
 			2,
-			'start_of_week_number',
+			$this->original,
 			'Must be an integer number between 0 and 1.'
 		);
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_start_of_week_number',
 			'1',
 			'',
-			'start_of_week_number',
+			$this->original,
 			'Must be an integer number between 0 and 1.'
 		);
 	}
