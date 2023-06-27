@@ -66,11 +66,11 @@ class GP_Translation_Errors {
 	 * @since 4.0.0
 	 * @access public
 	 *
-	 * @param GP_Original $gp_original     The original object.
+	 * @param GP_Original $gp_original  The original object.
 	 * @param string[]    $translations The translations.
 	 * @param GP_Locale   $locale       The locale.
 	 * @return array|null Null if no issues have been found, otherwise an array
-	 *                    with warnings.
+	 *                    with errors.
 	 */
 	public function check( $gp_original, $translations, $locale ) {
 		$singular = $gp_original->singular;
@@ -122,7 +122,7 @@ class GP_Translation_Errors {
  * @since 4.0.0
  */
 class GP_Builtin_Translation_Errors {
-	/*
+	/**
 	 * Executes all the callbacks and returns an array of problems.
 	 *
 	 * @since 4.0.0
@@ -131,7 +131,6 @@ class GP_Builtin_Translation_Errors {
 	 * @param GP_Original $original     The original string.
 	 * @param string[]    $translations The translations.
 	 * @param GP_Locale   $locale       The locale.
-	 *
 	 * @return array|null
 	 */
 	public function check( $original, $translations, $locale ) {
@@ -186,12 +185,12 @@ class GP_Builtin_Translation_Errors {
 	 *  - Submitted translation: `<a href="%s">100%</a>`
 	 *  - Proper translation: `<a href="%s">100%%</a>`
 	 *
-	 * @param string $original The original string.
-	 * @param string $translation The translated string.
-	 *
-	 * @return bool|string
 	 * @since 4.0.0
 	 * @access public
+	 *
+	 * @param string $original    The original string.
+	 * @param string $translation The translated string.
+	 * @return bool|string
 	 */
 	public function error_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
@@ -199,7 +198,7 @@ class GP_Builtin_Translation_Errors {
 
 		// Find any percents that are not valid or escaped.
 		if ( $is_sprintf ) {
-			// Negative/Positive lookahead not used to allow the warning to include the context around the % sign.
+			// Negative/Positive lookahead not used to allow the error to include the context around the % sign.
 			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.))/i', $translation, $m );
 			foreach ( $m['char'] as $i => $char ) {
 				// % is included for escaped %%.
@@ -220,53 +219,10 @@ class GP_Builtin_Translation_Errors {
 	}
 
 	/**
-	 * Adds an error for unexpected timezone strings.
+	 * Registers all methods starting with `error_` as built-in errors.
 	 *
-	 * @param string      $original    The original string.
-	 * @param string      $translation The translated string.
-	 * @param GP_Original $gp_original The GP_original object.
-	 * @param GP_Locale   $locale      The locale.
-	 *
-	 * @return string|true
 	 * @since 4.0.0
 	 * @access public
-	 */
-	public function error_unexpected_timezone( $original, $translation, $gp_original, $locale ) {
-		if ( is_null( $gp_original->comment ) ) {
-			return true;
-		}
-		if ( ! str_contains( $gp_original->comment, 'default_GMT_offset_or_timezone_string' ) ) {
-			return true;
-		}
-		// Must be either a valid offset (-12 to 14).
-		if ( is_numeric( $translation ) && round( $translation ) == intval( $translation ) && $translation >= - 12 && $translation <= 14 ) {
-			// Countries with half-hour offsets or similar need to use a timezone string.
-			return true;
-		}
-		// Or a valid timezone string (America/New_York).
-		if ( in_array( $translation, timezone_identifiers_list() ) ) {
-			return true;
-		}
-
-		return esc_html( 'Must be either a valid offset (-12 to 14) or a valid timezone string (America/New_York).', 'glotpress' );
-	}
-
-	public function error_unexpected_start_of_week_number( $original, $translation, $gp_original, $locale ) {
-		if ( is_null( $gp_original->comment ) ) {
-			return true;
-		}
-		if ( ! str_contains( $gp_original->comment, 'start_of_week_number' ) ) {
-			return true;
-		}
-		if ( is_int( $translation ) && $translation >= 0 && $translation <= 1 ) {
-			return true;
-		}
-
-		return esc_html( 'Must be an integer number between 0 and 1.', 'glotpress' );
-	}
-
-	/**
-	 * Registers all methods starting with `error_` as built-in warnings.
 	 *
 	 * @param GP_Translation_Errors $translation_errors Instance of GP_Translation_Errors.
 	 */
