@@ -123,61 +123,6 @@ class GP_Translation_Errors {
  */
 class GP_Builtin_Translation_Errors {
 	/**
-	 * Executes all the callbacks and returns an array of problems.
-	 *
-	 * @since 4.0.0
-	 * @access public
-	 *
-	 * @param GP_Original $original     The original string.
-	 * @param string[]    $translations The translations.
-	 * @param GP_Locale   $locale       The locale.
-	 * @return array|null
-	 */
-	public function check( $original, $translations, $locale ) {
-		$singular = $original->singular;
-		$plural   = $original->plural;
-		$comment  = $original->comment;
-		$problems = array();
-		foreach ( $translations as $translation_index => $translation ) {
-			if ( ! $translation ) {
-				continue;
-			}
-
-			$skip = array(
-				'singular' => false,
-				'plural'   => false,
-			);
-			if ( null !== $plural ) {
-				$numbers_for_index = $locale->numbers_for_index( $translation_index );
-				if ( 1 === $locale->nplurals ) {
-					$skip['singular'] = true;
-				} elseif ( in_array( 1, $numbers_for_index, true ) ) {
-					$skip['plural'] = true;
-				} else {
-					$skip['singular'] = true;
-				}
-			}
-
-			foreach ( $this->callbacks as $callback_id => $callback ) {
-				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $original, $locale );
-					if ( true !== $singular_test ) {
-						$problems[ $translation_index ][ $callback_id ] = $singular_test;
-					}
-				}
-				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $original, $locale );
-					if ( true !== $plural_test ) {
-						$problems[ $translation_index ][ $callback_id ] = $plural_test;
-					}
-				}
-			}
-		}
-
-		return empty( $problems ) ? null : $problems;
-	}
-
-	/**
 	 * Adds an error for adding unexpected percent signs in a sprintf-like string.
 	 *
 	 * This is to catch translations for originals like this:
