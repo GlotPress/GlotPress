@@ -155,7 +155,7 @@ class GP_Builtin_Translation_Errors {
 		if ( $unexpected_tokens ) {
 			return sprintf(
 			/* translators: %s: Placeholders. */
-				__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
+				esc_html__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
 				implode( ', ', $unexpected_tokens )
 			);
 		}
