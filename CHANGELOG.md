@@ -1,6 +1,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.5] (July 12, 2023)
+
+**Features**
+* Set as old the previous translations with waiting status for this user ([#1536])
+* Highlight leading and trailing spaces, and double/multiple spaces in the middle ([#1500]) 
+* Add I18n to JavaScript ([#1369]) 
+* Add plural and plural forms labels to row previews and format the row editor accordingly ([#1506])
+* Reorder glossary row editor items ([#1622])
+
+**Bugfixes**
+* Fix notice accessing undefined variable ([#1582]) 
+* Improve translation strings consistency and comments to translators ([#1600]) 
+* Fix PHP error for parameter after optional parameter ([#1465]) 
+* Combine the suffixes for shorter regular expression. ([#1651]) 
+
+**Locales**
+* Update plural expression for Kyrgyz ([#1634]) 
+* Shorten the slug for Valencia (Catalan) ([#1635])
+
 ## [4.0.0-alpha.4] (Feb 28, 2023)
 
 **Features**
@@ -521,6 +540,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-alpha.5]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.4...4.0.0-alpha.5
 [4.0.0-alpha.4]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.3...4.0.0-alpha.4
 [4.0.0-alpha.3]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.2...4.0.0-alpha.3
 [4.0.0-alpha.2]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.1...4.0.0-alpha.2
@@ -610,3 +630,14 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1524]: https://github.com/GlotPress/GlotPress/pull/1524
 [#1477]: https://github.com/GlotPress/GlotPress/pull/1477
 [#1569]: https://github.com/GlotPress/GlotPress/pull/1569
+[#1536]: https://github.com/GlotPress/GlotPress/pull/1536
+[#1500]: https://github.com/GlotPress/GlotPress/pull/1500
+[#1582]: https://github.com/GlotPress/GlotPress/pull/1582
+[#1600]: https://github.com/GlotPress/GlotPress/pull/1600
+[#1465]: https://github.com/GlotPress/GlotPress/pull/1465
+[#1369]: https://github.com/GlotPress/GlotPress/pull/1369
+[#1506]: https://github.com/GlotPress/GlotPress/pull/1506
+[#1622]: https://github.com/GlotPress/GlotPress/pull/1622
+[#1634]: https://github.com/GlotPress/GlotPress/pull/1634
+[#1635]: https://github.com/GlotPress/GlotPress/pull/1635
+[#1651]: https://github.com/GlotPress/GlotPress/pull/1651
