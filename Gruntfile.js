@@ -19,6 +19,7 @@ module.exports = function( grunt ) {
 					'assets/js/**/*.js',
 
 					// Exceptions.
+					'!assets/js/vendor/*',
 					'!**/*.min.js'
 				],
 
