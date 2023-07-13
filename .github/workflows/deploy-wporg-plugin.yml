@@ -24,15 +24,17 @@ jobs:
           node-version: 16
           cache: npm
 
-      - name: Install NPM Dependencies
-        run: npm ci
-
-      - name: Build minified JavaScript and CSS
-        run: npm run build
+      - name: Build
+        run: |
+          npm install
+          npm run build
+          mkdir build
+          cp -r assets gp-includes gp-templates locales CHANGELOG.md glotpress.php gp-settings.php license.txt readme.txt build
 
       - name: WordPress.org plugin update
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}
+          BUILD_DIR: build
           SLUG: glotpress
