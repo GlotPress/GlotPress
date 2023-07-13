@@ -36,8 +36,6 @@ jobs:
 
       - name: WordPress.org plugin update
         uses: 10up/action-wordpress-plugin-deploy@stable
-        with:
-          dry-run: true
         env:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}
