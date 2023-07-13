@@ -41,5 +41,4 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}
-          BUILD_DIR: build
           SLUG: glotpress
