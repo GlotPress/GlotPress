@@ -3,6 +3,7 @@ name: Deploy plugin to WordPress.org
 on:
   release:
     types: [published]
+  pull_request:
 
 permissions:
   contents: read
@@ -28,11 +29,13 @@ jobs:
         run: |
           npm install
           npm run build
-          mkdir build
-          cp -r assets gp-includes gp-templates locales CHANGELOG.md glotpress.php gp-settings.php license.txt readme.txt build
+          git add .
+          git commit -m "Build"
 
       - name: WordPress.org plugin update
         uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          dry-run: true
         env:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}
