@@ -29,6 +29,8 @@ jobs:
         run: |
           npm install
           npm run build
+          git config user.email "build@glotpress.blog"
+          git config user.name "Glotpress Build"
           git add .
           git commit -m "Build"
 
