@@ -3,7 +3,6 @@ name: Deploy plugin to WordPress.org
 on:
   release:
     types: [published]
-  pull_request:
 
 permissions:
   contents: read
