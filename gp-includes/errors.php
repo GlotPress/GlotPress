@@ -139,23 +139,27 @@ class GP_Builtin_Translation_Errors {
 	 */
 	public function error_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
-		$is_sprintf        = preg_match( '!%((\d+\$(?:\d+)?)?[bcdefgosuxl])\b!i', $original );
+
+		$sprintf_placeholder_regex    = '!%(?:(\d+\$(?:\d+)?)?(?:[0-9]+|\*)?(?:\.[0-9]+|\*)?[bcdefgosuxl%])!i';
+		$original_without_placeholder = preg_replace( $sprintf_placeholder_regex, '', $original );
+
+		$is_sprintf = $original_without_placeholder !== $original && false === strpos( $original_without_placeholder, '%' );
 
 		// Find any percents that are not valid or escaped.
 		if ( $is_sprintf ) {
-			// Negative/Positive lookahead not used to allow the error to include the context around the % sign.
-			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.|$))/i', $translation, $m );
-			foreach ( $m['char'] as $i => $char ) {
-				// % is included for escaped %%.
-				if ( '' === $char || false === strpos( 'bcdefgosux%l.', $char ) ) {
-					$unexpected_tokens[] = $m[0][ $i ];
-				}
+			$translation_without_placeholder = preg_replace( $sprintf_placeholder_regex, '', $translation );
+
+			$p = strpos( $translation_without_placeholder, '%' );
+			while ( false !== $p ) {
+				$unexpected_tokens[] = trim( substr( $translation_without_placeholder, max( 0, $p - 2 ), 4 ) ) . ' (unescaped %, use %% instead)';
+
+				$p = strpos( $translation_without_placeholder, '%', $p + 1 );
 			}
 		}
 		if ( $unexpected_tokens ) {
 			return sprintf(
-			/* translators: %s: Placeholders. */
-				esc_html__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
+				/* translators: %s: Placeholders. */
+				__( 'The translation contains the following unexpected placeholders: %s', 'glotpress' ),
 				implode( ', ', $unexpected_tokens )
 			);
 		}
