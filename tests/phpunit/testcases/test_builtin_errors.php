@@ -79,29 +79,29 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 		);
 		$this->assertHasErrorsAndContainsOutput(
 			'unexpected_sprintf_token',
-			'<a href="%f">100 percent</a>',
-			' 95% of <a href="%f">100%%</a>',
+			'95 percent of <a href="%f">100 percent</a>',
+			'95% of <a href="%f">100%%</a>',
 			null,
-			'The translation contains the following unexpected placeholders: 95% '
+			'The translation contains the following unexpected placeholders: 95%'
 		);
 		$this->assertHasErrorsAndContainsOutput(
 			'unexpected_sprintf_token',
-			'<a href="%f">100 percent</a>',
-			'<a href="%f">100%%</a> of 95% ',
+			'<a href="%f">95 percent</a> of 100 percent',
+			'<a href="%f">95%%</a> of 100%',
 			null,
-			'The translation contains the following unexpected placeholders: 95% '
 		);
 		$this->assertHasErrorsAndContainsOutput(
 			'unexpected_sprintf_token',
-			'<a href="%f">100 percent</a>',
-			'<a href="%f">100%</a> of 95% ',
+			'<a href="%f">95 percent</a> of 100 percent',
+			'<a href="%f">95%</a> of 100%',
 			null,
-			'The translation contains the following unexpected placeholders: ">100%<, 95% '
+			'The translation contains the following unexpected placeholders: ">95%<, 100%'
 		);
 		$this->assertHasErrorsAndContainsOutput( 'unexpected_sprintf_token',
 			'This is 100 percent bug free! <a href="%s">See this for proof</a>',
 			'Yo! We so great! 100% bug free! <a href="%s">Check it!</a>',
 			null,
-			'The translation contains the following unexpected placeholders: 100% ' );
+			'The translation contains the following unexpected placeholders: 100%'
+		);
 	}
 }

@@ -144,10 +144,10 @@ class GP_Builtin_Translation_Errors {
 		// Find any percents that are not valid or escaped.
 		if ( $is_sprintf ) {
 			// Negative/Positive lookahead not used to allow the error to include the context around the % sign.
-			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.))/i', $translation, $m );
+			preg_match_all( '/(?P<context>[^\s%]*)%((\d+\$(?:\d+)?)?(?P<char>.|$))/i', $translation, $m );
 			foreach ( $m['char'] as $i => $char ) {
 				// % is included for escaped %%.
-				if ( false === strpos( 'bcdefgosux%l.', $char ) ) {
+				if ( '' === $char || false === strpos( 'bcdefgosux%l.', $char ) ) {
 					$unexpected_tokens[] = $m[0][ $i ];
 				}
 			}
