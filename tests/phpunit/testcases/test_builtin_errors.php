@@ -4,11 +4,11 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->w              = new GP_Builtin_Translation_Errors();
-		$this->l              = $this->factory->locale->create();
-		$project = $this->factory->project->create();
-		$this->original	      = $this->factory->original->create( array( 'project_id' => $project->id ) );
-		$this->original->comment = "Test comment";
+		$this->w                 = new GP_Builtin_Translation_Errors();
+		$this->l                 = $this->factory->locale->create();
+		$project                 = $this->factory->project->create();
+		$this->original          = $this->factory->original->create( array( 'project_id' => $project->id ) );
+		$this->original->comment = 'Test comment';
 	}
 
 	function _assertError( $assert, $error, $original, $translation, $gp_original = null, $locale = null ) {
@@ -53,6 +53,11 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2fMB baba', '%2$.2fMB баба' );
 		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.3fMB baba', '%2$.2fMB баба' );
 		$this->assertNoErrors( 'unexpected_sprintf_token', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', 'This is 100 percent bug free!', 'This is 100% bug free!' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '<a href="%f">95 percent</a>', '<a href="%F">95 percent</a>' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '<a href="%S">95 percent</a>', '<a href="%s">95 percent</a>' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2f baba', '%2$.2F баба' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2F baba', '%2$.2f баба' );
 
 		$this->assertNoErrors(
 			'unexpected_sprintf_token',
@@ -105,7 +110,8 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 			null,
 			'The translation contains the following unexpected placeholders: 95%< (unescaped %, use %% instead), 00% (unescaped %, use %% instead)'
 		);
-		$this->assertHasErrorsAndContainsOutput( 'unexpected_sprintf_token',
+		$this->assertHasErrorsAndContainsOutput(
+			'unexpected_sprintf_token',
 			'This is 100 percent bug free! <a href="%s">See this for proof</a>',
 			'Yo! We so great! 100% bug free! <a href="%s">Check it!</a>',
 			null,
