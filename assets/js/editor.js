@@ -585,37 +585,7 @@ jQuery( document ).ready(
 			var pulse = jQuery( '<div class="pulse tour-' + tourName + '">' );
 			field.parent().append( pulse );
 		}
-		window.tour = { // window.tour['ui-intro'][1]= { selector: '.something', html": 'something' }; window.tour.loadTour()
-			'ui-intro' : [
-				{
-					title: 'UI Introduction Tour',
-					color : '#3939c7',
-				},
-				{
-					selector: '.revealing.filter',
-					html: 'Click here to reveal the search field'
-				},
-				{
-					reveal: '.revealing.filter',
-					selector: '.filters-expanded input.is-primary',
-					html: 'Click here to search', 
-				}
-			],
-			'translation-guide' : [
-			{
-				title: 'How to translate',
-				color : '#f939c7',
-			},
-			{
-				selector: '.source-string',
-				html: 'This is the English text'
-			},
-			{
-				selector: '.translation-actions .is-primary',
-				html: 'Submit your translation',
-			}
-	],
-		};
+		window.tour = gp_tour;
 
 		window.loadTour = function(){
 			for ( const n in window.tour ) {
