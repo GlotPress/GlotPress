@@ -1,4 +1,4 @@
-/* global document, wp */
+/* global wp */
 var $gp = (
 	function( $ ) {
 		return {
