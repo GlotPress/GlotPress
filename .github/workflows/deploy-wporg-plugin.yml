@@ -31,7 +31,7 @@ jobs:
           git config user.email "build@glotpress.blog"
           git config user.name "GlotPress Build"
           git add .
-          git commit -m "Build"
+          git commit -m "Build" || true
 
       - name: WordPress.org plugin update
         uses: 10up/action-wordpress-plugin-deploy@stable
