@@ -2,7 +2,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.0.0-alpha.6] (July 25, 2023)
-* Increase the cache buster
+* Increase the cache buster ([#1661])
 
 ## [4.0.0-alpha.5] (July 12, 2023)
 
@@ -583,6 +583,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [1.0.0-rc.1]: https://github.com/GlotPress/GlotPress/compare/1.0.0-beta.1...1.0-rc.1
 [1.0-beta1]: https://github.com/GlotPress/GlotPress/releases/tag/1.0-beta1
 
+[#1661]: https://github.com/GlotPress/GlotPress/pull/1661
 [#1327]: https://github.com/GlotPress/GlotPress/pull/1327
 [#1332]: https://github.com/GlotPress/GlotPress/pull/1332
 [#1338]: https://github.com/GlotPress/GlotPress/pull/1338
