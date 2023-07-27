@@ -34,15 +34,6 @@ function prepare_original( $text ) {
 	// Wrap placeholders with notranslate.
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
-	// Put the glossaries back!
-	$text = preg_replace_callback(
-		'!(<span GLOSSARY=(\d+)>)!',
-		function( $m ) use ( $glossary_entries ) {
-			return $glossary_entries[ $m[2] ];
-		},
-		$text
-	);
-
 	// Highlight two or more spaces between words.
 	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
 	// Highlight leading and trailing spaces in single lines.
@@ -54,6 +45,15 @@ function prepare_original( $text ) {
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
+
+	// Put the glossaries back!
+	$text = preg_replace_callback(
+		'!(<span GLOSSARY=(\d+)>)!',
+		function( $m ) use ( $glossary_entries ) {
+			return $glossary_entries[ $m[2] ];
+		},
+		$text
+	);
 
 	return $text;
 }
