@@ -423,8 +423,7 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
-<?php ob_start(); ?>
-<table id="translations" class="gp-table translations <?php echo esc_attr( $class_rtl ); ?>">
+<table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
 	<thead>
 	<tr>
 		<?php
@@ -459,18 +458,15 @@ $i = 0;
 ?>
 </table>
 <?php
-$translations_table = ob_get_clean();
-
+$def_vars = get_defined_vars();
 /**
- * Filters the contents of the translation table..
+ * Fires after the translation table has been displayed.
  *
  * @since 4.0.0
  *
- * @param array get_defined_vars() The variables defined in the template.
+ * @param array $def_vars Variables defined in the template.
  */
-$translations_table = apply_filters( 'gp_translation_table_after', get_defined_vars() );
-// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-echo $translations_table;
+do_action( 'gp_after_translation_table', $def_vars );
 ?>
 
 <div class="gp-table-actions bottom">
