@@ -36,7 +36,7 @@ wp_localize_script(
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
-
+gp_enqueue_styles( 'gp-jquery-webui-popover' );
 gp_tmpl_header();
 $i = 0;
 ?>
