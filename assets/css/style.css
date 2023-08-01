@@ -1608,9 +1608,6 @@ table.form-table td {
 		flex-direction: column;
 	}
 }
-.pulse-wrapper {
-	display: inline-block;
-}
 
 .pulse {
     border-radius: 50%;
