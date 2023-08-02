@@ -25,6 +25,9 @@ jQuery( document ).ready(
 			const tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
 
 			let popover_content = wrapper.data( 'popover-content' );
+			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
+			wrapper.addClass( 'pulse-border' );
+
 			if ( tourEndsHere ) {
 				popover_content += '<br/><br/><a href="" class="close-tour">Close</a>'
 			} else if ( typeof window.tour[tourName][nextItem] !== 'undefined' &&  typeof window.tour[tourName][nextItem].reveal === 'undefined') {

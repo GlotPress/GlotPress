@@ -1618,3 +1618,10 @@ table.form-table td {
     width: 12px;
     height: 12px;
 }
+
+.pulse-border {
+	border: 0.15em dashed rgb(177 60 13);
+    padding: 0.4em;
+    border-radius: 3px;
+    margin: 10px 11px;
+}
