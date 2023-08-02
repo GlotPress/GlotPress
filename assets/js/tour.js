@@ -20,7 +20,6 @@ jQuery( document ).ready(
 		} );
 		jQuery( document ).on( 'click', '.pulse', function() {
 			const wrapper = jQuery( this ).closest( '.pulse-wrapper' );
-			console.log( wrapper.data() );
 			const tourName = wrapper.data( 'tourname' );
 			const nextItem = 1 + wrapper.data( 'tourindex' );
 			const tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
