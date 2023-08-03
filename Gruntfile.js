@@ -31,7 +31,7 @@ module.exports = function( grunt ) {
 		},
 		concat: {
 			inline_translation: {
-				src: [ 'inline-translation/css/jquery.webui-popover.css','inline-translation/css/custom.css' ],
+				src: [ 'assets/css/jquery.webui-popover.css', 'inline-translation/css/custom.css' ],
 				dest: 'assets/css/inline-translation.css'
 			},
 		},
@@ -96,6 +96,7 @@ module.exports = function( grunt ) {
 			},
 			inline_translation_js: {
 				files: [
+					'assets/js/jquery.webui-popover.js',
 					'inline-translation/lib/*.js',
 				],
 				tasks: [ 'browserify' ],

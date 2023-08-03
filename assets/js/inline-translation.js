@@ -1,713 +1,5 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.gpInlineTranslation = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /*
- * This is a utility function to help reduce the number of calls made to
- * the GlotPress database ( or generic backend ), especially as we're
- * loading a new page.
- * It takes a function that takes an array and callback, and generates a new
- * function that takes a single argument and returns a Deferred object.
- * i.e.
- * function ( arrayArgument, callback )
- * to:
- * function ( singleArgument ) { return jQuery.deferred( singleResult ) }
- *
- * Internally, the function collects up a series of these singleArgument
- * calls and makes a single call to the original function ( presumably the
- * backend ) after a brief delay.
- */
-
-function handleBatchedResponse( response, originalToCallbacksMap ) {
-	var i, data, j, key;
-	if ( 'undefined' === typeof response ) {
-		return false;
-	}
-
-	if ( 'undefined' === typeof response[ 0 ] ) {
-		response = [ response ];
-	}
-
-	for ( i = 0; ( data = response[ i ] ); i++ ) {
-		if ( 'undefined' === typeof data || 'undefined' === typeof data.original ) {
-			// if there is not a single valid original
-			break;
-		}
-
-		key = data.original.hash;
-		if ( 'undefined' === typeof originalToCallbacksMap[ key ] || !
-		originalToCallbacksMap[ key ] ) {
-			continue;
-		}
-
-		for ( j = 0; j < originalToCallbacksMap[ key ].length; j++ ) {
-			originalToCallbacksMap[ key ][ j ].resolve( data );
-		}
-
-		originalToCallbacksMap[ key ] = null;
-		delete originalToCallbacksMap[ key ];
-	}
-
-	// reject any keys that have not been handled
-	for ( key in originalToCallbacksMap ) {
-		if ( ! originalToCallbacksMap[ key ] ) {
-			continue;
-		}
-
-		for ( j = 0; j < originalToCallbacksMap[ key ].length; j++ ) {
-			originalToCallbacksMap[ key ][ j ].reject();
-		}
-	}
-}
-
-module.exports = function( functionToWrap ) {
-	var batchDelay = 200,
-		originalToCallbacksMap = {},
-		batchedOriginals = [],
-		batchTimeout,
-		delayMore,
-		resolveBatch;
-
-	if ( 'function' !== typeof ( functionToWrap ) ) {
-		return null;
-	}
-
-	delayMore = function() {
-		if ( batchTimeout ) {
-			window.clearTimeout( batchTimeout );
-		}
-		batchTimeout = window.setTimeout( resolveBatch, batchDelay );
-	};
-
-	// Actually make the call through the original function
-	resolveBatch = function() {
-		// Capture the data relevant to this request
-		var originals = batchedOriginals.slice(),
-			callbacks = originalToCallbacksMap;
-
-		// Then clear out the data so it's ready for the next batch.
-		batchTimeout = null;
-		originalToCallbacksMap = {};
-		batchedOriginals = [];
-
-		if ( 0 === originals.length ) {
-			return;
-		}
-
-		functionToWrap( originals, function( response ) {
-			handleBatchedResponse( response, callbacks );
-		} );
-	};
-
-	return function( original ) {
-		var deferred = new jQuery.Deferred();
-		if ( original.hash in originalToCallbacksMap ) {
-			originalToCallbacksMap[ original.hash ].push( deferred );
-		} else {
-			batchedOriginals.push( original );
-			originalToCallbacksMap[ original.hash ] = [ deferred ];
-		}
-
-		delayMore();
-
-		return deferred;
-	};
-};
-
-},{}],2:[function(require,module,exports){
-/**
- * Community Translation GlotPress module
- */
-'use strict';
-
-var batcher = require( './batcher.js' );
-
-function GlotPress( locale, translations ) {
-	var server = {
-			url: '',
-			projects: [],
-			translation_set_slug: 'default',
-		},
-		batch = batcher( fetchOriginals ),
-		lastPrompt = '',
-		glossaryMarkups = {};
-	function ajax( options ) {
-		options = jQuery.extend( {
-			method: 'POST',
-			data: {},
-			beforeSend: function( xhr ) {
-				xhr.setRequestHeader( 'X-WP-Nonce', server.nonce );
-			},
-		}, options );
-		return jQuery.ajax( options );
-	}
-
-	function fetchOriginals( originals, callback ) {
-		if ( ! server.projects.length ) {
-			return callback( {} );
-		}
-		ajax( {
-			url: server.restUrl + '/translations-by-originals',
-			data: {
-				projects: server.projects,
-				translation_set_slug: server.translation_set_slug,
-				locale_slug: locale.getLocaleCode(),
-				original_strings: JSON.stringify( originals ),
-			},
-		} ).done( function( response ) {
-			callback( response );
-		} );
-	}
-
-	function hash( original ) {
-		var key = '|' + original.singular;
-		if ( 'undefined' !== typeof original.context ) {
-			key = original.context + key;
-		}
-		key = '|' + key;
-		if ( 'undefined' !== typeof original.domain ) {
-			key = original.domain + key;
-		}
-		return key;
-	}
-
-	return {
-		getPermalink: function( translationPair ) {
-			var originalId = translationPair.getOriginal().getId(),
-				projectUrl,
-				translateSetSlug = server.translation_set_slug,
-				translationId,
-				url;
-
-			projectUrl = server.url + 'projects/' + translationPair.getGlotPressProject();
-			url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
-
-			if ( 'undefined' !== typeof translationId ) {
-				url += '&filters[translation_id]=' + translationId;
-			}
-
-			return url;
-		},
-
-		loadSettings: function( gpInstance ) {
-			server = gpInstance;
-		},
-
-		shouldLoadSuggestions: function() {
-			return !! server.openai_key;
-		},
-
-		getLastPrompt: function() {
-			return lastPrompt;
-		},
-
-		queryByOriginal: function( original ) {
-			var deferred;
-			original.hash = hash( original );
-			if ( original.hash in translations ) {
-				deferred = new jQuery.Deferred();
-				deferred.resolve( translations[ original.hash ] );
-				return deferred;
-			}
-
-			return batch( original );
-		},
-
-		glossaryMarkup: function( translationPair ) {
-			var data;
-			if ( ! translationPair.getOriginal().getSingularGlossaryMarkup() && glossaryMarkups[ translationPair.getOriginal().getSingular() ] ) {
-				translationPair.getOriginal().setSingularGlossaryMarkup( glossaryMarkups[ translationPair.getOriginal().getSingular() ] );
-			}
-			if ( ! translationPair.getOriginal().getPluralGlossaryMarkup() && glossaryMarkups[ translationPair.getOriginal().getPlural() ] ) {
-				translationPair.getOriginal().setPluralGlossaryMarkup( glossaryMarkups[ translationPair.getOriginal().getPlural() ] );
-			}
-			if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
-				return new jQuery.Deferred().resolve( translationPair.getOriginal().objectify() );
-			}
-			data = {
-				project: translationPair.getGlotPressProject(),
-				translation_set_slug: server.translation_set_slug,
-				locale_slug: locale.getLocaleCode(),
-				original: translationPair.getOriginal().objectify(),
-			};
-
-			return ajax( {
-				url: server.restUrl + '/glossary-markup',
-				data: data,
-			} ).then( function( response ) {
-				if ( response.singular_glossary_markup ) {
-					glossaryMarkups[ translationPair.getOriginal().getSingular() ] = response.singular_glossary_markup;
-					translationPair.getOriginal().setSingularGlossaryMarkup( response.singular_glossary_markup );
-				}
-				if ( response.plural_glossary_markup ) {
-					glossaryMarkups[ translationPair.getOriginal().getPlural() ] = response.plural_glossary_markup;
-					translationPair.getOriginal().setPluralGlossaryMarkup( response.plural_glossary_markup );
-				}
-			} );
-		},
-
-		submitTranslation: function( translation, translationPair ) {
-			var data = {
-				project: translationPair.getGlotPressProject(),
-				translation_set_slug: server.translation_set_slug,
-				locale_slug: locale.getLocaleCode(),
-				translation: translation,
-			};
-			window.parent.postMessage( { type: 'relay', message: 'new-translation', data: data }, 'https://playground.wordpress.net/' );
-			return ajax( {
-				url: server.restUrl + '/translation',
-				data: data,
-			} );
-		},
-
-		getSuggestedTranslation: function( translationPair, data ) {
-			var messages,
-				original = [ translationPair.getOriginal().getSingular() ],
-				prompt = ( data && data.prompt ) || '',
-				language = locale.getLanguageName();
-
-			if ( [ 'German' ].includes( language ) ) {
-				language = 'informal ' + language;
-			}
-
-			if ( server.openai_prompt ) {
-				prompt += server.openai_prompt;
-			}
-
-			if ( ! ( data && data.prompt ) && translationPair.getOriginal().getSingularGlossaryMarkup() ) {
-				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
-					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
-						prompt += 'Translate "' + word.textContent + '" as "' + e.translation + '" when it is a ' + e.pos;
-						if ( e.comment ) {
-							prompt += ' (' + e.comment + ')';
-						}
-						prompt += '. ';
-					} );
-				} );
-			}
-
-			lastPrompt = prompt;
-
-			if ( prompt ) {
-				prompt += '. Given these conditions, ';
-			}
-
-			prompt += 'Translate the text in this JSON to ' + language + ' and always respond as pure JSON list (no outside comments!) in the format (append to the list if you have multiple suggestions): ';
-
-			if ( translationPair.getOriginal().getPlural() ) {
-				original.push( translationPair.getOriginal().getPlural() );
-				prompt += '[["singular translation","plural translation"]]';
-			} else {
-				prompt += '["translation"]';
-			}
-
-			messages = [
-				{
-					role: 'user',
-					content: prompt + '\n\n' + JSON.stringify( original ),
-				},
-			];
-
-			return jQuery.ajax( {
-				url: 'https://api.openai.com/v1/chat/completions',
-				type: 'POST',
-				headers: {
-					Authorization: 'Bearer ' + server.openai_key,
-				},
-				data: JSON.stringify( {
-					model: 'gpt-3.5-turbo',
-					messages: messages,
-					max_tokens: 1000,
-				} ),
-				contentType: 'application/json; charset=utf-8',
-				dataType: 'json',
-			} );
-		},
-	};
-}
-
-module.exports = GlotPress;
-
-},{"./batcher.js":1}],3:[function(require,module,exports){
-/**
- * Community Translation core module
- */
-'use strict';
-
-/**
- * Internal dependencies
- */
-var TranslationPair = require( './translation-pair' ),
-	Walker = require( './walker' ),
-	Locale = require( './locale' ),
-	Popover = require( './popover' ),
-	GlotPress = require( './glotpress' );
-
-/**
- * Local variables
- */
-var debounceTimeout,
-	currentlyWalkingTheDom = false,
-	loadCSS, loadData, registerContentChangedCallback, registerDomChangedCallback,
-	registerPopoverHandlers, findNewTranslatableTexts,
-	glotPress, currentUserId, walker,
-	translationData = {
-		cssUrl: '/',
-		currentUserId: false,
-		localeCode: 'en',
-		languageName: 'English',
-		pluralForms: 'nplurals=2; plural=(n != 1)',
-		contentChangedCallback: function() {},
-	},
-	translationUpdateCallbacks = [];
-require( './jquery.webui-popover.js' );
-
-module.exports = {
-
-	load: function() {
-		if ( 'undefined' === typeof window.gpInlineTranslationData ) {
-			return false;
-		}
-		loadCSS();
-		loadData( window.gpInlineTranslationData );
-		registerPopoverHandlers();
-		registerContentChangedCallback();
-		findNewTranslatableTexts();
-	},
-
-	unload: function() {
-		if ( debounceTimeout ) {
-			window.clearTimeout( debounceTimeout );
-		}
-		if ( 'object' === typeof window.gpInlineTranslationData ) {
-			window.gpInlineTranslationData.contentChangedCallback = function() {};
-		}
-		unRegisterPopoverHandlers();
-		removeCssClasses();
-	},
-
-	registerTranslatedCallback: function( callback ) {
-		translationUpdateCallbacks.push( callback );
-	},
-
-};
-
-function notifyTranslated( newTranslationPair ) {
-	translationUpdateCallbacks.forEach( function( hook ) {
-		hook( newTranslationPair.serialize() );
-	} );
-}
-
-loadCSS = function() {
-	var s;
-	if ( translationData.cssUrl ) {
-		s = document.createElement( 'link' );
-		s.setAttribute( 'rel', 'stylesheet' );
-		s.setAttribute( 'type', 'text/css' );
-		s.setAttribute( 'href', translationData.cssUrl );
-		document.getElementsByTagName( 'head' )[ 0 ].appendChild( s );
-	}
-	jQuery( 'iframe' ).addClass( 'translator-untranslatable' );
-};
-
-loadData = function( translationDataFromJumpstart ) {
-	if (
-		typeof translationDataFromJumpstart === 'object' &&
-			typeof translationDataFromJumpstart.localeCode === 'string'
-	) {
-		translationData = translationDataFromJumpstart;
-	}
-
-	translationData.locale = new Locale( translationData.localeCode, translationData.languageName, translationData.pluralForms );
-	currentUserId = translationData.currentUserId;
-
-	glotPress = new GlotPress( translationData.locale, translationData.translations );
-	if ( 'undefined' !== typeof translationData.glotPress ) {
-		glotPress.loadSettings( translationData.glotPress );
-	}
-
-	TranslationPair.setTranslationData( translationData );
-	walker = new Walker( TranslationPair, jQuery, document );
-};
-
-registerContentChangedCallback = function() {
-	if ( 'object' === typeof window.gpInlineTranslationData ) {
-		window.gpInlineTranslationData.contentChangedCallback = function() {
-			if ( debounceTimeout ) {
-				window.clearTimeout( debounceTimeout );
-			}
-			debounceTimeout = window.setTimeout( findNewTranslatableTexts, 250 );
-		};
-
-		if ( typeof window.gpInlineTranslationData.stringsUsedOnPage === 'object' ) {
-			registerDomChangedCallback();
-		}
-	}
-};
-
-// This is a not very elegant but quite efficient way to check if the DOM has changed
-// after the initial walking of the DOM
-registerDomChangedCallback = function() {
-	var checksRemaining = 10,
-		lastBodySize = document.body.innerHTML.length,
-		checkBodySize = function() {
-			var bodySize;
-
-			if ( --checksRemaining <= 0 ) {
-				return;
-			}
-
-			bodySize = document.body.innerHTML.length;
-			if ( lastBodySize !== bodySize ) {
-				lastBodySize = bodySize;
-
-				if ( debounceTimeout ) {
-					window.clearTimeout( debounceTimeout );
-				}
-				debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1700 );
-			}
-			window.setTimeout( checkBodySize, 500 );
-		};
-
-	window.setTimeout( checkBodySize, 500 );
-};
-
-registerPopoverHandlers = function() {
-	jQuery( document ).on( 'input', 'textarea.translation', function() {
-		var textareasWithInput,
-			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
-			$allTextareas = jQuery( this ),
-			$button = $form.find( 'button' ),
-			translationPair = $form.data( 'translationPair' ),
-			newPlaceholders = getPlaceholdersLink( translationPair, $allTextareas.val() );
-		jQuery( this ).siblings( 'div.placeholders' ).html( newPlaceholders ).css( 'display', 'block' );
-
-		textareasWithInput = $allTextareas.filter( function() {
-			return this.value.length;
-		} );
-
-		// disable if no textarea has an input
-		$button.prop( 'disabled', 0 === textareasWithInput.length );
-	} );
-
-	jQuery( document.body ).on( 'focus', 'textarea.translation', function() {
-		var currentText = '',
-			newPlaceholders = '',
-			textareas = jQuery( 'textarea[name="translation[]"]' ),
-			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
-			translationPair = $form.data( 'translationPair' );
-
-		textareas.map( function() {
-			currentText = jQuery( this ).val();
-			newPlaceholders = getPlaceholdersLink( translationPair, currentText );
-			jQuery( this ).siblings( '.placeholders' ).html( newPlaceholders );
-			return true;
-		} );
-	} );
-
-	jQuery( document ).on( 'submit', 'form.ct-new-translation', function() {
-		var $form = jQuery( this ),
-			$node = jQuery( '.' + $form.data( 'nodes' ) ),
-			translationPair = $form.data( 'translationPair' ),
-			newTranslationStringsFromForm = $form.find( 'textarea' ).map( function() {
-				return jQuery( this ).val();
-			} ).get();
-
-		function notEmpty( string ) {
-			return string.trim().length > 0;
-		}
-
-		if ( ! newTranslationStringsFromForm.every( notEmpty ) ) {
-			return false;
-		}
-
-		// We're optimistic
-		// TODO: reset on failure.
-		// TODO: use Jed to insert with properly replaced variables
-		$node.addClass( 'translator-user-translated' ).removeClass( 'translator-untranslated' );
-		if ( $node.children().length === 0 ) {
-			$node.text( newTranslationStringsFromForm[ 0 ] );
-		}
-
-		// Reporting to GlotPress
-		jQuery
-			.when( translationPair.getOriginal().getId() )
-			.done( function( originalId ) {
-				var submittedTranslations = jQuery.makeArray( newTranslationStringsFromForm ),
-					translation = {},
-					warnings = '',
-					warningsObj = {},
-					outputWarningMessage = '';
-
-				translation[ originalId ] = submittedTranslations;
-				glotPress.submitTranslation( translation, translationPair ).done( function( data ) {
-					if ( typeof data[ originalId ] === 'undefined' ) {
-						return;
-					}
-					warnings = data[ originalId ][ 0 ].warnings;
-					if ( data[ originalId ][ 0 ].warnings !== undefined && data[ originalId ][ 0 ].warnings ) {
-						warningsObj = JSON.parse( warnings )[ 0 ];
-
-						jQuery.each( warningsObj, function( key, value ) {
-							outputWarningMessage += value + '<br>';
-						} );
-
-						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Warnings: </b>' + outputWarningMessage + '</p>' );
-
-						return;
-					}
-
-					$form.closest( '.webui-popover' ).hide();
-
-					translationPair.updateAllTranslations( data[ originalId ], currentUserId );
-					makeTranslatable( translationPair, $node );
-					notifyTranslated( translationPair );
-
-					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
-						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
-					}
-				} ).fail( function( xhr ) {
-					if ( xhr.responseJSON ) {
-						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b><span class="message">' );
-						$form.find( '.warnings .message' ).text( xhr.responseJSON.message );
-					}
-				} );
-			} );
-
-		return false;
-	} );
-
-	jQuery( document ).on( 'submit', 'form.ct-existing-translation', function() {
-		var enclosingNode = jQuery( this ),
-			popover, webUiPopover,
-			translationPair = enclosingNode.data( 'translationPair' );
-		if ( 'object' !== typeof translationPair ) {
-			return false;
-		}
-
-		popover = new Popover( translationPair, translationData.locale, glotPress );
-		webUiPopover = enclosingNode.closest( '.webui-popover' );
-		enclosingNode.parent().empty().append( popover.getTranslationHtml() ).find( 'textarea' ).get( 0 ).focus();
-		webUiPopover.data( 'triggerElement' ).trigger( 'shown.webui.popover', [ webUiPopover ] );
-
-		return false;
-	} );
-
-	jQuery( document ).on( 'submit', 'form.copy-translation', function() {
-		var originals = jQuery( this ).next().find( 'div.original strong' );
-		jQuery( this ).next().find( 'textarea' ).each( function( i ) {
-			if ( ! originals[ i ] ) {
-				return;
-			}
-			this.focus();
-			this.select();
-
-			// Replace all text with new text
-			document.execCommand( 'insertText', false, originals[ i ].textContent );
-		} );
-		jQuery( this ).next().find( 'textarea' ).first().focus().trigger( 'keyup' );
-
-		return false;
-	} );
-};
-
-function removeCssClasses() {
-	var classesToDrop = [
-		'translator-checked',
-		'translator-untranslated',
-		'translator-translated',
-		'translator-user-translated',
-		'translator-untranslatable',
-		'translator-dont-translate' ];
-
-	jQuery( '.' + classesToDrop.join( ', .' ) ).removeClass( classesToDrop.join( ' ' ) );
-}
-
-function unRegisterPopoverHandlers() {
-	jQuery( document ).off( 'submit', 'form.ct-existing-translation,form.ct-new-translation' );
-	jQuery( '.translator-translatable' ).webuiPopover( 'destroy' );
-}
-
-function makeUntranslatable( translationPair, $node ) {
-	$node.removeClass( 'translator-untranslated translator-translated translator-translatable translator-checking' );
-	$node.addClass( 'translator-dont-translate' );
-	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
-}
-
-function makeTranslatable( translationPair, node ) {
-	translationPair.createPopover( node, glotPress );
-	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
-	if ( translationPair.isFullyTranslated() ) {
-		if ( translationPair.isTranslationWaiting() ) {
-			node.removeClass( 'translator-translated' ).addClass( 'translator-user-translated' );
-		} else {
-			node.removeClass( 'translator-user-translated' ).addClass( 'translator-translated' );
-		}
-		node.each( function() {
-			var el = this;
-			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) {
-				if ( ! translationPair.getRegex().test( el.innerHTML ) ) {
-					setTimeout( function() {
-						el.innerHTML = translationPair.getReplacementText( el.innerHTML );
-					}, 1 );
-				}
-				return;
-			}
-			if ( ! translationPair.getRegex().test( el.textContent ) ) {
-				setTimeout( function() {
-					el.textContent = translationPair.getReplacementText( el.textContent );
-				}, 1 );
-			}
-		} );
-	} else {
-		node.addClass( 'translator-untranslated' );
-	}
-}
-
-findNewTranslatableTexts = function() {
-	if ( currentlyWalkingTheDom ) {
-		if ( debounceTimeout ) {
-			window.clearTimeout( debounceTimeout );
-		}
-		debounceTimeout = window.setTimeout( findNewTranslatableTexts, 500 );
-		return;
-	}
-
-	currentlyWalkingTheDom = true;
-
-	walker.walkTextNodes( document.body, function( translationPair, enclosingNode ) {
-		enclosingNode.addClass( 'translator-checking' );
-
-		translationPair.fetchOriginalAndTranslations( glotPress, currentUserId )
-			.fail(
-				// Failure indicates that the string is not in GlotPress yet
-				makeUntranslatable.bind( null, translationPair, enclosingNode )
-			)
-			.done(
-				makeTranslatable.bind( null, translationPair, enclosingNode )
-			);
-	}, function() {
-		currentlyWalkingTheDom = false;
-	} );
-};
-
-function getPlaceholdersLink( translationPair, textAreaContent ) {
-	var placeholdersLink = '';
-	var placeholders = translationPair.getOriginal().getPlaceholders();
-	var index = 0;
-
-	if ( placeholders.length ) {
-		placeholdersLink = placeholders.map( function( match ) {
-			if ( ! ( textAreaContent.indexOf( match ) === -1 ) ) {
-				index = textAreaContent.indexOf( match );
-				textAreaContent = textAreaContent.slice( 0, index ) + textAreaContent.slice( index + match.length );
-				return '<a class="placeholder-exist inline-placeholder" href="#">' + match + '</a>';
-			}
-			return '<a class="inline-placeholder" href="#">' + match + '</a>';
-		} ).join( '' );
-	}
-	return placeholdersLink;
-}
-
-},{"./glotpress":2,"./jquery.webui-popover.js":4,"./locale":5,"./popover":7,"./translation-pair":8,"./walker":10}],4:[function(require,module,exports){
-/*
  *  webui popover plugin  - v1.2.2
  *  A lightWeight popover plugin with jquery ,enchance the  popover plugin of bootstrap with some awesome new features. It works well with bootstrap ,but bootstrap is not necessary!
  *  https://github.com/sandywalker/webui-popover
@@ -1625,7 +917,715 @@ function getPlaceholdersLink( translationPair, textAreaContent ) {
 
 })(jQuery, window, document);
 
-},{}],5:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
+/*
+ * This is a utility function to help reduce the number of calls made to
+ * the GlotPress database ( or generic backend ), especially as we're
+ * loading a new page.
+ * It takes a function that takes an array and callback, and generates a new
+ * function that takes a single argument and returns a Deferred object.
+ * i.e.
+ * function ( arrayArgument, callback )
+ * to:
+ * function ( singleArgument ) { return jQuery.deferred( singleResult ) }
+ *
+ * Internally, the function collects up a series of these singleArgument
+ * calls and makes a single call to the original function ( presumably the
+ * backend ) after a brief delay.
+ */
+
+function handleBatchedResponse( response, originalToCallbacksMap ) {
+	var i, data, j, key;
+	if ( 'undefined' === typeof response ) {
+		return false;
+	}
+
+	if ( 'undefined' === typeof response[ 0 ] ) {
+		response = [ response ];
+	}
+
+	for ( i = 0; ( data = response[ i ] ); i++ ) {
+		if ( 'undefined' === typeof data || 'undefined' === typeof data.original ) {
+			// if there is not a single valid original
+			break;
+		}
+
+		key = data.original.hash;
+		if ( 'undefined' === typeof originalToCallbacksMap[ key ] || !
+		originalToCallbacksMap[ key ] ) {
+			continue;
+		}
+
+		for ( j = 0; j < originalToCallbacksMap[ key ].length; j++ ) {
+			originalToCallbacksMap[ key ][ j ].resolve( data );
+		}
+
+		originalToCallbacksMap[ key ] = null;
+		delete originalToCallbacksMap[ key ];
+	}
+
+	// reject any keys that have not been handled
+	for ( key in originalToCallbacksMap ) {
+		if ( ! originalToCallbacksMap[ key ] ) {
+			continue;
+		}
+
+		for ( j = 0; j < originalToCallbacksMap[ key ].length; j++ ) {
+			originalToCallbacksMap[ key ][ j ].reject();
+		}
+	}
+}
+
+module.exports = function( functionToWrap ) {
+	var batchDelay = 200,
+		originalToCallbacksMap = {},
+		batchedOriginals = [],
+		batchTimeout,
+		delayMore,
+		resolveBatch;
+
+	if ( 'function' !== typeof ( functionToWrap ) ) {
+		return null;
+	}
+
+	delayMore = function() {
+		if ( batchTimeout ) {
+			window.clearTimeout( batchTimeout );
+		}
+		batchTimeout = window.setTimeout( resolveBatch, batchDelay );
+	};
+
+	// Actually make the call through the original function
+	resolveBatch = function() {
+		// Capture the data relevant to this request
+		var originals = batchedOriginals.slice(),
+			callbacks = originalToCallbacksMap;
+
+		// Then clear out the data so it's ready for the next batch.
+		batchTimeout = null;
+		originalToCallbacksMap = {};
+		batchedOriginals = [];
+
+		if ( 0 === originals.length ) {
+			return;
+		}
+
+		functionToWrap( originals, function( response ) {
+			handleBatchedResponse( response, callbacks );
+		} );
+	};
+
+	return function( original ) {
+		var deferred = new jQuery.Deferred();
+		if ( original.hash in originalToCallbacksMap ) {
+			originalToCallbacksMap[ original.hash ].push( deferred );
+		} else {
+			batchedOriginals.push( original );
+			originalToCallbacksMap[ original.hash ] = [ deferred ];
+		}
+
+		delayMore();
+
+		return deferred;
+	};
+};
+
+},{}],3:[function(require,module,exports){
+/**
+ * Community Translation GlotPress module
+ */
+'use strict';
+
+var batcher = require( './batcher.js' );
+
+function GlotPress( locale, translations ) {
+	var server = {
+			url: '',
+			projects: [],
+			translation_set_slug: 'default',
+		},
+		batch = batcher( fetchOriginals ),
+		lastPrompt = '',
+		glossaryMarkups = {};
+	function ajax( options ) {
+		options = jQuery.extend( {
+			method: 'POST',
+			data: {},
+			beforeSend: function( xhr ) {
+				xhr.setRequestHeader( 'X-WP-Nonce', server.nonce );
+			},
+		}, options );
+		return jQuery.ajax( options );
+	}
+
+	function fetchOriginals( originals, callback ) {
+		if ( ! server.projects.length ) {
+			return callback( {} );
+		}
+		ajax( {
+			url: server.restUrl + '/translations-by-originals',
+			data: {
+				projects: server.projects,
+				translation_set_slug: server.translation_set_slug,
+				locale_slug: locale.getLocaleCode(),
+				original_strings: JSON.stringify( originals ),
+			},
+		} ).done( function( response ) {
+			callback( response );
+		} );
+	}
+
+	function hash( original ) {
+		var key = '|' + original.singular;
+		if ( 'undefined' !== typeof original.context ) {
+			key = original.context + key;
+		}
+		key = '|' + key;
+		if ( 'undefined' !== typeof original.domain ) {
+			key = original.domain + key;
+		}
+		return key;
+	}
+
+	return {
+		getPermalink: function( translationPair ) {
+			var originalId = translationPair.getOriginal().getId(),
+				projectUrl,
+				translateSetSlug = server.translation_set_slug,
+				translationId,
+				url;
+
+			projectUrl = server.url + 'projects/' + translationPair.getGlotPressProject();
+			url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
+
+			if ( 'undefined' !== typeof translationId ) {
+				url += '&filters[translation_id]=' + translationId;
+			}
+
+			return url;
+		},
+
+		loadSettings: function( gpInstance ) {
+			server = gpInstance;
+		},
+
+		shouldLoadSuggestions: function() {
+			return !! server.openai_key;
+		},
+
+		getLastPrompt: function() {
+			return lastPrompt;
+		},
+
+		queryByOriginal: function( original ) {
+			var deferred;
+			original.hash = hash( original );
+			if ( original.hash in translations ) {
+				deferred = new jQuery.Deferred();
+				deferred.resolve( translations[ original.hash ] );
+				return deferred;
+			}
+
+			return batch( original );
+		},
+
+		glossaryMarkup: function( translationPair ) {
+			var data;
+			if ( ! translationPair.getOriginal().getSingularGlossaryMarkup() && glossaryMarkups[ translationPair.getOriginal().getSingular() ] ) {
+				translationPair.getOriginal().setSingularGlossaryMarkup( glossaryMarkups[ translationPair.getOriginal().getSingular() ] );
+			}
+			if ( ! translationPair.getOriginal().getPluralGlossaryMarkup() && glossaryMarkups[ translationPair.getOriginal().getPlural() ] ) {
+				translationPair.getOriginal().setPluralGlossaryMarkup( glossaryMarkups[ translationPair.getOriginal().getPlural() ] );
+			}
+			if ( translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+				return new jQuery.Deferred().resolve( translationPair.getOriginal().objectify() );
+			}
+			data = {
+				project: translationPair.getGlotPressProject(),
+				translation_set_slug: server.translation_set_slug,
+				locale_slug: locale.getLocaleCode(),
+				original: translationPair.getOriginal().objectify(),
+			};
+
+			return ajax( {
+				url: server.restUrl + '/glossary-markup',
+				data: data,
+			} ).then( function( response ) {
+				if ( response.singular_glossary_markup ) {
+					glossaryMarkups[ translationPair.getOriginal().getSingular() ] = response.singular_glossary_markup;
+					translationPair.getOriginal().setSingularGlossaryMarkup( response.singular_glossary_markup );
+				}
+				if ( response.plural_glossary_markup ) {
+					glossaryMarkups[ translationPair.getOriginal().getPlural() ] = response.plural_glossary_markup;
+					translationPair.getOriginal().setPluralGlossaryMarkup( response.plural_glossary_markup );
+				}
+			} );
+		},
+
+		submitTranslation: function( translation, translationPair ) {
+			var data = {
+				project: translationPair.getGlotPressProject(),
+				translation_set_slug: server.translation_set_slug,
+				locale_slug: locale.getLocaleCode(),
+				translation: translation,
+			};
+			window.parent.postMessage( { type: 'relay', message: 'new-translation', data: data }, 'https://playground.wordpress.net/' );
+			return ajax( {
+				url: server.restUrl + '/translation',
+				data: data,
+			} );
+		},
+
+		getSuggestedTranslation: function( translationPair, data ) {
+			var messages,
+				original = [ translationPair.getOriginal().getSingular() ],
+				prompt = ( data && data.prompt ) || '',
+				language = locale.getLanguageName();
+
+			if ( [ 'German' ].includes( language ) ) {
+				language = 'informal ' + language;
+			}
+
+			if ( server.openai_prompt ) {
+				prompt += server.openai_prompt;
+			}
+
+			if ( ! ( data && data.prompt ) && translationPair.getOriginal().getSingularGlossaryMarkup() ) {
+				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
+					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
+						prompt += 'Translate "' + word.textContent + '" as "' + e.translation + '" when it is a ' + e.pos;
+						if ( e.comment ) {
+							prompt += ' (' + e.comment + ')';
+						}
+						prompt += '. ';
+					} );
+				} );
+			}
+
+			lastPrompt = prompt;
+
+			if ( prompt ) {
+				prompt += '. Given these conditions, ';
+			}
+
+			prompt += 'Translate the text in this JSON to ' + language + ' and always respond as pure JSON list (no outside comments!) in the format (append to the list if you have multiple suggestions): ';
+
+			if ( translationPair.getOriginal().getPlural() ) {
+				original.push( translationPair.getOriginal().getPlural() );
+				prompt += '[["singular translation","plural translation"]]';
+			} else {
+				prompt += '["translation"]';
+			}
+
+			messages = [
+				{
+					role: 'user',
+					content: prompt + '\n\n' + JSON.stringify( original ),
+				},
+			];
+
+			return jQuery.ajax( {
+				url: 'https://api.openai.com/v1/chat/completions',
+				type: 'POST',
+				headers: {
+					Authorization: 'Bearer ' + server.openai_key,
+				},
+				data: JSON.stringify( {
+					model: 'gpt-3.5-turbo',
+					messages: messages,
+					max_tokens: 1000,
+				} ),
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
+			} );
+		},
+	};
+}
+
+module.exports = GlotPress;
+
+},{"./batcher.js":2}],4:[function(require,module,exports){
+/**
+ * Community Translation core module
+ */
+'use strict';
+
+/**
+ * Internal dependencies
+ */
+var TranslationPair = require( './translation-pair' ),
+	Walker = require( './walker' ),
+	Locale = require( './locale' ),
+	Popover = require( './popover' ),
+	GlotPress = require( './glotpress' );
+
+/**
+ * Local variables
+ */
+var debounceTimeout,
+	currentlyWalkingTheDom = false,
+	loadCSS, loadData, registerContentChangedCallback, registerDomChangedCallback,
+	registerPopoverHandlers, findNewTranslatableTexts,
+	glotPress, currentUserId, walker,
+	translationData = {
+		cssUrl: '/',
+		currentUserId: false,
+		localeCode: 'en',
+		languageName: 'English',
+		pluralForms: 'nplurals=2; plural=(n != 1)',
+		contentChangedCallback: function() {},
+	},
+	translationUpdateCallbacks = [];
+require( '../../assets/js/jquery.webui-popover.js' );
+
+module.exports = {
+
+	load: function() {
+		if ( 'undefined' === typeof window.gpInlineTranslationData ) {
+			return false;
+		}
+		loadCSS();
+		loadData( window.gpInlineTranslationData );
+		registerPopoverHandlers();
+		registerContentChangedCallback();
+		findNewTranslatableTexts();
+	},
+
+	unload: function() {
+		if ( debounceTimeout ) {
+			window.clearTimeout( debounceTimeout );
+		}
+		if ( 'object' === typeof window.gpInlineTranslationData ) {
+			window.gpInlineTranslationData.contentChangedCallback = function() {};
+		}
+		unRegisterPopoverHandlers();
+		removeCssClasses();
+	},
+
+	registerTranslatedCallback: function( callback ) {
+		translationUpdateCallbacks.push( callback );
+	},
+
+};
+
+function notifyTranslated( newTranslationPair ) {
+	translationUpdateCallbacks.forEach( function( hook ) {
+		hook( newTranslationPair.serialize() );
+	} );
+}
+
+loadCSS = function() {
+	var s;
+	if ( translationData.cssUrl ) {
+		s = document.createElement( 'link' );
+		s.setAttribute( 'rel', 'stylesheet' );
+		s.setAttribute( 'type', 'text/css' );
+		s.setAttribute( 'href', translationData.cssUrl );
+		document.getElementsByTagName( 'head' )[ 0 ].appendChild( s );
+	}
+	jQuery( 'iframe' ).addClass( 'translator-untranslatable' );
+};
+
+loadData = function( translationDataFromJumpstart ) {
+	if (
+		typeof translationDataFromJumpstart === 'object' &&
+			typeof translationDataFromJumpstart.localeCode === 'string'
+	) {
+		translationData = translationDataFromJumpstart;
+	}
+
+	translationData.locale = new Locale( translationData.localeCode, translationData.languageName, translationData.pluralForms );
+	currentUserId = translationData.currentUserId;
+
+	glotPress = new GlotPress( translationData.locale, translationData.translations );
+	if ( 'undefined' !== typeof translationData.glotPress ) {
+		glotPress.loadSettings( translationData.glotPress );
+	}
+
+	TranslationPair.setTranslationData( translationData );
+	walker = new Walker( TranslationPair, jQuery, document );
+};
+
+registerContentChangedCallback = function() {
+	if ( 'object' === typeof window.gpInlineTranslationData ) {
+		window.gpInlineTranslationData.contentChangedCallback = function() {
+			if ( debounceTimeout ) {
+				window.clearTimeout( debounceTimeout );
+			}
+			debounceTimeout = window.setTimeout( findNewTranslatableTexts, 250 );
+		};
+
+		if ( typeof window.gpInlineTranslationData.stringsUsedOnPage === 'object' ) {
+			registerDomChangedCallback();
+		}
+	}
+};
+
+// This is a not very elegant but quite efficient way to check if the DOM has changed
+// after the initial walking of the DOM
+registerDomChangedCallback = function() {
+	var checksRemaining = 10,
+		lastBodySize = document.body.innerHTML.length,
+		checkBodySize = function() {
+			var bodySize;
+
+			if ( --checksRemaining <= 0 ) {
+				return;
+			}
+
+			bodySize = document.body.innerHTML.length;
+			if ( lastBodySize !== bodySize ) {
+				lastBodySize = bodySize;
+
+				if ( debounceTimeout ) {
+					window.clearTimeout( debounceTimeout );
+				}
+				debounceTimeout = window.setTimeout( findNewTranslatableTexts, 1700 );
+			}
+			window.setTimeout( checkBodySize, 500 );
+		};
+
+	window.setTimeout( checkBodySize, 500 );
+};
+
+registerPopoverHandlers = function() {
+	jQuery( document ).on( 'input', 'textarea.translation', function() {
+		var textareasWithInput,
+			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
+			$allTextareas = jQuery( this ),
+			$button = $form.find( 'button' ),
+			translationPair = $form.data( 'translationPair' ),
+			newPlaceholders = getPlaceholdersLink( translationPair, $allTextareas.val() );
+		jQuery( this ).siblings( 'div.placeholders' ).html( newPlaceholders ).css( 'display', 'block' );
+
+		textareasWithInput = $allTextareas.filter( function() {
+			return this.value.length;
+		} );
+
+		// disable if no textarea has an input
+		$button.prop( 'disabled', 0 === textareasWithInput.length );
+	} );
+
+	jQuery( document.body ).on( 'focus', 'textarea.translation', function() {
+		var currentText = '',
+			newPlaceholders = '',
+			textareas = jQuery( 'textarea[name="translation[]"]' ),
+			$form = jQuery( this ).parents( 'form.ct-new-translation' ),
+			translationPair = $form.data( 'translationPair' );
+
+		textareas.map( function() {
+			currentText = jQuery( this ).val();
+			newPlaceholders = getPlaceholdersLink( translationPair, currentText );
+			jQuery( this ).siblings( '.placeholders' ).html( newPlaceholders );
+			return true;
+		} );
+	} );
+
+	jQuery( document ).on( 'submit', 'form.ct-new-translation', function() {
+		var $form = jQuery( this ),
+			$node = jQuery( '.' + $form.data( 'nodes' ) ),
+			translationPair = $form.data( 'translationPair' ),
+			newTranslationStringsFromForm = $form.find( 'textarea' ).map( function() {
+				return jQuery( this ).val();
+			} ).get();
+
+		function notEmpty( string ) {
+			return string.trim().length > 0;
+		}
+
+		if ( ! newTranslationStringsFromForm.every( notEmpty ) ) {
+			return false;
+		}
+
+		// We're optimistic
+		// TODO: reset on failure.
+		// TODO: use Jed to insert with properly replaced variables
+		$node.addClass( 'translator-user-translated' ).removeClass( 'translator-untranslated' );
+		if ( $node.children().length === 0 ) {
+			$node.text( newTranslationStringsFromForm[ 0 ] );
+		}
+
+		// Reporting to GlotPress
+		jQuery
+			.when( translationPair.getOriginal().getId() )
+			.done( function( originalId ) {
+				var submittedTranslations = jQuery.makeArray( newTranslationStringsFromForm ),
+					translation = {},
+					warnings = '',
+					warningsObj = {},
+					outputWarningMessage = '';
+
+				translation[ originalId ] = submittedTranslations;
+				glotPress.submitTranslation( translation, translationPair ).done( function( data ) {
+					if ( typeof data[ originalId ] === 'undefined' ) {
+						return;
+					}
+					warnings = data[ originalId ][ 0 ].warnings;
+					if ( data[ originalId ][ 0 ].warnings !== undefined && data[ originalId ][ 0 ].warnings ) {
+						warningsObj = JSON.parse( warnings )[ 0 ];
+
+						jQuery.each( warningsObj, function( key, value ) {
+							outputWarningMessage += value + '<br>';
+						} );
+
+						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Warnings: </b>' + outputWarningMessage + '</p>' );
+
+						return;
+					}
+
+					$form.closest( '.webui-popover' ).hide();
+
+					translationPair.updateAllTranslations( data[ originalId ], currentUserId );
+					makeTranslatable( translationPair, $node );
+					notifyTranslated( translationPair );
+
+					if ( !! document.cookie.match( /inlinejumptonext=1/ ) ) {
+						jQuery( '.translator-translatable.translator-untranslated:visible' ).webuiPopover( 'show' );
+					}
+				} ).fail( function( xhr ) {
+					if ( xhr.responseJSON ) {
+						$form.find( '.warnings' ).html( '<p class="local-inline-warning"><b>Error: </b><span class="message">' );
+						$form.find( '.warnings .message' ).text( xhr.responseJSON.message );
+					}
+				} );
+			} );
+
+		return false;
+	} );
+
+	jQuery( document ).on( 'submit', 'form.ct-existing-translation', function() {
+		var enclosingNode = jQuery( this ),
+			popover, webUiPopover,
+			translationPair = enclosingNode.data( 'translationPair' );
+		if ( 'object' !== typeof translationPair ) {
+			return false;
+		}
+
+		popover = new Popover( translationPair, translationData.locale, glotPress );
+		webUiPopover = enclosingNode.closest( '.webui-popover' );
+		enclosingNode.parent().empty().append( popover.getTranslationHtml() ).find( 'textarea' ).get( 0 ).focus();
+		webUiPopover.data( 'triggerElement' ).trigger( 'shown.webui.popover', [ webUiPopover ] );
+
+		return false;
+	} );
+
+	jQuery( document ).on( 'submit', 'form.copy-translation', function() {
+		var originals = jQuery( this ).next().find( 'div.original strong' );
+		jQuery( this ).next().find( 'textarea' ).each( function( i ) {
+			if ( ! originals[ i ] ) {
+				return;
+			}
+			this.focus();
+			this.select();
+
+			// Replace all text with new text
+			document.execCommand( 'insertText', false, originals[ i ].textContent );
+		} );
+		jQuery( this ).next().find( 'textarea' ).first().focus().trigger( 'keyup' );
+
+		return false;
+	} );
+};
+
+function removeCssClasses() {
+	var classesToDrop = [
+		'translator-checked',
+		'translator-untranslated',
+		'translator-translated',
+		'translator-user-translated',
+		'translator-untranslatable',
+		'translator-dont-translate' ];
+
+	jQuery( '.' + classesToDrop.join( ', .' ) ).removeClass( classesToDrop.join( ' ' ) );
+}
+
+function unRegisterPopoverHandlers() {
+	jQuery( document ).off( 'submit', 'form.ct-existing-translation,form.ct-new-translation' );
+	jQuery( '.translator-translatable' ).webuiPopover( 'destroy' );
+}
+
+function makeUntranslatable( translationPair, $node ) {
+	$node.removeClass( 'translator-untranslated translator-translated translator-translatable translator-checking' );
+	$node.addClass( 'translator-dont-translate' );
+	$node.attr( 'title', 'Text-Domain: ' + translationPair.getDomain() );
+}
+
+function makeTranslatable( translationPair, node ) {
+	translationPair.createPopover( node, glotPress );
+	node.removeClass( 'translator-checking' ).addClass( 'translator-translatable' );
+	if ( translationPair.isFullyTranslated() ) {
+		if ( translationPair.isTranslationWaiting() ) {
+			node.removeClass( 'translator-translated' ).addClass( 'translator-user-translated' );
+		} else {
+			node.removeClass( 'translator-user-translated' ).addClass( 'translator-translated' );
+		}
+		node.each( function() {
+			var el = this;
+			if ( el.childNodes.length > 1 || el.childNodes[ 0 ].nodeType !== 3 ) {
+				if ( ! translationPair.getRegex().test( el.innerHTML ) ) {
+					setTimeout( function() {
+						el.innerHTML = translationPair.getReplacementText( el.innerHTML );
+					}, 1 );
+				}
+				return;
+			}
+			if ( ! translationPair.getRegex().test( el.textContent ) ) {
+				setTimeout( function() {
+					el.textContent = translationPair.getReplacementText( el.textContent );
+				}, 1 );
+			}
+		} );
+	} else {
+		node.addClass( 'translator-untranslated' );
+	}
+}
+
+findNewTranslatableTexts = function() {
+	if ( currentlyWalkingTheDom ) {
+		if ( debounceTimeout ) {
+			window.clearTimeout( debounceTimeout );
+		}
+		debounceTimeout = window.setTimeout( findNewTranslatableTexts, 500 );
+		return;
+	}
+
+	currentlyWalkingTheDom = true;
+
+	walker.walkTextNodes( document.body, function( translationPair, enclosingNode ) {
+		enclosingNode.addClass( 'translator-checking' );
+
+		translationPair.fetchOriginalAndTranslations( glotPress, currentUserId )
+			.fail(
+				// Failure indicates that the string is not in GlotPress yet
+				makeUntranslatable.bind( null, translationPair, enclosingNode )
+			)
+			.done(
+				makeTranslatable.bind( null, translationPair, enclosingNode )
+			);
+	}, function() {
+		currentlyWalkingTheDom = false;
+	} );
+};
+
+function getPlaceholdersLink( translationPair, textAreaContent ) {
+	var placeholdersLink = '';
+	var placeholders = translationPair.getOriginal().getPlaceholders();
+	var index = 0;
+
+	if ( placeholders.length ) {
+		placeholdersLink = placeholders.map( function( match ) {
+			if ( ! ( textAreaContent.indexOf( match ) === -1 ) ) {
+				index = textAreaContent.indexOf( match );
+				textAreaContent = textAreaContent.slice( 0, index ) + textAreaContent.slice( index + match.length );
+				return '<a class="placeholder-exist inline-placeholder" href="#">' + match + '</a>';
+			}
+			return '<a class="inline-placeholder" href="#">' + match + '</a>';
+		} ).join( '' );
+	}
+	return placeholdersLink;
+}
+
+},{"../../assets/js/jquery.webui-popover.js":1,"./glotpress":3,"./locale":5,"./popover":7,"./translation-pair":8,"./walker":10}],5:[function(require,module,exports){
 /**
  * Locale module
  */
@@ -3871,5 +3871,5 @@ return parser;
 
 })(this);
 
-},{}]},{},[3])(3)
+},{}]},{},[4])(4)
 });
