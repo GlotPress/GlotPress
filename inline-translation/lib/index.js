@@ -29,7 +29,7 @@ var debounceTimeout,
 		contentChangedCallback: function() {},
 	},
 	translationUpdateCallbacks = [];
-require( './jquery.webui-popover.js' );
+require( '../../assets/js/jquery.webui-popover.js' );
 
 module.exports = {
 
