@@ -1,7 +1,8 @@
 jQuery( document ).ready(
 	function() {
-		jQuery( document ).on( 'click', '.close-tour', function() {
+		jQuery( document ).on( 'click', '.close-tour, .dismiss-tour', function() {
 			jQuery( this ).closest( '.webui-popover' ).hide();
+			jQuery( '.pulse-wrapper' ).removeClass('pulse-border');
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.next-tour-item', function() {
@@ -14,10 +15,7 @@ jQuery( document ).ready(
 			jQuery( jQuery( this ).data( 'reveal' ) ).first().click();
 			return false;
 		} );
-		jQuery( document ).on( 'click', '.dismiss-tour', function() {
-			jQuery( this ).closest( '.webui-popover' ).hide();
-			return false;
-		} );
+
 		jQuery( document ).on( 'click', '.pulse', function() {
 			const wrapper = jQuery( this ).closest( '.pulse-wrapper' );
 			const tourName = wrapper.data( 'tourname' );
