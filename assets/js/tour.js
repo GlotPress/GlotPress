@@ -10,6 +10,14 @@ jQuery( document ).ready(
 			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().click();
 			return false;
 		} );
+		jQuery( document ).on( 'click', '.previous-tour-item', function() {
+			let currentPopover = jQuery( this ).closest( '.webui-popover' );
+			if( currentPopover.prev().hasClass( 'webui-popover' ) ){
+				currentPopover.hide();
+				currentPopover.prev().show();
+			}
+			return false;
+		} );
 		jQuery( document ).on( 'click', '.reveal-next-tour-item', function() {
 			jQuery( this ).closest( '.webui-popover' ).hide();
 			jQuery( jQuery( this ).data( 'reveal' ) ).first().click();
@@ -21,6 +29,7 @@ jQuery( document ).ready(
 			const tourName = wrapper.data( 'tourname' );
 			const nextItem = 1 + wrapper.data( 'tourindex' );
 			const tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
+			const showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
 
 			let popover_content = wrapper.data( 'popover-content' );
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
@@ -32,6 +41,9 @@ jQuery( document ).ready(
 				popover_content += '<br/><br/><a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
 			} else if ( typeof window.tour[tourName][nextItem].reveal !== 'undefined' ) {
 				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">Reveal Next Step</a>'
+			}
+			if ( showPreviousBtn ) {
+				popover_content += '<br/><br/><a href="" class="previous-tour-item" data-tourname="' + tourName + '">Previous</a>'
 			}
 			if ( ! tourEndsHere ) {
 				popover_content += '<br/><br/><small><a href="" class="dismiss-tour">Dismiss this tour';
