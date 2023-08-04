@@ -67,6 +67,9 @@ jQuery( document ).ready(
 			} else if ( typeof window.tour[ tourName ][ nextItem ].reveal !== 'undefined' ) {
 				popoverContent += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[ tourName ][ nextItem ].reveal + '">' + wp.i18n.__( 'Reveal Next Step', 'glotpress' ) + '</a>';
 			}
+			if ( showPreviousBtn ) {
+				popover_content += '<br/><br/><a href="" class="previous-tour-item" data-tourname="' + tourName + '">Previous</a>'
+			}
 			if ( ! tourEndsHere ) {
 				popoverContent += '<br/><small><a href="" class="dismiss-tour">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
 			}
