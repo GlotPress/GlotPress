@@ -1618,10 +1618,43 @@ table.form-table td {
     width: 12px;
     height: 12px;
 }
-
+.webui-popover .webui-popover-content {
+	font-size: .9em;
+	color: #fff;
+}
 .pulse-border {
 	border: 0.15em dashed rgb(177 60 13);
     padding: 0.4em;
     border-radius: 3px;
     margin: 10px 11px;
+}
+a.previous-tour-item {
+	text-decoration: none;
+    margin-right: 0.5em;
+    color: #fdfdfd;
+    border: #78bdf4 thin solid;
+    padding: 3px;
+}
+a.next-tour-item {
+    background: #ffe399;
+    padding: 3px 10px;
+    color: #000000;
+    border-radius: 3px;
+	font-weight: bold;
+}
+a.previous-tour-item:hover{
+	text-decoration: none;
+	border: #f0efef thin solid;
+}
+
+a.next-tour-item:hover {
+	text-decoration: none;
+	background: #f5e3b6;
+	border: #f6ca5a thin solid;
+}
+.popover-nav-btns {
+	margin-top: 11px;
+}
+.webui-popover.in{
+	background: #2f99ee;
 }

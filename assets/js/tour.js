@@ -38,7 +38,7 @@ jQuery( document ).ready(
 			if ( tourEndsHere ) {
 				popover_content += '<br/><br/><a href="" class="close-tour">Close</a>'
 			} else if ( typeof window.tour[tourName][nextItem] !== 'undefined' &&  typeof window.tour[tourName][nextItem].reveal === 'undefined') {
-				popover_content += '<div>';
+				popover_content += '<div class="popover-nav-btns">';
 				popover_content += showPreviousBtn ? '<br/><br/><a href="" class="previous-tour-item" data-tourname="' + tourName + '">Previous</a>' : '';
 				popover_content += '<a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
 				popover_content += '</div>';
