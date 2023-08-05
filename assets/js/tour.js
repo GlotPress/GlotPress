@@ -38,12 +38,12 @@ jQuery( document ).ready(
 			if ( tourEndsHere ) {
 				popover_content += '<br/><br/><a href="" class="close-tour">Close</a>'
 			} else if ( typeof window.tour[tourName][nextItem] !== 'undefined' &&  typeof window.tour[tourName][nextItem].reveal === 'undefined') {
-				popover_content += '<br/><br/><a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
+				popover_content += '<div>';
+				popover_content += showPreviousBtn ? '<br/><br/><a href="" class="previous-tour-item" data-tourname="' + tourName + '">Previous</a>' : '';
+				popover_content += '<a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
+				popover_content += '</div>';
 			} else if ( typeof window.tour[tourName][nextItem].reveal !== 'undefined' ) {
 				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">Reveal Next Step</a>'
-			}
-			if ( showPreviousBtn ) {
-				popover_content += '<br/><br/><a href="" class="previous-tour-item" data-tourname="' + tourName + '">Previous</a>'
 			}
 			if ( ! tourEndsHere ) {
 				popover_content += '<br/><br/><small><a href="" class="dismiss-tour">Dismiss this tour';
