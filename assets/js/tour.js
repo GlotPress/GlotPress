@@ -46,7 +46,7 @@ jQuery( document ).ready(
 				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">Reveal Next Step</a>'
 			}
 			if ( ! tourEndsHere ) {
-				popover_content += '<br/><br/><small><a href="" class="dismiss-tour">Dismiss this tour';
+				popover_content += '<br/><small><a href="" class="dismiss-tour">Dismiss this tour';
 			}
 			WebuiPopovers.show( this, { title: window.tour[tourName][0].title, content: popover_content, width: 300, dismissible: true } );
 			jQuery( '.tour-' + tourName ).remove();
