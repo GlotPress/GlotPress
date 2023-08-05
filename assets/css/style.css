@@ -1658,3 +1658,6 @@ a.next-tour-item:hover {
 .webui-popover.in{
 	background: #2f99ee;
 }
+a.dismiss-tour {
+    color: #e1e1e1;
+}
