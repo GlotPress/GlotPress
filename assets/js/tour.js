@@ -11,7 +11,7 @@ jQuery( document ).ready(
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.previous-tour-item', function() {
-			const currentPopover = jQuery( this ).closest( '.webui-popover' );
+			var currentPopover = jQuery( this ).closest( '.webui-popover' );
 			if ( currentPopover.prev().hasClass( 'webui-popover' ) ) {
 				currentPopover.hide();
 				currentPopover.prev().show();
@@ -25,13 +25,13 @@ jQuery( document ).ready(
 		} );
 
 		jQuery( document ).on( 'click', '.pulse', function() {
-			const wrapper = jQuery( this ).closest( '.pulse-wrapper' );
-			const tourName = wrapper.data( 'tourname' );
-			const nextItem = 1 + wrapper.data( 'tourindex' );
-			const tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
-			const showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
+			var wrapper = jQuery( this ).closest( '.pulse-wrapper' );
+			var tourName = wrapper.data( 'tourname' );
+			var nextItem = 1 + wrapper.data( 'tourindex' );
+			var tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
+			var showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
 
-			let popover_content = wrapper.data( 'popover-content' );
+			var popover_content = wrapper.data( 'popover-content' );
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
 			wrapper.addClass( 'pulse-border' );
 
