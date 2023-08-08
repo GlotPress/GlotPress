@@ -55,7 +55,7 @@ jQuery( document ).ready(
 			if ( tourEndsHere ) {
 				return;
 			}
-			const item = window.tour[tourName][nextItem];
+			var item = window.tour[tourName][nextItem];
 			addPulse( jQuery(item.selector), item.html, tourName, nextItem );
 
 		} );
@@ -68,9 +68,9 @@ jQuery( document ).ready(
 		}
 		window.tour = gp_tour;
 		window.loadTour = function(){
-			for ( const n in window.tour ) {
-				const color1 = window.tour[n][0].color + '00';
-				const color2 = window.tour[n][0].color + 'a0';
+			for ( var n in window.tour ) {
+				var color1 = window.tour[n][0].color + '00';
+				var color2 = window.tour[n][0].color + 'a0';
 				var sheet = document.styleSheets[0];
 				sheet.insertRule(`@keyframes animation-${n} {
 					0% {
