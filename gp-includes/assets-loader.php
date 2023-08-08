@@ -42,6 +42,7 @@ function gp_register_default_scripts() {
 	wp_set_script_translations( 'gp-editor', 'glotpress' );
 	wp_set_script_translations( 'gp-glossary', 'glotpress' );
 	wp_set_script_translations( 'gp-mass-create-sets-page', 'glotpress' );
+	wp_set_script_translations( 'gp-tour', 'glotpress' );
 	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'jquery' ), '20210429', false );
 	wp_localize_script( 'gp-tour', 'gp_tour', apply_filters( 'gp_tour', array() ) );
 }
