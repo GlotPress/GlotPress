@@ -1614,9 +1614,20 @@ table.form-table td {
     position: relative;
     cursor: pointer;
     top: -2em;
-    left: -.5em;
+    left: -0.4em;
     width: 12px;
     height: 12px;
+		margin: -6px;
+}
+
+.pulse-wrapper {
+	border: 2px dashed transparent;
+	padding: 0.4em;
+	border-radius: 3px;
+	margin-left: calc( -0.4em - 2px );
+	margin-right: calc( -0.4em - 2px );
+	margin-top: calc( -0.4em - 2px );
+	margin-bottom: calc( -0.4em - 2px );
 }
 .pulse-wrapper {
 	display: inline-block;
@@ -1626,10 +1637,7 @@ table.form-table td {
 	color: #fff;
 }
 .pulse-border {
-	border: 0.15em dashed rgb(177 60 13);
-    padding: 0.4em;
-    border-radius: 3px;
-    margin: 10px 11px;
+	border: 2px dashed #826eb4;
 }
 a.previous-tour-item {
 	text-decoration: none;
