@@ -11,8 +11,8 @@ jQuery( document ).ready(
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.previous-tour-item', function() {
-			let currentPopover = jQuery( this ).closest( '.webui-popover' );
-			if( currentPopover.prev().hasClass( 'webui-popover' ) ){
+			const currentPopover = jQuery( this ).closest( '.webui-popover' );
+			if ( currentPopover.prev().hasClass( 'webui-popover' ) ) {
 				currentPopover.hide();
 				currentPopover.prev().show();
 			}
