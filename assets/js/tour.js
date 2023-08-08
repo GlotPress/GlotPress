@@ -1,3 +1,4 @@
+/* global wp */
 jQuery( document ).ready(
 	function() {
 		jQuery( document ).on( 'click', '.close-tour, .dismiss-tour', function() {
@@ -36,17 +37,17 @@ jQuery( document ).ready(
 			wrapper.addClass( 'pulse-border' );
 
 			if ( tourEndsHere ) {
-				popover_content += '<br/><br/><a href="" class="close-tour">Close</a>'
-			} else if ( typeof window.tour[tourName][nextItem] !== 'undefined' &&  typeof window.tour[tourName][nextItem].reveal === 'undefined') {
+				popover_content += '<br/><br/><a href="" class="close-tour">' + wp.i18n.__( 'Close', 'glotpress' ) + '</a>'
+			} else if ( typeof window.tour[tourName][nextItem] !== 'undefined' && typeof window.tour[tourName][nextItem].reveal === 'undefined') {
 				popover_content += '<div class="popover-nav-btns">';
-				popover_content += showPreviousBtn ? '<br/><br/><a href="" class="previous-tour-item" data-tourname="' + tourName + '">Previous</a>' : '';
-				popover_content += '<a href="" class="next-tour-item" data-tourname="' + tourName + '">Next</a>'
+				popover_content += showPreviousBtn ? '<br/><br/><a href="" class="tour-button previous-tour-item" data-tourname="' + tourName + '">' + wp.i18n.__( 'Previous', 'glotpress' ) + '</a>' : '';
+				popover_content += '<a href="" class="tour-button next-tour-item button-primary" data-tourname="' + tourName + '">Next</a>'
 				popover_content += '</div>';
 			} else if ( typeof window.tour[tourName][nextItem].reveal !== 'undefined' ) {
-				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">Reveal Next Step</a>'
+				popover_content += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[tourName][nextItem].reveal + '">' + wp.i18n.__( 'Reveal Next Step', 'glotpress' ) + '</a>'
 			}
 			if ( ! tourEndsHere ) {
-				popover_content += '<br/><small><a href="" class="dismiss-tour">Dismiss this tour';
+				popover_content += '<br/><small><a href="" class="dismiss-tour">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
 			}
 			WebuiPopovers.show( this, { title: window.tour[tourName][0].title, content: popover_content, width: 300, dismissible: true } );
 			jQuery( '.tour-' + tourName ).remove();
@@ -82,7 +83,7 @@ jQuery( document ).ready(
 					100% {
 					  box-shadow: 0 0 0 0 ${color1};
 					}`, sheet.cssRules.length);
-				
+
 				sheet.insertRule(`.tour-${n} {
 					box-shadow: 0 0 0 ${color2};
 					background: ${color1};
@@ -91,9 +92,7 @@ jQuery( document ).ready(
 					}`, sheet.cssRules.length);
 
 				addPulse( jQuery( window.tour[n][1].selector ), window.tour[n][1].html, n, 1 );
-			
 
-				
 			}
 		}
 		window.loadTour();
