@@ -1692,10 +1692,7 @@ a.tour-button.button-primary:hover {
 	color: #fff;
 }
 .pulse-border {
-	border: 0.15em dashed rgb(177 60 13);
-    padding: 0.4em;
-    border-radius: 3px;
-    margin: 10px 11px;
+	border: 2px dashed #826eb4;
 }
 a.previous-tour-item {
 	text-decoration: none;
