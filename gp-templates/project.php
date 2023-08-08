@@ -7,7 +7,7 @@ gp_title(
 	)
 );
 gp_breadcrumb_project( $project );
-gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
+gp_enqueue_scripts( array( 'gp-editor', 'tablesorter', 'gp-jquery-webui-popover', 'gp-tour' ) );
 $edit_link   = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
 $delete_link = gp_link_project_delete_get( $project, _x( '(delete)', 'project', 'glotpress' ) );
 

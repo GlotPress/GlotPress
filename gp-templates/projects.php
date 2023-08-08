@@ -1,6 +1,7 @@
 <?php
 gp_title( __( 'Projects &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Projects', 'glotpress' ) ) );
+gp_enqueue_scripts( array( 'gp-jquery-webui-popover', 'gp-tour' ) );
 gp_tmpl_header();
 ?>
 
