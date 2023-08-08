@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp, WebuiPopovers */
+/* global $gp_editor_options, $gp, wp */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -528,5 +528,4 @@ $gp.editor = (
 jQuery( function( $ ) {
 	$gp.editor.init( $( '#translations' ) );
 } );
-
 
