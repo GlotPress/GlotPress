@@ -16,7 +16,7 @@ function gp_register_default_styles() {
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20230725' );
-	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery-webui-popover' . $suffix, array(), '20230503' );
+	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'gp-base' ), '20230503' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
@@ -36,13 +36,13 @@ function gp_register_default_scripts() {
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20230808' );
 	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20230808' );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20230808' );
-	wp_register_script( 'gp-tour', $url . '/tour' . $suffix, array( 'jquery' ), '20230728' );
-	
+	wp_register_script( 'gp-tour', $url . '/tour' . $suffix, array( 'jquery', 'gp-jquery-webui-popover' ), '20230728', false );
+
 	wp_set_script_translations( 'gp-common', 'glotpress' );
 	wp_set_script_translations( 'gp-editor', 'glotpress' );
 	wp_set_script_translations( 'gp-glossary', 'glotpress' );
 	wp_set_script_translations( 'gp-mass-create-sets-page', 'glotpress' );
-	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery-webui-popover' . $suffix, array( 'gp-editor' ), '20210429' );
+	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'jquery' ), '20210429', false );
 	wp_localize_script( 'gp-tour', 'gp_tour', apply_filters( 'gp_tour', array() ) );
 }
 
