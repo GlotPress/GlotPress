@@ -12,7 +12,7 @@
 function gp_register_default_styles() {
 	$url = gp_plugin_url( 'assets/css' );
 
-	$suffix = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.css' : '.min.css';
+	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20230725' );
@@ -26,7 +26,7 @@ add_action( 'init', 'gp_register_default_styles' );
 function gp_register_default_scripts() {
 	$url = gp_plugin_url( 'assets/js' );
 
-	$suffix = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.js' : '.min.js';
+	$suffix = SCRIPT_DEBUG ? '.js' : '.min.js';
 
 	// Register our standard scripts.
 	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '20210429' );
