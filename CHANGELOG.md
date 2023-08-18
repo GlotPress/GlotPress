@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.0-alpha.1] (August 18, 2023)
+
+**Features**
+* Add Local GlotPress ([#1657])
+
 ## [4.0.0] (August 18, 2023)
 
 (this space intentionally left blank)
@@ -552,6 +557,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.0...HEAD
 [4.0.0]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.7...4.0.0
 [4.0.0-alpha.7]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.6...4.0.0-alpha.7
 [4.0.0-alpha.6]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.5...4.0.0-alpha.6
@@ -659,3 +665,4 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1651]: https://github.com/GlotPress/GlotPress/pull/1651
 [#1662]: https://github.com/GlotPress/GlotPress/pull/1662
 [#1664]: https://github.com/GlotPress/GlotPress/pull/1664
+[#1657]: https://github.com/GlotPress/GlotPress/pull/1657
