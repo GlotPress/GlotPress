@@ -42,7 +42,6 @@ if ( ! defined( 'GP_TMPL_PATH' ) ) {
 	define( 'GP_TMPL_PATH', GP_PATH . 'gp-templates/' );
 }
 
-require_once GP_PATH . GP_INC . 'local.php';
 require_once GP_PATH . GP_INC . 'meta.php';
 require_once GP_PATH . GP_INC . 'misc.php';
 require_once GP_PATH . GP_INC . 'url.php';
@@ -112,7 +111,6 @@ GP::$translation_errors         = new GP_Translation_Errors();
 GP::$builtin_translation_errors = new GP_Builtin_Translation_Errors();
 GP::$builtin_translation_errors->add_all( GP::$translation_errors );
 GP::$router  = new GP_Router();
-GP::$local   = new GP_Local();
 GP::$formats = array();
 
 require_once GP_PATH . GP_INC . 'format.php';
@@ -124,13 +122,6 @@ require_once GP_PATH . GP_INC . 'formats/format-properties.php';
 require_once GP_PATH . GP_INC . 'formats/format-json.php';
 require_once GP_PATH . GP_INC . 'formats/format-jed1x.php';
 require_once GP_PATH . GP_INC . 'formats/format-ngx.php';
-
-if ( GP_Local::is_active() ) {
-	require_once GP_PATH . GP_INC . 'rest-api.php';
-	GP::$rest = new GP_Rest_API();
-	require_once GP_PATH . GP_INC . 'inline-translation.php';
-	GP_Inline_Translation::init();
-}
 
 // Let's do it again, there are more variables added since last time we called it.
 gp_set_globals( get_defined_vars() );

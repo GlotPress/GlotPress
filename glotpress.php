@@ -38,7 +38,7 @@ define( 'GP_PATH', __DIR__ . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.6' );
 define( 'GP_PHP_REQUIRED_VERSION', '7.4' );
-define( 'GP_SCRIPT_DEBUG', true );
+
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
  *
@@ -129,6 +129,34 @@ function gp_unsupported_version_admin_notice() {
  */
 if ( version_compare( $GLOBALS['wp_version'], GP_WP_REQUIRED_VERSION, '<' ) ) {
 	add_action( 'admin_notices', 'gp_unsupported_version_admin_notice', 10, 2 );
+
+	// Bail out now so no additional code is run.
+	return;
+}
+
+/**
+ * Adds a message if no permalink structure is detected .
+ *
+ * Message is only displayed on the plugin screen.
+ *
+ * @since 2.0.0
+ */
+function gp_unsupported_permalink_structure_admin_notice() {
+	$short_notice = __( '&#151; You are running an unsupported permalink structure.', 'glotpress' );
+	/* translators: %s: URL to permalink settings */
+	$long_notice = __( 'GlotPress requires a custom permalink structure to be enabled. Please go to <a href="%s">Permalink Settings</a> and enable an option other than Plain.', 'glotpress' );
+	$long_notice = sprintf( $long_notice, admin_url( 'options-permalink.php' ) );
+
+	gp_display_disabled_admin_notice( $short_notice, $long_notice );
+}
+
+/*
+ * Check the permalink structure, if we don't have one (aka the rewrite engine is disabled)
+ * return without running any more code as the user will not be able to access GlotPress
+ * any errors and show an admin notice.
+ */
+if ( ! get_option( 'permalink_structure' ) ) {
+	add_action( 'admin_notices', 'gp_unsupported_permalink_structure_admin_notice', 10, 2 );
 
 	// Bail out now so no additional code is run.
 	return;
