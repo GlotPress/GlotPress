@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.7] (August 08, 2023)
+
+**Bugfixes**
+* Fix wordpress.org plugin deploy if the minified files are already built ([#1662])
+* Avoid adding the invisible classes in the glossary ([#1664])
+
 ## [4.0.0-alpha.6] (July 25, 2023)
 * Increase the cache buster ([#1661])
 
@@ -8,19 +14,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 **Features**
 * Set as old the previous translations with waiting status for this user ([#1536])
-* Highlight leading and trailing spaces, and double/multiple spaces in the middle ([#1500]) 
-* Add I18n to JavaScript ([#1369]) 
+* Highlight leading and trailing spaces, and double/multiple spaces in the middle ([#1500])
+* Add I18n to JavaScript ([#1369])
 * Add plural and plural forms labels to row previews and format the row editor accordingly ([#1506])
 * Reorder glossary row editor items ([#1622])
 
 **Bugfixes**
-* Fix notice accessing undefined variable ([#1582]) 
-* Improve translation strings consistency and comments to translators ([#1600]) 
-* Fix PHP error for parameter after optional parameter ([#1465]) 
-* Combine the suffixes for shorter regular expression. ([#1651]) 
+* Fix notice accessing undefined variable ([#1582])
+* Improve translation strings consistency and comments to translators ([#1600])
+* Fix PHP error for parameter after optional parameter ([#1465])
+* Combine the suffixes for shorter regular expression. ([#1651])
 
 **Locales**
-* Update plural expression for Kyrgyz ([#1634]) 
+* Update plural expression for Kyrgyz ([#1634])
 * Shorten the slug for Valencia (Catalan) ([#1635])
 
 ## [4.0.0-alpha.4] (Feb 28, 2023)
@@ -53,15 +59,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.0.0-alpha.2] (Sep 15, 2022)
 
 **Features**
-* Add a new status: changes requested ([#1451]). Currently, only available using the gp-translation-helpers plugin. 
-* Add "Last Modified" column to Glossary ([#1428]) 
+* Add a new status: changes requested ([#1451]). Currently, only available using the gp-translation-helpers plugin.
+* Add "Last Modified" column to Glossary ([#1428])
 * Add word_count_type for each locale ([#1482])
 * Add the alphabet for each locale ([#1479])
-* Add a template for the PR ([#1448]) 
+* Add a template for the PR ([#1448])
 * Translations: Add sort by original string length ([#1449])
 
 **Bugfixes**
-* Fixes deprecation notice in PHP8 for usort returning bool ([#1464]) 
+* Fixes deprecation notice in PHP8 for usort returning bool ([#1464])
 * Fix warning discard link margin ([#1455])
 
 ## [4.0.0-alpha.1] (Mai 3, 2022)
@@ -543,6 +549,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-alpha.7]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.6...4.0.0-alpha.7
+[4.0.0-alpha.6]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.5...4.0.0-alpha.6
 [4.0.0-alpha.5]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.4...4.0.0-alpha.5
 [4.0.0-alpha.4]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.3...4.0.0-alpha.4
 [4.0.0-alpha.3]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.2...4.0.0-alpha.3
@@ -645,3 +653,5 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1634]: https://github.com/GlotPress/GlotPress/pull/1634
 [#1635]: https://github.com/GlotPress/GlotPress/pull/1635
 [#1651]: https://github.com/GlotPress/GlotPress/pull/1651
+[#1662]: https://github.com/GlotPress/GlotPress/pull/1662
+[#1664]: https://github.com/GlotPress/GlotPress/pull/1664
