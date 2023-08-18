@@ -1,6 +1,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0] (August 18, 2023)
+
+(this space intentionally left blank)
+
 ## [4.0.0-alpha.7] (August 08, 2023)
 
 **Bugfixes**
@@ -548,7 +552,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.7...4.0.0
 [4.0.0-alpha.7]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.6...4.0.0-alpha.7
 [4.0.0-alpha.6]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.5...4.0.0-alpha.6
 [4.0.0-alpha.5]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.4...4.0.0-alpha.5
