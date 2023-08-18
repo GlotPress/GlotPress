@@ -104,6 +104,23 @@ class GP {
 	public static $router;
 
 	/**
+	 * Singleton for the rest api.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @var GP_Rest_API
+	 */
+	public static $rest;
+
+	/**
+	 * Singleton for translating local items.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @var GP_Local
+	 */
+	public static $local;
+	/**
 	 * Singleton for translation warnings.
 	 *
 	 * @since 1.0.0

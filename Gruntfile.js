@@ -29,6 +29,12 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+		concat: {
+			inline_translation: {
+				src: [ 'assets/css/jquery.webui-popover.css', 'inline-translation/css/custom.css' ],
+				dest: 'assets/css/inline-translation.css'
+			},
+		},
 		cssmin: {
 			core: {
 				expand: true,
@@ -45,6 +51,19 @@ module.exports = function( grunt ) {
 				rename: function( dst, src ) {
 					return src.replace( '.css', '.min.css' );
 				}
+			}
+		},
+		browserify: {
+			core: {
+				src: [
+					'inline-translation/lib/index.js',
+				],
+				dest: 'assets/js/inline-translation.js',
+				options: {
+					browserifyOptions: {
+						standalone: 'gpInlineTranslation'
+					}
+				},
 			}
 		},
 		watch: {
@@ -66,8 +85,24 @@ module.exports = function( grunt ) {
 				],
 				tasks: [ 'cssmin' ],
 			},
+			inline_translation_css: {
+				files: [
+					'inline-translation/css/*.css',
+
+					// Exceptions.
+					'!**/*.min.css'
+				],
+				tasks: [ 'concat' ],
+			},
+			inline_translation_js: {
+				files: [
+					'assets/js/jquery.webui-popover.js',
+					'inline-translation/lib/*.js',
+				],
+				tasks: [ 'browserify' ],
+			},
 		},
 	} );
 
-	grunt.registerTask( 'default', [ 'uglify', 'cssmin' ] );
+	grunt.registerTask( 'default', [ 'browserify', 'concat', 'cssmin', 'uglify' ] );
 };
