@@ -223,8 +223,17 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		$terms_search .= ')\b';
 	}
 
-	// Split the singular string on glossary terms boundaries.
-	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	// Split the singular string on HTML tags boundaries.
+	$result         = preg_split( '/(<[^>]+>)/', $translation->singular, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
+	$singular_split = array();
+	foreach ( $result as $item ) {
+		if ( substr( $item, 0, 1 ) === '<' ) {
+			$singular_split[] = $item;
+		} else {
+			// Split the singular string on glossary terms boundaries.
+			$singular_split = array_merge( $singular_split, preg_split( '/' . $terms_search . '/i', $item, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE ) );
+		}
+	}
 
 	// Loop through each chunk of the split to find glossary terms.
 	if ( is_array( $singular_split ) ) {
@@ -233,6 +242,12 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		foreach ( $singular_split as $chunk ) {
 			// Create an escaped version for use later on.
 			$escaped_chunk = esc_translation( $chunk );
+
+			// Skip the HTML items.
+			if ( substr( $chunk, 0, 1 ) === '<' ) {
+				$singular_combined .= $escaped_chunk;
+				continue;
+			}
 
 			// Create a lower case version to compare with the glossary terms.
 			$lower_chunk = strtolower( $chunk );
@@ -331,8 +346,26 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$translation->plural_glossary_markup = esc_translation( $translation->plural );
 		}
 	}
-
 	return $translation;
+}
+
+function split_html_tags( string $text ) {
+// $regex = '/(<[^>]+>)([^<]*)|([^<]+)/s';
+// $result = array();
+// $output = array();
+// preg_match_all($regex, $text, $result, PREG_SET_ORDER);
+//
+// foreach ($result as $matches) {
+// if (!empty($matches[1])) {
+// $output[] = $matches[1]; // Opening tag
+// $output[] =  $matches[2]; // Content between tags
+// } else {
+// $output[] =  $matches[3]; // Non-tag content
+// }
+// }
+	$output = preg_split( '/(<[^>]+>)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
+
+	return $output;
 }
 
 function textareas( $entry, $permissions, $index = 0 ) {
