@@ -361,6 +361,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$translation->plural_glossary_markup = esc_translation( $translation->plural );
 		}
 	}
+
 	return $translation;
 }
 
