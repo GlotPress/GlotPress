@@ -364,25 +364,6 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	return $translation;
 }
 
-function split_html_tags( string $text ) {
-// $regex = '/(<[^>]+>)([^<]*)|([^<]+)/s';
-// $result = array();
-// $output = array();
-// preg_match_all($regex, $text, $result, PREG_SET_ORDER);
-//
-// foreach ($result as $matches) {
-// if (!empty($matches[1])) {
-// $output[] = $matches[1]; // Opening tag
-// $output[] =  $matches[2]; // Content between tags
-// } else {
-// $output[] =  $matches[3]; // Non-tag content
-// }
-// }
-	$output = preg_split( '/(<[^>]+>)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
-
-	return $output;
-}
-
 function textareas( $entry, $permissions, $index = 0 ) {
 	list( $can_edit, $can_approve ) = $permissions;
 	?>
