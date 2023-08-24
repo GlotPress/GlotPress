@@ -180,6 +180,35 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects not matching a term inside an HTML tag in the plural origin.
+	 */
+	function test_map_glossary_entries_to_translation_originals_excluding_terms_in_html_tags_in_the_plural_origin() {
+		$singular_string          = 'This is s strong test <strong>strong</strong>. This is another<dd>strong</dd>, very strong test with<img src="strong.img" /> images <hr/>.';
+		$plural_string            = 'Plural. This is s strong test <strong>strong</strong>. This is another<dd>strong</dd>, very strong test with<img src="strong.img" /> images <hr/>.';
+		$singular_expected_result = 'This is s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test &lt;strong&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/strong&gt;. This is another&lt;dd&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/dd&gt;, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test with&lt;img src="strong.img" /&gt; images &lt;hr/&gt;.';
+		$plural_expected_result   = 'Plural. This is s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test &lt;strong&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/strong&gt;. This is another&lt;dd&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span>&lt;/dd&gt;, very <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;forte&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">strong</span> test with&lt;img src="strong.img" /&gt; images &lt;hr/&gt;.';
+
+		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'strong',
+			'part_of_speech' => 'noun',
+			'translation' => 'forte',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
+		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
+	}
+
+	/**
 	 * Expects highlighting leading and ending spaces in single line strings, and double/multiple spaces in the middle.
 	 */
 	function test_prepare_original_with_leading_and_trailing_spaces_and_multiple_spaces_in_middle_of_single_line_strings() {

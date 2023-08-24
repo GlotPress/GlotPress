@@ -227,7 +227,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	$result         = preg_split( '/(<[^>]+>)/', $translation->singular, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 	$singular_split = array();
 	foreach ( $result as $item ) {
-		if ( substr( $item, 0, 1 ) === '<' ) {
+		if ( '<' === substr( $item, 0, 1 ) ) {
 			$singular_split[] = $item;
 		} else {
 			// Split the singular string on glossary terms boundaries.
@@ -244,7 +244,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$escaped_chunk = esc_translation( $chunk );
 
 			// Skip the HTML items.
-			if ( substr( $chunk, 0, 1 ) === '<' ) {
+			if ( '<' === substr( $chunk, 0, 1 ) ) {
 				$singular_combined .= $escaped_chunk;
 				continue;
 			}
@@ -293,8 +293,17 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 	// Add glossary terms to the plural if we have one.
 	if ( $translation->plural ) {
-		// Split the plural string on glossary terms boundaries.
-		$plural_split = @preg_split( '/' . $terms_search . '/i', $translation->plural, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+		// Split the singular string on HTML tags boundaries.
+		$result       = @preg_split( '/(<[^>]+>)/', $translation->plural, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
+		$plural_split = array();
+		foreach ( $result as $item ) {
+			if ( '<' === substr( $item, 0, 1 ) ) {
+				$plural_split[] = $item;
+			} else {
+				// Split the singular string on glossary terms boundaries.
+				$plural_split = array_merge( $plural_split, @preg_split( '/' . $terms_search . '/i', $item, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE ) );
+			}
+		}
 
 		// Loop through each chunk of the split to find glossary terms.
 		if ( is_array( $plural_split ) ) {
@@ -303,6 +312,12 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			foreach ( $plural_split as $chunk ) {
 				// Create an escaped version for use later on.
 				$escaped_chunk = esc_translation( $chunk );
+
+				// Skip the HTML items.
+				if ( '<' === substr( $chunk, 0, 1 ) ) {
+					$plural_combined .= $escaped_chunk;
+					continue;
+				}
 
 				// Create a lower case version to compare with the glossary terms.
 				$lower_chunk = strtolower( $chunk );
