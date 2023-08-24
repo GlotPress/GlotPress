@@ -11,11 +11,11 @@ gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
 $edit_link   = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
 $delete_link = gp_link_project_delete_get( $project, _x( '(delete)', 'project', 'glotpress' ) );
 
-if ( $project->active ) {
+if ( ! $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
 		function( $items ) {
-			$items[ count( $items ) - 1 ] .= ' <span class="active bubble">' . __( 'Active', 'glotpress' ) . '</span>';
+			$items[ count( $items ) - 1 ] .= ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 
 			return $items;
 		}
@@ -191,8 +191,8 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
 		<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
 		<?php
-		if ( $sub_project->active ) {
-			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>';
+		if ( ! $sub_project->active ) {
+			echo "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>';
 		}
 		?>
 	</dt>
