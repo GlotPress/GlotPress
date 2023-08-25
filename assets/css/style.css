@@ -23,6 +23,7 @@
 	--gp-color-black: #0b0c0c;
 	--gp-color-white: #ffffff;
 	--gp-color-yellow: #ffd566;
+	--gp-color-dark-orange: #C05621;
 	--gp-color-red: #a62626;
 	--gp-color-green: #266430;
 
@@ -87,6 +88,8 @@
 	--gp-color-btn-danger-hover-text: var( --gp-color-white );
 	--gp-color-btn-danger-hover-bg: var( --gp-color-red );
 	--gp-color-btn-danger-hover-border: var( --gp-color-red );
+	--gp-color-bubble-inactive-project-text: var( --gp-color-dark-orange );
+	--gp-color-bubble-inactive-project-border: var( --gp-color-dark-orange );
 
 	--gp-color-status-fuzzy-subtle: #fc6;
 	--gp-color-status-current-subtle: #e9ffd8;
@@ -1085,8 +1088,10 @@ a.bubble, .bubble {
 }
 
 span.inactive {
-	background-color: var( --gp-color-yellow );
-	color: var( --gp-color-fg-default );
+	border: 1px solid var( --gp-color-bubble-inactive-project-text );
+	border-radius: 10px;
+	color: var( --gp-color-bubble-inactive-project-text );
+	padding: 0.2em 0.5em 0.1em 0.5em;
 	font-weight: 500;
 }
 
