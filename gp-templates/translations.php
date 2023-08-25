@@ -16,10 +16,15 @@ gp_title(
 		$project->name
 	)
 );
+$archived_bubble = '';
+if ( ! $project->active ) {
+	$archived_bubble = ' <span class="archived bubble">' . __( 'Archived', 'glotpress' ) . '</span>';
+}
+
 gp_breadcrumb(
 	array(
 		gp_project_links_from_root( $project ),
-		gp_link_get( $url, $translation_set->name ),
+		gp_link_get( $url, $translation_set->name ) . $archived_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
