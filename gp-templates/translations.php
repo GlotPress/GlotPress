@@ -16,15 +16,15 @@ gp_title(
 		$project->name
 	)
 );
-$archived_bubble = '';
+$inactive_bubble = '';
 if ( ! $project->active ) {
-	$archived_bubble = ' <span class="archived bubble">' . __( 'Archived', 'glotpress' ) . '</span>';
+	$inactive_bubble = ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 }
 
 gp_breadcrumb(
 	array(
 		gp_project_links_from_root( $project ),
-		gp_link_get( $url, $translation_set->name ) . $archived_bubble,
+		gp_link_get( $url, $translation_set->name ) . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );

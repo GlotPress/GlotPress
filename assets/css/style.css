@@ -234,7 +234,7 @@ h3 {
 	text-decoration: none;
 }
 
-.breadcrumb span.archived {
+.breadcrumb span.inactive {
 	padding: 0.2em 0.3em;
 	margin-left: .3em;
 	text-shadow: none;
@@ -1084,7 +1084,7 @@ a.bubble, .bubble {
 	text-align: center;
 }
 
-span.archived {
+span.inactive {
 	background-color: var( --gp-color-yellow );
 	color: var( --gp-color-fg-default );
 	font-weight: 500;

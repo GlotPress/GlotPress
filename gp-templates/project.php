@@ -15,7 +15,7 @@ if ( ! $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
 		function( $items ) {
-			$items[ count( $items ) - 1 ] .= ' <span class="archived bubble">' . __( 'Archived', 'glotpress' ) . '</span>';
+			$items[ count( $items ) - 1 ] .= ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 
 			return $items;
 		}
@@ -192,7 +192,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 		<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
 		<?php
 		if ( ! $sub_project->active ) {
-			echo "<span class='archived bubble'>" . __( 'Archived', 'glotpress' ) . '</span>';
+			echo "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>';
 		}
 		?>
 	</dt>
