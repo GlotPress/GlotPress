@@ -319,11 +319,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	);
 
 	/**
-	 * Filter the Suffix list for each Part of Speech.
+	 * Filter the list of Suffixes to match glossary terms for each Part of Speech.
 	 *
 	 * @since 4.0.0
 	 */
-	$suffixes = apply_filters( 'gp_glossary_suffixes', $suffixes );
+	$suffixes = apply_filters( 'gp_glossary_match_suffixes', $suffixes );
 
 	$glossary_entries_suffixes = array();
 
