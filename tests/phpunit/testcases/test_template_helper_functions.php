@@ -265,7 +265,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 			array(
 				'term' => 'report',
-				'part_of_speech' => 'noun',
+				'part_of_speech' => 'verb',
 				'translation' => 'report',
 				'glossary_id' => $glossary->id,
 			),
