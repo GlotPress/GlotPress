@@ -422,15 +422,15 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$glossary_entries_reference[ $term ][] = $id;
 		}
 
-		$terms_search = '\b(';
+		$regex_group = array();
 		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
-			$terms_search .= preg_quote( $term, '/' );
+			$regex_suffix = $suffixes ? '(?:' . implode( '|', $suffixes ) . ')?' : '';
 
-			if ( ! empty( $suffixes ) ) {
-				$terms_search .= '(?:' . implode( '|', $suffixes ) . ')?';
+			if ( ! isset( $regex_group[ $regex_suffix ] ) ) {
+				$regex_group[ $regex_suffix ] = array();
 			}
 
-			$terms_search .= '|';
+			$regex_group[ $regex_suffix ][] = preg_quote( $term, '/' );
 
 			$referenced_term = $term;
 			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
@@ -454,6 +454,12 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
 				}
 			}
+		}
+
+		// Build the regular expression.
+		$terms_search = '\b(';
+		foreach ( $regex_group as $suffix => $terms ) {
+			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
