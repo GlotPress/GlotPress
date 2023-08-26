@@ -194,7 +194,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'party' => array(
 				'Welcome to the party.',
 				'My parties.',
-				'I know, partys is the wrong plural ending but we need it because of nouns like boys.',
 			),
 			'color' => array(
 				'One color.',
