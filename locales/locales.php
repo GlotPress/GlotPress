@@ -9,7 +9,7 @@ class GP_Locale {
 	public $lang_code_iso_639_2 = null;
 	public $lang_code_iso_639_3 = null;
 	public $country_code;
-	public $wp_locale; // This should only be set for locales that are offically supported on translate.wordpress.org.
+	public $wp_locale; // This should only be set for locales that are officially supported on translate.wordpress.org.
 	public $slug;
 	public $nplurals = 2;
 	public $plural_expression = 'n != 1';
@@ -472,7 +472,7 @@ class GP_Locales {
 		$ca_valencia->lang_code_iso_639_1 = 'ca';
 		$ca_valencia->lang_code_iso_639_2 = 'cat';
 		$ca_valencia->wp_locale = 'ca_valencia';
-		$ca_valencia->slug = 'ca-valencia';
+		$ca_valencia->slug = 'ca-val';
 		$ca_valencia->google_code = 'ca';
 		$ca_valencia->facebook_locale = 'ca_ES';
 
@@ -1600,8 +1600,6 @@ class GP_Locales {
 		$kir->country_code = 'kg';
 		$kir->wp_locale = 'kir';
 		$kir->slug = 'kir';
-		$kir->nplurals = 1;
-		$kir->plural_expression = '0';
 		$kir->google_code = 'ky';
 		$kir->alphabet = 'cyrillic';
 
