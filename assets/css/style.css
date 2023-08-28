@@ -1087,11 +1087,33 @@ a.bubble, .bubble {
 	text-align: center;
 }
 
+a.bubble.action.edit {
+	background-color: var( --gp-color-btn-bg );
+	color: var( --gp-color-btn-text );
+	border: 1px solid var( --gp-color-btn-border );
+	display: inline-flex;
+	border-radius: 2px;
+	box-shadow: none;
+	margin: 0 0 0 0.2rem;
+	cursor: pointer;
+	outline: 0;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+a.bubble.action.edit:hover, a.bubble.action.edit:focus {
+	background-color: var( --gp-color-btn-hover-bg );
+	color: var( --gp-color-btn-hover-text );
+	border-color: var( --gp-color-btn-hover-border );
+	box-shadow: 0 0 0 1px var( --gp-color-btn-hover-border );
+}
+
 span.inactive {
 	border: 1px solid var( --gp-color-bubble-inactive-project-text );
 	border-radius: 10px;
 	color: var( --gp-color-bubble-inactive-project-text );
 	padding: 0.2em 0.5em 0.1em 0.5em;
+	margin-left: 0.2rem;
 	font-weight: 500;
 }
 
