@@ -1684,6 +1684,9 @@ a.tour-button.button-primary:hover {
 .webui-popover a {
 	color: #fff;
 }
+.pulse-wrapper {
+	display: inline-block;
+}
 .webui-popover .webui-popover-content {
 	font-size: .9em;
 	color: #fff;
