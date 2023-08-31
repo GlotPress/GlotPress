@@ -1618,6 +1618,9 @@ table.form-table td {
     width: 12px;
     height: 12px;
 }
+.pulse-wrapper {
+	display: inline-block;
+}
 .webui-popover .webui-popover-content {
 	font-size: .9em;
 	color: #fff;
