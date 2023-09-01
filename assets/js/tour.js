@@ -31,7 +31,6 @@ jQuery( document ).ready(
 			var nextItem = 1 + wrapper.data( 'tourindex' );
 			var tourEndsHere = typeof window.tour[tourName][nextItem] === 'undefined';
 			var showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
-
 			var popover_content = wrapper.data( 'popover-content' );
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
 			wrapper.addClass( 'pulse-border' );
@@ -57,16 +56,30 @@ jQuery( document ).ready(
 				return;
 			}
 			var item = window.tour[tourName][nextItem];
-			addPulse( jQuery(item.selector), item.html, tourName, nextItem );
+
+			addPulse( jQuery(item.selector), item, tourName, nextItem );
 
 		} );
-		function addPulse( field, html, tourName, index ) {
+		function addPulse( field, item, tourName, index ) {
 			var div = jQuery( '<div class="pulse-wrapper">' );
-			div.data( 'tourname', tourName ).data( 'tourindex', index ).data( 'popover-content', html );
+			
+			div.data( 'tourname', tourName ).data( 'tourindex', index ).data( 'popover-content', item.html );
 			field.wrap( div );
 			var pulse = jQuery( '<div class="pulse tour-' + tourName + '">' );
 			field.parent().append( pulse );
+			if ( typeof item.css !== 'undefined' ) {
+				var cssString = cssObjectToString(item.css);
+				jQuery( item.selector ).closest( '.pulse-wrapper' ).css( 'cssText', cssString );
+			}
 		}
+
+		// Convert the CSS object to a CSS string
+		function cssObjectToString(cssObject) {
+			return jQuery.map(cssObject, function(value, property) {
+				return property + ': ' + value;
+			}).join( '; ' );
+		}
+
 		window.tour = gp_tour;
 		window.loadTour = function(){
 			for ( var n in window.tour ) {
@@ -91,7 +104,7 @@ jQuery( document ).ready(
 					animation: animation-${n} 2s infinite;
 					}`, sheet.cssRules.length);
 
-				addPulse( jQuery( window.tour[n][1].selector ), window.tour[n][1].html, n, 1 );
+				addPulse( jQuery( window.tour[n][1].selector ), window.tour[n][1], n, 1 );
 
 			}
 		}
