@@ -109,14 +109,5 @@ jQuery( document ).ready(
 			}
 		}
 		window.loadTour();
-		// addPulse( jQuery( '.source-string .glossary-word:first' ), 'Please follow this translation recommendation', function() {
-		// 	addPulse( jQuery( '.translation-actions__save' ), 'Don\'t forget to submit your translation', function() {
-		// 	} );
-		// } );
-		// addPulse( jQuery( '.revealing.filter' ), 'Click here to reveal the search field', function() {
-		// 	addPulse( jQuery( '.filters-expanded input.is-primary' ), 'Click here to search', function() {
-		// 		addPulse( jQuery( '.glossary-word' ), 'Please follow this translation recommendation' );
-		// 	} );
-		// } );
 	}
 );
