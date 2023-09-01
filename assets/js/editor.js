@@ -528,4 +528,3 @@ $gp.editor = (
 jQuery( function( $ ) {
 	$gp.editor.init( $( '#translations' ) );
 } );
-
