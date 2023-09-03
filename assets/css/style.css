@@ -1627,13 +1627,10 @@ table.form-table td {
 	padding: 0.4em;
 	border-radius: 3px;
 	margin-left: calc( -0.4em - 2px );
-	margin-right: calc( -0.4em - 2px );
 	margin-top: calc( -0.4em - 2px );
 	margin-bottom: calc( -0.4em - 2px );
 }
-.pulse-wrapper {
-	display: inline-block;
-}
+
 .webui-popover .webui-popover-content {
 	font-size: .9em;
 	color: #fff;
