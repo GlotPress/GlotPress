@@ -54,7 +54,6 @@ jQuery( document ).ready(
 			WebuiPopovers.show( this, { title: window.tour[ tourName ][ 0 ].title, content: popoverContent, width: 300, dismissible: true } );
 			jQuery( '.tour-' + tourName ).remove();
 
-			jQuery( '.tour-' + tourName ).remove();
 			if ( tourEndsHere ) {
 				return;
 			}
