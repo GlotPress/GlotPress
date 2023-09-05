@@ -36,6 +36,7 @@ jQuery( document ).ready(
 			var popoverContent = wrapper.data( 'popover-content' );
 			var item = window.tour[ tourName ][ nextItem ];
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
+			jQuery( '.webui-popover:visible' ).hide();
 			wrapper.addClass( 'pulse-border' );
 
 			if ( tourEndsHere ) {
