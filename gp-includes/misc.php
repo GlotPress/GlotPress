@@ -566,6 +566,31 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 }
 
 /**
+ * Gets the list of format extensions prefixed with leading delimiters "." ( eg.: '.po' ).
+ *
+ * @since 4.0.0
+ *
+ * @return array   Supported format file extensions.
+ */
+function gp_get_format_extensions() {
+
+	$format_extensions = array();
+
+	// Get all the supported format extensions.
+	foreach ( GP::$formats as $format ) {
+		$format_extensions = array_merge( $format_extensions, $format->get_file_extensions() );
+	}
+
+	// Remove any duplicates added by alternate extensions.
+	$format_extensions = array_unique( $format_extensions );
+
+	// Prefix with delimiter ".".
+	$format_extensions = preg_replace( '/^/', '.', $format_extensions );
+
+	return $format_extensions;
+}
+
+/**
  * Displays the GlotPress administrator option in the user profile screen for WordPress administrators.
  *
  * @since 2.0.0
@@ -670,6 +695,10 @@ function gp_get_sort_by_fields() {
 		'references'                => array(
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
+		),
+		'length'                    => array(
+			'title'       => __( 'Original length', 'glotpress' ),
+			'sql_sort_by' => 'LENGTH(o.singular) %s',
 		),
 		'random'                    => array(
 			'title'       => __( 'Random', 'glotpress' ),

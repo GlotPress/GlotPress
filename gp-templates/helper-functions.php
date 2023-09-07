@@ -34,6 +34,18 @@ function prepare_original( $text ) {
 	// Wrap placeholders with notranslate.
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
+	// Highlight two or more spaces between words.
+	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading and trailing spaces in single lines.
+	$text = preg_replace( '/^ +| +$/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading spaces in multi lines.
+	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
+	// Highlight trailing spaces in multi lines.
+	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
+
+	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
+	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
+
 	// Put the glossaries back!
 	$text = preg_replace_callback(
 		'!(<span GLOSSARY=(\d+)>)!',
@@ -42,9 +54,6 @@ function prepare_original( $text ) {
 		},
 		$text
 	);
-
-	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
-	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
 
 	return $text;
 }
@@ -96,21 +105,21 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 		$suffixes = array();
 		if ( 'y' === substr( $term, -1 ) ) {
-			$term = substr( $term, 0, -1 );
+			$term       = substr( $term, 0, -1 );
 			$suffixes[] = 'y';
 			$suffixes[] = 'ies';
 			$suffixes[] = 'ys';
 		} elseif ( 'f' === substr( $term, -1 ) ) {
-			$term = substr( $term, 0, -1 );
+			$term       = substr( $term, 0, -1 );
 			$suffixes[] = 'f';
 			$suffixes[] = 'ves';
-			$terms[] = substr( $term, 0, -1 ) . 'ves';
+			$terms[]    = substr( $term, 0, -1 ) . 'ves';
 		} elseif ( 'fe' === substr( $term, -2 ) ) {
-			$term = substr( $term, 0, -2 );
+			$term       = substr( $term, 0, -2 );
 			$suffixes[] = 'fe';
 			$suffixes[] = 'ves';
 		} elseif ( 'an' === substr( $term, -2 ) ) {
-			$term = substr( $term, 0, -2 );
+			$term       = substr( $term, 0, -2 );
 			$suffixes[] = 'an';
 			$suffixes[] = 'en';
 		} else {
@@ -151,7 +160,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	} else {
 		// Build our glossary search.
 		$glossary_entries = $glossary->get_entries();
-		$cached_glossary = $glossary->id;
+		$cached_glossary  = $glossary->id;
 		if ( empty( $glossary_entries ) ) {
 			$terms_search = false;
 			return $translation;
@@ -169,15 +178,15 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$glossary_entries_reference[ $term ][] = $id;
 		}
 
-		$terms_search = '\b(';
+		$regex_group = array();
 		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
-			$terms_search .= preg_quote( $term, '/' );
+			$regex_suffix = $suffixes ? '(?:' . implode( '|', $suffixes ) . ')?' : '';
 
-			if ( ! empty( $suffixes ) ) {
-				$terms_search .= '(?:' . implode( '|', $suffixes ) . ')?';
+			if ( ! isset( $regex_group[ $regex_suffix ] ) ) {
+				$regex_group[ $regex_suffix ] = array();
 			}
 
-			$terms_search .= '|';
+			$regex_group[ $regex_suffix ][] = preg_quote( $term, '/' );
 
 			$referenced_term = $term;
 			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
@@ -203,8 +212,14 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			}
 		}
 
+		// Build the regular expression.
+		$terms_search = '\b(';
+		foreach ( $regex_group as $suffix => $terms ) {
+			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
+		}
+
 		// Remove the trailing |.
-		$terms_search = substr( $terms_search, 0, -1 );
+		$terms_search  = substr( $terms_search, 0, -1 );
 		$terms_search .= ')\b';
 	}
 
@@ -341,13 +356,19 @@ function textareas( $entry, $permissions, $index = 0 ) {
 			endforeach;
 
 		endif;
+		// Don't show the translation in the translation textarea if the translation status is changesrequested but the
+		// changesrequested is not enabled, because in this situation we consider the changesrequested as rejected translations.
+		if ( 'changesrequested' == $entry->translation_status && ! apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+			$entry->translations = array();
+		}
 		?>
 		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
-		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
+		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $entry->id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
 
 		<div>
 			<?php
 			if ( $can_edit ) {
+				echo '<div class="counts"></div>';
 				gp_entry_actions();
 			} elseif ( is_user_logged_in() ) {
 				_e( 'You are not allowed to edit this translation.', 'glotpress' );
@@ -366,12 +387,17 @@ function textareas( $entry, $permissions, $index = 0 ) {
 
 function display_status( $status ) {
 	$status_labels = array(
-		'current'  => _x( 'current', 'Single Status', 'glotpress' ),
-		'waiting'  => _x( 'waiting', 'Single Status', 'glotpress' ),
-		'fuzzy'    => _x( 'fuzzy', 'Single Status', 'glotpress' ),
-		'old'      => _x( 'old', 'Single Status', 'glotpress' ),
-		'rejected' => _x( 'rejected', 'Single Status', 'glotpress' ),
+		'current'          => _x( 'current', 'Single Status', 'glotpress' ),
+		'waiting'          => _x( 'waiting', 'Single Status', 'glotpress' ),
+		'fuzzy'            => _x( 'fuzzy', 'Single Status', 'glotpress' ),
+		'old'              => _x( 'old', 'Single Status', 'glotpress' ),
+		'rejected'         => _x( 'rejected', 'Single Status', 'glotpress' ),
+		'changesrequested' => _x( 'changes requested', 'Single Status', 'glotpress' ),
 	);
+	// If a changesrequested status exists in the database but they are no longer enabled, they will show as rejected.
+	if ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) {// todo: delete when we merge the gp-translation-helpers in GlotPress
+		$status_labels['changesrequested'] = _x( 'rejected', 'Single Status', 'glotpress' );
+	}
 	if ( isset( $status_labels[ $status ] ) ) {
 		$status = $status_labels[ $status ];
 	}

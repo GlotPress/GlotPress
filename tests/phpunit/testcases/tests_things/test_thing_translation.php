@@ -26,6 +26,40 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, $set->current_count() );
 	}
 
+	function test_translation_changesrequested_change_status() {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$permission = array( 'user_id' => $user, 'action' => 'approve',
+                             'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug );
+		GP::$validator_permission->create( $permission );
+
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		// Put the current count already in the cache
+		$set->current_count();
+
+		$translation->set_status('changesrequested');
+		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
+
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+		$this->assertEquals( 1, $set->changesrequested_count() );
+
+		$translation->set_status('current'); // Change the status to current.
+		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
+
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'current' ) );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+		$this->assertEquals( 1, $set->current_count() );
+		$this->assertEquals( 0, $set->changesrequested_count() );
+
+	}
+
 	function test_translation_denied_approve_change_status() {
 		$object_type = GP::$validator_permission->object_type;
 		$user = $this->factory->user->create();
@@ -55,6 +89,39 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$this->assertEquals( 0, count( $current_translations ) );
 		$this->assertEquals( 0, $set->current_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
+	}
+
+	function test_translation_denied_changesrequested_change_status() {
+		$object_type = GP::$validator_permission->object_type;
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$permission = array( 'user_id' => $user, 'action' => 'approve',
+                             'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug );
+		GP::$validator_permission->create( $permission );
+
+		$cannot_approve_translation = function( $verdict, $args ) {
+			return 'approve' !== $args['action'] || 'translation' !== $args['object_type'];
+		};
+
+		add_filter( 'gp_pre_can_user', $cannot_approve_translation, 2, 2 );
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+
+		// Put the current count already in the cache
+		$set->current_count();
+
+		$this->assertFalse( $translation->set_status( 'changesrequested' ) );
+		$set->update_status_breakdown(); // Refresh the counts of the object but not the cache
+		remove_filter( 'gp_pre_can_user', $cannot_approve_translation );
+
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 0, count( $changesrequested_translations ) );
+		$this->assertEquals( 0, $set->changesrequested_count() );
 		$this->assertEquals( 1, count( $waiting_translations ) );
 		$this->assertEquals( 1, $set->waiting_count() );
 	}
@@ -190,6 +257,19 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( $translation1->id, $for_translation[0]->id );
 	}
 
+	function test_for_changesrequested_should_not_include_untranslated_for_single_status() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) ); //This isn't going to be translated
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'changesrequested' ) );
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array('status' => 'changesrequested'), array('by' => 'translation', 'how' => 'asc') );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+		$this->assertEquals( $translation1->id, $for_translation[0]->id );
+	}
+
 	function test_for_translation_should_respect_priorities() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
@@ -211,6 +291,26 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
 		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_untranslated' ) );
+
+		$this->assertEquals( 2, count( $for_export ) );
+
+		// We can't be sure which order the for_export call returned the strings, so make sure to compare the right one.
+		if ( (int) $for_export[0]->original_id === (int) $translation1->original_id ) {
+			$this->assertEquals( $translation1->id, $for_export[0]->id );
+		} else {
+			$this->assertEquals( $translation1->id, $for_export[1]->id );
+		}
+	}
+
+	function test_for_export_should_include_changesrequested() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original1 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$original2 = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		$translation1 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original1->id, 'status' => 'current' ) );
+		$translation2 = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original2->id, 'status' => 'changesrequested' ) );
+		$for_export = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current_or_changesrequested' ) );
 
 		$this->assertEquals( 2, count( $for_export ) );
 
@@ -272,6 +372,24 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( $user, $translation->user_id_last_modified );
 	}
 
+	function test_validator_id_saved_on_status_change_to_changesrequested() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status( 'waiting' );
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		GP::$validator_permission->create( array(
+			'user_id' => $user, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
+
+		$translation->set_status( 'changesrequested' );
+		$this->assertEquals( $user, $translation->user_id_last_modified );
+	}
+
 	function test_cannot_reject_translation_without_approve_permission() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
@@ -281,6 +399,19 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		wp_set_current_user( $user );
 
 		$this->assertFalse( $translation->set_status( 'rejected' ) );
+		$this->assertNotEquals( $user, $translation->user_id_last_modified );
+	}
+
+	function test_cannot_changesrequested_translation_without_approve_permission() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$this->assertTrue( $translation->set_status( 'waiting' ) );
+
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+		$translation->set_status( 'changesrequested' );
+
+		$this->assertFalse( $translation->set_status( 'changesrequested' ) );
 		$this->assertNotEquals( $user, $translation->user_id_last_modified );
 	}
 
@@ -352,5 +483,151 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 
 		$this->assertEquals( 0, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '1' ) ) ) ) );
 		$this->assertEquals( 1, count( GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => array( '-1' ) ) ) ) );
+	}
+
+	function test_when_update_a_changedrequested_translation_it_is_set_to_old_status() {
+		$user1 = $this->factory->user->create();
+		$user2 = $this->factory->user->create();
+
+		wp_set_current_user( $user1 );
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => 'Translation 1', 'user_id' => $user1 ) );
+		$translation->set_status( 'waiting' );
+
+		GP::$validator_permission->create( array(
+			'user_id' => $user2, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
+
+		wp_set_current_user( $user2 );
+		$translation->set_as_changesrequested();
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( $user2, $translation->user_id_last_modified );
+		$this->assertEquals( 1, count( $changesrequested_translations ) );
+		$this->assertEquals( 1, $set->changesrequested_count() );
+		$this->assertEquals( 0, count( $waiting_translations ) );
+		$this->assertEquals( 0, $set->waiting_count() );
+
+		wp_set_current_user( $user1 );
+		$translation->save( array( 'translation_0' => 'Translation 2' ) );
+		$translation->set_as_waiting();
+		gp_clean_translation_set_cache( $set->id ); // Clean the cache.
+		$set->update_status_breakdown();            // Refresh the counts of the object.
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( 0, count( $changesrequested_translations ) );
+		$this->assertEquals( 0, $set->changesrequested_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
+	}
+
+	function test_when_update_the_same_changedrequested_translation_two_times_it_is_set_to_old_status() {
+		$user1 = $this->factory->user->create();
+		$user2 = $this->factory->user->create();
+
+		wp_set_current_user( $user1 );
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => 'Translation 1', 'user_id' => $user1 ) );
+		$translation->set_status( 'waiting' );
+
+		GP::$validator_permission->create( array(
+			'user_id' => $user2, 'action' => 'approve',
+			'project_id' => $set->project_id, 'locale_slug' => $set->locale,
+			'set_slug' => $set->slug,
+		) );
+
+		wp_set_current_user( $user2 );
+		$translation->set_as_changesrequested();
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( $user2, $translation->user_id_last_modified );
+		$this->assertEquals( 1, count( $changesrequested_translations ) );
+		$this->assertEquals( 1, $set->changesrequested_count() );
+		$this->assertEquals( 0, count( $waiting_translations ) );
+		$this->assertEquals( 0, $set->waiting_count() );
+
+		wp_set_current_user( $user1 );
+		$translation->save( array( 'translation_0' => 'Translation 2' ) );
+		$translation->set_as_waiting();
+		gp_clean_translation_set_cache( $set->id ); // Clean the cache.
+		$set->update_status_breakdown();            // Refresh the counts of the object.
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( 0, count( $changesrequested_translations ) );
+		$this->assertEquals( 0, $set->changesrequested_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
+
+		wp_set_current_user( $user2 );
+		$translation->set_as_changesrequested();
+		gp_clean_translation_set_cache( $set->id ); // Clean the cache.
+		$set->update_status_breakdown();            // Refresh the counts of the object.
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( $user2, $translation->user_id_last_modified );
+		$this->assertEquals( 1, count( $changesrequested_translations ) );
+		$this->assertEquals( 1, $set->changesrequested_count() );
+		$this->assertEquals( 0, count( $waiting_translations ) );
+		$this->assertEquals( 0, $set->waiting_count() );
+
+		wp_set_current_user( $user1 );
+		$translation->save( array( 'translation_0' => 'Translation 3' ) );
+		$translation->set_as_waiting();
+		gp_clean_translation_set_cache( $set->id ); // Clean the cache.
+		$set->update_status_breakdown();            // Refresh the counts of the object.
+		$changesrequested_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'changesrequested' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+		$this->assertEquals( 0, count( $changesrequested_translations ) );
+		$this->assertEquals( 0, $set->changesrequested_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, $set->waiting_count() );
+	}
+
+	function test_when_update_a_waiting_translation_it_is_set_to_old_status() {
+		$user = $this->factory->user->create();
+
+		wp_set_current_user( $user );
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$translation_old = $this->factory->translation->create( array( 'user_id' => $user, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation_old->set_as_waiting() );
+		$translation_waiting = $this->factory->translation->create( array( 'user_id' => $user, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation_waiting->set_as_waiting() ); //$translation_old is now old
+
+		$old_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'old' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 1, $set->waiting_count() );
+		$this->assertEquals( 1, count( $waiting_translations ) );
+		$this->assertEquals( 1, count( $old_translations ) );
+	}
+
+	function test_when_update_a_waiting_translation_it_is_set_to_old_status_and_dont_set_as_old_the_suggestions_from_other_users() {
+		$user1 = $this->factory->user->create();
+		$user2 = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale( );
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		wp_set_current_user( $user1 );
+		$translation1_old = $this->factory->translation->create( array( 'user_id' => $user1, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation1_old->set_as_waiting() );
+
+		wp_set_current_user( $user2 );
+		$translation2 = $this->factory->translation->create( array( 'user_id' => $user2, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation2->set_as_waiting() );
+
+		wp_set_current_user( $user1 );
+		$translation1_waiting = $this->factory->translation->create( array( 'user_id' => $user1, 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertTrue( $translation1_waiting->set_as_waiting() ); //$translation1_old is now old
+
+		$old_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'old' ) );
+		$waiting_translations = GP::$translation->for_translation( $set->project, $set, 0, array( 'status' => 'waiting' ) );
+
+		$this->assertEquals( 2, $set->waiting_count() );
+		$this->assertEquals( 2, count( $waiting_translations ) );
+		$this->assertEquals( 1, count( $old_translations ) );
 	}
 }

@@ -26,7 +26,7 @@ gp_tmpl_header();
 <form action="" method="post" enctype="multipart/form-data">
 	<p>
 		<label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label>
-		<input type="file" name="import-file" id="import-file" />
+		<input type="file" name="import-file" id="import-file" accept=".csv" />
 	</p>
 	<?php if ( $can_edit ) : ?>
 		<p>

@@ -38,15 +38,21 @@ If you'd like to work on something and there's not currently an issue for it, op
 
 == Installation ==
 
-Search for "GlotPress" in the WordPress.org plugin directory and install it.
+= Within WordPress =
 
-After activating the plugin, GlotPress can be accessed via `<home_url>/glotpress/`
+1. Visit the plugins page within your dashboard and select ‘Add New’
+1. Search for ‘GlotPress’
+1. Activate ‘GlotPress’ from your Plugins page
 
-= Manual Installation =
+= Manually =
 
-1. Upload the entire `/glotpress` directory to the `/wp-content/plugins/` directory.
-2. Activate GlotPress through the 'Plugins' menu in WordPress.
-3. GlotPress can then be accessed via `<home_url>/glotpress/`
+1. Upload the ‘glotpress’ folder to the /wp-content/plugins/ directory
+1. Activate the GlotPress plugin through the ‘Plugins’ menu in WordPress
+
+= After activation =
+
+1. GlotPress can be accessed via `<home_url>/glotpress/`.
+1. You’re done!
 
 = More Info =
 

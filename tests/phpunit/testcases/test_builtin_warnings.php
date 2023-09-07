@@ -184,7 +184,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$warnings = $this->getMockBuilder( 'GP_Translation_Warnings' )->getMock();
 		// we check for the number of warnings, because PHPUnit doesn't allow
 		// us to check if each argument is a callable
-		$warnings->expects( $this->exactly( 10 ) )->method( 'add' )->will( $this->returnValue( true ) );
+		$warnings->expects( $this->exactly( 11 ) )->method( 'add' )->will( $this->returnValue( true ) );
 		$this->w->add_all( $warnings );
 	}
 
@@ -549,60 +549,6 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		);
 	}
 
-
-	function test_unexpected_sprintf_token() {
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '100 percent', '100%' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '<a href="%a">100 percent</a>', '<a href="%a">100%</a>' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '<a href="%s">100 percent</a>', '<a href="%s">100%%</a>' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '<a href="%1$s">100 percent</a>', '<a href="%1$s">100%%</a>' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '%1$.2f baba', '%1$.2f баба' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '%1$.2f baba', '%1$.3f баба' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '%2$.2fMB baba', '%2$.2fMB баба' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', '%2$.3fMB baba', '%2$.2fMB баба' );
-		$this->assertNoWarnings( 'unexpected_sprintf_token', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s', 'Data: %1$.2fMB | Index: %2$.2fMB | Free: %3$.2fMB | Engine: %4$s' );
-
-		$this->assertNoWarnings(
-			'unexpected_sprintf_token',
-			'The %s contains %d items',
-			'El %s contiene %d elementos'
-		);
-		$this->assertNoWarnings(
-			'unexpected_sprintf_token',
-			'The %2$s contains %1$d items. That\'s a nice %2$s full of %1$d items.',
-			'El %2$s contiene %1$d elementos. Es un bonito %2$s lleno de %1$d elementos.'
-		);
-		$this->assertNoWarnings(
-			'unexpected_sprintf_token',
-			'The application password %friendly_name%.',
-			'La contraseña de aplicación %friendly_name%.'
-		);
-
-		$this->assertHasWarningsAndContainsOutput(
-			'unexpected_sprintf_token',
-			'<a href="%d">100 percent</a>',
-			'<a href="%d">100%</a>',
-			'The translation contains the following unexpected placeholders: ">100%<'
-		);
-		$this->assertHasWarningsAndContainsOutput(
-			'unexpected_sprintf_token',
-			'<a href="%f">100 percent</a>',
-			' 95% of <a href="%f">100%%</a>',
-			'The translation contains the following unexpected placeholders: 95% '
-		);
-		$this->assertHasWarningsAndContainsOutput(
-			'unexpected_sprintf_token',
-			'<a href="%f">100 percent</a>',
-			'<a href="%f">100%%</a> of 95% ',
-			'The translation contains the following unexpected placeholders: 95% '
-		);
-		$this->assertHasWarningsAndContainsOutput(
-			'unexpected_sprintf_token',
-			'<a href="%f">100 percent</a>',
-			'<a href="%f">100%</a> of 95% ',
-			'The translation contains the following unexpected placeholders: ">100%<, 95% '
-		);
-	}
-
 	function test_named_placeholders() {
 		$this->assertNoWarnings( 'named_placeholders', '###NEW_EMAIL###', '###NEW_EMAIL###' );
 		$this->assertNoWarnings( 'named_placeholders', '###new-email###', '###new-email###' );
@@ -661,6 +607,107 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			"The translation appears to be missing the following placeholders: ###new_email###\nThe translation contains the following unexpected placeholders: ###NEW_EMAIL###"
 		);
 	}
+
+	public function test_unexpected_start_end_space() {
+		$this->assertNoWarnings( 'unexpected_start_end_space', 'Original string', 'Cadea traducida' );
+		$this->assertNoWarnings( 'unexpected_start_end_space', ' Original string', ' Cadea traducida' );
+		$this->assertNoWarnings( 'unexpected_start_end_space', 'Original string ', 'Cadea traducida ' );
+		$this->assertNoWarnings( 'unexpected_start_end_space', ' Original string ', ' Cadea traducida ' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			' Original string',
+			'Cadea traducida',
+			'The translation appears to be missing 1 space at the beginning.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string',
+			' Cadea traducida',
+			'The translation appears to be adding 1 space at the beginning.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string ',
+			'Cadea traducida',
+			'The translation appears to be missing 1 space at the end.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string',
+			'Cadea traducida ',
+			'The translation appears to be adding 1 space at the end.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			' Original string',
+			'   Cadea traducida',
+			'Expected 1 space at the beginning, got 3.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'   Original string',
+			' Cadea traducida',
+			'Expected 3 spaces at the beginning, got 1.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string ',
+			'Cadea traducida   ',
+			'Expected 1 space at the end, got 3.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'Original string   ',
+			'Cadea traducida ',
+			'Expected 3 spaces at the end, got 1.' );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			'   Original string   ',
+			' Cadea traducida ',
+			"Expected 3 spaces at the beginning, got 1.\nExpected 3 spaces at the end, got 1." );
+		$this->assertHasWarningsAndContainsOutput( 'unexpected_start_end_space',
+			' Original string ',
+			'   Cadea traducida   ',
+			"Expected 1 space at the beginning, got 3.\nExpected 1 space at the end, got 3." );
+	}
+
+	public function test_missing_uppercase_beginning() {
+		$this->l->slug = 'ga';
+		$this->l->alphabet = 'latin';
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Original string', 'Cadea traducida', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'original string', 'cadea traducida', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'おはようございます', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', 'おはよう', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'सुबह बख़ैर', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', 'Доброе утро', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', 'доброе утро', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'Good morning', '早上好', $this->l );
+		$this->assertNoWarnings( 'missing_uppercase_beginning', 'good morning', '早上好', $this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'bos días',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'доброе утро',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'καλημέρα',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'Good morning',
+			'բարի լույս',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Bos días',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Доброе утро',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Καλημέρα',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+		$this->assertHasWarningsAndContainsOutput( 'missing_uppercase_beginning',
+			'good morning',
+			'Բարի առավոտ',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l );
+}
 
 	public function test_chained_warnings() {
 		$this->tw = new GP_Translation_Warnings();
@@ -842,6 +889,30 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 					'should_not_end_on_newline'   => 'Translation should not end on newline.',
 					'should_not_begin_on_newline' => 'Translation should not begin on newline.',
 					'placeholders'                => 'Extra %% placeholder in translation.',
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			' <p><a href="%s">100 percent</a></p>',
+			null,
+			array( "<a href=\"%s\">100%%</a> " ),
+			array(
+				array(
+					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
+					'placeholders'                => 'Extra %% placeholder in translation.',
+					'unexpected_start_end_space'  => "The translation appears to be missing 1 space at the beginning.\nThe translation appears to be adding 1 space at the end."
+				),
+			)
+		);
+		$this->assertContainsOutput(
+			'    <p><a href="%s">100 percent</a></p> ',
+			null,
+			array( " <a href=\"%s\">100%%</a>     " ),
+			array(
+				array(
+					'tags'                        => 'Missing tags from translation. Expected: <p> </p>',
+					'placeholders'                => 'Extra %% placeholder in translation.',
+					'unexpected_start_end_space'  => "Expected 4 spaces at the beginning, got 1.\nExpected 1 space at the end, got 5."
 				),
 			)
 		);
