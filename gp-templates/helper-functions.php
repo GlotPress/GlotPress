@@ -230,11 +230,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	if ( is_array( $singular_split ) ) {
 		$singular_combined = '';
 
-		foreach ( $singular_split as $k => $chunk ) {
+		foreach ( $singular_split as $key => $chunk ) {
 			// Create an escaped version for use later on.
 			$escaped_chunk = esc_translation( $chunk );
 
-			if ( $k > 0 && ( '<' === substr( $singular_split[ $k - 1 ], -1 ) || '"' === substr( $singular_split[ $k - 1 ], -1 ) || '</' === substr( $singular_split[ $k - 1 ], -2 ) ) ) {
+			if ( should_skip_element( $key, $singular_split ) ) {
 				$singular_combined .= $escaped_chunk;
 				continue;
 			}
@@ -290,12 +290,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		if ( is_array( $plural_split ) ) {
 			$plural_combined = '';
 
-			foreach ( $plural_split as $k => $chunk ) {
+			foreach ( $plural_split as $key => $chunk ) {
 				// Create an escaped version for use later on.
 				$escaped_chunk = esc_translation( $chunk );
 
-				// Skip the HTML items.
-				if ( $k > 0 && ( '<' === substr( $plural_split[ $k - 1 ], -1 ) || '"' === substr( $plural_split[ $k - 1 ], -1 ) || '</' === substr( $plural_split[ $k - 1 ], -2 ) ) ) {
+				if ( should_skip_element( $key, $plural_split ) ) {
 					$plural_combined .= $escaped_chunk;
 					continue;
 				}
@@ -524,4 +523,24 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 	?>
 </form>
 <?php
+}
+
+/**
+ * Determine if the current element should be skipped.
+ *
+ * @since 4.0.0
+ *
+ * @param int   $key           The key of the current element.
+ * @param array $split_element The split element.
+ *
+ * @return bool
+ */
+function should_skip_element( int $key, array $split_element ): bool {
+	if ( $key > 0 &&
+		( '<' === substr( $split_element[ $key - 1 ], -1 ) ||
+			( '"' === substr( $split_element[ $key - 1 ], -1 ) && ! ( 'alt="' === substr( $split_element[ $key - 1 ], -5 ) || 'title="' === substr( $split_element[ $key - 1 ], -7 ) ) ) ||
+			'</' === substr( $split_element[ $key - 1 ], -2 ) ) ) {
+		return true;
+	}
+	return false;
 }
