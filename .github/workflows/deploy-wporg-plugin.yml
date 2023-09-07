@@ -18,6 +18,21 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v3
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+
+      - name: Build minified JavaScript and CSS and commit it just for the release
+        run: |
+          npm ci
+          npm run build
+          git config user.email "build@glotpress.blog"
+          git config user.name "GlotPress Build"
+          git add .
+          git commit -m "Build" || true
+
       - name: WordPress.org plugin update
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:

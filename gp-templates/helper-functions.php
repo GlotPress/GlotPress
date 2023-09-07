@@ -34,15 +34,6 @@ function prepare_original( $text ) {
 	// Wrap placeholders with notranslate.
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
-	// Put the glossaries back!
-	$text = preg_replace_callback(
-		'!(<span GLOSSARY=(\d+)>)!',
-		function( $m ) use ( $glossary_entries ) {
-			return $glossary_entries[ $m[2] ];
-		},
-		$text
-	);
-
 	// Highlight two or more spaces between words.
 	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
 	// Highlight leading and trailing spaces in single lines.
@@ -54,6 +45,15 @@ function prepare_original( $text ) {
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
+
+	// Put the glossaries back!
+	$text = preg_replace_callback(
+		'!(<span GLOSSARY=(\d+)>)!',
+		function( $m ) use ( $glossary_entries ) {
+			return $glossary_entries[ $m[2] ];
+		},
+		$text
+	);
 
 	return $text;
 }
@@ -178,15 +178,15 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$glossary_entries_reference[ $term ][] = $id;
 		}
 
-		$terms_search = '\b(';
+		$regex_group = array();
 		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
-			$terms_search .= preg_quote( $term, '/' );
+			$regex_suffix = $suffixes ? '(?:' . implode( '|', $suffixes ) . ')?' : '';
 
-			if ( ! empty( $suffixes ) ) {
-				$terms_search .= '(?:' . implode( '|', $suffixes ) . ')?';
+			if ( ! isset( $regex_group[ $regex_suffix ] ) ) {
+				$regex_group[ $regex_suffix ] = array();
 			}
 
-			$terms_search .= '|';
+			$regex_group[ $regex_suffix ][] = preg_quote( $term, '/' );
 
 			$referenced_term = $term;
 			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
@@ -210,6 +210,12 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
 				}
 			}
+		}
+
+		// Build the regular expression.
+		$terms_search = '\b(';
+		foreach ( $regex_group as $suffix => $terms ) {
+			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.

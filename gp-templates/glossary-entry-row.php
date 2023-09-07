@@ -42,10 +42,10 @@
 					}
 				?>
 				</select></dd>
-				<dt><label for="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?><?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
-				<dd><textarea type="text" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][comment]" id="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?>"><?php echo esc_textarea( $entry->comment ); ?></textarea></dd>
 				<dt><label for="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><input type="text" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][translation]" id="glossary_entry_translation_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->translation ); ?>"></dd>
+				<dt><label for="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?><?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dd><textarea type="text" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][comment]" id="glossary_entry_comments_<?php echo esc_attr( $entry->id ); ?>"><?php echo esc_textarea( $entry->comment ); ?></textarea></dd>
 			</dl>
 
 			<input type="hidden" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][glossary_id]" value="<?php echo esc_attr( $entry->glossary_id ); ?>">
