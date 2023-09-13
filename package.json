@@ -14,8 +14,6 @@
     "@wordpress/env": "^8.6.0",
     "@wordpress/scripts": "^26.11.0",
     "grunt": "^1.6.1",
-    "grunt-browserify": "^6.0.0",
-    "grunt-contrib-concat": "^2.1.0",
     "grunt-contrib-cssmin": "^5.0.0",
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
