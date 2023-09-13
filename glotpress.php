@@ -38,7 +38,6 @@ define( 'GP_PATH', __DIR__ . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.6' );
 define( 'GP_PHP_REQUIRED_VERSION', '7.4' );
-define( 'GP_SCRIPT_DEBUG', true );
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
  *
