@@ -9,7 +9,6 @@ jQuery( document ).ready(
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.next-tour-item', function() {
-			jQuery( this ).closest( '.webui-popover' ).hide();
 			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().click();
 			return false;
 		} );
