@@ -9,17 +9,14 @@ jQuery( document ).ready(
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.next-tour-item', function() {
-			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().click();
+			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data('navtype', 'next').click();
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.previous-tour-item', function() {
-			var currentPopover = jQuery( this ).closest( '.webui-popover' );
-			if ( currentPopover.prev().hasClass( 'webui-popover' ) ) {
-				currentPopover.hide();
-				currentPopover.prev().show();
-			}
+			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data('navtype', 'previous').click();
 			return false;
 		} );
+		
 		jQuery( document ).on( 'click', '.reveal-next-tour-item', function() {
 			jQuery( this ).closest( '.webui-popover' ).hide();
 			jQuery( jQuery( this ).data( 'reveal' ) ).first().click();
@@ -27,6 +24,7 @@ jQuery( document ).ready(
 		} );
 
 		jQuery( document ).on( 'click', '.pulse', function() {
+			var navType = jQuery(this).data('navtype');
 			var wrapper = jQuery( this ).closest( '.pulse-wrapper' );
 			var tourName = wrapper.data( 'tourname' );
 			var currentTourIndex = wrapper.data( 'tourindex' );
