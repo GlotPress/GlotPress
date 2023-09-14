@@ -226,15 +226,16 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 	// Loop through each chunk of the split to find glossary terms.
-	// dd($translation->singular, $singular_split);
+
 	if ( is_array( $singular_split ) ) {
 		$singular_combined = '';
+		should_skip_chunk( '' ); // Reset the state machine.
 
-		foreach ( $singular_split as $key => $chunk ) {
+		foreach ( $singular_split as $chunk ) {
 			// Create an escaped version for use later on.
 			$escaped_chunk = esc_translation( $chunk );
 
-			if ( should_skip_element( $key, $singular_split ) ) {
+			if ( should_skip_chunk( $chunk ) ) {
 				$singular_combined .= $escaped_chunk;
 				continue;
 			}
@@ -289,12 +290,13 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// Loop through each chunk of the split to find glossary terms.
 		if ( is_array( $plural_split ) ) {
 			$plural_combined = '';
+			should_skip_chunk( '' ); // Reset the state machine.
 
-			foreach ( $plural_split as $key => $chunk ) {
+			foreach ( $plural_split as $chunk ) {
 				// Create an escaped version for use later on.
 				$escaped_chunk = esc_translation( $chunk );
 
-				if ( should_skip_element( $key, $plural_split ) ) {
+				if ( should_skip_chunk( $chunk ) ) {
 					$plural_combined .= $escaped_chunk;
 					continue;
 				}
@@ -526,88 +528,86 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 }
 
 /**
- * Determine if the current element should be skipped.
+ * Determine if the current chunk should be skipped.
  *
  * @since 4.0.0
  *
- * @param int   $key           The key of the current element.
- * @param array $split_element The split element.
+ * @param string $chunk The current chunk.
  *
  * @return bool
  */
-function should_skip_element( int $key, array $split_element ): bool {
-	$insideTag              = false;
-	$insideAllowedAttribute = false;
+function should_skip_chunk( string $chunk ) {
+	static $state = false;
+	if ( '' === $chunk ) {
+		$state = false;
+	}
 
-	if ( $key <= 0 ) {
-		// We cannot skip the first element.
+	if ( ! $state ) {
+		if ( '<' === substr( $chunk, -1 ) || '</' === substr( $chunk, -2 ) ) {
+			$state = 'tag_open';
+		} elseif ( preg_match( '/<[^>]+$/', $chunk, $m ) ) {
+			$state = 'inside_tag';
+			$chunk = $m[0];
+		}
+	}
+
+	if ( ! $state ) {
 		return false;
 	}
 
-	for ( $i = 0; $i < $key; $i++ ) {
-		// Check for HTML tag opening and closing
-		$openingTagPosition = strripos( $split_element[ $i ], '<' );
-		$closingTagPosition = strripos( $split_element[ $i ], '>' );
-		// Determine if I am inside a tag
-		// If I have an open position, a close position and the open is after the close, I am inside a tag
-		if ( false !== $openingTagPosition && false !== $closingTagPosition && $openingTagPosition > $closingTagPosition ) {
-			$insideTag = true;
-		} elseif ( false !== $openingTagPosition && false !== $closingTagPosition && $openingTagPosition < $closingTagPosition ) {
-			// If I have an open position, a close position and the open is before the close, I am outside a tag
-			$insideTag = false;
-		} elseif ( false !== $openingTagPosition && false === $closingTagPosition ) {
-			// If I only have an open position, I am inside a tag
-			$insideTag = true;
-		} elseif ( false === $openingTagPosition && false !== $closingTagPosition ) {
-			// If I only have a close position, I am outside an tag
-			$insideTag = false;
-		}
+	if ( 'tag_open' === $state ) {
+		$state = 'inside_tag';
 
-		// Check for the attribute elements inside the tag
-		if ( true === $insideTag ) {
-			$openAllowedAtributePosition = false;
-			// Search for last title and alt attributes
-			$titlePosition = strripos( $split_element[ $i ], 'title="' );
-			$altPosition   = strripos( $split_element[ $i ], 'alt="' );
-			// If I have found the title element, increase the position to the end of the attribute
-			if ( false !== $titlePosition ) {
-				$titlePosition += 6;
-			}
-			// If I have found the alt element, increase the position to the end of the attribute
-			if ( false !== $altPosition ) {
-				$altPosition += 4;
-			}
-			// Search for the last closing quote of the attribute
-			$closeAllowedAtributePosition = strripos( $split_element[ $i ], '"' );
-			if ( $titlePosition ) {
-				$insideAllowedAttribute      = true;
-				$openAllowedAtributePosition = $titlePosition;
-			}
-			if ( $altPosition && $altPosition > $openAllowedAtributePosition ) {
-				$insideAllowedAttribute      = true;
-				$openAllowedAtributePosition = $altPosition;
-			}
-			// If the close position is the same than the open position, the close position is from the attribute
-			if ( false !== $closeAllowedAtributePosition && $openAllowedAtributePosition == $closeAllowedAtributePosition ) {
-				$closeAllowedAtributePosition = false;
-			}
-			// Determine if I am inside an attribute
-			// If I have an open position, a close position and the open is after the close, I am inside an attribute
-			if ( false !== $openAllowedAtributePosition && false !== $closeAllowedAtributePosition && $openAllowedAtributePosition >= $closeAllowedAtributePosition ) {
-				$insideAllowedAttribute = true;
-			} elseif ( false !== $openAllowedAtributePosition && false !== $closeAllowedAtributePosition && $openAllowedAtributePosition < $closeAllowedAtributePosition ) {
-				// If I have an open position, a close position and the open is before the close, I am outside an attribute
-				$insideAllowedAttribute = false;
-			} elseif ( $openAllowedAtributePosition > 0 && false === $closeAllowedAtributePosition ) {
-				// If I only have an open position, I am inside an attribute
-				$insideAllowedAttribute = true;
-				} elseif ( false === $openAllowedAtributePosition && $closeAllowedAtributePosition > 0 ) {
-					// If I only have a close position, I am outside an attribute
-					$insideAllowedAttribute = false;
-				}
+		if ( preg_match( '/\s/', $chunk ) ) {
+			// Our chunk is just the HTML tag name, so skip.
+			return true;
 		}
 	}
 
-	return $insideTag && ! $insideAllowedAttribute;
+	if ( 'inside_attr' === $state || 'inside_allowed_attr' === $state ) {
+		$p = strpos( $chunk, '"' );
+		if ( false === $p ) {
+				// Still inside the attribute.
+				if ( 'inside_allowed_attr' === $state ) {
+				return false;
+			}
+			return true;
+		}
+
+		$state = 'inside_tag';
+		// Back in the tag but maybe an attribute will be opened again, so let's check the rest.
+		$chunk = substr( $chunk, $p + 1 );
+	}
+
+	if ( 'inside_tag' === $state ) {
+		if ( preg_match( '/\b([a-z]+)\s*=\s*"[^"]*$/', strtolower( $chunk ), $m ) ) {
+			// The chunk ends with an open-ended attribute.
+
+			$state = 'inside_attr';
+			if ( 'alt' === $m[1] || 'title' === $m[1] ) {
+				$state = 'inside_allowed_attr';
+			}
+			return true;
+		}
+
+		$p = strpos( $chunk, '>' );
+		while ( false !== $p ) {
+			// The tag ended, let's see if a new one starts again inside the current chunk.
+			$chunk = substr( $chunk, $p + 1 );
+			if ( false === strpos( $chunk, '<' ) ) {
+				// No more html start, so we're outside of a tag.
+				$state = false;
+				return true;
+			}
+		}
+
+		return true;
+	}
+
+	if ( 'inside_allowed_attr' === $state ) {
+		return false;
+	}
+
+	return true;
 }
 
