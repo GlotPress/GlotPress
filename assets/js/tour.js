@@ -3,6 +3,7 @@
 
 jQuery( document ).ready(
 	function() {
+		var lastNavClicked = false;
 		jQuery( document ).on( 'click', '.close-tour, .dismiss-tour', function() {
 			jQuery( this ).closest( '.webui-popover' ).hide();
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
@@ -13,6 +14,13 @@ jQuery( document ).ready(
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.previous-tour-item', function() {
+			if ( ! lastNavClicked ) {
+				var tourindex = jQuery( this ).data( 'tourindex' ) -1;
+				var prevItem = window.tour[ jQuery( this ).data( 'tourname' ) ][ tourindex ];
+				lastNavClicked = true;
+				jQuery( '.tour-' + jQuery( this ).data( 'tourname' ) ).remove();
+				addPulse( jQuery( prevItem.selector ), prevItem, jQuery( this ).data( 'tourname' ), tourindex );
+			}
 			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data('navtype', 'previous').click();
 			return false;
 		} );
@@ -56,7 +64,7 @@ jQuery( document ).ready(
 				popoverContent += '<br/><br/><a href="" class="close-tour">' + wp.i18n.__( 'Close', 'glotpress' ) + '</a>';
 			} else if ( typeof window.tour[ tourName ][ nextItem ] !== 'undefined' && typeof window.tour[ tourName ][ nextItem ].reveal === 'undefined' ) {
 				popoverContent += '<div class="popover-nav-btns">';
-				popoverContent += showPreviousBtn ? '<br/><br/><a href="" class="tour-button previous-tour-item" data-tourname="' + tourName + '">' + wp.i18n.__( 'Previous', 'glotpress' ) + '</a>' : '';
+				popoverContent += showPreviousBtn ? '<br/><br/><a href="" class="tour-button previous-tour-item" data-tourname="' + tourName + '"  data-tourindex="' + wrapper.data( 'tourindex' ) + '">' + wp.i18n.__( 'Previous', 'glotpress' ) + '</a>' : '';
 				popoverContent += '<a href="" class="tour-button next-tour-item button-primary" data-tourname="' + tourName + '">Next</a>';
 				popoverContent += '</div>';
 			} else if ( typeof window.tour[ tourName ][ nextItem ].reveal !== 'undefined' ) {
