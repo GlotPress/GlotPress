@@ -33,7 +33,21 @@ jQuery( document ).ready(
 			var tourEndsHere = typeof window.tour[ tourName ][ nextItem ] === 'undefined';
 			var showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
-			var item = window.tour[ tourName ][ nextItem ];
+			var item;
+			
+			if( ! tourEndsHere ) {
+				// Check if the selector for the next item does not exists
+				if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length < 1  ) {
+					while ( nextItem < window.tour[ tourName ].length) {
+						if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length > 0 ) {
+							break;
+						}
+						nextItem++;
+					}
+				}
+			}
+			item = window.tour[ tourName ][ nextItem ];
+
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
 			jQuery( '.webui-popover:visible' ).hide();
 			wrapper.addClass( 'pulse-border' );
@@ -60,6 +74,7 @@ jQuery( document ).ready(
 
 			addPulse( jQuery( item.selector ), item, tourName, nextItem );
 		} );
+
 		function addPulse( field, item, tourName, index ) {
 			var div = jQuery( '<div class="pulse-wrapper">' );
 			var pulse = jQuery( '<div class="pulse tour-' + tourName + '">' );
