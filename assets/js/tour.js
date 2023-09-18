@@ -10,21 +10,22 @@ jQuery( document ).ready(
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.next-tour-item', function() {
-			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data('navtype', 'next').click();
+			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data( 'navtype', 'next' ).click();
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.previous-tour-item', function() {
+			var tourindex;
+			var prevItem;
 			if ( ! lastNavClicked ) {
-				var tourindex = jQuery( this ).data( 'tourindex' ) -1;
-				var prevItem = window.tour[ jQuery( this ).data( 'tourname' ) ][ tourindex ];
+				tourindex = jQuery( this ).data( 'tourindex' ) - 1;
+				prevItem = window.tour[ jQuery( this ).data( 'tourname' ) ][ tourindex ];
 				lastNavClicked = true;
 				jQuery( '.tour-' + jQuery( this ).data( 'tourname' ) ).remove();
 				addPulse( jQuery( prevItem.selector ), prevItem, jQuery( this ).data( 'tourname' ), tourindex );
 			}
-			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data('navtype', 'previous').click();
+			jQuery( '.pulse-wrapper .tour-' + jQuery( this ).data( 'tourname' ) + ':visible' ).first().data( 'navtype', 'previous' ).click();
 			return false;
 		} );
-		
 		jQuery( document ).on( 'click', '.reveal-next-tour-item', function() {
 			jQuery( this ).closest( '.webui-popover' ).hide();
 			jQuery( jQuery( this ).data( 'reveal' ) ).first().click();
@@ -32,7 +33,7 @@ jQuery( document ).ready(
 		} );
 
 		jQuery( document ).on( 'click', '.pulse', function() {
-			var navType = jQuery(this).data('navtype');
+			var navType = jQuery( this ).data( 'navtype' );
 			var wrapper = jQuery( this ).closest( '.pulse-wrapper' );
 			var tourName = wrapper.data( 'tourname' );
 			var currentTourIndex = wrapper.data( 'tourindex' );
@@ -41,6 +42,15 @@ jQuery( document ).ready(
 			var showPreviousBtn = currentTourIndex > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
 			var item;
+			if ( 'next' === navType || ! navType ) {
+				nextItem = 1 + wrapper.data( 'tourindex' );
+			} else if ( 'previous' === navType ) {
+				nextItem = wrapper.data( 'tourindex' ) - 1;
+			}
+
+			tourEndsHere = typeof window.tour[ tourName ][ nextItem ] === 'undefined';
+			showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
+			popoverContent = wrapper.data( 'popover-content' );
 
 			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
