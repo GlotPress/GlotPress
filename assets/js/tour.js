@@ -35,15 +35,12 @@ jQuery( document ).ready(
 			var showPreviousBtn = currentTourIndex > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
 			var item;
-			var istopOffsetDefined = typeof window.tour[ tourName ][ currentTourIndex ].topOffset !== 'undefined' && Number.isInteger( window.tour[ tourName ][ currentTourIndex ].topOffset );
-			var popoverTopOffset = istopOffsetDefined ? window.tour[ tourName ][ currentTourIndex ].topOffset : 0;
-			var isPlacementDefined = typeof window.tour[ tourName ][ currentTourIndex ].placement !== 'undefined';
-			var popoverPlacement = isPlacementDefined ? window.tour[ tourName ][ currentTourIndex ].placement : 'bottom-right';
+
 			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
-				if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length < 1 ) {
+				if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length < 1 ) {
 					while ( nextItem < window.tour[ tourName ].length ) {
-						if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length > 0 ) {
+						if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length > 0 ) {
 							break;
 						}
 						nextItem++;
