@@ -34,11 +34,11 @@ jQuery( document ).ready(
 			var showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
 			var item;
-			
-			if( ! tourEndsHere ) {
+
+			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
-				if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length < 1  ) {
-					while ( nextItem < window.tour[ tourName ].length) {
+				if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length < 1 ) {
+					while ( nextItem < window.tour[ tourName ].length ) {
 						if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length > 0 ) {
 							break;
 						}
