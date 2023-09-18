@@ -37,7 +37,7 @@ jQuery( document ).ready(
 
 			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
-				if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length < 1 ) {
+				if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length < 1 ) {
 					while ( nextItem < window.tour[ tourName ].length ) {
 						if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length > 0 ) {
 							break;
