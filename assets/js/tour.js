@@ -39,7 +39,7 @@ jQuery( document ).ready(
 				// Check if the selector for the next item does not exists
 				if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length < 1 ) {
 					while ( nextItem < window.tour[ tourName ].length ) {
-						if ( jQuery( window.tour[ tourName ][ nextItem ].selector ).length > 0 ) {
+						if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length > 0 ) {
 							break;
 						}
 						nextItem++;
