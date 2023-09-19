@@ -57,8 +57,8 @@ $i = 0;
 		);
 		?>
 	</h2>
-	<?php gp_link_set_edit( $translation_set, $project, _x( '(edit)', 'translation set', 'glotpress' ) ); ?>
-	<?php gp_link_set_delete( $translation_set, $project, _x( '(delete)', 'translation set', 'glotpress' ) ); ?>
+	<?php gp_link_set_edit( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
+	<?php gp_link_set_delete( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
 	<div class="glossary-links">
 		<?php
 		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
