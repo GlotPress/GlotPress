@@ -422,7 +422,7 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
-<table id="translations" class="gp-table translations <?php echo esc_attr( $class_rtl ); ?>">
+<table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
 	<thead>
 	<tr>
 		<?php
@@ -456,6 +456,16 @@ if ( ! $translations ) :
 	endif;
 ?>
 </table>
+<?php
+/**
+ * Fires after the translation table has been displayed.
+ *
+ * @since 4.0.0
+ *
+ * @param array $def_vars Variables defined in the template.
+ */
+do_action( 'gp_after_translation_table', get_defined_vars() );
+?>
 
 <div class="gp-table-actions bottom">
 	<?php
