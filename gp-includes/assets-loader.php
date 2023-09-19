@@ -12,10 +12,11 @@
 function gp_register_default_styles() {
 	$url = gp_plugin_url( 'assets/css' );
 
-	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
+	$suffix = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20230725' );
+	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'gp-base' ), '20230503' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
@@ -26,7 +27,7 @@ add_action( 'init', 'gp_register_default_styles' );
 function gp_register_default_scripts() {
 	$url = gp_plugin_url( 'assets/js' );
 
-	$suffix = SCRIPT_DEBUG ? '.js' : '.min.js';
+	$suffix = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.js' : '.min.js';
 
 	// Register our standard scripts.
 	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '20210429' );
@@ -35,11 +36,15 @@ function gp_register_default_scripts() {
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20230808' );
 	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20230808' );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20230808' );
+	wp_register_script( 'gp-tour', $url . '/tour' . $suffix, array( 'jquery', 'gp-jquery-webui-popover' ), '20230728', false );
 
 	wp_set_script_translations( 'gp-common', 'glotpress' );
 	wp_set_script_translations( 'gp-editor', 'glotpress' );
 	wp_set_script_translations( 'gp-glossary', 'glotpress' );
 	wp_set_script_translations( 'gp-mass-create-sets-page', 'glotpress' );
+	wp_set_script_translations( 'gp-tour', 'glotpress' );
+	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'jquery' ), '20210429', false );
+	wp_localize_script( 'gp-tour', 'gp_tour', apply_filters( 'gp_tour', array() ) );
 }
 
 add_action( 'init', 'gp_register_default_scripts' );
