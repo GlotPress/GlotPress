@@ -1,4 +1,5 @@
 **/*.min.js
 **/node_modules/**
+assets/js/jquery.webui-popover.js
 **/vendor/**
 /*.js
