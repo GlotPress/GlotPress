@@ -458,7 +458,6 @@ $i = 0;
 ?>
 </table>
 <?php
-$def_vars = get_defined_vars();
 /**
  * Fires after the translation table has been displayed.
  *
@@ -466,7 +465,7 @@ $def_vars = get_defined_vars();
  *
  * @param array $def_vars Variables defined in the template.
  */
-do_action( 'gp_after_translation_table', $def_vars );
+do_action( 'gp_after_translation_table', get_defined_vars() );
 ?>
 
 <div class="gp-table-actions bottom">
