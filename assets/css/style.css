@@ -1379,7 +1379,6 @@ a.project-actions {
 
 #sub-projects {
 	float: left;
-	width: 20em;
 	margin-right: 4em;
 	margin-left: -24em;
 }
@@ -1390,6 +1389,7 @@ a.project-actions {
 	line-height: 1.3em;
 	color: #555;
 	margin: 0;
+	padding: 0.2rem 0 0.4rem 0;
 }
 
 #projects dl,
