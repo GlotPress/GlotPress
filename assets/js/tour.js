@@ -99,13 +99,17 @@ jQuery( document ).ready(
 		window.loadTour = function() {
 			var color1 = '';
 			var color2 = '';
-			var sheet = {};
+			var styleElement = {};
 			var n;
+			var style;
 			for ( n in window.tour ) {
 				color1 = window.tour[ n ][ 0 ].color + '00';
 				color2 = window.tour[ n ][ 0 ].color + 'a0';
-				sheet = document.styleSheets[ 0 ];
-				sheet.insertRule( '@keyframes animation-' + n + ' {' +
+				styleElement = document.createElement( 'style' );
+				document.head.appendChild( styleElement );
+				style = styleElement.sheet;
+
+				style.insertRule( '@keyframes animation-' + n + ' {' +
 					'0% {' +
 					'box-shadow: 0 0 0 0 ' + color2 + ';' +
 					'}' +
@@ -116,14 +120,14 @@ jQuery( document ).ready(
 					'box-shadow: 0 0 0 0 ' + color1 + ';' +
 					'}' +
 					'}',
-				sheet.cssRules.length );
+				style.cssRules.length );
 
-				sheet.insertRule( '.tour-' + n + '{' +
+				style.insertRule( '.tour-' + n + '{' +
 					'box-shadow: 0 0 0 ' + color2 + ';' +
 					'background: ' + color1 + ';' +
 					'-webkit-animation: animation-' + n + ' 2s infinite;' +
 					'animation: animation-' + n + ' 2s infinite; }',
-				sheet.cssRules.length );
+				style.cssRules.length );
 				addPulse( jQuery( window.tour[ n ][ 1 ].selector ), window.tour[ n ][ 1 ], n, 1 );
 			}
 		};
