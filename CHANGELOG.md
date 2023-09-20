@@ -1,6 +1,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.8] (September 19, 2023)
+
+**Features**
+* Add a Tour Component ([#1632])
+* Add a filter for the classes of the translation table and an action after the translation table is displayed ([#1665])
+* Dependencies for site tour ([#1684])
+
+**Bugfixes**
+* Fix button margins ([#1677])
+* Remove the glossary tooltip inside the HTML tags ([#1679])
+* Correction of plurals parameters for Saraiki ([#1682])
+
 ## [4.0.0] (August 18, 2023)
 
 (this space intentionally left blank)
@@ -654,8 +666,14 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1369]: https://github.com/GlotPress/GlotPress/pull/1369
 [#1506]: https://github.com/GlotPress/GlotPress/pull/1506
 [#1622]: https://github.com/GlotPress/GlotPress/pull/1622
+[#1632]: https://github.com/GlotPress/GlotPress/pull/1632
 [#1634]: https://github.com/GlotPress/GlotPress/pull/1634
 [#1635]: https://github.com/GlotPress/GlotPress/pull/1635
 [#1651]: https://github.com/GlotPress/GlotPress/pull/1651
 [#1662]: https://github.com/GlotPress/GlotPress/pull/1662
 [#1664]: https://github.com/GlotPress/GlotPress/pull/1664
+[#1665]: https://github.com/GlotPress/GlotPress/pull/1665
+[#1677]: https://github.com/GlotPress/GlotPress/pull/1677
+[#1679]: https://github.com/GlotPress/GlotPress/pull/1679
+[#1682]: https://github.com/GlotPress/GlotPress/pull/1682
+[#1684]: https://github.com/GlotPress/GlotPress/pull/1684

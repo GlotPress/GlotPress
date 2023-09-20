@@ -97,6 +97,8 @@
 	--gp-color-status-waiting-subtle: #ffffc2;
 	--gp-color-status-rejected-subtle: #ff8e8e;
 	--gp-color-status-changesrequested-subtle: #87ceeb;
+
+	--gp-color-tour: var( --gp-color-primary );
 }
 
 *,
@@ -1617,4 +1619,78 @@ table.form-table td {
 	.gp-footer-credits {
 		flex-direction: column;
 	}
+}
+
+.pulse {
+		border-radius: 50%;
+		position: relative;
+		cursor: pointer;
+		top: -2em;
+		left: -0.4em;
+		width: 12px;
+		height: 12px;
+		margin: -6px;
+}
+
+.pulse-wrapper {
+	border: 2px dashed transparent;
+	padding: 0.4em;
+	border-radius: 3px;
+	margin-left: calc( -0.4em - 2px );
+	margin-top: calc( -0.4em - 2px );
+	margin-bottom: calc( -0.4em - 2px );
+}
+
+.webui-popover .webui-popover-content {
+	font-size: .9em;
+	color: #fff;
+}
+.pulse-border {
+	border: 2px dashed var( --gp-color-tour );
+}
+
+a.tour-button {
+	text-decoration: none;
+	border-radius: 3px;
+	font-weight: bold;
+	padding: 3px 10px;
+	border: rgba( 255, 255, 255, .5 ) thin solid;
+	color: #fff;
+}
+a.tour-button:hover {
+	border: #fff thin solid;
+	background: rgba( 255, 255, 255, .25 );
+}
+
+a.previous-tour-item {
+	margin-right: 0.5em;
+}
+
+a.tour-button.button-primary {
+	background: #fff;
+	color: #2f99ee;
+	color: var( --gp-color-tour );
+	border: #fff thin solid;
+}
+a.tour-button.button-primary:hover {
+	background: rgba( 255,255,255,.75 );
+}
+
+.popover-nav-btns {
+	margin-top: 11px;
+}
+
+.webui-popover.in{
+	background: var( --gp-color-tour );
+}
+
+.webui-popover .webui-popover-title {
+	border-radius: 4px 4px 0 0; // Make webui-popover outside and inner borders radius concentric.
+	background: #fff;
+	font-weight: bold;
+	color: var( --gp-color-tour );
+}
+
+.webui-popover a {
+	color: #fff;
 }
