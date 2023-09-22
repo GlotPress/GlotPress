@@ -8,7 +8,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
 		$test_string = 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.';
 		$orig = '';
-		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.';
+		$expected_result = 'This string, &lt;code&gt;<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -207,6 +207,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
 		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
 	}
+
+	function test_map_glossary_entries_with_placeholders_glued_glossary_words() {
+		$test_string = 'I want to show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
+		$expected_result = 'I want to <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and test %3$show%4$show to %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%2$b test %show%d %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%d %3$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%4$s and%3$s%3$s test and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and %3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> %4$s %%4%show %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'show',
+			'part_of_speech' => 'verb',
+			'translation' => 'amosar',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	function test_map_glossary_entries_with_placeholders_glued_glossary_words_in_the_plural_origin() {
+		$singular_string = 'I want to show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
+		$plural_string   = 'Plural. I want to show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
+		$singular_expected_result = 'I want to <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and test %3$show%4$show to %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%2$b test %show%d %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%d %3$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%4$s and%3$s%3$s test and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and %3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> %4$s %%4%show %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how.';
+		$plural_expected_result = 'Plural. I want to <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and test %3$show%4$show to %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%2$b test %show%d %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%d %3$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span>%4$s and%3$s%3$s test and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> and %3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> %4$s %%4%show %%<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;amosar&quot;,&quot;pos&quot;:&quot;verb&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">show</span> how.';
+
+		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'show',
+			'part_of_speech' => 'verb',
+			'translation' => 'amosar',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
+		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );	}
 
 	/**
 	 * Expects highlighting leading and ending spaces in single line strings, and double/multiple spaces in the middle.
