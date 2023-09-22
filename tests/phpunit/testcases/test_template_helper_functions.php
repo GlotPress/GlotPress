@@ -254,6 +254,35 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
 		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
+		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
+	}
+
+	/*
+	 * Doesn't match the glossary word inside other words.
+	 */
+	function test_map_glossary_entries_with_placeholders_inside_another_words() {
+		$singular_string          = 'My alidads and granddaddies and dad and dads and skedaddle and hispanidad and dadaistic';
+		$plural_string            = 'Plural. ' . $singular_string;
+		$singular_expected_result = 'My alidads and granddaddies and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;pai&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">dad</span> and <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;pai&quot;,&quot;pos&quot;:&quot;noun&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">dads</span> and skedaddle and hispanidad and dadaistic';
+		$plural_expected_result   = 'Plural. ' . $singular_expected_result;
+
+		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'dad',
+			'part_of_speech' => 'noun',
+			'translation' => 'pai',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
 		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );	}
 
 	/**
