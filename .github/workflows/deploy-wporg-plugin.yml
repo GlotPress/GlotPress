@@ -28,6 +28,7 @@ jobs:
         run: |
           npm ci
           npm run build
+          npm run updateGPScriptDebugConst
           git config user.email "build@glotpress.blog"
           git config user.name "GlotPress Build"
           git add .
