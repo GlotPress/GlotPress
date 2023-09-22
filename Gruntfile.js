@@ -68,7 +68,7 @@ module.exports = function( grunt ) {
 			},
 		},
 		replace: {
-			updateGPScriptDebug: {
+			updateGPScriptDebugConst: {
 				src: ['glotpress.php'],
 				overwrite: true,
 				replacements: [

@@ -25,7 +25,7 @@
   "scripts": {
     "build": "grunt",
     "watch": "grunt watch",
-    "updateGPScriptDebugConst": "grunt replace:updateGPScriptDebug",
+    "updateGPScriptDebugConst": "grunt replace:updateGPScriptDebugConst",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop",
     "lint:js": "wp-scripts lint-js",
