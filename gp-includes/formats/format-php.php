@@ -66,7 +66,7 @@ class GP_Format_PHP extends GP_Format {
 			);
 		}
 
-		return '<?php' . PHP_EOL . 'return ' . $this->var_export( $result, true ) . ';';
+		return '<?php' . PHP_EOL . 'return ' . $this->var_export( $result ) . ';';
 	}
 
 	/**
@@ -75,7 +75,7 @@ class GP_Format_PHP extends GP_Format {
 	 * @since 4.0.0
 	 *
 	 * @param string $file_name The name of the uploaded PHP file.
-	 * @return Translations|bool The extracted originals on success, false on failure.
+	 * @return false Always returns false, as this is not currently implemented.
 	 */
 	public function read_originals_from_file( $file_name ) {
 		// TODO: Either implement in a secure way or mark as unsupported.
@@ -89,10 +89,47 @@ class GP_Format_PHP extends GP_Format {
 	 *
 	 * @param string     $file_name The name of the uploaded properties file.
 	 * @param GP_Project $project   Unused. The project object to read the translations into.
-	 * @return Translations|bool The extracted translations on success, false on failure.
+	 * @return false Always returns false, as this is not currently implemented.
 	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
-		return $this->read_originals_from_file( $file_name );
+		// TODO: Either implement in a secure way or mark as unsupported.
+		return false;
+	}
+
+	/**
+	 * Determines if the given array is a list.
+	 *
+	 * An array is considered a list if its keys consist of consecutive numbers from 0 to count($array)-1.
+	 *
+	 * Polyfill for array_is_list() in PHP 8.1.
+	 *
+	 * @see https://github.com/symfony/polyfill-php81/tree/main
+	 *
+	 * @since 4.0.0
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @param array<mixed> $arr The array being evaluated.
+	 * @return bool True if array is a list, false otherwise.
+	 */
+	private function array_is_list( array $arr ): bool {
+		if ( function_exists( 'array_is_list' ) ) {
+			return array_is_list( $arr );
+		}
+
+		if ( ( array() === $arr ) || ( array_values( $arr ) === $arr ) ) {
+			return true;
+		}
+
+		$next_key = -1;
+
+		foreach ( $arr as $k => $v ) {
+			if ( ++$next_key !== $k ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -103,27 +140,23 @@ class GP_Format_PHP extends GP_Format {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed $value       The variable you want to export.
-	 * @param bool  $return_only Optional. Whether to return the variable representation instead of outputing it. Default false.
-	 * @return string|void The variable representation or void.
+	 * @param mixed $value The variable you want to export.
+	 * @return string The variable representation.
 	 */
-	private function var_export( $value, $return_only = false ) {
+	private function var_export( $value ): string {
 		if ( ! is_array( $value ) ) {
-			return var_export( $value, $return_only );
+			return var_export( $value, true );
 		}
 
 		$entries = array();
+
+		$is_list = $this->array_is_list( $value );
+
 		foreach ( $value as $key => $val ) {
-			$entries[] = var_export( $key, true ) . '=>' . $this->var_export( $val, true );
+			$entries[] = $is_list ? $this->var_export( $val ) : var_export( $key, true ) . '=>' . $this->var_export( $val );
 		}
 
-		$code = '[' . implode( ',', $entries ) . ']';
-		if ( $return_only ) {
-			return $code;
-		}
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $code;
+		return '[' . implode( ',', $entries ) . ']';
 	}
 }
 
