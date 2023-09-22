@@ -44,7 +44,7 @@ class GP_Test_Format_PHP extends GP_UnitTestCase {
 
 		$php = GP::$formats[ $this->format ]->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
 
-		$this->assertStringContainsString("'messages'=>['foo'=>[0=>'bar'],'bar'=>[0=>'baz']]", $php );
+		$this->assertStringContainsString("'messages'=>['foo'=>['bar'],'bar'=>['baz']]", $php );
 	}
 
 	public function test_read_originals_from_file() {
