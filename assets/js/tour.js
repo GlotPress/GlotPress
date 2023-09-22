@@ -99,14 +99,13 @@ jQuery( document ).ready(
 		window.loadTour = function() {
 			var color1 = '';
 			var color2 = '';
-			var styleElement = {};
+			var styleElement = document.createElement( 'style' );
 			var n;
 			var style;
+			document.head.appendChild( styleElement );
 			for ( n in window.tour ) {
 				color1 = window.tour[ n ][ 0 ].color + '00';
 				color2 = window.tour[ n ][ 0 ].color + 'a0';
-				styleElement = document.createElement( 'style' );
-				document.head.appendChild( styleElement );
 				style = styleElement.sheet;
 
 				style.insertRule( '@keyframes animation-' + n + ' {' +
