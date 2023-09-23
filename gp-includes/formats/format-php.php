@@ -48,7 +48,7 @@ class GP_Format_PHP extends GP_Format {
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$result = array(
-			'generator'                 => 'GlotPress/' . GP_VERSION,
+			'x-generator'               => 'GlotPress/' . GP_VERSION,
 			'translation-revision-date' => GP::$translation->last_modified( $translation_set ) . '+0000',
 			'plural-forms'              => "nplurals=$locale->nplurals; plural=$locale->plural_expression;",
 			'messages'                  => array(),
