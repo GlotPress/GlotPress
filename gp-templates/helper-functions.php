@@ -213,7 +213,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Build the regular expression.
-		$terms_search = '((?<!%)%(?:[1-9]\$)?[bcdefgosuxEFGX%l@])|(\b';
+		$terms_search = '(%(?:[1-9]\$)?[bcdefgosuxEFGX%l@])|(\b';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
