@@ -102,11 +102,13 @@ jQuery( document ).ready(
 			var styleElement = document.createElement( 'style' );
 			var n;
 			var style;
+
 			document.head.appendChild( styleElement );
+			style = styleElement.sheet;
+
 			for ( n in window.tour ) {
 				color1 = window.tour[ n ][ 0 ].color + '00';
 				color2 = window.tour[ n ][ 0 ].color + 'a0';
-				style = styleElement.sheet;
 
 				style.insertRule( '@keyframes animation-' + n + ' {' +
 					'0% {' +
