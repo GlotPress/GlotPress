@@ -37,6 +37,8 @@ jQuery( document ).ready(
 			var item;
 			var istopOffsetDefined = typeof window.tour[ tourName ][ currentTourIndex ].topOffset !== 'undefined' && Number.isInteger( window.tour[ tourName ][ currentTourIndex ].topOffset );
 			var popoverTopOffset = istopOffsetDefined ? window.tour[ tourName ][ currentTourIndex ].topOffset : 0;
+			var isPlacementDefined = typeof window.tour[ tourName ][ currentTourIndex ].placement !== 'undefined';
+			var popoverPlacement = isPlacementDefined ? window.tour[ tourName ][ currentTourIndex ].placement : 'bottom-right';
 			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
 				if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length < 1 ) {
@@ -68,7 +70,7 @@ jQuery( document ).ready(
 			if ( ! tourEndsHere ) {
 				popoverContent += '<br/><small><a href="" class="dismiss-tour">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
 			}
-			WebuiPopovers.show( this, { title: window.tour[ tourName ][ 0 ].title, content: popoverContent, width: 300, dismissible: true, offsetTop: popoverTopOffset } );
+			WebuiPopovers.show( this, { title: window.tour[ tourName ][ 0 ].title, content: popoverContent, width: 300, dismissible: true, offsetTop: popoverTopOffset, placement: popoverPlacement } );
 			jQuery( '.tour-' + tourName ).remove();
 
 			if ( tourEndsHere ) {
