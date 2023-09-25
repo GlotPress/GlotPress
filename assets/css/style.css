@@ -1685,7 +1685,7 @@ a.tour-button.button-primary:hover {
 }
 
 .webui-popover .webui-popover-title {
-	border-radius: 4px 4px 0 0; // Make webui-popover outside and inner borders radius concentric.
+	border-radius: 4px 4px 0 0; /* Make webui-popover outside and inner borders radius concentric. */
 	background: #fff;
 	font-weight: bold;
 	color: var( --gp-color-tour );
