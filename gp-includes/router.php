@@ -181,10 +181,6 @@ class GP_Router {
 
 		$url_path = gp_url_path( gp_url_public_root() );
 
-		// Check if the last character of the text is not a slash, and add it if needed
-		if ( substr( $_SERVER['REQUEST_URI'], -1 ) !== '/' ) {
-			$_SERVER['REQUEST_URI'] .= '/';
-		}
 		// If the request URL doesn't match our base URL, don't bother trying to match
 		if ( $url_path && ! gp_startswith( wp_unslash( trailingslashit( $_SERVER['REQUEST_URI'] ) ), $url_path ) ) {
 			return;
