@@ -29,12 +29,16 @@ jQuery( document ).ready(
 		jQuery( document ).on( 'click', '.pulse', function() {
 			var wrapper = jQuery( this ).closest( '.pulse-wrapper' );
 			var tourName = wrapper.data( 'tourname' );
-			var nextItem = 1 + wrapper.data( 'tourindex' );
+			var currentTourIndex = wrapper.data( 'tourindex' );
+			var nextItem = 1 + currentTourIndex;
 			var tourEndsHere = typeof window.tour[ tourName ][ nextItem ] === 'undefined';
-			var showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
+			var showPreviousBtn = currentTourIndex > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
 			var item;
-
+			var istopOffsetDefined = typeof window.tour[ tourName ][ currentTourIndex ].topOffset !== 'undefined' && Number.isInteger( window.tour[ tourName ][ currentTourIndex ].topOffset );
+			var popoverTopOffset = istopOffsetDefined ? window.tour[ tourName ][ currentTourIndex ].topOffset : 0;
+			var isPlacementDefined = typeof window.tour[ tourName ][ currentTourIndex ].placement !== 'undefined';
+			var popoverPlacement = isPlacementDefined ? window.tour[ tourName ][ currentTourIndex ].placement : 'bottom-right';
 			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
 				if ( jQuery( window.tour[ tourName ][ nextItem ].selector + ':visible' ).length < 1 ) {
@@ -46,6 +50,7 @@ jQuery( document ).ready(
 					}
 				}
 			}
+
 			item = window.tour[ tourName ][ nextItem ];
 
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
@@ -65,7 +70,7 @@ jQuery( document ).ready(
 			if ( ! tourEndsHere ) {
 				popoverContent += '<br/><small><a href="" class="dismiss-tour">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
 			}
-			WebuiPopovers.show( this, { title: window.tour[ tourName ][ 0 ].title, content: popoverContent, width: 300, dismissible: true } );
+			WebuiPopovers.show( this, { title: window.tour[ tourName ][ 0 ].title, content: popoverContent, width: 300, dismissible: true, offsetTop: popoverTopOffset, placement: popoverPlacement } );
 			jQuery( '.tour-' + tourName ).remove();
 
 			if ( tourEndsHere ) {
