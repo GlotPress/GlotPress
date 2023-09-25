@@ -182,7 +182,7 @@ class GP_Router {
 		$url_path = gp_url_path( gp_url_public_root() );
 
 		// If the request URL doesn't match our base URL, don't bother trying to match
-		if ( $url_path && ! gp_startswith( wp_unslash( $_SERVER['REQUEST_URI'] ), $url_path ) ) {
+		if ( $url_path && ! gp_startswith( wp_unslash( trailingslashit( $_SERVER['REQUEST_URI'] ) ), $url_path ) ) {
 			return;
 		}
 
