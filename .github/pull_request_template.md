@@ -1,19 +1,39 @@
-<!-- Thanks for contributing to GlotPress! Please, follow the GlotPress Contributing Guidelines:
-https://github.com/GlotPress/GlotPress/blob/develop/CONTRIBUTING.md -->
+<!-- 
+Thanks for contributing to GlotPress! Please, follow the GlotPress Contributing Guidelines:
+https://github.com/GlotPress/GlotPress/blob/develop/CONTRIBUTING.md 
+-->
 
-## What?
-<!-- In a few words, what is the PR actually doing? -->
+## Problem
 
-## Why?
-<!-- Why is this PR necessary? What problem is it solving? What new functionality is it adding? Reference any existing previous issue(s) or PR(s), but please add a short summary here, too -->
+<!--
+Please, describe what is the status/problem before the PR.
+-->
 
-## How?
-<!-- How is your PR addressing the issue at hand? What are the implementation details? -->
+## Solution
+
+<!--
+Please, describe how this PR improves the situation.
+-->
+
+## To-do
+
+<!--
+Please, describe the other undone tasks or items on the to-do list for this PR,
+only if it is applicable.
+-->
+- [ ] Task 1 (Replace with your task description)
 
 ## Testing Instructions
-<!-- Please include step-by-step instructions on how to test this PR. -->
-<!-- 1. Open a original string in a project. -->
-<!-- 2. Add the translation. -->
-<!-- 3. etc. -->
+<!-- 
+Add as many details as possible to help others reproduce the issue and test the fix.
+"Before / After" screenshots can also be very helpful when the change is visual.
+Please, include step-by-step instructions on how to test this PR:
+1. Open a original string in a project.
+2. Add the translation.
+3. etc. 
+-->
 
-## Screenshots or screencast <!-- if applicable -->
+## Screenshots or screencast
+<!-- 
+Only if it is applicable 
+-->

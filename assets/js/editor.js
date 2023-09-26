@@ -249,7 +249,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				button.prop( 'disabled', true );
-				$gp.notices.notice( 'Saving&hellip;' );
+				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				data = {
 					original_id: editor.original_id,
@@ -272,7 +272,7 @@ $gp.editor = (
 						var original_id;
 
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Saved!' );
+						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
@@ -284,7 +284,8 @@ $gp.editor = (
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error saving the translation!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
@@ -298,7 +299,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				select.prop( 'disabled', true );
-				$gp.notices.notice( 'Setting priority&hellip;' );
+				$gp.notices.notice( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
@@ -313,20 +314,21 @@ $gp.editor = (
 						var new_priority_class;
 
 						select.prop( 'disabled', false );
-						$gp.notices.success( 'Priority set!' );
+						$gp.notices.success( wp.i18n.__( 'Priority set!', 'glotpress' ) );
 						new_priority_class = 'priority-' + $( 'option:selected', select ).text();
 						$gp.editor.current.addClass( new_priority_class );
 						$gp.editor.current.preview.addClass( new_priority_class );
 					},
 					error: function( xhr, msg ) {
 						select.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the priority!';
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error setting the priority!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data,
+				var editor, data, status_name,
 					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
@@ -342,12 +344,29 @@ $gp.editor = (
 				} );
 
 				if ( translationChanged ) {
-					$gp.notices.error( 'Translation has changed! Please add the new translation before changing its status.' );
+					$gp.notices.error( wp.i18n.__( 'Translation has changed! Please add the new translation before changing its status.', 'glotpress' ) );
 					return;
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( 'Setting status to &#8220;' + status + '&#8221;&hellip;' );
+
+				switch ( status ) {
+					case 'current':
+						status_name = wp.i18n._x( 'current', 'Single Status', 'glotpress' );
+						break;
+					case 'rejected':
+						status_name = wp.i18n._x( 'rejected', 'Single Status', 'glotpress' );
+						break;
+					case 'fuzzy':
+						status_name = wp.i18n._x( 'fuzzy', 'Single Status', 'glotpress' );
+						break;
+					case 'changesrequested':
+						status_name = wp.i18n._x( 'changes requested', 'Single Status', 'glotpress' );
+						break;
+				}
+
+				/* translators: %s: Status name. */
+				$gp.notices.notice( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
 
 				data = {
 					translation_id: editor.translation_id,
@@ -361,13 +380,14 @@ $gp.editor = (
 					data: data,
 					success: function( response ) {
 						button.prop( 'disabled', false );
-						$gp.notices.success( 'Status set!' );
+						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error setting the status!';
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error setting the status!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );
@@ -378,7 +398,7 @@ $gp.editor = (
 					return;
 				}
 
-				$gp.notices.notice( 'Discarding&hellip;' );
+				$gp.notices.notice( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
 
 				data = {
 					translation_id: $gp.editor.current.translation_id,
@@ -393,11 +413,12 @@ $gp.editor = (
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
 					success: function( response ) {
-						$gp.notices.success( 'Saved!' );
+						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
 					},
 					error: function( xhr, msg ) {
-						msg = xhr.responseText ? 'Error: ' + xhr.responseText : 'Error saving the translation!';
+						/* translators: %s: Error message. */
+						msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error saving the translation!', 'glotpress' );
 						$gp.notices.error( msg );
 					},
 				} );

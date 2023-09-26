@@ -36,7 +36,6 @@ wp_localize_script(
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
-
 gp_tmpl_header();
 $i = 0;
 ?>
@@ -423,7 +422,7 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
-<table id="translations" class="gp-table translations <?php echo esc_attr( $class_rtl ); ?>">
+<table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
 	<thead>
 	<tr>
 		<?php
@@ -440,23 +439,33 @@ $i = 0;
 	</tr>
 	</thead>
 <?php
-	foreach ( $translations as $translation ) {
-		if ( ! $translation->translation_set_id ) {
-			$translation->translation_set_id = $translation_set->id;
-		}
+foreach ( $translations as $translation ) {
+	if ( ! $translation->translation_set_id ) {
+		$translation->translation_set_id = $translation_set->id;
+	}
 
 	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 	gp_tmpl_load( 'translation-row', get_defined_vars() );
 }
 ?>
 <?php
-	if ( ! $translations ) :
-?>
+if ( ! $translations ) :
+	?>
 	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
-<?php
+	<?php
 	endif;
 ?>
 </table>
+<?php
+/**
+ * Fires after the translation table has been displayed.
+ *
+ * @since 4.0.0
+ *
+ * @param array $def_vars Variables defined in the template.
+ */
+do_action( 'gp_after_translation_table', get_defined_vars() );
+?>
 
 <div class="gp-table-actions bottom">
 	<?php

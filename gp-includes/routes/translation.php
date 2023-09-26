@@ -293,6 +293,20 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$original         = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
+			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
+			if ( $errors ) {
+				$output = '<ul>';
+				foreach ( $errors as $error ) {
+					foreach ( $error as $key => $value ) {
+						$output .= '<li>';
+						$output .= htmlentities( $value );
+						$output .= '</li>';
+					}
+				}
+				$output .= '</ul>';
+
+				return $this->die_with_error( $output, 403 );
+			}
 
 			$existing_translations = GP::$translation->for_translation(
 				$project,
@@ -489,7 +503,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					case 'changesrequested':
 						$message = sprintf(
 						/* translators: %s: Translations count. */
-							_n( 'Error requesting changes in %s translation.', 'Error requesting changes in %s translations.', $error, 'glotpress' ),
+							_n( 'Error with requesting changes in %s translation.', 'Error with requesting changes in %s translations.', $error, 'glotpress' ),
 							$error
 						);
 						break;

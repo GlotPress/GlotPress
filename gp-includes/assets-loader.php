@@ -10,12 +10,13 @@
  * Registers the GlotPress styles and loads the base style sheet.
  */
 function gp_register_default_styles() {
-	$url = gp_plugin_url( 'assets/css' );
-
-	$suffix = SCRIPT_DEBUG ? '.css' : '.min.css';
+	$url    = gp_plugin_url( 'assets/css' );
+	$path   = plugin_dir_path( __DIR__ ) . 'assets/css/';
+	$suffix = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.css' : '.min.css';
 
 	// Register our base style.
-	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), '20220503' );
+	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), filemtime( $path . 'style' . $suffix ) );
+	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'gp-base' ), filemtime( $path . 'jquery.webui-popover' . $suffix ) );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
@@ -24,29 +25,26 @@ add_action( 'init', 'gp_register_default_styles' );
  * Register the GlotPress scripts.
  */
 function gp_register_default_scripts() {
-	$url = gp_plugin_url( 'assets/js' );
-
-	$suffix = SCRIPT_DEBUG ? '.js' : '.min.js';
+	$url    = gp_plugin_url( 'assets/js' );
+	$path   = plugin_dir_path( __DIR__ ) . 'assets/js/';
+	$suffix = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.js' : '.min.js';
 
 	// Register our standard scripts.
-	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), '20210429' );
-	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery', 'wp-i18n' ), '20220319' );
-	wp_add_inline_script(
-		'gp-common',
-		sprintf(
-			'$gp.l10n = %s',
-			wp_json_encode(
-				array(
-					'dismiss' => __( 'Dismiss', 'glotpress' ),
-				)
-			)
-		)
-	);
+	wp_register_script( 'tablesorter', $url . '/vendor/jquery.tablesorter' . $suffix, array( 'jquery' ), filemtime( $path . 'vendor/jquery.tablesorter' . $suffix ) );
+	wp_register_script( 'gp-common', $url . '/common' . $suffix, array( 'jquery', 'wp-i18n' ), filemtime( $path . 'common' . $suffix ) );
+	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip', 'wp-wordcount' ), filemtime( $path . 'editor' . $suffix ) );
+	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), filemtime( $path . 'glossary' . $suffix ) );
+	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), filemtime( $path . 'translations-page' . $suffix ) );
+	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), filemtime( $path . 'mass-create-sets-page' . $suffix ) );
+	wp_register_script( 'gp-tour', $url . '/tour' . $suffix, array( 'jquery', 'gp-jquery-webui-popover' ), filemtime( $path . 'tour' . $suffix ), false );
 
-	wp_register_script( 'gp-editor', $url . '/editor' . $suffix, array( 'gp-common', 'jquery-ui-tooltip', 'wp-wordcount' ), '20220319' );
-	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), '20220319' );
-	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), '20220327' );
-	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), '20210429' );
+	wp_set_script_translations( 'gp-common', 'glotpress' );
+	wp_set_script_translations( 'gp-editor', 'glotpress' );
+	wp_set_script_translations( 'gp-glossary', 'glotpress' );
+	wp_set_script_translations( 'gp-mass-create-sets-page', 'glotpress' );
+	wp_set_script_translations( 'gp-tour', 'glotpress' );
+	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'jquery' ), filemtime( $path . 'jquery.webui-popover' . $suffix ), false );
+	wp_localize_script( 'gp-tour', 'gp_tour', apply_filters( 'gp_tour', array() ) );
 }
 
 add_action( 'init', 'gp_register_default_scripts' );
