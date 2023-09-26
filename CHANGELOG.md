@@ -1,6 +1,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.9] (September 25, 2023)
+
+**Features**
+* Use filemtime to set the asset's version ([#1693])
+
+**Bugfixes**
+* Site Tour: Fix CORS error in accessing tour stylesheet ([#1694])
+* Site Tour: Add popover offset property ([#1695])
+* Add a slash at the end of a requested URI ([#1701])
+
 ## [4.0.0-alpha.8] (September 19, 2023)
 
 **Features**
@@ -564,7 +574,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[4.0.0]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.7...4.0.0
+[4.0.0-alpha.9]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.8...4.0.0-alpha.9
+[4.0.0-alpha.8]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.7...4.0.0-alpha.8
 [4.0.0-alpha.7]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.6...4.0.0-alpha.7
 [4.0.0-alpha.6]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.5...4.0.0-alpha.6
 [4.0.0-alpha.5]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.4...4.0.0-alpha.5
@@ -677,3 +688,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1679]: https://github.com/GlotPress/GlotPress/pull/1679
 [#1682]: https://github.com/GlotPress/GlotPress/pull/1682
 [#1684]: https://github.com/GlotPress/GlotPress/pull/1684
+[#1693]: https://github.com/GlotPress/GlotPress/pull/1693
+[#1694]: https://github.com/GlotPress/GlotPress/pull/1694
+[#1695]: https://github.com/GlotPress/GlotPress/pull/1695
+[#1701]: https://github.com/GlotPress/GlotPress/pull/1701
