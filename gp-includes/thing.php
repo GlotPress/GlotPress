@@ -682,6 +682,9 @@ class GP_Thing {
 	}
 
 	public function sql_from_order( $order_by, $order_how = '' ) {
+		if ( ! $order_by ) {
+			$order_by = '';
+		}
 		if ( is_array( $order_by ) ) {
 			$order_by  = implode( ' ', $order_by );
 			$order_how = '';
