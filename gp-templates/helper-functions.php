@@ -398,6 +398,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 }
 
 function display_status( $status ) {
+	if ( ! $status ) {
+		$status = '';
+	}
+
 	$status_labels = array(
 		'current'          => _x( 'current', 'Single Status', 'glotpress' ),
 		'waiting'          => _x( 'waiting', 'Single Status', 'glotpress' ),
