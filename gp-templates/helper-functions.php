@@ -464,7 +464,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Build the regular expression.
-		$terms_search = '\b(';
+		$terms_search = '(%(?:[1-9]\$)?[bcdefgosuxEFGX%l@])|(\b';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
@@ -473,11 +473,9 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		$terms_search  = rtrim( $terms_search, '|' );
 		$terms_search .= ')\b';
 	}
-
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 	// Loop through each chunk of the split to find glossary terms.
-
 	if ( is_array( $singular_split ) ) {
 		$singular_combined = '';
 		should_skip_chunk( '' ); // Reset the state machine.
