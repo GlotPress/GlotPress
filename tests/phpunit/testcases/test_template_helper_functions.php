@@ -493,7 +493,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		}
 	}
 
-
 	/**
 	 * @dataProvider provide_test_map_glossary_entries_to_translation_originals
 	 */
