@@ -460,38 +460,39 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 	function provide_test_map_glossary_entries_to_translation_originals() {
 		foreach ( array(
-					  'party' => array(
-						  'Welcome to the party.',
-						  'My parties.',
-						  'I know, partys is the wrong plural ending but we need it because of nouns like boys.',
-					  ),
-					  'color' => array(
-						  'One color.',
-						  'Two colors.',
-					  ),
-					  'half' => array(
-						  'Half a loaf is better than none.',
-						  'Two halves are even better.',
-					  ),
-					  'man' => array(
-						  'The word man is the root of the word mankind.',
-						  'There are men but there is no menkind.',
-					  ),
-					  'issue' => array(
-						  'If you find a bug, file an issue.',
-						  'If you find two bugs, please file two issues.',
-					  ),
-					  'report' => array(
-						  'I reported a bug.',
-						  'Now there is a bug report.',
-						  'We call it bug reporting.',
-					  ),
-				  ) as $expected_result => $test_strings ) {
+			'party' => array(
+				'Welcome to the party.',
+				'My parties.',
+				'I know, partys is the wrong plural ending but we need it because of nouns like boys.',
+			),
+			'color' => array(
+				'One color.',
+				'Two colors.',
+			),
+			'half' => array(
+				'Half a loaf is better than none.',
+				'Two halves are even better.',
+			),
+			'man' => array(
+				'The word man is the root of the word mankind.',
+				'There are men but there is no menkind.',
+			),
+			'issue' => array(
+				'If you find a bug, file an issue.',
+				'If you find two bugs, please file two issues.',
+			),
+			'report' => array(
+				'I reported a bug.',
+				'Now there is a bug report.',
+				'We call it bug reporting.',
+			),
+		) as $expected_result => $test_strings ) {
 			foreach ( $test_strings as $test_string ) {
 				yield array( $test_string, $expected_result );
 			}
 		}
 	}
+
 
 	/**
 	 * @dataProvider provide_test_map_glossary_entries_to_translation_originals
