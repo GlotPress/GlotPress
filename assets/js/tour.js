@@ -42,15 +42,15 @@ jQuery( document ).ready(
 			var showPreviousBtn = currentTourIndex > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
 			var item;
+			var istopOffsetDefined = typeof window.tour[ tourName ][ currentTourIndex ].topOffset !== 'undefined' && Number.isInteger( window.tour[ tourName ][ currentTourIndex ].topOffset );
+			var popoverTopOffset = istopOffsetDefined ? window.tour[ tourName ][ currentTourIndex ].topOffset : 0;
+			var isPlacementDefined = typeof window.tour[ tourName ][ currentTourIndex ].placement !== 'undefined';
+			var popoverPlacement = isPlacementDefined ? window.tour[ tourName ][ currentTourIndex ].placement : 'bottom-right';
 			if ( 'next' === navType || ! navType ) {
 				nextItem = 1 + wrapper.data( 'tourindex' );
 			} else if ( 'previous' === navType ) {
 				nextItem = wrapper.data( 'tourindex' ) - 1;
 			}
-
-			tourEndsHere = typeof window.tour[ tourName ][ nextItem ] === 'undefined';
-			showPreviousBtn = wrapper.data( 'tourindex' ) > 1;
-			popoverContent = wrapper.data( 'popover-content' );
 
 			if ( ! tourEndsHere ) {
 				// Check if the selector for the next item does not exists
