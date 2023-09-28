@@ -286,7 +286,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );	}
 
 	/*
-	 * Matches the glossary variations. Added two unnecessary glossary entries.
+	 * Matches the glossary variations.
 	 */
 	function test_map_glossary_entries_with_variations() {
 		$singular_string          = 'Converting, converts, converted and convert.';
@@ -299,32 +299,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$glossary_entry = array(
-			'term' => 'toy',
-			'part_of_speech' => 'noun',
-			'translation' => 'xoguete',
-			'glossary_id' => $glossary->id,
+		$glossary_entries = array(
+			array(
+				'term' => 'delay',
+				'part_of_speech' => 'noun',
+				'translation' => 'retraso',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'key',
+				'part_of_speech' => 'noun',
+				'translation' => 'chave',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'toy',
+				'part_of_speech' => 'noun',
+				'translation' => 'xoguete',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'guy',
+				'part_of_speech' => 'noun',
+				'translation' => 'rapaz',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'see',
+				'part_of_speech' => 'verb',
+				'translation' => 'ver',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'convert',
+				'part_of_speech' => 'verb',
+				'translation' => 'converter',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'chef',
+				'part_of_speech' => 'noum',
+				'translation' => 'cociñeiro',
+				'glossary_id' => $glossary->id,
+			),
 		);
 
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'convert',
-			'part_of_speech' => 'verb',
-			'translation' => 'converter',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'guy',
-			'part_of_speech' => 'noun',
-			'translation' => 'rapaz',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
 
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
@@ -346,59 +368,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$glossary_entry = array(
-			'term' => 'delay',
-			'part_of_speech' => 'noun',
-			'translation' => 'retraso',
-			'glossary_id' => $glossary->id,
+		$glossary_entries = array(
+			array(
+				'term' => 'delay',
+				'part_of_speech' => 'noun',
+				'translation' => 'retraso',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'key',
+				'part_of_speech' => 'noun',
+				'translation' => 'chave',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'toy',
+				'part_of_speech' => 'noun',
+				'translation' => 'xoguete',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'guy',
+				'part_of_speech' => 'noun',
+				'translation' => 'rapaz',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'see',
+				'part_of_speech' => 'verb',
+				'translation' => 'ver',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'convert',
+				'part_of_speech' => 'verb',
+				'translation' => 'converter',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'chef',
+				'part_of_speech' => 'noum',
+				'translation' => 'cociñeiro',
+				'glossary_id' => $glossary->id,
+			),
 		);
 
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'key',
-			'part_of_speech' => 'noun',
-			'translation' => 'chave',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'toy',
-			'part_of_speech' => 'noun',
-			'translation' => 'xoguete',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'guy',
-			'part_of_speech' => 'noun',
-			'translation' => 'rapaz',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'see',
-			'part_of_speech' => 'verb',
-			'translation' => 'ver',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$glossary_entry = array(
-			'term' => 'convert',
-			'part_of_speech' => 'verb',
-			'translation' => 'converter',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
 
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
@@ -443,33 +460,33 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 	function provide_test_map_glossary_entries_to_translation_originals() {
 		foreach ( array(
-			'party' => array(
-				'Welcome to the party.',
-				'My parties.',
-				'I know, partys is the wrong plural ending but we need it because of nouns like boys.',
-			),
-			'color' => array(
-				'One color.',
-				'Two colors.',
-			),
-			'half' => array(
-				'Half a loaf is better than none.',
-				'Two halves are even better.',
-			),
-			'man' => array(
-				'The word man is the root of the word mankind.',
-				'There are men but there is no menkind.',
-			),
-			'issue' => array(
-				'If you find a bug, file an issue.',
-				'If you find two bugs, please file two issues.',
-			),
-			'report' => array(
-				'I reported a bug.',
-				'Now there is a bug report.',
-				'We call it bug reporting.',
-			),
-		) as $expected_result => $test_strings ) {
+					  'party' => array(
+						  'Welcome to the party.',
+						  'My parties.',
+						  'I know, partys is the wrong plural ending but we need it because of nouns like boys.',
+					  ),
+					  'color' => array(
+						  'One color.',
+						  'Two colors.',
+					  ),
+					  'half' => array(
+						  'Half a loaf is better than none.',
+						  'Two halves are even better.',
+					  ),
+					  'man' => array(
+						  'The word man is the root of the word mankind.',
+						  'There are men but there is no menkind.',
+					  ),
+					  'issue' => array(
+						  'If you find a bug, file an issue.',
+						  'If you find two bugs, please file two issues.',
+					  ),
+					  'report' => array(
+						  'I reported a bug.',
+						  'Now there is a bug report.',
+						  'We call it bug reporting.',
+					  ),
+				  ) as $expected_result => $test_strings ) {
 			foreach ( $test_strings as $test_string ) {
 				yield array( $test_string, $expected_result );
 			}
