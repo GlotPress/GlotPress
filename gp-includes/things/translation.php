@@ -576,7 +576,7 @@ class GP_Translation extends GP_Thing {
 			for ( $i = 0; $i < $locale->nplurals; $i++ ) {
 				$row->translations[] = $row->{'translation_' . $i};
 			}
-			$row->references         = preg_split( '/\s+/', $row->references ?? '', -1, PREG_SPLIT_NO_EMPTY );
+			$row->references         = $row->references !== null ? preg_split( '/\s+/', $row->references, -1, PREG_SPLIT_NO_EMPTY ) : array();
 			$row->extracted_comments = $row->comment;
 			$row->warnings           = $row->warnings ? maybe_unserialize( $row->warnings ) : null;
 			unset( $row->comment );
