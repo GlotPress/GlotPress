@@ -14,9 +14,12 @@ jQuery( document ).ready(
 		} );
 		jQuery( document ).on( 'click', '.previous-tour-item', function() {
 			var currentPopover = jQuery( this ).closest( '.webui-popover' );
+			var tourindex = jQuery( this ).data( 'tourindex' );
 			if ( currentPopover.prev().hasClass( 'webui-popover' ) ) {
 				currentPopover.hide();
 				currentPopover.prev().show();
+				jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
+				jQuery( '.item-' + tourindex ).addClass( 'pulse-border' );
 			}
 			return false;
 		} );
@@ -31,6 +34,7 @@ jQuery( document ).ready(
 			var tourName = wrapper.data( 'tourname' );
 			var currentTourIndex = wrapper.data( 'tourindex' );
 			var nextItem = 1 + currentTourIndex;
+			var prevItem = currentTourIndex - 1;
 			var tourEndsHere = typeof window.tour[ tourName ][ nextItem ] === 'undefined';
 			var showPreviousBtn = currentTourIndex > 1;
 			var popoverContent = wrapper.data( 'popover-content' );
@@ -61,11 +65,11 @@ jQuery( document ).ready(
 				popoverContent += '<br/><br/><a href="" class="close-tour">' + wp.i18n.__( 'Close', 'glotpress' ) + '</a>';
 			} else if ( typeof window.tour[ tourName ][ nextItem ] !== 'undefined' && typeof window.tour[ tourName ][ nextItem ].reveal === 'undefined' ) {
 				popoverContent += '<div class="popover-nav-btns">';
-				popoverContent += showPreviousBtn ? '<br/><br/><a href="" class="tour-button previous-tour-item" data-tourname="' + tourName + '">' + wp.i18n.__( 'Previous', 'glotpress' ) + '</a>' : '';
+				popoverContent += showPreviousBtn ? '<br/><br/><a href="" class="tour-button previous-tour-item" data-tourname="' + tourName + '" data-tourindex="' + ( prevItem ) + '">' + wp.i18n.__( 'Previous', 'glotpress' ) + '</a>' : '';
 				popoverContent += '<a href="" class="tour-button next-tour-item button-primary" data-tourname="' + tourName + '">Next</a>';
 				popoverContent += '</div>';
 			} else if ( typeof window.tour[ tourName ][ nextItem ].reveal !== 'undefined' ) {
-				popoverContent += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[ tourName ][ nextItem ].reveal + '">' + wp.i18n.__( 'Reveal Next Step', 'glotpress' ) + '</a>';
+				popoverContent += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[ tourName ][ nextItem ].reveal + '" >' + wp.i18n.__( 'Reveal Next Step', 'glotpress' ) + '</a>';
 			}
 			if ( ! tourEndsHere ) {
 				popoverContent += '<br/><small><a href="" class="dismiss-tour">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
@@ -81,7 +85,7 @@ jQuery( document ).ready(
 		} );
 
 		function addPulse( field, item, tourName, index ) {
-			var div = jQuery( '<div class="pulse-wrapper">' );
+			var div = jQuery( '<div class="pulse-wrapper item-' + index + '" >' );
 			var pulse = jQuery( '<div class="pulse tour-' + tourName + '">' );
 			var cssString = '';
 			div.data( 'tourname', tourName ).data( 'tourindex', index ).data( 'popover-content', item.html );
