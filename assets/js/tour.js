@@ -4,8 +4,10 @@
 jQuery( document ).ready(
 	function() {
 		jQuery( document ).on( 'click', '.close-tour, .dismiss-tour', function() {
+			var tourName = jQuery( this ).data( 'tourname' );
 			jQuery( this ).closest( '.webui-popover' ).hide();
 			jQuery( '.pulse-wrapper' ).removeClass( 'pulse-border' );
+			jQuery( '.tour-' + tourName ).remove();
 			return false;
 		} );
 		jQuery( document ).on( 'click', '.next-tour-item', function() {
@@ -68,7 +70,7 @@ jQuery( document ).ready(
 				popoverContent += '<br/><br/><a href="" class="reveal-next-tour-item" data-reveal="' + window.tour[ tourName ][ nextItem ].reveal + '">' + wp.i18n.__( 'Reveal Next Step', 'glotpress' ) + '</a>';
 			}
 			if ( ! tourEndsHere ) {
-				popoverContent += '<br/><small><a href="" class="dismiss-tour">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
+				popoverContent += '<br/><small><a href="" class="dismiss-tour" data-tourname="' + tourName + '">' + wp.i18n.__( 'Dismiss this tour', 'glotpress' );
 			}
 			WebuiPopovers.show( this, { title: window.tour[ tourName ][ 0 ].title, content: popoverContent, width: 300, dismissible: true, offsetTop: popoverTopOffset, placement: popoverPlacement } );
 			jQuery( '.tour-' + tourName ).remove();
