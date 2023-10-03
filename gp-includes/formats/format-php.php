@@ -112,7 +112,7 @@ class GP_Format_PHP extends GP_Format {
 	 * @param array<mixed> $arr The array being evaluated.
 	 * @return bool True if array is a list, false otherwise.
 	 */
-	private function array_is_list( array $arr ): bool {
+	private function array_is_list( $arr ) {
 		if ( function_exists( 'array_is_list' ) ) {
 			return array_is_list( $arr );
 		}
@@ -143,7 +143,7 @@ class GP_Format_PHP extends GP_Format {
 	 * @param mixed $value The variable you want to export.
 	 * @return string The variable representation.
 	 */
-	private function var_export( $value ): string {
+	private function var_export( $value ) {
 		if ( ! is_array( $value ) ) {
 			return var_export( $value, true );
 		}
