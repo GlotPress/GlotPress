@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Report a bug to help us improve
-title: ''
-labels: bug
-assignees: ''
+title: ""
+labels: "[Type] Bug"
+assignees: ""
 
 ---
 
@@ -42,7 +42,7 @@ Please list the steps needed to reproduce the bug. For example:
 ## Screenshots or screen recording (optional)
 <!--
 If possible, please upload a screenshot or screen recording which demonstrates
-the bug. 
+the bug.
 -->
 
 ## WordPress information
