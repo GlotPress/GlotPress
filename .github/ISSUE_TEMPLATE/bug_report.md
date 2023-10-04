@@ -13,10 +13,10 @@ be closed.
 
 Before submitting a bug report:
 
-- Check if the bug has already been fixed by updating WordPress, GlotPress and/or the plugin.
-- Check if the bug is caused by a plugin by deactivating all plugins except GlotPress and this plugin.
-- Check if the bug is caused by a theme by activating a default theme, e.g. Twenty Twenty Two.
-- Check if the bug has already been reported by searching https://github.com/WordPress/gp-translation-helpers/issues.
+- Check if the bug has already been fixed by updating WordPress and/or GlotPress.
+- Check if the bug is caused by a plugin by deactivating all plugins except GlotPress.
+- Check if the bug is caused by a theme by activating a default theme, e.g. Twenty Twenty-Three.
+- Check if the bug has already been reported by searching https://github.com/glotpress/glotpress/issues.
 
 If this is a security issue, please report it in HackerOne instead:
 https://hackerone.com/wordpress
@@ -41,16 +41,16 @@ Please list the steps needed to reproduce the bug. For example:
 
 ## Screenshots or screen recording (optional)
 <!--
-If possible, please upload a screenshot or screen recording which demonstrates
+If possible, please, upload a screenshot or screen recording which demonstrates
 the bug.
 -->
 
 ## WordPress information
 - WordPress version: <!-- e.g. "6.0.0". Find this in Tools → Site Health → Info → WordPress -->
 - GlotPress version: <!-- e.g. "3.0.0" or "Not installed" -->
-- Plugin version: <!-- e.g. "0.0.2" or "Not installed" -->
-- Are all plugins except GlotPress and this plugin deactivated? <!-- "Yes" or "No" -->
-- Are you using a default theme (e.g. Twenty Twenty-Two)? <!-- "Yes" or "No" -->
+- Are all plugins except GlotPress deactivated? <!-- "Yes" or "No" -->
+- Are you using a default theme (e.g. Twenty Twenty-Three)? <!-- "Yes" or "No" -->
 
 ## Device information
 - Operating system: <!-- e.g. "macOS 12.4", "Windows 11", "Android 11.0" or "iOS 14.0" -->
+- Browser: <!-- e.g. "Chrome 94.0.4606.81", "Firefox 93.0" or "Safari 15.0" -->

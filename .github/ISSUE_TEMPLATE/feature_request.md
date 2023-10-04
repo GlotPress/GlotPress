@@ -9,6 +9,10 @@ assignees: ""
 
 ## What problem does this address?
 <!--
+
+Before submitting a new enhancement request, please, check if the feature has
+already been requested by searching at https://github.com/glotpress/glotpress/issues
+
 Please describe if this feature or enhancement is related to a current problem
 or pain point. For example, "I'm always frustrated when ..." or "It is currently
 difficult to ...".
