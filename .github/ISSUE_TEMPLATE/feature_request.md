@@ -23,3 +23,9 @@ difficult to ...".
 Please outline the feature or enhancement that you want and how it addresses any
 problem identified above.
 -->
+
+## Mockups/screenshots
+<!--
+If applicable, add mockups or screenshots to help explain your feature or
+enhancement.
+-->
