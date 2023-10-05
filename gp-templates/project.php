@@ -8,14 +8,14 @@ gp_title(
 );
 gp_breadcrumb_project( $project );
 gp_enqueue_scripts( array( 'gp-editor', 'tablesorter' ) );
-$edit_link   = gp_link_project_edit_get( $project, _x( '(edit)', 'project', 'glotpress' ) );
-$delete_link = gp_link_project_delete_get( $project, _x( '(delete)', 'project', 'glotpress' ) );
+$edit_link   = gp_link_project_edit_get( $project, null, array( 'class' => 'button is-small' ) );
+$delete_link = gp_link_project_delete_get( $project, null, array( 'class' => 'button is-small' ) );
 
-if ( $project->active ) {
+if ( ! $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
 		function( $items ) {
-			$items[ count( $items ) - 1 ] .= ' <span class="active bubble">' . __( 'Active', 'glotpress' ) . '</span>';
+			$items[ count( $items ) - 1 ] .= ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 
 			return $items;
 		}
@@ -183,34 +183,39 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 
 <?php if ( $sub_projects ) : ?>
 <div id="sub-projects">
-<h3><?php _e( 'Sub-projects', 'glotpress' ); ?></h3>
-<dl>
-<?php foreach ( $sub_projects as $sub_project ) : ?>
-	<dt>
-		<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
-		<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
-		<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'bubble' ) ); ?>
-		<?php
-		if ( $sub_project->active ) {
-			echo "<span class='active bubble'>" . __( 'Active', 'glotpress' ) . '</span>';
+	<h3><?php _e( 'Sub-projects', 'glotpress' ); ?></h3>
+	<dl>
+	<?php
+		foreach ( $sub_projects as $sub_project ) {
+			$sub_project_class = $sub_project->active ? 'project-active' : 'project-inactive';
+			?>
+			<dt class="<?php echo esc_attr( $sub_project_class ); ?>">
+				<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
+				<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'button is-small' ) ); ?>
+				<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'button is-small' ) ); ?>
+				<?php
+				if ( ! $sub_project->active ) {
+					echo "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>';
+				}
+				?>
+			</dt>
+			<dd class="<?php echo esc_attr( $sub_project_class ); ?>">
+				<?php
+				/**
+				 * Filter a sub-project description.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string     $description Sub-project description.
+				 * @param GP_Project $project     The sub-project.
+				 */
+				echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) );
+				?>
+			</dd>
+			<?php
 		}
 		?>
-	</dt>
-	<dd>
-		<?php
-		/**
-		 * Filter a sub-project description.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string     $description Sub-project description.
-		 * @param GP_Project $project     The sub-project.
-		 */
-		echo esc_html( gp_html_excerpt( apply_filters( 'gp_sub_project_description', $sub_project->description, $sub_project ), 111 ) );
-		?>
-	</dd>
-<?php endforeach; ?>
-</dl>
+	</dl>
 </div>
 <?php endif; ?>
 
