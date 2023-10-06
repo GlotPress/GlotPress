@@ -39,6 +39,7 @@ wp_localize_script(
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
+$gp_tour = apply_filters( 'gp_tour', array() );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 gp_tmpl_header();
@@ -87,6 +88,14 @@ $i = 0;
 			echo gp_link( $glossary->path(), __( 'Project Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) );
 		} elseif ( $can_approve ) {
 			echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Project Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) );
+		}
+
+		// Tour link.
+		if( $gp_tour ) {
+			?>
+			<strong class="separator">•</strong>
+			<?php
+			echo '<a href="#" id="tour-link"><b>' . __( 'Tour', 'glotpress' ) . '</b></a>';
 		}
 		?>
 	</div>
