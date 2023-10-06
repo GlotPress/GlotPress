@@ -1,4 +1,4 @@
-/* global , document, window, gp_tour */
+/* global , document, window, gp_tour, WebuiPopovers */
 /* eslint camelcase: "off" */
 
 jQuery( document ).ready(
@@ -25,6 +25,16 @@ jQuery( document ).ready(
 				steps: tourSteps,
 			} );
 			driverObj.drive();
+		} );
+
+		jQuery( document ).on( 'click', '#tour-link', function() {
+			var tourList = '<ul>';
+			var tourName;
+			for ( tourName in window.tour ) {
+				tourList += '<li><a href="#" data-tourname="' + tourName + '">' + window.tour[ tourName ][ 0 ].title + '</a></li>';
+			}
+			tourList += '</ul>';
+			WebuiPopovers.show( this, { title: 'Tour list', content: tourList, width: 300, dismissible: true } );
 		} );
 
 		function addPulse( field, item, tourName, index ) {
