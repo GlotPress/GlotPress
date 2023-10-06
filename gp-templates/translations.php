@@ -39,7 +39,7 @@ wp_localize_script(
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
-$gp_tour = apply_filters( 'gp_tour', array() );
+$gp_tour        = apply_filters( 'gp_tour', array() );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 gp_tmpl_header();
@@ -91,7 +91,7 @@ $i = 0;
 		}
 
 		// Tour link.
-		if( $gp_tour ) {
+		if ( $gp_tour ) {
 			?>
 			<strong class="separator">•</strong>
 			<?php
