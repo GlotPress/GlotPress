@@ -17,7 +17,7 @@ function gp_register_default_styles() {
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), filemtime( $path . 'style' . $suffix ) );
 	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'gp-base' ), filemtime( $path . 'jquery.webui-popover' . $suffix ) );
-	wp_register_style( 'driver-js',  $url . '/driver-js' . $suffix, array(), '1.3.0' );
+	wp_register_style( 'driver-js', $url . '/driver-js' . $suffix, array(), '1.3.0' );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
