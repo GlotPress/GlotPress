@@ -338,7 +338,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 			array(
 				'term' => 'chef',
-				'part_of_speech' => 'noum',
+				'part_of_speech' => 'noun',
 				'translation' => 'cociñeiro',
 				'glossary_id' => $glossary->id,
 			),
@@ -407,7 +407,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 			array(
 				'term' => 'chef',
-				'part_of_speech' => 'noum',
+				'part_of_speech' => 'noun',
 				'translation' => 'cociñeiro',
 				'glossary_id' => $glossary->id,
 			),
