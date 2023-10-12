@@ -130,7 +130,7 @@ jQuery( document ).ready(
 
 				style.insertRule( '.tour-' + n + '{' +
 					'box-shadow: 0 0 0 ' + color2 + ';' +
-					'background: ' + color1 + ';' +
+					'background: ' + color1 + '80' + ';' +
 					'-webkit-animation: animation-' + n + ' 2s infinite;' +
 					'animation: animation-' + n + ' 2s infinite; }',
 				style.cssRules.length );
