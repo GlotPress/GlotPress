@@ -16,10 +16,15 @@ gp_title(
 		$project->name
 	)
 );
+$inactive_bubble = '';
+if ( ! $project->active ) {
+	$inactive_bubble = ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
+}
+
 gp_breadcrumb(
 	array(
 		gp_project_links_from_root( $project ),
-		gp_link_get( $url, $translation_set->name ),
+		gp_link_get( $url, $translation_set->name ) . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
@@ -51,8 +56,8 @@ $i = 0;
 		);
 		?>
 	</h2>
-	<?php gp_link_set_edit( $translation_set, $project, _x( '(edit)', 'translation set', 'glotpress' ) ); ?>
-	<?php gp_link_set_delete( $translation_set, $project, _x( '(delete)', 'translation set', 'glotpress' ) ); ?>
+	<?php gp_link_set_edit( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
+	<?php gp_link_set_delete( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
 	<div class="glossary-links">
 		<?php
 		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
