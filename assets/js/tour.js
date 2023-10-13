@@ -112,7 +112,7 @@ jQuery( document ).ready(
 			style = styleElement.sheet;
 
 			for ( n in window.tour ) {
-				color1 = window.tour[ n ][ 0 ].color + '00';
+				color1 = window.tour[ n ][ 0 ].color;
 				color2 = window.tour[ n ][ 0 ].color + 'a0';
 
 				style.insertRule( '@keyframes animation-' + n + ' {' +
@@ -120,17 +120,17 @@ jQuery( document ).ready(
 					'box-shadow: 0 0 0 0 ' + color2 + ';' +
 					'}' +
 					'70% {' +
-					'box-shadow: 0 0 0 10px ' + color1 + ';' +
+					'box-shadow: 0 0 0 10px ' + color1 + '00' + ';' +
 					'}' +
 					'100% {' +
-					'box-shadow: 0 0 0 0 ' + color1 + ';' +
+					'box-shadow: 0 0 0 0 ' + color1 + '00' + ';' +
 					'}' +
 					'}',
 				style.cssRules.length );
 
 				style.insertRule( '.tour-' + n + '{' +
 					'box-shadow: 0 0 0 ' + color2 + ';' +
-					'background: ' + color1 + ';' +
+					'background: ' + color1 + '80' + ';' +
 					'-webkit-animation: animation-' + n + ' 2s infinite;' +
 					'animation: animation-' + n + ' 2s infinite; }',
 				style.cssRules.length );
