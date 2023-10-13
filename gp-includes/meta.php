@@ -79,7 +79,7 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
  *
  * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
  */
-function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global = false ) {
+function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
 
 	if ( ! is_numeric( $object_id ) || empty( $object_id ) && ! $global ) {
@@ -165,7 +165,7 @@ function gp_update_meta( $object_id = 0, $meta_key, $meta_value, $type, $global 
  *
  * @return bool
  */
-function gp_delete_meta( $object_id = 0, $meta_key, $meta_value, $type, $global = false ) {
+function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
 
 	if ( ! is_numeric( $object_id ) || empty( $object_id ) && ! $global ) {

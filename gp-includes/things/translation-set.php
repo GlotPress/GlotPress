@@ -105,11 +105,46 @@ class GP_Translation_Set extends GP_Thing {
 	public $warnings_count;
 
 	/**
+	 * Number of rejected translations.
+	 *
+	 * @var int
+	 */
+	public $rejected_count;
+
+	/**
+	 * Number of old translations.
+	 *
+	 * @var int
+	 */
+	public $old_count;
+
+	/**
 	 * Number of all originals.
 	 *
 	 * @var int
 	 */
 	public $all_count;
+
+	/**
+	 * The percent translated.
+	 *
+	 * @var int
+	 */
+	public $percent_translated;
+
+	/**
+	 * The English name of the locale.
+	 *
+	 * @var string
+	 */
+	public $name_with_locale;
+
+	/**
+	 * The WP locale.
+	 *
+	 * @var string
+	 */
+	public $wp_locale;
 
 	/**
 	 * Sets restriction rules for fields.

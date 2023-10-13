@@ -19,6 +19,7 @@ module.exports = function( grunt ) {
 					'assets/js/**/*.js',
 
 					// Exceptions.
+					'!assets/js/vendor/*',
 					'!**/*.min.js'
 				],
 
@@ -66,6 +67,18 @@ module.exports = function( grunt ) {
 				tasks: [ 'cssmin' ],
 			},
 		},
+		replace: {
+			'prepare-release': {
+				src: ['glotpress.php'],
+				overwrite: true,
+				replacements: [
+					{
+						from: /define\( 'GP_SCRIPT_DEBUG', true \);/g,
+						to: "define( 'GP_SCRIPT_DEBUG', false );" // Replacement text
+					}
+				]
+			}
+		}
 	} );
 
 	grunt.registerTask( 'default', [ 'uglify', 'cssmin' ] );

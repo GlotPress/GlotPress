@@ -211,6 +211,10 @@ class GP_Original extends GP_Thing {
 		foreach ( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();
 
+			if ( ! $entry->context ) {
+				$entry->context = '';
+			}
+
 			// Context needs to match VARCHAR(255) in the database schema.
 			if ( mb_strlen( $entry->context ) > 255 ) {
 				$entry->context                         = mb_substr( $entry->context, 0, 255 );

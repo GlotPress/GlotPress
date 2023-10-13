@@ -34,6 +34,18 @@ function prepare_original( $text ) {
 	// Wrap placeholders with notranslate.
 	$text = preg_replace( '/(%(\d+\$(?:\d+)?)?[bcdefgosuxEFGX])/', '<span class="notranslate">\\1</span>', $text );
 
+	// Highlight two or more spaces between words.
+	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading and trailing spaces in single lines.
+	$text = preg_replace( '/^ +| +$/', '<span class="invisible-spaces">$0</span>', $text );
+	// Highlight leading spaces in multi lines.
+	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
+	// Highlight trailing spaces in multi lines.
+	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
+
+	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
+	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
+
 	// Put the glossaries back!
 	$text = preg_replace_callback(
 		'!(<span GLOSSARY=(\d+)>)!',
@@ -42,9 +54,6 @@ function prepare_original( $text ) {
 		},
 		$text
 	);
-
-	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
-	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
 
 	return $text;
 }
@@ -169,15 +178,15 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$glossary_entries_reference[ $term ][] = $id;
 		}
 
-		$terms_search = '\b(';
+		$regex_group = array();
 		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
-			$terms_search .= preg_quote( $term, '/' );
+			$regex_suffix = $suffixes ? '(?:' . implode( '|', $suffixes ) . ')?' : '';
 
-			if ( ! empty( $suffixes ) ) {
-				$terms_search .= '(?:' . implode( '|', $suffixes ) . ')?';
+			if ( ! isset( $regex_group[ $regex_suffix ] ) ) {
+				$regex_group[ $regex_suffix ] = array();
 			}
 
-			$terms_search .= '|';
+			$regex_group[ $regex_suffix ][] = preg_quote( $term, '/' );
 
 			$referenced_term = $term;
 			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
@@ -203,21 +212,31 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			}
 		}
 
+		// Build the regular expression.
+		$terms_search = '(%(?:[1-9]\$)?[bcdefgosuxEFGX%l@])|\b(';
+		foreach ( $regex_group as $suffix => $terms ) {
+			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
+		}
+
 		// Remove the trailing |.
 		$terms_search  = substr( $terms_search, 0, -1 );
 		$terms_search .= ')\b';
 	}
-
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
-
 	// Loop through each chunk of the split to find glossary terms.
 	if ( is_array( $singular_split ) ) {
 		$singular_combined = '';
+		should_skip_chunk( '' ); // Reset the state machine.
 
 		foreach ( $singular_split as $chunk ) {
 			// Create an escaped version for use later on.
 			$escaped_chunk = esc_translation( $chunk );
+
+			if ( should_skip_chunk( $chunk ) ) {
+				$singular_combined .= $escaped_chunk;
+				continue;
+			}
 
 			// Create a lower case version to compare with the glossary terms.
 			$lower_chunk = strtolower( $chunk );
@@ -269,10 +288,16 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// Loop through each chunk of the split to find glossary terms.
 		if ( is_array( $plural_split ) ) {
 			$plural_combined = '';
+			should_skip_chunk( '' ); // Reset the state machine.
 
 			foreach ( $plural_split as $chunk ) {
 				// Create an escaped version for use later on.
 				$escaped_chunk = esc_translation( $chunk );
+
+				if ( should_skip_chunk( $chunk ) ) {
+					$plural_combined .= $escaped_chunk;
+					continue;
+				}
 
 				// Create a lower case version to compare with the glossary terms.
 				$lower_chunk = strtolower( $chunk );
@@ -371,6 +396,10 @@ function textareas( $entry, $permissions, $index = 0 ) {
 }
 
 function display_status( $status ) {
+	if ( ! $status ) {
+		$status = '';
+	}
+
 	$status_labels = array(
 		'current'          => _x( 'current', 'Single Status', 'glotpress' ),
 		'waiting'          => _x( 'waiting', 'Single Status', 'glotpress' ),
@@ -499,3 +528,88 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 </form>
 <?php
 }
+
+/**
+ * Determine if the current chunk should be skipped.
+ *
+ * @since 4.0.0
+ *
+ * @param string $chunk The current chunk.
+ *
+ * @return bool
+ */
+function should_skip_chunk( string $chunk ) {
+	static $state = false;
+	if ( '' === $chunk ) {
+		$state = false;
+	}
+
+	if ( ! $state ) {
+		if ( '<' === substr( $chunk, -1 ) || '</' === substr( $chunk, -2 ) ) {
+			$state = 'tag_open';
+		} elseif ( preg_match( '/<[^>]+$/', $chunk, $m ) ) {
+			$state = 'inside_tag';
+			$chunk = $m[0];
+		}
+	}
+
+	if ( ! $state ) {
+		return false;
+	}
+
+	if ( 'tag_open' === $state ) {
+		$state = 'inside_tag';
+
+		if ( preg_match( '/\s/', $chunk ) ) {
+			// Our chunk is just the HTML tag name, so skip.
+			return true;
+		}
+	}
+
+	if ( 'inside_attr' === $state || 'inside_allowed_attr' === $state ) {
+		$p = strpos( $chunk, '"' );
+		if ( false === $p ) {
+				// Still inside the attribute.
+				if ( 'inside_allowed_attr' === $state ) {
+				return false;
+			}
+			return true;
+		}
+
+		$state = 'inside_tag';
+		// Back in the tag but maybe an attribute will be opened again, so let's check the rest.
+		$chunk = substr( $chunk, $p + 1 );
+	}
+
+	if ( 'inside_tag' === $state ) {
+		if ( preg_match( '/\b([a-z]+)\s*=\s*"[^"]*$/', strtolower( $chunk ), $m ) ) {
+			// The chunk ends with an open-ended attribute.
+
+			$state = 'inside_attr';
+			if ( 'alt' === $m[1] || 'title' === $m[1] ) {
+				$state = 'inside_allowed_attr';
+			}
+			return true;
+		}
+
+		$p = strpos( $chunk, '>' );
+		while ( false !== $p ) {
+			// The tag ended, let's see if a new one starts again inside the current chunk.
+			$chunk = substr( $chunk, $p + 1 );
+			if ( false === strpos( $chunk, '<' ) ) {
+				// No more html start, so we're outside of a tag.
+				$state = false;
+				return true;
+			}
+		}
+
+		return true;
+	}
+
+	if ( 'inside_allowed_attr' === $state ) {
+		return false;
+	}
+
+	return true;
+}
+
