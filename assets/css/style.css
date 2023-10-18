@@ -1694,3 +1694,6 @@ a.tour-button.button-primary:hover {
 .webui-popover a {
 	color: #fff;
 }
+.highlight {
+	outline: 2px solid var( --gp-color-tour );
+  }

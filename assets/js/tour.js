@@ -85,5 +85,18 @@ jQuery( document ).ready(
 			}
 		};
 		window.loadTour();
+
+		function highlightElement( event ) {
+			var target = event.target;
+			target.classList.add( 'highlight' );
+		}
+
+		function removeHighlight( event ) {
+			var target = event.target;
+			target.classList.remove( 'highlight' );
+		}
+
+		document.addEventListener( 'mouseover', highlightElement );
+		document.addEventListener( 'mouseout', removeHighlight );
 	}
 );
