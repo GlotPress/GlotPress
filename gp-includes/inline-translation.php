@@ -130,7 +130,7 @@ class GP_Inline_Translation {
 	 */
 	public function enqueue_scripts() {
 		$css_extension = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.css' : '.min.css';
-		$js_extension = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.js' : '.min.js';
+		$js_extension  = SCRIPT_DEBUG || GP_SCRIPT_DEBUG ? '.js' : '.min.js';
 
 		wp_enqueue_style( 'inline-translation-loader', gp_plugin_url( 'assets/css/inline-translation-loader' . $css_extension, __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		wp_enqueue_style( 'inline-translation', gp_plugin_url( 'assets/css/inline-translation' . $css_extension, __FILE__ ) ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
@@ -713,7 +713,7 @@ class GP_Inline_Translation {
 			'currentUserId'          => get_current_user_id(),
 			'pluralForms'            => $plural_forms,
 			'glotPress'              => array(
-				'url'                  => gp_url( '/' ),
+				'url'                  => apply_filters( 'gp_inline_translation_frontend_url', gp_url( '/' ) ),
 				'restUrl'              => esc_url_raw( rest_url( 'glotpress/v1' ) ),
 				'nonce'                => wp_create_nonce( 'wp_rest' ),
 				'projects'             => $project_paths,
