@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-alpha.11] (October 19, 2023)
+
+**Bugfixes**
+* Don't set context to empty string by default ([#1726])
+
 ## [4.0.0-alpha.10] (October 16, 2023)
 
 **Features**
@@ -593,6 +598,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
+[4.0.0-alpha.11]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.10...4.0.0-alpha.11
 [4.0.0-alpha.10]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.9...4.0.0-alpha.10
 [4.0.0-alpha.9]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.8...4.0.0-alpha.9
 [4.0.0-alpha.8]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.7...4.0.0-alpha.8
@@ -725,3 +731,4 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1711]: https://github.com/GlotPress/GlotPress/pull/1711
 [#1713]: https://github.com/GlotPress/GlotPress/pull/1713
 [#1714]: https://github.com/GlotPress/GlotPress/pull/1714
+[#1726]: https://github.com/GlotPress/GlotPress/pull/1726
