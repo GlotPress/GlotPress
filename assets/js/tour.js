@@ -3,6 +3,11 @@
 
 jQuery( document ).ready(
 	function() {
+		jQuery( document ).on( 'click', '.tour-settings-btn', function() {
+			jQuery( '.tour-dashboard' ).toggleClass( 'footer-show' );
+			jQuery( this ).toggleClass( 'tour-settings-btn-up' );
+		} );
+
 		jQuery( document ).on( 'click', '.pulse', function() {
 			var driver = window.driver.js.driver;
 			var wrapper = jQuery( this ).closest( '.pulse-wrapper' );

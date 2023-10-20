@@ -1696,4 +1696,42 @@ a.tour-button.button-primary:hover {
 }
 .highlight {
 	outline: 2px solid var( --gp-color-tour );
-  }
+}
+
+
+.tour-dashboard{
+	background-color: var( --gp-color-black );
+	height: 50px;
+	color: #fff;
+	text-align: center;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px 0;
+	transition: transform 0.3s ease-out;
+	transform: translateY(100%); 
+}
+
+.footer-show {
+	transform: translateX(0);
+}
+
+.tour-settings-btn {
+	background-color: var( --gp-color-black );
+	color: #fff;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 10px;
+	cursor: pointer;
+	transition: transform 0.3s ease-out;
+}
+
+.tour-settings-btn:hover {
+	outline: none;
+}
+
+.tour-settings-btn-up {
+	transform: translateY(-100%);
+} 

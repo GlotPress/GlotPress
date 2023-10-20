@@ -31,5 +31,7 @@
 
 		<?php gp_footer(); ?>
 	</footer>
+	<div class="tour-dashboard"></div>
+	<div class="tour-settings-btn">Tour Settings</div>
 	</body>
 </html>
