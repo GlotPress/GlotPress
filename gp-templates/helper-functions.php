@@ -218,6 +218,24 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 'ed', // Add 'ed'.
 			),
 
+			// Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: '-ed'.
+			array(
+				'preceded' => '[aeiou]', // Preceded by any vowel.
+				'endings'  => array(
+					'[b-df-hj-np-tv-xz]' => '%s', // Add 'ed'. Visit and visit-ed, develop and develop-ed.
+				),
+				'add'      => 'ed', // Add 'ed'.
+			),
+
+			// Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: Repeat ending consonant and '-ed'.
+			array(
+				'preceded' => '[aeiou]', // Preceded by any vowel.
+				'endings'  => array(
+					'[b-df-hj-np-tv-xz]' => '%1$s%1$s', // Double ending consonant and add 'ed'. Commit and committ-ed, prefer and preferr-ed, travel and travell-ed.
+				),
+				'add'      => 'ed', // Add 'ed'.
+			),
+
 			/**
 			 * Present participle and gerund of verbs.
 			 */
@@ -233,6 +251,24 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					'oe'       => '%s', // Add 'ing'.        Tiptoe and tiptoe-ing.
 					// Ending with single '-e'.
 					'e'        => '',   // Change to 'ing'. Contribute and contribut-ing, delete and delet-ing, care and car-ing.
+				),
+				'add'      => 'ing', // Add 'ing'.
+			),
+
+			// Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: '-ing'.
+			array(
+				'preceded' => '[aeiou]', // Preceded by any vowel.
+				'endings'  => array(
+					'[b-df-hj-np-tv-xz]' => '%s', // Add 'ing'. Visit and visit-ing, develop and develop-ing.
+				),
+				'add'      => 'ing', // Add 'ing'.
+			),
+
+			// Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: Repeat ending consonant and '-ing'.
+			array(
+				'preceded' => '[aeiou]', // Preceded by any vowel.
+				'endings'  => array(
+					'[b-df-hj-np-tv-xz]' => '%1$s%1$s', // Double ending consonant and add 'ing'. Commit and committ-ing, prefer and preferr-ing, travelling and travell-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
