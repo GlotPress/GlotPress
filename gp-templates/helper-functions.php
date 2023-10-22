@@ -128,15 +128,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 'es',                 // Add 'es'.
 			),
 
-			// Ending with '-an'. Suffix: '-en'.
-			array(
-				'endings'  => array(
-					'an' => 'en', // Woman and wom-en. Change to '-en'.
-				),
-				'preceded' => null,
-				'add'      => null,
-			),
-
 			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
 			array(
 				'endings'  => array(
@@ -151,7 +142,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|an|fe)' => null, // None of the above except 'f' because of words like 'Chief' which plural is '-s'.
+					'\w(?<!z|x|sh|ch|s|y|fe)' => null, // None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'preceded' => null,
 				'add'      => 's', // Add 's'.
@@ -863,4 +854,3 @@ function should_skip_chunk( string $chunk ) {
 
 	return true;
 }
-

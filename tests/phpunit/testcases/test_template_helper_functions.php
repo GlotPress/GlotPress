@@ -826,55 +826,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Expects matching the plurals of Nouns ending with '-an'. Suffix: '-en'.
-	 */
-	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_an_in_glossary() {
-		$test_string = 'Testing words woman, women.';
-		$orig = '';
-		$part_of_speech = 'noun';
-
-		$matches = array(
-			'mulher' => array( // Portuguese.
-				'woman',         // Singular.
-				'women',         // Plural.
-			),
-		);
-
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
-		$glossary_entries = array(
-			array(
-				'term' => 'woman', // Woman and women.
-				'part_of_speech' => $part_of_speech,
-				'translation' => 'mulher', // Portuguese.
-				'glossary_id' => $glossary->id,
-			),
-		);
-
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
-	}
-
-	/**
 	 * Expects matching the plurals of Nouns ending with '-f' or '-fe'. Suffix: '-ves'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_f_in_glossary() {
