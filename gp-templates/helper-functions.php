@@ -91,9 +91,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 	$suffixes = array(
 
-		// Plurals of singular nouns.
-		// https://www.thefreedictionary.com/Forming-Plurals.htm.
-		// https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
+		/**
+		 * Plurals of singular nouns.
+		 * https://www.thefreedictionary.com/Forming-Plurals.htm.
+		 * https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
+		 */
 		'noun'         => array(
 
 			// Ending in a sibilant. Suffix: '-es'.
@@ -147,12 +149,18 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'preceded' => null,
 				'add'      => 's', // Add 's'.
 			),
+
 		),
 
-		// Verb tenses.
+		/**
+		 * Verb tenses.
+		 */
 		'verb'         => array(
 
-			// Third-person singular for verbs.
+			/**
+			 * Third-person singular for verbs.
+			 */
+
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
 				'endings'  => array(
@@ -194,7 +202,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 's',  // Add 's'.
 			),
 
-			// Past simple tense and past participle of verbs. Suffix '-ed'.
+			/**
+			 * Past simple tense and past participle of verbs.
+			 */
+
+			// Not ending with '-e', and ending with '-e'. Suffix '-ed'.
 			array(
 				'endings'  => array(
 					// Not ending with '-e'.
@@ -206,7 +218,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 'ed', // Add 'ed'.
 			),
 
-			// Present participle and gerund of verbs. Suffix '-ing'.
+			/**
+			 * Present participle and gerund of verbs.
+			 */
+
+			// Not ending with '-e', ending with '-ee', '-ye' or '-oe', and ending with '-e'. Suffix '-ing'.
 			array(
 				'endings'  => array(
 					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
@@ -221,8 +237,10 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'add'      => 'ing', // Add 'ing'.
 			),
 
-			// Nouns formed by Verbs.
-			// https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm.
+			/**
+			 * Nouns formed by Verbs.
+			 * https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm.
+			 */
 
 			// Verbs that form nouns ending with suffix '-tion'.
 			array(
