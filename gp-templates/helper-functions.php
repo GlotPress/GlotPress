@@ -335,10 +335,13 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		foreach ( $suffixes[ $type ] as $rule ) {
 
 			// Loop through rule endings.
-			foreach ( $rule['endings'] as $ending => $change ) {
+			foreach ( $rule['endings'] as $ending_pattern => $change ) {
 
 				// Check if noun ends with known suffix.
-				if ( preg_match( '/' . $rule['preceded'] . $ending . '\b/i', $term ) ) {
+				if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
+
+					// Set ending.
+					$ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
 
 					// Build suffix with changes and additions.
 					$suffix = ( is_null( $change ) ? '' : $change ) . ( $rule['add'] ? $rule['add'] : '' );
