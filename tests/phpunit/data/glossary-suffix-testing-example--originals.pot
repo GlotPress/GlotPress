@@ -1,0 +1,215 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GlotPress glossary test\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2022-07-21 13:01+0100\n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language-Team: \n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#. Nouns, plural.
+#. Ending in a sibilant. Suffix: '-es'.
+msgctxt "Nouns, plural"
+msgid "Kiss, waltz, box, dish, coach."
+msgid_plural "Kisses, waltzes, boxes, dishes, coaches."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-y' preceded by vowel. Suffix: '-s'.
+msgctxt "Nouns, plural"
+msgid "Delay, key, toy, guy."
+msgid_plural "Delays, keys, toys, guys."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+msgctxt "Nouns, plural"
+msgid "Lady, hero, tomato."
+msgid_plural "Ladies, heroes, tomatoes."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
+msgctxt "Nouns, plural"
+msgid "Wife, leaf, wolf, bus, lens."
+msgid_plural "Wives, leaves, wolf, buses, lenses."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Nouns, plural.
+#. Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
+msgctxt "Nouns, plural"
+msgid "Chef, chief, plan, human."
+msgid_plural "Chefs, chiefs, plans, humans."
+msgstr[0] ""
+msgstr[1] ""
+
+#. Verbs.
+#. Ending in a sibilant. Suffix: '-es'.
+msgctxt "Verbs, third-person singular"
+msgid ""
+"Bias and biases.\n"
+"Focus and focuses.\n"
+"Pass and passes.\n"
+"Quiz and quizes.\n"
+"Fix and fixes.\n"
+"Push and pushes.\n"
+"Watch and watches."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-y' preceded by vowel. Suffix: '-s'.
+msgctxt "Verbs, third-person singular"
+msgid "Play and plays."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+msgctxt "Verbs, third-person singular"
+msgid ""
+"Try and tries.\n"
+"Go and goes.\n"
+"Do and does."
+msgstr ""
+
+#. Verbs.
+#. Fallback suffix for most verbs. Suffix: '-s'.
+msgctxt "Verbs, third-person singular"
+msgid ""
+"Format and formats.\n"
+"Make and makes.\n"
+"Pull and pulls."
+msgstr ""
+
+#. Verbs.
+#. Not ending with '-e'.
+msgctxt "Verbs, past simple tense and past participle. Suffix '-ed'."
+msgid ""
+"Fix and fixed.\n"
+"Push and pushed."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-e'.
+msgctxt "Verbs, past simple tense and past participle. Suffix '-ed'."
+msgid ""
+"Contribute and contributed.\n"
+"Delete and deleted."
+msgstr ""
+
+#. Verbs.
+#. Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: '-ed'.
+msgctxt "Verbs, past simple tense, independently of the stressed syllable. Suffix: '-ed'"
+msgid ""
+"Visit, visited and visitted (false positive).\n"
+"Develop, developed and developped (false positive).\n"
+msgstr ""
+
+#. Verbs.
+#. Ending with consonant, preceded by vowel. For the cases where is used an ending double consonant. Suffix '-ed'.
+msgctxt "Verbs, past simple tense, independently of the stressed syllable. Doubled consonant. Suffix: '-ed'"
+msgid ""
+"Commit, commited (false positive) and committed.\n"
+"Prefer, prefered (false positive) and preferred.\n"
+"Travel, traveled (false positive) and travelled.\n"
+msgstr ""
+
+#. Verbs.
+#. Not ending with '-e'.
+msgctxt "Verbs, present participle and gerund of verbs. Suffix '-ing'."
+msgid ""
+"Fix and fixing.\n"
+"Push and pushing."
+msgstr ""
+
+#. Verbs.
+#. Ending with '-ee', '-ye' -or '-oe'.
+msgctxt "Verbs, present participle and gerund of verbs. Suffix '-ing'."
+msgid ""
+"Agree and agreeing.\n"
+"See and seeing.\n"
+"Dye and dyeing.\n"
+"Tiptoe and tiptoeing."
+msgstr ""
+
+#. Verbs.
+#. Ending with single '-e'.
+msgctxt "Verbs, present participle and gerund of verbs. Suffix '-ing'."
+msgid ""
+"Contribute and contributing.\n"
+"Delete and deleting.\n"
+"Care and caring."
+msgstr ""
+
+#. Verbs.
+#. Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: '-ing'.
+msgctxt "Verbs, past simple tense, independently of the stressed syllable. Suffix: '-ing'"
+msgid ""
+"Visit, visiting and visitting (false positive).\n"
+"Develop, developing and developping (false positive).\n"
+msgstr ""
+
+#. Verbs.
+#. Ending with consonant, preceded by vowel. For the cases where is used an ending double consonant. Suffix '-ing'.
+msgctxt "Verbs, past simple tense, independently of the stressed syllable. Doubled consonant. Suffix: '-ing'"
+msgid ""
+"Commit, commiting (false positive) and committing.\n"
+"Prefer, prefering (false positive) and preferring.\n"
+"Travel, traveling (false positive) and travelling.\n"
+msgstr ""
+
+#. Verbs.
+#. Verbs that form nouns ending with suffix '-tion'.
+msgctxt "Verbs, forming nouns"
+msgid ""
+"Abbreviate and abbreviation.\n"
+"Authorize and authorization.\n"
+"Specify and specification.\n"
+"Liquefy and liquefaction.\n"
+"Exclaim and exclamation.\n"
+"Encrypt and encryption.\n"
+"Subscribe and subscription.\n"
+"Perceive and perception.\n"
+"Resume and resumption.\n"
+"Correct and correction.\n"
+"Delete and deletion.\n"
+"Edit and edition.\n"
+"Ignite and ignition.\n"
+"Contribute and contribution.\n"
+"Resolve and resolution.\n"
+"Compose and composition.\n"
+"Abstain and abstention.\n"
+"Contravene and contravention.\n"
+"Prevent and prevention.\n"
+"Insert and insertion."
+msgstr ""
+
+#. Verbs.
+#. Verbs that form nouns ending with suffix '-sion'.
+msgctxt "Verbs, forming nouns"
+msgid ""
+"Invade and invasion.\n"
+"Precede and precession.\n"
+"Decide and decision.\n"
+"Explode and explosion.\n"
+"Exclude and exclusion.\n"
+"Supervise and supervision.\n"
+"Confuse and confusion.\n"
+"Expel and expulsion.\n"
+"Submit and submission.\n"
+"Compress and compression.\n"
+"Extend and extension.\n"
+"Convert and conversion.\n"
+"Disperse and dispersion.\n"
+"Recur and recursion.\n"
+"Emerge and emersion."
+msgstr ""

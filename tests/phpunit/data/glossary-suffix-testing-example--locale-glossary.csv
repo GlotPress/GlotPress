@@ -1,0 +1,149 @@
+en,pt,pos,description
+
+# Nouns
+
+# Ending in a sibilant. Suffix: '-es'.
+kiss,beijo,noun,
+waltz,valsa,noun,
+box,caixa,noun,
+dish,prato,noun,
+coach,treinador,noun,
+
+# Ending with '-y' preceded by vowel. Suffix: '-s'.
+delay,atraso,noun,
+key,chave,noun,
+toy,brinquedo,noun,
+guy,rapaz,noun,
+
+# Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+lady,senhora,noun,
+hero,herói,noun,
+tomato,tomate,noun,
+
+# Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
+wife,mulher,noun,
+leaf,folha,noun,
+wolf,lobo,noun,
+bus,autocarro,noun,
+lens,lente,noun,
+
+# Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
+chef,chef,noun,
+chief,chefe,noun,
+plan,plano,noun,
+human,humano,noun,
+
+# Verbs
+
+# Third-person singular
+
+# Ending in a sibilant. Suffix: '-es'.
+bias,enviesar,verb,
+focus,focar,verb,
+pass,passar,verb,
+quiz,questionar,verb,
+fix,corrigir,verb,
+push,empurrar,verb,
+watch,ver,verb,
+
+# Ending with '-y' preceded by vowel. Suffix: '-s'.
+play,brincar,verb,
+
+# Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
+try,tentar,verb,
+go,ir,verb,
+do,fazer,verb,
+
+# Fallback suffix for most verbs. Suffix: '-s'.
+format,formatar,verb,
+make,fazer,verb,
+pull,puxar,verb,
+
+# Past simple tense and past participle. Suffix '-ed'.
+
+# Not ending with '-e'.
+fix,corrigir,verb,
+push,empurrar,verb,
+# Ending with '-e'.
+contribute,contribuir,verb,
+delete,eliminar,verb,
+
+# Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: '-ed'.
+visit,visitar,verb,
+develop,desenvolver,verb,
+
+# Ending with consonant, preceded by vowel. For the cases where is used an ending double consonant. Suffix '-ed'.
+commit,comprometer,verb,
+prefer,preferir,verb,
+travel,viajar,verb,
+
+# Present participle and gerund of verbs. Suffix '-ing'.
+
+# Not ending with '-e'.
+fix,corrigir,verb,
+push,empurrar,verb,
+# Ending with '-ee', '-ye' -or '-oe'.
+agree,concordar,verb,
+see,ver,verb,
+dye,tingir,verb,
+tiptoe,"andar em bicos de pés",verb,
+# Ending with single '-e'.
+contribute,contribuir,verb,
+delete,eliminar,verb,
+care,cuidar,verb,
+
+# Ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: '-ing'.
+visit,visitar,verb,
+develop,desenvolver,verb,
+
+# Ending with consonant, preceded by vowel. For the cases where is used an ending double consonant. Suffix '-ing'.
+commit,comprometer,verb,
+prefer,preferir,verb,
+travel,viajar,verb,
+
+# Nouns formed by Verbs.
+
+# Verbs that form nouns ending with suffix '-tion'.
+# General.
+abbreviate,abreviar,verb,
+authorize,autorizar,verb,
+specify,especificar,verb,
+liquefy,liquefazer,verb,
+exclaim,exclamar,verb,
+encrypt,encriptar,verb,
+subscribe,subscrever,verb,
+perceive,percepcionar,verb,
+resume,retomar,verb,
+correct,corrigir,verb,
+delete,eliminar,verb,
+edit,editar,verb,
+ignite,acender,verb,
+contribute,contribuir,verb,
+resolve,resolver,verb,
+compose,"compôr",verb,
+# After 'n' cases.
+abstain,abster,verb,
+contravene,transgredir,verb,
+prevent,prevenir,verb,
+# After 'r' cases.
+insert,inserir,verb,
+
+# Verbs that form nouns ending with suffix '-sion'.
+# General.
+invade,invadir,verb,
+precede,preceder,verb,
+decide,decidir,verb,
+explode,explodir,verb,
+exclude,excluir,verb,
+supervise,supervisionar,verb,
+confuse,confundir,verb,
+expel,expulsar,verb,
+submit,submeter,verb,
+compress,comprimir,verb,
+# After 'n' cases.
+extend,estender,verb,
+# After 'r' cases.
+convert,converter,verb,
+disperse,dispersar,verb,
+recur,repetir,verb,
+emerge,emergir,verb,
