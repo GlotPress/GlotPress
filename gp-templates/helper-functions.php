@@ -165,7 +165,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					's'  => '%s', // Add 'es'. Pass and pass-es, bias and bias-es.
+					's'  => '%s', // Add 'es'. Pass and pass-es, bias and bias-es, focus and focus-es.
 					'z'  => '%s', // Add 'es'. Quiz and quiz-es.
 					'x'  => '%s', // Add 'es'. Fix and fix-es.
 					'sh' => '%s', // Add 'es'. Push and push-es.
