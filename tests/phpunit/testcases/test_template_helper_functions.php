@@ -554,7 +554,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_sibilant_in_glossary() {
 		$test_string = 'Testing words kiss, kisses, waltz, waltzes, box, boxes, dish, dishes, coach, coaches.';
-		$orig = '';
 		$part_of_speech = 'noun';
 
 		$matches = array(
@@ -580,62 +579,40 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'kiss', // Kiss and kisses.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'beijo', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'waltz', // Waltz and waltzes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'valsa', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'box', // Box and boxes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'caixa', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'dish', // Dish and dishes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'prato', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'coach', // Coach and coaches.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'treinador', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -643,7 +620,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_y_preceded_by_vowel_in_glossary() {
 		$test_string = 'Testing words delay, delays, key, keys, toy, toys, guy, guys.';
-		$orig = '';
 		$part_of_speech = 'noun';
 
 		$matches = array(
@@ -665,64 +641,41 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'delay', // Delay and delays.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'atraso', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'key', // Key and keys.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'chave', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'toy', // Toy and toys.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'brinquedo', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'guy', // Guy and guys.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'rapaz', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
 	 * Expects matching the plurals of Nouns ending with '-y' preceded by consonant. Suffix: '-ies'.
 	 */
-	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_y_preceded_by_consonant_in_glossary() {
+	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_o_and_y_preceded_by_consonant_in_glossary() {
 		$test_string = 'Testing words lady, ladies.';
-		$orig = '';
 		$part_of_speech = 'noun';
 
 		$matches = array(
@@ -732,38 +685,16 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'lady', // Lady and ladies.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'senhora', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -771,7 +702,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_alternate_ending_with_o_preceded_by_consonant_in_glossary() {
 		$test_string = 'Testing words hero, heroes, tomato, tomatoes.';
-		$orig = '';
 		$part_of_speech = 'noun';
 
 		$matches = array(
@@ -785,44 +715,22 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'hero', // Hero and heroes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'herói', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'tomato', // Tomato and tomatoes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'tomate', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -830,7 +738,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_ending_with_f_in_glossary() {
 		$test_string = 'Testing words wife, wives, leaf, leaves, wolf, wolves.';
-		$orig = '';
 		$part_of_speech = 'noun';
 
 		$matches = array(
@@ -848,50 +755,28 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'wife', // Wife and wives.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'esposa', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'leaf', // Leaf and leaves.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'folha', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'wolf', // Wolf and wolves.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'lobo', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -899,7 +784,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_fallback_ending_with_s_in_glossary() {
 		$test_string = 'Testing words bus, buses, lens, lenses.';
-		$orig = '';
 		$part_of_speech = 'noun';
 
 		$matches = array(
@@ -913,107 +797,95 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'bus', // Bus and buses.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'autocarro', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'lens', // Lens and lenses.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'lente', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
 	 * Expects matching the fallback plurals of Nouns not ending with '-s'. Suffix '-s'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_nouns_fallback_not_ending_with_s_in_glossary() {
-		$test_string = 'Testing words chief, chiefs.';
-		$orig = '';
+		$test_string = 'Testing words chef, chefs, chief, chiefs, plan, plans, human, humans.';
 		$part_of_speech = 'noun';
 
 		$matches = array(
+			'chef' => array( // Portuguese.
+				'chef',        // Singular.
+				'chefs',       // Plural.
+			),
 			'chefe' => array( // Portuguese.
 				'chief',        // Singular.
 				'chiefs',       // Plural.
 			),
+			'plano' => array( // Portuguese.
+				'plan',         // Singular.
+				'plans',        // Plural.
+			),
+			'humano' => array( // Portuguese.
+				'human',         // Singular.
+				'humans',        // Plural.
+			),
 		);
-
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
 		$glossary_entries = array(
+			array(
+				'term' => 'chef', // Chef and chefs.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'chef', // Portuguese.
+				'glossary_id' => null,
+			),
 			array(
 				'term' => 'chief', // Chief and chiefs.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'chefe', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'plan', // Plan and plans.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'plano', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'human', // Human and humans.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'humano', // Portuguese.
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
 	 * Expects matching the third-person of Verbs ending in a sibilant. Suffix: '-es'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_sibilant_in_glossary() {
-		$test_string = 'Testing words pass, passes, quiz, quizes, fix, fixes, push, pushes, watch, watches.';
-		$orig = '';
+		$test_string = 'Testing words pass, passes, bias, biases, quiz, quizes, fix, fixes, push, pushes, watch, watches.';
 		$part_of_speech = 'verb';
 
 		$matches = array(
 			'passar' => array( // Portuguese.
 				'pass',          // Infinitive.
 				'passes',        // Third-person.
+			),
+			'enviesar' => array( // Portuguese.
+				'bias',            // Infinitive.
+				'biases',          // Third-person.
 			),
 			'questionar' => array( // Portuguese.
 				'quiz',              // Infinitive.
@@ -1033,62 +905,46 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'pass', // Pass and passes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'passar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'bias', // Bias and biases.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'enviesar', // Portuguese.
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'quiz', // Quiz and quizes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'questionar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'fix', // Fix and fixes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'corrigir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'push', // Push and pushes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'empurrar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'watch', // Watch and watches.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'ver', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1096,7 +952,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_y_preceded_by_vowel_in_glossary() {
 		$test_string = 'Testing words play, plays.';
-		$orig = '';
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1106,46 +961,23 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'play', // Play and plays.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'reproduzir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
-	 * Expects matching the third-person of Verbs ending with '-y' preceded by consonant. Suffix: '-ies'.
+	 * Expects matching the third-person of Verbs ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 	 */
-	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_y_preceded_by_consonant_in_glossary() {
-		$test_string = 'Testing words try, tries.';
-		$orig = '';
+	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_o_and_y_preceded_by_consonant_in_glossary() {
+		$test_string = 'Testing words try, tries, go, goes, do, does.';
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1153,89 +985,38 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'try',           // Infinitive.
 				'tries',         // Third-person.
 			),
+			'ir' => array( // Portuguese.
+				'go',        // Infinitive.
+				'goes',      // Third-person.
+			),
+			'fazer' => array( // Portuguese.
+				'do',           // Infinitive.
+				'does',         // Third-person.
+			),
 		);
-
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
 		$glossary_entries = array(
 			array(
 				'term' => 'try', // Try and tries.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'tentar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
-		);
-
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
-	}
-
-	/**
-	 * Expects matching the third-person of Verbs ending with '-o' preceded by consonant. Suffix: '-es'.
-	 */
-	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_o_preceded_by_consonant_in_glossary() {
-		$test_string = 'Testing words go, goes.';
-		$orig = '';
-		$part_of_speech = 'verb';
-
-		$matches = array(
-			'ir' => array( // Portuguese.
-				'go',        // Infinitive.
-				'goes',      // Third-person.
-			),
-		);
-
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
-		$glossary_entries = array(
 			array(
-				'term' => 'go', // Try and tries.
+				'term' => 'go', // Go and goes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'ir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'do', // Do and does.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'fazer', // Portuguese.
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1243,7 +1024,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_most_verbs_3rdperson_fallback_in_glossary() {
 		$test_string = 'Testing words format, formats, make, makes, pull, pulls.';
-		$orig = '';
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1261,109 +1041,28 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'make', // Make and makes.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'fazer', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'format', // Format and formats.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'formatar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'pull', // Pull and pulls.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'puxar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
-	}
-
-	/**
-	 * Expects matching the past of Verbs ending with '-e'. Suffix '-ed'.
-	 */
-	function test_map_glossary_entries_to_translation_originals_with_verbs_past_ending_with_e_in_glossary() {
-		$test_string = 'Testing words contribute, contributed, delete, deleted.';
-		$orig = '';
-		$part_of_speech = 'verb';
-
-		$matches = array(
-			'contribuir' => array( // Portuguese.
-				'contribute',        // Infinitive.
-				'contributed',       // Past.
-			),
-			'eliminar' => array( // Portuguese.
-				'delete',          // Infinitive.
-				'deleted',         // Past.
-			),
-		);
-
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
-		$glossary_entries = array(
-			array(
-				'term' => 'contribute', // Contribute and contributed.
-				'part_of_speech' => $part_of_speech,
-				'translation' => 'contribuir', // Portuguese.
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'delete', // Delete and deleted.
-				'part_of_speech' => $part_of_speech,
-				'translation' => 'eliminar', // Portuguese.
-				'glossary_id' => $glossary->id,
-			),
-		);
-
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1371,7 +1070,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_past_not_ending_with_e_in_glossary() {
 		$test_string = 'Testing words fix, fixed, push, pushed.';
-		$orig = '';
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1385,113 +1083,140 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'fix', // Fix and fixed.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'corrigir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'push', // Push and pushed.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'empurrar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
-	 * Expects matching the present of Verbs ending with '-e'. Suffix '-ing'.
+	 * Expects matching the past of Verbs ending with '-e'. Suffix '-ed'.
 	 */
-	function test_map_glossary_entries_to_translation_originals_with_verbs_present_ending_with_e_in_glossary() {
-		$test_string = 'Testing words contribute, contributing, delete, deleting, care, caring.';
-		$orig = '';
+	function test_map_glossary_entries_to_translation_originals_with_verbs_past_ending_with_e_in_glossary() {
+		$test_string = 'Testing words contribute, contributed, delete, deleted.';
 		$part_of_speech = 'verb';
 
 		$matches = array(
 			'contribuir' => array( // Portuguese.
 				'contribute',        // Infinitive.
-				'contributing',      // Present.
+				'contributed',       // Past.
 			),
 			'eliminar' => array( // Portuguese.
 				'delete',          // Infinitive.
-				'deleting',        // Present.
-			),
-			'cuidar' => array( // Portuguese.
-				'care',          // Infinitive.
-				'caring',        // Present.
+				'deleted',         // Past.
 			),
 		);
-
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
 		$glossary_entries = array(
 			array(
-				'term' => 'contribute', // Contribute and contributing.
+				'term' => 'contribute', // Contribute and contributed.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'contribuir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
-				'term' => 'delete', // Delete and deleting.
+				'term' => 'delete', // Delete and deleted.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'eliminar', // Portuguese.
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'care', // Care and caring.
-				'part_of_speech' => $part_of_speech,
-				'translation' => 'cuidar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
 
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+	/**
+	 * Expects matching the past of Verbs ending with consonant preceded by vowel, independently of the stressed syllable. Suffix '-ed'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_past_ending_with_consonant_preceded_by_vowel_in_glossary() {
+		$test_string = 'Testing words visit, visited, develop, developed.';
+		$part_of_speech = 'verb';
 
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$matches = array(
+			'visitar' => array( // Portuguese.
+				'visit',          // Infinitive.
+				'visited',        // Past.
+			),
+			'desenvolver' => array( // Portuguese.
+				'develop',            // Infinitive.
+				'developed',          // Past.
+			),
+		);
+
+		$glossary_entries = array(
+			array(
+				'term' => 'visit', // Visit and visited.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'visitar', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'develop', // Develop and developed.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'desenvolver', // Portuguese.
+				'glossary_id' => null,
+			),
+		);
+
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
+
+	/**
+	 * Expects matching the past of Verbs ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: Repeat ending consonant and '-ed'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_past_ending_with_consonant_preceded_by_vowel_double_consonant_in_glossary() {
+		$test_string = 'Testing words commit, committed, prefer, preferred, travel, travelled.';
+		$part_of_speech = 'verb';
+
+		$matches = array(
+			'comprometer' => array( // Portuguese.
+				'commit',             // Infinitive.
+				'committed',          // Past.
+			),
+			'preferir' => array( // Portuguese.
+				'prefer',          // Infinitive.
+				'preferred',       // Past.
+			),
+			'viajar' => array( // Portuguese.
+				'travel',        // Infinitive.
+				'travelled',      // Past.
+			),
+		);
+
+		$glossary_entries = array(
+			array(
+				'term' => 'commit', // Commit and committed.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'comprometer', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'prefer', // Prefer and preferred.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'preferir', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'travel', // Travel and travelled.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'viajar', // Portuguese.
+				'glossary_id' => null,
+			),
+		);
+
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1499,7 +1224,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_present_not_ending_with_e_or_ending_with_ee_ye_oe_in_glossary() {
 		$test_string = 'Testing words fix, fixing, push, pushing, agree, agreeing, see, seeing, dye, dyeing, tiptoe, tiptoeing.';
-		$orig = '';
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1529,76 +1253,182 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'fix', // Contribute and contributing.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'corrigir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'push', // Push and pushing.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'empurrar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'agree', // Agree and agreeing.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'concordar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'see', // See and seeing.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'ver', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'dye', // Dye and dyeing.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'tingir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'tiptoe', // Tiptoe and tiptoeing.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'andar em pontas dos pés', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
+
+	/**
+	 * Expects matching the present of Verbs ending with '-e'. Suffix '-ing'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_present_ending_with_e_in_glossary() {
+		$test_string = 'Testing words contribute, contributing, delete, deleting, care, caring.';
+		$part_of_speech = 'verb';
+
+		$matches = array(
+			'contribuir' => array( // Portuguese.
+				'contribute',        // Infinitive.
+				'contributing',      // Present.
+			),
+			'eliminar' => array( // Portuguese.
+				'delete',          // Infinitive.
+				'deleting',        // Present.
+			),
+			'cuidar' => array( // Portuguese.
+				'care',          // Infinitive.
+				'caring',        // Present.
+			),
+		);
+
+		$glossary_entries = array(
+			array(
+				'term' => 'contribute', // Contribute and contributing.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'contribuir', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'delete', // Delete and deleting.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'eliminar', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'care', // Care and caring.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'cuidar', // Portuguese.
+				'glossary_id' => null,
+			),
+		);
+
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
+
+	/**
+	 * Expects matching the past of Verbs ending with consonant preceded by vowel, independently of the stressed syllable. Suffix '-ing'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_present_ending_with_consonant_preceded_by_vowel_in_glossary() {
+		$test_string = 'Testing words visit, visiting, develop, developing.';
+		$part_of_speech = 'verb';
+
+		$matches = array(
+			'visitar' => array( // Portuguese.
+				'visit',          // Infinitive.
+				'visiting',       // Present.
+			),
+			'desenvolver' => array( // Portuguese.
+				'develop',            // Infinitive.
+				'developing',         // Present.
+			),
+		);
+
+		$glossary_entries = array(
+			array(
+				'term' => 'visit', // Visit and visiting.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'visitar', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'develop', // Develop and developing.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'desenvolver', // Portuguese.
+				'glossary_id' => null,
+			),
+		);
+
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
+
+	/**
+	 * Expects matching the past of Verbs ending with consonant preceded by vowel, independently of the stressed syllable. Suffix: Repeat ending consonant and '-ing'.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_verbs_present_ending_with_consonant_preceded_by_vowel_double_consonant_in_glossary() {
+		$test_string = 'Testing words commit, committing, prefer, preferring, travel, travelling.';
+		$part_of_speech = 'verb';
+
+		$matches = array(
+			'comprometer' => array( // Portuguese.
+				'commit',             // Infinitive.
+				'committing',         // Present.
+			),
+			'preferir' => array( // Portuguese.
+				'prefer',          // Infinitive.
+				'preferring',      // Present.
+			),
+			'viajar' => array( // Portuguese.
+				'travel',        // Infinitive.
+				'travelling',    // Present.
+			),
+		);
+
+		$glossary_entries = array(
+			array(
+				'term' => 'commit', // Commit and committing.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'comprometer', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'prefer', // Prefer and preferring.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'preferir', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'travel', // Travel and travelling.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'viajar', // Portuguese.
+				'glossary_id' => null,
+			),
+		);
+
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
+
 
 	/**
 	 * Expects matching the Verbs that form Nouns ending with suffix '-tion'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_form_nouns_ending_with_tion_in_glossary() {
 		$test_string = 'Testing words abbreviate, abbreviation, authorize, authorization, specify, specification, liquefy, liquefaction, exclaim, exclamation, encrypt, encryption, subscribe, subscription, perceive, perception, resume, resumption, correct, correction, delete, deletion, edit, edition, ignite, ignition, contribute, contribution, resolve, resolution, compose, composition, abstain, abstention, contravene, contravention, prevent, prevention, insert, insertion.';
-
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1685,153 +1515,131 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'abbreviate', // Abbreviate and abbreviation.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'abreviar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'authorize', // Authorize and authorization.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'autorizar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'specify', // Specify and specification.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'especificar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'liquefy', // Liquefy and liquefaction.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'liquefazer', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'exclaim', // Exclaim and exclamation.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'exclamar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'encrypt', // Encrypt and encryption.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'encriptar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'subscribe', // Subscribe and subscription.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'subscrever', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'perceive', // Perceive and perception.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'percepcionar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'resume', // Resume and resumption.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'resumir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'correct', // Correct and correction.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'corrigir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'delete', // Delete and deletion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'eliminar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'edit', // Edit and edition.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'editar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'ignite', // Ignite and ignition.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'acender', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'contribute', // Contribute and contribution.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'contribuir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'resolve', // Resolve and resolution.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'resolver', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'compose', // Compose and composition.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'compôr', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'abstain', // Abstain and abstention.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'abster', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'contravene', // Contravene and contravention.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'transgredir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'prevent', // Prevent and prevention.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'prevenir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'insert', // Insert and insertion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'inserir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1839,7 +1647,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_form_nouns_ending_with_sion_in_glossary() {
 		$test_string = 'Testing words invade, invasion, precede, precession, decide, decision, explode, explosion, exclude, exclusion, supervise, supervision, confuse, confusion, expel, expulsion, submit, submission, compress, compression, extend, extension, convert, conversion, disperse, dispersion, recur, recursion, emerge, emersion.';
-
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -1906,123 +1713,101 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 		);
 
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
 		$glossary_entries = array(
 			array(
 				'term' => 'invade', // Invade and invasion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'invadir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'precede', // Precede and precession.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'preceder', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'decide', // Decide and decision.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'decidir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'explode', // Explode and explosion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'explodir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'exclude', // Exclude and exclusion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'excluir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'supervise', // Supervise and supervision.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'supervisionar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'confuse', // Confuse and confusion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'confundir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'expel', // Expel and expulsion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'expulsar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'submit', // Submit and submission.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'submeter', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'compress', // Compress and compression.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'comprimir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'extend', // Extend and extension.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'estender', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'convert', // Convert and conversion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'converter', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'disperse', // Disperse and dispersion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'dispersar', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'recur', // Recur and recursion.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'repetir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 			array(
 				'term' => 'emerge', // Emerge and emersion
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'emergir', // Portuguese.
-				'glossary_id' => $glossary->id,
+				'glossary_id' => null,
 			),
 
 		);
 
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
