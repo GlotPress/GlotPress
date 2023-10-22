@@ -100,6 +100,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					'ss' => null, // Add 'es'. Kiss and kiss-es.
 					'z'  => null, // Add 'es'. Waltz and waltz-es.
@@ -107,46 +108,45 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					'sh' => null, // Add 'es'. Dish and dish-es.
 					'ch' => null, // Add 'es'. Coach and coach-es.
 				),
-				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
 			),
 
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
+				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
 					'y' => null, // Add 's'. Delay and delay-s, key and key-s, toy and toy-s, guy and guy-s.
 				),
-				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'add'      => 's',       // Add 's'.
 			),
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Lady and ladi-es.
 					'o' => null, // Add 'es'.         Hero and hero-es, tomato and tomato-es.
 				),
-				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'add'      => 'es',                 // Add 'es'.
 			),
 
 			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					'fe' => 'v',  // Change to 'v-es'. Wife and wiv-es.
 					'f'  => 'v',  // Change to 'v-es'. Leaf and leav-es, wolf and wolv-es.
 					's'  => null, // Add 'es'.         Bus and bus-es, lens and len-ses.
 				),
-				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
 			),
 
 			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					'\w(?<!z|x|sh|ch|s|y|fe)' => null, // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
-				'preceded' => null,
 				'add'      => 's', // Add 's'.
 			),
 
@@ -163,6 +163,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					's'  => null, // Add 'es'. Pass and pass-es, bias and bias-es.
 					'z'  => null, // Add 'es'. Quiz and quiz-es.
@@ -170,35 +171,34 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					'sh' => null, // Add 'es'. Push and push-es.
 					'ch' => null, // Add 'es'. Watch and watch-es.
 				),
-				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
 			),
 
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
+				'preceded' => '[aeiou]', // Any vowel.
 				'endings'  => array(
 					'y' => null, // Add 's'. Play and play-s.
 				),
-				'preceded' => '[aeiou]', // Any vowel.
 				'add'      => 's',       // Add 's'.
 			),
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
+				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Try and tri-es.
 					'o' => null, // Add 'es'.         Go and go-es, do and do-es.
 				),
-				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
 				'add'      => 'es',                 // Add 'es'.
 			),
 
 			// Fallback suffix for most verbs. Suffix: '-s'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					'\w(?<!z|x|sh|ch|s|y|o)' => null, // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
 				),
-				'preceded' => null,
 				'add'      => 's',  // Add 's'.
 			),
 
@@ -208,13 +208,13 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Not ending with '-e', and ending with '-e'. Suffix '-ed'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					// Not ending with '-e'.
 					'\w(?<!e)' => null, // Add 'ed'.       Fix and fix-ed, push and push-ed.
 					// Ending with '-e'.
 					'e'        => '',   // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
 				),
-				'preceded' => null,
 				'add'      => 'ed', // Add 'ed'.
 			),
 
@@ -224,6 +224,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Not ending with '-e', ending with '-ee', '-ye' or '-oe', and ending with '-e'. Suffix '-ing'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
 					'\w(?<!e)' => null, // Add 'ing'.         Fix and fix-ing, push and push-ing.
@@ -233,7 +234,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					// Ending with single '-e'.
 					'e'        => '',   //  Change to 'ing'.  Contribute and contribut-ing, delete and delet-ing, care and car-ing.
 				),
-				'preceded' => null,
 				'add'      => 'ing', // Add 'ing'.
 			),
 
@@ -244,6 +244,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Verbs that form nouns ending with suffix '-tion'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					// General.
 					'ate'    => 'a',     // Change to 'a-tion'.     Abbreviate and abbrevia-tion.
@@ -269,12 +270,12 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					// After 'r' cases.
 					'rt'     => 'r',     // Change to 'r-tion'.     Insert and inser-tion.
 				),
-				'preceded' => null,
 				'add'      => 'tion', // Add 'tion'.
 			),
 
 			// Verbs that form nouns ending with suffix '-sion'.
 			array(
+				'preceded' => null,
 				'endings'  => array(
 					// General.
 					'ade'  => 'a',   // Change to 'a-sion'.   Invade and inva-sion.
@@ -295,7 +296,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					'ur'   => 'ur',  // Change to 'ur-sion'.  Recur and recur-sion.
 					'erge' => 'er',  // Change to 'er-sion'.  Emerge and emer-sion.
 				),
-				'preceded' => null,
 				'add'      => 'sion', // Add 'sion'.
 			),
 
