@@ -100,7 +100,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					'ss' => null, // Add 'es'. Kiss and kiss-es.
 					'z'  => null, // Add 'es'. Waltz and waltz-es.
@@ -132,7 +132,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					'fe' => 'v',  // Change to 'v-es'. Wife and wiv-es.
 					'f'  => 'v',  // Change to 'v-es'. Leaf and leav-es, wolf and wolv-es.
@@ -143,7 +143,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					'\w(?<!z|x|sh|ch|s|y|fe)' => null, // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
@@ -163,7 +163,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					's'  => null, // Add 'es'. Pass and pass-es, bias and bias-es.
 					'z'  => null, // Add 'es'. Quiz and quiz-es.
@@ -176,7 +176,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
-				'preceded' => '[aeiou]', // Any vowel.
+				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
 					'y' => null, // Add 's'. Play and play-s.
 				),
@@ -185,7 +185,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
-				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Try and tri-es.
 					'o' => null, // Add 'es'.         Go and go-es, do and do-es.
@@ -195,7 +195,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Fallback suffix for most verbs. Suffix: '-s'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					'\w(?<!z|x|sh|ch|s|y|o)' => null, // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
 				),
@@ -208,7 +208,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Not ending with '-e', and ending with '-e'. Suffix '-ed'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e'.
 					'\w(?<!e)' => null, // Add 'ed'.       Fix and fix-ed, push and push-ed.
@@ -224,7 +224,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Not ending with '-e', ending with '-ee', '-ye' or '-oe', and ending with '-e'. Suffix '-ing'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
 					'\w(?<!e)' => null, // Add 'ing'.         Fix and fix-ing, push and push-ing.
@@ -244,7 +244,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Verbs that form nouns ending with suffix '-tion'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// General.
 					'ate'    => 'a',     // Change to 'a-tion'.     Abbreviate and abbrevia-tion.
@@ -275,7 +275,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 			// Verbs that form nouns ending with suffix '-sion'.
 			array(
-				'preceded' => null,
+				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// General.
 					'ade'  => 'a',   // Change to 'a-sion'.   Invade and inva-sion.
