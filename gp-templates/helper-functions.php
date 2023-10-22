@@ -244,8 +244,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
+					// Not ending with '-e'.
 					'\w(?<!e)' => '%s', // Add 'ing'.        Fix and fix-ing, push and push-ing.
+					// Ending with '-ee', '-ye' or '-oe'.
 					'ee'       => '%s', // Add 'ing'.        Agree and agree-ing, see and see-ing.
 					'ye'       => '%s', // Add 'ing'.        Dye and dye-ing.
 					'oe'       => '%s', // Add 'ing'.        Tiptoe and tiptoe-ing.
