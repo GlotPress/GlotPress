@@ -99,11 +99,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'ss' => null, // Kiss and kiss-es.
-					'z'  => null, // Waltz and waltz-es.
-					'x'  => null, // Box and box-es.
-					'sh' => null, // Dish and dish-es.
-					'ch' => null, // Coach and coach-es.
+					'ss' => null, // Add 'es'. Kiss and kiss-es.
+					'z'  => null, // Add 'es'. Waltz and waltz-es.
+					'x'  => null, // Add 'es'. Box and box-es.
+					'sh' => null, // Add 'es'. Dish and dish-es.
+					'ch' => null, // Add 'es'. Coach and coach-es.
 				),
 				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
@@ -112,7 +112,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'y' => null, // Delay and delay-s, key and key-s, toy and toy-s, guy and guy-s.
+					'y' => null, // Add 's'. Delay and delay-s, key and key-s, toy and toy-s, guy and guy-s.
 				),
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'add'      => 's',       // Add 's'.
@@ -121,8 +121,8 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'y' => 'i',  // Lady and ladi-es. Change to 'i-es'.
-					'o' => null, // Hero and hero-es, tomato and tomato-es.
+					'y' => 'i',  // Change to 'i-es'. Lady and ladi-es.
+					'o' => null, // Add 'es'.         Hero and hero-es, tomato and tomato-es.
 				),
 				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'add'      => 'es',                 // Add 'es'.
@@ -131,9 +131,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending with '-f', '-fe' or '-s'. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'fe' => 'v',  // Wife and wiv-es. Change to 'v-es'.
-					'f'  => 'v',  // Leaf and leav-es, wolf and wolv-es. Change to 'v-es'.
-					's'  => null, // Bus and bus-es, lens and len-ses.
+					'fe' => 'v',  // Change to 'v-es'. Wife and wiv-es.
+					'f'  => 'v',  // Change to 'v-es'. Leaf and leav-es, wolf and wolv-es.
+					's'  => null, // Add 'es'.         Bus and bus-es, lens and len-ses.
 				),
 				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
@@ -142,7 +142,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Fallback suffix for most nouns not ended with '-s'. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|fe)' => null, // None of the above except 'f' because of words like 'Chief' which plural is '-s'.
+					'\w(?<!z|x|sh|ch|s|y|fe)' => null, // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'preceded' => null,
 				'add'      => 's', // Add 's'.
@@ -156,11 +156,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'ss' => null, // Pass and pass-es.
-					'z'  => null, // Quiz and quiz-es.
-					'x'  => null, // Fix and fix-es.
-					'sh' => null, // Push and push-es.
-					'ch' => null, // Watch and watch-es.
+					'ss' => null, // Add 'es'. Pass and pass-es.
+					'z'  => null, // Add 'es'. Quiz and quiz-es.
+					'x'  => null, // Add 'es'. Fix and fix-es.
+					'sh' => null, // Add 'es'. Push and push-es.
+					'ch' => null, // Add 'es'. Watch and watch-es.
 				),
 				'preceded' => null,
 				'add'      => 'es', // Add 'es'.
@@ -169,7 +169,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending with '-y' preceded by vowel. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'y' => null, // Play and play-s.
+					'y' => null, // Add 's'. Play and play-s.
 				),
 				'preceded' => '[aeiou]', // Any vowel.
 				'add'      => 's',       // Add 's'.
@@ -178,8 +178,8 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'y' => 'i',  // Try and tri-es. Change to 'i-es'.
-					'o' => null, // Go and go-es, do and do-es.
+					'y' => 'i',  // Change to 'i-es'. Try and tri-es.
+					'o' => null, // Add 'es'.         Go and go-es, do and do-es.
 				),
 				'preceded' => '[b-df-hj-np-tv-xz]', // Any consonant.
 				'add'      => 'es',                 // Add 'es'.
@@ -188,7 +188,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Fallback suffix for most verbs. Suffix: '-s'.
 			array(
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|o)' => null, // None of the above. Format and format-s, make and make-s, pull and pull-s.
+					'\w(?<!z|x|sh|ch|s|y|o)' => null, // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
 				),
 				'preceded' => null,
 				'add'      => 's',  // Add 's'.
@@ -198,9 +198,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'endings'  => array(
 					// Not ending with '-e'.
-					'\w(?<!e)' => null, // Fix and fix-ed, push and push-ed.
+					'\w(?<!e)' => null, // Add 'ed'.       Fix and fix-ed, push and push-ed.
 					// Ending with '-e'.
-					'e'        => '', // Contribute and contribut-ed, delete and delet-ed. Change to '-ed'.
+					'e'        => '',   // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
 				),
 				'preceded' => null,
 				'add'      => 'ed', // Add 'ed'.
@@ -210,12 +210,12 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'endings'  => array(
 					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
-					'\w(?<!e)' => null, // Fix and fix-ing, push and push-ing.
-					'ee'       => null, // Agree and agree-ing, see and see-ing.
-					'ye'       => null, // Dye and dye-ing.
-					'oe'       => null, // Tiptoe and tiptoe-ing.
+					'\w(?<!e)' => null, // Add 'ing'.         Fix and fix-ing, push and push-ing.
+					'ee'       => null, // Add 'ing'.         Agree and agree-ing, see and see-ing.
+					'ye'       => null, // Add 'ing'.         Dye and dye-ing.
+					'oe'       => null, // Add 'ing'.         Tiptoe and tiptoe-ing.
 					// Ending with single '-e'.
-					'e'        => '', // Contribute and contribut-ing, delete and delet-ing, care and car-ing. Change to '-ing'.
+					'e'        => '',   //  Change to 'ing'.  Contribute and contribut-ing, delete and delet-ing, care and car-ing.
 				),
 				'preceded' => null,
 				'add'      => 'ing', // Add 'ing'.
@@ -228,28 +228,28 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'endings'  => array(
 					// General.
-					'ate'    => 'a',     // Abbreviate and abbrevia-tion. Change to 'a-tion'.
-					'ize'    => 'iza',   // Authorize and authoriza-tion. Change to 'iza-tion'.
-					'ify'    => 'ifica', // Specify and specifica-tion. Change to 'ifica-tion'.
-					'efy'    => 'efac',  // Liquefy and liquefac-tion. Change to 'efaca-tion'.
-					'aim'    => 'ama',   // Exclaim and exclama-tion. Change to 'ama-tion'.
-					'pt'     => 'p',     // Encrypt and encryp-tion. Change to 'p-tion'.
-					'scribe' => 'scrip', // Subscribe and subscrip-tion. Change to 'scrip-tion'.
-					'ceive'  => 'cep',   // Perceive and percep-tion. Change to 'cep-tion'.
-					'sume'   => 'sump',  // Resume and resump-tion. Change to 'sump-tion'.
-					'ct'     => 'c',     // Correct and correc-tion. Change to 'c-tion'.
-					'ete'    => 'e',     // Delete and dele-tion. Change to 'e-tion'.
-					'it'     => 'i',     // Edit and edi-tion. Change to 'i-tion'.
-					'ite'    => 'i',     // Ignite and igni-tion. Change to 'i-tion'.
-					'ute'    => 'u',     // Contribute and contribu-tion. Change to 'u-tion'.
-					'olve'   => 'olu',   // Resolve and resolu-tion. Change to 'olu-tion'.
-					'ose'    => 'osi',   // Compose and composi-tion. Change to 'osi-tion'.
+					'ate'    => 'a',     // Change to 'a-tion'.     Abbreviate and abbrevia-tion.
+					'ize'    => 'iza',   // Change to 'iza-tion'.   Authorize and authoriza-tion.
+					'ify'    => 'ifica', // Change to 'ifica-tion'. Specify and specifica-tion.
+					'efy'    => 'efac',  // Change to 'efaca-tion'. Liquefy and liquefac-tion.
+					'aim'    => 'ama',   // Change to 'ama-tion'.   Exclaim and exclama-tion.
+					'pt'     => 'p',     // Change to 'p-tion'.     Encrypt and encryp-tion.
+					'scribe' => 'scrip', // Change to 'scrip-tion'. Subscribe and subscrip-tion.
+					'ceive'  => 'cep',   // Change to 'cep-tion'.   Perceive and percep-tion.
+					'sume'   => 'sump',  // Change to 'sump-tion'.  Resume and resump-tion.
+					'ct'     => 'c',     // Change to 'c-tion'.     Correct and correc-tion.
+					'ete'    => 'e',     // Change to 'e-tion'.     Delete and dele-tion.
+					'it'     => 'i',     // Change to 'i-tion'.     Edit and edi-tion.
+					'ite'    => 'i',     // Change to 'i-tion'.     Ignite and igni-tion.
+					'ute'    => 'u',     // Change to 'u-tion'.     Contribute and contribu-tion.
+					'olve'   => 'olu',   // Change to 'olu-tion'.   Resolve and resolu-tion.
+					'ose'    => 'osi',   // Change to 'osi-tion'.   Compose and composi-tion.
 					// After 'n' cases.
-					'tain'   => 'ten',   // Abstain and absten-tion. Change to 'ten-tion'.
-					'vene'   => 'ven',   // Contravene and contraven-tion. Change to 'ven-tion'.
-					'vent'   => 'ven',   // Prevent and preven-tion. Change to 'ven-tion'.
+					'tain'   => 'ten',   // Change to 'ten-tion'.   Abstain and absten-tion.
+					'vene'   => 'ven',   // Change to 'ven-tion'.   Contravene and contraven-tion.
+					'vent'   => 'ven',   // Change to 'ven-tion'.   Prevent and preven-tion.
 					// After 'r' cases.
-					'rt'     => 'r',     // Insert and inser-tion. Change to 'r-tion'.
+					'rt'     => 'r',     // Change to 'r-tion'.     Insert and inser-tion.
 				),
 				'preceded' => null,
 				'add'      => 'tion', // Add 'tion'.
@@ -259,23 +259,23 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'endings'  => array(
 					// General.
-					'ade'  => 'a',   // Invade and inva-sion. Change to 'a-sion'.
-					'cede' => 'ces', // Precede and preces-sion. Change to 'ces-sion'.
-					'ide'  => 'i',   // Decide and deci-sion. Change to 'i-sion'.
-					'ode'  => 'o',   // Explode and explo-sion. Change to 'o-sion'.
-					'ude'  => 'u',   // Exclude and exclu-sion. Change to 'u-sion'.
-					'ise'  => 'i',   // Supervise and supervi-sion. Change to 'i-sion'.
-					'use'  => 'u',   // Confuse and confu-sion. Change to 'u-sion'.
-					'pel'  => 'pul', // Expel and expul-sion. Change to 'pul-sion'.
-					'mit'  => 'mis', // Submit and submis-sion. Change to 'mis-sion'.
-					'ss'   => 's',   // Compress and compres-sion. Change to 's-sion'.
+					'ade'  => 'a',   // Change to 'a-sion'.   Invade and inva-sion.
+					'cede' => 'ces', // Change to 'ces-sion'. Precede and preces-sion.
+					'ide'  => 'i',   // Change to 'i-sion'.   Decide and deci-sion.
+					'ode'  => 'o',   // Change to 'o-sion'.   Explode and explo-sion.
+					'ude'  => 'u',   // Change to 'u-sion'.   Exclude and exclu-sion.
+					'ise'  => 'i',   // Change to 'i-sion'.   Supervise and supervi-sion.
+					'use'  => 'u',   // Change to 'u-sion'.   Confuse and confu-sion.
+					'pel'  => 'pul', // Change to 'pul-sion'. Expel and expul-sion.
+					'mit'  => 'mis', // Change to 'mis-sion'. Submit and submis-sion.
+					'ss'   => 's',   // Change to 's-sion'.   Compress and compres-sion.
 					// After 'n' cases.
-					'end'  => 'en',  // Extend and exten-sion. Change to 'en-sion'.
+					'end'  => 'en',  // Change to 'en-sion'.  Extend and exten-sion.
 					// After 'r' cases.
-					'vert' => 'ver', // Convert and conver-sion. Change to 'ver-sion'.
-					'erse' => 'er',  // Disperse and disper-sion. Change to 'er-sion'.
-					'ur'   => 'ur',  // Recur and recur-sion. Change to 'ur-sion'.
-					'erge' => 'er',  // Emerge and emer-sion. Change to 'er-sion'.
+					'vert' => 'ver', // Change to 'ver-sion'. Convert and conver-sion.
+					'erse' => 'er',  // Change to 'er-sion'.  Disperse and disper-sion.
+					'ur'   => 'ur',  // Change to 'ur-sion'.  Recur and recur-sion.
+					'erge' => 'er',  // Change to 'er-sion'.  Emerge and emer-sion.
 				),
 				'preceded' => null,
 				'add'      => 'sion', // Add 'sion'.
