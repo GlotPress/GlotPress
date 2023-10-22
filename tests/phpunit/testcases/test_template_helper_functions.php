@@ -865,7 +865,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 * Expects matching the third-person of Verbs ending in a sibilant. Suffix: '-es'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_3rdperson_ending_with_sibilant_in_glossary() {
-		$test_string = 'Testing words pass, passes, bias, biases, quiz, quizes, fix, fixes, push, pushes, watch, watches.';
+		$test_string = 'Testing words pass, passes, bias, biases, focus, focuses, quiz, quizes, fix, fixes, push, pushes, watch, watches.';
 		$part_of_speech = 'verb';
 
 		$matches = array(
@@ -876,6 +876,10 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'enviesar' => array( // Portuguese.
 				'bias',            // Infinitive.
 				'biases',          // Third-person.
+			),
+			'focar' => array( // Portuguese.
+				'focus',        // Infinitive.
+				'focuses',      // Third-person.
 			),
 			'questionar' => array( // Portuguese.
 				'quiz',              // Infinitive.
@@ -906,6 +910,12 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'term' => 'bias', // Bias and biases.
 				'part_of_speech' => $part_of_speech,
 				'translation' => 'enviesar', // Portuguese.
+				'glossary_id' => null,
+			),
+			array(
+				'term' => 'focus', // Focus and focuses.
+				'part_of_speech' => $part_of_speech,
+				'translation' => 'focar', // Portuguese.
 				'glossary_id' => null,
 			),
 			array(
