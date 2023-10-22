@@ -2025,4 +2025,41 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
 	}
 
+	/**
+	 * Method to test the map_glossary_entries_to_translation_originals() function.
+	 *
+	 * @param $test_string		  The string to test.
+	 * @param $part_of_speech	  The part of speech of the string to test.
+	 * @param $matches			    The matches to expect.
+	 * @param $glossary_entries	The glossary entries to create.
+	 * @return void
+	 */
+	function check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries ) {
+		$expected_result = array();
+		foreach ( $matches as $glossary_entry => $originals ) {
+			foreach ( $originals as $original ) {
+				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+			}
+		}
+
+		$expected_result = sprintf(
+			'Testing words %s.',
+			implode( ', ', $expected_result )
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( $glossary_entries as $glossary_entry ) {
+			$glossary_entry['glossary_id'] = $glossary->id;
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
 }
