@@ -102,11 +102,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'ss' => null, // Add 'es'. Kiss and kiss-es.
-					'z'  => null, // Add 'es'. Waltz and waltz-es.
-					'x'  => null, // Add 'es'. Box and box-es.
-					'sh' => null, // Add 'es'. Dish and dish-es.
-					'ch' => null, // Add 'es'. Coach and coach-es.
+					'ss' => '%s', // Add 'es'. Kiss and kiss-es.
+					'z'  => '%s', // Add 'es'. Waltz and waltz-es.
+					'x'  => '%s', // Add 'es'. Box and box-es.
+					'sh' => '%s', // Add 'es'. Dish and dish-es.
+					'ch' => '%s', // Add 'es'. Coach and coach-es.
 				),
 				'add'      => 'es', // Add 'es'.
 			),
@@ -115,7 +115,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'y' => null, // Add 's'. Delay and delay-s, key and key-s, toy and toy-s, guy and guy-s.
+					'y' => '%s', // Add 's'. Delay and delay-s, key and key-s, toy and toy-s, guy and guy-s.
 				),
 				'add'      => 's',       // Add 's'.
 			),
@@ -125,7 +125,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Lady and ladi-es.
-					'o' => null, // Add 'es'.         Hero and hero-es, tomato and tomato-es.
+					'o' => '%s', // Add 'es'.         Hero and hero-es, tomato and tomato-es.
 				),
 				'add'      => 'es',                 // Add 'es'.
 			),
@@ -136,7 +136,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'endings'  => array(
 					'fe' => 'v',  // Change to 'v-es'. Wife and wiv-es.
 					'f'  => 'v',  // Change to 'v-es'. Leaf and leav-es, wolf and wolv-es.
-					's'  => null, // Add 'es'.         Bus and bus-es, lens and len-ses.
+					's'  => '%s', // Add 'es'.         Bus and bus-es, lens and len-ses.
 				),
 				'add'      => 'es', // Add 'es'.
 			),
@@ -145,7 +145,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|fe)' => null, // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
+					'\w(?<!z|x|sh|ch|s|y|fe)' => '%s', // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'add'      => 's', // Add 's'.
 			),
@@ -165,11 +165,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					's'  => null, // Add 'es'. Pass and pass-es, bias and bias-es.
-					'z'  => null, // Add 'es'. Quiz and quiz-es.
-					'x'  => null, // Add 'es'. Fix and fix-es.
-					'sh' => null, // Add 'es'. Push and push-es.
-					'ch' => null, // Add 'es'. Watch and watch-es.
+					's'  => '%s', // Add 'es'. Pass and pass-es, bias and bias-es.
+					'z'  => '%s', // Add 'es'. Quiz and quiz-es.
+					'x'  => '%s', // Add 'es'. Fix and fix-es.
+					'sh' => '%s', // Add 'es'. Push and push-es.
+					'ch' => '%s', // Add 'es'. Watch and watch-es.
 				),
 				'add'      => 'es', // Add 'es'.
 			),
@@ -178,7 +178,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'y' => null, // Add 's'. Play and play-s.
+					'y' => '%s', // Add 's'. Play and play-s.
 				),
 				'add'      => 's',       // Add 's'.
 			),
@@ -188,7 +188,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Try and tri-es.
-					'o' => null, // Add 'es'.         Go and go-es, do and do-es.
+					'o' => '%s', // Add 'es'.         Go and go-es, do and do-es.
 				),
 				'add'      => 'es',                 // Add 'es'.
 			),
@@ -197,7 +197,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|o)' => null, // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
+					'\w(?<!z|x|sh|ch|s|y|o)' => '%s', // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
 				),
 				'add'      => 's',  // Add 's'.
 			),
@@ -211,7 +211,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e'.
-					'\w(?<!e)' => null, // Add 'ed'.       Fix and fix-ed, push and push-ed.
+					'\w(?<!e)' => '%s', // Add 'ed'.       Fix and fix-ed, push and push-ed.
 					// Ending with '-e'.
 					'e'        => '',   // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
 				),
@@ -227,12 +227,12 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e', or ending with '-ee', '-ye' -or '-oe'.
-					'\w(?<!e)' => null, // Add 'ing'.         Fix and fix-ing, push and push-ing.
-					'ee'       => null, // Add 'ing'.         Agree and agree-ing, see and see-ing.
-					'ye'       => null, // Add 'ing'.         Dye and dye-ing.
-					'oe'       => null, // Add 'ing'.         Tiptoe and tiptoe-ing.
+					'\w(?<!e)' => '%s', // Add 'ing'.        Fix and fix-ing, push and push-ing.
+					'ee'       => '%s', // Add 'ing'.        Agree and agree-ing, see and see-ing.
+					'ye'       => '%s', // Add 'ing'.        Dye and dye-ing.
+					'oe'       => '%s', // Add 'ing'.        Tiptoe and tiptoe-ing.
 					// Ending with single '-e'.
-					'e'        => '',   //  Change to 'ing'.  Contribute and contribut-ing, delete and delet-ing, care and car-ing.
+					'e'        => '',   // Change to 'ing'. Contribute and contribut-ing, delete and delet-ing, care and car-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
@@ -353,19 +353,28 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		foreach ( $suffixes[ $type ] as $rule ) {
 
 			// Loop through rule endings.
-			foreach ( $rule['endings'] as $ending_pattern => $change ) {
+			foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
 
 				// Check if noun ends with known suffix.
 				if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
 
 					// Set ending.
-					$ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
+					$old_ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
+
+					// Format endings using %s or %1$s placeholders to allow using the ending itself in the changing string.
+					// Eg.: '%1$s%1$s' to match 'Commi[t]' -> Commi[tt][ing]
+					$new_ending = sprintf(
+						$new_ending,
+						$old_ending
+					);
+
+					$change_ending = $old_ending === $new_ending ? false : true;
 
 					// Build suffix with changes and additions.
-					$suffix = ( is_null( $change ) ? '' : $change ) . ( $rule['add'] ? $rule['add'] : '' );
+					$suffix = ( ! $change_ending ? '' : $new_ending ) . $rule['add'];
 
-					// Set key.
-					$key = is_null( $change ) ? $term : substr( $term, 0, - strlen( $ending ) );
+					// Set key term.
+					$key = $change_ending ? substr( $term, 0, - strlen( $old_ending ) ) : $term;
 
 					// Check if key term is set.
 					if ( ! isset( $glossary_entries_suffixes[ $key ] ) ) {
@@ -374,12 +383,12 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 
 					// If the ending changes, also add the ending.
-					if ( ! is_null( $change ) ) {
+					if ( $change_ending ) {
 
 						// Check if ending already exist in array of suffixes.
-						if ( ! in_array( $ending, $glossary_entries_suffixes[ $key ], true ) ) {
+						if ( ! in_array( $old_ending, $glossary_entries_suffixes[ $key ], true ) ) {
 							// Add the ending to the suffixes.
-							$glossary_entries_suffixes[ $key ][] = $ending;
+							$glossary_entries_suffixes[ $key ][] = $old_ending;
 						}
 					}
 
