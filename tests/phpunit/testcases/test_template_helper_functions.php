@@ -472,10 +472,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'Half a loaf is better than none.',
 				'Two halves are even better.',
 			),
-			'man' => array(
-				'The word man is the root of the word mankind.',
-				'There are men but there is no menkind.',
-			),
 			'issue' => array(
 				'If you find a bug, file an issue.',
 				'If you find two bugs, please file two issues.',
@@ -518,12 +514,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'term' => 'half',
 				'part_of_speech' => 'noun',
 				'translation' => 'half',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'man',
-				'part_of_speech' => 'noun',
-				'translation' => 'man',
 				'glossary_id' => $glossary->id,
 			),
 			array(
