@@ -156,7 +156,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			// Ending in a sibilant. Suffix: '-es'.
 			array(
 				'endings'  => array(
-					'ss' => null, // Add 'es'. Pass and pass-es.
+					's'  => null, // Add 'es'. Pass and pass-es, bias and bias-es.
 					'z'  => null, // Add 'es'. Quiz and quiz-es.
 					'x'  => null, // Add 'es'. Fix and fix-es.
 					'sh' => null, // Add 'es'. Push and push-es.
