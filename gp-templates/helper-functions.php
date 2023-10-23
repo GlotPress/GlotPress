@@ -92,6 +92,25 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	$suffixes = array(
 
 		/**
+		 * Array structure of suffix matcing cases:
+		 *   - 'preceded'  String with value or regex pattern of what precedes the ending of the word.
+		 *   - 'endings'   Array of endings to match. Key: String or regex pattern of original ending. Value: String of changed ending, can include placeholder (single %s or multiple %1$s) to represent the original ending.
+		 *   - 'add'       String to add after the changed ending.
+		 *
+		 * Example array(
+		 *   'preceded' => '[aeiou]', // Preceded by any vowel.
+		 *   'endings'  => array(
+		 *     'ss'     => '%s',          // Ending with '-ss'.              Add 'es'. Kiss and ki[ss]-es, pass and pa[ss]-es.
+		 *     '[sxz]'  => '%s',          // Ending with '-s', '-x' or '-z'. Add 'es'. Bias and bia[s]-es, fix and fi[x]-es, quiz and qui[z]-es.
+		 *     'sh'     => '%s',          // Ending with '-sh'.              Add 'es'. Dish and di[sh]-es.
+		 *     'ch'     => '%s',          // Ending with '-ch'.              Add 'es'. Coach and coa[ch]-es.
+		 *     '[rt]'   => '%1$s%1$sing', // Ending with '-r' or '-t'.       Doubles the consonant, add 'ing' and add 'es'. Prefer and prefe[rring]-es Visit and visi[tting]-es (non-existing matches to show the possibilies).
+		 *   ),
+		 *   'add'      => 'es', // Add 'es'.
+		 * )
+		 */
+
+		/**
 		 * Plurals of singular nouns.
 		 * https://www.thefreedictionary.com/Forming-Plurals.htm.
 		 * https://preply.com/en/blog/simple-rules-for-the-formation-of-plural-nouns-in-english/.
