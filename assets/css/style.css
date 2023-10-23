@@ -1734,4 +1734,41 @@ a.tour-button.button-primary:hover {
 
 .tour-settings-btn-up {
 	transform: translateY(-100%);
-} 
+}
+
+.tour-dashboard-btn {
+	float: right;
+	outline: 0;
+	border: none;
+}
+
+.create-tour-btn {
+	background-color: var(--gp-color-btn-primary-bg);
+	border-color: var(--gp-color-btn-primary-border);
+	color: var(--gp-color-btn-primary-text) !important;
+    font-size: 14px;
+    padding: 5px 16px;
+    line-height: 20px;
+    font-weight: 500;
+    border: 1px solid var(--gp-color-btn-border);
+    border-radius: 2px;
+    box-shadow: none;
+    min-height: 32px;
+    margin: 0 20px;
+    cursor: pointer;
+	outline: 0;
+	text-decoration: none;
+}
+
+.tour-form-field {
+	width: 70%;
+	padding: 1em;
+	width: 100%;
+	border-radius: 3px;
+	margin-bottom: 20px;
+	font-size: .9em;
+}
+
+.tour-form-textarea {
+	height: 80px;
+}

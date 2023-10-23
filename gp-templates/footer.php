@@ -31,7 +31,26 @@
 
 		<?php gp_footer(); ?>
 	</footer>
-	<div class="tour-dashboard"></div>
+	<div class="tour-dashboard">
+		<div class="tour-dashboard-btn">
+			<a href="#TB_inline?&width=600&height=550&inlineId=tour-form-content" class="thickbox create-tour-btn">Create Tour</a>	
+		</div>
+	</div>
 	<div class="tour-settings-btn">Tour Settings</div>
+	<div id="tour-form-content" style="display:none;">
+		<form>
+			<div>
+				<label>Tour Title</label><br>
+				<input type="text" class="tour-form-field" id="tour-title" />
+			</div>
+			<div>
+				<label>Tour Description</label><br>
+				<textarea class="tour-form-field tour-form-textarea" id="tour-desc"></textarea>
+			</div>
+			<div>
+				<button class="tour-form-field tour-form-submit" type="submit">Create Tour</button>
+			</div>
+	 	</form>
+	</div>
 	</body>
 </html>
