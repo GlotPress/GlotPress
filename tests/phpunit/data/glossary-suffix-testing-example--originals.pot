@@ -111,7 +111,7 @@ msgstr ""
 msgctxt "Verbs, past simple tense, independently of the stressed syllable. Suffix: '-ed'"
 msgid ""
 "Visit, visited and visitted (false positive).\n"
-"Develop, developed and developped (false positive).\n"
+"Develop, developed and developped (false positive)."
 msgstr ""
 
 #. Verbs.
@@ -120,7 +120,7 @@ msgctxt "Verbs, past simple tense, independently of the stressed syllable. Doubl
 msgid ""
 "Commit, commited (false positive) and committed.\n"
 "Prefer, prefered (false positive) and preferred.\n"
-"Travel, traveled (false positive) and travelled.\n"
+"Travel, traveled (false positive) and travelled."
 msgstr ""
 
 #. Verbs.
@@ -155,7 +155,7 @@ msgstr ""
 msgctxt "Verbs, past simple tense, independently of the stressed syllable. Suffix: '-ing'"
 msgid ""
 "Visit, visiting and visitting (false positive).\n"
-"Develop, developing and developping (false positive).\n"
+"Develop, developing and developping (false positive)."
 msgstr ""
 
 #. Verbs.
@@ -164,7 +164,7 @@ msgctxt "Verbs, past simple tense, independently of the stressed syllable. Doubl
 msgid ""
 "Commit, commiting (false positive) and committing.\n"
 "Prefer, prefering (false positive) and preferring.\n"
-"Travel, traveling (false positive) and travelling.\n"
+"Travel, traveling (false positive) and travelling."
 msgstr ""
 
 #. Verbs.
