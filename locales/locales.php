@@ -804,6 +804,16 @@ class GP_Locales {
 		$es->google_code = 'es';
 		$es->facebook_locale = 'es_ES';
 
+		$es_an = new GP_Locale();
+		$es_an->english_name = 'Spanish (Andalusia)';
+		$es_an->native_name = 'Español de Andalucía';
+		$es_an->lang_code_iso_639_1 = 'es';
+		$es_an->lang_code_iso_639_2 = 'spa';
+		$es_an->lang_code_iso_639_3 = 'spa';
+		$es_an->country_code = 'es';
+		$es_an->wp_locale = 'es_AN';
+		$es_an->slug = 'es-an';
+
 		$es_ar = new GP_Locale();
 		$es_ar->english_name = 'Spanish (Argentina)';
 		$es_ar->native_name = 'Español de Argentina';
@@ -2138,7 +2148,7 @@ class GP_Locales {
 		$rhg->slug = 'rhg';
 		$rhg->nplurals = 1;
 		$rhg->plural_expression = '0';
-		
+
 		$rif = new GP_Locale();
 		$rif->english_name = 'Tarifit';
 		$rif->native_name = 'Tarifiyt';
