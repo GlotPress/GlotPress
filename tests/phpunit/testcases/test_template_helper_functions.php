@@ -208,10 +208,46 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
 	}
 
-	function test_map_glossary_entries_with_placeholders_glued_glossary_words() {
-		$test_string = 'I %%show want to reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
-		$expected_result = 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.';
+	/**
+	 * Data provider.
+	 *
+	 * @var array
+	 */
+	function provide_test_map_glossary_entries_with_placeholders_glued_glossary_words() {
+		return array(
+			array(
+				'test_string'     => 'I %sshow%d.',
+				'expected_result' => 'I %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d.',
+			),
+			array(
+				'test_string'     => 'I %s show%d.',
+				'expected_result' => 'I %s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d.',
+			),
+			array(
+				'test_string'     => 'I %sshow %d.',
+				'expected_result' => 'I %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %d.',
+			),
+			array(
+				'test_string'     => 'I %1$sshow %d.',
+				'expected_result' => 'I %1$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %d.',
+			),
+			array(
+				'test_string'     => 'I %s show %d.',
+				'expected_result' => 'I %s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %d.',
+			),
+			array(
+				'test_string'     => 'I %%show want to %sshow and show%s, reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.',
+				'expected_result' => 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%s, reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.',
+			),
+		);
+	}
 
+	/**
+	 * Expects matching glossary terms glued to placeholders.
+	 *
+	 * @dataProvider provide_test_map_glossary_entries_with_placeholders_glued_glossary_words
+	 */
+	function test_map_glossary_entries_with_placeholders_glued_glossary_words( $test_string, $expected_result ) {
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
@@ -231,10 +267,15 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
 	}
 
-	function test_map_glossary_entries_with_placeholders_glued_glossary_words_in_the_plural_origin() {
-		$singular_string = 'I %%show want to reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.';
-		$plural_string   = 'Plural. ' . $singular_string;
-		$singular_expected_result = 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.';
+	/**
+	 * Expects matching glossary terms glued to placeholders, both in singular and plural.
+	 *
+	 * @dataProvider provide_test_map_glossary_entries_with_placeholders_glued_glossary_words
+	 */
+	function test_map_glossary_entries_with_placeholders_glued_glossary_words_in_the_plural_origin( $test_string, $expected_result ) {
+		$singular_string = $test_string;
+		$plural_string   = 'Plural. ' . $test_string;
+		$singular_expected_result = $expected_result;
 		$plural_expected_result = 'Plural. ' . $singular_expected_result;
 
 		$entry = new Translation_Entry( array( 'singular' => $singular_string, 'plural' => $plural_string ) );
