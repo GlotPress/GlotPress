@@ -552,9 +552,9 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	/**
 	 * Method to test the test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() function.
 	 *
-	 * @param string $glossary_entry   The string to test.
-	 * @param string $part_of_speech   The part of speech of the string to test.
-	 * @param string $original         The matches to expect.
+	 * @param string $glossary_entry   The translation of the glossary entry.
+	 * @param string $part_of_speech   The part of speech of the glossary entry.
+	 * @param string $original         The original matched string.
 	 * @return string                  The formated glossary match output.
 	 */
 	function glossary_match( $glossary_entry, $part_of_speech, $original ) {
