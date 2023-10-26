@@ -213,14 +213,15 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Build the regular expression.
-		$terms_search = '(%(?:[1-9]\$)?[bcdefgosuxEFGX%l@])|\b(';
+		$placeholders_search = '%(?:[1-9]\$)?[bcdefgosuxEFGX%l@]';
+		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
 		$terms_search  = substr( $terms_search, 0, -1 );
-		$terms_search .= ')\b';
+		$terms_search .= ')\b)|(' . $placeholders_search . ')';
 	}
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
@@ -612,4 +613,3 @@ function should_skip_chunk( string $chunk ) {
 
 	return true;
 }
-
