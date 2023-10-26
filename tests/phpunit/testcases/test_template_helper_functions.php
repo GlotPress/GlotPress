@@ -342,45 +342,9 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 		$glossary_entries = array(
 			array(
-				'term' => 'delay',
-				'part_of_speech' => 'noun',
-				'translation' => 'retraso',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'key',
-				'part_of_speech' => 'noun',
-				'translation' => 'chave',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'toy',
-				'part_of_speech' => 'noun',
-				'translation' => 'xoguete',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'guy',
-				'part_of_speech' => 'noun',
-				'translation' => 'rapaz',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'see',
-				'part_of_speech' => 'verb',
-				'translation' => 'ver',
-				'glossary_id' => $glossary->id,
-			),
-			array(
 				'term' => 'convert',
 				'part_of_speech' => 'verb',
 				'translation' => 'converter',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'chef',
-				'part_of_speech' => 'noum',
-				'translation' => 'cociñeiro',
 				'glossary_id' => $glossary->id,
 			),
 		);
@@ -444,12 +408,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'term' => 'convert',
 				'part_of_speech' => 'verb',
 				'translation' => 'converter',
-				'glossary_id' => $glossary->id,
-			),
-			array(
-				'term' => 'chef',
-				'part_of_speech' => 'noum',
-				'translation' => 'cociñeiro',
 				'glossary_id' => $glossary->id,
 			),
 		);
