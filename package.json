@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@wordpress/env": "^8.10.0",
-    "@wordpress/scripts": "^26.15.0",
+    "@wordpress/scripts": "^26.16.0",
     "grunt": "^1.6.1",
     "grunt-browserify": "^6.0.0",
     "grunt-contrib-concat": "^2.1.0",
