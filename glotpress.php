@@ -209,3 +209,9 @@ function gp_deactivate_plugin( $network_wide ) {
 
 }
 register_deactivation_hook( GP_PLUGIN_FILE, 'gp_deactivate_plugin' );
+
+add_action( 'gp_init', function() {
+    gp_enqueue_style( 'tour-css' );
+    gp_enqueue_script( 'tour' );
+	gp_enqueue_script( 'tour-step-editor' );
+ } );
