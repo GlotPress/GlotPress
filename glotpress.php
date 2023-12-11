@@ -216,5 +216,7 @@ add_action(
 		gp_enqueue_style( 'tour-css' );
 		gp_enqueue_script( 'tour' );
 		gp_enqueue_script( 'tour-step-editor' );
+		gp_enqueue_style( 'driver-js' );
+
 	}
 );
