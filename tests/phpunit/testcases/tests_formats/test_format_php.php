@@ -39,12 +39,27 @@ class GP_Test_Format_PHP extends GP_UnitTestCase {
 	public function test_print_exported_file() {
 		$entries = array(
 			new Translation_Entry( array( 'singular' => 'foo', 'translations' => array( 'bar' ) ) ),
-			new Translation_Entry( array( 'singular' => 'bar', 'translations' => array( 'baz' ) ) ),
+			new Translation_Entry( array(
+				'context'      => 'somecontext',
+				'singular'     => 'bar',
+				'translations' => array( 'baz' ),
+			) ),
+			new Translation_Entry( array(
+				'singular'     => '%d Theme Update',
+				'translations' => array(
+					'%d Theme Update',
+					'%d Theme Updates',
+				),
+			) ),
 		);
 
 		$php = GP::$formats[ $this->format ]->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
 
-		$this->assertStringContainsString("'messages'=>['foo'=>['bar'],'bar'=>['baz']]", $php );
+		var_dump($php);
+
+		$this->assertStringContainsString("'foo'=>'bar'", $php );
+		$this->assertStringContainsString("'somecontext\4bar'=>'baz'", $php );
+		$this->assertStringContainsString("'%d Theme Update'=>'%d Theme Update' . \"\\0\" . '%d Theme Updates'", $php );
 	}
 
 	public function test_read_originals_from_file() {
