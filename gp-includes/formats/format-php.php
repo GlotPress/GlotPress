@@ -58,14 +58,15 @@ class GP_Format_PHP extends GP_Format {
 		foreach ( $entries as $entry ) {
 			$key = $entry->context ? $entry->context . chr( 4 ) . $entry->singular : $entry->singular;
 
-			$result['messages'][$key] = implode(
+			$result['messages'][ $key ] = implode(
 				"\0",
 				array_filter(
 					$entry->translations,
-					function ( $translation ) {
+					static function ( $translation ) {
 						return null !== $translation;
 					}
-				) );
+				)
+			);
 		}
 
 		return '<?php' . PHP_EOL . 'return ' . $this->var_export( $result ) . ';';
