@@ -35,7 +35,10 @@ gp_tmpl_header();
 
 	$format_options         = array();
 	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
-	foreach ( GP::$formats as $slug => $format ) {
+
+	$formats = GP::$formats;
+	unset( $formats['php'] ); // Remove PHP format from the list of formats until we have an import process.
+	foreach ( $formats as $slug => $format ) {
 		$format_options[ $slug ] = $format->name;
 	}
 
