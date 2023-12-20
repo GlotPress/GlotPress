@@ -1,17 +1,49 @@
 {
     "landingPage": "/glotpress/",
     "preferredVersions": {
-        "php": "7.4",
-        "wp": "5.9"
+      "php": "8.0",
+      "wp": "latest"
     },
-    "phpExtensionBundles": [
-        "kitchen-sink"
-    ],
     "steps": [
-        {
-            "step": "login",
-            "username": "admin",
-            "password": "password"
+      {
+        "step": "login",
+        "username": "admin",
+        "password": "password"
+      },
+      {
+        "step": "mkdir",
+        "path": "/wordpress/wp-content/languages/plugins"
+      },
+      {
+        "step": "mkdir",
+        "path": "/wordpress/wp-content/languages/themes"
+      },
+      {
+        "step": "setSiteOptions",
+        "options": {
+          "WPLANG": "de_DE",
+          "permalink_structure": "/%year%/%monthnum%/%day%/%postname%/"
         }
+      },
+      {
+        "step": "writeFile",
+        "path": "/wordpress/wp-content/mu-plugins/gp-sqlite.php",
+        "data": "<?php add_action( 'admin_footer', function() {echo '<input type=\\\"checkbox\\\" name=\\\"gp_enable_inline_translation\\\" checked=\\\"checked\\\" style=\\\"display: none\\\" />';} );add_filter( 'query', function( $query ) {return str_replace( ' BINARY ', ' ', $query );} );add_filter( 'gp_inline_translation_frontend_url', function( $url ) {return 'https://translate.wordpress.org/';} );if ( ! function_exists( 'libxml_clear_errors' ) ) {function libxml_clear_errors() {}}if ( ! function_exists( 'libxml_use_internal_errors' ) ) {function libxml_use_internal_errors() {}}if ( ! function_exists( 'libxml_get_errors' ) ) {function libxml_get_errors() {}}if ( ! function_exists( 'mysql_get_client_info' ) ) {function mysql_get_client_info() {}}if ( ! function_exists( 'mb_str_split' ) ) {function mb_str_split(  $string = '', $length = 1 , $encoding = null ){return str_split( $string, $length );}}if ( ! class_exists( 'DOMDocument' ) ) {class DOMDocument {function loadHTML() {}}}"
+      },
+      {
+        "step": "installPlugin",
+        "pluginZipFile": {
+          "resource": "wordpress.org/plugins",
+          "slug": "glotpress"
+        }
+      },
+      {
+        "step": "runPHP",
+        "code": "<?php include 'wordpress/wp-load.php';// Ensure the database tables are created.require_once ABSPATH . 'wp-admin/includes/upgrade.php';require_once GP_PATH . GP_INC . 'install-upgrade.php';require_once GP_PATH . GP_INC . 'schema.php';gp_upgrade_db();set_current_user( 1 );$request = new WP_REST_Request();$request->set_param( 'name', 'friends');$request->set_param( 'path', 'wp-' . 'plugin' . 's/' . 'friends' );$request->set_param( 'locale', 'de_DE' );$request->set_param( 'locale_slug', 'default' );print_r( GP::$rest->create_local_project( $request ) );$glossary_entry_route = new GP_Route_Glossary_Entry();if ( file_exists( '/wordpress/wp-content/languages/glossary-de_DE.csv' ) ) {$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, 'default', 'de' );$locale_glossary = new GP_Glossary();$locale_glossary->translation_set_id = $locale_glossary_translation_set->id;$locale_glossary = GP::$glossary->create_and_select( $locale_glossary );echo $glossary_entry_route->read_glossary_entries_from_file( '/wordpress/wp-content/languages/glossary-de_DE.csv', $locale_glossary->id, 'de' ), ' locale glossary entries', PHP_EOL;}if ( file_exists( '/wordpress/wp-content/languages/plugins/friends-glossary-de_DE.csv' ) ) {$project = GP::$project->by_path( 'local-plugins/friends' );$glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, 'default', 'de' );$glossary = new GP_Glossary();$glossary->translation_set_id = $glossary_translation_set->id;$glossary = GP::$glossary->create_and_select( $glossary );echo $glossary_entry_route->read_glossary_entries_from_file( '/wordpress/wp-content/languages/plugins/friends-glossary-de_DE.csv', $glossary->id, 'de' ), ' project glossary entries', PHP_EOL;;}",
+        "progress": {
+          "caption": "Making plugins translatable"
+        }
+      }
     ]
-}
+  }
+  
