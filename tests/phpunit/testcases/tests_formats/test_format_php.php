@@ -55,6 +55,8 @@ class GP_Test_Format_PHP extends GP_UnitTestCase {
 
 		$php = GP::$formats[ $this->format ]->print_exported_file( $this->translation_set->project, $this->locale, $this->translation_set, $entries );
 
+		$this->assertStringContainsString("'project-id-version'=>'foo_project'", $php );
+		$this->assertStringContainsString("'language'=>'aa'", $php );
 		$this->assertStringContainsString("'foo'=>'bar'", $php );
 		$this->assertStringContainsString("'somecontext\4bar'=>'baz'", $php );
 		$this->assertStringContainsString("'%d Theme Update'=>'%d Theme Update' . \"\\0\" . '%d Theme Updates'", $php );

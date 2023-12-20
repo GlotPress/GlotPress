@@ -47,10 +47,33 @@ class GP_Format_PHP extends GP_Format {
 	 * @return string The exported PHP string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
+		$language_code = $this->get_language_code( $locale );
+		if ( false === $language_code ) {
+			$language_code = $locale->slug;
+		}
+
+		$current        = $project;
+		$project_tree   = array();
+		$project_tree[] = $current->name;
+
+		while ( $current->parent_project_id > 0 ) {
+			$current        = GP::$project->get( $current->parent_project_id );
+			$project_tree[] = $current->name;
+		}
+
+		$project_tree = array_reverse( $project_tree );
+
+		$project_id_version = implode( ' - ', $project_tree );
+
+		/** This filter is documented in gp-includes/formats/format-pomo.php */
+		$project_id_version = apply_filters( 'gp_pomo_export_project_id_version', $project_id_version, $project_tree );
+
 		$result = array(
 			'x-generator'               => 'GlotPress/' . GP_VERSION,
 			'translation-revision-date' => GP::$translation->last_modified( $translation_set ) . '+0000',
 			'plural-forms'              => "nplurals=$locale->nplurals; plural=$locale->plural_expression;",
+			'project-id-version'        => $project_id_version,
+			'language'                  => $language_code,
 			'messages'                  => array(),
 		);
 
