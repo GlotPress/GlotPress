@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: WordPress.org plugin assets/readme update
         uses: 10up/action-wordpress-plugin-asset-update@9cedd67f930dd3b72306f2e24465568737207d43
