@@ -108,14 +108,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$ge_post = gp_post( 'glossary_entry' );
 		if ( ! is_array( $ge_post ) || ! isset( $ge_post[0]['glossary_entry_id'] ) ) {
-			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
+			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 404 );
 		}
 
 		$ge             = array_shift( $ge_post );
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ) {
-			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 200 );
+			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 404 );
 		}
 
 		if ( ! $this->verify_nonce( 'edit-glossary-entry_' . $glossary_entry->id ) ) {
