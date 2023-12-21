@@ -23,6 +23,7 @@
 	--gp-color-black: #0b0c0c;
 	--gp-color-white: #ffffff;
 	--gp-color-yellow: #ffd566;
+	--gp-color-dark-orange: #C05621;
 	--gp-color-red: #a62626;
 	--gp-color-green: #266430;
 
@@ -87,6 +88,8 @@
 	--gp-color-btn-danger-hover-text: var( --gp-color-white );
 	--gp-color-btn-danger-hover-bg: var( --gp-color-red );
 	--gp-color-btn-danger-hover-border: var( --gp-color-red );
+	--gp-color-bubble-inactive-project-text: var( --gp-color-dark-orange );
+	--gp-color-bubble-inactive-project-border: var( --gp-color-dark-orange );
 
 	--gp-color-status-fuzzy-subtle: #fc6;
 	--gp-color-status-current-subtle: #e9ffd8;
@@ -236,19 +239,13 @@ h3 {
 	text-decoration: none;
 }
 
-.breadcrumb span.active {
-	padding: 0.2em 0.3em;
-	margin-left: .3em;
-	text-shadow: none;
-}
-
 /*
  * GP Heading
  */
 
 .gp-heading {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 0.2em;
 	margin: 0 0 1rem 0;
 }
@@ -1078,18 +1075,25 @@ span.context {
 	margin: 1rem 0;
 }
 
-a.bubble, .bubble {
-	font-size: 80%;
-	color: white;
-	padding: 0.2em 0.3em 0.1em 0.2em;
-	text-decoration: none;
-	text-align: center;
+a.button.action.edit {
+	margin: 0 0 0 0.2rem;
 }
 
-span.active {
-	background-color: var( --gp-color-yellow );
-	color: var( --gp-color-fg-default );
+span.bubble.inactive {
+	color: var( --gp-color-bubble-inactive-project-text );
+	padding: 0.2em 0.5em;
+	border: 1px solid var( --gp-color-bubble-inactive-project-text );
+	border-radius: 1em;
+	text-decoration: none;
+	text-align: center;
+	text-shadow: none;
+	margin-left: 0.2rem;
 	font-weight: 500;
+	font-size: 80%;
+}
+
+.project-inactive span.bubble.inactive {
+	vertical-align: middle;
 }
 
 span.locale-entry.bubble {
@@ -1377,30 +1381,35 @@ a.project-actions {
 
 #sub-projects {
 	float: left;
-	width: 20em;
 	margin-right: 4em;
 	margin-left: -24em;
 }
 
+#projects dd,
 #sub-projects dd {
 	font-size: 0.75em;
 	line-height: 1.3em;
 	color: #555;
 	margin: 0;
+	padding: 0.2rem 0 0.4rem 0;
 }
 
+#projects dl,
 #sub-projects dl {
 	margin-left: 0.5em;
 }
 
+#projects dt,
 #sub-projects dt {
 	margin-top: 0.5em;
 }
 
+#projects a,
 #sub-projects a {
 	font-weight: bold;
 }
 
+#projects a.action,
 #sub-projects a.action {
 	font-weight: normal;
 }
@@ -1579,6 +1588,7 @@ table.form-table td {
 }
 
 @media (max-width: 799px) {
+	#projects,
 	#sub-projects {
 		float: none;
 		width: auto;

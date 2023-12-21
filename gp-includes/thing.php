@@ -641,7 +641,7 @@ class GP_Thing {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
 		$operator = '=';
-		if ( is_integer( $php_value ) || ctype_digit( $php_value ) ) {
+		if ( is_integer( $php_value ) || ( null !== $php_value && ctype_digit( $php_value ) ) ) {
 			$sql_value = $php_value;
 		} else {
 			$sql_value = "'" . esc_sql( $php_value ) . "'";
@@ -682,6 +682,9 @@ class GP_Thing {
 	}
 
 	public function sql_from_order( $order_by, $order_how = '' ) {
+		if ( ! $order_by ) {
+			$order_by = '';
+		}
 		if ( is_array( $order_by ) ) {
 			$order_by  = implode( ' ', $order_by );
 			$order_how = '';
