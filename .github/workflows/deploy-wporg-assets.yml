@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: WordPress.org plugin assets/readme update
-        uses: 10up/action-wordpress-plugin-asset-update@a807d08b98c588b6a39376bfe17bc74faa5f51a2
+        uses: 10up/action-wordpress-plugin-asset-update@9cedd67f930dd3b72306f2e24465568737207d43
         env:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}

@@ -11,8 +11,8 @@
     "url": "https://github.com/GlotPress/GlotPress/issues"
   },
   "devDependencies": {
-    "@wordpress/env": "^8.9.0",
-    "@wordpress/scripts": "^26.14.0",
+    "@wordpress/env": "^9.0.0",
+    "@wordpress/scripts": "^26.19.0",
     "grunt": "^1.6.1",
     "grunt-browserify": "^6.0.0",
     "grunt-contrib-concat": "^2.1.0",
