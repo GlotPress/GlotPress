@@ -66,7 +66,17 @@ class GP_Format_PHP extends GP_Format {
 		$project_id_version = implode( ' - ', $project_tree );
 
 		/** This filter is documented in gp-includes/formats/format-pomo.php */
-		$project_id_version = apply_filters( 'gp_pomo_export_project_id_version', $project_id_version, $project_tree );
+		/**
+		 * Filter the project name and version header before export.
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param string $project_id_version The default project name/version to use in the header and
+		 *                                   comments ( "Parent - Child - GrandChild - etc." by default).
+		 * @param array  $project_tree       An array of the parent/child project tree, ordered from Parent
+		 *                                   to child to grandchild to etc...
+		 */
+		$project_id_version = apply_filters( 'gp_php_export_project_id_version', $project_id_version, $project_tree );
 
 		$result = array(
 			'x-generator'               => 'GlotPress/' . GP_VERSION,
