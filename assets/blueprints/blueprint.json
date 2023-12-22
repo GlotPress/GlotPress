@@ -11,14 +11,6 @@
         "password": "password"
       },
       {
-        "step": "mkdir",
-        "path": "/wordpress/wp-content/languages/plugins"
-      },
-      {
-        "step": "mkdir",
-        "path": "/wordpress/wp-content/languages/themes"
-      },
-      {
         "step": "setSiteOptions",
         "options": {
           "WPLANG": "de_DE",
