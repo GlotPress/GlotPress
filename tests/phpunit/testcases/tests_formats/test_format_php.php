@@ -29,11 +29,11 @@ class GP_Test_Format_PHP extends GP_UnitTestCase {
 	}
 
 	public function test_format_name() {
-		$this->assertSame( 'PHP (.php)', GP::$formats[ $this->format ]->name );
+		$this->assertSame( 'PHP (.mo.php)', GP::$formats[ $this->format ]->name );
 	}
 
 	public function test_format_extension() {
-		$this->assertSame( 'php', GP::$formats[ $this->format ]->extension );
+		$this->assertSame( 'mo.php', GP::$formats[ $this->format ]->extension );
 	}
 
 	public function test_print_exported_file() {
