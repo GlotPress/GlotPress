@@ -65,7 +65,6 @@ class GP_Format_PHP extends GP_Format {
 
 		$project_id_version = implode( ' - ', $project_tree );
 
-		/** This filter is documented in gp-includes/formats/format-pomo.php */
 		/**
 		 * Filter the project name and version header before export.
 		 *
