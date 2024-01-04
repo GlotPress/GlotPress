@@ -107,7 +107,7 @@ $i = 0;
 		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
 		// Remove any non-string or non-numeric values from the array.
 		$filters_and_sort	= array_filter( $filters_and_sort, function ( $value, $key ) {
-			return is_string($value) || is_numeric($value);
+			return is_string( $value ) || is_numeric( $value );
 		}, ARRAY_FILTER_USE_BOTH );
 
 		/**
