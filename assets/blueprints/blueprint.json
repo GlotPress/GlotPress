@@ -13,7 +13,6 @@
       {
         "step": "setSiteOptions",
         "options": {
-          "WPLANG": "de_DE",
           "permalink_structure": "/%year%/%monthnum%/%day%/%postname%/"
         }
       },
