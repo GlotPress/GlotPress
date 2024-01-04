@@ -83,7 +83,7 @@ function gp_const_set( $name, $value ) {
 
 
 function gp_member_get( $object, $key, $default = '' ) {
-	return isset( $object->$key ) ? $object->$key : $default;
+	return is_string( $key ) && property_exists( $object, $key ) ? $object->$key : $default;
 }
 
 /**
