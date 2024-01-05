@@ -63,7 +63,7 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return ( is_string( $key ) || is_numeric( $key ) ) && isset( $array[ $key ] ) ? $array[ $key ] : $default;
+	return ( is_scalar( $key ) && isset( $array[ $key ] ) ) ? $array[ $key ] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
