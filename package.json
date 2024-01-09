@@ -26,7 +26,7 @@
     "build": "grunt",
     "watch": "grunt watch",
     "prepare-release": "grunt replace:prepare-release",
-    "env:start": "wp-env start && wp-env run cli --env-cwd=wp-content/plugins/GlotPress wp rewrite structure '/%postname%/' --hard",
+    "env:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/' && wp-env run cli --env-cwd=wp-content/plugins/GlotPress wp rewrite flush --hard",
     "env:stop": "wp-env stop",
     "lint:js": "wp-scripts lint-js",
     "lint:js-fix": "wp-scripts lint-js --fix"
