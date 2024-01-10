@@ -18,7 +18,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 
 	function assertRedirectURLContains( $text ) {
 		$this->assertRedirected();
-		$this->assertContains( $text, $this->route->redirected_to );
+		$this->assertStringContainsString( $text, $this->route->redirected_to );
 	}
 
 	function assertThereIsAnErrorContaining( $text ) {

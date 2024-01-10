@@ -101,7 +101,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 			$project->name
 		);
 
-		$this->assertContains( $expected, $file );
+		$this->assertStringContainsString( $expected, $file );
 	}
 
 	public function test_read_originals() {
