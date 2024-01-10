@@ -29,7 +29,7 @@ class GP_Test_Projects_API extends GP_UnitTestCase_Route {
     $this->route->single($this->set->project->path);
     $response = $this->api_response();
 
-    $this->assertObjectHasAttribute( 'translation_sets', $response );
+    $this->assertObjectHasProperty( 'translation_sets', $response );
     $this->assertFalse( empty( $response->translation_sets ) );
   }
 
@@ -39,8 +39,8 @@ class GP_Test_Projects_API extends GP_UnitTestCase_Route {
 
     $first_set = reset( $response->translation_sets );
 
-    $this->assertObjectHasAttribute( 'current_count', $first_set );
-    $this->assertObjectHasAttribute( 'untranslated_count', $first_set );
-    $this->assertObjectHasAttribute( 'waiting_count', $first_set );
+    $this->assertObjectHasProperty( 'current_count', $first_set );
+    $this->assertObjectHasProperty( 'untranslated_count', $first_set );
+    $this->assertObjectHasProperty( 'waiting_count', $first_set );
   }
 }
