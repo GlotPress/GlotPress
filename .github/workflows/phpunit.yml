@@ -37,26 +37,26 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        php: [ '7.4' ]
+        php: [ '8.3' ]
         wordpress: [ 'latest' ]
         multisite: [ false ]
         coverage: [ false ]
         experimental: [ false ]
         include:
           - os: ubuntu-latest
-            php: '7.4'
+            php: '8.3'
             wordpress: 'nightly'
             multisite: false
             coverage: false
             experimental: false
           - os: ubuntu-latest
-            php: '7.4'
+            php: '8.3'
             wordpress: 'latest'
             multisite: false
             coverage: true
             experimental: false
           - os: ubuntu-latest
-            php: '7.4'
+            php: '8.3'
             wordpress: 'latest'
             multisite: true
             coverage: false
