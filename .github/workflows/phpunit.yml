@@ -38,11 +38,17 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         php: [ '7.4' ]
-        wordpress: [ 'latest', 'nightly' ]
+        wordpress: [ 'latest' ]
         multisite: [ false ]
         coverage: [ false ]
         experimental: [ false ]
         include:
+          - os: ubuntu-latest
+            php: '7.4'
+            wordpress: 'nightly'
+            multisite: false
+            coverage: false
+            experimental: false
           - os: ubuntu-latest
             php: '7.4'
             wordpress: 'latest'
