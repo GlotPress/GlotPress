@@ -43,18 +43,21 @@ jobs:
         coverage: [ false ]
         experimental: [ false ]
         include:
+          # WordPress nightly.
           - os: ubuntu-latest
             php: '8.3'
             wordpress: 'nightly'
             multisite: false
             coverage: false
             experimental: false
+          # With coverage.
           - os: ubuntu-latest
             php: '8.3'
             wordpress: 'latest'
             multisite: false
             coverage: true
             experimental: false
+          # Multisite.
           - os: ubuntu-latest
             php: '8.3'
             wordpress: 'latest'
