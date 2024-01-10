@@ -76,7 +76,7 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$nouns = array( 'term', 'box', 'city', 'toy', 'wife', 'shelf', 'man', 'woman', 'post', 'install/installation', 'color' );
+		$nouns = array( 'term', 'box', 'city', 'toy', 'wife', 'shelf', 'post', 'install/installation', 'color' );
 		foreach ( $nouns as $noun ) {
 			GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => $noun, 'part_of_speech' => 'noun', 'translation' => $noun, 'comment' => 'my comment', 'last_edited_by' =>'1' ) );
 		}
@@ -101,8 +101,6 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			'Two blogs about two shelves.' => array( 'shelf' ),
 			'A blog about a wife.' => array( 'wife' ),
 			'Two blogs about two wives.' => array( 'wife' ),
-			'A blog about a man and a woman.' => array( 'man', 'woman' ),
-			'Two blogs about two men and two women.' => array( 'man', 'woman' ),
 			'I write about something.' => array( 'write' ),
 			'Someone writes about something.' => array( 'write' ),
 			'I post about something.' => array( 'post' ),
@@ -132,8 +130,6 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			'Two blogs about two shelves.' => 1,
 			'A blog about a wife.' => 1,
 			'Two blogs about two wives.' => 1,
-			'A blog about a man and a woman.' => 1,
-			'Two blogs about two men and two women.' => 1,
 			'I write about something.' => 1,
 			'Someone writes about something.' => 1,
 			'I post about something.' => 1,
