@@ -4,7 +4,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	var $route;
 	var $route_class;
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 		$this->route = new $this->route_class;
 		$this->route->fake_request = true;

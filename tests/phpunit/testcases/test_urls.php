@@ -2,7 +2,7 @@
 
 class GP_Test_Urls extends GP_UnitTestCase {
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 
 		$this->home_url = 'http://example.org';
@@ -16,7 +16,7 @@ class GP_Test_Urls extends GP_UnitTestCase {
 		add_filter( 'option_home', array( $this, '_gp_url_home_url' ) );
 	}
 
-	function teardown() {
+	function teardown(): void {
 		parent::tearDown();
 
 		remove_filter( 'gp_url_base_path', array( $this, '_gp_url_base_path_sub_dir' ) );

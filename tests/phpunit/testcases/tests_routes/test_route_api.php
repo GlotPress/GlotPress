@@ -3,7 +3,7 @@
 class GP_Test_Projects_API extends GP_UnitTestCase_Route {
   var $route_class = 'GP_Route_Project';
 
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->set = $this->factory->translation_set->create_with_project_and_locale();
     $this->route->api = true;

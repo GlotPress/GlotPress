@@ -2,7 +2,7 @@
 
 class GP_Test_Template_Functions extends GP_UnitTestCase {
 
-	function tearDown() {
+	function tearDown(): void {
 		parent::tearDown();
 		remove_all_filters('gp_breadcrumb_items');
 	}
