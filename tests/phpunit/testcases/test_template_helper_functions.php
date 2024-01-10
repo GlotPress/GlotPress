@@ -1813,10 +1813,11 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	/**
 	 * Method to test the map_glossary_entries_to_translation_originals() function.
 	 *
-	 * @param $test_string      The string to test.
-	 * @param $part_of_speech   The part of speech of the string to test.
-	 * @param $matches          The matches to expect.
-	 * @param $glossary_entries The glossary entries to create.
+	 * @param string $test_string      The string to test.
+	 * @param string $part_of_speech   The part of speech of the string to test.
+	 * @param array  $matches          The matches to expect.
+	 * @param array  $glossary_entries The glossary entries to create.
+	 *
 	 * @return void
 	 */
 	function check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries ) {
