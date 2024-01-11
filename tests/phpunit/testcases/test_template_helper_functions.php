@@ -239,6 +239,49 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'test_string'     => 'I %%show want to %sshow and show%s, reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.',
 				'expected_result' => 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%s, reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.',
 			),
+			// Test with simple placeholders before and after glossary matches.
+			array(
+				// Test %s.
+				'test_string'     => 'Words with %ssimple %sstring%s placeholder%s.',
+				'expected_result' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%s.',
+			),
+			array(
+				// Test %d.
+				'test_string'     => 'Words with %dsimple %dinteger%d placeholder%d.',
+				'expected_result' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%d.',
+			),
+			array(
+				// Test %l.
+				'test_string'     => 'Words with %lsimple %llist%l placeholder%l.',
+				'expected_result' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%l.',
+			),
+			array(
+				 // Test %1s, %1d and %1l.
+				'test_string'     => 'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.',
+				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
+				//'expected_result' => 'Words with %1ssimple %1sstring%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
+			),
+			// Test with numbered placeholders before and after glossary matches.
+			array(
+				// Test %1$s.
+				'test_string'     => 'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',
+				'expected_result' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$s.',
+			),
+			array(
+				// Test %1$d.
+				'test_string'     => 'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',
+				'expected_result' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$d.',
+			),
+			array(
+				// Test %1$l.
+				'test_string'     => 'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',
+				'expected_result' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$l.',
+			),
+			array(
+				// Test %1$1s, %1$1d and %1$1l.
+				'test_string'     => 'Words with %1$1snumbered %2$1sstring%3$1d placeholder%4$1l with minimum width.',
+				'expected_result' => 'Words with %1$1s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$1l with minimum width.',
+			),
 		);
 	}
 
@@ -253,14 +296,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$glossary_entry = array(
-			'term' => 'show',
-			'part_of_speech' => 'verb',
-			'translation' => 'amosar',
-			'glossary_id' => $glossary->id,
+		$glossary_entries = array(
+			array(
+				'term' => 'show',
+				'part_of_speech' => 'verb',
+				'translation' => 'amosar',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term'           => 'simple',
+				'part_of_speech' => 'noun',
+				'translation'    => 'simples', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'numbered',
+				'part_of_speech' => 'noun',
+				'translation'    => 'numerado', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'string',
+				'part_of_speech' => 'noun',
+				'translation'    => 'string', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'integer',
+				'part_of_speech' => 'noun',
+				'translation'    => 'número inteiro', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'list',
+				'part_of_speech' => 'noun',
+				'translation'    => 'lista', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'placeholder',
+				'part_of_speech' => 'noun',
+				'translation'    => 'variável', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
 		);
 
-		GP::$glossary_entry->create_and_select( $glossary_entry );
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
 
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
@@ -283,14 +366,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$glossary_entry = array(
-			'term' => 'show',
-			'part_of_speech' => 'verb',
-			'translation' => 'amosar',
-			'glossary_id' => $glossary->id,
+		$glossary_entries = array(
+			array(
+				'term' => 'show',
+				'part_of_speech' => 'verb',
+				'translation' => 'amosar',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term'           => 'simple',
+				'part_of_speech' => 'noun',
+				'translation'    => 'simples', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'numbered',
+				'part_of_speech' => 'noun',
+				'translation'    => 'numerado', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'string',
+				'part_of_speech' => 'noun',
+				'translation'    => 'string', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'integer',
+				'part_of_speech' => 'noun',
+				'translation'    => 'número inteiro', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'list',
+				'part_of_speech' => 'noun',
+				'translation'    => 'lista', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'placeholder',
+				'part_of_speech' => 'noun',
+				'translation'    => 'variável', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
 		);
 
-		GP::$glossary_entry->create_and_select( $glossary_entry );
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
 
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
@@ -419,7 +542,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
 		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
-		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );	}
+		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
+	}
 
 	/**
 	 * Expects highlighting leading and ending spaces in single line strings, and double/multiple spaces in the middle.
@@ -1807,94 +1931,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
-	}
-
-	/**
-	 * Expects matching glossary entries preceded and succeded by placeholders.
-	 */
-	function test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() {
-		$test_strings = array(
-			// Test with simple placeholders before and after glossary matches.
-			'Words with %ssimple %sstring%s placeholder%s.',                        // Test %s.
-			'Words with %dsimple %dinteger%d placeholder%d.',                       // Test %d.
-			'Words with %lsimple %llist%l placeholder%l.',                          // Test %l.
-			'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.', // Test %1s, %1d and %1l.
-			// Test with numbered placeholders before and after glossary matches.
-			'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',                        // Test %s.
-			'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',                       // Test %d.
-			'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',                          // Test %l.
-			'Words with %1$1snumbered %2$1sstring%3$1d placeholder%4$1l with minimum width.', // Test %1$1s, %1$1d and %1$1l.
-		);
-		$test_string = implode( ' ', $test_strings );
-
-		$part_of_speech = 'noun';
-
-		$expected_results = array(
-			// Test with simple placeholders before and after glossary matches.
-			'Words with %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%s.',
-			'Words with %d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;n\u00famero inteiro&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">integer</span>%d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%d.',
-			'Words with %l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;lista&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">list</span>%l <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%l.',
-			'Words with %1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;simples&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">simple</span> %1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%1d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%1l with minimum width.',
-			// Test with numbered placeholders before and after glossary matches.
-			'Words with %1$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%3$s <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$s.',
-			'Words with %1$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$d<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;n\u00famero inteiro&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">integer</span>%3$d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$d.',
-			'Words with %1$l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$l<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;lista&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">list</span>%3$l <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$l.',
-			'Words with %1$1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;numerado&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">numbered</span> %2$1s<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;string&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">string</span>%3$1d <span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;vari\u00e1vel&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">placeholder</span>%4$1l with minimum width.',
-		);
-
-		$expected_result = implode( ' ', $expected_results );
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
-		$glossary_entries = array(
-			array(
-				'term'           => 'simple',
-				'part_of_speech' => $part_of_speech,
-				'translation'    => 'simples', // Portuguese.
-				'glossary_id'    => $glossary->id,
-			),
-			array(
-				'term'           => 'numbered',
-				'part_of_speech' => $part_of_speech,
-				'translation'    => 'numerado', // Portuguese.
-				'glossary_id'    => $glossary->id,
-			),
-			array(
-				'term'           => 'string',
-				'part_of_speech' => $part_of_speech,
-				'translation'    => 'string', // Portuguese.
-				'glossary_id'    => $glossary->id,
-			),
-			array(
-				'term'           => 'integer',
-				'part_of_speech' => $part_of_speech,
-				'translation'    => 'número inteiro', // Portuguese.
-				'glossary_id'    => $glossary->id,
-			),
-			array(
-				'term'           => 'list',
-				'part_of_speech' => $part_of_speech,
-				'translation'    => 'lista', // Portuguese.
-				'glossary_id'    => $glossary->id,
-			),
-			array(
-				'term'           => 'placeholder',
-				'part_of_speech' => $part_of_speech,
-				'translation'    => 'variável', // Portuguese.
-				'glossary_id'    => $glossary->id,
-			),
-		);
-
-		foreach ( $glossary_entries as $glossary_entry ) {
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
 	}
 
 	/**
