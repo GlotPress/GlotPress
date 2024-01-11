@@ -3,7 +3,7 @@
 class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	var $route_class = 'GP_Route_Translation_Set';
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 		$this->set = $this->factory->translation_set->create_with_project_and_locale();
 	}

@@ -14,7 +14,7 @@ class GP_UnitTestCase extends WP_UnitTestCase {
 	 */
 	public $factory;
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 
 		$this->factory = new GP_UnitTest_Factory();
