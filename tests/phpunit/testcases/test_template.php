@@ -2,7 +2,7 @@
 
 class GP_Test_Template_Functions extends GP_UnitTestCase {
 
-	function tearDown() {
+	function tearDown(): void {
 		parent::tearDown();
 		remove_all_filters('gp_breadcrumb_items');
 	}
@@ -43,6 +43,6 @@ class GP_Test_Template_Functions extends GP_UnitTestCase {
 
 	function test_gp_get_translation_row_classes() {
 		$entry = new Translation_Entry ( array( 'singular' => 'ganoush', 'warnings' => null, 'priority'=> '1', 'translation_status' =>'untranslated' ) );
-		$this->assertEquals( array( 'status-untranslated', 'no-warnings', 'priority-high', 'no-translations' ), gp_get_translation_row_classes( $entry ), '', 0.0, 10, true );
+		$this->assertEqualsCanonicalizing( array( 'status-untranslated', 'no-warnings', 'priority-high', 'no-translations' ), gp_get_translation_row_classes( $entry ) );
 	}
 }

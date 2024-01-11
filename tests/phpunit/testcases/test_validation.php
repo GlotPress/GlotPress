@@ -21,7 +21,7 @@ class Mouse extends GP_Thing {
 
 
 class GP_Test_Validation extends GP_UnitTestCase {
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 
 		global $wpdb;
