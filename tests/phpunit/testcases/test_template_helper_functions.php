@@ -570,6 +570,17 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects highlighting placeholders in strings.
+	 */
+	function test_prepare_original_with_placeholders_bounded_by_words() {
+		$test_string     = '%dPlaceholders %1$sbounded%2$s by words%s (%4$l).';
+		$expected_result = $this->highlight_placeholder( '%d' ) . 'Placeholders ' . $this->highlight_placeholder( '%1$s' ) . 'bounded' . $this->highlight_placeholder( '%2$s' ) . ' by words' . $this->highlight_placeholder( '%s' ) . ' (' . $this->highlight_placeholder( '%4$l' ) . ').';
+
+		$orig = prepare_original( $test_string );
+		$this->assertEquals( $orig, $expected_result );
+	}
+
+	/**
 	 * Expects highlighting line breaks and tabs.
 	 */
 	function test_prepare_original_with_line_breaks_and_tabs() {
@@ -1991,6 +2002,16 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function highlight_invisible_spaces( $spaces ) {
 		return '<span class="invisible-spaces">' . $spaces . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @param string $placeholder  The placeholder to highlight.
+	 * @return string              The placeholder highlighted.
+	 */
+	function highlight_placeholder( $placeholder ) {
+		return '<span class="notranslate placeholder">' . $placeholder . '</span>';
 	}
 
 	/**
