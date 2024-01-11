@@ -31,8 +31,8 @@ function prepare_original( $text ) {
 	$text = preg_replace( '/(&lt;.+?&gt;)/', '<span class="notranslate">\\1</span>', $text );
 	// Break out & back into notranslate for translatable attributes.
 	$text = preg_replace( '/(title|aria-label)=([\'"])([^\\2]+?)\\2/', '\\1=\\2</span>\\3<span class="notranslate">\\2', $text );
-	// Wrap placeholders with notranslate.
-	$text = preg_replace( '/(%(?:(\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX])/', '<span class="notranslate placeholder">\\1</span>', $text );
+	// Wrap placeholders with 'notranslate placeholder'.
+	$text = preg_replace( '/(%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@])/', '<span class="notranslate placeholder">\\1</span>', $text );
 
 	// Highlight two or more spaces between words.
 	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
@@ -541,7 +541,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		}
 
 		// Build the regular expression.
-		$placeholders_search = '%(?:[1-9]\$)?[bcdefgosuxEFGX%l@]';
+		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
 		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
