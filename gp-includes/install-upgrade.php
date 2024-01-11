@@ -12,6 +12,9 @@
  * @since 1.0.0
  */
 function gp_upgrade_db() {
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once GP_PATH . GP_INC . 'schema.php';
+
 	global $wpdb;
 
 	$gp_db_version = get_option( 'gp_db_version' );
