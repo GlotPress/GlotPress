@@ -1810,84 +1810,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Method to test the map_glossary_entries_to_translation_originals() function.
-	 *
-	 * @param string $test_string      The string to test.
-	 * @param string $part_of_speech   The part of speech of the string to test.
-	 * @param array  $matches          The matches to expect.
-	 * @param array  $glossary_entries The glossary entries to create.
-	 *
-	 * @return void
-	 */
-	function check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries ) {
-		$expected_result = array();
-		foreach ( $matches as $glossary_entry => $originals ) {
-			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-			}
-		}
-
-		$expected_result = sprintf(
-			'Testing words %s.',
-			implode( ', ', $expected_result )
-		);
-
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
-		foreach ( $glossary_entries as $glossary_entry ) {
-			$glossary_entry['glossary_id'] = $glossary->id;
-			GP::$glossary_entry->create_and_select( $glossary_entry );
-		}
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
-	}
-
-	/**
-	 * Method to test the test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() function.
-	 *
-	 * @param string $glossary_entry   The translation of the glossary entry.
-	 * @param string $part_of_speech   The part of speech of the glossary entry.
-	 * @param string $original         The original matched string.
-	 * @return string                  The formated glossary match output.
-	 */
-	function glossary_match( $glossary_entry, $part_of_speech, $original ) {
-		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
-	}
-
-	/**
-	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
-	 *
-	 * @param string $spaces  The spaces to highlight.
-	 * @return string         The spaces highlighted.
-	 */
-	function highlight_invisible_spaces( $spaces ) {
-		return '<span class="invisible-spaces">' . $spaces . '</span>';
-	}
-
-	/**
-	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
-	 *
-	 * @return string  The tab highlighted.
-	 */
-	function highlight_tab() {
-		return "<span class='invisibles' title='Tab character'>&rarr;</span>\t";
-	}
-
-	/**
-	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
-	 *
-	 * @return string  The line break highlighted.
-	 */
-	function highlight_line_break() {
-		return "<span class='invisibles' title='New line'>&crarr;</span>\n";
-	}
-
-	/**
 	 * Expects matching glossary entries preceded and succeded by placeholders.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() {
@@ -1973,6 +1895,84 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Method to test the map_glossary_entries_to_translation_originals() function.
+	 *
+	 * @param string $test_string      The string to test.
+	 * @param string $part_of_speech   The part of speech of the string to test.
+	 * @param array  $matches          The matches to expect.
+	 * @param array  $glossary_entries The glossary entries to create.
+	 *
+	 * @return void
+	 */
+	function check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries ) {
+		$expected_result = array();
+		foreach ( $matches as $glossary_entry => $originals ) {
+			foreach ( $originals as $original ) {
+				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+			}
+		}
+
+		$expected_result = sprintf(
+			'Testing words %s.',
+			implode( ', ', $expected_result )
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( $glossary_entries as $glossary_entry ) {
+			$glossary_entry['glossary_id'] = $glossary->id;
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Method to test the test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() function.
+	 *
+	 * @param string $glossary_entry   The translation of the glossary entry.
+	 * @param string $part_of_speech   The part of speech of the glossary entry.
+	 * @param string $original         The original matched string.
+	 * @return string                  The formated glossary match output.
+	 */
+	function glossary_match( $glossary_entry, $part_of_speech, $original ) {
+		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @param string $spaces  The spaces to highlight.
+	 * @return string         The spaces highlighted.
+	 */
+	function highlight_invisible_spaces( $spaces ) {
+		return '<span class="invisible-spaces">' . $spaces . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @return string  The tab highlighted.
+	 */
+	function highlight_tab() {
+		return "<span class='invisibles' title='Tab character'>&rarr;</span>\t";
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @return string  The line break highlighted.
+	 */
+	function highlight_line_break() {
+		return "<span class='invisibles' title='New line'>&crarr;</span>\n";
 	}
 
 }
