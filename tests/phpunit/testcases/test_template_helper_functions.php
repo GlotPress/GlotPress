@@ -8,7 +8,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
 		$test_string = 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.';
 		$orig = '';
-		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.';
+		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . 'gt;&lt;/code&gt;, should not have the code tags mangled.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
