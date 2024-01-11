@@ -62,7 +62,7 @@ class GP_Test_Meta extends GP_UnitTestCase {
 	}
 
 	function test_gp_update_meta_updates_an_existing_meta_value() {
-		$this->assertInternalType( 'int', gp_update_meta( '1', 'key', 'value-1', 'thing' ) );
+		$this->assertIsInt( gp_update_meta( '1', 'key', 'value-1', 'thing' ) );
 		$this->assertTrue( gp_update_meta( '1', 'key', 'value-2', 'thing'  ) );
 		$this->assertSame( 'value-2', gp_get_meta( 'thing', '1', 'key' ) );
 	}
@@ -84,7 +84,7 @@ class GP_Test_Meta extends GP_UnitTestCase {
 	}
 
 	function test_gp_update_meta_does_not_update_if_prev_value_equals_new_value() {
-		$this->assertInternalType( 'int', gp_update_meta( '1', 'foo', 'foo', 'thing' ) );
+		$this->assertIsInt( gp_update_meta( '1', 'foo', 'foo', 'thing' ) );
 		$this->assertTrue( gp_update_meta( '1', 'foo', 'foo', 'thing' ) ); // @todo Is this the correct return value?
 	}
 

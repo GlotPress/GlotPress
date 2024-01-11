@@ -6,6 +6,7 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	verbose="true"
+	cacheResult="false"
 	>
 	<testsuites>
 		<testsuite name="glotpress">
