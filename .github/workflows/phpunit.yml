@@ -37,60 +37,18 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        php: [ '8.3' ]
-        wordpress: [ 'latest' ]
-        multisite: [ false ]
+        php: [ '7.4', '8.3' ]
+        wordpress: [ 'latest', 'nightly' ]
+        multisite: [ false, true ]
         coverage: [ false ]
         experimental: [ false ]
         include:
-          # PHP 7.4 and WordPress latest.
-          - os: ubuntu-latest
-            php: '7.4'
-            wordpress: 'latest'
-            multisite: false
-            coverage: false
-            experimental: false
-          # PHP 7.4 and WordPress nightly.
-          - os: ubuntu-latest
-            php: '7.4'
-            wordpress: 'nightly'
-            multisite: false
-            coverage: false
-            experimental: false
-          # PHP 8.3 and WordPress nightly.
-          - os: ubuntu-latest
-            php: '8.3'
-            wordpress: 'nightly'
-            multisite: false
-            coverage: false
-            experimental: false
-          # PHP 7.4 with coverage.
-          - os: ubuntu-latest
-            php: '7.4'
-            wordpress: 'latest'
-            multisite: false
-            coverage: true
-            experimental: false
-          # PHP 8.3 with coverage.
+          # Run coverage only on latest PHP.
           - os: ubuntu-latest
             php: '8.3'
             wordpress: 'latest'
             multisite: false
             coverage: true
-            experimental: false
-          # PHP 7.4 and WordPress Multisite.
-          - os: ubuntu-latest
-            php: '7.4'
-            wordpress: 'latest'
-            multisite: true
-            coverage: false
-            experimental: false
-          # PHP 8.3 and WordPress Multisite.
-          - os: ubuntu-latest
-            php: '8.3'
-            wordpress: 'latest'
-            multisite: true
-            coverage: false
             experimental: false
 
     steps:
