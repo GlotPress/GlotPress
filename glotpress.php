@@ -178,12 +178,13 @@ if ( is_admin() && gp_db_upgrade_required() ) {
  * @since 1.0.0
  */
 function gp_activate_plugin() {
-	// Create/upgrade database tables.
 	// Even though there is logic above to upgrade the database when a user visits an admin page, the plugin should be
 	// functional regardless of whether the user visited an admin page or not.
 	// This also makes it possible to activate the plugin through wp-cli, since in that case, the database upgrade logic
 	// above will not run since is_admin() is false.
-	gp_upgrade_db();
+	if ( gp_db_upgrade_required() ) {
+		gp_upgrade_db();
+	}
 
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
