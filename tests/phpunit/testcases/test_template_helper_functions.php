@@ -5,11 +5,56 @@ require_once GP_TMPL_PATH . 'helper-functions.php';
 
 class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
-	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
-		$test_string = 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.';
-		$orig = '';
-		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.';
+	/**
+	 * Data provider.
+	 *
+	 * @var array
+	 */
+	function provide_test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
+		return array(
+			// Shouldn't mangle the code tags.
+			array(
+				'test_string'     => 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.',
+				'expected_result' => 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.',
+			),
+			array(
+				'test_string'     => 'Products & Services',
+				'expected_result' => 'Products &amp; Services', // Wrong: Should match.
+			),
+			// Test word left bound.
+			array(
+				'test_string'     => 'Products ,& Services',
+				'expected_result' => 'Products ,&amp; Services', // Wrong: Should match.
+			),
+			// Test word right bound.
+			array(
+				'test_string'     => 'Products ,& Services',
+				'expected_result' => 'Products ,&amp; Services', // Wrong: Should match.
+			),
+			// Test word both bounds.
+			array(
+				'test_string'     => 'Products ,&. Services',
+				'expected_result' => 'Products ,&amp;. Services', // Wrong: Should match.
+			),
+			// Don't match examples.
+			array(
+				'test_string'     => 'Shop &gt; Products &amp; Services',
+				'expected_result' => 'Shop &amp;gt; Products &amp;amp; Services',
+			),
+			// Match the simple &.
+			array(
+				'test_string'     => 'Shop &gt; Products & Services',
+				'expected_result' => 'Shop &amp;gt; Products &amp; Services',
+			),
+		);
+	}
 
+	/**
+	 * Expects matching glossary term '&'.
+	 *
+	 * @dataProvider provide_test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary( $test_string, $expected_result ) {
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
