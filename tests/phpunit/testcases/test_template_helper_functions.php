@@ -15,7 +15,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			// Shouldn't mangle the code tags.
 			array(
 				'test_string'     => 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.',
-				'expected_result' => 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.',
+				'expected_result' => 'This string, &lt;code&gt;&amp;lt;/body&amp;gt;&lt;/code&gt;, should not have the code tags mangled.',
 			),
 			array(
 				'test_string'     => 'Products & Services',
