@@ -14,7 +14,7 @@
 function gp_db_upgrade_required(): bool {
 	$gp_db_version = get_option( 'gp_db_version' );
 
-	return GP_DB_VERSION > $gp_db_version;
+	return false === $gp_db_version || GP_DB_VERSION > $gp_db_version;
 }
 
 /**
