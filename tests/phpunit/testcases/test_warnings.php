@@ -1,7 +1,7 @@
 <?php
 
 class GP_Test_Translation_Warnings extends GP_UnitTestCase {
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 		$this->is_baba = function( $o, $t, $l ) {
 			return $t == "баба"? true : "error";
