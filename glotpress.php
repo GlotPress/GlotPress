@@ -163,12 +163,12 @@ if ( ! get_option( 'permalink_structure' ) ) {
 }
 
 require_once GP_PATH . 'gp-settings.php';
+require_once GP_PATH . GP_INC . 'install-upgrade.php';
 
 /*
  * Check if we need to run the upgrade routine, but only run it on the admin side.
  */
 if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
-	require_once GP_PATH . GP_INC . 'install-upgrade.php';
 	gp_upgrade_db();
 }
 
@@ -183,7 +183,6 @@ function gp_activate_plugin() {
 	// functional regardless of whether the user visited an admin page or not.
 	// This also makes it possible to activate the plugin through wp-cli, since in that case, the database upgrade logic
 	// above will not run since is_admin() is false.
-	require_once GP_PATH . GP_INC . 'install-upgrade.php';
 	gp_upgrade_db();
 
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
