@@ -3,7 +3,7 @@
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.0
+ * Version: 4.0.0-alpha.11
  * Requires at least: 4.6
  * Tested up to: 5.9
  * Requires PHP: 7.4
@@ -29,7 +29,7 @@
  * @package GlotPress
  */
 
-define( 'GP_VERSION', '4.0.0' );
+define( 'GP_VERSION', '4.0.0-alpha.11' );
 define( 'GP_DB_VERSION', '980' );
 define( 'GP_CACHE_VERSION', '3.0' );
 define( 'GP_ROUTING', true );
@@ -38,7 +38,7 @@ define( 'GP_PATH', __DIR__ . '/' );
 define( 'GP_INC', 'gp-includes/' );
 define( 'GP_WP_REQUIRED_VERSION', '4.6' );
 define( 'GP_PHP_REQUIRED_VERSION', '7.4' );
-
+define( 'GP_SCRIPT_DEBUG', true );
 /**
  * Displays an admin notice on the plugins page that GlotPress has been disabled and why..
  *

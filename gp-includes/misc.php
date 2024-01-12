@@ -543,12 +543,15 @@ function gp_gmt_strtotime( $string ) {
  * @return object|null A GP_Format child object or null if not found.
  */
 function gp_get_import_file_format( $selected_format, $filename ) {
-	$format = gp_array_get( GP::$formats, $selected_format, null );
+	$formats = GP::$formats;
+	unset( $formats['php'] ); // Remove PHP format from the list of formats until we have an import process.
+
+	$format = gp_array_get( $formats, $selected_format, null );
 
 	if ( ! $format ) {
 		$matched_ext_len = 0;
 
-		foreach ( GP::$formats as $format_entry ) {
+		foreach ( $formats as $format_entry ) {
 			$format_extensions = $format_entry->get_file_extensions();
 
 			foreach ( $format_extensions as $extension ) {

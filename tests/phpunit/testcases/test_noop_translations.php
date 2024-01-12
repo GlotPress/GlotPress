@@ -1,7 +1,7 @@
 <?php
 
 class GP_Test_NOOP_Translations extends GP_UnitTestCase {
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 		$this->noop = new NOOP_Translations;
 		$this->entry = new Translation_Entry( array( 'singular' => 'baba' ) );
