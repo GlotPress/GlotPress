@@ -168,7 +168,7 @@ require_once GP_PATH . GP_INC . 'install-upgrade.php';
 /*
  * Check if we need to run the upgrade routine, but only run it on the admin side.
  */
-if ( is_admin() && GP_DB_VERSION > get_option( 'gp_db_version' ) ) {
+if ( is_admin() && gp_db_upgrade_required() ) {
 	gp_upgrade_db();
 }
 

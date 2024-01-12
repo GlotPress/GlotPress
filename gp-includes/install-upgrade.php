@@ -7,6 +7,17 @@
  */
 
 /**
+ * Tells whether the database needs to be installed/upgraded or not.
+ *
+ * @since 4.0.0
+ */
+function gp_db_upgrade_required(): bool {
+	$gp_db_version = get_option( 'gp_db_version' );
+
+	return GP_DB_VERSION > $gp_db_version;
+}
+
+/**
  * Runs the install/upgrade of the database.
  *
  * @since 1.0.0
