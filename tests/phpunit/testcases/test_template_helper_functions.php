@@ -19,22 +19,22 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			),
 			array(
 				'test_string'     => 'Products & Services',
-				'expected_result' => 'Products &amp; Services', // Wrong: Should match.
+				'expected_result' => 'Products ' . $this->glossary_match( '&amp;', 'noun', '&' ) . ' Services', // Wrong: Should match.
 			),
 			// Test word left bound.
 			array(
 				'test_string'     => 'Products ,& Services',
-				'expected_result' => 'Products ,&amp; Services', // Wrong: Should match.
+				'expected_result' => 'Products ,' . $this->glossary_match( '&amp;', 'noun', '&' ) . ' Services', // Wrong: Should match.
 			),
 			// Test word right bound.
 			array(
 				'test_string'     => 'Products ,& Services',
-				'expected_result' => 'Products ,&amp; Services', // Wrong: Should match.
+				'expected_result' => 'Products ,' . $this->glossary_match( '&amp;', 'noun', '&' ) . ' Services', // Wrong: Should match.
 			),
 			// Test word both bounds.
 			array(
 				'test_string'     => 'Products ,&. Services',
-				'expected_result' => 'Products ,&amp;. Services', // Wrong: Should match.
+				'expected_result' => 'Products ,' . $this->glossary_match( '&amp;', 'noun', '&' ) . '. Services', // Wrong: Should match.
 			),
 			// Don't match examples.
 			array(
@@ -44,7 +44,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			// Match the simple &.
 			array(
 				'test_string'     => 'Shop &gt; Products & Services',
-				'expected_result' => 'Shop &amp;gt; Products &amp; Services',
+				'expected_result' => 'Shop &amp;gt; Products ' . $this->glossary_match( '&amp;', 'noun', '&' ) . ' Services',
 			),
 		);
 	}
