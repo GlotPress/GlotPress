@@ -17,6 +17,15 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'test_string'     => 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.',
 				'expected_result' => 'This string, &lt;code&gt;&amp;lt;/body&amp;gt;&lt;/code&gt;, should not have the code tags mangled.',
 			),
+			// Should only match the exact bounds of the single '&' non word character.
+			array(
+				'test_string'     => 'Products && & Services',
+				'expected_result' => 'Products && ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services',
+			),
+			array(
+				'test_string'     => 'Products & && Services',
+				'expected_result' => 'Products ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' && Services',
+			),
 			array(
 				'test_string'     => 'Products & Services',
 				'expected_result' => 'Products ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services', // Wrong: Should match.
