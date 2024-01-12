@@ -84,6 +84,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects matching a term with diacritics in the begining, the middle or the end.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_diacritics_in_glossary() {
+		$test_string     = 'My naïve fiancé loves using the Ångström & meter scales.';
+		$expected_result = 'My ' . $this->glossary_match( 'naife', 'interjection', 'naïve' ) . ' ' . $this->glossary_match( 'noivo', 'noun', 'fiancé' ) . ' loves the ' . $this->glossary_match( 'Ångström', 'noun', 'Ångström' ) . ' scale.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entries = array(
+			array(
+				'term' => '&',
+				'part_of_speech' => 'interjection',
+				'translation' => '&amp;',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'Ångström',
+				'part_of_speech' => 'noun',
+				'translation' => 'Ångström',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'fiancé',
+				'part_of_speech' => 'noun',
+				'translation' => 'noivo',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'naïve',
+				'part_of_speech' => 'noun',
+				'translation' => 'naife',
+				'glossary_id' => $glossary->id,
+			),
+		);
+
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
 	 * Expects matching a term with a space between words [color scheme].
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_spaces_in_glossary() {
