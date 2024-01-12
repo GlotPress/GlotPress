@@ -7,7 +7,7 @@ class GP_My_Table extends GP_Thing {
 
 class GP_Test_Thing extends GP_UnitTestCase {
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 
 		$GLOBALS['wpdb']->mytable = 'mytable';

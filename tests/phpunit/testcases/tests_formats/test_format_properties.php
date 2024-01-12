@@ -2,7 +2,7 @@
 
 class GP_Test_Format_Properties extends GP_UnitTestCase {
 
-    function setUp() {
+    function setUp(): void {
 		parent::setUp();
 		$this->properties = new GP_Format_Properties;
 		$this->entries = array(
@@ -38,7 +38,7 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 
 		$file_contents = file_get_contents( GP_DIR_TESTDATA . '/translation.properties' );
 		$file_contents = str_replace( '[GP VERSION]', GP_VERSION, $file_contents );
-		
+
 		$exported = $this->properties->print_exported_file( $project, $locale, $set, $entries_for_export );
 
 		$this->assertEquals( $file_contents, $exported );
@@ -46,7 +46,7 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 
 	function test_read_originals() {
 		$translations = $this->properties->read_originals_from_file( GP_DIR_TESTDATA . '/originals.properties' );
-		
+
 		// We're adding one extra to the count for the entries because the file contains a multi-line entry that we want to test reading but don't test writing later.
 		$this->assertEquals( count( $this->entries ) + 1, count( $translations->entries ), 'number of read originals is different from the expected' );
 
