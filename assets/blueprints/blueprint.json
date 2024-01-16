@@ -60,51 +60,18 @@
       }
     },
     {
-      "step": "writeFile",
-      "path": "/wordpress/wp-content/downloads/twentytwentyfour_KR_translations.zip",
-      "data": {
-        "resource": "url",
-        "caption": "Downloading zip file",
-        "url": "https://downloads.wordpress.org/translation/theme/twentytwentyfour/1.0/ko_KR.zip"
-      }
-    },
-    {
-      "step": "writeFile",
-      "path": "/wordpress/wp-content/downloads/twentytwentyfour_IN_translations.zip",
-      "data": {
-        "resource": "url",
-        "caption": "Downloading zip file",
-        "url": "https://downloads.wordpress.org/translation/theme/twentytwentyfour/1.0/hi_IN.zip"
-      }
-    },
-    {
-      
       "step": "unzip",
       "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_DE_translations.zip",
       "extractToPath": "/wordpress/wp-content/languages/themes"
     },
     {
-
       "step": "unzip",
       "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_FR_translations.zip",
       "extractToPath": "/wordpress/wp-content/languages/themes"
     },
     {
-
       "step": "unzip",
       "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_ES_translations.zip",
-      "extractToPath": "/wordpress/wp-content/languages/themes"
-    },
-    {
-
-      "step": "unzip",
-      "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_KR_translations.zip",
-      "extractToPath": "/wordpress/wp-content/languages/themes"
-    },
-    {
-
-      "step": "unzip",
-      "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_IN_translations.zip",
       "extractToPath": "/wordpress/wp-content/languages/themes"
     },
     {
