@@ -50,13 +50,31 @@
         "url": "https://downloads.wordpress.org/translation/theme/twentytwentyfour/1.0/fr_FR.zip"
       }
     },
-      {
+    {
       "step": "writeFile",
       "path": "/wordpress/wp-content/downloads/twentytwentyfour_ES_translations.zip",
       "data": {
         "resource": "url",
         "caption": "Downloading zip file",
         "url": "https://downloads.wordpress.org/translation/theme/twentytwentyfour/1.0/es_ES.zip"
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/downloads/twentytwentyfour_KR_translations.zip",
+      "data": {
+        "resource": "url",
+        "caption": "Downloading zip file",
+        "url": "https://downloads.wordpress.org/translation/theme/twentytwentyfour/1.0/ko_KR.zip"
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/wordpress/wp-content/downloads/twentytwentyfour_IN_translations.zip",
+      "data": {
+        "resource": "url",
+        "caption": "Downloading zip file",
+        "url": "https://downloads.wordpress.org/translation/theme/twentytwentyfour/1.0/hi_IN.zip"
       }
     },
     {
@@ -78,8 +96,20 @@
       "extractToPath": "/wordpress/wp-content/languages/themes"
     },
     {
+
+      "step": "unzip",
+      "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_KR_translations.zip",
+      "extractToPath": "/wordpress/wp-content/languages/themes"
+    },
+    {
+
+      "step": "unzip",
+      "zipPath": "/wordpress/wp-content/downloads/twentytwentyfour_IN_translations.zip",
+      "extractToPath": "/wordpress/wp-content/languages/themes"
+    },
+    {
       "step": "runPHP",
-      "code": "<?php include 'wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/upgrade.php';require_once GP_PATH . GP_INC . 'install-upgrade.php'; require_once GP_PATH . GP_INC . 'schema.php';gp_upgrade_db();set_current_user( 1 ); GP::$administrator_permission->create( array( 'user_id' => 1, 'action' => 'admin', 'object_type' => null, ));function translation_import_overrides( $fields ) { if ( ! empty( $fields['warnings'] ) ) { unset( $fields['warnings'] ); $fields['status'] = 'current'; } unset( $fields['user_id'] ); return $fields;}$new_project = new GP_Project( array( 'name' => 'Twenty Twenty-Four', 'slug' => 'twentytwentyfour','path' => 'twentytwentyfour', 'description' => 'Welcome to this GlotPress demo inside WordPress Playground! We have setup this GlotPress project with the Twenty Twenty-Four theme and loaded a few languages.' . PHP_EOL . 'In this safe environment, you can experiment with translations. We have also given you administrative priviledges, so you can create new projects and translation sets and so on.' . PHP_EOL . 'Happy exploring!', 'active' => true ));$project = GP::$project->create_and_select( $new_project ); foreach( array( 'de_DE', 'es_ES', 'fr_FR' ) as $lang ) { $locale = GP_Locales::by_field( 'wp_locale', $lang );$new_set = new GP_Translation_Set( array( 'name' => $locale->english_name, 'slug' => 'default', 'project_id' => $project->id, 'locale' => $locale->slug ) ); $translation_set = GP::$translation_set->create_and_select( $new_set ); $local_mo = '/wordpress/wp-content/languages/themes/twentytwentyfour-' . $lang . '.mo'; $format = 'mo'; $format = gp_array_get( GP::$formats, $format, null ); $originals = $format->read_originals_from_file( $local_mo, $project ); $originals = GP::$original->import_for_project( $project, $originals ); $mo = new MO(); $mo->import_from_file( $local_mo ); add_filter( 'gp_translation_prepare_for_save', 'translation_import_overrides' ); $translation_set->import( $mo, 'current' ); }",
+      "code": "<?php include 'wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/upgrade.php';require_once GP_PATH . GP_INC . 'install-upgrade.php'; require_once GP_PATH . GP_INC . 'schema.php';gp_upgrade_db();set_current_user( 1 ); GP::$administrator_permission->create( array( 'user_id' => 1, 'action' => 'admin', 'object_type' => null, ));function translation_import_overrides( $fields ) { if ( ! empty( $fields['warnings'] ) ) { unset( $fields['warnings'] ); $fields['status'] = 'current'; } unset( $fields['user_id'] ); return $fields; } $new_project = new GP_Project( array( 'name' => 'Twenty Twenty-Four', 'slug' => 'twentytwentyfour','path' => 'twentytwentyfour', 'description' => 'Welcome to this GlotPress demo inside WordPress Playground! We have setup this GlotPress project with the Twenty Twenty-Four theme and loaded a few languages.' . PHP_EOL . 'In this safe environment, you can experiment with translations. We have also given you administrative priviledges, so you can create new projects and translation sets and so on.' . PHP_EOL . 'Happy exploring!', 'active' => true ));$project = GP::$project->create_and_select( $new_project ); foreach( array( 'de_DE', 'es_ES', 'fr_FR', 'hi_IN', 'ko_KR' ) as $lang ) { $locale = GP_Locales::by_field( 'wp_locale', $lang ); $new_set = new GP_Translation_Set( array( 'name' => $locale->english_name, 'slug' => 'default', 'project_id' => $project->id, 'locale' => $locale->slug ) ); $translation_set = GP::$translation_set->create_and_select( $new_set ); $local_mo = '/wordpress/wp-content/languages/themes/twentytwentyfour-' . $lang . '.mo'; $format = 'mo'; $format = gp_array_get( GP::$formats, $format, null ); $originals = $format->read_originals_from_file( $local_mo, $project ); $originals = GP::$original->import_for_project( $project, $originals ); $mo = new MO(); $mo->import_from_file( $local_mo ); add_filter( 'gp_translation_prepare_for_save', 'translation_import_overrides' ); $translation_set->import( $mo, 'current' ); }",
       "progress": {
         "caption": "Making theme translatable"
       }
