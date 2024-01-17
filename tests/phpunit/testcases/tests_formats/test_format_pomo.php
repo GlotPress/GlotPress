@@ -26,7 +26,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 	 */
 	protected $has_comments = true;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.po';
@@ -101,7 +101,7 @@ class GP_Test_Format_PO extends GP_UnitTestCase {
 			$project->name
 		);
 
-		$this->assertContains( $expected, $file );
+		$this->assertStringContainsString( $expected, $file );
 	}
 
 	public function test_read_originals() {
@@ -182,7 +182,7 @@ class GP_Test_Format_MO extends GP_Test_Format_PO {
 	 */
 	protected $format;
 
-   	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->translation_file = GP_DIR_TESTDATA . '/translation.mo';

@@ -273,7 +273,7 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertSame( 2, $total );
 
 		$all = GP::$original->count_by_project_id( $project->id, 'all' );
-		$this->assertInternalType( 'object', $all );
+		$this->assertIsObject( $all );
 		$this->assertSame( 2, $all->total );
 		$this->assertSame( 1, $all->hidden );
 		$this->assertSame( 1, $all->public );

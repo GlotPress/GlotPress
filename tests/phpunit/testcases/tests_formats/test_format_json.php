@@ -16,7 +16,7 @@ class GP_Test_Format_JSON extends GP_UnitTestCase {
 	 */
 	protected $format = 'json';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->translation_set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'foo_project' ) );
