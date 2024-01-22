@@ -23,3 +23,4 @@ jobs:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}
           IGNORE_OTHER_FILES: true
+          SLUG: glotpress
