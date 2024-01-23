@@ -28,8 +28,8 @@
     "prepare-release": "grunt replace:prepare-release",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop",
-    "env:tests": "npm run env:tests-cmd composer install && npm run env:tests-cmd composer test",
-    "env:tests-cmd": "wp-env run tests-cli --env-cwd=wp-content/plugins/GlotPress",
+    "env:tests": "npm run env:tests-cmd composer test",
+    "env:tests-cmd": "npm run env:tests-cmd composer install && wp-env run tests-cli --env-cwd=wp-content/plugins/GlotPress",
     "lint:js": "wp-scripts lint-js",
     "lint:js-fix": "wp-scripts lint-js --fix"
   }
