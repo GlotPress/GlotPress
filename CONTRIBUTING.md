@@ -78,6 +78,20 @@ npm run env:start
 npm run env:phpunit
 ```
 
+If you need to pass arguments to PHPUnit, you can do so too:
+
+> Note that the `--` is required, otherwise arguments will not be correctly passed to PHPUnit.
+
+```shell
+npm run env:phpunit -- --version
+```
+
+As an example, to only run the `test_multiple_imports_singular` test, you would use:
+
+```shell
+npm run env:phpunit -- --filter test_multiple_imports_singular
+```
+
 ## Helpful tips for writing issues
 
 When submitting an issue on GitHub there are several things you should include to ensure we can verify the problem and have enough information to resolve it.
