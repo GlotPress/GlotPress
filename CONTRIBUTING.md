@@ -71,8 +71,11 @@ To write unit tests, find the relevant file that has similar tests already in th
 You can also run tests in `wp-env`. Once you have [set up `wp-env`](#alternative-wp-env), you can run the whole test suite with:
 
 ```shell
+# If wp-env isn't running, you need to start it first.
 npm run env:start
-npm run env:tests
+
+# Run the whole test suite.
+npm run env:phpunit
 ```
 
 ## Helpful tips for writing issues
