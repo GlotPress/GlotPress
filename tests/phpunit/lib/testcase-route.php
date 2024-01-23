@@ -4,7 +4,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	var $route;
 	var $route_class;
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 		$this->route = new $this->route_class;
 		$this->route->fake_request = true;
@@ -18,7 +18,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 
 	function assertRedirectURLContains( $text ) {
 		$this->assertRedirected();
-		$this->assertContains( $text, $this->route->redirected_to );
+		$this->assertStringContainsString( $text, $this->route->redirected_to );
 	}
 
 	function assertThereIsAnErrorContaining( $text ) {

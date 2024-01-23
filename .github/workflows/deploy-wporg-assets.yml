@@ -18,8 +18,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: WordPress.org plugin assets/readme update
-        uses: 10up/action-wordpress-plugin-asset-update@9cedd67f930dd3b72306f2e24465568737207d43
+        uses: 10up/action-wordpress-plugin-asset-update@4eb612e1fceb9425cd6286a166ba1a4210052f64
         env:
           SVN_USERNAME: ${{ secrets.WORDPRESSORG_SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.WORDPRESSORG_SVN_PASSWORD }}
           IGNORE_OTHER_FILES: true
+          SLUG: glotpress

@@ -16,7 +16,7 @@ class GP_Test_Format_PHP extends GP_UnitTestCase {
 	 */
 	protected $format = 'php';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->translation_set = $this->factory->translation_set->create_with_project_and_locale( array(), array( 'name' => 'foo_project' ) );
@@ -29,11 +29,11 @@ class GP_Test_Format_PHP extends GP_UnitTestCase {
 	}
 
 	public function test_format_name() {
-		$this->assertSame( 'PHP (.mo.php)', GP::$formats[ $this->format ]->name );
+		$this->assertSame( 'PHP (.l10n.php)', GP::$formats[ $this->format ]->name );
 	}
 
 	public function test_format_extension() {
-		$this->assertSame( 'mo.php', GP::$formats[ $this->format ]->extension );
+		$this->assertSame( 'l10n.php', GP::$formats[ $this->format ]->extension );
 	}
 
 	public function test_print_exported_file() {
