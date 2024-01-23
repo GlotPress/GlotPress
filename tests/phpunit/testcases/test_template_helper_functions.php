@@ -5,11 +5,66 @@ require_once GP_TMPL_PATH . 'helper-functions.php';
 
 class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
-	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
-		$test_string = 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.';
-		$orig = '';
-		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.';
+	/**
+	 * Data provider.
+	 *
+	 * @var array
+	 */
+	function provide_test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
+		return array(
+			// Shouldn't mangle the code tags and shoudln't match '&'.
+			array(
+				'test_string'     => 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.',
+				'expected_result' => 'This string, &lt;code&gt;&amp;lt;/body&amp;gt;&lt;/code&gt;, should not have the code tags mangled.',
+			),
+			// Should only match the exact bounds of the single '&' non word character.
+			/*
+			array(
+				'test_string'     => 'Products && & Services',
+				'expected_result' => 'Products && ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services',
+			),
+			array(
+				'test_string'     => 'Products & && Services',
+				'expected_result' => 'Products ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' && Services',
+			)*/
+			array(
+				'test_string'     => 'Products & Services',
+				'expected_result' => 'Products ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services', // Wrong: Should match.
+			),
+			// Test word left bound.
+			array(
+				'test_string'     => 'Products ,& Services',
+				'expected_result' => 'Products ,' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services', // Wrong: Should match.
+			),
+			// Test word right bound.
+			array(
+				'test_string'     => 'Products ,& Services',
+				'expected_result' => 'Products ,' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services', // Wrong: Should match.
+			),
+			// Test word both bounds.
+			array(
+				'test_string'     => 'Products ,&. Services',
+				'expected_result' => 'Products ,' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . '. Services', // Wrong: Should match.
+			),
+			// Don't match examples.
+			array(
+				'test_string'     => 'Shop &gt; Products &amp; Services',
+				'expected_result' => 'Shop &amp;gt; Products &amp;amp; Services',
+			),
+			// Match the simple &.
+			array(
+				'test_string'     => 'Shop &gt; Products & Services',
+				'expected_result' => 'Shop &amp;gt; Products ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' Services',
+			),
+		);
+	}
 
+	/**
+	 * Expects matching glossary term '&'.
+	 *
+	 * @dataProvider provide_test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary( $test_string, $expected_result ) {
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
@@ -23,6 +78,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects matching a term with diacritics in the begining, the middle or the end.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_diacritics_in_glossary() {
+		$test_string     = 'My naïve fiancé loves using the Ångström & meter scales.';
+		$expected_result = 'My ' . $this->glossary_match( 'naife', 'noun', 'naïve' ) . ' ' . $this->glossary_match( 'noivo', 'noun', 'fiancé' ) . ' loves the ' . $this->glossary_match( 'Ångström', 'noun', 'Ångström' ) . ' ' . $this->glossary_match( '&amp;amp;', 'interjection', '&amp;' ) . ' meter scales.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entries = array(
+			array(
+				'term' => '&',
+				'part_of_speech' => 'interjection',
+				'translation' => '&amp;',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'Ångström',
+				'part_of_speech' => 'noun',
+				'translation' => 'Ångström',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'fiancé',
+				'part_of_speech' => 'noun',
+				'translation' => 'noivo',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term' => 'naïve',
+				'part_of_speech' => 'noun',
+				'translation' => 'naife',
+				'glossary_id' => $glossary->id,
+			),
+		);
+
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
 
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 

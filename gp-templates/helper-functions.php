@@ -540,16 +540,20 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			}
 		}
 
+		// Set before and after word bounds, compatible with words like just '&'.
+		$word_bound_before = '(?<!\w)';
+		$word_bound_after  = '(?!\w)';
+
 		// Build the regular expression.
 		$placeholders_search = '%(?:[1-9]\$)?[bcdefgosuxEFGX%l@]';
-		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
+		$terms_search        = '(?:(' . $word_bound_before . '|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
 		$terms_search  = rtrim( $terms_search, '|' );
-		$terms_search .= ')\b)|(' . $placeholders_search . ')';
+		$terms_search .= ')' . $word_bound_after . ')|(' . $placeholders_search . ')';
 	}
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
