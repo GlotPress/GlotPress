@@ -66,6 +66,15 @@ $ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassw
 
 To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/documentation.html) and existing files for how to write new tests.
 
+### Alternative: run tests with wp-env
+
+You can also run tests in `wp-env`. Once you have [set up `wp-env`](#alternative-wp-env), you can run the whole test suite with:
+
+```shell
+npm run env:start
+npm run env:tests
+```
+
 ## Helpful tips for writing issues
 
 When submitting an issue on GitHub there are several things you should include to ensure we can verify the problem and have enough information to resolve it.
