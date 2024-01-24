@@ -239,32 +239,49 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'test_string'     => 'I %%show want to %sshow and show%s, reshow and show and test %3$show%4$show to %2$dshow%2$b test %show%d %sshow%d %3$sshow%4$s and%3$s%3$s test and show and %3$s show how show %4$s %%4%show %%show how.',
 				'expected_result' => 'I %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' want to %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%s, reshow and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and test %3$show%4$show to %2$d' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%2$b test %show%d %s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%d %3$s' . $this->glossary_match( 'amosar', 'verb', 'show' ) . '%4$s and%3$s%3$s test and ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' and %3$s ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how ' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' %4$s %%4%show %%' . $this->glossary_match( 'amosar', 'verb', 'show' ) . ' how.',
 			),
+			// Test with simple placeholders before and after glossary matches.
+			array(
+				// Test %s.
+				'test_string'     => 'Words with %ssimple %sstring%s placeholder%s.',
+				'expected_result' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%s.',
+			),
+			array(
+				// Test %d.
+				'test_string'     => 'Words with %dsimple %dinteger%d placeholder%d.',
+				'expected_result' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%d.',
+			),
+			array(
+				// Test %l.
+				'test_string'     => 'Words with %lsimple %llist%l placeholder%l.',
+				'expected_result' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%l.',
+			),
+			array(
+				 // Test %1s, %1d and %1l.
+				'test_string'     => 'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.',
+				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
+			),
+			// Test with numbered placeholders before and after glossary matches.
+			array(
+				// Test %1$s.
+				'test_string'     => 'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',
+				'expected_result' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$s.',
+			),
+			array(
+				// Test %1$d.
+				'test_string'     => 'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',
+				'expected_result' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$d.',
+			),
+			array(
+				// Test %1$l.
+				'test_string'     => 'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',
+				'expected_result' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$l.',
+			),
+			array(
+				// Test %1$1s, %1$1d and %1$1l.
+				'test_string'     => 'Words with %1$1snumbered %2$1sstring%3$1d placeholder%4$1l with minimum width.',
+				'expected_result' => 'Words with %1$1s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$1l with minimum width.',
+			),
 		);
-	}
-
-	/**
-	 * Expects matching glossary terms glued to placeholders.
-	 *
-	 * @dataProvider provide_test_map_glossary_entries_with_placeholders_glued_glossary_words
-	 */
-	function test_map_glossary_entries_with_placeholders_glued_glossary_words( $test_string, $expected_result ) {
-		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
-
-		$set = $this->factory->translation_set->create_with_project_and_locale();
-		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
-
-		$glossary_entry = array(
-			'term' => 'show',
-			'part_of_speech' => 'verb',
-			'translation' => 'amosar',
-			'glossary_id' => $glossary->id,
-		);
-
-		GP::$glossary_entry->create_and_select( $glossary_entry );
-
-		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
-
-		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
 	}
 
 	/**
@@ -283,14 +300,54 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
 
-		$glossary_entry = array(
-			'term' => 'show',
-			'part_of_speech' => 'verb',
-			'translation' => 'amosar',
-			'glossary_id' => $glossary->id,
+		$glossary_entries = array(
+			array(
+				'term' => 'show',
+				'part_of_speech' => 'verb',
+				'translation' => 'amosar',
+				'glossary_id' => $glossary->id,
+			),
+			array(
+				'term'           => 'simple',
+				'part_of_speech' => 'noun',
+				'translation'    => 'simples', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'numbered',
+				'part_of_speech' => 'noun',
+				'translation'    => 'numerado', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'string',
+				'part_of_speech' => 'noun',
+				'translation'    => 'string', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'integer',
+				'part_of_speech' => 'noun',
+				'translation'    => 'número inteiro', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'list',
+				'part_of_speech' => 'noun',
+				'translation'    => 'lista', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
+			array(
+				'term'           => 'placeholder',
+				'part_of_speech' => 'noun',
+				'translation'    => 'variável', // Portuguese.
+				'glossary_id'    => $glossary->id,
+			),
 		);
 
-		GP::$glossary_entry->create_and_select( $glossary_entry );
+		foreach ( $glossary_entries as $glossary_entry ) {
+			GP::$glossary_entry->create_and_select( $glossary_entry );
+		}
 
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
@@ -419,7 +476,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
 		$this->assertEquals( $orig->singular_glossary_markup, $singular_expected_result );
-		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );	}
+		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
+	}
 
 	/**
 	 * Expects highlighting leading and ending spaces in single line strings, and double/multiple spaces in the middle.
@@ -442,6 +500,17 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 		$orig = prepare_original( $test_string );
 
+		$this->assertEquals( $orig, $expected_result );
+	}
+
+	/**
+	 * Expects highlighting placeholders in strings.
+	 */
+	function test_prepare_original_with_placeholders_bounded_by_words() {
+		$test_string     = '%dPlaceholders %1$sbounded%2$s by words%s (%4$l).';
+		$expected_result = $this->highlight_placeholder( '%d' ) . 'Placeholders ' . $this->highlight_placeholder( '%1$s' ) . 'bounded' . $this->highlight_placeholder( '%2$s' ) . ' by words' . $this->highlight_placeholder( '%s' ) . ' (' . $this->highlight_placeholder( '%4$l' ) . ').';
+
+		$orig = prepare_original( $test_string );
 		$this->assertEquals( $orig, $expected_result );
 	}
 
@@ -1867,6 +1936,16 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function highlight_invisible_spaces( $spaces ) {
 		return '<span class="invisible-spaces">' . $spaces . '</span>';
+	}
+
+	/**
+	 * Method to test_prepare_original() and the map_glossary_entries_to_translation_originals() functions.
+	 *
+	 * @param string $placeholder  The placeholder to highlight.
+	 * @return string              The placeholder highlighted.
+	 */
+	function highlight_placeholder( $placeholder ) {
+		return '<span class="notranslate placeholder">' . $placeholder . '</span>';
 	}
 
 	/**
