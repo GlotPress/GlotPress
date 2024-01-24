@@ -304,7 +304,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				 // Test %1s, %1d and %1l.
 				'test_string'     => 'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.',
 				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
-				//'expected_result' => 'Words with %1ssimple %1sstring%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
 			),
 			// Test with numbered placeholders before and after glossary matches.
 			array(
