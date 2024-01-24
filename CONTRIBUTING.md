@@ -56,7 +56,7 @@ GlotPress includes automated test code, but coverage is not complete at this tim
 
 ### Unit tests
 
-You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix. GlotPress tests are based on the WordPress test suite.
+You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix. GlotPress tests are based on the WordPress test suite, which is currently compatible with PHPUnit up to 9.x. Please use the latest PHPUnit version from the 9.x branch.
 
 The unit test files are in the `tests/` directory. To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
 
