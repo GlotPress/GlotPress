@@ -168,7 +168,7 @@ require_once GP_PATH . GP_INC . 'install-upgrade.php';
 /*
  * Check if we need to run the upgrade routine, but only run it on the admin side.
  */
-if ( is_admin() && gp_db_upgrade_required() ) {
+if ( is_admin() && gp_is_db_upgrade_required() ) {
 	gp_upgrade_db();
 }
 
@@ -182,7 +182,7 @@ function gp_activate_plugin() {
 	// functional regardless of whether the user visited an admin page or not.
 	// This also makes it possible to activate the plugin through wp-cli, since in that case, the database upgrade logic
 	// above will not run since is_admin() is false.
-	if ( gp_db_upgrade_required() ) {
+	if ( gp_is_db_upgrade_required() ) {
 		gp_upgrade_db();
 	}
 
