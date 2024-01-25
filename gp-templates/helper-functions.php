@@ -405,56 +405,61 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 			continue;
 		}
 
-		// Loop through rules.
-		foreach ( $suffixes[ $type ] as $rule ) {
+		// Filter out suffixes with empty values.
+		$suffixes = array_filter( $suffixes, fn( $value ) => ! empty( $value ) );
 
-			// Loop through rule endings.
-			foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
+		if ( ! empty( $suffixes[ $type ] ) ) {
+			// Loop through rules.
+			foreach ( $suffixes[ $type ] as $rule ) {
 
-				// Check if noun ends with known suffix.
-				if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
+				// Loop through rule endings.
+				foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
 
-					// Set ending.
-					$old_ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
+					// Check if noun ends with known suffix.
+					if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
 
-					// Format endings using %s or %1$s placeholders to allow using the ending itself in the changing string.
-					// Eg.: '%1$s%1$s' to match 'Commi[t]' -> Commi[tt][ing]
-					$new_ending = sprintf(
-						$new_ending,
-						$old_ending
-					);
+						// Set ending.
+						$old_ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
 
-					$change_ending = $old_ending === $new_ending ? false : true;
+						// Format endings using %s or %1$s placeholders to allow using the ending itself in the changing string.
+						// Eg.: '%1$s%1$s' to match 'Commi[t]' -> Commi[tt][ing]
+						$new_ending = sprintf(
+							$new_ending,
+							$old_ending
+						);
 
-					// Build suffix with changes and additions.
-					$suffix = ( ! $change_ending ? '' : $new_ending ) . $rule['add'];
+						$change_ending = $old_ending === $new_ending ? false : true;
 
-					// Set key term.
-					$key = $change_ending ? substr( $term, 0, - strlen( $old_ending ) ) : $term;
+						// Build suffix with changes and additions.
+						$suffix = ( ! $change_ending ? '' : $new_ending ) . $rule['add'];
 
-					// Check if key term is set.
-					if ( ! isset( $glossary_entries_suffixes[ $key ] ) ) {
-						// Add the key term with empty array.
-						$glossary_entries_suffixes[ $key ] = array();
-					}
+						// Set key term.
+						$key = $change_ending ? substr( $term, 0, -strlen( $old_ending ) ) : $term;
 
-					// If the ending changes, also add the ending.
-					if ( $change_ending ) {
-
-						// Check if ending already exist in array of suffixes.
-						if ( ! in_array( $old_ending, $glossary_entries_suffixes[ $key ], true ) ) {
-							// Add the ending to the suffixes.
-							$glossary_entries_suffixes[ $key ][] = $old_ending;
+						// Check if key term is set.
+						if ( ! isset( $glossary_entries_suffixes[ $key ] ) ) {
+							// Add the key term with empty array.
+							$glossary_entries_suffixes[ $key ] = array();
 						}
-					}
 
-					// Check if suffix already exist in array of suffixes.
-					if ( ! in_array( $suffix, $glossary_entries_suffixes[ $key ], true ) ) {
-						// Add suffix.
-						$glossary_entries_suffixes[ $key ][] = $suffix;
-					}
+						// If the ending changes, also add the ending.
+						if ( $change_ending ) {
 
-					break;
+							// Check if ending already exist in array of suffixes.
+							if ( ! in_array( $old_ending, $glossary_entries_suffixes[ $key ], true ) ) {
+								// Add the ending to the suffixes.
+								$glossary_entries_suffixes[ $key ][] = $old_ending;
+							}
+						}
+
+						// Check if suffix already exist in array of suffixes.
+						if ( ! in_array( $suffix, $glossary_entries_suffixes[ $key ], true ) ) {
+							// Add suffix.
+							$glossary_entries_suffixes[ $key ][] = $suffix;
+						}
+
+						break;
+					}
 				}
 			}
 		}
