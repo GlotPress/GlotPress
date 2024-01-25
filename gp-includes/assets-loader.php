@@ -16,7 +16,6 @@ function gp_register_default_styles() {
 
 	// Register our base style.
 	wp_register_style( 'gp-base', $url . '/style' . $suffix, array(), filemtime( $path . 'style' . $suffix ) );
-	wp_register_style( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'gp-base' ), filemtime( $path . 'jquery.webui-popover' . $suffix ) );
 }
 
 add_action( 'init', 'gp_register_default_styles' );
@@ -36,8 +35,6 @@ function gp_register_default_scripts() {
 	wp_register_script( 'gp-glossary', $url . '/glossary' . $suffix, array( 'gp-editor' ), filemtime( $path . 'glossary' . $suffix ) );
 	wp_register_script( 'gp-translations-page', $url . '/translations-page' . $suffix, array( 'gp-editor' ), filemtime( $path . 'translations-page' . $suffix ) );
 	wp_register_script( 'gp-mass-create-sets-page', $url . '/mass-create-sets-page' . $suffix, array( 'gp-editor' ), filemtime( $path . 'mass-create-sets-page' . $suffix ) );
-	wp_register_script( 'gp-jquery-webui-popover', $url . '/jquery.webui-popover' . $suffix, array( 'jquery' ), filemtime( $path . 'jquery.webui-popover' . $suffix ), false );
-
 	wp_set_script_translations( 'gp-common', 'glotpress' );
 	wp_set_script_translations( 'gp-editor', 'glotpress' );
 	wp_set_script_translations( 'gp-glossary', 'glotpress' );
