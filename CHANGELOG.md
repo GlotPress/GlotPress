@@ -1,6 +1,28 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-beta.1] (January 25, 2024)
+
+**Features**
+* Document how to use wp-env to run tests ([#1776])
+* Improve placeholders match and visibility ([#1620])
+* Change file extension for PHP format ([#1774])
+* Set the slug ([#1768])
+* Update readme.txt ([#1773])
+* Add Plugin Preview to GlotPress ([#1748])
+* Make it possible to run tests in PHP 8 ([#1760])
+* Add suffixes for matching glossary terms ([#1373])
+* Add new PHP format ([#1626])
+
+**Bugfixes**
+* Glossary: Fix fatal array in PHP8 for invalid post data ([#1750])
+* Fix glossary matching left bounded by placeholder. ([#1733])
+* Remove unused files ([#1723])
+* Fix fatal error in PHP8.x for invalid get data ([#1754])
+
+**Locales**
+* Add a new locale: Andalusian (Andalûh) ([#1729])
+
 ## [4.0.0-alpha.11] (October 19, 2023)
 
 **Bugfixes**
@@ -598,6 +620,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-beta.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.11...4.0.0-beta.1
 [4.0.0-alpha.11]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.10...4.0.0-alpha.11
 [4.0.0-alpha.10]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.9...4.0.0-alpha.10
 [4.0.0-alpha.9]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.8...4.0.0-alpha.9
@@ -732,3 +756,30 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1713]: https://github.com/GlotPress/GlotPress/pull/1713
 [#1714]: https://github.com/GlotPress/GlotPress/pull/1714
 [#1726]: https://github.com/GlotPress/GlotPress/pull/1726
+[#1776]: https://github.com/GlotPress/GlotPress/pull/1776
+[#1754]: https://github.com/GlotPress/GlotPress/pull/1754
+[#1620]: https://github.com/GlotPress/GlotPress/pull/1620
+[#1772]: https://github.com/GlotPress/GlotPress/pull/1772
+[#1771]: https://github.com/GlotPress/GlotPress/pull/1771
+[#1774]: https://github.com/GlotPress/GlotPress/pull/1774
+[#1768]: https://github.com/GlotPress/GlotPress/pull/1768
+[#1773]: https://github.com/GlotPress/GlotPress/pull/1773
+[#1723]: https://github.com/GlotPress/GlotPress/pull/1723
+[#1748]: https://github.com/GlotPress/GlotPress/pull/1748
+[#1761]: https://github.com/GlotPress/GlotPress/pull/1761
+[#1760]: https://github.com/GlotPress/GlotPress/pull/1760
+[#1733]: https://github.com/GlotPress/GlotPress/pull/1733
+[#1756]: https://github.com/GlotPress/GlotPress/pull/1756
+[#1373]: https://github.com/GlotPress/GlotPress/pull/1373
+[#1626]: https://github.com/GlotPress/GlotPress/pull/1626
+[#1736]: https://github.com/GlotPress/GlotPress/pull/1736
+[#1689]: https://github.com/GlotPress/GlotPress/pull/1689
+[#1747]: https://github.com/GlotPress/GlotPress/pull/1747
+[#1750]: https://github.com/GlotPress/GlotPress/pull/1750
+[#1752]: https://github.com/GlotPress/GlotPress/pull/1752
+[#1734]: https://github.com/GlotPress/GlotPress/pull/1734
+[#1688]: https://github.com/GlotPress/GlotPress/pull/1688
+[#1731]: https://github.com/GlotPress/GlotPress/pull/1731
+[#1730]: https://github.com/GlotPress/GlotPress/pull/1730
+[#1729]: https://github.com/GlotPress/GlotPress/pull/1729
+

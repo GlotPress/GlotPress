@@ -63,7 +63,7 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
+	return ( is_scalar( $key ) && isset( $array[ $key ] ) ) ? $array[ $key ] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
@@ -80,7 +80,7 @@ function gp_const_set( $name, $value ) {
 
 
 function gp_member_get( $object, $key, $default = '' ) {
-	return isset( $object->$key ) ? $object->$key : $default;
+	return ( is_string( $key ) && property_exists( $object, $key ) ) ? $object->$key : $default;
 }
 
 /**

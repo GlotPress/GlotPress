@@ -20,7 +20,7 @@ class GP_Format_PHP extends GP_Format {
 	 *
 	 * @var string
 	 */
-	public $name = 'PHP (.mo.php)';
+	public $name = 'PHP (.l10n.php)';
 
 	/**
 	 * File extension of the file format, used to autodetect formats and when creating the output file names.
@@ -29,7 +29,7 @@ class GP_Format_PHP extends GP_Format {
 	 *
 	 * @var string
 	 */
-	public $extension = 'mo.php';
+	public $extension = 'l10n.php';
 
 	/**
 	 * Generates a string the contains the $entries to export in the PHP file format.
