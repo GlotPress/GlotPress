@@ -1,6 +1,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-beta.2] (January 26, 2024)
+
+**Bugfixes**
+
+* Solve some warnings with the glossary suffixes ([#1779])
+* Remove Tour code in favor of using the dedicated Tour plugin ([#1745])
+
 ## [4.0.0-beta.1] (January 25, 2024)
 
 **Features**
@@ -621,6 +628,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-beta.2]: https://github.com/GlotPress/GlotPress/compare/4.0.0-beta.1...4.0.0-beta.2
 [4.0.0-beta.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.11...4.0.0-beta.1
 [4.0.0-alpha.11]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.10...4.0.0-alpha.11
 [4.0.0-alpha.10]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.9...4.0.0-alpha.10
@@ -782,4 +790,5 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1731]: https://github.com/GlotPress/GlotPress/pull/1731
 [#1730]: https://github.com/GlotPress/GlotPress/pull/1730
 [#1729]: https://github.com/GlotPress/GlotPress/pull/1729
-
+[#1779]: https://github.com/GlotPress/GlotPress/pull/1779
+[#1745]: https://github.com/GlotPress/GlotPress/pull/1745
