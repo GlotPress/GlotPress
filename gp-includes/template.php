@@ -98,7 +98,7 @@ function gp_nav_menu( $location = 'main' ) {
 	$items = gp_nav_menu_items( $location );
 
 	// Get the current URI.
-	$current_uri = str_replace( home_url(), '', gp_url_current() );
+	$current_uri = str_replace( home_url(), '', trailingslashit( gp_url_current() ) );
 
 	foreach ( $items as $link => $title ) {
 		// Check if the link matches the current URI base, if true, add 'current' class.
