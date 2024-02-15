@@ -1,5 +1,5 @@
 <?php
-gp_title( __( 'Edit Glossary &lt; GlotPress', 'glotpress' ) );
+gp_title( __( 'Edit glossary &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb_project(
 	$project,
 	array(
@@ -12,7 +12,7 @@ gp_breadcrumb_project(
 gp_tmpl_header();
 ?>
 
-<h2><?php _e( 'Edit Glossary', 'glotpress' ); ?></h2>
+<h2><?php _e( 'Edit glossary', 'glotpress' ); ?></h2>
 
 <form action="" method="post">
 	<p>
