@@ -15,10 +15,11 @@ gp_title(
 		$project->name
 	)
 );
-gp_breadcrumb(
+gp_breadcrumb_project(
+	$project,
 	array(
-		gp_project_links_from_root( $project ),
-		gp_link_get( $url, $locale->english_name . ( 'default' !== $set->slug ? ' ' . $set->name : '' ) ),
+		gp_link_get( $url, $locale->english_name . 'default' !== $set->slug ? ' ' . $set->name : '' ),
+		__( 'Delete', 'glotpress' ),
 	)
 );
 gp_tmpl_header();
