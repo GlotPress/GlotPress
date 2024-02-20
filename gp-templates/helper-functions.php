@@ -401,7 +401,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		$term = strtolower( $value->term );
 		$type = $value->part_of_speech;
 
-		// Add suffixes for part_of_speech with rules.
+		// Check existent suffixes for part_of_speech with rules.
 		if ( ! empty( $suffixes[ $type ] ) ) {
 
 			// Loop through rules.
