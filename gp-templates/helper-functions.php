@@ -405,21 +405,19 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		if ( ! empty( $suffixes[ $type ] ) ) {
 
 			// Loop through rules.
-				foreach ( $suffixes[ $type ] as $rule ) {
+			foreach ( $suffixes[ $type ] as $rule ) {
 
 				// Loop through rule endings.
 				foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
 
+					// Pattern of already suffixed terms.
 					$already_suffixed_pattern = '/' . $rule['preceded'] . sprintf( $new_ending, $ending_pattern ) . $rule['add'] . '\b/i';
-
-					$replace = '/' . $rule['preceded'] . $ending_pattern . '\b/i';
 
 					// Check if suffix is already apply, to revert to base term.
 					if ( preg_match( $already_suffixed_pattern, $term, $match ) ) {
 
-						$term = str_replace( sprintf( $new_ending, $ending_pattern ) . $rule['add'], $ending_pattern, $term );
-
-						$glossary_entries_suffix_reverted[ $key ]->term = $term;
+						// Revert the suffixed term to the base term, for further suffix matching according to the known rules.
+						$glossary_entries_suffix_reverted[ $key ]->term = str_replace( sprintf( $new_ending, $ending_pattern ) . $rule['add'], $ending_pattern, $term );
 					}
 				}
 			}
