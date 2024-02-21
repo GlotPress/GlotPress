@@ -671,6 +671,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -727,6 +728,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -753,6 +755,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -789,6 +792,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -835,6 +839,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -871,6 +876,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -927,6 +933,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1013,6 +1020,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1039,6 +1047,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1085,6 +1094,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1131,6 +1141,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1167,6 +1178,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1203,6 +1215,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1239,6 +1252,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1285,6 +1299,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1361,6 +1376,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1407,6 +1423,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1443,6 +1460,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1489,6 +1507,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 
@@ -1708,6 +1727,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1876,6 +1896,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1914,6 +1935,26 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Method to test the map_glossary_entries_to_translation_originals() function by matching from a suffixed term.
+	 *
+	 * @param string $test_string      The string to test.
+	 * @param string $part_of_speech   The part of speech of the string to test.
+	 * @param array  $matches          The matches to expect.
+	 * @param array  $glossary_entries The glossary entries to create.
+	 *
+	 * @return void
+	 */
+	function check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries ) {
+		// Set the suffixed terms as glossary entries.
+		foreach ( $glossary_entries as $glossary_entry ) {
+			$glossary_entry['term'] = $matches[ $glossary_entry['translation'] ][1];
+		}
+
+		// Check map_glossary from suffixed terms, by reverting to base term and matching all glossary suffixes normally.
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
