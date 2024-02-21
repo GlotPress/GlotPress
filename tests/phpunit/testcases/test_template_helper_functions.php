@@ -243,43 +243,43 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			array(
 				// Test %s.
 				'test_string'     => 'Words with %ssimple %sstring%s placeholder%s.',
-				'expected_result' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%s.',
+				'expected_result' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%s.',
 			),
 			array(
 				// Test %d.
 				'test_string'     => 'Words with %dsimple %dinteger%d placeholder%d.',
-				'expected_result' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%d.',
+				'expected_result' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'número inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%d.',
 			),
 			array(
 				// Test %l.
 				'test_string'     => 'Words with %lsimple %llist%l placeholder%l.',
-				'expected_result' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%l.',
+				'expected_result' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%l.',
 			),
 			array(
 				 // Test %1s, %1d and %1l.
 				'test_string'     => 'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.',
-				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
+				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%1l with minimum width.',
 			),
 			// Test with numbered placeholders before and after glossary matches.
 			array(
 				// Test %1$s.
 				'test_string'     => 'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',
-				'expected_result' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$s.',
+				'expected_result' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$s.',
 			),
 			array(
 				// Test %1$d.
 				'test_string'     => 'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',
-				'expected_result' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$d.',
+				'expected_result' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'número inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$d.',
 			),
 			array(
 				// Test %1$l.
 				'test_string'     => 'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',
-				'expected_result' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$l.',
+				'expected_result' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$l.',
 			),
 			array(
 				// Test %1$1s, %1$1d and %1$1l.
 				'test_string'     => 'Words with %1$1snumbered %2$1sstring%3$1d placeholder%4$1l with minimum width.',
-				'expected_result' => 'Words with %1$1s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$1l with minimum width.',
+				'expected_result' => 'Words with %1$1s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$1d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$1l with minimum width.',
 			),
 		);
 	}
@@ -763,7 +763,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$part_of_speech = 'noun';
 
 		$matches = array(
-			'her\u00f3i' => array( // Portuguese.
+			'herói' => array( // Portuguese.
 				'hero',              // Singular.
 				'heroes',            // Plural.
 			),
@@ -1315,7 +1315,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'dye',           // Infinitive.
 				'dyeing',        // Present.
 			),
-			'andar em pontas dos p\u00e9s' => array( // Portuguese.
+			'andar em pontas dos pés' => array( // Portuguese.
 				'tiptoe',                              // Infinitive.
 				'tiptoeing',                           // Present.
 			),
@@ -1560,7 +1560,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'resolve',         // Verb.
 				'resolution',      // Noun.
 			),
-			'comp\u00f4r' => array( // Portuguese.
+			'compôr' => array( // Portuguese.
 				'compose',            // Verb.
 				'composition',        // Noun.
 			),
@@ -1925,7 +1925,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 * @return string                  The formated glossary match output.
 	 */
 	function glossary_match( $glossary_entry, $part_of_speech, $original ) {
-		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:' . htmlspecialchars( wp_json_encode( $glossary_entry ), ENT_QUOTES, 'UTF-8' ) . ',&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
 	}
 
 	/**
