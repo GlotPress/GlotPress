@@ -428,6 +428,16 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
+<?php
+/**
+ * Fires before the translation table has been displayed.
+ *
+ * @since 4.0.0
+ *
+ * @param array $def_vars Variables defined in the template.
+ */
+do_action( 'gp_before_translation_table', get_defined_vars() );
+?>
 <table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
 	<thead>
 	<tr>
