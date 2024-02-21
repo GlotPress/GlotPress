@@ -416,8 +416,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					// Check if suffix is already apply, to revert to base term.
 					if ( preg_match( $already_suffixed_pattern, $term, $match ) ) {
 
-						// Revert the suffixed term to the base term, for further suffix matching according to the known rules.
-						$glossary_entries_suffix_reverted[ $key ]->term = str_replace( sprintf( $new_ending, $ending_pattern ) . $rule['add'], $ending_pattern, $term );
+						// Revert term suffix.
+						$term = str_replace( sprintf( $new_ending, $ending_pattern ) . $rule['add'], $ending_pattern, $term );
+
+						// Update term in the list.
+						$glossary_entries_suffix_reverted[ $key ]->term = $term;
 					}
 				}
 			}
