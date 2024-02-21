@@ -1892,7 +1892,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$expected_result = array();
 		foreach ( $matches as $glossary_entry => $originals ) {
 			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+				$expected_result[] = $this->glossary_match( $glossary_entry, $part_of_speech, $original );
 			}
 		}
 
