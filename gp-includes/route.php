@@ -370,11 +370,13 @@ class GP_Route {
 		// Current URL.
 		$current_uri = wp_parse_url( gp_url_current() );
 
+		// URL path.
 		$current_path = $current_uri['path'];
 
 		// If the current path has no trailing slash, redirect to path with trailing slash.
 		if ( $current_path !== trailingslashit( $current_path ) ) {
 
+			// Add trailing slash to redirect URL.
 			$redirect_url = trailingslashit( $current_path );
 
 			// Include any existing query.
@@ -382,6 +384,7 @@ class GP_Route {
 				$redirect_url .= '?' . $current_uri['query'];
 			}
 
+			// Redirect to URL with trailing slash.
 			$this->redirect( $redirect_url );
 		}
 	}
