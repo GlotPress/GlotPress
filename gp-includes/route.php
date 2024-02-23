@@ -374,7 +374,7 @@ class GP_Route {
 
 		// If the current URL has no trailing slash, redirect to URL with trailing slash.
 		if ( $current_uri_with_trailing_slash !== $current_uri_no_trailing_slash ) {
-			wp_safe_redirect( $current_uri_with_trailing_slash );
+			$this->redirect( $current_uri_with_trailing_slash );
 		}
 	}
 }
