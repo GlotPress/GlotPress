@@ -366,15 +366,23 @@ class GP_Route {
 	 * @since 4.0.0
 	 */
 	public function check_uri_trailing_slash() {
+
 		// Current URL.
-		$current_uri = str_replace( home_url(), '', gp_url_current() );
+		$current_uri = wp_parse_url( gp_url_current() );
 
-		// Current URL with forced trailing slash.
-		$current_uri_with_trailing_slash = str_replace( home_url(), '', trailingslashit( gp_url_current() ) );
+		$current_path = $current_uri['path'];
 
-		// If the current URL has no trailing slash, redirect to URL with trailing slash.
-		if ( $current_uri !== $current_uri_with_trailing_slash ) {
-			$this->redirect( $current_uri_with_trailing_slash );
+		// If the current path has no trailing slash, redirect to path with trailing slash.
+		if ( $current_path !== trailingslashit( $current_path ) ) {
+
+			$redirect_url = trailingslashit( $current_path );
+
+			// Include any existing query.
+			if ( isset( $current_uri['query'] ) ) {
+				$redirect_url .= '?' . $current_uri['query'];
+			}
+
+			$this->redirect( $redirect_url );
 		}
 	}
 }
