@@ -274,11 +274,10 @@ function gp_breadcrumb_project( $project, $extra_items = array() ) {
 	// If is a translation project, get the links. If is a virtual project with ID '0' for glossary, return base Locale for breadcrumb.
 	$breadcrumb = 0 !== $project->id ? gp_project_links_from_root( $project ) : array( gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) ) );
 
-	foreach ( $breadcrumb as $key => $link ) {
-		// If no extra items, the last item is the project name without link.
-		if ( array_key_last( $breadcrumb ) === $key && empty( $extra_items ) ) {
-			$breadcrumb[ $key ] = $project->name;
-		}
+	if ( empty( $extra_items ) ) {
+		end( $breadcrumb );
+		$last_key = key( $breadcrumb );
+		$breadcrumb[ $last_key ] = $project->name;
 	}
 
 	// Add extra items.
