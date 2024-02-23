@@ -281,11 +281,7 @@ function gp_breadcrumb_project( $project, $extra_items = array() ) {
 	}
 
 	// Add extra items.
-	if ( ! empty( $extra_items ) ) {
-		foreach ( $extra_items as $item ) {
-			$breadcrumb[] = $item;
-		}
-	}
+	$breadcrumb = array_merge($breadcrumb, $extra_items);
 
 	return gp_breadcrumb( $breadcrumb );
 }
