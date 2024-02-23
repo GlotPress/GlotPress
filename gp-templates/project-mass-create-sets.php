@@ -6,7 +6,12 @@ gp_title(
 		$project->name
 	)
 );
-gp_breadcrumb_project( $project );
+gp_breadcrumb_project(
+	$project,
+	array(
+		__( 'Mass-create Translation Sets', 'glotpress' ),
+	)
+);
 gp_enqueue_scripts( 'gp-mass-create-sets-page' );
 wp_localize_script(
 	'gp-mass-create-sets-page',
