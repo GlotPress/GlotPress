@@ -374,7 +374,7 @@ class GP_Route {
 		$current_path = $current_uri['path'];
 
 		// If the current path has no trailing slash, redirect to path with trailing slash.
-		if ( $current_path !== trailingslashit( $current_path ) ) {
+		if ( trailingslashit( $current_path ) !== $current_path ) {
 
 			// Add trailing slash to redirect URL.
 			$redirect_url = trailingslashit( $current_path );
