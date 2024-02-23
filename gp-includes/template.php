@@ -258,8 +258,34 @@ function gp_project_links_from_root( $leaf_project ) {
 	return $links;
 }
 
-function gp_breadcrumb_project( $project ) {
-	return gp_breadcrumb( gp_project_links_from_root( $project ) );
+/**
+ * Get project breadcrumb.
+ *
+ * @since 4.0.0   New $extra_items array to append items like Translation Set, Project Glossary or the current action. The last item has no link.
+ *                If project ID is '0', set base locales link to breadcrumb.
+ *
+ * @param GP_Project $project       GlotPress Project object.
+ * @param array      $extra_items   Array of additional items to add to the breadcrumb.
+ *
+ * @return string   HTML of the breadcrumb.
+ */
+function gp_breadcrumb_project( $project, $extra_items = array() ) {
+
+	// If is a translation project, get the links. If is a virtual project with ID '0' for glossary, return base Locale for breadcrumb.
+	$breadcrumb = 0 !== $project->id ? gp_project_links_from_root( $project ) : array( gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) ) );
+
+	// If no extra items, the last breadcrumb item is the project name with no link.
+	if ( empty( $extra_items ) ) {
+		end( $breadcrumb );
+		$last_key = key( $breadcrumb );
+
+		$breadcrumb[ $last_key ] = $project->name;
+	}
+
+	// Add extra items.
+	$breadcrumb = array_merge( $breadcrumb, $extra_items );
+
+	return gp_breadcrumb( $breadcrumb );
 }
 
 function gp_js_focus_on( $html_id ) {
