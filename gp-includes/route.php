@@ -27,6 +27,8 @@ class GP_Route {
 
 	public function __construct() {
 
+		// Make sure that the current URL has a trailing slash.
+		add_action( 'gp_before_request', array( $this, 'check_uri_trailing_slash' ) );
 	}
 
 	public function die_with_error( $message, $status = 500 ) {
@@ -356,5 +358,34 @@ class GP_Route {
 			return;
 		}
 		return status_header( $status );
+	}
+
+	/**
+	 * Check if the current URL has trailing slash. If not, redirect to trailed slash URL.
+	 *
+	 * @since 4.0.0
+	 */
+	public function check_uri_trailing_slash() {
+
+		// Current URL.
+		$current_uri = wp_parse_url( gp_url_current() );
+
+		// URL path.
+		$current_path = $current_uri['path'];
+
+		// If the current path has no trailing slash, redirect to path with trailing slash.
+		if ( trailingslashit( $current_path ) !== $current_path ) {
+
+			// Add trailing slash to redirect URL.
+			$redirect_url = trailingslashit( $current_path );
+
+			// Include any existing query.
+			if ( isset( $current_uri['query'] ) ) {
+				$redirect_url .= '?' . $current_uri['query'];
+			}
+
+			// Redirect to URL with trailing slash.
+			$this->redirect( $redirect_url );
+		}
 	}
 }
