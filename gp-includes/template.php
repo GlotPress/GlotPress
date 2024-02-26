@@ -253,7 +253,10 @@ function gp_project_links_from_root( $leaf_project ) {
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
 	$links[]        = empty( $path_from_root ) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
-		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
+		$link = gp_link_project_get( $project, esc_html( $project->name ) );
+		if ( '' !== strip_tags( $link ) ) {
+			$links[] = $link;
+		}
 	}
 	return $links;
 }
@@ -284,7 +287,6 @@ function gp_breadcrumb_project( $project, $extra_items = array() ) {
 
 	// Add extra items.
 	$breadcrumb = array_merge( $breadcrumb, $extra_items );
-
 	return gp_breadcrumb( $breadcrumb );
 }
 
