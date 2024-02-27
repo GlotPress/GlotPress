@@ -1,6 +1,7 @@
 <?php
 gp_title( __( 'Create New Project &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb(
+gp_breadcrumb_project(
+	$project,
 	array(
 		__( 'Create New Project', 'glotpress' ),
 	)
