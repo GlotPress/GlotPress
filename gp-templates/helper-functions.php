@@ -182,6 +182,68 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	return $glossary_entries_suffixes;
 }
 
+
+/**
+ * Revert suffixed terms for use in map_glossary_entries_to_translation_originals().
+ *
+ * @param array $glossary_entries   An array of glossary entries.
+ *
+ * @return array The suffixed entries.
+ */
+function gp_glossary_remove_suffixes( $glossary_entries ) {
+	if ( empty( $glossary_entries ) ) {
+		return array();
+	}
+
+	// Get suffixes for glossary matching.
+	$suffixes = gp_glossary_suffixes();
+
+	foreach ( $glossary_entries as $key => $value ) {
+
+		$term = strtolower( $value->term );
+		$type = $value->part_of_speech;
+
+		// Check existent suffixes for part_of_speech with rules.
+		if ( ! empty( $suffixes[ $type ] ) ) {
+
+			// Loop through rules.
+			foreach ( $suffixes[ $type ] as $rule ) {
+
+				// Loop through rule endings.
+				foreach ( $rule['endings'] as $ending_pattern => $current_ending ) {
+
+					// Pattern of already suffixed terms.
+					$already_suffixed_pattern = '/' . $rule['preceded'] . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/i';
+
+					// Check if suffix is already applied, to revert to base term.
+					if ( preg_match( $already_suffixed_pattern, $term/*, $match*/ ) ) {
+
+						$term_begining = preg_replace( '/' . $rule['add'] . '\b/', '', $term );
+
+						$term_pattern = preg_replace( '/' . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/', $ending_pattern, $term );
+
+						if ( preg_match( '/' . $term_pattern . '/', $term_begining, $match ) ) {
+
+							// Add new base term.
+							$value = clone $value;
+
+							$value->term = $match[0];
+
+							// Add base term.
+							$glossary_entries[] = $value;
+
+							break 2;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return $glossary_entries;
+}
+
+
 /**
  * Add markup to a translation original to identify the glossary terms.
  *
