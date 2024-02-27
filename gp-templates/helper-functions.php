@@ -507,7 +507,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
  *
  * @return array The suffixed entries.
  */
-function gp_glossary_remove_suffixes( $glossary_entries ) {
+function gp_glossary_add_reverted_suffixes( $glossary_entries ) {
 	if ( empty( $glossary_entries ) ) {
 		return array();
 	}
@@ -584,6 +584,10 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			return $translation;
 		}
 
+		// Find already suffixed entries and revert to the base form. Example: Troubleshooting -> Troubleshoot.
+		$glossary_entries = gp_glossary_add_reverted_suffixes( $glossary_entries );
+
+		// Add suffixes for glossary matching.
 		$glossary_entries_suffixes = gp_glossary_add_suffixes( $glossary_entries );
 
 		$glossary_entries_reference = array();
@@ -628,6 +632,15 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
 				}
 			}
+		}
+
+		// Remove duplicates with the same Glossary Entry ID previously added from the suffix reversion.
+		foreach ( $glossary_entries_reference as $term => $referenced_terms ) {
+			$entries = array();
+			foreach ( $referenced_terms as $key => $entry_id ) {
+				$entries[ $glossary_entries[ $entry_id ]->id ] = $entry_id;
+			}
+			$glossary_entries_reference[ $term ] = $entries;
 		}
 
 		// Build the regular expression.
