@@ -94,43 +94,6 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 	$glossary_entries_suffixes = array();
 
-	// Find already suffixed entries and revert to the base form. Example: Troubleshooting -> Troubleshoot.
-	$glossary_entries_suffix_reverted = array();
-	foreach ( $glossary_entries as $key => $value ) {
-
-		$glossary_entries_suffix_reverted[ $key ] = $value;
-
-		$term = strtolower( $value->term );
-		$type = $value->part_of_speech;
-
-		// Check existent suffixes for part_of_speech with rules.
-		if ( ! empty( $suffixes[ $type ] ) ) {
-
-			// Loop through rules.
-			foreach ( $suffixes[ $type ] as $rule ) {
-
-				// Loop through rule endings.
-				foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
-
-					// Pattern of already suffixed terms.
-					$already_suffixed_pattern = '/' . $rule['preceded'] . sprintf( $new_ending, $ending_pattern ) . $rule['add'] . '\b/i';
-
-					// Check if suffix is already apply, to revert to base term.
-					if ( preg_match( $already_suffixed_pattern, $term, $match ) ) {
-
-						// Revert term suffix.
-						$term = str_replace( sprintf( $new_ending, $ending_pattern ) . $rule['add'], $ending_pattern, $term );
-
-						// Update term in the list.
-						$glossary_entries_suffix_reverted[ $key ]->term = $term;
-					}
-				}
-			}
-		}
-	}
-
-	$glossary_entries = $glossary_entries_suffix_reverted;
-
 	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $value ) {
 		$term = strtolower( $value->term );
