@@ -548,7 +548,9 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 				}
 			}
 		}
-
+		// Make the regex more deterministic.
+		ksort( $regex_group );
+		
 		// Build the regular expression.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
 		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
