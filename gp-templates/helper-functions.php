@@ -633,6 +633,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 				}
 			}
 		}
+		// Make the regex more deterministic.
+		ksort( $regex_group );
 
 		// Remove duplicates with the same Glossary Entry ID previously added from the suffix reversion.
 		foreach ( $glossary_entries_reference as $term => $referenced_terms ) {
