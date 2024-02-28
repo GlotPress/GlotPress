@@ -1,6 +1,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0-beta.3] (February 28, 2024)
+
+**Features**
+* Add a 'gp_before_translation_table' hook ([#1792])
+
+**Bugfixes**
+
+* Add trailing slash to current_url to fix matching URLs without trailing slash ([#1785])
+* Breadcrumbs: Improve consistency across all content types ([#1789])
+* Glossary: Match single word entries of parts of speech that have no suffix rules. ([#1791])
+* Fix redirecting URL with query args ([#1797])
+* Add the breadcrumbs for the "New project" actions ([#1800])
+* Make the glossary regex more deterministic ([#1801])
+
 ## [4.0.0-beta.2] (January 26, 2024)
 
 **Bugfixes**
@@ -628,6 +642,7 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 * Initial release.
 
 [Unreleased]: https://github.com/GlotPress/GlotPress/compare/3.0.0...HEAD
+[4.0.0-beta.3]: https://github.com/GlotPress/GlotPress/compare/4.0.0-beta.2...4.0.0-beta.3
 [4.0.0-beta.2]: https://github.com/GlotPress/GlotPress/compare/4.0.0-beta.1...4.0.0-beta.2
 [4.0.0-beta.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.11...4.0.0-beta.1
 [4.0.0-alpha.11]: https://github.com/GlotPress/GlotPress/compare/4.0.0-alpha.10...4.0.0-alpha.11
@@ -792,3 +807,13 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1729]: https://github.com/GlotPress/GlotPress/pull/1729
 [#1779]: https://github.com/GlotPress/GlotPress/pull/1779
 [#1745]: https://github.com/GlotPress/GlotPress/pull/1745
+[#1801]: https://github.com/GlotPress/GlotPress/pull/1801
+[#1798]: https://github.com/GlotPress/GlotPress/pull/1798
+[#1800]: https://github.com/GlotPress/GlotPress/pull/1800
+[#1797]: https://github.com/GlotPress/GlotPress/pull/1797
+[#1785]: https://github.com/GlotPress/GlotPress/pull/1785
+[#1791]: https://github.com/GlotPress/GlotPress/pull/1791
+[#1789]: https://github.com/GlotPress/GlotPress/pull/1789
+[#1796]: https://github.com/GlotPress/GlotPress/pull/1796
+[#1786]: https://github.com/GlotPress/GlotPress/pull/1786
+[#1792]: https://github.com/GlotPress/GlotPress/pull/1792
