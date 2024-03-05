@@ -1510,7 +1510,6 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
-
 	/**
 	 * Expects matching the Verbs that form Nouns ending with suffix '-tion'.
 	 */
@@ -2093,8 +2092,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries ) {
 		// Set the suffixed terms as glossary entries.
-		foreach ( $glossary_entries as $glossary_entry ) {
-			$glossary_entry['term'] = $matches[ $glossary_entry['translation'] ][1];
+		foreach ( $glossary_entries as $key => $glossary_entry ) {
+			$glossary_entries[ $key ]['term'] = $matches[ $glossary_entry['translation'] ][1];
 		}
 
 		// Check map_glossary from suffixed terms, by reverting to base term and matching all glossary suffixes normally.
