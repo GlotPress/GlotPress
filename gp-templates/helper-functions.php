@@ -139,7 +139,7 @@ function gp_glossary_suffixes() {
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
-				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
+				'preceded' => '[^aeiou]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Lady and ladi-es.
 					'o' => '%s', // Add 'es'.         Hero and hero-es, tomato and tomato-es.
@@ -162,7 +162,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|fe)' => '%s', // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
+					'(?<!z|x|sh|ch|s|y|fe)' => '%s', // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'add'      => 's', // Add 's'.
 			),
@@ -202,7 +202,7 @@ function gp_glossary_suffixes() {
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
-				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
+				'preceded' => '[^aeiou]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Try and tri-es.
 					'o' => '%s', // Add 'es'.         Go and go-es, do and do-es.
@@ -214,7 +214,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'\w(?<!z|x|sh|ch|s|y|o)' => '%s', // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
+					'(?<!z|x|sh|ch|s|y|o)' => '%s', // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
 				),
 				'add'      => 's',  // Add 's'.
 			),
@@ -228,7 +228,7 @@ function gp_glossary_suffixes() {
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e'.
-					'\w(?<!e)' => '%s', // Add 'ed'.       Fix and fix-ed, push and push-ed.
+					'[^e]'     => '%s', // Add 'ed'.       Fix and fix-ed, push and push-ed.
 					// Ending with '-e'.
 					'e'        => '',   // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
 				),
@@ -239,7 +239,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[b-df-hj-np-tv-xz]' => '%s', // Add 'ed'. Visit and visit-ed, develop and develop-ed.
+					'[^aeiou]' => '%s', // Add 'ed'. Visit and visit-ed, develop and develop-ed.
 				),
 				'add'      => 'ed', // Add 'ed'.
 			),
@@ -248,7 +248,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[b-df-hj-np-tv-xz]' => '%1$s%1$s', // Double ending consonant and add 'ed'. Commit and committ-ed, prefer and preferr-ed, travel and travell-ed.
+					'[^aeiou]' => '%1$s%1$s', // Double ending consonant and add 'ed'. Commit and committ-ed, prefer and preferr-ed, travel and travell-ed.
 				),
 				'add'      => 'ed', // Add 'ed'.
 			),
@@ -262,7 +262,7 @@ function gp_glossary_suffixes() {
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e'.
-					'\w(?<!e)' => '%s', // Add 'ing'.        Fix and fix-ing, push and push-ing.
+					'[^e]'     => '%s', // Add 'ing'.        Fix and fix-ing, push and push-ing.
 					// Ending with '-ee', '-ye' or '-oe'.
 					'ee'       => '%s', // Add 'ing'.        Agree and agree-ing, see and see-ing.
 					'ye'       => '%s', // Add 'ing'.        Dye and dye-ing.
@@ -277,7 +277,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[b-df-hj-np-tv-xz]' => '%s', // Add 'ing'. Visit and visit-ing, develop and develop-ing.
+					'[^aeiou]' => '%s', // Add 'ing'. Visit and visit-ing, develop and develop-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
@@ -286,7 +286,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[b-df-hj-np-tv-xz]' => '%1$s%1$s', // Double ending consonant and add 'ing'. Commit and committ-ing, prefer and preferr-ing, travelling and travell-ing.
+					'[^aeiou]' => '%1$s%1$s', // Double ending consonant and add 'ing'. Commit and committ-ing, prefer and preferr-ing, travelling and travell-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
