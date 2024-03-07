@@ -6,7 +6,12 @@ if ( 'originals' === $kind ) {
 		esc_html( $project->name )
 	);
 	$return_link = gp_url_project( $project );
-	gp_breadcrumb_project( $project );
+	gp_breadcrumb_project(
+		$project,
+		array(
+			__( 'Import Originals', 'glotpress' ),
+		)
+	);
 } else {
 	$gp_title = sprintf(
 		/* translators: %s: Project name. */
@@ -14,27 +19,32 @@ if ( 'originals' === $kind ) {
 		esc_html( $project->name )
 	);
 	$return_link = gp_url_project_locale( $project, $locale->slug, $translation_set->slug );
-	gp_breadcrumb(
+	gp_breadcrumb_project(
+		$project,
 		array(
-			gp_project_links_from_root( $project ),
 			gp_link_get( $return_link, $translation_set->name ),
+			__( 'Import Translations', 'glotpress' ),
 		)
 	);
 }
 
 gp_title( $gp_title );
 gp_tmpl_header();
-?>
 
+?>
 <h2><?php echo 'originals' == $kind ? __( 'Import Originals', 'glotpress' ) : __( 'Import Translations', 'glotpress' ); ?></h2>
 <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 	<dt><label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label></dt>
-	<dd><input type="file" name="import-file" id="import-file" /></dd>
+	<dd><input type="file" name="import-file" id="import-file" accept="<?php echo esc_attr( implode( ',', gp_get_format_extensions() ) ); ?>" /></dd>
 <?php
+
 	$format_options         = array();
 	$format_options['auto'] = __( 'Auto Detect', 'glotpress' );
-	foreach ( GP::$formats as $slug => $format ) {
+
+	$formats = GP::$formats;
+	unset( $formats['php'] ); // Remove PHP format from the list of formats until we have an import process.
+	foreach ( $formats as $slug => $format ) {
 		$format_options[ $slug ] = $format->name;
 	}
 

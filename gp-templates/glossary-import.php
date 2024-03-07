@@ -1,10 +1,11 @@
 <?php
 gp_title( __( 'Import into Glossary &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb(
+gp_breadcrumb_project(
+	$project,
 	array(
-		gp_project_links_from_root( $project ),
 		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ) . '/glossary', __( 'Glossary', 'glotpress' ) ),
+		// Check if is Global or Project Glossary.
+		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ) . 'glossary', 0 === $project->id ? __( 'Locale Glossary', 'glotpress' ) : __( 'Project Glossary', 'glotpress' ), ),
 		__( 'Import', 'glotpress' ),
 	)
 );
@@ -26,7 +27,7 @@ gp_tmpl_header();
 <form action="" method="post" enctype="multipart/form-data">
 	<p>
 		<label for="import-file"><?php _e( 'Import File:', 'glotpress' ); ?></label>
-		<input type="file" name="import-file" id="import-file" />
+		<input type="file" name="import-file" id="import-file" accept=".csv" />
 	</p>
 	<?php if ( $can_edit ) : ?>
 		<p>

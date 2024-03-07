@@ -1,10 +1,11 @@
 <?php
 gp_title( __( 'View Glossary &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb(
+gp_breadcrumb_project(
+	$project,
 	array(
-		gp_project_links_from_root( $project ),
+		// Show Projects if is projects path, show Locales if is locales path.
 		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-		__( 'Glossary', 'glotpress' ),
+		0 === $project->id ? __( 'Locale Glossary', 'glotpress' ) : __( 'Project Glossary', 'glotpress' ),
 	)
 );
 
@@ -12,7 +13,7 @@ $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpres
 $delete_url       = gp_url_join( $url, '-delete' );
 $glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
 
-gp_enqueue_scripts( 'gp-glossary' );
+gp_enqueue_scripts( array( 'gp-glossary', 'tablesorter' ) );
 wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
 
 gp_tmpl_header();
@@ -36,8 +37,8 @@ if ( 0 === $project->id ) {
 		);
 		?>
 	</h2>
-	<?php gp_link_glossary_edit( $glossary, $translation_set, _x( '(edit)', 'glossary', 'glotpress' ) ); ?>
-	<?php gp_link_glossary_delete( $glossary, $translation_set, _x( '(delete)', 'glossary', 'glotpress' ) ); ?>
+	<?php gp_link_glossary_edit( $glossary, $translation_set, null, array( 'class' => 'button is-small' ) ); ?>
+	<?php gp_link_glossary_delete( $glossary, $translation_set, null, array( 'class' => 'button is-small' ) ); ?>
 </div>
 
 <?php
@@ -60,12 +61,13 @@ if ( $glossary_description ) {
 <table class="gp-table glossary" id="glossary">
 	<thead>
 		<tr>
-			<th class="gp-column-item"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-part-of-speech"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-translation"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-comments"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-item" data-sorter="text"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-part-of-speech" data-sorter="false"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-translation" data-sorter="text"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-comments" data-sorter="false"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+			<th class="gp-column-modified" data-sorter="text"><?php _ex( 'Last Modified', 'glossary entry', 'glotpress' ); ?></th>
 			<?php if ( $can_edit ) : ?>
-				<th class="gp-column-actions">&mdash;</th>
+				<th class="gp-column-actions" data-sorter="false">&mdash;</th>
 			<?php endif; ?>
 		</tr>
 	</thead>
@@ -78,7 +80,7 @@ if ( $glossary_description ) {
 	} else {
 		?>
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<?php _e( 'No glossary entries yet.', 'glotpress' ); ?>
 			</td>
 		</tr>

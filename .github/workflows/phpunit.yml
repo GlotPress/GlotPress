@@ -37,31 +37,23 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        php: [ '7.4', '7.3', '7.2' ]
+        php: [ '7.4', '8.3' ]
         wordpress: [ 'latest', 'nightly' ]
-        multisite: [ false ]
+        multisite: [ false, true ]
         coverage: [ false ]
         experimental: [ false ]
         include:
-        # - php: '8.0'
-        #   os: ubuntu-latest
-        #   experimental: true
+          # Run coverage only on latest PHP.
           - os: ubuntu-latest
-            php: '7.4'
+            php: '8.3'
             wordpress: 'latest'
             multisite: false
             coverage: true
             experimental: false
-          - os: ubuntu-latest
-            php: '7.4'
-            wordpress: 'latest'
-            multisite: true
-            coverage: false
-            experimental: false
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -71,7 +63,7 @@ jobs:
           tools: composer
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
         with:
           composer-options: "--no-progress --no-ansi --no-interaction"
 
@@ -95,7 +87,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: ${{ matrix.coverage }}
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           file: coverage-clover-${{ github.sha }}.xml
           fail_ci_if_error: true

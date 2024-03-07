@@ -11,17 +11,25 @@
     "url": "https://github.com/GlotPress/GlotPress/issues"
   },
   "devDependencies": {
-    "@wordpress/env": "^4.4.0",
-    "@wordpress/scripts": "^22.3.0",
-    "grunt": "^1.4.1",
-    "grunt-contrib-cssmin": "^4.0.0",
-    "grunt-contrib-uglify": "^5.1.0",
+    "@wordpress/env": "^9.4.0",
+    "@wordpress/scripts": "^27.3.0",
+    "grunt": "^1.6.1",
+    "grunt-browserify": "^6.0.0",
+    "grunt-contrib-concat": "^2.1.0",
+    "grunt-contrib-cssmin": "^5.0.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-text-replace": "^0.4.0",
     "load-grunt-tasks": "^5.1.0"
   },
   "scripts": {
-    "grunt": "grunt",
+    "build": "grunt",
+    "watch": "grunt watch",
+    "prepare-release": "grunt replace:prepare-release",
     "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
     "env:stop": "wp-env stop",
-    "lint:js": "wp-scripts lint-js"
+    "env:phpunit": "wp-env run tests-cli --env-cwd=wp-content/plugins/GlotPress composer install && wp-env run tests-cli --env-cwd=wp-content/plugins/GlotPress php ./vendor/bin/phpunit",
+    "lint:js": "wp-scripts lint-js",
+    "lint:js-fix": "wp-scripts lint-js --fix"
   }
 }

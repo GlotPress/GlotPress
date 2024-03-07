@@ -73,6 +73,7 @@ if ( ! class_exists( 'GP_Locale' ) || ! class_exists( 'GP_Locales' ) ) {
 gp_set_globals( get_defined_vars() );
 
 require_once GP_PATH . GP_INC . 'warnings.php';
+require_once GP_PATH . GP_INC . 'errors.php';
 require_once GP_PATH . GP_INC . 'validation.php';
 require_once GP_PATH . GP_INC . 'advanced-permissions.php';
 
@@ -106,6 +107,9 @@ require_once GP_PATH . GP_INC . 'routes/locale.php';
 GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
 GP::$builtin_translation_warnings->add_all( GP::$translation_warnings );
+GP::$translation_errors         = new GP_Translation_Errors();
+GP::$builtin_translation_errors = new GP_Builtin_Translation_Errors();
+GP::$builtin_translation_errors->add_all( GP::$translation_errors );
 GP::$router  = new GP_Router();
 GP::$formats = array();
 
@@ -118,6 +122,7 @@ require_once GP_PATH . GP_INC . 'formats/format-properties.php';
 require_once GP_PATH . GP_INC . 'formats/format-json.php';
 require_once GP_PATH . GP_INC . 'formats/format-jed1x.php';
 require_once GP_PATH . GP_INC . 'formats/format-ngx.php';
+require_once GP_PATH . GP_INC . 'formats/format-php.php';
 
 // Let's do it again, there are more variables added since last time we called it.
 gp_set_globals( get_defined_vars() );

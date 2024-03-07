@@ -16,10 +16,14 @@ gp_title(
 		$project->name
 	)
 );
-gp_breadcrumb(
+$inactive_bubble = '';
+if ( ! $project->active ) {
+	$inactive_bubble = ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
+}
+gp_breadcrumb_project(
+	$project,
 	array(
-		gp_project_links_from_root( $project ),
-		gp_link_get( $url, $translation_set->name ),
+		$translation_set->name . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
@@ -33,10 +37,9 @@ wp_localize_script(
 );
 
 // localizer adds var in front of the variable name, so we can't use $gp.editor.options
-$editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url' );
+$editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
-
 gp_tmpl_header();
 $i = 0;
 ?>
@@ -52,13 +55,40 @@ $i = 0;
 		);
 		?>
 	</h2>
-	<?php gp_link_set_edit( $translation_set, $project, _x( '(edit)', 'translation set', 'glotpress' ) ); ?>
-	<?php gp_link_set_delete( $translation_set, $project, _x( '(delete)', 'translation set', 'glotpress' ) ); ?>
-	<?php if ( $glossary && $glossary->translation_set_id === $translation_set->id ) : ?>
-	<?php echo gp_link( $glossary->path(), __( 'Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
-	<?php elseif ( $can_approve ) : ?>
-		<?php echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) ); ?>
-	<?php endif; ?>
+	<?php gp_link_set_edit( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
+	<?php gp_link_set_delete( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
+	<div class="glossary-links">
+		<?php
+		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set->slug, $translation_set->locale );
+		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+
+		// Locale Glossary link.
+		if ( $locale_glossary ) {
+			?>
+			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
+			<?php
+		} elseif ( $can_create_locale_glossary ) {
+			?>
+			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
+			<?php
+		}
+
+		// Show separator if both links are shown.
+		if ( ( $locale_glossary || $can_create_locale_glossary ) && ( ( $glossary && $glossary->translation_set_id === $translation_set->id ) || $can_approve ) ) {
+			?>
+			<strong class="separator">•</strong>
+			<?php
+		}
+
+		// Project Glossary link.
+		if ( $glossary && $glossary->translation_set_id === $translation_set->id ) {
+			echo gp_link( $glossary->path(), __( 'Project Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) );
+		} elseif ( $can_approve ) {
+			echo gp_link_get( gp_url( '/glossaries/-new', array( 'translation_set_id' => $translation_set->id ) ), __( 'Create Project Glossary', 'glotpress' ), array( 'class' => 'glossary-link' ) );
+		}
+		?>
+	</div>
 </div>
 
 <div class="filter-toolbar">
@@ -74,6 +104,8 @@ $i = 0;
 		$filters_values_only = array_filter( $filters );
 		$sort_values_only    = array_filter( $sort );
 		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
+		// Remove any non-string or non-numeric values from the array.
+		$filters_and_sort    = array_filter( $filters_and_sort, 'is_scalar' );
 
 		/**
 		 * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
@@ -152,6 +184,22 @@ $i = 0;
 			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) ),
 			$is_current_filter ? $current_filter_class : array()
 		);
+
+		$changesrequested_filters = array(
+			'filters[status]' => 'changesrequested',
+		);
+
+		$is_current_filter = array() === array_diff( $changesrequested_filters, $filters_and_sort ) && ! $additional_filters && ! $changesrequested_filters;
+		$current_filter    = $is_current_filter ? 'changesrequested' : $current_filter;
+
+		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
+			$filter_links[] = gp_link_get(
+				add_query_arg( $changesrequested_filters, $url ),
+				// Translators: %s is the changes requested strings count for the current translation set.
+				sprintf( __( 'Changes requested&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->changesrequested_count() ) ),
+				$is_current_filter ? $current_filter_class : array()
+			);
+		}
 
 		$fuzzy_filters = array(
 			'filters[status]' => 'fuzzy',
@@ -261,6 +309,12 @@ $i = 0;
 						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Rejected', 'glotpress' ); ?>
 					</label><br />
+					<?php if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
+						<label for="filters[status][changesrequested]">
+							<input type="checkbox" value="changesrequested" id="filters[status][changesrequested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changesrequested', $selected_status_list, true ) ); ?>>
+							<?php _e( 'Changes requested', 'glotpress' ); ?>
+						</label><br />
+					<?php endif; ?>
 					<label for="filters[status][old]">
 						<input type="checkbox" value="old" id="filters[status][old]" <?php gp_checked( 'either' === $selected_status || in_array( 'old', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Old', 'glotpress' ); ?>
@@ -374,7 +428,17 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
-<table id="translations" class="gp-table translations <?php echo esc_attr( $class_rtl ); ?>">
+<?php
+/**
+ * Fires before the translation table has been displayed.
+ *
+ * @since 4.0.0
+ *
+ * @param array $def_vars Variables defined in the template.
+ */
+do_action( 'gp_before_translation_table', get_defined_vars() );
+?>
+<table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
 	<thead>
 	<tr>
 		<?php
@@ -391,23 +455,33 @@ $i = 0;
 	</tr>
 	</thead>
 <?php
-	foreach ( $translations as $translation ) {
-		if ( ! $translation->translation_set_id ) {
-			$translation->translation_set_id = $translation_set->id;
-		}
+foreach ( $translations as $translation ) {
+	if ( ! $translation->translation_set_id ) {
+		$translation->translation_set_id = $translation_set->id;
+	}
 
 	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 	gp_tmpl_load( 'translation-row', get_defined_vars() );
 }
 ?>
 <?php
-	if ( ! $translations ) :
-?>
+if ( ! $translations ) :
+	?>
 	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
-<?php
+	<?php
 	endif;
 ?>
 </table>
+<?php
+/**
+ * Fires after the translation table has been displayed.
+ *
+ * @since 4.0.0
+ *
+ * @param array $def_vars Variables defined in the template.
+ */
+do_action( 'gp_after_translation_table', get_defined_vars() );
+?>
 
 <div class="gp-table-actions bottom">
 	<?php
@@ -419,6 +493,9 @@ $i = 0;
 		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 		<?php
 		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
+			if ( ( 'changesrequested' == $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+				continue;
+			}
 			?>
 			<div class="box status-<?php echo esc_attr( $legend_status ); ?>"></div>
 			<div>
@@ -438,6 +515,13 @@ $i = 0;
 						break;
 					case 'rejected':
 						_e( 'Rejected', 'glotpress' );
+						break;
+					case 'changesrequested':
+						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+							_e( 'Changes requested', 'glotpress' );
+						} else {
+							_e( 'Rejected', 'glotpress' );
+						}
 						break;
 					default:
 						echo esc_html( $legend_status );

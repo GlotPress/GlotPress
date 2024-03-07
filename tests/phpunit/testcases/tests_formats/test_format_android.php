@@ -1,7 +1,7 @@
 <?php
 
 class GP_Test_Format_Android extends GP_UnitTestCase {
-    function setUp() {
+    function setUp(): void {
 		parent::setUp();
 		$this->android = new GP_Format_Android;
 		$this->entries = array(

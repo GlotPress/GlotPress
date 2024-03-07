@@ -97,8 +97,13 @@ function gp_nav_menu( $location = 'main' ) {
 	$html  = '';
 	$items = gp_nav_menu_items( $location );
 
+	// Get the current URI.
+	$current_uri = str_replace( home_url(), '', gp_url_current() );
+
 	foreach ( $items as $link => $title ) {
-		$html .= '<a href="' . $link . '">' . $title . '</a>';
+		// Check if the link matches the current URI base, if true, add 'current' class.
+		$class = gp_startswith( $current_uri, $link ) ? 'current' : '';
+		$html .= '<a class="' . $class . '" href="' . $link . '">' . $title . '</a>';
 	}
 
 	return $html;
@@ -248,13 +253,40 @@ function gp_project_links_from_root( $leaf_project ) {
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
 	$links[]        = empty( $path_from_root ) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
-		$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
+		if ( ! is_null( $project->id ) ) {
+			$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
+		}
 	}
 	return $links;
 }
 
-function gp_breadcrumb_project( $project ) {
-	return gp_breadcrumb( gp_project_links_from_root( $project ) );
+/**
+ * Get project breadcrumb.
+ *
+ * @since 4.0.0   New $extra_items array to append items like Translation Set, Project Glossary or the current action. The last item has no link.
+ *                If project ID is '0', set base locales link to breadcrumb.
+ *
+ * @param GP_Project $project       GlotPress Project object.
+ * @param array      $extra_items   Array of additional items to add to the breadcrumb.
+ *
+ * @return string   HTML of the breadcrumb.
+ */
+function gp_breadcrumb_project( $project, $extra_items = array() ) {
+
+	// If is a translation project, get the links. If is a virtual project with ID '0' for glossary, return base Locale for breadcrumb.
+	$breadcrumb = 0 !== $project->id ? gp_project_links_from_root( $project ) : array( gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) ) );
+
+	// If no extra items, the last breadcrumb item is the project name with no link.
+	if ( empty( $extra_items ) ) {
+		end( $breadcrumb );
+		$last_key = key( $breadcrumb );
+
+		$breadcrumb[ $last_key ] = $project->name;
+	}
+
+	// Add extra items.
+	$breadcrumb = array_merge( $breadcrumb, $extra_items );
+	return gp_breadcrumb( $breadcrumb );
 }
 
 function gp_js_focus_on( $html_id ) {
@@ -650,12 +682,15 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  * @return array
  */
 function gp_get_translation_row_classes( $translation ) {
-	$classes   = array();
-	$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	$classes = array();
+	if ( ( 'changesrequested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code
+		$classes[] = 'untranslated';
+	} else {
+		$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';
+	}
 	$classes[] = 'priority-' . gp_array_get( GP::$original->get_static( 'priorities' ), $translation->priority );
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	$classes[] = count( array_filter( $translation->translations, 'gp_is_not_null' ) ) > 0 ? 'has-translations' : 'no-translations';
-
 	/**
 	 * Filters the list of CSS classes for a translation row
 	 *

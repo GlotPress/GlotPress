@@ -2,7 +2,7 @@
 
 class GP_Test_Format_Strings extends GP_UnitTestCase {
 
-    function setUp() {
+    function setUp(): void {
 		parent::setUp();
 		$this->strings = new GP_Format_Strings;
 		$this->entries = array(

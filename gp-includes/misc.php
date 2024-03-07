@@ -63,7 +63,7 @@ function gp_route_nonce_url( $url, $action ) {
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
-	return isset( $array[ $key ] ) ? $array[ $key ] : $default;
+	return ( is_scalar( $key ) && isset( $array[ $key ] ) ) ? $array[ $key ] : $default;
 }
 
 function gp_const_get( $name, $default = '' ) {
@@ -80,7 +80,7 @@ function gp_const_set( $name, $value ) {
 
 
 function gp_member_get( $object, $key, $default = '' ) {
-	return isset( $object->$key ) ? $object->$key : $default;
+	return ( is_string( $key ) && property_exists( $object, $key ) ) ? $object->$key : $default;
 }
 
 /**
@@ -543,12 +543,15 @@ function gp_gmt_strtotime( $string ) {
  * @return object|null A GP_Format child object or null if not found.
  */
 function gp_get_import_file_format( $selected_format, $filename ) {
-	$format = gp_array_get( GP::$formats, $selected_format, null );
+	$formats = GP::$formats;
+	unset( $formats['php'] ); // Remove PHP format from the list of formats until we have an import process.
+
+	$format = gp_array_get( $formats, $selected_format, null );
 
 	if ( ! $format ) {
 		$matched_ext_len = 0;
 
-		foreach ( GP::$formats as $format_entry ) {
+		foreach ( $formats as $format_entry ) {
 			$format_extensions = $format_entry->get_file_extensions();
 
 			foreach ( $format_extensions as $extension ) {
@@ -563,6 +566,31 @@ function gp_get_import_file_format( $selected_format, $filename ) {
 	}
 
 	return $format;
+}
+
+/**
+ * Gets the list of format extensions prefixed with leading delimiters "." ( eg.: '.po' ).
+ *
+ * @since 4.0.0
+ *
+ * @return array   Supported format file extensions.
+ */
+function gp_get_format_extensions() {
+
+	$format_extensions = array();
+
+	// Get all the supported format extensions.
+	foreach ( GP::$formats as $format ) {
+		$format_extensions = array_merge( $format_extensions, $format->get_file_extensions() );
+	}
+
+	// Remove any duplicates added by alternate extensions.
+	$format_extensions = array_unique( $format_extensions );
+
+	// Prefix with delimiter ".".
+	$format_extensions = preg_replace( '/^/', '.', $format_extensions );
+
+	return $format_extensions;
 }
 
 /**
@@ -670,6 +698,10 @@ function gp_get_sort_by_fields() {
 		'references'                => array(
 			'title'       => __( 'Filename in source', 'glotpress' ),
 			'sql_sort_by' => 'o.references',
+		),
+		'length'                    => array(
+			'title'       => __( 'Original length', 'glotpress' ),
+			'sql_sort_by' => 'LENGTH(o.singular) %s',
 		),
 		'random'                    => array(
 			'title'       => __( 'Random', 'glotpress' ),

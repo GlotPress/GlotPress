@@ -19,6 +19,7 @@ module.exports = function( grunt ) {
 					'assets/js/**/*.js',
 
 					// Exceptions.
+					'!assets/js/vendor/*',
 					'!**/*.min.js'
 				],
 
@@ -44,6 +45,38 @@ module.exports = function( grunt ) {
 				rename: function( dst, src ) {
 					return src.replace( '.css', '.min.css' );
 				}
+			}
+		},
+		watch: {
+			js: {
+				files: [
+					'assets/js/**/*.js',
+
+					// Exceptions.
+					'!**/*.min.js'
+				],
+				tasks: [ 'uglify' ],
+			},
+			css: {
+				files: [
+					'assets/css/*.css',
+
+					// Exceptions.
+					'!**/*.min.css'
+				],
+				tasks: [ 'cssmin' ],
+			},
+		},
+		replace: {
+			'prepare-release': {
+				src: ['glotpress.php'],
+				overwrite: true,
+				replacements: [
+					{
+						from: /define\( 'GP_SCRIPT_DEBUG', true \);/g,
+						to: "define( 'GP_SCRIPT_DEBUG', false );" // Replacement text
+					}
+				]
 			}
 		}
 	} );
