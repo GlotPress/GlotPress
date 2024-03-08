@@ -933,6 +933,17 @@ class GP_Locales {
 		$es_pa->google_code = 'es';
 		$es_pa->facebook_locale = 'es_LA';
 
+		$es_py = new GP_Locale();
+		$es_py->english_name = 'Spanish (Paraguay)';
+		$es_py->native_name = 'Español de Paraguay';
+		$es_py->lang_code_iso_639_1 = 'es';
+		$es_py->lang_code_iso_639_2 = 'spa';
+		$es_py->lang_code_iso_639_3 = 'spa';
+		$es_py->country_code = 'py';
+		$es_py->slug = 'es-py';
+		$es_py->google_code = 'es';
+		$es_py->facebook_locale = 'es_LA';
+
 		$es_pe = new GP_Locale();
 		$es_pe->english_name = 'Spanish (Peru)';
 		$es_pe->native_name = 'Español de Perú';
@@ -1225,6 +1236,15 @@ class GP_Locales {
 		$gn->lang_code_iso_639_1 = 'gn';
 		$gn->lang_code_iso_639_2 = 'grn';
 		$gn->slug = 'gn';
+
+		$gn_py = new GP_Locale();
+		$gn_py->english_name = 'Guaraní (Paraguay)';
+		$gn_py->native_name = 'Avañe\'ẽ';
+		$gn_py->lang_code_iso_639_1 = 'gn';
+		$gn_py->lang_code_iso_639_2 = 'grn';
+		$gn_py->lang_code_iso_639_3 = 'grn';
+		$gn_py->country_code = 'py';
+		$gn_py->slug = 'gn-py';
 
 		$gsw = new GP_Locale();
 		$gsw->english_name = 'Swiss German';
