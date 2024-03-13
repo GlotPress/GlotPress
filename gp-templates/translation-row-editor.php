@@ -28,7 +28,7 @@ $plural   = sprintf(
 );
 
 ?>
-<tr class="editor <?php gp_translation_row_classes( $translation ); ?>" id="editor-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>">
+<tr class="editor <?php gp_translation_row_classes( $translation ); ?>" id="editor-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>" translation_status="<?php echo esc_attr( $translation->translation_status ?? 'untranslated' ); ?>">
 	<td colspan="<?php echo esc_attr( $colspan ); ?>">
 		<div class="strings">
 			<?php if ( ! $translation->plural ) : ?>
