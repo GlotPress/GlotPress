@@ -7,11 +7,23 @@
  */
 
 /**
+ * Tells whether the database needs to be installed/upgraded or not.
+ *
+ * @since 4.0.0
+ */
+function gp_is_db_upgrade_required(): bool {
+	return GP_DB_VERSION > get_option( 'gp_db_version' );
+}
+
+/**
  * Runs the install/upgrade of the database.
  *
  * @since 1.0.0
  */
 function gp_upgrade_db() {
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once GP_PATH . GP_INC . 'schema.php';
+
 	global $wpdb;
 
 	$gp_db_version = get_option( 'gp_db_version' );
