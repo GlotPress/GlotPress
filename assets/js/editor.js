@@ -81,26 +81,34 @@ $gp.editor = (
 					$( this ).find( 'div.counts' ).html( html );
 				} );
 			},
-			update_filter_count: function( old_status, new_status ) {
+			update_filter_count: function( status, action ) {
+				var status_filter, count;
+
 				// Get User Locale.
 				var userLocale = $gp_editor_options.user_locale;
 
 				var filter_toolbar = $( 'form#upper-filters-toolbar' );
 
-				var old_status_filter = filter_toolbar.find( 'a.' + old_status );
-				var old_count = old_status_filter.attr( 'data-count' );
+				if ( status === 'current' ) {
+					status = 'translated';
+				}
 
-				var new_status_filter = filter_toolbar.find( 'a.' + new_status );
-				var new_count = new_status_filter.attr( 'data-count' );
+				status_filter = filter_toolbar.find( 'a.' + status );
+				count = status_filter.attr( 'data-count' );
 
-				// Decrease old status count.
-				--old_count;
-				// Increase new status count.
-				++new_count;
+				switch ( action ) {
+					case 'add':
+						// Increase status count.
+						++count;
+						break;
+					case 'remove':
+						// Decrease status count.
+						--count;
+						break;
+				}
 
 				// Update filters data-attributes.
-				$( old_status_filter ).attr( 'data-count', old_count );
-				$( new_status_filter ).attr( 'data-count', new_count );
+				$( status_filter ).attr( 'data-count', count );
 
 				/**
 				 * Update translation filter counts.
@@ -108,8 +116,7 @@ $gp.editor = (
 				 * Until there isn't a proper function like number_format_i18n() for js, use Intl.NumberFormat based on WP user locale slug ('en', 'pt', etc.).
 				 * https://github.com/WordPress/gutenberg/issues/22628
 				 */
-				$( old_status_filter ).find( 'span.count' ).text( new Intl.NumberFormat( userLocale.slug ).format( old_count ) );
-				$( new_status_filter ).find( 'span.count' ).text( new Intl.NumberFormat( userLocale.slug ).format( new_count ) );
+				$( status_filter ).find( 'span.count' ).text( new Intl.NumberFormat( userLocale.slug ).format( count ) );
 			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
