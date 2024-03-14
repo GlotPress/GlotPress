@@ -24,6 +24,33 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
+			translation_status_from_row: function( editor ) {
+				// CSS classes and their actual statuses.
+				var statuses = {
+					untranslated: 'untranslated',
+					'status-current': 'translated',
+					'status-waiting': 'waiting',
+					'status-changesrequested': 'changesrequested',
+					'status-fuzzy': 'fuzzy',
+					'status-old': 'old',
+					'status-rejected': 'rejected',
+				};
+				var classes = editor.attr( 'class' ).split( ' ' );
+				var status = false;
+				var hasWarnings = false;
+				$.each( classes, function( index, value ) {
+					if ( statuses.hasOwnProperty( value ) ) {
+						status = statuses[ value ];
+					}
+					if ( value === 'has-warnings' ) {
+						hasWarnings = true;
+					}
+				} );
+				return {
+					status: status,
+					hasWarnings: hasWarnings,
+				};
+			},
 			update_word_count: function( element ) {
 				var string;
 				var count_characters;
