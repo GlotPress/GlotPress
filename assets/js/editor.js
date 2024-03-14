@@ -468,7 +468,7 @@ $gp.editor = (
 				} );
 			},
 			discard_warning: function( link ) {
-				var data;
+				var data, old_warnings, new_warnings;
 				if ( ! $gp.editor.current ) {
 					return;
 				}
@@ -489,7 +489,14 @@ $gp.editor = (
 					data: data,
 					success: function( response ) {
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
+						old_warnings = $gp.editor.current.translation_warnings;
 						$gp.editor.replace_current( response );
+						new_warnings = $gp.editor.current.translation_warnings;
+						// Check if removed all warnings.
+						if ( old_warnings !== new_warnings ) {
+							$gp.editor.update_filter_count( 'warnings', 'remove' );
+							$gp.editor.next();
+						}
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */
