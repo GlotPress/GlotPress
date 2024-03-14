@@ -126,7 +126,6 @@ $gp.editor = (
 				var offset = new Date().getTimezoneOffset();
 				var gmt_date = new Date( gmt_date_added.text() );
 				var local_date = new Date( ( gmt_date - ( offset * 60 * 1000 ) ) );
-				var translation_status = element.closest( 'tr' ).attr( 'translation_status' );
 
 				if ( ! editor.length ) {
 					return;
@@ -138,7 +137,8 @@ $gp.editor = (
 				editor.row_id = row_id;
 				editor.original_id = $gp.editor.original_id_from_row_id( row_id );
 				editor.translation_id = $gp.editor.translation_id_from_row_id( row_id );
-				editor.translation_status = translation_status;
+				editor.translation_status = $gp.editor.translation_status_from_row( editor ).status;
+				editor.translation_warnings = $gp.editor.translation_status_from_row( editor ).hasWarnings;
 
 				editor.original_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
 					return this.value;
