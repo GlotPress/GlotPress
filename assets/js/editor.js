@@ -24,7 +24,7 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
-			update_count: function( element ) {
+			update_word_count: function( element ) {
 				var string;
 				var count_characters;
 				var count_words;
@@ -172,7 +172,7 @@ $gp.editor = (
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
-					.on( 'focus input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
+					.on( 'focus input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_word_count );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -523,8 +523,8 @@ $gp.editor = (
 				keydown: function( e ) {
 					return $gp.editor.keydown( e );
 				},
-				update_count: function( e ) {
-					return $gp.editor.update_count( e );
+				update_word_count: function( e ) {
+					return $gp.editor.update_word_count( e );
 				},
 				copy: function() {
 					$gp.editor.copy( $( this ) );
