@@ -15,7 +15,7 @@ $priority_char = array(
 
 ?>
 
-<tr class="preview <?php gp_translation_row_classes( $translation ); ?>" id="preview-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>" translation_status="<?php echo esc_attr( $translation->translation_status ?? 'untranslated' ); ?>">
+<tr class="preview <?php gp_translation_row_classes( $translation ); ?>" id="preview-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>">
 	<?php if ( $can_approve_translation ) : ?>
 		<th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]"/></th>
 	<?php elseif ( $can_approve ) : ?>
