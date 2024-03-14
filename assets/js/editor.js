@@ -54,6 +54,17 @@ $gp.editor = (
 					$( this ).find( 'div.counts' ).html( html );
 				} );
 			},
+			update_filter_count: function( old_status, new_status ) {
+				var filter_toolbar = $( 'form#upper-filters-toolbar' );
+				var old_status_filter = filter_toolbar.find( 'a.' + old_status + ' span.count' );
+				var new_status_filter = filter_toolbar.find( 'a.' + new_status + ' span.count' );
+				var old_count = old_status_filter.text();
+				var new_count = new_status_filter.text();
+
+				// Update translation filter counts.
+				$( old_status_filter ).text( --old_count );
+				$( new_status_filter ).text( ++new_count );
+			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
 				var editor = $( '#editor-' + row_id );
@@ -62,6 +73,7 @@ $gp.editor = (
 				var offset = new Date().getTimezoneOffset();
 				var gmt_date = new Date( gmt_date_added.text() );
 				var local_date = new Date( ( gmt_date - ( offset * 60 * 1000 ) ) );
+				var translation_status = element.closest( 'tr' ).attr( 'translation_status' );
 
 				if ( ! editor.length ) {
 					return;
@@ -73,6 +85,7 @@ $gp.editor = (
 				editor.row_id = row_id;
 				editor.original_id = $gp.editor.original_id_from_row_id( row_id );
 				editor.translation_id = $gp.editor.translation_id_from_row_id( row_id );
+				editor.translation_status = translation_status;
 
 				editor.original_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
 					return this.value;
@@ -328,7 +341,7 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data, status_name,
+				var editor, data, status_name, old_status,
 					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
@@ -374,6 +387,8 @@ $gp.editor = (
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
+				old_status = $gp.editor.current.translation_status;
+
 				$.ajax( {
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
@@ -383,6 +398,13 @@ $gp.editor = (
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
+						if ( old_status === 'current' ) {
+							old_status = 'translated';
+						}
+						if ( status === 'current' ) {
+							status = 'translated';
+						}
+						$gp.editor.update_filter_count( old_status, status );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
