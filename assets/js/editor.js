@@ -455,8 +455,6 @@ $gp.editor = (
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
-				old_status = $gp.editor.current.translation_status;
-
 				$.ajax( {
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
@@ -464,15 +462,13 @@ $gp.editor = (
 					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
+						old_status = $gp.editor.current.translation_status;
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
-						if ( old_status === 'current' ) {
-							old_status = 'translated';
+						if ( old_status !== status ) {
+							$gp.editor.update_filter_count( old_status, 'remove' );
+							$gp.editor.update_filter_count( status, 'add' );
 						}
-						if ( status === 'current' ) {
-							status = 'translated';
-						}
-						$gp.editor.update_filter_count( old_status, status );
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
