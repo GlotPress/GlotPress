@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp */
+/* global $gp_editor_options, $gp, Intl, wp */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -55,15 +55,34 @@ $gp.editor = (
 				} );
 			},
 			update_filter_count: function( old_status, new_status ) {
-				var filter_toolbar = $( 'form#upper-filters-toolbar' );
-				var old_status_filter = filter_toolbar.find( 'a.' + old_status + ' span.count' );
-				var new_status_filter = filter_toolbar.find( 'a.' + new_status + ' span.count' );
-				var old_count = old_status_filter.text();
-				var new_count = new_status_filter.text();
+				// Get User Locale.
+				var userLocale = $gp_editor_options.user_locale;
 
-				// Update translation filter counts.
-				$( old_status_filter ).text( --old_count );
-				$( new_status_filter ).text( ++new_count );
+				var filter_toolbar = $( 'form#upper-filters-toolbar' );
+
+				var old_status_filter = filter_toolbar.find( 'a.' + old_status );
+				var old_count = old_status_filter.attr( 'data-count' );
+
+				var new_status_filter = filter_toolbar.find( 'a.' + new_status );
+				var new_count = new_status_filter.attr( 'data-count' );
+
+				// Decrease old status count.
+				--old_count;
+				// Increase new status count.
+				++new_count;
+
+				// Update filters data-attributes.
+				$( old_status_filter ).attr( 'data-count', old_count );
+				$( new_status_filter ).attr( 'data-count', new_count );
+
+				/**
+				 * Update translation filter counts.
+				 *
+				 * Until there isn't a proper function like number_format_i18n() for js, use Intl.NumberFormat based on WP user locale slug ('en', 'pt', etc.).
+				 * https://github.com/WordPress/gutenberg/issues/22628
+				 */
+				$( old_status_filter ).find( 'span.count' ).text( new Intl.NumberFormat( userLocale.slug ).format( old_count ) );
+				$( new_status_filter ).find( 'span.count' ).text( new Intl.NumberFormat( userLocale.slug ).format( new_count ) );
 			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
