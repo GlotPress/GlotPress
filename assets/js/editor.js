@@ -335,13 +335,28 @@ $gp.editor = (
 					data: data,
 					dataType: 'json',
 					success: function( response ) {
-						var original_id;
+						var original_id, old_status, old_warnings, new_status, new_warnings;
 
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 
+						old_status = $gp.editor.current.translation_status;
+						old_warnings = $gp.editor.current.translation_warnings;
+
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
+						}
+
+						new_status = $gp.editor.current.translation_status;
+						new_warnings = $gp.editor.current.translation_warnings;
+
+						if ( old_status !== new_status ) {
+							$gp.editor.update_filter_count( old_status, 'remove' );
+							$gp.editor.update_filter_count( new_status, 'add' );
+						}
+
+						if ( old_warnings === false && new_warnings === true ) {
+							$gp.editor.update_filter_count( 'warnings', 'add' );
 						}
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
