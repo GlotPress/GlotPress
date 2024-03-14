@@ -145,7 +145,8 @@ $i = 0;
 				'<span class="count">' . number_format_i18n( $translation_set->all_count() ) . '</span>'
 			),
 			array(
-				'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'data-count' => $translation_set->all_count(),
 			)
 		);
 
@@ -167,7 +168,8 @@ $i = 0;
 				'<span class="count">' . number_format_i18n( $translation_set->current_count() ) . '</span>'
 			),
 			array(
-				'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'data-count' => $translation_set->current_count(),
 			)
 		);
 
@@ -189,7 +191,8 @@ $i = 0;
 				'<span class="count">' . number_format_i18n( $translation_set->untranslated_count() ) . '</span>'
 			),
 			array(
-				'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'data-count' => $translation_set->untranslated_count(),
 			)
 		);
 
@@ -211,7 +214,8 @@ $i = 0;
 				'<span class="count">' . number_format_i18n( $translation_set->waiting_count() ) . '</span>'
 			),
 			array(
-				'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'data-count' => $translation_set->waiting_count(),
 			)
 		);
 
@@ -234,7 +238,8 @@ $i = 0;
 					'<span class="count">' . number_format_i18n( $translation_set->changesrequested_count() ) . '</span>'
 				),
 				array(
-					'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+					'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+					'data-count' => $translation_set->changesrequested_count(),
 				)
 			);
 		}
@@ -257,7 +262,8 @@ $i = 0;
 				'<span class="count">' . number_format_i18n( $translation_set->fuzzy_count() ) . '</span>'
 			),
 			array(
-				'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'data-count' => $translation_set->fuzzy_count(),
 			)
 		);
 
@@ -279,7 +285,8 @@ $i = 0;
 				'<span class="count">' . number_format_i18n( $translation_set->warnings_count() ) . '</span>'
 			),
 			array(
-				'class' => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'class'      => $filter . ( $is_current_filter ? $current_filter_class : '' ),
+				'data-count' => $translation_set->warnings_count(),
 			)
 		);
 
