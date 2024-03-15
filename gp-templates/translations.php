@@ -286,10 +286,9 @@ $i = 0;
 				<fieldset id="filter-status-fields">
 					<legend class="filter-title"><?php _e( 'Status:', 'glotpress' ); ?></legend>
 					<?php
-					$default_filter  = 'current_or_waiting_or_fuzzy_or_untranslated';
-					$selected_status = gp_array_get( $filters, 'status', $default_filter );
+					$selected_status = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated' );
 					if ( ! is_string( $selected_status ) ) {
-						$selected_status = $default_filter;
+						$selected_status = '';
 					}
 					$selected_status_list = explode( '_or_', $selected_status );
 					?>
