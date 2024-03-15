@@ -423,7 +423,11 @@ class GP_Translation extends GP_Thing {
 		};
 
 		$join_on  = array();
-		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated_or_changesrequested' );
+		$default_statuses = 'current_or_waiting_or_fuzzy_or_untranslated_or_changesrequested';
+		$status           = gp_array_get( $filters, 'status', $default_statuses );
+		if ( ! is_string( $status ) ) {
+			$status = $default_statuses;
+		}
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses, true ) ) {
 			if ( array( 'untranslated' ) == $statuses ) {
