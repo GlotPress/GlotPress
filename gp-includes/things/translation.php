@@ -334,9 +334,9 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'term' ) ) {
 			// Check wether to do a regex or regular search.
 			if ( $regex ) {
-				$like = "REGEXP $collation '" . ( esc_sql( gp_array_get( $filters, 'term' ) ) ) . "'";
+				$condition = "REGEXP $collation '" . ( esc_sql( gp_array_get( $filters, 'term' ) ) ) . "'";
 			} else {
-				$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+				$condition = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			}
 
 			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
@@ -363,8 +363,8 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$mapped_scope_array = array_map(
-				function( $x ) use ( $like ) {
-					return "($x $like)";
+				function( $x ) use ( $condition ) {
+					return "($x $condition)";
 				},
 				$scope_array
 			);
