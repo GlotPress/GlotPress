@@ -327,11 +327,17 @@ class GP_Translation extends GP_Thing {
 			'desc' => 'DESC',
 		);
 		$sort_how  = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
+		$regex     = 'yes' === gp_array_get( $filters, 'regex' ) ? true : false;
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+			// Check wether to do a regex or regular search.
+			if ( $regex ) {
+				$like = "REGEXP $collation '" . ( esc_sql( gp_array_get( $filters, 'term' ) ) ) . "'";
+			} else {
+				$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+			}
 
 			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
 
