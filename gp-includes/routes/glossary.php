@@ -16,7 +16,15 @@ class GP_Route_Glossary extends GP_Route_Main {
 
 	public function new_get() {
 		$glossary                     = new GP_Glossary();
-		$glossary->translation_set_id = gp_get( 'translation_set_id' );
+
+		$translation_set_id = gp_get( 'translation_set_id' );
+
+		if ( ! is_string( $translation_set_id ) ) {
+			$this->redirect_with_error( __( 'Couldn&#8217;t find translation set with this ID.', 'glotpress' ) );
+			return;
+		}
+
+		$glossary->translation_set_id = $translation_set_id;
 
 		$translation_set = $glossary->translation_set_id ? GP::$translation_set->get( $glossary->translation_set_id ) : null;
 
