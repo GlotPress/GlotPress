@@ -195,7 +195,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$page    = gp_get( 'page', 1 );
-		$page    = is_string( $page ) ? $page : 1;
+		$page    = is_string( $page ) && intval( $page ) ? intval( $page ) : 1;
 		$filters = gp_get( 'filters', array() );
 		$filters = array_filter( $filters, 'is_scalar' );
 		$sort    = gp_get( 'sort', array() );
