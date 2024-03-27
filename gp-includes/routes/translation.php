@@ -161,7 +161,10 @@ class GP_Route_Translation extends GP_Route_Main {
 		 */
 		$filename = apply_filters( 'gp_export_translations_filename', $filename, $format, $locale, $project, $translation_set );
 
-		$entries = GP::$translation->for_export( $project, $translation_set, gp_get( 'filters' ) );
+		$filters = gp_get( 'filters', array() );
+		$filters = array_filter( $filters, 'is_scalar' );
+
+		$entries = GP::$translation->for_export( $project, $translation_set, $filters );
 
 		if ( gp_has_translation_been_updated( $translation_set ) ) {
 			$last_modified = gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( GP::$translation->last_modified( $translation_set ) ) ) . ' GMT';
@@ -195,8 +198,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$page    = gp_get( 'page', 1 );
+		$page    = is_numeric( $page ) ? intval( $page ) : 1;
 		$filters = gp_get( 'filters', array() );
+		$filters = array_filter( $filters, 'is_scalar' );
 		$sort    = gp_get( 'sort', array() );
+		$sort    = array_filter( $sort, 'is_scalar' );
 
 		if ( is_array( $sort ) && 'random' === gp_array_get( $sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
