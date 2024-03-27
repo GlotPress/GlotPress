@@ -182,6 +182,9 @@ class GP_Route_Translation extends GP_Route_Main {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
 
+		// Get user locale for i18n.
+		$user_locale = GP_locales::by_field( 'wp_locale', get_user_locale() );
+
 		if ( ! $project || ! $locale ) {
 			return $this->die_with_404();
 		}
