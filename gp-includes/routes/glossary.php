@@ -19,8 +19,8 @@ class GP_Route_Glossary extends GP_Route_Main {
 
 		$translation_set_id = gp_get( 'translation_set_id' );
 
-		// Make sure 'translation_set_id' is a string and convert to int ID. Defaults to null.
-		$translation_set_id = is_string( $translation_set_id ) && intval( $translation_set_id ) ? intval( $translation_set_id ) : null;
+		// Make sure 'translation_set_id' is a numeric string and convert to int ID. Defaults to null.
+		$translation_set_id = is_numeric( $translation_set_id ) ? intval( $translation_set_id ) : null;
 
 		if ( is_null( $translation_set_id ) ) {
 			$this->redirect_with_error( __( 'Couldn&#8217;t find translation set with this ID.', 'glotpress' ) );

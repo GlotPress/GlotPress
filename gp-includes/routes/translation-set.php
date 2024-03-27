@@ -17,8 +17,8 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$set        = new GP_Translation_Set();
 		$project_id = gp_get( 'project_id' );
 
-		// Make sure 'project_id' is a string and convert to int ID. Defaults to null.
-		$set->project_id = is_string( $project_id ) && intval( $project_id ) ? intval( $project_id ) : null;
+		// Make sure 'project_id' is a numeric string and convert to int ID. Defaults to null.
+		$set->project_id = is_numeric( $project_id ) ? intval( $project_id ) : null;
 
 		$project = $set->project_id ? GP::$project->get( $set->project_id ) : null;
 		if ( $this->cannot_edit_set_and_redirect( $set ) ) {
