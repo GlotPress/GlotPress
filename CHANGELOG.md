@@ -1,6 +1,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.1] (April 3, 2024)
+
+**Bugfixes**
+* Fix errors when URL parameters like "filter[status]" aren't strings ([#1814])
+
 ## [4.0.0] (March 7, 2024)
 
 (this space intentionally left blank)
@@ -649,7 +654,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/GlotPress/GlotPress/compare/4.0.0-rc.1...4.0.0
 [4.0.0-rc.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0-beta.3...4.0.0-rc.1
 [4.0.0-beta.3]: https://github.com/GlotPress/GlotPress/compare/4.0.0-beta.2...4.0.0-beta.3
@@ -827,3 +833,13 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1796]: https://github.com/GlotPress/GlotPress/pull/1796
 [#1786]: https://github.com/GlotPress/GlotPress/pull/1786
 [#1792]: https://github.com/GlotPress/GlotPress/pull/1792
+[#1803]: https://github.com/GlotPress/GlotPress/pull/1803
+[#1814]: https://github.com/GlotPress/GlotPress/pull/1814
+[#1815]: https://github.com/GlotPress/GlotPress/pull/1815
+[#1820]: https://github.com/GlotPress/GlotPress/pull/1820
+[#1821]: https://github.com/GlotPress/GlotPress/pull/1821
+[#1819]: https://github.com/GlotPress/GlotPress/pull/1819
+[#1818]: https://github.com/GlotPress/GlotPress/pull/1818
+[#1809]: https://github.com/GlotPress/GlotPress/pull/1809
+[#1807]: https://github.com/GlotPress/GlotPress/pull/1807
+[#1773]: https://github.com/GlotPress/GlotPress/pull/1773
