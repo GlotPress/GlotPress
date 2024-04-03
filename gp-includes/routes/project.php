@@ -288,9 +288,13 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function new_get() {
-		$project                    = new GP_Project();
-		$project->active            = 1;
-		$project->parent_project_id = gp_get( 'parent_project_id', null );
+		$project         = new GP_Project();
+		$project->active = 1;
+
+		$parent_project_id = gp_get( 'parent_project_id' );
+
+		// Make sure 'parent_project_id' is a numeric string and convert to int ID. Defaults to null.
+		$project->parent_project_id = is_numeric( $parent_project_id ) ? intval( $parent_project_id ) : null;
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->parent_project_id ) ) {
 			return;
