@@ -527,7 +527,6 @@ class GP_Locales {
 		$cor->native_name = 'Kernewek';
 		$cor->lang_code_iso_639_1 = 'kw';
 		$cor->lang_code_iso_639_2 = 'cor';
-		$cor->lang_code_iso_639_2 = 'cor';
 		$cor->country_code = 'gb';
 		$cor->wp_locale = 'cor';
 		$cor->slug = 'cor';
