@@ -8,11 +8,12 @@
  */
 
 gp_title( __( 'Delete glossary &lt; GlotPress', 'glotpress' ) );
-gp_breadcrumb(
+gp_breadcrumb_project(
+	$project,
 	array(
-		gp_project_links_from_root( $project ),
 		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), $translation_set->name ),
-		gp_link_get( gp_url_join( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ), '/glossary' ), __( 'Glossary', 'glotpress' ) ),
+		// Check if is Global or Project Glossary.
+		gp_link_get( gp_url_project_locale( $project->path, $locale->slug, $translation_set->slug ) . 'glossary', 0 === $project->id ? __( 'Locale Glossary', 'glotpress' ) : __( 'Project Glossary', 'glotpress' ), ),
 		__( 'Delete', 'glotpress' ),
 	)
 );

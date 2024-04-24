@@ -6,8 +6,7 @@
 
 	<?php
 	// Enqueue the base style so we don't have to load it manually on each page.
-	gp_enqueue_styles( array( 'gp-base', 'driver-js' ) );
-	gp_enqueue_scripts( array( 'gp-tour', 'driver-js' ) );
+	gp_enqueue_styles( array( 'gp-base' ) );
 
 	gp_head();
 	?>

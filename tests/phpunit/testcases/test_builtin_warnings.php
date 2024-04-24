@@ -2,7 +2,7 @@
 
 class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 
-	function setUp() {
+	function setUp(): void {
 		parent::setUp();
 		$this->w              = new GP_Builtin_Translation_Warnings();
 		$this->l              = $this->factory->locale->create();

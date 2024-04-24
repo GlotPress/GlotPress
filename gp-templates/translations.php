@@ -20,11 +20,10 @@ $inactive_bubble = '';
 if ( ! $project->active ) {
 	$inactive_bubble = ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 }
-
-gp_breadcrumb(
+gp_breadcrumb_project(
+	$project,
 	array(
-		gp_project_links_from_root( $project ),
-		gp_link_get( $url, $translation_set->name ) . $inactive_bubble,
+		$translation_set->name . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
@@ -105,6 +104,8 @@ $i = 0;
 		$filters_values_only = array_filter( $filters );
 		$sort_values_only    = array_filter( $sort );
 		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
+		// Remove any non-string or non-numeric values from the array.
+		$filters_and_sort    = array_filter( $filters_and_sort, 'is_scalar' );
 
 		/**
 		 * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
@@ -427,6 +428,16 @@ $i = 0;
 </div>
 
 <?php $class_rtl = 'rtl' === $locale->text_direction ? ' translation-sets-rtl' : ''; ?>
+<?php
+/**
+ * Fires before the translation table has been displayed.
+ *
+ * @since 4.0.0
+ *
+ * @param array $def_vars Variables defined in the template.
+ */
+do_action( 'gp_before_translation_table', get_defined_vars() );
+?>
 <table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
 	<thead>
 	<tr>

@@ -6,7 +6,12 @@ gp_title(
 		$project->name
 	)
 );
-gp_breadcrumb_project( $project );
+gp_breadcrumb_project(
+	$project,
+	array(
+		__( 'Permissions', 'glotpress' ),
+	)
+);
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Permissions', 'glotpress' ); ?></h2>

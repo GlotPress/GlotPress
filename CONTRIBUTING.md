@@ -56,7 +56,7 @@ GlotPress includes automated test code, but coverage is not complete at this tim
 
 ### Unit tests
 
-You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix.  GlotPress tests are based on the WordPress test suite which is currently only compatible with PHPUnit up to 7.x. Please use the latest PHPUnit version from the 7.x branch.
+You can run [PHPUnit](https://phpunit.de/) on Unix or Windows, however at this time instructions and scripts are only provided for Unix. GlotPress tests are based on the WordPress test suite, which is currently compatible with PHPUnit up to 9.x. Please use the latest PHPUnit version from the 9.x branch.
 
 The unit test files are in the `tests/` directory. To run the unit tests on a Unix machine, open a command shell, change to your development directory for GlotPress and run:
 
@@ -65,6 +65,32 @@ $ ./tests/phpunit/bin/run-unittests.sh -d testdb_name [ -u dbuser ] [ -p dbpassw
 ```
 
 To write unit tests, find the relevant file that has similar tests already in them (they are named accordingly), and add the tests there. If there isn't a file that has tests for the functionality you've written, create a new file, and name it `test_<functionality>.php`. PHPUnit will pick up the file automatically. Refer to the [PHPUnit documentation](https://phpunit.de/documentation.html) and existing files for how to write new tests.
+
+### Alternative: run tests with wp-env
+
+You can also run tests in `wp-env`. Once you have [set up `wp-env`](#alternative-wp-env), you can run the whole test suite with:
+
+```shell
+# If wp-env isn't running, you need to start it first.
+npm run env:start
+
+# Run the whole test suite.
+npm run env:phpunit
+```
+
+If you need to pass arguments to PHPUnit, you can do so too:
+
+> Note that the `--` is required, otherwise arguments will not be correctly passed to PHPUnit.
+
+```shell
+npm run env:phpunit -- --version
+```
+
+As an example, to only run the `test_multiple_imports_singular` test, you would use:
+
+```shell
+npm run env:phpunit -- --filter test_multiple_imports_singular
+```
 
 ## Helpful tips for writing issues
 
