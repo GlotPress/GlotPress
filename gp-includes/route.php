@@ -36,6 +36,30 @@ class GP_Route {
 		$this->exit_( $message );
 	}
 
+	/**
+	 * Shows a template and exit.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $title    The title of the page.
+	 * @param string $message  The message to display.
+	 * @param string $template The template to use.
+	 * @param int    $status   The HTTP status code.
+	 *
+	 * @return void
+	 */
+	public function die_with_template( string $title = '', string $message = '', string $template = 'error', int $status = 500 ) {
+		$this->status_header( $status );
+		$this->tmpl(
+			$template,
+			array(
+				'title'   => $title,
+				'message' => $message,
+			)
+		);
+		$this->exit_();
+	}
+
 	public function before_request() {
 		/**
 		 * Fires before a route method is called.
