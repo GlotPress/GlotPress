@@ -41,7 +41,7 @@ class GP_Route {
 	 *
 	 * @return void
 	 */
-	public function die_with_error(string $message, int $status = 500, string $title = '', string $template = 'error' ) {
+	public function die_with_error( string $message, int $status = 500, string $title = '', string $template = 'error' ) {
 		$this->status_header( $status );
 		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
 			$this->exit_( $message );
