@@ -31,33 +31,30 @@ class GP_Route {
 		add_action( 'gp_before_request', array( $this, 'check_uri_trailing_slash' ) );
 	}
 
-	public function die_with_error( $message, $status = 500 ) {
-		$this->status_header( $status );
-		$this->exit_( $message );
-	}
-
 	/**
 	 * Shows a template and exit.
 	 *
-	 * @since 4.1.0
-	 *
-	 * @param string $title    The title of the page.
 	 * @param string $message  The message to display.
-	 * @param string $template The template to use.
 	 * @param int    $status   The HTTP status code.
+	 * @param string $title    The title of the page.
+	 * @param string $template The template to use.
 	 *
 	 * @return void
 	 */
-	public function die_with_template( string $title = '', string $message = '', string $template = 'error', int $status = 500 ) {
+	public function die_with_error(string $message, int $status = 500, string $title = '', string $template = 'error' ) {
 		$this->status_header( $status );
-		$this->tmpl(
-			$template,
-			array(
-				'title'   => $title,
-				'message' => $message,
-			)
-		);
-		$this->exit_();
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
+			$this->exit_( $message );
+		} else {
+			$this->tmpl(
+				$template,
+				array(
+					'title'   => $title,
+					'message' => $message,
+				)
+			);
+			$this->exit_();
+		}
 	}
 
 	public function before_request() {
