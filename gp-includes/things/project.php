@@ -451,7 +451,7 @@ class GP_Project extends GP_Thing {
 		// Delete Project child projects.
 		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
 
-		// Get Project translation sets IDs.
+		// Get the Project translation sets IDs.
 		$translation_sets = array_map(
 			function ( $translation_set ) {
 				return $translation_set->id;
@@ -459,15 +459,30 @@ class GP_Project extends GP_Thing {
 			GP::$translation_set->find_many( array( 'project_id' => $this->id ) )
 		);
 
-		// Delete Project translation sets.
+		// Get the Project Glossaries IDs.
+		$glossaries = array_map(
+			function ( $glossary ) {
+				return $glossary->id;
+			},
+			$glossaries = GP::$glossary->find_many( array( 'translation_set_id' => $translation_sets ) )
+		);
+
+		// Delete the Project Translations.
 		GP::$translation->delete_many( array( 'translation_set_id' => $translation_sets ) );
 
-		// Delete Project translation sets.
+		// Delete the Project Glossaries entries.
+		GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossaries ) );
+
+		// Delete the Project Glossaries.
+		GP::$glossary->delete_many( array( 'translation_set_id' => $translation_sets ) );
+
+		// Delete the Project Translation Sets.
 		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
 
-		// Delete Project originals.
+		// Delete the Project Originals.
 		GP::$original->delete_many( array( 'project_id' => $this->id ) );
 
+		// Delete the Project.
 		return parent::delete();
 	}
 }
