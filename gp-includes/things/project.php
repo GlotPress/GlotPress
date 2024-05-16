@@ -360,6 +360,7 @@ class GP_Project extends GP_Thing {
 		return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
 	}
 
+
 	/**
 	 * Copy Translation Sets, Translations and Project Glossaries from an existent Project.
 	 *
@@ -442,6 +443,13 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
+	/**
+	 * Duplicate Originals, Translation Sets, Translations and Project Glossaries from an existent Project.
+	 *
+	 * @param GP_Project $source_project   Project.
+	 *
+	 * @return void
+	 */
 	public function duplicate_project_contents_from( $source_project ) {
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
