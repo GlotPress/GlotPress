@@ -479,9 +479,6 @@ class GP_Project extends GP_Thing {
 			// Delete the Project Translations.
 			GP::$translation->delete_many( array( 'translation_set_id' => $translation_sets ) );
 
-			// Delete the Project Glossaries.
-			GP::$glossary->delete_many( array( 'translation_set_id' => $translation_sets ) );
-
 			// Get the Project Glossaries IDs.
 			$glossaries = GP::$glossary->find_many( array( 'translation_set_id' => $translation_sets ) );
 
@@ -496,6 +493,9 @@ class GP_Project extends GP_Thing {
 				// Delete the Project Glossaries entries.
 				GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossaries ) );
 			}
+
+			// Delete the Project Glossaries.
+			GP::$glossary->delete_many( array( 'translation_set_id' => $translation_sets ) );
 		}
 
 		// Delete the Project Translation Sets.
