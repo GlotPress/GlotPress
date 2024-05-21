@@ -408,6 +408,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		// Filter out suffixes with empty values.
 		$suffixes = array_filter( $suffixes, fn( $value ) => ! empty( $value ) );
 
+		// Add suffixes for part_of_speech with rules.
 		if ( ! empty( $suffixes[ $type ] ) ) {
 			// Loop through rules.
 			foreach ( $suffixes[ $type ] as $rule ) {
@@ -462,6 +463,9 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 				}
 			}
+		} else {
+			// Add match for part_of_speech without any suffix rules.
+			$glossary_entries_suffixes[ $term ] = array();
 		}
 	}
 
@@ -544,6 +548,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 				}
 			}
 		}
+		// Make the regex more deterministic.
+		ksort( $regex_group );
 
 		// Build the regular expression.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
