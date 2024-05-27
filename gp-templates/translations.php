@@ -105,7 +105,7 @@ $i = 0;
 		$sort_values_only    = array_filter( $sort );
 		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
 		// Remove any non-string or non-numeric values from the array.
-		$filters_and_sort    = array_filter( $filters_and_sort, 'is_scalar' );
+		$filters_and_sort = array_filter( $filters_and_sort, 'is_scalar' );
 
 		/**
 		 * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,

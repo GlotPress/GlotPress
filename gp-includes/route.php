@@ -34,14 +34,17 @@ class GP_Route {
 	/**
 	 * Shows a template and exit.
 	 *
-	 * @param string $message  The message to display.
-	 * @param int    $status   The HTTP status code.
-	 * @param string $title    The title of the page.
-	 * @param string $template The template to use.
+	 * @param string      $message  The message to display.
+	 * @param int         $status   The HTTP status code.
+	 * @param string|null $title    The title of the page.
+	 * @param string      $template The template to use.
 	 *
 	 * @return void
 	 */
-	public function die_with_error( string $message, int $status = 500, string $title = '', string $template = 'error' ) {
+	public function die_with_error( string $message, int $status = 500, ?string $title = null, string $template = 'error' ) {
+		if ( null === $title ) {
+			$title = esc_html__( 'Error', 'glotpress' );
+		}
 		$this->status_header( $status );
 		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
 			$this->exit_( $message );
