@@ -7,7 +7,7 @@
 /** @var string $message */
 
 /* Translators: %s: title */
-gp_title( esc_html( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), $title ) ) );
+gp_title( esc_html( sprintf( __( '%s &lt; GlotPress', 'glotpress' ), $title ? $title : esc_html__( 'Error', 'glotpress' ) ) ) );
 gp_tmpl_header();
 ?>
 	<div class="error-template">
