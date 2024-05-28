@@ -1703,3 +1703,9 @@ a.tour-button.button-primary:hover {
 .webui-popover a {
 	color: #fff;
 }
+
+.error-template {
+	text-align: center;
+	margin: 0 auto;
+	padding: 7rem 0;
+}
