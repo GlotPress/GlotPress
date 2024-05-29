@@ -44,13 +44,12 @@
 	line-height: 100%;
 }
 
-
 #translator-pop-out .box {
 	width: 0.8em;
 	height: 0.8em;
 	border: #0085be thin solid;
 	float: left;
-	margin: .3em .3em .2em .7em;
+	margin: .1em .3em;
 }
 
 #translator-pop-out .box.stats-current {
