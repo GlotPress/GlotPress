@@ -1,16 +1,17 @@
-
 #translator-launcher {
 	position: fixed;
-	bottom: 76px;
+	bottom: 60px;
 	right: 24px;
-	border-radius: 24px;
-	background: #0085be !important;
+	border-radius: 200px;
+	background: #3857e9 !important;
 	padding: 4px !important;
 	font-size: 16px;
 	z-index: 99;
 	display: none;
 	cursor: pointer;
 	color: #fff;
+	width: 20px;
+	height: 20px;
 }
 
 #translator-launcher span.dashicons-admin-site-alt3 {
@@ -19,26 +20,30 @@
 
 #translator-pop-out {
 	display: none;
-	width: 212px;
-    height: auto;
-    background: white;
-    bottom: 108px;
-    right: 24px;
-    position: fixed;
-    border-radius: 6px;
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	height: auto;
+	background: white;
+	bottom: 108px;
+	right: 24px;
+	position: fixed;
+	border-radius: 2px;
 	z-index: 999999999;
+	border: 1px solid #ccc;
+	font-size: 14px;
+	padding: 12px;
 }
 
-#translator-pop-out ul{
+#translator-pop-out ul {
 	margin-top: 0;
 }
 
-#translator-pop-out ul li{
-	padding: 8px;
+
+#translator-pop-out ul li {
+	padding: 0 0 12px 0;
 	border-bottom: #eeeded thin solid;
 	margin: 0;
+	line-height: 100%;
 }
+
 
 #translator-pop-out .box {
 	width: 0.8em;
@@ -49,15 +54,15 @@
 }
 
 #translator-pop-out .box.stats-current {
-	background: #4cb420;
+	background: rgba(51, 240, 120, 0.5);
 }
 
 #translator-pop-out .box.stats-waiting {
-	background: #ff0;
+	background: rgba(255, 249, 114, 0.5);
 }
 
 #translator-pop-out .box.stats-untranslated {
-	background: #f00;
+	background: rgba(227, 112, 86, 0.5);;
 }
 
 #translator-pop-out span.stats-label {
