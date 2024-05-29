@@ -419,19 +419,21 @@ div.webui-popover button.save {
 }
 
 .translator-translated {
-	text-shadow: 0px 0px 10px #0f0, 0px 0px 2px #4cb420 !important;
-	cursor: pointer;
+    cursor: pointer;
+    background: rgba(51, 240, 120, 0.5);
+    border-radius: 2px;
 }
-.translator-checking {
-	text-shadow: 0px 0px 1px #e83 !important;
-}
-.translator-user-translated {
-	text-shadow: 0px 0px 10px #ff0, 0px 0px 2px #ffba00 !important;
-	cursor: pointer;
-}
+
 .translator-untranslated {
-	text-shadow: 0px 0px 10px #f00, 0px 0px 2px #dd3d36 !important;
-	cursor: pointer;
+    cursor: pointer;
+    background: rgba(227, 112, 86, 0.5);
+    border-radius: 2px;
+}
+
+.translator-user-untranslated {
+    cursor: pointer;
+    background: rgba(255, 249, 114, 0.5);
+    border-radius: 2px;
 }
 
 .translator-highlight {
