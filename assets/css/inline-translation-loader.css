@@ -12,6 +12,7 @@
 	color: #fff;
 	width: 20px;
 	height: 20px;
+	box-sizing: content-box;
 }
 
 #translator-launcher span.dashicons-admin-site-alt3 {
