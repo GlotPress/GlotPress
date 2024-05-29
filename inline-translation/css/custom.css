@@ -99,7 +99,7 @@ div.webui-popover button.save {
     border-radius: 2px;
 }
 
-.translator-user-untranslated {
+.translator-user-translated {
     cursor: pointer;
     background: rgba(255, 249, 114, 0.5);
     border-radius: 2px;
