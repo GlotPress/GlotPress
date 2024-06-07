@@ -136,9 +136,9 @@
 
 		function autoloadTranslator( enable ) {
 			if ( enable ) {
-				document.cookie = 'autoinlinetranslation=1;path=/';
-			} else {
 				document.cookie = 'autoinlinetranslation=;expires=Sat,%201%20Jan%202000%2000:00:00%20GMT;path=/';
+			} else {
+				document.cookie = 'autoinlinetranslation=0;path=/';
 			}
 		}
 
@@ -148,7 +148,7 @@
 				return true;
 			}
 
-			return !! document.cookie.match( /autoinlinetranslation=1/ );
+			return ! document.cookie.match( /autoinlinetranslation=0/ );
 		}
 		function jumpToNextOnSave() {
 			return !! document.cookie.match( /inlinejumptonext=1/ );

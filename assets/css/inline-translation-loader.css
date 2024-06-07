@@ -51,6 +51,7 @@
 	border: #0085be thin solid;
 	float: left;
 	margin: .1em .3em;
+	padding: 0;
 }
 
 #translator-pop-out .box.stats-current {
