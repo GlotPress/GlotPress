@@ -1186,7 +1186,7 @@ function GlotPress( locale, translations ) {
 				language = 'informal ' + language;
 			}
 
-			if ( server.openai_prompt ) {
+			if ( server.openai_prompt && ! prompt ) {
 				prompt += server.openai_prompt;
 			}
 
