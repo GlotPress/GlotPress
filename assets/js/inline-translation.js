@@ -1186,14 +1186,32 @@ function GlotPress( locale, translations ) {
 				language = 'informal ' + language;
 			}
 
-			if ( server.openai_prompt ) {
+			if ( server.openai_prompt && '' === prompt ) {
 				prompt += server.openai_prompt;
 			}
 
 			if ( ! ( data && data.prompt ) && translationPair.getOriginal().getSingularGlossaryMarkup() ) {
 				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
 					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
-						prompt += 'Translate "' + word.textContent + '" as "' + e.translation + '" when it is a ' + e.pos;
+						const orRegex = new RegExp( '\s' + [
+							'o', // Spanish and Italian
+							'oder', // German
+							'ou', // French or Portuguese
+							'of', // Dutch
+							'или', // Russian
+							'または', // Japanese
+							'或者', // Chinese
+							'또는', // Korean
+							'أو', // Arabic
+							'या', // Hindi
+							'অথবা', // Bengali
+							'veya', // Turkish
+							'hoặc', // Vietnamese
+							'หรือ', // Thai
+							'או', // Hebrew
+							'ή', // Greek
+						].join( '|' ) + '\s', 'g' );
+						prompt += 'Translate "' + word.textContent + '" as "' + e.translation.replace( orRegex, '" or "' ) + '" when it is a ' + e.pos;
 						if ( e.comment ) {
 							prompt += ' (' + e.comment + ')';
 						}
