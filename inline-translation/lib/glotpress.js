@@ -160,7 +160,7 @@ function GlotPress( locale, translations ) {
 			if ( ! ( data && data.prompt ) && translationPair.getOriginal().getSingularGlossaryMarkup() ) {
 				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
 					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
-						const orRegex = new RegExp( '\s' + [
+						const orRegex = new RegExp( '\\s' + [
 							'o', // Spanish and Italian
 							'oder', // German
 							'ou', // French or Portuguese
@@ -176,8 +176,8 @@ function GlotPress( locale, translations ) {
 							'hoặc', // Vietnamese
 							'หรือ', // Thai
 							'או', // Hebrew
-							'ή', // Greek
-						].join( '|' ) + '\s', 'g' );
+							'ή' // Greek
+						].join( '|' ) + '\\s', 'g' );
 						prompt += 'Translate "' + word.textContent + '" as "' + e.translation.replace( orRegex, '" or "' ) + '" when it is a ' + e.pos;
 						if ( e.comment ) {
 							prompt += ' (' + e.comment + ')';
