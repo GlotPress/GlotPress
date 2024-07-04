@@ -26,7 +26,7 @@
     "build": "grunt",
     "watch": "grunt watch",
     "prepare-release": "grunt replace:prepare-release",
-    "env:start": "wp-env start && wp-env run cli wp option update permalink_structure '/%postname%/'",
+    "env:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/' && wp-env run cli --env-cwd=wp-content/plugins/GlotPress wp rewrite flush --hard",
     "env:stop": "wp-env stop",
     "env:phpunit": "wp-env run tests-cli --env-cwd=wp-content/plugins/GlotPress composer install && wp-env run tests-cli --env-cwd=wp-content/plugins/GlotPress php ./vendor/bin/phpunit",
     "lint:js": "wp-scripts lint-js",
