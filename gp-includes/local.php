@@ -668,6 +668,20 @@ class GP_Local {
 				},
 				apply_filters( 'local_glotpress_local_themes', wp_get_themes() )
 			),
+			'pages'      => array_map(
+				function( $page ) {
+					if ( ! get_the_excerpt( $page->ID ) ) {
+						return false;
+					}
+					return array(
+						'TextDomain'  => 'page-' . $page->ID,
+						'Name'        => $page->post_title,
+						'Description' => get_the_excerpt( $page->ID ),
+						'Version'     => $page->post_date,
+					);
+				},
+				apply_filters( 'local_glotpress_local_pages', get_pages() )
+			),
 		);
 	}
 
@@ -747,7 +761,7 @@ class GP_Local {
 			$show_actions_column = $can_create_projects;
 			?>
 			<p>
-				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change their translations.', 'glotpress' ); ?>
+				<?php esc_html_e( 'These are the pages, plugins, and themes you have in your WordPress installation. With GlotPress, you can change their translations.', 'glotpress' ); ?>
 			</p>
 
 			<?php foreach ( $projects as $type => $items ) : ?>
