@@ -543,6 +543,36 @@ class GP_Rest_API {
 			$locale->slug
 		);
 
+		if ( ! $translation_set ) {
+			$new_set         = new GP_Translation_Set(
+				array(
+					'name'       => $locale->english_name,
+					'slug'       => $locale_slug,
+					'project_id' => $project->id,
+					'locale'     => $locale->slug,
+				)
+			);
+			$translation_set = GP::$translation_set->create_and_select( $new_set );
+			$messages[]      = __( 'Translation set was created.', 'glotpress' );
+		}
+
+		if ( 'pages/page-' === substr( $path, 0, 11 ) ) {
+			$originals_added = $this->import_page( $project, $path );
+			$messages[]      = sprintf(
+			// translators: %s is the number of originals.
+				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
+				$originals_added
+			);
+
+			return array(
+				'project'         => $project->id,
+				'translation_set' => $translation_set->id,
+				'url'             => gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ),
+				'originals_added' => $originals_added,
+				'messages'        => $messages,
+			);
+		}
+
 		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
 
 		$local_mo = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
@@ -559,19 +589,6 @@ class GP_Rest_API {
 					)
 				);
 			}
-		}
-
-		if ( ! $translation_set ) {
-			$new_set         = new GP_Translation_Set(
-				array(
-					'name'       => $locale->english_name,
-					'slug'       => $locale_slug,
-					'project_id' => $project->id,
-					'locale'     => $locale->slug,
-				)
-			);
-			$translation_set = GP::$translation_set->create_and_select( $new_set );
-			$messages[]      = __( 'Translation set was created.', 'glotpress' );
 		}
 
 		$originals_added    = false;
@@ -749,5 +766,84 @@ class GP_Rest_API {
 		}
 		rename( $mo_file, $local_mo );
 		return $mo_file_url;
+	}
+
+	/**
+	 * Import a page.
+	 *
+	 * @param GP_Project $project The project.
+	 * @param string     $path    The path.
+	 *
+	 * @return int The number of originals created.
+	 */
+	private function import_page( GP_Project $project, string $path ): int {
+		$originals_created = 0;
+		$page_id           = str_replace( 'pages/page-', '', $path );
+		$page              = get_post( $page_id );
+		$page_blocks       = array();
+		if ( has_blocks( $page->post_content ) ) {
+			$blocks      = parse_blocks( $page->post_content );
+			$page_blocks = $this->get_content_from_blocks( $blocks );
+		}
+		foreach ( $page_blocks as $block ) {
+			$original        = (object) array(
+				'singular' => $block,
+				'plural'   => '',
+				'context'  => 'block',
+			);
+			$original_record = GP::$original->by_project_id_and_entry( $project->id, $original );
+
+			if ( ! $original_record ) {
+				$original = GP::$original->create(
+					array(
+						'project_id' => $project->id,
+						'singular'   => $original->singular,
+						'plural'     => $original->plural,
+						'context'    => $original->context,
+					)
+				);
+				if ( $original ) {
+					$originals_created++;
+				}
+			}
+		}
+		return $originals_created;
+	}
+
+	/**
+	 * Get only the content from blocks.
+	 *
+	 * @param array $blocks The blocks.
+	 *
+	 * @return array The content.
+	 */
+	private function get_content_from_blocks( array $blocks ): array {
+		$page_blocks = array();
+		foreach ( $blocks as $block ) {
+			if ( ! $this->is_empty_block( $block ) ) {
+				if ( ! empty( $block['innerHTML'] ) ) {
+					$page_blocks[] = str_replace( array( "\n", "\r", "\t" ), '', $block['innerHTML'] );
+				} elseif ( ! empty( $block['innerContent'] ) ) {
+					$page_blocks[] = $block['innerContent'];
+				}
+			}
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$page_blocks = array_merge( $page_blocks, $this->get_content_from_blocks( $block['innerBlocks'] ) );
+			}
+		}
+		return $page_blocks;
+	}
+
+	/**
+	 * Check if a block is empty: only has new lines, spaces, tabs, HTML tags, etc.
+	 *
+	 * @param array $block The block to check.
+	 *
+	 * @return bool
+	 */
+	private function is_empty_block( array $block ): bool {
+		$block_content = str_replace( array( "\n", "\r", "\t" ), '', $block['innerHTML'] );
+		$block_content = wp_strip_all_tags( $block_content );
+		return '' === $block_content;
 	}
 }
