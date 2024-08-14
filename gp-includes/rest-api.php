@@ -508,7 +508,9 @@ class GP_Rest_API {
 	 * @return     array  The result.
 	 */
 	public function create_local_project( $request ) {
-		$path = $request->get_param( 'path' );
+		$path               = $request->get_param( 'path' );
+		$originals_added    = false;
+		$translations_added = false;
 		if ( ! $path ) {
 			return new WP_Error( 'missing-parameter', 'Missing parameter: path', array( 'status' => 400 ) );
 		}
@@ -563,50 +565,9 @@ class GP_Rest_API {
 				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
 				$originals_added
 			);
-
-			return array(
-				'project'         => $project->id,
-				'translation_set' => $translation_set->id,
-				'url'             => gp_url( 'projects/' . $project->path . '/' . $translation_set->locale . '/' . $translation_set->slug ),
-				'originals_added' => $originals_added,
-				'messages'        => $messages,
-			);
-		}
-
-		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
-
-		$local_mo = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
-		if ( ! file_exists( $local_mo ) || $translation_set ) {
-			$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_mo );
-			if ( is_wp_error( $downloaded ) ) {
-				$messages[] = $downloaded->get_error_message();
-			} else {
-				$messages[] = make_clickable(
-					sprintf(
-					// translators: %s is a URL.
-						__( 'Downloaded MO file from %s', 'glotpress' ),
-						$downloaded
-					)
-				);
-			}
-		}
-
-		$originals_added    = false;
-		$translations_added = false;
-		if ( file_exists( $local_mo ) ) {
-			list( $originals_added ) = $this->get_or_import_originals( $project, $local_mo );
-			$messages[]              = sprintf(
-				// translators: %s is the number of originals.
-				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
-				$originals_added
-			);
-
-			$translations_added = $this->get_or_import_translations( $project, $translation_set, $local_mo );
-			$messages[]         = sprintf(
-				// translators: %s is the number of translations.
-				_n( 'Imported new %s translation.', 'Imported new %s translations.', $translations_added, 'glotpress' ),
-				$translations_added
-			);
+		} else {
+			list($messages_added, $originals_added, $translations_added) = $this->import_mo_file( $path, $locale, $locale_slug, $translation_set, $project, $messages );
+			$messages = array_merge( $messages, $messages_added );
 		}
 
 		return array(
@@ -845,5 +806,54 @@ class GP_Rest_API {
 		$block_content = str_replace( array( "\n", "\r", "\t" ), '', $block['innerHTML'] );
 		$block_content = wp_strip_all_tags( $block_content );
 		return '' === $block_content;
+	}
+
+	/**
+	 * @param string             $path            The type of project and its name, in URL format.
+	 * @param GP_Locale          $locale          The locale.
+	 * @param string             $locale_slug     The locale slug.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param GP_Project         $project         The project.
+	 *
+	 * @return array
+	 */
+	private function import_mo_file( string $path, GP_Locale $locale, string $locale_slug, GP_Translation_Set $translation_set, GP_Project $project ): array {
+		$messages      = array();
+		$languages_dir = trailingslashit( WP_CONTENT_DIR ) . 'languages/';
+
+		$local_mo = apply_filters( 'gp_local_project_pomo_base', $languages_dir . basename( $path ) . '-' . $locale->wp_locale, $path, $locale_slug, $locale, $languages_dir ) . '.mo';
+		if ( ! file_exists( $local_mo ) || $translation_set ) {
+			$downloaded = $this->download_dotorg_translation( $project, $locale, $locale_slug, $local_mo );
+			if ( is_wp_error( $downloaded ) ) {
+				$messages[] = $downloaded->get_error_message();
+			} else {
+				$messages[] = make_clickable(
+					sprintf(
+					// translators: %s is a URL.
+						__( 'Downloaded MO file from %s', 'glotpress' ),
+						$downloaded
+					)
+				);
+			}
+		}
+
+		$originals_added    = false;
+		$translations_added = false;
+		if ( file_exists( $local_mo ) ) {
+			list($originals_added) = $this->get_or_import_originals( $project, $local_mo );
+			$messages[]            = sprintf(
+			// translators: %s is the number of originals.
+				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
+				$originals_added
+			);
+
+			$translations_added = $this->get_or_import_translations( $project, $translation_set, $local_mo );
+			$messages[]         = sprintf(
+			// translators: %s is the number of translations.
+				_n( 'Imported new %s translation.', 'Imported new %s translations.', $translations_added, 'glotpress' ),
+				$translations_added
+			);
+		}
+		return array( $messages, $originals_added, $translations_added );
 	}
 }
