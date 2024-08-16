@@ -559,11 +559,15 @@ class GP_Rest_API {
 		}
 
 		if ( 'pages/page-' === substr( $path, 0, 11 ) ) {
-			$originals_added = $this->import_page( $project, $path );
-			$messages[]      = sprintf(
-			// translators: %s is the number of originals.
-				_n( 'Imported %s original.', 'Imported %s originals.', $originals_added, 'glotpress' ),
-				$originals_added
+			list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $this->import_page( $project, $path );
+			$messages[] = sprintf(
+			/* Translators: 1: Added strings count. 2: Updated strings count. 3: Fuzzied strings count. 4: Obsoleted strings count. 5: Error string count. */
+				__( '%1$d new strings added, %2$d updated, %3$d fuzzied, %4$d obsoleted and %5$d with error.', 'glotpress' ),
+				$originals_added,
+				$originals_existing,
+				$originals_fuzzied,
+				$originals_obsoleted,
+				$originals_error
 			);
 		} else {
 			list($messages_added, $originals_added, $translations_added) = $this->import_mo_file( $path, $locale, $locale_slug, $translation_set, $project, $messages );
@@ -735,40 +739,18 @@ class GP_Rest_API {
 	 * @param GP_Project $project The project.
 	 * @param string     $path    The path.
 	 *
-	 * @return int The number of originals created.
+	 * @return array The number of added, existing, fuzzied, obsoleted and error strings.
 	 */
-	private function import_page( GP_Project $project, string $path ): int {
-		$originals_created = 0;
-		$page_id           = str_replace( 'pages/page-', '', $path );
-		$page              = get_post( $page_id );
-		$page_blocks       = array();
+	private function import_page( GP_Project $project, string $path ): array {
+		$page_id     = str_replace( 'pages/page-', '', $path );
+		$page        = get_post( $page_id );
+		$page_blocks = array();
 		if ( has_blocks( $page->post_content ) ) {
 			$blocks      = parse_blocks( $page->post_content );
 			$page_blocks = $this->get_content_from_blocks( $blocks );
 		}
-		foreach ( $page_blocks as $block ) {
-			$original        = (object) array(
-				'singular' => $block,
-				'plural'   => '',
-				'context'  => 'block',
-			);
-			$original_record = GP::$original->by_project_id_and_entry( $project->id, $original );
-
-			if ( ! $original_record ) {
-				$original = GP::$original->create(
-					array(
-						'project_id' => $project->id,
-						'singular'   => $original->singular,
-						'plural'     => $original->plural,
-						'context'    => $original->context,
-					)
-				);
-				if ( $original ) {
-					$originals_created++;
-				}
-			}
-		}
-		return $originals_created;
+		$po_object = $this->get_po_object( $page_blocks );
+		return GP::$original->import_for_project( $project, $po_object );
 	}
 
 	/**
@@ -855,5 +837,24 @@ class GP_Rest_API {
 			);
 		}
 		return array( $messages, $originals_added, $translations_added );
+	}
+
+	/**
+	 * Get a PO object.
+	 *
+	 * @param array $page_blocks The page blocks.
+	 *
+	 * @return PO The PO object.
+	 */
+	private function get_po_object( array $page_blocks ): PO {
+		$po          = new PO();
+		$po->entries = array();
+		foreach ( $page_blocks as $block ) {
+			$entry                           = new Translation_Entry();
+			$entry->singular                 = $block;
+			$entry->context                  = 'block';
+			$po->entries[ $entry->singular ] = $entry;
+		}
+		return $po;
 	}
 }
