@@ -241,7 +241,7 @@ class GP_Local {
 					<?php
 						echo wp_kses(
 							sprintf(
-								// translators: %s: URL to permalink settings
+								// translators: %s: URL to permalink settings.
 								__( 'You are running an unsupported permalink structure, thus the Translation Interface is not available. <a href="%s">Please change your permalink settings</a> if you want to use it.', 'glotpress' ),
 								admin_url( 'options-permalink.php' ),
 							),
@@ -327,7 +327,7 @@ class GP_Local {
 					<?php
 						echo wp_kses(
 							sprintf(
-								// translators: %s: URL to permalink settings
+								// translators: %s: URL to permalink settings.
 								__( 'You are running an unsupported permalink structure, thus the Translation Interface is not available. <a href="%s">Please change your permalink settings</a> if you want to use it.', 'glotpress' ),
 								admin_url( 'options-permalink.php' ),
 							),
@@ -875,6 +875,8 @@ class GP_Local {
 														$gp_locale->native_name
 													)
 												);
+											} elseif ( 'pages/' === substr( $path, 0, 6 ) ) {
+												esc_html_e( 'Update strings for this page', 'glotpress' );
 											} else {
 												esc_html_e( 'Update strings and translations from WordPress.org', 'glotpress' );
 											}
