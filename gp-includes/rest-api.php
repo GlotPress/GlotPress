@@ -472,6 +472,17 @@ class GP_Rest_API {
 		);
 		$entries = GP::$translation->for_export( $project, $translation_set, $filters );
 
+		if ( 'pages/page-' === substr( $path, 0, 11 ) ) {
+			$translations_deployed = $this->deploy_page( $path, $project, $locale, $translation_set );
+			return array(
+				'message' => sprintf(
+				/* translators: %s: Number of entries deployed. */
+					_n( '%d translation was deployed.', '%d translations were deployed.', $translations_deployed, 'glotpress' ),
+					$translations_deployed
+				),
+			);
+		}
+
 		global $wp_filesystem;
 		if ( empty( $wp_filesystem ) ) {
 			require_once ABSPATH . '/wp-admin/includes/file.php';
@@ -853,8 +864,150 @@ class GP_Rest_API {
 			$entry                           = new Translation_Entry();
 			$entry->singular                 = $block;
 			$entry->context                  = 'block';
+			$entry->status                   = '+active';
 			$po->entries[ $entry->singular ] = $entry;
 		}
 		return $po;
+	}
+
+	/**
+	 * Deploy a translated page.
+	 *
+	 * @param string             $path            The path.
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Locale          $locale          The locale.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 *
+	 * @return int The number of translations deployed.
+	 */
+	private function deploy_page( string $path, GP_Project $project, GP_Locale $locale, GP_Translation_Set $translation_set ): int {
+		$original_page_id      = str_replace( 'pages/page-', '', $path );
+		$translated_page       = $this->get_translated_page( $original_page_id, $locale );
+		$translations_deployed = 0;
+		$translated_page_id    = $translated_page->ID;
+		if ( ! $translated_page_id ) {
+			$translated_page_id = $this->create_translated_page( $original_page_id, $locale );
+		}
+		if ( $translated_page_id ) {
+			$original_page     = get_post( $original_page_id );
+			$translated_blocks = array();
+			if ( has_blocks( $original_page->post_content ) ) {
+				$original_blocks  = parse_blocks( $original_page->post_content );
+				$project_id       = $project->id;
+				$original_strings = GP::$original->by_project_id( $project_id );
+				foreach ( $original_blocks as $block ) {
+					$block_translated    = $this->get_block_translated( $block, $original_strings, $translation_set );
+					$translated_blocks[] = $block_translated;
+					if ( $block === $block_translated ) {
+						$translations_deployed++;
+					}
+				}
+				wp_update_post(
+					wp_slash(
+						array(
+							'ID'           => $translated_page_id,
+							'post_content' => serialize_blocks( $translated_blocks ),
+						)
+					),
+					false,
+					false
+				);
+			}
+		}
+		return $translations_deployed;
+	}
+
+	/**
+	 * Get the translated page.
+	 *
+	 * @param int       $original_page_id The original page ID from the non-translated page.
+	 * @param GP_Locale $locale          The locale used in the translated page.
+	 *
+	 * @return false|WP_Post The translated page.
+	 */
+	private function get_translated_page( int $original_page_id, GP_Locale $locale ) {
+		$args = array(
+			'meta_query'     => array(
+				array(
+					'key'     => '_original_page_id',
+					'value'   => $original_page_id,
+					'compare' => '=',
+				),
+				array(
+					'key'     => '_locale',
+					'value'   => $locale->wp_locale,
+					'compare' => '=',
+				),
+			),
+			'post_type'      => 'any',
+			'posts_per_page' => 1,
+		);
+
+		$query = new WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			return $query->posts[0];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Create a new page to store the translated content.
+	 *
+	 * @param int       $original_page_id The original page ID from the non-translated page.
+	 * @param GP_Locale $locale          The locale used in the translated page.
+	 * @param array     $page_data        The page extra data.
+	 *
+	 * @return false|int|WP_Error
+	 */
+	private function create_translated_page( int $original_page_id, GP_Locale $locale, $page_data = array() ) {
+		$default_page_data = array(
+			'post_title'   => 'Translated Page - ' . $locale,
+			'post_content' => '',
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+		);
+
+		$post_data   = wp_parse_args( $page_data, $default_page_data );
+		$new_post_id = wp_insert_post( $post_data );
+
+		if ( $new_post_id && ! is_wp_error( $new_post_id ) ) {
+			update_post_meta( $new_post_id, '_original_page_id', $original_page_id );
+			update_post_meta( $new_post_id, '_locale', $locale->wp_locale );
+			return $new_post_id;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return the translated block, if it exists.
+	 *
+	 * @param array              $block            The block.
+	 * @param array              $original_strings The original strings.
+	 * @param GP_Translation_Set $translation_set  The translation set.
+	 *
+	 * @return array The translated block.
+	 */
+	private function get_block_translated( array $block, array $original_strings, GP_Translation_Set $translation_set ): array {
+		foreach ( $original_strings as $original ) {
+			$block_cleaned = str_replace( array( "\n", "\r", "\t" ), '', $block['innerHTML'] );
+			if ( $block_cleaned === $original->singular ) {
+				$translation = GP::$translation->find_one(
+					array(
+						'status'             => 'current',
+						'original_id'        => $original->id,
+						'translation_set_id' => $translation_set->id,
+					)
+				);
+				if ( $translation ) {
+					$block['innerHTML']       = $translation->translation_0;
+					$block['innerContent'][0] = $translation->translation_0;
+				}
+				break;
+			}
+		}
+		return $block;
 	}
 }
