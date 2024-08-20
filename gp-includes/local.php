@@ -673,6 +673,9 @@ class GP_Local {
 					if ( ! get_the_excerpt( $page->ID ) ) {
 						return false;
 					}
+					if ( metadata_exists( 'post', $page->ID, '_original_page_id' ) ) {
+						return false;
+					}
 					return array(
 						'TextDomain'  => 'page-' . $page->ID,
 						'Name'        => $page->post_title,
