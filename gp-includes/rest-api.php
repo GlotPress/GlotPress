@@ -1002,12 +1002,46 @@ class GP_Rest_API {
 						'translation_set_id' => $translation_set->id,
 					)
 				);
+				if ( ! isset( $block['attrs']['className'] ) ) {
+					$block['attrs']['className'] = '';
+				}
+				$block['attrs']['className'] .= ' translator-checked translator-original-' . $original->id;
 				if ( $translation ) {
 					$block['innerHTML']              = $translation->translation_0;
 					$block['innerContent'][0]        = $translation->translation_0;
 					$block['attrs']['translationId'] = $translation->id;
+					$block['attrs']['className']    .= ' translator-translatable translator-translated';
+				} else {
+					$block['attrs']['className'] .= ' translator-translatable translator-untranslated';
 				}
 				$block['attrs']['originalId'] = $original->id;
+
+				$block['innerHTML'] = preg_replace_callback(
+					'/<(\w+)([^>]*)class="([^"]*)"([^>]*)>/',
+					function( $matches ) use ( $block ) {
+						$tag_name         = $matches[1]; // The tag name (e.g., p, div, etc.).
+						$pre_class_attrs  = $matches[2]; // Attributes before class.
+						$existing_classes = $matches[3]; // The existing class values.
+						$post_class_attrs = $matches[4]; // Attributes after class.
+
+						// Combine existing class with new classes.
+						$new_class_value = trim( $existing_classes . ' ' . $block['attrs']['className'] );
+
+						// Return the rebuilt tag with the new class value.
+						return "<{$tag_name}{$pre_class_attrs}class=\"{$new_class_value}\"{$post_class_attrs}>";
+					},
+					$block['innerHTML']
+				);
+
+				// Handle tags without an existing class attribute.
+				$block['innerHTML'] = preg_replace(
+					'/<(\w+)([^>]*)>/',
+					'<$1$2 class="' . esc_attr( $block['attrs']['className'] ) . '">',
+					$block['innerHTML']
+				);
+
+				$block['innerContent'][0] = $block['innerHTML'];
+
 				break;
 			}
 		}
