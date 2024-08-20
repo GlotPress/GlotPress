@@ -1003,9 +1003,11 @@ class GP_Rest_API {
 					)
 				);
 				if ( $translation ) {
-					$block['innerHTML']       = $translation->translation_0;
-					$block['innerContent'][0] = $translation->translation_0;
+					$block['innerHTML']              = $translation->translation_0;
+					$block['innerContent'][0]        = $translation->translation_0;
+					$block['attrs']['translationId'] = $translation->id;
 				}
+				$block['attrs']['originalId'] = $original->id;
 				break;
 			}
 		}
