@@ -760,7 +760,8 @@ class GP_Rest_API {
 			$blocks      = parse_blocks( $page->post_content );
 			$page_blocks = $this->get_content_from_blocks( $blocks );
 		}
-		$po_object = $this->get_po_object( $page_blocks );
+		$page_blocks = array_merge( array( $page->post_title ), $page_blocks );
+		$po_object   = $this->get_po_object( $page_blocks );
 		return GP::$original->import_for_project( $project, $po_object );
 	}
 
@@ -863,7 +864,6 @@ class GP_Rest_API {
 		foreach ( $page_blocks as $block ) {
 			$entry                           = new Translation_Entry();
 			$entry->singular                 = $block;
-			$entry->context                  = 'block';
 			$entry->status                   = '+active';
 			$po->entries[ $entry->singular ] = $entry;
 		}
@@ -906,6 +906,7 @@ class GP_Rest_API {
 					wp_slash(
 						array(
 							'ID'           => $translated_page_id,
+							'post_title'   => $this->get_title_translated( $original_page->post_title, $original_strings, $translation_set ),
 							'post_content' => serialize_blocks( $translated_blocks ),
 						)
 					),
@@ -1016,5 +1017,35 @@ class GP_Rest_API {
 			$block['innerBlocks'] = $new_inner_blocks;
 		}
 		return $block;
+	}
+
+	/**
+	 * Get the title translated.
+	 *
+	 * @param string             $original_title   The original title.
+	 * @param array              $original_strings The original strings.
+	 * @param GP_Translation_Set $translation_set  The translation set.
+	 *
+	 * @return string The translated title.
+	 */
+	private function get_title_translated( string $original_title, array $original_strings, GP_Translation_Set $translation_set ): string {
+		$translated_title = $original_title;
+		foreach ( $original_strings as $original ) {
+			$title_cleaned = str_replace( array( "\n", "\r", "\t" ), '', $original_title );
+			if ( $title_cleaned === $original->singular ) {
+				$translation = GP::$translation->find_one(
+					array(
+						'status'             => 'current',
+						'original_id'        => $original->id,
+						'translation_set_id' => $translation_set->id,
+					)
+				);
+				if ( $translation ) {
+					$translated_title = $translation->translation_0;
+				}
+				break;
+			}
+		}
+		return $translated_title;
 	}
 }
