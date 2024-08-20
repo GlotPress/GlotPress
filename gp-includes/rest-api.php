@@ -1008,6 +1008,13 @@ class GP_Rest_API {
 				break;
 			}
 		}
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			$new_inner_blocks = array();
+			foreach ( $block['innerBlocks'] as $nested_block ) {
+				$new_inner_blocks[] = $this->get_block_translated( $nested_block, $original_strings, $translation_set );
+			}
+			$block['innerBlocks'] = $new_inner_blocks;
+		}
 		return $block;
 	}
 }
