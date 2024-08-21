@@ -1059,7 +1059,7 @@ function GlotPress( locale, translations ) {
 	}
 
 	function fetchOriginals( originals, callback ) {
-		if ( ! server.projects.length ) {
+		if ( ! server.projects ) {
 			return callback( {} );
 		}
 		ajax( {

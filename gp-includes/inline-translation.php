@@ -704,6 +704,13 @@ class GP_Inline_Translation {
 			}
 		}
 
+		if ( get_the_ID() ) {
+			if ( metadata_exists( 'post', get_the_ID(), '_original_page_id' ) ) {
+				$original_page_id = get_post_meta( get_the_ID(), '_original_page_id', true );
+				$project_paths[ 'page-' . $original_page_id ] = array( 'pages/page-' . $original_page_id );
+			}
+		}
+
 		$data = array(
 			'translations'           => $this->get_translations( $gp_locale ),
 			'stringsUsedOnPage'      => $this->strings_used,
