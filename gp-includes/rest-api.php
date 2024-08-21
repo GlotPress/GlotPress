@@ -1006,11 +1006,11 @@ class GP_Rest_API {
 				);
 
 				$data = array(
-					'singular'=> $original->singular,
-					'context' => $original->context,
+					'singular'    => $original->singular,
+					'context'     => $original->context,
 					'original-id' => $original->id,
-					'domain' => $project->slug,
-					'project' => $project->path,
+					'domain'      => $project->slug,
+					'project'     => $project->path,
 				);
 
 				if ( $original->plural ) {
