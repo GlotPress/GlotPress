@@ -1029,7 +1029,7 @@ class GP_Rest_API {
 
 				}
 				$dataTag .= '>';
-				$block['innerHTML'] = $dataTag . $block['innerHTML'] . '</data>';
+				$block['innerHTML'] = $dataTag . trim($block['innerHTML']) . '</data>';
 				$block['innerContent'][0] = $block['innerHTML'];
 				break;
 			}
