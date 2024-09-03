@@ -284,6 +284,16 @@ class GP_Rest_API {
 
 			if ( 'current' === $data['status'] ) {
 				$translation->set_status( 'current' );
+				if ( 'page-title' === $original->context ) {
+					$project            = GP::$project->get( $original->project_id );
+					$original_page_id   = str_replace( 'pages/page-', '', $project->path );
+					$translated_page_id = $this->get_post_id_by_meta( $original_page_id, $locale->wp_locale );
+					if ( $translated_page_id ) {
+						$translated_page             = get_post( $translated_page_id );
+						$translated_page->post_title = $translations[0];
+						wp_update_post( $translated_page );
+					}
+				}
 			}
 
 			gp_clean_translation_set_cache( $translation_set->id );
@@ -866,6 +876,9 @@ class GP_Rest_API {
 			$entry->singular                 = $block;
 			$entry->status                   = '+active';
 			$po->entries[ $entry->singular ] = $entry;
+			if ( reset( $page_blocks ) === $block ) {
+				$entry->context = 'page-title';
+			}
 		}
 		return $po;
 	}
@@ -1072,5 +1085,40 @@ class GP_Rest_API {
 			}
 		}
 		return $translated_title;
+	}
+
+	/**
+	 * Get the translated page ID by meta.
+	 *
+	 * @param int    $original_page_id The original page ID.
+	 * @param string $locale           The locale.
+	 *
+	 * @return int|null The post ID.
+	 */
+	private function get_post_id_by_meta( int $original_page_id, string $locale ): ?int {
+		$query = new WP_Query(
+			array(
+				'post_type'      => 'page',
+				'meta_query'     => array(
+					'relation' => 'AND',
+					array(
+						'key'   => '_original_page_id',
+						'value' => $original_page_id,
+					),
+					array(
+						'key'   => '_locale',
+						'value' => $locale,
+					),
+				),
+				'fields'         => 'ids',
+				'posts_per_page' => 1,
+			)
+		);
+
+		if ( $query->have_posts() ) {
+			return $query->posts[0];
+		}
+
+		return null;
 	}
 }
