@@ -1018,18 +1018,18 @@ class GP_Rest_API {
 				}
 
 				if ( $translation ) {
-					$block['innerHTML']              = $translation->translation_0;
-					$block['innerContent'][0]        = $translation->translation_0;
-					$data['translation-id'] = $translation->id;
-					$data['translation'] = $translation->translation_0;
+					$block['innerHTML']       = $translation->translation_0;
+					$block['innerContent'][0] = $translation->translation_0;
+					$data['translation-id']   = $translation->id;
+					$data['translation']      = $translation->translation_0;
 				}
-				$dataTag = '<data class="translatable"';
+				$data_tag = '<data class="translatable"';
 				foreach ( $data as $attr => $value ) {
-					$dataTag .= ' data-' . $attr . '="' . esc_attr( $value ) . '"';
+					$data_tag .= ' data-' . $attr . '="' . esc_attr( $value ) . '"';
 
 				}
-				$dataTag .= '>';
-				$block['innerHTML'] = $dataTag . trim($block['innerHTML']) . '</data>';
+				$data_tag                .= '>';
+				$block['innerHTML']       = $data_tag . trim( $block['innerHTML'] ) . '</data>';
 				$block['innerContent'][0] = $block['innerHTML'];
 				break;
 			}
