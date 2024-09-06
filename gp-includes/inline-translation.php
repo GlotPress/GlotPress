@@ -234,6 +234,10 @@ class GP_Inline_Translation {
 	 * @return string The translated title.
 	 */
 	public function translate_title( string $post_title, int $post_id ): string {
+		if ( ! is_page() ) {
+			return $post_title;
+		}
+
 		$original_page_id = get_post_meta( $post_id, '_original_page_id', true );
 		$wp_locale        = get_post_meta( $post_id, '_locale', true );
 		$project          = GP::$project->by_path( 'pages/page-' . $original_page_id );
