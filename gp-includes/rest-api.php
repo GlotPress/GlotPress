@@ -911,7 +911,7 @@ class GP_Rest_API {
 				foreach ( $original_blocks as $block ) {
 					$block_translated    = $this->get_block_translated( $block, $original_strings, $translation_set );
 					$translated_blocks[] = $block_translated;
-					if ( $block === $block_translated ) {
+					if ( '' !== trim( $block_translated['innerHTML'] ) ) {
 						$translations_deployed++;
 					}
 				}
