@@ -251,14 +251,24 @@ class GP_Inline_Translation {
 			)
 		);
 		$original         = GP::$original->get( $translation->original_id );
-		$data             = array(
+		if ( ! $original ) {
+			// If we don't have the translation, we need to get the original using the project_id and the post_title.
+			$original = GP::$original->find_one(
+				array(
+					'singular'   => $post_title,
+					'project_id' => $project->id,
+					'status'     => '+active',
+				)
+			);
+		}
+		$data     = array(
 			'singular'    => $original->singular,
 			'context'     => $original->context,
 			'original-id' => $original->id,
 			'domain'      => $project->slug,
 			'project'     => $project->path,
 		);
-		$data_tag         = '<data class="translatable"';
+		$data_tag = '<data class="translatable"';
 		foreach ( $data as $attr => $value ) {
 			$data_tag .= ' data-' . $attr . '="' . esc_attr( $value ) . '"';
 
