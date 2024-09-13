@@ -241,7 +241,7 @@ class GP_Local {
 					<?php
 						echo wp_kses(
 							sprintf(
-								// translators: %s: URL to permalink settings
+								// translators: %s: URL to permalink settings.
 								__( 'You are running an unsupported permalink structure, thus the Translation Interface is not available. <a href="%s">Please change your permalink settings</a> if you want to use it.', 'glotpress' ),
 								admin_url( 'options-permalink.php' ),
 							),
@@ -327,7 +327,7 @@ class GP_Local {
 					<?php
 						echo wp_kses(
 							sprintf(
-								// translators: %s: URL to permalink settings
+								// translators: %s: URL to permalink settings.
 								__( 'You are running an unsupported permalink structure, thus the Translation Interface is not available. <a href="%s">Please change your permalink settings</a> if you want to use it.', 'glotpress' ),
 								admin_url( 'options-permalink.php' ),
 							),
@@ -668,6 +668,23 @@ class GP_Local {
 				},
 				apply_filters( 'local_glotpress_local_themes', wp_get_themes() )
 			),
+			'pages'      => array_map(
+				function( $page ) {
+					if ( ! get_the_excerpt( $page->ID ) ) {
+						return false;
+					}
+					if ( metadata_exists( 'post', $page->ID, '_original_page_id' ) ) {
+						return false;
+					}
+					return array(
+						'TextDomain'  => 'page-' . $page->ID,
+						'Name'        => $page->post_title,
+						'Description' => get_the_excerpt( $page->ID ),
+						'Version'     => $page->post_date,
+					);
+				},
+				apply_filters( 'local_glotpress_local_pages', get_pages() )
+			),
 		);
 	}
 
@@ -747,7 +764,7 @@ class GP_Local {
 			$show_actions_column = $can_create_projects;
 			?>
 			<p>
-				<?php esc_html_e( 'These are the plugins and themes that you have installed locally. With GlotPress you can change their translations.', 'glotpress' ); ?>
+				<?php esc_html_e( 'These are the pages, plugins, and themes you have in your WordPress installation. With GlotPress, you can change their translations.', 'glotpress' ); ?>
 			</p>
 
 			<?php foreach ( $projects as $type => $items ) : ?>
@@ -861,6 +878,8 @@ class GP_Local {
 														$gp_locale->native_name
 													)
 												);
+											} elseif ( 'pages/' === substr( $path, 0, 6 ) ) {
+												esc_html_e( 'Update strings for this page', 'glotpress' );
 											} else {
 												esc_html_e( 'Update strings and translations from WordPress.org', 'glotpress' );
 											}

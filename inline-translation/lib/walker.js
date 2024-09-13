@@ -58,6 +58,9 @@ module.exports = function( TranslationPair, jQuery, document ) {
 					return false;
 				}
 				enclosingNode = jQuery( textNode.parentElement );
+				if ( enclosingNode.closest( 'data.translatable' ) ) {
+					enclosingNode = enclosingNode.closest( 'data.translatable' );
+				}
 
 				enclosingNode.addClass( 'translator-checked' );
 

@@ -114,6 +114,7 @@ class GP_Inline_Translation {
 		add_action( 'gettext_with_context', array( $this, 'translate_with_context' ), 10, 5 );
 		add_action( 'ngettext', array( $this, 'ntranslate' ), 10, 5 );
 		add_action( 'ngettext_with_context', array( $this, 'ntranslate_with_context' ), 10, 6 );
+		add_filter( 'the_title', array( $this, 'translate_title' ), 10, 2 );
 		add_action( 'wp_footer', array( $this, 'load_translator' ), 1000 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
@@ -222,6 +223,64 @@ class GP_Inline_Translation {
 	 */
 	public function ntranslate_with_context( $translation, $single, $plural, $number, $context, $domain ) {
 		return $this->translate_with_context( $translation, array( $single, $plural ), $context, $domain );
+	}
+
+	/**
+	 * Filter for the title with its translation.
+	 *
+	 * @param string $post_title The title of the post.
+	 * @param int    $post_id    The post ID.
+	 *
+	 * @return string The translated title.
+	 */
+	public function translate_title( string $post_title, int $post_id ): string {
+		if ( ! is_page() ) {
+			return $post_title;
+		}
+
+		$original_page_id = get_post_meta( $post_id, '_original_page_id', true );
+		$wp_locale        = get_post_meta( $post_id, '_locale', true );
+		$project          = GP::$project->by_path( 'pages/page-' . $original_page_id );
+		$locale           = GP_Locales::by_field( 'wp_locale', $wp_locale );
+		$translation_set  = GP::$translation_set->by_project_id_slug_and_locale( $project->id, 'default', $locale->slug );
+		$translation      = GP::$translation->find_one(
+			array(
+				'status'             => 'current',
+				'translation_0'      => $post_title,
+				'translation_set_id' => $translation_set->id,
+			)
+		);
+
+		$original = false;
+		if ( $translation ) {
+			$original = GP::$original->get( $translation->original_id );
+		}
+		if ( ! $original ) {
+			// If we don't have the translation, we need to get the original using the project_id and the post_title.
+			$original = GP::$original->find_one(
+				array(
+					'singular'   => $post_title,
+					'project_id' => $project->id,
+					'status'     => '+active',
+				)
+			);
+		}
+		$data     = array(
+			'singular'    => $original->singular,
+			'context'     => $original->context,
+			'original-id' => $original->id,
+			'domain'      => $project->slug,
+			'project'     => $project->path,
+		);
+		$data_tag = '<data class="translatable"';
+		foreach ( $data as $attr => $value ) {
+			$data_tag .= ' data-' . $attr . '="' . esc_attr( $value ) . '"';
+
+		}
+		$data_tag .= '>';
+		$data_tag .= trim( $post_title ) . '</data>';
+
+		return $data_tag;
 	}
 
 	/**
@@ -701,6 +760,13 @@ class GP_Inline_Translation {
 			$project_paths[ $text_domain ] = array();
 			foreach ( $projects as $project ) {
 				$project_paths[ $text_domain ][] = $project->path;
+			}
+		}
+
+		if ( get_the_ID() ) {
+			if ( metadata_exists( 'post', get_the_ID(), '_original_page_id' ) ) {
+				$original_page_id                             = get_post_meta( get_the_ID(), '_original_page_id', true );
+				$project_paths[ 'page-' . $original_page_id ] = array( 'pages/page-' . $original_page_id );
 			}
 		}
 

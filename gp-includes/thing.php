@@ -125,7 +125,7 @@ class GP_Thing {
 	 *
 	 * @param string $query   Query statement with optional sprintf()-like placeholders.
 	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
-	 * @return string|null Database query result (as string), or false on failure.
+	 * @return string|null database query result (as string), or false on failure.
 	 */
 	public function value( $query, ...$args ) {
 		global $wpdb;
@@ -191,7 +191,7 @@ class GP_Thing {
 	 *
 	 * @param string $query   Query statement with optional sprintf()-like placeholders.
 	 * @param mixed  ...$args Optional arguments to pass to the GP_Thing::prepare() function.
-	 * @return object[] Database query results.
+	 * @return object[] database query results.
 	 */
 	public function many_no_map( $query, ...$args ) {
 		array_unshift( $args, $query );
@@ -326,7 +326,7 @@ class GP_Thing {
 	 * @see wpdb::query()
 	 * @see wpdb::prepare()
 	 *
-	 * @param string $query   Database query.
+	 * @param string $query   database query.
 	 * @param mixed  ...$args Optional arguments to pass to the prepare method.
 	 * @return int|bool Number of rows affected/selected or false on error.
 	 */

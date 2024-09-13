@@ -26,7 +26,7 @@ function GlotPress( locale, translations ) {
 	}
 
 	function fetchOriginals( originals, callback ) {
-		if ( ! server.projects.length ) {
+		if ( ! server.projects ) {
 			return callback( {} );
 		}
 		ajax( {
@@ -160,6 +160,7 @@ function GlotPress( locale, translations ) {
 			if ( ! ( data && data.prompt ) && translationPair.getOriginal().getSingularGlossaryMarkup() ) {
 				jQuery.each( jQuery( '<div>' + translationPair.getOriginal().getSingularGlossaryMarkup() ).find( '.glossary-word' ), function( k, word ) {
 					jQuery.each( jQuery( word ).data( 'translations' ), function( i, e ) {
+						/* eslint-env es6 */
 						const orRegex = new RegExp( '\\s' + [
 							'o', // Spanish and Italian
 							'oder', // German
@@ -176,7 +177,7 @@ function GlotPress( locale, translations ) {
 							'hoặc', // Vietnamese
 							'หรือ', // Thai
 							'או', // Hebrew
-							'ή' // Greek
+							'ή', // Greek
 						].join( '|' ) + '\\s', 'g' );
 						prompt += 'Translate "' + word.textContent + '" as "' + e.translation.replace( orRegex, '" or "' ) + '" when it is a ' + e.pos;
 						if ( e.comment ) {

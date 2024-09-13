@@ -87,19 +87,19 @@ div.webui-popover button.save {
 	margin-top: 1em
 }
 
-.translator-translated {
+.translator-translated, data.translator-translated *:first-child {
     cursor: pointer;
     background: rgba(51, 240, 120, 0.5);
     border-radius: 2px;
 }
 
-.translator-untranslated {
+.translator-untranslated, data.translator-untranslated *:first-child {
     cursor: pointer;
     background: rgba(227, 112, 86, 0.5);
     border-radius: 2px;
 }
 
-.translator-user-translated {
+.translator-user-translated, data.translator-user-translated *:first-child {
     cursor: pointer;
     background: rgba(255, 249, 114, 0.5);
     border-radius: 2px;
