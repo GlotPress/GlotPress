@@ -85,11 +85,11 @@ function Original( original ) {
 		},
 		objectify: objectify,
 		fetchIdAndTranslations: function( glotPress, context, domain ) {
-			let original = objectify( context, domain );
+			var originalObject = objectify( context, domain );
 			if ( originalId ) {
-				original.id = originalId;
+				originalObject.id = originalId;
 			}
-			return glotPress.queryByOriginal( original ).done( function( data ) {
+			return glotPress.queryByOriginal( originalObject ).done( function( data ) {
 				originalId = data.original_id;
 				if ( typeof data.original_comment === 'string' ) {
 					comment = data.original_comment.replace( /^translators: /, '' );
