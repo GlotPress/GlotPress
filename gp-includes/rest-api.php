@@ -405,7 +405,11 @@ class GP_Rest_API {
 				$checked_originals[ $key ] = true;
 
 				foreach ( $translation_sets[ $text_domain ] as $project_id => $translation_set ) {
-					$original_record = GP::$original->by_project_id_and_entry( $project_id, $original );
+					if ( isset( $original->id ) ) {
+						$original_record = GP::$original->get( $original->id );
+					} else {
+						$original_record = GP::$original->by_project_id_and_entry( $project_id, $original );
+					}
 					if ( ! $original_record ) {
 						continue;
 					}

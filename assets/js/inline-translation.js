@@ -1787,7 +1787,11 @@ function Original( original ) {
 		},
 		objectify: objectify,
 		fetchIdAndTranslations: function( glotPress, context, domain ) {
-			return glotPress.queryByOriginal( objectify( context, domain ) ).done( function( data ) {
+			let original = objectify( context, domain );
+			if ( originalId ) {
+				original.id = originalId;
+			}
+			return glotPress.queryByOriginal( original ).done( function( data ) {
 				originalId = data.original_id;
 				if ( typeof data.original_comment === 'string' ) {
 					comment = data.original_comment.replace( /^translators: /, '' );

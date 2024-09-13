@@ -250,7 +250,11 @@ class GP_Inline_Translation {
 				'translation_set_id' => $translation_set->id,
 			)
 		);
-		$original         = GP::$original->get( $translation->original_id );
+
+		$original = false;
+		if ( $translation ) {
+			$original = GP::$original->get( $translation->original_id );
+		}
 		if ( ! $original ) {
 			// If we don't have the translation, we need to get the original using the project_id and the post_title.
 			$original = GP::$original->find_one(
