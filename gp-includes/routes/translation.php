@@ -286,8 +286,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			foreach ( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				if ( isset( $translations[ $i ] ) ) {
 					// Allow some languages to normalize their strings depending on locale typography rules.
-					if (function_exists( 'glotpress_normalize_for_locale' ) ) {
-						$data["translation_$i"] = glotpress_normalize_for_locale( $translations[ $i ] );
+					if ( function_exists( 'glotpress_normalize_for_locale' ) ) {
+						$data[ "translation_$i" ] = glotpress_normalize_for_locale( $translations[ $i ] );
 					} else {
 						$data[ "translation_$i" ] = $translations[ $i ];
 					}
