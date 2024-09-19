@@ -270,7 +270,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
-		// fix chars by language using current locale
+		// Fix chars by language using current locale.
 		$normalize_file = GP_PATH . GP_INC . 'normalize/' . $locale_slug . '.php';
 		if ( file_exists( $normalize_file )) {
 			include_once $normalize_file;
