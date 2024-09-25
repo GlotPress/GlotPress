@@ -280,12 +280,32 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 			$sub_project_class = $sub_project->active ? 'project-active' : 'project-inactive';
 			?>
 			<dt class="<?php echo esc_attr( $sub_project_class ); ?>">
-				<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
-				<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'button is-small' ) ); ?>
-				<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'button is-small' ) ); ?>
 				<?php
-				if ( ! $sub_project->active ) {
-					echo "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>';
+
+				/**
+				 * Filter a project row items, like title, action buttons and active bubble.
+				 *
+				 * @since 4.0.2
+				 *
+				 * @param array $project_row_items   The array of project items to render on the projects list.
+				 * @param GP_Project $project        GP_Project object.
+				 */
+				$project_row_items = apply_filters(
+					'gp_project_row_items',
+					array(
+						'link-name'     => gp_link_project_get( $sub_project, esc_html( $sub_project->name ) ),
+						'button-edit'   => gp_link_project_edit_get( $sub_project, null, array( 'class' => 'button is-small' ) ),
+						'button-delete' => gp_link_project_delete_get( $sub_project, null, array( 'class' => 'button is-small' ) ),
+						'bubble-status' => $sub_project->active ? null : "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>',
+					),
+					$sub_project
+				);
+
+				// Render project row items.
+				foreach ( $project_row_items as $project_row_item ) {
+					if ( ! is_null( $project_row_item ) ) {
+						echo wp_kses_post( $project_row_item );
+					}
 				}
 				?>
 			</dt>
