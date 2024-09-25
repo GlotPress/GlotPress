@@ -285,7 +285,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				<?php
 
 				/**
-				 * Filter a project row items, like title, action buttons and active bubble.
+				 * Filter a subproject row items, like title, action buttons and active bubble in the project template.
 				 *
 				 * @since 4.0.2
 				 *
@@ -293,7 +293,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				 * @param GP_Project $project        GP_Project object.
 				 */
 				$project_row_items = apply_filters(
-					'gp_project_row_items',
+					'gp_project_template_subproject_items',
 					array(
 						'link-name'     => gp_link_project_get( $sub_project, esc_html( $sub_project->name ) ),
 						'button-edit'   => gp_link_project_edit_get( $sub_project, null, array( 'class' => 'button is-small' ) ),

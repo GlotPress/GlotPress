@@ -15,7 +15,7 @@ gp_tmpl_header();
 					<?php
 
 					/**
-					 * Filter a project row items, like title, action buttons and active bubble.
+					 * Filter a project row items, like title, action buttons and active bubble in the root projects template.
 					 *
 					 * @since 4.0.2
 					 *
@@ -23,7 +23,7 @@ gp_tmpl_header();
 					 * @param GP_Project $project        GP_Project object.
 					 */
 					$project_row_items = apply_filters(
-						'gp_project_row_items',
+						'gp_projects_template_project_items',
 						array(
 							'link-name'     => gp_link_project_get( $project, esc_html( $project->name ) ),
 							'button-edit'   => gp_link_project_edit_get( $project, null, array( 'class' => 'button is-small' ) ),
