@@ -124,11 +124,13 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 								<td>
 									<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 									<?php
-									if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
-											$percent = floor( $set->current_count / $set->all_count * 100 );
-									?>
+									if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) {
+										$percent = floor( $set->current_count / $set->all_count * 100 );
+										?>
 										<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
-									<?php endif; ?>
+										<?php
+									}
+									?>
 								</td>
 								<?php
 								break;
