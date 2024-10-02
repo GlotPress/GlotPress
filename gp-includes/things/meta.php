@@ -23,7 +23,7 @@ class GP_Meta extends GP_Thing {
 	public $table_basename = 'gp_meta';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a meta.
 	 *
 	 * @var array $field_names
 	 */
