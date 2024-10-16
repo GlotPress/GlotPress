@@ -139,6 +139,7 @@ $gp.editor = (
 					.on( 'click', 'button.changesrequested', $gp.editor.hooks.set_status_changesrequested )
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
+					.on( 'click', '.editor .original span.notranslate.placeholder', $gp.editor.hooks.placeholder )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
 					.on( 'focus input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
 				$( '#translations' ).tooltip( {
@@ -431,6 +432,18 @@ $gp.editor = (
 
 				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
 			},
+			copyPlaceholder: function( link ) {
+				var text_area = link.closest( 'p' ).nextAll( '.textareas' ).first().find( 'textarea.foreign-text' );
+				var cursorPos = text_area.prop( 'selectionStart' ) ? text_area.prop( 'selectionStart' ) : 0;
+				var placeholderText = link.text();
+				var textareaValue = text_area.val() ? text_area.val() : '';
+				var textBefore = textareaValue.substring( 0, cursorPos ) ? textareaValue.substring( 0, cursorPos ) : '';
+				var textAfter = textareaValue.substring( cursorPos, textareaValue.length ) ? textareaValue.substring( cursorPos, textareaValue.length ) : '';
+				textareaValue = textBefore + placeholderText + textAfter;
+				text_area.val( textareaValue );
+				text_area.focus();
+				text_area[ 0 ].selectionEnd = cursorPos + placeholderText.length;
+			},
 			tab: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
 				var cursorPos = text_area.prop( 'selectionStart' );
@@ -466,6 +479,10 @@ $gp.editor = (
 				},
 				ok: function() {
 					$gp.editor.save( $( this ) );
+					return false;
+				},
+				placeholder: function() {
+					$gp.editor.copyPlaceholder( $( this ) );
 					return false;
 				},
 				cancel: function() {
