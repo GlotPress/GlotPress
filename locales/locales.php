@@ -271,7 +271,7 @@ class GP_Locales {
 
 		$azb = new GP_Locale();
 		$azb->english_name = 'South Azerbaijani';
-		$azb->native_name = 'گؤنئی آذربایجان';
+		$azb->native_name = 'تۆرکجه‌ (آذربایجان تۆرکجه‌سی)';
 		$azb->lang_code_iso_639_1 = 'az';
 		$azb->lang_code_iso_639_3 = 'azb';
 		$azb->country_code = 'ir';
