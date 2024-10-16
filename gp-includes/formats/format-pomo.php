@@ -33,7 +33,7 @@ class GP_Format_PO extends GP_Format {
 			// Convert NULL to empty string to prevent PHP 8 passing NULL errors.
 			$entry->translations = array_map(
 				function ( $translation ) {
-					return $translation ?: '';
+					return $translation ? $translation : '';
 				},
 				$entry->translations
 			);
