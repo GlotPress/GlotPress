@@ -26,53 +26,57 @@ gp_tmpl_header();
 <h4 id="validators"><?php _e( 'Validators for this project', 'glotpress' ); ?></h4>
 	<?php endif; ?>
 
-	<table class="gp-table permissions">
-		<thead>
-			<tr>
-				<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
-				<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
-				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
-				<th class="gp-column-actions">&mdash;</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ( $permissions as $permission ) : ?>
+	<div class="gp-table-container">
+		<table class="gp-table permissions">
+			<thead>
 				<tr>
-					<td class="user"><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
-					<td><?php echo esc_html( $permission->action ); ?></td>
-					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
-					<td><?php echo esc_html( $permission->set_slug ); ?></td>
-					<td><a href="<?php echo esc_url( gp_route_nonce_url( gp_url_join( gp_url_current(), '-delete/' . $permission->id ), 'delete-project-permission_' . $permission->id ) ); ?>" class="action delete"><?php _e( 'Delete', 'glotpress' ); ?></a></td>
+					<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
+					<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
+					<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+					<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
+					<th class="gp-column-actions">&mdash;</th>
 				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<?php foreach ( $permissions as $permission ) : ?>
+					<tr>
+						<td class="user"><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
+						<td><?php echo esc_html( $permission->action ); ?></td>
+						<td><?php echo esc_html( $permission->locale_slug ); ?></td>
+						<td><?php echo esc_html( $permission->set_slug ); ?></td>
+						<td><a href="<?php echo esc_url( gp_route_nonce_url( gp_url_join( gp_url_current(), '-delete/' . $permission->id ), 'delete-project-permission_' . $permission->id ) ); ?>" class="action delete"><?php _e( 'Delete', 'glotpress' ); ?></a></td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 	<?php endif; ?>
 	<?php if ( $parent_permissions ) : ?>
 <h4 id="validators"><?php _e( 'Validators for parent projects', 'glotpress' ); ?></h4>
-	<table class="gp-table permissions">
-		<thead>
-			<tr>
-				<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
-				<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
-				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
-				<th class="gp-column-parent"><?php _e( 'Parent', 'glotpress' ); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ( $parent_permissions as $permission ) : ?>
+	<div class="gp-table-container">
+		<table class="gp-table permissions">
+			<thead>
 				<tr>
-					<td><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
-					<td><?php echo esc_html( $permission->action ); ?></td>
-					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
-					<td><?php echo esc_html( $permission->set_slug ); ?></td>
-					<td><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></td>
+					<th class="gp-column-user"><?php _e( 'User', 'glotpress' ); ?></th>
+					<th class="gp-column-permission"><?php _e( 'Permission', 'glotpress' ); ?></th>
+					<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+					<th class="gp-column-slug"><?php _e( 'Slug', 'glotpress' ); ?></th>
+					<th class="gp-column-parent"><?php _e( 'Parent', 'glotpress' ); ?></th>
 				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<?php foreach ( $parent_permissions as $permission ) : ?>
+					<tr>
+						<td><?php printf( '<a href="%s">%s</a>', esc_url( gp_url_profile( $permission->user->user_nicename ) ), esc_html( $permission->user->user_login ) ); ?></td>
+						<td><?php echo esc_html( $permission->action ); ?></td>
+						<td><?php echo esc_html( $permission->locale_slug ); ?></td>
+						<td><?php echo esc_html( $permission->set_slug ); ?></td>
+						<td><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 	<?php endif; ?>
 	<?php if ( ! $permissions && ! $parent_permissions ) : ?>
 		<strong><?php _e( 'No validators defined for this project.', 'glotpress' ); ?></strong>

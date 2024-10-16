@@ -71,110 +71,112 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 <?php if ( $translation_sets ) : ?>
 <div id="translation-sets">
 	<h3><?php _e( 'Translations', 'glotpress' ); ?></h3>
-	<table class="gp-table translation-sets">
-		<thead>
-			<tr>
-				<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
-				<th class="gp-column-percent"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
-				<th class="gp-column-translated"><?php _e( 'Translated', 'glotpress' ); ?></th>
-				<th class="gp-column-fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
-				<th class="gp-column-untranslated"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
-				<th class="gp-column-waiting"><?php _e( 'Waiting', 'glotpress' ); ?></th>
-				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-					<th class="gp-column-extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
-				<?php endif; ?>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-		foreach ( $translation_sets as $set ) :
-		?>
-			<tr>
-				<td>
-					<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
-					<?php
-					if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
-							$percent = floor( $set->current_count / $set->all_count * 100 );
-					?>
-						<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
+	<div class="gp-table-container">
+		<table class="gp-table translation-sets">
+			<thead>
+				<tr>
+					<th class="gp-column-locale"><?php _e( 'Locale', 'glotpress' ); ?></th>
+					<th class="gp-column-percent"><?php _ex( '%', 'locale translation percent header', 'glotpress' ); ?></th>
+					<th class="gp-column-translated"><?php _e( 'Translated', 'glotpress' ); ?></th>
+					<th class="gp-column-fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+					<th class="gp-column-untranslated"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+					<th class="gp-column-waiting"><?php _e( 'Waiting', 'glotpress' ); ?></th>
+					<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
+						<th class="gp-column-extra"><?php _e( 'Extra', 'glotpress' ); ?></th>
 					<?php endif; ?>
-				</td>
-				<td class="stats percent"><?php echo number_format_i18n( $set->percent_translated ); ?>%</td>
-				<td class="stats translated" title="translated">
-					<?php
-					gp_link(
-						gp_url_project(
-							$project,
-							gp_url_join( $set->locale, $set->slug ),
-							array(
-								'filters[status]' => 'current',
-							)
-						),
-						number_format_i18n( $set->current_count )
-					);
-					?>
-				</td>
-				<td class="stats fuzzy" title="fuzzy">
-					<?php
-					gp_link(
-						gp_url_project(
-							$project,
-							gp_url_join( $set->locale, $set->slug ),
-							array(
-								'filters[status]' => 'fuzzy',
-							)
-						),
-						number_format_i18n( $set->fuzzy_count )
-					);
-					?>
-				</td>
-				<td class="stats untranslated" title="untranslated">
-					<?php
-					gp_link(
-						gp_url_project(
-							$project,
-							gp_url_join( $set->locale, $set->slug ),
-							array(
-								'filters[status]' => 'untranslated',
-							)
-						),
-						number_format_i18n( $set->untranslated_count )
-					);
-					?>
-				</td>
-				<td class="stats waiting">
-					<?php
-					gp_link(
-						gp_url_project(
-							$project,
-							gp_url_join( $set->locale, $set->slug ),
-							array(
-								'filters[status]' => 'waiting',
-							)
-						),
-						number_format_i18n( $set->waiting_count )
-					);
-					?>
-				</td>
-				<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
-					<td class="extra">
+				</tr>
+			</thead>
+			<tbody>
+			<?php
+			foreach ( $translation_sets as $set ) :
+			?>
+				<tr>
+					<td>
+						<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 						<?php
-						/**
-						 * Fires in an extra information column of a translation set.
-						 *
-						 * @since 1.0.0
-						 *
-						 * @param GP_Translation_Set $set     The translation set.
-						 * @param GP_Project         $project The current project.
-						 */
-						do_action( 'gp_project_template_translation_set_extra', $set, $project );
+						if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) :
+								$percent = floor( $set->current_count / $set->all_count * 100 );
+						?>
+							<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
+						<?php endif; ?>
+					</td>
+					<td class="stats percent"><?php echo number_format_i18n( $set->percent_translated ); ?>%</td>
+					<td class="stats translated" title="translated">
+						<?php
+						gp_link(
+							gp_url_project(
+								$project,
+								gp_url_join( $set->locale, $set->slug ),
+								array(
+									'filters[status]' => 'current',
+								)
+							),
+							number_format_i18n( $set->current_count )
+						);
 						?>
 					</td>
-				<?php endif; ?>
-			</tr>
-		<?php endforeach; ?>
-		</tbody>
-	</table>
+					<td class="stats fuzzy" title="fuzzy">
+						<?php
+						gp_link(
+							gp_url_project(
+								$project,
+								gp_url_join( $set->locale, $set->slug ),
+								array(
+									'filters[status]' => 'fuzzy',
+								)
+							),
+							number_format_i18n( $set->fuzzy_count )
+						);
+						?>
+					</td>
+					<td class="stats untranslated" title="untranslated">
+						<?php
+						gp_link(
+							gp_url_project(
+								$project,
+								gp_url_join( $set->locale, $set->slug ),
+								array(
+									'filters[status]' => 'untranslated',
+								)
+							),
+							number_format_i18n( $set->untranslated_count )
+						);
+						?>
+					</td>
+					<td class="stats waiting">
+						<?php
+						gp_link(
+							gp_url_project(
+								$project,
+								gp_url_join( $set->locale, $set->slug ),
+								array(
+									'filters[status]' => 'waiting',
+								)
+							),
+							number_format_i18n( $set->waiting_count )
+						);
+						?>
+					</td>
+					<?php if ( has_action( 'gp_project_template_translation_set_extra' ) ) : ?>
+						<td class="extra">
+							<?php
+							/**
+							 * Fires in an extra information column of a translation set.
+							 *
+							 * @since 1.0.0
+							 *
+							 * @param GP_Translation_Set $set     The translation set.
+							 * @param GP_Project         $project The current project.
+							 */
+							do_action( 'gp_project_template_translation_set_extra', $set, $project );
+							?>
+						</td>
+					<?php endif; ?>
+				</tr>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 </div>
 <?php elseif ( ! $sub_projects ) : ?>
 	<p><?php _e( 'There are no translations of this project.', 'glotpress' ); ?></p>
