@@ -270,6 +270,12 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
+		// Fix chars by language using current locale.
+		$normalize_file = GP_PATH . GP_INC . 'normalize/' . $locale_slug . '.php';
+		if ( file_exists( $normalize_file ) ) {
+			include_once $normalize_file;
+		}
+
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
 			$data                       = compact( 'original_id' );
@@ -279,7 +285,12 @@ class GP_Route_Translation extends GP_Route_Main {
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {
 				if ( isset( $translations[ $i ] ) ) {
-					$data[ "translation_$i" ] = $translations[ $i ];
+					// Allow some languages to normalize their strings depending on locale typography rules.
+					if ( function_exists( 'glotpress_normalize_for_locale' ) ) {
+						$data[ "translation_$i" ] = glotpress_normalize_for_locale( $translations[ $i ] );
+					} else {
+						$data[ "translation_$i" ] = $translations[ $i ];
+					}
 				}
 			}
 
