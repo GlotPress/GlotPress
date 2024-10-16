@@ -434,9 +434,15 @@ $gp.editor = (
 				link.parents( '.textareas' ).find( 'textarea' ).val( original_text ).focus();
 			},
 			copyPlaceholder: function( link ) {
+				$gp.editor.copyToTextarea( link, link.text() );
+			},
+			copyInvisibleSpaces: function( link ) {
+				$gp.editor.copyToTextarea( link, ' '.repeat( link.text().length ) );
+			},
+			copyToTextarea: function( link, valueToCopy ) {
 				var text_area = link.closest( 'p' ).nextAll( '.textareas' ).first().find( 'textarea.foreign-text' );
 				var cursorPos = text_area.prop( 'selectionStart' ) ? text_area.prop( 'selectionStart' ) : 0;
-				var placeholderText = link.text();
+				var placeholderText = valueToCopy;
 				var textareaValue = text_area.val() ? text_area.val() : '';
 				var textBefore = textareaValue.substring( 0, cursorPos ) ? textareaValue.substring( 0, cursorPos ) : '';
 				var textAfter = textareaValue.substring( cursorPos, textareaValue.length ) ? textareaValue.substring( cursorPos, textareaValue.length ) : '';
@@ -444,17 +450,6 @@ $gp.editor = (
 				text_area.val( textareaValue );
 				text_area.focus();
 				text_area[ 0 ].selectionEnd = cursorPos + placeholderText.length;
-			},
-			copyInvisibleSpaces: function( link ) {
-				var text_area = link.closest( 'p' ).nextAll( '.textareas' ).first().find( 'textarea.foreign-text' );
-				var cursorPos = text_area.prop( 'selectionStart' ) ? text_area.prop( 'selectionStart' ) : 0;
-				var textareaValue = text_area.val() ? text_area.val() : '';
-				var textBefore = textareaValue.substring( 0, cursorPos ) ? textareaValue.substring( 0, cursorPos ) : '';
-				var textAfter = textareaValue.substring( cursorPos, textareaValue.length ) ? textareaValue.substring( cursorPos, textareaValue.length ) : '';
-				textareaValue = textBefore + ' '.repeat( link.text().length ) + textAfter;
-				text_area.val( textareaValue );
-				text_area.focus();
-				text_area[ 0 ].selectionEnd = cursorPos + link.text().length;
 			},
 			tab: function( link ) {
 				var text_area = link.parents( '.textareas' ).find( 'textarea' );
