@@ -179,21 +179,185 @@ class GP_Validation_Rules {
 	}
 
 	public function construct_error_message( $rule ) {
-		$type_field = 'field';
-		$name_field = $rule['field'];
-		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
 
-		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
-			$type_field = 'textarea';
-			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
+		// Simple input field type.
+		$type_field = __( 'field', 'glotpress' );
+		$name_field = $rule['field'];
+
+		// Translate glossary field names.
+		switch ( $name_field ) {
+			case 'term':
+				$name_field = _x( 'Original term', 'glossary entry', 'glotpress' );
+				break;
+			case 'part_of_speech':
+				$name_field = _x( 'Part of speech', 'glossary entry', 'glotpress' );
+				break;
+			case 'translation':
+				$name_field = _x( 'Translation', 'glossary entry', 'glotpress' );
+				break;
+			case 'comment':
+				$name_field = _x( 'Comments', 'glossary entry', 'glotpress' );
+				break;
 		}
 
-		if ( 'positive' == $rule['kind'] ) {
-			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
-			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+		// Textarea input field type.
+		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
+			$type_field = __( 'textarea', 'glotpress' );
+			$name_field = sprintf(
+				/* translators: %d: Plural index of the translation. */
+				__( 'Translation %d', 'glotpress' ),
+				intval( substr( $name_field, 12 ) ) + 1
+			);
+		}
+
+		// Validation messages.
+		$messages = array(
+			'empty'                                     => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be empty!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be empty!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'empty_string'                              => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be an empty string!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be an empty string!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'positive_int'                              => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be a positive integer!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be a positive integer!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'int'                                       => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be an integer!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be an integer!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'null'                                      => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be null!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be null!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'between'                                   => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be the same or between the start and end value!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be the same or between the start and end value!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'between_exclusive'                         => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be between the start and end value!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be between the start and end value!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'one_of'                                    => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should be one of the values in the list!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not be one of the values in the list!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'consisting_only_of_ASCII_characters'       => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should consist only of ASCII characters!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not consist only of ASCII characters!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+			'starting_and_ending_with_a_word_character' => array(
+				'positive' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should start and end with a word character!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+				'negative' => sprintf(
+						/* translators: 1: Type of a validation field. 2: Name of a validation field. */
+					__( 'The %1$s %2$s is invalid and should not start and end with a word character!', 'glotpress' ),
+					$type_field,
+					'<strong>' . $name_field . '</strong>'
+				),
+			),
+		);
+
+		if ( 'positive' === $rule['kind'] ) {
+			return $messages[ $rule['rule'] ]['positive'];
 		} else { // if ( 'negative' == $rule['kind'] )
-			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
-			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
+			return $messages[ $rule['rule'] ]['negative'];
 		}
 	}
 }
@@ -202,7 +366,6 @@ class GP_Validators {
 	static $callbacks = array();
 
 	public static function register( $key, $callback, $negative_callback = null ) {
-		// TODO: add data for easier generation of error messages
 		self::$callbacks[ $key ] = array(
 			'positive' => $callback,
 			'negative' => $negative_callback,
