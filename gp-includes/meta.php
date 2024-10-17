@@ -32,7 +32,6 @@ function gp_sanitize_meta_key( $key ) {
  * @return mixed|false Metadata or false.
  */
 function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
-	global $wpdb;
 	$meta_key = gp_sanitize_meta_key( $meta_key );
 
 	if ( ! $object_type ) {
@@ -47,7 +46,12 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
 	$object_meta = wp_cache_get( $object_id, $object_type );
 
 	if ( false === $object_meta ) {
-		$db_object_meta = $wpdb->get_results( $wpdb->prepare( "SELECT `meta_key`, `meta_value` FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d", $object_type, $object_id ) );
+		$db_object_meta = GP::$meta->find(
+			array(
+				'object_type' => $object_type,
+				'object_id'   => $object_id,
+			)
+		);
 
 		$object_meta = array();
 		foreach ( $db_object_meta as $meta ) {

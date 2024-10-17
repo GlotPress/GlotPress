@@ -87,6 +87,7 @@ require_once GP_PATH . GP_INC . 'things/validator-permission.php';
 require_once GP_PATH . GP_INC . 'things/administrator-permission.php';
 require_once GP_PATH . GP_INC . 'things/glossary.php';
 require_once GP_PATH . GP_INC . 'things/glossary-entry.php';
+require_once GP_PATH . GP_INC . 'things/meta.php';
 
 require_once GP_PATH . GP_INC . 'route.php';
 require_once GP_PATH . GP_INC . 'router.php';
