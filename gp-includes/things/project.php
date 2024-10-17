@@ -448,12 +448,63 @@ class GP_Project extends GP_Thing {
 	 * @return bool
 	 */
 	public function delete() {
+		// Prepare array of projects to delete queue.
+		$projects = array(
+			$this->id, // Add current project ID.
+		);
+
+		// Get sub-projects.
+		$sub_projects = GP::$project->find_many( array( 'parent_project_id' => $this->id ) );
+		if ( is_array( $sub_projects ) && ! empty( $sub_projects ) ) {
+			foreach ( $sub_projects as $sub_project ) {
+				$projects[] = $sub_project->id; // Add sub-project ID.
+			}
+		}
+
+		// Delete Project sub-projects.
 		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
 
-		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
+		// Get the Project translation sets IDs.
+		$translation_sets = GP::$translation_set->find_many( array( 'project_id' => $projects ) );
 
-		GP::$original->delete_many( array( 'project_id' => $this->id ) );
+		if ( is_array( $translation_sets ) && ! empty( $translation_sets ) ) {
 
+			$translation_sets = array_map(
+				function ( $translation_set ) {
+					return $translation_set->id;
+				},
+				$translation_sets
+			);
+
+			// Delete the Project Translations.
+			GP::$translation->delete_many( array( 'translation_set_id' => $translation_sets ) );
+
+			// Get the Project Glossaries IDs.
+			$glossaries = GP::$glossary->find_many( array( 'translation_set_id' => $translation_sets ) );
+
+			if ( is_array( $glossaries ) && ! empty( $glossaries ) ) {
+				$glossaries = array_map(
+					function ( $glossary ) {
+						return $glossary->id;
+					},
+					$glossaries
+				);
+
+				// Delete the Project Glossaries entries.
+				GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossaries ) );
+			}
+
+			// Delete the Project Glossaries.
+			GP::$glossary->delete_many( array( 'translation_set_id' => $translation_sets ) );
+		}
+
+		// Delete the Project Translation Sets.
+		GP::$translation_set->delete_many( array( 'project_id' => $projects ) );
+
+		// Delete the Project Originals.
+		GP::$original->delete_many( array( 'project_id' => $projects ) );
+
+		// Delete the Project.
 		return parent::delete();
 	}
 }
