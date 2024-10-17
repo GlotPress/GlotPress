@@ -360,6 +360,14 @@ class GP_Project extends GP_Thing {
 		return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
 	}
 
+
+	/**
+	 * Copy Translation Sets, Translations and Project Glossaries from an existent Project.
+	 *
+	 * @param int $source_project_id   ID of the source project.
+	 *
+	 * @return void
+	 */
 	public function copy_sets_and_translations_from( $source_project_id ) {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
@@ -381,6 +389,27 @@ class GP_Project extends GP_Thing {
 			} else {
 				// Duplicate translations.
 				$new_set->copy_translations_from( $to_add->id );
+
+				// Check for project glossary.
+				$glossaries = GP::$glossary->find( array( 'translation_set_id' => $to_add->id ) );
+
+				if ( is_array( $glossaries ) && ! empty( $glossaries ) ) {
+					$glossary = $glossaries[0];
+
+					// Duplicate project glossary.
+					$new_glossary = GP::$glossary->create(
+						array(
+							'translation_set_id' => $new_set->id,
+							'description'        => $glossary->description,
+						)
+					);
+					if ( ! $new_glossary ) {
+						$this->errors[] = __( 'Error in creating glossary!', 'glotpress' );
+					} else {
+						// Duplicate glossary entries.
+						$new_entries = $new_glossary->copy_glossary_items_from( $glossary->id );
+					}
+				}
 			}
 		}
 	}
@@ -414,10 +443,17 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
+	/**
+	 * Duplicate Originals, Translation Sets, Translations and Project Glossaries from an existent Project.
+	 *
+	 * @param GP_Project $source_project   Project.
+	 *
+	 * @return void
+	 */
 	public function duplicate_project_contents_from( $source_project ) {
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
-		// Duplicate originals, translations sets and translations for the root project.
+		// Duplicate originals, translations sets, translations and glossaries for the root project.
 		$this->copy_originals_from( $source_project->id );
 		$this->copy_sets_and_translations_from( $source_project->id );
 
@@ -425,7 +461,7 @@ class GP_Project extends GP_Thing {
 		$parents                        = array();
 		$parents[ $source_project->id ] = $this->id;
 
-		// Duplicate originals, translations sets and translations for the child projects.
+		// Duplicate originals, translations sets, translations and glossaries for the child projects.
 		foreach ( $source_sub_projects as $sub ) {
 			$copy_project                    = new GP_Project( $sub->fields() );
 			$copy_project->parent_project_id = $parents[ $sub->parent_project_id ];

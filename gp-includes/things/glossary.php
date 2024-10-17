@@ -145,7 +145,7 @@ class GP_Glossary extends GP_Thing {
 	 * Copies glossary items from a glossary to the current one
 	 * This function does not merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
 	 *
-	 * @param int $source_glossary_id
+	 * @param int $source_glossary_id   ID of the source glossary.
 	 *
 	 * @return mixed
 	 */
@@ -155,12 +155,12 @@ class GP_Glossary extends GP_Thing {
 		$current_date = $this->now_in_mysql_format();
 
 		return $this->query(
-			"INSERT INTO $wpdb->gp_glossary_items (
-				id, term, type, examples, comment, suggested_translation, last_update
+			"INSERT INTO $wpdb->gp_glossary_entries (
+				glossary_id, term, part_of_speech, comment, translation,       date_modified, last_edited_by
 			)
 			SELECT
-				%s AS id, term, type, examples, comment, suggested_translation, %s AS last_update
-			FROM $wpdb->gp_glossary_items WHERE id = %s",
+				%s AS glossary_id, term, part_of_speech, comment, translation, %s AS date_modified, last_edited_by
+			FROM $wpdb->gp_glossary_entries WHERE glossary_id = %s",
 			$this->id,
 			$current_date,
 			$source_glossary_id
