@@ -419,20 +419,20 @@ div.webui-popover button.save {
 }
 
 .translator-translated {
-    cursor: pointer;
-    background: rgba(51, 240, 120, 0.5);
+    cursor: pointer !important;
+    background: rgba(51, 240, 120, 0.5) !important;
     border-radius: 2px;
 }
 
 .translator-untranslated {
-    cursor: pointer;
-    background: rgba(227, 112, 86, 0.5);
+    cursor: pointer !important;
+    background: rgba(227, 112, 86, 0.5) !important;
     border-radius: 2px;
 }
 
 .translator-user-translated {
-    cursor: pointer;
-    background: rgba(255, 249, 114, 0.5);
+    cursor: pointer !important;
+    background: rgba(255, 249, 114, 0.5) !important;
     border-radius: 2px;
 }
 
