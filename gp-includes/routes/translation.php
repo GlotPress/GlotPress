@@ -733,7 +733,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
 
 		if ( ! $translation ) {
-			return $this->die_with_error( 'Translation doesn&#8217;t exist!' );
+			return $this->die_with_error( esc_html__( 'Translation doesn&#8217;t exist!', 'glotpress' ), 404, esc_html__( 'Not Found', 'glotpress' ), '404' );
 		}
 
 		$this->can_approve_translation_or_forbidden( $translation );
@@ -776,7 +776,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	 */
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
-			return $this->die_with_error( 'The warning doesn&#8217;exist!' );
+			return $this->die_with_error( esc_html__( 'The warning doesn&#8217;t exist!', 'glotpress' ), 404, esc_html__( 'Not Found', 'glotpress' ), '404' );
 		}
 
 		$warning = array(
