@@ -56,6 +56,13 @@ class GP_Glossary_Entry extends GP_Thing {
 			return;
 		}
 
+		add_action( 'init', array( $this, 'translate_parts_of_speech' ) );
+	}
+
+	/**
+	 * Translates the parts of speech.
+	 */
+	public function translate_parts_of_speech() {
 		$this->parts_of_speech = array(
 			'noun'         => _x( 'noun', 'part-of-speech', 'glotpress' ),
 			'verb'         => _x( 'verb', 'part-of-speech', 'glotpress' ),
