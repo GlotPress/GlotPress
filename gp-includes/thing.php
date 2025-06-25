@@ -340,8 +340,9 @@ class GP_Thing {
 	/**
 	 * Inserts a new row
 	 *
-	 * @param $args array associative array with fields as keys and values as values
-	 * @return mixed the object corresponding to the inserted row or false on error
+	 * @param array $args Associative array with fields as keys and values as values.
+	 *
+	 * @return mixed The object corresponding to the inserted row or false on error.
 	 */
 	public function create( $args ) {
 		global $wpdb;
@@ -362,8 +363,8 @@ class GP_Thing {
 	/**
 	 * Inserts a record and then selects it back based on the id
 	 *
-	 * @param $args array see create()
-	 * @return mixed the selected object or false on error
+	 * @param array $args See create().
+	 * @return mixed the selected object or false on error.
 	 */
 	public function create_and_select( $args ) {
 		$created = $this->create( $args );
@@ -377,7 +378,7 @@ class GP_Thing {
 	/**
 	 * Updates a single row
 	 *
-	 * @param $data array associative array with fields as keys and updated values as values
+	 * @param array $data Associative array with fields as keys and updated values as values.
 	 */
 	public function update( $data, $where = null ) {
 		global $wpdb;
