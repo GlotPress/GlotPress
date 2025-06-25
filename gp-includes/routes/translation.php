@@ -161,7 +161,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		 */
 		$filename = apply_filters( 'gp_export_translations_filename', $filename, $format, $locale, $project, $translation_set );
 
-		$filters = gp_get( 'filters', array() );
+		$filters = (array) gp_get( 'filters', array() );
 		$filters = array_filter( $filters, 'is_scalar' );
 
 		$entries = GP::$translation->for_export( $project, $translation_set, $filters );
@@ -196,12 +196,12 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$page    = gp_get( 'page', 1 );
 		$page    = is_numeric( $page ) ? intval( $page ) : 1;
-		$filters = gp_get( 'filters', array() );
+		$filters = (array) gp_get( 'filters', array() );
 		$filters = array_filter( $filters, 'is_scalar' );
-		$sort    = gp_get( 'sort', array() );
+		$sort    = (array) gp_get( 'sort', array() );
 		$sort    = array_filter( $sort, 'is_scalar' );
 
-		if ( is_array( $sort ) && 'random' === gp_array_get( $sort, 'by' ) ) {
+		if ( 'random' === gp_array_get( $sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
 		}
 
@@ -733,7 +733,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translation = GP::$translation->get( gp_post( 'translation_id' ) );
 
 		if ( ! $translation ) {
-			return $this->die_with_error( 'Translation doesn&#8217;t exist!' );
+			return $this->die_with_error( esc_html__( 'Translation doesn&#8217;t exist!', 'glotpress' ), 404, esc_html__( 'Not Found', 'glotpress' ), '404' );
 		}
 
 		$this->can_approve_translation_or_forbidden( $translation );
@@ -776,7 +776,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	 */
 	private function discard_warning_edit_function( $project, $locale, $translation_set, $translation ) {
 		if ( ! isset( $translation->warnings[ gp_post( 'index' ) ][ gp_post( 'key' ) ] ) ) {
-			return $this->die_with_error( 'The warning doesn&#8217;exist!' );
+			return $this->die_with_error( esc_html__( 'The warning doesn&#8217;t exist!', 'glotpress' ), 404, esc_html__( 'Not Found', 'glotpress' ), '404' );
 		}
 
 		$warning = array(

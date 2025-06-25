@@ -23,6 +23,8 @@ class GP_Validator_Permission extends GP_Permission {
 	public $project_id;
 	public $locale_slug;
 	public $set_slug;
+	public $user;
+	public $project;
 
 	/**
 	 * Sets restriction rules for fields.
