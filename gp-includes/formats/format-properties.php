@@ -83,7 +83,7 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param $string string The string to encode.
+	 * @param string $string The string to encode.
 	 *
 	 * @return string
 	 */
