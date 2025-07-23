@@ -390,6 +390,10 @@ class GP_Route {
 	 * @since 4.0.0
 	 */
 	public function check_uri_trailing_slash() {
+		// Only check for GET requests.
+		if ( 'GET' !== $_SERVER['REQUEST_METHOD'] ) {
+			return;
+		}
 
 		// Current URL.
 		$current_uri = wp_parse_url( gp_url_current() );
