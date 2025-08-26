@@ -6,9 +6,6 @@
  * @subpackage Tests
  */
 
-// Skip WordPress deprecation tracking during tests to avoid cluttering test output with deprecation notices.
-define( 'WP_TESTS_SKIP_DEPRECATION', true );
-
 if ( ! defined( 'GP_TESTS_DIR' ) ) {
 	define( 'GP_TESTS_DIR', __DIR__ );
 }
