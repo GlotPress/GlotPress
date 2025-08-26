@@ -752,7 +752,6 @@ function gp_set_translations_import_max_memory_limit() {
 function gp_is_valid_utf8( $string ) {
 	if ( function_exists( 'wp_is_valid_utf8' ) ) {
 		return wp_is_valid_utf8( $string );
-	} else {
-		return seems_utf8( $string );
 	}
+	return seems_utf8( $string );
 }
