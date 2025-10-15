@@ -2,9 +2,9 @@
 Contributors: A5hleyRich, akibjorklund, akirk, amieiro, atimmer, bradt, ChantalC, ckykenken, DaMsT, daveshine, dd32, evarlese, extendwings, gilbitron, GregRoss, javorszky, nacin, Nikschavan, ocean90, pedromendonca, petya, polevaultweb, ramiy, rmccue, samuelsidler, SergeyBiryukov, sunxiyuan, swissspidy, tobifjellner, vladytimy, xavivars, yoavf
 Tags: translation
 Requires at least: 4.6
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

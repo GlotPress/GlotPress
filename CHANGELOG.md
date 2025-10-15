@@ -1,6 +1,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.2] (October 15, 2025)
+
+**Bugfixes**
+* Add a new gp_is_valid_utf8 helper function ([#1929])
+* In the check_uri_trailing_slash, check if the request method is GET ([#1879])
+* Delay the translation of parts of speech to the init hook ([#1907])
+* Avoid warnings by type-casting array GET variables to arrays. ([#1835])
+* Install SVN in the GitHub action ([#1889])
+* Convert NULL translation values to empty string ([#1859])
+* Declare variables to avoid dynamic creation error in PHP 8 ([#1861])
+* Update the 404 template and add a new generic error template ([#1842])
+* Do not fail the CI if the codecov action fails ([#1844])
+
+**Locales**
+* Update AZB properties in locales.php ([#1763])
+* Rename locales and fix native name ([#1876])
+
 ## [4.0.1] (April 3, 2024)
 
 **Bugfixes**
@@ -654,7 +671,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.1...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.2...HEAD
+[4.0.2]: https://github.com/GlotPress/GlotPress/compare/4.0.1...4.0.2
 [4.0.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/GlotPress/GlotPress/compare/4.0.0-rc.1...4.0.0
 [4.0.0-rc.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0-beta.3...4.0.0-rc.1
@@ -843,3 +861,47 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1809]: https://github.com/GlotPress/GlotPress/pull/1809
 [#1807]: https://github.com/GlotPress/GlotPress/pull/1807
 [#1773]: https://github.com/GlotPress/GlotPress/pull/1773
+[#1939]: https://github.com/GlotPress/GlotPress/pull/1939
+[#1938]: https://github.com/GlotPress/GlotPress/pull/1938
+[#1937]: https://github.com/GlotPress/GlotPress/pull/1937
+[#1936]: https://github.com/GlotPress/GlotPress/pull/1936
+[#1935]: https://github.com/GlotPress/GlotPress/pull/1935
+[#1920]: https://github.com/GlotPress/GlotPress/pull/1920
+[#1933]: https://github.com/GlotPress/GlotPress/pull/1933
+[#1934]: https://github.com/GlotPress/GlotPress/pull/1934
+[#1924]: https://github.com/GlotPress/GlotPress/pull/1924
+[#1925]: https://github.com/GlotPress/GlotPress/pull/1925
+[#1930]: https://github.com/GlotPress/GlotPress/pull/1930
+[#1926]: https://github.com/GlotPress/GlotPress/pull/1926
+[#1931]: https://github.com/GlotPress/GlotPress/pull/1931
+[#1932]: https://github.com/GlotPress/GlotPress/pull/1932
+[#1929]: https://github.com/GlotPress/GlotPress/pull/1929
+[#1915]: https://github.com/GlotPress/GlotPress/pull/1915
+[#1879]: https://github.com/GlotPress/GlotPress/pull/1879
+[#1907]: https://github.com/GlotPress/GlotPress/pull/1907
+[#1914]: https://github.com/GlotPress/GlotPress/pull/1914
+[#1910]: https://github.com/GlotPress/GlotPress/pull/1910
+[#1909]: https://github.com/GlotPress/GlotPress/pull/1909
+[#1908]: https://github.com/GlotPress/GlotPress/pull/1908
+[#1763]: https://github.com/GlotPress/GlotPress/pull/1763
+[#1876]: https://github.com/GlotPress/GlotPress/pull/1876
+[#1835]: https://github.com/GlotPress/GlotPress/pull/1835
+[#1902]: https://github.com/GlotPress/GlotPress/pull/1902
+[#1906]: https://github.com/GlotPress/GlotPress/pull/1906
+[#1903]: https://github.com/GlotPress/GlotPress/pull/1903
+[#1901]: https://github.com/GlotPress/GlotPress/pull/1901
+[#1900]: https://github.com/GlotPress/GlotPress/pull/1900
+[#1899]: https://github.com/GlotPress/GlotPress/pull/1899
+[#1894]: https://github.com/GlotPress/GlotPress/pull/1894
+[#1890]: https://github.com/GlotPress/GlotPress/pull/1890
+[#1840]: https://github.com/GlotPress/GlotPress/pull/1840
+[#1892]: https://github.com/GlotPress/GlotPress/pull/1892
+[#1893]: https://github.com/GlotPress/GlotPress/pull/1893
+[#1851]: https://github.com/GlotPress/GlotPress/pull/1851
+[#1852]: https://github.com/GlotPress/GlotPress/pull/1852
+[#1828]: https://github.com/GlotPress/GlotPress/pull/1828
+[#1889]: https://github.com/GlotPress/GlotPress/pull/1889
+[#1859]: https://github.com/GlotPress/GlotPress/pull/1859
+[#1861]: https://github.com/GlotPress/GlotPress/pull/1861
+[#1842]: https://github.com/GlotPress/GlotPress/pull/1842
+[#1844]: https://github.com/GlotPress/GlotPress/pull/1844
