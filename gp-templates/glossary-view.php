@@ -58,37 +58,39 @@ if ( $glossary_description ) {
 }
 ?>
 
-<table class="gp-table glossary" id="glossary">
-	<thead>
-		<tr>
-			<th class="gp-column-item" data-sorter="text"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-part-of-speech" data-sorter="false"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-translation" data-sorter="text"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-comments" data-sorter="false"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
-			<th class="gp-column-modified" data-sorter="text"><?php _ex( 'Last Modified', 'glossary entry', 'glotpress' ); ?></th>
-			<?php if ( $can_edit ) : ?>
-				<th class="gp-column-actions" data-sorter="false">&mdash;</th>
-			<?php endif; ?>
-		</tr>
-	</thead>
-	<tbody>
-<?php
-	if ( count( $glossary_entries ) > 0 ) {
-		foreach ( $glossary_entries as $entry ) {
-			gp_tmpl_load( 'glossary-entry-row', get_defined_vars() );
+<div class="gp-table-container">
+	<table class="gp-table glossary" id="glossary">
+		<thead>
+			<tr>
+				<th class="gp-column-item" data-sorter="text"><?php _ex( 'Item', 'glossary entry', 'glotpress' ); ?></th>
+				<th class="gp-column-part-of-speech" data-sorter="false"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></th>
+				<th class="gp-column-translation" data-sorter="text"><?php _ex( 'Translation', 'glossary entry', 'glotpress' ); ?></th>
+				<th class="gp-column-comments" data-sorter="false"><?php _ex( 'Comments', 'glossary entry', 'glotpress' ); ?></th>
+				<th class="gp-column-modified" data-sorter="text"><?php _ex( 'Last Modified', 'glossary entry', 'glotpress' ); ?></th>
+				<?php if ( $can_edit ) : ?>
+					<th class="gp-column-actions" data-sorter="false">&mdash;</th>
+				<?php endif; ?>
+			</tr>
+		</thead>
+		<tbody>
+	<?php
+		if ( count( $glossary_entries ) > 0 ) {
+			foreach ( $glossary_entries as $entry ) {
+				gp_tmpl_load( 'glossary-entry-row', get_defined_vars() );
+			}
+		} else {
+			?>
+			<tr>
+				<td colspan="6">
+					<?php _e( 'No glossary entries yet.', 'glotpress' ); ?>
+				</td>
+			</tr>
+			<?php
 		}
-	} else {
-		?>
-		<tr>
-			<td colspan="6">
-				<?php _e( 'No glossary entries yet.', 'glotpress' ); ?>
-			</td>
-		</tr>
-		<?php
-	}
-?>
-	</tbody>
-</table>
+	?>
+		</tbody>
+	</table>
+</div>
 
 <?php if ( $can_edit ) : ?>
 <h4><?php _e( 'Create an entry', 'glotpress' ); ?></h4>

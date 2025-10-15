@@ -438,40 +438,42 @@ $i = 0;
  */
 do_action( 'gp_before_translation_table', get_defined_vars() );
 ?>
-<table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
-	<thead>
-	<tr>
-		<?php
-		if ( $can_approve ) :
-			?>
-			<th class="gp-column-checkbox checkbox" scope="row"><input type="checkbox" /></th>
+<div class="gp-table-container">
+	<table id="translations" class="<?php echo esc_attr( apply_filters( 'gp_translation_table_classes', 'gp-table translations ' . $class_rtl, get_defined_vars() ) ); ?>">
+		<thead>
+		<tr>
 			<?php
-		endif;
-		?>
-		<th class="gp-column-priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
-		<th class="gp-column-original"><?php _e( 'Original string', 'glotpress' ); ?></th>
-		<th class="gp-column-translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
-		<th class="gp-column-actions">&mdash;</th>
-	</tr>
-	</thead>
-<?php
-foreach ( $translations as $translation ) {
-	if ( ! $translation->translation_set_id ) {
-		$translation->translation_set_id = $translation_set->id;
-	}
-
-	$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
-	gp_tmpl_load( 'translation-row', get_defined_vars() );
-}
-?>
-<?php
-if ( ! $translations ) :
-	?>
-	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
+			if ( $can_approve ) :
+				?>
+				<th class="gp-column-checkbox checkbox" scope="row"><input type="checkbox" /></th>
+				<?php
+			endif;
+			?>
+			<th class="gp-column-priority"><?php /* Translators: Priority */ _e( 'Prio', 'glotpress' ); ?></th>
+			<th class="gp-column-original"><?php _e( 'Original string', 'glotpress' ); ?></th>
+			<th class="gp-column-translation"><?php _e( 'Translation', 'glotpress' ); ?></th>
+			<th class="gp-column-actions">&mdash;</th>
+		</tr>
+		</thead>
 	<?php
-	endif;
-?>
-</table>
+	foreach ( $translations as $translation ) {
+		if ( ! $translation->translation_set_id ) {
+			$translation->translation_set_id = $translation_set->id;
+		}
+
+		$can_approve_translation = GP::$permission->current_user_can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
+		gp_tmpl_load( 'translation-row', get_defined_vars() );
+	}
+	?>
+	<?php
+	if ( ! $translations ) :
+		?>
+		<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
+		<?php
+		endif;
+	?>
+	</table>
+</div>
 <?php
 /**
  * Fires after the translation table has been displayed.

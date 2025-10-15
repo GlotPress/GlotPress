@@ -615,10 +615,19 @@ button,
 	border-spacing: 0;
 }
 
+.gp-table-container {
+	margin: 1rem 0;
+	overflow: auto;
+}
+
 table.gp-table {
 	width: 100%;
 	margin: 1rem 0;
 	border: 1px solid var( --gp-color-border-default );
+}
+
+.gp-table-container table.gp-table {
+	margin: 0;
 }
 
 table.gp-table thead th,

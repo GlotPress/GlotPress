@@ -60,129 +60,131 @@ foreach ( $projects_data as $project_id => $sub_projects ) :
 	?>
 	<div class="locale-project">
 		<h3><?php echo esc_html( $projects[ $project_id ]->name ); ?></h3>
-		<table class="gp-table locale-sub-projects">
-			<thead>
-				<tr>
-					<th class="gp-column-project-stats" rowspan="<?php echo esc_attr( $count_sub_projects ); ?>"><?php _e( 'Project / Stats', 'glotpress' ); ?></th>
-					<th class="gp-column-set-sub-projects"><?php _e( 'Set / Sub Project', 'glotpress' ); ?></th>
-					<th class="gp-column-translated"><?php _e( 'Translated', 'glotpress' ); ?></th>
-					<th class="gp-column-fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
-					<th class="gp-column-untranslated"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
-					<th class="gp-column-waiting"><?php _e( 'Waiting', 'glotpress' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php foreach ( $sub_projects as $sub_project_id => $data ) : ?>
-				<tr>
-				<th class="sub-project" rowspan="<?php echo count( $data['sets'] ); ?>">
-					<?php
-					if ( $has_sub_projects ) {
-						echo esc_html( $projects[ $sub_project_id ]->name );
-					}
-					?>
-					<div class="stats">
-						<div class="total-strings">
-							<?php
-							printf(
-								/* translators: %s: Count number. */
-								__( '%s strings', 'glotpress' ),
-								number_format_i18n( $data['totals']->all_count )
-							);
-							?>
-						</div>
-						<div class="percent-completed">
-							<?php
-							$percent_completed = 0;
-							if ( $data['totals']->current_count ) {
-								$percent_completed = floor( $data['totals']->current_count / $data['totals']->all_count * 100 );
-							}
-							printf(
-								/* translators: %s: Percent completed. */
-								__( '%s%% translated', 'glotpress' ),
-								number_format_i18n( $percent_completed )
-							);
-							?>
-						</div>
-					</div>
-				</th>
-				<?php foreach ( $data['sets'] as $set_id => $set_data ) : ?>
-					<?php
-					reset( $data['sets'] );
-					if ( key( $data['sets'] ) !== $set_id ) {
-						echo '<tr>';
-					}
-					?>
-					<td class="set-name">
-						<strong><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ) ), $set_data->name ); ?></strong>
-						<?php
-						if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
-							$percent = floor( $set_data->current_count / $set_data->all_count * 100 );
-							?>
-							<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
-						<?php endif; ?>
-					</td>
-					<td class="stats translated">
-						<?php
-						gp_link(
-							gp_url_project(
-								$set_data->project_path,
-								gp_url_join( $locale->slug, $set_data->slug ),
-								array(
-									'filters[status]' => 'current',
-								)
-							),
-							number_format_i18n( $set_data->current_count )
-						);
-						?>
-					</td>
-					<td class="stats fuzzy">
-						<?php
-						gp_link(
-							gp_url_project(
-								$set_data->project_path,
-								gp_url_join( $locale->slug, $set_data->slug ),
-								array(
-									'filters[status]' => 'fuzzy',
-								)
-							),
-							number_format_i18n( $set_data->fuzzy_count )
-						);
-						?>
-					</td>
-					<td class="stats untranslated">
-						<?php
-						gp_link(
-							gp_url_project(
-								$set_data->project_path,
-								gp_url_join( $locale->slug, $set_data->slug ),
-								array(
-									'filters[status]' => 'untranslated',
-								)
-							),
-							number_format_i18n( $set_data->all_count - $set_data->current_count )
-						);
-						?>
-					</td>
-					<td class="stats waiting">
-						<?php
-						gp_link(
-							gp_url_project(
-								$set_data->project_path,
-								gp_url_join( $locale->slug, $set_data->slug ),
-								array(
-									'filters[status]' => 'waiting',
-								)
-							),
-							number_format_i18n( $set_data->waiting_count )
-						);
-						?>
-					</td>
+		<div class="gp-table-container">
+			<table class="gp-table locale-sub-projects">
+				<thead>
+					<tr>
+						<th class="gp-column-project-stats" rowspan="<?php echo esc_attr( $count_sub_projects ); ?>"><?php _e( 'Project / Stats', 'glotpress' ); ?></th>
+						<th class="gp-column-set-sub-projects"><?php _e( 'Set / Sub Project', 'glotpress' ); ?></th>
+						<th class="gp-column-translated"><?php _e( 'Translated', 'glotpress' ); ?></th>
+						<th class="gp-column-fuzzy"><?php _e( 'Fuzzy', 'glotpress' ); ?></th>
+						<th class="gp-column-untranslated"><?php _e( 'Untranslated', 'glotpress' ); ?></th>
+						<th class="gp-column-waiting"><?php _e( 'Waiting', 'glotpress' ); ?></th>
 					</tr>
-				<?php endforeach; // Sub project slugs. ?>
-				</tr>
-			<?php endforeach;  // Sub projects. ?>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+				<?php foreach ( $sub_projects as $sub_project_id => $data ) : ?>
+					<tr>
+					<th class="sub-project" rowspan="<?php echo count( $data['sets'] ); ?>">
+						<?php
+						if ( $has_sub_projects ) {
+							echo esc_html( $projects[ $sub_project_id ]->name );
+						}
+						?>
+						<div class="stats">
+							<div class="total-strings">
+								<?php
+								printf(
+									/* translators: %s: Count number. */
+									__( '%s strings', 'glotpress' ),
+									number_format_i18n( $data['totals']->all_count )
+								);
+								?>
+							</div>
+							<div class="percent-completed">
+								<?php
+								$percent_completed = 0;
+								if ( $data['totals']->current_count ) {
+									$percent_completed = floor( $data['totals']->current_count / $data['totals']->all_count * 100 );
+								}
+								printf(
+									/* translators: %s: Percent completed. */
+									__( '%s%% translated', 'glotpress' ),
+									number_format_i18n( $percent_completed )
+								);
+								?>
+							</div>
+						</div>
+					</th>
+					<?php foreach ( $data['sets'] as $set_id => $set_data ) : ?>
+						<?php
+						reset( $data['sets'] );
+						if ( key( $data['sets'] ) !== $set_id ) {
+							echo '<tr>';
+						}
+						?>
+						<td class="set-name">
+							<strong><?php gp_link( gp_url_project( $set_data->project_path, gp_url_join( $locale->slug, $set_data->slug ) ), $set_data->name ); ?></strong>
+							<?php
+							if ( $set_data->current_count && $set_data->current_count >= $set_data->all_count * 0.9 ) :
+								$percent = floor( $set_data->current_count / $set_data->all_count * 100 );
+								?>
+								<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
+							<?php endif; ?>
+						</td>
+						<td class="stats translated">
+							<?php
+							gp_link(
+								gp_url_project(
+									$set_data->project_path,
+									gp_url_join( $locale->slug, $set_data->slug ),
+									array(
+										'filters[status]' => 'current',
+									)
+								),
+								number_format_i18n( $set_data->current_count )
+							);
+							?>
+						</td>
+						<td class="stats fuzzy">
+							<?php
+							gp_link(
+								gp_url_project(
+									$set_data->project_path,
+									gp_url_join( $locale->slug, $set_data->slug ),
+									array(
+										'filters[status]' => 'fuzzy',
+									)
+								),
+								number_format_i18n( $set_data->fuzzy_count )
+							);
+							?>
+						</td>
+						<td class="stats untranslated">
+							<?php
+							gp_link(
+								gp_url_project(
+									$set_data->project_path,
+									gp_url_join( $locale->slug, $set_data->slug ),
+									array(
+										'filters[status]' => 'untranslated',
+									)
+								),
+								number_format_i18n( $set_data->all_count - $set_data->current_count )
+							);
+							?>
+						</td>
+						<td class="stats waiting">
+							<?php
+							gp_link(
+								gp_url_project(
+									$set_data->project_path,
+									gp_url_join( $locale->slug, $set_data->slug ),
+									array(
+										'filters[status]' => 'waiting',
+									)
+								),
+								number_format_i18n( $set_data->waiting_count )
+							);
+							?>
+						</td>
+						</tr>
+					<?php endforeach; // Sub project slugs. ?>
+					</tr>
+				<?php endforeach;  // Sub projects. ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 <?php endforeach; // Top projects. ?>
 
