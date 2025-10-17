@@ -56,6 +56,19 @@ class GP_Glossary_Entry extends GP_Thing {
 			return;
 		}
 
+		$this->parts_of_speech = array(
+			'noun'         => 'noun',
+			'verb'         => 'verb',
+			'adjective'    => 'adjective',
+			'adverb'       => 'adverb',
+			'interjection' => 'interjection',
+			'conjunction'  => 'conjunction',
+			'preposition'  => 'preposition',
+			'pronoun'      => 'pronoun',
+			'expression'   => 'expression',
+			'abbreviation' => 'abbreviation',
+		);
+
 		add_action( 'init', array( $this, 'translate_parts_of_speech' ) );
 	}
 
