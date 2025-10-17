@@ -206,6 +206,5 @@ function gp_deactivate_plugin( $network_wide ) {
 	} else {
 		update_option( 'gp_rewrite_rule', '' );
 	}
-
 }
 register_deactivation_hook( GP_PLUGIN_FILE, 'gp_deactivate_plugin' );

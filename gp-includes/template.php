@@ -162,7 +162,7 @@ function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
 		add_filter(
 			'gp_title',
-			function() use ( $title ) {
+			function () use ( $title ) {
 				return $title;
 			},
 			5
@@ -186,7 +186,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 
 		add_filter(
 			'gp_breadcrumb_items',
-			function( $breadcrumbs ) use ( $breadcrumb ) {
+			function ( $breadcrumbs ) use ( $breadcrumb ) {
 				return array_merge( $breadcrumbs, $breadcrumb );
 			},
 			1
@@ -529,7 +529,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 function gp_array_of_things_to_json( $array ) {
 	return wp_json_encode(
 		array_map(
-			function( $thing ) {
+			function ( $thing ) {
 				return $thing->fields();
 			},
 			$array
@@ -538,9 +538,9 @@ function gp_array_of_things_to_json( $array ) {
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
-	$map_to_fields = function( $array ) {
+	$map_to_fields = function ( $array ) {
 		return array_map(
-			function( $thing ) {
+			function ( $thing ) {
 				return $thing->fields();
 			},
 			$array

@@ -141,10 +141,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
-		} else {
-			if ( ! $glossary_entry->update( $new_glossary_entry ) ) {
+		} elseif ( ! $glossary_entry->update( $new_glossary_entry ) ) {
 				$this->errors = $glossary_entry->errors;
-			}
 		}
 
 		if ( $this->errors ) {
@@ -360,7 +358,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				}
 				$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
 				if ( $created_glossary_entry ) {
-					$glossary_entries++;
+					++$glossary_entries;
 				}
 			}
 		}
@@ -368,5 +366,4 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		fclose( $f );
 		return $glossary_entries;
 	}
-
 }

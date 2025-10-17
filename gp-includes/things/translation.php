@@ -357,7 +357,7 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$mapped_scope_array = array_map(
-				function( $x ) use ( $like ) {
+				function ( $x ) use ( $like ) {
 					return "($x $like)";
 				},
 				$scope_array
@@ -406,7 +406,7 @@ class GP_Translation extends GP_Thing {
 			$valid_priorities = array_keys( GP::$original->get_static( 'priorities' ) );
 			$priorities       = array_filter(
 				gp_array_get( $filters, 'priority' ),
-				function( $p ) use ( $valid_priorities ) {
+				function ( $p ) use ( $valid_priorities ) {
 					return in_array( intval( $p ), $valid_priorities, true );
 				}
 			);
@@ -420,7 +420,7 @@ class GP_Translation extends GP_Thing {
 				$priorities_where = '(' . implode( ' OR ', $priorities_where ) . ')';
 				$where[]          = $priorities_where;
 			}
-		};
+		}
 
 		$join_on  = array();
 		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated_or_changesrequested' );
@@ -434,7 +434,7 @@ class GP_Translation extends GP_Thing {
 			$join_on[] = "t.status != 'old'";
 			$statuses  = array_filter(
 				$statuses,
-				function( $x ) {
+				function ( $x ) {
 					return 'untranslated' !== $x;
 				}
 			);
@@ -443,7 +443,7 @@ class GP_Translation extends GP_Thing {
 		$all_statuses = $this->get_static( 'statuses' );
 		$statuses     = array_filter(
 			$statuses,
-			function( $s ) use ( $all_statuses ) {
+			function ( $s ) use ( $all_statuses ) {
 				return in_array( $s, $all_statuses, true );
 			}
 		);

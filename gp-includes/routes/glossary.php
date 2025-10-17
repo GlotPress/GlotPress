@@ -209,5 +209,4 @@ class GP_Route_Glossary extends GP_Route_Main {
 	private function cannot_delete_glossary_and_redirect( $glossary ) {
 		return $this->cannot_and_redirect( 'delete', 'translation-set', $glossary->translation_set_id );
 	}
-
 }

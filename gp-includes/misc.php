@@ -242,7 +242,7 @@ function gp_array_zip( ...$args ) {
 			next( $array );
 		}
 
-		$array_count++;
+		++$array_count;
 	}
 
 	return $res;
@@ -254,10 +254,8 @@ function gp_array_any( $callback, $array, $arg = null ) {
 			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
-		} else {
-			if ( $callback( $item, $arg ) ) {
+		} elseif ( $callback( $item, $arg ) ) {
 				return true;
-			}
 		}
 	}
 	return false;

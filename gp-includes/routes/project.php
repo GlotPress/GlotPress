@@ -49,7 +49,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		usort(
 			$translation_sets,
-			function( $a, $b ) {
+			function ( $a, $b ) {
 				return( $a->current_count <=> $b->current_count );
 			}
 		);
@@ -346,7 +346,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions  = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn       = function( $x, $y ) {
+		$cmp_fn       = function ( $x, $y ) {
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
 		usort( $permissions, $cmp_fn );
@@ -576,5 +576,4 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$this->redirect( gp_url_project( $new_project ) );
 	}
-
 }

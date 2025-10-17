@@ -169,7 +169,7 @@ class GP_Format_Android extends GP_Format {
 				$entries->add_entry( $entry );
 
 				// Increment our index for the next entry.
-				$item_index++;
+				++$item_index;
 			}
 		}
 
@@ -452,7 +452,6 @@ class GP_Format_Android extends GP_Format {
 
 		return $string;
 	}
-
 }
 
 GP::$formats['android'] = new GP_Format_Android();

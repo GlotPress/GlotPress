@@ -232,5 +232,4 @@ class GP_Router {
 
 		gp_tmpl_404();
 	}
-
 }

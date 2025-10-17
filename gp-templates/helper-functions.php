@@ -19,7 +19,7 @@ function prepare_original( $text ) {
 	$glossary_entries = array();
 	$text             = preg_replace_callback(
 		'!(<span class="glossary-word"[^>]+>)!i',
-		function( $m ) use ( &$glossary_entries ) {
+		function ( $m ) use ( &$glossary_entries ) {
 			$item_number                      = count( $glossary_entries );
 			$glossary_entries[ $item_number ] = $m[0];
 			return "<span GLOSSARY={$item_number}>";
@@ -49,7 +49,7 @@ function prepare_original( $text ) {
 	// Put the glossaries back!
 	$text = preg_replace_callback(
 		'!(<span GLOSSARY=(\d+)>)!',
-		function( $m ) use ( $glossary_entries ) {
+		function ( $m ) use ( $glossary_entries ) {
 			return $glossary_entries[ $m[2] ];
 		},
 		$text
@@ -472,7 +472,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	// Sort by length in descending order.
 	uksort(
 		$glossary_entries_suffixes,
-		function( $a, $b ) {
+		function ( $a, $b ) {
 			return mb_strlen( $b ) <=> mb_strlen( $a );
 		}
 	);

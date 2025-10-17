@@ -14,7 +14,7 @@ $delete_link = gp_link_project_delete_get( $project, null, array( 'class' => 'bu
 if ( ! $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
-		function( $items ) {
+		function ( $items ) {
 			$items[ count( $items ) - 1 ] .= ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 
 			return $items;
