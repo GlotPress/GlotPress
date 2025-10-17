@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.3] (October 17, 2025)
+
+**Bugfixes**
+* Check if ->all_count is > 0 ([#1941])
+* Add the untranslated parts of speech ([#1943])
+
 ## [4.0.2] (October 15, 2025)
 
 **Bugfixes**
@@ -671,7 +677,8 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 
 * Initial release.
 
-[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.2...HEAD
+[Unreleased]: https://github.com/GlotPress/GlotPress/compare/4.0.3...HEAD
+[4.0.3]: https://github.com/GlotPress/GlotPress/compare/4.0.2...4.0.3
 [4.0.2]: https://github.com/GlotPress/GlotPress/compare/4.0.1...4.0.2
 [4.0.1]: https://github.com/GlotPress/GlotPress/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/GlotPress/GlotPress/compare/4.0.0-rc.1...4.0.0
@@ -905,3 +912,5 @@ Thanks to all the contributors so far: Aki Björklund, Daisuke Takahashi, Domini
 [#1861]: https://github.com/GlotPress/GlotPress/pull/1861
 [#1842]: https://github.com/GlotPress/GlotPress/pull/1842
 [#1844]: https://github.com/GlotPress/GlotPress/pull/1844
+[#1941]: https://github.com/GlotPress/GlotPress/pull/1941
+[#1943]: https://github.com/GlotPress/GlotPress/pull/1943
