@@ -81,19 +81,19 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
+		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
 			return;
 		}
 
-		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] );
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( ! $format ) {
 			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
 			return;
 		}
 
-		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'], $project );
+		$translations = $format->read_translations_from_file( $_FILES['import-file']['tmp_name'], $project ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( ! $translations ) {
 			$this->redirect_with_error( __( 'Couldn&#8217;t load translations from file!', 'glotpress' ) );
 			return;

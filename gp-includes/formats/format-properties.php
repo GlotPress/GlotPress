@@ -435,30 +435,28 @@ class GP_Format_Properties extends GP_Format {
 				if ( false === $inline ) {
 					$entries->add_entry( $entry );
 				}
-			} else {
+			} elseif ( true === $inline ) {
 				// If we're processing a multi-line entry, add the line to the translation.
-				if ( true === $inline ) {
-					// Check to make sure we're not a blank line.
-					if ( '' != trim( $line ) ) {
-						// If there's still more lines to add, trim off the trailing slash.
-						if ( gp_endswith( $line, '\\' ) ) {
-							$line = rtrim( $line, '\\' );
-						}
-
-						// Strip off leading spaces.
-						$line = ltrim( $line );
-
-						// Decode the translation and add it to the current entry.
-						$entry->singular = $entry->singular . $this->uni_decode( $line );
-					} else {
-						// Any blank line signals end of the entry.
-						$entries->add_entry( $entry );
-						$inline = false;
+				// Check to make sure we're not a blank line.
+				if ( '' != trim( $line ) ) {
+					// If there's still more lines to add, trim off the trailing slash.
+					if ( gp_endswith( $line, '\\' ) ) {
+						$line = rtrim( $line, '\\' );
 					}
+
+					// Strip off leading spaces.
+					$line = ltrim( $line );
+
+					// Decode the translation and add it to the current entry.
+					$entry->singular = $entry->singular . $this->uni_decode( $line );
 				} else {
-					// If we hit a blank line and are not processing a multi-line entry, reset the comment.
-					$comment = null;
+					// Any blank line signals end of the entry.
+					$entries->add_entry( $entry );
+					$inline = false;
 				}
+			} else {
+				// If we hit a blank line and are not processing a multi-line entry, reset the comment.
+				$comment = null;
 			}
 		}
 

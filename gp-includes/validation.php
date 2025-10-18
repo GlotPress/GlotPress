@@ -6,6 +6,8 @@
  * @since 1.0.0
  */
 
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
+
 /**
  * Core class to handle validation of translations.
  *
