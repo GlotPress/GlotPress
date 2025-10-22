@@ -187,6 +187,7 @@ class GP_Original extends GP_Thing {
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key          = array();
+		$references                = array();
 		foreach ( $all_originals_for_project as $original ) {
 			$entry = new Translation_Entry(
 				array(
@@ -197,6 +198,7 @@ class GP_Original extends GP_Thing {
 			);
 
 			$originals_by_key[ $entry->key() ] = $original;
+			$references = apply_filters( 'gp_references', array(), $original, $entry );
 		}
 
 		$obsolete_originals = array_filter(
@@ -270,6 +272,7 @@ class GP_Original extends GP_Thing {
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
 					$originals_existing++;
+					do_action( 'gp_original_is_different', $entry );
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
@@ -353,7 +356,7 @@ class GP_Original extends GP_Thing {
 					$originals_error++;
 					continue;
 				}
-
+				do_action( 'gp_import_after_original_created', $entry, $original, $created, $references, $originals_by_key );
 				$originals_added++;
 			}
 		}

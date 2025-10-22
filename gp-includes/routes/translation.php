@@ -123,7 +123,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_404();
 		}
 
-		$get_format = gp_get( 'format', 'po' );
+		$get_format = apply_filters( 'gp_export_determine_format', gp_get( 'format', 'po' ), $project_path, $locale_slug );
 
 		// If for some reason we were passed in an array or object from the get parameters, don't use it.
 		if ( ! is_string( $get_format ) ) {

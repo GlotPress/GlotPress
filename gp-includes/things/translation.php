@@ -816,7 +816,14 @@ class GP_Translation extends GP_Thing {
 			return $last_modified;
 		}
 
-		$last_modified = $this->value( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1", $translation_set->id, 'current' );
+		$last_modified = apply_filters( 
+			'gp_translation_last_modified', 
+			$this->value( "SELECT date_modified FROM {$this->table} WHERE translation_set_id = %d AND status = %s ORDER BY date_modified DESC LIMIT 1",
+				$translation_set->id,
+				'current'
+			),
+			$translation_set
+		);
 		wp_cache_set( $translation_set->id, (string) $last_modified, 'translation_set_last_modified' );
 		return $last_modified;
 	}
