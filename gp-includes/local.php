@@ -486,8 +486,9 @@ class GP_Local {
 			case 'local-wp':
 				return str_replace( '/dev/dev/', '/dev/', substr( $project_path, 6 ) );
 			case 'local-plugins':
-			case 'local-themes':
 				return 'wp-' . substr( $project_path, 6 );
+			case 'local-themes':
+				return 'wp-' . str_replace( '/dev/', '/', substr( $project_path, 6 ) );
 		}
 
 		return $project_path;
