@@ -110,14 +110,16 @@ class GP_Local {
 				'local-glotpress',
 				array( $this, 'show_local_projects' ),
 			);
-			add_submenu_page(
-				'glotpress',
-				esc_html__( 'Contribute back', 'glotpress' ),
-				esc_html__( 'Contribute back', 'glotpress' ),
-				'read',
-				'glotpress-sync',
-				array( $this, 'sync_to_wordpress_org_overview' ),
-			);
+			if ( ! get_option('wporg_translate_live' ) ) {
+				add_submenu_page(
+					'glotpress',
+					esc_html__( 'Contribute back', 'glotpress' ),
+					esc_html__( 'Contribute back', 'glotpress' ),
+					'read',
+					'glotpress-sync',
+					array( $this, 'sync_to_wordpress_org_overview' ),
+				);
+			}
 		}
 	}
 

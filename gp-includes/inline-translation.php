@@ -459,7 +459,7 @@ class GP_Inline_Translation {
 		$query_result->singular           = $original_record->singular;
 		$query_result->plural             = $original_record->plural;
 		$query_result->context            = $original_record->context;
-		$query_result->project            = $project->path;
+		$query_result->project            = get_option( 'wporg_translate_live' ) ? apply_filters( 'gp_remote_project_path', $project->path ) : $project->path;
 		$query_result->translation_set_id = $translation_sets[ $project->id ]->id;
 		$query_result->original_comment   = $original_record->comment;
 		$query_result->hash               = $text_domain . '|' . $context . '|' . $entry->singular;
@@ -718,6 +718,7 @@ class GP_Inline_Translation {
 				'nonce'                => wp_create_nonce( 'wp_rest' ),
 				'projects'             => $project_paths,
 				'translation_set_slug' => 'default',
+				'use_search_permalinks' => (bool) get_option( 'wporg_translate_live' ),
 			),
 		);
 

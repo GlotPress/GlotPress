@@ -63,7 +63,11 @@ function GlotPress( locale, translations ) {
 				url;
 
 			projectUrl = server.url + 'projects/' + translationPair.getGlotPressProject();
-			url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
+			if (server.use_search_permalinks) {
+				url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[term]=' + encodeURIComponent( translationPair.getOriginal().getSingular() ) + '&filters[term_scope]=scope_originals';
+			} else {
+				url = projectUrl + '/' + locale.getLocaleCode() + '/' + translateSetSlug + '?filters[original_id]=' + originalId;
+			}
 
 			if ( 'undefined' !== typeof translationId ) {
 				url += '&filters[translation_id]=' + translationId;
