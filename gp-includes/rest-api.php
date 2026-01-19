@@ -193,7 +193,7 @@ class GP_Rest_API {
 		}
 		$translation = $request->get_param( 'translation' );
 
-		$project = GP::$project->by_path( $project_path );
+		$project = GP::$project->by_path( apply_filters( 'gp_local_project_path', $project_path ) );
 		if ( ! $project ) {
 			return new WP_Error(
 				'rest_invalid_project',
