@@ -435,7 +435,16 @@ class GP_Thing {
 
 		$args = $this->prepare_fields_for_save( $args );
 
-		$update_res = $this->update( $args );
+		// Update if thing has id, create new if not.
+		if ( $this->id  ) {
+			$update_res = $this->update( $args );
+		} else {
+			$new_thing  = $this->create( $args );
+			$update_res = $new_thing ? true : false;
+			if ( $new_thing ) {
+				$args['id'] = $new_thing->id;
+			}
+		}
 
 		$this->set_fields( $args );
 
