@@ -682,6 +682,22 @@ class GP_Thing {
 		return $this->apply_default_conditions( $conditions );
 	}
 
+	/**
+	 * Generates SQL ORDER BY clause from provided ordering parameters.
+	 *
+	 * This method constructs an ORDER BY clause for SQL queries based on the provided
+	 * column name(s) and sort direction. If no order is specified, it falls back to
+	 * the object's default order.
+	 * 
+	 * @since 1.0.0
+	 *
+	 * @param string|array $order_by  The column name(s) to order by. Can be a string
+	 *                                 or an array of column names.
+	 * @param string       $order_how Optional. The sort direction (ASC or DESC).
+	 *                                 Ignored if $order_by is an array. Default empty string.
+	 *
+	 * @return string The SQL ORDER BY clause, or the default order if no valid order is provided.
+	 */
 	public function sql_from_order( $order_by, $order_how = '' ) {
 		if ( ! $order_by ) {
 			$order_by = '';
@@ -697,6 +713,23 @@ class GP_Thing {
 		return 'ORDER BY ' . $order_by . ( $order_how ? " $order_how" : '' );
 	}
 
+	/**
+	 * Builds a complete SQL SELECT query with conditions and ordering.
+	 *
+	 * This method generates a full SQL SELECT statement by combining the table name,
+	 * WHERE conditions, and ORDER BY clause. It uses the object's table property and
+	 * delegates to sql_from_conditions() and sql_from_order() for building the
+	 * respective SQL clauses.
+	 * 
+	 * @since 1.0.0
+	 *
+	 * @param mixed        $conditions The conditions to use in the WHERE clause.
+	 *                                  Format depends on sql_from_conditions() implementation.
+	 * @param string|array $order      Optional. The ordering parameters passed to sql_from_order().
+	 *                                  Default null.
+	 *
+	 * @return string The complete SQL SELECT query with optional WHERE and ORDER BY clauses.
+	 */
 	public function select_all_from_conditions_and_order( $conditions, $order = null ) {
 		$query          = "SELECT * FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $conditions );
