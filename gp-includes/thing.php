@@ -15,6 +15,7 @@
 class GP_Thing {
 
 	var $field_names        = array();
+	var $query_vars         = array();
 	var $non_db_field_names = array();
 	var $int_fields         = array();
 	var $validation_rules   = null;
@@ -92,6 +93,27 @@ class GP_Thing {
 		$this->set_fields( $fields );
 
 		return $this;
+	}
+
+	/**
+	 * Count rows from the database based on conditions.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param array $conditions {
+	 *    Conditions to match.
+	 *    @type string $orderby   Optional. Column to order by. Default 'id'.
+	 *    @type string $order     Optional. Sort direction (ASC/DESC). Default 'asc'.
+	 *    @type int    $page      Optional. Page number for pagination. Default 1.
+	 *    @type int    $per_page  Optional. Number of results per page. Default $this->per_page.
+	 * 
+	 * }
+	 * @return int
+	 */
+	public function count( $conditions = array() ) {
+		global $wpdb;
+		$conditions['count'] = true;
+		return $wpdb->get_var( $this->select( $conditions ) );
 	}
 
 	/**
@@ -248,6 +270,25 @@ class GP_Thing {
 	 */
 	public function find( $conditions, $order = null ) {
 		return $this->find_many( $conditions, $order );
+	}
+
+	/**
+	 * Find rows from the database based on conditions.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param array $conditions {
+	 *    Conditions to match.
+	 *    @type string $orderby   Optional. Column to order by. Default 'id'.
+	 *    @type string $order     Optional. Sort direction (ASC/DESC). Default 'asc'.
+	 *    @type int    $page      Optional. Page number for pagination. Default 1.
+	 *    @type int    $per_page  Optional. Number of results per page. Default $this->per_page.
+	 * 
+	 * }
+	 * @return mixed
+	 */
+	public function find_some( $conditions = array() ) {
+		return $this->many( $this->select( $conditions ) );
 	}
 
 	/**
@@ -752,6 +793,61 @@ class GP_Thing {
 		if ( $order_sql ) {
 			$query .= " $order_sql";
 		}
+		return $query;
+	}
+
+	/**
+	 * Builds a complete SQL SELECT query.
+	 *
+	 * This method generates a full SQL SELECT statement by combining the table name,
+	 * WHERE conditions, ORDER BY clause and LIMIT/OFFSET. It uses the object's table property and
+	 * delegates to sql_from_conditions() and sql_from_order() and sql_limit_for_paging() for building the
+	 * respective SQL clauses.
+	 * 
+	 * @since 5.0.0
+	 *
+	 * @param mixed        $args The conditions to use
+	 *
+	 * @return string The complete SQL SELECT query with optional WHERE, LIMIT, and ORDER BY clauses.
+	 */
+	public function select( $args = array() ) {
+
+		$defaults = array(
+			'orderby'  => 'id',
+			'order'    => 'asc',
+			'page'     => 1,
+			'per_page' => $this->per_page,
+			'count'    => false,
+		);
+
+		// Merge defaults with provided args.
+		$args = wp_parse_args( $args, $defaults );
+
+		// Remove keys from $args, leaving only the extra where conditions.
+		$conditions = array_intersect_key( $args, array_flip($this->field_names) );
+
+		// Begin building the query string.
+		if ( $args['count'] ) {
+			$query = "SELECT COUNT(*) FROM $this->table";
+			$args['per_page'] = 'no-limit';
+			$args['page'] = 1;
+		} else {
+			$query = "SELECT * FROM $this->table";
+		}
+
+		$conditions_sql = $this->sql_from_conditions( $conditions );
+		if ( $conditions_sql ) {
+			$query .= " WHERE $conditions_sql";
+		}
+		$order_sql = $this->sql_from_order( $args['orderby'], $args['order'] );
+		if ( $order_sql ) {
+			$query .= " $order_sql";
+		}
+		$pagination_sql = $this->sql_limit_for_paging( $args['page'], $args['per_page'] );
+		if ( $pagination_sql ) {
+			$query .= " $pagination_sql";
+		}
+
 		return $query;
 	}
 
