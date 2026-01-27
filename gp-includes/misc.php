@@ -753,3 +753,26 @@ function gp_is_valid_utf8( $string ) {
 	}
 	return seems_utf8( $string );
 }
+
+/**
+ * Fetch a thing from the DB.
+ * Ex: gp_get_thing( 1, 'project' );
+ *
+ * @since 5.0.0
+ *
+ * @param  int    $id   Thing ID.
+ * @param  string $type Thing type.
+ * @return object|false The object or false on failure.
+ */
+function gp_get_thing( $id = 0, $type = '' ) {
+	$object = GP::${ $type } ?? null;
+	$id     = (int) $id;
+
+	if ( ! $id || ! is_callable( array( $object, 'get' ) ) ) {
+		return false;
+	}
+
+	$thing = $object->get( $id );
+
+	return false !== $thing ? $thing : false;
+}
