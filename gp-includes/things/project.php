@@ -198,12 +198,16 @@ class GP_Project extends GP_Thing {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
 
-		if ( isset( $args['slug'] ) && ! $args['slug'] ) {
+		if ( empty( $args['slug'] ) && ! empty( $args['name'] ) ) {
 			$args['slug'] = $args['name'];
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
+		}
+
+		if ( empty( $args['description'] ) ) {
+			$args['description'] = '';
 		}
 
 		if ( ( isset( $args['path'] ) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {
