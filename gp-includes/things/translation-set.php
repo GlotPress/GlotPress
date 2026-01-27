@@ -235,12 +235,25 @@ class GP_Translation_Set extends GP_Thing {
 		return $result;
 	}
 
-	public function by_locale( $locale_slug ) {
-		return $this->many(
-			"SELECT * FROM $this->table
-			WHERE locale = %s",
-			$locale_slug
-		);
+	/**
+	 * Retrieves translation sets filtered by locale slug.
+	 *
+	 * @param string      $locale_slug The locale slug to filter translation sets by.
+	 * @param string|null $orderby     Optional. Field to order the results by. Default null.
+	 *
+	 * @return GP_Translation_Set[] Array of translation set objects.
+	 */
+	public function by_locale( $locale_slug, $orderby = null ) {
+		$sql = "SELECT * FROM $this->table
+			WHERE locale = %s";
+
+		$params = array( $locale_slug );
+
+		if ( $orderby && in_array( $orderby, $this->field_names, true ) ) {
+			$sql .= " ORDER BY %s";
+			$params[] = $orderby;
+		}
+		return $this->many( $sql, $params);
 	}
 
 	public function existing_locales() {
