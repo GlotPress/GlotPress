@@ -106,6 +106,7 @@ require_once GP_PATH . GP_INC . 'routes/locale.php';
 require_once GP_PATH . GP_INC . '/rest-api/rest-functions.php';
 require_once GP_PATH . GP_INC . '/rest-api/rest-api.php';
 require_once GP_PATH . GP_INC . 'rest-api/routes/v1/crud.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/import.php';
 require_once GP_PATH . GP_INC . 'rest-api/routes/v1/projects.php';
 
 GP::$translation_warnings         = new GP_Translation_Warnings();
