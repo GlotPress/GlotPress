@@ -60,6 +60,7 @@ class GP_REST_API {
 		return array(
 			'projects'         => 'GP_REST_Projects_V1_Controller',
 			'import'           => 'GP_REST_Import_V1_Controller',
+			'languages'        => 'GP_REST_Languages_V1_Controller',
 		);
 	}
 
