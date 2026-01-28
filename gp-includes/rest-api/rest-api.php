@@ -23,6 +23,7 @@ class GP_REST_API {
 	 * Hook into WordPress ready to init the REST API as needed.
 	 */
 	public function __construct() { // phpcs:ignore WooCommerce.Functions.InternalInjectionMethod -- Not an injection method.
+		require_once GP_TMPL_PATH . 'helper-functions.php';
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ), 10 );
 	}
 
@@ -61,6 +62,7 @@ class GP_REST_API {
 			'projects'         => 'GP_REST_Projects_V1_Controller',
 			'import'           => 'GP_REST_Import_V1_Controller',
 			'languages'        => 'GP_REST_Languages_V1_Controller',
+			'translations'     => 'GP_REST_Translations_V1_Controller',
 			'translation_sets' => 'GP_REST_Translation_Sets_V1_Controller',
 		);
 	}

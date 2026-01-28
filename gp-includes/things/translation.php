@@ -212,6 +212,24 @@ class GP_Translation extends GP_Thing {
 	}
 
 	/**
+	 * Saves an existing translation.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param mixed $args Values to update.
+	 * @return bool|null Null and false on failure, true on success.
+	 */
+	public function save( $args = null ) {
+		$update_res = parent::save( $args );
+
+		if ( $update_res ) {
+			gp_clean_translation_set_cache( $this->translation_set_id );
+		}
+
+		return $update_res;
+	}
+
+	/**
 	 * Normalizes an array with key-value pairs representing
 	 * a GP_Translation object.
 	 *
