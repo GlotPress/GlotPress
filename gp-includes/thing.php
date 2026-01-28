@@ -15,7 +15,6 @@
 class GP_Thing {
 
 	var $field_names        = array();
-	var $query_vars         = array();
 	var $non_db_field_names = array();
 	var $int_fields         = array();
 	var $validation_rules   = null;

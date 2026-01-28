@@ -95,6 +95,15 @@ class GP {
 	public static $glossary_entry;
 
 	/**
+	 * Singleton for REST API.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @var GP_REST_API
+	 */
+	public static $rest;
+
+	/**
 	 * Singleton for router.
 	 *
 	 * @since 1.0.0
