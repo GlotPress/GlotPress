@@ -61,6 +61,7 @@ class GP_REST_API {
 			'projects'         => 'GP_REST_Projects_V1_Controller',
 			'import'           => 'GP_REST_Import_V1_Controller',
 			'languages'        => 'GP_REST_Languages_V1_Controller',
+			'translation_sets' => 'GP_REST_Translation_Sets_V1_Controller',
 		);
 	}
 

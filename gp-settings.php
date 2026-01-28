@@ -109,6 +109,7 @@ require_once GP_PATH . GP_INC . 'rest-api/routes/v1/crud.php';
 require_once GP_PATH . GP_INC . 'rest-api/routes/v1/import.php';
 require_once GP_PATH . GP_INC . 'rest-api/routes/v1/languages.php';
 require_once GP_PATH . GP_INC . 'rest-api/routes/v1/projects.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/translation-sets.php';
 
 GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
