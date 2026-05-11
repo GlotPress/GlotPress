@@ -273,7 +273,6 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return boolean or void
 	 */
 	public function import( $translations, $desired_status = 'current' ) {
-               
 		wp_raise_memory_limit( 'gp_translations_import' );
 
 		if ( ! isset( $this->project ) || ! $this->project ) {
