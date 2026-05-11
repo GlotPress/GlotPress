@@ -304,7 +304,7 @@ class GP_Translation_Set extends GP_Thing {
 				'status' => 'rejected',
 			)
 		);
-                                
+		
 		$existing_translations['current'] = new Translations();
 		foreach ( $current_translations_list as $entry ) {
 			$existing_translations['current']->add_entry( $entry );
