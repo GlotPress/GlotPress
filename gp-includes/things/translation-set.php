@@ -288,8 +288,7 @@ class GP_Translation_Set extends GP_Thing {
 		$locale = GP_Locales::by_slug( $this->locale );
 		$user   = wp_get_current_user();
 		$existing_translations = array();
-        $rejected_translations = array();
-
+		$rejected_translations = array();
 		$current_translations_list        = GP::$translation->for_translation(
 			$this->project,
 			$this,
