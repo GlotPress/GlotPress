@@ -295,7 +295,7 @@ class GP_Translation_Set extends GP_Thing {
 			$this,
 			'no-limit',
 			array(
-				'status' => 'current',
+			'status' => 'current',
 			)
 		);
             $rejected_translations_list        = GP::$translation->for_translation(
@@ -303,7 +303,7 @@ class GP_Translation_Set extends GP_Thing {
 			$this,
 			'no-limit',
 			array(
-				'status' => 'rejected',
+			'status' => 'rejected',
 			)
 		);
                                 
@@ -313,7 +313,7 @@ class GP_Translation_Set extends GP_Thing {
 		}
 		unset( $current_translations_list );
 
-         $rejected_translations['rejected'] = new Translations();
+		$rejected_translations['rejected'] = new Translations();
 		foreach ( $rejected_translations_list as $entry ) {
 			$rejected_translations['rejected']->add_entry( $entry );
 		}
@@ -378,13 +378,12 @@ class GP_Translation_Set extends GP_Thing {
 
 			$create     = false;
 			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
-            $rejected_translated = $rejected_translations['rejected']->translate_entry( $entry );
+			$rejected_translated = $rejected_translations['rejected']->translate_entry( $entry );
 
 			if ( 'current' !== $entry->status && ! $translated ) {
 				// Don't create an entry if it already exists as current.
-				$translated = $existing_translations['current']->translate_entry( $entry );
-                                 
-     		         }
+				$translated = $existing_translations['current']->translate_entry( $entry );                 
+			}
 
 			if ( $translated ) {
 				// We have the same string translated, so create a new one if they don't match.
@@ -399,11 +398,10 @@ class GP_Translation_Set extends GP_Thing {
 				 *
 				 * @param bool $import_over Import over an existing translation.
 				 */
-                                $rejected_match = $rejected_translations['rejected']->translate_entry( $entry );
-
-                                if ( $rejected_match ) {
-                                     continue;
-                                 }
+				$rejected_match = $rejected_translations['rejected']->translate_entry( $entry );
+				if ( $rejected_match ) {
+					continue;
+				}
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
@@ -419,7 +417,6 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->translation_set_id = $this->id;
-
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
