@@ -296,7 +296,7 @@ class GP_Translation_Set extends GP_Thing {
 				'status' => 'current',
 			)
 		);
-            $rejected_translations_list        = GP::$translation->for_translation(
+		$rejected_translations_list        = GP::$translation->for_translation(
 			$this->project,
 			$this,
 			'no-limit',
