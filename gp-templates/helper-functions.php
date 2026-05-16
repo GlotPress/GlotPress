@@ -481,6 +481,35 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 }
 
 /**
+* Determine if a chunk is part of a URL in the full string.
+ *
+ * Checks whether the given chunk appears inside a URL token within the original text,
+ * so that glossary terms inside URLs are not marked up.
+ *
+ * @since 4.0.0
+ *
+ * @param string $chunk       The current chunk to test.
+ * @param string $full_string The full original string being processed.
+ * @return bool True if the chunk is inside a URL and should not be marked.
+ */
+function gp_chunk_is_inside_url( $chunk, $full_string ) {
+        // Find all URL tokens in the full string.
+        if ( ! preg_match_all( '/https?:\/\/\S+/i', $full_string, $matches ) ) {
+                return false;
+        }
+
+        $lower_chunk = strtolower( $chunk );
+        foreach ( $matches[0] as $url ) {
+                if ( strpos( strtolower( $url ), $lower_chunk ) !== false ) {
+                        return true;
+                }
+        }
+
+        return false;
+}
+
+/**
+
  * Add markup to a translation original to identify the glossary terms.
  *
  * @param GP_Translation $translation            A GP Translation object.
@@ -583,6 +612,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 			// Search the glossary terms for a matching entry.
 			if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
+			    // Do not mark glossary terms that appear inside a URL.
+                 if ( gp_chunk_is_inside_url( $chunk, $translation->singular ) ) {
+                        $singular_combined .= $escaped_chunk;
+                         continue;
+                  }
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
@@ -644,6 +678,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 				// Search the glossary terms for a matching entry.
 				if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
+					    // Do not mark glossary terms that appear inside a URL.
+                        if ( gp_chunk_is_inside_url( $chunk, $translation->plural ) ) {
+                                $plural_combined .= $escaped_chunk;
+                                continue;
+                         }
 					$glossary_data = array();
 
 					// Add glossary data for each matching entry.

@@ -38,6 +38,10 @@ class GP_Format_PO extends GP_Format {
 				},
 				$entry->translations
 			);
+			// Skip entries where the translation is missing placeholders from the original.
+			if ( ! gp_entry_has_all_placeholders( $entry ) ) {
+				continue;
+			}
 			$po->add_entry( $entry );
 		}
 
@@ -129,6 +133,75 @@ class GP_Format_MO extends GP_Format_PO {
 	protected function add_comments_before_headers( $format, $text ) {
 		return;
 	}
+}
+
+/**
+ * Checks whether a translation entry contains all placeholders present in the original.
+ *
+ * Uses the same placeholder regex as GP_Builtin_Translation_Warnings::warning_placeholders()
+ * so behaviour is consistent between the warnings system and export.
+ *
+ * Examples of placeholders that are checked: %s, %d, %1$s, %2$d, %.2f
+ *
+ * Usage:
+ *   if ( ! gp_entry_has_all_placeholders( $entry ) ) {
+ *       // skip or reject this entry
+ *   }
+ *
+ * @since 4.0.0
+ *
+ * @param Translation_Entry $entry The translation entry to check.
+ * @return bool True if all placeholders from the original are present in every
+ *              translation form. False if any are missing.
+ */
+function gp_entry_has_all_placeholders( Translation_Entry $entry ): bool {
+	$original = $entry->singular ?? '';
+
+	if ( empty( $original ) || empty( $entry->translations ) ) {
+		return true;
+	}
+
+	/**
+	 * Use the same filter as warning_placeholders() in warnings.php so that
+	 * any customisation of the regex applies consistently to both warnings and export.
+	 *
+	 * This filter is documented in gp-includes/warnings.php.
+	 */
+	$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?(\.\d+)?[bcdefgosuxEFGX%l@]' );
+
+	// Count each placeholder in the original string.
+	$original_counts = array();
+	preg_match_all( "/$placeholders_re/", $original, $matches );
+	foreach ( $matches[0] as $match ) {
+		$original_counts[ $match ] = ( $original_counts[ $match ] ?? 0 ) + 1;
+	}
+
+	// No placeholders in the original — nothing to check.
+	if ( empty( $original_counts ) ) {
+		return true;
+	}
+
+	// Every translation form (singular + any plural forms) must contain all placeholders.
+	foreach ( $entry->translations as $translation ) {
+		if ( empty( $translation ) ) {
+			continue;
+		}
+
+		$translation_counts = array();
+		preg_match_all( "/$placeholders_re/", $translation, $matches );
+		foreach ( $matches[0] as $match ) {
+			$translation_counts[ $match ] = ( $translation_counts[ $match ] ?? 0 ) + 1;
+		}
+
+		foreach ( $original_counts as $placeholder => $original_count ) {
+			$translation_count = $translation_counts[ $placeholder ] ?? 0;
+			if ( $original_count > $translation_count ) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 GP::$formats['po'] = new GP_Format_PO();
