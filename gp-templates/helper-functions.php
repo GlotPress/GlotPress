@@ -493,19 +493,17 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
  * @return bool True if the chunk is inside a URL and should not be marked.
  */
 function gp_chunk_is_inside_url( $chunk, $full_string ) {
-        // Find all URL tokens in the full string.
-        if ( ! preg_match_all( '/https?:\/\/\S+/i', $full_string, $matches ) ) {
-                return false;
-        }
-
-        $lower_chunk = strtolower( $chunk );
-        foreach ( $matches[0] as $url ) {
-                if ( strpos( strtolower( $url ), $lower_chunk ) !== false ) {
-                        return true;
-                }
-        }
-
-        return false;
+	// Find all URL tokens in the full string.
+	if ( ! preg_match_all( '/https?:\/\/\S+/i', $full_string, $matches ) ) {
+		return false;
+	}
+	$lower_chunk = strtolower( $chunk );
+	foreach ( $matches[0] as $url ) {
+		if ( strpos( strtolower( $url ), $lower_chunk ) !== false ) {
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
