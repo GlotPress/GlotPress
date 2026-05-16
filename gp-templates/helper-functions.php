@@ -481,7 +481,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 }
 
 /**
- * Determine if a chunk is part of a URL in the full string.
+* Determine if a chunk is part of a URL in the full string.
  *
  * Checks whether the given chunk appears inside a URL token within the original text,
  * so that glossary terms inside URLs are not marked up.
@@ -555,7 +555,8 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			$referenced_term = $term;
 			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
 				foreach ( $suffixes as $suffix ) {
-					if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
+					if ( isset( $glossary_entries_reference[ $term . $suffix ] ) &&
+					! isset( $glossary_entries_reference[ $term ] ) ) {
 						$referenced_term = $term . $suffix;
 					}
 				}
@@ -564,15 +565,18 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 					continue;
 				}
 			}
-
 			$referenced_term = $glossary_entries_reference[ $referenced_term ];
 			// Add the suffixed terms to the lookup table.
 			foreach ( $suffixes as $suffix ) {
-				if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
-					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( $glossary_entries_reference[ $term . $suffix ], $referenced_term ) ) );
-				} else {
-					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
+				$suffixed_term = $term . $suffix;
+
+				// If the suffixed form is itself a standalone glossary entry, don't
+				// merge the root term's entries into it — it has its own correct entries.
+				if ( isset( $glossary_entries_reference[ $suffixed_term ] ) ) {
+					continue;
 				}
+
+				$glossary_entries_reference[ $suffixed_term ] = $referenced_term;
 			}
 		}
 		// Make the regex more deterministic.
