@@ -809,18 +809,18 @@ class GP_Route_Translation extends GP_Route_Main {
 
 	private function set_status_edit_function( $project, $locale, $translation_set, $translation ) {
 		$new_status = gp_post( 'status' );
-    if ( 'current' === $new_status ) {
-        $original = GP::$original->get( $translation->original_id );
-        if ( $original ) {
-            $translations = $translation->translations();
-            $warnings     = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
-            if ( $warnings ) {
-                return $this->die_with_error( __( 'The translation has warnings and cannot be approved.', 'glotpress' ), 403 );
-            }
-        }
-    }
-	$res = $translation->set_status( $new_status );
-	if ( ! $res ) {
+		if ( 'current' === $new_status ) {
+			$original = GP::$original->get( $translation->original_id );
+			if ( $original ) {
+				$translations = $translation->translations();
+				$warnings     = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
+				if ( $warnings ) {
+					return $this->die_with_error( __( 'The translation has warnings and cannot be approved.', 'glotpress' ), 403 );
+				}
+			}
+		}
+		$res = $translation->set_status( $new_status );
+		if ( ! $res ) {
 			return $this->die_with_error( 'Error in saving the translation status!' );
 		}
 	}
