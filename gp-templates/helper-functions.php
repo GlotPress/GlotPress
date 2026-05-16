@@ -610,11 +610,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 			// Search the glossary terms for a matching entry.
 			if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
-			    // Do not mark glossary terms that appear inside a URL.
-                 if ( gp_chunk_is_inside_url( $chunk, $translation->singular ) ) {
-                        $singular_combined .= $escaped_chunk;
-                         continue;
-                  }
+				// Do not mark glossary terms that appear inside a URL.
+				if ( gp_chunk_is_inside_url( $chunk, $translation->singular ) ) {
+					$singular_combined .= $escaped_chunk;
+					continue;
+				}
 				$glossary_data = array();
 
 				// Add glossary data for each matching entry.
@@ -676,11 +676,11 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 				// Search the glossary terms for a matching entry.
 				if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
-					    // Do not mark glossary terms that appear inside a URL.
-                        if ( gp_chunk_is_inside_url( $chunk, $translation->plural ) ) {
-                                $plural_combined .= $escaped_chunk;
-                                continue;
-                         }
+					// Do not mark glossary terms that appear inside a URL.
+					if ( gp_chunk_is_inside_url( $chunk, $translation->plural ) ) {
+						$plural_combined .= $escaped_chunk;
+						continue;
+					}
 					$glossary_data = array();
 
 					// Add glossary data for each matching entry.
