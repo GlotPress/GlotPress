@@ -481,7 +481,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 }
 
 /**
-* Determine if a chunk is part of a URL in the full string.
+ * Determine if a chunk is part of a URL in the full string.
  *
  * Checks whether the given chunk appears inside a URL token within the original text,
  * so that glossary terms inside URLs are not marked up.
