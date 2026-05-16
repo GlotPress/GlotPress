@@ -350,6 +350,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );
 
 			if ( ! $new_glossary_entry->validate() ) {
+				foreach ( $new_glossary_entry->errors as $error ) {
+					$this->errors[] = sprintf(
+						/* translators: 1: Glossary term. 2: Validation error. */
+						__( 'Skipped glossary entry "%1$s": %2$s', 'glotpress' ),
+						esc_html( $data[0] ),
+						esc_html( $error )
+					);
+				}
 				continue;
 			} else {
 				$entry_exists = GP::$glossary_entry->find_one( $entry_data );
