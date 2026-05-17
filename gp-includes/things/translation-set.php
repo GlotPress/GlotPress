@@ -272,7 +272,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * @param  string       $desired_status 'current', 'waiting' or 'fuzzy'.
 	 * @return boolean or void
 	 */
-	public function import( $translations, $desired_status = 'current' ) {
+	public function import( $translations, $desired_status = 'current', $skip_existing = false ) {
 		wp_raise_memory_limit( 'gp_translations_import' );
 
 		if ( ! isset( $this->project ) || ! $this->project ) {
@@ -366,6 +366,10 @@ class GP_Translation_Set extends GP_Thing {
 			}
 
 			if ( $translated ) {
+				// Skip if the existing translation is current and skip_existing is enabled.
+				if ( $skip_existing && 'current' === $translated->status ) {
+					continue;
+				}
 				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;

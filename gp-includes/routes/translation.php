@@ -99,7 +99,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$translations_added = $translation_set->import( $translations, $import_status );
+		$skip_existing      = (bool) gp_post( 'skip_existing', false );
+		$translations_added = $translation_set->import( $translations, $import_status, $skip_existing );
 		$this->notices[]    = sprintf(
 			/* translators: %s: Translations count. */
 			_n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ),

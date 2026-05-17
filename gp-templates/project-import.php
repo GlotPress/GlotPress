@@ -71,7 +71,13 @@ gp_tmpl_header();
 		<?php endif; ?>
 	</dd>
 <?php endif; ?>
-	<dt>
+<?php if ( 'originals' !== $kind ) : ?>
+	<dt><label for="skip_existing"><?php _e( 'Skip existing translations:', 'glotpress' ); ?></label></dt>
+	<dd>
+		<input type="checkbox" name="skip_existing" id="skip_existing" value="1" />
+		<small><?php _e( 'If checked, strings that already have a current translation will not be overwritten.', 'glotpress' ); ?></small>
+	</dd>
+<?php endif; ?>
 		<div class="button-group">
 			<input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Import', 'glotpress' ); ?>" id="submit" />
 			<a class="button is-link" href="<?php echo esc_url( $return_link ); ?>"><?php _e( 'Cancel', 'glotpress' ); ?></a>
