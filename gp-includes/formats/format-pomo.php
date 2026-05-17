@@ -134,7 +134,6 @@ class GP_Format_PO extends GP_Format {
  * @return bool True if all placeholders from the original are present in every
  *              translation form. False if any are missing.
  */
- // phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 function gp_entry_has_all_placeholders( Translation_Entry $entry ): bool {
 	$original = $entry->singular ?? '';
 
