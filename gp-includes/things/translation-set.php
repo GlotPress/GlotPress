@@ -366,21 +366,17 @@ class GP_Translation_Set extends GP_Thing {
 			}
 
 			if ( $translated ) {
-				// Skip if the existing translation is current and skip_existing is enabled.
-				if ( $skip_existing && 'current' === $translated->status ) {
-					continue;
+				// If skip_existing is enabled, skip if there is any current, waiting or fuzzy translation.
+				if ( $skip_existing ) {
+					$current_translation = $existing_translations['current']->translate_entry( $entry );
+					$waiting_translation = isset( $existing_translations['waiting'] ) ? $existing_translations['waiting']->translate_entry( $entry ) : null;
+					if ( $current_translation || $waiting_translation ) {
+						continue;
+					}
 				}
 				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
-
-				/**
-				 * Filter whether to import over an existing translation on a translation set.
-				 *
-				 * @since 1.0.0
-				 *
-				 * @param bool $import_over Import over an existing translation.
-				 */
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
