@@ -334,11 +334,11 @@ class GP_Translation extends GP_Thing {
 				$term_value = mb_strtolower( gp_array_get( $filters, 'term' ) );
 				$like = "LIKE '%" . ( esc_sql( $wpdb->esc_like( $term_value ) ) ) . "%'";
 				$use_lower = true;
-				} else {
+			} else {
 				$term_value = gp_array_get( $filters, 'term' );
 				$like = "LIKE BINARY '%" . ( esc_sql( $wpdb->esc_like( $term_value ) ) ) . "%'";
 				$use_lower = false;
-				}
+			}
 
 			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
 
@@ -366,7 +366,7 @@ class GP_Translation extends GP_Thing {
 			$mapped_scope_array = array_map(
 				function ( $x ) use ( $like, $use_lower ) {
 					return $use_lower ? "(LOWER($x) $like)" : "($x $like)";
-					},
+				},
 				$scope_array
 			);
 
