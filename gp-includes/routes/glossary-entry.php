@@ -309,11 +309,11 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	private function print_export_file( $locale_slug, $entries ) {
 		$outstream = fopen( 'php://output', 'w' );
 
-		fputcsv( $outstream, array( 'en', $locale_slug, 'pos', 'description' ) );
+		fputcsv( $outstream, array( 'en', $locale_slug, 'pos', 'description' ), ',', '"', '' );
 
 		foreach ( $entries as $entry ) {
 			$values = array( $entry->term, $entry->translation, $entry->part_of_speech, $entry->comment );
-			fputcsv( $outstream, $values );
+			fputcsv( $outstream, $values, ',', '"', '' );
 		}
 
 		fclose( $outstream );
@@ -323,7 +323,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$f                = fopen( $file, 'r' );
 		$glossary_entries = 0;
 
-		$data = fgetcsv( $f, 0, ',' );
+		$data = fgetcsv( $f, 0, ',', '"', '' );
 
 		if ( ! is_array( $data ) ) {
 			return;
@@ -332,7 +332,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 
-		while ( ( $data = fgetcsv( $f, 0, ',' ) ) !== false ) {
+		while ( ( $data = fgetcsv( $f, 0, ',', '"', '' ) ) !== false ) {
 			// We're only parsing one locale per file right now
 			if ( count( $data ) > 4 ) {
 				$data = array_splice( $data, 2, -2 );

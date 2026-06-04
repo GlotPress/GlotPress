@@ -29,6 +29,8 @@ class GP_Glossary_Entry extends GP_Thing {
 	public $translation;
 	public $date_modified;
 	public $last_edited_by;
+	public $user_login;
+	public $user_display_name;
 
 
 	public function __construct( $fields = array() ) {
