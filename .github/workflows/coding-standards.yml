@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version-file: '.nvmrc'
           cache: npm
 
       - name: Install NPM Dependencies
