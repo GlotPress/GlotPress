@@ -57,7 +57,7 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		// Actual: n != 1
 		// Expected: (n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)
-		'pt',
+		'pt', 'pt-ao90',
 
 		// CLDR 40+ added a "many" plural category (non-zero multiples of 1,000,000)
 		// for several Romance languages, raising nplurals from 2 to 3. Adopting these
