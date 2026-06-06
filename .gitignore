@@ -12,6 +12,3 @@ node_modules
 phpcs.xml
 phpunit.xml
 php.ini
-
-## ignore vs
-.vs/
