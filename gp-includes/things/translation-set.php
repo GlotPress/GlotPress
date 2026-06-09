@@ -274,23 +274,22 @@ class GP_Translation_Set extends GP_Thing {
 	 */
 	public function import( $translations, $desired_status = 'current', $skip_existing = false ) {
 		wp_raise_memory_limit( 'gp_translations_import' );
-		$user_id = get_current_user_id();
+		$user_id           = get_current_user_id();
 		global $wpdb;
-
-		$project = GP::$project->get( $this->project_id );
+		$project           = GP::$project->get( $this->project_id );
 		$parent_project_id = $project ? $project->parent_project_id : 0;
-
-		$is_translation_editor = $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*) FROM wp_translation_editors
+		$is_translation_editor = (bool) $wpdb->get_var(
+		$wpdb->prepare(
+			'SELECT COUNT(*) FROM wp_translation_editors
 			WHERE user_id = %d
 			AND locale = %s
-			AND ( project_id = %d OR project_id = %d OR project_id = 0 )",
-				$user_id,
-				$this->locale,
-				$this->project_id,
-				$parent_project_id
-				) );
-
+			AND ( project_id = %d OR project_id = %d OR project_id = 0 )',
+			$user_id,
+			$this->locale,
+			$this->project_id,
+			$parent_project_id
+			)
+		);
 		if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $this->id ) &&
 			! GP::$permission->current_user_can( 'approve', 'locale', $this->locale ) &&
 			! GP::$permission->current_user_can( 'admin' ) &&

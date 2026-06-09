@@ -29,14 +29,19 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		global $wpdb;
-		$user_id            = get_current_user_id();
-		$parent_project_id  = $project->parent_project_id ? $project->parent_project_id : 0;
-		$is_translation_editor = (bool) $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*) FROM wp_translation_editors
-			WHERE user_id = %d AND locale = %s
-			AND ( project_id = %d OR project_id = %d OR project_id = 0 )",
-				$user_id, $locale->slug, $project->id, $parent_project_id
-		) );
+		$user_id           = get_current_user_id();
+		$parent_project_id = $project->parent_project_id ? $project->parent_project_id : 0;
+		$is_translation_editor = (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				'SELECT COUNT(*) FROM wp_translation_editors
+				WHERE user_id = %d AND locale = %s
+				AND ( project_id = %d OR project_id = %d OR project_id = 0 )',
+				$user_id,
+				$locale->slug,
+				$project->id,
+				$parent_project_id
+			)
+		);
 		$can_import_current = $this->can( 'approve', 'translation-set', $translation_set->id ) || $is_translation_editor;
 		$can_import_waiting = $can_import_current || $this->can( 'import-waiting', 'translation-set', $translation_set->id );
 
