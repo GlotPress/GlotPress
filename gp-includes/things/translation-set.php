@@ -280,15 +280,14 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		// Fuzzy is also checked in the flags, but if all strings in an import are fuzzy, fuzzy status can be forced.
-		if ( ! in_array( $desired_status, array( 'current', 'waiting', 'fuzzy' ), true ) ) {
+		if ( ! in_array( $desired_status, array( 'current', 'waiting', 'fuzzy', 'rejected' ), true ) ) {
 			return false;
 		}
 
 		$locale = GP_Locales::by_slug( $this->locale );
 		$user   = wp_get_current_user();
-
 		$existing_translations = array();
-
+		$rejected_translations = array();
 		$current_translations_list        = GP::$translation->for_translation(
 			$this->project,
 			$this,
@@ -297,13 +296,29 @@ class GP_Translation_Set extends GP_Thing {
 				'status' => 'current',
 			)
 		);
+		$rejected_translations_list        = GP::$translation->for_translation(
+			$this->project,
+			$this,
+			'no-limit',
+			array(
+				'status' => 'rejected',
+			)
+		);
+		
 		$existing_translations['current'] = new Translations();
 		foreach ( $current_translations_list as $entry ) {
 			$existing_translations['current']->add_entry( $entry );
 		}
 		unset( $current_translations_list );
 
+		$rejected_translations['rejected'] = new Translations();
+		foreach ( $rejected_translations_list as $entry ) {
+			$rejected_translations['rejected']->add_entry( $entry );
+		}
+		unset( $rejected_translations_list );
+
 		$translations_added = 0;
+
 		foreach ( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) {
 				continue;
@@ -335,8 +350,7 @@ class GP_Translation_Set extends GP_Thing {
 			 * @param GP_Translation|null $old_translation The previous translation.
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
-
-			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
+      			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
 			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
 				$entry->status = 'waiting';
 			}
@@ -351,24 +365,29 @@ class GP_Translation_Set extends GP_Thing {
 						'status' => $entry->status,
 					)
 				);
+
+                               
 				$existing_translations[ $entry->status ] = new Translations();
 				foreach ( $existing_translations_list as $_entry ) {
 					$existing_translations[ $entry->status ]->add_entry( $_entry );
 				}
-				unset( $existing_translations_list );
+				unset( $existing_translations_list );                 
 			}
 
 			$create     = false;
 			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
+			$rejected_translated = $rejected_translations['rejected']->translate_entry( $entry );
+
 			if ( 'current' !== $entry->status && ! $translated ) {
 				// Don't create an entry if it already exists as current.
-				$translated = $existing_translations['current']->translate_entry( $entry );
+				$translated = $existing_translations['current']->translate_entry( $entry );                 
 			}
 
 			if ( $translated ) {
 				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
+                                 
 
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
@@ -377,6 +396,10 @@ class GP_Translation_Set extends GP_Thing {
 				 *
 				 * @param bool $import_over Import over an existing translation.
 				 */
+				$rejected_match = $rejected_translations['rejected']->translate_entry( $entry );
+				if ( $rejected_match ) {
+					continue;
+				}
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
@@ -392,7 +415,6 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->translation_set_id = $this->id;
-
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
