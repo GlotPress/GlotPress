@@ -400,11 +400,14 @@ class GP_Import extends GP_UnitTestCase {
 		) ) );
 
 		$action_args = array();
-		add_action( 'gp_translations_imported', function( $set_id, $created_translation_ids = null ) use ( &$action_args ) {
+		$closure = function( $set_id, $created_translation_ids = null ) use ( &$action_args ) {
 			$action_args = array( $set_id, $created_translation_ids );
-		}, 10, 2 );
+		};
+		add_action( 'gp_translations_imported', $closure, 10, 2 );
 
 		$set->import( $translations );
+
+		remove_action( 'gp_translations_imported', $closure );
 
 		$this->assertSame( $set->id, $action_args[0] );
 		$this->assertIsArray( $action_args[1] );
@@ -432,11 +435,14 @@ class GP_Import extends GP_UnitTestCase {
 		) ) );
 
 		$created_translation_ids = null;
-		add_action( 'gp_translations_imported', function( $set_id, $ids = null ) use ( &$created_translation_ids ) {
+		$closure = function( $set_id, $ids = null ) use ( &$created_translation_ids ) {
 			$created_translation_ids = $ids;
-		}, 10, 2 );
+		};
+		add_action( 'gp_translations_imported', $closure, 10, 2 );
 
 		$set->import( $translations );
+
+		remove_action( 'gp_translations_imported', $closure );
 
 		$this->assertSame( array(), $created_translation_ids );
 	}
