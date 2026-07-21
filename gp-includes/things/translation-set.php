@@ -283,19 +283,28 @@ class GP_Translation_Set extends GP_Thing {
 
 		$existing_translations = array();
 
-		$current_translations_list        = GP::$translation->for_translation(
-			$this->project,
-			$this,
-			'no-limit',
-			array(
-				'status' => 'current',
-			)
-		);
-		$existing_translations['current'] = new Translations();
-		foreach ( $current_translations_list as $entry ) {
-			$existing_translations['current']->add_entry( $entry );
-		}
-		unset( $current_translations_list );
+		$load_existing_translations = function ( $status ) use ( &$existing_translations ) {
+			if ( ! isset( $existing_translations[ $status ] ) ) {
+				$existing_translations_list = GP::$translation->for_translation(
+					$this->project,
+					$this,
+					'no-limit',
+					array(
+						'status' => $status,
+					)
+				);
+
+				$existing_translations[ $status ] = new Translations();
+				foreach ( $existing_translations_list as $existing_entry ) {
+					$existing_translations[ $status ]->add_entry( $existing_entry );
+				}
+				unset( $existing_translations_list );
+			}
+
+			return $existing_translations[ $status ];
+		};
+
+		$load_existing_translations( 'current' );
 
 		$translations_added      = 0;
 		$created_translation_ids = array();
@@ -336,28 +345,35 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->status = 'waiting';
 			}
 
-			// Lazy load other entries.
-			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
-				$existing_translations_list              = GP::$translation->for_translation(
-					$this->project,
-					$this,
-					'no-limit',
-					array(
-						'status' => $entry->status,
-					)
-				);
-				$existing_translations[ $entry->status ] = new Translations();
-				foreach ( $existing_translations_list as $_entry ) {
-					$existing_translations[ $entry->status ]->add_entry( $_entry );
-				}
-				unset( $existing_translations_list );
-			}
-
 			$create     = false;
-			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
+			$translated = $load_existing_translations( $entry->status )->translate_entry( $entry );
 			if ( 'current' !== $entry->status && ! $translated ) {
 				// Don't create an entry if it already exists as current.
 				$translated = $existing_translations['current']->translate_entry( $entry );
+			}
+
+			if ( 'current' === $entry->status && ! $translated ) {
+				/**
+				 * Filter whether an imported translation that is identical to an existing
+				 * waiting translation should approve the waiting translation instead of
+				 * creating a new one, preserving the original translator's credit.
+				 *
+				 * @since 4.1.0
+				 *
+				 * @param bool              $approve_waiting Approve the matching waiting translation. Default true.
+				 * @param Translation_Entry $entry           Translation entry object to import.
+				 * @param Translations      $translations    Translations collection.
+				 */
+				if ( apply_filters( 'gp_translation_set_import_approve_waiting', true, $entry, $translations ) ) {
+					$waiting = $load_existing_translations( 'waiting' )->translate_entry( $entry );
+					if ( $waiting && array_pad( $entry->translations, $locale->nplurals, null ) === $waiting->translations ) {
+						$waiting_translation = GP::$translation->get( $waiting->id );
+						if ( $waiting_translation && $waiting_translation->set_status( 'current' ) ) {
+							$translations_added += 1;
+							continue;
+						}
+					}
+				}
 			}
 
 			if ( $translated ) {

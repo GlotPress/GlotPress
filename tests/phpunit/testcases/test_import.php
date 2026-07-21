@@ -254,6 +254,96 @@ class GP_Import extends GP_UnitTestCase {
 	}
 
 
+	/**
+	 * @ticket gh-710
+	 */
+	function test_import_identical_to_waiting_approves_and_keeps_translator_credit() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array( 'user_id' => $validator, 'action' => 'approve',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		wp_set_current_user( $validator );
+		$set->import( $translations, 'current' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertEquals( $waiting->id, $current->id, 'The waiting translation should have been approved, not replaced.' );
+		$this->assertEquals( $translator, (int) $current->user_id, 'Credit should remain with the original translator.' );
+		$this->assertEquals( $validator, (int) $current->user_id_last_modified, 'The importer should be recorded as approver.' );
+	}
+
+	/**
+	 * @ticket gh-710
+	 */
+	function test_import_different_from_waiting_still_creates_new_translation() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array( 'user_id' => $validator, 'action' => 'approve',
+		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Tag' ),
+		) ) );
+
+		wp_set_current_user( $validator );
+		$set->import( $translations, 'current' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertNotEquals( $waiting->id, $current->id );
+		$this->assertEquals( 'Guten Tag', $current->translation_0 );
+		$this->assertEquals( $validator, (int) $current->user_id );
+	}
+
 	function test_multiple_imports_multiple_singulars() {
 		$originals = array(
 			array(
