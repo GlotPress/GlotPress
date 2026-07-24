@@ -172,12 +172,17 @@ require_once GP_PATH . 'gp-settings.php';
 function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
-		GP::$permission->create(
-			array(
-				'user_id' => get_current_user_id(),
-				'action'  => 'admin',
-			)
-		);
+		$user_id = get_current_user_id();
+
+		// A user_id of 0 (e.g. WP-CLI activation) would be stored as a NULL admin that anonymous requests match.
+		if ( $user_id ) {
+			GP::$permission->create(
+				array(
+					'user_id' => $user_id,
+					'action'  => 'admin',
+				)
+			);
+		}
 	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );
