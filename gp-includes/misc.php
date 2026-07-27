@@ -751,5 +751,6 @@ function gp_is_valid_utf8( $string ) {
 	if ( function_exists( 'wp_is_valid_utf8' ) ) {
 		return wp_is_valid_utf8( $string );
 	}
-	return seems_utf8( $string );
+
+	return 1 === preg_match( '//u', $string );
 }

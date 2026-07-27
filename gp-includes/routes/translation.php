@@ -305,7 +305,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				foreach ( $errors as $error ) {
 					foreach ( $error as $key => $value ) {
 						$output .= '<li>';
-						$output .= htmlentities( $value );
+						$output .= htmlentities( $value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 );
 						$output .= '</li>';
 					}
 				}
