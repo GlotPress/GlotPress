@@ -461,19 +461,18 @@ class GP_Route_Translation extends GP_Route_Main {
 					$original_id    = (int) gp_array_get( $parts, 0 );
 					$translation_id = (int) gp_array_get( $parts, 1 );
 
-					$original = GP::$original->get( $original_id );
-					if ( ! $original || (int) $original->project_id !== (int) $project->id ) {
-						return false;
-					}
-
 					if ( $translation_id ) {
+						// A translated row must be a genuine (original, translation) pair of this set,
+						// which in turn guarantees the original belongs to the set's project.
 						$translation = GP::$translation->get( $translation_id );
-						if ( ! $translation || (int) $translation->translation_set_id !== (int) $translation_set->id ) {
-							return false;
-						}
+						return $translation
+							&& (int) $translation->translation_set_id === (int) $translation_set->id
+							&& (int) $translation->original_id === $original_id;
 					}
 
-					return true;
+					// An untranslated row (e.g. set-priority) must reference an original of this project.
+					$original = GP::$original->get( $original_id );
+					return $original && (int) $original->project_id === (int) $project->id;
 				}
 			)
 		);

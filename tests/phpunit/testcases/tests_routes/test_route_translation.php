@@ -96,4 +96,29 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertEquals( 0, (int) GP::$original->get( $other_original->id )->priority );
 	}
+
+	/**
+	 * A bulk row must be a genuine (original, translation) pair: a row pairing an
+	 * original with a translation that belongs to a different original is dropped.
+	 */
+	function test_bulk_filter_drops_rows_with_a_mismatched_original_and_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original_a    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A' ) );
+		$original_b     = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'B' ) );
+		$translation_b = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original_b->id, 'status' => 'current' ) );
+
+		// The translation belongs to original_b, but the row pairs it with original_a.
+		$_POST['bulk'] = array(
+			'action'      => 'fuzzy',
+			'row-ids'     => $original_a->id . '-' . $translation_b->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertEquals( 'current', GP::$translation->get( $translation_b->id )->status );
+	}
 }
