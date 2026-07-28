@@ -816,10 +816,18 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	private function can_approve_translation_or_forbidden( $translation ) {
-		$can_reject_self = ( get_current_user_id() == $translation->user_id && 'waiting' == $translation->status );
-		if ( $can_reject_self ) {
+		$requested_status  = gp_post( 'status' );
+		$requires_approval = in_array( $requested_status, array( 'current', 'changesrequested' ), true );
+
+		// The author of a waiting translation may manage it (e.g. reject it or
+		// discard its warnings) without approval rights, but approving it or
+		// requesting changes on it still requires the approve permission.
+		$is_own_waiting_translation = get_current_user_id() === (int) $translation->user_id && 'waiting' === $translation->status;
+
+		if ( $is_own_waiting_translation && ! $requires_approval ) {
 			return;
 		}
+
 		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
 	}
 
