@@ -68,7 +68,7 @@ gp_tmpl_header();
 					<td><?php echo esc_html( $permission->action ); ?></td>
 					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
 					<td><?php echo esc_html( $permission->set_slug ); ?></td>
-					<td><?php gp_link_project( $permission->project, esc_html( $permission->project->name ) ); ?></td>
+					<td><?php gp_link_project( $permission->project, $permission->project->name ); ?></td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>

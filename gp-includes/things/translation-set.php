@@ -206,7 +206,7 @@ class GP_Translation_Set extends GP_Thing {
 		$parts  = array( $locale->english_name );
 
 		if ( 'default' !== $this->slug ) {
-			$parts[] = $this->name;
+			$parts[] = esc_html( $this->name );
 		}
 
 		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
