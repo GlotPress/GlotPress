@@ -9,7 +9,9 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	}
 
 	function test_single_with_a_non_existent_set_gives_404() {
-		$this->route->single( 11123123 );
+		$this->do_route_request( function () {
+			$this->route->single( 11123123 );
+		} );
 		$this->assert404();
 	}
 
@@ -96,7 +98,9 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 	function test_edit_post_with_a_non_existent_set_gives_404() {
 		$this->set_admin_user_as_current();
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_11' );
-		$this->route->edit_post( 11 );
+		$this->do_route_request( function () {
+			$this->route->edit_post( 11 );
+		} );
 		$this->assert404();
 	}
 
@@ -156,7 +160,9 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 
 	function test_delete_post_with_a_non_existent_set_gives_404() {
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-translation-set_11' );
-		$this->route->delete_post( 11 );
+		$this->do_route_request( function () {
+			$this->route->delete_post( 11 );
+		} );
 		$this->assert404();
 	}
 

@@ -26,7 +26,11 @@ class GP_Test_Route_Translation_Self_Status extends GP_UnitTestCase_Route {
 		$_POST['translation_id']     = $translation->id;
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-' . $status . '_' . $translation->id );
 
-		$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
 
 		return GP::$translation->get( $translation->id );
 	}
@@ -39,6 +43,18 @@ class GP_Test_Route_Translation_Self_Status extends GP_UnitTestCase_Route {
 		$reloaded = $this->set_status( $set, $translation, 'current' );
 
 		$this->assertSame( 'waiting', $reloaded->status, 'A user without approval rights must not approve their own translation.' );
+		$this->assertSame( 403, $this->route->http_status, 'The route should forbid the change instead of failing later.' );
+	}
+
+	public function test_user_cannot_request_changes_on_their_own_waiting_translation() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$user_id     = $this->set_normal_user_as_current();
+		$translation = $this->create_waiting_translation_for( $set, $user_id );
+
+		$reloaded = $this->set_status( $set, $translation, 'changesrequested' );
+
+		$this->assertSame( 'waiting', $reloaded->status, 'A user without approval rights must not request changes on their own translation.' );
+		$this->assertSame( 403, $this->route->http_status, 'The route should forbid the change instead of failing later.' );
 	}
 
 	public function test_user_can_reject_their_own_waiting_translation() {
