@@ -173,4 +173,60 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$this->assertNotAllowedRedirect();
 	}
 
+	private function grant_project_write( $user_id, $project_id ) {
+		GP::$permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $project_id,
+			)
+		);
+	}
+
+	function test_edit_post_requires_write_on_the_sets_current_project() {
+		$user_id = $this->set_normal_user_as_current();
+		$set     = $this->factory->translation_set->create_with_project_and_locale();
+		$target  = $this->factory->project->create();
+
+		$original_project_id = $set->project_id;
+
+		// The user can write the destination project, but not the set's own project.
+		$this->grant_project_write( $user_id, $target->id );
+
+		$_POST['set']                = array(
+			'name'       => 'Renamed',
+			'slug'       => $set->slug,
+			'locale'     => $set->locale,
+			'project_id' => $target->id,
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $set->id );
+		$this->route->edit_post( $set->id );
+
+		$set->reload();
+		$this->assertEquals( $original_project_id, $set->project_id, 'The set must not move without write on its current project.' );
+		$this->assertNotEquals( 'Renamed', $set->name, 'The set must not be edited without write on its current project.' );
+	}
+
+	function test_edit_post_can_move_a_set_when_the_user_can_write_both_projects() {
+		$user_id = $this->set_normal_user_as_current();
+		$set     = $this->factory->translation_set->create_with_project_and_locale();
+		$target  = $this->factory->project->create();
+
+		$this->grant_project_write( $user_id, $set->project_id );
+		$this->grant_project_write( $user_id, $target->id );
+
+		$_POST['set']                = array(
+			'name'       => $set->name,
+			'slug'       => $set->slug,
+			'locale'     => $set->locale,
+			'project_id' => $target->id,
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $set->id );
+		$this->route->edit_post( $set->id );
+
+		$set->reload();
+		$this->assertEquals( (int) $target->id, (int) $set->project_id, 'A user with write on both projects can move the set.' );
+	}
+
 }
