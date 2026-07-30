@@ -23,7 +23,7 @@ if ( ! $project->active ) {
 gp_breadcrumb_project(
 	$project,
 	array(
-		$translation_set->name . $inactive_bubble,
+		esc_html( $translation_set->name ) . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );

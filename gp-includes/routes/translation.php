@@ -395,6 +395,10 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$bulk            = gp_post( 'bulk' );
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
+
+		// Drop rows outside the authorized project/set before any action runs, so neither the built-in handlers nor custom actions on the hook below can touch another set's data.
+		$bulk['row-ids'] = $this->filter_bulk_row_ids_for_set( $bulk['row-ids'], $project, $translation_set );
+
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
 				case 'approve':
@@ -434,6 +438,44 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$bulk['redirect_to'] = esc_url_raw( $bulk['redirect_to'] );
 		$this->redirect( $bulk['redirect_to'] );
+	}
+
+	/**
+	 * Filters client-supplied bulk-action row IDs down to those belonging to the authorized project and set.
+	 *
+	 * Row IDs have the form "<original_id>-<translation_id>". A request is authorized for a single
+	 * project/set, so rows whose original is in another project, or whose translation is in another
+	 * set, are dropped before any action runs.
+	 *
+	 * @param string[]           $row_ids         The client-supplied row IDs.
+	 * @param GP_Project         $project         The authorized project.
+	 * @param GP_Translation_Set $translation_set The authorized translation set.
+	 * @return string[] The row IDs that belong to the project and set.
+	 */
+	private function filter_bulk_row_ids_for_set( $row_ids, $project, $translation_set ) {
+		return array_values(
+			array_filter(
+				$row_ids,
+				function ( $row_id ) use ( $project, $translation_set ) {
+					$parts          = explode( '-', $row_id );
+					$original_id    = (int) gp_array_get( $parts, 0 );
+					$translation_id = (int) gp_array_get( $parts, 1 );
+
+					if ( $translation_id ) {
+						// A translated row must be a genuine (original, translation) pair of this set,
+						// which in turn guarantees the original belongs to the set's project.
+						$translation = GP::$translation->get( $translation_id );
+						return $translation
+							&& (int) $translation->translation_set_id === (int) $translation_set->id
+							&& (int) $translation->original_id === $original_id;
+					}
+
+					// An untranslated row (e.g. set-priority) must reference an original of this project.
+					$original = GP::$original->get( $original_id );
+					return $original && (int) $original->project_id === (int) $project->id;
+				}
+			)
+		);
 	}
 
 	private function _bulk_approve( $bulk ) {
