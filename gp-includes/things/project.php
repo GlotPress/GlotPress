@@ -249,10 +249,12 @@ class GP_Project extends GP_Thing {
 		if ( is_null( $res_self ) ) {
 			return $res_self;
 		}
-		// Update children's paths, too.
+		// Update children's paths, too. The trailing slash restricts the match
+		// to actual descendants (old_path/...) so a project whose path is merely
+		// a prefix of an unrelated project (e.g. "foo" vs "foobar") is untouched.
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '%' );
+			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '/%' );
 		} else {
 			return $res_self;
 		}
@@ -300,14 +302,13 @@ class GP_Project extends GP_Thing {
 	public function source_url_template() {
 		if ( isset( $this->user_source_url_template ) ) {
 			return $this->user_source_url_template;
-		} else {
-			if ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
-					 && isset( $templates[ $this->id ] ) ) {
+		} elseif ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
+					&& isset( $templates[ $this->id ] ) ) {
+
 				$this->user_source_url_template = $templates[ $this->id ];
 				return $this->user_source_url_template;
-			} else {
-				return $this->source_url_template;
-			}
+		} else {
+			return $this->source_url_template;
 		}
 	}
 

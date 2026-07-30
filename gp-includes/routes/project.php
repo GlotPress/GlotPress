@@ -49,7 +49,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		usort(
 			$translation_sets,
-			function( $a, $b ) {
+			function ( $a, $b ) {
 				return( $a->current_count <=> $b->current_count );
 			}
 		);
@@ -134,20 +134,20 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) {
+		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			// TODO: different errors for different upload conditions
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
 			return;
 		}
 
-		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] );
+		$format = gp_get_import_file_format( gp_post( 'format', 'po' ), $_FILES['import-file']['name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( ! $format ) {
 			$this->redirect_with_error( __( 'No such format.', 'glotpress' ) );
 			return;
 		}
 
-		$translations = $format->read_originals_from_file( $_FILES['import-file']['tmp_name'] );
+		$translations = $format->read_originals_from_file( $_FILES['import-file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( ! $translations ) {
 			$this->redirect_with_error( __( 'Couldn&#8217;t load translations from file!', 'glotpress' ) );
@@ -192,6 +192,20 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-edit', get_defined_vars() );
 	}
 
+	/**
+	 * Returns the project fields a user is allowed to set from the request.
+	 *
+	 * The path is intentionally excluded: it is derived from the slug and the
+	 * parent project in GP_Project::update_path(), never taken from the client.
+	 *
+	 * @return array Whitelisted project input.
+	 */
+	private function editable_project_input() {
+		$editable_fields = array( 'name', 'slug', 'description', 'source_url_template', 'active', 'parent_project_id' );
+
+		return array_intersect_key( (array) gp_post( 'project' ), array_flip( $editable_fields ) );
+	}
+
 	public function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -207,14 +221,18 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$updated_project = new GP_Project( gp_post( 'project' ) );
+		$updated_project = new GP_Project( $this->editable_project_input() );
 		if ( $this->invalid_and_redirect( $updated_project, gp_url_project( $project, '-edit' ) ) ) {
 			return;
 		}
 
+		$new_parent_id = (int) $updated_project->parent_project_id;
+
 		// TODO: add id check as a validation rule
-		if ( $project->id == $updated_project->parent_project_id ) {
+		if ( $project->id == $new_parent_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
+		} elseif ( $new_parent_id && $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent_id ) ) {
+			$this->errors[] = __( 'You are not allowed to do that!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );
 		} else {
@@ -308,7 +326,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$post              = gp_post( 'project' );
+		$post              = $this->editable_project_input();
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
@@ -346,7 +364,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$path_to_root = array_slice( $project->path_to_root(), 1 );
 		$permissions  = GP::$validator_permission->by_project_id( $project->id );
-		$cmp_fn       = function( $x, $y ) {
+		$cmp_fn       = function ( $x, $y ) {
 			return strcmp( $x->locale_slug, $y->locale_slug );
 		};
 		usort( $permissions, $cmp_fn );
@@ -541,7 +559,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function branch_project_post( $project_path ) {
-		$post    = gp_post( 'project' );
+		$post    = $this->editable_project_input();
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -576,5 +594,4 @@ class GP_Route_Project extends GP_Route_Main {
 
 		$this->redirect( gp_url_project( $new_project ) );
 	}
-
 }

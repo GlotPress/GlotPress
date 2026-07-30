@@ -124,7 +124,7 @@ class GP_Format_Strings extends GP_Format {
 		// Convert multi-line comments into a single line.
 		$file = preg_replace_callback(
 			'/\/\*\s*(.*?)\s*\*\//s',
-			function( $m ) {
+			function ( $m ) {
 				return str_replace( PHP_EOL, '\n', $m[0] );
 			},
 			$file
@@ -202,7 +202,6 @@ class GP_Format_Strings extends GP_Format {
 	private function escape( $string ) {
 		return addcslashes( $string, '"\\/' );
 	}
-
 }
 
 GP::$formats['strings'] = new GP_Format_Strings();

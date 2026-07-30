@@ -271,7 +271,7 @@ class GP_Locales {
 
 		$azb = new GP_Locale();
 		$azb->english_name = 'South Azerbaijani';
-		$azb->native_name = 'گؤنئی آذربایجان';
+		$azb->native_name = 'تۆرکجه‌ (آذربایجان تۆرکجه‌سی)';
 		$azb->lang_code_iso_639_1 = 'az';
 		$azb->lang_code_iso_639_3 = 'azb';
 		$azb->country_code = 'ir';
@@ -307,7 +307,7 @@ class GP_Locales {
 		$bal->slug = 'bal';
 
 		$bcc = new GP_Locale();
-		$bcc->english_name = 'Balochi Southern';
+		$bcc->english_name = 'Balochi (Southern)';
 		$bcc->native_name = 'بلوچی مکرانی';
 		$bcc->lang_code_iso_639_3 = 'bcc';
 		$bcc->country_code = 'pk';
@@ -345,8 +345,8 @@ class GP_Locales {
 		$bg->alphabet = 'cyrillic';
 
 		$bgn = new GP_Locale();
-		$bgn->english_name = 'Western Balochi';
-		$bgn->native_name = 'بلوچی‎';
+		$bgn->english_name = 'Balochi (western)';
+		$bgn->native_name = 'مغربی بلوچی';
 		$bgn->lang_code_iso_639_3 = 'bgn';
 		$bgn->country_code = 'pk';
 		$bgn->wp_locale = 'bgn';
@@ -527,7 +527,7 @@ class GP_Locales {
 		$cor->native_name = 'Kernewek';
 		$cor->lang_code_iso_639_1 = 'kw';
 		$cor->lang_code_iso_639_2 = 'cor';
-		$cor->lang_code_iso_639_2 = 'cor';
+		$cor->lang_code_iso_639_3 = 'cor';
 		$cor->country_code = 'gb';
 		$cor->wp_locale = 'cor';
 		$cor->slug = 'cor';

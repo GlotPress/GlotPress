@@ -242,7 +242,7 @@ function gp_array_zip( ...$args ) {
 			next( $array );
 		}
 
-		$array_count++;
+		++$array_count;
 	}
 
 	return $res;
@@ -254,10 +254,8 @@ function gp_array_any( $callback, $array, $arg = null ) {
 			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
-		} else {
-			if ( $callback( $item, $arg ) ) {
+		} elseif ( $callback( $item, $arg ) ) {
 				return true;
-			}
 		}
 	}
 	return false;
@@ -735,4 +733,28 @@ function gp_get_sort_by_fields() {
  */
 function gp_set_translations_import_max_memory_limit() {
 	return '256M';
+}
+
+/**
+ * Checks if a string is valid UTF-8.
+ *
+ * The wp_is_valid_utf8() was introduced in WordPress 6.9.0, so we need a fallback for older versions.
+ * seems_utf8() was deprecated in WordPress 6.9.0.
+ * See https://core.trac.wordpress.org/changeset/60630
+ *
+ * @since 4.1.0
+ *
+ * @param string $string The string to check.
+ * @return bool True if the string is valid UTF-8, false otherwise.
+ */
+function gp_is_valid_utf8( $string ) {
+	if ( function_exists( 'wp_is_valid_utf8' ) ) {
+		return wp_is_valid_utf8( $string );
+	}
+
+	if ( function_exists( 'mb_check_encoding' ) ) {
+		return mb_check_encoding( $string, 'UTF-8' );
+	}
+
+	return 1 === preg_match( '//u', $string );
 }

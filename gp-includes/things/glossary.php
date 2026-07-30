@@ -95,7 +95,6 @@ class GP_Glossary extends GP_Thing {
 		    WHERE translation_set_id = %d LIMIT 1",
 			$set_id
 		);
-
 	}
 
 	/**
