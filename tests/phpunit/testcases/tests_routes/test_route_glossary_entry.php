@@ -69,7 +69,11 @@ class GP_Test_Route_Glossary_Entry extends GP_UnitTestCase_Route {
 		);
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-glossary-entry_' . $entry->id );
 
-		$this->route->glossary_entries_post( $authorized_set->project->path, $authorized_set->locale, $authorized_set->slug );
+		$this->do_route_request(
+			function () use ( $authorized_set ) {
+				$this->route->glossary_entries_post( $authorized_set->project->path, $authorized_set->locale, $authorized_set->slug );
+			}
+		);
 
 		$reloaded = GP::$glossary_entry->get( $entry->id );
 
