@@ -147,6 +147,13 @@ class GP_Translation_Set extends GP_Thing {
 	public $wp_locale;
 
 	/**
+	 * The date of the last modified translation.
+	 *
+	 * @var string|false
+	 */
+	public $last_modified;
+
+	/**
 	 * Sets restriction rules for fields.
 	 *
 	 * @since 1.0.0
