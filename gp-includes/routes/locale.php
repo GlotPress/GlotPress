@@ -124,7 +124,7 @@ class GP_Route_Locale extends GP_Route_Main {
 						$set_list[ $set->slug ] = __( 'Default', 'glotpress' );
 					}
 				} elseif ( $set->slug != $current_set_slug ) {
-						$set_list[ $set->slug ] = gp_link_get( gp_url( gp_url_join( '/languages', $locale->slug, $set->slug ) ), esc_html( $set->name ) );
+						$set_list[ $set->slug ] = gp_link_get( gp_url( gp_url_join( '/languages', $locale->slug, $set->slug ) ), $set->name );
 				} else {
 					$set_list[ $set->slug ] = esc_html( $set->name );
 				}

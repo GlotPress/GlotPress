@@ -122,7 +122,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	 * @return string The last modified date on success, empty string on failure.
 	 */
 	public function last_modified( $glossary ) {
-		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' );
+		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id );
 	}
 }
 

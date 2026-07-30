@@ -321,4 +321,14 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $previous_set->name, 'Before' );
 		$this->assertEquals( $translation_set->name, 'After' );
 	}
+
+	function test_name_with_locale_escapes_the_set_name() {
+		$name = '<b>abc123</b>';
+		$set  = $this->factory->translation_set->create_with_project_and_locale( array( 'name' => $name, 'slug' => 'markup' ) );
+
+		$html = $set->name_with_locale();
+
+		$this->assertStringNotContainsString( $name, $html );
+		$this->assertStringContainsString( esc_html( $name ), $html );
+	}
 }

@@ -14,6 +14,13 @@
  */
 class GP_Route_Glossary_Entry extends GP_Route_Main {
 
+	/**
+	 * Leading characters that make a spreadsheet interpret a cell as a formula.
+	 *
+	 * @var string[]
+	 */
+	private const FORMULA_TRIGGERS = array( '=', '+', '-', '@' );
+
 	public function glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -71,10 +78,16 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
 		}
+
+		// Derive the glossary from the authorized set; a client-supplied glossary_id must not target an unrelated glossary.
+		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+		if ( ! $glossary ) {
+			return $this->die_with_404();
+		}
+
 		$new_glossary_entry                 = new GP_Glossary_Entry( gp_post( 'new_glossary_entry' ) );
 		$new_glossary_entry->last_edited_by = get_current_user_id();
-
-		$glossary = GP::$glossary->get( $new_glossary_entry->glossary_id );
+		$new_glossary_entry->glossary_id    = $glossary->id;
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -138,6 +151,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$new_glossary_entry                 = new GP_Glossary_Entry( $ge );
 		$new_glossary_entry->last_edited_by = get_current_user_id();
+		$new_glossary_entry->glossary_id    = $glossary_entry->glossary_id; // Keep the entry in its glossary; a client-supplied glossary_id must not move it elsewhere.
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -163,7 +177,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			echo wp_json_encode( $output );
 		}
 
-		exit();
+		$this->exit_();
 	}
 
 	public function glossary_entry_delete_post() {
@@ -312,11 +326,58 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		fputcsv( $outstream, array( 'en', $locale_slug, 'pos', 'description' ), ',', '"', '' );
 
 		foreach ( $entries as $entry ) {
-			$values = array( $entry->term, $entry->translation, $entry->part_of_speech, $entry->comment );
+			$values = array_map(
+				array( $this, 'escape_csv_value' ),
+				array( $entry->term, $entry->translation, $entry->part_of_speech, $entry->comment )
+			);
 			fputcsv( $outstream, $values, ',', '"', '' );
 		}
 
 		fclose( $outstream );
+	}
+
+	/**
+	 * Prevents a cell value from being interpreted as a formula by spreadsheet
+	 * software.
+	 *
+	 * A value that begins with a formula trigger character is prefixed with a
+	 * tab. fputcsv() then wraps the field in double quotes, keeping the tab
+	 * inside the quoted field so the value is rendered as literal text. A tab is
+	 * used rather than a leading single quote because Microsoft Excel does not
+	 * preserve the latter across a save and reopen of the file.
+	 *
+	 * @see GP_Route_Glossary_Entry::unescape_csv_value() Reverses this on import.
+	 *
+	 * @param string $value Cell value.
+	 * @return string Value safe to write to a CSV cell.
+	 */
+	protected function escape_csv_value( $value ) {
+		if ( is_string( $value ) && '' !== $value && in_array( $value[0], self::FORMULA_TRIGGERS, true ) ) {
+			return "\t" . $value;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Reverses escape_csv_value() when a CSV file is read back in.
+	 *
+	 * Removes the leading tab that the export adds in front of a value that
+	 * starts with a formula trigger character, so a value survives an export and
+	 * a re-import unchanged. Only a tab that precedes such a character is
+	 * removed; the export never prefixes any other value.
+	 *
+	 * @see GP_Route_Glossary_Entry::escape_csv_value()
+	 *
+	 * @param string $value Cell value read from the CSV file.
+	 * @return string Value with an export-added tab prefix removed.
+	 */
+	protected function unescape_csv_value( $value ) {
+		if ( is_string( $value ) && isset( $value[1] ) && "\t" === $value[0] && in_array( $value[1], self::FORMULA_TRIGGERS, true ) ) {
+			return substr( $value, 1 );
+		}
+
+		return $value;
 	}
 
 	private function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
@@ -340,10 +401,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 			$entry_data = array(
 				'glossary_id'    => $glossary_id,
-				'term'           => $data[0],
-				'translation'    => $data[1],
-				'part_of_speech' => $data[2],
-				'comment'        => $data[3],
+				'term'           => $this->unescape_csv_value( $data[0] ),
+				'translation'    => $this->unescape_csv_value( $data[1] ),
+				'part_of_speech' => $this->unescape_csv_value( $data[2] ),
+				'comment'        => $this->unescape_csv_value( $data[3] ),
 				'last_edited_by' => get_current_user_id(),
 			);
 
