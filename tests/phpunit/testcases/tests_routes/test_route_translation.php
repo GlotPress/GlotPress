@@ -121,4 +121,80 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertEquals( 'current', GP::$translation->get( $translation_b->id )->status );
 	}
+
+	/**
+	 * A translation whose set is authorized but whose original belongs to another project (a
+	 * "phantom" pairing) must not let a bulk action reach that foreign original.
+	 */
+	function test_bulk_set_priority_cannot_target_a_cross_project_original_via_a_phantom_translation() {
+		$authorized_set = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set      = $this->factory->translation_set->create_with_project_and_locale();
+
+		$victim_original = $this->factory->original->create( array( 'project_id' => $other_set->project->id, 'status' => '+active', 'singular' => 'Victim', 'priority' => 0 ) );
+
+		// A translation in the authorized set that points at the other project's original.
+		$phantom = $this->factory->translation->create( array( 'translation_set_id' => $authorized_set->id, 'original_id' => $victim_original->id ) );
+
+		$user = $this->become_validator_for_set( $authorized_set );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $authorized_set->project->id ) );
+
+		$_POST['bulk'] = array(
+			'action'      => 'set-priority',
+			'priority'    => -2,
+			'row-ids'     => $victim_original->id . '-' . $phantom->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $authorized_set->project->path, $authorized_set->locale, $authorized_set->slug );
+
+		$this->assertEquals( 0, (int) GP::$original->get( $victim_original->id )->priority, 'A cross-project original must not be reachable through a phantom translation.' );
+	}
+
+	/**
+	 * Submitting a translation for an original that belongs to another project must not create it,
+	 * so a translation's set and original can never span two projects.
+	 */
+	function test_translations_post_ignores_an_original_from_another_project() {
+		$set   = $this->factory->translation_set->create_with_project_and_locale();
+		$other = $this->factory->translation_set->create_with_project_and_locale();
+
+		$foreign_original = $this->factory->original->create( array( 'project_id' => $other->project->id, 'status' => '+active', 'singular' => 'Foreign' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $foreign_original->id;
+		$_POST['translation']        = array( $foreign_original->id => array( 'anything' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $foreign_original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $foreign_original->id ) ), 'A translation must not be created for another project\'s original.' );
+	}
+
+	/**
+	 * The tightened filter must still act on a legitimate in-project translated row.
+	 */
+	function test_bulk_fuzzy_marks_a_translation_of_the_authorized_set() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+
+		$_POST['bulk'] = array(
+			'action'      => 'fuzzy',
+			'row-ids'     => $original->id . '-' . $translation->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertEquals( 'fuzzy', GP::$translation->get( $translation->id )->status, 'A legitimate in-project translated row must still be acted on.' );
+	}
 }

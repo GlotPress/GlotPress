@@ -262,16 +262,22 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
-		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
-
 		if ( ! $translation_set ) {
 			return $this->die_with_404();
 		}
+
+		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
+			$original = GP::$original->get( $original_id );
+
+			if ( ! $this->original_belongs_to_project( $original, $project ) ) {
+				continue;
+			}
+
 			$data                       = compact( 'original_id' );
 			$data['user_id']            = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
@@ -297,7 +303,6 @@ class GP_Route_Translation extends GP_Route_Main {
 				$set_status = 'waiting';
 			}
 
-			$original         = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
 			if ( $errors ) {
@@ -461,21 +466,33 @@ class GP_Route_Translation extends GP_Route_Main {
 					$original_id    = (int) gp_array_get( $parts, 0 );
 					$translation_id = (int) gp_array_get( $parts, 1 );
 
+					$original = GP::$original->get( $original_id );
+					if ( ! $this->original_belongs_to_project( $original, $project ) ) {
+						return false;
+					}
+
 					if ( $translation_id ) {
-						// A translated row must be a genuine (original, translation) pair of this set,
-						// which in turn guarantees the original belongs to the set's project.
 						$translation = GP::$translation->get( $translation_id );
 						return $translation
 							&& (int) $translation->translation_set_id === (int) $translation_set->id
 							&& (int) $translation->original_id === $original_id;
 					}
 
-					// An untranslated row (e.g. set-priority) must reference an original of this project.
-					$original = GP::$original->get( $original_id );
-					return $original && (int) $original->project_id === (int) $project->id;
+					return true;
 				}
 			)
 		);
+	}
+
+	/**
+	 * Whether an original exists and belongs to a project.
+	 *
+	 * @param GP_Original|false $original The original to check.
+	 * @param GP_Project        $project  The project it must belong to.
+	 * @return bool
+	 */
+	private function original_belongs_to_project( $original, $project ) {
+		return $original && (int) $original->project_id === (int) $project->id;
 	}
 
 	private function _bulk_approve( $bulk ) {
