@@ -254,7 +254,7 @@ function gp_project_links_from_root( $leaf_project ) {
 	$links[]        = empty( $path_from_root ) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
 		if ( ! is_null( $project->id ) ) {
-			$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
+			$links[] = gp_link_project_get( $project, $project->name );
 		}
 	}
 	return $links;
@@ -281,7 +281,7 @@ function gp_breadcrumb_project( $project, $extra_items = array() ) {
 		end( $breadcrumb );
 		$last_key = key( $breadcrumb );
 
-		$breadcrumb[ $last_key ] = $project->name;
+		$breadcrumb[ $last_key ] = esc_html( $project->name );
 	}
 
 	// Add extra items.

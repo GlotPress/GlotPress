@@ -192,6 +192,20 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-edit', get_defined_vars() );
 	}
 
+	/**
+	 * Returns the project fields a user is allowed to set from the request.
+	 *
+	 * The path is intentionally excluded: it is derived from the slug and the
+	 * parent project in GP_Project::update_path(), never taken from the client.
+	 *
+	 * @return array Whitelisted project input.
+	 */
+	private function editable_project_input() {
+		$editable_fields = array( 'name', 'slug', 'description', 'source_url_template', 'active', 'parent_project_id' );
+
+		return array_intersect_key( (array) gp_post( 'project' ), array_flip( $editable_fields ) );
+	}
+
 	public function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -207,14 +221,18 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$updated_project = new GP_Project( gp_post( 'project' ) );
+		$updated_project = new GP_Project( $this->editable_project_input() );
 		if ( $this->invalid_and_redirect( $updated_project, gp_url_project( $project, '-edit' ) ) ) {
 			return;
 		}
 
+		$new_parent_id = (int) $updated_project->parent_project_id;
+
 		// TODO: add id check as a validation rule
-		if ( $project->id == $updated_project->parent_project_id ) {
+		if ( $project->id == $new_parent_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
+		} elseif ( $new_parent_id && $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent_id ) ) {
+			$this->errors[] = __( 'You are not allowed to do that!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );
 		} else {
@@ -308,7 +326,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$post              = gp_post( 'project' );
+		$post              = $this->editable_project_input();
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
@@ -541,7 +559,7 @@ class GP_Route_Project extends GP_Route_Main {
 
 
 	public function branch_project_post( $project_path ) {
-		$post    = gp_post( 'project' );
+		$post    = $this->editable_project_input();
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {

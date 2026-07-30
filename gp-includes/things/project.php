@@ -249,10 +249,12 @@ class GP_Project extends GP_Thing {
 		if ( is_null( $res_self ) ) {
 			return $res_self;
 		}
-		// Update children's paths, too.
+		// Update children's paths, too. The trailing slash restricts the match
+		// to actual descendants (old_path/...) so a project whose path is merely
+		// a prefix of an unrelated project (e.g. "foo" vs "foobar") is untouched.
 		if ( $old_path ) {
 			$query = "UPDATE $this->table SET path = CONCAT(%s, SUBSTRING(path, %d)) WHERE path LIKE %s";
-			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '%' );
+			return $this->query( $query, $path, strlen( $old_path ) + 1, $wpdb->esc_like( $old_path ) . '/%' );
 		} else {
 			return $res_self;
 		}

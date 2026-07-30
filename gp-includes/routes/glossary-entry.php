@@ -71,10 +71,16 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
 			return;
 		}
+
+		// Derive the glossary from the authorized set; a client-supplied glossary_id must not target an unrelated glossary.
+		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
+		if ( ! $glossary ) {
+			return $this->die_with_404();
+		}
+
 		$new_glossary_entry                 = new GP_Glossary_Entry( gp_post( 'new_glossary_entry' ) );
 		$new_glossary_entry->last_edited_by = get_current_user_id();
-
-		$glossary = GP::$glossary->get( $new_glossary_entry->glossary_id );
+		$new_glossary_entry->glossary_id    = $glossary->id;
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -138,6 +144,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$new_glossary_entry                 = new GP_Glossary_Entry( $ge );
 		$new_glossary_entry->last_edited_by = get_current_user_id();
+		$new_glossary_entry->glossary_id    = $glossary_entry->glossary_id; // Keep the entry in its glossary; a client-supplied glossary_id must not move it elsewhere.
 
 		if ( ! $new_glossary_entry->validate() ) {
 			$this->errors = $new_glossary_entry->errors;
@@ -163,7 +170,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			echo wp_json_encode( $output );
 		}
 
-		exit();
+		$this->exit_();
 	}
 
 	public function glossary_entry_delete_post() {
