@@ -6,13 +6,18 @@
 # The script also prints the same summary information to the terminal.
 echo "Generating release notes: finding latest tag, listing commits since that tag,"
 echo -e "extracting PR numbers and descriptions, and building markdown output.\n"
-cd ..
+
+# Run from the repository root, so the script works from any directory.
+cd "$(dirname "$0")/.." || exit 1
 
 # Get the latest tag
-latest_tag=$(git describe --tags --abbrev=0)
+if ! latest_tag=$(git describe --tags --abbrev=0 2>/dev/null); then
+  echo "ERROR: No tags found in this repository. Cannot determine the latest release." >&2
+  exit 1
+fi
 
 # Get the commits since the latest tag
-commits=$(git log --oneline --no-merges $latest_tag..HEAD)
+commits=$(git log --oneline --no-merges "$latest_tag"..HEAD)
 
 # Initialize the markdown text and PR URLs array
 markdown="## Recent Changes"$'\n\n'
@@ -20,8 +25,9 @@ pr_urls=()
 
 # Iterate over each commit and collect PRs (skip commits without PR numbers)
 while IFS= read -r commit; do
-  # Extract the PR number and description from the commit message
-  pr_number=$(echo "$commit" | grep -o '#[0-9]*' | cut -c2-)
+  # Extract the PR number from the trailing "(#1234)" that GitHub appends on
+  # merge, ignoring issue references elsewhere in the commit subject.
+  pr_number=$(echo "$commit" | grep -oE '\(#[0-9]+\)$' | tr -d '(#)')
   # If no PR number was found, skip this commit
   if [ -z "$pr_number" ]; then
     continue
@@ -29,7 +35,7 @@ while IFS= read -r commit; do
   description=$(echo "$commit" | cut -d' ' -f2-)
 
   # Generate the markdown text with PR link
-  markdown+="* ${description/ \(#$pr_number\)}"
+  markdown+="* ${description%" (#$pr_number)"}"
   markdown+=" ([#$pr_number])"$'\n'
 
   # Generate the PR URL and add it to the array
