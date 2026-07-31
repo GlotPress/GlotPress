@@ -6,15 +6,14 @@
  * from GlotPress translation sets.
  *
  * @package GlotPress
- * @since 1.0.0
  */
 class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	/**
-	 * Counter for the number of duplicate translations removed.
+	 * Counter for the number of duplicate translations found (and removed unless dry-run).
 	 *
 	 * @var int
 	 */
-	private $duplicates_removed = 0;
+	private $duplicates_found = 0;
 
 	/**
 	 * Remove duplicate current translations from translation sets.
@@ -69,11 +68,11 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	 * @when after_wp_load
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		$dry_run                  = isset( $assoc_args['dry-run'] ) ? (bool) $assoc_args['dry-run'] : false;
-		$verbose                  = isset( $assoc_args['verbose'] ) ? (bool) $assoc_args['verbose'] : false;
-		$project_path             = isset( $assoc_args['project-path'] ) ? $assoc_args['project-path'] : null;
-		$locale                   = isset( $assoc_args['locale'] ) ? $assoc_args['locale'] : null;
-		$this->duplicates_removed = 0;
+		$dry_run                = isset( $assoc_args['dry-run'] ) ? (bool) $assoc_args['dry-run'] : false;
+		$verbose                = isset( $assoc_args['verbose'] ) ? (bool) $assoc_args['verbose'] : false;
+		$project_path           = isset( $assoc_args['project-path'] ) ? $assoc_args['project-path'] : null;
+		$locale                 = isset( $assoc_args['locale'] ) ? $assoc_args['locale'] : null;
+		$this->duplicates_found = 0;
 
 		if ( $locale && ! $project_path ) {
 			WP_CLI::error( __( 'The --locale parameter requires --project-path to be specified.', 'glotpress' ) );
@@ -111,16 +110,6 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 
 		$conditions = $this->get_translation_set_conditions( $project_path, $locale, $verbose );
 		if ( $conditions ) {
-			if ( $verbose ) {
-				WP_CLI::log(
-					sprintf(
-					/* translators: 1: project path, 2: locale code */
-						__( 'Processing sets for project: %1$s, locale: %2$s', 'glotpress' ),
-						$project_path,
-						$locale
-					)
-				);
-			}
 			$this->process_specific_sets( $conditions, $dry_run, $verbose );
 		} else {
 			$this->process_all_sets( $dry_run, $verbose );
@@ -154,16 +143,14 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 
 		$project_ids = $this->get_project_and_subproject_ids( $project );
 
-		if ( count( $project_ids ) > 0 ) {
-			if ( $verbose ) {
-				WP_CLI::log(
-					sprintf(
-					/* translators: %d: number of projects */
-						__( 'Found %d projects (including subprojects) to process', 'glotpress' ),
-						count( $project_ids )
-					)
-				);
-			}
+		if ( $verbose ) {
+			WP_CLI::log(
+				sprintf(
+				/* translators: %d: number of projects */
+					__( 'Found %d projects (including subprojects) to process', 'glotpress' ),
+					count( $project_ids )
+				)
+			);
 		}
 
 		$conditions = array(
@@ -213,24 +200,22 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 		global $wpdb;
 
 		$where_clauses = array();
+		$query_args    = array();
 
-		if ( isset( $conditions['project_ids'] ) ) {
-			if ( is_array( $conditions['project_ids'] ) ) {
-				$project_ids     = array_map( 'intval', $conditions['project_ids'] );
-				$where_clauses[] = 'project_id IN (' . implode( ',', $project_ids ) . ')';
-			} else {
-				$where_clauses[] = 'project_id = ' . intval( $conditions['project_ids'] );
-			}
+		if ( ! empty( $conditions['project_ids'] ) ) {
+			$project_ids     = implode( ',', array_map( 'intval', $conditions['project_ids'] ) );
+			$where_clauses[] = "project_id IN ({$project_ids})";
 		}
 
 		if ( isset( $conditions['locale'] ) ) {
-			$where_clauses[] = "locale = '" . esc_sql( $conditions['locale'] ) . "'";
+			$where_clauses[] = 'locale = %s';
+			$query_args[]    = $conditions['locale'];
 		}
 
 		$where_sql = implode( ' AND ', $where_clauses );
-		$query     = "SELECT * FROM {$wpdb->gp_translation_sets} WHERE {$where_sql} LIMIT %d OFFSET %d";
+		$query     = "SELECT * FROM {$wpdb->gp_translation_sets} WHERE {$where_sql} ORDER BY id ASC LIMIT %d OFFSET %d";
 
-		$this->process_sets( $query, $dry_run, $verbose );
+		$this->process_sets( $query, $query_args, $dry_run, $verbose );
 	}
 
 	/**
@@ -242,24 +227,25 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	private function process_all_sets( $dry_run, $verbose ) {
 		global $wpdb;
 
-		$query = "SELECT * FROM {$wpdb->gp_translation_sets} LIMIT %d OFFSET %d";
-		$this->process_sets( $query, $dry_run, $verbose );
+		$query = "SELECT * FROM {$wpdb->gp_translation_sets} ORDER BY id ASC LIMIT %d OFFSET %d";
+		$this->process_sets( $query, array(), $dry_run, $verbose );
 	}
 
 	/**
 	 * Process translation sets using a given query.
 	 *
-	 * @param string $query    SQL query template with LIMIT %d OFFSET %d placeholders.
-	 * @param bool   $dry_run  Whether to perform a dry run without deleting duplicates.
-	 * @param bool   $verbose  Whether to output verbose logging.
+	 * @param string $query      SQL query template ending in LIMIT %d OFFSET %d placeholders.
+	 * @param array  $query_args Values for the query placeholders before LIMIT and OFFSET.
+	 * @param bool   $dry_run    Whether to perform a dry run without deleting duplicates.
+	 * @param bool   $verbose    Whether to output verbose logging.
 	 */
-	private function process_sets( $query, $dry_run, $verbose ) {
+	private function process_sets( $query, $query_args, $dry_run, $verbose ) {
 		$batch_size      = 1000;
 		$offset          = 0;
 		$total_processed = 0;
 
 		while ( true ) {
-			$sets = GP::$translation_set->many( $query, $batch_size, $offset );
+			$sets = GP::$translation_set->many( $query, ...array_merge( $query_args, array( $batch_size, $offset ) ) );
 
 			if ( $verbose && ! empty( $sets ) ) {
 				WP_CLI::log(
@@ -303,21 +289,22 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 			unset( $sets );
 		}
 
-		if ( $this->duplicates_removed > 0 ) {
+		if ( $dry_run ) {
 			WP_CLI::success(
 				sprintf(
-				/* translators: 1: total number of sets processed, 2: number of duplicates removed */
-					__( 'Multiple currents are cleaned up. Total sets processed: %1$d. Duplicates removed: %2$d', 'glotpress' ),
+				/* translators: 1: total number of sets processed, 2: number of duplicates found */
+					__( 'Dry run finished, nothing was deleted. Total sets processed: %1$d. Duplicates found: %2$d', 'glotpress' ),
 					$total_processed,
-					$this->duplicates_removed
+					$this->duplicates_found
 				)
 			);
 		} else {
 			WP_CLI::success(
 				sprintf(
-				/* translators: %d: total number of sets processed */
-					__( 'Multiple currents are cleaned up. Total sets processed: %d', 'glotpress' ),
-					$total_processed
+				/* translators: 1: total number of sets processed, 2: number of duplicates removed */
+					__( 'Multiple currents are cleaned up. Total sets processed: %1$d. Duplicates removed: %2$d', 'glotpress' ),
+					$total_processed,
+					$this->duplicates_found
 				)
 			);
 		}
@@ -331,22 +318,21 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	 * @param bool               $verbose Whether to output verbose logging.
 	 */
 	private function process_set( $set, $dry_run, $verbose ) {
-		$translations         = GP::$translation->find(
+		$translations     = GP::$translation->find(
 			array(
 				'translation_set_id' => $set->id,
 				'status'             => 'current',
 			),
 			'original_id ASC'
 		);
-		$prev_original_id     = null;
-		$previous_translation = null;
+		$prev_original_id = null;
 		foreach ( $translations as $translation ) {
 			if ( $translation->original_id === $prev_original_id ) {
 				WP_CLI::log(
 					sprintf(
-						/* translators: 1: original ID, 2: new ID */
-						__( '- Duplicate with prev_original_id #%1$d. Translation_id #%2$d. \nTranslation string: %3$s', 'glotpress' ),
-						$previous_translation,
+						/* translators: 1: original ID, 2: translation ID, 3: translation string */
+						__( '- Duplicate for original_id #%1$d. Translation_id #%2$d. Translation string: %3$s', 'glotpress' ),
+						$prev_original_id,
 						$translation->id,
 						$translation->translation_0
 					)
@@ -362,14 +348,12 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 						)
 					);
 				}
+				++$this->duplicates_found;
 				if ( ! $dry_run ) {
 					$translation->delete();
-					// Increment the counter for each duplicate found.
-					++$this->duplicates_removed;
 				}
 			}
-			$prev_original_id     = $translation->original_id;
-			$previous_translation = $translation;
+			$prev_original_id = $translation->original_id;
 		}
 	}
 }
