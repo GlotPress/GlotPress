@@ -751,5 +751,10 @@ function gp_is_valid_utf8( $string ) {
 	if ( function_exists( 'wp_is_valid_utf8' ) ) {
 		return wp_is_valid_utf8( $string );
 	}
-	return seems_utf8( $string );
+
+	if ( function_exists( 'mb_check_encoding' ) ) {
+		return mb_check_encoding( $string, 'UTF-8' );
+	}
+
+	return 1 === preg_match( '//u', $string );
 }

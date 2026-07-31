@@ -20,7 +20,6 @@ composer.json export-ignore
 composer.lock export-ignore
 CONTRIBUTING.md export-ignore
 .wp-env.json export-ignore
-codecov.yml export-ignore
 Gruntfile.js export-ignore
 package-lock.json export-ignore
 package.json export-ignore

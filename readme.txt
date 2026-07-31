@@ -12,15 +12,15 @@ GlotPress is a WordPress plugin to let you set up your own collaborative, web-ba
 
 == Description ==
 
-Many open source projects span regions, countries and dialects and need to support a variety of translations, GlotPress is here to help you collaborate online with your translators to ensure your users see your software in their native language.
+Many open source projects span regions, countries and dialects and need to support a variety of translations; GlotPress is here to help you collaborate online with your translators to ensure your users see your software in their native language.
 
 For more information about GlotPress, feel free to visit the channels listed below in the "Communication" section.
 
 So who should use GlotPress?
 
-Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start, anyone who uses a gettext bases system can use GlotPress to help their translators collaborate.
+Any developer of software that uses [gettext](https://www.gnu.org/software/gettext/), like WordPress theme or plugin authors. But that's just the start. Anyone who uses a gettext-based system can use GlotPress to help their translators collaborate.
 
-This plugin wouldn't be possible without all the hard work that has gone in to the standalone version of GlotPress and we'd like to thank all those who contribute to it.
+This plugin wouldn't be possible without all the hard work that has gone into the standalone version of GlotPress and we'd like to thank all those who contribute to it.
 
 = Support =
 

@@ -53,7 +53,33 @@ class GP_Test_Locales extends GP_UnitTestCase {
 
 		// Actual: n > 1
 		// Expected: (n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)
-		'fr', 'fr-be', 'fr-ca', 'fr-ch',
+		'fr', 'fr-be', 'fr-ca', 'fr-ch', 'pt-br',
+
+		// Actual: n != 1
+		// Expected: (n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)
+		'pt', 'pt-ao90',
+
+		// CLDR 40+ added a "many" plural category (non-zero multiples of 1,000,000)
+		// for several Romance languages, raising nplurals from 2 to 3. Adopting these
+		// would require coordinated changes across translate.wordpress.org and all PO
+		// files, so GP_Locales intentionally keeps the previous rules.
+		// Actual: n != 1
+		// Expected: (n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)
+		'ca', 'ca-val', 'es', 'es-an', 'es-ar', 'es-cl', 'es-co', 'es-cr', 'es-do',
+		'es-ec', 'es-gt', 'es-hn', 'es-mx', 'es-pa', 'es-pe', 'es-pr', 'es-us',
+		'es-uy', 'es-ve', 'it', 'scn',
+
+		// CLDR refined the "few" range so that numbers with n % 100 == 1 (e.g. 101, 201)
+		// fall into "few" instead of "other". Semantic change, kept on the existing rule
+		// to preserve existing Romanian translations.
+		// Actual: (n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2)
+		// Expected: (n == 1) ? 0 : ((n == 0 || n != 1 && n % 100 >= 1 && n % 100 <= 19) ? 1 : 2)
+		'ro',
+
+		// CLDR 45 split off a dedicated "two" category for Maltese, raising nplurals from 4 to 5.
+		// Actual: (n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 10) ? 1 : ((n % 100 >= 11 && n % 100 <= 19) ? 2 : 3))
+		// Expected: (n == 1) ? 0 : ((n == 2) ? 1 : ((n == 0 || n % 100 >= 3 && n % 100 <= 10) ? 2 : ((n % 100 >= 11 && n % 100 <= 19) ? 3 : 4)))
+		'mlt',
 	];
 
 	public function test_class_exists() {
