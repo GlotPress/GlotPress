@@ -361,7 +361,9 @@ class GP_Route {
 		if ( $this->fake_request ) {
 			$this->exited       = true;
 			$this->exit_message = $message;
-			return;
+			// Halt the route the way a real request would, so a faked request
+			// does not keep running the code that follows a die or redirect.
+			throw new GP_Route_Exit_Exception();
 		}
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- May contain HTML.
 		exit( $message );

@@ -666,7 +666,7 @@ class GP_Thing {
 					$string_conditions[] = '(' . implode(
 						' OR ',
 						array_map(
-							function( $cond ) use ( $field ) {
+							function ( $cond ) use ( $field ) {
 								return "$field $cond";
 							},
 							$sql_condition

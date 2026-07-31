@@ -14,7 +14,7 @@ $delete_link = gp_link_project_delete_get( $project, null, array( 'class' => 'bu
 if ( ! $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
-		function( $items ) {
+		function ( $items ) {
 			$items[ count( $items ) - 1 ] .= ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 
 			return $items;
@@ -190,7 +190,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 			$sub_project_class = $sub_project->active ? 'project-active' : 'project-inactive';
 			?>
 			<dt class="<?php echo esc_attr( $sub_project_class ); ?>">
-				<?php gp_link_project( $sub_project, esc_html( $sub_project->name ) ); ?>
+				<?php gp_link_project( $sub_project, $sub_project->name ); ?>
 				<?php gp_link_project_edit( $sub_project, null, array( 'class' => 'button is-small' ) ); ?>
 				<?php gp_link_project_delete( $sub_project, null, array( 'class' => 'button is-small' ) ); ?>
 				<?php
