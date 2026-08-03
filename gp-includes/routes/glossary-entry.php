@@ -75,11 +75,6 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
-			return;
-		}
-
-		// Derive the glossary from the authorized set; a client-supplied glossary_id must not target an unrelated glossary.
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 		if ( ! $glossary ) {
 			return $this->die_with_404();
