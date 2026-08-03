@@ -174,6 +174,20 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( $s1->id, $difference['removed'][0]->id );
 	}
 
+	function test_set_difference_from_distinguishes_sets_by_slug() {
+		$locale = $this->factory->locale->create();
+		$target = $this->factory->project->create( array( 'name' => 'Target' ) );
+		$source = $this->factory->project->create( array( 'name' => 'Source' ) );
+
+		$target_set = $this->factory->translation_set->create( array( 'project_id' => $target->id, 'locale' => $locale->slug, 'slug' => 'default' ) );
+		$source_set = $this->factory->translation_set->create( array( 'project_id' => $source->id, 'locale' => $locale->slug, 'slug' => 'formal' ) );
+
+		$difference = $target->set_difference_from( $source );
+
+		$this->assertEquals( $source_set->id, $difference['added'][0]->id );
+		$this->assertEquals( $target_set->id, $difference['removed'][0]->id );
+	}
+
 	function test_copy_originals_from() {
 		$s1 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'P1' ) );
 		$s2 = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'nl' ), array( 'name' => 'P2' ) );
