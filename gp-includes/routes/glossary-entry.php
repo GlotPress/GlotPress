@@ -52,7 +52,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			}
 		}
 
-		$can_edit = $this->can( 'approve', 'translation-set', $translation_set->id );
+		$can_edit = $this->can( 'approve', 'translation-set', $glossary->translation_set_id );
 		$url      = gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) );
 
 		$this->tmpl( 'glossary-view', get_defined_vars() );
@@ -83,6 +83,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 		if ( ! $glossary ) {
 			return $this->die_with_404();
+		}
+
+		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $glossary->translation_set_id ) ) {
+			return;
 		}
 
 		$new_glossary_entry                 = new GP_Glossary_Entry( gp_post( 'new_glossary_entry' ) );
