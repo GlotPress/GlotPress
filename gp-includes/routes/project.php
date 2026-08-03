@@ -485,7 +485,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 
 		if ( ! $other_project ) {
-			return $this->die_with_error( esc_html__( 'Project wasn&#8217;found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
+			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
 		}
 
 		$changes = $project->set_difference_from( $other_project );
@@ -519,7 +519,7 @@ class GP_Route_Project extends GP_Route_Main {
 				}
 			}
 		} elseif ( ! empty( $changes['removed'] ) ) {
-			$this->errors[] = __( 'You are not allowed to remove translation sets, so only additions were applied.', 'glotpress' );
+			$this->errors[] = __( 'You are not allowed to remove translation sets.', 'glotpress' );
 		}
 		if ( empty( $this->errors ) ) {
 			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
@@ -542,7 +542,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 
 		if ( ! $other_project ) {
-			return $this->die_with_error( esc_html__( 'Project wasn&#8217;found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
+			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
 		}
 
 		header( 'Content-Type: application/json' );
