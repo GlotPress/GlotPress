@@ -288,18 +288,12 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		$changeable_attributes = array(
-			// We allow certain attributes to be different in translations.
-			'title',
-			'aria-label',
-			// src and href will be checked separately.
-			'src',
-			'href',
-		);
-
-		$attribute_regex       = '/(\s*(?P<attr>%s))=([\'"])(?P<value>.+)\\3(\s*)/i';
-		$attribute_replace     = '$1=$3...$3$5';
-		$changeable_attr_regex = sprintf( $attribute_regex, implode( '|', $changeable_attributes ) );
+		// An attribute value may legitimately differ between a source string and its
+		// translation (title, aria-label, alt, lang, and the href/src URLs, which are
+		// checked separately below). Blank every attribute value before comparing the
+		// tag structure, so only added, removed, or renamed attributes differ.
+		$attribute_regex   = '/(\s*[\w-]+)=([\'"]).*?\2/i';
+		$attribute_replace = '$1=$2...$2';
 
 		// Items are sorted, so if all is well, will match up.
 		$parts_tags = array_combine( $original_parts, $translation_parts );
@@ -311,8 +305,8 @@ class GP_Builtin_Translation_Warnings {
 			}
 
 			// Remove any attributes that can be expected to differ.
-			$original_filtered_tag    = preg_replace( $changeable_attr_regex, $attribute_replace, $original_tag );
-			$translation_filtered_tag = preg_replace( $changeable_attr_regex, $attribute_replace, $translation_tag );
+			$original_filtered_tag    = preg_replace( $attribute_regex, $attribute_replace, $original_tag );
+			$translation_filtered_tag = preg_replace( $attribute_regex, $attribute_replace, $translation_tag );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(

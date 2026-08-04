@@ -152,6 +152,20 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<a href="%s" x>Баба</a>',
 			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.'
 		);
+		// Attributes appended after a changeable attribute (href/src/title) must not
+		// be swallowed by the attribute normalization.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="%s">Baba</a>',
+			'<a href="%s" onmouseover="alert(1)">Баба</a>',
+			'Expected <a href="%s">, got <a href="%s" onmouseover="alert(1)">.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="%s">Baba</a>',
+			'<a href="%s" style="animation:x 1s" onanimationstart="alert(1)">Баба</a>',
+			'Expected <a href="%s">, got <a href="%s" style="animation:x 1s" onanimationstart="alert(1)">.'
+		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<p>Baba</p>',
