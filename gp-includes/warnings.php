@@ -691,9 +691,26 @@ class GP_Builtin_Translation_Warnings {
 	 * @return array
 	 */
 	private function get_values_from_href_src( array $content ): array {
-		preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', implode( ' ', $content ), $href_values );
-		preg_match_all( '/<[^>]+src=([\'"])(?<src>.+?)\1[^>]*>/i', implode( ' ', $content ), $src_values );
-		return array_merge( $href_values['href'], $src_values['src'] );
+		$href_values = array();
+		$src_values  = array();
+
+		$processor = new WP_HTML_Tag_Processor( implode( ' ', $content ) );
+		while ( $processor->next_tag() ) {
+			// href is validated for anchors only; src for any element that carries it.
+			if ( 'A' === $processor->get_tag() ) {
+				$href = $processor->get_attribute( 'href' );
+				if ( is_string( $href ) ) {
+					$href_values[] = $href;
+				}
+			}
+
+			$src = $processor->get_attribute( 'src' );
+			if ( is_string( $src ) ) {
+				$src_values[] = $src;
+			}
+		}
+
+		return array_merge( $href_values, $src_values );
 	}
 
 	/**
