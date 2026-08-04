@@ -288,12 +288,13 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		// An attribute value may legitimately differ between a source string and its
-		// translation (title, aria-label, alt, lang, and the href/src URLs, which are
-		// checked separately below). Blank every attribute value before comparing the
-		// tag structure, so only added, removed, or renamed attributes differ.
-		$attribute_regex   = '/(\s*[\w-]+)=([\'"]).*?\2/i';
-		$attribute_replace = '$1=$2...$2';
+		// Blank the values of attributes whose contents legitimately differ between a
+		// source string and its translation (translatable text and locale markers; the
+		// href/src URLs are compared separately below). A value change to any other
+		// attribute, or an attribute the source did not have, then still differs.
+		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
+		$attribute_regex       = '/(?<![\w-])(' . implode( '|', $changeable_attributes ) . ')=([\'"]).*?\2/is';
+		$attribute_replace     = '$1=$2...$2';
 
 		// Items are sorted, so if all is well, will match up.
 		$parts_tags = array_combine( $original_parts, $translation_parts );
@@ -304,9 +305,10 @@ class GP_Builtin_Translation_Warnings {
 				continue;
 			}
 
-			// Remove any attributes that can be expected to differ.
-			$original_filtered_tag    = preg_replace( $attribute_regex, $attribute_replace, $original_tag );
-			$translation_filtered_tag = preg_replace( $attribute_regex, $attribute_replace, $translation_tag );
+			// Collapse whitespace so cosmetic spacing differences are not compared,
+			// then blank the changeable attribute values.
+			$original_filtered_tag    = preg_replace( $attribute_regex, $attribute_replace, preg_replace( '/\s+/', ' ', $original_tag ) );
+			$translation_filtered_tag = preg_replace( $attribute_regex, $attribute_replace, preg_replace( '/\s+/', ' ', $translation_tag ) );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(

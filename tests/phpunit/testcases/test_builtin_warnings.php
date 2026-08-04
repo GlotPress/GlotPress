@@ -166,6 +166,21 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<a href="%s" style="animation:x 1s" onanimationstart="alert(1)">Баба</a>',
 			'Expected <a href="%s">, got <a href="%s" style="animation:x 1s" onanimationstart="alert(1)">.'
 		);
+		// A value change to an attribute outside the allow-list must still warn.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<span style="color:red">%s</span>',
+			'<span style="color:red;background:url(//evil)">%s</span>',
+			'Expected <span style="color:red">, got <span style="color:red;background:url(//evil)">.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<button onclick="a()">%s</button>',
+			'<button onclick="evil()">%s</button>',
+			'Expected <button onclick="a()">, got <button onclick="evil()">.'
+		);
+		// Cosmetic whitespace differences between attributes must not warn.
+		$this->assertNoWarnings( 'tags', '<img src="a" alt="x">', '<img  src="a" alt="x">' );
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<p>Baba</p>',
