@@ -156,8 +156,8 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'Line one<br>Line two<br>',
-			'Linea uno<iframe onload="alert(1)">Linea dos<br>',
-			'Expected <br>, got <iframe onload="alert(1)">.'
+			'Linea uno<hr>Linea dos<br>',
+			'Expected <br>, got <hr>.'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
