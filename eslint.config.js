@@ -16,7 +16,7 @@ module.exports = [
 	{
 		languageOptions: {
 			globals: {
-				jQuery: true,
+				jQuery: 'readonly',
 			},
 		},
 		rules: {
