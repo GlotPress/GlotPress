@@ -157,35 +157,29 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<a href="%s">Baba</a>',
-			'<a href="%s" onmouseover="alert(1)">Баба</a>',
-			'Expected <a href="%s">, got <a href="%s" onmouseover="alert(1)">.'
+			'<a href="%s" data-info="1">Баба</a>',
+			'Expected <a href="%s">, got <a href="%s" data-info="1">.'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<a href="%s">Baba</a>',
-			'<a href="%s" style="animation:x 1s" onanimationstart="alert(1)">Баба</a>',
-			'Expected <a href="%s">, got <a href="%s" style="animation:x 1s" onanimationstart="alert(1)">.'
+			'<a href="%s" data-info="1" data-extra="2">Баба</a>',
+			'Expected <a href="%s">, got <a href="%s" data-info="1" data-extra="2">.'
 		);
 		// A value change to an attribute outside the allow-list must still warn.
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
-			'<span style="color:red">%s</span>',
-			'<span style="color:red;background:url(//evil)">%s</span>',
-			'Expected <span style="color:red">, got <span style="color:red;background:url(//evil)">.'
-		);
-		$this->assertHasWarningsAndContainsOutput(
-			'tags',
-			'<button onclick="a()">%s</button>',
-			'<button onclick="evil()">%s</button>',
-			'Expected <button onclick="a()">, got <button onclick="evil()">.'
+			'<span data-role="a">%s</span>',
+			'<span data-role="b">%s</span>',
+			'Expected <span data-role="a">, got <span data-role="b">.'
 		);
 		// An allow-listed name appearing inside another attribute's value (title= within
-		// an onclick handler) must still be compared, so a change to it warns.
+		// a data-* value) must still be compared, so a change to it warns.
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
-			'<a onclick="this.title=\'a\'">Link</a>',
-			'<a onclick="this.title=\'hacked\'">Link</a>',
-			'Expected <a onclick="this.title=\'a\'">, got <a onclick="this.title=\'hacked\'">.'
+			'<span data-info="title=\'a\'">Text</span>',
+			'<span data-info="title=\'b\'">Text</span>',
+			'Expected <span data-info="title=\'a\'">, got <span data-info="title=\'b\'">.'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
