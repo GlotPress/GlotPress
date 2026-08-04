@@ -68,8 +68,8 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	 * @when after_wp_load
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		$dry_run                = isset( $assoc_args['dry-run'] ) ? (bool) $assoc_args['dry-run'] : false;
-		$verbose                = isset( $assoc_args['verbose'] ) ? (bool) $assoc_args['verbose'] : false;
+		$dry_run                = filter_var( \WP_CLI\Utils\get_flag_value( $assoc_args, 'dry-run', false ), FILTER_VALIDATE_BOOLEAN );
+		$verbose                = filter_var( \WP_CLI\Utils\get_flag_value( $assoc_args, 'verbose', false ), FILTER_VALIDATE_BOOLEAN );
 		$project_path           = isset( $assoc_args['project-path'] ) ? $assoc_args['project-path'] : null;
 		$locale                 = isset( $assoc_args['locale'] ) ? $assoc_args['locale'] : null;
 		$this->duplicates_found = 0;
@@ -203,8 +203,9 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 		$query_args    = array();
 
 		if ( ! empty( $conditions['project_ids'] ) ) {
-			$project_ids     = implode( ',', array_map( 'intval', $conditions['project_ids'] ) );
-			$where_clauses[] = "project_id IN ({$project_ids})";
+			$placeholders    = implode( ',', array_fill( 0, count( $conditions['project_ids'] ), '%d' ) );
+			$where_clauses[] = "project_id IN ({$placeholders})";
+			$query_args      = array_merge( $query_args, array_map( 'intval', $conditions['project_ids'] ) );
 		}
 
 		if ( isset( $conditions['locale'] ) ) {
@@ -328,23 +329,34 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 		$prev_original_id = null;
 		foreach ( $translations as $translation ) {
 			if ( $translation->original_id === $prev_original_id ) {
-				WP_CLI::log(
-					sprintf(
-						/* translators: 1: original ID, 2: translation ID, 3: translation string */
-						__( '- Duplicate for original_id #%1$d. Translation_id #%2$d. Translation string: %3$s', 'glotpress' ),
-						$prev_original_id,
-						$translation->id,
-						$translation->translation_0
-					)
-				);
-				$original = GP::$original->get( $translation->original_id );
-				if ( $original ) {
+				if ( $verbose ) {
 					WP_CLI::log(
 						sprintf(
-						/* translators: 1: original ID, 2: original string */
-							__( '    Original id: %1$d. Original string: %2$s', 'glotpress' ),
-							$original->id,
-							$original->singular
+							/* translators: 1: original ID, 2: translation ID, 3: translation string */
+							__( '- Duplicate for original_id #%1$d. Translation_id #%2$d. Translation string: %3$s', 'glotpress' ),
+							$prev_original_id,
+							$translation->id,
+							$translation->translation_0
+						)
+					);
+					$original = GP::$original->get( $translation->original_id );
+					if ( $original ) {
+						WP_CLI::log(
+							sprintf(
+							/* translators: 1: original ID, 2: original string */
+								__( '    Original id: %1$d. Original string: %2$s', 'glotpress' ),
+								$original->id,
+								$original->singular
+							)
+						);
+					}
+				} else {
+					WP_CLI::log(
+						sprintf(
+							/* translators: 1: original ID, 2: translation ID */
+							__( '- Duplicate for original_id #%1$d. Translation_id #%2$d.', 'glotpress' ),
+							$prev_original_id,
+							$translation->id
 						)
 					);
 				}
