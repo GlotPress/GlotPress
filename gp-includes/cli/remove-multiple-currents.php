@@ -111,7 +111,9 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 		$conditions = $this->get_translation_set_conditions( $project_path, $locale, $verbose );
 		if ( $conditions ) {
 			$this->process_specific_sets( $conditions, $dry_run, $verbose );
-		} else {
+		} elseif ( ! $project_path ) {
+			// Only process everything when no filtering was requested: an invalid
+			// --project-path must never degrade into a full-database run.
 			$this->process_all_sets( $dry_run, $verbose );
 		}
 	}
@@ -185,7 +187,7 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 		}
 
 		$where_sql = implode( ' AND ', $where_clauses );
-		$query     = "SELECT ts.* FROM {$wpdb->gp_translation_sets} ts JOIN {$wpdb->gp_projects} p ON p.id = ts.project_id WHERE {$where_sql} ORDER BY ts.id ASC LIMIT %d OFFSET %d";
+		$query     = "SELECT ts.* FROM {$wpdb->gp_translation_sets} ts JOIN {$wpdb->gp_projects} p ON p.id = ts.project_id WHERE {$where_sql} AND ts.id > %d ORDER BY ts.id ASC LIMIT %d";
 
 		$this->process_sets( $query, $query_args, $dry_run, $verbose );
 	}
@@ -199,33 +201,36 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	private function process_all_sets( $dry_run, $verbose ) {
 		global $wpdb;
 
-		$query = "SELECT * FROM {$wpdb->gp_translation_sets} ORDER BY id ASC LIMIT %d OFFSET %d";
+		$query = "SELECT * FROM {$wpdb->gp_translation_sets} WHERE id > %d ORDER BY id ASC LIMIT %d";
 		$this->process_sets( $query, array(), $dry_run, $verbose );
 	}
 
 	/**
 	 * Process translation sets using a given query.
 	 *
-	 * @param string $query      SQL query template ending in LIMIT %d OFFSET %d placeholders.
-	 * @param array  $query_args Values for the query placeholders before LIMIT and OFFSET.
+	 * Pages through the sets with keyset pagination (id > last processed ID) so
+	 * each batch query costs the same regardless of how far the run has advanced.
+	 *
+	 * @param string $query      SQL query template ending in id > %d ORDER BY id ASC LIMIT %d placeholders.
+	 * @param array  $query_args Values for the query placeholders before the id and LIMIT ones.
 	 * @param bool   $dry_run    Whether to perform a dry run without deleting duplicates.
 	 * @param bool   $verbose    Whether to output verbose logging.
 	 */
 	private function process_sets( $query, $query_args, $dry_run, $verbose ) {
 		$batch_size      = 1000;
-		$offset          = 0;
+		$last_id         = 0;
 		$total_processed = 0;
 
 		while ( true ) {
-			$sets = GP::$translation_set->many( $query, ...array_merge( $query_args, array( $batch_size, $offset ) ) );
+			$sets = GP::$translation_set->many( $query, ...array_merge( $query_args, array( $last_id, $batch_size ) ) );
 
 			if ( $verbose && ! empty( $sets ) ) {
 				WP_CLI::log(
 					sprintf(
-					/* translators: 1: number of sets loaded, 2: offset value */
-						__( 'Loaded %1$d sets with offset %2$d', 'glotpress' ),
+					/* translators: 1: number of sets loaded, 2: translation set ID */
+						__( 'Loaded %1$d sets after set #%2$d', 'glotpress' ),
 						count( $sets ),
-						$offset
+						$last_id
 					)
 				);
 			}
@@ -245,7 +250,7 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 				$this->process_set( $set, $dry_run, $verbose );
 			}
 
-			$offset += $batch_size;
+			$last_id = end( $sets )->id;
 
 			if ( $verbose ) {
 				WP_CLI::log(
