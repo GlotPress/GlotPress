@@ -141,20 +141,18 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 			return null;
 		}
 
-		$project_ids = $this->get_project_and_subproject_ids( $project );
-
 		if ( $verbose ) {
 			WP_CLI::log(
 				sprintf(
-				/* translators: %d: number of projects */
-					__( 'Found %d projects (including subprojects) to process', 'glotpress' ),
-					count( $project_ids )
+				/* translators: %s: project path */
+					__( 'Processing the project %s and all its subprojects', 'glotpress' ),
+					$project->path
 				)
 			);
 		}
 
 		$conditions = array(
-			'project_ids' => $project_ids,
+			'project_path' => $project->path,
 		);
 
 		if ( $locale ) {
@@ -165,56 +163,29 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	}
 
 	/**
-	 * Get project ID and all subproject IDs recursively.
-	 *
-	 * @param GP_Project $project The parent project.
-	 * @return array Array of project IDs.
-	 */
-	private function get_project_and_subproject_ids( $project ) {
-		$project_ids = array( $project->id );
-
-		// Find all subprojects.
-		$subprojects = GP::$project->find_many(
-			array(
-				'parent_project_id' => $project->id,
-			)
-		);
-
-		// Recursively get IDs from subprojects.
-		foreach ( $subprojects as $subproject ) {
-			$subproject_ids = $this->get_project_and_subproject_ids( $subproject );
-			$project_ids    = array_merge( $project_ids, $subproject_ids );
-		}
-
-		return $project_ids;
-	}
-
-	/**
 	 * Process specific translation sets based on conditions.
 	 *
-	 * @param array $conditions Conditions to filter translation sets.
+	 * Filters the translation sets by joining on the projects table and matching the
+	 * project path (and its subprojects) instead of enumerating project IDs, so the
+	 * query size stays constant regardless of the number of subprojects.
+	 *
+	 * @param array $conditions Conditions to filter translation sets (project_path, locale).
 	 * @param bool  $dry_run    Whether to perform a dry run without deleting duplicates.
 	 * @param bool  $verbose    Whether to output verbose logging.
 	 */
 	private function process_specific_sets( $conditions, $dry_run, $verbose ) {
 		global $wpdb;
 
-		$where_clauses = array();
-		$query_args    = array();
-
-		if ( ! empty( $conditions['project_ids'] ) ) {
-			$placeholders    = implode( ',', array_fill( 0, count( $conditions['project_ids'] ), '%d' ) );
-			$where_clauses[] = "project_id IN ({$placeholders})";
-			$query_args      = array_merge( $query_args, array_map( 'intval', $conditions['project_ids'] ) );
-		}
+		$where_clauses = array( '( p.path = %s OR p.path LIKE %s )' );
+		$query_args    = array( $conditions['project_path'], $wpdb->esc_like( $conditions['project_path'] ) . '/%' );
 
 		if ( isset( $conditions['locale'] ) ) {
-			$where_clauses[] = 'locale = %s';
+			$where_clauses[] = 'ts.locale = %s';
 			$query_args[]    = $conditions['locale'];
 		}
 
 		$where_sql = implode( ' AND ', $where_clauses );
-		$query     = "SELECT * FROM {$wpdb->gp_translation_sets} WHERE {$where_sql} ORDER BY id ASC LIMIT %d OFFSET %d";
+		$query     = "SELECT ts.* FROM {$wpdb->gp_translation_sets} ts JOIN {$wpdb->gp_projects} p ON p.id = ts.project_id WHERE {$where_sql} ORDER BY ts.id ASC LIMIT %d OFFSET %d";
 
 		$this->process_sets( $query, $query_args, $dry_run, $verbose );
 	}
@@ -314,32 +285,50 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 	/**
 	 * Process a single translation set to remove duplicate current translations.
 	 *
+	 * Finds the originals with more than one current translation with a grouping
+	 * query, then loads only the translations for those originals, keeps the oldest
+	 * one (lowest ID) and removes the rest, so memory usage is proportional to the
+	 * number of duplicates instead of the size of the set.
+	 *
 	 * @param GP_Translation_Set $set     The translation set to process.
 	 * @param bool               $dry_run Whether to perform a dry run without deleting duplicates.
 	 * @param bool               $verbose Whether to output verbose logging.
 	 */
 	private function process_set( $set, $dry_run, $verbose ) {
-		$translations     = GP::$translation->find(
-			array(
-				'translation_set_id' => $set->id,
-				'status'             => 'current',
-			),
-			'original_id ASC'
+		global $wpdb;
+
+		$duplicate_rows = GP::$translation->many_no_map(
+			"SELECT original_id FROM {$wpdb->gp_translations} WHERE translation_set_id = %d AND status = 'current' GROUP BY original_id HAVING COUNT(*) > 1",
+			$set->id
 		);
-		$prev_original_id = null;
-		foreach ( $translations as $translation ) {
-			if ( $translation->original_id === $prev_original_id ) {
+
+		foreach ( $duplicate_rows as $row ) {
+			$original_id  = (int) $row->original_id;
+			$translations = GP::$translation->find(
+				array(
+					'translation_set_id' => $set->id,
+					'status'             => 'current',
+					'original_id'        => $original_id,
+				),
+				'id ASC'
+			);
+
+			// Keep the oldest current translation and remove the rest.
+			array_shift( $translations );
+
+			$original = $verbose ? GP::$original->get( $original_id ) : null;
+
+			foreach ( $translations as $translation ) {
 				if ( $verbose ) {
 					WP_CLI::log(
 						sprintf(
 							/* translators: 1: original ID, 2: translation ID, 3: translation string */
 							__( '- Duplicate for original_id #%1$d. Translation_id #%2$d. Translation string: %3$s', 'glotpress' ),
-							$prev_original_id,
+							$original_id,
 							$translation->id,
 							$translation->translation_0
 						)
 					);
-					$original = GP::$original->get( $translation->original_id );
 					if ( $original ) {
 						WP_CLI::log(
 							sprintf(
@@ -355,7 +344,7 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 						sprintf(
 							/* translators: 1: original ID, 2: translation ID */
 							__( '- Duplicate for original_id #%1$d. Translation_id #%2$d.', 'glotpress' ),
-							$prev_original_id,
+							$original_id,
 							$translation->id
 						)
 					);
@@ -365,7 +354,6 @@ class GP_CLI_Remove_Multiple_Currents extends WP_CLI_Command {
 					$translation->delete();
 				}
 			}
-			$prev_original_id = $translation->original_id;
 		}
 	}
 }
