@@ -131,9 +131,9 @@ class GP_Route_Locale extends GP_Route_Main {
 			}
 		}
 
-		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$can_create_locale_glossary      = gp_can_create_locale_glossary( $locale_slug, $current_set_slug );
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $current_set_slug, $locale_slug );
-		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary                 = $locale_glossary_translation_set ? GP::$glossary->by_set_id( $locale_glossary_translation_set->id ) : null;
 
 		$this->tmpl( 'locale', get_defined_vars() );
 	}
