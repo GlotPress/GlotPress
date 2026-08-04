@@ -131,7 +131,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			return;
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', GP::$validator_permission->object_type, GP::$validator_permission->object_id( $project->id, $locale_slug, $translation_set_slug ) ) ) {
+		if ( ! gp_can_create_locale_glossary( $locale_slug, $translation_set_slug ) ) {
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
 			return;
 		}
 
