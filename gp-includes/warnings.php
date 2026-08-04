@@ -288,19 +288,6 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		$changeable_attributes = array(
-			// We allow certain attributes to be different in translations.
-			'title',
-			'aria-label',
-			// src and href will be checked separately.
-			'src',
-			'href',
-		);
-
-		$attribute_regex       = '/(\s*(?P<attr>%s))=([\'"])(?P<value>.+)\\3(\s*)/i';
-		$attribute_replace     = '$1=$3...$3$5';
-		$changeable_attr_regex = sprintf( $attribute_regex, implode( '|', $changeable_attributes ) );
-
 		// Items are sorted, so if all is well, will match up.
 		$parts_tags = array_combine( $original_parts, $translation_parts );
 
@@ -310,9 +297,10 @@ class GP_Builtin_Translation_Warnings {
 				continue;
 			}
 
-			// Remove any attributes that can be expected to differ.
-			$original_filtered_tag    = preg_replace( $changeable_attr_regex, $attribute_replace, $original_tag );
-			$translation_filtered_tag = preg_replace( $changeable_attr_regex, $attribute_replace, $translation_tag );
+			// Blank the values of attributes whose contents may legitimately differ so
+			// that only structural tag changes are compared.
+			$original_filtered_tag    = $this->blank_changeable_attribute_values( $original_tag );
+			$translation_filtered_tag = $this->blank_changeable_attribute_values( $translation_tag );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(
@@ -660,6 +648,37 @@ class GP_Builtin_Translation_Warnings {
 		}
 
 		return trim( $error );
+	}
+
+	/**
+	 * Blanks the values of attributes whose contents may legitimately differ between a
+	 * source string and its translation, leaving only structural tag changes to compare.
+	 *
+	 * The tag is parsed with the HTML API so that only real attributes are considered; an
+	 * allow-listed name appearing inside another attribute's value is left untouched, and
+	 * a change to it is still compared. The href and src URLs are validated separately.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return string The tag with allow-listed attribute values blanked.
+	 */
+	private function blank_changeable_attribute_values( string $tag ): string {
+		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
+
+		$processor = new WP_HTML_Tag_Processor( $tag );
+		if ( ! $processor->next_tag() ) {
+			return $tag;
+		}
+
+		foreach ( $changeable_attributes as $attribute ) {
+			if ( null !== $processor->get_attribute( $attribute ) ) {
+				$processor->set_attribute( $attribute, '...' );
+			}
+		}
+
+		return $processor->get_updated_html();
 	}
 
 	/**
