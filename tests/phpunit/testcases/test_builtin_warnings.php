@@ -88,7 +88,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<b>テキスト1</b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 			$this->l
 		);
-		$this->assertNoWarnings( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>' );
+		$this->assertHasWarningsAndContainsOutput( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>', 'Expected </a>, got <a>.' );
 		$this->assertNoWarnings(
 			'tags',
 			' Text 1 <a href="https://wordpress.org/plugins/example-plugin/">Example plugin</a> Text 2<a href="https://wordpress.com/log-in/">Log in</a> Text 3 <img src="example.jpg" alt="Example alt text">',
@@ -151,6 +151,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<a href="%s" title="Blimp!">Baba</a>',
 			'<a href="%s" x>Баба</a>',
 			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.'
+		);
+		// A tag that replaces one of two identical source tags must still be compared.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'Line one<br>Line two<br>',
+			'Linea uno<iframe onload="alert(1)">Linea dos<br>',
+			'Expected <br>, got <iframe onload="alert(1)">.'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
