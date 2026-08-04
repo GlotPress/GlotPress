@@ -732,31 +732,38 @@ class GP_Builtin_Translation_Warnings {
 			return true;
 		}
 
-		libxml_clear_errors();
-		libxml_use_internal_errors( true );
-		$original = new DOMDocument();
-		$original->loadHTML( implode( '', $original_parts ) );
 		// If the original parts are not well-formed, don't continue the translation check.
-		$errors = libxml_get_errors();
-		if ( ! empty( $errors ) ) {
+		if ( ! $this->is_html_well_formed( implode( '', $original_parts ) ) ) {
 			return true;
 		}
 
-		$translation = new DOMDocument();
-		$translation->loadHTML( implode( '', $translation_parts ) );
-		$errors = libxml_get_errors();
-		if ( ! empty( $errors ) ) {
-			$message = array();
-			foreach ( $errors as $error ) {
-				$message[] = trim( $error->message );
-			}
-			return sprintf(
-				/* translators: %s: HTML tags. */
-				__( 'The translation contains incorrect HTML tags: %s', 'glotpress' ),
-				implode( ', ', $message )
-			);
+		if ( ! $this->is_html_well_formed( implode( '', $translation_parts ) ) ) {
+			return __( 'The translation contains incorrect HTML tags.', 'glotpress' );
 		}
+
 		return true;
+	}
+
+	/**
+	 * Determines whether an HTML fragment can be fully parsed to spec.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $html An HTML fragment.
+	 * @return bool True if the fragment parses without an unsupported or incomplete state.
+	 */
+	private function is_html_well_formed( string $html ): bool {
+		$processor = WP_HTML_Processor::create_fragment( $html );
+		if ( null === $processor ) {
+			return false;
+		}
+
+		while ( $processor->next_token() ) {
+			continue;
+		}
+
+		return null === $processor->get_last_error();
 	}
 
 	/**
