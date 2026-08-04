@@ -117,6 +117,56 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 	}
 
+	public function glossary_create_post( $project_path, $locale_slug, $translation_set_slug ) {
+		$project = GP::$project->by_path( $project_path );
+		$locale  = GP_Locales::by_slug( $locale_slug );
+
+		// The locale glossary lives on the virtual locale project (id 0).
+		if ( ! $project || ! $locale || 0 !== $project->id ) {
+			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'create-locale-glossary_' . $locale_slug . $translation_set_slug ) ) {
+			return;
+		}
+
+		if ( ! gp_can_create_locale_glossary( $locale_slug, $translation_set_slug ) ) {
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
+			return;
+		}
+
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		if ( ! $translation_set ) {
+			$translation_set = GP::$translation_set->create(
+				array(
+					'project_id' => $project->id,
+					'name'       => $locale->english_name,
+					'slug'       => $translation_set_slug,
+					'locale'     => $locale_slug,
+				)
+			);
+		}
+
+		if ( ! $translation_set ) {
+			$this->errors[] = __( 'Error in creating the locale glossary!', 'glotpress' );
+			$this->redirect( gp_url_join( gp_url( '/languages' ), $locale_slug ) );
+			return;
+		}
+
+		$glossary = GP::$glossary->by_set_id( $translation_set->id );
+		if ( ! $glossary ) {
+			$glossary = GP::$glossary->create( array( 'translation_set_id' => $translation_set->id ) );
+		}
+
+		if ( ! $glossary ) {
+			$this->errors[] = __( 'Error in creating the locale glossary!', 'glotpress' );
+			$this->redirect( gp_url_join( gp_url( '/languages' ), $locale_slug ) );
+			return;
+		}
+
+		$this->redirect( gp_url_join( gp_url( '/languages' ), $locale_slug, $translation_set_slug, 'glossary' ) );
+	}
+
 	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$ge_post = gp_post( 'glossary_entry' );
 		if ( ! is_array( $ge_post ) ) {

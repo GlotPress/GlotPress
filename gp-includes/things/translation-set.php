@@ -220,26 +220,13 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
-		$result = $this->one(
+		return $this->one(
 			"SELECT * FROM $this->table
 			WHERE slug = %s AND project_id= %d AND locale = %s",
 			$slug,
 			$project_id,
 			$locale_slug
 		);
-
-		if ( ! $result && 0 === $project_id ) {
-			$result = $this->create(
-				array(
-					'project_id' => $project_id,
-					'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
-					'slug'       => $slug,
-					'locale'     => $locale_slug,
-				)
-			);
-		}
-
-		return $result;
 	}
 
 	public function by_locale( $locale_slug ) {

@@ -30,11 +30,17 @@ gp_tmpl_header();
 		?>
 	</h2>
 	<div class="glossary-links">
-		<?php if ( $locale_glossary ) : ?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
-		<?php elseif ( $can_create_locale_glossary ) : ?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $current_set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
-		<?php endif; ?>
+		<?php
+		gp_tmpl_load(
+			'locale-glossary-link',
+			array(
+				'locale'                     => $locale,
+				'set_slug'                   => $current_set_slug,
+				'locale_glossary'            => $locale_glossary,
+				'can_create_locale_glossary' => $can_create_locale_glossary,
+			)
+		);
+		?>
 	</div>
 </div>
 

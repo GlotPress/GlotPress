@@ -84,6 +84,137 @@ class GP_Test_Route_Glossary_Entry extends GP_UnitTestCase_Route {
 	}
 
 	/**
+	 * Reading a locale glossary that does not exist must not create it; only an
+	 * explicit, authorized action may.
+	 */
+	function test_reading_a_missing_locale_glossary_does_not_create_it() {
+		$locale = $this->factory->locale->create();
+
+		$this->do_route_request(
+			function () use ( $locale ) {
+				$this->route->glossary_entries_get( '/languages', $locale->slug, 'aaaatest' );
+			}
+		);
+
+		$this->assertEmpty(
+			GP::$translation_set->by_project_id_slug_and_locale( 0, 'aaaatest', $locale->slug ),
+			'Reading a missing locale glossary must not create a translation set.'
+		);
+	}
+
+	/**
+	 * A locale approver (the permission GTEs/locale managers hold on wordpress.org,
+	 * granted through a filter rather than a stored row) can create the locale
+	 * glossary through the explicit action.
+	 */
+	function test_a_locale_approver_can_create_the_locale_glossary() {
+		$locale    = $this->factory->locale->create();
+		$object_id = '0|' . $locale->slug . '|default';
+
+		add_filter(
+			'gp_pre_can_user',
+			function ( $verdict, $args ) use ( $object_id ) {
+				if ( 'approve' === $args['action'] && $object_id === $args['object_id'] ) {
+					return true;
+				}
+				return $verdict;
+			},
+			10,
+			2
+		);
+		$this->set_normal_user_as_current();
+
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'create-locale-glossary_' . $locale->slug . 'default' );
+
+		$this->do_route_request(
+			function () use ( $locale ) {
+				$this->route->glossary_create_post( '/languages', $locale->slug, 'default' );
+			}
+		);
+
+		$set = GP::$translation_set->by_project_id_slug_and_locale( 0, 'default', $locale->slug );
+		$this->assertNotEmpty( $set, 'A locale approver can create the locale glossary.' );
+		$this->assertNotEmpty( GP::$glossary->by_set_id( $set->id ) );
+	}
+
+	/**
+	 * A user without approve on the locale must not create the locale glossary.
+	 */
+	function test_a_non_approver_cannot_create_the_locale_glossary() {
+		$locale = $this->factory->locale->create();
+
+		$this->set_normal_user_as_current();
+
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'create-locale-glossary_' . $locale->slug . 'default' );
+
+		$this->do_route_request(
+			function () use ( $locale ) {
+				$this->route->glossary_create_post( '/languages', $locale->slug, 'default' );
+			}
+		);
+
+		$this->assertEmpty(
+			GP::$translation_set->by_project_id_slug_and_locale( 0, 'default', $locale->slug ),
+			'A user without approve on the locale must not create the locale glossary.'
+		);
+	}
+
+	/**
+	 * An anonymous request must not create the locale glossary.
+	 */
+	function test_an_anonymous_user_cannot_create_the_locale_glossary() {
+		$locale = $this->factory->locale->create();
+		wp_set_current_user( 0 );
+
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'create-locale-glossary_' . $locale->slug . 'default' );
+
+		$this->do_route_request(
+			function () use ( $locale ) {
+				$this->route->glossary_create_post( '/languages', $locale->slug, 'default' );
+			}
+		);
+
+		$this->assertEmpty(
+			GP::$translation_set->by_project_id_slug_and_locale( 0, 'default', $locale->slug ),
+			'An anonymous user must not create the locale glossary.'
+		);
+	}
+
+	/**
+	 * A missing nonce must block creation even for a locale approver.
+	 */
+	function test_a_missing_nonce_blocks_locale_glossary_creation() {
+		$locale    = $this->factory->locale->create();
+		$object_id = '0|' . $locale->slug . '|default';
+
+		add_filter(
+			'gp_pre_can_user',
+			function ( $verdict, $args ) use ( $object_id ) {
+				if ( 'approve' === $args['action'] && $object_id === $args['object_id'] ) {
+					return true;
+				}
+				return $verdict;
+			},
+			10,
+			2
+		);
+		$this->set_normal_user_as_current();
+
+		unset( $_REQUEST['_gp_route_nonce'] );
+
+		$this->do_route_request(
+			function () use ( $locale ) {
+				$this->route->glossary_create_post( '/languages', $locale->slug, 'default' );
+			}
+		);
+
+		$this->assertEmpty(
+			GP::$translation_set->by_project_id_slug_and_locale( 0, 'default', $locale->slug ),
+			'A missing nonce must block locale glossary creation.'
+		);
+	}
+
+	/**
 	 * A validator of a sub-project set must not add entries to a glossary
 	 * inherited from an ancestor project, which they hold no permission on.
 	 */

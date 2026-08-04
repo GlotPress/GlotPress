@@ -66,21 +66,20 @@ class GP_Glossary extends GP_Thing {
 	public function by_set_or_parent_project( $translation_set, $project ) {
 		$glossary = $this->by_set_id( $translation_set->id );
 
-		if ( ! $glossary ) {
-			if ( 0 === $project->id ) {
-				// Auto-create the Locale Glossary.
-				$glossary = $this->create( array( 'translation_set_id' => $translation_set->id ) );
-			} elseif ( $project->parent_project_id ) {
-				$locale = $translation_set->locale;
-				$slug   = $translation_set->slug;
+		if ( ! $glossary && $project->parent_project_id ) {
+			$locale = $translation_set->locale;
+			$slug   = $translation_set->slug;
 
-				while ( ! $glossary && $project->parent_project_id ) {
-					$project         = GP::$project->get( $project->parent_project_id );
-					$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+			while ( ! $glossary && $project->parent_project_id ) {
+				$project = GP::$project->get( $project->parent_project_id );
+				if ( ! $project ) {
+					break;
+				}
 
-					if ( $translation_set ) {
-						$glossary = $this->by_set_id( $translation_set->id );
-					}
+				$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+
+				if ( $translation_set ) {
+					$glossary = $this->by_set_id( $translation_set->id );
 				}
 			}
 		}
