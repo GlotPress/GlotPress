@@ -288,17 +288,6 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		// Blank the values of attributes whose contents legitimately differ between a
-		// source string and its translation (translatable text and locale markers; the
-		// href/src URLs are compared separately below). A value change to any other
-		// attribute, or an attribute the source did not have, then still differs.
-		// The leading whitespace anchors the match to a real attribute position, so an
-		// allow-listed name appearing inside another attribute's value (e.g. href= in an
-		// onclick handler) is left intact and a change to it is still compared.
-		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
-		$attribute_regex       = '/(\s)(' . implode( '|', $changeable_attributes ) . ')=([\'"]).*?\3/is';
-		$attribute_replace     = '$1$2=$3...$3';
-
 		// Items are sorted, so if all is well, will match up.
 		$parts_tags = array_combine( $original_parts, $translation_parts );
 
@@ -308,8 +297,10 @@ class GP_Builtin_Translation_Warnings {
 				continue;
 			}
 
-			$original_filtered_tag    = preg_replace( $attribute_regex, $attribute_replace, $original_tag );
-			$translation_filtered_tag = preg_replace( $attribute_regex, $attribute_replace, $translation_tag );
+			// Blank the values of attributes whose contents may legitimately differ so
+			// that only structural tag changes are compared.
+			$original_filtered_tag    = $this->blank_changeable_attribute_values( $original_tag );
+			$translation_filtered_tag = $this->blank_changeable_attribute_values( $translation_tag );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(
@@ -657,6 +648,38 @@ class GP_Builtin_Translation_Warnings {
 		}
 
 		return trim( $error );
+	}
+
+	/**
+	 * Blanks the values of attributes whose contents may legitimately differ between a
+	 * source string and its translation, leaving only structural tag changes to compare.
+	 *
+	 * Each attribute is matched as a whole name="value" unit and only allow-listed names
+	 * are blanked. Consuming the quoted value as a unit means an allow-listed name that
+	 * appears inside another attribute's value is skipped, so a change to it is still
+	 * compared. The href and src URLs are validated separately.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return string The tag with allow-listed attribute values blanked.
+	 */
+	private function blank_changeable_attribute_values( string $tag ): string {
+		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
+
+		return preg_replace_callback(
+			'/(\s)([\w-]+)=("[^"]*"|\'[^\']*\')/',
+			static function ( $matches ) use ( $changeable_attributes ) {
+				if ( ! in_array( strtolower( $matches[2] ), $changeable_attributes, true ) ) {
+					return $matches[0];
+				}
+
+				$quote = $matches[3][0];
+				return $matches[1] . $matches[2] . '=' . $quote . '...' . $quote;
+			},
+			$tag
+		);
 	}
 
 	/**

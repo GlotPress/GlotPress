@@ -174,12 +174,19 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'Expected <span data-role="a">, got <span data-role="b">.'
 		);
 		// An allow-listed name appearing inside another attribute's value (title= within
-		// a data-* value) must still be compared, so a change to it warns.
+		// a data-* value) must still be compared, so a change to it warns. This holds
+		// whether or not the value has whitespace before the allow-listed name.
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<span data-info="title=\'a\'">Text</span>',
 			'<span data-info="title=\'b\'">Text</span>',
 			'Expected <span data-info="title=\'a\'">, got <span data-info="title=\'b\'">.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<span data-info="x title=\'a\'">Text</span>',
+			'<span data-info="x title=\'b\'">Text</span>',
+			'Expected <span data-info="x title=\'a\'">, got <span data-info="x title=\'b\'">.'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
