@@ -82,4 +82,67 @@ class GP_Test_Route_Glossary_Entry extends GP_UnitTestCase_Route {
 		$this->assertEquals( 'edited', $reloaded->term );
 		$this->assertCount( 0, GP::$glossary_entry->by_glossary_id( $other_glossary->id ) );
 	}
+
+	/**
+	 * A validator of a sub-project set must not add entries to a glossary
+	 * inherited from an ancestor project, which they hold no permission on.
+	 */
+	function test_add_entry_cannot_reach_a_parent_glossary_from_a_sub_project_set() {
+		$parent_set      = $this->factory->translation_set->create_with_project_and_locale();
+		$parent_glossary = GP::$glossary->create( array( 'translation_set_id' => $parent_set->id ) );
+
+		$child_project = $this->factory->project->create( array( 'parent_project_id' => $parent_set->project->id ) );
+		$child_set     = $this->factory->translation_set->create(
+			array(
+				'project_id' => $child_project->id,
+				'locale'     => $parent_set->locale,
+				'slug'       => $parent_set->slug,
+			)
+		);
+		$child_set->project = $child_project;
+
+		$this->become_validator_for_set( $child_set );
+
+		$_POST['new_glossary_entry'] = array(
+			'term'           => 'security',
+			'part_of_speech' => 'noun',
+			'translation'    => 'Sicherheit',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-glossary-entry_' . $child_project->path . $child_set->locale . $child_set->slug );
+
+		$this->route->glossary_entry_add_post( $child_project->path, $child_set->locale, $child_set->slug );
+
+		$this->assertCount( 0, GP::$glossary_entry->by_glossary_id( $parent_glossary->id ), 'A sub-project validator must not write into the parent project glossary.' );
+	}
+
+	/**
+	 * A validator of the parent project can still add entries to the parent
+	 * glossary through a sub-project that inherits it.
+	 */
+	function test_add_entry_reaches_a_parent_glossary_for_a_parent_validator() {
+		$parent_set      = $this->factory->translation_set->create_with_project_and_locale();
+		$parent_glossary = GP::$glossary->create( array( 'translation_set_id' => $parent_set->id ) );
+
+		$child_project = $this->factory->project->create( array( 'parent_project_id' => $parent_set->project->id ) );
+		$child_set     = $this->factory->translation_set->create(
+			array(
+				'project_id' => $child_project->id,
+				'locale'     => $parent_set->locale,
+				'slug'       => $parent_set->slug,
+			)
+		);
+
+		$this->become_validator_for_set( $parent_set );
+
+		$_POST['new_glossary_entry'] = array(
+			'term'           => 'security',
+			'part_of_speech' => 'noun',
+			'translation'    => 'Sicherheit',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-glossary-entry_' . $child_project->path . $child_set->locale . $child_set->slug );
+
+		$this->route->glossary_entry_add_post( $child_project->path, $child_set->locale, $child_set->slug );
+
+		$this->assertCount( 1, GP::$glossary_entry->by_glossary_id( $parent_glossary->id ), 'A parent validator can add to the parent glossary.' );
+	}
 }

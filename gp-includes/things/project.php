@@ -358,7 +358,7 @@ class GP_Project extends GP_Thing {
 	}
 
 	public function _compare_set_item( $set, $this_set ) {
-		return ( $set->locale == $this_set->locale && $set->slug = $this_set->slug );
+		return ( $set->locale === $this_set->locale && $set->slug === $this_set->slug );
 	}
 
 	public function copy_sets_and_translations_from( $source_project_id ) {

@@ -485,10 +485,12 @@ class GP_Route_Project extends GP_Route_Main {
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 
 		if ( ! $other_project ) {
-			return $this->die_with_error( esc_html__( 'Project wasn&#8217;found', 'glotpress' ), 404, __esc_html__( 'Not found', 'glotpress' ), '404' );
+			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
 		}
 
 		$changes = $project->set_difference_from( $other_project );
+
+		$can_delete = $this->can( 'delete', 'project', $project->id );
 
 		foreach ( $changes['added'] as $to_add ) {
 			if ( ! GP::$translation_set->create(
@@ -506,14 +508,18 @@ class GP_Route_Project extends GP_Route_Main {
 				);
 			}
 		}
-		foreach ( $changes['removed'] as $to_remove ) {
-			if ( ! $to_remove->delete() ) {
-				$this->errors[] = sprintf(
-					/* translators: %s: Translation set name. */
-					__( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ),
-					esc_html( $to_remove->name )
-				);
+		if ( $can_delete ) {
+			foreach ( $changes['removed'] as $to_remove ) {
+				if ( ! $to_remove->delete() ) {
+					$this->errors[] = sprintf(
+						/* translators: %s: Translation set name. */
+						__( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ),
+						esc_html( $to_remove->name )
+					);
+				}
 			}
+		} elseif ( ! empty( $changes['removed'] ) ) {
+			$this->errors[] = __( 'You are not allowed to remove translation sets.', 'glotpress' );
 		}
 		if ( empty( $this->errors ) ) {
 			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
@@ -536,7 +542,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 
 		if ( ! $other_project ) {
-			return $this->die_with_error( esc_html__( 'Project wasn&#8217;found', 'glotpress' ), 404, __esc_html__( 'Not found', 'glotpress' ), '404' );
+			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
 		}
 
 		header( 'Content-Type: application/json' );
