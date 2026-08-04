@@ -292,9 +292,12 @@ class GP_Builtin_Translation_Warnings {
 		// source string and its translation (translatable text and locale markers; the
 		// href/src URLs are compared separately below). A value change to any other
 		// attribute, or an attribute the source did not have, then still differs.
+		// The leading whitespace anchors the match to a real attribute position, so an
+		// allow-listed name appearing inside another attribute's value (e.g. href= in an
+		// onclick handler) is left intact and a change to it is still compared.
 		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
-		$attribute_regex       = '/(?<![\w-])(' . implode( '|', $changeable_attributes ) . ')=([\'"]).*?\2/is';
-		$attribute_replace     = '$1=$2...$2';
+		$attribute_regex       = '/(\s)(' . implode( '|', $changeable_attributes ) . ')=([\'"]).*?\3/is';
+		$attribute_replace     = '$1$2=$3...$3';
 
 		// Items are sorted, so if all is well, will match up.
 		$parts_tags = array_combine( $original_parts, $translation_parts );
@@ -305,10 +308,8 @@ class GP_Builtin_Translation_Warnings {
 				continue;
 			}
 
-			// Collapse whitespace so cosmetic spacing differences are not compared,
-			// then blank the changeable attribute values.
-			$original_filtered_tag    = preg_replace( $attribute_regex, $attribute_replace, preg_replace( '/\s+/', ' ', $original_tag ) );
-			$translation_filtered_tag = preg_replace( $attribute_regex, $attribute_replace, preg_replace( '/\s+/', ' ', $translation_tag ) );
+			$original_filtered_tag    = preg_replace( $attribute_regex, $attribute_replace, $original_tag );
+			$translation_filtered_tag = preg_replace( $attribute_regex, $attribute_replace, $translation_tag );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(

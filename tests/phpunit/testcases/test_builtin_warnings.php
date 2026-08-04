@@ -179,8 +179,14 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<button onclick="evil()">%s</button>',
 			'Expected <button onclick="a()">, got <button onclick="evil()">.'
 		);
-		// Cosmetic whitespace differences between attributes must not warn.
-		$this->assertNoWarnings( 'tags', '<img src="a" alt="x">', '<img  src="a" alt="x">' );
+		// An allow-listed name appearing inside another attribute's value (title= within
+		// an onclick handler) must still be compared, so a change to it warns.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a onclick="this.title=\'a\'">Link</a>',
+			'<a onclick="this.title=\'hacked\'">Link</a>',
+			'Expected <a onclick="this.title=\'a\'">, got <a onclick="this.title=\'hacked\'">.'
+		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<p>Baba</p>',
