@@ -59,20 +59,20 @@ $i = 0;
 	<?php gp_link_set_delete( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
 	<div class="glossary-links">
 		<?php
-		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$can_create_locale_glossary      = gp_can_create_locale_glossary( $translation_set->locale, $translation_set->slug );
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set->slug, $translation_set->locale );
-		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary                 = $locale_glossary_translation_set ? GP::$glossary->by_set_id( $locale_glossary_translation_set->id ) : null;
 
 		// Locale Glossary link.
-		if ( $locale_glossary ) {
-			?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
-			<?php
-		} elseif ( $can_create_locale_glossary ) {
-			?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
-			<?php
-		}
+		gp_tmpl_load(
+			'locale-glossary-link',
+			array(
+				'locale'                     => $locale,
+				'set_slug'                   => $translation_set->slug,
+				'locale_glossary'            => $locale_glossary,
+				'can_create_locale_glossary' => $can_create_locale_glossary,
+			)
+		);
 
 		// Show separator if both links are shown.
 		if ( ( $locale_glossary || $can_create_locale_glossary ) && ( ( $glossary && $glossary->translation_set_id === $translation_set->id ) || $can_approve ) ) {
