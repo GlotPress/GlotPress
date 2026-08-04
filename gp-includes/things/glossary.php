@@ -51,9 +51,7 @@ class GP_Glossary extends GP_Thing {
 	 * @return array Normalized arguments for a glossary.
 	 */
 	public function normalize_fields( $args ) {
-		// The description column is nullable, but consumers pass it through WP
-		// string functions (the gp_glossary_description filter, esc_textarea),
-		// which deprecate null in PHP 8.1+.
+		// The description column is nullable; keep it a string for its consumers.
 		if ( array_key_exists( 'description', $args ) ) {
 			$args['description'] = (string) $args['description'];
 		}
