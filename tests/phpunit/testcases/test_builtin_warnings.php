@@ -195,6 +195,27 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<span data-info="x title=\'b\'">Text</span>',
 			'Expected <span data-info="x title=\'a\'">, got <span data-info="x title=\'b\'">.'
 		);
+		// The URL compared is the tag's own href/src, not one that appears inside
+		// another attribute's value.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="https://www.example.org/docs">Docs</a>',
+			'<a href="https://www.example.com/?x=href=\'https://www.example.org/docs\'">Doku</a>',
+			'The translation appears to be missing the following URLs: https://www.example.org/docs'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<img src="https://www.example.org/a.png" alt="A">',
+			'<img src="https://www.example.com/b.png?x=src=\'https://www.example.org/a.png\'" alt="B">',
+			'The translation appears to be missing the following URLs: https://www.example.org/a.png'
+		);
+		// href is compared on every tag that carries it, not only on <a>.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<link href="https://www.example.org/style.css">',
+			'<link href="https://www.example.com/style.css">',
+			'The translation appears to be missing the following URLs: https://www.example.org/style.css'
+		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
 			'<p>Baba</p>',

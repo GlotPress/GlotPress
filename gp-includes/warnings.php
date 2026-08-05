@@ -683,7 +683,42 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Parses the quoted attributes of a single HTML tag.
+	 *
+	 * Each attribute is matched as a whole name="value" unit, so a name that appears
+	 * inside another attribute's value is not mistaken for an attribute of its own.
+	 * Where a name is repeated, the first occurrence wins, which is the one a browser
+	 * uses.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return array Attribute values keyed by lowercased attribute name.
+	 */
+	private function get_tag_attributes( string $tag ): array {
+		$attributes = array();
+
+		if ( ! preg_match_all( '/\s([\w-]+)=("[^"]*"|\'[^\']*\')/', $tag, $matches, PREG_SET_ORDER ) ) {
+			return $attributes;
+		}
+
+		foreach ( $matches as $match ) {
+			$name = strtolower( $match[1] );
+
+			if ( ! isset( $attributes[ $name ] ) ) {
+				$attributes[ $name ] = substr( $match[2], 1, -1 );
+			}
+		}
+
+		return $attributes;
+	}
+
+	/**
 	 * Returns the values from the href and the src
+	 *
+	 * Every tag carrying one of the two attributes is covered, so that the set of URLs
+	 * compared here matches the set blanked by blank_changeable_attribute_values().
 	 *
 	 * @since 3.0.0
 	 * @access private
@@ -692,9 +727,22 @@ class GP_Builtin_Translation_Warnings {
 	 * @return array
 	 */
 	private function get_values_from_href_src( array $content ): array {
-		preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', implode( ' ', $content ), $href_values );
-		preg_match_all( '/<[^>]+src=([\'"])(?<src>.+?)\1[^>]*>/i', implode( ' ', $content ), $src_values );
-		return array_merge( $href_values['href'], $src_values['src'] );
+		$href_values = array();
+		$src_values  = array();
+
+		foreach ( $content as $tag ) {
+			$attributes = $this->get_tag_attributes( $tag );
+
+			if ( isset( $attributes['href'] ) ) {
+				$href_values[] = $attributes['href'];
+			}
+
+			if ( isset( $attributes['src'] ) ) {
+				$src_values[] = $attributes['src'];
+			}
+		}
+
+		return array_merge( $href_values, $src_values );
 	}
 
 	/**
