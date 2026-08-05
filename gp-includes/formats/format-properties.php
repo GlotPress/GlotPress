@@ -346,7 +346,7 @@ class GP_Format_Properties extends GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);

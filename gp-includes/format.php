@@ -24,6 +24,31 @@ abstract class GP_Format {
 		return array_merge( array( $this->extension ), $this->alt_extensions );
 	}
 
+	/**
+	 * Prepares a value read from an uploaded file for inclusion in a log message.
+	 *
+	 * Whitespace is collapsed and the length is capped so that the value stays on one
+	 * readable line whatever the file contained.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $value The value to prepare.
+	 * @return string The prepared value.
+	 */
+	protected function sanitize_for_log( $value ) {
+		$value = (string) $value;
+
+		// Falls back to the byte-wise class when the value is not valid UTF-8.
+		$collapsed = preg_replace( '/\s+/u', ' ', $value );
+		$value     = null === $collapsed ? preg_replace( '/\s+/', ' ', $value ) : $collapsed;
+
+		if ( mb_strlen( $value ) > 200 ) {
+			$value = mb_substr( $value, 0, 200 ) . '…';
+		}
+
+		return $value;
+	}
+
 	public function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) {
 			return false;
@@ -61,7 +86,7 @@ abstract class GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);
