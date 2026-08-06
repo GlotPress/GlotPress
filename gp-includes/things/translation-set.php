@@ -357,16 +357,6 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
-				if ( 'current' === $entry->status && $translated_is_different
-					&& $this->approve_matching_waiting_translation( $translated->original_id, $entry, $locale, $translations ) ) {
-					/*
-					 * An existing waiting translation was approved. Nothing was created, so its ID
-					 * is deliberately not added to $created_translation_ids, which lists new rows only.
-					 */
-					$translations_added += 1;
-					continue;
-				}
-
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
 				 *
@@ -375,6 +365,24 @@ class GP_Translation_Set extends GP_Thing {
 				 * @param bool $import_over Import over an existing translation.
 				 */
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
+
+				/*
+				 * Only once the filter above has agreed that the existing translation may be
+				 * replaced, because approving a waiting translation supersedes it as well.
+				 */
+				if ( $create && 'current' === $entry->status
+					&& $this->approve_matching_waiting_translation( $translated->original_id, $entry, $locale, $translations ) ) {
+					/*
+					 * An existing waiting translation was approved, so nothing was created and its
+					 * ID is not added to $created_translation_ids, which is documented as the rows
+					 * created by this import. The approved row keeps the original translator's
+					 * user_id, so reporting it would credit that translator and not the importer.
+					 * Whether the hook should expose approvals too, in a separate argument, is an
+					 * open question for the maintainer rather than a settled one.
+					 */
+					$translations_added += 1;
+					continue;
+				}
 			} else {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
@@ -382,8 +390,10 @@ class GP_Translation_Set extends GP_Thing {
 					if ( 'current' === $entry->status
 						&& $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations ) ) {
 						/*
-						 * An existing waiting translation was approved. Nothing was created, so its ID
-						 * is deliberately not added to $created_translation_ids, which lists new rows only.
+						 * Nothing was created, so the approved ID is not added to
+						 * $created_translation_ids, for the reasons noted at the other call site.
+						 * No existing current translation is overwritten here, so
+						 * gp_translation_set_import_over_existing does not apply.
 						 */
 						$translations_added += 1;
 						continue;
@@ -435,7 +445,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * collection is keyed by context and singular and would therefore keep only one waiting
 	 * translation per original.
 	 *
-	 * @since 4.1.0
+	 * @since 4.2.0
 	 *
 	 * @param int               $original_id  The ID of the original the entry belongs to.
 	 * @param Translation_Entry $entry        Translation entry object to import.
@@ -449,7 +459,7 @@ class GP_Translation_Set extends GP_Thing {
 		 * waiting translation should approve the waiting translation instead of
 		 * creating a new one, preserving the original translator's credit.
 		 *
-		 * @since 4.1.0
+		 * @since 4.2.0
 		 *
 		 * @param bool              $approve_waiting Approve the matching waiting translation. Default true.
 		 * @param Translation_Entry $entry           Translation entry object to import.
