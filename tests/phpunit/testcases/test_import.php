@@ -262,8 +262,13 @@ class GP_Import extends GP_UnitTestCase {
 		$validator  = $this->factory->user->create();
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
-		GP::$validator_permission->create( array( 'user_id' => $validator, 'action' => 'approve',
-		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
 
 		$original = $this->factory->original->create( array(
 			'project_id' => $set->project_id,
@@ -300,6 +305,361 @@ class GP_Import extends GP_UnitTestCase {
 	}
 
 	/**
+	 * An original that is already translated must still approve an identical waiting suggestion
+	 * instead of creating a third row credited to the importer.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_identical_to_waiting_approves_when_original_already_current() {
+		$translator     = $this->factory->user->create();
+		$old_translator = $this->factory->user->create();
+		$validator      = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$existing_current = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Tag',
+			'user_id'            => $old_translator,
+			'status'             => 'current',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		wp_set_current_user( $validator );
+		$set->import( $translations, 'current' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertEquals( $waiting->id, $current->id, 'The waiting translation should have been approved, not replaced.' );
+		$this->assertEquals( $translator, (int) $current->user_id, 'Credit should remain with the original translator.' );
+		$this->assertEquals( $validator, (int) $current->user_id_last_modified, 'The importer should be recorded as approver.' );
+
+		$superseded = GP::$translation->get( $existing_current->id );
+		$this->assertEquals( 'old', $superseded->status, 'The previously current translation should have been superseded.' );
+
+		$all = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+		) );
+		$this->assertCount( 2, $all, 'No third translation should have been created.' );
+	}
+
+	/**
+	 * The waiting translations of an original are compared one by one, so a matching suggestion
+	 * is found even when the original carries more than one waiting translation.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_matches_waiting_translation_among_several_of_same_original() {
+		$translator_a = $this->factory->user->create();
+		$translator_b = $this->factory->user->create();
+		$validator    = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		/*
+		 * The matching suggestion is added first on purpose: a Translations collection is keyed
+		 * by context and singular, so it keeps only the last waiting row of the original and the
+		 * earlier matching one would never be seen.
+		 */
+		$waiting_a = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator_a,
+			'status'             => 'waiting',
+		) );
+
+		$waiting_b = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Moin',
+			'user_id'            => $translator_b,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		wp_set_current_user( $validator );
+		$set->import( $translations, 'current' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertEquals( $waiting_a->id, $current->id, 'The matching waiting translation should have been approved.' );
+		$this->assertEquals( $translator_a, (int) $current->user_id, 'Credit should remain with the matching translator.' );
+
+		$all = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+		) );
+		$this->assertCount( 2, $all, 'No new translation should have been created.' );
+
+		// Approving demotes every other waiting translation of the original, exactly like the UI does.
+		$other = GP::$translation->get( $waiting_b->id );
+		$this->assertEquals( 'old', $other->status );
+	}
+
+	/**
+	 * The plural forms of a waiting translation are compared up to the number of plurals of the locale.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_identical_to_waiting_approves_plural_string() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'One comment',
+			'plural'     => '%d comments',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Ein Kommentar',
+			'translation_1'      => '%d Kommentare',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'One comment',
+			'plural'       => '%d comments',
+			'translations' => array( 'Ein Kommentar', '%d Kommentare' ),
+		) ) );
+
+		wp_set_current_user( $validator );
+		$set->import( $translations, 'current' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertEquals( $waiting->id, $current->id, 'The waiting plural translation should have been approved.' );
+		$this->assertEquals( $translator, (int) $current->user_id );
+	}
+
+	/**
+	 * The `gp_translation_set_import_approve_waiting` filter opts out of the approval.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_approve_waiting_filter_false_creates_new_translation() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		wp_set_current_user( $validator );
+		add_filter( 'gp_translation_set_import_approve_waiting', '__return_false' );
+		$set->import( $translations, 'current' );
+		remove_filter( 'gp_translation_set_import_approve_waiting', '__return_false' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+
+		$this->assertNotEquals( $waiting->id, $current->id, 'A new translation should have been created.' );
+		$this->assertEquals( $validator, (int) $current->user_id );
+
+		$superseded = GP::$translation->get( $waiting->id );
+		$this->assertEquals( 'old', $superseded->status );
+	}
+
+	/**
+	 * Approving goes through `set_status( 'current' )`, so an import without a current user,
+	 * a WP-CLI import for example, keeps the previous behaviour of creating a new translation.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_without_current_user_creates_new_translation() {
+		$translator = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		wp_set_current_user( 0 );
+		$set->import( $translations, 'current' );
+
+		$still_waiting = GP::$translation->get( $waiting->id );
+		$this->assertEquals( 'waiting', $still_waiting->status, 'Without a current user nothing can be approved.' );
+
+		$all = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+		) );
+		$this->assertCount( 2, $all, 'A new translation should have been created.' );
+	}
+
+	/**
+	 * Approved waiting translations are not created, so their IDs are not passed to
+	 * `gp_translations_imported`.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_gp_translations_imported_excludes_approved_waiting_ids() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		$created_translation_ids = null;
+		$closure = function( $set_id, $ids = null ) use ( &$created_translation_ids ) {
+			$created_translation_ids = $ids;
+		};
+		add_action( 'gp_translations_imported', $closure, 10, 2 );
+
+		wp_set_current_user( $validator );
+		$translations_added = $set->import( $translations, 'current' );
+
+		remove_action( 'gp_translations_imported', $closure );
+
+		$this->assertSame( array(), $created_translation_ids, 'An approval creates nothing, so no ID is reported.' );
+		$this->assertSame( 1, $translations_added, 'The approval still counts towards the imported total.' );
+	}
+
+	/**
 	 * @ticket gh-710
 	 */
 	function test_import_different_from_waiting_still_creates_new_translation() {
@@ -307,8 +667,13 @@ class GP_Import extends GP_UnitTestCase {
 		$validator  = $this->factory->user->create();
 
 		$set = $this->factory->translation_set->create_with_project_and_locale();
-		GP::$validator_permission->create( array( 'user_id' => $validator, 'action' => 'approve',
-		                                          'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
 
 		$original = $this->factory->original->create( array(
 			'project_id' => $set->project_id,

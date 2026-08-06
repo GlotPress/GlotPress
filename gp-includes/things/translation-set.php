@@ -352,34 +352,20 @@ class GP_Translation_Set extends GP_Thing {
 				$translated = $existing_translations['current']->translate_entry( $entry );
 			}
 
-			if ( 'current' === $entry->status && ! $translated ) {
-				/**
-				 * Filter whether an imported translation that is identical to an existing
-				 * waiting translation should approve the waiting translation instead of
-				 * creating a new one, preserving the original translator's credit.
-				 *
-				 * @since 4.1.0
-				 *
-				 * @param bool              $approve_waiting Approve the matching waiting translation. Default true.
-				 * @param Translation_Entry $entry           Translation entry object to import.
-				 * @param Translations      $translations    Translations collection.
-				 */
-				if ( apply_filters( 'gp_translation_set_import_approve_waiting', true, $entry, $translations ) ) {
-					$waiting = $load_existing_translations( 'waiting' )->translate_entry( $entry );
-					if ( $waiting && array_pad( $entry->translations, $locale->nplurals, null ) === $waiting->translations ) {
-						$waiting_translation = GP::$translation->get( $waiting->id );
-						if ( $waiting_translation && $waiting_translation->set_status( 'current' ) ) {
-							$translations_added += 1;
-							continue;
-						}
-					}
-				}
-			}
-
 			if ( $translated ) {
 				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
+
+				if ( 'current' === $entry->status && $translated_is_different
+					&& $this->approve_matching_waiting_translation( $translated->original_id, $entry, $locale, $translations ) ) {
+					/*
+					 * An existing waiting translation was approved. Nothing was created, so its ID
+					 * is deliberately not added to $created_translation_ids, which lists new rows only.
+					 */
+					$translations_added += 1;
+					continue;
+				}
 
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
@@ -393,6 +379,16 @@ class GP_Translation_Set extends GP_Thing {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
+					if ( 'current' === $entry->status
+						&& $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations ) ) {
+						/*
+						 * An existing waiting translation was approved. Nothing was created, so its ID
+						 * is deliberately not added to $created_translation_ids, which lists new rows only.
+						 */
+						$translations_added += 1;
+						continue;
+					}
+
 					$entry->original_id = $original->id;
 					$create             = true;
 				}
@@ -429,6 +425,79 @@ class GP_Translation_Set extends GP_Thing {
 		do_action( 'gp_translations_imported', $this->id, $created_translation_ids );
 
 		return $translations_added;
+	}
+
+	/**
+	 * Approves an existing waiting translation that is identical to an imported entry.
+	 *
+	 * Keeps the original translator's credit instead of creating a duplicate row for the importer.
+	 * The waiting translations of the original are looked up directly, because a `Translations`
+	 * collection is keyed by context and singular and would therefore keep only one waiting
+	 * translation per original.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param int               $original_id  The ID of the original the entry belongs to.
+	 * @param Translation_Entry $entry        Translation entry object to import.
+	 * @param GP_Locale         $locale       The locale of the translation set.
+	 * @param Translations      $translations Translations collection being imported.
+	 * @return GP_Translation|null The approved translation, or null if none was approved.
+	 */
+	private function approve_matching_waiting_translation( $original_id, $entry, $locale, $translations ) {
+		/**
+		 * Filter whether an imported translation that is identical to an existing
+		 * waiting translation should approve the waiting translation instead of
+		 * creating a new one, preserving the original translator's credit.
+		 *
+		 * @since 4.1.0
+		 *
+		 * @param bool              $approve_waiting Approve the matching waiting translation. Default true.
+		 * @param Translation_Entry $entry           Translation entry object to import.
+		 * @param Translations      $translations    Translations collection.
+		 */
+		if ( ! apply_filters( 'gp_translation_set_import_approve_waiting', true, $entry, $translations ) ) {
+			return null;
+		}
+
+		/*
+		 * Approving goes through set_status( 'current' ), which requires an approve-capable
+		 * current user. Without a current user, for example a WP-CLI import, nothing can be
+		 * approved, so skip the lookup and let the caller create a new translation as before.
+		 */
+		if ( ! get_current_user_id() ) {
+			return null;
+		}
+
+		$wanted       = array_pad( $entry->translations, $locale->nplurals, null );
+		$waiting_rows = GP::$translation->find_many(
+			array(
+				'translation_set_id' => $this->id,
+				'original_id'        => $original_id,
+				'status'             => 'waiting',
+			),
+			// Oldest suggestion first, so which translator gets credited is deterministic.
+			'date_added ASC, id ASC'
+		);
+
+		foreach ( $waiting_rows as $waiting_row ) {
+			// translations() is always padded to the maximum number of plurals, the locale decides how many count.
+			if ( array_slice( $waiting_row->translations(), 0, $locale->nplurals ) !== $wanted ) {
+				continue;
+			}
+
+			if ( ! $waiting_row->set_status( 'current' ) ) {
+				/*
+				 * The current user is not allowed to approve this translation, for example a
+				 * translator importing their own suggestion. Keep the pre-existing behaviour
+				 * and let the caller create a new translation.
+				 */
+				return null;
+			}
+
+			return $waiting_row;
+		}
+
+		return null;
 	}
 
 	/**
