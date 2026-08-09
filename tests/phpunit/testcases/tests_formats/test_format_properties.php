@@ -51,7 +51,7 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 
 		$entries_for_export = array(
 			(object) array(
-				'context' => 'some.key',
+				'context' => "some\rkey",
 				'singular' => 'Some key',
 				'translations' => array( "ok\r" . 'app.update.url=https://example.org' ),
 				'extracted_comments' => "first\rsecond",
@@ -61,7 +61,7 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 		$exported = $this->properties->print_exported_file( $project, $locale, $set, $entries_for_export );
 
 		$this->assertStringNotContainsString( "\r", $exported );
-		$this->assertStringContainsString( 'some.key = ok\rapp.update.url=https://example.org' . "\n", $exported );
+		$this->assertStringContainsString( 'some\rkey = ok\rapp.update.url=https://example.org' . "\n", $exported );
 		$this->assertStringContainsString( "# first\n# second\n", $exported );
 	}
 
