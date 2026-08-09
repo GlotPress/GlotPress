@@ -148,7 +148,6 @@ class GP_Locale {
 	 * Restores a locale exported by var_export().
 	 *
 	 * @param array $state Associative array of property names and their values.
-	 *
 	 * @return GP_Locale The restored locale.
 	 */
 	public static function __set_state( $state ) {
@@ -198,7 +197,6 @@ class GP_Locale {
 	 * @param int $index      Index of the plural form.
 	 * @param int $how_many   Optional. Maximum number of sample numbers to return. Default 3.
 	 * @param int $test_up_to Optional. Highest number (exclusive) to test. Default 1000.
-	 *
 	 * @return int[] Sample numbers for the plural form.
 	 */
 	public function numbers_for_index( $index, $how_many = 3, $test_up_to = 1000 ) {
@@ -221,7 +219,6 @@ class GP_Locale {
 	 * Returns the index of the plural form which is used for the given number.
 	 *
 	 * @param int $number Number to get the plural form index for.
-	 *
 	 * @return int Index of the plural form.
 	 */
 	public function index_for_number( $number ) {
@@ -2978,7 +2975,6 @@ class GP_Locales {
 			 * @since 3.0.0
 			 *
 			 * @param array $def_vars The array of locale objects.
-			 *
 			 * @return array The updated array of locale objects.
 			 */
 			$def_vars = apply_filters( 'gp_locale_definitions_array', $def_vars );
@@ -3015,7 +3011,6 @@ class GP_Locales {
 	 * Checks whether a locale with the given slug exists.
 	 *
 	 * @param string $slug Slug of the locale.
-	 *
 	 * @return bool Whether the locale exists.
 	 */
 	public static function exists( $slug ) {
@@ -3027,7 +3022,6 @@ class GP_Locales {
 	 * Returns the locale with the given slug.
 	 *
 	 * @param string $slug Slug of the locale.
-	 *
 	 * @return GP_Locale|null The locale, or null if it doesn't exist.
 	 */
 	public static function by_slug( $slug ) {
@@ -3040,7 +3034,6 @@ class GP_Locales {
 	 *
 	 * @param string $field_name  Name of the GP_Locale property to compare, for example 'wp_locale'.
 	 * @param mixed  $field_value Value to search for.
-	 *
 	 * @return GP_Locale|false The locale, or false if no locale matches.
 	 */
 	public static function by_field( $field_name, $field_value ) {
