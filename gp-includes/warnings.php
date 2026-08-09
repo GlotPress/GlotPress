@@ -288,11 +288,11 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		// Items are sorted, so if all is well, will match up.
-		$parts_tags = array_combine( $original_parts, $translation_parts );
-
 		$warnings = array();
-		foreach ( $parts_tags as $original_tag => $translation_tag ) {
+
+		// The tags are sorted and equal in count, so compare them by position.
+		foreach ( $original_parts as $i => $original_tag ) {
+			$translation_tag = $translation_parts[ $i ];
 			if ( $original_tag === $translation_tag ) {
 				continue;
 			}
@@ -684,6 +684,9 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Returns the values from the href and the src
 	 *
+	 * Every tag carrying one of the two attributes is covered, so that the set of URLs
+	 * compared here matches the set blanked by blank_changeable_attribute_values().
+	 *
 	 * @since 3.0.0
 	 * @access private
 	 *
@@ -696,12 +699,9 @@ class GP_Builtin_Translation_Warnings {
 
 		$processor = new WP_HTML_Tag_Processor( implode( ' ', $content ) );
 		while ( $processor->next_tag() ) {
-			// href is validated for anchors only; src for any element that carries it.
-			if ( 'A' === $processor->get_tag() ) {
-				$href = $processor->get_attribute( 'href' );
-				if ( is_string( $href ) ) {
-					$href_values[] = $href;
-				}
+			$href = $processor->get_attribute( 'href' );
+			if ( is_string( $href ) ) {
+				$href_values[] = $href;
 			}
 
 			$src = $processor->get_attribute( 'src' );

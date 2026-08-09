@@ -43,6 +43,23 @@ class GP_Glossary extends GP_Thing {
 	}
 
 	/**
+	 * Normalizes an array with key-value pairs representing a glossary.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param array $args Arguments for a glossary.
+	 * @return array Normalized arguments for a glossary.
+	 */
+	public function normalize_fields( $args ) {
+		// The description column is nullable; keep it a string for its consumers.
+		if ( array_key_exists( 'description', $args ) ) {
+			$args['description'] = (string) $args['description'];
+		}
+
+		return parent::normalize_fields( $args );
+	}
+
+	/**
 	 * Get the path to the glossary.
 	 *
 	 * @return string

@@ -88,7 +88,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<b>テキスト1</b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 			$this->l
 		);
-		$this->assertNoWarnings( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>' );
+		$this->assertHasWarningsAndContainsOutput( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>', 'Expected </a>, got <a>.' );
 		$this->assertNoWarnings(
 			'tags',
 			' Text 1 <a href="https://wordpress.org/plugins/example-plugin/">Example plugin</a> Text 2<a href="https://wordpress.com/log-in/">Log in</a> Text 3 <img src="example.jpg" alt="Example alt text">',
@@ -152,7 +152,14 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<a href="%s" x>Баба</a>',
 			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.'
 		);
-		// An attribute appended after a changeable attribute (href/src/title) must not
+		// A tag that replaces one of two identical source tags must still be compared.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'Line one<br>Line two<br>',
+			'Linea uno<hr>Linea dos<br>',
+			'Expected <br>, got <hr>.'
+		);
+		// Attributes appended after a changeable attribute (href/src/title) must not
 		// be swallowed by the attribute normalization.
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
@@ -187,6 +194,27 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<span data-info="x title=\'a\'">Text</span>',
 			'<span data-info="x title=\'b\'">Text</span>',
 			'Expected <span data-info="x title=\'a\'">, got <span data-info="x title=\'b\'">.'
+		);
+		// The URL compared is the tag's own href/src, not one that appears inside
+		// another attribute's value.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="https://www.example.org/docs">Docs</a>',
+			'<a href="https://www.example.com/?x=href=\'https://www.example.org/docs\'">Doku</a>',
+			'The translation appears to be missing the following URLs: https://www.example.org/docs'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<img src="https://www.example.org/a.png" alt="A">',
+			'<img src="https://www.example.com/b.png?x=src=\'https://www.example.org/a.png\'" alt="B">',
+			'The translation appears to be missing the following URLs: https://www.example.org/a.png'
+		);
+		// href is compared on every tag that carries it, not only on <a>.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<link href="https://www.example.org/style.css">',
+			'<link href="https://www.example.com/style.css">',
+			'The translation appears to be missing the following URLs: https://www.example.org/style.css'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
