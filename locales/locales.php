@@ -2866,7 +2866,7 @@ class GP_Locales {
 		$instance = GP_Locales::instance();
 		$result   = false;
 
-		foreach( $instance->locales() as $locale ) {
+		foreach( $instance->locales as $locale ) {
 			if ( isset( $locale->$field_name ) && $locale->$field_name == $field_value ) {
 				$result = $locale;
 				break;
