@@ -212,6 +212,18 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( null, $for_translation[0]->id );
 	}
 
+	function test_for_translation_accepts_a_scalar_priority_filter() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'priority' => 1 ) );
+		$this->factory->original->create( array( 'project_id' => $set->project_id, 'priority' => 0 ) );
+
+		$for_translation = GP::$translation->for_translation( $set->project, $set, 0, array( 'priority' => '1' ) );
+
+		$this->assertEquals( 1, count( $for_translation ) );
+		$this->assertEquals( $original->id, $for_translation[0]->original_id );
+	}
+
 	function test_for_translation_should_include_untranslated_by_default() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 

@@ -101,7 +101,7 @@ class GP_Route_Profile extends GP_Route_Main {
 
 				$translation_sets[] = $translation_set;
 
-				$i++;
+				++$i;
 
 				// Bail early if we have already the amount requested
 				if ( $i >= $amount ) {

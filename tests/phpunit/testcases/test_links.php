@@ -24,7 +24,11 @@ class GP_Test_Links extends GP_UnitTestCase {
 	}
 
 	function test_gp_link_get_escape() {
-		$this->assertEquals( '<a href="http://dir.bg/">Baba & Dyado</a>', gp_link_get( 'http://dir.bg/', 'Baba & Dyado' ) );
+		// The link text is escaped so the output is safe by default.
+		$this->assertEquals( '<a href="http://dir.bg/">Baba &amp; Dyado</a>', gp_link_get( 'http://dir.bg/', 'Baba & Dyado' ) );
+		$this->assertEquals( '<a href="http://dir.bg/">&lt;b&gt;x&lt;/b&gt;</a>', gp_link_get( 'http://dir.bg/', '<b>x</b>' ) );
+		// Existing entities in the text are preserved, not double-encoded.
+		$this->assertEquals( '<a href="http://dir.bg/">&larr; Prev</a>', gp_link_get( 'http://dir.bg/', '&larr; Prev' ) );
 		$this->assertEquals( '<a href="http://dir.bg/?x=5&#038;y=11">Baba</a>', gp_link_get( 'http://dir.bg/?x=5&y=11', 'Baba' ) );
 		$this->assertEquals( '<a href="http://dir.bg/" a="&quot;">Baba</a>', gp_link_get( 'http://dir.bg/', 'Baba', array( 'a' => '"') ) );
 	}

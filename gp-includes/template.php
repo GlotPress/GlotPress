@@ -162,7 +162,7 @@ function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
 		add_filter(
 			'gp_title',
-			function() use ( $title ) {
+			function () use ( $title ) {
 				return $title;
 			},
 			5
@@ -186,7 +186,7 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 
 		add_filter(
 			'gp_breadcrumb_items',
-			function( $breadcrumbs ) use ( $breadcrumb ) {
+			function ( $breadcrumbs ) use ( $breadcrumb ) {
 				return array_merge( $breadcrumbs, $breadcrumb );
 			},
 			1
@@ -254,7 +254,7 @@ function gp_project_links_from_root( $leaf_project ) {
 	$links[]        = empty( $path_from_root ) ? __( 'Projects', 'glotpress' ) : gp_link_get( gp_url( '/projects' ), __( 'Projects', 'glotpress' ) );
 	foreach ( $path_from_root as $project ) {
 		if ( ! is_null( $project->id ) ) {
-			$links[] = gp_link_project_get( $project, esc_html( $project->name ) );
+			$links[] = gp_link_project_get( $project, $project->name );
 		}
 	}
 	return $links;
@@ -281,7 +281,7 @@ function gp_breadcrumb_project( $project, $extra_items = array() ) {
 		end( $breadcrumb );
 		$last_key = key( $breadcrumb );
 
-		$breadcrumb[ $last_key ] = $project->name;
+		$breadcrumb[ $last_key ] = esc_html( $project->name );
 	}
 
 	// Add extra items.
@@ -529,7 +529,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 function gp_array_of_things_to_json( $array ) {
 	return wp_json_encode(
 		array_map(
-			function( $thing ) {
+			function ( $thing ) {
 				return $thing->fields();
 			},
 			$array
@@ -538,9 +538,9 @@ function gp_array_of_things_to_json( $array ) {
 }
 
 function gp_array_of_array_of_things_to_json( $array ) {
-	$map_to_fields = function( $array ) {
+	$map_to_fields = function ( $array ) {
 		return array_map(
-			function( $thing ) {
+			function ( $thing ) {
 				return $thing->fields();
 			},
 			$array

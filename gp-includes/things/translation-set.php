@@ -147,6 +147,13 @@ class GP_Translation_Set extends GP_Thing {
 	public $wp_locale;
 
 	/**
+	 * The date of the last modified translation.
+	 *
+	 * @var string|false
+	 */
+	public $last_modified;
+
+	/**
 	 * Sets restriction rules for fields.
 	 *
 	 * @since 1.0.0
@@ -206,33 +213,20 @@ class GP_Translation_Set extends GP_Thing {
 		$parts  = array( $locale->english_name );
 
 		if ( 'default' !== $this->slug ) {
-			$parts[] = $this->name;
+			$parts[] = esc_html( $this->name );
 		}
 
 		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
-		$result = $this->one(
+		return $this->one(
 			"SELECT * FROM $this->table
 			WHERE slug = %s AND project_id= %d AND locale = %s",
 			$slug,
 			$project_id,
 			$locale_slug
 		);
-
-		if ( ! $result && 0 === $project_id ) {
-			$result = $this->create(
-				array(
-					'project_id' => $project_id,
-					'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
-					'slug'       => $slug,
-					'locale'     => $locale_slug,
-				)
-			);
-		}
-
-		return $result;
 	}
 
 	public function by_locale( $locale_slug ) {
@@ -303,7 +297,8 @@ class GP_Translation_Set extends GP_Thing {
 		}
 		unset( $current_translations_list );
 
-		$translations_added = 0;
+		$translations_added      = 0;
+		$created_translation_ids = array();
 		foreach ( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) {
 				continue;
@@ -398,7 +393,8 @@ class GP_Translation_Set extends GP_Thing {
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
 					$translation->set_status( $entry->status );
-					$translations_added += 1;
+					$translations_added       += 1;
+					$created_translation_ids[] = $translation->id;
 				}
 			}
 		}
@@ -409,10 +405,12 @@ class GP_Translation_Set extends GP_Thing {
 		 * Fires after translations have been imported to a translation set.
 		 *
 		 * @since 1.0.0
+		 * @since 4.1.0 Added the `$created_translation_ids` parameter.
 		 *
-		 * @param int $translation_set The ID of the translation set the import was made into.
+		 * @param int   $translation_set         The ID of the translation set the import was made into.
+		 * @param int[] $created_translation_ids The IDs of the translations created during the import.
 		 */
-		do_action( 'gp_translations_imported', $this->id );
+		do_action( 'gp_translations_imported', $this->id, $created_translation_ids );
 
 		return $translations_added;
 	}

@@ -111,15 +111,20 @@ class GP_Permission extends GP_Thing {
 			return $preliminary;
 		}
 
-		$verdict =
-			$this->find_one(
-				array(
-					'action'  => 'admin',
-					'user_id' => $user_id,
-				)
-			) ||
-			$this->find_one( $args ) ||
-			$this->find_one( array_merge( $args, array( 'object_id' => null ) ) );
+		// A NULL user_id would match rows via `user_id IS NULL`, granting anonymous requests permissions they should not have.
+		if ( null === $user_id ) {
+			$verdict = false;
+		} else {
+			$verdict =
+				$this->find_one(
+					array(
+						'action'  => 'admin',
+						'user_id' => $user_id,
+					)
+				) ||
+				$this->find_one( $args ) ||
+				$this->find_one( array_merge( $args, array( 'object_id' => null ) ) );
+		}
 
 		/**
 		 * Filter whether an user can do an action.

@@ -242,7 +242,7 @@ function gp_array_zip( ...$args ) {
 			next( $array );
 		}
 
-		$array_count++;
+		++$array_count;
 	}
 
 	return $res;
@@ -254,10 +254,8 @@ function gp_array_any( $callback, $array, $arg = null ) {
 			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
-		} else {
-			if ( $callback( $item, $arg ) ) {
+		} elseif ( $callback( $item, $arg ) ) {
 				return true;
-			}
 		}
 	}
 	return false;
@@ -735,4 +733,47 @@ function gp_get_sort_by_fields() {
  */
 function gp_set_translations_import_max_memory_limit() {
 	return '256M';
+}
+
+/**
+ * Checks if a string is valid UTF-8.
+ *
+ * The wp_is_valid_utf8() was introduced in WordPress 6.9.0, so we need a fallback for older versions.
+ * seems_utf8() was deprecated in WordPress 6.9.0.
+ * See https://core.trac.wordpress.org/changeset/60630
+ *
+ * @since 4.1.0
+ *
+ * @param string $string The string to check.
+ * @return bool True if the string is valid UTF-8, false otherwise.
+ */
+function gp_is_valid_utf8( $string ) {
+	if ( function_exists( 'wp_is_valid_utf8' ) ) {
+		return wp_is_valid_utf8( $string );
+	}
+
+	if ( function_exists( 'mb_check_encoding' ) ) {
+		return mb_check_encoding( $string, 'UTF-8' );
+	}
+
+	return 1 === preg_match( '//u', $string );
+}
+
+/**
+ * Determines whether the current user may create the locale glossary for a locale and set slug.
+ *
+ * A locale glossary lives on the virtual locale project (id 0), so it is authorized
+ * the same way its translations are: with the `approve` permission on the set, which
+ * covers GlotPress administrators and the locale's approvers.
+ *
+ * @param string $locale_slug The locale slug. E.g. "de".
+ * @param string $set_slug    The translation set slug. E.g. "default".
+ * @return bool Whether the current user may create the locale glossary.
+ */
+function gp_can_create_locale_glossary( $locale_slug, $set_slug ) {
+	return GP::$permission->current_user_can(
+		'approve',
+		GP::$validator_permission->object_type,
+		GP::$validator_permission->object_id( 0, $locale_slug, $set_slug )
+	);
 }
