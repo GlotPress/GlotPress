@@ -52,7 +52,7 @@ class GP_Locale {
 	 *
 	 * @var string|null
 	 */
-	public $country_code;
+	public $country_code = null;
 
 	/**
 	 * WordPress locale code.
@@ -61,7 +61,7 @@ class GP_Locale {
 	 *
 	 * @var string|null
 	 */
-	public $wp_locale;
+	public $wp_locale = null;
 
 	/**
 	 * Slug of the locale, used in URLs.
