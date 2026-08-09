@@ -10,6 +10,15 @@ abstract class GP_Format {
 	public $alt_extensions   = array();
 	public $filename_pattern = '%s-%s';
 
+	/**
+	 * Maximum length of a single value included in a log message.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @var int
+	 */
+	const LOG_VALUE_MAX_LENGTH = 200;
+
 	abstract public function print_exported_file( $project, $locale, $translation_set, $entries );
 	abstract public function read_originals_from_file( $file_name );
 
@@ -38,12 +47,23 @@ abstract class GP_Format {
 	protected function sanitize_for_log( $value ) {
 		$value = (string) $value;
 
-		// Falls back to the byte-wise class when the value is not valid UTF-8.
-		$collapsed = preg_replace( '/\s+/u', ' ', $value );
-		$value     = null === $collapsed ? preg_replace( '/\s+/', ' ', $value ) : $collapsed;
+		// A value read from an uploaded file is not guaranteed to be valid UTF-8. Both
+		// steps use the byte-wise functions when it is not, so that neither depends on
+		// an encoding the value does not have.
+		if ( preg_match( '//u', $value ) ) {
+			$value = preg_replace( '/\s+/u', ' ', $value );
 
-		if ( mb_strlen( $value ) > 200 ) {
-			$value = mb_substr( $value, 0, 200 ) . '…';
+			if ( mb_strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+				$value = mb_substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '…';
+			}
+
+			return $value;
+		}
+
+		$value = preg_replace( '/\s+/', ' ', $value );
+
+		if ( strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+			$value = substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '...';
 		}
 
 		return $value;
