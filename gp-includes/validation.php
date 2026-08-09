@@ -6,6 +6,8 @@
  * @since 1.0.0
  */
 
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
+
 /**
  * Core class to handle validation of translations.
  *
@@ -105,8 +107,7 @@ class GP_Validation_Rules {
 				}
 			}
 		}
-		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
-		trigger_error(
+		throw new BadMethodCallException(
 			sprintf(
 				/* translators: %s: Method name. */
 				esc_html__( 'Call to undefined method: %s.', 'glotpress' ),
@@ -115,8 +116,7 @@ class GP_Validation_Rules {
 					esc_html( get_class( $this ) ),
 					esc_html( $name )
 				)
-			),
-			E_USER_ERROR
+			)
 		);
 	}
 
@@ -163,16 +163,14 @@ class GP_Validation_Rules {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict        = false;
 				}
-			} else {
-				if ( null === $callback['negative'] ) {
-					if ( $callback['positive']( ...$args ) ) {
-						$this->errors[] = $this->construct_error_message( $rule );
-						$verdict        = false;
-					}
-				} elseif ( ! $callback['negative']( ...$args ) ) {
+			} elseif ( null === $callback['negative'] ) {
+				if ( $callback['positive']( ...$args ) ) {
 					$this->errors[] = $this->construct_error_message( $rule );
 					$verdict        = false;
 				}
+			} elseif ( ! $callback['negative']( ...$args ) ) {
+				$this->errors[] = $this->construct_error_message( $rule );
+				$verdict        = false;
 			}
 		}
 		return $verdict;

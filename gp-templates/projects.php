@@ -12,7 +12,7 @@ gp_tmpl_header();
 				$project_class = $project->active ? 'project-active' : 'project-inactive';
 				?>
 				<dt class="<?php echo esc_attr( $project_class ); ?>">
-					<?php gp_link_project( $project, esc_html( $project->name ) ); ?>
+					<?php gp_link_project( $project, $project->name ); ?>
 					<?php gp_link_project_edit( $project, null, array( 'class' => 'button is-small' ) ); ?>
 					<?php gp_link_project_delete( $project, null, array( 'class' => 'button is-small' ) ); ?>
 					<?php

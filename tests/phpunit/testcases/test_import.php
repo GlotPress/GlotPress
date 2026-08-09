@@ -369,4 +369,82 @@ class GP_Import extends GP_UnitTestCase {
 		));
 	}
 
+	/**
+	 * The `gp_translations_imported` action should pass the IDs of the created translations.
+	 *
+	 * @ticket gh-1467
+	 */
+	function test_gp_translations_imported_passes_created_translation_ids() {
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'    => $user,
+			'action'     => 'approve',
+			'project_id' => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'   => $set->slug,
+		) );
+
+		$this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		$action_args = array();
+		$closure = function( $set_id, $created_translation_ids = null ) use ( &$action_args ) {
+			$action_args = array( $set_id, $created_translation_ids );
+		};
+		add_action( 'gp_translations_imported', $closure, 10, 2 );
+
+		$set->import( $translations );
+
+		remove_action( 'gp_translations_imported', $closure );
+
+		$this->assertSame( $set->id, $action_args[0] );
+		$this->assertIsArray( $action_args[1] );
+		$this->assertCount( 1, $action_args[1] );
+		$this->assertContainsOnly( 'int', $action_args[1] );
+		$this->assertGreaterThan( 0, $action_args[1][0] );
+	}
+
+	/**
+	 * The `gp_translations_imported` action should pass an empty array when no translations are created.
+	 *
+	 * @ticket gh-1467
+	 */
+	function test_gp_translations_imported_passes_empty_array_when_nothing_created() {
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		// No originals exist, so nothing can be created from the import.
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		$created_translation_ids = null;
+		$closure = function( $set_id, $ids = null ) use ( &$created_translation_ids ) {
+			$created_translation_ids = $ids;
+		};
+		add_action( 'gp_translations_imported', $closure, 10, 2 );
+
+		$set->import( $translations );
+
+		remove_action( 'gp_translations_imported', $closure );
+
+		$this->assertSame( array(), $created_translation_ids );
+	}
+
 }

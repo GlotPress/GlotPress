@@ -361,7 +361,9 @@ class GP_Route {
 		if ( $this->fake_request ) {
 			$this->exited       = true;
 			$this->exit_message = $message;
-			return;
+			// Halt the route the way a real request would, so a faked request
+			// does not keep running the code that follows a die or redirect.
+			throw new GP_Route_Exit_Exception();
 		}
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- May contain HTML.
 		exit( $message );
@@ -390,6 +392,10 @@ class GP_Route {
 	 * @since 4.0.0
 	 */
 	public function check_uri_trailing_slash() {
+		// Only check for GET requests.
+		if ( 'GET' !== $_SERVER['REQUEST_METHOD'] ) {
+			return;
+		}
 
 		// Current URL.
 		$current_uri = wp_parse_url( gp_url_current() );

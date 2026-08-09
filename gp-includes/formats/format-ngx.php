@@ -108,14 +108,14 @@ class GP_Format_NGX extends GP_Format {
 			if ( is_array( $value ) ) {
 				foreach ( $value as $keyelem => $valueelem ) {
 					if ( isset( $valueelem['key'] )
-					  && isset( $valueelem['translation'] ) ) {
+						&& isset( $valueelem['translation'] ) ) {
 						$args = array(
 							'singular' => $valueelem['translation'],
 							'context'  => $key . '[' . $valueelem['key'] . ']',
 						);
 						$entries->add_entry( new Translation_Entry( $args ) );
 					}
-				};
+				}
 			} else {
 				$args = array(
 					'singular' => $value,

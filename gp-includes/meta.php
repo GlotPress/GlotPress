@@ -82,7 +82,7 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
 function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
 
-	if ( ! is_numeric( $object_id ) || empty( $object_id ) && ! $global ) {
+	if ( ( ! is_numeric( $object_id ) || empty( $object_id ) ) && ! $global ) {
 		return false;
 	}
 
@@ -168,7 +168,7 @@ function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = fa
 function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
 	global $wpdb;
 
-	if ( ! is_numeric( $object_id ) || empty( $object_id ) && ! $global ) {
+	if ( ( ! is_numeric( $object_id ) || empty( $object_id ) ) && ! $global ) {
 		return false;
 	}
 
@@ -196,7 +196,7 @@ function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $global = fa
 		$meta_sql = $wpdb->prepare( "SELECT `meta_id` FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s AND `meta_value` = %s", $object_type, $object_id, $meta_key, $meta_value );
 	}
 
-	if ( ! $meta_id = $wpdb->get_var( $meta_sql ) ) { // WPCS: unprepared SQL ok.
+	if ( ! $meta_id = $wpdb->get_var( $meta_sql ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		return false;
 	}
 
