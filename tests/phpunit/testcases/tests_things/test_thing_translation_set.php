@@ -331,4 +331,15 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertStringNotContainsString( $name, $html );
 		$this->assertStringContainsString( esc_html( $name ), $html );
 	}
+
+	function test_non_db_field_names_are_declared_properties() {
+		$set = new GP_Translation_Set();
+
+		foreach ( $set->non_db_field_names as $field ) {
+			$this->assertTrue(
+				property_exists( $set, $field ),
+				"Non-DB field '$field' must be a declared property so assigning it does not create a dynamic property."
+			);
+		}
+	}
 }

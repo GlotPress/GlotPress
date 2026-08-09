@@ -81,6 +81,7 @@ class GP_Router {
 			"get:(/languages)/$locale/$dir/glossary"          => array( 'GP_Route_Glossary_Entry', 'glossary_entries_get' ),
 			"post:(/languages)/$locale/$dir/glossary"         => array( 'GP_Route_Glossary_Entry', 'glossary_entries_post' ),
 			"post:(/languages)/$locale/$dir/glossary/-new"    => array( 'GP_Route_Glossary_Entry', 'glossary_entry_add_post' ),
+			"post:(/languages)/$locale/$dir/glossary/-create" => array( 'GP_Route_Glossary_Entry', 'glossary_create_post' ),
 			"post:(/languages)/$locale/$dir/glossary/-delete" => array( 'GP_Route_Glossary_Entry', 'glossary_entry_delete_post' ),
 			"get:(/languages)/$locale/$dir/glossary/-export"  => array( 'GP_Route_Glossary_Entry', 'export_glossary_entries_get' ),
 			"get:(/languages)/$locale/$dir/glossary/-import"  => array( 'GP_Route_Glossary_Entry', 'import_glossary_entries_get' ),
