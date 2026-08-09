@@ -256,7 +256,7 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 		$num_queries = $wpdb->num_queries;
 		$set->update_status_breakdown();
-		$this->assertEquals( $num_queries + 9, $wpdb->num_queries );
+		$this->assertEquals( $num_queries + 6, $wpdb->num_queries );
 	}
 
 	public function test_created_action_is_called() {
@@ -320,5 +320,26 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $initial_set, $previous_set );
 		$this->assertEquals( $previous_set->name, 'Before' );
 		$this->assertEquals( $translation_set->name, 'After' );
+	}
+
+	function test_name_with_locale_escapes_the_set_name() {
+		$name = '<b>abc123</b>';
+		$set  = $this->factory->translation_set->create_with_project_and_locale( array( 'name' => $name, 'slug' => 'markup' ) );
+
+		$html = $set->name_with_locale();
+
+		$this->assertStringNotContainsString( $name, $html );
+		$this->assertStringContainsString( esc_html( $name ), $html );
+	}
+
+	function test_non_db_field_names_are_declared_properties() {
+		$set = new GP_Translation_Set();
+
+		foreach ( $set->non_db_field_names as $field ) {
+			$this->assertTrue(
+				property_exists( $set, $field ),
+				"Non-DB field '$field' must be a declared property so assigning it does not create a dynamic property."
+			);
+		}
 	}
 }

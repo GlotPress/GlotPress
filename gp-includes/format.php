@@ -106,5 +106,4 @@ abstract class GP_Format {
 
 		return $ret;
 	}
-
 }

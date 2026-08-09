@@ -7,7 +7,7 @@ $meta = array(
 );
 
 foreach ( $recent_projects as $project ) {
-	$project->set_name = html_entity_decode( $project->set_name );
+	$project->set_name = html_entity_decode( $project->set_name, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8' );
 	unset( $project->project_id );
 	unset( $project->set_id );
 }

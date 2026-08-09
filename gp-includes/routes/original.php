@@ -42,5 +42,4 @@ class GP_Route_Original extends GP_Route_Main {
 			return $this->die_with_error( 'Error in saving original!' );
 		}
 	}
-
 }
