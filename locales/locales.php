@@ -252,10 +252,23 @@ endif;
 
 if ( ! class_exists( 'GP_Locales' ) ) :
 
+/**
+ * Registry of all locales known to GlotPress.
+ */
 class GP_Locales {
 
+	/**
+	 * List of locales, keyed by their slug.
+	 *
+	 * @var GP_Locale[]
+	 */
 	public $locales = array();
 
+	/**
+	 * Constructor.
+	 *
+	 * Defines all locales and populates the registry.
+	 */
 	public function __construct() {
 		$aa = new GP_Locale();
 		$aa->english_name = 'Afar';
@@ -2976,6 +2989,11 @@ class GP_Locales {
 		}
 	}
 
+	/**
+	 * Returns the shared instance of the registry, creating it on first use.
+	 *
+	 * @return GP_Locales The shared instance.
+	 */
 	public static function &instance() {
 		if ( ! isset( $GLOBALS['gp_locales'] ) )
 			$GLOBALS['gp_locales'] = new GP_Locales;
@@ -2983,21 +3001,48 @@ class GP_Locales {
 		return $GLOBALS['gp_locales'];
 	}
 
+	/**
+	 * Returns all locales.
+	 *
+	 * @return GP_Locale[] List of locales, keyed by their slug.
+	 */
 	public static function locales() {
 		$instance = GP_Locales::instance();
 		return $instance->locales;
 	}
 
+	/**
+	 * Checks whether a locale with the given slug exists.
+	 *
+	 * @param string $slug Slug of the locale.
+	 *
+	 * @return bool Whether the locale exists.
+	 */
 	public static function exists( $slug ) {
 		$instance = GP_Locales::instance();
 		return isset( $instance->locales[ $slug ] );
 	}
 
+	/**
+	 * Returns the locale with the given slug.
+	 *
+	 * @param string $slug Slug of the locale.
+	 *
+	 * @return GP_Locale|null The locale, or null if it doesn't exist.
+	 */
 	public static function by_slug( $slug ) {
 		$instance = GP_Locales::instance();
 		return isset( $instance->locales[ $slug ] )? $instance->locales[ $slug ] : null;
 	}
 
+	/**
+	 * Returns the first locale with the given value for the given field.
+	 *
+	 * @param string $field_name  Name of the GP_Locale property to compare, for example 'wp_locale'.
+	 * @param mixed  $field_value Value to search for.
+	 *
+	 * @return GP_Locale|false The locale, or false if no locale matches.
+	 */
 	public static function by_field( $field_name, $field_value ) {
 		$instance = GP_Locales::instance();
 		$result   = false;
