@@ -654,10 +654,9 @@ class GP_Builtin_Translation_Warnings {
 	 * Blanks the values of attributes whose contents may legitimately differ between a
 	 * source string and its translation, leaving only structural tag changes to compare.
 	 *
-	 * Each attribute is matched as a whole name="value" unit and only allow-listed names
-	 * are blanked. Consuming the quoted value as a unit means an allow-listed name that
-	 * appears inside another attribute's value is skipped, so a change to it is still
-	 * compared. The href and src URLs are validated separately.
+	 * The tag is parsed with the HTML API so that only real attributes are considered; an
+	 * allow-listed name appearing inside another attribute's value is left untouched, and
+	 * a change to it is still compared. The href and src URLs are validated separately.
 	 *
 	 * @since 4.1.0
 	 * @access private
@@ -668,50 +667,18 @@ class GP_Builtin_Translation_Warnings {
 	private function blank_changeable_attribute_values( string $tag ): string {
 		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
 
-		return preg_replace_callback(
-			'/(\s)([\w-]+)=("[^"]*"|\'[^\']*\')/',
-			static function ( $matches ) use ( $changeable_attributes ) {
-				if ( ! in_array( strtolower( $matches[2] ), $changeable_attributes, true ) ) {
-					return $matches[0];
-				}
-
-				$quote = $matches[3][0];
-				return $matches[1] . $matches[2] . '=' . $quote . '...' . $quote;
-			},
-			$tag
-		);
-	}
-
-	/**
-	 * Parses the quoted attributes of a single HTML tag.
-	 *
-	 * Each attribute is matched as a whole name="value" unit, so a name that appears
-	 * inside another attribute's value is not mistaken for an attribute of its own.
-	 * Where a name is repeated, the first occurrence wins, which is the one a browser
-	 * uses.
-	 *
-	 * @since 4.1.0
-	 * @access private
-	 *
-	 * @param string $tag An HTML tag.
-	 * @return array Attribute values keyed by lowercased attribute name.
-	 */
-	private function get_tag_attributes( string $tag ): array {
-		$attributes = array();
-
-		if ( ! preg_match_all( '/\s([\w-]+)=("[^"]*"|\'[^\']*\')/', $tag, $matches, PREG_SET_ORDER ) ) {
-			return $attributes;
+		$processor = new WP_HTML_Tag_Processor( $tag );
+		if ( ! $processor->next_tag() ) {
+			return $tag;
 		}
 
-		foreach ( $matches as $match ) {
-			$name = strtolower( $match[1] );
-
-			if ( ! isset( $attributes[ $name ] ) ) {
-				$attributes[ $name ] = substr( $match[2], 1, -1 );
+		foreach ( $changeable_attributes as $attribute ) {
+			if ( null !== $processor->get_attribute( $attribute ) ) {
+				$processor->set_attribute( $attribute, '...' );
 			}
 		}
 
-		return $attributes;
+		return $processor->get_updated_html();
 	}
 
 	/**
@@ -730,15 +697,16 @@ class GP_Builtin_Translation_Warnings {
 		$href_values = array();
 		$src_values  = array();
 
-		foreach ( $content as $tag ) {
-			$attributes = $this->get_tag_attributes( $tag );
-
-			if ( isset( $attributes['href'] ) ) {
-				$href_values[] = $attributes['href'];
+		$processor = new WP_HTML_Tag_Processor( implode( ' ', $content ) );
+		while ( $processor->next_tag() ) {
+			$href = $processor->get_attribute( 'href' );
+			if ( is_string( $href ) ) {
+				$href_values[] = $href;
 			}
 
-			if ( isset( $attributes['src'] ) ) {
-				$src_values[] = $attributes['src'];
+			$src = $processor->get_attribute( 'src' );
+			if ( is_string( $src ) ) {
+				$src_values[] = $src;
 			}
 		}
 
