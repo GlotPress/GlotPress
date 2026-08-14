@@ -44,6 +44,27 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertFalse( $verdict );
 	}
 
+	function test_term_with_trailing_punctuation() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'note:', 'part_of_speech' => 'noun', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertTrue( $verdict );
+	}
+
+	function test_term_with_punctuation_expression() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'are you sure...?', 'part_of_speech' => 'expression', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertTrue( $verdict );
+	}
+
+	function test_term_with_brackets() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'display [location]', 'part_of_speech' => 'expression', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertTrue( $verdict );
+	}
+
 	function test_by_glossary_id() {
 		$glossary_entry_1 = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );
 		$glossary_entry_2 = GP::$glossary_entry->create( array( 'glossary_id' => '2', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );
