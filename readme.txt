@@ -60,4 +60,4 @@ More information can be found in the [GlotPress Manual](https://glotpress.blog/t
 
 == Changelog ==
 
-This project adheres to [Semantic Versioning](https://semver.org/). All notable changes to this project will be documented in the [CHANGELOG.md file on GitHub](https://github.com/GlotPress/GlotPress/blob/develop/CHANGELOG.md).
+This project adheres to [Semantic Versioning](https://semver.org/). All notable changes to this project are documented in the [releases on GitHub](https://github.com/GlotPress/GlotPress/releases).
