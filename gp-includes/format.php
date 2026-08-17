@@ -10,6 +10,15 @@ abstract class GP_Format {
 	public $alt_extensions   = array();
 	public $filename_pattern = '%s-%s';
 
+	/**
+	 * Maximum length of a single value included in a log message.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @var int
+	 */
+	const LOG_VALUE_MAX_LENGTH = 200;
+
 	abstract public function print_exported_file( $project, $locale, $translation_set, $entries );
 	abstract public function read_originals_from_file( $file_name );
 
@@ -22,6 +31,42 @@ abstract class GP_Format {
 	 */
 	public function get_file_extensions() {
 		return array_merge( array( $this->extension ), $this->alt_extensions );
+	}
+
+	/**
+	 * Prepares a value read from an uploaded file for inclusion in a log message.
+	 *
+	 * Whitespace is collapsed and the length is capped so that the value stays on one
+	 * readable line whatever the file contained.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $value The value to prepare.
+	 * @return string The prepared value.
+	 */
+	protected function sanitize_for_log( $value ) {
+		$value = (string) $value;
+
+		// A value read from an uploaded file is not guaranteed to be valid UTF-8. Both
+		// steps use the byte-wise functions when it is not, so that neither depends on
+		// an encoding the value does not have.
+		if ( preg_match( '//u', $value ) ) {
+			$value = preg_replace( '/\s+/u', ' ', $value );
+
+			if ( mb_strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+				$value = mb_substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '…';
+			}
+
+			return $value;
+		}
+
+		$value = preg_replace( '/\s+/', ' ', $value );
+
+		if ( strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+			$value = substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '...';
+		}
+
+		return $value;
 	}
 
 	public function read_translations_from_file( $file_name, $project = null ) {
@@ -61,7 +106,7 @@ abstract class GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);
