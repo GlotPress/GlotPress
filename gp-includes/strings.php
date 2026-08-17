@@ -2,7 +2,6 @@
 /**
  * Functions, which make work with strings easier
  */
-
 function gp_startswith( $haystack, $needle ) {
 	return 0 === strpos( $haystack, $needle );
 }
@@ -150,7 +149,7 @@ function gp_sanitize_slug( $slug ) {
 	// Restore octets.
 	$slug = preg_replace( '|---([a-fA-F0-9][a-fA-F0-9])---|', '%$1', $slug );
 
-	if ( seems_utf8( $slug ) ) {
+	if ( gp_is_valid_utf8( $slug ) ) {
 		if ( function_exists( 'mb_strtolower' ) ) {
 			$slug = mb_strtolower( $slug, 'UTF-8' );
 		}

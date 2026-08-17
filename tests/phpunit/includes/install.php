@@ -6,7 +6,7 @@
  * @subpackage Tests
  */
 
-error_reporting( E_ALL & ~E_DEPRECATED & ~E_STRICT );
+error_reporting( E_ALL & ~E_DEPRECATED );
 
 $config_file_path = $argv[1];
 $tests_dir_path = $argv[2];

@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 
 class GP_Format_PO extends GP_Format {
 

@@ -12,6 +12,42 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->route->notices = array();
 	}
 
+	/**
+	 * Runs a route request and catches the exit a faked request throws when the
+	 * route ends the request, so the response can be asserted afterwards.
+	 *
+	 * @param callable $request Callback that invokes the route method under test.
+	 */
+	function do_route_request( callable $request ) {
+		try {
+			$request();
+		} catch ( GP_Route_Exit_Exception $e ) {
+			// The route ended the request; its state is recorded on $this->route.
+		}
+	}
+
+	/**
+	 * Creates a user with validator (approve) permission on a translation set and makes them the current user.
+	 *
+	 * @param GP_Translation_Set $set A set with its project/locale/slug available.
+	 * @return int The created user id.
+	 */
+	function become_validator_for_set( $set ) {
+		$user = $this->factory->user->create();
+		GP::$validator_permission->create(
+			array(
+				'user_id'     => $user,
+				'action'      => 'approve',
+				'project_id'  => $set->project->id,
+				'locale_slug' => $set->locale,
+				'set_slug'    => $set->slug,
+			)
+		);
+		wp_set_current_user( $user );
+
+		return $user;
+	}
+
 	function assertRedirected() {
 		$this->assertTrue( $this->route->redirected, "Wasn't redirected" );
 	}

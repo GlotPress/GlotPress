@@ -92,8 +92,16 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 
 		list( $set, ,  ) = $items;
 
+		// Editing the set requires write access to the project it currently
+		// belongs to, independent of any project supplied in the request.
+		if ( $this->cannot_edit_set_and_redirect( $set ) ) {
+			return;
+		}
+
 		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
 
+		// Moving the set to another project additionally requires write access
+		// to the destination project.
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) {
 			return;
 		}

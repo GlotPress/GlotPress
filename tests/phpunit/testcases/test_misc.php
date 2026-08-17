@@ -52,4 +52,14 @@ class GP_Test_Misc extends GP_UnitTestCase {
 		$this->assertEquals( null, gp_get_import_file_format( 'thiswillneverbeafileformat', 'filename.thiswillneverbeafileformat' ) );
 		$this->assertEquals( null, gp_get_import_file_format( null, 'filename.thiswillneverbeafileformat' ) );
 	}
+
+	function test_gp_is_valid_utf8() {
+		$this->assertTrue( gp_is_valid_utf8( '' ) );
+		$this->assertTrue( gp_is_valid_utf8( 'just a test' ) );
+		$this->assertTrue( gp_is_valid_utf8( "\xE2\x9C\x8F" ) );
+		$this->assertFalse( gp_is_valid_utf8( "\xE2\x9C" ) );
+		$this->assertFalse( gp_is_valid_utf8( "\xC1\xBF" ) );
+		$this->assertFalse( gp_is_valid_utf8( "\xED\xB0\x80" ) );
+		$this->assertFalse( gp_is_valid_utf8( "B\xFCch" ) );
+	}
 }
