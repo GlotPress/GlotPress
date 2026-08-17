@@ -172,5 +172,4 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 			$translation->update( array( 'warnings' => $warnings ) );
 		}
 	}
-
 }

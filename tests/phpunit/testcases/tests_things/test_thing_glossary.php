@@ -48,6 +48,16 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 
 	}
 
+	function test_description_defaults_to_empty_string() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		// Reload from the database so the nullable column goes through the load path.
+		$reloaded = GP::$glossary->get( $glossary->id );
+
+		$this->assertSame( '', $reloaded->description );
+	}
+
 	/**
 	 * @ticket gh-435
 	 */

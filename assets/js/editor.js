@@ -41,13 +41,13 @@ $gp.editor = (
 						wp.i18n.sprintf(
 							/* translators: %d: Characters count. */
 							wp.i18n._n( '%d Character', '%d Characters', count_characters, 'glotpress' ),
-							count_characters
+							count_characters,
 						),
 						wp.i18n.sprintf(
 							/* translators: %d: Words count. */
 							wp.i18n._n( '%d Word', '%d Words', count_words, 'glotpress' ),
-							count_words
-						)
+							count_words,
+						),
 					);
 
 					// Update counts HTML.

@@ -44,6 +44,27 @@ class GP_Test_Format_Properties extends GP_UnitTestCase {
 		$this->assertEquals( $file_contents, $exported );
 	}
 
+	function test_export_escapes_carriage_returns() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$project = $set->project;
+		$locale = $this->factory->locale->create();
+
+		$entries_for_export = array(
+			(object) array(
+				'context' => "some\rkey",
+				'singular' => 'Some key',
+				'translations' => array( "ok\r" . 'app.update.url=https://example.org' ),
+				'extracted_comments' => "first\rsecond",
+			),
+		);
+
+		$exported = $this->properties->print_exported_file( $project, $locale, $set, $entries_for_export );
+
+		$this->assertStringNotContainsString( "\r", $exported );
+		$this->assertStringContainsString( 'some\rkey = ok\rapp.update.url=https://example.org' . "\n", $exported );
+		$this->assertStringContainsString( "# first\n# second\n", $exported );
+	}
+
 	function test_read_originals() {
 		$translations = $this->properties->read_originals_from_file( GP_DIR_TESTDATA . '/originals.properties' );
 

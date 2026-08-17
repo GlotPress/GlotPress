@@ -3,7 +3,7 @@ if ( 'originals' === $kind ) {
 	$gp_title = sprintf(
 		/* translators: %s: Project name. */
 		__( 'Import Originals &lt; %s &lt; GlotPress', 'glotpress' ),
-		esc_html( $project->name )
+		$project->name
 	);
 	$return_link = gp_url_project( $project );
 	gp_breadcrumb_project(
@@ -16,7 +16,7 @@ if ( 'originals' === $kind ) {
 	$gp_title = sprintf(
 		/* translators: %s: Project name. */
 		__( 'Import Translations &lt; %s &lt; GlotPress', 'glotpress' ),
-		esc_html( $project->name )
+		$project->name
 	);
 	$return_link = gp_url_project_locale( $project, $locale->slug, $translation_set->slug );
 	gp_breadcrumb_project(

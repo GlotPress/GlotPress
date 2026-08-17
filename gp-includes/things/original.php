@@ -201,7 +201,7 @@ class GP_Original extends GP_Thing {
 
 		$obsolete_originals = array_filter(
 			$originals_by_key,
-			function( $entry ) {
+			function ( $entry ) {
 				return ( '-obsolete' == $entry->status );
 			}
 		);
@@ -269,7 +269,7 @@ class GP_Original extends GP_Thing {
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
-					$originals_existing++;
+					++$originals_existing;
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
@@ -337,9 +337,9 @@ class GP_Original extends GP_Thing {
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
 					$this->set_translations_for_original_to_fuzzy( $original->id );
-					$originals_fuzzied++;
+					++$originals_fuzzied;
 				} else {
-					$originals_existing++;
+					++$originals_existing;
 				}
 
 				// No need to obsolete it now.
@@ -350,18 +350,18 @@ class GP_Original extends GP_Thing {
 				$created = GP::$original->create( $data );
 
 				if ( ! $created ) {
-					$originals_error++;
+					++$originals_error;
 					continue;
 				}
 
-				$originals_added++;
+				++$originals_added;
 			}
 		}
 
 		// Mark remaining possibly dropped strings as obsolete.
 		foreach ( $possibly_dropped as $key => $value ) {
 			$this->update( array( 'status' => '-obsolete' ), array( 'id' => $value->id ) );
-			$originals_obsoleted++;
+			++$originals_obsoleted;
 		}
 
 		wp_suspend_cache_invalidation( $prev_suspend_cache );

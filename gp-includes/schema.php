@@ -2,7 +2,6 @@
 /**
  * Includes the database schema definitions and comments
  */
-
 function gp_schema_get() {
 	global $wpdb;
 
