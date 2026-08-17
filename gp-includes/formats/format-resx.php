@@ -216,7 +216,6 @@ class GP_Format_ResX extends GP_Format {
 		$this->line( '</xsd:element>', 2 );
 		$this->line( '</xsd:schema>', 1 );
 	}
-
 }
 
 GP::$formats['resx'] = new GP_Format_ResX();

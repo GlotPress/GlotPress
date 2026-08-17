@@ -49,7 +49,8 @@ class GP_Format_Properties extends GP_Format {
 				$translation = $entry->translations[0];
 			}
 
-			$translation = str_replace( "\n", "\\n", $translation );
+			// A bare CR terminates a logical line in this format, so it has to be escaped like LF.
+			$translation = str_replace( array( "\r", "\n" ), array( '\\r', '\\n' ), $translation );
 			$translation = $this->utf8_uni_encode( $translation );
 
 			if ( empty( $entry->context ) ) {
@@ -58,7 +59,7 @@ class GP_Format_Properties extends GP_Format {
 				$original = $entry->context;
 			}
 
-			$original = str_replace( "\n", "\\n", $original );
+			$original = str_replace( array( "\r", "\n" ), array( '\\r', '\\n' ), $original );
 
 			$comment = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
@@ -66,7 +67,7 @@ class GP_Format_Properties extends GP_Format {
 				$comment = 'No comment provided.';
 			}
 
-			$comment_lines = explode( "\n", $comment );
+			$comment_lines = preg_split( '/\r\n|\r|\n/', $comment );
 
 			foreach ( $comment_lines as $line ) {
 				$result .= "# $line\n";
@@ -83,7 +84,7 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param $string string The string to encode.
+	 * @param string $string The string to encode.
 	 *
 	 * @return string
 	 */
@@ -182,7 +183,7 @@ class GP_Format_Properties extends GP_Format {
 		/*
 		 * This is an alternate way to encode the character but it needs the iconv functions available:
 		 *
-		 *		iconv( 'UCS-4LE', 'UTF-8', pack( 'V', hexdec( $matches[ 1 ] ) ) );
+		 *      iconv( 'UCS-4LE', 'UTF-8', pack( 'V', hexdec( $matches[ 1 ] ) ) );
 		 *
 		 */
 
@@ -228,7 +229,7 @@ class GP_Format_Properties extends GP_Format {
 			}
 
 			for ( $i = 2; $i <= $bytesnumber; $i++ ) {
-				$offset ++;
+				++$offset;
 				$code2    = ord( substr( $string, $offset, 1 ) ) - 128;  // 10xxxxxx
 				$codetemp = ( $codetemp * 64 ) + $code2;
 			}
@@ -272,7 +273,7 @@ class GP_Format_Properties extends GP_Format {
 		// There's always one match (the entire line) so if we matched more than one, let's see if we can split the line.
 		if ( $num_matches > 1 ) {
 			// Loop through the matches, starting at the second one.
-			for ( $i = 1; $i < $num_matches; $i ++ ) {
+			for ( $i = 1; $i < $num_matches; $i++ ) {
 				// Get the location of the current match.
 				$location = $matches[ $i ][1];
 
@@ -346,7 +347,7 @@ class GP_Format_Properties extends GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);
@@ -435,30 +436,28 @@ class GP_Format_Properties extends GP_Format {
 				if ( false === $inline ) {
 					$entries->add_entry( $entry );
 				}
-			} else {
+			} elseif ( true === $inline ) {
 				// If we're processing a multi-line entry, add the line to the translation.
-				if ( true === $inline ) {
-					// Check to make sure we're not a blank line.
-					if ( '' != trim( $line ) ) {
-						// If there's still more lines to add, trim off the trailing slash.
-						if ( gp_endswith( $line, '\\' ) ) {
-							$line = rtrim( $line, '\\' );
-						}
-
-						// Strip off leading spaces.
-						$line = ltrim( $line );
-
-						// Decode the translation and add it to the current entry.
-						$entry->singular = $entry->singular . $this->uni_decode( $line );
-					} else {
-						// Any blank line signals end of the entry.
-						$entries->add_entry( $entry );
-						$inline = false;
+				// Check to make sure we're not a blank line.
+				if ( '' != trim( $line ) ) {
+					// If there's still more lines to add, trim off the trailing slash.
+					if ( gp_endswith( $line, '\\' ) ) {
+						$line = rtrim( $line, '\\' );
 					}
+
+					// Strip off leading spaces.
+					$line = ltrim( $line );
+
+					// Decode the translation and add it to the current entry.
+					$entry->singular = $entry->singular . $this->uni_decode( $line );
 				} else {
-					// If we hit a blank line and are not processing a multi-line entry, reset the comment.
-					$comment = null;
+					// Any blank line signals end of the entry.
+					$entries->add_entry( $entry );
+					$inline = false;
 				}
+			} else {
+				// If we hit a blank line and are not processing a multi-line entry, reset the comment.
+				$comment = null;
 			}
 		}
 
@@ -526,7 +525,6 @@ class GP_Format_Properties extends GP_Format {
 	private function escape_key( $string ) {
 		return addcslashes( $string, '=: ' );
 	}
-
 }
 
 GP::$formats['properties'] = new GP_Format_Properties();

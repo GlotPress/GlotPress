@@ -23,7 +23,7 @@ if ( ! $project->active ) {
 gp_breadcrumb_project(
 	$project,
 	array(
-		$translation_set->name . $inactive_bubble,
+		esc_html( $translation_set->name ) . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
@@ -59,20 +59,20 @@ $i = 0;
 	<?php gp_link_set_delete( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
 	<div class="glossary-links">
 		<?php
-		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$can_create_locale_glossary      = gp_can_create_locale_glossary( $translation_set->locale, $translation_set->slug );
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set->slug, $translation_set->locale );
-		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary                 = $locale_glossary_translation_set ? GP::$glossary->by_set_id( $locale_glossary_translation_set->id ) : null;
 
 		// Locale Glossary link.
-		if ( $locale_glossary ) {
-			?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
-			<?php
-		} elseif ( $can_create_locale_glossary ) {
-			?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
-			<?php
-		}
+		gp_tmpl_load(
+			'locale-glossary-link',
+			array(
+				'locale'                     => $locale,
+				'set_slug'                   => $translation_set->slug,
+				'locale_glossary'            => $locale_glossary,
+				'can_create_locale_glossary' => $can_create_locale_glossary,
+			)
+		);
 
 		// Show separator if both links are shown.
 		if ( ( $locale_glossary || $can_create_locale_glossary ) && ( ( $glossary && $glossary->translation_set_id === $translation_set->id ) || $can_approve ) ) {
@@ -105,7 +105,7 @@ $i = 0;
 		$sort_values_only    = array_filter( $sort );
 		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
 		// Remove any non-string or non-numeric values from the array.
-		$filters_and_sort    = array_filter( $filters_and_sort, 'is_scalar' );
+		$filters_and_sort = array_filter( $filters_and_sort, 'is_scalar' );
 
 		/**
 		 * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,

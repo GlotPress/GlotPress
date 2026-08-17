@@ -29,6 +29,8 @@ class GP_Glossary_Entry extends GP_Thing {
 	public $translation;
 	public $date_modified;
 	public $last_edited_by;
+	public $user_login;
+	public $user_display_name;
 
 
 	public function __construct( $fields = array() ) {
@@ -56,6 +58,26 @@ class GP_Glossary_Entry extends GP_Thing {
 			return;
 		}
 
+		$this->parts_of_speech = array(
+			'noun'         => 'noun',
+			'verb'         => 'verb',
+			'adjective'    => 'adjective',
+			'adverb'       => 'adverb',
+			'interjection' => 'interjection',
+			'conjunction'  => 'conjunction',
+			'preposition'  => 'preposition',
+			'pronoun'      => 'pronoun',
+			'expression'   => 'expression',
+			'abbreviation' => 'abbreviation',
+		);
+
+		add_action( 'init', array( $this, 'translate_parts_of_speech' ) );
+	}
+
+	/**
+	 * Translates the parts of speech.
+	 */
+	public function translate_parts_of_speech() {
 		$this->parts_of_speech = array(
 			'noun'         => _x( 'noun', 'part-of-speech', 'glotpress' ),
 			'verb'         => _x( 'verb', 'part-of-speech', 'glotpress' ),
@@ -100,7 +122,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	 * @return string The last modified date on success, empty string on failure.
 	 */
 	public function last_modified( $glossary ) {
-		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' );
+		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id );
 	}
 }
 
