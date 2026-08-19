@@ -197,4 +197,25 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertEquals( 'fuzzy', GP::$translation->get( $translation->id )->status, 'A legitimate in-project translated row must still be acted on.' );
 	}
+
+	function test_export_strips_control_characters() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+
+		// Created directly, the way an import does, so no blocking error runs.
+		$translation = $this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+			'translation_0'      => "Guardar\x04alteracoes",
+		) );
+		$translation->set_as_current();
+
+		ob_start();
+		$this->route->export_translations_get( $set->project->path, $set->locale, $set->slug );
+		$po = ob_get_clean();
+
+		$this->assertStringNotContainsString( "\x04", $po );
+		$this->assertStringContainsString( 'Guardaralteracoes', $po );
+	}
 }

@@ -170,6 +170,35 @@ class GP_Builtin_Translation_Errors {
 	}
 
 	/**
+	 * Adds an error for a translation containing forbidden control characters.
+	 *
+	 * These characters break exported files. 0x04 is the context separator
+	 * of the gettext formats, so msgfmt rejects a catalog that contains it
+	 * in a string, and XML 1.0 cannot represent any C0 control character
+	 * apart from tab, line feed and carriage return, which makes the
+	 * Android and .NET exports invalid documents. Tab, line feed and
+	 * carriage return themselves are legitimate and stay allowed.
+	 *
+	 * @since 4.1.0
+	 * @access public
+	 *
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
+	 * @return string|true True if check is OK, otherwise error message.
+	 */
+	public function error_control_characters( $original, $translation ) {
+		if ( preg_match( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', $translation, $match ) ) {
+			return sprintf(
+				/* translators: %s: Code point of the control character, e.g. U+0004. */
+				__( 'The translation contains the control character %s, which would break exported files.', 'glotpress' ),
+				sprintf( 'U+%04X', ord( $match[0] ) )
+			);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Registers all methods starting with `error_` as built-in errors.
 	 *
 	 * @since 4.0.0
