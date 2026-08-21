@@ -503,6 +503,25 @@ class GP_Translation_Set extends GP_Thing {
 				continue;
 			}
 
+			/*
+			 * The create path filters the status a second time right before creating a row, with
+			 * the translation that is already there. Approving supersedes that creation, so give
+			 * the filter the same say here, passing the waiting translation that is about to be
+			 * approved as the previous translation.
+			 *
+			 * This filter is documented in gp-includes/things/translation-set.php.
+			 */
+			$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $waiting_row );
+
+			if ( 'current' !== $entry->status ) {
+				/*
+				 * The filter downgraded the imported string, so the waiting translation must not
+				 * be approved. The caller falls through to the normal create path, which stores
+				 * the entry with the status the filter asked for.
+				 */
+				return null;
+			}
+
 			if ( ! $waiting_row->set_status( 'current' ) ) {
 				/*
 				 * The current user is not allowed to approve this translation, for example a

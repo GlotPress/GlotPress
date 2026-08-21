@@ -636,6 +636,134 @@ class GP_Import extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Approving a waiting translation replaces the second `gp_translation_set_import_status` call
+	 * of the create path, so a filter that downgrades the imported string must be able to stop it.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_status_filter_can_prevent_approving_waiting_translation() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		$downgrade = function ( $status, $entry, $old_translation ) {
+			return $old_translation ? 'waiting' : $status;
+		};
+
+		wp_set_current_user( $validator );
+		add_filter( 'gp_translation_set_import_status', $downgrade, 10, 3 );
+		$set->import( $translations, 'current' );
+		remove_filter( 'gp_translation_set_import_status', $downgrade, 10 );
+
+		$still_waiting = GP::$translation->get( $waiting->id );
+		$this->assertEquals( 'waiting', $still_waiting->status, 'The filter refused the current status, so nothing should have been approved.' );
+
+		$current = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+		$this->assertFalse( $current, 'No translation should have become current.' );
+
+		$all = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+		) );
+		$this->assertCount( 2, $all, 'The import falls through to the create path, with the status the filter asked for.' );
+	}
+
+	/**
+	 * A filter that leaves the status alone still gets to see the waiting translation that is
+	 * about to be approved, and the approval happens.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_import_status_filter_sees_the_waiting_translation_and_approval_happens() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+
+		$old_translation_ids = array();
+		$record              = function ( $status, $entry, $old_translation ) use ( &$old_translation_ids ) {
+			$old_translation_ids[] = $old_translation ? (int) $old_translation->id : 0;
+			return $status;
+		};
+
+		wp_set_current_user( $validator );
+		add_filter( 'gp_translation_set_import_status', $record, 10, 3 );
+		$set->import( $translations, 'current' );
+		remove_filter( 'gp_translation_set_import_status', $record, 10 );
+
+		$this->assertContains( (int) $waiting->id, $old_translation_ids, 'The filter should have been called with the waiting translation.' );
+
+		$approved = GP::$translation->get( $waiting->id );
+		$this->assertEquals( 'current', $approved->status, 'The filter left the status alone, so the approval should have happened.' );
+		$this->assertEquals( $translator, (int) $approved->user_id, 'Credit should remain with the original translator.' );
+
+		$all = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+		) );
+		$this->assertCount( 1, $all, 'Nothing should have been created.' );
+	}
+
+	/**
 	 * Approving goes through `set_status( 'current' )`, so an import without a current user,
 	 * a WP-CLI import for example, keeps the previous behaviour of creating a new translation.
 	 *
