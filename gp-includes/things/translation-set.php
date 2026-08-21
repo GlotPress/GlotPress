@@ -306,8 +306,9 @@ class GP_Translation_Set extends GP_Thing {
 
 		$load_existing_translations( 'current' );
 
-		$translations_added      = 0;
-		$created_translation_ids = array();
+		$translations_added       = 0;
+		$created_translation_ids  = array();
+		$approved_translation_ids = array();
 		foreach ( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) {
 				continue;
@@ -370,33 +371,36 @@ class GP_Translation_Set extends GP_Thing {
 				 * Only once the filter above has agreed that the existing translation may be
 				 * replaced, because approving a waiting translation supersedes it as well.
 				 */
-				if ( $create && 'current' === $entry->status
-					&& $this->approve_matching_waiting_translation( $translated->original_id, $entry, $locale, $translations ) ) {
-					/*
-					 * An existing waiting translation was approved, so nothing was created and its
-					 * ID is not added to $created_translation_ids, which is documented as the rows
-					 * created by this import. The approved row keeps the original translator's
-					 * user_id, so reporting it would credit that translator and not the importer.
-					 * Whether the hook should expose approvals too, in a separate argument, is an
-					 * open question for the maintainer rather than a settled one.
-					 */
-					$translations_added += 1;
-					continue;
+				if ( $create && 'current' === $entry->status ) {
+					$approved = $this->approve_matching_waiting_translation( $translated->original_id, $entry, $locale, $translations );
+					if ( $approved ) {
+						/*
+						 * An approval is not a creation, so the row is reported through
+						 * $approved_translation_ids and not through $created_translation_ids. It
+						 * keeps the original translator's user_id, so a consumer crediting the
+						 * import credits that translator and not the importer.
+						 */
+						$approved_translation_ids[] = $approved->id;
+						$translations_added        += 1;
+						continue;
+					}
 				}
 			} else {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
-					if ( 'current' === $entry->status
-						&& $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations ) ) {
-						/*
-						 * Nothing was created, so the approved ID is not added to
-						 * $created_translation_ids, for the reasons noted at the other call site.
-						 * No existing current translation is overwritten here, so
-						 * gp_translation_set_import_over_existing does not apply.
-						 */
-						$translations_added += 1;
-						continue;
+					if ( 'current' === $entry->status ) {
+						$approved = $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations );
+						if ( $approved ) {
+							/*
+							 * Reported through $approved_translation_ids, as at the other call site.
+							 * No existing current translation is overwritten here, so
+							 * gp_translation_set_import_over_existing does not apply.
+							 */
+							$approved_translation_ids[] = $approved->id;
+							$translations_added        += 1;
+							continue;
+						}
 					}
 
 					$entry->original_id = $original->id;
@@ -428,11 +432,15 @@ class GP_Translation_Set extends GP_Thing {
 		 *
 		 * @since 1.0.0
 		 * @since 4.1.0 Added the `$created_translation_ids` parameter.
+		 * @since 4.2.0 Added the `$approved_translation_ids` parameter.
 		 *
-		 * @param int   $translation_set         The ID of the translation set the import was made into.
-		 * @param int[] $created_translation_ids The IDs of the translations created during the import.
+		 * @param int   $translation_set          The ID of the translation set the import was made into.
+		 * @param int[] $created_translation_ids  The IDs of the translations created during the import.
+		 * @param int[] $approved_translation_ids The IDs of the waiting translations approved during the import.
+		 *                                        These were not created by the import and keep the original
+		 *                                        translator's credit.
 		 */
-		do_action( 'gp_translations_imported', $this->id, $created_translation_ids );
+		do_action( 'gp_translations_imported', $this->id, $created_translation_ids, $approved_translation_ids );
 
 		return $translations_added;
 	}

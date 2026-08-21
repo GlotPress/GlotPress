@@ -680,12 +680,12 @@ class GP_Import extends GP_UnitTestCase {
 	}
 
 	/**
-	 * Approved waiting translations are not created, so their IDs are not passed to
-	 * `gp_translations_imported`.
+	 * An approved waiting translation was not created, so `gp_translations_imported` reports it
+	 * through `$approved_translation_ids` and not through `$created_translation_ids`.
 	 *
 	 * @ticket gh-710
 	 */
-	function test_gp_translations_imported_excludes_approved_waiting_ids() {
+	function test_gp_translations_imported_reports_approved_waiting_ids_separately() {
 		$translator = $this->factory->user->create();
 		$validator  = $this->factory->user->create();
 
@@ -704,7 +704,7 @@ class GP_Import extends GP_UnitTestCase {
 			'singular'   => 'Good morning',
 		) );
 
-		$this->factory->translation->create( array(
+		$waiting = $this->factory->translation->create( array(
 			'original_id'        => $original->id,
 			'translation_set_id' => $set->id,
 			'translation_0'      => 'Guten Morgen',
@@ -718,19 +718,96 @@ class GP_Import extends GP_UnitTestCase {
 			'translations' => array( 'Guten Morgen' ),
 		) ) );
 
-		$created_translation_ids = null;
-		$closure = function( $set_id, $ids = null ) use ( &$created_translation_ids ) {
-			$created_translation_ids = $ids;
+		$created_translation_ids  = null;
+		$approved_translation_ids = null;
+		$closure = function( $set_id, $created = null, $approved = null ) use ( &$created_translation_ids, &$approved_translation_ids ) {
+			$created_translation_ids  = $created;
+			$approved_translation_ids = $approved;
 		};
-		add_action( 'gp_translations_imported', $closure, 10, 2 );
+		add_action( 'gp_translations_imported', $closure, 10, 3 );
 
 		wp_set_current_user( $validator );
 		$translations_added = $set->import( $translations, 'current' );
 
 		remove_action( 'gp_translations_imported', $closure );
 
-		$this->assertSame( array(), $created_translation_ids, 'An approval creates nothing, so no ID is reported.' );
+		$this->assertSame( array(), $created_translation_ids, 'An approval creates nothing, so no ID is reported as created.' );
+		$this->assertSame( array( $waiting->id ), $approved_translation_ids, 'The approved translation is reported separately.' );
+		$this->assertContainsOnly( 'int', $approved_translation_ids );
 		$this->assertSame( 1, $translations_added, 'The approval still counts towards the imported total.' );
+	}
+
+	/**
+	 * A single import can both create and approve, and `gp_translations_imported` keeps the two
+	 * sets apart so that a credit consumer can tell them apart again.
+	 *
+	 * @ticket gh-710
+	 */
+	function test_gp_translations_imported_reports_created_and_approved_separately() {
+		$translator = $this->factory->user->create();
+		$validator  = $this->factory->user->create();
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create( array(
+			'user_id'     => $validator,
+			'action'      => 'approve',
+			'project_id'  => $set->project_id,
+			'locale_slug' => $set->locale,
+			'set_slug'    => $set->slug,
+		) );
+
+		$waiting_original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$untranslated_original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good evening',
+		) );
+
+		$waiting = $this->factory->translation->create( array(
+			'original_id'        => $waiting_original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'user_id'            => $translator,
+			'status'             => 'waiting',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Guten Morgen' ),
+		) ) );
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good evening',
+			'translations' => array( 'Guten Abend' ),
+		) ) );
+
+		$created_translation_ids  = null;
+		$approved_translation_ids = null;
+		$closure = function( $set_id, $created = null, $approved = null ) use ( &$created_translation_ids, &$approved_translation_ids ) {
+			$created_translation_ids  = $created;
+			$approved_translation_ids = $approved;
+		};
+		add_action( 'gp_translations_imported', $closure, 10, 3 );
+
+		wp_set_current_user( $validator );
+		$translations_added = $set->import( $translations, 'current' );
+
+		remove_action( 'gp_translations_imported', $closure );
+
+		$created = GP::$translation->find_one( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $untranslated_original->id,
+		) );
+
+		$this->assertSame( array( $created->id ), $created_translation_ids, 'Only the new row is reported as created.' );
+		$this->assertSame( array( $waiting->id ), $approved_translation_ids, 'Only the approved row is reported as approved.' );
+		$this->assertSame( array(), array_intersect( $created_translation_ids, $approved_translation_ids ), 'The two sets are disjoint.' );
+		$this->assertSame( 2, $translations_added, 'Both entries count towards the imported total.' );
 	}
 
 	/**
