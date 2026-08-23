@@ -268,8 +268,26 @@ class GP_Original extends GP_Thing {
 				$original = $originals_by_key[ $entry->key() ];
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
+					/*
+					 * The key of an entry is made of its context and singular only, so a string which gained
+					 * a plural form, or whose plural form changed, matches the existing original and is updated
+					 * in place. Its current translations don't have a translation for every plural form of the
+					 * locale any more, so they have to be set to fuzzy, like for any other changed original.
+					 */
+					$plural         = gp_array_get( $data, 'plural' );
+					$plural_changed = ! is_null( $plural ) && '' !== $plural && $original->plural !== $plural;
+
+					/** This filter is documented in gp-includes/things/original.php */
+					$do_fuzzy = $plural_changed && apply_filters( 'gp_set_translations_for_original_to_fuzzy', true, (object) $data, $original );
+
 					$this->update( $data, array( 'id' => $original->id ) );
-					++$originals_existing;
+
+					if ( $do_fuzzy ) {
+						$this->set_translations_for_original_to_fuzzy( $original->id );
+						++$originals_fuzzied;
+					} else {
+						++$originals_existing;
+					}
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
@@ -321,7 +339,8 @@ class GP_Original extends GP_Thing {
 				/**
 				 * Filters whether to set existing translations to fuzzy.
 				 *
-				 * This filter is called when a new  string closely match an existing possibly dropped string.
+				 * This filter is called when a new string closely match an existing possibly dropped string,
+				 * and when an existing original gains a plural form or its plural form changes.
 				 *
 				 * @since 2.3.0
 				 *
@@ -381,7 +400,7 @@ class GP_Original extends GP_Thing {
 		 * @param int    $originals_added     Number or total originals added.
 		 * @param int    $originals_existing  Number of existing originals updated.
 		 * @param int    $originals_obsoleted Number of originals that were marked as obsolete.
-		 * @param int    $originals_fuzzied   Number of originals that were close matches of old ones and thus marked as fuzzy.
+		 * @param int    $originals_fuzzied   Number of originals that were close matches of old ones, or whose plural form changed, and thus marked as fuzzy.
 		 * @param int    $originals_error     Number of originals that were not imported due to an error.
 		 */
 		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error );

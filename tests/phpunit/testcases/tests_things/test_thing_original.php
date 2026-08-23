@@ -139,6 +139,102 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEquals( 0, count( $fuzzy_translations ) );
 	}
 
+	function test_import_should_mark_translation_as_fuzzy_when_an_original_gains_a_plural() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => '%d item', 'plural' => '%d items' ) ) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 0, $originals_existing );
+		$this->assertEquals( 1, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
+
+		$original->reload();
+		$this->assertEquals( '%d items', $original->plural );
+
+		$current_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'current'" );
+		$fuzzy_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'fuzzy'" );
+
+		$this->assertEquals( 0, count( $current_translations ) );
+		$this->assertEquals( 1, count( $fuzzy_translations ) );
+	}
+
+	function test_import_should_mark_translation_as_fuzzy_when_the_plural_of_an_original_changes() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => '%d item', 'plural' => '%d files' ) ) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 0, $originals_existing );
+		$this->assertEquals( 1, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
+
+		$current_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'current'" );
+		$fuzzy_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'fuzzy'" );
+
+		$this->assertEquals( 0, count( $current_translations ) );
+		$this->assertEquals( 1, count( $fuzzy_translations ) );
+	}
+
+	function test_import_should_not_mark_translation_as_fuzzy_when_an_original_gains_a_plural_with_filter() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$translations_for_import = $this->create_translations_with( array( array( 'singular' => '%d item', 'plural' => '%d items' ) ) );
+
+		add_filter( 'gp_set_translations_for_original_to_fuzzy', '__return_false' );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		remove_filter( 'gp_set_translations_for_original_to_fuzzy', '__return_false' );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 1, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
+
+		$original->reload();
+		$this->assertEquals( '%d items', $original->plural );
+
+		$current_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'current'" );
+		$fuzzy_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'fuzzy'" );
+
+		$this->assertEquals( 1, count( $current_translations ) );
+		$this->assertEquals( 0, count( $fuzzy_translations ) );
+	}
+
+	function test_import_should_not_mark_translation_as_fuzzy_when_the_plural_of_an_original_is_unchanged() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$entry = new Translation_Entry( array( 'singular' => '%d item', 'plural' => '%d items' ) );
+		$entry->references = array( 'foo.php:12' );
+		$translations_for_import = $this->create_translations_with( array( $entry ) );
+
+		list( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error ) = $original->import_for_project( $set->project, $translations_for_import );
+
+		$this->assertEquals( 0, $originals_added );
+		$this->assertEquals( 1, $originals_existing );
+		$this->assertEquals( 0, $originals_fuzzied );
+		$this->assertEquals( 0, $originals_obsoleted );
+		$this->assertEquals( 0, $originals_error );
+
+		$current_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'current'" );
+		$fuzzy_translations = GP::$translation->find_many( "original_id = '{$original->id}' AND status = 'fuzzy'" );
+
+		$this->assertEquals( 1, count( $current_translations ) );
+		$this->assertEquals( 0, count( $fuzzy_translations ) );
+	}
+
 	/**
 	 * @ticket 508
 	 */
