@@ -177,6 +177,55 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	}
 
 	/**
+	 * A translation of a plural original is only valid with a translation for every plural form of the
+	 * locale, so a submission which doesn't have one for each of them must not be saved.
+	 */
+	function test_translations_post_does_not_save_a_plural_translation_with_a_missing_form() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $original->id;
+		$_POST['translation']        = array( $original->id => array( 'Um item' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id ) ), 'A translation without a translation for each plural form must not be saved.' );
+	}
+
+	/**
+	 * A translation which has a translation for each plural form of the locale must still be saved.
+	 */
+	function test_translations_post_saves_a_plural_translation_with_all_forms() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $original->id;
+		$_POST['translation']        = array( $original->id => array( 'Um item', 'Muitos itens' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$translation = GP::$translation->find_one( array( 'original_id' => $original->id ) );
+
+		$this->assertNotFalse( $translation, 'A translation with a translation for each plural form must be saved.' );
+		$this->assertEquals( 'Um item', $translation->translation_0 );
+		$this->assertEquals( 'Muitos itens', $translation->translation_1 );
+	}
+
+	/**
 	 * The tightened filter must still act on a legitimate in-project translated row.
 	 */
 	function test_bulk_fuzzy_marks_a_translation_of_the_authorized_set() {
