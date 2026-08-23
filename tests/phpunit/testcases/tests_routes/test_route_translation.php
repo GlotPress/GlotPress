@@ -176,6 +176,88 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $foreign_original->id ) ), 'A translation must not be created for another project\'s original.' );
 	}
 
+	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text ) {
+		$_POST['original_id']        = $nonce_original_id;
+		$_POST['translation']        = array( $submitted_original_id => array( $text ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $nonce_original_id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		unset( $_POST['original_id'], $_POST['translation'], $_REQUEST['_gp_route_nonce'] );
+	}
+
+	/**
+	 * A submitted translation is stored for the original the request is authorized for.
+	 */
+	function test_translations_post_stores_a_translation_for_the_submitted_original() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Plain' ) );
+
+		$this->become_validator_for_set( $set );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Stored' );
+
+		$translation = GP::$translation->find_one( array( 'original_id' => $original->id ) );
+		$this->assertNotFalse( $translation, 'A translation is created for the submitted original.' );
+		$this->assertSame( 'current', $translation->status );
+	}
+
+	/**
+	 * The originals a request may write to are limited to the one it carries a nonce for.
+	 */
+	function test_translations_post_ignores_an_original_the_request_is_not_authorized_for() {
+		$set   = $this->factory->translation_set->create_with_project_and_locale();
+		$first = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'First' ) );
+		$other = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Other' ) );
+
+		$this->become_validator_for_set( $set );
+
+		$this->submit_translation( $set, $first->id, $other->id, 'Elsewhere' );
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $other->id ) ), 'Only the original the nonce covers is written to.' );
+	}
+
+	/**
+	 * Originals that are kept out of the listings stay out of reach of the submit route too.
+	 */
+	function test_translations_post_ignores_a_hidden_original_without_write_permission() {
+		$set    = $this->factory->translation_set->create_with_project_and_locale();
+		$hidden = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Not listed', 'priority' => -2 ) );
+
+		$user_id = $this->become_validator_for_set( $set );
+		$this->assertFalse( (bool) GP::$permission->user_can( $user_id, 'write', 'project', $set->project->id ) );
+
+		$this->submit_translation( $set, $hidden->id, $hidden->id, 'Should not be stored' );
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $hidden->id ) ), 'A hidden original is not written to without write permission.' );
+	}
+
+	/**
+	 * A user with write permission still sees and edits hidden originals.
+	 */
+	function test_translations_post_stores_a_hidden_original_with_write_permission() {
+		$set    = $this->factory->translation_set->create_with_project_and_locale();
+		$hidden = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Not listed', 'priority' => -2 ) );
+
+		$user_id = $this->set_normal_user_as_current();
+		GP::$permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $set->project->id,
+			)
+		);
+
+		$this->submit_translation( $set, $hidden->id, $hidden->id, 'Stored by a writer' );
+
+		$this->assertNotFalse( GP::$translation->find_one( array( 'original_id' => $hidden->id ) ), 'A writer can still translate a hidden original.' );
+	}
+
 	/**
 	 * The tightened filter must still act on a legitimate in-project translated row.
 	 */

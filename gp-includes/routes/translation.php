@@ -260,6 +260,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
+		$authorized_original_id = (int) $original_id;
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		if ( ! $translation_set ) {
@@ -270,11 +272,23 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
+		$can_write = $this->can( 'write', 'project', $project->id );
+
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
+			// The nonce covers a single original, which is the only one this request may write to.
+			if ( (int) $original_id !== $authorized_original_id ) {
+				continue;
+			}
+
 			$original = GP::$original->get( $original_id );
 
 			if ( ! $this->original_belongs_to_project( $original, $project ) ) {
+				continue;
+			}
+
+			// Hidden originals are left out of the listings of users without write permission.
+			if ( (int) $original->priority <= -2 && ! $can_write ) {
 				continue;
 			}
 
@@ -297,7 +311,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$data['status'] = 'waiting';
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
+			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $can_write ) {
 				$set_status = 'current';
 			} else {
 				$set_status = 'waiting';
