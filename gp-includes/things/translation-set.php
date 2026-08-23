@@ -194,6 +194,10 @@ class GP_Translation_Set extends GP_Thing {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
+		if ( ! empty( $args['locale'] ) ) {
+			$args['locale'] = gp_sanitize_slug( $args['locale'] );
+		}
+
 		return $args;
 	}
 

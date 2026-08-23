@@ -332,6 +332,55 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertStringContainsString( esc_html( $name ), $html );
 	}
 
+	function test_locale_is_reduced_to_slug_characters() {
+		$project = $this->factory->project->create();
+
+		$set = new GP_Translation_Set(
+			array(
+				'name'       => 'Set',
+				'slug'       => 'default',
+				'project_id' => $project->id,
+				'locale'     => '<b>de</b>',
+			)
+		);
+
+		$this->assertSame( 'de', $set->locale, 'A locale is reduced to slug characters.' );
+		$this->assertTrue( $set->validate() );
+	}
+
+	function test_locale_that_reduces_to_nothing_is_invalid() {
+		$project = $this->factory->project->create();
+
+		$set = new GP_Translation_Set(
+			array(
+				'name'       => 'Set',
+				'slug'       => 'default',
+				'project_id' => $project->id,
+				'locale'     => '<script>`',
+			)
+		);
+
+		$this->assertSame( '', $set->locale );
+		$this->assertFalse( $set->validate(), 'A locale left empty by the reduction does not validate.' );
+	}
+
+	function test_locale_keeps_the_characters_real_locale_slugs_use() {
+		$project = $this->factory->project->create();
+
+		foreach ( array( 'de', 'pt-br', 'zh-hk', 'art-xemoji' ) as $slug ) {
+			$set = new GP_Translation_Set(
+				array(
+					'name'       => 'Set',
+					'slug'       => 'default',
+					'project_id' => $project->id,
+					'locale'     => $slug,
+				)
+			);
+
+			$this->assertSame( $slug, $set->locale, 'A real locale slug is kept unchanged.' );
+		}
+	}
+
 	function test_non_db_field_names_are_declared_properties() {
 		$set = new GP_Translation_Set();
 
