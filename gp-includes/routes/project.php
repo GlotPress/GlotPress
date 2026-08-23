@@ -227,11 +227,12 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$new_parent_id = (int) $updated_project->parent_project_id;
+		$new_parent    = $new_parent_id ? $new_parent_id : null;
 
 		// TODO: add id check as a validation rule
 		if ( $project->id == $new_parent_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
-		} elseif ( $new_parent_id && $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent_id ) ) {
+		} elseif ( $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent ) ) {
 			$this->errors[] = __( 'You are not allowed to do that!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );

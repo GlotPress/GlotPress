@@ -79,6 +79,100 @@ class GP_Test_Route_Project extends GP_UnitTestCase_Route {
 		$this->assertSame( 'owned', $project->path );
 	}
 
+	public function test_writer_cannot_move_a_project_to_the_root_level() {
+		$user_id = $this->set_normal_user_as_current();
+		$parent  = $this->factory->project->create( array( 'name' => 'Parent', 'slug' => 'root-parent' ) );
+		$child   = $this->factory->project->create(
+			array(
+				'name'              => 'Child',
+				'slug'              => 'root-child',
+				'parent_project_id' => $parent->id,
+			)
+		);
+		$this->factory->project->create(
+			array(
+				'name'              => 'Grandchild',
+				'slug'              => 'root-grandchild',
+				'parent_project_id' => $child->id,
+			)
+		);
+
+		GP::$permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $child->id,
+			)
+		);
+
+		$this->edit_project(
+			$child,
+			array(
+				'name'              => 'Child',
+				'slug'              => 'root-child',
+				'parent_project_id' => 0,
+			)
+		);
+
+		$child->reload();
+		$this->assertSame( (int) $parent->id, (int) $child->parent_project_id, 'Moving a project to the root level requires write permission there.' );
+		$this->assertSame( 'root-parent/root-child', $child->path );
+		$this->assertSame( 'root-parent/root-child/root-grandchild', GP::$project->by_path( 'root-parent/root-child/root-grandchild' )->path, 'The descendant path is unchanged.' );
+	}
+
+	public function test_writer_can_still_rename_a_root_level_project() {
+		$user_id = $this->set_normal_user_as_current();
+		$project = $this->factory->project->create( array( 'name' => 'Top', 'slug' => 'top-level' ) );
+
+		GP::$permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $project->id,
+			)
+		);
+
+		$this->edit_project(
+			$project,
+			array(
+				'name'              => 'Top renamed',
+				'slug'              => 'top-level',
+				'parent_project_id' => 0,
+			)
+		);
+
+		$project->reload();
+		$this->assertSame( 'Top renamed', $project->name, 'A writer can still edit a project that already sits at the root level.' );
+		$this->assertSame( 0, (int) $project->parent_project_id );
+	}
+
+	public function test_admin_can_move_a_project_to_the_root_level() {
+		$this->set_admin_user_as_current();
+		$parent = $this->factory->project->create( array( 'name' => 'Parent', 'slug' => 'admin-parent' ) );
+		$child  = $this->factory->project->create(
+			array(
+				'name'              => 'Child',
+				'slug'              => 'admin-child',
+				'parent_project_id' => $parent->id,
+			)
+		);
+
+		$this->edit_project(
+			$child,
+			array(
+				'name'              => 'Child',
+				'slug'              => 'admin-child',
+				'parent_project_id' => 0,
+			)
+		);
+
+		$child->reload();
+		$this->assertSame( 0, (int) $child->parent_project_id );
+		$this->assertSame( 'admin-child', $child->path );
+	}
+
 	public function test_admin_can_reparent_a_project() {
 		$this->set_admin_user_as_current();
 		$parent  = $this->factory->project->create( array( 'name' => 'Parent', 'slug' => 'parent' ) );
