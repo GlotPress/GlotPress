@@ -427,22 +427,22 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	public function permissions_delete( $project_path, $permission_id ) {
-		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $permission_id ) ) {
-			return;
-		}
-
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
-			$this->die_with_404();
+			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $project->id . '_' . $permission_id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
 
-		$permission = GP::$permission->get( $permission_id );
-		if ( $permission ) {
+		$permission = GP::$validator_permission->get( $permission_id );
+		if ( $permission && (int) $permission->project_id === (int) $project->id ) {
 			if ( $permission->delete() ) {
 				$this->notices[] = __( 'Permission was deleted.', 'glotpress' );
 			} else {

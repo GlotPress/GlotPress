@@ -43,7 +43,12 @@ gp_tmpl_header();
 					<td><?php echo esc_html( $permission->action ); ?></td>
 					<td><?php echo esc_html( $permission->locale_slug ); ?></td>
 					<td><?php echo esc_html( $permission->set_slug ); ?></td>
-					<td><a href="<?php echo esc_url( gp_route_nonce_url( gp_url_join( gp_url_current(), '-delete/' . $permission->id ), 'delete-project-permission_' . $permission->id ) ); ?>" class="action delete"><?php _e( 'Delete', 'glotpress' ); ?></a></td>
+					<td>
+						<form action="<?php echo esc_url( gp_url_join( gp_url_current(), '-delete/' . $permission->id ) ); ?>" method="post">
+							<?php gp_route_nonce_field( 'delete-project-permission_' . $project->id . '_' . $permission->id ); ?>
+							<button type="submit" class="button is-link action delete"><?php _e( 'Delete', 'glotpress' ); ?></button>
+						</form>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>

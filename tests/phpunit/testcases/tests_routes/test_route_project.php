@@ -184,4 +184,115 @@ class GP_Test_Route_Project extends GP_UnitTestCase_Route {
 		$this->assertNotFalse( GP::$translation_set->get( $target_set->id ), 'The existing set must survive without delete permission.' );
 		$this->assertCount( 2, GP::$translation_set->by_project_id( $target_set->project->id ), 'The addition is applied while the removal is skipped.' );
 	}
+
+	private function become_writer_for_project( $project ) {
+		$user_id = $this->set_normal_user_as_current();
+
+		GP::$permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $project->id,
+			)
+		);
+
+		return $user_id;
+	}
+
+	private function delete_permission( $project, $permission_id, $nonce_project_id = null ) {
+		$nonce_project_id            = null === $nonce_project_id ? $project->id : $nonce_project_id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'delete-project-permission_' . $nonce_project_id . '_' . $permission_id );
+
+		$this->do_route_request(
+			function () use ( $project, $permission_id ) {
+				$this->route->permissions_delete( $project->path, $permission_id );
+			}
+		);
+
+		unset( $_REQUEST['_gp_route_nonce'] );
+	}
+
+	private function create_validator_permission( $project ) {
+		return GP::$validator_permission->create(
+			array(
+				'user_id'     => $this->factory->user->create(),
+				'action'      => 'approve',
+				'project_id'  => $project->id,
+				'locale_slug' => 'bg',
+				'set_slug'    => 'default',
+			)
+		);
+	}
+
+	public function test_permissions_delete_removes_a_validator_of_the_project() {
+		$project = $this->factory->project->create( array( 'name' => 'Owned', 'slug' => 'owned-permissions' ) );
+		$this->become_writer_for_project( $project );
+
+		$permission = $this->create_validator_permission( $project );
+
+		$this->delete_permission( $project, $permission->id );
+
+		$this->assertFalse( GP::$permission->get( $permission->id ), 'A validator of the project is deleted.' );
+	}
+
+	public function test_permissions_delete_leaves_a_validator_of_another_project() {
+		$project       = $this->factory->project->create( array( 'name' => 'Owned', 'slug' => 'owned-validators' ) );
+		$other_project = $this->factory->project->create( array( 'name' => 'Other', 'slug' => 'other-validators' ) );
+		$this->become_writer_for_project( $project );
+
+		$permission = $this->create_validator_permission( $other_project );
+
+		$this->delete_permission( $project, $permission->id );
+
+		$this->assertNotFalse( GP::$permission->get( $permission->id ), 'A validator of another project is not deleted.' );
+	}
+
+	public function test_permissions_delete_leaves_a_site_wide_admin_permission() {
+		$project = $this->factory->project->create( array( 'name' => 'Owned', 'slug' => 'owned-admins' ) );
+		$this->become_writer_for_project( $project );
+
+		$other_user = $this->factory->user->create();
+		$permission = GP::$permission->create(
+			array(
+				'user_id' => $other_user,
+				'action'  => 'admin',
+			)
+		);
+
+		$this->delete_permission( $project, $permission->id );
+
+		$this->assertNotFalse( GP::$permission->get( $permission->id ), 'A site-wide admin permission is not deleted.' );
+		$this->assertTrue( GP::$permission->user_can( $other_user, 'admin' ), 'The other user keeps the admin permission.' );
+	}
+
+	public function test_permissions_delete_leaves_a_project_write_permission() {
+		$project = $this->factory->project->create( array( 'name' => 'Owned', 'slug' => 'owned-writers' ) );
+		$this->become_writer_for_project( $project );
+
+		$permission = GP::$permission->create(
+			array(
+				'user_id'     => $this->factory->user->create(),
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $project->id,
+			)
+		);
+
+		$this->delete_permission( $project, $permission->id );
+
+		$this->assertNotFalse( GP::$permission->get( $permission->id ), 'This route only removes validators, so a write permission is not deleted.' );
+	}
+
+	public function test_permissions_delete_rejects_a_nonce_issued_for_another_project() {
+		$project       = $this->factory->project->create( array( 'name' => 'Owned', 'slug' => 'owned-nonces' ) );
+		$other_project = $this->factory->project->create( array( 'name' => 'Other', 'slug' => 'other-nonces' ) );
+		$this->become_writer_for_project( $project );
+
+		$permission = $this->create_validator_permission( $project );
+
+		$this->delete_permission( $project, $permission->id, $other_project->id );
+
+		$this->assertNotFalse( GP::$permission->get( $permission->id ), 'A nonce issued for another project does not authorize the request.' );
+	}
 }
