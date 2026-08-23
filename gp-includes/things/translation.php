@@ -767,6 +767,14 @@ class GP_Translation extends GP_Thing {
 			return false;
 		}
 
+		/*
+		 * A translation which doesn't have a translation for every plural form of the locale is not a
+		 * valid translation, so it can't become the current one, no matter how it made it to the database.
+		 */
+		if ( 'current' === $status && ! $this->has_all_translations() ) {
+			return false;
+		}
+
 		if ( 'current' === $status ) {
 			$updated = $this->set_as_current();
 		} elseif ( 'changesrequested' === $status ) {
@@ -787,6 +795,40 @@ class GP_Translation extends GP_Thing {
 		}
 
 		return $updated;
+	}
+
+	/**
+	 * Checks whether the translation has a non-empty translation for each plural form of its locale.
+	 *
+	 * Translations of an original without a plural form only have a single translation, whatever the
+	 * number of plural forms of the locale is.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return bool True if the translation has a translation for each plural form, false otherwise.
+	 */
+	public function has_all_translations() {
+		$nplurals = 1;
+		$original = GP::$original->get( $this->original_id );
+
+		if ( $original && $original->plural ) {
+			$translation_set = GP::$translation_set->get( $this->translation_set_id );
+			$locale          = $translation_set ? GP_Locales::by_slug( $translation_set->locale ) : false;
+
+			if ( $locale ) {
+				$nplurals = $locale->nplurals;
+			}
+		}
+
+		$translations = $this->translations();
+
+		for ( $index = 0; $index < $nplurals; $index++ ) {
+			if ( is_null( $translations[ $index ] ) || '' === $translations[ $index ] ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public function translations() {
