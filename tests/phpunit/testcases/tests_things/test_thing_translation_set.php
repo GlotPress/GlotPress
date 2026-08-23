@@ -15,6 +15,36 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		);
 	}
 
+	function test_copy_translations_from_should_copy_all_plural_forms() {
+		$source_set = $this->factory->translation_set->create();
+		$destination_set = $this->factory->translation_set->create();
+		$this->factory->translation->create( array(
+			'translation_set_id' => $source_set->id,
+			'translation_0' => 'Form 0',
+			'translation_1' => 'Form 1',
+			'translation_2' => 'Form 2',
+			'translation_3' => 'Form 3',
+			'translation_4' => 'Form 4',
+			'translation_5' => 'Form 5',
+		) );
+
+		$destination_set->copy_translations_from( $source_set->id );
+
+		$destination_set_translations = GP::$translation->find( array( 'translation_set_id' => $destination_set->id ) );
+
+		$this->assertEquals( 1, count( $destination_set_translations ) );
+		$this->assertEqualFields( $destination_set_translations[0],
+			array(
+				'translation_0' => 'Form 0',
+				'translation_1' => 'Form 1',
+				'translation_2' => 'Form 2',
+				'translation_3' => 'Form 3',
+				'translation_4' => 'Form 4',
+				'translation_5' => 'Form 5',
+			)
+		);
+	}
+
 	function test_import_should_import_a_plural_translation_with_all_plural_forms() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
