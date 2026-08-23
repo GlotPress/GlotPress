@@ -206,7 +206,7 @@ class GP_Test_Route_Project extends GP_UnitTestCase_Route {
 
 		$this->do_route_request(
 			function () use ( $project, $permission_id ) {
-				$this->route->permissions_delete( $project->path, $permission_id );
+				$this->route->permissions_delete_post( $project->path, $permission_id );
 			}
 		);
 

@@ -426,7 +426,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_current() );
 	}
 
-	public function permissions_delete( $project_path, $permission_id ) {
+	public function permissions_delete_post( $project_path, $permission_id ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
