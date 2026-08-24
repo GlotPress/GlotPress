@@ -339,7 +339,7 @@ class GP_Original extends GP_Thing {
 				/**
 				 * Filters whether to set existing translations to fuzzy.
 				 *
-				 * This filter is called when a new string closely match an existing possibly dropped string,
+				 * This filter is called when a new string closely matches an existing possibly dropped string,
 				 * and when an existing original gains a plural form or its plural form changes.
 				 *
 				 * @since 2.3.0
