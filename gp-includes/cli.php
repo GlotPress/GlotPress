@@ -6,7 +6,6 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/add-admin.php';
-	require_once GP_PATH . GP_INC . 'cli/audit-incomplete-translations.php';
 	require_once GP_PATH . GP_INC . 'cli/branch-project.php';
 	require_once GP_PATH . GP_INC . 'cli/import-originals.php';
 	require_once GP_PATH . GP_INC . 'cli/regenerate-paths.php';
@@ -25,7 +24,6 @@ function gp_cli_register() {
 	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
 
 	// New style commands.
-	WP_CLI::add_command( 'glotpress audit-incomplete-translations', 'GP_CLI_Audit_Incomplete_Translations' );
 	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
 
 	// CLI related filters.
