@@ -283,7 +283,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$data['translation_set_id'] = $translation_set->id;
 
 			// The editor has a textarea for each plural form of the locale, so a translation of a plural original is expected to have one translation per plural form.
-			$expected_translations = $original->plural ? $locale->nplurals : 1;
+			$expected_translations = ! is_null( $original->plural ) ? $locale->nplurals : 1;
 
 			// Reduce range by one since we're starting at 0, see GH#516.
 			foreach ( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) - 1 ) as $i ) {

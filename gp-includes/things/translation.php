@@ -811,7 +811,7 @@ class GP_Translation extends GP_Thing {
 		$nplurals = 1;
 		$original = GP::$original->get( $this->original_id );
 
-		if ( $original && $original->plural ) {
+		if ( $original && ! is_null( $original->plural ) ) {
 			$translation_set = GP::$translation_set->get( $this->translation_set_id );
 			$locale          = $translation_set ? GP_Locales::by_slug( $translation_set->locale ) : false;
 
