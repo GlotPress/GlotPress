@@ -531,6 +531,15 @@ class GP_Route_Translation extends GP_Route_Main {
 			if ( ! $translation ) {
 				continue;
 			}
+			if ( 'current' === $new_status && ! empty( $translation->warnings ) ) {
+				++$error;
+				$this->errors[] = sprintf(
+					/* translators: %d: Translation ID. */
+					__( 'Translation %d has warnings and was not approved.', 'glotpress' ),
+					(int) $translation->id
+				);
+				continue;
+			}
 			if ( $translation->set_status( $new_status ) ) {
 				++$ok;
 			} else {
