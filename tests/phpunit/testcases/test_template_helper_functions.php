@@ -84,6 +84,114 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects that a single-word glossary term does not match inside a hyphenated compound
+	 * (e.g. term `add` in `add-on`).
+	 */
+	function test_glossary_term_does_not_match_inside_hyphenated_compound() {
+		$test_string       = 'Install the add-on now.';
+		$expected_result   = 'Install the add-on now.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'add',
+				'part_of_speech' => 'verb',
+				'translation'    => 'toevoegen',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * Expects that a glossary term does not match when the original contains a longer word that
+	 * has the term as a prefix joined by a hyphen (e.g. term `content` in `wp-content`).
+	 */
+	function test_glossary_term_does_not_match_hyphenated_compound_of_term() {
+		$test_string       = 'Edit the wp-content directory.';
+		$expected_result   = 'Edit the wp-content directory.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'content',
+				'part_of_speech' => 'noun',
+				'translation'    => 'inhoud',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * Expects that a single-word glossary term still matches at the end of the string.
+	 * Sanity check that the hyphen-aware right boundary does not regress the end-of-string case.
+	 */
+	function test_glossary_term_still_matches_at_end_of_string() {
+		$test_string     = 'Click add';
+		$expected_result = 'Click ' . $this->glossary_match( 'toevoegen', 'verb', 'add' );
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'add',
+				'part_of_speech' => 'verb',
+				'translation'    => 'toevoegen',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * Expects that a single-word glossary term still matches when followed by a space or
+	 * punctuation. Guards against accidentally regressing non-hyphen word boundaries.
+	 */
+	function test_glossary_term_still_matches_before_space_and_punctuation() {
+		$test_string     = 'Click add. Then add now.';
+		$expected_result = 'Click ' . $this->glossary_match( 'toevoegen', 'verb', 'add' ) . '. Then ' . $this->glossary_match( 'toevoegen', 'verb', 'add' ) . ' now.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'add',
+				'part_of_speech' => 'verb',
+				'translation'    => 'toevoegen',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
 	 * Expects matching a term with space and hyphen mixed [GlotPress WP-Team].
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_spaces_and_hyphens_in_glossary() {

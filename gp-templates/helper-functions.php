@@ -553,14 +553,14 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 		// Build the regular expression.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
-		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
+		$terms_search        = '(?:(?<!-)(\b|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
 		$terms_search  = rtrim( $terms_search, '|' );
-		$terms_search .= ')\b)|(' . $placeholders_search . ')';
+		$terms_search .= ')(?=\b(?!-)))|(' . $placeholders_search . ')';
 	}
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
