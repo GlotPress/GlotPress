@@ -279,4 +279,34 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertEquals( 'fuzzy', GP::$translation->get( $translation->id )->status, 'A legitimate in-project translated row must still be acted on.' );
 	}
+
+	/**
+	 * Bulk approving a waiting translation that has stored warnings must not
+	 * promote it to current. See issue #1994.
+	 */
+	function test_bulk_approve_does_not_promote_a_translation_with_warnings() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+		$translation = $this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'waiting',
+			'translations'       => array( 'No Placeholder' ),
+			'warnings'           => array( 0 => array( 'placeholders' => 'Missing %s placeholder in translation.' ) ),
+		) );
+
+		$_POST['bulk'] = array(
+			'action'      => 'approve',
+			'row-ids'     => $original->id . '-' . $translation->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertEquals( 'waiting', GP::$translation->get( $translation->id )->status, 'A waiting translation with warnings must not be promoted to current by bulk approve.' );
+		$this->assertNotEmpty( $this->route->errors, 'An error must be recorded for the skipped warning-laden row.' );
+	}
 }
