@@ -719,6 +719,149 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			"Expected 1 space at the beginning, got 3.\nExpected 1 space at the end, got 3." );
 	}
 
+	/**
+	 * Tests that a translation beginning with a term copied from the original
+	 * does not warn, because the case of that term comes from the original.
+	 *
+	 * Languages that reorder the sentence can begin the translation with a
+	 * different term from the original, such as a product name.
+	 *
+	 * @see https://github.com/GlotPress/GlotPress/issues/1969
+	 */
+	public function test_missing_uppercase_beginning_ignores_terms_copied_from_the_original() {
+		$this->l->slug     = 'bn';
+		$this->l->alphabet = 'bengali';
+
+		// The original begins with a deliberately lowercase product name.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'bbPress is part of WordPress.org',
+			'WordPress.org মূলত bbPress এরই অংশ',
+			$this->l
+		);
+
+		$this->l->slug     = 'hi';
+		$this->l->alphabet = 'devanagari';
+
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'bbPress is part of WordPress.org',
+			'WordPress.org का हिस्सा bbPress है',
+			$this->l
+		);
+
+		// A name whose casing is internal rather than initial.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'visit bbPress',
+			'bbPress पर जाएँ',
+			$this->l
+		);
+
+		// A version identifier.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'Use v2 now',
+			'v2 का उपयोग करें',
+			$this->l
+		);
+
+		// A code identifier.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'Set foo_bar here',
+			'foo_bar सेट करें',
+			$this->l
+		);
+	}
+
+	/**
+	 * Tests that a term which merely resembles one in the original still warns.
+	 *
+	 * @see https://github.com/GlotPress/GlotPress/issues/1969
+	 */
+	public function test_missing_uppercase_beginning_still_warns_for_marks_inside_ordinary_words() {
+		$this->l->slug     = 'hi';
+		$this->l->alphabet = 'devanagari';
+
+		/*
+		 * A leading term counts as a name only when it carries its own casing: an
+		 * uppercase letter, a digit, or one of `.`, `_`, `/` or `\\`. Marks and
+		 * punctuation that occur inside ordinary words of other scripts must not
+		 * qualify, or the warning is silently lost for those languages.
+		 */
+
+		$middle_dot = "col\u{00B7}legi";        // Catalan, ordinary word.
+		$decomposed = "e\u{0301}quipe";         // French, accent as a combining mark.
+		$hindi_word = "\u{092C}\u{0926}\u{0932}\u{0947}\u{0902}";
+
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			"Change {$middle_dot} setting",
+			"{$middle_dot} {$hindi_word}",
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			"Change {$decomposed} setting",
+			"{$decomposed} {$hindi_word}",
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+	}
+
+	public function test_missing_uppercase_beginning_still_warns_for_terms_not_in_the_original() {
+		$this->l->slug     = 'hi';
+		$this->l->alphabet = 'devanagari';
+
+		// `word` is not a term in the original, it is only part of `WordPress`.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'WordPress plugin',
+			'word प्लगइन',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		// `Press` is not a term in the original, it is only part of `bbPress`.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'bbPress forum',
+			'Press फोरम',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l
+		);
+
+		// The original spells the term with a different case.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'Settings page',
+			'settings पेज',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		// An ordinary lowercase word is not a name, even when copied from the original.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'Change settings',
+			'settings बदलें',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		// A hyphenated compound is an ordinary word, not a name.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'Check front-end settings',
+			'front-end सेटिंग्स जांचें',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+	}
+
 	public function test_missing_uppercase_beginning() {
 		$this->l->slug = 'ga';
 		$this->l->alphabet = 'latin';
