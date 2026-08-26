@@ -775,7 +775,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 
 	public function test_missing_uppercase_beginning_excluded_locales() {
 		$w = new GP_Builtin_Translation_Warnings();
-		$w->casing_exclude_languages = array( 'nl' );
+		$w->casing_exclude_languages = array( 'nl', 'nl-be' );
 
 		$nl           = $this->factory->locale->create();
 		$nl->slug     = 'nl';
@@ -788,6 +788,13 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertSame(
 			true,
 			$w->warning_missing_uppercase_beginning( 'monday', 'Maandag', $nl )
+		);
+
+		$nl_be       = $this->factory->locale->create();
+		$nl_be->slug = 'nl-be';
+		$this->assertSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'Monday', 'maandag', $nl_be )
 		);
 	}
 

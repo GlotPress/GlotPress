@@ -200,12 +200,12 @@ class GP_Builtin_Translation_Warnings {
 	 * a translation, even when the source string starts with an uppercase letter
 	 * (e.g. Dutch "maandag", Afrikaans "maandag").
 	 *
-	 * @since 4.0.0
+	 * @since 4.2.0
 	 * @access public
 	 *
 	 * @var array
 	 */
-	public $casing_exclude_languages = array( 'nl', 'af' );
+	public $casing_exclude_languages = array( 'nl', 'nl-be', 'af' );
 
 	/**
 	 * Checks whether lengths of source and translation differ too much.
@@ -977,12 +977,12 @@ class GP_Builtin_Translation_Warnings {
 	 */
 	public function warning_missing_uppercase_beginning( $original, $translation, $locale ) {
 		/**
-		 * Filters the list of locales excluded from the missing-uppercase-beginning check.
+		 * Filter the list of locales excluded from the missing-uppercase-beginning check.
 		 *
 		 * Locales in this list may legitimately start translations with a lowercase
 		 * letter (e.g. Dutch "maandag").
 		 *
-		 * @since 4.0.0
+		 * @since 4.2.0
 		 *
 		 * @param string[]  $casing_exclude_languages Locale slugs to exclude.
 		 * @param GP_Locale $locale                   The current locale.
