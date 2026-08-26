@@ -773,6 +773,70 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			$this->l );
 }
 
+	public function test_missing_uppercase_beginning_excluded_locales() {
+		$w = new GP_Builtin_Translation_Warnings();
+		$w->casing_exclude_languages = array( 'nl', 'nl-be' );
+
+		$nl           = $this->factory->locale->create();
+		$nl->slug     = 'nl';
+		$nl->alphabet = 'latin';
+
+		$this->assertSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'Monday', 'maandag', $nl )
+		);
+		$this->assertSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'monday', 'Maandag', $nl )
+		);
+
+		$nl_be       = $this->factory->locale->create();
+		$nl_be->slug = 'nl-be';
+		$this->assertSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'Monday', 'maandag', $nl_be )
+		);
+	}
+
+	public function test_missing_uppercase_beginning_non_excluded_locale() {
+		$w = new GP_Builtin_Translation_Warnings();
+		$w->casing_exclude_languages = array( 'nl' );
+
+		$es           = $this->factory->locale->create();
+		$es->slug     = 'es';
+		$es->alphabet = 'latin';
+
+		$this->assertNotSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'Monday', 'lunes', $es )
+		);
+	}
+
+	public function test_missing_uppercase_beginning_filter_overrides_list() {
+		$w = new GP_Builtin_Translation_Warnings();
+		$w->casing_exclude_languages = array( 'nl' );
+
+		$locale           = $this->factory->locale->create();
+		$locale->slug     = 'es';
+		$locale->alphabet = 'latin';
+
+		$this->assertNotSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'Monday', 'lunes', $locale )
+		);
+
+		$callback = function ( $exclude, $l ) use ( $locale ) {
+			unset( $l );
+			return array_merge( $exclude, array( 'es' ) );
+		};
+		add_filter( 'gp_casing_exclude_languages', $callback, 10, 2 );
+		$this->assertSame(
+			true,
+			$w->warning_missing_uppercase_beginning( 'Monday', 'lunes', $locale )
+		);
+		remove_filter( 'gp_casing_exclude_languages', $callback, 10 );
+	}
+
 	public function test_chained_warnings() {
 		$this->tw = new GP_Translation_Warnings();
 		$this->w  = new GP_Builtin_Translation_Warnings();
