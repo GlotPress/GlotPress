@@ -93,6 +93,11 @@ class GP_Route_Glossary extends GP_Route_Main {
 
 		if ( ! $glossary ) {
 			$this->redirect_with_error( __( 'Cannot find glossary.', 'glotpress' ) );
+			return;
+		}
+
+		if ( $this->cannot_edit_glossary_and_redirect( $glossary ) ) {
+			return;
 		}
 
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );

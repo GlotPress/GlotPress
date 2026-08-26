@@ -112,7 +112,7 @@ class GP_Router {
 
 			"get:/$project/-permissions"                      => array( 'GP_Route_Project', 'permissions_get' ),
 			"post:/$project/-permissions"                     => array( 'GP_Route_Project', 'permissions_post' ),
-			"get:/$project/-permissions/-delete/$dir"         => array( 'GP_Route_Project', 'permissions_delete' ),
+			"post:/$project/-permissions/-delete/$dir"        => array( 'GP_Route_Project', 'permissions_delete_post' ),
 
 			"get:/$project/-mass-create-sets"                 => array( 'GP_Route_Project', 'mass_create_sets_get' ),
 			"post:/$project/-mass-create-sets"                => array( 'GP_Route_Project', 'mass_create_sets_post' ),
