@@ -326,12 +326,19 @@ class GP_Translation extends GP_Thing {
 			'asc'  => 'ASC',
 			'desc' => 'DESC',
 		);
-		$sort_how  = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
 		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			$like = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
+			if ( '' === $collation ) {
+				$term_value = mb_strtolower( gp_array_get( $filters, 'term' ) );
+				$like = "LIKE '%" . ( esc_sql( $wpdb->esc_like( $term_value ) ) ) . "%'";
+				$use_lower = true;
+			} else {
+				$term_value = gp_array_get( $filters, 'term' );
+				$like = "LIKE BINARY '%" . ( esc_sql( $wpdb->esc_like( $term_value ) ) ) . "%'";
+				$use_lower = false;
+			}
 
 			$term_scope = gp_array_get( $filters, 'term_scope', 'scope_any' );
 
@@ -357,8 +364,8 @@ class GP_Translation extends GP_Thing {
 			}
 
 			$mapped_scope_array = array_map(
-				function ( $x ) use ( $like ) {
-					return "($x $like)";
+				function ( $x ) use ( $like, $use_lower ) {
+					return $use_lower ? "(LOWER($x) $like)" : "($x $like)";
 				},
 				$scope_array
 			);
