@@ -95,6 +95,27 @@ class GP_Thing {
 	}
 
 	/**
+	 * Count rows from the database based on conditions.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param array $conditions {
+	 *    Conditions to match.
+	 *    @type string $orderby   Optional. Column to order by. Default 'id'.
+	 *    @type string $order     Optional. Sort direction (ASC/DESC). Default 'asc'.
+	 *    @type int    $page      Optional. Page number for pagination. Default 1.
+	 *    @type int    $per_page  Optional. Number of results per page. Default $this->per_page.
+	 * 
+	 * }
+	 * @return int
+	 */
+	public function count( $conditions = array() ) {
+		global $wpdb;
+		$conditions['count'] = true;
+		return $wpdb->get_var( $this->select( $conditions ) );
+	}
+
+	/**
 	 * Retrieves one row from the database.
 	 *
 	 * @since 1.0.0
@@ -248,6 +269,25 @@ class GP_Thing {
 	 */
 	public function find( $conditions, $order = null ) {
 		return $this->find_many( $conditions, $order );
+	}
+
+	/**
+	 * Find rows from the database based on conditions.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param array $conditions {
+	 *    Conditions to match.
+	 *    @type string $orderby   Optional. Column to order by. Default 'id'.
+	 *    @type string $order     Optional. Sort direction (ASC/DESC). Default 'asc'.
+	 *    @type int    $page      Optional. Page number for pagination. Default 1.
+	 *    @type int    $per_page  Optional. Number of results per page. Default $this->per_page.
+	 * 
+	 * }
+	 * @return mixed
+	 */
+	public function find_some( $conditions = array() ) {
+		return $this->many( $this->select( $conditions ) );
 	}
 
 	/**
@@ -435,7 +475,16 @@ class GP_Thing {
 
 		$args = $this->prepare_fields_for_save( $args );
 
-		$update_res = $this->update( $args );
+		// Update if thing has id, create new if not.
+		if ( $this->id  ) {
+			$update_res = $this->update( $args );
+		} else {
+			$new_thing  = $this->create( $args );
+			$update_res = $new_thing ? true : false;
+			if ( $new_thing ) {
+				$args['id'] = $new_thing->id;
+			}
+		}
 
 		$this->set_fields( $args );
 
@@ -663,15 +712,18 @@ class GP_Thing {
 
 			foreach ( $conditions as $field => $sql_condition ) {
 				if ( is_array( $sql_condition ) ) {
-					$string_conditions[] = '(' . implode(
-						' OR ',
-						array_map(
-							function ( $cond ) use ( $field ) {
-								return "$field $cond";
-							},
-							$sql_condition
-						)
-					) . ')';
+					$values = array_map(
+						static function ( $cond ) {
+							return trim( preg_replace( '/^[=!<>]+/', '', $cond ) );
+						},
+						$sql_condition
+					);
+
+					$string_conditions[] = sprintf(
+						'%s IN (%s)',
+						$field,
+						implode( ', ', $values )
+					);
 				} else {
 					$string_conditions[] = "$field $sql_condition";
 				}
@@ -682,6 +734,22 @@ class GP_Thing {
 		return $this->apply_default_conditions( $conditions );
 	}
 
+	/**
+	 * Generates SQL ORDER BY clause from provided ordering parameters.
+	 *
+	 * This method constructs an ORDER BY clause for SQL queries based on the provided
+	 * column name(s) and sort direction. If no order is specified, it falls back to
+	 * the object's default order.
+	 * 
+	 * @since 1.0.0
+	 *
+	 * @param string|array $order_by  The column name(s) to order by. Can be a string
+	 *                                 or an array of column names.
+	 * @param string       $order_how Optional. The sort direction (ASC or DESC).
+	 *                                 Ignored if $order_by is an array. Default empty string.
+	 *
+	 * @return string The SQL ORDER BY clause, or the default order if no valid order is provided.
+	 */
 	public function sql_from_order( $order_by, $order_how = '' ) {
 		if ( ! $order_by ) {
 			$order_by = '';
@@ -697,6 +765,23 @@ class GP_Thing {
 		return 'ORDER BY ' . $order_by . ( $order_how ? " $order_how" : '' );
 	}
 
+	/**
+	 * Builds a complete SQL SELECT query with conditions and ordering.
+	 *
+	 * This method generates a full SQL SELECT statement by combining the table name,
+	 * WHERE conditions, and ORDER BY clause. It uses the object's table property and
+	 * delegates to sql_from_conditions() and sql_from_order() for building the
+	 * respective SQL clauses.
+	 * 
+	 * @since 1.0.0
+	 *
+	 * @param mixed        $conditions The conditions to use in the WHERE clause.
+	 *                                  Format depends on sql_from_conditions() implementation.
+	 * @param string|array $order      Optional. The ordering parameters passed to sql_from_order().
+	 *                                  Default null.
+	 *
+	 * @return string The complete SQL SELECT query with optional WHERE and ORDER BY clauses.
+	 */
 	public function select_all_from_conditions_and_order( $conditions, $order = null ) {
 		$query          = "SELECT * FROM $this->table";
 		$conditions_sql = $this->sql_from_conditions( $conditions );
@@ -707,6 +792,61 @@ class GP_Thing {
 		if ( $order_sql ) {
 			$query .= " $order_sql";
 		}
+		return $query;
+	}
+
+	/**
+	 * Builds a complete SQL SELECT query.
+	 *
+	 * This method generates a full SQL SELECT statement by combining the table name,
+	 * WHERE conditions, ORDER BY clause and LIMIT/OFFSET. It uses the object's table property and
+	 * delegates to sql_from_conditions() and sql_from_order() and sql_limit_for_paging() for building the
+	 * respective SQL clauses.
+	 * 
+	 * @since 5.0.0
+	 *
+	 * @param mixed        $args The conditions to use
+	 *
+	 * @return string The complete SQL SELECT query with optional WHERE, LIMIT, and ORDER BY clauses.
+	 */
+	public function select( $args = array() ) {
+
+		$defaults = array(
+			'orderby'  => 'id',
+			'order'    => 'asc',
+			'page'     => 1,
+			'per_page' => $this->per_page,
+			'count'    => false,
+		);
+
+		// Merge defaults with provided args.
+		$args = wp_parse_args( $args, $defaults );
+
+		// Remove keys from $args, leaving only the extra where conditions.
+		$conditions = array_intersect_key( $args, array_flip($this->field_names) );
+
+		// Begin building the query string.
+		if ( $args['count'] ) {
+			$query = "SELECT COUNT(*) FROM $this->table";
+			$args['per_page'] = 'no-limit';
+			$args['page'] = 1;
+		} else {
+			$query = "SELECT * FROM $this->table";
+		}
+
+		$conditions_sql = $this->sql_from_conditions( $conditions );
+		if ( $conditions_sql ) {
+			$query .= " WHERE $conditions_sql";
+		}
+		$order_sql = $this->sql_from_order( $args['orderby'], $args['order'] );
+		if ( $order_sql ) {
+			$query .= " $order_sql";
+		}
+		$pagination_sql = $this->sql_limit_for_paging( $args['page'], $args['per_page'] );
+		if ( $pagination_sql ) {
+			$query .= " $pagination_sql";
+		}
+
 		return $query;
 	}
 
