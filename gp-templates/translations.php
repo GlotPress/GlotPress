@@ -455,6 +455,21 @@ do_action( 'gp_before_translation_table', get_defined_vars() );
 	</tr>
 	</thead>
 <?php
+$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set->slug, $translation_set->locale );
+$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+$glossary_entries                = GP::$glossary_entry->by_glossary_id( $locale_glossary->id );
+$glossary_entries                = array_filter( $glossary_entries, fn( $value ) => 'glossary-button' === $value->comment );
+$new_actions                     = '';
+// Create the buttons from the glossary entries.
+foreach ( $glossary_entries as $glossary_entry ) {
+	$new_actions .= '<button type="button" class="button is-small insert-glossary-item" data-title="' . esc_attr( $glossary_entry->translation ) . '" title="' . esc_attr( $glossary_entry->translation ) . '">' . esc_attr( $glossary_entry->translation ) . '</button>';
+}
+add_filter(
+	'gp_entry_actions',
+	function( $actions ) use ( $new_actions ) {
+		return array( str_replace( '</div>', $new_actions . '</div>', $actions[0] ) );
+	}
+);
 foreach ( $translations as $translation ) {
 	if ( ! $translation->translation_set_id ) {
 		$translation->translation_set_id = $translation_set->id;
