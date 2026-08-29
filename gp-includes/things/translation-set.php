@@ -382,7 +382,32 @@ class GP_Translation_Set extends GP_Thing {
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
 					$entry->original_id = $original->id;
-					$create             = true;
+					// Skip if the original has a plural but the imported entry only provides a singular.
+					// A singular-only entry (msgid + msgstr, no msgid_plural) must not populate a plural
+					// original, as the plural form would be left empty or incorrectly filled.
+					if ( ! empty( $original->plural ) && empty( $entry->plural ) ) {
+						continue;
+					}
+
+					// Skip if translation was previously rejected by a validator and user can't approve.
+					if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $this->id ) ) {
+						global $wpdb;
+						$rejected = $wpdb->get_var( $wpdb->prepare(
+							"SELECT id FROM {$wpdb->gp_translations}
+							WHERE translation_set_id = %d
+							AND original_id = %d
+							AND status = 'rejected'
+							AND translation_0 = %s",
+							$this->id,
+							$original->id,
+							$entry->translations[0]
+						) );
+						if ( $rejected ) {
+							continue;
+						}
+					}
+
+					$create = true;
 				}
 			}
 			if ( $create ) {
