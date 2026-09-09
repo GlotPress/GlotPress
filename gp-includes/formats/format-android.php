@@ -86,7 +86,7 @@ class GP_Format_Android extends GP_Format {
 				$entry->context = $entry->singular;
 			}
 
-			$id = preg_replace( '/[^a-zA-Z0-9_]/U', '_', $entry->context );
+			$id = $this->normalize_resource_name( $entry->context );
 
 			$this->line( '<string name="' . $id . '">' . $this->escape( $entry->translations[0] ) . '</string>', 1 );
 		}
@@ -355,7 +355,9 @@ class GP_Format_Android extends GP_Format {
 
 		// Loop through all of the single entries add them to a mapping array.
 		foreach ( $entries as $entry ) {
-			// Make sure the array name is sanitized.
+			// Group by the raw array name (the context without its index suffix)
+			// so arrays with distinct names are never merged. The name is
+			// normalized only on output below.
 			$array_name = preg_replace( '/\[\d+\]$/', '', $entry->context );
 
 			// Initialize the mapping array entry if this is the first time.
@@ -378,8 +380,10 @@ class GP_Format_Android extends GP_Format {
 
 		// Now do the actual output to the class variable.
 		foreach ( array_keys( $mapping ) as $array_name ) {
-			// Open the string array tag.
-			$this->line( '<string-array name="' . $array_name . '">', 1 );
+			// Open the string array tag. The name is normalized to the
+			// characters Android allows (matching the <string> export) so it
+			// can't break out of the name attribute.
+			$this->line( '<string-array name="' . $this->normalize_resource_name( $array_name ) . '">', 1 );
 
 			// Output each item in the array.
 			foreach ( $mapping[ $array_name ] as $item ) {
@@ -389,6 +393,19 @@ class GP_Format_Android extends GP_Format {
 			// Close the string array tag.
 			$this->line( '</string-array>', 1 );
 		}
+	}
+
+	/**
+	 * Normalizes a context into an Android resource name.
+	 *
+	 * Replaces every character Android does not allow in a resource name with an
+	 * underscore, so the value is safe to write into a `name` attribute.
+	 *
+	 * @param string $name The raw context.
+	 * @return string The normalized resource name.
+	 */
+	private function normalize_resource_name( $name ) {
+		return preg_replace( '/[^a-zA-Z0-9_]/U', '_', $name );
 	}
 
 	/**

@@ -1,10 +1,8 @@
 === GlotPress ===
 Contributors: A5hleyRich, akibjorklund, akirk, amieiro, atimmer, bradt, ChantalC, ckykenken, DaMsT, daveshine, dd32, evarlese, extendwings, gilbitron, GregRoss, javorszky, nacin, Nikschavan, ocean90, pedromendonca, petya, polevaultweb, ramiy, rmccue, samuelsidler, SergeyBiryukov, sunxiyuan, swissspidy, tobifjellner, vladytimy, xavivars, yoavf
 Tags: translation
-Requires at least: 4.6
-Tested up to: 6.8
-Requires PHP: 7.4
-Stable tag: 4.0.3
+Tested up to: 7.1
+Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,4 +58,4 @@ More information can be found in the [GlotPress Manual](https://glotpress.blog/t
 
 == Changelog ==
 
-This project adheres to [Semantic Versioning](https://semver.org/). All notable changes to this project will be documented in the [CHANGELOG.md file on GitHub](https://github.com/GlotPress/GlotPress/blob/develop/CHANGELOG.md).
+This project adheres to [Semantic Versioning](https://semver.org/). All notable changes to this project are documented in the [releases on GitHub](https://github.com/GlotPress/GlotPress/releases).

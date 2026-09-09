@@ -165,7 +165,7 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 						'pos' => $pos,
 					);
 
-					$regex = '#<span class="glossary-word" data-translations="\[.*?' . preg_quote( htmlspecialchars( substr( json_encode( $translation_json ), 0, -2 ) ), '#' ) . '[^"]+">[^<]+</span>#';
+					$regex = '#<span class="glossary-word" data-translations="\[.*?' . preg_quote( htmlspecialchars( substr( json_encode( $translation_json ), 0, -2 ), ENT_QUOTES, 'UTF-8' ), '#' ) . '[^"]+">[^<]+</span>#';
 
 					$this->assertMatchesRegularExpression( $regex, $translation->singular_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->singular . '".' );
 					$this->assertMatchesRegularExpression( $regex, $translation->plural_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->plural . '".' );

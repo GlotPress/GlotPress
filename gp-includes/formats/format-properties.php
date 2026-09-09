@@ -79,7 +79,8 @@ class GP_Format_Properties extends GP_Format {
 				$translation = $entry->translations[0];
 			}
 
-			$translation = str_replace( "\n", "\\n", $translation );
+			// A bare CR terminates a logical line in this format, so it has to be escaped like LF.
+			$translation = str_replace( array( "\r", "\n" ), array( '\\r', '\\n' ), $translation );
 			$translation = $this->utf8_uni_encode( $translation );
 
 			if ( empty( $entry->context ) ) {
@@ -88,7 +89,7 @@ class GP_Format_Properties extends GP_Format {
 				$original = $entry->context;
 			}
 
-			$original = str_replace( "\n", "\\n", $original );
+			$original = str_replace( array( "\r", "\n" ), array( '\\r', '\\n' ), $original );
 
 			$comment = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
@@ -96,7 +97,7 @@ class GP_Format_Properties extends GP_Format {
 				$comment = 'No comment provided.';
 			}
 
-			$comment_lines = explode( "\n", $comment );
+			$comment_lines = preg_split( '/\r\n|\r|\n/', $comment );
 
 			foreach ( $comment_lines as $line ) {
 				$result .= "# $line\n";
@@ -376,7 +377,7 @@ class GP_Format_Properties extends GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);

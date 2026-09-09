@@ -295,18 +295,38 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
-		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+		$authorized_original_id = (int) $original_id;
 
-		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		if ( ! $translation_set ) {
 			return $this->die_with_404();
 		}
 
+		$this->can_or_forbidden( 'edit', 'translation-set', $translation_set->id );
+
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
+
+		$can_write = $this->can( 'write', 'project', $project->id );
 
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
+			// The nonce covers a single original, which is the only one this request may write to.
+			if ( (int) $original_id !== $authorized_original_id ) {
+				continue;
+			}
+
+			$original = GP::$original->get( $original_id );
+
+			if ( ! $this->original_belongs_to_project( $original, $project ) ) {
+				continue;
+			}
+
+			// Hidden originals are left out of the listings of users without write permission.
+			if ( (int) $original->priority <= -2 && ! $can_write ) {
+				continue;
+			}
+
 			$data                       = compact( 'original_id' );
 			$data['user_id']            = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
@@ -326,13 +346,12 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$data['status'] = 'waiting';
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
+			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $can_write ) {
 				$set_status = 'current';
 			} else {
 				$set_status = 'waiting';
 			}
 
-			$original         = GP::$original->get( $original_id );
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
 			if ( $errors ) {
@@ -340,7 +359,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				foreach ( $errors as $error ) {
 					foreach ( $error as $key => $value ) {
 						$output .= '<li>';
-						$output .= htmlentities( $value );
+						$output .= htmlentities( $value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8' );
 						$output .= '</li>';
 					}
 				}
@@ -437,6 +456,10 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$bulk            = gp_post( 'bulk' );
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
+
+		// Drop rows outside the authorized project/set before any action runs, so neither the built-in handlers nor custom actions on the hook below can touch another set's data.
+		$bulk['row-ids'] = $this->filter_bulk_row_ids_for_set( $bulk['row-ids'], $project, $translation_set );
+
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
 				case 'approve':
@@ -476,6 +499,56 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$bulk['redirect_to'] = esc_url_raw( $bulk['redirect_to'] );
 		$this->redirect( $bulk['redirect_to'] );
+	}
+
+	/**
+	 * Filters client-supplied bulk-action row IDs down to those belonging to the authorized project and set.
+	 *
+	 * Row IDs have the form "<original_id>-<translation_id>". A request is authorized for a single
+	 * project/set, so rows whose original is in another project, or whose translation is in another
+	 * set, are dropped before any action runs.
+	 *
+	 * @param string[]           $row_ids         The client-supplied row IDs.
+	 * @param GP_Project         $project         The authorized project.
+	 * @param GP_Translation_Set $translation_set The authorized translation set.
+	 * @return string[] The row IDs that belong to the project and set.
+	 */
+	private function filter_bulk_row_ids_for_set( $row_ids, $project, $translation_set ) {
+		return array_values(
+			array_filter(
+				$row_ids,
+				function ( $row_id ) use ( $project, $translation_set ) {
+					$parts          = explode( '-', $row_id );
+					$original_id    = (int) gp_array_get( $parts, 0 );
+					$translation_id = (int) gp_array_get( $parts, 1 );
+
+					$original = GP::$original->get( $original_id );
+					if ( ! $this->original_belongs_to_project( $original, $project ) ) {
+						return false;
+					}
+
+					if ( $translation_id ) {
+						$translation = GP::$translation->get( $translation_id );
+						return $translation
+							&& (int) $translation->translation_set_id === (int) $translation_set->id
+							&& (int) $translation->original_id === $original_id;
+					}
+
+					return true;
+				}
+			)
+		);
+	}
+
+	/**
+	 * Whether an original exists and belongs to a project.
+	 *
+	 * @param GP_Original|false $original The original to check.
+	 * @param GP_Project        $project  The project it must belong to.
+	 * @return bool
+	 */
+	private function original_belongs_to_project( $original, $project ) {
+		return $original && (int) $original->project_id === (int) $project->id;
 	}
 
 	/**
@@ -896,10 +969,18 @@ class GP_Route_Translation extends GP_Route_Main {
 	 * @param GP_Translation $translation The translation to check.
 	 */
 	private function can_approve_translation_or_forbidden( $translation ) {
-		$can_reject_self = ( get_current_user_id() == $translation->user_id && 'waiting' == $translation->status );
-		if ( $can_reject_self ) {
+		$requested_status  = gp_post( 'status' );
+		$requires_approval = in_array( $requested_status, array( 'current', 'changesrequested' ), true );
+
+		// The author of a waiting translation may manage it (e.g. reject it or
+		// discard its warnings) without approval rights, but approving it or
+		// requesting changes on it still requires the approve permission.
+		$is_own_waiting_translation = get_current_user_id() === (int) $translation->user_id && 'waiting' === $translation->status;
+
+		if ( $is_own_waiting_translation && ! $requires_approval ) {
 			return;
 		}
+
 		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
 	}
 

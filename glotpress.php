@@ -3,9 +3,8 @@
  * Plugin Name: GlotPress
  * Plugin URI: https://wordpress.org/plugins/glotpress/
  * Description: GlotPress is a tool to help translators collaborate.
- * Version: 4.0.3
+ * Version: 4.1.0
  * Requires at least: 4.6
- * Tested up to: 6.8
  * Requires PHP: 7.4
  * Author: the GlotPress team
  * Author URI: https://glotpress.blog
@@ -29,7 +28,7 @@
  * @package GlotPress
  */
 
-define( 'GP_VERSION', '4.0.3' );
+define( 'GP_VERSION', '4.1.0' );
 define( 'GP_DB_VERSION', '980' );
 define( 'GP_CACHE_VERSION', '3.0' );
 define( 'GP_ROUTING', true );
@@ -172,12 +171,17 @@ require_once GP_PATH . 'gp-settings.php';
 function gp_activate_plugin() {
 	$admins = GP::$permission->find_one( array( 'action' => 'admin' ) );
 	if ( ! $admins ) {
-		GP::$permission->create(
-			array(
-				'user_id' => get_current_user_id(),
-				'action'  => 'admin',
-			)
-		);
+		$user_id = get_current_user_id();
+
+		// A user_id of 0 (e.g. WP-CLI activation) would be stored as a NULL admin that anonymous requests match.
+		if ( $user_id ) {
+			GP::$permission->create(
+				array(
+					'user_id' => $user_id,
+					'action'  => 'admin',
+				)
+			);
+		}
 	}
 }
 register_activation_hook( GP_PLUGIN_FILE, 'gp_activate_plugin' );

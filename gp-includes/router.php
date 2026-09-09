@@ -136,6 +136,7 @@ class GP_Router {
 			"get:(/languages)/$locale/$dir/glossary"          => array( 'GP_Route_Glossary_Entry', 'glossary_entries_get' ),
 			"post:(/languages)/$locale/$dir/glossary"         => array( 'GP_Route_Glossary_Entry', 'glossary_entries_post' ),
 			"post:(/languages)/$locale/$dir/glossary/-new"    => array( 'GP_Route_Glossary_Entry', 'glossary_entry_add_post' ),
+			"post:(/languages)/$locale/$dir/glossary/-create" => array( 'GP_Route_Glossary_Entry', 'glossary_create_post' ),
 			"post:(/languages)/$locale/$dir/glossary/-delete" => array( 'GP_Route_Glossary_Entry', 'glossary_entry_delete_post' ),
 			"get:(/languages)/$locale/$dir/glossary/-export"  => array( 'GP_Route_Glossary_Entry', 'export_glossary_entries_get' ),
 			"get:(/languages)/$locale/$dir/glossary/-import"  => array( 'GP_Route_Glossary_Entry', 'import_glossary_entries_get' ),
@@ -166,7 +167,7 @@ class GP_Router {
 
 			"get:/$project/-permissions"                      => array( 'GP_Route_Project', 'permissions_get' ),
 			"post:/$project/-permissions"                     => array( 'GP_Route_Project', 'permissions_post' ),
-			"get:/$project/-permissions/-delete/$dir"         => array( 'GP_Route_Project', 'permissions_delete' ),
+			"post:/$project/-permissions/-delete/$dir"        => array( 'GP_Route_Project', 'permissions_delete_post' ),
 
 			"get:/$project/-mass-create-sets"                 => array( 'GP_Route_Project', 'mass_create_sets_get' ),
 			"post:/$project/-mass-create-sets"                => array( 'GP_Route_Project', 'mass_create_sets_post' ),
