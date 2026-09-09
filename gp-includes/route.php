@@ -496,6 +496,7 @@ class GP_Route {
 	 * Exits the request.
 	 *
 	 * @param mixed $message Optional. Message to output before exit. Default: 0.
+	 * @throws GP_Route_Exit_Exception If the request is a fake request.
 	 */
 	public function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {

@@ -138,6 +138,7 @@ class GP_Validation_Rules {
 	 *
 	 * @param string $name The name of the called method.
 	 * @param array  $args The arguments passed to the called method.
+	 * @throws BadMethodCallException If the called method does not match any defined validation pattern.
 	 * @return bool True if a validation rule was added, otherwise triggers an error.
 	 */
 	public function __call( $name, $args ) {
