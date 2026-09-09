@@ -1,13 +1,56 @@
 <?php
+/**
+ * GlotPress Format RESX
+ *
+ * @package GlotPress
+ */
 
+/**
+ * Format class used to support RESX files.
+ */
 class GP_Format_ResX extends GP_Format {
 
-	public $name           = '.NET Resource (.resx)';
-	public $extension      = 'resx';
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @var string
+	 */
+	public $name = '.NET Resource (.resx)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @var string
+	 */
+	public $extension = 'resx';
+
+	/**
+	 * Alternative file extensions of the file format, used to autodetect formats.
+	 *
+	 * @var string[]
+	 */
 	public $alt_extensions = array( 'resx.xml' );
 
+	/**
+	 * Holds the exported string.
+	 *
+	 * @var string
+	 */
 	public $exported = '';
 
+	/**
+	 * Generates a string the contains the $entries to export in the RESX file format.
+	 *
+	 * @param GP_Project         $project         The project the strings are being exported for, not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set $translation_set The locale object the strings are being
+	 *                                            exported for. not used in this format but part
+	 *                                            of the scaffold of the parent object.
+	 * @param GP_Translation     $entries         The entries to export.
+	 * @return string The exported strings string.
+	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$this->exported = '';
 		$this->line( '<?xml version="1.0" encoding="utf-8"?>' );
@@ -49,6 +92,12 @@ class GP_Format_ResX extends GP_Format {
 		return $this->exported;
 	}
 
+	/**
+	 * Reads a set of original strings from a RESX file.
+	 *
+	 * @param string $file_name The name of the uploaded strings file.
+	 * @return Translations|bool The extracted originals on success, false on failure.
+	 */
 	public function read_originals_from_file( $file_name ) {
 		$errors = libxml_use_internal_errors( true );
 		$data   = simplexml_load_string( file_get_contents( $file_name ) );
@@ -80,27 +129,52 @@ class GP_Format_ResX extends GP_Format {
 		return $entries;
 	}
 
-
+	/**
+	 * Adds a line to the exported string.
+	 *
+	 * @param string $string       The string to add.
+	 * @param int    $prepend_tabs The number of tabs to prepend.
+	 */
 	private function line( $string, $prepend_tabs = 0 ) {
 		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
 	}
 
+	/**
+	 * Adds a resheader to the RESX file.
+	 *
+	 * @param string $name  The name of the resheader.
+	 * @param string $value The value of the resheader.
+	 */
 	private function res_header( $name, $value ) {
 		$this->line( '<resheader name="' . $name . '">', 1 );
 		$this->line( '<value>' . $value . '</value>', 2 );
 		$this->line( '</resheader>', 1 );
 	}
 
+	/**
+	 * Unescapes a string from a RESX file.
+	 *
+	 * @param string $string The string to unescape.
+	 * @return string The unescaped string.
+	 */
 	private function unescape( $string ) {
 		return $string;
 	}
 
+	/**
+	 * Escapes a string for use in a RESX file.
+	 *
+	 * @param string $string The string to escape.
+	 * @return string The escaped string.
+	 */
 	private function escape( $string ) {
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
 		return $string;
 	}
 
-
+	/**
+	 * Adds the schema information to the RESX file.
+	 */
 	private function add_schema_info() {
 		$this->line( '<!--', 1 );
 		$this->line( 'Microsoft ResX Schema', 2 );
@@ -163,6 +237,9 @@ class GP_Format_ResX extends GP_Format {
 		$this->line( '-->', 1 );
 	}
 
+	/**
+	 * Adds the schema declaration to the RESX file.
+	 */
 	private function add_schema_declaration() {
 		$this->line( '<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">', 1 );
 		$this->line( '<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />', 2 );

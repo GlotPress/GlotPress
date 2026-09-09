@@ -1,3 +1,12 @@
+<?php
+/**
+ * Templates: Translation Set Form
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
+?>
 <dl>
 	<dt><label for="set[locale]"><?php _e( 'Locale', 'glotpress' ); ?></label></dt>
 	<dd>

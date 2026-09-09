@@ -14,22 +14,109 @@
  */
 class GP_Original extends GP_Thing {
 
-	var $table_basename           = 'gp_originals';
-	var $field_names              = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
-	var $int_fields               = array( 'id', 'project_id', 'priority' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_originals';
+
+	/**
+	 * List of field names for an original.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'project_id', 'priority' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id', 'path' );
 
+	/**
+	 * ID of the original.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the project.
+	 *
+	 * @var int $project_id
+	 */
 	public $project_id;
+
+	/**
+	 * Context of the original.
+	 *
+	 * @var string|null $context
+	 */
 	public $context;
+
+	/**
+	 * Singular form of the original.
+	 *
+	 * @var string $singular
+	 */
 	public $singular;
+
+	/**
+	 * Plural form of the original.
+	 *
+	 * @var string|null $plural
+	 */
 	public $plural;
+
+	/**
+	 * References of the original.
+	 *
+	 * @var string $references
+	 */
 	public $references;
+
+	/**
+	 * Comment for the original.
+	 *
+	 * @var string $comment
+	 */
 	public $comment;
+
+	/**
+	 * Status of the original.
+	 *
+	 * @var string $status
+	 */
 	public $status;
+
+	/**
+	 * Priority of the original.
+	 *
+	 * @var int $priority
+	 */
 	public $priority;
+
+	/**
+	 * Date the original was added.
+	 *
+	 * @var string $date_added
+	 */
 	public $date_added;
 
+	/**
+	 * Priority names mapped to their integer values.
+	 *
+	 * @var array $priorities
+	 */
 	static $priorities = array(
 		'-2' => 'hidden',
 		'-1' => 'low',
@@ -37,6 +124,11 @@ class GP_Original extends GP_Thing {
 		'1'  => 'high',
 	);
 
+	/**
+	 * Cache group for count_by_project_id results.
+	 *
+	 * @var string $count_cache_group
+	 */
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
@@ -82,6 +174,12 @@ class GP_Original extends GP_Thing {
 		return $args;
 	}
 
+	/**
+	 * Retrieves all originals for a project.
+	 *
+	 * @param int $project_id The project ID.
+	 * @return array The originals.
+	 */
 	public function by_project_id( $project_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
@@ -158,6 +256,15 @@ class GP_Original extends GP_Thing {
 		return 0;
 	}
 
+	/**
+	 * Retrieves an original by project ID and entry.
+	 *
+	 * @param int               $project_id The project ID.
+	 * @param Translation_Entry $entry      The translation entry.
+	 * @param string|null       $status     Optional. The status of the original to retrieve.
+	 *                                      Default null to ignore status.
+	 * @return GP_Original|false The original or false if not found.
+	 */
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
 
@@ -165,7 +272,7 @@ class GP_Original extends GP_Thing {
 		$entry->context = isset( $entry->context ) ? $entry->context : null;
 
 		$where = array();
-		// now each condition has to contain a %s not to break the sequence
+		// now each condition has to contain a %s not to break the sequence.
 		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
 		$where[] = 'singular = BINARY %s';
 		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
@@ -180,6 +287,13 @@ class GP_Original extends GP_Thing {
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}
 
+	/**
+	 * Imports originals for a project from a Translation Set.
+	 *
+	 * @param GP_Project         $project      The project to import originals into.
+	 * @param GP_Translation_Set $translations The translation set to import from.
+	 * @return array Array containing number of originals added, existing, fuzzied, obsoleted, and errors.
+	 */
 	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
@@ -346,7 +460,7 @@ class GP_Original extends GP_Thing {
 				unset( $possibly_dropped[ $close_original ] );
 
 				continue;
-			} else { // Completely new string
+			} else { // Completely new string.
 				$created = GP::$original->create( $data );
 
 				if ( ! $created ) {
@@ -389,6 +503,11 @@ class GP_Original extends GP_Thing {
 		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error );
 	}
 
+	/**
+	 * Sets all translations for an original to fuzzy.
+	 *
+	 * @param int $original_id The original ID.
+	 */
 	public function set_translations_for_original_to_fuzzy( $original_id ) {
 		$translations = GP::$translation->find_many( "original_id = '$original_id' AND status = 'current'" );
 		foreach ( $translations as $translation ) {
@@ -396,6 +515,14 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Checks if provided data is different from the original.
+	 *
+	 * @param array            $data     Key-value pairs to check.
+	 * @param GP_Original|null $original Optional. The original to compare against.
+	 *                                   Default null to use current object.
+	 * @return bool True if different, false if the same.
+	 */
 	public function is_different_from( $data, $original = null ) {
 		if ( ! $original ) {
 			$original = $this;
@@ -409,11 +536,24 @@ class GP_Original extends GP_Thing {
 		return false;
 	}
 
+	/**
+	 * Gets the priority integer by its name.
+	 *
+	 * @param string $name The priority name.
+	 * @return int|null The priority integer or null if not found.
+	 */
 	public function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
 		return isset( $by_name[ $name ] ) ? $by_name[ $name ] : null;
 	}
 
+	/**
+	 * Finds the closest matching original from a list of strings.
+	 *
+	 * @param string $input         Input string.
+	 * @param array  $other_strings List of strings to check against input string.
+	 * @return string|null The closest matching string or null if none found.
+	 */
 	public function closest_original( $input, $other_strings ) {
 		/**
 		 * Filters the preemptive return value of closest original check.
@@ -494,6 +634,11 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Retrieves all originals matching this one in other projects.
+	 *
+	 * @return array Array of GP_Original.
+	 */
 	public function get_matching_originals_in_other_projects() {
 		$where   = array();
 		$where[] = 'singular = BINARY %s';
@@ -519,7 +664,7 @@ class GP_Original extends GP_Thing {
 		return parent::delete();
 	}
 
-	// Triggers
+	// Triggers.
 
 	/**
 	 * Executes after creating an original.

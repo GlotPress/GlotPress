@@ -95,7 +95,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Translation for a singular form.
 	 *
-	 * @var string $translation_1
+	 * @var string $translation_0
 	 */
 	public $translation_0;
 
@@ -167,7 +167,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Date when the translation was modified.
 	 *
-	 * @var string $date_added
+	 * @var string $date_modified
 	 */
 	public $date_modified;
 
@@ -201,6 +201,12 @@ class GP_Translation extends GP_Thing {
 	 */
 	public static $number_of_plural_translations = 6;
 
+	/**
+	 * Creates a new translation.
+	 *
+	 * @param array $args Arguments for a GP_Translation object.
+	 * @return int|false The inserted ID or false on failure.
+	 */
 	public function create( $args ) {
 		$inserted = parent::create( $args );
 
@@ -247,6 +253,12 @@ class GP_Translation extends GP_Thing {
 		return $args;
 	}
 
+	/**
+	 * Prepares the translation fields before they are saved.
+	 *
+	 * @param array $args Translation arguments.
+	 * @return array Prepared translation arguments.
+	 */
 	public function prepare_fields_for_save( $args ) {
 		$args = parent::prepare_fields_for_save( $args );
 
@@ -300,10 +312,28 @@ class GP_Translation extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Gets translations for export.
+	 *
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param array|null         $filters         Optional. An array of filters to apply.
+	 * @return array Array of GP_Translation objects.
+	 */
 	public function for_export( $project, $translation_set, $filters = null ) {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
+	/**
+	 * Gets translations for a translation set.
+	 *
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param int|string         $page            Page number or 'no-limit'.
+	 * @param array              $filters         Optional. An array of filters to apply.
+	 * @param array              $sort            Optional. An array with 'by' and 'how' keys for sorting.
+	 * @return array Array of GP_Translation objects.
+	 */
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
 
@@ -393,7 +423,7 @@ class GP_Translation extends GP_Thing {
 
 		if ( gp_array_get( $filters, 'user_login' ) ) {
 			$user = get_user_by( 'login', $filters['user_login'] );
-			// do not return any entries if the user doesn't exist
+			// do not return any entries if the user doesn't exist.
 			$where[] = $wpdb->prepare( 't.user_id = %d', ( $user && $user->ID ) ? $user->ID : -1 );
 		}
 
@@ -601,6 +631,12 @@ class GP_Translation extends GP_Thing {
 		return $translations;
 	}
 
+	/**
+	 * Sets as old the other current, waiting, fuzzy and changesrequested translations for the same original,
+	 * setting the current one as current.
+	 *
+	 * @return bool|null
+	 */
 	public function set_as_current() {
 		return $this->update(
 			array( 'status' => 'old' ),
@@ -699,6 +735,9 @@ class GP_Translation extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Rejects the translation.
+	 */
 	public function reject() {
 		$this->set_status( 'rejected' );
 	}
@@ -789,6 +828,11 @@ class GP_Translation extends GP_Thing {
 		return $updated;
 	}
 
+	/**
+	 * Retrieves all translations in an array.
+	 *
+	 * @return array Array of translations.
+	 */
 	public function translations() {
 		$translations = array();
 
@@ -821,7 +865,7 @@ class GP_Translation extends GP_Thing {
 		return $last_modified;
 	}
 
-	// Triggers
+	// Triggers.
 
 	/**
 	 * Executes after creating a translation.

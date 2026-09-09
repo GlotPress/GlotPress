@@ -14,25 +14,116 @@
  */
 class GP_Glossary_Entry extends GP_Thing {
 
-	var $table_basename           = 'gp_glossary_entries';
-	var $field_names              = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
-	var $int_fields               = array( 'id', 'glossary_id', 'last_edited_by' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_glossary_entries';
+
+	/**
+	 * List of field names for a glossary entry.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * Parts of speech captions.
+	 *
+	 * @var array $parts_of_speech
+	 */
 	public $parts_of_speech = array();
 
+	/**
+	 * ID of the glossary entry.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the glossary.
+	 *
+	 * @var int $glossary_id
+	 */
 	public $glossary_id;
+
+	/**
+	 * The term.
+	 *
+	 * @var string $term
+	 */
 	public $term;
+
+	/**
+	 * The part of speech.
+	 *
+	 * @var string $part_of_speech
+	 */
 	public $part_of_speech;
+
+	/**
+	 * The comment.
+	 *
+	 * @var string $comment
+	 */
 	public $comment;
+
+	/**
+	 * The translation.
+	 *
+	 * @var string $translation
+	 */
 	public $translation;
+
+	/**
+	 * The date modified.
+	 *
+	 * @var string $date_modified
+	 */
 	public $date_modified;
+
+	/**
+	 * ID of the last editor.
+	 *
+	 * @var int $last_edited_by
+	 */
 	public $last_edited_by;
+
+	/**
+	 * Username of the last editor.
+	 *
+	 * @var string $user_login
+	 */
 	public $user_login;
+
+	/**
+	 * Display name of the last editor.
+	 *
+	 * @var string $user_display_name
+	 */
 	public $user_display_name;
 
-
+	/**
+	 * Constructor.
+	 *
+	 * @param array $fields Optional. Associative array of field values.
+	 */
 	public function __construct( $fields = array() ) {
 		$this->setup_pos();
 
@@ -109,6 +200,12 @@ class GP_Glossary_Entry extends GP_Thing {
 		$rules->last_edited_by_should_be( 'positive_int' );
 	}
 
+	/**
+	 * Retrieves all entries for a glossary.
+	 *
+	 * @param int $glossary_id The glossary ID.
+	 * @return array The glossary entries.
+	 */
 	public function by_glossary_id( $glossary_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE glossary_id= %d ORDER by term ASC", $glossary_id );
 	}

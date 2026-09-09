@@ -13,6 +13,10 @@
  * @since 1.0.0
  */
 class GP_Route_Translation_Set extends GP_Route_Main {
+
+	/**
+	 * Displays the new translation set page.
+	 */
 	public function new_get() {
 		$set        = new GP_Translation_Set();
 		$project_id = gp_get( 'project_id' );
@@ -27,6 +31,9 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->tmpl( 'translation-set-new', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the new translation set POST request.
+	 */
 	public function new_post() {
 		if ( $this->invalid_nonce_and_redirect( 'add-translation-set' ) ) {
 			return;
@@ -50,6 +57,11 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Redirects to the translation set page.
+	 *
+	 * @param int $set_id A translation set id to view.
+	 */
 	public function single( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( ! $items ) {
@@ -59,6 +71,11 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project, array( $set->locale, $set->slug ) ) );
 	}
 
+	/**
+	 * Displays the edit page for a translation set.
+	 *
+	 * @param int $set_id A translation set id to edit.
+	 */
 	public function edit_get( $set_id ) {
 		$items = $this->get_set_project_and_locale_from_set_id_or_404( $set_id );
 		if ( ! $items ) {
@@ -186,6 +203,12 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 		return $this->cannot_and_redirect( 'write', 'project', $set->project_id );
 	}
 
+	/**
+	 * Retrieves the translation set, project, and locale based on the set ID or throws a 404 error.
+	 *
+	 * @param int $set_id The translation set ID.
+	 * @return array|null An array containing the translation set, project, and locale, or null if not found.
+	 */
 	private function get_set_project_and_locale_from_set_id_or_404( $set_id ) {
 		$set = GP::$translation_set->get( $set_id );
 		if ( ! $set ) {

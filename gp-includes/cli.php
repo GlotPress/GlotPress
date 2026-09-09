@@ -1,9 +1,17 @@
 <?php
+/**
+ * GlotPress CLI
+ *
+ * @package GlotPress
+ */
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	gp_cli_register();
 }
 
+/**
+ * Register GlotPress CLI commands.
+ */
 function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/add-admin.php';
 	require_once GP_PATH . GP_INC . 'cli/branch-project.php';

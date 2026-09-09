@@ -14,10 +14,39 @@
  */
 class GP_Translation_Set extends GP_Thing {
 
-	var $table_basename           = 'gp_translation_sets';
-	var $field_names              = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names       = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
-	var $int_fields               = array( 'id', 'project_id' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_translation_sets';
+
+	/**
+	 * List of field names for a translation set.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
+
+	/**
+	 * List of non-database field names.
+	 *
+	 * @var array $non_db_field_names
+	 */
+	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'project_id' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
 	/**
@@ -378,7 +407,7 @@ class GP_Translation_Set extends GP_Thing {
 				 */
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
-				// we don't have the string translated, let's see if the original is there
+				// we don't have the string translated, let's see if the original is there.
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
 					$entry->original_id = $original->id;

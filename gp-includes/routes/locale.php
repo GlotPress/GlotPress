@@ -14,6 +14,9 @@
  */
 class GP_Route_Locale extends GP_Route_Main {
 
+	/**
+	 * Displays the locales page.
+	 */
 	public function locales_get() {
 		if ( null !== gp_get( 'all', null ) ) {
 			$locales = GP_Locales::locales();
@@ -32,6 +35,12 @@ class GP_Route_Locale extends GP_Route_Main {
 		$this->tmpl( 'locales', get_defined_vars() );
 	}
 
+	/**
+	 * Displays the locale page.
+	 *
+	 * @param string $locale_slug The slug of the locale.
+	 * @param string $current_set_slug The slug of the current translation set. Defaults to 'default'.
+	 */
 	public function single( $locale_slug, $current_set_slug = 'default' ) {
 		$locale = GP_Locales::by_slug( $locale_slug );
 		$sets   = GP::$translation_set->by_locale( $locale_slug );
@@ -138,6 +147,14 @@ class GP_Route_Locale extends GP_Route_Main {
 		$this->tmpl( 'locale', get_defined_vars() );
 	}
 
+	/**
+	 * Sets the data for a translation set.
+	 *
+	 * @param GP_Translation_Set $set      The translation set to set the data for.
+	 * @param GP_Project         $project  The project associated with the translation set.
+	 * @param stdClass|null      $set_data The existing set data to update, or null to create new data.
+	 * @return stdClass The updated set data.
+	 */
 	private function set_data( $set, $project, $set_data = null ) {
 		if ( ! $set_data ) {
 			$set_data = new stdClass();
@@ -162,10 +179,24 @@ class GP_Route_Locale extends GP_Route_Main {
 		return $set_data;
 	}
 
+	/**
+	 * Sorts locales by their English name.
+	 *
+	 * @param GP_Locale $a The first locale to compare.
+	 * @param GP_Locale $b The second locale to compare.
+	 * @return int A negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
+	 */
 	private function sort_locales( $a, $b ) {
 		return $a->english_name <=> $b->english_name;
 	}
 
+	/**
+	 * Sorts translation sets by their project ID.
+	 *
+	 * @param stdClass $a The first translation set to compare.
+	 * @param stdClass $b The second translation set to compare.
+	 * @return int A negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
+	 */
 	private function sort_sets_by_project_id( $a, $b ) {
 		return $a->project_id <=> $b->project_id;
 	}

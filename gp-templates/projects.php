@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Projects
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Projects &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Projects', 'glotpress' ) ) );
 gp_tmpl_header();

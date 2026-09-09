@@ -1,6 +1,8 @@
 <?php
 /**
  * Functions, which deal with URLs: manipulation, generation
+ *
+ * @package GlotPress
  */
 
 /**
@@ -46,8 +48,9 @@ function gp_url_join( ...$components ) {
 /**
  * Builds a URL relative to the GlotPress' domain root.
  *
- * @param mixed $path string path or array of path components
- * @param array $query associative array of query arguments (optional)
+ * @param mixed $path String path or array of path components.
+ * @param array $query Associative array of query arguments (optional).
+ * @return string URL relative to the GlotPress' domain root.
  */
 function gp_url( $path = '/', $query = null ) {
 	$base = gp_url_path( gp_url_public_root() );
@@ -65,6 +68,14 @@ function gp_url( $path = '/', $query = null ) {
 	return apply_filters( 'gp_url', gp_url_add_path_and_query( $base, $path, $query ), $path, $query );
 }
 
+/**
+ * Adds a path and query to a base URL.
+ *
+ * @param string            $base  The base URL.
+ * @param string|array      $path  The path or the components as an array to add to the base URL.
+ * @param string|array|null $query The query part of the URL, either as a string or an associative array. Optional.
+ * @return string The resulting URL with the added path and query.
+ */
 function gp_url_add_path_and_query( $base, $path, $query ) {
 	// todo: same domain with current url?
 	$url = gp_url_join( $base, $path );
@@ -102,6 +113,13 @@ function gp_url_public_root() {
 /**
  * Constructs URL for a project and locale.
  * /<project-path>/<locale>/<path>/<page>
+ * A leading double-slash in the project path will avoid prepending /projects/ to the path.
+ *
+ * @param GP_Project|string $project_or_path Project path or object.
+ * @param string            $locale          Locale code.
+ * @param string            $path            Additional path to append to the base path.
+ * @param array             $query           Optional. Associative array of query arguments.
+ * @return string URL for the project and locale.
  */
 function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = null ) {
 	return gp_url_project( $project_or_path, array( $locale, $path ), $query );
@@ -110,16 +128,18 @@ function gp_url_project_locale( $project_or_path, $locale, $path = '', $query = 
 /**
  * Get the URL for an image file
  *
- * @param string $file Image filename
+ * @param string $file Image filename.
  *
- * @return string
+ * @return string URL for the image file.
  */
 function gp_url_img( $file ) {
 	return gp_plugin_url( "assets/img/$file" );
 }
 
 /**
- * The URL of the current page
+ * The URL of the current page.
+ *
+ * @return string The URL of the current page.
  */
 function gp_url_current() {
 	$protocol      = is_ssl() ? 'https://' : 'http://';
@@ -154,6 +174,12 @@ function gp_url_project( $project_or_path = '', $path = '', $query = null ) {
 	return gp_url( array( $project_path, $path ), $query );
 }
 
+/**
+ * Get the URL for a user profile.
+ *
+ * @param string $user_nicename User's nicename; the slug of the user.
+ * @return string URL for the user profile.
+ */
 function gp_url_profile( $user_nicename = '' ) {
 	$url = gp_url( array( '/profile', $user_nicename ) );
 	/**
@@ -167,6 +193,11 @@ function gp_url_profile( $user_nicename = '' ) {
 	return apply_filters( 'gp_url_profile', $url, $user_nicename );
 }
 
+/**
+ * Get the base path of a GlotPress URL.
+ *
+ * @return string The base path of a GlotPress URL.
+ */
 function gp_url_base_path() {
 	/**
 	 * Filter the base path of a GlotPress URL.
@@ -178,6 +209,12 @@ function gp_url_base_path() {
 	return apply_filters( 'gp_url_base_path', user_trailingslashit( '/' . gp_const_get( 'GP_URL_BASE', 'glotpress' ) ) );
 }
 
+/**
+ * Get the URL for a plugin file.
+ *
+ * @param string $path Optional. The path to append to the plugin URL. Default is an empty string.
+ * @return string The URL for the specified plugin file.
+ */
 function gp_plugin_url( $path = '' ) {
 	return plugins_url( $path, GP_PLUGIN_FILE );
 }

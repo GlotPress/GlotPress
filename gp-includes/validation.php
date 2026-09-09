@@ -68,17 +68,51 @@
  */
 class GP_Validation_Rules {
 
+	/**
+	 * An array of validation rules.
+	 *
+	 * Each rule is an associative array with the following keys:
+	 * - 'field': The name of the field to validate.
+	 * - 'rule': The name of the validation rule to apply.
+	 * - 'kind': The kind of validation ('positive' or 'negative').
+	 * - 'args': An array of additional arguments to pass to the validation callback.
+	 *
+	 * @var array $rules
+	 */
 	var $rules = array();
 
+	/**
+	 * An array of validation errors.
+	 * Each error is a string describing the validation failure.
+	 *
+	 * @var array $errors
+	 */
 	public $errors = array();
+
+	/**
+	 * An array of field names that can be validated.
+	 *
+	 * @var array $field_names
+	 */
 	public $field_names;
 
+	/**
+	 * An array of suffices for positive validation methods.
+	 *
+	 * @var array $positive_suffices
+	 */
 	static $positive_suffices = array(
 		'should_be',
 		'should',
 		'can',
 		'can_be',
 	);
+
+	/**
+	 * An array of suffices for negative validation methods.
+	 *
+	 * @var array $negative_suffices
+	 */
 	static $negative_suffices = array(
 		'should_not_be',
 		'should_not',
@@ -86,10 +120,27 @@ class GP_Validation_Rules {
 		'cant_be',
 	);
 
+	/**
+	 * Constructor.
+	 *
+	 * @param array $field_names An array of field names that can be validated.
+	 */
 	public function __construct( $field_names ) {
 		$this->field_names = $field_names;
 	}
 
+	/**
+	 * Magic method to handle calls to undefined methods.
+	 *
+	 * This method checks if the called method matches the pattern of [field]_[rule] for either positive or negative validation.
+	 * If a match is found, it adds the corresponding validation rule to the $rules array.
+	 * If no match is found, it triggers a user error for an undefined method call.
+	 *
+	 * @param string $name The name of the called method.
+	 * @param array  $args The arguments passed to the called method.
+	 * @throws BadMethodCallException If the called method does not match any defined validation pattern.
+	 * @return bool True if a validation rule was added, otherwise triggers an error.
+	 */
 	public function __call( $name, $args ) {
 		foreach ( array( 'positive', 'negative' ) as $kind ) {
 			$suffices = "{$kind}_suffices";
@@ -120,6 +171,16 @@ class GP_Validation_Rules {
 		);
 	}
 
+	/**
+	 * Runs the validation rules on a given object.
+	 *
+	 * This method iterates through the defined validation rules and applies them to the corresponding fields of the provided object.
+	 * If a field is missing from the object, it will be skipped.
+	 * The method returns true if all validations pass, and false if any validation fails. In case of failure, the $errors array will contain the error messages.
+	 *
+	 * @param object $thing The object to validate.
+	 * @return bool True if all validations pass, false otherwise.
+	 */
 	public function run( $thing ) {
 		$this->errors = array();
 		$verdict      = true;
@@ -135,6 +196,17 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
+	/**
+	 * Runs the validation rules for a single field.
+	 *
+	 * This method applies all validation rules defined for a specific field to the provided value.
+	 * It retrieves the corresponding validation callbacks and executes them with the specified arguments.
+	 * If any validation fails, it adds an error message to the $errors array and returns false. If all validations pass, it returns true.
+	 *
+	 * @param string $field The name of the field to validate.
+	 * @param mixed  $value The value of the field to validate.
+	 * @return bool True if all validations for the field pass, false otherwise.
+	 */
 	public function run_on_single_field( $field, $value ) {
 		if ( ! isset( $this->rules[ $field ] ) || ! is_array( $this->rules[ $field ] ) ) {
 			// No rules means always valid.
@@ -176,6 +248,15 @@ class GP_Validation_Rules {
 		return $verdict;
 	}
 
+	/**
+	 * Constructs an error message for a failed validation rule.
+	 *
+	 * This method generates a user-friendly error message based on the provided validation rule.
+	 * It identifies the type of field (e.g., input or textarea) and formats the message accordingly, including the name of the field and the validation rule that failed.
+	 *
+	 * @param array $rule The validation rule that failed, containing 'field', 'rule', and 'kind' keys.
+	 * @return string The constructed error message.
+	 */
 	public function construct_error_message( $rule ) {
 		$type_field = 'field';
 		$name_field = $rule['field'];
@@ -196,21 +277,50 @@ class GP_Validation_Rules {
 	}
 }
 
+/**
+ * Core class to handle validation callbacks.
+ *
+ * Each callback is an associative array with 'positive' and 'negative' keys, containing the respective callback functions.
+ */
 class GP_Validators {
+
+	/**
+	 * An array of registered validation callbacks.
+	 *
+	 * @var array $callbacks
+	 */
 	static $callbacks = array();
 
+	/**
+	 * Registers a validation callback for a specific key.
+	 *
+	 * @param string        $key               The key to identify the validation rule.
+	 * @param callable      $callback          The callback function for positive validation. It should return true if the validation passes, false otherwise.
+	 * @param callable|null $negative_callback Optional. The callback function for negative validation. It should return true if the validation fails, false otherwise. If not provided, the positive callback will be used for negative validation as well.
+	 */
 	public static function register( $key, $callback, $negative_callback = null ) {
-		// TODO: add data for easier generation of error messages
+		// TODO: add data for easier generation of error messages.
 		self::$callbacks[ $key ] = array(
 			'positive' => $callback,
 			'negative' => $negative_callback,
 		);
 	}
 
+	/**
+	 * Unregisters a validation callback for a specific key.
+	 *
+	 * @param string $key The key to identify the validation rule to be unregistered.
+	 */
 	public static function unregister( $key ) {
 		unset( self::$callbacks[ $key ] );
 	}
 
+	/**
+	 * Retrieves the validation callback for a specific key.
+	 *
+	 * @param string $key The key to identify the validation rule.
+	 * @return array|null An associative array with 'positive' and 'negative' keys containing the respective callback functions, or null if the key is not registered.
+	 */
 	public static function get( $key ) {
 		return gp_array_get( self::$callbacks, $key, null );
 	}
