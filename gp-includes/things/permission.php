@@ -22,7 +22,7 @@ class GP_Permission extends GP_Thing {
 	var $table_basename = 'gp_permissions';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a permission.
 	 *
 	 * @var array $field_names
 	 */
@@ -52,7 +52,7 @@ class GP_Permission extends GP_Thing {
 	/**
 	 * ID of the user.
 	 *
-	 * @var int $id
+	 * @var int $user_id
 	 */
 	public $user_id;
 
@@ -73,7 +73,7 @@ class GP_Permission extends GP_Thing {
 	/**
 	 * Object ID of the permission.
 	 *
-	 * @var int $object_id
+	 * @var string|int|null $object_id
 	 */
 	public $object_id;
 

@@ -113,7 +113,7 @@ function gp_member_get( $object, $key, $default = '' ) {
  * Makes from an array of arrays a flat array.
  *
  * @param array $array The array to flatten.
- * @return array Flattenned array.
+ * @return array Flattened array.
  */
 function gp_array_flatten( $array ) {
 	$res = array();

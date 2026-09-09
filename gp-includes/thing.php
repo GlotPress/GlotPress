@@ -15,7 +15,7 @@
 class GP_Thing {
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a thing.
 	 *
 	 * @var array $field_names
 	 */
@@ -817,7 +817,7 @@ class GP_Thing {
 	 */
 	public function sql_from_conditions( $conditions ) {
 		if ( is_string( $conditions ) ) {
-			$conditions;
+			return $this->apply_default_conditions( $conditions );
 		} elseif ( is_array( $conditions ) ) {
 			$conditions        = array_map( array( &$this, 'sql_condition_from_php_value' ), $conditions );
 			$string_conditions = array();

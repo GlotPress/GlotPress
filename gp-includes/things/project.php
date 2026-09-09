@@ -22,7 +22,7 @@ class GP_Project extends GP_Thing {
 	var $table_basename = 'gp_projects';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a project.
 	 *
 	 * @var array $field_names
 	 */

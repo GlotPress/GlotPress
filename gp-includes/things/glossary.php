@@ -22,7 +22,7 @@ class GP_Glossary extends GP_Thing {
 	var $table_basename = 'gp_glossaries';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a glossary.
 	 *
 	 * @var array $field_names
 	 */
@@ -52,7 +52,7 @@ class GP_Glossary extends GP_Thing {
 	/**
 	 * ID of the translation set.
 	 *
-	 * @var int $id
+	 * @var int $translation_set_id
 	 */
 	public $translation_set_id;
 
@@ -67,7 +67,7 @@ class GP_Glossary extends GP_Thing {
 	 * Caches the array of Glossary_Entry objects.
 	 *
 	 * @since 2.3.0
-	 * @var entries
+	 * @var GP_Glossary_Entry[] $entries
 	 */
 	private $entries = array();
 

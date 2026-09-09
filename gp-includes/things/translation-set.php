@@ -22,7 +22,7 @@ class GP_Translation_Set extends GP_Thing {
 	var $table_basename = 'gp_translation_sets';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a translation set.
 	 *
 	 * @var array $field_names
 	 */

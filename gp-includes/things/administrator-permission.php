@@ -22,7 +22,7 @@ class GP_Administrator_Permission extends GP_Permission {
 	var $table_basename = 'gp_permissions';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for an administrator permission.
 	 *
 	 * @var array $field_names
 	 */

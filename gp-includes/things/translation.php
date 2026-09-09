@@ -95,7 +95,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Translation for a singular form.
 	 *
-	 * @var string $translation_1
+	 * @var string $translation_0
 	 */
 	public $translation_0;
 
@@ -167,7 +167,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Date when the translation was modified.
 	 *
-	 * @var string $date_added
+	 * @var string $date_modified
 	 */
 	public $date_modified;
 
