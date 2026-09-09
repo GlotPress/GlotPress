@@ -133,16 +133,16 @@ class GP_Route_Locale extends GP_Route_Main {
 						$set_list[ $set->slug ] = __( 'Default', 'glotpress' );
 					}
 				} elseif ( $set->slug != $current_set_slug ) {
-						$set_list[ $set->slug ] = gp_link_get( gp_url( gp_url_join( '/languages', $locale->slug, $set->slug ) ), esc_html( $set->name ) );
+						$set_list[ $set->slug ] = gp_link_get( gp_url( gp_url_join( '/languages', $locale->slug, $set->slug ) ), $set->name );
 				} else {
 					$set_list[ $set->slug ] = esc_html( $set->name );
 				}
 			}
 		}
 
-		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$can_create_locale_glossary      = gp_can_create_locale_glossary( $locale_slug, $current_set_slug );
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $current_set_slug, $locale_slug );
-		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary                 = $locale_glossary_translation_set ? GP::$glossary->by_set_id( $locale_glossary_translation_set->id ) : null;
 
 		$this->tmpl( 'locale', get_defined_vars() );
 	}

@@ -22,7 +22,7 @@ class GP_Original extends GP_Thing {
 	var $table_basename = 'gp_originals';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for an original.
 	 *
 	 * @var array $field_names
 	 */
@@ -52,7 +52,7 @@ class GP_Original extends GP_Thing {
 	/**
 	 * ID of the project.
 	 *
-	 * @var int $id
+	 * @var int $project_id
 	 */
 	public $project_id;
 

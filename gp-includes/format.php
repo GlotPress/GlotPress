@@ -39,7 +39,16 @@ abstract class GP_Format {
 	public $filename_pattern = '%s-%s';
 
 	/**
-	 * Generates a string the contains the $entries to export in the specific file format.
+	 * Maximum length of a single value included in a log message.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @var int
+	 */
+	const LOG_VALUE_MAX_LENGTH = 200;
+
+	/**
+	 * Generates a string that contains the $entries to export in the specific file format.
 	 *
 	 * @since 1.0.0
 	 *
@@ -50,7 +59,7 @@ abstract class GP_Format {
 	 * @param GP_Translation_Set $translation_set The locale object the strings are being
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
-	 * @param GP_Translation     $entries         The entries to export.
+	 * @param GP_Translation[]   $entries         The entries to export.
 	 * @return string The exported strings string.
 	 */
 	abstract public function print_exported_file( $project, $locale, $translation_set, $entries );
@@ -74,6 +83,42 @@ abstract class GP_Format {
 	 */
 	public function get_file_extensions() {
 		return array_merge( array( $this->extension ), $this->alt_extensions );
+	}
+
+	/**
+	 * Prepares a value read from an uploaded file for inclusion in a log message.
+	 *
+	 * Whitespace is collapsed and the length is capped so that the value stays on one
+	 * readable line whatever the file contained.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $value The value to prepare.
+	 * @return string The prepared value.
+	 */
+	protected function sanitize_for_log( $value ) {
+		$value = (string) $value;
+
+		// A value read from an uploaded file is not guaranteed to be valid UTF-8. Both
+		// steps use the byte-wise functions when it is not, so that neither depends on
+		// an encoding the value does not have.
+		if ( preg_match( '//u', $value ) ) {
+			$value = preg_replace( '/\s+/u', ' ', $value );
+
+			if ( mb_strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+				$value = mb_substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '…';
+			}
+
+			return $value;
+		}
+
+		$value = preg_replace( '/\s+/', ' ', $value );
+
+		if ( strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+			$value = substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '...';
+		}
+
+		return $value;
 	}
 
 	/**
@@ -123,7 +168,7 @@ abstract class GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);

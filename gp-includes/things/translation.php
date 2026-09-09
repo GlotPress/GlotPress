@@ -95,7 +95,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Translation for a singular form.
 	 *
-	 * @var string $translation_1
+	 * @var string $translation_0
 	 */
 	public $translation_0;
 
@@ -167,7 +167,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Date when the translation was modified.
 	 *
-	 * @var string $date_added
+	 * @var string $date_modified
 	 */
 	public $date_modified;
 
@@ -435,7 +435,7 @@ class GP_Translation extends GP_Thing {
 		if ( $priorities ) {
 			$valid_priorities = array_keys( GP::$original->get_static( 'priorities' ) );
 			$priorities       = array_filter(
-				gp_array_get( $filters, 'priority' ),
+				(array) $priorities,
 				function ( $p ) use ( $valid_priorities ) {
 					return in_array( intval( $p ), $valid_priorities, true );
 				}

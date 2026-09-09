@@ -157,8 +157,7 @@ class GP_Validation_Rules {
 				}
 			}
 		}
-		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
-		trigger_error(
+		throw new BadMethodCallException(
 			sprintf(
 				/* translators: %s: Method name. */
 				esc_html__( 'Call to undefined method: %s.', 'glotpress' ),
@@ -167,8 +166,7 @@ class GP_Validation_Rules {
 					esc_html( get_class( $this ) ),
 					esc_html( $name )
 				)
-			),
-			E_USER_ERROR
+			)
 		);
 	}
 

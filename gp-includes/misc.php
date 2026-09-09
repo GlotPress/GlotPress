@@ -113,7 +113,7 @@ function gp_member_get( $object, $key, $default = '' ) {
  * Makes from an array of arrays a flat array.
  *
  * @param array $array The array to flatten.
- * @return array Flattenned array.
+ * @return array Flattened array.
  */
 function gp_array_flatten( $array ) {
 	$res = array();
@@ -809,5 +809,29 @@ function gp_is_valid_utf8( $string ) {
 	if ( function_exists( 'wp_is_valid_utf8' ) ) {
 		return wp_is_valid_utf8( $string );
 	}
-	return seems_utf8( $string );
+
+	if ( function_exists( 'mb_check_encoding' ) ) {
+		return mb_check_encoding( $string, 'UTF-8' );
+	}
+
+	return 1 === preg_match( '//u', $string );
+}
+
+/**
+ * Determines whether the current user may create the locale glossary for a locale and set slug.
+ *
+ * A locale glossary lives on the virtual locale project (id 0), so it is authorized
+ * the same way its translations are: with the `approve` permission on the set, which
+ * covers GlotPress administrators and the locale's approvers.
+ *
+ * @param string $locale_slug The locale slug. E.g. "de".
+ * @param string $set_slug    The translation set slug. E.g. "default".
+ * @return bool Whether the current user may create the locale glossary.
+ */
+function gp_can_create_locale_glossary( $locale_slug, $set_slug ) {
+	return GP::$permission->current_user_can(
+		'approve',
+		GP::$validator_permission->object_type,
+		GP::$validator_permission->object_id( 0, $locale_slug, $set_slug )
+	);
 }

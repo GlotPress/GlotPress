@@ -22,7 +22,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	var $table_basename = 'gp_glossary_entries';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a glossary entry.
 	 *
 	 * @var array $field_names
 	 */
@@ -59,7 +59,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	/**
 	 * ID of the glossary.
 	 *
-	 * @var int $id
+	 * @var int $glossary_id
 	 */
 	public $glossary_id;
 
@@ -104,7 +104,19 @@ class GP_Glossary_Entry extends GP_Thing {
 	 * @var int $last_edited_by
 	 */
 	public $last_edited_by;
+
+	/**
+	 * Username of the last editor.
+	 *
+	 * @var string $user_login
+	 */
 	public $user_login;
+
+	/**
+	 * Display name of the last editor.
+	 *
+	 * @var string $user_display_name
+	 */
 	public $user_display_name;
 
 	/**
@@ -207,7 +219,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	 * @return string The last modified date on success, empty string on failure.
 	 */
 	public function last_modified( $glossary ) {
-		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id, 'current' );
+		return (string) $this->value( "SELECT date_modified FROM {$this->table} WHERE glossary_id = %d ORDER BY date_modified DESC LIMIT 1", $glossary->id );
 	}
 }
 

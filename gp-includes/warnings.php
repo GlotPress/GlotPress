@@ -288,31 +288,19 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		$changeable_attributes = array(
-			// We allow certain attributes to be different in translations.
-			'title',
-			'aria-label',
-			// src and href will be checked separately.
-			'src',
-			'href',
-		);
-
-		$attribute_regex       = '/(\s*(?P<attr>%s))=([\'"])(?P<value>.+)\\3(\s*)/i';
-		$attribute_replace     = '$1=$3...$3$5';
-		$changeable_attr_regex = sprintf( $attribute_regex, implode( '|', $changeable_attributes ) );
-
-		// Items are sorted, so if all is well, will match up.
-		$parts_tags = array_combine( $original_parts, $translation_parts );
-
 		$warnings = array();
-		foreach ( $parts_tags as $original_tag => $translation_tag ) {
+
+		// The tags are sorted and equal in count, so compare them by position.
+		foreach ( $original_parts as $i => $original_tag ) {
+			$translation_tag = $translation_parts[ $i ];
 			if ( $original_tag === $translation_tag ) {
 				continue;
 			}
 
-			// Remove any attributes that can be expected to differ.
-			$original_filtered_tag    = preg_replace( $changeable_attr_regex, $attribute_replace, $original_tag );
-			$translation_filtered_tag = preg_replace( $changeable_attr_regex, $attribute_replace, $translation_tag );
+			// Blank the values of attributes whose contents may legitimately differ so
+			// that only structural tag changes are compared.
+			$original_filtered_tag    = $this->blank_changeable_attribute_values( $original_tag );
+			$translation_filtered_tag = $this->blank_changeable_attribute_values( $translation_tag );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(
@@ -663,7 +651,74 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Blanks the values of attributes whose contents may legitimately differ between a
+	 * source string and its translation, leaving only structural tag changes to compare.
+	 *
+	 * Each attribute is matched as a whole name="value" unit and only allow-listed names
+	 * are blanked. Consuming the quoted value as a unit means an allow-listed name that
+	 * appears inside another attribute's value is skipped, so a change to it is still
+	 * compared. The href and src URLs are validated separately.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return string The tag with allow-listed attribute values blanked.
+	 */
+	private function blank_changeable_attribute_values( string $tag ): string {
+		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
+
+		return preg_replace_callback(
+			'/(\s)([\w-]+)=("[^"]*"|\'[^\']*\')/',
+			static function ( $matches ) use ( $changeable_attributes ) {
+				if ( ! in_array( strtolower( $matches[2] ), $changeable_attributes, true ) ) {
+					return $matches[0];
+				}
+
+				$quote = $matches[3][0];
+				return $matches[1] . $matches[2] . '=' . $quote . '...' . $quote;
+			},
+			$tag
+		);
+	}
+
+	/**
+	 * Parses the quoted attributes of a single HTML tag.
+	 *
+	 * Each attribute is matched as a whole name="value" unit, so a name that appears
+	 * inside another attribute's value is not mistaken for an attribute of its own.
+	 * Where a name is repeated, the first occurrence wins, which is the one a browser
+	 * uses.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return array Attribute values keyed by lowercased attribute name.
+	 */
+	private function get_tag_attributes( string $tag ): array {
+		$attributes = array();
+
+		if ( ! preg_match_all( '/\s([\w-]+)=("[^"]*"|\'[^\']*\')/', $tag, $matches, PREG_SET_ORDER ) ) {
+			return $attributes;
+		}
+
+		foreach ( $matches as $match ) {
+			$name = strtolower( $match[1] );
+
+			if ( ! isset( $attributes[ $name ] ) ) {
+				$attributes[ $name ] = substr( $match[2], 1, -1 );
+			}
+		}
+
+		return $attributes;
+	}
+
+	/**
 	 * Returns the values from the href and the src
+	 *
+	 * Every tag carrying one of the two attributes is covered, so that the set of URLs
+	 * compared here matches the set blanked by blank_changeable_attribute_values().
 	 *
 	 * @since 3.0.0
 	 * @access private
@@ -672,9 +727,22 @@ class GP_Builtin_Translation_Warnings {
 	 * @return array
 	 */
 	private function get_values_from_href_src( array $content ): array {
-		preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', implode( ' ', $content ), $href_values );
-		preg_match_all( '/<[^>]+src=([\'"])(?<src>.+?)\1[^>]*>/i', implode( ' ', $content ), $src_values );
-		return array_merge( $href_values['href'], $src_values['src'] );
+		$href_values = array();
+		$src_values  = array();
+
+		foreach ( $content as $tag ) {
+			$attributes = $this->get_tag_attributes( $tag );
+
+			if ( isset( $attributes['href'] ) ) {
+				$href_values[] = $attributes['href'];
+			}
+
+			if ( isset( $attributes['src'] ) ) {
+				$src_values[] = $attributes['src'];
+			}
+		}
+
+		return array_merge( $href_values, $src_values );
 	}
 
 	/**

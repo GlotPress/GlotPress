@@ -39,6 +39,54 @@ class GP_Test_Format_Android extends GP_UnitTestCase {
 		$this->assertEquals( $file_contents, $this->android->print_exported_file( $project, $locale, $set, $entries_for_export ) );
 	}
 
+	function test_export_normalizes_string_array_names() {
+		$set     = $this->factory->translation_set->create_with_project_and_locale();
+		$project = $set->project;
+		$locale  = $this->factory->locale->create();
+
+		// The array name (the context minus its [index] suffix) contains
+		// characters that would break out of the name attribute if written raw.
+		$entries_for_export = array(
+			(object) array(
+				'context'      => 'x"><y[0]',
+				'singular'     => 'a',
+				'translations' => array( 'a' ),
+			),
+		);
+
+		$xml = $this->android->print_exported_file( $project, $locale, $set, $entries_for_export );
+
+		$this->assertStringContainsString( '<string-array name="x___y">', $xml );
+		$this->assertStringNotContainsString( 'x"><y', $xml );
+	}
+
+	function test_export_does_not_merge_arrays_with_distinct_names() {
+		$set     = $this->factory->translation_set->create_with_project_and_locale();
+		$project = $set->project;
+		$locale  = $this->factory->locale->create();
+
+		// Two arrays whose raw names differ but normalize to the same value must
+		// stay separate; normalization happens only for the output attribute.
+		$entries_for_export = array(
+			(object) array(
+				'context'      => 'a.b[0]',
+				'singular'     => 'one',
+				'translations' => array( 'one' ),
+			),
+			(object) array(
+				'context'      => 'a_b[0]',
+				'singular'     => 'two',
+				'translations' => array( 'two' ),
+			),
+		);
+
+		$xml = $this->android->print_exported_file( $project, $locale, $set, $entries_for_export );
+
+		$this->assertSame( 2, substr_count( $xml, '<string-array name="a_b">' ), 'Arrays with distinct raw names must not be merged.' );
+		$this->assertStringContainsString( '<item>one</item>', $xml );
+		$this->assertStringContainsString( '<item>two</item>', $xml );
+	}
+
 
 	function test_read_originals() {
 		$translations = $this->android->read_originals_from_file( GP_DIR_TESTDATA . '/originals.android.xml' );

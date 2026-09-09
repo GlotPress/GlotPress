@@ -22,7 +22,7 @@ class GP_Glossary extends GP_Thing {
 	var $table_basename = 'gp_glossaries';
 
 	/**
-	 * List of field names for a translation.
+	 * List of field names for a glossary.
 	 *
 	 * @var array $field_names
 	 */
@@ -52,7 +52,7 @@ class GP_Glossary extends GP_Thing {
 	/**
 	 * ID of the translation set.
 	 *
-	 * @var int $id
+	 * @var int $translation_set_id
 	 */
 	public $translation_set_id;
 
@@ -67,7 +67,7 @@ class GP_Glossary extends GP_Thing {
 	 * Caches the array of Glossary_Entry objects.
 	 *
 	 * @since 2.3.0
-	 * @var entries
+	 * @var GP_Glossary_Entry[] $entries
 	 */
 	private $entries = array();
 
@@ -80,6 +80,23 @@ class GP_Glossary extends GP_Thing {
 	 */
 	public function restrict_fields( $rules ) {
 		$rules->translation_set_id_should_not_be( 'empty' );
+	}
+
+	/**
+	 * Normalizes an array with key-value pairs representing a glossary.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param array $args Arguments for a glossary.
+	 * @return array Normalized arguments for a glossary.
+	 */
+	public function normalize_fields( $args ) {
+		// The description column is nullable; keep it a string for its consumers.
+		if ( array_key_exists( 'description', $args ) ) {
+			$args['description'] = (string) $args['description'];
+		}
+
+		return parent::normalize_fields( $args );
 	}
 
 	/**
@@ -106,21 +123,20 @@ class GP_Glossary extends GP_Thing {
 	public function by_set_or_parent_project( $translation_set, $project ) {
 		$glossary = $this->by_set_id( $translation_set->id );
 
-		if ( ! $glossary ) {
-			if ( 0 === $project->id ) {
-				// Auto-create the Locale Glossary.
-				$glossary = $this->create( array( 'translation_set_id' => $translation_set->id ) );
-			} elseif ( $project->parent_project_id ) {
-				$locale = $translation_set->locale;
-				$slug   = $translation_set->slug;
+		if ( ! $glossary && $project->parent_project_id ) {
+			$locale = $translation_set->locale;
+			$slug   = $translation_set->slug;
 
-				while ( ! $glossary && $project->parent_project_id ) {
-					$project         = GP::$project->get( $project->parent_project_id );
-					$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+			while ( ! $glossary && $project->parent_project_id ) {
+				$project = GP::$project->get( $project->parent_project_id );
+				if ( ! $project ) {
+					break;
+				}
 
-					if ( $translation_set ) {
-						$glossary = $this->by_set_id( $translation_set->id );
-					}
+				$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+
+				if ( $translation_set ) {
+					$glossary = $this->by_set_id( $translation_set->id );
 				}
 			}
 		}
