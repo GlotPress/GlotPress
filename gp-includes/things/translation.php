@@ -301,7 +301,28 @@ class GP_Translation extends GP_Thing {
 	}
 
 	public function for_export( $project, $translation_set, $filters = null ) {
-		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
+		$entries = GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
+
+		// Strings that entered through an import were never checked by the
+		// blocking errors, so they can carry control characters that break
+		// the exported file (see GH#1975). Strip them on the way out, here
+		// rather than in the export route, so the WP-CLI export goes through
+		// the same treatment. Originals get the same stripping because a
+		// control character in a msgid breaks the file just as fatally.
+		foreach ( $entries as $entry ) {
+			foreach ( array( 'singular', 'plural', 'context' ) as $field ) {
+				if ( isset( $entry->{$field} ) && is_string( $entry->{$field} ) ) {
+					$entry->{$field} = gp_strip_forbidden_control_characters( $entry->{$field} );
+				}
+			}
+			foreach ( $entry->translations as $i => $form ) {
+				if ( is_string( $form ) ) {
+					$entry->translations[ $i ] = gp_strip_forbidden_control_characters( $form );
+				}
+			}
+		}
+
+		return $entries;
 	}
 
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
