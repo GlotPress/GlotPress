@@ -42,6 +42,43 @@ class GP_Test_Route_Glossary_Entry_Csv extends GP_UnitTestCase_Route {
 		$this->assertStringNotContainsString( "\tplus", $csv );
 	}
 
+	function test_import_accepts_terms_with_non_word_character_boundaries() {
+		$user_id = $this->factory->user->create();
+		wp_set_current_user( $user_id );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create( array( 'translation_set_id' => $set->id ) );
+
+		$file = tempnam( sys_get_temp_dir(), 'gp-glossary' );
+		$f    = fopen( $file, 'w' );
+		fputcsv( $f, array( 'Term', $set->locale, 'Part of speech', 'Comments' ), ',', '"', '' );
+		fputcsv( $f, array( 'are you sure...?', 'sigur ...?', 'expression', '' ), ',', '"', '' );
+		fputcsv( $f, array( 'note:', 'nota:', 'noun', '' ), ',', '"', '' );
+		fputcsv( $f, array( 'display [location]', 'exibir [local]', 'expression', '' ), ',', '"', '' );
+		fputcsv( $f, array( 'bogus', 'bogus', 'not-a-part-of-speech', '' ), ',', '"', '' );
+		fclose( $f );
+
+		$method = new ReflectionMethod( GP_Route_Glossary_Entry::class, 'read_glossary_entries_from_file' );
+		$method->setAccessible( true );
+		$count = $method->invoke( new GP_Route_Glossary_Entry(), $file, $glossary->id, $set->locale );
+
+		unlink( $file );
+
+		// The three punctuation-edged terms import; the invalid part of speech row is still skipped.
+		$this->assertSame( 3, $count );
+
+		$entry = GP::$glossary_entry->find_one( array( 'glossary_id' => $glossary->id, 'term' => 'are you sure...?' ) );
+		$this->assertSame( 'sigur ...?', $entry->translation );
+
+		$entry = GP::$glossary_entry->find_one( array( 'glossary_id' => $glossary->id, 'term' => 'note:' ) );
+		$this->assertSame( 'nota:', $entry->translation );
+
+		$entry = GP::$glossary_entry->find_one( array( 'glossary_id' => $glossary->id, 'term' => 'display [location]' ) );
+		$this->assertSame( 'exibir [local]', $entry->translation );
+
+		$this->assertEmpty( GP::$glossary_entry->find_one( array( 'glossary_id' => $glossary->id, 'term' => 'bogus' ) ) );
+	}
+
 	function test_import_reverses_the_formula_escape() {
 		$route = new Testable_GP_Route_Glossary_Entry_Csv();
 
