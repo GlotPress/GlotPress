@@ -1,4 +1,17 @@
 <?php
+/**
+ * GlotPress Template Functions
+ *
+ * @package GlotPress
+ */
+
+/**
+ * Loads a template file, passing it arguments.
+ *
+ * @param string      $template      The template name.
+ * @param array       $args          Arguments to pass to the template.
+ * @param string|null $template_path Priority template location, if any.
+ */
 function gp_tmpl_load( $template, $args = array(), $template_path = null ) {
 	$args = gp_tmpl_filter_args( $args );
 
@@ -67,14 +80,27 @@ function gp_tmpl_get_output( ...$args ) {
 	return ob_get_clean();
 }
 
+/**
+ * Loads the header template.
+ *
+ * @param array $args Arguments to pass to the template.
+ */
 function gp_tmpl_header( $args = array() ) {
 	gp_tmpl_load( 'header', $args );
 }
 
+/**
+ * Loads the footer template.
+ *
+ * @param array $args Arguments to pass to the template.
+ */
 function gp_tmpl_footer( $args = array() ) {
 	gp_tmpl_load( 'footer', $args );
 }
 
+/**
+ * Fires inside the head element on the header template.
+ */
 function gp_head() {
 	/**
 	 * Fires inside the head element on the header template.
@@ -84,6 +110,9 @@ function gp_head() {
 	do_action( 'gp_head' );
 }
 
+/**
+ * Fires at the end of the page, on the footer template.
+ */
 function gp_footer() {
 	/**
 	 * Fires at the end of the page, on the footer template.
@@ -93,6 +122,12 @@ function gp_footer() {
 	do_action( 'gp_footer' );
 }
 
+/**
+ * Retrieves the navigation menu HTML.
+ *
+ * @param string $location Location of the menu.
+ * @return string Navigation menu HTML.
+ */
 function gp_nav_menu( $location = 'main' ) {
 	$html  = '';
 	$items = gp_nav_menu_items( $location );
@@ -109,6 +144,12 @@ function gp_nav_menu( $location = 'main' ) {
 	return $html;
 }
 
+/**
+ * Navigational menu items.
+ *
+ * @param string $location Location of the menu.
+ * @return array Menu items. URL as the key, menu label as the value.
+ */
 function gp_nav_menu_items( $location = 'main' ) {
 	$items = array();
 
@@ -137,6 +178,12 @@ function gp_nav_menu_items( $location = 'main' ) {
 	return apply_filters( 'gp_nav_menu_items', $items, $location );
 }
 
+/**
+ * Filters template arguments to remove unsafe variables.
+ *
+ * @param array $args Arguments passed to the template.
+ * @return array Filtered arguments.
+ */
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v ) {
@@ -147,6 +194,11 @@ function gp_tmpl_filter_args( $args ) {
 	return $clean_args;
 }
 
+/**
+ * Loads the 404 template.
+ *
+ * @param array $args Arguments to pass to the template.
+ */
 function gp_tmpl_404( $args = array() ) {
 	gp_tmpl_load(
 		'404',
@@ -158,6 +210,12 @@ function gp_tmpl_404( $args = array() ) {
 	exit();
 }
 
+/**
+ * Gets or sets the title of a page.
+ *
+ * @param string|null $title The title to set, or null to get the current title.
+ * @return string The title of the page.
+ */
 function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {
 		add_filter(
@@ -180,6 +238,13 @@ function gp_title( $title = null ) {
 	}
 }
 
+/**
+ * Gets or sets the breadcrumb navigation.
+ *
+ * @param array|null $breadcrumb An array of breadcrumb items as HTML strings to set, or null to get the current breadcrumb.
+ * @param array      $args       Arguments for rendering the breadcrumb when getting it.
+ * @return string|null The breadcrumb HTML when getting it, or null when setting it.
+ */
 function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	if ( $breadcrumb ) {
 		$breadcrumb = gp_array_flatten( $breadcrumb );
@@ -232,6 +297,12 @@ function gp_breadcrumb( $breadcrumb = null, $args = array() ) {
 	}
 }
 
+/**
+ * Get project names from root to leaf, separated by " | ".
+ *
+ * @param GP_Project $leaf_project The leaf project.
+ * @return string The project names from root to leaf.
+ */
 function gp_project_names_from_root( $leaf_project ) {
 	$names          = array();
 	$path_from_root = array_reverse( $leaf_project->path_to_root() );
@@ -245,6 +316,12 @@ function gp_project_names_from_root( $leaf_project ) {
 	return $project_path;
 }
 
+/**
+ * Get project links from root to leaf.
+ *
+ * @param GP_Project $leaf_project The leaf project.
+ * @return array The project links from root to leaf.
+ */
 function gp_project_links_from_root( $leaf_project ) {
 	if ( 0 === $leaf_project->id ) {
 		return array();
@@ -289,10 +366,25 @@ function gp_breadcrumb_project( $project, $extra_items = array() ) {
 	return gp_breadcrumb( $breadcrumb );
 }
 
+/**
+ * Generates JavaScript code to focus on an HTML element by its ID.
+ *
+ * @param string $html_id The HTML ID of the element to focus on.
+ * @return string JavaScript code to focus on the element.
+ */
 function gp_js_focus_on( $html_id ) {
 	return '<script type="text/javascript">document.getElementById(\'' . esc_js( $html_id ) . '\').focus();</script>';
 }
 
+/**
+ * Generates HTML markup for a select element.
+ *
+ * @param string $name_and_id  Name and ID of the select element.
+ * @param array  $options      Options for the select element. Array of value => label pairs.
+ * @param string $selected_key The key of the currently selected option.
+ * @param array  $attrs        Extra attributes for the select element.
+ * @return string HTML markup for a select element.
+ */
 function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	$attributes = gp_html_attributes( $attrs );
 	$attributes = $attributes ? " $attributes" : '';
@@ -314,17 +406,33 @@ function gp_select( $name_and_id, $options, $selected_key, $attrs = array() ) {
 	return $res;
 }
 
+/**
+ * Generates HTML markup for a group of radio buttons.
+ *
+ * @param string $name        Name of the radio button group.
+ * @param array  $radio_buttons Array of value => label pairs for the radio buttons.
+ * @param string $checked_key The key of the currently checked radio button.
+ * @return string HTML markup for a group of radio buttons.
+ */
 function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
 	$res = '';
 	foreach ( $radio_buttons as $value => $label ) {
 		$checked = checked( $value, $checked_key, false );
-		// TODO: something more flexible than <br />
+		// TODO: something more flexible than <br /> ?
 		$res .= "\t<input type='radio' id='" . esc_attr( "{$name}[{$value}]" ) . "' name='" . esc_attr( $name ) . "' value='" . esc_attr( $value ) . "'$checked/>&nbsp;";
 		$res .= "<label for='" . esc_attr( "{$name}[{$value}]" ) . "'>" . esc_html( $label ) . "</label><br />\n";
 	}
 	return $res;
 }
 
+/**
+ * Generates HTML markup for pagination links.
+ *
+ * @param int $page     Current page number.
+ * @param int $per_page Objects per page.
+ * @param int $objects  Total number of objects to page.
+ * @return string HTML markup for pagination links.
+ */
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
 	$first       = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
@@ -401,6 +509,12 @@ HTML;
 	return apply_filters( 'gp_pagination', $html, $page, $per_page, $objects );
 }
 
+/**
+ * Converts an array of HTML attributes to a string.
+ *
+ * @param array $attrs Array of HTML attributes as key-value pairs.
+ * @return string String of HTML attributes.
+ */
 function gp_html_attributes( $attrs ) {
 	$attrs   = wp_parse_args( $attrs );
 	$strings = array();
@@ -410,6 +524,13 @@ function gp_html_attributes( $attrs ) {
 	return implode( ' ', $strings );
 }
 
+/**
+ * Adds a CSS class to an array of HTML attributes.
+ *
+ * @param array  $attrs      Array of HTML attributes as key-value pairs.
+ * @param string $class_name The CSS class name to add.
+ * @return array Updated array of HTML attributes with the new class added.
+ */
 function gp_attrs_add_class( $attrs, $class_name ) {
 	$attrs['class'] = isset( $attrs['class'] ) ? $attrs['class'] . ' ' . $class_name : $class_name;
 	return $attrs;
@@ -486,7 +607,7 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	}
 
 	$projects = GP::$project->all();
-	// TODO: mark which nodes are editable by the current user
+	// TODO: mark which nodes are editable by the current user.
 	$tree = array();
 	$top  = array();
 	foreach ( $projects as $p ) {
@@ -526,6 +647,12 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	return gp_select( $name_and_id, $options, $selected_project_id, $attrs );
 }
 
+/**
+ * Converts an array of GP_Thing objects to a JSON string.
+ *
+ * @param array $array An array of GP_Thing objects.
+ * @return string JSON string representing the array of GP_Thing objects.
+ */
 function gp_array_of_things_to_json( $array ) {
 	return wp_json_encode(
 		array_map(
@@ -537,6 +664,12 @@ function gp_array_of_things_to_json( $array ) {
 	);
 }
 
+/**
+ * Converts an array of arrays of GP_Thing objects to a JSON string.
+ *
+ * @param array $array An array of arrays of GP_Thing objects.
+ * @return string JSON string representing the array of arrays of GP_Thing objects.
+ */
 function gp_array_of_array_of_things_to_json( $array ) {
 	$map_to_fields = function ( $array ) {
 		return array_map(
@@ -550,6 +683,12 @@ function gp_array_of_array_of_things_to_json( $array ) {
 	return wp_json_encode( array_map( $map_to_fields, $array ) );
 }
 
+/**
+ * Recursively converts GP_Thing objects in an array to their fields.
+ *
+ * @param mixed $data An array or a GP_Thing object.
+ * @return mixed The input data with GP_Thing objects converted to their fields.
+ */
 function things_to_fields( $data ) {
 	if ( is_array( $data ) ) {
 		foreach ( $data as $item_id => $item ) {
@@ -562,6 +701,11 @@ function things_to_fields( $data ) {
 	return $data;
 }
 
+/**
+ * Outputs a style tag to set the preferred sans-serif font family for a locale.
+ *
+ * @param GP_Locale $locale The locale object containing the preferred sans-serif font family.
+ */
 function gp_preferred_sans_serif_style_tag( $locale ) {
 	if ( ! $locale->preferred_sans_serif_font_family ) {
 		return;
@@ -576,6 +720,14 @@ function gp_preferred_sans_serif_style_tag( $locale ) {
 	<?php
 }
 
+/**
+ * Returns an HTML excerpt of a string, with an ellipsis if the string was truncated.
+ *
+ * @param string $str      The string to excerpt.
+ * @param int    $count    The number of characters to excerpt.
+ * @param string $ellipsis The string to append if the string was truncated. Default is an ellipsis character.
+ * @return string The HTML excerpt of the string.
+ */
 function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;' ) {
 	$excerpt = trim( wp_html_excerpt( $str, $count ) );
 	if ( $str != $excerpt ) {
@@ -584,12 +736,24 @@ function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;' ) {
 	return $excerpt;
 }
 
+/**
+ * Echoes 'checked="checked"' if the given value is truthy.
+ *
+ * @param bool $checked Whether the checkbox should be checked.
+ */
 function gp_checked( $checked ) {
 	if ( $checked ) {
 		echo 'checked="checked"';
 	}
 }
 
+/**
+ * Displays action links for a project, such as importing originals, managing permissions, creating sub-projects, and more.
+ * The available actions can be filtered using the 'gp_project_actions' filter hook.
+ *
+ * @param GP_Project $project          The project for which to display the action links.
+ * @param array      $translation_sets An array of translation sets associated with the project, used to determine if personal options should be displayed.
+ */
 function gp_project_actions( $project, $translation_sets ) {
 	$actions = array(
 		gp_link_get( gp_url_project( $project, 'import-originals' ), __( 'Import Originals', 'glotpress' ) ),
@@ -625,6 +789,12 @@ function gp_project_actions( $project, $translation_sets ) {
 	echo '</ul>';
 }
 
+/**
+ * Generates HTML markup for the personal project options form, allowing users to set a source file URL template for a project.
+ *
+ * @param GP_Project $project The project for which to generate the options form.
+ * @return string HTML markup for the personal project options form.
+ */
 function gp_project_options_form( $project ) {
 	return '
 			<a href="#" class="personal-options" id="personal-options-toggle"> ' . __( 'Personal project options', 'glotpress' ) . ' &darr;</a>
@@ -652,6 +822,12 @@ function gp_project_options_form( $project ) {
 			</div>';
 }
 
+/**
+ * Displays action links for a translation entry, such as copying from the original string, inserting a tab, or inserting a newline.
+ * The available actions can be filtered using the 'gp_entry_actions' filter hook.
+ *
+ * @param string $seperator The separator to use between action links. Default is ' &bull; '.
+ */
 function gp_entry_actions( $seperator = ' &bull; ' ) {
 	$actions = array(
 		'<div class="button-group entry-actions"><button type="button" class="button is-small copy" tabindex="-1" title="' . __( 'Copy the original string to the translation area (overwrites existing text).', 'glotpress' ) . '">' . __( 'Copy from original', 'glotpress' ) . '</button> ' .
@@ -692,7 +868,7 @@ function gp_get_translation_row_classes( $translation ) {
 	$classes[] = $translation->warnings ? 'has-warnings' : 'no-warnings';
 	$classes[] = count( array_filter( $translation->translations, 'gp_is_not_null' ) ) > 0 ? 'has-translations' : 'no-translations';
 	/**
-	 * Filters the list of CSS classes for a translation row
+	 * Filters the list of CSS classes for a translation row.
 	 *
 	 * @since 2.2.0
 	 *

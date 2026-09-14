@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Create New Project
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Create New Project &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb_project(
 	$project,

@@ -1,14 +1,58 @@
 <?php
+/**
+ * GlotPress Format PO/MO
+ *
+ * @package GlotPress
+ */
+
 // phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
 
+/**
+ * Format class used to support PO files.
+ */
 class GP_Format_PO extends GP_Format {
 
-	public $name           = 'Portable Object Message Catalog (.po/.pot)';
-	public $extension      = 'po';
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @var string
+	 */
+	public $name = 'Portable Object Message Catalog (.po/.pot)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @var string
+	 */
+	public $extension = 'po';
+
+	/**
+	 * Alternative file extensions of the file format, used to autodetect formats.
+	 *
+	 * @var string[]
+	 */
 	public $alt_extensions = array( 'pot' );
 
+	/**
+	 * Class name of the PO handling class.
+	 *
+	 * @var string
+	 */
 	public $class = 'PO';
 
+	/**
+	 * Generates a string the contains the $entries to export in the PO file format.
+	 *
+	 * @param GP_Project         $project         The project the strings are being exported for, not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
+	 *                                            in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set $translation_set The locale object the strings are being
+	 *                                            exported for. not used in this format but part
+	 *                                            of the scaffold of the parent object.
+	 * @param GP_Translation     $entries         The entries to export.
+	 * @return string The exported strings string.
+	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
 		$po = new $this->class();
 
@@ -74,6 +118,16 @@ class GP_Format_PO extends GP_Format {
 		return $po->export();
 	}
 
+	/**
+	 * Reads a set of translations from a PO file.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string     $file_name The filename of the uploaded PO file.
+	 * @param GP_Project $project   The project object to read the translations in to.
+	 *
+	 * @return Translations|bool
+	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
 		$po     = new $this->class();
 		$result = $po->import_from_file( $file_name );
@@ -81,6 +135,12 @@ class GP_Format_PO extends GP_Format {
 		return $result ? $po : $result;
 	}
 
+	/**
+	 * Reads a set of original strings from a PO file.
+	 *
+	 * @param string $file_name The name of the uploaded strings file.
+	 * @return Translations|bool The extracted originals on success, false on failure.
+	 */
 	public function read_originals_from_file( $file_name ) {
 		return $this->read_translations_from_file( $file_name );
 	}
@@ -111,11 +171,36 @@ class GP_Format_PO extends GP_Format {
 	}
 }
 
+/**
+ * Format class used to support MO files.
+ */
 class GP_Format_MO extends GP_Format_PO {
-	public $name           = 'Machine Object Message Catalog (.mo)';
-	public $extension      = 'mo';
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @var string
+	 */
+	public $name = 'Machine Object Message Catalog (.mo)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @var string
+	 */
+	public $extension = 'mo';
+
+	/**
+	 * Alternative file extensions of the file format, used to autodetect formats.
+	 *
+	 * @var string[]
+	 */
 	public $alt_extensions = array();
 
+	/**
+	 * Class name of the MO handling class.
+	 *
+	 * @var string
+	 */
 	public $class = 'MO';
 
 	/**

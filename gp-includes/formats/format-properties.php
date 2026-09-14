@@ -1,11 +1,41 @@
 <?php
+/**
+ * GlotPress Format Properties
+ *
+ * @package GlotPress
+ */
 
+/**
+ * Format class used to support Properties files.
+ */
 class GP_Format_Properties extends GP_Format {
 
-	public $name             = 'Java Properties File (.properties)';
-	public $extension        = 'properties';
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @var string
+	 */
+	public $name = 'Java Properties File (.properties)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @var string
+	 */
+	public $extension = 'properties';
+
+	/**
+	 * Pattern used to generate the output file names.
+	 *
+	 * @var string
+	 */
 	public $filename_pattern = '%s_%s';
 
+	/**
+	 * Holds the exported string.
+	 *
+	 * @var string
+	 */
 	public $exported = '';
 
 	/**
@@ -215,7 +245,7 @@ class GP_Format_Properties extends GP_Format {
 		$code        = ord( $character );
 		$bytesnumber = 1;
 
-		if ( $code >= 128 ) {  // Otherwise 0xxxxxxx
+		if ( $code >= 128 ) {  // Otherwise 0xxxxxxx.
 			$codetemp = $code - 192;
 
 			if ( $code < 224 ) {
@@ -330,7 +360,7 @@ class GP_Format_Properties extends GP_Format {
 
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
+			// so we need to swap singular and translation.
 			$entry->translations = array( $entry->singular );
 			$entry->singular     = null;
 
@@ -403,7 +433,7 @@ class GP_Format_Properties extends GP_Format {
 					$comment = null;
 				}
 			} elseif ( false === $inline && $this->split_properties_line( $line, $key, $value ) ) {
-				// Check to see if this line continues on to the next
+				// Check to see if this line continues on to the next.
 				if ( gp_endswith( $line, '\\' ) ) {
 					$inline = true;
 					$value  = trim( $value, '\\' );

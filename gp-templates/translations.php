@@ -36,7 +36,7 @@ wp_localize_script(
 	)
 );
 
-// localizer adds var in front of the variable name, so we can't use $gp.editor.options
+// localizer adds var in front of the variable name, so we can't use $gp.editor.options.
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
@@ -192,7 +192,7 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $changesrequested_filters, $filters_and_sort ) && ! $additional_filters && ! $changesrequested_filters;
 		$current_filter    = $is_current_filter ? 'changesrequested' : $current_filter;
 
-		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
+		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress.
 			$filter_links[] = gp_link_get(
 				add_query_arg( $changesrequested_filters, $url ),
 				// Translators: %s is the changes requested strings count for the current translation set.
@@ -309,7 +309,7 @@ $i = 0;
 						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Rejected', 'glotpress' ); ?>
 					</label><br />
-					<?php if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
+					<?php if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress. ?>
 						<label for="filters[status][changesrequested]">
 							<input type="checkbox" value="changesrequested" id="filters[status][changesrequested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changesrequested', $selected_status_list, true ) ); ?>>
 							<?php _e( 'Changes requested', 'glotpress' ); ?>
@@ -493,7 +493,7 @@ do_action( 'gp_after_translation_table', get_defined_vars() );
 		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 		<?php
 		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
-			if ( ( 'changesrequested' == $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+			if ( ( 'changesrequested' == $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress.
 				continue;
 			}
 			?>
@@ -517,7 +517,7 @@ do_action( 'gp_after_translation_table', get_defined_vars() );
 						_e( 'Rejected', 'glotpress' );
 						break;
 					case 'changesrequested':
-						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress.
 							_e( 'Changes requested', 'glotpress' );
 						} else {
 							_e( 'Rejected', 'glotpress' );

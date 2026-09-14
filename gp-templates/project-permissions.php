@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Project Permissions
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title(
 	sprintf(
 		/* translators: %s: Project name. */

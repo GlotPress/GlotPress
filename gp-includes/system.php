@@ -1,7 +1,14 @@
 <?php
+/**
+ * GlotPress System Functions
+ *
+ * @package GlotPress
+ */
 
 /**
- * Makes all key/value pairs in $vars global variables
+ * Makes all key/value pairs in $vars global variables.
+ *
+ * @param array $vars Key/value pairs to set as global variables.
  */
 function gp_set_globals( $vars ) {
 	foreach ( $vars as $name => $value ) {
@@ -71,6 +78,8 @@ function gp_abort_main_wp_query( $sql, WP_Query $wp_query ) {
  * via WP's 'deleted_user' action.
  *
  * @since 1.0.0
+ *
+ * @param int $user_id The ID of the deleted user.
  */
 function gp_delete_user_permissions( $user_id ) {
 	$permissions = GP::$permission->find_many( array( 'user_id' => $user_id ) );

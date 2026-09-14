@@ -1,8 +1,17 @@
 <?php
+/**
+ * GlotPress Advanced Permissions
+ *
+ * @package GlotPress
+ */
 
 /**
  * Filter for can_user, which tries if the user
- * has permissions on project parents
+ * has permissions on project parents.
+ *
+ * @param string|bool $verdict Previous decision whether the user can do this.
+ * @param array       $args    Permission details.
+ * @return string|bool New decision whether the user can do this.
  */
 function gp_recurse_project_permissions( $verdict, $args ) {
 	if ( ! ( ! $verdict && 'project' == $args['object_type'] && $args['object_id'] && $args['user'] ) ) {
@@ -15,6 +24,14 @@ function gp_recurse_project_permissions( $verdict, $args ) {
 	return false;
 }
 
+/**
+ * Filter for can_user, which tries if the user
+ * has validator permissions on parent projects.
+ *
+ * @param string|bool $verdict Previous decision whether the user can do this.
+ * @param array       $args    Permission details.
+ * @return string|bool New decision whether the user can do this.
+ */
 function gp_recurse_validator_permission( $verdict, $args ) {
 	if ( ! ( ! $verdict && GP::$validator_permission->object_type == $args['object_type'] && $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
@@ -28,7 +45,13 @@ function gp_recurse_validator_permission( $verdict, $args ) {
 	return false;
 }
 
-
+/**
+ * Maps the translation-set permissions to the validator permissions.
+ *
+ * @param string|bool $verdict Previous decision whether the user can do this.
+ * @param array       $args    Permission details.
+ * @return string|bool New decision whether the user can do this.
+ */
 function gp_route_translation_set_permissions_to_validator_permissions( $verdict, $args ) {
 	if ( is_bool( $verdict ) ) {
 		return $verdict;
@@ -51,6 +74,13 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 	);
 }
 
+/**
+ * Allow any logged in user to translate.
+ *
+ * @param string|bool $verdict Previous decision whether the user can do this.
+ * @param array       $args    Permission details.
+ * @return string|bool New decision whether the user can do this.
+ */
 function gp_allow_everyone_to_translate( $verdict, $args ) {
 	if ( is_bool( $verdict ) ) {
 		return $verdict;

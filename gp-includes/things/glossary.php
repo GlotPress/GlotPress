@@ -14,20 +14,60 @@
  */
 class GP_Glossary extends GP_Thing {
 
-	var $table_basename           = 'gp_glossaries';
-	var $field_names              = array( 'id', 'translation_set_id', 'description' );
-	var $int_fields               = array( 'id', 'translation_set_id' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_glossaries';
+
+	/**
+	 * List of field names for a glossary.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'translation_set_id', 'description' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'translation_set_id' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * ID of the glossary.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the translation set.
+	 *
+	 * @var int $translation_set_id
+	 */
 	public $translation_set_id;
+
+	/**
+	 * Description of the glossary.
+	 *
+	 * @var string $description
+	 */
 	public $description;
 
 	/**
 	 * Caches the array of Glossary_Entry objects.
 	 *
 	 * @since 2.3.0
-	 * @var entries
+	 * @var GP_Glossary_Entry[] $entries
 	 */
 	private $entries = array();
 
@@ -75,8 +115,8 @@ class GP_Glossary extends GP_Thing {
 	 * Get the glossary by set/project.
 	 * If there's no glossary for this specific project, get the nearest parent glossary
 	 *
-	 * @param GP_Project         $project
-	 * @param GP_Translation_Set $translation_set
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param GP_Project         $project         The project.
 	 *
 	 * @return GP_Glossary|bool
 	 */
@@ -104,6 +144,12 @@ class GP_Glossary extends GP_Thing {
 		return $glossary;
 	}
 
+	/**
+	 * Get the glossary by set id.
+	 *
+	 * @param int $set_id The translation set ID.
+	 * @return GP_Glossary|bool
+	 */
 	public function by_set_id( $set_id ) {
 		return $this->one(
 			"
@@ -160,7 +206,7 @@ class GP_Glossary extends GP_Thing {
 	 * Copies glossary items from a glossary to the current one
 	 * This function does not merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
 	 *
-	 * @param int $source_glossary_id
+	 * @param int $source_glossary_id The source glossary ID.
 	 *
 	 * @return mixed
 	 */

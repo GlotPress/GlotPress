@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Locales
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Locales &lt; GlotPress', 'glotpress' ) );
 
 gp_enqueue_scripts( array( 'gp-common', 'tablesorter' ) );

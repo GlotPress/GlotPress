@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Create New Translation Set
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Create New Translation Set &lt; GlotPress', 'glotpress' ) );
 if ( $project ) {
 	gp_breadcrumb_project(

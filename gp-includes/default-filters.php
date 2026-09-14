@@ -9,28 +9,28 @@
  * @package GlotPress
  */
 
-// Actions
+// Actions.
 add_action( 'init', 'gp_init' );
 
-// WP
+// WP.
 add_action( 'parse_request', 'gp_parse_request' );
 
-// Styles and scripts
+// Styles and scripts.
 add_action( 'gp_head', 'wp_enqueue_scripts' );
 add_action( 'gp_head', 'gp_print_styles' );
 add_action( 'gp_head', 'gp_print_scripts' );
 
-// Rewrite rules
+// Rewrite rules.
 add_filter( 'query_vars', 'gp_query_vars' );
 add_action( 'template_redirect', 'gp_run_route' );
 
-// Users
+// Users.
 add_action( 'deleted_user', 'gp_delete_user_permissions' );
 
-// Query
+// Query.
 add_action( 'pre_get_posts', 'gp_set_is_home_false' );
 
-// WordPress profile options
+// WordPress profile options.
 add_action( 'show_user_profile', 'gp_wp_profile_options' );
 add_action( 'edit_user_profile', 'gp_wp_profile_options' );
 add_action( 'personal_options_update', 'gp_wp_profile_options_update' );
@@ -63,5 +63,5 @@ add_filter( 'gp_title', 'wptexturize' );
 add_filter( 'gp_title', 'convert_chars' );
 add_filter( 'gp_title', 'esc_html' );
 
-// Memory limit
+// Memory limit.
 add_filter( 'gp_translations_import_memory_limit', 'gp_set_translations_import_max_memory_limit' );
