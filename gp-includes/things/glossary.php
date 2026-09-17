@@ -104,6 +104,25 @@ class GP_Glossary extends GP_Thing {
 		return $glossary;
 	}
 
+	/**
+	 * Retrieves the locale glossary for a locale and translation set slug.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $locale_slug Slug of the locale.
+	 * @param string $set_slug    Slug of the translation set.
+	 * @return GP_Glossary|false The locale glossary, false if there is none.
+	 */
+	public function by_locale_and_set_slug( $locale_slug, $set_slug ) {
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $set_slug, $locale_slug );
+
+		if ( ! $locale_glossary_translation_set ) {
+			return false;
+		}
+
+		return $this->by_set_id( $locale_glossary_translation_set->id );
+	}
+
 	public function by_set_id( $set_id ) {
 		return $this->one(
 			"

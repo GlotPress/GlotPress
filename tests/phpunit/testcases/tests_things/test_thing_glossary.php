@@ -17,6 +17,21 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		$this->assertNotEquals( $glossary_2, $new );
 	}
 
+	function test_by_locale_and_set_slug() {
+		$locale      = $this->factory->locale->create();
+		$locale_set  = $this->factory->translation_set->create( array( 'project_id' => 0, 'locale' => $locale->slug, 'slug' => 'default' ) );
+		$project     = $this->factory->project->create();
+		$project_set = $this->factory->translation_set->create( array( 'project_id' => $project->id, 'locale' => $locale->slug, 'slug' => 'default' ) );
+
+		GP::$glossary->create_and_select( array( 'translation_set_id' => $project_set->id ) );
+		$this->assertFalse( GP::$glossary->by_locale_and_set_slug( $locale->slug, 'default' ), 'A project glossary is not a locale glossary.' );
+
+		$locale_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $locale_set->id ) );
+
+		$this->assertEquals( $locale_glossary, GP::$glossary->by_locale_and_set_slug( $locale->slug, 'default' ) );
+		$this->assertFalse( GP::$glossary->by_locale_and_set_slug( $locale->slug, 'formal' ), 'Another set slug has no locale glossary.' );
+	}
+
 	function test_by_set_or_parent_project() {
 		$locale = $this->factory->locale->create( array( 'slug' => 'bg' ) );
 

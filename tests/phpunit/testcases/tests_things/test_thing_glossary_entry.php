@@ -52,6 +52,30 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertNotEquals( array( $glossary_entry_2 ), $new );
 	}
 
+	function test_by_glossary_id_and_term() {
+		$noun = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'Post', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		$verb = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'post', 'part_of_speech' => 'verb', 'last_edited_by' => '1' ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'posts', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => '2', 'term' => 'post', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+
+		$entries = GP::$glossary_entry->by_glossary_id_and_term( '1', 'POST' );
+
+		$this->assertEqualsCanonicalizing( array( $noun->id, $verb->id ), wp_list_pluck( $entries, 'id' ) );
+	}
+
+	function test_by_glossary_id_and_term_treats_sql_wildcards_and_quotes_literally() {
+		GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'plugin', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		$quoted = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => "plugin's", 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+
+		$this->assertSame( array(), GP::$glossary_entry->by_glossary_id_and_term( '1', 'plug%' ) );
+		$this->assertSame( array(), GP::$glossary_entry->by_glossary_id_and_term( '1', 'plugi_' ) );
+		$this->assertSame( array(), GP::$glossary_entry->by_glossary_id_and_term( '1', "' OR '1'='1" ) );
+
+		$entries = GP::$glossary_entry->by_glossary_id_and_term( '1', "plugin's" );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $quoted->id, $entries[0]->id );
+	}
+
 	function test_part_of_speech_array_set() {
 		$this->assertCount( 10, GP::$glossary_entry->parts_of_speech );
 		$this->assertArrayHasKey( 'noun', GP::$glossary_entry->parts_of_speech );
