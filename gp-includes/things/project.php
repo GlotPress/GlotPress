@@ -66,6 +66,36 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
+	 * Fetches the project by a path or ID.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param int|string $identifier A project path or the ID.
+	 * @return GP_Project|false The project on success or false on failure.
+	 */
+	public function by_path_or_id( $identifier ) {
+		/**
+		 * Filters the prefix for the locale glossary path.
+		 *
+		 * @since 2.3.1
+		 *
+		 * @param string $$locale_glossary_path_prefix Prefix for the locale glossary path.
+		 */
+		$locale_glossary_path_prefix = apply_filters( 'gp_locale_glossary_path_prefix', '/languages' );
+
+		if ( $locale_glossary_path_prefix === $identifier ) {
+			return GP::$glossary->get_locale_glossary_project();
+		}
+
+		$path = rawurlencode( urldecode( $identifier ) );
+		$path = str_replace( '%2F', '/', $path );
+		$path = str_replace( '%20', ' ', $path );
+		$path = trim( $path, '/' );
+
+		return $this->one( "SELECT * FROM $this->table WHERE path = %s OR id = %d", $path, $identifier );
+	}
+
+	/**
 	 * Fetches the project by ID or object.
 	 *
 	 * @since 2.3.0
@@ -198,12 +228,16 @@ class GP_Project extends GP_Thing {
 			$args['parent_project_id'] = $this->force_false_to_null( $args['parent_project_id'] );
 		}
 
-		if ( isset( $args['slug'] ) && ! $args['slug'] ) {
+		if ( empty( $args['slug'] ) && ! empty( $args['name'] ) ) {
 			$args['slug'] = $args['name'];
 		}
 
 		if ( ! empty( $args['slug'] ) ) {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
+		}
+
+		if ( empty( $args['description'] ) ) {
+			$args['description'] = '';
 		}
 
 		if ( ( isset( $args['path'] ) && ! $args['path'] ) || ! isset( $args['path'] ) || is_null( $args['path'] ) ) {

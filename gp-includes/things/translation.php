@@ -212,6 +212,24 @@ class GP_Translation extends GP_Thing {
 	}
 
 	/**
+	 * Saves an existing translation.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param mixed $args Values to update.
+	 * @return bool|null Null and false on failure, true on success.
+	 */
+	public function save( $args = null ) {
+		$update_res = parent::save( $args );
+
+		if ( $update_res ) {
+			gp_clean_translation_set_cache( $this->translation_set_id );
+		}
+
+		return $update_res;
+	}
+
+	/**
 	 * Normalizes an array with key-value pairs representing
 	 * a GP_Translation object.
 	 *
@@ -304,7 +322,21 @@ class GP_Translation extends GP_Thing {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
 	}
 
-	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
+	/**
+	 * Retrieves translations for a translation set.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Project         $project         The project to retrieve translations for.
+	 * @param GP_Translation_Set $translation_set The translation set to retrieve translations for.
+	 * @param int|string         $page            The page number or 'no-limit' for all translations.
+	 * @param array              $filters         Optional. An array of filters to apply. Default empty array.
+	 * @param array              $sort            Optional. An array of sort settings. Default empty array.
+	 * @param int|null           $per_page        Optional. Number of translations per page. Default null. @since 5.0.0
+	 * @return array Array of Translation_Entry objects.
+	 */
+	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array(), $per_page = null ) {
+
 		global $wpdb;
 
 		$locale = GP_Locales::by_slug( $translation_set->locale );
@@ -494,7 +526,10 @@ class GP_Translation extends GP_Thing {
 
 		$orderby = sprintf( $sort_by, $sort_how );
 
-		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
+		if ( null === $per_page ) {
+			$per_page = $this->per_page;
+		}
+		$limit = $this->sql_limit_for_paging( (int) $page, (int) $per_page );
 
 		/**
 		 * Filters the 'for_translation' query SQL clauses.

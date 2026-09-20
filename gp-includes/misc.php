@@ -777,3 +777,26 @@ function gp_can_create_locale_glossary( $locale_slug, $set_slug ) {
 		GP::$validator_permission->object_id( 0, $locale_slug, $set_slug )
 	);
 }
+
+/**
+ * Fetch a thing from the DB.
+ * Ex: gp_get_thing( 1, 'project' );
+ *
+ * @since 5.0.0
+ *
+ * @param  int    $id   Thing ID.
+ * @param  string $type Thing type.
+ * @return object|false The object or false on failure.
+ */
+function gp_get_thing( $id = 0, $type = '' ) {
+	$object = GP::${ $type } ?? null;
+	$id     = (int) $id;
+
+	if ( ! $id || ! is_callable( array( $object, 'get' ) ) ) {
+		return false;
+	}
+
+	$thing = $object->get( $id );
+
+	return false !== $thing ? $thing : false;
+}

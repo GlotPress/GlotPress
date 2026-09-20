@@ -34,9 +34,7 @@ class GP_Route_Locale extends GP_Route_Main {
 
 	public function single( $locale_slug, $current_set_slug = 'default' ) {
 		$locale = GP_Locales::by_slug( $locale_slug );
-		$sets   = GP::$translation_set->by_locale( $locale_slug );
-
-		usort( $sets, array( $this, 'sort_sets_by_project_id' ) );
+		$sets   = GP::$translation_set->by_locale( $locale_slug, 'project_id' );
 
 		$projects_data   = $projects = $parents = $set_slugs = $set_list = array();
 		$locale_projects = wp_list_pluck( $sets, 'project_id' );
