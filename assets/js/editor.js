@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp */
+/* global $gp_editor_options, $gp, Intl, wp */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -24,7 +24,34 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
-			update_count: function( element ) {
+			translation_status_from_row: function( editor ) {
+				// CSS classes and their actual statuses.
+				var statuses = {
+					untranslated: 'untranslated',
+					'status-current': 'translated',
+					'status-waiting': 'waiting',
+					'status-changesrequested': 'changesrequested',
+					'status-fuzzy': 'fuzzy',
+					'status-old': 'old',
+					'status-rejected': 'rejected',
+				};
+				var classes = editor.attr( 'class' ).split( ' ' );
+				var status = false;
+				var hasWarnings = false;
+				$.each( classes, function( index, value ) {
+					if ( statuses.hasOwnProperty( value ) ) {
+						status = statuses[ value ];
+					}
+					if ( value === 'has-warnings' ) {
+						hasWarnings = true;
+					}
+				} );
+				return {
+					status: status,
+					hasWarnings: hasWarnings,
+				};
+			},
+			update_word_count: function( element ) {
 				var string;
 				var count_characters;
 				var count_words;
@@ -54,6 +81,43 @@ $gp.editor = (
 					$( this ).find( 'div.counts' ).html( html );
 				} );
 			},
+			update_filter_count: function( status, action ) {
+				var status_filter, count;
+
+				// Get User Locale.
+				var userLocale = $gp_editor_options.user_locale;
+
+				var filter_toolbar = $( 'form#upper-filters-toolbar' );
+
+				if ( status === 'current' ) {
+					status = 'translated';
+				}
+
+				status_filter = filter_toolbar.find( 'a.' + status );
+				count = status_filter.attr( 'data-count' );
+
+				switch ( action ) {
+					case 'add':
+						// Increase status count.
+						++count;
+						break;
+					case 'remove':
+						// Decrease status count.
+						--count;
+						break;
+				}
+
+				// Update filters data-attributes.
+				$( status_filter ).attr( 'data-count', count );
+
+				/**
+				 * Update translation filter counts.
+				 *
+				 * Until there isn't a proper function like number_format_i18n() for js, use Intl.NumberFormat based on WP user locale slug ('en', 'pt', etc.).
+				 * https://github.com/WordPress/gutenberg/issues/22628
+				 */
+				$( status_filter ).find( 'span.count' ).text( new Intl.NumberFormat( userLocale.slug ).format( count ) );
+			},
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
 				var editor = $( '#editor-' + row_id );
@@ -73,6 +137,8 @@ $gp.editor = (
 				editor.row_id = row_id;
 				editor.original_id = $gp.editor.original_id_from_row_id( row_id );
 				editor.translation_id = $gp.editor.translation_id_from_row_id( row_id );
+				editor.translation_status = $gp.editor.translation_status_from_row( editor ).status;
+				editor.translation_warnings = $gp.editor.translation_status_from_row( editor ).hasWarnings;
 
 				editor.original_translations = $( 'textarea[name="translation[' + editor.original_id + '][]"]', editor ).map( function() {
 					return this.value;
@@ -140,7 +206,7 @@ $gp.editor = (
 					.on( 'click', 'button.fuzzy', $gp.editor.hooks.set_status_fuzzy )
 					.on( 'click', 'button.ok', $gp.editor.hooks.ok )
 					.on( 'keydown', 'tr.editor textarea', $gp.editor.hooks.keydown )
-					.on( 'focus input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_count );
+					.on( 'focus input', 'tr.editor textarea.foreign-text', $gp.editor.hooks.update_word_count );
 				$( '#translations' ).tooltip( {
 					items: '.glossary-word',
 					content: function() {
@@ -269,13 +335,28 @@ $gp.editor = (
 					data: data,
 					dataType: 'json',
 					success: function( response ) {
-						var original_id;
+						var original_id, old_status, old_warnings, new_status, new_warnings;
 
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 
+						old_status = $gp.editor.current.translation_status;
+						old_warnings = $gp.editor.current.translation_warnings;
+
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
+						}
+
+						new_status = $gp.editor.current.translation_status;
+						new_warnings = $gp.editor.current.translation_warnings;
+
+						if ( old_status !== new_status ) {
+							$gp.editor.update_filter_count( old_status, 'remove' );
+							$gp.editor.update_filter_count( new_status, 'add' );
+						}
+
+						if ( old_warnings === false && new_warnings === true ) {
+							$gp.editor.update_filter_count( 'warnings', 'add' );
 						}
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
@@ -328,7 +409,7 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data, status_name,
+				var editor, data, status_name, old_status,
 					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
@@ -381,8 +462,13 @@ $gp.editor = (
 					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
+						old_status = $gp.editor.current.translation_status;
 						$gp.editor.replace_current( response );
 						$gp.editor.next();
+						if ( old_status !== status ) {
+							$gp.editor.update_filter_count( old_status, 'remove' );
+							$gp.editor.update_filter_count( status, 'add' );
+						}
 					},
 					error: function( xhr, msg ) {
 						button.prop( 'disabled', false );
@@ -393,7 +479,7 @@ $gp.editor = (
 				} );
 			},
 			discard_warning: function( link ) {
-				var data;
+				var data, old_warnings, new_warnings;
 				if ( ! $gp.editor.current ) {
 					return;
 				}
@@ -414,7 +500,14 @@ $gp.editor = (
 					data: data,
 					success: function( response ) {
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
+						old_warnings = $gp.editor.current.translation_warnings;
 						$gp.editor.replace_current( response );
+						new_warnings = $gp.editor.current.translation_warnings;
+						// Check if removed all warnings.
+						if ( old_warnings !== new_warnings ) {
+							$gp.editor.update_filter_count( 'warnings', 'remove' );
+							$gp.editor.next();
+						}
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */
@@ -482,8 +575,8 @@ $gp.editor = (
 				keydown: function( e ) {
 					return $gp.editor.keydown( e );
 				},
-				update_count: function( e ) {
-					return $gp.editor.update_count( e );
+				update_word_count: function( e ) {
+					return $gp.editor.update_word_count( e );
 				},
 				copy: function() {
 					$gp.editor.copy( $( this ) );
