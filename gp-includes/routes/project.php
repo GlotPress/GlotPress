@@ -227,11 +227,12 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		$new_parent_id = (int) $updated_project->parent_project_id;
+		$new_parent    = $new_parent_id ? $new_parent_id : null;
 
 		// TODO: add id check as a validation rule
 		if ( $project->id == $new_parent_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
-		} elseif ( $new_parent_id && $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent_id ) ) {
+		} elseif ( $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent ) ) {
 			$this->errors[] = __( 'You are not allowed to do that!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
 			$this->notices[] = __( 'The project was saved.', 'glotpress' );
@@ -426,23 +427,23 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_current() );
 	}
 
-	public function permissions_delete( $project_path, $permission_id ) {
-		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $permission_id ) ) {
-			return;
-		}
-
+	public function permissions_delete_post( $project_path, $permission_id ) {
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
-			$this->die_with_404();
+			return $this->die_with_404();
+		}
+
+		if ( $this->invalid_nonce_and_redirect( 'delete-project-permission_' . $project->id . '_' . $permission_id ) ) {
+			return;
 		}
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
 			return;
 		}
 
-		$permission = GP::$permission->get( $permission_id );
-		if ( $permission ) {
+		$permission = GP::$validator_permission->get( $permission_id );
+		if ( $permission && (int) $permission->project_id === (int) $project->id ) {
 			if ( $permission->delete() ) {
 				$this->notices[] = __( 'Permission was deleted.', 'glotpress' );
 			} else {

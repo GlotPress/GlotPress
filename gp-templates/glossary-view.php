@@ -37,7 +37,9 @@ if ( 0 === $project->id ) {
 		);
 		?>
 	</h2>
-	<?php gp_link_glossary_edit( $glossary, $translation_set, null, array( 'class' => 'button is-small' ) ); ?>
+	<?php if ( $can_edit ) : ?>
+		<?php gp_link_glossary_edit( $glossary, $translation_set, null, array( 'class' => 'button is-small' ) ); ?>
+	<?php endif; ?>
 	<?php gp_link_glossary_delete( $glossary, $translation_set, null, array( 'class' => 'button is-small' ) ); ?>
 </div>
 
