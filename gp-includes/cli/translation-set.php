@@ -2,6 +2,27 @@
 
 class GP_CLI_Translation_Set extends WP_CLI_Command {
 	/**
+	 * Project of the current translation set.
+	 *
+	 * @var GP_Project|false
+	 */
+	protected $project;
+
+	/**
+	 * Locale of the current translation set.
+	 *
+	 * @var GP_Locale|null
+	 */
+	protected $locale;
+
+	/**
+	 * Current translation set.
+	 *
+	 * @var GP_Translation_Set|false
+	 */
+	protected $translation_set;
+
+	/**
 	 * Get a translation set for a project.
 	 *
 	 * @param string $project Project path
