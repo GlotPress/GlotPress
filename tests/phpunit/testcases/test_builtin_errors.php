@@ -118,4 +118,15 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 			'The translation contains the following unexpected placeholders: 00%'
 		);
 	}
+
+	function test_error_control_characters() {
+		$this->assertNoErrors( 'control_characters', 'Original', 'A clean translation' );
+		$this->assertNoErrors( 'control_characters', 'Original', "Tabs\tnewlines\nand\rreturns are fine" );
+
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "EOT\x04here", null, 'U+0004' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "SOH\x01here", null, 'U+0001' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Bell\x07here", null, 'U+0007' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Escape\x1Bhere", null, 'U+001B' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Delete\x7Fhere", null, 'U+007F' );
+	}
 }

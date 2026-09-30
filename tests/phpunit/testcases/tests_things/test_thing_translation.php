@@ -642,4 +642,43 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 2, count( $waiting_translations ) );
 		$this->assertEquals( 1, count( $old_translations ) );
 	}
+
+	function test_for_export_strips_control_characters() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+
+		// Created directly, the way an import does, so no blocking error runs.
+		$translation = $this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+			'translation_0'      => "Guardar\x04alteracoes",
+		) );
+		$translation->set_as_current();
+
+		// for_export() is the shared path of the web export route and the
+		// WP-CLI export command, so stripping here covers both.
+		$entries = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
+
+		$this->assertCount( 1, $entries );
+		$this->assertSame( 'Guardaralteracoes', $entries[0]->translations[0] );
+	}
+
+	function test_for_export_strips_control_characters_from_originals() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => "Bad\x04original" ) );
+
+		$translation = $this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+			'translation_0'      => 'Uma traducao limpa',
+		) );
+		$translation->set_as_current();
+
+		$entries = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
+
+		$this->assertCount( 1, $entries );
+		$this->assertSame( 'Badoriginal', $entries[0]->singular );
+	}
 }
