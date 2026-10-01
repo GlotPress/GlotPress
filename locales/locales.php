@@ -459,8 +459,6 @@ class GP_Locales {
 		$bcc->country_code = 'pk';
 		$bcc->wp_locale = 'bcc';
 		$bcc->slug = 'bcc';
-		$bcc->nplurals = 1;
-		$bcc->plural_expression = '0';
 		$bcc->text_direction = 'rtl';
 		$bcc->alphabet = 'balochi';
 
@@ -497,8 +495,6 @@ class GP_Locales {
 		$bgn->country_code = 'pk';
 		$bgn->wp_locale = 'bgn';
 		$bgn->slug = 'bgn';
-		$bgn->nplurals = 1;
-		$bgn->plural_expression = '0';
 		$bgn->text_direction = 'rtl';
 		$bgn->alphabet = 'balochi';
 
