@@ -190,7 +190,7 @@ class GP_Glossary extends GP_Thing {
 	 * @return bool
 	 */
 	public function delete() {
-		GP::$glossary_entry->delete_many( array( 'glossary_id', $this->id ) );
+		GP::$glossary_entry->delete_many( array( 'glossary_id' => $this->id ) );
 
 		return parent::delete();
 	}
