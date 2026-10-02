@@ -171,6 +171,63 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	}
 
 	/**
+	 * @covers GP_Translation::has_all_translations
+	 */
+	function test_translation_with_a_missing_plural_form_cannot_be_set_to_current() {
+		$set = $this->create_set_with_validator_as_current_user();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'status' => 'waiting' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertEquals( 'waiting', GP::$translation->get( $translation->id )->status );
+	}
+
+	/**
+	 * @covers GP_Translation::has_all_translations
+	 */
+	function test_translation_with_all_plural_forms_can_be_set_to_current() {
+		$set = $this->create_set_with_validator_as_current_user();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'translation_1' => 'Muitos itens', 'status' => 'waiting' ) );
+
+		$this->assertTrue( (bool) $translation->set_status( 'current' ) );
+		$this->assertEquals( 'current', GP::$translation->get( $translation->id )->status );
+	}
+
+	/**
+	 * A translation of an original without a plural form only needs a single translation, whatever the
+	 * number of plural forms of the locale is.
+	 *
+	 * @covers GP_Translation::has_all_translations
+	 */
+	function test_translation_of_a_singular_original_can_be_set_to_current() {
+		$set = $this->create_set_with_validator_as_current_user();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'status' => 'waiting' ) );
+
+		$this->assertTrue( (bool) $translation->set_status( 'current' ) );
+		$this->assertEquals( 'current', GP::$translation->get( $translation->id )->status );
+	}
+
+	/**
+	 * Creates a translation set and makes a validator of it the current user.
+	 *
+	 * @return GP_Translation_Set The created translation set.
+	 */
+	private function create_set_with_validator_as_current_user() {
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create(
+			array( 'user_id' => $user, 'action' => 'approve',
+			       'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug )
+		);
+
+		return $set;
+	}
+
+	/**
 	 * @ticket gh-341
 	 */
 	function test_translation_should_not_report_empty_translation_set_id_as_translation_value_error() {
