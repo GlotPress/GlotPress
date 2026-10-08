@@ -37,18 +37,67 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
+		// API requests can ask for the glossary used by the translation editor, which includes the locale glossary.
+		$extended        = $this->api && '1' === gp_get( 'extended' );
+		$locale_glossary = false;
+		if ( $extended ) {
+			$locale_glossary = GP::$glossary->by_locale_and_set_slug( $locale_slug, $translation_set_slug );
+
+			if ( ! $glossary ) {
+				$glossary        = $locale_glossary;
+				$locale_glossary = false;
+			} elseif ( $locale_glossary && $locale_glossary->id === $glossary->id ) {
+				$locale_glossary = false;
+			}
+		}
+
 		if ( ! $glossary ) {
 			return $this->die_with_404();
 		}
 
-		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
+		$term = '';
+		if ( $this->api ) {
+			$term = gp_get( 'term' );
+			$term = is_string( $term ) ? trim( $term ) : '';
+		}
 
-		foreach ( $glossary_entries as $key => $entry ) {
-			$user = get_userdata( $entry->last_edited_by );
+		$glossary_entries = $this->get_glossary_entries( $glossary, $term );
 
-			if ( $user ) {
-				$glossary_entries[ $key ]->user_login        = $user->user_login;
-				$glossary_entries[ $key ]->user_display_name = $user->display_name;
+		if ( $locale_glossary ) {
+			// Project entries take precedence, the same way GP_Glossary::merge_with_glossary() merges them.
+			$entry_keys = array_map(
+				function ( $entry ) {
+					return $entry->key();
+				},
+				$glossary_entries
+			);
+
+			foreach ( $this->get_glossary_entries( $locale_glossary, $term ) as $entry ) {
+				if ( ! in_array( $entry->key(), $entry_keys, true ) ) {
+					$glossary_entries[] = $entry;
+				}
+			}
+		}
+
+		if ( $this->api ) {
+			$last_modified = max(
+				GP::$glossary_entry->last_modified( $glossary ),
+				$locale_glossary ? GP::$glossary_entry->last_modified( $locale_glossary ) : ''
+			);
+
+			if ( $last_modified ) {
+				$this->header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( $last_modified ) ) . ' GMT' );
+			}
+		}
+
+		if ( ! $this->api ) {
+			foreach ( $glossary_entries as $key => $entry ) {
+				$user = get_userdata( $entry->last_edited_by );
+
+				if ( $user ) {
+					$glossary_entries[ $key ]->user_login        = $user->user_login;
+					$glossary_entries[ $key ]->user_display_name = $user->display_name;
+				}
 			}
 		}
 
@@ -56,6 +105,23 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$url      = gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) );
 
 		$this->tmpl( 'glossary-view', get_defined_vars() );
+	}
+
+	/**
+	 * Retrieves the entries of a glossary, optionally limited to a term.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Glossary $glossary The glossary.
+	 * @param string      $term     The term to look up. An empty string retrieves all entries.
+	 * @return GP_Glossary_Entry[] The glossary entries.
+	 */
+	private function get_glossary_entries( $glossary, $term ) {
+		if ( '' !== $term ) {
+			return GP::$glossary_entry->by_glossary_id_and_term( $glossary->id, $term );
+		}
+
+		return GP::$glossary_entry->by_glossary_id( $glossary->id );
 	}
 
 	public function glossary_entry_add_post( $project_path, $locale_slug, $translation_set_slug ) {

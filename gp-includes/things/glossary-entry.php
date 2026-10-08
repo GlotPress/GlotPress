@@ -114,6 +114,24 @@ class GP_Glossary_Entry extends GP_Thing {
 	}
 
 	/**
+	 * Retrieves the entries of a glossary matching a term.
+	 *
+	 * The whole term must match, but the comparison is case-insensitive and
+	 * follows the column collation, which with WordPress' default collations
+	 * also ignores accents. A term can have several entries, for example one
+	 * per part of speech.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int    $glossary_id The ID of the glossary.
+	 * @param string $term        The term to look up.
+	 * @return GP_Glossary_Entry[] The matching entries.
+	 */
+	public function by_glossary_id_and_term( $glossary_id, $term ) {
+		return $this->many( "SELECT * FROM $this->table WHERE glossary_id = %d AND LOWER(term) = LOWER(%s) ORDER BY term ASC, part_of_speech ASC", $glossary_id, $term );
+	}
+
+	/**
 	 * Retrieves the last modified date of a entry in a glossary.
 	 *
 	 * @since 1.0.0
