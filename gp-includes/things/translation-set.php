@@ -270,7 +270,7 @@ class GP_Translation_Set extends GP_Thing {
 	 * @param  string       $desired_status 'current', 'waiting' or 'fuzzy'.
 	 * @return boolean or void
 	 */
-	public function import( $translations, $desired_status = 'current' ) {
+	public function import( $translations, $desired_status = 'current', $skip_existing = false ) {
 		wp_raise_memory_limit( 'gp_translations_import' );
 
 		if ( ! isset( $this->project ) || ! $this->project ) {
@@ -365,24 +365,49 @@ class GP_Translation_Set extends GP_Thing {
 			}
 
 			if ( $translated ) {
+				// If skip_existing is enabled, skip if there is any current, waiting or fuzzy translation.
+				if ( $skip_existing ) {
+					$current_translation = $existing_translations['current']->translate_entry( $entry );
+					$waiting_translation = isset( $existing_translations['waiting'] ) ? $existing_translations['waiting']->translate_entry( $entry ) : null;
+					if ( $current_translation || $waiting_translation ) {
+						continue;
+					}
+				}
 				// We have the same string translated, so create a new one if they don't match.
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
-
-				/**
-				 * Filter whether to import over an existing translation on a translation set.
-				 *
-				 * @since 1.0.0
-				 *
-				 * @param bool $import_over Import over an existing translation.
-				 */
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
 			} else {
 				// we don't have the string translated, let's see if the original is there
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
 					$entry->original_id = $original->id;
-					$create             = true;
+					// Skip if the original has a plural but the imported entry only provides a singular.
+					// A singular-only entry (msgid + msgstr, no msgid_plural) must not populate a plural
+					// original, as the plural form would be left empty or incorrectly filled.
+					if ( ! empty( $original->plural ) && empty( $entry->plural ) ) {
+						continue;
+					}
+
+					// Skip if translation was previously rejected by a validator and user can't approve.
+					if ( ! GP::$permission->current_user_can( 'approve', 'translation-set', $this->id ) ) {
+						global $wpdb;
+						$rejected = $wpdb->get_var( $wpdb->prepare(
+							"SELECT id FROM {$wpdb->gp_translations}
+							WHERE translation_set_id = %d
+							AND original_id = %d
+							AND status = 'rejected'
+							AND translation_0 = %s",
+							$this->id,
+							$original->id,
+							$entry->translations[0]
+						) );
+						if ( $rejected ) {
+							continue;
+						}
+					}
+
+					$create = true;
 				}
 			}
 			if ( $create ) {
