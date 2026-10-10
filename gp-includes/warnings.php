@@ -388,6 +388,16 @@ class GP_Builtin_Translation_Warnings {
 			}
 		}
 
+		// Check if the original uses numbered placeholders (%1$s) but the translation uses unnumbered (%s).
+		$numbered_re        = '(?<!%)%\d+\$[bcdefgosuxEFGX%l@]';
+		$unnumbered_re      = '(?<!%)%[bcdefgosuxEFGX%l@]';
+		$original_has_numbered      = preg_match( "/$numbered_re/", $original );
+		$translation_has_unnumbered = preg_match( "/$unnumbered_re/", $translation );
+
+		if ( $original_has_numbered && $translation_has_unnumbered ) {
+			return __( 'Translation uses unnumbered placeholders, but the original uses numbered placeholders.', 'glotpress' );
+		}
+
 		return true;
 	}
 
