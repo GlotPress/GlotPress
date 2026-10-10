@@ -193,6 +193,21 @@ class GP_Builtin_Translation_Warnings {
 	);
 
 	/**
+	 * List of locales for which the casing of the leading letter of a translation
+	 * is intentionally not validated.
+	 *
+	 * These locales may legitimately use a lowercase letter at the beginning of
+	 * a translation, even when the source string starts with an uppercase letter
+	 * (e.g. Dutch "maandag", Afrikaans "maandag").
+	 *
+	 * @since 4.2.0
+	 * @access public
+	 *
+	 * @var array
+	 */
+	public $casing_exclude_languages = array( 'nl', 'nl-be', 'af' );
+
+	/**
 	 * Checks whether lengths of source and translation differ too much.
 	 *
 	 * @since 1.0.0
@@ -955,12 +970,29 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 4.0.0
 	 * @access public
 	 *
-	 * @param string $original    The source string.
-	 * @param string $translation The translation.
-	 *
+	 * @param string    $original    The source string.
+	 * @param string    $translation The translation.
+	 * @param GP_Locale $locale      The locale of the translation.
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
-	public function warning_missing_uppercase_beginning( string $original, string $translation ) {
+	public function warning_missing_uppercase_beginning( $original, $translation, $locale ) {
+		/**
+		 * Filter the list of locales excluded from the missing-uppercase-beginning check.
+		 *
+		 * Locales in this list may legitimately start translations with a lowercase
+		 * letter (e.g. Dutch "maandag").
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param string[]  $casing_exclude_languages Locale slugs to exclude.
+		 * @param GP_Locale $locale                   The current locale.
+		 */
+		$casing_exclude_languages = apply_filters( 'gp_casing_exclude_languages', $this->casing_exclude_languages, $locale );
+
+		if ( in_array( $locale->slug, $casing_exclude_languages, true ) ) {
+			return true;
+		}
+
 		$is_first_letter_uppercase_original    = preg_match( '/^\p{Lu}/u', $original );
 		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
 		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
