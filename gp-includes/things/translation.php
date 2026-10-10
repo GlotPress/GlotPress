@@ -740,6 +740,20 @@ class GP_Translation extends GP_Thing {
 			$can_set_status = true;
 		}
 
+		// Block setting to current if the original has a plural but one or more plural forms are empty.
+		if ( $can_set_status && 'current' === $desired_status ) {
+			$original = GP::$original->get( $this->original_id );
+			if ( $original && ! empty( $original->plural ) ) {
+				$locale = GP_Locales::by_slug( GP::$translation_set->get( $this->translation_set_id )->locale);
+				foreach ( range( 0, $locale->nplurals - 1 ) as $i ) {
+					if ( empty( $this->{"translation_$i"} ) ) {
+						$can_set_status = false;
+						break;
+					}
+				}
+			}
+		}
+
 		/**
 		 * Filters the decision whether a translation can be set to a status.
 		 *
