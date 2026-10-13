@@ -552,15 +552,19 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		ksort( $regex_group );
 
 		// Build the regular expression.
+		// Terms are bounded with lookarounds instead of \b because \b inverts
+		// its meaning next to a non-word character: a term like `note:` or
+		// `are you sure...?` could never match. For terms with word-character
+		// edges the lookarounds behave exactly like \b.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
-		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
+		$terms_search        = '(?:((?<!\w)|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
 		$terms_search  = rtrim( $terms_search, '|' );
-		$terms_search .= ')\b)|(' . $placeholders_search . ')';
+		$terms_search .= ')(?!\w))|(' . $placeholders_search . ')';
 	}
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
