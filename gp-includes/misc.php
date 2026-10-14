@@ -470,6 +470,23 @@ function gp_is_starting_and_ending_with_a_word_character( $value ) {
 }
 
 /**
+ * Strips the control characters that cannot appear in exported files.
+ *
+ * Keeps tab, line feed and carriage return, which are legitimate in
+ * translations, and removes the remaining C0 control characters and DEL.
+ * 0x04 in particular is the context separator of the gettext formats,
+ * and XML 1.0 cannot represent any of these characters at all.
+ *
+ * @since 4.1.0
+ *
+ * @param string $text The text to strip.
+ * @return string The text without forbidden control characters.
+ */
+function gp_strip_forbidden_control_characters( $text ) {
+	return (string) preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', (string) $text );
+}
+
+/**
  * Acts the same as core PHP setcookie() but its arguments are run through the gp_set_cookie filter.
  *
  * If the filter returns false, setcookie() isn't called.
