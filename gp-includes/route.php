@@ -414,8 +414,9 @@ class GP_Route {
 				$redirect_url .= '?' . $current_uri['query'];
 			}
 
-			// Redirect to URL with trailing slash.
+			// Redirect to URL with trailing slash, and stop the route from running too.
 			$this->redirect( $redirect_url );
+			$this->exit_();
 		}
 	}
 }
