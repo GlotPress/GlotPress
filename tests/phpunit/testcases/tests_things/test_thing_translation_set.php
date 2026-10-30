@@ -316,6 +316,23 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 	}
 
 	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_translation_set_permissions() {
+		$user      = $this->factory->user->create();
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create_with_project_and_locale();
+
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'approve', 'object_type' => 'translation-set', 'object_id' => $set->id ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'approve', 'object_type' => 'translation-set', 'object_id' => $other_set->id ) );
+
+		$set->delete();
+
+		$this->assertEmpty( GP::$permission->find_many( array( 'object_type' => 'translation-set', 'object_id' => $set->id ) ) );
+		$this->assertCount( 1, GP::$permission->find_many( array( 'object_type' => 'translation-set', 'object_id' => $other_set->id ) ) );
+	}
+
+	/**
 	 * @ticket gh-397
 	 */
 	function test_update_status_breakdown_updates_pre_2_1_cached_values() {

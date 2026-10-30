@@ -574,7 +574,7 @@ class GP_Project extends GP_Thing {
 
 	/**
 	 * Deletes a project and all of sub projects, translations, translation sets, originals, glossaries
-	 * and validator permissions.
+	 * and permissions.
 	 *
 	 * @since 2.0.0
 	 *
@@ -592,6 +592,12 @@ class GP_Project extends GP_Thing {
 		GP::$original->delete_many( array( 'project_id' => $this->id ) );
 
 		GP::$validator_permission->delete_by_project_id( $this->id );
+		GP::$permission->delete_many(
+			array(
+				'object_type' => 'project',
+				'object_id'   => $this->id,
+			)
+		);
 
 		return parent::delete();
 	}
