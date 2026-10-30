@@ -2108,6 +2108,15 @@ class GP_Locales {
 		$nso->country_code = 'za';
 		$nso->slug = 'nso';
 
+		$nyn = new GP_Locale();
+		$nyn->english_name = 'Nyankole';
+		$nyn->native_name = 'Orunyankore';
+		$nyn->lang_code_iso_639_2 = 'nyn';
+		$nyn->lang_code_iso_639_3 = 'nyn';
+		$nyn->country_code = 'ug';
+		$nyn->wp_locale = 'nyn';
+		$nyn->slug = 'nyn';
+
 		$oci = new GP_Locale();
 		$oci->english_name = 'Occitan';
 		$oci->native_name = 'Occitan';
