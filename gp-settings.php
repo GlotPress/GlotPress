@@ -104,6 +104,15 @@ require_once GP_PATH . GP_INC . 'routes/glossary.php';
 require_once GP_PATH . GP_INC . 'routes/glossary-entry.php';
 require_once GP_PATH . GP_INC . 'routes/locale.php';
 
+require_once GP_PATH . GP_INC . '/rest-api/rest-functions.php';
+require_once GP_PATH . GP_INC . '/rest-api/rest-api.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/crud.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/api.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/import.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/languages.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/projects.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/translation-sets.php';
+require_once GP_PATH . GP_INC . 'rest-api/routes/v1/translations.php';
 
 GP::$translation_warnings         = new GP_Translation_Warnings();
 GP::$builtin_translation_warnings = new GP_Builtin_Translation_Warnings();
@@ -113,6 +122,7 @@ GP::$builtin_translation_errors = new GP_Builtin_Translation_Errors();
 GP::$builtin_translation_errors->add_all( GP::$translation_errors );
 GP::$router  = new GP_Router();
 GP::$formats = array();
+GP::$rest  = new GP_REST_API();
 
 require_once GP_PATH . GP_INC . 'format.php';
 require_once GP_PATH . GP_INC . 'formats/format-android.php';
