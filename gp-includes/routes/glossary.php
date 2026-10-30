@@ -112,8 +112,14 @@ class GP_Route_Glossary extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
-		$locale          = GP_Locales::by_slug( $translation_set->locale );
-		$project         = GP::$project->get( $translation_set->project_id );
+		$project         = $translation_set ? GP::$project->get( $translation_set->project_id ) : false;
+
+		if ( ! $project ) {
+			$this->redirect_with_error( __( 'Cannot find glossary.', 'glotpress' ) );
+			return;
+		}
+
+		$locale = GP_Locales::by_slug( $translation_set->locale );
 
 		$this->tmpl( 'glossary-edit', get_defined_vars() );
 	}
@@ -175,8 +181,14 @@ class GP_Route_Glossary extends GP_Route_Main {
 		}
 
 		$translation_set = GP::$translation_set->get( $glossary->translation_set_id );
-		$locale          = GP_Locales::by_slug( $translation_set->locale );
-		$project         = GP::$project->get( $translation_set->project_id );
+		$project         = $translation_set ? GP::$project->get( $translation_set->project_id ) : false;
+
+		if ( ! $project ) {
+			$this->redirect_with_error( __( 'Cannot find glossary.', 'glotpress' ) );
+			return;
+		}
+
+		$locale = GP_Locales::by_slug( $translation_set->locale );
 
 		$this->tmpl( 'glossary-delete', get_defined_vars() );
 	}
