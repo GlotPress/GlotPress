@@ -904,7 +904,7 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
-	 * Deletes a translation set and all of its translations and glossaries.
+	 * Deletes a translation set and all of its translations, glossaries and translation set permissions.
 	 *
 	 * @since 2.0.0
 	 *
@@ -917,6 +917,13 @@ class GP_Translation_Set extends GP_Thing {
 		if ( $glossary ) {
 			$glossary->delete();
 		}
+
+		GP::$permission->delete_many(
+			array(
+				'object_type' => 'translation-set',
+				'object_id'   => $this->id,
+			)
+		);
 
 		return parent::delete();
 	}
