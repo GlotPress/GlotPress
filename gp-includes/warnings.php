@@ -965,13 +965,103 @@ class GP_Builtin_Translation_Warnings {
 		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
 		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
 		$is_first_letter_lowercase_translation = preg_match( '/^\p{Ll}/u', $translation );
-		if ( $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation ) {
-			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
-		}
-		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
-			return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+
+		$missing_uppercase = $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation;
+		$missing_lowercase = $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation;
+
+		if ( ! $missing_uppercase && ! $missing_lowercase ) {
+			return true;
 		}
 
-		return true;
+		/*
+		 * The check compares the first letter of the original with the first letter
+		 * of the translation, which assumes both sentences begin with the same term.
+		 * Languages that reorder the sentence can begin the translation with a name
+		 * carried over from the original, such as `WordPress.org`, `bbPress`, `v2`,
+		 * or `foo_bar`. The case of such a name comes from the original rather than
+		 * from the translator, so there is nothing to correct.
+		 */
+		if ( $this->begins_with_name_from_original( $original, $translation ) ) {
+			return true;
+		}
+
+		if ( $missing_uppercase ) {
+			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
+		}
+
+		return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+	}
+
+	/**
+	 * Determines whether the translation begins with a name copied from the original.
+	 *
+	 * Only names are considered, meaning terms that carry their own casing, such as
+	 * `WordPress.org`, `bbPress`, `v2` or `foo_bar`. Ordinary words, including
+	 * hyphenated compounds such as `front-end`, are not names, so a translation
+	 * beginning with one is still checked.
+	 *
+	 * The comparison is case sensitive and matches whole terms, so a translation
+	 * beginning with `Word` is not treated as a copy of `WordPress`.
+	 *
+	 * @since 4.2.0
+	 * @access private
+	 *
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
+	 *
+	 * @return bool True if the translation begins with a name from the original.
+	 */
+	private function begins_with_name_from_original( string $original, string $translation ): bool {
+		if ( ! preg_match( '/^\S+/u', $translation, $matches ) ) {
+			return false;
+		}
+
+		$first_term = $this->trim_punctuation( $matches[0] );
+
+		if ( '' === $first_term || ! preg_match( '/[\p{Lu}\p{Ll}]/u', $first_term ) ) {
+			return false;
+		}
+
+		/*
+		 * A name carries its own casing: an uppercase letter, or one of the
+		 * characters identifiers use and ordinary words do not, meaning a digit,
+		 * `.`, `_`, `/` or `\`. Marks and punctuation that occur inside ordinary
+		 * words are deliberately excluded, so a dash as in `front-end`, an
+		 * apostrophe as in `don't`, a middle dot as in `col·legi` and a
+		 * combining accent as in a decomposed `équipe` all stay ordinary words.
+		 *
+		 * The consequence is that an all-lowercase hyphenated identifier such as
+		 * `wp-admin` is also read as an ordinary word, because it is shaped
+		 * exactly like `front-end`. Telling the two apart needs a dictionary
+		 * rather than a boundary rule, so the check keeps the warning for both
+		 * instead of risking the loss of a real one.
+		 */
+		$carries_own_case = preg_match( '/\p{Lu}/u', $first_term ) || preg_match( '/[\p{N}._\/\\\\]/u', $first_term );
+
+		if ( ! $carries_own_case ) {
+			return false;
+		}
+
+		foreach ( preg_split( '/\s+/u', $original, -1, PREG_SPLIT_NO_EMPTY ) as $term ) {
+			if ( $first_term === $this->trim_punctuation( $term ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Removes leading and trailing punctuation from a term.
+	 *
+	 * @since 4.2.0
+	 * @access private
+	 *
+	 * @param string $term The term to trim.
+	 *
+	 * @return string The trimmed term.
+	 */
+	private function trim_punctuation( string $term ): string {
+		return (string) preg_replace( '/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/u', '', $term );
 	}
 }
