@@ -1,5 +1,13 @@
 <?php
+/**
+ * GlotPress CLI Command to Manage Translation Sets
+ *
+ * @package GlotPress
+ */
 
+/**
+ * WP-CLI command class to manage translation sets in GlotPress.
+ */
 class GP_CLI_Translation_Set extends WP_CLI_Command {
 	/**
 	 * Project of the current translation set.
@@ -25,9 +33,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	/**
 	 * Get a translation set for a project.
 	 *
-	 * @param string $project Project path
-	 * @param string $locale Locale slug
-	 * @param string $set Set slug
+	 * @param string $project Project path.
+	 * @param string $locale Locale slug.
+	 * @param string $set Set slug.
 	 * @return GP_Translation_Set|WP_Error Translation set if available, error otherwise.
 	 */
 	protected function get_translation_set( $project, $locale, $set = 'default' ) {
@@ -74,6 +82,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--priority=<priorities>]
 	 * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
+	 *
+	 * @param string[] $args       Positional arguments.
+	 * @param array    $assoc_args Associative arguments.
 	 */
 	public function export( $args, $assoc_args ) {
 		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';

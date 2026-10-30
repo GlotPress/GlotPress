@@ -13,6 +13,10 @@
  * @since 1.0.0
  */
 class GP_Route_Index extends GP_Route_Main {
+
+	/**
+	 * Redirects to the projects page.
+	 */
 	public function index() {
 		$this->redirect( gp_url_project( '' ) );
 	}

@@ -1,3 +1,12 @@
+<?php
+/**
+ * Templates: Glossary Entry Row
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
+?>
 
 <tr class='view' data-id="<?php echo esc_attr( $entry->id ); ?>">
 	<td><?php echo esc_html( $entry->term ); ?></td>

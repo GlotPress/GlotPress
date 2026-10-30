@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Locale Projects
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title(
 	sprintf(
 		/* translators: %s: Locale english name. */

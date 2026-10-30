@@ -14,12 +14,20 @@
  */
 class GP_Route_Project extends GP_Route_Main {
 
+	/**
+	 * Displays the projects index page.
+	 */
 	public function index() {
 		$title    = __( 'Projects', 'glotpress' );
 		$projects = GP::$project->top_level();
 		$this->tmpl( 'projects', get_defined_vars() );
 	}
 
+	/**
+	 * Displays a single project page.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function single( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -74,6 +82,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the personal options POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function personal_options_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -104,6 +117,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
+	/**
+	 * Displays the import originals page for a project.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function import_originals_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -119,6 +137,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the import originals POST request for a project.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function import_originals_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -135,7 +158,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( ! is_uploaded_file( $_FILES['import-file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			// TODO: different errors for different upload conditions
+			// TODO: different errors for different upload conditions.
 			$this->redirect_with_error( __( 'Error uploading the file.', 'glotpress' ) );
 			return;
 		}
@@ -178,6 +201,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
+	/**
+	 * Displays the edit page for a project.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function edit_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -206,6 +234,11 @@ class GP_Route_Project extends GP_Route_Main {
 		return array_intersect_key( (array) gp_post( 'project' ), array_flip( $editable_fields ) );
 	}
 
+	/**
+	 * Handles the edit project POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function edit_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -229,7 +262,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$new_parent_id = (int) $updated_project->parent_project_id;
 		$new_parent    = $new_parent_id ? $new_parent_id : null;
 
-		// TODO: add id check as a validation rule
+		// TODO: add id check as a validation rule.
 		if ( $project->id == $new_parent_id ) {
 			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
 		} elseif ( $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent ) ) {
@@ -305,7 +338,9 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-delete', get_defined_vars() );
 	}
 
-
+	/**
+	 * Displays the new project page.
+	 */
 	public function new_get() {
 		$project         = new GP_Project();
 		$project->active = 1;
@@ -322,6 +357,9 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-new', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the new project POST request.
+	 */
 	public function new_post() {
 		if ( $this->invalid_nonce_and_redirect( 'add-project' ) ) {
 			return;
@@ -352,6 +390,11 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Displays the project permissions page.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function permissions_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -379,13 +422,18 @@ class GP_Route_Project extends GP_Route_Main {
 			}
 			$parent_permissions = array_merge( $parent_permissions, (array) $this_parent_permissions );
 		}
-		// we can't join on users table
+		// we can't join on users table.
 		foreach ( array_merge( (array) $permissions, (array) $parent_permissions ) as $permission ) {
 			$permission->user = get_user_by( 'id', $permission->user_id );
 		}
 		$this->tmpl( 'project-permissions', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the project permissions POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function permissions_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -427,6 +475,12 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_current() );
 	}
 
+	/**
+	 * Handles the project permission deletion request.
+	 *
+	 * @param string $project_path  The path of the project.
+	 * @param int    $permission_id The ID of the permission to delete.
+	 */
 	public function permissions_delete_post( $project_path, $permission_id ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -455,6 +509,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project, '-permissions' ) );
 	}
 
+	/**
+	 * Displays the mass create translation sets page.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function mass_create_sets_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -469,6 +528,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-mass-create-sets', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the mass create translation sets POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function mass_create_sets_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 		if ( ! $project ) {
@@ -529,6 +593,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->redirect( gp_url_project( $project ) );
 	}
 
+	/**
+	 * Handles the mass create translation sets preview POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function mass_create_sets_preview_post( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -550,6 +619,11 @@ class GP_Route_Project extends GP_Route_Main {
 		echo wp_json_encode( $project->set_difference_from( $other_project ) );
 	}
 
+	/**
+	 * Displays the branch project page.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function branch_project_get( $project_path ) {
 		$project = GP::$project->by_path( $project_path );
 
@@ -564,7 +638,11 @@ class GP_Route_Project extends GP_Route_Main {
 		$this->tmpl( 'project-branch', get_defined_vars() );
 	}
 
-
+	/**
+	 * Handles the branch project POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 */
 	public function branch_project_post( $project_path ) {
 		$post    = $this->editable_project_input();
 		$project = GP::$project->by_path( $project_path );

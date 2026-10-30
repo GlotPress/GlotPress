@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Public Profile
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Profile &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Profile', 'glotpress' ) ) );
 
