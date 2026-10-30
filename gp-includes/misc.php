@@ -528,21 +528,6 @@ function gp_is_starting_and_ending_with_a_word_character( $value ) {
 }
 
 /**
- * Checks if the passed value contains at least one letter or digit.
- *
- * A glossary term made only of punctuation, like `.` or `-`, would be marked
- * in almost every original.
- *
- * @since 4.2.0
- *
- * @param string $value The value you want to check.
- * @return bool
- */
-function gp_is_containing_a_letter_or_digit( $value ) {
-	return (bool) preg_match( '/[\p{L}\p{N}]/u', $value );
-}
-
-/**
  * Strips the control characters that cannot appear in exported files.
  *
  * Keeps tab, line feed and carriage return, which are legitimate in

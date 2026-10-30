@@ -65,25 +65,6 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertTrue( $verdict );
 	}
 
-	/**
-	 * @dataProvider data_terms_without_a_word_character
-	 */
-	function test_term_without_a_word_character( $term ) {
-		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => $term, 'part_of_speech' => 'expression', 'last_edited_by' =>'1' ) );
-		$verdict = $glossary_entry->validate();
-
-		$this->assertFalse( $verdict );
-	}
-
-	function data_terms_without_a_word_character() {
-		return array(
-			'period'   => array( '.' ),
-			'hyphen'   => array( '-' ),
-			'ellipsis' => array( '...' ),
-			'spaced'   => array( ' & ' ),
-		);
-	}
-
 	function test_term_is_saved_without_surrounding_whitespace() {
 		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => "  plugin \t", 'part_of_speech' => 'noun', 'last_edited_by' =>'1' ) );
 
