@@ -408,6 +408,8 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		// Filter out suffixes with empty values.
 		$suffixes = array_filter( $suffixes, fn( $value ) => ! empty( $value ) );
 
+		$matched_rule = false;
+
 		// Add suffixes for part_of_speech with rules.
 		if ( ! empty( $suffixes[ $type ] ) ) {
 			// Loop through rules.
@@ -418,6 +420,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 					// Check if noun ends with known suffix.
 					if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
+						$matched_rule = true;
 
 						// Set ending.
 						$old_ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
@@ -463,8 +466,10 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 				}
 			}
-		} else {
-			// Add match for part_of_speech without any suffix rules.
+		}
+
+		// Terms that no suffix rule fits, like `&` or `404`, are still matched as they are.
+		if ( ! $matched_rule && ! isset( $glossary_entries_suffixes[ $term ] ) ) {
 			$glossary_entries_suffixes[ $term ] = array();
 		}
 	}

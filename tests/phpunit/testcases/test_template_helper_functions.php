@@ -64,6 +64,47 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 	}
 
+	/**
+	 * Nouns and verbs get suffix rules, which none of these terms fit.
+	 *
+	 * @dataProvider data_terms_without_a_suffix_rule
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_term_without_a_suffix_rule( $term, $part_of_speech, $test_string, $expected_before, $expected_after ) {
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => $term,
+				'part_of_speech' => $part_of_speech,
+				'translation'    => 'X',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'plugin',
+				'part_of_speech' => 'noun',
+				'translation'    => 'extension',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_before . $this->glossary_match( 'X', $part_of_speech, esc_translation( $term ) ) . $expected_after, $orig->singular_glossary_markup );
+	}
+
+	function data_terms_without_a_suffix_rule() {
+		return array(
+			'ampersand noun' => array( '&', 'noun', 'Fish & Chips', 'Fish ', ' Chips' ),
+			'number noun'    => array( '404', 'noun', 'Error 404 page', 'Error ', ' page' ),
+			'symbol verb'    => array( '+', 'verb', 'Press + now', 'Press ', ' now' ),
+		);
+	}
+
 	function test_map_glossary_entries_to_translation_originals_with_term_after_character_reference() {
 		$entry = new Translation_Entry( array( 'singular' => 'Install&nbsp;plugin now' ) );
 
