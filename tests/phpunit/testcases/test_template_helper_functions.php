@@ -33,6 +33,57 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	/**
 	 * Expects matching a standalone ampersand term [&].
 	 */
+	/**
+	 * @dataProvider data_numeric_character_references
+	 */
+	function test_map_glossary_entries_to_translation_originals_does_not_match_ampersand_in_numeric_character_reference( $test_string ) {
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => '&',
+				'part_of_speech' => 'conjunction',
+				'translation'    => 'e',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( esc_translation( $test_string ), $orig->singular_glossary_markup );
+	}
+
+	function data_numeric_character_references() {
+		return array(
+			'decimal'     => array( 'Fish &#38; Chips' ),
+			'hexadecimal' => array( 'Fish &#x26; Chips' ),
+			'em dash'     => array( 'Fish &#8212; Chips' ),
+		);
+	}
+
+	function test_map_glossary_entries_to_translation_originals_with_term_after_character_reference() {
+		$entry = new Translation_Entry( array( 'singular' => 'Install&nbsp;plugin now' ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'plugin',
+				'part_of_speech' => 'noun',
+				'translation'    => 'extension',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( esc_translation( 'Install&nbsp;' ) . $this->glossary_match( 'extension', 'noun', 'plugin' ) . ' now', $orig->singular_glossary_markup );
+	}
+
 	function test_map_glossary_entries_to_translation_originals_with_standalone_ampersand_in_glossary() {
 		$test_string = 'Categories & Tags';
 		$orig = '';

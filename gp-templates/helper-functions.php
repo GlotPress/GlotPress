@@ -555,9 +555,10 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// Terms are bounded with lookarounds instead of \b because \b inverts
 		// its meaning next to a non-word character: a term like `note:` or
 		// `are you sure...?` could never match. A hyphen counts as part of the
-		// word, so `add` is not marked inside `add-on`.
+		// word, so `add` is not marked inside `add-on`. Character references
+		// are split off first, so a term like `&` is not marked inside `&#38;`.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
-		$terms_search        = '(?:((?<![\w-])|' . $placeholders_search . ')(';
+		$terms_search        = '(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
