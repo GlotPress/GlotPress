@@ -913,7 +913,10 @@ class GP_Translation_Set extends GP_Thing {
 	public function delete() {
 		GP::$translation->delete_many( array( 'translation_set_id' => $this->id ) );
 
-		GP::$glossary->delete_many( array( 'translation_set_id', $this->id ) );
+		$glossary = GP::$glossary->by_set_id( $this->id );
+		if ( $glossary ) {
+			$glossary->delete();
+		}
 
 		return parent::delete();
 	}

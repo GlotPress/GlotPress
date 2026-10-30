@@ -279,6 +279,27 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 	}
 
 	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_its_glossary_and_keeps_other_glossaries() {
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$glossary       = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		$other_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $other_set->id ) );
+
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		$this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$set->delete();
+
+		$this->assertFalse( GP::$glossary->by_set_id( $set->id ) );
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+		$this->assertEmpty( GP::$translation->find_many( array( 'translation_set_id' => $set->id ) ) );
+		$this->assertEquals( $other_glossary->id, GP::$glossary->by_set_id( $other_set->id )->id );
+	}
+
+	/**
 	 * @ticket gh-397
 	 */
 	function test_update_status_breakdown_updates_pre_2_1_cached_values() {

@@ -63,6 +63,26 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 
 	}
 
+	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_its_entries_and_keeps_entries_of_other_glossaries() {
+		global $wpdb;
+
+		// ID 1 is used on purpose: a malformed where clause matched every row for it.
+		$wpdb->insert( $wpdb->gp_glossaries, array( 'id' => 1, 'translation_set_id' => 1 ) );
+		$glossary       = GP::$glossary->get( 1 );
+		$other_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => 2 ) );
+
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => $other_glossary->id, 'term' => 'other term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+
+		$glossary->delete();
+
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+		$this->assertCount( 1, GP::$glossary_entry->find_many( array( 'glossary_id' => $other_glossary->id ) ) );
+	}
+
 	function test_description_defaults_to_empty_string() {
 		$set      = $this->factory->translation_set->create_with_project_and_locale();
 		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );

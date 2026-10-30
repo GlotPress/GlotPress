@@ -580,9 +580,13 @@ class GP_Project extends GP_Thing {
 	 * @return bool
 	 */
 	public function delete() {
-		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
+		foreach ( GP::$project->find_many( array( 'parent_project_id' => $this->id ) ) as $sub_project ) {
+			$sub_project->delete();
+		}
 
-		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
+		foreach ( GP::$translation_set->by_project_id( $this->id ) as $translation_set ) {
+			$translation_set->delete();
+		}
 
 		GP::$original->delete_many( array( 'project_id' => $this->id ) );
 
