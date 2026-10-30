@@ -84,6 +84,13 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		);
 	}
 
+	function test_term_is_saved_without_surrounding_whitespace() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => "  plugin \t", 'part_of_speech' => 'noun', 'last_edited_by' =>'1' ) );
+
+		$this->assertTrue( $glossary_entry->validate() );
+		$this->assertSame( 'plugin', GP::$glossary_entry->get( $glossary_entry->id )->term );
+	}
+
 	function test_by_glossary_id() {
 		$glossary_entry_1 = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );
 		$glossary_entry_2 = GP::$glossary_entry->create( array( 'glossary_id' => '2', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );

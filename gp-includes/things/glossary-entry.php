@@ -184,6 +184,26 @@ class GP_Glossary_Entry extends GP_Thing {
 	}
 
 	/**
+	 * Normalizes an array with key-value pairs representing
+	 * a GP_Glossary_Entry object.
+	 *
+	 * The term is trimmed because the glossary matcher would otherwise
+	 * require the surrounding whitespace literally.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $args Arguments for a GP_Glossary_Entry object.
+	 * @return array Normalized arguments for a GP_Glossary_Entry object.
+	 */
+	public function normalize_fields( $args ) {
+		if ( isset( $args['term'] ) && is_string( $args['term'] ) ) {
+			$args['term'] = trim( $args['term'] );
+		}
+
+		return parent::normalize_fields( $args );
+	}
+
+	/**
 	 * Sets restriction rules for fields.
 	 *
 	 * @since 1.0.0
