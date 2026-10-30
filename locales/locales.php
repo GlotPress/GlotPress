@@ -731,15 +731,6 @@ class GP_Locales {
 		$cv->plural_expression = '0';
 		$cv->alphabet = 'cyrillic';
 
-		$cv = new GP_Locale();
-		$cv->english_name = 'Chuvash';
-		$cv->native_name = 'чӑваш чӗлхи';
-		$cv->lang_code_iso_639_1 = 'cv';
-		$cv->lang_code_iso_639_2 = 'chv';
-		$cv->country_code = 'ru';
-		$cv->slug = 'cv';
-		$cv->alphabet = 'cyrillic';
-
 		$cy = new GP_Locale();
 		$cy->english_name = 'Welsh';
 		$cy->native_name = 'Cymraeg';
