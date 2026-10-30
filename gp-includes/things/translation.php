@@ -321,7 +321,18 @@ class GP_Translation extends GP_Thing {
 	 * @return Translation_Entry[] The translation entries.
 	 */
 	public function for_export( $project, $translation_set, $filters = null ) {
-		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
+		$entries = GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
+
+		// Imported translations skip the blocking errors. Stripping here also covers the WP-CLI export.
+		foreach ( $entries as $entry ) {
+			foreach ( $entry->translations as $i => $form ) {
+				if ( is_string( $form ) ) {
+					$entry->translations[ $i ] = gp_strip_forbidden_control_characters( $form );
+				}
+			}
+		}
+
+		return $entries;
 	}
 
 	/**
