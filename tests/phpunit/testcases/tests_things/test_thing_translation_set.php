@@ -300,6 +300,22 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Validator permissions are inherited by sub-projects and can exist without a set.
+	 *
+	 * @ticket gh-2153
+	 */
+	function test_delete_keeps_validator_permissions() {
+		$user = $this->factory->user->create();
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve', 'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$set->delete();
+
+		$this->assertCount( 1, GP::$validator_permission->by_project_id( $set->project_id ) );
+	}
+
+	/**
 	 * @ticket gh-397
 	 */
 	function test_update_status_breakdown_updates_pre_2_1_cached_values() {
