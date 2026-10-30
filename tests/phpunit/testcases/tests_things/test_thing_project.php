@@ -345,6 +345,31 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
 
+	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_grandchild_projects_and_their_contents() {
+		$root       = $this->factory->project->create();
+		$child      = $this->factory->project->create( array( 'parent_project_id' => $root->id ) );
+		$grandchild = $this->factory->project->create( array( 'parent_project_id' => $child->id ) );
+
+		$locale   = $this->factory->locale->create();
+		$set      = $this->factory->translation_set->create( array( 'project_id' => $grandchild->id, 'locale' => $locale->slug ) );
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		$this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$root->delete();
+
+		$this->assertFalse( GP::$project->get( $child->id ) );
+		$this->assertFalse( GP::$project->get( $grandchild->id ) );
+		$this->assertEmpty( GP::$translation_set->find_many( array( 'project_id' => $grandchild->id ) ) );
+		$this->assertEmpty( GP::$original->find_many( array( 'project_id' => $grandchild->id ) ) );
+		$this->assertEmpty( GP::$translation->find_many( array( 'translation_set_id' => $set->id ) ) );
+		$this->assertFalse( GP::$glossary->get( $glossary->id ) );
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+	}
+
 	public function test_previous_state_is_passed_to_saved_action() {
 		$project = $this->factory->project->create( array( 'name' => 'Before' ) );
 		$initial_project = clone $project;

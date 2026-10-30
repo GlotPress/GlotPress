@@ -911,21 +911,12 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return bool
 	 */
 	public function delete() {
-		// Delete Translation Set.
 		GP::$translation->delete_many( array( 'translation_set_id' => $this->id ) );
 
-		// Get the single Project Glossary for the translation Set.
-		$glossaries = GP::$glossary->find( array( 'translation_set_id' => $this->id ) );
-
-		if ( is_array( $glossaries ) && ! empty( $glossaries ) ) {
-			$glossary = $glossaries[0];
-
-			// Delete the Project Glossary entries.
-			GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossary->id ) );
+		$glossary = GP::$glossary->by_set_id( $this->id );
+		if ( $glossary ) {
+			$glossary->delete();
 		}
-
-		// Delete Translation Set Glossary.
-		GP::$glossary->delete_many( array( 'translation_set_id' => $this->id ) );
 
 		return parent::delete();
 	}
