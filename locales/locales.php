@@ -736,8 +736,12 @@ class GP_Locales {
 		$cv->native_name = 'чӑваш чӗлхи';
 		$cv->lang_code_iso_639_1 = 'cv';
 		$cv->lang_code_iso_639_2 = 'chv';
+		$cv->lang_code_iso_639_3 = 'chv';
 		$cv->country_code = 'ru';
+		$cv->wp_locale = 'cv';
 		$cv->slug = 'cv';
+		$cv->nplurals = 1;
+		$cv->plural_expression = '0';
 		$cv->alphabet = 'cyrillic';
 
 		$cy = new GP_Locale();
