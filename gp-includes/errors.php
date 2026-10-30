@@ -179,7 +179,7 @@ class GP_Builtin_Translation_Errors {
 	 * Android and .NET exports invalid documents. Tab, line feed and
 	 * carriage return themselves are legitimate and stay allowed.
 	 *
-	 * @since 4.1.0
+	 * @since 4.2.0
 	 * @access public
 	 *
 	 * @param string $original    The source string.

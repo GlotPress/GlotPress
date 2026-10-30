@@ -535,7 +535,7 @@ function gp_is_starting_and_ending_with_a_word_character( $value ) {
  * 0x04 in particular is the context separator of the gettext formats,
  * and XML 1.0 cannot represent any of these characters at all.
  *
- * @since 4.1.0
+ * @since 4.2.0
  *
  * @param string $text The text to strip.
  * @return string The text without forbidden control characters.

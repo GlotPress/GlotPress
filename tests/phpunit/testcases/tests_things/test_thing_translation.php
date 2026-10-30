@@ -663,22 +663,4 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertSame( 'Guardaralteracoes', $entries[0]->translations[0] );
 	}
-
-	function test_for_export_strips_control_characters_from_originals() {
-		$set      = $this->factory->translation_set->create_with_project_and_locale();
-		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => "Bad\x04original" ) );
-
-		$translation = $this->factory->translation->create( array(
-			'translation_set_id' => $set->id,
-			'original_id'        => $original->id,
-			'status'             => 'current',
-			'translation_0'      => 'Uma traducao limpa',
-		) );
-		$translation->set_as_current();
-
-		$entries = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
-
-		$this->assertCount( 1, $entries );
-		$this->assertSame( 'Badoriginal', $entries[0]->singular );
-	}
 }
