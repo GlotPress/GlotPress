@@ -80,7 +80,7 @@ class GP_Project extends GP_Thing {
 	/**
 	 * ID of the parent project.
 	 *
-	 * @var int $parent_project_id
+	 * @var int|null $parent_project_id
 	 */
 	public $parent_project_id;
 
@@ -398,7 +398,7 @@ class GP_Project extends GP_Thing {
 	/**
 	 * Retrieves the source URL template, considering user-specific overrides.
 	 *
-	 * @return string The source URL template.
+	 * @return string|null The source URL template.
 	 */
 	public function source_url_template() {
 		if ( isset( $this->user_source_url_template ) ) {

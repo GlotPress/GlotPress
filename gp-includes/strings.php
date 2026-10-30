@@ -87,7 +87,7 @@ function esc_translation( $text ) {
  *
  * @param string $str1 First string.
  * @param string $str2 Second string.
- * @return float Similarity between 0 and 1.
+ * @return float Similarity, 1 for identical strings. Can be negative for strings of very different lengths.
  */
 function gp_string_similarity( $str1, $str2 ) {
 
@@ -107,13 +107,12 @@ function gp_string_similarity( $str1, $str2 ) {
 	return $similarity;
 }
 
-/*
-	PHP native implementation of levensthein is limited to 255 bytes, so let's extend that
-	Source: https://github.com/wikimedia/mediawiki-extensions-Translate/blob/master/ttmserver/TTMServer.php#L90
-
-*/
 /**
  * Calculates the Levenshtein distance between two strings.
+ *
+ * PHP's native levenshtein() is limited to 255 bytes, so this extends it.
+ *
+ * @link https://github.com/wikimedia/mediawiki-extensions-Translate/blob/master/ttmserver/TTMServer.php#L90
  *
  * @param string $str1    First string.
  * @param string $str2    Second string.

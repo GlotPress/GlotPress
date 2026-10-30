@@ -214,7 +214,7 @@ function gp_tmpl_404( $args = array() ) {
  * Gets or sets the title of a page.
  *
  * @param string|null $title The title to set, or null to get the current title.
- * @return string The title of the page.
+ * @return string|null The title of the page when getting it, or null when setting it.
  */
 function gp_title( $title = null ) {
 	if ( ! is_null( $title ) ) {

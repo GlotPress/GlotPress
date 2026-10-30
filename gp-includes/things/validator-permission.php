@@ -52,7 +52,7 @@ class GP_Validator_Permission extends GP_Permission {
 	/**
 	 * ID of the project.
 	 *
-	 * @var int $project_id
+	 * @var int|string $project_id
 	 */
 	public $project_id;
 
@@ -73,7 +73,7 @@ class GP_Validator_Permission extends GP_Permission {
 	/**
 	 * User object.
 	 *
-	 * @var GP_User $user
+	 * @var WP_User $user
 	 */
 	public $user;
 

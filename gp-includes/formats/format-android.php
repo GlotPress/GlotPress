@@ -52,7 +52,7 @@ class GP_Format_Android extends GP_Format {
 	 * @param GP_Translation_Set $translation_set The locale object the strings are being
 	 *                                            exported for. not used in this format but part
 	 *                                            of the scaffold of the parent object.
-	 * @param GP_Translation     $entries         The entries to export.
+	 * @param Translation_Entry[] $entries         The entries to export.
 	 *
 	 * @return string The exported Android XML string.
 	 */

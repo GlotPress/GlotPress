@@ -227,7 +227,7 @@ class GP_Route {
 	 *
 	 * @param object $thing A GP_Thing instance to validate.
 	 * @param string $url Where to redirect if the thing doesn't validate.
-	 * @return bool Whether the thing is valid.
+	 * @return bool True if the thing was invalid and a redirect was issued, false if it is valid.
 	 */
 	public function invalid_and_redirect( $thing, $url = null ) {
 		$valid = $this->validate( $thing );

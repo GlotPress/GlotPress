@@ -94,7 +94,7 @@ class GP_Thing {
 	/**
 	 * Default conditions for queries.
 	 *
-	 * @var array $default_conditions
+	 * @var string|null $default_conditions
 	 */
 	public $default_conditions;
 
@@ -500,7 +500,7 @@ class GP_Thing {
 	 *
 	 * @param array $data Associative array with fields as keys and updated values as values.
 	 * @param array $where Optional. Associative array with fields as keys and values as values for the WHERE clause.
-	 * @return bool|null Null and false on failure, true on success.
+	 * @return bool False if there is nothing to update, true otherwise.
 	 */
 	public function update( $data, $where = null ) {
 		global $wpdb;
@@ -959,7 +959,7 @@ class GP_Thing {
 	/**
 	 * Retrieves the number of rows found by the last SQL_CALC_FOUND_ROWS query.
 	 *
-	 * @return int Number of found rows.
+	 * @return string|null Number of found rows, as returned by the database.
 	 */
 	public function found_rows() {
 		global $wpdb;

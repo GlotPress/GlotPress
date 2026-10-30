@@ -71,7 +71,7 @@ class GP_Validation_Rules {
 	/**
 	 * An array of validation rules.
 	 *
-	 * Each rule is an associative array with the following keys:
+	 * Rules are grouped by field name. Each rule is an associative array with the following keys:
 	 * - 'field': The name of the field to validate.
 	 * - 'rule': The name of the validation rule to apply.
 	 * - 'kind': The kind of validation ('positive' or 'negative').
@@ -132,14 +132,14 @@ class GP_Validation_Rules {
 	/**
 	 * Magic method to handle calls to undefined methods.
 	 *
-	 * This method checks if the called method matches the pattern of [field]_[rule] for either positive or negative validation.
+	 * This method checks if the called method matches the pattern of [field]_[suffix], for example name_should_not_be( 'empty' ), for either positive or negative validation. The rule is passed as the first argument.
 	 * If a match is found, it adds the corresponding validation rule to the $rules array.
-	 * If no match is found, it triggers a user error for an undefined method call.
+	 * If no match is found, it throws a BadMethodCallException.
 	 *
 	 * @param string $name The name of the called method.
 	 * @param array  $args The arguments passed to the called method.
 	 * @throws BadMethodCallException If the called method does not match any defined validation pattern.
-	 * @return bool True if a validation rule was added, otherwise triggers an error.
+	 * @return true True when a validation rule was added.
 	 */
 	public function __call( $name, $args ) {
 		foreach ( array( 'positive', 'negative' ) as $kind ) {
@@ -252,7 +252,7 @@ class GP_Validation_Rules {
 	 * Constructs an error message for a failed validation rule.
 	 *
 	 * This method generates a user-friendly error message based on the provided validation rule.
-	 * It identifies the type of field (e.g., input or textarea) and formats the message accordingly, including the name of the field and the validation rule that failed.
+	 * It identifies the type of field ('field' or 'textarea') and formats the message accordingly, including the name of the field and the validation rule that failed.
 	 *
 	 * @param array $rule The validation rule that failed, containing 'field', 'rule', and 'kind' keys.
 	 * @return string The constructed error message.
@@ -296,7 +296,7 @@ class GP_Validators {
 	 *
 	 * @param string        $key               The key to identify the validation rule.
 	 * @param callable      $callback          The callback function for positive validation. It should return true if the validation passes, false otherwise.
-	 * @param callable|null $negative_callback Optional. The callback function for negative validation. It should return true if the validation fails, false otherwise. If not provided, the positive callback will be used for negative validation as well.
+	 * @param callable|null $negative_callback Optional. The callback function for negative validation. It should return true if the value passes the negative check (for example, is not empty), false otherwise. If not provided, the negative check passes when the positive callback returns false.
 	 */
 	public static function register( $key, $callback, $negative_callback = null ) {
 		// TODO: add data for easier generation of error messages.

@@ -113,7 +113,7 @@ class GP_Original extends GP_Thing {
 	public $date_added;
 
 	/**
-	 * Priority names mapped to their integer values.
+	 * Priority values mapped to their names.
 	 *
 	 * @var array $priorities
 	 */
@@ -288,10 +288,10 @@ class GP_Original extends GP_Thing {
 	}
 
 	/**
-	 * Imports originals for a project from a Translation Set.
+	 * Imports originals for a project from translations read from a file.
 	 *
 	 * @param GP_Project         $project      The project to import originals into.
-	 * @param GP_Translation_Set $translations The translation set to import from.
+	 * @param Translations       $translations The translations read from a file.
 	 * @return array Array containing number of originals added, existing, fuzzied, obsoleted, and errors.
 	 */
 	public function import_for_project( $project, $translations ) {

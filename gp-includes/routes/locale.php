@@ -193,8 +193,8 @@ class GP_Route_Locale extends GP_Route_Main {
 	/**
 	 * Sorts translation sets by their project ID.
 	 *
-	 * @param stdClass $a The first translation set to compare.
-	 * @param stdClass $b The second translation set to compare.
+	 * @param GP_Translation_Set $a The first translation set to compare.
+	 * @param GP_Translation_Set $b The second translation set to compare.
 	 * @return int A negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
 	 */
 	private function sort_sets_by_project_id( $a, $b ) {

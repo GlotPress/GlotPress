@@ -181,7 +181,7 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Number of found results.
 	 *
-	 * @var int $found_rows
+	 * @var string|null $found_rows
 	 */
 	public $found_rows;
 
@@ -205,7 +205,7 @@ class GP_Translation extends GP_Thing {
 	 * Creates a new translation.
 	 *
 	 * @param array $args Arguments for a GP_Translation object.
-	 * @return int|false The inserted ID or false on failure.
+	 * @return GP_Translation|false The created translation on success, false on failure.
 	 */
 	public function create( $args ) {
 		$inserted = parent::create( $args );
@@ -318,7 +318,7 @@ class GP_Translation extends GP_Thing {
 	 * @param GP_Project         $project         The project.
 	 * @param GP_Translation_Set $translation_set The translation set.
 	 * @param array|null         $filters         Optional. An array of filters to apply.
-	 * @return array Array of GP_Translation objects.
+	 * @return Translation_Entry[] The translation entries.
 	 */
 	public function for_export( $project, $translation_set, $filters = null ) {
 		return GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
@@ -332,7 +332,7 @@ class GP_Translation extends GP_Thing {
 	 * @param int|string         $page            Page number or 'no-limit'.
 	 * @param array              $filters         Optional. An array of filters to apply.
 	 * @param array              $sort            Optional. An array with 'by' and 'how' keys for sorting.
-	 * @return array Array of GP_Translation objects.
+	 * @return Translation_Entry[] The translation entries.
 	 */
 	public function for_translation( $project, $translation_set, $page, $filters = array(), $sort = array() ) {
 		global $wpdb;
@@ -635,7 +635,7 @@ class GP_Translation extends GP_Thing {
 	 * Sets as old the other current, waiting, fuzzy and changesrequested translations for the same original,
 	 * setting the current one as current.
 	 *
-	 * @return bool|null
+	 * @return bool
 	 */
 	public function set_as_current() {
 		return $this->update(
