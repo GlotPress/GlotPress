@@ -290,8 +290,8 @@ class GP_Original extends GP_Thing {
 	/**
 	 * Imports originals for a project from translations read from a file.
 	 *
-	 * @param GP_Project         $project      The project to import originals into.
-	 * @param Translations       $translations The translations read from a file.
+	 * @param GP_Project   $project      The project to import originals into.
+	 * @param Translations $translations The translations read from a file.
 	 * @return array Array containing number of originals added, existing, fuzzied, obsoleted, and errors.
 	 */
 	public function import_for_project( $project, $translations ) {
