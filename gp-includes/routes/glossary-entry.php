@@ -64,19 +64,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries = $this->get_glossary_entries( $glossary, $term );
 
 		if ( $locale_glossary ) {
-			// Project entries take precedence, the same way GP_Glossary::merge_with_glossary() merges them.
-			$entry_keys = array_map(
-				function ( $entry ) {
-					return $entry->key();
-				},
-				$glossary_entries
-			);
-
-			foreach ( $this->get_glossary_entries( $locale_glossary, $term ) as $entry ) {
-				if ( ! in_array( $entry->key(), $entry_keys, true ) ) {
-					$glossary_entries[] = $entry;
-				}
-			}
+			$glossary_entries = GP_Glossary::merge_entries( $glossary_entries, $this->get_glossary_entries( $locale_glossary, $term ) );
 		}
 
 		if ( $this->api ) {

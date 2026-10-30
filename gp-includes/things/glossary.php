@@ -141,18 +141,38 @@ class GP_Glossary extends GP_Thing {
 	 * @return array Array of Glossary_Entry.
 	 */
 	public function merge_with_glossary( GP_Glossary $merge ) {
-		$entry_map = array();
-		foreach ( $this->get_entries() as $i => $entry ) {
-			$entry_map[ $entry->key() ] = $i;
+		$entries       = $this->get_entries();
+		$merge_entries = $merge->get_entries();
+		$this->entries = self::merge_entries( $entries ? $entries : array(), $merge_entries ? $merge_entries : array() );
+
+		return $this->entries;
+	}
+
+	/**
+	 * Merges two lists of glossary entries.
+	 *
+	 * An entry of the first list takes precedence over an entry of the second
+	 * list with the same term and part of speech.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Glossary_Entry[] $entries       The entries that take precedence.
+	 * @param GP_Glossary_Entry[] $merge_entries The entries to merge into the first list.
+	 * @return GP_Glossary_Entry[] The merged entries.
+	 */
+	public static function merge_entries( array $entries, array $merge_entries ) {
+		$keys = array();
+		foreach ( $entries as $entry ) {
+			$keys[ $entry->key() ] = true;
 		}
 
-		foreach ( $merge->get_entries() as $entry ) {
-			if ( ! isset( $entry_map[ $entry->key() ] ) ) {
-				$this->entries[] = $entry;
+		foreach ( $merge_entries as $entry ) {
+			if ( ! isset( $keys[ $entry->key() ] ) ) {
+				$entries[] = $entry;
 			}
 		}
 
-		return $this->entries;
+		return $entries;
 	}
 
 	/**
