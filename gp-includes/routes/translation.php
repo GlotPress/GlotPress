@@ -918,14 +918,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	protected function get_extended_glossary( $translation_set, $project ) {
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
-		$locale_glossary_project_id      = 0;
-		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $locale_glossary_project_id, $translation_set->slug, $translation_set->locale );
-
-		if ( ! $locale_glossary_translation_set ) {
-			return $glossary;
-		}
-
-		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary = GP::$glossary->by_locale_and_set_slug( $translation_set->locale, $translation_set->slug );
 
 		// Return locale glossary if a project has no glossary.
 		if ( false === $glossary && $locale_glossary instanceof GP_Glossary ) {
