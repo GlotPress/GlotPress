@@ -15,6 +15,87 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		);
 	}
 
+	function test_copy_translations_from_should_copy_all_plural_forms() {
+		$source_set = $this->factory->translation_set->create();
+		$destination_set = $this->factory->translation_set->create();
+		$this->factory->translation->create( array(
+			'translation_set_id' => $source_set->id,
+			'translation_0' => 'Form 0',
+			'translation_1' => 'Form 1',
+			'translation_2' => 'Form 2',
+			'translation_3' => 'Form 3',
+			'translation_4' => 'Form 4',
+			'translation_5' => 'Form 5',
+		) );
+
+		$destination_set->copy_translations_from( $source_set->id );
+
+		$destination_set_translations = GP::$translation->find( array( 'translation_set_id' => $destination_set->id ) );
+
+		$this->assertEquals( 1, count( $destination_set_translations ) );
+		$this->assertEqualFields( $destination_set_translations[0],
+			array(
+				'translation_0' => 'Form 0',
+				'translation_1' => 'Form 1',
+				'translation_2' => 'Form 2',
+				'translation_3' => 'Form 3',
+				'translation_4' => 'Form 4',
+				'translation_5' => 'Form 5',
+			)
+		);
+	}
+
+	function test_import_should_import_a_plural_translation_with_all_plural_forms() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'plural' => '%d items', 'translations' => array( 'One item', 'Some items' ) ) );
+
+		$translations_added = $set->import( $translations_for_import );
+
+		$this->assertEquals( 1, $translations_added );
+
+		$translations = GP::$translation->all();
+		$this->assertEquals( 1, count( $translations ) );
+		$this->assertEquals( 'One item', $translations[0]->translation_0 );
+		$this->assertEquals( 'Some items', $translations[0]->translation_1 );
+	}
+
+	function test_import_should_not_import_a_plural_translation_with_an_empty_plural_form() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'plural' => '%d items', 'translations' => array( 'One item', '' ) ) );
+
+		$translations_added = $set->import( $translations_for_import );
+
+		$this->assertEquals( 0, $translations_added );
+		$this->assertEquals( 0, count( GP::$translation->all() ) );
+	}
+
+	function test_import_should_not_import_a_translation_with_fewer_forms_than_the_locale_has() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+		$this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id' => $original->id,
+			'translation_0' => 'One item',
+			'translation_1' => 'Some items',
+			'status' => 'current',
+		) );
+
+		// The entry matches the existing translation by singular and context, but carries a single form.
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'translations' => array( 'Another item' ) ) );
+
+		$translations_added = $set->import( $translations_for_import );
+
+		$this->assertEquals( 0, $translations_added );
+		$this->assertEquals( 1, count( GP::$translation->all() ) );
+	}
+
 	function test_import_should_save_user_info() {
 		$user = $this->factory->user->create( array( 'user_login' => 'pijo' ) );
 		wp_set_current_user( $user );

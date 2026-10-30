@@ -386,6 +386,17 @@ class GP_Translation_Set extends GP_Thing {
 				}
 			}
 			if ( $create ) {
+				/*
+				 * Translations of a plural original are only valid if they have a translation for every
+				 * plural form of the locale. Imported translations are created without being validated,
+				 * unlike the ones submitted through the editor, so they are checked here.
+				 */
+				$original_plural = $translated ? $translated->plural : $original->plural;
+
+				if ( ! $this->entry_has_all_translations( $entry, is_null( $original_plural ) ? 1 : $locale->nplurals ) ) {
+					continue;
+				}
+
 				if ( $user ) {
 					$entry->user_id = $user->ID;
 				}
@@ -417,6 +428,25 @@ class GP_Translation_Set extends GP_Thing {
 		do_action( 'gp_translations_imported', $this->id, $created_translation_ids );
 
 		return $translations_added;
+	}
+
+	/**
+	 * Checks whether a translation entry has a non-empty translation for each expected plural form.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param Translation_Entry $entry    The translation entry to check.
+	 * @param int               $nplurals Number of translations the entry is expected to have.
+	 * @return bool True if the entry has a translation for each plural form, false otherwise.
+	 */
+	private function entry_has_all_translations( $entry, $nplurals ) {
+		for ( $index = 0; $index < $nplurals; $index++ ) {
+			if ( ! isset( $entry->translations[ $index ] ) || '' === $entry->translations[ $index ] ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -708,10 +738,10 @@ class GP_Translation_Set extends GP_Thing {
 		} else {
 			return $this->query(
 				"INSERT INTO $wpdb->gp_translations (
-					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
+					original_id,       translation_set_id, translation_0, translation_1, translation_2, translation_3, translation_4, translation_5, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
-					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
+					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, translation_3, translation_4, translation_5, user_id, status, date_added, %s AS date_modified, warnings
 				FROM $wpdb->gp_translations WHERE translation_set_id = %s",
 				$this->id,
 				$current_date,
