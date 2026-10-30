@@ -1,5 +1,13 @@
 <?php
+/**
+ * GlotPress CLI Command to Import Originals
+ *
+ * @package GlotPress
+ */
 
+/**
+ * WP-CLI command class to import originals into a project in GlotPress.
+ */
 class GP_CLI_Import_Originals extends WP_CLI_Command {
 	/**
 	 * Import originals for a project from a file
@@ -14,9 +22,12 @@ class GP_CLI_Import_Originals extends WP_CLI_Command {
 	 *
 	 * [--format=<format>]
 	 * : Accepted values: po, mo, android, resx, strings. Default: po
+	 *
+	 * @param string[] $args       Positional arguments.
+	 * @param array    $assoc_args Associative arguments.
 	 */
 	public function __invoke( $args, $assoc_args ) {
-		// Double-check for compatibility
+		// Double-check for compatibility.
 		if ( '-p' === $args[0] || '-f' === $args[1] ) {
 			WP_CLI::error( __( '-p and -f are no longer required and should be removed.', 'glotpress' ) );
 		}

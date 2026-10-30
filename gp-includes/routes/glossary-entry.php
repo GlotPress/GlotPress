@@ -21,6 +21,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	 */
 	private const FORMULA_TRIGGERS = array( '=', '+', '-', '@' );
 
+	/**
+	 * Displays the glossary entries page.
+	 *
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -37,18 +44,55 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
+		// API requests can ask for the glossary used by the translation editor, which includes the locale glossary.
+		$extended        = $this->api && '1' === gp_get( 'extended' );
+		$locale_glossary = false;
+		if ( $extended ) {
+			$locale_glossary = GP::$glossary->by_locale_and_set_slug( $locale_slug, $translation_set_slug );
+
+			if ( ! $glossary ) {
+				$glossary        = $locale_glossary;
+				$locale_glossary = false;
+			} elseif ( $locale_glossary && $locale_glossary->id === $glossary->id ) {
+				$locale_glossary = false;
+			}
+		}
+
 		if ( ! $glossary ) {
 			return $this->die_with_404();
 		}
 
-		$glossary_entries = GP::$glossary_entry->by_glossary_id( $glossary->id );
+		$term = '';
+		if ( $this->api ) {
+			$term = gp_get( 'term' );
+			$term = is_string( $term ) ? trim( $term ) : '';
+		}
 
-		foreach ( $glossary_entries as $key => $entry ) {
-			$user = get_userdata( $entry->last_edited_by );
+		$glossary_entries = $this->get_glossary_entries( $glossary, $term );
 
-			if ( $user ) {
-				$glossary_entries[ $key ]->user_login        = $user->user_login;
-				$glossary_entries[ $key ]->user_display_name = $user->display_name;
+		if ( $locale_glossary ) {
+			$glossary_entries = GP_Glossary::merge_entries( $glossary_entries, $this->get_glossary_entries( $locale_glossary, $term ) );
+		}
+
+		if ( $this->api ) {
+			$last_modified = max(
+				GP::$glossary_entry->last_modified( $glossary ),
+				$locale_glossary ? GP::$glossary_entry->last_modified( $locale_glossary ) : ''
+			);
+
+			if ( $last_modified ) {
+				$this->header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', gp_gmt_strtotime( $last_modified ) ) . ' GMT' );
+			}
+		}
+
+		if ( ! $this->api ) {
+			foreach ( $glossary_entries as $key => $entry ) {
+				$user = get_userdata( $entry->last_edited_by );
+
+				if ( $user ) {
+					$glossary_entries[ $key ]->user_login        = $user->user_login;
+					$glossary_entries[ $key ]->user_display_name = $user->display_name;
+				}
 			}
 		}
 
@@ -58,6 +102,30 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->tmpl( 'glossary-view', get_defined_vars() );
 	}
 
+	/**
+	 * Retrieves the entries of a glossary, optionally limited to a term.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Glossary $glossary The glossary.
+	 * @param string      $term     The term to look up. An empty string retrieves all entries.
+	 * @return GP_Glossary_Entry[] The glossary entries.
+	 */
+	private function get_glossary_entries( $glossary, $term ) {
+		if ( '' !== $term ) {
+			return GP::$glossary_entry->by_glossary_id_and_term( $glossary->id, $term );
+		}
+
+		return GP::$glossary_entry->by_glossary_id( $glossary->id );
+	}
+
+	/**
+	 * Handles the add glossary entry POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 * @param string $locale_slug The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function glossary_entry_add_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -117,6 +185,15 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Handles the create locale glossary POST request.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function glossary_create_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -167,6 +244,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->redirect( gp_url_join( gp_url( '/languages' ), $locale_slug, $translation_set_slug, 'glossary' ) );
 	}
 
+	/**
+	 * Handles the edit glossary entry POST request.
+	 *
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$ge_post = gp_post( 'glossary_entry' );
 		if ( ! is_array( $ge_post ) ) {
@@ -229,9 +313,20 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->exit_();
 	}
 
+	/**
+	 * Handles the delete glossary entry POST request.
+	 */
 	public function glossary_entry_delete_post() {
-		$ge_post        = gp_post( 'glossary_entry' );
-		$ge             = array_shift( $ge_post );
+		$ge_post = gp_post( 'glossary_entry' );
+		if ( ! is_array( $ge_post ) ) {
+			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 404 );
+		}
+
+		$ge = array_shift( $ge_post );
+		if ( ! isset( $ge['glossary_entry_id'] ) ) {
+			return $this->die_with_error( __( 'The glossary entry cannot be found', 'glotpress' ), 404 );
+		}
+
 		$glossary_entry = GP::$glossary_entry->get( absint( $ge['glossary_entry_id'] ) );
 
 		if ( ! $glossary_entry ) {
@@ -267,6 +362,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		exit();
 	}
 
+	/**
+	 * Exports glossary entries as a CSV file.
+	 *
+	 * @param string $project_path The path of the project.
+	 * @param string $locale_slug The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function export_glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -295,6 +397,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->print_export_file( $locale->slug, $glossary_entries );
 	}
 
+	/**
+	 * Displays the import glossary entries page.
+	 *
+	 * @param string $project_path The path of the project.
+	 * @param string $locale_slug The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function import_glossary_entries_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -318,6 +427,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->tmpl( 'glossary-import', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the import glossary entries POST request.
+	 *
+	 * @param string $project_path The path of the project.
+	 * @param string $locale_slug The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function import_glossary_entries_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -369,6 +485,12 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 	}
 
+	/**
+	 * Prints the glossary entries as a CSV file.
+	 *
+	 * @param string $locale_slug The slug of the locale.
+	 * @param array  $entries The glossary entries to print.
+	 */
 	private function print_export_file( $locale_slug, $entries ) {
 		$outstream = fopen( 'php://output', 'w' );
 
@@ -429,6 +551,14 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		return $value;
 	}
 
+	/**
+	 * Reads glossary entries from a CSV file and adds them to the glossary.
+	 *
+	 * @param string $file        The path to the CSV file.
+	 * @param int    $glossary_id The ID of the glossary to add entries to.
+	 * @param string $locale_slug The slug of the locale.
+	 * @return int|null The number of glossary entries added, or null on failure.
+	 */
 	private function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
 		$f                = fopen( $file, 'r' );
 		$glossary_entries = 0;
@@ -443,7 +573,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		while ( ( $data = fgetcsv( $f, 0, ',', '"', '' ) ) !== false ) {
-			// We're only parsing one locale per file right now
+			// We're only parsing one locale per file right now.
 			if ( count( $data ) > 4 ) {
 				$data = array_splice( $data, 2, -2 );
 			}

@@ -1,15 +1,39 @@
 <?php
 /**
- * Functions, which make work with strings easier
+ * GlotPress Strings
+ *
+ * @package GlotPress
+ */
+
+/**
+ * Checks if a string starts with a given substring.
+ *
+ * @param string $haystack The full string.
+ * @param string $needle   The substring to look for.
+ * @return bool True if $haystack starts with $needle, false otherwise.
  */
 function gp_startswith( $haystack, $needle ) {
 	return 0 === strpos( $haystack, $needle );
 }
 
+/**
+ * Checks if a string ends with a given substring.
+ *
+ * @param string $haystack The full string.
+ * @param string $needle   The substring to look for.
+ * @return bool True if $haystack ends with $needle, false otherwise.
+ */
 function gp_endswith( $haystack, $needle ) {
 	return substr( $haystack, -strlen( $needle ) ) === $needle;
 }
 
+/**
+ * Checks if a string contains a given substring.
+ *
+ * @param string $needle   The substring to look for.
+ * @param string $haystack The full string.
+ * @return bool True if $haystack contains $needle, false otherwise.
+ */
 function gp_in( $needle, $haystack ) {
 	return false !== strpos( $haystack, $needle );
 }
@@ -58,6 +82,13 @@ function esc_translation( $text ) {
 	return htmlspecialchars( $safe_text, ENT_NOQUOTES, false, true );
 }
 
+/**
+ * Calculates the similarity between two strings.
+ *
+ * @param string $str1 First string.
+ * @param string $str2 Second string.
+ * @return float Similarity, 1 for identical strings. Can be negative for strings of very different lengths.
+ */
 function gp_string_similarity( $str1, $str2 ) {
 
 	$length1 = mb_strlen( $str1 );
@@ -76,11 +107,19 @@ function gp_string_similarity( $str1, $str2 ) {
 	return $similarity;
 }
 
-/*
-	PHP native implementation of levensthein is limited to 255 bytes, so let's extend that
-	Source: https://github.com/wikimedia/mediawiki-extensions-Translate/blob/master/ttmserver/TTMServer.php#L90
-
-*/
+/**
+ * Calculates the Levenshtein distance between two strings.
+ *
+ * PHP's native levenshtein() is limited to 255 bytes, so this extends it.
+ *
+ * @link https://github.com/wikimedia/mediawiki-extensions-Translate/blob/master/ttmserver/TTMServer.php#L90
+ *
+ * @param string $str1    First string.
+ * @param string $str2    Second string.
+ * @param int    $length1 Length of first string.
+ * @param int    $length2 Length of second string.
+ * @return int Levenshtein distance.
+ */
 function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
 	if ( 0 == $length1 ) {
