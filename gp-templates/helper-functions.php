@@ -408,6 +408,8 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 		// Filter out suffixes with empty values.
 		$suffixes = array_filter( $suffixes, fn( $value ) => ! empty( $value ) );
 
+		$matched_rule = false;
+
 		// Add suffixes for part_of_speech with rules.
 		if ( ! empty( $suffixes[ $type ] ) ) {
 			// Loop through rules.
@@ -418,6 +420,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 					// Check if noun ends with known suffix.
 					if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
+						$matched_rule = true;
 
 						// Set ending.
 						$old_ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
@@ -463,8 +466,10 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 					}
 				}
 			}
-		} else {
-			// Add match for part_of_speech without any suffix rules.
+		}
+
+		// Terms that no suffix rule fits, like `&` or `404`, are still matched as they are.
+		if ( ! $matched_rule && ! isset( $glossary_entries_suffixes[ $term ] ) ) {
 			$glossary_entries_suffixes[ $term ] = array();
 		}
 	}
@@ -552,15 +557,20 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		ksort( $regex_group );
 
 		// Build the regular expression.
+		// Terms are bounded with lookarounds instead of \b because \b inverts
+		// its meaning next to a non-word character: a term like `note:` or
+		// `are you sure...?` could never match. A hyphen counts as part of the
+		// word, so `add` is not marked inside `add-on`. Character references
+		// are split off first, so a term like `&` is not marked inside `&#38;`.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
-		$terms_search        = '(?:(\b|' . $placeholders_search . ')(';
+		$terms_search        = '(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
 		$terms_search  = rtrim( $terms_search, '|' );
-		$terms_search .= ')\b)|(' . $placeholders_search . ')';
+		$terms_search .= ')(?![\w-]))|(' . $placeholders_search . ')';
 	}
 	// Split the singular string on glossary terms boundaries.
 	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
