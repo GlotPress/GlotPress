@@ -399,6 +399,11 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
+				// Do not recreate identical rejected or changesrequested strings.
+				if ( $translated_is_different && $this->should_skip_rejected_or_changesrequested( $translated->original_id, $entry, $locale ) ) {
+					continue;
+				}
+
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
 				 *
@@ -430,6 +435,11 @@ class GP_Translation_Set extends GP_Thing {
 				// we don't have the string translated, let's see if the original is there.
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
+					// Do not recreate identical rejected or changesrequested strings.
+					if ( $this->should_skip_rejected_or_changesrequested( $original->id, $entry, $locale ) ) {
+						continue;
+					}
+
 					if ( 'current' === $entry->status ) {
 						$approved = $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations );
 						if ( $approved ) {
@@ -484,6 +494,59 @@ class GP_Translation_Set extends GP_Thing {
 		do_action( 'gp_translations_imported', $this->id, $created_translation_ids, $approved_translation_ids );
 
 		return $translations_added;
+	}
+
+	/**
+	 * Checks whether an identical translation already exists with 'rejected' or 'changesrequested' status.
+	 *
+	 * Only applies to suggestions ('waiting').
+	 *
+	 * @since x.x.x
+	 *
+	 * @param int               $original_id  The ID of the original.
+	 * @param Translation_Entry $entry        Translation entry object to import.
+	 * @param GP_Locale         $locale       The locale of the translation set.
+	 * @return bool True if the entry should be skipped, false otherwise.
+	 */
+	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale ) {
+		// Users importing directly as 'current' (editors) are allowed to replace rejected or changesrequested entries.
+		if ( 'waiting' !== $entry->status ) {
+			return false;
+		}
+
+		/**
+		 * Filter whether to skip importing suggestions identical to rejected or changesrequested entries.
+		 *
+		 * @since x.x.x
+		 *
+		 * @param bool              $skip_entry  Whether to skip the entry. Default true.
+		 * @param Translation_Entry $entry       Translation entry object to import.
+		 * @param int               $original_id The ID of the original.
+		 */
+		if ( ! apply_filters( 'gp_translation_set_import_skip_rejected_or_changesrequested', true, $entry, $original_id ) ) {
+			return false;
+		}
+
+		$wanted = array_pad( $entry->translations, $locale->nplurals, null );
+
+		$existing_rows = GP::$translation->find_many(
+			array(
+				'translation_set_id' => $this->id,
+				'original_id'        => $original_id,
+			)
+		);
+
+		foreach ( $existing_rows as $row ) {
+			if ( ! in_array( $row->status, array( 'rejected', 'changesrequested' ), true ) ) {
+				continue;
+			}
+
+			if ( array_slice( $row->translations(), 0, $locale->nplurals ) === $wanted ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
