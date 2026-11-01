@@ -389,10 +389,11 @@ class GP_Translation_Set extends GP_Thing {
 
 			$entry_original = new GP_Original(
 				array(
-					'project_id' => $this->project->id,
+					'project_id' => $this->project_id,
 					'singular'   => $entry->singular,
 					'plural'     => $entry->plural,
 					'context'    => $entry->context,
+					'comment'    => $entry->extracted_comments,
 				)
 			);
 

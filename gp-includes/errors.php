@@ -259,6 +259,7 @@ class GP_Builtin_Translation_Errors {
 		$placeholders  = array();
 		$next_argument = 0;
 		foreach ( $matches as $match ) {
+			// An escaped percent sign reads no argument, also in its padded form like `%5%`.
 			if ( '%' === substr( $match[0], -1 ) ) {
 				continue;
 			}
