@@ -478,6 +478,147 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		);
 	}
 
+	/**
+	 * @ticket gh-2142
+	 */
+	public function test_placeholders_using_check_single_number_forms() {
+		$w       = new GP_Translation_Warnings();
+		$builtin = new GP_Builtin_Translation_Warnings();
+		$w->add( 'placeholder', array( $builtin, 'warning_placeholders' ) );
+
+		$ar = new GP_Locale(
+			array(
+				'nplurals'          => 6,
+				'plural_expression' => '(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))))',
+			)
+		);
+		$de = new GP_Locale(
+			array(
+				'nplurals'          => 2,
+				'plural_expression' => 'n != 1',
+			)
+		);
+		$fr = new GP_Locale(
+			array(
+				'nplurals'          => 2,
+				'plural_expression' => 'n > 1',
+			)
+		);
+		$pl = new GP_Locale(
+			array(
+				'nplurals'          => 3,
+				'plural_expression' => '(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)',
+			)
+		);
+		$ru = new GP_Locale(
+			array(
+				'nplurals'          => 3,
+				'plural_expression' => '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)',
+			)
+		);
+
+		// Arabic forms 0, 1 and 2 are only used for 0, 1 and 2, and say the number in words.
+		$this->assertNull(
+			$w->check(
+				'%d taxonomy deleted.',
+				'%d taxonomies deleted.',
+				array( 'لم يتم حذف أي فئة.', 'تم حذف فئة واحدة.', 'تم حذف فئتين.', 'تم حذف %d فئات.', 'تم حذف %d فئةً.', 'تم حذف %d فئة.' ),
+				$ar
+			)
+		);
+
+		// Form 0 of `n != 1` is only used for 1.
+		$this->assertNull(
+			$w->check( '%d comment', '%d comments', array( 'Ein Kommentar', '%d Kommentare' ), $de )
+		);
+
+		// Without a numeric placeholder the count can be any of them, here a number formatted as `%s`.
+		$this->assertNull(
+			$w->check( '%1$s response to %2$s', '%1$s responses to %2$s', array( 'translation %2$s', 'translation %1$s %2$s' ), $de )
+		);
+
+		// A numbered count can be left out wherever it stands.
+		$this->assertNull(
+			$w->check( '%1$d item in %2$s', '%1$d items in %2$s', array( 'translation %2$s', 'translation %2$s', 'translation %2$s', 'translation %1$d %2$s', 'translation %1$d %2$s', 'translation %1$d %2$s' ), $ar )
+		);
+
+		// The last unnumbered placeholder can be left out.
+		$this->assertNull(
+			$w->check( '%s item in %d', '%s items in %d', array( 'translation %s', 'translation %s %d' ), $de )
+		);
+
+		// Form 0 of Russian is used for 1, 21, 31 and so on.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check( '%d file', '%d files', array( 'translation', 'translation %d', 'translation %d' ), $ru )
+		);
+
+		// Form 0 of `n > 1` is used for 0 and 1.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check( '%d comment', '%d comments', array( 'Un commentaire', '%d commentaires' ), $fr )
+		);
+
+		// Arabic form 3 is used for 3 to 10.
+		$this->assertSame(
+			array( 3 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check(
+				'%d taxonomy deleted.',
+				'%d taxonomies deleted.',
+				array( 'لم يتم حذف أي فئة.', 'تم حذف فئة واحدة.', 'تم حذف فئتين.', 'تم حذف فئات.', 'تم حذف %d فئةً.', 'تم حذف %d فئة.' ),
+				$ar
+			)
+		);
+
+		// With a numeric placeholder, the one left out has to be the number.
+		$this->assertSame(
+			array( 1 => array( 'placeholder' => 'Missing %1$s placeholder in translation.' ) ),
+			$w->check( '%1$s has %2$d item', '%1$s has %2$d items', array( 'translation %1$s', 'translation %2$d', 'translation %1$s', 'translation %1$s %2$d', 'translation %1$s %2$d', 'translation %1$s %2$d' ), $ar )
+		);
+
+		// Polish form 0 is only used for 1, but swapping the placeholder is not leaving it out.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check( 'Open revisions screen: %d revision', 'Open revisions screen: %d revisions', array( 'translation %s', 'translation %d', 'translation %d' ), $pl )
+		);
+
+		// Only one placeholder can be left out.
+		$this->assertSame(
+			array( 1 => array( 'placeholder' => 'Missing %1$d placeholder in translation.' ) ),
+			$w->check( '%1$d item and %2$d selected', '%1$d items and %2$d selected', array( 'translation %2$d', 'translation', 'translation %2$d', 'translation %1$d %2$d', 'translation %1$d %2$d', 'translation %1$d %2$d' ), $ar )
+		);
+
+		// The unnumbered placeholder that is kept would print the first number, whichever one was left out.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check( '%d item and %d selected', '%d items and %d selected', array( 'translation %d', 'translation %d %d' ), $de )
+		);
+
+		// Without a numeric placeholder the count could be either `%s`, but the one kept would print the first argument.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %s placeholder in translation.' ) ),
+			$w->check( '%s item in %s', '%s items in %s', array( 'translation %s', 'translation %s %s' ), $de )
+		);
+
+		// An unnumbered placeholder followed by another one cannot be left out, as the next one would print the number.
+		$this->assertSame(
+			array( 1 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check( '%d item in %s', '%d items in %s', array( 'translation %d %s', 'translation %s', 'translation %d %s', 'translation %d %s', 'translation %d %s', 'translation %d %s' ), $ar )
+		);
+
+		// A literal percent sign is not a number.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %% placeholder in translation.' ) ),
+			$w->check( '%s item, 50%% off', '%s items, 50%% off', array( 'translation %s', 'translation %s 50%%' ), $de )
+		);
+
+		// An original without a plural has no plural form to leave the number out of.
+		$this->assertSame(
+			array( 0 => array( 'placeholder' => 'Missing %d placeholder in translation.' ) ),
+			$w->check( '%d comment', null, array( 'Ein Kommentar' ), $de )
+		);
+	}
+
 	function test_mismatching_urls() {
 		$this->assertNoWarnings( 'mismatching_urls', 'https://www.example', 'https://www.example' );
 		$this->assertNoWarnings( 'mismatching_urls', 'http://www.example', 'http://www.example' );
