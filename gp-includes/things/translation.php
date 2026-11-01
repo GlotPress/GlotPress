@@ -808,12 +808,22 @@ class GP_Translation extends GP_Thing {
 	 * Changes the status of a translation if possible.
 	 *
 	 * @since 2.3.0
+	 * @since 4.2.0 Refuses to approve a translation with translation errors.
 	 *
 	 * @param string $status The status to be set.
 	 * @return bool Whether the setting of status was successful.
 	 */
 	public function set_status( $status ) {
 		if ( ! $this->can_set_status( $status ) ) {
+			return false;
+		}
+
+		/*
+		 * A row that is already current is not being approved. Callers create rows as
+		 * current and then call this to supersede the other translations of the original,
+		 * which must still happen or the original ends up with two current translations.
+		 */
+		if ( 'current' === $status && 'current' !== $this->status && $this->has_translation_errors() ) {
 			return false;
 		}
 
@@ -837,6 +847,24 @@ class GP_Translation extends GP_Thing {
 		}
 
 		return $updated;
+	}
+
+	/**
+	 * Checks the translation against the registered translation errors.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return bool Whether any translation error applies.
+	 */
+	private function has_translation_errors() {
+		$original        = GP::$original->get( $this->original_id );
+		$translation_set = GP::$translation_set->get( $this->translation_set_id );
+		$locale          = $translation_set ? GP_Locales::by_slug( $translation_set->locale ) : null;
+		if ( ! $original || ! $locale ) {
+			return false;
+		}
+
+		return null !== GP::$translation_errors->check( $original, $this->translations(), $locale );
 	}
 
 	/**
