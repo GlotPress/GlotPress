@@ -1247,4 +1247,5 @@ class GP_Import extends GP_UnitTestCase {
 
 		$this->assertSame( array(), $created_translation_ids );
 	}
+
 }
