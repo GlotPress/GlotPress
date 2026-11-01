@@ -510,7 +510,7 @@ class GP_Translation_Set extends GP_Thing {
 	 */
 	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale ) {
 		// Users importing directly as 'current' (editors) are allowed to replace rejected or changesrequested entries.
-		if ( 'waiting' !== $entry->status ) {
+		if ( ! in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
 			return false;
 		}
 
