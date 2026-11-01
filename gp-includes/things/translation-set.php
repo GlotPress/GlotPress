@@ -315,6 +315,7 @@ class GP_Translation_Set extends GP_Thing {
 		$user   = wp_get_current_user();
 
 		$existing_translations = array();
+		$rows_by_original      = null;
 
 		$load_existing_translations = function ( $status ) use ( &$existing_translations ) {
 			if ( ! isset( $existing_translations[ $status ] ) ) {
@@ -399,11 +400,6 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->original_id      = $translated->original_id;
 				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
 
-				// Do not recreate identical rejected or changesrequested strings.
-				if ( $translated_is_different && $this->should_skip_rejected_or_changesrequested( $translated->original_id, $entry, $locale ) ) {
-					continue;
-				}
-
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
 				 *
@@ -435,11 +431,6 @@ class GP_Translation_Set extends GP_Thing {
 				// we don't have the string translated, let's see if the original is there.
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
-					// Do not recreate identical rejected or changesrequested strings.
-					if ( $this->should_skip_rejected_or_changesrequested( $original->id, $entry, $locale ) ) {
-						continue;
-					}
-
 					if ( 'current' === $entry->status ) {
 						$approved = $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations );
 						if ( $approved ) {
@@ -466,6 +457,12 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->translation_set_id = $this->id;
 
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
+
+				// Do not recreate identical rejected or changesrequested strings.
+				if ( $this->should_skip_rejected_or_changesrequested( $entry->original_id, $entry, $locale, $rows_by_original ) ) {
+					continue;
+				}
+
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
@@ -499,16 +496,16 @@ class GP_Translation_Set extends GP_Thing {
 	/**
 	 * Checks whether an identical translation already exists with 'rejected' or 'changesrequested' status.
 	 *
-	 * Only applies to suggestions ('waiting').
+	 * Only applies to suggestions ('waiting') and fuzzy translations ('fuzzy').
 	 *
-	 * @since x.x.x
+	 * @since 4.2.0
 	 *
 	 * @param int               $original_id  The ID of the original.
 	 * @param Translation_Entry $entry        Translation entry object to import.
 	 * @param GP_Locale         $locale       The locale of the translation set.
 	 * @return bool True if the entry should be skipped, false otherwise.
 	 */
-	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale ) {
+	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale )
 		// Users importing directly as 'current' (editors) are allowed to replace rejected or changesrequested entries.
 		if ( ! in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
 			return false;
@@ -517,7 +514,7 @@ class GP_Translation_Set extends GP_Thing {
 		/**
 		 * Filter whether to skip importing suggestions identical to rejected or changesrequested entries.
 		 *
-		 * @since x.x.x
+		 * @since 4.2.0
 		 *
 		 * @param bool              $skip_entry  Whether to skip the entry. Default true.
 		 * @param Translation_Entry $entry       Translation entry object to import.
@@ -527,26 +524,22 @@ class GP_Translation_Set extends GP_Thing {
 			return false;
 		}
 
-		$wanted = array_pad( $entry->translations, $locale->nplurals, null );
-
-		$existing_rows = GP::$translation->find_many(
-			array(
-				'translation_set_id' => $this->id,
-				'original_id'        => $original_id,
-			)
-		);
-
-		foreach ( $existing_rows as $row ) {
-			if ( ! in_array( $row->status, array( 'rejected', 'changesrequested' ), true ) ) {
-				continue;
-			}
-
-			if ( array_slice( $row->translations(), 0, $locale->nplurals ) === $wanted ) {
-				return true;
+		if ( null === $rows_by_original ) {
+			$rows_by_original = array();
+			$rows             = GP::$translation->find_many(
+				array(
+					'translation_set_id' => $this->id,
+					'status'             => array( 'rejected', 'changesrequested' ),
+				)
+			);
+			foreach ( $rows as $row ) {
+				$rows_by_original[ $row->original_id ][] = array_slice( $row->translations(), 0, $locale->nplurals );
 			}
 		}
 
-		return false;
+		$wanted = array_pad( $entry->translations, $locale->nplurals, null );
+
+		return in_array( $wanted, $rows_by_original[ $original_id ] ?? array(), true );
 	}
 
 	/**
