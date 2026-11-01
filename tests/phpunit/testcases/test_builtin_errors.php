@@ -133,6 +133,8 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 			'The translation contains the following unexpected placeholders: %D'
 		);
 		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%l Elemente', null );
+		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%0$s Elemente', null );
+		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%*s Elemente', null );
 	}
 
 	function test_error_extra_sprintf_placeholders() {
@@ -165,6 +167,13 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 			'%1$s von %2$s in %3$s und %4$d',
 			null,
 			'The translation contains more placeholders than the original: %3$s, %4$d'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'%s items',
+			'%5% %s Elemente',
+			null,
+			'The translation contains more placeholders than the original: %s'
 		);
 		$this->assertHasErrorsAndContainsOutput(
 			'extra_sprintf_placeholders',

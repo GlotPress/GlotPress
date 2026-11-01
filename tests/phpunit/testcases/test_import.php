@@ -340,6 +340,37 @@ class GP_Import extends GP_UnitTestCase {
 		$this->assertSame( 'fuzzy', $imported[0]->status );
 	}
 
+	function test_import_status_filter_cannot_make_translation_with_errors_current() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => '%s items',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => '%s items',
+			'translations' => array( '%s Elemente in %s' ),
+		) ) );
+
+		$force_current = function () {
+			return 'current';
+		};
+		add_filter( 'gp_translation_set_import_status', $force_current );
+		$set->import( $translations, 'current' );
+		remove_filter( 'gp_translation_set_import_status', $force_current );
+
+		$imported = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+		) );
+
+		$this->assertCount( 1, $imported );
+		$this->assertSame( 'fuzzy', $imported[0]->status );
+	}
+
 	/**
 	 * An original that is already translated must still approve an identical waiting suggestion
 	 * instead of creating a third row credited to the importer.

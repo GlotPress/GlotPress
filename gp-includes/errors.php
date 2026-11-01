@@ -129,13 +129,14 @@ class GP_Builtin_Translation_Errors {
 	 *
 	 * The first group holds the argument number of a positional placeholder.
 	 * Specifiers are case-sensitive because sprintf() throws a ValueError on
-	 * unknown ones like `%S`, while `%X` and `%E` are valid.
+	 * unknown ones like `%S`, while `%X` and `%E` are valid. Argument number 0
+	 * and a `*` width are left out, as they make sprintf() fail as well.
 	 *
 	 * @since 4.2.0
 	 *
 	 * @var string
 	 */
-	const SPRINTF_PLACEHOLDER_REGEX = '!%(?:(\d+\$(?:\d+)?)?(?:[0-9]+|\*)?(?:\.[0-9]+|\*)?(?:l?[bcdeEfFgGhHosuxX]|%))!';
+	const SPRINTF_PLACEHOLDER_REGEX = '!%(?:([1-9]\d*\$(?:\d+)?)?(?:[0-9]+)?(?:\.[0-9]+)?(?:l?[bcdeEfFgGhHosuxX]|%))!';
 
 	/**
 	 * Adds an error for adding unexpected percent signs in a sprintf-like string.
@@ -259,8 +260,8 @@ class GP_Builtin_Translation_Errors {
 		$placeholders  = array();
 		$next_argument = 0;
 		foreach ( $matches as $match ) {
-			// An escaped percent sign reads no argument, also in its padded form like `%5%`.
-			if ( '%' === substr( $match[0], -1 ) ) {
+			// Only the bare form reads no argument, a padded one like `%5%` takes one.
+			if ( '%%' === $match[0] ) {
 				continue;
 			}
 
