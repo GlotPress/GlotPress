@@ -375,4 +375,113 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertStringNotContainsString( "\x04", $po );
 		$this->assertStringContainsString( 'Guardaralteracoes', $po );
 	}
+
+	/**
+	 * Tests that translations_post() blocks re-submitting an already rejected translation by the same user,
+	 * but allows other users or validators to submit it.
+	 */
+	function test_translations_post_blocks_resubmitting_rejected_translation_by_same_user() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Discard' ) );
+
+		$user_1 = $this->set_normal_user_as_current();
+
+		// Rejected translation by user 1.
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'user_id'            => $user_1,
+				'status'             => 'rejected',
+				'translation_0'      => 'Verwerfen',
+			)
+		);
+
+		// 1. User 1 tries to submit the identical rejected text again -> blocked.
+		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
+
+		$this->assertStringContainsString( 'Identical rejected translation already exists.', $this->route->template_output );
+		$waiting_for_user_1 = GP::$translation->find_many( array( 'original_id' => $original->id, 'user_id' => $user_1, 'status' => 'waiting' ) );
+		$this->assertEmpty( $waiting_for_user_1, 'No new waiting translation must be created for the same user.' );
+
+		// 2. User 2 submits the same text -> allowed.
+		$user_2 = $this->factory->user->create();
+		wp_set_current_user( $user_2 );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
+
+		$waiting_for_user_2 = GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2, 'status' => 'waiting' ) );
+		$this->assertNotFalse( $waiting_for_user_2, 'Another user is permitted to suggest the same string.' );
+
+		// 3. Validator submits the text -> allowed and directly approved (current).
+		$this->become_validator_for_set( $set );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
+
+		$current_translation = GP::$translation->find_one( array( 'original_id' => $original->id, 'status' => 'current' ) );
+		$this->assertNotFalse( $current_translation, 'A validator can approve/submit a previously rejected string.' );
+	}
+
+	/**
+	 * Tests that translations_post() blocks any user from submitting identical text when changes are requested.
+	 */
+	function test_translations_post_blocks_changesrequested_translation_for_all_users() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Pending' ) );
+
+		$user_1 = $this->set_normal_user_as_current();
+
+		// Translation with changes requested.
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'user_id'            => $user_1,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Ausstehend',
+			)
+		);
+
+		// 1. User 1 submits the uncorrected string -> blocked.
+		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
+		$this->assertStringContainsString( 'Identical translation with changes requested already exists.', $this->route->template_output );
+
+		// 2. User 2 submits the uncorrected string -> also blocked.
+		$user_2 = $this->factory->user->create();
+		wp_set_current_user( $user_2 );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
+		$this->assertStringContainsString( 'Identical translation with changes requested already exists.', $this->route->template_output );
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2 ) ) );
+	}
+
+	/**
+	 * Tests that the gp_translation_block_rejected_or_changesrequested filter can bypass the block.
+	 */
+	function test_translations_post_filter_can_bypass_block() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Retry' ) );
+
+		$user = $this->set_normal_user_as_current();
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'user_id'            => $user,
+				'status'             => 'rejected',
+				'translation_0'      => 'Wiederholen',
+			)
+		);
+
+		// Filter unblocks the suggestion.
+		add_filter( 'gp_translation_block_rejected_or_changesrequested', '__return_false' );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Wiederholen' );
+
+		remove_filter( 'gp_translation_block_rejected_or_changesrequested', '__return_false' );
+
+		$created = GP::$translation->find_one( array( 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertNotFalse( $created, 'The filter bypassed the duplicate block and created the suggestion.' );
+	}
 }
