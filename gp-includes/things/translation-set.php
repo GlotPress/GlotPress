@@ -458,7 +458,6 @@ class GP_Translation_Set extends GP_Thing {
 
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 
-				// Do not recreate identical rejected or changesrequested strings.
 				if ( $this->should_skip_rejected_or_changesrequested( $entry->original_id, $entry, $locale, $rows_by_original ) ) {
 					continue;
 				}
@@ -500,13 +499,13 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param int               $original_id  The ID of the original.
-	 * @param Translation_Entry $entry        Translation entry object to import.
-	 * @param GP_Locale         $locale       The locale of the translation set.
+	 * @param int               $original_id      The ID of the original.
+	 * @param Translation_Entry $entry            Translation entry object to import.
+	 * @param GP_Locale         $locale           The locale of the translation set.
+	 * @param array|null        $rows_by_original Optional. Cache of rejected/changesrequested translations grouped by original ID.
 	 * @return bool True if the entry should be skipped, false otherwise.
 	 */
-	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale )
-		// Users importing directly as 'current' (editors) are allowed to replace rejected or changesrequested entries.
+	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale, &$rows_by_original = null ) {
 		if ( ! in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
 			return false;
 		}
