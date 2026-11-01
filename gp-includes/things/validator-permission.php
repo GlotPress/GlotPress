@@ -162,5 +162,23 @@ class GP_Validator_Permission extends GP_Permission {
 		$project_id = (int) $project_id;
 		return $this->find_many( "object_id LIKE '$project_id|%'" );
 	}
+
+	/**
+	 * Deletes all validator permissions of a project.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int $project_id The project ID.
+	 * @return int|false The number of deleted permissions, false on failure.
+	 */
+	public function delete_by_project_id( $project_id ) {
+		global $wpdb;
+
+		return $this->query(
+			"DELETE FROM $this->table WHERE object_type = %s AND object_id LIKE %s",
+			$this->object_type,
+			$wpdb->esc_like( (int) $project_id . '|' ) . '%'
+		);
+	}
 }
 GP::$validator_permission = new GP_Validator_Permission();
