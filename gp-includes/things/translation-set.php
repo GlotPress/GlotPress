@@ -686,12 +686,12 @@ class GP_Translation_Set extends GP_Thing {
 		$wanted = array_pad( array_values( $translations ), $locale->nplurals, null );
 
 		foreach ( $existing_translations as $existing ) {
-			if ( array_slice( $existing->translations(), 0, $locale->nplurals ) === $wanted ) {
+			if ( array_slice( $existing->translations(), 0, $locale->nplurals ) == $wanted ) {
 				if ( 'changesrequested' === $existing->status ) {
 					return 'changesrequested';
 				}
 
-				if ( 'rejected' === $existing->status && (int) $existing->user_id === (int) $user_id ) {
+				if ( 'rejected' === $existing->status && (int) $user_id > 0 && (int) $existing->user_id === (int) $user_id ) {
 					return 'rejected';
 				}
 			}
