@@ -58,6 +58,7 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 		$this->assertNoErrors( 'unexpected_sprintf_token', '<a href="%S">95 percent</a>', '<a href="%s">95 percent</a>' );
 		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2f baba', '%2$.2F баба' );
 		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2F baba', '%2$.2f баба' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '%x of %ld', '%X von %ld' );
 
 		$this->assertNoErrors(
 			'unexpected_sprintf_token',
@@ -117,6 +118,21 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 			null,
 			'The translation contains the following unexpected placeholders: 00%'
 		);
+		$this->assertHasErrorsAndContainsOutput(
+			'unexpected_sprintf_token',
+			'%s items',
+			'%S Elemente',
+			null,
+			'The translation contains the following unexpected placeholders: %S'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'unexpected_sprintf_token',
+			'%d items',
+			'%D Elemente',
+			null,
+			'The translation contains the following unexpected placeholders: %D'
+		);
+		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%l Elemente', null );
 	}
 
 	function test_error_extra_sprintf_placeholders() {

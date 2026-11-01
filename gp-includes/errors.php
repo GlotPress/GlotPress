@@ -128,12 +128,14 @@ class GP_Builtin_Translation_Errors {
 	 * Matches a sprintf() placeholder or an escaped percent sign.
 	 *
 	 * The first group holds the argument number of a positional placeholder.
+	 * Specifiers are case-sensitive because sprintf() throws a ValueError on
+	 * unknown ones like `%S`, while `%X` and `%E` are valid.
 	 *
 	 * @since 4.2.0
 	 *
 	 * @var string
 	 */
-	const SPRINTF_PLACEHOLDER_REGEX = '!%(?:(\d+\$(?:\d+)?)?(?:[0-9]+|\*)?(?:\.[0-9]+|\*)?[bcdefgosuxl%])!i';
+	const SPRINTF_PLACEHOLDER_REGEX = '!%(?:(\d+\$(?:\d+)?)?(?:[0-9]+|\*)?(?:\.[0-9]+|\*)?(?:l?[bcdeEfFgGhHosuxX]|%))!';
 
 	/**
 	 * Adds an error for adding unexpected percent signs in a sprintf-like string.
