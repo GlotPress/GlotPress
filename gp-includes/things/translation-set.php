@@ -656,6 +656,51 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
+	 * Checks if an incoming suggestion matches an existing rejected or changes-requested translation.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int   $original_id  The ID of the original string.
+	 * @param array $translations Array of translation strings (indexed 0..n).
+	 * @param int   $user_id      The ID of the user submitting the suggestion.
+	 * @return string|false 'changesrequested', 'rejected', or false if allowed.
+	 */
+	public function check_already_rejected_or_changesrequested( $original_id, array $translations, $user_id ) {
+		$locale = GP_Locales::by_slug( $this->locale );
+		if ( ! $locale ) {
+			return false;
+		}
+
+		$existing_translations = GP::$translation->find_many(
+			array(
+				'translation_set_id' => $this->id,
+				'original_id'        => $original_id,
+				'status'             => array( 'rejected', 'changesrequested' ),
+			)
+		);
+
+		if ( ! $existing_translations ) {
+			return false;
+		}
+
+		$wanted = array_pad( array_values( $translations ), $locale->nplurals, null );
+
+		foreach ( $existing_translations as $existing ) {
+			if ( array_slice( $existing->translations(), 0, $locale->nplurals ) === $wanted ) {
+				if ( 'changesrequested' === $existing->status ) {
+					return 'changesrequested';
+				}
+
+				if ( 'rejected' === $existing->status && (int) $existing->user_id === (int) $user_id ) {
+					return 'rejected';
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Retrieves the number of waiting translations.
 	 *
 	 * @return int Number of waiting translations.
