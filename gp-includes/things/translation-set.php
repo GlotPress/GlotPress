@@ -511,7 +511,7 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		/**
-		 * Filter whether to skip importing suggestions identical to rejected or changesrequested entries.
+		 * Filter whether to skip importing suggestions and fuzzy translations identical to rejected or changesrequested entries.
 		 *
 		 * @since 4.2.0
 		 *
