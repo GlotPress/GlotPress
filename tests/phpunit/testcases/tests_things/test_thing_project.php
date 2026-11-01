@@ -345,6 +345,68 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertNotEquals( $pre_delete, $post_delete );
 	}
 
+	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_grandchild_projects_and_their_contents() {
+		$root       = $this->factory->project->create();
+		$child      = $this->factory->project->create( array( 'parent_project_id' => $root->id ) );
+		$grandchild = $this->factory->project->create( array( 'parent_project_id' => $child->id ) );
+
+		$locale   = $this->factory->locale->create();
+		$set      = $this->factory->translation_set->create( array( 'project_id' => $grandchild->id, 'locale' => $locale->slug ) );
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		$this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$root->delete();
+
+		$this->assertFalse( GP::$project->get( $child->id ) );
+		$this->assertFalse( GP::$project->get( $grandchild->id ) );
+		$this->assertEmpty( GP::$translation_set->find_many( array( 'project_id' => $grandchild->id ) ) );
+		$this->assertEmpty( GP::$original->find_many( array( 'project_id' => $grandchild->id ) ) );
+		$this->assertEmpty( GP::$translation->find_many( array( 'translation_set_id' => $set->id ) ) );
+		$this->assertFalse( GP::$glossary->get( $glossary->id ) );
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+	}
+
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_validator_permissions_of_the_project_and_its_sub_projects() {
+		$user  = $this->factory->user->create();
+		$root  = $this->factory->project->create();
+		$sub   = $this->factory->project->create( array( 'parent_project_id' => $root->id ) );
+		$other = $this->factory->project->create();
+
+		foreach ( array( $root, $sub, $other ) as $project ) {
+			GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve', 'project_id' => $project->id, 'locale_slug' => 'bg', 'set_slug' => 'default' ) );
+		}
+
+		$root->delete();
+
+		$this->assertEmpty( GP::$validator_permission->by_project_id( $root->id ) );
+		$this->assertEmpty( GP::$validator_permission->by_project_id( $sub->id ) );
+		$this->assertCount( 1, GP::$validator_permission->by_project_id( $other->id ) );
+	}
+
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_project_permissions() {
+		$user    = $this->factory->user->create();
+		$project = $this->factory->project->create();
+		$other   = $this->factory->project->create();
+
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $project->id ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $other->id ) );
+
+		$project->delete();
+
+		$this->assertEmpty( GP::$permission->find_many( array( 'object_type' => 'project', 'object_id' => $project->id ) ) );
+		$this->assertCount( 1, GP::$permission->find_many( array( 'object_type' => 'project', 'object_id' => $other->id ) ) );
+	}
+
 	public function test_previous_state_is_passed_to_saved_action() {
 		$project = $this->factory->project->create( array( 'name' => 'Before' ) );
 		$initial_project = clone $project;

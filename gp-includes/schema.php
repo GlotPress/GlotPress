@@ -1,5 +1,11 @@
 <?php
 /**
+ * GlotPress Schema
+ *
+ * @package GlotPress
+ */
+
+/**
  * Includes the database schema definitions and comments
  */
 function gp_schema_get() {

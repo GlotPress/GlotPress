@@ -62,4 +62,11 @@ class GP_Test_Misc extends GP_UnitTestCase {
 		$this->assertFalse( gp_is_valid_utf8( "\xED\xB0\x80" ) );
 		$this->assertFalse( gp_is_valid_utf8( "B\xFCch" ) );
 	}
+
+	function test_gp_strip_forbidden_control_characters() {
+		$this->assertSame( 'Guardaralteracoes', gp_strip_forbidden_control_characters( "Guardar\x04alteracoes" ) );
+		$this->assertSame( 'ABC', gp_strip_forbidden_control_characters( "\x01A\x02B\x07C\x7F" ) );
+		$this->assertSame( "Keep\ttabs\nnewlines\rreturns", gp_strip_forbidden_control_characters( "Keep\ttabs\nnewlines\rreturns" ) );
+		$this->assertSame( 'unchanged', gp_strip_forbidden_control_characters( 'unchanged' ) );
+	}
 }

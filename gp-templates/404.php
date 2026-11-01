@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: 404
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Not Found &lt; GlotPress', 'glotpress' ) );
 gp_tmpl_header();
 ?>

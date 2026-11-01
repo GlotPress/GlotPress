@@ -13,7 +13,11 @@
  * @since 1.0.0
  */
 class GP_Route_Profile extends GP_Route_Main {
-	// For caching purposes
+	/**
+	 * Cache of projects.
+	 *
+	 * @var array
+	 */
 	private $projects = array();
 
 	/**
@@ -103,7 +107,7 @@ class GP_Route_Profile extends GP_Route_Main {
 
 				++$i;
 
-				// Bail early if we have already the amount requested
+				// Bail early if we have already the amount requested.
 				if ( $i >= $amount ) {
 					break;
 				}
@@ -165,7 +169,7 @@ class GP_Route_Profile extends GP_Route_Main {
 		foreach ( $permissions as $key => &$permission ) {
 			$object_id = GP::$validator_permission->project_id_locale_slug_set_slug( $permission->object_id );
 
-			// Skip admin permissions
+			// Skip admin permissions.
 			if ( ! isset( $object_id[1] ) ) {
 				unset( $permissions[ $key ] );
 				continue;
@@ -179,7 +183,7 @@ class GP_Route_Profile extends GP_Route_Main {
 				)
 			);
 
-			// Skip permissions for non existing sets
+			// Skip permissions for non existing sets.
 			if ( ! $set ) {
 				unset( $permissions[ $key ] );
 				continue;

@@ -258,6 +258,81 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertNotFalse( GP::$translation->find_one( array( 'original_id' => $hidden->id ) ), 'A writer can still translate a hidden original.' );
 	}
 
+	function test_set_status_names_the_errors_that_prevent_an_approval() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => '%s Elemente in %s' ) );
+
+		$_POST['status']             = 'current';
+		$_POST['translation_id']     = $translation->id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-current_' . $translation->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertSame( 'waiting', GP::$translation->get( $translation->id )->status );
+		$this->assertStringContainsString( 'The translation contains more placeholders than the original: %s', $this->route->template_output );
+	}
+
+	function test_bulk_approve_reports_translations_refused_for_errors() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original_with_errors = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s items' ) );
+		$translation_with_errors = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original_with_errors->id, 'status' => 'waiting', 'translation_0' => '%s Elemente in %s' ) );
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => 'Hallo' ) );
+
+		$_POST['bulk'] = array(
+			'action'      => 'approve',
+			'row-ids'     => $original_with_errors->id . '-' . $translation_with_errors->id . ',' . $original->id . '-' . $translation->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertSame( 'current', GP::$translation->get( $translation->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $translation_with_errors->id )->status );
+		$this->assertThereIsANoticeContaining( '1 translation was approved.' );
+		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
+		$this->assertCount( 1, $this->route->errors );
+	}
+
+	function test_bulk_approve_reports_refused_translations_next_to_other_failures() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original_with_errors    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s items' ) );
+		$translation_with_errors = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original_with_errors->id, 'status' => 'waiting', 'translation_0' => '%s Elemente in %s' ) );
+		$original                = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+		$translation             = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => 'Hallo' ) );
+
+		$deny = function ( $verdict, $translation_to_check ) use ( $translation ) {
+			return (int) $translation_to_check->id === (int) $translation->id ? false : $verdict;
+		};
+		add_filter( 'gp_pre_can_set_translation_status', $deny, 10, 2 );
+
+		$_POST['bulk'] = array(
+			'action'      => 'approve',
+			'row-ids'     => $original_with_errors->id . '-' . $translation_with_errors->id . ',' . $original->id . '-' . $translation->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+		remove_filter( 'gp_pre_can_set_translation_status', $deny );
+
+		$this->assertCount( 1, $this->route->errors );
+		$this->assertThereIsAnErrorContaining( 'Error with approving 1 translation.' );
+		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
+	}
+
 	/**
 	 * The tightened filter must still act on a legitimate in-project translated row.
 	 */
@@ -278,5 +353,26 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
 
 		$this->assertEquals( 'fuzzy', GP::$translation->get( $translation->id )->status, 'A legitimate in-project translated row must still be acted on.' );
+	}
+
+	function test_export_strips_control_characters() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+
+		// Created directly, the way an import does, so no blocking error runs.
+		$translation = $this->factory->translation->create( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+			'translation_0'      => "Guardar\x04alteracoes",
+		) );
+		$translation->set_as_current();
+
+		ob_start();
+		$this->route->export_translations_get( $set->project->path, $set->locale, $set->slug );
+		$po = ob_get_clean();
+
+		$this->assertStringNotContainsString( "\x04", $po );
+		$this->assertStringContainsString( 'Guardaralteracoes', $po );
 	}
 }

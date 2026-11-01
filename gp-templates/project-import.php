@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Project Import
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 if ( 'originals' === $kind ) {
 	$gp_title = sprintf(
 		/* translators: %s: Project name. */
