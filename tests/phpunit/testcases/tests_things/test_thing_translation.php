@@ -126,6 +126,73 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, $set->waiting_count() );
 	}
 
+	function test_set_status_should_not_approve_translation_with_errors() {
+		$set = $this->create_set_with_validator();
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project_id, 'singular' => '%s items' ) );
+		$translation = $this->factory->translation->create(
+			array(
+				'original_id'        => $original->id,
+				'translation_set_id' => $set->id,
+				'translation_0'      => '%s Elemente in %s',
+				'status'             => 'waiting',
+			)
+		);
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertSame( 'waiting', GP::$translation->get( $translation->id )->status );
+
+		$this->assertTrue( $translation->set_status( 'rejected' ) );
+	}
+
+	function test_set_status_should_supersede_current_translation_when_new_one_is_created_as_current() {
+		$set = $this->create_set_with_validator();
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'singular' => '%s items' ) );
+		$previous = $this->factory->translation->create(
+			array(
+				'original_id'        => $original->id,
+				'translation_set_id' => $set->id,
+				'translation_0'      => '%s Elemente',
+				'status'             => 'current',
+			)
+		);
+		$created  = GP::$translation->create(
+			array(
+				'original_id'        => $original->id,
+				'translation_set_id' => $set->id,
+				'translation_0'      => '%s Elemente in %s',
+				'status'             => 'current',
+			)
+		);
+
+		$this->assertTrue( $created->set_status( 'current' ) );
+		$this->assertSame( 'old', GP::$translation->get( $previous->id )->status );
+	}
+
+	/**
+	 * Creates a translation set and lets the current user approve translations in it.
+	 *
+	 * @return GP_Translation_Set The translation set.
+	 */
+	private function create_set_with_validator() {
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		GP::$validator_permission->create(
+			array(
+				'user_id'     => $user,
+				'action'      => 'approve',
+				'project_id'  => $set->project_id,
+				'locale_slug' => $set->locale,
+				'set_slug'    => $set->slug,
+			)
+		);
+
+		return $set;
+	}
+
 	function test_translation_should_support_6_plurals() {
 		$plurals = array( 'translation_0' => 'Zero', 'translation_1' => 'One', 'translation_2' => 'Two', 'translation_3' => 'Three', 'translation_4' => 'Four', 'translation_5' => 'Five' );
 		$translation = $this->factory->translation->create( $plurals );

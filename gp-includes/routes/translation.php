@@ -355,17 +355,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
 			if ( $errors ) {
-				$output = '<ul>';
-				foreach ( $errors as $error ) {
-					foreach ( $error as $key => $value ) {
-						$output .= '<li>';
-						$output .= htmlentities( $value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8' );
-						$output .= '</li>';
-					}
-				}
-				$output .= '</ul>';
-
-				return $this->die_with_error( $output, 403 );
+				return $this->die_with_error( $this->translation_errors_list( gp_array_flatten( $errors ) ), 403 );
 			}
 
 			$existing_translations = GP::$translation->for_translation(
@@ -560,7 +550,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$action = $bulk['action'];
 
-		$ok = $error = 0;
+		$ok = $error = $refused = 0;
 		switch ( $action ) {
 			case 'approve':
 				$new_status = 'current';
@@ -580,12 +570,14 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 			if ( $translation->set_status( $new_status ) ) {
 				++$ok;
+			} elseif ( $translation->errors ) {
+				++$refused;
 			} else {
 				++$error;
 			}
 		}
 
-		if ( 0 === $error ) {
+		if ( 0 === $error && ( $ok > 0 || 0 === $refused ) ) {
 			switch ( $action ) {
 				case 'approve':
 					$this->notices[] = sprintf(
@@ -658,7 +650,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					break;
 			}
 				$this->errors[] = $message;
-		} else {
+		} elseif ( $error > 0 ) {
 			switch ( $action ) {
 				case 'approve':
 					$this->errors[] = sprintf(
@@ -682,6 +674,17 @@ class GP_Route_Translation extends GP_Route_Main {
 					);
 					break;
 			}
+		}
+
+		if ( $refused ) {
+			$this->errors[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was not approved because it has translation errors.', '%d translations were not approved because they have translation errors.', $refused, 'glotpress' ),
+				$refused
+			);
+
+			// Errors reach the next page through a single cookie, which keeps only the last one.
+			$this->errors = array( implode( ' ', $this->errors ) );
 		}
 	}
 
@@ -959,8 +962,29 @@ class GP_Route_Translation extends GP_Route_Main {
 		$res = $translation->set_status( gp_post( 'status' ) );
 
 		if ( ! $res ) {
-			return $this->die_with_error( 'Error in saving the translation status!' );
+			if ( $translation->errors ) {
+				return $this->die_with_error( $this->translation_errors_list( $translation->errors ), 403 );
+			}
+
+			return $this->die_with_error( __( 'Error in saving the translation status!', 'glotpress' ) );
 		}
+	}
+
+	/**
+	 * Builds the HTML list of translation error messages for an error response.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $messages The error messages.
+	 * @return string The HTML list.
+	 */
+	private function translation_errors_list( $messages ) {
+		$output = '<ul>';
+		foreach ( $messages as $message ) {
+			$output .= '<li>' . htmlentities( $message, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8' ) . '</li>';
+		}
+
+		return $output . '</ul>';
 	}
 
 	/**

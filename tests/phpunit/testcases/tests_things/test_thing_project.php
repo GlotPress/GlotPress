@@ -370,6 +370,43 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
 	}
 
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_validator_permissions_of_the_project_and_its_sub_projects() {
+		$user  = $this->factory->user->create();
+		$root  = $this->factory->project->create();
+		$sub   = $this->factory->project->create( array( 'parent_project_id' => $root->id ) );
+		$other = $this->factory->project->create();
+
+		foreach ( array( $root, $sub, $other ) as $project ) {
+			GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve', 'project_id' => $project->id, 'locale_slug' => 'bg', 'set_slug' => 'default' ) );
+		}
+
+		$root->delete();
+
+		$this->assertEmpty( GP::$validator_permission->by_project_id( $root->id ) );
+		$this->assertEmpty( GP::$validator_permission->by_project_id( $sub->id ) );
+		$this->assertCount( 1, GP::$validator_permission->by_project_id( $other->id ) );
+	}
+
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_project_permissions() {
+		$user    = $this->factory->user->create();
+		$project = $this->factory->project->create();
+		$other   = $this->factory->project->create();
+
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $project->id ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $other->id ) );
+
+		$project->delete();
+
+		$this->assertEmpty( GP::$permission->find_many( array( 'object_type' => 'project', 'object_id' => $project->id ) ) );
+		$this->assertCount( 1, GP::$permission->find_many( array( 'object_type' => 'project', 'object_id' => $other->id ) ) );
+	}
+
 	public function test_previous_state_is_passed_to_saved_action() {
 		$project = $this->factory->project->create( array( 'name' => 'Before' ) );
 		$initial_project = clone $project;

@@ -125,6 +125,20 @@ class GP_Translation_Errors {
  */
 class GP_Builtin_Translation_Errors {
 	/**
+	 * Matches a sprintf() placeholder or an escaped percent sign.
+	 *
+	 * The first group holds the argument number of a positional placeholder.
+	 * Specifiers are case-sensitive because sprintf() throws a ValueError on
+	 * unknown ones like `%S`, while `%X` and `%E` are valid. Argument number 0
+	 * and a `*` width are left out, as they make sprintf() fail as well.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string
+	 */
+	const SPRINTF_PLACEHOLDER_REGEX = '!%(?:([1-9]\d*\$(?:\d+)?)?(?:[0-9]+)?(?:\.[0-9]+)?(?:l?[bcdeEfFgGhHosuxX]|%))!';
+
+	/**
 	 * Adds an error for adding unexpected percent signs in a sprintf-like string.
 	 *
 	 * This is to catch translations for originals like this:
@@ -142,14 +156,13 @@ class GP_Builtin_Translation_Errors {
 	public function error_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
 
-		$sprintf_placeholder_regex    = '!%(?:(\d+\$(?:\d+)?)?(?:[0-9]+|\*)?(?:\.[0-9]+|\*)?[bcdefgosuxl%])!i';
-		$original_without_placeholder = preg_replace( $sprintf_placeholder_regex, '', $original );
+		$original_without_placeholder = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $original );
 
 		$is_sprintf = $original_without_placeholder !== $original && false === strpos( $original_without_placeholder, '%' );
 
 		// Find any percents that are not valid or escaped.
 		if ( $is_sprintf ) {
-			$translation_without_placeholder = preg_replace( $sprintf_placeholder_regex, '', $translation );
+			$translation_without_placeholder = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $translation );
 
 			$p = strpos( $translation_without_placeholder, '%' );
 			while ( false !== $p ) {
@@ -167,6 +180,95 @@ class GP_Builtin_Translation_Errors {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Adds an error for a translation that needs more sprintf() arguments than the original.
+	 *
+	 * The code passes the arguments of the original, so a translation that
+	 * references one more makes sprintf() throw an ArgumentCountError on PHP 8.
+	 * Fewer placeholders or a different type are harmless and stay allowed.
+	 *
+	 * Plural forms are checked against both forms of the original, since the
+	 * code passes the same arguments to each of them and a locale can use the
+	 * number in a form that the English singular spells out, like "One item".
+	 *
+	 * @since 4.2.0
+	 * @access public
+	 *
+	 * @param string           $original    The original string.
+	 * @param string           $translation The translated string.
+	 * @param GP_Original|null $gp_original Optional. The original object.
+	 * @return string|true True if check is OK, otherwise error message.
+	 */
+	public function error_extra_sprintf_placeholders( $original, $translation, $gp_original = null ) {
+		$originals = array( $original );
+		if ( $gp_original && null !== $gp_original->plural ) {
+			$originals = array( $gp_original->singular, $gp_original->plural );
+		}
+
+		$is_sprintf          = false;
+		$available_arguments = 0;
+		foreach ( $originals as $text ) {
+			$text_without_placeholders = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $text );
+			if ( false !== strpos( $text_without_placeholders, '%' ) ) {
+				return true;
+			}
+
+			$is_sprintf = $is_sprintf || $text_without_placeholders !== $text;
+			foreach ( $this->get_sprintf_placeholders( $text ) as list( , $argument ) ) {
+				$available_arguments = max( $available_arguments, $argument );
+			}
+		}
+
+		if ( ! $is_sprintf ) {
+			return true;
+		}
+
+		$extra_placeholders = array();
+		foreach ( $this->get_sprintf_placeholders( $translation ) as list( $placeholder, $argument ) ) {
+			if ( $argument > $available_arguments ) {
+				$extra_placeholders[] = $placeholder;
+			}
+		}
+
+		if ( ! $extra_placeholders ) {
+			return true;
+		}
+
+		return sprintf(
+			/* translators: %s: Placeholders. */
+			__( 'The translation contains more placeholders than the original: %s', 'glotpress' ),
+			implode( ', ', array_unique( $extra_placeholders ) )
+		);
+	}
+
+	/**
+	 * Lists the sprintf() placeholders of a string with the argument each one reads.
+	 *
+	 * Mirrors sprintf(): a placeholder without an argument number reads the
+	 * next argument, and a positional one does not move that counter.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $text The string to parse.
+	 * @return array<int, array{0: string, 1: int}> Pairs of placeholder and 1-based argument number.
+	 */
+	private function get_sprintf_placeholders( $text ) {
+		preg_match_all( self::SPRINTF_PLACEHOLDER_REGEX, $text, $matches, PREG_SET_ORDER );
+
+		$placeholders  = array();
+		$next_argument = 0;
+		foreach ( $matches as $match ) {
+			// Only the bare form reads no argument, a padded one like `%5%` takes one.
+			if ( '%%' === $match[0] ) {
+				continue;
+			}
+
+			$placeholders[] = array( $match[0], empty( $match[1] ) ? ++$next_argument : (int) $match[1] );
+		}
+
+		return $placeholders;
 	}
 
 	/**

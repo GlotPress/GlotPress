@@ -808,13 +808,30 @@ class GP_Translation extends GP_Thing {
 	 * Changes the status of a translation if possible.
 	 *
 	 * @since 2.3.0
+	 * @since 4.2.0 Refuses to approve a translation with translation errors and
+	 *              stores their messages in `$errors`.
 	 *
 	 * @param string $status The status to be set.
 	 * @return bool Whether the setting of status was successful.
 	 */
 	public function set_status( $status ) {
+		$this->errors = array();
+
 		if ( ! $this->can_set_status( $status ) ) {
 			return false;
+		}
+
+		/*
+		 * A row that is already current is not being approved. Callers create rows as
+		 * current and then call this to supersede the other translations of the original,
+		 * which must still happen or the original ends up with two current translations.
+		 */
+		if ( 'current' === $status && 'current' !== $this->status ) {
+			$translation_errors = $this->get_translation_errors();
+			if ( $translation_errors ) {
+				$this->errors = $translation_errors;
+				return false;
+			}
 		}
 
 		if ( 'current' === $status ) {
@@ -837,6 +854,24 @@ class GP_Translation extends GP_Thing {
 		}
 
 		return $updated;
+	}
+
+	/**
+	 * Checks the translation against the registered translation errors.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return string[] The messages of the errors that apply, without duplicates across plural forms.
+	 */
+	private function get_translation_errors() {
+		$original        = GP::$original->get( $this->original_id );
+		$translation_set = GP::$translation_set->get( $this->translation_set_id );
+		$locale          = $translation_set ? GP_Locales::by_slug( $translation_set->locale ) : null;
+		if ( ! $original || ! $locale ) {
+			return array();
+		}
+
+		return array_unique( gp_array_flatten( (array) GP::$translation_errors->check( $original, $this->translations(), $locale ) ) );
 	}
 
 	/**
