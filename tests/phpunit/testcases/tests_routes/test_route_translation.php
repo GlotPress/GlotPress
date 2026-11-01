@@ -413,12 +413,23 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$waiting_for_user_2 = GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2, 'status' => 'waiting' ) );
 		$this->assertNotFalse( $waiting_for_user_2, 'Another user is permitted to suggest the same string.' );
 
-		// 3. Validator submits the text -> allowed and directly approved (current).
+		// 3. Validator submits a rejected text on another original -> allowed and directly approved (current).
+		$original_2 = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Cancel' ) );
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original_2->id,
+				'user_id'            => $user_1,
+				'status'             => 'rejected',
+				'translation_0'      => 'Abbrechen',
+			)
+		);
+
 		$this->become_validator_for_set( $set );
 
-		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
+		$this->submit_translation( $set, $original_2->id, $original_2->id, 'Abbrechen' );
 
-		$current_translation = GP::$translation->find_one( array( 'original_id' => $original->id, 'status' => 'current' ) );
+		$current_translation = GP::$translation->find_one( array( 'original_id' => $original_2->id, 'status' => 'current' ) );
 		$this->assertNotFalse( $current_translation, 'A validator can approve/submit a previously rejected string.' );
 	}
 
