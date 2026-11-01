@@ -943,6 +943,9 @@ class GP_Translation extends GP_Thing {
 	 * @return bool
 	 */
 	public function after_save( $translation_before ) {
+		// The cached status breakdown also counts the translations with warnings.
+		gp_clean_translation_set_cache( $this->translation_set_id );
+
 		/**
 		 * Fires after a translation was saved.
 		 *

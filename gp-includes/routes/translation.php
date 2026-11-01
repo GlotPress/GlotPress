@@ -412,6 +412,8 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 		}
+		$this->send_filter_counts_header( $translation_set );
+
 		echo wp_json_encode( $output );
 	}
 
@@ -894,6 +896,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
+			$this->send_filter_counts_header( $translation_set );
+
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			return $this->die_with_error( 'Error in retrieving translation!' );
@@ -968,6 +972,37 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			return $this->die_with_error( __( 'Error in saving the translation status!', 'glotpress' ) );
 		}
+	}
+
+	/**
+	 * Sends the counts of the status filters, so the editor can update them after a change.
+	 *
+	 * The editor cannot work them out itself, because they depend on the other
+	 * translations of an original, which the page does not show.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 */
+	private function send_filter_counts_header( $translation_set ) {
+		// A hook may have loaded the counts before the change.
+		$translation_set->update_status_breakdown();
+
+		// Some locales use an HTML entity as the thousands separator, the editor sets the counts as text.
+		$format = static function ( $count ) {
+			return html_entity_decode( number_format_i18n( $count ), ENT_QUOTES, 'UTF-8' );
+		};
+
+		$counts = array(
+			'translated'       => $format( $translation_set->current_count() ),
+			'untranslated'     => $format( $translation_set->untranslated_count() ),
+			'waiting'          => $format( $translation_set->waiting_count() ),
+			'changesrequested' => $format( $translation_set->changesrequested_count() ),
+			'fuzzy'            => $format( $translation_set->fuzzy_count() ),
+			'warnings'         => $format( $translation_set->warnings_count() ),
+		);
+
+		$this->header( 'X-GlotPress-Filter-Counts: ' . wp_json_encode( $counts ) );
 	}
 
 	/**
