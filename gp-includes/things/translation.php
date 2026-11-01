@@ -315,6 +315,9 @@ class GP_Translation extends GP_Thing {
 	/**
 	 * Gets translations for export.
 	 *
+	 * Leaves out translations that need more sprintf() arguments than the
+	 * original passes, as they make sprintf() throw an ArgumentCountError.
+	 *
 	 * @param GP_Project         $project         The project.
 	 * @param GP_Translation_Set $translation_set The translation set.
 	 * @param array|null         $filters         Optional. An array of filters to apply.
@@ -332,7 +335,50 @@ class GP_Translation extends GP_Thing {
 			}
 		}
 
-		return $entries;
+		return $this->without_extra_sprintf_placeholders( $entries, $translation_set );
+	}
+
+	/**
+	 * Removes the entries whose translation needs more sprintf() arguments than the original.
+	 *
+	 * Approval refuses such a translation, but imports and rows created as
+	 * current skip that check, so an older current translation can still have
+	 * one. This applies only the registered `extra_sprintf_placeholders` error,
+	 * so a site that removed that error exports these translations as before.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param Translation_Entry[] $entries         The translation entries.
+	 * @param GP_Translation_Set  $translation_set The translation set.
+	 * @return Translation_Entry[] The entries without the ones that need more arguments.
+	 */
+	private function without_extra_sprintf_placeholders( array $entries, $translation_set ): array {
+		$locale = GP_Locales::by_slug( $translation_set->locale );
+		if ( ! $locale || ! GP::$translation_errors->has( 'extra_sprintf_placeholders' ) ) {
+			return $entries;
+		}
+
+		$errors = new GP_Translation_Errors();
+		$errors->add( 'extra_sprintf_placeholders', GP::$translation_errors->callbacks['extra_sprintf_placeholders'] );
+
+		$kept = array();
+		foreach ( $entries as $entry ) {
+			$original = new GP_Original(
+				array(
+					'project_id' => $translation_set->project_id,
+					'singular'   => $entry->singular,
+					'plural'     => $entry->plural,
+					'context'    => $entry->context,
+					'comment'    => $entry->extracted_comments,
+				)
+			);
+
+			if ( null === $errors->check( $original, $entry->translations, $locale ) ) {
+				$kept[] = $entry;
+			}
+		}
+
+		return $kept;
 	}
 
 	/**

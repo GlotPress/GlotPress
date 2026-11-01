@@ -730,4 +730,136 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertSame( 'Guardaralteracoes', $entries[0]->translations[0] );
 	}
+
+	/**
+	 * Creates a current translation directly, the way an import does, so no blocking error runs.
+	 *
+	 * @param GP_Translation_Set $set          The translation set.
+	 * @param GP_Original        $original     The original.
+	 * @param string[]           $translations The translated forms.
+	 */
+	private function create_current_translation_without_errors_check( $set, $original, $translations ) {
+		$fields = array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		);
+		foreach ( $translations as $i => $translation ) {
+			$fields[ "translation_$i" ] = $translation;
+		}
+
+		$translation = $this->factory->translation->create( $fields );
+		$translation->set_as_current();
+	}
+
+	/**
+	 * @ticket gh-1877
+	 */
+	public function test_for_export_leaves_out_translations_with_extra_sprintf_placeholders() {
+		$set          = $this->factory->translation_set->create_with_project_and_locale();
+		$good         = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello %s' ) );
+		$extra        = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Goodbye %s' ) );
+		$untranslated = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Welcome %s' ) );
+
+		$this->create_current_translation_without_errors_check( $set, $good, array( 'Hallo %s' ) );
+		// The original passes one argument, so sprintf() would throw an ArgumentCountError.
+		$this->create_current_translation_without_errors_check( $set, $extra, array( 'Auf Wiedersehen %1$s %2$s' ) );
+
+		$current = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
+		$this->assertSame( array( 'Hello %s' ), wp_list_pluck( $current, 'singular' ) );
+
+		// The default export keeps untranslated originals, but not the original with the left out translation.
+		$default = GP::$translation->for_export( $set->project, $set );
+		$this->assertEqualSets( array( 'Hello %s', 'Welcome %s' ), wp_list_pluck( $default, 'singular' ) );
+	}
+
+	/**
+	 * @ticket gh-1877
+	 */
+	public function test_for_export_leaves_out_plural_entry_with_one_form_with_extra_sprintf_placeholders() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create(
+			array(
+				'project_id' => $set->project->id,
+				'status'     => '+active',
+				'singular'   => '%s item',
+				'plural'     => '%s items',
+			)
+		);
+
+		$this->create_current_translation_without_errors_check( $set, $original, array( '%s Element', '%1$s %2$s Elemente' ) );
+
+		$this->assertSame( array(), GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) ) );
+	}
+
+	/**
+	 * @ticket gh-1877
+	 */
+	public function test_for_export_keeps_translations_with_fewer_sprintf_placeholders() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$singular = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Edit %s' ) );
+		$plural   = $this->factory->original->create(
+			array(
+				'project_id' => $set->project->id,
+				'status'     => '+active',
+				'singular'   => '%d item',
+				'plural'     => '%d items',
+			)
+		);
+
+		// A missing placeholder does not make sprintf() fail, so these are still exported.
+		$this->create_current_translation_without_errors_check( $set, $singular, array( 'Bearbeiten' ) );
+		$this->create_current_translation_without_errors_check( $set, $plural, array( 'Ein Element', '%d Elemente' ) );
+
+		$this->assertEqualSets(
+			array( 'Edit %s', '%d item' ),
+			wp_list_pluck( GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) ), 'singular' )
+		);
+	}
+
+	/**
+	 * @ticket gh-1877
+	 */
+	public function test_for_export_keeps_translations_with_extra_sprintf_placeholders_without_the_error() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Goodbye %s' ) );
+
+		$this->create_current_translation_without_errors_check( $set, $original, array( 'Auf Wiedersehen %1$s %2$s' ) );
+
+		$callbacks = GP::$translation_errors->callbacks;
+		GP::$translation_errors->remove( 'extra_sprintf_placeholders' );
+		try {
+			$entries = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
+		} finally {
+			GP::$translation_errors->callbacks = $callbacks;
+		}
+
+		$this->assertCount( 1, $entries );
+		$this->assertSame( 'Auf Wiedersehen %1$s %2$s', $entries[0]->translations[0] );
+	}
+
+	/**
+	 * @ticket gh-1877
+	 */
+	public function test_for_export_keeps_translations_with_other_translation_errors() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello %s' ) );
+
+		$this->create_current_translation_without_errors_check( $set, $original, array( 'Hallo %s' ) );
+
+		$callbacks = GP::$translation_errors->callbacks;
+		GP::$translation_errors->add(
+			'always',
+			static function () {
+				return 'Always an error.';
+			}
+		);
+		try {
+			$entries = GP::$translation->for_export( $set->project, $set, array( 'status' => 'current' ) );
+		} finally {
+			GP::$translation_errors->callbacks = $callbacks;
+		}
+
+		$this->assertCount( 1, $entries );
+	}
 }
