@@ -387,6 +387,23 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->status = 'waiting';
 			}
 
+			$entry_original = new GP_Original(
+				array(
+					'project_id' => $this->project_id,
+					'singular'   => $entry->singular,
+					'plural'     => $entry->plural,
+					'context'    => $entry->context,
+					'comment'    => $entry->extracted_comments,
+				)
+			);
+
+			$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
+
+			// Not waiting, because a translation with errors cannot be approved before it is edited.
+			if ( $has_errors ) {
+				$entry->status = 'fuzzy';
+			}
+
 			$create     = false;
 			$translated = $load_existing_translations( $entry->status )->translate_entry( $entry );
 			if ( 'current' !== $entry->status && ! $translated ) {
@@ -456,6 +473,12 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->translation_set_id = $this->id;
 
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
+
+				// A row created as current is not checked again when its status is set.
+				if ( $has_errors && 'current' === $entry->status ) {
+					$entry->status = 'fuzzy';
+				}
+
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
