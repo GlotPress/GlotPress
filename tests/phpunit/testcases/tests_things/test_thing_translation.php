@@ -791,11 +791,13 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	function test_for_translation_invalid_regex_search() {
 		$set = $this->create_set_with_originals( array( 'Activate plugin' ) );
 
-		// No database error is printed.
-		$this->expectOutputString( '' );
+		ob_start();
+		$found = $this->search_originals( $set, array( 'term' => '(Activ', 'regex' => 'yes' ) );
+		$output = ob_get_clean();
 
-		$this->assertSame( array(), $this->search_originals( $set, array( 'term' => '(Activ', 'regex' => 'yes' ) ) );
+		$this->assertSame( array(), $found );
 		$this->assertNotEmpty( GP::$translation->regex_error );
+		$this->assertStringNotContainsString( 'WordPress database error', $output );
 	}
 
 	/**
