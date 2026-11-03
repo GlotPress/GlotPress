@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: View Glossary
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'View Glossary &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb_project(
 	$project,

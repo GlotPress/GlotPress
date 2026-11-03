@@ -1,13 +1,24 @@
 <?php
+/**
+ * GlotPress CLI Command to Add Admin
+ *
+ * @package GlotPress
+ */
 
+/**
+ * WP-CLI command class to add admin users to GlotPress.
+ */
 class GP_CLI_Add_Admin extends WP_CLI_Command {
 	/**
-	 * Give the user admin rights in GlotPress
+	 * Give the user admin rights in GlotPress.
 	 *
 	 * ## OPTIONS
 	 *
 	 * <username>...
 	 * : Username(s) to make an admin
+	 *
+	 * @param string[] $args       Positional arguments.
+	 * @param array    $assoc_args Associative arguments.
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		foreach ( $args as $user_login ) {
