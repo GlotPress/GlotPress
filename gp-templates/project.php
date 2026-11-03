@@ -98,7 +98,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				/**
 				 * Fires after the last header column of a translation set.
 				 *
-				 * @since 4.0.2
+				 * @since 4.2.0
 				 *
 				 * @param GP_Translation_Set $set     The translation set.
 				 * @param GP_Project         $project The current project.
@@ -250,7 +250,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 									/**
 									 * Fires inside each custom column of the Translation Sets list table.
 									 *
-									 * @since 4.0.2
+									 * @since 4.2.0
 									 *
 									 * @param string             $column_name   Name of the column.
 									 * @param GP_Translation_Set $set           The translation set.
@@ -294,7 +294,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				/**
 				 * Filter a subproject row items, like title, action buttons and active bubble in the project template.
 				 *
-				 * @since 4.0.2
+				 * @since 4.2.0
 				 *
 				 * @param array $project_row_items   The array of project items to render on the projects list.
 				 * @param GP_Project $project        GP_Project object.

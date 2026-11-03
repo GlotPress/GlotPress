@@ -24,7 +24,7 @@ gp_tmpl_header();
 					/**
 					 * Filter a project row items, like title, action buttons and active bubble in the root projects template.
 					 *
-					 * @since 4.0.2
+					 * @since 4.2.0
 					 *
 					 * @param array $project_row_items   The array of project items to render on the projects list.
 					 * @param GP_Project $project        GP_Project object.
