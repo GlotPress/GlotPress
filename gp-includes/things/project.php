@@ -502,13 +502,10 @@ class GP_Project extends GP_Thing {
 				// Duplicate translations.
 				$new_set->copy_translations_from( $to_add->id );
 
-				// Check for project glossary.
-				$glossaries = GP::$glossary->find( array( 'translation_set_id' => $to_add->id ) );
+				// Duplicate the project glossary of the translation set, if it has one.
+				$glossary = GP::$glossary->by_set_id( $to_add->id );
 
-				if ( is_array( $glossaries ) && ! empty( $glossaries ) ) {
-					$glossary = $glossaries[0];
-
-					// Duplicate project glossary.
+				if ( $glossary ) {
 					$new_glossary = GP::$glossary->create(
 						array(
 							'translation_set_id' => $new_set->id,
@@ -516,10 +513,14 @@ class GP_Project extends GP_Thing {
 						)
 					);
 					if ( ! $new_glossary ) {
-						$this->errors[] = __( 'Error in creating glossary!', 'glotpress' );
+						$this->errors[] = sprintf(
+							/* translators: %s: Translation set. */
+							__( 'Couldn&#8217;t add the glossary of translation set named %s', 'glotpress' ),
+							esc_html( $to_add->name )
+						);
 					} else {
 						// Duplicate glossary entries.
-						$new_entries = $new_glossary->copy_glossary_items_from( $glossary->id );
+						$new_glossary->copy_glossary_items_from( $glossary->id );
 					}
 				}
 			}

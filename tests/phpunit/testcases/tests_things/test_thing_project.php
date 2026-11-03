@@ -308,6 +308,51 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( count( $originals_sub ), count( $originals_branch_sub ) );
 	}
 
+	function test_branching_copies_project_glossaries() {
+		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
+		$root = $root_set->project;
+
+		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
+
+		foreach ( array( $root_set, $sub_set ) as $set ) {
+			$glossary = GP::$glossary->create( array( 'translation_set_id' => $set->id, 'description' => 'Glossary of set ' . $set->id ) );
+			foreach ( array( 'term a', 'term b' ) as $term ) {
+				GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => $term, 'part_of_speech' => 'noun', 'translation' => 'translation of ' . $term, 'comment' => 'comment', 'last_edited_by' => 7 ) );
+			}
+		}
+
+		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$branch->duplicate_project_contents_from( $root );
+
+		$this->assertEmpty( $branch->errors );
+
+		$branch_sub = $branch->sub_projects();
+		$branch_sub = array_shift( $branch_sub );
+
+		foreach ( array( array( $root_set, $branch ), array( $sub_set, $branch_sub ) ) as list( $source_set, $project ) ) {
+			$branch_sets = GP::$translation_set->by_project_id( $project->id );
+			$branch_glossary = GP::$glossary->by_set_id( $branch_sets[0]->id );
+
+			$this->assertNotEmpty( $branch_glossary );
+			$this->assertSame( 'Glossary of set ' . $source_set->id, $branch_glossary->description );
+
+			$entries = GP::$glossary_entry->by_glossary_id( $branch_glossary->id );
+
+			$this->assertEqualsCanonicalizing(
+				array(
+					'term a' => 'translation of term a',
+					'term b' => 'translation of term b',
+				),
+				wp_list_pluck( $entries, 'translation', 'term' )
+			);
+			$this->assertEquals( array( 7, 7 ), wp_list_pluck( $entries, 'last_edited_by' ) );
+
+			// The glossary of the source project is left as it was.
+			$source_glossary = GP::$glossary->by_set_id( $source_set->id );
+			$this->assertCount( 2, GP::$glossary_entry->by_glossary_id( $source_glossary->id ) );
+		}
+	}
+
 	function test_branching_paths(){
 		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
 		$root = $root_set->project;
