@@ -730,4 +730,83 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertSame( 'Guardaralteracoes', $entries[0]->translations[0] );
 	}
+
+	/**
+	 * Creates a translation set with a current translation for each of the given originals.
+	 *
+	 * @param string[] $singulars The singulars of the originals.
+	 * @return GP_Translation_Set The translation set.
+	 */
+	private function create_set_with_originals( $singulars ) {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		foreach ( $singulars as $singular ) {
+			$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'singular' => $singular ) );
+			$this->factory->translation->create( array( 'original_id' => $original->id, 'translation_set_id' => $set->id, 'translation_0' => 'Translation', 'status' => 'current' ) );
+		}
+
+		return $set;
+	}
+
+	/**
+	 * Searches the originals of a translation set and returns the singulars found.
+	 *
+	 * @param GP_Translation_Set $set     The translation set.
+	 * @param array              $filters The search filters.
+	 * @return string[] The singulars found, sorted.
+	 */
+	private function search_originals( $set, $filters ) {
+		$found = wp_list_pluck(
+			GP::$translation->for_translation( $set->project, $set, 'no-limit', $filters + array( 'term_scope' => 'scope_originals' ) ),
+			'singular'
+		);
+		sort( $found );
+
+		return $found;
+	}
+
+	/**
+	 * @covers GP_Translation::for_translation
+	 */
+	function test_for_translation_regex_search() {
+		$set = $this->create_set_with_originals( array( 'Activate plugin', 'activate theme', 'Disable %s', 'Delete plugin' ) );
+
+		$this->assertSame( array( 'Activate plugin', 'Disable %s', 'activate theme' ), $this->search_originals( $set, array( 'term' => '^(Activ|Disabl)', 'regex' => 'yes' ) ) );
+		$this->assertSame( '', GP::$translation->regex_error );
+	}
+
+	/**
+	 * @covers GP_Translation::for_translation
+	 */
+	function test_for_translation_case_sensitive_regex_search() {
+		$set = $this->create_set_with_originals( array( 'Activate plugin', 'activate theme', 'Delete plugin' ) );
+
+		$this->assertSame( array( 'Activate plugin' ), $this->search_originals( $set, array( 'term' => '^Activ', 'regex' => 'yes', 'case_sensitive' => 'yes' ) ) );
+		$this->assertSame( '', GP::$translation->regex_error );
+	}
+
+	/**
+	 * @covers GP_Translation::for_translation
+	 */
+	function test_for_translation_invalid_regex_search() {
+		$set = $this->create_set_with_originals( array( 'Activate plugin' ) );
+
+		ob_start();
+		$found = $this->search_originals( $set, array( 'term' => '(Activ', 'regex' => 'yes' ) );
+		$output = ob_get_clean();
+
+		$this->assertSame( array(), $found );
+		$this->assertNotEmpty( GP::$translation->regex_error );
+		$this->assertStringNotContainsString( 'WordPress database error', $output );
+	}
+
+	/**
+	 * @covers GP_Translation::for_translation
+	 */
+	function test_for_translation_search_without_regex_matches_the_term_literally() {
+		$set = $this->create_set_with_originals( array( 'Activate plugin', 'Use (Activ to start' ) );
+
+		$this->assertSame( array( 'Use (Activ to start' ), $this->search_originals( $set, array( 'term' => '(Activ' ) ) );
+		$this->assertSame( '', GP::$translation->regex_error );
+	}
 }
