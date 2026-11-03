@@ -8,7 +8,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	function test_map_glossary_entries_to_translation_originals_with_ampersand_in_glossary() {
 		$test_string = 'This string, <code>&lt;/body&gt;</code>, should not have the code tags mangled.';
 		$orig = '';
-		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;&amp;amp;&quot;,&quot;pos&quot;:&quot;interjection&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">&amp;</span>gt;&lt;/code&gt;, should not have the code tags mangled.';
+		// The `&` glossary term must not match the `&` inside the `&lt;`/`&gt;` HTML entities.
+		$expected_result = 'This string, &lt;code&gt;&amp;lt;/body&amp;gt;&lt;/code&gt;, should not have the code tags mangled.';
 
 		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
 
@@ -19,6 +20,206 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			'term' => '&',
 			'part_of_speech' => 'interjection',
 			'translation' => '&amp;',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects matching a standalone ampersand term [&].
+	 */
+	/**
+	 * @dataProvider data_numeric_character_references
+	 */
+	function test_map_glossary_entries_to_translation_originals_does_not_match_ampersand_in_numeric_character_reference( $test_string ) {
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => '&',
+				'part_of_speech' => 'conjunction',
+				'translation'    => 'e',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( esc_translation( $test_string ), $orig->singular_glossary_markup );
+	}
+
+	function data_numeric_character_references() {
+		return array(
+			'decimal'     => array( 'Fish &#38; Chips' ),
+			'hexadecimal' => array( 'Fish &#x26; Chips' ),
+			'em dash'     => array( 'Fish &#8212; Chips' ),
+		);
+	}
+
+	/**
+	 * Nouns and verbs get suffix rules, which none of these terms fit.
+	 *
+	 * @dataProvider data_terms_without_a_suffix_rule
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_term_without_a_suffix_rule( $term, $part_of_speech, $test_string, $expected_before, $expected_after ) {
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => $term,
+				'part_of_speech' => $part_of_speech,
+				'translation'    => 'X',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'plugin',
+				'part_of_speech' => 'noun',
+				'translation'    => 'extension',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_before . $this->glossary_match( 'X', $part_of_speech, esc_translation( $term ) ) . $expected_after, $orig->singular_glossary_markup );
+	}
+
+	function data_terms_without_a_suffix_rule() {
+		return array(
+			'ampersand noun' => array( '&', 'noun', 'Fish & Chips', 'Fish ', ' Chips' ),
+			'number noun'    => array( '404', 'noun', 'Error 404 page', 'Error ', ' page' ),
+			'symbol verb'    => array( '+', 'verb', 'Press + now', 'Press ', ' now' ),
+		);
+	}
+
+	function test_map_glossary_entries_to_translation_originals_with_term_after_character_reference() {
+		$entry = new Translation_Entry( array( 'singular' => 'Install&nbsp;plugin now' ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'plugin',
+				'part_of_speech' => 'noun',
+				'translation'    => 'extension',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( esc_translation( 'Install&nbsp;' ) . $this->glossary_match( 'extension', 'noun', 'plugin' ) . ' now', $orig->singular_glossary_markup );
+	}
+
+	function test_map_glossary_entries_to_translation_originals_with_standalone_ampersand_in_glossary() {
+		$test_string = 'Categories & Tags';
+		$orig = '';
+		$expected_result = 'Categories ' . $this->glossary_match( 'e', 'conjunction', '&amp;' ) . ' Tags';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => '&',
+			'part_of_speech' => 'conjunction',
+			'translation' => 'e',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects matching a term ending in a non-word character [note:].
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_trailing_colon_in_glossary() {
+		$test_string = 'Add a note: for the reviewer.';
+		$orig = '';
+		$expected_result = 'Add a ' . $this->glossary_match( 'nota:', 'noun', 'note:' ) . ' for the reviewer.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'note:',
+			'part_of_speech' => 'noun',
+			'translation' => 'nota:',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects matching an expression term ending in punctuation [are you sure...?].
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_punctuation_expression_in_glossary() {
+		$test_string = 'The prompt are you sure...? is shown once.';
+		$orig = '';
+		$expected_result = 'The prompt ' . $this->glossary_match( 'sigur ...?', 'expression', 'are you sure...?' ) . ' is shown once.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'are you sure...?',
+			'part_of_speech' => 'expression',
+			'translation' => 'sigur ...?',
+			'glossary_id' => $glossary->id,
+		);
+
+		GP::$glossary_entry->create_and_select( $glossary_entry );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects matching a term containing brackets [display [location]].
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_brackets_in_glossary() {
+		$test_string = 'The display [location] option.';
+		$orig = '';
+		$expected_result = 'The ' . $this->glossary_match( 'exibir [local]', 'expression', 'display [location]' ) . ' option.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string, ) );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		$glossary_entry = array(
+			'term' => 'display [location]',
+			'part_of_speech' => 'expression',
+			'translation' => 'exibir [local]',
 			'glossary_id' => $glossary->id,
 		);
 
@@ -81,6 +282,114 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
 
 		$this->assertEquals( $orig->singular_glossary_markup, $expected_result );
+	}
+
+	/**
+	 * Expects that a single-word glossary term does not match inside a hyphenated compound
+	 * (e.g. term `add` in `add-on`).
+	 */
+	function test_glossary_term_does_not_match_inside_hyphenated_compound() {
+		$test_string       = 'Install the add-on now.';
+		$expected_result   = 'Install the add-on now.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'add',
+				'part_of_speech' => 'verb',
+				'translation'    => 'toevoegen',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * Expects that a glossary term does not match when the original contains a longer word that
+	 * has the term as a prefix joined by a hyphen (e.g. term `content` in `wp-content`).
+	 */
+	function test_glossary_term_does_not_match_hyphenated_compound_of_term() {
+		$test_string       = 'Edit the wp-content directory.';
+		$expected_result   = 'Edit the wp-content directory.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'content',
+				'part_of_speech' => 'noun',
+				'translation'    => 'inhoud',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * Expects that a single-word glossary term still matches at the end of the string.
+	 * Sanity check that the hyphen-aware right boundary does not regress the end-of-string case.
+	 */
+	function test_glossary_term_still_matches_at_end_of_string() {
+		$test_string     = 'Click add';
+		$expected_result = 'Click ' . $this->glossary_match( 'toevoegen', 'verb', 'add' );
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'add',
+				'part_of_speech' => 'verb',
+				'translation'    => 'toevoegen',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * Expects that a single-word glossary term still matches when followed by a space or
+	 * punctuation. Guards against accidentally regressing non-hyphen word boundaries.
+	 */
+	function test_glossary_term_still_matches_before_space_and_punctuation() {
+		$test_string     = 'Click add. Then add now.';
+		$expected_result = 'Click ' . $this->glossary_match( 'toevoegen', 'verb', 'add' ) . '. Then ' . $this->glossary_match( 'toevoegen', 'verb', 'add' ) . ' now.';
+
+		$entry = new Translation_Entry( array( 'singular' => $test_string ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select(
+			array(
+				'term'           => 'add',
+				'part_of_speech' => 'verb',
+				'translation'    => 'toevoegen',
+				'glossary_id'    => $glossary->id,
+			)
+		);
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertEquals( $expected_result, $orig->singular_glossary_markup );
 	}
 
 	/**

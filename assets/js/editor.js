@@ -1,4 +1,4 @@
-/* global $gp_editor_options, $gp, wp */
+/* global $gp_editor_options, $gp, wp, Event */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
@@ -23,6 +23,27 @@ $gp.editor = (
 			},
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
+			},
+			update_filter_counts: function( xhr ) {
+				var counts = xhr.getResponseHeader( 'X-GlotPress-Filter-Counts' );
+
+				if ( ! counts ) {
+					return;
+				}
+
+				$.each( JSON.parse( counts ), function( filter, count ) {
+					var link = $( '#upper-filters-toolbar a[data-filter="' + filter + '"]' );
+					var text = link.text();
+					var oldCount = String( link.attr( 'data-count' ) );
+					// Only the number is swapped, the rest of the label is translated text.
+					var position = text.lastIndexOf( oldCount );
+
+					if ( -1 === position ) {
+						return;
+					}
+
+					link.text( text.slice( 0, position ) + count + text.slice( position + oldCount.length ) ).attr( 'data-count', count );
+				} );
 			},
 			update_count: function( element ) {
 				var string;
@@ -79,12 +100,37 @@ $gp.editor = (
 				} ).get();
 
 				$gp.editor.current = editor;
+				$gp.editor.add_placeholder_buttons( editor );
 
 				local_date_added.text( local_date.toLocaleDateString() + ' ' + local_date.toLocaleTimeString() );
 
 				editor.show();
 				editor.preview.hide();
 				$( 'textarea:first', editor ).focus();
+			},
+			add_placeholder_buttons: function( editor ) {
+				if ( ! $( 'textarea.foreign-text', editor ).not( ':disabled' ).length ) {
+					return;
+				}
+
+				$( '.original span.notranslate.placeholder', editor ).replaceWith( function() {
+					var placeholder = $( this ).text();
+					/* translators: %s: Placeholder, for example %s or %1$d. */
+					var title = wp.i18n.sprintf( wp.i18n.__( 'Insert placeholder %s', 'glotpress' ), placeholder );
+
+					// A title instead of an aria-label keeps the placeholder as the name read within the original.
+					return $( '<button type="button" class="notranslate placeholder placeholder-insert"></button>' )
+						.text( placeholder )
+						.attr( 'title', title );
+				} );
+			},
+			insert_placeholder: function( button ) {
+				var textarea = $gp.editor.current.last_textarea || $( 'textarea.foreign-text', $gp.editor.current ).get( 0 );
+
+				textarea.setRangeText( button.text(), textarea.selectionStart, textarea.selectionEnd, 'end' );
+				textarea.focus();
+				// A native event, so listeners added without jQuery see the change too.
+				textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
 			},
 			prev: function() {
 				var prev;
@@ -134,6 +180,8 @@ $gp.editor = (
 					.on( 'click', 'button.copy', $gp.editor.hooks.copy )
 					.on( 'click', 'button.inserttab', $gp.editor.hooks.tab )
 					.on( 'click', 'button.insertnl', $gp.editor.hooks.newline )
+					.on( 'click', 'button.placeholder-insert', $gp.editor.hooks.insert_placeholder )
+					.on( 'focus', 'tr.editor textarea.foreign-text', $gp.editor.hooks.remember_textarea )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.changesrequested', $gp.editor.hooks.set_status_changesrequested )
@@ -268,7 +316,7 @@ $gp.editor = (
 					url: $gp_editor_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( response ) {
+					success: function( response, textStatus, xhr ) {
 						var original_id;
 
 						button.prop( 'disabled', false );
@@ -277,6 +325,8 @@ $gp.editor = (
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
 						}
+
+						$gp.editor.update_filter_counts( xhr );
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -378,10 +428,11 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
 					data: data,
-					success: function( response ) {
+					success: function( response, textStatus, xhr ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
+						$gp.editor.update_filter_counts( xhr );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -412,9 +463,10 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
-					success: function( response ) {
+					success: function( response, textStatus, xhr ) {
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
+						$gp.editor.update_filter_counts( xhr );
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */
@@ -496,6 +548,16 @@ $gp.editor = (
 				newline: function() {
 					$gp.editor.newline( $( this ) );
 					return false;
+				},
+				insert_placeholder: function() {
+					$gp.editor.insert_placeholder( $( this ) );
+					return false;
+				},
+				remember_textarea: function() {
+					// A button takes the focus when clicked, so the placeholder goes into the textarea used last.
+					if ( $gp.editor.current ) {
+						$gp.editor.current.last_textarea = this;
+					}
 				},
 				discard_warning: function() {
 					$gp.editor.discard_warning( $( this ) );

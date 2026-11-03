@@ -1,3 +1,12 @@
+<?php
+/**
+ * Templates: Header
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
+?>
 <!DOCTYPE html>
 <html>
 <head>

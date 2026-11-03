@@ -1305,6 +1305,32 @@ form.filters-toolbar a.revealing.open {
 	font-family: monospace;
 }
 
+/* Only a hint, unlike the placeholders that can be inserted in the editor. */
+.invisible-spaces {
+	background-color: transparent;
+	border-style: dashed;
+}
+
+.editor .original .placeholder-insert {
+	margin: 0;
+	font-size: inherit;
+	color: var( --gp-color-btn-text );
+	background-color: var( --gp-color-btn-bg );
+	border-color: var( --gp-color-btn-border );
+	cursor: pointer;
+}
+
+.editor .original .placeholder-insert:hover {
+	color: var( --gp-color-btn-hover-text );
+	background-color: var( --gp-color-btn-hover-bg );
+	border-color: var( --gp-color-btn-hover-border );
+}
+
+.editor .original .placeholder-insert:focus-visible {
+	outline: 2px solid var( --gp-color-btn-hover-border );
+	outline-offset: 1px;
+}
+
 .ternary {
 	font-size: 0.8em;
 }
