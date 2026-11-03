@@ -134,6 +134,7 @@ $gp.editor = (
 					.on( 'click', 'button.copy', $gp.editor.hooks.copy )
 					.on( 'click', 'button.inserttab', $gp.editor.hooks.tab )
 					.on( 'click', 'button.insertnl', $gp.editor.hooks.newline )
+					.on( 'click', 'button.insert-glossary-item', $gp.editor.hooks.insert_glossary_item )
 					.on( 'click', 'button.approve', $gp.editor.hooks.set_status_current )
 					.on( 'click', 'button.reject', $gp.editor.hooks.set_status_rejected )
 					.on( 'click', 'button.changesrequested', $gp.editor.hooks.set_status_changesrequested )
@@ -455,6 +456,18 @@ $gp.editor = (
 				text_area.focus();
 				text_area[ 0 ].selectionEnd = cursorPos + 1;
 			},
+			insert_glossary_item: function( link ) {
+				var text_area = link.closest( '.textareas' ).first().find( 'textarea.foreign-text' );
+				var cursorPos = text_area.prop( 'selectionStart' ) ? text_area.prop( 'selectionStart' ) : 0;
+				var buttonText = link.data( 'title' );
+				var textareaValue = text_area.val() ? text_area.val() : '';
+				var textBefore = textareaValue.substring( 0, cursorPos ) ? textareaValue.substring( 0, cursorPos ) : '';
+				var textAfter = textareaValue.substring( cursorPos, textareaValue.length ) ? textareaValue.substring( cursorPos, textareaValue.length ) : '';
+				textareaValue = textBefore + buttonText + textAfter;
+				text_area.val( textareaValue );
+				text_area.focus();
+				text_area[ 0 ].selectionEnd = cursorPos + buttonText.length;
+			},
 			hooks: {
 				show: function() {
 					$gp.editor.show( $( this ) );
@@ -495,6 +508,10 @@ $gp.editor = (
 				},
 				newline: function() {
 					$gp.editor.newline( $( this ) );
+					return false;
+				},
+				insert_glossary_item: function() {
+					$gp.editor.insert_glossary_item( $( this ) );
 					return false;
 				},
 				discard_warning: function() {
