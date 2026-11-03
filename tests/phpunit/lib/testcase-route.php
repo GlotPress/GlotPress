@@ -27,6 +27,28 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Requests a status change for a translation through the route and reloads it.
+	 *
+	 * @param GP_Translation_Set $set         A set with its project/locale/slug available.
+	 * @param GP_Translation     $translation The translation to change.
+	 * @param string             $status      The requested status.
+	 * @return GP_Translation The reloaded translation.
+	 */
+	function set_status( $set, $translation, $status ) {
+		$_POST['status']             = $status;
+		$_POST['translation_id']     = $translation->id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-' . $status . '_' . $translation->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		return GP::$translation->get( $translation->id );
+	}
+
+	/**
 	 * Creates a user with validator (approve) permission on a translation set and makes them the current user.
 	 *
 	 * @param GP_Translation_Set $set A set with its project/locale/slug available.

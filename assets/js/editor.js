@@ -24,6 +24,27 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
+			update_filter_counts: function( xhr ) {
+				var counts = xhr.getResponseHeader( 'X-GlotPress-Filter-Counts' );
+
+				if ( ! counts ) {
+					return;
+				}
+
+				$.each( JSON.parse( counts ), function( filter, count ) {
+					var link = $( '#upper-filters-toolbar a[data-filter="' + filter + '"]' );
+					var text = link.text();
+					var oldCount = String( link.attr( 'data-count' ) );
+					// Only the number is swapped, the rest of the label is translated text.
+					var position = text.lastIndexOf( oldCount );
+
+					if ( -1 === position ) {
+						return;
+					}
+
+					link.text( text.slice( 0, position ) + count + text.slice( position + oldCount.length ) ).attr( 'data-count', count );
+				} );
+			},
 			update_count: function( element ) {
 				var string;
 				var count_characters;
@@ -268,7 +289,7 @@ $gp.editor = (
 					url: $gp_editor_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( response ) {
+					success: function( response, textStatus, xhr ) {
 						var original_id;
 
 						button.prop( 'disabled', false );
@@ -277,6 +298,8 @@ $gp.editor = (
 						for ( original_id in response ) {
 							$gp.editor.replace_current( response[ original_id ] );
 						}
+
+						$gp.editor.update_filter_counts( xhr );
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -378,10 +401,11 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
 					data: data,
-					success: function( response ) {
+					success: function( response, textStatus, xhr ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
+						$gp.editor.update_filter_counts( xhr );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -412,9 +436,10 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
-					success: function( response ) {
+					success: function( response, textStatus, xhr ) {
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
+						$gp.editor.update_filter_counts( xhr );
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */
