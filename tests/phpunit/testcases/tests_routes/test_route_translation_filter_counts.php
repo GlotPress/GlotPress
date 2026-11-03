@@ -16,10 +16,27 @@ class GP_Test_Route_Translation_Filter_Counts extends GP_UnitTestCase_Route {
 		);
 	}
 
-	private function filter_counts() {
-		$this->assertArrayHasKey( 'X-GlotPress-Filter-Counts', $this->route->headers );
+	/**
+	 * Requests the filter counts of a translation set, as the editor does after a change.
+	 *
+	 * @param GP_Translation_Set $set The translation set.
+	 * @return array The counts, keyed by filter.
+	 */
+	private function filter_counts( $set ) {
+		// The editor endpoints don't count the set themselves.
+		$this->assertArrayNotHasKey( 'X-GlotPress-Filter-Counts', $this->route->headers );
 
-		return json_decode( trim( $this->route->headers['X-GlotPress-Filter-Counts'] ), true );
+		ob_start();
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->filter_counts_get( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+		$output = ob_get_clean();
+
+		$this->assertSame( 'application/json', trim( $this->route->headers['Content-Type'] ) );
+
+		return json_decode( $output, true );
 	}
 
 	function test_suggestion_for_a_translated_original_only_adds_a_waiting_translation() {
@@ -38,7 +55,7 @@ class GP_Test_Route_Translation_Filter_Counts extends GP_UnitTestCase_Route {
 			}
 		);
 
-		$counts = $this->filter_counts();
+		$counts = $this->filter_counts( $set );
 		$this->assertSame( '1', $counts['translated'] );
 		$this->assertSame( '1', $counts['waiting'] );
 		$this->assertSame( '0', $counts['untranslated'] );
@@ -53,7 +70,7 @@ class GP_Test_Route_Translation_Filter_Counts extends GP_UnitTestCase_Route {
 		$this->become_validator_for_set( $set );
 		$this->set_status( $set, $waiting, 'current' );
 
-		$counts = $this->filter_counts();
+		$counts = $this->filter_counts( $set );
 		$this->assertSame( '1', $counts['translated'] );
 		$this->assertSame( '0', $counts['waiting'] );
 	}
@@ -66,7 +83,7 @@ class GP_Test_Route_Translation_Filter_Counts extends GP_UnitTestCase_Route {
 		$this->become_validator_for_set( $set );
 		$this->set_status( $set, $translation, 'rejected' );
 
-		$counts = $this->filter_counts();
+		$counts = $this->filter_counts( $set );
 		$this->assertSame( '0', $counts['translated'] );
 		$this->assertSame( '1', $counts['untranslated'] );
 	}
@@ -94,7 +111,19 @@ class GP_Test_Route_Translation_Filter_Counts extends GP_UnitTestCase_Route {
 			}
 		);
 
-		$counts = $this->filter_counts();
+		$counts = $this->filter_counts( $set );
 		$this->assertSame( '0', $counts['warnings'] );
+	}
+
+	function test_filter_counts_of_an_unknown_translation_set_is_a_404() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->filter_counts_get( $set->project->path, $set->locale, 'unknown' );
+			}
+		);
+
+		$this->assertSame( 404, $this->route->http_status );
 	}
 }

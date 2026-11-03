@@ -1,10 +1,12 @@
-/* global $gp_editor_options, $gp, wp, Event */
+/* global $gp_editor_options, $gp, wp, Event, setTimeout, clearTimeout */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
 		return {
 			current: null,
 			original_translations: null,
+			filter_counts_timer: null,
+			filter_counts_request: null,
 			init: function( table ) {
 				var $previewRows;
 
@@ -24,14 +26,34 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
-			update_filter_counts: function( xhr ) {
-				var counts = xhr.getResponseHeader( 'X-GlotPress-Filter-Counts' );
+			/*
+			 * Updates the status filter counts once the translator pauses, instead of after every
+			 * change, as counting them goes through the whole translation set.
+			 */
+			schedule_filter_counts: function() {
+				clearTimeout( $gp.editor.filter_counts_timer );
 
-				if ( ! counts ) {
-					return;
+				// A request that started before this change could bring older counts.
+				if ( $gp.editor.filter_counts_request ) {
+					$gp.editor.filter_counts_request.abort();
+					$gp.editor.filter_counts_request = null;
 				}
 
-				$.each( JSON.parse( counts ), function( filter, count ) {
+				$gp.editor.filter_counts_timer = setTimeout( $gp.editor.update_filter_counts, 1000 );
+			},
+			update_filter_counts: function() {
+				$gp.editor.filter_counts_request = $.ajax( {
+					type: 'GET',
+					url: $gp_editor_options.filter_counts_url,
+					dataType: 'json',
+					success: function( counts ) {
+						$gp.editor.filter_counts_request = null;
+						$gp.editor.set_filter_counts( counts );
+					},
+				} );
+			},
+			set_filter_counts: function( counts ) {
+				$.each( counts, function( filter, count ) {
 					var link = $( '#upper-filters-toolbar a[data-filter="' + filter + '"]' );
 					var text = link.text();
 					var oldCount = String( link.attr( 'data-count' ) );
@@ -316,7 +338,7 @@ $gp.editor = (
 					url: $gp_editor_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( response, textStatus, xhr ) {
+					success: function( response ) {
 						var original_id;
 
 						button.prop( 'disabled', false );
@@ -326,7 +348,7 @@ $gp.editor = (
 							$gp.editor.replace_current( response[ original_id ] );
 						}
 
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.schedule_filter_counts();
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -428,11 +450,11 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
 					data: data,
-					success: function( response, textStatus, xhr ) {
+					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.schedule_filter_counts();
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -463,10 +485,10 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
-					success: function( response, textStatus, xhr ) {
+					success: function( response ) {
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.schedule_filter_counts();
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */
