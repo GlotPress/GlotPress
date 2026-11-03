@@ -738,7 +738,6 @@ class GP_Locales {
 		$cv->lang_code_iso_639_2 = 'chv';
 		$cv->lang_code_iso_639_3 = 'chv';
 		$cv->country_code = 'ru';
-		$cv->wp_locale = 'chv';
 		$cv->slug = 'cv';
 		$cv->nplurals = 1;
 		$cv->plural_expression = '0';
