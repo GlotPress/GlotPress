@@ -30,7 +30,7 @@ jQuery( function( $ ) {
 					if ( sets.length ) {
 						html += '<ul>';
 						$.each( sets, function() {
-							html += '<li>' + $gp.esc_html( this.name ) + ' (' + this.locale + '/' + this.slug + ')</li>';
+							html += '<li>' + $gp.esc_html( this.name ) + ' (' + $gp.esc_html( this.locale ) + '/' + $gp.esc_html( this.slug ) + ')</li>';
 						} );
 						html += '</ul>';
 					}

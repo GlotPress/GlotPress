@@ -36,14 +36,14 @@ class GP_Format_NGX extends GP_Format {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @param GP_Project         $project         The project the strings are being exported for, not used
-	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
-	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Translation_Set $translation_set The locale object the strings are being
-	 *                                            exported for. not used in this format but part
-	 *                                            of the scaffold of the parent object.
-	 * @param GP_Translation     $entries         The entries to export.
+	 * @param GP_Project          $project         The project the strings are being exported for, not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale           $locale          The locale object the strings are being exported for. not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set  $translation_set The locale object the strings are being
+	 *                                             exported for. not used in this format but part
+	 *                                             of the scaffold of the parent object.
+	 * @param Translation_Entry[] $entries         The entries to export.
 	 * @return string The exported JSON string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
@@ -108,14 +108,14 @@ class GP_Format_NGX extends GP_Format {
 			if ( is_array( $value ) ) {
 				foreach ( $value as $keyelem => $valueelem ) {
 					if ( isset( $valueelem['key'] )
-					  && isset( $valueelem['translation'] ) ) {
+						&& isset( $valueelem['translation'] ) ) {
 						$args = array(
 							'singular' => $valueelem['translation'],
 							'context'  => $key . '[' . $valueelem['key'] . ']',
 						);
 						$entries->add_entry( new Translation_Entry( $args ) );
 					}
-				};
+				}
 			} else {
 				$args = array(
 					'singular' => $value,

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Projects
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title( __( 'Projects &lt; GlotPress', 'glotpress' ) );
 gp_breadcrumb( array( __( 'Projects', 'glotpress' ) ) );
 gp_tmpl_header();
@@ -25,7 +32,7 @@ gp_tmpl_header();
 					$project_row_items = apply_filters(
 						'gp_projects_template_project_items',
 						array(
-							'link-name'     => gp_link_project_get( $project, esc_html( $project->name ) ),
+							'link-name'     => gp_link_project_get( $project, $project->name ),
 							'button-edit'   => gp_link_project_edit_get( $project, null, array( 'class' => 'button is-small' ) ),
 							'button-delete' => gp_link_project_delete_get( $project, null, array( 'class' => 'button is-small' ) ),
 							'bubble-status' => $project->active ? null : "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>',

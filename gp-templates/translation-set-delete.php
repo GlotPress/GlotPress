@@ -18,7 +18,7 @@ gp_title(
 gp_breadcrumb_project(
 	$project,
 	array(
-		gp_link_get( $url, $locale->english_name . 'default' !== $set->slug ? ' ' . $set->name : '' ),
+		gp_link_get( $url, $locale->english_name . ( 'default' !== $set->slug ? ' ' . $set->name : '' ) ),
 		__( 'Delete', 'glotpress' ),
 	)
 );

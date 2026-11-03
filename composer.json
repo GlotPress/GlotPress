@@ -23,8 +23,8 @@
     "gettext/languages": "^2.6",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
     "phpunit/phpunit": "^9.6.15",
-    "wp-coding-standards/wpcs": "^2.2",
-    "yoast/phpunit-polyfills": "^2.0"
+    "wp-coding-standards/wpcs": "^3.2",
+    "yoast/phpunit-polyfills": "^4.0"
   },
   "config": {
     "allow-plugins": {

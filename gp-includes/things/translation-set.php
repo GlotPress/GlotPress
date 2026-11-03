@@ -14,10 +14,39 @@
  */
 class GP_Translation_Set extends GP_Thing {
 
-	var $table_basename           = 'gp_translation_sets';
-	var $field_names              = array( 'id', 'name', 'slug', 'project_id', 'locale' );
-	var $non_db_field_names       = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
-	var $int_fields               = array( 'id', 'project_id' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_translation_sets';
+
+	/**
+	 * List of field names for a translation set.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
+
+	/**
+	 * List of non-database field names.
+	 *
+	 * @var array $non_db_field_names
+	 */
+	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'project_id' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
 	/**
@@ -147,6 +176,13 @@ class GP_Translation_Set extends GP_Thing {
 	public $wp_locale;
 
 	/**
+	 * The date of the last modified translation.
+	 *
+	 * @var string|false
+	 */
+	public $last_modified;
+
+	/**
 	 * Sets restriction rules for fields.
 	 *
 	 * @since 1.0.0
@@ -187,6 +223,10 @@ class GP_Translation_Set extends GP_Thing {
 			$args['slug'] = gp_sanitize_slug( $args['slug'] );
 		}
 
+		if ( ! empty( $args['locale'] ) ) {
+			$args['locale'] = gp_sanitize_slug( $args['locale'] );
+		}
+
 		return $args;
 	}
 
@@ -206,33 +246,20 @@ class GP_Translation_Set extends GP_Thing {
 		$parts  = array( $locale->english_name );
 
 		if ( 'default' !== $this->slug ) {
-			$parts[] = $this->name;
+			$parts[] = esc_html( $this->name );
 		}
 
 		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
 	}
 
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
-		$result = $this->one(
+		return $this->one(
 			"SELECT * FROM $this->table
 			WHERE slug = %s AND project_id= %d AND locale = %s",
 			$slug,
 			$project_id,
 			$locale_slug
 		);
-
-		if ( ! $result && 0 === $project_id ) {
-			$result = $this->create(
-				array(
-					'project_id' => $project_id,
-					'name'       => GP_Locales::by_slug( $locale_slug )->english_name,
-					'slug'       => $slug,
-					'locale'     => $locale_slug,
-				)
-			);
-		}
-
-		return $result;
 	}
 
 	public function by_locale( $locale_slug ) {
@@ -289,21 +316,32 @@ class GP_Translation_Set extends GP_Thing {
 
 		$existing_translations = array();
 
-		$current_translations_list        = GP::$translation->for_translation(
-			$this->project,
-			$this,
-			'no-limit',
-			array(
-				'status' => 'current',
-			)
-		);
-		$existing_translations['current'] = new Translations();
-		foreach ( $current_translations_list as $entry ) {
-			$existing_translations['current']->add_entry( $entry );
-		}
-		unset( $current_translations_list );
+		$load_existing_translations = function ( $status ) use ( &$existing_translations ) {
+			if ( ! isset( $existing_translations[ $status ] ) ) {
+				$existing_translations_list = GP::$translation->for_translation(
+					$this->project,
+					$this,
+					'no-limit',
+					array(
+						'status' => $status,
+					)
+				);
 
-		$translations_added = 0;
+				$existing_translations[ $status ] = new Translations();
+				foreach ( $existing_translations_list as $existing_entry ) {
+					$existing_translations[ $status ]->add_entry( $existing_entry );
+				}
+				unset( $existing_translations_list );
+			}
+
+			return $existing_translations[ $status ];
+		};
+
+		$load_existing_translations( 'current' );
+
+		$translations_added       = 0;
+		$created_translation_ids  = array();
+		$approved_translation_ids = array();
 		foreach ( $translations->entries as $entry ) {
 			if ( empty( $entry->translations ) ) {
 				continue;
@@ -336,30 +374,38 @@ class GP_Translation_Set extends GP_Thing {
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
 
-			$entry->warnings = maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) );
+			/**
+			 * Filters the warnings of imported translations of a translation set.
+			 *
+			 * @since 4.2.0
+			 *
+			 * @param array            $warnings The warnings array.
+			 * @param Translation_Entry $entry   The translation entry being imported.
+			 */
+			$entry->warnings = apply_filters( 'gp_translation_set_import_warnings', maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) ), $entry );
 			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
 				$entry->status = 'waiting';
 			}
 
-			// Lazy load other entries.
-			if ( ! isset( $existing_translations[ $entry->status ] ) ) {
-				$existing_translations_list              = GP::$translation->for_translation(
-					$this->project,
-					$this,
-					'no-limit',
-					array(
-						'status' => $entry->status,
-					)
-				);
-				$existing_translations[ $entry->status ] = new Translations();
-				foreach ( $existing_translations_list as $_entry ) {
-					$existing_translations[ $entry->status ]->add_entry( $_entry );
-				}
-				unset( $existing_translations_list );
+			$entry_original = new GP_Original(
+				array(
+					'project_id' => $this->project_id,
+					'singular'   => $entry->singular,
+					'plural'     => $entry->plural,
+					'context'    => $entry->context,
+					'comment'    => $entry->extracted_comments,
+				)
+			);
+
+			$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
+
+			// Not waiting, because a translation with errors cannot be approved before it is edited.
+			if ( $has_errors ) {
+				$entry->status = 'fuzzy';
 			}
 
 			$create     = false;
-			$translated = $existing_translations[ $entry->status ]->translate_entry( $entry );
+			$translated = $load_existing_translations( $entry->status )->translate_entry( $entry );
 			if ( 'current' !== $entry->status && ! $translated ) {
 				// Don't create an entry if it already exists as current.
 				$translated = $existing_translations['current']->translate_entry( $entry );
@@ -378,10 +424,43 @@ class GP_Translation_Set extends GP_Thing {
 				 * @param bool $import_over Import over an existing translation.
 				 */
 				$create = apply_filters( 'gp_translation_set_import_over_existing', $translated_is_different );
+
+				/*
+				 * Only once the filter above has agreed that the existing translation may be
+				 * replaced, because approving a waiting translation supersedes it as well.
+				 */
+				if ( $create && 'current' === $entry->status ) {
+					$approved = $this->approve_matching_waiting_translation( $translated->original_id, $entry, $locale, $translations );
+					if ( $approved ) {
+						/*
+						 * An approval is not a creation, so the row is reported through
+						 * $approved_translation_ids and not through $created_translation_ids. It
+						 * keeps the original translator's user_id, so a consumer crediting the
+						 * import credits that translator and not the importer.
+						 */
+						$approved_translation_ids[] = $approved->id;
+						$translations_added        += 1;
+						continue;
+					}
+				}
 			} else {
-				// we don't have the string translated, let's see if the original is there
+				// we don't have the string translated, let's see if the original is there.
 				$original = GP::$original->by_project_id_and_entry( $this->project->id, $entry, '+active' );
 				if ( $original ) {
+					if ( 'current' === $entry->status ) {
+						$approved = $this->approve_matching_waiting_translation( $original->id, $entry, $locale, $translations );
+						if ( $approved ) {
+							/*
+							 * Reported through $approved_translation_ids, as at the other call site.
+							 * No existing current translation is overwritten here, so
+							 * gp_translation_set_import_over_existing does not apply.
+							 */
+							$approved_translation_ids[] = $approved->id;
+							$translations_added        += 1;
+							continue;
+						}
+					}
+
 					$entry->original_id = $original->id;
 					$create             = true;
 				}
@@ -394,11 +473,18 @@ class GP_Translation_Set extends GP_Thing {
 				$entry->translation_set_id = $this->id;
 
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
+
+				// A row created as current is not checked again when its status is set.
+				if ( $has_errors && 'current' === $entry->status ) {
+					$entry->status = 'fuzzy';
+				}
+
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
 					$translation->set_status( $entry->status );
-					$translations_added += 1;
+					$translations_added       += 1;
+					$created_translation_ids[] = $translation->id;
 				}
 			}
 		}
@@ -409,12 +495,110 @@ class GP_Translation_Set extends GP_Thing {
 		 * Fires after translations have been imported to a translation set.
 		 *
 		 * @since 1.0.0
+		 * @since 4.1.0 Added the `$created_translation_ids` parameter.
+		 * @since 4.2.0 Added the `$approved_translation_ids` parameter.
 		 *
-		 * @param int $translation_set The ID of the translation set the import was made into.
+		 * @param int   $translation_set          The ID of the translation set the import was made into.
+		 * @param int[] $created_translation_ids  The IDs of the translations created during the import.
+		 * @param int[] $approved_translation_ids The IDs of the waiting translations approved during the import.
+		 *                                        These were not created by the import and keep the original
+		 *                                        translator's credit.
 		 */
-		do_action( 'gp_translations_imported', $this->id );
+		do_action( 'gp_translations_imported', $this->id, $created_translation_ids, $approved_translation_ids );
 
 		return $translations_added;
+	}
+
+	/**
+	 * Approves an existing waiting translation that is identical to an imported entry.
+	 *
+	 * Keeps the original translator's credit instead of creating a duplicate row for the importer.
+	 * The waiting translations of the original are looked up directly, because a `Translations`
+	 * collection is keyed by context and singular and would therefore keep only one waiting
+	 * translation per original.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int               $original_id  The ID of the original the entry belongs to.
+	 * @param Translation_Entry $entry        Translation entry object to import.
+	 * @param GP_Locale         $locale       The locale of the translation set.
+	 * @param Translations      $translations Translations collection being imported.
+	 * @return GP_Translation|null The approved translation, or null if none was approved.
+	 */
+	private function approve_matching_waiting_translation( $original_id, $entry, $locale, $translations ) {
+		/**
+		 * Filter whether an imported translation that is identical to an existing
+		 * waiting translation should approve the waiting translation instead of
+		 * creating a new one, preserving the original translator's credit.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param bool              $approve_waiting Approve the matching waiting translation. Default true.
+		 * @param Translation_Entry $entry           Translation entry object to import.
+		 * @param Translations      $translations    Translations collection.
+		 */
+		if ( ! apply_filters( 'gp_translation_set_import_approve_waiting', true, $entry, $translations ) ) {
+			return null;
+		}
+
+		/*
+		 * Approving goes through set_status( 'current' ), which requires an approve-capable
+		 * current user. Without a current user, for example a WP-CLI import, nothing can be
+		 * approved, so skip the lookup and let the caller create a new translation as before.
+		 */
+		if ( ! get_current_user_id() ) {
+			return null;
+		}
+
+		$wanted       = array_pad( $entry->translations, $locale->nplurals, null );
+		$waiting_rows = GP::$translation->find_many(
+			array(
+				'translation_set_id' => $this->id,
+				'original_id'        => $original_id,
+				'status'             => 'waiting',
+			),
+			// Oldest suggestion first, so which translator gets credited is deterministic.
+			'date_added ASC, id ASC'
+		);
+
+		foreach ( $waiting_rows as $waiting_row ) {
+			// translations() is always padded to the maximum number of plurals, the locale decides how many count.
+			if ( array_slice( $waiting_row->translations(), 0, $locale->nplurals ) !== $wanted ) {
+				continue;
+			}
+
+			/*
+			 * The create path filters the status a second time right before creating a row, with
+			 * the translation that is already there. Approving supersedes that creation, so give
+			 * the filter the same say here, passing the waiting translation that is about to be
+			 * approved as the previous translation.
+			 *
+			 * This filter is documented in gp-includes/things/translation-set.php.
+			 */
+			$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $waiting_row );
+
+			if ( 'current' !== $entry->status ) {
+				/*
+				 * The filter downgraded the imported string, so the waiting translation must not
+				 * be approved. The caller falls through to the normal create path, which stores
+				 * the entry with the status the filter asked for.
+				 */
+				return null;
+			}
+
+			if ( ! $waiting_row->set_status( 'current' ) ) {
+				/*
+				 * The current user is not allowed to approve this translation, for example a
+				 * translator importing their own suggestion. Keep the pre-existing behaviour
+				 * and let the caller create a new translation.
+				 */
+				return null;
+			}
+
+			return $waiting_row;
+		}
+
+		return null;
 	}
 
 	/**
@@ -743,7 +927,7 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
-	 * Deletes a translation set and all of its translations and glossaries.
+	 * Deletes a translation set and all of its translations, glossaries and translation set permissions.
 	 *
 	 * @since 2.0.0
 	 *
@@ -752,7 +936,17 @@ class GP_Translation_Set extends GP_Thing {
 	public function delete() {
 		GP::$translation->delete_many( array( 'translation_set_id' => $this->id ) );
 
-		GP::$glossary->delete_many( array( 'translation_set_id', $this->id ) );
+		$glossary = GP::$glossary->by_set_id( $this->id );
+		if ( $glossary ) {
+			$glossary->delete();
+		}
+
+		GP::$permission->delete_many(
+			array(
+				'object_type' => 'translation-set',
+				'object_id'   => $this->id,
+			)
+		);
 
 		return parent::delete();
 	}

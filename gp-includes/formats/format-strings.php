@@ -36,14 +36,14 @@ class GP_Format_Strings extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param GP_Project         $project         The project the strings are being exported for, not used
-	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
-	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Translation_Set $translation_set The locale object the strings are being
-	 *                                            exported for. not used in this format but part
-	 *                                            of the scaffold of the parent object.
-	 * @param GP_Translation     $entries         The entries to export.
+	 * @param GP_Project          $project         The project the strings are being exported for, not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale           $locale          The locale object the strings are being exported for. not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set  $translation_set The locale object the strings are being
+	 *                                             exported for. not used in this format but part
+	 *                                             of the scaffold of the parent object.
+	 * @param Translation_Entry[] $entries         The entries to export.
 	 * @return string The exported strings string.
 	 */
 	public function print_exported_file( $project, $locale, $translation_set, $entries ) {
@@ -124,7 +124,7 @@ class GP_Format_Strings extends GP_Format {
 		// Convert multi-line comments into a single line.
 		$file = preg_replace_callback(
 			'/\/\*\s*(.*?)\s*\*\//s',
-			function( $m ) {
+			function ( $m ) {
 				return str_replace( PHP_EOL, '\n', $m[0] );
 			},
 			$file
@@ -202,7 +202,6 @@ class GP_Format_Strings extends GP_Format {
 	private function escape( $string ) {
 		return addcslashes( $string, '"\\/' );
 	}
-
 }
 
 GP::$formats['strings'] = new GP_Format_Strings();

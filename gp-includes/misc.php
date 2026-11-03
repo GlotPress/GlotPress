@@ -1,4 +1,9 @@
 <?php
+/**
+ * GlotPress Miscellaneous Functions
+ *
+ * @package GlotPress
+ */
 
 /**
  * Retrieves a value from $_POST.
@@ -57,19 +62,33 @@ function gp_route_nonce_url( $url, $action ) {
 /**
  * Retrieves a value from $array
  *
- * @param array  $array
- * @param string $key name of array value
- * @param mixed  $default value to return if $array[$key] doesn't exist. Default is ''
+ * @param array  $array   The array to get the value from.
+ * @param string $key     Name of array value.
+ * @param mixed  $default Value to return if $array[$key] doesn't exist. Default is ''.
  * @return mixed $array[$key] if exists or $default
  */
 function gp_array_get( $array, $key, $default = '' ) {
 	return ( is_scalar( $key ) && isset( $array[ $key ] ) ) ? $array[ $key ] : $default;
 }
 
+/**
+ * Retrieves a constant value or a default value if the constant isn't defined.
+ *
+ * @param string $name    Name of the constant.
+ * @param mixed  $default Value to return if the constant isn't defined. Default is ''.
+ * @return mixed Constant value if defined or $default.
+ */
 function gp_const_get( $name, $default = '' ) {
 	return defined( $name ) ? constant( $name ) : $default;
 }
 
+/**
+ * Defines a constant if it isn't already defined.
+ *
+ * @param string $name  Name of the constant.
+ * @param mixed  $value Value to set the constant to.
+ * @return bool True if the constant was defined, false if it was already defined.
+ */
 function gp_const_set( $name, $value ) {
 	if ( defined( $name ) ) {
 		return false;
@@ -78,7 +97,14 @@ function gp_const_set( $name, $value ) {
 	return true;
 }
 
-
+/**
+ * Retrieves a member variable from an object.
+ *
+ * @param object       $object  The object to get the member from.
+ * @param string       $key     Name of member variable.
+ * @param string|array $default Value to return if $object->$key doesn't exist. Default is ''.
+ * @return string|array $object->$key if exists or $default
+ */
 function gp_member_get( $object, $key, $default = '' ) {
 	return ( is_string( $key ) && property_exists( $object, $key ) ) ? $object->$key : $default;
 }
@@ -86,8 +112,8 @@ function gp_member_get( $object, $key, $default = '' ) {
 /**
  * Makes from an array of arrays a flat array.
  *
- * @param array $array the arra to flatten
- * @return array flattenned array
+ * @param array $array The array to flatten.
+ * @return array Flattened array.
  */
 function gp_array_flatten( $array ) {
 	$res = array();
@@ -114,10 +140,10 @@ function gp_notice_set( $message, $key = 'notice' ) {
 /**
  * Retrieves a notice message, set by {@link gp_notice()}
  *
- * @param string $key Optional. Message key. The default is 'notice'
+ * @param string $key Optional. Message key. The default is 'notice'.
  */
 function gp_notice( $key = 'notice' ) {
-	// Sanitize fields
+	// Sanitize fields.
 	$allowed_tags = array(
 		'a'       => array( 'href' => true ),
 		'abbr'    => array(),
@@ -153,6 +179,9 @@ function gp_notice( $key = 'notice' ) {
 	return wp_kses( gp_array_get( GP::$redirect_notices, $key ), $allowed_tags );
 }
 
+/**
+ * Populates the GP::$redirect_notices array from the cookies and clears the cookies.
+ */
 function gp_populate_notices() {
 	GP::$redirect_notices = array();
 	$prefix               = '_gp_notice_';
@@ -242,27 +271,40 @@ function gp_array_zip( ...$args ) {
 			next( $array );
 		}
 
-		$array_count++;
+		++$array_count;
 	}
 
 	return $res;
 }
 
+/**
+ * Returns true if callback returns true for any item in array.
+ *
+ * @param callable     $callback The callback to run for each item.
+ * @param array        $array    The array to iterate over.
+ * @param mixed|string $arg      Optional. An additional argument to pass to the callback. Default null.
+ * @return bool
+ */
 function gp_array_any( $callback, $array, $arg = null ) {
 	foreach ( $array as $item ) {
 		if ( is_array( $callback ) ) {
 			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
 			}
-		} else {
-			if ( $callback( $item, $arg ) ) {
+		} elseif ( $callback( $item, $arg ) ) {
 				return true;
-			}
 		}
 	}
 	return false;
 }
 
+/**
+ * Returns true if callback returns true for all items in array.
+ *
+ * @param callable $callback The callback to run for each item.
+ * @param array    $array    The array to iterate over.
+ * @return bool
+ */
 function gp_array_all( $callback, $array ) {
 	foreach ( $array as $item ) {
 		if ( ! $callback( $item ) ) {
@@ -272,6 +314,11 @@ function gp_array_all( $callback, $array ) {
 	return true;
 }
 
+/**
+ * Logs a value to the error log.
+ *
+ * @param mixed $value The value to log.
+ */
 function gp_error_log_dump( $value ) {
 	if ( is_array( $value ) || is_object( $value ) ) {
 		$value = print_r( $value, true );
@@ -279,6 +326,13 @@ function gp_error_log_dump( $value ) {
 	error_log( $value );
 }
 
+/**
+ * Checks if an object has a member variable.
+ *
+ * @param object $object   The object to check.
+ * @param string $var_name Name of member variable.
+ * @return bool
+ */
 function gp_object_has_var( $object, $var_name ) {
 	return in_array( $var_name, array_keys( get_object_vars( $object ) ), true );
 }
@@ -286,7 +340,7 @@ function gp_object_has_var( $object, $var_name ) {
 /**
  * Has this translation been updated since the passed timestamp?
  *
- * @param GP_Translation_Set $translation_set Translation to check
+ * @param GP_Translation_Set $translation_set Translation to check.
  * @param int                $timestamp Optional; unix timestamp to compare against. Defaults to HTTP_IF_MODIFIED_SINCE if set.
  * @return bool
  */
@@ -297,7 +351,7 @@ function gp_has_translation_been_updated( $translation_set, $timestamp = 0 ) {
 		$timestamp = gp_gmt_strtotime( wp_unslash( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) );
 	}
 
-	// If nothing to compare against, then always assume there's an update available
+	// If nothing to compare against, then always assume there's an update available.
 	if ( ! $timestamp ) {
 		return true;
 	}
@@ -327,7 +381,7 @@ function gp_clean_translation_set_cache( $id ) {
 /**
  * Delete counts cache for all translation sets of a project
  *
- * @param int $project_id project ID
+ * @param int $project_id Project ID.
  */
 function gp_clean_translation_sets_cache( $project_id ) {
 	$translation_sets = GP::$translation_set->by_project_id( $project_id );
@@ -416,8 +470,8 @@ function gp_is_not_null( $value ) {
  * Checks if the passed value is between the start and end value or is the same.
  *
  * @param string $value The value you want to check.
- * @param string $value The lower value you want to check against.
- * @param string $value The upper value you want to check against.
+ * @param string $start The lower value you want to check against.
+ * @param string $end   The upper value you want to check against.
  * @return bool
  */
 function gp_is_between( $value, $start, $end ) {
@@ -428,6 +482,8 @@ function gp_is_between( $value, $start, $end ) {
  * Checks if the passed value is between the start and end value.
  *
  * @param string $value The value you want to check.
+ * @param string $start The lower value you want to check against.
+ * @param string $end   The upper value you want to check against.
  * @return bool
  */
 function gp_is_between_exclusive( $value, $start, $end ) {
@@ -469,6 +525,23 @@ function gp_is_ascii_string( $value ) {
  */
 function gp_is_starting_and_ending_with_a_word_character( $value ) {
 	return (bool) preg_match( '/\b' . preg_quote( $value, '/' ) . '\b/i', $value );
+}
+
+/**
+ * Strips the control characters that cannot appear in exported files.
+ *
+ * Keeps tab, line feed and carriage return, which are legitimate in
+ * translations, and removes the remaining C0 control characters and DEL.
+ * 0x04 in particular is the context separator of the gettext formats,
+ * and XML 1.0 cannot represent any of these characters at all.
+ *
+ * @since 4.2.0
+ *
+ * @param string $text The text to strip.
+ * @return string The text without forbidden control characters.
+ */
+function gp_strip_forbidden_control_characters( $text ) {
+	return (string) preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', (string) $text );
 }
 
 /**
@@ -735,4 +808,47 @@ function gp_get_sort_by_fields() {
  */
 function gp_set_translations_import_max_memory_limit() {
 	return '256M';
+}
+
+/**
+ * Checks if a string is valid UTF-8.
+ *
+ * The wp_is_valid_utf8() was introduced in WordPress 6.9.0, so we need a fallback for older versions.
+ * seems_utf8() was deprecated in WordPress 6.9.0.
+ * See https://core.trac.wordpress.org/changeset/60630
+ *
+ * @since 4.1.0
+ *
+ * @param string $string The string to check.
+ * @return bool True if the string is valid UTF-8, false otherwise.
+ */
+function gp_is_valid_utf8( $string ) {
+	if ( function_exists( 'wp_is_valid_utf8' ) ) {
+		return wp_is_valid_utf8( $string );
+	}
+
+	if ( function_exists( 'mb_check_encoding' ) ) {
+		return mb_check_encoding( $string, 'UTF-8' );
+	}
+
+	return 1 === preg_match( '//u', $string );
+}
+
+/**
+ * Determines whether the current user may create the locale glossary for a locale and set slug.
+ *
+ * A locale glossary lives on the virtual locale project (id 0), so it is authorized
+ * the same way its translations are: with the `approve` permission on the set, which
+ * covers GlotPress administrators and the locale's approvers.
+ *
+ * @param string $locale_slug The locale slug. E.g. "de".
+ * @param string $set_slug    The translation set slug. E.g. "default".
+ * @return bool Whether the current user may create the locale glossary.
+ */
+function gp_can_create_locale_glossary( $locale_slug, $set_slug ) {
+	return GP::$permission->current_user_can(
+		'approve',
+		GP::$validator_permission->object_type,
+		GP::$validator_permission->object_id( 0, $locale_slug, $set_slug )
+	);
 }

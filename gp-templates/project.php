@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Project
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title(
 	sprintf(
 		/* translators: %s: Project name. */
@@ -14,7 +21,7 @@ $delete_link = gp_link_project_delete_get( $project, null, array( 'class' => 'bu
 if ( ! $project->active ) {
 	add_filter(
 		'gp_breadcrumb_items',
-		function( $items ) {
+		function ( $items ) {
 			$items[ count( $items ) - 1 ] .= ' <span class="inactive bubble">' . __( 'Inactive', 'glotpress' ) . '</span>';
 
 			return $items;
@@ -124,7 +131,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 								<td>
 									<strong><?php gp_link( gp_url_project( $project, gp_url_join( $set->locale, $set->slug ) ), $set->name_with_locale() ); ?></strong>
 									<?php
-									if ( $set->current_count && $set->current_count >= $set->all_count * 0.9 ) {
+									if ( $set->current_count && $set->all_count && $set->current_count >= $set->all_count * 0.9 ) {
 										$percent = floor( $set->current_count / $set->all_count * 100 );
 										?>
 										<span class="bubble morethan90"><?php echo number_format_i18n( $percent ); ?>%</span>
@@ -295,7 +302,7 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				$project_row_items = apply_filters(
 					'gp_project_template_subproject_items',
 					array(
-						'link-name'     => gp_link_project_get( $sub_project, esc_html( $sub_project->name ) ),
+						'link-name'     => gp_link_project_get( $sub_project, $sub_project->name ),
 						'button-edit'   => gp_link_project_edit_get( $sub_project, null, array( 'class' => 'button is-small' ) ),
 						'button-delete' => gp_link_project_delete_get( $sub_project, null, array( 'class' => 'button is-small' ) ),
 						'bubble-status' => $sub_project->active ? null : "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>',

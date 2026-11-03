@@ -12,6 +12,64 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->route->notices = array();
 	}
 
+	/**
+	 * Runs a route request and catches the exit a faked request throws when the
+	 * route ends the request, so the response can be asserted afterwards.
+	 *
+	 * @param callable $request Callback that invokes the route method under test.
+	 */
+	function do_route_request( callable $request ) {
+		try {
+			$request();
+		} catch ( GP_Route_Exit_Exception $e ) {
+			// The route ended the request; its state is recorded on $this->route.
+		}
+	}
+
+	/**
+	 * Requests a status change for a translation through the route and reloads it.
+	 *
+	 * @param GP_Translation_Set $set         A set with its project/locale/slug available.
+	 * @param GP_Translation     $translation The translation to change.
+	 * @param string             $status      The requested status.
+	 * @return GP_Translation The reloaded translation.
+	 */
+	function set_status( $set, $translation, $status ) {
+		$_POST['status']             = $status;
+		$_POST['translation_id']     = $translation->id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-' . $status . '_' . $translation->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		return GP::$translation->get( $translation->id );
+	}
+
+	/**
+	 * Creates a user with validator (approve) permission on a translation set and makes them the current user.
+	 *
+	 * @param GP_Translation_Set $set A set with its project/locale/slug available.
+	 * @return int The created user id.
+	 */
+	function become_validator_for_set( $set ) {
+		$user = $this->factory->user->create();
+		GP::$validator_permission->create(
+			array(
+				'user_id'     => $user,
+				'action'      => 'approve',
+				'project_id'  => $set->project->id,
+				'locale_slug' => $set->locale,
+				'set_slug'    => $set->slug,
+			)
+		);
+		wp_set_current_user( $user );
+
+		return $user;
+	}
+
 	function assertRedirected() {
 		$this->assertTrue( $this->route->redirected, "Wasn't redirected" );
 	}

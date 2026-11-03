@@ -44,12 +44,64 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertFalse( $verdict );
 	}
 
+	function test_term_with_trailing_punctuation() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'note:', 'part_of_speech' => 'noun', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertTrue( $verdict );
+	}
+
+	function test_term_with_punctuation_expression() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'are you sure...?', 'part_of_speech' => 'expression', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertTrue( $verdict );
+	}
+
+	function test_term_with_brackets() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'display [location]', 'part_of_speech' => 'expression', 'last_edited_by' =>'1' ) );
+		$verdict = $glossary_entry->validate();
+
+		$this->assertTrue( $verdict );
+	}
+
+	function test_term_is_saved_without_surrounding_whitespace() {
+		$glossary_entry = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => "  plugin \t", 'part_of_speech' => 'noun', 'last_edited_by' =>'1' ) );
+
+		$this->assertTrue( $glossary_entry->validate() );
+		$this->assertSame( 'plugin', GP::$glossary_entry->get( $glossary_entry->id )->term );
+	}
+
 	function test_by_glossary_id() {
 		$glossary_entry_1 = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );
 		$glossary_entry_2 = GP::$glossary_entry->create( array( 'glossary_id' => '2', 'term' => 'term', 'part_of_speech' => 'verb', 'last_edited_by' =>'1' ) );
 		$new = GP::$glossary_entry->by_glossary_id( '1' );
 		$this->assertEquals( array( $glossary_entry_1 ), $new );
 		$this->assertNotEquals( array( $glossary_entry_2 ), $new );
+	}
+
+	function test_by_glossary_id_and_term() {
+		$noun = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'Post', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		$verb = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'post', 'part_of_speech' => 'verb', 'last_edited_by' => '1' ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'posts', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => '2', 'term' => 'post', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+
+		$entries = GP::$glossary_entry->by_glossary_id_and_term( '1', 'POST' );
+
+		$this->assertEqualsCanonicalizing( array( $noun->id, $verb->id ), wp_list_pluck( $entries, 'id' ) );
+	}
+
+	function test_by_glossary_id_and_term_treats_sql_wildcards_and_quotes_literally() {
+		GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => 'plugin', 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		$quoted = GP::$glossary_entry->create( array( 'glossary_id' => '1', 'term' => "plugin's", 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+
+		$this->assertSame( array(), GP::$glossary_entry->by_glossary_id_and_term( '1', 'plug%' ) );
+		$this->assertSame( array(), GP::$glossary_entry->by_glossary_id_and_term( '1', 'plugi_' ) );
+		$this->assertSame( array(), GP::$glossary_entry->by_glossary_id_and_term( '1', "' OR '1'='1" ) );
+
+		$entries = GP::$glossary_entry->by_glossary_id_and_term( '1', "plugin's" );
+		$this->assertCount( 1, $entries );
+		$this->assertEquals( $quoted->id, $entries[0]->id );
 	}
 
 	function test_part_of_speech_array_set() {
@@ -165,7 +217,7 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 						'pos' => $pos,
 					);
 
-					$regex = '#<span class="glossary-word" data-translations="\[.*?' . preg_quote( htmlspecialchars( substr( json_encode( $translation_json ), 0, -2 ) ), '#' ) . '[^"]+">[^<]+</span>#';
+					$regex = '#<span class="glossary-word" data-translations="\[.*?' . preg_quote( htmlspecialchars( substr( json_encode( $translation_json ), 0, -2 ), ENT_QUOTES, 'UTF-8' ), '#' ) . '[^"]+">[^<]+</span>#';
 
 					$this->assertMatchesRegularExpression( $regex, $translation->singular_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->singular . '".' );
 					$this->assertMatchesRegularExpression( $regex, $translation->plural_glossary_markup, 'Glossary term "' . $term . '" should have been found in "' . $translation->plural . '".' );

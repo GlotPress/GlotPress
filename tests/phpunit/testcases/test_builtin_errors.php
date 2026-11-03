@@ -58,6 +58,7 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 		$this->assertNoErrors( 'unexpected_sprintf_token', '<a href="%S">95 percent</a>', '<a href="%s">95 percent</a>' );
 		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2f baba', '%2$.2F баба' );
 		$this->assertNoErrors( 'unexpected_sprintf_token', '%2$.2F baba', '%2$.2f баба' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '%x of %ld', '%X von %ld' );
 
 		$this->assertNoErrors(
 			'unexpected_sprintf_token',
@@ -117,5 +118,104 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 			null,
 			'The translation contains the following unexpected placeholders: 00%'
 		);
+		$this->assertHasErrorsAndContainsOutput(
+			'unexpected_sprintf_token',
+			'%s items',
+			'%S Elemente',
+			null,
+			'The translation contains the following unexpected placeholders: %S'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'unexpected_sprintf_token',
+			'%d items',
+			'%D Elemente',
+			null,
+			'The translation contains the following unexpected placeholders: %D'
+		);
+		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%l Elemente', null );
+		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%0$s Elemente', null );
+		$this->assertHasErrors( 'unexpected_sprintf_token', '%s items', '%*s Elemente', null );
+	}
+
+	function test_error_extra_sprintf_placeholders() {
+		$this->assertNoErrors( 'extra_sprintf_placeholders', 'The %s contains %d items', 'El %s contiene %d elementos' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', 'The %s contains %d items', 'Der Inhalt von %s' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', '%s items', '%d Elemente' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', '%s of %s', '%2$s von %1$s' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', '%s items', '%1$s Elemente, nochmal %1$s' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', '%s percent', '%s %%' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', 'Hello', 'Hallo %s' );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', '100% of %s', '100% von %s und %s' );
+
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'%s items',
+			'%s Elemente in %s',
+			null,
+			'The translation contains more placeholders than the original: %s'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'%s items',
+			'%2$s Elemente',
+			null,
+			'The translation contains more placeholders than the original: %2$s'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'%1$s of %2$s',
+			'%1$s von %2$s in %3$s und %4$d',
+			null,
+			'The translation contains more placeholders than the original: %3$s, %4$d'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'%s items',
+			'%5% %s Elemente',
+			null,
+			'The translation contains more placeholders than the original: %s'
+		);
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'<a href="%s">Docs</a>',
+			'<a href="%s">Doku</a> unter example.org/%2Fdocs',
+			null,
+			'%2F'
+		);
+	}
+
+	function test_error_extra_sprintf_placeholders_counts_both_plural_forms() {
+		$errors = new GP_Translation_Errors();
+		$this->w->add_all( $errors );
+
+		$russian  = $this->factory->locale->create(
+			array(
+				'nplurals'          => 3,
+				'plural_expression' => '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)',
+			)
+		);
+		$original = $this->factory->original->create(
+			array(
+				'singular' => 'One item',
+				'plural'   => '%d items',
+			)
+		);
+
+		$this->assertNull( $errors->check( $original, array( '%d элемент', '%d элемента', '%d элементов' ), $russian ) );
+
+		$problems = $errors->check( $original, array( '%d элемент в %s', '%d элемента', '%d элементов' ), $russian );
+		$this->assertArrayHasKey( 'extra_sprintf_placeholders', $problems[0] );
+		$this->assertArrayNotHasKey( 1, $problems );
+	}
+
+	function test_error_control_characters() {
+		$this->assertNoErrors( 'control_characters', 'Original', 'A clean translation' );
+		$this->assertNoErrors( 'control_characters', 'Original', "Tabs\tnewlines\nand\rreturns are fine" );
+
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "EOT\x04here", null, 'U+0004' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "SOH\x01here", null, 'U+0001' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Bell\x07here", null, 'U+0007' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Escape\x1Bhere", null, 'U+001B' );
+		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Delete\x7Fhere", null, 'U+007F' );
 	}
 }
