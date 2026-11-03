@@ -2114,7 +2114,6 @@ class GP_Locales {
 		$nyn->lang_code_iso_639_2 = 'nyn';
 		$nyn->lang_code_iso_639_3 = 'nyn';
 		$nyn->country_code = 'ug';
-		$nyn->wp_locale = 'nyn';
 		$nyn->slug = 'nyn';
 
 		$oci = new GP_Locale();
